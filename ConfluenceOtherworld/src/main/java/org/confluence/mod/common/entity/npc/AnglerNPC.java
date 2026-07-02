@@ -29,7 +29,6 @@ import org.confluence.mod.common.init.item.MountItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.network.s2c.OpenAnglerDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,21 +38,19 @@ import java.util.List;
  * 自然生成于海洋时处于躺下（睡眠）状态，玩家交互后唤醒。
  */
 public class AnglerNPC extends BaseNPC {
-    private static final EntityDataAccessor<Boolean> DATA_WAKE_UP =
-            SynchedEntityData.defineId(AnglerNPC.class, EntityDataSerializers.BOOLEAN);
-    private static final String WAKE_UP_KEY = "WakeUp";
+    private static final EntityDataAccessor<Boolean> DATA_WAKE_UP = SynchedEntityData.defineId(AnglerNPC.class, EntityDataSerializers.BOOLEAN);
+    public static final String WAKE_UP_KEY = "WakeUp";
 
     private Vec3 driftDir = Vec3.ZERO;
-    private Vec3 driftSpeed = Vec3.ZERO;
 
     public AnglerNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_WAKE_UP, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(DATA_WAKE_UP, false);
     }
 
     public boolean isWakeUp() {
@@ -72,10 +69,10 @@ public class AnglerNPC extends BaseNPC {
     }
 
     @Override
-    protected @NotNull EntityDimensions getDefaultDimensions(@NotNull Pose pose) {
+    public EntityDimensions getDimensions(Pose pose) {
         return isWakeUp()
-                ? super.getDefaultDimensions(pose)
-                : super.getDefaultDimensions(pose).scale(2F, 0.5F);
+                ? super.getDimensions(pose)
+                : super.getDimensions(pose).scale(2, 0.5F);
     }
 
     @Override
@@ -92,7 +89,7 @@ public class AnglerNPC extends BaseNPC {
             setDeltaMovement(0, 0.02, 0);
             float f = 0.001f;
             float maxSpeed = 0.008f;
-            driftSpeed = new Vec3(
+            Vec3 driftSpeed = new Vec3(
                     (Math.random() * 2 * f - f),
                     0,
                     (Math.random() * 2 * f - f));

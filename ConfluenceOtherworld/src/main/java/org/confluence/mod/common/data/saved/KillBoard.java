@@ -48,9 +48,9 @@ public enum KillBoard implements IGlobalData {
         return defeatedEvents.getBoolean(moment);
     }
 
-    public boolean isAnyDefeated(EntityType<?>... entityTypes) {
-        for (EntityType<?> entityType : entityTypes) {
-            if (isDefeated(entityType)) return true;
+    public boolean isAnyDefeated(EntityType<?>... types) {
+        for (EntityType<?> type : types) {
+            if (isDefeated(type)) return true;
         }
         return false;
     }

@@ -1,7 +1,9 @@
 package org.confluence.mod.common.entity.monster.slime;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -9,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -18,6 +21,8 @@ import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.SlimeHopAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.BaseMonster;
+import org.confluence.mod.util.DateUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseSlime extends BaseMonster {
@@ -55,6 +60,25 @@ public class BaseSlime extends BaseMonster {
         this.slimeColor = slimeColor;
         this.passiveByDay = passiveByDay;
         this.terrariaKbResist = terrariaKbResist;
+    }
+
+    public static boolean checkBlueSlimeSpawnRules(EntityType<BaseSlime> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        if (LibDateUtils.isNight(level) || pos.getY() < OverworldUtils.getUndergroundY())
+            return false;
+        return checkMonsterSpawnRules(type, level, reason, pos, random);
+    }
+
+    public static boolean checkGreenSlimeSpawnRules(EntityType<BaseSlime> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        if (LibDateUtils.isNight(level) || pos.getY() < OverworldUtils.getSurfaceY()) return false;
+        return level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, reason, pos, random);
+    }
+
+    public static boolean checkGreenDumplingSlimeSpawnRules(EntityType<BaseSlime> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (DateUtils.isQingMing(DateUtils.getLunar())) {
+            int y = pos.getY();
+            return y > 30 && y < 260 && LibDateUtils.isDay(level) && level.canSeeSky(pos);
+        }
+        return false;
     }
 
     @Nullable

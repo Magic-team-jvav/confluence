@@ -227,17 +227,18 @@ public final class ModEntities {
     }
 
     public static void register(IEventBus eventBus) {
-        ENTITIES.register(eventBus);
-        MonsterEntities.ENTITIES.register(eventBus);
-        CritterEntities.ENTITIES.register(eventBus);
-        NpcEntities.ENTITIES.register(eventBus);
+        for (DeferredRegister<EntityType<?>> register : getEntities()) {
+            register.register(eventBus);
+        }
     }
 
     public static List<DeferredRegister<EntityType<?>>> getEntities() {
         return List.of(
                 ENTITIES,
                 MonsterEntities.ENTITIES,
-                CritterEntities.ENTITIES
+                CritterEntities.ENTITIES,
+                NpcEntities.ENTITIES,
+                BossEntities.ENTITIES
         );
     }
 }

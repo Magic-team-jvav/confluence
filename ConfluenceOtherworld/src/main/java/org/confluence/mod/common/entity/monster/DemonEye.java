@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.monster;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,10 +12,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -26,6 +30,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.util.OverworldUtils;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -42,6 +47,11 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
     public DemonEye(EntityType<? extends DemonEye> type, Level level, Variant variant) {
         super(type, level);
         setVariant(variant);
+    }
+
+    public static boolean checkDemonEyeSpawnRules(EntityType<DemonEye> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        if (LibDateUtils.isDay(level) || pos.getY() < OverworldUtils.getSurfaceY()) return false;
+        return level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, reason, pos, random);
     }
 
     private void applyVariantStats(Variant v) {
@@ -96,7 +106,7 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        PortDataResultExtension.ifSuccess(Variant.CODEC.encodeStart(NbtOps.INSTANCE, getVariant()), t -> tag.put(VARIANT_KEY, t));
+        getVariant().serialize(tag);
     }
 
     @Override

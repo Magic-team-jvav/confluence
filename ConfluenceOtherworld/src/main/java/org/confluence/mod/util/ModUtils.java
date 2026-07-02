@@ -64,11 +64,13 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
+import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -124,7 +126,7 @@ public final class ModUtils {
         return stack.is(PotionItems.BOTTLED_WATER.get()) || PotionUtils.getPotion(stack).equals(Potions.WATER);
     }
 
-    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss, boolean onSurface) {
+    public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, boolean onSurface) {
         double x = pos.getX() + 0.5 + LibMathUtils.randomFromTo(level.random, pos.getX(), 30, 50);
         double z = pos.getZ() + 0.5 + LibMathUtils.randomFromTo(level.random, pos.getZ(), 30, 50);
         double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
@@ -132,12 +134,12 @@ public final class ModUtils {
             y = pos.getY();
         }
         boss.setPos(x, y, z);
-        if (TEUtils.internalSpawnEntity(boss, level)) {
+//        if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);
-        }
+//        }
     }
 
-    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
+    public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss) {
         summonBoss(level, pos, boss, true);
     }
 
@@ -158,16 +160,16 @@ public final class ModUtils {
 
         EntityType<?> type = living.getType();
         KillBoard.INSTANCE.defeat(type);
-        boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
-        if (isEaterOfWorlds || type == TEBossEntities.BRAIN_OF_CTHULHU.get()) {
+        boolean isEaterOfWorlds = type == BossEntities.EATER_OF_WORLDS.get();
+        if (isEaterOfWorlds || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
             if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
             }
         }
-        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
-        boolean is$WallOrHill$OfFlesh = type == TEBossEntities.WALL_OF_FLESH.get() || type == TEBossEntities.HILL_OF_FLESH.get();
+        boolean stickySituation = type == BossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
+        boolean is$WallOrHill$OfFlesh = type == BossEntities.WALL_OF_FLESH.get() || type == BossEntities.HILL_OF_FLESH.get();
         ResourceKey<Level> dimension = living.level().dimension();
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
             TreasureBagItem.createItemEntity(living, player);
@@ -212,7 +214,7 @@ public final class ModUtils {
     public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
         if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
-            if (type == MonsterEntities.VISUAL_NEURON.get() || (type == TEBossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
+            if (type == BossEntities.CREEPER_OF_CTHULHU.get() || (type == BossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
                 boolean master = LibUtils.isMaster(level, living.blockPosition());
                 MobEffect debuff;
                 float min;

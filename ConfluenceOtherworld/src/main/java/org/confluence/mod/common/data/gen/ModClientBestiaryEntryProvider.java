@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen;
 
-import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.HolderLookup;
@@ -8,7 +7,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +14,10 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
+import org.confluence.mod.common.entity.IVariant;
+import org.confluence.mod.common.entity.animal.*;
 import org.confluence.mod.common.entity.monster.DemonEye;
+import org.confluence.mod.common.entity.npc.AnglerNPC;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
@@ -74,13 +75,13 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 骷髅商人
                 .add(NpcEntities.OLD_MAN, builder -> builder.order(4000).rarity(2).background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON))
                 // 神秘青蛙
-                .add(CritterEntities.BUNNY, builder -> builder.order(4200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUNNY, Bunny.Variant.NORMAL, builder -> builder.order(4200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(EntityType.RABBIT, builder -> builder.order(4210).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （戴帽子）
-                .add(CritterEntities.EXPLOSIVE_BUNNY, builder -> builder.order(4250).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUNNY, Bunny.Variant.EXPLOSIVE, builder -> builder.order(4250).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （史莱姆）
                 // 兔兔 （圣诞节）
-                .addIntVariant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.GOLDEN_ID, builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.JEWEL_BUNNY, JewelBunny.Variant.GOLD, builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(CritterEntities.BIRD, builder -> builder.order(4800).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(CritterEntities.BLUE_JAY, builder -> builder.order(4900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(CritterEntities.CARDINAL, builder -> builder.order(5000).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
@@ -92,72 +93,72 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 金鸟
                 // 金鱼
                 // 金金鱼
-                .addIntVariant(CritterEntities.SQUIRREL, Squirrel.VARIANT_KEY, Squirrel.COMMON_ID, builder -> builder.order(5900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.SQUIRREL, Squirrel.VARIANT_KEY, Squirrel.RED_ID, builder -> builder.order(6000).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.GOLDEN_ID, builder -> builder.order(6100).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.SQUIRREL, Squirrel.Variant.NORMAL, builder -> builder.order(5900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.SQUIRREL, Squirrel.Variant.RED, builder -> builder.order(6000).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.SQUIRREL, Squirrel.Variant.GOLD, builder -> builder.order(6100).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 老鼠
                 // 金老鼠
                 .add(EntityType.FROG, builder -> builder.order(6400).rarity(1).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
                 // 金青蛙
-                .addIntVariant(CritterEntities.GRASSHOPPER, JumpableVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_GRASSHOPPER_ID, builder -> builder.order(6600).rarity(1).background(SURFACE).filters(FilterEntry.SURFACE))
-                .addIntVariant(CritterEntities.GRASSHOPPER, JumpableVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_GRASSHOPPER_ID, builder -> builder.order(6700).rarity(5).background(SURFACE).filters(FilterEntry.SURFACE))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.JULIA_BUTTERFLY_ID, builder -> builder.order(6800).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.MONARCH_BUTTERFLY_ID, builder -> builder.order(6801).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.PURPLE_EMPEROR_BUTTERFLY_ID, builder -> builder.order(6802).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.RED_ADMIRAL_BUTTERFLY_ID, builder -> builder.order(6803).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.SULPHUR_BUTTERFLY_ID, builder -> builder.order(6804).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.TREE_NYMPH_BUTTERFLY_ID, builder -> builder.order(6805).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.ULYSSES_BUTTERFLY_ID, builder -> builder.order(6806).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.ZEBRA_SWALLOWTAIL_BUTTERFLY_ID, builder -> builder.order(6807).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.BUTTERFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_BUTTERFLY_ID, builder -> builder.order(6900).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.WORM, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_WORM_ID, builder -> builder.order(7000).rarity(1).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
-                .addIntVariant(CritterEntities.WORM, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_WORM_ID, builder -> builder.order(7100).rarity(5).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
-                .addIntVariant(CritterEntities.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.BLACK_DRAGONFLY_ID, builder -> builder.order(7200).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.BLUE_DRAGONFLY_ID, builder -> builder.order(7201).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GREEN_DRAGONFLY_ID, builder -> builder.order(7202).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.ORANGE_DRAGONFLY_ID, builder -> builder.order(7203).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.RED_DRAGONFLY_ID, builder -> builder.order(7204).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.YELLOW_DRAGONFLY_ID, builder -> builder.order(7205).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.DRAGONFLY, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_DRAGONFLY_ID, builder -> builder.order(7300).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.GRASSHOPPER, Grasshopper.Variant.GREEN, builder -> builder.order(6600).rarity(1).background(SURFACE).filters(FilterEntry.SURFACE))
+                .variant(CritterEntities.GRASSHOPPER, Grasshopper.Variant.GOLD, builder -> builder.order(6700).rarity(5).background(SURFACE).filters(FilterEntry.SURFACE))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.JULIA, builder -> builder.order(6800).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.MONARCH, builder -> builder.order(6801).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.PURPLE_EMPEROR, builder -> builder.order(6802).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.RED_ADMIRAL, builder -> builder.order(6803).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.SULPHUR, builder -> builder.order(6804).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.TREE_NYMPH, builder -> builder.order(6805).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.ULYSSES, builder -> builder.order(6806).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.ZEBRA_SWALLOWTAIL, builder -> builder.order(6807).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.BUTTERFLY, Butterfly.Variant.GOLD, builder -> builder.order(6900).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.WORM, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_WORM_ID, builder -> builder.order(7000).rarity(1).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
+                .variant(CritterEntities.WORM, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_WORM_ID, builder -> builder.order(7100).rarity(5).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
+                .variant(CritterEntities.DRAGONFLY, Dragonfly.VARIANT_KEY, VariantsTextureMaps.BLACK_DRAGONFLY_ID, builder -> builder.order(7200).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.DRAGONFLY, Dragonfly.VARIANT_KEY, VariantsTextureMaps.BLUE_DRAGONFLY_ID, builder -> builder.order(7201).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.DRAGONFLY, Dragonfly.VARIANT_KEY, VariantsTextureMaps.GREEN_DRAGONFLY_ID, builder -> builder.order(7202).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.DRAGONFLY, Dragonfly.VARIANT_KEY, VariantsTextureMaps.ORANGE_DRAGONFLY_ID, builder -> builder.order(7203).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.DRAGONFLY, Dragonfly.VARIANT_KEY, VariantsTextureMaps.RED_DRAGONFLY_ID, builder -> builder.order(7204).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.DRAGONFLY, Dragonfly.VARIANT_KEY, VariantsTextureMaps.YELLOW_DRAGONFLY_ID, builder -> builder.order(7205).rarity(3).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.DRAGONFLY, Dragonfly.VARIANT_KEY, VariantsTextureMaps.GOLD_DRAGONFLY_ID, builder -> builder.order(7300).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 海马
                 // 金海马
                 // 水黾
                 // 金水黾
-                .addIntVariant(CritterEntities.LADYBUG, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_LADYBUG_ID, builder -> builder.order(7800).rarity(3).background(SURFACE).filters(FilterEntry.WINDY_DAY))
-                .addIntVariant(CritterEntities.LADYBUG, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_LADYBUG_ID, builder -> builder.order(7900).rarity(5).background(SURFACE).filters(FilterEntry.WINDY_DAY))
+                .variant(CritterEntities.LADYBUG, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.COMMON_LADYBUG_ID, builder -> builder.order(7800).rarity(3).background(SURFACE).filters(FilterEntry.WINDY_DAY))
+                .variant(CritterEntities.LADYBUG, BirdVariantAnimal.VARIANT_KEY, VariantsTextureMaps.GOLD_LADYBUG_ID, builder -> builder.order(7900).rarity(5).background(SURFACE).filters(FilterEntry.WINDY_DAY))
                 // 臭虫
-                .addIntVariant(CritterEntities.FEALING, Fairy.VARIANT_KEY, VariantsTextureMaps.COMMON_FEALING_ID, builder -> builder.order(8100).rarity(5).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.DUCK, Duck.VARIANT_KEY, Duck.MALLARD_ID, builder -> builder.order(8200).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
-                .addIntVariant(CritterEntities.DUCK, Duck.VARIANT_KEY, Duck.COMMON_ID, builder -> builder.order(8300).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.FEALING, Fairy.VARIANT_KEY, VariantsTextureMaps.COMMON_FEALING_ID, builder -> builder.order(8100).rarity(5).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.DUCK, Duck.VARIANT_KEY, Duck.MALLARD_ID, builder -> builder.order(8200).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
+                .variant(CritterEntities.DUCK, Duck.VARIANT_KEY, Duck.COMMON_ID, builder -> builder.order(8300).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 龟
                 // 猫头鹰
                 // 萤火虫
-                .addIntVariant(CritterEntities.WORM, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.ENCHANTED_NIGHTCRAWLER_ID, builder -> builder.order(8700).rarity(5).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
-                .addIntVariant(CritterEntities.FAIRY, Fairy.VARIANT_KEY, VariantsTextureMaps.PINK_FAIRY_ID, builder -> builder.order(8800).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
-                .addIntVariant(CritterEntities.FAIRY, Fairy.VARIANT_KEY, VariantsTextureMaps.GREEN_FAIRY_ID, builder -> builder.order(8900).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
-                .addIntVariant(CritterEntities.FAIRY, Fairy.VARIANT_KEY, VariantsTextureMaps.BLUE_FAIRY_ID, builder -> builder.order(9000).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
+                .variant(CritterEntities.WORM, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.ENCHANTED_NIGHTCRAWLER_ID, builder -> builder.order(8700).rarity(5).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
+                .variant(CritterEntities.FAIRY, Fairy.VARIANT_KEY, VariantsTextureMaps.PINK_FAIRY_ID, builder -> builder.order(8800).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
+                .variant(CritterEntities.FAIRY, Fairy.VARIANT_KEY, VariantsTextureMaps.GREEN_FAIRY_ID, builder -> builder.order(8900).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
+                .variant(CritterEntities.FAIRY, Fairy.VARIANT_KEY, VariantsTextureMaps.BLUE_FAIRY_ID, builder -> builder.order(9000).rarity(4).background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME))
                 // 大鼠
                 .add(CritterEntities.MAGGOT, builder -> builder.order(9200).rarity(1).background(GRAVEYARD).filters(FilterEntry.GRAVEYARD))
-                .addIntVariant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.AMETHYST_ID, builder -> builder.order(9300).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.TOPAZ_ID, builder -> builder.order(9400).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.SAPPHIRE_ID, builder -> builder.order(9500).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.EMERALD_ID, builder -> builder.order(9600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.RUBY_ID, builder -> builder.order(9700).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.DIAMOND_ID, builder -> builder.order(9800).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.AMBER_ID, builder -> builder.order(9900).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.AMETHYST_ID, builder -> builder.order(10000).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.TOPAZ_ID, builder -> builder.order(10100).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.SAPPHIRE_ID, builder -> builder.order(10200).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.EMERALD_ID, builder -> builder.order(10300).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.RUBY_ID, builder -> builder.order(10400).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.DIAMOND_ID, builder -> builder.order(10500).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
-                .addIntVariant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.AMBER_ID, builder -> builder.order(10600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.AMETHYST_ID, builder -> builder.order(9300).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.TOPAZ_ID, builder -> builder.order(9400).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.SAPPHIRE_ID, builder -> builder.order(9500).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.EMERALD_ID, builder -> builder.order(9600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.RUBY_ID, builder -> builder.order(9700).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.DIAMOND_ID, builder -> builder.order(9800).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_SQUIRREL, JewelSquirrel.VARIANT_KEY, JewelSquirrel.AMBER_ID, builder -> builder.order(9900).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.AMETHYST_ID, builder -> builder.order(10000).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.TOPAZ_ID, builder -> builder.order(10100).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.SAPPHIRE_ID, builder -> builder.order(10200).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.EMERALD_ID, builder -> builder.order(10300).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.RUBY_ID, builder -> builder.order(10400).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.DIAMOND_ID, builder -> builder.order(10500).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .variant(CritterEntities.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.AMBER_ID, builder -> builder.order(10600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
                 .add(CritterEntities.SNAIL, builder -> builder.order(10700).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
                 // 松露虫
                 // 企鹅
                 // 企鹅（黑）
-                .addIntVariant(CritterEntities.SCORPION, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.SCORPION_ID, builder -> builder.order(11100).rarity(1).background(DESERT_SUN).filters(FilterEntry.DESERT, FilterEntry.DAYTIME))
-                .addIntVariant(CritterEntities.SCORPION, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.BLACK_SCORPION_ID, builder -> builder.order(11200).rarity(2).background(DESERT_SUN).filters(FilterEntry.DESERT, FilterEntry.DAYTIME))
+                .variant(CritterEntities.SCORPION, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.SCORPION_ID, builder -> builder.order(11100).rarity(1).background(DESERT_SUN).filters(FilterEntry.DESERT, FilterEntry.DAYTIME))
+                .variant(CritterEntities.SCORPION, SimpleVariantAnimal.VARIANT_KEY, VariantsTextureMaps.BLACK_SCORPION_ID, builder -> builder.order(11200).rarity(2).background(DESERT_SUN).filters(FilterEntry.DESERT, FilterEntry.DAYTIME))
                 // 䴙䴘
                 // 鳉鱼
                 // 海鸥
@@ -190,7 +191,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 雨伞史莱姆
                 .add(MonsterEntities.FLYING_FISH, builder -> builder.order(13700).rarity(2).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
                 // 愤怒雨云怪
-                .demonEyeVariant(DemonEye.Variant.DILATED, builder -> builder.order(13900).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .variant(MonsterEntities.DEMON_EYE.get(), DemonEye.Variant.DILATED, builder -> builder.order(13900).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 .demonEyeVariant(DemonEye.Variant.DILATED_SMALL, builder -> builder.order(13910).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 .demonEyeVariant(DemonEye.Variant.SLEEPY, builder -> builder.order(14000).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 .demonEyeVariant(DemonEye.Variant.SLEEPY_BIG, builder -> builder.order(14010).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
@@ -727,16 +728,12 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
             return add(type.builtInRegistryHolder(), consumer);
         }
 
-        public Builder addIntVariant(Supplier<? extends EntityType<?>> holder, String variantKey, int variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
-            return add(holder, Integer.toString(variant), consumer.andThen(builder -> builder.entityNbt(nbt -> nbt.putInt(variantKey, variant))));
+        public <E extends Enum<E> & IVariant> Builder variant(EntityType<?> type, E variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return add(type, variant.getSerializedName(), consumer.andThen(builder -> builder.entityNbt(variant::serialize)));
         }
 
-        public Builder addIntVariant(EntityType<?> type, String variantKey, int variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
-            return addIntVariant(type.builtInRegistryHolder(), variantKey, variant, consumer);
-        }
-
-        public Builder demonEyeVariant(DemonEye.Variant variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
-            return add(MonsterEntities.DEMON_EYE, variant.getSerializedName(), consumer.andThen(builder -> builder.entityNbt(nbt -> PortDataResultExtension.ifSuccess(DemonEye.Variant.CODEC.encodeStart(NbtOps.INSTANCE, variant), t -> nbt.put(DemonEye.VARIANT_KEY, t)))));
+        public <E extends Enum<E> & IVariant> Builder variant(Supplier<? extends EntityType<?>> type, E variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return variant(type.get(), variant, consumer);
         }
 
         /// @param armorItems \[鞋子，裤子，衣服，帽子\]

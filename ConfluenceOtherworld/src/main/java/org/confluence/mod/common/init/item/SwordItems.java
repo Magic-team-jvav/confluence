@@ -20,7 +20,6 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.sword.*;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.common.item.sword.legacy.SwordStrategy;
-import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.util.generation.variant.ForwardGeneration;
 import org.confluence.mod.util.track.variant.SimpleTrack;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +27,7 @@ import org.mesdag.portlib.diff.IPortFoodProperties;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.mesdag.portlib.registries.PortRegistryEntry;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.Optional;
@@ -210,7 +210,7 @@ public class SwordItems {
         });
     }
 
-    public static boolean isShortSword(PortDeferredItem<? extends Item> holder) {
+    public static boolean isShortSword(PortRegistryEntry<Item, ? extends Item> holder) {
         return holder.getId().getPath().endsWith("_short_sword");
     }
 

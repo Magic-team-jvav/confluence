@@ -5,14 +5,12 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibTags;
@@ -27,14 +25,9 @@ import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.confluence.terraentity.init.TEItems;
-import org.confluence.terraentity.init.TETags;
-import org.confluence.terraentity.init.block.TEFigureBlocks;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TESpawnEggItems;
-import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.registries.PortRegistryEntry;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.concurrent.CompletableFuture;
@@ -52,69 +45,69 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         HookItems.ITEMS.getEntries().forEach(item -> {
             hook.add(item.get());
         });
-        IntrinsicTagAppender<Item> potions = tag(Tags.Items.POTIONS);
+        IntrinsicTagAppender<Item> potions = tag(PortTags.Items.POTIONS);
         PotionItems.ITEMS.getEntries().forEach(item -> {
             if (item.get() instanceof AbstractPotionItem item1) {
                 potions.add(item1);
             }
         });
-        IntrinsicTagAppender<Item> foods = tag(Tags.Items.FOODS);
+        IntrinsicTagAppender<Item> foods = tag(PortTags.Items.FOODS);
         foods.add(PotionItems.ALE.get());
         FoodItems.ITEMS.getEntries().forEach(item -> {
             foods.add(item.get());
         });
 
-        IntrinsicTagAppender<Item> notFlammableWood = tag(ItemTags.NON_FLAMMABLE_WOOD);
+        IntrinsicTagAppender<Item> notFlammableWood = tag(PortTags.Items.NON_FLAMMABLE_WOOD);
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             if (blockSet.ignitedByLava) continue;
-            notFlammableWood.add(blockSet.PLANKS.get().asItem());
-            if (blockSet.LOG.isBound()) notFlammableWood.add(blockSet.LOG.get().asItem());
-            if (blockSet.WOOD.isBound()) notFlammableWood.add(blockSet.WOOD.get().asItem());
+            notFlammableWood.add(blockSet.PLANKS.asItem());
+            if (blockSet.LOG.isBound()) notFlammableWood.add(blockSet.LOG.asItem());
+            if (blockSet.WOOD.isBound()) notFlammableWood.add(blockSet.WOOD.asItem());
             if (blockSet.STRIPPED_LOG.isBound())
-                notFlammableWood.add(blockSet.STRIPPED_LOG.get().asItem());
+                notFlammableWood.add(blockSet.STRIPPED_LOG.asItem());
             if (blockSet.STRIPPED_WOOD.isBound())
-                notFlammableWood.add(blockSet.STRIPPED_WOOD.get().asItem());
-            if (blockSet.STAIRS.isBound()) notFlammableWood.add(blockSet.STAIRS.get().asItem());
-            if (blockSet.SLAB.isBound()) notFlammableWood.add(blockSet.SLAB.get().asItem());
-            if (blockSet.BUTTON.isBound()) notFlammableWood.add(blockSet.BUTTON.get().asItem());
-            if (blockSet.FENCE.isBound()) notFlammableWood.add(blockSet.FENCE.get().asItem());
+                notFlammableWood.add(blockSet.STRIPPED_WOOD.asItem());
+            if (blockSet.STAIRS.isBound()) notFlammableWood.add(blockSet.STAIRS.asItem());
+            if (blockSet.SLAB.isBound()) notFlammableWood.add(blockSet.SLAB.asItem());
+            if (blockSet.BUTTON.isBound()) notFlammableWood.add(blockSet.BUTTON.asItem());
+            if (blockSet.FENCE.isBound()) notFlammableWood.add(blockSet.FENCE.asItem());
             if (blockSet.FENCE_GATE.isBound())
-                notFlammableWood.add(blockSet.FENCE_GATE.get().asItem());
-            if (blockSet.SIGN.isBound()) notFlammableWood.add(blockSet.SIGN.get().asItem());
+                notFlammableWood.add(blockSet.FENCE_GATE.asItem());
+            if (blockSet.SIGN.isBound()) notFlammableWood.add(blockSet.SIGN.asItem());
             if (blockSet.PRESSURE_PLATE.isBound())
-                notFlammableWood.add(blockSet.PRESSURE_PLATE.get().asItem());
-            if (blockSet.DOOR.isBound()) notFlammableWood.add(blockSet.DOOR.get().asItem());
+                notFlammableWood.add(blockSet.PRESSURE_PLATE.asItem());
+            if (blockSet.DOOR.isBound()) notFlammableWood.add(blockSet.DOOR.asItem());
         }
 
         tag(ModTags.Items.REPEATER_ENCHANTABLE);
         tag(ModTags.Items.TOOLS_REPEATER);
-        tag(ModTags.Items.MOUNT).addOptionalTag(TETags.Items.CURIOS_MOUNT);
-        tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
-        tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
-        LightPetItems.ITEMS.getEntries().forEach(item -> tag(TETags.Items.CURIOS_LIGHT_PET).add(item.get()));
+//        tag(ModTags.Items.MOUNT).addOptionalTag(TETags.Items.CURIOS_MOUNT);
+//        tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
+//        tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
+        LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
 
-        IntrinsicTagAppender<Item> boats = tag(ItemTags.BOATS);
+        IntrinsicTagAppender<Item> boats = tag(PortTags.Items.BOATS);
         BoatItems.BOAT_ITEMS.getEntries().forEach(item -> boats.add(item.get()));
-        IntrinsicTagAppender<Item> chestBoats = tag(ItemTags.CHEST_BOATS);
+        IntrinsicTagAppender<Item> chestBoats = tag(PortTags.Items.CHEST_BOATS);
         BoatItems.CHEST_BOAT_ITEMS.getEntries().forEach(item -> chestBoats.add(item.get()));
         IntrinsicTagAppender<Item> minecart = tag(ModTags.Items.MINECART);
         minecart.add(Items.MINECART);
         MinecartItems.ITEMS.getEntries().forEach(item -> minecart.add(item.get()));
         tag(ModTags.Items.PROVIDE_MANA).add(ModItems.STAR.get(), ModItems.SOUL_CAKE.get(), ModItems.SUGAR_PLUM.get());
         tag(ModTags.Items.PROVIDE_LIFE).add(ModItems.HEART.get(), ModItems.CANDY_APPLE.get(), ModItems.CANDY_CANE.get());
-        tag(ModTags.Items.DESERT_FOSSIL).add(NatureBlocks.DESERT_FOSSIL.get().asItem());
-        tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.get().asItem());
-        tag(ModTags.Items.SILT_BLOCK).add(NatureBlocks.SILT_BLOCK.get().asItem());
-        tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.get().asItem());
-        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.get().asItem(), ModBlocks.POO.get().asItem());
+        tag(ModTags.Items.DESERT_FOSSIL).add(NatureBlocks.DESERT_FOSSIL.asItem());
+        tag(ModTags.Items.SLUSH).add(NatureBlocks.SLUSH.asItem());
+        tag(ModTags.Items.SILT_BLOCK).add(NatureBlocks.SILT_BLOCK.asItem());
+        tag(ModTags.Items.MARINE_GRAVEL).add(NatureBlocks.MARINE_GRAVEL.asItem());
+        tag(ModTags.Items.POO).add(DecorativeBlocks.POO_BLOCK.asItem(), ModBlocks.POO.asItem());
         tag(ModTags.Items.EXTRACT_SAND).add(Items.OBSIDIAN);
-        tag(ModTags.Items.EXTRACT_HONEY_BLOCK).add(Items.BEE_NEST, NatureBlocks.JUNGLE_HIVE_BLOCK.get().asItem());
-        tag(ModTags.Items.EXTRACT_MOSS).add(NatureBlocks.HELIUM_MOSS.get().asItem(), NatureBlocks.NEON_MOSS.get().asItem(), NatureBlocks.ARGON_MOSS.get().asItem(), NatureBlocks.XENON_MOSS.get().asItem(), NatureBlocks.KRYPTON_MOSS.get().asItem(), NatureBlocks.LAVA_MOSS.get().asItem());
-        tag(ModTags.Items.JUNK).add(Blocks.LILY_PAD.get().asItem(), Items.LEATHER_BOOTS, Blocks.SEAGRASS.get().asItem());
-        tag(ModTags.Items.CORALS).add(Blocks.TUBE_CORAL.get().asItem(), Blocks.TUBE_CORAL_FAN.get().asItem(), Blocks.TUBE_CORAL_BLOCK.get().asItem(), Blocks.BRAIN_CORAL.get().asItem(), Blocks.BRAIN_CORAL_FAN.get().asItem(), Blocks.BRAIN_CORAL_BLOCK.get().asItem(),
-                Blocks.BUBBLE_CORAL.get().asItem(), Blocks.BUBBLE_CORAL_FAN.get().asItem(), Blocks.BUBBLE_CORAL_BLOCK.get().asItem(), Blocks.FIRE_CORAL.get().asItem(), Blocks.FIRE_CORAL_FAN.get().asItem(), Blocks.FIRE_CORAL_BLOCK.get().asItem(), Blocks.HORN_CORAL.get().asItem(), Blocks.HORN_CORAL_FAN.get().asItem(), Blocks.HORN_CORAL_BLOCK.get().asItem(),
-                Blocks.DEAD_TUBE_CORAL.get().asItem(), Blocks.DEAD_TUBE_CORAL_FAN.get().asItem(), Blocks.DEAD_TUBE_CORAL_BLOCK.get().asItem(), Blocks.DEAD_BRAIN_CORAL.get().asItem(), Blocks.DEAD_BRAIN_CORAL_FAN.get().asItem(), Blocks.DEAD_BRAIN_CORAL_BLOCK.get().asItem(),
-                Blocks.DEAD_BUBBLE_CORAL.get().asItem(), Blocks.DEAD_BUBBLE_CORAL_FAN.get().asItem(), Blocks.DEAD_BUBBLE_CORAL_BLOCK.get().asItem(), Blocks.DEAD_FIRE_CORAL.get().asItem(), Blocks.DEAD_FIRE_CORAL_FAN.get().asItem(), Blocks.DEAD_FIRE_CORAL_BLOCK.get().asItem(), Blocks.DEAD_HORN_CORAL.get().asItem(), Blocks.DEAD_HORN_CORAL_FAN.get().asItem(), Blocks.DEAD_HORN_CORAL_BLOCK.get().asItem());
+        tag(ModTags.Items.EXTRACT_HONEY_BLOCK).add(Items.BEE_NEST, NatureBlocks.JUNGLE_HIVE_BLOCK.asItem());
+        tag(ModTags.Items.EXTRACT_MOSS).add(NatureBlocks.HELIUM_MOSS.asItem(), NatureBlocks.NEON_MOSS.asItem(), NatureBlocks.ARGON_MOSS.asItem(), NatureBlocks.XENON_MOSS.asItem(), NatureBlocks.KRYPTON_MOSS.asItem(), NatureBlocks.LAVA_MOSS.asItem());
+        tag(ModTags.Items.JUNK).add(Blocks.LILY_PAD.asItem(), Items.LEATHER_BOOTS, Blocks.SEAGRASS.asItem());
+        tag(ModTags.Items.CORALS).add(Blocks.TUBE_CORAL.asItem(), Blocks.TUBE_CORAL_FAN.asItem(), Blocks.TUBE_CORAL_BLOCK.asItem(), Blocks.BRAIN_CORAL.asItem(), Blocks.BRAIN_CORAL_FAN.asItem(), Blocks.BRAIN_CORAL_BLOCK.asItem(),
+                Blocks.BUBBLE_CORAL.asItem(), Blocks.BUBBLE_CORAL_FAN.asItem(), Blocks.BUBBLE_CORAL_BLOCK.asItem(), Blocks.FIRE_CORAL.asItem(), Blocks.FIRE_CORAL_FAN.asItem(), Blocks.FIRE_CORAL_BLOCK.asItem(), Blocks.HORN_CORAL.asItem(), Blocks.HORN_CORAL_FAN.asItem(), Blocks.HORN_CORAL_BLOCK.asItem(),
+                Blocks.DEAD_TUBE_CORAL.asItem(), Blocks.DEAD_TUBE_CORAL_FAN.asItem(), Blocks.DEAD_TUBE_CORAL_BLOCK.asItem(), Blocks.DEAD_BRAIN_CORAL.asItem(), Blocks.DEAD_BRAIN_CORAL_FAN.asItem(), Blocks.DEAD_BRAIN_CORAL_BLOCK.asItem(),
+                Blocks.DEAD_BUBBLE_CORAL.asItem(), Blocks.DEAD_BUBBLE_CORAL_FAN.asItem(), Blocks.DEAD_BUBBLE_CORAL_BLOCK.asItem(), Blocks.DEAD_FIRE_CORAL.asItem(), Blocks.DEAD_FIRE_CORAL_FAN.asItem(), Blocks.DEAD_FIRE_CORAL_BLOCK.asItem(), Blocks.DEAD_HORN_CORAL.asItem(), Blocks.DEAD_HORN_CORAL_FAN.asItem(), Blocks.DEAD_HORN_CORAL_BLOCK.asItem());
         tag(ModTags.Items.EVIL_MATERIAL).add(
                 MaterialItems.WORM_TOOTH.get(),
                 MaterialItems.VERTEBRA.get(),
@@ -126,6 +119,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.SEA_BASS.get(),
                 FoodItems.ATLANTIC_COD.get(),
                 FoodItems.TROUT.get()
+        );
+        tag(PortTags.Items.FOODS_COOKED_FISH).add(
+                FoodItems.COOKED_SHRIMP.get(),
+                FoodItems.COOK_FISH.get()
         );
         tag(ModTags.Items.SEAFOOD_DINNER_MATERIALS).add(
                 FoodItems.FROSTY_MINNOW.get(),
@@ -147,19 +144,19 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.STINKY_FISH.get()
         );
         tag(ModTags.Items.INITIAL_WOOD).add(
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.PLANKS.get().asItem(),
-                NatureBlocks.LIVING_LOG_BLOCKS.PLANKS.get().asItem(),
-                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.PLANKS.get().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.PLANKS.get().asItem(),
-                Blocks.OAK_PLANKS.get().asItem(),
-                Blocks.ACACIA_PLANKS.get().asItem(),
-                Blocks.BAMBOO_PLANKS.get().asItem(),
-                Blocks.BIRCH_PLANKS.get().asItem(),
-                Blocks.CHERRY_PLANKS.get().asItem(),
-                Blocks.DARK_OAK_PLANKS.get().asItem(),
-                Blocks.JUNGLE_PLANKS.get().asItem(),
-                Blocks.MANGROVE_PLANKS.get().asItem(),
-                Blocks.SPRUCE_PLANKS.get().asItem()
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.PLANKS.asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.PLANKS.asItem(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.PLANKS.asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.PLANKS.asItem(),
+                Blocks.OAK_PLANKS.asItem(),
+                Blocks.ACACIA_PLANKS.asItem(),
+                Blocks.BAMBOO_PLANKS.asItem(),
+                Blocks.BIRCH_PLANKS.asItem(),
+                Blocks.CHERRY_PLANKS.asItem(),
+                Blocks.DARK_OAK_PLANKS.asItem(),
+                Blocks.JUNGLE_PLANKS.asItem(),
+                Blocks.MANGROVE_PLANKS.asItem(),
+                Blocks.SPRUCE_PLANKS.asItem()
         );
         tag(ModTags.Items.QUESTED_FISHES).add(
                 QuestedFishes.AMANITA_FUNGIFIN.get(),
@@ -225,7 +222,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.TISSUE_SAMPLE.get()
         );
 
-        tag(ItemTags.BEACON_PAYMENT_ITEMS).add(
+        tag(PortTags.Items.BEACON_PAYMENT_ITEMS).add(
                 MaterialItems.LEAD_INGOT.get(),
                 MaterialItems.SILVER_INGOT.get(),
                 MaterialItems.TUNGSTEN_INGOT.get(),
@@ -254,20 +251,20 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.GELSTONE.get(),
                 MaterialItems.COLD_CRYSTAL.get()
         );
-        tag(ItemTags.SAPLINGS).add(
-                NatureBlocks.RUBY_SAPLING.get().asItem(),
-                NatureBlocks.AMBER_SAPLING.get().asItem(),
-                NatureBlocks.TOPAZ_SAPLING.get().asItem(),
-                NatureBlocks.JADE_SAPLING.get().asItem(),
-                NatureBlocks.DIAMOND_SAPLING.get().asItem(),
-                NatureBlocks.SAPPHIRE_SAPLING.get().asItem(),
-                NatureBlocks.AMETHYST_SAPLING.get().asItem()
+        tag(PortTags.Items.SAPLINGS).add(
+                NatureBlocks.RUBY_SAPLING.asItem(),
+                NatureBlocks.AMBER_SAPLING.asItem(),
+                NatureBlocks.TOPAZ_SAPLING.asItem(),
+                NatureBlocks.JADE_SAPLING.asItem(),
+                NatureBlocks.DIAMOND_SAPLING.asItem(),
+                NatureBlocks.SAPPHIRE_SAPLING.asItem(),
+                NatureBlocks.AMETHYST_SAPLING.asItem()
         );
-        copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
+        copy(BlockTags.SAPLINGS, PortTags.Items.SAPLINGS);
 
         tag(ModTags.Items.EVIL_INGOT).addTags(ModTags.Items.INGOTS_DEMONITE, ModTags.Items.INGOTS_CRIMTANE);
-        tag(ModTags.Items.LEAD_AND_IRON).addTags(Tags.Items.INGOTS_IRON, ModTags.Items.INGOTS_LEAD);
-        tag(ModTags.Items.GOLD_AND_PLATINUM).addTags(Tags.Items.INGOTS_GOLD, ModTags.Items.INGOTS_PLATINUM);
+        tag(ModTags.Items.LEAD_AND_IRON).addTags(PortTags.Items.INGOTS_IRON, ModTags.Items.INGOTS_LEAD);
+        tag(ModTags.Items.GOLD_AND_PLATINUM).addTags(PortTags.Items.INGOTS_GOLD, ModTags.Items.INGOTS_PLATINUM);
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
 //        for (Torches torches : Torches.values()) torch.add(torches.item.get());
@@ -292,21 +289,21 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.BLOOD_ORANGE.get(), FoodItems.ELDERBERRY.get(), FoodItems.BLACKCURRANT.get()
         );
 
-        tag(ModTags.Items.COAL_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_COAL_ORE.get().asItem(), OreBlocks.CORRUPTION_COAL_ORE.get().asItem(), OreBlocks.FLESHIFICATION_COAL_ORE.get().asItem());
-        tag(ModTags.Items.IRON_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_IRON_ORE.get().asItem(), OreBlocks.CORRUPTION_IRON_ORE.get().asItem(), OreBlocks.FLESHIFICATION_IRON_ORE.get().asItem());
+        tag(ModTags.Items.COAL_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_COAL_ORE.asItem(), OreBlocks.CORRUPTION_COAL_ORE.asItem(), OreBlocks.FLESHIFICATION_COAL_ORE.asItem());
+        tag(ModTags.Items.IRON_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_IRON_ORE.asItem(), OreBlocks.CORRUPTION_IRON_ORE.asItem(), OreBlocks.FLESHIFICATION_IRON_ORE.asItem());
         tag(ModTags.Items.TIN_ORE_SMELTING).addTag(ModTags.Items.ORES_TIN).add(MaterialItems.RAW_TIN.get());
-        tag(ModTags.Items.COPPER_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_COPPER_ORE.get().asItem(), OreBlocks.CORRUPTION_COPPER_ORE.get().asItem(), OreBlocks.FLESHIFICATION_COPPER_ORE.get().asItem());
+        tag(ModTags.Items.COPPER_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_COPPER_ORE.asItem(), OreBlocks.CORRUPTION_COPPER_ORE.asItem(), OreBlocks.FLESHIFICATION_COPPER_ORE.asItem());
         tag(ModTags.Items.LEAD_ORE_SMELTING).addTag(ModTags.Items.ORES_LEAD).add(MaterialItems.RAW_LEAD.get());
         tag(ModTags.Items.SILVER_ORE_SMELTING).addTag(ModTags.Items.ORES_SILVER).add(MaterialItems.RAW_SILVER.get());
         tag(ModTags.Items.TUNGSTEN_ORE_SMELTING).addTag(ModTags.Items.ORES_TUNGSTEN).add(MaterialItems.RAW_TUNGSTEN.get());
-        tag(ModTags.Items.GOLD_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_GOLD_ORE.get().asItem(), OreBlocks.CORRUPTION_GOLD_ORE.get().asItem(), OreBlocks.FLESHIFICATION_GOLD_ORE.get().asItem());
+        tag(ModTags.Items.GOLD_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_GOLD_ORE.asItem(), OreBlocks.CORRUPTION_GOLD_ORE.asItem(), OreBlocks.FLESHIFICATION_GOLD_ORE.asItem());
         tag(ModTags.Items.PLATINUM_ORE_SMELTING).addTag(ModTags.Items.ORES_PLATINUM).add(MaterialItems.RAW_PLATINUM.get());
         tag(ModTags.Items.DEMONITE_ORE_SMELTING).addTag(ModTags.Items.ORES_DEMONITE).add(MaterialItems.RAW_DEMONITE.get());
         tag(ModTags.Items.CRIMTANE_ORE_SMELTING).addTag(ModTags.Items.ORES_CRIMTANE).add(MaterialItems.RAW_CRIMTANE.get());
-        tag(ModTags.Items.METEORITE_ORE_SMELTING).add(OreBlocks.METEORITE_ORE.get().asItem(), MaterialItems.RAW_METEORITE.get());
-        tag(ModTags.Items.DIAMOND_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_DIAMOND_ORE.get().asItem(), OreBlocks.CORRUPTION_DIAMOND_ORE.get().asItem(), OreBlocks.FLESHIFICATION_DIAMOND_ORE.get().asItem());
-        tag(ModTags.Items.EMERALD_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_EMERALD_ORE.get().asItem(), OreBlocks.CORRUPTION_EMERALD_ORE.get().asItem(), OreBlocks.FLESHIFICATION_EMERALD_ORE.get().asItem());
-        tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_REDSTONE_ORE.get().asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.get().asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.get().asItem());
+        tag(ModTags.Items.METEORITE_ORE_SMELTING).add(OreBlocks.METEORITE_ORE.asItem(), MaterialItems.RAW_METEORITE.get());
+        tag(ModTags.Items.DIAMOND_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_DIAMOND_ORE.asItem(), OreBlocks.CORRUPTION_DIAMOND_ORE.asItem(), OreBlocks.FLESHIFICATION_DIAMOND_ORE.asItem());
+        tag(ModTags.Items.EMERALD_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_EMERALD_ORE.asItem(), OreBlocks.CORRUPTION_EMERALD_ORE.asItem(), OreBlocks.FLESHIFICATION_EMERALD_ORE.asItem());
+        tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.asItem());
 
         tag(ModTags.Items.COBALT_ORE_SMELTING).addTag(ModTags.Items.ORES_COBALT).add(MaterialItems.RAW_COBALT.get());
         tag(ModTags.Items.PALLADIUM_ORE_SMELTING).addTag(ModTags.Items.ORES_PALLADIUM).add(MaterialItems.RAW_PALLADIUM.get());
@@ -315,10 +312,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.ADAMANTITE_ORE_SMELTING).addTag(ModTags.Items.ORES_ADAMANTITE).add(MaterialItems.RAW_ADAMANTITE.get());
         tag(ModTags.Items.TITANIUM_ORE_SMELTING).addTag(ModTags.Items.ORES_TITANIUM).add(MaterialItems.RAW_TITANIUM.get());
 
-        tag(ItemTags.BOOKSHELF_BOOKS).add(
+        tag(PortTags.Items.BOOKSHELF_BOOKS).add(
                 ManaWeaponItems.WATER_BOLT.get()
         );
-        tag(ItemTags.CAT_FOOD).add(
+        tag(PortTags.Items.CAT_FOOD).add(
                 FoodItems.SEA_BASS.get(),
                 FoodItems.ATLANTIC_COD.get(),
                 FoodItems.DAMSEL_FISH.get(),
@@ -329,62 +326,62 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.TILAPIA.get()
         );
         // neoforge
-        tag(Tags.Items.POTION_BOTTLE).add(
+        tag(PortTags.Items.POTION_BOTTLE).add(
                 PotionItems.BOTTLE.get(),
                 PotionItems.BOTTLED_WATER.get()
         );
-        tag(Tags.Items.BONES).add(
+        tag(PortTags.Items.BONES).add(
                 MaterialItems.ROTTEN_BONE.get(),
                 MaterialItems.VERTEBRA.get()
         );
-        tag(Tags.Items.BRICKS).add(
-                DecorativeBlocks.COPPER_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.CRIMTANE_ORE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.CRIMSTONE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.GOLDEN_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.IRON_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.DEMONITE_ORE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.EBONSTONE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.BLUE_ICE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.PACKED_ICE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.LEAD_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.METEORITE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.PEARLSTONE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.PLATINUM_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.SILVER_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.TUNGSTEN_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.OBSIDIAN_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.get().asItem(),
-                DecorativeBlocks.CRYSTAL_BLOCK.get().asItem(),
-                DecorativeBlocks.RAINBOW_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.BLUE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.CHISELED_BLUE_BRICKS.get().asItem(),
-                FunctionalBlocks.FRAGILE_BLUE_BRICKS.get().asItem(),
-                DecorativeBlocks.GREEN_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.CHISELED_GREEN_BRICKS.get().asItem(),
-                FunctionalBlocks.FRAGILE_GREEN_BRICKS.get().asItem(),
-                DecorativeBlocks.PINK_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.CHISELED_PINK_BRICKS.get().asItem(),
-                FunctionalBlocks.FRAGILE_PINK_BRICKS.get().asItem()
+        tag(PortTags.Items.BRICKS).add(
+                DecorativeBlocks.COPPER_BRICKS.FULL.asItem(),
+                DecorativeBlocks.CRIMTANE_ORE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.CRIMSTONE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.GOLDEN_BRICKS.FULL.asItem(),
+                DecorativeBlocks.IRON_BRICKS.FULL.asItem(),
+                DecorativeBlocks.DEMONITE_ORE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.EBONSTONE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.BLUE_ICE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.PACKED_ICE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.LEAD_BRICKS.FULL.asItem(),
+                DecorativeBlocks.METEORITE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.PEARLSTONE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.PLATINUM_BRICKS.FULL.asItem(),
+                DecorativeBlocks.SILVER_BRICKS.FULL.asItem(),
+                DecorativeBlocks.TUNGSTEN_BRICKS.FULL.asItem(),
+                DecorativeBlocks.OBSIDIAN_BRICKS.FULL.asItem(),
+                DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.asItem(),
+                DecorativeBlocks.CRYSTAL_BLOCK.asItem(),
+                DecorativeBlocks.RAINBOW_BRICKS.FULL.asItem(),
+                DecorativeBlocks.BLUE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.CHISELED_BLUE_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
+                DecorativeBlocks.GREEN_BRICKS.FULL.asItem(),
+                DecorativeBlocks.CHISELED_GREEN_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_GREEN_BRICKS.asItem(),
+                DecorativeBlocks.PINK_BRICKS.FULL.asItem(),
+                DecorativeBlocks.CHISELED_PINK_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_PINK_BRICKS.asItem()
         );
-        tag(Tags.Items.BUCKETS).add(
+        tag(PortTags.Items.BUCKETS).add(
                 ToolItems.HONEY_BUCKET.get(),
                 ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(),
                 ToolItems.BOTTOMLESS_WATER_BUCKET.get(),
                 ToolItems.BOTTOMLESS_LAVA_BUCKET.get(),
                 ToolItems.BOTTOMLESS_HONEY_BUCKET.get()
         );
-        tag(Tags.Items.BUCKETS_LAVA).add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get());
-        tag(Tags.Items.BUCKETS_WATER).add(ToolItems.BOTTOMLESS_WATER_BUCKET.get());
-        tag(Tags.Items.CROPS).add(
+        tag(PortTags.Items.BUCKETS_LAVA).add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get());
+        tag(PortTags.Items.BUCKETS_WATER).add(ToolItems.BOTTOMLESS_WATER_BUCKET.get());
+        tag(PortTags.Items.CROPS).add(
                 MaterialItems.FLOATING_WHEAT_HEADS.get(),
                 MaterialItems.WEAVING_CLOUD_COTTON.get(),
                 MaterialItems.STAR_PETALS.get()
         );
-        tag(Tags.Items.CROPS_WHEAT).add(
+        tag(PortTags.Items.CROPS_WHEAT).add(
                 MaterialItems.FLOATING_WHEAT_HEADS.get()
         );
-        tag(Tags.Items.DUSTS).add(
+        tag(PortTags.Items.DUSTS).add(
                 MaterialItems.BLOOD_CLOT_POWDER.get(),
                 MaterialItems.PIXIE_DUST.get(),
                 ConsumableItems.ROTTEN_BONE_DUST.get(),
@@ -393,22 +390,22 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.VICIOUS_POWDER.get(),
                 ConsumableItems.PURIFICATION_POWDER.get()
         );
-        tag(Tags.Items.DYED_WHITE).add(DecorativeBlocks.WHITE_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_LIGHT_GRAY).add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_GRAY).add(DecorativeBlocks.GRAY_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_BLACK).add(DecorativeBlocks.BLACK_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_BROWN).add(DecorativeBlocks.BROWN_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_RED).add(DecorativeBlocks.RED_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_ORANGE).add(DecorativeBlocks.ORANGE_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_YELLOW).add(DecorativeBlocks.YELLOW_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_LIME).add(DecorativeBlocks.LIME_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_GREEN).add(DecorativeBlocks.GREEN_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_CYAN).add(DecorativeBlocks.CYAN_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_LIGHT_BLUE).add(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_BLUE).add(DecorativeBlocks.BLUE_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_PURPLE).add(DecorativeBlocks.PURPLE_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_MAGENTA).add(DecorativeBlocks.MAGENTA_PURE_GLASS.get().asItem());
-        tag(Tags.Items.DYED_PINK).add(DecorativeBlocks.PINK_PURE_GLASS.get().asItem());
+        tag(PortTags.Items.DYED_WHITE).add(DecorativeBlocks.WHITE_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_LIGHT_GRAY).add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_GRAY).add(DecorativeBlocks.GRAY_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_BLACK).add(DecorativeBlocks.BLACK_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_BROWN).add(DecorativeBlocks.BROWN_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_RED).add(DecorativeBlocks.RED_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_ORANGE).add(DecorativeBlocks.ORANGE_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_YELLOW).add(DecorativeBlocks.YELLOW_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_LIME).add(DecorativeBlocks.LIME_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_GREEN).add(DecorativeBlocks.GREEN_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_CYAN).add(DecorativeBlocks.CYAN_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_LIGHT_BLUE).add(DecorativeBlocks.LIGHT_BLUE_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_BLUE).add(DecorativeBlocks.BLUE_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_PURPLE).add(DecorativeBlocks.PURPLE_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_MAGENTA).add(DecorativeBlocks.MAGENTA_PURE_GLASS.asItem());
+        tag(PortTags.Items.DYED_PINK).add(DecorativeBlocks.PINK_PURE_GLASS.asItem());
 
         tag(ModTags.Items.GEMS_RUBY).add(MaterialItems.RUBY.get());
         tag(ModTags.Items.GEMS_AMBER).add(MaterialItems.AMBER.get());
@@ -416,7 +413,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.GEMS_JADE).add(MaterialItems.JADE.get());
         tag(ModTags.Items.GEMS_SAPPHIRE).add(MaterialItems.SAPPHIRE.get());
         tag(ModTags.Items.GEMS_AMETHYST).add(MaterialItems.AMETHYST.get());
-        tag(Tags.Items.GEMS).addTags(
+        tag(PortTags.Items.GEMS).addTags(
                 ModTags.Items.GEMS_RUBY,
                 ModTags.Items.GEMS_AMBER,
                 ModTags.Items.GEMS_TOPAZ,
@@ -425,7 +422,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModTags.Items.GEMS_AMETHYST
         );
 
-        tag(Tags.Items.INGOTS).add(
+        tag(PortTags.Items.INGOTS).add(
                 MaterialItems.TIN_INGOT.get(),
                 MaterialItems.LEAD_INGOT.get(),
                 MaterialItems.SILVER_INGOT.get(),
@@ -447,13 +444,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SPECTRE_INGOT.get(),
                 MaterialItems.LUMINITE_INGOT.get()
         );
-        tag(Tags.Items.MUSHROOMS).add(
+        tag(PortTags.Items.MUSHROOMS).add(
                 MaterialItems.GLOWING_MUSHROOM.get(),
                 MaterialItems.LIFE_MUSHROOM.get(),
                 MaterialItems.VICIOUS_MUSHROOM.get(),
                 MaterialItems.VILE_MUSHROOM.get()
         );
-        tag(Tags.Items.NUGGETS).add(
+        tag(PortTags.Items.NUGGETS).add(
                 MaterialItems.TIN_NUGGET.get(),
                 MaterialItems.LEAD_NUGGET.get(),
                 MaterialItems.SILVER_NUGGET.get(),
@@ -465,7 +462,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.HELLSTONE_NUGGET.get()
         );
 
-        tag(Tags.Items.SEEDS).add(
+        tag(PortTags.Items.SEEDS).add(
                 FoodItems.FLOATING_WHEAT_SEED.get(),
                 FoodItems.CLOUDWEAVER_SEED.get(),
                 FoodItems.STELLAR_BLOSSOM_SEED.get(),
@@ -477,36 +474,36 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.DAYBLOOM_SEED.get(),
                 FoodItems.DEATHWEED_SEED.get()
         );
-        tag(Tags.Items.SEEDS_WHEAT).add(
+        tag(PortTags.Items.SEEDS_WHEAT).add(
                 FoodItems.FLOATING_WHEAT_SEED.get()
         );
 
-        IntrinsicTagAppender<Item> tools = tag(Tags.Items.TOOLS);
-        IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS); // 镐子
-        IntrinsicTagAppender<Item> mining_loot_enchantable = tag(ItemTags.MINING_LOOT_ENCHANTABLE);
-        IntrinsicTagAppender<Item> mining_enchantable = tag(ItemTags.MINING_ENCHANTABLE);
-        IntrinsicTagAppender<Item> durability_enchantable = tag(ItemTags.DURABILITY_ENCHANTABLE);
+        IntrinsicTagAppender<Item> tools = tag(PortTags.Items.TOOLS);
+        IntrinsicTagAppender<Item> mining_tool_tools = tag(PortTags.Items.MINING_TOOL_TOOLS); // 镐子
+        IntrinsicTagAppender<Item> mining_loot_enchantable = tag(PortTags.Items.MINING_LOOT_ENCHANTABLE);
+        IntrinsicTagAppender<Item> mining_enchantable = tag(PortTags.Items.MINING_ENCHANTABLE);
+        IntrinsicTagAppender<Item> durability_enchantable = tag(PortTags.Items.DURABILITY_ENCHANTABLE);
         IntrinsicTagAppender<Item> skip_reset_strength = tag(LibTags.Items.SKIP_RESET_STRENGTH);
-        IntrinsicTagAppender<Item> melee_weapon_tools = tag(Tags.Items.MELEE_WEAPON_TOOLS);
+        IntrinsicTagAppender<Item> melee_weapon_tools = tag(PortTags.Items.MELEE_WEAPON_TOOLS);
         IntrinsicTagAppender<Item> skip_using_slowdown = tag(LibTags.Items.SKIP_USING_SLOWDOWN);
-        IntrinsicTagAppender<Item> ranged_weapon_tools = tag(Tags.Items.RANGED_WEAPON_TOOLS);
-        IntrinsicTagAppender<Item> weapon_enchantable = tag(ItemTags.WEAPON_ENCHANTABLE);
-        IntrinsicTagAppender<Item> sharp_weapon_enchantable = tag(ItemTags.SHARP_WEAPON_ENCHANTABLE);
-        IntrinsicTagAppender<Item> crossbow_enchantable = tag(ItemTags.CROSSBOW_ENCHANTABLE);
+        IntrinsicTagAppender<Item> ranged_weapon_tools = tag(PortTags.Items.RANGED_WEAPON_TOOLS);
+        IntrinsicTagAppender<Item> weapon_enchantable = tag(PortTags.Items.WEAPON_ENCHANTABLE);
+        IntrinsicTagAppender<Item> sharp_weapon_enchantable = tag(PortTags.Items.SHARP_WEAPON_ENCHANTABLE);
+        IntrinsicTagAppender<Item> crossbow_enchantable = tag(PortTags.Items.CROSSBOW_ENCHANTABLE);
         IntrinsicTagAppender<Item> repeater_enchantable = tag(ModTags.Items.REPEATER_ENCHANTABLE);
         IntrinsicTagAppender<Item> repeater_crossbow_enchantable = tag(ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE);
-        IntrinsicTagAppender<Item> tools_crossbow = tag(Tags.Items.TOOLS_CROSSBOW);
+        IntrinsicTagAppender<Item> tools_crossbow = tag(PortTags.Items.TOOLS_CROSSBOW);
         IntrinsicTagAppender<Item> tools_repeater = tag(ModTags.Items.TOOLS_REPEATER);
         IntrinsicTagAppender<Item> repeater_crossbow = tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW);
 
         tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
                 .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
-                .add(TEBoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+                .add(BoomerangItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new));
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
-                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES)
-                .add(Items.MACE);
+                .addTags(PortTags.Items.SWORDS, PortTags.Items.AXES, PortTags.Items.PICKAXES, PortTags.Items.SHOVELS, PortTags.Items.HOES)
+        /*.add(Items.MACE)*/;
         tag(ModTags.Items.PREFIX_RANGED_ONLY)
-                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, ModTags.GUN)
+                .addTags(PortTags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
                 .add(Items.TRIDENT);
         tag(ModTags.Items.PREFIX_MAGIC_ONLY)
                 .addTags(ModTags.Items.MANA_WEAPON, ModTags.Items.SUMMONER_WEAPON);
@@ -516,7 +513,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         dye.add(VanityArmorItems.TEAM_DYE.get());
 
-        IntrinsicTagAppender<Item> dyed = tag(Tags.Items.DYED);
+        IntrinsicTagAppender<Item> dyed = tag(PortTags.Items.DYED);
         for (BaseDyeItem dyeItem : VanityArmorItems.COLORED_DYE_ITEMS) {
             dye.add(dyeItem);
             dyed.add(dyeItem);
@@ -524,32 +521,32 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         PaintItems.PAINT_ITEMS.forEach(dyed::add);
 
-        IntrinsicTagAppender<Item> arrows = tag(ItemTags.ARROWS);
+        IntrinsicTagAppender<Item> arrows = tag(PortTags.Items.ARROWS);
         ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));
 
-        IntrinsicTagAppender<Item> gun = tag(ModTags.GUN);
+        IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);
         GunItems.ITEMS.getEntries().forEach(item -> gun.add(item.get()));
 
         IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
         ManaWeaponItems.ITEMS.getEntries().forEach(item -> mana_weapon.add(item.get()));
         skip_using_slowdown.addTag(ModTags.Items.MANA_WEAPON);
 
-        IntrinsicTagAppender<Item> fishing_rod = tag(Tags.Items.TOOLS_FISHING_ROD);
-        IntrinsicTagAppender<Item> fishing_enchantable = tag(ItemTags.FISHING_ENCHANTABLE);
+        IntrinsicTagAppender<Item> fishing_rod = tag(PortTags.Items.TOOLS_FISHING_ROD);
+        IntrinsicTagAppender<Item> fishing_enchantable = tag(PortTags.Items.FISHING_ENCHANTABLE);
         FishingPoleItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             fishing_rod.add(value);
             fishing_enchantable.add(value);
         });
 
-        IntrinsicTagAppender<Item> axes = tag(ItemTags.AXES);
+        IntrinsicTagAppender<Item> axes = tag(PortTags.Items.AXES);
         AxeItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             axes.add(value);
             melee_weapon_tools.add(value);
         });
 
-        IntrinsicTagAppender<Item> pickaxes = tag(ItemTags.PICKAXES);
+        IntrinsicTagAppender<Item> pickaxes = tag(PortTags.Items.PICKAXES);
         PickaxeItems.ITEMS.getEntries().forEach(item -> pickaxes.add(item.get()));
 
         PickaxeAxeItems.ITEMS.getEntries().forEach(item -> {
@@ -573,10 +570,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> drill = tag(ModTags.Items.TOOLS_DRILL);
         DrillItems.ITEMS.getEntries().forEach(item -> drill.add(item.get()));
 
-        IntrinsicTagAppender<Item> hoes = tag(ItemTags.HOES);
+        IntrinsicTagAppender<Item> hoes = tag(PortTags.Items.HOES);
         HoeItems.ITEMS.getEntries().forEach(item -> hoes.add(item.get()));
 
-        IntrinsicTagAppender<Item> shovels = tag(ItemTags.SHOVELS);
+        IntrinsicTagAppender<Item> shovels = tag(PortTags.Items.SHOVELS);
         ShovelItems.ITEMS.getEntries().forEach(item -> shovels.add(item.get()));
 
         IntrinsicTagAppender<Item> shears = tag(ModTags.Items.TOOLS_SHEAR);
@@ -598,8 +595,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             axes.add(value);
         });
 
-        IntrinsicTagAppender<Item> tools_bows = tag(Tags.Items.TOOLS_BOW);
-        IntrinsicTagAppender<Item> bow_enchantable = tag(ItemTags.BOW_ENCHANTABLE);
+        IntrinsicTagAppender<Item> tools_bows = tag(PortTags.Items.TOOLS_BOW);
+        IntrinsicTagAppender<Item> bow_enchantable = tag(PortTags.Items.BOW_ENCHANTABLE);
         BowItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             durability_enchantable.add(value);
@@ -619,17 +616,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             }
         });
 
-        IntrinsicTagAppender<Item> swords = tag(ItemTags.SWORDS);
+        IntrinsicTagAppender<Item> swords = tag(PortTags.Items.SWORDS);
         SwordItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             melee_weapon_tools.add(value);
             swords.add(value);
         });
 
-        IntrinsicTagAppender<Item> head_armor = tag(ItemTags.HEAD_ARMOR);
-        IntrinsicTagAppender<Item> chest_armor = tag(ItemTags.CHEST_ARMOR);
-        IntrinsicTagAppender<Item> leg_armor = tag(ItemTags.LEG_ARMOR);
-        IntrinsicTagAppender<Item> foot_armor = tag(ItemTags.FOOT_ARMOR);
+        IntrinsicTagAppender<Item> head_armor = tag(PortTags.Items.HEAD_ARMOR);
+        IntrinsicTagAppender<Item> chest_armor = tag(PortTags.Items.CHEST_ARMOR);
+        IntrinsicTagAppender<Item> leg_armor = tag(PortTags.Items.LEG_ARMOR);
+        IntrinsicTagAppender<Item> foot_armor = tag(PortTags.Items.FOOT_ARMOR);
         ArmorItems.ITEMS.getEntries().forEach(item -> {
             if (item.get() instanceof ArmorItem armor) {
                 if (armor.getEquipmentSlot() == EquipmentSlot.HEAD) {
@@ -662,8 +659,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> flail = tag(ModTags.Items.FLAIL);
         skip_reset_strength.addTag(ModTags.Items.FLAIL);
         melee_weapon_tools.addTag(ModTags.Items.FLAIL);
-        tag(ItemTags.MACE_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
-        tag(ItemTags.DURABILITY_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
+        tag(PortTags.Items.MACE_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
+        tag(PortTags.Items.DURABILITY_ENCHANTABLE).addTag(ModTags.Items.FLAIL);
         FlailItems.ITEMS.getEntries().forEach(item -> flail.add(item.get()));
 
         IntrinsicTagAppender<Item> spear = tag(ModTags.Items.SPEAR);
@@ -680,7 +677,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
 
-        TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
+        SummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 
         copy(ModTags.Blocks.COINS, ModTags.Items.COINS);
         tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
@@ -702,7 +699,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_BRIGHT.get(),
 
                 MaterialItems.CRYSTAL_SHARDS.get(),
-                ModBlocks.CURSED_FLAME.get(),
+                ModBlocks.CURSED_FLAME.asItem(),
                 MaterialItems.ICHOR.get(),
                 MaterialItems.PIXIE_DUST.get(),
                 MaterialItems.UNICORN_HORN.get(),
@@ -801,7 +798,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
             copy(ModTags.Blocks.STORAGE_BLOCKS_FLOATING_WHEAT_BALE, ModTags.Items.STORAGE_BLOCKS_FLOATING_WHEAT_BALE);
 
-            copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
+            copy(PortTags.Blocks.STORAGE_BLOCKS, PortTags.Items.STORAGE_BLOCKS);
         }
         {
             tag(ModTags.Items.RAW_MATERIALS_TIN).add(MaterialItems.RAW_TIN.get());
@@ -830,7 +827,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
             tag(ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT).add(MaterialItems.FLOATING_WHEAT_HEADS.get());
 
-            tag(Tags.Items.RAW_MATERIALS).addTags(
+            tag(PortTags.Items.RAW_MATERIALS).addTags(
                     ModTags.Items.RAW_MATERIALS_TIN,
                     ModTags.Items.RAW_MATERIALS_LEAD,
                     ModTags.Items.RAW_MATERIALS_SILVER,
@@ -859,14 +856,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             );
         }
         {
-            tag(ItemTags.COAL_ORES).add(OreBlocks.SANCTIFICATION_COAL_ORE.get().asItem(), OreBlocks.CORRUPTION_COAL_ORE.get().asItem(), OreBlocks.FLESHIFICATION_COAL_ORE.get().asItem());
-            tag(ItemTags.COPPER_ORES).add(OreBlocks.SANCTIFICATION_COPPER_ORE.get().asItem(), OreBlocks.CORRUPTION_COPPER_ORE.get().asItem(), OreBlocks.FLESHIFICATION_COPPER_ORE.get().asItem());
-            tag(ItemTags.DIAMOND_ORES).add(OreBlocks.SANCTIFICATION_DIAMOND_ORE.get().asItem(), OreBlocks.CORRUPTION_DIAMOND_ORE.get().asItem(), OreBlocks.FLESHIFICATION_DIAMOND_ORE.get().asItem());
-            tag(ItemTags.EMERALD_ORES).add(OreBlocks.SANCTIFICATION_EMERALD_ORE.get().asItem(), OreBlocks.CORRUPTION_EMERALD_ORE.get().asItem(), OreBlocks.FLESHIFICATION_EMERALD_ORE.get().asItem());
-            tag(ItemTags.GOLD_ORES).add(OreBlocks.SANCTIFICATION_GOLD_ORE.get().asItem(), OreBlocks.CORRUPTION_GOLD_ORE.get().asItem(), OreBlocks.FLESHIFICATION_GOLD_ORE.get().asItem());
-            tag(ItemTags.IRON_ORES).add(OreBlocks.SANCTIFICATION_IRON_ORE.get().asItem(), OreBlocks.CORRUPTION_IRON_ORE.get().asItem(), OreBlocks.FLESHIFICATION_IRON_ORE.get().asItem());
-            tag(ItemTags.LAPIS_ORES).add(OreBlocks.SANCTIFICATION_LAPIS_ORE.get().asItem(), OreBlocks.CORRUPTION_LAPIS_ORE.get().asItem(), OreBlocks.FLESHIFICATION_LAPIS_ORE.get().asItem());
-            tag(ItemTags.REDSTONE_ORES).add(OreBlocks.SANCTIFICATION_REDSTONE_ORE.get().asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.get().asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.get().asItem());
+            tag(PortTags.Items.COAL_ORES).add(OreBlocks.SANCTIFICATION_COAL_ORE.asItem(), OreBlocks.CORRUPTION_COAL_ORE.asItem(), OreBlocks.FLESHIFICATION_COAL_ORE.asItem());
+            tag(PortTags.Items.COPPER_ORES).add(OreBlocks.SANCTIFICATION_COPPER_ORE.asItem(), OreBlocks.CORRUPTION_COPPER_ORE.asItem(), OreBlocks.FLESHIFICATION_COPPER_ORE.asItem());
+            tag(PortTags.Items.DIAMOND_ORES).add(OreBlocks.SANCTIFICATION_DIAMOND_ORE.asItem(), OreBlocks.CORRUPTION_DIAMOND_ORE.asItem(), OreBlocks.FLESHIFICATION_DIAMOND_ORE.asItem());
+            tag(PortTags.Items.EMERALD_ORES).add(OreBlocks.SANCTIFICATION_EMERALD_ORE.asItem(), OreBlocks.CORRUPTION_EMERALD_ORE.asItem(), OreBlocks.FLESHIFICATION_EMERALD_ORE.asItem());
+            tag(PortTags.Items.GOLD_ORES).add(OreBlocks.SANCTIFICATION_GOLD_ORE.asItem(), OreBlocks.CORRUPTION_GOLD_ORE.asItem(), OreBlocks.FLESHIFICATION_GOLD_ORE.asItem());
+            tag(PortTags.Items.IRON_ORES).add(OreBlocks.SANCTIFICATION_IRON_ORE.asItem(), OreBlocks.CORRUPTION_IRON_ORE.asItem(), OreBlocks.FLESHIFICATION_IRON_ORE.asItem());
+            tag(PortTags.Items.LAPIS_ORES).add(OreBlocks.SANCTIFICATION_LAPIS_ORE.asItem(), OreBlocks.CORRUPTION_LAPIS_ORE.asItem(), OreBlocks.FLESHIFICATION_LAPIS_ORE.asItem());
+            tag(PortTags.Items.REDSTONE_ORES).add(OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.asItem());
 
             copy(ModTags.Blocks.ORES_TIN, ModTags.Items.ORES_TIN);
             copy(ModTags.Blocks.ORES_LEAD, ModTags.Items.ORES_LEAD);
@@ -892,25 +889,25 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             copy(ModTags.Blocks.ORES_SAPPHIRE, ModTags.Items.ORES_SAPPHIRE);
             copy(ModTags.Blocks.ORES_AMETHYST, ModTags.Items.ORES_AMETHYST);
 
-            copy(Tags.Blocks.ORES, Tags.Items.ORES);
+            copy(PortTags.Blocks.ORES, PortTags.Items.ORES);
         }
-        copy(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE, Tags.Items.ORES_IN_GROUND_DEEPSLATE);
-        copy(Tags.Blocks.ORES_IN_GROUND_NETHERRACK, Tags.Items.ORES_IN_GROUND_NETHERRACK);
-        copy(Tags.Blocks.ORES_IN_GROUND_STONE, Tags.Items.ORES_IN_GROUND_STONE);
+        copy(PortTags.Blocks.ORES_IN_GROUND_DEEPSLATE, PortTags.Items.ORES_IN_GROUND_DEEPSLATE);
+        copy(PortTags.Blocks.ORES_IN_GROUND_NETHERRACK, PortTags.Items.ORES_IN_GROUND_NETHERRACK);
+        copy(PortTags.Blocks.ORES_IN_GROUND_STONE, PortTags.Items.ORES_IN_GROUND_STONE);
 
         tag(ModTags.Items.MOSS_ITEM).add(
-                NatureBlocks.BROWN_MOSS.get().asItem(),
-                NatureBlocks.BROWN_MOSS.get().asItem(),
-                NatureBlocks.RED_MOSS.get().asItem(),
-                NatureBlocks.BLUE_MOSS.get().asItem(),
-                NatureBlocks.PURPLE_MOSS.get().asItem(),
-                NatureBlocks.LAVA_MOSS.get().asItem(),
-                NatureBlocks.KRYPTON_MOSS.get().asItem(),
-                NatureBlocks.XENON_MOSS.get().asItem(),
-                NatureBlocks.ARGON_MOSS.get().asItem(),
-                NatureBlocks.NEON_MOSS.get().asItem(),
-                NatureBlocks.HELIUM_MOSS.get().asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_MOSS.get().asItem()
+                NatureBlocks.BROWN_MOSS.asItem(),
+                NatureBlocks.BROWN_MOSS.asItem(),
+                NatureBlocks.RED_MOSS.asItem(),
+                NatureBlocks.BLUE_MOSS.asItem(),
+                NatureBlocks.PURPLE_MOSS.asItem(),
+                NatureBlocks.LAVA_MOSS.asItem(),
+                NatureBlocks.KRYPTON_MOSS.asItem(),
+                NatureBlocks.XENON_MOSS.asItem(),
+                NatureBlocks.ARGON_MOSS.asItem(),
+                NatureBlocks.NEON_MOSS.asItem(),
+                NatureBlocks.HELIUM_MOSS.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_MOSS.asItem()
         );
 
         // 农作物掉落提升 再生法杖/再生之斧
@@ -927,8 +924,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.AMMO)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())
-                .addTag(ItemTags.ARROWS)
-                .addOptionalTag(ModTags.AMMO);
+                .addTag(PortTags.Items.ARROWS);
 
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
@@ -950,15 +946,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HammerItems.PWNHAMMER.get(),
                 HammerItems.HAMMUSH.get()
         );
-        tag(Tags.Items.FOODS_SOUP).add(
+        tag(PortTags.Items.FOODS_SOUP).add(
                 FoodItems.BOWL_OF_SOUP.get(),
                 FoodItems.GRUB_SOUP.get()
         );
-        tag(Tags.Items.FOODS_BREAD).add(
+        tag(PortTags.Items.FOODS_BREAD).add(
                 FoodItems.BOULDER_BREAD.get(),
                 FoodItems.CLOUD_BREAD.get()
         );
-        tag(ItemTags.MEAT).add(
+        tag(PortTags.Items.MEAT).add(
                 FoodItems.RAW_FROG.get(),
                 FoodItems.RAW_SQUIRREL.get(),
                 FoodItems.RAW_BIRD.get(),
@@ -970,11 +966,18 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.RAW_BIRD.get(),
                 FoodItems.RAW_DUCK.get()
         );
-        tag(Tags.Items.FERTILIZERS).add(ConsumableItems.FERTILIZER.get());
-        tag(ItemTags.PARROT_POISONOUS_FOOD).add(
+        tag(PortTags.Items.FOODS_COOKED_MEAT).add(
+                FoodItems.COOKED_FROG.get(),
+                FoodItems.COOKED_SQUIRREL.get(),
+                FoodItems.COOKED_BIRD.get(),
+                FoodItems.COOKED_DUCK.get(),
+                FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.get()
+        );
+        tag(PortTags.Items.FERTILIZERS).add(ConsumableItems.FERTILIZER.get());
+        tag(PortTags.Items.PARROT_POISONOUS_FOOD).add(
                 FoodItems.CHOCOLATE_CHIP_COOKIE.get()
         );
-        tag(ItemTags.PARROT_FOOD).add(
+        tag(PortTags.Items.PARROT_FOOD).add(
                 FoodItems.FLOATING_WHEAT_SEED.get(),
                 FoodItems.CLOUDWEAVER_SEED.get(),
                 FoodItems.STELLAR_BLOSSOM_SEED.get(),
@@ -986,26 +989,26 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.DAYBLOOM_SEED.get(),
                 FoodItems.DEATHWEED_SEED.get()
         );
-        tag(ItemTags.VILLAGER_PLANTABLE_SEEDS).add(
+        tag(PortTags.Items.VILLAGER_PLANTABLE_SEEDS).add(
                 FoodItems.STELLAR_BLOSSOM_SEED.get(),
                 FoodItems.CLOUDWEAVER_SEED.get(),
                 FoodItems.FLOATING_WHEAT_SEED.get()
         );
-        tag(ItemTags.LLAMA_TEMPT_ITEMS).add(DecorativeBlocks.FLOATING_WHEAT_BALE.get().asItem());
-        tag(ItemTags.LLAMA_FOOD).add(MaterialItems.FLOATING_WHEAT_HEADS.get());
-        tag(ItemTags.GOAT_FOOD).add(MaterialItems.FLOATING_WHEAT_HEADS.get());
-        tag(Tags.Items.FOODS_GOLDEN).add(
+        tag(PortTags.Items.LLAMA_TEMPT_ITEMS).add(DecorativeBlocks.FLOATING_WHEAT_BALE.asItem());
+        tag(PortTags.Items.LLAMA_FOOD).add(MaterialItems.FLOATING_WHEAT_HEADS.get());
+        tag(PortTags.Items.GOAT_FOOD).add(MaterialItems.FLOATING_WHEAT_HEADS.get());
+        tag(PortTags.Items.FOODS_GOLDEN).add(
                 FoodItems.GOLDEN_CARP.get(),
                 FoodItems.GOLDEN_DELIGHT.get()
         );
-        tag(ItemTags.PIGLIN_LOVED).add(
+        tag(PortTags.Items.PIGLIN_LOVED).add(
                 FoodItems.GOLDEN_CARP.get(),
                 FoodItems.GOLDEN_DELIGHT.get()
         );
-        tag(Tags.Items.FOODS_VEGETABLE).add(
+        tag(PortTags.Items.FOODS_VEGETABLE).add(
                 FoodItems.SPICY_PEPPER.get()
         );
-        tag(ItemTags.FISHES).add(
+        tag(PortTags.Items.FISHES).add(
                 SwordItems.PURPLE_CLUBBERFISH.get(),
                 ConsumableItems.BOMB_FISH.get(),
                 PickaxeItems.REAVER_SHARK_PICKAXE.get(),
@@ -1079,11 +1082,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.YELLOW_EEL.get(),
                 FoodItems.TILAPIA.get()
         );
-        tag(Tags.Items.FOODS_EDIBLE_WHEN_PLACED).add(FoodItems.GREEN_DUMPLING.get());
-        tag(ItemTags.CLUSTER_MAX_HARVESTABLES).addTag(ItemTags.PICKAXES);
-        tag(ItemTags.COMPASSES).add(ToolItems.METEOR_COMPASS.get());
-        tag(Tags.Items.FOODS_PIE).add(FoodItems.APPLE_PIE.get());
-        tag(Tags.Items.FOODS_COOKIE).add(FoodItems.CHOCOLATE_CHIP_COOKIE.get());
+        tag(PortTags.Items.FOODS_EDIBLE_WHEN_PLACED).add(FoodItems.GREEN_DUMPLING.get());
+        tag(PortTags.Items.CLUSTER_MAX_HARVESTABLES).addTag(PortTags.Items.PICKAXES);
+        tag(PortTags.Items.COMPASSES).add(ToolItems.METEOR_COMPASS.get());
+        tag(PortTags.Items.FOODS_PIE).add(FoodItems.APPLE_PIE.get());
+        tag(PortTags.Items.FOODS_COOKIE).add(FoodItems.CHOCOLATE_CHIP_COOKIE.get());
         tag(ModTags.Items.EXPLOSIVE).add(
                 Items.TNT,
                 ConsumableItems.BOMB.get(),
@@ -1103,42 +1106,42 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.WET_BOMB.get(),
                 ConsumableItems.LAVA_BOMB.get(),
                 ConsumableItems.HONEY_BOMB.get(),
-                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().asItem()
+                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.asItem()
         );
 
-        copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
-        copy(Tags.Blocks.STRIPPED_LOGS, Tags.Items.STRIPPED_LOGS);
-        copy(BlockTags.STANDING_SIGNS, ItemTags.SIGNS);
-        copy(BlockTags.CEILING_HANGING_SIGNS, ItemTags.HANGING_SIGNS);
-        copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
-        copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
-        copy(BlockTags.PLANKS, ItemTags.PLANKS);
-        copy(BlockTags.LOGS, ItemTags.LOGS);
-        copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
-        copy(BlockTags.WOODEN_FENCES, ItemTags.WOODEN_FENCES);
-        copy(BlockTags.WOODEN_DOORS, ItemTags.WOODEN_DOORS);
-        copy(BlockTags.WOODEN_TRAPDOORS, ItemTags.WOODEN_TRAPDOORS);
-        copy(BlockTags.WOODEN_PRESSURE_PLATES, ItemTags.WOODEN_PRESSURE_PLATES);
-        copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
-        copy(BlockTags.LEAVES, ItemTags.LEAVES);
-        copy(Tags.Blocks.GLASS_BLOCKS, Tags.Items.GLASS_BLOCKS);
-        copy(BlockTags.RAILS, ItemTags.RAILS);
-        copy(BlockTags.LOGS_THAT_BURN, ItemTags.LOGS_THAT_BURN);
-        copy(BlockTags.STONE_BRICKS, ItemTags.STONE_BRICKS);
-        copy(BlockTags.ANVIL, ItemTags.ANVIL);
-        copy(BlockTags.FENCE_GATES, ItemTags.FENCE_GATES);
-        copy(BlockTags.DIRT, ItemTags.DIRT);
-        copy(Tags.Blocks.ORE_RATES_SINGULAR, Tags.Items.ORE_RATES_SINGULAR);
-        copy(Tags.Blocks.ORE_RATES_DENSE, Tags.Items.ORE_RATES_DENSE);
-        copy(Tags.Blocks.SANDSTONE_BLOCKS, Tags.Items.SANDSTONE_BLOCKS);
-        copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
-        copy(Tags.Blocks.PLAYER_WORKSTATIONS_FURNACES, Tags.Items.PLAYER_WORKSTATIONS_FURNACES);
-        copy(Tags.Blocks.CHAINS, Tags.Items.CHAINS);
-        copy(Tags.Blocks.ROPES, Tags.Items.ROPES);
-        copy(Tags.Blocks.VILLAGER_JOB_SITES, Tags.Items.VILLAGER_JOB_SITES);
-        copy(Tags.Blocks.CHESTS_TRAPPED, Tags.Items.CHESTS_TRAPPED);
-        copy(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, Tags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES);
-        copy(Tags.Blocks.GLASS_BLOCKS_COLORLESS, Tags.Items.GLASS_BLOCKS_COLORLESS);
+        copy(PortTags.Blocks.FENCE_GATES, PortTags.Items.FENCE_GATES);
+        copy(PortTags.Blocks.STRIPPED_LOGS, PortTags.Items.STRIPPED_LOGS);
+        copy(BlockTags.STANDING_SIGNS, PortTags.Items.SIGNS);
+        copy(BlockTags.CEILING_HANGING_SIGNS, PortTags.Items.HANGING_SIGNS);
+        copy(BlockTags.WOODEN_BUTTONS, PortTags.Items.WOODEN_BUTTONS);
+        copy(PortTags.Blocks.STORAGE_BLOCKS, PortTags.Items.STORAGE_BLOCKS);
+        copy(BlockTags.PLANKS, PortTags.Items.PLANKS);
+        copy(BlockTags.LOGS, PortTags.Items.LOGS);
+        copy(BlockTags.WOODEN_SLABS, PortTags.Items.WOODEN_SLABS);
+        copy(BlockTags.WOODEN_FENCES, PortTags.Items.WOODEN_FENCES);
+        copy(BlockTags.WOODEN_DOORS, PortTags.Items.WOODEN_DOORS);
+        copy(BlockTags.WOODEN_TRAPDOORS, PortTags.Items.WOODEN_TRAPDOORS);
+        copy(BlockTags.WOODEN_PRESSURE_PLATES, PortTags.Items.WOODEN_PRESSURE_PLATES);
+        copy(BlockTags.WOODEN_STAIRS, PortTags.Items.WOODEN_STAIRS);
+        copy(BlockTags.LEAVES, PortTags.Items.LEAVES);
+        copy(PortTags.Blocks.GLASS_BLOCKS, PortTags.Items.GLASS_BLOCKS);
+        copy(BlockTags.RAILS, PortTags.Items.RAILS);
+        copy(BlockTags.LOGS_THAT_BURN, PortTags.Items.LOGS_THAT_BURN);
+        copy(BlockTags.STONE_BRICKS, PortTags.Items.STONE_BRICKS);
+        copy(BlockTags.ANVIL, PortTags.Items.ANVIL);
+        copy(BlockTags.FENCE_GATES, PortTags.Items.FENCE_GATES);
+        copy(BlockTags.DIRT, PortTags.Items.DIRT);
+        copy(PortTags.Blocks.ORE_RATES_SINGULAR, PortTags.Items.ORE_RATES_SINGULAR);
+        copy(PortTags.Blocks.ORE_RATES_DENSE, PortTags.Items.ORE_RATES_DENSE);
+        copy(PortTags.Blocks.SANDSTONE_BLOCKS, PortTags.Items.SANDSTONE_BLOCKS);
+        copy(PortTags.Blocks.FENCE_GATES_WOODEN, PortTags.Items.FENCE_GATES_WOODEN);
+        copy(PortTags.Blocks.PLAYER_WORKSTATIONS_FURNACES, PortTags.Items.PLAYER_WORKSTATIONS_FURNACES);
+        copy(PortTags.Blocks.CHAINS, PortTags.Items.CHAINS);
+        copy(PortTags.Blocks.ROPES, PortTags.Items.ROPES);
+        copy(PortTags.Blocks.VILLAGER_JOB_SITES, PortTags.Items.VILLAGER_JOB_SITES);
+        copy(PortTags.Blocks.CHESTS_TRAPPED, PortTags.Items.CHESTS_TRAPPED);
+        copy(PortTags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES, PortTags.Items.PLAYER_WORKSTATIONS_CRAFTING_TABLES);
+        copy(PortTags.Blocks.GLASS_BLOCKS_COLORLESS, PortTags.Items.GLASS_BLOCKS_COLORLESS);
 
         IntrinsicTagAppender<Item> wip = tag(LibTags.Items.WIP);
         wip.add(
@@ -1245,159 +1248,159 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.THE_DOCTORS_SHIRT.get(),
                 VanityArmorItems.THE_DOCTORS_PANTS.get(),
                 VanityArmorItems.THE_DOCTORS_SHOES.get(),
-                NatureBlocks.LOOSE_HONEY_BLOCK.get().asItem(),
-                NatureBlocks.GREEN_MOSS.get().asItem(),
-                NatureBlocks.BROWN_MOSS.get().asItem(),
-                NatureBlocks.RED_MOSS.get().asItem(),
-                NatureBlocks.BLUE_MOSS.get().asItem(),
-                NatureBlocks.PURPLE_MOSS.get().asItem(),
-                NatureBlocks.KRYPTON_MOSS.get().asItem(),
-                NatureBlocks.ARGON_MOSS.get().asItem(),
-                NatureBlocks.NEON_MOSS.get().asItem(),
-                NatureBlocks.HELIUM_MOSS.get().asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_MOSS.get().asItem(),
-                NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get().asItem(),
-                NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().asItem(),
-                NatureBlocks.CORRODED_WORM_ROOTS_BLOCK.get().asItem(),
-                NatureBlocks.CORRUPTED_OVARIES_BLOCK.get().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.STRIPPED_LOG.get().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.WOOD.get().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.STRIPPED_WOOD.get().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.TRAPDOOR.get().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.DOOR.get().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.LOG.get().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.LEAVES.get().asItem(),
-                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().asItem(),
-                NatureBlocks.SMALL_DESERT_PLANT.get().asItem(),
-                NatureBlocks.SMALL_CACTUS.get().asItem(),
-                NatureBlocks.SHIMMER_CRYSTALS_BLOCK.get().asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.TRAPDOOR.get().asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.get().asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.get().asItem(),
-                PotBlocks.OCEAN_POT.get().asItem(),
-                OreBlocks.HALLOWED_BLOCK.get().asItem(),
-                OreBlocks.RAW_CHLOROPHYTE_BLOCK.get().asItem(),
-                OreBlocks.CHLOROPHYTE_BLOCK.get().asItem(),
-                OreBlocks.SHROOMITE_BLOCK.get().asItem(),
-                OreBlocks.SPECTRE_BLOCK.get().asItem(),
-                OreBlocks.RAW_LUMINITE_BLOCK.get().asItem(),
-                OreBlocks.LUMINITE_BLOCK.get().asItem(),
-                OreBlocks.RAW_COBALT_BLOCK.get().asItem(),
-                OreBlocks.COBALT_BLOCK.get().asItem(),
-                OreBlocks.RAW_PALLADIUM_BLOCK.get().asItem(),
-                OreBlocks.PALLADIUM_BLOCK.get().asItem(),
-                OreBlocks.RAW_MYTHRIL_BLOCK.get().asItem(),
-                OreBlocks.MYTHRIL_BLOCK.get().asItem(),
-                OreBlocks.RAW_ORICHALCUM_BLOCK.get().asItem(),
-                OreBlocks.ORICHALCUM_BLOCK.get().asItem(),
-                OreBlocks.RAW_ADAMANTITE_BLOCK.get().asItem(),
-                OreBlocks.ADAMANTITE_BLOCK.get().asItem(),
-                OreBlocks.RAW_TITANIUM_BLOCK.get().asItem(),
-                OreBlocks.TITANIUM_BLOCK.get().asItem(),
-                DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get().asItem(),
-                DecorativeBlocks.ENCHANTED_GREEN_BRICKS.get().asItem(),
-                DecorativeBlocks.ENCHANTED_PINK_BRICKS.get().asItem(),
-                DecorativeBlocks.LIHZAHRD_DOOR.get().asItem(),
-                DecorativeBlocks.RAINBOW_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get().asItem(),
-                DecorativeBlocks.FLESH_BLOCK.get().asItem(),
-                DecorativeBlocks.LESION_BLOCK.get().asItem(),
-                DecorativeBlocks.SANDSTONE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.SANDSTONE_BRICKS.STAIRS.get().asItem(),
-                DecorativeBlocks.SANDSTONE_BRICKS.SLAB.get().asItem(),
-                DecorativeBlocks.SANDSTONE_BRICKS.WALL.get().asItem(),
-                DecorativeBlocks.RED_SANDSTONE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.RED_SANDSTONE_BRICKS.STAIRS.get().asItem(),
-                DecorativeBlocks.RED_SANDSTONE_BRICKS.SLAB.get().asItem(),
-                DecorativeBlocks.RED_SANDSTONE_BRICKS.WALL.get().asItem(),
-                DecorativeBlocks.EBONSANDSTONE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.EBONSANDSTONE_BRICKS.STAIRS.get().asItem(),
-                DecorativeBlocks.EBONSANDSTONE_BRICKS.SLAB.get().asItem(),
-                DecorativeBlocks.EBONSANDSTONE_BRICKS.WALL.get().asItem(),
-                DecorativeBlocks.PEARLSANDSTONE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.PEARLSANDSTONE_BRICKS.STAIRS.get().asItem(),
-                DecorativeBlocks.PEARLSANDSTONE_BRICKS.SLAB.get().asItem(),
-                DecorativeBlocks.PEARLSANDSTONE_BRICKS.WALL.get().asItem(),
-                DecorativeBlocks.CRIMSANDSTONE_BRICKS.FULL.get().asItem(),
-                DecorativeBlocks.CRIMSANDSTONE_BRICKS.STAIRS.get().asItem(),
-                DecorativeBlocks.CRIMSANDSTONE_BRICKS.SLAB.get().asItem(),
-                DecorativeBlocks.CRIMSANDSTONE_BRICKS.WALL.get().asItem(),
-                DecorativeBlocks.CRIMTANE_ORE_BRICKS.STAIRS.get().asItem(),
-                DecorativeBlocks.CRIMTANE_ORE_BRICKS.SLAB.get().asItem(),
-                StatueBlocks.ARMOR_STATUE.get().asItem(),
-                StatueBlocks.AXE_STATUE.get().asItem(),
-                StatueBlocks.BOOMERANG_STATUE.get().asItem(),
-                StatueBlocks.BOOT_STATUE.get().asItem(),
-                StatueBlocks.BOW_STATUE.get().asItem(),
-                StatueBlocks.GARGOYLE_STATUE.get().asItem(),
-                StatueBlocks.GLOOM_STATUE.get().asItem(),
-                StatueBlocks.HAMMER_STATUE.get().asItem(),
-                StatueBlocks.PICKAXE_STATUE.get().asItem(),
-                StatueBlocks.PILLAR_STATUE.get().asItem(),
-                StatueBlocks.POT_STATUE.get().asItem(),
-                StatueBlocks.POTION_STATUE.get().asItem(),
-                StatueBlocks.REAPER_STATUE.get().asItem(),
-                StatueBlocks.SHIELD_STATUE.get().asItem(),
-                StatueBlocks.SPEAR_STATUE.get().asItem(),
-                StatueBlocks.SUNFLOWER_STATUE.get().asItem(),
-                StatueBlocks.SWORD_STATUE.get().asItem(),
-                StatueBlocks.TREE_STATUE.get().asItem(),
-                StatueBlocks.WOMEN_STATUE.get().asItem(),
-                StatueBlocks.LIHZAHRD_STATUE.get().asItem(),
-                StatueBlocks.LIHZAHRD_GUARDIAN_STATUE.get().asItem(),
-                StatueBlocks.LIHZAHRD_WATCHER_STATUE.get().asItem(),
-                StatueBlocks.ARMED_ZOMBIE_STATUE.get().asItem(),
-                StatueBlocks.BONE_SKELETON_STATUE.get().asItem(),
-                StatueBlocks.CORRUPT_STATUE.get().asItem(),
-                StatueBlocks.DRIPPLER_STATUE.get().asItem(),
-                StatueBlocks.EYEBALL_STATUE.get().asItem(),
-                StatueBlocks.SKELETON_STATUE.get().asItem(),
-                StatueBlocks.SLIME_STATUE.get().asItem(),
-                StatueBlocks.BOMB_STATUE.get().asItem(),
-                StatueBlocks.HEART_STATUE.get().asItem(),
-                StatueBlocks.STAR_STATUE.get().asItem(),
-                StatueBlocks.BOULDER_3X_STATUE.get().asItem(),
-                StatueBlocks.BAST_STATUE.get().asItem(),
-                TFBlocks.GLASS_KILN.get().asItem(),
-                TFBlocks.LIVING_LOOM.get().asItem(),
-                TFBlocks.ICE_MACHINE.get().asItem(),
-                TFBlocks.FISH_BOWL.get().asItem(),
-                TFBlocks.GOLD_FISH_BOWL.get().asItem(),
-                TFBlocks.PUPFISH_BOWL.get().asItem(),
-                TFBlocks.LAVA_SERPENT_BOWL.get().asItem(),
-                TFBlocks.GLASS_SET.LANTERN.get().asItem(),
-                TFBlocks.BLUE_DUNGEON_SET.SOFA.get().asItem(),
-                TFBlocks.BLUE_DUNGEON_SET.LANTERN.get().asItem(),
-                TFBlocks.BLUE_DUNGEON_SET.LAMP.get().asItem(),
-                TFBlocks.BLUE_DUNGEON_SET.CLOCK.get().asItem(),
-                TFBlocks.BLUE_DUNGEON_SET.BATHTUB.get().asItem(),
-                ChestBlocks.LIVING_WOOD_CHEST.get().asItem(),
-                ChestBlocks.JUNGLE_CHEST.get().asItem(),
-                ChestBlocks.CORRUPTION_CHEST.get().asItem(),
-                ChestBlocks.CRIMSON_CHEST.get().asItem(),
-                ChestBlocks.HALLOWED_CHEST.get().asItem(),
-                ChestBlocks.ICE_CHEST.get().asItem(),
-                ChestBlocks.DESERT_CHEST.get().asItem(),
-                ChestBlocks.OCEAN_CHEST.get().asItem(),
-                ChestBlocks.UNIVERSE_CHEST.get().asItem(),
-                ChestBlocks.MECHANIC_SAFE_CHEST.get().asItem(),
-                FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get().asItem(),
-                FunctionalBlocks.BLEND_O_MATIC.get().asItem(),
-                FunctionalBlocks.MEAT_GRINDER.get().asItem(),
-                FunctionalBlocks.WOODEN_SPIKE.get().asItem(),
-                FunctionalBlocks.ENCHANTED_FRAGILE_GREEN_BRICKS.get().asItem(),
-                FunctionalBlocks.ENCHANTED_FRAGILE_PINK_BRICKS.get().asItem(),
-                FunctionalBlocks.SILLY_BALLOON_MACHINE.get().asItem(),
-                FunctionalBlocks.PLAYER_PRESSURE_PLATE.get().asItem(),
-                FunctionalBlocks.LEVER.get().asItem(),
-                FunctionalBlocks.GEYSER_BLOCK.get().asItem(),
-                FunctionalBlocks.LAND_MINE.get().asItem(),
-                FunctionalBlocks.SUPER_DART_TRAP.get().asItem(),
-                FunctionalBlocks.FLAME_TRAP.get().asItem(),
-                FunctionalBlocks.SPIKY_BALL_TRAP.get().asItem(),
-                FunctionalBlocks.SPEAR_TRAP.get().asItem(),
-                FunctionalBlocks.TREE_HOLES_BLOCK.get().asItem(),
-                FunctionalBlocks.MAGIC_MAIL_BOX.get().asItem(),
+                NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
+                NatureBlocks.GREEN_MOSS.asItem(),
+                NatureBlocks.BROWN_MOSS.asItem(),
+                NatureBlocks.RED_MOSS.asItem(),
+                NatureBlocks.BLUE_MOSS.asItem(),
+                NatureBlocks.PURPLE_MOSS.asItem(),
+                NatureBlocks.KRYPTON_MOSS.asItem(),
+                NatureBlocks.ARGON_MOSS.asItem(),
+                NatureBlocks.NEON_MOSS.asItem(),
+                NatureBlocks.HELIUM_MOSS.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_MOSS.asItem(),
+                NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.asItem(),
+                NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.asItem(),
+                NatureBlocks.CORRODED_WORM_ROOTS_BLOCK.asItem(),
+                NatureBlocks.CORRUPTED_OVARIES_BLOCK.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.STRIPPED_LOG.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.WOOD.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.STRIPPED_WOOD.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.TRAPDOOR.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.DOOR.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.LOG.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.LEAVES.asItem(),
+                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.asItem(),
+                NatureBlocks.SMALL_DESERT_PLANT.asItem(),
+                NatureBlocks.SMALL_CACTUS.asItem(),
+                NatureBlocks.SHIMMER_CRYSTALS_BLOCK.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.TRAPDOOR.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
+                PotBlocks.OCEAN_POT.asItem(),
+                OreBlocks.HALLOWED_BLOCK.asItem(),
+                OreBlocks.RAW_CHLOROPHYTE_BLOCK.asItem(),
+                OreBlocks.CHLOROPHYTE_BLOCK.asItem(),
+                OreBlocks.SHROOMITE_BLOCK.asItem(),
+                OreBlocks.SPECTRE_BLOCK.asItem(),
+                OreBlocks.RAW_LUMINITE_BLOCK.asItem(),
+                OreBlocks.LUMINITE_BLOCK.asItem(),
+                OreBlocks.RAW_COBALT_BLOCK.asItem(),
+                OreBlocks.COBALT_BLOCK.asItem(),
+                OreBlocks.RAW_PALLADIUM_BLOCK.asItem(),
+                OreBlocks.PALLADIUM_BLOCK.asItem(),
+                OreBlocks.RAW_MYTHRIL_BLOCK.asItem(),
+                OreBlocks.MYTHRIL_BLOCK.asItem(),
+                OreBlocks.RAW_ORICHALCUM_BLOCK.asItem(),
+                OreBlocks.ORICHALCUM_BLOCK.asItem(),
+                OreBlocks.RAW_ADAMANTITE_BLOCK.asItem(),
+                OreBlocks.ADAMANTITE_BLOCK.asItem(),
+                OreBlocks.RAW_TITANIUM_BLOCK.asItem(),
+                OreBlocks.TITANIUM_BLOCK.asItem(),
+                DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.asItem(),
+                DecorativeBlocks.ENCHANTED_GREEN_BRICKS.asItem(),
+                DecorativeBlocks.ENCHANTED_PINK_BRICKS.asItem(),
+                DecorativeBlocks.LIHZAHRD_DOOR.asItem(),
+                DecorativeBlocks.RAINBOW_BRICKS.FULL.asItem(),
+                DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.asItem(),
+                DecorativeBlocks.FLESH_BLOCK.asItem(),
+                DecorativeBlocks.LESION_BLOCK.asItem(),
+                DecorativeBlocks.SANDSTONE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.SANDSTONE_BRICKS.STAIRS.asItem(),
+                DecorativeBlocks.SANDSTONE_BRICKS.SLAB.asItem(),
+                DecorativeBlocks.SANDSTONE_BRICKS.WALL.asItem(),
+                DecorativeBlocks.RED_SANDSTONE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.RED_SANDSTONE_BRICKS.STAIRS.asItem(),
+                DecorativeBlocks.RED_SANDSTONE_BRICKS.SLAB.asItem(),
+                DecorativeBlocks.RED_SANDSTONE_BRICKS.WALL.asItem(),
+                DecorativeBlocks.EBONSANDSTONE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.EBONSANDSTONE_BRICKS.STAIRS.asItem(),
+                DecorativeBlocks.EBONSANDSTONE_BRICKS.SLAB.asItem(),
+                DecorativeBlocks.EBONSANDSTONE_BRICKS.WALL.asItem(),
+                DecorativeBlocks.PEARLSANDSTONE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.PEARLSANDSTONE_BRICKS.STAIRS.asItem(),
+                DecorativeBlocks.PEARLSANDSTONE_BRICKS.SLAB.asItem(),
+                DecorativeBlocks.PEARLSANDSTONE_BRICKS.WALL.asItem(),
+                DecorativeBlocks.CRIMSANDSTONE_BRICKS.FULL.asItem(),
+                DecorativeBlocks.CRIMSANDSTONE_BRICKS.STAIRS.asItem(),
+                DecorativeBlocks.CRIMSANDSTONE_BRICKS.SLAB.asItem(),
+                DecorativeBlocks.CRIMSANDSTONE_BRICKS.WALL.asItem(),
+                DecorativeBlocks.CRIMTANE_ORE_BRICKS.STAIRS.asItem(),
+                DecorativeBlocks.CRIMTANE_ORE_BRICKS.SLAB.asItem(),
+                StatueBlocks.ARMOR_STATUE.asItem(),
+                StatueBlocks.AXE_STATUE.asItem(),
+                StatueBlocks.BOOMERANG_STATUE.asItem(),
+                StatueBlocks.BOOT_STATUE.asItem(),
+                StatueBlocks.BOW_STATUE.asItem(),
+                StatueBlocks.GARGOYLE_STATUE.asItem(),
+                StatueBlocks.GLOOM_STATUE.asItem(),
+                StatueBlocks.HAMMER_STATUE.asItem(),
+                StatueBlocks.PICKAXE_STATUE.asItem(),
+                StatueBlocks.PILLAR_STATUE.asItem(),
+                StatueBlocks.POT_STATUE.asItem(),
+                StatueBlocks.POTION_STATUE.asItem(),
+                StatueBlocks.REAPER_STATUE.asItem(),
+                StatueBlocks.SHIELD_STATUE.asItem(),
+                StatueBlocks.SPEAR_STATUE.asItem(),
+                StatueBlocks.SUNFLOWER_STATUE.asItem(),
+                StatueBlocks.SWORD_STATUE.asItem(),
+                StatueBlocks.TREE_STATUE.asItem(),
+                StatueBlocks.WOMEN_STATUE.asItem(),
+                StatueBlocks.LIHZAHRD_STATUE.asItem(),
+                StatueBlocks.LIHZAHRD_GUARDIAN_STATUE.asItem(),
+                StatueBlocks.LIHZAHRD_WATCHER_STATUE.asItem(),
+                StatueBlocks.ARMED_ZOMBIE_STATUE.asItem(),
+                StatueBlocks.BONE_SKELETON_STATUE.asItem(),
+                StatueBlocks.CORRUPT_STATUE.asItem(),
+                StatueBlocks.DRIPPLER_STATUE.asItem(),
+                StatueBlocks.EYEBALL_STATUE.asItem(),
+                StatueBlocks.SKELETON_STATUE.asItem(),
+                StatueBlocks.SLIME_STATUE.asItem(),
+                StatueBlocks.BOMB_STATUE.asItem(),
+                StatueBlocks.HEART_STATUE.asItem(),
+                StatueBlocks.STAR_STATUE.asItem(),
+                StatueBlocks.BOULDER_3X_STATUE.asItem(),
+                StatueBlocks.BAST_STATUE.asItem(),
+                TFBlocks.GLASS_KILN.asItem(),
+                TFBlocks.LIVING_LOOM.asItem(),
+                TFBlocks.ICE_MACHINE.asItem(),
+                TFBlocks.FISH_BOWL.asItem(),
+                TFBlocks.GOLD_FISH_BOWL.asItem(),
+                TFBlocks.PUPFISH_BOWL.asItem(),
+                TFBlocks.LAVA_SERPENT_BOWL.asItem(),
+                TFBlocks.GLASS_SET.LANTERN.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.SOFA.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.LANTERN.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.LAMP.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.CLOCK.asItem(),
+                TFBlocks.BLUE_DUNGEON_SET.BATHTUB.asItem(),
+                ChestBlocks.LIVING_WOOD_CHEST.asItem(),
+                ChestBlocks.JUNGLE_CHEST.asItem(),
+                ChestBlocks.CORRUPTION_CHEST.asItem(),
+                ChestBlocks.CRIMSON_CHEST.asItem(),
+                ChestBlocks.HALLOWED_CHEST.asItem(),
+                ChestBlocks.ICE_CHEST.asItem(),
+                ChestBlocks.DESERT_CHEST.asItem(),
+                ChestBlocks.OCEAN_CHEST.asItem(),
+                ChestBlocks.UNIVERSE_CHEST.asItem(),
+                ChestBlocks.MECHANIC_SAFE_CHEST.asItem(),
+                FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.asItem(),
+                FunctionalBlocks.BLEND_O_MATIC.asItem(),
+                FunctionalBlocks.MEAT_GRINDER.asItem(),
+                FunctionalBlocks.WOODEN_SPIKE.asItem(),
+                FunctionalBlocks.ENCHANTED_FRAGILE_GREEN_BRICKS.asItem(),
+                FunctionalBlocks.ENCHANTED_FRAGILE_PINK_BRICKS.asItem(),
+                FunctionalBlocks.SILLY_BALLOON_MACHINE.asItem(),
+                FunctionalBlocks.PLAYER_PRESSURE_PLATE.asItem(),
+                FunctionalBlocks.LEVER.asItem(),
+                FunctionalBlocks.GEYSER_BLOCK.asItem(),
+                FunctionalBlocks.LAND_MINE.asItem(),
+                FunctionalBlocks.SUPER_DART_TRAP.asItem(),
+                FunctionalBlocks.FLAME_TRAP.asItem(),
+                FunctionalBlocks.SPIKY_BALL_TRAP.asItem(),
+                FunctionalBlocks.SPEAR_TRAP.asItem(),
+                FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
+                FunctionalBlocks.MAGIC_MAIL_BOX.asItem(),
                 MaterialItems.SPIDER_FANG.get(),
                 HookItems.WEB_SLINGER.get(),
                 HookItems.SLIME_HOOK.get(),
@@ -1416,28 +1419,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HookItems.ANTI_GRAVITY_HOOK.get(),
                 HookItems.LUNAR_HOOK.get(),
                 HookItems.STATIC_HOOK.get(),
-                TEItems.DEBUG_ITEM.get(),
                 DrillItems.CHLOROPHYTE_DRILL.get(),
                 DrillItems.DRAX.get(),
                 DrillItems.SOLAR_FLARE_DRILL.get(),
                 DrillItems.VORTEX_DRILL.get(),
                 DrillItems.NEBULA_DRILL.get(),
                 DrillItems.STARDUST_DRILL.get(),
-                TEFigureBlocks.FIGURE.get().asItem(),
-                TEFigureBlocks.FIGURE2.get().asItem(),
-                TEFigureBlocks.FIGURE3.get().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.get().asItem(),
-                DecorativeBlocks.THE_TWINS_RELIC.get().asItem(),
-                DecorativeBlocks.SKELETRON_PRIME_RELIC.get().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
+                DecorativeBlocks.THE_TWINS_RELIC.asItem(),
+                DecorativeBlocks.SKELETRON_PRIME_RELIC.asItem(),
                 LanceItems.HALLOWED_JOUSTING_LANCE.get(),
                 LanceItems.SHADOW_JOUSTING_LANCE.get(),
                 CrossbowItems.STAKE_LAUNCHER.get(),
-                TESpawnEggItems.RETINAZER_SPAWN_EGG.get(),
-                TESpawnEggItems.SPAZMATISM_SPAWN_EGG.get(),
-                TESpawnEggItems.THE_DESTROYER_SPAWN_EGG.get(),
-                TESpawnEggItems.THE_TWINS_SPAWN_EGG.get(),
-                TESpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
-                TESpawnEggItems.PLANTERA_SPAWN_EGG.get(),
+                SpawnEggItems.RETINAZER_SPAWN_EGG.get(),
+                SpawnEggItems.SPAZMATISM_SPAWN_EGG.get(),
+                SpawnEggItems.THE_DESTROYER_SPAWN_EGG.get(),
+                SpawnEggItems.THE_TWINS_SPAWN_EGG.get(),
+                SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
+                SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
                 TreasureBagItems.THE_TWINS_TREASURE_BAG.get(),
                 TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
                 HoeShovelItems.COBALT_HOE_SHOVEL.get(),
@@ -1452,7 +1451,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         Consumer<RegistryObject> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
-        tag(ModTags.AUTOMATIC_GUN).add(
+        tag(ModTags.Items.AUTOMATIC_GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),
                 ManaWeaponItems.SPACE_GUN.get(),
                 GunItems.STAR_CANNON.get()
@@ -1472,54 +1471,51 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 bullet.add(item.get());
         });
         tag(ModTags.Items.SNOW_AMMO).add(Items.SNOWBALL);
-        tag(ModTags.Items.SEED_AMMO).addTag(Tags.Items.SEEDS);
-        tag(ModTags.Items.AMMO).addTags(ModTags.Items.SEED_AMMO, ModTags.Items.SNOW_AMMO, ModTags.Items.BULLET);
-        tag(ModTags.AMMO).add(
-                MaterialItems.FALLING_STAR.get()
-        );
+        tag(ModTags.Items.SEED_AMMO).addTag(PortTags.Items.SEEDS);
+        tag(ModTags.Items.AMMO)
+                .addTags(ModTags.Items.SEED_AMMO, ModTags.Items.SNOW_AMMO, ModTags.Items.BULLET)
+                .add(MaterialItems.FALLING_STAR.get());
         IntrinsicTagAppender<Item> death = tag(ModTags.Items.DEATH);
         death.add(
-                FunctionalBlocks.SHIMMER_TRAP.get().asItem(),
-                FunctionalBlocks.GRAVITATION_TRAP.get().asItem(),
-                FunctionalBlocks.PNEUMATIC_TRAP.get().asItem(),
-                FunctionalBlocks.SPIKE.get().asItem(),
-                FunctionalBlocks.WOODEN_SPIKE.get().asItem(),
-                FunctionalBlocks.FRAGILE_SANDSTONE.get().asItem(),
-                FunctionalBlocks.FRAGILE_BLUE_BRICKS.get().asItem(),
-                FunctionalBlocks.FRAGILE_GREEN_BRICKS.get().asItem(),
-                FunctionalBlocks.FRAGILE_PINK_BRICKS.get().asItem(),
-                FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().asItem(),
-                FunctionalBlocks.ENCHANTED_FRAGILE_GREEN_BRICKS.get().asItem(),
-                FunctionalBlocks.ENCHANTED_FRAGILE_PINK_BRICKS.get().asItem(),
-                FunctionalBlocks.SCULK_TRAP.get().asItem(),
-                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().asItem(),
-                FunctionalBlocks.DART_TRAP.get().asItem(),
-                FunctionalBlocks.STONE_DART_TRAP.get().asItem(),
-                FunctionalBlocks.DEEPSLATE_DART_TRAP.get().asItem(),
-                FunctionalBlocks.GEYSER_BLOCK.get().asItem(),
-                FunctionalBlocks.NORMAL_BOULDER.get().asItem(),
-                FunctionalBlocks.BOUNCY_BOULDER.get().asItem(),
-                FunctionalBlocks.POO_BOULDER.get().asItem(),
-                FunctionalBlocks.LAVA_BOULDER.get().asItem(),
-                FunctionalBlocks.GHOULDER.get().asItem(),
-                FunctionalBlocks.SPIDER_BOULDER.get().asItem(),
-                FunctionalBlocks.OAK_LOG_BOULDER.get().asItem(),
-                FunctionalBlocks.FOLLOWER_BOULDER.get().asItem(),
-                FunctionalBlocks.EXPLODE_BOULDER.get().asItem(),
-                FunctionalBlocks.ROLLING_CACTUS_BOULDER.get().asItem(),
-                FunctionalBlocks.LIFECRYSTAL_BOULDER.get().asItem(),
-                FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get().asItem(),
-                FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get().asItem(),
-                FunctionalBlocks.LAND_MINE.get().asItem(),
-                FunctionalBlocks.SUPER_DART_TRAP.get().asItem(),
-                FunctionalBlocks.FLAME_TRAP.get().asItem(),
-                FunctionalBlocks.SPIKY_BALL_TRAP.get().asItem(),
-                FunctionalBlocks.SPEAR_TRAP.get().asItem(),
+                FunctionalBlocks.SHIMMER_TRAP.asItem(),
+                FunctionalBlocks.GRAVITATION_TRAP.asItem(),
+                FunctionalBlocks.PNEUMATIC_TRAP.asItem(),
+                FunctionalBlocks.SPIKE.asItem(),
+                FunctionalBlocks.WOODEN_SPIKE.asItem(),
+                FunctionalBlocks.FRAGILE_SANDSTONE.asItem(),
+                FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_GREEN_BRICKS.asItem(),
+                FunctionalBlocks.FRAGILE_PINK_BRICKS.asItem(),
+                FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.asItem(),
+                FunctionalBlocks.ENCHANTED_FRAGILE_GREEN_BRICKS.asItem(),
+                FunctionalBlocks.ENCHANTED_FRAGILE_PINK_BRICKS.asItem(),
+                FunctionalBlocks.SCULK_TRAP.asItem(),
+                FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.asItem(),
+                FunctionalBlocks.DART_TRAP.asItem(),
+                FunctionalBlocks.STONE_DART_TRAP.asItem(),
+                FunctionalBlocks.DEEPSLATE_DART_TRAP.asItem(),
+                FunctionalBlocks.GEYSER_BLOCK.asItem(),
+                FunctionalBlocks.NORMAL_BOULDER.asItem(),
+                FunctionalBlocks.BOUNCY_BOULDER.asItem(),
+                FunctionalBlocks.POO_BOULDER.asItem(),
+                FunctionalBlocks.LAVA_BOULDER.asItem(),
+                FunctionalBlocks.GHOULDER.asItem(),
+                FunctionalBlocks.SPIDER_BOULDER.asItem(),
+                FunctionalBlocks.OAK_LOG_BOULDER.asItem(),
+                FunctionalBlocks.FOLLOWER_BOULDER.asItem(),
+                FunctionalBlocks.EXPLODE_BOULDER.asItem(),
+                FunctionalBlocks.ROLLING_CACTUS_BOULDER.asItem(),
+                FunctionalBlocks.LIFECRYSTAL_BOULDER.asItem(),
+                FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.asItem(),
+                FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.asItem(),
+                FunctionalBlocks.LAND_MINE.asItem(),
+                FunctionalBlocks.SUPER_DART_TRAP.asItem(),
+                FunctionalBlocks.FLAME_TRAP.asItem(),
+                FunctionalBlocks.SPIKY_BALL_TRAP.asItem(),
+                FunctionalBlocks.SPEAR_TRAP.asItem(),
                 HookItems.STATIC_HOOK.get()
         );
-        for (RegistryObject deathChest : ChestBlocks.DEATH_CHESTS) {
-            death.add(deathChest.get().asItem());
-        }
+        ChestBlocks.DEATH_CHESTS.forEach(block -> death.add(block.asItem()));
 
         tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).add(
                 AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
@@ -1563,9 +1559,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         IntrinsicTagAppender<Item> autoAttackBlacklist = tag(ModTags.Items.AUTO_ATTACK_BLACKLIST);
-        for (RegistryObject entry : LanceItems.ITEMS.getEntries()) {
-            autoAttackBlacklist.add(entry.get());
-        }
+        LanceItems.ITEMS.getEntries().forEach(item -> autoAttackBlacklist.add(item.get()));
 
         tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(
                 SwordItems.ICE_BLADE.get(),
@@ -1596,17 +1590,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW).addTag(
                 ModTags.Items.TOOLS_REPEATER
         );
-        tag(Tags.Items.TOOLS_CROSSBOW).addTag(
+        tag(PortTags.Items.TOOLS_CROSSBOW).addTag(
                 ModTags.Items.TOOLS_REPEATER_CROSSBOW
         );
-        tag(ItemTags.CROSSBOW_ENCHANTABLE).addTag(
+        tag(PortTags.Items.CROSSBOW_ENCHANTABLE).addTag(
                 ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
         );
         IntrinsicTagAppender<Item> short_sword = tag(ModTags.Items.SHORT_SWORD);
-        for (RegistryObject holder : SwordItems.ITEMS.getEntries()) {
-            if (SwordItems.isShortSword(holder)) {
-                short_sword.add(holder.get());
+        SwordItems.ITEMS.getEntries().forEach(item -> {
+            if (SwordItems.isShortSword(item)) {
+                short_sword.add(item.get());
             }
-        }
+        });
     }
 }

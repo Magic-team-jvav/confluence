@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -34,7 +35,7 @@ import java.util.Locale;
 
 public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
 
-    public enum Variant implements StringRepresentable {
+    public enum Variant implements IVariant {
         NORMAL, GOLD, PARTY, SLIMED, XMAS,
         AMETHYST, TOPAZ, SAPPHIRE, EMERALD, RUBY, AMBER, DIAMOND,
         CORRUPT, VICIOUS, EXPLOSIVE;
@@ -55,10 +56,21 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
             String name = this == NORMAL ? "bunny" : getSerializedName() + "_bunny";
             return Confluence.asResource("textures/entity/animal/bunny/" + name);
         }
+
+        @Override
+        public Codec<Variant> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public String serializeKey() {
+            return VARIANT_KEY;
+        }
     }
 
     private static final EntityDataAccessor<Integer> DATA_VARIANT =
             SynchedEntityData.defineId(Bunny.class, EntityDataSerializers.INT);
+    public static final String VARIANT_KEY = "Variant";
     private static final RawAnimation WATCH_1 = RawAnimation.begin().thenPlay("watch_1");
     private static final RawAnimation WATCH_2 = RawAnimation.begin().thenPlay("watch_2");
 
@@ -102,13 +114,13 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        PortDataResultExtension.ifSuccess(Variant.CODEC.encodeStart(NbtOps.INSTANCE, getVariant()), t -> tag.put("Variant", t));
+        getVariant().serialize(tag);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        PortDataResultExtension.ifSuccess(Variant.CODEC.decode(NbtOps.INSTANCE, tag.get("Variant")), p -> setVariant(p.getFirst()));
+        PortDataResultExtension.ifSuccess(Variant.CODEC.decode(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), p -> setVariant(p.getFirst()));
     }
 
     @Override

@@ -14,6 +14,7 @@ import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -28,6 +29,7 @@ import java.util.Locale;
 
 public class Butterfly extends BaseCritter implements VariantHolder<Butterfly.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.INT);
+    public static final String VARIANT_KEY = "Variant";
 
     public Butterfly(EntityType<? extends Butterfly> type, Level level) {
         super(type, level);
@@ -55,35 +57,69 @@ public class Butterfly extends BaseCritter implements VariantHolder<Butterfly.Va
         this.entityData.define(DATA_VARIANT, Variant.RED_ADMIRAL.ordinal());
     }
 
-    @Override public Variant getVariant() { return Variant.values()[this.entityData.get(DATA_VARIANT)]; }
-    @Override public void setVariant(Variant v) { this.entityData.set(DATA_VARIANT, v.ordinal()); }
+    @Override
+    public Variant getVariant() {return Variant.values()[this.entityData.get(DATA_VARIANT)];}
+
+    @Override
+    public void setVariant(Variant v) {this.entityData.set(DATA_VARIANT, v.ordinal());}
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        PortDataResultExtension.ifSuccess(Variant.CODEC.encodeStart(NbtOps.INSTANCE, getVariant()), t -> tag.put("Variant", t));
+        getVariant().serialize(tag);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get("Variant")), this::setVariant);
+        PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
     }
 
-    @Override public ResourceLocation getModelPath() { return getVariant().modelPath(); }
-    @Override public ResourceLocation getTexturePath() { return getVariant().texturePath(); }
+    @Override
+    public ResourceLocation getModelPath() {return getVariant().modelPath();}
+
+    @Override
+    public ResourceLocation getTexturePath() {return getVariant().texturePath();}
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(DefaultAnimations.genericWalkIdleController(this));
     }
 
-    public enum Variant implements StringRepresentable {
-        RED_ADMIRAL, MONARCH, SULPHUR, TREE_NYMPH, ZEBRA_SWALLOWTAIL, ULYSESS, PURPLE_EMPEROR;
+    public enum Variant implements IVariant {
+        JULIA,
+        MONARCH,
+        PURPLE_EMPEROR,
+        RED_ADMIRAL,
+        SULPHUR,
+        TREE_NYMPH,
+        ULYSSES,
+        ZEBRA_SWALLOWTAIL,
+        GOLD;
+
         public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
 
-        @Override public String getSerializedName() { return name().toLowerCase(Locale.ROOT); }
-        public ResourceLocation modelPath() { return Confluence.asResource("animal/butterfly"); }
-        public ResourceLocation texturePath() { return Confluence.asResource("textures/entity/butterfly/" + getSerializedName() + ".png"); }
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+
+        public ResourceLocation modelPath() {
+            return Confluence.asResource("animal/butterfly");
+        }
+
+        public ResourceLocation texturePath() {
+            return Confluence.asResource("textures/entity/butterfly/" + getSerializedName() + ".png");
+        }
+
+        @Override
+        public Codec<Variant> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public String serializeKey() {
+            return VARIANT_KEY;
+        }
     }
 }

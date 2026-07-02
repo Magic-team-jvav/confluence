@@ -9,10 +9,10 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.boss.Skeletron;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.terraentity.entity.boss.Skeletron;
-import org.confluence.terraentity.init.entity.TEBossEntities;
 
 /**
  * 老人 —— 地牢入口的诅咒 NPC。夜晚交互召出骷髅王后消失。
@@ -33,10 +33,10 @@ public class OldManNPC extends BaseNPC {
         if (!level().isClientSide && player instanceof ServerPlayer sp) {
             if (isNight()) {
                 // 召唤骷髅王
-                Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level());
+                Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level());
                 skeletron.finalizeSpawn((ServerLevel) level(),
                         level().getCurrentDifficultyAt(blockPosition()),
-                        MobSpawnType.EVENT, null);
+                        MobSpawnType.EVENT, null, null);
                 ModUtils.summonBoss((ServerLevel) level(), blockPosition(), skeletron);
                 discard();
             } else {

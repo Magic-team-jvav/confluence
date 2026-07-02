@@ -2,7 +2,7 @@ package org.confluence.mod.common.init;
 
 import com.google.common.collect.ImmutableSet;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.Villager;
@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.BasicItemListing;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
+import org.confluence.lib.util.range.IntegerRange;
 import org.confluence.mod.common.entity.npc.RandomItemListing;
 import org.confluence.mod.common.entity.npc.SkyVillagerItemListing;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -22,34 +24,34 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.village.PortVillagerTradesEvent;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import static org.confluence.mod.Confluence.MODID;
 
 public final class ModVillagers {
-    public static final DeferredRegister<PoiType> POIS = DeferredRegister.create(BuiltInRegistries.POINT_OF_INTEREST_TYPE.key(), MODID);
-    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(BuiltInRegistries.VILLAGER_PROFESSION.key(), MODID);
-    public static final DeferredRegister<VillagerType> TYPES = DeferredRegister.create(BuiltInRegistries.VILLAGER_TYPE.key(), MODID);
+    public static final DeferredRegister<PoiType> POIS = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, MODID);
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(Registries.VILLAGER_PROFESSION, MODID);
+    public static final DeferredRegister<VillagerType> TYPES = DeferredRegister.create(Registries.VILLAGER_TYPE, MODID);
 
     // 村民的兴趣点
-    public static final DeferredHolder<PoiType, PoiType> SKY_POI = POIS.register("sky", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SKY_MILL.get().getStateDefinition().getPossibleStates()), 1, 1));
-    public static final DeferredHolder<PoiType, PoiType> COOKING_POI = POIS.register("cooking", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.COOKING_POT.get().getStateDefinition().getPossibleStates()), 1, 1));
-    public static final DeferredHolder<PoiType, PoiType> COIN_POI = POIS.register("coin", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SAFE.get().getStateDefinition().getPossibleStates()), 1, 1));
+    public static final RegistryObject<PoiType> SKY_POI = POIS.register("sky", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SKY_MILL.get().getStateDefinition().getPossibleStates()), 1, 1));
+    public static final RegistryObject<PoiType> COOKING_POI = POIS.register("cooking", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.COOKING_POT.get().getStateDefinition().getPossibleStates()), 1, 1));
+    public static final RegistryObject<PoiType> COIN_POI = POIS.register("coin", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SAFE.get().getStateDefinition().getPossibleStates()), 1, 1));
 
     // 村民的职业
-    public static final Supplier<VillagerProfession> SKY_MILLER = PROFESSIONS.register("sky_miller", () -> new VillagerProfession("sky", holder -> holder.is(SKY_POI.getId()), holder -> holder.is(SKY_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_WEAPONSMITH));
-    public static final Supplier<VillagerProfession> CHEF = PROFESSIONS.register("chef", () -> new VillagerProfession("chef", holder -> holder.is(COOKING_POI.getId()), holder -> holder.is(COOKING_POI.getId()), ImmutableSet.of(FoodItems.COOK_FISH.get()), ImmutableSet.of(), SoundEvents.CAMPFIRE_CRACKLE));
-    public static final Supplier<VillagerProfession> BANKER = PROFESSIONS.register("banker", () -> new VillagerProfession("coin", holder -> holder.is(COIN_POI.getId()), holder -> holder.is(COIN_POI.getId()), ImmutableSet.of(
+    public static final RegistryObject<VillagerProfession> SKY_MILLER = PROFESSIONS.register("sky_miller", () -> new VillagerProfession("sky", holder -> holder.is(SKY_POI.getId()), holder -> holder.is(SKY_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_WEAPONSMITH));
+    public static final RegistryObject<VillagerProfession> CHEF = PROFESSIONS.register("chef", () -> new VillagerProfession("chef", holder -> holder.is(COOKING_POI.getId()), holder -> holder.is(COOKING_POI.getId()), ImmutableSet.of(FoodItems.COOK_FISH.get()), ImmutableSet.of(), SoundEvents.CAMPFIRE_CRACKLE));
+    public static final RegistryObject<VillagerProfession> BANKER = PROFESSIONS.register("banker", () -> new VillagerProfession("coin", holder -> holder.is(COIN_POI.getId()), holder -> holder.is(COIN_POI.getId()), ImmutableSet.of(
             ModItems.GOLD_COIN.get(),
             ModItems.PLATINUM_COIN.get(),
             ModItems.EMERALD_COIN.get()
     ), ImmutableSet.of(), ModSoundEvents.COINS.get()));
 
     // 村民的群系
-    public static final Supplier<VillagerType> SKY_TYPE = TYPES.register("sky", () -> new VillagerType("confluence_sky")); // 天域村民
+    public static final RegistryObject<VillagerType> SKY_TYPE = TYPES.register("sky", () -> new VillagerType("confluence_sky")); // 天域村民
 
     public static void villagerTrades(PortVillagerTradesEvent event) {
         VillagerProfession type = event.getType();
@@ -205,6 +207,6 @@ public final class ModVillagers {
         POIS.register(eventBus);
         PROFESSIONS.register(eventBus);
         TYPES.register(eventBus);
-        NeoForge.EVENT_BUS.addListener(ModVillagers::villagerTrades);
+        PortEventHandler.addListener(ModVillagers::villagerTrades);
     }
 }

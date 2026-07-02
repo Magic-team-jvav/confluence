@@ -44,7 +44,6 @@ import net.minecraftforge.client.extensions.common.IClientBlockExtensions;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.client.extensions.common.IClientMobEffectExtensions;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
@@ -72,6 +71,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
+import org.mesdag.portlib.registries.PortRegistryEntry;
 
 import java.awt.*;
 import java.util.Map;
@@ -246,8 +246,8 @@ public final class ModClientSetups {
     static final IClientItemExtensions FULL_LIGHT = new CustomLightItemExtension(15);
 
     /// 对于使用原版json模型，且使用了Extensions来自定义渲染的物品，需使用该方法标记为自定义模型
-    static void asCustomModel(Map<ResourceLocation, BakedModel> modelRegistry, RegistryObject<?>... deferredItems) {
-        for (RegistryObject<?> holder : deferredItems) {
+    static void asCustomModel(Map<ResourceLocation, BakedModel> modelRegistry, PortRegistryEntry<?, ?>... deferredItems) {
+        for (PortRegistryEntry<?, ?> holder : deferredItems) {
             modelRegistry.compute(PortModelResourceLocationExtension.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model));
         }
     }

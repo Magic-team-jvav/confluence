@@ -9,15 +9,20 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
  * 蠕虫体节。每 tick 跟随前一个体节（或头部），保持固定间距。
  */
-public class BaseWormPart extends Entity implements WormSegment {
+public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
     private static final float SEGMENT_SPACING = 1.6F;
     private static final float COLLISION_DAMAGE = 5.0F;
     private static final int COLLISION_COOLDOWN = 10;
 
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected Entity leader;
     protected int index;
     protected boolean tail;
@@ -137,5 +142,13 @@ public class BaseWormPart extends Entity implements WormSegment {
     @Override
     public boolean is(Entity entity) {
         return this == entity;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 }

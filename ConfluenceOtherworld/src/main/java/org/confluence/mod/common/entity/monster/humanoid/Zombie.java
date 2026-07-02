@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.monster.humanoid;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,10 +12,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -25,6 +29,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.util.OverworldUtils;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -43,11 +48,16 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
         setVariant(variant);
     }
 
-    private void applyVariantStats(Variant v) {
-        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(v.health);
-        this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(v.damage);
-        this.getAttribute(Attributes.ARMOR).setBaseValue((double) v.armor);
-        this.setHealth(this.getMaxHealth());
+    public static boolean checkZombieSpawnRules(EntityType<Zombie> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        if (LibDateUtils.isDay(level) || pos.getY() < OverworldUtils.getSurfaceY()) return false;
+        return checkMonsterSpawnRules(type, level, reason, pos, random);
+    }
+
+    protected void applyVariantStats(Variant v) {
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(v.health);
+        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(v.damage);
+        getAttribute(Attributes.ARMOR).setBaseValue(v.armor);
+        setHealth(getMaxHealth());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -121,7 +131,8 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
     public void aiStep() {
         super.aiStep();
         if (!level().isClientSide && !isPersistenceRequired()
-                && level().isDay() && level().canSeeSky(blockPosition())) {
+                && level().isDay() && level().canSeeSky(blockPosition())
+        ) {
             discard();
         }
     }

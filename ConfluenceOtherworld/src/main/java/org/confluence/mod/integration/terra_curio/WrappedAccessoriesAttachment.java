@@ -1,6 +1,5 @@
 package org.confluence.mod.integration.terra_curio;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,10 +11,6 @@ import org.confluence.terra_curio.common.attachment.AccessoriesAttachment;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class WrappedAccessoriesAttachment extends AccessoriesAttachment {
     private final AccessoriesAttachment original;
     private final Player player;
@@ -60,8 +55,8 @@ public class WrappedAccessoriesAttachment extends AccessoriesAttachment {
     }
 
     @Override
-    public <T, V extends PrimitiveValue<T>> void putUnitIfPresent(ValueType<T, V> type) {
-        original.putUnitIfPresent(type);
+    public <T, V extends PrimitiveValue<T>> void putUnit(ValueType<T, V> type) {
+        original.putUnit(type);
     }
 
     @Override

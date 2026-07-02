@@ -1,6 +1,7 @@
 package org.confluence.mod.api.event.bestiary;
 
 import com.google.common.collect.Maps;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,17 +26,18 @@ public class RegisterBestiaryKeyEvent extends Event implements IModBusEvent {
     public static String getKey(LivingEntity living) {
         EntityType type = living.getType();
         Factory factory = factories.get(type);
-        if (factory == null) return type.getDescriptionId();
+        if (factory == null) {
+            if (living instanceof VariantHolder<?> holder && holder.getVariant() instanceof StringRepresentable variant) {
+                return type.getDescriptionId() + '.' + variant.getSerializedName();
+            }
+            return type.getDescriptionId();
+        }
         return factory.get(type, living);
     }
 
     public static <V, T extends LivingEntity & VariantHolder<V>> Factory<T> vanillaVariant(Function<V, String> toString) {
         return (type, living) -> type.getDescriptionId() + '.' + toString.apply(living.getVariant());
     }
-
-//    public static <V, T extends LivingEntity & IVariant<V>> Factory<T> terraVariant(Function<V, String> toString) {
-//        return (type, living) -> type.getDescriptionId() + '.' + toString.apply(living.getTEVariant());
-//    }
 
     @FunctionalInterface
     public interface Factory<T extends Entity> {

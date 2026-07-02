@@ -4,16 +4,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.fml.ModList;
@@ -23,7 +17,6 @@ import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.resource.PathPackResources;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
@@ -38,6 +31,7 @@ import org.confluence.mod.common.entity.InverseEnderMan;
 import org.confluence.mod.common.entity.InverseEntityType;
 import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.entity.animal.*;
+import org.confluence.mod.common.entity.boss.*;
 import org.confluence.mod.common.entity.monster.*;
 import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 import org.confluence.mod.common.entity.monster.slime.*;
@@ -51,22 +45,15 @@ import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.common.init.entity.CritterEntities;
-import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.DispenserRegistration;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
-import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
-import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.mesdag.portlib.event.PortEventHandler;
@@ -78,8 +65,7 @@ import org.mesdag.portlib.event.lifecycle.PortFMLLoadCompleteEvent;
 import org.mesdag.portlib.event.other.PortAddPackFindersEvent;
 import org.mesdag.portlib.event.other.PortBlockEntityTypeAddBlocksEvent;
 import org.mesdag.portlib.event.other.PortBuildCreativeModeTabContentsEvent;
-
-import java.util.function.Function;
+import org.mesdag.portlib.wrapper.world.entity.PortSpawnPlacementTypes;
 
 public final class ModEvents {
     public static void init() {
@@ -91,14 +77,11 @@ public final class ModEvents {
         PortEventHandler.addListener(ModEvents::addPackFinders);
 //        PortEventHandler.addListener(ModEvents::registerConfigurationTasks);
         PortEventHandler.addListener(ModEvents::entityAttributeCreation);
-        PortEventHandler.addListener(ModEvents::registerUnitType);
-        PortEventHandler.addListener(ModEvents::registerOtherType);
         PortEventHandler.addListener(ModEvents::registerAccessoriesComponentUnitValueTypeLocalSync);
         PortEventHandler.addListener(PortEventPriority.LOW, ModEvents::buildCreativeModeTabContents);
         PortEventHandler.addListener(ModEvents::blockEntityTypeAddBlocks);
 //        PortEventHandler.addListener(ModEvents::registerCapabilities);
         PortEventHandler.addListener(PortEventPriority.LOW, ModEvents::registerSpawnReplacements);
-        PortEventHandler.addListener(ModEvents::registerBestiaryKey);
         PortEventHandler.addListener(ModEvents::registerEvilMaterialReplaces);
     }
 
@@ -153,7 +136,6 @@ public final class ModEvents {
             LogBlockSet.setFlammable();
             ModRecipes.Brewing.initialize();
             ModUtils.registerCauldronInteractions();
-            TEHelper.redirectLootTable();
             MagicMailBox.registerVariants();
             ModArmorBonus.registerArmorSetBonus();
             IGlobalData.registerGlobalData(
@@ -219,7 +201,10 @@ public final class ModEvents {
         event.put(CritterEntities.JEWEL_BUNNY.get(), Bunny.createAttributes().build());
         event.put(CritterEntities.HOSTILE_BUNNY.get(), HostileBunny.createAttributes().build());
         event.put(CritterEntities.BIRD.get(), Bird.createAttributes().build());
+        event.put(CritterEntities.BLUE_JAY.get(), BlueJay.createAttributes().build());
+        event.put(CritterEntities.CARDINAL.get(), Cardinal.createAttributes().build());
         event.put(CritterEntities.SQUIRREL.get(), Squirrel.createAttributes().build());
+        event.put(CritterEntities.RED_SQUIRREL.get(), Squirrel.createAttributes().build());
         event.put(CritterEntities.JEWEL_SQUIRREL.get(), Squirrel.createAttributes().build());
         event.put(CritterEntities.WORM.get(), Worm.createAttributes().build());
         event.put(CritterEntities.DUCK.get(), Duck.createAttributes().build());
@@ -231,6 +216,11 @@ public final class ModEvents {
         event.put(CritterEntities.GRUBBY.get(), SimpleCritter.createAttributes().build());
         event.put(CritterEntities.MAGGOT.get(), SimpleCritter.createAttributes().build());
         event.put(CritterEntities.SCORPION.get(), SimpleCritter.createAttributes().build());
+        event.put(CritterEntities.HELL_BUTTERFLY.get(), HellButterfly.createAttributes().build());
+        event.put(CritterEntities.PRISMATIC_LACEWING.get(), PrismaticLacewing.createAttributes().build());
+        event.put(CritterEntities.DRAGONFLY.get(), Dragonfly.createAttributes().build());
+        event.put(CritterEntities.GRASSHOPPER.get(), Grasshopper.createAttributes().build());
+        event.put(CritterEntities.LADYBUG.get(), Ladybug.createAttributes().build());
         event.put(MonsterEntities.DEMON_EYE.get(), DemonEye.createAttributes().build());
         event.put(MonsterEntities.HARPY.get(), Harpy.createAttributes().build());
         event.put(MonsterEntities.PIXIE.get(), Pixie.createAttributes().build());
@@ -266,7 +256,21 @@ public final class ModEvents {
         event.put(MonsterEntities.SNATCHER.get(), Snatcher.createAttributes().build());
         event.put(MonsterEntities.MAN_EATER.get(), Snatcher.createAttributes().build());
         event.put(MonsterEntities.SPORE_SKELETON.get(), MeleeSkeleton.createAttributes().build());
+        event.put(MonsterEntities.BASE_BONES.get(), MeleeSkeleton.createAttributes().build());
+        event.put(MonsterEntities.ANGER_BONES.get(), MeleeSkeleton.createAttributes().build());
+        event.put(MonsterEntities.SHORT_BONES.get(), MeleeSkeleton.createAttributes().build());
+        event.put(MonsterEntities.BIG_BONES.get(), MeleeSkeleton.createAttributes().build());
+        event.put(MonsterEntities.BIG_ANGER_BONES.get(), MeleeSkeleton.createAttributes().build());
+        event.put(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), MeleeSkeleton.createAttributes().build());
+        event.put(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), MeleeSkeleton.createAttributes().build());
+        event.put(MonsterEntities.UNDEAD_VIKING.get(), MeleeSkeleton.createAttributes().build());
         event.put(MonsterEntities.WYVERN.get(), Wyvern.createAttributes().build());
+        event.put(MonsterEntities.DEVOURER.get(), BaseWormMonster.createWormAttributes().build());
+        event.put(MonsterEntities.TOMB_CRAWLER.get(), BaseWormMonster.createWormAttributes().build());
+        event.put(MonsterEntities.GIANT_WORM.get(), BaseWormMonster.createWormAttributes().build());
+        event.put(MonsterEntities.LEECH.get(), BaseWormMonster.createWormAttributes().build());
+        event.put(MonsterEntities.BONE_SERPENT.get(), BaseWormMonster.createWormAttributes().build());
+        event.put(MonsterEntities.WITHER_BONE_SERPENT.get(), BaseWormMonster.createWormAttributes().build());
         event.put(MonsterEntities.DARK_CASTER.get(), DarkCaster.createAttributes().build());
         event.put(MonsterEntities.GOBLIN_SORCERER.get(), DarkCaster.createAttributes().build());
         event.put(MonsterEntities.ZOMBIE.get(), Zombie.createAttributes().build());
@@ -276,6 +280,46 @@ public final class ModEvents {
         event.put(MonsterEntities.ICE_BAT.get(), CaveBat.createAttributes().build());
         event.put(MonsterEntities.GIANT_BAT.get(), CaveBat.createAttributes().build());
         event.put(MonsterEntities.HELL_BAT.get(), CaveBat.createAttributes().build());
+        event.put(MonsterEntities.SPORE_BAT.get(), CaveBat.createAttributes().build());
+        // 飞行怪
+        event.put(MonsterEntities.DRIPPLER.get(), BaseFlyingMonster.createFlyingAttributes().build());
+        event.put(MonsterEntities.FLYING_FISH.get(), BaseFlyingMonster.createFlyingAttributes().build());
+        event.put(MonsterEntities.WANDERING_EYE_FISH.get(), BaseFlyingMonster.createFlyingAttributes().build());
+        event.put(MonsterEntities.DEMON.get(), Demon.createAttributes().build());
+        event.put(MonsterEntities.VOODOO_DEMON.get(), Demon.createAttributes().build());
+        event.put(MonsterEntities.HORNET.get(), Hornet.createAttributes().build());
+        event.put(MonsterEntities.LITTLE_HORNET.get(), Hornet.createAttributes().build());
+        event.put(MonsterEntities.FIRE_IMP.get(), FireImp.createAttributes().build());
+        event.put(MonsterEntities.DECAYEDER.get(), Decayeder.createAttributes().build());
+        event.put(MonsterEntities.GHOST.get(), Ghost.createAttributes().build());
+        event.put(MonsterEntities.DERPLING.get(), Derpling.createAttributes().build());
+        event.put(MonsterEntities.HERPLING.get(), Derpling.createAttributes().build());
+        event.put(MonsterEntities.METEOR_HEAD.get(), MeteorHead.createAttributes().build());
+        event.put(MonsterEntities.GRANITE_ELEMENTAL.get(), GraniteElemental.createAttributes().build());
+        event.put(MonsterEntities.ANTLION_SWARMER.get(), AntlionSwarmer.createAttributes().build());
+        event.put(MonsterEntities.GIANT_ANTLION_SWARMER.get(), AntlionSwarmer.createAttributes().build());
+        event.put(MonsterEntities.THE_HUNGRY.get(), TheHungry.createAttributes().build());
+        event.put(MonsterEntities.BLOOD_ZOMBIE.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.SNOW_FLINX.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.FACE_MONSTER.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.BLOOD_TUMORS.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.POSSESS_ARMOR.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.MUMMY.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.DARK_MUMMY.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.BLOOD_MUMMY.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.LIGHT_MUMMY.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.DARK_LAMIA.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.LIGHT_LAMIA.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.GHOUL.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.TAINTED_GHOUL.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.VILE_GHOUL.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.DREAMER_GHOUL.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.GOBLIN_ARCHER.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.GOBLIN_PEON.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.GOBLIN_WARRIOR.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.GOBLIN_THIEF.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.GOBLIN_SCOUT.get(), BaseWarriorMonster.createAttributes().build());
         // 陆行怪
         event.put(MonsterEntities.BLOODY_SPORE.get(), BloodySpore.createAttributes().build());
         event.put(MonsterEntities.BLOOD_CRAWLER.get(), BloodCrawler.createAttributes().build());
@@ -322,6 +366,26 @@ public final class ModEvents {
         event.put(NpcEntities.TRUFFLE.get(), BaseNPC.createAttributes().build());
         event.put(NpcEntities.WIZARD.get(), BaseNPC.createAttributes().build());
         event.put(NpcEntities.ZOOLOGIST.get(), BaseNPC.createAttributes().build());
+        event.put(BossEntities.KING_SLIME.get(), KingSlime.createAttributes().build());
+        event.put(BossEntities.EYE_OF_CTHULHU.get(), EyeOfCthulhu.createAttributes().build());
+        event.put(BossEntities.SERVANT_OF_CTHULHU.get(), ServantOfCthulhu.createAttributes().build());
+        event.put(BossEntities.EATER_OF_WORLDS.get(), EaterOfWorlds.createAttributes().build());
+        event.put(BossEntities.QUEEN_BEE.get(), QueenBee.createAttributes().build());
+        event.put(BossEntities.BRAIN_OF_CTHULHU.get(), BrainOfCthulhu.createAttributes().build());
+        event.put(BossEntities.CREEPER_OF_CTHULHU.get(), CreeperOfCthulhu.createAttributes().build());
+        event.put(BossEntities.SKELETRON.get(), Skeletron.createAttributes().build());
+        event.put(BossEntities.DUNGEON_GUARDIAN.get(), DungeonGuardian.createAttributes().build());
+        event.put(BossEntities.THE_DESTROYER.get(), TheDestroyer.createAttributes().build());
+        event.put(BossEntities.THE_TWINS.get(), TheTwins.createAttributes().build());
+        event.put(BossEntities.RETINAZER.get(), Retinazer.createAttributes().build());
+        event.put(BossEntities.SPAZMATISM.get(), Spazmatism.createAttributes().build());
+        event.put(BossEntities.SKELETRON_PRIME.get(), SkeletronPrime.createAttributes().build());
+        event.put(BossEntities.WALL_OF_FLESH.get(), WallOfFlesh.createAttributes().build());
+        event.put(BossEntities.HUNGRY.get(), Hungry.createAttributes().build());
+        event.put(BossEntities.PLANTERA.get(), Plantera.createAttributes().build());
+        event.put(BossEntities.LUNATIC_CULTIST.get(), LunaticCultist.createAttributes().build());
+        event.put(BossEntities.PHANTASM_DRAGON.get(), PhantasmDragon.createAttributes().build());
+        event.put(BossEntities.HILL_OF_FLESH.get(), HillOfFlesh.createAttributes().build());
     }
 
 // todo   private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
@@ -407,31 +471,6 @@ public final class ModEvents {
 //        ;
 //    }
 
-    private static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {
-        event.register(AccessoryItems.LUCKY$COIN);
-        event.register(AccessoryItems.VINE$ROPE);
-        event.register(AccessoryItems.AUTO$GET$MANA);
-        event.register(AccessoryItems.HURT$GET$MANA);
-        event.register(AccessoryItems.FAST$MANA$GENERATION);
-        event.register(AccessoryItems.HIGH$TEST$FISHING$LINE);
-        event.register(AccessoryItems.TACKLE$BOX);
-        event.register(AccessoryItems.LAVAPROOF$FISHING$HOOK);
-        event.register(AccessoryItems.SPECTRE$GOGGLES);
-        event.register(AccessoryItems.PAINT$SPRAYER);
-        event.register(AccessoryItems.CLOTHIER$KILLER);
-        event.register(AccessoryItems.$AFK);
-    }
-
-    private static void registerOtherType(RegisterAccessoriesComponentUpdateEvent.OtherType event) {
-        event.register(AccessoryItems.ADDITIONAL$MANA);
-        event.register(AccessoryItems.MANA$USE$REDUCE);
-        event.register(AccessoryItems.MANA$PICKUP$RANGE);
-        event.register(AccessoryItems.COIN$PICKUP$RANGE);
-        event.register(AccessoryItems.REDUCE$HEALING$COOLDOWN);
-        event.register(AccessoryItems.FISHING$POWER);
-        event.register(AccessoryItems.SPECIAL$PRICE);
-    }
-
     private static void registerAccessoriesComponentUnitValueTypeLocalSync(RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent event) {
         AccessoryItems.AFK_INDEX = event.register(AccessoryItems.$AFK);
     }
@@ -453,7 +492,7 @@ public final class ModEvents {
         event.modify(BlockEntityType.CAMPFIRE, FunctionalBlocks.LIFE_CAMPFIRE.get());
     }
 
-//    private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
+// todo  private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
 //        event.registerBlock(ForgeCapabilities.ITEM_HANDLER, (level, pos, state, blockEntity, side) -> {
 //            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
 //                return null;
@@ -474,87 +513,16 @@ public final class ModEvents {
 //    }
 
     private static void registerSpawnReplacements(PortRegisterSpawnPlacementsEvent event) {
-        event.register(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
-            if (DateUtils.isQingMing(DateUtils.getLunar()) && serverLevel instanceof Level level) {
-                int y = pos.getY();
-                return y > 30 && y < 260 && LibDateUtils.isDay(level) && serverLevel.canSeeSky(pos);
-            }
-            return false;
-        }, PortRegisterSpawnPlacementsEvent.PortOperation.REPLACE);
-        event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(CritterEntities.BUNNY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-        event.register(CritterEntities.JEWEL_BUNNY.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
-
-        // DemonEye: 夜晚地表飞行怪
-        event.register(MonsterEntities.DEMON_EYE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
-            if (level.isDay() || pos.getY() < 60) return false;
-            return level.canSeeSky(pos) && Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
-        });
-
-        // GreenSlime: 白天森林地表
-        event.register(MonsterEntities.GREEN_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
-            if (!level.isDay() || pos.getY() < 40) return false;
-            return level.canSeeSky(pos) && Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
-        });
-        // BlueSlime: 白天森林/地下
-        event.register(MonsterEntities.BLUE_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
-            if (!level.isDay() || pos.getY() < 0) return false;
-            return Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
-        });
-        // Zombie: 夜晚地表
-        event.register(MonsterEntities.ZOMBIE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (type, level, reason, pos, random) -> {
-            if (level.isDay() || pos.getY() < 40) return false;
-            return Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
-        });
+        event.register(MonsterEntities.GREEN_DUMPLING_SLIME.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseSlime::checkGreenDumplingSlimeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(CritterEntities.BUNNY.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(CritterEntities.JEWEL_BUNNY.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(MonsterEntities.DEMON_EYE.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DemonEye::checkDemonEyeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(MonsterEntities.GREEN_SLIME.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseSlime::checkGreenSlimeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(MonsterEntities.BLUE_SLIME.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseSlime::checkBlueSlimeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(MonsterEntities.ZOMBIE.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Zombie::checkZombieSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
 
         PortEventHandler.postEvent(new RegisterBestiaryKeyEvent()); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
-    }
-
-    private static void registerBestiaryKey(RegisterBestiaryKeyEvent event) {
-        Function<Integer, String> i2s = i -> Integer.toString(i);
-        event.register(TEAnimals.JEWEL_BUNNY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.JEWEL_SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.GRASSHOPPER.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.BUTTERFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.WORM.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.DRAGONFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.LADYBUG.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEAnimals.SCORPION.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) -> {
-            String key = type.getDescriptionId() + '.';
-            return key + eye.getVariant().getSerializedName();
-        });
-        event.register(EntityType.ZOMBIE, ((type, zombie) -> {
-            String key = type.getDescriptionId();
-            if (IZombie.of(zombie).terra_entity$isSlimeZombie()) {
-                return key + ".slime";
-            }
-            Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
-            if (chest == ArmorItems.RAINCOAT.get()) {
-                return key + ".raincoat";
-            } else if (chest == ArmorItems.SNOW_SUITS.get()) {
-                return key + ".frozen";
-            } else if (chest == ArmorItems.PINK_SNOW_SUITS.get()) {
-                return key + ".frozen.pink";
-            }
-            return key;
-        }));
-        event.register(TEMonsterEntities.BLACK_SLIME.get(), (type, slime) -> {
-            int size = slime.getSize();
-            if (size == 1) return "entity.terra_entity.baby_slime";
-            if (size == 4) return "entity.terra_entity.mother_slime";
-            return type.getDescriptionId();
-        });
-        event.register(EntityType.SKELETON, (type, skeleton) -> {
-            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE)) {
-                return "entity.confluence.undead_miner";
-            }
-            return type.getDescriptionId();
-        });
     }
 
     private static void registerEvilMaterialReplaces(RegisterEvilMaterialReplacesEvent event) {

@@ -3197,6 +3197,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FlailItems.DAO_OF_POW.get(), "太极连枷");
         add(FlailItems.FLOWER_POWER.get(),"花之力");
         add(FlailItems.DRIPPLER_CRIPPLER.get(),"滴滴怪致残者");
+        add(FlailItems.CHAIN_KNIFE.get(),"链刃");
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");

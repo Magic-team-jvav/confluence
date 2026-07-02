@@ -32,7 +32,7 @@ public final class HandPositionUtils {
      * @param localOffset 手掌局部坐标系下的位移 (侧向, 上下, 前后)，可为 {@code null}
      * @return 世界坐标
      */
-    public static Vec3 getPalmPosition(@Nullable Player player, float partialTick, @Nullable Vec3 localOffset) {
+    public static Vec3 getPalmPosition(Player player, float partialTick, @Nullable Vec3 localOffset) {
         // 基于身体朝向计算水平前向和侧向，忽略视角俯仰
         float yBodyRot = Mth.rotLerp(partialTick, player.yBodyRotO, player.yBodyRot);
         float yawRad = yBodyRot * Mth.DEG_TO_RAD;

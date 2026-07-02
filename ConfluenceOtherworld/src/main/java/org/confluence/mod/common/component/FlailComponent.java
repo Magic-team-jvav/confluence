@@ -37,6 +37,7 @@ public class FlailComponent {
 
     /** 击中实体时的回调，null 表示无特殊效果 */
     public final BiConsumer<Player, LivingEntity> onHit;
+    public final boolean launchMode;
 
     private FlailComponent(Builder b) {
         this.damageFactor = b.damageFactor;
@@ -53,6 +54,7 @@ public class FlailComponent {
         this.ballTexture = b.ballTexture;
         this.modelLocation = b.modelLocation;
         this.onHit = b.onHit;
+        this.launchMode = b.launchMode;
     }
 
     // ── 预定义连枷 ──
@@ -239,7 +241,7 @@ public class FlailComponent {
             .spinRadius(1.2f)
             .spinSpeed(1.5f)
             .throwSpeed(1.3f)
-            .maxDistance(10)
+            .maxDistance(20)
             .retractSpeed(1)
             .gravity(0.2f)
             .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
@@ -248,6 +250,21 @@ public class FlailComponent {
             .model(Confluence.asResource("geo/entity/flail/drippler_crippler.geo.json"))
             .build();
 
+    // 投射类连枷 
+    
+    /** 链刃 */
+
+    public static final FlailComponent CHAIN_KNIFE = new Builder()
+            .damageFactor(6)
+            .throwSpeed(1.3f)
+            .maxDistance(10)
+            .retractSpeed(1)
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/chain_knife.png"))
+            .model(Confluence.asResource("geo/entity/flail/chain_knife.geo.json"))
+            .launchMode()
+            .build();
     // ── 工具方法 ──
 
     public SoundEvent getSoundEvent() {
@@ -281,6 +298,7 @@ public class FlailComponent {
         float gravity = 0.05f;
         float bounceFactor = 0.3f;
         int maxBounces = 3;
+        boolean launchMode = false;
         ResourceLocation soundEvent;
         ResourceLocation projType;
         ResourceLocation ballTexture;
@@ -301,6 +319,7 @@ public class FlailComponent {
         public Builder texture(ResourceLocation v) { this.ballTexture = v; return this; }
         public Builder model(ResourceLocation v) { this.modelLocation = v; return this; }
         public Builder onHit(BiConsumer<Player, LivingEntity> v) { this.onHit = v; return this; }
+        public Builder launchMode() { this.launchMode = true; return this; }
 
         public FlailComponent build() {
             return new FlailComponent(this);

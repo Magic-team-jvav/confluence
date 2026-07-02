@@ -70,7 +70,12 @@ public final class FlailControlPacketC2S implements IPacketC2S {
                     if (projType == null) return;
                     var entity = projType.create(player.level());
                     if (!(entity instanceof BaseFlailEntity flail)) return;
-                    flail.init(player, stack, component);
+                    if(component.launchMode){
+                        flail.initLaunch(player, stack, component);
+                    }
+                    else{
+                        flail.init(player, stack, component);
+                    }
                     // 注入物品绑定的攻击策略
                     FlailStrategy strategy = ((BaseFlailItem) stack.getItem()).getAttackStrategy();
                     if (strategy != null) {

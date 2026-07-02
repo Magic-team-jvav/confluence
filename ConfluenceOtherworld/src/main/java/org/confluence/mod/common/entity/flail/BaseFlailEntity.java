@@ -79,6 +79,10 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      */
     private int previousPhase = -1;
     /**
+     * 发射模式：为 {@code true} 时跳过 SPIN/STAY，仅走 THROWN→RETRACT 简化流程。
+     */
+    private boolean launchMode = false;
+    /**
      * 渲染用：帧间平滑后的链条方向，由 {@code BaseFlailRenderer} 逐帧 lerp 更新
      */
     public Vec3 smoothedChainDir = null;
@@ -96,6 +100,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      */
     public int getSpinTickCounter() {
         return spinTickCounter;
+    }
+
+    /** 是否为发射模式（跳过 SPIN/STAY，仅 THROWN→RETRACT） */
+    public boolean isLaunchMode() {
+        return launchMode;
     }
 
     /** 获取当前攻击策略 */
@@ -124,6 +133,22 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         // 几何中心对齐手掌
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
         setPhase(PHASE_SPIN);
+    }
+
+    /**
+     * 发射模式初始化：跳过 SPIN/STAY，直接沿视线方向发射。
+     *
+     * @param owner     持有者玩家
+     * @param weapon    武器物品堆
+     * @param component 连枷参数组件
+     */
+    public void initLaunch(@NotNull Player owner, ItemStack weapon, @NotNull FlailComponent component) {
+        setOwner(owner);
+        this.cachedComponent = component;
+        this.launchMode = true;
+        Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
+        setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
+        launch(owner);
     }
 
     // ── 数据同步 ──
@@ -184,8 +209,12 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (level().isClientSide() || getPhase() != PHASE_RETRACT) {
             return;
         }
-        setPos(result.getLocation());
-        playerDrop();
+        if (launchMode) {
+            discard();
+        } else {
+            setPos(result.getLocation());
+            playerDrop();
+        }
     }
 
     // ── Tick ──
@@ -351,8 +380,14 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         if (!level().isClientSide()) {
             bounceCount++;
-            setPhase(PHASE_STAY);
-            stayDuration = 0;
+            if (launchMode) {
+                // 发射模式：撞墙直接飞回，跳过 STAY
+                attackStrategy.onThrownToRetract(this, player, component);
+                setPhase(PHASE_RETRACT);
+            } else {
+                setPhase(PHASE_STAY);
+                stayDuration = 0;
+            }
         }
     }
 
@@ -491,6 +526,10 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      * <p>用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。
      */
     public void playerDrop() {
+        if (launchMode) {
+            forceRetract();
+            return;
+        }
         setPhase(PHASE_STAY);
         Vec3 motion = getDeltaMovement();
         setDeltaMovement(motion.scale(0.15));
@@ -528,6 +567,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (tag.contains("StayDuration")) stayDuration = tag.getInt("StayDuration");
         if (tag.contains("BounceCount")) bounceCount = tag.getInt("BounceCount");
         if (tag.contains("PlayerDropped")) playerDropped = tag.getBoolean("PlayerDropped");
+        if (tag.contains("LaunchMode")) launchMode = tag.getBoolean("LaunchMode");
     }
 
     @Override
@@ -537,6 +577,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         tag.putInt("StayDuration", stayDuration);
         tag.putInt("BounceCount", bounceCount);
         tag.putBoolean("PlayerDropped", playerDropped);
+        tag.putBoolean("LaunchMode", launchMode);
     }
 
     @Override

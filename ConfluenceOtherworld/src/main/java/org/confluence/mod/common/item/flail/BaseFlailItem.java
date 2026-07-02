@@ -102,7 +102,13 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
             Entity entity = entityType.create(level);
             if (!(entity instanceof BaseFlailEntity flail))
                 return InteractionResultHolder.fail(stack);
-            flail.init(player, stack, comp);
+            if (comp.launchMode){
+                flail.initLaunch(player, stack, comp);
+            }
+            else{
+                flail.init(player, stack, comp);
+            }
+            
             // 注入专属攻击策略（子类可覆盖 getAttackStrategy() 返回非空值）
             FlailStrategy strategy = getAttackStrategy();
             if (strategy != null) {

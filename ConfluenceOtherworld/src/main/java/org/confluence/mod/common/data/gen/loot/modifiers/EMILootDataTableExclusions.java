@@ -7,20 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EMILootDataTableExclusions {
+    public static final Codec<EMILootDataTableExclusions> CODEC = RecordCodecBuilder.create((tableExclusionsInstance) -> tableExclusionsInstance.group(
+            Codec.list(Codec.STRING).fieldOf("exclusions").forGetter((instance) -> instance.excludedPaths)
+    ).apply(tableExclusionsInstance, EMILootDataTableExclusions::new));
+
+    public List<String> excludedPaths;
+
     public EMILootDataTableExclusions() {
         this.excludedPaths = new ArrayList<>();
     }
 
     EMILootDataTableExclusions(List<String> excludedPaths) {
         this.excludedPaths = excludedPaths;
-    }
-
-    public static Codec<EMILootDataTableExclusions> CODEC;
-    public List<String> excludedPaths;
-
-    static {
-        CODEC = RecordCodecBuilder.create((tableExclusionsInstance) -> tableExclusionsInstance.group(
-                Codec.list(Codec.STRING).fieldOf("exclusions").forGetter((instance) -> instance.excludedPaths)
-        ).apply(tableExclusionsInstance, EMILootDataTableExclusions::new));
     }
 }

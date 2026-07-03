@@ -4,13 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.trade.conditions.AlwaysTrueCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.AndCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.NotCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.OrCondition;
 import org.confluence.mod.common.init.ModCustomRegistries;
 
 public interface TradeCondition {
-
     Codec<TradeCondition> CODEC = ModCustomRegistries.TRADE_CONDITIONS.byNameCodec().dispatch(TradeCondition::codec, MapCodec::codec);
 
     boolean test(ServerPlayer player, BaseNPC npc);
@@ -27,5 +27,9 @@ public interface TradeCondition {
 
     default TradeCondition not() {
         return new NotCondition(this);
+    }
+
+    static TradeCondition alwaysTrue() {
+        return AlwaysTrueCondition.INSTANCE;
     }
 }

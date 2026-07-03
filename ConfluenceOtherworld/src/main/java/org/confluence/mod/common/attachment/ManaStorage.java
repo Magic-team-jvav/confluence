@@ -167,6 +167,6 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
     }
 
     public static ManaStorage of(LivingEntity living) {
-        return living.getAttach(ModAttachmentTypes.MANA_STORAGE);
+        return living.getData(ModAttachmentTypes.MANA_STORAGE);
     }
 }

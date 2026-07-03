@@ -1,5 +1,6 @@
 package org.confluence.mod.network.c2s;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("wormhole_to_player");
-    public static final PortStreamCodec<FriendlyByteBuf, WormholeToPlayerPacketC2S> STREAM_CODEC = PortPortStreamCodec.composite(
+    public static final PortStreamCodec<FriendlyByteBuf, WormholeToPlayerPacketC2S> STREAM_CODEC = PortStreamCodec.composite(
             LibStreamCodecUtils.UUID, WormholeToPlayerPacketC2S::playerId,
             ByMod.STREAM_CODEC, WormholeToPlayerPacketC2S::byMod,
             WormholeToPlayerPacketC2S::new
@@ -37,7 +38,7 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
         if (target != null && PlayerSpecialData.of(player).getTeam() == PlayerSpecialData.of(target).getTeam()) {
             ItemStack potion = getWormholePotion(player);
             if (potion.isEmpty()) return;
-            if (!PortPlayer.hasInfiniteMaterials(player)) potion.shrink(1);
+            if (!player.hasInfiniteMaterials()) potion.shrink(1);
             teleport(player, target);
         }
     }
@@ -48,7 +49,7 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements I
 
     private static ItemStack getWormholePotion(ServerPlayer serverPlayer) {
         Inventory inventory = serverPlayer.getInventory();
-        ItemStack stack = inventory.offhand.getFirst();
+        ItemStack stack = PortListExtension.getFirst(inventory.offhand);
         if (!stack.isEmpty() && stack.is(PotionItems.WORMHOLE_POTION)) {
             return stack;
         } else {

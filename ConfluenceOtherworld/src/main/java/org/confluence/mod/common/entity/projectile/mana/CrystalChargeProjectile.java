@@ -82,7 +82,7 @@ public class CrystalChargeProjectile extends AbstractManaProjectile {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.04;
     }
 }

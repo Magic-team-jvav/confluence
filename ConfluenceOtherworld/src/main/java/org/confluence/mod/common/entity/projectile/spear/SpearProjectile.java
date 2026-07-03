@@ -21,7 +21,6 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.api.entity.ICollisionAttackEntity;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.jetbrains.annotations.Nullable;
@@ -29,13 +28,11 @@ import org.joml.Vector3f;
 
 import java.util.Comparator;
 
-/**
- * <h1>长矛弹射物基类</h1>
- * <p>
- * 子类应覆写{@link #updateMotion()} 方法实现自定义运动曲线，
- * 可选覆写{@link #getTrailParticle()} 提供拖尾粒子效果。
- */
-public abstract class SpearProjectile extends AbstractHurtingProjectile implements ICollisionAttackEntity {
+/// # 长矛弹射物基类
+///
+/// 子类应覆写[#updateMotion()] 方法实现自定义运动曲线，
+/// 可选覆写[#getTrailParticle()] 提供拖尾粒子效果。
+public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo projectile implements ICollisionAttackEntity*/ {
     // 可调参数
     public int lifetime = 40;
     public int pierceRemaining = 1;
@@ -43,7 +40,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     protected float baseAttackDamage = 0.0F;
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
-    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0.5F);
+//    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0.5F);
     protected SpearProjectileComponent projComponent;
     public final IAxisZRotate.Rotate rotate = new IAxisZRotate.Rotate();
 
@@ -193,7 +190,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
             setPos(getX() + velocity.x, getY() + velocity.y, getZ() + velocity.z);
 
             // 7. 碰撞检测
-            doCollisionAttack(this::canHitEntity, this::doHurt);
+//            doCollisionAttack(this::canHitEntity, this::doHurt);
 
             // 8. 超时销毁
             if (ticksAlive++ >= (projComponent != null ? projComponent.existTicks() : lifetime)) {
@@ -219,13 +216,13 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         if (pierceRemaining <= 0) {
             return false;
         }
-        return TEUtils.projectileCanHitEntityTest.test(this, target);
+        return true /*TEUtils.projectileCanHitEntityTest.test(this, target)*/;
     }
 
-    @Override
-    public boolean shouldDoCollision() {
-        return true;
-    }
+//    @Override
+//    public boolean shouldDoCollision() {
+//        return true;
+//    }
 
     // ===== 伤害计算（子类可覆写） =====
 
@@ -242,9 +239,9 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
      * 应用击中特效。子类可覆写以自定义特效。
      */
     protected void applyHitEffect(LivingEntity owner, LivingEntity target) {
-        if (projComponent != null) {
-            projComponent.hitEffect().ifPresent(effect -> effect.applyAll(owner, target));
-        }
+//  todo component       if (projComponent != null) {
+//            projComponent.hitEffect().ifPresent(effect -> effect.applyAll(owner, target));
+//        }
     }
 
     /**
@@ -261,11 +258,11 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
      * 造成伤害。编排子方法调用，子类可按需覆写 {@link #getDamage()} / {@link #applyHitEffect} / {@link #applyPenetration()}。
      */
     protected boolean doHurt(Entity target) {
-        if (TEUtils.projectileCanHurtEntityTest.test(this, target)) {
+        if (true/*TEUtils.projectileCanHurtEntityTest.test(this, target)*/) {
             float damage = getDamage();
             DamageSource damageSource = damageSource();
 
-            if (IAttackableProjectile.tryHit(target, damageSource)) {
+            if (true/*IAttackableProjectile.tryHit(target, damageSource)*/) {
                 return true;
             }
 
@@ -448,10 +445,10 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
         return 0;
     }
 
-    @Override
-    public CollisionProperties getCollisionProperties() {
-        return collisionProperties;
-    }
+//    @Override
+//    public CollisionProperties getCollisionProperties() {
+//        return collisionProperties;
+//    }
 
     @Override
     protected void onHitBlock(net.minecraft.world.phys.BlockHitResult result) {

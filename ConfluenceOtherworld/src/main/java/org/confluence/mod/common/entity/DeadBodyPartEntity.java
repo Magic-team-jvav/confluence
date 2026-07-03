@@ -59,7 +59,7 @@ public class DeadBodyPartEntity extends Entity {
         this.dyingEntity = dyingEntity;
         this.cube = cube;
         this.minSide = minSide;
-        if (dyingEntity instanceof AbstractTerraBossBase || dyingEntity instanceof Boss) {
+        if (dyingEntity instanceof Boss) {
             lifetime = level.random.nextInt(60, 75);
         } else {
             lifetime = level.random.nextInt(20, 30);

@@ -19,8 +19,8 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL;
-import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.PortOperation.ADD_VALUE;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.ADD_VALUE;
 
 @SuppressWarnings("unused")
 public interface ModPrefix {
@@ -32,7 +32,7 @@ public interface ModPrefix {
         return createComponent(prefixType);
     }
 
-    default AttributeModifier createModifier(double value, PortAttributeModifier.PortOperation operation) {
+    default AttributeModifier createModifier(double value, PortAttributeModifier.Operation operation) {
         ResourceLocation id = LibUtils.withUniqueSuffix(getModifierId());
         return new AttributeModifier(PortAttributeModifier.rl2uuid(id), id.getPath(), value, operation.unwrap());
     }

@@ -49,8 +49,9 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
             rotateZ(rotate, this, 0.125F);
         } else {
             AABB boundingBox = getBoundingBox().inflate(1.0);
-            if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
-                Entity entity = entityHitResult.getEntity();
+            EntityHitResult result = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
+            if (result != null) {
+                Entity entity = result.getEntity();
                 float damage = LibUtils.switchByDifficulty(level(), blockPosition(), 16, 32, 48);
                 if (entity instanceof LivingEntity living) {
                     damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
@@ -75,7 +76,7 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.04;
     }
 

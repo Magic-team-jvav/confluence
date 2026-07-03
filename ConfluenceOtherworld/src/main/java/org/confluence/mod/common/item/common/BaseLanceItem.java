@@ -13,7 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -31,7 +30,7 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.mesdag.portlib.wrapper.world.item.PortItem;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -50,7 +49,7 @@ import java.util.function.Consumer;
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
 /// 通用骑枪类。需要注意的是baseAttackDamage*0.1才是基础伤害，原算法是有问题的，后面可能会改动。
-public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateItem, GeoItem {
+public class BaseLanceItem extends CustomRarityItem implements /* todo leftclick ILeftClickStateItem,*/ GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackInterval;
     private final double attackDistance;
@@ -77,30 +76,30 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
         return Optional.of(component);
     }
 
-    @Override
-    public void onLeftClick(Player player, ItemStack itemStack) {
-        if (!player.level().isClientSide && !player.getCooldowns().isOnCooldown(this)) {
-            triggerAnim(player, GeoItem.getOrAssignId(itemStack, (ServerLevel) player.level()), "lance", "sting");
-        }
-    }
-
-    @Override
-    public void onLeftRelease(Player player, ItemStack itemStack) {
-        if (!player.level().isClientSide) {
-            stopTriggeredAnim(player, GeoItem.getOrAssignId(itemStack, (ServerLevel) player.level()), "lance", "sting");
-        }
-    }
-
-    @Override
-    public boolean canSwitchWithoutRelease(Player player, ItemStack itemStack) {
-        return false;
-    }
+// todo leftclick   @Override
+//    public void onLeftClick(Player player, ItemStack itemStack) {
+//        if (!player.level().isClientSide && !player.getCooldowns().isOnCooldown(this)) {
+//            triggerAnim(player, GeoItem.getOrAssignId(itemStack, (ServerLevel) player.level()), "lance", "sting");
+//        }
+//    }
+//
+//    @Override
+//    public void onLeftRelease(Player player, ItemStack itemStack) {
+//        if (!player.level().isClientSide) {
+//            stopTriggeredAnim(player, GeoItem.getOrAssignId(itemStack, (ServerLevel) player.level()), "lance", "sting");
+//        }
+//    }
+//
+//    @Override
+//    public boolean canSwitchWithoutRelease(Player player, ItemStack itemStack) {
+//        return false;
+//    }
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (isSelected &&
                 entity instanceof ServerPlayer owner &&
-                WeaponStorage.of(owner).leftClicking &&
+                /* todo leftclick WeaponStorage.of(owner).leftClicking &&*/
                 !owner.getCooldowns().isOnCooldown(this) &&
                 (attackInterval <= 1 || owner.level().getGameTime() % attackInterval == 0)
         ) {
@@ -142,7 +141,7 @@ public class BaseLanceItem extends CustomRarityItem implements ILeftClickStateIt
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, PortItem.PortTooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (tooltips == null) {
             ImmutableList.Builder<Component> builder = ImmutableList.builder();
             builder.add(Component.translatable("tooltip." + getDescriptionId() + ".0").withStyle(ChatFormatting.GRAY));

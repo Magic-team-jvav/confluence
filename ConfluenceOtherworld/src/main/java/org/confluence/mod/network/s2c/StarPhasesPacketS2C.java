@@ -17,9 +17,10 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
 public record StarPhasesPacketS2C(
-        Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> starPhases) implements IPortPacket.S2C {
+        Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> starPhases
+) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("star_phases");
-    public static final PortStreamCodec<ByteBuf, StarPhasesPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+    public static final PortStreamCodec<ByteBuf, StarPhasesPacketS2C> STREAM_CODEC = new PortStreamCodec<>() {
         public StarPhasesPacketS2C decode(ByteBuf buffer) {
             boolean isLeft = buffer.readBoolean();
             if (isLeft) {

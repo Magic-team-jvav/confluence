@@ -33,7 +33,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         super(ModMenuTypes.EXTRA_INVENTORY.get(), containerId);
         Player player = inventory.player;
         this.extraInventory = ExtraInventory.of(player);
-        Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player);
+        Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player).resolve();
         int count = extraInventory.getContainerSize();
         for (int i = VANITY_ARMOR_START; i < count; i++) {
             if (i < VANITY_ARMOR_DYE_START) { // 0, 1, 2, 3

@@ -38,6 +38,7 @@ public class BossEntities {
     public static final RegistryObject<EntityType<HillOfFlesh>> HILL_OF_FLESH = registerEntity("hill_of_flesh", EntityType.Builder.of(HillOfFlesh::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<HillOfFleshEye>> HILL_OF_FLESH_EYE = registerEntity("hill_of_flesh_eye", EntityType.Builder.of(HillOfFleshEye::new, MobCategory.MONSTER).sized(1.5F, 1.5F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<HillOfFleshMouth>> HILL_OF_FLESH_MOUTH = registerEntity("hill_of_flesh_mouth", EntityType.Builder.of(HillOfFleshMouth::new, MobCategory.MONSTER).sized(1.5F, 1.5F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<DeerClops>> DEERCLOPS = registerEntity("deerclops", EntityType.Builder.of(DeerClops::new, MobCategory.MONSTER));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> registerEntity(String name, EntityType.Builder<T> builder) {
         return PortDeferredRegisterExtension.register(ENTITIES, name, id -> builder.build(id.toString()));

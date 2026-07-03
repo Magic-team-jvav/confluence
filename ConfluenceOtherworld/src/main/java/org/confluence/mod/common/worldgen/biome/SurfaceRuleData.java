@@ -9,6 +9,7 @@ import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
+// todo terrablender
 public class SurfaceRuleData {
     private static SurfaceRules.RuleSource state(Block block) {
         return SurfaceRules.state(block.defaultBlockState());

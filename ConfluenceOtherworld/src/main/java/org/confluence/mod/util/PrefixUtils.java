@@ -14,8 +14,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.api.npc.trade.ITradeHolder;
-import org.confluence.terraentity.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 
 public final class PrefixUtils {
@@ -420,11 +418,12 @@ public final class PrefixUtils {
         if (TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }
-        ITradeHolder holder = ((IPlayer) player).terra_entity$getTradeHolder();
-        float priceAdjustment = 1.0F;
-        if (holder != null && holder.getMood() != null) {
-            priceAdjustment = 100.0F / holder.getMood().getValue();
-        }
-        return (int) (price * priceAdjustment / 3);
+// todo trade       ITradeHolder holder = ((IPlayer) player).terra_entity$getTradeHolder();
+//        float priceAdjustment = 1.0F;
+//        if (holder != null && holder.getMood() != null) {
+//            priceAdjustment = 100.0F / holder.getMood().getValue();
+//        }
+//        return (int) (price * priceAdjustment / 3);
+        return price;
     }
 }

@@ -97,10 +97,12 @@ public class Ladybug extends BaseCritter implements VariantHolder<Ladybug.Varian
             return name().toLowerCase(Locale.ROOT);
         }
 
+        @Override
         public ResourceLocation modelPath() {
             return Confluence.asResource("animal/ladybug");
         }
 
+        @Override
         public ResourceLocation texturePath() {
             return Confluence.asResource("textures/entity/ladybug/" + getSerializedName() + ".png");
         }

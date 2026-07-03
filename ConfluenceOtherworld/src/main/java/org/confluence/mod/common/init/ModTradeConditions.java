@@ -10,7 +10,7 @@ import org.confluence.mod.common.entity.npc.trade.conditions.*;
 public final class ModTradeConditions {
     public static final DeferredRegister<MapCodec<? extends TradeCondition>> TYPES = DeferredRegister.create(ModCustomRegistries.Keys.TRADE_CONDITIONS, Confluence.MODID);
 
-    public static final RegistryObject<MapCodec<AlwaysCondition>> ALWAYS = TYPES.register("always", () -> AlwaysCondition.CODEC);
+    public static final RegistryObject<MapCodec<AlwaysTrueCondition>> ALWAYS_TRUE = TYPES.register("always", () -> AlwaysTrueCondition.CODEC);
     public static final RegistryObject<MapCodec<HardmodeCondition>> HARDMODE = TYPES.register("hardmode", () -> HardmodeCondition.CODEC);
     public static final RegistryObject<MapCodec<AnyBossDefeatedCondition>> ANY_BOSS_DEFEATED = TYPES.register("any_boss_defeated", () -> AnyBossDefeatedCondition.CODEC);
     public static final RegistryObject<MapCodec<BossDefeatedCondition>> BOSS_DEFEATED = TYPES.register("boss_defeated", () -> BossDefeatedCondition.CODEC);

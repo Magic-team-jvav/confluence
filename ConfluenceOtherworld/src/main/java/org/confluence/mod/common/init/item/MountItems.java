@@ -13,6 +13,7 @@ public class MountItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    public static final PortDeferredItem<Item> FUZZY_CARROT = ITEMS.register("fuzzy_carrot",
-            () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.ORANGE));
+    public static final PortDeferredItem<Item> FUZZY_CARROT = ITEMS.register("fuzzy_carrot", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.ORANGE));
+    public static final PortDeferredItem<Item> SLIMY_SADDLE = ITEMS.registerSimpleItem("slimy_saddle", new Item.Properties());
+    public static final PortDeferredItem<Item> HONEYED_GOGGLES = ITEMS.registerSimpleItem("honeyed_goggles", new Item.Properties());
 }

@@ -18,6 +18,7 @@ public class UnholyArrowEntity extends BaseArrowEntity {
     public UnholyArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, ItemStack pickupItemStack, ItemStack firedFromWeapon) {
         super(entityType, owner, pickupItemStack, firedFromWeapon);
     }
+
     @Override
     public double getBaseDamage() {
         return 5.4;
@@ -27,8 +28,6 @@ public class UnholyArrowEntity extends BaseArrowEntity {
     protected int getPenetrationCount() {
         return 5;
     }
-
-    @Override
 
     @Override
     public ResourceLocation getTexturePath() {

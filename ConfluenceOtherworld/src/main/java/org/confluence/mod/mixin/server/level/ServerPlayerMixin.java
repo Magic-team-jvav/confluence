@@ -1,7 +1,7 @@
 package org.confluence.mod.mixin.server.level;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketSendListener;
 import net.minecraft.network.protocol.Packet;
@@ -66,7 +66,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     public void confluence$bulldozer() {
         if (confluence$bulldozer < 0) return;
         if (this.confluence$bulldozer++ >= 9999) {
-            AdvancementHolder advancement = server.getAdvancements().get(AchievementUtils.asAchievement("bulldozer"));
+            Advancement advancement = server.getAdvancements().getAdvancement(AchievementUtils.asAchievement("bulldozer"));
             if (advancement != null) {
                 getAdvancements().award(advancement, "never");
             }
@@ -99,17 +99,17 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
         return confluence$titaniumShards != null && !confluence$titaniumShards.isRemoved();
     }
 
-    @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
-    private void checkMarathon(CallbackInfo ci) {
-        if (!confluence$marathon_medalist) {
-            this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
-        }
-    }
+//    @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
+//    private void checkMarathon(CallbackInfo ci) {
+//        if (!confluence$marathon_medalist) {
+//            this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
+//        }
+//    }
 
     @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))
     private boolean replacePacket(ServerGamePacketListenerImpl instance, Packet<?> packet, PacketSendListener packetSendListener) {
         if (packet instanceof ClientboundPlayerCombatKillPacket combatKillPacket) {
-            return PlayerDeathInfoPacketS2C.replaceCombatKillPacket(instance.player, combatKillPacket.message());
+            return PlayerDeathInfoPacketS2C.replaceCombatKillPacket(instance.player, combatKillPacket.getMessage());
         }
         return true;
     }

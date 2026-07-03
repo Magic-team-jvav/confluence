@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -128,7 +129,7 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
         }
     }
 
-    public enum Variant implements StringRepresentable {
+    public enum Variant implements IVariant {
         NORMAL("normal", 15.0, 3.5, 1, 1.0F),
         NORMAL_BIG("normal_big", 12.0, 4.0, 2, 1.3F),
         CATARACT("cataract", 11.5, 3.5, 2, 1.0F),
@@ -167,8 +168,20 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
 
         public int textureIndex() { return ordinal() / 2; }
 
+        @Override
+        public Codec<Variant> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public String serializeKey() {
+            return VARIANT_KEY;
+        }
+
+        @Override
         public ResourceLocation modelPath() { return Confluence.asResource("monster/demon_eye"); }
 
+        @Override
         public ResourceLocation texturePath() {
             String[] names = {"normal", "cataract", "sleepy", "dilated", "green", "purple", "owl", "spaceship"};
             return Confluence.asResource("textures/entity/demon_eye/" + names[textureIndex()] + ".png");

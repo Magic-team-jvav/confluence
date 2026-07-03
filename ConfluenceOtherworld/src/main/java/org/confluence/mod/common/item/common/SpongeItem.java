@@ -27,7 +27,7 @@ public class SpongeItem extends TooltipItem {
     public SpongeItem(ModRarity rarity, String name, int blockInteractionRange, Predicate<BlockState> fluidPredicate) {
         super(new Properties().stacksTo(1).attributes(PortItemAttributeModifiers.builder()
                 .add(PortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
-                        Confluence.asResource(name), blockInteractionRange, PortAttributeModifier.PortOperation.ADD_VALUE
+                        Confluence.asResource(name), blockInteractionRange, PortAttributeModifier.Operation.ADD_VALUE
                 ), PortEquipmentSlotGroup.MAINHAND)
                 .build()), rarity, "tooltip.item.confluence." + name + ".0");
         this.fluidPredicate = fluidPredicate;

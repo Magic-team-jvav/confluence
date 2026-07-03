@@ -1,15 +1,16 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
+import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
@@ -30,7 +31,7 @@ public class LavaBoulderEntity extends BoulderEntity {
         final int blockRadius = 2;
         final BlockState toFill = Fluids.LAVA.defaultFluidState().createLegacyBlock();
 
-        if (!serverLevel.dimensionType().ultraWarm() || toFill.getFluidState().getType().getFluidType() != NeoForgeMod.WATER_TYPE.value()) {
+        if (!serverLevel.dimensionType().ultraWarm() || toFill.getFluidState().getType().getFluidType() != ForgeMod.WATER_TYPE.get()) {
             BlockPos blockPos = blockPosition();
             BlockPos.MutableBlockPos mutable = blockPos.mutable();
             for (int i = -blockRadius; i < blockRadius; i++) {
@@ -47,7 +48,7 @@ public class LavaBoulderEntity extends BoulderEntity {
                 }
             }
         }
-        TerraStyleExplosion.terraExplode(serverLevel, this, Explosion.getDefaultDamageSource(serverLevel, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), blockRadius, Level.ExplosionInteraction.NONE);
+        TerraStyleExplosion.terraExplode(serverLevel, this, PortExplosionExtension.getDefaultDamageSource(serverLevel, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), blockRadius, Level.ExplosionInteraction.NONE);
     }
 
     @Override

@@ -46,6 +46,9 @@ import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
+import org.confluence.mod.common.entity.boss.Skeletron;
+import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -55,7 +58,10 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
@@ -67,7 +73,6 @@ import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
-import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
@@ -82,7 +87,6 @@ import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.living.*;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
-import org.mesdag.portlib.wrapper.world.effect.MobEffectHolder;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.Collection;
@@ -130,8 +134,8 @@ public final class LivingEntityEvents {
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
                         CommonConfigs.ENEMY_DROPS_MONEY.get() &&
-                        level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
-                        (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)
+                        level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) /* todo summoner &&
+                        (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)*/
                 ) ModUtils.enemyDropMoney(victim, level);
                 Bestiary.INSTANCE.updateEntry(victim, true);
             }
@@ -159,8 +163,8 @@ public final class LivingEntityEvents {
                         LibDateUtils.isNight(level) && // 晚上杀死才生成
                         TCUtils.hasType(player, AccessoryItems.CLOTHIER$KILLER)
                 ) {
-                    Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);
-                    skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null);
+                    Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level);
+                    skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null, null);
                     ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
                 }
 
@@ -278,7 +282,7 @@ public final class LivingEntityEvents {
 
     private static void mobEffect$Applicable(PortMobEffectEvent.Applicable event) {
         if (event.getResult() == PortMobEffectEvent.Applicable.Result.DEFAULT && !(event.getEntity() instanceof Player)) {
-            Holder<MobEffect> effect = MobEffectHolder.wrap(event.getEffectInstance().getEffect());
+            MobEffect effect = event.getEffectInstance().getEffect();
             if (LivingInvulnerableEffects.isInvulnerableTo(event.getEntity(), effect)) {
                 event.setPortResult(PortMobEffectEvent.Applicable.PortResult.DO_NOT_APPLY);
             }
@@ -294,7 +298,7 @@ public final class LivingEntityEvents {
         FlaskEffect.removeAnotherFlaskEffects(instance, event.getEntity());
 
         if (event.getEntity() instanceof Player player) {
-            Object2IntMap<Holder<MobEffect>> value = ModArmorBonus.getValue(player, ModArmorBonus.ENHANCE$EFFECT$DURATION);
+            Object2IntMap<MobEffect> value = ModArmorBonus.getValue(player, ModArmorBonus.ENHANCE$EFFECT$DURATION);
             int extraDuration = value.getInt(instance.getEffect());
             instance.duration += extraDuration;
         }
@@ -346,7 +350,7 @@ public final class LivingEntityEvents {
         boolean isEnemy = living instanceof Enemy;
         if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
                 isEnemy &&
-                (!(living instanceof IMinion minion) || minion.minion_getOwnerUUID() == null) &&
+                /* todo summoner (!(living instanceof IMinion minion) || minion.minion_getOwnerUUID() == null) &&*/
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
                 (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
                 living.getRandom().nextFloat() < (LibUtils.isAtLeastExpert(level, living.blockPosition()) ? 0.36F : 0.2F)
@@ -363,7 +367,7 @@ public final class LivingEntityEvents {
             }
         }
         if (isEnemy && level.dimension() == OverworldUtils.underworld() && living.getRandom().nextInt(400) == 0) { // 掉落喷流球
-            drops.add(new ItemEntity(level, x, y, z, TEYoyosItems.CASCADE.toStack()));
+            drops.add(new ItemEntity(level, x, y, z, YoyoItems.CASCADE.toStack()));
         }
 
         for (ItemEntity entity : drops) {
@@ -440,20 +444,20 @@ public final class LivingEntityEvents {
         } else if (event.getSpawnType() == MobSpawnType.NATURAL && mob instanceof Slime slime) {
             if ((ModSecretSeeds.CELEBRATIONMK10.match() || ModSecretSeeds.GET_FIXED_BOI.match()) && mob.getRandom().nextInt(140) == 1) {
                 event.setCanceled(true);
-                GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(level);
+                GoldenSlime goldenSlime = MonsterEntities.GOLDEN_SLIME.get().create(level);
                 if (goldenSlime != null) {
                     goldenSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
                     level.addFreshEntity(goldenSlime);
                 }
             }
-        } else if (type == TEAnimals.WORM.get()) {
-            SimpleVariantAnimal worm = TEAnimals.WORM.get().tryCast(mob);
+        }/* else if (type == CritterEntities.WORM.get()) {
+            Worm worm = CritterEntities.WORM.get().tryCast(mob);
             if (worm != null) {
                 TEHelper.finalizeWormSpawn(worm);
             }
         } else if (type == ModEntities.INVERSE_ENDERMAN.get()) {
             mob.moveTo(mob.getX(), mob.getY() - mob.getBbHeight(), mob.getZ());
-        }
+        }*/
 
         if (!event.isCanceled()) {
             GamePhase2AttributeModifiers.applyModifiers(mob);
@@ -564,16 +568,16 @@ public final class LivingEntityEvents {
 
     private static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
         LivingEntity living = event.getEntity();
-        if (living instanceof AbstractSummonMob) {
+        /* todo summoner if (living instanceof AbstractSummonMob) {
             event.setCanceled(true);
-        } else {
+        } else {*/
             EntityType<?> type = living.getType();
             if (type.is(ModTags.EntityTypes.BESTIARY_BLACKLIST)) {
                 event.setCanceled(true);
-            } else if (type == TEBossEntities.SKELETRON_HAND.get()) {
+            } else if (type == BossEntities.SKELETRON_HAND.get()) {
                 event.setCanceled(true);
             }
-        }
+//        }
     }
 
     private static void armorPenetration(ArmorPenetrationEvent event) {

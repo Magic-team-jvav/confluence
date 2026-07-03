@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen.data_map;
 
+import PortLib.extensions.net.minecraft.core.HolderSet.PortHolderSetExtension;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -16,6 +17,7 @@ import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.CritterEntities;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
@@ -28,27 +30,27 @@ public final class BlockBreakSpawnsSubProvider {
         HolderSet<Biome> jungleLike = new OrHolderSet<>(List.of(biome.getOrThrow(PortTags.Biomes.IS_JUNGLE), biome.getOrThrow(PortTags.Biomes.IS_LUSH)));
 
         appender.create()
-                .push(Blocks.SHORT_GRASS)
-                .expand(TEAnimals.GRASSHOPPER.get(), 0.01F)
-                .expand(TEAnimals.WORM.get(), 0.0025F)
+                .push(Blocks.GRASS)
+                .expand(CritterEntities.GRASSHOPPER.get(), 0.01F)
+                .expand(CritterEntities.WORM.get(), 0.0025F)
                 .pop()
                 .push(Blocks.FERN)
-                .expand(TEAnimals.GRASSHOPPER.get(), 0.01F)
-                .expand(TEAnimals.WORM.get(), 0.0025F)
+                .expand(CritterEntities.GRASSHOPPER.get(), 0.01F)
+                .expand(CritterEntities.WORM.get(), 0.0025F)
                 .pop()
                 .push(Blocks.TALL_GRASS)
-                .expand(TEAnimals.GRASSHOPPER.get(), 0.01F)
-                .expand(TEAnimals.WORM.get(), 0.0025F)
+                .expand(CritterEntities.GRASSHOPPER.get(), 0.01F)
+                .expand(CritterEntities.WORM.get(), 0.0025F)
                 .pop()
                 .push(NatureBlocks.LIFE_MUSHROOM.get())
-                .expand(TEAnimals.GRASSHOPPER.get(), 0.02F)
-                .expand(TEAnimals.WORM.get(), 0.005F)
+                .expand(CritterEntities.GRASSHOPPER.get(), 0.02F)
+                .expand(CritterEntities.WORM.get(), 0.005F)
                 .pop();
 
         SimpleWeightedRandomList<EntityType<?>> jungleBugs = SimpleWeightedRandomList.<EntityType<?>>builder()
-                .add(TEAnimals.GRUBBY.get(), 8)
-                .add(TEAnimals.SLUGGY.get(), 3)
-                .add(TEAnimals.GRUBBY.get(), 1) // todo 改成蚜虫
+                .add(CritterEntities.GRUBBY.get(), 8)
+                .add(CritterEntities.SLUGGY.get(), 3)
+                .add(CritterEntities.GRUBBY.get(), 1) // todo 改成蚜虫
                 .build();
         appender.create()
                 .push(NatureBlocks.JUNGLE_ROSE.get())
@@ -99,7 +101,7 @@ public final class BlockBreakSpawnsSubProvider {
             }
 
             public Expander expand(EntityType<?> type, float chance) {
-                return expand(type, chance, HolderSet.empty());
+                return expand(type, chance, PortHolderSetExtension.empty());
             }
 
             public Builder pop() {

@@ -62,10 +62,12 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.BowItems;
+import org.confluence.mod.common.init.item.FishingPoleItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
-import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -379,17 +381,17 @@ public final class ModClientSetups {
             ItemProperties.register(item.get(), pulling, bowPulling);
         });
 
-        ClampedItemPropertyFunction crossbowPulling = (itemStack, clientLevel, living, speed) -> {
-            if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
-                return 0.0F;
-            }
-            var projectiles = repeater.getHandler(itemStack);
-            if (projectiles != null && !projectiles.isEmpty()) {
-                return 1.0F;
-            }
-            return 0.0F;
-        };
-        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, crossbowPulling));
+// todo crossbow       ClampedItemPropertyFunction crossbowPulling = (itemStack, clientLevel, living, speed) -> {
+//            if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
+//                return 0.0F;
+//            }
+//            var projectiles = repeater.getHandler(itemStack);
+//            if (projectiles != null && !projectiles.isEmpty()) {
+//                return 1.0F;
+//            }
+//            return 0.0F;
+//        };
+//        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, crossbowPulling));
     }
 
     public static void registerFishingPoleProperties() {

@@ -43,7 +43,7 @@ public class TitaniumShardsProjectileRenderer extends EntityRenderer<TitaniumSha
 
     @Override
     public void render(TitaniumShardsProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        int color = Minecraft.getInstance().options.getCameraType().isFirstPerson() ? 0x55FFFFFF : -1;
+        float alpha = Minecraft.getInstance().options.getCameraType().isFirstPerson() ? 55.0F / 255 : 1;
         Player owner = entity.getOwner();
         if (owner != null) { // 补偿与玩家的坐标差值
             poseStack.pushPose();
@@ -63,7 +63,7 @@ public class TitaniumShardsProjectileRenderer extends EntityRenderer<TitaniumSha
             poseStack.translate(x, y, z);
             poseStack.mulPose(Axis.YN.rotation((entity.tickCount + partialTick) * Mth.DEG_TO_RAD + i));
             poseStack.scale(0.8F, -0.8F, 0.8F);
-            model.renderToBuffer(poseStack, bufferSource.getBuffer(RENDER_TYPES[i % 3]), packedLight, OverlayTexture.NO_OVERLAY, color, 1, 1, 1, 1);
+            model.renderToBuffer(poseStack, bufferSource.getBuffer(RENDER_TYPES[i % 3]), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, alpha);
             poseStack.popPose();
         }
         if (owner != null) {

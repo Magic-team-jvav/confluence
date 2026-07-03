@@ -7,7 +7,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.fml.ModLoader;
 import org.confluence.mod.api.event.gameevent.GameEventAfterRenderSkyRegisterEvent;
 import org.confluence.mod.api.event.gameevent.GameEventSyncCallbackRegisterEvent;
 import org.confluence.mod.common.data.saved.SpecificMoonVariant;
@@ -15,6 +14,7 @@ import org.confluence.mod.common.gameevent.*;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.*;
@@ -28,14 +28,14 @@ public final class ClientGameEventSystem {
         map.put(BloodMoonGameEvent.KEY, ClientGameEventSystem::handleBloodMoon);
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyProgressRenderer::handleSync);
         map.put(SpecificMoonGameEvent.KEY, ClientGameEventSystem::handleSpecificMoon);
-        ModLoader.postEvent(new GameEventSyncCallbackRegisterEvent(map));
+        PortEventHandler.postEvent(new GameEventSyncCallbackRegisterEvent(map));
     });
 
     static final Map<ResourceKey<? extends GameEvent>, AfterRenderSky> RENDERERS = Util.make(new IdentityHashMap<>(), map -> {
         map.put(SlimeRainGameEvent.KEY, SlimeRainSprite::renderSlimeRain);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerSprite::renderMeteorShower);
         map.put(LanternNightGameEvent.KEY, LanternNightSprite::renderLanternNight);
-        ModLoader.postEvent(new GameEventAfterRenderSkyRegisterEvent(map));
+        PortEventHandler.postEvent(new GameEventAfterRenderSkyRegisterEvent(map));
     });
     static final PoseStack poseStack = new PoseStack();
     public static @Nullable ResourceLocation moonTexture;
@@ -44,7 +44,7 @@ public final class ClientGameEventSystem {
     private static final Set<ResourceKey<? extends GameEvent>> RUNNING_EVENTS = new HashSet<>();
 
     public static void handle(LocalPlayer player) {
-        if (!Minecraft.getInstance().isPaused() && player.clientLevel.tickRateManager().runsNormally()) {
+        if (!Minecraft.getInstance().isPaused()) {
             long gameTime = player.level().getGameTime();
             SlimeRainSprite.tick(gameTime);
             MeteorShowerSprite.tick(gameTime);

@@ -10,7 +10,6 @@ import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.common.MinecraftForge;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
@@ -22,6 +21,7 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -52,7 +52,7 @@ public enum BloodMoonGameEvent implements GameEvent {
     public void open(MinecraftServer server) {
         this.server = server;
         this.level = OverworldUtils.getLevel(server);
-        this.spawnerData = MinecraftForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
+        this.spawnerData = PortEventHandler.postEventWithReturn(new GameEventSpawnerDataModificationEvent(KEY, level,
                 new MobSpawnSettings.SpawnerData(MonsterEntities.DRIPPLER.get(), 150, 1, 1),
                 new MobSpawnSettings.SpawnerData(MonsterEntities.BLOOD_ZOMBIE.get(), 420, 1, 1)
         )).create();

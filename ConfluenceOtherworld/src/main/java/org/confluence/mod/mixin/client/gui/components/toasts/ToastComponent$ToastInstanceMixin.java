@@ -4,13 +4,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.components.toasts.Toast;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(targets = "net.minecraft.client.gui.components.toasts.ToastComponent$ToastInstance")
+@Mixin(ToastComponent.ToastInstance.class)
 public abstract class ToastComponent$ToastInstanceMixin<T extends Toast> {
     @Shadow
     @Final

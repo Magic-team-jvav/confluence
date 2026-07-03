@@ -12,7 +12,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -43,16 +42,16 @@ public abstract class DamageSettableProjectile extends Projectile {
         PrefixComponent component = itemStack.get(ModDataComponentTypes.PREFIX);
         if (component == null) return damage;
         double d0 = damage;
-        for (AttributeModifier modifier : component.modifiers().get().get(LibAttributes.getAttackDamage())) {
-            if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
-                d0 += modifier.amount();
+        for (AttributeModifier modifier : component.modifiers().get().get(LibAttributes.getAttackDamage().value())) {
+            if (modifier.getOperation() == AttributeModifier.Operation.ADDITION) {
+                d0 += modifier.getAmount();
             }
             double d1 = d0;
-            if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
-                d1 += d0 * modifier.amount();
+            if (modifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE) {
+                d1 += d0 * modifier.getAmount();
             }
-            if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
-                d1 *= 1.0 + modifier.amount();
+            if (modifier.getOperation() == AttributeModifier.Operation.MULTIPLY_TOTAL) {
+                d1 *= 1.0 + modifier.getAmount();
             }
             d0 = d1;
         }
@@ -85,9 +84,9 @@ public abstract class DamageSettableProjectile extends Projectile {
     }
 
     @Override
-    public Vec3 getMovementToShoot(double x, double y, double z, float velocity, float inaccuracy) {
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         setDefaultVelocity(velocity);
-        return super.getMovementToShoot(x, y, z, velocity, inaccuracy);
+        super.shoot(x, y, z, velocity, inaccuracy);
     }
 
     @Override

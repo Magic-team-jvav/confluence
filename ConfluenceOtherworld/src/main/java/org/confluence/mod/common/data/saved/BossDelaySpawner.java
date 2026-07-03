@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -13,9 +14,13 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.EyeOfCthulhu;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.LanternNightGameEvent;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.wrapper.common.PortTags;
@@ -30,13 +35,13 @@ public enum BossDelaySpawner {
     public static final int SUCCESS = 0;
     public static final int CONTINUE = -1;
     public static final int CANCEL = -2;
-    private final List<Delayed<AbstractTerraBossBase>> bossQueue = new ArrayList<>();
+    private final List<Delayed<BaseBoss>> bossQueue = new ArrayList<>();
 
     public void tick(ServerLevel level) {
         if (bossQueue.isEmpty()) return;
-        Iterator<Delayed<AbstractTerraBossBase>> iterator = bossQueue.iterator();
+        Iterator<Delayed<BaseBoss>> iterator = bossQueue.iterator();
         while (iterator.hasNext()) l:{
-            Delayed<AbstractTerraBossBase> delayed = iterator.next();
+            Delayed<BaseBoss> delayed = iterator.next();
             if (--delayed.delay >= 0) continue;
             for (ServerPlayer player : level.players()) {
                 int state = delayed.predicate.applyAsInt(player);
@@ -57,8 +62,8 @@ public enum BossDelaySpawner {
     }
 
     /// @param predicate 等于[BossDelaySpawner#SUCCESS]时成功,等于[BossDelaySpawner#CONTINUE]时跳过该玩家,等于[BossDelaySpawner#CANCEL]时取消生成,大于0时设置下次检测延时
-    public void pushBoss(int delay, EntityType<? extends AbstractTerraBossBase> boss, ToIntFunction<ServerPlayer> predicate) {
-        if (bossQueue.size() == 8) bossQueue.removeFirst();
+    public void pushBoss(int delay, EntityType<? extends BaseBoss> boss, ToIntFunction<ServerPlayer> predicate) {
+        if (bossQueue.size() == 8) PortListExtension.removeFirst(bossQueue);
         bossQueue.add(new Delayed<>(delay, boss, predicate));
     }
 
@@ -75,7 +80,7 @@ public enum BossDelaySpawner {
         if (!CommonConfigs.EYE_OF_CTHULHU_NATURE_SPAWNING.get()) return;
         if (GameEventSystem.INSTANCE.getStartedEventAmount(true, false) > 0) return;
         if (LanternNightGameEvent.INSTANCE.started()) return;
-        EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
+        EntityType<EyeOfCthulhu> type = BossEntities.EYE_OF_CTHULHU.get();
         if (KillBoard.INSTANCE.isDefeated(type) || BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
             return;
         }
@@ -83,7 +88,7 @@ public enum BossDelaySpawner {
             if (!BossDelaySpawner.eyeOfCthulhuChecker(player) || level.random.nextFloat() >= 0.3333F) {
                 continue;
             }
-            BossDelaySpawner.INSTANCE.pushBoss(1350, TEBossEntities.EYE_OF_CTHULHU.get(), player1 ->
+            BossDelaySpawner.INSTANCE.pushBoss(1350, BossEntities.EYE_OF_CTHULHU.get(), player1 ->
                     player1.getY() > OverworldUtils.getSurfaceY() && LibDateUtils.isNight(player1.level()) && BossDelaySpawner.eyeOfCthulhuChecker(player1)
                             ? BossDelaySpawner.SUCCESS
                             : 20
@@ -108,10 +113,10 @@ public enum BossDelaySpawner {
     public static void spawnDeerClops(ServerLevel level) {
         if (!CommonConfigs.DEERCLOPS_NATURE_SPAWNING.get()) return;
         if (!level.isRaining()) return;
-        if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(TEBossEntities.DEERCLOPS.get())) return;
+        if (BossDelaySpawner.INSTANCE.hasSameTypeInQueue(BossEntities.DEERCLOPS.get())) return;
         for (ServerPlayer player : level.players()) {
             if (!BossDelaySpawner.deerclopsChecker(player)) continue;
-            BossDelaySpawner.INSTANCE.pushBoss(0, TEBossEntities.DEERCLOPS.get(), player1 ->
+            BossDelaySpawner.INSTANCE.pushBoss(0, BossEntities.DEERCLOPS.get(), player1 ->
                     BossDelaySpawner.deerclopsChecker(player1)
                             ? BossDelaySpawner.SUCCESS
                             : BossDelaySpawner.CONTINUE

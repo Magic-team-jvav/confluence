@@ -84,12 +84,12 @@ public enum MeteoriteTracker {
         List<ServerPlayer> players = new ArrayList<>(level.players());
         ChunkHolder chunkHolder;
         ChunkMap chunkMap = level.getChunkSource().chunkMap;
-        int dist = level.getChunkSource().chunkMap.getDistanceManager().playerTicketManager.viewDistance;
         do {
             if (!players.isEmpty()) {
                 Iterator<ServerPlayer> iterator = players.iterator();
                 while (iterator.hasNext()) {
                     ServerPlayer player = iterator.next();
+                    int dist = player.requestedViewDistance();
                     int cx = SectionPos.blockToSectionCoord(player.getX());
                     int cz = SectionPos.blockToSectionCoord(player.getZ());
                     boolean removal = false;

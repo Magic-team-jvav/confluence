@@ -1,5 +1,6 @@
 package org.confluence.mod.common.gameevent;
 
+import com.google.common.collect.Streams;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -18,8 +19,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibMathUtils;
@@ -29,11 +28,11 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.terraentity.init.entity.TEBossEntities;
-import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.HashSet;
 import java.util.List;
@@ -69,11 +68,11 @@ public enum SlimeRainGameEvent implements GameEvent {
         }
         this.forceStart = false;
         this.haveKingSlime = false;
-        this.spawnerData = MinecraftForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
+        this.spawnerData = PortEventHandler.postEventWithReturn(new GameEventSpawnerDataModificationEvent(KEY, level,
                 new MobSpawnSettings.SpawnerData(MonsterEntities.BLUE_SLIME.get(), 200, 1, 1),
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GREEN_SLIME.get(), 300, 1, 1),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.PURPLE_SLIME.get(), 100, 1, 1),
-                new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_SLIME.get(), 1, 1, 1)
+                new MobSpawnSettings.SpawnerData(MonsterEntities.PURPLE_SLIME.get(), 100, 1, 1),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.PINK_SLIME.get(), 1, 1, 1)
         )).create();
     }
 
@@ -92,7 +91,7 @@ public enum SlimeRainGameEvent implements GameEvent {
         if (duration <= 0) return;
         --this.duration;
         if (duration % 20 == 4) {
-            this.haveKingSlime = Streams.of(level.getAllEntities()).anyMatch(entity -> entity.getType() == TEBossEntities.KING_SLIME.get());
+            this.haveKingSlime = Streams.stream(level.getAllEntities()).anyMatch(entity -> entity.getType() == BossEntities.KING_SLIME.get());
         }
         Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
@@ -151,12 +150,12 @@ public enum SlimeRainGameEvent implements GameEvent {
             if (spawnedKingSlime) {
                 count = count * 3 / 2;
             }
-            if (KillBoard.INSTANCE.isDefeated(TEBossEntities.KING_SLIME.get())) {
+            if (KillBoard.INSTANCE.isDefeated(BossEntities.KING_SLIME.get())) {
                 count /= 2;
             }
             if (killed >= count) {
                 ServerPlayer player = Util.getRandom(level.players(), level.random);
-                TEBossEntities.KING_SLIME.get().create(level, entity -> {
+                BossEntities.KING_SLIME.get().create(level, null, entity -> {
                     this.killed = 0;
                     this.spawnedKingSlime = true;
                     entity.addTag(ENTITY_TAG);
@@ -193,7 +192,7 @@ public enum SlimeRainGameEvent implements GameEvent {
             }
         }
         if (invChance > 0) {
-            if (KillBoard.INSTANCE.isDefeated(TEBossEntities.KING_SLIME.get())) { // 击败史莱姆王
+            if (KillBoard.INSTANCE.isDefeated(BossEntities.KING_SLIME.get())) { // 击败史莱姆王
                 invChance *= 2;
             }
             if (KillBoard.INSTANCE.getGamePhase().isHardmode()) { // 困难模式
@@ -260,7 +259,7 @@ public enum SlimeRainGameEvent implements GameEvent {
     }
 
     public void checkEnd(LivingEntity victim) {
-        if (started && victim.getType() == TEBossEntities.KING_SLIME.get()) {
+        if (started && victim.getType() == BossEntities.KING_SLIME.get()) {
             forceEnd();
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 AchievementUtils.awardAchievement(player, "sticky_situation");

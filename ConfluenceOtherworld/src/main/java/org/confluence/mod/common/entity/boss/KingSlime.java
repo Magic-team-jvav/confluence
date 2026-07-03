@@ -88,7 +88,7 @@ public class KingSlime extends BaseBoss {
                         SelectorNode.of(
                                 SequenceNode.of(new HasTargetCondition(KingSlime.this),
                                         new BossHopAction(KingSlime.this, true, 0.5)),
-                                SequenceNode.of(new WaitAction(20 + random().nextInt(40)),
+                                SequenceNode.of(new WaitAction(20 + random.nextInt(40)),
                                         new BossHopAction(KingSlime.this, false, 0.3))
                         )
                 );
@@ -162,7 +162,6 @@ public class KingSlime extends BaseBoss {
                 double dist = 3 + random.nextFloat() * 5;
                 double tx = targetPos.x + Math.cos(angle) * dist;
                 double tz = targetPos.z + Math.sin(angle) * dist;
-                int ty = Level.Heightmap.WORLD_SURFACE;
                 BlockPos surface = serverLevel.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new BlockPos((int) tx, 0, (int) tz));
                 teleportTo(tx, surface.getY() + 2, tz);
             }

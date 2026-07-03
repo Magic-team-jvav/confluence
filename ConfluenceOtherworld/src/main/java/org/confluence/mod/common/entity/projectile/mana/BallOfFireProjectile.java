@@ -38,7 +38,7 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
         Entity entity = result.getEntity();
         if (random.nextBoolean()) {
             if (ModSecretSeeds.DONT_DIG_UP.match() && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(ModEffects.HELLFIRE, 100));
+                living.addEffect(new MobEffectInstance(ModEffects.HELLFIRE.get(), 100));
             } else {
                 entity.setRemainingFireTicks(100);
             }

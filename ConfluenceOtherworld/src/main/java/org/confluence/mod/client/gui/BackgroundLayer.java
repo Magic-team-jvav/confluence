@@ -3,24 +3,16 @@ package org.confluence.mod.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
-import net.minecraft.advancements.AdvancementProgress;
-import net.minecraft.advancements.CriterionProgress;
-import net.minecraft.advancements.FrameType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraftforge.client.DimensionSpecialEffectsManager;
-import net.minecraftforge.client.ForgeHooksClient;
-import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -28,10 +20,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public enum BackgroundLayer {
     SKY {
@@ -196,14 +186,14 @@ public enum BackgroundLayer {
                 this.draggedSun = true;
                 sunPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
-                awardGoingOldschool();
+//                awardGoingOldschool();
                 return true;
             }
             if (moonPos.distance((float) mouseX, (float) mouseY) < moonSize) {
                 this.draggedMoon = true;
                 moonPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
-                awardGoingOldschool();
+//                awardGoingOldschool();
                 return true;
             }
             return false;
@@ -318,7 +308,7 @@ public enum BackgroundLayer {
                 float screenY = y * scale;
                 guiGraphics.pose().translate(screenX, screenY, 0);
                 guiGraphics.pose().scale(scale, scale, 1.0f);
-                guiGraphics.blitSprite(sprite, textureW, textureH, u, v, 0, 0, w, h);
+                guiGraphics.blitSprite(sprite, sprite.textureW(), sprite.textureH(), u, v, 0, 0, w, h);
                 guiGraphics.pose().popPose();
                 RenderSystem.setShaderColor(1, 1, 1, 1);
                 if (shader != null) {
@@ -498,30 +488,30 @@ public enum BackgroundLayer {
         enabled = false;
     }
 
-    private static void awardGoingOldschool() {
-        if (completedGoingOldSchool) return;
-        Map<ResourceLocation, AdvancementProgress> data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-        if (data.containsKey(AchievementUtils.GOING_OLDSCHOOL)) {
-            completedGoingOldSchool = true;
-        } else {
-            completedGoingOldSchool = true;
-            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data);
-            CriterionProgress progress = new CriterionProgress();
-            progress.grant();
-            map.put(AchievementUtils.GOING_OLDSCHOOL, new AchievementProgress(Map.of("never", progress), true));
-            data = map;
-            AchievementToast toast = new AchievementToast(
-                    Confluence.asResource("textures/achievement/going_oldschool.png"),
-                    new AchievementToast.Display(FrameType.CHALLENGE,
-                            Component.translatable("achievements.confluence.going_oldschool.title"),
-                            Component.translatable("achievements.confluence.going_oldschool.description")
-                    ));
-            toast.blitOffset = () -> ForgeHooksClient.getGuiFarPlane() - 21000 + 1;
-            Minecraft.getInstance().getToasts().addToast(toast);
-            AchievementUtils.handleData(data, false);
-            AchievementUtils.saveData();
-        }
-    }
+// todo advancement   private static void awardGoingOldschool() {
+//        if (completedGoingOldSchool) return;
+//        Map<ResourceLocation, AdvancementProgress> data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
+//        if (data.containsKey(AchievementUtils.GOING_OLDSCHOOL)) {
+//            completedGoingOldSchool = true;
+//        } else {
+//            completedGoingOldSchool = true;
+//            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data);
+//            CriterionProgress progress = new CriterionProgress();
+//            progress.grant();
+//            map.put(AchievementUtils.GOING_OLDSCHOOL, new AchievementProgress(Map.of("never", progress), true));
+//            data = map;
+//            AchievementToast toast = new AchievementToast(
+//                    Confluence.asResource("textures/achievement/going_oldschool.png"),
+//                    new AchievementToast.Display(FrameType.CHALLENGE,
+//                            Component.translatable("achievements.confluence.going_oldschool.title"),
+//                            Component.translatable("achievements.confluence.going_oldschool.description")
+//                    ));
+//            toast.blitOffset = () -> ForgeHooksClient.getGuiFarPlane() - 21000 + 1;
+//            Minecraft.getInstance().getToasts().addToast(toast);
+//            AchievementUtils.handleData(data, false);
+//            AchievementUtils.saveData();
+//        }
+//    }
 
     public static boolean isCompletedGoingOldSchool() {
         return completedGoingOldSchool;

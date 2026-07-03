@@ -19,7 +19,7 @@ public class ItemInHandRendererMixin {
 
     @Inject(method = "applyItemArmTransform", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V"), cancellable = true)
     public void cancelAnim(PoseStack poseStack, HumanoidArm hand, float equippedProg, CallbackInfo ci, @Local int i) {
-        if (this.mainHandItem.is(ModTags.GUN)) {
+        if (this.mainHandItem.is(ModTags.Items.GUN)) {
             poseStack.translate((float) i * 0.56F, -0.52F + 0, -0.72F);
             ci.cancel();
         }

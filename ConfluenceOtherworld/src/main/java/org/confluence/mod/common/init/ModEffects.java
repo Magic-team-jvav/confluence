@@ -29,7 +29,7 @@ import org.mesdag.portlib.wrapper.common.PortEffectCure;
 
 import java.util.function.Function;
 
-import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.PortOperation.*;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.*;
 
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, Confluence.MODID);

@@ -15,7 +15,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.util.LibMathUtils;
+import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 import javax.annotation.Nullable;
@@ -125,16 +125,16 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
         return distance < d0 * d0;
     }
 
-    @Override
-    public boolean canUsePortal(boolean allowPassengers) {
-        return true;
-    }
+//    @Override
+//    public boolean canUsePortal(boolean allowPassengers) {
+//        return true;
+//    }
 
     @Override
     public void tick() {
         super.tick();
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        if (hitresult.getType() != HitResult.Type.MISS && !net.neoforged.neoforge.event.EventHooks.onProjectileImpact(this, hitresult)) {
+        if (hitresult.getType() != HitResult.Type.MISS && !PortProjectileImpactEvent.onProjectileImpact(this, hitresult)) {
             hitTargetOrDeflectSelf(hitresult);
         }
 
@@ -161,21 +161,21 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.08;
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.put("Item", getItem().save(registryAccess()));
+        compound.put("Item", getItem().save(new CompoundTag()));
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.contains("Item", 10)) {
-            setItem(ItemStack.parse(registryAccess(), compound.getCompound("Item")).orElse(ItemStack.EMPTY));
+            setItem(ItemStack.of(compound.getCompound("Item")));
         } else {
             setItem(ItemStack.EMPTY);
         }

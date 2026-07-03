@@ -25,6 +25,6 @@ public class PlayerSafeContainer extends PlayerContainer<SafeBlock.BEntity> {
     }
 
     public static PlayerSafeContainer of(Player player) {
-        return player.getAttach(ModAttachmentTypes.SAFE);
+        return player.getData(ModAttachmentTypes.SAFE);
     }
 }

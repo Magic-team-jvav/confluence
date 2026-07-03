@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 public class HellStoneBlock extends Block {
     private final boolean lava;
@@ -48,7 +49,7 @@ public class HellStoneBlock extends Block {
     }
 
     public static class BStair extends StairBlock {
-        public BStair(BlockState state, Properties properties) {
+        public BStair(Supplier<BlockState> state, Properties properties) {
             super(state, properties);
         }
 

@@ -1,9 +1,9 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
+import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -43,7 +43,7 @@ public class BaseGrenadeEntity extends BaseBombEntity {
 
     @Override
     protected void explodeFunction(ServerLevel level) {
-        TerraStyleExplosion.terraExplode(level, this, Explosion.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), 1.5F, Level.ExplosionInteraction.NONE);
+        TerraStyleExplosion.terraExplode(level, this, PortExplosionExtension.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), 1.5F, Level.ExplosionInteraction.NONE);
     }
 
     protected ExplosionDamageCalculator getExplosionDamageCalculator() {

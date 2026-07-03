@@ -14,7 +14,7 @@ public class FossilArrowItem extends BaseTerraArrowItem {
     }
 
     @Override
-    protected BaseArrowEntity createArrowEntity(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
+    public BaseArrowEntity createArrowEntity(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
         return new FossilArrowEntity(ModEntities.FOSSIL_ARROW.get(), shooter, ammo, weapon);
     }
 }

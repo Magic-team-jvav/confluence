@@ -3,6 +3,7 @@ package org.confluence.mod.common.component;
 import PortLib.extensions.net.minecraft.resources.ResourceLocation.PortResourceLocationExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -12,14 +13,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.EffectStrategyComponent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /// # 连枷弹射物组
@@ -38,7 +36,6 @@ import java.util.function.Supplier;
 /// @param soundEvent   音效 ResourceLocation
 /// @param projType     弹射物实体类ResourceLocation
 /// @param chainTexture 链条纹理 ResourceLocation
-/// @param hitEffect    击中特效（可选）
 public record FlailComponent(
         float damageFactor,
         float spinRadius,
@@ -52,8 +49,7 @@ public record FlailComponent(
         int maxBounces,
         ResourceLocation soundEvent,
         ResourceLocation projType,
-        ResourceLocation chainTexture,
-        Optional<EffectStrategyComponent> hitEffect
+        ResourceLocation chainTexture
 ) {
 
     public static final Codec<FlailComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -69,10 +65,9 @@ public record FlailComponent(
             Codec.INT.optionalFieldOf("maxBounces", 3).forGetter(FlailComponent::maxBounces),
             ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(FlailComponent::soundEvent),
             ResourceLocation.CODEC.fieldOf("projType").forGetter(FlailComponent::projType),
-            ResourceLocation.CODEC.fieldOf("chainTexture").forGetter(FlailComponent::chainTexture),
-            EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(FlailComponent::hitEffect)
+            ResourceLocation.CODEC.fieldOf("chainTexture").forGetter(FlailComponent::chainTexture)
     ).apply(instance, FlailComponent::new));
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, FlailComponent> STREAM_CODEC = LibStreamCodecUtils.composite(
+    public static final PortStreamCodec<ByteBuf, FlailComponent> STREAM_CODEC = LibStreamCodecUtils.composite(
             PortByteBufCodecs.FLOAT, FlailComponent::damageFactor,
             PortByteBufCodecs.FLOAT, FlailComponent::spinRadius,
             PortByteBufCodecs.FLOAT, FlailComponent::spinSpeed,
@@ -86,7 +81,6 @@ public record FlailComponent(
             PortResourceLocationExtension.streamCodec(), FlailComponent::soundEvent,
             PortResourceLocationExtension.streamCodec(), FlailComponent::projType,
             PortResourceLocationExtension.streamCodec(), FlailComponent::chainTexture,
-            PortByteBufCodecs.optional(EffectStrategyComponent.STREAM_CODEC), FlailComponent::hitEffect,
             FlailComponent::new
     );
 
@@ -105,8 +99,7 @@ public record FlailComponent(
                     3,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/ball_o_hurt_chain.png"),
-                    Optional.empty()
+                    Confluence.asResource("textures/entity/ball_o_hurt_chain.png")
             );
 
     /// 链球 MACE 预制参数
@@ -124,8 +117,7 @@ public record FlailComponent(
                     3,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     ModEntities.FLAIL_ENTITY.getId(),
-                    Confluence.asResource("textures/entity/mace_chain.png"),
-                    Optional.empty()
+                    Confluence.asResource("textures/entity/mace_chain.png")
             );
 
     public SoundEvent getSoundEvent() {
@@ -148,8 +140,7 @@ public record FlailComponent(
                     maxBounces == other.maxBounces &&
                     soundEvent.equals(other.soundEvent) &&
                     projType.equals(other.projType) &&
-                    chainTexture.equals(other.chainTexture) &&
-                    hitEffect.equals(other.hitEffect);
+                    chainTexture.equals(other.chainTexture);
         }
         return false;
     }
@@ -169,7 +160,6 @@ public record FlailComponent(
         result = 31 * result + soundEvent.hashCode();
         result = 31 * result + projType.hashCode();
         result = 31 * result + chainTexture.hashCode();
-        result = 31 * result + hitEffect.hashCode();
         return result;
     }
 

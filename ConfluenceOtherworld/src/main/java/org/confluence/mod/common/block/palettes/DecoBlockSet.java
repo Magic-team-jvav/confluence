@@ -43,7 +43,7 @@ public class DecoBlockSet {
         this.stonecutting = builder.stonecutting;
 
         this.FULL = ModBlocks.registerWithItem(id, () -> builder.full.apply(builder.properties.get()), builder.itemProperties);
-        this.STAIRS = ModBlocks.registerWithItem(id + "_stairs", () -> builder.stairs.apply(FULL.get().defaultBlockState(), builder.properties.get()), builder.itemProperties);
+        this.STAIRS = ModBlocks.registerWithItem(id + "_stairs", () -> builder.stairs.apply(() -> FULL.get().defaultBlockState(), builder.properties.get()), builder.itemProperties);
         this.SLAB = ModBlocks.registerWithItem(id + "_slab", () -> builder.slab.apply(builder.properties.get()), builder.itemProperties);
         this.WALL = ModBlocks.registerWithItem(id + "_wall", () -> builder.wall.apply(builder.properties.get().forceSolidOn()), builder.itemProperties);
 
@@ -93,7 +93,7 @@ public class DecoBlockSet {
         private boolean stonecutting = false;
         private Item.Properties itemProperties = new Item.Properties();
         private Function<BlockBehaviour.Properties, ? extends Block> full = Block::new;
-        private BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> stairs = StairBlock::new;
+        private BiFunction<Supplier<BlockState>, BlockBehaviour.Properties, ? extends StairBlock> stairs = StairBlock::new;
         private Function<BlockBehaviour.Properties, ? extends SlabBlock> slab = SlabBlock::new;
         private Function<BlockBehaviour.Properties, ? extends WallBlock> wall = WallBlock::new;
 
@@ -127,7 +127,7 @@ public class DecoBlockSet {
             return this;
         }
 
-        public Builder stair(@Nullable BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> function) {
+        public Builder stair(@Nullable BiFunction<Supplier<BlockState>, BlockBehaviour.Properties, ? extends StairBlock> function) {
             this.stairs = function;
             return this;
         }

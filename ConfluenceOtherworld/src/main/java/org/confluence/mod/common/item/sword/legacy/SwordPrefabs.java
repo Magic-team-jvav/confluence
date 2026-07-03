@@ -28,7 +28,7 @@ public class SwordPrefabs {
     public static final Function<Supplier<SwordProjectileComponent>, ModifierBuilder> PROJ_SWORD = (strategy) -> new ModifierBuilder().setProj(strategy);
 
     /// 效果剑
-    public static final Function<EffectStrategyComponent, ModifierBuilder> EFFECT_SWORD = (effect) -> new ModifierBuilder().setOnHitEffect(effect);
+//    public static final Function<EffectStrategyComponent, ModifierBuilder> EFFECT_SWORD = (effect) -> new ModifierBuilder().setOnHitEffect(effect);
 
     /// 特殊类
     // 雨伞
@@ -37,7 +37,7 @@ public class SwordPrefabs {
     public static ModifierBuilder withSpecialSweep(float ratio, ModifierBuilder builder) {
         builder.setSpecialSweep();
         if (ratio > 0.0F) {
-            return builder.addAttributeModifier(PortAttributesExtension.sweepingDamageRatio(), ratio, PortAttributeModifier.PortOperation.ADD_VALUE);
+            return builder.addAttributeModifier(PortAttributesExtension.sweepingDamageRatio(), ratio, PortAttributeModifier.Operation.ADD_VALUE);
         }
         return builder;
     }

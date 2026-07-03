@@ -3,7 +3,6 @@ package org.confluence.mod.mixed;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,17 +11,19 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.confluence.lib.mixed.ILibExtraSyncedData;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
@@ -91,18 +92,16 @@ public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
 
     static ObjectArrayList<ItemStack> modifyLoot(FishingHook self, ObjectArrayList<ItemStack> original) {
         if (self.getPlayerOwner() instanceof ServerPlayer player) {
-            PlayerSpecialData data = PlayerSpecialData.of(player);
-            ItemStack questedFish = data.getCurrentQuestedFish(player);
-            if (!questedFish.isEmpty()) {
-                data.removeCurrentQuestedFish();
-                return ObjectArrayList.of(questedFish);
+            Item questedFish = PlayerSpecialData.of(player).getQuestedFish();
+            if (questedFish != Items.AIR && LibMathUtils.checkChance(0.25F, self.getRandom())) {
+                return ObjectArrayList.of(questedFish.getDefaultInstance());
             }
 
             int sample = player.hasEffect(ModEffects.CRATE) ? 4 : 10;
             ServerLevel level = player.serverLevel();
             if (level.random.nextInt(sample) == 0) {
-                ResourceKey<LootTable> lootTable = IMinecraftServer.isHardmode(level.getServer()) ? ModLootTables.CRATE_HARDMODE : ModLootTables.CRATE;
-                return level.getServer().reloadableRegistries().getLootTable(lootTable)
+                ResourceLocation lootTable = IMinecraftServer.isHardmode(level.getServer()) ? ModLootTables.CRATE_HARDMODE : ModLootTables.CRATE;
+                return level.getServer().getLootData().getLootTable(lootTable)
                         .getRandomItems(new LootParams.Builder(level)
                                 .withParameter(LootContextParams.ORIGIN, self.position())
                                 .withParameter(LootContextParams.THIS_ENTITY, self)

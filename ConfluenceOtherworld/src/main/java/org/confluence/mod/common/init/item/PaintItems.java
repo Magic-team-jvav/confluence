@@ -1,12 +1,9 @@
 package org.confluence.mod.common.init.item;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
@@ -16,6 +13,9 @@ import org.confluence.mod.common.item.paint.*;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
+import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,8 +79,8 @@ public class PaintItems {
     private static <T extends Item> PortDeferredItem<T> registerTool(String suffix, TriFunction<Item.Properties, ModRarity, List<Component>, T> factory, boolean spectre) {
         return ITEMS.register(spectre ? "spectre_" + suffix : suffix, () -> {
             Item.Properties properties = new Item.Properties();
-            if (spectre) properties.attributes(ItemAttributeModifiers.builder().add(
-                    Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 3, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND
+            if (spectre) properties.attributes(PortItemAttributeModifiers.builder().add(
+                    PortAttributesExtension.blockInteractionRange(), ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 3, PortAttributeModifier.Operation.ADD_VALUE, PortEquipmentSlotGroup.MAINHAND
             ).build());
             return factory.apply(properties, ModRarity.WHITE, TooltipItem.getTooltipsFromString(suffix, 2, ChatFormatting.GRAY));
         });

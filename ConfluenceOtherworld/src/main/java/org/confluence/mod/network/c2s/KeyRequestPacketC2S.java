@@ -1,7 +1,6 @@
 package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -11,6 +10,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
@@ -32,7 +32,7 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
         } else if (key == KEY_MANA) {
             ManaPotionItem.use(player);
         } else if (key == KEY_CLAIRVOYANCE) {
-            player.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE, MobEffectInstance.INFINITE_DURATION));
+            player.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE.get(), MobEffectInstance.INFINITE_DURATION));
             ManaStorage.of(player).flushAbility(player);
         }
     }

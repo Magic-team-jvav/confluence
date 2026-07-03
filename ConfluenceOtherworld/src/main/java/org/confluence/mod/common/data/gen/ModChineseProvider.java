@@ -3708,7 +3708,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BaitItems.BLUE_JELLYFISH.get(), "蓝水母");
         add(BaitItems.BLUE_DRAGONFLY.get(), "蓝蜻蜓");
         add(BaitItems.BUGGY.get(), "蚜虫");
-        add(BaitItems.ENCHANTED_NIGHTCRAWLER.get(), "附魔夜行者");
+        add(BaitItems.NIGHTCRAWLER.get(), "附魔夜行者");
         add(BaitItems.FIREFLY.get(), "萤火虫");
         add(BaitItems.GLOWING_SNAIL.get(), "发光蜗牛");
         add(BaitItems.GOLD_BUTTERFLY.get(), "金蝴蝶");
@@ -4734,14 +4734,14 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(TCEffects.GRAVITATION.get(), "重力", "按[%s]可逆转重力");
         addEffect(TCEffects.PALADINS_SHIELD.get(), "圣骑士护盾", "所受伤害的25%将被转移到另一名玩家身上");
 
-        addEffect(TEEffects.DEMONIC_THOUGHTS.get(), "邪念", "再次被赋予邪念时会生成噬魂怪");
-        addEffect(TEEffects.SUMMON_FOCUS.get(), "狩猎", "召唤物额外造成伤害");
-        addEffect(TEEffects.HELLFIRE.get(), "狱炎", "持续损失生命值");
-        addEffect(TEEffects.FROST_BURN.get(), "霜冻", "缓慢损失生命值，无法再生生命");
-        addEffect(TEEffects.CRIMSON_STORM.get(), "猩红风暴", "你已陷入风暴，无可逃脱。");
-        addEffect(TEEffects.HORRIFIED.get(), "惊恐", "你已看到污秽之物，无可逃脱。");
-        addEffect(TEEffects.THE_TONGUE.get(), "狂卷之舌", "你被吸入嘴中");
-        addEffect(TEEffects.SCARED.get(), "惊慌", "如惊弓之鸟，四处逃串");
+        addEffect(ModEffects.DEMONIC_THOUGHTS.get(), "邪念", "再次被赋予邪念时会生成噬魂怪");
+        addEffect(ModEffects.SUMMON_FOCUS.get(), "狩猎", "召唤物额外造成伤害");
+        addEffect(ModEffects.HELLFIRE.get(), "狱炎", "持续损失生命值");
+        addEffect(ModEffects.FROST_BURN.get(), "霜冻", "缓慢损失生命值，无法再生生命");
+        addEffect(ModEffects.CRIMSON_STORM.get(), "猩红风暴", "你已陷入风暴，无可逃脱。");
+        addEffect(ModEffects.HORRIFIED.get(), "惊恐", "你已看到污秽之物，无可逃脱。");
+        addEffect(ModEffects.THE_TONGUE.get(), "狂卷之舌", "你被吸入嘴中");
+        addEffect(ModEffects.SCARED.get(), "惊慌", "如惊弓之鸟，四处逃串");
         add("item.confluence.spawn_eggs", "%s刷怪蛋");
 
         // 车万女仆

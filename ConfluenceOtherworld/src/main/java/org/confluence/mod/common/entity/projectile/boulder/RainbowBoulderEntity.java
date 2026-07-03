@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
+import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -13,11 +14,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.api.entity.Boss;
-import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.terra_curio.common.TCCommonConfigs;
-import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -200,12 +199,12 @@ public class RainbowBoulderEntity extends BoulderEntity {
             Vec3 motion = LibMathUtils.relativeScale(getDeltaMovement(), blockHitResult.getDirection().getAxis(), -bounceFactor);
             setDeltaMovement(motion);
         }
-        if (targetPos != null) {
-            if (targetPos.equals(blockHitResult.getBlockPos())) {
-                IntegerRGB rgb = IntegerRGB.of(getGlowingColor());
-                DebugBlocksHelper.Singleton().addDebugBlock(targetPos, new DebugBlocksHelper.DebugInfo(rgb.red(), rgb.green(), rgb.blue(), 200));
-            }
-        }
+//        if (targetPos != null) {
+//            if (targetPos.equals(blockHitResult.getBlockPos())) {
+//                IntegerRGB rgb = IntegerRGB.of(getGlowingColor());
+//                DebugBlocksHelper.Singleton().addDebugBlock(targetPos, new DebugBlocksHelper.DebugInfo(rgb.red(), rgb.green(), rgb.blue(), 200));
+//            }
+//        }
         target = null;
         targetPos = null;
     }
@@ -225,10 +224,10 @@ public class RainbowBoulderEntity extends BoulderEntity {
             Vec3 currentPos = this.position();
 
             if (trails.isEmpty()) {
-                trails.addLast(currentPos);
+                PortListExtension.addLast(trails, currentPos);
             }
 
-            Vec3 lastPos = trails.getLast();
+            Vec3 lastPos = PortListExtension.getLast(trails);
             double dist = lastPos.distanceTo(currentPos);
 
             double spacing = 0.4;
@@ -236,14 +235,14 @@ public class RainbowBoulderEntity extends BoulderEntity {
                 int steps = Mth.floor(dist / spacing);
                 Vec3 delta = currentPos.subtract(lastPos).scale(1.0 / steps);
                 for (int i = 1; i <= steps; i++) {
-                    trails.addLast(lastPos.add(delta.scale(i)));
+                    PortListExtension.addLast(trails, lastPos.add(delta.scale(i)));
                 }
             } else {
-                trails.addLast(currentPos);
+                PortListExtension.addLast(trails, currentPos);
             }
 
             while (trails.size() > 20) {
-                trails.removeFirst();
+                PortListExtension.removeFirst(trails);
             }
         }
     }

@@ -3,7 +3,6 @@ package org.confluence.mod.util;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -11,6 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
@@ -23,6 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -31,6 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+import org.mesdag.portlib.wrapper.world.level.PortExplosionDamageCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +41,13 @@ public class TerraStyleExplosion extends Explosion {
     private static final ResourceLocation PARTICLE_ID = Confluence.asResource("explosion");
 
     public TerraStyleExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, @Nullable ExplosionDamageCalculator damageCalculator, double x, double y, double z, float radius, Explosion.BlockInteraction blockInteraction) {
-        super(level, source, damageSource, damageCalculator, x, y, z, radius, false, blockInteraction, ParticleTypes.EXPLOSION, ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE);
+        super(level, source, damageSource, damageCalculator, x, y, z, radius, false, blockInteraction);
     }
 
     @Override
     public void explode() {
-        Vec3 center = new Vec3(x, y, z);
-        level.gameEvent(source, GameEvent.EXPLODE, center);
+        Vec3 vec3 = new Vec3(x, y, z);
+        level.gameEvent(source, GameEvent.EXPLODE, vec3);
 
         float obsidianBasedExplosionResistance = ModBlocks.getObsidianBasedExplosionResistance(0);
         BlockPos origin = BlockPos.containing(x, y, z);
@@ -69,12 +71,23 @@ public class TerraStyleExplosion extends Explosion {
         });
 
         List<Entity> list = level.getEntities(source, area);
-        net.neoforged.neoforge.event.net.minecraftforge.event.ForgeEventFactory.onExplosionDetonate(level, this, list, radius + radius);
+        ForgeEventFactory.onExplosionDetonate(level, this, list, radius + radius);
         for (Entity entity : list) {
-            if (entity.ignoreExplosion(this)) continue;
+            if (entity.ignoreExplosion()) continue;
 
-            if (damageCalculator.shouldDamageEntity(this, entity)) {
-                entity.hurt(damageSource, Math.min(damageCalculator.getEntityDamageAmount(this, entity), radius * 10));
+            float diameter = radius * 2.0F;
+            double distance = Math.sqrt(entity.distanceToSqr(vec3)) / diameter;
+            double percent = getSeenPercent(vec3, entity);
+            double ratio = (1.0D - distance) * percent;
+            float amount = ((int) ((ratio * ratio + ratio) / 2.0D * 7.0D * diameter + 1.0D));
+            if (damageCalculator instanceof PortExplosionDamageCalculator port &&
+                    port.shouldDamageEntity(this, entity)
+            ) {
+                float damage = port.getEntityDamage(this, entity);
+                if (damage < 0) {
+                    damage = amount;
+                }
+                entity.hurt(damageSource, Math.min(port.modifyEntityDamage(this, entity, damage), radius * 10));
             }
             if (entity instanceof Player player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
                 hitPlayers.put(player, Vec3.ZERO);
@@ -102,8 +115,23 @@ public class TerraStyleExplosion extends Explosion {
         }
     }
 
+    private static void addOrAppendStack(List<Pair<ItemStack, BlockPos>> drops, ItemStack stack, BlockPos pos) {
+        for (int i = 0; i < drops.size(); i++) {
+            Pair<ItemStack, BlockPos> pair = drops.get(i);
+            ItemStack itemstack = pair.getFirst();
+            if (ItemEntity.areMergable(itemstack, stack)) {
+                drops.set(i, Pair.of(ItemEntity.merge(itemstack, stack, 16), pair.getSecond()));
+                if (stack.isEmpty()) {
+                    return;
+                }
+            }
+        }
+
+        drops.add(Pair.of(stack, pos));
+    }
+
     public static void handleClientExplode(Level level, double x, double y, double z, float radius) {
-        level.playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F, false);
+        level.playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F, false);
         MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("variable.radius", radius)));
     }
 
@@ -122,11 +150,11 @@ public class TerraStyleExplosion extends Explosion {
             Explosion.BlockInteraction blockInteraction = switch (explosionInteraction) {
                 case NONE -> Explosion.BlockInteraction.KEEP;
                 case BLOCK -> getDestroyType(level, GameRules.RULE_BLOCK_EXPLOSION_DROP_DECAY);
-                case MOB -> net.minecraftforge.event.ForgeEventFactory.canEntityGrief(level, source)
+                case MOB -> ForgeEventFactory.getMobGriefingEvent(level, source)
                         ? getDestroyType(level, GameRules.RULE_MOB_EXPLOSION_DROP_DECAY)
                         : Explosion.BlockInteraction.KEEP;
                 case TNT -> getDestroyType(level, GameRules.RULE_TNT_EXPLOSION_DROP_DECAY);
-                case TRIGGER -> Explosion.BlockInteraction.TRIGGER_BLOCK;
+//                case TRIGGER -> Explosion.BlockInteraction.TRIGGER_BLOCK;
             };
             Explosion explosion = new TerraStyleExplosion(level, source, damageSource, damageCalculator, x, y, z, radius, blockInteraction);
             if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(level, explosion))

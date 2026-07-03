@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
@@ -23,17 +22,20 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IForgeShearable;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.*;
 
@@ -53,7 +55,7 @@ public class RainbowSheep extends Animal implements IForgeShearable {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.25));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1, this::isFood, false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.1, Ingredient.of(PortTags.Items.SHEEP_FOOD), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1));
         this.goalSelector.addGoal(5, this.eatBlockGoal = new EatHallowBlockGoal(this));
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -63,7 +65,7 @@ public class RainbowSheep extends Animal implements IForgeShearable {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.is(ItemTags.SHEEP_FOOD);
+        return stack.is(PortTags.Items.SHEEP_FOOD);
     }
 
     @Override
@@ -259,14 +261,14 @@ public class RainbowSheep extends Animal implements IForgeShearable {
             if (eatAnimationTick == adjustedTickDelay(4)) {
                 BlockPos pos = mob.blockPosition();
                 if (level.getBlockState(pos).is(NatureBlocks.HALLOW_GRASS.get())) {
-                    if (net.minecraftforge.event.ForgeEventFactory.canEntityGrief(level, mob)) {
+                    if (ForgeEventFactory.getMobGriefingEvent(level, mob)) {
                         level.destroyBlock(pos, false);
                     }
                     mob.ate();
                 } else {
                     BlockPos below = pos.below();
                     if (this.level.getBlockState(below).is(NatureBlocks.HALLOW_GRASS_BLOCK.get())) {
-                        if (net.minecraftforge.event.ForgeEventFactory.canEntityGrief(level, mob)) {
+                        if (ForgeEventFactory.getMobGriefingEvent(level, mob)) {
                             int id = Block.getId(NatureBlocks.HALLOW_GRASS_BLOCK.get().defaultBlockState());
                             level.levelEvent(LevelEvent.PARTICLES_DESTROY_BLOCK, below, id);
                             level.setBlock(below, Blocks.DIRT.defaultBlockState(), 2);

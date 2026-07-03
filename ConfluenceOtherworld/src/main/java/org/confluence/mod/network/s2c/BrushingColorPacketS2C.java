@@ -23,7 +23,7 @@ import java.util.Map;
 
 public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("brushing_color");
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, BrushingColorPacketS2C> STREAM_CODEC = new StreamCode<>() {
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, BrushingColorPacketS2C> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public BrushingColorPacketS2C decode(PortRegistryFriendlyByteBuf buffer) {
             ChunkPos chunkPos = buffer.readChunkPos();

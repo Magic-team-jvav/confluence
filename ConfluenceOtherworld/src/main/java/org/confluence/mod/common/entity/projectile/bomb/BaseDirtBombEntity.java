@@ -1,18 +1,18 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
+import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.Tags;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 public class BaseDirtBombEntity extends BaseBombEntity {
     protected int radius = 4;
@@ -47,12 +47,12 @@ public class BaseDirtBombEntity extends BaseBombEntity {
                         BlockState state = level.getBlockState(mutable);
                         if (state.canBeReplaced()) {
                             level.destroyBlock(mutable, true, getOwner());
-                            level.setBlockAndUpdate(mutable, state.getFluidState().is(Tags.Fluids.WATER) ? toFillWhenInWater : toFill);
+                            level.setBlockAndUpdate(mutable, state.getFluidState().is(PortTags.Fluids.WATER) ? toFillWhenInWater : toFill);
                         }
                     }
                 }
             }
         }
-        TerraStyleExplosion.terraExplode(level, this, Explosion.getDefaultDamageSource(level, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), radius, Level.ExplosionInteraction.NONE);
+        TerraStyleExplosion.terraExplode(level, this, PortExplosionExtension.getDefaultDamageSource(level, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), radius, Level.ExplosionInteraction.NONE);
     }
 }

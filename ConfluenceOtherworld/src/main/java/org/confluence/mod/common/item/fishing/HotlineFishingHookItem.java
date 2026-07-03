@@ -17,7 +17,7 @@ public class HotlineFishingHookItem extends AbstractFishingPole {
 
     public HotlineFishingHookItem() {
         super(new Properties().unbreakable().fireResistant(), ModRarity.ORANGE);
-        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.45, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
+        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.45, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
     }
 
     @Override

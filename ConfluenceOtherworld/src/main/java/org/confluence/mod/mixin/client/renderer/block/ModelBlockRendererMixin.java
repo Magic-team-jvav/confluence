@@ -18,24 +18,24 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(ModelBlockRenderer.class)
 public abstract class ModelBlockRendererMixin {
     /// @see org.confluence.mod.mixin.integration.sodium.BlockRendererMixin
-    @WrapOperation(method = "putQuadData", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;putBulkData(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lnet/minecraft/client/renderer/block/model/BakedQuad;[FFFFF[IIZ)V"))
-    private void putColor(VertexConsumer instance, PoseStack.Pose pose, BakedQuad quad, float[] brightness, float red, float green, float blue, float alpha, int[] lightmap, int packedOverlay, boolean readAlpha, Operation<Void> original, @Local(argsOnly = true) BlockPos pPos) {
+    @WrapOperation(method = "putQuadData", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;putBulkData(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lnet/minecraft/client/renderer/block/model/BakedQuad;[FFFF[IIZ)V"))
+    private void putColor(VertexConsumer instance, PoseStack.Pose poseEntry, BakedQuad quad, float[] colorMuls, float red, float green, float blue, int[] combinedLights, int combinedOverlay, boolean mulColor, Operation<Void> original, @Local(argsOnly = true) BlockPos pPos) {
         int color = LocalBrushData.getColor(pPos, quad.getDirection());
         if (color == BrushData.EMPTY_COLOR || color == BrushData.ECHO_COLOR) {
-            original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
+            original.call(instance, poseEntry, quad, combinedLights, red, green, blue, combinedLights, combinedOverlay, mulColor);
         } else if (color == BrushData.ILLUMINANT_COLOR) {
-            original.call(instance, pose, quad, brightness, red, green, blue, alpha, LibRenderUtils.FULL_BRIGHT, packedOverlay, readAlpha);
+            original.call(instance, poseEntry, quad, combinedLights, red, green, blue, LibRenderUtils.FULL_BRIGHT, combinedOverlay, mulColor);
         } else if (color == BrushData.NEGATIVE_COLOR) {
             if (red != 1.0F || green != 1.0F || blue != 1.0F) {
-                original.call(instance, pose, quad, brightness, 1.0F - red, 1.0F - green, 1.0F - blue, alpha, lightmap, packedOverlay, readAlpha);
+                original.call(instance, poseEntry, quad, combinedLights, 1.0F - red, 1.0F - green, 1.0F - blue, combinedLights, combinedOverlay, mulColor);
             } else {
-                original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
+                original.call(instance, poseEntry, quad, combinedLights, red, green, blue, combinedLights, combinedOverlay, mulColor);
             }
         } else {
             float r = (float) (color >> 16 & 255) * LibMathUtils.INV_255;
             float g = (float) (color >> 8 & 255) * LibMathUtils.INV_255;
             float b = (float) (color & 255) * LibMathUtils.INV_255;
-            original.call(instance, pose, quad, brightness, r, g, b, alpha, lightmap, packedOverlay, readAlpha);
+            original.call(instance, poseEntry, quad, combinedLights, r, g, b, combinedLights, combinedOverlay, mulColor);
         }
     }
 }

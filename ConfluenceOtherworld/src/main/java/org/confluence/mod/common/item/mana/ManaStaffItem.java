@@ -63,7 +63,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, double critChance) {
         this(new Properties().stacksTo(1), rarity, factory, damage, manaCost, rawVelocity, cooldown);
         if (critChance == 0.0) return;
-        addAttributeModifiers(builder -> builder.add(LibAttributes.getCriticalChance(), new PortAttributeModifier(ID, critChance, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND));
+        addAttributeModifiers(builder -> builder.add(LibAttributes.getCriticalChance(), new PortAttributeModifier(ID, critChance, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND));
     }
 
     public ManaStaffItem<E> withTooltip(Component... tooltips) {

@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.fluids.FluidType;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
@@ -25,6 +26,7 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.mixed.IEntity;
+import org.mesdag.portlib.event.PortEventHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -46,10 +48,10 @@ public abstract class EntityMixin implements IEntity {
     public abstract void discard();
 
     @Shadow
-    public abstract void setNoGravity(boolean pNoGravity);
+    public abstract void setNoGravity(boolean noGravity);
 
     @Shadow
-    public abstract void setGlowingTag(boolean pHasGlowingTag);
+    public abstract void setGlowingTag(boolean hasGlowingTag);
 
     @Shadow
     public abstract Vec3 getDeltaMovement();
@@ -61,10 +63,7 @@ public abstract class EntityMixin implements IEntity {
     public abstract EntityType<?> getType();
 
     @Shadow
-    public abstract boolean is(Entity pEntity);
-
-    @Shadow
-    public abstract BlockState getInBlockState();
+    public abstract boolean is(Entity entity);
 
     @Shadow
     public abstract BlockPos blockPosition();
@@ -117,7 +116,7 @@ public abstract class EntityMixin implements IEntity {
         if (confluence$isInShimmer) {
             if (confluence$entity_coolDown == 0 && !self.level().isClientSide && !(self instanceof ItemEntity)) {
                 ShimmerEntityTransmutationEvent.Pre pre = new ShimmerEntityTransmutationEvent.Pre(self);
-                if (MinecraftForge.EVENT_BUS.post(pre).isCanceled()) {
+                if (PortEventHandler.postEventWithReturn(pre).isCanceled()) {
                     confluence$setup(self, pre.getCoolDown(), pre.getSpeedY());
                 } else if (confluence$entity_transforming < pre.getTransformTime()) {
                     this.confluence$entity_transforming++;
@@ -201,7 +200,7 @@ public abstract class EntityMixin implements IEntity {
     @Unique
     private boolean confluence$checkInShimmer() {
         if (getEyeInFluidType() == ModFluids.SHIMMER.type().get()) return true;
-        BlockState state = getInBlockState();
+        BlockState state = confluence$self().getInBlockState();
         Block block = state.getBlock();
         return block == ModBlocks.AETHERIUM_CAULDRON.get() && ((AetheriumCauldronBlock) block).isEntityInsideContent(state, blockPosition(), confluence$self());
     }

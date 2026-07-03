@@ -3,7 +3,6 @@ package org.confluence.mod.client.gui.hud.soul.quick_skill;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
@@ -12,6 +11,7 @@ import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.client.PortDeltaTicker;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -61,8 +61,8 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     private static final float VISIBLE_RANGE = ADDITIONAL_COUNT + 0.4f;
 
     // ==================== 纹理资源 ====================
-    private static final ResourceLocation TEX = Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal");
-    private static final ResourceLocation TEX_SEL = Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal_select");
+    private static final PortSprite TEX = new PortSprite(Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal"), 128, 32);
+    private static final PortSprite TEX_SEL = new PortSprite(Confluence.asResource("hud/soul_quick_skill_hud/card_horizontal_select"), 128, 32);
 
     public static final int CARD_WIDTH = 128;
     public static final int CARD_HEIGHT = 32;
@@ -208,7 +208,7 @@ public class CardHorizontalHud extends BasicSoulQuickSkillHud {
     }
 
     private void renderCard(GuiGraphics guiGraphics, @Nullable SoulSkillStack stack, boolean selected, int skillIdx, float scale) {
-        ResourceLocation tex = selected ? TEX_SEL : TEX;
+        PortSprite tex = selected ? TEX_SEL : TEX;
         guiGraphics.blitSprite(tex, 0, 0, CARD_WIDTH, CARD_HEIGHT);
 
         if (selected) {

@@ -91,8 +91,8 @@ public class StormSpearProjectile extends SpearProjectile {
 
 
     @Override
-    public void onRemovedFromLevel() {
-        super.onRemovedFromLevel();
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
         if (!level().isClientSide) {
             EmitterCreationPacketS2C.sendToAll(
                     Confluence.asResource("thunder_zapper_expiration"),

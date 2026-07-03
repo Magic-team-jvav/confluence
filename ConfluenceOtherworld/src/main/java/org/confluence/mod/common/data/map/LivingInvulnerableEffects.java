@@ -4,7 +4,6 @@ import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.net.minecraft.world.effect.MobEffect.PortMobEffectExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.HolderSetCodec;
@@ -12,6 +11,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.common.init.ModDataMaps;
 
 import java.util.Arrays;
@@ -28,9 +28,11 @@ public record LivingInvulnerableEffects(HolderSet<MobEffect> effects, List<Categ
         this(effects, Arrays.stream(categories).toList());
     }
 
-    public static boolean isInvulnerableTo(LivingEntity living, Holder<MobEffect> effect) {
+    public static boolean isInvulnerableTo(LivingEntity living, MobEffect effect) {
         LivingInvulnerableEffects data = ModDataMaps.getEntityData(ModDataMaps.LIVING_INVULNERABLE_EFFECTS, living);
-        return data != null && data.effects.contains(effect) && (data.categories.isEmpty() || data.categories.stream().anyMatch(category -> category.is(effect)));
+        return data != null &&
+                data.effects.contains(ForgeRegistries.MOB_EFFECTS.getDelegateOrThrow(effect)) &&
+                (data.categories.isEmpty() || data.categories.stream().anyMatch(category -> category.is(effect)));
     }
 
     public enum Category implements StringRepresentable {
@@ -46,8 +48,8 @@ public record LivingInvulnerableEffects(HolderSet<MobEffect> effects, List<Categ
             this.value = value;
         }
 
-        public boolean is(Holder<MobEffect> effect) {
-            return value == effect.value().getCategory();
+        public boolean is(MobEffect effect) {
+            return value == effect.getCategory();
         }
 
         @Override

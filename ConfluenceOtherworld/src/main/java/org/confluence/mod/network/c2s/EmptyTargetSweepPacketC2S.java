@@ -13,7 +13,6 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.mixin.server.level.ServerPlayerAccessor;
 import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.PortLib;
 import org.mesdag.portlib.event.PortEventHandler;
@@ -49,7 +48,7 @@ public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
                         player.distanceToSqr(target) < entityReachSq
                 ) {
                     target.knockback(0.4F, Mth.sin(player.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(player.getYRot() * Mth.DEG_TO_RAD));
-                    float amount = ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, attackDamage, source);
+                    float amount = attackDamage/* todo enchantment ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, attackDamage, source)*/;
                     target.hurt(source, amount);
                     PortEnchantmentHelperExtension.doPostAttackEffects(player.serverLevel(), target, source);
                 }

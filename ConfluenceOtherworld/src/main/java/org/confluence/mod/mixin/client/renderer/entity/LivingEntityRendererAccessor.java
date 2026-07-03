@@ -17,9 +17,6 @@ public interface LivingEntityRendererAccessor {
     boolean callIsBodyVisible(LivingEntity livingEntity);
 
     @Invoker
-    void callSetupRotations(LivingEntity entity, PoseStack poseStack, float bob, float yBodyRot, float partialTick, float scale);
-
-    @Invoker
     void callScale(LivingEntity livingEntity, PoseStack poseStack, float partialTickTime);
 
     @Invoker

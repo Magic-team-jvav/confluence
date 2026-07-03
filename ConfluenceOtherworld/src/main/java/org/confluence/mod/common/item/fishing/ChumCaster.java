@@ -17,7 +17,7 @@ public class ChumCaster extends AbstractFishingPole {
 
     public ChumCaster() {
         super(new Properties().unbreakable(), ModRarity.GREEN);
-        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.25, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
+        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.25, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
     }
 
     @Override

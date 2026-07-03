@@ -3,7 +3,6 @@ package org.confluence.mod.mixin.world.effect;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.effect.MobEffectInstance;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.util.ModUtils;
@@ -29,10 +28,8 @@ public abstract class MobEffectInstanceMixin implements IMobEffectInstance {
     }
 
     @ModifyReturnValue(method = "save", at = @At("RETURN"))
-    private Tag saveExtra(Tag original) {
-        if (original instanceof CompoundTag tag) {
-            tag.putBoolean("confluence:is_enabled", confluence$isEnabled());
-        }
+    private CompoundTag saveExtra(CompoundTag original) {
+        original.putBoolean("confluence:is_enabled", confluence$isEnabled());
         return original;
     }
 
@@ -43,7 +40,7 @@ public abstract class MobEffectInstanceMixin implements IMobEffectInstance {
         }
     }
 
-    @ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;shouldApplyEffectTickThisTick(II)Z"))
+    @ModifyExpressionValue(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;isDurationEffectTick(II)Z"))
     private boolean skip(boolean original) {
         if (!confluence$enabled) {
             return false;

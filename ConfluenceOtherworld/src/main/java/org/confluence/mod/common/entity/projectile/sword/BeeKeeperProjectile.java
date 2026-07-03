@@ -53,7 +53,7 @@ public class BeeKeeperProjectile extends SwordProjectile {
         if (tickCount <= 10) {
             return false;
         }
-        return target instanceof Enemy && super.canHitEntity(target) && TEUtils.projectileCanHurtEntityTest.test(this, target);
+        return target instanceof Enemy && super.canHitEntity(target)/* todo projectile && TEUtils.projectileCanHurtEntityTest.test(this, target)*/;
     }
 
     @Override

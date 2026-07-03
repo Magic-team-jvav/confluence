@@ -11,7 +11,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import javax.annotation.Nullable;
 
 public class VoidBlock extends LiquidBlock implements EntityBlock {
-    public VoidBlock(FlowingFluid fluid, Properties properties) {
+    public VoidBlock(java.util.function.Supplier<? extends FlowingFluid> fluid, Properties properties) {
         super(fluid, properties);
     }
 

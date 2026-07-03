@@ -17,6 +17,8 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
+import org.confluence.mod.common.entity.boss.QueenBee;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.ModUtils;
 
 public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
@@ -55,7 +57,7 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
         if (state.getValue(PART).isBase() && level instanceof ServerLevel serverLevel) {
-            ModUtils.summonBoss(serverLevel, pos, new QueenBee(TEBossEntities.QUEEN_BEE.get(), level), false);
+            ModUtils.summonBoss(serverLevel, pos, new QueenBee(BossEntities.QUEEN_BEE.get(), level), false);
         }
     }
 

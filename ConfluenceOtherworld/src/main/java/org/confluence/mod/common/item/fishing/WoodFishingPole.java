@@ -17,7 +17,7 @@ public class WoodFishingPole extends AbstractFishingPole {
 
     public WoodFishingPole() {
         super(new Properties().durability(64), ModRarity.WHITE);
-        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.05, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
+        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.05, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
     }
 
     @Override

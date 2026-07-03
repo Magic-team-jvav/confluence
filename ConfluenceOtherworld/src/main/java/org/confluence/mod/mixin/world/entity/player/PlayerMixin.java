@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.world.entity.player;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -49,18 +50,19 @@ public abstract class PlayerMixin implements IPlayer {
         return confluence$currentBait;
     }
 
-    @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
-    private void attack(CallbackInfo ci, @Local DamageSource damagesource, @Local(ordinal = 2) boolean flag1) {
-        ILibDamageSource lds = ILibDamageSource.of(damagesource);
+    @ModifyExpressionValue(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;playerAttack(Lnet/minecraft/world/entity/player/Player;)Lnet/minecraft/world/damagesource/DamageSource;"))
+    private DamageSource attack(DamageSource original, @Local(name = "flag2") boolean flag2) {
+        ILibDamageSource lds = ILibDamageSource.of(original);
         if (lds != null) {
-            lds.confluence$setCritical(flag1);
+            lds.confluence$setCritical(flag2);
         }
+        return original;
     }
 
     @ModifyArg(method = "causeFoodExhaustion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;addExhaustion(F)V"))
     private float exhaustionDelay(float exhaustion) {
         if (exhaustion > 0.0F) {
-            MobEffectInstance effect = confluence$self().getEffect(ModEffects.HUNGER_DELAYED);
+            MobEffectInstance effect = confluence$self().getEffect(ModEffects.HUNGER_DELAYED.get());
             if (effect != null) {
                 float i = Math.min(effect.getAmplifier() + 1, 5) * 0.2F;
                 return Math.max(exhaustion - exhaustion * i, 0);

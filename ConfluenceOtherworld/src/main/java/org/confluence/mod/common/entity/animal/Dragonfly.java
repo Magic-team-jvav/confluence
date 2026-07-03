@@ -96,10 +96,12 @@ public class Dragonfly extends BaseCritter implements VariantHolder<Dragonfly.Va
             return name().toLowerCase(Locale.ROOT);
         }
 
+        @Override
         public ResourceLocation modelPath() {
             return Confluence.asResource("animal/dragonfly");
         }
 
+        @Override
         public ResourceLocation texturePath() {
             return Confluence.asResource("textures/entity/dragonfly/" + getSerializedName() + ".png");
         }

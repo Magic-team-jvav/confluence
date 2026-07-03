@@ -5,6 +5,7 @@ import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.ServerWatchdog;
 import net.minecraft.util.TimeUtil;
 import org.confluence.mod.mixed.IDedicatedServer;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,7 +20,7 @@ public abstract class ServerWatchdogMixin {
     @Final
     private DedicatedServer server;
 
-    @ModifyExpressionValue(method = "run", at = @At(value = "FIELD", target = "Lnet/minecraft/server/dedicated/ServerWatchdog;maxTickTimeNanos:J", ordinal = 0))
+    @ModifyExpressionValue(method = "run", at = @At(value = "FIELD", target = "Lnet/minecraft/server/dedicated/ServerWatchdog;maxTickTime:J", ordinal = 0, opcode = Opcodes.GETFIELD))
     private long replaceWhenOnHardmodeConversation(long original) {
         if (IDedicatedServer.of(server).confluence$isOnHardmodeConversation()) {
             return CONSERVATION_DELAY;

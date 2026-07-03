@@ -1,5 +1,7 @@
 package org.confluence.mod.mixin.world.level.levelgen.structure.templatesystem;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import PortLib.extensions.java.util.List.PortListExtension;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
@@ -40,7 +42,7 @@ import java.util.Map;
 @Mixin(StructureTemplate.class)
 public abstract class StructureTemplateMixin {
     @Inject(method = "fillFromWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;addToLists(Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate$StructureBlockInfo;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V"))
-    private void fillBrushData(CallbackInfo ci, @Local(argsOnly = true) Level level, @Local(ordinal = 4) BlockPos blockpos3, @Local StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo) {
+    private void fillBrushData(CallbackInfo ci, @Local(argsOnly = true) Level level, @Local(name = "blockpos3") BlockPos blockpos3, @Local(name = "structuretemplate$structureblockinfo") StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo) {
         if (level instanceof ServerLevel serverLevel) {
             ChunkPos chunkPos = new ChunkPos(blockpos3);
 
@@ -64,7 +66,7 @@ public abstract class StructureTemplateMixin {
         }
     }
 
-    @Inject(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/ListTag;add(Ljava/lang/Object;)Z", ordinal = 0))
+    @Inject(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/ListTag;add(Ljava/lang/Object;)Z", remap = false, ordinal = 0))
     private void saveBrushData(CallbackInfoReturnable<CompoundTag> cir, @Local StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo, @Local(ordinal = 1) CompoundTag compoundtag) {
         IStructureTemplate$StructureBlockInfo info = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo);
 
@@ -77,13 +79,13 @@ public abstract class StructureTemplateMixin {
         if (particle != null) {
             MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
-                ParticleTypes.CODEC.encodeStart(server.registryAccess().createSerializationContext(NbtOps.INSTANCE), particle).ifSuccess(result -> compoundtag.put("confluence:droplets", result));
+                PortDataResultExtension.ifSuccess(ParticleTypes.CODEC.encodeStart(server.registryAccess().createSerializationContext(NbtOps.INSTANCE), particle), result -> compoundtag.put("confluence:droplets", result));
             }
         }
     }
 
     @Inject(method = "loadPalette", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;addToLists(Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate$StructureBlockInfo;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V"))
-    private void loadBrushData(CallbackInfo ci, @Local(ordinal = 0) CompoundTag compoundtag, @Local StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo) {
+    private void loadBrushData(CallbackInfo ci, @Local(name = "compoundtag") CompoundTag compoundtag, @Local(name = "structuretemplate$structureblockinfo") StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo) {
         if (compoundtag.contains("confluence:colors", ListTag.TAG_INT_ARRAY)) {
             IStructureTemplate$StructureBlockInfo info = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo);
 
@@ -94,14 +96,14 @@ public abstract class StructureTemplateMixin {
             if (tag != null) {
                 MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
                 if (server != null) {
-                    ParticleTypes.CODEC.parse(server.registryAccess().createSerializationContext(NbtOps.INSTANCE), tag).ifSuccess(info::confluence$setDroplets);
+                    PortDataResultExtension.ifSuccess(ParticleTypes.CODEC.parse(server.registryAccess().createSerializationContext(NbtOps.INSTANCE), tag), info::confluence$setDroplets);
                 }
             }
         }
     }
 
-    @Inject(method = "processBlockInfos(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Ljava/util/List;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Ljava/util/List;iterator()Ljava/util/Iterator;", ordinal = 1))
-    private static void processBrushData(CallbackInfoReturnable<List<StructureTemplate.StructureBlockInfo>> cir, @Local(ordinal = 0) StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo, @Local(ordinal = 1) StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo1) {
+    @Inject(method = "processBlockInfos(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Ljava/util/List;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;)Ljava/util/List;", at = @At(value = "INVOKE", target = "Ljava/util/List;iterator()Ljava/util/Iterator;", remap = false, ordinal = 1), remap = false)
+    private static void processBrushData(CallbackInfoReturnable<List<StructureTemplate.StructureBlockInfo>> cir, @Local(name = "structuretemplate$structureblockinfo") StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo, @Local(name = "structuretemplate$structureblockinfo1") StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo1) {
         IStructureTemplate$StructureBlockInfo from = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo);
         IStructureTemplate$StructureBlockInfo to = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo1);
 
@@ -109,16 +111,16 @@ public abstract class StructureTemplateMixin {
         to.confluence$setDroplets(from.confluence$getDroplets());
     }
 
-    @Inject(method = "filterBlocks(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Lnet/minecraft/world/level/block/Block;Z)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;add(Ljava/lang/Object;)Z", shift = At.Shift.AFTER))
-    private void filterBrushData(CallbackInfoReturnable<ObjectArrayList<StructureTemplate.StructureBlockInfo>> cir, @Local ObjectArrayList<StructureTemplate.StructureBlockInfo> objectarraylist, @Local StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo) {
+    @Inject(method = "filterBlocks(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Lnet/minecraft/world/level/block/Block;Z)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;", at = @At(value = "INVOKE", target = "Lit/unimi/dsi/fastutil/objects/ObjectArrayList;add(Ljava/lang/Object;)Z", remap = false, shift = At.Shift.AFTER))
+    private void filterBrushData(CallbackInfoReturnable<ObjectArrayList<StructureTemplate.StructureBlockInfo>> cir, @Local(name = "objectarraylist") ObjectArrayList<StructureTemplate.StructureBlockInfo> objectarraylist, @Local(name = "structuretemplate$structureblockinfo") StructureTemplate.StructureBlockInfo structuretemplate$structureblockinfo) {
         IStructureTemplate$StructureBlockInfo from = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo);
-        IStructureTemplate$StructureBlockInfo to = IStructureTemplate$StructureBlockInfo.of(objectarraylist.getLast());
+        IStructureTemplate$StructureBlockInfo to = IStructureTemplate$StructureBlockInfo.of(PortListExtension.getLast(objectarraylist));
 
         to.confluence$colors(from.confluence$getColors());
         to.confluence$setDroplets(from.confluence$getDroplets());
     }
 
-    @Inject(method = "placeInWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;processBlockInfos(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Ljava/util/List;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;)Ljava/util/List;"))
+    @Inject(method = "placeInWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;processBlockInfos(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructurePlaceSettings;Ljava/util/List;Lnet/minecraft/world/level/levelgen/structure/templatesystem/StructureTemplate;)Ljava/util/List;", remap = false))
     private void createBrushData(
             CallbackInfoReturnable<Boolean> cir,
             @Share("brushData") LocalRef<Map<ChunkPos, BrushData>> brushData,

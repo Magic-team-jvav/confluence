@@ -1,6 +1,6 @@
 package org.confluence.mod.network.c2s;
 
-import net.minecraft.core.Holder;
+import PortLib.extensions.net.minecraft.world.effect.MobEffect.PortMobEffectExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
@@ -13,11 +13,13 @@ import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect,
-                                           boolean enabled) implements IPortPacket.C2S {
+public record SwitchEffectEnabledPackedC2S(
+        MobEffect effect,
+        boolean enabled
+) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("switch_effect_enabled");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, SwitchEffectEnabledPackedC2S> STREAM_CODEC = PortStreamCodec.composite(
-            MobEffect.STREAM_CODEC, SwitchEffectEnabledPackedC2S::effect,
+            PortMobEffectExtension.directStreamCodec(), SwitchEffectEnabledPackedC2S::effect,
             PortByteBufCodecs.BOOL, SwitchEffectEnabledPackedC2S::enabled,
             SwitchEffectEnabledPackedC2S::new
     );
@@ -42,7 +44,7 @@ public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect,
         }
     }
 
-    public static void sendToServer(Holder<MobEffect> effect, boolean enabled) {
+    public static void sendToServer(MobEffect effect, boolean enabled) {
         Confluence.NETWORK_HANDLER.sendToServer(new SwitchEffectEnabledPackedC2S(effect, enabled));
     }
 }

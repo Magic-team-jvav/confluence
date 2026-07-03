@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -93,6 +94,6 @@ public class Boulder3x3Entity extends BoulderEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        Direction.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_FACING)).ifSuccess(nbt -> tag.put("Facing", nbt));
+        PortDataResultExtension.ifSuccess(Direction.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_FACING)), t -> tag.put("Facing", t));
     }
 }

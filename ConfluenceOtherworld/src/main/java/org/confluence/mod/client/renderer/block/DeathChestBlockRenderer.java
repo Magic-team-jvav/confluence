@@ -8,10 +8,10 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.init.block.ChestBlocks;
+import org.mesdag.portlib.registries.PortDeferredBlock;
 
 import java.util.Hashtable;
 import java.util.function.BiFunction;
@@ -28,7 +28,7 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.BEnti
                     Sheets.CHEST_TRAP_LOCATION_RIGHT
             };
             private final Hashtable<Block, Material[]> cache = Util.make(new Hashtable<>(), map -> {
-                for (RegistryObject<DeathChestBlock> deathChest : ChestBlocks.DEATH_CHESTS) {
+                for (PortDeferredBlock<DeathChestBlock> deathChest : ChestBlocks.DEATH_CHESTS) {
                     String chestName = deathChest.getId().getPath().replace("_chest", "");
                     ResourceLocation location = Confluence.asResource("entity/chest/" + chestName);
                     map.put(deathChest.get(), new Material[]{

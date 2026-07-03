@@ -5,15 +5,14 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terra_curio.common.init.TCTags;
-import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -27,7 +26,7 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
         tag(TCTags.HARMFUL_EFFECT).add(
                 ModDamageTypes.ACID_VENOM,
                 ModDamageTypes.CURSED_INFERNO,
-                TETags.DamageTypes.FROST_BURN
+                ModDamageTypes.FROST_BURN
         );
         tag(LibTags.DamageTypes.AS_MELEE_ATTACK).add(
                 ModDamageTypes.SWORD_PROJECTILE,
@@ -36,8 +35,7 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 DamageTypes.PLAYER_ATTACK,
                 DamageTypes.STING
         );
-        tag(Tags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
+        tag(PortTags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
         tag(DamageTypeTags.IS_PROJECTILE).add(LibDamageTypes.BULLET_DAMAGE);
-        tag(DamageTypeTags.BYPASSES_ARMOR).add(TETags.DamageTypes.PASS_ARMOR);
     }
 }

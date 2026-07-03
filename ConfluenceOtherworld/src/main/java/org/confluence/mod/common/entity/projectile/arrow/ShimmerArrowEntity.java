@@ -18,12 +18,11 @@ public class ShimmerArrowEntity extends BaseArrowEntity {
     public ShimmerArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, ItemStack pickupItemStack, ItemStack firedFromWeapon) {
         super(entityType, owner, pickupItemStack, firedFromWeapon);
     }
+
     @Override
     public double getBaseDamage() {
         return 5.4;
     }
-
-    @Override
 
     @Override
     public double getDefaultGravity() {

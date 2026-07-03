@@ -18,6 +18,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
 import java.util.List;
@@ -39,10 +40,10 @@ public class ModBoneMealItem extends TooltipItem {
                     LivingEntity newEntity = null;
                     if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) && entityType == EntityType.CREEPER) {
                         entity.remove(Entity.RemovalReason.KILLED);
-                        newEntity = TEMonsterEntities.BLOODY_SPORE.value().create(level);
+                        newEntity = MonsterEntities.BLOODY_SPORE.get().create(level);
                     } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) && entityType == EntityType.SKELETON) {
                         entity.remove(Entity.RemovalReason.KILLED);
-                        newEntity = TEMonsterEntities.DECAYEDER.value().create(level);
+                        newEntity = MonsterEntities.DECAYEDER.get().create(level);
                     }
                     if (newEntity != null) {
                         newEntity.setPos(entity.getX(), entity.getY(), entity.getZ());

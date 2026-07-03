@@ -1,16 +1,17 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
-import net.minecraft.network.protocol.common.ClientboundCustomPayloadPacket;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPortPacket.S2C {
@@ -38,12 +39,12 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPor
     }
 
     public static void sendToAll() {
-        MinecraftServer server = net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer();
-        if (server == null) return;
-        ClientboundCustomPayloadPacket payload = new ClientboundCustomPayloadPacket(new DragonChargePlayerConfigPacketS2C());
-        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            if (LibEntityUtils.isSingleplayerOwner(player)) continue;
-            player.connection.send(payload);
+        if (ServerLifecycleHooks.getCurrentServer() != null) {
+            Packet<ClientGamePacketListener> packet = Confluence.NETWORK_HANDLER.toVanillaClientbound(new DragonChargePlayerConfigPacketS2C());
+            for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
+                if (LibEntityUtils.isSingleplayerOwner(player)) continue;
+                player.connection.send(packet);
+            }
         }
     }
 }

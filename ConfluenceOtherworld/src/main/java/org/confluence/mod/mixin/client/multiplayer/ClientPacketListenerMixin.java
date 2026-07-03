@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ClientPacketListener.class)
 public abstract class ClientPacketListenerMixin {
-    @ModifyExpressionValue(method = "handleUpdateMobEffect", at = @At(value = "NEW", target = "(Lnet/minecraft/core/Holder;IIZZZLnet/minecraft/world/effect/MobEffectInstance;)Lnet/minecraft/world/effect/MobEffectInstance;"))
+    @ModifyExpressionValue(method = "handleUpdateMobEffect", at = @At(value = "NEW", target = "(Lnet/minecraft/world/effect/MobEffect;IIZZZLnet/minecraft/world/effect/MobEffectInstance;Ljava/util/Optional;)Lnet/minecraft/world/effect/MobEffectInstance;"))
     private MobEffectInstance modify(MobEffectInstance original, @Local(argsOnly = true) ClientboundUpdateMobEffectPacket packet) {
         IMobEffectInstance.of(original).confluence$setEnabled(IClientboundUpdateMobEffectPacket.of(packet).confluence$isEnabled());
         return original;

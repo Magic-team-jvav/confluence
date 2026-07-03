@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
@@ -26,8 +26,8 @@ public abstract class BowItemMixin implements SelfGetter<BowItem> {
         return original.call(pCharge);
     }
 
-    @WrapOperation(method = "shootProjectile", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/Projectile;shootFromRotation(Lnet/minecraft/world/entity/Entity;FFFFF)V"))
-    private void shortBowSoot(Projectile instance, Entity shooter, float x, float y, float z, float velocity, float inaccuracy, Operation<Void> original) {
+    @WrapOperation(method = "releaseUsing", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/projectile/AbstractArrow;shootFromRotation(Lnet/minecraft/world/entity/Entity;FFFFF)V"))
+    private void shortBowSoot(AbstractArrow instance, Entity shooter, float x, float y, float z, float velocity, float inaccuracy, Operation<Void> original) {
         if (confluence$self() instanceof ShortBowItem shortBow) {
             original.call(instance, shooter, x, y, z, velocity * shortBow.getVelocityMultiplier() / 3.0F, inaccuracy);
         } else {

@@ -25,7 +25,7 @@ public class GrassSwordProjectile extends SwordProjectile {
         super(entityType, pLevel);
         this.canPenalize = true;
         this.hitCount = 99999;
-        this.collisionProperties = new CollisionProperties(10, 10, 1);
+//  todo projectile      this.collisionProperties = new CollisionProperties(10, 10, 1);
     }
 
     @Override

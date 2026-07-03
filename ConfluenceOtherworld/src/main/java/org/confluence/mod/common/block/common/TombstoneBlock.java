@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -65,7 +66,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, pos);
             RandomSource random = player.getRandom();
             if (iSection != null && iSection.confluence$isGraveyard() && random.nextBoolean()) {
-                TEMonsterEntities.GHOST.get().spawn((ServerLevel) level, pos.offset(
+                MonsterEntities.GHOST.get().spawn((ServerLevel) level, pos.offset(
                         Mth.randomBetweenInclusive(random, -15, 15),
                         Mth.randomBetweenInclusive(random, -15, 15),
                         Mth.randomBetweenInclusive(random, -15, 15)

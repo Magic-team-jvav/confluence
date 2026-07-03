@@ -19,6 +19,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.lib.util.function.ints.ToIntFunction4;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
 
 import java.util.Optional;
@@ -26,7 +27,7 @@ import java.util.Optional;
 public class SpaceSpawner implements CustomSpawner {
     private int nextTick;
     private final WeightedRandomList<Pair> spawnerData = WeightedRandomList.create(
-            new Pair(new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 3, 1, 1), (level, pos, csd, sd) -> {
+            new Pair(new MobSpawnSettings.SpawnerData(MonsterEntities.HARPY.get(), 3, 1, 1), (level, pos, csd, sd) -> {
                 RandomSource random = level.random;
                 int i = 0;
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
@@ -39,7 +40,7 @@ public class SpaceSpawner implements CustomSpawner {
                     if (level.getEntities(sd.type, new AABB(spawnPos).inflate(36.0, 36.0, 36.0), EntitySelector.NO_SPECTATORS).size() < csd.getCount(8)) {
                         BlockState blockState = level.getBlockState(spawnPos);
                         FluidState fluidState = level.getFluidState(spawnPos);
-                        if (SpawnPlacements.isSpawnPositionOk(sd.type, level, spawnPos) &&
+                        if (/* todo spawn SpawnPlacements.isSpawnPositionOk(sd.type, level, spawnPos) &&*/
                                 NaturalSpawner.isValidEmptySpawnBlock(level, spawnPos, blockState, fluidState, sd.type) &&
                                 SpawnPlacements.checkSpawnRules(sd.type, level, MobSpawnType.SPAWNER, spawnPos, random)
                         ) {
@@ -49,9 +50,9 @@ public class SpaceSpawner implements CustomSpawner {
                             for (int j = 0; j < amount; j++) {
                                 Entity entity = sd.type.create(level);
                                 if (entity != null) {
-                                    entity.moveTo(SpawnPlacements.getPlacementType(sd.type).adjustSpawnPosition(level, spawnPos), 0.0F, 0.0F);
+                                    entity.moveTo(spawnPos/*SpawnPlacements.getPlacementType(sd.type).adjustSpawnPosition(level, spawnPos)*/, 0.0F, 0.0F);
                                     if (entity instanceof Mob mob) {
-                                        spawnGroupData = mob.finalizeSpawn(level, difficulty, MobSpawnType.NATURAL, spawnGroupData);
+                                        spawnGroupData = mob.finalizeSpawn(level, difficulty, MobSpawnType.NATURAL, spawnGroupData, null);
                                     }
                                     level.addFreshEntityWithPassengers(entity);
                                     i++;
@@ -62,7 +63,7 @@ public class SpaceSpawner implements CustomSpawner {
                 }
                 return i;
             }),
-            new Pair(new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 2, 1, 1), (level, pos, csd, sd) -> {
+            new Pair(new MobSpawnSettings.SpawnerData(MonsterEntities.WYVERN.get(), 2, 1, 1), (level, pos, csd, sd) -> {
                 RandomSource random = level.random;
                 int i = 0;
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
@@ -75,7 +76,7 @@ public class SpaceSpawner implements CustomSpawner {
                     if (level.getEntities(sd.type, new AABB(spawnPos).inflate(36.0, 36.0, 36.0), EntitySelector.NO_SPECTATORS).size() < csd.getCount(6)) {
                         BlockState blockState = level.getBlockState(spawnPos);
                         FluidState fluidState = level.getFluidState(spawnPos);
-                        if (SpawnPlacements.isSpawnPositionOk(sd.type, level, spawnPos) &&
+                        if (/*SpawnPlacements.isSpawnPositionOk(sd.type, level, spawnPos) &&*/
                                 NaturalSpawner.isValidEmptySpawnBlock(level, spawnPos, blockState, fluidState, sd.type) &&
                                 SpawnPlacements.checkSpawnRules(sd.type, level, MobSpawnType.SPAWNER, spawnPos, random)
                         ) {
@@ -85,9 +86,9 @@ public class SpaceSpawner implements CustomSpawner {
                             for (int j = 0; j < amount; j++) {
                                 Entity entity = sd.type.create(level);
                                 if (entity != null) {
-                                    entity.moveTo(SpawnPlacements.getPlacementType(sd.type).adjustSpawnPosition(level, spawnPos), 0.0F, 0.0F);
+                                    entity.moveTo(spawnPos/*SpawnPlacements.getPlacementType(sd.type).adjustSpawnPosition(level, spawnPos)*/, 0.0F, 0.0F);
                                     if (entity instanceof Mob mob) {
-                                        spawnGroupData = mob.finalizeSpawn(level, difficulty, MobSpawnType.NATURAL, spawnGroupData);
+                                        spawnGroupData = mob.finalizeSpawn(level, difficulty, MobSpawnType.NATURAL, spawnGroupData, null);
                                     }
                                     level.addFreshEntityWithPassengers(entity);
                                     i++;

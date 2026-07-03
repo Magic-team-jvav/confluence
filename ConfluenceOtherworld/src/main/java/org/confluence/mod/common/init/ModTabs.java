@@ -1886,7 +1886,7 @@ public final class ModTabs {
                         output.accept(FoodItems.PINK_COLA);
                         output.accept(FoodItems.DONGDONGS_FLATBREAD);
                         output.accept(FoodItems.PIGLIN_STEW);
-                        output.accept(BoomerangItems.BeiDou_BOOMERANG);
+                        output.accept(BoomerangItems.BEIDOU_BOOMERANG);
                         output.accept(ToolItems.DEV_BUG_NET);
                         output.accept(SwordItems.DEVELOPER_SWORD);
                         output.accept(BoomerangItems.DEVELOPER_BOOMERANG);

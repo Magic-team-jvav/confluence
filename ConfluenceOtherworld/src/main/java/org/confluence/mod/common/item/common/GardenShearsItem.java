@@ -50,7 +50,7 @@ public class GardenShearsItem extends ShearsItem {
                 .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .attributes(PortItemAttributeModifiers.builder().add(
                         PortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
-                                ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 2.5, PortAttributeModifier.PortOperation.ADD_VALUE),
+                                ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 2.5, PortAttributeModifier.Operation.ADD_VALUE),
                         PortEquipmentSlotGroup.MAINHAND).build()));
     }
 

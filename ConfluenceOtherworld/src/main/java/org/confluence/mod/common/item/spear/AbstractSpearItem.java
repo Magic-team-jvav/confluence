@@ -238,8 +238,8 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
 
     public static PortItemAttributeModifiers attributes(float extraRange, float extraDamage) {
         return PortItemAttributeModifiers.builder()
-                .add(PortAttributesExtension.entityInteractionRange(), new PortAttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
-                .add(LibAttributes.getAttackDamage(), new PortAttributeModifier(ModItems.BASE_ATTACK_DAMAGE_ID, extraDamage, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
+                .add(PortAttributesExtension.entityInteractionRange(), new PortAttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getAttackDamage(), new PortAttributeModifier(ModItems.BASE_ATTACK_DAMAGE_ID, extraDamage, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
                 .build();
     }
 

@@ -3,8 +3,8 @@ package org.confluence.mod.client.entity.model;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
@@ -12,7 +12,7 @@ import software.bernie.geckolib.model.data.EntityModelData;
 import javax.annotation.Nullable;
 
 public class GeoNormalModel<T extends GeoEntity> extends DefaultedEntityGeoModel<T> {
-    protected GeoBone head;
+    protected CoreGeoBone head;
     protected final ResourceLocation path;
 
     public GeoNormalModel(ResourceLocation path) {
@@ -43,7 +43,7 @@ public class GeoNormalModel<T extends GeoEntity> extends DefaultedEntityGeoModel
         }
     }
 
-    protected @Nullable GeoBone getHead() {
+    protected @Nullable CoreGeoBone getHead() {
         return getAnimationProcessor().getBone(getHeadName());
     }
 

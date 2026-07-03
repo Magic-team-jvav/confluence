@@ -4,10 +4,13 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.worldselection.WorldSelectionList;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtIo;
+import net.minecraft.world.level.storage.LevelResource;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.LevelSummary;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,21 +28,21 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
     @Unique
     private long confluence$secretFlag;
     @Unique
-    private ResourceLocation confluence$worldIcon;
+    private PortSprite confluence$worldIcon;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void loadSecretFlag(CallbackInfo ci, @Local(argsOnly = true) LevelSummary summary) {
         try {
             LevelStorageSource.LevelStorageAccess levelStorageAccess = minecraft.getLevelSource().validateAndCreateAccess(summary.getLevelId());
-            this.confluence$secretFlag = levelStorageAccess.getDataTag().get("WorldGenSettings").orElseEmptyMap().get("secret_flag").asLong(0L);
-            levelStorageAccess.safeClose();
+            CompoundTag tag = NbtIo.readCompressed(levelStorageAccess.getLevelPath(LevelResource.LEVEL_DATA_FILE).toFile());
+            this.confluence$secretFlag = tag.getCompound("WorldGenSettings").getLong("secret_flag");
         } catch (Exception ignored) {}
     }
 
     @Inject(method = "render", at = @At("TAIL"))
     private void renderSecretFlagIcon(CallbackInfo ci, @Local(argsOnly = true) GuiGraphics guiGraphics, @Local(argsOnly = true, ordinal = 1) int top, @Local(argsOnly = true, ordinal = 2) int left) {
         if (confluence$worldIcon == null) {
-            this.confluence$worldIcon = IWorldOptions.getWorldIcon(confluence$secretFlag);
+            this.confluence$worldIcon = new PortSprite(IWorldOptions.getWorldIcon(confluence$secretFlag), 64, 64);
         }
         guiGraphics.blitSprite(confluence$worldIcon, 32, 32, 0, 0, left, top - 1, 32, 32);
     }

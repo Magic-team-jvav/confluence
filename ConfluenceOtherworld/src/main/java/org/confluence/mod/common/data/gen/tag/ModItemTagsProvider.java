@@ -12,7 +12,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -25,7 +24,6 @@ import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 import org.mesdag.portlib.wrapper.common.PortTags;
@@ -40,7 +38,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider) {
+    protected void addTags(HolderLookup.Provider provider) {
         IntrinsicTagAppender<Item> hook = tag(ModTags.Items.HOOK);
         HookItems.ITEMS.getEntries().forEach(item -> {
             hook.add(item.get());
@@ -1448,7 +1446,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HoeShovelItems.HALLOWED_HOE_SHOVEL.get(),
                 HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get()
         );
-        Consumer<RegistryObject> wipAction = item -> wip.add(item.get());
+        Consumer<PortRegistryEntry<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
         tag(ModTags.Items.AUTOMATIC_GUN).add(

@@ -5,10 +5,10 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.WorldOptions;
-import net.minecraftforge.fml.ModLoader;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomWorldIconRegisterEvent;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.mesdag.portlib.event.PortEventHandler;
 
 public interface IWorldOptions {
     void confluence$resetSecretFlag();
@@ -65,7 +65,7 @@ public interface IWorldOptions {
         registerWorldIcon(map, BW_MASK, "boulder_world");
 
         CustomWorldIconRegisterEvent event = new CustomWorldIconRegisterEvent(map);
-        ModLoader.postEventWrapContainerInModOrder(event);
+        PortEventHandler.postEvent(event);
         map.putAll(event.getToAdd());
     });
 

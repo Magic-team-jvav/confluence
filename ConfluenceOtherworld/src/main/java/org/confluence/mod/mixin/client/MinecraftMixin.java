@@ -13,7 +13,6 @@ import net.minecraft.server.WorldStem;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
-import org.confluence.mod.api.entity.IMinion;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
@@ -55,7 +54,7 @@ public abstract class MinecraftMixin {
     @Inject(method = "shouldEntityAppearGlowing", at = @At(value = "HEAD"), cancellable = true)
     public void changeGlowOutline(Entity entity, CallbackInfoReturnable<Boolean> cir) {
         if (player == null) return;
-        if (entity instanceof IMinion || entity instanceof ISummonMob) return;
+        /* todo minion if (entity instanceof IMinion || entity instanceof ISummonMob) return;*/
         GlowingHelper helper = GlowingHelper.INSTANCE;
         // 狩猎药水
         if (player.hasEffect(ModEffects.HUNTER.get())) {

@@ -54,12 +54,12 @@ public interface EntityType$BuilderAccessor<T extends Entity> {
     @Accessor
     FeatureFlagSet getRequiredFeatures();
 
-    @Accessor
+    @Accessor(remap = false)
     Predicate<EntityType<?>> getVelocityUpdateSupplier();
 
-    @Accessor
+    @Accessor(remap = false)
     ToIntFunction<EntityType<?>> getTrackingRangeSupplier();
 
-    @Accessor
+    @Accessor(remap = false)
     ToIntFunction<EntityType<?>> getUpdateIntervalSupplier();
 }

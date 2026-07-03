@@ -46,7 +46,7 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModEntityTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new CollectRecipeProvider(Confluence.asPlainId("server"), output, lookup,
-                NPCShopProvider::new,
+//                NPCShopProvider::new,
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,
                 HeavyWorkBenchProvider::new,
@@ -58,7 +58,7 @@ public final class ModDataGenerator {
                 HardmodeAnvilRecipeProvider::new
         ));
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
-        generator.addProvider(server, new ModLootTableProvider(output, lookup));
+        generator.addProvider(server, new ModLootTableProvider(output));
         generator.addProvider(server, new ModRecipeSerializerTagsProvider(output, lookup, helper));
         generator.addProvider(server, new EMILootDirectDropsProvider(output, lookup));
         generator.addProvider(server, new EMILootExcludedSyntheticLootModifierLootTablesProvider(output, lookup));

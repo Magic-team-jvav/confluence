@@ -2,6 +2,8 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
@@ -17,7 +19,12 @@ public record FluidCondition(TagKey<Fluid> fluid) implements TradeCondition {
 
     @Override
     public boolean test(ServerPlayer player, BaseNPC npc) {
-        return player.isEyeInFluidType(fluid);
+        for (Holder<Fluid> holder : BuiltInRegistries.FLUID.getOrCreateTag(fluid)) {
+            if (holder.value().getFluidType() == player.getEyeInFluidType()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

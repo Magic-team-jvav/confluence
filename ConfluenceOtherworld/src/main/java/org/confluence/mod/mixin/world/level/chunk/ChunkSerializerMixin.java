@@ -16,6 +16,8 @@ import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.chunk.storage.ChunkSerializer;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
+import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,19 +27,36 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ChunkSerializer.class)
 public abstract class ChunkSerializerMixin {
     @Shadow
-    private static void logErrors(ChunkPos pChunkPos, int pChunkSectionY, String pErrorMessage) {}
+    private static void logErrors(ChunkPos chunkPos, int chunkSectionY, String errorMessage) {}
+
+    @Shadow
+    @Final
+    private static Logger LOGGER;
 
     @Inject(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/chunk/LevelChunkSection;getBiomes()Lnet/minecraft/world/level/chunk/PalettedContainerRO;"))
-    private static void write(CallbackInfoReturnable<CompoundTag> cir, @Local Codec<PalettedContainerRO<Holder<Biome>>> codec, @Local(ordinal = 1) CompoundTag sectionTag, @Local LevelChunkSection levelchunksection) {
-        sectionTag.put("backup_biome", codec.encodeStart(NbtOps.INSTANCE, ILevelChunkSection.of(levelchunksection).confluence$getBackupBiome()).getOrThrow());
+    private static void write(
+            CallbackInfoReturnable<CompoundTag> cir,
+            @Local(name = "codec") Codec<PalettedContainerRO<Holder<Biome>>> codec,
+            @Local(name = "compoundtag1") CompoundTag compoundtag1,
+            @Local(name = "levelchunksection") LevelChunkSection levelchunksection
+    ) {
+        compoundtag1.put("backup_biome", codec.encodeStart(NbtOps.INSTANCE, ILevelChunkSection.of(levelchunksection).confluence$getBackupBiome()).getOrThrow(false, LOGGER::warn));
     }
 
     @Inject(method = "read", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/village/poi/PoiManager;checkConsistencyWithBlocks(Lnet/minecraft/core/SectionPos;Lnet/minecraft/world/level/chunk/LevelChunkSection;)V"))
-    private static void read(CallbackInfoReturnable<ProtoChunk> cir, @Local(argsOnly = true) ServerLevel level, @Local(argsOnly = true) ChunkPos pos, @Local Codec<PalettedContainerRO<Holder<Biome>>> codec, @Local(ordinal = 1) CompoundTag compoundtag, @Local(ordinal = 2) int k, @Local LevelChunkSection levelchunksection) {
+    private static void read(
+            CallbackInfoReturnable<ProtoChunk> cir,
+            @Local(argsOnly = true) ServerLevel level,
+            @Local(argsOnly = true) ChunkPos pos,
+            @Local(name = "codec") Codec<PalettedContainerRO<Holder<Biome>>> codec,
+            @Local(name = "compoundtag") CompoundTag compoundtag,
+            @Local(name = "k") int k,
+            @Local(name = "levelchunksection") LevelChunkSection levelchunksection
+    ) {
         // 从原来的方法里面抄的
         PalettedContainerRO<Holder<Biome>> bakBiome;
         if (compoundtag.contains("backup_biome", Tag.TAG_COMPOUND)) {
-            bakBiome = codec.parse(NbtOps.INSTANCE, compoundtag.getCompound("backup_biome")).promotePartial(err -> logErrors(pos, k, err)).getOrThrow(ChunkSerializer.ChunkReadException::new);
+            bakBiome = codec.parse(NbtOps.INSTANCE, compoundtag.getCompound("backup_biome")).promotePartial(err -> logErrors(pos, k, err)).getOrThrow(false, LOGGER::warn);
         } else {
             bakBiome = DynamicBiomeUtils.judgeBackupBiome(levelchunksection, level.registryAccess().lookupOrThrow(Registries.BIOME));
         }

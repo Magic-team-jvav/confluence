@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.spear;
 
+import com.eliotlash.mclib.math.IValue;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -9,10 +10,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.MushroomProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import software.bernie.geckolib.core.animation.EasingType;
+import software.bernie.geckolib.core.keyframe.Keyframe;
 
 public class MushroomSpearItem extends AbstractSpearItem {
     /// 刺击前摇结束时刻（tick），矛从蓄力转为前刺的时间点
@@ -42,7 +46,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
         double maxZ = Double.NEGATIVE_INFINITY;
         int maxZTime = 0;
         double cumulativeTime = 0;
-        for (Keyframe<MathValue> frame : keyframes) {
+        for (Keyframe<IValue> frame : keyframes) {
             cumulativeTime += frame.length();
             double endZ = frame.endValue().get();
             if (endZ > maxZ) {
@@ -60,7 +64,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
         double minZ = Double.POSITIVE_INFINITY;
         int minZTime = 0;
         double cumulativeTime = 0;
-        for (Keyframe<MathValue> frame : keyframes) {
+        for (Keyframe<IValue> frame : keyframes) {
             cumulativeTime += frame.length();
             double endZ = frame.endValue().get();
             if (endZ < minZ) {

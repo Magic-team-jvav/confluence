@@ -21,8 +21,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.StateProperties;
+import org.confluence.mod.common.entity.monster.EaterOfSouls;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
@@ -103,7 +105,7 @@ public class DecomposeTheSourceExtractBlock extends Block implements EntityBlock
             BlockState state = level.getBlockState(pos);
             if (state.is(this)) {
                 level.setBlockAndUpdate(pos.immutable(), state.setValue(VISIBLE, true));
-                AbstractMonster entity = TEMonsterEntities.EATER_OF_SOULS.get().create(level);
+                EaterOfSouls entity = MonsterEntities.EATER_OF_SOULS.get().create(level);
                 if (entity != null) {
                     entity.setPos(pos.getX() - 0.5, pos.getY() - 1.5, pos.getZ() - 0.5);
                     level.addFreshEntity(entity);

@@ -44,10 +44,10 @@ public class BossSummoningItem extends TooltipItem {
                     player.getY(),
                     player.getZ() + Mth.randomBetweenInclusive(level.random, -50, 50)
             );
-            if (TEUtils.internalSpawnEntity(mob, serverLevel)) {
+//            if (TEUtils.internalSpawnEntity(mob, serverLevel)) {
                 serverLevel.addFreshEntityWithPassengers(mob);
                 LanternNightGameEvent.INSTANCE.forceEnd();
-            }
+//            }
         }
         return InteractionResultHolder.success(itemStack);
     }

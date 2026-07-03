@@ -12,7 +12,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 public enum KillBoardSyncPacketS2C implements IPortPacket.S2C {
     INSTANCE;
     public static final ResourceLocation ID = Confluence.asResource("kill_board_sync");
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, KillBoardSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, KillBoardSyncPacketS2C> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public KillBoardSyncPacketS2C decode(PortRegistryFriendlyByteBuf buffer) {
             KillBoard.INSTANCE.networkDecode(buffer);
@@ -41,7 +41,7 @@ public enum KillBoardSyncPacketS2C implements IPortPacket.S2C {
         }
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(INSTANCE);
+    public static void sendToClient(ServerPlayer player) {
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, INSTANCE);
     }
 }

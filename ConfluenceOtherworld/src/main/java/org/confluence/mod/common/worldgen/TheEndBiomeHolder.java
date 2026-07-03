@@ -137,6 +137,7 @@ public class TheEndBiomeHolder {
         return (Mth.abs(Mth.abs(dis / transit - (float) radius / transit - 1) - 1) - Mth.sqrt(dis / transit - (float) radius / transit - 2) + 2) / 2;
     }
 
+    // todo
     public static void modifyDimensionType(DimensionType type) {
         DimensionTypeAccessor accessor = (DimensionTypeAccessor) (Record) type;
         if (accessor.getMinY() > -64) {

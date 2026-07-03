@@ -17,7 +17,7 @@ public class MechanicsRod extends AbstractFishingPole {
 
     public MechanicsRod() {
         super(new Properties().unbreakable(), ModRarity.GREEN);
-        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.35, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
+        addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new PortAttributeModifier(ID, 0.35, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND));
     }
 
     @Override

@@ -68,8 +68,8 @@ public final class ModBlocks {
     public static final PortDeferredBlock<CoinPileBlock> EMERALD_COIN = registerWithoutItem("emerald_coin", CoinPileBlock::new);
 
     // 流体
-    public static final PortDeferredBlock<LiquidBlock> HONEY = registerWithoutItem("honey", () -> new LiquidBlock(ModFluids.HONEY.fluid().get(), BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_YELLOW)));
-    public static final PortDeferredBlock<VoidBlock> VOID = registerWithoutItem("void", () -> new VoidBlock(ModFluids.VOID.fluid().get(), BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_BLACK)));
+    public static final PortDeferredBlock<LiquidBlock> HONEY = registerWithoutItem("honey", () -> new LiquidBlock(ModFluids.HONEY.fluid()::get, BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_YELLOW)));
+    public static final PortDeferredBlock<VoidBlock> VOID = registerWithoutItem("void", () -> new VoidBlock(ModFluids.VOID.fluid()::get, BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_BLACK)));
     public static final RegistryObject<BlockEntityType<VoidBlock.VoidBlockEntity>> VOID_ENTITY = BLOCK_ENTITIES.register("void_entity", () -> BlockEntityType.Builder.of(VoidBlock.VoidBlockEntity::new, VOID.get()).build(DSL.remainderType()));
     public static final PortDeferredBlock<LiquidBlock> SHIMMER = registerWithoutItem("shimmer", () -> new EmptyPickupLiquidBlock(ModFluids.SHIMMER.fluid()::get, BlockBehaviour.Properties.copy(Blocks.WATER).mapColor(MapColor.COLOR_PINK).lightLevel(blockState -> 10)));
     public static final PortDeferredBlock<AetheriumCauldronBlock> AETHERIUM_CAULDRON = registerWithItem("aetherium_cauldron", () -> new AetheriumCauldronBlock(BlockBehaviour.Properties.copy(Blocks.WATER_CAULDRON)));

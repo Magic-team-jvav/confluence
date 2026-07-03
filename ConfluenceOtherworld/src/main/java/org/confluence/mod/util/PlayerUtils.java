@@ -173,7 +173,7 @@ public final class PlayerUtils {
         syncMana2Client(player);
         VisibilityPacketS2C.sendTheConstantPostEffect(player);
         SecretFlagSyncPacketS2C.sendToClient(player, IMinecraftServer.of(player.server).confluence$getSecretFlag());
-        CompatibilitySyncPacketS2c.sendToClient(player);
+//        CompatibilitySyncPacketS2c.sendToClient(player);
         TeamPacket.sendToClient(player, player);
         DragonChargePlayerConfigPacketS2C.sendToPlayer(player);
     }

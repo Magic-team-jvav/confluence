@@ -17,9 +17,9 @@ import software.bernie.geckolib.core.animation.EasingType;
 public class StreamstrikeHalberdItem extends AbstractSpearItem {
     public StreamstrikeHalberdItem() {
         super(new Properties().attributes(PortItemAttributeModifiers.builder()
-                .add(PortAttributesExtension.entityInteractionRange(), new PortAttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, 6, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
-                .add(LibAttributes.getAttackDamage(), new PortAttributeModifier(ModItems.BASE_ATTACK_DAMAGE_ID, 7.5, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
-                .add(PortAttributesExtension.swimSpeed(), new PortAttributeModifier(Confluence.asResource("base_swim_speed"), 0.5, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND)
+                .add(PortAttributesExtension.entityInteractionRange(), new PortAttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, 6, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getAttackDamage(), new PortAttributeModifier(ModItems.BASE_ATTACK_DAMAGE_ID, 7.5, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
+                .add(PortAttributesExtension.swimSpeed(), new PortAttributeModifier(Confluence.asResource("base_swim_speed"), 0.5, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), PortEquipmentSlotGroup.MAINHAND)
                 .build()), ModRarity.BLUE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.25, 6, EasingType.EASE_OUT_BACK),

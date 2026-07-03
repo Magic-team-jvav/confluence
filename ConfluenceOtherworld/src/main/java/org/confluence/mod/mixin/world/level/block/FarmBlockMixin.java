@@ -19,7 +19,7 @@ public abstract class FarmBlockMixin {
             mutable.move(0, 1, 0);
         }
         BlockState blockState = level.getBlockState(mutable);
-        if (blockState.is(NatureBlocks.RAIN_CLOUD_BLOCK)) {
+        if (blockState.is(NatureBlocks.RAIN_CLOUD_BLOCK.get())) {
             cir.setReturnValue(true);
         }
     }

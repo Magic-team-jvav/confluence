@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.component.ModRarity;

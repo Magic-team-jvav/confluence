@@ -13,6 +13,7 @@ import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.confluence.mod.client.gui.container.NPCTradeScreen;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
@@ -305,7 +306,7 @@ public final class ClientConfigs {
         TRADE_SCREEN {
             @Override
             public boolean test() {
-                return Minecraft.getInstance().screen instanceof TETradeScreen<?>;
+                return Minecraft.getInstance().screen instanceof NPCTradeScreen;
             }
         };
 

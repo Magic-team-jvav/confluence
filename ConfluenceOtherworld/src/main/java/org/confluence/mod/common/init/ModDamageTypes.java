@@ -21,6 +21,7 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> MAGICAL_PROJECTILE = register("magical_projectile");
     public static final ResourceKey<DamageType> SWORD_PROJECTILE = register("sword_projectile");
     public static final ResourceKey<DamageType> SPEAR_PROJECTILE = register("spear_projectile");
+    public static final ResourceKey<DamageType> FROST_BURN = register("frost_burn");
 
     private static ResourceKey<DamageType> register(String id) {
         return Confluence.asResourceKey(Registries.DAMAGE_TYPE, id);

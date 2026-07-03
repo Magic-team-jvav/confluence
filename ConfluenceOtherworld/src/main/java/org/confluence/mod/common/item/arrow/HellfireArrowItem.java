@@ -14,7 +14,7 @@ public class HellfireArrowItem extends BaseTerraArrowItem {
     }
 
     @Override
-    protected BaseArrowEntity createArrowEntity(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
+    public BaseArrowEntity createArrowEntity(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
         return new HellfireArrowEntity(ModEntities.HELLFIRE_ARROW.get(), shooter, ammo, weapon);
     }
 }

@@ -22,6 +22,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.entity.boss.BrainOfCthulhu;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
@@ -44,7 +46,7 @@ public class CrimsonHeartBlock extends Block {
     }
 
     @Override
-    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
         if (level instanceof ServerLevel serverLevel) {
             Vec3 center = pos.getCenter();
@@ -78,7 +80,7 @@ public class CrimsonHeartBlock extends Block {
             }
 
             if (data.updateEvilBrokenCount()) {
-                ModUtils.summonBoss(serverLevel, pos, new BrainOfCthulhu(TEBossEntities.BRAIN_OF_CTHULHU.get(), level), false);
+                ModUtils.summonBoss(serverLevel, pos, new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level), false);
             }
         }
     }

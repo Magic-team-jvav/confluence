@@ -116,6 +116,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         return accessoryDye.size();
     }
 
+    // todo geckolib
     public ItemStack getVanityArmor(int index, boolean dye) {
         validateIndex(index, SIZE_VANITY_ARMOR);
         IStackWithDye stack = vanityArmor.get(index);
@@ -474,7 +475,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
     }
 
     public static ExtraInventory of(LivingEntity living) {
-        ExtraInventory extraInventory = living.getAttach(ModAttachmentTypes.EXTRA_INVENTORY);
+        ExtraInventory extraInventory = living.getData(ModAttachmentTypes.EXTRA_INVENTORY);
         extraInventory.living = living;
         return extraInventory;
     }

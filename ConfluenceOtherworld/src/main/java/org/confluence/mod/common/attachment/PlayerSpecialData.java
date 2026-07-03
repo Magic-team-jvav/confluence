@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,8 +22,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
@@ -46,6 +49,7 @@ import java.util.*;
 public class PlayerSpecialData extends PrimitiveValueHolder {
     private @NotNull ArmorSetBonusKey armorSetBonusKey = ArmorSetBonusKey.NONE;
 
+    private Item questedFish = Items.AIR;
     private long completedAnglerQuestDay = -1;
     private int anglerQuestCount;
 
@@ -62,6 +66,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         super.setToDefaultValue();
         this.armorSetBonusKey = ArmorSetBonusKey.NONE;
 
+        this.questedFish = Items.AIR;
         this.completedAnglerQuestDay = -1;
         this.anglerQuestCount = 0;
 
@@ -73,6 +78,10 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
     public ArmorSetBonusKey getArmorSetBonusKey() {
         return armorSetBonusKey;
+    }
+
+    public Item getQuestedFish() {
+        return questedFish;
     }
 
     public boolean hasCompletedAnglerQuestToday(ServerLevel level) {
@@ -258,6 +267,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         CompoundTag tag = super.serializeNBT(provider);
 
         PortDataResultExtension.ifSuccess(ArmorSetBonusKey.CODEC.encodeStart(ops, armorSetBonusKey), nbt -> tag.put("ArmorBonusKey", nbt));
+        tag.putString("QuestedFish", questedFish.builtInRegistryHolder().key().location().toString());
         tag.putLong("CompletedAnglerQuestDay", completedAnglerQuestDay);
         tag.putInt("AnglerQuestCount", anglerQuestCount);
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
@@ -275,6 +285,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         if (nbt.contains("ArmorBonusKey")) {
             this.armorSetBonusKey = ArmorSetBonusKey.CODEC.parse(ops, nbt.get("ArmorBonusKey")).result().orElse(ArmorSetBonusKey.NONE);
         }
+        this.questedFish = Objects.requireNonNullElse(ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(nbt.getString("QuestedFish"))), Items.AIR);
         this.completedAnglerQuestDay = nbt.getLong("CompletedAnglerQuestDay");
         this.anglerQuestCount = nbt.getInt("AnglerQuestCount");
         this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
@@ -284,7 +295,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
     }
 
     public static PlayerSpecialData of(Player player) {
-        return player.getAttach(ModAttachmentTypes.SPECIAL_DATA);
+        return player.getData(ModAttachmentTypes.SPECIAL_DATA);
     }
 
     public static void resetSomeData(Player player) {

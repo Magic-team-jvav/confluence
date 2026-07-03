@@ -4,11 +4,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.worldgen.biome.*;
-import terrablender.api.Regions;
-import terrablender.api.SurfaceRuleManager;
-
-import static org.confluence.mod.Confluence.MODID;
 
 public final class ModBiomes {
     public static final ResourceKey<Biome> THE_CORRUPTION = register("the_corruption");
@@ -36,15 +31,15 @@ public final class ModBiomes {
         return ResourceKey.create(Registries.BIOME, Confluence.asResource(name));
     }
 
-    public static void registerRegionAndSurface() {
-        Regions.register(new TheCrimsonRegion(Confluence.asResource("the_crimson"), 1));
-        Regions.register(new TheCorruptionRegion(Confluence.asResource("the_corruption"), 1));
-        Regions.register(new GlowingMushroomRegion(Confluence.asResource("glowing_mushroom"), 2));
-        Regions.register(new AshForestRegion(Confluence.asResource("ash_forest"), 1));
-        Regions.register(new AshWastelandRegion(Confluence.asResource("ash_wasteland"), 1));
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, SurfaceRuleData.makeConfluenceOverWorldRules());
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.NETHER, MODID, SurfaceRuleData.makeConfluenceNetherRules());
-        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.END, MODID, SurfaceRuleData.makeConfluenceEndRules());
-        SurfaceRuleManager.addToDefaultSurfaceRulesAtStage(SurfaceRuleManager.RuleCategory.OVERWORLD, SurfaceRuleManager.RuleStage.BEFORE_BEDROCK, 0, SurfaceRuleData.makeMinecraftOverWorldRules());
-    }
+// todo terrablender   public static void registerRegionAndSurface() {
+//        Regions.register(new TheCrimsonRegion(Confluence.asResource("the_crimson"), 1));
+//        Regions.register(new TheCorruptionRegion(Confluence.asResource("the_corruption"), 1));
+//        Regions.register(new GlowingMushroomRegion(Confluence.asResource("glowing_mushroom"), 2));
+//        Regions.register(new AshForestRegion(Confluence.asResource("ash_forest"), 1));
+//        Regions.register(new AshWastelandRegion(Confluence.asResource("ash_wasteland"), 1));
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, SurfaceRuleData.makeConfluenceOverWorldRules());
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.NETHER, MODID, SurfaceRuleData.makeConfluenceNetherRules());
+//        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.END, MODID, SurfaceRuleData.makeConfluenceEndRules());
+//        SurfaceRuleManager.addToDefaultSurfaceRulesAtStage(SurfaceRuleManager.RuleCategory.OVERWORLD, SurfaceRuleManager.RuleStage.BEFORE_BEDROCK, 0, SurfaceRuleData.makeMinecraftOverWorldRules());
+//    }
 }

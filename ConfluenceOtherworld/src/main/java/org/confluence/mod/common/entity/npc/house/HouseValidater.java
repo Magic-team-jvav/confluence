@@ -1,15 +1,14 @@
 package org.confluence.mod.common.entity.npc.house;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
-import java.util.ArrayDeque;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 3D BFS 房屋检测器。
@@ -21,13 +20,18 @@ public final class HouseValidater {
     private static final int MAX_VOLUME = 1500;
     private static final int MIN_LIGHT = 10;
 
-    public enum ResultType {
+    public enum ResultType implements PortTranslatableEnum {
         FOUND,
         TOO_SMALL,
         TOO_LARGE,
         NO_LIGHT,
         NO_CHAIR,
-        NO_TABLE
+        NO_TABLE;
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("house_validator.result_type." + name().toLowerCase(Locale.ROOT));
+        }
     }
 
     public record Result(ResultType type, @Nullable BlockPos min, @Nullable BlockPos max) {
@@ -38,11 +42,27 @@ public final class HouseValidater {
         public boolean isValid() {
             return type == ResultType.FOUND && min != null && max != null;
         }
+
+        public Component message() {
+            return type.getTranslatedName();
+        }
+
+        public House make(UUID uuid) {
+            if (isValid()) {
+                return new House(Optional.of(uuid), min, max);
+            }
+            return House.EMPTY;
+        }
+
+        public Iterable<BlockPos> list() {
+            if (isValid()) {
+                return BlockPos.betweenClosed(min, max);
+            }
+            return List.of();
+        }
     }
 
-    /**
-     * 从 start 位置 BFS flood fill，检测是否是合法 NPC 房屋。
-     */
+    /// 从 start 位置 BFS flood fill，检测是否是合法 NPC 房屋。
     public static Result scan(Level level, BlockPos start) {
         Set<BlockPos> visited = new HashSet<>();
         Queue<BlockPos> queue = new ArrayDeque<>();
@@ -60,9 +80,12 @@ public final class HouseValidater {
             BlockPos pos = queue.poll();
 
             // 更新边界
-            minX = Math.min(minX, pos.getX()); maxX = Math.max(maxX, pos.getX());
-            minY = Math.min(minY, pos.getY()); maxY = Math.max(maxY, pos.getY());
-            minZ = Math.min(minZ, pos.getZ()); maxZ = Math.max(maxZ, pos.getZ());
+            minX = Math.min(minX, pos.getX());
+            maxX = Math.max(maxX, pos.getX());
+            minY = Math.min(minY, pos.getY());
+            maxY = Math.max(maxY, pos.getY());
+            minZ = Math.min(minZ, pos.getZ());
+            maxZ = Math.max(maxZ, pos.getZ());
 
             BlockState state = level.getBlockState(pos);
 
@@ -89,7 +112,8 @@ public final class HouseValidater {
         int xSpan = maxX - minX;
         int zSpan = maxZ - minZ;
 
-        if (volume < MIN_VOLUME || xSpan < 3 || zSpan < 3) return Result.error(ResultType.TOO_SMALL);
+        if (volume < MIN_VOLUME || xSpan < 3 || zSpan < 3)
+            return Result.error(ResultType.TOO_SMALL);
         if (volume > MAX_VOLUME) return Result.error(ResultType.TOO_LARGE);
         if (!hasLight) return Result.error(ResultType.NO_LIGHT);
         if (!hasChair) return Result.error(ResultType.NO_CHAIR);

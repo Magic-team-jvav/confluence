@@ -1,7 +1,7 @@
 package org.confluence.mod.mixin.network.protocol.game;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.network.PortRegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.world.effect.MobEffectInstance;
 import org.confluence.mod.mixed.IClientboundUpdateMobEffectPacket;
@@ -22,18 +22,18 @@ public abstract class ClientboundUpdateMobEffectPacketMixin implements IClientbo
         return confluence$enabled;
     }
 
-    @Inject(method = "<init>(ILnet/minecraft/world/effect/MobEffectInstance;Z)V", at = @At("TAIL"))
+    @Inject(method = "<init>(ILnet/minecraft/world/effect/MobEffectInstance;)V", at = @At("TAIL"))
     private void init(CallbackInfo ci, @Local(argsOnly = true) MobEffectInstance effect) {
         this.confluence$enabled = IMobEffectInstance.of(effect).confluence$isEnabled();
     }
 
-    @Inject(method = "<init>(Lnet/minecraft/network/PortRegistryFriendlyByteBuf;)V", at = @At("TAIL"))
-    private void init(PortRegistryFriendlyByteBuf buffer, CallbackInfo ci) {
+    @Inject(method = "<init>(Lnet/minecraft/network/FriendlyByteBuf;)V", at = @At("TAIL"))
+    private void init(FriendlyByteBuf buffer, CallbackInfo ci) {
         this.confluence$enabled = buffer.readBoolean();
     }
 
     @Inject(method = "write", at = @At("TAIL"))
-    private void encode(PortRegistryFriendlyByteBuf buffer, CallbackInfo ci) {
+    private void encode(FriendlyByteBuf buffer, CallbackInfo ci) {
         buffer.writeBoolean(confluence$enabled);
     }
 }

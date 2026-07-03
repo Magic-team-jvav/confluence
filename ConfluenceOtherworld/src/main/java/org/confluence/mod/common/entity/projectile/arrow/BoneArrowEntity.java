@@ -18,12 +18,11 @@ public class BoneArrowEntity extends BaseArrowEntity {
     public BoneArrowEntity(EntityType<? extends AbstractArrow> entityType, LivingEntity owner, ItemStack pickupItemStack, ItemStack firedFromWeapon) {
         super(entityType, owner, pickupItemStack, firedFromWeapon);
     }
+
     @Override
     public double getBaseDamage() {
         return 4.6;
     }
-
-    @Override
 
     @Override
     public ResourceLocation getTexturePath() {

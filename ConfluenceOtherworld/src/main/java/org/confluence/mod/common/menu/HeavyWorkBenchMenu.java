@@ -12,7 +12,6 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.menu.ToggleAmountResultSlot;
-import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
@@ -37,12 +36,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                     access.initializeIfNeeded(inventory.player);
                     return new EnvironmentRecipeInput(menu, size, access);
                 },
-                (input, container, slot, x, y, setup) -> new ResultSlot(input, container, slot, x, y) {
-                    @Override
-                    protected void updateMenu() {
-                        setup.run();
-                    }
-                });
+                ResultSlot::new);
     }
 
     @Override
@@ -137,22 +131,16 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         return stillValid(access, player, FunctionalBlocks.HEAVY_WORK_BENCH.get());
     }
 
-    public static class ResultSlot extends ToggleAmountResultSlot<HeavyWorkBenchRecipe> {
+    public static class ResultSlot extends ToggleAmountResultSlot.For4x<HeavyWorkBenchRecipe> {
         private CraftingRecipe altRecipe;
 
-        public ResultSlot(MenuRecipeInput input, Container result, int pSlot, int pX, int pY) {
-            super(input, result, pSlot, pX, pY);
+        public ResultSlot(MenuRecipeInput input, Container container, int slot, int x, int y, Runnable setup) {
+            super(input, container, slot, x, y, setup);
         }
 
         @Override
         public void onTake(Player player, ItemStack stack) {
-            if (recipe != null) {
-                recipe.either
-                        .ifLeft(pattern -> AbstractAmountRecipe.consumeShaped(input, 4, 4, pattern))
-                        .ifRight(ingredients -> AbstractAmountRecipe.consumeShapeless(input, ingredients));
-                input.setChanged();
-                updateMenu();
-            }
+            super.onTake(player, stack);
             if (altRecipe != null && (altRecipe.getClass() == ShapedRecipe.class || altRecipe.getClass() == ShapelessRecipe.class)) {
                 for (ItemStack itemStack : input.getItems()) {
                     itemStack.shrink(1);

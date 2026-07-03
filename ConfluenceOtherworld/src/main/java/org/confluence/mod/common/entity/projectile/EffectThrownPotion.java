@@ -51,7 +51,7 @@ public class EffectThrownPotion extends ThrowableItemProjectile {
                 living.addEffect(item.data.create(), entity);
             }
         });
-        level().levelEvent(LevelEvent.PARTICLES_SPELL_POTION_SPLASH, this.blockPosition(), item.data.effect().value().getColor());
+        level().levelEvent(LevelEvent.PARTICLES_SPELL_POTION_SPLASH, this.blockPosition(), item.data.effect().get().getColor());
         discard();
     }
 }

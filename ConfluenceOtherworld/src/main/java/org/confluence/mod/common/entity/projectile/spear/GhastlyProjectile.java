@@ -128,7 +128,7 @@ public class GhastlyProjectile extends SpearProjectile {
         return target.isAlive()
                 && target != getOwner()
                 && target.isPickable()
-                && TEUtils.projectileCanHitEntityTest.test(this, target);
+                /* todo projectile && TEUtils.projectileCanHitEntityTest.test(this, target)*/;
     }
 
     /**

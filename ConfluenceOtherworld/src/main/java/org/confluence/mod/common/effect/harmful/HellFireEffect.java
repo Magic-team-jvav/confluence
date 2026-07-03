@@ -7,11 +7,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.lib.api.entity.Boss;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
+import org.mesdag.portlib.wrapper.world.level.PortExplosionDamageCalculator;
 
 public class HellFireEffect extends PortMobEffect {
     public HellFireEffect() {
@@ -35,17 +34,18 @@ public class HellFireEffect extends PortMobEffect {
         living.level().explode(
                 living,
                 living.damageSources().explosion(living, null),
-                new ExplosionDamageCalculator() {
+                new PortExplosionDamageCalculator() {
                     @Override
-                    public boolean shouldBlockExplode(Explosion explosion, BlockGetter reader,
-                                                      BlockPos pos, BlockState state, float power) {
+                    public boolean shouldBlockExplode(Explosion explosion, BlockGetter reader, BlockPos pos, BlockState state, float power) {
                         return false;
                     }
 
                     @Override
-                    public float getEntityDamageAmount(Explosion explosion, Entity entity) {
-                        if (!(entity instanceof Enemy || entity instanceof Boss)) return 0;
-                        return 3 + amplifier * 3;
+                    public float getEntityDamage(Explosion explosion, Entity entity) {
+                        if (entity instanceof Enemy) {
+                            return 3 + amplifier * 3;
+                        }
+                        return 0;
                     }
                 },
                 living.getX(), living.getY(0.0625), living.getZ(),

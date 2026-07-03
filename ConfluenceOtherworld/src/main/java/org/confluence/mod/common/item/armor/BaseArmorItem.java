@@ -141,30 +141,30 @@ public class BaseArmorItem extends ArmorItem {
             return this;
         }
 
-        public Builder attribute(Attribute attribute, double value, PortAttributeModifier.PortOperation operation) {
+        public Builder attribute(Attribute attribute, double value, PortAttributeModifier.Operation operation) {
             if (attributeModifiers == null) this.attributeModifiers = ImmutableMultimap.builder();
             attributeModifiers.put(attribute, new AttributeModifier(PortAttributeModifier.rl2uuid(asId()), asId().getPath(), value, operation.unwrap()));
             return this;
         }
 
-        public Builder attribute(Holder<Attribute> attribute, double value, PortAttributeModifier.PortOperation operation) {
+        public Builder attribute(Holder<Attribute> attribute, double value, PortAttributeModifier.Operation operation) {
             return attribute(attribute.value(), value, operation);
         }
 
         public Builder meleeDamage(double value) {
-            return attribute(LibAttributes.getAttackDamage(), value, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getAttackDamage(), value, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder rangedDamage(double value) {
-            return attribute(LibAttributes.getRangedDamage(), value, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getRangedDamage(), value, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder magicDamage(double value) {
-            return attribute(LibAttributes.getMagicDamage(), value, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getMagicDamage(), value, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder summonDamage(double value) {
-            return attribute(LibAttributes.getSummonDamage(), value, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL);
+            return attribute(LibAttributes.getSummonDamage(), value, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         }
 
         public Builder fourClassesDamage(double value) {
@@ -172,7 +172,7 @@ public class BaseArmorItem extends ArmorItem {
         }
 
         public Builder criticalChance(double value) {
-            return attribute(LibAttributes.getCriticalChance(), value, PortAttributeModifier.PortOperation.ADD_VALUE);
+            return attribute(LibAttributes.getCriticalChance(), value, PortAttributeModifier.Operation.ADD_VALUE);
         }
 
         public Builder setGolden() {

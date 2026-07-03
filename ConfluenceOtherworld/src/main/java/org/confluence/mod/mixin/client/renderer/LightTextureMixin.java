@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(LightTexture.class)
 public abstract class LightTextureMixin {
-    @ModifyExpressionValue(method = "updateLightTexture", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3f;lerp(Lorg/joml/Vector3fc;F)Lorg/joml/Vector3f;", ordinal = 0))
+    @ModifyExpressionValue(method = "updateLightTexture", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3f;lerp(Lorg/joml/Vector3fc;F)Lorg/joml/Vector3f;", remap = false, ordinal = 0))
     private Vector3f color(Vector3f original) {
         Vector3f color = ClientGameEventSystem.lightTextureColor;
         if (color != null) {

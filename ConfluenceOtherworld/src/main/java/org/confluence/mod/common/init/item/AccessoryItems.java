@@ -44,8 +44,8 @@ import java.util.function.Function;
 import static org.confluence.lib.common.component.ModRarity.*;
 import static org.confluence.terra_curio.common.component.PrimitiveValueComponent.of;
 import static org.confluence.terra_curio.common.component.PrimitiveValueComponent.units;
-import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL;
-import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.PortOperation.ADD_VALUE;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
+import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier.Operation.ADD_VALUE;
 
 @SuppressWarnings("unused")
 public class AccessoryItems {

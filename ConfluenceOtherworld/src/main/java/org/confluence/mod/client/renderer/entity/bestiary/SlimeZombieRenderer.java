@@ -4,11 +4,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ZombieRenderer;
-import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Zombie;
+import org.confluence.mod.common.entity.monster.slime.BaseSlime;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 
 public class SlimeZombieRenderer extends ZombieRenderer {
-    private Slime slime;
+    private BaseSlime slime;
     private boolean failed = false;
 
     public SlimeZombieRenderer(EntityRendererProvider.Context context) {
@@ -18,7 +19,7 @@ public class SlimeZombieRenderer extends ZombieRenderer {
     @Override
     public void render(Zombie zombie, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (!failed && slime == null) {
-            this.slime = TEMonsterEntities.BLUE_SLIME.get().create(zombie.level());
+            this.slime = MonsterEntities.BLUE_SLIME.get().create(zombie.level());
             if (slime == null) this.failed = true;
         }
         poseStack.pushPose();

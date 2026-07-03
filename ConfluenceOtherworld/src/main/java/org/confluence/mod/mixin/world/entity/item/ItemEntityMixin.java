@@ -14,7 +14,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModAdvancements;
@@ -26,6 +25,8 @@ import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.PrefixUtils;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.wrapper.world.item.crafting.PortSingleRecipeInput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -63,7 +64,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
 
         if (confluence$item_coolDown == 0 && IEntity.of(self).confluence$isInShimmer()) {
             ShimmerItemTransmutationEvent.Pre pre = new ShimmerItemTransmutationEvent.Pre(self);
-            if (MinecraftForge.EVENT_BUS.post(pre).isCanceled()) {
+            if (PortEventHandler.postEventWithReturn(pre).isCanceled()) {
                 if (!self.isRemoved()) {
                     self.getItem().shrink(pre.getShrink());
                     confluence$setup(self, pre.getCoolDown(), pre.getSpeedY());
@@ -74,7 +75,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
             } else {
                 ShimmerItemTransmutationEvent.Post post = new ShimmerItemTransmutationEvent.Post(self);
                 confluence$initTargets(post);
-                MinecraftForge.EVENT_BUS.post(post);
+                PortEventHandler.postEvent(post);
                 List<ItemStack> targets = post.getTargets();
                 self.getItem().shrink(post.getShrink());
                 if (targets == null) {
@@ -92,7 +93,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
                     }
                     level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
                     if (serverPlayer != null) {
-                        ModAdvancements.SHIMMER_TRANSMUTATION.get().trigger(serverPlayer, self);
+                        ModAdvancements.SHIMMER_TRANSMUTATION.trigger(serverPlayer, self);
                     }
                 }
             }
@@ -115,9 +116,8 @@ public abstract class ItemEntityMixin implements IItemEntity {
         ItemEntity source = event.getSource();
         ItemStack sourceItem = source.getItem();
 
-        List<RecipeHolder<ItemTransmutationRecipe>> recipes = source.level().getRecipeManager().getRecipesFor(ModRecipes.ITEM_TRANSMUTATION_TYPE.get(), new SingleRecipeInput(sourceItem), source.level());
-        for (RecipeHolder<ItemTransmutationRecipe> recipeHolder : recipes) {
-            ItemTransmutationRecipe recipe = recipeHolder.value();
+        List<ItemTransmutationRecipe> recipes = source.level().getRecipeManager().getRecipesFor(ModRecipes.ITEM_TRANSMUTATION_TYPE.get(), new PortSingleRecipeInput(sourceItem), source.level());
+        for (ItemTransmutationRecipe recipe : recipes) {
             if (!recipe.isValid()) return;
             int times = sourceItem.getCount() / recipe.shrink();
             List<ItemStack> results = new ArrayList<>();
@@ -142,8 +142,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
         MinecraftServer server = ((ServerLevel) source.level()).getServer();
         boolean isHardmode = IMinecraftServer.isHardmode(server);
         RandomSource random = source.level().random;
-        for (RecipeHolder<?> recipeHolder : server.getRecipeManager().getRecipes()) {
-            Recipe<?> recipe = recipeHolder.value();
+        for (Recipe<?> recipe : server.getRecipeManager().getRecipes()) {
             if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe) {
                 continue;
             }

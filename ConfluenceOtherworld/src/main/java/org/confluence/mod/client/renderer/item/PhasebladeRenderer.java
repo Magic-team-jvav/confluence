@@ -36,7 +36,7 @@ public class PhasebladeRenderer extends GeoItemRenderer<Phaseblade> {
 
     @Override
     public void actuallyRender(PoseStack poseStack, Phaseblade animatable, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        this.isTurningOn = getCurrentItemStack().getDataOrDefault(TEDataComponentTypes.BOOMERANG_READY, SingleBooleanComponent.FALSE).value();
+        this.isTurningOn = Phaseblade.isTurnOn(getCurrentItemStack());
         super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

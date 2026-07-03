@@ -78,10 +78,14 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
     }
 
     @Override
-    public ResourceLocation getModelPath() {return getVariant().modelPath();}
+    public ResourceLocation getModelPath() {
+        return getVariant().modelPath();
+    }
 
     @Override
-    public ResourceLocation getTexturePath() {return getVariant().texturePath();}
+    public ResourceLocation getTexturePath() {
+        return getVariant().texturePath();
+    }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -98,10 +102,12 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
             return name().toLowerCase(Locale.ROOT);
         }
 
+        @Override
         public ResourceLocation modelPath() {
             return Confluence.asResource("animal/grasshopper");
         }
 
+        @Override
         public ResourceLocation texturePath() {
             return Confluence.asResource("textures/entity/grasshopper/" + getSerializedName() + ".png");
         }

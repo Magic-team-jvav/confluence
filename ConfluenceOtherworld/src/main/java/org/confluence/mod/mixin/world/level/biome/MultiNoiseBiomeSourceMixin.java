@@ -1,6 +1,5 @@
-package org.confluence.mod.mixin.integration.terrablender;
+package org.confluence.mod.mixin.world.level.biome;
 
-import com.bawnorton.mixinsquared.TargetHandler;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -24,7 +23,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
@@ -32,16 +30,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Mixin(value = MultiNoiseBiomeSource.class, priority = 1100)
-public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBiomeSource {
+@Mixin(value = MultiNoiseBiomeSource.class, priority = 800)
+public abstract class MultiNoiseBiomeSourceMixin implements IMultiNoiseBiomeSource {
     @Unique
     private List<Holder<Biome>> confluence$jungle;
     @Unique
     private Pair<Holder<Biome>, Holder<Biome>> confluence$biomePair;
 
-    @TargetHandler(mixin = "terrablender.mixin.MixinMultiNoiseBiomeSource", name = "getNoiseBiome")
-    @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
-    private void replaceBiome(int x, int y, int z, Climate.Sampler sampler, CallbackInfoReturnable<Holder<Biome>> cir, CallbackInfo ci) {
+    @Inject(method = "getNoiseBiome(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;", at = @At("HEAD"), cancellable = true)
+    private void replaceBiome(int x, int y, int z, Climate.Sampler sampler, CallbackInfoReturnable<Holder<Biome>> cir) {
         OverworldUtils.replaceBiome(confluence$self(), x, y, z, cir, () -> {
             if (confluence$jungle == null) {
                 this.confluence$jungle = new ArrayList<>();

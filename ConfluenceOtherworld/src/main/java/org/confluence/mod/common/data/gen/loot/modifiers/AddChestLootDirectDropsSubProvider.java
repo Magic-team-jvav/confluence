@@ -1,13 +1,12 @@
 package org.confluence.mod.common.data.gen.loot.modifiers;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
 
 /// Generates loot tables into EMI's direct_drop registry i.e. minecraft/direct_drops/chests/jungle_temple.json
 public class AddChestLootDirectDropsSubProvider extends AddChestLootConfluenceSubProvider {
-    public AddChestLootDirectDropsSubProvider(HolderLookup.Provider provider) {
-        super(provider);
+    public AddChestLootDirectDropsSubProvider() {
+        super();
     }
 
     protected ResourceKey<LootTable> getResourceKey(ResourceKey<LootTable> lootTable) {

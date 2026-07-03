@@ -1,16 +1,14 @@
 package org.confluence.mod.common.item.crossbow;
 
+import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -20,8 +18,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -46,24 +42,26 @@ import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.mod.network.s2c.RepeaterShootingPayloadS2C;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.mesdag.portlib.wrapper.common.extensions.IPortCrossbowItemExtension;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemPropertiesExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
-public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickStateItem, IPortCrossbowItemExtension {
+// todo crossbow
+public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftclick ILeftClickStateItem,*/ IPortCrossbowItemExtension {
     public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
 
     public static final String ATTACK_SPEED_TEXT = "attribute.name.repeater.attack_speed";
@@ -78,11 +76,11 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
     public static final String REPEATER_SHOOTING = "repeater.shooting";
 
     private static final ResourceLocation ID = Confluence.asResource(PortEquipmentSlotGroup.MAINHAND.getSerializedName());
-    private static final ChargingSounds DEFAULT_SOUNDS = new ChargingSounds(
-            Optional.of(SoundEvents.CROSSBOW_LOADING_START),
-            Optional.of(SoundEvents.CROSSBOW_LOADING_MIDDLE),
-            Optional.of(SoundEvents.CROSSBOW_LOADING_END)
-    );
+//    private static final ChargingSounds DEFAULT_SOUNDS = new ChargingSounds(
+//            Optional.of(SoundEvents.CROSSBOW_LOADING_START),
+//            Optional.of(SoundEvents.CROSSBOW_LOADING_MIDDLE),
+//            Optional.of(SoundEvents.CROSSBOW_LOADING_END)
+//    );
 
     private boolean startSoundPlayed = false;
     private boolean midLoadSoundPlayed = false;
@@ -144,10 +142,10 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
      */
     public BaseTerraRepeaterItem(Properties properties, float baseDamage, ModifyArrowBuilder modifyArrowBuilder, Builder repeaterBuilder) {
         super(modifyArrowBuilder.buildProperties(properties.stacksTo(1)
-                .component(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.fromItems(repeaterBuilder.capacity))
-                .attributes(ItemAttributeModifiers.builder().add(Attributes.ATTACK_KNOCKBACK,
+                        .component(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.fromItems(repeaterBuilder.capacity))
+                /*.attributes(ItemAttributeModifiers.builder().add(Attributes.ATTACK_KNOCKBACK,
                         new AttributeModifier(ID, repeaterBuilder.knockback, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build()
-                ))
+                )*/)
         );
         this.baseReloadSpeed = repeaterBuilder.reloadSpeed;
         this.baseShootInterval = repeaterBuilder.shootInterval;
@@ -230,19 +228,19 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
 
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-        if (!(stack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler)) {
-            return false;
-        }
+//        if (!(stack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler)) {
+//            return false;
+//        }
 
         if (other.isEmpty()) {
-            if (!handler.isEmpty() && action == ClickAction.SECONDARY) {
-                ItemStack itemStack = handler.extractItem(0, handler.getStackInSlot(0).getCount(), false);
-                boolean isEmpty = itemStack.isEmpty();
-                if (!isEmpty) {
-                    playRemoveSound(player);
-                }
-                return !isEmpty && access.set(itemStack);
-            }
+//            if (!handler.isEmpty() && action == ClickAction.SECONDARY) {
+//                ItemStack itemStack = handler.extractItem(0, handler.getStackInSlot(0).getCount(), false);
+//                boolean isEmpty = itemStack.isEmpty();
+//                if (!isEmpty) {
+//                    playRemoveSound(player);
+//                }
+//                return !isEmpty && access.set(itemStack);
+//            }
             return false;
         }
 
@@ -257,14 +255,15 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
 
         ItemStack copy = other.copyWithCount(stackCount);
 
-        boolean is = handler.insertItem(() -> copy, false);
-
-        if (is) {
-            playAerialShootingSound(player);
-            other.setCount(other.getCount() - (stackCount - copy.getCount()));
-        }
-
-        return is;
+//        boolean is = handler.insertItem(() -> copy, false);
+//
+//        if (is) {
+//            playAerialShootingSound(player);
+//            other.setCount(other.getCount() - (stackCount - copy.getCount()));
+//        }
+//
+//        return is;
+        return true;
     }
 
     public static boolean isCharged(ItemStack crossbowStack) {
@@ -284,9 +283,9 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
         return new Vector3f(vector3f).rotateAxis(angle * Mth.DEG_TO_RAD, vector3f2.x, vector3f2.y, vector3f2.z);
     }
 
-    protected float getShootingPower(RepeaterContentsComponentHandler handler, Player player, InteractionHand hand) {
-        return getArrowSpeed(player, hand);
-    }
+//    protected float getShootingPower(RepeaterContentsComponentHandler handler, Player player, InteractionHand hand) {
+//        return getArrowSpeed(player, hand);
+//    }
 
     protected static float getShotPitch(RandomSource random, int index) {
         return index == 0 ? 1.0F : getRandomShotPitch((index & 1) == 1, random);
@@ -297,16 +296,16 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
         return 1.0F / (random.nextFloat() * 0.5F + 1.8F) + f;
     }
 
-    protected ChargingSounds getChargingSounds(ItemStack stack) {
-        return DEFAULT_SOUNDS;
-    }
-
-    public @Nullable RepeaterContentsComponentHandler getHandler(ItemStack stack) {
-        if (stack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
-            return handler;
-        }
-        return null;
-    }
+//    protected ChargingSounds getChargingSounds(ItemStack stack) {
+//        return DEFAULT_SOUNDS;
+//    }
+//
+//    public @Nullable RepeaterContentsComponentHandler getHandler(ItemStack stack) {
+//        if (stack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
+//            return handler;
+//        }
+//        return null;
+//    }
 
     private static InteractionHand getHand(Player player, ItemStack itemStack) {
         return player.getMainHandItem() == itemStack ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
@@ -325,7 +324,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
         if (!(level instanceof ServerLevel serverlevel)) {
             return false;
         }
-        List<ItemStack> itemStacks = RepeaterContentsComponentHandler.extractItemList(weapon, 1, !isConsume);
+        List<ItemStack> itemStacks = List.of()/*RepeaterContentsComponentHandler.extractItemList(weapon, 1, !isConsume)*/;
         this.shoot(serverlevel, shooter, hand, weapon, itemStacks, velocity, inaccuracy, true, target);
         if (shooter instanceof ServerPlayer serverplayer) {
             // 告诉客户端玩家已发射
@@ -398,7 +397,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
                 level.addFreshEntity(projectile);
             }
 
-            weapon.hurtAndBreak(this.getDurabilityUse(itemstack), shooter, LivingEntity.getSlotForHand(hand));
+            weapon.hurtAndBreak(this.getDurabilityUse(itemstack), shooter, PortLivingEntityExtension.getSlotForHand(hand));
             if (weapon.isEmpty()) {
                 break;
             }
@@ -406,7 +405,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
     }
 
     @Override
-    protected void shootProjectile(LivingEntity shooter, Projectile projectile, int index, float velocity, float inaccuracy, float angle, @Nullable LivingEntity target) {
+    public void shootProjectile(LivingEntity shooter, Projectile projectile, int index, float velocity, float inaccuracy, float angle, @Nullable LivingEntity target) {
         Vector3f vector3f;
         if (target != null) {
             double d0 = target.getX() - shooter.getX();
@@ -426,69 +425,69 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
         shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, shooter.getSoundSource(), 1.0F, f);
     }
 
-    @Override
-    public void onLeftClick(Player player, ItemStack itemStack) {
-        if (player.level().isClientSide) return;
-        var handler = getHandler(itemStack);
-        if (handler == null) {
-            return;
-        }
+//    @Override
+//    public void onLeftClick(Player player, ItemStack itemStack) {
+//        if (player.level().isClientSide) return;
+//        var handler = getHandler(itemStack);
+//        if (handler == null) {
+//            return;
+//        }
+//
+//        if (handler.isEmpty()) {
+//            playAerialShootingSound(player);
+//            return;
+//        }
+//
+//        InteractionHand hand = getHand(player, itemStack);
+//        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
+//        Level level = player.level();
+//        if (!delayTaskHolder.containsTask(hand).isEmpty()) {
+//            return;
+//        }
+//
+//        int countCount = getBurstCount(player, hand);
+//        float shootingPower = getShootingPower(handler, player, hand);
+//        if (countCount > 1) {
+//            shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
+//        }
+//
+//        delayTaskHolder.addTask(hand, REPEATER_SHOOTING, DelayTaskHolder.createTaskBilder()
+//                .repeatCount(-1)
+//                .removedTick(getShootInterval(player, hand))
+//                .resultRun((tick, maxTick, task) -> {
+//                    var projectiles = getHandler(itemStack);
+//                    if (projectiles == null || projectiles.isEmpty()) {
+//                        task.remove();
+//                        return 0;
+//                    }
+//                    if (countCount > 1) {
+//                        shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
+//                    }
+//                    if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null, true)) {
+//                        task.remove();
+//                    }
+//                    return 0;
+//                }).build());
+//    }
 
-        if (handler.isEmpty()) {
-            playAerialShootingSound(player);
-            return;
-        }
-
-        InteractionHand hand = getHand(player, itemStack);
-        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
-        Level level = player.level();
-        if (!delayTaskHolder.containsTask(hand).isEmpty()) {
-            return;
-        }
-
-        int countCount = getBurstCount(player, hand);
-        float shootingPower = getShootingPower(handler, player, hand);
-        if (countCount > 1) {
-            shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
-        }
-
-        delayTaskHolder.addTask(hand, REPEATER_SHOOTING, DelayTaskHolder.createTaskBilder()
-                .repeatCount(-1)
-                .removedTick(getShootInterval(player, hand))
-                .resultRun((tick, maxTick, task) -> {
-                    var projectiles = getHandler(itemStack);
-                    if (projectiles == null || projectiles.isEmpty()) {
-                        task.remove();
-                        return 0;
-                    }
-                    if (countCount > 1) {
-                        shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
-                    }
-                    if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null, true)) {
-                        task.remove();
-                    }
-                    return 0;
-                }).build());
-    }
-
-    @Override
-    public void onLeftRelease(Player player, ItemStack itemStack) {
-        if (player.level().isClientSide) return;
-        InteractionHand hand = getHand(player, itemStack);
-        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
-        delayTaskHolder.removeTask(hand, REPEATER_SHOOTING);
-        delayTaskHolder.removeTask(hand, REPEATER_CONTINUOUS_SHOOTING);
-    }
+//    @Override
+//    public void onLeftRelease(Player player, ItemStack itemStack) {
+//        if (player.level().isClientSide) return;
+//        InteractionHand hand = getHand(player, itemStack);
+//        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
+//        delayTaskHolder.removeTask(hand, REPEATER_SHOOTING);
+//        delayTaskHolder.removeTask(hand, REPEATER_CONTINUOUS_SHOOTING);
+//    }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        var projectiles = getHandler(itemstack);
-        if (projectiles == null || projectiles.isEmpty() && !player.getProjectile(itemstack).isEmpty()) {
-            this.startSoundPlayed = false;
-            this.midLoadSoundPlayed = false;
-            player.startUsingItem(hand);
-        }
+//        var projectiles = getHandler(itemstack);
+//        if (projectiles == null || projectiles.isEmpty() && !player.getProjectile(itemstack).isEmpty()) {
+//            this.startSoundPlayed = false;
+//            this.midLoadSoundPlayed = false;
+//            player.startUsingItem(hand);
+//        }
         return InteractionResultHolder.consume(itemstack);
     }
 
@@ -509,30 +508,30 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
             return;
         }
         Level level = entity.level();
-        WeaponStorage.of(entity).bowFullPull = true;
+//        WeaponStorage.of(entity).bowFullPull = true;
         if (level.isClientSide) {
             entity.playSound(ModSoundEvents.BOW_COOLDOWN_RECOVERY.get());
         }
-        ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
-        crossbowitem$chargingsounds.end().ifPresent(p_352852_ -> level.playSound(
-                null,
-                entity.getX(),
-                entity.getY(),
-                entity.getZ(),
-                p_352852_.value(),
-                entity.getSoundSource(),
-                1.0F,
-                1.0F / (level.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F
-        ));
+//        ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
+//        crossbowitem$chargingsounds.end().ifPresent(p_352852_ -> level.playSound(
+//                null,
+//                entity.getX(),
+//                entity.getY(),
+//                entity.getZ(),
+//                p_352852_.value(),
+//                entity.getSoundSource(),
+//                1.0F,
+//                1.0F / (level.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F
+//        ));
     }
 
     protected boolean tryLoadProjectiles(LivingEntity shooter, ItemStack weapon) {
         if (shooter.level().isClientSide) {
             return true;
         }
-        return RepeaterContentsComponentHandler.insertItem(weapon,
+        return true /*RepeaterContentsComponentHandler.insertItem(weapon,
                 () -> shooter.getProjectile(weapon),
-                shooter instanceof Player player && player.isCreative());
+                shooter instanceof Player player && player.isCreative())*/;
     }
 
     protected float getPowerForTime(int timeLeft, ItemStack stack, LivingEntity shooter) {
@@ -551,38 +550,38 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
         }
         float f = (float) (stack.getUseDuration(livingEntity) - count) / (float) getReloadSpeed(livingEntity, stack);
         if (f < 0.2F) {
-            WeaponStorage.of(livingEntity).bowFullPull = false;
+//            WeaponStorage.of(livingEntity).bowFullPull = false;
             this.startSoundPlayed = false;
             this.midLoadSoundPlayed = false;
         }
 
-        ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
+//        ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
         if (f >= 0.2F && !this.startSoundPlayed) {
             this.startSoundPlayed = true;
-            crossbowitem$chargingsounds.start().ifPresent(p_352849_ -> level.playSound(
-                    null,
-                    livingEntity.getX(),
-                    livingEntity.getY(),
-                    livingEntity.getZ(),
-                    p_352849_.value(),
-                    SoundSource.PLAYERS,
-                    0.5F,
-                    1.0F
-            ));
+//            crossbowitem$chargingsounds.start().ifPresent(p_352849_ -> level.playSound(
+//                    null,
+//                    livingEntity.getX(),
+//                    livingEntity.getY(),
+//                    livingEntity.getZ(),
+//                    p_352849_.value(),
+//                    SoundSource.PLAYERS,
+//                    0.5F,
+//                    1.0F
+//            ));
         }
 
         if (f >= 0.5F && !this.midLoadSoundPlayed) {
             this.midLoadSoundPlayed = true;
-            crossbowitem$chargingsounds.mid().ifPresent(p_352855_ -> level.playSound(
-                    null,
-                    livingEntity.getX(),
-                    livingEntity.getY(),
-                    livingEntity.getZ(),
-                    p_352855_.value(),
-                    SoundSource.PLAYERS,
-                    0.5F,
-                    1.0F
-            ));
+//            crossbowitem$chargingsounds.mid().ifPresent(p_352855_ -> level.playSound(
+//                    null,
+//                    livingEntity.getX(),
+//                    livingEntity.getY(),
+//                    livingEntity.getZ(),
+//                    p_352855_.value(),
+//                    SoundSource.PLAYERS,
+//                    0.5F,
+//                    1.0F
+//            ));
         }
 
         if (f >= 1) {
@@ -597,12 +596,12 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
 
     @Override
     public Predicate<ItemStack> getSupportedHeldProjectiles(ItemStack stack) {
-        return (itemStack) -> ammunitionRestrictions.test(itemStack, stack);
+        return ammo -> ammunitionRestrictions.test(ammo, stack);
     }
 
     @Override
     public Predicate<ItemStack> getAllSupportedProjectiles(ItemStack stack) {
-        return (itemStack) -> ammunitionRestrictions.test(itemStack, stack);
+        return ammo -> ammunitionRestrictions.test(ammo, stack);
     }
 
     @Override
@@ -611,7 +610,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
     }
 
     @Override
-    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
@@ -625,17 +624,17 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
         return ItemStack.isSameItem(oldStack, newStack);
     }
 
-    @Override
-    public boolean canSwitchWithoutRelease(Player player, ItemStack itemStack) {
-        return false;
-    }
+//    @Override
+//    public boolean canSwitchWithoutRelease(Player player, ItemStack itemStack) {
+//        return false;
+//    }
 
     public void modifyArrowEntity(BaseArrowEntity entity) {
         modifyArrowBuilder.applyModifiers(entity);
     }
 
     @Override
-    public void appendHoverText(ItemStack weapon, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(ItemStack weapon, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         tooltipComponents.add(tooltip(ARROW_CAPACITY_TEXT).append(getTotalSize(weapon).getItemsTotalCount() + "/" + baseCapacity).withStyle(ChatFormatting.DARK_GRAY));
         tooltipComponents.add(tooltip(ATTACK_SPEED_TEXT).append(String.valueOf(baseArrowSpeed)).withStyle(ChatFormatting.DARK_GRAY));
         tooltipComponents.add(tooltip(KNOCKBACK_TEXT).append(String.valueOf(baseKnockback)).withStyle(ChatFormatting.DARK_GRAY));
@@ -794,8 +793,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
     }
 
     public static class ModifyArrowBuilder {
-        public List<java.util.function.UnaryOperator<org.mesdag.portlib.wrapper.world.item.Properties>> modifyProperties = new java.util.ArrayList<>();
-        public List<java.util.function.Consumer<BaseArrowEntity>> modifyArrowBuilder = new java.util.ArrayList<>();
+        public List<UnaryOperator<Properties>> modifyProperties = new java.util.ArrayList<>();
+        public List<Consumer<BaseArrowEntity>> modifyArrowBuilder = new java.util.ArrayList<>();
         public int multiShoot = 1;
         public java.util.function.Predicate<net.minecraft.world.item.ItemStack> canMultiShoot = ammo -> false;
         public float inaccuracy;
@@ -805,7 +804,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
         }
 
         public ModifyArrowBuilder setUnBreakable() {
-            this.modifyProperties.add(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
+            this.modifyProperties.add(IPortItemPropertiesExtension::unbreakable);
             return this;
         }
 
@@ -819,8 +818,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickSta
             return this;
         }
 
-        public org.mesdag.portlib.wrapper.world.item.Properties buildProperties(org.mesdag.portlib.wrapper.world.item.Properties properties) {
-            for (java.util.function.UnaryOperator<org.mesdag.portlib.wrapper.world.item.Properties> f : modifyProperties) {
+        public Properties buildProperties(Properties properties) {
+            for (UnaryOperator<Properties> f : modifyProperties) {
                 f.apply(properties);
             }
             return properties;

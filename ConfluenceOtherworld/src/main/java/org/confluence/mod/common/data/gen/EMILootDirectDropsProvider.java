@@ -23,7 +23,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class EMILootDirectDropsProvider implements DataProvider {
     private final PackOutput.PathProvider pathProvider;
@@ -59,7 +59,7 @@ public class EMILootDirectDropsProvider implements DataProvider {
         Map<ResourceLocation, LootTable> lootTables = Maps.newHashMap();
         Map<RandomSupport.Seed128bit, ResourceLocation> map = new Object2ObjectOpenHashMap<>();
         getTables().forEach(entry -> {
-            entry.provider().apply(provider).generate((id, builder) -> {
+            entry.provider().get().generate((id, builder) -> {
                 ResourceLocation seedKey = map.put(RandomSequence.seedForKey(id), id);
                 if (seedKey != null) {
                     String seed = String.valueOf(seedKey);
@@ -84,5 +84,5 @@ public class EMILootDirectDropsProvider implements DataProvider {
         return "EMILoot Direct Drops";
     }
 
-    public record SubProviderEntry(Function<HolderLookup.Provider, LootTableSubProvider> provider, LootContextParamSet paramSet) {}
+    public record SubProviderEntry(Supplier<LootTableSubProvider> provider, LootContextParamSet paramSet) {}
 }

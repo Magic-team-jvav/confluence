@@ -84,7 +84,7 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public BItem(LifeCrystalBlock pBlock) {
-            super(pBlock, new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
+            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
         }
 
         @Override

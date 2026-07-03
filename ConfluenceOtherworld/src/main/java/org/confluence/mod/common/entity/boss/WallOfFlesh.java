@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.boss;
 
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -174,5 +175,9 @@ public class WallOfFlesh extends BaseBoss {
     public void die(DamageSource source) {
         super.die(source);
         // TODO: trigger Hardmode activation
+    }
+
+    public void setForward(Direction direction) {
+        // todo
     }
 }

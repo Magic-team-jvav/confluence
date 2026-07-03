@@ -10,16 +10,18 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.common.Tags;
+import net.minecraftforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.mesdag.particlestorm.ParticleStorm;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +45,7 @@ public class AccumulatingEnergyEntity extends Entity {
     public void tick() {
         super.tick();
 
-        if (!isInWaterOrBubble() && getAttachedEntity() == null && level().getBlockState(getOnPos()).getFluidState().is(Tags.Fluids.WATER)) {
+        if (!isInWaterOrBubble() && getAttachedEntity() == null && level().getBlockState(getOnPos()).getFluidState().is(PortTags.Fluids.WATER)) {
             setPos(position().add(0, -0.75, 0));
         }
 
@@ -93,7 +95,7 @@ public class AccumulatingEnergyEntity extends Entity {
                 );
                 if (inWaterOrBubble) {
                     EmitterCreationPacketS2C packet = new EmitterCreationPacketS2C(Confluence.asResource("in_water_lightning_bolt"), position().toVector3f(), MolangExp.EMPTY, -1);
-                    Confluence.NETWORK_HANDLER.sendToPlayersTrackingChunk((ServerLevel) level(), chunkPosition(), packet);
+                    ParticleStorm.CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level().getChunk(chunkPosition().x, chunkPosition().z)), packet);
                 }
                 List<Entity> entities = level().getEntities(this, boundingBox, entity -> entity.isAlive() && inWaterOrBubble == entity.isInWaterOrBubble());
                 for (Entity entity : entities) {

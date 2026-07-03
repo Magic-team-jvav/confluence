@@ -44,6 +44,7 @@ import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.util.DateUtils;
@@ -408,13 +409,13 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             }
         }
         int defeated = KillBoard.INSTANCE.countDefeated(
-                TEBossEntities.EYE_OF_CTHULHU.get(),
-                TEBossEntities.EATER_OF_WORLDS.get(),
-                TEBossEntities.BRAIN_OF_CTHULHU.get(),
-                TEBossEntities.QUEEN_BEE.get(),
-                TEBossEntities.SKELETRON.get(),
-                TEBossEntities.THE_TWINS.get(),
-                TEBossEntities.PLANTERA.get()
+                BossEntities.EYE_OF_CTHULHU.get(),
+                BossEntities.EATER_OF_WORLDS.get(),
+                BossEntities.BRAIN_OF_CTHULHU.get(),
+                BossEntities.QUEEN_BEE.get(),
+                BossEntities.SKELETRON.get(),
+                BossEntities.THE_TWINS.get(),
+                BossEntities.PLANTERA.get()
         ) + KillBoard.INSTANCE.countDefeated(
                 GoblinArmyGameEvent.KEY
         );

@@ -34,42 +34,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.Locale;
 
 public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
-
-    public enum Variant implements IVariant {
-        NORMAL, GOLD, PARTY, SLIMED, XMAS,
-        AMETHYST, TOPAZ, SAPPHIRE, EMERALD, RUBY, AMBER, DIAMOND,
-        CORRUPT, VICIOUS, EXPLOSIVE;
-
-        public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
-
-        @Override
-        public String getSerializedName() {
-            return name().toLowerCase(Locale.ROOT);
-        }
-
-        public ResourceLocation modelPath() {
-            String id = this == EXPLOSIVE ? "explosive_bunny" : "bunny";
-            return Confluence.asResource("animal/" + id);
-        }
-
-        public ResourceLocation texturePath() {
-            String name = this == NORMAL ? "bunny" : getSerializedName() + "_bunny";
-            return Confluence.asResource("textures/entity/animal/bunny/" + name);
-        }
-
-        @Override
-        public Codec<Variant> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public String serializeKey() {
-            return VARIANT_KEY;
-        }
-    }
-
-    private static final EntityDataAccessor<Integer> DATA_VARIANT =
-            SynchedEntityData.defineId(Bunny.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Bunny.class, EntityDataSerializers.INT);
     public static final String VARIANT_KEY = "Variant";
     private static final RawAnimation WATCH_1 = RawAnimation.begin().thenPlay("watch_1");
     private static final RawAnimation WATCH_2 = RawAnimation.begin().thenPlay("watch_2");
@@ -142,5 +107,40 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
             level().explode(this, getX(), getY(), getZ(), 3.0F, Level.ExplosionInteraction.NONE);
         }
         super.die(source);
+    }
+
+    public enum Variant implements IVariant {
+        NORMAL, GOLD, PARTY, SLIMED, XMAS,
+        AMETHYST, TOPAZ, SAPPHIRE, EMERALD, RUBY, AMBER, DIAMOND,
+        CORRUPT, VICIOUS, EXPLOSIVE;
+
+        public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
+
+        @Override
+        public String getSerializedName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+
+        @Override
+        public ResourceLocation modelPath() {
+            String id = this == EXPLOSIVE ? "explosive_bunny" : "bunny";
+            return Confluence.asResource("animal/" + id);
+        }
+
+        @Override
+        public ResourceLocation texturePath() {
+            String name = this == NORMAL ? "bunny" : getSerializedName() + "_bunny";
+            return Confluence.asResource("textures/entity/animal/bunny/" + name);
+        }
+
+        @Override
+        public Codec<Variant> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public String serializeKey() {
+            return VARIANT_KEY;
+        }
     }
 }

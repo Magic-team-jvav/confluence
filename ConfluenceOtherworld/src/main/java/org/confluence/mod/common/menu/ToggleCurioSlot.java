@@ -4,7 +4,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.terra_curio.TerraCurio;
@@ -39,7 +38,7 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
     @Override
     public boolean mayPickup(Player player) {
         ItemStack itemstack = getItem();
-        return (itemstack.isEmpty() || player.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(player);
+        return (itemstack.isEmpty() || player.isCreative() || !EnchantmentHelper.hasBindingCurse(itemstack)) && super.mayPickup(player);
     }
 
     @Override

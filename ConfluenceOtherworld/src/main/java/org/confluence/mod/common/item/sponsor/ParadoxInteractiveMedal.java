@@ -17,10 +17,10 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 public class ParadoxInteractiveMedal extends BaseCurioItem {
     public ParadoxInteractiveMedal() {
         super(builder("paradox_interactive_medal").rarity(ModRarity.MASTER)
-                .attribute(LibAttributes.getAttackDamage(), 0.1, PortAttributeModifier.PortOperation.ADD_MULTIPLIED_TOTAL)
-                .attribute(PortAttributesExtension.entityInteractionRange(), 3, PortAttributeModifier.PortOperation.ADD_VALUE)
-                .attribute(ConfluenceMagicLib.MINION_CAPACITY, 2, PortAttributeModifier.PortOperation.ADD_VALUE)
-                .attribute(Attributes.MAX_HEALTH, 10, PortAttributeModifier.PortOperation.ADD_VALUE)
-                .attribute(Attributes.ARMOR, 6, PortAttributeModifier.PortOperation.ADD_VALUE));
+                .attribute(LibAttributes.getAttackDamage(), 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                .attribute(PortAttributesExtension.entityInteractionRange(), 3, PortAttributeModifier.Operation.ADD_VALUE)
+                .attribute(ConfluenceMagicLib.MINION_CAPACITY, 2, PortAttributeModifier.Operation.ADD_VALUE)
+                .attribute(Attributes.MAX_HEALTH, 10, PortAttributeModifier.Operation.ADD_VALUE)
+                .attribute(Attributes.ARMOR, 6, PortAttributeModifier.Operation.ADD_VALUE));
     }
 }

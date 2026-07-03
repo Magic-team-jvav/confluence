@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.Queue;
@@ -58,12 +59,13 @@ final class SlimeRainSprite {
         RenderSystem.setShaderTexture(0, texture);
         RenderSystem.setShaderColor(1, 1, 1, alpha * a);
         Matrix4f matrix4f = poseStack.last().pose();
-        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         builder.vertex(matrix4f, -radius, dist, -radius).uv(0.0F, v1);
         builder.vertex(matrix4f, radius, dist, -radius).uv(1.0F, v1);
         builder.vertex(matrix4f, radius, dist, radius).uv(1.0F, v0);
         builder.vertex(matrix4f, -radius, dist, radius).uv(0.0F, v0);
-        BufferUploader.drawWithShader(builder.buildOrThrow());
+        BufferUploader.drawWithShader(builder.end());
         poseStack.popPose();
     }
 
@@ -77,7 +79,7 @@ final class SlimeRainSprite {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         float a = (1.0F - rainLevel) * 0.5F;
         poseStack.pushPose();
-        poseStack.mulPose(event.getModelViewMatrix());
+        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
         for (SlimeRainSprite sprite : SPRITES) {
             sprite.render(partialTick, a);
         }

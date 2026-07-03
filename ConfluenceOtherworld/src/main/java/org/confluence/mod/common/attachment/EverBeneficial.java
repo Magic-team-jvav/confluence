@@ -169,6 +169,6 @@ public class EverBeneficial implements IPortNBTSerializable<CompoundTag> {
     }
 
     public static EverBeneficial of(LivingEntity living) {
-        return living.getAttach(ModAttachmentTypes.EVER_BENEFICIAL);
+        return living.getData(ModAttachmentTypes.EVER_BENEFICIAL);
     }
 }

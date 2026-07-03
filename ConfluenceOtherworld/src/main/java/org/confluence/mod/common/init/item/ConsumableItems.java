@@ -11,11 +11,13 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.component.LootComponent;
+import org.confluence.mod.common.entity.boss.*;
 import org.confluence.mod.common.entity.projectile.ThrownWaterProjectile;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
@@ -93,18 +95,18 @@ public class ConsumableItems {
     public static final PortDeferredItem<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", () -> new ModBoneMealItem(ModRarity.BLUE, "rotten_bone_dust"));
     public static final PortDeferredItem<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder", () -> new ModBoneMealItem(ModRarity.BLUE, "bloodstained_powder"));
 
-    public static final PortDeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), EyeOfCthulhu::new, TooltipItem.getTooltipsFromString("suspicious_looking_eye", 3, ChatFormatting.RED)));
-    public static final PortDeferredItem<BossSummoningItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummoningItem(player -> true, KingSlime::new, TooltipItem.getTooltipsFromString("slime_crown", 3, ChatFormatting.BLUE)));
-    public static final PortDeferredItem<BossSummoningItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(level, true), TooltipItem.getTooltipsFromString("worm_food", 3, ChatFormatting.DARK_PURPLE)));
-    public static final PortDeferredItem<BossSummoningItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CRIMSON), BrainOfCthulhu::new, TooltipItem.getTooltipsFromString("bloody_spine", 3, ChatFormatting.RED)));
+    public static final PortDeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), level -> new EyeOfCthulhu(BossEntities.EYE_OF_CTHULHU.get(), level), TooltipItem.getTooltipsFromString("suspicious_looking_eye", 3, ChatFormatting.RED)));
+    public static final PortDeferredItem<BossSummoningItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummoningItem(player -> true, level -> new KingSlime(BossEntities.KING_SLIME.get(), level), TooltipItem.getTooltipsFromString("slime_crown", 3, ChatFormatting.BLUE)));
+    public static final PortDeferredItem<BossSummoningItem> WORM_FOOD = ITEMS.register("worm_food", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CORRUPTION), level -> new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level), TooltipItem.getTooltipsFromString("worm_food", 3, ChatFormatting.DARK_PURPLE)));
+    public static final PortDeferredItem<BossSummoningItem> BLOODY_SPINE = ITEMS.register("bloody_spine", () -> new BossSummoningItem(player -> player.level().getBiome(player.blockPosition()).is(ModTags.Biomes.THE_CRIMSON), level -> new BrainOfCthulhu(BossEntities.BRAIN_OF_CTHULHU.get(), level), TooltipItem.getTooltipsFromString("bloody_spine", 3, ChatFormatting.RED)));
     public static final PortDeferredItem<BossSummoningItem> ABEEMINATION = ITEMS.register("abeemination", () -> new BossSummoningItem(player -> {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(PortTags.Biomes.IS_JUNGLE) || biome.is(PortTags.Biomes.IS_LUSH);
-    }, QueenBee::new, BossSummoningItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
+    }, level -> new QueenBee(BossEntities.QUEEN_BEE.get(), level), BossSummoningItem.getTooltipsFromString("abeemination", 4, ChatFormatting.YELLOW)));
     public static final PortDeferredItem<BossSummoningItem> DEER_THING = ITEMS.register("deer_thing", () -> new BossSummoningItem(player -> {
         Holder<Biome> biome = player.level().getBiome(player.blockPosition());
         return biome.is(PortTags.Biomes.IS_SNOWY) || biome.is(PortTags.Biomes.IS_ICY);
-    }, Deerclops::new, BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.AQUA)));
+    }, level -> new DeerClops(BossEntities.DEERCLOPS.get(), level), BossSummoningItem.getTooltipsFromString("deer_thing", 3, ChatFormatting.AQUA)));
 
     public static final PortDeferredItem<TooltipItem> GOLDEN_LOCK_BOX = ITEMS.register("golden_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.GOLDEN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("golden_lock_box", 2, ChatFormatting.GRAY)));
     public static final PortDeferredItem<TooltipItem> OBSIDIAN_LOCK_BOX = ITEMS.register("obsidian_lock_box", () -> new TooltipItem(new Item.Properties().component(ModDataComponentTypes.LOOT, new LootComponent(ModLootTables.OBSIDIAN_LOCK_BOX)), ModRarity.GREEN, TooltipItem.getTooltipsFromString("obsidian_lock_box", 2, ChatFormatting.GRAY)));

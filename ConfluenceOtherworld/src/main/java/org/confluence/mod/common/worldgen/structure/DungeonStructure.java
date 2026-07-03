@@ -43,6 +43,7 @@ import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.mixed.IStructureStart;
 import org.confluence.mod.util.ModUtils;
 import org.joml.Vector3f;
@@ -149,7 +150,7 @@ public class DungeonStructure extends Structure {
             Vector3f vct = new Vector3f(centerPos.getX(), random.nextInt(-15, -10), centerPos.getZ());
             firstChannel.add(new Vector3f(vct.x, vct.y + outRoomSizeHeight + 10, vct.z));
             LibGeometryUtils.lightningPathList(firstChannel, 2, 0.125F, random);
-            lineSet(firstChannel, 5.5, 5.5, 1, true, blockMap);
+            lineSet(firstChannel, 5.5F, 5.5F, 1, true, blockMap);
 
             BlockPos underCenter = new BlockPos(centerPos.getX(), Mth.floor(vct.y), centerPos.getZ());
 
@@ -291,7 +292,7 @@ public class DungeonStructure extends Structure {
 
             builder.addPiece(new SimpleTemplatePiece(manager, UG, underCenter.offset(-96, -41, -96), true, true, Rotation.NONE));
 
-            lineSet(firstChannel, 2.5, 2.5, 0, true, blockMap);
+            lineSet(firstChannel, 2.5F, 2.5F, 0, true, blockMap);
             rectangular(underCenter.offset(-2, 48, -2), underCenter.offset(2, 48, 2), 6, blockMap, 0);
             rectangular(underCenter.offset(-1, 48, -1), underCenter.offset(1, 48, 1), 1, blockMap, 0);
             rectangular(underCenter.offset(-6, -1, -6), underCenter.offset(6, -5, 6), 7, blockMap, 0);
@@ -552,7 +553,7 @@ public class DungeonStructure extends Structure {
         if (player.isAlive() &&
                 player.gameMode.getGameModeForPlayer().isSurvival() &&
                 level.getGameTime() % 100 == 1 &&
-                !KillBoard.INSTANCE.isDefeated(TEBossEntities.SKELETRON.get())
+                !KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())
         ) {
             iterateDungeon(level, player.chunkPosition(), structureStart -> {
                 BoundingBox boundingBox = IStructureStart.of(structureStart).confluence$cachedBoundingBox();
@@ -564,7 +565,7 @@ public class DungeonStructure extends Structure {
                         LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
                         if (alert < 3) return true;
                     }
-                    ModUtils.summonBoss(level, player.blockPosition(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
+                    ModUtils.summonBoss(level, player.blockPosition(), BossEntities.DUNGEON_GUARDIAN.get().create(level));
                 }
                 if (shouldAlert)
                     LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);

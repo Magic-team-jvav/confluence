@@ -9,12 +9,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraftforge.common.Tags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.mod.common.item.mana.FlamelashItem;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 public class FlamelashProjectile extends BaseDraggingProjectile {
     public static final double RANGE = 6.0 * 2 / 3;
@@ -48,7 +48,7 @@ public class FlamelashProjectile extends BaseDraggingProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
-        doFluidCheck(fluidState -> fluidState.is(Tags.Fluids.WATER) || fluidState.is(Tags.Fluids.HONEY));
+        doFluidCheck(fluidState -> fluidState.is(PortTags.Fluids.WATER) || fluidState.is(PortTags.Fluids.HONEY));
         doAgeCheck(1200);
     }
 

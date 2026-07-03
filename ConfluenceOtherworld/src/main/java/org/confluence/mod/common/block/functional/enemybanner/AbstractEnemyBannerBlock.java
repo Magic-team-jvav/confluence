@@ -152,7 +152,7 @@ public class AbstractEnemyBannerBlock extends Block implements EntityBlock {
             super(
                     ModBlocks.ENEMY_BANNER.get(),
                     ModBlocks.WALL_ENEMY_BANNER.get(),
-                    new Item.Properties()
+                    new Properties()
                             .component(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(TAG_ENTRY_KEY, DEFAULT_ENTRY_KEY)))
                             .component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
                     Direction.DOWN

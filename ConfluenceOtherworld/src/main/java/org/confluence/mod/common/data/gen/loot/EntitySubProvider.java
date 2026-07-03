@@ -16,13 +16,14 @@ import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunctio
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
-import net.minecraft.world.level.storage.loot.predicates.*;
+import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModLootTables;
@@ -79,18 +80,18 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), Confluence.asResource("entities/terra_entity/eater_of_worlds_segment"), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5))
-                        .add(EmptyLootItem.emptyItem())
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SHADOW_SCALE).apply(count1To2))
-                        .add(EmptyLootItem.emptyItem())
-                )
-        );
-        add(MonsterEntities.VISUAL_NEURON.get(), Confluence.asResource("entities/terra_entity/visual_neuron"), LootTable.lootTable()
+// todo datagen       add(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), Confluence.asResource("entities/terra_entity/eater_of_worlds_segment"), LootTable.lootTable()
+//                .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
+//                .withPool(LootPool.lootPool()
+//                        .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5))
+//                        .add(EmptyLootItem.emptyItem())
+//                )
+//                .withPool(LootPool.lootPool()
+//                        .add(LootItem.lootTableItem(SHADOW_SCALE).apply(count1To2))
+//                        .add(EmptyLootItem.emptyItem())
+//                )
+//        );
+        add(BossEntities.CREEPER_OF_CTHULHU.get(), Confluence.asResource("entities/terra_entity/visual_neuron"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem())))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
@@ -309,26 +310,26 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(195))
                 )
         );
-        add(MonsterEntities.SPORE_ZOMBIE.get(), Confluence.asResource("entities/terra_entity/spore_zombie"), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
-                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
-                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
-                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
-                )
-        );
-        add(MonsterEntities.HAT_SPORE_ZOMBIE.get(), Confluence.asResource("entities/terra_entity/hat_spore_zombie"), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
-                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
-                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
-                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
-                )
-        );
+//        add(MonsterEntities.SPORE_ZOMBIE.get(), Confluence.asResource("entities/terra_entity/spore_zombie"), LootTable.lootTable()
+//                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
+//                )
+//                .withPool(LootPool.lootPool()
+//                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
+//                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
+//                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+//                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
+//                )
+//        );
+//        add(MonsterEntities.HAT_SPORE_ZOMBIE.get(), Confluence.asResource("entities/terra_entity/hat_spore_zombie"), LootTable.lootTable()
+//                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
+//                )
+//                .withPool(LootPool.lootPool()
+//                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
+//                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
+//                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+//                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
+//                )
+//        );
         add(MonsterEntities.SPORE_SKELETON.get(), Confluence.asResource("entities/terra_entity/spore_skeleton"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BONE).apply(random0To1).apply(count1To2))
@@ -650,18 +651,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(667))
                 )
         );
-        add(MonsterEntities.ANGER_GOBLIN.get(), Confluence.asResource("entities/terra_entity/anger_goblin"), goblinCommon()
-        );
-        add(MonsterEntities.GOBLIN_ARCHER.get(), Confluence.asResource("entities/terra_entity/goblin_archer"), goblinCommon()
-        );
-        add(MonsterEntities.GOBLIN_PEON.get(), Confluence.asResource("entities/terra_entity/goblin_peon"), goblinCommon()
-        );
-        add(MonsterEntities.GOBLIN_SORCERER.get(), Confluence.asResource("entities/terra_entity/goblin_sorcerer"), goblinCommon()
-        );
-        add(MonsterEntities.GOBLIN_THIEF.get(), Confluence.asResource("entities/terra_entity/goblin_thief"), goblinCommon()
-        );
-        add(MonsterEntities.GOBLIN_WARRIOR.get(), Confluence.asResource("entities/terra_entity/goblin_warrior"), goblinCommon()
-        );
+//        add(MonsterEntities.ANGER_GOBLIN.get(), Confluence.asResource("entities/terra_entity/anger_goblin"), goblinCommon());
+        add(MonsterEntities.GOBLIN_ARCHER.get(), Confluence.asResource("entities/terra_entity/goblin_archer"), goblinCommon());
+        add(MonsterEntities.GOBLIN_PEON.get(), Confluence.asResource("entities/terra_entity/goblin_peon"), goblinCommon());
+        add(MonsterEntities.GOBLIN_SORCERER.get(), Confluence.asResource("entities/terra_entity/goblin_sorcerer"), goblinCommon());
+        add(MonsterEntities.GOBLIN_THIEF.get(), Confluence.asResource("entities/terra_entity/goblin_thief"), goblinCommon());
+        add(MonsterEntities.GOBLIN_WARRIOR.get(), Confluence.asResource("entities/terra_entity/goblin_warrior"), goblinCommon());
         add(NpcEntities.MECHANIC.get(), Confluence.asResource("entities/terra_entity/mechanic"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(BoomerangItems.COMBAT_WRENCH))
@@ -914,7 +909,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
                         .apply(random0To1)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
-                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -4040988))))
+//                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -4040988))))
                 )
         );
         add(MonsterEntities.CRIMSLIME.get(), Confluence.asResource("entities/terra_entity/crimslime"), LootTable.lootTable()
@@ -926,7 +921,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
                         .apply(random0To1)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
-                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -3386287))))
+//                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -3386287))))
                 )
         );
         add(MonsterEntities.CORRUPT_SLIME.get(), Confluence.asResource("entities/terra_entity/corrupt_slime"), LootTable.lootTable()
@@ -938,7 +933,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
                         .apply(random0To1)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
-                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -6522185))))
+//                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -6522185))))
                 )
         );
         // 宝箱怪
@@ -1162,6 +1157,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
     }
 
+    private AnyOfCondition.Builder shouldSmeltLoot() {
+        return AnyOfCondition.anyOf(
+                LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setOnFire(true).build())),
+                LootItemEntityPropertyCondition.hasProperties(
+                        LootContext.EntityTarget.DIRECT_KILLER,
+                        EntityPredicate.Builder.entity().equipment(EntityEquipmentPredicate.Builder.equipment().mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FIRE_ASPECT, MinMaxBounds.Ints.ANY)).build()).build())
+                )
+        );
+    }
+
     private static LootTable.Builder ghoulCommon() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -1262,7 +1267,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
                         .apply(random0To1)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
-                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", gelColor))))
+//                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", gelColor))))
                 );
     }
 

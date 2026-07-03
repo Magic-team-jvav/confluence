@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.ScheduledForMove;
+import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;

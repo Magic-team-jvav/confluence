@@ -227,13 +227,13 @@ public final class GameClientEvents {
         MeteorLandingHandler.reset();
         LocalBrushData.reset();
         ClientPacketHandler.reset();
-        CompatibilityHandler.reset();
+//        CompatibilityHandler.reset();
         DropletsHandler.reset();
         EctoMistHelper.reset();
         ClientBestiary.getInstance().reset();
         LucyTheAxeHandler.reset();
         ClientGameEventSystem.reset();
-        AchievementUtils.saveData();
+//        AchievementUtils.saveData();
     }
 
 

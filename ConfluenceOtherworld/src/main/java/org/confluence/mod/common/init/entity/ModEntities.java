@@ -200,7 +200,7 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<CustomBulletEntity>> GRAVITY_BULLET_ENTITY = register("gravity_bullet", id -> EntityType.Builder.<CustomBulletEntity>of(CustomBulletEntity::new, MobCategory.MISC).sized(0.1f, 0.1f).build(id.toString()));
 
     public static final RegistryObject<EntityType<RainbowSheep>> RAINBOW_SHEEP = register("rainbow_sheep", id -> EntityType.Builder.of(RainbowSheep::new, MobCategory.CREATURE).sized(0.9F, 1.3F)/* todo .eyeHeight(1.235F).passengerAttachments(1.2375F)*/.clientTrackingRange(10).build(id.toString()));
-    public static final RegistryObject<EntityType<InverseEnderMan>> INVERSE_ENDERMAN = register("inverse_enderman", id -> InverseEntityType.create(InverseEnderMan::new, MobCategory.MONSTER, id.toString(), builder -> builder.sized(0.6F, 2.9F)/* todo .eyeHeight(2.55F).passengerAttachments(2.80625F)*/.clientTrackingRange(8)));
+//    public static final RegistryObject<EntityType<InverseEnderMan>> INVERSE_ENDERMAN = register("inverse_enderman", id -> InverseEntityType.create(InverseEnderMan::new, MobCategory.MONSTER, id.toString(), builder -> builder.sized(0.6F, 2.9F)/* todo .eyeHeight(2.55F).passengerAttachments(2.80625F)*/.clientTrackingRange(8)));
 
     // 史莱姆尖刺
     public static final RegistryObject<EntityType<SlimeSpikeEntity>> SLIME_SPIKE = register("slime_spike",

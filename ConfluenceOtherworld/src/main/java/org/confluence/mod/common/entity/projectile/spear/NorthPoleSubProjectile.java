@@ -11,14 +11,12 @@ import org.confluence.mod.common.init.ModParticleTypes;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
-/**
- * <h1>北极矛子弹射物</h1>
- * 由 {@link NorthPoleProjectile} 间歇生成，初始速度为零，受重力下落，使用孢子云粒子渲染。
- */
+/// # 北极矛子弹射物
+/// 由 [NorthPoleProjectile] 间歇生成，初始速度为零，受重力下落，使用孢子云粒子渲染。
 public class NorthPoleSubProjectile extends SpearProjectile {
     public NorthPoleSubProjectile(EntityType<? extends NorthPoleSubProjectile> entityType, Level level) {
         super(entityType, level);
-        this.collisionProperties = new CollisionProperties(1, 1, 0.65F);
+// todo projectile       this.collisionProperties = new CollisionProperties(1, 1, 0.65F);
     }
 
     @Override
@@ -52,8 +50,8 @@ public class NorthPoleSubProjectile extends SpearProjectile {
     }
 
     @Override
-    public void onRemovedFromLevel() {
-        super.onRemovedFromLevel();
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ModParticleTypes.SNOW.get(),
                     getX(), getY(), getZ(), 40, 0.2, 0.2, 0.2, 0.01);

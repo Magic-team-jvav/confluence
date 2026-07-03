@@ -75,7 +75,7 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
                 int j1 = i + i1 % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
                 int k1 = j + i1 / RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_HEIGHT + 2;
                 if (pX >= j1 && pX < j1 + RECIPES_IMAGE_SIZE_WIDTH && pY >= k1 && pY < k1 + RECIPES_IMAGE_SIZE_HEIGHT) {
-                    pGuiGraphics.renderTooltip(font, list.get(l).value().getResultItem(minecraft.level.registryAccess()), pX, pY);
+                    pGuiGraphics.renderTooltip(font, list.get(l).getResultItem(minecraft.level.registryAccess()), pX, pY);
                 }
             }
         }
@@ -98,14 +98,14 @@ public class SkyMillScreen extends AbstractContainerScreen<SkyMillMenu> {
     }
 
     private void renderRecipes(GuiGraphics pGuiGraphics, int pX, int pY, int pStartIndex) {
-        List<RecipeHolder<SkyMillRecipe>> list = menu.getRecipes();
+        List<SkyMillRecipe> list = menu.getRecipes();
 
         for (int i = startIndex; i < pStartIndex && i < menu.getNumRecipes(); ++i) {
             int j = i - startIndex;
             int k = pX + j % RECIPES_COLUMNS * RECIPES_IMAGE_SIZE_WIDTH;
             int l = j / RECIPES_COLUMNS;
             int i1 = pY + l * RECIPES_IMAGE_SIZE_HEIGHT + 2;
-            pGuiGraphics.renderItem(list.get(i).value().getResultItem(minecraft.level.registryAccess()), k, i1);
+            pGuiGraphics.renderItem(list.get(i).getResultItem(minecraft.level.registryAccess()), k, i1);
         }
     }
 

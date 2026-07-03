@@ -15,10 +15,9 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.api.entity.ICollisionAttackEntity;
+import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.jetbrains.annotations.Nullable;
@@ -26,8 +25,9 @@ import org.joml.Vector3f;
 
 import java.util.Comparator;
 
+// todo projectile
 /// 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
-public abstract class SwordProjectile extends AbstractHurtingProjectile implements ICollisionAttackEntity {
+public abstract class SwordProjectile extends AbstractHurtingProjectile {
     // 可调参数
     public int lifetime = 40;
     public int hitCount = 1;
@@ -36,7 +36,6 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     protected boolean canPenalize = false;
-    protected CollisionProperties collisionProperties = new CollisionProperties(1, 1, 0.5F);
     protected SwordProjectileComponent projComponent;
 
     protected ItemStack firedFromWeapon;
@@ -154,7 +153,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return gravity;
     }
 
@@ -170,19 +169,17 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 Vec3 motion = getDeltaMovement();
                 Vec3 dir = target.position().add(0, target.getBoundingBox().getYsize() * 0.5, 0).subtract(this.position())
                         .normalize().scale(motion.length());
-                double angle = TEUtils.angleBetween(motion, dir);
+                double angle = LibMathUtils.angleBetween(motion, dir);
 
                 if (projComponent.trackType().isPresent()) {
                     this.setDeltaMovement(projComponent.trackType().get().calDeltaMovement(motion, dir, angle));
                 }
             }
         }
-        if (!level().isClientSide && tickCount >= lifetime)
+        if (!level().isClientSide && tickCount >= lifetime) {
             discard();
-//        this.applyGravity();
-        doCollisionAttack(this::canHitEntity,
-                this::doHurt);
-
+        }
+// todo projectile doCollisionAttack(this::canHitEntity, this::doHurt);
     }
 
     @Override
@@ -191,17 +188,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             return false;
         }
 
-        return TEUtils.projectileCanHitEntityTest.test(this, target);
-    }
-
-    @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
-//        Entity entity = entityHitResult.getEntity();
-//        if (!level().isClientSide && entity instanceof LivingEntity living && getOwner() instanceof LivingEntity owner && owner != entity) {
-        // 事件统一暴击判定 org.confluence.mod.common.event.game.entity.LivingEntityEvents.livingDamage$Pre
-//            if (random.nextFloat() < criticalChance) damage *= 1.5F;
-//            doHurt(living);
-//        }
+        return true/* todo projectile TEUtils.projectileCanHitEntityTest.test(this, target)*/;
     }
 
     @Override
@@ -214,35 +201,31 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, getOwner());
     }
 
-    @Override
-    public CollisionProperties getCollisionProperties() {
-        return collisionProperties;
-    }
-
     protected boolean doHurt(Entity target) {
-        if (TEUtils.projectileCanHurtEntityTest.test(this, target)) {
+        if (true/* todo projectile TEUtils.projectileCanHurtEntityTest.test(this, target)*/) {
             float damage = getBaseDamage() * (attackDamageFactor);
             DamageSource damageSource = damageSource();
 
-            if (IAttackableProjectile.tryHit(target, damageSource)) {
+            if (true/* todo projectile IAttackableProjectile.tryHit(target, damageSource)*/) {
                 return true;
             }
 
             LivingEntity hurter;
-            if (LibUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
+            if (LibEntityUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
                 hurter = living;
             } else {
                 return false;
             }
 
-            if (getOwner() instanceof LivingEntity owner && projComponent != null)
-                projComponent.hitEffect().ifPresent(effect -> {
-                    effect.applyAll(owner, hurter);
-                });
+            if (getOwner() instanceof LivingEntity owner && projComponent != null) {
+//  todo component               projComponent.hitEffect().ifPresent(effect -> {
+//                    effect.applyAll(owner, hurter);
+//                });
+            }
 
             if (target.hurt(damageSource, damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
-                VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
+                LibEntityUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
 
                 if (--hitCount <= 0 && !level().isClientSide) {
                     discard();
@@ -269,8 +252,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         return false;
     }
 
-
-    @Override//火焰效果
+    @Override
     protected boolean shouldBurn() {
         return false;
     }
@@ -286,7 +268,6 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     }
 
     @Override
-    @Nullable
     protected ParticleOptions getTrailParticle() {
         return null;
     }
@@ -294,10 +275,5 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public SwordProjectile setExistTime(int time) {
         lifetime = time;
         return this;
-    }
-
-    @Override
-    public boolean shouldDoCollision() {
-        return true;
     }
 }

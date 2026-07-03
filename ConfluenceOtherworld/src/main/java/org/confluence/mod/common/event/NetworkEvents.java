@@ -5,8 +5,6 @@ import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
-import org.confluence.mod.network.task.ReplyAchievementsPacketC2S;
-import org.confluence.mod.network.task.RequestAchievementsPacketS2C;
 import org.mesdag.portlib.network.PortNetworkHandler;
 
 public final class NetworkEvents {
@@ -23,7 +21,6 @@ public final class NetworkEvents {
         handler.registerInGameC2S(HouseSelectPacketC2S.class, HouseSelectPacketC2S.ID, HouseSelectPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(KeyRequestPacketC2S.class, KeyRequestPacketC2S.ID, KeyRequestPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(OpenMenuPacketC2S.class, OpenMenuPacketC2S.ID, OpenMenuPacketC2S.STREAM_CODEC);
-        handler.registerInGameC2S(SellTradePacketC2S.class, SellTradePacketC2S.ID, SellTradePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SpearAttackPacketC2S.class, SpearAttackPacketC2S.ID, SpearAttackPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SwitchEffectEnabledPackedC2S.class, SwitchEffectEnabledPackedC2S.ID, SwitchEffectEnabledPackedC2S.STREAM_CODEC);
         handler.registerInGameC2S(SwordProjectilePacketC2S.class, SwordProjectilePacketC2S.ID, SwordProjectilePacketC2S.STREAM_CODEC);
@@ -32,11 +29,11 @@ public final class NetworkEvents {
 
         // S2C
         handler.registerInGameS2C(AchievementOffsetSyncPacketS2C.class, AchievementOffsetSyncPacketS2C.ID, AchievementOffsetSyncPacketS2C.STREAM_CODEC);
-        handler.registerInGameS2C(AchievementsDataSyncPacketS2C.class, AchievementsDataSyncPacketS2C.ID, AchievementsDataSyncPacketS2C.STREAM_CODEC);
+//        handler.registerInGameS2C(AchievementsDataSyncPacketS2C.class, AchievementsDataSyncPacketS2C.ID, AchievementsDataSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(AvailableHouseSelectPacketS2C.class, AvailableHouseSelectPacketS2C.ID, AvailableHouseSelectPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(BestiarySyncPacketS2C.class, BestiarySyncPacketS2C.ID, BestiarySyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(BrushingColorPacketS2C.class, BrushingColorPacketS2C.ID, BrushingColorPacketS2C.STREAM_CODEC);
-        handler.registerInGameS2C(CompatibilitySyncPacketS2c.class, CompatibilitySyncPacketS2c.ID, CompatibilitySyncPacketS2c.STREAM_CODEC);
+//        handler.registerInGameS2C(CompatibilitySyncPacketS2c.class, CompatibilitySyncPacketS2c.ID, CompatibilitySyncPacketS2c.STREAM_CODEC);
         handler.registerInGameS2C(DeathMotionPacketS2C.class, DeathMotionPacketS2C.ID, DeathMotionPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(DragonChargePlayerConfigPacketS2C.class, DragonChargePlayerConfigPacketS2C.ID, DragonChargePlayerConfigPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(DropletsSyncPacketS2C.class, DropletsSyncPacketS2C.ID, DropletsSyncPacketS2C.STREAM_CODEC);
@@ -67,7 +64,7 @@ public final class NetworkEvents {
         handler.registerInGameBidirectional(AskForSoftcorePacket.class, AskForSoftcorePacket.ID, AskForSoftcorePacket.STREAM_CODEC);
 
         // Configuration
-        handler.registerConfigurationTask(RequestAchievementsPacketS2C.class, RequestAchievementsPacketS2C.ID, RequestAchievementsPacketS2C.STREAM_CODEC);
-        handler.registerConfigurationTask(ReplyAchievementsPacketC2S.class, ReplyAchievementsPacketC2S.ID, ReplyAchievementsPacketC2S.STREAM_CODEC);
+//        handler.registerConfigurationTask(RequestAchievementsPacketS2C.class, RequestAchievementsPacketS2C.ID, RequestAchievementsPacketS2C.STREAM_CODEC);
+//        handler.registerConfigurationTask(ReplyAchievementsPacketC2S.class, ReplyAchievementsPacketC2S.ID, ReplyAchievementsPacketC2S.STREAM_CODEC);
     }
 }

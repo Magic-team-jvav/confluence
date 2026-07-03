@@ -10,7 +10,6 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.block.Block;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
@@ -22,6 +21,7 @@ import org.confluence.mod.common.item.food.ModFoodProperties;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder.EffectData;
 import org.confluence.terra_curio.common.init.TCEffects;
+import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -70,7 +70,7 @@ public class FoodItems {
     public static final PortDeferredItem<BaseFoodItem> FROGGLE_BUNWICH = registerNormalFood("froggle_bunwich", ModRarity.GREEN,
             () -> ModFoodProperties.plentySatisfiedProperties(7200, 6, 3.5f));
     public static final PortDeferredItem<BaseFoodItem> GOLDEN_DELIGHT = registerNormalFood("golden_delight", ModRarity.LIGHT_PURPLE,
-            () -> ModFoodProperties.GOLDEN_CARP); //金美味
+            ModFoodProperties.GOLDEN_CARP); //金美味
     public static final PortDeferredItem<BaseFoodItem> GRILLED_SQUIRREL = registerNormalFood("grilled_squirrel", ModRarity.BLUE,
             () -> ModFoodProperties.preparedMeatProperties(8, 12.8f)); //松鼠尾
     public static final PortDeferredItem<BaseFoodItem> LOBSTER_TAIL = registerNormalFood("lobster_tail", ModRarity.GREEN,
@@ -224,7 +224,7 @@ public class FoodItems {
     public static final PortDeferredItem<BaseFoodItem> FROZEN_BANANA_DAIQUIRI = registerDrinkingFood("frozen_banana_daiquiri", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(18000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //香蕉圣代
     public static final PortDeferredItem<BaseFoodItem> GRAPE_JUICE = registerDrinkingFood("grape_juice", ModRarity.LIGHT_RED,
-            () -> ModFoodProperties.GOLDEN_CARP, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //葡萄汁
+            ModFoodProperties.GOLDEN_CARP, 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //葡萄汁
     public static final PortDeferredItem<BaseFoodItem> LEMONADE = registerDrinkingFood("lemonade", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(12000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //柠檬水
     public static final PortDeferredItem<BaseFoodItem> PEACH_SANGRIA = registerDrinkingFood("peach_sangria", ModRarity.BLUE,
@@ -266,7 +266,7 @@ public class FoodItems {
     public static final PortDeferredItem<BaseFoodItem> GOLDFISH = registerNormalFood("goldfish", ModRarity.WHITE,
             () -> ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final PortDeferredItem<BaseFoodItem> GOLD_GOLDFISH = registerNormalFood("gold_goldfish", ModRarity.ORANGE,
-            () -> ModFoodProperties.GOLDEN_CARP);
+            ModFoodProperties.GOLDEN_CARP);
     public static final PortDeferredItem<BaseFoodItem> SEA_BASS = registerNormalFood("sea_bass", ModRarity.WHITE,
             () -> ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final PortDeferredItem<BaseFoodItem> ATLANTIC_COD = registerNormalFood("atlantic_cod", ModRarity.WHITE,
@@ -322,7 +322,7 @@ public class FoodItems {
     public static final PortDeferredItem<BaseFoodItem> BROWN_STALKSPINE = registerNormalFood("brown_stalkspine", ModRarity.BLUE,
             () -> ModFoodProperties.noEffectProperties(4, 1.8f));
     public static final PortDeferredItem<BaseFoodItem> GOLDEN_CARP = registerNormalFood("golden_carp", ModRarity.LIGHT_RED,
-            () -> ModFoodProperties.GOLDEN_CARP);
+            ModFoodProperties.GOLDEN_CARP);
     public static final PortDeferredItem<BaseFoodItem> OBSIDIFISH = registerFood("obsidifish",
             builder -> builder.rarity(ModRarity.WHITE).food(ModFoodProperties.noEffectProperties(2, 0.4f))
                     .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
@@ -412,7 +412,7 @@ public class FoodItems {
         });
     }
 
-    public static PortDeferredItem<BaseFoodItem.BItem> registerBlockItemFood(String name, Consumer<BaseFoodItem.Builder> consumer, Supplier<? extends Block> block) {
+    public static PortDeferredItem<BaseFoodItem.BItem> registerBlockItemFood(String name, Consumer<BaseFoodItem.Builder> consumer, PortDeferredBlock<?> block) {
         return ITEMS.register(name, () -> {
             BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64);
             consumer.accept(builder);

@@ -7,7 +7,10 @@ import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MinecartRenderer;
+import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -76,10 +79,6 @@ import org.confluence.mod.client.renderer.entity.flail.FlailModel;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
-import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
-import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
-import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
-import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
@@ -104,8 +103,6 @@ import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.common.item.tooltipcomponent.RepeaterComponent;
 import org.confluence.mod.util.ClientUtils;
-import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
 import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.event.PortEventHandler;
@@ -145,6 +142,7 @@ public final class ModClientEvents {
         PortEventHandler.addListener(ModClientEvents::registerRenderBuffers);
         PortEventHandler.addListener(ModClientEvents::registerClientTooltipComponentFactories);
         PortEventHandler.addListener(ModClientEvents::registerClientReloadListeners);
+        PortEventHandler.addListener(ModClientEvents::registerCustomBestiaryEntryModel);
         PortEventHandler.addListener(ModClientEvents::registerItemDecorations);
     }
 
@@ -326,16 +324,16 @@ public final class ModClientEvents {
         event.registerEntityRenderer(WATER_BOLT.get(), NoopRenderer::new);
         event.registerEntityRenderer(BALL_OF_FIRE.get(), NoopRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_BLADE_SWORD.get(), context -> new ForwardProjRenderer<>(context, new IceBladeSwordProjectileModel(context.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
-        event.registerEntityRenderer(STAR_FURY.get(), StarFuryProjectileRenderer::new);
-        event.registerEntityRenderer(ENCHANTED_SWORD.get(), context -> new ForwardProjRenderer<>(context, new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
-        event.registerEntityRenderer(LIGHTS_BANE.get(), LightsBaneProjectileRenderer::new);
-        event.registerEntityRenderer(GRASS.get(), context -> new ForwardProjRenderer<>(context, null, null));
-        event.registerEntityRenderer(BEE.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
-        event.registerEntityRenderer(NIGHTS_EDGE.get(), NightEdgeProjectileRenderer::new);
-
+        event.registerEntityRenderer(ICE_BLADE_SWORD.get(), NoopRenderer::new/* context -> new ForwardProjRenderer<>(context, new IceBladeSwordProjectileModel(context.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F)*/);
+        event.registerEntityRenderer(STAR_FURY.get(), NoopRenderer::new/*StarFuryProjectileRenderer::new*/);
+        event.registerEntityRenderer(ENCHANTED_SWORD.get(), NoopRenderer::new /* context -> new ForwardProjRenderer<>(context, new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f)*/);
+        event.registerEntityRenderer(LIGHTS_BANE.get(), NoopRenderer::new /* LightsBaneProjectileRenderer::new*/);
+        event.registerEntityRenderer(GRASS.get(), NoopRenderer::new /* context -> new ForwardProjRenderer<>(context, null, null)*/);
+        event.registerEntityRenderer(BEE.get(), NoopRenderer::new/* context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png"))*/);
+        event.registerEntityRenderer(NIGHTS_EDGE.get(), NoopRenderer::new/*NightEdgeProjectileRenderer::new*/);
+// todo renderer
         event.registerEntityRenderer(BASE_ARROW.get(), TerraArrowRenderer::new);
-        event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(BEE_ARROW.get(), NoopRenderer::new/* context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png"))*/);
         event.registerEntityRenderer(HELL_BAT_ARROW.get(), context -> new GeoArrowRenderer(context, MonsterEntities.HELL_BAT.getId()));
         event.registerEntityRenderer(DRIVE_AWAY_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(FLAMING_ARROW.get(), TerraArrowRenderer::new);
@@ -448,7 +446,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(GRAVITY_BULLET_ENTITY.get(), ThrownItemRenderer::new);
 
         event.registerEntityRenderer(RAINBOW_SHEEP.get(), RainbowSheepRenderer::new);
-        event.registerEntityRenderer(INVERSE_ENDERMAN.get(), EndermanRenderer::new);
+//        event.registerEntityRenderer(INVERSE_ENDERMAN.get(), EndermanRenderer::new);
 
         // Critter renderers — Bunny 保留自定义模型，其余用 CritterRenderer
         event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);

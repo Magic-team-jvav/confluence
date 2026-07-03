@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.npc;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
@@ -26,10 +27,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
@@ -41,12 +42,8 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Optional;
-
-/**
- * NPC 基类 —— Brain 驱动 + GeckoLib 人形动画。
- * P0 阶段仅 IDLE activity（漫步 + 注视），Schedule / 防御 后续补。
- */
+/// NPC 基类 —— Brain 驱动 + GeckoLib 人形动画。
+/// P0 阶段仅 IDLE activity（漫步 + 注视），Schedule / 防御 后续补。
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -73,8 +70,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected NPCChat currentChat;
     protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
     protected boolean shouldInteract;
+    protected BlockPos spawnAtPos = BlockPos.ZERO;
 
-    @SuppressWarnings("this-escape")
     public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
     }
@@ -113,13 +110,26 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        tickBrain((ServerLevel) level());
+        ServerLevel level = (ServerLevel) level();
+        tickBrain(level);
         if (!house.isValid()) {
-            tickFindHouse((ServerLevel) level());
+            tickFindHouse(level);
         }
-        tickWalkToHome((ServerLevel) level());
+        tickWalkToHome(level);
         tickMood();
-        ChatManager.tickNPC(this);
+//        ChatManager.tickNPC(this);
+
+        // 由于NPCHouseBehaviors#walkToHouse疑似不能触发，于是在tick里判断
+        // 过远时传送回自己的出生点
+        if (spawnAtPos != null &&
+                (house == null || !house.contains(blockPosition())) &&
+                level().getGameTime() % 100 == 2 && level().players().stream().noneMatch(player -> player.distanceToSqr(this) < 32 * 32)
+        ) {
+            double sqr = blockPosition().distSqr(spawnAtPos);
+            if (sqr > 64 * 64 || (sqr > 500 && LibDateUtils.isNight(level()))) {
+                teleportTo(spawnAtPos.getX(), spawnAtPos.getY(), spawnAtPos.getZ());
+            }
+        }
     }
 
     // === 心情 ===
@@ -153,22 +163,16 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         brain.tick(level, this);
     }
 
-    /**
-     * 每 600 tick 在当前位置及周边采样，尝试发现房屋。
-     */
+    /// 每 600 tick 在当前位置及周边采样，尝试发现房屋。
     protected void tickFindHouse(ServerLevel level) {
         if (tickCount % FIND_HOUSE_INTERVAL != 0) return;
         HouseValidater.Result result = HouseValidater.scan(level, blockPosition());
-        if (result.isValid()) {
-            House found = new House(Optional.of(getUUID()), result.min(), result.max());
-            setHouse(found);
-            HouseHandler.INSTANCE.setHouse(this, found);
-        }
+        House found = result.make(getUUID());
+        setHouse(found);
+        HouseHandler.INSTANCE.setHouse(this, found);
     }
 
-    /**
-     * 有 HOME 记忆时向家移动。
-     */
+    /// 有 HOME 记忆时向家移动。
     protected void tickWalkToHome(ServerLevel level) {
         if (!house.isValid()) return;
         BlockPos homePos = house.center();
@@ -274,11 +278,11 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (house.isValid()) {
-            House.CODEC.encodeStart(NbtOps.INSTANCE, house)
-                    .result().ifPresent(t -> tag.put("House", t));
+            PortDataResultExtension.ifSuccess(House.CODEC.encodeStart(NbtOps.INSTANCE, house), t -> tag.put("House", t));
         }
-        NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, region).ifSuccess(t -> tag.put("confluence:region", t));
-        tag.putBoolean("confluence:should_interact", shouldInteract);
+        PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, region), t -> tag.put("Region", t));
+        tag.putBoolean("ShouldInteract", shouldInteract);
+        PortDataResultExtension.ifSuccess(BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, spawnAtPos), t -> tag.put("SpawnAtPos", t));
     }
 
     @Override
@@ -288,10 +292,20 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             House.CODEC.parse(NbtOps.INSTANCE, tag.get("House"))
                     .result().ifPresent(this::setHouse);
         }
-        if (tag.contains("confluence:region")) {
-            NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("confluence:region"))
-                    .result().ifPresent(r -> this.region = r);
+        if (tag.contains("Region")) {
+            PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("Region")), r -> this.region = r);
         }
-        this.shouldInteract = tag.getBoolean("confluence:should_interact");
+        this.shouldInteract = tag.getBoolean("ShouldInteract");
+        PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), r -> this.spawnAtPos = r);
+    }
+
+    public BlockPos getSpawnAtPos() {
+        return spawnAtPos;
+    }
+
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        this.spawnAtPos = blockPosition();
     }
 }

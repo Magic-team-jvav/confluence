@@ -19,8 +19,8 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
 
     public WeatherPainItem() {
         super(ModRarity.GREEN, HurtnadoProjectile::new, 6.5F, 30, 1.0F, 45, builder -> builder
-                .add(LibAttributes.getCriticalChance(), new PortAttributeModifier(ID, 0.04, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
-                .add(LibAttributes.getArmorPenetration(), new PortAttributeModifier(ID, 10, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND));
+                .add(LibAttributes.getCriticalChance(), new PortAttributeModifier(ID, 0.04, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getArmorPenetration(), new PortAttributeModifier(ID, 10, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND));
     }
 
     @Override

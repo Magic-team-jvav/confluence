@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -77,7 +78,7 @@ public class SpearEntity extends Entity {
             }
         }
 
-        setBoundingBox(Shulker.getProgressAabb(1.0F, getDirection(), 13 * progress).move(getX() - 0.5, getY(), getZ() - 0.5));
+        setBoundingBox(Shulker.getProgressAabb(getDirection(), 13 * progress).move(getX() - 0.5, getY(), getZ() - 0.5));
 
         Vec3 startVec = position().relative(getDirection().getOpposite(), 1);
         Vec3 endVec = position().relative(getDirection(), Mth.ceil(13 * progress));
@@ -98,12 +99,12 @@ public class SpearEntity extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
-        setDirection(Direction.CODEC.parse(NbtOps.INSTANCE, compound.get("Direction")).getOrThrow());
+        PortDataResultExtension.ifSuccess(Direction.CODEC.parse(NbtOps.INSTANCE, compound.get("Direction")), this::setDirection);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.put("Direction", Direction.CODEC.encodeStart(NbtOps.INSTANCE, getDirection()).getOrThrow());
+        PortDataResultExtension.ifSuccess(Direction.CODEC.encodeStart(NbtOps.INSTANCE, getDirection()), t -> compound.put("Direction", t));
     }
 
     public void setDirection(Direction direction) {

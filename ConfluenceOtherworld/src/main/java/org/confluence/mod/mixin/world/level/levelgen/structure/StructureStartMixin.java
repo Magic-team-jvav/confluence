@@ -6,6 +6,8 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import org.confluence.mod.mixed.IStructureStart;
+import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,6 +19,10 @@ public abstract class StructureStartMixin implements IStructureStart {
     @Shadow
     public abstract BoundingBox getBoundingBox();
 
+    @Shadow
+    @Final
+    private static Logger LOGGER;
+
     @Override
     public BoundingBox confluence$cachedBoundingBox() {
         return getBoundingBox();
@@ -24,7 +30,7 @@ public abstract class StructureStartMixin implements IStructureStart {
 
     @Inject(method = "createTag", at = @At(value = "RETURN", ordinal = 0))
     private void saveBoundingBox(CallbackInfoReturnable<CompoundTag> cir) {
-        cir.getReturnValue().put("confluence:cached_bounding_box", BoundingBox.CODEC.encodeStart(NbtOps.INSTANCE, getBoundingBox()).getOrThrow());
+        cir.getReturnValue().put("confluence:cached_bounding_box", BoundingBox.CODEC.encodeStart(NbtOps.INSTANCE, getBoundingBox()).getOrThrow(false, LOGGER::warn));
     }
 
     @Inject(method = "loadStaticStart", at = @At(value = "RETURN", ordinal = 2))

@@ -1,11 +1,10 @@
 package org.confluence.mod.network.c2s;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,9 +23,9 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record HookThrowingPacketC2S(boolean throwing, int id) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("hook_throwing");
-    public static final PortStreamCodec<ByteBuf, HookThrowingPacketC2S> STREAM_CODEC = new PortStreamCodec<>() {
+    public static final PortStreamCodec<FriendlyByteBuf, HookThrowingPacketC2S> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
-        public HookThrowingPacketC2S decode(PortRegistryFriendlyByteBuf buffer) {
+        public HookThrowingPacketC2S decode(FriendlyByteBuf buffer) {
             boolean throwing = buffer.readBoolean();
             int id = 0;
             if (!throwing) id = buffer.readVarInt();
@@ -34,7 +33,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements IPortPa
         }
 
         @Override
-        public void encode(PortRegistryFriendlyByteBuf buffer, HookThrowingPacketC2S value) {
+        public void encode(FriendlyByteBuf buffer, HookThrowingPacketC2S value) {
             buffer.writeBoolean(value.throwing);
             if (!value.throwing) buffer.writeVarInt(value.id);
         }

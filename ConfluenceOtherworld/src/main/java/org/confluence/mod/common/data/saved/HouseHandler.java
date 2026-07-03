@@ -55,7 +55,14 @@ public enum HouseHandler implements IGlobalData {
     }
 
     public void setHouse(BaseNPC npc, House house) {
-        setHouse(npc.level().dimension(), new NPCSpawner.Region(house.center()), npc.getUUID(), house);
+        ResourceKey<Level> dimension = npc.level().dimension();
+        NPCSpawner.Region region = new NPCSpawner.Region(house.center());
+        UUID uuid = npc.getUUID();
+        if (house == House.EMPTY) {
+            removeHouse(dimension, region, uuid);
+        } else {
+            setHouse(dimension, region, uuid, house);
+        }
     }
 
     public @Nullable House getHouse(BaseNPC npc) {

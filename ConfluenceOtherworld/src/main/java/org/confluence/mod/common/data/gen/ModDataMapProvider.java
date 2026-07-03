@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import org.confluence.mod.common.data.gen.data_map.*;
 import org.confluence.mod.common.init.ModDataMaps;
+import org.mesdag.portlib.PortLib;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.datamap.PortDataMapType;
 
@@ -24,7 +25,7 @@ public class ModDataMapProvider extends PortDataMapProvider {
         ImmunitySubProvider.gather(() -> builder(ModDataMaps.IMMUNITY));
         DiggingPowerProvider.gather(() -> builder(ModDataMaps.DIGGING_POWER));
         BugNetEntityToItemSubProvider.gather(builder(ModDataMaps.BUG_NET_ENTITY_TO_ITEM, BugNetEntityToItemSubProvider.Builder::new));
-        FurnaceFuelSubProvider.gather(() -> builder(NeoForgeDataMaps.FURNACE_FUELS));
+        FurnaceFuelSubProvider.gather(() -> builder(PortLib.FURNACE_FUELS));
         LivingInvulnerableEffectsSubProvider.gather(builder(ModDataMaps.LIVING_INVULNERABLE_EFFECTS, LivingInvulnerableEffectsSubProvider.Builder::new), provider);
         BlockBreakSpawnsSubProvider.gather(builder(ModDataMaps.BLOCK_BREAK_SPAWNS, BlockBreakSpawnsSubProvider.Builder::new), provider);
         GamePhase2AttributeModifiersSubProvider.gather(builder(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, GamePhase2AttributeModifiersSubProvider.Builder::new));

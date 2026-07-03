@@ -12,6 +12,7 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.confluence.mod.util.OverworldUtils;
+import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,7 +36,7 @@ public abstract class PlacedFeatureMixin {
             Consumer<BlockPos> consumer,
             @Local(argsOnly = true) PlacementContext context,
             @Local(argsOnly = true) RandomSource source,
-            @Local MutableBoolean success
+            @Local(name = "mutableboolean") MutableBoolean mutableboolean
     ) {
         if (confluence$isPine == PortTriState.FALSE) { // 大概率为false，所以只需要检查一次
             return consumer;
@@ -44,7 +45,7 @@ public abstract class PlacedFeatureMixin {
         if (confluence$isPine == PortTriState.TRUE) { // 不是false，大概率就是true
             return pos -> {
                 if (OverworldUtils.replacePine(context, source, pos)) {
-                    success.setTrue();
+                    mutableboolean.setTrue();
                 } else {
                     consumer.accept(pos);
                 }

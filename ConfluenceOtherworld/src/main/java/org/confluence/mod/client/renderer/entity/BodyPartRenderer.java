@@ -172,7 +172,7 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 }
                 float scale = living.getScale();
                 poseStack.scale(scale, scale, scale);
-                ra.callSetupRotations(living, poseStack, 0, living.yBodyRot, 1, scale);
+// todo renderer               ra.callSetupRotations(living, poseStack, 0, living.yBodyRot, 1, scale);
                 Vector3f modelPartRot = entity.modelPartRot;
                 poseStack.mulPose(Axis.ZP.rotation(modelPartRot.z));
                 poseStack.mulPose(Axis.YP.rotation(-modelPartRot.y));

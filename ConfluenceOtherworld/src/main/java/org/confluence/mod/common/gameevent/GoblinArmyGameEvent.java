@@ -11,7 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraftforge.common.MinecraftForge;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
@@ -23,6 +22,7 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.network.s2c.GoblinArmyProgressPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -57,13 +57,13 @@ public enum GoblinArmyGameEvent implements GameEvent {
     public void open(MinecraftServer server) {
         this.server = server;
         this.level = OverworldUtils.getLevel(server);
-        this.spawnerData = MinecraftForge.EVENT_BUS.post(new GameEventSpawnerDataModificationEvent(KEY, level,
+        this.spawnerData = PortEventHandler.postEventWithReturn(new GameEventSpawnerDataModificationEvent(KEY, level,
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_ARCHER.get(), 360, 2, 4),
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_PEON.get(), 480, 2, 3),
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_WARRIOR.get(), 360, 2, 3),
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_SORCERER.get(), 240, 1, 1),
-                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_THIEF.get(), 480, 2, 4),
-                new MobSpawnSettings.SpawnerData(MonsterEntities.ANGER_GOBLIN.get(), 240, 1, 2)
+                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_THIEF.get(), 480, 2, 4)
+//                new MobSpawnSettings.SpawnerData(MonsterEntities.ANGER_GOBLIN.get(), 240, 1, 2)
         )).create();
     }
 

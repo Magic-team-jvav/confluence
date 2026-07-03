@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.SpriteLoader;
+import net.minecraft.client.resources.metadata.animation.AnimationFrame;
+import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.lib.util.LibClientUtils;
@@ -44,11 +46,13 @@ public abstract class SpriteLoaderMixin {
                 FrameSize frameSize = new FrameSize(content.width(), content.height());
 
                 NativeImage grayImage = LibClientUtils.copyWithGray(content.getOriginalImage());
-                SpriteContents grayContent = new SpriteContents(name.withSuffix(ClientUtils.GRAY_SUFFIX), frameSize, grayImage, content.metadata());
+                SpriteContents.AnimatedTexture texture = content.animatedTexture;
+                AnimationMetadataSection section = new AnimationMetadataSection(texture.frames.stream().map(info -> new AnimationFrame(info.index, info.time)).toList(), frameSize.width(), frameSize.height(), texture.frames.get(0).time, texture.interpolateFrames);
+                SpriteContents grayContent = new SpriteContents(name.withSuffix(ClientUtils.GRAY_SUFFIX), frameSize, grayImage, section, content.forgeMeta);
                 neoContents.add(grayContent);
 
                 NativeImage negativeImage = LibClientUtils.copyWithNegative(content.getOriginalImage());
-                SpriteContents negativeContent = new SpriteContents(name.withSuffix(ClientUtils.NEGATIVE_SUFFIX), frameSize, negativeImage, content.metadata());
+                SpriteContents negativeContent = new SpriteContents(name.withSuffix(ClientUtils.NEGATIVE_SUFFIX), frameSize, negativeImage, section, content.forgeMeta);
                 neoContents.add(negativeContent);
             }
             return neoContents;

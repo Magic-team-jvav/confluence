@@ -21,7 +21,7 @@ public record GameEventSyncPacketS2C(
 ) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("game_event_sync");
     public static final PortStreamCodec<ByteBuf, GameEventSyncPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
-            GameEvent.KEY_STREAM_CODEC.apply(ByteBufCodecs.list()), GameEventSyncPacketS2C::keys,
+            GameEvent.KEY_STREAM_CODEC.apply(PortByteBufCodecs.list()), GameEventSyncPacketS2C::keys,
             PortByteBufCodecs.BOOL, GameEventSyncPacketS2C::start,
             GameEventSyncPacketS2C::new
     );

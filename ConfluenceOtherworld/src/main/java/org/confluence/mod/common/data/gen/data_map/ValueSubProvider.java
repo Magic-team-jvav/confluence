@@ -344,13 +344,13 @@ public final class ValueSubProvider {
                 .add(SwordItems.ORICHALCUM_SWORD, gold2 + silver50 + silver2 + silver1)
                 .add(SwordItems.ADAMANTITE_SWORD, gold2 + silver50 + silver20 + silver5 + silver1)
                 .add(SwordItems.TITANIUM_SWORD, gold2 + gold1 + silver20 + silver2)
-                .add(TEBoomerangItems.ENCHANTED_BOOMERANG, gold1)
-                .add(TEBoomerangItems.FLAMARANG, gold2)
-                .add(TEBoomerangItems.ICE_BOOMERANG, gold1)
-                .add(TEBoomerangItems.SHROOMERANG, silver50 + silver10)
-                .add(TEBoomerangItems.TRIMARANG, gold2)
-                .add(TEBoomerangItems.COMBAT_WRENCH, silver50)
-                .add(TEBoomerangItems.WOOD_BOOMERANG, silver20)
+                .add(BoomerangItems.ENCHANTED_BOOMERANG, gold1)
+                .add(BoomerangItems.FLAMARANG, gold2)
+                .add(BoomerangItems.ICE_BOOMERANG, gold1)
+                .add(BoomerangItems.SHROOMERANG, silver50 + silver10)
+                .add(BoomerangItems.TRIMARANG, gold2)
+                .add(BoomerangItems.COMBAT_WRENCH, silver50)
+                .add(BoomerangItems.WOOD_BOOMERANG, silver20)
                 .add(SwordItems.BREAKER_BLADE, gold1 + gold2);
         builder // 探索
                 .add(ModBlocks.ROPE, 2)
@@ -393,8 +393,8 @@ public final class ValueSubProvider {
                 .add(LightPetItems.CRIMSON_HEART, gold1 + silver50)
                 .add(LightPetItems.MAGIC_LANTERN, gold2);
         builder
-                .add(TERideableItems.SLIMY_SADDLE, gold5)
-                .add(TERideableItems.HONEYED_GOGGLES, gold5);
+                .add(MountItems.SLIMY_SADDLE, gold5)
+                .add(MountItems.HONEYED_GOGGLES, gold5);
         builder // 影响地形
                 .add(ToolItems.STAFF_OF_REGROWTH, silver50)
                 .add(ModItems.HIVE_WAND, silver50)
@@ -665,30 +665,30 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.CRYSTAL_STORM, gold5 - gold1)
                 .add(ManaWeaponItems.CURSED_FLAMES, gold5 - gold1);
         builder
-                .add(TESummonItems.SLIME_STAFF, gold2)
-                .add(TESummonItems.HORNET_STAFF, silver50 + silver20)
-                .add(TESummonItems.IMP_STAFF, silver50 + silver2 + silver2)
-                .add(TESummonItems.FINCH_STAFF, gold1)
-                .add(TESummonItems.SNOW_FLINX_STAFF, gold1 + silver50)
-                .add(TESummonItems.SCULK_WISP_STAFF, gold1)
-                .add(TESummonItems.IRON_GOLEM_STAFF, gold2)
-                .add(TESummonItems.TERRAPRISMA, gold20)
-                .add(TEPetItems.CHESTER_STAFF, gold2)
-                .add(TEPetItems.WALLET, gold2);
+                .add(SummonItems.SLIME_STAFF, gold2)
+                .add(SummonItems.HORNET_STAFF, silver50 + silver20)
+                .add(SummonItems.IMP_STAFF, silver50 + silver2 + silver2)
+                .add(SummonItems.FINCH_STAFF, gold1)
+                .add(SummonItems.SNOW_FLINX_STAFF, gold1 + silver50)
+                .add(SummonItems.SCULK_WISP_STAFF, gold1)
+                .add(SummonItems.IRON_GOLEM_STAFF, gold2)
+                .add(SummonItems.TERRAPRISMA, gold20)
+                .add(PetItems.CHESTER_STAFF, gold2)
+                .add(PetItems.WALLET, gold2);
         builder
-                .add(TEWhipItems.LEATHER_WHIP, gold2)
-                .add(TEWhipItems.SLUB_WHIP, 30)
-                .add(TEWhipItems.RUBY_WHIP, gold2)
-                .add(TEWhipItems.AMBER_WHIP, gold2 + silver50)
-                .add(TEWhipItems.TOPAZ_WHIP, gold2 + silver10)
-                .add(TEWhipItems.JADE_WHIP, gold2 + silver20)
-                .add(TEWhipItems.DIAMOND_WHIP, gold2 + silver50)
-                .add(TEWhipItems.SAPPHIRE_WHIP, gold2 + silver20)
-                .add(TEWhipItems.AMETHYST_WHIP, gold2 + silver10)
-                .add(TEWhipItems.SWAMP_WHIP, gold2 + silver50 + silver50)
-                .add(TEWhipItems.SNAPTHORN, gold1)
-                .add(TEWhipItems.SPINAL_TAP, gold1 + silver50)
-                .add(TEWhipItems.FIRECRACKER, gold1 + gold2);
+                .add(WhipItems.LEATHER_WHIP, gold2)
+                .add(WhipItems.SLUB_WHIP, 30)
+                .add(WhipItems.RUBY_WHIP, gold2)
+                .add(WhipItems.AMBER_WHIP, gold2 + silver50)
+                .add(WhipItems.TOPAZ_WHIP, gold2 + silver10)
+                .add(WhipItems.JADE_WHIP, gold2 + silver20)
+                .add(WhipItems.DIAMOND_WHIP, gold2 + silver50)
+                .add(WhipItems.SAPPHIRE_WHIP, gold2 + silver20)
+                .add(WhipItems.AMETHYST_WHIP, gold2 + silver10)
+                .add(WhipItems.SWAMP_WHIP, gold2 + silver50 + silver50)
+                .add(WhipItems.SNAPTHORN, gold1)
+                .add(WhipItems.SPINAL_TAP, gold1 + silver50)
+                .add(WhipItems.FIRECRACKER, gold1 + gold2);
         builder
                 .add(TCItems.AGLET, 25000)
                 .add(TCItems.AMBER_HORSESHOE_BALLOON, 30000)
@@ -1638,7 +1638,7 @@ public final class ValueSubProvider {
                 .add(BaitItems.BLUE_DRAGONFLY, silver10)
                 .add(BaitItems.BLUE_JELLYFISH, gold1 + gold2 + silver50)
                 .add(BaitItems.BUGGY, silver10)
-                .add(BaitItems.ENCHANTED_NIGHTCRAWLER, silver20)
+                .add(BaitItems.NIGHTCRAWLER, silver20)
                 .add(BaitItems.FIREFLY, silver1 + silver2)
                 .add(BaitItems.GLOWING_SNAIL, silver50)
                 .add(BaitItems.GOLD_BUTTERFLY, gold10)
@@ -1719,15 +1719,15 @@ public final class ValueSubProvider {
                 .add(MaterialItems.GLOWING_MUSHROOM, 10);
         // 悠悠球
         builder
-                .add(TEYoyosItems.WOODEN_YOYO, 100)
-                .add(TEYoyosItems.RALLY, 5000)
-                .add(TEYoyosItems.MALAISE, gold1)
-                .add(TEYoyosItems.ARTERY, gold1)
-                .add(TEYoyosItems.AMAZON, 13000)
-                .add(TEYoyosItems.CODE_1, gold1)
-                .add(TEYoyosItems.HIVE_FIVE, 7000)
-                .add(TEYoyosItems.CASCADE, 18000)
-                .add(TEYoyosItems.VALOR, 17500);
+                .add(YoyoItems.WOODEN_YOYO, 100)
+                .add(YoyoItems.RALLY, 5000)
+                .add(YoyoItems.MALAISE, gold1)
+                .add(YoyoItems.ARTERY, gold1)
+                .add(YoyoItems.AMAZON, 13000)
+                .add(YoyoItems.CODE_1, gold1)
+                .add(YoyoItems.HIVE_FIVE, 7000)
+                .add(YoyoItems.CASCADE, 18000)
+                .add(YoyoItems.VALOR, 17500);
         builder
                 .add(FoodItems.BLINKROOT_SEED, 16)
                 .add(FoodItems.CLOUDWEAVER_SEED, silver5)

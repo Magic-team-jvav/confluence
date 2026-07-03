@@ -10,7 +10,7 @@ import org.confluence.mod.common.entity.monster.DemonEye;
 public class DemonEyeRenderer extends GeoNormalRenderer<DemonEye> {
 
     public DemonEyeRenderer(EntityRendererProvider.Context context) {
-        super(context, new DemonEyeGeoModel(), 1.0F, 0.0F);
+        super(context, new DemonEyeGeoModel());
         this.shadowRadius = 0.5F;
     }
 

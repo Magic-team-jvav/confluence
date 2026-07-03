@@ -3,10 +3,13 @@ package org.confluence.mod.client.effect;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+
+import java.util.function.BiFunction;
 
 public class RenderStateShardAccessor extends RenderStateShard {
     public static final RenderType TRAIL_RENDER_TYPE = RenderType.create(
@@ -33,6 +36,19 @@ public class RenderStateShardAccessor extends RenderStateShard {
                     .setCullState(NO_CULL)
                     .setOverlayState(OVERLAY)
                     .createCompositeState(false));
+    public static final BiFunction<ResourceLocation, TransparencyStateShard, RenderType> EYES = Util.memoize(
+            (texture, transparencyStateShard) -> {
+                RenderStateShard.TextureStateShard textureStateShard = new RenderStateShard.TextureStateShard(texture, false, false);
+                return RenderType.create("confluence_eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                        RenderType.CompositeState.builder()
+                                .setShaderState(RENDERTYPE_EYES_SHADER)
+                                .setTextureState(textureStateShard)
+                                .setTransparencyState(transparencyStateShard)
+                                .setWriteMaskState(COLOR_WRITE)
+                                .createCompositeState(false)
+                );
+            }
+    );
 
     public static RenderType createTextOutline(ResourceLocation texture) {
         return RenderType.create("confluence_outline_text", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, true,

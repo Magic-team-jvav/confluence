@@ -1,10 +1,7 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import com.mojang.datafixers.util.Pair;
+import PortLib.extensions.net.minecraft.util.StringRepresentable.PortStringRepresentableExtension;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.Lifecycle;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -51,7 +48,8 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
 
     @Override
     protected void defineSynchedData() {
-        super.defineSynchedData(this.entityData.define(DATA_VARIANT_ID, 0));
+        super.defineSynchedData();
+        entityData.define(DATA_VARIANT_ID, 0);
     }
 
     public void setVariant(Variant pVariant) {
@@ -151,8 +149,13 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         return getVariant().knockBack;
     }
 
-    public record Variant(int id, String name, double gravity, float knockBack,
-                          FloatRGB color) implements StringRepresentable {
+    public record Variant(
+            int id,
+            String name,
+            double gravity,
+            float knockBack,
+            FloatRGB color
+    ) implements StringRepresentable {
         public static final List<Variant> VALUES = new ArrayList<>();
 
         public static final Variant AMETHYST = register("amethyst", -1.0, 3.25F, 0.91765F, 0.41961F, 1F);
@@ -166,24 +169,9 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         public static final Variant SPARK = register("spark", 0.04, 0.0F, 0, 0, 0);
         public static final Variant THUNDER_ZAPPER = register("thunder_zapper", -1.0, 0.0F, 0, 0, 0);
 
-        public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(new Variant[0])).mapResult(new Codec.ResultFunction<>() {
-            @Override
-            public <T> DataResult<Pair<Variant, T>> apply(DynamicOps<T> ops, T input, DataResult<Pair<Variant, T>> a) {
-                if (a.isError()) {
-                    return DataResult.success(new Pair<>(JADE, input), Lifecycle.stable());
-                }
-                return a;
-            }
+        public static final Codec<Variant> CODEC = PortStringRepresentableExtension.fromValues(() -> VALUES.toArray(Variant[]::new));
 
-            @Override
-            public <T> DataResult<T> coApply(DynamicOps<T> ops, Variant input, DataResult<T> t) {
-                return t;
-            }
-        });
-
-        /**
-         * @param rawKnockBack 换算前的击退
-         */
+        /// @param rawKnockBack 换算前的击退
         private static Variant register(String name, double gravity, float rawKnockBack, float red, float green, float blue) {
             Variant variant = new Variant(VALUES.size(), name, gravity, rawKnockBack / 8.0F, new FloatRGB(red, green, blue));
             VALUES.add(variant);

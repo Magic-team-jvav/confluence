@@ -33,13 +33,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
 import org.confluence.lib.common.event.LibGameEvents;
 import org.confluence.lib.common.item.ColoredItem;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
@@ -56,6 +54,7 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
@@ -76,7 +75,6 @@ import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.network.s2c.AchievementsDataSyncPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
@@ -106,10 +104,11 @@ public final class PlayerEvents {
         PortEventHandler.addListener(PlayerEvents::interact$RightClickItem);
         PortEventHandler.addListener(PlayerEvents::useItemOnBlock);
         PortEventHandler.addListener(PlayerEvents::attackEntity);
+        PortEventHandler.addListener(PlayerEvents::cloneE);
         PortEventHandler.addListener(PlayerEvents::respawn);
         PortEventHandler.addListener(PlayerEvents::harvestCheck);
         PortEventHandler.addListener(PlayerEvents::advancementEarn);
-        PortEventHandler.addListener(PlayerEvents::advancementProgress);
+//        PortEventHandler.addListener(PlayerEvents::advancementProgress);
         PortEventHandler.addListener(PlayerEvents::startTracking);
         PortEventHandler.addListener(PlayerEvents::changedDimension);
         PortEventHandler.addListener(PlayerEvents::container$Close);
@@ -342,15 +341,14 @@ public final class PlayerEvents {
         }
     }
 
-    @SubscribeEvent
-    private static void clone(PlayerEvent.Clone event) {
+    private static void cloneE(PortPlayerEvent.Clone event) {
         Player old = event.getOriginal();
         Player neo = event.getEntity();
 
         FlaskEffect.cloneFlaskEffects(old, neo);
     }
 
-    private static void respawn(PlayerEvent.PlayerRespawnEvent event) {
+    private static void respawn(PortPlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         EverBeneficial everBeneficial = EverBeneficial.of(player);
         EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
@@ -368,7 +366,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void harvestCheck(PlayerEvent.HarvestCheck event) {
+    private static void harvestCheck(PortPlayerEvent.HarvestCheck event) {
         ItemStack itemStack = event.getEntity().getMainHandItem();
         if (!itemStack.isEmpty() && itemStack.is(ItemTags.PICKAXES)) {
             event.setCanHarvest(ModTiers.isCorrectToolForDrops(DiggingPower.getPower(itemStack), itemStack, event.getTargetBlock()));
@@ -384,14 +382,14 @@ public final class PlayerEvents {
         }
     }
 
-    private static void advancementProgress(PortAdvancementEvent.AdvancementProgressEvent event) {
-        ServerPlayer player = (ServerPlayer) event.getEntity();
-        if (!LibEntityUtils.isSingleplayerOwner(player) &&
-                AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
-        ) {
-            AchievementsDataSyncPacketS2C.sendToPlayer(player);
-        }
-    }
+// todo advancement   private static void advancementProgress(PortAdvancementEvent.AdvancementProgressEvent event) {
+//        ServerPlayer player = (ServerPlayer) event.getEntity();
+//        if (!LibEntityUtils.isSingleplayerOwner(player) &&
+//                AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
+//        ) {
+//            AchievementsDataSyncPacketS2C.sendToPlayer(player);
+//        }
+//    }
 
     private static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof ServerPlayer target) {

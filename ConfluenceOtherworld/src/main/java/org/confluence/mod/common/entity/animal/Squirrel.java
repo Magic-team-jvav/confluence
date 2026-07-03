@@ -98,10 +98,12 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
             return name().toLowerCase(Locale.ROOT);
         }
 
+        @Override
         public ResourceLocation modelPath() {
             return Confluence.asResource("animal/squirrel");
         }
 
+        @Override
         public ResourceLocation texturePath() {
             return Confluence.asResource("textures/entity/squirrel/" + getSerializedName() + ".png");
         }

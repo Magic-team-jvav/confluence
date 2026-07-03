@@ -65,7 +65,7 @@ public abstract class WorldOptionsMixin implements IWorldOptions {
         return new WorldOptions(seed, generateStructures, generateBonusChest, legacyCustomOptions);
     }
 
-    @ModifyExpressionValue(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/codecs/RecordCodecBuilder;mapCodec(Ljava/util/function/Function;)Lcom/mojang/serialization/MapCodec;"))
+    @ModifyExpressionValue(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/codecs/RecordCodecBuilder;mapCodec(Ljava/util/function/Function;)Lcom/mojang/serialization/MapCodec;", remap = false))
     private static MapCodec<WorldOptions> wrapCodec(MapCodec<WorldOptions> original) {
         return new MapCodec<>() {
             private static final String secretFlagName = "secret_flag";

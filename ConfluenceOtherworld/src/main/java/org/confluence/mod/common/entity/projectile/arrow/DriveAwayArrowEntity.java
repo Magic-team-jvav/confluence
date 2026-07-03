@@ -11,16 +11,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.terraentity.entity.monster.Harpy;
-import org.confluence.terraentity.utils.DriveAwaySystem.DriveAwayArrowIntegration;
+import org.confluence.mod.common.entity.monster.Harpy;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 稻草人弓专用箭矢，在飞行过程中驱离鸟妖
- * 对飞行单位造成1.5倍伤害
- * 使用 DriveAwayArrowIntegration 处理飞行途中和命中驱离逻辑
- */
-public class DriveAwayArrowEntity extends BaseArrowEntity {
+/// 稻草人弓专用箭矢，在飞行过程中驱离鸟妖
+/// 对飞行单位造成1.5倍伤害
+/// 使用 DriveAwayArrowIntegration 处理飞行途中和命中驱离逻辑
+public class DriveAwayArrowEntity extends BaseArrowEntity { // todo arrow
 
     private boolean hittingFlyingTarget = false;
 
@@ -40,7 +37,7 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
 
         // 仅在服务端执行驱离逻辑
         if (!level().isClientSide()) {
-            DriveAwayArrowIntegration.onArrowTick(this);
+//            DriveAwayArrowIntegration.onArrowTick(this);
         }
     }
 
@@ -71,7 +68,7 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
         if (!level().isClientSide()) {
             Vec3 hitPos = result.getLocation();
             // 调用 DriveAwayArrowIntegration 处理命中驱离和药水效果
-            DriveAwayArrowIntegration.onArrowHit(this, hitPos);
+//            DriveAwayArrowIntegration.onArrowHit(this, hitPos);
         }
     }
 
@@ -81,7 +78,7 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
         // 命中方块时也触发驱离
         if (!level().isClientSide()) {
             Vec3 hitPos = result.getLocation();
-            DriveAwayArrowIntegration.onArrowHit(this, hitPos);
+//            DriveAwayArrowIntegration.onArrowHit(this, hitPos);
         }
     }
 
@@ -89,7 +86,7 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
     public void remove(Entity.RemovalReason reason) {
         super.remove(reason);
         // 清理追踪数据
-        DriveAwayArrowIntegration.clearArrowTrackingData(this);
+//        DriveAwayArrowIntegration.clearArrowTrackingData(this);
     }
 
     public static BaseArrowEntity create(EntityType<? extends AbstractArrow> type, LivingEntity shooter,

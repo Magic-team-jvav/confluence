@@ -46,7 +46,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 EntityType.TROPICAL_FISH,
                 EntityType.TURTLE,
                 EntityType.FROG,
-                CritterEntities.EXPLOSIVE_BUNNY.get(),
+//                CritterEntities.EXPLOSIVE_BUNNY.get(),
                 CritterEntities.BUNNY.get(),
                 CritterEntities.BIRD.get(),
                 CritterEntities.BLUE_JAY.get(),

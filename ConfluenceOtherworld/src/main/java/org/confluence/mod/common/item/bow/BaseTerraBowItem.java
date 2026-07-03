@@ -130,11 +130,11 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
         if (multiShootCount > 1 && !terraArrow.hasAutoDiscard()) {
             terraArrow.setAutoDiscard(100);
         }
-        WeaponStorage data = WeaponStorage.of(shooter);
-        if (data.bowFullPull) {
-            terraArrow.fullPull = true;
-            data.bowFullPull = false;
-        }
+// todo bow       WeaponStorage data = WeaponStorage.of(shooter);
+//        if (data.bowFullPull) {
+//            terraArrow.fullPull = true;
+//            data.bowFullPull = false;
+//        }
     }
 
     public static void transformAndApplyOffsetToProjectile(Projectile projectile, Vec3 offset) {

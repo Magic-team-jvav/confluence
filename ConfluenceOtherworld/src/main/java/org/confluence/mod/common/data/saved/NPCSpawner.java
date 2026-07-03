@@ -55,6 +55,7 @@ import org.confluence.mod.common.entity.npc.TravelingMerchantNPC;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -64,11 +65,9 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 /// 注：NPC默认生成在对应玩家出生点
@@ -464,10 +463,10 @@ public enum NPCSpawner implements IGlobalData {
     private boolean trySpawnDryad(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.DRYAD.get())) {
             if (KillBoard.INSTANCE.isAnyDefeated(
-                    TEBossEntities.EYE_OF_CTHULHU.get(),
-                    TEBossEntities.EATER_OF_WORLDS.get(),
-                    TEBossEntities.BRAIN_OF_CTHULHU.get(),
-                    TEBossEntities.SKELETRON.get()
+                    BossEntities.EYE_OF_CTHULHU.get(),
+                    BossEntities.EATER_OF_WORLDS.get(),
+                    BossEntities.BRAIN_OF_CTHULHU.get(),
+                    BossEntities.SKELETRON.get()
             )) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.DRYAD.get());
             }
@@ -477,7 +476,7 @@ public enum NPCSpawner implements IGlobalData {
 
     private boolean trySpawnWitchDoctor(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.WITCH_DOCTOR.get())) {
-            if (KillBoard.INSTANCE.isDefeated(TEBossEntities.QUEEN_BEE.get())) {
+            if (KillBoard.INSTANCE.isDefeated(BossEntities.QUEEN_BEE.get())) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.WITCH_DOCTOR.get());
             }
         }
@@ -558,7 +557,7 @@ public enum NPCSpawner implements IGlobalData {
     ///
     /// 首次交互时 BaseNPC.mobInteract 处理 shouldInteract → 加入区域
     private boolean trySpawnMechanic(ServerPlayer player, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.isDefeated(TEBossEntities.SKELETRON.get()) && npcSpawned.contains(NpcEntities.MECHANIC.get())) {
+        if (KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get()) && npcSpawned.contains(NpcEntities.MECHANIC.get())) {
             if (!hasNPCAlive(region, NpcEntities.MECHANIC.get())) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.MECHANIC.get());
             }
@@ -601,7 +600,6 @@ public enum NPCSpawner implements IGlobalData {
         return true;
     }
 
-    /// @see ServerPlayer#adjustSpawnLocation(ServerLevel, BlockPos)
     public static BlockPos adjustSpawnLocation(ServerLevel level, BlockPos pos, BaseNPC npc) {
         AABB aabb = npc.getDimensions(Pose.STANDING).makeBoundingBox(Vec3.ZERO);
         BlockPos blockPos = pos;
@@ -666,12 +664,13 @@ public enum NPCSpawner implements IGlobalData {
     /// 调用前需检查是否已使用过先进战斗技术
     public static void applyAdvancedCombatTechniques(BaseNPC living, ResourceLocation id) {
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
+        UUID uuid = PortAttributeModifier.rl2uuid(id);
         if (armor != null) {
-            armor.addOrReplacePermanentModifier(new AttributeModifier(id, 3, AttributeModifier.Operation.ADD_VALUE));
+            armor.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 3, AttributeModifier.Operation.ADDITION));
         }
         AttributeInstance attackDamage = living.getAttribute(LibAttributes.getAttackDamage());
         if (attackDamage != null) {
-            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 0.2, AttributeModifier.Operation.MULTIPLY_TOTAL));
         }
     }
 

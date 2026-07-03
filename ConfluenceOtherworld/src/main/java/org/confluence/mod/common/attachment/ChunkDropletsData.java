@@ -116,6 +116,6 @@ public class ChunkDropletsData implements IPortNBTSerializable<CompoundTag> {
     }
 
     public static ChunkDropletsData of(Level level) {
-        return level.getAttach(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
+        return level.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
     }
 }

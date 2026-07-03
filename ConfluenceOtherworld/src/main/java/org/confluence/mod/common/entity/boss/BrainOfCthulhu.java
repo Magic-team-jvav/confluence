@@ -113,8 +113,8 @@ public class BrainOfCthulhu extends BaseBoss {
             }
 
             // Count alive creepers
-            aliveCreepers = (int) level().getEntities(this, getBoundingBox().inflate(64),
-                    e -> e instanceof CreeperOfCthulhu && e.isAlive()).count();
+            aliveCreepers = level().getEntities(this, getBoundingBox().inflate(64),
+                    e -> e instanceof CreeperOfCthulhu && e.isAlive()).size();
 
             // Phase transition
             if (!phase2 && aliveCreepers == 0) {

@@ -79,28 +79,32 @@ public class LogBlockSet {
             throw new NullPointerException();
         this.id = builder.id;
         this.ignitedByLava = builder.ignitedByLava;
-        this.PLANKS = registerWithItem(id + "_planks", () -> builder.planks.apply(ignitedByLava(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD))));
-        this.LOG = register(builder.log, id + "_log", true, ignitedByLava(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD)));
-        this.STRIPPED_LOG = register(builder.strippedLog, "stripped_" + id + "_log", true, () -> ignitedByLava(BlockBehaviour.Properties.copy(LOG.get())));
+        MapColor baseColor = MapColor.WOOD;
+        BlockBehaviour.Properties baseProp = ignitedByLava(BlockBehaviour.Properties.of().mapColor(baseColor).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+        this.PLANKS = registerWithItem(id + "_planks", () -> builder.planks.apply(baseProp));
+        BlockBehaviour.Properties logProp = ignitedByLava(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD));
+        this.LOG = register(builder.log, id + "_log", true, logProp);
+        this.STRIPPED_LOG = register(builder.strippedLog, "stripped_" + id + "_log", true, logProp);
         this.LEAVES = register(builder.leaves, id + "_leaves", true, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(LogBlockSet::valid).isSuffocating(LogBlockSet::never).isViewBlocking(LogBlockSet::never).pushReaction(PushReaction.DESTROY).isRedstoneConductor(LogBlockSet::never));
-        this.WOOD = register(builder.wood, id + "_wood", true, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD));
-        this.STRIPPED_WOOD = register(builder.strippedWood, "stripped_" + id + "_wood", true, () -> BlockBehaviour.Properties.copy(WOOD.get()));
+        BlockBehaviour.Properties woodProp = BlockBehaviour.Properties.of().mapColor(baseColor).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD);
+        this.WOOD = register(builder.wood, id + "_wood", true, woodProp);
+        this.STRIPPED_WOOD = register(builder.strippedWood, "stripped_" + id + "_wood", true, woodProp);
         this.BUTTON = register(builder.button, id + "_button", true, BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY));
-        this.FENCE = register(builder.fence, id + "_fence", true, () -> ignitedByLava(BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD).mapColor(PLANKS.get().defaultMapColor())));
-        this.FENCE_GATE = register(builder.fenceGate, id + "_fence_gate", true, () -> ignitedByLava(BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).mapColor(PLANKS.get().defaultMapColor())));
-        this.PRESSURE_PLATE = register(builder.pressurePlate, id + "_pressure_plate", true, () -> ignitedByLava(BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY).mapColor(PLANKS.get().defaultMapColor())));
-        this.SLAB = register(builder.slab, id + "_slab", true, ignitedByLava(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD)));
-        this.STAIRS = builder.stairs == null ? PortDeferredBlock.createBlock(Confluence.asResource(id + "_stairs")) : registerWithItem(id + "_stairs", () -> builder.stairs.apply(PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(PLANKS.get())));
-        this.SIGN = register(builder.staindingSign, id + "_sign", false, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F));
-        this.WALL_SIGN = register(builder.wallSign, id + "_wall_sign", false, () -> BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).lootFrom(SIGN));
+        this.FENCE = register(builder.fence, id + "_fence", true, () -> ignitedByLava(BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD).mapColor(baseColor)));
+        this.FENCE_GATE = register(builder.fenceGate, id + "_fence_gate", true, () -> ignitedByLava(BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).mapColor(baseColor)));
+        this.PRESSURE_PLATE = register(builder.pressurePlate, id + "_pressure_plate", true, () -> ignitedByLava(BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY).mapColor(baseColor)));
+        this.SLAB = register(builder.slab, id + "_slab", true, baseProp);
+        this.STAIRS = builder.stairs == null ? PortDeferredBlock.createBlock(Confluence.asResource(id + "_stairs")) : registerWithItem(id + "_stairs", () -> builder.stairs.apply(() -> PLANKS.get().defaultBlockState(), baseProp));
+        this.SIGN = register(builder.staindingSign, id + "_sign", false, BlockBehaviour.Properties.of().mapColor(baseColor).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F));
+        this.WALL_SIGN = register(builder.wallSign, id + "_wall_sign", false, () -> BlockBehaviour.Properties.of().mapColor(baseColor).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).lootFrom(SIGN));
         this.SIGN_ITEM = builder.signItem == null ? PortDeferredItem.createItem(Confluence.asResource(id + "_sign")) : ModItems.BLOCK_ITEMS.register(id + "_sign", () -> builder.signItem.apply(new Item.Properties().stacksTo(16), SIGN.get(), WALL_SIGN.get()));
-        this.TRAPDOOR = register(builder.trapdoor, id + "_trapdoor", true, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().isValidSpawn(LogBlockSet::never).ignitedByLava());
-        this.DOOR = register(builder.door, id + "_door", true, () -> BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().pushReaction(PushReaction.DESTROY).ignitedByLava().mapColor(PLANKS.get().defaultMapColor()));
-        this.HANGING_SIGN = register(builder.ceilingHangingSign, id + "_hanging_sign", false, BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).ignitedByLava());
-        this.WALL_HANGING_SIGN = register(builder.wallHangingSign, id + "_wall_hanging_sign", false, () -> BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).ignitedByLava().lootFrom(HANGING_SIGN));
+        this.TRAPDOOR = register(builder.trapdoor, id + "_trapdoor", true, BlockBehaviour.Properties.of().mapColor(baseColor).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().isValidSpawn(LogBlockSet::never).ignitedByLava());
+        this.DOOR = register(builder.door, id + "_door", true, () -> BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().pushReaction(PushReaction.DESTROY).ignitedByLava().mapColor(baseColor));
+        this.HANGING_SIGN = register(builder.ceilingHangingSign, id + "_hanging_sign", false, BlockBehaviour.Properties.of().mapColor(baseColor).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).ignitedByLava());
+        this.WALL_HANGING_SIGN = register(builder.wallHangingSign, id + "_wall_hanging_sign", false, () -> BlockBehaviour.Properties.of().mapColor(baseColor).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).ignitedByLava().lootFrom(HANGING_SIGN));
         this.HANGING_SIGN_ITEM = builder.hangingSignItem == null ? PortDeferredItem.createItem(Confluence.asResource(id + "_hanging_sign")) : ModItems.BLOCK_ITEMS.register(id + "_hanging_sign", () -> builder.hangingSignItem.apply(HANGING_SIGN.get(), WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
 
-        this.CHISELED_PLANKS = register(builder.chiseledPlanks, "chiseled_" + id + "_planks", true, () -> ignitedByLava(BlockBehaviour.Properties.copy(PLANKS.get())));
+        this.CHISELED_PLANKS = register(builder.chiseledPlanks, "chiseled_" + id + "_planks", true, baseProp);
         this.SAPLING = builder.sapling == null ? PortDeferredBlock.createBlock(Confluence.asResource(id + "_sapling")) : registerWithItem(id + "_sapling", () -> builder.sapling.apply(BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
     }
 
@@ -431,7 +435,7 @@ public class LogBlockSet {
         private Function<BlockBehaviour.Properties, ? extends FenceGateBlock> fenceGate;
         private Function<BlockBehaviour.Properties, ? extends PressurePlateBlock> pressurePlate;
         private Function<BlockBehaviour.Properties, ? extends SlabBlock> slab = SlabBlock::new;
-        private BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> stairs = StairBlock::new;
+        private BiFunction<Supplier<BlockState>, BlockBehaviour.Properties, ? extends StairBlock> stairs = StairBlock::new;
         private Function<BlockBehaviour.Properties, ? extends StandingSignBlock> staindingSign;
         private Function<BlockBehaviour.Properties, ? extends WallSignBlock> wallSign;
         private TriFunction<Item.Properties, StandingSignBlock, WallSignBlock, ? extends SignItem> signItem;
@@ -515,7 +519,7 @@ public class LogBlockSet {
             return this;
         }
 
-        public Builder stair(@Nullable BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> function) {
+        public Builder stair(@Nullable BiFunction<Supplier<BlockState>, BlockBehaviour.Properties, ? extends StairBlock> function) {
             this.stairs = function;
             return this;
         }

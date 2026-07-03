@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
@@ -20,6 +21,6 @@ public class ModRecipeSerializerTagsProvider extends TagsProvider<RecipeSerializ
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(ModTags.RecipeSerializers.AUTOMATION_IGNORE).add(ModRecipes.BOOM_BUNNY_SERIALIZER.getKey());
+        tag(ModTags.RecipeSerializers.AUTOMATION_IGNORE).add((ResourceKey) ModRecipes.BOOM_BUNNY_SERIALIZER.getKey());
     }
 }

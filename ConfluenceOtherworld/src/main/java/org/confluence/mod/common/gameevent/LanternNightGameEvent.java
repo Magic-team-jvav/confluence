@@ -2,6 +2,7 @@ package org.confluence.mod.common.gameevent;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,11 +15,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 public enum LanternNightGameEvent implements GameEvent {
     INSTANCE;
-    public static final ResourceKey<LanternNightGameEvent> KEY = GameEvent.createKey(Confluence.asResource("lantern_night"));
-    private static final AttributeModifier MODIFIER = new AttributeModifier(Confluence.asResource("lantern_night"), 0.3, AttributeModifier.Operation.ADD_VALUE);
+
+    public static final ResourceLocation ID = Confluence.asResource("lantern_night");
+    public static final ResourceKey<LanternNightGameEvent> KEY = GameEvent.createKey(ID);
+    private static final AttributeModifier MODIFIER = new AttributeModifier(PortAttributeModifier.rl2uuid(ID), ID.getPath(), 0.3, AttributeModifier.Operation.ADDITION);
 
     private transient MinecraftServer server;
     private transient ServerLevel level;

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
+import PortLib.extensions.net.minecraft.data.DataProvider.PortDataProviderExtension;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -10,11 +11,11 @@ import org.confluence.mod.common.data.gen.loot.modifiers.*;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class EMILootExcludedSyntheticLootModifierLootTablesProvider implements DataProvider {
     private final PackOutput.PathProvider pathProvider;
-    private final List<Function<HolderLookup.Provider, SyntheticLootTableProvider>> providers;
+    private final List<Supplier<SyntheticLootTableProvider>> providers;
     private final CompletableFuture<HolderLookup.Provider> registries;
 
 
@@ -33,10 +34,10 @@ public class EMILootExcludedSyntheticLootModifierLootTablesProvider implements D
         return this.registries.thenCompose((provider) -> {
             var tableExclusions = new EMILootDataTableExclusions();
             this.providers.forEach(i -> {
-                tableExclusions.excludedPaths.addAll(i.apply(provider).getSyntheticLootTablePaths());
+                tableExclusions.excludedPaths.addAll(i.get().getSyntheticLootTablePaths());
             });
             Path path = this.pathProvider.json(ResourceLocation.fromNamespaceAndPath("emi_loot", "table_exclusions"));
-            return DataProvider.saveStable(cachedOutput, provider, EMILootDataTableExclusions.CODEC, tableExclusions, path);
+            return PortDataProviderExtension.saveStable(cachedOutput, provider, EMILootDataTableExclusions.CODEC, tableExclusions, path);
         });
     }
 

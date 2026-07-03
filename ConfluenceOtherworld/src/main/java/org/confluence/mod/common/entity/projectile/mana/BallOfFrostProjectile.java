@@ -34,7 +34,7 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(ModEffects.FROSTBITE, Mth.randomBetweenInclusive(living.getRandom(), 100, 280)));
+            living.addEffect(new MobEffectInstance(ModEffects.FROSTBITE.get(), Mth.randomBetweenInclusive(living.getRandom(), 100, 280)));
         }
         doHurtAndKnockback(entity, 0.65, 0.2);
     }

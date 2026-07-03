@@ -31,7 +31,7 @@ public class ArmsDealerNPC extends BaseNPC implements RangedAttackMob {
     @Override
     public void performRangedAttack(LivingEntity target, float velocity) {
         AbstractArrow projectile = ProjectileUtil.getMobArrow(this,
-                new ItemStack(Items.ARROW), velocity, new ItemStack(Items.CROSSBOW));
+                new ItemStack(Items.ARROW), velocity);
         double dx = target.getX() - getX();
         double dy = target.getY(0.333) - projectile.getY();
         double dz = target.getZ() - getZ();

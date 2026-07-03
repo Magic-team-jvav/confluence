@@ -1,8 +1,8 @@
 package org.confluence.mod.network.s2c;
 
+import PortLib.extensions.net.minecraft.core.particles.ParticleTypes.PortParticleTypesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +21,7 @@ import java.util.Map;
 public record DropletsSyncPacketS2C(
         Map<ChunkPos, Map<BlockPos, ParticleOptions>> data) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("droplets_sync");
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, DropletsSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, DropletsSyncPacketS2C> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public DropletsSyncPacketS2C decode(PortRegistryFriendlyByteBuf buffer) {
             int amount = buffer.readVarInt();
@@ -32,7 +32,7 @@ public record DropletsSyncPacketS2C(
                 Map<BlockPos, ParticleOptions> map = new HashMap<>();
                 for (int j = 0; j < size; j++) {
                     BlockPos blockPos = LibUtils.decompressRelativePos(pos, buffer.readVarInt());
-                    ParticleOptions particle = ParticleTypes.STREAM_CODEC.decode(buffer);
+                    ParticleOptions particle = PortParticleTypesExtension.streamCodec().decode(buffer);
                     map.put(blockPos, particle);
                 }
                 mapMap.put(pos, map);
@@ -48,7 +48,7 @@ public record DropletsSyncPacketS2C(
                 buffer.writeVarInt(entry.getValue().size());
                 for (Map.Entry<BlockPos, ParticleOptions> entry1 : entry.getValue().entrySet()) {
                     buffer.writeVarInt(LibUtils.compressRelativePos(entry1.getKey()));
-                    ParticleTypes.STREAM_CODEC.encode(buffer, entry1.getValue());
+                    PortParticleTypesExtension.streamCodec().encode(buffer, entry1.getValue());
                 }
             }
         }

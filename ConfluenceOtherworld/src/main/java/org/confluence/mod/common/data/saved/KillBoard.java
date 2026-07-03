@@ -132,7 +132,7 @@ public enum KillBoard implements IGlobalData {
         }
     }
 
-    public void networkEncode(org.mesdag.portlib.network.PortRegistryFriendlyByteBuf buffer) {
+    public void networkEncode(PortRegistryFriendlyByteBuf buffer) {
         DEFEATED_BOSSES_STREAM_CODEC.encode(buffer, defeatedBosses);
         DEFEATED_EVENTS_STREAM_CODEC.encode(buffer, defeatedEvents);
         GamePhase.STREAM_CODEC.encode(buffer, gamePhase);

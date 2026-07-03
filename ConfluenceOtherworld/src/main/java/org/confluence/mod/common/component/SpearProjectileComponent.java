@@ -11,7 +11,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.EffectStrategyComponent;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -36,7 +35,6 @@ import java.util.function.Supplier;
 /// @param trackType    追踪类型
 /// @param generation   生成位置策略
 /// @param pierceCount  穿透次数
-/// @param hitEffect    击中特效
 public record SpearProjectileComponent(
         float damageFactor,
         float baseSpeed,
@@ -48,8 +46,7 @@ public record SpearProjectileComponent(
         ResourceLocation projType,
         Optional<ITrackType> trackType,
         IGeneration generation,
-        Optional<Integer> pierceCount,
-        Optional<EffectStrategyComponent> hitEffect
+        Optional<Integer> pierceCount
 ) {
 
     public static final Codec<SpearProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -63,8 +60,7 @@ public record SpearProjectileComponent(
             ResourceLocation.CODEC.fieldOf("projType").forGetter(SpearProjectileComponent::projType),
             ITrackType.TYPED_CODEC.optionalFieldOf("trackType").forGetter(SpearProjectileComponent::trackType),
             IGeneration.TYPED_CODEC.fieldOf("generation").forGetter(SpearProjectileComponent::generation),
-            Codec.INT.optionalFieldOf("pierceCount").forGetter(SpearProjectileComponent::pierceCount),
-            EffectStrategyComponent.CODEC.optionalFieldOf("hitEffect").forGetter(SpearProjectileComponent::hitEffect)
+            Codec.INT.optionalFieldOf("pierceCount").forGetter(SpearProjectileComponent::pierceCount)
     ).apply(instance, SpearProjectileComponent::new));
 
     /**
@@ -75,7 +71,7 @@ public record SpearProjectileComponent(
                     ModSoundEvents.FROZEN_ARROW.getId(),
                     ModEntities.STORM_SPEAR_SHOT.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 0),
-                    Optional.empty(), Optional.empty());
+                    Optional.empty());
 
     /**
      * 直线标准弹射物
@@ -85,7 +81,7 @@ public record SpearProjectileComponent(
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     Confluence.asResource("orichalcum_halberd_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
-                    Optional.empty(), Optional.empty());
+                    Optional.empty());
     /**
      * 蘑菇孢子 - 自旋悬浮弹射物
      */
@@ -94,7 +90,7 @@ public record SpearProjectileComponent(
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     Confluence.asResource("mushroom_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
-                    Optional.empty(), Optional.empty());
+                    Optional.empty());
 
     /**
      * 北极 — 弧形雪花弹射物
@@ -104,7 +100,7 @@ public record SpearProjectileComponent(
                     ModSoundEvents.FROZEN_ARROW.getId(),
                     Confluence.asResource("north_pole_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
-                    Optional.of(3), Optional.empty());
+                    Optional.of(3));
 
     /**
      * 叶绿长戟 — 孢子云弹射物
@@ -114,7 +110,7 @@ public record SpearProjectileComponent(
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     Confluence.asResource("spore_cloud_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, (float) 1.5),
-                    Optional.of(Integer.MAX_VALUE), Optional.empty());
+                    Optional.of(Integer.MAX_VALUE));
 
     /**
      * 恶魂长戟 — 恶魂弹射物，水平飞行，无限穿透穿墙
@@ -124,7 +120,7 @@ public record SpearProjectileComponent(
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     ModEntities.GHASTLY.getId(),
                     Optional.empty(), ForwardGeneration.of(0, 0),
-                    Optional.of(Integer.MAX_VALUE), Optional.empty());
+                    Optional.of(Integer.MAX_VALUE));
 
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.get(soundEvent);
@@ -146,8 +142,7 @@ public record SpearProjectileComponent(
                     projType.equals(other.projType) &&
                     trackType.equals(other.trackType) &&
                     generation.equals(other.generation) &&
-                    pierceCount.equals(other.pierceCount) &&
-                    hitEffect.equals(other.hitEffect);
+                    pierceCount.equals(other.pierceCount);
         }
         return false;
     }
@@ -165,7 +160,6 @@ public record SpearProjectileComponent(
         result = 31 * result + trackType.hashCode();
         result = 31 * result + generation.hashCode();
         result = 31 * result + pierceCount.hashCode();
-        result = 31 * result + hitEffect.hashCode();
         return result;
     }
 

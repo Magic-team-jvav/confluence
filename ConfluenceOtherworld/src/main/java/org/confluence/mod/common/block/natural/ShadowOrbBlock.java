@@ -22,6 +22,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.entity.boss.EaterOfWorlds;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.LightPetItems;
@@ -77,7 +79,7 @@ public class ShadowOrbBlock extends Block {
             }
 
             if (data.updateEvilBrokenCount()) {
-                ModUtils.summonBoss(serverLevel, pos, new EaterOfWorlds(level, true), false);
+                ModUtils.summonBoss(serverLevel, pos, new EaterOfWorlds(MonsterEntities.EATER_OF_SOULS.get(), level), false);
             }
         }
     }

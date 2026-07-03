@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.client.renderer.entity.bestiary.GeoWormBestiaryEntryRenderer;
-import org.confluence.mod.common.entity.monster.BaseWormMonster;
+import org.confluence.mod.common.entity.monster.SimpleWormMonster;
 import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.Map;
@@ -30,15 +30,15 @@ public class RegisterCustomBestiaryEntryRendererEvent extends Event implements I
         RENDERERS.put(key, (EntityRenderer<LivingEntity>) renderer);
     }
 
-    public void registerBaseWorm(RegistryObject<EntityType<BaseWormMonster>> holder) {
+    public void registerBaseWorm(RegistryObject<EntityType<SimpleWormMonster>> holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer(context, holder.getId()));
     }
 
-    public void registeSurefaceWorm(RegistryObject<EntityType<BaseWormMonster>> holder) {
+    public void registeSurefaceWorm(RegistryObject<EntityType<SimpleWormMonster>> holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer(context, holder.getId()));
     }
 
-    public void registerBoneSerpent(RegistryObject<EntityType<BaseWormMonster>> holder) {
+    public void registerBoneSerpent(RegistryObject<EntityType<SimpleWormMonster>> holder) {
         register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer(context, holder.getId()));
     }
 

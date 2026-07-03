@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HoneyBottleItem.class)
 public abstract class HoneyBottleItemMixin {
-    @Inject(method = "finishUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;removeEffectsCuredBy(Lnet/neoforged/neoforge/common/EffectCure;)Z"))
+    @Inject(method = "finishUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;removeEffect(Lnet/minecraft/world/effect/MobEffect;)Z"))
     private void addEffect(CallbackInfoReturnable<ItemStack> cir, @Local(argsOnly = true) LivingEntity living) {
-        living.addEffect(new MobEffectInstance(TCEffects.HONEY, 300));
+        living.addEffect(new MobEffectInstance(TCEffects.HONEY.get(), 300));
     }
 }

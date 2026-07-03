@@ -120,8 +120,8 @@ public class NorthPoleProjectile extends SpearProjectile {
     }
 
     @Override
-    public void onRemovedFromLevel() {
-        super.onRemovedFromLevel();
+    public void onRemovedFromWorld() {
+        super.onRemovedFromWorld();
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ModParticleTypes.SNOW.get(),
                     getX(), getY(), getZ(), 10, 0.5, 0.5, 0.5, 0.05);

@@ -3,6 +3,8 @@ package org.confluence.mod.common.data.gen.recipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -11,8 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
@@ -597,7 +597,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(writer, ConsumableItems.SCARAB_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(writer, BoomerangItems.TRIMARANG.toStack(), Ingredient.of(BoomerangItems.ENCHANTED_BOOMERANG), Ingredient.of(BoomerangItems.ICE_BOOMERANG), Ingredient.of(BoomerangItems.SHROOMERANG));
         shapeless(writer, BoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(BoomerangItems.WOOD_BOOMERANG), Ingredient.of(MaterialItems.FALLING_STAR));
-        shapeless(writer, BaitItems.ENCHANTED_NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(writer, BaitItems.NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM), Ingredient.of(MaterialItems.FALLING_STAR));
         // 宝石树苗
         shapeless(writer, NatureBlocks.RUBY_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_RUBY));
         shapeless(writer, NatureBlocks.AMBER_SAPLING.toStack(), Ingredient.of(Items.OAK_SAPLING), Ingredient.of(ModTags.Items.GEMS_AMBER));
@@ -1011,36 +1011,37 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         writer.accept(new UnitFinishedRecipe(DragonPepperExtractingRecipe.getInstance()));
     }
 
-    protected void shaped(Consumer<FinishedRecipe> writer, String prefix, String suffix, PortShapedRecipePattern pattern, ItemStack result) {
+    protected void shaped(Consumer<FinishedRecipe> writer, String prefix, String suffix, CraftingBookCategory category, PortShapedRecipePattern pattern, ItemStack result) {
         ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
-        writer.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), createAdvancementBuilder(id, pattern.ingredients()));
+        writer.accept(new ShapedRecipeBuilder.Result(id, result.getItem(), result.getCount(), "", category, pattern.data.get().pattern(), pattern.data.get().key(), createAdvancementBuilder(id, pattern.ingredients()), id.withPrefix("recipes/shaped/"), true));
+    }
+
+    protected void shaped(Consumer<FinishedRecipe> writer, String prefix, String suffix, PortShapedRecipePattern pattern, ItemStack result) {
+        shaped(writer, prefix, suffix, CraftingBookCategory.MISC, pattern, result);
     }
 
     protected void shaped(Consumer<FinishedRecipe> writer, PortShapedRecipePattern pattern, ItemStack result) {
-        ResourceLocation id = Confluence.asResource(getItemName(result.getItem()));
-        writer.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), createAdvancementBuilder(id, pattern.ingredients()));
+        shaped(writer, "", "", pattern, result);
+    }
+
+    protected void shapeless(Consumer<FinishedRecipe> writer, String prefix, String suffix, CraftingBookCategory category, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        writer.accept(new ShapelessRecipeBuilder.Result(id, result.getItem(), result.getCount(), "", category, zingredients, createAdvancementBuilder(id, zingredients), id.withPrefix("recipes/shapeless/")));
     }
 
     protected void shapeless(Consumer<FinishedRecipe> writer, String prefix, String suffix, ItemStack result, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
-        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), createAdvancementBuilder(id, zingredients));
+        shapeless(writer, prefix, suffix, CraftingBookCategory.MISC, result, ingredients);
     }
 
     protected void shapeless(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource(getItemName(result.getItem()));
-        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), createAdvancementBuilder(id, zingredients));
+        shapeless(writer, "", "", result, ingredients);
     }
 
     // 九原料合成一块的合成及分解配方
     protected void compressAndDecompressNine(Consumer<FinishedRecipe> writer, ItemLike decompressed, TagKey<Item> decompressedTag, ItemLike compressed, TagKey<Item> compressedTag) {
-        ResourceLocation id1 = Confluence.asResource(getItemName(decompressed).concat("_from_decompacting"));
-        NonNullList<Ingredient> ingredients = NonNullList.of(Ingredient.EMPTY, Ingredient.of(compressedTag));
-        writer.accept(id1, new ShapelessRecipe("", CraftingBookCategory.BUILDING, new ItemStack(decompressed, 9), ingredients), createAdvancementBuilder(id1, ingredients));
-        ResourceLocation id2 = Confluence.asResource(getItemName(compressed).concat("_from_compacting"));
-        PortShapedRecipePattern pattern = PortShapedRecipePattern.of(Map.of('A', Ingredient.of(decompressedTag)), List.of("AAA", "AAA", "AAA"));
-        writer.accept(id2, new ShapedRecipe("", CraftingBookCategory.BUILDING, pattern, compressed.asItem().getDefaultInstance()), createAdvancementBuilder(id2, pattern.ingredients()));
+        shapeless(writer, "", "_from_decompacting", CraftingBookCategory.BUILDING, new ItemStack(decompressed, 9), Ingredient.of(compressedTag));
+        shaped(writer, "", "_from_compacting", CraftingBookCategory.BUILDING, PortShapedRecipePattern.of(Map.of('A', Ingredient.of(decompressedTag)), List.of("AAA", "AAA", "AAA")), new ItemStack(compressed));
     }
 
     // 木头配方

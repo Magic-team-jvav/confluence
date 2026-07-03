@@ -57,7 +57,7 @@ public class ZombieArmRenderer {
         float f = Mth.rotLerp(partialTick, player.yBodyRotO, player.yBodyRot);
         LivingEntityRendererAccessor accessor = (LivingEntityRendererAccessor) playerRenderer;
         float f9 = accessor.callGetBob(player, partialTick);
-        accessor.callSetupRotations(player, poseStack, f9, f, partialTick, f8);
+// todo renderer       accessor.callSetupRotations(player, poseStack, f9, f, partialTick, f8);
         poseStack.scale(-1.0F, -1.0F, 1.0F);
         accessor.callScale(player, poseStack, partialTick);
         poseStack.translate(0.0F, -1.501F, 0.0F);

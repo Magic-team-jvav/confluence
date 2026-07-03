@@ -2,12 +2,12 @@ package org.confluence.mod.client.renderer.entity.projectile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.client.entity.renderer.GeoNormalRenderer;
 import org.confluence.mod.common.entity.projectile.arrow.HellBatArrowEntity;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
     public GeoArrowRenderer(EntityRendererProvider.Context renderManager, ResourceLocation path) {
@@ -15,12 +15,15 @@ public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
     }
 
     @Override
-    protected void adjustPose(PoseStack poseStack, HellBatArrowEntity animatable, BakedGeoModel model, float partialTick) {
+    public void render(HellBatArrowEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        poseStack.pushPose();
         poseStack.translate(0, 0F, 0.0F);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, animatable.yRotO, animatable.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, animatable.xRotO, animatable.getXRot())));
         poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
         poseStack.mulPose(Axis.XP.rotationDegrees(60F));
         poseStack.translate(0F, -0.5, -0.3F);
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+        poseStack.popPose();
     }
 }

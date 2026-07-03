@@ -1,5 +1,7 @@
 package org.confluence.mod.common.item.food;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -48,7 +50,7 @@ public class ModFoodProperties {
                 .saturation(saturation)
                 .fast()
                 .alwaysEdible()
-                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration), 1.0f)
                 .build();
     }
 
@@ -59,8 +61,8 @@ public class ModFoodProperties {
                 .saturation(saturation)
                 .fast()
                 .alwaysEdible()
-                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration, 1), 1.0f)
-                .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED, duration / 6), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration, 1), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED.get(), duration / 6), 1.0f)
                 .build();
     }
 
@@ -71,8 +73,8 @@ public class ModFoodProperties {
                 .saturation(saturation)
                 .fast()
                 .alwaysEdible()
-                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration, 2), 1.0f)
-                .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED, duration / 6, 1), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration, 2), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED.get(), duration / 6, 1), 1.0f)
                 .build();
     }
 
@@ -84,7 +86,7 @@ public class ModFoodProperties {
                 .fast()
                 .alwaysEdible()
                 .useCovertsTo(item)
-                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration), 1.0f)
                 .build();
     }
 
@@ -95,8 +97,8 @@ public class ModFoodProperties {
                 .fast()
                 .alwaysEdible()
                 .useCovertsTo(item)
-                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration, 1), 1.0f)
-                .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED, duration / 6), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration, 1), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED.get(), duration / 6), 1.0f)
                 .build();
     }
 
@@ -107,21 +109,21 @@ public class ModFoodProperties {
                 .fast()
                 .alwaysEdible()
                 .useCovertsTo(item)
-                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, duration, 2), 1.0f)
-                .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED, duration / 6, 1), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration, 2), 1.0f)
+                .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED.get(), duration / 6, 1), 1.0f)
                 .build();
     }
 
     // 金鲤鱼
-    public static final FoodProperties GOLDEN_CARP = ModFoodPropertiesBuilder.Builder()
+    public static final Supplier<FoodProperties> GOLDEN_CARP = Suppliers.memoize(() -> ModFoodPropertiesBuilder.Builder()
             .nutrition(8)
             .saturation(0.8F)
             .fast()
             .alwaysEdible()
-            .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED, 24000, 2), 1.0f)
+            .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), 24000, 2), 1.0f)
             .addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1), 1.0F)
             .addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 2400), 1.0F)
-            .build();
+            .build());
 
     // 生命蘑菇
     public static final FoodProperties LIFE_MUSHROOM = ModFoodPropertiesBuilder.Builder()

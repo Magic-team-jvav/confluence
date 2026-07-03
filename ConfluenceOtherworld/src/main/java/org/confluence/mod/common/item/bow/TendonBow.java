@@ -21,7 +21,7 @@ public class TendonBow extends BaseTerraBowItem {
             @Override
             protected void onHit(LivingEntity owner, LivingEntity target, boolean fullPull) {
                 if (!fullPull) return;
-                target.addEffect(new MobEffectInstance(ModEffects.BLOOD_BUTCHERED.getDelegate(), 180, 4));
+                target.addEffect(new MobEffectInstance(ModEffects.BLOOD_BUTCHERED.get(), 180, 4));
             }
         };
     }

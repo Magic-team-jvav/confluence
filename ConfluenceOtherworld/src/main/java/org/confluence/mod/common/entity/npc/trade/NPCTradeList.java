@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -25,11 +25,10 @@ public final class NPCTradeList {
     /**
      * 获取指定 NPC 当前可用的商品列表。
      */
-    public static List<NPCTradeOffer> getAvailableOffers(BaseNPC npc) {
+    public static List<NPCTradeOffer> getAvailableOffers(ServerPlayer player, BaseNPC npc) {
         List<NPCTradeOffer> all = offerTable.getOrDefault(npc.getType(), List.of());
-        if (!(npc.level() instanceof ServerLevel level)) return List.of();
         return all.stream()
-                .filter(o -> o.isAvailable(level, npc))
+                .filter(o -> o.isAvailable(player, npc))
                 .toList();
     }
 

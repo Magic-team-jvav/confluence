@@ -8,6 +8,7 @@ import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
@@ -175,10 +176,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
         } catch (Exception ignored) {}
     }
 
-    @Override
     public void hangingSignBlock(CeilingHangingSignBlock hangingSignBlock, WallHangingSignBlock wallHangingSignBlock, ResourceLocation texture) {
         try {
-            super.hangingSignBlock(hangingSignBlock, wallHangingSignBlock, texture);
+            ModelFile hangingSign = models().sign(ForgeRegistries.BLOCKS.getKey(hangingSignBlock).getPath(), texture);
+            simpleBlock(hangingSignBlock, hangingSign);
+            simpleBlock(wallHangingSignBlock, hangingSign);
         } catch (Exception ignored) {}
     }
 

@@ -51,8 +51,9 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
             rotateZ(rotate, this, 0.125F);
         } else {
             AABB boundingBox = getBoundingBox().inflate(1.0);
-            if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
-                Entity entity = entityHitResult.getEntity();
+            EntityHitResult result = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
+            if (result != null) {
+                Entity entity = result.getEntity();
                 if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), 3.2F)) {
                     LibEntityUtils.knockBackA2B(this, entity, 0.1, 0.02);
                 }
@@ -76,7 +77,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.05;
     }
 

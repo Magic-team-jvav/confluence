@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.phys.Vec2;
@@ -17,10 +16,11 @@ import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.mesdag.portlib.client.PortDeltaTicker;
+import org.mesdag.portlib.client.gui.components.PortSprite;
 
 public class RouletteWheelSmallHud extends BasicSoulQuickSkillHud {
     // 资源与常量定义
-    public static final ResourceLocation TEXTURE = Confluence.asResource("hud/soul_quick_skill_hud/roulette_wheel_small");
+    public static final PortSprite TEXTURE = new PortSprite(Confluence.asResource("hud/soul_quick_skill_hud/roulette_wheel_small"), 128, 128);
     private static final int DISPLAY_COUNT = SoulQuickSkillHudUtils.DEFAULT_DISPLAY_COUNT;                    // 显示的技能框数量
     private static final float INTERVAL = SoulQuickSkillHudUtils.DEFAULT_INTERVAL;    // 每个技能框的角度间隔
     private static final float INTERVAL_RADIANS = SoulQuickSkillHudUtils.DEFAULT_INTERVAL_RADIANS; // 角度间隔（弧度）

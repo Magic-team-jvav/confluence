@@ -69,7 +69,7 @@ public class VanityArmorItems {
             ModArmorMaterials.VANITY_ARMOR_MATERIALS.get(),
             ArmorItem.Type.CHESTPLATE,
             ModRarity.GREEN,
-            (id, builder) -> builder.add(Attributes.ARMOR, new PortAttributeModifier(id, 4.0, PortAttributeModifier.PortOperation.ADD_VALUE), PortEquipmentSlotGroup.CHEST)
+            (id, builder) -> builder.add(Attributes.ARMOR, new PortAttributeModifier(id, 4.0, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.CHEST)
     );
     public static final PortDeferredItem<BaseVanityArmorItem> GUY_FAWKES_MASK = registerVanityArmor("guy_fawkes_mask", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final PortDeferredItem<BaseVanityArmorItem> GUY_FAWKES_HAT = registerVanityArmor("guy_fawkes_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);

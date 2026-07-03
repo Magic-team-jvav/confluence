@@ -12,6 +12,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.DynamicLoot;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -73,8 +74,7 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                         ),
                         playerHasSmeltsLootEnchantment
                 )))
-                .apply(EnchantedCountIncreaseFunction.lootingMultiplier(
-                        this.registries,
+                .apply(LootingEnchantFunction.lootingMultiplier(
                         UniformGenerator.between(0.0f, 1.0f)
                 ))
         ))));
@@ -88,8 +88,7 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                                 ),
                                 playerHasSmeltsLootEnchantment
                         )))
-                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(
-                                this.registries,
+                        .apply(LootingEnchantFunction.lootingMultiplier(
                                 UniformGenerator.between(0.0f, 1.0f)
                         ))
                 )

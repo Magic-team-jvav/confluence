@@ -2,12 +2,14 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Unit;
+import net.minecraft.server.network.FilteredText;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
@@ -188,13 +190,13 @@ public final class ModStacks {
     }
 
     private static ItemStack createMural(CompoundTag data, String translationKey) {
-        ItemStack stack = new ItemStack(DecorativeBlocks.MURAL_BLOCK.get());
-        stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(data));
-        stack.set(DataComponents.LORE, new ItemLore(List.of(
+        ItemStack stack = DecorativeBlocks.MURAL_BLOCK.toStack();
+        stack.setBlockEntityData(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), data);
+        stack.setLore(List.of(
                 Component.translatable(translationKey)
                         .withStyle(ChatFormatting.GRAY)
                         .withStyle(style -> style.withItalic(false))
-        )));
+        ));
         return stack;
     }
 
@@ -216,13 +218,13 @@ public final class ModStacks {
     ) {
         ItemStack stack = new ItemStack(Items.WRITTEN_BOOK);
 
-        stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(customModelData));
-        stack.set(DataComponents.RARITY, Rarity.RARE);
-        stack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, false);
+        stack.setCustomModelData(customModelData);
+        stack.setRarity(Rarity.RARE);
+        stack.setEnchantmentGlintOverride(false);
 
-        stack.set(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE);
+        stack.setShowAdditionalTooltip(false);
 
-        stack.set(DataComponents.CUSTOM_NAME, Component.translatable(titleKey).withStyle(s -> s.withItalic(false)));
+        stack.setCustomName(Component.translatable(titleKey).withStyle(s -> s.withItalic(false)));
 
         Component authorLine = Component.translatable("book.byAuthor", Component.translatable(authorKey))
                 .withStyle(ChatFormatting.GRAY)
@@ -230,16 +232,14 @@ public final class ModStacks {
         Component descLine = Component.translatable(loreKey)
                 .withStyle(ChatFormatting.DARK_GRAY)
                 .withStyle(s -> s.withItalic(false));
-        stack.set(DataComponents.LORE, new ItemLore(List.of(authorLine, Component.empty(), descLine, Component.empty())));
-
-        Filterable<String> title = Filterable.passThrough(rawTitleStr);
-        List<Filterable<Component>> pages = pageKeys.stream()
-                .map(key -> Filterable.<Component>passThrough(
-                        Component.translatable(key).withStyle(s -> s.withItalic(false))
-                ))
-                .toList();
-
-        stack.set(DataComponents.WRITTEN_BOOK_CONTENT, new WrittenBookContent(title, "Dev", 0, pages, true));
+        stack.setLore(List.of(authorLine, Component.empty(), descLine, Component.empty()));
+        FilteredText title = FilteredText.passThrough(rawTitleStr);
+        List<FilteredText> pages = pageKeys.stream().map(FilteredText::passThrough).toList();
+        stack.addTagElement("author", StringTag.valueOf(Component.Serializer.toJson(authorLine)));
+        stack.addTagElement("title", StringTag.valueOf(title.filteredOrEmpty()));
+        ListTag listtag = new ListTag();
+        pages.stream().map(text -> StringTag.valueOf(Component.Serializer.toJson(Component.literal(text.filteredOrEmpty())))).forEach(listtag::add);
+        stack.addTagElement("pages", listtag);
 
         return stack;
     }
@@ -247,10 +247,9 @@ public final class ModStacks {
     public static ItemStack createMysteriousNote(String titleKey, List<Component> loreLines) {
         ItemStack stack = new ItemStack(ModItems.MYSTERIOUS_NOTE.get());
 
-        stack.set(DataComponents.CUSTOM_NAME,
-                Component.translatable(titleKey).withStyle(style -> style.withColor(ChatFormatting.WHITE).withItalic(false)));
+        stack.setCustomName(Component.translatable(titleKey).withStyle(style -> style.withColor(ChatFormatting.WHITE).withItalic(false)));
 
-        stack.set(DataComponents.LORE, new ItemLore(loreLines));
+        stack.setLore(loreLines);
 
         return stack;
     }

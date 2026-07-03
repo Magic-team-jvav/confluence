@@ -54,7 +54,7 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.04;
     }
 

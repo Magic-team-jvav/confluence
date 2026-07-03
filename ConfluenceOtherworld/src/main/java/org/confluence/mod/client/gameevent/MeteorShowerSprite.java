@@ -61,19 +61,17 @@ final class MeteorShowerSprite {
         RenderSystem.enableBlend();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         float a = Math.max(1.0F - player.level().getRainLevel(partialTick), 0.2F);
         poseStack.pushPose();
-        poseStack.mulPose(event.getModelViewMatrix());
+        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
         for (MeteorShowerSprite sprite : SPRITES) {
             sprite.render(builder, a);
         }
         poseStack.popPose();
-        MeshData data = builder.build();
-        if (data != null) {
-            BufferUploader.drawWithShader(data);
-        }
+        BufferUploader.drawWithShader(builder.end());
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);

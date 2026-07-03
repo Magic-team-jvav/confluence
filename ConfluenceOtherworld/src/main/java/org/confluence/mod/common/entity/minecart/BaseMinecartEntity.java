@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibMathUtils;
+import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;

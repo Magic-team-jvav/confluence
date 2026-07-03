@@ -29,6 +29,10 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.entity.boss.HillOfFlesh;
+import org.confluence.mod.common.entity.boss.WallOfFlesh;
+import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.jetbrains.annotations.Nullable;
@@ -113,8 +117,8 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     }
 
     public static void summon(Entity entity, ServerLevel level, boolean isWall, Supplier<@Nullable Direction> forward) {
-        EntityType<WallOfFlesh> wof = TEBossEntities.WALL_OF_FLESH.get();
-        EntityType<HillOfFlesh> hof = TEBossEntities.HILL_OF_FLESH.get();
+        EntityType<WallOfFlesh> wof = BossEntities.WALL_OF_FLESH.get();
+        EntityType<HillOfFlesh> hof = BossEntities.HILL_OF_FLESH.get();
         if (Streams.stream(level.getAllEntities()).anyMatch(entity1 -> {
             EntityType<?> type = entity1.getType();
             return type == wof || type == hof;
@@ -152,7 +156,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
             hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
         }
         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
-            player.connection.send(new ClientboundSoundPacket(ModSoundEvents.WALL_OF_FLESH_ROAR, SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));
+            player.connection.send(new ClientboundSoundPacket(ModSoundEvents.WALL_OF_FLESH_ROAR.getHolder().orElseThrow(), SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));
         }
     }
 

@@ -32,9 +32,9 @@ public interface IAbstractContainerScreen {
             call.run();
         } else {
             RenderSystem.enableBlend();
-            guiGraphics.color(1, 1, 1, 0.5F);
+            guiGraphics.setColor(1, 1, 1, 0.5F);
             call.run();
-            guiGraphics.color(1, 1, 1, 1);
+            guiGraphics.setColor(1, 1, 1, 1);
             RenderSystem.disableBlend();
         }
     }

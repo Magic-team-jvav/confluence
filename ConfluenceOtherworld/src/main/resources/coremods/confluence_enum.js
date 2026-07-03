@@ -6,6 +6,9 @@ var MethodInsnNode = Java.type('org.objectweb.asm.tree.MethodInsnNode');
 var TypeInsnNode = Java.type('org.objectweb.asm.tree.TypeInsnNode');
 var VarInsnNode = Java.type('org.objectweb.asm.tree.VarInsnNode');
 var LdcInsnNode = Java.type('org.objectweb.asm.tree.LdcInsnNode');
+var IntInsnNode = Java.type('org.objectweb.asm.tree.IntInsnNode');
+var JumpInsnNode = Java.type('org.objectweb.asm.tree.JumpInsnNode');
+var LabelNode = Java.type('org.objectweb.asm.tree.LabelNode');
 var FieldNode = Java.type('org.objectweb.asm.tree.FieldNode');
 
 function initializeCoreMod() {
@@ -25,6 +28,10 @@ function initializeCoreMod() {
                 classNode.fields.add(new FieldNode(
                     Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC | Opcodes.ACC_SYNTHETIC,
                     'confluence$boatTypesExtended', 'Z', null, null
+                ));
+                classNode.fields.add(new FieldNode(
+                    Opcodes.ACC_PUBLIC,
+                    'css', 'Ljava/util/function/Supplier;', null, null
                 ));
 
                 var clinit = null;
@@ -64,10 +71,9 @@ function initializeCoreMod() {
                 var oldArrVar = baseLocals;
                 var newArrVar = baseLocals + 1;
                 var proxyVar = baseLocals + 2;
-                var planksVar = baseLocals + 3;
-                var nameVar = baseLocals + 4;
-                var newInstVar = baseLocals + 5;
-                clinit.maxLocals = baseLocals + 6;
+                var nameVar = baseLocals + 3;
+                var newInstVar = baseLocals + 4;
+                clinit.maxLocals = baseLocals + 5;
 
                 var boatTypes = [
                     { proxy: 'ASH',              enumName: 'CONFLUENCE_ASH' },
@@ -118,40 +124,36 @@ function initializeCoreMod() {
                     list.add(new FieldInsnNode(Opcodes.GETSTATIC, modBoatTypes, bt.proxy, enumProxyDesc));
                     list.add(new VarInsnNode(Opcodes.ASTORE, proxyVar));
 
-                    // planksVar = (Block) ((Supplier) proxyVar.planks.get()).get()
-                    list.add(new VarInsnNode(Opcodes.ALOAD, proxyVar));
-                    list.add(new FieldInsnNode(Opcodes.GETFIELD, enumProxy, 'planks', planksFieldDesc));
-                    list.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, supplier, 'get', '()Ljava/lang/Object;', true));
-                    list.add(new TypeInsnNode(Opcodes.CHECKCAST, supplier));
-                    list.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, supplier, 'get', '()Ljava/lang/Object;', true));
-                    list.add(new TypeInsnNode(Opcodes.CHECKCAST, block));
-                    list.add(new VarInsnNode(Opcodes.ASTORE, planksVar));
-
                     // nameVar = proxyVar.name
                     list.add(new VarInsnNode(Opcodes.ALOAD, proxyVar));
                     list.add(new FieldInsnNode(Opcodes.GETFIELD, enumProxy, 'name', stringDesc));
                     list.add(new VarInsnNode(Opcodes.ASTORE, nameVar));
 
-                    // ordinal = oldArr.length + k
-                    var ordinal = new InsnList();
-                    ordinal.add(new VarInsnNode(Opcodes.ALOAD, oldArrVar));
-                    ordinal.add(new InsnNode(Opcodes.ARRAYLENGTH));
-                    if (k <= 5) {
-                        ordinal.add(new InsnNode(Opcodes.ICONST_0 + k));
-                    } else {
-                        ordinal.add(new LdcInsnNode(k));
-                    }
-                    ordinal.add(new InsnNode(Opcodes.IADD));
-                    list.add(ordinal);
-
                     // newInstVar = new Boat$Type(enumName, ordinal, planksVar, nameVar)
                     list.add(new TypeInsnNode(Opcodes.NEW, boatType));
                     list.add(new InsnNode(Opcodes.DUP));
                     list.add(new LdcInsnNode(bt.enumName));
-                    list.add(new VarInsnNode(Opcodes.ALOAD, planksVar));
+
+                    // ordinal = oldArr.length + k
+                    list.add(new VarInsnNode(Opcodes.ALOAD, oldArrVar));
+                    list.add(new InsnNode(Opcodes.ARRAYLENGTH));
+                    if (k <= 5) {
+                        list.add(new InsnNode(Opcodes.ICONST_0 + k));
+                    } else {
+                        list.add(new IntInsnNode(Opcodes.BIPUSH, k));
+                    }
+                    list.add(new InsnNode(Opcodes.IADD));
+
+                    list.add(new InsnNode(Opcodes.ACONST_NULL));
                     list.add(new VarInsnNode(Opcodes.ALOAD, nameVar));
                     list.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, boatType, '<init>', constructorDesc, false));
                     list.add(new VarInsnNode(Opcodes.ASTORE, newInstVar));
+
+                    // newInstVar.css = proxyVar.planks
+                    list.add(new VarInsnNode(Opcodes.ALOAD, newInstVar));
+                    list.add(new VarInsnNode(Opcodes.ALOAD, proxyVar));
+                    list.add(new FieldInsnNode(Opcodes.GETFIELD, enumProxy, 'planks', planksFieldDesc));
+                    list.add(new FieldInsnNode(Opcodes.PUTFIELD, boatType, 'css', 'Ljava/util/function/Supplier;'));
 
                     // proxyVar.setValue(newInstVar)
                     list.add(new VarInsnNode(Opcodes.ALOAD, proxyVar));
@@ -165,7 +167,7 @@ function initializeCoreMod() {
                     if (k <= 5) {
                         list.add(new InsnNode(Opcodes.ICONST_0 + k));
                     } else {
-                        list.add(new LdcInsnNode(k));
+                        list.add(new IntInsnNode(Opcodes.BIPUSH, k));
                     }
                     list.add(new InsnNode(Opcodes.IADD));
                     list.add(new VarInsnNode(Opcodes.ALOAD, newInstVar));
@@ -177,6 +179,34 @@ function initializeCoreMod() {
                 list.add(new FieldInsnNode(Opcodes.PUTSTATIC, boatType, '$VALUES', '[L' + boatType + ';'));
 
                 instructions.insertBefore(nodes[retIdx], list);
+
+                // Transform getPlanks() to check css supplier first
+                var blockDesc = 'L' + block + ';';
+                for (var m = 0; m < classNode.methods.size(); m++) {
+                    var method = classNode.methods.get(m);
+                    if (method.name === 'getPlanks' && method.desc === '()' + blockDesc) {
+                        var prefix = new InsnList();
+                        var afterPrefix = new LabelNode();
+
+                        // if (this.css != null)
+                        prefix.add(new VarInsnNode(Opcodes.ALOAD, 0));
+                        prefix.add(new FieldInsnNode(Opcodes.GETFIELD, boatType, 'css', 'Ljava/util/function/Supplier;'));
+                        prefix.add(new JumpInsnNode(Opcodes.IFNULL, afterPrefix));
+
+                        // return (Block) this.css.get().get()
+                        prefix.add(new VarInsnNode(Opcodes.ALOAD, 0));
+                        prefix.add(new FieldInsnNode(Opcodes.GETFIELD, boatType, 'css', 'Ljava/util/function/Supplier;'));
+                        prefix.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, supplier, 'get', '()Ljava/lang/Object;', true));
+                        prefix.add(new TypeInsnNode(Opcodes.CHECKCAST, supplier));
+                        prefix.add(new MethodInsnNode(Opcodes.INVOKEINTERFACE, supplier, 'get', '()Ljava/lang/Object;', true));
+                        prefix.add(new TypeInsnNode(Opcodes.CHECKCAST, block));
+                        prefix.add(new InsnNode(Opcodes.ARETURN));
+
+                        prefix.add(afterPrefix);
+                        method.instructions.insertBefore(method.instructions.getFirst(), prefix);
+                        break;
+                    }
+                }
 
                 return classNode;
             }

@@ -56,6 +56,7 @@ import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -141,7 +142,7 @@ public class AltarBlock extends BaseEntityBlock {
             RandomSource random = player.getRandom();
             int wraithAmount = random.nextInt(2) + 1;
             for (int i = 0; i < wraithAmount; i++) {
-                TEMonsterEntities.WRAITH.get().spawn(serverLevel, pos.offset(
+                MonsterEntities.WRAITH.get().spawn(serverLevel, pos.offset(
                         Mth.randomBetweenInclusive(random, -15, 15),
                         Mth.randomBetweenInclusive(random, -15, 15),
                         Mth.randomBetweenInclusive(random, -15, 15)

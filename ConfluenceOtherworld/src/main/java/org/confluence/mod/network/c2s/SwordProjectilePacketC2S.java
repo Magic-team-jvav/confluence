@@ -15,7 +15,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 public final class SwordProjectilePacketC2S implements IPortPacket.C2S {
     private static final SwordProjectilePacketC2S INSTANCE = new SwordProjectilePacketC2S();
     public static final ResourceLocation ID = Confluence.asResource("sword_projectile");
-    public static final PortStreamCodec<ByteBuf, SwordProjectilePacketC2S> STREAM_CODEC = PortPortStreamCodec.unit(INSTANCE);
+    public static final PortStreamCodec<ByteBuf, SwordProjectilePacketC2S> STREAM_CODEC = PortStreamCodec.unit(INSTANCE);
 
     private SwordProjectilePacketC2S() {}
 

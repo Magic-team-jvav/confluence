@@ -87,7 +87,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
     }
 
     public static PlayerPiggyBankContainer of(Player player) {
-        PlayerPiggyBankContainer data = player.getAttach(ModAttachmentTypes.PIGGY_BANK);
+        PlayerPiggyBankContainer data = player.getData(ModAttachmentTypes.PIGGY_BANK);
         data.setOwner(player);
         return data;
     }

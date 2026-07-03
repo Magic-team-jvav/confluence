@@ -15,6 +15,7 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,21 +28,21 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     private static final int HOTBAR_SIZE = 9;
 
     private final BaseNPC npc;
-    private final ServerPlayer player;
+    private final @Nullable ServerPlayer player;
     private final Container tradeContainer = new SimpleContainer(TRADE_SIZE);
     private final List<SlotState> slotStates = new ArrayList<>(TRADE_SIZE);
     private int scrollOffset;
 
-    public static NPCTradeMenu fromNetwork(int containerId, Inventory playerInv, FriendlyByteBuf data) {
+    public static NPCTradeMenu fromNetwork(int containerId, Inventory inventory, FriendlyByteBuf data) {
         int entityId = data.readInt();
-        BaseNPC npc = (BaseNPC) playerInv.player.level().getEntity(entityId);
-        return new NPCTradeMenu(containerId, playerInv, npc);
+        BaseNPC npc = (BaseNPC) inventory.player.level().getEntity(entityId);
+        return new NPCTradeMenu(containerId, inventory, npc);
     }
 
-    public NPCTradeMenu(int containerId, Inventory playerInv, BaseNPC npc) {
+    public NPCTradeMenu(int containerId, Inventory inventory, BaseNPC npc) {
         super(ModMenuTypes.NPC_TRADE.get(), containerId);
         this.npc = npc;
-        this.player = (ServerPlayer) playerInv.player;
+        this.player = inventory.player instanceof ServerPlayer sp ? sp : null;
 
         // 4×9 trade slots
         for (int row = 0; row < TRADE_ROWS; row++) {
@@ -55,24 +56,22 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         // Player inventory
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                addSlot(new Slot(playerInv, col + row * 9 + 9, 8 + col * 18, 86 + row * 18));
+                addSlot(new Slot(inventory, col + row * 9 + 9, 8 + col * 18, 86 + row * 18));
             }
         }
         // Hotbar
         for (int col = 0; col < 9; col++) {
-            addSlot(new Slot(playerInv, col, 8 + col * 18, 144));
+            addSlot(new Slot(inventory, col, 8 + col * 18, 144));
         }
 
         // Fill NPC offers
-        loadOffers();
-    }
-
-    private void loadOffers() {
-        List<NPCTradeOffer> offers = NPCTradeList.getAvailableOffers(npc);
-        for (int i = 0; i < offers.size() && i < TRADE_SIZE; i++) {
-            NPCTradeOffer offer = offers.get(i);
-            tradeContainer.setItem(i, offer.item().copy());
-            slotStates.set(i, SlotState.NPC_ITEM);
+        if (player != null) {
+            List<NPCTradeOffer> offers = NPCTradeList.getAvailableOffers(player, npc);
+            for (int i = 0; i < offers.size() && i < TRADE_SIZE; i++) {
+                NPCTradeOffer offer = offers.get(i);
+                tradeContainer.setItem(i, offer.stack().copy());
+                slotStates.set(i, SlotState.NPC_ITEM);
+            }
         }
     }
 

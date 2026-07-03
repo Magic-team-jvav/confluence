@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.loot;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -32,7 +31,7 @@ import org.confluence.terra_furniture.common.init.TFBlocks;
 import java.util.Calendar;
 import java.util.function.BiConsumer;
 
-public record GiftSubProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
+public record GiftSubProvider() implements LootTableSubProvider {
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
         // VanillaChestLoot
@@ -702,7 +701,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 8)))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(BaitItems.ENCHANTED_NIGHTCRAWLER).setWeight(3)
+                        .add(LootItem.lootTableItem(BaitItems.NIGHTCRAWLER).setWeight(3)
                                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(7))

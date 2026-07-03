@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
+import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -57,7 +58,7 @@ public class ScarabBombEntity extends StickyBombEntity {
         Vec3 step = facingDir.normalize().scale(-3);
         float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(0);
         ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
-        DamageSource damageSource = Explosion.getDefaultDamageSource(level, this);
+        DamageSource damageSource = PortExplosionExtension.getDefaultDamageSource(level, this);
         MultiplyExplosionDamageCalculator damageCalculator = new MultiplyExplosionDamageCalculator(0.2F);
         for (int i = 0; i < 24; i++) {
             if (i % 3 == 0) {

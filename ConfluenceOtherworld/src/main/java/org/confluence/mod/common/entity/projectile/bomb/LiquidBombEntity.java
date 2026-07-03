@@ -1,15 +1,15 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
+import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.ForgeMod;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.util.TerraStyleExplosion;
 
@@ -29,7 +29,7 @@ public class LiquidBombEntity extends BaseBombEntity {
 
     @Override
     protected void explodeFunction(ServerLevel level) {
-        if (!level.dimensionType().ultraWarm() || toFill.getFluidType() != NeoForgeMod.WATER_TYPE.value()) {
+        if (!level.dimensionType().ultraWarm() || toFill.getFluidType() != ForgeMod.WATER_TYPE.get()) {
             BlockPos blockPos = blockPosition();
             BlockPos.MutableBlockPos mutable = blockPos.mutable();
             for (int i = -radius; i < radius; i++) {
@@ -41,7 +41,7 @@ public class LiquidBombEntity extends BaseBombEntity {
                         mutable.set(x, y, z);
                         BlockState state = level.getBlockState(mutable);
                         if (state.getBlock() instanceof SimpleWaterloggedBlock block &&
-                                block.canPlaceLiquid(getOwner() instanceof Player player ? player : null, level, mutable, state, toFill)
+                                block.canPlaceLiquid(/*getOwner() instanceof Player player ? player : null, */level, mutable, state, toFill)
                         ) {
                             block.placeLiquid(level, mutable, state, toFill.defaultFluidState());
                         } else if (state.canBeReplaced(toFill)) {
@@ -52,7 +52,7 @@ public class LiquidBombEntity extends BaseBombEntity {
                 }
             }
         }
-        TerraStyleExplosion.terraExplode(level, this, Explosion.getDefaultDamageSource(level, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), radius, Level.ExplosionInteraction.NONE);
+        TerraStyleExplosion.terraExplode(level, this, PortExplosionExtension.getDefaultDamageSource(level, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), radius, Level.ExplosionInteraction.NONE);
     }
 
     @Override

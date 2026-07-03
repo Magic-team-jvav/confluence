@@ -17,6 +17,10 @@ import org.confluence.mod.common.data.map.*;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.datamap.PortAdvancedDataMapType;
 import org.mesdag.portlib.datamap.PortDataMapType;
+import org.mesdag.portlib.datamap.PortDataMapValueMerger;
+import org.mesdag.portlib.datamap.PortDataMapValueRemover;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.registries.PortRegisterDataMapTypesEvent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +57,7 @@ public final class ModDataMaps {
         return type;
     }
 
-    private static <R, T, VR extends DataMapValueRemover<R, T>> PortAdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, @Nullable DataMapValueMerger<R, T> merger, boolean synced) {
+    private static <R, T, VR extends PortDataMapValueRemover<R, T>> PortAdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, @Nullable PortDataMapValueMerger<R, T> merger, boolean synced) {
         PortAdvancedDataMapType.Builder<T, R, VR> builder = PortAdvancedDataMapType.builder(Confluence.asResource(path), resourceKey, codec).remover(removerCodec);
         if (merger != null) builder.merger(merger);
         if (synced) builder.synced(codec, false);
@@ -62,21 +66,24 @@ public final class ModDataMaps {
         return type;
     }
 
-    private static <R, T, VR extends DataMapValueRemover<R, T>> PortAdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, boolean synced) {
+    private static <R, T, VR extends PortDataMapValueRemover<R, T>> PortAdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, boolean synced) {
         return register(path, resourceKey, codec, removerCodec, null, synced);
     }
 
-    public static void registerDataMapTypes(RegisterDataMapTypesEvent event) {
-        for (PortDataMapType<?, ?> type : types) {
-            event.register(type);
-        }
-        types = null;
+    public static void init() {
+        PortEventHandler.addListener((PortRegisterDataMapTypesEvent event) -> {
+            for (PortDataMapType<?, ?> type : types) {
+                event.register(type);
+            }
+            types = null;
+        });
     }
 
     public static <T> @Nullable T getEntityData(PortDataMapType<EntityType<?>, T> type, Entity entity) {
         return getEntityData(type, entity.getType());
     }
 
+    @SuppressWarnings("deprecation")
     public static <T> @Nullable T getEntityData(PortDataMapType<EntityType<?>, T> type, EntityType<?> entityType) {
         return BuiltInRegistries.ENTITY_TYPE.getData(type, entityType.builtInRegistryHolder().unwrapKey().orElseThrow());
     }

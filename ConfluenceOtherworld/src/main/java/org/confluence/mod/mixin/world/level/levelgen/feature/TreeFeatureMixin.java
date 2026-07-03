@@ -21,7 +21,7 @@ public abstract class TreeFeatureMixin {
         OverworldUtils.replaceTree(context, cir);
     }
 
-    @WrapOperation(method = "lambda$place$6", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/WorldGenLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
+    @WrapOperation(method = "lambda$place$6", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/WorldGenLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"), remap = false)
     private static boolean logBoulder(WorldGenLevel instance, BlockPos blockPos, BlockState blockState, int i, Operation<Boolean> original) {
         return OverworldUtils.replaceLogBoulder(instance, blockPos, blockState, i, original);
     }

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.init.item;
 
 import com.google.common.base.Supplier;
+import net.minecraft.world.item.Item;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;

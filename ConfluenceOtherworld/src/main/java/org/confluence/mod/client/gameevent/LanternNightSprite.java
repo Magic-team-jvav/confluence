@@ -13,6 +13,7 @@ import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.mesdag.particlestorm.data.molang.compiler.value.Variable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -92,19 +93,17 @@ final class LanternNightSprite {
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
         RenderSystem.setShaderColor(1, 1, 1, globalAlpha);
-        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         float a = 1.0F - rainLevel;
         poseStack.pushPose();
-        poseStack.mulPose(event.getModelViewMatrix());
+        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
         poseStack.translate(0, Mth.lerp(partialTick, globalYO, globalY), 0);
         for (LanternNightSprite sprite : SPRITES) {
             sprite.render(builder, partialTick, a);
         }
         poseStack.popPose();
-        MeshData data = builder.build();
-        if (data != null) {
-            BufferUploader.drawWithShader(data);
-        }
+        BufferUploader.drawWithShader(builder.end());
         RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
         RenderSystem.depthMask(true);

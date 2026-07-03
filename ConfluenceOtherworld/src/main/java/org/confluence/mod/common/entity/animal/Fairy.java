@@ -96,10 +96,12 @@ public class Fairy extends BaseCritter implements VariantHolder<Fairy.Variant> {
             return name().toLowerCase(Locale.ROOT);
         }
 
+        @Override
         public ResourceLocation modelPath() {
             return Confluence.asResource("animal/fairy");
         }
 
+        @Override
         public ResourceLocation texturePath() {
             return Confluence.asResource("textures/entity/fairy/" + getSerializedName() + ".png");
         }

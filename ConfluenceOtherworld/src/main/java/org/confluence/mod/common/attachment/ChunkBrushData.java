@@ -66,6 +66,6 @@ public class ChunkBrushData implements IPortNBTSerializable<CompoundTag> {
     }
 
     public static ChunkBrushData of(Level level) {
-        return level.getAttach(ModAttachmentTypes.CHUNK_BRUSH_DATA);
+        return level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA);
     }
 }

@@ -35,7 +35,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    public double getDefaultGravity() {
         return 0.04;
     }
 
@@ -43,7 +43,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity instanceof LivingEntity living) {
-            living.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO, 140));
+            living.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO.get(), 140));
         }
         doHurtAndKnockback(entity, 0.6, 0.2);
         if (this.penetrateCount++ >= 1) { // 击中就算一次

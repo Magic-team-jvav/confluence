@@ -41,7 +41,7 @@ public class GoldenShowerProjectile extends AbstractManaProjectile {
         Entity entity = result.getEntity();
         if (doPenetrateCheck(entity)) {
             if (doHurtAndKnockback(entity, 3.5, 0.2) && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(ModEffects.ICHOR, 200));
+                living.addEffect(new MobEffectInstance(ModEffects.ICHOR.get(), 200));
             }
             doDiscardInMaxPenetrate(4);
         }

@@ -4,7 +4,6 @@ import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.Util;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.CommonComponents;
@@ -14,7 +13,6 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
-import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
@@ -80,8 +78,8 @@ public class AchievementScreen extends Screen {
     private Iterable<Map.Entry<ResourceLocation, AchievementOffset>> rendered;
     private int lines;
     private int skip;
-    private Map<ResourceLocation, AdvancementProgress> data;
-    private boolean completedGoingOldSchool;
+// todo advancement   private Map<ResourceLocation, AdvancementProgress> data;
+//    private boolean completedGoingOldSchool;
     private boolean[] categoriesDisabled;
 
     private int hovered = -1;
@@ -122,8 +120,8 @@ public class AchievementScreen extends Screen {
         }
         this.rendered = achievements.entrySet();
         this.lines = achievements.size();
-        this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-        this.completedGoingOldSchool = data.containsKey(AchievementUtils.GOING_OLDSCHOOL);
+//        this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
+//        this.completedGoingOldSchool = data.containsKey(AchievementUtils.GOING_OLDSCHOOL);
         this.categoriesDisabled = new boolean[4];
     }
 
@@ -165,12 +163,12 @@ public class AchievementScreen extends Screen {
             assert entry != null;
             ResourceLocation key = entry.getKey();
             guiGraphics.blit(BACKGROUND, x, y, ENTRY_U, ENTRY_V, ENTRY_W, ENTRY_H, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-            AdvancementProgress progress = data.get(key);
+//            AdvancementProgress progress = data.get(key);
             int frameX = x + ENTRY_FRAME_X;
             int frameY = y + ENTRY_FRAME_Y;
-            if (progress != null && progress.isDone()) {
-                guiGraphics.blit(BACKGROUND, frameX, frameY, ENTRY_FRAME_U, ENTRY_FRAME_V, ENTRY_FRAME_W, ENTRY_FRAME_H, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-            }
+//            if (progress != null && progress.isDone()) {
+//                guiGraphics.blit(BACKGROUND, frameX, frameY, ENTRY_FRAME_U, ENTRY_FRAME_V, ENTRY_FRAME_W, ENTRY_FRAME_H, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+//            }
             Triple<ResourceLocation, Component, Component> triple = achievementDisplays.get(key);
             if (triple != null) {
                 guiGraphics.blit(triple.getLeft(), frameX + ENTRY_ICON_X, frameY + ENTRY_ICON_Y, 0, 0, 32, 32, 32, 32);
@@ -308,12 +306,12 @@ public class AchievementScreen extends Screen {
             }
             x += w;
         }
-        if (button == 0 && BackgroundLayer.clickedLayers(mouseX, mouseY)) {
-            if (completedGoingOldSchool != BackgroundLayer.isCompletedGoingOldSchool()) {
-                this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-            }
-            return true;
-        }
+//        if (button == 0 && BackgroundLayer.clickedLayers(mouseX, mouseY)) {
+//            if (completedGoingOldSchool != BackgroundLayer.isCompletedGoingOldSchool()) {
+//                this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
+//            }
+//            return true;
+//        }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 

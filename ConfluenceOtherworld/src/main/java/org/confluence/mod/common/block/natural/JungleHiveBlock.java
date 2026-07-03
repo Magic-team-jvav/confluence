@@ -11,7 +11,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.confluence.mod.common.entity.monster.Hornet;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 
 import javax.annotation.Nullable;
 
@@ -35,7 +37,7 @@ public class JungleHiveBlock extends Block {
         if (randomNumber == 0) {
             level.setBlockAndUpdate(pos, ModBlocks.HONEY.get().defaultBlockState());
         } else if (randomNumber == 1) {
-            LittleHornet BeeEntity = TEMonsterEntities.LITTLE_HORNET.get().create(level);
+            Hornet BeeEntity = MonsterEntities.LITTLE_HORNET.get().create(level);
             if (BeeEntity != null) {
                 BeeEntity.setPos(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
                 level.addFreshEntity(BeeEntity);

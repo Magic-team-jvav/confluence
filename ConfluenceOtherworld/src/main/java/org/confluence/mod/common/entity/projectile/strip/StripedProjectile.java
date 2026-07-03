@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.strip;
 
+import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -139,7 +140,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.put("StartPos", Vec3.CODEC.encodeStart(NbtOps.INSTANCE, startPos).getOrThrow());
+        PortDataResultExtension.ifSuccess(Vec3.CODEC.encodeStart(NbtOps.INSTANCE, startPos), t -> compound.put("StartPos", t));
         compound.putInt("Age", tickCount);
         compound.putBoolean("IsHead", isHead());
     }
@@ -147,7 +148,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.startPos = Vec3.CODEC.parse(NbtOps.INSTANCE, compound.get("StartPos")).getOrThrow();
+        PortDataResultExtension.ifSuccess(Vec3.CODEC.parse(NbtOps.INSTANCE, compound.get("StartPos")), r -> this.startPos = r);
         this.tickCount = compound.getInt("Age");
         setHead(compound.getBoolean("IsHead"));
     }

@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Villager.class)
 public abstract class VillagerMixin {
-    @ModifyExpressionValue(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hasEffect(Lnet/minecraft/core/Holder;)Z"))
+    @ModifyExpressionValue(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;hasEffect(Lnet/minecraft/world/effect/MobEffect;)Z"))
     private boolean hasSpecialOffer(boolean original, @Local(argsOnly = true) Player player, @Share("specialPrice") LocalIntRef specialPrice) {
         int value = TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE);
         specialPrice.set(value);
@@ -26,10 +26,10 @@ public abstract class VillagerMixin {
     }
 
     @ModifyExpressionValue(method = "updateSpecialPrices", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffectInstance;getAmplifier()I"))
-    private int modifyAmplifier(int original, @Local MobEffectInstance effectInstance, @Share("specialPrice") LocalIntRef specialPrice) {
+    private int modifyAmplifier(int original, @Local(name = "mobeffectinstance") MobEffectInstance mobeffectinstance, @Share("specialPrice") LocalIntRef specialPrice) {
         int value = specialPrice.get();
         if (value > 0) {
-            if (effectInstance == null) {
+            if (mobeffectinstance == null) {
                 return value - 1;
             }
             return value;

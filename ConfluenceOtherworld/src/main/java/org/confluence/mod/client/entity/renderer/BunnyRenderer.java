@@ -8,7 +8,7 @@ import org.confluence.mod.common.entity.animal.Bunny;
 public class BunnyRenderer extends GeoNormalRenderer<Bunny> {
 
     public BunnyRenderer(EntityRendererProvider.Context context) {
-        super(context, new BunnyGeoModel(), 1.0F, 0.0F);
+        super(context, new BunnyGeoModel());
         this.shadowRadius = 0.3F;
     }
 

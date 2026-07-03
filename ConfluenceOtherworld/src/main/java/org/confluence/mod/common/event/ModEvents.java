@@ -27,8 +27,6 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.data.saved.*;
-import org.confluence.mod.common.entity.InverseEnderMan;
-import org.confluence.mod.common.entity.InverseEntityType;
 import org.confluence.mod.common.entity.RainbowSheep;
 import org.confluence.mod.common.entity.animal.*;
 import org.confluence.mod.common.entity.boss.*;
@@ -37,7 +35,6 @@ import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 import org.confluence.mod.common.entity.monster.slime.*;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.gameevent.GameEventSystem;
-import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModGunProperties;
 import org.confluence.mod.common.init.ModRecipes;
@@ -51,7 +48,6 @@ import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.DispenserRegistration;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -91,7 +87,7 @@ public final class ModEvents {
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
-            ModBiomes.registerRegionAndSurface();
+//            ModBiomes.registerRegionAndSurface();
             if (StartupConfigs.forceAllowWipItemsDisplayInCreativeModeTab()) {
                 WipNotDisplayOutput.forceAllow();
             }
@@ -126,7 +122,7 @@ public final class ModEvents {
     private static void modConfig$Reloading(ModConfigEvent.Reloading event) {
         if (event.getConfig().getType() == ModConfig.Type.COMMON && Confluence.MODID.equals(event.getConfig().getModId())) {
             CommonConfigs.onLoad();
-            CompatibilitySyncPacketS2c.sendToAll();
+//            CompatibilitySyncPacketS2c.sendToAll();
         }
     }
 
@@ -154,7 +150,7 @@ public final class ModEvents {
         });
     }
 
-// todo   private static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
+// todo event  private static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
 //        event.register(ModBlocks.HONEY_CAULDRON.get(), ModFluids.HONEY.fluid().get(), FluidType.BUCKET_VOLUME, null);
 //        event.register(ModBlocks.AETHERIUM_CAULDRON.get(), ModFluids.SHIMMER.fluid().get(), FluidType.BUCKET_VOLUME, null);
 //    }
@@ -189,14 +185,14 @@ public final class ModEvents {
         }
     }
 
-// todo   private static void registerConfigurationTasks(PortRegisterConfigurationTasksEvent event) {
+// todo event  private static void registerConfigurationTasks(PortRegisterConfigurationTasksEvent event) {
 //        event.register(new AchievementsTask(event.getListener()));
 //    }
 
     private static void entityAttributeCreation(PortEntityAttributeCreationEvent event) {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
         event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
-        event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
+//        event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
         event.put(CritterEntities.BUNNY.get(), Bunny.createAttributes().build());
         event.put(CritterEntities.JEWEL_BUNNY.get(), Bunny.createAttributes().build());
         event.put(CritterEntities.HOSTILE_BUNNY.get(), HostileBunny.createAttributes().build());
@@ -388,7 +384,7 @@ public final class ModEvents {
         event.put(BossEntities.HILL_OF_FLESH.get(), HillOfFlesh.createAttributes().build());
     }
 
-// todo   private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
+// todo event  private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
 //        new AttributeRegistration(event)
 //                .set(LibAttributes.getArmorPenetration())
 //                .register(TEBossEntities.QUEEN_BEE.get(), 2)
@@ -492,7 +488,7 @@ public final class ModEvents {
         event.modify(BlockEntityType.CAMPFIRE, FunctionalBlocks.LIFE_CAMPFIRE.get());
     }
 
-// todo  private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
+// todo event private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
 //        event.registerBlock(ForgeCapabilities.ITEM_HANDLER, (level, pos, state, blockEntity, side) -> {
 //            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
 //                return null;
@@ -514,7 +510,7 @@ public final class ModEvents {
 
     private static void registerSpawnReplacements(PortRegisterSpawnPlacementsEvent event) {
         event.register(MonsterEntities.GREEN_DUMPLING_SLIME.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseSlime::checkGreenDumplingSlimeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
-        event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+//        event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(CritterEntities.BUNNY.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(CritterEntities.JEWEL_BUNNY.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(MonsterEntities.DEMON_EYE.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DemonEye::checkDemonEyeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);

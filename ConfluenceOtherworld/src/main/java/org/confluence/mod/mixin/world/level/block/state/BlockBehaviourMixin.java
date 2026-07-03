@@ -37,8 +37,8 @@ import java.util.Map;
 
 @Mixin(BlockBehaviour.class)
 public abstract class BlockBehaviourMixin {
-    @ModifyExpressionValue(method = "getDestroyProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getDigSpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F"))
-    private float deny(float original, @Local(argsOnly = true) BlockState state, @Local int i) {
+    @ModifyExpressionValue(method = "getDestroyProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;getDigSpeed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)F", remap = false))
+    private float deny(float original, @Local(argsOnly = true) BlockState state, @Local(name = "i") int i) {
         if (i > 30 && state.is(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST)) {
             return 0.0F;
         }

@@ -62,6 +62,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.holdersets.AndHolderSet;
+import net.minecraftforge.registries.holdersets.NotHolderSet;
 import net.minecraftforge.registries.holdersets.OrHolderSet;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.Confluence;
@@ -73,7 +75,6 @@ import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.CritterEntities;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.worldgen.BannedBiomeNoiseBasedChunkGenerator;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
@@ -1681,8 +1682,8 @@ public class ModDataProvider {
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_BAT.get(), 60, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_SKELETON.get(), 60, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_ZOMBIE.get(), 45, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
+//                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_ZOMBIE.get(), 45, 1, 2))
+//                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 1, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 1, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_SNAIL.get(), 10, 1, 2))
@@ -1730,7 +1731,7 @@ public class ModDataProvider {
             context.register(ModBiomes.INVERSE_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(mobSpawnSettings(builder -> {
-                        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.INVERSE_ENDERMAN.get(), 10, 4, 4));
+//                        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.INVERSE_ENDERMAN.get(), 10, 4, 4));
                     }))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
@@ -1741,7 +1742,7 @@ public class ModDataProvider {
             context.register(ModBiomes.INVERSE_PLAINS, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
                     .mobSpawnSettings(mobSpawnSettings(builder -> {
-                        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.INVERSE_ENDERMAN.get(), 10, 4, 4));
+//                        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.INVERSE_ENDERMAN.get(), 10, 4, 4));
                     }))
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
@@ -1895,23 +1896,20 @@ public class ModDataProvider {
             HolderLookup.RegistryLookup<Biome> biomeLookup = registryLookup(Registries.BIOME, biome);
             HolderGetter<StructureTemplatePool> templatePool = context.lookup(Registries.TEMPLATE_POOL);
             HolderSet<Biome> overworld = biome.getOrThrow(PortTags.Biomes.IS_OVERWORLD);
-            HolderSet<Biome> notAquatic = new AndHolderSet<>(overworld, new NotHolderSet<>(biomeLookup, biome.getOrThrow(PortTags.Biomes.IS_AQUATIC)));
+            HolderSet<Biome> notAquatic = new AndHolderSet<>(List.of(overworld, new NotHolderSet<>(biomeLookup, biome.getOrThrow(PortTags.Biomes.IS_AQUATIC))));
             HolderSet<Biome> crimson = HolderSet.direct(biome.getOrThrow(ModBiomes.THE_CRIMSON));
-            HolderSet<Biome> desertBadlands = new OrHolderSet<>(biome.getOrThrow(PortTags.Biomes.IS_DESERT), biome.getOrThrow(PortTags.Biomes.IS_BADLANDS));
+            HolderSet<Biome> desertBadlands = new OrHolderSet<>(List.of(biome.getOrThrow(PortTags.Biomes.IS_DESERT), biome.getOrThrow(PortTags.Biomes.IS_BADLANDS)));
             Optional<Heightmap.Types> worldSurfaceWg = Optional.of(Heightmap.Types.WORLD_SURFACE_WG);
 
             context.register(ModStructures.Keys.AIR, new JigsawStructure(
-                    new Structure.StructureSettings(overworld),
+                    new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.SURFACE_STRUCTURES, TerrainAdjustment.NONE),
                     templatePool.getOrThrow(TemplatePools.AIR$AIR),
                     Optional.empty(),
                     7,
                     UniformHeight.of(VerticalAnchor.absolute(64), VerticalAnchor.absolute(80)),
                     false,
                     Optional.empty(),
-                    116,
-                    List.of(),
-                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                    LiquidSettings.IGNORE_WATERLOGGING
+                    116
             ));
             context.register(ModStructures.Keys.CRIMSON_CAVE, new CrimsonCaveStructure(new Structure.StructureSettings(crimson, Map.of(), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE)));
             context.register(ModStructures.Keys.CRIMSON_FOSSIL, new JigsawStructure(
@@ -1922,10 +1920,7 @@ public class ModDataProvider {
                     ConstantHeight.of(VerticalAnchor.absolute(-10)),
                     false,
                     worldSurfaceWg,
-                    116,
-                    List.of(),
-                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                    LiquidSettings.APPLY_WATERLOGGING
+                    116
             ));
             context.register(ModStructures.Keys.GRANITE_CAVE, new GraniteCaveStructure(new Structure.StructureSettings(overworld, Map.of(
                     MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
@@ -1941,10 +1936,7 @@ public class ModDataProvider {
                     UniformHeight.of(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(10)),
                     false,
                     Optional.empty(),
-                    116,
-                    List.of(),
-                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                    LiquidSettings.IGNORE_WATERLOGGING
+                    116
             ));
             context.register(ModStructures.Keys.DUNGEON, new DungeonStructure(new Structure.StructureSettings(notAquatic, Map.of(
                     MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
@@ -1967,10 +1959,7 @@ public class ModDataProvider {
                     ConstantHeight.of(VerticalAnchor.absolute(0)),
                     false,
                     worldSurfaceWg,
-                    116,
-                    List.of(),
-                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                    LiquidSettings.APPLY_WATERLOGGING
+                    116
             ));
             context.register(ModStructures.Keys.EBONY_STONE_THORN, new JigsawStructure(
                     new Structure.StructureSettings(HolderSet.direct(biome.getOrThrow(ModBiomes.THE_CORRUPTION)), Map.of(), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE),
@@ -1980,14 +1969,11 @@ public class ModDataProvider {
                     ConstantHeight.of(VerticalAnchor.absolute(-10)),
                     false,
                     worldSurfaceWg,
-                    116,
-                    List.of(),
-                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
-                    LiquidSettings.APPLY_WATERLOGGING
+                    116
             ));
             context.register(ModStructures.Keys.SHIMMER_LAKE, new ShimmerLakeStructure(new Structure.StructureSettings(overworld, Map.of(
                     MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
-                            new MobSpawnSettings.SpawnerData(CritterEntities.FEALING.get(), 30, 1, 2)
+//                            new MobSpawnSettings.SpawnerData(CritterEntities.FEALING.get(), 30, 1, 2)
                     ))
             ), GenerationStep.Decoration.VEGETAL_DECORATION, TerrainAdjustment.NONE)));
         }

@@ -296,8 +296,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         if (damageMultiplier <= 0) return;
 
         AABB checkBox = getBoundingBox().inflate(1.5);
-        var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox,
-                e -> e != player && e.isAlive() && TEUtils.projectileCanHurtEntityTest.test(this, e));
+        var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox, e -> e != player && e.isAlive() /* todo projectile && TEUtils.projectileCanHurtEntityTest.test(this, e)*/);
 
         for (LivingEntity target : entities) {
             float baseDamage = (float) (component.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
@@ -306,7 +305,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
 
             if (target.hurt(source, finalDamage)) {
                 LibEntityUtils.knockBackA2B(this, target, 0.3f, 0.15f);
-                component.hitEffect().ifPresent(effect -> effect.applyAll(player, target));
+//  todo component              component.hitEffect().ifPresent(effect -> effect.applyAll(player, target));
                 hitCooldown = phase == PHASE_THROWN ? 3 : 8;
             }
         }

@@ -205,7 +205,6 @@ public final class ModEvents {
         event.put(CritterEntities.WORM.get(), Worm.createAttributes().build());
         event.put(CritterEntities.DUCK.get(), Duck.createAttributes().build());
         event.put(CritterEntities.CRAB.get(), Crab.createAttributes().build());
-        event.put(CritterEntities.JEWEL_SQUIRREL.get(), Squirrel.createAttributes().build());
         event.put(CritterEntities.BUTTERFLY.get(), Butterfly.createAttributes().build());
         event.put(CritterEntities.FAIRY.get(), Fairy.createAttributes().build());
         event.put(CritterEntities.GLOWING_SNAIL.get(), SimpleCritter.createAttributes().build());

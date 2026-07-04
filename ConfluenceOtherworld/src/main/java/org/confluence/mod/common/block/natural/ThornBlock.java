@@ -21,16 +21,17 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Supplier;
 
 public class ThornBlock extends PipeBlock {
     public static final IntegerProperty PROP_AGE = IntegerProperty.create("age", 0, 7);
 
     protected final float damageAmount;
-    protected final Block ground;
+    protected final Supplier<? extends Block> ground;
 
-    public ThornBlock(float damageAmount, Block ground) {
+    public ThornBlock(float damageAmount, Supplier<? extends Block> ground) {
         super(0.3125f, Properties.of().replaceable().noCollission().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY).randomTicks());
         this.damageAmount = damageAmount;
         this.ground = ground;
@@ -39,51 +40,51 @@ public class ThornBlock extends PipeBlock {
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return getStateForPlacement(pContext.getLevel(), pContext.getClickedPos());
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return getStateForPlacement(context.getLevel(), context.getClickedPos());
     }
 
-    public BlockState getStateForPlacement(BlockGetter pLevel, BlockPos pPos) {
+    public BlockState getStateForPlacement(BlockGetter level, BlockPos pos) {
         BlockState blockState = defaultBlockState();
         for (Direction direction : Direction.values()) {
-            BlockState nearState = pLevel.getBlockState(pPos.relative(direction));
-            blockState = blockState.setValue(PROPERTY_BY_DIRECTION.get(direction), nearState.is(this) || nearState.is(ground));
+            BlockState nearState = level.getBlockState(pos.relative(direction));
+            blockState = blockState.setValue(PROPERTY_BY_DIRECTION.get(direction), nearState.is(this) || nearState.is(ground.get()));
         }
         return blockState;
     }
 
     @Override
-    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
-        if (pLevel.isClientSide()) return;
-        if (pEntity instanceof ServerPlayer player) {
-            player.hurt(ModDamageTypes.of(pLevel, DamageTypes.THORNS), damageAmount);
-            pLevel.destroyBlock(pPos, false);
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+        if (level.isClientSide()) return;
+        if (entity instanceof ServerPlayer player) {
+            player.hurt(ModDamageTypes.of(level, DamageTypes.THORNS), damageAmount);
+            level.destroyBlock(pos, false);
         }
-        if (pEntity instanceof Projectile) {
-            pLevel.destroyBlock(pPos, false);
+        if (entity instanceof Projectile) {
+            level.destroyBlock(pos, false);
         }
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, PROP_AGE);
-        super.createBlockStateDefinition(pBuilder);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, PROP_AGE);
+        super.createBlockStateDefinition(builder);
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState pState) {
-        return !pState.is(NatureBlocks.PLANTERA_THORN.get()) && pState.getValue(PROP_AGE) < 7;
+    public boolean isRandomlyTicking(BlockState state) {
+        return !state.is(NatureBlocks.PLANTERA_THORN.get()) && state.getValue(PROP_AGE) < 7;
     }
 
     @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (this == NatureBlocks.PLANTERA_THORN.get() || pRandom.nextInt(50) != 0) return;
-        Direction dir = Direction.getRandom(pRandom);
-        BlockPos targetPos = pPos.relative(dir);
-        if (!pLevel.getBlockState(targetPos).isAir() || checkBorder(pLevel, targetPos, dir)) return;
-        int age = pState.getValue(PROP_AGE);
-        pLevel.setBlock(targetPos, getStateForPlacement(pLevel, targetPos).setValue(PROP_AGE, Math.min(7, age + pRandom.nextInt(1, 3))), Block.UPDATE_CLIENTS);
-        pLevel.setBlock(pPos, pState.setValue(PROPERTY_BY_DIRECTION.get(dir), true).setValue(PROP_AGE, pRandom.nextBoolean() ? 7 : age + 1), Block.UPDATE_CLIENTS);
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (this == NatureBlocks.PLANTERA_THORN.get() || random.nextInt(50) != 0) return;
+        Direction dir = Direction.getRandom(random);
+        BlockPos targetPos = pos.relative(dir);
+        if (!level.getBlockState(targetPos).isAir() || checkBorder(level, targetPos, dir)) return;
+        int age = state.getValue(PROP_AGE);
+        level.setBlock(targetPos, getStateForPlacement(level, targetPos).setValue(PROP_AGE, Math.min(7, age + random.nextInt(1, 3))), Block.UPDATE_CLIENTS);
+        level.setBlock(pos, state.setValue(PROPERTY_BY_DIRECTION.get(dir), true).setValue(PROP_AGE, random.nextBoolean() ? 7 : age + 1), Block.UPDATE_CLIENTS);
     }
 
     private boolean checkBorder(Level level, BlockPos pos, Direction direction) {
@@ -97,8 +98,7 @@ public class ThornBlock extends PipeBlock {
     }
 
     @Override
-    @NotNull
-    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pPos, BlockPos pNeighborPos) {
-        return pState.setValue(PROPERTY_BY_DIRECTION.get(pDirection), pNeighborState.is(this) || pNeighborState.is(ground));
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        return state.setValue(PROPERTY_BY_DIRECTION.get(direction), neighborState.is(this) || neighborState.is(ground.get()));
     }
 }

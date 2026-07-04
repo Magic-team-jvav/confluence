@@ -9,18 +9,19 @@ import net.minecraft.world.level.block.grower.AbstractTreeGrower;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class BaseSaplingBlock extends SaplingBlock {
-    private Supplier<? extends Block>[] blocksSupplier;
-    private Block[] blocks;
+    private Supplier<List<? extends Block>> blocksSup;
+    private Set<Block> cache;
     private final TagKey<Block> tags;
 
-    @SafeVarargs
-    public BaseSaplingBlock(AbstractTreeGrower grower, Properties properties, @Nullable TagKey<Block> tags, Supplier<? extends Block>... blocks) {
+    public BaseSaplingBlock(AbstractTreeGrower grower, Properties properties, @Nullable TagKey<Block> tags, Supplier<List<? extends Block>> blocks) {
         super(grower, properties);
-        this.blocksSupplier = blocks;
+        this.blocksSup = blocks;
         this.tags = tags;
     }
 
@@ -28,10 +29,10 @@ public class BaseSaplingBlock extends SaplingBlock {
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
         BlockState blockBelow = level.getBlockState(below);
-        if (blocks == null) {
-            this.blocks = Arrays.stream(blocksSupplier).map(Supplier::get).toArray(Block[]::new);
-            this.blocksSupplier = null;
+        if (cache == null) {
+            this.cache = blocksSup.get().stream().collect(Collectors.toUnmodifiableSet());
+            this.blocksSup = null;
         }
-        return (blocks.length == 0 || Arrays.stream(blocks).anyMatch(blockBelow::is)) && (tags == null || blockBelow.is(tags));
+        return cache.contains(blockBelow.getBlock()) && (tags == null || blockBelow.is(tags));
     }
 }

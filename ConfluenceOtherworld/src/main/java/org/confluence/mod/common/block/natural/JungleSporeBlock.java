@@ -13,14 +13,11 @@ import org.confluence.mod.common.init.item.MaterialItems;
 
 import java.util.List;
 
-/**
- * 必须在NatureBlocks.JUNGLE_GRASS_BLOCK之后注册
- */
 public class JungleSporeBlock extends BasePlantBlock {
     protected static final VoxelShape SHAPE = box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D);
 
     public JungleSporeBlock() {
-        super(Properties.copy(Blocks.DANDELION).lightLevel(value -> 4), List.of(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), Blocks.STONE, Blocks.DEEPSLATE, Blocks.MOSS_BLOCK, Blocks.CLAY));
+        super(Properties.copy(Blocks.DANDELION).lightLevel(value -> 4), () -> List.of(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), Blocks.STONE, Blocks.DEEPSLATE, Blocks.MOSS_BLOCK, Blocks.CLAY));
     }
 
     @Override

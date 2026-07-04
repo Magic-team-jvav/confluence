@@ -1,0 +1,69 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 128,
+				"texture_height": 128,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "Head",
+					"pivot": [0, 20, 0],
+					"cubes": [
+						{"origin": [-4, 20, -4], "size": [8, 8, 8], "uv": [0, 12]},
+						{"origin": [-1.5, 18.8, 5.1], "size": [3, 6, 3], "pivot": [0, 21.8, 6.6], "rotation": [5, 0, 0], "uv": [32, 66]},
+						{"origin": [-1, 21.95, 3.75], "size": [2, 2, 2], "pivot": [0, 22.95, 4.75], "rotation": [15, 0, 0], "uv": [0, 72]},
+						{"origin": [-5.5, 25, -5.55], "size": [11, 1, 11], "pivot": [0, 26.55, -0.05], "rotation": [-2.5, 0, 0], "uv": [0, 0]},
+						{"origin": [-4.5, 26.1, -4.55], "size": [9, 3, 9], "inflate": 0.1, "pivot": [0, 26.55, -0.05], "rotation": [-2.5, 0, 0], "uv": [32, 12]},
+						{"origin": [-4, 20, -4], "size": [8, 8, 8], "inflate": 0.5, "uv": [0, 28]}
+					]
+				},
+				{
+					"name": "Body",
+					"pivot": [0, 20, 0],
+					"cubes": [
+						{"origin": [-4, 10, -2], "size": [8, 10, 4], "uv": [32, 24]},
+						{"origin": [-4, 10, -2], "size": [8, 10, 4], "inflate": 0.25, "uv": [32, 38]}
+					]
+				},
+				{
+					"name": "RightArm",
+					"pivot": [-5, 18, 0],
+					"cubes": [
+						{"origin": [-7, 10, -2], "size": [3, 10, 4], "uv": [1, 44]},
+						{"origin": [-7, 10, -2], "size": [3, 10, 4], "inflate": 0.25, "uv": [15, 44]}
+					]
+				},
+				{
+					"name": "LeftArm",
+					"pivot": [5, 18, 0],
+					"cubes": [
+						{"origin": [4, 10, -2], "size": [3, 10, 4], "uv": [32, 52]},
+						{"origin": [4, 10, -2], "size": [3, 10, 4], "inflate": 0.25, "uv": [46, 52]}
+					]
+				},
+				{
+					"name": "RightLeg",
+					"pivot": [-1.9, 10, 0],
+					"cubes": [
+						{"origin": [-3.9, 0, -2], "size": [4, 10, 4], "uv": [56, 24]},
+						{"origin": [-3.9, 0, -2], "size": [4, 10, 4], "inflate": 0.25, "uv": [56, 38]}
+					]
+				},
+				{
+					"name": "LeftLeg",
+					"pivot": [1.9, 10, 0],
+					"cubes": [
+						{"origin": [-0.1, 0, -2], "size": [4, 10, 4], "uv": [0, 58]},
+						{"origin": [-0.1, 0, -2], "size": [4, 10, 4], "inflate": 0.25, "uv": [16, 58]}
+					]
+				}
+			]
+		}
+	]
+}

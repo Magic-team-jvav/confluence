@@ -15,12 +15,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 
+import java.util.List;
+
 public class NaturesGiftBlock extends BasePlantBlock {
     protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D);
     protected final BlockItemType type;
 
     public NaturesGiftBlock(BlockItemType type) {
-        super(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, Blocks.CLAY, NatureBlocks.JUNGLE_GRASS_BLOCK.get());
+        super(() -> List.of(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, Blocks.CLAY, NatureBlocks.JUNGLE_GRASS_BLOCK.get()));
         this.type = type;
     }
 

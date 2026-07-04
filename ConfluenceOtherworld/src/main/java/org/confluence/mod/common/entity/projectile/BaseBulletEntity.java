@@ -198,7 +198,7 @@ public class BaseBulletEntity extends Projectile {
     }
 
     protected ItemStack getDefaultItem() {
-        return GunItems.EMPTY_BULLET.get().getDefaultInstance();
+        return GunItems.DUMMY_BULLET.get().getDefaultInstance();
     }
 
     @Override

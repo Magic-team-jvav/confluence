@@ -186,7 +186,7 @@ public class SwordItems { // todo sword
                         .build();
                 IPortFoodProperties i = IPortFoodProperties.of(properties);
                 i.portlib$setEatSeconds(2);
-                i.portlib$setUsingConvertsTo(BROKEN_SWEET_SWORD.toStack());
+                i.portlib$setUsingConvertsTo(BROKEN_SWEET_SWORD::toStack);
                 p.food(properties);
             })
     ));

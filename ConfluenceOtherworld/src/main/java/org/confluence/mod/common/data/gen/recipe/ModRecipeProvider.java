@@ -13,7 +13,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.SmithingTransformRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -23,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.Tags;
@@ -40,6 +40,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_furniture.common.init.TFTags;
+import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortShapedRecipePattern;
 
@@ -178,57 +179,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 200);
         cooking(writer, campfireCooking, "campfire_cooking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
 
-
-        SmithingTransformRecipeBuilder.smithing(
-                Ingredient.of(DecorativeBlocks.AMBER_CHAIN),
-                Ingredient.of(DecorativeBlocks.AMBER_CHAIN),
-                Ingredient.of(DecorativeBlocks.AMBER_BLOCK),
-                RecipeCategory.TOOLS,
-                HookItems.AMBER_HOOK.get()
-        ).save(writer, Confluence.asResource("smithing/amber_hook"));
-        SmithingTransformRecipeBuilder.smithing(
-                Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN),
-                Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN),
-                Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK),
-                RecipeCategory.TOOLS,
-                HookItems.TOPAZ_HOOK.get()
-        ).save(writer, Confluence.asResource("smithing/topaz_hook"));
-        SmithingTransformRecipeBuilder.smithing(
-                Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN),
-                Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN),
-                Ingredient.of(DecorativeBlocks.AMETHYST_BLOCK),
-                RecipeCategory.TOOLS,
-                HookItems.AMETHYST_HOOK.get()
-        ).save(writer, Confluence.asResource("smithing/amethyst_hook"));
-        SmithingTransformRecipeBuilder.smithing(
-                Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN),
-                Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN),
-                Ingredient.of(Items.DIAMOND_BLOCK),
-                RecipeCategory.TOOLS,
-                HookItems.DIAMOND_HOOK.get()
-        ).save(writer, Confluence.asResource("smithing/diamond_hook"));
-        SmithingTransformRecipeBuilder.smithing(
-                Ingredient.of(DecorativeBlocks.RUBY_CHAIN),
-                Ingredient.of(DecorativeBlocks.RUBY_CHAIN),
-                Ingredient.of(DecorativeBlocks.RUBY_BLOCK),
-                RecipeCategory.TOOLS,
-                HookItems.RUBY_HOOK.get()
-        ).save(writer, Confluence.asResource("smithing/ruby_hook"));
-        SmithingTransformRecipeBuilder.smithing(
-                Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN),
-                Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN),
-                Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK),
-                RecipeCategory.TOOLS,
-                HookItems.SAPPHIRE_HOOK.get()
-        ).save(writer, Confluence.asResource("smithing/sapphire_hook"));
-        SmithingTransformRecipeBuilder.smithing(
-                Ingredient.of(Items.CHAIN),
-                Ingredient.of(Items.CHAIN),
-                Ingredient.of(MaterialItems.HOOK),
-                RecipeCategory.TOOLS,
-                HookItems.GRAPPLING_HOOK.get()
-        ).save(writer, Confluence.asResource("smithing/grappling_hook"));
-
+        hook(writer, Ingredient.of(DecorativeBlocks.AMBER_CHAIN), Ingredient.of(DecorativeBlocks.AMBER_BLOCK), HookItems.AMBER_HOOK);
+        hook(writer, Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN), Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK), HookItems.TOPAZ_HOOK);
+        hook(writer, Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), Ingredient.of(DecorativeBlocks.AMETHYST_BLOCK), HookItems.AMETHYST_HOOK);
+        hook(writer, Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), Ingredient.of(Items.DIAMOND_BLOCK), HookItems.DIAMOND_HOOK);
+        hook(writer, Ingredient.of(DecorativeBlocks.RUBY_CHAIN), Ingredient.of(DecorativeBlocks.RUBY_BLOCK), HookItems.RUBY_HOOK);
+        hook(writer, Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN), Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK), HookItems.SAPPHIRE_HOOK);
+        hook(writer, Ingredient.of(Items.CHAIN), Ingredient.of(MaterialItems.HOOK), HookItems.GRAPPLING_HOOK);
 
         skyMill(writer, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(writer, DecorativeBlocks.STAR_CLOUD_BLOCK.toStack(10), Ingredient.of(MaterialItems.FALLING_STAR), AmountIngredient.of(10, NatureBlocks.CLOUD_BLOCK));
@@ -241,8 +198,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         skyMill(writer, DecorativeBlocks.SUN_PLATE.WALL.toStack(), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(writer, DecorativeBlocks.SUN_PLATE.SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(writer, NatureBlocks.CLOUD_BLOCK.toStack(2), Ingredient.of(MaterialItems.WEAVING_CLOUD_COTTON));
-        skyMill(writer, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
-        skyMill(writer, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(provider.lookupOrThrow(Registries.BIOME).getOrThrow(PortTags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
+        skyMill(writer, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), provider, Ingredient.of(NatureBlocks.CLOUD_BLOCK));
+        skyMill(writer, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(provider.lookupOrThrow(Registries.BIOME).getOrThrow(PortTags.Biomes.IS_COLD_OVERWORLD), null, false), provider, Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(writer, TFBlocks.SKYWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.SUN_PLATE.FULL));
         skyMill(writer, TFBlocks.DUSKWARE_SET.TABLE.toStack(), AmountIngredient.of(8, DecorativeBlocks.MOON_PLATE.FULL));
         skyMill(writer, DecorativeBlocks.DISC_BLOCK.STAIRS.toStack(), Ingredient.of(DecorativeBlocks.DISC_BLOCK.FULL));
@@ -262,47 +219,34 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         baseRobe(writer, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_JADE), Ingredient.of(ModTags.Items.GEMS_JADE), ArmorItems.JADE_ROBE.toStack());
         baseRobe(writer, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_SAPPHIRE), Ingredient.of(ModTags.Items.GEMS_SAPPHIRE), ArmorItems.SAPPHIRE_ROBE.toStack());
         baseRobe(writer, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMETHYST), Ingredient.of(ModTags.Items.GEMS_AMETHYST), ArmorItems.AMETHYST_ROBE.toStack());
-        loom(writer, VanityArmorItems.ROBE.toStack(),
-                PortShapedRecipePattern.of(
-                        Map.of(
-                                '#', AmountIngredient.of(3, MaterialItems.SILK),
-                                'a', AmountIngredient.of(2, MaterialItems.SILK)
-                        ),
-                        List.of(
-                                "#a#",
-                                "# #",
-                                "# #"
-                        )
-                )
-        );
-        loom(writer, ArmorItems.FLINX_FUR_COAT.toStack(),
-                PortShapedRecipePattern.of(
-                        Map.of(
-                                'a', AmountIngredient.of(4, MaterialItems.FLINX_FUR),
-                                'b', AmountIngredient.of(2, MaterialItems.SILK),
-                                '#', AmountIngredient.of(8, ModTags.Items.GOLD_AND_PLATINUM)
-                        ),
-                        List.of(
-                                "a#a",
-                                "bbb",
-                                "b b"
-                        )
-                )
-        );
+        loom(writer, VanityArmorItems.ROBE.toStack(), PortShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(3, MaterialItems.SILK),
+                'a', AmountIngredient.of(2, MaterialItems.SILK)
+        ), List.of(
+                "#a#",
+                "# #",
+                "# #"
+        )));
+        loom(writer, ArmorItems.FLINX_FUR_COAT.toStack(), PortShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, MaterialItems.FLINX_FUR),
+                'b', AmountIngredient.of(2, MaterialItems.SILK),
+                '#', AmountIngredient.of(8, ModTags.Items.GOLD_AND_PLATINUM)
+        ), List.of(
+                "a#a",
+                "bbb",
+                "b b"
+        )));
 
         // 哥布林战旗
-        loom(writer, ConsumableItems.GOBLIN_BATTLE_STANDARD.toStack(),
-                PortShapedRecipePattern.of(Map.of(
-                                '#', AmountIngredient.of(3, MaterialItems.TATTERED_CLOTH),
-                                'b', Ingredient.of(MaterialItems.TATTERED_CLOTH),
-                                'a', AmountIngredient.of(2, ItemTags.PLANKS)
-                        ), List.of(
-                                "###",
-                                " b ",
-                                "aaa"
-                        )
-                )
-        );
+        loom(writer, ConsumableItems.GOBLIN_BATTLE_STANDARD.toStack(), PortShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(3, MaterialItems.TATTERED_CLOTH),
+                'b', Ingredient.of(MaterialItems.TATTERED_CLOTH),
+                'a', AmountIngredient.of(2, ItemTags.PLANKS)
+        ), List.of(
+                "###",
+                " b ",
+                "aaa"
+        )));
 
         workshop(writer, AccessoryItems.ANGLER_TACKLE_BAG.toStack(), Ingredient.of(AccessoryItems.HIGH_TEST_FISHING_LINE), Ingredient.of(AccessoryItems.TACKLE_BOX), Ingredient.of(TCItems.ANGLER_EARRING));
         workshop(writer, AccessoryItems.MAGIC_CUFFS.toStack(), Ingredient.of(AccessoryItems.MANA_REGENERATION_BAND), Ingredient.of(TCItems.SHACKLE));
@@ -327,41 +271,29 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(writer, TCItems.ARCHITECT_GIZMO_PACK.toStack(), Ingredient.of(TCItems.BRICK_LAYER), Ingredient.of(TCItems.EXTENDO_GRIP), Ingredient.of(TCItems.PORTABLE_CEMENT_MIXER), Ingredient.of(AccessoryItems.PAINT_SPRAYER));
         workshop(writer, AccessoryItems.ARCANE_FLOWER.toStack(), Ingredient.of(TCItems.PUTRID_SCENT), Ingredient.of(AccessoryItems.MANA_FLOWER));
         workshop(writer, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
-        workshop(writer, AccessoryItems.BAND_OF_STARPOWER.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(TCItems.PANIC_NECKLACE));
-        workshop(writer, TCItems.PANIC_NECKLACE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        workshop(writer, AccessoryItems.BAND_OF_STARPOWER.toStack(), EnvironmentLevelAccess.matcher(null, null, true), provider, Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(TCItems.PANIC_NECKLACE));
+        workshop(writer, TCItems.PANIC_NECKLACE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), provider, Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
         workshop(writer, TCItems.CELL_PHONE.toStack(), Ingredient.of(TCItems.PDA), Ingredient.of(ToolItems.ICE_MIRROR));
 
-        solidifier(writer, DecorativeBlocks.BLUE_GEL_BLOCK.toStack(),
-                PortShapedRecipePattern.of(Map.of(
-                                '#', Ingredient.of(MaterialItems.GEL)),
-                        List.of(
-                                "##",
-                                "##"
-                        )
-                )
-        );
-        solidifier(writer, DecorativeBlocks.PINK_GEL_BLOCK.toStack(),
-                PortShapedRecipePattern.of(Map.of(
-                                '#', Ingredient.of(MaterialItems.PINK_GEL)
-                        ),
-                        List.of(
-                                "##",
-                                "##"
-                        )
-                )
-        );
-        solidifier(writer, DecorativeBlocks.FROZEN_GEL_BLOCK.toStack(),
-                PortShapedRecipePattern.of(Map.of(
-                                '#', Ingredient.of(DecorativeBlocks.BLUE_GEL_BLOCK),
-                                'a', Ingredient.of(Items.BLUE_ICE)
-                        ),
-                        List.of(
-                                "a",
-                                "#"
-                        )
-                )
-        );
-
+        solidifier(writer, DecorativeBlocks.BLUE_GEL_BLOCK.toStack(), PortShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(MaterialItems.GEL)
+        ), List.of(
+                "##",
+                "##"
+        )));
+        solidifier(writer, DecorativeBlocks.PINK_GEL_BLOCK.toStack(), PortShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(MaterialItems.PINK_GEL)
+        ), List.of(
+                "##",
+                "##"
+        )));
+        solidifier(writer, DecorativeBlocks.FROZEN_GEL_BLOCK.toStack(), PortShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.BLUE_GEL_BLOCK),
+                'a', Ingredient.of(Items.BLUE_ICE)
+        ), List.of(
+                "a",
+                "#"
+        )));
 
         hellforge(writer, MaterialItems.HELLSTONE_INGOT.toStack(), 0.2F, 100, true, AmountIngredient.of(3, MaterialItems.RAW_HELLSTONE), Ingredient.of(Items.OBSIDIAN));
         hellforge(writer, MaterialItems.COBALT_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(3, MaterialItems.RAW_COBALT));
@@ -470,9 +402,9 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(writer, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS), AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
         crystalBlock(writer, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME), AmountIngredient.of(20, MaterialItems.ICHOR), AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(writer, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(PortTags.Items.SANDS));
-        crystalBlock(writer, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(provider), false), emptyDropper);
-        crystalBlock(writer, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(provider), false), emptyDropper);
-        crystalBlock(writer, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), emptyDropper);
+        crystalBlock(writer, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(provider), false), provider, emptyDropper);
+        crystalBlock(writer, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(provider), false), provider, emptyDropper);
+        crystalBlock(writer, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), provider, emptyDropper);
         crystalBlock(writer, FunctionalBlocks.WATER_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES));
         crystalBlock(writer, FunctionalBlocks.RAINBOW_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), AmountIngredient.of(50, MaterialItems.FALLING_STAR));
 
@@ -558,14 +490,23 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         writer.accept(new SimpleFinishedRecipe<>(id, new SolidifierRecipe(result, zingredients)));
     }
 
+    protected void hook(Consumer<FinishedRecipe> writer, Ingredient chain, Ingredient head, ItemLike result) {
+        ResourceLocation id = Confluence.asResource("smithing/" + getItemName(result));
+        NonNullList<Ingredient> ingredients = NonNullList.of(Ingredient.EMPTY, chain, head);
+        writer.accept(new SmithingTransformRecipeBuilder.Result(id, RecipeSerializer.SMITHING_TRANSFORM, chain, chain, head, result.asItem(), createAdvancementBuilder(id, ingredients), id.withPrefix("recipes/confluence/")));
+    }
 
     protected void skyMill(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
         skyMill(writer, result, EnvironmentLevelAccess.Matcher.EMPTY, ingredients);
     }
 
     protected void skyMill(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
+        skyMill(writer, result, environment, null, ingredients);
+    }
+
+    protected void skyMill(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, @Nullable HolderLookup.Provider provider, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
-        writer.accept(new SimpleFinishedRecipe<>(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment)));
+        writer.accept(new SimpleFinishedRecipe<>(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment), provider));
     }
 
     protected void workshop(Consumer<FinishedRecipe> writer, ItemStack result, Ingredient... ingredients) {
@@ -573,8 +514,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     }
 
     protected void workshop(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
+        workshop(writer, result, environment, null, ingredients);
+    }
+
+    protected void workshop(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, @Nullable HolderLookup.Provider provider, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("workshop/" + getItemName(result.getItem()));
-        writer.accept(new SimpleFinishedRecipe<>(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment)));
+        writer.accept(new SimpleFinishedRecipe<>(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment), provider));
     }
 
     protected void hellforge(Consumer<FinishedRecipe> writer, ItemStack result, float experience, int cookingTime, boolean requiresFuel, Ingredient... ingredients) {
@@ -609,9 +554,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     }
 
     protected void crystalBlock(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
+        crystalBlock(writer, result, environment, null, ingredients);
+    }
+
+    protected void crystalBlock(Consumer<FinishedRecipe> writer, ItemStack result, EnvironmentLevelAccess.Matcher environment, @Nullable HolderLookup.Provider provider, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("crystal_block/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        writer.accept(new SimpleFinishedRecipe<>(id, new CrystalBallRecipe(result, zingredients, environment)));
+        writer.accept(new SimpleFinishedRecipe<>(id, new CrystalBallRecipe(result, zingredients, environment), provider));
     }
 
     protected void hardmodeForge(Consumer<FinishedRecipe> writer, ItemStack result, float experience, int cookingTime, boolean requiresFuel, Ingredient... ingredients) {

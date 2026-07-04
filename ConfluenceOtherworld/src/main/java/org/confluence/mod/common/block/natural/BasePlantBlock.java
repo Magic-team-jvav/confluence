@@ -16,22 +16,22 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.data.saved.KillBoard;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class BasePlantBlock extends BushBlock {
     protected static final VoxelShape SHAPE = box(2, 0, 2, 14, 13, 14);
 
-    protected final List<Block> survive;
-    private transient Set<Block> cache;
+    protected Supplier<List<? extends Block>> survive;
+    private Set<Block> cache;
 
-    public BasePlantBlock(Block... survive) {
-        this(Properties.copy(Blocks.DANDELION).replaceable(), Arrays.stream(survive).toList());
+    public BasePlantBlock(Supplier<List<? extends Block>> survive) {
+        this(Properties.copy(Blocks.DANDELION).replaceable(), survive);
     }
 
-    public BasePlantBlock(Properties prop, List<Block> survive) {
+    public BasePlantBlock(Properties prop, Supplier<List<? extends Block>> survive) {
         super(prop);
         this.survive = survive;
     }
@@ -44,7 +44,10 @@ public class BasePlantBlock extends BushBlock {
 
     @Override
     public boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        if (cache == null) this.cache = new HashSet<>(survive);
+        if (cache == null) {
+            this.cache = survive.get().stream().collect(Collectors.toUnmodifiableSet());
+            this.survive = null;
+        }
         return cache.contains(state.getBlock());
     }
 

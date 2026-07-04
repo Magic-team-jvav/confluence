@@ -219,23 +219,6 @@ public class AltarBlock extends BaseEntityBlock {
         return false;
     }
 
-    public static final GeoItemRenderer<BItem> ALTAR_RENDERER = new GeoItemRenderer<>(new GeoModel<>() {
-        @Override
-        public ResourceLocation getModelResource(BItem animatable) {
-            return AltarBlockModel.MODELS[animatable.getVariant().getId()];
-        }
-
-        @Override
-        public ResourceLocation getTextureResource(BItem animatable) {
-            return AltarBlockModel.TEXTURES[animatable.getVariant().getId()];
-        }
-
-        @Override
-        public ResourceLocation getAnimationResource(BItem animatable) {
-            return AltarBlockModel.ANIMATIONS[animatable.getVariant().getId()];
-        }
-    });
-
     public static class BEntity extends BaseContainerBlockEntity implements GeoBlockEntity {
         public static final int CONTAINER_SIZE = 6;
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);

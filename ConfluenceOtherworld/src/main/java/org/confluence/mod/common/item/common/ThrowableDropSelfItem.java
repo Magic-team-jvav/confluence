@@ -12,18 +12,20 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-public class ThrowableDropSelfItem extends Item {
-    final EntityType<? extends ThrowableDropSelfProjectile> entityType;
-    final boolean dropSelf;
-    final float inaccuracy;
-    final float power;
-    final int cooldown;
-    final float damage;
-    final int flyTicks;
+import java.util.function.Supplier;
 
-    public ThrowableDropSelfItem(EntityType<? extends ThrowableDropSelfProjectile> entityType, float damage, float power, float inaccuracy, int cooldown, int flyTicks, boolean dropSelf) {
+public class ThrowableDropSelfItem extends Item {
+    protected final Supplier<EntityType<? extends ThrowableDropSelfProjectile>> typeSup;
+    protected final boolean dropSelf;
+    protected final float inaccuracy;
+    protected final float power;
+    protected final int cooldown;
+    protected final float damage;
+    protected final int flyTicks;
+
+    public ThrowableDropSelfItem(Supplier<EntityType<? extends ThrowableDropSelfProjectile>> typeSup, float damage, float power, float inaccuracy, int cooldown, int flyTicks, boolean dropSelf) {
         super(new Properties());
-        this.entityType = entityType;
+        this.typeSup = typeSup;
         this.dropSelf = dropSelf;
         this.inaccuracy = inaccuracy;
         this.power = power;
@@ -37,7 +39,7 @@ public class ThrowableDropSelfItem extends Item {
         ItemStack itemstack = player.getItemInHand(hand);
         if (!level.isClientSide) {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.WAVING.get(), SoundSource.PLAYERS, 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
-            ThrowableDropSelfProjectile projectile = entityType.create(level);
+            ThrowableDropSelfProjectile projectile = typeSup.get().create(level);
             if (projectile != null) {
                 projectile.setOwner(player);
                 if (dropSelf) {

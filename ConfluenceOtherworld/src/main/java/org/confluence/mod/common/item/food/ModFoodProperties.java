@@ -5,8 +5,9 @@ import com.google.common.base.Suppliers;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.init.ModEffects;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -79,36 +80,36 @@ public class ModFoodProperties {
     }
 
     // 带容器返还的版本
-    public static FoodProperties wellFedProperties(int duration, int nutrition, float saturation, ItemLike item) {
+    public static FoodProperties wellFedProperties(int duration, int nutrition, float saturation, Supplier<@Nullable ItemStack> item) {
         return ModFoodPropertiesBuilder.Builder()
                 .nutrition(nutrition)
                 .saturation(saturation)
                 .fast()
                 .alwaysEdible()
-                .useCovertsTo(item)
+                .usingConvertsTo(item)
                 .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration), 1.0f)
                 .build();
     }
 
-    public static FoodProperties plentySatisfiedProperties(int duration, int nutrition, float saturation, ItemLike item) {
+    public static FoodProperties plentySatisfiedProperties(int duration, int nutrition, float saturation, Supplier<@Nullable ItemStack> item) {
         return ModFoodPropertiesBuilder.Builder()
                 .nutrition(nutrition)
                 .saturation(saturation)
                 .fast()
                 .alwaysEdible()
-                .useCovertsTo(item)
+                .usingConvertsTo(item)
                 .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration, 1), 1.0f)
                 .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED.get(), duration / 6), 1.0f)
                 .build();
     }
 
-    public static FoodProperties exquisitelyStuffedProperties(int duration, int nutrition, float saturation, ItemLike item) {
+    public static FoodProperties exquisitelyStuffedProperties(int duration, int nutrition, float saturation, Supplier<@Nullable ItemStack> item) {
         return ModFoodPropertiesBuilder.Builder()
                 .nutrition(nutrition)
                 .saturation(saturation)
                 .fast()
                 .alwaysEdible()
-                .useCovertsTo(item)
+                .usingConvertsTo(item)
                 .addEffect(new MobEffectInstance(ModEffects.EXQUISITELY_STUFFED.get(), duration, 2), 1.0f)
                 .addEffect(new MobEffectInstance(ModEffects.HUNGER_DELAYED.get(), duration / 6, 1), 1.0f)
                 .build();

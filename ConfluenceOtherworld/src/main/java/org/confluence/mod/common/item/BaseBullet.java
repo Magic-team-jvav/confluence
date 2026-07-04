@@ -51,8 +51,8 @@ public class BaseBullet extends Item {
         return colorID;
     }
 
-    public static class EmptyBullet extends BaseBullet {
-        public EmptyBullet(Properties properties) {
+    public static class Dummy extends BaseBullet {
+        public Dummy(Properties properties) {
             super(properties, 0, 0, 0, 0, ModRarity.WHITE, 0, false);
         }
 

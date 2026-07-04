@@ -4,7 +4,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
 public class JewelSquirrel extends Squirrel {
-
     private static final Variant[] JEWEL_VARIANTS = {
             Variant.AMETHYST, Variant.TOPAZ, Variant.SAPPHIRE,
             Variant.EMERALD, Variant.RUBY, Variant.AMBER, Variant.DIAMOND

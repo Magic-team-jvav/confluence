@@ -10,16 +10,16 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class InversePlantBlock extends BasePlantBlock {
-
     protected static final VoxelShape SHAPE = box(2, 3, 2, 14, 16, 14);
 
-    public InversePlantBlock(Properties prop, List<Block> survive) {
+    public InversePlantBlock(Properties prop, Supplier<List<? extends Block>> survive) {
         super(prop, survive);
     }
 
-    public InversePlantBlock(Block... survive) {
+    public InversePlantBlock(Supplier<List<? extends Block>> survive) {
         super(survive);
     }
 

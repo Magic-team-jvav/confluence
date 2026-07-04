@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -19,6 +20,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.CookingPotRecipe;
 import org.confluence.mod.common.recipe.CookingPotRecipe.HeatSourcePredicate;
+import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.function.Consumer;
@@ -29,7 +31,7 @@ public class CookingPotRecipeProvider extends AbstractRecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(Consumer<FinishedRecipe> writer) {
+    protected void buildRecipes(Consumer<FinishedRecipe> writer, HolderLookup.Provider provider) {
         Ingredient bottleContainer = Ingredient.of(PotionItems.BOTTLE);
         Ingredient bowlContainer = Ingredient.of(Items.BOWL);
         HeatSourcePredicate campfireHeatSource = HeatSourcePredicate.builder().of(BlockTags.CAMPFIRES).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BlockStateProperties.LIT, true)).build();
@@ -42,7 +44,7 @@ public class CookingPotRecipeProvider extends AbstractRecipeProvider {
         cookingPot(writer, FoodItems.COOKED_SHRIMP.toStack(), Ingredient.EMPTY, campfireHeatSource, 200, Ingredient.of(FoodItems.SHRIMP));
         cookingPot(writer, FoodItems.ESCARGOT.toStack(), Ingredient.EMPTY, campfireHeatSource, 200, Ingredient.of(BaitItems.SNAIL));
         cookingPot(writer, FoodItems.FROGGLE_BUNWICH.toStack(), Ingredient.EMPTY, campfireHeatSource, 200, AmountIngredient.of(2, FoodItems.RAW_FROG));
-        cookingPot(writer, FoodItems.FROZEN_BANANA_DAIQUIRI.toStack(), bottleContainer, snowHeatSource, 100, Ingredient.of(FoodItems.BANANA));
+        cookingPot(writer, "", FoodItems.FROZEN_BANANA_DAIQUIRI.toStack(), bottleContainer, snowHeatSource, 100, provider, Ingredient.of(FoodItems.BANANA));
         cookingPot(writer, FoodItems.FRUIT_JUICE.toStack(), bottleContainer, HeatSourcePredicate.EMPTY, 100, AmountIngredient.of(3, PortTags.Items.FOODS_FRUIT));
         cookingPot(writer, FoodItems.FRUIT_SALAD.toStack(), bowlContainer, HeatSourcePredicate.EMPTY, 100, AmountIngredient.of(3, PortTags.Items.FOODS_FRUIT));
         cookingPot(writer, FoodItems.GOLDEN_DELIGHT.toStack(), Ingredient.EMPTY, campfireHeatSource, 200, Ingredient.of(ModTags.Items.GOLD_COOKING));
@@ -73,9 +75,13 @@ public class CookingPotRecipeProvider extends AbstractRecipeProvider {
     }
 
     protected void cookingPot(Consumer<FinishedRecipe> writer, String suffix, ItemStack result, Ingredient container, HeatSourcePredicate heatSource, int cookingTime, Ingredient... ingredients) {
+        cookingPot(writer, suffix, result, container, heatSource, cookingTime, null, ingredients);
+    }
+
+    protected void cookingPot(Consumer<FinishedRecipe> writer, String suffix, ItemStack result, Ingredient container, HeatSourcePredicate heatSource, int cookingTime, @Nullable HolderLookup.Provider provider, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("cooking_pot/" + getItemName(result.getItem()) + suffix);
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
         CookingPotRecipe recipe = new CookingPotRecipe(result, zingredients, container, heatSource, cookingTime);
-        writer.accept(new SimpleFinishedRecipe<>(id, recipe));
+        writer.accept(new SimpleFinishedRecipe<>(id, recipe, provider));
     }
 }

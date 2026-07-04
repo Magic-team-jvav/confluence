@@ -6,7 +6,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.diff.IPortFoodProperties;
 
@@ -25,7 +24,7 @@ public class ModFoodPropertiesBuilder {
 
     private float eatSeconds;
 
-    private @Nullable ItemStack usingConvertsTo;
+    private Supplier<@Nullable ItemStack> usingConvertsTo;
 
     public static ModFoodPropertiesBuilder Builder() {
         return new ModFoodPropertiesBuilder();
@@ -43,11 +42,6 @@ public class ModFoodPropertiesBuilder {
 
     public ModFoodPropertiesBuilder alwaysEdible() {
         this.canAlwaysEat = true;
-        return this;
-    }
-
-    public ModFoodPropertiesBuilder usingConvertsTo(ItemStack usingConvertsTo) {
-        this.usingConvertsTo = usingConvertsTo;
         return this;
     }
 
@@ -74,8 +68,8 @@ public class ModFoodPropertiesBuilder {
         return addEffect(() -> effect, 1.0f);
     }
 
-    public ModFoodPropertiesBuilder useCovertsTo(ItemLike usingConvertsTo) {
-        this.usingConvertsTo = usingConvertsTo.asItem().getDefaultInstance();
+    public ModFoodPropertiesBuilder usingConvertsTo(Supplier<@Nullable ItemStack> usingConvertsTo) {
+        this.usingConvertsTo = usingConvertsTo;
         return this;
     }
 

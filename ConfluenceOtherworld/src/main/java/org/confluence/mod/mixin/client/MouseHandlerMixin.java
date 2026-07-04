@@ -19,7 +19,10 @@ public abstract class MouseHandlerMixin {
 
     @WrapWithCondition(method = "onMove", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MouseHandler;turnPlayer()V"))
     private boolean canTurn(MouseHandler instance) {
-        return ILocalPlayer.of(minecraft.player).confluence$isCanMove();
+        if (minecraft.player != null) {
+            return ILocalPlayer.of(minecraft.player).confluence$isCanMove();
+        }
+        return true;
     }
 
     @WrapWithCondition(method = "onPress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MouseHandler;grabMouse()V"))

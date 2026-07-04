@@ -152,6 +152,11 @@ public class ModDataProvider {
             public Optional<HolderSet.Named<T>> get(TagKey<T> tagKey) {
                 return tags.computeIfAbsent(tagKey, holderGetter::get);
             }
+
+            @Override
+            public boolean canSerializeIn(HolderOwner<T> owner) {
+                return true;
+            }
         };
     }
 
@@ -1678,26 +1683,26 @@ public class ModDataProvider {
                     })).build()
             );
             context.register(ModBiomes.GLOWING_MUSHROOM, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
-                    .specialEffects(new BiomeSpecialEffects.Builder().fogColor(12638463).waterColor(4159204).waterFogColor(329011).skyColor(12638463).build())
-                    .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_BAT.get(), 60, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_SKELETON.get(), 60, 1, 2))
+                            .specialEffects(new BiomeSpecialEffects.Builder().fogColor(12638463).waterColor(4159204).waterFogColor(329011).skyColor(12638463).build())
+                            .mobSpawnSettings(new MobSpawnSettings.Builder()
+                                    .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_BAT.get(), 60, 1, 2))
+                                    .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_SKELETON.get(), 60, 1, 2))
 //                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_ZOMBIE.get(), 45, 1, 2))
 //                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 1, 1, 1))
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_SNAIL.get(), 10, 1, 2))
-                            .build())
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
-                        addDefaultGenerations(builder);
-                        builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.GLOWING_MUSHROOM_CAVE_CARVER);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.HUGE_LIFE_MUSHROOM_TREE);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_LIFE_CRYSTAL);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_TREE);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_VINE);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_CATTAILS);
-                    })).build()
+                                    .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 1, 1, 1))
+                                    .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 1, 1, 1))
+                                    .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_SNAIL.get(), 10, 1, 2))
+                                    .build())
+                            .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                                addDefaultGenerations(builder);
+                                builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.GLOWING_MUSHROOM_CAVE_CARVER);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.HUGE_LIFE_MUSHROOM_TREE);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_LIFE_CRYSTAL);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_TREE);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_VINE);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_CATTAILS);
+                            })).build()
             );
             context.register(ModBiomes.CHORUS_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
@@ -1729,26 +1734,26 @@ public class ModDataProvider {
                     })).build()
             );
             context.register(ModBiomes.INVERSE_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
-                    .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
-                    .mobSpawnSettings(mobSpawnSettings(builder -> {
+                            .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
+                            .mobSpawnSettings(mobSpawnSettings(builder -> {
 //                        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.INVERSE_ENDERMAN.get(), 10, 4, 4));
-                    }))
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
-                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_GRASS);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_GRASS);
-                    })).build()
+                            }))
+                            .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                                builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_GRASS);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_GRASS);
+                            })).build()
             );
             context.register(ModBiomes.INVERSE_PLAINS, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
-                    .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
-                    .mobSpawnSettings(mobSpawnSettings(builder -> {
+                            .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())
+                            .mobSpawnSettings(mobSpawnSettings(builder -> {
 //                        builder.addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(ModEntities.INVERSE_ENDERMAN.get(), 10, 4, 4));
-                    }))
-                    .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
-                        builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_GRASS);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_GRASS);
-                    })).build()
+                            }))
+                            .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
+                                builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_GRASS);
+                                builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_GRASS);
+                            })).build()
             );
             context.register(ModBiomes.MOONBLIGHT_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
                     .specialEffects(new BiomeSpecialEffects.Builder().fogColor(0x000000).waterColor(0x000000).waterFogColor(0x000000).skyColor(0x000000).build())

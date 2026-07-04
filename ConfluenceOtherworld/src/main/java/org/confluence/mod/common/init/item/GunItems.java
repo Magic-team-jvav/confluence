@@ -56,7 +56,8 @@ public class GunItems {
     public static final PortDeferredItem<BaseBullet> NANO_BULLET = registerBullet("nano_bullet", properties -> new BaseBullet(properties.stacksTo(99), 5.5f, 0.57f, 3, 0.18f, ModRarity.ORANGE, 0, false));
     public static final PortDeferredItem<BaseBullet> ENDLESS_MUSKET_POUCH = registerBullet("endless_musket_pouch", properties -> new BaseBullet(properties.stacksTo(1), 1.5f, 0.5f, 2, 0.1f, ModRarity.GREEN, 0, true));
     public static final PortDeferredItem<BaseBullet> LUMINITE_BULLET = registerBullet("luminite_bullet", properties -> new BaseBullet(properties.stacksTo(99), 6f, 0.25f, 6, 0.15f, ModRarity.CYAN, -1, false));
-    public static final PortDeferredItem<BaseBullet> EMPTY_BULLET = ITEMS.register("empty_bullet", () -> new BaseBullet.EmptyBullet(new Item.Properties()));
+
+    public static final PortDeferredItem<BaseBullet> DUMMY_BULLET = ITEMS.register("dummy_bullet", () -> new BaseBullet.Dummy(new Item.Properties()));
 
     private static PortDeferredItem<BaseGun> registerGun(String name, BaseGun.Builder builder) {
         PortDeferredItem<BaseGun> item = ITEMS.register(name, builder::build);

@@ -41,9 +41,8 @@ public abstract class CreateWorldScreenMixin {
 //            }), settings -> settings.paddingLeft(-4));
 //            return original.call(font, layout, label);
 //        }
-        @SuppressWarnings("UnresolvedLocalCapture")
         @Inject(method = "<init>", at = @At("TAIL"))
-        private void setSeedEditorWidthAndAddButton(CreateWorldScreen this$0, CallbackInfo ci, @Local GridLayout.RowHelper gridlayout$rowhelper1) {
+        private void setSeedEditorWidthAndAddButton(CreateWorldScreen this$0, CallbackInfo ci, @Local(name = "gridlayout$rowhelper1") GridLayout.RowHelper gridlayout$rowhelper1) {
             seedEdit.setWidth(seedEdit.getWidth() - seedEdit.getHeight() - 2);
             gridlayout$rowhelper1.addChild(new PortImageButton(0, 0, 20, 20, SecretSeedsSelectionScreen.SPRITES, button -> {
                 button.setFocused(false);

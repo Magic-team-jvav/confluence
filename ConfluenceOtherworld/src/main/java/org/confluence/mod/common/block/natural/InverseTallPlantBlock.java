@@ -12,14 +12,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class InverseTallPlantBlock extends BaseTallPlantBlock {
-
-    public InverseTallPlantBlock(Properties prop, List<Block> survive) {
+    public InverseTallPlantBlock(Properties prop, Supplier<List<? extends Block>> survive) {
         super(prop, survive);
     }
 
-    public InverseTallPlantBlock(Block... survive) {
+    public InverseTallPlantBlock(Supplier<List<? extends Block>> survive) {
         super(survive);
     }
 

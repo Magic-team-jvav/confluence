@@ -37,17 +37,17 @@ public final class ModVillagers {
     public static final DeferredRegister<VillagerType> TYPES = DeferredRegister.create(Registries.VILLAGER_TYPE, MODID);
 
     // 村民的兴趣点
-    public static final RegistryObject<PoiType> SKY_POI = POIS.register("sky", () -> new PoiType(ImmutableSet.of()/* todo villager ImmutableSet.copyOf(FunctionalBlocks.SKY_MILL.get().getStateDefinition().getPossibleStates())*/, 1, 1));
-    public static final RegistryObject<PoiType> COOKING_POI = POIS.register("cooking", () -> new PoiType(ImmutableSet.copyOf(Blocks.CAMPFIRE/* todo villager FunctionalBlocks.COOKING_POT.get()*/.getStateDefinition().getPossibleStates()), 1, 1));
-    public static final RegistryObject<PoiType> COIN_POI = POIS.register("coin", () -> new PoiType(ImmutableSet.copyOf(Blocks.EMERALD_BLOCK/* todo villager FunctionalBlocks.SAFE.get()*/.getStateDefinition().getPossibleStates()), 1, 1));
+    public static final RegistryObject<PoiType> SKY_POI = POIS.register("sky", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SKY_MILL.get().getStateDefinition().getPossibleStates()), 1, 1));
+    public static final RegistryObject<PoiType> COOKING_POI = POIS.register("cooking", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.COOKING_POT.get().getStateDefinition().getPossibleStates()), 1, 1));
+    public static final RegistryObject<PoiType> COIN_POI = POIS.register("coin", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SAFE.get().getStateDefinition().getPossibleStates()), 1, 1));
 
     // 村民的职业
-    public static final RegistryObject<VillagerProfession> SKY_MILLER = PROFESSIONS.register("sky_miller", () -> new VillagerProfession("sky", holder -> holder.is(SKY_POI.getId()), holder -> holder.is(SKY_POI.getId()), ImmutableSet.of(/* todo villager MaterialItems.FALLING_STAR.get()*/), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_WEAPONSMITH));
-    public static final RegistryObject<VillagerProfession> CHEF = PROFESSIONS.register("chef", () -> new VillagerProfession("chef", holder -> holder.is(COOKING_POI.getId()), holder -> holder.is(COOKING_POI.getId()), ImmutableSet.of(/* todo villager FoodItems.COOK_FISH.get()*/), ImmutableSet.of(), SoundEvents.CAMPFIRE_CRACKLE));
+    public static final RegistryObject<VillagerProfession> SKY_MILLER = PROFESSIONS.register("sky_miller", () -> new VillagerProfession("sky", holder -> holder.is(SKY_POI.getId()), holder -> holder.is(SKY_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_WEAPONSMITH));
+    public static final RegistryObject<VillagerProfession> CHEF = PROFESSIONS.register("chef", () -> new VillagerProfession("chef", holder -> holder.is(COOKING_POI.getId()), holder -> holder.is(COOKING_POI.getId()), ImmutableSet.of(FoodItems.COOK_FISH.get()), ImmutableSet.of(), SoundEvents.CAMPFIRE_CRACKLE));
     public static final RegistryObject<VillagerProfession> BANKER = PROFESSIONS.register("banker", () -> new VillagerProfession("coin", holder -> holder.is(COIN_POI.getId()), holder -> holder.is(COIN_POI.getId()), ImmutableSet.of(
-            /* todo villager ModItems.GOLD_COIN.get(),
+            ModItems.GOLD_COIN.get(),
             ModItems.PLATINUM_COIN.get(),
-            ModItems.EMERALD_COIN.get()*/
+            ModItems.EMERALD_COIN.get()
     ), ImmutableSet.of(), ModSoundEvents.COINS.get()));
 
     // 村民的群系

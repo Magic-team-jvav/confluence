@@ -14,7 +14,7 @@ public class NpcEntities {
 
     private static RegistryObject<EntityType<SimpleNPC>> register(String name) {
         return PortDeferredRegisterExtension.register(ENTITIES, name,
-                id -> EntityType.Builder.of(SimpleNPC::new, MobCategory.MISC)
+                id -> EntityType.Builder.of(SimpleNPC::new, MobCategory.CREATURE)
                         .sized(0.6F, 1.85F)
                         .clientTrackingRange(10)
                         .build(id.toString()));
@@ -37,20 +37,20 @@ public class NpcEntities {
 
     // 有特殊行为的 NPC 子类
     public static final RegistryObject<EntityType<GuideNPC>> GUIDE = PortDeferredRegisterExtension.register(ENTITIES, "guide",
-            id -> EntityType.Builder.of(GuideNPC::new, MobCategory.MISC).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
+            id -> EntityType.Builder.of(GuideNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<NurseNPC>> NURSE = PortDeferredRegisterExtension.register(ENTITIES, "nurse",
-            id -> EntityType.Builder.of(NurseNPC::new, MobCategory.MISC).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
+            id -> EntityType.Builder.of(NurseNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<DemolitionistNPC>> DEMOLITIONIST = PortDeferredRegisterExtension.register(ENTITIES, "demolitionist",
-            id -> EntityType.Builder.of(DemolitionistNPC::new, MobCategory.MISC).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
+            id -> EntityType.Builder.of(DemolitionistNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<ArmsDealerNPC>> ARMS_DEALER = PortDeferredRegisterExtension.register(ENTITIES, "arms_dealer",
-            id -> EntityType.Builder.of(ArmsDealerNPC::new, MobCategory.MISC).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
+            id -> EntityType.Builder.of(ArmsDealerNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<GoblinTinkererNPC>> GOBLIN_TINKERER = PortDeferredRegisterExtension.register(ENTITIES, "goblin_tinkerer",
-            id -> EntityType.Builder.of(GoblinTinkererNPC::new, MobCategory.MISC).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
+            id -> EntityType.Builder.of(GoblinTinkererNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
 
     public static final RegistryObject<EntityType<AnglerNPC>> ANGLER = PortDeferredRegisterExtension.register(ENTITIES, "angler",
-            id -> EntityType.Builder.of(AnglerNPC::new, MobCategory.MISC).sized(0.6F, 1.4F).clientTrackingRange(10).build(id.toString()));
+            id -> EntityType.Builder.of(AnglerNPC::new, MobCategory.CREATURE).sized(0.6F, 1.4F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<TravelingMerchantNPC>> TRAVELING_MERCHANT = PortDeferredRegisterExtension.register(ENTITIES, "traveling_merchant",
-            id -> EntityType.Builder.of(TravelingMerchantNPC::new, MobCategory.MISC).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
+            id -> EntityType.Builder.of(TravelingMerchantNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<OldManNPC>> OLD_MAN = PortDeferredRegisterExtension.register(ENTITIES, "old_man",
-            id -> EntityType.Builder.of(OldManNPC::new, MobCategory.MISC).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
+            id -> EntityType.Builder.of(OldManNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
 }

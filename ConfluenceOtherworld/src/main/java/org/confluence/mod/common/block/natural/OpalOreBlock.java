@@ -2,18 +2,18 @@ package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.level.block.BrushableBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BrushableBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import org.confluence.lib.common.block.SupBrushableBlock;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-public class OpalOreBlock extends BrushableBlock {
+public class OpalOreBlock extends SupBrushableBlock {
     public OpalOreBlock() {
-        super(NatureBlocks.DIATOMACEOUS.get(), BlockBehaviour.Properties.of().strength(3.0F, 3.0F).pushReaction(PushReaction.BLOCK), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED);
+        super(NatureBlocks.DIATOMACEOUS, BlockBehaviour.Properties.of().strength(3.0F, 3.0F).pushReaction(PushReaction.BLOCK), SoundEvents.BRUSH_SAND, SoundEvents.BRUSH_SAND_COMPLETED);
     }
 
     @Override

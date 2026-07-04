@@ -22,20 +22,20 @@ public abstract class ModelBlockRendererMixin {
     private void putColor(VertexConsumer instance, PoseStack.Pose poseEntry, BakedQuad quad, float[] colorMuls, float red, float green, float blue, int[] combinedLights, int combinedOverlay, boolean mulColor, Operation<Void> original, @Local(argsOnly = true) BlockPos pPos) {
         int color = LocalBrushData.getColor(pPos, quad.getDirection());
         if (color == BrushData.EMPTY_COLOR || color == BrushData.ECHO_COLOR) {
-            original.call(instance, poseEntry, quad, combinedLights, red, green, blue, combinedLights, combinedOverlay, mulColor);
+            original.call(instance, poseEntry, quad, colorMuls, red, green, blue, combinedLights, combinedOverlay, mulColor);
         } else if (color == BrushData.ILLUMINANT_COLOR) {
-            original.call(instance, poseEntry, quad, combinedLights, red, green, blue, LibRenderUtils.FULL_BRIGHT, combinedOverlay, mulColor);
+            original.call(instance, poseEntry, quad, colorMuls, red, green, blue, LibRenderUtils.FULL_BRIGHT, combinedOverlay, mulColor);
         } else if (color == BrushData.NEGATIVE_COLOR) {
             if (red != 1.0F || green != 1.0F || blue != 1.0F) {
-                original.call(instance, poseEntry, quad, combinedLights, 1.0F - red, 1.0F - green, 1.0F - blue, combinedLights, combinedOverlay, mulColor);
+                original.call(instance, poseEntry, quad, colorMuls, 1.0F - red, 1.0F - green, 1.0F - blue, combinedLights, combinedOverlay, mulColor);
             } else {
-                original.call(instance, poseEntry, quad, combinedLights, red, green, blue, combinedLights, combinedOverlay, mulColor);
+                original.call(instance, poseEntry, quad, colorMuls, red, green, blue, combinedLights, combinedOverlay, mulColor);
             }
         } else {
             float r = (float) (color >> 16 & 255) * LibMathUtils.INV_255;
             float g = (float) (color >> 8 & 255) * LibMathUtils.INV_255;
             float b = (float) (color & 255) * LibMathUtils.INV_255;
-            original.call(instance, poseEntry, quad, combinedLights, r, g, b, combinedLights, combinedOverlay, mulColor);
+            original.call(instance, poseEntry, quad, colorMuls, r, g, b, combinedLights, combinedOverlay, mulColor);
         }
     }
 }

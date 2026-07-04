@@ -8,10 +8,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import org.confluence.mod.common.block.natural.ThornBlock;
 
+import java.util.function.Supplier;
+
 public class SpreadingThornBlock extends ThornBlock implements ISpreadable {
     protected final Type type;
 
-    public SpreadingThornBlock(float amount, Block ground, Type type) {
+    public SpreadingThornBlock(float amount, Supplier<? extends Block> ground, Type type) {
         super(amount, ground);
         this.type = type;
         registerDefaultState(stateDefinition.any().setValue(STILL_ALIVE, true));
@@ -30,9 +32,9 @@ public class SpreadingThornBlock extends ThornBlock implements ISpreadable {
     }
 
     @Override
-    public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (!pLevel.isAreaLoaded(pPos, 3)) return;
-        spread(pState, pLevel, pPos, pRandom);
-        super.randomTick(pState, pLevel, pPos, pRandom);
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!level.isAreaLoaded(pos, 3)) return;
+        spread(state, level, pos, random);
+        super.randomTick(state, level, pos, random);
     }
 }

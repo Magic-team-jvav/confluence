@@ -48,7 +48,7 @@ public class ManaGunItem extends BaseGun {
             GunEvent.AmmoDataEvent ammoDataEvent = new GunEvent.AmmoDataEvent(player, this, gunStack, damage, critical, knockback, velocity, penetrate, inaccuracy);
             PortEventHandler.postEvent(ammoDataEvent);
 
-            prepareBulletEntity(baseBulletEntities, player, GunItems.EMPTY_BULLET.get().getDefaultInstance(), gunStack, ammoDataEvent.getDamage(), ammoDataEvent.getKnockback(), ammoDataEvent.getVelocity(), ammoDataEvent.getPenetrate(), ammoDataEvent.getInaccuracy());
+            prepareBulletEntity(baseBulletEntities, player, GunItems.DUMMY_BULLET.get().getDefaultInstance(), gunStack, ammoDataEvent.getDamage(), ammoDataEvent.getKnockback(), ammoDataEvent.getVelocity(), ammoDataEvent.getPenetrate(), ammoDataEvent.getInaccuracy());
             baseBulletEntities.forEach(player.serverLevel()::addFreshEntity);
             baseBulletEntities.clear();
         }

@@ -7,22 +7,24 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FarmBlock;
+import net.minecraft.world.level.block.StemBlock;
+import net.minecraft.world.level.block.StemGrownBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.common.block.SupAttachedStemBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class BalloonAttachedStemBlock extends AttachedStemBlock {
+public class BalloonAttachedStemBlock extends SupAttachedStemBlock {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
-    private final StemGrownBlock fruit;
 
     private static final Map<Direction, VoxelShape> AABBS = Maps.newEnumMap(ImmutableMap.<Direction, VoxelShape>builder()
             .put(Direction.SOUTH, Block.box(6.0, 0.0, 6.0, 10.0, 10.0, 16.0))
@@ -32,10 +34,8 @@ public class BalloonAttachedStemBlock extends AttachedStemBlock {
             .put(Direction.UP, Block.box(6.0, 0.0, 6.0, 10.0, 16.0, 10.0))
             .build());
 
-    public BalloonAttachedStemBlock(StemGrownBlock fruit, Supplier<Item> seedSupplier, BlockBehaviour.Properties properties) {
-        super(fruit, seedSupplier, properties);
-        this.fruit = fruit;
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.UP));
+    public BalloonAttachedStemBlock(Supplier<? extends StemGrownBlock> fruitSup, Supplier<Item> seedSupplier, BlockBehaviour.Properties properties) {
+        super(fruitSup, seedSupplier, properties);
     }
 
     @Override
@@ -47,19 +47,14 @@ public class BalloonAttachedStemBlock extends AttachedStemBlock {
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
         Direction attachedDirection = state.getValue(FACING);
         if (facing == attachedDirection) {
-            if (!facingState.is(this.fruit)) {
-                BlockState stemState = this.fruit.getStem().defaultBlockState();
+            if (!facingState.is(fruitSup.get())) {
+                BlockState stemState = fruitSup.get().getStem().defaultBlockState();
                 if (stemState.hasProperty(StemBlock.AGE)) {
                     return stemState.setValue(StemBlock.AGE, 7);
                 }
             }
         }
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
     }
 
     @Override

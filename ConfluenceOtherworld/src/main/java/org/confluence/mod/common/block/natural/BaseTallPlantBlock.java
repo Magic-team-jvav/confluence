@@ -14,27 +14,30 @@ import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class BaseTallPlantBlock extends DoublePlantBlock {
-    protected final List<Block> survive;
-    private transient Set<Block> cache;
+    protected Supplier<List<? extends Block>> survive;
+    private Set<Block> cache;
 
-    public BaseTallPlantBlock(Block... survive) {
-        this(Properties.copy(Blocks.TALL_GRASS).replaceable(), Arrays.stream(survive).toList());
+    public BaseTallPlantBlock(Supplier<List<? extends Block>> survive) {
+        this(Properties.copy(Blocks.TALL_GRASS).replaceable(), survive);
     }
 
-    public BaseTallPlantBlock(Properties prop, List<Block> survive) {
+    public BaseTallPlantBlock(Properties prop, Supplier<List<? extends Block>> survive) {
         super(prop);
         this.survive = survive;
     }
 
     @Override
     public boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        if (cache == null) this.cache = new HashSet<>(survive);
+        if (cache == null) {
+            this.cache = survive.get().stream().collect(Collectors.toUnmodifiableSet());
+            this.survive = null;
+        }
         return cache.contains(state.getBlock());
     }
 

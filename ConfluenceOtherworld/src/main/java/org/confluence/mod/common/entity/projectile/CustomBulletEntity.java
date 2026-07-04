@@ -26,7 +26,7 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
     }
 
     public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, LivingEntity owner, float gravity, ItemStack bullet) {
-        super(type, owner, GunItems.EMPTY_BULLET.toStack());
+        super(type, owner, GunItems.DUMMY_BULLET.toStack());
         this.gravity = gravity;
         this.entityData.set(GRAVITY_BULLET, bullet);
     }

@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import org.confluence.mod.common.data.gen.data_map.*;
 import org.confluence.mod.common.init.ModDataMaps;
+import org.confluence.terra_curio.common.init.TCDataMaps;
 import org.mesdag.portlib.PortLib;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.datamap.PortDataMapType;
@@ -29,6 +30,7 @@ public class ModDataMapProvider extends PortDataMapProvider {
         LivingInvulnerableEffectsSubProvider.gather(builder(ModDataMaps.LIVING_INVULNERABLE_EFFECTS, LivingInvulnerableEffectsSubProvider.Builder::new), provider);
         BlockBreakSpawnsSubProvider.gather(builder(ModDataMaps.BLOCK_BREAK_SPAWNS, BlockBreakSpawnsSubProvider.Builder::new), provider);
         GamePhase2AttributeModifiersSubProvider.gather(builder(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, GamePhase2AttributeModifiersSubProvider.Builder::new));
+        AccessoriesSubProvider.gather(builder(TCDataMaps.ACCESSORIES, AccessoriesSubProvider.Builder::new));
     }
 
     @SuppressWarnings("unchecked")

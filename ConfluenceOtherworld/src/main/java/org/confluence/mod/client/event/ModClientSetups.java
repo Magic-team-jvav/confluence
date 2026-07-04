@@ -1,6 +1,7 @@
 package org.confluence.mod.client.event;
 
 import PortLib.extensions.net.minecraft.client.resources.model.ModelResourceLocation.PortModelResourceLocationExtension;
+import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -55,6 +56,7 @@ import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
 import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
+import org.confluence.mod.client.security.SecurityFace;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -76,7 +78,10 @@ import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public final class ModClientSetups {
     public static final ResourceLocation VANILLA_BLOCK_ATLAS = InventoryMenu.BLOCK_ATLAS;
@@ -407,5 +412,35 @@ public final class ModClientSetups {
             }
         };
         FishingPoleItems.ITEMS.getEntries().forEach(pole -> ItemProperties.register(pole.get(), cast, function));
+    }
+
+    private static Supplier<String> seKey;
+
+    private static boolean shouldSe(ResourceLocation location, String result) {
+        String namespace = location.getNamespace();
+        if (!namespace.equals(Confluence.MODID)) {
+            return false;
+        }
+        return !result.startsWith("{");
+    }
+
+    public static String wrapFile(String result, ResourceLocation location) {
+        // Please respect the copyright of the model and do not attempt to publicly disseminate encrypted files.
+        // 请尊重模型的著作权，加密文件请不要试图公开传播。
+        if (shouldSe(location, result)) {
+            if (seKey == null) {
+                seKey = Suppliers.memoize(() -> {
+                    try {
+                        ResourceLocation location1 = Confluence.asResource("license.bin");
+                        InputStream inputStream = Minecraft.getInstance().getResourceManager().open(location1);
+                        return SecurityFace.readKey(inputStream, i -> location1.hashCode());
+                    } catch (IOException e) {
+                        throw new RuntimeException("License Key Error");
+                    }
+                });
+            }
+            return SecurityFace.S3.decrypt(result, seKey.get());
+        }
+        return result;
     }
 }

@@ -28,11 +28,13 @@ public class MutableRenderTypeItemExtension implements IClientItemExtensions {
             this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
                 @Override
                 public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-                    minecraft.getItemRenderer().renderModelLists(
-                            minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250913),
-                            stack, packedLight, packedOverlay, poseStack,
-                            VertexMultiConsumer.create(buffer.getBuffer(getter.apply(stack)), buffer.getBuffer(Sheets.translucentCullBlockSheet()))
-                    );
+                    try {
+                        minecraft.getItemRenderer().renderModelLists(
+                                minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250913),
+                                stack, packedLight, packedOverlay, poseStack,
+                                VertexMultiConsumer.create(buffer.getBuffer(getter.apply(stack)), buffer.getBuffer(Sheets.translucentCullBlockSheet()))
+                        );
+                    } catch (Exception ignored) {}
                 }
             };
         }

@@ -18,10 +18,8 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.common.block.natural.LunarCoralBlock;
-import org.confluence.mod.common.block.natural.LunarCoralFanBlock;
-import org.confluence.mod.common.block.natural.LunarCoralPlantBlock;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 
@@ -98,7 +96,7 @@ public class LunarCoralFeature extends Feature<LunarCoralFeature.Config> {
                             int y = (int) ((maxDebugZ * maxDebugZ - (dis - maxDebugZ) * (dis - maxDebugZ)) * (height + 1.5 * (Mth.cos(angle * angleScale) + 1)) / (maxDebugZ * maxDebugZ));
                             Vector2i pos = new Vector2i(x, z);
                             placeMap.put(pos, y);
-                            stateMap.put(pos, coralBlock.trySetValue(LunarCoralBlock.HUMIDITY, (int) (debugZ / ((upLine + 0.5) / 4))));
+                            stateMap.put(pos, coralBlock.trySetValue(StateProperties.HUMIDITY, (int) (debugZ / ((upLine + 0.5) / 4))));
 
                             if (bubble) {
                                 float line = debugZ / upLine;
@@ -146,7 +144,7 @@ public class LunarCoralFeature extends Feature<LunarCoralFeature.Config> {
                     for (int i = 0; i < 10; i++) {
                         if (level.getBlockState(basePos.offset(x, offset, z)).is(END_PLANT_CAN_SURVIVE) && level.getBlockState(basePos.offset(x, offset + 1, z)).canBeReplaced()) {
                             int humidity = Mth.clamp((int) ((dis + 1) / (radiusMax / 4)), 0, 3);
-                            level.setBlock(basePos.offset(x, offset + 1, z), random.nextBoolean() ? coralFanBlock.trySetValue(LunarCoralFanBlock.HUMIDITY, humidity).trySetValue(WATERLOGGED, false) : coralPlantBlock.trySetValue(LunarCoralPlantBlock.HUMIDITY, humidity).trySetValue(WATERLOGGED, false), 3);
+                            level.setBlock(basePos.offset(x, offset + 1, z), random.nextBoolean() ? coralFanBlock.trySetValue(StateProperties.HUMIDITY, humidity).trySetValue(WATERLOGGED, false) : coralPlantBlock.trySetValue(StateProperties.HUMIDITY, humidity).trySetValue(WATERLOGGED, false), 3);
                             break;
                         } else if (level.getBlockState(basePos.offset(x, offset, z)).canBeReplaced()) {
                             offset--;

@@ -161,7 +161,6 @@ public class BaseLanceItem extends CustomRarityItem implements /* todo leftclick
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        if (this != LanceItems.JOUSTING_LANCE.get()) return; // todo 还剩两支骑枪
         consumer.accept(new IClientItemExtensions() {
             private GeoItemRenderer<BaseLanceItem> renderer;
 

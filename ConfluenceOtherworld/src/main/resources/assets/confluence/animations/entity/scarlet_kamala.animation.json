@@ -4,7 +4,7 @@
 		"spawn": {
 			"animation_length": 2.79167,
 			"bones": {
-				"head2": {
+				"Head2": {
 					"rotation": {
 						"0.0": {
 							"vector": [-90, 0, 0]
@@ -46,7 +46,7 @@
 						}
 					}
 				},
-				"head1": {
+				"Head1": {
 					"rotation": {
 						"0.0": {
 							"vector": [-90, 0, 0]

@@ -13,11 +13,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AttachedStemBlock;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.PumpkinBlock;
+import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.FoodItems;
 
 import static org.confluence.mod.common.init.block.DecorativeBlocks.CARVED_WHITE_PUMPKIN;
@@ -25,6 +28,16 @@ import static org.confluence.mod.common.init.block.DecorativeBlocks.CARVED_WHITE
 public class WhitePumpkinBlock extends PumpkinBlock {
     public WhitePumpkinBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public StemBlock getStem() {
+        return NatureBlocks.WHITE_PUMPKIN_STEM.get();
+    }
+
+    @Override
+    public AttachedStemBlock getAttachedStem() {
+        return NatureBlocks.ATTACHED_WHITE_PUMPKIN_STEM.get();
     }
 
     @Override

@@ -7,8 +7,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
+import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
@@ -96,10 +98,56 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(ModTags.EntityTypes.ENEMY_BANNER_BLACKLIST)
                 .addTag(Tags.EntityTypes.BOSSES);
         tag(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)
-                .addTag(ModTags.EntityTypes.SLIME);
+                .addTag(LibTags.EntityTypes.SLIME);
         IntrinsicTagAppender<EntityType<?>> npcInvulnerableToPlayer = tag(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER);
         for (RegistryObject<? extends EntityType<?>> npc : NpcEntities.ENTITIES.getEntries()) {
             npcInvulnerableToPlayer.add(npc.get());
         }
+
+        tag(LibTags.EntityTypes.SLIME).add(
+                MonsterEntities.BLUE_SLIME.get(),
+                MonsterEntities.GREEN_SLIME.get(),
+                MonsterEntities.PINK_SLIME.get(),
+                MonsterEntities.DUNGEON_SLIME.get(),
+                MonsterEntities.CORRUPT_SLIME.get(),
+                MonsterEntities.DESERT_SLIME.get(),
+                MonsterEntities.JUNGLE_SLIME.get(),
+                MonsterEntities.EVIL_SLIME.get(),
+                MonsterEntities.ICE_SLIME.get(),
+                MonsterEntities.LAVA_SLIME.get(),
+                MonsterEntities.LUMINOUS_SLIME.get(),
+                MonsterEntities.CRIMSLIME.get(),
+                MonsterEntities.PURPLE_SLIME.get(),
+                MonsterEntities.RED_SLIME.get(),
+                MonsterEntities.TROPIC_SLIME.get(),
+                MonsterEntities.YELLOW_SLIME.get(),
+                MonsterEntities.HONEY_SLIME.get(),
+                MonsterEntities.BLACK_SLIME.get(),
+                MonsterEntities.GOLDEN_SLIME.get(),
+                MonsterEntities.SPIKED_JUNGLE_SLIME.get(),
+                MonsterEntities.SPIKED_ICE_SLIME.get(),
+                MonsterEntities.SPIKED_SLIME.get(),
+                EntityType.SLIME
+        );
+
+        tag(ModTags.EntityTypes.CORRUPT).add(
+                MonsterEntities.EATER_OF_SOULS.get(),
+                MonsterEntities.DECAYEDER.get(),
+                MonsterEntities.DEVOURER.get()
+        );
+
+        tag(Tags.EntityTypes.BOSSES).add(
+                BossEntities.EYE_OF_CTHULHU.get(),
+                BossEntities.KING_SLIME.get(),
+                BossEntities.EATER_OF_WORLDS.get(),
+//                BossEntities.EATER_OF_WORLDS_SEGMENT.get(),
+                BossEntities.BRAIN_OF_CTHULHU.get(),
+//                BossEntities.BRAIN_FAKE.get(),
+                BossEntities.QUEEN_BEE.get(),
+                BossEntities.SKELETRON.get(),
+                BossEntities.SKELETRON_HAND.get(),
+                BossEntities.WALL_OF_FLESH.get(),
+                BossEntities.HILL_OF_FLESH.get()
+        );
     }
 }

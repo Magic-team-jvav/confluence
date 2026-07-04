@@ -26,7 +26,7 @@ public enum ShootPacketC2S implements IPortPacket.C2S {
         ItemStack gunStack = player.getMainHandItem();
         if (gunStack.getItem() instanceof BaseGun baseGun) {
             ItemStack ammo = ModGunUtils.getAmmo(player, gunStack);
-            ammo = ammo.equals(ItemStack.EMPTY) ? GunItems.EMPTY_BULLET.get().getDefaultInstance() : ammo;
+            ammo = ammo.equals(ItemStack.EMPTY) ? GunItems.DUMMY_BULLET.get().getDefaultInstance() : ammo;
 
             baseGun.shoot(player, ammo, gunStack);
             baseGun.fireAnimator(gunStack, player);

@@ -500,10 +500,7 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> ENEMY_BANNER_BLACKLIST = register("enemy_banner_blacklist"); // 旗帜黑名单
         public static final TagKey<EntityType<?>> GORE_EFFECT_BLACKLIST = register("gore_effect_blacklist"); // 肢解效果黑名单
         public static final TagKey<EntityType<?>> NPC_INVULNERABLE_TO_PLAYER = register("npc_invulnerable_to_player"); // 能够免疫玩家伤害的NPC
-
-        public static final TagKey<EntityType<?>> CORRUPT = register("corrupt"); // todo
-        public static final TagKey<EntityType<?>> FLESH_ALLIANCE = register("flesh_alliance"); // todo
-        public static final TagKey<EntityType<?>> SLIME = register("slime"); // todo
+        public static final TagKey<EntityType<?>> CORRUPT = register("corrupt");
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

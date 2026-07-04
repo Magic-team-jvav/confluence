@@ -48,6 +48,7 @@ public final class ModDamageTypes {
         damageType(context, MAGICAL_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
         damageType(context, SWORD_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
         damageType(context, SPEAR_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
+        damageType(context, FROST_BURN, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
     }
 
     private static void damageType(BootstapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion, DamageEffects effects, DeathMessageType deathMessageType) {

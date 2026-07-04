@@ -35,7 +35,7 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     protected final boolean isNaturalGrowth;
     protected final boolean isClimbable;
     protected final Supplier<List<Block>> attachedBlocksSupplier;
-    private final int lightLevel;
+    private List<Block> cache;
 
     private BaseDroopingPlantsHeadBlock(int side, int maxAge, Direction growthDirection, boolean isNaturalGrowth, boolean isClimbable, Supplier<List<Block>> attachedBlocksSupplier, int lightLevel) {
         super(Properties.of()
@@ -52,7 +52,6 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
         this.isNaturalGrowth = isNaturalGrowth;
         this.isClimbable = isClimbable;
         this.attachedBlocksSupplier = attachedBlocksSupplier;
-        this.lightLevel = lightLevel;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(AGE, 0)
                 .setValue(WATERLOGGED, false)
@@ -102,11 +101,11 @@ public class BaseDroopingPlantsHeadBlock extends GrowingPlantHeadBlock implement
     }
 
     private boolean isAnchor(BlockState state) {
-        List<Block> anchors = attachedBlocksSupplier.get();
-        if (anchors != null && !anchors.isEmpty()) {
-            for (Block block : anchors) {
-                if (state.is(block)) return true;
-            }
+        if (cache == null) {
+            this.cache = attachedBlocksSupplier.get();
+        }
+        for (Block block : cache) {
+            if (state.is(block)) return true;
         }
         return state.is(ModTags.Blocks.DROOPING_VINE_CAN_SURVIVE);
     }

@@ -2,8 +2,10 @@ package org.confluence.mod.common.init;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.registries.Registries;
@@ -17,6 +19,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.mod.common.loot.SecretFlagLootItemCondition;
+
+import java.util.Map;
 
 public final class ModLootTables {
     public static final ResourceLocation WOODEN_CRATE = register("gameplay/crate/wooden_crate");
@@ -102,16 +106,21 @@ public final class ModLootTables {
         public static final RegistryObject<LootItemConditionType> GAME_PHASE = register("game_phase", GamePhaseLootItemCondition.CODEC);
         public static final RegistryObject<LootItemConditionType> SECRET_FLAG = register("secret_flag", SecretFlagLootItemCondition.CODEC);
 
-        private static <T extends LootItemCondition> RegistryObject<LootItemConditionType> register(String name, MapCodec<T> codec) {
+        private static <T extends LootItemCondition> RegistryObject<LootItemConditionType> register(String name, MapCodec<T> mapCodec) {
+            Codec<T> codec = mapCodec.codec();
             return TYPES.register(name, () -> new LootItemConditionType(new Serializer<T>() {
                 @Override
                 public void serialize(JsonObject json, T value, JsonSerializationContext serializationContext) {
-                    codec.encode(value, JsonOps.INSTANCE, codec.compressedBuilder(JsonOps.INSTANCE)).build(json);
+                    PortDataResultExtension.ifSuccess(codec.encodeStart(JsonOps.INSTANCE, value), r -> {
+                        for (Map.Entry<String, JsonElement> entry : r.getAsJsonObject().entrySet()) {
+                            json.add(entry.getKey(), entry.getValue());
+                        }
+                    });
                 }
 
                 @Override
                 public T deserialize(JsonObject json, JsonDeserializationContext serializationContext) {
-                    return PortDataResultExtension.getOrThrow(codec.compressedDecode(JsonOps.INSTANCE, json));
+                    return PortDataResultExtension.getOrThrow(mapCodec.compressedDecode(JsonOps.INSTANCE, json));
                 }
             }));
         }

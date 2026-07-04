@@ -17,11 +17,14 @@ import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 public class MushroomBlock extends BasePlantBlock implements ISpreadable, BonemealableBlock {
     protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
     public ISpreadable.Type type;
 
-    public MushroomBlock(ISpreadable.Type type, Block... surviveBlock) {
+    public MushroomBlock(ISpreadable.Type type, Supplier<List<? extends Block>> surviveBlock) {
         super(surviveBlock);
         this.type = type;
     }

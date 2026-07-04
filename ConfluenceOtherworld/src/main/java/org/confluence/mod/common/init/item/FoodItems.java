@@ -7,9 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemNameBlockItem;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.*;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
@@ -21,6 +19,7 @@ import org.confluence.mod.common.item.food.ModFoodProperties;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder.EffectData;
 import org.confluence.terra_curio.common.init.TCEffects;
+import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
@@ -30,7 +29,6 @@ import org.mesdag.portlib.wrapper.common.PortEffectCures;
 import java.util.function.Consumer;
 
 import static net.minecraft.world.item.Items.BOWL;
-import static net.minecraft.world.item.Items.GLASS_BOTTLE;
 import static org.confluence.mod.common.item.food.ModFoodProperties.hasEffectProperties;
 
 public class FoodItems {
@@ -216,6 +214,7 @@ public class FoodItems {
             builder -> builder.rarity(ModRarity.GREEN)
                     .food(ModFoodProperties.noEffectProperties(3, 1.8f))
                     .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), NatureBlocks.SHIMMER_DROOPING_VINE);
+    public static final Supplier<@Nullable ItemStack> GLASS_BOTTLE = Items.GLASS_BOTTLE::getDefaultInstance;
     //返还容器
     public static final PortDeferredItem<BaseFoodItem> FRUIT_JUICE = registerDrinkingFood("fruit_juice", ModRarity.BLUE,
             () -> ModFoodProperties.wellFedProperties(18000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //混合果汁
@@ -246,7 +245,7 @@ public class FoodItems {
     public static final PortDeferredItem<BaseFoodItem> MILKSHAKE = registerDrinkingFood("milkshake", ModRarity.LIGHT_RED,
             () -> ModFoodProperties.exquisitelyStuffedProperties(19200, 8, 5.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //奶昔
     public static final PortDeferredItem<BaseFoodItem> BUNNY_STEW = registerDrinkingFood("bunny_stew", ModRarity.BLUE,
-            () -> ModFoodProperties.wellFedProperties(12000, 4, 1.5f, BOWL), 20, UseAnim.DRINK, SoundEvents.GENERIC_DRINK, SoundEvents.GENERIC_DRINK); //炖兔兔
+            () -> ModFoodProperties.wellFedProperties(12000, 4, 1.5f, BOWL::getDefaultInstance), 20, UseAnim.DRINK, SoundEvents.GENERIC_DRINK, SoundEvents.GENERIC_DRINK); //炖兔兔
     //不返还容器
     public static final PortDeferredItem<BaseFoodItem> JOJA_COLA = registerDrinkingFood("joja_cola", ModRarity.WHITE,
             () -> ModFoodProperties.wellFedProperties(2400, 4, 1.5f), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //乔家可乐

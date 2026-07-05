@@ -342,6 +342,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
     private void tickThrown(Player player, FlailComponent component) {
         Vec3 motion = getDeltaMovement();
+        if (component.thrownGravity) {
+            motion = motion.add(0, -component.gravity, 0);
+        }
 
         // 速度过低直接收回（仅服务端判断）
         if (!level().isClientSide() && motion.lengthSqr() < 0.1) {
@@ -463,7 +466,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             if (target.hurt(source, finalDamage)) {
                 if (!anyHit) firstHit = target;
                 anyHit = true;
-                VectorUtils.knockBackA2B(this, target, 0.3f, 0.15f);
+                VectorUtils.knockBackA2B(this, target, component.knockback, 0.15f);
                 if (component.onHit != null) {
                     component.onHit.accept(player, target);
                 }

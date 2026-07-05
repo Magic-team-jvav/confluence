@@ -1,10 +1,15 @@
 package org.confluence.mod.common.item.flail;
 
+import org.mesdag.particlestorm.ParticleStorm;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -16,6 +21,7 @@ import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.projectile.Flail.DripplerCripplerProjectile;
 import org.confluence.mod.common.entity.projectile.Flail.FlowerProjectile;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.network.s2c.GuardianFlailBeamPacketS2C;
 import org.confluence.lib.util.LibUtils;
@@ -293,6 +299,49 @@ public interface FlailStrategy {
             projectile.setBaseDamage(projectileDamage);
             projectile.setMaxLifetime(200);
             level.addFreshEntity(projectile);
+        }
+    }
+
+    /**
+     * <h1>锚攻击策略</h1>
+     * 触碰方块进入收回状态时，若飞行时间超过 4 tick，
+     * 对锚周围 4×4×1 区域内的敌怪造成 60% 武器伤害。
+     */
+    final class AnchorAttackStrategy implements FlailStrategy {
+
+        @Override
+        public void onThrownToRetract(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                                      @NotNull FlailComponent component) {
+            Level level = flail.level();
+            if (level.isClientSide()) return;
+
+            // 飞行时间需超过 4 tick（0.2s）
+            if (flail.tickCount <= 4) return;
+
+            float baseDamage = (float) Math.max(1.0F, player.getAttributeValue(Attributes.ATTACK_DAMAGE));
+            float aoeDamage = baseDamage * 0.6f;
+            DamageSource source = ModDamageTypes.of(level, ModDamageTypes.SWORD_PROJECTILE, flail, player);
+
+            // 横向 4 格、纵向 4 格、高 1 格的方形区域
+            AABB aoe = flail.getBoundingBox().inflate(2.0, 0.5, 2.0);
+            List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, aoe,
+                    e -> e != player && e.isAlive() && LibUtils.canHitEntity(flail, e));
+
+            for (LivingEntity target : targets) {
+                target.hurt(source, aoeDamage);
+            }
+
+            // 撞击音效
+            level.playSound(null, flail.getX(), flail.getY(), flail.getZ(),
+                    SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.8F, 0.9F + level.random.nextFloat() * 0.2F);
+
+            // 方块破碎粒子
+            if (level instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(
+                        new BlockParticleOption(ParticleTypes.BLOCK, net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState()),
+                        flail.getX(), flail.getY() + 0.5, flail.getZ(),
+                        60, 3, 0.5, 3, 0.2);
+            }
         }
     }
 }

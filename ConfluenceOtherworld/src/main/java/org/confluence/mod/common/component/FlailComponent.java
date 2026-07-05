@@ -22,6 +22,7 @@ import java.util.function.BiConsumer;
  */
 public class FlailComponent {
     public final float damageFactor;
+    public final float knockback;
     public final float spinRadius;
     public final float spinSpeed;
     public final float throwSpeed;
@@ -38,9 +39,12 @@ public class FlailComponent {
     /** 击中实体时的回调，null 表示无特殊效果 */
     public final BiConsumer<Player, LivingEntity> onHit;
     public final boolean launchMode;
+    /** 投射类连枷在飞行/收回阶段是否受重力影响 */
+    public final boolean thrownGravity;
 
     private FlailComponent(Builder b) {
         this.damageFactor = b.damageFactor;
+        this.knockback = b.knockback;
         this.spinRadius = b.spinRadius;
         this.spinSpeed = b.spinSpeed;
         this.throwSpeed = b.throwSpeed;
@@ -55,6 +59,7 @@ public class FlailComponent {
         this.modelLocation = b.modelLocation;
         this.onHit = b.onHit;
         this.launchMode = b.launchMode;
+        this.thrownGravity = b.thrownGravity;
     }
 
     // ── 预定义连枷 ──
@@ -265,6 +270,22 @@ public class FlailComponent {
             .model(Confluence.asResource("geo/entity/flail/chain_knife.geo.json"))
             .launchMode()
             .build();
+
+    /** 锚 — 投射型，受重力（飞行+收回） */
+    public static final FlailComponent ANCHOR = new Builder()
+            .damageFactor(35)
+            .knockback(0.8f)
+            .throwSpeed(1.3f)
+            .maxDistance(100)
+            .retractSpeed(1)
+            .gravity(0.05f)
+            .thrownGravity()
+            .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+            .projType(ModEntities.FLAIL_ENTITY.getId())
+            .texture(Confluence.asResource("textures/entity/flail/anchor.png"))
+            .model(Confluence.asResource("geo/entity/flail/anchor.geo.json"))
+            .launchMode()
+            .build();
     // ── 工具方法 ──
 
     public SoundEvent getSoundEvent() {
@@ -290,6 +311,7 @@ public class FlailComponent {
 
     public static class Builder {
         float damageFactor;
+        float knockback = 0.3f;
         float spinRadius = 1.2f;
         float spinSpeed = 1.2f;
         float throwSpeed = 1.2f;
@@ -299,6 +321,7 @@ public class FlailComponent {
         float bounceFactor = 0.3f;
         int maxBounces = 3;
         boolean launchMode = false;
+        boolean thrownGravity = false;
         ResourceLocation soundEvent;
         ResourceLocation projType;
         ResourceLocation ballTexture;
@@ -306,6 +329,7 @@ public class FlailComponent {
         BiConsumer<Player, LivingEntity> onHit;
 
         public Builder damageFactor(float v) { this.damageFactor = v; return this; }
+        public Builder knockback(float v) { this.knockback = v; return this; }
         public Builder spinRadius(float v) { this.spinRadius = v; return this; }
         public Builder spinSpeed(float v) { this.spinSpeed = v; return this; }
         public Builder throwSpeed(float v) { this.throwSpeed = v; return this; }
@@ -320,6 +344,7 @@ public class FlailComponent {
         public Builder model(ResourceLocation v) { this.modelLocation = v; return this; }
         public Builder onHit(BiConsumer<Player, LivingEntity> v) { this.onHit = v; return this; }
         public Builder launchMode() { this.launchMode = true; return this; }
+        public Builder thrownGravity() { this.thrownGravity = true; return this; }
 
         public FlailComponent build() {
             return new FlailComponent(this);

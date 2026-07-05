@@ -69,4 +69,9 @@ public class FlailItems {
         /** 链刃 */
         public static final DeferredItem<BaseFlailItem> CHAIN_KNIFE = ITEMS.register("chain_knife", () ->
                 new BaseFlailItem(FlailComponent.CHAIN_KNIFE, ModRarity.COMMON));
+
+        /** 锚 */
+        public static final DeferredItem<BaseFlailItem> ANCHOR = ITEMS.register("anchor", () ->
+                new BaseFlailItem(FlailComponent.ANCHOR, ModRarity.COMMON,
+                        FlailStrategy.AnchorAttackStrategy::new));
 }

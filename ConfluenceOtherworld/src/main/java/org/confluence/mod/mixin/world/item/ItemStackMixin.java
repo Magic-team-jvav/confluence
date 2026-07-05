@@ -22,6 +22,6 @@ public abstract class ItemStackMixin implements Immunity {
         if (getItem() instanceof Immunity immunity) {
             return immunity.confluence$getImmunityDuration(damageSource);
         }
-        return Immunity.super.confluence$getImmunityDuration(damageSource);
+        return Immunity.defaultGetImmunityDuration(this, damageSource);
     }
 }

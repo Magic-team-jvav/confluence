@@ -20,9 +20,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
+@SuppressWarnings("all")
 public interface Immunity {
-    @Nullable
-    static Immunity getCause(DamageSource damageSource) {
+    static @Nullable Immunity getCause(DamageSource damageSource) {
         Entity directEntity = damageSource.getDirectEntity();
         ItemStack weaponItemStack = damageSource.getWeaponItem();
         if (weaponItemStack != null) {
@@ -88,11 +88,11 @@ public interface Immunity {
 
     Type confluence$getImmunityType();
 
-    @SuppressWarnings("all")
-    default int confluence$getImmunityDuration(DamageSource damageSource) {
+    int confluence$getImmunityDuration(DamageSource damageSource);
+
+    static int defaultGetImmunityDuration(Immunity self, DamageSource damageSource) {
         Entity causeEntity = damageSource.getEntity();
         // 自身是汇流近战武器且使用者有攻击速度属性
-        Object self = this;
         if (self instanceof ItemStack weaponItemStack && weaponItemStack.getItem() instanceof SwordItem weaponItem
                 && ModUtils.isFromConfluence(BuiltInRegistries.ITEM, weaponItem)
                 && causeEntity instanceof LivingEntity living && living.getAttributes().hasAttribute(Attributes.ATTACK_SPEED)
@@ -105,13 +105,9 @@ public interface Immunity {
     }
 
     enum Type implements StringRepresentable {
-        /**
-         * 静态无敌帧，以类而不是对象区分不同的伤害，比如魔刺，多个魔刺弹幕叠在一起伤害频率也不会变快
-         */
+        /// 静态无敌帧，以类而不是对象区分不同的伤害，比如魔刺，多个魔刺弹幕叠在一起伤害频率也不会变快
         STATIC,
-        /**
-         * 局部无敌帧，以对象区分不同的伤害，比如召唤物，多个同种召唤物同时击中不会骗伤
-         */
+        /// 局部无敌帧，以对象区分不同的伤害，比如召唤物，多个同种召唤物同时击中不会骗伤
         LOCAL;
 
         public static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);

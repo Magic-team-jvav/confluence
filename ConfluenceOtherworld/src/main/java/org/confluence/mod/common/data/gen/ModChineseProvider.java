@@ -1756,6 +1756,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.CRYSTAL_CHARGE_2_PROJECTILE.get(), "爆炸水晶2");
         add(ModEntities.FLOWER_PROJECTILE.get(),"花瓣");
         add(ModEntities.DRIPPLER_CRIPPLER_PROJECTILE.get(),"血肉射弹");
+        add(ModEntities.FLAIRON_BUBBLE.get(),"泡泡");
 
         //region blocks
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");
@@ -3197,6 +3198,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FlailItems.DAO_OF_POW.get(), "太极连枷");
         add(FlailItems.FLOWER_POWER.get(),"花之力");
         add(FlailItems.DRIPPLER_CRIPPLER.get(),"滴滴怪致残者");
+        add(FlailItems.Flairon.get(),"猪鲨链球");
         add(FlailItems.CHAIN_KNIFE.get(),"链刃");
         add(FlailItems.ANCHOR.get(),"锚");
 

@@ -20,6 +20,7 @@ import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.projectile.Flail.DripplerCripplerProjectile;
+import org.confluence.mod.common.entity.projectile.Flail.FlaironBubbleProjectile;
 import org.confluence.mod.common.entity.projectile.Flail.FlowerProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
@@ -303,6 +304,123 @@ public interface FlailStrategy {
     }
 
     /**
+     * <h1>猪鲨链球攻击策略</h1>
+     * SPIN/THROWN/RETRACT 阶段每秒发射 15 枚追踪气泡，
+     * STAY 阶段每秒发射 10 枚。气泡从连枷面朝方向的 30° 锥角内随机射出。
+     * <p>
+     * 射弹造成武器面板 50% 伤害，边长 [0.5, 0.8] 格，命中敌怪后消失。
+     */
+    final class FlaironAttackStrategy implements FlailStrategy {
+        /** 每 tick +1 的循环计数器，用于 1-1-2 发射节奏 */
+        private int tickCounter;
+
+        /** 60° 锥角半角（弧度） */
+        private static final double CONE_HALF_ANGLE = Math.toRadians(30);
+
+        @Override
+        public void onSpinTick(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                               @NotNull FlailComponent component) {
+            tryShoot(flail, player, component, true, false);
+        }
+
+        @Override
+        public void onThrownTick(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                                 @NotNull FlailComponent component) {
+            tryShoot(flail, player, component, true, false);
+        }
+
+        @Override
+        public void onRetractTick(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                                  @NotNull FlailComponent component) {
+            tryShoot(flail, player, component, true, true);
+        }
+
+        @Override
+        public void onStayTick(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                               @NotNull FlailComponent component) {
+            tryShoot(flail, player, component, false, false);
+        }
+
+        @Override
+        public void onDiscard(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                              @NotNull FlailComponent component) {
+            tickCounter = 0;
+        }
+
+        /**
+         * @param active true=SPIN/THROWN/RETRACT (1-1-2 节奏, 15/秒),
+         *               false=STAY (每 2 tick, 10/秒)
+         * @param invert true=RETRACT 时反转发射方向
+         */
+        private void tryShoot(BaseFlailEntity flail, Player player, FlailComponent component,
+                              boolean active, boolean invert) {
+            boolean shouldShoot;
+            if (active) {
+                // 1-1-2 节奏: tick 0,1,2 发射, tick 2 跳过, 循环
+                shouldShoot = tickCounter % 4 != 2;
+            } else {
+                // 每 2 tick: tick 0 发射, tick 1 跳过
+                shouldShoot = tickCounter % 2 == 0;
+            }
+            tickCounter++;
+
+            if (!shouldShoot) return;
+
+            Level level = flail.level();
+            if (level.isClientSide()) return;
+
+            float baseDamage = (float) (player.getAttributeValue(LibAttributes.getAttackDamage()));
+            float bubbleDamage = baseDamage * 0.5f;
+
+            // 连枷面朝方向（由 faceDirection 设置的 yaw/pitch 反算）
+            float yaw = (float) Math.toRadians(flail.getYRot());
+            float pitch = (float) Math.toRadians(flail.getXRot());
+            double cosPitch = Math.cos(pitch);
+            Vec3 facing = new Vec3(
+                    -Math.sin(yaw) * cosPitch,
+                    -Math.sin(pitch),
+                    Math.cos(yaw) * cosPitch
+            ).normalize();
+
+            // 30° 锥角内随机方向
+            Vec3 dir = randomInCone(level, facing);
+
+            // RETRACT 时反转方向（面朝玩家 → 背离玩家）
+            if (invert) {
+                dir = dir.scale(-1);
+            }
+
+            // 随机初速 [2格/秒, 5格/秒] = [0.1, 0.25] 格/tick
+            double speed = 0.1 + level.random.nextDouble() * 0.15;
+            Vec3 velocity = dir.scale(speed);
+
+            FlaironBubbleProjectile bubble = new FlaironBubbleProjectile(
+                    ModEntities.FLAIRON_BUBBLE.get(), level, flail, player, velocity);
+            bubble.setPos(flail.position().add(0, flail.getBbHeight() * 0.5, 0));
+            bubble.setBaseDamage(bubbleDamage);
+            level.addFreshEntity(bubble);
+        }
+
+        /** 在给定方向的 30° 锥角内生成随机单位向量 */
+        @NotNull
+        private static Vec3 randomInCone(Level level, Vec3 axis) {
+            double theta = level.random.nextDouble() * CONE_HALF_ANGLE;
+            double phi = level.random.nextDouble() * 2.0 * Math.PI;
+            double sinTheta = Math.sin(theta);
+            double cosTheta = Math.cos(theta);
+
+            // 构建正交基
+            Vec3 arb = Math.abs(axis.x) < 0.9 ? new Vec3(1, 0, 0) : new Vec3(0, 1, 0);
+            Vec3 right = axis.cross(arb).normalize();
+            Vec3 up = axis.cross(right);
+
+            return axis.scale(cosTheta)
+                    .add(right.scale(sinTheta * Math.cos(phi)))
+                    .add(up.scale(sinTheta * Math.sin(phi)));
+        }
+    }
+
+    /**
      * <h1>锚攻击策略</h1>
      * 触碰方块进入收回状态时，若飞行时间超过 4 tick，
      * 对锚周围 4×4×1 区域内的敌怪造成 60% 武器伤害。
@@ -340,7 +458,7 @@ public interface FlailStrategy {
                 serverLevel.sendParticles(
                         new BlockParticleOption(ParticleTypes.BLOCK, net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState()),
                         flail.getX(), flail.getY() + 0.5, flail.getZ(),
-                        60, 3, 0.5, 3, 0.2);
+                        60, 4, 0.5, 4, 0.2);
             }
         }
     }

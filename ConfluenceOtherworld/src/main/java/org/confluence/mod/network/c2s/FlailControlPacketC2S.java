@@ -70,7 +70,7 @@ public final class FlailControlPacketC2S implements IPacketC2S {
                     if (projType == null) return;
                     var entity = projType.create(player.level());
                     if (!(entity instanceof BaseFlailEntity flail)) return;
-                    if(component.launchMode){
+                    if(component.launchMode || flailItem.isProjectileMode(stack)){
                         flail.initLaunch(player, stack, component);
                     }
                     else{

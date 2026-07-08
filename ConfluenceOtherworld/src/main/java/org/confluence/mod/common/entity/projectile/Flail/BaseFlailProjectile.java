@@ -189,6 +189,14 @@ public abstract class BaseFlailProjectile extends Projectile implements GeoAnima
         return null;
     }
 
+    /**
+     * 返回 Billboard 渲染的半边长，默认 0.15（即 0.3 格宽）。
+     * 子类可覆盖以实现动态尺寸。
+     */
+    public float getBillboardScale() {
+        return 0.15F;
+    }
+
     // ── Tick ──
 
     @Override
@@ -202,7 +210,7 @@ public abstract class BaseFlailProjectile extends Projectile implements GeoAnima
 
         super.tick();
 
-        // 碰撞检测：MC 1.21 的 Projectile.tick() 不再自动检测，需手动处理
+        // 碰撞检测
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (hitResult.getType() == HitResult.Type.ENTITY) {
             onHitEntity((EntityHitResult) hitResult);
@@ -259,7 +267,7 @@ public abstract class BaseFlailProjectile extends Projectile implements GeoAnima
     }
 
     /**
-     * 快捷方法：使投射物面朝速度方向。
+     * 使投射物面朝速度方向。
      */
     protected void faceVelocity() {
         Vec3 motion = getDeltaMovement();

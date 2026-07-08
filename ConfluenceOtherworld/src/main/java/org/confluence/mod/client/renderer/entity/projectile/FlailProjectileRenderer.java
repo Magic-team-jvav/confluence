@@ -98,7 +98,7 @@ public class FlailProjectileRenderer extends EntityRenderer<BaseFlailProjectile>
         poseStack.translate(0, entity.getBbHeight() * 0.5, 0);
         poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 
-        float s = scale;
+        float s = entity.getBillboardScale();
         Matrix4f matrix = poseStack.last().pose();
         consumer.addVertex(matrix, -s, -s, 0).setColor(255, 255, 255, 255)
                 .setUv(0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(0, 0, 1);

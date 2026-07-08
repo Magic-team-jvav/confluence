@@ -107,6 +107,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         return launchMode;
     }
 
+    /** 设置发射模式（用于 Flairon 等动态切换形态的连枷） */
+    public void setLaunchMode(boolean launchMode) {
+        this.launchMode = launchMode;
+    }
+
     /** 获取当前攻击策略 */
     @NotNull
     public FlailStrategy getAttackStrategy() {
@@ -319,6 +324,13 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             move(MoverType.SELF, getDeltaMovement());
         }
         setDeltaMovement(Vec3.ZERO);
+
+        // SPIN 阶段面朝轨道切线方向（forward * (-sinθ) + up * cosθ）
+        faceDirection(new Vec3(
+                sinYaw * Math.sin(spinAngle),
+                Math.cos(spinAngle),
+                -cosYaw * Math.sin(spinAngle)
+        ));
     }
 
     /**
@@ -336,7 +348,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     /** 使实体面朝指定方向，从 deltaMovement 或 toOwner 向量计算 yaw/pitch */
     private void faceDirection(Vec3 dir) {
         double hDist = Math.sqrt(dir.x * dir.x + dir.z * dir.z);
-        setYRot((float) Math.toDegrees(Math.atan2(dir.x, dir.z)));
+        setYRot((float) Math.toDegrees(Math.atan2(-dir.x, dir.z)));
         setXRot((float) Math.toDegrees(Math.atan2(-dir.y, hDist)));
     }
 
@@ -461,6 +473,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             float baseDamage = Math.max(1.0F, totalAttack);
             float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
             float finalDamage = baseDamage * damageMultiplier * (1.0F + turbineBonus);
+            if (launchMode) {
+                finalDamage *= component.launchDamageRatio;
+            }
             DamageSource source = ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {

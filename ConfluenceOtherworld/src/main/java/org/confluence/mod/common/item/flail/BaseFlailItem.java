@@ -38,11 +38,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
  * <h1>连枷物品基类</h1>
- * 继承 {@link TooltipItem}，通过 {@link #use(Level, Player, InteractionHand)} 触发连枷攻击。
- * <p>
- * 状态机：无 → SPIN（挥舞）→ THROWN（投掷）→ STAY（停留）→ RETRACT（收回）
- * <p>
- * 用法：直接 new BaseFlailItem(flailComponent, rarity) 
  */
 public class BaseFlailItem extends TooltipItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -74,7 +69,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
     }
 
     /**
-     * 右键触发连枷状态机：
+     * 左键触发连枷状态机：
      * <ul>
      *   <li>无连枷 → 创建并开始 SPIN</li>
      *   <li>SPIN 中 → 发射 THROWN</li>
@@ -98,28 +93,26 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (level.isClientSide()) return InteractionResultHolder.consume(stack);
+        return InteractionResultHolder.pass(player.getItemInHand(hand));
+    }
 
-        FlailComponent comp = component;
-
+    /** 连枷状态机核心逻辑：创建或推进连枷。子类（如 FlaironItem）可复用。 */
+    protected void useFlail(Level level, Player player, ItemStack stack) {
+        FlailComponent comp = getComponent();
         BaseFlailEntity existing = findExistingFlail(player);
 
         if (existing == null) {
-            // 创建新连枷并开始 SPIN
             EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(comp.projType);
-            if (entityType == null) return InteractionResultHolder.fail(stack);
+            if (entityType == null) return;
             Entity entity = entityType.create(level);
-            if (!(entity instanceof BaseFlailEntity flail))
-                return InteractionResultHolder.fail(stack);
-            if (comp.launchMode){
+            if (!(entity instanceof BaseFlailEntity flail)) return;
+
+            if (comp.launchMode || isProjectileMode(stack)) {
                 flail.initLaunch(player, stack, comp);
-            }
-            else{
+            } else {
                 flail.init(player, stack, comp);
             }
-            
-            // 注入专属攻击策略（子类可覆盖 getAttackStrategy() 返回非空值）
+
             FlailStrategy strategy = getAttackStrategy();
             if (strategy != null) {
                 flail.setAttackStrategy(strategy);
@@ -128,22 +121,24 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     comp.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
         } else {
+            // 同步 ItemStack 模式到现有实体
+            existing.setLaunchMode(comp.launchMode || isProjectileMode(stack));
             switch (existing.getPhase()) {
-                case BaseFlailEntity.PHASE_SPIN -> {
-                    existing.launch(player);
-                }
-                case BaseFlailEntity.PHASE_THROWN, BaseFlailEntity.PHASE_RETRACT ->
-                        existing.playerDrop();
+                case BaseFlailEntity.PHASE_SPIN -> existing.launch(player);
+                case BaseFlailEntity.PHASE_THROWN, BaseFlailEntity.PHASE_RETRACT -> existing.playerDrop();
                 case BaseFlailEntity.PHASE_STAY -> existing.forceRetract();
                 default -> {}
             }
         }
+    }
 
-        return InteractionResultHolder.consume(stack);
+    /** 子类覆盖以支持模式切换（如 FlaironItem），默认返回 false */
+    public boolean isProjectileMode(ItemStack stack) {
+        return false;
     }
 
     @Nullable
-    private static BaseFlailEntity findExistingFlail(Player player) {
+    protected static BaseFlailEntity findExistingFlail(Player player) {
         return player.level().getEntitiesOfClass(BaseFlailEntity.class,
                 player.getBoundingBox().inflate(30),
                 e -> e.getOwner() == player

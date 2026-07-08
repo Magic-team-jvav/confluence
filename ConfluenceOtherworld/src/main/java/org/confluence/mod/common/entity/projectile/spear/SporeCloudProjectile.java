@@ -32,6 +32,11 @@ public class SporeCloudProjectile extends SpearProjectile {
     public SporeCloudProjectile(EntityType<? extends SporeCloudProjectile> entityType, Level level) {
         super(entityType, level);
         this.collisionProperties = new CollisionProperties(1, 1, 0.65F);
+        this.config = new Config()
+                    .damageFactor(0.8f)
+                    .baseSpeed(1.2f)
+                    .existTicks(200)
+                    .pierceCount(Integer.MAX_VALUE);
     }
 
     @Override

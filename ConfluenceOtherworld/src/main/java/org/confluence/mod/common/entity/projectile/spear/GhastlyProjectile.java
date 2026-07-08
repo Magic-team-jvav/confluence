@@ -22,19 +22,13 @@ import org.jetbrains.annotations.Nullable;
  * 可无限穿透、穿墙，每 4 tick 对同一实体最多造成一次伤害。
  */
 public class GhastlyProjectile extends SpearProjectile {
-    /** 对同一实体的伤害冷却间隔（tick） */
     private static final int DAMAGE_INTERVAL = 4;
-
-    /** 记录每个实体上次受伤的 tick 时间，用于伤害冷却 */
     private final Object2IntMap<Entity> lastHitTicks = new Object2IntOpenHashMap<>();
-    /** 是否已穿过目标，穿过不再索敌折返 */
     private boolean hasPassedTarget = false;
 
-    /** 模型层定义 */
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(Confluence.asResource("ghastly_projectile"), "main");
 
-    /** 恶魂弹射物网格：半透明幽灵状方块体 */
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -47,30 +41,26 @@ public class GhastlyProjectile extends SpearProjectile {
         super(entityType, level);
         this.knockBack = 0.0f;
         this.baseKnockBack = 0.0f;
+        this.config = new Config()
+                    .damageFactor(0.9f)
+                    .baseSpeed(0.5f)
+                    .existTicks(10)
+                    .pierceCount(Integer.MAX_VALUE);
     }
 
-    /**
-     * 跳过基类的自动索敌逻辑，目标由外部通过 {@link #setLockedTarget(LivingEntity)} 指定。
-     * 注意：调用 {@code level.addFreshEntity()} 后再通过 {@link #setLockedTarget} 设置目标，
-     * 可覆盖基类 {@code onAddedToLevel} 中自动索敌的结果。
-     */
 
     /** 设置锁定目标 */
     public void setLockedTarget(LivingEntity target) {
         this.target = target;
     }
 
-    /**
-     * 水平飞向锁定目标，y 轴速度恒为零。
-     * 穿过目标不再折返，继续沿原方向飞行。
-     */
     @Override
     protected void updateMotion() {
         if (!hasPassedTarget && target != null && target.isAlive()) {
             Vec3 toTarget = target.position().subtract(position());
             double horizontalDistSqr = toTarget.x * toTarget.x + toTarget.z * toTarget.z;
             if (horizontalDistSqr > 0.25) {
-                float speed = projComponent != null ? projComponent.baseSpeed() : 0.5f;
+                float speed = getBaseSpeed();
                 Vec3 horizontalDir = new Vec3(toTarget.x, 0.0, toTarget.z).normalize();
                 velocity = horizontalDir.scale(speed);
             }
@@ -87,22 +77,14 @@ public class GhastlyProjectile extends SpearProjectile {
     }
 
     // ===== 穿透与穿墙 =====
-
-    /** 无限穿透 — 不减少穿透次数，不销毁 */
     @Override
     protected void applyPenetration() {
-        // 空实现：无限穿透
     }
-
-    /** 穿墙 — 撞墙时不销毁 */
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        // 空实现：穿墙
     }
 
     // ===== 伤害与碰撞 =====
-
-    /** 始终可命中存活、可拾取的非主人实体 */
     @Override
     protected boolean canHitEntity(Entity target) {
         return target.isAlive()
@@ -130,7 +112,6 @@ public class GhastlyProjectile extends SpearProjectile {
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
-            // 清理已死亡或已移除的实体记录
             lastHitTicks.keySet().removeIf(e -> !e.isAlive() || e.isRemoved());
         }
     }

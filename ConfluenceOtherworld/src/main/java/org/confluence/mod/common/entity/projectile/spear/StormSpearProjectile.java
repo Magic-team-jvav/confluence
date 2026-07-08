@@ -45,13 +45,16 @@ public class StormSpearProjectile extends SpearProjectile {
 
     public StormSpearProjectile(EntityType<? extends StormSpearProjectile> entityType, Level level) {
         super(entityType, level);
+        this.config = new Config()
+                    .damageFactor(1.5f)
+                    .baseSpeed(0.1f)
+                    .existTicks(40)
+                    .pierceCount(1);
     }
 
     @Override
     protected void updateMotion() {
-        if (projComponent != null) {
-            velocity = velocity.scale(projComponent.acceleration());
-        }
+        velocity = velocity.scale(getAcceleration());
     }
 
     @Override

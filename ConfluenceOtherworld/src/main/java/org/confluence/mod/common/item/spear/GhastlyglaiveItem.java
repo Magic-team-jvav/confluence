@@ -10,7 +10,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.GhastlyProjectile;
 import org.confluence.mod.common.init.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
@@ -74,9 +73,8 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
                 nearestEnemy.getZ() - spawnZ
         ).normalize();
 
-        SpearProjectileComponent component = SpearProjectileComponent.GHASTLY_PROJECTILE;
         GhastlyProjectile projectile = spawnProjectile(level, owner,
-                new Vec3(spawnX, spawnY, spawnZ), dir, component);
+                new Vec3(spawnX, spawnY, spawnZ), dir);
         // addFreshEntity 会触发 onAddedToLevel 自动索敌，此处显式覆盖以确保锁定正确目标
         projectile.setLockedTarget(nearestEnemy);
     }
@@ -91,15 +89,14 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
      * @param component 弹射物配置组件
      * @return 已生成的弹射物实例
      */
-    private GhastlyProjectile spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos,Vec3 direction, SpearProjectileComponent component) {
+    private GhastlyProjectile spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction) {
         GhastlyProjectile projectile = new GhastlyProjectile(
                 ModEntities.GHASTLY_PROJECTILE.get(), level);
         projectile.setOwner(owner);
         projectile.setWeapon(owner.getMainHandItem());
-        // setProjComponent 自动从 owner 获取基础攻击伤害
-        projectile.setProjComponent(component, owner);
+        projectile.initFromOwner(owner);
         projectile.setPos(pos.x, pos.y, pos.z);
-        projectile.fire(direction, component.getVelocity(owner), 0.0f);
+        projectile.fire(direction, projectile.getBaseSpeed(), 0.0f);
         level.addFreshEntity(projectile);
         return projectile;
     }

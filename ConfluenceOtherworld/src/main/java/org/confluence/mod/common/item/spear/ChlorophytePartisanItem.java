@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.SporeCloudProjectile;
 import org.confluence.mod.common.init.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
@@ -32,19 +31,16 @@ public class ChlorophytePartisanItem extends AbstractSpearItem {
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
-            SpearProjectileComponent component = SpearProjectileComponent.SPORE_CLOUD_PROJ;
             SporeCloudProjectile projectile = new SporeCloudProjectile(
                     ModEntities.SPORE_CLOUD_PROJECTILE.get(), level);
             projectile.setOwner(owner);
             projectile.setWeapon(owner.getMainHandItem());
-            projectile.setProjComponent(component, owner);
 
             // 初始位置：矛尖与玩家之间约1/3处
             Vec3 spawnPos = owner.getEyePosition().add(tipPos.subtract(owner.getEyePosition()).scale(0.33));
             projectile.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
 
-            // 基础攻击伤害已在 setProjComponent() 中自动从 owner
-            projectile.fire(owner.getLookAngle(), component.getVelocity(owner), 0.1f);
+            projectile.fireFromOwner(owner, owner.getLookAngle(), 0.1f);
 
             level.addFreshEntity(projectile);
         }

@@ -19,6 +19,13 @@ public class NorthPoleSubProjectile extends SpearProjectile {
     public NorthPoleSubProjectile(EntityType<? extends NorthPoleSubProjectile> entityType, Level level) {
         super(entityType, level);
         this.collisionProperties = new CollisionProperties(1, 1, 0.65F);
+        this.config = new Config()
+                    .damageFactor(1.0f)
+                    .baseSpeed(1.0f)
+                    .acceleration(0.99f)
+                    .existTicks(120)
+                    .projGravity(0.03f)
+                    .pierceCount(3);
     }
 
     @Override

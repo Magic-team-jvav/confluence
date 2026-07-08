@@ -45,13 +45,18 @@ public class NorthPoleProjectile extends SpearProjectile {
 
     public NorthPoleProjectile(EntityType<? extends NorthPoleProjectile> entityType, Level level) {
         super(entityType, level);
+        this.config = new Config()
+                    .damageFactor(1.0f)
+                    .baseSpeed(1.0f)
+                    .acceleration(0.99f)
+                    .existTicks(120)
+                    .projGravity(0.03f)
+                    .pierceCount(3);
     }
 
     @Override
     protected void updateMotion() {
-        if (projComponent != null) {
-            velocity = velocity.scale(projComponent.acceleration());
-        }
+        velocity = velocity.scale(getAcceleration());
     }
 
     @Override
@@ -76,9 +81,6 @@ public class NorthPoleProjectile extends SpearProjectile {
                 ModEntities.NORTH_POLE_SUB_PROJECTILE.get(), level());
         sub.setOwner(getOwner());
         sub.setWeapon(getWeaponItem());
-        if (projComponent != null) {
-            sub.setProjComponent(projComponent, getOwner() instanceof LivingEntity living ? living : null);
-        }
         sub.setPos(getX(), getY(), getZ());
         // 子射物初始速度为零,仅受重力下落
         sub.velocity = new Vec3(0, 0, 0);

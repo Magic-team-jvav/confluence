@@ -11,7 +11,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.MushroomProjectile;
 import org.confluence.mod.common.init.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
@@ -97,9 +96,8 @@ public class MushroomSpearItem extends AbstractSpearItem {
             Vec3 viewVector = owner.getViewVector(1.0F);
             Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
             Vec3 tipPos = position.add(viewVector.scale(getDistance(tickCount, owner)));
-            SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ;
             Vec3 forwardOffset = viewVector.scale(1.0);
-            spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
+            spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), viewVector);
             lastSpawnTipZ = getDistance(tickCount, owner);
         }
         // 收矛阶段：按间距控制生成密度，与刺出阶段保持一致
@@ -109,21 +107,19 @@ public class MushroomSpearItem extends AbstractSpearItem {
                 Vec3 viewVector = owner.getViewVector(1.0F);
                 Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
                 Vec3 tipPos = position.add(viewVector.scale(currentTipZ));
-                SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ;
                 Vec3 forwardOffset = viewVector.scale(1.0);
-                spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
+                spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), viewVector);
                 lastSpawnTipZ = currentTipZ;
             }
         }
     }
 
-    private void spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos,
-                                  SpearProjectileComponent component, Vec3 direction) {
+    private void spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction) {
         MushroomProjectile projectile = new MushroomProjectile(
                 ModEntities.MUSHROOM_PROJECTILE.get(), level);
         projectile.setOwner(owner);
         projectile.setWeapon(owner.getMainHandItem());
-        projectile.setProjComponent(component, owner);
+        projectile.initFromOwner(owner);
         projectile.setPos(pos.x, pos.y, pos.z);
         projectile.fire(direction, 0.0f, 0.0f);
         level.addFreshEntity(projectile);

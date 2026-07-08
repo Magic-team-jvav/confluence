@@ -38,6 +38,12 @@ public class MushroomProjectile extends SpearProjectile {
         super(entityType, level);
         this.knockBack = 0.0f;
         this.baseKnockBack = 0.0f;
+        this.config = new Config()
+                    .damageFactor(1.0f)
+                    .baseSpeed(0.0f)
+                    .acceleration(0.95f)
+                    .existTicks(20)
+                    .pierceCount(1);
     }
 
     @Override

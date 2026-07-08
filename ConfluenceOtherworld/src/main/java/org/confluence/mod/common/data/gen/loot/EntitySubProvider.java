@@ -16,10 +16,7 @@ import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunctio
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
-import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
-import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
-import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.DeferredRegister;
@@ -309,26 +306,26 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(195))
                 )
         );
-//        add(MonsterEntities.SPORE_ZOMBIE.get(), LootTable.lootTable()
-//                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
-//                )
-//                .withPool(LootPool.lootPool()
-//                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
-//                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
-//                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
-//                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
-//                )
-//        );
-//        add(MonsterEntities.HAT_SPORE_ZOMBIE.get(), LootTable.lootTable()
-//                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
-//                )
-//                .withPool(LootPool.lootPool()
-//                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
-//                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
-//                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
-//                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
-//                )
-//        );
+        add(MonsterEntities.SPORE_ZOMBIE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
+                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.01F))
+                )
+        );
+        add(MonsterEntities.HAT_SPORE_ZOMBIE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
+                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.01F))
+                )
+        );
         add(MonsterEntities.SPORE_SKELETON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.BONE).apply(random0To1).apply(count1To2))
@@ -650,7 +647,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(667))
                 )
         );
-//        add(MonsterEntities.ANGER_GOBLIN.get(), goblinCommon());
+        add(MonsterEntities.ANGER_GOBLIN.get(), goblinCommon());
         add(MonsterEntities.GOBLIN_ARCHER.get(), goblinCommon());
         add(MonsterEntities.GOBLIN_PEON.get(), goblinCommon());
         add(MonsterEntities.GOBLIN_SORCERER.get(), goblinCommon());
@@ -709,6 +706,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(CritterEntities.BUNNY.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.RABBIT).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
+        add(CritterEntities.EXPLOSIVE_BUNNY.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RABBIT).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
                         )

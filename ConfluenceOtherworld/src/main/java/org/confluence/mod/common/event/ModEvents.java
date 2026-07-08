@@ -195,6 +195,7 @@ public final class ModEvents {
 //        event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
         event.put(CritterEntities.BUNNY.get(), Bunny.createAttributes().build());
         event.put(CritterEntities.JEWEL_BUNNY.get(), Bunny.createAttributes().build());
+        event.put(CritterEntities.EXPLOSIVE_BUNNY.get(), Bunny.createAttributes().build());
         event.put(CritterEntities.HOSTILE_BUNNY.get(), HostileBunny.createAttributes().build());
         event.put(CritterEntities.BIRD.get(), Bird.createAttributes().build());
         event.put(CritterEntities.BLUE_JAY.get(), BlueJay.createAttributes().build());
@@ -207,6 +208,7 @@ public final class ModEvents {
         event.put(CritterEntities.CRAB.get(), Crab.createAttributes().build());
         event.put(CritterEntities.BUTTERFLY.get(), Butterfly.createAttributes().build());
         event.put(CritterEntities.FAIRY.get(), Fairy.createAttributes().build());
+        event.put(CritterEntities.FEALING.get(), Fairy.createAttributes().build());
         event.put(CritterEntities.GLOWING_SNAIL.get(), SimpleCritter.createAttributes().build());
         event.put(CritterEntities.GRUBBY.get(), SimpleCritter.createAttributes().build());
         event.put(CritterEntities.MAGGOT.get(), SimpleCritter.createAttributes().build());
@@ -280,6 +282,7 @@ public final class ModEvents {
         event.put(MonsterEntities.DRIPPLER.get(), BaseFlyingMonster.createFlyingAttributes().build());
         event.put(MonsterEntities.FLYING_FISH.get(), BaseFlyingMonster.createFlyingAttributes().build());
         event.put(MonsterEntities.WANDERING_EYE_FISH.get(), BaseFlyingMonster.createFlyingAttributes().build());
+        event.put(MonsterEntities.VISUAL_NEURON.get(), VisualNeuron.createAttributes().build());
         event.put(MonsterEntities.DEMON.get(), Demon.createAttributes().build());
         event.put(MonsterEntities.VOODOO_DEMON.get(), Demon.createAttributes().build());
         event.put(MonsterEntities.HORNET.get(), Hornet.createAttributes().build());
@@ -294,6 +297,7 @@ public final class ModEvents {
         event.put(MonsterEntities.ANTLION_SWARMER.get(), AntlionSwarmer.createAttributes().build());
         event.put(MonsterEntities.GIANT_ANTLION_SWARMER.get(), AntlionSwarmer.createAttributes().build());
         event.put(MonsterEntities.THE_HUNGRY.get(), TheHungry.createAttributes().build());
+        event.put(MonsterEntities.HILL_HUNGRY.get(), HillHungry.createAttributes().build());
         event.put(MonsterEntities.BLOOD_ZOMBIE.get(), BaseWarriorMonster.createAttributes().build());
         event.put(MonsterEntities.SNOW_FLINX.get(), BaseWarriorMonster.createAttributes().build());
         event.put(MonsterEntities.FACE_MONSTER.get(), BaseWarriorMonster.createAttributes().build());
@@ -315,9 +319,12 @@ public final class ModEvents {
         event.put(MonsterEntities.GOBLIN_WARRIOR.get(), BaseWarriorMonster.createAttributes().build());
         event.put(MonsterEntities.GOBLIN_THIEF.get(), BaseWarriorMonster.createAttributes().build());
         event.put(MonsterEntities.GOBLIN_SCOUT.get(), BaseWarriorMonster.createAttributes().build());
+        event.put(MonsterEntities.ANGER_GOBLIN.get(), AngerGoblin.createAttributes().build());
         // 陆行怪
         event.put(MonsterEntities.BLOODY_SPORE.get(), BloodySpore.createAttributes().build());
         event.put(MonsterEntities.BLOOD_CRAWLER.get(), BloodCrawler.createAttributes().build());
+        event.put(MonsterEntities.SPORE_ZOMBIE.get(), SporeZombie.createAttributes().build());
+        event.put(MonsterEntities.HAT_SPORE_ZOMBIE.get(), HatSporeZombie.createAttributes().build());
         event.put(MonsterEntities.NYMPH.get(), Nymph.createAttributes().build());
         event.put(MonsterEntities.SAND_POACHER.get(), SandPoacher.createAttributes().build());
         // 水怪
@@ -512,6 +519,7 @@ public final class ModEvents {
 //        event.register(ModEntities.INVERSE_ENDERMAN.get(), InverseEntityType.ON_CEIL, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, InverseEnderMan::checkInverseEnderManSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(CritterEntities.BUNNY.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(CritterEntities.JEWEL_BUNNY.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(CritterEntities.FEALING.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(MonsterEntities.DEMON_EYE.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DemonEye::checkDemonEyeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(MonsterEntities.GREEN_SLIME.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseSlime::checkGreenSlimeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(MonsterEntities.BLUE_SLIME.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BaseSlime::checkBlueSlimeSpawnRules, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);

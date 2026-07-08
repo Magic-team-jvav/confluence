@@ -62,8 +62,8 @@ public enum GoblinArmyGameEvent implements GameEvent {
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_PEON.get(), 480, 2, 3),
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_WARRIOR.get(), 360, 2, 3),
                 new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_SORCERER.get(), 240, 1, 1),
-                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_THIEF.get(), 480, 2, 4)
-//                new MobSpawnSettings.SpawnerData(MonsterEntities.ANGER_GOBLIN.get(), 240, 1, 2)
+                new MobSpawnSettings.SpawnerData(MonsterEntities.GOBLIN_THIEF.get(), 480, 2, 4),
+                new MobSpawnSettings.SpawnerData(MonsterEntities.ANGER_GOBLIN.get(), 240, 1, 2)
         )).create();
     }
 

@@ -107,6 +107,6 @@
     }
   },
   "textures": {
-    "particle": "terra_guns:item/texture"
+    "particle": "confluence:item/texture"
   }
 }

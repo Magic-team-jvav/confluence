@@ -1687,8 +1687,8 @@ public class ModDataProvider {
                             .mobSpawnSettings(new MobSpawnSettings.Builder()
                                     .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_BAT.get(), 60, 1, 2))
                                     .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_SKELETON.get(), 60, 1, 2))
-//                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_ZOMBIE.get(), 45, 1, 2))
-//                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
+                                    .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.SPORE_ZOMBIE.get(), 45, 1, 2))
+                                    .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
                                     .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 1, 1, 1))
                                     .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 1, 1, 1))
                                     .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CritterEntities.GLOWING_SNAIL.get(), 10, 1, 2))
@@ -1977,8 +1977,8 @@ public class ModDataProvider {
                     116
             ));
             context.register(ModStructures.Keys.SHIMMER_LAKE, new ShimmerLakeStructure(new Structure.StructureSettings(overworld, Map.of(
-                    MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
-//                            new MobSpawnSettings.SpawnerData(CritterEntities.FEALING.get(), 30, 1, 2)
+                    MobCategory.CREATURE, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
+                            new MobSpawnSettings.SpawnerData(CritterEntities.FEALING.get(), 30, 1, 2)
                     ))
             ), GenerationStep.Decoration.VEGETAL_DECORATION, TerrainAdjustment.NONE)));
         }

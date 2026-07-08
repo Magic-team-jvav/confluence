@@ -5,7 +5,7 @@
 			"identifier": "confluence:hellfire",
 			"basic_render_parameters": {
 				"material": "particles_add",
-				"texture": "terra_entity:fire"
+				"texture": "confluence:fire"
 			}
 		},
 		"components": {

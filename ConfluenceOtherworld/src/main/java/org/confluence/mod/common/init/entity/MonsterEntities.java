@@ -72,6 +72,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<SimpleFlyMonster>> DRIPPLER = registerFlyer("drippler", 1.0F, 1.0F);
     public static final RegistryObject<EntityType<SimpleFlyMonster>> FLYING_FISH = registerFlyer("flying_fish", 0.8F, 0.6F);
     public static final RegistryObject<EntityType<SimpleFlyMonster>> WANDERING_EYE_FISH = registerFlyer("wandering_eye_fish", 1.1F, 1.1F);
+    public static final RegistryObject<EntityType<VisualNeuron>> VISUAL_NEURON = registerEntity("visual_neuron", EntityType.Builder.of(VisualNeuron::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10));
 
     // 恶魔
     public static final RegistryObject<EntityType<Demon>> DEMON = registerEntity("demon", EntityType.Builder.of(Demon::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10));
@@ -106,6 +107,7 @@ public class MonsterEntities {
 
     // 饿鬼 (独立版)
     public static final RegistryObject<EntityType<TheHungry>> THE_HUNGRY = registerEntity("the_hungry", EntityType.Builder.of(TheHungry::new, MobCategory.MONSTER).sized(0.6F, 0.8F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<HillHungry>> HILL_HUNGRY = registerEntity("hill_hungry", EntityType.Builder.of(HillHungry::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10));
 
     // 陆行怪 —— BaseWarriorMonster 匿名子类
     public static final RegistryObject<EntityType<BaseWarriorMonster>> BLOOD_ZOMBIE = registerLand("blood_zombie", 0.6F, 1.95F);
@@ -133,8 +135,11 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<BaseWarriorMonster>> GOBLIN_WARRIOR = registerLand("goblin_warrior", 0.6F, 1.5F);
     public static final RegistryObject<EntityType<BaseWarriorMonster>> GOBLIN_THIEF = registerLand("goblin_thief", 0.6F, 1.5F);
     public static final RegistryObject<EntityType<BaseWarriorMonster>> GOBLIN_SCOUT = registerLand("goblin_scout", 0.6F, 1.5F);
+    public static final RegistryObject<EntityType<AngerGoblin>> ANGER_GOBLIN = registerEntity("anger_goblin", EntityType.Builder.of(AngerGoblin::new, MobCategory.MONSTER).sized(0.65F, 1.85F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<BloodySpore>> BLOODY_SPORE = registerEntity("bloody_spore", EntityType.Builder.of(BloodySpore::new, MobCategory.MONSTER).sized(1, 1.5f).clientTrackingRange(10));
     public static final RegistryObject<EntityType<BloodCrawler>> BLOOD_CRAWLER = registerEntity("blood_crawler", EntityType.Builder.of(BloodCrawler::new, MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<SporeZombie>> SPORE_ZOMBIE = registerEntity("spore_zombie", EntityType.Builder.of(SporeZombie::new, MobCategory.MONSTER).sized(0.75F, 1.95F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<HatSporeZombie>> HAT_SPORE_ZOMBIE = registerEntity("hat_spore_zombie", EntityType.Builder.of(HatSporeZombie::new, MobCategory.MONSTER).sized(0.75F, 1.95F).clientTrackingRange(10));
 
     // 水怪
     public static final RegistryObject<EntityType<Piranha>> PIRANHA = registerEntity("piranha", EntityType.Builder.of(Piranha::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10));

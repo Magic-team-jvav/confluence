@@ -451,6 +451,7 @@ public final class ModClientEvents {
         // Critter renderers — Bunny 保留自定义模型，其余用 CritterRenderer
         event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.JEWEL_BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.BIRD.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.BLUE_JAY.get(), CritterRenderer::new);
@@ -463,6 +464,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(CritterEntities.WORM.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.BUTTERFLY.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.FAIRY.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.FEALING.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.GLOWING_SNAIL.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.GRUBBY.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.MAGGOT.get(), CritterRenderer::new);
@@ -555,6 +557,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.DRIPPLER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/drippler")));
         event.registerEntityRenderer(MonsterEntities.FLYING_FISH.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/flying_fish")));
         event.registerEntityRenderer(MonsterEntities.WANDERING_EYE_FISH.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/wandering_eye_fish")));
+        event.registerEntityRenderer(MonsterEntities.VISUAL_NEURON.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("visual_neuron")));
         event.registerEntityRenderer(MonsterEntities.DEMON.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/demon")));
         event.registerEntityRenderer(MonsterEntities.VOODOO_DEMON.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/demon")));
         event.registerEntityRenderer(MonsterEntities.HORNET.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/hornet")));
@@ -568,7 +571,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GRANITE_ELEMENTAL.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/granite_elemental")));
         event.registerEntityRenderer(MonsterEntities.ANTLION_SWARMER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/antlion_swarmer")));
         event.registerEntityRenderer(MonsterEntities.GIANT_ANTLION_SWARMER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/antlion_swarmer")));
-        event.registerEntityRenderer(MonsterEntities.THE_HUNGRY.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/the_hungry")));
+        event.registerEntityRenderer(MonsterEntities.THE_HUNGRY.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("the_hungry")));
+        event.registerEntityRenderer(MonsterEntities.HILL_HUNGRY.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("the_hungry")));
         event.registerEntityRenderer(MonsterEntities.BLOOD_ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/blood_zombie")));
         event.registerEntityRenderer(MonsterEntities.SNOW_FLINX.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/snow_flinx")));
         event.registerEntityRenderer(MonsterEntities.FACE_MONSTER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/face_monster")));
@@ -590,10 +594,13 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GOBLIN_WARRIOR.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/goblin")));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_THIEF.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/goblin")));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_SCOUT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/goblin")));
+        event.registerEntityRenderer(MonsterEntities.ANGER_GOBLIN.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("goblin/anger_goblin")));
         // 陆行怪
         event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/zombie")));
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/bloody_spore")));
         event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/blood_crawler")));
+        event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("spore_zombie")));
+        event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("hat_spore_zombie")));
         event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/nymph")));
         event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("monster/sand_poacher")));
         // 水怪

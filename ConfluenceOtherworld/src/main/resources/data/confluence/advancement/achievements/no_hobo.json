@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "terra_entity:house_detector"
+            "id": "confluence:house_detector"
         },
         "title": {
             "translate": "achievements.confluence.no_hobo.title"

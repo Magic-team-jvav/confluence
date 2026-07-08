@@ -18,6 +18,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.item.ToolItems;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
@@ -129,7 +130,7 @@ public final class ModFluids {
 //        addEntity(NpcEntities.ANGLER.get(), NpcEntities.FEMALE_ANGLER.get());
 //        addEntity(NpcEntities.FEMALE_ANGLER.get(), NpcEntities.ANGLER.get());
         // 飞灵转化
-//        addEntity(ModTags.EntityTypes.FEALING_TRANSMUTATION, CritterEntities.FEALING.get());
+        addEntity(ModTags.EntityTypes.FEALING_TRANSMUTATION, CritterEntities.FEALING.get());
     }
 
     public static void initialize() {}

@@ -13,6 +13,7 @@ public class CritterEntities {
 
     public static final RegistryObject<EntityType<Bunny>> BUNNY = register("bunny", Bunny::new);
     public static final RegistryObject<EntityType<JewelBunny>> JEWEL_BUNNY = register("jewel_bunny", JewelBunny::new);
+    public static final RegistryObject<EntityType<ExplosiveBunny>> EXPLOSIVE_BUNNY = register("explosive_bunny", ExplosiveBunny::new);
     public static final RegistryObject<EntityType<HostileBunny>> HOSTILE_BUNNY = registerHostile("hostile_bunny", HostileBunny::new);
     public static final RegistryObject<EntityType<Bird>> BIRD = register("bird", Bird::new);
     public static final RegistryObject<EntityType<BlueJay>> BLUE_JAY = register("blue_jay", BlueJay::new);
@@ -26,6 +27,7 @@ public class CritterEntities {
     // Insects
     public static final RegistryObject<EntityType<Butterfly>> BUTTERFLY = registerInsect("butterfly", Butterfly::new);
     public static final RegistryObject<EntityType<Fairy>> FAIRY = registerInsect("fairy", Fairy::new);
+    public static final RegistryObject<EntityType<Fealing>> FEALING = registerInsect("fealing", Fealing::new);
     public static final RegistryObject<EntityType<SimpleCritter>> GLOWING_SNAIL = registerInsect("glowing_snail", SimpleCritter::new);
     public static final RegistryObject<EntityType<SimpleCritter>> GRUBBY = registerInsect("grubby", SimpleCritter::new);
     public static final RegistryObject<EntityType<SimpleCritter>> MAGGOT = registerInsect("maggot", SimpleCritter::new);

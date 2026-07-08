@@ -50,7 +50,7 @@ public class BoomBunnyRecipe extends ShapelessRecipe {
                 CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
                 if (tag == null) continue;
                 String id = tag.getString(Entity.ID_TAG);
-                if ("confluence:bunny".equals(id) || "minecraft:rabbit".equals(id)) {
+                if ("confluence:bunny".equals(id) || "confluence:explosive_bunny".equals(id) || "minecraft:rabbit".equals(id)) {
                     return true;
                 }
             }
@@ -66,7 +66,7 @@ public class BoomBunnyRecipe extends ShapelessRecipe {
             CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
             if (tag == null) continue;
             tag = tag.copy();
-            tag.putString(Entity.ID_TAG, CritterEntities.BUNNY.getId().toString());
+            tag.putString(Entity.ID_TAG, CritterEntities.EXPLOSIVE_BUNNY.getId().toString());
             Bunny.Variant.EXPLOSIVE.serialize(tag);
             tag.putUUID(Entity.UUID_TAG, Mth.createInsecureUUID());
             assemble.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));

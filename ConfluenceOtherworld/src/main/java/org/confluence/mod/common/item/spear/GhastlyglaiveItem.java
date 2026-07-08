@@ -74,7 +74,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
                 nearestEnemy.getZ() - spawnZ
         ).normalize();
 
-        SpearProjectileComponent component = SpearProjectileComponent.GHASTLY_PROJECTILE.get();
+        SpearProjectileComponent component = SpearProjectileComponent.GHASTLY_PROJECTILE;
         GhastlyProjectile projectile = spawnProjectile(level, owner,
                 new Vec3(spawnX, spawnY, spawnZ), dir, component);
         // addFreshEntity 会触发 onAddedToLevel 自动索敌，此处显式覆盖以确保锁定正确目标

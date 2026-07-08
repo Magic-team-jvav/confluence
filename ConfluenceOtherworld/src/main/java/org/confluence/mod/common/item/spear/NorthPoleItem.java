@@ -32,7 +32,7 @@ public class NorthPoleItem extends AbstractSpearItem {
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
-            SpearProjectileComponent component = SpearProjectileComponent.NORTH_POLE_PROJ.get();
+            SpearProjectileComponent component = SpearProjectileComponent.NORTH_POLE_PROJ;
             NorthPoleProjectile projectile = new NorthPoleProjectile(
                     ModEntities.NORTH_POLE_PROJECTILE.get(), level);
             projectile.setOwner(owner);

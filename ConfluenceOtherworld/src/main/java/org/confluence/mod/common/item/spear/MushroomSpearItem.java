@@ -97,7 +97,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
             Vec3 viewVector = owner.getViewVector(1.0F);
             Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
             Vec3 tipPos = position.add(viewVector.scale(getDistance(tickCount, owner)));
-            SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
+            SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ;
             Vec3 forwardOffset = viewVector.scale(1.0);
             spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
             lastSpawnTipZ = getDistance(tickCount, owner);
@@ -109,7 +109,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
                 Vec3 viewVector = owner.getViewVector(1.0F);
                 Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
                 Vec3 tipPos = position.add(viewVector.scale(currentTipZ));
-                SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
+                SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ;
                 Vec3 forwardOffset = viewVector.scale(1.0);
                 spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
                 lastSpawnTipZ = currentTipZ;

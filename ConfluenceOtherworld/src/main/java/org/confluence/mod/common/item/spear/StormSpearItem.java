@@ -35,7 +35,7 @@ public class StormSpearItem extends AbstractSpearItem {
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
-            SpearProjectileComponent component = SpearProjectileComponent.STORM_SPEAR_PROJ.get();
+            SpearProjectileComponent component = SpearProjectileComponent.STORM_SPEAR_PROJ;
             StormSpearProjectile projectile = new StormSpearProjectile(
                     ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), level);
 

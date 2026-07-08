@@ -32,7 +32,7 @@ public class ChlorophytePartisanItem extends AbstractSpearItem {
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
-            SpearProjectileComponent component = SpearProjectileComponent.SPORE_CLOUD_PROJ.get();
+            SpearProjectileComponent component = SpearProjectileComponent.SPORE_CLOUD_PROJ;
             SporeCloudProjectile projectile = new SporeCloudProjectile(
                     ModEntities.SPORE_CLOUD_PROJECTILE.get(), level);
             projectile.setOwner(owner);

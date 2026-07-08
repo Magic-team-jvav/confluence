@@ -8,7 +8,6 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -90,19 +89,7 @@ public interface Immunity {
 
     int confluence$getImmunityDuration(DamageSource damageSource);
 
-    static int defaultGetImmunityDuration(Immunity self, DamageSource damageSource) {
-        Entity causeEntity = damageSource.getEntity();
-        // 自身是汇流近战武器且使用者有攻击速度属性
-        if (self instanceof ItemStack weaponItemStack && weaponItemStack.getItem() instanceof SwordItem weaponItem
-                && ModUtils.isFromConfluence(BuiltInRegistries.ITEM, weaponItem)
-                && causeEntity instanceof LivingEntity living && living.getAttributes().hasAttribute(Attributes.ATTACK_SPEED)
-        ) {
-            double speed = living.getAttribute(Attributes.ATTACK_SPEED).getValue();
-            int time = (int) (20 / speed) - 1;
-            return Math.max(0, time);
-        }
-        return 0;
-    }
+    int DEFAULT_IMMUNITY_DURATINO = 0;
 
     enum Type implements StringRepresentable {
         /// 静态无敌帧，以类而不是对象区分不同的伤害，比如魔刺，多个魔刺弹幕叠在一起伤害频率也不会变快

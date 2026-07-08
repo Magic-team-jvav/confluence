@@ -20,8 +20,7 @@ public interface IEntity extends Immunity, SelfGetter<Entity> {
 
     @Override
     default int confluence$getImmunityDuration(DamageSource damageSource) {
-        return ImmunityDataMap.getImmunityDuration(confluence$self(), damageSource,
-                source -> Immunity.defaultGetImmunityDuration(this, source));
+        return ImmunityDataMap.getImmunityDuration(confluence$self(), damageSource, source -> DEFAULT_IMMUNITY_DURATINO);
     }
 
     static IEntity of(Entity entity) {

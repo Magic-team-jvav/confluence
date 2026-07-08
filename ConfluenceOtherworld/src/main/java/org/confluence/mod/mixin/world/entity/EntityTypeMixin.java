@@ -17,6 +17,6 @@ public abstract class EntityTypeMixin implements Immunity {
         if (damageSource.getDirectEntity() instanceof Immunity im) {
             return im.confluence$getImmunityDuration(damageSource);
         }
-        return Immunity.defaultGetImmunityDuration(this, damageSource);
+        return 0;
     }
 }

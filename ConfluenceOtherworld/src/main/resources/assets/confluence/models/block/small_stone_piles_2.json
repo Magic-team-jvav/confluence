@@ -5,7 +5,7 @@
 	"texture_size": [36, 36],
 	"textures": {
 		"0": "confluence:block/small_stone_piles_2",
-		"particle": "confluence:block/small_stone_piles_2"
+        "particle": "block/stone"
 	},
 	"elements": [
 		{

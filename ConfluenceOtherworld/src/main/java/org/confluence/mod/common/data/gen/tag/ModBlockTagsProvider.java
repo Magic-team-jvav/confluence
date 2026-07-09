@@ -590,6 +590,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GOLDEN_MELON.get(),
 
                 SMALL_STONE_PILES.get(),
+                SMALL_SANDSTONE_PILES.get(),
+                ANTLION_EGGS.get(),
 
                 KING_SLIME_RELIC.get(),
                 EYE_OF_CTHULHU_RELIC.get(),
@@ -1047,6 +1049,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 INVERSE_GRASS_BLOCK.get(),
                 MOONLIT_GRASS_BLOCK.get(),
                 SMALL_STONE_PILES.get(),
+                SMALL_SANDSTONE_PILES.get(),
+                ANTLION_EGGS.get(),
                 END_DIRT.get(),
                 END_MUD.get(),
 

@@ -88,6 +88,8 @@ public class NatureBlocks {
 
     // 小堆环境
     public static final DeferredBlock<SmallPilesBlock> SMALL_STONE_PILES = registerWithItem("small_stone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.STONE)));
+    public static final DeferredBlock<SmallPilesBlock> SMALL_SANDSTONE_PILES = registerWithItem("small_sandstone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.SAND)));
+    public static final DeferredBlock<SmallPilesBlock> ANTLION_EGGS = registerWithItem("antlion_eggs", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.STONE).strength(0.05F)));
 
 
     public static final DeferredBlock<Block> GRANITE = registerWithItem("granite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));

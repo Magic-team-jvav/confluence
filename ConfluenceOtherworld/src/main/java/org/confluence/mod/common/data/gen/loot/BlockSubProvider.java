@@ -846,6 +846,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(Blocks.COBBLESTONE))
                         .add(EmptyLootItem.emptyItem()))
         );
+        add(SMALL_SANDSTONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Blocks.SANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
         addGrassLoot(ASH_GRASS.get(), ASH_GRASS.asItem());
         addGrassLoot(DESERT_GRASS.get(), DESERT_GRASS.asItem());
         addGrassLoot(DESERT_TALL_GRASS.get(), DESERT_TALL_GRASS.asItem());

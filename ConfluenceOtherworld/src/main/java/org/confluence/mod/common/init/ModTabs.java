@@ -175,6 +175,8 @@ public final class ModTabs {
                         desert.accept(NatureBlocks.SAND_LAYER_BLOCK);
                         desert.accept(NatureBlocks.RED_SAND_LAYER_BLOCK);
                         desert.accept(NatureBlocks.DESERT_FOSSIL);
+                        desert.accept(NatureBlocks.SMALL_SANDSTONE_PILES);
+                        desert.accept(NatureBlocks.ANTLION_EGGS);
 
                         CreativeModeTab.Output ocean = GroupItem.belongsTo("ocean", output);
                         ocean.accept(NatureBlocks.DIATOMACEOUS);

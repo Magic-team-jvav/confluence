@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +21,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -28,9 +28,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -44,7 +42,14 @@ import java.util.*;
 
 public class MuralBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<MuralBlock> CODEC = simpleCodec(MuralBlock::new);
-    private static final Map<BlockPos, BlockEntity> BE_CACHE = new HashMap<>();
+    public static final String TAG_DISPLAY_STATE = "displayState";
+    public static final String TAG_MURAL_WIDTH = "muralWidth";
+    public static final String TAG_MURAL_HEIGHT = "muralHeight";
+    private static final String TAG_HEAD_POS = "headPos";
+    private static final String TAG_LORE = "lore";
+    private static final String TAG_BELONGS_TO_GROUP = "belongs_to_group";
+    private static final BlockState DEFAULT_DISPLAY_STATE = Blocks.STONE_BRICKS.defaultBlockState();
+    private static final Map<GlobalPos, BEntity> BE_CACHE = new HashMap<>();
 
     public MuralBlock(Properties properties) {
         super(properties);
@@ -65,6 +70,11 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
     }
 
     @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
+    }
+
+    @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (level.isClientSide) return;
@@ -78,15 +88,15 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         if (lore != null && !lore.lines().isEmpty()) {
             muralEntity.setLore(new ArrayList<>(lore.lines()));
         }
-
-        GroupItem.BelongsTo group = stack.get(ConfluenceMagicLib.BELONGS_TO_GROUP);
-        if (group != null) {
-            muralEntity.setBelongsToGroup(group);
+        GroupItem.BelongsTo belongsToGroup = stack.get(ConfluenceMagicLib.BELONGS_TO_GROUP);
+        if (belongsToGroup != null) {
+            muralEntity.setBelongsToGroup(belongsToGroup);
         }
 
         Direction facing = state.getValue(FACING);
         int xOffset = -facing.getStepZ();
         int zOffset = facing.getStepX();
+        BlockState displayState = muralEntity.getDisplayState();
 
         for (int w = 0; w < width; w++) {
             for (int h = 0; h < height; h++) {
@@ -100,6 +110,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                     newMuralEntity.setMuralWidth(-1);
                     newMuralEntity.setMuralHeight(-1);
                     newMuralEntity.setHeadPos(new BlockPos(w, h, 0));
+                    newMuralEntity.setDisplayState(displayState);
                     newMuralEntity.setChanged();
                 }
             }
@@ -111,87 +122,31 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity be, ItemStack tool) {
         boolean hasSilkTouch = EnchantmentHelper.getEnchantmentLevel(level.registryAccess().holderOrThrow(Enchantments.SILK_TOUCH), player) > 0;
+        BEntity headMuralEntity = findHeadEntity(level, pos, state, be, true);
         if (hasSilkTouch) {
             ItemStack dropStack = new ItemStack(this);
-            BlockEntity headBeToSave = null;
-
-            if (be instanceof BEntity muralEntity) {
-                int w = muralEntity.getMuralWidth();
-                int h = muralEntity.getMuralHeight();
-                if (!(w == -1 || h == -1)) {
-                    headBeToSave = be;
-                } else {
-                    Direction facing = state.getValue(FACING);
-                    int xOffset = -facing.getStepZ();
-                    int zOffset = facing.getStepX();
-                    BlockPos relPos = muralEntity.getHeadPos();
-                    BlockPos headWorldPos = pos.offset(-xOffset * relPos.getX(), -relPos.getY(), -zOffset * relPos.getX());
-                    BlockEntity cachedHeadBe = BE_CACHE.get(headWorldPos);
-                    if (cachedHeadBe instanceof BEntity) {
-                        headBeToSave = cachedHeadBe;
-                        BE_CACHE.remove(headWorldPos);
-                    }
-                }
-            }
-
-            if (headBeToSave != null) {
-                headBeToSave.saveToItem(dropStack, level.registryAccess());
-                if (headBeToSave instanceof BEntity b) {
-                    b.restoreItemComponents(dropStack);
-                }
+            if (headMuralEntity != null) {
+                headMuralEntity.saveToItem(dropStack, level.registryAccess());
+                headMuralEntity.restoreItemComponents(dropStack);
             }
             popResource(level, pos, dropStack);
         } else {
-            int dropCount = 1;
-            if (be instanceof BEntity muralEntity) {
-                int w = muralEntity.getMuralWidth();
-                int h = muralEntity.getMuralHeight();
-                if (!(w == -1 || h == -1)) {
-                    dropCount = Math.max(1, w) * Math.max(1, h);
-                } else {
-                    Direction facing = state.getValue(FACING);
-                    int xOffset = -facing.getStepZ();
-                    int zOffset = facing.getStepX();
-                    BlockPos relPos = muralEntity.getHeadPos();
-                    BlockPos headWorldPos = pos.offset(-xOffset * relPos.getX(), -relPos.getY(), -zOffset * relPos.getX());
-                    BlockEntity cachedHeadBe = BE_CACHE.get(headWorldPos);
-                    if (cachedHeadBe instanceof BEntity headMuralEntity) {
-                        dropCount = Math.max(1, headMuralEntity.getMuralWidth()) * Math.max(1, headMuralEntity.getMuralHeight());
-                        BE_CACHE.remove(headWorldPos);
-                    }
-                }
-            }
-            if (dropCount > 0)
-                popResource(level, pos, new ItemStack(Items.STONE_BRICKS, dropCount));
+            BEntity dropSource = headMuralEntity == null ? null : headMuralEntity;
+            BlockState displayState = dropSource == null ? DEFAULT_DISPLAY_STATE : dropSource.getDisplayState();
+            int dropCount = dropSource == null ? 1 : dropSource.getBlockCount();
+            ItemStack dropStack = new ItemStack(displayState.getBlock().asItem(), dropCount);
+            if (!dropStack.isEmpty()) popResource(level, pos, dropStack);
         }
     }
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         ItemStack stack = new ItemStack(this);
-        if (level.getBlockEntity(pos) instanceof BEntity muralEntity) {
-            BlockEntity headBeToSave = null;
-            int w = muralEntity.getMuralWidth();
-            int h = muralEntity.getMuralHeight();
-            if (!(w == -1 || h == -1)) {
-                headBeToSave = muralEntity;
-            } else {
-                Direction facing = state.getValue(FACING);
-                int xOffset = -facing.getStepZ();
-                int zOffset = facing.getStepX();
-                BlockPos relPos = muralEntity.getHeadPos();
-                BlockPos headWorldPos = pos.offset(-xOffset * relPos.getX(), -relPos.getY(), -zOffset * relPos.getX());
-                BlockEntity headBe = level.getBlockEntity(headWorldPos);
-                if (headBe instanceof BEntity) headBeToSave = headBe;
-            }
-
-            if (headBeToSave != null) {
-                headBeToSave.setChanged();
-                headBeToSave.saveToItem(stack, level.registryAccess());
-                if (headBeToSave instanceof BEntity b) {
-                    b.restoreItemComponents(stack);
-                }
-            }
+        BEntity headMuralEntity = findHeadEntity(level, pos, state, level.getBlockEntity(pos), false);
+        if (headMuralEntity != null) {
+            headMuralEntity.setChanged();
+            headMuralEntity.saveToItem(stack, level.registryAccess());
+            headMuralEntity.restoreItemComponents(stack);
         }
         return stack;
     }
@@ -217,7 +172,8 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             int zOffset = facing.getStepX();
             BlockPos headPos = pos.offset(-xOffset * relX, -relY, -zOffset * relX);
             BlockEntity headBe = level.getBlockEntity(headPos);
-            if (headBe instanceof BEntity) BE_CACHE.put(headPos, headBe);
+            if (headBe instanceof BEntity headMuralEntity)
+                BE_CACHE.put(GlobalPos.of(level.dimension(), headPos), headMuralEntity);
             if (level.getBlockState(headPos).getBlock() == this) level.removeBlock(headPos, false);
         } else {
             int xOffset = -state.getValue(FACING).getStepZ();
@@ -240,15 +196,9 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         Level level = context.getLevel();
         BlockPos pos = context.getClickedPos();
         Direction facing = context.getHorizontalDirection();
-        int width = 1, height = 1;
         ItemStack stack = context.getItemInHand();
-        CustomData customData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
-        if (customData != null) {
-            CompoundTag tag = customData.copyTag();
-            if (tag.contains("muralWidth")) width = tag.getInt("muralWidth");
-            if (tag.contains("muralHeight")) height = tag.getInt("muralHeight");
-        }
-        if (width == -1 || height == -1) return defaultBlockState().setValue(FACING, facing);
+        int width = getMuralWidth(stack);
+        int height = getMuralHeight(stack);
         int xOffset = -facing.getStepZ();
         int zOffset = facing.getStepX();
         for (int w = 0; w < width; w++) {
@@ -261,6 +211,100 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         return defaultBlockState().setValue(FACING, facing);
     }
 
+    public static int getMuralWidth(ItemStack stack) {
+        return getMuralSize(stack, TAG_MURAL_WIDTH);
+    }
+
+    public static int getMuralHeight(ItemStack stack) {
+        return getMuralSize(stack, TAG_MURAL_HEIGHT);
+    }
+
+    private static int getMuralSize(ItemStack stack, String key) {
+        CustomData customData = stack.get(DataComponents.BLOCK_ENTITY_DATA);
+        if (customData == null) return 1;
+        CompoundTag tag = customData.copyTag();
+        return tag.contains(key) ? Math.max(1, tag.getInt(key)) : 1;
+    }
+
+    private static @Nullable BEntity findHeadEntity(LevelReader level, BlockPos pos, BlockState state, @Nullable BlockEntity be, boolean useCache) {
+        if (!(be instanceof BEntity muralEntity)) return null;
+        if (!muralEntity.isChild()) return muralEntity;
+
+        BlockPos headWorldPos = getHeadWorldPos(pos, state, muralEntity.getHeadPos());
+        if (useCache && level instanceof Level realLevel) {
+            BEntity cached = BE_CACHE.remove(GlobalPos.of(realLevel.dimension(), headWorldPos));
+            if (cached != null) return cached;
+        }
+        BlockEntity headBe = level.getBlockEntity(headWorldPos);
+        return headBe instanceof BEntity headMuralEntity ? headMuralEntity : null;
+    }
+
+    private static BlockPos getHeadWorldPos(BlockPos pos, BlockState state, BlockPos relPos) {
+        Direction facing = state.getValue(FACING);
+        int xOffset = -facing.getStepZ();
+        int zOffset = facing.getStepX();
+        return pos.offset(-xOffset * relPos.getX(), -relPos.getY(), -zOffset * relPos.getX());
+    }
+
+    private static BlockState sanitizeDisplayState(@Nullable BlockState state) {
+        if (state == null || state.isAir() || state.getBlock() instanceof MuralBlock || state.getRenderShape() != RenderShape.MODEL) {
+            return DEFAULT_DISPLAY_STATE;
+        }
+        return state;
+    }
+
+    private static void putDisplayState(CompoundTag tag, HolderLookup.Provider registries, BlockState state) {
+        BlockState.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), sanitizeDisplayState(state))
+                .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode displayState: " + err))
+                .ifPresent(stateTag -> tag.put(TAG_DISPLAY_STATE, stateTag));
+    }
+
+    private static BlockState readDisplayState(CompoundTag tag, HolderLookup.Provider registries) {
+        if (!tag.contains(TAG_DISPLAY_STATE)) return DEFAULT_DISPLAY_STATE;
+        return BlockState.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag.get(TAG_DISPLAY_STATE))
+                .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode displayState: " + err))
+                .map(MuralBlock::sanitizeDisplayState)
+                .orElse(DEFAULT_DISPLAY_STATE);
+    }
+
+    private static void putLore(CompoundTag tag, HolderLookup.Provider registries, @Nullable List<Component> lore) {
+        if (lore == null || lore.isEmpty()) return;
+        ListTag loreTag = new ListTag();
+        for (Component component : lore) {
+            ComponentSerialization.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), component)
+                    .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode lore: " + err))
+                    .ifPresent(loreTag::add);
+        }
+        if (!loreTag.isEmpty()) tag.put(TAG_LORE, loreTag);
+    }
+
+    private static @Nullable List<Component> readLore(CompoundTag tag, HolderLookup.Provider registries) {
+        if (!tag.contains(TAG_LORE)) return null;
+        ListTag loreTag = tag.getList(TAG_LORE, Tag.TAG_COMPOUND);
+        if (loreTag.isEmpty()) return null;
+        List<Component> lore = new ArrayList<>();
+        for (Tag value : loreTag) {
+            ComponentSerialization.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), value)
+                    .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode lore: " + err))
+                    .ifPresent(lore::add);
+        }
+        return lore.isEmpty() ? null : lore;
+    }
+
+    private static void putBelongsToGroup(CompoundTag tag, HolderLookup.Provider registries, @Nullable GroupItem.BelongsTo belongsToGroup) {
+        if (belongsToGroup == null) return;
+        GroupItem.BelongsTo.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), belongsToGroup)
+                .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode belongsToGroup: " + err))
+                .ifPresent(groupTag -> tag.put(TAG_BELONGS_TO_GROUP, groupTag));
+    }
+
+    private static @Nullable GroupItem.BelongsTo readBelongsToGroup(CompoundTag tag, HolderLookup.Provider registries) {
+        if (!tag.contains(TAG_BELONGS_TO_GROUP)) return null;
+        return GroupItem.BelongsTo.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag.get(TAG_BELONGS_TO_GROUP))
+                .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode belongsToGroup: " + err))
+                .orElse(null);
+    }
+
     public static class BEntity extends BlockEntity {
         private Optional<List<MuralData>> back = Optional.empty();
         private Optional<List<MuralData>> left = Optional.empty();
@@ -269,6 +313,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         private int muralWidth = 1;
         private int muralHeight = 1;
         private BlockPos headPos = BlockPos.ZERO;
+        private BlockState displayState = DEFAULT_DISPLAY_STATE;
         private List<Component> lore = null;
         private GroupItem.BelongsTo belongsToGroup = null;
 
@@ -290,19 +335,33 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
 
         public BlockPos getHeadPos() {return headPos;}
 
+        public BlockState getDisplayState() {return displayState;}
+
+        public List<Component> getLore() {return lore;}
+
+        public GroupItem.BelongsTo getBelongsToGroup() {return belongsToGroup;}
+
+        public boolean isChild() {return muralWidth == -1 || muralHeight == -1;}
+
+        public int getBlockCount() {return Math.max(1, muralWidth) * Math.max(1, muralHeight);}
+
         public void setMuralWidth(int w) {muralWidth = w;}
 
         public void setMuralHeight(int h) {muralHeight = h;}
 
         public void setHeadPos(BlockPos p) {headPos = p;}
 
-        public List<Component> getLore() {return lore;}
+        public void setDisplayState(BlockState state) {
+            displayState = sanitizeDisplayState(state);
+            requestModelDataUpdate();
+            if (level != null && level.isClientSide) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
+            }
+        }
 
-        public void setLore(List<Component> l) {this.lore = l;}
+        public void setLore(List<Component> lore) {this.lore = lore;}
 
-        public GroupItem.BelongsTo getBelongsToGroup() {return belongsToGroup;}
-
-        public void setBelongsToGroup(GroupItem.BelongsTo group) {this.belongsToGroup = group;}
+        public void setBelongsToGroup(GroupItem.BelongsTo belongsToGroup) {this.belongsToGroup = belongsToGroup;}
 
         public void restoreItemComponents(ItemStack stack) {
             if (lore != null && !lore.isEmpty()) {
@@ -318,24 +377,12 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             tag.put("left", MuralData.encode(left, registries));
             tag.put("right", MuralData.encode(right, registries));
             tag.put("front", MuralData.encode(front, registries));
-            tag.putInt("muralWidth", muralWidth);
-            tag.putInt("muralHeight", muralHeight);
-            tag.putLong("headPos", headPos.asLong());
-
-            if (lore != null && !lore.isEmpty()) {
-                ListTag loreTag = new ListTag();
-                for (Component comp : lore) {
-                    ComponentSerialization.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), comp)
-                            .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode lore: " + err))
-                            .ifPresent(loreTag::add);
-                }
-                tag.put("lore", loreTag);
-            }
-            if (belongsToGroup != null) {
-                GroupItem.BelongsTo.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), belongsToGroup)
-                        .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode belongsToGroup: " + err))
-                        .ifPresent(groupTag -> tag.put("belongs_to_group", groupTag));
-            }
+            tag.putInt(TAG_MURAL_WIDTH, muralWidth);
+            tag.putInt(TAG_MURAL_HEIGHT, muralHeight);
+            tag.putLong(TAG_HEAD_POS, headPos.asLong());
+            putDisplayState(tag, registries, displayState);
+            putLore(tag, registries, lore);
+            putBelongsToGroup(tag, registries, belongsToGroup);
         }
 
         private void encodeForPersistence(CompoundTag tag, HolderLookup.Provider registries) {
@@ -343,9 +390,12 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             tag.put("left", MuralData.encode(left, registries));
             tag.put("right", MuralData.encode(right, registries));
             tag.put("front", MuralData.encode(front, registries));
-            tag.putInt("muralWidth", muralWidth);
-            tag.putInt("muralHeight", muralHeight);
-            tag.putLong("headPos", headPos.asLong());
+            tag.putInt(TAG_MURAL_WIDTH, muralWidth);
+            tag.putInt(TAG_MURAL_HEIGHT, muralHeight);
+            tag.putLong(TAG_HEAD_POS, headPos.asLong());
+            putDisplayState(tag, registries, displayState);
+            putLore(tag, registries, lore);
+            putBelongsToGroup(tag, registries, belongsToGroup);
         }
 
         private void decode(CompoundTag tag, HolderLookup.Provider registries) {
@@ -353,29 +403,15 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             left = MuralData.decode(tag.getList("left", Tag.TAG_COMPOUND), registries);
             right = MuralData.decode(tag.getList("right", Tag.TAG_COMPOUND), registries);
             front = MuralData.decode(tag.getList("front", Tag.TAG_COMPOUND), registries);
-            muralWidth = tag.contains("muralWidth") ? tag.getInt("muralWidth") : 1;
-            muralHeight = tag.contains("muralHeight") ? tag.getInt("muralHeight") : 1;
-            headPos = tag.contains("headPos") ? BlockPos.of(tag.getLong("headPos")) : BlockPos.ZERO;
-
-            if (tag.contains("lore")) {
-                ListTag loreTag = tag.getList("lore", Tag.TAG_COMPOUND);
-                List<Component> loreList = new ArrayList<>();
-                for (Tag value : loreTag) {
-                    ComponentSerialization.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), value)
-                            .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode lore: " + err))
-                            .ifPresent(loreList::add);
-                }
-                this.lore = loreList.isEmpty() ? null : loreList;
-            } else {
-                this.lore = null;
-            }
-
-            if (tag.contains("belongs_to_group")) {
-                GroupItem.BelongsTo.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag.get("belongs_to_group"))
-                        .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode belongsToGroup: " + err))
-                        .ifPresent(group -> this.belongsToGroup = group);
-            } else {
-                this.belongsToGroup = null;
+            muralWidth = tag.contains(TAG_MURAL_WIDTH) ? tag.getInt(TAG_MURAL_WIDTH) : 1;
+            muralHeight = tag.contains(TAG_MURAL_HEIGHT) ? tag.getInt(TAG_MURAL_HEIGHT) : 1;
+            headPos = tag.contains(TAG_HEAD_POS) ? BlockPos.of(tag.getLong(TAG_HEAD_POS)) : BlockPos.ZERO;
+            displayState = readDisplayState(tag, registries);
+            lore = readLore(tag, registries);
+            belongsToGroup = readBelongsToGroup(tag, registries);
+            requestModelDataUpdate();
+            if (level != null && level.isClientSide) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
             }
         }
 

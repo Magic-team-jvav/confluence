@@ -68,6 +68,7 @@ import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.renderer.block.MuralPlacementPreviewRenderer;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
@@ -84,6 +85,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.ScryingOrb;
+import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
@@ -108,7 +110,6 @@ import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.event.GeoRenderEvent;
-import org.confluence.mod.common.item.flail.BaseFlailItem;
 
 import java.util.Iterator;
 import java.util.List;
@@ -354,6 +355,7 @@ public final class GameClientEvents {
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
             HouseSelectHud.renderRegionInWorld(minecraft);
+            MuralPlacementPreviewRenderer.render(minecraft, player, event);
         }
     }
 

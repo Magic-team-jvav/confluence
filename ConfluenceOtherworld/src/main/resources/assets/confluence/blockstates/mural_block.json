@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "facing=east": {
+            "model": "confluence:block/mural_block"
+        },
+        "facing=north": {
+            "model": "confluence:block/mural_block"
+        },
+        "facing=south": {
+            "model": "confluence:block/mural_block"
+        },
+        "facing=west": {
+            "model": "confluence:block/mural_block"
+        }
+    }
+}

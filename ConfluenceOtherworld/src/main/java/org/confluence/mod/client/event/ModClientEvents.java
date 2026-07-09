@@ -56,6 +56,7 @@ import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
+import org.confluence.mod.client.model.block.MuralBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
 import org.confluence.mod.client.model.entity.RainbowSheepFurModel;
@@ -585,6 +586,7 @@ public final class ModClientEvents {
         ModClientSetups.asCustomModel(modelRegistry, TreasureBagItems.ITEMS.getEntries().toArray(DeferredHolder[]::new));
 
         ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);
+        ModelSwapper.swapModels(modelRegistry, ModelSwapper.getAllBlockStateModelLocations(DecorativeBlocks.MURAL_BLOCK.getId(), DecorativeBlocks.MURAL_BLOCK.get()), MuralBlockModel::new);
 
         if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture())
             return;

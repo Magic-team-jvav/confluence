@@ -2285,6 +2285,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.SMALL_STONE_PILES.get(), "小石堆");
         add(NatureBlocks.SMALL_SANDSTONE_PILES.get(), "小砂岩堆");
+        add(NatureBlocks.SMALL_GRANITE_PILES.get(), "小花岗岩堆");
         add(NatureBlocks.ANTLION_EGGS.get(), "蚁狮卵");
 
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.LOG.get(), "阴森原木");

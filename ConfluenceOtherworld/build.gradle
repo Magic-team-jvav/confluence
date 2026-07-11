@@ -217,7 +217,7 @@ dependencies {
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
     implementation jarJar(files('libs/LanguageFixer.jar'))
-    implementation jarJar(files('libs/datatip-1.2.3-neoforge.jar'))
+    implementation jarJar(files('libs/datatip-1.2.4-neoforge.jar'))
 
     if (offline) {
         compileOnly(annotationProcessor(files("libs/mixinsquared-common-0.3.3.jar")))

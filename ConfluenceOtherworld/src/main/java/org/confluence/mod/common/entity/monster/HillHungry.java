@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-public class 饿鬼 extends TheHungry {
+public class HillHungry extends TheHungry {
     public HillHungry(EntityType<? extends HillHungry> type, Level level) {
         super(type, level);
     }

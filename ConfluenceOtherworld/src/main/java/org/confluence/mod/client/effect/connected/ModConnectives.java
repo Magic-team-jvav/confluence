@@ -32,9 +32,9 @@ public final class ModConnectives {
         register(NatureBlocks.PUPIL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "pupil_block"));
         register(NatureBlocks.EYEBALL_BLOCK.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "eyeball_block"));
 
-        register(NatureBlocks.PALM_LOG_BLOCKS.CHISELED_PLANKS.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "chiseled_palm_planks"));
-        register(DecorativeBlocks.GRANITE_COLUMN.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "granite_column"));
-        register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "marble_column"));
+        register(NatureBlocks.PALM_LOG_BLOCKS.CHISELED_PLANKS.get(), () -> new SimpleCTBehaviour(AllCTTypes.VERTICAL, "chiseled_palm_planks"));
+        register(DecorativeBlocks.GRANITE_COLUMN.get(), () -> new SimpleCTBehaviour(AllCTTypes.VERTICAL, "granite_column"));
+        register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllCTTypes.VERTICAL, "marble_column"));
 
         register(DecorativeBlocks.WHITE_PAPER_PANE.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "white_paper_pane"));
         register(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get(), () -> new SimpleCTBehaviour(AllCTTypes.OMNIDIRECTIONAL, "white_paper_pane_lamp"));

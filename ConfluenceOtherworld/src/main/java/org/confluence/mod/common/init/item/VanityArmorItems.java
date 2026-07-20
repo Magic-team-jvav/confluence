@@ -30,10 +30,6 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> GOLD_CROWN = registerVanityArmor("gold_crown", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> PLATINUM_CROWN = registerVanityArmor("platinum_crown", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> ROBE = registerVanityArmor("robe", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> TOP_HAT = registerVanityArmor("top_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> TUXEDO_SHIRT = registerVanityArmor("tuxedo_shirt", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> TUXEDO_PANTS = registerVanityArmor("tuxedo_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> TUXEDO_SHOES = registerVanityArmor("tuxedo_shoes", ArmorItem.Type.BOOTS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> SUMMER_HAT = registerVanityArmor("summer_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> BUNNY_HOOD = registerVanityArmor("bunny_hood", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> PLUMBERS_HAT = registerVanityArmor("plumbers_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
@@ -85,6 +81,12 @@ public class VanityArmorItems {
     // public static final DeferredItem<BaseVanityArmorItem> BUCKET_HAT = registerVanityArmor("bucket_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> RUNE_HAT = registerVanityArmor("rune_hat", "vanity_armor/rune_set", ArmorItem.Type.HELMET, ModRarity.PINK);
     public static final DeferredItem<BaseVanityArmorItem> RUNE_ROBE = registerVanityArmor("rune_robe", "vanity_armor/rune_set", ArmorItem.Type.CHESTPLATE, ModRarity.PINK);
+    public static final DeferredItem<BaseVanityArmorItem> WEDDING_VEIL = registerVanityArmor("wedding_veil", "vanity_armor/wedding_set", ArmorItem.Type.HELMET, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> WEDDING_DRESS = registerVanityArmor("wedding_dress", "vanity_armor/wedding_set", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> TOP_HAT = registerVanityArmor("top_hat", "vanity_armor/tuxedo_set", ArmorItem.Type.HELMET, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> TUXEDO_SHIRT = registerVanityArmor("tuxedo_shirt", "vanity_armor/tuxedo_set", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> TUXEDO_PANTS = registerVanityArmor("tuxedo_pants", "vanity_armor/tuxedo_set", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> TUXEDO_SHOES = registerVanityArmor("tuxedo_shoes", "vanity_armor/tuxedo_set", ArmorItem.Type.BOOTS, ModRarity.WHITE);
     public static final DeferredItem<BaseDyeItem> DYE = registerColoredDye("dye", 0x39C5BB);
     public static final DeferredItem<BaseDyeItem> RED_DYE = registerColoredDye("red_dye", 0xDB0909);
     public static final DeferredItem<BaseDyeItem> BRIGHT_RED_DYE = registerColoredDye("bright_red_dye", 0xFF4F4F);

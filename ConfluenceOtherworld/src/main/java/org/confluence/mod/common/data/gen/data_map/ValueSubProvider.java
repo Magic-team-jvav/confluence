@@ -1431,6 +1431,8 @@ public final class ValueSubProvider {
                 .add(VanityArmorItems.WIZARDS_HAT, silver50 + silver10)
                 .add(VanityArmorItems.RUNE_HAT, gold1)
                 .add(VanityArmorItems.RUNE_ROBE, gold1)
+                .add(VanityArmorItems.WEDDING_VEIL, silver10)
+                .add(VanityArmorItems.WEDDING_DRESS, silver10)
                 .add(VanityArmorItems.PEDDLERS_HAT, silver20 + silver5)
                 .add(VanityArmorItems.RED_DYE, silver20)
                 .add(VanityArmorItems.BRIGHT_RED_DYE, silver20)

@@ -1614,6 +1614,7 @@ public final class ModTabs {
                         output.accept(ArmorItems.MAGIC_HAT.get());
                         output.accept(ArmorItems.SOUL_HOOD.get());
                         output.accept(ArmorItems.SOULDANCER_HOOD.get());
+                        output.accept(ArmorItems.FLINX_FUR_COAT.get());
                         output.accept(VanityArmorItems.DEAD_MANS_SWEATER.get());
                         output.accept(VanityArmorItems.TOP_HAT.get());
                         output.accept(VanityArmorItems.SUMMER_HAT.get());
@@ -1631,8 +1632,8 @@ public final class ModTabs {
                         output.accept(VanityArmorItems.RUNE_HAT.get());
                         output.accept(VanityArmorItems.RUNE_ROBE.get());
                        // output.accept(VanityArmorItems.BUCKET_HAT.get());
-                        output.accept(ArmorItems.FLINX_FUR_COAT.get());
-                        output.accept(ArmorItems.FLINX_FUR_COAT.get());
+                        output.accept(VanityArmorItems.WEDDING_VEIL.get());
+                        output.accept(VanityArmorItems.WEDDING_DRESS.get());
                         output.accept(TCItems.DIVING_HELMET);
 
                         CreativeModeTab.Output dyes = GroupItem.belongsTo("dyes", output);

@@ -1,16 +1,16 @@
 [submodule "TerraCurio"]
 	path = TerraCurio
-	url = https://github.com/westernat/TerraCurio
+	url = git@github.com:westernat/TerraCurio.git
 	branch = forge-dev/1.20.1
 [submodule "TerraFurniture"]
 	path = TerraFurniture
-	url = https://github.com/MakerTechno/TerraFurniture
+	url = git@github.com:MakerTechno/TerraFurniture.git
 	branch = forge-dev/1.20.1
 [submodule "Confluence-Magic-Lib"]
 	path = Confluence-Magic-Lib
-	url = https://github.com/westernat/Confluence-Magic-Lib
+	url = git@github.com:westernat/Confluence-Magic-Lib.git
 	branch = forge-dev/1.20.1
 [submodule "PortLib"]
 	path = PortLib
-	url = https://github.com/westernat/MesdagPortLib
+	url = git@github.com:westernat/MesdagPortLib.git
 	branch = forge-dev/1.20.1

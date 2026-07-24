@@ -44,9 +44,16 @@ public class TheCrimsonConversionTable extends ConversionTable {
             return NatureBlocks.RED_PACKED_ICE.get();
         }
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_ICE)) return NatureBlocks.RED_ICE.get();
+        if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_ICE_TAPERED_BLOCK)) {
+            return NatureBlocks.RED_ICE_TAPERED_BLOCK.get();
+        }
+
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_SAND)) return NatureBlocks.CRIMSAND.get();
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE)) {
             return NatureBlocks.CRIMSANDSTONE.get();
+        }
+        if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE_PILES)) {
+            return NatureBlocks.SMALL_CRIMSANDSTONE_PILES.get();
         }
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_HARDENED_SAND_BLOCK)) {
             return NatureBlocks.HARDENED_CRIMSAND_BLOCK.get();

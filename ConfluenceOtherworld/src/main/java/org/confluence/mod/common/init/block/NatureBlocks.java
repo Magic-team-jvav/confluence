@@ -71,6 +71,9 @@ public class NatureBlocks {
     // 环境辅助
     public static final DeferredBlock<ThinIceBlock> THIN_ICE_BLOCK = registerWithItem("thin_ice_block", ThinIceBlock::new);
     public static final DeferredBlock<TaperedTwoPartBlock> ICE_TAPERED_BLOCK = registerWithItem("ice_tapered_block", TaperedTwoPartBlock::new);
+    public static final DeferredBlock<TaperedTwoPartBlock> RED_ICE_TAPERED_BLOCK = registerWithItem("red_ice_tapered_block", TaperedTwoPartBlock::new);
+    public static final DeferredBlock<TaperedTwoPartBlock> PURPLE_ICE_TAPERED_BLOCK = registerWithItem("purple_ice_tapered_block", TaperedTwoPartBlock::new);
+    public static final DeferredBlock<TaperedTwoPartBlock> PINK_ICE_TAPERED_BLOCK = registerWithItem("pink_ice_tapered_block", TaperedTwoPartBlock::new);
     public static final DeferredBlock<Block> HARDENED_SAND_BLOCK = registerWithItem("hardened_sand_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.SAND)));
     public static final DeferredBlock<MoistSandBlock> MOISTENED_SAND_BLOCK = registerWithItem("moistened_sand_block", () -> new MoistSandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.SAND), Blocks.SAND));
     public static final DeferredBlock<Block> HARDENED_RED_SAND_BLOCK = registerWithItem("hardened_red_sand_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
@@ -89,7 +92,13 @@ public class NatureBlocks {
     // 小堆环境
     public static final DeferredBlock<SmallPilesBlock> SMALL_STONE_PILES = registerWithItem("small_stone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.STONE)));
     public static final DeferredBlock<SmallPilesBlock> SMALL_SANDSTONE_PILES = registerWithItem("small_sandstone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.SAND)));
+    public static final DeferredBlock<SmallPilesBlock> SMALL_RED_SANDSTONE_PILES = registerWithItem("small_red_sandstone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
+    public static final DeferredBlock<SmallPilesBlock> SMALL_EBONSANDSTONE_PILES = registerWithItem("small_ebonsandstone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
+    public static final DeferredBlock<SmallPilesBlock> SMALL_PEARLSANDSTONE_PILES = registerWithItem("small_pearlsandstone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_PINK)));
+    public static final DeferredBlock<SmallPilesBlock> SMALL_CRIMSANDSTONE_PILES = registerWithItem("small_crimsandstone_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
     public static final DeferredBlock<SmallPilesBlock> SMALL_GRANITE_PILES = registerWithItem("small_granite_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
+    public static final DeferredBlock<SmallPilesBlock> SMALL_MARBLE_PILES = registerWithItem("small_marble_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<SmallPilesBlock> SMALL_REMAINS_PILES = registerWithItem("small_remains_piles", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
     public static final DeferredBlock<SmallPilesBlock> ANTLION_EGGS = registerWithItem("antlion_eggs", () -> new SmallPilesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.STONE).strength(0.05F)));
 
 
@@ -187,6 +196,7 @@ public class NatureBlocks {
     // 沙漠
     public static final LogBlockSet PALM_LOG_BLOCKS = LogBlockSet.builder("palm", true, PALM).leaves(PalmLeaves::new).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, properties, null, getSupplier(Blocks.SAND), getSupplier(Blocks.RED_SAND), getSupplier(Blocks.GRASS_BLOCK), NatureBlocks.MOISTENED_SAND_BLOCK, NatureBlocks.MOISTENED_RED_SAND_BLOCK)).build();
     public static final DeferredBlock<TaperedTwoPartBlock> DESERT_TAPERED_BLOCK = registerWithItem("desert_tapered_block", TaperedTwoPartBlock::new);
+    public static final DeferredBlock<TaperedTwoPartBlock> RED_DESERT_TAPERED_BLOCK = registerWithItem("red_desert_tapered_block", TaperedTwoPartBlock::new);
     public static final DeferredBlock<DesertPlantBlock> SMALL_DESERT_PLANT = registerWithItem("small_desert_plant", () -> new DesertPlantBlock(Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D)));
     public static final DeferredBlock<DesertPlantBlock> BIG_DESERT_PLANT = registerWithItem("big_desert_plant", () -> new DesertPlantBlock(Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D)));
     public static final DeferredBlock<SmallCactusBlock> SMALL_CACTUS = registerWithItem("small_cactus", SmallCactusBlock::new);

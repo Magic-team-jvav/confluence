@@ -46,11 +46,17 @@ public class TheCorruptionConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_ICE)) {
             return NatureBlocks.PURPLE_ICE.get();
         }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_ICE_TAPERED_BLOCK)) {
+            return NatureBlocks.PURPLE_ICE_TAPERED_BLOCK.get();
+        }
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SAND)) {
             return NatureBlocks.EBONSAND.get();
         }
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE)) {
             return NatureBlocks.EBONSANDSTONE.get();
+        }
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE_PILES)) {
+            return NatureBlocks.SMALL_EBONSANDSTONE_PILES.get();
         }
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK)) {
             return NatureBlocks.HARDENED_EBONSAND_BLOCK.get();

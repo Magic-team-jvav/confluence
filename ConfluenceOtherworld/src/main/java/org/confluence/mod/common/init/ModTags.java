@@ -64,11 +64,13 @@ public final class ModTags {
         public static final TagKey<Block> PURE_CONVERSION_SHORT_GRASS = register("pure_conversion_short_grass");
         public static final TagKey<Block> PURE_CONVERSION_PACKED_ICE = register("pure_conversion_packed_ice");
         public static final TagKey<Block> PURE_CONVERSION_ICE = register("pure_conversion_ice");
+        public static final TagKey<Block> PURE_CONVERSION_ICE_TAPERED_BLOCK = register("pure_conversion_ice_tapered_block");
         public static final TagKey<Block> PURE_CONVERSION_SAND = register("pure_conversion_sand");
         public static final TagKey<Block> PURE_CONVERSION_SANDSTONE = register("pure_conversion_sandstone");
         public static final TagKey<Block> PURE_CONVERSION_HARDENED_SAND_BLOCK = register("pure_conversion_hardened_sand_block");
         public static final TagKey<Block> PURE_CONVERSION_MOIST_SAND_BLOCK = register("pure_conversion_moist_sand_block");
         public static final TagKey<Block> PURE_CONVERSION_CACTUS = register("pure_conversion_cactus");
+        public static final TagKey<Block> PURE_CONVERSION_SANDSTONE_PILES = register("pure_conversion_sandstone_piles");
 
         public static final TagKey<Block> CORRUPTION_CONVERSION_DIRT = register("corruption_conversion_dirt");
         public static final TagKey<Block> CORRUPTION_CONVERSION_GRASS_BLOCK = register("corruption_conversion_grass_block");
@@ -81,6 +83,8 @@ public final class ModTags {
         public static final TagKey<Block> CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK = register("corruption_conversion_hardened_sand_block");
         public static final TagKey<Block> CORRUPTION_CONVERSION_MOIST_SAND_BLOCK = register("corruption_conversion_moist_sand_block");
         public static final TagKey<Block> CORRUPTION_CONVERSION_CACTUS = register("corruption_conversion_cactus");
+        public static final TagKey<Block> CORRUPTION_CONVERSION_ICE_TAPERED_BLOCK = register("corruption_conversion_ice_tapered_block");
+        public static final TagKey<Block> CORRUPTION_CONVERSION_SANDSTONE_PILES = register("corruption_conversion_sandstone_piles");
 
         public static final TagKey<Block> CRIMSON_CONVERSION_DIRT = register("crimson_conversion_dirt");
         public static final TagKey<Block> CRIMSON_CONVERSION_GRASS_BLOCK = register("crimson_conversion_grass_block");
@@ -93,6 +97,8 @@ public final class ModTags {
         public static final TagKey<Block> CRIMSON_CONVERSION_HARDENED_SAND_BLOCK = register("crimson_conversion_hardened_sand_block");
         public static final TagKey<Block> CRIMSON_CONVERSION_MOIST_SAND_BLOCK = register("crimson_conversion_moist_sand_block");
         public static final TagKey<Block> CRIMSON_CONVERSION_CACTUS = register("crimson_conversion_cactus");
+        public static final TagKey<Block> CRIMSON_CONVERSION_ICE_TAPERED_BLOCK = register("crimson_conversion_ice_tapered_block");
+        public static final TagKey<Block> CRIMSON_CONVERSION_SANDSTONE_PILES = register("crimson_conversion_sandstone_piles");
 
         public static final TagKey<Block> HALLOW_CONVERSION_GRASS_BLOCK = register("hallow_conversion_grass_block");
         public static final TagKey<Block> HALLOW_CONVERSION_SHORT_GRASS = register("hallow_conversion_short_grass");
@@ -103,6 +109,8 @@ public final class ModTags {
         public static final TagKey<Block> HALLOW_CONVERSION_HARDENED_SAND_BLOCK = register("hallow_conversion_hardened_sand_block");
         public static final TagKey<Block> HALLOW_CONVERSION_MOIST_SAND_BLOCK = register("hallow_conversion_moist_sand_block");
         public static final TagKey<Block> HALLOW_CONVERSION_CACTUS = register("hallow_conversion_cactus");
+        public static final TagKey<Block> HALLOW_CONVERSION_ICE_TAPERED_BLOCK = register("hallow_conversion_ice_tapered_block");
+        public static final TagKey<Block> HALLOW_CONVERSION_SANDSTONE_PILES = register("hallow_conversion_sandstone_piles");
 
         public static final TagKey<Block> CRIMSON_BLOCKS = register("crimson_blocks");
         public static final TagKey<Block> CRIMSON_DESERT_BLOCKS = register("crimson_desert_blocks");

@@ -40,9 +40,15 @@ public class TheHallowConversionTable extends ConversionTable {
             return NatureBlocks.PINK_PACKED_ICE.get();
         }
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) return NatureBlocks.PINK_ICE.get();
+        if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_ICE_TAPERED_BLOCK)) {
+            return NatureBlocks.PINK_ICE_TAPERED_BLOCK.get();
+        }
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) return NatureBlocks.PEARLSAND.get();
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
             return NatureBlocks.PEARLSANDSTONE.get();
+        }
+        if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE_PILES)) {
+            return NatureBlocks.SMALL_PEARLSANDSTONE_PILES.get();
         }
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
             return NatureBlocks.HARDENED_PEARLSAND_BLOCK.get();

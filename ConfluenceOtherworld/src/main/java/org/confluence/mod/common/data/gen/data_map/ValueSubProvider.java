@@ -1221,6 +1221,10 @@ public final class ValueSubProvider {
                 .add(VanityArmorItems.MUMMY_SHIRT, silver50 - silver20)
                 .add(VanityArmorItems.MUMMY_PANTS, silver50 - silver20)
                 .add(VanityArmorItems.MUMMY_SHOES, silver50 - silver20)
+                .add(VanityArmorItems.CLOWN_ATTIRE, silver20)
+                .add(VanityArmorItems.CLOWN_SHIRT, silver20)
+                .add(VanityArmorItems.CLOWN_PANTS, silver20)
+                .add(VanityArmorItems.CLOWN_SHOES, silver20)
                 .add(VanityArmorItems.DEAD_MANS_SWEATER, silver20);
         builder
                 .add(Items.LEATHER_HORSE_ARMOR, 14)

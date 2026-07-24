@@ -274,6 +274,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.doctors_set", "博士套装");
         add("itemGroup.confluence.guy_fawkes_set", "盖伊·福克斯套装");
         add("itemGroup.confluence.mummy_set", "木乃伊套装");
+        add("itemGroup.confluence.clown_set", "小丑套装");
 
         add("itemGroup.confluence.boomerang", "回旋镖");
         add("itemGroup.confluence.spear", "长矛");
@@ -2285,7 +2286,13 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.SMALL_STONE_PILES.get(), "小石堆");
         add(NatureBlocks.SMALL_SANDSTONE_PILES.get(), "小砂岩堆");
+        add(NatureBlocks.SMALL_RED_SANDSTONE_PILES.get(), "小红砂岩堆");
+        add(NatureBlocks.SMALL_EBONSANDSTONE_PILES.get(), "小黑檀砂岩堆");
+        add(NatureBlocks.SMALL_CRIMSANDSTONE_PILES.get(), "小猩红砂岩堆");
+        add(NatureBlocks.SMALL_PEARLSANDSTONE_PILES.get(), "小珍珠砂岩堆");
         add(NatureBlocks.SMALL_GRANITE_PILES.get(), "小花岗岩堆");
+        add(NatureBlocks.SMALL_MARBLE_PILES.get(), "小大理石堆");
+        add(NatureBlocks.SMALL_REMAINS_PILES.get(), "小残骸堆");
         add(NatureBlocks.ANTLION_EGGS.get(), "蚁狮卵");
 
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.LOG.get(), "阴森原木");
@@ -2410,10 +2417,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRUPTED_OVARIES_BLOCK.get(), "腐化卵巢");
         add(NatureBlocks.SHIMMER_CRYSTALS_BLOCK.get(), "以太结晶");
         add(NatureBlocks.DESERT_TAPERED_BLOCK.get(), "沙漠石笋");
+        add(NatureBlocks.RED_DESERT_TAPERED_BLOCK.get(), "红沙漠石笋");
         add(NatureBlocks.CORRUPT_TAPERED_BLOCK.get(), "腐化石笋");
         add(NatureBlocks.CRIMSON_TAPERED_BLOCK.get(), "猩红石笋");
         add(NatureBlocks.HALLOW_TAPERED_BLOCK.get(), "神圣石笋");
         add(NatureBlocks.ICE_TAPERED_BLOCK.get(), "冰锥");
+        add(NatureBlocks.RED_ICE_TAPERED_BLOCK.get(), "红冰锥");
+        add(NatureBlocks.PURPLE_ICE_TAPERED_BLOCK.get(), "紫冰锥");
+        add(NatureBlocks.PINK_ICE_TAPERED_BLOCK.get(), "粉冰锥");
         add(NatureBlocks.MARBLE_TAPERED_BLOCK.get(), "大理石笋");
         add(NatureBlocks.GRANITE_TAPERED_BLOCK.get(), "花岗岩石笋");
         add(NatureBlocks.SMALL_DESERT_PLANT.get(), "小型沙漠植株");
@@ -4568,6 +4579,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.MUMMY_SHIRT.get(), "木乃伊衣");
         add(VanityArmorItems.MUMMY_PANTS.get(), "木乃伊裤");
         add(VanityArmorItems.MUMMY_SHOES.get(), "木乃伊鞋");
+        add(VanityArmorItems.CLOWN_ATTIRE.get(), "小丑装束");
+        add(VanityArmorItems.CLOWN_SHIRT.get(), "小丑衣");
+        add(VanityArmorItems.CLOWN_PANTS.get(), "小丑裤");
+        add(VanityArmorItems.CLOWN_SHOES.get(), "小丑鞋");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
         add(VanityArmorItems.SUNGLASSES.get(), "墨镜");

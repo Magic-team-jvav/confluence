@@ -710,7 +710,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(MYCELIAL_DIRT.get());
 
         dropWhenSilkTouch(ICE_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(RED_ICE_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(PURPLE_ICE_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(PINK_ICE_TAPERED_BLOCK.get());
         dropSelf(DESERT_TAPERED_BLOCK.get());
+        dropSelf(RED_DESERT_TAPERED_BLOCK.get());
         dropSelf(MARBLE_TAPERED_BLOCK.get());
         dropSelf(GRANITE_TAPERED_BLOCK.get());
 
@@ -851,9 +855,39 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(Blocks.SANDSTONE))
                         .add(EmptyLootItem.emptyItem()))
         );
+        add(SMALL_RED_SANDSTONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Blocks.RED_SANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_EBONSANDSTONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(EBONSANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_CRIMSANDSTONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(CRIMSANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_PEARLSANDSTONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PEARLSANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
         add(SMALL_GRANITE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_REMAINS_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.BONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_MARBLE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(NatureBlocks.MARBLE))
                         .add(EmptyLootItem.emptyItem()))
         );
         addGrassLoot(ASH_GRASS.get(), ASH_GRASS.asItem());

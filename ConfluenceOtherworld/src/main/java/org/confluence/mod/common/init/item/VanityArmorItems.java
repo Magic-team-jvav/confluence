@@ -40,10 +40,10 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> HEROS_SHIRT = registerVanityArmor("heros_shirt", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> HEROS_PANTS = registerVanityArmor("heros_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> HEROS_SHOES = registerVanityArmor("heros_shoes", ArmorItem.Type.BOOTS, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> ARCHAEOLOGISTS_HAT = registerVanityArmor("archaeologists_hat", ArmorItem.Type.HELMET, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> ARCHAEOLOGISTS_JACKET = registerVanityArmor("archaeologists_jacket", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> ARCHAEOLOGISTS_PANTS = registerVanityArmor("archaeologists_pants", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
-    public static final DeferredItem<BaseVanityArmorItem> ARCHAEOLOGISTS_SHOES = registerVanityArmor("archaeologists_shoes", ArmorItem.Type.BOOTS, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> ARCHAEOLOGISTS_HAT = registerVanityArmor("archaeologists_hat", "vanity_armor/archaeologists_set",ArmorItem.Type.HELMET, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> ARCHAEOLOGISTS_JACKET = registerVanityArmor("archaeologists_jacket", "vanity_armor/archaeologists_set",ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> ARCHAEOLOGISTS_PANTS = registerVanityArmor("archaeologists_pants", "vanity_armor/archaeologists_set",ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> ARCHAEOLOGISTS_SHOES = registerVanityArmor("archaeologists_shoes", "vanity_armor/archaeologists_set",ArmorItem.Type.BOOTS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> CLOTHIERS_HAT = registerVanityArmor("clothiers_hat","vanity_armor/clothiers_set", ArmorItem.Type.HELMET, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> CLOTHIERS_JACKET = registerVanityArmor("clothiers_jacket","vanity_armor/clothiers_set",  ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> CLOTHIERS_PANTS = registerVanityArmor("clothiers_pants", "vanity_armor/clothiers_set", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
@@ -87,6 +87,10 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> TUXEDO_SHIRT = registerVanityArmor("tuxedo_shirt", "vanity_armor/tuxedo_set", ArmorItem.Type.CHESTPLATE, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> TUXEDO_PANTS = registerVanityArmor("tuxedo_pants", "vanity_armor/tuxedo_set", ArmorItem.Type.LEGGINGS, ModRarity.WHITE);
     public static final DeferredItem<BaseVanityArmorItem> TUXEDO_SHOES = registerVanityArmor("tuxedo_shoes", "vanity_armor/tuxedo_set", ArmorItem.Type.BOOTS, ModRarity.WHITE);
+    public static final DeferredItem<BaseVanityArmorItem> CLOWN_ATTIRE = registerVanityArmor("clown_attire", "vanity_armor/clown_set", ArmorItem.Type.HELMET, ModRarity.GREEN);
+    public static final DeferredItem<BaseVanityArmorItem> CLOWN_SHIRT = registerVanityArmor("clown_shirt", "vanity_armor/clown_set", ArmorItem.Type.CHESTPLATE, ModRarity.GREEN);
+    public static final DeferredItem<BaseVanityArmorItem> CLOWN_PANTS = registerVanityArmor("clown_pants", "vanity_armor/clown_set", ArmorItem.Type.LEGGINGS, ModRarity.GREEN);
+    public static final DeferredItem<BaseVanityArmorItem> CLOWN_SHOES = registerVanityArmor("clown_shoes", "vanity_armor/clown_set", ArmorItem.Type.BOOTS, ModRarity.GREEN);
     public static final DeferredItem<BaseDyeItem> DYE = registerColoredDye("dye", 0x39C5BB);
     public static final DeferredItem<BaseDyeItem> RED_DYE = registerColoredDye("red_dye", 0xDB0909);
     public static final DeferredItem<BaseDyeItem> BRIGHT_RED_DYE = registerColoredDye("bright_red_dye", 0xFF4F4F);

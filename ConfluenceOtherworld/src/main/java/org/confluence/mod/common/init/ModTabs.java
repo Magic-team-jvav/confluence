@@ -89,6 +89,7 @@ public final class ModTabs {
                         natural_environment.accept(NatureBlocks.MARBLE_TAPERED_BLOCK);
                         natural_environment.accept(NatureBlocks.SMALL_STONE_PILES);
                         natural_environment.accept(NatureBlocks.SMALL_GRANITE_PILES);
+                        natural_environment.accept(NatureBlocks.SMALL_MARBLE_PILES);
 
                         CreativeModeTab.Output corruption = GroupItem.belongsTo("corruption", output);
                         corruption.accept(NatureBlocks.CORRUPT_GRASS_BLOCK);
@@ -108,6 +109,8 @@ public final class ModTabs {
                         corruption.accept(NatureBlocks.CORRUPT_TAPERED_BLOCK);
                         corruption.accept(ModItems.EBONY_CATTAIL);
                         corruption.accept(NatureBlocks.CORRUPT_DROOPING_VINE);
+                        corruption.accept(NatureBlocks.PURPLE_ICE_TAPERED_BLOCK);
+                        corruption.accept(NatureBlocks.SMALL_EBONSANDSTONE_PILES);
 
                         CreativeModeTab.Output hallow = GroupItem.belongsTo("hallow", output);
                         hallow.accept(NatureBlocks.HALLOW_GRASS_BLOCK);
@@ -125,6 +128,8 @@ public final class ModTabs {
                         hallow.accept(NatureBlocks.HALLOW_TAPERED_BLOCK);
                         hallow.accept(ModItems.HALLOW_CATTAIL);
                         hallow.accept(NatureBlocks.HALLOW_DROOPING_VINE);
+                        hallow.accept(NatureBlocks.PINK_ICE_TAPERED_BLOCK);
+                        hallow.accept(NatureBlocks.SMALL_PEARLSANDSTONE_PILES);
 
                         CreativeModeTab.Output crimson = GroupItem.belongsTo("crimson", output);
                         crimson.accept(NatureBlocks.CRIMSON_GRASS_BLOCK);
@@ -146,6 +151,8 @@ public final class ModTabs {
                         crimson.accept(NatureBlocks.CRIMSON_DROOPING_VINE);
                         crimson.accept(NatureBlocks.PUPIL_BLOCK);
                         crimson.accept(NatureBlocks.EYEBALL_BLOCK);
+                        crimson.accept(NatureBlocks.RED_ICE_TAPERED_BLOCK);
+                        crimson.accept(NatureBlocks.SMALL_CRIMSANDSTONE_PILES);
 
                         CreativeModeTab.Output mushroom = GroupItem.belongsTo("mushroom", output);
                         mushroom.accept(NatureBlocks.MUSHROOM_GRASS_BLOCK);
@@ -163,6 +170,7 @@ public final class ModTabs {
 
                         CreativeModeTab.Output desert = GroupItem.belongsTo("desert", output);
                         desert.accept(NatureBlocks.DESERT_TAPERED_BLOCK);
+                        desert.accept(NatureBlocks.RED_DESERT_TAPERED_BLOCK);
                         desert.accept(NatureBlocks.SMALL_DESERT_PLANT);
                         desert.accept(NatureBlocks.BIG_DESERT_PLANT);
                         desert.accept(NatureBlocks.SMALL_CACTUS);
@@ -177,6 +185,7 @@ public final class ModTabs {
                         desert.accept(NatureBlocks.RED_SAND_LAYER_BLOCK);
                         desert.accept(NatureBlocks.DESERT_FOSSIL);
                         desert.accept(NatureBlocks.SMALL_SANDSTONE_PILES);
+                        desert.accept(NatureBlocks.SMALL_REMAINS_PILES);
                         desert.accept(NatureBlocks.ANTLION_EGGS);
 
                         CreativeModeTab.Output ocean = GroupItem.belongsTo("ocean", output);
@@ -1718,6 +1727,12 @@ public final class ModTabs {
                         mummy_set.accept(VanityArmorItems.MUMMY_SHIRT.get());
                         mummy_set.accept(VanityArmorItems.MUMMY_PANTS.get());
                         mummy_set.accept(VanityArmorItems.MUMMY_SHOES.get());
+
+                        CreativeModeTab.Output clown_set = GroupItem.belongsTo("clown_set", output);
+                        clown_set.accept(VanityArmorItems.CLOWN_ATTIRE.get());
+                        clown_set.accept(VanityArmorItems.CLOWN_SHIRT.get());
+                        clown_set.accept(VanityArmorItems.CLOWN_PANTS.get());
+                        clown_set.accept(VanityArmorItems.CLOWN_SHOES.get());
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
 

@@ -1427,6 +1427,18 @@ public final class ModTabs {
                         evocation_robe_armor.accept(ArmorItems.EVOCATION_LEGGINGS.get());
                         evocation_robe_armor.accept(ArmorItems.EVOCATION_BOOTS.get());
 
+                        CreativeModeTab.Output verdant_robe_armor = GroupItem.belongsTo("verdant_robe_armor", output);
+                        verdant_robe_armor.accept(ArmorItems.VERDANT_HAT.get());
+                        verdant_robe_armor.accept(ArmorItems.VERDANT_ROBE.get());
+                        verdant_robe_armor.accept(ArmorItems.VERDANT_LEGGINGS.get());
+                        verdant_robe_armor.accept(ArmorItems.VERDANT_BOOTS.get());
+
+                        CreativeModeTab.Output ember_robe_armor = GroupItem.belongsTo("ember_robe_armor", output);
+                        ember_robe_armor.accept(ArmorItems.EMBER_HAT.get());
+                        ember_robe_armor.accept(ArmorItems.EMBER_ROBE.get());
+                        ember_robe_armor.accept(ArmorItems.EMBER_LEGGINGS.get());
+                        ember_robe_armor.accept(ArmorItems.EMBER_BOOTS.get());
+
                         CreativeModeTab.Output battle_robe_armor = GroupItem.belongsTo("battle_robe_armor", output);
                         battle_robe_armor.accept(ArmorItems.BATTLE_COLLAR.get());
                         battle_robe_armor.accept(ArmorItems.BATTLE_ROBE.get());

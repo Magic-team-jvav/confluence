@@ -176,6 +176,16 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
             "evocation_robe", 1.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> VERDANT_ROBE_ARMOR_MATERIALS = registerArmorMaterial("verdant_robe_armor_materials",
+            3, 4, 4, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
+            "ember_robe", 1.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> EMBER_ROBE_ARMOR_MATERIALS = registerArmorMaterial("ember_robe_armor_materials",
+            4, 5, 5, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.SILK,
+            "ember_robe", 1.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> ARCHERS_ARMOR_MATERIALS = registerArmorMaterial("archers_armor_materials",
             3, 5, 5, 3,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,

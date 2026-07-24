@@ -260,6 +260,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.guards_armor", "Guards Armor");
         add("itemGroup.confluence.spelunker_armor", "Spelunker Armor");
         add("itemGroup.confluence.evocation_robe_armor", "Evocation Robe Armor");
+        add("itemGroup.confluence.verdant_robe_armor", "Verdant Robe Armor");
+        add("itemGroup.confluence.ember_robe_armor", "Ember Robe Armor");
         add("itemGroup.confluence.battle_robe_armor", "Battle Robe Armor");
         add("itemGroup.confluence.splendid_robe_armor", "Splendid Robe Armor");
         add("itemGroup.confluence.archers_armor", "Archers Armor");
@@ -1277,6 +1279,11 @@ public class ModEnglishProvider extends LanguageProvider {
         // Spelunker Set
         add("armor_set_bonus.confluence.spelunker_set.0", "Increases your max number of minions by 1");
         add("armor_set_bonus.confluence.spelunker_set.1", "Increase the duration of spelunker potions by 2 minutes");
+        // Verdant Robe Armor
+        add("armor_set_bonus.confluence.verdant_robe_set.0", "20% chance to gain Soul when hitting an enemy");
+        add("armor_set_bonus.confluence.verdant_robe_set.1", "Gain 5% Critical Chance and 7% Magic Damage for 10 seconds after collecting a Soul");
+        // Ember Robe Armor
+        add("armor_set_bonus.confluence.ember_robe_set.0", "Gain the Hellfire effect");
         // Splendid Robe Armor
         add("armor_set_bonus.confluence.splendid_robe_set.0", "7% increased movement speed");
         // Archer Set

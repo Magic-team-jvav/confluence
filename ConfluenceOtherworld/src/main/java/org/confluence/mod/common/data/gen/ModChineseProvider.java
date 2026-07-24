@@ -219,6 +219,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
         add("itemGroup.confluence.spelunker_armor", "探穴者盔甲");
         add("itemGroup.confluence.evocation_robe_armor", "唤魔长袍盔甲");
+        add("itemGroup.confluence.ember_robe_armor", "余烬长袍盔甲");
+        add("itemGroup.confluence.verdant_robe_armor", "碧绿长袍盔甲");
         add("itemGroup.confluence.battle_robe_armor", "战袍盔甲");
         add("itemGroup.confluence.splendid_robe_armor", "华丽长袍盔甲");
         add("itemGroup.confluence.archers_armor", "弓箭手盔甲");
@@ -1313,6 +1315,11 @@ public class ModChineseProvider extends LanguageProvider {
         // 探穴者
         add("armor_set_bonus.confluence.spelunker_set.0", "仆从数量上限增加1");
         add("armor_set_bonus.confluence.spelunker_set.1", "提升洞穴探险药水时长2分钟");
+        // 碧绿长袍盔甲
+        add("armor_set_bonus.confluence.verdant_robe_set.0", "击中敌人有20%概率获得灵魂");
+        add("armor_set_bonus.confluence.verdant_robe_set.1", "收集灵魂后10秒，提升5%暴击率和7%魔法伤害");
+        // 余烬长袍盔甲
+        add("armor_set_bonus.confluence.ember_robe_set.0", "获得狱火效果");
         // 华丽长袍盔甲
         add("armor_set_bonus.confluence.splendid_robe_set.0", "移动速度提高7%");
         // 弓箭手
@@ -3985,6 +3992,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.EVOCATION_ROBE.get(), "唤魔长袍");
         add(ArmorItems.EVOCATION_LEGGINGS.get(), "唤魔护腿");
         add(ArmorItems.EVOCATION_BOOTS.get(), "唤魔靴子");
+        add(ArmorItems.VERDANT_HAT.get(), "碧绿帽");
+        add(ArmorItems.VERDANT_ROBE.get(), "碧绿长袍");
+        add(ArmorItems.VERDANT_LEGGINGS.get(), "碧绿护腿");
+        add(ArmorItems.VERDANT_BOOTS.get(), "碧绿靴子");
+        add(ArmorItems.EMBER_HAT.get(), "余烬帽");
+        add(ArmorItems.EMBER_ROBE.get(), "余烬长袍");
+        add(ArmorItems.EMBER_LEGGINGS.get(), "余烬护腿");
+        add(ArmorItems.EMBER_BOOTS.get(), "余烬靴子");
         add(ArmorItems.BATTLE_COLLAR.get(), "战斗衣领");
         add(ArmorItems.BATTLE_ROBE.get(), "战袍");
         add(ArmorItems.BATTLE_LEGGINGS.get(), "战斗护腿");

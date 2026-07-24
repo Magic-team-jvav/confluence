@@ -319,6 +319,52 @@ public class ArmorItems {
             .attribute(Attributes.MOVEMENT_SPEED, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
     );
 
+    public static final DeferredItem<BaseArmorItem> VERDANT_HAT = register("verdant_hat", ModArmorMaterials.VERDANT_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/verdant_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .criticalChance(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> VERDANT_ROBE = register("verdant_robe", ModArmorMaterials.VERDANT_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/verdant_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .magicDamage(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> VERDANT_LEGGINGS = register("verdant_leggings", ModArmorMaterials.VERDANT_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/verdant_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .criticalChance(0.03)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> VERDANT_BOOTS = register("verdant_boots", ModArmorMaterials.VERDANT_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/verdant_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .magicDamage(0.05)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
+    public static final DeferredItem<BaseArmorItem> EMBER_HAT = register("ember_hat", ModArmorMaterials.EMBER_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/ember_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .criticalChance(0.06)
+    );
+    public static final DeferredItem<BaseArmorItem> EMBER_ROBE = register("ember_robe", ModArmorMaterials.EMBER_ROBE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/ember_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .magicDamage(0.08)
+    );
+    public static final DeferredItem<BaseArmorItem> EMBER_LEGGINGS = register("ember_leggings", ModArmorMaterials.EMBER_ROBE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/ember_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .criticalChance(0.06)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> EMBER_BOOTS = register("ember_boots", ModArmorMaterials.EMBER_ROBE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/ember_robe_armor")
+            .rarity(ModRarity.ORANGE)
+            .magicDamage(0.08)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
     public static final DeferredItem<BaseArmorItem> BATTLE_COLLAR = register("battle_collar", ModArmorMaterials.BATTLE_ROBE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/battle_robe_armor")
             .rarity(ModRarity.BLUE)

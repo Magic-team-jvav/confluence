@@ -32,15 +32,19 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void loadSecretFlag(CallbackInfo ci, @Local(argsOnly = true) LevelSummary summary) {
-        try {
-            LevelStorageSource.LevelStorageAccess levelStorageAccess = minecraft.getLevelSource().validateAndCreateAccess(summary.getLevelId());
-            CompoundTag tag = NbtIo.readCompressed(levelStorageAccess.getLevelPath(LevelResource.LEVEL_DATA_FILE).toFile());
+        try (LevelStorageSource.LevelStorageAccess access = minecraft.getLevelSource().validateAndCreateAccess(summary.getLevelId())) {
+            CompoundTag tag = NbtIo.readCompressed(access.getLevelPath(LevelResource.LEVEL_DATA_FILE).toFile());
             this.confluence$secretFlag = tag.getCompound("WorldGenSettings").getLong("secret_flag");
         } catch (Exception ignored) {}
     }
 
     @Inject(method = "render", at = @At("TAIL"))
-    private void renderSecretFlagIcon(CallbackInfo ci, @Local(argsOnly = true) GuiGraphics guiGraphics, @Local(argsOnly = true, ordinal = 1) int top, @Local(argsOnly = true, ordinal = 2) int left) {
+    private void renderSecretFlagIcon(
+            CallbackInfo ci,
+            @Local(argsOnly = true) GuiGraphics guiGraphics,
+            @Local(argsOnly = true, ordinal = 1) int top,
+            @Local(argsOnly = true, ordinal = 2) int left
+    ) {
         if (confluence$worldIcon == null) {
             this.confluence$worldIcon = new PortSprite(IWorldOptions.getWorldIcon(confluence$secretFlag), 64, 64);
         }

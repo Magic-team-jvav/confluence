@@ -171,7 +171,9 @@ public final class ModClientEvents {
     public static void modConfig$Reloading(ModConfigEvent.Reloading event) {
         if (event.getConfig().getType() == ModConfig.Type.CLIENT && Confluence.MODID.equals(event.getConfig().getModId())) {
             ClientConfigs.onLoad();
-            StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
+            StarPhaseHandler.enabled = CommonConfigs.SPEC.isLoaded()
+                    ? CommonConfigs.STAR_PHASE.get()
+                    : false;
         }
     }
 

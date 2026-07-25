@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.*;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -103,6 +104,8 @@ public final class CommonConfigs {
 
     public static Set<ResourceKey<Item>> ammoSlotsItemBlackList = Set.of(Confluence.asResourceKey(Registries.ITEM, "falling_star"));
     public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(PortTags.Items.SEEDS);
+
+    public static ForgeConfigSpec SPEC;
 
     private static boolean isSingleplayerOwner = true;
     private static boolean dragonChargePlayer = true;
@@ -297,6 +300,6 @@ public final class CommonConfigs {
             }
             builder.pop();
         }
-        context.registerConfig(ModConfig.Type.COMMON, builder.build());
+        context.registerConfig(ModConfig.Type.COMMON, SPEC = builder.build());
     }
 }

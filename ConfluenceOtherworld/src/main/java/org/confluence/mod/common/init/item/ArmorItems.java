@@ -266,6 +266,23 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
             .attribute(Attributes.MOVEMENT_SPEED, 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
+    public static final DeferredItem<BaseArmorItem> HIGHLAND_HELMET = register("highland_helmet", ModArmorMaterials.HIGHLAND_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/highland_armor")
+            .rarity(ModRarity.ORANGE)
+            .meleeDamage(0.07));
+    public static final DeferredItem<BaseArmorItem> HIGHLAND_CHESTPLATE = register("highland_chestplate", ModArmorMaterials.HIGHLAND_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/highland_armor")
+            .rarity(ModRarity.BLUE)
+            .fourClassesDamage(0.07));
+    public static final DeferredItem<BaseArmorItem> HIGHLAND_LEGGINGS = register("highland_leggings", ModArmorMaterials.HIGHLAND_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/highland_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.ATTACK_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+    public static final DeferredItem<BaseArmorItem> HIGHLAND_BOOTS = register("highland_boots", ModArmorMaterials.HIGHLAND_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/highland_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
     public static final DeferredItem<BaseArmorItem> REINFORCED_MAIL_HELMET = register("reinforced_mail_helmet", ModArmorMaterials.REINFORCED_MAIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/reinforced_mail_armor")
             .rarity(ModRarity.BLUE)

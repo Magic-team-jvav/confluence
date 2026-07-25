@@ -269,6 +269,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.hermit_armor", "Hermit Armor");
         add("itemGroup.confluence.blue_hermit_armor", "Blue Hermit Armor");
         add("itemGroup.confluence.scale_mail_armor", "Scale Mail Armor");
+        add("itemGroup.confluence.highland_armor", "Highland Armor");
         add("itemGroup.confluence.rain_wear", "Rain Coat");
         add("itemGroup.confluence.snow_insulated_wear", "Snow Insulated Wear");
         add("itemGroup.confluence.pink_snow_insulated_wear", "Pink Snow Insulated Wear");
@@ -1276,6 +1277,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.hunters_set.0", "Applies Hunt effect to struck enemies");
         // Guards Set
         add("armor_set_bonus.confluence.guards_set.0", "10% chance to save ammo");
+        // Highlands Set
+        add("armor_set_bonus.confluence.highlands_set.0", "Grants Jump Boost effect");
+        add("armor_set_bonus.confluence.highlands_set.1", "Gain 10% movement speed for 5 seconds after jumping");
         // Spelunker Set
         add("armor_set_bonus.confluence.spelunker_set.0", "Increases your max number of minions by 1");
         add("armor_set_bonus.confluence.spelunker_set.1", "Increase the duration of spelunker potions by 2 minutes");

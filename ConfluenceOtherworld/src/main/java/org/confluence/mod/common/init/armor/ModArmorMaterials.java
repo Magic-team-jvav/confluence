@@ -144,7 +144,12 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> SCALE_MAIL_ARMOR_MATERIALS = registerArmorMaterial("scale_mail_armor_materials",
             3, 5, 5, 2,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
-            "scale_mail", 2.0F, 0.0F
+            "scale_mail", 1.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> HIGHLAND_ARMOR_MATERIALS = registerArmorMaterial("highland_armor_materials",
+            4, 6, 6, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
+            "highland", 1.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> PHANTOM_ARMOR_MATERIALS = registerArmorMaterial("phantom_armor_materials",
             3, 4, 4, 3,

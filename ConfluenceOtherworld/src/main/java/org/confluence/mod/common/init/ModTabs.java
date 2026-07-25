@@ -1391,6 +1391,12 @@ public final class ModTabs {
                         scale_mail_armor.accept(ArmorItems.SCALE_MAIL_LEGGINGS.get());
                         scale_mail_armor.accept(ArmorItems.SCALE_MAIL_BOOTS.get());
 
+                        CreativeModeTab.Output highland_armor = GroupItem.belongsTo("highland_armor", output);
+                        highland_armor.accept(ArmorItems.HIGHLAND_HELMET.get());
+                        highland_armor.accept(ArmorItems.HIGHLAND_CHESTPLATE.get());
+                        highland_armor.accept(ArmorItems.HIGHLAND_LEGGINGS.get());
+                        highland_armor.accept(ArmorItems.HIGHLAND_BOOTS.get());
+
                         CreativeModeTab.Output guards_armor = GroupItem.belongsTo("guards_armor", output);
                         guards_armor.accept(ArmorItems.GUARDS_HELMET.get());
                         guards_armor.accept(ArmorItems.GUARDS_CHESTPLATE.get());

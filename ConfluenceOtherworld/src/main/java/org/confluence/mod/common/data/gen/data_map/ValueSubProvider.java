@@ -245,6 +245,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.VIAL_OF_VENOM, 300)
                 .add(MaterialItems.BELL, 2000)
                 .add(MaterialItems.HARP, 2000)
+                .add(MaterialItems.FIRE_FEATHER, gold2 + silver50)
                 .add(MaterialItems.HARPY_FEATHER, 10)
                 .add(MaterialItems.GIANT_HARPY_FEATHER, gold2 + silver50)
                 .add(MaterialItems.FLINX_FUR, silver1)

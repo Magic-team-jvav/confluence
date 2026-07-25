@@ -228,6 +228,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.hermit_armor", "隐匿者盔甲");
         add("itemGroup.confluence.blue_hermit_armor", "蓝隐匿者盔甲");
         add("itemGroup.confluence.scale_mail_armor", "鳞甲盔甲");
+        add("itemGroup.confluence.highland_armor", "高地盔甲");
         add("itemGroup.confluence.rain_wear", "雨衣套装");
         add("itemGroup.confluence.snow_insulated_wear", "防寒套装");
         add("itemGroup.confluence.pink_snow_insulated_wear", "粉色防寒套装");
@@ -1312,6 +1313,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.hunters_set.0", "为击中的敌人附加狩猎效果");
         // 守卫
         add("armor_set_bonus.confluence.guards_set.0", "10%几率省下弹药");
+        // 高地
+        add("armor_set_bonus.confluence.highlands_set.0", "获得跳跃提升效果");
+        add("armor_set_bonus.confluence.highlands_set.1", "跳跃后5秒提升10%移动速度");
         // 探穴者
         add("armor_set_bonus.confluence.spelunker_set.0", "仆从数量上限增加1");
         add("armor_set_bonus.confluence.spelunker_set.1", "提升洞穴探险药水时长2分钟");
@@ -3102,6 +3106,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.VIAL_OF_VENOM.get(), "小瓶毒液");
         add(MaterialItems.BELL.get(), "铃铛");
         add(MaterialItems.HARP.get(), "竖琴");
+        add(MaterialItems.FIRE_FEATHER.get(), "火羽");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "水叶草");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
@@ -3980,6 +3985,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.SCALE_MAIL_CHESTPLATE.get(), "鳞甲胸甲");
         add(ArmorItems.SCALE_MAIL_LEGGINGS.get(), "鳞甲护腿");
         add(ArmorItems.SCALE_MAIL_BOOTS.get(), "鳞甲靴子");
+        add(ArmorItems.HIGHLAND_HELMET.get(), "高地头盔");
+        add(ArmorItems.HIGHLAND_CHESTPLATE.get(), "高地胸甲");
+        add(ArmorItems.HIGHLAND_LEGGINGS.get(), "高地护腿");
+        add(ArmorItems.HIGHLAND_BOOTS.get(), "高地靴子");
         add(ArmorItems.REINFORCED_MAIL_HELMET.get(), "强化链甲头盔");
         add(ArmorItems.REINFORCED_MAIL_CHESTPLATE.get(), "强化链甲胸甲");
         add(ArmorItems.REINFORCED_MAIL_LEGGINGS.get(), "强化链甲护腿");

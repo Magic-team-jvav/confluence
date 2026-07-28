@@ -15,7 +15,9 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.HookItems;
+import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
@@ -26,6 +28,8 @@ import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.RESET_F
 
 public final class HookThrowingHandler {
     public static void handle(LocalPlayer player) {
+        if (player.hasEffect(ModEffects.SHIMMER)) return;
+        if (!ILocalPlayer.of(player).confluence$isCanMove()) return;
         if (Minecraft.getInstance().isPaused()) return;
         boolean isDown = false;
         while (ModKeyBindings.HOOK.get().consumeClick()) isDown = true;

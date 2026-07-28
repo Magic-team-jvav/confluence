@@ -178,7 +178,7 @@ public final class GameClientEvents {
             ) {
                 SwordProjectilePacketC2S.sendToServer();
             }
-            //连枷按键检测
+            // 连枷按键检测
             boolean isFlail = player.getMainHandItem().getItem() instanceof BaseFlailItem;
             boolean keyHeld = minecraft.options.keyAttack.isDown();
             if (isFlail) {
@@ -262,13 +262,9 @@ public final class GameClientEvents {
     public static void input$MouseScrolling(InputEvent.MouseScrollingEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
-        double mouseX = event.getMouseX();
-        double mouseY = event.getMouseY();
         double scrollDeltaY = event.getScrollDeltaY();
-        double scrollDeltaX = event.getScrollDeltaX();
         if (SoulSkillClientHolder.INSTANCE.scrolling(scrollDeltaY)) {
             event.setCanceled(true);
-            return;
         }
     }
 

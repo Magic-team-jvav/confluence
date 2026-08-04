@@ -54,10 +54,7 @@ public abstract class LevelChunkSectionMixin implements ILevelChunkSection {
 
     /// 不写这个会没有初始化confluence$backupBiome，导致区块保存失败
     /// [ChunkSerializerMixin#write]
-    @Inject(method = {
-            "<init>(Lnet/minecraft/core/Registry;)V",
-            "<init>(Lnet/minecraft/world/level/chunk/PalettedContainer;Lnet/minecraft/world/level/chunk/PalettedContainerRO;)V"
-    }, at = @At("TAIL"))
+    @Inject(method = "<init>*", at = @At("TAIL"))
     private void constr(CallbackInfo ci) {
         this.confluence$backupBiome = biomes.recreate();
     }

@@ -35,30 +35,28 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", shift = At.Shift.AFTER))
-    private void switchEnabled(GuiGraphics guiGraphics, int mouseX, int mouseY, CallbackInfo ci, @Local(ordinal = 0) MobEffectInstance instance) {
+    private void switchEnabled(CallbackInfo ci, @Local(ordinal = 0) MobEffectInstance instance) {
         if (confluence$mouseClicked) {
             IAbstractContainerScreen.switchEnabled(instance);
         }
     }
 
-    @Inject(
-            method = "renderEffects",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lnet/minecraft/client/gui/GuiGraphics;IILjava/lang/Iterable;)V",
-                    shift = At.Shift.AFTER
-            )
-    )
-    private void switchEnabled(GuiGraphics guiGraphics, int mouseX, int mouseY, CallbackInfo ci, @Local Iterable<MobEffectInstance> iterable, @Local(name = "k") int k) {
+    @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/EffectRenderingInventoryScreen;renderLabels(Lnet/minecraft/client/gui/GuiGraphics;IILjava/lang/Iterable;)V", shift = At.Shift.AFTER))
+    private void switchEnabled(
+            CallbackInfo ci,
+            @Local(argsOnly = true, ordinal = 1) int mouseY,
+            @Local Iterable<MobEffectInstance> iterable,
+            @Local(name = "k") int k
+    ) {
         int l = this.topPos;
         MobEffectInstance instance = null;
-        for(MobEffectInstance ins : iterable) {
+        for (MobEffectInstance ins : iterable) {
             if (mouseY >= l && mouseY <= l + k) {
                 instance = ins;
             }
             l += k;
         }
-        if(instance != null) {
+        if (instance != null) {
             if (confluence$mouseClicked) {
                 IAbstractContainerScreen.switchEnabled(instance);
             }
@@ -66,7 +64,7 @@ public abstract class EffectRenderingInventoryScreenMixin<T extends AbstractCont
     }
 
     @Inject(method = "renderEffects", at = @At("TAIL"))
-    private void reset(GuiGraphics guiGraphics, int mouseX, int mouseY, CallbackInfo ci) {
+    private void reset(CallbackInfo ci) {
         this.confluence$mouseClicked = false;
     }
 

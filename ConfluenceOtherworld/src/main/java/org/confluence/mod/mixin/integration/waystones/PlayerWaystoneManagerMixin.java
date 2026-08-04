@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(targets = "net.blay09.mods.waystones.core.PlayerWaystoneManager", remap = false)
 public abstract class PlayerWaystoneManagerMixin {
     @WrapOperation(method = "activateWaystone",at= @At(value = "INVOKE", target = "Lnet/minecraft/resources/ResourceLocation;equals(Ljava/lang/Object;)Z"))
-    private static boolean additionalCheck(ResourceLocation instance, Object resourcelocation, Operation<Boolean> original) {
-        return original.call(instance, resourcelocation) || Confluence.MODID.equals(instance.getNamespace());
+    private static boolean additionalCheck(ResourceLocation instance, Object other, Operation<Boolean> original) {
+        return original.call(instance, other) || Confluence.MODID.equals(instance.getNamespace());
     }
 }

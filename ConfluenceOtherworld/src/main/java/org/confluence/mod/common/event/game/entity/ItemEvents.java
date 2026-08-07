@@ -35,15 +35,20 @@ import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
+import org.confluence.mod.common.item.gun.BeeGunItem;
 import org.confluence.mod.common.item.gun.ManaGunItem;
+import org.confluence.mod.common.item.gun.SpaceGunItem;
+import org.confluence.mod.common.item.gun.StarCannonItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_guns.api.event.GunEvent;
+import org.confluence.terra_guns.common.entity.bullet.BaseBulletEntity;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 @EventBusSubscriber(modid = Confluence.MODID)
@@ -96,7 +101,44 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void gunFire(GunEvent.GunFireEvent event) {
         if (event.getGun() instanceof ManaGunItem) {
+            event.setAmmo(ItemStack.EMPTY);
             event.setFire(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void gun$Use(GunEvent.UseGunEvent event) {
+        if (event.getGun() instanceof ManaGunItem manaGunItem &&
+                event.getPlayer() instanceof ServerPlayer player &&
+                !manaGunItem.consumeMana(player, player.getMainHandItem())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void gun$CreateProjectiles(GunEvent.ProjectileCreationEvent event) {
+        if (event.getGun() instanceof BeeGunItem beeGunItem) {
+            event.setProjectiles(beeGunItem.createProjectiles(event.getContext().shooter()));
+            return;
+        }
+
+        if (event.getGun() instanceof StarCannonItem starCannonItem) {
+            event.setProjectiles(List.of(starCannonItem.createProjectile(
+                    event.getContext().shooter(), event.getContext().ammo()
+            )));
+            return;
+        }
+
+        if (event.getGun() instanceof ManaGunItem manaGunItem) {
+            event.setProjectiles(List.of(manaGunItem.createProjectile(
+                    event.getContext().shooter(), event.getContext().ammo()
+            )));
+        }
+        if (event.getGun() instanceof SpaceGunItem) {
+            event.getProjectiles().stream()
+                    .filter(BaseBulletEntity.class::isInstance)
+                    .map(BaseBulletEntity.class::cast)
+                    .forEach(projectile -> projectile.setColorID("space_gun"));
         }
     }
 

@@ -40,7 +40,7 @@ public class RainbowBoulderRenderer extends BoulderRenderer<RainbowBoulderEntity
 
         poseStack.pushPose();
         Matrix4f matrix4f = poseStack.last().pose();
-        VertexConsumer buffer = bufferSource.getBuffer(TGRenderTypes.TRAIL_RENDER_TYPE);
+        VertexConsumer buffer = bufferSource.getBuffer(TGRenderTypes.coloredTrail());
 
         Minecraft mc = Minecraft.getInstance();
         Vec3 camDir = new Vec3(mc.gameRenderer.getMainCamera().getLookVector());

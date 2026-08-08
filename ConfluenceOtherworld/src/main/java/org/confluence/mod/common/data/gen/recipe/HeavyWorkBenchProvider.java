@@ -17,6 +17,7 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.gen.ModDataGenerator;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -68,7 +69,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 玻璃窑
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, ModTags.Items.LEAD_AND_IRON),
+                '#', AmountIngredient.of(2, ModDataGenerator.INGOTS_IRON_AND_LEAD),
                 'a', Ingredient.of(Items.TORCH)
         ), List.of(
                 " ## ",
@@ -356,7 +357,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         // 小雪怪法杖
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, MaterialItems.FLINX_FUR),
-                '#', AmountIngredient.of(2, ModTags.Items.GOLD_AND_PLATINUM)
+                '#', AmountIngredient.of(2, ModDataGenerator.INGOTS_GOLD_AND_PLATINUM)
         ), List.of(
                 "  aa",
                 " a##",
@@ -368,7 +369,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.GOLD_WATCH, TCItems.PLATINUM_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
-                'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                'c', ModDataGenerator.INGOTS_IRON_AND_LEAD
         ), List.of(
                 "cbc",
                 "cac",
@@ -378,7 +379,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.SILVER_WATCH, TCItems.TUNGSTEN_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
-                'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                'c', ModDataGenerator.INGOTS_IRON_AND_LEAD
         ), List.of(
                 "cbc",
                 "cac",
@@ -388,7 +389,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.COPPER_WATCH, TCItems.TIN_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
-                'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                'c', ModDataGenerator.INGOTS_IRON_AND_LEAD
         ), List.of(
                 "cbc",
                 "cac",
@@ -487,7 +488,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(3, MaterialItems.OPAL),
                 'a', AmountIngredient.of(2, MaterialItems.HEIM),
-                'b', AmountIngredient.of(3, ModTags.Items.GOLD_AND_PLATINUM),
+                'b', AmountIngredient.of(3, ModDataGenerator.INGOTS_GOLD_AND_PLATINUM),
                 'c', Ingredient.of(MaterialItems.HEIM)
         ), List.of(
                 "  ca",
@@ -552,8 +553,8 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), HammerItems.FLESH_GRINDER.toStack());
         // 烹饪锅
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
-                'b', AmountIngredient.of(2, ModTags.Items.LEAD_AND_IRON),
+                'a', ModDataGenerator.INGOTS_IRON_AND_LEAD,
+                'b', AmountIngredient.of(2, ModDataGenerator.INGOTS_IRON_AND_LEAD),
                 '#', Ingredient.of(ItemTags.PLANKS)
         ), List.of(
                 "a  a",
@@ -563,7 +564,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.COOKING_POT.toStack());
         // 锯木机
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                'a', ModDataGenerator.INGOTS_IRON_AND_LEAD,
                 'b', AmountIngredient.of(3, ItemTags.WOODEN_SLABS),
                 'c', Ingredient.of(Items.STICK),
                 'd', Ingredient.of(Items.CHAIN)
@@ -1014,8 +1015,8 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), ArmorItems.HEIM_BOOTS.toStack());
         // 魔光护符
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(ModTags.Items.EVIL_INGOT),
-                'c', AmountIngredient.of(2, ModTags.Items.EVIL_INGOT),
+                'a', ModDataGenerator.INGOTS_EVIL,
+                'c', AmountIngredient.of(2, ModDataGenerator.INGOTS_EVIL),
                 '/', AmountIngredient.of(2, ModTags.Items.GEMS_TOPAZ)
         ), List.of(
                 "a  a",
@@ -1304,7 +1305,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 垃圾桶
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                '#', ModDataGenerator.INGOTS_IRON_AND_LEAD
         ), List.of(
                 "####",
                 " ## ",

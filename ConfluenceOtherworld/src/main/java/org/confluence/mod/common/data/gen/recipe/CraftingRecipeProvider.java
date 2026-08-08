@@ -20,6 +20,7 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.data.gen.ModDataGenerator;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -155,7 +156,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, "", "_from_lead_and_iron", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.REDSTONE_TORCH),
                 'S', Ingredient.of(Items.STICK),
-                'X', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                'X', ModDataGenerator.INGOTS_IRON_AND_LEAD
         ), List.of(
                 "XSX",
                 "X#X",
@@ -164,7 +165,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         // 广播盒
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ItemTags.SIGNS),
-                'I', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                'I', ModDataGenerator.INGOTS_IRON_AND_LEAD,
                 'R', Ingredient.of(Items.REDSTONE)
         ), List.of(
                 "RIR",
@@ -388,7 +389,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         )), FishingPoleItems.WOOD_FISHING_POLE.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
-                '/', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                '/', ModDataGenerator.INGOTS_IRON_AND_LEAD
         ), FISHING_POLE_PATTERN), FishingPoleItems.REINFORCED_FISHING_POLE.toStack());
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'S', Ingredient.of(Items.STRING),
@@ -749,7 +750,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         // 风向标
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        '#', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        '#', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "###",
                         " # ",
@@ -774,7 +775,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         '#', Ingredient.of(Items.TNT),
                         'a', Ingredient.of(Items.GUNPOWDER),
                         'b', Ingredient.of(Items.REDSTONE),
-                        'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        'c', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         " c ",
                         "a#a",
@@ -787,7 +788,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 ShapedRecipePattern.of(Map.of(
                         'G', Ingredient.of(Items.GLASS),
                         'D', Ingredient.of(Tags.Items.GEMS_DIAMOND),
-                        'g', Ingredient.of(ModTags.Items.GOLD_AND_PLATINUM)
+                        'g', ModDataGenerator.INGOTS_GOLD_AND_PLATINUM
                 ), List.of(
                         "gGg",
                         "GDG",
@@ -831,7 +832,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
                         '#', Ingredient.of(Items.SMOOTH_STONE),
-                        'I', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                        'I', ModDataGenerator.INGOTS_IRON_AND_LEAD,
                         'X', Ingredient.of(Items.FURNACE)
                 ), List.of(
                         "III",
@@ -842,7 +843,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        '#', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        '#', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "# #",
                         " # "
@@ -851,7 +852,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        '#', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        '#', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "# #",
                         "# #",
@@ -863,7 +864,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 ShapedRecipePattern.of(Map.of(
                         '#', Ingredient.of(Items.STICK),
                         '$', Ingredient.of(Items.TRIPWIRE_HOOK),
-                        '&', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                        '&', ModDataGenerator.INGOTS_IRON_AND_LEAD,
                         '~', Ingredient.of(Items.STRING)
                 ), List.of(
                         "#&#",
@@ -876,7 +877,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 ShapedRecipePattern.of(Map.of(
                         '#', Ingredient.of(Items.STONE_PRESSURE_PLATE),
                         'R', Ingredient.of(Items.REDSTONE),
-                        'X', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        'X', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "X X",
                         "X#X",
@@ -887,7 +888,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
                         'C', Ingredient.of(Items.CHEST),
-                        'I', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        'I', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "I I",
                         "ICI",
@@ -897,7 +898,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        '#', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        '#', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "# #",
                         "###"
@@ -909,7 +910,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         '#', Ingredient.of(Items.COBBLESTONE),
                         'R', Ingredient.of(Items.REDSTONE),
                         'T', Ingredient.of(ItemTags.PLANKS),
-                        'X', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        'X', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "TTT",
                         "#X#",
@@ -920,7 +921,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
                         '#', Ingredient.of(Items.STICK),
-                        'X', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        'X', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "X X",
                         "X#X",
@@ -930,7 +931,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        'i', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+                        'i', ModDataGenerator.INGOTS_IRON_AND_LEAD
                 ), List.of(
                         "i ",
                         " i"
@@ -939,7 +940,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        'O', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                        'O', ModDataGenerator.INGOTS_IRON_AND_LEAD,
                         '#', Ingredient.of(ItemTags.PLANKS)
                 ), List.of(
                         "#O#",
@@ -950,7 +951,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        'O', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                        'O', ModDataGenerator.INGOTS_IRON_AND_LEAD,
                         '#', Ingredient.of(ItemTags.PLANKS)
                 ), List.of(
                         "OO",
@@ -961,7 +962,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        'O', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                        'O', ModDataGenerator.INGOTS_IRON_AND_LEAD,
                         '#', Ingredient.of(Items.STONE)
                 ), List.of(
                         " O ",
@@ -971,7 +972,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         );
         shaped(output, "", "_from_lead_and_iron",
                 ShapedRecipePattern.of(Map.of(
-                        'O', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                        'O', ModDataGenerator.INGOTS_IRON_AND_LEAD,
                         'S', Ingredient.of(Items.STICK),
                         '#', Ingredient.of(ItemTags.PLANKS)
                 ), List.of(
@@ -981,7 +982,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 )),
                 new ItemStack(Items.TRIPWIRE_HOOK, 2)
         );
-        shapeless(output, new ItemStack(Items.FLINT_AND_STEEL), Ingredient.of(ModTags.Items.LEAD_AND_IRON), Ingredient.of(Items.FLINT));
+        shapeless(output, new ItemStack(Items.FLINT_AND_STEEL), ModDataGenerator.INGOTS_IRON_AND_LEAD, Ingredient.of(Items.FLINT));
         shapeless(output, new ItemStack(NatureBlocks.FEY_LOG_BLOCKS.LOG,8), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.LOGS),Ingredient.of(MaterialItems.LIFE_MUSHROOM));
 
         // 石头及深板岩压力板
@@ -991,7 +992,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
         shapeless(output, ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.toStack(), Ingredient.of(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP), Ingredient.of(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION));
 
-        shapeless(output, FunctionalBlocks.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2, ModTags.Items.GOLD_AND_PLATINUM), Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, FunctionalBlocks.PEACE_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(2, ModDataGenerator.INGOTS_GOLD_AND_PLATINUM), Ingredient.of(MaterialItems.PINK_GEL));
 
         shapeless(output, FunctionalBlocks.HEART_LANTERN.toStack(), Ingredient.of(Items.CHAIN), Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
         shapeless(output, FunctionalBlocks.STAR_IN_A_BOTTLE.toStack(), Ingredient.of(PotionItems.BOTTLE, Items.GLASS_BOTTLE), Ingredient.of(MaterialItems.FALLING_STAR));

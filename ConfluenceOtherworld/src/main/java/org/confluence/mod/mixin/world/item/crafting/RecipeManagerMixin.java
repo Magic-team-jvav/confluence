@@ -9,7 +9,6 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.confluence.mod.integration.create.CreateHelper;
-import org.confluence.mod.integration.terra_curio.TCHelper;
 import org.confluence.mod.integration.terra_entity.TEHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,7 +28,6 @@ public abstract class RecipeManagerMixin {
 
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("HEAD"))
     private void processRecipes(CallbackInfo ci, @Local(argsOnly = true) Map<ResourceLocation, JsonElement> recipes) {
-        TCHelper.processRecipes(recipes);
         TEHelper.processRecipes(recipes);
     }
 

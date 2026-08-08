@@ -1,5 +1,8 @@
 package org.confluence.mod.common.event;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.lib.api.event.NameFixRegisterEvent;
@@ -8,7 +11,7 @@ import org.confluence.mod.Confluence;
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class RenameEvents {
     @SubscribeEvent
-    public static void blockWithItemNameFixRegister(NameFixRegisterEvent.BlockWithItem event) {
+    public static void nameFixRegister$BlockWithItem(NameFixRegisterEvent.BlockWithItem event) {
         event
                 // 1.1.2 -> 1.1.3
                 .register("confluence:freeze_crate", "confluence:frozen_crate")
@@ -102,7 +105,7 @@ public final class RenameEvents {
     }
 
     @SubscribeEvent
-    public static void blockNameFixRegister(NameFixRegisterEvent.Block event) {
+    public static void nameFixRegister$Block(NameFixRegisterEvent.Block event) {
         event
                 // 1.1.2 -> 1.1.3
                 .register("confluence:copper_coin_pile", "confluence:copper_coin")
@@ -113,7 +116,7 @@ public final class RenameEvents {
     }
 
     @SubscribeEvent
-    public static void itemNameFixRegister(NameFixRegisterEvent.Item event) {
+    public static void nameFixRegister$Item(NameFixRegisterEvent.Item event) {
         event
                 // 1.1.2 -> 1.1.3
                 .register("confluence:copper_board_sword", "confluence:copper_broadsword")
@@ -165,11 +168,14 @@ public final class RenameEvents {
     }
 
     @SubscribeEvent
-    public static void biomeNameFixRegister(NameFixRegisterEvent.Biome event) {
-        event
-                // 1.1.2 -> 1.1.3
-                .register("confluence:tr_crimson", "confluence:the_crimson")
-                .register("confluence:tr_crimson_desert", "confluence:the_crimson_desert")
-                .register("confluence:tr_crimson_tundra", "confluence:the_crimson_tundra");
+    public static void nameFixRegister$Data(NameFixRegisterEvent.Data event) {
+        ResourceKey<? extends Registry<?>> key = event.getRegistryKey();
+        if (Registries.BIOME.equals(key)) {
+            event
+                    // 1.1.2 -> 1.1.3
+                    .register("confluence:tr_crimson", "confluence:the_crimson")
+                    .register("confluence:tr_crimson_desert", "confluence:the_crimson_desert")
+                    .register("confluence:tr_crimson_tundra", "confluence:the_crimson_tundra");
+        }
     }
 }

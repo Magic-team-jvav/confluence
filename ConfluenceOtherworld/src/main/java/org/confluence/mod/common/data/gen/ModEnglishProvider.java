@@ -10,7 +10,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -1826,9 +1825,9 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     public void add(String key, String value) {
-        if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
+        try {
             super.add(key, value);
-        }
+        } catch (Exception ignored) {}
     }
 
     private void addPotion(Item potion, String tooltip) {

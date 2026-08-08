@@ -391,10 +391,7 @@ public final class ModTags {
         public static final TagKey<Item> INITIAL_WOOD = register("initial_wood");  // 木套tag，用于合成木套而分离其他套装
         public static final TagKey<Item> QUESTED_FISHES = register("quested_fishes");  // 任务鱼
         public static final TagKey<Item> EMBLEM = register("emblem");  // 徽章
-        public static final TagKey<Item> LEAD_AND_IRON = register("lead_and_iron");
-        public static final TagKey<Item> GOLD_AND_PLATINUM = register("gold_and_platinum");
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
-        public static final TagKey<Item> EVIL_INGOT = register("evil_ingot");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> HARDMODE_RAW_MATERIALS = register("hardmode_raw_materials");
         public static final TagKey<Item> WINGS = register("wings");

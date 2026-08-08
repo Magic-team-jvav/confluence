@@ -66,9 +66,7 @@ neoForge {
                     // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
                     "-XX:+IgnoreUnrecognizedVMOptions",
                     // 启用 JetBrain Runtime 热重载功能
-                    "-XX:+AllowEnhancedClassRedefinition",
-                    // 并发修改检测
-                    //"-javaagent:mods/CMESuckMyDuck-1.0.5.jar=net/minecraft/util/ClassInstanceMultiMap;byClass;Map;nonstatic"
+                    "-XX:+AllowEnhancedClassRedefinition"
             ])
             if (isRunningInIdea) {
                 systemProperty "terminal.jline", "true"
@@ -208,13 +206,13 @@ boolean offline = false
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-    implementation jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
     implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
     implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")
     implementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
-    implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
+    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
 
     implementation jarJar(files('libs/LanguageFixer.jar'))
     implementation jarJar(files('libs/datatip-1.2.6-fix-neoforge.jar'))

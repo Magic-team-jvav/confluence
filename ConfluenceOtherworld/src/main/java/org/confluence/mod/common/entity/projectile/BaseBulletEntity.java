@@ -123,7 +123,7 @@ public class BaseBulletEntity extends Projectile {
     }
 
     public DamageSource getDamageSource() {
-        return LibUtils.damageSource(level(), LibDamageTypes.BULLET_DAMAGE, this, getOwner());
+        return LibUtils.damageSource(level(), LibDamageTypes.GUN_BULLET, this, getOwner());
     }
 
     @Override

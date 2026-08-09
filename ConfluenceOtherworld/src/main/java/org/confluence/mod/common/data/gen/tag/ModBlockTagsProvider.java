@@ -18,7 +18,6 @@ import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.integration.mrcrayfish.furniture.MrCrayfishFurnitureHelper;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +29,6 @@ import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.*;
-import static org.confluence.mod.common.init.block.NatureBlocks.SMALL_EBONSANDSTONE_PILES;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 
 @SuppressWarnings("all")
@@ -1809,7 +1807,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.PURE_CONVERSION_SHORT_GRASS).add(HALLOW_GRASS.get(), CRIMSON_GRASS.get(), CORRUPT_GRASS.get());
             tag(ModTags.Blocks.PURE_CONVERSION_PACKED_ICE).add(RED_PACKED_ICE.get(), PINK_PACKED_ICE.get(), PURPLE_PACKED_ICE.get());
             tag(ModTags.Blocks.PURE_CONVERSION_ICE).add(RED_ICE.get(), PINK_ICE.get(), PURPLE_ICE.get());
-            tag(ModTags.Blocks.PURE_CONVERSION_ICE_TAPERED_BLOCK).add(PURPLE_ICE_TAPERED_BLOCK.get(),RED_ICE_TAPERED_BLOCK.get(), PINK_ICE_TAPERED_BLOCK.get());
+            tag(ModTags.Blocks.PURE_CONVERSION_ICE_TAPERED_BLOCK).add(PURPLE_ICE_TAPERED_BLOCK.get(), RED_ICE_TAPERED_BLOCK.get(), PINK_ICE_TAPERED_BLOCK.get());
             tag(ModTags.Blocks.PURE_CONVERSION_SAND).add(PEARLSAND.get(), CRIMSAND.get(), EBONSAND.get());
             tag(ModTags.Blocks.PURE_CONVERSION_SANDSTONE).add(CRIMSANDSTONE.get(), PEARLSANDSTONE.get(), EBONSANDSTONE.get());
             tag(ModTags.Blocks.PURE_CONVERSION_SANDSTONE_PILES).add(SMALL_CRIMSANDSTONE_PILES.get(), SMALL_PEARLSANDSTONE_PILES.get(), SMALL_EBONSANDSTONE_PILES.get());
@@ -1824,7 +1822,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_SHORT_GRASS).add(Blocks.SHORT_GRASS, Blocks.FERN, HALLOW_GRASS.get(), CRIMSON_GRASS.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_PACKED_ICE).add(Blocks.PACKED_ICE, RED_PACKED_ICE.get(), PINK_PACKED_ICE.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_ICE).add(Blocks.ICE, RED_ICE.get(), PINK_ICE.get());
-            tag(ModTags.Blocks.CORRUPTION_CONVERSION_ICE_TAPERED_BLOCK).add(ICE_TAPERED_BLOCK.get(),RED_ICE_TAPERED_BLOCK.get(), PINK_ICE_TAPERED_BLOCK.get());
+            tag(ModTags.Blocks.CORRUPTION_CONVERSION_ICE_TAPERED_BLOCK).add(ICE_TAPERED_BLOCK.get(), RED_ICE_TAPERED_BLOCK.get(), PINK_ICE_TAPERED_BLOCK.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_SAND).add(Blocks.SAND, Blocks.RED_SAND, PEARLSAND.get(), CRIMSAND.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, CRIMSANDSTONE.get(), PEARLSANDSTONE.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE_PILES).add(SMALL_SANDSTONE_PILES.get(), SMALL_RED_SANDSTONE_PILES.get(), SMALL_CRIMSANDSTONE_PILES.get(), SMALL_PEARLSANDSTONE_PILES.get());
@@ -1839,7 +1837,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.CRIMSON_CONVERSION_SHORT_GRASS).add(Blocks.SHORT_GRASS, Blocks.FERN, CORRUPT_GRASS.get(), HALLOW_GRASS.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_PACKED_ICE).add(Blocks.PACKED_ICE, PURPLE_PACKED_ICE.get(), PINK_PACKED_ICE.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_ICE).add(Blocks.ICE, PURPLE_ICE.get(), PINK_ICE.get());
-            tag(ModTags.Blocks.CRIMSON_CONVERSION_ICE_TAPERED_BLOCK).add(ICE_TAPERED_BLOCK.get(),PURPLE_ICE_TAPERED_BLOCK.get(), PINK_ICE_TAPERED_BLOCK.get());
+            tag(ModTags.Blocks.CRIMSON_CONVERSION_ICE_TAPERED_BLOCK).add(ICE_TAPERED_BLOCK.get(), PURPLE_ICE_TAPERED_BLOCK.get(), PINK_ICE_TAPERED_BLOCK.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_SAND).add(Blocks.SAND, Blocks.RED_SAND, EBONSAND.get(), PEARLSAND.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, EBONSANDSTONE.get(), PEARLSANDSTONE.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE_PILES).add(SMALL_SANDSTONE_PILES.get(), SMALL_RED_SANDSTONE_PILES.get(), SMALL_EBONSANDSTONE_PILES.get(), SMALL_PEARLSANDSTONE_PILES.get());
@@ -1852,7 +1850,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS).add(Blocks.SHORT_GRASS, Blocks.FERN, CORRUPT_GRASS.get(), CRIMSON_GRASS.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE).add(Blocks.PACKED_ICE, PURPLE_PACKED_ICE.get(), RED_PACKED_ICE.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_ICE).add(Blocks.ICE, PURPLE_ICE.get(), RED_ICE.get());
-            tag(ModTags.Blocks.HALLOW_CONVERSION_ICE_TAPERED_BLOCK).add(ICE_TAPERED_BLOCK.get(),PURPLE_ICE_TAPERED_BLOCK.get(), RED_ICE_TAPERED_BLOCK.get());
+            tag(ModTags.Blocks.HALLOW_CONVERSION_ICE_TAPERED_BLOCK).add(ICE_TAPERED_BLOCK.get(), PURPLE_ICE_TAPERED_BLOCK.get(), RED_ICE_TAPERED_BLOCK.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_SAND).add(Blocks.SAND, Blocks.RED_SAND, EBONSAND.get(), CRIMSAND.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, EBONSANDSTONE.get(), CRIMSANDSTONE.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE_PILES).add(SMALL_SANDSTONE_PILES.get(), SMALL_RED_SANDSTONE_PILES.get(), SMALL_EBONSANDSTONE_PILES.get(), SMALL_CRIMSANDSTONE_PILES.get());
@@ -2089,7 +2087,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.CAMPFIRES).add(
                 LIFE_CAMPFIRE.get()
         );
-        WaystonesHelper.blockTags(this::tag);
         MrCrayfishFurnitureHelper.blockTags(this::tag);
     }
 }

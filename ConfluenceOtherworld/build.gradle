@@ -227,15 +227,15 @@ dependencies {
 
     compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
     compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-    if (false) {
+    if (true) {
         runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
         runtimeOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
         runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
         runtimeOnly("com.tterrag.registrate:Registrate:${registrate_version}")
 
         // 航空学 v1.1.3
-        runtimeOnly "maven.modrinth:create-aeronautics:1sv6OtSz"
-        runtimeOnly "maven.modrinth:sable:g8CObHcP"
+//        runtimeOnly "maven.modrinth:create-aeronautics:1sv6OtSz"
+//        runtimeOnly "maven.modrinth:sable:g8CObHcP"
     }
 
     api "dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}"
@@ -293,12 +293,12 @@ dependencies {
         runtimeOnly "curse.maven:kubejs-238086:7278501"
     }
 
-    compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
-    compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
-    if (true) {
-        runtimeOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
-        runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
-    }
+//    compileOnly "maven.modrinth:waystones:21.1.40+neoforge-1.21.1"
+//    compileOnly "maven.modrinth:balm:21.0.64+neoforge-1.21.1"
+//    if (true) {
+//        runtimeOnly "maven.modrinth:waystones:21.1.40+neoforge-1.21.1"
+//        runtimeOnly "maven.modrinth:balm:21.0.64+neoforge-1.21.1"
+//    }
 
     compileOnly "curse.maven:xaeros-minimap-263420:7412188"
     compileOnly "curse.maven:xaeros-world-map-317780:7412262"

@@ -18,6 +18,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 
 import java.util.List;
@@ -520,7 +521,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "abc"
         )));
         // 翅膀
-        hardmodeAnvil(recipeOutput, AccessoryItems.FAIRY_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
+        hardmodeAnvil(recipeOutput, TCItems.FAIRY_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
                 'b', AmountIngredient.of(14, MaterialItems.PIXIE_DUST),
                 'c', AmountIngredient.of(8, MaterialItems.PIXIE_DUST)
@@ -530,13 +531,13 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "b  b",
                 "c  c"
         )));
-        hardmodeAnvil(recipeOutput, AccessoryItems.HARPY_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
+        hardmodeAnvil(recipeOutput, TCItems.HARPY_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
                 'b', Ingredient.of(MaterialItems.GIANT_HARPY_FEATHER)
         ), List.of(
                 "aba"
         )));
-        hardmodeAnvil(recipeOutput, AccessoryItems.ANGEL_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
+        hardmodeAnvil(recipeOutput, TCItems.ANGEL_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
                 'b', AmountIngredient.of(4, MaterialItems.SOUL_OF_LIGHT),
                 'c', AmountIngredient.of(5, MaterialItems.HARPY_FEATHER)
@@ -545,7 +546,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "caac",
                 "b  b"
         )));
-        hardmodeAnvil(recipeOutput, AccessoryItems.DEMON_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
+        hardmodeAnvil(recipeOutput, TCItems.DEMON_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
                 'b', AmountIngredient.of(4, MaterialItems.SOUL_OF_NIGHT),
                 'c', AmountIngredient.of(5, MaterialItems.HARPY_FEATHER)

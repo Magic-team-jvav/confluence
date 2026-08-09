@@ -394,7 +394,6 @@ public final class ModTags {
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> HARDMODE_RAW_MATERIALS = register("hardmode_raw_materials");
-        public static final TagKey<Item> WINGS = register("wings");
         public static final TagKey<Item> BOSS_SUMMONING = register("boss_summoning");
         public static final TagKey<Item> COAL_ORE_SMELTING = register("coal_ore_smelting");
         public static final TagKey<Item> IRON_ORE_SMELTING = register("iron_ore_smelting");

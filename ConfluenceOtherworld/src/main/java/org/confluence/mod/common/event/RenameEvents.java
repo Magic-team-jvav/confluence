@@ -7,13 +7,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.lib.api.event.NameFixRegisterEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.terra_curio.common.init.TCItems;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class RenameEvents {
     @SubscribeEvent
     public static void nameFixRegister$BlockWithItem(NameFixRegisterEvent.BlockWithItem event) {
-        event
-                // 1.1.2 -> 1.1.3
+        event // 1.1.2 -> 1.1.3
                 .register("confluence:freeze_crate", "confluence:frozen_crate")
                 .register("confluence:ebony_stone", "confluence:ebonstone")
                 .register("confluence:pearl_stone", "confluence:pearlstone")
@@ -86,10 +86,10 @@ public final class RenameEvents {
                 .register("confluence:tr_emerald_block", "confluence:jade_block")
                 .register("confluence:emerald_branches", "confluence:jade_branches")
                 .register("confluence:emerald_sapling", "confluence:jade_sapling")
-                .register("confluence:emerald_chain", "confluence:jade_chain")
-                // 1.1.4 -> 1.1.5
-                .register("confluence:golden_coin", "confluence:gold_coin")
-                // 1.1.5 -> 1.2.0
+                .register("confluence:emerald_chain", "confluence:jade_chain");
+        event // 1.1.4 -> 1.1.5
+                .register("confluence:golden_coin", "confluence:gold_coin");
+        event // 1.1.5 -> 1.2.0
                 .register("confluence:cattails_head", "confluence:cattail_block")
                 .register("confluence:cattails_body", "confluence:cattail_block")
                 .register("confluence:jungle_cattails_head", "confluence:jungle_cattail_block")
@@ -106,8 +106,7 @@ public final class RenameEvents {
 
     @SubscribeEvent
     public static void nameFixRegister$Block(NameFixRegisterEvent.Block event) {
-        event
-                // 1.1.2 -> 1.1.3
+        event // 1.1.2 -> 1.1.3
                 .register("confluence:copper_coin_pile", "confluence:copper_coin")
                 .register("confluence:silver_coin_pile", "confluence:silver_coin")
                 .register("confluence:golden_coin_pile", "confluence:golden_coin")
@@ -117,8 +116,7 @@ public final class RenameEvents {
 
     @SubscribeEvent
     public static void nameFixRegister$Item(NameFixRegisterEvent.Item event) {
-        event
-                // 1.1.2 -> 1.1.3
+        event // 1.1.2 -> 1.1.3
                 .register("confluence:copper_board_sword", "confluence:copper_broadsword")
                 .register("confluence:tin_board_sword", "confluence:tin_broadsword")
                 .register("confluence:lead_board_sword", "confluence:lead_broadsword")
@@ -143,13 +141,13 @@ public final class RenameEvents {
                 .register("confluence:blue_light_saber", "confluence:blue_phaseblade")
                 .register("confluence:purple_light_saber", "confluence:purple_phaseblade")
                 .register("confluence:white_light_saber", "confluence:white_phaseblade")
-                .register("confluence:demon_ocnch", "confluence:demon_conch")
-                // 1.1.3 -> 1.1.4
-                .register("confluence:night_edge", "confluence:nights_edge")
-                // 1.1.4 -> 1.1.5
+                .register("confluence:demon_ocnch", "confluence:demon_conch");
+        event // 1.1.3 -> 1.1.4
+                .register("confluence:night_edge", "confluence:nights_edge");
+        event // 1.1.4 -> 1.1.5
                 .register("confluence:crystal_shards_item", "confluence:crystal_shards")
-                .register("confluence:throwing_knives", "confluence:throwing_knive")
-                // 1.1.5 -> 1.2.0
+                .register("confluence:throwing_knives", "confluence:throwing_knive");
+        event // 1.1.5 -> 1.2.0
                 .register("confluence:cap_tunabeard", "confluence:capn_tunabeard")
                 .register("confluence:obsidian_fish", "confluence:obsidifish")
                 .register("terra_moment:slime_rain", "confluence:slime_rain")
@@ -160,19 +158,18 @@ public final class RenameEvents {
                 .register("confluence:glowing_mushroom_cattails", "confluence:glowing_mushroom_cattail")
                 .register("confluence:hallow_cattails", "confluence:hallow_cattail")
                 .register("confluence:ebony_cattails", "confluence:ebony_cattail")
-                .register("confluence:crimson_cattails", "confluence:crimson_cattail")
-                // 1.2.4 -> 1.3.0
+                .register("confluence:crimson_cattails", "confluence:crimson_cattail");
+        event // 1.2.4 -> 1.3.0
                 .register("confluence:blue_brick_slab", "confluence:blue_bricks_slab")
-                .register("confluence:blue_brick_stairs", "confluence:blue_bricks_stairs")
-        ;
+                .register("confluence:blue_brick_stairs", "confluence:blue_bricks_stairs");
+        TCItems.WINGS.getEntries().forEach(holder -> event.register(Confluence.asResource(holder.getId().getPath()), holder.getId()));
     }
 
     @SubscribeEvent
     public static void nameFixRegister$Data(NameFixRegisterEvent.Data event) {
         ResourceKey<? extends Registry<?>> key = event.getRegistryKey();
         if (Registries.BIOME.equals(key)) {
-            event
-                    // 1.1.2 -> 1.1.3
+            event // 1.1.2 -> 1.1.3
                     .register("confluence:tr_crimson", "confluence:the_crimson")
                     .register("confluence:tr_crimson_desert", "confluence:the_crimson_desert")
                     .register("confluence:tr_crimson_tundra", "confluence:the_crimson_tundra");

@@ -524,7 +524,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.PREFIX_MAGIC_ONLY)
                 .addTags(ModTags.Items.MANA_WEAPON, ModTags.Items.SUMMONER_WEAPON);
         tag(ModTags.Items.PREFIX_ACCESSORY_ONLY)
-                .addTag(TCTags.ACCESSORY);
+                .addTag(TCTags.Items.ACCESSORY);
 
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         dye.add(VanityArmorItems.TEAM_DYE.get());
@@ -657,12 +657,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             }
         });
 
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> accessory = tag(TCTags.ACCESSORY);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> accessory = tag(TCTags.Items.ACCESSORY);
         AccessoryItems.ITEMS.getEntries().forEach(item -> accessory.add(item.get()));
         accessory.add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get());
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wings = tag(ModTags.Items.WINGS);
-        AccessoryItems.WINGS.forEach(item -> wings.add(item.get()));
-        wings.add(TCItems.CELESTIAL_STARBOARD.get());
 
         IntrinsicTagAppender<Item> tools_chainsaw = tag(ModTags.Items.TOOLS_CHAINSAW);
         skip_reset_strength.addTag(ModTags.Items.TOOLS_CHAINSAW);
@@ -1181,28 +1178,28 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 PickaxeItems.VORTEX_PICKAXE.get(),
                 PickaxeItems.NEBULA_PICKAXE.get(),
                 PickaxeItems.STARDUST_PICKAXE.get(),
-                AccessoryItems.FROZEN_WINGS.get(),
-                AccessoryItems.JETPACK.get(),
-                AccessoryItems.LEAF_WINGS.get(),
-                AccessoryItems.BAT_WINGS.get(),
-                AccessoryItems.BUTTERFLY_WINGS.get(),
-                AccessoryItems.FLAME_WINGS.get(),
-                AccessoryItems.HOVERBOARD.get(),
-                AccessoryItems.BONE_WINGS.get(),
-                AccessoryItems.MOTHRON_WINGS.get(),
-                AccessoryItems.SPECTRE_WINGS.get(),
-                AccessoryItems.BEETLE_WINGS.get(),
-                AccessoryItems.FESTIVE_WINGS.get(),
-                AccessoryItems.SPOOKY_WINGS.get(),
-                AccessoryItems.TATTERED_WINGS.get(),
-                AccessoryItems.STEAMPUNK_WINGS.get(),
-                AccessoryItems.BETSYS_WINGS.get(),
-                AccessoryItems.EMPRESS_WINGS.get(),
-                AccessoryItems.FISHRON_WINGS.get(),
-                AccessoryItems.NEBULA_WINGS.get(),
-                AccessoryItems.VORTEX_BOOSTER.get(),
-                AccessoryItems.SOLAR_WINGS.get(),
-                AccessoryItems.STARDUST_WINGS.get(),
+                TCItems.FROZEN_WINGS.get(),
+                TCItems.JETPACK.get(),
+                TCItems.LEAF_WINGS.get(),
+                TCItems.BAT_WINGS.get(),
+                TCItems.BUTTERFLY_WINGS.get(),
+                TCItems.FLAME_WINGS.get(),
+                TCItems.HOVERBOARD.get(),
+                TCItems.BONE_WINGS.get(),
+                TCItems.MOTHRON_WINGS.get(),
+                TCItems.SPECTRE_WINGS.get(),
+                TCItems.BEETLE_WINGS.get(),
+                TCItems.FESTIVE_WINGS.get(),
+                TCItems.SPOOKY_WINGS.get(),
+                TCItems.TATTERED_WINGS.get(),
+                TCItems.STEAMPUNK_WINGS.get(),
+                TCItems.BETSYS_WINGS.get(),
+                TCItems.EMPRESS_WINGS.get(),
+                TCItems.FISHRON_WINGS.get(),
+                TCItems.NEBULA_WINGS.get(),
+                TCItems.VORTEX_BOOSTER.get(),
+                TCItems.SOLAR_WINGS.get(),
+                TCItems.STARDUST_WINGS.get(),
                 TCItems.EVERLASTING.get(),
                 TCItems.BASE_POINT.get(),
                 AxeItems.CHLOROPHYTE_GREATAXE.get(),

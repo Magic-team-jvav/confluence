@@ -192,7 +192,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(SwordItems.STARFURY))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.FLEDGLING_WINGS))
+                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
                         .add(EmptyLootItem.emptyItem().setWeight(39))
                 )
         );
@@ -205,7 +205,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(SwordItems.STARFURY))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.FLEDGLING_WINGS).setQuality(2))
+                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS).setQuality(2))
                         .add(EmptyLootItem.emptyItem().setWeight(100))
                 )
                 .withPool(LootPool.lootPool()

@@ -461,8 +461,6 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(ModBlocks.VOID_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(VoidBlockRenderer::new));
         event.registerBlockEntityRenderer(NatureBlocks.VOID_TREE_ROOT_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(VoidTreeRootBlockRenderer::new));
         event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
-
-        ModClientSetups.registerWaystoneRenderers(event);
     }
 
     @SubscribeEvent

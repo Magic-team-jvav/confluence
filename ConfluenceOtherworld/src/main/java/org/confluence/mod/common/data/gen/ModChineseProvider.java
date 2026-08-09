@@ -7,7 +7,6 @@ import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.language.*;
-import org.confluence.mod.common.entity.projectile.Flail.*;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -15,7 +14,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
 
@@ -1766,9 +1764,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.SKY_FRACTURE_PROJECTILE.get(), "裂天剑");
         add(ModEntities.CRYSTAL_CHARGE_1_PROJECTILE.get(), "爆炸水晶1");
         add(ModEntities.CRYSTAL_CHARGE_2_PROJECTILE.get(), "爆炸水晶2");
-        add(ModEntities.FLOWER_PROJECTILE.get(),"花瓣");
-        add(ModEntities.DRIPPLER_CRIPPLER_PROJECTILE.get(),"血肉射弹");
-        add(ModEntities.FLAIRON_BUBBLE.get(),"泡泡");
+        add(ModEntities.FLOWER_PROJECTILE.get(), "花瓣");
+        add(ModEntities.DRIPPLER_CRIPPLER_PROJECTILE.get(), "血肉射弹");
+        add(ModEntities.FLAIRON_BUBBLE.get(), "泡泡");
 
         //region blocks
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");
@@ -2517,8 +2515,8 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add(DecorativeBlocks.SNOW_BRICKS.FULL.get(), "雪砖");
-        add(DecorativeBlocks.SNOW_BRICKS.STAIRS.get(),"雪砖楼梯");
-        add(DecorativeBlocks.SNOW_BRICKS.SLAB.get(),"雪砖台阶");
+        add(DecorativeBlocks.SNOW_BRICKS.STAIRS.get(), "雪砖楼梯");
+        add(DecorativeBlocks.SNOW_BRICKS.SLAB.get(), "雪砖台阶");
         add(DecorativeBlocks.SNOW_BRICKS.WALL.get(), "雪砖墙");
 
         add(DecorativeBlocks.BLUE_ICE_BRICKS.FULL.get(), "蓝冰砖");
@@ -2647,7 +2645,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.RAINBOW_BRICKS.STAIRS.get(), "彩虹砖楼梯");
         add(DecorativeBlocks.RAINBOW_BRICKS.SLAB.get(), "彩虹砖台阶");
         add(DecorativeBlocks.RAINBOW_BRICKS.WALL.get(), "彩虹砖墙");
-
 
 
         add(DecorativeBlocks.ASPHALT_BLOCK.get(), "沥青块");
@@ -3222,11 +3219,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(FlailItems.BLUE_MOON.get(), "蓝月");
         add(FlailItems.SUNFURY.get(), "阳炎之怒");
         add(FlailItems.DAO_OF_POW.get(), "太极连枷");
-        add(FlailItems.FLOWER_POWER.get(),"花之力");
-        add(FlailItems.DRIPPLER_CRIPPLER.get(),"滴滴怪致残者");
-        add(FlailItems.Flairon.get(),"猪鲨链球");
-        add(FlailItems.CHAIN_KNIFE.get(),"链刃");
-        add(FlailItems.ANCHOR.get(),"锚");
+        add(FlailItems.FLOWER_POWER.get(), "花之力");
+        add(FlailItems.DRIPPLER_CRIPPLER.get(), "滴滴怪致残者");
+        add(FlailItems.Flairon.get(), "猪鲨链球");
+        add(FlailItems.CHAIN_KNIFE.get(), "链刃");
+        add(FlailItems.ANCHOR.get(), "锚");
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");
@@ -4619,7 +4616,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.RUNE_ROBE.get(), "符文长袍");
         add(VanityArmorItems.WEDDING_VEIL.get(), "面纱");
         add(VanityArmorItems.WEDDING_DRESS.get(), "婚裙");
-       // add(VanityArmorItems.BUCKET_HAT.get(), "水桶帽");
+        // add(VanityArmorItems.BUCKET_HAT.get(), "水桶帽");
         add(VanityArmorItems.DYE.get(), "染料");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
         add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");
@@ -4813,7 +4810,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
 
         PonderHelper.addTranslateKeys(this::add, false);
-        WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), false);
         CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), false);
 
         add(BaseTerraRepeaterItem.ATTACK_SPEED_TEXT, "矢速度");

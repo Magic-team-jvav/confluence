@@ -15,7 +15,6 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
@@ -298,7 +297,6 @@ public final class ModTabs {
                         special_plants.accept(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK);
 
 
-
                         CreativeModeTab.Output sanctificationOres = GroupItem.belongsTo("sanctification_ores", output);
                         sanctificationOres.accept(OreBlocks.SANCTIFICATION_COAL_ORE);
                         sanctificationOres.accept(OreBlocks.SANCTIFICATION_COPPER_ORE);
@@ -520,7 +518,6 @@ public final class ModTabs {
                         marble_bricks.accept(DecorativeBlocks.MARBLE_SMALL_BRICKS.get());
                         marble_bricks.accept(DecorativeBlocks.GILDED_MARBLE.get());
                         marble_bricks.accept(DecorativeBlocks.POLISHED_MARBLE.get());
-
 
 
                         CreativeModeTab.Output glass = GroupItem.belongsTo("glass", output);
@@ -818,7 +815,6 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
                         misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
-                        WaystonesHelper.accept(output);
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
                     .build());
@@ -1109,7 +1105,8 @@ public final class ModTabs {
                         note.accept(ModStacks.structureNote0_0(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                         note.accept(ModStacks.structureNote0_1(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
                         note.accept(ModStacks.structureNote1(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                        for (ItemStack mysteriousNote : ModStacks.mysteriousNotes()) note.accept(mysteriousNote, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+                        for (ItemStack mysteriousNote : ModStacks.mysteriousNotes())
+                            note.accept(mysteriousNote, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
 
                     })
                     .withTabsBefore(MATERIALS.getId())
@@ -1658,7 +1655,7 @@ public final class ModTabs {
                         output.accept(VanityArmorItems.PEDDLERS_HAT.get());
                         output.accept(VanityArmorItems.RUNE_HAT.get());
                         output.accept(VanityArmorItems.RUNE_ROBE.get());
-                       // output.accept(VanityArmorItems.BUCKET_HAT.get());
+                        // output.accept(VanityArmorItems.BUCKET_HAT.get());
                         output.accept(VanityArmorItems.WEDDING_VEIL.get());
                         output.accept(VanityArmorItems.WEDDING_DRESS.get());
                         output.accept(TCItems.DIVING_HELMET);

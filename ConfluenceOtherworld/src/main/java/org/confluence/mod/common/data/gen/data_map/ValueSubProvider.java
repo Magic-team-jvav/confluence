@@ -14,7 +14,6 @@ import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -361,12 +360,12 @@ public final class ValueSubProvider {
                 .add(FlailItems.FLAMING_MACE, gold2)
                 .add(FlailItems.WIND_ANCHOR, gold1 + gold2)
                 .add(FlailItems.GUARDIAN_FLAIL, gold1)
-                .add(FlailItems.ANCIENT_GUARDIAN_FLAIL, gold1+ silver50)
-                .add(FlailItems.BALL_O_HURT, gold1+ silver50)
+                .add(FlailItems.ANCIENT_GUARDIAN_FLAIL, gold1 + silver50)
+                .add(FlailItems.BALL_O_HURT, gold1 + silver50)
                 .add(FlailItems.THE_MEATBALL, silver50)
-                .add(FlailItems.BLUE_MOON, gold1+ silver50+ silver20+ silver5)
-                .add(FlailItems.SUNFURY, gold2+ silver50)
-                .add(FlailItems.DAO_OF_POW, gold2+ silver50+ silver20+ silver10+ silver5);
+                .add(FlailItems.BLUE_MOON, gold1 + silver50 + silver20 + silver5)
+                .add(FlailItems.SUNFURY, gold2 + silver50)
+                .add(FlailItems.DAO_OF_POW, gold2 + silver50 + silver20 + silver10 + silver5);
         builder // 探索
                 .add(ModBlocks.ROPE, 2)
                 .add(ModBlocks.SILK_ROPE, 2)
@@ -476,13 +475,13 @@ public final class ValueSubProvider {
                 .add(BowItems.HELLWING_BOW, gold2 + silver50)
                 .add(BowItems.WOODEN_SHORT_BOW, 30)
                 .add(CrossbowItems.COBALT_REPEATER, gold1 + silver20)
-                .add(CrossbowItems.PALLADIUM_REPEATER, gold1 + silver50+ silver10)
+                .add(CrossbowItems.PALLADIUM_REPEATER, gold1 + silver50 + silver10)
                 .add(CrossbowItems.MYTHRIL_REPEATER, gold2 - silver20)
                 .add(CrossbowItems.ORICHALCUM_REPEATER, gold2 + silver20)
                 .add(CrossbowItems.ADAMANTITE_REPEATER, gold2 + silver20 + silver20)
                 .add(CrossbowItems.TITANIUM_REPEATER, gold2 + gold1 - silver20)
                 .add(CrossbowItems.HALLOWED_REPEATER, gold2 + gold2)
-                .add(CrossbowItems.CHLOROPHYTE_REPEATER, gold5 + - silver20)
+                .add(CrossbowItems.CHLOROPHYTE_REPEATER, gold5 + -silver20)
                 .add(CrossbowItems.STAKE_LAUNCHER, gold10);
         builder
                 .add(PickaxeItems.CACTUS_PICKAXE, silver2 + silver2)
@@ -665,7 +664,7 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.SPACE_GUN, silver20 + silver20)
                 .add(ManaWeaponItems.WATER_BOLT, gold1 + silver50)
                 .add(ManaWeaponItems.DEMON_SCYTHE, gold1 + silver50)
-                .add(ManaWeaponItems.MAGIC_MISSILE, gold1 + silver50+ silver20+ silver5)
+                .add(ManaWeaponItems.MAGIC_MISSILE, gold1 + silver50 + silver20 + silver5)
                 .add(ManaWeaponItems.FLAMELASH, gold2 + silver50)
                 .add(ManaWeaponItems.BOOK_OF_SKULLS, gold1 + silver50)
                 .add(ManaWeaponItems.FLOWER_OF_FIRE, gold2 + silver50)
@@ -1011,20 +1010,20 @@ public final class ValueSubProvider {
                 .add(ArmorItems.SCALE_MAIL_CHESTPLATE, silver10)
                 .add(ArmorItems.SCALE_MAIL_LEGGINGS, silver10)
                 .add(ArmorItems.SCALE_MAIL_BOOTS, silver10)
-                .add(ArmorItems.GUARDS_HELMET, silver20 + silver10 )
-                .add(ArmorItems.GUARDS_CHESTPLATE, silver20 + silver10 )
+                .add(ArmorItems.GUARDS_HELMET, silver20 + silver10)
+                .add(ArmorItems.GUARDS_CHESTPLATE, silver20 + silver10)
                 .add(ArmorItems.GUARDS_LEGGINGS, silver20)
                 .add(ArmorItems.GUARDS_BOOTS, silver20)
-                .add(ArmorItems.SPELUNKER_HELMET, silver20 + silver10 )
-                .add(ArmorItems.SPELUNKER_CHESTPLATE, silver20 + silver10 )
+                .add(ArmorItems.SPELUNKER_HELMET, silver20 + silver10)
+                .add(ArmorItems.SPELUNKER_CHESTPLATE, silver20 + silver10)
                 .add(ArmorItems.SPELUNKER_LEGGINGS, silver20)
                 .add(ArmorItems.SPELUNKER_BOOTS, silver20)
-                .add(ArmorItems.HERMIT_HELMET, silver10 )
-                .add(ArmorItems.HERMIT_CHESTPLATE, silver10 )
+                .add(ArmorItems.HERMIT_HELMET, silver10)
+                .add(ArmorItems.HERMIT_CHESTPLATE, silver10)
                 .add(ArmorItems.HERMIT_LEGGINGS, silver10)
                 .add(ArmorItems.HERMIT_BOOTS, silver10)
-                .add(ArmorItems.BLUE_HERMIT_HELMET, silver20 )
-                .add(ArmorItems.BLUE_HERMIT_CHESTPLATE, silver20 )
+                .add(ArmorItems.BLUE_HERMIT_HELMET, silver20)
+                .add(ArmorItems.BLUE_HERMIT_CHESTPLATE, silver20)
                 .add(ArmorItems.BLUE_HERMIT_LEGGINGS, silver20)
                 .add(ArmorItems.BLUE_HERMIT_BOOTS, silver20)
                 .add(Items.LEATHER_HELMET, 10)
@@ -1176,10 +1175,10 @@ public final class ValueSubProvider {
                 .add(ArmorItems.VIKING_HELMET, silver50)
                 .add(ArmorItems.FLINX_FUR_COAT, silver50 + gold2)
 
-                .add(ArmorItems.TIKI_MASK, silver50 + gold5+ gold2)
-                .add(ArmorItems.TIKI_SHIRT, silver50 + gold5+ gold2)
-                .add(ArmorItems.TIKI_LEGGINGS, silver50 + gold5+ gold2)
-                .add(ArmorItems.TIKI_BOOTS, silver50 + gold5+ gold2)
+                .add(ArmorItems.TIKI_MASK, silver50 + gold5 + gold2)
+                .add(ArmorItems.TIKI_SHIRT, silver50 + gold5 + gold2)
+                .add(ArmorItems.TIKI_LEGGINGS, silver50 + gold5 + gold2)
+                .add(ArmorItems.TIKI_BOOTS, silver50 + gold5 + gold2)
 
                 .add(TCItems.DIVING_HELMET, silver2);
         builder
@@ -1983,14 +1982,14 @@ public final class ValueSubProvider {
 
                 .add(FunctionalBlocks.HEART_LANTERN, 20)
                 .add(FunctionalBlocks.STAR_IN_A_BOTTLE, 20)
-                .add(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE,20)
-                .add(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE,20)
-                .add(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE,20)
-                .add(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE,20)
-                .add(FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE,20)
-                .add(FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE,20)
-                .add(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE,20)
-                .add(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE,20)
+                .add(FunctionalBlocks.SOUL_OF_FLIGHT_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_LIGHT_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_FRIGHT_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_NIGHT_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_MIGHT_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_SIGHT_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_BRIGHT_IN_A_BOTTLE, 20)
+                .add(FunctionalBlocks.SOUL_OF_VOIGHT_IN_A_BOTTLE, 20)
                 .add(TFBlocks.GLASS_KILN, silver50 + silver2 + silver2)
                 .add(TFBlocks.LIVING_LOOM, gold2);
         builder
@@ -2070,24 +2069,24 @@ public final class ValueSubProvider {
         ;
         // 气球
         builder
-                .add(DecorativeBlocks.WHITE_BALLOON ,20)
-                .add(DecorativeBlocks.LIGHT_GRAY_BALLOON ,20)
-                .add(DecorativeBlocks.GRAY_BALLOON ,20)
-                .add(DecorativeBlocks.BLACK_BALLOON ,20)
-                .add(DecorativeBlocks.BROWN_BALLOON ,20)
-                .add(DecorativeBlocks.RED_BALLOON ,20)
-                .add(DecorativeBlocks.ORANGE_BALLOON ,20)
-                .add(DecorativeBlocks.YELLOW_BALLOON ,20)
-                .add(DecorativeBlocks.LIME_BALLOON ,20)
-                .add(DecorativeBlocks.GREEN_BALLOON ,20)
-                .add(DecorativeBlocks.CYAN_BALLOON ,20)
-                .add(DecorativeBlocks.LIGHT_BLUE_BALLOON ,20)
-                .add(DecorativeBlocks.BLUE_BALLOON ,20)
-                .add(DecorativeBlocks.PURPLE_BALLOON ,20)
-                .add(DecorativeBlocks.MAGENTA_BALLOON ,20)
-                .add(DecorativeBlocks.PINK_BALLOON ,20)
-                .add(DecorativeBlocks.PINK_BALLOON ,20)
-                .add(NatureBlocks.BALLOON_MELON ,silver5 + silver2)
+                .add(DecorativeBlocks.WHITE_BALLOON, 20)
+                .add(DecorativeBlocks.LIGHT_GRAY_BALLOON, 20)
+                .add(DecorativeBlocks.GRAY_BALLOON, 20)
+                .add(DecorativeBlocks.BLACK_BALLOON, 20)
+                .add(DecorativeBlocks.BROWN_BALLOON, 20)
+                .add(DecorativeBlocks.RED_BALLOON, 20)
+                .add(DecorativeBlocks.ORANGE_BALLOON, 20)
+                .add(DecorativeBlocks.YELLOW_BALLOON, 20)
+                .add(DecorativeBlocks.LIME_BALLOON, 20)
+                .add(DecorativeBlocks.GREEN_BALLOON, 20)
+                .add(DecorativeBlocks.CYAN_BALLOON, 20)
+                .add(DecorativeBlocks.LIGHT_BLUE_BALLOON, 20)
+                .add(DecorativeBlocks.BLUE_BALLOON, 20)
+                .add(DecorativeBlocks.PURPLE_BALLOON, 20)
+                .add(DecorativeBlocks.MAGENTA_BALLOON, 20)
+                .add(DecorativeBlocks.PINK_BALLOON, 20)
+                .add(DecorativeBlocks.PINK_BALLOON, 20)
+                .add(NatureBlocks.BALLOON_MELON, silver5 + silver2)
         ;
         // 圣物
         for (DeferredBlock<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {
@@ -2148,8 +2147,6 @@ public final class ValueSubProvider {
                 .add(LanceItems.JOUSTING_LANCE.get(), gold1 + silver20)
                 .add(LanceItems.HALLOWED_JOUSTING_LANCE.get(), gold5 - silver20 - silver20)
                 .add(LanceItems.SHADOW_JOUSTING_LANCE.get(), gold10);
-
-        WaystonesHelper.appendValue(builder);
     }
 
     public static class Builder extends DataMapProvider.Builder<ValueComponent, Item> {

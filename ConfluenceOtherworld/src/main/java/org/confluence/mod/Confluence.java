@@ -25,7 +25,6 @@ import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +49,6 @@ public final class Confluence {
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
-        WaystonesHelper.register(eventBus);
         AgeratumHelper.register(eventBus);
         CreateHelper.register(eventBus);
         ModAdvancements.register(eventBus);

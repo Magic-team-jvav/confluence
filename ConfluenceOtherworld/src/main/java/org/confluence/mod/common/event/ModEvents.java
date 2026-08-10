@@ -81,7 +81,6 @@ import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.RepeaterContentsComponentHandler;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent;
-import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terraentity.init.entity.TEAnimals;
@@ -210,33 +209,6 @@ public final class ModEvents {
     @SubscribeEvent
     public static void entityAttributeModification(EntityAttributeModificationEvent event) {
         TEEvents.modifyAttributes(event);
-    }
-
-    @SubscribeEvent
-    public static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {
-        event.register(AccessoryItems.LUCKY$COIN);
-        event.register(AccessoryItems.VINE$ROPE);
-        event.register(AccessoryItems.AUTO$GET$MANA);
-        event.register(AccessoryItems.HURT$GET$MANA);
-        event.register(AccessoryItems.FAST$MANA$GENERATION);
-        event.register(AccessoryItems.HIGH$TEST$FISHING$LINE);
-        event.register(AccessoryItems.TACKLE$BOX);
-        event.register(AccessoryItems.LAVAPROOF$FISHING$HOOK);
-        event.register(AccessoryItems.SPECTRE$GOGGLES);
-        event.register(AccessoryItems.PAINT$SPRAYER);
-        event.register(AccessoryItems.CLOTHIER$KILLER);
-        event.register(AccessoryItems.$AFK);
-    }
-
-    @SubscribeEvent
-    public static void registerOtherType(RegisterAccessoriesComponentUpdateEvent.OtherType event) {
-        event.register(AccessoryItems.ADDITIONAL$MANA);
-        event.register(AccessoryItems.MANA$USE$REDUCE);
-        event.register(AccessoryItems.MANA$PICKUP$RANGE);
-        event.register(AccessoryItems.COIN$PICKUP$RANGE);
-        event.register(AccessoryItems.REDUCE$HEALING$COOLDOWN);
-        event.register(AccessoryItems.FISHING$POWER);
-        event.register(AccessoryItems.SPECIAL$PRICE);
     }
 
     @SubscribeEvent

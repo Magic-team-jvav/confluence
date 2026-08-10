@@ -60,8 +60,8 @@ public class WrappedAccessoriesAttachment extends AccessoriesAttachment {
     }
 
     @Override
-    public <T, V extends PrimitiveValue<T>> void putUnitIfPresent(ValueType<T, V> type) {
-        original.putUnitIfPresent(type);
+    public <T, V extends PrimitiveValue<T>> void putUnit(ValueType<T, V> type) {
+        original.putUnit(type);
     }
 
     @Override

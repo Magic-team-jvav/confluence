@@ -66,9 +66,7 @@ import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.BloodyFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.GlowingFishingHookModel;
 import org.confluence.mod.client.model.entity.fishing.HotlineFishingHookModel;
-import org.confluence.mod.client.model.entity.hook.BaseHookModel;
-import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
-import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
+import org.confluence.mod.client.model.entity.hook.*;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.particle.*;
 import org.confluence.mod.client.renderer.block.*;
@@ -280,8 +278,26 @@ public final class ModClientEvents {
         event.registerLayerDefinition(BaseHookModel.LAYER_LOCATION, BaseHookModel::createBodyLayer);
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);
         event.registerLayerDefinition(SkeletronHandModel.LAYER_LOCATION, SkeletronHandModel::createBodyLayer);
-
-        /* todo 静止钩 */
+        event.registerLayerDefinition(AntiGravityHookModel.LAYER_LOCATION, AntiGravityHookModel::createBodyLayer);
+        event.registerLayerDefinition(BatHookModel.LAYER_LOCATION, BatHookModel::createBodyLayer);
+        event.registerLayerDefinition(CandyCaneHookModel.LAYER_LOCATION, CandyCaneHookModel::createBodyLayer);
+        event.registerLayerDefinition(ChristmasHookModel.LAYER_LOCATION, ChristmasHookModel::createBodyLayer);
+        event.registerLayerDefinition(DualHookModel.LAYER_LOCATION, DualHookModel::createBodyLayer);
+        event.registerLayerDefinition(FishHookModel.LAYER_LOCATION, FishHookModel::createBodyLayer);
+        event.registerLayerDefinition(HookOfDissonanceModel.LAYER_LOCATION, HookOfDissonanceModel::createBodyLayer);
+        event.registerLayerDefinition(IlluminantHookModel.LAYER_LOCATION, IlluminantHookModel::createBodyLayer);
+        event.registerLayerDefinition(IvyWhipModel.LAYER_LOCATION, IvyWhipModel::createBodyLayer);
+        event.registerLayerDefinition(LunarHookNebulaModel.LAYER_LOCATION, LunarHookNebulaModel::createBodyLayer);
+        event.registerLayerDefinition(LunarHookSolarModel.LAYER_LOCATION, LunarHookSolarModel::createBodyLayer);
+        event.registerLayerDefinition(LunarHookStardustModel.LAYER_LOCATION, LunarHookStardustModel::createBodyLayer);
+        event.registerLayerDefinition(LunarHookVortexModel.LAYER_LOCATION, LunarHookVortexModel::createBodyLayer);
+        event.registerLayerDefinition(SlimeHookModel.LAYER_LOCATION, SlimeHookModel::createBodyLayer);
+        event.registerLayerDefinition(SpookyHookModel.LAYER_LOCATION, SpookyHookModel::createBodyLayer);
+        event.registerLayerDefinition(SquirrelHookModel.LAYER_LOCATION, SquirrelHookModel::createBodyLayer);
+        event.registerLayerDefinition(StaticHookModel.LAYER_LOCATION, StaticHookModel::createBodyLayer);
+        event.registerLayerDefinition(TendonHookModel.LAYER_LOCATION, TendonHookModel::createBodyLayer);
+        event.registerLayerDefinition(ThornHookModel.LAYER_LOCATION, ThornHookModel::createBodyLayer);
+        event.registerLayerDefinition(WormHookModel.LAYER_LOCATION, WormHookModel::createBodyLayer);
 
         event.registerLayerDefinition(WeatherVaneBlockModel.LAYER_LOCATION, WeatherVaneBlockModel::createBodyLayer);
 
@@ -398,18 +414,18 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BASE_HOOK.get(), BaseHookRenderer::new);
         event.registerEntityRenderer(WEB_SLINGER.get(), WebSlingerRenderer::new);
         event.registerEntityRenderer(SKELETRON_HAND.get(), SkeletronHandRenderer::new);
-        event.registerEntityRenderer(SLIME_HOOK.get(), SlimeHookRenderer::new);
-        event.registerEntityRenderer(FISH_HOOK.get(), FishHookRenderer::new);
-        event.registerEntityRenderer(IVY_WHIP.get(), IvyWhipRenderer::new);
-        event.registerEntityRenderer(BAT_HOOK.get(), BatHookRenderer::new);
-        event.registerEntityRenderer(CANDY_CANE_HOOK.get(), CandyCaneHookRenderer::new);
+        event.registerEntityRenderer(SLIME_HOOK.get(), ctx -> new SimpleHookRenderer<>(ctx, new SlimeHookModel(ctx.bakeLayer(SlimeHookModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/slime_hook.png")));
+        event.registerEntityRenderer(FISH_HOOK.get(), ctx -> new SimpleHookRenderer<>(ctx, new FishHookModel(ctx.bakeLayer(FishHookModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/fish_hook.png")));
+        event.registerEntityRenderer(IVY_WHIP.get(), ctx -> new SimpleHookRenderer<>(ctx, new IvyWhipModel(ctx.bakeLayer(IvyWhipModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/ivy_whip.png")));
+        event.registerEntityRenderer(BAT_HOOK.get(), ctx -> new SimpleHookRenderer<>(ctx, new BatHookModel(ctx.bakeLayer(BatHookModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/bat_hook.png")));
+        event.registerEntityRenderer(CANDY_CANE_HOOK.get(), ctx -> new SimpleHookRenderer<>(ctx, new CandyCaneHookModel(ctx.bakeLayer(CandyCaneHookModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/candycane_hook_head.png")));
         event.registerEntityRenderer(DUAL_HOOK.get(), DualHookRenderer::new);
-        event.registerEntityRenderer(HOOK_OF_DISSONANCE.get(), HookOfDissonanceRenderer::new);
-        event.registerEntityRenderer(THORN_HOOK.get(), ThornHookRenderer::new);
+        event.registerEntityRenderer(HOOK_OF_DISSONANCE.get(), ctx -> new SimpleHookRenderer<>(ctx, new HookOfDissonanceModel(ctx.bakeLayer(HookOfDissonanceModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/hoof_of_dissonance.png")));
+        event.registerEntityRenderer(THORN_HOOK.get(), ctx -> new SimpleHookRenderer<>(ctx, new ThornHookModel(ctx.bakeLayer(ThornHookModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/thorn_hook.png")));
         event.registerEntityRenderer(MIMIC_HOOK.get(), MimicHookRenderer::new);
-        event.registerEntityRenderer(ANTI_GRAVITY_HOOK.get(), AntiGravityHookRenderer::new);
-        event.registerEntityRenderer(SPOOKY_HOOK.get(), SpookyHookRenderer::new);
-        event.registerEntityRenderer(CHRISTMAS_HOOK.get(), ChristmasHookRenderer::new);
+        event.registerEntityRenderer(ANTI_GRAVITY_HOOK.get(), ctx -> new SimpleHookRenderer<>(ctx, new AntiGravityHookModel(ctx.bakeLayer(AntiGravityHookModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/anti_gravity_hook.png")));
+        event.registerEntityRenderer(SPOOKY_HOOK.get(), ctx -> new SimpleHookRenderer<>(ctx, new SpookyHookModel(ctx.bakeLayer(SpookyHookModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/spooky_hook.png")));
+        event.registerEntityRenderer(CHRISTMAS_HOOK.get(), ctx -> new SimpleHookRenderer<>(ctx, new ChristmasHookModel(ctx.bakeLayer(ChristmasHookModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/hook/christmas_hook.png")));
         event.registerEntityRenderer(LUNAR_HOOK.get(), LunarHookRenderer::new);
         /* todo 静止钩 */
 

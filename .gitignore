@@ -28,8 +28,10 @@ run-data/
 *.map
 
 #vscode
-.vscode/
+.github
 .history/
-
+.eclipse/
+.vscode/
 generated/
 build/
+.vscode/settings.json

@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @SuppressWarnings("MixinSuperClass")
 @Mixin(value = AccessoriesAttachment.class, remap = false)
 public abstract class AccessoriesAttachmentMixin extends PrimitiveValueHolder {
-    @Inject(method = "lambda$flushAbility$4", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$Inject()V"))
+    @Inject(method = "lambda$flushAbility$2", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$Inject()V"))
     private void additionalMana(CallbackInfo ci, @Local(name = "stack") ItemStack stack) {
         PrefixComponent prefix = PrefixUtils.getPrefix(stack);
         if (prefix == null) return;

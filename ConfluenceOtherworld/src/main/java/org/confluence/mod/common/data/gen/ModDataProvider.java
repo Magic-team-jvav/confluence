@@ -313,7 +313,10 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> GOLD_VEIN_WITH_DETONATOR = key("gold_vein_with_detonator");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VOID_GRASS = key("void_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> TALL_VOID_GRASS = key("tall_void_grass");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> INVERSE_RHEUM_NOBILE = key("inverse_rheum_nobile");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> TALL_INVERSE_RHEUM_NOBILE = key("tall_inverse_rheum_nobile");
         private static final ResourceKey<ConfiguredFeature<?, ?>> INVERSE_GRASS = key("inverse_grass");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> TWILIGHT_ELLFLOWER = key("twilight_ellflower");
         private static final ResourceKey<ConfiguredFeature<?, ?>> TALL_INVERSE_GRASS = key("tall_inverse_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> SILVER_GRASS = key("silver_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> TALL_SILVER_GRASS = key("tall_silver_grass");
@@ -419,6 +422,8 @@ public class ModDataProvider {
             herb(context, VOID_GRASS, 180, NatureBlocks.VOID_GRASS.get());
             herb(context, TALL_VOID_GRASS, 180, NatureBlocks.TALL_VOID_GRASS.get());
             herb(context, INVERSE_GRASS, 180, NatureBlocks.INVERSE_GRASS.get());
+            herb(context, INVERSE_RHEUM_NOBILE, 180, NatureBlocks.INVERSE_RHEUM_NOBILE.get());
+            herb(context, TWILIGHT_ELLFLOWER, 180, NatureBlocks.TWILIGHT_ELLFLOWER.get());
             herb(context, SILVER_GRASS, 180, NatureBlocks.SILVER_GRASS.get());
             herb(context, TALL_SILVER_GRASS, 180, NatureBlocks.TALL_SILVER_GRASS.get());
             herb(context, VOID_VIOLET, 180, NatureBlocks.VOID_VIOLET.get());
@@ -429,6 +434,7 @@ public class ModDataProvider {
             herb(context, NATURES_GIFT, 4, NatureBlocks.NATURES_GIFT.get());
 
             inverseHerb(context, TALL_INVERSE_GRASS, 180, NatureBlocks.TALL_INVERSE_GRASS.get());
+            inverseHerb(context, TALL_INVERSE_RHEUM_NOBILE, 180, NatureBlocks.TALL_INVERSE_RHEUM_NOBILE.get());
 
             droopingVineTree(context, ModFeatures.Configured.YELLOW_WILLOW_TREE, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LOG.get(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LEAVES.get(), NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), 6);
 
@@ -898,7 +904,10 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> GOLD_VEIN_WITH_DETONATOR = key("gold_vein_with_detonator");
         private static final ResourceKey<PlacedFeature> VOID_GRASS = key("void_grass");
         private static final ResourceKey<PlacedFeature> TALL_VOID_GRASS = key("tall_void_grass");
+        private static final ResourceKey<PlacedFeature> INVERSE_RHEUM_NOBILE = key("inverse_rheum_nobile");
+        private static final ResourceKey<PlacedFeature> TALL_INVERSE_RHEUM_NOBILE = key("tall_inverse_rheum_nobile");
         private static final ResourceKey<PlacedFeature> INVERSE_GRASS = key("inverse_grass");
+        private static final ResourceKey<PlacedFeature> TWILIGHT_ELLFLOWER = key("twilight_ellflower");
         private static final ResourceKey<PlacedFeature> TALL_INVERSE_GRASS = key("tall_inverse_grass");
         private static final ResourceKey<PlacedFeature> SILVER_GRASS = key("silver_grass");
         private static final ResourceKey<PlacedFeature> SEA_SILVER_GRASS = key("sea_silver_grass");
@@ -1023,6 +1032,9 @@ public class ModDataProvider {
             register(context, TALL_VOID_GRASS, configured.getOrThrow(ConfiguredFeatures.TALL_VOID_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
             register(context, INVERSE_GRASS, configured.getOrThrow(ConfiguredFeatures.INVERSE_GRASS), CountPlacement.of(40), inSquare, bottomThroughUnderground, heightRandom0_10, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesTag(ModTags.Blocks.END_PLANT_CAN_SURVIVE), air, 20), ySpreadN1, the_end, biome);
             register(context, TALL_INVERSE_GRASS, configured.getOrThrow(ConfiguredFeatures.TALL_INVERSE_GRASS), CountPlacement.of(12), inSquare, bottomThroughUnderground, heightRandom0_10, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesTag(ModTags.Blocks.END_PLANT_CAN_SURVIVE), air, 20), ySpreadN1, the_end, biome);
+            register(context, INVERSE_RHEUM_NOBILE, configured.getOrThrow(ConfiguredFeatures.INVERSE_RHEUM_NOBILE), CountPlacement.of(8), inSquare, bottomThroughUnderground, heightRandom0_10, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesTag(ModTags.Blocks.END_PLANT_CAN_SURVIVE), air, 20), ySpreadN1, the_end, biome);
+            register(context, TALL_INVERSE_RHEUM_NOBILE, configured.getOrThrow(ConfiguredFeatures.TALL_INVERSE_RHEUM_NOBILE), CountPlacement.of(8), inSquare, bottomThroughUnderground, heightRandom0_10, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesTag(ModTags.Blocks.END_PLANT_CAN_SURVIVE), air, 20), ySpreadN1, the_end, biome);
+            register(context, TWILIGHT_ELLFLOWER, configured.getOrThrow(ConfiguredFeatures.TWILIGHT_ELLFLOWER), CountPlacement.of(8), inSquare, bottomThroughUnderground, heightRandom0_10, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesTag(ModTags.Blocks.END_PLANT_CAN_SURVIVE), air, 20), ySpreadN1, the_end, biome);
             register(context, SILVER_GRASS, configured.getOrThrow(ConfiguredFeatures.SILVER_GRASS), CountPlacement.of(30), inSquare, the_end, biome);
             register(context, SEA_SILVER_GRASS, configured.getOrThrow(ConfiguredFeatures.SILVER_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
             register(context, TALL_SILVER_GRASS, configured.getOrThrow(ConfiguredFeatures.TALL_SILVER_GRASS), CountPlacement.of(10), inSquare, the_end, biome);
@@ -1755,6 +1767,9 @@ public class ModDataProvider {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_RHEUM_NOBILE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_RHEUM_NOBILE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TWILIGHT_ELLFLOWER);
                     })).build()
             );
             context.register(ModBiomes.INVERSE_PLAINS, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)
@@ -1766,6 +1781,9 @@ public class ModDataProvider {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.DRAGONSAL_ORE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_GRASS);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.INVERSE_RHEUM_NOBILE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TALL_INVERSE_RHEUM_NOBILE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TWILIGHT_ELLFLOWER);
                     })).build()
             );
             context.register(ModBiomes.MOONBLIGHT_FOREST, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f).hasPrecipitation(false)

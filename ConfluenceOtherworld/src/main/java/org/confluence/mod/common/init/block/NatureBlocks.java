@@ -294,6 +294,8 @@ public class NatureBlocks {
     public static final DeferredBlock<InversePlantBlock> TWILIGHT_ELLFLOWER = registerWithItem("twilight_ellflower", () -> new InversePlantBlock(INVERSE_GRASS_BLOCK.get()));
     public static final DeferredBlock<InversePlantBlock> INVERSE_GRASS = registerWithItem("inverse_grass", () -> new InversePlantBlock(INVERSE_GRASS_BLOCK.get()));
     public static final DeferredBlock<InverseTallPlantBlock> TALL_INVERSE_GRASS = registerWithItem("tall_inverse_grass", () -> new InverseTallPlantBlock(INVERSE_GRASS_BLOCK.get()));
+    public static final DeferredBlock<InversePlantBlock> INVERSE_RHEUM_NOBILE = registerWithItem("inverse_rheum_nobile", () -> new InversePlantBlock(INVERSE_GRASS_BLOCK.get()));
+    public static final DeferredBlock<InverseTallPlantBlock> TALL_INVERSE_RHEUM_NOBILE = registerWithItem("tall_inverse_rheum_nobile", () -> new InverseTallPlantBlock(INVERSE_GRASS_BLOCK.get()));
     public static final LogBlockSet GAZE_LOG_BLOCKS = LogBlockSet.builder("gaze", true, GAZE).build();
     public static final DeferredBlock<Block> GAZE_TUBER = registerWithItem("gaze_tuber", () -> new CandyBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.COLOR_GREEN)));
 

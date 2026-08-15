@@ -1,0 +1,38 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "confluence:molten_pickaxe"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.miner_for_fire.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:molten_pickaxe"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.miner_for_fire.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

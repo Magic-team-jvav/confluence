@@ -4,12 +4,15 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
+import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.language.*;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
-import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.terra_curio.common.init.TCEffects;
 
@@ -22,6 +25,9 @@ public class ModChineseProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        addMountAndHostileProjectileTranslations();
+        add("tooltip.confluence.rideable_item.desc", "按下快捷键以骑乘。默认 R 键");
+
         add("confluence.trade_lock.drawer.position.title", "坐标");
         add("confluence.trade_lock.drawer.position.and", "且");
         add("confluence.trade_lock.drawer.moon_phase.title", "月相");
@@ -310,19 +316,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("config.jade.plugin_confluence.jade_ponder_component", "思索信息");
         add("config.jade.plugin_confluence.jade_tombstone_info", "墓石信息");
 
-        add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
-        add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");
-        add("creativetab.confluence.materials", "汇流来世 | 材料");
-        add("creativetab.confluence.tools", "汇流来世 | 工具");
-        add("creativetab.confluence.warriors", "汇流来世 | 战士武器");
-        add("creativetab.confluence.rangers", "汇流来世 | 射手武器");
-        add("creativetab.confluence.mages", "汇流来世 | 法师武器");
-        add("creativetab.confluence.summoners", "汇流来世 | 召唤师武器");
-        add("creativetab.confluence.misc", "汇流来世 | 杂项");
-        add("creativetab.confluence.food_and_potions", "汇流来世 | 食物与药水");
-        add("creativetab.confluence.armors", "汇流来世 | 盔甲");
-        add("creativetab.confluence.mechanical", "汇流来世 | 器械");
-        add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
+        addCreativeTabTranslations();
 
         add("chat.type.advancement.achievement", "%s达成了成就%s");
         add("chat.confluence.magic_conch", "你听取海洋声音的位置[%s]已记录");
@@ -362,6 +356,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.goblin_army.ready", "一支哥布林军队正在逼近！");
         add("message.confluence.goblin_army.start", "哥布林军队来了！");
         add("message.confluence.goblin_army.victory", "哥布林军队已被击败！");
+        add("message.confluence.pumpkin_moon.start", "南瓜月正在升起……");
+        add("message.confluence.pumpkin_moon.end", "南瓜月已经结束。");
+        add("message.confluence.frost_moon.start", "霜月正在升起……");
+        add("message.confluence.frost_moon.end", "霜月已经结束。");
         add("message.confluence.scrying_orb.singleplayer", "你在球中只看到自己的倒影。");
         add("message.confluence.scrying_orb.alone", "只有你一个人……");
         add("message.confluence.on_team", "%s队");
@@ -409,11 +407,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("team.confluence.magenta.lower_case", "品红");
         add("team.confluence.pink.lower_case", "粉");
 
-        add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
-        add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
-        add("commands.confluence.reforge.success", "已成功重铸为：%s");
-        add("commands.confluence.reforge.clear.success", "已成功清除词缀");
-        add("commands.confluence.reforge.set.unavailable_group", "该物品不能应用该词缀！");
+        addReforgeTranslations();
         add("commands.confluence.arguments.prefix.invalid", "无效词缀！");
         add("commands.confluence.arguments.game_event.unknown", "未知游戏事件！");
 
@@ -433,6 +427,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("enchantment.confluence.spell_desperation.desc", "剩余魔力比值越低攻击力越高");
         add("enchantment.confluence.mystic_surge", "秘能激涌");
         add("enchantment.confluence.mystic_surge.desc", "剩余魔力比值越高攻击力越高");
+        add("enchantment.confluence.whip_sweep", "横扫之鞭");
+        add("enchantment.confluence.whip_sweep.desc", "概率造成大范围伤害");
+        add("enchantment.confluence.multi_boomerang", "影分身");
+        add("enchantment.confluence.multi_boomerang.desc", "额外发射一个回旋镖");
+        add("enchantment.confluence.summoner_pact", "召唤师契约");
+        add("enchantment.confluence.summoner_pact.desc", "提高仆从容量");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
@@ -443,6 +443,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.price.silver", "银 ");
         add("tooltip.price.copper", "铜 ");
         add("tooltip.price.sell", "卖出：");
+        add("tooltip.price.buy", "买入：");
 
         add("tooltip.jei.state_properties", "需要的方块属性：");
         add("tooltip.jei.count_range", "数量：%s-%s");
@@ -675,6 +676,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("key.confluence.mana", "快捷喝药（魔力）");
         add("key.confluence.extra_inventory", "快捷打开额外栏");
         add("key.confluence.hook", "使用钩爪");
+        add("key.confluence.mount", "切换坐骑");
         add("key.confluence.specular_detail", "视觉药水细节观测");
         add("key.confluence.shoot", "射击");
         add("key.confluence.aim", "瞄准");
@@ -765,8 +767,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin.0", "潜行右键合并为上级钱币");
         add("tooltip.item.confluence.hardmode_convertor.0", "右击地面将当前世界立刻开始转变为困难模式");
         add("tooltip.item.confluence.life_crystal.0", "最大生命永久增加4");
+        add("tooltip.item.confluence.recall_life_crystal.0", "最大生命永久减少4");
         add("tooltip.item.confluence.life_fruit.0", "最大生命永久增加1");
         add("tooltip.item.confluence.mana_crystal.0", "最大魔力永久增加20");
+        add("tooltip.item.confluence.recall_mana_crystal.0", "最大魔力永久减少20");
         add("tooltip.item.confluence.arcane_crystal.0", "永久提高魔力再生");
         add("tooltip.item.confluence.vital_crystal.0", "永久加速生命再生");
         add("tooltip.item.confluence.aegis_apple.0", "永久提高防御力");
@@ -799,9 +803,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "点燃");
         add("tooltip.item.confluence.can_penetrate", "穿透");
 
-        add("tooltip.terra_guns.damage", "远程伤害：%s");
-        add("tooltip.terra_guns.critical", "暴击率：%s%%");
-        add("tooltip.terra_guns.knockback", "击退力：%s");
+        add("tooltip.confluence.ranged_damage", "远程伤害：%s");
+        add("tooltip.confluence.critical_chance", "暴击率：%s%%");
         add("tooltip.confluence.attack_damage", "伤害：%s");
         add("tooltip.confluence.mana_cost", "魔力消耗：%s");
         add("tooltip.confluence.velocity", "射弹速度：%s");
@@ -1139,85 +1142,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");
         add("entity.confluence.undead_miner", "不死矿工");
+        add("entity.confluence.baby_slime", "史莱姆宝宝");
+        add("entity.confluence.mother_slime", "史莱姆之母");
 
         new DialogsLanguageSubProvider(this::add, false);
 
         new PatchouliLanguageSubProvider(this::add, false);
 
-        //音效
-        add("confluence.subtitle.transmission", "传送魔法：开启");
-        add("confluence.subtitle.lightsaber_open", "光剑：开启");
-        add("confluence.subtitle.regular_staff_shoot", "魔法：发射");
-        add("confluence.subtitle.regular_staff_shoot_2", "魔法：迸发");
-        add("confluence.subtitle.regular_staff_shoot_3", "魔法：喷射");
-        add("confluence.subtitle.frozen_broken", "霜冻魔法：破裂");
-        add("confluence.subtitle.frozen_arrow", "霜冻魔法：发射");
-        add("confluence.subtitle.cooldown_recovery", "冷却：准备就绪");
-        add("confluence.subtitle.bow_cooldown_recovery", "弓冷却：蓄力就绪");
-        add("confluence.subtitle.decoupling", "鱼钩：脱钩");
-        add("confluence.subtitle.achievements", "成就：达成");
-        add("confluence.subtitle.shimmer_detachment", "生物：浸出微光");
-        add("confluence.subtitle.shimmer_evolution", "微光：嬗变");
-        add("confluence.subtitle.shimmer_immersion", "生物：浸入微光");
-        add("confluence.subtitle.transmutation_use", "神秘力量：汲取");
-        add("confluence.subtitle.hook_attach", "钩爪：攀附");
-        add("confluence.subtitle.hook_shoot", "钩爪：发射");
-        add("confluence.subtitle.shimmer_item_interactions", "物品：浸入微光");
-        add("confluence.subtitle.star", "坠落之星：闪耀");
-        add("confluence.subtitle.star_lands", "坠落之星：落地");
-        add("confluence.subtitle.terra_operation", "行动：操作");
-        add("confluence.subtitle.life_crystal_use", "生命水晶：汲取");
-        add("confluence.subtitle.mana_star_use", "魔力水晶：汲取");
-        add("confluence.subtitle.coins", "钱币堆：叮当作响");
-        add("confluence.subtitle.coins_small", "少量钱币:拾起");
-        add("confluence.subtitle.coins_medium", "中量钱币:拾起");
-        add("confluence.subtitle.coins_large", "大量钱币:拾起");
-        add("confluence.subtitle.lucyaxe_talk", "露西斧:娇嗔");
-        add("confluence.subtitle.repeater_item_aerial_shooting", "连弩:装填箭矢");
-        add("confluence.subtitle.crystal_vile_shard_shoot", "魔晶碎块:延伸");
-
-        add("terra_curio.subtitle.transmission", "传送魔法：开启");
-        add("terra_curio.subtitle.fart_sound", "玩家：放屁声");
-        add("terra_curio.subtitle.double_jump", "玩家：二段跳");
-        add("terra_curio.subtitle.shoes_walk", "鞋：跑动");
-        add("terra_curio.subtitle.rocket_boots_boost", "火箭靴：助推");
-        add("terra_curio.subtitle.rocket_boots_stop", "火箭靴：关闭");
-
-        add("terra_entity.subtitle.routine_hurt", "怪物：受伤");
-        add("terra_entity.subtitle.routine_death", "怪物：死亡");
-        add("terra_entity.subtitle.roar", "BOSS：吼叫");
-        add("terra_entity.subtitle.hurried_roaring", "BOSS：急促吼叫");
-        add("terra_entity.subtitle.blood_crawler_death", "血爬虫：死亡");
-        add("terra_entity.subtitle.blood_crawler_free", "血爬虫：血液流动");
-        add("terra_entity.subtitle.blood_crawler_hurt", "血爬虫：受伤");
-        add("terra_entity.subtitle.bloody_spore_death", "血腥芽孢：死亡");
-        add("terra_entity.subtitle.bloody_spore_fuse", "血腥芽孢：孕育");
-        add("terra_entity.subtitle.bloody_spore_hit", "血腥芽孢：受伤");
-        add("terra_entity.subtitle.drippler_death", "滴滴怪：死亡");
-        add("terra_entity.subtitle.drippler_hurt", "滴滴怪：受伤");
-        add("terra_entity.subtitle.metal_death", "机械怪物：死亡");
-        add("terra_entity.subtitle.metal_hurt", "机械怪物：受伤");
-        add("terra_entity.subtitle.visual_neuron_death", "视神经元：死亡");
-        add("terra_entity.subtitle.visual_neuron_hurt", "视神经元：受伤");
-        add("terra_entity.subtitle.dig_sound", "蠕虫生物：挖掘");
-        add("terra_entity.subtitle.giant_shelly_death", "巨型卷壳怪：死亡");
-        add("terra_entity.subtitle.giant_shelly_free_0", "巨型卷壳怪：滚动");
-        add("terra_entity.subtitle.giant_shelly_free_1", "巨型卷壳怪：爬行");
-        add("terra_entity.subtitle.giant_shelly_hurt", "巨型卷壳怪：受伤");
-        add("terra_entity.subtitle.tr_zombie_death", "僵尸：死亡");
-        add("terra_entity.subtitle.tr_skeleton_hurt", "骷髅：受伤");
-        add("terra_entity.subtitle.waving", "玩家：挥动");
-        add("terra_entity.subtitle.use_mounts", "玩家：召唤坐骑");
-        add("terra_entity.subtitle.decayeder_ambient", "腐骴：摩擦身体");
-        add("terra_entity.subtitle.decayeder_death", "腐骴：死亡");
-        add("terra_entity.subtitle.decayeder_hurt", "腐骴：受伤");
-        add("terra_entity.subtitle.decayeder_step", "腐骴：脚步声");
-        add("terra_entity.subtitle.whip_attack", "鞭子：抽打");
-        add("terra_entity.subtitle.routine_summon", "召唤物：召唤");
-        add("terra_entity.subtitle.summon_hornet", "黄蜂：召唤");
-        add("terra_entity.subtitle.summon_eye", "飞行召唤物：召唤");
-        add("terra_entity.subtitle.summon_imp", "小鬼：召唤");
-        //标签
+        addSoundTranslations();
         add("tag.fluid.confluence.fishing_able", "可钓鱼");
         add("tag.fluid.confluence.not_lava", "非熔岩");
         add("tag.item.confluence.ammo", "弹药");
@@ -1490,70 +1422,70 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.minecraft.zombie.slime", "史莱姆僵尸");
         add("entity.minecraft.zombie.raincoat", "雨衣僵尸");
         add("entity.minecraft.zombie.frozen", "冰雪僵尸");
-        add("entity.terra_entity.duck.0", "野鸭");
-        add("entity.terra_entity.duck.1", "鸭");
-        add("entity.terra_entity.demon_eye.dilated", "涣散恶魔眼");
-        add("entity.terra_entity.demon_eye.dilated_small", "小涣散恶魔眼");
-        add("entity.terra_entity.demon_eye.sleepy", "瞌睡恶魔眼");
-        add("entity.terra_entity.demon_eye.sleepy_big", "大瞌睡恶魔眼");
-        add("entity.terra_entity.demon_eye.purple", "紫色恶魔眼");
-        add("entity.terra_entity.demon_eye.purple_big", "大紫色恶魔眼");
-        add("entity.terra_entity.demon_eye.normal", "恶魔眼");
-        add("entity.terra_entity.demon_eye.normal_big", "大恶魔眼");
-        add("entity.terra_entity.demon_eye.green", "绿恶魔眼");
-        add("entity.terra_entity.demon_eye.green_small", "小绿恶魔眼");
-        add("entity.terra_entity.demon_eye.cataract", "白内障恶魔眼");
-        add("entity.terra_entity.demon_eye.cataract_big", "大白内障恶魔眼");
-        add("entity.terra_entity.worm.0", "附魔夜行者");
-        add("entity.terra_entity.worm.1", "金蠕虫");
-        add("entity.terra_entity.worm.2", "蠕虫");
-        add("entity.terra_entity.grasshopper.0", "金蚱蜢");
-        add("entity.terra_entity.grasshopper.1", "蚱蜢");
-        add("entity.terra_entity.ladybug.0", "金瓢虫");
-        add("entity.terra_entity.ladybug.1", "瓢虫");
-        add("entity.terra_entity.fealing.0", "飞灵");
-        add("entity.terra_entity.fairy.0", "粉仙灵");
-        add("entity.terra_entity.fairy.1", "绿仙灵");
-        add("entity.terra_entity.fairy.2", "栏仙灵");
-        add("entity.terra_entity.scorpion.0", "黑蝎子");
-        add("entity.terra_entity.scorpion.1", "蝎子");
-        add("entity.terra_entity.squirrel.0", "灰松鼠");
-        add("entity.terra_entity.squirrel.1", "红松鼠");
-        add("entity.terra_entity.jewel_squirrel.0", "琥珀松鼠");
-        add("entity.terra_entity.jewel_squirrel.1", "金松鼠");
-        add("entity.terra_entity.jewel_squirrel.2", "紫晶松鼠");
-        add("entity.terra_entity.jewel_squirrel.3", "钻石松鼠");
-        add("entity.terra_entity.jewel_squirrel.4", "翡翠松鼠");
-        add("entity.terra_entity.jewel_squirrel.5", "红玉松鼠");
-        add("entity.terra_entity.jewel_squirrel.6", "蓝玉松鼠");
-        add("entity.terra_entity.jewel_squirrel.7", "黄玉松鼠");
-        add("entity.terra_entity.jewel_bunny.0", "琥珀兔兔");
-        add("entity.terra_entity.jewel_bunny.1", "紫晶兔兔");
-        add("entity.terra_entity.jewel_bunny.2", "钻石兔兔");
-        add("entity.terra_entity.jewel_bunny.3", "翡翠兔兔");
-        add("entity.terra_entity.jewel_bunny.4", "金兔兔");
-        add("entity.terra_entity.jewel_bunny.5", "红玉兔兔");
-        add("entity.terra_entity.jewel_bunny.6", "蓝玉兔兔");
-        add("entity.terra_entity.jewel_bunny.7", "黄玉兔兔");
-        add("entity.terra_entity.butterfly.0", "金蝴蝶");
-        add("entity.terra_entity.butterfly.1", "珠袖蝶");
-        add("entity.terra_entity.butterfly.2", "帝王蝶");
-        add("entity.terra_entity.butterfly.3", "紫蛱蝶");
-        add("entity.terra_entity.butterfly.4", "红蛱蝶");
-        add("entity.terra_entity.butterfly.5", "黄粉蝶");
-        add("entity.terra_entity.butterfly.6", "帛斑蝶");
-        add("entity.terra_entity.butterfly.7", "翠凤蝶");
-        add("entity.terra_entity.butterfly.8", "带凤蝶");
-        add("entity.terra_entity.dragonfly.0", "黑蜻蜓");
-        add("entity.terra_entity.dragonfly.1", "蓝蜻蜓");
-        add("entity.terra_entity.dragonfly.2", "金蜻蜓");
-        add("entity.terra_entity.dragonfly.3", "绿蜻蜓");
-        add("entity.terra_entity.dragonfly.4", "橙蜻蜓");
-        add("entity.terra_entity.dragonfly.5", "红蜻蜓");
-        add("entity.terra_entity.dragonfly.6", "黄蜻蜓");
+        add("entity.confluence.duck.0", "野鸭");
+        add("entity.confluence.duck.1", "鸭");
+        add("entity.confluence.demon_eye.dilated", "涣散恶魔眼");
+        add("entity.confluence.demon_eye.dilated_small", "小涣散恶魔眼");
+        add("entity.confluence.demon_eye.sleepy", "瞌睡恶魔眼");
+        add("entity.confluence.demon_eye.sleepy_big", "大瞌睡恶魔眼");
+        add("entity.confluence.demon_eye.purple", "紫色恶魔眼");
+        add("entity.confluence.demon_eye.purple_big", "大紫色恶魔眼");
+        add("entity.confluence.demon_eye.normal", "恶魔眼");
+        add("entity.confluence.demon_eye.normal_big", "大恶魔眼");
+        add("entity.confluence.demon_eye.green", "绿恶魔眼");
+        add("entity.confluence.demon_eye.green_small", "小绿恶魔眼");
+        add("entity.confluence.demon_eye.cataract", "白内障恶魔眼");
+        add("entity.confluence.demon_eye.cataract_big", "大白内障恶魔眼");
+        add("entity.confluence.worm.0", "附魔夜行者");
+        add("entity.confluence.worm.1", "金蠕虫");
+        add("entity.confluence.worm.2", "蠕虫");
+        add("entity.confluence.grasshopper.0", "金蚱蜢");
+        add("entity.confluence.grasshopper.1", "蚱蜢");
+        add("entity.confluence.ladybug.0", "金瓢虫");
+        add("entity.confluence.ladybug.1", "瓢虫");
+        add("entity.confluence.fealing.0", "飞灵");
+        add("entity.confluence.fairy.0", "粉仙灵");
+        add("entity.confluence.fairy.1", "绿仙灵");
+        add("entity.confluence.fairy.2", "栏仙灵");
+        add("entity.confluence.scorpion.0", "黑蝎子");
+        add("entity.confluence.scorpion.1", "蝎子");
+        add("entity.confluence.squirrel.0", "灰松鼠");
+        add("entity.confluence.squirrel.1", "红松鼠");
+        add("entity.confluence.jewel_squirrel.0", "琥珀松鼠");
+        add("entity.confluence.jewel_squirrel.1", "金松鼠");
+        add("entity.confluence.jewel_squirrel.2", "紫晶松鼠");
+        add("entity.confluence.jewel_squirrel.3", "钻石松鼠");
+        add("entity.confluence.jewel_squirrel.4", "翡翠松鼠");
+        add("entity.confluence.jewel_squirrel.5", "红玉松鼠");
+        add("entity.confluence.jewel_squirrel.6", "蓝玉松鼠");
+        add("entity.confluence.jewel_squirrel.7", "黄玉松鼠");
+        add("entity.confluence.jewel_bunny.0", "琥珀兔兔");
+        add("entity.confluence.jewel_bunny.1", "紫晶兔兔");
+        add("entity.confluence.jewel_bunny.2", "钻石兔兔");
+        add("entity.confluence.jewel_bunny.3", "翡翠兔兔");
+        add("entity.confluence.jewel_bunny.4", "金兔兔");
+        add("entity.confluence.jewel_bunny.5", "红玉兔兔");
+        add("entity.confluence.jewel_bunny.6", "蓝玉兔兔");
+        add("entity.confluence.jewel_bunny.7", "黄玉兔兔");
+        add("entity.confluence.butterfly.0", "金蝴蝶");
+        add("entity.confluence.butterfly.1", "珠袖蝶");
+        add("entity.confluence.butterfly.2", "帝王蝶");
+        add("entity.confluence.butterfly.3", "紫蛱蝶");
+        add("entity.confluence.butterfly.4", "红蛱蝶");
+        add("entity.confluence.butterfly.5", "黄粉蝶");
+        add("entity.confluence.butterfly.6", "帛斑蝶");
+        add("entity.confluence.butterfly.7", "翠凤蝶");
+        add("entity.confluence.butterfly.8", "带凤蝶");
+        add("entity.confluence.dragonfly.0", "黑蜻蜓");
+        add("entity.confluence.dragonfly.1", "蓝蜻蜓");
+        add("entity.confluence.dragonfly.2", "金蜻蜓");
+        add("entity.confluence.dragonfly.3", "绿蜻蜓");
+        add("entity.confluence.dragonfly.4", "橙蜻蜓");
+        add("entity.confluence.dragonfly.5", "红蜻蜓");
+        add("entity.confluence.dragonfly.6", "黄蜻蜓");
         add("entity.confluence.rainbow_sheep", "彩虹羊");
 
-        // Special world seeds
+        // 特殊世界种子
         add("title.confluence.secret_seeds_selection.empty", "信息");
         add("description.confluence.secret_seeds_selection.empty", "请选择上述选项来构建你的世界。");
         add("title.confluence.secret_seeds_selection.normal", "常规世界");
@@ -1630,7 +1562,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BODY_PART.get(), "身体部件");
         add(ModEntities.BOMB_ENTITY.get(), "炸弹");
         add(ModEntities.BOMB_FISH_ENTITY.get(), "炸弹鱼");
-//        add(ModEntities.BOOMERANG_PROJECTILE.get(), "回旋镖");
+        add(ModEntities.BOOMERANG_PROJECTILE.get(), "回旋镖");
         add(ModEntities.BOUNCY_BOMB_ENTITY.get(), "弹力炸弹");
         add(ModEntities.BOUNCY_DYNAMITE.get(), "弹力炸药");
         add(ModEntities.BOUNCY_GRENADE.get(), "弹力手雷");
@@ -1719,6 +1651,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.MAGIC_DAGGER.get(), "魔法飞刀射弹");
         add(ModEntities.CRYSTAL_STORM.get(), "水晶风暴射弹");
         add(ModEntities.DEMON_SCYTHE.get(), "恶魔镰刀射弹");
+        add(ModEntities.HOSTILE_DEMON_SCYTHE.get(), "敌对恶魔镰刀射弹");
+        add(ModEntities.HORNET_STINGER.get(), "黄蜂毒刺射弹");
         add(ModEntities.SKULL.get(), "骷髅头射弹");
         add(ModEntities.BLOOD_CLOUD.get(), "血云射弹");
         add(ModEntities.BLOOD_RAIN.get(), "血雨射弹");
@@ -1745,7 +1679,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.CRYSTAL_CHARGE_2.get(), "爆炸水晶2");
 
 
-        //region blocks
+        // region 方块
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");
         add(OreBlocks.CORRUPTION_COAL_ORE.get(), "腐化煤矿石");
         add(OreBlocks.FLESHIFICATION_COAL_ORE.get(), "血化煤矿石");
@@ -2432,6 +2366,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
         add(LightPetItems.MAGIC_LANTERN.get(), "魔法灯笼");
+        addStorageCompanionTranslations();
 
         add(DecorativeBlocks.RUBY_BLOCK.get(), "红玉块");
         add(DecorativeBlocks.AMBER_BLOCK.get(), "琥珀块");
@@ -2918,9 +2853,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArrowItems.FLY_FISH_ARROW.get(), "飞鱼箭");
 
 
-        //endregion blocks
+        // endregion 方块
 
-        //region items
+        // region 物品
         add(MaterialItems.RAW_TIN.get(), "粗锡");
         add(MaterialItems.TIN_INGOT.get(), "锡锭");
         add(MaterialItems.TIN_NUGGET.get(), "锡粒");
@@ -3157,9 +3092,7 @@ public class ModChineseProvider extends LanguageProvider {
         //快攻
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
 
-        add(FlailItems.MACE.get(), "链球");
-        add(FlailItems.BALL_O_HURT.get(), "致伤球");
-
+        addFlailTranslations();
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");
         add(AxeItems.LEAD_AXE.get(), "铅斧");
@@ -3279,7 +3212,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ChainsawItems.ADAMANTITE_CHAINSAW.get(), "精金链锯");
         add(ChainsawItems.TITANIUM_CHAINSAW.get(), "钛金链锯");
 
-        // Hammers
+        // 锤类工具
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
         add(HammerItems.EBONWOOD_HAMMER.get(), "乌木锤");
         add(HammerItems.SHADEWOOD_HAMMER.get(), "暗影木锤");
@@ -3444,7 +3377,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.LAVA_BOMB.get(), "熔岩炸弹");
         add(ConsumableItems.HONEY_BOMB.get(), "蜂蜜炸弹");
         add(ConsumableItems.MANA_CRYSTAL.get(), "魔力水晶");
+        add(ConsumableItems.RECALL_MANA_CRYSTAL.get(), "回溯魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
+        add(ConsumableItems.RECALL_LIFE_CRYSTAL.get(), "回溯生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
@@ -3468,6 +3403,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG.get(), "血肉山宝藏袋");
         add(TreasureBagItems.THE_TWINS_TREASURE_BAG.get(), "双子魔眼宝藏袋");
         add(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(), "机械骷髅王宝藏袋");
+        add(TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get(), "毁灭者宝藏袋");
+        add(TreasureBagItems.PLANTERA_TREASURE_BAG.get(), "世纪之花宝藏袋");
+        add(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get(), "拜月教邪教徒宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");
@@ -3498,6 +3436,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
         add(ModItems.MYSTERIOUS_NOTE.get(), "神秘纸条");
         add(ModItems.MYSTERIOUS_SLATE.get(), "神秘石板");
+        add(ModItems.TEST_SOUL_GUI.get(), "魂师GUI测试");
         add(ModItems.FERTILE_SINGULARITY.get(), "丰饶奇点");
         add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
         add(ModItems.PULSAR.get(), "脉冲星");
@@ -4727,7 +4666,6 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.SUMMONING.get(), "召唤", "仆从数量上限增加1");
         addEffect(ModEffects.AROMATIC_SATIATION.get(), "芳息饱腹", "持续回复饥饿与饱和");
 
-
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");
         addEffect(TCEffects.HONEY.get(), "蜂蜜", "生命再生速度提高");
         addEffect(TCEffects.CONFUSED.get(), "困惑", "移动方向逆转");
@@ -4735,7 +4673,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(TCEffects.PALADINS_SHIELD.get(), "圣骑士护盾", "所受伤害的25%将被转移到另一名玩家身上");
 
         addEffect(ModEffects.DEMONIC_THOUGHTS.get(), "邪念", "再次被赋予邪念时会生成噬魂怪");
-        addEffect(ModEffects.SUMMON_FOCUS.get(), "狩猎", "召唤物额外造成伤害");
+        addWhipTagEffectTranslations();
         addEffect(ModEffects.HELLFIRE.get(), "狱炎", "持续损失生命值");
         addEffect(ModEffects.FROST_BURN.get(), "霜冻", "缓慢损失生命值，无法再生生命");
         addEffect(ModEffects.CRIMSON_STORM.get(), "猩红风暴", "你已陷入风暴，无可逃脱。");
@@ -4743,6 +4681,13 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.THE_TONGUE.get(), "狂卷之舌", "你被吸入嘴中");
         addEffect(ModEffects.SCARED.get(), "惊慌", "如惊弓之鸟，四处逃串");
         add("item.confluence.spawn_eggs", "%s刷怪蛋");
+        add(SpawnEggItems.RETINAZER_SPAWN_EGG.get(), "激光眼刷怪蛋");
+        add(SpawnEggItems.SPAZMATISM_SPAWN_EGG.get(), "魔焰眼刷怪蛋");
+        add(SpawnEggItems.THE_DESTROYER_SPAWN_EGG.get(), "毁灭者刷怪蛋");
+        add(SpawnEggItems.THE_TWINS_SPAWN_EGG.get(), "双子魔眼刷怪蛋");
+        add(SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(), "机械骷髅王刷怪蛋");
+        add(SpawnEggItems.PLANTERA_SPAWN_EGG.get(), "世纪之花刷怪蛋");
+        add(SpawnEggItems.PRIME_ENDER_DRAGON_SPAWN_EGG.get(), "本源末影龙刷怪蛋");
 
         // 车万女仆
         add("task.confluence.use_life_crystal", "生命水晶");
@@ -4756,6 +4701,482 @@ public class ModChineseProvider extends LanguageProvider {
         add(BaseTerraRepeaterItem.RELOAD_SPEED_TEXT, "装填速度");
         add(BaseTerraRepeaterItem.FIRING_INTERVAL_TEXT, "射击间隔");
         add(BaseTerraRepeaterItem.ARROW_CAPACITY_TEXT, "箭矢容量");
+
+        add(BossEntities.LUNATIC_CULTIST_CLONE.get(), "拜月教邪教徒幻影");
+        add(BossEntities.PLANTERA_HOOK.get(), "世纪之花钩");
+        add(MonsterEntities.GREEN_SLIME.get(), "绿色史莱姆");
+        add(MonsterEntities.BLUE_SLIME.get(), "蓝色史莱姆");
+        add(MonsterEntities.JUNGLE_SLIME.get(), "丛林史莱姆");
+        add(MonsterEntities.PURPLE_SLIME.get(), "紫色史莱姆");
+        add(MonsterEntities.GREEN_DUMPLING_SLIME.get(), "青团史莱姆");
+        add(MonsterEntities.SWAMP_SLIME.get(), "沼泽史莱姆");
+        add(MonsterEntities.DESERT_SLIME.get(), "沙漠史莱姆");
+        add(MonsterEntities.EVIL_SLIME.get(), "邪恶史莱姆");
+        add(MonsterEntities.RED_SLIME.get(), "红色史莱姆");
+        add(MonsterEntities.YELLOW_SLIME.get(), "黄色史莱姆");
+        add(MonsterEntities.DUNGEON_SLIME.get(), "地牢史莱姆");
+        add(MonsterEntities.PINK_SLIME.get(), "粉色史莱姆");
+        add(MonsterEntities.ICE_SLIME.get(), "冰雪史莱姆");
+        add(MonsterEntities.LAVA_SLIME.get(), "熔岩史莱姆");
+        add(MonsterEntities.TROPIC_SLIME.get(), "热带史莱姆");
+        add(MonsterEntities.CORRUPT_SLIME.get(), "腐化史莱姆");
+        add(MonsterEntities.SLIMELING.get(), "小史莱姆");
+        add(MonsterEntities.CRIMSLIME.get(), "猩红史莱姆");
+        add(MonsterEntities.LUMINOUS_SLIME.get(), "夜明史莱姆");
+        add(MonsterEntities.BLACK_SLIME.get(), "黑色史莱姆");
+        add(MonsterEntities.HONEY_SLIME.get(), "蜂蜜史莱姆");
+        add(MonsterEntities.GOLDEN_SLIME.get(), "金史莱姆");
+        add(MonsterEntities.FLESH_SLIME.get(), "血肉史莱姆");
+        add(MonsterEntities.SPIKED_SLIME.get(), "尖刺史莱姆");
+        add(MonsterEntities.SPIKED_JUNGLE_SLIME.get(), "尖刺丛林史莱姆");
+        add(MonsterEntities.SPIKED_ICE_SLIME.get(), "尖刺冰雪史莱姆");
+        add(MonsterEntities.DEMON_EYE.get(), "恶魔眼");
+        add(MonsterEntities.HARPY.get(), "鸟妖");
+        add(MonsterEntities.PIXIE.get(), "妖精");
+        add(MonsterEntities.EATER_OF_SOULS.get(), "噬魂怪");
+        add(MonsterEntities.CRIMERA.get(), "猩红喀迈拉");
+        add(MonsterEntities.CURSED_SKULL.get(), "诅咒骷髅头");
+        add(MonsterEntities.ZOMBIE.get(), "僵尸");
+        add(MonsterEntities.SPORE_SKELETON.get(), "孢子骷髅");
+        add(MonsterEntities.BASE_BONES.get(), "地牢骷髅");
+        add(MonsterEntities.ANGER_BONES.get(), "愤怒骷髅");
+        add(MonsterEntities.SHORT_BONES.get(), "矮骷髅");
+        add(MonsterEntities.BIG_BONES.get(), "大骷髅");
+        add(MonsterEntities.BIG_ANGER_BONES.get(), "大愤怒骷髅");
+        add(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), "大块头愤怒骷髅");
+        add(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), "大头盔愤怒骷髅");
+        add(MonsterEntities.UNDEAD_VIKING.get(), "亡灵维京海盗");
+        add(MonsterEntities.SPORE_BAT.get(), "孢子蝙蝠");
+        add(MonsterEntities.DRIPPLER.get(), "滴滴怪");
+        add(MonsterEntities.FLYING_FISH.get(), "飞鱼");
+        add(MonsterEntities.WANDERING_EYE_FISH.get(), "游荡眼球怪鱼");
+        add(MonsterEntities.VISUAL_NEURON.get(), "视神经元");
+        add(MonsterEntities.DEMON.get(), "恶魔");
+        add(MonsterEntities.VOODOO_DEMON.get(), "巫毒恶魔");
+        add(MonsterEntities.HORNET.get(), "黄蜂");
+        add(MonsterEntities.LITTLE_HORNET.get(), "小黄蜂");
+        add(MonsterEntities.FIRE_IMP.get(), "火焰小鬼");
+        add(MonsterEntities.DECAYEDER.get(), "腐骴");
+        add(MonsterEntities.GHOST.get(), "鬼魂");
+        add(MonsterEntities.DERPLING.get(), "跳跳兽");
+        add(MonsterEntities.HERPLING.get(), "蹦蹦兽");
+        add(MonsterEntities.METEOR_HEAD.get(), "流星头");
+        add(MonsterEntities.GRANITE_ELEMENTAL.get(), "花岗精");
+        add(MonsterEntities.ANTLION_SWARMER.get(), "蚁狮蜂");
+        add(MonsterEntities.GIANT_ANTLION_SWARMER.get(), "巨型蚁狮蜂");
+        add(MonsterEntities.THE_HUNGRY.get(), "饿鬼");
+        add(MonsterEntities.HILL_HUNGRY.get(), "饿鬼");
+        add(MonsterEntities.BLOOD_ZOMBIE.get(), "血腥僵尸");
+        add(MonsterEntities.SNOW_FLINX.get(), "小雪怪");
+        add(MonsterEntities.FACE_MONSTER.get(), "脸怪");
+        add(MonsterEntities.BLOOD_TUMORS.get(), "血瘤");
+        add(MonsterEntities.POSSESS_ARMOR.get(), "装甲幻影魔");
+        add(MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.get(), "装甲幻影魔·虚空载体");
+        add(MonsterEntities.MUMMY.get(), "木乃伊");
+        add(MonsterEntities.DARK_MUMMY.get(), "暗黑木乃伊");
+        add(MonsterEntities.BLOOD_MUMMY.get(), "血木乃伊");
+        add(MonsterEntities.LIGHT_MUMMY.get(), "光明木乃伊");
+        add(MonsterEntities.DARK_LAMIA.get(), "黑暗拉弥亚");
+        add(MonsterEntities.LIGHT_LAMIA.get(), "光明拉弥亚");
+        add(MonsterEntities.GHOUL.get(), "食尸鬼");
+        add(MonsterEntities.TAINTED_GHOUL.get(), "红染食尸鬼");
+        add(MonsterEntities.VILE_GHOUL.get(), "腐恶食尸鬼");
+        add(MonsterEntities.DREAMER_GHOUL.get(), "神梦食尸鬼");
+        add(MonsterEntities.GOBLIN_ARCHER.get(), "哥布林弓箭手");
+        add(MonsterEntities.GOBLIN_PEON.get(), "哥布林苦力");
+        add(MonsterEntities.GOBLIN_WARRIOR.get(), "哥布林战士");
+        add(MonsterEntities.GOBLIN_THIEF.get(), "哥布林盗贼");
+        add(MonsterEntities.GOBLIN_SCOUT.get(), "哥布林侦察兵");
+        add(MonsterEntities.ANGER_GOBLIN.get(), "愤怒哥布林");
+        add(MonsterEntities.BLOODY_SPORE.get(), "血腥芽孢");
+        add(MonsterEntities.BLOOD_CRAWLER.get(), "血爬虫");
+        add(MonsterEntities.SPORE_ZOMBIE.get(), "孢子僵尸");
+        add(MonsterEntities.HAT_SPORE_ZOMBIE.get(), "帽子蘑菇僵尸");
+        add(MonsterEntities.PIRANHA.get(), "食人鱼");
+        add(MonsterEntities.BLUE_JELLYFISH.get(), "蓝水母");
+        add(MonsterEntities.PINK_JELLYFISH.get(), "粉水母");
+        add(MonsterEntities.SHARK.get(), "鲨鱼");
+        add(MonsterEntities.CAVE_BAT.get(), "洞穴蝙蝠");
+        add(MonsterEntities.JUNGLE_BAT.get(), "丛林蝙蝠");
+        add(MonsterEntities.ICE_BAT.get(), "冰雪蝙蝠");
+        add(MonsterEntities.GIANT_BAT.get(), "巨型蝙蝠");
+        add(MonsterEntities.HELL_BAT.get(), "地狱蝙蝠");
+        add(MonsterEntities.WORM_SEGMENT.get(), "蠕虫体节");
+        add(MonsterEntities.WYVERN.get(), "飞龙");
+        add(MonsterEntities.DEVOURER.get(), "吞噬怪");
+        add(MonsterEntities.TOMB_CRAWLER.get(), "墓穴爬虫");
+        add(MonsterEntities.GIANT_WORM.get(), "巨型蠕虫");
+        add(MonsterEntities.LEECH.get(), "血蛭");
+        add(MonsterEntities.BONE_SERPENT.get(), "骨蛇");
+        add(MonsterEntities.WITHER_BONE_SERPENT.get(), "凋零骨蛇");
+        add(MonsterEntities.DARK_CASTER.get(), "暗黑法师");
+        add(MonsterEntities.GOBLIN_SORCERER.get(), "哥布林巫士");
+        add(MonsterEntities.GIANT_SHELLY.get(), "巨型卷壳怪");
+        add(MonsterEntities.CRAWDAD.get(), "龙虾");
+        add(MonsterEntities.NYMPH.get(), "宁芙");
+        add(MonsterEntities.SNATCHER.get(), "抓人草");
+        add(MonsterEntities.MAN_EATER.get(), "食人怪");
+        add(MonsterEntities.ARAPAIMA.get(), "巨骨舌鱼");
+        add(MonsterEntities.GREEN_JELLYFISH.get(), "绿水母");
+        add(MonsterEntities.WOODEN_MIMIC.get(), "木宝箱怪");
+        add(MonsterEntities.GOLDEN_MIMIC.get(), "金宝箱怪");
+        add(MonsterEntities.SHADOW_MIMIC.get(), "暗影宝箱怪");
+        add(MonsterEntities.ICE_MIMIC.get(), "冰雪宝箱怪");
+        add(MonsterEntities.CRIMSON_MIMIC.get(), "猩红宝箱怪");
+        add(MonsterEntities.CORRUPT_MIMIC.get(), "腐化宝箱怪");
+        add(MonsterEntities.HALLOWED_MIMIC.get(), "神圣宝箱怪");
+        add(MonsterEntities.JUNGLE_MIMIC.get(), "丛林宝箱怪");
+        add(MonsterEntities.SAND_POACHER.get(), "沙贼");
+        add(MonsterEntities.WRAITH.get(), "幻灵");
+        add(CritterEntities.SQUIRREL.get(), "松鼠");
+        add(CritterEntities.RED_SQUIRREL.get(), "红松鼠");
+        add(CritterEntities.JEWEL_SQUIRREL.get(), "宝石松鼠");
+        add(CritterEntities.BUNNY.get(), "兔兔");
+        add(CritterEntities.JEWEL_BUNNY.get(), "宝石兔");
+        add(CritterEntities.EXPLOSIVE_BUNNY.get(), "爆炸兔");
+        add(CritterEntities.DUCK.get(), "鸭子");
+        add(CritterEntities.BIRD.get(), "鸟");
+        add(CritterEntities.BLUE_JAY.get(), "冠蓝鸦");
+        add(CritterEntities.CARDINAL.get(), "红雀");
+        add(CritterEntities.CRAB.get(), "螃蟹");
+        add(CritterEntities.GLOWING_SNAIL.get(), "发光蜗牛");
+        add(CritterEntities.GRUBBY.get(), "蛆虫");
+        add(CritterEntities.MAGGOT.get(), "蝇蛆");
+        add(CritterEntities.MAGMA_SNAIL.get(), "岩浆蜗牛");
+        add(CritterEntities.SLUGGY.get(), "鼻涕虫");
+        add(CritterEntities.SNAIL.get(), "蜗牛");
+        add(CritterEntities.BUTTERFLY.get(), "蝴蝶");
+        add(CritterEntities.HELL_BUTTERFLY.get(), "地狱蝴蝶");
+        add(CritterEntities.DRAGONFLY.get(), "蜻蜓");
+        add(CritterEntities.FAIRY.get(), "仙灵");
+        add(CritterEntities.FEALING.get(), "飞灵");
+        add(CritterEntities.GRASSHOPPER.get(), "蚱蜢");
+        add(CritterEntities.LADYBUG.get(), "瓢虫");
+        add(CritterEntities.SCORPION.get(), "蝎子");
+        add(CritterEntities.WORM.get(), "蠕虫");
+        add(CritterEntities.PRISMATIC_LACEWING.get(), "七彩草蛉");
+        add(CritterEntities.HOSTILE_BUNNY.get(), "敌对兔兔");
+        add(BossEntities.KING_SLIME.get(), "史莱姆王");
+        add(BossEntities.EYE_OF_CTHULHU.get(), "克苏鲁之眼");
+        add(BossEntities.SERVANT_OF_CTHULHU.get(), "克苏鲁之仆");
+        add(BossEntities.EATER_OF_WORLDS.get(), "世界吞噬怪");
+        add(BossEntities.WORM_SEGMENT.get(), "世界吞噬怪体节");
+        add(BossEntities.BRAIN_OF_CTHULHU.get(), "克苏鲁之脑");
+        add(BossEntities.BRAIN_FAKE.get(), "克苏鲁之脑幻象");
+        add(BossEntities.QUEEN_BEE.get(), "蜂王");
+        add(BossEntities.SKELETRON.get(), "骷髅王");
+        add(BossEntities.SKELETRON_HAND.get(), "骷髅王之手");
+        add(BossEntities.DUNGEON_GUARDIAN.get(), "地牢守卫");
+        add(BossEntities.DEERCLOPS.get(), "独眼巨鹿");
+        add(BossEntities.HILL_OF_FLESH.get(), "血肉山");
+        add(BossEntities.HILL_OF_FLESH_EYE.get(), "血肉山之眼");
+        add(BossEntities.HILL_OF_FLESH_MOUTH.get(), "血肉山之口");
+        add(BossEntities.PRIME_ENDER_DRAGON.get(), "本源末影龙");
+        add(BossEntities.PRIME_ENDER_DRAGON_PART.get(), "本源末影龙部件");
+        add(BossEntities.WALL_OF_FLESH.get(), "血肉墙");
+        add(BossEntities.RETINAZER.get(), "激光眼");
+        add(BossEntities.SPAZMATISM.get(), "魔焰眼");
+        add(BossEntities.THE_TWINS.get(), "双子魔眼");
+        add(BossEntities.SKELETRON_PRIME.get(), "机械骷髅王");
+        add(BossEntities.SKELETRON_PRIME_ARM.get(), "机械骷髅王机械臂");
+        add(BossEntities.THE_DESTROYER.get(), "毁灭者");
+        add(BossEntities.THE_DESTROYER_PROBE.get(), "毁灭者探测器");
+        add(BossEntities.PLANTERA.get(), "世纪之花");
+        add(BossEntities.PLANTERA_TENTACLE.get(), "世纪之花触手");
+        add(BossEntities.LUNATIC_CULTIST.get(), "拜月教邪教徒");
+        add(BossEntities.PHANTASM_DRAGON.get(), "幻影龙");
+        add(MonsterEntities.GIANT_TORTOISE.get(), "巨型陆龟");
+        add(MonsterEntities.GIANT_FLYING_FOX.get(), "巨型飞狐");
+        add(MonsterEntities.CORRUPTOR.get(), "腐化者");
+        add(MonsterEntities.BLOOD_FEEDER.get(), "嗜血怪鱼");
+        add(MonsterEntities.UNICORN.get(), "独角兽");
+        add(MonsterEntities.GASTROPOD.get(), "腹足怪");
+        add(MonsterEntities.CHAOS_ELEMENTAL.get(), "混沌精");
+        add(MonsterEntities.ENCHANTED_SWORD.get(), "魔法剑");
+        add(MonsterEntities.BLAZING_WHEEL.get(), "烈焰轮");
+        add(MonsterEntities.SPIKE_BALL.get(), "尖刺球");
+        add(MonsterEntities.PALADIN.get(), "圣骑士");
+        add(MonsterEntities.BONE_LEE.get(), "李小骨");
+        add(MonsterEntities.NECROMANCER.get(), "死灵法师");
+        add(MonsterEntities.DIABOLIST.get(), "魔教徒");
+        add(MonsterEntities.RAGGED_CASTER.get(), "褛褴邪教徒法师");
+        add(MonsterEntities.ARCH_WYVERN.get(), "大飞龙");
+        add(MonsterEntities.SLIMER.get(), "恶翼史莱姆");
+        ModEntities.getEntities().forEach(register -> register.getEntries()
+                .forEach(entity -> {
+                    if (entity.getId() != null) {
+                        add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath()));
+                    }
+                }));
+    }
+
+    /**
+     * 添加链锤名称。
+     *
+     * <p>主翻译方法已经接近 JVM 单方法长度上限，因此按内容分组为同类私有方法；
+     * 名称仍直接绑定注册对象，不引入额外映射表或外部名称类。</p>
+     */
+    private void addFlailTranslations() {
+        add(FlailItems.MACE.get(), "链球");
+        add(FlailItems.FLAMING_MACE.get(), "火焰链锤");
+        add(FlailItems.WIND_ANCHOR.get(), "风锚");
+        add(FlailItems.GUARDIAN_FLAIL.get(), "守卫者链锤");
+        add(FlailItems.ANCIENT_GUARDIAN_FLAIL.get(), "远古守卫者链锤");
+        add(FlailItems.BALL_O_HURT.get(), "致伤球");
+        add(FlailItems.THE_MEATBALL.get(), "血肉之球");
+        add(FlailItems.BLUE_MOON.get(), "蓝月");
+        add(FlailItems.SUNFURY.get(), "阳炎之怒");
+        add(FlailItems.DAO_OF_POW.get(), "太极连枷");
+        add(FlailItems.FLOWER_POWER.get(), "花之力");
+        add(FlailItems.DRIPPLER_CRIPPLER.get(), "滴滴怪致残者");
+        add(FlailItems.FLAIRON.get(), "猪鲨链球");
+        add(FlailItems.CHAIN_KNIFE.get(), "链刃");
+        add(FlailItems.ANCHOR.get(), "锚");
+
+        // 战斗召唤物
+        add(SummonItems.FINCH_STAFF.get(), "雀杖");
+        add(SummonItems.IRON_GOLEM_STAFF.get(), "铁傀儡杖");
+        add(SummonItems.SLIME_STAFF.get(), "史莱姆法杖");
+        add(SummonItems.HORNET_STAFF.get(), "黄蜂法杖");
+        add(SummonItems.SCULK_WISP_STAFF.get(), "幽匿飞灵法杖");
+        add(SummonItems.IMP_STAFF.get(), "小鬼法杖");
+        add(SummonItems.SNOW_FLINX_STAFF.get(), "雪怪法杖");
+        add(SummonItems.SUMMON_WOODEN_SWORD_STAFF.get(), "木剑法杖");
+        add(SummonItems.SUMMON_STONE_SWORD_STAFF.get(), "石剑法杖");
+        add(SummonItems.SUMMON_IRON_SWORD_STAFF.get(), "铁剑法杖");
+        add(SummonItems.SUMMON_GOLDEN_SWORD_STAFF.get(), "金剑法杖");
+        add(SummonItems.SUMMON_DIAMOND_SWORD_STAFF.get(), "钻石剑法杖");
+        add(SummonItems.SUMMON_NETHERITE_SWORD_STAFF.get(), "下界合金剑法杖");
+        add(SummonItems.TERRAPRISMA.get(), "泰拉棱镜");
+        add(SummonItems.STARDUST_DRAGON_STAFF.get(), "星尘龙法杖");
+        add("tooltip.confluence.summon.damage", "基础召唤伤害：%s");
+        add("tooltip.confluence.summon.slots", "占用仆从栏：%s");
+        add("tooltip.confluence.summon.retrieve", "潜行使用以收回全部战斗召唤物");
+        add(ModEntities.FLOWER_POWER_PETAL.get(), "花之力花瓣");
+        add(ModEntities.DRIPPLER_CRIPPLER_PROJECTILE.get(), "血肉射弹");
+        add(ModEntities.FLAIRON_BUBBLE.get(), "猪鲨链球气泡");
+    }
+
+
+    /**
+     * 注册声音事件使用的中文字幕。
+     *
+     * <p>声音字幕没有可绑定的注册对象重载，因此直接登记固定语言键。
+     * 本方法只负责字幕文本，不承担旧命名空间兼容或运行时别名。</p>
+     */
+    private void addSoundTranslations() {
+        add("confluence.subtitle.transmission", "传送魔法：开启");
+        add("confluence.subtitle.lightsaber_open", "光剑：开启");
+        add("confluence.subtitle.regular_staff_shoot", "魔法：发射");
+        add("confluence.subtitle.regular_staff_shoot_2", "魔法：迸发");
+        add("confluence.subtitle.regular_staff_shoot_3", "魔法：喷射");
+        add("confluence.subtitle.frozen_broken", "霜冻魔法：破裂");
+        add("confluence.subtitle.frozen_arrow", "霜冻魔法：发射");
+        add("confluence.subtitle.cooldown_recovery", "冷却：准备就绪");
+        add("confluence.subtitle.bow_cooldown_recovery", "弓冷却：蓄力就绪");
+        add("confluence.subtitle.decoupling", "鱼钩：脱钩");
+        add("confluence.subtitle.achievements", "成就：达成");
+        add("confluence.subtitle.shimmer_detachment", "生物：浸出微光");
+        add("confluence.subtitle.shimmer_evolution", "微光：嬗变");
+        add("confluence.subtitle.shimmer_immersion", "生物：浸入微光");
+        add("confluence.subtitle.transmutation_use", "神秘力量：汲取");
+        add("confluence.subtitle.hook_attach", "钩爪：攀附");
+        add("confluence.subtitle.hook_shoot", "钩爪：发射");
+        add("confluence.subtitle.shimmer_item_interactions", "物品：浸入微光");
+        add("confluence.subtitle.star", "坠落之星：闪耀");
+        add("confluence.subtitle.star_lands", "坠落之星：落地");
+        add("confluence.subtitle.terra_operation", "行动：操作");
+        add("confluence.subtitle.life_crystal_use", "生命水晶：汲取");
+        add("confluence.subtitle.mana_star_use", "魔力水晶：汲取");
+        add("confluence.subtitle.coins", "钱币堆：叮当作响");
+        add("confluence.subtitle.coins_small", "少量钱币:拾起");
+        add("confluence.subtitle.coins_medium", "中量钱币:拾起");
+        add("confluence.subtitle.coins_large", "大量钱币:拾起");
+        add("confluence.subtitle.lucyaxe_talk", "露西斧:娇嗔");
+        add("confluence.subtitle.repeater_item_aerial_shooting", "连弩:装填箭矢");
+        add("confluence.subtitle.crystal_vile_shard_shoot", "魔晶碎块:延伸");
+
+        add("terra_curio.subtitle.transmission", "传送魔法：开启");
+        add("terra_curio.subtitle.fart_sound", "玩家：放屁声");
+        add("terra_curio.subtitle.double_jump", "玩家：二段跳");
+        add("terra_curio.subtitle.shoes_walk", "鞋：跑动");
+        add("terra_curio.subtitle.rocket_boots_boost", "火箭靴：助推");
+        add("terra_curio.subtitle.rocket_boots_stop", "火箭靴：关闭");
+
+        add("confluence.subtitle.routine_hurt", "怪物：受伤");
+        add("confluence.subtitle.routine_death", "怪物：死亡");
+        add("confluence.subtitle.roar", "BOSS：吼叫");
+        add("confluence.subtitle.hurried_roaring", "BOSS：急促吼叫");
+        add("confluence.subtitle.blood_crawler_death", "血爬虫：死亡");
+        add("confluence.subtitle.blood_crawler_free", "血爬虫：血液流动");
+        add("confluence.subtitle.blood_crawler_hurt", "血爬虫：受伤");
+        add("confluence.subtitle.bloody_spore_death", "血腥芽孢：死亡");
+        add("confluence.subtitle.bloody_spore_fuse", "血腥芽孢：孕育");
+        add("confluence.subtitle.bloody_spore_hit", "血腥芽孢：受伤");
+        add("confluence.subtitle.drippler_death", "滴滴怪：死亡");
+        add("confluence.subtitle.drippler_hurt", "滴滴怪：受伤");
+        add("confluence.subtitle.metal_death", "机械怪物：死亡");
+        add("confluence.subtitle.metal_hurt", "机械怪物：受伤");
+        add("confluence.subtitle.visual_neuron_death", "视神经元：死亡");
+        add("confluence.subtitle.visual_neuron_hurt", "视神经元：受伤");
+        add("confluence.subtitle.dig_sound", "蠕虫生物：挖掘");
+        add("confluence.subtitle.giant_shelly_death", "巨型卷壳怪：死亡");
+        add("confluence.subtitle.giant_shelly_free_0", "巨型卷壳怪：滚动");
+        add("confluence.subtitle.giant_shelly_free_1", "巨型卷壳怪：爬行");
+        add("confluence.subtitle.giant_shelly_hurt", "巨型卷壳怪：受伤");
+        add("confluence.subtitle.face_hoot", "脸怪：嘶鸣");
+        add("confluence.subtitle.tr_zombie_death", "僵尸：死亡");
+        add("confluence.subtitle.tr_skeleton_hurt", "骷髅：受伤");
+        add("confluence.subtitle.waving", "玩家：挥动");
+        add("confluence.subtitle.use_mounts", "玩家：召唤坐骑");
+        add("confluence.subtitle.decayeder_ambient", "腐骴：摩擦身体");
+        add("confluence.subtitle.decayeder_death", "腐骴：死亡");
+        add("confluence.subtitle.decayeder_hurt", "腐骴：受伤");
+        add("confluence.subtitle.decayeder_step", "腐骴：脚步声");
+        add("confluence.subtitle.whip_attack", "鞭子：抽打");
+        add("confluence.subtitle.routine_summon", "召唤物：召唤");
+        add("confluence.subtitle.summon_hornet", "黄蜂：召唤");
+        add("confluence.subtitle.summon_eye", "飞行召唤物：召唤");
+        add("confluence.subtitle.summon_imp", "小鬼：召唤");
+        add("confluence.subtitle.summon_money_trough", "钱币槽：出现");
+        add("confluence.subtitle.antlion_death", "蚁狮：死亡");
+        add("confluence.subtitle.antlion_hurt", "蚁狮：受伤");
+        add("confluence.subtitle.antlion_free", "蚁狮：活动");
+        add("confluence.subtitle.antlion_swarmer_death", "蚁狮蜂：死亡");
+        add("confluence.subtitle.antlion_swarmer_free", "蚁狮蜂：振翅");
+        add("confluence.subtitle.bat_death", "蝙蝠：死亡");
+        add("confluence.subtitle.beetle_death", "甲虫：死亡");
+        add("confluence.subtitle.blood_jelly_death", "血水母：死亡");
+        add("confluence.subtitle.blood_jelly_free", "血水母：游动");
+        add("confluence.subtitle.bone_serpent_death", "骨蛇：死亡");
+        add("confluence.subtitle.demon_death", "恶魔：死亡");
+        add("confluence.subtitle.demon_free", "恶魔：低吼");
+        add("confluence.subtitle.demon_hurt", "恶魔：受伤");
+        add("confluence.subtitle.dungeon_spirit_death", "地牢幽魂：死亡");
+        add("confluence.subtitle.dungeon_spirit_free", "地牢幽魂：低语");
+        add("confluence.subtitle.dungeon_spirit_hurt", "地牢幽魂：受伤");
+        add("confluence.subtitle.granite_golem_death", "花岗岩巨人：死亡");
+        add("confluence.subtitle.granite_golem_hurt", "花岗岩巨人：受伤");
+        add("confluence.subtitle.granite_golem_free", "花岗岩巨人：移动");
+        add("confluence.subtitle.jellyfish_death", "水母：死亡");
+        add("confluence.subtitle.jellyfish_free", "水母：游动");
+        add("confluence.subtitle.jellyfish_hurt", "水母：受伤");
+        add("confluence.subtitle.pixie_death", "妖精：死亡");
+        add("confluence.subtitle.pixie_free", "妖精：闪烁");
+        add("confluence.subtitle.pixie_hurt", "妖精：受伤");
+        add("confluence.subtitle.sand_shoot", "蚁狮：发射沙弹");
+        add("confluence.subtitle.soul_death", "灵魂：消散");
+        add("confluence.subtitle.tr_zombie_free", "僵尸：呻吟");
+        add("confluence.subtitle.unicorn_death", "独角兽：死亡");
+        add("confluence.subtitle.unicorn_hurt", "独角兽：受伤");
+        add("confluence.subtitle.wyvern_death", "飞龙：死亡");
+        add("confluence.subtitle.wyvern_hurt", "飞龙：受伤");
+        add("confluence.subtitle.the_hungry_death", "饿鬼：死亡");
+        add("confluence.subtitle.the_hungry_hurt", "饿鬼：受伤");
+        add("confluence.subtitle.wall_of_flesh_hurt", "血肉墙：受伤");
+        add("confluence.subtitle.wall_of_flesh_roar", "血肉墙：咆哮");
+        add("confluence.subtitle.wall_of_flesh_summon", "血肉墙：苏醒");
+    }
+
+    /**
+     * 添加坐骑物品、坐骑实体和敌对生物弹幕名称。
+     *
+     * <p>这些翻译仍直接写在本 Provider 中。方法边界仅用于控制主翻译方法的字节码长度，
+     * 不引入额外名称表，也不改变 DataGen 的来源。</p>
+     */
+    private void addMountAndHostileProjectileTranslations() {
+        add(NpcEntities.FEMALE_ANGLER.get(), "渔女");
+        add("message.confluence.boss_spawn", "%s已苏醒！");
+        add("message.confluence.boss_leave", "%s已被击败！");
+        add(YoyoItems.AMAZON.get(), "亚马逊球");
+        add(YoyoItems.ARTERY.get(), "血脉球");
+        add(YoyoItems.CASCADE.get(), "喷流球");
+        add(YoyoItems.CODE_1.get(), "代码一号");
+        add(YoyoItems.HIVE_FIVE.get(), "蜂巢球");
+        add(YoyoItems.MALAISE.get(), "抑郁球");
+        add(YoyoItems.RALLY.get(), "对打球");
+        add(YoyoItems.VALOR.get(), "英勇球");
+        add(YoyoItems.WOODEN_YOYO.get(), "木悠悠球");
+        add("tooltip.confluence.yoyo.max_range", "最大射程");
+        add("tooltip.confluence.yoyo.exist_time", "使用时间");
+        add("tooltip.confluence.yoyo.hit_effect", "命中效果");
+        add(MountItems.FUZZY_CARROT.get(), "绒毛胡萝卜");
+        add(MountItems.SLIMY_SADDLE.get(), "粘鞍");
+        add(MountItems.HONEYED_GOGGLES.get(), "涂蜜护目镜");
+        add(ModEntities.RIDEABLE_SLIME.get(), "史莱姆坐骑");
+        add(ModEntities.RIDEABLE_BEE.get(), "蜜蜂坐骑");
+        add(ModEntities.YOYO.get(), "悠悠球");
+        add(ModEntities.HARPY_FEATHER.get(), "鸟妖羽毛弹幕");
+        add(ModEntities.DARK_CASTER_PROJECTILE.get(), "暗黑法师弹幕");
+        add(ModEntities.VILE_SPIT_PROJECTILE.get(), "魔唾液弹幕");
+        add(ModEntities.FIRE_IMP_PROJECTILE.get(), "火焰小鬼弹幕");
+        add(ModEntities.GASTROPOD_PROJECTILE.get(), "腹足怪能量弹幕");
+        add(ModEntities.PALADIN_HAMMER_PROJECTILE.get(), "圣骑士重锤弹幕");
+        add(ModEntities.THROWN_ICE_PROJECTILE.get(), "抛射冰块");
+        add(ModEntities.ICE_PILLAR.get(), "冰柱");
+        add(ModEntities.SHADOW_HAND.get(), "暗影之手");
+    }
+
+    /**
+     * 添加本体创造模式分页名称。
+     *
+     * <p>翻译仍直接维护在本类中；单独方法只是控制
+     * {@link #addTranslations()} 的 JVM 字节码长度，避免继续增加本体翻译时
+     * 触发单方法 64 KiB 上限。</p>
+     */
+    private void addCreativeTabTranslations() {
+        add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
+        add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");
+        add("creativetab.confluence.materials", "汇流来世 | 材料");
+        add("creativetab.confluence.tools", "汇流来世 | 工具");
+        add("creativetab.confluence.warriors", "汇流来世 | 战士武器");
+        add("creativetab.confluence.rangers", "汇流来世 | 射手武器");
+        add("creativetab.confluence.mages", "汇流来世 | 法师武器");
+        add("creativetab.confluence.summoners", "汇流来世 | 召唤师武器");
+        add("creativetab.confluence.misc", "汇流来世 | 杂项");
+        add("creativetab.confluence.food_and_potions", "汇流来世 | 食物与药水");
+        add("creativetab.confluence.armors", "汇流来世 | 盔甲");
+        add("creativetab.confluence.mechanical", "汇流来世 | 器械");
+        add("creativetab.confluence.entity", "汇流来世 | 生物");
+        add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
+    }
+
+    /**
+     * 添加个人存钱罐的两种随身入口。
+     *
+     * <p>名称仍直接写在中文提供器中；分组方法仅用于控制主翻译方法的字节码长度。</p>
+     */
+    private void addStorageCompanionTranslations() {
+        add(PetItems.CHESTER_STAFF.get(), "眼骨");
+        add(PetItems.WALLET.get(), "钱币槽");
+        add(ModEntities.CHESTER.get(), "切斯特");
+        add(ModEntities.FLYING_PIGGY_BANK.get(), "飞行存钱罐");
+        add("container.confluence.chester", "切斯特");
+    }
+
+    /**
+     * 重铸命令与哥布林工匠界面的文本。
+     */
+    private void addReforgeTranslations() {
+        add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
+        add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
+        add("commands.confluence.reforge.success", "已成功重铸为：%s");
+        add("commands.confluence.reforge.clear.success", "已成功清除词缀");
+        add("commands.confluence.reforge.set.unavailable_group", "该物品不能应用该词缀！");
+        add("button.confluence.reforge", "重铸");
+        add("container.confluence.reforge", "哥布林重铸");
+    }
+
+
+    @Override
+    public void add(String key, String value) {
+        addIfAbsent(key, value);
+    }
+
+    private void addIfAbsent(String key, String value) {
+        if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
+            super.add(key, value);
+        }
     }
 
     private void addPotion(Item potion, String name, String tooltip) {
@@ -4766,5 +5187,31 @@ public class ModChineseProvider extends LanguageProvider {
     private void addEffect(MobEffect effect, String name, String tooltip) {
         add(effect, name);
         add("tooltip." + effect.getDescriptionId() + ".0", tooltip);
+    }
+
+    /**
+     * 独立方法仅用于避免主翻译方法超过 JVM 的单方法字节码上限。
+     */
+    private void addWhipTagEffectTranslations() {
+        addWhipTagEffect(WhipItems.LEATHER_WHIP.get());
+        addWhipTagEffect(WhipItems.SLUB_WHIP.get());
+        addWhipTagEffect(WhipItems.RUBY_WHIP.get());
+        addWhipTagEffect(WhipItems.AMBER_WHIP.get());
+        addWhipTagEffect(WhipItems.TOPAZ_WHIP.get());
+        addWhipTagEffect(WhipItems.JADE_WHIP.get());
+        addWhipTagEffect(WhipItems.DIAMOND_WHIP.get());
+        addWhipTagEffect(WhipItems.SAPPHIRE_WHIP.get());
+        addWhipTagEffect(WhipItems.AMETHYST_WHIP.get());
+        addWhipTagEffect(WhipItems.SWAMP_WHIP.get());
+        addWhipTagEffect(WhipItems.SNAPTHORN.get());
+        addWhipTagEffect(WhipItems.SPINAL_TAP.get());
+        addWhipTagEffect(WhipItems.FIRECRACKER.get());
+    }
+
+    private void addWhipTagEffect(BaseWhipItem whip) {
+        String tooltip = whip.definition().tagEffect().get().fixedDamage() == 0.0F
+                ? "召唤物优先攻击该目标"
+                : "召唤物额外造成伤害";
+        addEffect(whip.definition().tagEffect().get(), "狩猎", tooltip);
     }
 }

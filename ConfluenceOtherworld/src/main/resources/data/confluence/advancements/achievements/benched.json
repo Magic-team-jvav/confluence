@@ -1,0 +1,38 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "minecraft:crafting_table"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.benched.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "minecraft:crafting_table"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.benched.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

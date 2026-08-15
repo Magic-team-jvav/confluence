@@ -1,31 +1,46 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
+import org.confluence.mod.common.entity.ai.bt.leaf.BowCombatAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.ShootAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.init.ModSoundEvents;
 
+/**
+ * 腐骴远程骷髅。
+ *
+ * <p>生成时固定持弓，并使用与 1.21 远程骷髅相同的作战周期。若命令、数据包或其他
+ * 模组替换了主手武器，腐骴会改用近战；重新拿到弓后无需重建实体即可恢复远程行为。</p>
+ */
 public class Decayeder extends BaseMonster {
-
     public Decayeder(EntityType<? extends BaseMonster> type, Level level) {
         super(type, level);
+        setItemSlot(EquipmentSlot.MAINHAND, Items.BOW.getDefaultInstance());
+        setLeftHanded(false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return BaseMonster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 50.0)
-                .add(Attributes.ATTACK_DAMAGE, 10.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.20);
+                .add(Attributes.MAX_HEALTH, 10.0)
+                .add(Attributes.ARMOR, 6.0)
+                .add(Attributes.ATTACK_DAMAGE, 6.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.25);
     }
 
     @Override
@@ -34,28 +49,51 @@ public class Decayeder extends BaseMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(Decayeder.this),
-                                new ShootAction(Decayeder.this, 8.0f, 0.3f), new WaitAction(30)),
-                        SequenceNode.of(new HasTargetCondition(Decayeder.this),
-                                new MoveToTargetAction(Decayeder.this, 0.8, 5.0)),
-                        new WaitAction(20)
-                );
+                        new BowCombatAction(
+                                Decayeder.this,
+                                1.0,
+                                40,
+                                20,
+                                15.0,
+                                20,
+                                1.6F),
+                        SequenceNode.of(
+                                new HasTargetCondition(Decayeder.this),
+                                new MoveToTargetAction(
+                                        Decayeder.this, 1.2, 2.0),
+                                new MeleeAttackAction(
+                                        Decayeder.this, 2.0)),
+                        SequenceNode.of(
+                                new WaitAction(20 + random.nextInt(40)),
+                                new RandomStrollAction(
+                                        Decayeder.this, 1.0, 10)));
             }
         };
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+    protected boolean isSunBurnTick() {
+        return false;
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (!level().isClientSide && getTarget() == null && tickCount % 20 == 0) {
-            Player nearest = level().getNearestPlayer(this, 32);
-            if (nearest != null) setTarget(nearest);
-        }
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.DECAYEDER_AMBIENT.get();
     }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.DECAYEDER_DEATH.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.DECAYEDER_HURT.get();
+    }
+
+    @Override
+    protected void playStepSound(BlockPos position, BlockState state) {
+        playSound(ModSoundEvents.DECAYEDER_STEP.get(), 0.15F, 1.0F);
+    }
+
 }

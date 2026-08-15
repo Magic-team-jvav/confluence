@@ -7,13 +7,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FarmBlock;
-import net.minecraft.world.level.block.StemBlock;
-import net.minecraft.world.level.block.StemGrownBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -24,7 +20,12 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 public class BalloonAttachedStemBlock extends SupAttachedStemBlock {
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    /*
+     * 1.20 的 StemGrownBlock 接口强制返回 AttachedStemBlock，因此这里必须
+     * 沿用原版附着茎的水平朝向属性。此前另建同名六向属性却没有加入状态定义，
+     * 导致每次查询形状都会抛出属性不存在异常。
+     */
+    public static final DirectionProperty FACING = AttachedStemBlock.FACING;
 
     private static final Map<Direction, VoxelShape> AABBS = Maps.newEnumMap(ImmutableMap.<Direction, VoxelShape>builder()
             .put(Direction.SOUTH, Block.box(6.0, 0.0, 6.0, 10.0, 10.0, 16.0))

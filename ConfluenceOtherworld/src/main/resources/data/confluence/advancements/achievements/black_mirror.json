@@ -1,0 +1,38 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "terra_curio:cell_phone"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.black_mirror.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "terra_curio:cell_phone"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.black_mirror.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,14 +21,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.ArmorSetBonusData;
@@ -49,13 +47,11 @@ import java.util.*;
 public class PlayerSpecialData extends PrimitiveValueHolder {
     private @NotNull ArmorSetBonusKey armorSetBonusKey = ArmorSetBonusKey.NONE;
 
-    private Item questedFish = Items.AIR;
     private long completedAnglerQuestDay = -1;
     private int anglerQuestCount;
 
     private boolean couldHurtCritters;
     private boolean couldDamageEnvironment;
-    //    private boolean fallenSoulCoreActive = false;
     private final transient Map<String, Set<BlockPos>> enemyBannerEntries = new HashMap<>();
     private transient boolean dirty;
     private Team team;
@@ -66,30 +62,25 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         super.setToDefaultValue();
         this.armorSetBonusKey = ArmorSetBonusKey.NONE;
 
-        this.questedFish = Items.AIR;
         this.completedAnglerQuestDay = -1;
         this.anglerQuestCount = 0;
 
         this.couldHurtCritters = true;
         this.couldDamageEnvironment = true;
-//        this.fallenSoulCoreActive = false;
         this.team = Team.WHITE;
+        this.pvp = false;
     }
 
     public ArmorSetBonusKey getArmorSetBonusKey() {
         return armorSetBonusKey;
     }
 
-    public Item getQuestedFish() {
-        return questedFish;
-    }
-
     public boolean hasCompletedAnglerQuestToday(ServerLevel level) {
-        return completedAnglerQuestDay == level.getGameTime() / 24000;
+        return completedAnglerQuestDay == AnglerData.currentDay(level);
     }
 
     public void markAnglerQuestCompleted(ServerLevel level) {
-        this.completedAnglerQuestDay = level.getGameTime() / 24000;
+        this.completedAnglerQuestDay = AnglerData.currentDay(level);
         this.anglerQuestCount++;
     }
 
@@ -112,14 +103,6 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
     public boolean isCouldDamageEnvironment() {
         return couldDamageEnvironment;
     }
-
-//    public boolean isFallenSoulCoreActive() {
-//        return fallenSoulCoreActive;
-//    }
-//
-//    public void setFallenSoulCoreActive(boolean active) {
-//        this.fallenSoulCoreActive = active;
-//    }
 
     public void updateEnemyBannerEntries(String key, BlockPos pos, boolean add) {
         Set<BlockPos> blockPos = enemyBannerEntries.computeIfAbsent(key, s -> new HashSet<>());
@@ -230,7 +213,9 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
             }
         }
 
-        setToDefaultValue();
+        // 换装只刷新由护甲/饰品计算出的临时值；钓鱼任务、队伍和玩家开关必须跨换装保留。
+        super.setToDefaultValue();
+        this.armorSetBonusKey = ArmorSetBonusKey.NONE;
         ArmorSetBonusData data = ModArmorBonus.getArmorSetBonusData(player, key);
         if (data == null) {
             this.armorSetBonusKey = ArmorSetBonusKey.NONE;
@@ -267,11 +252,10 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         CompoundTag tag = super.serializeNBT(provider);
 
         PortDataResultExtension.ifSuccess(ArmorSetBonusKey.CODEC.encodeStart(ops, armorSetBonusKey), nbt -> tag.put("ArmorBonusKey", nbt));
-        tag.putString("QuestedFish", questedFish.builtInRegistryHolder().key().location().toString());
         tag.putLong("CompletedAnglerQuestDay", completedAnglerQuestDay);
         tag.putInt("AnglerQuestCount", anglerQuestCount);
         tag.putBoolean("CouldHurtCritters", couldHurtCritters);
-//        tag.putBoolean("FallenSoulCoreActive", fallenSoulCoreActive);
+        tag.putBoolean("CouldDamageEnvironment", couldDamageEnvironment);
         PortDataResultExtension.ifSuccess(Team.CODEC.encodeStart(ops, team), nbt -> tag.put("Team", nbt));
         tag.putBoolean("PVP", pvp);
         return tag;
@@ -280,17 +264,29 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
+        // 附件对象可能被复用；先恢复完整默认值，再由确实存在的旧存档字段逐项覆盖。
+        setToDefaultValue();
         super.deserializeNBT(provider, nbt);
 
         if (nbt.contains("ArmorBonusKey")) {
             this.armorSetBonusKey = ArmorSetBonusKey.CODEC.parse(ops, nbt.get("ArmorBonusKey")).result().orElse(ArmorSetBonusKey.NONE);
         }
-        this.questedFish = Objects.requireNonNullElse(ForgeRegistries.ITEMS.getValue(ResourceLocation.parse(nbt.getString("QuestedFish"))), Items.AIR);
-        this.completedAnglerQuestDay = nbt.getLong("CompletedAnglerQuestDay");
-        this.anglerQuestCount = nbt.getInt("AnglerQuestCount");
-        this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
-//        this.fallenSoulCoreActive = nbt.getBoolean("FallenSoulCoreActive");
-        this.team = Team.CODEC.parse(ops, nbt.get("Team")).result().orElse(Team.WHITE);
+        if (nbt.contains("CompletedAnglerQuestDay")) {
+            this.completedAnglerQuestDay = Math.max(-1L, nbt.getLong("CompletedAnglerQuestDay"));
+        }
+        if (nbt.contains("AnglerQuestCount")) {
+            this.anglerQuestCount = Math.max(0, nbt.getInt("AnglerQuestCount"));
+        }
+        if (nbt.contains("CouldHurtCritters")) {
+            this.couldHurtCritters = nbt.getBoolean("CouldHurtCritters");
+        }
+        if (nbt.contains("CouldDamageEnvironment")) {
+            this.couldDamageEnvironment = nbt.getBoolean("CouldDamageEnvironment");
+        }
+        Tag teamTag = nbt.get("Team");
+        if (teamTag != null) {
+            this.team = Team.CODEC.parse(ops, teamTag).result().orElse(Team.WHITE);
+        }
         this.pvp = nbt.getBoolean("PVP");
     }
 

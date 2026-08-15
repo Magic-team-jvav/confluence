@@ -7,11 +7,11 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.entity.Entity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.mana.SkullProjectile;
 import org.jetbrains.annotations.NotNull;
 
-public class SkullProjectileModel extends EntityModel<SkullProjectile> {
+public class SkullProjectileModel<T extends Entity> extends EntityModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("skull_projectile"), "main");
     private final ModelPart root;
 
@@ -29,7 +29,7 @@ public class SkullProjectileModel extends EntityModel<SkullProjectile> {
     }
 
     @Override
-    public void setupAnim(@NotNull SkullProjectile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+    public void setupAnim(@NotNull T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
     @Override
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

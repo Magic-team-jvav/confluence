@@ -1,13 +1,13 @@
 {
-  "neoforge:conditions": [
+    "conditions": [
     {
-      "type": "neoforge:mod_loaded",
+        "type": "forge:mod_loaded",
       "modid": "create"
     },
     {
-      "type": "neoforge:not",
+        "type": "forge:not",
       "value": {
-        "type": "neoforge:tag_empty",
+          "type": "forge:tag_empty",
         "tag": "c:raw_materials/tungsten"
       }
     }

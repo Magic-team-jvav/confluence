@@ -56,11 +56,11 @@ public enum HouseHandler implements IGlobalData {
 
     public void setHouse(BaseNPC npc, House house) {
         ResourceKey<Level> dimension = npc.level().dimension();
-        NPCSpawner.Region region = new NPCSpawner.Region(house.center());
         UUID uuid = npc.getUUID();
         if (house == House.EMPTY) {
-            removeHouse(dimension, region, uuid);
+            removeHouse(dimension, uuid);
         } else {
+            NPCSpawner.Region region = new NPCSpawner.Region(house.center());
             setHouse(dimension, region, uuid, house);
         }
     }
@@ -77,6 +77,19 @@ public enum HouseHandler implements IGlobalData {
         map1.remove(uuid);
     }
 
+    /**
+     * 在一个维度的所有区域中解除指定 NPC 的房屋。
+     *
+     * <p>清空房屋时已经没有可用于反推区域的房屋中心，不能再拿 {@link House#EMPTY}
+     * 的零坐标删除，否则只会清理世界原点区域并留下幽灵占用记录。</p>
+     */
+    public void removeHouse(ResourceKey<Level> dimension, UUID uuid) {
+        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
+        if (regions == null) return;
+        regions.values().forEach(houses -> houses.remove(uuid));
+        regions.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+    }
+
     public @Nullable House findHouseAt(ResourceKey<Level> dimension, BlockPos pos) {
         NPCSpawner.Region region = new NPCSpawner.Region(pos);
         Map<UUID, House> houses = getOrCreateHouses(dimension, region);
@@ -88,14 +101,34 @@ public enum HouseHandler implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")),
-                result -> this.data = new Object2ObjectOpenHashMap<>(result));
+        if (tag.isEmpty()) {
+            return;
+        }
+        Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> decoded =
+                PortDataResultExtension.getOrThrow(
+                        DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")),
+                        message -> new IllegalArgumentException(
+                                "Failed to decode NPC house data: " + message));
+        Object2ObjectOpenHashMap<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>>
+                mutableData = new Object2ObjectOpenHashMap<>();
+        decoded.forEach((dimension, regions) -> {
+            Object2ObjectOpenHashMap<NPCSpawner.Region, Map<UUID, House>> mutableRegions =
+                    new Object2ObjectOpenHashMap<>();
+            regions.forEach((region, houses) -> mutableRegions.put(
+                    region,
+                    new Object2ObjectOpenHashMap<>(houses)));
+            mutableData.put(dimension, mutableRegions);
+        });
+        // Codec 可能返回不可变的嵌套映射；住房数据在运行期需要增删，三层都必须复制。
+        this.data = mutableData;
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(DATA_CODEC.encodeStart(NbtOps.INSTANCE, data),
-                nbt -> tag.put("data", nbt));
+        tag.put("data", PortDataResultExtension.getOrThrow(
+                DATA_CODEC.encodeStart(NbtOps.INSTANCE, data),
+                message -> new IllegalStateException(
+                        "Failed to encode NPC house data: " + message)));
     }
 
     @Override

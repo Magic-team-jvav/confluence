@@ -1,0 +1,40 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "confluence:king_slime"
+                        }
+                    }
+                ]
+            },
+            "trigger": "minecraft:player_killed_entity"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.slippery_shinobi.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:slime_crown"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.slippery_shinobi.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

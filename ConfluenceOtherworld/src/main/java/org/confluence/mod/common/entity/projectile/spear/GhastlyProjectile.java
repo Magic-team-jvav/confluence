@@ -2,12 +2,6 @@ package org.confluence.mod.common.entity.projectile.spear;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -16,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * <h1>恶魂弹射物</h1>
@@ -38,23 +31,6 @@ public class GhastlyProjectile extends SpearProjectile {
      */
     private boolean hasPassedTarget = false;
 
-    /**
-     * 模型层定义
-     */
-    public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(Confluence.asResource("ghastly_projectile"), "main");
-
-    /**
-     * 恶魂弹射物网格：半透明幽灵状方块体
-     */
-    public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        partdefinition.addOrReplaceChild("body", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F), PartPose.ZERO);
-        return LayerDefinition.create(meshdefinition, 32, 32);
-    }
-
     public GhastlyProjectile(EntityType<? extends GhastlyProjectile> entityType, Level level) {
         super(entityType, level);
         this.knockBack = 0.0f;
@@ -62,13 +38,10 @@ public class GhastlyProjectile extends SpearProjectile {
     }
 
     /**
-     * 跳过基类的自动索敌逻辑，目标由外部通过 {@link #setLockedTarget(LivingEntity)} 指定。
-     * 注意：调用 {@code level.addFreshEntity()} 后再通过 {@link #setLockedTarget} 设置目标，
-     * 可覆盖基类 {@code onAddedToLevel} 中自动索敌的结果。
-     */
-
-    /**
-     * 设置锁定目标
+     * 在统一派生弹幕事务提交实体前设置锁定目标。
+     *
+     * <p>目标配置早于实体加入世界，因此不会先触发基类自动索敌，也不依赖生成后的可变状态
+     * 修补。锁定目标只控制运动方向，战斗数值仍完全来自服务端冻结快照。</p>
      */
     public void setLockedTarget(LivingEntity target) {
         this.target = target;
@@ -126,9 +99,16 @@ public class GhastlyProjectile extends SpearProjectile {
     @Override
     protected boolean canHitEntity(Entity target) {
         return target.isAlive()
-                && target != getOwner()
                 && target.isPickable()
-                /* todo projectile && TEUtils.projectileCanHitEntityTest.test(this, target)*/;
+                && super.canHitEntity(target);
+    }
+
+    /**
+     * 恶魂弹幕按自身 4 tick 冷却重复伤害，不采用普通弹幕的永久 UUID 去重。
+     */
+    @Override
+    protected boolean allowsRepeatedHits() {
+        return true;
     }
 
     /**
@@ -142,8 +122,11 @@ public class GhastlyProjectile extends SpearProjectile {
         if (currentTick - lastTick < DAMAGE_INTERVAL) {
             return false;
         }
-        lastHitTicks.put(target, currentTick);
-        return super.doHurt(target);
+        boolean hurt = super.doHurt(target);
+        if (hurt) {
+            lastHitTicks.put(target, currentTick);
+        }
+        return hurt;
     }
 
     @Override
@@ -170,14 +153,4 @@ public class GhastlyProjectile extends SpearProjectile {
         return Confluence.asResource("textures/entity/ghastly_projectile.png");
     }
 
-    @Override
-    public ModelLayerLocation getModelLayer() {
-        return LAYER_LOCATION;
-    }
-
-    @Override
-    @Nullable
-    protected net.minecraft.core.particles.ParticleOptions getTrailParticle() {
-        return null;
-    }
 }

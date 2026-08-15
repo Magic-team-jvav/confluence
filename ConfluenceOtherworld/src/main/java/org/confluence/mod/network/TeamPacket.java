@@ -13,15 +13,25 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
+/**
+ * 玩家队伍与 PvP 状态的双向同步包。
+ *
+ * <p>S2C 使用 {@code playerId} 定位被同步玩家；C2S 则永远忽略该编号并以发包者为目标，
+ * 防止客户端修改其他玩家。服务端更新后重新构造权威包广播，不原样转发客户端数据。</p>
+ */
 public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortPacket {
-    public static final byte TEAM_MASK = 0b0001_1111;
+    public static final byte TEAM_MASK = 0b0000_1111;
     public static final byte PVP_MASK = 0b0100_0000;
     public static final ResourceLocation ID = Confluence.asResource("team");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, TeamPacket> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public TeamPacket decode(PortRegistryFriendlyByteBuf buffer) {
             byte b = buffer.readByte();
-            return new TeamPacket(buffer.readVarInt(), Team.TEAMS[b & TEAM_MASK], (b & PVP_MASK) != 0);
+            int teamId = b & TEAM_MASK;
+            if (teamId >= Team.TEAMS.length) {
+                throw new IllegalArgumentException("Unknown team id: " + teamId);
+            }
+            return new TeamPacket(buffer.readVarInt(), Team.TEAMS[teamId], (b & PVP_MASK) != 0);
         }
 
         @Override
@@ -35,9 +45,9 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortP
     public void handle(Context context) {
         Player player = context.player();
         if (player instanceof ServerPlayer sp) {
-            c2s(sp);
+            context.enqueueWork(() -> c2s(sp));
         } else if (player != null) {
-            s2c(player);
+            context.enqueueWork(() -> s2c(player));
         }
     }
 
@@ -47,33 +57,35 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortP
     }
 
     public void c2s(ServerPlayer player) {
-        if (player.level().getEntity(playerId) instanceof Player target) {
-            PlayerSpecialData data = PlayerSpecialData.of(target);
-            PlayerList playerList = player.server.getPlayerList();
-            int textColor = team.getColor().getTextColor();
-            if (data.getTeam() != team) {
-                Component msg;
-                if (team == Team.WHITE) {
-                    msg = Component.translatable(
-                            "message.confluence.leave_team", target.getName()
-                    ).withColor(textColor);
-                } else {
-                    msg = PortMutableComponentExtension.withColor(Component.translatable(
-                            "message.confluence.join_team", target.getName(), team.getLowerCaseName()
-                    ), textColor);
-                }
-                playerList.broadcastSystemMessage(msg, false);
-                data.setTeam(team);
-            }
-            if (data.isPvP() != pvp) {
-                Component msg = PortMutableComponentExtension.withColor(Component.translatable(
-                        pvp ? "message.confluence.enable_pvp" : "message.confluence.disable_pvp", target.getName()
+        // C2S 中的实体编号不可信：玩家只能修改自己的队伍与 PvP 状态。
+        // playerId 仍保留在协议中，供同一个双向包在 S2C 同步其他玩家时定位实体。
+        Player target = player;
+        PlayerSpecialData data = PlayerSpecialData.of(target);
+        PlayerList playerList = player.server.getPlayerList();
+        int textColor = team.getColor().getTextColor();
+        if (data.getTeam() != team) {
+            Component msg;
+            if (team == Team.WHITE) {
+                msg = Component.translatable(
+                        "message.confluence.leave_team", target.getName()
+                ).withColor(textColor);
+            } else {
+                msg = PortMutableComponentExtension.withColor(Component.translatable(
+                        "message.confluence.join_team", target.getName(), team.getLowerCaseName()
                 ), textColor);
-                playerList.broadcastSystemMessage(msg, false);
-                data.setPvP(pvp);
             }
+            playerList.broadcastSystemMessage(msg, false);
+            data.setTeam(team);
         }
-        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntity(player, this);
+        if (data.isPvP() != pvp) {
+            Component msg = PortMutableComponentExtension.withColor(Component.translatable(
+                    pvp ? "message.confluence.enable_pvp" : "message.confluence.disable_pvp", target.getName()
+            ), textColor);
+            playerList.broadcastSystemMessage(msg, false);
+            data.setPvP(pvp);
+        }
+        // 广播服务器重新构造的权威状态，不能原样转发客户端提供的 playerId。
+        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(player, makePacket(player));
     }
 
     public void s2c(Player player) {

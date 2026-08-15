@@ -232,12 +232,18 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
 
         @Override
         public boolean isEmpty() {
-            return false;
+            for (ItemStack stack : items) {
+                if (!stack.isEmpty()) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         @Override
         public void clearContent() {
-
+            // 固定槽位列表只清空内容，不改变用于配方和菜单的槽位编号。
+            items.clear();
         }
 
         @Override
@@ -246,23 +252,25 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         }
 
         @Override
-        public ItemStack removeItem(int i, int i1) {
-            return items.remove(i);
+        public ItemStack removeItem(int slot, int amount) {
+            return ContainerHelper.removeItem(items, slot, amount);
         }
 
         @Override
-        public ItemStack removeItemNoUpdate(int i) {
-            return items.remove(i);
+        public ItemStack removeItemNoUpdate(int slot) {
+            return ContainerHelper.takeItem(items, slot);
         }
 
         @Override
         public void setItem(int i, ItemStack itemStack) {
             items.set(i, itemStack);
+            itemStack.limitSize(getMaxStackSize());
+            setChanged();
         }
 
         @Override
         public boolean stillValid(Player player) {
-            return false;
+            return Container.stillValidBlockEntity(this, player);
         }
 
         @Override

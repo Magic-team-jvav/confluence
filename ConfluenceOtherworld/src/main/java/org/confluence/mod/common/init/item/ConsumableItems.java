@@ -2,9 +2,13 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluids;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.api.permanent.PermanentUpgrade;
+import org.confluence.lib.api.permanent.PermanentUpgradeItem;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibDateUtils;
@@ -27,27 +31,29 @@ import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
+import java.util.function.Supplier;
+
 public class ConsumableItems {
     public static void init() {}
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
     public static final PortDeferredItem<ManaCrystalItem> MANA_CRYSTAL = ITEMS.register("mana_crystal", ManaCrystalItem::new);
-    public static final PortDeferredItem<EverBeneficialItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_crystal", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> new EverBeneficialItem(ModRarity.LIME, EverBeneficialItem.LIFE_FRUITS, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_fruit", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("vital_crystal", 1, ChatFormatting.GREEN)));
+    public static final PortDeferredItem<PermanentUpgradeItem> RECALL_MANA_CRYSTAL = ITEMS.register("recall_mana_crystal", () -> permanent(ModRarity.GREEN, PermanentUpgrades.MANA_CRYSTAL, -1, ModSoundEvents.MANA_STAR_USE, "recall_mana_crystal", 1, ChatFormatting.AQUA, 16));
+    public static final PortDeferredItem<PermanentUpgradeItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> permanent(ModRarity.GREEN, PermanentUpgrades.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, "life_crystal", 1));
+    public static final PortDeferredItem<PermanentUpgradeItem> RECALL_LIFE_CRYSTAL = ITEMS.register("recall_life_crystal", () -> permanent(ModRarity.GREEN, PermanentUpgrades.LIFE_CRYSTAL, -1, ModSoundEvents.LIFE_CRYSTAL_USE, "recall_life_crystal", 1, ChatFormatting.RED, 64));
+    public static final PortDeferredItem<PermanentUpgradeItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> permanent(ModRarity.LIME, PermanentUpgrades.LIFE_FRUIT, ModSoundEvents.LIFE_CRYSTAL_USE, "life_fruit", 1));
+    public static final PortDeferredItem<PermanentUpgradeItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> permanent(ModRarity.LIGHT_PURPLE, PermanentUpgrades.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE, "vital_crystal", 1));
     public static final PortDeferredItem<ArcaneCrystalItem> ARCANE_CRYSTAL = ITEMS.register("arcane_crystal", ArcaneCrystalItem::new);
-    public static final PortDeferredItem<EverBeneficialItem> AEGIS_APPLE = ITEMS.register("aegis_apple", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AEGIS_APPLE, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("aegis_apple", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> AMBROSIA = ITEMS.register("ambrosia", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.AMBROSIA, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("ambrosia", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> GUMMY_WORM = ITEMS.register("gummy_worm", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GUMMY_WORM, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("gummy_worm", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> GALAXY_PEARL = ITEMS.register("galaxy_pearl", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.GALAXY_PEARL, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("galaxy_pearl", 1, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> new EverBeneficialItem(ModRarity.EXPERT, EverBeneficialItem.MINECART_UPGRADE_KIT, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("minecart_upgrade_kit", 2, ChatFormatting.GREEN)));
-    public static final PortDeferredItem<EverBeneficialItem> ARTISAN_LOAF = ITEMS.register("artisan_loaf", () -> new EverBeneficialItem(ModRarity.ORANGE, EverBeneficialItem.ARTISAN_LOAF, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("artisan_loaf", 2, ChatFormatting.GREEN)));
+    public static final PortDeferredItem<PermanentUpgradeItem> AEGIS_APPLE = ITEMS.register("aegis_apple", () -> permanent(ModRarity.LIGHT_PURPLE, PermanentUpgrades.AEGIS_APPLE, ModSoundEvents.TRANSMUTATION_USE, "aegis_apple", 1));
+    public static final PortDeferredItem<PermanentUpgradeItem> AMBROSIA = ITEMS.register("ambrosia", () -> permanent(ModRarity.LIGHT_PURPLE, PermanentUpgrades.AMBROSIA, ModSoundEvents.TRANSMUTATION_USE, "ambrosia", 1));
+    public static final PortDeferredItem<PermanentUpgradeItem> GUMMY_WORM = ITEMS.register("gummy_worm", () -> permanent(ModRarity.LIGHT_PURPLE, PermanentUpgrades.GUMMY_WORM, ModSoundEvents.TRANSMUTATION_USE, "gummy_worm", 1));
+    public static final PortDeferredItem<PermanentUpgradeItem> GALAXY_PEARL = ITEMS.register("galaxy_pearl", () -> permanent(ModRarity.LIGHT_PURPLE, PermanentUpgrades.GALAXY_PEARL, ModSoundEvents.TRANSMUTATION_USE, "galaxy_pearl", 1));
+    public static final PortDeferredItem<PermanentUpgradeItem> MINECART_UPGRADE_KIT = ITEMS.register("minecart_upgrade_kit", () -> permanent(ModRarity.EXPERT, PermanentUpgrades.MINECART_UPGRADE_KIT, ModSoundEvents.TRANSMUTATION_USE, "minecart_upgrade_kit", 2));
+    public static final PortDeferredItem<PermanentUpgradeItem> ARTISAN_LOAF = ITEMS.register("artisan_loaf", () -> permanent(ModRarity.ORANGE, PermanentUpgrades.ARTISAN_LOAF, ModSoundEvents.TRANSMUTATION_USE, "artisan_loaf", 2));
     public static final PortDeferredItem<AdvancedCombatTechniquesItem> ADVANCED_COMBAT_TECHNIQUES = ITEMS.register("advanced_combat_techniques", AdvancedCombatTechniquesItem::new);
     public static final PortDeferredItem<AdvancedCombatTechniquesVolumeTwoItem> ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO = ITEMS.register("advanced_combat_techniques_volume_two", AdvancedCombatTechniquesVolumeTwoItem::new);
     public static final PortDeferredItem<PeddlersSatchelItem> PEDDLERS_SATCHEL = ITEMS.register("peddlers_satchel", PeddlersSatchelItem::new);
-//    public static final PortDeferredItem<EverBeneficialItem> FALLEN_SOUL_CORE = ITEMS.register("fallen_soul_core", () -> new EverBeneficialItem(ModRarity.BLUE, EverBeneficialItem.FALLEN_SOUL_CORE, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("fallen_soul_core", 1, ChatFormatting.GREEN)));
-
     public static final PortDeferredItem<ThrowableItem<BaseBombEntity>> BOMB = ITEMS.register("bomb", () -> new ThrowableItem<>(0.8F, BaseBombEntity::new));
     public static final PortDeferredItem<ThrowableItem<BouncyBombEntity>> BOUNCY_BOMB = ITEMS.register("bouncy_bomb", () -> new ThrowableItem<>(0.8F, BouncyBombEntity::new));
     public static final PortDeferredItem<ThrowableItem<StickyBombEntity>> STICKY_BOMB = ITEMS.register("sticky_bomb", () -> new ThrowableItem<>(0.8F, StickyBombEntity::new));
@@ -113,4 +119,35 @@ public class ConsumableItems {
 
     public static final PortDeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
     public static final PortDeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));
+
+    /**
+     * 本体注册永久增益物品时只提供声明式定义和展示信息，实际事务统一复用 MagicLib。
+     */
+    private static PermanentUpgradeItem permanent(ModRarity rarity, PermanentUpgrade upgrade,
+                                                  Supplier<SoundEvent> sound,
+                                                  String tooltipId, int tooltipLines) {
+        return permanent(rarity, upgrade, 1, sound, tooltipId, tooltipLines, ChatFormatting.GREEN, 64);
+    }
+
+    /**
+     * 声明正向或回溯永久物品的统一入口。回溯物品复用同一个稳定升级 ID，
+     * 只用负增量修改等级，因此不会产生第二份互相矛盾的玩家状态。
+     */
+    private static PermanentUpgradeItem permanent(
+            ModRarity rarity,
+            PermanentUpgrade upgrade,
+            int levelDelta,
+            Supplier<SoundEvent> sound,
+            String tooltipId,
+            int tooltipLines,
+            ChatFormatting tooltipColor,
+            int maxStackSize
+    ) {
+        return new PermanentUpgradeItem(
+                new Item.Properties().stacksTo(maxStackSize).component(ConfluenceMagicLib.MOD_RARITY, rarity),
+                upgrade,
+                levelDelta,
+                sound,
+                TooltipItem.getTooltipsFromString(tooltipId, tooltipLines, tooltipColor));
+    }
 }

@@ -1,0 +1,40 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "confluence:brain_of_cthulhu"
+                        }
+                    }
+                ]
+            },
+            "trigger": "minecraft:player_killed_entity"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.mastermind.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:bloody_spine"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.mastermind.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

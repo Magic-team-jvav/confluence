@@ -8,20 +8,22 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
 /**
- * 猩红史莱姆 —— 攻击致盲，生成时随机大小。
+ * 猩红史莱姆保持 1.21 侧实际生效的二号体型，并在成功接触攻击时有概率施加黑暗。
  */
 public class Crimslime extends BaseSlime {
 
     public Crimslime(EntityType<? extends BaseSlime> type, Level level) {
-        super(type, level, 0x8B4949, false, 30);
+        super(type, level, 0x8B4949, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createSlimeAttributes(31.2f, 26, 200.0f, 30);
+        return createSlimeAttributes(31.2f, 26, 104.0f);
     }
 
     @Override
     protected void onAttackTarget(LivingEntity target) {
-        target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 160, 0));
+        if (target.getRandom().nextFloat() <= 0.25F) {
+            target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 300), this);
+        }
     }
 }

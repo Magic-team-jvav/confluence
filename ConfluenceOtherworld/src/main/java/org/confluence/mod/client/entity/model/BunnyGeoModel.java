@@ -22,7 +22,7 @@ public class BunnyGeoModel extends DefaultedEntityGeoModel<Bunny> {
 
     @Override
     public ResourceLocation getModelResource(Bunny bunny) {
-        return bunny.getVariant().modelPath();
+        return CritterGeoModel.resolveModelResource(bunny.getVariant().modelPath());
     }
 
     @Override

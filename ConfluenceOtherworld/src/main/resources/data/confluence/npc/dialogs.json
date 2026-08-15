@@ -106,12 +106,14 @@
   },
   "confluence:female_angler": {
     "dialogs": [
-      "dialogs.confluence.angler.0",
-      "dialogs.confluence.angler.1",
-      "dialogs.confluence.angler.2",
-      "dialogs.confluence.angler.3",
-      "dialogs.confluence.angler.4",
-      "dialogs.confluence.angler.5"
+        "dialogs.confluence.female_angler.0",
+        "dialogs.confluence.female_angler.1",
+        "dialogs.confluence.female_angler.2",
+        "dialogs.confluence.female_angler.3",
+        "dialogs.confluence.female_angler.4",
+        "dialogs.confluence.female_angler.5",
+        "dialogs.confluence.female_angler.6",
+        "dialogs.confluence.female_angler.7"
     ]
   },
   "confluence:old_man": {
@@ -185,5 +187,44 @@
       "dialogs.confluence.truffle.5",
       "dialogs.confluence.truffle.6"
     ]
+  },
+    "confluence:wizard": {
+        "dialogs": [
+            "dialogs.confluence.wizard.0",
+            "dialogs.confluence.wizard.1",
+            "dialogs.confluence.wizard.2",
+            "dialogs.confluence.wizard.3",
+            "dialogs.confluence.wizard.4",
+            "dialogs.confluence.wizard.5",
+            "dialogs.confluence.wizard.6",
+            "dialogs.confluence.wizard.7"
+        ]
+    },
+    "confluence:zoologist": {
+        "dialogs": [
+            "dialogs.confluence.zoologist.0",
+            "dialogs.confluence.zoologist.1",
+            "dialogs.confluence.zoologist.2",
+            "dialogs.confluence.zoologist.3",
+            "dialogs.confluence.zoologist.4",
+            "dialogs.confluence.zoologist.5",
+            "dialogs.confluence.zoologist.6",
+            "dialogs.confluence.zoologist.7",
+            "dialogs.confluence.zoologist.8"
+        ]
+    },
+    "confluence:stylist": {
+        "dialogs": [
+            "dialogs.confluence.stylist.0",
+            "dialogs.confluence.stylist.1",
+            "dialogs.confluence.stylist.2"
+        ]
+    },
+    "confluence:tax_collector": {
+        "dialogs": [
+            "dialogs.confluence.tax_collector.0",
+            "dialogs.confluence.tax_collector.1",
+            "dialogs.confluence.tax_collector.2"
+        ]
   }
 }

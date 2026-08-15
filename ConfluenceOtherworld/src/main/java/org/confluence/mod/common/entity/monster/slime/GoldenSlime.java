@@ -1,11 +1,11 @@
 package org.confluence.mod.common.entity.monster.slime;
 
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
+import org.joml.Vector3f;
 
 /**
  * 金色史莱姆 —— 高血量、快速跳跃、掉落金币，稀有。
@@ -13,37 +13,31 @@ import net.minecraft.world.level.Level;
 public class GoldenSlime extends BaseSlime {
 
     public GoldenSlime(EntityType<? extends BaseSlime> type, Level level) {
-        super(type, level, 0xFFD700, false, -40);
+        super(type, level, 0xFCF8BD, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createSlimeAttributes(5.0f, 2, 97.0f, -40);
+        return createSlimeAttributes(5.0f, 2, 97.0f);
+    }
+
+    /**
+     * 金史莱姆在 1.21 侧锁定为八刻基础跳跃间隔；追击目标时由移动控制器取其三分之一。
+     */
+    @Override
+    protected int getJumpDelay() {
+        return 8;
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide && tickCount % 11 == 0) {
-            level().addParticle(ParticleTypes.HAPPY_VILLAGER,
-                    getX() + random.nextGaussian() * 0.3,
-                    getY() + getBbHeight() * 0.5,
-                    getZ() + random.nextGaussian() * 0.3,
-                    0, 0.05, 0);
+        if (tickCount % 22 == 0 && level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    new DustParticleOptions(new Vector3f(1.0F, 0.666F, 0.0F), 1.0F),
+                    getX(), getY(), getZ(),
+                    12,
+                    random.nextFloat(), random.nextFloat(), random.nextFloat(),
+                    0.01);
         }
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        boolean result = super.hurt(source, amount);
-        if (result && !level().isClientSide && level() instanceof ServerLevel serverLevel) {
-            for (int i = 0; i < 3; i++) {
-                serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER,
-                        getX() + random.nextGaussian() * 0.5,
-                        getY() + getBbHeight() * 0.5,
-                        getZ() + random.nextGaussian() * 0.5,
-                        3, 0.3, 0.3, 0.3, 0.1);
-            }
-        }
-        return result;
     }
 }

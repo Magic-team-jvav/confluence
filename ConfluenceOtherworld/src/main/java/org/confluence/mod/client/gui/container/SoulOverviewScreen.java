@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
 import org.confluence.mod.client.gui.widget.soul_skill.soul_overview.*;
+import org.confluence.mod.client.handler.SoulGuiAccess;
 import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.common.init.ModSoulSkills;
 import org.confluence.mod.common.soulskill.SoulSkill;
@@ -80,6 +81,14 @@ public class SoulOverviewScreen extends Screen {
         backgroundNoise = NormalNoise.create(RandomSource.create(12345L), -5, 1.0, 1.0, 1.0, 1.0);
 
         initSkillsFromRegistry();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!SoulGuiAccess.isAllowed(minecraft == null ? null : minecraft.player)) {
+            onClose();
+        }
     }
 
     private record CachedDot(

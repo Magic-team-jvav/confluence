@@ -28,10 +28,11 @@ public class CircleAroundTargetAction extends BTNode {
     @Override
     public BTStatus execute() {
         tick++;
-        if (tick > DURATION || mob.getTarget() == null) return BTStatus.SUCCESS;
+        var currentTarget = mob.getTarget();
+        if (tick > DURATION || currentTarget == null) return BTStatus.SUCCESS;
 
         angle += 0.05;
-        Vec3 target = mob.getTarget().position();
+        Vec3 target = currentTarget.position();
         Vec3 orbit = target.add(Math.cos(angle) * radius, 1.5, Math.sin(angle) * radius);
         Vec3 dir = orbit.subtract(mob.position()).normalize().scale(speed * 0.04);
         mob.setDeltaMovement(mob.getDeltaMovement().add(dir).scale(0.92));

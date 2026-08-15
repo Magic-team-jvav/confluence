@@ -11,9 +11,11 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.UseAnim;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.terra_curio.common.item.MagicMirror;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -56,5 +58,27 @@ public abstract class ItemInHandRendererMixin {
             }
         }
         return is;
+    }
+
+    /**
+     * 魔镜保留长按使用时间，但第一人称不能套用望远镜的贴脸模型变换。
+     *
+     * <p>TerraCurio 使用 {@link UseAnim#SPYGLASS} 表达持续施法，原版渲染器却会因此把普通物品模型
+     * 放到相机前方并极度放大。这里只修正本体客户端的显示分支，不修改 TerraCurio 的物品逻辑。</p>
+     */
+    @WrapOperation(
+            method = "renderArmWithItem",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/item/ItemStack;getUseAnimation()Lnet/minecraft/world/item/UseAnim;"
+            )
+    )
+    private UseAnim useNormalFirstPersonTransformForMagicMirror(
+            ItemStack stack,
+            Operation<UseAnim> original
+    ) {
+        return stack.getItem() instanceof MagicMirror
+                ? UseAnim.NONE
+                : original.call(stack);
     }
 }

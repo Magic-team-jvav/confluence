@@ -30,16 +30,29 @@ public class ManaPotionItem extends AbstractPotionItem {
         if (level.isClientSide) return;
         if (living instanceof ServerPlayer serverPlayer) {
             PlayerUtils.receiveMana(serverPlayer, () -> amount);
-            MobEffectInstance instance = serverPlayer.getEffect(ModEffects.MANA_SICKNESS.get());
-            if (instance == null) {
-                instance = new MobEffectInstance(ModEffects.MANA_SICKNESS.get(), EnchantmentUtils.processManaSicknessDuration(serverPlayer, 100));
-            } else {
-                int duration = Math.min(EnchantmentUtils.processManaSicknessDuration(serverPlayer, instance.duration + 100), 200);
-                instance = new MobEffectInstance(instance); // 复制一份，保证能正常更新
-                instance.duration = duration;
-            }
-            serverPlayer.addEffect(instance);
+            applyAutomaticUseEffects(serverPlayer);
         }
+    }
+
+    /**
+     * 应用喝下魔力药水后必然产生的魔力病效果。
+     *
+     * <p>统一弹幕成本会在整批弹幕成功生成后调用本方法；魔力恢复和药水扣除已在可回滚的提交
+     * 阶段完成，因此这里不能再次恢复魔力或消耗物品。</p>
+     */
+    public static void applyAutomaticUseEffects(ServerPlayer player) {
+        MobEffectInstance instance = player.getEffect(ModEffects.MANA_SICKNESS.get());
+        if (instance == null) {
+            instance = new MobEffectInstance(
+                    ModEffects.MANA_SICKNESS.get(),
+                    EnchantmentUtils.processManaSicknessDuration(player, 100));
+        } else {
+            int duration = Math.min(
+                    EnchantmentUtils.processManaSicknessDuration(player, instance.duration + 100), 200);
+            instance = new MobEffectInstance(instance); // 复制后再改持续时间，避免修改效果容器中的旧实例。
+            instance.duration = duration;
+        }
+        player.addEffect(instance);
     }
 
     public static void use(Player player) {

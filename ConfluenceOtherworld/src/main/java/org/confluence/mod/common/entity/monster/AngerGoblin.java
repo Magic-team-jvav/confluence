@@ -3,20 +3,17 @@ package org.confluence.mod.common.entity.monster;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModSoundEvents;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.core.animation.AnimatableManager;
 
-public class AngerGoblin extends BaseWarriorMonster {
+public class AngerGoblin extends GoblinMonster {
     public AngerGoblin(EntityType<? extends AngerGoblin> type, Level level) {
-        super(type, level, 0.3, 32.0);
-        setItemSlot(EquipmentSlot.MAINHAND, Items.GOLDEN_SWORD.getDefaultInstance());
+        super(type, level, Items.GOLDEN_SWORD.getDefaultInstance(),
+                LandAnimationProfile.NONE);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -39,8 +36,4 @@ public class AngerGoblin extends BaseWarriorMonster {
         return ModSoundEvents.ROUTINE_DEATH.get();
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(DefaultAnimations.genericWalkIdleController(this));
-    }
 }

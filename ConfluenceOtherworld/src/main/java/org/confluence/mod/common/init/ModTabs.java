@@ -1031,7 +1031,9 @@ public final class ModTabs {
 
                         CreativeModeTab.Output gain = GroupItem.belongsTo("gain", output);
                         gain.accept(ConsumableItems.MANA_CRYSTAL.get());
+                        gain.accept(ConsumableItems.RECALL_MANA_CRYSTAL.get());
                         gain.accept(ConsumableItems.LIFE_CRYSTAL.get());
+                        gain.accept(ConsumableItems.RECALL_LIFE_CRYSTAL.get());
                         gain.accept(ConsumableItems.LIFE_FRUIT.get());
                         gain.accept(ConsumableItems.VITAL_CRYSTAL.get());
                         gain.accept(ConsumableItems.ARCANE_CRYSTAL.get());
@@ -1864,6 +1866,7 @@ public final class ModTabs {
                         acceptAll(SummonItems.ITEMS, output);
                         acceptAll(WhipItems.ITEMS, output);
                         acceptAll(LightPetItems.ITEMS, output);
+                        acceptAll(PetItems.ITEMS, output);
                     })
                     .withTabsBefore(MAGES.getId())
                     .build());
@@ -1871,7 +1874,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(IconItems.ENTITY_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.entity"))
                     .displayItems((parameters, output) -> {
-                        // todo
+                        // 该页签暂不展示物品，后续由内容分组接入。
                     })
                     .withTabsBefore(SUMMONERS.getId())
                     .build());

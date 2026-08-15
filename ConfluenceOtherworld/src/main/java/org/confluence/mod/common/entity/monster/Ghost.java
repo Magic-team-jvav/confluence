@@ -1,20 +1,23 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.DirectFloatingPursuitAction;
+import org.confluence.mod.common.init.ModSoundEvents;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 
+/**
+ * 无视地形并持续追逐玩家的幽灵。
+ */
 public class Ghost extends BaseFlyingMonster {
+    private static final RawAnimation FLOAT = RawAnimation.begin().thenLoop("move.walk");
 
     public Ghost(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
@@ -32,27 +35,24 @@ public class Ghost extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(Ghost.this),
-                                new ChargeAttackAction(Ghost.this, 0.5)),
-                        new FlyWanderAction(Ghost.this, 0.2, 16)
-                );
+                return new DirectFloatingPursuitAction(Ghost.this);
             }
         };
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(
+                this, "Float", 3, state -> state.setAndContinue(FLOAT)));
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (!level().isClientSide && getTarget() == null && tickCount % 20 == 0) {
-            Player nearest = level().getNearestPlayer(this, 32);
-            if (nearest != null) setTarget(nearest);
-        }
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.SOUL_DEATH.get();
+    }
+
+    @Override
+    protected boolean hasPushableBody() {
+        return true;
     }
 }

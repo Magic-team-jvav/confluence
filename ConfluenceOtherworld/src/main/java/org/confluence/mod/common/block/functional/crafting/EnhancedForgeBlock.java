@@ -570,9 +570,13 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
                 this.cookingTotalTime = tag.getInt("CookTimeTotal");
                 this.litDuration = getBurnDuration(getItems().get(FUEL_SLOT));
                 CompoundTag compoundtag = tag.getCompound("RecipesUsed");
-
+                recipesUsed.clear();
                 for (String s : compoundtag.getAllKeys()) {
-                    recipesUsed.put(ResourceLocation.parse(s), compoundtag.getInt(s));
+                    ResourceLocation id = ResourceLocation.tryParse(s);
+                    int amount = compoundtag.getInt(s);
+                    if (id != null && amount > 0) {
+                        recipesUsed.put(id, amount);
+                    }
                 }
             }
         }
@@ -593,34 +597,41 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
 
         @Override
         public boolean isEmpty() {
-            return items.isEmpty();
-        }
-
-        @Override
-        public ItemStack getItem(int slot) {
-            return items.get(slot);
-        }
-
-        @Override
-        public ItemStack removeItem(int slot, int amount) {
-            ItemStack stack = items.get(slot);
-            stack.shrink(amount);
-            return stack.isEmpty() ? ItemStack.EMPTY : stack;
-        }
-
-        @Override
-        public ItemStack removeItemNoUpdate(int slot) {
-            return items.remove(slot);
-        }
-
-        @Override
-        public boolean stillValid(Player player) {
+            // NonNullList 的长度是固定槽位数，不能用列表长度判断容器是否为空。
+            for (ItemStack stack : getItems()) {
+                if (!stack.isEmpty()) {
+                    return false;
+                }
+            }
             return true;
         }
 
         @Override
+        public ItemStack getItem(int slot) {
+            // 非基座半边也必须读取基座库存，否则菜单与漏斗会看到两份状态。
+            return getItems().get(slot);
+        }
+
+        @Override
+        public ItemStack removeItem(int slot, int amount) {
+            // ContainerHelper 返回实际取出的分割栈，并把剩余数量留在原槽位。
+            return ContainerHelper.removeItem(getItems(), slot, amount);
+        }
+
+        @Override
+        public ItemStack removeItemNoUpdate(int slot) {
+            // 取空槽位时用 EMPTY 替换，绝不能删除 NonNullList 元素并改变槽位编号。
+            return ContainerHelper.takeItem(getItems(), slot);
+        }
+
+        @Override
+        public boolean stillValid(Player player) {
+            return Container.stillValidBlockEntity(getBasePart(), player);
+        }
+
+        @Override
         public void clearContent() {
-            items.clear();
+            getItems().clear();
         }
     }
 }

@@ -30,6 +30,13 @@ public record SwitchEffectEnabledPackedC2S(
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        if (context.player() instanceof ServerPlayer player) {
+            context.enqueueWork(() -> work(player));
+        }
+    }
+
+    @Override
     public void work(ServerPlayer player) {
         MobEffectInstance instance = player.getActiveEffectsMap().get(effect);
         if (instance != null && ModUtils.isSwitchableEffect(instance)) {

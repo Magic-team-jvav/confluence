@@ -3,83 +3,86 @@ package org.confluence.mod.common.effect.harmful;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.ModEffects;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
+/**
+ * 将逃离追逐区域的参战者拉回血肉墙前方。
+ *
+ * <p>效果每次都从受影响实体保存的 UUID 解析血肉墙，不缓存可被其他战斗覆盖的全局引用。
+ * 拉回点使用墙体的实际朝向计算，因此四个水平推进方向具有完全一致的行为。</p>
+ */
 public class TheTongueEffect extends PortMobEffect {
-    private static final int NETHER_CEILING = 128;
-    private WallOfFlesh wall;
+    private static final double EXECUTION_DISTANCE = 1000.0;
+    private static final double RELEASE_DISTANCE = 9.0;
 
     public TheTongueEffect() {
         super(MobEffectCategory.HARMFUL, 0xAB1122);
     }
 
     @Override
-    public void applyEffectTick(LivingEntity living, int amplifier) {
-        if (wall == null || !wall.isAlive()) return;
-
-        Vec3 wallPos = wall.position();
-        double distanceToWall = living.position().distanceTo(wallPos);
-
-        // If too far, kill
-        if (distanceToWall > 1000.0) {
-            living.kill();
+    public void applyEffectTick(
+            LivingEntity living, int amplifier) {
+        if (living.level().isClientSide) {
+            return;
+        }
+        WallOfFlesh wall = HorrifiedEffect.resolve(living);
+        if (wall == null) {
+            living.removeEffect(ModEffects.THE_TONGUE.get());
             return;
         }
 
-        // Pull target: 45 blocks ahead of the wall (toward east = away from wall's movement)
-        Vec3 targetPos = wallPos.add(new Vec3(45, 0, 0));
-        if (living.level().dimension() == Level.NETHER
-                && living.getY() < NETHER_CEILING
-                && targetPos.y >= NETHER_CEILING) {
-            targetPos = new Vec3(targetPos.x, targetPos.y - 15.0, targetPos.z);
+        Vec3 targetPosition = wall.position()
+                .add(wall.getForwardVector().scale(45.0))
+                .add(0.0, wall.getBbHeight() * 0.5, 0.0);
+        double distanceToWall =
+                living.position().distanceTo(wall.position());
+        if (distanceToWall > EXECUTION_DISTANCE) {
+            living.kill();
+            return;
+        }
+        Vec3 toTarget =
+                targetPosition.subtract(living.position());
+        double distance = toTarget.length();
+        if (distance <= RELEASE_DISTANCE) {
+            living.removeEffect(ModEffects.THE_TONGUE.get());
+            return;
         }
 
-        if (!living.level().isClientSide) {
-            Vec3 toTarget = targetPos.subtract(living.position());
-            double distance = toTarget.length();
-            if (distance < 0.01) return;
-            Vec3 dragDir = toTarget.normalize();
-
-            double speed = Math.abs(wall.getDeltaMovement().x) + 0.1;
-            double factor = Mth.clamp(distance / 15.0 + speed + 0.35, speed + 0.15, speed + 0.5);
-            Vec3 adjustedForce = dragDir.scale(factor);
-
-            if (distance <= 9.0) {
-                living.removeEffect(ModEffects.THE_TONGUE.get());
-            } else {
-                living.setDeltaMovement(living.getDeltaMovement().add(adjustedForce));
-                living.hurtMarked = true;
-                if (living.tickCount % 10 == 0) {
-                    living.hurt(living.level().damageSources().mobAttack(wall), 2);
-                }
-            }
+        double wallSpeed =
+                wall.getDeltaMovement().horizontalDistance();
+        double strength = Mth.clamp(
+                distance / 15.0 + wallSpeed + 0.35,
+                wallSpeed + 0.15,
+                wallSpeed + 0.5);
+        living.setDeltaMovement(
+                living.getDeltaMovement()
+                        .add(toTarget.normalize().scale(strength)));
+        living.hurtMarked = true;
+        if (living.tickCount % 10 == 0) {
+            living.hurt(
+                    living.damageSources().mobAttack(wall), 2.0F);
         }
     }
 
     @Override
-    public void onEffectStarted(LivingEntity living, int amplifier) {
+    public void onEffectStarted(
+            LivingEntity living, int amplifier) {
         super.onEffectStarted(living, amplifier);
-        if (wall == null || !wall.isAlive()) {
-            living.hurt(living.level().damageSources().magic(), 4);
+        WallOfFlesh wall = HorrifiedEffect.resolve(living);
+        if (wall == null) {
+            living.hurt(living.damageSources().magic(), 4.0F);
         } else {
-            living.hurt(living.level().damageSources().mobAttack(wall), 4);
+            living.hurt(
+                    living.damageSources().mobAttack(wall), 4.0F);
         }
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(
+            int duration, int amplifier) {
         return true;
-    }
-
-    public WallOfFlesh getWall() {
-        return wall;
-    }
-
-    public void setWall(WallOfFlesh wall) {
-        this.wall = wall;
     }
 }

@@ -49,6 +49,12 @@ public class NpcEntities {
 
     public static final RegistryObject<EntityType<AnglerNPC>> ANGLER = PortDeferredRegisterExtension.register(ENTITIES, "angler",
             id -> EntityType.Builder.of(AnglerNPC::new, MobCategory.CREATURE).sized(0.6F, 1.4F).clientTrackingRange(10).build(id.toString()));
+    /**
+     * 渔女与渔夫共用钓鱼任务行为，仅注册身份、尺寸和表现资源不同。
+     * 这样任务进度、奖励和后续修复只需维护一份实现。
+     */
+    public static final RegistryObject<EntityType<AnglerNPC>> FEMALE_ANGLER = PortDeferredRegisterExtension.register(ENTITIES, "female_angler",
+            id -> EntityType.Builder.of(AnglerNPC::new, MobCategory.CREATURE).sized(0.45F, 1.45F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<TravelingMerchantNPC>> TRAVELING_MERCHANT = PortDeferredRegisterExtension.register(ENTITIES, "traveling_merchant",
             id -> EntityType.Builder.of(TravelingMerchantNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<OldManNPC>> OLD_MAN = PortDeferredRegisterExtension.register(ENTITIES, "old_man",

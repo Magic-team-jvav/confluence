@@ -9,13 +9,17 @@ import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/// @param damage             子弹伤害
-/// @param velocity           射弹速度
-/// @param velocityMultiplier 总射弹速度乘数
-/// @param knockback          击退
-/// @param penetrate          穿透
-/// @param rarity             稀有度
-/// @param infinity           无限使用
+/**
+ * 子弹物品栈持久化的基础射击数值。
+ *
+ * @param damage             子弹提供的基础伤害
+ * @param velocity           子弹提供的基础弹速
+ * @param velocityMultiplier 最终弹速乘数
+ * @param knockback          子弹提供的基础击退
+ * @param penetrate          子弹提供的穿透次数，-1 表示无限穿透
+ * @param rarity             子弹稀有度
+ * @param infinity           是否不消耗该弹药
+ */
 public record BulletPropertyComponent(
         float damage,
         float velocity,

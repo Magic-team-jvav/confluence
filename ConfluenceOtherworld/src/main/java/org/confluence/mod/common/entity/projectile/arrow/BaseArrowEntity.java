@@ -1,6 +1,10 @@
 package org.confluence.mod.common.entity.projectile.arrow;
 
 import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -22,16 +26,29 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.mixed.IAbstractArrow;
+import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 import org.mesdag.portlib.wrapper.world.entity.projectile.PortAbstractArrow;
+import org.mesdag.portlib.diff.IPortEntity;
+import org.mesdag.portlib.diff.IPortProjectile;
+import org.mesdag.portlib.wrapper.world.entity.projectile.PortProjectileDeflection;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * 泰拉箭矢的通用运行实体。
+ *
+ * <p>PortLib 只补足 1.20 缺失的拾取物与发射武器字段；本类负责满蓄力、剩余寿命、穿透次数
+ * 和已命中目标等具体玩法状态。箭矢跨区块重载后必须继续消耗原预算，不能重新获得命中次数或
+ * 把同一目标当作首次命中。</p>
+ */
 public class BaseArrowEntity extends PortAbstractArrow {
+    private static final String RUNTIME_TAG = "ConfluenceArrowRuntime";
+    private static final int CURRENT_FORMAT_VERSION = 1;
     private ParticleEmitter emitter;
 
     private int penetrate;
@@ -39,6 +56,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
     public boolean fullPull;
 
     private int autoDiscardTick;
+    private boolean invalidRuntimeState;
 
     public BaseArrowEntity(EntityType<? extends AbstractArrow> entityType, Level level) {
         super(entityType, level);
@@ -92,6 +110,9 @@ public class BaseArrowEntity extends PortAbstractArrow {
     }
 
     public void setAutoDiscard(int tick) {
+        if (tick < 0) {
+            throw new IllegalArgumentException("Arrow discard delay must be non-negative");
+        }
         this.autoDiscardTick = tick;
     }
 
@@ -135,6 +156,15 @@ public class BaseArrowEntity extends PortAbstractArrow {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
+        PortProjectileDeflection deflection = IPortEntity.of(entity).deflection(this);
+        if (deflection != PortProjectileDeflection.NONE) {
+            IPortProjectile portProjectile = IPortProjectile.of(this);
+            if (entity != portProjectile.portlib$getLastDeflectedBy()
+                    && deflect(deflection, entity, entity, false)) {
+                portProjectile.portlib$setLastDeflectedBy(entity);
+            }
+            return;
+        }
         if (!(entity instanceof LivingEntity living)) {
             super.onHitEntity(result);
             return;
@@ -143,13 +173,17 @@ public class BaseArrowEntity extends PortAbstractArrow {
         DamageSource damageSource = getDamageSource();
         if (entity.hurt(damageSource, getCalculatedDamage())) {
             playSound(getSound(), 1.0F, 1.2F / (random.nextFloat() * 0.2F + 0.9F));
-            doPostHurtEffects(living);
+            Entity owner = getOwner();
+            boolean reflectedByMimic = owner instanceof BaseMimic;
+            // 宝箱怪反射的箭只造成折半后的直接伤害，不附加箭种减益或武器附魔效果。
+            if (!reflectedByMimic) {
+                doPostHurtEffects(living);
+            }
             if (!level().isClientSide) {
                 living.setArrowCount(living.getArrowCount() + 1);
             }
             doKnockback(living, damageSource);
-            Entity owner = getOwner();
-            if (!level().isClientSide && owner instanceof LivingEntity) {
+            if (!reflectedByMimic && !level().isClientSide && owner instanceof LivingEntity) {
                 PortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damageSource);
             }
             if (living != owner && living instanceof Player && owner instanceof ServerPlayer player && !isSilent()) {
@@ -164,6 +198,15 @@ public class BaseArrowEntity extends PortAbstractArrow {
             if (!level().isClientSide && getDeltaMovement().lengthSqr() < 1.0E-7D) {
                 if (pickup == Pickup.ALLOWED) spawnAtLocation(getPickupItem(), 0.1F);
             }
+        }
+    }
+
+    @Override
+    public void onDeflection(@Nullable Entity entity, boolean deflectedByPlayer) {
+        if (entity instanceof BaseMimic) {
+            setOwner(entity);
+            setBaseDamage(getBaseDamage() * 0.5D);
+            penetrate = getPenetrationCount();
         }
     }
 
@@ -192,6 +235,10 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     @Override
     public void tick() {
+        if (invalidRuntimeState && !level().isClientSide) {
+            discard();
+            return;
+        }
         if (!level().isClientSide && tickCount > autoDiscardTick) discard();
         super.tick();
         if (level().isClientSide && emitter == null) {
@@ -212,5 +259,85 @@ public class BaseArrowEntity extends PortAbstractArrow {
     @Override
     protected boolean canHitEntity(Entity target) {
         return super.canHitEntity(target) && !havenBeen.contains(target.getUUID());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag entityTag) {
+        super.addAdditionalSaveData(entityTag);
+        CompoundTag runtimeTag = new CompoundTag();
+        runtimeTag.putInt("Version", CURRENT_FORMAT_VERSION);
+        runtimeTag.putBoolean("FullPull", fullPull);
+        runtimeTag.putInt("RemainingLifetime", Math.max(autoDiscardTick - tickCount, 0));
+        runtimeTag.putInt("PenetratedCount", Math.max(penetrate, 0));
+
+        ListTag targetsTag = new ListTag();
+        for (UUID targetUuid : havenBeen) {
+            targetsTag.add(NbtUtils.createUUID(targetUuid));
+        }
+        runtimeTag.put("HitTargets", targetsTag);
+        entityTag.put(RUNTIME_TAG, runtimeTag);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag entityTag) {
+        super.readAdditionalSaveData(entityTag);
+        resetRuntimeState();
+        if (!entityTag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) {
+            return;
+        }
+        try {
+            CompoundTag runtimeTag = entityTag.getCompound(RUNTIME_TAG);
+            requireTag(runtimeTag, "Version", Tag.TAG_INT);
+            if (runtimeTag.getInt("Version") != CURRENT_FORMAT_VERSION) {
+                throw new IllegalArgumentException("Unsupported arrow runtime state version");
+            }
+            requireTag(runtimeTag, "FullPull", Tag.TAG_BYTE);
+            requireTag(runtimeTag, "RemainingLifetime", Tag.TAG_INT);
+            requireTag(runtimeTag, "PenetratedCount", Tag.TAG_INT);
+            requireTag(runtimeTag, "HitTargets", Tag.TAG_LIST);
+            int remainingLifetime = runtimeTag.getInt("RemainingLifetime");
+            int penetratedCount = runtimeTag.getInt("PenetratedCount");
+            if (remainingLifetime < 0) {
+                throw new IllegalArgumentException("Arrow remaining lifetime is out of range");
+            }
+            if (penetratedCount < 0) {
+                throw new IllegalArgumentException("Arrow penetrated count is out of range");
+            }
+            Tag rawTargets = runtimeTag.get("HitTargets");
+            if (!(rawTargets instanceof ListTag targetsTag)
+                    || !targetsTag.isEmpty() && targetsTag.getElementType() != Tag.TAG_INT_ARRAY) {
+                throw new IllegalArgumentException("Arrow hit targets must be a UUID list");
+            }
+            for (Tag targetTag : targetsTag) {
+                UUID targetUuid = NbtUtils.loadUUID(targetTag);
+                if (!havenBeen.add(targetUuid)) {
+                    throw new IllegalArgumentException("Arrow hit target UUIDs must be unique");
+                }
+            }
+            this.fullPull = runtimeTag.getBoolean("FullPull");
+            this.autoDiscardTick = remainingLifetime;
+            this.penetrate = penetratedCount;
+            this.tickCount = 0;
+        } catch (RuntimeException exception) {
+            resetRuntimeState();
+            this.invalidRuntimeState = true;
+        }
+    }
+
+    /**
+     * 缺少当前格式时保留安全默认值；存在但损坏的当前格式则在下一服务端 tick 销毁。
+     */
+    private void resetRuntimeState() {
+        this.fullPull = false;
+        this.autoDiscardTick = Math.max(getAutoDiscardTick(), 0);
+        this.penetrate = 0;
+        this.havenBeen.clear();
+        this.invalidRuntimeState = false;
+    }
+
+    private static void requireTag(CompoundTag tag, String key, int expectedType) {
+        if (!tag.contains(key, expectedType)) {
+            throw new IllegalArgumentException("Missing or invalid arrow runtime field: " + key);
+        }
     }
 }

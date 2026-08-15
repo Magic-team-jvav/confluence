@@ -27,7 +27,8 @@ public class DyeVatScreen extends AbstractContainerScreen<DyeVatMenu> {
             if (player != null) {
                 ItemStack stack = player.containerMenu.getCarried();
                 player.containerMenu.setCarried(ItemStack.EMPTY);
-                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.DYE_MIX_MENU, stack);
+                OpenMenuPacketC2S.sendToServer(
+                        OpenMenuPacketC2S.DYE_MIX_MENU, stack);
             }
         }).width(48).pos(leftPos + 109, topPos + 58).build());
     }

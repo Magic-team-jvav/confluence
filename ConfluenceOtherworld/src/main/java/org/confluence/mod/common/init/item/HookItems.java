@@ -49,7 +49,15 @@ public class HookItems {
     public static final PortDeferredItem<BaseHookItem> CHRISTMAS_HOOK = ITEMS.register("christmas_hook", () -> new BaseHookItem(ModRarity.LIME, 3, 22.92F, 1.55F, BaseHookItem.HookType.SIMULTANEOUS, (itemStack, item, player, level) -> new AbstractHookEntity.Impl(ModEntities.CHRISTMAS_HOOK.get(), item, player, level)));
     public static final PortDeferredItem<BaseHookItem> ANTI_GRAVITY_HOOK = ITEMS.register("anti_gravity_hook", () -> new BaseHookItem(ModRarity.LIME, 3, 20.83F, 1.4F, BaseHookItem.HookType.SIMULTANEOUS, (itemStack, item, player, level) -> new AbstractHookEntity.Impl(ModEntities.ANTI_GRAVITY_HOOK.get(), item, player, level)));
     public static final PortDeferredItem<BaseHookItem> LUNAR_HOOK = ITEMS.register("lunar_hook", LunarHookItem::new);
-    public static final PortDeferredItem<BaseHookItem> STATIC_HOOK = ITEMS.register("static_hook", () -> new BaseHookItem(ModRarity.RED, 2, 25, 2, BaseHookItem.HookType.INDIVIDUAL, (itemStack, item, player, level) -> {
-        throw new UnsupportedOperationException("Static Hook Can Not Use Right Now"); // todo
-    }));
+    public static final PortDeferredItem<BaseHookItem> STATIC_HOOK = ITEMS.register("static_hook", () ->
+            new BaseHookItem(ModRarity.RED, 2, 25, 2, BaseHookItem.HookType.INDIVIDUAL,
+                    (itemStack, item, player, level) -> {
+                        throw new UnsupportedOperationException("Static hook is not implemented");
+                    }) {
+                /** 静止钩实体尚未实现，服务端网络入口必须在调用占位工厂前拒绝。 */
+                @Override
+                public boolean isThrowAvailable() {
+                    return false;
+                }
+            });
 }

@@ -16,8 +16,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.FloatRGB;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
@@ -115,10 +115,17 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
         float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
         if (target.hurt(getDamageSource(), damage)) {
-            float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
-            if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
-                LibEntityUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
-            }
+            combatState().recordSuccessfulHit(ProjectileHitRules.impactedEntity(target).getUUID());
+            float legacyKnockback = getBaseKnockBack()
+                    * (1.0F + getKnockbackBonus())
+                    * (float) knockbackStrength;
+            float snapshotKnockback = getProjectileCombatSnapshot() == null
+                    ? 0.0F
+                    : getProjectileCombatSnapshot().knockback();
+            float attackKnockback = snapshotKnockback > 0.0F
+                    ? snapshotKnockback
+                    : legacyKnockback;
+            ProjectileHitRules.applyResolvedKnockback(this, target, attackKnockback, knockbackMotionY);
             afterHurtTarget(target);
             return true;
         }

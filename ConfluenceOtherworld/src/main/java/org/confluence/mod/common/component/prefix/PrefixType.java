@@ -34,7 +34,7 @@ public enum PrefixType implements StringRepresentable {
 
         @Override
         public ModPrefix randomPrefix(RandomSource random) {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException("Unknown prefix type cannot choose a random prefix");
         }
 
         @Override
@@ -81,7 +81,7 @@ public enum PrefixType implements StringRepresentable {
     }
 
     public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack itemStack) {
-        return switch (this) { // todo 没有击退的远程和魔法武器
+        return switch (this) { // 待调整：没有击退属性的远程和魔法武器需要单独处理
             case UNIVERSAL -> random.nextBoolean() ? Universal.GODLY : Universal.DEMONIC;
             case MELEE ->
                     itemStack.is(PortTags.Items.MELEE_WEAPON_TOOLS) ? Melee.LEGENDARY : Melee.LIGHT;

@@ -1,0 +1,57 @@
+{
+    "textures": {
+        "0": "confluence:item/whip_model_tex/firecracker"
+    },
+    "elements": [
+        {
+            "from": [
+                7.5,
+                0,
+                7.5
+            ],
+            "to": [
+                8.5,
+                4,
+                8.5
+            ],
+            "faces": {
+                "north": {
+                    "uv": [
+                        0,
+                        0,
+                        1,
+                        4
+                    ],
+                    "texture": "#0"
+                },
+                "east": {
+                    "uv": [
+                        1,
+                        0,
+                        2,
+                        4
+                    ],
+                    "texture": "#0"
+                },
+                "south": {
+                    "uv": [
+                        2,
+                        0,
+                        3,
+                        4
+                    ],
+                    "texture": "#0"
+                },
+                "west": {
+                    "uv": [
+                        3,
+                        0,
+                        4,
+                        4
+                    ],
+                    "texture": "#0"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,57 @@
+{
+    "textures": {
+        "1": "confluence:item/whip_model_tex/spinal_tap"
+    },
+    "elements": [
+        {
+            "from": [
+                7,
+                0,
+                7
+            ],
+            "to": [
+                9,
+                4,
+                9
+            ],
+            "faces": {
+                "north": {
+                    "uv": [
+                        0,
+                        0,
+                        2,
+                        4
+                    ],
+                    "texture": "#1"
+                },
+                "east": {
+                    "uv": [
+                        0,
+                        0,
+                        2,
+                        4
+                    ],
+                    "texture": "#1"
+                },
+                "south": {
+                    "uv": [
+                        2,
+                        0,
+                        4,
+                        4
+                    ],
+                    "texture": "#1"
+                },
+                "west": {
+                    "uv": [
+                        4,
+                        0,
+                        6,
+                        4
+                    ],
+                    "texture": "#1"
+                }
+            }
+        }
+    ]
+}

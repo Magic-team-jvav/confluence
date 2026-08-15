@@ -34,19 +34,18 @@ import java.util.function.Supplier;
 
 import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
 
-/// 允许空挥的剑都是特殊横扫剑
-/// 有自动挥舞的剑都是特殊横扫剑
-/// 有特殊横扫的剑不一定是自动挥舞的剑
-/// 是否允许自动挥舞是根据[ModTags.Items#AUTO_ATTACK_WHITELIST]判断的
-/// 是否允许特殊横扫是根据[BaseSwordItem.ModifierBuilder#specialSweep]判断的，即下文中的.setSpecialSweep()
-/// 如果不是由BOARD_SWORD定义的，那么需要使用[SwordPrefabs#withSpecialSweep]方法
-public class SwordItems { // todo sword
+/// 允许空挥的剑都属于特殊横扫剑。
+/// 允许自动挥舞的剑都属于特殊横扫剑，但特殊横扫不一定代表自动挥舞。
+/// 自动挥舞由 {@link ModTags.Items#AUTO_ATTACK_WHITELIST} 判断。
+/// 特殊横扫由 {@link BaseSwordItem.ModifierBuilder#specialSweep()} 控制，也就是下方配置链中的 setSpecialSweep()。
+/// 不通过 BOARD_SWORD 预设定义的剑，需要使用 {@link SwordPrefabs#withSpecialSweep()} 补上横扫行为。
+public class SwordItems {
     public static void init() {}
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    // 铂金以上剑参考数值为 泰拉wiki中的伤害÷2后 + 2为基础值
-    // 普通短剑
+    // 铂金及以上剑的参考数值为泰拉 Wiki 伤害除以 2 后再加 2 作为基础值。
+    // 普通短剑。
     public static final PortDeferredItem<BaseSwordItem> COPPER_SHORT_SWORD = register("copper_short_sword", ModTiers.COPPER, 2, 3, ModRarity.WHITE, () -> SHORT_SWORD.get()
             .addTooltip(p -> p.withColor(0x984c11))
             .addTooltip(p -> p.withColor(0x984c11)));
@@ -171,7 +170,7 @@ public class SwordItems { // todo sword
     public static final PortDeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, () -> BOARD_SWORD.apply(1.0F)
             .addAttributeModifier(PortAttributesExtension.entityInteractionRange(), 7, PortAttributeModifier.Operation.ADD_VALUE).hasImage()
             .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
-                    1, 0.3f, 1, 50, 0f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(),
+                    1, 0.0F, 0.3f, 1, 50, 0f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(),
                     Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8f, 0.2f, Optional.empty(), 0.1)),
                     ForwardGeneration.of(0, 0)
             ))));

@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.server.dedicated;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.dedicated.DedicatedServerProperties;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -12,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Properties;
+
 @Mixin(DedicatedServerProperties.class)
 public abstract class DedicatedServerPropertiesMixin {
     @Mutable
@@ -19,10 +20,11 @@ public abstract class DedicatedServerPropertiesMixin {
     @Final
     public WorldOptions worldOptions;
 
-    @Inject(method = "<init>", at = @At(value = "NEW", target = "(Lcom/google/gson/JsonObject;Ljava/lang/String;)Lnet/minecraft/server/dedicated/DedicatedServerProperties$WorldDimensionData;"))
-    private void modify(CallbackInfo ci, @Local String s) {
-        if (!s.isEmpty()) {
-            this.worldOptions = ModSecretSeeds.matchSeed(s, worldOptions).left();
+    @Inject(method = "<init>", at = @At("RETURN"))
+    private void modify(Properties properties, CallbackInfo ci) {
+        String seed = properties.getProperty("level-seed", "");
+        if (!seed.isEmpty()) {
+            this.worldOptions = ModSecretSeeds.matchSeed(seed, worldOptions).left();
         }
     }
 }

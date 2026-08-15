@@ -114,7 +114,14 @@ public class LockBlock extends Block implements EntityBlock {
         @Override
         public void load(CompoundTag tag) {
             super.load(tag);
-            this.matchTool = PortItemPredicateExtension.codec().parse(NbtOps.INSTANCE, tag.get("MatchTool")).result();
+            /*
+             * 没有匹配工具是锁块的合法默认状态，保存时也会省略 MatchTool。
+             * 因此读取当前格式时必须先检查字段，不能把 null 交给编解码器。
+             */
+            this.matchTool = tag.contains("MatchTool")
+                    ? PortItemPredicateExtension.codec()
+                    .parse(NbtOps.INSTANCE, tag.get("MatchTool")).result()
+                    : Optional.empty();
             this.consumeTool = tag.getBoolean("ConsumeTool");
         }
 

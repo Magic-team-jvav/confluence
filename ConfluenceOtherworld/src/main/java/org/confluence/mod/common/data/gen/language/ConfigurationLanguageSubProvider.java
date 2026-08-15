@@ -43,6 +43,9 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Spawning", "Spawning Mechanism");
         add("confluence.configuration.Spawning.button", "Spawning Mechanism");
         add("confluence.configuration.Spawning.tooltip", "Settings related to entity spawning");
+        add("confluence.configuration.spawnWithoutLight", "Ignore Light for Enemy Spawns");
+        add("confluence.configuration.spawnWithoutLight.tooltip",
+                "Allows Confluence enemies to spawn without the vanilla darkness requirement.");
         add("confluence.configuration.Falling Star", "Falling Star");
         add("confluence.configuration.Falling Star.button", "Falling Star");
         add("confluence.configuration.Falling Star.tooltip", "Settings controlling the spawning of falling stars");
@@ -161,6 +164,14 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Gameplay", "Gameplay Mechanics");
         add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
         add("confluence.configuration.Gameplay.tooltip", "Some gameplay mechanics can be defined by you");
+        add("confluence.configuration.AutomaticWeaponUse", "Automatic Weapon Use");
+        add("confluence.configuration.AutomaticWeaponUse.tooltip", "Controls which weapon categories automatically repeat while their input is held");
+        add("confluence.configuration.autoSwingAllSwords", "Auto Swing All Swords");
+        add("confluence.configuration.autoSwingAllSwords.tooltip", "When disabled, only tagged swords or swords enabled by glove accessories can auto swing");
+        add("confluence.configuration.autoReleaseAllBows", "Auto Release All Bows");
+        add("confluence.configuration.autoReleaseAllBows.tooltip", "When disabled, only bows in the automatic bow tag release when fully charged");
+        add("confluence.configuration.autoFireAllGuns", "Auto Fire All Guns");
+        add("confluence.configuration.autoFireAllGuns.tooltip", "When disabled, only guns in the automatic gun tag support hold-to-fire");
         add("confluence.configuration.PlayerDeath", "Player Death Mechanics");
         add("confluence.configuration.PlayerDeath.button", "Player Death Mechanics");
         add("confluence.configuration.PlayerDeath.tooltip", "Defines the effects when a player dies");
@@ -172,6 +183,9 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.ammoSlotsBlacklist.tooltip", "Items with IDs or tags in the blacklist will not automatically enter the ammo slot");
         add("confluence.configuration.shimmerDecompose", "Shimmer Decomposition");
         add("confluence.configuration.shimmerDecompose.tooltip", "When enabled, Shimmer can decompose items into raw materials.");
+        add("confluence.configuration.shimmerDecomposeFirstTagItem", "Use First Tag Item for Shimmer Decomposition");
+        add("confluence.configuration.shimmerDecomposeFirstTagItem.tooltip",
+                "When enabled, Shimmer decomposition uses the first matching ingredient item instead of randomly selecting from tag candidates.");
         add("confluence.configuration.starPhase", "Stellar Phase");
         add("confluence.configuration.starPhase.tooltip", "Currently has no function. Not recommended to enable.");
         add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
@@ -266,10 +280,32 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.minEctoMistEffectRadius", "Min Ecto Mist Effect Radius");
         add("confluence.configuration.minEctoMistEffectRadius.tooltip", "Disables ecto mist effect when set to 0.");
         add("confluence.configuration.customTitle", "Custom Title");
+        add("confluence.configuration.WeaponInput", "Weapon Input");
+        add("confluence.configuration.WeaponInput.button", "Weapon Input");
+        add("confluence.configuration.WeaponInput.tooltip",
+                "Choose the primary action button for each weapon category.");
+        add("confluence.configuration.weaponInputButton.left", "Left Mouse Button");
+        add("confluence.configuration.weaponInputButton.right", "Right Mouse Button");
+        add("confluence.configuration.staffUseButton", "Staff Action Button");
+        add("confluence.configuration.whipUseButton", "Whip Action Button");
+        add("confluence.configuration.yoyoUseButton", "Yoyo Action Button");
+        add("confluence.configuration.gunUseButton", "Gun Action Button");
+        add("confluence.configuration.flailUseButton", "Flail Action Button");
     }
 
     @Override
     public void chinese() {
+        add("confluence.configuration.WeaponInput", "武器输入");
+        add("confluence.configuration.WeaponInput.button", "武器输入");
+        add("confluence.configuration.WeaponInput.tooltip",
+                "分别设置各类武器主要动作使用鼠标左键还是右键。");
+        add("confluence.configuration.weaponInputButton.left", "鼠标左键");
+        add("confluence.configuration.weaponInputButton.right", "鼠标右键");
+        add("confluence.configuration.staffUseButton", "法杖动作按键");
+        add("confluence.configuration.whipUseButton", "鞭子动作按键");
+        add("confluence.configuration.yoyoUseButton", "悠悠球动作按键");
+        add("confluence.configuration.gunUseButton", "枪械动作按键");
+        add("confluence.configuration.flailUseButton", "链锤动作按键");
 // 设置
         add("confluence.configuration.Compatibility", "兼容性机制");
         add("confluence.configuration.Compatibility.button", "关于与其他模组的兼容性设置");
@@ -301,6 +337,9 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Spawning", "生成机制");
         add("confluence.configuration.Spawning.button", "生成机制");
         add("confluence.configuration.Spawning.tooltip", "一些生成相关设置");
+        add("confluence.configuration.spawnWithoutLight", "敌怪生成忽略光照");
+        add("confluence.configuration.spawnWithoutLight.tooltip",
+                "允许本体敌怪跳过原版暗度要求，其余生成条件不受影响。");
         add("confluence.configuration.Falling Star", "坠落之星");
         add("confluence.configuration.Falling Star.button", "坠落之星");
         add("confluence.configuration.Falling Star.tooltip", "控制坠落之星生成相关设置");
@@ -348,6 +387,9 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmerDecompose", "微光分解");
         add("confluence.configuration.shimmerDecompose.tooltip", "启用时，微光液体能将物品分解为原材料");
+        add("confluence.configuration.shimmerDecomposeFirstTagItem", "微光分解优先首个标签物品");
+        add("confluence.configuration.shimmerDecomposeFirstTagItem.tooltip",
+                "启用后，微光分解遇到标签原料时固定使用第一个可用候选，而不是在候选中随机选择。");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.rightClickRideMinecart", "右键上矿车");
@@ -417,6 +459,14 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Gameplay", "游戏机制");
         add("confluence.configuration.Gameplay.button", "游戏机制定义");
         add("confluence.configuration.Gameplay.tooltip", "一些游戏机制可以由你决定");
+        add("confluence.configuration.AutomaticWeaponUse", "武器自动使用");
+        add("confluence.configuration.AutomaticWeaponUse.tooltip", "控制按住对应按键时哪些武器类别会自动重复使用");
+        add("confluence.configuration.autoSwingAllSwords", "所有剑自动挥舞");
+        add("confluence.configuration.autoSwingAllSwords.tooltip", "关闭后，仅标签内的剑或由手套饰品启用的剑可以自动挥舞");
+        add("confluence.configuration.autoReleaseAllBows", "所有弓蓄满自动发射");
+        add("confluence.configuration.autoReleaseAllBows.tooltip", "关闭后，仅自动发射弓标签内的弓会在蓄力完成时发射");
+        add("confluence.configuration.autoFireAllGuns", "所有枪械长按连射");
+        add("confluence.configuration.autoFireAllGuns.tooltip", "关闭后，仅自动枪械标签内的枪械支持长按连射");
         add("confluence.configuration.PlayerDeath", "玩家死亡机制");
         add("confluence.configuration.PlayerDeath.button", "玩家死亡机制");
         add("confluence.configuration.PlayerDeath.tooltip", "定义玩家死亡时的效果");

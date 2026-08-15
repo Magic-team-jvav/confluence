@@ -1,164 +1,358 @@
 package org.confluence.mod.common.entity.monster.slime;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.CanBeHostileCondition;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.SlimeHopAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseMonster;
-import org.confluence.mod.util.DateUtils;
-import org.confluence.mod.util.OverworldUtils;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseSlime extends BaseMonster {
+    protected static final String SIZE_KEY = "SlimeSize";
+    private static final String HONEY_SOAK_TIME_KEY = "HoneySoakTime";
+    private static final int HONEY_SOAK_CHECKS_REQUIRED = 120;
+    private static final EntityDataAccessor<Integer> DATA_SIZE =
+            SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
     protected final int slimeColor;
     protected final boolean passiveByDay;
-    /** 泰拉瑞亚击退抗性百分比，-40 到 100+ */
-    protected final float terrariaKbResist;
-    private long lastHurtTime;
+    private float oldSquish;
+    private float squish;
+    private float targetSquish;
+    private boolean wasOnGround;
+    private int honeySoakTime;
 
     public BaseSlime(EntityType<? extends BaseSlime> type, Level level) {
-        super(type, level);
-        this.slimeColor = 0x48E920;
-        this.passiveByDay = false;
-        this.terrariaKbResist = 0;
+        this(type, level, 0x48E920, false, 2);
     }
 
     protected BaseSlime(EntityType<? extends BaseSlime> type, Level level, int slimeColor) {
-        super(type, level);
-        this.slimeColor = slimeColor;
-        this.passiveByDay = false;
-        this.terrariaKbResist = 0;
+        this(type, level, slimeColor, false, 2);
     }
 
     protected BaseSlime(EntityType<? extends BaseSlime> type, Level level,
                         int slimeColor, boolean passiveByDay) {
-        super(type, level);
-        this.slimeColor = slimeColor;
-        this.passiveByDay = passiveByDay;
-        this.terrariaKbResist = 0;
+        this(type, level, slimeColor, passiveByDay, 2);
     }
 
     public BaseSlime(EntityType<? extends BaseSlime> type, Level level,
-                     int slimeColor, boolean passiveByDay, float terrariaKbResist) {
+                     int slimeColor, boolean passiveByDay, int size) {
         super(type, level);
         this.slimeColor = slimeColor;
         this.passiveByDay = passiveByDay;
-        this.terrariaKbResist = terrariaKbResist;
-    }
-
-    public static boolean checkBlueSlimeSpawnRules(EntityType<BaseSlime> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        if (LibDateUtils.isNight(level) || pos.getY() < OverworldUtils.getUndergroundY())
-            return false;
-        return checkMonsterSpawnRules(type, level, reason, pos, random);
-    }
-
-    public static boolean checkGreenSlimeSpawnRules(EntityType<BaseSlime> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        if (LibDateUtils.isNight(level) || pos.getY() < OverworldUtils.getSurfaceY()) return false;
-        return level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, reason, pos, random);
-    }
-
-    public static boolean checkGreenDumplingSlimeSpawnRules(EntityType<BaseSlime> entityType, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (DateUtils.isQingMing(DateUtils.getLunar())) {
-            int y = pos.getY();
-            return y > 30 && y < 260 && LibDateUtils.isDay(level) && level.canSeeSky(pos);
-        }
-        return false;
-    }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType,
-                                        @Nullable SpawnGroupData data,
-                                        @Nullable CompoundTag tag) {
-        double scale = switch (difficulty.getDifficulty()) {
-            case PEACEFUL, EASY -> 0.75;
-            case NORMAL -> 1.0;
-            case HARD -> 1.5;
-        };
-        if (scale != 1.0) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(
-                    this.getAttribute(Attributes.MAX_HEALTH).getBaseValue() * scale);
-            this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(
-                    this.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue() * scale);
-            this.setHealth(this.getMaxHealth());
-        }
-        return super.finalizeSpawn(level, difficulty, spawnType, data, tag);
+        this.moveControl = new SlimeMoveControl(this);
+        setSlimeSize(size);
     }
 
     /**
-     * 是否处于敌对状态。被动史莱姆在白天且露天时不会主动攻击，除非被激怒。
+     * 保留 1.21 侧原版史莱姆的索敌规则。
+     *
+     * <p>白天被动的颜色变体不会主动寻找玩家，但受击反击仍由
+     * {@link HurtByTargetGoal} 独立处理；玩家与史莱姆的高度差也必须不超过四格。
+     * 铁傀儡使用较低优先级，避免同时存在玩家时改变原有目标选择。</p>
      */
-    public boolean canBeHostile() {
-        if (!passiveByDay) return true;
-        if (level().isNight()) return true;
-        if (!level().canSeeSky(blockPosition())) return true;
-        if (level().getGameTime() - lastHurtTime < 200) return true;
-        return false;
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        targetSelector.removeAllGoals(goal -> true);
+        targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(
+                this,
+                Player.class,
+                10,
+                true,
+                false,
+                this::canProactivelyTargetPlayer));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
+                this, IronGolem.class, true));
+    }
+
+    /**
+     * 判断玩家是否满足史莱姆的主动索敌条件；受击反击不经过此方法。
+     */
+    protected boolean canProactivelyTargetPlayer(LivingEntity player) {
+        return Math.abs(player.getY() - getY()) <= 4.0
+                && (!passiveByDay || level().isNight());
     }
 
     @Override
-    public boolean hurt(DamageSource source, float amount) {
-        boolean result = super.hurt(source, amount);
-        if (result && !level().isClientSide) {
-            lastHurtTime = level().getGameTime();
-            if (source.getEntity() instanceof LivingEntity attacker) {
-                setTarget(attacker);
-            }
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(DATA_SIZE, 2);
+    }
+
+    /**
+     * 返回服务端权威并同步到客户端的史莱姆大小。
+     *
+     * <p>该值同时驱动碰撞箱和模型尺寸；特殊变体只需修改这一处，不能再分别维护渲染缩放和逻辑体积。</p>
+     */
+    public int getSlimeSize() {
+        return entityData.get(DATA_SIZE);
+    }
+
+    protected void setSlimeSize(int size) {
+        int clampedSize = Mth.clamp(size, 1, 4);
+        entityData.set(DATA_SIZE, clampedSize);
+        refreshDimensions();
+        var movementSpeed = getAttribute(Attributes.MOVEMENT_SPEED);
+        if (movementSpeed != null) {
+            movementSpeed.setBaseValue(0.2F + 0.1F * clampedSize);
         }
-        return result;
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (DATA_SIZE.equals(key)) {
+            refreshDimensions();
+        }
+    }
+
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        float logicalSize = 0.52F * getSlimeSize();
+        return EntityDimensions.scalable(logicalSize, logicalSize).scale(getVisualScale());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt(SIZE_KEY, getSlimeSize());
+        tag.putInt(HONEY_SOAK_TIME_KEY, honeySoakTime);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains(SIZE_KEY, net.minecraft.nbt.Tag.TAG_INT)) {
+            setSlimeSize(tag.getInt(SIZE_KEY));
+        }
+        if (tag.contains(HONEY_SOAK_TIME_KEY, net.minecraft.nbt.Tag.TAG_INT)) {
+            honeySoakTime = Mth.clamp(
+                    tag.getInt(HONEY_SOAK_TIME_KEY), 0, HONEY_SOAK_CHECKS_REQUIRED);
+        }
+    }
+
+    /**
+     * 按史莱姆类型执行 1.21 侧现有的自然生成分层规则。
+     *
+     * <p>生物群系数据只决定某种史莱姆能否进入候选列表；亮度、高度、昼夜和露天条件仍在
+     * 此处统一判定。未列入任何分支的类型保持不可自然生成，包括虽然注册了放置规则、但
+     * 1.21 当前没有为其提供有效环境分支的青团史莱姆。</p>
+     */
+    public static boolean checkSlimeSpawn(EntityType<? extends Mob> type,
+                                          ServerLevelAccessor level,
+                                          MobSpawnType spawnType,
+                                          BlockPos pos,
+                                          RandomSource random) {
+        if (!(level instanceof Level world)
+                || !SpawnPlacementChecks.checkMonsterSpawnRules(
+                type, level, spawnType, pos, random)) {
+            return false;
+        }
+
+        int y = pos.getY();
+        if (type == MonsterEntities.YELLOW_SLIME.get()
+                || type == MonsterEntities.RED_SLIME.get()
+                || type == MonsterEntities.DESERT_SLIME.get()) {
+            return level.getBrightness(LightLayer.SKY, pos) == 0 && y >= 0 && y < 40;
+        }
+        if (type == MonsterEntities.BLACK_SLIME.get()
+                || type == MonsterEntities.DUNGEON_SLIME.get()) {
+            return level.getBrightness(LightLayer.SKY, pos) == 0 && y <= 40;
+        }
+        if (type == MonsterEntities.LAVA_SLIME.get()) {
+            return y >= 30 && y < 100;
+        }
+        if (type == MonsterEntities.BLUE_SLIME.get()
+                || type == MonsterEntities.GREEN_SLIME.get()
+                || type == MonsterEntities.PURPLE_SLIME.get()
+                || type == MonsterEntities.ICE_SLIME.get()
+                || type == MonsterEntities.JUNGLE_SLIME.get()
+                || type == MonsterEntities.PINK_SLIME.get()
+                || type == MonsterEntities.SWAMP_SLIME.get()
+                || type == MonsterEntities.TROPIC_SLIME.get()) {
+            return y >= 40 && y < 260 && world.isDay() && level.canSeeSky(pos);
+        }
+        return false;
     }
 
     @Override
     protected BTRoot createBT() {
-        BTNode combat = SequenceNode.of(
-                new HasTargetCondition(this),
-                new SlimeHopAction(this, true));
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() {
+                return new SlimeLocomotionAction(BaseSlime.this);
+            }
+        };
+    }
 
-        BTNode idle = SequenceNode.of(
-                new WaitAction(20 + random.nextInt(40)),
-                new SlimeHopAction(this, false));
-
-        if (passiveByDay) {
-            return new BTRoot() {
-                @Override
-                protected BTNode createTree() {
-                    return SelectorNode.of(
-                            SequenceNode.of(new CanBeHostileCondition(BaseSlime.this), combat),
-                            idle);
-                }
-            };
-        } else {
-            return new BTRoot() {
-                @Override
-                protected BTNode createTree() {
-                    return SelectorNode.of(combat, idle);
-                }
-            };
-        }
+    /**
+     * 返回下一次落地起跳前的等待时间。
+     *
+     * <p>普通史莱姆沿用原版的十至二十九刻随机间隔；进入攻击状态后，移动控制器会把
+     * 该间隔缩短为三分之一。仅金史莱姆等在 1.21 侧明确覆盖此值的变体需要重写。</p>
+     */
+    protected int getJumpDelay() {
+        return random.nextInt(20) + 10;
     }
 
     @Override
     public void tick() {
+        if (!level().isClientSide && tickCount % 20 == 0) {
+            updateHoneySoaking();
+            if (isRemoved()) {
+                return;
+            }
+        }
+        oldSquish = squish;
+        boolean groundedBeforeTick = onGround();
         super.tick();
-        if (!level().isClientSide && getTarget() == null && canBeHostile() && tickCount % 40 == 0) {
-            setTarget(level().getNearestPlayer(this, 16));
+        if (onGround() && !groundedBeforeTick) {
+            targetSquish = -0.5F;
+        } else if (!onGround() && wasOnGround) {
+            targetSquish = 1.0F;
+        }
+        squish += (targetSquish - squish) * 0.5F;
+        targetSquish *= 0.6F;
+        wasOnGround = onGround();
+    }
+
+    /**
+     * 连续驱动史莱姆移动的行为节点。
+     *
+     * <p>它对应 1.21 侧原版史莱姆同时运行的漂浮、攻击、随机转向和持续跳跃四个目标，
+     * 但仍作为新架构中的单一行为树节点执行。节点不会把一次跳跃拆成“蓄力—起跳—落地—
+     * 长时间等待”的离散任务，因此转向、追击速度和落地后的下一跳节奏与原实现一致。</p>
+     */
+    private static final class SlimeLocomotionAction extends BTNode {
+        private final BaseSlime slime;
+        private float idleDirection;
+        private int directionChangeDelay;
+
+        private SlimeLocomotionAction(BaseSlime slime) {
+            this.slime = slime;
+            this.idleDirection = slime.getYRot();
+        }
+
+        @Override
+        public BTStatus execute() {
+            if (!(slime.getMoveControl() instanceof SlimeMoveControl control)) {
+                return BTStatus.FAILURE;
+            }
+
+            if (slime.isInWater() || slime.isInLava()) {
+                if (slime.getRandom().nextFloat() < 0.8F) {
+                    slime.getJumpControl().jump();
+                }
+                control.setWantedMovement(1.2);
+                return BTStatus.RUNNING;
+            }
+
+            LivingEntity target = slime.getTarget();
+            if (target != null && target.isAlive() && slime.canAttack(target)) {
+                slime.lookAt(target, 10.0F, 10.0F);
+                control.setDirection(slime.getYRot(), slime.isEffectiveAi());
+                control.setWantedMovement(1.0);
+                return BTStatus.RUNNING;
+            }
+
+            if (!slime.isPassenger()
+                    && (slime.onGround() || slime.hasEffect(net.minecraft.world.effect.MobEffects.LEVITATION))) {
+                if (--directionChangeDelay <= 0) {
+                    directionChangeDelay = 40 + slime.getRandom().nextInt(60);
+                    idleDirection = slime.getRandom().nextInt(360);
+                }
+                control.setDirection(idleDirection, false);
+                control.setWantedMovement(1.0);
+            }
+            return BTStatus.RUNNING;
+        }
+    }
+
+    /**
+     * 复刻原版史莱姆的移动控制器。行为树只提供朝向、速度和是否处于攻击状态；真正的
+     * 落地等待、起跳和空中续速都在这里连续推进，避免每一刻直接改写水平速度造成弹跳。
+     */
+    private static final class SlimeMoveControl extends MoveControl {
+        private final BaseSlime slime;
+        private float wantedYRot;
+        private int jumpDelay;
+        private boolean aggressive;
+
+        private SlimeMoveControl(BaseSlime slime) {
+            super(slime);
+            this.slime = slime;
+            this.wantedYRot = 180.0F * slime.getYRot() / Mth.PI;
+        }
+
+        private void setDirection(float yRot, boolean aggressive) {
+            this.wantedYRot = yRot;
+            this.aggressive = aggressive;
+        }
+
+        private void setWantedMovement(double speed) {
+            speedModifier = speed;
+            operation = Operation.MOVE_TO;
+        }
+
+        @Override
+        public void tick() {
+            mob.setYRot(rotlerp(mob.getYRot(), wantedYRot, 90.0F));
+            mob.setYHeadRot(mob.getYRot());
+            mob.setYBodyRot(mob.getYRot());
+            if (operation != Operation.MOVE_TO) {
+                mob.setZza(0.0F);
+                return;
+            }
+
+            operation = Operation.WAIT;
+            float speed = (float) (speedModifier
+                    * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            if (!mob.onGround()) {
+                mob.setSpeed(speed);
+                return;
+            }
+
+            mob.setSpeed(speed);
+            if (jumpDelay-- <= 0) {
+                jumpDelay = slime.getJumpDelay();
+                if (aggressive) {
+                    jumpDelay /= 3;
+                }
+                slime.getJumpControl().jump();
+                slime.playSound(
+                        SoundEvents.SLIME_JUMP,
+                        slime.getSoundVolume(),
+                        ((slime.getRandom().nextFloat() - slime.getRandom().nextFloat())
+                                * 0.2F + 1.0F) * 0.8F);
+                return;
+            }
+
+            slime.setXxa(0.0F);
+            slime.setZza(0.0F);
+            mob.setSpeed(0.0F);
         }
     }
 
@@ -174,6 +368,71 @@ public class BaseSlime extends BaseMonster {
             onAttackTarget(living);
         }
         return result;
+    }
+
+    /**
+     * 处理原版史莱姆式接触攻击。
+     *
+     * <p>跳跃行为树只负责移动；玩家碰撞和铁傀儡推挤才是攻击入口。这样不会把伤害
+     * 频率绑在某一种跳跃实现上，也能继续使用受伤无敌帧限制连续碰撞伤害。</p>
+     */
+    protected void dealContactDamage(LivingEntity target) {
+        if (!level().isClientSide
+                && isAlive()
+                && isEffectiveAi()
+                && isWithinMeleeAttackRange(target)
+                && hasLineOfSight(target)
+                && doHurtTarget(target)) {
+            playSound(SoundEvents.SLIME_ATTACK, 1.0F,
+                    (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        }
+    }
+
+    /**
+     * 每秒检查一次蜂蜜浸泡状态。只有 1.21 侧明确支持的绿、蓝、紫三种史莱姆参与转化，
+     * 离开蜂蜜后进度立即清零；完成时由服务端原位替换为二号蜂蜜史莱姆。
+     */
+    private void updateHoneySoaking() {
+        if (!canConvertFromHoney()
+                || !level().getBlockState(blockPosition()).is(ModTags.Blocks.HONEY)) {
+            honeySoakTime = 0;
+            return;
+        }
+        if (++honeySoakTime < HONEY_SOAK_CHECKS_REQUIRED) {
+            return;
+        }
+
+        HoneySlime honeySlime = MonsterEntities.HONEY_SLIME.get().create(level());
+        if (honeySlime == null) {
+            return;
+        }
+        honeySlime.setSlimeSize(2);
+        honeySlime.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
+        if (hasCustomName()) {
+            honeySlime.setCustomName(getCustomName());
+        }
+        level().addFreshEntity(honeySlime);
+        discard();
+    }
+
+    private boolean canConvertFromHoney() {
+        EntityType<?> type = getType();
+        return type == MonsterEntities.GREEN_SLIME.get()
+                || type == MonsterEntities.BLUE_SLIME.get()
+                || type == MonsterEntities.PURPLE_SLIME.get();
+    }
+
+    @Override
+    public void playerTouch(Player player) {
+        dealContactDamage(player);
+    }
+
+    @Override
+    public void push(Entity entity) {
+        super.push(entity);
+        if (entity instanceof IronGolem ironGolem) {
+            dealContactDamage(ironGolem);
+        }
     }
 
     /** 是否免疫火焰伤害 */
@@ -208,7 +467,7 @@ public class BaseSlime extends BaseMonster {
             resetFallDistance();
         }
         if (hurtByWater() && isInWater()) {
-            hurt(damageSources().drown(), 2.0F);
+            hurt(damageSources().freeze(), 0.8F);
         }
     }
 
@@ -218,79 +477,88 @@ public class BaseSlime extends BaseMonster {
         return super.isInWater();
     }
 
-    @org.jetbrains.annotations.Nullable
-    protected ParticleOptions getGelParticle() {
-        return null;
+    /**
+     * 客户端模型缩放值，供使用同一实体类型表达不同年龄的史莱姆家族使用。
+     */
+    public float getVisualScale() {
+        return 1.0F;
+    }
+
+    /**
+     * 普通史莱姆在 1.21 侧使用原版尺寸 2；年龄或特殊变体可继续通过
+     * {@link #getVisualScale()} 调整最终大小。
+     */
+    public float getVisualSize() {
+        return getSlimeSize() * getVisualScale();
+    }
+
+    /**
+     * 上一游戏刻的挤压值，供客户端在两刻之间插值。
+     */
+    public float getOldSquish() {
+        return oldSquish;
+    }
+
+    /**
+     * 当前游戏刻的挤压值。
+     */
+    public float getSquish() {
+        return squish;
     }
 
     // === 属性工厂方法 ===
 
-    /**
-     * @param terrariaKbResist 泰拉瑞亚击退抗性百分比，范围 -40 到 100+。
-     *                         负值在 {@link #knockback} 中处理，非负值映射到 KNOCKBACK_RESISTANCE。
-     */
     protected static AttributeSupplier.Builder createSlimeAttributes(
-            float attackDamage, int armor, float maxHealth, float terrariaKbResist) {
-        double mcKb = Math.max(0.0, terrariaKbResist / 100.0);
+            float attackDamage, int armor, float maxHealth) {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, maxHealth)
                 .add(Attributes.ATTACK_DAMAGE, attackDamage)
                 .add(Attributes.ARMOR, (double) armor)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
-                .add(Attributes.FOLLOW_RANGE, 16.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, mcKb);
-    }
-
-    @Override
-    public void knockback(double strength, double x, double z) {
-        if (terrariaKbResist < 0) {
-            super.knockback(strength * (1.0 - terrariaKbResist / 100.0), x, z);
-        } else {
-            super.knockback(strength, x, z);
-        }
+                .add(Attributes.FOLLOW_RANGE, 16.0);
     }
 
     public static AttributeSupplier.Builder createGreenAttributes() {
-        return createSlimeAttributes(3.0f, 0, 9.0f, -20);
+        return createSlimeAttributes(3.0f, 0, 9.0f);
     }
 
     public static AttributeSupplier.Builder createBlueAttributes() {
-        return createSlimeAttributes(4.0f, 2, 16.0f, 0);
+        return createSlimeAttributes(4.0f, 2, 16.0f);
     }
 
     public static AttributeSupplier.Builder createRedAttributes() {
-        return createSlimeAttributes(5.0f, 4, 25.0f, 10);
+        return createSlimeAttributes(5.0f, 4, 25.0f);
     }
 
     public static AttributeSupplier.Builder createPurpleAttributes() {
-        return createSlimeAttributes(5.0f, 6, 25.0f, 10);
+        return createSlimeAttributes(5.0f, 6, 25.0f);
     }
 
     public static AttributeSupplier.Builder createYellowAttributes() {
-        return createSlimeAttributes(6.0f, 7, 25.0f, 10);
+        return createSlimeAttributes(6.0f, 7, 25.0f);
     }
 
     public static AttributeSupplier.Builder createDungeonAttributes() {
-        return createSlimeAttributes(15.6f, 2, 150.0f, 50);
+        return createSlimeAttributes(15.6f, 2, 78.0f);
     }
 
     public static AttributeSupplier.Builder createDesertAttributes() {
-        return createSlimeAttributes(6.0f, 5, 21.0f, 20);
+        return createSlimeAttributes(6.0f, 5, 21.0f);
     }
 
     public static AttributeSupplier.Builder createJungleAttributes() {
-        return createSlimeAttributes(12.0f, 6, 46.0f, 30);
+        return createSlimeAttributes(12.0f, 6, 46.0f);
     }
 
     public static AttributeSupplier.Builder createEvilAttributes() {
-        return createSlimeAttributes(29.0f, 2, 58.0f, 40);
+        return createSlimeAttributes(29.0f, 2, 58.0f);
     }
 
     public static AttributeSupplier.Builder createGreenDumplingAttributes() {
-        return createSlimeAttributes(5.0f, 0, 25.0f, -10);
+        return createSlimeAttributes(5.0f, 0, 25.0f);
     }
 
     public static AttributeSupplier.Builder createSwampAttributes() {
-        return createSlimeAttributes(5.0f, 1, 25.0f, 10);
+        return createSlimeAttributes(5.0f, 1, 25.0f);
     }
 }

@@ -32,7 +32,6 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -70,26 +69,44 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         public ExtraInventory decode(PortRegistryFriendlyByteBuf buffer) {
             ExtraInventory extraInventory = new ExtraInventory(false);
             int accessoryDye = buffer.readVarInt();
-            int size = SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye;
+            if (accessoryDye < 0) {
+                throw new IllegalArgumentException("Extra inventory accessory dye count must be non-negative");
+            }
+            int encodedSize = buffer.readVarInt();
+            long expectedSize = (long) SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye;
+            if (expectedSize != encodedSize) {
+                throw new IllegalArgumentException(
+                        "Extra inventory item count must be " + expectedSize + ", got " + encodedSize);
+            }
+            // 每个可选物品栈至少占用一个字节；先用剩余包长约束分配，避免畸形计数触发超大数组。
+            if (encodedSize > buffer.readableBytes()) {
+                throw new IllegalArgumentException(
+                        "Extra inventory item count exceeds the remaining packet size");
+            }
+            int size = encodedSize;
             extraInventory.initialized = true;
             extraInventory.accessoryDye = NonNullList.withSize(accessoryDye, ItemStack.EMPTY);
             extraInventory.previousStacks = NonNullList.withSize(size, ItemStack.EMPTY);
             extraInventory.dirty = false;
-            List<ItemStack> list = PortItemStackExtension.optionalListStreamCodec().decode(buffer);
             for (int i = 0; i < size; i++) {
-                extraInventory.setItem(i, list.get(i));
+                extraInventory.setItem(i, PortItemStackExtension.optionalStreamCodec().decode(buffer));
             }
+            // 解码过程会通过 setItem 标记变更；完整快照落地后应以干净状态开始。
+            extraInventory.dirty = false;
             return extraInventory;
         }
 
         @Override
         public void encode(PortRegistryFriendlyByteBuf buffer, ExtraInventory extraInventory) {
-            buffer.writeVarInt(extraInventory.getSizeAccessoryDye());
-            List<ItemStack> list = new ArrayList<>();
-            for (int i = 0; i < extraInventory.getContainerSize(); i++) {
-                list.add(i, extraInventory.getItem(i));
+            int accessoryDyes = extraInventory.getSizeAccessoryDye();
+            if (accessoryDyes < 0) {
+                throw new IllegalArgumentException("Extra inventory accessory dye count must be non-negative");
             }
-            PortItemStackExtension.optionalListStreamCodec().encode(buffer, list);
+            buffer.writeVarInt(accessoryDyes);
+            buffer.writeVarInt(extraInventory.getContainerSize());
+            for (int i = 0; i < extraInventory.getContainerSize(); i++) {
+                PortItemStackExtension.optionalStreamCodec().encode(buffer, extraInventory.getItem(i));
+            }
         }
     };
 
@@ -116,7 +133,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         return accessoryDye.size();
     }
 
-    // todo geckolib
+    // GeckoLib 盔甲渲染适配尚未迁入当前附加背包实现。
     public ItemStack getVanityArmor(int index, boolean dye) {
         validateIndex(index, SIZE_VANITY_ARMOR);
         IStackWithDye stack = vanityArmor.get(index);
@@ -182,6 +199,13 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         return getEquipment(HOOK_INDEX, dye);
     }
 
+    /**
+     * 返回坐骑槽或对应染料槽的当前物品。
+     */
+    public ItemStack getMount(boolean dye) {
+        return getEquipment(MOUNT_INDEX, dye);
+    }
+
     public void setEquipment(int index, ItemStack stack, boolean dye) {
         validateIndex(index, SIZE_EQUIPMENT);
         if (dye) equipment.set(index, equipment.get(index).setDye(stack));
@@ -211,7 +235,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
 
     private static void validateIndex(int index, int size) {
         if (index < 0 || index >= size) {
-            throw new RuntimeException("Slot " + index + " not in valid range - [0," + size + ")");
+            throw new RuntimeException("Slot " + index + " is outside [0, " + size + ")");
         }
     }
 
@@ -264,11 +288,17 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
     }
 
     public void updateAccessorySize(Player player, int accessoryDye) {
+        if (accessoryDye < 0) {
+            throw new IllegalArgumentException("Extra inventory accessory dye count must be non-negative");
+        }
         setAccessoryDyes(player, accessoryDye);
         this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
     }
 
     public void setAccessoryDyes(Player player, int sizeCurrent) {
+        if (sizeCurrent < 0) {
+            throw new IllegalArgumentException("Extra inventory accessory dye count must be non-negative");
+        }
         int sizeBefore = accessoryDye.size();
         NonNullList<ItemStack> itemStacks = NonNullList.withSize(sizeCurrent, ItemStack.EMPTY);
         if (!player.isLocalPlayer() && sizeBefore > sizeCurrent) {
@@ -313,27 +343,32 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        if (nbt.getBoolean("confluence:fixed")) {
-            RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
-            ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
-            for (int i = 0; i < vanityArmor.size(); i++) {
-                vanityArmor.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
-            }
-            decodeList(coin, nbt.getList("Coin", Tag.TAG_COMPOUND), ops);
-            decodeList(ammo, nbt.getList("Ammo", Tag.TAG_COMPOUND), ops);
-            t = nbt.getList("Equipment", Tag.TAG_COMPOUND);
-            for (int i = 0; i < equipment.size(); i++) {
-                equipment.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
-            }
-            this.trash = decode(nbt.getCompound("Trash"), ops);
-            t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
-            encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
+        if (!nbt.getBoolean("confluence:fixed")) {
+            // 1.20 只接受当前格式；无版本标记的内容不作旧 NBT 迁移，并必须清除可能残留的旧实例状态。
+            resetStoredContents();
+            return;
         }
+
+        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
+        ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
+        for (int i = 0; i < vanityArmor.size(); i++) {
+            vanityArmor.set(i, i < t.size() ? StackWithDye.DEFAULT.decode(t.getCompound(i), ops) : StackWithDye.DEFAULT);
+        }
+        decodeList(coin, nbt.getList("Coin", Tag.TAG_COMPOUND), ops);
+        decodeList(ammo, nbt.getList("Ammo", Tag.TAG_COMPOUND), ops);
+        t = nbt.getList("Equipment", Tag.TAG_COMPOUND);
+        for (int i = 0; i < equipment.size(); i++) {
+            equipment.set(i, i < t.size() ? StackWithDye.DEFAULT.decode(t.getCompound(i), ops) : StackWithDye.DEFAULT);
+        }
+        this.trash = decode(nbt.getCompound("Trash"), ops);
+        t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
+        decodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), t, ops);
+        this.dirty = true;
     }
 
     private static void decodeList(NonNullList<ItemStack> list, ListTag tag, DynamicOps<Tag> ops) {
         for (int i = 0; i < list.size(); i++) {
-            list.set(i, decode(tag.getCompound(i), ops));
+            list.set(i, i < tag.size() ? decode(tag.getCompound(i), ops) : ItemStack.EMPTY);
         }
     }
 
@@ -342,16 +377,36 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
     }
 
     public void copyFrom(ExtraInventory other) {
-        this.vanityArmor = other.vanityArmor;
-        this.coin = other.coin;
-        this.ammo = other.ammo;
-        this.equipment = other.equipment;
-        this.trash = other.trash;
-        this.accessoryDye = other.accessoryDye;
+        // 玩家克隆与网络快照都必须拥有独立可变状态，不能与源附件共享列表或 ItemStack。
+        this.vanityArmor = copyStackWithDyeList(other.vanityArmor);
+        this.coin = copyItemList(other.coin);
+        this.ammo = copyItemList(other.ammo);
+        this.equipment = copyStackWithDyeList(other.equipment);
+        this.trash = other.trash.copy();
+        this.accessoryDye = copyItemList(other.accessoryDye);
 
         this.initialized = other.initialized;
-        this.previousStacks = other.previousStacks;
+        this.previousStacks = other.previousStacks == null
+                ? NonNullList.withSize(getContainerSize(), ItemStack.EMPTY)
+                : copyItemList(other.previousStacks);
         this.dirty = other.dirty;
+    }
+
+    private static NonNullList<ItemStack> copyItemList(List<ItemStack> source) {
+        NonNullList<ItemStack> copy = NonNullList.withSize(source.size(), ItemStack.EMPTY);
+        for (int i = 0; i < source.size(); i++) {
+            copy.set(i, source.get(i).copy());
+        }
+        return copy;
+    }
+
+    private static NonNullList<IStackWithDye> copyStackWithDyeList(List<IStackWithDye> source) {
+        NonNullList<IStackWithDye> copy = NonNullList.withSize(source.size(), StackWithDye.DEFAULT);
+        for (int i = 0; i < source.size(); i++) {
+            IStackWithDye stack = source.get(i);
+            copy.set(i, new StackWithDye(stack.getStack().copy(), stack.getDye().copy()));
+        }
+        return copy;
     }
 
     public void setDirty() {
@@ -387,9 +442,21 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
 
     @Override
     public ItemStack removeItem(int slot, int amount) {
-        ItemStack stack = removeItemNoUpdate(slot);
-        setDirty();
-        return stack;
+        if (amount <= 0) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack stored = getItem(slot);
+        if (stored.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack removed = stored.split(amount);
+        if (stored.isEmpty()) {
+            setItem(slot, ItemStack.EMPTY);
+        } else {
+            setChanged();
+        }
+        return removed;
     }
 
     @Override
@@ -437,7 +504,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         for (ItemStack stack : accessoryDye) {
             if (!stack.isEmpty()) return false;
         }
-        return true;
+        return trash.isEmpty();
     }
 
     @Override
@@ -452,12 +519,17 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
 
     @Override
     public void clearContent() {
+        resetStoredContents();
+    }
+
+    private void resetStoredContents() {
         vanityArmor.clear();
         coin.clear();
         ammo.clear();
         equipment.clear();
         this.trash = ItemStack.EMPTY;
         accessoryDye.clear();
+        setChanged();
     }
 
     public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {

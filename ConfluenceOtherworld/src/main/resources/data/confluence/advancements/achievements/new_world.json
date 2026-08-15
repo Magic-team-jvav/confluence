@@ -1,0 +1,43 @@
+{
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "player": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type_specific": {
+                                "type": "player",
+                                "gamemode": "survival"
+                            }
+                        }
+                    }
+                ]
+            },
+            "trigger": "minecraft:location"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+        "description": {
+            "translate": "achievements.confluence.new_world.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:copper_short_sword"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.new_world.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": true
+}

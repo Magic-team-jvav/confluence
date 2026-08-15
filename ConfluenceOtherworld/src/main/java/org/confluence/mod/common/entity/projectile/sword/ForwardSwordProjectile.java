@@ -2,8 +2,13 @@ package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
+/**
+ * 带逐 tick 速度倍率的直线剑气。
+ *
+ * <p>父类已经用本 tick 的完整移动向量执行一次原版 swept collision，并完成唯一一次位置更新。
+ * 本类只为下一 tick 调整速度，不能再次修改位置，否则会产生一段没有碰撞检测的额外位移。</p>
+ */
 public class ForwardSwordProjectile extends SwordProjectile {
     public ForwardSwordProjectile(EntityType<? extends ForwardSwordProjectile> type, Level level) {
         super(type, level);
@@ -12,18 +17,10 @@ public class ForwardSwordProjectile extends SwordProjectile {
     @Override
     public void tick() {
         super.tick();
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        float accelerate;
-        if (projComponent != null) {
-            accelerate = projComponent.acceleration();
-        } else {
-            accelerate = 0.8f;
+        if (isRemoved()) {
+            return;
         }
-
-        setDeltaMovement(vec3.scale(accelerate));
-        setPos(offX, offY, offZ);
+        float acceleration = projComponent == null ? 0.8F : projComponent.acceleration();
+        setDeltaMovement(getDeltaMovement().scale(acceleration));
     }
 }

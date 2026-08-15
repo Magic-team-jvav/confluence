@@ -1,24 +1,44 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
+import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.ShootAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
+import org.confluence.mod.common.init.entity.ModEntities;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 
+/**
+ * 丛林黄蜂。
+ *
+ * <p>黄蜂的射击与战斗走位是 1.21 中独立于普通飞行预制体的特例：射击前停止导航并
+ * 转正，发射后按固定周期重新寻找悬空路径。相关计时保留在实体专用节点中，避免为单个
+ * 特例增加公共飞行参数。</p>
+ */
 public class Hornet extends BaseFlyingMonster {
+    private static final RawAnimation IDLE =
+            RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation ATTACK =
+            RawAnimation.begin().thenPlay("attack.cast");
 
     public Hornet(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
+        this.moveControl = new FlyingMoveControl(this, 20, true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -33,28 +53,190 @@ public class Hornet extends BaseFlyingMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(Hornet.this),
-                                new ShootAction(Hornet.this, 6.0f, 0.4f), new WaitAction(25)),
-                        SequenceNode.of(new HasTargetCondition(Hornet.this),
-                                new FlyWanderAction(Hornet.this, 0.4, 8)),
-                        new FlyWanderAction(Hornet.this, 0.2, 6)
-                );
+                        new HornetCombatNode(),
+                        new HornetWanderNode());
             }
         };
     }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+    HornetStingerProjectile createStinger(LivingEntity target) {
+        HornetStingerProjectile projectile = new HornetStingerProjectile(
+                ModEntities.HORNET_STINGER.get(), level());
+        Vec3 origin = position();
+        Vec3 aim = new Vec3(
+                target.getX() - getX(),
+                target.getY() + target.getEyeHeight() * 0.5F - getY(),
+                target.getZ() - getZ());
+        projectile.configure(
+                this,
+                origin,
+                aim,
+                (float) getAttributeValue(Attributes.ATTACK_DAMAGE),
+                5.0F,
+                0);
+        swing(InteractionHand.MAIN_HAND);
+        return projectile;
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (!level().isClientSide && getTarget() == null && tickCount % 20 == 0) {
-            Player nearest = level().getNearestPlayer(this, 32);
-            if (nearest != null) setTarget(nearest);
+    public void registerControllers(
+            AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(
+                this,
+                "Idle/Attack",
+                3,
+                state -> state.setAndContinue(
+                        swinging ? ATTACK : IDLE)));
+    }
+
+    @Override
+    protected boolean hasPushableBody() {
+        return true;
+    }
+
+    /**
+     * 黄蜂可以穿过门洞，但不会把水面当作可漂浮路径。
+     */
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level) {
+            @Override
+            public boolean isStableDestination(BlockPos position) {
+                return !this.level.getBlockState(position.below()).isAir();
+            }
+        };
+        navigation.setCanOpenDoors(false);
+        navigation.setCanFloat(false);
+        navigation.setCanPassDoors(true);
+        return navigation;
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
+
+    private final class HornetCombatNode extends BTNode {
+        private static final int SHOOT_INTERVAL = 25;
+        private static final int REPATH_RESET = 200;
+        private static final int REPATH_THRESHOLD = 175;
+        private static final double FIRE_ANGLE = 0.1;
+
+        private int shootCooldown;
+        private int repathTicks;
+        private boolean aiming;
+
+        @Override
+        public void start() {
+            aiming = false;
         }
+
+        @Override
+        public BTStatus execute() {
+            LivingEntity target = getTarget();
+            if (target == null || !target.isAlive()) {
+                aiming = false;
+                return BTStatus.FAILURE;
+            }
+
+            if (aiming) {
+                lookAtTarget(target, 10.0F, 89.0F);
+                if (angleBetween(
+                        getLookAngle(),
+                        target.getEyePosition().subtract(getEyePosition()))
+                        < FIRE_ANGLE) {
+                    HornetStingerProjectile projectile = createStinger(target);
+                    level().addFreshEntity(projectile);
+                    shootCooldown = SHOOT_INTERVAL;
+                    aiming = false;
+                }
+                return BTStatus.RUNNING;
+            }
+
+            if (--shootCooldown <= 0) {
+                getNavigation().stop();
+                aiming = true;
+                return BTStatus.RUNNING;
+            }
+
+            if (--repathTicks <= 0 || repathTicks < REPATH_THRESHOLD) {
+                Vec3 destination = findFlightPosition(6, 3);
+                if (destination != null) {
+                    swing(InteractionHand.MAIN_HAND);
+                    getNavigation().moveTo(destination.x, destination.y,
+                            destination.z, 1.5);
+                }
+                repathTicks = REPATH_RESET;
+            }
+            lookAtTarget(target, 360.0F, 360.0F);
+            return BTStatus.RUNNING;
+        }
+
+        @Override
+        public void stop() {
+            aiming = false;
+        }
+    }
+
+    /**
+     * 无战斗目标时使用的原版黄蜂悬空游荡节点。
+     * 幼蜂沿用同一套路径选择，只替换战斗节点。
+     */
+    protected class HornetWanderNode extends BTNode {
+        private boolean moving;
+
+        @Override
+        public void start() {
+            moving = false;
+        }
+
+        @Override
+        public BTStatus execute() {
+            if (getTarget() != null) {
+                return BTStatus.FAILURE;
+            }
+            if (moving) {
+                return getNavigation().isInProgress()
+                        ? BTStatus.RUNNING
+                        : BTStatus.SUCCESS;
+            }
+            if (!getNavigation().isDone() || getRandom().nextInt(10) != 0) {
+                return BTStatus.SUCCESS;
+            }
+            Vec3 destination = findFlightPosition(3, 1);
+            if (destination == null) {
+                return BTStatus.SUCCESS;
+            }
+            moving = getNavigation().moveTo(
+                    destination.x, destination.y, destination.z, 1.0);
+            return moving ? BTStatus.RUNNING : BTStatus.SUCCESS;
+        }
+    }
+
+    protected final Vec3 findFlightPosition(
+            int verticalRange, int minimumHeight) {
+        Vec3 view = getViewVector(0.0F);
+        Vec3 destination = HoverRandomPos.getPos(
+                this, 8, 7, view.x, view.z,
+                (float) (Math.PI / 2.0), verticalRange, minimumHeight);
+        return destination != null
+                ? destination
+                : AirAndWaterRandomPos.getPos(
+                this, 8, 4, -2, view.x, view.z, Math.PI / 2.0);
+    }
+
+    private void lookAtTarget(
+            LivingEntity target, float yawLimit, float pitchLimit) {
+        lookAt(target, yawLimit, pitchLimit);
+        getLookControl().setLookAt(target);
+    }
+
+    private static double angleBetween(Vec3 first, Vec3 second) {
+        double denominator = first.length() * second.length();
+        if (denominator < 1.0E-7) {
+            return 0.0;
+        }
+        double cosine = first.dot(second) / denominator;
+        return Math.acos(Math.max(-1.0, Math.min(1.0, cosine)));
     }
 }

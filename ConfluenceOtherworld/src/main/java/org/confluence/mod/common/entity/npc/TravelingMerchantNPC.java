@@ -1,15 +1,18 @@
 package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 旅商 —— 随机到访、黄昏后离开。
@@ -17,7 +20,11 @@ import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
  * 商贩背包可使商品数 +1。
  */
 public class TravelingMerchantNPC extends BaseNPC {
+    private static final String STOCK_INITIALIZED_TAG = "TradeStockInitialized";
+    private static final String STOCK_TAG = "TradeStock";
     private long spawnDayTime;
+    private boolean tradeStockInitialized;
+    private final List<ResourceLocation> tradeStock = new ArrayList<>();
 
     public TravelingMerchantNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
@@ -32,13 +39,33 @@ public class TravelingMerchantNPC extends BaseNPC {
         return base;
     }
 
+    /**
+     * 首次打开商店时从当前数据包报价中抽取本次到访库存，之后固定到实体的新格式 NBT。
+     */
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!level().isClientSide && player instanceof ServerPlayer sp) {
-            Confluence.NETWORK_HANDLER.sendToPlayer(sp,
-                    new OpenNPCDialogPacketS2C(getId()));
+    public List<NPCTradeOffer> selectTradeOffers(List<NPCTradeOffer> offers) {
+        if (!tradeStockInitialized && !level().isClientSide) {
+            List<NPCTradeOffer> shuffled = new ArrayList<>(offers);
+            for (int index = shuffled.size() - 1; index > 0; index--) {
+                int swapIndex = random.nextInt(index + 1);
+                NPCTradeOffer previous = shuffled.set(
+                        index, shuffled.get(swapIndex));
+                shuffled.set(swapIndex, previous);
+            }
+            int count = Math.min(getTradeCount(), shuffled.size());
+            tradeStock.clear();
+            for (int index = 0; index < count; index++) {
+                tradeStock.add(shuffled.get(index).id());
+            }
+            tradeStockInitialized = true;
         }
-        return InteractionResult.sidedSuccess(level().isClientSide);
+        if (!tradeStockInitialized) {
+            return List.of();
+        }
+        Set<ResourceLocation> selectedIds = new HashSet<>(tradeStock);
+        return offers.stream()
+                .filter(offer -> selectedIds.contains(offer.id()))
+                .toList();
     }
 
     @Override
@@ -54,11 +81,26 @@ public class TravelingMerchantNPC extends BaseNPC {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.spawnDayTime = tag.getLong("SpawnDayTime");
+        tradeStockInitialized = tag.getBoolean(STOCK_INITIALIZED_TAG);
+        tradeStock.clear();
+        ListTag stock = tag.getList(STOCK_TAG, StringTag.TAG_STRING);
+        for (int index = 0; index < stock.size(); index++) {
+            ResourceLocation id = ResourceLocation.tryParse(stock.getString(index));
+            if (id != null && !tradeStock.contains(id)) {
+                tradeStock.add(id);
+            }
+        }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putLong("SpawnDayTime", spawnDayTime);
+        tag.putBoolean(STOCK_INITIALIZED_TAG, tradeStockInitialized);
+        ListTag stock = new ListTag();
+        for (ResourceLocation id : tradeStock) {
+            stock.add(StringTag.valueOf(id.toString()));
+        }
+        tag.put(STOCK_TAG, stock);
     }
 }

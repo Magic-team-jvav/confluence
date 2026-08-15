@@ -9,15 +9,15 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.SteeringDashAction;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 public class EaterOfSouls extends BaseFlyingMonster {
+    private static final RawAnimation SPAWN = RawAnimation.begin().thenPlayAndHold("spawn");
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
 
     public EaterOfSouls(EntityType<? extends EaterOfSouls> type, Level level) {
@@ -31,14 +31,21 @@ public class EaterOfSouls extends BaseFlyingMonster {
 
     @Override
     protected BTRoot createBT() {
-        BTNode combat = SelectorNode.of(
-                SequenceNode.of(new CircleAroundTargetAction(this, 0.3, 4), new WaitAction(20)),
-                SequenceNode.of(new ChargeAttackAction(this, 0.5)));
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(EaterOfSouls.this), combat),
+                        SequenceNode.of(
+                                new HasTargetCondition(EaterOfSouls.this),
+                                new SteeringDashAction(
+                                        EaterOfSouls.this,
+                                        0.98,
+                                        0.4,
+                                        0.01,
+                                        10.0,
+                                        10.0,
+                                        10.0,
+                                        15)),
                         new FlyWanderAction(EaterOfSouls.this, 0.15, 10));
             }
         };
@@ -46,6 +53,8 @@ public class EaterOfSouls extends BaseFlyingMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Fly", 0, state -> state.setAndContinue(FLY)));
+        controllers.add(new AnimationController<>(
+                this, "Movement", 0, state -> state.setAndContinue(
+                getType() == MonsterEntities.CRIMERA.get() ? FLY : SPAWN)));
     }
 }

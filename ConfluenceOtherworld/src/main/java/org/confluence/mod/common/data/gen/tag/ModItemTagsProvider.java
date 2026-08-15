@@ -81,7 +81,19 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.REPEATER_ENCHANTABLE);
         tag(ModTags.Items.TOOLS_REPEATER);
-//        tag(ModTags.Items.MOUNT).addOptionalTag(TETags.Items.CURIOS_MOUNT);
+        tag(ModTags.Items.TOOLS_KNIFE).add(
+                SwordItems.COPPER_SHORT_SWORD.get(),
+                SwordItems.TIN_SHORT_SWORD.get(),
+                SwordItems.IRON_SHORT_SWORD.get(),
+                SwordItems.LEAD_SHORT_SWORD.get(),
+                SwordItems.SILVER_SHORT_SWORD.get(),
+                SwordItems.TUNGSTEN_SHORT_SWORD.get(),
+                SwordItems.GOLDEN_SHORT_SWORD.get(),
+                SwordItems.PLATINUM_SHORT_SWORD.get()
+        );
+        tag(ModTags.Items.MOUNT).add(
+                MountItems.SLIMY_SADDLE.get(),
+                MountItems.HONEYED_GOGGLES.get());
 //        tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
 //        tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
         LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
@@ -325,7 +337,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.YELLOW_EEL.get(),
                 FoodItems.TILAPIA.get()
         );
-        // neoforge
+        // 这些标签用于承接跨版本常用物品分类，方便配方和联动统一查询。
         tag(PortTags.Items.POTION_BOTTLE).add(
                 PotionItems.BOTTLE.get(),
                 PotionItems.BOTTLED_WATER.get()
@@ -500,7 +512,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
                 .add(BoomerangItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new));
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
-                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES)
+                .addTags(
+                        ItemTags.SWORDS,
+                        ItemTags.AXES,
+                        ItemTags.PICKAXES,
+                        ItemTags.SHOVELS,
+                        ItemTags.HOES,
+                        ModTags.Items.FLAIL,
+                        ModTags.Items.SPEAR,
+                        ModTags.Items.TOOLS_LANCE)
+                .add(WhipItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
+                .add(YoyoItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
         /*.add(Items.MACE)*/;
         tag(ModTags.Items.PREFIX_RANGED_ONLY)
                 .addTags(PortTags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
@@ -525,7 +547,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));
 
         IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);
-        GunItems.ITEMS.getEntries().forEach(item -> gun.add(item.get()));
+        GunItems.GUN_ITEMS.forEach(item -> gun.add(item.get()));
 
         IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
         ManaWeaponItems.ITEMS.getEntries().forEach(item -> mana_weapon.add(item.get()));
@@ -610,6 +632,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             Item value = item.get();
             crossbow_enchantable.add(value);
             tools_crossbow.add(value);
+            ranged_weapon_tools.add(value);
             if (value instanceof BaseTerraRepeaterItem) {
                 repeater_enchantable.add(value);
                 tools_repeater.add(value);
@@ -1249,16 +1272,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.THE_DOCTORS_PANTS.get(),
                 VanityArmorItems.THE_DOCTORS_SHOES.get(),
                 NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
-                NatureBlocks.GREEN_MOSS.asItem(),
-                NatureBlocks.BROWN_MOSS.asItem(),
-                NatureBlocks.RED_MOSS.asItem(),
-                NatureBlocks.BLUE_MOSS.asItem(),
-                NatureBlocks.PURPLE_MOSS.asItem(),
-                NatureBlocks.KRYPTON_MOSS.asItem(),
-                NatureBlocks.ARGON_MOSS.asItem(),
-                NatureBlocks.NEON_MOSS.asItem(),
-                NatureBlocks.HELIUM_MOSS.asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_MOSS.asItem(),
                 NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.asItem(),
                 NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.asItem(),
                 NatureBlocks.CORRODED_WORM_ROOTS_BLOCK.asItem(),
@@ -1277,6 +1290,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.TRAPDOOR.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
+                NatureBlocks.MOONGLOW_WILLOW_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
+                NatureBlocks.VOID_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
+                NatureBlocks.GAZE_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
+                NatureBlocks.GAZE_TUBER.asItem(),
+                NatureBlocks.SHIMMER_RICE.asItem(),
+                NatureBlocks.SHIMMER_CORAL_TUBE.asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
                 OreBlocks.RAW_CHLOROPHYTE_BLOCK.asItem(),
@@ -1302,9 +1321,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.ENCHANTED_PINK_BRICKS.asItem(),
                 DecorativeBlocks.LIHZAHRD_DOOR.asItem(),
                 DecorativeBlocks.RAINBOW_BRICKS.FULL.asItem(),
+                DecorativeBlocks.RAINBOW_BRICKS.STAIRS.asItem(),
+                DecorativeBlocks.RAINBOW_BRICKS.SLAB.asItem(),
+                DecorativeBlocks.RAINBOW_BRICKS.WALL.asItem(),
                 DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.asItem(),
-                DecorativeBlocks.FLESH_BLOCK.asItem(),
-                DecorativeBlocks.LESION_BLOCK.asItem(),
                 DecorativeBlocks.SANDSTONE_BRICKS.FULL.asItem(),
                 DecorativeBlocks.SANDSTONE_BRICKS.STAIRS.asItem(),
                 DecorativeBlocks.SANDSTONE_BRICKS.SLAB.asItem(),
@@ -1431,12 +1451,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 LanceItems.HALLOWED_JOUSTING_LANCE.get(),
                 LanceItems.SHADOW_JOUSTING_LANCE.get(),
                 CrossbowItems.STAKE_LAUNCHER.get(),
+                FunctionalBlocks.RAINBOW_BOULDER.asItem(),
+                FunctionalBlocks.SPIDER_BOULDER.asItem(),
                 SpawnEggItems.RETINAZER_SPAWN_EGG.get(),
                 SpawnEggItems.SPAZMATISM_SPAWN_EGG.get(),
                 SpawnEggItems.THE_DESTROYER_SPAWN_EGG.get(),
                 SpawnEggItems.THE_TWINS_SPAWN_EGG.get(),
                 SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(),
                 SpawnEggItems.PLANTERA_SPAWN_EGG.get(),
+                SpawnEggItems.PRIME_ENDER_DRAGON_SPAWN_EGG.get(),
                 TreasureBagItems.THE_TWINS_TREASURE_BAG.get(),
                 TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get(),
                 HoeShovelItems.COBALT_HOE_SHOVEL.get(),
@@ -1454,7 +1477,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.AUTOMATIC_GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),
                 ManaWeaponItems.SPACE_GUN.get(),
-                GunItems.STAR_CANNON.get()
+                GunItems.STAR_CANNON.get(),
+                GunItems.MINISHARK.get(),
+                GunItems.SNOWBALL_CANNON.get(),
+                GunItems.BLOWGUN.get(),
+                GunItems.TACTICAL_SHOTGUN.get()
         );
         tag(ModTags.Items.MANUAL_GUN).add(
                 GunItems.HAND_GUN.get(),
@@ -1465,11 +1492,16 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 GunItems.THE_UNDERTAKER.get(),
                 GunItems.MUSKET.get()
         );
-        IntrinsicTagAppender<Item> bullet = tag(ModTags.Items.BULLET);
-        GunItems.ITEMS.getEntries().forEach(item -> {
-            if (item.get() instanceof org.confluence.mod.common.item.BaseBullet)
-                bullet.add(item.get());
+        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
+        WhipItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            whip.add(value);
+            melee_weapon_tools.add(value);
         });
+        YoyoItems.ITEMS.getEntries().forEach(item ->
+                melee_weapon_tools.add(item.get()));
+        IntrinsicTagAppender<Item> bullet = tag(ModTags.Items.BULLET);
+        GunItems.BULLET_ITEMS.forEach(item -> bullet.add(item.get()));
         tag(ModTags.Items.SNOW_AMMO).add(Items.SNOWBALL);
         tag(ModTags.Items.SEED_AMMO).addTag(PortTags.Items.SEEDS);
         tag(ModTags.Items.AMMO)
@@ -1580,6 +1612,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.TITANIUM_SWORD.get(),
                 SwordItems.MURAMASA.get()
         );
+        // 标签本身即为公开扩展点；本体目前没有额外的普通自动发射弓。
+        tag(ModTags.Items.AUTOMATIC_BOW);
         tag(ModTags.Items.MIMIC_SUMMON_KEY).add(
                 ToolItems.KEY_OF_LIGHT.get(),
                 ToolItems.KEY_OF_NIGHT.get()

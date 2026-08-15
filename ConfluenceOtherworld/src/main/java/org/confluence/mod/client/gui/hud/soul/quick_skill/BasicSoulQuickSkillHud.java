@@ -3,6 +3,7 @@ package org.confluence.mod.client.gui.hud.soul.quick_skill;
 import net.minecraft.client.gui.GuiGraphics;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
+import org.confluence.mod.client.handler.SoulGuiAccess;
 import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.mesdag.portlib.client.PortDeltaTicker;
 
@@ -18,6 +19,10 @@ public abstract class BasicSoulQuickSkillHud extends BasicHudLayer {
 
     @Override
     public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
+        if (!SoulGuiAccess.isAllowed(getPlayer())) {
+            close();
+            return;
+        }
         if (!isInit) {
             update();
         }

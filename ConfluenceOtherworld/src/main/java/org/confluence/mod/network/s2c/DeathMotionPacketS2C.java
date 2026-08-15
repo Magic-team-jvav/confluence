@@ -32,13 +32,19 @@ public record DeathMotionPacketS2C(int entityId, float x, float y,
         return ID;
     }
 
+    /**
+     * 死亡运动同步会查找并修改客户端实体，必须交给客户端主线程执行。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
     @Override
     public void work(Player player) {
         if (player.level().getEntity(entityId) instanceof IClientLivingEntity entity) {
             entity.confluence$deathMotion(new Vec3(x, y, z));
-            if (entity instanceof LivingEntity living && living.isDeadOrDying()) {
-                Confluence.LOGGER.warn("Receive death motion packet but entity is dying");
-            }
         }
     }
 

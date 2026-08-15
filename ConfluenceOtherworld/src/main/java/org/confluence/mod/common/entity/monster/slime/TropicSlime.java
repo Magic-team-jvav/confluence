@@ -7,11 +7,11 @@ import net.minecraft.world.level.Level;
 public class TropicSlime extends BaseSlime {
 
     public TropicSlime(EntityType<? extends BaseSlime> type, Level level) {
-        super(type, level, 0x73bcf4, true, 10);
+        super(type, level, 0x73bcf4, true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createSlimeAttributes(5.0f, 1, 13.0f, 10);
+        return createSlimeAttributes(5.0f, 1, 13.0f);
     }
 
     @Override

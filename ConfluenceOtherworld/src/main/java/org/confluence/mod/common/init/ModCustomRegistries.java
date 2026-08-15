@@ -14,10 +14,8 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 import static net.minecraft.resources.ResourceKey.createRegistryKey;
 
 public final class ModCustomRegistries {
-    public static void init() {}
-
     public static final PortCustomRegistration<TrackTypeProvider> TRACK_TYPE_PROVIDERS = createRegistry(Keys.TRACK_TYPE_PROVIDER);
-    public static final PortCustomRegistration<GenerationProvider> GENERATION_PROVIERS = createRegistry(Keys.GENERATION_PROVIER);
+    public static final PortCustomRegistration<GenerationProvider> GENERATION_PROVIDERS = createRegistry(Keys.GENERATION_PROVIDER);
     public static final PortCustomRegistration<MapCodec<? extends TradeCondition>> TRADE_CONDITIONS = createRegistry(Keys.TRADE_CONDITIONS);
 
     private static <T> PortCustomRegistration<T> createRegistry(ResourceKey<Registry<T>> key) {
@@ -26,11 +24,19 @@ public final class ModCustomRegistries {
 
     public static class Keys {
         public static final ResourceKey<Registry<TrackTypeProvider>> TRACK_TYPE_PROVIDER = createRegistryKey(Confluence.asResource("track_type_provider"));
-        public static final ResourceKey<Registry<GenerationProvider>> GENERATION_PROVIER = createRegistryKey(Confluence.asResource("generation_provider"));
+        public static final ResourceKey<Registry<GenerationProvider>> GENERATION_PROVIDER = createRegistryKey(Confluence.asResource("generation_provider"));
         public static final ResourceKey<Registry<MapCodec<? extends TradeCondition>>> TRADE_CONDITIONS = createRegistryKey(Confluence.asResource("trade_conditions"));
     }
 
+    /**
+     * 把三个自定义注册表的内容注册到同一模组事件总线。
+     *
+     * <p>注册表对象本身由 {@link PortCustomRegistration} 建立；对应的 DeferredRegister 仍必须全部
+     * 挂到事件总线。遗漏任意一项会在 codec dispatch 时表现为 “Registry Object not present”。</p>
+     */
     public static void register(IEventBus bus) {
         ModTrackTypeProviderTypes.TYPES.register(bus);
+        ModGenerationProviderTypes.TYPES.register(bus);
+        ModTradeConditions.TYPES.register(bus);
     }
 }

@@ -32,6 +32,9 @@ public final class ModEnchantments {
     public static final RegistryObject<Enchantment> ARCANE_PROTECTION = ENCHANTMENTS.register("arcane_protection", ArcaneProtectionEnchantment::new);
     public static final RegistryObject<Enchantment> SPELL_DESPERATION = ENCHANTMENTS.register("spell_desperation", ManaAttackEnchantment::new);
     public static final RegistryObject<Enchantment> MYSTIC_SURGE = ENCHANTMENTS.register("mystic_surge", ManaAttackEnchantment::new);
+    public static final RegistryObject<Enchantment> WHIP_SWEEP = ENCHANTMENTS.register("whip_sweep", WhipSweepEnchantment::new);
+    public static final RegistryObject<Enchantment> MULTI_BOOMERANG = ENCHANTMENTS.register("multi_boomerang", MultiBoomerangEnchantment::new);
+    public static final RegistryObject<Enchantment> SUMMONER_PACT = ENCHANTMENTS.register("summoner_pact", SummonerPactEnchantment::new);
 
     @SuppressWarnings("deprecation")
     public static class Categories {
@@ -40,5 +43,13 @@ public final class ModEnchantments {
             return holder.is(PortTags.Items.ARMORS) || holder.is(ModTags.Items.MANA_WEAPON);
         });
         public static final EnchantmentCategory MANA = EnchantmentCategory.create("CONFLUENCE_MANA", item -> item.builtInRegistryHolder().is(ModTags.Items.MANA_WEAPON));
+        public static final EnchantmentCategory WHIP = EnchantmentCategory.create(
+                "CONFLUENCE_WHIP",
+                item -> item.builtInRegistryHolder().is(ModTags.Items.WHIP)
+        );
+        public static final EnchantmentCategory BOOMERANG = EnchantmentCategory.create(
+                "CONFLUENCE_BOOMERANG",
+                item -> item instanceof org.confluence.mod.common.item.boomerang.BoomerangItem
+        );
     }
 }

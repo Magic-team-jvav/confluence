@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -10,11 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -24,7 +20,7 @@ import java.util.List;
  * 蠕虫怪物基类——分段实体（头+体+尾），穿透方块移动。
  * 每 tick 头部移动，体节跟随前一个保持固定间距。
  */
-public abstract class BaseWormMonster extends BaseMonster {
+public abstract class BaseWormMonster extends BaseMonster implements WormSegment {
     private static final float COLLISION_DAMAGE = 10.0F;
     private static final int COLLISION_COOLDOWN = 8;
 
@@ -34,6 +30,7 @@ public abstract class BaseWormMonster extends BaseMonster {
     public BaseWormMonster(EntityType<? extends BaseWormMonster> type, Level level) {
         super(type, level);
         this.noPhysics = true;
+        setNoGravity(true);
     }
 
     protected abstract int getSegmentCount();
@@ -50,38 +47,59 @@ public abstract class BaseWormMonster extends BaseMonster {
     }
 
     public void initSegments() {
-        if (!segments.isEmpty()) return;
-        for (int i = 0; i < getSegmentCount(); i++) {
-            BaseWormPart part = new BaseWormPart(i == 0 ? this : segments.get(i - 1), i, level());
-            if (i == getSegmentCount() - 1) part.tail = true;
-            level().addFreshEntity(part);
+        if (hasCompleteSegmentChain()) return;
+        discardSegments();
+        for (int index = 1; index <= getSegmentCount(); index++) {
+            BaseWormPart part = MonsterEntities.WORM_SEGMENT.get().create(level());
+            if (part == null) {
+                discardSegments();
+                return;
+            }
+            part.bindTo(this, index, index == getSegmentCount());
+            if (!level().addFreshEntity(part)) {
+                part.discard();
+                discardSegments();
+                return;
+            }
             segments.add(part);
         }
+    }
+
+    private boolean hasCompleteSegmentChain() {
+        if (segments.size() != getSegmentCount()) return false;
+        for (int index = 1; index <= segments.size(); index++) {
+            BaseWormPart part = segments.get(index - 1);
+            if (part.isRemoved() || part.getOwner() != this || part.getSegmentIndex() != index)
+                return false;
+        }
+        return true;
+    }
+
+    private void discardSegments() {
+        for (BaseWormPart part : segments) {
+            if (!part.isRemoved()) part.discard();
+        }
+        segments.clear();
     }
 
     @Nullable
     public WormSegment getSegment(int index) {
         if (index < 0) return null;
-        if (index == 0) return null;
+        if (index == 0) return this;
         int segIdx = index - 1;
         return segIdx < segments.size() ? segments.get(segIdx) : null;
+    }
+
+    public List<BaseWormPart> getSegments() {
+        return List.copyOf(segments);
     }
 
     @Override
     public void tick() {
         super.tick();
         if (!level().isClientSide) {
-            if (segments.isEmpty()) initSegments();
-            tickWormMove();
+            initSegments();
             tickCollision();
-        }
-    }
-
-    private void tickWormMove() {
-        Entity leader = this;
-        for (BaseWormPart part : segments) {
-            part.leader = leader;
-            leader = part;
         }
     }
 
@@ -91,6 +109,7 @@ public abstract class BaseWormMonster extends BaseMonster {
         for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, box)) {
             if (target == this) continue;
             if (target.getType() == getType()) continue;
+            if (!canAttack(target)) continue;
             if (getTarget() == null) setTarget(target);
             target.hurt(damageSources().mobAttack(this), COLLISION_DAMAGE);
             collisionCooldown = COLLISION_COOLDOWN;
@@ -101,7 +120,28 @@ public abstract class BaseWormMonster extends BaseMonster {
     @Override
     public void remove(RemovalReason reason) {
         super.remove(reason);
-        for (BaseWormPart part : segments) part.discard();
+        if (!level().isClientSide) discardSegments();
+    }
+
+    @Override
+    public int getSegmentIndex() {return 0;}
+
+    @Override
+    public @Nullable WormSegment getPrev() {return null;}
+
+    @Override
+    public @Nullable WormSegment getNext() {return getSegment(1);}
+
+    @Override
+    public void updateSegmentPosition() {}
+
+    /**
+     * 供同包行为测试核对长虫头部是否保留穿墙移动能力。
+     *
+     * <p>该状态是长虫路径语义的一部分，但没有必要作为跨模组公共 API 暴露。</p>
+     */
+    boolean isPhasingThroughBlocks() {
+        return noPhysics;
     }
 
     public static AttributeSupplier.Builder createWormAttributes() {
@@ -118,11 +158,17 @@ public abstract class BaseWormMonster extends BaseMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(BaseWormMonster.this),
-                                new MoveToTargetAction(BaseWormMonster.this, 0.5, 2.0)),
-                        new WaitAction(20));
+                return new WormMovementAction(
+                        BaseWormMonster.this,
+                        movementProfile());
             }
         };
+    }
+
+    /**
+     * 子类只声明所属蠕虫族的高度和速度边界，三维转向由公共节点完成。
+     */
+    protected WormMovementAction.Profile movementProfile() {
+        return WormMovementAction.Profile.underground();
     }
 }

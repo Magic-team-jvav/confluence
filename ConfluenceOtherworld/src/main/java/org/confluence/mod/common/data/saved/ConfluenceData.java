@@ -35,28 +35,65 @@ public final class ConfluenceData extends SavedData {
     private boolean stopAskForSoftcore = false;
 
     ConfluenceData() {
+        meteoriteTracker.reset();
+        fillDefaultStarPhases();
+    }
+
+    /**
+     * 从世界 SavedData 恢复 Confluence 的世界级状态。
+     *
+     * <p>先填入完整默认星相，再用存档中的合法条目覆盖。这样旧版本缺字段、列表不满十项，
+     * 或个别条目损坏时，其余槽位仍始终可读，不会把空映射传播给同步和渲染逻辑。</p>
+     */
+    ConfluenceData(CompoundTag nbt) {
+        fillDefaultStarPhases();
+        this.initialized = nbt.getBoolean("initialized");
+        this.windSpeed.x = finiteOrZero(nbt.getFloat("windSpeedX"));
+        this.windSpeed.z = finiteOrZero(nbt.getFloat("windSpeedZ"));
+        for (Tag tag : nbt.getList("starPhases", Tag.TAG_COMPOUND)) {
+            CompoundTag phaseTag = (CompoundTag) tag;
+            int index = phaseTag.getInt("index");
+            if (index < 0 || index >= STAR_PHASES_SIZE) continue;
+            StarPhase phase = new StarPhase(phaseTag);
+            if (isValidStarPhase(phase)) starPhases.put(index, phase);
+        }
+        this.revealStep = Math.max(-1, nbt.getInt("revealStep"));
+        this.meteoriteTracker.deserialize(nbt);
+        this.evilBrokenCount = Math.max(0, nbt.getInt("evilBrokenCount"));
+        this.stopAskForSoftcore = nbt.getBoolean("stopAskForSoftcore");
+    }
+
+    /**
+     * 保证星相映射始终包含固定的十个槽位。
+     */
+    private void fillDefaultStarPhases() {
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             starPhases.put(i, StarPhase.DEFAULT);
         }
     }
 
-    ConfluenceData(CompoundTag nbt) {
-        this.initialized = nbt.getBoolean("initialized");
-        this.windSpeed.x = nbt.getFloat("windSpeedX");
-        this.windSpeed.z = nbt.getFloat("windSpeedZ");
-        for (Tag tag : nbt.getList("starPhases", Tag.TAG_COMPOUND)) {
-            CompoundTag phase = (CompoundTag) tag;
-            starPhases.put(phase.getInt("index"), new StarPhase(phase));
-        }
-        this.revealStep = nbt.getInt("revealStep");
-        this.meteoriteTracker.deserialize(nbt);
-        this.evilBrokenCount = nbt.getInt("evilBrokenCount");
-        this.stopAskForSoftcore = nbt.getBoolean("stopAskForSoftcore");
+    private static float finiteOrZero(float value) {
+        return Float.isFinite(value) ? value : 0.0F;
+    }
+
+    private static boolean isValidStarPhase(StarPhase phase) {
+        return Float.isFinite(phase.radius()) && phase.radius() >= 0.0F && Float.isFinite(phase.angle());
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
-        ConfluenceData data = serverLevel.getDataStorage().computeIfAbsent(ConfluenceData::new, ConfluenceData::new, Confluence.MODID);
-        initialize(serverLevel, data);
+        /*
+         * 这些字段描述整台服务器的 Terraria 世界进度，而不是单个维度：陨石只在主世界落地，
+         * 邪恶方块破坏计数、揭示步骤和软核提示同样全局生效。调用者即使身处下界/末地，
+         * 也必须访问主世界 DataStorage；否则多个 SavedData 会争用 MeteoriteTracker 枚举单例，
+         * 后加载的维度将覆盖先加载维度的状态。
+         */
+        ServerLevel canonicalLevel = serverLevel.getServer().overworld();
+        ConfluenceData data = canonicalLevel.getDataStorage().computeIfAbsent(
+                ConfluenceData::new,
+                ConfluenceData::new,
+                Confluence.MODID
+        );
+        initialize(canonicalLevel, data);
         return data;
     }
 
@@ -103,9 +140,9 @@ public final class ConfluenceData extends SavedData {
     }
 
     public void setWindSpeed(float x, float z) {
-        this.windSpeed.x = x;
-        this.windSpeed.z = z;
-        WindSpeedPacketS2C.sendToAll(x, z);
+        this.windSpeed.x = finiteOrZero(x);
+        this.windSpeed.z = finiteOrZero(z);
+        WindSpeedPacketS2C.sendToAll(this.windSpeed.x, this.windSpeed.z);
         setDirty();
     }
 
@@ -118,7 +155,8 @@ public final class ConfluenceData extends SavedData {
     }
 
     public boolean setStarPhase(int index, int timeOffset, float radius, float angle) {
-        if (index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return false;
+        if (index < 0 || index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return false;
+        if (!Float.isFinite(radius) || radius < 0.0F || !Float.isFinite(angle)) return false;
         starPhases.put(index, new StarPhase(timeOffset, radius, angle));
         StarPhasesPacketS2C.sendToAll(index, timeOffset, radius, angle);
         setDirty();
@@ -126,7 +164,7 @@ public final class ConfluenceData extends SavedData {
     }
 
     public StarPhase getStarPhase(int index) {
-        if (index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return null;
+        if (index < 0 || index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return null;
         return starPhases.getOrDefault(index, StarPhase.DEFAULT);
     }
 
@@ -136,15 +174,20 @@ public final class ConfluenceData extends SavedData {
 
     public boolean increaseRevealStep() {
         BlockState[][] pairs = StepRevealingBlock.PAIRS.get();
-        if (revealStep < pairs.length - 1) {
-            GlobalCloakData.INSTANCE.reveal(pairs[++this.revealStep]);
+        int nextStep = revealStep + 1;
+        if (nextStep >= 0 && nextStep < pairs.length) {
+            this.revealStep = nextStep;
+            GlobalCloakData.INSTANCE.reveal(pairs[nextStep]);
             setDirty();
             return true;
         }
         return false;
     }
 
-    /// 一般为[-1, 8]
+    /**
+     * 当前已完成的揭示步骤；{@code -1} 表示尚未开始。
+     * 实际上限由 {@link StepRevealingBlock#PAIRS} 的运行时内容决定。
+     */
     public int getRevealStep() {
         return revealStep;
     }

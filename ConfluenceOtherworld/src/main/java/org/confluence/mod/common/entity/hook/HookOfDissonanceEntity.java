@@ -20,9 +20,10 @@ public class HookOfDissonanceEntity extends AbstractHookEntity {
 
     @Override
     protected void onHooked(BlockHitResult hitResult, ItemStack itemStack) {
-        if (getOwner() != null) {
+        var owner = getOwner();
+        if (owner != null) {
             Vec3 vec3 = getDeltaMovement().normalize().scale(0.5);
-            getOwner().teleportTo(getX() - vec3.x, getY() - vec3.y, getZ() - vec3.z);
+            owner.teleportTo(getX() - vec3.x, getY() - vec3.y, getZ() - vec3.z);
         }
         super.onHooked(hitResult, itemStack);
     }

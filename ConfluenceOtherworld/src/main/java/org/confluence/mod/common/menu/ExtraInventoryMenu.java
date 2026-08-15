@@ -10,6 +10,7 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.confluence.lib.common.menu.ToggleSlot;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModMenuTypes;
@@ -34,6 +35,8 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
         Player player = inventory.player;
         this.extraInventory = ExtraInventory.of(player);
         Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player).resolve();
+        optional.map(handler -> handler.getCurios().get(TerraCurio.CURIO_SLOT))
+                .ifPresent(accessory -> extraInventory.setAccessoryDyes(player, accessory.getSlots()));
         int count = extraInventory.getContainerSize();
         for (int i = VANITY_ARMOR_START; i < count; i++) {
             if (i < VANITY_ARMOR_DYE_START) { // 0, 1, 2, 3
@@ -54,8 +57,10 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                     @Override
                     public boolean mayPickup(Player player) {
                         ItemStack itemstack = getItem();
-                        if (!itemstack.isEmpty()) {player.isCreative();}
-                        return super.mayPickup(player);
+                        return (itemstack.isEmpty()
+                                || player.isCreative()
+                                || !EnchantmentHelper.hasBindingCurse(itemstack))
+                                && super.mayPickup(player);
                     }
                 });
             } else if (i < COINS_START) { // 4, 5, 6 ,7
@@ -121,6 +126,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
+        if (index < 0 || index >= slots.size()) return ItemStack.EMPTY;
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot.hasItem()) {
@@ -190,8 +196,13 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                     slot.onTake(player, itemStack);
                 }
             } else if (PortItemStackExtension.isSameItemSameComponents(carried, slotItem)) {
-                slotItem.grow(Math.min(slot.getMaxStackSize(slotItem) - slotItem.getCount(), carried.getCount()));
-                setCarried(ItemStack.EMPTY);
+                int moved = Math.min(slot.getMaxStackSize(slotItem) - slotItem.getCount(), carried.getCount());
+                if (moved > 0) {
+                    slotItem.grow(moved);
+                    carried.shrink(moved);
+                    slot.setChanged();
+                }
+                setCarried(carried.isEmpty() ? ItemStack.EMPTY : carried);
             } else {
                 slot.setByPlayer(carried);
                 setCarried(ItemStack.EMPTY);

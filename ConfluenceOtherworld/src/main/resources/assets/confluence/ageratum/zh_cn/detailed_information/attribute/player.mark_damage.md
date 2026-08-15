@@ -6,7 +6,7 @@ version: 1.3.0
 
 # 仆从标记伤害
 
-当攻击者造成的伤害源类型为`#terra_entity:summoner`，或者攻击者实现了`ISummonMob`
+当攻击者造成的伤害源类型为`#confluence:summoner`，或者攻击者实现了`ISummonMob`
 接口时（即各类召唤物实体），被攻击者受到的伤害为：
 
 ```
@@ -30,4 +30,4 @@ version: 1.3.0
 
 ## 历史
 
-- 1.3.0: 命名空间从`terra_entity`更改为`confluence_magic_lib`
+- 1.3.0: 命名空间从`confluence`更改为`confluence_magic_lib`

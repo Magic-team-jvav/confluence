@@ -15,20 +15,24 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
+/**
+ * 手里剑、飞刀和标枪等可回收投掷物的共享实体实现。
+ *
+ * <p>初始伤害、弹速、伤害通道和暴击由 MagicLib 发射事务冻结；本类只维护每次成功命中后
+ * 递减的当前伤害、最多四次命中的穿透阶段、重力延迟和掉落物。共享战斗状态统一负责成功命中
+ * UUID 去重，因而这些规则在区块卸载和服务器重启后仍保持一致。</p>
+ */
 public class ThrowableDropSelfProjectile extends DamageSettableProjectile implements IPortProjectileExtension {
     protected static final EntityDataAccessor<Integer> DATA_FLY_TICKS = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.ITEM_STACK);
     protected int penetrate;
     protected float deltaDamage;
-    protected final Set<UUID> hitSet = new HashSet<>();
 
     @Override
     protected void defineSynchedData() {
@@ -50,11 +54,11 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
     }
 
     public void setItem(ItemStack drop) {
-        entityData.set(DATA_ITEM_STACK, drop);
+        entityData.set(DATA_ITEM_STACK, drop.copyWithCount(1));
     }
 
     public ItemStack getItem() {
-        return entityData.get(DATA_ITEM_STACK);
+        return entityData.get(DATA_ITEM_STACK).copy();
     }
 
     public void setFlyTicks(int ticks) {
@@ -69,7 +73,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            hitSet.add(entity.getUUID());
+            combatState().recordSuccessfulHit(ProjectileHitRules.impactedEntity(entity).getUUID());
             this.damage -= deltaDamage;
             LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
             if (penetrate >= 3) {
@@ -99,8 +103,17 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
     }
 
     @Override
-    public boolean canHitEntity(Entity target) {
-        return super.canHitEntity(target) && !hitSet.contains(target.getUUID());
+    public float getCalculatedDamage() {
+        return damage;
+    }
+
+    /**
+     * 每次安装冻结快照时同步建立不可变的百分之十递减步长。
+     */
+    @Override
+    public void setProjectileCombatSnapshot(ProjectileCombatSnapshot snapshot) {
+        super.setProjectileCombatSnapshot(snapshot);
+        this.deltaDamage = snapshot.baseDamage() * 0.1F;
     }
 
     @Override
@@ -133,6 +146,9 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
     @Override
     public void tick() {
         super.tick();
+        if (shouldAbortSubclassTick()) {
+            return;
+        }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (hitresult.getType() != HitResult.Type.MISS && !PortProjectileImpactEvent.onProjectileImpact(this, hitresult)) {
             hitTargetOrDeflectSelf(hitresult);
@@ -165,19 +181,69 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
         return 0.08;
     }
 
+    /**
+     * 普通投掷物已经成功命中三次后，第四次命中会立即结束实体。
+     */
+    protected int maximumPenetrationPhase() {
+        return 3;
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.put("Item", getItem().save(new CompoundTag()));
+        ProjectileCombatSnapshot snapshot = getProjectileCombatSnapshot();
+        if (snapshot == null) {
+            // 非武器入口误建的实体只写原版字段；再次读取时会因缺失当前战斗格式安全失效。
+            return;
+        }
+        ThrowableProjectileRuntime.write(
+                compound,
+                !getItem().isEmpty(),
+                getFlyTicks(),
+                penetrate,
+                damage,
+                snapshot.baseDamage(),
+                maximumPenetrationPhase());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (compound.contains("Item", 10)) {
-            setItem(ItemStack.of(compound.getCompound("Item")));
-        } else {
-            setItem(ItemStack.EMPTY);
+        setItem(ItemStack.EMPTY);
+        setFlyTicks(0);
+        penetrate = 0;
+        damage = 0.0F;
+        deltaDamage = 0.0F;
+        if (combatState().isInvalid()) {
+            return;
         }
+        ProjectileCombatSnapshot snapshot = getProjectileCombatSnapshot();
+        if (snapshot == null) {
+            combatState().invalidate("Throwable projectile is missing its combat snapshot");
+            return;
+        }
+        try {
+            ThrowableProjectileRuntime.State state =
+                    ThrowableProjectileRuntime.read(
+                            compound, snapshot.baseDamage(), maximumPenetrationPhase());
+            setItem(state.dropSelf()
+                    ? snapshot.weapon().getItem().getDefaultInstance()
+                    : ItemStack.EMPTY);
+            setFlyTicks(state.flyTicks());
+            penetrate = state.penetrationPhase();
+            damage = state.currentDamage();
+            deltaDamage = snapshot.baseDamage() * 0.1F;
+        } catch (RuntimeException exception) {
+            combatState().invalidate(englishReason(exception));
+        }
+    }
+
+    private static String englishReason(RuntimeException exception) {
+        String message = exception.getMessage();
+        if (message == null || message.isBlank()
+                || !message.chars().allMatch(character -> character < 128)) {
+            return "Malformed throwable runtime state";
+        }
+        return message;
     }
 }

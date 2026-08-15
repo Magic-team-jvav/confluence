@@ -95,20 +95,24 @@
 		},
 		"wing": {
 			"loop": true,
-			"animation_length": 0.0833,
+            "animation_length": 0.1667,
 			"bones": {
 				"wings": {
 					"rotation": {
 						"0.0": {
 							"vector": [-7.5, 0, 0]
 						},
-						"0.0417": {
-							"vector": [20, 0, 0],
-							"easing": "easeInOutBack"
-						},
 						"0.0833": {
+                            "vector": [
+                                20,
+                                0,
+                                0
+                            ],
+                            "easing": "easeInOutSine"
+                        },
+                        "0.1667": {
 							"vector": [-7.5, 0, 0],
-							"easing": "easeInOutBack"
+                            "easing": "easeInOutSine"
 						}
 					}
 				}
@@ -117,6 +121,39 @@
 		"misc.idle": {
 			"loop": true
 		},
+        "misc.tired": {
+            "loop": true,
+            "animation_length": 0.5,
+            "bones": {
+                "wings": {
+                    "rotation": {
+                        "0.0": {
+                            "vector": [
+                                -7.5,
+                                0,
+                                0
+                            ]
+                        },
+                        "0.25": {
+                            "vector": [
+                                5,
+                                0,
+                                0
+                            ],
+                            "easing": "easeInOutSine"
+                        },
+                        "0.5": {
+                            "vector": [
+                                -7.5,
+                                0,
+                                0
+                            ],
+                            "easing": "easeInOutSine"
+                        }
+                    }
+                }
+            }
+        },
 		"move.walk": {
 			"loop": true,
 			"animation_length": 0.5,

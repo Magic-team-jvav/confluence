@@ -5,15 +5,22 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.api.projectile.ProjectileLaunch;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.common.init.ModGenerationProviderTypes;
 import org.confluence.mod.util.generation.GenerationProvider;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.function.Supplier;
 
-/// # 直线弹幕
+/**
+ * 从所有者视线方向发射的纯布局。
+ *
+ * @param offsetY    相对眼睛高度的纵向偏移
+ * @param inaccuracy 原版散布角度
+ */
 public record ForwardGeneration(float offsetY, float inaccuracy) implements IGeneration {
     public static final MapCodec<ForwardGeneration> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
             Codec.FLOAT.fieldOf("offsetY").forGetter(ForwardGeneration::offsetY),
@@ -25,14 +32,21 @@ public record ForwardGeneration(float offsetY, float inaccuracy) implements IGen
     }
 
     @Override
-    public void genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float velocity, Supplier<? extends @Nullable Projectile> proj) {
-        Projectile projectile = proj.get();
-        if (projectile == null) return;
+    public List<ProjectileLaunch> createLaunches(
+            LivingEntity owner,
+            float velocity,
+            Supplier<? extends @Nullable Projectile> projectileFactory
+    ) {
+        Projectile projectile = projectileFactory.get();
+        if (projectile == null) {
+            return List.of();
+        }
         projectile.setOwner(owner);
-        // todo 计算yaw
-        projectile.setPos(owner.getX(), owner.getY() + owner.getEyeHeight() + offsetY, owner.getZ());
+        // 调用实体自己的发射钩子，保留草剑等子类在发射瞬间初始化的运动参数。
         projectile.shootFromRotation(owner, owner.getXRot(), owner.getYRot(), 0.0F, velocity, inaccuracy);
-        owner.level().addFreshEntity(projectile);
+        Vec3 direction = projectile.getDeltaMovement();
+        Vec3 position = new Vec3(owner.getX(), owner.getY() + owner.getEyeHeight() + offsetY, owner.getZ());
+        return List.of(new ProjectileLaunch(projectile, position, direction));
     }
 
     @Override

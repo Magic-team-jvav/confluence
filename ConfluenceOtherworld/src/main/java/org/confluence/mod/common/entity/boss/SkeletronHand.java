@@ -1,11 +1,13 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -14,21 +16,36 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * 骷髅王之手。绕头部轨道运行，周期性挥击玩家。
+ * 骷髅王之手。
+ *
+ * <p>手在待机时停留于头部左右两侧；攻击时先从玩家方向向后蓄势，再穿过玩家到达另一侧。
+ * 这两段位移与 1.21 侧使用相同的间隔和速度，不能简化成绕圈后直接冲向玩家，否则挥击方向、
+ * 首次攻击时机和专家难度节奏都会发生变化。</p>
  */
-public class SkeletronHand extends Entity implements GeoEntity {
-    private static final float ORBIT_RADIUS = 4.0F;
-    private static final float SWIPE_SPEED = 0.8F;
+public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity {
+    private static final int CLASSIC_SLAP_INTERVAL = 45;
+    private static final int EXPERT_SLAP_INTERVAL = 30;
+    private static final int RANDOM_INTERVAL = 6;
+    private static final double CLASSIC_SLAP_SPEED = 1.0;
+    private static final double EXPERT_SLAP_SPEED = 1.2;
+    private static final double PREPARE_DISTANCE = 6.0;
+    private static final double PASS_DISTANCE = 4.0;
+    private static final double ARRIVAL_DISTANCE_SQUARED = 1.5;
     private static final float DAMAGE = 10.0F;
+    private static final float MAX_PART_HEALTH = 405.0F;
+    private static final String HAND_INDEX_TAG = "HandIndex";
+    private static final EntityDataAccessor<Integer> HAND_INDEX =
+            SynchedEntityData.defineId(SkeletronHand.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private Skeletron master;
-    private int handIndex; // 0 = left, 1 = right
-    private double orbitAngle;
-    private int swipeTimer;
-    private int swipeCooldown;
-    private boolean swiping;
-    private Vec3 swipeTarget;
+    private int slapInterval;
+    private double slapSpeed;
+    private int slapTick;
+    /**
+     * -1 表示待机，0 表示向后蓄势，1 表示穿过目标。
+     */
+    private int slapPhase = -1;
+    private Vec3 phaseTarget = Vec3.ZERO;
 
     public SkeletronHand(EntityType<?> type, Level level) {
         super(type, level);
@@ -36,109 +53,150 @@ public class SkeletronHand extends Entity implements GeoEntity {
     }
 
     public void setMaster(Skeletron master, int index) {
-        this.master = master;
-        this.handIndex = index;
-        this.orbitAngle = index == 0 ? 0 : Math.PI;
-        this.swipeCooldown = 60 + master.getRandom().nextInt(60);
+        if (index < 0 || index > 1) throw new IllegalArgumentException("Hand index must be 0 or 1");
+        bindTo(master);
+        this.entityData.set(HAND_INDEX, index);
+        this.slapInterval = (master.isExpert()
+                ? EXPERT_SLAP_INTERVAL : CLASSIC_SLAP_INTERVAL)
+                + master.getRandom().nextInt(RANDOM_INTERVAL);
+        this.slapSpeed = master.isExpert()
+                ? EXPERT_SLAP_SPEED : CLASSIC_SLAP_SPEED;
+        // 1.21 侧首次生成后立即进入一次挥击，而不是先等待完整冷却。
+        this.slapTick = slapInterval;
+    }
+
+    public int getHandIndex() {
+        return entityData.get(HAND_INDEX);
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (master == null || !master.isAlive()) {
-            discard();
-            return;
-        }
+    protected void tickPart(Skeletron master) {
         if (level().isClientSide) return;
 
-        updateOrbit();
-        updateSwipe();
-    }
-
-    private void updateOrbit() {
-        if (swiping) return;
-
-        orbitAngle += 0.03;
-        double tx = master.getX() + Math.cos(orbitAngle) * ORBIT_RADIUS;
-        double ty = master.getY() - 1 + Math.sin(orbitAngle * 0.7) * 1.5;
-        double tz = master.getZ() + Math.sin(orbitAngle) * ORBIT_RADIUS;
-        Vec3 target = new Vec3(tx, ty, tz);
-        Vec3 toTarget = target.subtract(position());
-        if (toTarget.lengthSqr() > 0.1) {
-            setDeltaMovement(toTarget.normalize().scale(0.3));
-        }
-        setPos(getX() + getDeltaMovement().x, getY() + getDeltaMovement().y, getZ() + getDeltaMovement().z);
-    }
-
-    private void updateSwipe() {
-        if (swiping) {
-            swipeTimer--;
-            Vec3 toTarget = swipeTarget.subtract(position());
-            if (toTarget.lengthSqr() < 1 || swipeTimer <= 0) {
-                swiping = false;
-                swipeCooldown = 40 + master.getRandom().nextInt(40);
-                setDeltaMovement(Vec3.ZERO);
-            } else {
-                setDeltaMovement(toTarget.normalize().scale(SWIPE_SPEED));
-            }
-            // Contact damage during swipe
-            for (LivingEntity e : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.5))) {
-                if (e != master && master.canAttack(e)) {
-                    e.hurt(damageSources().mobAttack(master), DAMAGE);
-                }
-            }
+        if (slapPhase >= 0) {
+            tickSlap(master);
+        } else if (!master.isSpinning() && slapTick >= slapInterval) {
+            beginSlap(master);
+            tickSlap(master);
         } else {
-            swipeCooldown--;
-            if (swipeCooldown <= 0) {
-                beginSwipe();
+            tickStandby(master);
+        }
+    }
+
+    private void tickStandby(Skeletron master) {
+        slapTick++;
+        float yaw = master.yBodyRot * Mth.DEG_TO_RAD;
+        double side = getHandIndex() == 0 ? 1.0 : -1.0;
+        double vertical = master.isSpinning() ? 4.0 : -3.5;
+        Vec3 target = master.position().add(
+                Mth.cos(yaw) * 5.0 * side,
+                vertical,
+                Mth.sin(yaw) * 5.0 * side);
+        moveToward(target, master.isExpert() ? 1.0 : 0.7);
+    }
+
+    private void beginSlap(Skeletron master) {
+        LivingEntity target = master.getTarget();
+        if (target == null || !target.isAlive()) {
+            return;
+        }
+        Vec3 away = position().subtract(target.position());
+        if (away.lengthSqr() <= 1.0E-7) {
+            away = new Vec3(0.0, 0.0, 1.0);
+        }
+        phaseTarget = position().add(away.normalize().scale(PREPARE_DISTANCE));
+        slapPhase = 0;
+    }
+
+    private void tickSlap(Skeletron master) {
+        LivingEntity target = master.getTarget();
+        if (target == null || !target.isAlive() || master.isSpinning()) {
+            finishSlap();
+            return;
+        }
+        if (position().distanceToSqr(phaseTarget) <= ARRIVAL_DISTANCE_SQUARED) {
+            if (slapPhase == 0) {
+                Vec3 through = target.position().subtract(position());
+                if (through.lengthSqr() <= 1.0E-7) {
+                    through = new Vec3(0.0, 0.0, 1.0);
+                }
+                phaseTarget = target.position().add(
+                        through.normalize().scale(PASS_DISTANCE));
+                slapPhase = 1;
+            } else {
+                finishSlap();
+                return;
+            }
+        }
+        moveToward(phaseTarget, slapSpeed);
+        for (LivingEntity entity : level().getEntitiesOfClass(
+                LivingEntity.class, getBoundingBox().inflate(0.5))) {
+            if (entity != master && master.canAttack(entity)) {
+                entity.hurt(damageSources().mobAttack(master), DAMAGE);
             }
         }
     }
 
-    private void beginSwipe() {
-        LivingEntity target = master.getTarget();
-        if (target == null) return;
-        swiping = true;
-        swipeTimer = 20;
-        swipeTarget = target.position();
-        swipeCooldown = 0;
+    private void finishSlap() {
+        slapPhase = -1;
+        slapTick = 0;
+        phaseTarget = Vec3.ZERO;
+        setDeltaMovement(Vec3.ZERO);
+    }
+
+    private void moveToward(Vec3 target, double maximumSpeed) {
+        Vec3 difference = target.subtract(position());
+        if (difference.lengthSqr() <= 1.0E-7) {
+            setDeltaMovement(Vec3.ZERO);
+            return;
+        }
+        Vec3 velocity = difference.normalize().scale(maximumSpeed);
+        setDeltaMovement(velocity);
+        setPos(getX() + velocity.x, getY() + velocity.y, getZ() + velocity.z);
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (master != null && master.isAlive()) {
-            master.hurt(source, amount * 0.5f);
-        }
-        return true;
+        return hurtOwnerAndPart(source, amount, 0.5F);
     }
 
     @Override
-    public boolean isPickable() { return true; }
-
-    @Override
-    public boolean canBeCollidedWith() { return master != null && master.isAlive(); }
-
-    @Override
-    protected void defineSynchedData() {}
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {}
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {}
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return new ClientboundAddEntityPacket(this);
+    protected float getMaxPartHealth() {
+        return MAX_PART_HEALTH;
     }
 
     @Override
-    public EntityDimensions getDimensions(Pose pose) {
-        return EntityDimensions.scalable(1.2F, 0.6F);
+    protected Class<Skeletron> getOwnerType() {
+        return Skeletron.class;
     }
 
     @Override
-    public boolean is(Entity entity) { return this == entity; }
+    protected void onPartDestroyed(Skeletron owner) {
+        owner.onHandDestroyed(getHandIndex(), this);
+    }
+
+    @Override
+    protected void onPartHealthChanged(Skeletron owner, float remainingHealth) {
+        owner.onHandHealthChanged(getHandIndex(), remainingHealth);
+    }
+
+    @Override
+    protected void definePartSynchedData() {
+        entityData.define(HAND_INDEX, 0);
+    }
+
+    @Override
+    protected void readPartSaveData(CompoundTag tag) {
+        entityData.set(HAND_INDEX, tag.getInt(HAND_INDEX_TAG));
+        slapPhase = -1;
+        slapTick = slapInterval;
+        phaseTarget = Vec3.ZERO;
+    }
+
+    @Override
+    protected void addPartSaveData(CompoundTag tag) {
+        tag.putInt(HAND_INDEX_TAG, getHandIndex());
+    }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}

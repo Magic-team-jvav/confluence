@@ -1,0 +1,29 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "runtime": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.the_frequent_flyer.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:heart"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.the_frequent_flyer.title"
+        }
+    },
+    "requirements": [
+        [
+            "runtime"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

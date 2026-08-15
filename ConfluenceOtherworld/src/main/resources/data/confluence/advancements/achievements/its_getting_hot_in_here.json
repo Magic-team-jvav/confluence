@@ -1,0 +1,42 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "player": {
+                    "location": {
+                        "dimension": "minecraft:the_nether",
+                        "position": {
+                            "y": {
+                                "max": 36,
+                                "min": 0
+                            }
+                        }
+                    }
+                }
+            },
+            "trigger": "minecraft:location"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.its_getting_hot_in_here.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "minecraft:wither_skeleton_skull"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.its_getting_hot_in_here.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

@@ -37,15 +37,32 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
         LibEntityUtils.knockBackA2B(owner, victim, 0.31, 0.2);
+    }
 
-        // 生成恶魂弹射物
-        if (!owner.level().isClientSide && owner.level() instanceof ServerLevel serverLevel) {
-            spawnGhastlyProjectile(serverLevel, owner, victim);
-        }
+    /**
+     * 使用当前挥击已经传入的武器栈生成恶魂弹幕。
+     *
+     * <p>这里不能在命中后重新读取玩家主手，否则玩家切换物品或未来扩展副手攻击时，派生弹幕
+     * 可能冻结错误武器。基础实现仍负责伤害、击退回调和附魔后处理。</p>
+     */
+    @Override
+    protected void onHitEntity(
+            ItemStack stack,
+            ServerLevel level,
+            LivingEntity owner,
+            Entity victim
+    ) {
+        super.onHitEntity(stack, level, owner, victim);
+        spawnGhastlyProjectile(stack, level, owner, victim);
     }
 
     /// 在受害者周围搜寻最近敌人，并在其周围圆形区域生成 [GhastlyProjectile]。
-    private void spawnGhastlyProjectile(ServerLevel level, LivingEntity owner, Entity victim) {
+    private void spawnGhastlyProjectile(
+            ItemStack weapon,
+            ServerLevel level,
+            LivingEntity owner,
+            Entity victim
+    ) {
         Vec3 victimPos = victim.position();
         AABB searchBox = new AABB(victimPos.add(-SEARCH_RANGE, -SEARCH_RANGE, -SEARCH_RANGE),
                 victimPos.add(SEARCH_RANGE, SEARCH_RANGE, SEARCH_RANGE));
@@ -73,30 +90,26 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
         ).normalize();
 
         SpearProjectileComponent component = SpearProjectileComponent.GHASTLY_PROJECTILE.get();
-        GhastlyProjectile projectile = spawnProjectile(level, owner,
-                new Vec3(spawnX, spawnY, spawnZ), dir, component);
-        // addFreshEntity 会触发 onAddedToLevel 自动索敌，此处显式覆盖以确保锁定正确目标
-        projectile.setLockedTarget(nearestEnemy);
+        spawnProjectile(weapon, level, owner,
+                new Vec3(spawnX, spawnY, spawnZ), dir, component, nearestEnemy);
     }
 
-    /// 生成 [GhastlyProjectile] 并添加到世界。
-    ///
-    /// @param level     服务端世界
-    /// @param owner     弹射物主人
-    /// @param pos       生成位置
-    /// @param direction 发射方向
-    /// @param component 弹射物配置组件
-    /// @return 已生成的弹射物实例
-    private GhastlyProjectile spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction, SpearProjectileComponent component) {
-        GhastlyProjectile projectile = new GhastlyProjectile(
-                ModEntities.GHASTLY.get(), level);
-        projectile.setOwner(owner);
-        projectile.setWeapon(owner.getMainHandItem());
-        // setProjComponent 自动从 owner 获取基础攻击伤害
-        projectile.setProjComponent(component, owner);
-        projectile.setPos(pos.x, pos.y, pos.z);
-        projectile.fire(direction, component.getVelocity(owner), 0.0f);
-        level.addFreshEntity(projectile);
+    /**
+     * 在世界提交前锁定目标，再由统一事务安装 MELEE 快照并生成实体。
+     */
+    private GhastlyProjectile spawnProjectile(
+            ItemStack weapon,
+            ServerLevel level,
+            LivingEntity owner,
+            Vec3 pos,
+            Vec3 direction,
+            SpearProjectileComponent component,
+            LivingEntity target
+    ) {
+        GhastlyProjectile projectile = new GhastlyProjectile(ModEntities.GHASTLY.get(), level);
+        fireDerivedProjectile(
+                weapon, level, owner, component, projectile,
+                pos, direction, 0.0F, value -> value.setLockedTarget(target));
         return projectile;
     }
 

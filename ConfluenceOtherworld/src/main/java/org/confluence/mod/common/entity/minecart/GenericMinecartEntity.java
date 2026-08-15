@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.minecart;
 
 import PortLib.extensions.net.minecraft.util.StringRepresentable.PortStringRepresentableExtension;
 import com.mojang.serialization.Codec;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -33,12 +34,25 @@ public class GenericMinecartEntity extends BaseMinecartEntity implements Variant
 
     @Override
     public void setVariant(Variant variant) {
-        entityData.set(DATA_VARIANT_ID, variant.id);
+        entityData.set(DATA_VARIANT_ID, (variant == null ? Variant.DESERT : variant).id);
     }
 
     @Override
     public Variant getVariant() {
         return Variant.byId(entityData.get(DATA_VARIANT_ID));
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        // 通用矿车共用同一个实体类型，具体外观必须由当前存档字段恢复。
+        setVariant(Variant.byId(tag.getInt("Variant")));
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("Variant", getVariant().id);
     }
 
     public record Variant(String name, int id) implements StringRepresentable {
@@ -68,7 +82,7 @@ public class GenericMinecartEntity extends BaseMinecartEntity implements Variant
         public static final Codec<Variant> CODEC = PortStringRepresentableExtension.fromValues(() -> VALUES.toArray(Variant[]::new));
 
         public static Variant byId(int id) {
-            return VALUES.get(id);
+            return id >= 0 && id < VALUES.size() ? VALUES.get(id) : DESERT;
         }
 
         @Override

@@ -20,6 +20,12 @@ public record FlushArmorSetBonusPacketS2C(int playerId) implements IPortPacket.S
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
+    @Override
     public void work(Player player) {
         ClientPacketHandler.handleFlushArmorSetBonus(player, playerId);
     }

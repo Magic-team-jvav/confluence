@@ -1,0 +1,36 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "enter_bee_hive": {
+            "conditions": {
+                "player": {
+                    "location": {
+                        "structure": "confluence:queen_bee_hive"
+                    }
+                }
+            },
+            "trigger": "minecraft:location"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.wheres_my_honey.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:jungle_hive_block"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.wheres_my_honey.title"
+        }
+    },
+    "requirements": [
+        [
+            "enter_bee_hive"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

@@ -1,0 +1,8 @@
+{
+    "parent": "confluence:item/whip_segments/chain_4px",
+    "render_type": "cutout",
+    "textures": {
+        "particle": "confluence:item/whip_model_tex/chain/amber_chain",
+        "all": "confluence:item/whip_model_tex/chain/amber_chain"
+    }
+}

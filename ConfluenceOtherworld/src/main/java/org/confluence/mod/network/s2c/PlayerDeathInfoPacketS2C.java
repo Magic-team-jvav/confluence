@@ -37,6 +37,12 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
+    @Override
     public void work(Player player) {
         ClientPacketHandler.handleDeathInfo(this, player);
     }

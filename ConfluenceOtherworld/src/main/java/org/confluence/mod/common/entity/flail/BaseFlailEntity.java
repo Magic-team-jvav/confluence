@@ -26,6 +26,10 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.HandPositionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// # 连枷弹射物基类
 /// 支持五阶段状态机：SPIN->THROWN->STAY->RETRACT
@@ -34,7 +38,7 @@ import org.joml.Vector3f;
 /// THROWN：沿视线方向发射，造成 100% 伤害，无限穿透
 /// STAY：受重力停留地面，造成 50% 伤害
 /// RETRACT：飞回玩家并消失
-public class BaseFlailEntity extends Projectile implements Immunity {
+public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     // ── 状态常量 ──
     public static final int PHASE_SPIN = 0;
     public static final int PHASE_THROWN = 1;
@@ -55,6 +59,16 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     private boolean playerDropped = false;
     @Nullable
     private FlailComponent cachedComponent;
+    /**
+     * 客户端渲染链条时使用的平滑方向。
+     *
+     * <p>连枷阶段切换或服务端同步位置时，弹球位置可能在相邻帧内出现小幅跳变。如果链条
+     * 直接使用瞬时方向，会表现为手部端点弹动；该字段只参与客户端渲染，不保存到实体数据。</p>
+     */
+    @Nullable
+    public Vec3 smoothedChainDir;
+    private final AnimatableInstanceCache animationCache =
+            GeckoLibUtil.createInstanceCache(this);
 
     public BaseFlailEntity(EntityType<? extends BaseFlailEntity> entityType, Level level) {
         super(entityType, level);
@@ -66,8 +80,11 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         setOwner(owner);
         this.cachedComponent = component;
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
-        setPos(palm);
+        setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
         setPhase(PHASE_SPIN);
+        if (startsLaunched()) {
+            launch(owner);
+        }
         // 持续播放挖掘动画
         if (level().isClientSide()) {
             owner.swing(InteractionHand.MAIN_HAND);
@@ -86,7 +103,17 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     }
 
     public void setPhase(int phase) {
+        int previous = entityData.get(DATA_PHASE);
         entityData.set(DATA_PHASE, phase);
+        if (!level().isClientSide()
+                && previous == PHASE_THROWN
+                && phase == PHASE_RETRACT
+                && getOwner() instanceof Player player) {
+            FlailComponent component = getComponent();
+            if (component != null) {
+                onThrownToRetract(player, component);
+            }
+        }
     }
 
     public float getSyncedSpinAngle() {
@@ -157,9 +184,14 @@ public class BaseFlailEntity extends Projectile implements Immunity {
             case PHASE_STAY -> tickStay(player, component);
             case PHASE_RETRACT -> tickRetract(player, component);
         }
+        tickSpecialBehavior(player, component, getPhase());
 
         if (!level().isClientSide() && hitCooldown <= 0) {
-            doCollisionCheck(player, phase, component);
+            /*
+             * 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
+             * 否则直接发射型链锤撞墙后仍会在同一 tick 以投出伤害命中附近实体。
+             */
+            doCollisionCheck(player, getPhase(), component);
         }
 
         // 所有阶段：玩家超出最大距离时自动收回（仅服务端判断）
@@ -172,11 +204,15 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     }
 
     private void tickSpin(Player player, FlailComponent component) {
+        this.noPhysics = true;
         setNoGravity(true);
         // 默认 SPIN：绕玩家肩部，在玩家面朝方向的竖直平面内圆周运动
         spinAngle += component.getSpinSpeed(player);
-        Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F);
-        float yawRad = (float) Math.toRadians(player.getYRot());
+        Vec3 pivot = HandPositionUtils.getPalmPosition(
+                player,
+                1.0F,
+                new Vec3(0.25, 0.25, -0.2));
+        float yawRad = (float) Math.toRadians(player.yBodyRot);
         float cosYaw = (float) Math.cos(yawRad);
         float sinYaw = (float) Math.sin(yawRad);
         double r = component.spinRadius();
@@ -186,7 +222,20 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         double x = pivot.x - localZ * sinYaw;
         double y = pivot.y + localY;
         double z = pivot.z + localZ * cosYaw;
-        setPos(x, y, z);
+        Vec3 targetPos = new Vec3(x, y - getBbHeight() * 0.5, z);
+        Vec3 toTarget = targetPos.subtract(position());
+        double distance = toTarget.length();
+        if (distance > 1.0E-7) {
+            double maxOrbitalSpeed = r * component.getSpinSpeed(player) * 1.5;
+            double speed = Math.min(distance * 0.8, maxOrbitalSpeed + 0.5);
+            setDeltaMovement(toTarget.normalize().scale(speed));
+            move(MoverType.SELF, getDeltaMovement());
+        }
+        setDeltaMovement(Vec3.ZERO);
+        faceDirection(new Vec3(
+                sinYaw * Math.sin(spinAngle),
+                Math.cos(spinAngle),
+                -cosYaw * Math.sin(spinAngle)));
 
         // 客户端持续播放挥动动画
         if (level().isClientSide()) {
@@ -204,7 +253,8 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     }
 
     private void tickThrown(Player player, FlailComponent component) {
-        Vec3 motion = getDeltaMovement();
+        Vec3 motion = getDeltaMovement().add(
+                0.0, -getThrownGravity(), 0.0);
 
         // 速度过低直接收回（仅服务端判断）
         if (!level().isClientSide() && motion.lengthSqr() < 0.1) {
@@ -212,17 +262,26 @@ public class BaseFlailEntity extends Projectile implements Immunity {
             return;
         }
 
+        faceDirection(motion);
         BlockHitResult blockHit = clipBlock(motion);
         if (blockHit != null) {
             Vec3 normal = Vec3.atLowerCornerOf(blockHit.getDirection().getNormal());
             setPos(blockHit.getLocation().add(normal.scale(0.1)));
+
+            if (startsLaunched()) {
+                if (!level().isClientSide()) {
+                    onLaunchedBlockImpact(player, component, blockHit);
+                    setPhase(PHASE_RETRACT);
+                }
+                return;
+            }
 
             // 反射速度：仅当朝向墙面时反弹，防浅角度卡住
             double dot = motion.dot(normal);
             if (dot < 0) {
                 motion = motion.subtract(normal.scale(2.0 * dot));
             }
-            motion = motion.scale(0.6);
+            motion = motion.scale(component.bounceFactor());
             setDeltaMovement(motion);
 
             // 反弹次数耗尽 或 反射后速度过低 直接收回（仅服务端判断）
@@ -277,6 +336,7 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         }
         Vec3 dir = toOwner.normalize();
         Vec3 motion = dir.scale(component.retractSpeed());
+        faceDirection(motion);
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
 
@@ -296,7 +356,10 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         if (damageMultiplier <= 0) return;
 
         AABB checkBox = getBoundingBox().inflate(1.5);
-        var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox, e -> e != player && e.isAlive() /* todo projectile && TEUtils.projectileCanHurtEntityTest.test(this, e)*/);
+        var entities = level().getEntitiesOfClass(
+                LivingEntity.class,
+                checkBox,
+                e -> e != player && e.isAlive());
 
         for (LivingEntity target : entities) {
             float baseDamage = (float) (component.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
@@ -305,10 +368,90 @@ public class BaseFlailEntity extends Projectile implements Immunity {
 
             if (target.hurt(source, finalDamage)) {
                 LibEntityUtils.knockBackA2B(this, target, 0.3f, 0.15f);
-//  todo component              component.hitEffect().ifPresent(effect -> effect.applyAll(player, target));
+                ItemStack held = player.getMainHandItem();
+                if (held.getItem() instanceof BaseFlailItem flailItem) {
+                    flailItem.onFlailHit(player, target, this);
+                }
                 hitCooldown = phase == PHASE_THROWN ? 3 : 8;
+                if (phase == PHASE_THROWN && startsLaunched()) {
+                    setPhase(PHASE_RETRACT);
+                    return;
+                }
             }
         }
+    }
+
+    /**
+     * 返回当前连枷是否属于直接发射型。
+     *
+     * <p>普通链锤先旋转再投出；链刃、锚等直接发射型由实体子类覆盖，
+     * 其参数和行为无需再写入物品注册或额外定义表。</p>
+     */
+    protected boolean startsLaunched() {
+        return false;
+    }
+
+    /**
+     * 返回链锤头部是否按泰拉瑞亚原始平面精灵绘制。
+     */
+    public boolean usesSpriteHead() {
+        return false;
+    }
+
+    /**
+     * 返回投出阶段每 tick 额外施加的重力。
+     */
+    protected double getThrownGravity() {
+        return 0.0;
+    }
+
+    /**
+     * 按指定方向同步实体朝向。
+     *
+     * <p>渲染器会根据实体朝向决定球体姿态。旋转、投出和收回阶段都维护朝向后，
+     * 连枷不会再因为服务端位置变化而出现球体横躺、正反面乱跳或链条接到模型侧面的错觉。</p>
+     */
+    private void faceDirection(Vec3 direction) {
+        if (direction.lengthSqr() < 1.0E-7) {
+            return;
+        }
+        double horizontal = Math.sqrt(
+                direction.x * direction.x + direction.z * direction.z);
+        setYRot((float) Math.toDegrees(
+                Math.atan2(-direction.x, direction.z)));
+        setXRot((float) Math.toDegrees(
+                Math.atan2(-direction.y, horizontal)));
+    }
+
+    /**
+     * 在共享移动、碰撞和状态转换完成后执行具体武器行为。
+     *
+     * <p>特殊链锤只需覆盖此扩展点发射附属弹幕；普通链锤保持空实现。</p>
+     */
+    protected void tickSpecialBehavior(
+            Player player,
+            FlailComponent component,
+            int phase
+    ) {
+    }
+
+    /**
+     * 直接发射型链锤撞击方块时的扩展点。
+     */
+    protected void onLaunchedBlockImpact(
+            Player player,
+            FlailComponent component,
+            BlockHitResult hit
+    ) {
+    }
+
+    /**
+     * 投出阶段首次进入收回阶段时的扩展点。
+     */
+    protected void onThrownToRetract(
+            Player player,
+            FlailComponent component
+    ) {
     }
 
     /// SPIN 切换THROWN
@@ -321,7 +464,9 @@ public class BaseFlailEntity extends Projectile implements Immunity {
         playerDropped = false;
 
         Vec3 look = player.getViewVector(1.0F);
-        setPos(HandPositionUtils.getPalmPosition(player, 1.0F));
+        Vec3 palm = HandPositionUtils.getPalmPosition(player, 1.0F);
+        setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
+        faceDirection(look);
 
         float velocity = component.getVelocity(player);
         setDeltaMovement(look.scale(velocity));
@@ -381,5 +526,16 @@ public class BaseFlailEntity extends Projectile implements Immunity {
     @Override
     public int confluence$getImmunityDuration(DamageSource damageSource) {
         return 7;
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animationCache;
+    }
+
+    @Override
+    public void registerControllers(
+            AnimatableManager.ControllerRegistrar controllers
+    ) {
     }
 }

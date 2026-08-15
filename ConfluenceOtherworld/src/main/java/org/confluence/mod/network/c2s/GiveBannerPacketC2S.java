@@ -18,21 +18,37 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("give_banner");
-    public static final PortStreamCodec<ByteBuf, GiveBannerPacketC2S> STREAM_CODEC = PortByteBufCodecs.STRING_UTF8.map(GiveBannerPacketC2S::new, GiveBannerPacketC2S::key);
+    public static final PortStreamCodec<ByteBuf, GiveBannerPacketC2S> STREAM_CODEC =
+            PortByteBufCodecs.STRING_UTF8
+                    .map(GiveBannerPacketC2S::new, GiveBannerPacketC2S::key);
 
     @Override
     public ResourceLocation identifier() {
         return ID;
     }
 
+    /**
+     * 领取旗帜会读取图鉴并修改玩家物品栏，必须回到服务端主线程执行。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        if (context.player() instanceof ServerPlayer player) {
+            context.enqueueWork(() -> work(player));
+        }
+    }
+
     @Override
     public void work(ServerPlayer player) {
         BestiaryEntry entry = Bestiary.INSTANCE.getEntries().get(key);
-        if (entry != null && entry.isCompleted()) {
-            ItemStack stack = ModItems.ENEMY_BANNER.get().getDefaultInstance();
-            stack.set(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(AbstractEnemyBannerBlock.TAG_ENTRY_KEY, key)));
-            player.addItem(stack);
-        }
+        if (entry == null || !entry.isCompleted()) return;
+
+        ItemStack stack = ModItems.ENEMY_BANNER.get().getDefaultInstance();
+        stack.set(
+                ConfluenceMagicLib.NBT,
+                NbtComponent.create(tag -> tag.putString(
+                        AbstractEnemyBannerBlock.TAG_ENTRY_KEY,
+                        key)));
+        player.addItem(stack);
     }
 
     public static void sendToServer(ClientBestiaryEntry entry) {

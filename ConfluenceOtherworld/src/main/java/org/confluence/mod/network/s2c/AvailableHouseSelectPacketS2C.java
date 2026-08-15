@@ -18,6 +18,7 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
     public static final ResourceLocation ID = Confluence.asResource("available_house_select");
     public static final int size = 25;
     public static final int traveling_merchant = 20;
+    public static final int angler = 21;
     public static final PortStreamCodec<ByteBuf, AvailableHouseSelectPacketS2C> STREAM_CODEC = LibStreamCodecUtils.booleanArray(size)
             .map(AvailableHouseSelectPacketS2C::new, AvailableHouseSelectPacketS2C::available);
     private static EntityType<?>[] TYPES;
@@ -25,6 +26,15 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
     @Override
     public ResourceLocation identifier() {
         return ID;
+    }
+
+    /**
+     * 住房选择状态由客户端 HUD 持有，必须交给客户端主线程更新。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
     }
 
     @Override
@@ -73,10 +83,26 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
             EntityType<?> type = getTypes()[i];
             if (type == EntityType.PLAYER) {
                 values[i] = true;
+            } else if (i == angler) {
+                // 渔夫和渔女是同一住房槽位下的微光变体。
+                values[i] = details.getBoolean(NpcEntities.ANGLER.get())
+                        || details.getBoolean(NpcEntities.FEMALE_ANGLER.get());
             } else if (type != null) {
                 values[i] = details.getBoolean(type);
             }
         }
         return new AvailableHouseSelectPacketS2C(values);
+    }
+
+    /**
+     * 判断实体类型是否属于指定住房槽位。
+     */
+    public static boolean matchesSelection(int selected, EntityType<?> type) {
+        if (selected == angler) {
+            return type == NpcEntities.ANGLER.get()
+                    || type == NpcEntities.FEMALE_ANGLER.get();
+        }
+        return selected >= 0 && selected < getTypes().length
+                && type == getTypes()[selected];
     }
 }

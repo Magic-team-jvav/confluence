@@ -31,6 +31,13 @@ public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        if (context.player() instanceof ServerPlayer player) {
+            context.enqueueWork(() -> work(player));
+        }
+    }
+
+    @Override
     public void work(ServerPlayer player) {
         if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             float damage = (float) player.getAttributeValue(LibAttributes.getAttackDamage());

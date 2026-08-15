@@ -12,5 +12,8 @@ public class MechanicalCartEntity extends BaseMinecartEntity {
         super(level, x, y, z, abilities);
     }
 
-    // todo
+    /*
+     * 机械矿车当前复用基础高速矿车能力。
+     * 若要补充激光、粒子或额外撞击效果，应在本类覆盖 tick 追加，保持基础类只承载公共规则。
+     */
 }

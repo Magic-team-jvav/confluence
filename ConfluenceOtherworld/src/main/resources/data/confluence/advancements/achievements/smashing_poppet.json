@@ -1,0 +1,29 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "runtime": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.smashing_poppet.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:shadow_orb"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.smashing_poppet.title"
+        }
+    },
+    "requirements": [
+        [
+            "runtime"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

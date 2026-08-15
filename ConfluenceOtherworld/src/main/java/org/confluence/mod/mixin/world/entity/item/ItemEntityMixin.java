@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.world.entity.item;
 
-import net.minecraft.Util;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -19,8 +18,8 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModAdvancements;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
+import org.confluence.mod.common.recipe.ShimmerDecompositionInputs;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -35,7 +34,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Mixin(ItemEntity.class)
@@ -153,16 +151,8 @@ public abstract class ItemEntityMixin implements IItemEntity {
                 for (Ingredient ingredient : recipe.getIngredients()) {
                     ItemStack[] itemStacks = ingredient.getItems();
                     if (itemStacks.length == 0) continue;
-                    if (!isHardmode && Arrays.stream(itemStacks).allMatch(itemStack -> itemStack.is(ModTags.Items.HARDMODE))) {
-                        continue;
-                    }
-                    ItemStack input = Util.getRandom(itemStacks, random);
-                    if (!isHardmode && input.is(ModTags.Items.HARDMODE)) {
-                        for (int i = 0; i < itemStacks.length && input.is(ModTags.Items.HARDMODE); i++) {
-                            input = itemStacks[i];
-                        }
-                        if (input.is(ModTags.Items.HARDMODE)) continue;
-                    }
+                    ItemStack input = ShimmerDecompositionInputs.choose(itemStacks, isHardmode, random, CommonConfigs.SHIMMER_DECOMPOSE_FIRST_TAG_ITEM.get());
+                    if (input == null) continue;
                     ItemStack result = input.copy();
                     if (result.getItem().hasCraftingRemainingItem(result)) continue;
                     int count = result.getCount() * times;

@@ -16,7 +16,6 @@ import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 public class NorthPoleSubProjectile extends SpearProjectile {
     public NorthPoleSubProjectile(EntityType<? extends NorthPoleSubProjectile> entityType, Level level) {
         super(entityType, level);
-// todo projectile       this.collisionProperties = new CollisionProperties(1, 1, 0.65F);
     }
 
     @Override

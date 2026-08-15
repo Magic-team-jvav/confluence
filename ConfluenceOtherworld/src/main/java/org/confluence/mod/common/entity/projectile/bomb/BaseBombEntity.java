@@ -133,10 +133,27 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.delay = compound.getInt("Delay");
-        this.blastPower = compound.getFloat("BlastPower");
-        this.bounceFactor = compound.getDouble("BounceFactor");
-        this.frictionFactor = compound.getDouble("FrictionFactor");
+        if (compound.contains("Delay", CompoundTag.TAG_INT)) {
+            this.delay = Math.max(compound.getInt("Delay"), 0);
+        }
+        if (compound.contains("BlastPower", CompoundTag.TAG_FLOAT)) {
+            float savedBlastPower = compound.getFloat("BlastPower");
+            if (Float.isFinite(savedBlastPower)) {
+                this.blastPower = Math.max(savedBlastPower, 0.0F);
+            }
+        }
+        if (compound.contains("BounceFactor", CompoundTag.TAG_DOUBLE)) {
+            double savedBounceFactor = compound.getDouble("BounceFactor");
+            if (Double.isFinite(savedBounceFactor)) {
+                this.bounceFactor = Mth.clamp(savedBounceFactor, 0.0, 1.0);
+            }
+        }
+        if (compound.contains("FrictionFactor", CompoundTag.TAG_DOUBLE)) {
+            double savedFrictionFactor = compound.getDouble("FrictionFactor");
+            if (Double.isFinite(savedFrictionFactor)) {
+                this.frictionFactor = Mth.clamp(savedFrictionFactor, 0.0, 1.0);
+            }
+        }
     }
 
     @Override

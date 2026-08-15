@@ -10,6 +10,9 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 public class HillHungry extends TheHungry {
+    private static final double HORIZONTAL_LEASH_DISTANCE = 32.0;
+    private static final double VERTICAL_LEASH_DISTANCE = 64.0;
+
     public HillHungry(EntityType<? extends HillHungry> type, Level level) {
         super(type, level);
     }
@@ -23,6 +26,20 @@ public class HillHungry extends TheHungry {
                 .add(Attributes.FLYING_SPEED, 0.6)
                 .add(Attributes.FOLLOW_RANGE, 40.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
+    }
+
+    /**
+     * 肉丘嘴部的饿鬼只负责守卫单个嘴部锚点，活动范围比血肉墙饿鬼短。
+     * 参数保留在具体实体中，避免共用父类再次把两种 Boss 的运动语义合并。
+     */
+    @Override
+    protected double horizontalLeashDistance() {
+        return HORIZONTAL_LEASH_DISTANCE;
+    }
+
+    @Override
+    protected double verticalLeashDistance() {
+        return VERTICAL_LEASH_DISTANCE;
     }
 
     @Override

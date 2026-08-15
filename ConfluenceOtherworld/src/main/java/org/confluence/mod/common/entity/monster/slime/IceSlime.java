@@ -6,19 +6,23 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibUtils;
 
 public class IceSlime extends BaseSlime {
 
     public IceSlime(EntityType<? extends BaseSlime> type, Level level) {
-        super(type, level, 0xB3F0EA, true, 20);
+        super(type, level, 0xB3F0EA, true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createSlimeAttributes(5.0f, 4, 13.0f, 20);
+        return createSlimeAttributes(5.0f, 4, 13.0f);
     }
 
     @Override
     protected void onAttackTarget(LivingEntity target) {
-        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 0));
+        if (LibUtils.isMaster(level(), blockPosition())
+                || (LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextBoolean())) {
+            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 0), this);
+        }
     }
 }

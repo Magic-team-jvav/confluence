@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundChunksBiomesPacket;
 import net.minecraft.server.MinecraftServer;
@@ -32,7 +33,6 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.MinecraftForge;
-import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
@@ -56,23 +56,37 @@ import java.util.function.Function;
 /// [困难模式转换](https://terraria.wiki.gg/zh/wiki/%E5%9B%B0%E9%9A%BE%E6%A8%A1%E5%BC%8F%E8%BD%AC%E6%8D%A2)
 public enum HardmodeConvertor implements IGlobalData {
     INSTANCE;
+    /**
+     * 每个区块固定包含 16×16 个水平列，存档协议必须恰好写满这些位置。
+     */
+    private static final int COLUMN_COUNT = 16 * 16;
     public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> SANCTIFICATION_CODEC = PortCodecExtension.lazyInitialized(() -> {
         Codec<BlockPosColumn[][]> codec = new Codec<>() {
             @Override
             public <T> DataResult<Pair<BlockPosColumn[][], T>> decode(DynamicOps<T> ops, T input) {
-                BlockPosColumn[][] columns = new BlockPosColumn[16][16];
-                MutableInt counter = new MutableInt();
-                PortDataResultExtension.getOrThrow(ops.getLongStream(input)).forEach(l -> {
-                    int i = counter.getAndIncrement();
-                    int x = i / 16;
-                    int z = i % 16;
-                    columns[x][z] = BlockPosColumn.of(l);
+                return ops.getLongStream(input).flatMap(stream -> {
+                    // 最多读取 257 项即可判断超长，避免损坏标签驱动无界流消费。
+                    long[] values = stream.limit(COLUMN_COUNT + 1L).toArray();
+                    if (values.length != COLUMN_COUNT) {
+                        return DataResult.error(() -> "Hardmode chunk column matrix requires exactly "
+                                + COLUMN_COUNT + " entries, got " + values.length);
+                    }
+                    BlockPosColumn[][] columns = new BlockPosColumn[16][16];
+                    for (int i = 0; i < values.length; i++) {
+                        columns[i / 16][i % 16] = BlockPosColumn.of(values[i]);
+                    }
+                    return DataResult.success(new Pair<>(columns, input), Lifecycle.stable());
                 });
-                return DataResult.success(new Pair<>(columns, input), Lifecycle.stable());
             }
 
             @Override
             public <T> DataResult<T> encode(BlockPosColumn[][] input, DynamicOps<T> ops, T prefix) {
+                if (input.length != 16 || Arrays.stream(input).anyMatch(row -> row == null || row.length != 16)) {
+                    return DataResult.error(() -> "Hardmode chunk column matrix must be 16x16");
+                }
+                if (Arrays.stream(input).flatMap(Arrays::stream).anyMatch(Objects::isNull)) {
+                    return DataResult.error(() -> "Hardmode chunk column matrix cannot contain null columns");
+                }
                 T longList = ops.createLongList(Arrays.stream(input).flatMapToLong(columns -> Arrays.stream(columns).mapToLong(BlockPosColumn::asLong)));
                 return DataResult.success(longList, Lifecycle.stable());
             }
@@ -262,22 +276,52 @@ public enum HardmodeConvertor implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
+        if (tag.isEmpty()) {
+            return;
+        }
+        if (!tag.contains("sanctification")
+                || !tag.contains("started", Tag.TAG_BYTE)
+                || !tag.contains("completed", Tag.TAG_BYTE)) {
+            throw new IllegalArgumentException(
+                    "Hardmode conversion data is missing a required field or contains an invalid field type");
+        }
         this.shouldContinue = false;
-        PortDataResultExtension.ifSuccess(SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, tag.get("sanctification")),
-                result -> this.sanctification = new LinkedList<>(result));
-        this.started = tag.getBoolean("started");
-        this.completed = tag.getBoolean("completed");
-        this.shouldContinue = true;
+        try {
+            Tag storedQueue = tag.get("sanctification");
+            if (storedQueue == null) {
+                throw new IllegalArgumentException(
+                        "Hardmode conversion data is missing the sanctification queue");
+            }
+            List<Tuple<ChunkPos, BlockPosColumn[][]>> decoded =
+                    PortDataResultExtension.getOrThrow(
+                            SANCTIFICATION_CODEC.parse(
+                                    NbtOps.INSTANCE, storedQueue),
+                            message -> new IllegalArgumentException(
+                                    "Failed to decode hardmode conversion queue: "
+                                            + message));
+            this.sanctification = new LinkedList<>(decoded);
+            this.started = tag.getBoolean("started");
+            this.completed = tag.getBoolean("completed");
+        } finally {
+            this.shouldContinue = true;
+        }
     }
 
     @Override
     public void encode(CompoundTag tag) {
         this.shouldContinue = false;
-        PortDataResultExtension.ifSuccess(SANCTIFICATION_CODEC.encodeStart(NbtOps.INSTANCE, sanctification),
-                nbt -> tag.put("sanctification", nbt));
-        tag.putBoolean("started", started);
-        tag.putBoolean("completed", completed);
-        this.shouldContinue = true;
+        try {
+            tag.put("sanctification", PortDataResultExtension.getOrThrow(
+                    SANCTIFICATION_CODEC.encodeStart(
+                            NbtOps.INSTANCE, sanctification),
+                    message -> new IllegalStateException(
+                            "Failed to encode hardmode conversion queue: "
+                                    + message)));
+            tag.putBoolean("started", started);
+            tag.putBoolean("completed", completed);
+        } finally {
+            this.shouldContinue = true;
+        }
     }
 
     @Override

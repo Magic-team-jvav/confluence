@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import static net.minecraft.world.level.block.entity.CampfireBlockEntity.cookTick;
 import static net.minecraft.world.level.block.entity.CampfireBlockEntity.cooldownTick;
 
-// todo 电线控制
+// 生命营火当前遵循原版点燃状态；后续电线控制应统一接入机械网络。
 public class LifeCampfireBlock extends CampfireBlock {
     public LifeCampfireBlock(Properties properties) {
         super(true, 1, properties);

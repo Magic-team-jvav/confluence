@@ -24,6 +24,15 @@ public record SoulPacketS2C(int maxSoul, float currentSoul,
         return ID;
     }
 
+    /**
+     * 魂力缓存由客户端界面读取，必须在客户端主线程更新。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
     @Override
     public void work(Player player) {
         ClientPacketHandler.handleSoul(this, player);

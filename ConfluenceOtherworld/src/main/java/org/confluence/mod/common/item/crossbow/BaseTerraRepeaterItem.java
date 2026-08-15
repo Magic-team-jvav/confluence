@@ -1,11 +1,9 @@
 package org.confluence.mod.common.item.crossbow;
 
-import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -20,6 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
@@ -29,10 +28,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.api.projectile.*;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
@@ -50,18 +51,27 @@ import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.mesdag.portlib.attachment.IPortAttachmentHolder;
+import org.mesdag.portlib.wrapper.common.extensions.IPortArrowItemExtension;
 import org.mesdag.portlib.wrapper.common.extensions.IPortCrossbowItemExtension;
 import org.mesdag.portlib.wrapper.common.extensions.IPortItemPropertiesExtension;
-import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-// todo crossbow
-public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftclick ILeftClickStateItem,*/ IPortCrossbowItemExtension {
+/**
+ * 1.20.1 连弩实现：右键装填弹仓，攻击键通过统一 RANGED 动作发射。
+ *
+ * <p>弹仓是不可变当前格式组件；并发箭作为同一批原子生成，后续 burst tick 复用首发冻结快照，
+ * 但各自只在实际入世前扣除一枚弹药和一次耐久。切换武器、死亡或断开会让延迟任务停止，尚未
+ * 执行的批次不会提前损失资源，也不能转移到另一把连弩。</p>
+ */
+public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbowItemExtension, ProjectileWeaponAction {
     public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
 
     public static final String ATTACK_SPEED_TEXT = "attribute.name.repeater.attack_speed";
@@ -73,17 +83,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
     public static final String ARROW_CAPACITY_TEXT = "attribute.name.repeater.arrow_capacity";
 
     public static final String REPEATER_CONTINUOUS_SHOOTING = "repeater.continuous_shooting";
-    public static final String REPEATER_SHOOTING = "repeater.shooting";
-
-    private static final ResourceLocation ID = Confluence.asResource(PortEquipmentSlotGroup.MAINHAND.getSerializedName());
-//    private static final ChargingSounds DEFAULT_SOUNDS = new ChargingSounds(
-//            Optional.of(SoundEvents.CROSSBOW_LOADING_START),
-//            Optional.of(SoundEvents.CROSSBOW_LOADING_MIDDLE),
-//            Optional.of(SoundEvents.CROSSBOW_LOADING_END)
-//    );
-
-    private boolean startSoundPlayed = false;
-    private boolean midLoadSoundPlayed = false;
 
     /**
      * 基础伤害
@@ -143,9 +142,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
     public BaseTerraRepeaterItem(Properties properties, float baseDamage, ModifyArrowBuilder modifyArrowBuilder, Builder repeaterBuilder) {
         super(modifyArrowBuilder.buildProperties(properties.stacksTo(1)
                         .component(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.fromItems(repeaterBuilder.capacity))
-                /*.attributes(ItemAttributeModifiers.builder().add(Attributes.ATTACK_KNOCKBACK,
-                        new AttributeModifier(ID, repeaterBuilder.knockback, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build()
-                )*/)
+                )
         );
         this.baseReloadSpeed = repeaterBuilder.reloadSpeed;
         this.baseShootInterval = repeaterBuilder.shootInterval;
@@ -174,10 +171,17 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
         return getReloadSpeed(shooter, shooter.getItemInHand(hand));
     }
 
-    ///  获取装填速度
+    /**
+     * 返回当前物品的实际装填时间。
+     *
+     * <p>原版 1.20.1 的快速装填每级减少 5 tick。连弩拥有各自的基础装填时间，
+     * 因而不能直接调用写死 25 tick 基准的原版静态方法，但必须保留相同的每级
+     * 修正语义，并保证异常高等级附魔也不会产生零或负时间。</p>
+     */
     public int getReloadSpeed(LivingEntity shooter, ItemStack stack) {
-        float f = baseReloadSpeed / 20f;
-        return Mth.floor(f * 20.0F);
+        int quickCharge = LibEnchantmentUtils.getEnchantmentLevel(
+                Enchantments.QUICK_CHARGE, stack);
+        return Math.max(1, baseReloadSpeed - quickCharge * 5);
     }
 
     public int getShootInterval(LivingEntity shooter, InteractionHand hand) {
@@ -198,16 +202,17 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
     }
 
     public int getBurstCount(LivingEntity shooter, InteractionHand hand) {
-        int processProjectileCount;
-        if (shooter.level() instanceof ServerLevel) {
-            ItemStack stack = shooter.getItemInHand(hand);
-            int count = 1;
-            int level = LibEnchantmentUtils.getEnchantmentLevel(Enchantments.MULTISHOT, stack);
-            processProjectileCount = count - level;
-        } else {
-            processProjectileCount = 0;
+        int base = Math.max(1, Math.round(this.baseBurstCount.getCount(shooter.getRandom())));
+        if (!(shooter.level() instanceof ServerLevel)) {
+            return base;
         }
-        return Math.round(this.baseBurstCount.getCount(shooter.getRandom())) + processProjectileCount;
+        int enchantmentBonus = LibEnchantmentUtils.getEnchantmentLevel(
+                Enchantments.MULTISHOT, shooter.getItemInHand(hand));
+        /*
+         * 原版多重射击一级把一枚弹丸扩展为三枚，即额外两枚。连弩将这两枚
+         * 转换为两个受控 burst tick，继续沿用逐次入世、逐次扣弹的事务语义。
+         */
+        return Math.max(1, base + enchantmentBonus * 2);
     }
 
     public int getConcurrentCount(LivingEntity shooter, InteractionHand hand) {
@@ -228,41 +233,60 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
 
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-//        if (!(stack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler)) {
-//            return false;
-//        }
-
         if (other.isEmpty()) {
-//            if (!handler.isEmpty() && action == ClickAction.SECONDARY) {
-//                ItemStack itemStack = handler.extractItem(0, handler.getStackInSlot(0).getCount(), false);
-//                boolean isEmpty = itemStack.isEmpty();
-//                if (!isEmpty) {
-//                    playRemoveSound(player);
-//                }
-//                return !isEmpty && access.set(itemStack);
-//            }
-            return false;
+            return action == ClickAction.SECONDARY
+                    && unloadFirstContents(stack, player, access);
         }
-
         if (!getAllSupportedProjectiles(stack).test(other)) {
             return false;
         }
-
-        int stackCount = switch (action) {
+        int requested = switch (action) {
             case PRIMARY -> other.getCount();
             case SECONDARY -> 1;
         };
+        int inserted = insertIntoContents(stack, other, requested);
+        if (inserted <= 0) {
+            return false;
+        }
+        if (!player.isCreative()) {
+            other.shrink(inserted);
+        }
+        playAerialShootingSound(player);
+        return true;
+    }
 
-        ItemStack copy = other.copyWithCount(stackCount);
-
-//        boolean is = handler.insertItem(() -> copy, false);
-//
-//        if (is) {
-//            playAerialShootingSound(player);
-//            other.setCount(other.getCount() - (stackCount - copy.getCount()));
-//        }
-//
-//        return is;
+    /**
+     * 把弹仓首组弹药完整移到空光标。
+     *
+     * <p>先要求光标槽接受物品，再提交新的不可变弹仓，避免槽位拒绝写入时已经
+     * 删除弹药。该操作只是取回真实弹药，创造模式也不能复制弹仓内容。</p>
+     */
+    private boolean unloadFirstContents(
+            ItemStack weapon,
+            Player player,
+            SlotAccess access
+    ) {
+        RepeaterContents contents = weapon.getOrDefault(
+                ModDataComponentTypes.REPEATER_CONTENTS.get(),
+                RepeaterContents.EMPTY);
+        List<ItemStack> stored = contents.nonEmptyStream().toList();
+        if (stored.isEmpty()) {
+            return false;
+        }
+        ItemStack removed = stored.get(0).copy();
+        if (!access.set(removed)) {
+            return false;
+        }
+        List<ItemStack> remaining = stored.stream()
+                .skip(1)
+                .map(ItemStack::copy)
+                .toList();
+        weapon.set(
+                ModDataComponentTypes.REPEATER_CONTENTS.get(),
+                RepeaterContents.fromItems(
+                        remaining,
+                        contents.getMaxItemCapacity()));
+        playRemoveSound(player);
         return true;
     }
 
@@ -283,10 +307,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
         return new Vector3f(vector3f).rotateAxis(angle * Mth.DEG_TO_RAD, vector3f2.x, vector3f2.y, vector3f2.z);
     }
 
-//    protected float getShootingPower(RepeaterContentsComponentHandler handler, Player player, InteractionHand hand) {
-//        return getArrowSpeed(player, hand);
-//    }
-
     protected static float getShotPitch(RandomSource random, int index) {
         return index == 0 ? 1.0F : getRandomShotPitch((index & 1) == 1, random);
     }
@@ -294,21 +314,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
     protected static float getRandomShotPitch(boolean isHighPitched, RandomSource random) {
         float f = isHighPitched ? 0.63F : 0.43F;
         return 1.0F / (random.nextFloat() * 0.5F + 1.8F) + f;
-    }
-
-//    protected ChargingSounds getChargingSounds(ItemStack stack) {
-//        return DEFAULT_SOUNDS;
-//    }
-//
-//    public @Nullable RepeaterContentsComponentHandler getHandler(ItemStack stack) {
-//        if (stack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
-//            return handler;
-//        }
-//        return null;
-//    }
-
-    private static InteractionHand getHand(Player player, ItemStack itemStack) {
-        return player.getMainHandItem() == itemStack ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
     }
 
     private void playRemoveSound(Entity entity) {
@@ -321,87 +326,304 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean shootingPerform(Level level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, float velocity, float inaccuracy, @Nullable LivingEntity target, boolean isConsume) {
-        if (!(level instanceof ServerLevel serverlevel)) {
+        if (!(level instanceof ServerLevel) || !(shooter instanceof ServerPlayer player)) {
             return false;
         }
-        List<ItemStack> itemStacks = List.of()/*RepeaterContentsComponentHandler.extractItemList(weapon, 1, !isConsume)*/;
-        this.shoot(serverlevel, shooter, hand, weapon, itemStacks, velocity, inaccuracy, true, target);
-        if (shooter instanceof ServerPlayer serverplayer) {
-            // 告诉客户端玩家已发射
-            RepeaterShootingPayloadS2C.sendToClient(serverplayer);
-            CriteriaTriggers.SHOT_CROSSBOW.trigger(serverplayer, weapon);
-            serverplayer.awardStat(Stats.ITEM_USED.get(weapon.getItem()));
-        }
-
-        return true;
+        return ServerProjectileFireService.fire(
+                player, hand, ProjectileFireTrigger.ATTACK_PRESSED)
+                == ProjectileFireResult.SUCCESS;
     }
 
     protected boolean shootingPerformContinuousShooting(Player player, ItemStack itemStack, int countCount, DelayTaskHolder delayTaskHolder, InteractionHand hand, Level level, float shootingPower) {
-        if (delayTaskHolder.containsTask(hand, REPEATER_CONTINUOUS_SHOOTING)) {
-            return false;
+        // 新实现由首发动作保存冻结快照并安排受控 continuation；旧入口仅保留二进制兼容。
+        return false;
+    }
+
+    /**
+     * 从当前不可变弹仓声明一次攻击键触发的 RANGED burst。
+     */
+    @Override
+    public @Nullable ProjectileFireAction createProjectileFireAction(ProjectileFireContext context) {
+        if (context.trigger() != ProjectileFireTrigger.ATTACK_PRESSED
+                && context.trigger() != ProjectileFireTrigger.VANILLA_CROSSBOW_RELEASE) {
+            return null;
         }
-        delayTaskHolder.addTask(hand, REPEATER_CONTINUOUS_SHOOTING, DelayTaskHolder.createTaskBilder()
-                .repeatCount(countCount - 1)
+        int requestedBurst = getBurstCount(context.player(), context.hand());
+        RepeaterShotPlan plan = createShotPlan(context.weapon(), requestedBurst);
+        if (plan == null) {
+            return null;
+        }
+
+        int punch = EnchantmentHelper.getItemEnchantmentLevel(
+                Enchantments.PUNCH_ARROWS, context.weapon());
+        int durabilityUse = getDurabilityUse(plan.ammunition());
+        RepeaterContentsProjectileCost cost = new RepeaterContentsProjectileCost(
+                plan.expectedContents(), plan.remainingContents(), durabilityUse);
+        AtomicReference<ProjectileCombatSnapshot> frozenSnapshot = new AtomicReference<>();
+        return ProjectileFireAction.builder(
+                        ProjectileDamageChannel.RANGED,
+                        cost,
+                        (fireContext, snapshot) -> {
+                            frozenSnapshot.set(snapshot);
+                            return createRepeaterLaunches(
+                                    fireContext.player(),
+                                    fireContext.hand(),
+                                    snapshot.weapon(),
+                                    plan.ammunition(),
+                                    snapshot,
+                                    null);
+                        })
+                .baseDamage(baseDamage)
+                .baseVelocity(baseArrowSpeed)
+                .baseKnockback(baseKnockback + punch)
+                .inherentCritical(true)
+                .triggers(
+                        ProjectileFireTrigger.ATTACK_PRESSED,
+                        ProjectileFireTrigger.VANILLA_CROSSBOW_RELEASE)
+                .cooldownTicks(Math.max(0, baseShootInterval))
+                .validator(fireContext -> !isCharged(fireContext.weapon())
+                        ? false
+                        : fireContext.matchesCurrentWeapon())
+                .successAction(fireContext -> {
+                    ProjectileCombatSnapshot snapshot = frozenSnapshot.get();
+                    if (snapshot == null) {
+                        throw new IllegalStateException("Repeater transaction completed without a frozen snapshot");
+                    }
+                    afterSuccessfulShot(fireContext.player(), fireContext.hand());
+                    scheduleBurst(fireContext.player(), fireContext.hand(), plan, snapshot);
+                })
+                .build();
+    }
+
+    /**
+     * 从弹仓头部拆出当前批次的一枚弹药，并保留尚未执行的 burst 次数。
+     */
+    private @Nullable RepeaterShotPlan createShotPlan(ItemStack weapon, int requestedBurst) {
+        RepeaterContents contents = weapon.getOrDefault(
+                ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+        if (contents.isEmpty() || requestedBurst < 1) {
+            return null;
+        }
+
+        ItemStack ammunition = ItemStack.EMPTY;
+        List<ItemStack> remaining = new ArrayList<>();
+        for (ItemStack stored : contents.nonEmptyStream().toList()) {
+            if (ammunition.isEmpty()) {
+                ammunition = stored.copyWithCount(1);
+                if (stored.getCount() > 1) {
+                    remaining.add(stored.copyWithCount(stored.getCount() - 1));
+                }
+            } else {
+                remaining.add(stored.copy());
+            }
+        }
+        if (ammunition.isEmpty()) {
+            return null;
+        }
+        return new RepeaterShotPlan(
+                contents,
+                RepeaterContents.fromItems(remaining, contents.getMaxItemCapacity()),
+                ammunition,
+                requestedBurst - 1);
+    }
+
+    /**
+     * 创建一次 burst tick 的并发箭矢；不播放声音、不改弹仓、不写世界。
+     */
+    private List<ProjectileLaunch> createRepeaterLaunches(
+            ServerPlayer shooter,
+            InteractionHand hand,
+            ItemStack frozenWeapon,
+            ItemStack ammunition,
+            ProjectileCombatSnapshot snapshot,
+            @Nullable LivingEntity target
+    ) {
+        int count = Math.max(1, getConcurrentCount(shooter, hand));
+        float spread = getConcurrentAngle(shooter, hand);
+        float interval = getConcurrentInterval(shooter, hand);
+        float center = (count - 1) * 0.5F;
+        boolean firework = ammunition.is(Items.FIREWORK_ROCKET);
+        float velocityMultiplier = firework ? 0.507F : 1.0F;
+        List<ProjectileLaunch> launches = new ArrayList<>(count);
+        for (int index = 0; index < count; index++) {
+            float relative = index - center;
+            Projectile projectile = createRepeaterProjectile(
+                    shooter.serverLevel(), shooter, frozenWeapon, ammunition, firework);
+            shootProjectile(
+                    shooter,
+                    projectile,
+                    index,
+                    snapshot.resolvedVelocity() * velocityMultiplier,
+                    1.0F + modifyArrowBuilder.inaccuracy,
+                    relative * spread,
+                    target);
+            if (interval != 0.0F) {
+                BaseTerraBowItem.transformAndApplyOffsetToProjectile(
+                        projectile, new Vec3(0.0, 0.0, relative * interval));
+            }
+            BaseTerraBowItem.processArrowBaseEffects(
+                    shooter, hand, frozenWeapon, projectile, index, count);
+            if (projectile instanceof IAbstractArrow arrow) {
+                arrow.confluence$setDamageNotAffectedBySpeedBonus(true);
+                if (index > 0) {
+                    arrow.confluence$setDisappearingOnGround(true);
+                }
+            }
+            launches.add(new ProjectileLaunch(
+                    projectile,
+                    projectile.position(),
+                    projectile.getDeltaMovement(),
+                    velocityMultiplier));
+        }
+        return List.copyOf(launches);
+    }
+
+    /**
+     * 创建原版箭、泰拉箭或烟花，并在事务安装快照前完成纯实体配置。
+     */
+    private Projectile createRepeaterProjectile(
+            ServerLevel level,
+            ServerPlayer shooter,
+            ItemStack weapon,
+            ItemStack ammunition,
+            boolean firework
+    ) {
+        if (firework) {
+            return new FireworkRocketEntity(
+                    level,
+                    ammunition,
+                    shooter,
+                    shooter.getX(),
+                    shooter.getEyeY() - 0.15,
+                    shooter.getZ(),
+                    true);
+        }
+        IPortArrowItemExtension arrowItem = ammunition.getItem() instanceof IPortArrowItemExtension extension
+                ? extension
+                : (IPortArrowItemExtension) Items.ARROW;
+        AbstractArrow arrow = arrowItem.createArrow(level, ammunition, shooter, weapon);
+        arrow.setBaseDamage(baseDamage);
+        arrow.setCritArrow(false);
+        int punch = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, weapon);
+        if (punch > 0) {
+            arrow.setKnockback(punch);
+        }
+        if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, weapon) > 0) {
+            arrow.setSecondsOnFire(100);
+        }
+        if (arrow instanceof BaseArrowEntity terraArrow) {
+            modifyArrowEntity(terraArrow);
+        } else {
+            int power = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, weapon);
+            if (power > 0) {
+                arrow.setBaseDamage(arrow.getBaseDamage() + power * 0.5D + 0.5D);
+            }
+        }
+        return arrow;
+    }
+
+    /**
+     * 在首批成功后按每 tick 一发继续 burst，所有子批次复用同一冻结快照。
+     */
+    private void scheduleBurst(
+            ServerPlayer player,
+            InteractionHand hand,
+            RepeaterShotPlan plan,
+            ProjectileCombatSnapshot snapshot
+    ) {
+        if (plan.remainingBurstShots() <= 0) {
+            return;
+        }
+        DelayTaskHolder holder = DelayTaskHolder.of((IPortAttachmentHolder) player);
+        if (holder.containsTask(hand, REPEATER_CONTINUOUS_SHOOTING)) {
+            return;
+        }
+        holder.addTask(hand, REPEATER_CONTINUOUS_SHOOTING, DelayTaskHolder.createTaskBilder()
+                .repeatCount(plan.remainingBurstShots())
                 .removedTick(1)
                 .resultRun((tick, maxTick, task) -> {
-                    if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null, true)) {
+                    ItemStack currentWeapon = player.getItemInHand(hand);
+                    RepeaterShotPlan nextPlan = createShotPlan(currentWeapon, 1);
+                    if (nextPlan == null) {
+                        task.remove();
+                        return 0;
+                    }
+                    try {
+                        List<ProjectileLaunch> launches = createRepeaterLaunches(
+                                player,
+                                hand,
+                                snapshot.weapon(),
+                                nextPlan.ammunition(),
+                                snapshot,
+                                null);
+                        RepeaterContentsProjectileCost cost = new RepeaterContentsProjectileCost(
+                                nextPlan.expectedContents(),
+                                nextPlan.remainingContents(),
+                                getDurabilityUse(nextPlan.ammunition()));
+                        ProjectileFireResult result = ServerProjectileFireService.continueBurst(
+                                player, hand, snapshot, launches, cost);
+                        if (result != ProjectileFireResult.SUCCESS) {
+                            task.remove();
+                            return 0;
+                        }
+                        afterSuccessfulShot(player, hand);
+                    } catch (RuntimeException exception) {
+                        Confluence.LOGGER.error("Repeater burst continuation failed", exception);
                         task.remove();
                     }
                     return 0;
                 }).build());
-        return true;
+    }
+
+    /**
+     * 只在对应批次真正进入世界后运行声音、动画包、进度和统计。
+     */
+    private void afterSuccessfulShot(ServerPlayer player, InteractionHand hand) {
+        player.level().playSound(
+                null,
+                player.getX(),
+                player.getY(),
+                player.getZ(),
+                SoundEvents.CROSSBOW_SHOOT,
+                player.getSoundSource(),
+                1.0F,
+                getShotPitch(player.getRandom(), 0));
+        RepeaterShootingPayloadS2C.sendToClient(player);
+        ItemStack weapon = player.getItemInHand(hand);
+        CriteriaTriggers.SHOT_CROSSBOW.trigger(player, weapon);
+        player.awardStat(Stats.ITEM_USED.get(weapon.getItem()));
+    }
+
+    /**
+     * 不可变 burst 内容；访问弹药时始终返回防御性副本。
+     */
+    private record RepeaterShotPlan(
+            RepeaterContents expectedContents,
+            RepeaterContents remainingContents,
+            ItemStack ammunition,
+            int remainingBurstShots
+    ) {
+        private RepeaterShotPlan {
+            if (expectedContents == null || remainingContents == null || ammunition == null
+                    || ammunition.isEmpty()) {
+                throw new IllegalArgumentException("Repeater shot plan must contain valid ammunition");
+            }
+            if (remainingBurstShots < 0) {
+                throw new IllegalArgumentException("Repeater remaining burst count must not be negative");
+            }
+            ammunition = ammunition.copyWithCount(1);
+        }
+
+        @Override
+        public ItemStack ammunition() {
+            return ammunition.copy();
+        }
     }
 
     @Override
     public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
-        float processProjectileSpread = 0.0F;
-        int projectileItemsCount = projectileItems.size();
-
-        float angleIncrement = projectileItemsCount == 1 ? 0.0F : 2.0F * processProjectileSpread / (float) (projectileItemsCount - 1);
-        float initialAngleOffset = (float) ((projectileItemsCount - 1) % 2) * angleIncrement / 2.0F;
-
-        int signFactor = shooter.getRandom().nextBoolean() ? 1 : -1;
-        for (int itemstackIndex = 0; itemstackIndex < projectileItemsCount; itemstackIndex++) {
-            ItemStack itemstack = projectileItems.get(itemstackIndex);
-            if (itemstack.isEmpty()) {
-                continue;
-            }
-            float projectileVelocity = itemstack.is(Items.FIREWORK_ROCKET) ? velocity * 0.507f : velocity;
-            int i = (itemstackIndex % 2 == 0 ? itemstackIndex - 1 : -itemstackIndex) * signFactor;
-            int concurrentCount = getConcurrentCount(shooter, hand);
-
-            int multiShootCount = !modifyArrowBuilder.canMultiShoot.test(itemstack) ? 1 : concurrentCount;
-            int signFactor1 = shooter.getRandom().nextBoolean() ? 1 : -1;
-            for (int projectileIndex = 0; projectileIndex < concurrentCount; projectileIndex++) {
-                int i1 = (projectileIndex % 2 == 0 ? projectileIndex - 1 : -projectileIndex) * signFactor1;
-
-                float angle = projectileIndex > 0 ? getConcurrentAngle(shooter, hand) * i : 0;
-                float angleY = initialAngleOffset * angleIncrement + angle;
-
-                Projectile projectile = createProjectile(level, shooter, weapon, itemstack, isCrit);
-                if (projectile instanceof AbstractArrow abstractArrow) {
-                    abstractArrow.setBaseDamage(getDamage(shooter, hand));
-                }
-                shootProjectile(shooter, projectile, itemstackIndex, projectileVelocity, inaccuracy + modifyArrowBuilder.inaccuracy, angleY, target);
-                float y = itemstackIndex > 0 ? getConcurrentInterval(shooter, hand) * i : 0;
-                float z = projectileIndex > 0 ? getConcurrentInterval(shooter, hand) * i1 : 0;
-                Vec3 offset = projectileItemsCount <= multiShootCount ? new Vec3(0, y, z) : new Vec3(0, z, y);
-                BaseTerraBowItem.transformAndApplyOffsetToProjectile(projectile, offset);
-                BaseTerraBowItem.processArrowBaseEffects(shooter, hand, weapon, projectile, itemstackIndex, multiShootCount);
-                if (projectile instanceof IAbstractArrow abstractArrow) {
-                    abstractArrow.confluence$setDamageNotAffectedBySpeedBonus(true);
-                    if (itemstackIndex > 0 || projectileIndex > 0) {
-                        abstractArrow.confluence$setDisappearingOnGround(true);
-                    }
-                }
-                level.addFreshEntity(projectile);
-            }
-
-            weapon.hurtAndBreak(this.getDurabilityUse(itemstack), shooter, PortLivingEntityExtension.getSlotForHand(hand));
-            if (weapon.isEmpty()) {
-                break;
-            }
-        }
+        throw new UnsupportedOperationException(
+                "Legacy repeater shooting bridge is disabled; use the projectile action service");
     }
 
     @Override
@@ -421,74 +643,18 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
         }
 
         projectile.shoot(vector3f.x(), vector3f.y(), vector3f.z(), velocity, inaccuracy);
-        float f = getShotPitch(shooter.getRandom(), index);
-        shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, shooter.getSoundSource(), 1.0F, f);
     }
-
-//    @Override
-//    public void onLeftClick(Player player, ItemStack itemStack) {
-//        if (player.level().isClientSide) return;
-//        var handler = getHandler(itemStack);
-//        if (handler == null) {
-//            return;
-//        }
-//
-//        if (handler.isEmpty()) {
-//            playAerialShootingSound(player);
-//            return;
-//        }
-//
-//        InteractionHand hand = getHand(player, itemStack);
-//        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
-//        Level level = player.level();
-//        if (!delayTaskHolder.containsTask(hand).isEmpty()) {
-//            return;
-//        }
-//
-//        int countCount = getBurstCount(player, hand);
-//        float shootingPower = getShootingPower(handler, player, hand);
-//        if (countCount > 1) {
-//            shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
-//        }
-//
-//        delayTaskHolder.addTask(hand, REPEATER_SHOOTING, DelayTaskHolder.createTaskBilder()
-//                .repeatCount(-1)
-//                .removedTick(getShootInterval(player, hand))
-//                .resultRun((tick, maxTick, task) -> {
-//                    var projectiles = getHandler(itemStack);
-//                    if (projectiles == null || projectiles.isEmpty()) {
-//                        task.remove();
-//                        return 0;
-//                    }
-//                    if (countCount > 1) {
-//                        shootingPerformContinuousShooting(player, itemStack, countCount, delayTaskHolder, hand, level, shootingPower);
-//                    }
-//                    if (!shootingPerform(level, player, hand, itemStack, shootingPower, 1.0F, null, true)) {
-//                        task.remove();
-//                    }
-//                    return 0;
-//                }).build());
-//    }
-
-//    @Override
-//    public void onLeftRelease(Player player, ItemStack itemStack) {
-//        if (player.level().isClientSide) return;
-//        InteractionHand hand = getHand(player, itemStack);
-//        DelayTaskHolder delayTaskHolder = DelayTaskHolder.of(player);
-//        delayTaskHolder.removeTask(hand, REPEATER_SHOOTING);
-//        delayTaskHolder.removeTask(hand, REPEATER_CONTINUOUS_SHOOTING);
-//    }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-//        var projectiles = getHandler(itemstack);
-//        if (projectiles == null || projectiles.isEmpty() && !player.getProjectile(itemstack).isEmpty()) {
-//            this.startSoundPlayed = false;
-//            this.midLoadSoundPlayed = false;
-//            player.startUsingItem(hand);
-//        }
-        return InteractionResultHolder.consume(itemstack);
+        RepeaterContents contents = itemstack.getOrDefault(
+                ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+        if (!contents.isFull() && !player.getProjectile(itemstack).isEmpty()) {
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(itemstack);
+        }
+        return InteractionResultHolder.pass(itemstack);
     }
 
     @Override
@@ -504,34 +670,92 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
     public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
         int i = this.getUseDuration(stack, entity) - count;
         float f = getPowerForTime(i, stack, entity);
-        if (f < 1.0F || !tryLoadProjectiles(entity, stack)) {
+        if (f < 1.0F) {
             return;
         }
+        completeLoading(entity, stack);
+    }
+
+    /**
+     * 把本轮装填结果提交到当前连弩。
+     *
+     * <p>主动松手和达到完整装填时间会共用此入口。完整装填 tick 必须先提交弹仓再结束使用，
+     * 不能只依赖不同加载器版本对 {@code stopUsingItem()} 的回调细节，否则服务端可能已经
+     * 停止拉弩却没有写入弹药。</p>
+     */
+    private boolean completeLoading(LivingEntity entity, ItemStack stack) {
+        if (!tryLoadProjectiles(entity, stack)) {
+            return false;
+        }
         Level level = entity.level();
-//        WeaponStorage.of(entity).bowFullPull = true;
         if (level.isClientSide) {
             entity.playSound(ModSoundEvents.BOW_COOLDOWN_RECOVERY.get());
         }
-//        ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
-//        crossbowitem$chargingsounds.end().ifPresent(p_352852_ -> level.playSound(
-//                null,
-//                entity.getX(),
-//                entity.getY(),
-//                entity.getZ(),
-//                p_352852_.value(),
-//                entity.getSoundSource(),
-//                1.0F,
-//                1.0F / (level.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F
-//        ));
+        return true;
     }
 
     protected boolean tryLoadProjectiles(LivingEntity shooter, ItemStack weapon) {
         if (shooter.level().isClientSide) {
             return true;
         }
-        return true /*RepeaterContentsComponentHandler.insertItem(weapon,
-                () -> shooter.getProjectile(weapon),
-                shooter instanceof Player player && player.isCreative())*/;
+        ItemStack ammunition = shooter.getProjectile(weapon);
+        if (ammunition.isEmpty() || !getAllSupportedProjectiles(weapon).test(ammunition)) {
+            return false;
+        }
+        RepeaterContents contents = weapon.getOrDefault(
+                ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+        int available = contents.getMaxItemCapacity() - contents.getItemsTotalCount();
+        if (available <= 0) {
+            return false;
+        }
+        boolean creative = shooter instanceof Player player && player.isCreative();
+        int inserted = insertIntoContents(
+                weapon,
+                ammunition,
+                creative ? available : Math.min(available, ammunition.getCount()));
+        if (inserted <= 0) {
+            return false;
+        }
+        if (!creative) {
+            ammunition.shrink(inserted);
+        }
+        return true;
+    }
+
+    /**
+     * 向不可变弹仓插入同种弹药，返回实际插入数。
+     */
+    private int insertIntoContents(ItemStack weapon, ItemStack ammunition, int requested) {
+        if (requested <= 0 || ammunition.isEmpty()
+                || !getAllSupportedProjectiles(weapon).test(ammunition)) {
+            return 0;
+        }
+        RepeaterContents contents = weapon.getOrDefault(
+                ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+        int inserted = Math.min(
+                requested,
+                contents.getMaxItemCapacity() - contents.getItemsTotalCount());
+        if (inserted <= 0) {
+            return 0;
+        }
+        List<ItemStack> items = new ArrayList<>(contents.nonEmptyStream().toList());
+        boolean merged = false;
+        for (int index = 0; index < items.size(); index++) {
+            ItemStack stored = items.get(index);
+            if (ItemStack.isSameItemSameTags(stored, ammunition)) {
+                stored.grow(inserted);
+                items.set(index, stored);
+                merged = true;
+                break;
+            }
+        }
+        if (!merged) {
+            items.add(ammunition.copyWithCount(inserted));
+        }
+        weapon.set(
+                ModDataComponentTypes.REPEATER_CONTENTS.get(),
+                RepeaterContents.fromItems(items, contents.getMaxItemCapacity()));
+        return inserted;
     }
 
     protected float getPowerForTime(int timeLeft, ItemStack stack, LivingEntity shooter) {
@@ -548,43 +772,10 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
         if (level.isClientSide) {
             return;
         }
-        float f = (float) (stack.getUseDuration(livingEntity) - count) / (float) getReloadSpeed(livingEntity, stack);
-        if (f < 0.2F) {
-//            WeaponStorage.of(livingEntity).bowFullPull = false;
-            this.startSoundPlayed = false;
-            this.midLoadSoundPlayed = false;
-        }
-
-//        ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
-        if (f >= 0.2F && !this.startSoundPlayed) {
-            this.startSoundPlayed = true;
-//            crossbowitem$chargingsounds.start().ifPresent(p_352849_ -> level.playSound(
-//                    null,
-//                    livingEntity.getX(),
-//                    livingEntity.getY(),
-//                    livingEntity.getZ(),
-//                    p_352849_.value(),
-//                    SoundSource.PLAYERS,
-//                    0.5F,
-//                    1.0F
-//            ));
-        }
-
-        if (f >= 0.5F && !this.midLoadSoundPlayed) {
-            this.midLoadSoundPlayed = true;
-//            crossbowitem$chargingsounds.mid().ifPresent(p_352855_ -> level.playSound(
-//                    null,
-//                    livingEntity.getX(),
-//                    livingEntity.getY(),
-//                    livingEntity.getZ(),
-//                    p_352855_.value(),
-//                    SoundSource.PLAYERS,
-//                    0.5F,
-//                    1.0F
-//            ));
-        }
-
-        if (f >= 1) {
+        float progress = (float) (stack.getUseDuration(livingEntity) - count)
+                / (float) getReloadSpeed(livingEntity, stack);
+        if (progress >= 1.0F) {
+            completeLoading(livingEntity, stack);
             livingEntity.stopUsingItem();
         }
     }
@@ -623,11 +814,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
     public boolean shouldCauseBlockBreakReset(ItemStack oldStack, ItemStack newStack) {
         return ItemStack.isSameItem(oldStack, newStack);
     }
-
-//    @Override
-//    public boolean canSwitchWithoutRelease(Player player, ItemStack itemStack) {
-//        return false;
-//    }
 
     public void modifyArrowEntity(BaseArrowEntity entity) {
         modifyArrowBuilder.applyModifiers(entity);
@@ -766,7 +952,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements /* todo leftc
         }
 
         public Builder concurrentInterval(IRandomCount concurrentInterval) {
-            this.concurrentInterval = concurrentAngle;
+            this.concurrentInterval = concurrentInterval;
             return this;
         }
 

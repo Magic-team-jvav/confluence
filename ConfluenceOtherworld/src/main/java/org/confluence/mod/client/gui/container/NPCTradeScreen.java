@@ -1,71 +1,109 @@
 package org.confluence.mod.client.gui.container;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import org.confluence.mod.common.component.ValueComponent;
+import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
-import org.confluence.mod.util.Coins;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.common.entity.npc.GoblinTinkererNPC;
+import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 
-public class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
+/**
+ * 使用原版箱子纹理显示 NPC 商店。
+ *
+ * <p>该类只提供分页按钮和页码，不读取条件、计算价格或决定成交。按钮复用原版菜单
+ * 按钮数据包，请求服务端切换已经冻结的会话报价页。</p>
+ */
+public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
+    private static final ResourceLocation CONTAINER_TEXTURE =
+            ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
     private static final int TRADE_ROWS = 4;
-    private static final int TRADE_COLS = 9;
-    private static final int TRADE_SIZE = TRADE_ROWS * TRADE_COLS;
+    private static final int TOP_HEIGHT = TRADE_ROWS * 18 + 17;
+
+    private Button previousPage;
+    private Button nextPage;
 
     public NPCTradeScreen(NPCTradeMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
-        this.imageWidth = 176;
-        this.imageHeight = 166;
-        this.inventoryLabelY = this.imageHeight - 94;
+        imageHeight = 114 + TRADE_ROWS * 18;
+        inventoryLabelY = imageHeight - 94;
     }
 
     @Override
-    public void render(GuiGraphics g, int mouseX, int mouseY, float partialTick) {
-        super.render(g, mouseX, mouseY, partialTick);
-        renderTooltip(g, mouseX, mouseY);
-
-        // Tooltip for NPC items (show buy price) and player-sold items (show refund price)
-        for (int i = 0; i < TRADE_SIZE; i++) {
-            if (isHovering(i % TRADE_COLS, i / TRADE_COLS, mouseX, mouseY)) {
-                NPCTradeMenu.SlotState state = menu.getSlotStates().get(i);
-                if (state == NPCTradeMenu.SlotState.NPC_ITEM) {
-                    var item = menu.getSlot(i).getItem();
-                    int value = ValueComponent.getValue(item, 0);
-                    if (value > 0) {
-                        float mood = menu.getNPC().getMood().getTradePriceMultiplier();
-                        int buyPrice = (int) (value * 5 * mood);
-                        Coins coins = PlayerUtils.decodeCoin(buyPrice);
-                        g.renderTooltip(font, Component.translatable("tooltip.confluence.trade.buy_price",
-                                coins.platinum(), coins.gold(), coins.silver(), coins.copper()), mouseX, mouseY);
-                    }
-                }
-            }
+    protected void init() {
+        super.init();
+        previousPage = addRenderableWidget(Button.builder(Component.literal("<"),
+                        button -> requestPage(menu.getCurrentPage() - 1))
+                .bounds(leftPos + imageWidth - 52, topPos + 4, 20, 14)
+                .build());
+        nextPage = addRenderableWidget(Button.builder(Component.literal(">"),
+                        button -> requestPage(menu.getCurrentPage() + 1))
+                .bounds(leftPos + imageWidth - 28, topPos + 4, 20, 14)
+                .build());
+        if (menu.getNPC() instanceof GoblinTinkererNPC) {
+            // 重铸属于商店的附加入口，放在容器上方，避免覆盖 NPC 名称和页码。
+            addRenderableWidget(Button.builder(
+                            Component.translatable("button.confluence.reforge"),
+                            button -> {
+                                LocalPlayer player = minecraft.player;
+                                if (player == null) return;
+                                ItemStack stack = player.containerMenu.getCarried();
+                                player.containerMenu.setCarried(ItemStack.EMPTY);
+                                OpenMenuPacketC2S.sendToServer(
+                                        OpenMenuPacketC2S.NPC_REFORGE_MENU,
+                                        stack);
+                            })
+                    .bounds(leftPos + 4, topPos - 18, 48, 16)
+                    .build());
         }
+        updatePageButtons();
     }
 
     @Override
-    protected void renderBg(GuiGraphics g, float partialTick, int mouseX, int mouseY) {
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-        g.fill(x, y, x + imageWidth, y + imageHeight, 0xFF_C6C6C6);
-        g.fill(x + 1, y + 1, x + imageWidth - 1, y + imageHeight - 1, 0xFF_8B8B8B);
-
-        // Trade slots
-        for (int row = 0; row < TRADE_ROWS; row++) {
-            for (int col = 0; col < TRADE_COLS; col++) {
-                int slotX = x + 7 + col * 18;
-                int slotY = y + 17 + row * 18;
-                g.fill(slotX, slotY, slotX + 16, slotY + 16, 0xFF_373737);
-                g.fill(slotX + 1, slotY + 1, slotX + 15, slotY + 15, 0xFF_8B8B8B);
-            }
-        }
+    public void containerTick() {
+        super.containerTick();
+        updatePageButtons();
     }
 
-    private boolean isHovering(int col, int row, int mouseX, int mouseY) {
-        int x = (width - imageWidth) / 2 + 7 + col * 18;
-        int y = (height - imageHeight) / 2 + 17 + row * 18;
-        return mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16;
+    @Override
+    protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+        super.renderLabels(graphics, mouseX, mouseY);
+        String page = (menu.getCurrentPage() + 1) + " / " + menu.getPageCount();
+        graphics.drawString(font, page, imageWidth - 82 - font.width(page) / 2, 7, 0x404040, false);
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
+        graphics.blit(CONTAINER_TEXTURE, leftPos, topPos, 0, 0, imageWidth, TOP_HEIGHT);
+        graphics.blit(CONTAINER_TEXTURE, leftPos, topPos + TOP_HEIGHT, 0, 126,
+                imageWidth, 96);
+    }
+
+    @Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+        renderBackground(graphics);
+        super.render(graphics, mouseX, mouseY, partialTick);
+        renderTooltip(graphics, mouseX, mouseY);
+    }
+
+    private void requestPage(int page) {
+        if (minecraft == null || minecraft.gameMode == null) {
+            return;
+        }
+        minecraft.gameMode.handleInventoryButtonClick(menu.containerId, page);
+    }
+
+    private void updatePageButtons() {
+        if (previousPage == null || nextPage == null) {
+            return;
+        }
+        previousPage.active = menu.getCurrentPage() > 0;
+        nextPage.active = menu.getCurrentPage() + 1 < menu.getPageCount();
+        previousPage.visible = menu.getPageCount() > 1;
+        nextPage.visible = menu.getPageCount() > 1;
     }
 }

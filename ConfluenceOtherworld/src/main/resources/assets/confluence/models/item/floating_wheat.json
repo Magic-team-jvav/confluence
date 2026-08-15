@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:item/floating_wheat"
+        "layer0": "confluence:item/materials/floating_wheat_heads"
     }
 }

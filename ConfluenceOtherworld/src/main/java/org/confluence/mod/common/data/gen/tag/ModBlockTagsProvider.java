@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
@@ -19,6 +20,7 @@ import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.Comparator;
 
 import static org.confluence.mod.Confluence.MODID;
 import static org.confluence.mod.common.init.block.ChestBlocks.*;
@@ -46,6 +48,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         StatueBlocks.acceptTag(mineableWithHammer);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(STONY_LOG.get());
         tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(ASH_LOG_BLOCKS.LOG.get());
+        tag(ModTags.Blocks.HONEY).add(Blocks.HONEY_BLOCK, ModBlocks.HONEY.get());
         tag(ModTags.Blocks.OPAL_ORE_REPLACEMENT).add(DIATOMACEOUS.get());
         tag(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT).add(HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get());
         tag(ModTags.Blocks.SLUSH_REPLACEMENT).add(Blocks.PACKED_ICE, Blocks.SNOW_BLOCK);
@@ -1686,7 +1689,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                     ModTags.Blocks.STORAGE_BLOCKS_FLOATING_WHEAT_BALE
             );
         }
-        tag(ModTags.Blocks.TOMBSTONE).add(TOMBSTONES.keySet().stream().map(PortDeferredBlock::get).toArray(TombstoneBlock[]::new));
+        tag(ModTags.Blocks.TOMBSTONE).add(TOMBSTONES.keySet().stream()
+                // TOMBSTONES 使用开放寻址映射；按注册名排序后，生成标签不会随对象哈希变化而漂移。
+                .map(PortDeferredBlock::get)
+                .sorted(Comparator.comparing(block -> ForgeRegistries.BLOCKS.getKey(block).toString()))
+                .toArray(TombstoneBlock[]::new));
         tag(BlockTags.STONE_BRICKS).add(
                 BLUE_BRICKS.FULL.get(),
                 CHISELED_BLUE_BRICKS.get(),
@@ -1867,6 +1874,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WHITE_PAPER_PANE_LAMP.get(),
                 MALACHITE_PAPER_PANE_LAMP.get()
         );
+        /*
+         * 1.20 侧先用原版可稳定识别的家具语义承载房屋判定，避免把房屋系统绑定到
+         * TerraFurniture。附属模组仍可通过同名数据标签加入自己的桌椅。
+         */
+        tag(ModTags.Blocks.NPC_HOUSE_CHAIR).addTag(BlockTags.STAIRS);
+        tag(ModTags.Blocks.NPC_HOUSE_TABLE).add(Blocks.CRAFTING_TABLE);
         tag(ModTags.Blocks.CACTUS).add(
                 Blocks.CACTUS,
                 CRIMSON_CACTUS.get(),

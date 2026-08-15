@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.potion;
 
 import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -108,9 +107,12 @@ public abstract class AbstractPotionItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         String key = "tooltip." + stack.getDescriptionId() + ".0";
-        if (I18n.exists(key)) {
-            tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
-        }
+        /*
+         * 物品类会同时加载在客户端与专用服务端，不能在这里通过客户端 I18n
+         * 判断翻译键是否存在。基础药水的说明键由语言数据生成器统一提供，直接
+         * 保存为可翻译组件既能延迟到客户端解析，也允许服务端安全构造提示信息。
+         */
+        tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
     }
 
     public static <T extends AbstractPotionItem> void use(Player player, float required, Class<T> type, ToIntFunction<T> function) {

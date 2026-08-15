@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.menu.IToggleSlot;
@@ -133,7 +134,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 }
             }
         }
-        // better experience mixin here
+        // 此处保留界面交互注入点，后续用于改善附加背包的操作体验。
     }
 
     @Override
@@ -384,8 +385,12 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         PortImageButton extraInventoryButton = new PortImageButton(x, y, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
             LocalPlayer player = Minecraft.getInstance().player;
             if (player != null) {
-                ItemStack stack = player.containerMenu.getCarried();
-                player.containerMenu.setCarried(ItemStack.EMPTY);
+                // 创造物品栏使用独立的界面菜单，不能从 player.containerMenu 读取光标物品。
+                // 切换额外栏时必须把源菜单的光标栈直接转交出去；如果只复制而不清空，
+                // 客户端会暂时保留幽灵光标栈，表现成物品显示位置变化但服务器物品没有同步移动。
+                AbstractContainerMenu sourceMenu = screen.getMenu();
+                ItemStack stack = sourceMenu.getCarried();
+                sourceMenu.setCarried(ItemStack.EMPTY);
                 OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
             }
         });

@@ -1,11 +1,5 @@
 package org.confluence.mod.common.entity.projectile.spear;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -14,32 +8,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * <h1>蘑菇弹射物</h1>
  * 自旋悬浮弹射物，可穿墙，单次命中后销毁，无击退。
  */
 public class MushroomProjectile extends SpearProjectile {
-
-    /**
-     * 模型层定义
-     */
-    public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(Confluence.asResource("mushroom_projectile"), "main");
-
-    /**
-     * 蘑菇弹射物网格：扁盘形菌盖 + 细短菌柄
-     */
-    public static LayerDefinition createBodyLayer() {
-        MeshDefinition meshdefinition = new MeshDefinition();
-        PartDefinition partdefinition = meshdefinition.getRoot();
-        partdefinition.addOrReplaceChild("cap", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-3.0F, -3.0F, 0.0F, 6.0F, 6.0F, 1.0F), PartPose.ZERO);
-        partdefinition.addOrReplaceChild("stem", CubeListBuilder.create()
-                .texOffs(0, 8).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 2.0F, 2.0F), PartPose.ZERO);
-        return LayerDefinition.create(meshdefinition, 32, 32);
-    }
 
     public MushroomProjectile(EntityType<? extends MushroomProjectile> entityType, Level level) {
         super(entityType, level);
@@ -96,14 +70,4 @@ public class MushroomProjectile extends SpearProjectile {
         return Confluence.asResource("textures/entity/mushroom_projectile.png");
     }
 
-    @Override
-    public ModelLayerLocation getModelLayer() {
-        return LAYER_LOCATION;
-    }
-
-    @Override
-    @Nullable
-    protected net.minecraft.core.particles.ParticleOptions getTrailParticle() {
-        return null;
-    }
 }

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.block.common;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class LihzahrdDoorBlock extends DoorBlock {
@@ -52,6 +54,11 @@ public class LihzahrdDoorBlock extends DoorBlock {
             level.gameEvent(player, isOpen(state) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
             if (!player.hasInfiniteMaterials()) {
                 stack.shrink(1);
+            }
+            // Forge 1.20.1 没有 1.21 的 any_block_use 触发器；只有真正消耗神庙钥匙
+            // 并完成解锁的服务端玩家才应获得“神庙丽影”，普通开关门不会重复授予。
+            if (player instanceof ServerPlayer serverPlayer) {
+                AchievementUtils.awardAchievement(serverPlayer, "temple_raider");
             }
             return InteractionResult.SUCCESS;
         }

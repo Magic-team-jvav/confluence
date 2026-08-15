@@ -20,8 +20,8 @@ public record BasisTrack(double trackAngle, double power) implements ITrackType 
     ).apply(instance, BasisTrack::new));
 
     @Override
-    public Vec3 calDeltaMovement(Vec3 currentDir, Vec3 targetDir, double trackAngle) {
-        if (trackAngle < trackAngle) {
+    public Vec3 calDeltaMovement(Vec3 currentDir, Vec3 targetDir, double actualAngle) {
+        if (actualAngle < trackAngle) {
             return LibMathUtils.interpolateBasis(currentDir, targetDir, d -> d * power, d -> 0);
         }
         return currentDir;

@@ -14,16 +14,27 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 public class PiggyBankMenu extends AbstractContainerMenu {
     private final Player player;
     private final ContainerLevelAccess access;
+    private final boolean requiresBlockAccess;
     private final int containerRows = 6;
 
     public PiggyBankMenu(int containerId, Inventory inventory) {
-        this(containerId, inventory, ContainerLevelAccess.NULL);
+        this(containerId, inventory, ContainerLevelAccess.NULL, false);
     }
 
     public PiggyBankMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
+        this(containerId, inventory, access, true);
+    }
+
+    private PiggyBankMenu(
+            int containerId,
+            Inventory inventory,
+            ContainerLevelAccess access,
+            boolean requiresBlockAccess
+    ) {
         super(ModMenuTypes.PIGGY_BANK.get(), containerId);
         this.player = inventory.player;
         this.access = access;
+        this.requiresBlockAccess = requiresBlockAccess;
 
         int i = (containerRows - 4) * 18;
         PlayerPiggyBankContainer container = getContainer();
@@ -56,6 +67,7 @@ public class PiggyBankMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
+        if (index < 0 || index >= slots.size()) return ItemStack.EMPTY;
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot.hasItem()) {
@@ -81,7 +93,9 @@ public class PiggyBankMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, FunctionalBlocks.PIGGY_BANK.get());
+        // 方块打开的存钱罐需要校验距离；切斯特和飞行存钱罐只是入口实体，不能反查世界中是否存在存钱罐方块。
+        return !requiresBlockAccess
+                || stillValid(access, player, FunctionalBlocks.PIGGY_BANK.get());
     }
 
     @Override

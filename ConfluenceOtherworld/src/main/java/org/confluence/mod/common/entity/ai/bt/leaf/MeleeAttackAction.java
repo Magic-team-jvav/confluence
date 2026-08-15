@@ -13,7 +13,7 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 public class MeleeAttackAction extends BTNode {
     protected final Mob mob;
     protected final double attackRange;
-    protected int cooldown;
+    protected final GameTickCooldown cooldown = new GameTickCooldown();
     protected static final int ATTACK_COOLDOWN = 20;
 
     public MeleeAttackAction(Mob mob, double attackRange) {
@@ -22,21 +22,16 @@ public class MeleeAttackAction extends BTNode {
     }
 
     @Override
-    public void start() {
-        cooldown = 0;
-    }
-
-    @Override
     public BTStatus execute() {
-        if (cooldown > 0) {
-            cooldown--;
+        long gameTime = mob.level().getGameTime();
+        if (!cooldown.isReady(gameTime)) {
             return BTStatus.SUCCESS;
         }
         LivingEntity target = mob.getTarget();
         if (target != null && mob.distanceToSqr(target) <= attackRange * attackRange) {
             mob.swing(InteractionHand.MAIN_HAND);
             mob.doHurtTarget(target);
-            cooldown = ATTACK_COOLDOWN;
+            cooldown.restart(gameTime, ATTACK_COOLDOWN);
         }
         return BTStatus.SUCCESS;
     }

@@ -10,25 +10,18 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
-import org.confluence.mod.common.entity.ai.bt.BTNode;
-import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.PlayerCloseCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.PanicFleeAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
-import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.Locale;
 
-public class Ladybug extends BaseCritter implements VariantHolder<Ladybug.Variant> {
+public class Ladybug extends Bird implements VariantHolder<Ladybug.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Ladybug.class, EntityDataSerializers.INT);
     public static final String VARIANT_KEY = "Variant";
 
@@ -37,19 +30,10 @@ public class Ladybug extends BaseCritter implements VariantHolder<Ladybug.Varian
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createCritterAttributes();
-    }
-
-    @Override
-    protected BTRoot createBT() {
-        return new BTRoot() {
-            @Override
-            protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(new PlayerCloseCondition(Ladybug.this, 3.0), new PanicFleeAction(Ladybug.this, 0.7)),
-                        SequenceNode.of(new WaitAction(30 + random.nextInt(60)), new RandomStrollAction(Ladybug.this, 0.3, 6)));
-            }
-        };
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 3.0)
+                .add(Attributes.MOVEMENT_SPEED, 0.18)
+                .add(Attributes.FLYING_SPEED, 0.25);
     }
 
     @Override
@@ -59,7 +43,10 @@ public class Ladybug extends BaseCritter implements VariantHolder<Ladybug.Varian
     }
 
     @Override
-    public Variant getVariant() {return Variant.values()[this.entityData.get(DATA_VARIANT)];}
+    public Variant getVariant() {
+        return CritterVariantUtil.byId(
+                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.RED);
+    }
 
     @Override
     public void setVariant(Variant v) {this.entityData.set(DATA_VARIANT, v.ordinal());}
@@ -73,7 +60,23 @@ public class Ladybug extends BaseCritter implements VariantHolder<Ladybug.Varian
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        if (!tag.contains(VARIANT_KEY)) {
+            setVariant(Variant.RED);
+            return;
+        }
         PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
+    }
+
+    @Override
+    protected String variantSaveKey() {
+        return VARIANT_KEY;
+    }
+
+    @Override
+    protected void initializeSpawnVariant() {
+        setVariant(random.nextInt(CritterVariantUtil.GOLD_RARITY) == 0
+                ? Variant.GOLD
+                : Variant.RED);
     }
 
     @Override
@@ -84,7 +87,11 @@ public class Ladybug extends BaseCritter implements VariantHolder<Ladybug.Varian
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(DefaultAnimations.genericWalkIdleController(this));
+        /*
+         * 瓢虫资源只定义 move.fly，没有空闲动画。始终循环翅膀动画可避免停顿阶段持续
+         * 查询不存在的 misc.idle，同时保持 1.21 侧的飞行观感。
+         */
+        registerFlyOnlyController(controllers);
     }
 
     public enum Variant implements IVariant {
@@ -99,12 +106,13 @@ public class Ladybug extends BaseCritter implements VariantHolder<Ladybug.Varian
 
         @Override
         public ResourceLocation modelPath() {
-            return Confluence.asResource("animal/ladybug");
+            return IVariant.resource("animal/ladybug");
         }
 
         @Override
         public ResourceLocation texturePath() {
-            return Confluence.asResource("textures/entity/ladybug/" + getSerializedName() + ".png");
+            String name = this == GOLD ? "gold_ladybug" : "ladybug";
+            return IVariant.resource("textures/entity/animal/ladybug/" + name + ".png");
         }
 
         @Override

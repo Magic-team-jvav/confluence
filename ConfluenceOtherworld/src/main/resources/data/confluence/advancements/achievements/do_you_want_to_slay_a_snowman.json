@@ -1,0 +1,29 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "runtime": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.do_you_want_to_slay_a_snowman.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "minecraft:barrier"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.do_you_want_to_slay_a_snowman.title"
+        }
+    },
+    "requirements": [
+        [
+            "runtime"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

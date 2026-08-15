@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
  * CAN_SUBMIT 状态不经过此界面，AnglerNPC 直接处理。
  */
 public class AnglerDialogScreen extends NPCDialogScreen {
-    public enum State { COMPLETED, NO_QUEST, SHOW_HINT }
+    public enum State {COMPLETED, NO_QUEST, SHOW_HINT, WAKE_UP}
 
     private final State state;
     private final ItemStack questFish;
@@ -64,6 +65,8 @@ public class AnglerDialogScreen extends NPCDialogScreen {
                 String key = "dialogs.confluence.angler.item." + questFish.getDescriptionId();
                 dialogText = Component.translatable(key);
             }
+            case WAKE_UP -> dialogText = Component.translatable(
+                    anglerDialogPrefix(npc) + ".wakeup." + npc.getRandom().nextInt(3));
         }
     }
 
@@ -72,7 +75,23 @@ public class AnglerDialogScreen extends NPCDialogScreen {
             case COMPLETED -> dialogText = Component.translatable("dialogs.confluence.angler.completed");
             case NO_QUEST -> dialogText = Component.translatable("dialogs.confluence.angler.no_quest");
             case SHOW_HINT -> dialogText = Component.translatable("dialogs.confluence.angler.quest_fish", questFish.getHoverName());
+            case WAKE_UP -> {
+                Entity entity = minecraft.level.getEntity(entityId);
+                if (entity instanceof BaseNPC npc) {
+                    dialogText = Component.translatable(
+                            anglerDialogPrefix(npc) + ".wakeup." + npc.getRandom().nextInt(3));
+                }
+            }
         }
+    }
+
+    /**
+     * 两种渔夫共用任务界面，但人物语气使用各自的翻译前缀。
+     */
+    private static String anglerDialogPrefix(BaseNPC npc) {
+        return npc.getType() == NpcEntities.FEMALE_ANGLER.get()
+                ? "dialogs.confluence.female_angler"
+                : "dialogs.confluence.angler";
     }
 
     @Override

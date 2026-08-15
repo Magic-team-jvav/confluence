@@ -30,7 +30,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
@@ -40,6 +39,7 @@ import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.PermanentUpgrades;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -108,7 +108,7 @@ public final class PlayerUtils {
         int delay = manaStorage.getRegenerateDelay();
         boolean notMove = isNotMove(player);
         if (delay > 0) {
-            if (manaStorage.isArcaneCrystalUsed())
+            if (PermanentUpgrades.ARCANE_CRYSTAL.getLevel(player) > 0)
                 delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && player.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
             int delayReduce = notMove ? 2 : 1;
@@ -195,7 +195,7 @@ public final class PlayerUtils {
         if (player.fishing != null) {
             base += player.fishing.luck;
         }
-        if (EverBeneficial.of(player).isGummyWormUsed()) {
+        if (PermanentUpgrades.GUMMY_WORM.getLevel(player) > 0) {
             base += 3.0F;
         }
         if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) {
@@ -272,79 +272,32 @@ public final class PlayerUtils {
         long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
-                int index = COIN_2_INDEX.applyAsInt(stack.getItem());
-                if (index != -1) {
-                    res += (long) (stack.getCount() * Math.pow(UPGRADES_COUNT, 3 - index));
-                }
+                res += CoinItem.valueOf(stack.getItem()) * stack.getCount();
             }
         }
         return res;
     }
 
     public static boolean tryCostMoney(Player player, long cost, boolean withPiggyBank) {
-        return tryCostMoney(getMoney(player, withPiggyBank), player, cost, withPiggyBank);
-    }
-
-    public static boolean tryCostMoney(long have, Player player, long cost, boolean withPiggyBank) {
-        if (have < cost) return false;
-
-        if (withPiggyBank) {
-            long res = PlayerPiggyBankContainer.of(player).tryCostMoney(cost);
-            if (res == 0) return true;
-            have -= cost - res;
-            cost = res;
-        }
-
-        Inventory inventory = player.getInventory();
-        for (int i = 0; i < inventory.getContainerSize(); i++) {
-            ItemStack stack = inventory.getItem(i);
-            if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
-                inventory.setItem(i, ItemStack.EMPTY);
-            }
-        }
-
-        ExtraInventory extraInventory = ExtraInventory.of(player);
-        for (int i = 0; i < SIZE_COINS; i++) {
-            extraInventory.setCoins(i, ItemStack.EMPTY);
-        }
-        Coins coins = decodeCoin(have - cost);
-
-        for (Object2IntMap.Entry<CoinItem> entry : coins.copper2PlatinumEntries()) {
-            int coin = entry.getIntValue();
-            if (coin <= 0) continue;
-            CoinItem coinItem = entry.getKey();
-            while (coin > UPGRADES_COUNT) {
-                inventory.add(new ItemStack(coinItem, UPGRADES_COUNT));
-                coin -= UPGRADES_COUNT;
-            }
-            inventory.add(new ItemStack(coinItem, coin));
-        }
-        return true;
+        return PlayerMoneyTransaction.debit(player, cost, withPiggyBank);
     }
 
     public static Coins decodeCoin(long money) {
         if (money < 0) throw new IllegalArgumentException("Money cannot be negative");
 
-        // jit自动优化
-        int p = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT)); // 铂金
-        money %= UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT;
-        int g = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT)); // 金币
-        money %= UPGRADES_COUNT * UPGRADES_COUNT;
-        int s = (int) (money / UPGRADES_COUNT); // 银币
-        money %= UPGRADES_COUNT;
+        int p = (int) (money / CoinItem.PLATINUM_VALUE);
+        money %= CoinItem.PLATINUM_VALUE;
+        int g = (int) (money / CoinItem.GOLD_VALUE);
+        money %= CoinItem.GOLD_VALUE;
+        int s = (int) (money / CoinItem.SILVER_VALUE);
+        money %= CoinItem.SILVER_VALUE;
         int c = (int) money; // 铜币
 
         return new Coins(c, s, g, p);
     }
 
     public static Coins decodeCoin(int money) {
-        int copper_count = money % UPGRADES_COUNT;
-        int i = ((money - copper_count) / UPGRADES_COUNT);
-        int silver_count = i % UPGRADES_COUNT;
-        int j = ((i - silver_count) / UPGRADES_COUNT);
-        int golden_count = j % UPGRADES_COUNT;
-        int k = (j - golden_count) / UPGRADES_COUNT;
-        return new Coins(copper_count, silver_count, golden_count, k);
+        return decodeCoin((long) money);
     }
 
     public static void sortCoins(Player player) {
@@ -388,7 +341,7 @@ public final class PlayerUtils {
         } else {
             drops = money;
         }
-        tryCostMoney(money, player, drops, false);
+        tryCostMoney(player, drops, false);
         ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
 
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {

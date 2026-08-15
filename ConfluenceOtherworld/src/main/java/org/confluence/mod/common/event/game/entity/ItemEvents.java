@@ -2,16 +2,17 @@ package org.confluence.mod.common.event.game.entity;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
@@ -22,6 +23,7 @@ import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.GunItems;
@@ -40,18 +42,21 @@ import org.mesdag.portlib.event.entity.item.PortItemTossEvent;
 import org.mesdag.portlib.event.other.PortItemAttributeModifierEvent;
 import org.mesdag.portlib.event.other.PortItemStackedOnOtherEvent;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.Collection;
 import java.util.Map;
 
 public final class ItemEvents {
+    private static final ResourceLocation SUMMONER_PACT_MODIFIER_ID =
+            org.confluence.mod.Confluence.asResource("enchantment.summoner_pact");
+
     public static void init() {
         PortEventHandler.addListener(PortEventPriority.NORMAL, true, ItemEvents::itemStackedOnOther);
         PortEventHandler.addListener(ItemEvents::attributeModifier);
         PortEventHandler.addListener(ItemEvents::toss);
         PortEventHandler.addListener(ItemEvents::gunFire);
         PortEventHandler.addListener(ItemEvents::gun$ShrinkBullet);
-        PortEventHandler.addListener(ItemEvents::gun$AmmoData);
         PortEventHandler.addListener(ItemEvents::gun$AmmoSelection);
         PortEventHandler.addListener(ItemEvents::gun$InventoryExtra);
         PortEventHandler.addListener(ItemEvents::shimmerItemTransmutation$Pre);
@@ -69,6 +74,18 @@ public final class ItemEvents {
 
     private static void attributeModifier(PortItemAttributeModifierEvent event) {
         ItemStack itemStack = event.getItemStack();
+        int summonerPactLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SUMMONER_PACT.get(), itemStack);
+        if (summonerPactLevel > 0) {
+            event.addModifier(
+                    ConfluenceMagicLib.MINION_CAPACITY,
+                    new PortAttributeModifier(
+                            SUMMONER_PACT_MODIFIER_ID,
+                            1.0 + 0.5 * (summonerPactLevel - 1),
+                            PortAttributeModifier.Operation.ADD_VALUE
+                    ),
+                    PortEquipmentSlotGroup.HEAD
+            );
+        }
         PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
         if (prefix == null ||
                 prefix.type() == PrefixType.UNKNOWN ||
@@ -112,24 +129,6 @@ public final class ItemEvents {
         } else if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
             event.setCanceled(true);
         }
-    }
-
-    private static void gun$AmmoData(GunEvent.AmmoDataEvent event) {
-        Player player = event.getPlayer();
-        float velocityModify = (float) player.getAttributeValue(LibAttributes.getRangedVelocity());
-        float knockbackModify = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-
-        if (event.getGun() instanceof ManaGunItem manaGunItem) {
-            event.setDamage(manaGunItem.getDamage());
-            event.setInaccuracy(manaGunItem.getInaccuracy());
-            event.setVelocity(manaGunItem.getVelocity());
-            event.setPenetrate(manaGunItem.getPenetrate());
-            event.setKnockback(manaGunItem.getKnockback());
-            event.setCritical(manaGunItem.getCritical());
-        }
-
-        event.setVelocity(event.getVelocity() * velocityModify);
-        event.setKnockback(event.getKnockback() * knockbackModify);
     }
 
     private static void gun$AmmoSelection(GunEvent.AmmoSelectionEvent event) {

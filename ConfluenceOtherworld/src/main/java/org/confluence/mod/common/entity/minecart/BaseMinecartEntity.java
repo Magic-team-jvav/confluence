@@ -9,13 +9,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.init.PermanentUpgrades;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,11 +28,16 @@ public class BaseMinecartEntity extends Minecart {
     public static final double MECHANICAL_CART_MAX_SPEED = 1.23;
     public static final double MECHANICAL_CART_ACCELERATION = 2.5;
     public static final double MECHANICAL_CART_DRAG_AIR = 0.99;
+    private static final ResourceLocation AIR_ITEM_ID = ResourceLocation.withDefaultNamespace("air");
 
-    protected ResourceLocation dropItem = ResourceLocation.withDefaultNamespace("air"); // both
-    protected float maxSpeed = 0.0F; // both
-    protected double acceleration = 0.0; // both
-    protected @Nullable LivingEntity driver; // server
+    protected ResourceLocation dropItem = AIR_ITEM_ID; // 双端
+    protected float maxSpeed = 0.0F; // 双端
+    protected double acceleration = 0.0; // 双端
+    /**
+     * 未应用永久升级时的基础空气阻力，不能与临时乘客加成混为一体。
+     */
+    protected double baseDragAir = IForgeAbstractMinecart.DEFAULT_AIR_DRAG; // 双端
+    protected @Nullable LivingEntity driver; // 服务端
 
     public BaseMinecartEntity(EntityType<? extends BaseMinecartEntity> entityType, Level level) {
         super(entityType, level);
@@ -40,8 +47,9 @@ public class BaseMinecartEntity extends Minecart {
         super(abilities.entityType.get(), level);
         this.dropItem = abilities.dropItem;
         this.acceleration = abilities.acceleration;
+        this.baseDragAir = abilities.dragAir;
         setCurrentCartSpeedCapOnRail(abilities.maxSpeed);
-        setDragAir(abilities.dragAir);
+        setDragAir(baseDragAir);
         setPos(x, y, z);
         this.xo = x;
         this.yo = y;
@@ -102,8 +110,10 @@ public class BaseMinecartEntity extends Minecart {
 
     @Override
     public void moveMinecartOnRail(BlockPos pos) {
-        boolean upgradeKit = driver != null && EverBeneficial.of(driver).isMinecartUpgradeKitUsed();
-        if (upgradeKit) setDragAir(getUpgradedDragAir());
+        boolean upgradeKit = driver instanceof ServerPlayer serverPlayer &&
+                PermanentUpgrades.MINECART_UPGRADE_KIT.getLevel(serverPlayer) > 0;
+        // 每次移动都从基础值重新选择，避免升级玩家离开后把加成永久残留在矿车实例上。
+        setDragAir(upgradeKit ? getUpgradedDragAir() : baseDragAir);
         double d25 = upgradeKit ? getUpgradedMaxSpeed() : getMaxSpeedWithRail();
         double d24 = upgradeKit ? getUpgradedAcceleration() : (isVehicle() ? acceleration : 1.0);
         Vec3 motion = getDeltaMovement();
@@ -124,7 +134,8 @@ public class BaseMinecartEntity extends Minecart {
 
     @Override
     public Item getDropItem() {
-        return BuiltInRegistries.ITEM.get(dropItem);
+        if (dropItem == null) return Items.AIR;
+        return BuiltInRegistries.ITEM.getOptional(dropItem).orElse(Items.AIR);
     }
 
     @Override
@@ -146,13 +157,47 @@ public class BaseMinecartEntity extends Minecart {
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.dropItem = ResourceLocation.tryParse(compound.getString("DropItem"));
+        ResourceLocation savedDropItem = ResourceLocation.tryParse(compound.getString("DropItem"));
+        this.dropItem = savedDropItem != null && BuiltInRegistries.ITEM.containsKey(savedDropItem)
+                ? savedDropItem
+                : AIR_ITEM_ID;
+
+        // 只读取当前格式字段；缺失或非有限值回落到安全默认值。
+        float savedSpeed = compound.getFloat("MaxSpeed");
+        setCurrentCartSpeedCapOnRail(Float.isFinite(savedSpeed)
+                ? Math.max(savedSpeed, 0.0F)
+                : 0.0F);
+
+        double savedAcceleration = compound.getDouble("Acceleration");
+        this.acceleration = Double.isFinite(savedAcceleration)
+                ? Math.max(savedAcceleration, 0.0)
+                : 0.0;
+
+        double savedDragAir = compound.getDouble("DragAir");
+        this.baseDragAir = Double.isFinite(savedDragAir) && savedDragAir >= 0.0
+                ? savedDragAir
+                : IForgeAbstractMinecart.DEFAULT_AIR_DRAG;
+        setDragAir(baseDragAir);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putString("DropItem", dropItem.toString());
+        ResourceLocation safeDropItem = dropItem != null && BuiltInRegistries.ITEM.containsKey(dropItem)
+                ? dropItem
+                : AIR_ITEM_ID;
+        float safeSpeed = Float.isFinite(maxSpeed) ? Math.max(maxSpeed, 0.0F) : 0.0F;
+        double safeAcceleration = Double.isFinite(acceleration)
+                ? Math.max(acceleration, 0.0)
+                : 0.0;
+        double safeDragAir = Double.isFinite(baseDragAir) && baseDragAir >= 0.0
+                ? baseDragAir
+                : IForgeAbstractMinecart.DEFAULT_AIR_DRAG;
+
+        compound.putString("DropItem", safeDropItem.toString());
+        compound.putFloat("MaxSpeed", safeSpeed);
+        compound.putDouble("Acceleration", safeAcceleration);
+        compound.putDouble("DragAir", safeDragAir);
     }
 
     public record Abilities<E extends BaseMinecartEntity>(Supplier<EntityType<E>> entityType,

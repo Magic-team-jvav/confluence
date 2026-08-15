@@ -7,4 +7,6 @@ public interface WormSegment {
     @Nullable WormSegment getPrev();
     @Nullable WormSegment getNext();
     void updateSegmentPosition();
+
+    default boolean isTail() {return false;}
 }

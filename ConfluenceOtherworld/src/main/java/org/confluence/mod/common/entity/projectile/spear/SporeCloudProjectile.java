@@ -29,7 +29,6 @@ public class SporeCloudProjectile extends SpearProjectile {
 
     public SporeCloudProjectile(EntityType<? extends SporeCloudProjectile> entityType, Level level) {
         super(entityType, level);
-// todo projectile       this.collisionProperties = new CollisionProperties(1, 1, 0.65F);
     }
 
     @Override
@@ -73,9 +72,24 @@ public class SporeCloudProjectile extends SpearProjectile {
     @Override
     protected boolean canHitEntity(Entity target) {
         return target.isAlive()
-                && target != getOwner()
                 && target.isPickable()
-                /*&& TEUtils.projectileCanHitEntityTest.test(this, target)*/;
+                && super.canHitEntity(target);
+    }
+
+    /**
+     * 孢子云按自身间隔重复伤害，不采用普通弹幕的永久 UUID 去重。
+     */
+    @Override
+    protected boolean allowsRepeatedHits() {
+        return true;
+    }
+
+    /**
+     * 孢子云按速度和寿命管理，不因单次成功命中消耗穿透。
+     */
+    @Override
+    protected void applyPenetration() {
+        // 无限穿透。
     }
 
     /// 检查伤害间隔后调用父类伤害逻辑。
@@ -86,8 +100,11 @@ public class SporeCloudProjectile extends SpearProjectile {
         if (currentTick - lastTick < damageInterval) {
             return false;
         }
-        lastHitTicks.put(target, currentTick);
-        return super.doHurt(target);
+        boolean hurt = super.doHurt(target);
+        if (hurt) {
+            lastHitTicks.put(target, currentTick);
+        }
+        return hurt;
     }
 
     @Override

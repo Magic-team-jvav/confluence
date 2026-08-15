@@ -18,6 +18,14 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CrystalBallRecipe;
 
 public class CrystalBallMenu extends AbstractContainerMenu {
+    private static final int RESULT_SLOT = 0;
+    private static final int INPUT_SLOT_START = 1;
+    private static final int INPUT_SLOT_END = 5;
+    private static final int INVENTORY_SLOT_START = 5;
+    private static final int INVENTORY_SLOT_END = 32;
+    private static final int HOTBAR_SLOT_START = 32;
+    private static final int HOTBAR_SLOT_END = 41;
+
     private final EnvironmentLevelAccess access;
     private final Player player;
     private final EnvironmentRecipeInput input;
@@ -72,7 +80,73 @@ public class CrystalBallMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY; // todo
+        if (index < 0 || index >= slots.size()) {
+            return ItemStack.EMPTY;
+        }
+
+        Slot sourceSlot = slots.get(index);
+        if (!sourceSlot.hasItem()) {
+            return ItemStack.EMPTY;
+        }
+
+        ItemStack sourceStack = sourceSlot.getItem();
+        ItemStack originalStack = sourceStack.copy();
+        if (index == RESULT_SLOT) {
+            sourceStack.getItem().onCraftedBy(
+                    sourceStack, player.level(), player);
+            if (!moveItemStackTo(
+                    sourceStack,
+                    INVENTORY_SLOT_START,
+                    HOTBAR_SLOT_END,
+                    true)) {
+                return ItemStack.EMPTY;
+            }
+            sourceSlot.onQuickCraft(sourceStack, originalStack);
+        } else if (index >= INPUT_SLOT_START && index < INPUT_SLOT_END) {
+            if (!moveItemStackTo(
+                    sourceStack,
+                    INVENTORY_SLOT_START,
+                    HOTBAR_SLOT_END,
+                    false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (!moveItemStackTo(
+                sourceStack,
+                INPUT_SLOT_START,
+                INPUT_SLOT_END,
+                false)) {
+            if (index >= INVENTORY_SLOT_START
+                    && index < INVENTORY_SLOT_END) {
+                if (!moveItemStackTo(
+                        sourceStack,
+                        HOTBAR_SLOT_START,
+                        HOTBAR_SLOT_END,
+                        false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (index >= HOTBAR_SLOT_START
+                    && index < HOTBAR_SLOT_END
+                    && !moveItemStackTo(
+                    sourceStack,
+                    INVENTORY_SLOT_START,
+                    INVENTORY_SLOT_END,
+                    false)) {
+                return ItemStack.EMPTY;
+            }
+        }
+
+        if (sourceStack.isEmpty()) {
+            sourceSlot.setByPlayer(ItemStack.EMPTY);
+        } else {
+            sourceSlot.setChanged();
+        }
+        if (sourceStack.getCount() == originalStack.getCount()) {
+            return ItemStack.EMPTY;
+        }
+
+        sourceSlot.onTake(player, sourceStack);
+        broadcastChanges();
+        return originalStack;
     }
 
     @Override

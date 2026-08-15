@@ -46,7 +46,7 @@ public enum BossDelaySpawner {
             for (ServerPlayer player : level.players()) {
                 int state = delayed.predicate.applyAsInt(player);
                 if (state == SUCCESS) {
-                    ModUtils.summonBoss(level, player.blockPosition(), delayed.entity.create(level));
+                    ModUtils.summonBoss(level, player.blockPosition(), delayed.entity.create(level), player);
                     iterator.remove();
                     break l;
                 } else if (state == CANCEL) {

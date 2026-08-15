@@ -19,6 +19,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.effect.PublicMobEffect;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.whip.WhipTagEffect;
 import org.confluence.mod.common.effect.beneficial.*;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.flask.FlaskOfFireEffect;
@@ -154,7 +155,6 @@ public final class ModEffects {
     public static final RegistryObject<MobEffect> DEMONIC_THOUGHTS = EFFECTS.register("demonic_toughts", DemonicThoughtsEffect::new);
     public static final RegistryObject<MobEffect> FROST_BURN = EFFECTS.register("frost_burn", FrostburnEffect::new);
     public static final RegistryObject<MobEffect> HELLFIRE = EFFECTS.register("hellfire", HellFireEffect::new);
-    public static final RegistryObject<MobEffect> SUMMON_FOCUS = EFFECTS.register("summon_mark", SummonFocusEffect::new);
     public static final RegistryObject<TheTongueEffect> THE_TONGUE = EFFECTS.register("the_tongue", TheTongueEffect::new);
     public static final RegistryObject<HorrifiedEffect> HORRIFIED = EFFECTS.register("horrified", HorrifiedEffect::new);
     public static final RegistryObject<CrimsonStormEffect> CRIMSON_STORM = EFFECTS.register("crimson_storm", CrimsonStormEffect::new);
@@ -167,6 +167,21 @@ public final class ModEffects {
 
     private static <T extends MobEffect> RegistryObject<T> register(String name, Function<ResourceLocation, T> function) {
         return PortDeferredRegisterExtension.register(EFFECTS, name, function);
+    }
+
+    /**
+     * 为一种鞭子注册独立召唤标记。
+     *
+     * <p>物品声明仍是鞭子数值和行为的唯一入口，本方法只负责将对应效果加入本体注册表。</p>
+     */
+    public static RegistryObject<WhipTagEffect> registerWhipTag(
+            String whipName,
+            float fixedDamage
+    ) {
+        return EFFECTS.register(
+                whipName + "_tag",
+                () -> new WhipTagEffect(0xABAB11, fixedDamage)
+        );
     }
 
     private static double exquisitelyStuffed(int v, double v0, double v1, double v2) {

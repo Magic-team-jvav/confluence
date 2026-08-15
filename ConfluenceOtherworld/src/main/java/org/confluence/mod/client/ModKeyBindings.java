@@ -56,9 +56,19 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
-    // endregion
     public static final Lazy<KeyMapping> HOOK = register(() -> new KeyMapping(
             "key.confluence.hook",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_E,
+            KEY_BINDINGS_CATEGORY
+    ));
+
+    /**
+     * 快捷坐骑只发送切换请求，实际槽位物品和实体类型由服务端重新读取。
+     */
+    public static final Lazy<KeyMapping> MOUNT = register(() -> new KeyMapping(
+            "key.confluence.mount",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_R,
@@ -94,23 +104,6 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             InputConstants.UNKNOWN.getValue(),
-            KEY_BINDINGS_CATEGORY
-    ));
-
-    // 枪械按键
-    public static final Lazy<KeyMapping> GUN_SHOOT = register(() -> new KeyMapping(
-            "key.confluence.gun.shoot",
-            KeyConflictContext.IN_GAME,
-            InputConstants.Type.MOUSE,
-            GLFW.GLFW_MOUSE_BUTTON_LEFT,
-            KEY_BINDINGS_CATEGORY
-    ));
-
-    public static final Lazy<KeyMapping> GUN_AIM = register(() -> new KeyMapping(
-            "key.confluence.gun.aim",
-            KeyConflictContext.IN_GAME,
-            InputConstants.Type.MOUSE,
-            GLFW.GLFW_MOUSE_BUTTON_RIGHT,
             KEY_BINDINGS_CATEGORY
     ));
 

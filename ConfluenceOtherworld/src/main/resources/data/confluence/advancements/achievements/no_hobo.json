@@ -1,0 +1,29 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "runtime": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.no_hobo.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "minecraft:oak_door"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.no_hobo.title"
+        }
+    },
+    "requirements": [
+        [
+            "runtime"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

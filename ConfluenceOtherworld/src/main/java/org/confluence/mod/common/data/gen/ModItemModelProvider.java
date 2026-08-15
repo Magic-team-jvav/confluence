@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -23,6 +24,7 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import static org.confluence.mod.Confluence.MODID;
@@ -78,8 +80,21 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(ToolItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(SwordItems.WAFFLES_IRON, templateNormal24x, "sword/");
-        separateModel(FlailItems.BALL_O_HURT, templateReverse24x, "flail/");
-        separateModel(FlailItems.MACE, templateReverse24x, "flail/");
+        flailModel(FlailItems.MACE);
+        flailModel(FlailItems.FLAMING_MACE);
+        flailModel(FlailItems.WIND_ANCHOR);
+        flailModel(FlailItems.GUARDIAN_FLAIL);
+        flailModel(FlailItems.ANCIENT_GUARDIAN_FLAIL);
+        flailModel(FlailItems.BALL_O_HURT);
+        flailModel(FlailItems.THE_MEATBALL);
+        flailModel(FlailItems.BLUE_MOON);
+        flailModel(FlailItems.SUNFURY);
+        flailModel(FlailItems.DAO_OF_POW);
+        flailModel(FlailItems.FLOWER_POWER);
+        flailModel(FlailItems.DRIPPLER_CRIPPLER);
+        flailModel(FlailItems.FLAIRON);
+        flailModel(FlailItems.CHAIN_KNIFE);
+        flailModel(FlailItems.ANCHOR);
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
         getBuilder(SwordItems.NIGHTS_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHTS_EDGE.getId().withPrefix("item/sword/"));
@@ -156,16 +171,23 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(HookItems.ITEMS, "hook/"));
         customModels.add(createDir(IconItems.ITEMS, "icon/"));
         customModels.add(createDir(LightPetItems.ITEMS, "light_pet/"));
+        customModels.add(createDir(PetItems.ITEMS, "pet/"));
         customModels.add(createDir(MaterialItems.ITEMS, "materials/", "ingot/"));
         customModels.add(createDir(MinecartItems.ITEMS, "minecart/"));
+        customModels.add(createDir(MountItems.ITEMS, "rideable/"));
         customModels.add(createDir(ModItems.ITEMS, "misc/"));
         customModels.add(createDir(ModItems.HIDDEN, "misc/"));
         customModels.add(createDir(PaintItems.ITEMS, "paint/"));
         customModels.add(createDir(PotionItems.ITEMS, "potion/"));
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
+        treasureBagModelAlias(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG, "skeletron_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.THE_DESTROYER_TREASURE_BAG, "eater_of_worlds_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.PLANTERA_TREASURE_BAG, "queen_bee_treasure_bag");
+        treasureBagModelAlias(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG, "skeletron_treasure_bag");
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
+        customModels.add(createDir(YoyoItems.ITEMS, "yoyo/"));
 
         genModels(customModels, "item/generated");
 
@@ -178,6 +200,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheld.add(createDir(PickaxeItems.ITEMS, "pickaxe/"));
         handheld.add(createDir(PickaxeAxeItems.ITEMS, "pickaxe_axe/"));
         handheld.add(createDir(ManaWeaponItems.ITEMS, "mana_staff/"));
+        handheld.add(createDir(SummonItems.ITEMS, "summon/"));
+        handheld.add(createDir(WhipItems.ITEMS, "whip/"));
         handheld.add(createDir(HoeItems.ITEMS, "hoe/"));
         handheld.add(createDir(ShovelItems.ITEMS, "shovel/"));
         handheld.add(createDir(HamaxeItems.ITEMS, "hamaxe/"));
@@ -235,6 +259,27 @@ public class ModItemModelProvider extends ItemModelProvider {
             String name = s.append(i).toString();
             withExistingParent(name, "item/generated").texture("layer0", Confluence.asResource("item/compass/" + name));
         }
+
+        /*
+         * 原版刷怪蛋由颜色层动态绘制，不读取模组贴图。统一指向原版模板，
+         * 避免通用物品兜底把它们生成为缺失纹理模型。
+         */
+        for (PortRegistryEntry<Item, ?> entry :
+                SpawnEggItems.ITEMS.getEntries()) {
+            withExistingParent(
+                    entry.getId().getPath(),
+                    ResourceLocation.withDefaultNamespace(
+                            "item/template_spawn_egg"));
+            skip.add(entry.get());
+        }
+
+        /*
+         * 通用规则只能生成常规父模型和纹理引用，不能覆盖 Blockbench 几何、特殊 display、
+         * predicate overrides 或 forge:separate_transforms。ExistingFileHelper 的资源管理器
+         * 只查询 --existing 输入，不会把本轮刚登记的 generatedModels 当作手写资源，因此可在
+         * 所有规则执行后统一撤销误生成项，同时仍允许其他生成模型引用这些手写模型。
+         */
+        generatedModels.keySet().removeIf(this::hasHandwrittenModel);
     }
 
     /**
@@ -258,8 +303,40 @@ public class ModItemModelProvider extends ItemModelProvider {
         skip.add(deferredItem.get());
     }
 
+    /**
+     * 连枷在手中交给 Geo 手柄渲染器，物品栏与展示场景继续使用紧凑二维图标。
+     */
+    private void flailModel(PortDeferredItem<?> deferredItem) {
+        String path = deferredItem.getId().getPath();
+        ResourceLocation none = Confluence.asResource("");
+        ResourceLocation icon = Confluence.asResource(
+                "item/flail/" + path + "_inventory");
+        ModelFile builtinEntity = new ModelFile.UncheckedModelFile(
+                ResourceLocation.withDefaultNamespace("builtin/entity"));
+        getBuilder(path).guiLight(BlockModel.GuiLight.FRONT)
+                .customLoader((builder, helper) -> {
+                    ItemModelBuilder iconModel = new ItemModelBuilder(none, helper)
+                            .parent(itemGenerated)
+                            .texture("layer0", icon);
+                    return SeparateTransformsModelBuilder.begin(builder, helper)
+                            .base(new ItemModelBuilder(none, helper)
+                                    .parent(builtinEntity)
+                                    .texture("particle", icon))
+                            .perspective(ItemDisplayContext.GUI, iconModel)
+                            .perspective(ItemDisplayContext.GROUND, iconModel)
+                            .perspective(ItemDisplayContext.FIXED, iconModel);
+                });
+        skip.add(deferredItem.get());
+    }
+
     private Map<PortItemRegistration, String[]> createDir(PortItemRegistration reg, String... packPaths) {
         return Map.of(reg, packPaths);
+    }
+
+    private void treasureBagModelAlias(PortDeferredItem<? extends Item> item, String textureName) {
+        withExistingParent(item.getId().getPath(), "item/generated")
+                .texture("layer0", Confluence.asResource("item/treasure_bag/" + textureName));
+        skip.add(item.get());
     }
 
     private void genModels(List<Map<PortItemRegistration, String[]>> list, String parent) {
@@ -279,6 +356,21 @@ public class ModItemModelProvider extends ItemModelProvider {
                     if (!exist) withExistingParent(path, MISSING_ITEM);
                 }
             }
+        }
+    }
+
+    /**
+     * 判断指定物品模型是否已经由主资源目录提供。
+     *
+     * <p>复杂模型继续由手写 JSON 持有；只有没有手写定义的常规模型才由本 Provider 接管。
+     * 这避免通用兜底在生成目录留下同路径但功能退化的副本。</p>
+     */
+    private boolean hasHandwrittenModel(ResourceLocation model) {
+        try {
+            existingFileHelper.getResource(model, PackType.CLIENT_RESOURCES, ".json", "models");
+            return true;
+        } catch (FileNotFoundException ignored) {
+            return false;
         }
     }
 }

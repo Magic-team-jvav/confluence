@@ -122,6 +122,8 @@ public class LostPaperBlock extends Block implements EntityBlock {
         @Override
         public void load(CompoundTag tag) {
             super.load(tag);
+            // BlockEntity 实例可能被重复读取；缺字段和损坏 ID 都必须覆盖旧值。
+            this.lootTable = null;
             if (tag.contains("LootTable", Tag.TAG_STRING)) {
                 this.lootTable = ResourceLocation.tryParse(tag.getString("LootTable"));
             }

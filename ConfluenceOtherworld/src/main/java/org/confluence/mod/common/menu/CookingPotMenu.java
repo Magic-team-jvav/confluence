@@ -70,6 +70,7 @@ public class CookingPotMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
+        if (index < 0 || index >= slots.size()) return ItemStack.EMPTY;
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot.hasItem()) {
@@ -82,7 +83,19 @@ public class CookingPotMenu extends AbstractContainerMenu {
 
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (index > CONTAINER_SLOT) {
-                if (!moveItemStackTo(itemstack1, INPUT_SLOT_1, CONTAINER_SLOT, false)) {
+                boolean movedToPot = moveItemStackTo(
+                        itemstack1,
+                        INPUT_SLOT_1,
+                        CONTAINER_SLOT,
+                        false);
+                if (!itemstack1.isEmpty()) {
+                    movedToPot |= moveItemStackTo(
+                            itemstack1,
+                            CONTAINER_SLOT,
+                            RESULT_SLOT,
+                            false);
+                }
+                if (!movedToPot) {
                     if (index < INV_SLOT_END) {
                         if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
                             return ItemStack.EMPTY;
@@ -90,9 +103,6 @@ public class CookingPotMenu extends AbstractContainerMenu {
                     } else if (index < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                         return ItemStack.EMPTY;
                     }
-                    return ItemStack.EMPTY;
-                } else if (!moveItemStackTo(itemstack1, CONTAINER_SLOT, RESULT_SLOT, false)) {
-                    return ItemStack.EMPTY;
                 }
             } else if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
                 return ItemStack.EMPTY;

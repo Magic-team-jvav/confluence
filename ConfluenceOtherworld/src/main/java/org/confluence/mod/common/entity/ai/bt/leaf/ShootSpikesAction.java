@@ -15,7 +15,7 @@ public class ShootSpikesAction extends BTNode {
     protected final int spikeCount;
     protected final float damage;
     protected final EntityType<? extends SlimeSpikeEntity> spikeType;
-    protected int cooldown;
+    protected final GameTickCooldown cooldown = new GameTickCooldown();
     protected static final int COOLDOWN_TICKS = 50;
 
     public ShootSpikesAction(Mob mob, int spikeCount, float damage,
@@ -27,14 +27,9 @@ public class ShootSpikesAction extends BTNode {
     }
 
     @Override
-    public void start() {
-        cooldown = 0;
-    }
-
-    @Override
     public BTStatus execute() {
-        if (cooldown > 0) {
-            cooldown--;
+        long gameTime = mob.level().getGameTime();
+        if (!cooldown.isReady(gameTime)) {
             return BTStatus.SUCCESS;
         }
         if (mob.getTarget() != null) {
@@ -46,7 +41,7 @@ public class ShootSpikesAction extends BTNode {
                         0.5f, damage);
                 mob.level().addFreshEntity(spike);
             }
-            cooldown = COOLDOWN_TICKS + mob.getRandom().nextInt(20);
+            cooldown.restart(gameTime, COOLDOWN_TICKS + mob.getRandom().nextInt(20));
         }
         return BTStatus.SUCCESS;
     }

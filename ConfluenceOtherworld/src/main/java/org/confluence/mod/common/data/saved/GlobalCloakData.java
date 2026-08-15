@@ -49,11 +49,16 @@ public enum GlobalCloakData implements IGlobalData {
     });
 
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_STREAM_CODEC = PortByteBufCodecs.map(
-            HashMap::new, LibStreamCodecUtils.BLOCK_STATE, LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
+            HashMap::new,
+            LibStreamCodecUtils.BLOCK_STATE,
+            LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
     );
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Map<Item, BooleanObjectPair<Item>>> ITEM_MAP_STREAM_CODEC = LibStreamCodecUtils.lazyInitialized(() -> {
         PortStreamCodec<PortRegistryFriendlyByteBuf, Item> streamCodec = PortByteBufCodecs.registry(Registries.ITEM);
-        return PortByteBufCodecs.map(HashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
+        return PortByteBufCodecs.map(
+                HashMap::new,
+                streamCodec,
+                LibStreamCodecUtils.booleanObjectPair(streamCodec));
     });
     public static final int VERSION = 1;
 
@@ -149,21 +154,40 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")),
-                result -> this.blockMap = new IdentityHashMap<>(result));
-        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")),
-                result -> this.itemMap = new IdentityHashMap<>(result));
-        this.version = tag.getInt("Version");
-
+        if (tag.isEmpty()) {
+            return;
+        }
+        int decodedVersion = tag.getInt("Version");
+        if (decodedVersion != VERSION) {
+            throw new IllegalArgumentException(
+                    "Unsupported global cloak data version: " + decodedVersion);
+        }
+        Map<BlockState, BooleanObjectPair<BlockState>> decodedBlocks =
+                PortDataResultExtension.getOrThrow(
+                        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")),
+                        message -> new IllegalArgumentException(
+                                "Failed to decode cloaked block data: " + message));
+        Map<Item, BooleanObjectPair<Item>> decodedItems =
+                PortDataResultExtension.getOrThrow(
+                        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")),
+                        message -> new IllegalArgumentException(
+                                "Failed to decode cloaked item data: " + message));
+        this.blockMap = new IdentityHashMap<>(decodedBlocks);
+        this.itemMap = new IdentityHashMap<>(decodedItems);
+        this.version = decodedVersion;
         rollbackAllProperties();
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap),
-                nbt -> tag.put("BlockMap", nbt));
-        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap),
-                nbt -> tag.put("ItemMap", nbt));
+        tag.put("BlockMap", PortDataResultExtension.getOrThrow(
+                BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap),
+                message -> new IllegalStateException(
+                        "Failed to encode cloaked block data: " + message)));
+        tag.put("ItemMap", PortDataResultExtension.getOrThrow(
+                ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap),
+                message -> new IllegalStateException(
+                        "Failed to encode cloaked item data: " + message)));
         tag.putInt("Version", version);
     }
 
@@ -182,14 +206,28 @@ public enum GlobalCloakData implements IGlobalData {
         return "confluence:global_cloak_data";
     }
 
-    public void networkEncode(PortRegistryFriendlyByteBuf buffer) {
-        BLOCK_MAP_STREAM_CODEC.encode(buffer, blockMap);
-        ITEM_MAP_STREAM_CODEC.encode(buffer, itemMap);
+    /**
+     * 为网络编码创建稳定的方块伪装快照。
+     */
+    public Map<BlockState, BooleanObjectPair<BlockState>> blockMapSnapshot() {
+        return new IdentityHashMap<>(blockMap);
     }
 
-    public void networkDecode(PortRegistryFriendlyByteBuf buffer) {
-        this.blockMap = BLOCK_MAP_STREAM_CODEC.decode(buffer);
-        this.itemMap = ITEM_MAP_STREAM_CODEC.decode(buffer);
+    /**
+     * 为网络编码创建稳定的物品伪装快照。
+     */
+    public Map<Item, BooleanObjectPair<Item>> itemMapSnapshot() {
+        return new IdentityHashMap<>(itemMap);
+    }
+
+    /**
+     * 在客户端主线程一次性替换网络同步的伪装映射。
+     */
+    public void applyNetworkState(
+            Map<BlockState, BooleanObjectPair<BlockState>> blocks,
+            Map<Item, BooleanObjectPair<Item>> items) {
+        this.blockMap = new IdentityHashMap<>(blocks);
+        this.itemMap = new IdentityHashMap<>(items);
     }
 
     public void rollbackAllProperties() {

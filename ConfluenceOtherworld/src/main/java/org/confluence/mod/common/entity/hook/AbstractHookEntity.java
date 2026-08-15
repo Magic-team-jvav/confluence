@@ -110,6 +110,12 @@ public abstract class AbstractHookEntity extends Projectile {
         }
         if (!level().isClientSide) {
             ItemStack hook = ExtraInventory.of(player).getHook(false);
+            if (!(hook.getItem() instanceof BaseHookItem)
+                    || !BaseHookItem.containsHook(hook, level(), player, this)) {
+                // 物品被替换、移出装备槽或运行时条目损坏后，实体不能脱离物品生命周期继续存在。
+                discard();
+                return;
+            }
             if (hookState != HookState.POP && distanceToSqr(owner) > hookRangeSqr) {
                 setHookState(HookState.POP);
             } else if (hookState == HookState.PUSH) {
@@ -145,13 +151,15 @@ public abstract class AbstractHookEntity extends Projectile {
     protected void onHooked(BlockHitResult hitResult, ItemStack itemStack) {
         BlockPos blockPos = hitResult.getBlockPos();
         BlockState blockState = level().getBlockState(blockPos);
+        Entity owner = getOwner();
         level().gameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.of(this, blockState));
         setDeltaMovement(Vec3.ZERO);
         setHookState(HookState.HOOKED);
         this.hookPos = blockPos;
         this.hookedState = blockState;
         this.hasImpulse = true;
-        float ratio = getOwner() == null ? 1 : Mth.clamp(Mth.sqrt((float) blockPos.distSqr(getOwner().blockPosition())) / Mth.sqrt(hookRangeSqr), 0, 1);
+        float ratio = owner == null ? 1 : Mth.clamp(
+                Mth.sqrt((float) blockPos.distSqr(owner.blockPosition())) / Mth.sqrt(hookRangeSqr), 0, 1);
         playSound(ModSoundEvents.HOOK_ATTACH.get(), 0.5F * ratio, 1.0F);
         if (level() instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState).setPos(blockPos),
@@ -214,7 +222,8 @@ public abstract class AbstractHookEntity extends Projectile {
 
         @Override
         protected void defineSynchedData() {
-
+            // 通用钩爪没有额外字段，但仍必须注册基类的阶段和收回速度。
+            super.defineSynchedData();
         }
     }
 }

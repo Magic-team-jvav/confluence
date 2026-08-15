@@ -207,7 +207,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     default -> null;
                 };
                 if (level.random.nextFloat() < 0.2F) {
-                    // todo 返回药水
+                    item = RECALL_POTION.get();
                 }
             } else if (y <= OverworldUtils.getUndergroundY()) {
                 item = switch (level.random.nextInt(15)) {
@@ -287,7 +287,9 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         return false;
     }
 
-    // todo 掉火把
+    /**
+     * 当前火把注册仍以普通火把为稳定兜底，后续特殊火把入口统一后再按罐子类型细分。
+     */
     private boolean dropTorch(ServerLevel level, BlockPos blockPos, Vec3 center) {
 //        boolean tundra = this == TUNDRA_POTS.get();
         int amount = /*tundra ? level.random.nextInt(2, 7) : */level.random.nextInt(4, 13);
@@ -420,7 +422,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 GoblinArmyGameEvent.KEY
         );
         for (int i = 0; i < defeated; i++) {
-            ratio *= 1.1F; // todo 毁灭者、机械骷髅王、石巨人、海盗入侵、雪人军团
+            ratio *= 1.1F; // 待补：毁灭者、机械骷髅王、石巨人、海盗入侵、雪人军团
         }
         ratio *= moneyRatio;
         int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);

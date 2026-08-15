@@ -22,6 +22,9 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -30,7 +33,8 @@ import static org.confluence.terra_curio.common.datagen.TCDataMapProvider.wrap;
 
 public class AccessoriesSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
-        Set<MobEffect> ankh = Set.of(
+        // 数据映射的编解码器会按集合迭代顺序写出免疫效果；LinkedHashSet 避免每次 DataGen 随机重排。
+        Set<MobEffect> ankh = Collections.unmodifiableSet(new LinkedHashSet<>(List.of(
                 MobEffects.POISON,
                 MobEffects.BLINDNESS,
                 MobEffects.MOVEMENT_SLOWDOWN,
@@ -41,7 +45,7 @@ public class AccessoriesSubProvider {
                 ModEffects.CURSED.get(),
                 ModEffects.SILENCED.get(),
                 ModEffects.STONED.get()
-        );
+        )));
         Consumer<Helper> celestial = helper -> {
             ResourceLocation id = helper.asId();
             helper.entry(TCItems.ATTRIBUTES, fourClassesAttribute(id, 0.1)

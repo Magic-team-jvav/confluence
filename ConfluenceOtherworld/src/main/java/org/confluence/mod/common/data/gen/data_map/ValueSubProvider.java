@@ -1542,7 +1542,12 @@ public final class ValueSubProvider {
                 .add(TreasureBagItems.SKELETRON_TREASURE_BAG, gold1 + gold2)
                 .add(TreasureBagItems.DEERCLOPS_TREASURE_BAG, gold5)
                 .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, gold10 - silver50)
-                .add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG, gold10 - silver50);
+                .add(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG, gold10 - silver50)
+                .add(TreasureBagItems.THE_TWINS_TREASURE_BAG, gold10 + gold2)
+                .add(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG, gold10 + gold2)
+                .add(TreasureBagItems.THE_DESTROYER_TREASURE_BAG, gold10 + gold2)
+                .add(TreasureBagItems.PLANTERA_TREASURE_BAG, gold10 + gold5)
+                .add(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG, gold10);
         builder
                 .add(AccessoryItems.PAINT_SPRAYER, gold2)
                 .add(AccessoryItems.LUCKY_COIN, gold1)

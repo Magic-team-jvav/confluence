@@ -1,6 +1,5 @@
 package org.confluence.mod.util;
 
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -13,7 +12,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.RandomSource;
@@ -245,32 +243,6 @@ public final class ClientUtils {
     }
 
     public static Component formatPrice(int price) {
-        int platinum = 0;
-        int gold = 0;
-        int silver = 0;
-        int copper;
-        if (price >= 1000000) {
-            platinum = price / 1000000;
-            price -= platinum * 1000000;
-        }
-        if (price >= 10000) {
-            gold = price / 10000;
-            price -= gold * 10000;
-        }
-        if (price >= 100) {
-            silver = price / 100;
-            price -= silver * 100;
-        }
-        copper = price;
-        MutableComponent cmp = Component.empty();
-        if (platinum > 0)
-            cmp.append(PortMutableComponentExtension.withColor(Component.literal(platinum + " ").append(Component.translatable("tooltip.price.platinum")), -4996668));
-        if (gold > 0)
-            cmp.append(PortMutableComponentExtension.withColor(Component.literal(gold + " ").append(Component.translatable("tooltip.price.gold")), -3891380));
-        if (silver > 0)
-            cmp.append(PortMutableComponentExtension.withColor(Component.literal(silver + " ").append(Component.translatable("tooltip.price.silver")), -4532777));
-        if (copper > 0)
-            cmp.append(PortMutableComponentExtension.withColor(Component.literal(copper + " ").append(Component.translatable("tooltip.price.copper")), -3837899));
-        return cmp;
+        return MoneyText.format(price);
     }
 }

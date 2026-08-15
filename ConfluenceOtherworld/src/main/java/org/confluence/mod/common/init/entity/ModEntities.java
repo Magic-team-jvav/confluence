@@ -16,18 +16,28 @@ import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
-import org.confluence.mod.common.entity.flail.BaseFlailEntity;
+import org.confluence.mod.common.entity.flail.*;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
+import org.confluence.mod.common.entity.mount.RideableBeeMountEntity;
+import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
 import org.confluence.mod.common.entity.projectile.*;
 import org.confluence.mod.common.entity.projectile.arrow.*;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.entity.projectile.boulder.*;
+import org.confluence.mod.common.entity.projectile.flail.DripplerCripplerProjectile;
+import org.confluence.mod.common.entity.projectile.flail.FlaironBubbleProjectile;
+import org.confluence.mod.common.entity.projectile.flail.FlowerPowerPetalProjectile;
 import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
+import org.confluence.mod.common.entity.projectile.summon.SummonBoltEntity;
 import org.confluence.mod.common.entity.projectile.sword.*;
+import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
+import org.confluence.mod.common.entity.storage.ChesterEntity;
+import org.confluence.mod.common.entity.storage.FlyingPiggyBankEntity;
+import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 
 import java.util.List;
 import java.util.function.Function;
@@ -60,6 +70,32 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<LiquidBombEntity>> HONEY_BOMB = registerBomb("honey_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
 
     // 魔法
+    public static final RegistryObject<EntityType<WhipAttackEntity>> WHIP_ATTACK = register(
+            "whip_attack",
+            id -> EntityType.Builder.of(WhipAttackEntity::new, MobCategory.MISC)
+                    .sized(0.1F, 0.1F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString())
+    );
+    public static final RegistryObject<EntityType<SummonBoltEntity>> SUMMON_BOLT = register(
+            "summon_bolt",
+            id -> EntityType.Builder.of(
+                            SummonBoltEntity::new, MobCategory.MISC)
+                    .sized(0.2F, 0.2F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSummon()
+                    .noSave()
+                    .build(id.toString())
+    );
+
+    public static final RegistryObject<EntityType<ChesterEntity>> CHESTER =
+            registerStorageCompanion("chester", ChesterEntity::new);
+    public static final RegistryObject<EntityType<FlyingPiggyBankEntity>>
+            FLYING_PIGGY_BANK = registerStorageCompanion(
+            "piggy_bank", FlyingPiggyBankEntity::new);
     public static final RegistryObject<EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF = register("base_mana_staff", id -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<VilethronProjectile>> VILETHRON = register("vilethron", id -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = register("crystal_vile_shard", id -> EntityType.Builder.<CrystalVileShardProjectile>of(CrystalVileShardProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
@@ -132,11 +168,299 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<ThrowableDropSelfProjectile>> DUNGEON_DEMON_BONE = register("dungeon_demon_bone", id -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<ThrowableDropSelfProjectile>> SHURIKEN = register("shuriken", id -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<ThrowableDropSelfProjectile>> JAVELIN = register("javelin", id -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<BoomerangProjectile>> BOOMERANG_PROJECTILE = register("boomerang_projectile", id -> EntityType.Builder.of(BoomerangProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<RopeCoilsProjectile>> ROPE_COILS = register("rope_coils", id -> EntityType.Builder.<RopeCoilsProjectile>of(RopeCoilsProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<IceTofuBrickProjectile>> ICE_TOFU_BRICK = register("ice_tofu_brick", id -> EntityType.Builder.<IceTofuBrickProjectile>of(IceTofuBrickProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<SpikyBallProjectile>> SPIKY_BALL = register("spiky_ball", id -> EntityType.Builder.<SpikyBallProjectile>of(SpikyBallProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
     public static final RegistryObject<EntityType<ThrownWaterProjectile>> THROWN_WATER = register("thrown_water", id -> EntityType.Builder.<ThrownWaterProjectile>of(ThrownWaterProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
     public static final RegistryObject<EntityType<FlowerPetalProjectile>> FLOWER_PETAL = register("flower_petal", id -> EntityType.Builder.<FlowerPetalProjectile>of(FlowerPetalProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
+    public static final RegistryObject<EntityType<HarpyFeatherProjectile>> HARPY_FEATHER = register(
+            "harpy_feather_projectile",
+            id -> EntityType.Builder.of(
+                            HarpyFeatherProjectile::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<HostileDemonScytheProjectile>>
+            HOSTILE_DEMON_SCYTHE = register(
+            "hostile_demon_scythe_projectile",
+            id -> EntityType.Builder.of(
+                            HostileDemonScytheProjectile::new, MobCategory.MISC)
+                    .sized(1.5F, 1.5F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<HornetStingerProjectile>>
+            HORNET_STINGER = register(
+            "hornet_stinger_projectile",
+            id -> EntityType.Builder.of(
+                            HornetStingerProjectile::new, MobCategory.MISC)
+                    .sized(0.35F, 0.35F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<SkeletronSkullProjectile>>
+            SKELETRON_SKULL = register(
+            "skeletron_skull_projectile",
+            id -> EntityType.Builder.of(
+                            SkeletronSkullProjectile::new, MobCategory.MISC)
+                    .sized(0.9F, 0.9F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<HillLavaPillarProjectile>>
+            HILL_LAVA_PILLAR = register(
+            "hill_lava_pillar",
+            id -> EntityType.Builder.of(
+                            HillLavaPillarProjectile::new, MobCategory.MISC)
+                    .sized(1.0F, 0.2F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<HostileParticleProjectile>>
+            WALL_OF_FLESH_LASER = register(
+            "wall_of_flesh_laser",
+            id -> EntityType.Builder.<HostileParticleProjectile>of(
+                            (type, level) -> new HostileParticleProjectile(
+                                    type, level,
+                                    HostileParticleProjectile.Variant
+                                            .WALL_OF_FLESH_LASER),
+                            MobCategory.MISC)
+                    .sized(0.35F, 0.35F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<DestroyerLaserProjectile>>
+            DESTROYER_LASER = register(
+            "destroyer_laser",
+            id -> EntityType.Builder.of(
+                            DestroyerLaserProjectile::new,
+                            MobCategory.MISC)
+                    .sized(0.35F, 0.35F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<PrimeLaserProjectile>>
+            PRIME_LASER = register(
+            "prime_laser",
+            id -> EntityType.Builder.of(
+                            PrimeLaserProjectile::new,
+                            MobCategory.MISC)
+                    .sized(0.35F, 0.35F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<PlanteraProjectile>>
+            PLANTERA_SEED = register(
+            "plantera_seed",
+            id -> EntityType.Builder.<PlanteraProjectile>of(
+                            (type, level) -> new PlanteraProjectile(
+                                    type, level,
+                                    PlanteraProjectile.Variant.SEED),
+                            MobCategory.MISC)
+                    .sized(0.3F, 0.3F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<PlanteraProjectile>>
+            PLANTERA_THORN_BALL = register(
+            "plantera_thorn_ball",
+            id -> EntityType.Builder.<PlanteraProjectile>of(
+                            (type, level) -> new PlanteraProjectile(
+                                    type, level,
+                                    PlanteraProjectile.Variant.THORN_BALL),
+                            MobCategory.MISC)
+                    .sized(0.7F, 0.7F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<PlanteraProjectile>>
+            PLANTERA_SPORE = register(
+            "plantera_spore",
+            id -> EntityType.Builder.<PlanteraProjectile>of(
+                            (type, level) -> new PlanteraProjectile(
+                                    type, level,
+                                    PlanteraProjectile.Variant.SPORE),
+                            MobCategory.MISC)
+                    .sized(0.45F, 0.45F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<TwinEyeProjectile>>
+            RETINAZER_LASER = register(
+            "retinazer_laser",
+            id -> EntityType.Builder.<TwinEyeProjectile>of(
+                            (type, level) -> new TwinEyeProjectile(
+                                    type, level,
+                                    TwinEyeProjectile.Variant.LASER),
+                            MobCategory.MISC)
+                    .sized(0.35F, 0.35F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<TwinEyeProjectile>>
+            SPAZMATISM_FLAME = register(
+            "spazmatism_flame",
+            id -> EntityType.Builder.<TwinEyeProjectile>of(
+                            (type, level) -> new TwinEyeProjectile(
+                                    type, level,
+                                    TwinEyeProjectile.Variant.CURSED_FLAME),
+                            MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<HostileParticleProjectile>>
+            DARK_CASTER_PROJECTILE = register(
+            "dark_caster_projectile",
+            id -> EntityType.Builder.<HostileParticleProjectile>of(
+                            (type, level) -> new HostileParticleProjectile(
+                                    type,
+                                    level,
+                                    HostileParticleProjectile.Variant.DARK_CASTER),
+                            MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<HostileParticleProjectile>>
+            VILE_SPIT_PROJECTILE = register(
+            "vile_spit_projectile",
+            id -> EntityType.Builder.<HostileParticleProjectile>of(
+                            (type, level) -> new HostileParticleProjectile(
+                                    type,
+                                    level,
+                                    HostileParticleProjectile.Variant.VILE_SPIT),
+                            MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<HostileParticleProjectile>>
+            FIRE_IMP_PROJECTILE = register(
+            "fire_imp_projectile",
+            id -> EntityType.Builder.<HostileParticleProjectile>of(
+                            (type, level) -> new HostileParticleProjectile(
+                                    type,
+                                    level,
+                                    HostileParticleProjectile.Variant.FIRE_IMP),
+                            MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<HostileParticleProjectile>>
+            GASTROPOD_PROJECTILE = register(
+            "gastropod_projectile",
+            id -> EntityType.Builder.<HostileParticleProjectile>of(
+                            (type, level) -> new HostileParticleProjectile(
+                                    type,
+                                    level,
+                                    HostileParticleProjectile.Variant.GASTROPOD),
+                            MobCategory.MISC)
+                    .sized(0.45F, 0.45F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<PaladinHammerProjectile>>
+            PALADIN_HAMMER_PROJECTILE = register(
+            "paladin_hammer_projectile",
+            id -> EntityType.Builder.of(
+                            PaladinHammerProjectile::new, MobCategory.MISC)
+                    .sized(0.9F, 0.9F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<DeerclopsThrownIceProjectile>>
+            THROWN_ICE_PROJECTILE = register(
+            "thrown_ice_projectile",
+            id -> EntityType.Builder.of(
+                            DeerclopsThrownIceProjectile::new, MobCategory.MISC)
+                    .sized(1.0F, 1.0F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .noSummon()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<DeerclopsIcePillarProjectile>>
+            ICE_PILLAR = register(
+            "ice_pillar",
+            id -> EntityType.Builder.of(
+                            DeerclopsIcePillarProjectile::new, MobCategory.MISC)
+                    .sized(1.0F, 1.0F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .noSummon()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<DeerclopsShadowHandProjectile>>
+            SHADOW_HAND = register(
+            "shadow_hand",
+            id -> EntityType.Builder.of(
+                            DeerclopsShadowHandProjectile::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .noSummon()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<AncientLightProjectile>> ANCIENT_LIGHT = register("ancient_light", id -> EntityType.Builder.of(AncientLightProjectile::new, MobCategory.MISC).sized(0.6F, 0.6F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
+    public static final RegistryObject<EntityType<CultistProjectile>> CULTIST_FIREBALL = register(
+            "cultist_fireball",
+            id -> EntityType.Builder.<CultistProjectile>of(
+                            (type, level) -> new CultistProjectile(
+                                    type, level, CultistProjectile.Variant.FIREBALL),
+                            MobCategory.MISC)
+                    .sized(0.55F, 0.55F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .noSummon()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<CultistProjectile>> CULTIST_ICE_MIST = register(
+            "cultist_ice_mist",
+            id -> EntityType.Builder.<CultistProjectile>of(
+                            (type, level) -> new CultistProjectile(
+                                    type, level, CultistProjectile.Variant.ICE_MIST),
+                            MobCategory.MISC)
+                    .sized(0.8F, 0.8F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .noSummon()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<CultistProjectile>> CULTIST_LIGHTNING_ORB = register(
+            "cultist_lightning_orb",
+            id -> EntityType.Builder.<CultistProjectile>of(
+                            (type, level) -> new CultistProjectile(
+                                    type, level, CultistProjectile.Variant.LIGHTNING_ORB),
+                            MobCategory.MISC)
+                    .sized(0.7F, 0.7F)
+                    .clientTrackingRange(10)
+                    .updateInterval(1)
+                    .noSave()
+                    .noSummon()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<PrimeCannonballProjectile>> PRIME_CANNONBALL = register("prime_cannonball", id -> EntityType.Builder.of(PrimeCannonballProjectile::new, MobCategory.MISC).sized(0.55F, 0.55F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
     public static final RegistryObject<EntityType<TitaniumShardsProjectile>> TITANIUM_SHARDS = register("titanium_shards", id -> EntityType.Builder.<TitaniumShardsProjectile>of(TitaniumShardsProjectile::new, MobCategory.MISC).sized(0, 0).fireImmune().noSummon().noSave().build(id.toString()));
     public static final RegistryObject<EntityType<FallingStarItemEntity>> FALLING_STAR = register("falling_star", id -> EntityType.Builder.<FallingStarItemEntity>of(FallingStarItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build(id.toString()));
     public static final RegistryObject<EntityType<TreasureBagItemEntity>> TREASURE_BAG = register("treasure_bag", id -> EntityType.Builder.<TreasureBagItemEntity>of(TreasureBagItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build(id.toString()));
@@ -176,10 +500,124 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<AbstractHookEntity.Impl>> SPOOKY_HOOK = registerHook("spooky_hook", AbstractHookEntity.Impl::new);
     public static final RegistryObject<EntityType<AbstractHookEntity.Impl>> CHRISTMAS_HOOK = registerHook("christmas_hook", AbstractHookEntity.Impl::new);
     public static final RegistryObject<EntityType<LunarHookEntity>> LUNAR_HOOK = registerHook("lunar_hook", LunarHookEntity::new);
-    /* todo 静止钩 */
 
     // 连枷
     public static final RegistryObject<EntityType<BaseFlailEntity>> FLAIL_ENTITY = register("flail", id -> EntityType.Builder.of(BaseFlailEntity::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(6).noSave().build(id.toString()));
+    public static final RegistryObject<EntityType<GuardianFlailEntity>> GUARDIAN_FLAIL_ENTITY =
+            register("guardian_flail", id -> EntityType.Builder
+                    .<GuardianFlailEntity>of(
+                            (type, level) -> new GuardianFlailEntity(
+                                    type, level, false),
+                            MobCategory.MISC)
+                    .sized(0.75F, 0.75F)
+                    .clientTrackingRange(20)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<GuardianFlailEntity>> ANCIENT_GUARDIAN_FLAIL_ENTITY =
+            register("ancient_guardian_flail", id -> EntityType.Builder
+                    .<GuardianFlailEntity>of(
+                            (type, level) -> new GuardianFlailEntity(
+                                    type, level, true),
+                            MobCategory.MISC)
+                    .sized(0.75F, 0.75F)
+                    .clientTrackingRange(24)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<FlowerPowerFlailEntity>> FLOWER_POWER_FLAIL =
+            register("flower_power", id -> EntityType.Builder
+                    .of(
+                            FlowerPowerFlailEntity::new,
+                            MobCategory.MISC)
+                    .sized(0.75F, 0.75F)
+                    .clientTrackingRange(20)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<DripplerCripplerFlailEntity>> DRIPPLER_CRIPPLER_FLAIL =
+            register("drippler_crippler", id -> EntityType.Builder
+                    .of(
+                            DripplerCripplerFlailEntity::new,
+                            MobCategory.MISC)
+                    .sized(0.75F, 0.75F)
+                    .clientTrackingRange(20)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<FlaironFlailEntity>> FLAIRON_FLAIL =
+            register("flairon", id -> EntityType.Builder
+                    .of(
+                            FlaironFlailEntity::new,
+                            MobCategory.MISC)
+                    .sized(0.75F, 0.75F)
+                    .clientTrackingRange(20)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<LaunchedFlailEntity>> CHAIN_KNIFE_FLAIL =
+            register("chain_knife", id -> EntityType.Builder
+                    .<LaunchedFlailEntity>of(
+                            (type, level) -> new LaunchedFlailEntity(
+                                    type, level, 0.0),
+                            MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(20)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<AnchorFlailEntity>> ANCHOR_FLAIL =
+            register("anchor", id -> EntityType.Builder
+                    .of(
+                            AnchorFlailEntity::new,
+                            MobCategory.MISC)
+                    .sized(0.9F, 0.9F)
+                    .clientTrackingRange(24)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+
+    public static final RegistryObject<EntityType<FlowerPowerPetalProjectile>> FLOWER_POWER_PETAL =
+            register("flower_power_petal", id -> EntityType.Builder
+                    .of(
+                            FlowerPowerPetalProjectile::new,
+                            MobCategory.MISC)
+                    .sized(0.3F, 0.3F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<DripplerCripplerProjectile>> DRIPPLER_CRIPPLER_PROJECTILE =
+            register("drippler_crippler_projectile", id -> EntityType.Builder
+                    .of(
+                            DripplerCripplerProjectile::new,
+                            MobCategory.MISC)
+                    .sized(0.4F, 0.4F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<FlaironBubbleProjectile>> FLAIRON_BUBBLE =
+            register("flairon_bubble", id -> EntityType.Builder
+                    .of(
+                            FlaironBubbleProjectile::new,
+                            MobCategory.MISC)
+                    .sized(0.65F, 0.65F)
+                    .clientTrackingRange(12)
+                    .updateInterval(1)
+                    .noSave()
+                    .build(id.toString()));
+
+    // 悠悠球是玩家左键控制的临时武器实体，所有品种共用这一实体类型。
+    public static final RegistryObject<EntityType<YoyoEntity>> YOYO =
+            register("yoyo", id -> EntityType.Builder
+                    .of(YoyoEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .noSummon()
+                    .noSave()
+                    .build(id.toString()));
 
     // 矿车
     public static final RegistryObject<EntityType<BaseMinecartEntity>> VANILLA_MINECART = registerMinecart("vanilla_minecart", BaseMinecartEntity::new);
@@ -191,7 +629,36 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<MeowmereMinecartEntity>> MEOWMERE_MINECART = registerMinecart("meowmere_minecart", MeowmereMinecartEntity::new);
     public static final RegistryObject<EntityType<DiggingMolecartEntity>> DIGGING_MOLECART = registerMinecart("digging_molecart", DiggingMolecartEntity::new);
 
-    public static final RegistryObject<EntityType<BestiaryEntryDisplay>> BESTIARY_ENTRY_DISPLAY = register("bestiary_entry_display", id -> EntityType.Builder.of(BestiaryEntryDisplay::new, MobCategory.MISC).sized(1, 1).build(id.toString()));
+    /**
+     * 临时坐骑由坐骑物品创建，不参与自然生成或区块存档。
+     */
+    public static final RegistryObject<EntityType<RideableSlimeMountEntity>> RIDEABLE_SLIME =
+            register("rideable_slime", id -> EntityType.Builder
+                    .of(RideableSlimeMountEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .noSummon()
+                    .noSave()
+                    .build(id.toString()));
+    public static final RegistryObject<EntityType<RideableBeeMountEntity>> RIDEABLE_BEE =
+            register("rideable_bee", id -> EntityType.Builder
+                    .of(RideableBeeMountEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(8)
+                    .updateInterval(1)
+                    .noSummon()
+                    .noSave()
+                    .build(id.toString()));
+
+    public static final RegistryObject<EntityType<BestiaryEntryDisplay>> BESTIARY_ENTRY_DISPLAY = register(
+            "bestiary_entry_display",
+            id -> EntityType.Builder.of(BestiaryEntryDisplay::new, MobCategory.MISC)
+                    .sized(1, 1)
+                    .noSummon()
+                    .noSave()
+                    .build(id.toString())
+    );
 
     // 子弹
     public static final RegistryObject<EntityType<StarCannonBulletEntity>> STAR_CANNON_BULLET = register("star_cannon_bullet", id -> EntityType.Builder.<StarCannonBulletEntity>of(StarCannonBulletEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(id.toString()));
@@ -199,27 +666,53 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<BaseBulletEntity>> BASE_BULLET_ENTITY = register("base_bullet", id -> EntityType.Builder.<BaseBulletEntity>of(BaseBulletEntity::new, MobCategory.MISC).sized(0.1f, 0.1f).build(id.toString()));
     public static final RegistryObject<EntityType<CustomBulletEntity>> GRAVITY_BULLET_ENTITY = register("gravity_bullet", id -> EntityType.Builder.<CustomBulletEntity>of(CustomBulletEntity::new, MobCategory.MISC).sized(0.1f, 0.1f).build(id.toString()));
 
-    public static final RegistryObject<EntityType<RainbowSheep>> RAINBOW_SHEEP = register("rainbow_sheep", id -> EntityType.Builder.of(RainbowSheep::new, MobCategory.CREATURE).sized(0.9F, 1.3F)/* todo .eyeHeight(1.235F).passengerAttachments(1.2375F)*/.clientTrackingRange(10).build(id.toString()));
-//    public static final RegistryObject<EntityType<InverseEnderMan>> INVERSE_ENDERMAN = register("inverse_enderman", id -> InverseEntityType.create(InverseEnderMan::new, MobCategory.MONSTER, id.toString(), builder -> builder.sized(0.6F, 2.9F)/* todo .eyeHeight(2.55F).passengerAttachments(2.80625F)*/.clientTrackingRange(8)));
+    public static final RegistryObject<EntityType<RainbowSheep>> RAINBOW_SHEEP = register("rainbow_sheep",
+            id -> EntityType.Builder.of(RainbowSheep::new, MobCategory.CREATURE)
+                    .sized(0.9F, 1.3F)
+                    .clientTrackingRange(10)
+                    .build(id.toString()));
 
     // 史莱姆尖刺
     public static final RegistryObject<EntityType<SlimeSpikeEntity>> SLIME_SPIKE = register("slime_spike",
-            id -> EntityType.Builder.<SlimeSpikeEntity>of(SlimeSpikeEntity::new, MobCategory.MISC)
+            id -> EntityType.Builder.of(SlimeSpikeEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build(id.toString()));
 
     public static final RegistryObject<EntityType<AccumulatingEnergyEntity>> ACCUMULATING_ENERGY = register("accumulating_energy", id -> EntityType.Builder.<AccumulatingEnergyEntity>of(AccumulatingEnergyEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(1).build(id.toString()));
 
     private static <E extends BaseMinecartEntity> RegistryObject<EntityType<E>> registerMinecart(String name, EntityType.EntityFactory<E> factory) {
-        return register(name, id -> EntityType.Builder.of(factory, MobCategory.MISC).sized(0.98F, 0.7F)/* todo .passengerAttachments(0.1875F)*/.clientTrackingRange(8).build(id.toString()));
+        return register(name, id -> EntityType.Builder.of(factory, MobCategory.MISC)
+                .sized(0.98F, 0.7F)
+                .clientTrackingRange(8)
+                .build(id.toString()));
     }
 
     private static <E extends AbstractHookEntity> RegistryObject<EntityType<E>> registerHook(String name, EntityType.EntityFactory<E> supplier) {
         int updateInterval = 20;
-        return register(name, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(updateInterval).build(id.toString()));
+        // 钩爪依赖物品参数与在线玩家，仅在当前操作周期存在；区块重载后由玩家重新发射。
+        return register(name, id -> EntityType.Builder.of(supplier, MobCategory.MISC)
+                .sized(0.5F, 0.5F)
+                .clientTrackingRange(4)
+                .updateInterval(updateInterval)
+                .noSave()
+                .build(id.toString()));
     }
 
     private static <E extends BaseBombEntity> RegistryObject<EntityType<E>> registerBomb(String name, EntityType.EntityFactory<E> supplier, float size) {
         return register(name, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(size, size).clientTrackingRange(4).updateInterval(10).fireImmune().build(id.toString()));
+    }
+
+    private static <E extends Entity>
+    RegistryObject<EntityType<E>> registerStorageCompanion(
+            String name,
+            EntityType.EntityFactory<E> factory
+    ) {
+        return register(name, id -> EntityType.Builder.of(factory, MobCategory.MISC)
+                .sized(1.0F, 1.0F)
+                .clientTrackingRange(10)
+                .updateInterval(1)
+                .noSummon()
+                .noSave()
+                .build(id.toString()));
     }
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, Function<ResourceLocation, EntityType<T>> function) {

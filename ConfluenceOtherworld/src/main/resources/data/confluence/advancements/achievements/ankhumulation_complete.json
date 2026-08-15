@@ -1,0 +1,38 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "terra_curio:ankh_shield"
+                        ]
+                    }
+                ]
+            },
+            "trigger": "minecraft:inventory_changed"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.ankhumulation_complete.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "terra_curio:ankh_shield"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.ankhumulation_complete.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

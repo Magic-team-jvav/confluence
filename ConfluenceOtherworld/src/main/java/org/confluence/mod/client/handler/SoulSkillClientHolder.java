@@ -2,6 +2,7 @@ package org.confluence.mod.client.handler;
 
 import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.client.ClientConfigs;
@@ -75,6 +76,14 @@ public final class SoulSkillClientHolder {
     }
 
     public void handler() {
+        if (!SoulGuiAccess.isAllowed(Minecraft.getInstance().player)) {
+            while (getKeyMapping().consumeClick()) {
+                // 丢弃未持有测试物品时积压的按键，避免重新手持后意外打开界面。
+            }
+            allClose();
+            wasSpellWheelDown = false;
+            return;
+        }
         while (getKeyMapping().consumeClick()) {
             if (!wasSpellWheelDown) {
                 allOpen();
@@ -85,6 +94,9 @@ public final class SoulSkillClientHolder {
     }
 
     public boolean scrolling(double scrollDeltaY) {
+        if (!SoulGuiAccess.isAllowed(Minecraft.getInstance().player)) {
+            return false;
+        }
         if (ClientConfigs.soulQuickSkillStyle == SoulSkillClientHolder.Type.ROULETTE_WHEEL_BIG) {
             return false;
         }

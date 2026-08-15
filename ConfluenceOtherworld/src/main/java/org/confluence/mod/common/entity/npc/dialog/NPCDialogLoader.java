@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -19,8 +20,11 @@ import java.util.Map;
 
 public class NPCDialogLoader extends SimpleJsonResourceReloadListener {
     private static final Codec<Map<EntityType<?>, NPCDialog>> CODEC =
-            Codec.unboundedMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec(), Codec.STRING.listOf().xmap(NPCDialog::new, NPCDialog::keys));
-    private static final ResourceLocation PATH = Confluence.asResource("npc/dialogs.json");
+            Codec.unboundedMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec(), NPCDialog.CODEC);
+    /**
+     * SimpleJsonResourceReloadListener 会移除监听目录和 .json 后缀。
+     */
+    private static final ResourceLocation PATH = Confluence.asResource("dialogs");
     private static NPCDialogLoader INSTANCE;
     private Map<EntityType<?>, NPCDialog> dialogs = ImmutableMap.of();
 
@@ -32,9 +36,19 @@ public class NPCDialogLoader extends SimpleJsonResourceReloadListener {
     protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
         JsonElement json = map.get(PATH);
         if (json == null) return;
-        this.dialogs = CODEC.parse(JsonOps.INSTANCE, json)
-                .resultOrPartial(msg -> Confluence.LOGGER.warn("Failed to parse npc/dialogs.json: {}", msg))
-                .orElse(ImmutableMap.of());
+        DataResult<Map<EntityType<?>, NPCDialog>> decoded = CODEC.parse(JsonOps.INSTANCE, json);
+        var parsed = decoded.result();
+        if (parsed.isEmpty()) {
+            String reason = decoded.error()
+                    .map(DataResult.PartialResult::message)
+                    .orElse("unknown decode error");
+            Confluence.LOGGER.error("Cannot load npc/dialogs.json: {}", reason);
+            Confluence.LOGGER.error(
+                    "NPC dialog reload was rejected; the previous valid table remains active");
+            return;
+        }
+        this.dialogs = ImmutableMap.copyOf(parsed.get());
+        Confluence.LOGGER.info("Loaded {} NPC dialog tables", dialogs.size());
     }
 
     @Nullable

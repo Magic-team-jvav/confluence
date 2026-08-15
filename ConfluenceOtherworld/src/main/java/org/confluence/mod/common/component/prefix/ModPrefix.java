@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -42,6 +43,26 @@ public interface ModPrefix {
     boolean canBeMercy();
 
     ResourceLocation getModifierId();
+
+    /**
+     * 根据武器实际使用的伤害通道选择词缀属性。
+     * <p>
+     * 鞭子沿用近战词缀池，但直击属于召唤伤害；召唤杖沿用魔法词缀池，
+     * 同样应增加召唤伤害。这里只修正属性落点，不改变词缀池和词缀数值。
+     */
+    private static Attribute resolveDamageAttribute(PrefixType prefixType, ItemStack stack) {
+        if (!stack.isEmpty()
+                && (stack.is(ModTags.Items.SUMMONER_WEAPON)
+                || stack.is(ModTags.Items.WHIP))) {
+            return LibAttributes.getSummonDamage().value();
+        }
+        return switch (prefixType) {
+            case UNIVERSAL, MELEE -> LibAttributes.getAttackDamage().value();
+            case RANGED -> LibAttributes.getRangedDamage().value();
+            case MAGIC -> LibAttributes.getMagicDamage().value();
+            case ACCESSORY, UNKNOWN -> LibAttributes.getAttackDamage().value();
+        };
+    }
 
     record Accessory(
             String name,
@@ -146,15 +167,14 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
+            return createComponent(prefixType, ItemStack.EMPTY);
+        }
+
+        @Override
+        public PrefixComponent createComponent(PrefixType prefixType, ItemStack stack) {
             ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
-                    builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                } else if (prefixType == PrefixType.RANGED) {
-                    builder.put(LibAttributes.getRangedDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                } else if (prefixType == PrefixType.MAGIC) {
-                    builder.put(LibAttributes.getMagicDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                }
+                builder.put(resolveDamageAttribute(prefixType, stack), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (criticalChance != 0.0F) {
                 builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
@@ -209,15 +229,14 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
+            return createComponent(prefixType, ItemStack.EMPTY);
+        }
+
+        @Override
+        public PrefixComponent createComponent(PrefixType prefixType, ItemStack stack) {
             ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
-                    builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                } else if (prefixType == PrefixType.RANGED) {
-                    builder.put(LibAttributes.getRangedDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                } else if (prefixType == PrefixType.MAGIC) {
-                    builder.put(LibAttributes.getMagicDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
-                }
+                builder.put(resolveDamageAttribute(prefixType, stack), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (attackSpeed != 0) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
@@ -283,9 +302,14 @@ public interface ModPrefix {
 
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
+            return createComponent(prefixType, ItemStack.EMPTY);
+        }
+
+        @Override
+        public PrefixComponent createComponent(PrefixType prefixType, ItemStack stack) {
             ImmutableListMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (attackDamage != 0.0F) {
-                builder.put(LibAttributes.getAttackDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                builder.put(resolveDamageAttribute(prefixType, stack), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
             }
             if (attackSpeed != 0) {
                 builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));

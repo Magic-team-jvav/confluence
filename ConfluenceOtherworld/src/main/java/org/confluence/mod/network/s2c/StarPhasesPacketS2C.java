@@ -55,6 +55,15 @@ public record StarPhasesPacketS2C(
         return ID;
     }
 
+    /**
+     * 星相同步会修改客户端世界数据，必须交给客户端主线程执行。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
     @Override
     public void work(Player player) {
         StarPhaseHandler.handleStarPhases(starPhases);

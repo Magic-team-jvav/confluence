@@ -8,7 +8,8 @@ public interface ILevelRenderer {
 
     void confluence$rebuildAllChunks();
 
-// todo sodium   static void scheduleRebuildForChunk(int x, int y, int z) {
+// Sodium 专用的单区块重建入口暂不启用；当前渲染刷新统一走全区块重建，避免跨渲染器分支产生不一致。
+//    static void scheduleRebuildForChunk(int x, int y, int z) {
 //        SodiumWorldRenderer.instance().scheduleRebuildForChunk(x, y, z, false);
 //    }
 

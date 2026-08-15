@@ -70,6 +70,13 @@ public class BaseVanityArmorItem extends BaseArmorItem implements GeoItem {
                         this.renderer = new NormalArmorItemRenderer<>(name);
                     }
                 }
+                if (equipmentSlot != null) {
+                    renderer.prepForRender(
+                            livingEntity,
+                            itemStack,
+                            equipmentSlot,
+                            original);
+                }
                 return renderer;
             }
         });

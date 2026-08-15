@@ -1,23 +1,28 @@
 package org.confluence.mod.common.item.mana;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
+import org.confluence.lib.api.projectile.ProjectileFireContext;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.MagicDaggerProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 
+/**
+ * 为统一法杖事务补充投掷物品外观和初始穿透阶段。
+ */
 public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
     public MagicDaggerItem() {
         super(ModRarity.LIGHT_RED, MagicDaggerProjectile::new, 20, 6, 12, 2, 0.04);
     }
 
     @Override
-    protected void beforeShoot(ServerPlayer player, ItemStack stack, MagicDaggerProjectile projectile) {
-        projectile.setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
-        projectile.setItem(stack);
+    protected void configureProjectile(
+            ProjectileFireContext context,
+            ProjectileCombatSnapshot snapshot,
+            MagicDaggerProjectile projectile
+    ) {
+        projectile.setItem(context.weapon());
         projectile.setFlyTicks(10);
-        super.beforeShoot(player, stack, projectile);
     }
 
     @Override

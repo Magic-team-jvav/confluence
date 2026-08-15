@@ -5,6 +5,7 @@ import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -66,10 +67,12 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.BowItems;
+import org.confluence.mod.common.init.item.CrossbowItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -96,7 +99,7 @@ public final class ModClientSetups {
     public static final PortSprite LEGACY_SPRITE = new PortSprite(Confluence.asResource("hud/icon"), LEGACY_SIZE, LEGACY_SIZE);
     public static final int OVERLAY_SIZE = 128;
     public static final PortSprite OVERLAY_SPRITE = new PortSprite(Confluence.asResource("hud/overlay"), OVERLAY_SIZE, OVERLAY_SIZE);
-    // region sun todo dynamic texture
+    // 太阳纹理当前沿用静态资源；动态纹理需要等环境渲染整体重构时统一接入。
     public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sunglasses.png");
     public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
     public static final ResourceLocation SUNGLASSES_BOULDER_TEXTURE = Confluence.asResource("textures/environment/sunglasses_boulder.png");
@@ -198,7 +201,6 @@ public final class ModClientSetups {
         }
     };
     static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED);
-    static final IClientItemExtensions SPEAR = simpleArmPose(ModArmPoses.SPEAR);
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW);
     static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE);
@@ -219,22 +221,17 @@ public final class ModClientSetups {
     };
     static final IItemDecorator REPEATER_AMMO = (guiGraphics, font, itemStack, x, y) -> {
         RepeaterContents data = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
-        // todo
-//        if (itemStack.getCapability(Capabilities.ItemHandler.ITEM) instanceof RepeaterContentsComponentHandler handler) {
-//            Iterator<ItemStack> itemIterator = handler.getAllItemIterator();
-//            if (itemIterator.hasNext()) {
-//                ItemStack stack = itemIterator.next();
-//                if (!stack.isEmpty()) {
-//                    PoseStack pose = guiGraphics.pose();
-//                    pose.pushPose();
-//                    pose.translate(x + 8, y + 8, 100);
-//                    pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
-//                    pose.translate(-7, -9, 0);
-//                    guiGraphics.renderItem(stack, 0, 0);
-//                    pose.popPose();
-//                }
-//            }
-//        }
+        ItemStack stack = data.nonEmptyStream().findFirst().orElse(ItemStack.EMPTY);
+        if (!stack.isEmpty()) {
+            PoseStack pose = guiGraphics.pose();
+            pose.pushPose();
+            pose.translate(x + 8, y + 8, 100);
+            pose.mulPose(Axis.ZN.rotation(Mth.HALF_PI));
+            pose.scale(0.5F, 0.5F, 0.5F);
+            pose.translate(-8, -8, 0);
+            guiGraphics.renderItem(stack, 0, 0);
+            pose.popPose();
+        }
         return false;
     };
 
@@ -386,17 +383,18 @@ public final class ModClientSetups {
             ItemProperties.register(item.get(), pulling, bowPulling);
         });
 
-// todo crossbow       ClampedItemPropertyFunction crossbowPulling = (itemStack, clientLevel, living, speed) -> {
-//            if (living == null || (!(itemStack.getItem() instanceof BaseTerraRepeaterItem repeater))) {
-//                return 0.0F;
-//            }
-//            var projectiles = repeater.getHandler(itemStack);
-//            if (projectiles != null && !projectiles.isEmpty()) {
-//                return 1.0F;
-//            }
-//            return 0.0F;
-//        };
-//        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, crossbowPulling));
+        ClampedItemPropertyFunction repeaterPulling = (itemStack, clientLevel, living, speed) -> {
+            if (!(itemStack.getItem() instanceof BaseTerraRepeaterItem)) {
+                return 0.0F;
+            }
+            if (living != null && living.isUsingItem() && living.getUseItem() == itemStack) {
+                return 1.0F;
+            }
+            RepeaterContents contents = itemStack.getOrDefault(
+                    ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+            return contents.isEmpty() ? 0.0F : 1.0F;
+        };
+        CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, repeaterPulling));
     }
 
     public static void registerFishingPoleProperties() {
@@ -425,8 +423,7 @@ public final class ModClientSetups {
     }
 
     public static String wrapFile(String result, ResourceLocation location) {
-        // Please respect the copyright of the model and do not attempt to publicly disseminate encrypted files.
-        // 请尊重模型的著作权，加密文件请不要试图公开传播。
+        // 请尊重模型的著作权，不要公开传播加密模型文件。
         if (shouldSe(location, result)) {
             if (seKey == null) {
                 seKey = Suppliers.memoize(() -> {

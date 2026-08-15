@@ -31,23 +31,4 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
         }
         return original.call(instance, slot);
     }
-
-// todo mixin   @WrapOperation(method = "renderArmorPiece", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/extensions/common/IClientItemExtensions;getArmorLayerTintColor(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ArmorMaterial$Layer;II)I", remap = false))
-//    private int dyeColor(IClientItemExtensions instance, ItemStack stack, LivingEntity entity, ArmorMaterial.Layer layer, int layerIdx, int fallbackColor, Operation<Integer> original, @Local(argsOnly = true) EquipmentSlot slot, @Share("extra") LocalRef<ExtraInventory> extra) {
-//        if (entity instanceof AbstractClientPlayer player) {
-//            int argb = ClientUtils.getVanityDyeARGB(extra.get(), getSlotIndex(slot), player);
-//            if (argb != -1) return argb;
-//        }
-//        return original.call(instance, stack, entity, layer, layerIdx, fallbackColor);
-//    }
-//
-//    @ModifyExpressionValue(method = "renderArmorPiece", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/ClientHooks;getArmorTexture(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ArmorMaterial$Layer;ZLnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/resources/ResourceLocation;", remap = false))
-//    private ResourceLocation withGray(ResourceLocation original, @Local(argsOnly = true) LivingEntity entity, @Local(argsOnly = true) EquipmentSlot slot, @Share("extra") LocalRef<ExtraInventory> extra) {
-//        if (entity instanceof AbstractClientPlayer) {
-//            if (!extra.get().getVanityArmor(getSlotIndex(slot), true).isEmpty()) {
-//                return ClientUtils.getGrayTexture(original);
-//            }
-//        }
-//        return original;
-//    }
 }

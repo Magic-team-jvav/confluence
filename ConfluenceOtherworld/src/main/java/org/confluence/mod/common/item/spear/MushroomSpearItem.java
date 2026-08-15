@@ -25,8 +25,8 @@ public class MushroomSpearItem extends AbstractSpearItem {
     private final int strikeEndTick;
     /// 收矛时孢子生成的最小间距（格），使收矛阶段密度与刺出阶段一致
     private static final double RETRACT_SPAWN_SPACING = 0.7;
-    /// 上一次生成孢子时矛尖的 z 偏移，用于收矛间距控制
-    private double lastSpawnTipZ;
+    /// 当前武器栈中记录的上一次孢子位置；避免物品单例在多个玩家之间串状态。
+    private static final String LAST_SPAWN_TIP_Z_KEY = "confluence:mushroom_spear_last_tip_z";
 
     public MushroomSpearItem() {
         super(new Properties().attributes(attributes(6, 30F)), ModRarity.BLUE, 20, 2, createKeyframes(
@@ -82,6 +82,11 @@ public class MushroomSpearItem extends AbstractSpearItem {
     }
 
     @Override
+    protected void onStartSting(ItemStack stack, ServerLevel level, LivingEntity owner) {
+        LibUtils.updateItemStackNbt(stack, tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, 0.0));
+    }
+
+    @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
@@ -99,33 +104,33 @@ public class MushroomSpearItem extends AbstractSpearItem {
             Vec3 tipPos = position.add(viewVector.scale(getDistance(tickCount, owner)));
             SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
             Vec3 forwardOffset = viewVector.scale(1.0);
-            spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
-            lastSpawnTipZ = getDistance(tickCount, owner);
+            spawnProjectile(stack, owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
+            LibUtils.updateItemStackNbt(stack,
+                    tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, getDistance(tickCount, owner)));
         }
         // 收矛阶段：按间距控制生成密度，与刺出阶段保持一致
         else if (tickCount > strikeEndTick && tickCount <= strikeEndTick + 6) {
             double currentTipZ = getDistance(tickCount, owner);
+            double lastSpawnTipZ = LibUtils.getItemStackNbtNoCopy(stack)
+                    .getDouble(LAST_SPAWN_TIP_Z_KEY);
             if (Math.abs(currentTipZ - lastSpawnTipZ) >= RETRACT_SPAWN_SPACING) {
                 Vec3 viewVector = owner.getViewVector(1.0F);
                 Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
                 Vec3 tipPos = position.add(viewVector.scale(currentTipZ));
                 SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
                 Vec3 forwardOffset = viewVector.scale(1.0);
-                spawnProjectile(owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
-                lastSpawnTipZ = currentTipZ;
+                spawnProjectile(stack, owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
+                LibUtils.updateItemStackNbt(stack,
+                        tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, currentTipZ));
             }
         }
     }
 
-    private void spawnProjectile(ServerLevel level, LivingEntity owner, Vec3 pos,
+    private void spawnProjectile(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 pos,
                                  SpearProjectileComponent component, Vec3 direction) {
         MushroomProjectile projectile = new MushroomProjectile(
                 ModEntities.MUSHROOM.get(), level);
-        projectile.setOwner(owner);
-        projectile.setWeapon(owner.getMainHandItem());
-        projectile.setProjComponent(component, owner);
-        projectile.setPos(pos.x, pos.y, pos.z);
-        projectile.fire(direction, 0.0f, 0.0f);
-        level.addFreshEntity(projectile);
+        fireDerivedProjectile(
+                stack, level, owner, component, projectile, pos, direction, 0.0F);
     }
 }

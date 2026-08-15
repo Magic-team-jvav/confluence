@@ -21,27 +21,48 @@ import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record HookThrowingPacketC2S(boolean throwing, int id) implements IPortPacket.C2S {
+import java.util.UUID;
+
+public record HookThrowingPacketC2S(boolean throwing, int id,
+                                    UUID uuid) implements IPortPacket.C2S {
+    private static final String LAST_THROW_TICK_KEY = "confluence:last_hook_throw_tick";
     public static final ResourceLocation ID = Confluence.asResource("hook_throwing");
     public static final PortStreamCodec<FriendlyByteBuf, HookThrowingPacketC2S> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public HookThrowingPacketC2S decode(FriendlyByteBuf buffer) {
             boolean throwing = buffer.readBoolean();
             int id = 0;
-            if (!throwing) id = buffer.readVarInt();
-            return new HookThrowingPacketC2S(throwing, id);
+            UUID uuid = null;
+            if (!throwing) {
+                id = buffer.readVarInt();
+                uuid = buffer.readUUID();
+            }
+            return new HookThrowingPacketC2S(throwing, id, uuid);
         }
 
         @Override
         public void encode(FriendlyByteBuf buffer, HookThrowingPacketC2S value) {
             buffer.writeBoolean(value.throwing);
-            if (!value.throwing) buffer.writeVarInt(value.id);
+            if (!value.throwing) {
+                buffer.writeVarInt(value.id);
+                buffer.writeUUID(value.uuid);
+            }
         }
     };
 
     @Override
     public ResourceLocation identifier() {
         return ID;
+    }
+
+    /**
+     * 钩爪操作会创建或修改世界实体，必须回到服务端主线程执行。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        if (context.player() instanceof ServerPlayer player) {
+            context.enqueueWork(() -> work(player));
+        }
     }
 
     @Override
@@ -51,34 +72,47 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements IPortPa
             ExtraInventory extraInventory = ExtraInventory.of(player);
             ItemStack itemStack = extraInventory.getHook(false);
             if (!(itemStack.getItem() instanceof BaseHookItem item)) return;
-            if (item.canHook(level, extraInventory, itemStack)) {
+            long gameTime = level.getGameTime();
+            CompoundTag playerData = player.getPersistentData();
+            if (playerData.contains(LAST_THROW_TICK_KEY, Tag.TAG_LONG)
+                    && playerData.getLong(LAST_THROW_TICK_KEY) == gameTime) {
+                return;
+            }
+            // 玩家级门禁先于 NBT 扫描和实体工厂，换用不同钩爪也不能在同 tick 绕过。
+            playerData.putLong(LAST_THROW_TICK_KEY, gameTime);
+            if (!item.isThrowAvailable()) return;
+            // 服务端每 tick 最多接受一次发射，阻止修改客户端批量创建临时实体。
+            if (player.getCooldowns().isOnCooldown(item)) return;
+            if (item.canHook(level, player, extraInventory, itemStack)) {
                 ListTag listTag = LibUtils.getItemStackNbt(itemStack).getList("hooks", Tag.TAG_COMPOUND);
+                UUID pendingEviction = null;
+                if (item.getHookType() == BaseHookItem.HookType.SIMULTANEOUS
+                        && listTag.size() == item.getHookAmount()
+                        && PortListExtension.getFirst(listTag) instanceof CompoundTag first
+                        && first.hasUUID("uuid")) {
+                    pendingEviction = first.getUUID("uuid");
+                }
+                AbstractHookEntity hook = item.getHook(
+                        itemStack, item, player, level, pendingEviction);
+                hook.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, item.getHookVelocity(), 0.5F);
+                // 无论实体加入是否被事件拒绝，本 tick 都不再接受第二次创建请求。
+                player.getCooldowns().addCooldown(item, 1);
+                if (!level.addFreshEntity(hook)) return;
+
                 BaseHookItem.HookType hookType = item.getHookType();
                 if (hookType == BaseHookItem.HookType.SINGLE) {
-                    LibUtils.updateItemStackNbt(itemStack, nbt -> {
-                        BaseHookItem.discardAllHooks(listTag, level);
-                        nbt.put("hooks", listTag);
-                        extraInventory.setChanged();
-                    });
-                } else if (hookType == BaseHookItem.HookType.SIMULTANEOUS && listTag.size() == item.getHookAmount()) {
-                    AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(PortListExtension.getFirst(listTag), level);
-                    if (hookEntity != null) {
+                    BaseHookItem.discardAllHooks(listTag, level, player);
+                } else if (hookType == BaseHookItem.HookType.SIMULTANEOUS
+                        && listTag.size() == item.getHookAmount()) {
+                    AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(
+                            PortListExtension.getFirst(listTag), level, player);
+                    if (hookEntity != null)
                         hookEntity.setHookState(AbstractHookEntity.HookState.POP);
-                        LibUtils.updateItemStackNbt(itemStack, nbt -> {
-                            PortListExtension.removeFirst(listTag);
-                            nbt.put("hooks", listTag);
-                            extraInventory.setChanged();
-                        });
-                    }
+                    PortListExtension.removeFirst(listTag);
                 }
 
-                AbstractHookEntity hook = item.getHook(itemStack, item, player, level);
-                hook.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, item.getHookVelocity(), 0.5F);
-                level.addFreshEntity(hook);
                 LibUtils.updateItemStackNbt(itemStack, nbt -> {
-                    CompoundTag tag = new CompoundTag();
-                    tag.putInt("id", hook.getId());
-                    listTag.add(tag);
+                    listTag.add(BaseHookItem.createHookEntry(hook));
                     nbt.put("hooks", listTag);
                     extraInventory.setChanged();
                 });
@@ -91,16 +125,21 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements IPortPa
                         ModSoundEvents.HOOK_SHOOT.get(), SoundSource.PLAYERS,
                         0.3F * ratio, 1);
             }
-        } else if (level.getEntity(id) instanceof AbstractHookEntity hookEntity) {
+        } else if (uuid != null
+                && level.getEntity(id) instanceof AbstractHookEntity hookEntity
+                && uuid.equals(hookEntity.getUUID())
+                && hookEntity.getOwner() == player) {
+            // 同时验证运行时编号、稳定 UUID 与所有者，避免编号复用后回收错误实体。
             hookEntity.setHookState(AbstractHookEntity.HookState.POP);
         }
     }
 
     public static void push() {
-        Confluence.NETWORK_HANDLER.sendToServer(new HookThrowingPacketC2S(true, 0));
+        Confluence.NETWORK_HANDLER.sendToServer(new HookThrowingPacketC2S(true, 0, null));
     }
 
-    public static void pop(int id) {
-        Confluence.NETWORK_HANDLER.sendToServer(new HookThrowingPacketC2S(false, id));
+    public static void pop(AbstractHookEntity hook) {
+        Confluence.NETWORK_HANDLER.sendToServer(
+                new HookThrowingPacketC2S(false, hook.getId(), hook.getUUID()));
     }
 }

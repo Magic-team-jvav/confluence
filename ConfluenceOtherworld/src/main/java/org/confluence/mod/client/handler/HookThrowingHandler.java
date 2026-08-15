@@ -11,12 +11,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.init.item.HookItems;
+import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
+import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
 
@@ -40,15 +41,16 @@ public final class HookThrowingHandler {
         Level level = player.level();
         boolean shouldSync = false;
         while (iterator.hasNext()) {
-            int id = ((CompoundTag) iterator.next()).getInt("id");
-            if (!(level.getEntity(id) instanceof AbstractHookEntity hookEntity)) {
+            Tag entry = iterator.next();
+            AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(entry, level, player);
+            if (hookEntity == null) {
                 iterator.remove();
                 continue;
             }
             if (hookEntity.getHookState() == AbstractHookEntity.HookState.HOOKED) {
                 Input input = player.input;
                 if (input.jumping || player.getVehicle() != null) {
-                    HookThrowingPacketC2S.pop(id);
+                    HookThrowingPacketC2S.pop(hookEntity);
                     PlayerJumpHandler.multiJump(player, 1.25F);
                     return;
                 }
@@ -83,7 +85,8 @@ public final class HookThrowingHandler {
         }
         if (shouldSync) {
             PlayerJumpHandler.reset(true);
-            Confluence.NETWORK_HANDLER.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) player.getDeltaMovement().y));
+            TerraCurio.NETWORK_HANDLER.sendToServer(
+                    new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) player.getDeltaMovement().y));
         }
     }
 }

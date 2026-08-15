@@ -14,10 +14,11 @@ import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.item.common.EverBeneficialItem;
+import org.confluence.mod.common.init.PermanentUpgrades;
 import org.mesdag.portlib.client.PortDeltaTicker;
 import org.mesdag.portlib.client.PortGuiLayer;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.Locale;
 
@@ -63,7 +64,8 @@ public class TerraStyleHealthHud implements PortGuiLayer {
                     absorptionHealth = player.getAbsorptionAmount();
                     maxHealth = player.getMaxHealth();
                     currentHealth = player.getHealth();
-                    AttributeModifier modifier = player.getAttribute(Attributes.MAX_HEALTH).getModifier(EverBeneficialItem.LIFE_FRUITS.id());
+                    AttributeModifier modifier = player.getAttribute(Attributes.MAX_HEALTH).getModifier(
+                            PortAttributeModifier.rl2uuid(PermanentUpgrades.LIFE_FRUIT.id()));
                     if (modifier != null) {
                         lifeFruitHealth = (int) modifier.getAmount();
                     }

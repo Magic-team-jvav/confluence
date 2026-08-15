@@ -3,10 +3,7 @@ package org.confluence.mod.common.block.functional;
 import com.mojang.datafixers.util.Function3;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.*;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -115,6 +112,13 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     public static class BEntity extends AbstractMechanicalBlock.BEntity {
+        private static final int MAX_TRACKED_ENTITIES = 3;
+        /**
+         * 该列表必须属于具体方块实体，而不能放在 Behaviour 中。Behaviour 随方块注册只创建一次，
+         * 若由它持有 UUID，同种雕像会跨坐标、跨维度甚至跨存档共享同一份召唤记录。
+         */
+        private final List<UUID> summonedEntities = new ArrayList<>();
+
         public BEntity(BlockPos pos, BlockState state) {
             super(StatueBlocks.BLOCK_ENTITY.get(), pos, state);
         }
@@ -122,14 +126,30 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         @Override
         protected void saveAdditional(CompoundTag tag) {
             super.saveAdditional(tag);
-            ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.saveAdditional(tag);
+            ListTag entitiesTag = new ListTag();
+            for (int i = 0; i < Math.min(summonedEntities.size(), MAX_TRACKED_ENTITIES); i++) {
+                entitiesTag.add(NbtUtils.createUUID(summonedEntities.get(i)));
+            }
+            tag.put("entities", entitiesTag);
         }
 
         @Override
         public void load(CompoundTag tag) {
             super.load(tag);
-            ((BehaviourStatueBlock) getBlockState().getBlock()).behaviour.loadAdditional(tag);
+            summonedEntities.clear();
+            ListTag entitiesTag = tag.getList("entities", Tag.TAG_INT_ARRAY);
+            for (int i = 0; i < entitiesTag.size() && summonedEntities.size() < MAX_TRACKED_ENTITIES; i++) {
+                Tag entry = entitiesTag.get(i);
+                if (!(entry instanceof IntArrayTag uuidTag) || uuidTag.getAsIntArray().length != 4)
+                    continue;
+                // 长度验证后 loadUUID 才不会因损坏的旧存档令整个区块加载失败。
+                UUID uuid = NbtUtils.loadUUID(uuidTag);
+                if (!summonedEntities.contains(uuid)) summonedEntities.add(uuid);
+            }
+        }
 
+        List<UUID> getSummonedEntities() {
+            return summonedEntities;
         }
 
         @Override
@@ -167,13 +187,9 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
             return null;
         }
 
-        protected void saveAdditional(CompoundTag tag) {}
-
-        protected void loadAdditional(CompoundTag tag) {}
     }
 
     public static class SummonBehaviour<E extends net.minecraft.world.entity.Entity> extends Behaviour {
-        private final List<UUID> entities = new ArrayList<>();
         private final boolean randomPos;
         private final boolean noDrops;
         private final int cooldown;
@@ -202,7 +218,9 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
         @Override
         public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
-            if (!state.getValue(StateProperties.DRIVE) && state.getValue(StateProperties.VERTICAL_TWO_PART).isBase()) {
+            if (!state.getValue(StateProperties.DRIVE) && state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() &&
+                    networkEntity.getSelf() instanceof BEntity blockEntity) {
+                List<UUID> entities = blockEntity.getSummonedEntities();
                 entities.removeIf(entity -> {
                     net.minecraft.world.entity.Entity entity1 = level.getEntity(entity);
                     return entity1 == null || entity1.isRemoved();
@@ -210,7 +228,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
                 if (entities.size() >= 3) return;
                 BlockPos relative = randomPos ? pos.relative(Util.getRandom(LibUtils.HORIZONTAL, level.random)) : pos;
                 E entity = factory.apply(state, level, relative.getCenter());
-                level.addFreshEntity(entity);
+                if (!level.addFreshEntity(entity)) return;
                 afterSummon.accept(entity);
                 if (noDrops) {
                     entity.addTag(LibUtils.NO_DROPS_TAG);
@@ -219,23 +237,6 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
                 level.setBlockAndUpdate(pos, state.setValue(StateProperties.DRIVE, true));
                 level.scheduleTick(pos, state.getBlock(), cooldown);
                 networkEntity.getSelf().setChanged();
-            }
-        }
-
-        @Override
-        protected void saveAdditional(CompoundTag tag) {
-            ListTag listTag = new ListTag();
-            for (UUID entity : entities) {
-                listTag.add(NbtUtils.createUUID(entity));
-            }
-            tag.put("entities", listTag);
-        }
-
-        @Override
-        protected void loadAdditional(CompoundTag tag) {
-            entities.clear();
-            for (Tag entity : tag.getList("entities", Tag.TAG_INT_ARRAY)) {
-                entities.add(NbtUtils.loadUUID(entity));
             }
         }
     }

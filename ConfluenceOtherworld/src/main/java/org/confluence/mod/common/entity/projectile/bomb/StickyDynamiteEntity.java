@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -40,6 +41,21 @@ public class StickyDynamiteEntity extends BaseDynamiteEntity {
         if (stickPos == null || stickBlock != level().getBlockState(stickPos)) {
             setNoGravity(false);
             this.stickBlock = null;
+            this.stickPos = null;
         }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        StickyBlockPersistence.save(compound, stickPos, stickBlock);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        StickyBlockPersistence.Attachment attachment = StickyBlockPersistence.load(compound, this);
+        this.stickPos = attachment.position();
+        this.stickBlock = attachment.blockState();
     }
 }

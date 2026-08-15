@@ -1,4 +1,4 @@
-{
+﻿{
     "base": {
         "credit": "Made with Blockbench",
         "parent": "builtin/entity",
@@ -52,7 +52,8 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/spear/dark_lance_inventory"
+            "layer0": "confluence:item/spear/dark_lance",
+            "particle": "confluence:item/spear/dark_lance"
         }
     },
     "gui_light": "front",

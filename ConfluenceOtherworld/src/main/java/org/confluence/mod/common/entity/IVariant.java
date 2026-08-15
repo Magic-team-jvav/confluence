@@ -6,6 +6,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
 
 public interface IVariant extends StringRepresentable {
+    static ResourceLocation resource(String path) {
+        return ResourceLocation.fromNamespaceAndPath("confluence", path);
+    }
+
     Codec<? extends IVariant> codec();
 
     String serializeKey();

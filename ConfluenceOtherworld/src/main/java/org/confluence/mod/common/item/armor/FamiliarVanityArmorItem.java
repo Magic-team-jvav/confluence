@@ -42,6 +42,13 @@ public class FamiliarVanityArmorItem extends BaseVanityArmorItem {
                         public void defaultRender(PoseStack poseStack, BaseVanityArmorItem animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @org.jetbrains.annotations.Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {}
                     };
                 }
+                if (equipmentSlot != null) {
+                    renderer.prepForRender(
+                            livingEntity,
+                            itemStack,
+                            equipmentSlot,
+                            original);
+                }
                 return renderer;
             }
         });

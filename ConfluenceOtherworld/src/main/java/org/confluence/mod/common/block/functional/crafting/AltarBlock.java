@@ -228,6 +228,14 @@ public class AltarBlock extends BaseEntityBlock {
         public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pos, blockState);
             this.itemHandler = new ItemStackHandlerRecipeInput(this, CONTAINER_SIZE);
+            /*
+             * BlockEntityType 的工厂会直接调用本构造器，不能只依赖
+             * AltarBlock#newBlockEntity 在之后补写变体。根据当前方块状态恢复
+             * 默认变体，保证新建实例在首次保存前也始终完整。
+             */
+            if (blockState.getBlock() instanceof AltarBlock altarBlock) {
+                this.variant = altarBlock.variant;
+            }
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
@@ -317,7 +325,12 @@ public class AltarBlock extends BaseEntityBlock {
 
         @Override
         public boolean isEmpty() {
-            return false;
+            for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
+                if (!itemHandler.getStackInSlot(slot).isEmpty()) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         @Override
@@ -337,7 +350,10 @@ public class AltarBlock extends BaseEntityBlock {
 
         @Override
         public void clearContent() {
-
+            // 祭坛没有通用菜单，但仍然是 Container；内部配方与方块掉落依赖正确的清空契约。
+            for (int slot = 0; slot < itemHandler.getSlots(); slot++) {
+                itemHandler.setStackInSlot(slot, ItemStack.EMPTY);
+            }
         }
 
         @Override
@@ -347,7 +363,7 @@ public class AltarBlock extends BaseEntityBlock {
 
         @Override
         protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException("Altar block entity does not expose a menu");
         }
 
         @Override

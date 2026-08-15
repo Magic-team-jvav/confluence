@@ -24,6 +24,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
 import org.confluence.lib.common.LibTags;
@@ -32,8 +34,9 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
+import org.confluence.mod.api.summon.OwnedSummon;
+import org.confluence.mod.api.whip.WhipTagTracker;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
@@ -54,6 +57,7 @@ import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.PermanentUpgrades;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -99,6 +103,10 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(LivingEntityEvents::death);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
         PortEventHandler.addListener(LivingEntityEvents::incomingDamage);
+        PortEventHandler.addListener(
+                PortEventPriority.HIGH,
+                LivingEntityEvents::summonTagDamage
+        );
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::damage$Pre);
         PortEventHandler.addListener(LivingEntityEvents::damage$Post);
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::processCriticalDamage);
@@ -131,19 +139,19 @@ public final class LivingEntityEvents {
             TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibEntityUtils.getOwner(damageSource);
 
-            if (attacker instanceof ServerPlayer) {
+            if (attacker instanceof ServerPlayer player) {
+                AchievementUtils.gelatinWorldTour(player, victim.getType());
                 if (victim instanceof Enemy &&
                         CommonConfigs.ENEMY_DROPS_MONEY.get() &&
-                        level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) /* todo summoner &&
-                        (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)*/
+                        level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
                 ) ModUtils.enemyDropMoney(victim, level);
                 Bestiary.INSTANCE.updateEntry(victim, true);
             }
             if (attacker != null && attacker.getType().is(ModTags.EntityTypes.CORRUPT)) {
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, victim);
             }
-            if (victim instanceof Boss boss && boss.shouldShowMessage()) {
-                ModUtils.bossDeath(level, victim);
+            if (victim instanceof BaseBoss boss && boss.shouldShowMessage()) {
+                ModUtils.bossDeath(level, boss);
                 SlimeRainGameEvent.INSTANCE.checkEnd(victim);
             }
             if (victim instanceof ServerPlayer player) {
@@ -165,7 +173,7 @@ public final class LivingEntityEvents {
                 ) {
                     Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level);
                     skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null, null);
-                    ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
+                    ModUtils.summonBoss(level, attacker.blockPosition(), skeletron, player);
                 }
 
                 if (npc.getType() == NpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {
@@ -188,7 +196,7 @@ public final class LivingEntityEvents {
         if (living instanceof Player player) {
             amount = ModArmorBonus.applyHealAmount(player, amount);
         }
-        if (EverBeneficial.of(living).isVitalCrystalUsed()) {
+        if (living instanceof ServerPlayer serverPlayer && PermanentUpgrades.VITAL_CRYSTAL.getLevel(serverPlayer) > 0) {
             amount *= 1.2F;
         }
         if (living.hasEffect(ModEffects.COZY_FIRE.get())) {
@@ -246,6 +254,26 @@ public final class LivingEntityEvents {
         }
         amount = SwordItems.processEffect(damageSource, attacker, victim, amount);
         event.setNewDamage(amount);
+    }
+
+    /**
+     * 在 MagicLib 处理召唤伤害倍率与暴击前加入玩家自己的鞭痕效果。
+     *
+     * <p>伤害来源的直接实体既可能是旧式实体召唤物，也可能是新架构使用的短生命周期弹丸。这里只识别
+     * 显式实现 {@link OwnedSummon} 的直接实体，普通驯服生物、坐骑和 Boss 部件不会误触发召唤标记。
+     * 非实体召唤物的近战伤害由运行时实例直接处理，不会在这里重复结算。</p>
+     */
+    private static void summonTagDamage(PortLivingDamageEvent.Pre event) {
+        float amount = event.getNewDamage();
+        if (amount <= 0.0F
+                || !(event.getEntity().level() instanceof ServerLevel level)
+                || !(event.getSource().getDirectEntity() instanceof OwnedSummon summon)) {
+            return;
+        }
+        Player owner = event.getSource().getEntity() instanceof Player player
+                ? player : summon.resolveSummonOwner(level);
+        if (owner == null) return;
+        event.setNewDamage(WhipTagTracker.modifyDamage(owner, summon, event.getEntity(), amount));
     }
 
     private static void damage$Post(PortLivingDamageEvent.Post event) {
@@ -350,7 +378,6 @@ public final class LivingEntityEvents {
         boolean isEnemy = living instanceof Enemy;
         if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
                 isEnemy &&
-                /* todo summoner (!(living instanceof IMinion minion) || minion.minion_getOwnerUUID() == null) &&*/
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
                 (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
                 living.getRandom().nextFloat() < (LibUtils.isAtLeastExpert(level, living.blockPosition()) ? 0.36F : 0.2F)
@@ -461,6 +488,11 @@ public final class LivingEntityEvents {
 
         if (!event.isCanceled()) {
             GamePhase2AttributeModifiers.applyModifiers(mob);
+            if (mob instanceof Boss boss
+                    && boss.isMainBody()
+                    && boss.shouldEnhanceMultiplayer()) {
+                BossMultiplayerEnhancement.apply(mob);
+            }
         }
     }
 
@@ -568,16 +600,10 @@ public final class LivingEntityEvents {
 
     private static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
         LivingEntity living = event.getEntity();
-        /* todo summoner if (living instanceof AbstractSummonMob) {
+        EntityType<?> type = living.getType();
+        if (type.is(ModTags.EntityTypes.BESTIARY_BLACKLIST) || type == BossEntities.SKELETRON_HAND.get()) {
             event.setCanceled(true);
-        } else {*/
-            EntityType<?> type = living.getType();
-            if (type.is(ModTags.EntityTypes.BESTIARY_BLACKLIST)) {
-                event.setCanceled(true);
-            } else if (type == BossEntities.SKELETRON_HAND.get()) {
-                event.setCanceled(true);
-            }
-//        }
+        }
     }
 
     private static void armorPenetration(ArmorPenetrationEvent event) {

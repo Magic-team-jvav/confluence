@@ -23,6 +23,12 @@ public record ManaPacketS2C(int maxMana, float currentMana) implements IPortPack
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
+    @Override
     public void work(Player player) {
         ClientPacketHandler.handleMana(this, player);
     }

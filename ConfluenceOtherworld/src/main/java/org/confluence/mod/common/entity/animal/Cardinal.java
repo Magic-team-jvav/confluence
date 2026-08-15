@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.animal;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 
@@ -14,11 +13,11 @@ public class Cardinal extends Bird {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createCritterAttributes().add(Attributes.FLYING_SPEED, 0.4);
+        return Bird.createAttributes();
     }
 
     @Override
     public ResourceLocation getModelPath() { return Confluence.asResource("animal/cardinal"); }
     @Override
-    public ResourceLocation getTexturePath() { return Confluence.asResource("textures/entity/cardinal/cardinal.png"); }
+    public ResourceLocation getTexturePath() {return Confluence.asResource("textures/entity/animal/cardinal.png");}
 }

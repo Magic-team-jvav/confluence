@@ -49,7 +49,8 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
             if (player != null) {
                 ItemStack stack = player.containerMenu.getCarried();
                 player.containerMenu.setCarried(ItemStack.EMPTY);
-                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.DYE_VAT_MENU, stack);
+                OpenMenuPacketC2S.sendToServer(
+                        OpenMenuPacketC2S.DYE_VAT_MENU, stack);
             }
         }).width(48).pos(leftPos + 109, topPos + 58).build());
         addRenderableWidget(this.editBox = new EditBox(minecraft.font, leftPos + 64, topPos + 24, 44, 10, Component.empty()));
@@ -118,7 +119,7 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
         if (mouseX > leftPos + 125 && mouseX < leftPos + 141 && mouseY > topPos + 35 && mouseY < topPos + 51) {
             ItemStack carried = menu.getCarried();
             if (!stack.isEmpty() && (carried.isEmpty() || (PortItemStackExtension.isSameItemSameComponents(carried, stack) && carried.getCount() < carried.getMaxStackSize()))) {
-                DyeMixPacketC2S.sendToServer(stack);
+                DyeMixPacketC2S.sendToServer(rgb);
             }
         }
         return super.mouseClicked(mouseX, mouseY, button);

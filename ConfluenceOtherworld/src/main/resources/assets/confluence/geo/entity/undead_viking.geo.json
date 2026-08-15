@@ -24,7 +24,7 @@
 					]
 				},
 				{
-					"name": "Head",
+                    "name": "Vhead",
 					"pivot": [0, 24, 0],
 					"cubes": [
 						{"origin": [-4, 24, -4], "size": [8, 8, 8], "uv": [0, 0]},
@@ -34,7 +34,7 @@
 					]
 				},
 				{
-					"name": "RightArm",
+                    "name": "Vright_arm",
 					"pivot": [-5, 22, 0],
 					"cubes": [
 						{"origin": [-6, 12, -1], "size": [2, 12, 2], "uv": [24, 32]},
@@ -43,7 +43,7 @@
 					]
 				},
 				{
-					"name": "LeftArm",
+                    "name": "Vleft_arm",
 					"pivot": [5, 22, 0],
 					"mirror": true,
 					"cubes": [
@@ -53,14 +53,14 @@
 					]
 				},
 				{
-					"name": "RightLeg",
+                    "name": "Vright_leg",
 					"pivot": [-2, 12, 0],
 					"cubes": [
 						{"origin": [-3, 0, -1], "size": [2, 12, 2], "uv": [40, 26]}
 					]
 				},
 				{
-					"name": "LeftLeg",
+                    "name": "Vleft_leg",
 					"pivot": [2, 12, 0],
 					"mirror": true,
 					"cubes": [

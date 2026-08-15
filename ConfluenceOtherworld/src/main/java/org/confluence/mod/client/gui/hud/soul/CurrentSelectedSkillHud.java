@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.HumanoidArm;
 import org.confluence.mod.client.gui.hud.BasicHudLayer;
 import org.confluence.mod.client.gui.widget.soul_skill.SoulSkillBox;
+import org.confluence.mod.client.handler.SoulGuiAccess;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.client.PortDeltaTicker;
@@ -15,6 +16,14 @@ public class CurrentSelectedSkillHud extends BasicHudLayer {
 
     public CurrentSelectedSkillHud() {
         super();
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, PortDeltaTicker deltaTracker) {
+        if (!SoulGuiAccess.isAllowed(getPlayer())) {
+            return;
+        }
+        super.render(guiGraphics, deltaTracker);
     }
 
     @Override

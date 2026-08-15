@@ -6,8 +6,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -16,6 +19,10 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class GrassSwordProjectile extends SwordProjectile {
+    static final float POISON_CHANCE = 0.5F;
+    static final int POISON_DURATION = 100;
+    static final int POISON_AMPLIFIER = 1;
+
     protected static final EntityDataAccessor<Float> DATA_YAW = SynchedEntityData.defineId(GrassSwordProjectile.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float> DATA_PITCH = SynchedEntityData.defineId(GrassSwordProjectile.class, EntityDataSerializers.FLOAT);
     private float yawSpeed;
@@ -25,7 +32,6 @@ public class GrassSwordProjectile extends SwordProjectile {
         super(entityType, pLevel);
         this.canPenalize = true;
         this.hitCount = 99999;
-//  todo projectile      this.collisionProperties = new CollisionProperties(10, 10, 1);
     }
 
     @Override
@@ -76,6 +82,30 @@ public class GrassSwordProjectile extends SwordProjectile {
         this.pitchSpeed = (float) (-Math.random() * 0.05f - 0.05f);
         this.entityData.set(DATA_YAW, yawSpeed);
         this.entityData.set(DATA_PITCH, pitchSpeed);
+    }
+
+    /**
+     * 恢复 1.21 草剑剑气的专属命中效果。该参数只属于草剑，不进入通用剑气组件，
+     * 以免其他剑气为了一个特例承担额外字段和序列化分支。
+     */
+    @Override
+    protected void applyHitEffect(Entity target) {
+        applyPoisonForRoll(target, getRandom().nextFloat());
+    }
+
+    /**
+     * 按给定随机值应用中毒，包级入口用于精确验证五成概率的边界。
+     *
+     * @return 是否成功向生物写入中毒效果
+     */
+    boolean applyPoisonForRoll(Entity target, float roll) {
+        if (!(target instanceof LivingEntity living) || roll < 0.0F || roll >= POISON_CHANCE) {
+            return false;
+        }
+        return living.addEffect(new MobEffectInstance(
+                MobEffects.POISON,
+                POISON_DURATION,
+                POISON_AMPLIFIER));
     }
 
     @Override

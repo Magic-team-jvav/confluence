@@ -21,9 +21,9 @@ public record AskForSoftcorePacket(boolean accept) implements IPortPacket {
     @Override
     public void handle(Context context) {
         if (context.player() instanceof ServerPlayer player) {
-            c2s(player);
-        } else {
-            s2c();
+            context.enqueueWork(() -> c2s(player));
+        } else if (context.player() != null) {
+            context.enqueueWork(this::s2c);
         }
     }
 

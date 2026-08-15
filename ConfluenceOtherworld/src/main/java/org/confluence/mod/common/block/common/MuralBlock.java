@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.item.GroupItem;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;
@@ -158,7 +159,8 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                     BlockPos headWorldPos = pos.offset(-xOffset * relPos.getX(), -relPos.getY(), -zOffset * relPos.getX());
                     BlockEntity cachedHeadBe = BE_CACHE.get(headWorldPos);
                     if (cachedHeadBe instanceof BEntity headMuralEntity) {
-                        dropCount = Math.max(1, headMuralEntity.getMuralWidth()) * Math.max(1, headMuralEntity.getMuralHeight());
+                        dropCount = Math.max(1, headMuralEntity.getMuralWidth())
+                                * Math.max(1, headMuralEntity.getMuralHeight());
                         BE_CACHE.remove(headWorldPos);
                     }
                 }
@@ -272,6 +274,12 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         private BlockPos headPos = BlockPos.ZERO;
         private List<Component> lore = null;
         private GroupItem.BelongsTo belongsToGroup = null;
+        /**
+         * Vanilla 区块恢复会先构造方块实体并调用 load，随后才把它安装进 LevelChunk。
+         * 壁画数据的 Component/物品组件 codec 需要动态注册表，因此 level 尚为空时先保存原始标签，
+         * 等 onLoad 获得 registryAccess 后再一次性解码。
+         */
+        private CompoundTag pendingLoadTag;
 
         public BEntity(BlockPos pos, BlockState blockState) {
             super(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), pos, blockState);
@@ -328,18 +336,22 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             tag.putInt("muralHeight", muralHeight);
             tag.putLong("headPos", headPos.asLong());
 
+            encodeMetadata(tag, registries);
+        }
+
+        private void encodeMetadata(CompoundTag tag, HolderLookup.Provider registries) {
             if (lore != null && !lore.isEmpty()) {
                 ListTag loreTag = new ListTag();
                 for (Component comp : lore) {
                     PortComponentSerialization.CODEC.encodeStart(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), comp)
-                            .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode lore: " + err))
+                            .resultOrPartial(err -> Confluence.LOGGER.warn("Failed to encode mural lore: {}", err))
                             .ifPresent(loreTag::add);
                 }
                 tag.put("lore", loreTag);
             }
             if (belongsToGroup != null) {
                 GroupItem.BelongsTo.CODEC.encodeStart(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), belongsToGroup)
-                        .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to encode belongsToGroup: " + err))
+                        .resultOrPartial(err -> Confluence.LOGGER.warn("Failed to encode mural group: {}", err))
                         .ifPresent(groupTag -> tag.put("belongs_to_group", groupTag));
             }
         }
@@ -352,6 +364,8 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             tag.putInt("muralWidth", muralWidth);
             tag.putInt("muralHeight", muralHeight);
             tag.putLong("headPos", headPos.asLong());
+            // lore 与分组会影响丝触掉落出的物品，必须和几何数据一起落盘，而不只是发送给客户端。
+            encodeMetadata(tag, registries);
         }
 
         private void decode(CompoundTag tag, HolderLookup.Provider registries) {
@@ -359,29 +373,28 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             left = MuralData.decode(tag.getList("left", Tag.TAG_COMPOUND), registries);
             right = MuralData.decode(tag.getList("right", Tag.TAG_COMPOUND), registries);
             front = MuralData.decode(tag.getList("front", Tag.TAG_COMPOUND), registries);
-            muralWidth = tag.contains("muralWidth") ? tag.getInt("muralWidth") : 1;
-            muralHeight = tag.contains("muralHeight") ? tag.getInt("muralHeight") : 1;
-            headPos = tag.contains("headPos") ? BlockPos.of(tag.getLong("headPos")) : BlockPos.ZERO;
+            muralWidth = tag.contains("muralWidth", Tag.TAG_INT) ? tag.getInt("muralWidth") : 1;
+            muralHeight = tag.contains("muralHeight", Tag.TAG_INT) ? tag.getInt("muralHeight") : 1;
+            headPos = tag.contains("headPos", Tag.TAG_LONG)
+                    ? BlockPos.of(tag.getLong("headPos")) : BlockPos.ZERO;
 
-            if (tag.contains("lore")) {
+            lore = null;
+            belongsToGroup = null;
+            if (tag.contains("lore", Tag.TAG_LIST)) {
                 ListTag loreTag = tag.getList("lore", Tag.TAG_COMPOUND);
                 List<Component> loreList = new ArrayList<>();
                 for (Tag value : loreTag) {
                     PortComponentSerialization.CODEC.parse(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), value)
-                            .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode lore: " + err))
+                            .resultOrPartial(err -> Confluence.LOGGER.warn("Failed to decode mural lore: {}", err))
                             .ifPresent(loreList::add);
                 }
                 this.lore = loreList.isEmpty() ? null : loreList;
-            } else {
-                this.lore = null;
             }
 
             if (tag.contains("belongs_to_group")) {
                 GroupItem.BelongsTo.CODEC.parse(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), tag.get("belongs_to_group"))
-                        .resultOrPartial(err -> System.err.println("[MuralBlock] Failed to decode belongsToGroup: " + err))
+                        .resultOrPartial(err -> Confluence.LOGGER.warn("Failed to decode mural group: {}", err))
                         .ifPresent(group -> this.belongsToGroup = group);
-            } else {
-                this.belongsToGroup = null;
             }
         }
 
@@ -396,25 +409,56 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         @Override
         public CompoundTag getUpdateTag() {
             CompoundTag tag = new CompoundTag();
-            encodeForNetwork(tag, Objects.requireNonNull(getRegistries()));
+            HolderLookup.Provider registries = getRegistries();
+            if (registries != null) {
+                encodeForNetwork(tag, registries);
+            } else if (pendingLoadTag != null) {
+                tag.merge(pendingLoadTag.copy());
+            }
             return tag;
         }
 
         @Override
         public void handleUpdateTag(CompoundTag tag) {
-            decode(tag, Objects.requireNonNull(getRegistries()));
+            decodeOrDefer(tag);
         }
 
         @Override
         public void load(CompoundTag tag) {
             super.load(tag);
-            decode(tag, Objects.requireNonNull(getRegistries()));
+            decodeOrDefer(tag);
+        }
+
+        @Override
+        public void onLoad() {
+            super.onLoad();
+            if (pendingLoadTag != null && getRegistries() != null) {
+                CompoundTag tag = pendingLoadTag;
+                pendingLoadTag = null;
+                decode(tag, getRegistries());
+            }
         }
 
         @Override
         protected void saveAdditional(CompoundTag tag) {
             super.saveAdditional(tag);
-            encodeForPersistence(tag, Objects.requireNonNull(getRegistries()));
+            HolderLookup.Provider registries = getRegistries();
+            if (registries != null) {
+                encodeForPersistence(tag, registries);
+            } else if (pendingLoadTag != null) {
+                // 极端情况下在 onLoad 前触发保存，保留尚未解码的原始数据，避免静默丢画。
+                tag.merge(pendingLoadTag.copy());
+            }
+        }
+
+        private void decodeOrDefer(CompoundTag tag) {
+            HolderLookup.Provider registries = getRegistries();
+            if (registries == null) {
+                pendingLoadTag = tag.copy();
+            } else {
+                pendingLoadTag = null;
+                decode(tag, registries);
+            }
         }
 
         @Override

@@ -55,6 +55,13 @@ public class MultiHeadGeoArmorItem extends NormalGeoArmorItem {
                         this.renderer = new MultiHeadArmorItemRenderer<>(name, items);
                     }
                 }
+                if (equipmentSlot != null) {
+                    renderer.prepForRender(
+                            livingEntity,
+                            itemStack,
+                            equipmentSlot,
+                            original);
+                }
                 return renderer;
             }
         });

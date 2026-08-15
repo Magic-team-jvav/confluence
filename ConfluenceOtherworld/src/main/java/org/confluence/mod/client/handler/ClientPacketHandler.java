@@ -112,7 +112,6 @@ public final class ClientPacketHandler {
 //        maxSoul = packet.maxSoul();
 //        currentSoul = packet.currentSoul();
 //        fallenSoulCoreActive = packet.fallenSoulCoreActive();
-//        EverBeneficial beneficial = EverBeneficial.of(player);
 //        beneficial.setFallenSoulCore(fallenSoulCoreActive);
 //        PlayerSpecialData data = PlayerSpecialData.of(player);
 //        data.setFallenSoulCoreActive(beneficial.getFallenSoulCore());

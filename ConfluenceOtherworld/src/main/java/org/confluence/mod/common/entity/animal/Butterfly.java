@@ -13,42 +13,25 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
-import org.confluence.mod.common.entity.ai.bt.BTNode;
-import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.PlayerCloseCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.PanicFleeAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
-import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.Locale;
 
-public class Butterfly extends BaseCritter implements VariantHolder<Butterfly.Variant> {
+public class Butterfly extends Bird implements VariantHolder<Butterfly.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Butterfly.class, EntityDataSerializers.INT);
     public static final String VARIANT_KEY = "Variant";
+    private static final Variant[] COMMON_SPAWN_VARIANTS = {
+            Variant.JULIA, Variant.MONARCH, Variant.PURPLE_EMPEROR, Variant.RED_ADMIRAL,
+            Variant.SULPHUR, Variant.TREE_NYMPH, Variant.ULYSSES, Variant.ZEBRA_SWALLOWTAIL
+    };
 
     public Butterfly(EntityType<? extends Butterfly> type, Level level) {
         super(type, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createCritterAttributes();
-    }
-
-    @Override
-    protected BTRoot createBT() {
-        return new BTRoot() {
-            @Override
-            protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(new PlayerCloseCondition(Butterfly.this, 3.0), new PanicFleeAction(Butterfly.this, 0.8)),
-                        SequenceNode.of(new WaitAction(20 + random.nextInt(40))));
-            }
-        };
+        return BaseFlyingCritter.createFlyingCritterAttributes();
     }
 
     @Override
@@ -58,7 +41,10 @@ public class Butterfly extends BaseCritter implements VariantHolder<Butterfly.Va
     }
 
     @Override
-    public Variant getVariant() {return Variant.values()[this.entityData.get(DATA_VARIANT)];}
+    public Variant getVariant() {
+        return CritterVariantUtil.byId(
+                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.RED_ADMIRAL);
+    }
 
     @Override
     public void setVariant(Variant v) {this.entityData.set(DATA_VARIANT, v.ordinal());}
@@ -72,7 +58,22 @@ public class Butterfly extends BaseCritter implements VariantHolder<Butterfly.Va
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        if (!tag.contains(VARIANT_KEY)) {
+            setVariant(Variant.RED_ADMIRAL);
+            return;
+        }
         PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
+    }
+
+    @Override
+    protected String variantSaveKey() {
+        return VARIANT_KEY;
+    }
+
+    @Override
+    protected void initializeSpawnVariant() {
+        setVariant(CritterVariantUtil.withRareVariant(
+                random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
     }
 
     @Override
@@ -83,7 +84,7 @@ public class Butterfly extends BaseCritter implements VariantHolder<Butterfly.Va
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(DefaultAnimations.genericWalkIdleController(this));
+        registerFlyOnlyController(controllers);
     }
 
     public enum Variant implements IVariant {
@@ -106,12 +107,13 @@ public class Butterfly extends BaseCritter implements VariantHolder<Butterfly.Va
 
         @Override
         public ResourceLocation modelPath() {
-            return Confluence.asResource("animal/butterfly");
+            return IVariant.resource("animal/butterfly");
         }
 
         @Override
         public ResourceLocation texturePath() {
-            return Confluence.asResource("textures/entity/butterfly/" + getSerializedName() + ".png");
+            return IVariant.resource("textures/entity/animal/butterfly/"
+                    + getSerializedName() + "_butterfly.png");
         }
 
         @Override

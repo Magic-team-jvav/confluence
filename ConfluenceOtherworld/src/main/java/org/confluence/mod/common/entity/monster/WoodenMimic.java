@@ -4,36 +4,29 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.entity.ai.bt.BTNode;
-import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 
-public class WoodenMimic extends BaseMonster {
-
+/**
+ * 普通宝箱怪实体。
+ *
+ * <p>木、金、冰和暗影注册项共享此类型；具体数值由注册表属性配置决定，开合与跳跃
+ * 行为统一由 {@link BaseMimic} 提供，避免每个外观变体复制一份状态机。</p>
+ */
+public class WoodenMimic extends BaseMimic {
     public WoodenMimic(EntityType<? extends WoodenMimic> type, Level level) {
         super(type, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return BaseMonster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0).add(Attributes.ATTACK_DAMAGE, 6.0);
+                .add(Attributes.MAX_HEALTH, 30.0)
+                .add(Attributes.ATTACK_DAMAGE, 6.0);
     }
 
+    /**
+     * 普通宝箱怪不使用困难模式宝箱怪的特殊攻击轮次。
+     */
     @Override
-    protected BTRoot createBT() {
-        return new BTRoot() {
-            @Override
-            protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(WoodenMimic.this),
-                                new MoveToTargetAction(WoodenMimic.this, 0.5, 2.0),
-                                new WaitAction(20)),
-                        new WaitAction(60));
-            }
-        };
+    protected boolean isHardmodeVariant() {
+        return false;
     }
 }

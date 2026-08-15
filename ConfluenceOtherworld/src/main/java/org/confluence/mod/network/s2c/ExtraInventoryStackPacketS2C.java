@@ -27,6 +27,15 @@ public record ExtraInventoryStackPacketS2C(long packedData,
         return ID;
     }
 
+    /**
+     * 额外物品栏同步会修改客户端玩家附件，必须交给客户端主线程执行。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
     @Override
     public void work(Player player) {
         if (player.level().getEntity(getEntityId()) instanceof Player entity) {
@@ -34,6 +43,7 @@ public record ExtraInventoryStackPacketS2C(long packedData,
             if (extraInventory.getSizeAccessoryDye() != getSizeAccessoryDye()) {
                 extraInventory.setAccessoryDyes(player, getSizeAccessoryDye());
             }
+            if (getSlot() < 0 || getSlot() >= extraInventory.getContainerSize()) return;
             extraInventory.setItem(getSlot(), itemStack);
         }
     }

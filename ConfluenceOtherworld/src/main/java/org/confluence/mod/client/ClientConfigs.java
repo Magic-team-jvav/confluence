@@ -7,19 +7,24 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.EnumValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.confluence.mod.client.gui.container.NPCTradeScreen;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 import org.confluence.mod.client.handler.SoulSkillClientHolder;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.flail.BaseFlailItem;
+import org.confluence.mod.common.item.gun.BaseGun;
+import org.confluence.mod.common.item.mana.ManaStaffItem;
+import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
@@ -61,10 +66,15 @@ public final class ClientConfigs {
     public static int extraInventoryButtonOffsetX = 0;
     public static int extraInventoryButtonOffsetY = 0;
 
-    public static boolean bloodyEffect = true; // todo
+    public static boolean bloodyEffect = true;
     public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
     public static boolean damageIndicator = true;
     public static boolean healIndicator = true;
+    public static WeaponUseButton staffUseButton = WeaponUseButton.RIGHT;
+    public static WeaponUseButton whipUseButton = WeaponUseButton.LEFT;
+    public static WeaponUseButton yoyoUseButton = WeaponUseButton.LEFT;
+    public static WeaponUseButton gunUseButton = WeaponUseButton.LEFT;
+    public static WeaponUseButton flailUseButton = WeaponUseButton.LEFT;
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static IntValue MIN_ECTO_MIST_EFFECT_RADIUS;
@@ -104,6 +114,11 @@ public final class ClientConfigs {
     private static EnumValue<GoreEffect> GORE_EFFECT;
     private static BooleanValue DAMAGE_INDICATOR;
     private static BooleanValue HEAL_INDICATOR;
+    private static EnumValue<WeaponUseButton> STAFF_USE_BUTTON;
+    private static EnumValue<WeaponUseButton> WHIP_USE_BUTTON;
+    private static EnumValue<WeaponUseButton> YOYO_USE_BUTTON;
+    private static EnumValue<WeaponUseButton> GUN_USE_BUTTON;
+    private static EnumValue<WeaponUseButton> FLAIL_USE_BUTTON;
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
@@ -144,6 +159,11 @@ public final class ClientConfigs {
         goreEffect = GORE_EFFECT == null ? GoreEffect.OFF : GORE_EFFECT.get();
         damageIndicator = DAMAGE_INDICATOR.get();
         healIndicator = HEAL_INDICATOR.get();
+        staffUseButton = STAFF_USE_BUTTON.get();
+        whipUseButton = WHIP_USE_BUTTON.get();
+        yoyoUseButton = YOYO_USE_BUTTON.get();
+        gunUseButton = GUN_USE_BUTTON.get();
+        flailUseButton = FLAIL_USE_BUTTON.get();
     }
 
     public static void register(FMLJavaModLoadingContext context) {
@@ -230,8 +250,60 @@ public final class ClientConfigs {
             }
             builder.pop();
         }
+        {
+            builder.push("WeaponInput");
+            STAFF_USE_BUTTON = builder.defineEnum(
+                    "staffUseButton", WeaponUseButton.RIGHT);
+            WHIP_USE_BUTTON = builder.defineEnum(
+                    "whipUseButton", WeaponUseButton.LEFT);
+            YOYO_USE_BUTTON = builder.defineEnum(
+                    "yoyoUseButton", WeaponUseButton.LEFT);
+            GUN_USE_BUTTON = builder.defineEnum(
+                    "gunUseButton", WeaponUseButton.LEFT);
+            FLAIL_USE_BUTTON = builder.defineEnum(
+                    "flailUseButton", WeaponUseButton.LEFT);
+            builder.pop();
+        }
 
         context.registerConfig(ModConfig.Type.CLIENT, builder.build());
+    }
+
+    /**
+     * 返回当前物品配置的主要动作键；不属于这五类武器时返回 {@code null}。
+     */
+    public static @Nullable WeaponUseButton weaponUseButton(ItemStack stack) {
+        if (stack.getItem() instanceof ManaStaffItem<?>) {
+            return staffUseButton;
+        }
+        if (stack.is(ModTags.Items.WHIP)) {
+            return whipUseButton;
+        }
+        if (stack.getItem() instanceof YoyoItem) {
+            return yoyoUseButton;
+        }
+        if (stack.getItem() instanceof BaseGun) {
+            return gunUseButton;
+        }
+        if (stack.getItem() instanceof BaseFlailItem) {
+            return flailUseButton;
+        }
+        return null;
+    }
+
+    public static boolean usesLeftWeaponButton(ItemStack stack) {
+        return weaponUseButton(stack) == WeaponUseButton.LEFT;
+    }
+
+    public enum WeaponUseButton implements PortTranslatableEnum {
+        LEFT,
+        RIGHT;
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable(
+                    "confluence.configuration.weaponInputButton."
+                            + name().toLowerCase(Locale.ROOT));
+        }
     }
 
     public enum GoreEffect implements PortTranslatableEnum {
@@ -306,7 +378,8 @@ public final class ClientConfigs {
         TRADE_SCREEN {
             @Override
             public boolean test() {
-                return Minecraft.getInstance().screen instanceof NPCTradeScreen;
+                return Minecraft.getInstance().player != null
+                        && Minecraft.getInstance().player.containerMenu instanceof NPCTradeMenu;
             }
         };
 

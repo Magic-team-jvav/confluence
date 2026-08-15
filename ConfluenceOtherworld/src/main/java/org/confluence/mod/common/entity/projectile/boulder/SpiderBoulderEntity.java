@@ -35,8 +35,7 @@ public class SpiderBoulderEntity extends BoulderEntity {
     @Override
     protected void removeEffect(ServerLevel serverLevel) {
         super.removeEffect(serverLevel);
-        // TODO 补充WALL_CREEPER
-//        serverLevel.addFreshEntity(ModEntities.WALL_CREEPER);
+        // 1.20 侧暂时沿用原版蜘蛛作为掉落召唤物；后续补齐墙爬虫实体后再替换为对应变种。
         Spider entity = EntityType.SPIDER.create(serverLevel);
         if (entity != null) {
             entity.setPos(position());

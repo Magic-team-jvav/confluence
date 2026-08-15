@@ -21,7 +21,6 @@ import java.util.*;
 
 public final class ClientGameEventSystem {
     static final Map<ResourceKey<? extends GameEvent>, GameEventSyncCallback> CALLBACKS = Util.make(new IdentityHashMap<>(), map -> {
-        map.put(GameEventSystem.ALL_EVENT_KEY, ClientGameEventSystem::handleAllEvent);
         map.put(SlimeRainGameEvent.KEY, SlimeRainSprite::handle);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerSprite::handle);
         map.put(LanternNightGameEvent.KEY, LanternNightSprite::handle);
@@ -55,6 +54,17 @@ public final class ClientGameEventSystem {
     public static void handlePacket(Player player, List<ResourceKey<? extends GameEvent>> keys, boolean start) {
         Map<ResourceKey<? extends GameEvent>, AfterRenderSky> map = new IdentityHashMap<>(afterRenderSky);
         for (ResourceKey<? extends GameEvent> key : keys) {
+            if (GameEventSystem.ALL_EVENT_KEY.equals(key)) {
+                handleAllEvent(player, start);
+                if (start) {
+                    map.putAll(RENDERERS);
+                    RUNNING_EVENTS.addAll(CALLBACKS.keySet());
+                } else {
+                    map.clear();
+                    RUNNING_EVENTS.clear();
+                }
+                continue;
+            }
             GameEventSyncCallback callback = CALLBACKS.get(key);
             if (callback != null) {
                 callback.call(player, start);

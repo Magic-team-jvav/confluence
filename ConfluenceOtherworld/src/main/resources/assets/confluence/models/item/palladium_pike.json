@@ -1,4 +1,4 @@
-{
+﻿{
     "base": {
         "credit": "Made with Blockbench",
         "parent": "builtin/entity",
@@ -57,7 +57,8 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/spear/palladium_pike_item"
+            "layer0": "confluence:item/spear/palladium_pike",
+            "particle": "confluence:item/spear/palladium_pike"
         }
     },
     "gui_light": "front",

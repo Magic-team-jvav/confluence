@@ -119,7 +119,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     public static void summon(Entity entity, ServerLevel level, boolean isWall, Supplier<@Nullable Direction> forward) {
         EntityType<WallOfFlesh> wof = BossEntities.WALL_OF_FLESH.get();
         EntityType<HillOfFlesh> hof = BossEntities.HILL_OF_FLESH.get();
-        if (Streams.stream(level.getAllEntities()).anyMatch(entity1 -> {
+        if (Streams.stream(level.getAllEntities()).filter(java.util.Objects::nonNull).anyMatch(entity1 -> {
             EntityType<?> type = entity1.getType();
             return type == wof || type == hof;
         })) return;
@@ -143,7 +143,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
                     for (ServerPlayer player : level.players()) {
                         int pz = player.blockPosition().getZ();
                         if (negative) if (pz < z) z = pz;
-                        else if (pz > x) x = pz;
+                        else if (pz > z) z = pz;
                     }
                     direction = Direction.fromAxisAndDirection(Direction.Axis.Z, negative ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
                 }
@@ -153,7 +153,11 @@ public class GuideVooDooDollItem extends BaseCurioItem {
                 wallOfFlesh.setForward(direction);
             }
         } else {
-            hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
+            HillOfFlesh hill =
+                    hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
+            if (hill != null) {
+                hill.enableArenaDestruction();
+            }
         }
         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
             player.connection.send(new ClientboundSoundPacket(ModSoundEvents.WALL_OF_FLESH_ROAR.getHolder().orElseThrow(), SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));

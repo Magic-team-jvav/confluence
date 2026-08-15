@@ -13,7 +13,7 @@ import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 
-// TODO 请给予更好的类名称
+// 集中处理需要在物品模型外额外渲染的手持道具效果。
 public final class SpecialItemRenderingUtil {
     public static void bowArrowRenderer(ItemRenderer itemRenderer, LivingEntity entity, ItemDisplayContext displayContext, boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level level, int combinedLight, int combinedOverlay, int seed, Player player, ItemStack stack) {
         float charge = player.getTicksUsingItem() / 20.0f;

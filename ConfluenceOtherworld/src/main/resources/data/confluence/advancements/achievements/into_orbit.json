@@ -1,0 +1,41 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "player": {
+                    "location": {
+                        "dimension": "minecraft:the_end",
+                        "position": {
+                            "y": {
+                                "min": 256
+                            }
+                        }
+                    }
+                }
+            },
+            "trigger": "minecraft:location"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.into_orbit.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:falling_star"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.into_orbit.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

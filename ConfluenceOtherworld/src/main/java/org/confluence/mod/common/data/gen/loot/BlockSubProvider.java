@@ -30,6 +30,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import org.confluence.mod.common.block.food.GreenDumplingBlock;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
@@ -287,6 +288,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         add(COLD_CRYSTAL_ORE.get(), block -> createOreDrop(block, COLD_CRYSTAL.get()));
         add(GELSTONE_ORE.get(), block -> createOreDrop(block, GELSTONE.get()));
+        // 欧泊矿保留原有 0~1 掉落，不附加时运加成；精准采集仍返回矿石方块本身。
+        add(OPAL_ORE.get(), block -> createSilkTouchDispatchTable(block,
+                LootItem.lootTableItem(OPAL.get())
+                        .apply(setCount(UniformGenerator.between(0.0F, 1.0F)))
+                        .when(survivesExplosion())));
 
         add(LUNARTEAR_ORE.get(), block -> createOreDrop(block, LUNARTEAR.get()));
         add(DRAGONSAL_ORE.get(), block -> createOreDrop(block, DRAGONSAL.get()));
@@ -736,6 +742,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         }
 
         CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
+        // 所有雕像均有对应方块物品；由注册表批量生成可同时覆盖普通雕像与行为雕像。
+        StatueBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
         // 草药
         addHerbDrop(ModBlocks.WATERLEAF.get(), MaterialItems.WATERLEAF.get(), FoodItems.WATERLEAF_SEED.get());
         addHerbDrop(ModBlocks.FIREBLOSSOM.get(), MaterialItems.FIREBLOSSOM.get(), FoodItems.FIREBLOSSOM_SEED.get());
@@ -974,6 +982,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         addCoinPileDrop(SILVER_COIN.get());
         addCoinPileDrop(GOLD_COIN.get());
         addCoinPileDrop(PLATINUM_COIN.get());
+        addGreenDumplingDrop();
     }
 
     @Override
@@ -984,6 +993,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                 getStreamFromRegister(DecorativeBlocks.BLOCKS),
                 getStreamFromRegister(ChestBlocks.BLOCKS),
                 getStreamFromRegister(CrateBlocks.BLOCKS),
+                getStreamFromRegister(StatueBlocks.BLOCKS),
                 getStreamFromRegister(FunctionalBlocks.BLOCKS),
                 getStreamFromRegister(NatureBlocks.BLOCKS),
                 getStreamFromRegister(PotBlocks.BLOCKS)
@@ -1048,6 +1058,24 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                                     .hasProperty(CoinPileBlock.HEAPS, String.valueOf(heaps))))
                     .add(LootItem.lootTableItem(block)
                             .apply(setCount(ConstantValue.exactly(heaps)))));
+        }
+        add(block, lootTable);
+    }
+
+    /**
+     * 青团方块的 {@code piece} 表示从零开始的堆叠下标，因此实际掉落数量始终为属性值加一。
+     * 由属性定义遍历可用值，可以让日后扩展堆叠层数时不再手工复制战利品池。
+     */
+    private void addGreenDumplingDrop() {
+        GreenDumplingBlock block = GREEN_DUMPLING.get();
+        LootTable.Builder lootTable = LootTable.lootTable();
+        for (int piece : GreenDumplingBlock.PIECE.getPossibleValues()) {
+            lootTable.withPool(LootPool.lootPool()
+                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                    .hasProperty(GreenDumplingBlock.PIECE, piece)))
+                    .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get())
+                            .apply(setCount(ConstantValue.exactly(piece + 1)))));
         }
         add(block, lootTable);
     }

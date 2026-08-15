@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -27,6 +28,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class VoidCrystalItem extends Item {
+    private static final String RUNTIME_TAG = "ConfluenceVoidCrystalRuntime";
+    private static final int RUNTIME_VERSION = 1;
+
     public VoidCrystalItem() {
         super(new Properties().stacksTo(64));
     }
@@ -58,22 +62,19 @@ public class VoidCrystalItem extends Item {
         if (!(state.getBlock() instanceof VoidTreeRootBlock)) return InteractionResult.PASS;
         if (level.isClientSide) return InteractionResult.SUCCESS;
 
-        CompoundTag tag = LibUtils.getItemStackNbt(stack);
         Direction clickedFace = context.getClickedFace();
-
-        if (!tag.contains("FirstPos")) {
-            markPosition(stack, tag, pos, clickedFace, player, level);
+        Mark mark = readMark(stack);
+        if (mark == null) {
+            markPosition(stack, pos, clickedFace, player, level);
         } else if (level instanceof ServerLevel serverLevel) {
-            processLinking(stack, tag, pos, clickedFace, player, serverLevel);
+            processLinking(stack, mark, pos, clickedFace, player, serverLevel);
         }
 
         return InteractionResult.SUCCESS;
     }
 
-    private void markPosition(ItemStack stack, CompoundTag tag, BlockPos pos, Direction face, @Nullable Player player, Level level) {
-        tag.putLong("FirstPos", pos.asLong());
-        tag.putInt("FirstFace", face.get3DDataValue());
-        stack.set(ConfluenceMagicLib.NBT, new NbtComponent(tag));
+    private void markPosition(ItemStack stack, BlockPos pos, Direction face, @Nullable Player player, Level level) {
+        writeMark(stack, new Mark(pos, face));
 
         if (player != null) {
             player.displayClientMessage(Component.translatable("chat.confluence.crystal_marked").withStyle(ChatFormatting.AQUA), true);
@@ -81,11 +82,17 @@ public class VoidCrystalItem extends Item {
         }
     }
 
-    private void processLinking(ItemStack stack, CompoundTag tag, BlockPos pos, Direction secondFace, @Nullable Player player, ServerLevel level) {
-        BlockPos firstPos = BlockPos.of(tag.getLong("FirstPos"));
-        Direction firstFace = Direction.from3DDataValue(tag.getInt("FirstFace"));
+    private void processLinking(ItemStack stack, Mark mark, BlockPos pos, Direction secondFace, @Nullable Player player, ServerLevel level) {
+        BlockPos firstPos = mark.position();
+        Direction firstFace = mark.face();
 
         if (player == null) return;
+        if (!level.isInWorldBounds(firstPos)
+                || !level.getWorldBorder().isWithinBounds(firstPos)) {
+            clearMark(stack);
+            notifyError(player, level, pos, "chat.confluence.link_failed_generic");
+            return;
+        }
         if (pos.equals(firstPos)) {
             notifyError(player, level, pos, "chat.confluence.link_same_block");
             return;
@@ -104,8 +111,9 @@ public class VoidCrystalItem extends Item {
             player.displayClientMessage(Component.translatable("chat.confluence.link_success").withStyle(ChatFormatting.GREEN), true);
             level.playSound(null, pos, SoundEvents.BEACON_ACTIVATE, SoundSource.BLOCKS, 1.0F, 1.5F);
 
+            // 标记属于本次连接事务；堆叠中剩余的水晶不能继承已消费水晶的旧端点。
+            clearMark(stack);
             if (!player.getAbilities().instabuild) stack.shrink(1);
-            else updateNbt(stack, tag, true);
         } else {
             notifyError(player, level, pos, "chat.confluence.link_failed_generic");
         }
@@ -113,28 +121,15 @@ public class VoidCrystalItem extends Item {
 
     private boolean handleClear(ItemStack stack, Level level, Player player) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-        if (tag != null && tag.contains("FirstPos")) {
+        if (tag != null && tag.contains(RUNTIME_TAG)) {
             if (!level.isClientSide) {
-                updateNbt(stack, tag, true);
+                clearMark(stack);
                 player.displayClientMessage(Component.translatable("chat.confluence.crystal_cleared").withStyle(ChatFormatting.YELLOW), true);
                 level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BUNDLE_REMOVE_ONE, SoundSource.PLAYERS, 1.0F, 1.2F);
             }
             return true;
         }
         return false;
-    }
-
-    private void updateNbt(ItemStack stack, CompoundTag originalTag, boolean shouldClear) {
-        CompoundTag workingTag = originalTag.copy();
-        if (shouldClear) {
-            workingTag.remove("FirstPos");
-            workingTag.remove("FirstFace");
-        }
-        if (workingTag.isEmpty()) {
-            stack.remove(ConfluenceMagicLib.NBT);
-        } else {
-            stack.set(ConfluenceMagicLib.NBT, new NbtComponent(workingTag));
-        }
     }
 
     private void notifyError(@Nullable Player player, Level level, BlockPos pos, String translationKey) {
@@ -145,12 +140,11 @@ public class VoidCrystalItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-        if (tag != null && tag.contains("FirstPos")) {
-            BlockPos pos = BlockPos.of(tag.getLong("FirstPos"));
-            Direction face = Direction.from3DDataValue(tag.getInt("FirstFace"));
+        Mark mark = readMark(stack);
+        if (mark != null) {
+            BlockPos pos = mark.position();
             tooltip.add(Component.translatable("tooltip.confluence.void_crystal.pos", pos.getX(), pos.getY(), pos.getZ()).withStyle(ChatFormatting.GRAY));
-            tooltip.add(Component.translatable("tooltip.confluence.void_crystal.face", face.getSerializedName()).withStyle(ChatFormatting.DARK_PURPLE));
+            tooltip.add(Component.translatable("tooltip.confluence.void_crystal.face", mark.face().getSerializedName()).withStyle(ChatFormatting.DARK_PURPLE));
         } else {
             tooltip.add(Component.translatable("tooltip.confluence.void_crystal.empty").withStyle(ChatFormatting.DARK_GRAY));
         }
@@ -176,4 +170,60 @@ public class VoidCrystalItem extends Item {
         }
         return false;
     }
+
+    /**
+     * 只接受位置与面同时存在的当前版本快照，损坏或早期扁平字段不会默认成原点和 DOWN。
+     */
+    static @Nullable Mark readMark(ItemStack stack) {
+        CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
+        if (itemTag == null || !itemTag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) return null;
+        CompoundTag runtime = itemTag.getCompound(RUNTIME_TAG);
+        if (!runtime.contains("Version", Tag.TAG_INT)
+                || runtime.getInt("Version") != RUNTIME_VERSION
+                || !runtime.contains("Position", Tag.TAG_LONG)
+                || !runtime.contains("Face", Tag.TAG_INT)) {
+            return null;
+        }
+        int faceId = runtime.getInt("Face");
+        if (faceId < 0 || faceId >= Direction.values().length) return null;
+        return new Mark(BlockPos.of(runtime.getLong("Position")),
+                Direction.from3DDataValue(faceId));
+    }
+
+    /**
+     * 写入当前格式完整快照并删除旧扁平键；异常文本由调用边界保持英文。
+     */
+    static void writeMark(ItemStack stack, Mark mark) {
+        if (mark == null) {
+            throw new IllegalArgumentException("Void crystal mark cannot be null");
+        }
+        LibUtils.updateItemStackNbt(stack, itemTag -> {
+            itemTag.remove("FirstPos");
+            itemTag.remove("FirstFace");
+            CompoundTag runtime = new CompoundTag();
+            runtime.putInt("Version", RUNTIME_VERSION);
+            runtime.putLong("Position", mark.position().asLong());
+            runtime.putInt("Face", mark.face().get3DDataValue());
+            itemTag.put(RUNTIME_TAG, runtime);
+        });
+    }
+
+    /**
+     * 仅移除本物品的运行状态，保留其他组件使用者的 NBT。
+     */
+    static void clearMark(ItemStack stack) {
+        CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
+        if (itemTag == null) return;
+        CompoundTag updated = itemTag.copy();
+        updated.remove(RUNTIME_TAG);
+        updated.remove("FirstPos");
+        updated.remove("FirstFace");
+        if (updated.isEmpty()) {
+            stack.remove(ConfluenceMagicLib.NBT);
+        } else {
+            stack.set(ConfluenceMagicLib.NBT, new NbtComponent(updated));
+        }
+    }
+
+    record Mark(BlockPos position, Direction face) {}
 }

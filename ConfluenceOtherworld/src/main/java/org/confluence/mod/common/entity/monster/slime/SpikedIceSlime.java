@@ -6,18 +6,19 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibUtils;
 
 /**
- * 尖刺冰雪史莱姆 —— 尖刺 + 攻击附加缓慢效果。
+ * 尖刺冰雪史莱姆保留远程尖刺攻击，并沿用冰雪史莱姆的难度限定减速效果。
  */
 public class SpikedIceSlime extends SpikedSlime {
 
     public SpikedIceSlime(EntityType<? extends BaseSlime> type, Level level) {
-        super(type, level, 0xB3F0EA, false, 70);
+        super(type, level, 0xB3F0EA, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createSlimeAttributes(6.0f, 8, 31.0f, 70);
+        return createSlimeAttributes(6.0f, 8, 31.0f);
     }
 
     @Override
@@ -27,6 +28,9 @@ public class SpikedIceSlime extends SpikedSlime {
 
     @Override
     protected void onAttackTarget(LivingEntity target) {
-        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 120, 0));
+        if (LibUtils.isMaster(level(), blockPosition())
+                || (LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextBoolean())) {
+            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 0), this);
+        }
     }
 }

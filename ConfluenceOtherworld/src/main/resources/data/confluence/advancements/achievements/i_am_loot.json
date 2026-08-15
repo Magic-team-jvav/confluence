@@ -1,0 +1,49 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "location": [
+                    {
+                        "condition": "minecraft:location_check",
+                        "predicate": {
+                            "block": {
+                                "blocks": [
+                                    "confluence:golden_chest"
+                                ]
+                            },
+                            "position": {
+                                "y": {
+                                    "max": 40,
+                                    "min": -64
+                                }
+                            }
+                        }
+                    }
+                ]
+            },
+            "trigger": "minecraft:item_used_on_block"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.i_am_loot.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:golden_chest"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.i_am_loot.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

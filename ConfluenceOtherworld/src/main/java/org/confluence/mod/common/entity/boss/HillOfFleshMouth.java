@@ -1,26 +1,31 @@
 package org.confluence.mod.common.entity.boss;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.init.entity.BossEntities;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.monster.HillHungry;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import javax.annotation.Nullable;
+import java.util.UUID;
+
 /**
- * 肉丘之嘴——定位在肉丘周围，周期性生成饿鬼仆从。
+ * 肉丘之嘴——定位在肉丘周围，并维持一只与当前嘴部锚点绑定的饿鬼。
+ *
+ * <p>嘴部本身不进入区块存档，因此重建后先按 Boss 身份和相对锚点认领
+ * 已保存的饿鬼。只有上一只确实死亡或被移除后才进入再次生成计时，
+ * 避免每个周期无上限堆积从属。</p>
  */
-public class HillOfFleshMouth extends Entity implements GeoEntity {
+public class HillOfFleshMouth extends BaseBossPart<HillOfFlesh> implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private HillOfFlesh master;
     private int summonTimer;
+    private @Nullable UUID hungryUUID;
 
     public HillOfFleshMouth(EntityType<?> type, Level level) {
         super(type, level);
@@ -28,66 +33,92 @@ public class HillOfFleshMouth extends Entity implements GeoEntity {
     }
 
     public void setMaster(HillOfFlesh master) {
-        this.master = master;
+        bindTo(master);
         this.summonTimer = 100 + random.nextInt(150);
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (master == null || !master.isAlive()) {
-            discard();
+    protected void tickPart(HillOfFlesh master) {
+        if (level().isClientSide) return;
+        if (master.isInitializing()) return;
+
+        if (resolveHungry(master) != null) {
             return;
         }
-        if (level().isClientSide) return;
-
         summonTimer--;
         if (summonTimer <= 0) {
             summonTimer = (master.isPhase2() ? 150 : 250) + random.nextInt(80);
-            spawnHungry();
+            spawnHungryIfAbsent(master);
         }
     }
 
-    private void spawnHungry() {
-        if (!(level() instanceof ServerLevel serverLevel)) return;
-        Hungry hungry = BossEntities.HUNGRY.get().create(level());
+    @Nullable
+    HillHungry spawnHungryIfAbsent(HillOfFlesh master) {
+        HillHungry existing = resolveHungry(master);
+        if (existing != null) {
+            return existing;
+        }
+        if (!(level() instanceof ServerLevel serverLevel)) {
+            return null;
+        }
+
+        HillHungry hungry =
+                MonsterEntities.HILL_HUNGRY.get().create(level());
         if (hungry != null) {
             hungry.setPos(position());
-            hungry.setMaster(master, position().subtract(master.position()));
+            hungry.setMaster(master, getRelativeAnchor(master));
             LivingEntity target = master.getTarget();
             if (target != null) hungry.setTarget(target);
             serverLevel.addFreshEntity(hungry);
+            hungryUUID = hungry.getUUID();
         }
+        return hungry;
+    }
+
+    @Nullable
+    HillHungry resolveHungry(HillOfFlesh master) {
+        if (!(level() instanceof ServerLevel serverLevel)) {
+            return null;
+        }
+        if (hungryUUID != null
+                && serverLevel.getEntity(hungryUUID)
+                instanceof HillHungry hungry
+                && hungry.isAlive()
+                && hungry.isOwnedBy(master)) {
+            return hungry;
+        }
+        hungryUUID = null;
+
+        Vec3 relativeAnchor = getRelativeAnchor(master);
+        HillHungry recovered = serverLevel.getEntitiesOfClass(
+                        HillHungry.class,
+                        master.getBoundingBox().inflate(40.0),
+                        candidate -> candidate.isAlive()
+                                && candidate.isOwnedBy(master)
+                                && candidate.getLeashPos()
+                                .distanceToSqr(relativeAnchor) < 0.25)
+                .stream()
+                .findFirst()
+                .orElse(null);
+        if (recovered != null) {
+            hungryUUID = recovered.getUUID();
+        }
+        return recovered;
+    }
+
+    private Vec3 getRelativeAnchor(HillOfFlesh master) {
+        return position().subtract(master.position());
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        return master != null && master.hurt(source, amount * 2.0f);
+        return hurtOwnerAndPart(source, amount, 2.0F);
     }
 
     @Override
-    public boolean isPickable() {return true;}
-
-    @Override
-    public boolean canBeCollidedWith() {return master != null && master.isAlive();}
-
-    @Override
-    protected void defineSynchedData() {}
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag t) {}
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag t) {}
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {return new ClientboundAddEntityPacket(this);}
-
-    @Override
-    public EntityDimensions getDimensions(Pose p) {return EntityDimensions.scalable(1.5F, 1.5F);}
-
-    @Override
-    public boolean is(Entity e) {return this == e;}
+    protected Class<HillOfFlesh> getOwnerType() {
+        return HillOfFlesh.class;
+    }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}

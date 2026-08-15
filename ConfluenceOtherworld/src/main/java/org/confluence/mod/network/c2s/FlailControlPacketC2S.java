@@ -1,55 +1,49 @@
 package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.entity.flail.BaseFlailEntity;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
-import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /**
- * <h1>连枷控制包C2S</h1>
- * 玩家按住/松开攻击键时发送，控制连枷 SPIN/THROWN/STAY/RETRACT 状态
+ * 链锤按下与松开控制包。
+ *
+ * <p>客户端只提交输入边沿；服务端重新读取主手并调用链锤物品的共享状态转换，
+ * 不接受客户端提供的实体、阶段、伤害或冷却数据。</p>
  */
-public final class FlailControlPacketC2S implements IPortPacket.C2S {
+public record FlailControlPacketC2S(Action action)
+        implements IPortPacket.C2S {
     public enum Action {
-        /**
-         * 按住
-         **/
         HOLD,
-        /**
-         * 松开
-         **/
         RELEASE
     }
 
-    private final Action action;
-    private static final FlailControlPacketC2S HOLD_INSTANCE = new FlailControlPacketC2S(Action.HOLD);
-    private static final FlailControlPacketC2S RELEASE_INSTANCE = new FlailControlPacketC2S(Action.RELEASE);
-
-    public static final ResourceLocation ID = Confluence.asResource("flail_control");
-    public static final PortStreamCodec<ByteBuf, FlailControlPacketC2S> STREAM_CODEC = new PortStreamCodec<>() {
+    public static final ResourceLocation ID =
+            Confluence.asResource("flail_control");
+    public static final PortStreamCodec<ByteBuf, FlailControlPacketC2S>
+            STREAM_CODEC = new PortStreamCodec<>() {
         @Override
-        public FlailControlPacketC2S decode(ByteBuf buf) {
-            return buf.readBoolean() ? HOLD_INSTANCE : RELEASE_INSTANCE;
+        public FlailControlPacketC2S decode(ByteBuf buffer) {
+            return new FlailControlPacketC2S(
+                    buffer.readBoolean() ? Action.HOLD : Action.RELEASE);
         }
 
         @Override
-        public void encode(ByteBuf buf, FlailControlPacketC2S packet) {
-            buf.writeBoolean(packet.action == Action.HOLD);
+        public void encode(
+                ByteBuf buffer,
+                FlailControlPacketC2S packet
+        ) {
+            buffer.writeBoolean(packet.action == Action.HOLD);
         }
     };
 
-    private FlailControlPacketC2S(Action action) {
-        this.action = action;
+    public FlailControlPacketC2S {
+        java.util.Objects.requireNonNull(
+                action, "Flail control action must not be null");
     }
 
     @Override
@@ -57,62 +51,36 @@ public final class FlailControlPacketC2S implements IPortPacket.C2S {
         return ID;
     }
 
+    /**
+     * 链锤控制会生成实体并切换其状态，必须由本数据包显式切回服务端主线程。
+     */
     @Override
-    public void work(ServerPlayer player) {
-        ItemStack stack = player.getMainHandItem();
-        if (!(stack.getItem() instanceof BaseFlailItem)) return;
-
-        FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
-        if (component == null) return;
-
-        // 查找现有连枷实体
-        BaseFlailEntity existing = findExistingFlail(player);
-
-        switch (action) {
-            case HOLD -> {
-                if (existing == null) {
-                    // 创建新连枷并开始 SPIN
-                    var projType = BuiltInRegistries.ENTITY_TYPE.get(component.projType());
-                    if (projType == null) return;
-                    var entity = projType.create(player.level());
-                    if (!(entity instanceof BaseFlailEntity flail)) return;
-                    flail.init(player, stack, component);
-                    player.level().addFreshEntity(flail);
-                    player.swing(InteractionHand.MAIN_HAND, true);
-                } else if (existing.getPhase() == BaseFlailEntity.PHASE_THROWN
-                        || existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
-                    // THROWN / RETRACT 中按键 → 掉落 STAY
-                    existing.playerDrop();
-                }
-            }
-            case RELEASE -> {
-                if (existing == null) return;
-                if (existing.getPhase() == BaseFlailEntity.PHASE_SPIN) {
-                    existing.launch(player);
-                    player.getCooldowns().addCooldown(stack.getItem(), component.getCooldown(player));
-                } else if (existing.getPhase() == BaseFlailEntity.PHASE_STAY) {
-                    existing.forceRetract();
-                } else if (existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
-                    // RETRACT 中松开 → 回到 STAY 重新掉落
-                    existing.playerDrop();
-                }
-            }
+    public void handle(IPortPacket.Context context) {
+        if (context.player() instanceof ServerPlayer player) {
+            context.enqueueWork(() -> work(player));
         }
     }
 
-    @Nullable
-    private BaseFlailEntity findExistingFlail(ServerPlayer player) {
-        return player.level().getEntitiesOfClass(BaseFlailEntity.class,
-                        player.getBoundingBox().inflate(30),
-                        e -> e.getOwner() != null && e.getOwner().is(player))
-                .stream().findFirst().orElse(null);
+    @Override
+    public void work(ServerPlayer player) {
+        ItemStack stack = player.getMainHandItem();
+        if (!(stack.getItem() instanceof BaseFlailItem)) {
+            return;
+        }
+        if (action == Action.HOLD) {
+            BaseFlailItem.press(player, stack);
+        } else {
+            BaseFlailItem.release(player, stack);
+        }
     }
 
     public static void sendHold() {
-        Confluence.NETWORK_HANDLER.sendToServer(HOLD_INSTANCE);
+        Confluence.NETWORK_HANDLER.sendToServer(
+                new FlailControlPacketC2S(Action.HOLD));
     }
 
     public static void sendRelease() {
-        Confluence.NETWORK_HANDLER.sendToServer(RELEASE_INSTANCE);
+        Confluence.NETWORK_HANDLER.sendToServer(
+                new FlailControlPacketC2S(Action.RELEASE));
     }
 }

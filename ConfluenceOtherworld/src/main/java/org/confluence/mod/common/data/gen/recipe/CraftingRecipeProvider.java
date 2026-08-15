@@ -549,6 +549,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(writer, "", "_from_slime_ball", new ItemStack(Items.TORCH, 3), Ingredient.of(Items.SLIME_BALL), Ingredient.of(Items.STICK));
 
         shapeless(writer, ConsumableItems.MANA_CRYSTAL.toStack(), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(writer, ConsumableItems.RECALL_MANA_CRYSTAL.toStack(), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(Items.ECHO_SHARD));
+        shapeless(writer, ConsumableItems.RECALL_LIFE_CRYSTAL.toStack(), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(Items.ECHO_SHARD));
         shapeless(writer, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
         shapeless(writer, FoodItems.CLOUD_DOUGH.toStack(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
         shapeless(writer, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));
@@ -1007,8 +1009,43 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         shapeless(writer, MaterialItems.RAW_ASPHALT.toStack(), AmountIngredient.of(2, ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(MaterialItems.GEL));
 
+        registerTemporaryRecipes(writer);
+
         writer.accept(new UnitFinishedRecipe(BoomBunnyRecipe.getInstance()));
         writer.accept(new UnitFinishedRecipe(DragonPepperExtractingRecipe.getInstance()));
+    }
+
+    /**
+     * 生成仍处于临时平衡阶段、但结构已经确定的原版工作台配方。
+     *
+     * <p>“临时”只表示后续可能调整材料或解锁方式，不表示资源应脱离 DataGen。将配方放在
+     * {@code temporary/} 命名空间下可以保留原资源 ID，同时让物品重命名或注册调整在生成时
+     * 立即暴露，而不是留下静默失效的手写 JSON。</p>
+     */
+    private void registerTemporaryRecipes(Consumer<FinishedRecipe> writer) {
+        Map<ItemLike, ItemLike> bottledDyes = Map.of(
+                Items.BLACK_DYE, VanityArmorItems.BLACK_DYE,
+                Items.BLUE_DYE, VanityArmorItems.BLUE_DYE,
+                Items.GREEN_DYE, VanityArmorItems.GREEN_DYE,
+                Items.RED_DYE, VanityArmorItems.RED_DYE
+        );
+        for (Map.Entry<ItemLike, ItemLike> entry : bottledDyes.entrySet()) {
+            shaped(writer, "temporary/", "_temporary", PortShapedRecipePattern.of(Map.of(
+                    '#', Ingredient.of(entry.getKey()),
+                    'a', Ingredient.of(PotionItems.BOTTLE)
+            ), List.of(
+                    "#",
+                    "a"
+            )), new ItemStack(entry.getValue()));
+        }
+
+        shaped(writer, "temporary/", "_temporary", PortShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Blocks.SCULK),
+                'a', Ingredient.of(Items.WATER_BUCKET)
+        ), List.of(
+                "#",
+                "a"
+        )), PaintItems.ECHO_COATING.toStack(8));
     }
 
     protected void shaped(Consumer<FinishedRecipe> writer, String prefix, String suffix, CraftingBookCategory category, PortShapedRecipePattern pattern, ItemStack result) {

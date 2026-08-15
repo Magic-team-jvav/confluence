@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,22 +15,27 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
+import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.joml.Matrix4f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+/**
+ * Otherworld 魔法弹幕的公共运行骨架。
+ *
+ * <p>本类统一处理所有者存活、粒子挂接、移动辅助、寿命与碰撞计数。年龄和已完成碰撞次数
+ * 会直接决定弹幕何时销毁，属于服务端玩法状态；当前 1.20 格式将它们保存在独立版本根中，
+ * 不读取旧扁平字段。缺失、类型错误或越界数据会复用战斗状态的安全失效通道。</p>
+ */
 public abstract class AbstractManaProjectile extends DamageSettableProjectile {
+    private static final String RUNTIME_TAG = "ConfluenceManaRuntime";
+    private static final int RUNTIME_VERSION = 1;
     protected boolean localVelocity = false;
-    private Set<UUID> penetrateSet; // use getter
     protected int collideCount;
     protected ParticleEmitter emitter;
     private Runnable particleChecker = this::doNothing;
@@ -46,6 +52,9 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
             discard();
         } else {
             super.tick();
+            if (isRemoved()) {
+                return;
+            }
             particleChecker.run();
             doHitCheck();
         }
@@ -66,9 +75,15 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     /// common
     protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
         if (target.hurt(getDamageSource(), getCalculatedDamage())) {
-            if (knockbackStrength > 0 || knockbackMotionY > 0) {
-                LibEntityUtils.knockBackA2B(this, target, knockbackStrength, knockbackMotionY);
-            }
+            combatState().recordSuccessfulHit(ProjectileHitRules.impactedEntity(target).getUUID());
+            float snapshotKnockback = getProjectileCombatSnapshot() == null
+                    ? 0.0F
+                    : getProjectileCombatSnapshot().knockback();
+            // 尚未把击退声明迁入物品动作的旧法术继续使用实体命中点数值；显式动作值优先。
+            float resolvedKnockback = snapshotKnockback > 0.0F
+                    ? snapshotKnockback
+                    : (float) knockbackStrength;
+            ProjectileHitRules.applyResolvedKnockback(this, target, resolvedKnockback, knockbackMotionY);
             return true;
         }
         return false;
@@ -77,25 +92,16 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     /// server side only
     protected boolean doPenetrateCheck(Entity entity) {
         if (level().isClientSide) return false;
-        return getPenetrateSet().add(entity.getUUID());
+        Entity impacted = ProjectileHitRules.impactedEntity(entity);
+        return combatState().canHit(impacted.getUUID(), false);
     }
 
     /// server side only
     protected void doDiscardInMaxPenetrate(int max) {
         if (level().isClientSide) return;
-        if (penetrateSet == null) return;
-        if (getPenetrateSet().size() >= max) {
+        if (combatState().successfulHitCount() >= max) {
             discard();
         }
-    }
-
-    /// server side only
-    protected Set<UUID> getPenetrateSet() {
-        if (level().isClientSide) return Set.of();
-        if (penetrateSet == null) {
-            this.penetrateSet = new HashSet<>();
-        }
-        return penetrateSet;
     }
 
     /// common
@@ -189,15 +195,50 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putInt("Age", tickCount);
-        compound.putInt("CollideCount", collideCount);
+        if (tickCount < 0) {
+            throw new IllegalStateException("Mana projectile age is outside the supported range");
+        }
+        if (collideCount < 0) {
+            throw new IllegalStateException("Mana projectile collision count is outside the supported range");
+        }
+        CompoundTag runtime = new CompoundTag();
+        runtime.putInt("Version", RUNTIME_VERSION);
+        runtime.putInt("Age", tickCount);
+        runtime.putInt("CollideCount", collideCount);
+        compound.put(RUNTIME_TAG, runtime);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.tickCount = compound.getInt("Age");
-        this.collideCount = compound.getInt("CollideCount");
+        if (combatState().isInvalid()) {
+            return;
+        }
+        if (!compound.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) {
+            combatState().invalidate("Missing or invalid mana projectile runtime state");
+            return;
+        }
+
+        CompoundTag runtime = compound.getCompound(RUNTIME_TAG);
+        if (!runtime.contains("Version", Tag.TAG_INT)
+                || runtime.getInt("Version") != RUNTIME_VERSION
+                || !runtime.contains("Age", Tag.TAG_INT)
+                || !runtime.contains("CollideCount", Tag.TAG_INT)) {
+            combatState().invalidate("Malformed mana projectile runtime state");
+            return;
+        }
+        int savedAge = runtime.getInt("Age");
+        int savedCollisions = runtime.getInt("CollideCount");
+        if (savedAge < 0) {
+            combatState().invalidate("Mana projectile age is outside the supported range");
+            return;
+        }
+        if (savedCollisions < 0) {
+            combatState().invalidate("Mana projectile collision count is outside the supported range");
+            return;
+        }
+        tickCount = savedAge;
+        collideCount = savedCollisions;
     }
 
     @Override

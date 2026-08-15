@@ -11,6 +11,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -23,23 +24,26 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 
 public final class ChestSubProvider implements LootTableSubProvider {
+    private static final List<net.minecraft.world.item.enchantment.Enchantment> MANA_ENCHANTMENTS = List.of(
+            ModEnchantments.MANA_REGENERATION.get(),
+            ModEnchantments.EFFICIENT_MAGIC.get(),
+            ModEnchantments.MANA_MENDING.get(),
+            ModEnchantments.CELESTIAL_ABSORPTION.get(),
+            ModEnchantments.SOOTHED_MANA.get(),
+            ModEnchantments.ARCANE_PROTECTION.get(),
+            ModEnchantments.SPELL_DESPERATION.get(),
+            ModEnchantments.MYSTIC_SURGE.get()
+    );
+
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
-        // VanillaChestLoot
-        EnchantRandomlyFunction.Builder manaEnchantmentBuilder = new EnchantRandomlyFunction.Builder()
-                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
-                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
-                .withEnchantment(ModEnchantments.MANA_MENDING.get())
-                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
-                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
-                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
-                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
-                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get());
+        // 原版宝箱战利品
         LootPoolSingletonContainer.Builder<?> manaEnchantedBookBuilder = LootItem.lootTableItem(Items.BOOK)
-                .apply(manaEnchantmentBuilder);
+                .apply(manaEnchantment());
 
         output.accept(Confluence.asResource("chests/surface_chests"), initialWorldSurfaceCommon()
                 .withPool(LootPool.lootPool()
@@ -630,15 +634,7 @@ public final class ChestSubProvider implements LootTableSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder()
-                                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
-                                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
-                                .withEnchantment(ModEnchantments.MANA_MENDING.get())
-                                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
-                                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
-                                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
-                                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
-                                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get()))
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(manaEnchantment())
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
@@ -711,15 +707,7 @@ public final class ChestSubProvider implements LootTableSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(29))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder()
-                                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
-                                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
-                                .withEnchantment(ModEnchantments.MANA_MENDING.get())
-                                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
-                                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
-                                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
-                                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
-                                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get()))
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(manaEnchantment())
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
@@ -800,15 +788,7 @@ public final class ChestSubProvider implements LootTableSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder()
-                                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
-                                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
-                                .withEnchantment(ModEnchantments.MANA_MENDING.get())
-                                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
-                                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
-                                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
-                                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
-                                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get()))
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(manaEnchantment())
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
@@ -884,15 +864,7 @@ public final class ChestSubProvider implements LootTableSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder()
-                                .withEnchantment(ModEnchantments.MANA_REGENERATION.get())
-                                .withEnchantment(ModEnchantments.EFFICIENT_MAGIC.get())
-                                .withEnchantment(ModEnchantments.MANA_MENDING.get())
-                                .withEnchantment(ModEnchantments.CELESTIAL_ABSORPTION.get())
-                                .withEnchantment(ModEnchantments.SOOTHED_MANA.get())
-                                .withEnchantment(ModEnchantments.ARCANE_PROTECTION.get())
-                                .withEnchantment(ModEnchantments.SPELL_DESPERATION.get())
-                                .withEnchantment(ModEnchantments.MYSTIC_SURGE.get()))
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(manaEnchantment())
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
@@ -943,5 +915,14 @@ public final class ChestSubProvider implements LootTableSubProvider {
                                         .apply(EnchantWithLevelsFunction.enchantWithLevels(ConstantValue.exactly(30.0F)))
                         )
                 );
+    }
+
+    /**
+     * 使用原版构建器创建只会抽取本模组魔力附魔的随机附魔函数。
+     */
+    private static LootItemFunction.Builder manaEnchantment() {
+        EnchantRandomlyFunction.Builder builder = EnchantRandomlyFunction.randomEnchantment();
+        MANA_ENCHANTMENTS.forEach(builder::withEnchantment);
+        return builder;
     }
 }

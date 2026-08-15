@@ -288,6 +288,7 @@ public final class ModCommands {
                     ConfluenceData.get(overworld).setStopAskForSoftcore(true);
                     return 1;
                 }))
+                .then(DeveloperTestSceneCommands.create())
         );
     }
 

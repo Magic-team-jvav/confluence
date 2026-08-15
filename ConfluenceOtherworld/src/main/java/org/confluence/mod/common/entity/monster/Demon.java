@@ -1,10 +1,13 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -12,10 +15,29 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.ShootAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.FlyingVolleyCombatAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.SteeringDashAction;
+import org.confluence.mod.common.entity.projectile.HostileDemonScytheProjectile;
+import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 
-public class Demon extends BaseFlyingMonster {
+/**
+ * 地狱恶魔的五连镰刀攻击与客户端动作表现。
+ *
+ * <p>恶魔先沿用鸟妖的一百五十刻接近阶段，再于第 175、183、191、199 和 201 tick
+ * 发射五枚镰刀。挥手状态持续 30 tick，与投掷动画长度一致；受伤动作优先于投掷，
+ * 二者结束后回到悬浮待机。</p>
+ */
+public class Demon extends Harpy {
+    private static final RawAnimation HURT =
+            RawAnimation.begin().thenPlay("hurt");
+    private static final RawAnimation ATTACK_THROW =
+            RawAnimation.begin().thenPlay("attack.throw");
+    private static final RawAnimation IDLE =
+            RawAnimation.begin().thenLoop("misc.idle");
 
     public Demon(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
@@ -29,32 +51,88 @@ public class Demon extends BaseFlyingMonster {
 
     @Override
     protected BTRoot createBT() {
+        BTNode combat = new FlyingVolleyCombatAction(
+                this,
+                new SteeringDashAction(
+                        this,
+                        0.95,
+                        0.5,
+                        0.02,
+                        10.0,
+                        90.0,
+                        30.0,
+                        30),
+                this::createDemonScythe,
+                150,
+                175,
+                183,
+                191,
+                199,
+                201);
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(Demon.this),
-                                new ShootAction(Demon.this, 8.0f, 0.3f), new WaitAction(20)),
-                        SequenceNode.of(new HasTargetCondition(Demon.this),
-                                new FlyWanderAction(Demon.this, 0.3, 8)),
-                        new FlyWanderAction(Demon.this, 0.2, 8)
-                );
+                        SequenceNode.of(
+                                new HasTargetCondition(Demon.this), combat),
+                        new FlyWanderAction(Demon.this, 0.2, 8));
             }
         };
     }
 
-    @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+    HostileDemonScytheProjectile createDemonScythe(LivingEntity target) {
+        HostileDemonScytheProjectile projectile =
+                new HostileDemonScytheProjectile(
+                        ModEntities.HOSTILE_DEMON_SCYTHE.get(), level());
+        projectile.configure(
+                this,
+                target,
+                (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        swing(InteractionHand.MAIN_HAND);
+        playSound(ModSoundEvents.WAVING.get());
+        return projectile;
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (!level().isClientSide && getTarget() == null && tickCount % 20 == 0) {
-            Player nearest = level().getNearestPlayer(this, 32);
-            if (nearest != null) setTarget(nearest);
-        }
+    public int getCurrentSwingDuration() {
+        return 30;
+    }
+
+    @Override
+    public void registerControllers(
+            AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(
+                this,
+                "Fly/Hurt/Throw",
+                3,
+                state -> {
+                    if (hurtTime > 0) {
+                        return state.setAndContinue(HURT);
+                    }
+                    if (swingTime > 0) {
+                        return state.setAndContinue(ATTACK_THROW);
+                    }
+                    return state.setAndContinue(IDLE);
+                }));
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return !source.is(DamageTypeTags.IS_FIRE) && super.hurt(source, amount);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.DEMON_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.DEMON_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.DEMON_DEATH.get();
     }
 }

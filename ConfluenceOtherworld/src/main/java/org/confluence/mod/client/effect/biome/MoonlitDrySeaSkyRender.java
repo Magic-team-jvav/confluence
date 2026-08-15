@@ -40,8 +40,10 @@ public class MoonlitDrySeaSkyRender {
 
         float flowStrength = 100.0F;
         long gameTime = 0;
-        if (Minecraft.getInstance().level != null) {
-            gameTime = Minecraft.getInstance().level.getGameTime();
+        // 切换世界时客户端世界可能被清空；只使用同一次读取获得的局部快照。
+        var level = Minecraft.getInstance().level;
+        if (level != null) {
+            gameTime = level.getGameTime();
         }
         float time = gameTime * 0.01F;
 
@@ -131,8 +133,10 @@ public class MoonlitDrySeaSkyRender {
         if (alphaMul < 0.01F) return;
 
         long gameTime = 0;
-        if (Minecraft.getInstance().level != null) {
-            gameTime = Minecraft.getInstance().level.getGameTime();
+        // 渲染阶段也可能恰好处于退出世界流程，不能在判空后重新读取单例字段。
+        var level = Minecraft.getInstance().level;
+        if (level != null) {
+            gameTime = level.getGameTime();
         }
         float time = event.getPartialTick().getGameTimeDeltaPartialTick(false) + gameTime;
 

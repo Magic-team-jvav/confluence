@@ -1,11 +1,14 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -14,84 +17,193 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * 世纪之花触手——从方块表面伸出攻击玩家，短时间后消失。
+ * 世纪之花第二阶段的附着触手。
+ *
+ * <p>触手不是一次性弹幕，也不会追逐生成瞬间保存的玩家坐标。每根触手拥有一个由
+ * 世纪之花管理的固定槽位：前八根附着在本体，其余九根平均附着在三个钩爪上。
+ * 槽位同时决定触手围绕锚点的基础方向，玩家吸引和同组触手排斥只负责连续修正方向，
+ * 因此不会全部重叠到同一个点。</p>
+ *
+ * <p>实体本身不写入区块存档。世纪之花是唯一的生命周期权威，在进入第二阶段、
+ * 重新加载或触手被击毁后的冷却结束时按槽位重建，避免临时部件重复加载。</p>
  */
-public class PlanteraTentacle extends Entity implements GeoEntity {
-    private static final float DAMAGE = 8.0F;
-    private static final int LIFETIME = 100;
+public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntity {
+    private static final String SLOT_TAG = "Slot";
+    private static final float DAMAGE = 15.6F;
+    private static final float MAX_HEALTH = 260.0F;
+    private static final double DISTANCE_FROM_ANCHOR = 6.0;
+    private static final double RADIAL_STEP = 0.15;
+    private static final double TARGET_ATTRACTION_RADIUS = 24.0;
+    private static final double TARGET_ATTRACTION = 0.25;
+    private static final double TENTACLE_REPULSION = 2.5;
+    private static final int CONTACT_COOLDOWN = 20;
+
+    private static final EntityDataAccessor<Integer> SLOT =
+            SynchedEntityData.defineId(PlanteraTentacle.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private LivingEntity master;
-    private Vec3 targetPos;
-    private int age;
+    private int contactCooldown;
 
     public PlanteraTentacle(EntityType<?> type, Level level) {
         super(type, level);
         this.noPhysics = true;
     }
 
-    public void setMaster(LivingEntity master, Vec3 target) {
-        this.master = master;
-        this.targetPos = target;
+    /**
+     * 将新建触手绑定到指定槽位。槽位必须由世纪之花分配，外部调用者不应自行复用。
+     */
+    public void setMaster(Plantera master, int slot) {
+        entityData.set(SLOT, Mth.clamp(slot, 0, Plantera.TENTACLE_COUNT - 1));
+        bindTo(master);
+        master.bindTentacle(this);
+    }
+
+    public int getSlot() {
+        return entityData.get(SLOT);
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (master == null || !master.isAlive() || age++ > LIFETIME) {
-            discard();
+    protected void definePartSynchedData() {
+        entityData.define(SLOT, 0);
+    }
+
+    @Override
+    protected void tickPart(Plantera master) {
+        if (level().isClientSide) {
             return;
         }
-        if (level().isClientSide) return;
 
-        // Reach toward target
-        if (targetPos != null) {
-            Vec3 toTarget = targetPos.subtract(position());
-            if (toTarget.lengthSqr() > 0.5) {
-                setDeltaMovement(toTarget.normalize().scale(0.15));
-            }
+        Vec3 anchor = master.getTentacleAnchor(getSlot());
+        Vec3 offset = getEyePosition().subtract(anchor);
+        double distance = offset.length();
+        if (distance < 1.0E-6) {
+            offset = master.getTentacleBaseDirection(getSlot())
+                    .scale(DISTANCE_FROM_ANCHOR);
+        } else {
+            double radialChange = Mth.clamp(
+                    DISTANCE_FROM_ANCHOR - distance,
+                    -RADIAL_STEP,
+                    RADIAL_STEP);
+            offset = offset.scale(
+                    Math.min(distance + radialChange,
+                            DISTANCE_FROM_ANCHOR) / distance);
         }
 
-        // Contact damage
-        for (LivingEntity e : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.3))) {
-            if (e != master && master.canAttack(e)) {
-                e.hurt(damageSources().mobAttack(master), DAMAGE);
+        LivingEntity target = master.getTarget();
+        if (target != null) {
+            Vec3 targetOffset = target.getEyePosition().subtract(anchor);
+            double attraction = Math.max(
+                    TARGET_ATTRACTION_RADIUS - targetOffset.length(),
+                    0.0) * TARGET_ATTRACTION;
+            offset = rotateToward(offset, targetOffset, attraction);
+        }
+
+        // 与 1.21 相同，所有存活触手都通过小角度旋转彼此推开。
+        for (PlanteraTentacle other : master.getTentacles()) {
+            if (other == null || other == this || other.isRemoved()) {
+                continue;
+            }
+            Vec3 otherOffset = other.getEyePosition().subtract(anchor);
+            double separation = other.getEyePosition()
+                    .distanceTo(getEyePosition());
+            offset = rotateToward(
+                    offset,
+                    otherOffset,
+                    -TENTACLE_REPULSION / Math.max(separation, 1.0));
+        }
+
+        Vec3 desiredEyePosition = anchor.add(offset);
+        Vec3 movement = master.getTentacleAnchorVelocity(getSlot())
+                .add(desiredEyePosition.subtract(getEyePosition()));
+        setDeltaMovement(movement);
+        move(MoverType.SELF, movement);
+
+        Vec3 lookDirection = getEyePosition().subtract(anchor);
+        if (lookDirection.lengthSqr() > 1.0E-6) {
+            setYRot((float) (Mth.atan2(lookDirection.z, lookDirection.x)
+                    * Mth.RAD_TO_DEG) - 90.0F);
+            setXRot((float) (-Mth.atan2(lookDirection.y,
+                    lookDirection.horizontalDistance())
+                    * Mth.RAD_TO_DEG));
+        }
+
+        if (contactCooldown > 0) {
+            contactCooldown--;
+            return;
+        }
+        for (LivingEntity entity : level().getEntitiesOfClass(
+                LivingEntity.class, getBoundingBox().inflate(0.25))) {
+            if (entity != master && master.canAttack(entity)
+                    && entity.hurt(damageSources().mobAttack(master), DAMAGE)) {
+                contactCooldown = CONTACT_COOLDOWN;
+                break;
             }
         }
     }
 
-    @Override
-    public boolean isPickable() {return true;}
+    /**
+     * 绕当前偏移与目标偏移的叉积旋转指定角度；使用 Rodrigues 公式避免把
+     * 1.21 的 JOML 四元数实现原样搬进公共实体逻辑。
+     */
+    private static Vec3 rotateToward(
+            Vec3 offset,
+            Vec3 targetOffset,
+            double degrees) {
+        if (Math.abs(degrees) < 1.0E-9
+                || offset.lengthSqr() < 1.0E-9
+                || targetOffset.lengthSqr() < 1.0E-9) {
+            return offset;
+        }
+        Vec3 axis = offset.cross(targetOffset);
+        if (axis.lengthSqr() < 1.0E-10) {
+            return offset;
+        }
+        axis = axis.normalize();
+        double radians = Math.toRadians(degrees);
+        double cosine = Math.cos(radians);
+        double sine = Math.sin(radians);
+        return offset.scale(cosine)
+                .add(axis.cross(offset).scale(sine))
+                .add(axis.scale(axis.dot(offset) * (1.0 - cosine)));
+    }
 
     @Override
-    public boolean canBeCollidedWith() {return true;}
+    protected float getMaxPartHealth() {
+        return MAX_HEALTH;
+    }
 
     @Override
-    protected void defineSynchedData() {}
+    protected Class<Plantera> getOwnerType() {
+        return Plantera.class;
+    }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag t) {}
+    public boolean isPickable() {
+        return false;
+    }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag t) {}
+    protected void onPartDestroyed(Plantera owner) {
+        owner.onTentacleDestroyed(getSlot(), this);
+    }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {return new ClientboundAddEntityPacket(this);}
+    protected void readPartSaveData(CompoundTag tag) {
+        entityData.set(SLOT, Mth.clamp(tag.getInt(SLOT_TAG), 0, Plantera.TENTACLE_COUNT - 1));
+    }
 
     @Override
-    public EntityDimensions getDimensions(Pose p) {return EntityDimensions.scalable(0.3F, 2.0F);}
-
-    @Override
-    public boolean is(Entity e) {return this == e;}
+    protected void addPartSaveData(CompoundTag tag) {
+        tag.putInt(SLOT_TAG, getSlot());
+    }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (master != null) master.hurt(source, amount * 0.3f);
-        return true;
+        return hurtOwnerAndPart(source, amount, 0.3F);
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {

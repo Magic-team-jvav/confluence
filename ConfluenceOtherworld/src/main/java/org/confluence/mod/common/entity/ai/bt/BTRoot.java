@@ -25,6 +25,11 @@ public abstract class BTRoot extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void start() {
         rootNode.start();
     }

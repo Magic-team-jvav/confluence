@@ -15,7 +15,8 @@ public record OpenAnglerDialogPacketS2C(int entityId, byte state, ItemStack ques
     public static final byte COMPLETED = 0;
     public static final byte NO_QUEST = 1;
     public static final byte SHOW_HINT = 2;
-    // CAN_SUBMIT is handled server-side by AnglerNPC, never reaches dialog
+    public static final byte WAKE_UP = 3;
+    // 可提交任务的状态由服务端钓鱼人直接处理，不进入客户端对话界面。
 
     public static final ResourceLocation ID = Confluence.asResource("open_angler_dialog");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenAnglerDialogPacketS2C> STREAM_CODEC =
@@ -26,11 +27,21 @@ public record OpenAnglerDialogPacketS2C(int entityId, byte state, ItemStack ques
                     OpenAnglerDialogPacketS2C::new
             );
 
+    /**
+     * 打开界面和读取客户端实体都必须在客户端主线程执行。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
     @Override
     public void work(Player player) {
         AnglerDialogScreen.State s = switch (state) {
             case COMPLETED -> AnglerDialogScreen.State.COMPLETED;
             case NO_QUEST -> AnglerDialogScreen.State.NO_QUEST;
+            case WAKE_UP -> AnglerDialogScreen.State.WAKE_UP;
             default -> AnglerDialogScreen.State.SHOW_HINT;
         };
         AnglerDialogScreen.open(entityId, s, questFish);

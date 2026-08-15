@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
@@ -25,12 +26,18 @@ import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 public class AccumulatingEnergyEntity extends Entity {
+    private static final int STRIKE_AGE = 160;
     protected static final EntityDataAccessor<Integer> ATTACHED_ENTITY = SynchedEntityData.defineId(AccumulatingEnergyEntity.class, EntityDataSerializers.INT);
 
     protected ParticleEmitter emitter;
     protected @Nullable LightningBolt lightningBolt;
+    /**
+     * 实体数字 ID 只用于双端同步；跨区块存档恢复必须使用稳定 UUID。
+     */
+    protected @Nullable UUID attachedEntityUUID;
 
     public AccumulatingEnergyEntity(EntityType<? extends AccumulatingEnergyEntity> entityType, Level level) {
         super(entityType, level);
@@ -69,7 +76,7 @@ public class AccumulatingEnergyEntity extends Entity {
             if (attachedEntity != null) {
                 setPos(attachedEntity.position());
             }
-            if (tickCount > 160) {
+            if (tickCount > STRIKE_AGE) {
                 if (lightningBolt == null) {
                     this.lightningBolt = new LightningBolt(EntityType.LIGHTNING_BOLT, level());
                 }
@@ -130,11 +137,24 @@ public class AccumulatingEnergyEntity extends Entity {
     }
 
     public void setAttachedEntity(@Nullable Entity entity) {
+        this.attachedEntityUUID = entity == null ? null : entity.getUUID();
         entityData.set(ATTACHED_ENTITY, entity == null ? -1 : entity.getId());
     }
 
     public @Nullable Entity getAttachedEntity() {
-        return level().getEntity(entityData.get(ATTACHED_ENTITY));
+        Entity byRuntimeId = level().getEntity(entityData.get(ATTACHED_ENTITY));
+        if (byRuntimeId != null && (attachedEntityUUID == null || attachedEntityUUID.equals(byRuntimeId.getUUID()))) {
+            if (attachedEntityUUID == null) attachedEntityUUID = byRuntimeId.getUUID();
+            return byRuntimeId;
+        }
+        if (attachedEntityUUID != null && level() instanceof ServerLevel serverLevel) {
+            Entity byUuid = serverLevel.getEntity(attachedEntityUUID);
+            if (byUuid != null) {
+                entityData.set(ATTACHED_ENTITY, byUuid.getId());
+                return byUuid;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -144,11 +164,19 @@ public class AccumulatingEnergyEntity extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
-        this.tickCount = compound.getInt("Age");
+        this.tickCount = Mth.clamp(compound.getInt("Age"), 0, STRIKE_AGE + 1);
+        this.attachedEntityUUID = compound.hasUUID("AttachedEntity")
+                ? compound.getUUID("AttachedEntity")
+                : null;
+        // 旧运行时 ID 在新进程中没有意义，等待 UUID 懒解析后重新同步。
+        entityData.set(ATTACHED_ENTITY, -1);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.putInt("Age", tickCount);
+        compound.putInt("Age", Mth.clamp(tickCount, 0, STRIKE_AGE + 1));
+        Entity attached = getAttachedEntity();
+        UUID uuid = attached == null ? attachedEntityUUID : attached.getUUID();
+        if (uuid != null) compound.putUUID("AttachedEntity", uuid);
     }
 }

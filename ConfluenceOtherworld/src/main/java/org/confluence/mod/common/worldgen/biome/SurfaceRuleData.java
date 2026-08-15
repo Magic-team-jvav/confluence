@@ -9,8 +9,14 @@ import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-// todo terrablender
-public class SurfaceRuleData {
+/**
+ * 为 TerraBlender 构造 Confluence 的地表材料规则。
+ *
+ * <p>这些规则只决定已选定群系中顶层与次表层方块的替换方式，不负责决定群系出现位置；
+ * 群系的噪声分布由各 {@link terrablender.api.Region} 实现提供。规则保持为方法延迟构造，
+ * 避免在 Forge 注册完成前过早调用模组方块的 {@code RegistryObject#get()}。</p>
+ */
+public final class SurfaceRuleData {
     private static SurfaceRules.RuleSource state(Block block) {
         return SurfaceRules.state(block.defaultBlockState());
     }
@@ -133,101 +139,37 @@ public class SurfaceRuleData {
 
     public static SurfaceRules.RuleSource makeConfluenceEndRules() {
         return SurfaceRules.sequence(
-                // 紫颂森林
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.CHORUS_FOREST),
-                        SurfaceRules.ifTrue(bedrockRoofSeed,
-                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, chorusGrassSurface()),
-                                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(4, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
-                                                state(Blocks.END_STONE)
-                                        )
-                                )
+                // 末地没有主世界/下界的顶部与底部基岩层，不能沿用 bedrockRoofSeed 作为外层条件。
+                // 原实现因此只会在世界顶部附近命中，普通末地岛实际不会换上自定义地表。
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.CHORUS_FOREST, ModBiomes.CHORUS_PLAINS),
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, chorusGrassSurface()),
+                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(4, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
+                                state(Blocks.END_STONE)
                         )
                 ),
-
-                // 紫颂森林
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.CHORUS_PLAINS),
-                        SurfaceRules.ifTrue(bedrockRoofSeed,
-                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, chorusGrassSurface()),
-                                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(4, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
-                                                state(Blocks.END_STONE)
-                                        )
-                                )
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.INVERSE_FOREST, ModBiomes.INVERSE_PLAINS),
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, state(NatureBlocks.INVERSE_GRASS_BLOCK.get())),
+                                state(Blocks.END_STONE)
                         )
                 ),
-
-                // 倒悬森林
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.INVERSE_FOREST),
-                        SurfaceRules.ifTrue(bedrockRoofSeed,
-                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, state(NatureBlocks.INVERSE_GRASS_BLOCK.get())),
-                                                state(Blocks.END_STONE)
-                                        )
-                                )
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.MOONBLIGHT_FOREST, ModBiomes.MOONBLIGHT_PLAINS),
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, silverSoulGrassSurface()),
+                                state(Blocks.END_STONE)
                         )
                 ),
-
-                // 倒悬平原
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.INVERSE_PLAINS),
-                        SurfaceRules.ifTrue(bedrockRoofSeed,
-                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.ON_CEILING, state(NatureBlocks.INVERSE_GRASS_BLOCK.get())),
-                                                state(Blocks.END_STONE)
-                                        )
-                                )
-                        )
-                ),
-
-                // 月蚀森林
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.MOONBLIGHT_FOREST),
-                        SurfaceRules.ifTrue(bedrockRoofSeed,
-                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, silverSoulGrassSurface()),
-                                                state(Blocks.END_STONE)
-                                        )
-                                )
-                        )
-                ),
-
-                // 月蚀平原
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.MOONBLIGHT_PLAINS),
-                        SurfaceRules.ifTrue(bedrockRoofSeed,
-                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, silverSoulGrassSurface()),
-                                                state(Blocks.END_STONE)
-                                        )
-                                )
-                        )
-                ),
-
-                // 朔月滩涂
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.DARK_MOON_FLATS),
-                        SurfaceRules.ifTrue(bedrockRoofSeed,
-                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(2, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
-                                                state(Blocks.END_STONE)
-                                        )
-                                )
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(2, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
+                                state(Blocks.END_STONE)
                         )
                 ),
-
-                // 映月空海
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.MOONLIT_DRY_SEA),
-                        SurfaceRules.ifTrue(bedrockRoofSeed,
-                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(6, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
-                                                state(Blocks.END_STONE)
-                                        )
-                                )
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(6, false, 1, CaveSurface.FLOOR), state(NatureBlocks.END_DIRT.get())),
+                                state(Blocks.END_STONE)
                         )
                 )
         );

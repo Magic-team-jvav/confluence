@@ -24,7 +24,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -92,13 +92,14 @@ public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
 
     static ObjectArrayList<ItemStack> modifyLoot(FishingHook self, ObjectArrayList<ItemStack> original) {
         if (self.getPlayerOwner() instanceof ServerPlayer player) {
-            Item questedFish = PlayerSpecialData.of(player).getQuestedFish();
-            if (questedFish != Items.AIR && LibMathUtils.checkChance(0.25F, self.getRandom())) {
-                return ObjectArrayList.of(questedFish.getDefaultInstance());
+            ServerLevel level = player.serverLevel();
+            AnglerData.INSTANCE.refreshIfNeeded(level);
+            ItemStack questedFish = AnglerData.INSTANCE.getQuestFish();
+            if (!questedFish.isEmpty() && LibMathUtils.checkChance(0.25F, self.getRandom())) {
+                return ObjectArrayList.of(questedFish);
             }
 
             int sample = player.hasEffect(ModEffects.CRATE) ? 4 : 10;
-            ServerLevel level = player.serverLevel();
             if (level.random.nextInt(sample) == 0) {
                 ResourceLocation lootTable = IMinecraftServer.isHardmode(level.getServer()) ? ModLootTables.CRATE_HARDMODE : ModLootTables.CRATE;
                 return level.getServer().getLootData().getLootTable(lootTable)

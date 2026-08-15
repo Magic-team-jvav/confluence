@@ -16,7 +16,7 @@
 					"pivot": [0, 1, 0]
 				},
 				{
-					"name": "LeftLeg",
+                    "name": "Vleft_leg",
 					"parent": "bone",
 					"pivot": [2, 13, 0],
 					"cubes": [
@@ -48,7 +48,7 @@
 					]
 				},
 				{
-					"name": "RightLeg",
+                    "name": "Vright_leg",
 					"parent": "bone",
 					"pivot": [-2, 13, 0],
 					"cubes": [
@@ -80,7 +80,7 @@
 					]
 				},
 				{
-					"name": "LeftArm",
+                    "name": "Vleft_arm",
 					"parent": "bone",
 					"pivot": [5.5, 23, 0],
 					"cubes": [
@@ -136,7 +136,7 @@
 					]
 				},
 				{
-					"name": "RightArm",
+                    "name": "Vright_arm",
 					"parent": "bone",
 					"pivot": [-5.5, 23, 0],
 					"cubes": [
@@ -192,7 +192,7 @@
 					]
 				},
 				{
-					"name": "Head",
+                    "name": "Vhead",
 					"parent": "bone",
 					"pivot": [0, 25, 0],
 					"cubes": [

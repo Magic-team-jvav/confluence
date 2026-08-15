@@ -34,13 +34,24 @@ public final class CommonConfigs {
     public static BooleanValue STOP_ASK_FOR_SOFTCORE;
     public static BooleanValue TERRA_STYLE_LIGHTNING_BOLT;
     public static IntValue TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER;
+    public static BooleanValue AUTO_SWING_ALL_SWORDS;
+    public static BooleanValue AUTO_RELEASE_ALL_BOWS;
+    public static BooleanValue AUTO_FIRE_ALL_GUNS;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
+    public static BooleanValue SHIMMER_DECOMPOSE_FIRST_TAG_ITEM;
     public static BooleanValue ALTAR_TIPS;
 
     public static BooleanValue DO_FALLING_STAR_SPAWNING;
     public static IntValue FALLING_STAR_INTERVAL;
+    /**
+     * 是否让本体敌怪跳过原版亮度门槛。
+     *
+     * <p>该开关只移除暗度判断，方块碰撞、世界边界、刷怪类型和各实体自己的高度、天气及维度
+     * 条件仍由放置谓词继续校验。</p>
+     */
+    public static BooleanValue SPAWN_WITHOUT_LIGHT;
 
     public static BooleanValue DO_NPC_SPAWNING;
     public static IntValue NPC_SPAWN_INTERVAL;
@@ -58,6 +69,9 @@ public final class CommonConfigs {
     public static IntValue DEFAULT_RESPAWN_TIME_MAX;
     public static IntValue BOSS_RESPAWN_TIME_MIN;
     public static IntValue BOSS_RESPAWN_TIME_MAX;
+    public static BooleanValue BOSS_CLEAR_WHEN_NO_TARGET;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_HEALTH;
+    public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE;
 
     public static BooleanValue WRAPPED_CRIMSON_HEART;
     public static BooleanValue INSTANTLY_HARDMODE_CONVERSION;
@@ -170,6 +184,13 @@ public final class CommonConfigs {
             DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
             STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
             {
+                builder.push("AutomaticWeaponUse");
+                AUTO_SWING_ALL_SWORDS = builder.define("autoSwingAllSwords", false);
+                AUTO_RELEASE_ALL_BOWS = builder.define("autoReleaseAllBows", false);
+                AUTO_FIRE_ALL_GUNS = builder.define("autoFireAllGuns", false);
+                builder.pop();
+            }
+            {
                 builder.push("LightningBolt");
                 TERRA_STYLE_LIGHTNING_BOLT = builder.define("terraStyleLightningBolt", true);
                 TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER = builder.defineInRange("terraStyleLightningBoltFrequencyMultiplier", 10, 1, 1000);
@@ -181,11 +202,13 @@ public final class CommonConfigs {
             builder.push("Recipe");
             FLETCHING_MENU = builder.define("fletchingMenu", true);
             SHIMMER_DECOMPOSE = builder.define("shimmerDecompose", true);
+            SHIMMER_DECOMPOSE_FIRST_TAG_ITEM = builder.define("shimmerDecomposeFirstTagItem", false);
             ALTAR_TIPS = builder.define("altarTips", true);
             builder.pop();
         }
         {
             builder.push("Spawning");
+            SPAWN_WITHOUT_LIGHT = builder.define("spawnWithoutLight", true);
             {
                 builder.push("Falling Star");
                 DO_FALLING_STAR_SPAWNING = builder.define("doFallingStarSpawning", true);
@@ -203,6 +226,11 @@ public final class CommonConfigs {
                 builder.push("Boss");
                 EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
                 DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
+                BOSS_CLEAR_WHEN_NO_TARGET = builder.define("bossClearWhenNoTarget", true);
+                BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder.defineInRange(
+                        "bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = builder.defineInRange(
+                        "bossAttributesMultiplierDamage", 1.0D, 0.0625D, 10.0D);
                 builder.pop();
             }
             DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);

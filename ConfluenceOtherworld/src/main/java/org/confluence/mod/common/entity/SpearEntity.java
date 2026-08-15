@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -27,13 +28,20 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TrapDamageHelper;
 
 /**
- * 长矛机关的发射物
+ * 长矛机关的伸缩碰撞实体。
+ *
+ * <p>来源机关位置、伸缩方向和当前阶段共同组成一次机关动作。实体可能随所在区块一起保存，
+ * 因而这些字段必须完整持久化；否则重载后实体会直接消失，来源机关也不会重新进入冷却调度。
+ * 回缩结束时仍会再次确认来源方块确实是长矛机关，避免损坏存档把任意方块当作机关修改。</p>
  */
 public class SpearEntity extends Entity {
     private static final EntityDataAccessor<Direction> DATA_DIRECTION = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.DIRECTION);
-    private boolean opened = false;
-    private float progress = 0;
-    public transient BlockPos trapPos;
+    private static final EntityDataAccessor<Boolean> DATA_OPENED = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_PROGRESS = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.FLOAT);
+    /**
+     * 生成该实体的机关位置。由机关在生成时写入，并随实体存档恢复。
+     */
+    public BlockPos trapPos;
 
     public SpearEntity(EntityType<SpearEntity> entityType, Level level) {
         super(entityType, level);
@@ -52,31 +60,43 @@ public class SpearEntity extends Entity {
             return;
         }
 
+        boolean opened = isOpened();
+        float progress = getProgress();
         if (opened) {
-            this.progress -= 0.05F;
+            progress -= 0.05F;
             if (progress <= 0.0F) {
-                this.opened = false;
-                this.progress = 0.0F;
+                opened = false;
+                progress = 0.0F;
                 if (!level().isClientSide) {
-                    level().setBlockAndUpdate(trapPos, level().getBlockState(trapPos).setValue(BlockStateProperties.TRIGGERED, true));
                     SpearTrapBlock block = FunctionalBlocks.SPEAR_TRAP.get();
+                    BlockState trapState = level().getBlockState(trapPos);
+                    if (!trapState.is(block)) {
+                        // 来源机关已被破坏时不再改写其他方块，也不留下无主实体。
+                        discard();
+                        return;
+                    }
+                    level().setBlockAndUpdate(trapPos, trapState.setValue(BlockStateProperties.TRIGGERED, true));
                     level().scheduleTick(trapPos, block, block.delay());
                 }
                 discard();
                 return;
             }
         } else {
-            this.progress += 0.05F;
+            progress += 0.05F;
             if (progress >= 1.0F) {
-                this.opened = true;
-                this.progress = 1.0F;
+                opened = true;
+                progress = 1.0F;
             } else {
                 BlockState blockState = level().getBlockState(blockPosition().relative(getDirection(), Mth.ceil(13 * progress)));
                 if (!blockState.isAir() && !blockState.liquid()) {
-                    this.opened = true;
+                    opened = true;
                 }
             }
         }
+
+        // 伸缩阶段使用同步实体数据；服务端从存档恢复后，客户端不会从零重新播放。
+        setOpened(opened);
+        setProgress(progress);
 
         setBoundingBox(Shulker.getProgressAabb(getDirection(), 13 * progress).move(getX() - 0.5, getY(), getZ() - 0.5));
 
@@ -95,20 +115,59 @@ public class SpearEntity extends Entity {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(DATA_DIRECTION, Direction.NORTH);
+        this.entityData.define(DATA_OPENED, false);
+        this.entityData.define(DATA_PROGRESS, 0.0F);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
-        PortDataResultExtension.ifSuccess(Direction.CODEC.parse(NbtOps.INSTANCE, compound.get("Direction")), this::setDirection);
+        setDirection(Direction.NORTH);
+        if (compound.contains("Direction")) {
+            PortDataResultExtension.ifSuccess(Direction.CODEC.parse(NbtOps.INSTANCE, compound.get("Direction")), this::setDirection);
+        }
+        this.trapPos = compound.contains("TrapPos", Tag.TAG_LONG) ? BlockPos.of(compound.getLong("TrapPos")) : null;
+        boolean opened = compound.getBoolean("Opened");
+        float savedProgress = compound.contains("Progress", Tag.TAG_ANY_NUMERIC)
+                ? compound.getFloat("Progress")
+                : 0.0F;
+        // NaN 会令伸缩分支永久无法完成；损坏数据统一回退到收起状态。
+        float progress = Float.isFinite(savedProgress) ? Mth.clamp(savedProgress, 0.0F, 1.0F) : 0.0F;
+        if (progress == 0.0F) {
+            opened = false;
+        }
+        setOpened(opened);
+        setProgress(progress);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         PortDataResultExtension.ifSuccess(Direction.CODEC.encodeStart(NbtOps.INSTANCE, getDirection()), t -> compound.put("Direction", t));
+        if (trapPos != null) {
+            compound.putLong("TrapPos", trapPos.asLong());
+        }
+        compound.putBoolean("Opened", isOpened());
+        float progress = getProgress();
+        compound.putFloat("Progress", Float.isFinite(progress) ? Mth.clamp(progress, 0.0F, 1.0F) : 0.0F);
     }
 
     public void setDirection(Direction direction) {
         entityData.set(DATA_DIRECTION, direction);
+    }
+
+    private void setOpened(boolean opened) {
+        entityData.set(DATA_OPENED, opened);
+    }
+
+    private boolean isOpened() {
+        return entityData.get(DATA_OPENED);
+    }
+
+    private void setProgress(float progress) {
+        entityData.set(DATA_PROGRESS, progress);
+    }
+
+    private float getProgress() {
+        return entityData.get(DATA_PROGRESS);
     }
 
     @Override

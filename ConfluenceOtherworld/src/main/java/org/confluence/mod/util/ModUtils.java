@@ -10,7 +10,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -64,6 +63,7 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
+import org.confluence.mod.common.advancement.BossAchievementSettlement;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
@@ -90,23 +90,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
-
 public final class ModUtils {
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraFurniture.MODID);
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void dropMoney(int amount, double x, double y, double z, Level level) {
-        int copper_count = amount % UPGRADES_COUNT;
-        int i = ((amount - copper_count) / UPGRADES_COUNT);
-        int silver_count = i % UPGRADES_COUNT;
-        int j = ((i - silver_count) / UPGRADES_COUNT);
-        int golden_count = j % UPGRADES_COUNT;
-        int k = (j - golden_count) / UPGRADES_COUNT;
-        LibEntityUtils.createItemEntity(ModItems.COPPER_COIN.get(), copper_count, x, y, z, level, 0);
-        LibEntityUtils.createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
-        LibEntityUtils.createItemEntity(ModItems.GOLD_COIN.get(), golden_count, x, y, z, level, 0);
-        LibEntityUtils.createItemEntity(ModItems.PLATINUM_COIN.get(), k, x, y, z, level, 0);
+        Coins coins = PlayerUtils.decodeCoin(amount);
+        LibEntityUtils.createItemEntity(ModItems.COPPER_COIN.get(), coins.copper(), x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.SILVER_COIN.get(), coins.silver(), x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.GOLD_COIN.get(), coins.gold(), x, y, z, level, 0);
+        LibEntityUtils.createItemEntity(ModItems.PLATINUM_COIN.get(), coins.platinum(), x, y, z, level, 0);
     }
 
     public static void dropMoney(long amount, double x, double y, double z, Level level) {
@@ -127,6 +120,10 @@ public final class ModUtils {
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, boolean onSurface) {
+        summonBoss(level, pos, boss, onSurface, null);
+    }
+
+    public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, boolean onSurface, @Nullable Player summoner) {
         double x = pos.getX() + 0.5 + LibMathUtils.randomFromTo(level.random, pos.getX(), 30, 50);
         double z = pos.getZ() + 0.5 + LibMathUtils.randomFromTo(level.random, pos.getZ(), 30, 50);
         double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
@@ -134,13 +131,19 @@ public final class ModUtils {
             y = pos.getY();
         }
         boss.setPos(x, y, z);
-//        if (TEUtils.internalSpawnEntity(boss, level)) {
-            level.addFreshEntityWithPassengers(boss);
-//        }
+        level.addFreshEntityWithPassengers(boss);
+        Player target = summoner == null ? level.getNearestPlayer(boss, 64.0) : summoner;
+        if (target != null) {
+            boss.initializeSummonedCombat(target);
+        }
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss) {
         summonBoss(level, pos, boss, true);
+    }
+
+    public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, Player summoner) {
+        summonBoss(level, pos, boss, true, summoner);
     }
 
     public static @Nullable BlockState getLeadAnvilDamage(BlockState state, DirectionProperty FACING) {
@@ -155,31 +158,29 @@ public final class ModUtils {
         return state;
     }
 
-    public static void bossDeath(ServerLevel level, LivingEntity living) {
+    public static void bossDeath(ServerLevel level, BaseBoss living) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return;
+        if (!living.tryBeginDeathRewardSettlement()) return;
 
+        List<ServerPlayer> participants = living.getOnlineCombatParticipants();
         EntityType<?> type = living.getType();
-        KillBoard.INSTANCE.defeat(type);
+        KillBoard.INSTANCE.defeat(level.getServer(), type);
         boolean isEaterOfWorlds = type == BossEntities.EATER_OF_WORLDS.get();
         if (isEaterOfWorlds || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
             if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
-                MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
-            } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
-                MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
+                MeteoriteTracker.INSTANCE.setSpawnAtNextNight(level, true);
+            } else if (!MeteoriteTracker.INSTANCE.isSpawnAtNextNight() && level.random.nextBoolean()) {
+                MeteoriteTracker.INSTANCE.setSpawnAtNextNight(level, true);
             }
         }
         boolean stickySituation = type == BossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
-        boolean is$WallOrHill$OfFlesh = type == BossEntities.WALL_OF_FLESH.get() || type == BossEntities.HILL_OF_FLESH.get();
-        ResourceKey<Level> dimension = living.level().dimension();
-        level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
+        participants.forEach(player -> {
             TreasureBagItem.createItemEntity(living, player);
-            if (isEaterOfWorlds) {
-                AchievementUtils.awardAchievement(player, "worm_fodder");
-            } else if (stickySituation) {
-                AchievementUtils.awardAchievement(player, "sticky_situation");
-            } else if (is$WallOrHill$OfFlesh) {
-                AchievementUtils.awardAchievement(player, "still_hungry");
-            }
+            BossAchievementSettlement.settle(
+                    player,
+                    type,
+                    stickySituation,
+                    living.isMechanicalMayhemParticipant(player.getUUID()));
         });
     }
 
@@ -214,7 +215,7 @@ public final class ModUtils {
     public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
         if (attacker != null && LibUtils.isAtLeastExpert(level, living.blockPosition())) {
             EntityType<?> type = attacker.getType();
-            if (type == BossEntities.CREEPER_OF_CTHULHU.get() || (type == BossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
+            if (type == MonsterEntities.VISUAL_NEURON.get() || (type == BossEntities.BRAIN_OF_CTHULHU.get() && attacker.getRandom().nextFloat() < 0.3333F)) {
                 boolean master = LibUtils.isMaster(level, living.blockPosition());
                 MobEffect debuff;
                 float min;

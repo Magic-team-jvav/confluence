@@ -15,7 +15,9 @@ import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.mesdag.portlib.registries.PortBlockRegistration;
 import org.mesdag.portlib.registries.PortItemRegistration;
@@ -46,6 +48,62 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("message.confluence.boss_spawn", "%s has awoken!");
+        add("message.confluence.boss_leave", "%s has been defeated!");
+        add(NpcEntities.FEMALE_ANGLER.get(), "Female Angler");
+        add(MountItems.FUZZY_CARROT.get(), "Fuzzy Carrot");
+        add(MountItems.SLIMY_SADDLE.get(), "Slimy Saddle");
+        add(MountItems.HONEYED_GOGGLES.get(), "Honeyed Goggles");
+        add("tooltip.confluence.rideable_item.desc", "Press hotkey to ride. Default R key");
+        add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
+        add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");
+        add(SummonItems.SLIME_STAFF.get(), "Slime Staff");
+        add(SummonItems.HORNET_STAFF.get(), "Hornet Staff");
+        add(SummonItems.SCULK_WISP_STAFF.get(), "Sculk Wisp Staff");
+        add(SummonItems.IMP_STAFF.get(), "Imp Staff");
+        add(SummonItems.SNOW_FLINX_STAFF.get(), "Flinx Staff");
+        add(SummonItems.SUMMON_WOODEN_SWORD_STAFF.get(), "Wooden Sword Staff");
+        add(SummonItems.SUMMON_STONE_SWORD_STAFF.get(), "Stone Sword Staff");
+        add(SummonItems.SUMMON_IRON_SWORD_STAFF.get(), "Iron Sword Staff");
+        add(SummonItems.SUMMON_GOLDEN_SWORD_STAFF.get(), "Golden Sword Staff");
+        add(SummonItems.SUMMON_DIAMOND_SWORD_STAFF.get(), "Diamond Sword Staff");
+        add(SummonItems.SUMMON_NETHERITE_SWORD_STAFF.get(), "Netherite Sword Staff");
+        add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
+        add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
+        add("tooltip.confluence.summon.damage", "Base summon damage: %s");
+        add("tooltip.confluence.summon.slots", "Minion slots: %s");
+        add("tooltip.confluence.summon.retrieve",
+                "Use while sneaking to retrieve all combat summons");
+        add(YoyoItems.AMAZON.get(), "Amazon");
+        add(YoyoItems.ARTERY.get(), "Artery");
+        add(YoyoItems.CASCADE.get(), "Cascade");
+        add(YoyoItems.CODE_1.get(), "Code 1");
+        add(YoyoItems.HIVE_FIVE.get(), "Hive-Five");
+        add(YoyoItems.MALAISE.get(), "Malaise");
+        add(YoyoItems.RALLY.get(), "Rally");
+        add(YoyoItems.VALOR.get(), "Valor");
+        add(YoyoItems.WOODEN_YOYO.get(), "Wooden Yoyo");
+        add("tooltip.confluence.yoyo.max_range", "Max Range");
+        add("tooltip.confluence.yoyo.exist_time", "Using Time");
+        add("tooltip.confluence.yoyo.hit_effect", "Hit Effect");
+        add(ModEntities.RIDEABLE_SLIME.get(), "Slime Mount");
+        add(ModEntities.RIDEABLE_BEE.get(), "Bee Mount");
+        add(ModEntities.YOYO.get(), "Yoyo");
+        add(ModEntities.HARPY_FEATHER.get(), "Harpy Feather Projectile");
+        add(ModEntities.HOSTILE_DEMON_SCYTHE.get(),
+                "Hostile Demon Scythe Projectile");
+        add(ModEntities.HORNET_STINGER.get(), "Hornet Stinger Projectile");
+        add(ModEntities.DARK_CASTER_PROJECTILE.get(),
+                "Dark Caster Projectile");
+        add(ModEntities.VILE_SPIT_PROJECTILE.get(), "Vile Spit Projectile");
+        add(ModEntities.FIRE_IMP_PROJECTILE.get(), "Fire Imp Projectile");
+        add(ModEntities.GASTROPOD_PROJECTILE.get(), "Gastropod Projectile");
+        add(ModEntities.PALADIN_HAMMER_PROJECTILE.get(),
+                "Paladin Hammer Projectile");
+        add(ModEntities.THROWN_ICE_PROJECTILE.get(), "Thrown Ice Projectile");
+        add(ModEntities.ICE_PILLAR.get(), "Ice Pillar");
+        add(ModEntities.SHADOW_HAND.get(), "Shadow Hand");
+
 //        var dimensionsLookup = registries.lookup(Registries.DIMENSION_TYPE);
 //        dimensionsLookup.ifPresent(dimensionTypeRegistryLookup -> addDefaultRegistryTranslations(dimensionTypeRegistryLookup, Registries.DIMENSION_TYPE.location().getPath()));
 //
@@ -342,19 +400,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("config.jade.plugin_confluence.jade_ponder_component", "Ponder Info");
         add("config.jade.plugin_confluence.jade_tombstone_info", "Tombstone Info");
 
-        add("creativetab.confluence.building_blocks", "Confluence | Buildings");
-        add("creativetab.confluence.natural_blocks", "Confluence | Naturals");
-        add("creativetab.confluence.materials", "Confluence | Materials");
-        add("creativetab.confluence.tools", "Confluence | Tools");
-        add("creativetab.confluence.warriors", "Confluence | Warriors");
-        add("creativetab.confluence.rangers", "Confluence | Rangers");
-        add("creativetab.confluence.mages", "Confluence | Mages");
-        add("creativetab.confluence.summoners", "Confluence | Summoners");
-        add("creativetab.confluence.misc", "Confluence | Miscellaneous");
-        add("creativetab.confluence.food_and_potions", "Confluence | Food & Potions");
-        add("creativetab.confluence.armors", "Confluence | Armors");
-        add("creativetab.confluence.mechanical", "Confluence | Mechanical");
-        add("creativetab.confluence.developer", "Confluence | Developer");
+        addCreativeTabTranslations();
 
         add("chat.type.advancement.achievement", "%s has achieved the achievement %s");
         add("chat.confluence.magic_conch", "The location where you listen to the sound of the ocean [%s] has been recorded");
@@ -394,6 +440,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.goblin_army.ready", "A goblin army is approaching!");
         add("message.confluence.goblin_army.start", "A goblin army has arrived!");
         add("message.confluence.goblin_army.victory", "The Goblin Army has been defeated!");
+        add("message.confluence.pumpkin_moon.start", "The Pumpkin Moon is rising...");
+        add("message.confluence.pumpkin_moon.end", "The Pumpkin Moon has ended.");
+        add("message.confluence.frost_moon.start", "The Frost Moon is rising...");
+        add("message.confluence.frost_moon.end", "The Frost Moon has ended.");
         add("message.confluence.scrying_orb.singleplayer", "All you see is your reflection in the orb.");
         add("message.confluence.scrying_orb.alone", "You're by yourself...");
         add("message.confluence.on_team", "On %s Team"); // capital
@@ -421,6 +471,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("commands.confluence.reforge.success", "Successfully reforged to: %s");
         add("commands.confluence.reforge.clear.success", "The prefix has been successfully cleared");
         add("commands.confluence.reforge.set.unavailable_group", "This item cannot have this prefix applied!");
+        add("button.confluence.reforge", "Reforge");
+        add("container.confluence.reforge", "Goblin Reforge");
         add("commands.confluence.arguments.prefix.invalid", "Invalid Prefix!");
         add("commands.confluence.arguments.game_event.unknown", "Unknown Game Event!");
 
@@ -440,6 +492,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("enchantment.confluence.spell_desperation.desc", "The lower the remaining mana ratio, the higher the attack");
         add("enchantment.confluence.mystic_surge", "Mystic Surge");
         add("enchantment.confluence.mystic_surge.desc", "The higher the remaining mana ratio, the higher the attack");
+        add("enchantment.confluence.whip_sweep", "Whip Sweep");
+        add("enchantment.confluence.whip_sweep.desc", "Chance to deal a wide area of damage");
+        add("enchantment.confluence.multi_boomerang", "Multi Shoot Boomerang");
+        add("enchantment.confluence.multi_boomerang.desc", "Fires an additional boomerang");
+        add("enchantment.confluence.summoner_pact", "Summoner's Pact");
+        add("enchantment.confluence.summoner_pact.desc", "Increases minion capacity");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");
@@ -450,6 +508,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.silver", "Silver ");
         add("tooltip.price.copper", "Copper ");
         add("tooltip.price.sell", "Sell: ");
+        add("tooltip.price.buy", "Buy: ");
 
         add("tooltip.jei.state_properties", "Required State Properties:");
         add("tooltip.jei.count_range", "Count: %s-%s");
@@ -676,6 +735,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.drops_money.copper", " %s copper");
 
         add("key.confluence.hook", "Throwing Hook");
+        add("key.confluence.mount", "Toggle Mount");
         add("key.confluence.specular_detail", "Detail observation of visual potions");
         add("key.confluence.gameplay", "Confluence Key Settings");
         add("key.confluence.healing", "Quick Use Health Potion");
@@ -770,8 +830,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin.0", "Sneak and right-click to merge into a primary coin");
         add("tooltip.item.confluence.hardmode_convertor.0", "Right-clicking on the ground immediately turns the current world into Hardmode");
         add("tooltip.item.confluence.life_crystal.0", "Permanently increases maximum life by 4");
+        add("tooltip.item.confluence.recall_life_crystal.0", "Permanently decreases maximum life by 4");
         add("tooltip.item.confluence.life_fruit.0", "Permanently increases maximum life by 1");
         add("tooltip.item.confluence.mana_crystal.0", "Permanently increases maximum mana by 20");
+        add("tooltip.item.confluence.recall_mana_crystal.0", "Permanently decreases maximum mana by 20");
         add("tooltip.item.confluence.arcane_crystal.0", "Permanently increases mana regeneration");
         add("tooltip.item.confluence.vital_crystal.0", "Permanently boosts life regeneration");
         add("tooltip.item.confluence.aegis_apple.0", "Permanently increases defense");
@@ -804,6 +866,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "Causes Fire");
         add("tooltip.item.confluence.can_penetrate", "Can Penetrate");
 
+        add("tooltip.confluence.ranged_damage", "Ranged Damage: %s");
+        add("tooltip.confluence.critical_chance", "Critical Strike Chance: %s%%");
         add("tooltip.confluence.attack_damage", "Damage: %s");
         add("tooltip.confluence.mana_cost", "Mana Cost: %s");
         add("tooltip.confluence.velocity", "Projectile Speed: %s");
@@ -1095,6 +1159,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.frozen_zombie", "Frozen Zombie");
         add("entity.confluence.raincoat_zombie", "Raincoat Zombie");
         add("entity.confluence.undead_miner", "Undead Miner");
+        add("entity.confluence.baby_slime", "Baby Slime");
+        add("entity.confluence.mother_slime", "Mother Slime");
 
         new DialogsLanguageSubProvider(this::add, true);
 
@@ -1139,40 +1205,41 @@ public class ModEnglishProvider extends LanguageProvider {
         add("terra_curio.subtitle.rocket_boots_boost", "Rocket Boots: Boost");
         add("terra_curio.subtitle.rocket_boots_stop", "Rocket Boots: Stop");
 
-        add("terra_entity.subtitle.routine_hurt", "Mob: Hurt");
-        add("terra_entity.subtitle.routine_death", "Mob: Death");
-        add("terra_entity.subtitle.roar", "Boss: Roar");
-        add("terra_entity.subtitle.hurried_roaring", "Boss: Hurried Roar");
-        add("terra_entity.subtitle.blood_crawler_death", "Blood Crawler: Death");
-        add("terra_entity.subtitle.blood_crawler_free", "Blood Crawler: Blood Flow");
-        add("terra_entity.subtitle.blood_crawler_hurt", "Blood Crawler: Hurt");
-        add("terra_entity.subtitle.bloody_spore_death", "Bloody Spore: Death");
-        add("terra_entity.subtitle.bloody_spore_fuse", "Bloody Spore: Gestation");
-        add("terra_entity.subtitle.bloody_spore_hit", "Bloody Spore: Hit");
-        add("terra_entity.subtitle.drippler_death", "Drippler: Death");
-        add("terra_entity.subtitle.drippler_hurt", "Drippler: Hurt");
-        add("terra_entity.subtitle.metal_death", "Metal Mob: Death");
-        add("terra_entity.subtitle.metal_hurt", "Metal Mob: Hurt");
-        add("terra_entity.subtitle.visual_neuron_death", "Visual Neuron: Death");
-        add("terra_entity.subtitle.visual_neuron_hurt", "Visual Neuron: Hurt");
-        add("terra_entity.subtitle.dig_sound", "Worm Creature: Digging");
-        add("terra_entity.subtitle.giant_shelly_death", "Giant Shelly: Death");
-        add("terra_entity.subtitle.giant_shelly_free_0", "Giant Shelly: Rolling");
-        add("terra_entity.subtitle.giant_shelly_free_1", "Giant Shelly: Crawling");
-        add("terra_entity.subtitle.giant_shelly_hurt", "Giant Shelly: Hurt");
-        add("terra_entity.subtitle.tr_zombie_death", "Zombie: Death");
-        add("terra_entity.subtitle.tr_skeleton_hurt", "Skeleton: Hurt");
-        add("terra_entity.subtitle.waving", "Player: Waving");
-        add("terra_entity.subtitle.use_mounts", "Player: Summon Mount");
-        add("terra_entity.subtitle.decayeder_ambient", "Decayeder: Rubbing Body");
-        add("terra_entity.subtitle.decayeder_death", "Decayeder: Death");
-        add("terra_entity.subtitle.decayeder_hurt", "Decayeder: Hurt");
-        add("terra_entity.subtitle.decayeder_step", "Decayeder: Footsteps");
-        add("terra_entity.subtitle.whip_attack", "Whip: Lash");
-        add("terra_entity.subtitle.routine_summon", "Summon: Summon");
-        add("terra_entity.subtitle.summon_hornet", "Hornet: Summon");
-        add("terra_entity.subtitle.summon_eye", "Flying Summon: Summon");
-        add("terra_entity.subtitle.summon_imp", "Imp: Summon");
+        add("confluence.subtitle.routine_hurt", "Mob: Hurt");
+        add("confluence.subtitle.routine_death", "Mob: Death");
+        add("confluence.subtitle.roar", "Boss: Roar");
+        add("confluence.subtitle.hurried_roaring", "Boss: Hurried Roar");
+        add("confluence.subtitle.blood_crawler_death", "Blood Crawler: Death");
+        add("confluence.subtitle.blood_crawler_free", "Blood Crawler: Blood Flow");
+        add("confluence.subtitle.blood_crawler_hurt", "Blood Crawler: Hurt");
+        add("confluence.subtitle.bloody_spore_death", "Bloody Spore: Death");
+        add("confluence.subtitle.bloody_spore_fuse", "Bloody Spore: Gestation");
+        add("confluence.subtitle.bloody_spore_hit", "Bloody Spore: Hit");
+        add("confluence.subtitle.drippler_death", "Drippler: Death");
+        add("confluence.subtitle.drippler_hurt", "Drippler: Hurt");
+        add("confluence.subtitle.metal_death", "Metal Mob: Death");
+        add("confluence.subtitle.metal_hurt", "Metal Mob: Hurt");
+        add("confluence.subtitle.visual_neuron_death", "Visual Neuron: Death");
+        add("confluence.subtitle.visual_neuron_hurt", "Visual Neuron: Hurt");
+        add("confluence.subtitle.dig_sound", "Worm Creature: Digging");
+        add("confluence.subtitle.giant_shelly_death", "Giant Shelly: Death");
+        add("confluence.subtitle.giant_shelly_free_0", "Giant Shelly: Rolling");
+        add("confluence.subtitle.giant_shelly_free_1", "Giant Shelly: Crawling");
+        add("confluence.subtitle.giant_shelly_hurt", "Giant Shelly: Hurt");
+        add("confluence.subtitle.tr_zombie_death", "Zombie: Death");
+        add("confluence.subtitle.tr_skeleton_hurt", "Skeleton: Hurt");
+        add("confluence.subtitle.waving", "Player: Waving");
+        add("confluence.subtitle.use_mounts", "Player: Summon Mount");
+        add("confluence.subtitle.decayeder_ambient", "Decayeder: Rubbing Body");
+        add("confluence.subtitle.decayeder_death", "Decayeder: Death");
+        add("confluence.subtitle.decayeder_hurt", "Decayeder: Hurt");
+        add("confluence.subtitle.decayeder_step", "Decayeder: Footsteps");
+        add("confluence.subtitle.whip_attack", "Whip: Lash");
+        add("confluence.subtitle.routine_summon", "Summon: Summon");
+        add("confluence.subtitle.summon_hornet", "Hornet: Summon");
+        add("confluence.subtitle.summon_eye", "Flying Summon: Summon");
+        add("confluence.subtitle.summon_imp", "Imp: Summon");
+        addCreatureSoundTranslations();
 
         // Tags
         add("tag.fluid.confluence.fishing_able", "Can Fishing Fluid");
@@ -1449,67 +1516,67 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.minecraft.zombie.slime", "Slime Zombie");
         add("entity.minecraft.zombie.raincoat", "Raincoat Zombie");
         add("entity.minecraft.zombie.frozen", "Frost Zombie");
-        add("entity.terra_entity.duck.0", "Wild Duck");
-        add("entity.terra_entity.duck.1", "Duck");
-        add("entity.terra_entity.demon_eye.dilated", "Dilated Demon Eye");
-        add("entity.terra_entity.demon_eye.dilated_small", "Small Dilated Demon Eye");
-        add("entity.terra_entity.demon_eye.sleepy", "Sleepy Demon Eye");
-        add("entity.terra_entity.demon_eye.sleepy_big", "Big Sleepy Demon Eye");
-        add("entity.terra_entity.demon_eye.purple", "Purple Demon Eye");
-        add("entity.terra_entity.demon_eye.purple_big", "Big Purple Demon Eye");
-        add("entity.terra_entity.demon_eye.normal", "Demon Eye");
-        add("entity.terra_entity.demon_eye.normal_big", "Big Demon Eye");
-        add("entity.terra_entity.demon_eye.green", "Green Demon Eye");
-        add("entity.terra_entity.demon_eye.green_small", "Small Green Demon Eye");
-        add("entity.terra_entity.demon_eye.cataract", "Cataract Demon Eye");
-        add("entity.terra_entity.demon_eye.cataract_big", "Big Cataract Demon Eye");
-        add("entity.terra_entity.worm.0", "Enchanted Nightcrawler");
-        add("entity.terra_entity.worm.1", "Gold Worm");
-        add("entity.terra_entity.worm.2", "Worm");
-        add("entity.terra_entity.grasshopper.0", "Gold Grasshopper");
-        add("entity.terra_entity.grasshopper.1", "Grasshopper");
-        add("entity.terra_entity.ladybug.0", "Gold Ladybug");
-        add("entity.terra_entity.ladybug.1", "Ladybug");
-        add("entity.terra_entity.fealing.0", "Flying Spirit");
-        add("entity.terra_entity.fairy.0", "Pink Fairy");
-        add("entity.terra_entity.fairy.1", "Green Fairy");
-        add("entity.terra_entity.fairy.2", "Blue Fairy");
-        add("entity.terra_entity.scorpion.0", "Black Scorpion");
-        add("entity.terra_entity.scorpion.1", "Scorpion");
-        add("entity.terra_entity.squirrel.0", "Gray Squirrel");
-        add("entity.terra_entity.squirrel.1", "Red Squirrel");
-        add("entity.terra_entity.jewel_squirrel.0", "Amber Squirrel");
-        add("entity.terra_entity.jewel_squirrel.1", "Gold Squirrel");
-        add("entity.terra_entity.jewel_squirrel.2", "Amethyst Squirrel");
-        add("entity.terra_entity.jewel_squirrel.3", "Diamond Squirrel");
-        add("entity.terra_entity.jewel_squirrel.4", "Emerald Squirrel");
-        add("entity.terra_entity.jewel_squirrel.5", "Ruby Squirrel");
-        add("entity.terra_entity.jewel_squirrel.6", "Sapphire Squirrel");
-        add("entity.terra_entity.jewel_squirrel.7", "Topaz Squirrel");
-        add("entity.terra_entity.jewel_bunny.0", "Amber Bunny");
-        add("entity.terra_entity.jewel_bunny.1", "Amethyst Bunny");
-        add("entity.terra_entity.jewel_bunny.2", "Diamond Bunny");
-        add("entity.terra_entity.jewel_bunny.3", "Emerald Bunny");
-        add("entity.terra_entity.jewel_bunny.4", "Gold Bunny");
-        add("entity.terra_entity.jewel_bunny.5", "Ruby Bunny");
-        add("entity.terra_entity.jewel_bunny.6", "Sapphire Bunny");
-        add("entity.terra_entity.jewel_bunny.7", "Topaz Bunny");
-        add("entity.terra_entity.butterfly.0", "Gold Butterfly");
-        add("entity.terra_entity.butterfly.1", "Julia Butterfly");
-        add("entity.terra_entity.butterfly.2", "Monarch Butterfly");
-        add("entity.terra_entity.butterfly.3", "Purple Emperor Butterfly");
-        add("entity.terra_entity.butterfly.4", "Red Admiral Butterfly");
-        add("entity.terra_entity.butterfly.5", "Sulphur Butterfly");
-        add("entity.terra_entity.butterfly.6", "Tree Nymph Butterfly");
-        add("entity.terra_entity.butterfly.7", "Ulysses Butterfly");
-        add("entity.terra_entity.butterfly.8", "Zebra Swallowtail Butterfly");
-        add("entity.terra_entity.dragonfly.0", "Black Dragonfly");
-        add("entity.terra_entity.dragonfly.1", "Blue Dragonfly");
-        add("entity.terra_entity.dragonfly.2", "Gold Dragonfly");
-        add("entity.terra_entity.dragonfly.3", "Green Dragonfly");
-        add("entity.terra_entity.dragonfly.4", "Orange Dragonfly");
-        add("entity.terra_entity.dragonfly.5", "Red Dragonfly");
-        add("entity.terra_entity.dragonfly.6", "Yellow Dragonfly");
+        add("entity.confluence.duck.0", "Wild Duck");
+        add("entity.confluence.duck.1", "Duck");
+        add("entity.confluence.demon_eye.dilated", "Dilated Demon Eye");
+        add("entity.confluence.demon_eye.dilated_small", "Small Dilated Demon Eye");
+        add("entity.confluence.demon_eye.sleepy", "Sleepy Demon Eye");
+        add("entity.confluence.demon_eye.sleepy_big", "Big Sleepy Demon Eye");
+        add("entity.confluence.demon_eye.purple", "Purple Demon Eye");
+        add("entity.confluence.demon_eye.purple_big", "Big Purple Demon Eye");
+        add("entity.confluence.demon_eye.normal", "Demon Eye");
+        add("entity.confluence.demon_eye.normal_big", "Big Demon Eye");
+        add("entity.confluence.demon_eye.green", "Green Demon Eye");
+        add("entity.confluence.demon_eye.green_small", "Small Green Demon Eye");
+        add("entity.confluence.demon_eye.cataract", "Cataract Demon Eye");
+        add("entity.confluence.demon_eye.cataract_big", "Big Cataract Demon Eye");
+        add("entity.confluence.worm.0", "Enchanted Nightcrawler");
+        add("entity.confluence.worm.1", "Gold Worm");
+        add("entity.confluence.worm.2", "Worm");
+        add("entity.confluence.grasshopper.0", "Gold Grasshopper");
+        add("entity.confluence.grasshopper.1", "Grasshopper");
+        add("entity.confluence.ladybug.0", "Gold Ladybug");
+        add("entity.confluence.ladybug.1", "Ladybug");
+        add("entity.confluence.fealing.0", "Flying Spirit");
+        add("entity.confluence.fairy.0", "Pink Fairy");
+        add("entity.confluence.fairy.1", "Green Fairy");
+        add("entity.confluence.fairy.2", "Blue Fairy");
+        add("entity.confluence.scorpion.0", "Black Scorpion");
+        add("entity.confluence.scorpion.1", "Scorpion");
+        add("entity.confluence.squirrel.0", "Gray Squirrel");
+        add("entity.confluence.squirrel.1", "Red Squirrel");
+        add("entity.confluence.jewel_squirrel.0", "Amber Squirrel");
+        add("entity.confluence.jewel_squirrel.1", "Gold Squirrel");
+        add("entity.confluence.jewel_squirrel.2", "Amethyst Squirrel");
+        add("entity.confluence.jewel_squirrel.3", "Diamond Squirrel");
+        add("entity.confluence.jewel_squirrel.4", "Emerald Squirrel");
+        add("entity.confluence.jewel_squirrel.5", "Ruby Squirrel");
+        add("entity.confluence.jewel_squirrel.6", "Sapphire Squirrel");
+        add("entity.confluence.jewel_squirrel.7", "Topaz Squirrel");
+        add("entity.confluence.jewel_bunny.0", "Amber Bunny");
+        add("entity.confluence.jewel_bunny.1", "Amethyst Bunny");
+        add("entity.confluence.jewel_bunny.2", "Diamond Bunny");
+        add("entity.confluence.jewel_bunny.3", "Emerald Bunny");
+        add("entity.confluence.jewel_bunny.4", "Gold Bunny");
+        add("entity.confluence.jewel_bunny.5", "Ruby Bunny");
+        add("entity.confluence.jewel_bunny.6", "Sapphire Bunny");
+        add("entity.confluence.jewel_bunny.7", "Topaz Bunny");
+        add("entity.confluence.butterfly.0", "Gold Butterfly");
+        add("entity.confluence.butterfly.1", "Julia Butterfly");
+        add("entity.confluence.butterfly.2", "Monarch Butterfly");
+        add("entity.confluence.butterfly.3", "Purple Emperor Butterfly");
+        add("entity.confluence.butterfly.4", "Red Admiral Butterfly");
+        add("entity.confluence.butterfly.5", "Sulphur Butterfly");
+        add("entity.confluence.butterfly.6", "Tree Nymph Butterfly");
+        add("entity.confluence.butterfly.7", "Ulysses Butterfly");
+        add("entity.confluence.butterfly.8", "Zebra Swallowtail Butterfly");
+        add("entity.confluence.dragonfly.0", "Black Dragonfly");
+        add("entity.confluence.dragonfly.1", "Blue Dragonfly");
+        add("entity.confluence.dragonfly.2", "Gold Dragonfly");
+        add("entity.confluence.dragonfly.3", "Green Dragonfly");
+        add("entity.confluence.dragonfly.4", "Orange Dragonfly");
+        add("entity.confluence.dragonfly.5", "Red Dragonfly");
+        add("entity.confluence.dragonfly.6", "Yellow Dragonfly");
         // Special world seeds
         add("title.confluence.secret_seeds_selection.empty", "Info");
         add("description.confluence.secret_seeds_selection.empty", "Please choose how your world will be built with the options above.");
@@ -1607,6 +1674,9 @@ public class ModEnglishProvider extends LanguageProvider {
         addAll(IconItems.ITEMS);
         addAll(LanceItems.ITEMS);
         addAll(LightPetItems.ITEMS);
+        add(PetItems.CHESTER_STAFF.get(), "Eye Bone");
+        add(PetItems.WALLET.get(), "Money Trough");
+        add("container.confluence.chester", "Chester");
         addAll(ManaWeaponItems.ITEMS);
         addAll(MaterialItems.ITEMS);
         addAll(MinecartItems.ITEMS);
@@ -1626,7 +1696,8 @@ public class ModEnglishProvider extends LanguageProvider {
         addAll(VanityArmorItems.ITEMS);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
-        ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));
+        ModEntities.getEntities().forEach(register -> register.getEntries()
+                .forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath()))));
 
         add(QuestedFishes.CAPN_TUNABEARD.get(), "Cap'n Tunabeard");
         add(FoodItems.PINA_COLADA.get(), "Piña Colada");
@@ -1766,7 +1837,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(TCEffects.PALADINS_SHIELD.get(), "25% of damage taken will be redirected to another player");
 
         addEffect(ModEffects.DEMONIC_THOUGHTS.get(), "Being inflicted with Demonic Thoughts again spawns Eater of Souls");
-        addEffect(ModEffects.SUMMON_FOCUS.get(), "Minions deal additional damage");
+        addWhipTagEffectTranslations();
         addEffect(ModEffects.HELLFIRE.get(), "Losing life");
         addEffect(ModEffects.FROST_BURN.get(), "Losing life; Cannot regenerate life");
         addEffect(ModEffects.CRIMSON_STORM.get(), "You are trapped in the storm, there is no escape.");
@@ -1775,12 +1846,122 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.SCARED.get(), "Like a bird startled by the sound of a bow, fleeing in all directions");
 
         add("item.confluence.spawn_eggs", "%s Spawn Egg");
+        add(SpawnEggItems.RETINAZER_SPAWN_EGG.get(), "Retinazer Spawn Egg");
+        add(SpawnEggItems.SPAZMATISM_SPAWN_EGG.get(), "Spazmatism Spawn Egg");
+        add(SpawnEggItems.THE_DESTROYER_SPAWN_EGG.get(), "The Destroyer Spawn Egg");
+        add(SpawnEggItems.THE_TWINS_SPAWN_EGG.get(), "The Twins Spawn Egg");
+        add(SpawnEggItems.SKELETRON_PRIME_SPAWN_EGG.get(), "Skeletron Prime Spawn Egg");
+        add(SpawnEggItems.PLANTERA_SPAWN_EGG.get(), "Plantera Spawn Egg");
+        add(SpawnEggItems.PRIME_ENDER_DRAGON_SPAWN_EGG.get(), "Prime Ender Dragon Spawn Egg");
 
         // TouhouLittleMaid
         add("task.confluence.use_life_crystal", "Use Life Crystal");
         add("task.confluence.use_life_crystal.desc", "Mail will use life crystal to heal herself");
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
     }
+
+    /**
+     * 注册生物与战斗相关声音的英文字幕。
+     *
+     * <p>字幕键与声音事件注册时声明的语言键保持一致；集中放在 Provider 内，
+     * 便于数据生成阶段直接检查重复键，并避免额外维护中间映射类。</p>
+     */
+    private void addCreatureSoundTranslations() {
+        add("confluence.subtitle.routine_hurt", "Mob: Hurt");
+        add("confluence.subtitle.routine_death", "Mob: Death");
+        add("confluence.subtitle.roar", "Boss: Roar");
+        add("confluence.subtitle.hurried_roaring", "Boss: Hurried Roar");
+        add("confluence.subtitle.blood_crawler_death", "Blood Crawler: Death");
+        add("confluence.subtitle.blood_crawler_free", "Blood Crawler: Blood Flow");
+        add("confluence.subtitle.blood_crawler_hurt", "Blood Crawler: Hurt");
+        add("confluence.subtitle.bloody_spore_death", "Bloody Spore: Death");
+        add("confluence.subtitle.bloody_spore_fuse", "Bloody Spore: Swelling");
+        add("confluence.subtitle.bloody_spore_hit", "Bloody Spore: Hurt");
+        add("confluence.subtitle.drippler_death", "Drippler: Death");
+        add("confluence.subtitle.drippler_hurt", "Drippler: Hurt");
+        add("confluence.subtitle.metal_death", "Metal Creature: Death");
+        add("confluence.subtitle.metal_hurt", "Metal Creature: Hurt");
+        add("confluence.subtitle.visual_neuron_death", "Visual Neuron: Death");
+        add("confluence.subtitle.visual_neuron_hurt", "Visual Neuron: Hurt");
+        add("confluence.subtitle.dig_sound", "Worm Creature: Digging");
+        add("confluence.subtitle.giant_shelly_death", "Giant Shelly: Death");
+        add("confluence.subtitle.giant_shelly_free_0", "Giant Shelly: Rolling");
+        add("confluence.subtitle.giant_shelly_free_1", "Giant Shelly: Crawling");
+        add("confluence.subtitle.giant_shelly_hurt", "Giant Shelly: Hurt");
+        add("confluence.subtitle.face_hoot", "Face Monster: Hoot");
+        add("confluence.subtitle.tr_zombie_death", "Zombie: Death");
+        add("confluence.subtitle.tr_skeleton_hurt", "Skeleton: Hurt");
+        add("confluence.subtitle.waving", "Player: Waving");
+        add("confluence.subtitle.use_mounts", "Player: Summons Mount");
+        add("confluence.subtitle.decayeder_ambient", "Decayeder: Rubbing Body");
+        add("confluence.subtitle.decayeder_death", "Decayeder: Death");
+        add("confluence.subtitle.decayeder_hurt", "Decayeder: Hurt");
+        add("confluence.subtitle.decayeder_step", "Decayeder: Footsteps");
+        add("confluence.subtitle.whip_attack", "Whip: Lash");
+        add("confluence.subtitle.routine_summon", "Summon: Appears");
+        add("confluence.subtitle.summon_hornet", "Hornet: Appears");
+        add("confluence.subtitle.summon_eye", "Flying Summon: Appears");
+        add("confluence.subtitle.summon_imp", "Imp: Appears");
+        add("confluence.subtitle.summon_money_trough", "Money Trough: Appears");
+        add("confluence.subtitle.antlion_death", "Antlion: Death");
+        add("confluence.subtitle.antlion_hurt", "Antlion: Hurt");
+        add("confluence.subtitle.antlion_free", "Antlion: Chitters");
+        add("confluence.subtitle.antlion_swarmer_death", "Antlion Swarmer: Death");
+        add("confluence.subtitle.antlion_swarmer_free", "Antlion Swarmer: Buzzes");
+        add("confluence.subtitle.bat_death", "Bat: Death");
+        add("confluence.subtitle.beetle_death", "Beetle: Death");
+        add("confluence.subtitle.blood_jelly_death", "Blood Jellyfish: Death");
+        add("confluence.subtitle.blood_jelly_free", "Blood Jellyfish: Pulses");
+        add("confluence.subtitle.bone_serpent_death", "Bone Serpent: Death");
+        add("confluence.subtitle.demon_death", "Demon: Death");
+        add("confluence.subtitle.demon_free", "Demon: Growls");
+        add("confluence.subtitle.demon_hurt", "Demon: Hurt");
+        add("confluence.subtitle.dungeon_spirit_death", "Dungeon Spirit: Death");
+        add("confluence.subtitle.dungeon_spirit_free", "Dungeon Spirit: Whispers");
+        add("confluence.subtitle.dungeon_spirit_hurt", "Dungeon Spirit: Hurt");
+        add("confluence.subtitle.granite_golem_death", "Granite Golem: Death");
+        add("confluence.subtitle.granite_golem_hurt", "Granite Golem: Hurt");
+        add("confluence.subtitle.granite_golem_free", "Granite Golem: Moves");
+        add("confluence.subtitle.jellyfish_death", "Jellyfish: Death");
+        add("confluence.subtitle.jellyfish_free", "Jellyfish: Pulses");
+        add("confluence.subtitle.jellyfish_hurt", "Jellyfish: Hurt");
+        add("confluence.subtitle.pixie_death", "Pixie: Death");
+        add("confluence.subtitle.pixie_free", "Pixie: Twinkles");
+        add("confluence.subtitle.pixie_hurt", "Pixie: Hurt");
+        add("confluence.subtitle.sand_shoot", "Antlion: Shoots Sand");
+        add("confluence.subtitle.soul_death", "Soul: Fades");
+        add("confluence.subtitle.tr_zombie_free", "Zombie: Groans");
+        add("confluence.subtitle.unicorn_death", "Unicorn: Death");
+        add("confluence.subtitle.unicorn_hurt", "Unicorn: Hurt");
+        add("confluence.subtitle.wyvern_death", "Wyvern: Death");
+        add("confluence.subtitle.wyvern_hurt", "Wyvern: Hurt");
+        add("confluence.subtitle.the_hungry_death", "The Hungry: Death");
+        add("confluence.subtitle.the_hungry_hurt", "The Hungry: Hurt");
+        add("confluence.subtitle.wall_of_flesh_hurt", "Wall of Flesh: Hurt");
+        add("confluence.subtitle.wall_of_flesh_roar", "Wall of Flesh: Roar");
+        add("confluence.subtitle.wall_of_flesh_summon", "Wall of Flesh: Awakens");
+    }
+
+    /**
+     * 添加创造模式分页的英文名称，并控制主翻译方法的字节码长度。
+     */
+    private void addCreativeTabTranslations() {
+        add("creativetab.confluence.building_blocks", "Confluence | Buildings");
+        add("creativetab.confluence.natural_blocks", "Confluence | Naturals");
+        add("creativetab.confluence.materials", "Confluence | Materials");
+        add("creativetab.confluence.tools", "Confluence | Tools");
+        add("creativetab.confluence.warriors", "Confluence | Warriors");
+        add("creativetab.confluence.rangers", "Confluence | Rangers");
+        add("creativetab.confluence.mages", "Confluence | Mages");
+        add("creativetab.confluence.summoners", "Confluence | Summoners");
+        add("creativetab.confluence.misc", "Confluence | Miscellaneous");
+        add("creativetab.confluence.food_and_potions", "Confluence | Food & Potions");
+        add("creativetab.confluence.armors", "Confluence | Armors");
+        add("creativetab.confluence.mechanical", "Confluence | Mechanical");
+        add("creativetab.confluence.entity", "Confluence | Entities");
+        add("creativetab.confluence.developer", "Confluence | Developer");
+    }
+
 
 //    private void addDefaultRegistryTranslations(HolderLookup.RegistryLookup<?> dimensions, String dimensionsPath) {
 //        dimensions.listElements().forEach(dimension -> {
@@ -1793,6 +1974,10 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     public void add(String key, String value) {
+        addIfAbsent(key, value);
+    }
+
+    private void addIfAbsent(String key, String value) {
         if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
             super.add(key, value);
         }
@@ -1804,6 +1989,29 @@ public class ModEnglishProvider extends LanguageProvider {
 
     private void addEffect(MobEffect effect, String tooltip) {
         add("tooltip." + effect.getDescriptionId() + ".0", tooltip);
+    }
+
+    private void addWhipTagEffectTranslations() {
+        addWhipTagEffect(WhipItems.LEATHER_WHIP.get());
+        addWhipTagEffect(WhipItems.SLUB_WHIP.get());
+        addWhipTagEffect(WhipItems.RUBY_WHIP.get());
+        addWhipTagEffect(WhipItems.AMBER_WHIP.get());
+        addWhipTagEffect(WhipItems.TOPAZ_WHIP.get());
+        addWhipTagEffect(WhipItems.JADE_WHIP.get());
+        addWhipTagEffect(WhipItems.DIAMOND_WHIP.get());
+        addWhipTagEffect(WhipItems.SAPPHIRE_WHIP.get());
+        addWhipTagEffect(WhipItems.AMETHYST_WHIP.get());
+        addWhipTagEffect(WhipItems.SWAMP_WHIP.get());
+        addWhipTagEffect(WhipItems.SNAPTHORN.get());
+        addWhipTagEffect(WhipItems.SPINAL_TAP.get());
+        addWhipTagEffect(WhipItems.FIRECRACKER.get());
+    }
+
+    private void addWhipTagEffect(BaseWhipItem whip) {
+        String tooltip = whip.definition().tagEffect().get().fixedDamage() == 0.0F
+                ? "Minions focus on this target"
+                : "Minions deal additional damage";
+        addEffect(whip.definition().tagEffect().get(), tooltip);
     }
 
 //    private String formatLocation(ResourceLocation location) {

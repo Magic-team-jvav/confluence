@@ -15,6 +15,11 @@ import org.confluence.mod.Confluence;
 
 public final class ModTags {
     public static class Blocks {
+        /**
+         * 可使常见史莱姆逐渐转化为蜂蜜史莱姆的方块。
+         */
+        public static final TagKey<Block> HONEY = register("honey");
+
         // NPC 房屋相关
         public static final TagKey<Block> NPC_HOUSE_CONSTITUTE = register("npc_house_constitute");
         public static final TagKey<Block> NPC_HOUSE_CHAIR = register("npc_house_chair");
@@ -347,7 +352,7 @@ public final class ModTags {
 
         public static final TagKey<Item> TOOLS_SHEAR = common("tools/shear");
 
-        public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
+        public static final TagKey<Item> SPEAR = register("spear"); // 1.21 侧同类标签会并入三叉戟体系。
         public static final TagKey<Item> FLAIL = register("flail");
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
@@ -355,6 +360,13 @@ public final class ModTags {
         public static final TagKey<Item> LIGHT_PET = register("light_pet");
         public static final TagKey<Item> MINECART = register("minecart");
         public static final TagKey<Item> HOOK = register("hook");
+        /**
+         * 允许作为坐骑物品处理的物品。
+         *
+         * <p>标签只负责给数据包和联动物品一个统一分类；真正要召唤的实体类型由
+         * {@link org.confluence.mod.common.item.mount.MountItem} 显式绑定，坐骑参数
+         * 仍由对应坐骑实体自己维护。</p>
+         */
         public static final TagKey<Item> MOUNT = register("mount");
         public static final TagKey<Item> DYE = register("dye");
         public static final TagKey<Item> SHORT_SWORD = register("short_sword");
@@ -426,6 +438,7 @@ public final class ModTags {
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
+        public static final TagKey<Item> AUTOMATIC_BOW = register("automatic_bow");
         public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
         public static final TagKey<Item> EXPLOSIVE = register("explosive"); // 爆炸物，用于爆破专家入住
         public static final TagKey<Item> SHOW_SIGNAL = register("show_signal"); // 手持可以显示信号连线
@@ -445,10 +458,12 @@ public final class ModTags {
         // 枪械标签
         public static final TagKey<Item> GUN = register("gun");
         public static final TagKey<Item> MANUAL_GUN = register("manual_gun");
+        public static final TagKey<Item> WHIP = register("whip");
         public static final TagKey<Item> AUTOMATIC_GUN = register("automatic_gun");
         public static final TagKey<Item> SEED_AMMO = register("seed_ammo");
         public static final TagKey<Item> SNOW_AMMO = register("snow_ammo");
         public static final TagKey<Item> BULLET = register("bullet");
+        public static final TagKey<Item> TOOLS_KNIFE = register("tools/knife");
 
         private static TagKey<Item> common(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -471,6 +486,13 @@ public final class ModTags {
         public static final TagKey<Biome> THE_MOONBLIGHT = register("the_moonblight");
         public static final TagKey<Biome> THE_END_SEA = register("the_end_sea");
         public static final TagKey<Biome> VANITY_TREES_REPLACEABLE = register("vanity_trees_replaceable");
+        public static final TagKey<Biome> HAS_STRUCTURE_ENCHANTED_SWORD_SHRINE = register("has_structure/enchanted_sword_shrine");
+        public static final TagKey<Biome> HAS_STRUCTURE_ICE_UNDERGROUND_CABINS = register("has_structure/ice_underground_cabins");
+        public static final TagKey<Biome> HAS_STRUCTURE_JUNGLE_UNDERGROUND_CABINS = register("has_structure/jungle_underground_cabins");
+        public static final TagKey<Biome> HAS_STRUCTURE_MINE_TUNNELS = register("has_structure/mine_tunnels");
+        public static final TagKey<Biome> HAS_STRUCTURE_NETHER_TOWER = register("has_structure/nether_tower");
+        public static final TagKey<Biome> HAS_STRUCTURE_SKY_VILLAGE = register("has_structure/sky_village");
+        public static final TagKey<Biome> HAS_STRUCTURE_UNDERGROUND_CABINS = register("has_structure/underground_cabins");
 
         private static TagKey<Biome> register(String id) {
             return Confluence.asTagKey(Registries.BIOME, id);
@@ -480,6 +502,7 @@ public final class ModTags {
     public static class Fluids {
         public static final TagKey<Fluid> FISHING_ABLE = register("fishing_able");
         public static final TagKey<Fluid> NOT_LAVA = register("not_lava");
+        public static final TagKey<Fluid> SHIMMER = register("shimmer");
 
         private static TagKey<Fluid> register(String id) {
             return Confluence.asTagKey(Registries.FLUID, id);
@@ -501,6 +524,8 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> GORE_EFFECT_BLACKLIST = register("gore_effect_blacklist"); // 肢解效果黑名单
         public static final TagKey<EntityType<?>> NPC_INVULNERABLE_TO_PLAYER = register("npc_invulnerable_to_player"); // 能够免疫玩家伤害的NPC
         public static final TagKey<EntityType<?>> CORRUPT = register("corrupt");
+        public static final TagKey<EntityType<?>> FLESH_ALLIANCE = register("flesh_alliance");
+        public static final TagKey<EntityType<?>> JELLY_FISH = register("jelly_fish");
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

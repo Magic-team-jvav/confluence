@@ -15,6 +15,12 @@ public record GoblinArmyProgressPacketS2C(float progress) implements IPortPacket
             .map(GoblinArmyProgressPacketS2C::new, GoblinArmyProgressPacketS2C::progress);
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
+    @Override
     public void work(Player player) {
         GoblinArmyProgressRenderer.handleProgress(progress);
     }

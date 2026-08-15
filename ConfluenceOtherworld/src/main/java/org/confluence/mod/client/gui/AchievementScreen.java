@@ -78,7 +78,8 @@ public class AchievementScreen extends Screen {
     private Iterable<Map.Entry<ResourceLocation, AchievementOffset>> rendered;
     private int lines;
     private int skip;
-// todo advancement   private Map<ResourceLocation, AdvancementProgress> data;
+    // TODO：成就界面完全接入原版进度后恢复此缓存。
+// private Map<ResourceLocation, AdvancementProgress> data;
 //    private boolean completedGoingOldSchool;
     private boolean[] categoriesDisabled;
 
@@ -306,12 +307,9 @@ public class AchievementScreen extends Screen {
             }
             x += w;
         }
-//        if (button == 0 && BackgroundLayer.clickedLayers(mouseX, mouseY)) {
-//            if (completedGoingOldSchool != BackgroundLayer.isCompletedGoingOldSchool()) {
-//                this.data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-//            }
-//            return true;
-//        }
+        if (button == 0 && BackgroundLayer.clickedLayers(mouseX, mouseY)) {
+            return true;
+        }
         return super.mouseClicked(mouseX, mouseY, button);
     }
 

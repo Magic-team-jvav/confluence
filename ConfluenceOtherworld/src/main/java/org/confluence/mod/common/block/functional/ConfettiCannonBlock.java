@@ -19,8 +19,10 @@ import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
 import java.util.Map;
 
-// todo
 public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements EntityBlock, INetworkBlock {
+    /**
+     * 每一级代表 30° 的发射仰角，用于把机械网络触发转换成彩纸粒子的方向参数。
+     */
     public static final IntegerProperty PITCH_30 = IntegerProperty.create("pitch_30", 0, 6);
 
     public ConfettiCannonBlock(Properties properties) {

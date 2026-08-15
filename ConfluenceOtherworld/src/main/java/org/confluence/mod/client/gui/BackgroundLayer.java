@@ -13,6 +13,7 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraftforge.client.DimensionSpecialEffectsManager;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.GoingOldschoolAchievementClient;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -186,14 +187,14 @@ public enum BackgroundLayer {
                 this.draggedSun = true;
                 sunPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
-//                awardGoingOldschool();
+                GoingOldschoolAchievementClient.requestAward();
                 return true;
             }
             if (moonPos.distance((float) mouseX, (float) mouseY) < moonSize) {
                 this.draggedMoon = true;
                 moonPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
-//                awardGoingOldschool();
+                GoingOldschoolAchievementClient.requestAward();
                 return true;
             }
             return false;
@@ -487,31 +488,6 @@ public enum BackgroundLayer {
     public static void closeLayers() {
         enabled = false;
     }
-
-// todo advancement   private static void awardGoingOldschool() {
-//        if (completedGoingOldSchool) return;
-//        Map<ResourceLocation, AdvancementProgress> data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
-//        if (data.containsKey(AchievementUtils.GOING_OLDSCHOOL)) {
-//            completedGoingOldSchool = true;
-//        } else {
-//            completedGoingOldSchool = true;
-//            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data);
-//            CriterionProgress progress = new CriterionProgress();
-//            progress.grant();
-//            map.put(AchievementUtils.GOING_OLDSCHOOL, new AchievementProgress(Map.of("never", progress), true));
-//            data = map;
-//            AchievementToast toast = new AchievementToast(
-//                    Confluence.asResource("textures/achievement/going_oldschool.png"),
-//                    new AchievementToast.Display(FrameType.CHALLENGE,
-//                            Component.translatable("achievements.confluence.going_oldschool.title"),
-//                            Component.translatable("achievements.confluence.going_oldschool.description")
-//                    ));
-//            toast.blitOffset = () -> ForgeHooksClient.getGuiFarPlane() - 21000 + 1;
-//            Minecraft.getInstance().getToasts().addToast(toast);
-//            AchievementUtils.handleData(data, false);
-//            AchievementUtils.saveData();
-//        }
-//    }
 
     public static boolean isCompletedGoingOldSchool() {
         return completedGoingOldSchool;

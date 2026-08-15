@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:item/vanilla_potion_overlay",
-    "layer1": "confluence:item/vanilla_potion"
+      "layer0": "confluence:item/potion/vanilla_potion_overlay",
+      "layer1": "confluence:item/potion/vanilla_potion"
   }
 }

@@ -51,7 +51,7 @@ version: 1.3.0
 
 ## NPC生成太多太频繁？
 
-### 按Esc呼出菜单，点击模组按钮，寻找confluence，terra_curio,terra_entity.the_trackers再点击配置按钮进行游戏内配置
+### 按Esc呼出菜单，点击模组按钮，寻找confluence，terra_curio,confluence.the_trackers再点击配置按钮进行游戏内配置
 
 ---
 

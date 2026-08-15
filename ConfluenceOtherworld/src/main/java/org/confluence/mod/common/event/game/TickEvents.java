@@ -15,6 +15,8 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
+import org.confluence.mod.common.mount.MountManager;
+import org.confluence.mod.common.summon.SummonContainer;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -72,10 +74,16 @@ public final class TickEvents {
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
             PlayerUtils.regenerateMana(player);
             ExtraInventory.of(player).sync(player);
+            MountManager.validate(player);
+            SummonContainer.of(player).tick(player);
             PlayerSpecialData.of(player).sync(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
             AchievementUtils.quietNeighborhood(player, level, gameTime);
             AchievementUtils.aRareRealm(player, gameTime);
+            // 距离来自原版服务端统计；分散到每秒一次检查，避免每次移动都查询成就进度。
+            if (Math.floorMod(gameTime, 20L) == Math.floorMod(player.getId(), 20)) {
+                AchievementUtils.marathonMedalist(player, player.getStats());
+            }
             TheConstant.applyDarkness(player, level, gameTime);
             TheConstant.instantlyDieWhenHasNoFoodLevel(player);
             DungeonStructure.checkSkeletronDefeated(player, level);

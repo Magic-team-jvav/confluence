@@ -72,6 +72,7 @@ public class DyeVatMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
+        if (index < 0 || index >= slots.size()) return ItemStack.EMPTY;
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = slots.get(index);
         if (slot.hasItem()) {
@@ -117,6 +118,35 @@ public class DyeVatMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return stillValid(access, player, FunctionalBlocks.DYE_VAT.get());
+    }
+
+    /**
+     * 严格验证当前服务端菜单仍然绑定在玩家附近的染缸上。
+     *
+     * <p>{@link ContainerLevelAccess#NULL} 在原版中会宽松地通过
+     * {@code stillValid}，以便客户端只按菜单类型构造界面。服务端的页面切换不能
+     * 接受这种空访问对象，否则伪造消息可以凭空打开染缸菜单。</p>
+     */
+    public boolean hasValidServerAccess(Player player) {
+        return access.evaluate((level, blockPos) ->
+                        level.hasChunkAt(blockPos)
+                                && level.getBlockState(blockPos)
+                                .is(FunctionalBlocks.DYE_VAT.get())
+                                && player.distanceToSqr(
+                                blockPos.getX() + 0.5,
+                                blockPos.getY() + 0.5,
+                                blockPos.getZ() + 0.5) <= 64.0,
+                false);
+    }
+
+    /**
+     * 返回由服务端方块交互建立的工作站访问对象。
+     *
+     * <p>该对象仅用于在染缸和混色页面之间切换；调用方仍须先通过
+     * {@link #hasValidServerAccess(Player)} 验证其有效性。</p>
+     */
+    public ContainerLevelAccess workstationAccess() {
+        return access;
     }
 
     @Override

@@ -1,43 +1,21 @@
 package org.confluence.mod.common.item.mana;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.api.permanent.PermanentUpgradeItem;
 import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.common.init.PermanentUpgrades;
 
-public class ManaCrystalItem extends TooltipItem {
+/**
+ * 魔力水晶通过自定义 levelAccess 接入 MagicLib 永久升级 API，ManaStorage 仍是魔力容量的权威数据源。
+ */
+public class ManaCrystalItem extends PermanentUpgradeItem {
     public ManaCrystalItem() {
-        super(new Properties().stacksTo(16), ModRarity.YELLOW, getTooltipsFromString("mana_crystal", 1, ChatFormatting.GREEN));
-    }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        level.playSound(player, player.blockPosition().above(), ModSoundEvents.MANA_STAR_USE.get(), SoundSource.PLAYERS, 1, 1);
-        ItemStack itemStack = player.getItemInHand(hand);
-        if (player instanceof ServerPlayer serverPlayer) {
-            ManaStorage manaStorage = ManaStorage.of(player);
-            if (manaStorage.addStar()) {
-                CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                if (!player.hasInfiniteMaterials()) {
-                    itemStack.shrink(1);
-                }
-            }
-            EverBeneficial everBeneficial;
-            if (manaStorage.isStarMaximum() && (everBeneficial = EverBeneficial.of(serverPlayer)).isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum()) {
-                AchievementUtils.awardAchievement(serverPlayer, "topped_off");
-            }
-        }
-        return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);
+        super(new Properties().stacksTo(16).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW),
+                PermanentUpgrades.MANA_CRYSTAL,
+                ModSoundEvents.MANA_STAR_USE,
+                TooltipItem.getTooltipsFromString("mana_crystal", 1, ChatFormatting.GREEN));
     }
 }

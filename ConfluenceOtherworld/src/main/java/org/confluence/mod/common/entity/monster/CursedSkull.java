@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -9,19 +10,29 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.PhasedFlyingPursuitAction;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 public class CursedSkull extends BaseFlyingMonster {
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
+    private final PhasedFlyingPursuitAction pursuit;
 
     public CursedSkull(EntityType<? extends CursedSkull> type, Level level) {
         super(type, level);
+        noPhysics = true;
+        pursuit = new PhasedFlyingPursuitAction(
+                this,
+                200,
+                150,
+                80,
+                0.02,
+                0.05,
+                0.5,
+                5.0,
+                0.3);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -31,21 +42,39 @@ public class CursedSkull extends BaseFlyingMonster {
 
     @Override
     protected BTRoot createBT() {
-        BTNode combat = SelectorNode.of(
-                SequenceNode.of(new CircleAroundTargetAction(this, 0.3, 4), new WaitAction(20)),
-                SequenceNode.of(new ChargeAttackAction(this, 0.5)));
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(CursedSkull.this), combat),
+                        SequenceNode.of(
+                                new HasTargetCondition(CursedSkull.this),
+                                pursuit),
                         new FlyWanderAction(CursedSkull.this, 0.15, 10));
             }
         };
     }
 
     @Override
+    public boolean doHurtTarget(Entity target) {
+        pursuit.resetCycle();
+        return super.doHurtTarget(target);
+    }
+
+    int getPursuitPhaseTicks() {
+        return pursuit.getRemainingTicks();
+    }
+
+    boolean isPhasingThroughBlocks() {
+        return noPhysics;
+    }
+
+    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Fly", 0, state -> state.setAndContinue(FLY)));
+    }
+
+    @Override
+    protected boolean hasPushableBody() {
+        return true;
     }
 }

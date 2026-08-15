@@ -93,7 +93,7 @@ public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
         int by = pos.getY();
         int bz = pos.getZ();
         double offsetY = state.getValue(IS_FLOOR) ? 12.0 : -12.0;
-        // todo 粒子
+        // 视觉喷发粒子后续接入粒子系统；伤害判定已经在下方完成。
         float damage = 4.0F;
         level.getEntities((net.minecraft.world.entity.Entity) null, new AABB(bx, by, bz, bx + 1.0, by + offsetY, bz + 1.0), entity -> entity instanceof LivingEntity)
                 .forEach(entity -> entity.hurt(level.damageSources().lava(), TrapDamageHelper.applyDeadMansSweaterReduction((LivingEntity) entity, damage)));

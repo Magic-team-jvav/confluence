@@ -17,10 +17,12 @@ public final class TreasureBagSubProvider {
                 .add(BossEntities.QUEEN_BEE, new TreasureBagDrop(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get()), false)
                 .add(BossEntities.DEERCLOPS, new TreasureBagDrop(TreasureBagItems.DEERCLOPS_TREASURE_BAG.get()), false)
                 .add(BossEntities.SKELETRON, new TreasureBagDrop(TreasureBagItems.SKELETRON_TREASURE_BAG.get()), false)
-                .add(BossEntities.DEERCLOPS, new TreasureBagDrop(TreasureBagItems.DEERCLOPS_TREASURE_BAG.get()), false)
                 .add(BossEntities.WALL_OF_FLESH, new TreasureBagDrop(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get()), false)
                 .add(BossEntities.HILL_OF_FLESH, new TreasureBagDrop(TreasureBagItems.HILL_OF_FLESH_TREASURE_BAG.get()), false)
                 .add(BossEntities.THE_TWINS, new TreasureBagDrop(TreasureBagItems.THE_TWINS_TREASURE_BAG.get()), false)
-                .add(BossEntities.SKELETRON_PRIME, new TreasureBagDrop(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get()), false);
+                .add(BossEntities.SKELETRON_PRIME, new TreasureBagDrop(TreasureBagItems.SKELETRON_PRIME_TREASURE_BAG.get()), false)
+                .add(BossEntities.THE_DESTROYER, new TreasureBagDrop(TreasureBagItems.THE_DESTROYER_TREASURE_BAG.get()), false)
+                .add(BossEntities.PLANTERA, new TreasureBagDrop(TreasureBagItems.PLANTERA_TREASURE_BAG.get()), false)
+                .add(BossEntities.LUNATIC_CULTIST, new TreasureBagDrop(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get()), false);
     }
 }

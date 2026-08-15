@@ -1,25 +1,33 @@
 package org.confluence.mod.common.item.gun;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.api.projectile.ProjectileDamageChannel;
+import org.confluence.lib.api.projectile.ProjectileFireContext;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.item.GunItems;
-import org.confluence.mod.util.PlayerUtils;
-import org.mesdag.portlib.event.PortEventHandler;
+import org.confluence.mod.common.item.mana.ManaProjectileCost;
 
+/**
+ * 使用魔力而非实体弹药的枪械基类。
+ *
+ * <p>伤害通道固定为 {@link ProjectileDamageChannel#MAGIC}，因此只在发射快照中应用一次魔法伤害
+ * 属性，不会再叠加远程伤害或远程弹速。魔力成本与现有法杖保持同一套前缀、附魔、饰品、自动
+ * 药水和魔力修补规则，同时支持整批弹丸生成失败时精确回滚。</p>
+ */
 public class ManaGunItem extends BaseGun {
-    private final float damage;
-    private final float knockback;
-    private final float critical;
-    private final float velocity;
-    private final int penetrate;
-    private final float inaccuracy;
-
-    public ManaGunItem(Properties properties, int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity, int manaCost) {
+    public ManaGunItem(
+            Properties properties,
+            int cooldown,
+            float damage,
+            float velocity,
+            float knockback,
+            float critical,
+            int penetrate,
+            float inaccuracy,
+            ModRarity rarity,
+            int manaCost
+    ) {
         super(new Builder(cooldown, damage, velocity)
                 .knockback(knockback)
                 .critical(critical)
@@ -30,39 +38,36 @@ public class ManaGunItem extends BaseGun {
                 .bulletFactory((player, bullet) -> new BaseBulletEntity(player, bullet) {
                     @Override
                     public DamageSource getDamageSource() {
-                        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+                        return ModDamageTypes.of(
+                                level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
                     }
                 })
                 .properties(properties));
-        this.damage = damage;
-        this.critical = critical;
-        this.knockback = knockback;
-        this.velocity = velocity;
-        this.penetrate = penetrate;
-        this.inaccuracy = inaccuracy;
     }
 
+    /**
+     * 魔力枪只选择 MAGIC 主通道，弹速保持武器声明值。
+     */
     @Override
-    public void shoot(ServerPlayer player, ItemStack bullet, ItemStack gunStack) {
-        if (PlayerUtils.extractMana(player, gunStack, this::getManaCost)) {
-            GunEvent.AmmoDataEvent ammoDataEvent = new GunEvent.AmmoDataEvent(player, this, gunStack, damage, critical, knockback, velocity, penetrate, inaccuracy);
-            PortEventHandler.postEvent(ammoDataEvent);
-
-            prepareBulletEntity(baseBulletEntities, player, GunItems.DUMMY_BULLET.get().getDefaultInstance(), gunStack, ammoDataEvent.getDamage(), ammoDataEvent.getKnockback(), ammoDataEvent.getVelocity(), ammoDataEvent.getPenetrate(), ammoDataEvent.getInaccuracy());
-            baseBulletEntities.forEach(player.serverLevel()::addFreshEntity);
-            baseBulletEntities.clear();
-        }
+    protected ProjectileDamageChannel damageChannel() {
+        return ProjectileDamageChannel.MAGIC;
     }
 
-    public float getDamage() {return damage;}
+    /**
+     * 为每次请求创建独占的可回滚魔力成本，绝不把事务状态保存在物品单例中。
+     */
+    @Override
+    protected ShotCost createShotCost(ProjectileFireContext context, net.minecraft.world.item.ItemStack selectedAmmo) {
+        ManaProjectileCost cost = new ManaProjectileCost(getManaCost(), this::isManaFree);
+        return new ShotCost(cost, cost::finishSuccessfulAction);
+    }
 
-    public float getInaccuracy() {return inaccuracy;}
-
-    public float getVelocity() {return velocity;}
-
-    public int getPenetrate() {return penetrate;}
-
-    public float getKnockback() {return knockback;}
-
-    public float getCritical() {return critical;}
+    /**
+     * 特殊武器可声明当前请求免魔力；默认始终收费。
+     *
+     * <p>该判断在服务端成本准备阶段使用，客户端不会参与。</p>
+     */
+    protected boolean isManaFree(ProjectileFireContext context) {
+        return false;
+    }
 }

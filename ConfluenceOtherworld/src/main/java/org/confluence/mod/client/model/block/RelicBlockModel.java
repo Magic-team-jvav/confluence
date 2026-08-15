@@ -11,21 +11,27 @@ import software.bernie.geckolib.model.GeoModel;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class RelicBlockModel extends GeoModel<RelicBlock.BEntity> {
     public static final Map<Block, ResourceLocation[]> CACHE = Util.make(new IdentityHashMap<>(), map -> {
         for (PortDeferredBlock<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {
-            String path = block.getId().getPath();
-            map.put(block.get(), new ResourceLocation[]{
-                    Confluence.asResource("geo/block/" + path + ".geo.json"),
-                    Confluence.asResource("textures/block/" + path + ".png"),
-                    Confluence.asResource("animations/block/" + path + ".animation.json")
-            });
+            map.put(block.get(), createLocations(block.getId().getPath()));
         }
     });
 
     private static ResourceLocation[] getLocations(RelicBlock.BEntity animatable) {
-        return CACHE.get(animatable.getBlockState().getBlock());
+        return Objects.requireNonNull(
+                CACHE.get(animatable.getBlockState().getBlock()),
+                "Unregistered relic block cannot be rendered");
+    }
+
+    private static ResourceLocation[] createLocations(String path) {
+        return new ResourceLocation[]{
+                Confluence.asResource("geo/block/" + path + ".geo.json"),
+                Confluence.asResource("textures/block/" + path + ".png"),
+                Confluence.asResource("animations/block/" + path + ".animation.json")
+        };
     }
 
     @Override

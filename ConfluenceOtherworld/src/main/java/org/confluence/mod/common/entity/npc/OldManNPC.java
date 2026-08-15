@@ -37,7 +37,7 @@ public class OldManNPC extends BaseNPC {
                 skeletron.finalizeSpawn((ServerLevel) level(),
                         level().getCurrentDifficultyAt(blockPosition()),
                         MobSpawnType.EVENT, null, null);
-                ModUtils.summonBoss((ServerLevel) level(), blockPosition(), skeletron);
+                ModUtils.summonBoss((ServerLevel) level(), blockPosition(), skeletron, sp);
                 discard();
             } else {
                 // 白天只显示对话

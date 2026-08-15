@@ -1,4 +1,4 @@
-{
+﻿{
     "base": {
         "credit": "Made with Blockbench",
         "parent": "builtin/entity",
@@ -57,7 +57,8 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/spear/the_rotted_fork_item"
+            "layer0": "confluence:item/spear/the_rotted_fork",
+            "particle": "confluence:item/spear/the_rotted_fork"
         }
     },
     "gui_light": "front",

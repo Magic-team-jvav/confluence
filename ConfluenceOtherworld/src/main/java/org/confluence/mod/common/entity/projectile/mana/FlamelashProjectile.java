@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -16,7 +17,16 @@ import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.mod.common.item.mana.FlamelashItem;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
+/**
+ * 烈焰火鞭弹幕。
+ *
+ * <p>第一次命中造成直接伤害，之后的命中改为爆炸，因此 {@link #penetrated} 是不可丢失的
+ * 服务端阶段状态。它与拖拽/已发射阶段分开保存，便于各层独立校验；1.20 不读取旧扁平字段。</p>
+ */
 public class FlamelashProjectile extends BaseDraggingProjectile {
+    private static final String RUNTIME_TAG = "ConfluenceFlamelashRuntime";
+    private static final int RUNTIME_VERSION = 1;
+
     public static final double RANGE = 6.0 * 2 / 3;
     public static final double KNOCKBACK = 0.65;
 
@@ -83,12 +93,29 @@ public class FlamelashProjectile extends BaseDraggingProjectile {
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        compound.putBoolean("Penetrated", penetrated);
+        CompoundTag runtime = new CompoundTag();
+        runtime.putInt("Version", RUNTIME_VERSION);
+        runtime.putBoolean("Penetrated", penetrated);
+        compound.put(RUNTIME_TAG, runtime);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        this.penetrated = compound.getBoolean("Penetrated");
+        if (combatState().isInvalid()) {
+            return;
+        }
+        if (!compound.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) {
+            combatState().invalidate("Missing or invalid Flamelash runtime state");
+            return;
+        }
+        CompoundTag runtime = compound.getCompound(RUNTIME_TAG);
+        if (!runtime.contains("Version", Tag.TAG_INT)
+                || runtime.getInt("Version") != RUNTIME_VERSION
+                || !runtime.contains("Penetrated", Tag.TAG_BYTE)) {
+            combatState().invalidate("Malformed Flamelash runtime state");
+            return;
+        }
+        penetrated = runtime.getBoolean("Penetrated");
     }
 }

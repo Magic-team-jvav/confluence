@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -10,6 +9,11 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 
+/**
+ * 不会因碰撞立即移除的高弹性巨石。
+ *
+ * <p>弹性与摩擦系数由基类统一保存，确保所有巨石变体使用同一份版本化运行状态。</p>
+ */
 public class BouncyBoulderEntity extends BoulderEntity {
 
     public BouncyBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
@@ -38,23 +42,5 @@ public class BouncyBoulderEntity extends BoulderEntity {
 
     @Override
     protected void horizontalHitBlock(BlockHitResult blockHitResult, Direction direction) {
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        if (compound.contains("BounceFactor")) {
-            this.bounceFactor = compound.getDouble("BounceFactor");
-        }
-        if (compound.contains("FrictionFactor")) {
-            this.frictionFactor = compound.getDouble("FrictionFactor");
-        }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putDouble("BounceFactor", bounceFactor);
-        compound.putDouble("FrictionFactor", frictionFactor);
     }
 }

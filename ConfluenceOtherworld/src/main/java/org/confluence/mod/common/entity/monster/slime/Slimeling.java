@@ -10,10 +10,10 @@ import net.minecraft.world.level.Level;
 public class Slimeling extends BaseSlime {
 
     public Slimeling(EntityType<? extends BaseSlime> type, Level level) {
-        super(type, level, 0xC91717, false, 0);
+        super(type, level, 0xC91717, false, 1);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createSlimeAttributes(7.0f, 2, 45.0f, 0);
+        return createSlimeAttributes(7.0f, 2, 45.0f);
     }
 }

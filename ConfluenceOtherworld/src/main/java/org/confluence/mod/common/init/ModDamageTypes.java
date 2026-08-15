@@ -17,6 +17,7 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> BOULDER = register("boulder");
     public static final ResourceKey<DamageType> CURSED_INFERNO = register("cursed_inferno");
     public static final ResourceKey<DamageType> DARKNESS = register("darkness");
+    public static final ResourceKey<DamageType> DUNGEON_GUARDIAN = register("dungeon_guardian");
     public static final ResourceKey<DamageType> FALLING_STAR = register("falling_star");
     public static final ResourceKey<DamageType> MAGICAL_PROJECTILE = register("magical_projectile");
     public static final ResourceKey<DamageType> SWORD_PROJECTILE = register("sword_projectile");
@@ -44,6 +45,7 @@ public final class ModDamageTypes {
         damageType(context, BOULDER, DamageScaling.ALWAYS, 5);
         damageType(context, CURSED_INFERNO, DamageScaling.ALWAYS, 10, DamageEffects.BURNING);
         damageType(context, DARKNESS, DamageScaling.ALWAYS, 20);
+        damageType(context, DUNGEON_GUARDIAN, DamageScaling.ALWAYS, 0.1F);
         damageType(context, FALLING_STAR, DamageScaling.ALWAYS, 10);
         damageType(context, MAGICAL_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
         damageType(context, SWORD_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);

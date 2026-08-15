@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.monster.slime;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -13,19 +14,21 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 黑史莱姆 —— 大小 1=Baby, 2=普通, 3=大型, 4=母体。
- * 攻击附加黑暗效果，母体死亡时分裂出 1-3 只小史莱姆。
+ * 黑史莱姆使用同一种实体表达幼体、普通个体和史莱姆之母。
+ *
+ * <p>母体死亡后会分裂出二至四只幼体。接触攻击在专家难度下有概率附加黑暗，
+ * 大师难度则必定附加，以保持与 1.21 侧一致的难度语义。</p>
  */
 public class BlackSlime extends BaseSlime {
     private static final int BABY_SIZE = 1;
     private static final int MOTHER_SIZE = 4;
-    private int slimeSize = 2;
 
     public BlackSlime(EntityType<? extends BaseSlime> type, Level level) {
-        super(type, level, 0x2D2D3A, false, 30);
+        super(type, level, 0x373535, false);
     }
 
     @Nullable
@@ -34,7 +37,10 @@ public class BlackSlime extends BaseSlime {
                                         MobSpawnType spawnType,
                                         @Nullable SpawnGroupData data,
                                         @Nullable CompoundTag tag) {
-        int size = level.getRandom().nextInt(4) + 1;
+        float specialMultiplier = difficulty.getSpecialMultiplier();
+        float motherChance = specialMultiplier <= 0.5F ? 0.15F
+                : specialMultiplier <= 1.0F ? 0.60F : 0.85F;
+        int size = level.getRandom().nextFloat() < motherChance ? MOTHER_SIZE : 2;
         applySizeStats(size);
         return super.finalizeSpawn(level, difficulty, spawnType, data, tag);
     }
@@ -43,49 +49,91 @@ public class BlackSlime extends BaseSlime {
         double health;
         double damage;
         int armor;
-        switch (size) {
-            case BABY_SIZE:
-                health = 15.0; damage = 4.0; armor = 2; break;
-            case 2:
-                health = 25.0; damage = 6.0; armor = 4; break;
-            case 3:
-                health = 40.0; damage = 8.0; armor = 5; break;
-            case MOTHER_SIZE:
-                health = 58.0; damage = 10.0; armor = 7; break;
-            default:
-                health = 25.0; damage = 6.0; armor = 4; break;
+        if (size == MOTHER_SIZE) {
+            health = 58.0;
+            damage = 10.0;
+            armor = 7;
+        } else {
+            health = 25.0;
+            damage = 6.0;
+            armor = 4;
         }
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health);
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(damage);
         this.getAttribute(Attributes.ARMOR).setBaseValue((double) armor);
         this.setHealth(this.getMaxHealth());
-        this.slimeSize = size;
+        setSlimeSize(size);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return createSlimeAttributes(6.0f, 4, 25.0f, 30);
+        return createSlimeAttributes(6.0f, 4, 25.0f);
+    }
+
+    /**
+     * 是否为击杀母体后生成的小史莱姆。
+     */
+    public boolean isBabySlime() {
+        return getSlimeSize() == BABY_SIZE;
+    }
+
+    /**
+     * 是否为会在死亡后分裂的史莱姆之母。
+     */
+    public boolean isMotherSlime() {
+        return getSlimeSize() == MOTHER_SIZE;
+    }
+
+    @Override
+    public Component getName() {
+        if (!hasCustomName()) {
+            if (isBabySlime()) {
+                return Component.translatable("entity.confluence.baby_slime");
+            }
+            if (isMotherSlime()) {
+                return Component.translatable("entity.confluence.mother_slime");
+            }
+        }
+        return super.getName();
     }
 
     @Override
     protected void onAttackTarget(LivingEntity target) {
-        target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 160, 0));
+        if (LibUtils.isMaster(level(), blockPosition())
+                || (LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextBoolean())) {
+            target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 300, 0), this);
+        }
     }
 
+    /**
+     * 母体只在死亡实体真正移除时分裂，数量沿用原版史莱姆的二至四只。
+     *
+     * <p>1.21 侧通过原版 {@code Slime#remove} 完成这一过程，而本类不再继承原版
+     * {@code Slime}，因此在相同生命周期节点补回等价逻辑。幼体只改变尺寸，继续使用
+     * 黑史莱姆注册时的基础属性；不能提前在 {@link #die(DamageSource)} 中生成，也不能
+     * 为幼体发明一套 1.21 中不存在的额外属性。</p>
+     */
     @Override
-    public void die(DamageSource source) {
-        super.die(source);
-        if (!level().isClientSide && slimeSize >= MOTHER_SIZE) {
-            int babies = 1 + random.nextInt(3);
+    public void remove(RemovalReason reason) {
+        if (!level().isClientSide
+                && !isRemoved()
+                && isDeadOrDying()
+                && isMotherSlime()) {
+            int babies = 2 + random.nextInt(3);
             for (int i = 0; i < babies; i++) {
-                BlackSlime baby = (BlackSlime) this.getType().create(level());
-                if (baby != null) {
-                    baby.applySizeStats(BABY_SIZE);
-                    baby.setPos(getX() + random.nextGaussian() * 0.5,
-                            getY(),
-                            getZ() + random.nextGaussian() * 0.5);
-                    level().addFreshEntity(baby);
+                BlackSlime baby = (BlackSlime) getType().create(level());
+                if (baby == null) {
+                    continue;
                 }
+                baby.setSlimeSize(BABY_SIZE);
+                baby.moveTo(
+                        getX() + random.nextGaussian() * 0.5,
+                        getY(),
+                        getZ() + random.nextGaussian() * 0.5,
+                        random.nextFloat() * 360.0F,
+                        0.0F);
+                level().addFreshEntity(baby);
             }
         }
+        super.remove(reason);
     }
 }

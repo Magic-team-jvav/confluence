@@ -87,12 +87,6 @@ public final class HouseValidater {
             minZ = Math.min(minZ, pos.getZ());
             maxZ = Math.max(maxZ, pos.getZ());
 
-            BlockState state = level.getBlockState(pos);
-
-            if (!hasLight && level.getLightEmission(pos) >= MIN_LIGHT) hasLight = true;
-            if (!hasChair && state.is(ModTags.Blocks.NPC_HOUSE_CHAIR)) hasChair = true;
-            if (!hasTable && state.is(ModTags.Blocks.NPC_HOUSE_TABLE)) hasTable = true;
-
             for (BlockPos neighbor : neighbors(pos)) {
                 if (visited.contains(neighbor)) continue;
                 int dx = Math.abs(neighbor.getX() - start.getX());
@@ -101,6 +95,14 @@ public final class HouseValidater {
                 if (dx > MAX_RADIUS || dy > MAX_RADIUS || dz > MAX_RADIUS) continue;
 
                 BlockState nbState = level.getBlockState(neighbor);
+                /*
+                 * 桌椅和墙面光源通常是房间边界的一部分，不应加入可行走空间的洪泛集合，
+                 * 但必须在检查边界时计入设施。旧实现只检查已经入队的空气节点，导致普通
+                 * 楼梯椅、工作台和火把永远无法被发现，合法房屋因此必然失败。
+                 */
+                if (!hasLight && level.getLightEmission(neighbor) >= MIN_LIGHT) hasLight = true;
+                if (!hasChair && nbState.is(ModTags.Blocks.NPC_HOUSE_CHAIR)) hasChair = true;
+                if (!hasTable && nbState.is(ModTags.Blocks.NPC_HOUSE_TABLE)) hasTable = true;
                 if (nbState.isAir() || nbState.is(ModTags.Blocks.NPC_HOUSE_CONSTITUTE)) {
                     visited.add(neighbor);
                     queue.add(neighbor);

@@ -9,6 +9,8 @@ import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -29,13 +32,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.confluence.lib.api.projectile.*;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModArmPoses;
+import org.confluence.mod.common.component.SpearProjectileComponent;
+import org.confluence.mod.common.entity.projectile.spear.SpearProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
@@ -67,13 +73,17 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     public static final String LAST_ATTACK_TIME_KEY = "confluence:last_attack_time";
+    /**
+     * 当前格式动作版本；1.20.1 不读取或迁移任何旧命中集合。
+     */
+    public static final String SPEAR_ACTION_VERSION_KEY = "confluence:spear_action_version";
+    public static final String SPEAR_ACTION_HITS_KEY = "confluence:spear_action_hits";
+    private static final int SPEAR_ACTION_VERSION = 1;
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final int attackDuration;
     protected final int attackInterval;
     protected final List<Keyframe<IValue>> keyframes;
     private TooltipComponent component;
-    /// 本次挥击已命中的实体 ID，挥击开始时清空
-    private final IntSet struckEntities = new IntArraySet();
 
     /// @param attackDuration 攻击持续时间，值越大攻击时间越长
     /// @param attackInterval 攻击间隔，每造成两次伤害之间的时间
@@ -119,8 +129,11 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
         if (entity.level() instanceof ServerLevel level && entity.level().getGameTime() - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY) > attackDuration) {
-            struckEntities.clear();
-            LibUtils.updateItemStackNbt(stack, tag -> tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime()));
+            LibUtils.updateItemStackNbt(stack, tag -> {
+                tag.putInt(SPEAR_ACTION_VERSION_KEY, SPEAR_ACTION_VERSION);
+                tag.putIntArray(SPEAR_ACTION_HITS_KEY, new int[0]);
+                tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime());
+            });
             triggerAnim(entity, GeoItem.getOrAssignId(stack, level), "spear", "use");
             onStartSting(stack, level, entity);
         }
@@ -146,29 +159,53 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
             CompoundTag tag = LibUtils.getItemStackNbtNoCopy(stack);
             long tickCount = gameTime - tag.getLong(LAST_ATTACK_TIME_KEY);
             if (tickCount <= attackDuration && (attackInterval <= 1 || gameTime % attackInterval == 0)) {
+                IntSet struckEntities = readActionHits(tag);
                 Vec3 viewVector = owner.getViewVector(1.0F);
                 Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
+                /*
+                 * 粗筛必须覆盖后续精确射线允许的 0.3 格命中容差，否则目标只要
+                 * 略微高于或低于零厚度射线，就会在执行扩张碰撞箱裁剪前被遗漏。
+                 */
+                AABB searchBox = new AABB(startVec, endVec).inflate(0.3);
 
-                try {
-                    level.getEntities(owner, new AABB(startVec, endVec), target -> canHitEntity(target, owner)).stream()
-                            .filter(v -> !struckEntities.contains(v.getId()))
-                            .sorted(Comparator.comparingDouble(a -> a.distanceToSqr(owner)))
-                            .forEachOrdered(victim -> {
-                                if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) {
-                                    return;
-                                }
-                                struckEntities.add(victim.getId());
-                                owner.setLastHurtMob(victim);
-                                victim = LibEntityUtils.tryFindBeImpacted(victim);
-                                onHitEntity(stack, owner.serverLevel(), owner, victim);
-                                throw new ReturnException();
-                            });
-                } catch (Exception ignored) {}
+                level.getEntities(owner, searchBox, target -> canHitEntity(target, owner)).stream()
+                        .filter(victim -> !struckEntities.contains(victim.getId()))
+                        .filter(victim -> victim.getBoundingBox().inflate(0.3)
+                                .clip(startVec, endVec).isPresent())
+                        .min(Comparator.comparingDouble(victim -> victim.distanceToSqr(owner)))
+                        .ifPresent(victim -> {
+                            struckEntities.add(victim.getId());
+                            writeActionHits(stack, struckEntities);
+                            owner.setLastHurtMob(victim);
+                            Entity impacted = LibEntityUtils.tryFindBeImpacted(victim);
+                            onHitEntity(stack, owner.serverLevel(), owner, impacted);
+                        });
                 onStingTick(stack, owner.serverLevel(), owner, endVec, attackDuration - tickCount < attackInterval);
             }
         }
+    }
+
+    /**
+     * 读取当前挥击的命中集合；版本缺失或不符时直接创建全新当前格式。
+     */
+    private static IntSet readActionHits(CompoundTag tag) {
+        if (tag.getInt(SPEAR_ACTION_VERSION_KEY) != SPEAR_ACTION_VERSION) {
+            tag.putInt(SPEAR_ACTION_VERSION_KEY, SPEAR_ACTION_VERSION);
+            tag.putIntArray(SPEAR_ACTION_HITS_KEY, new int[0]);
+        }
+        return new IntArraySet(tag.getIntArray(SPEAR_ACTION_HITS_KEY));
+    }
+
+    /**
+     * 把短生命周期命中集合写回当前武器栈，彻底隔离不同玩家和不同长矛。
+     */
+    private static void writeActionHits(ItemStack stack, IntSet hits) {
+        LibUtils.updateItemStackNbt(stack, tag -> {
+            tag.putInt(SPEAR_ACTION_VERSION_KEY, SPEAR_ACTION_VERSION);
+            tag.putIntArray(SPEAR_ACTION_HITS_KEY, hits.toIntArray());
+        });
     }
 
     protected abstract void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim);
@@ -184,6 +221,77 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     }
 
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
+
+    /**
+     * 通过统一 MELEE 事务生成一枚长矛衍生弹幕。
+     *
+     * <p>伤害在动作创建时冻结为当前攻击伤害乘组件系数；组件只配置运动、寿命、穿透和特效。
+     * 零速孢子使用零 launch 倍率静止生成，仍携带完整战斗快照。</p>
+     */
+    protected final <P extends SpearProjectile> ProjectileFireResult fireDerivedProjectile(
+            ItemStack weapon,
+            ServerLevel level,
+            LivingEntity owner,
+            SpearProjectileComponent component,
+            P projectile,
+            Vec3 position,
+            Vec3 direction,
+            float baseKnockback,
+            Consumer<P> configurator
+    ) {
+        if (!(owner instanceof ServerPlayer player)) {
+            return ProjectileFireResult.PLAYER_UNAVAILABLE;
+        }
+        if (component == null || projectile == null || position == null || direction == null
+                || configurator == null) {
+            throw new IllegalArgumentException("Spear projectile action arguments must not be null");
+        }
+        if (!Float.isFinite(baseKnockback) || baseKnockback < 0.0F) {
+            throw new IllegalArgumentException("Spear projectile knockback must be finite and non-negative");
+        }
+
+        projectile.setWeapon(weapon);
+        projectile.setProjComponent(component, owner);
+        projectile.fire(direction, component.baseSpeed(), baseKnockback);
+        configurator.accept(projectile);
+        float actionVelocity = component.baseSpeed() > 0.0F ? component.baseSpeed() : 1.0F;
+        float velocityMultiplier = component.baseSpeed() > 0.0F ? 1.0F : 0.0F;
+        float actionDamage = (float) owner.getAttributeValue(LibAttributes.getAttackDamage())
+                * component.damageFactor();
+        ProjectileFireAction action = ProjectileFireAction.builder(
+                        ProjectileDamageChannel.MELEE,
+                        ProjectileCost.none(),
+                        (context, snapshot) -> List.of(new ProjectileLaunch(
+                                projectile, position, direction, velocityMultiplier)))
+                .baseDamage(actionDamage)
+                .baseVelocity(actionVelocity)
+                .baseKnockback(baseKnockback)
+                .triggers(ProjectileFireTrigger.MELEE_ATTACK_TICK)
+                .build();
+        return ServerProjectileFireService.fire(
+                player,
+                InteractionHand.MAIN_HAND,
+                ProjectileFireTrigger.MELEE_ATTACK_TICK,
+                action);
+    }
+
+    /**
+     * 无额外实体配置时使用的简化重载。
+     */
+    protected final <P extends SpearProjectile> ProjectileFireResult fireDerivedProjectile(
+            ItemStack weapon,
+            ServerLevel level,
+            LivingEntity owner,
+            SpearProjectileComponent component,
+            P projectile,
+            Vec3 position,
+            Vec3 direction,
+            float baseKnockback
+    ) {
+        return fireDerivedProjectile(
+                weapon, level, owner, component, projectile, position, direction,
+                baseKnockback, ignored -> {});
+    }
 
     protected boolean hurtVictim(DamageSource damageSource, LivingEntity owner, Entity victim) {
         return victim.hurt(damageSource, (float) owner.getAttributeValue(LibAttributes.getAttackDamage()));
@@ -225,13 +333,42 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
             private GeoItemRenderer<AbstractSpearItem> renderer;
+            private Boolean hasGeoModel;
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                /*
+                 * 部分矛目前只有普通 item model，没有 geo/item/spear/<id>.geo.json。
+                 * 这种情况下不能强行返回 GeoItemRenderer，否则第一/第三人称会因为模型资源缺失
+                 * 直接空手；资源补齐后这里会自动启用 Geo 渲染。
+                 */
+                if (hasGeoModel == null) {
+                    hasGeoModel = Minecraft.getInstance()
+                            .getResourceManager()
+                            .getResource(Confluence.asResource(
+                                    "geo/item/spear/" + BuiltInRegistries.ITEM
+                                            .getKey(AbstractSpearItem.this)
+                                            .getPath() + ".geo.json"))
+                            .isPresent();
+                }
+                if (!hasGeoModel) return null;
                 if (renderer == null) {
                     this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("spear/" + BuiltInRegistries.ITEM.getKey(AbstractSpearItem.this).getPath())));
                 }
                 return renderer;
+            }
+
+            @Override
+            public HumanoidModel.ArmPose getArmPose(
+                    LivingEntity living,
+                    InteractionHand hand,
+                    ItemStack stack
+            ) {
+                /*
+                 * Forge 1.20.1 的 GeoItemRenderer 与手臂姿态共用同一个客户端扩展。
+                 * 必须在这里同时提供两者，后续再注册一个仅含姿态的扩展会覆盖 Geo 渲染器。
+                 */
+                return ModArmPoses.SPEAR;
             }
         });
     }

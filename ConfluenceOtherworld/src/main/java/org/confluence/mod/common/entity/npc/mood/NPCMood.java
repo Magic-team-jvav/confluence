@@ -9,10 +9,11 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 
 /**
- * NPC 心情系统。心情值影响交易价格系数：
+ * NPC 心情系统。心情值分别影响玩家买入与 NPC 售回价格：
  * <ul>
  *   <li>100 为基准，系数 1.0</li>
- *   <li>每 +10 心情，买入价格 -5%、卖出价格 +5%（系数 0.75 ~ 1.5）</li>
+ *   <li>每 +10 心情，玩家买入价格降低 5%，NPC 回收价格提高 5%</li>
+ *   <li>心情限制在 50 到 150，因此两种系数都限制在 0.75 到 1.25</li>
  * </ul>
  */
 public class NPCMood {
@@ -40,11 +41,19 @@ public class NPCMood {
     }
 
     /**
-     * 获取交易价格系数（0.75 ~ 1.5）。
-     * 100 心情 = 1.0，每 +10 心情 → 0.05 偏移。
+     * 获取玩家从 NPC 购买物品时的价格系数。
      */
-    public float getTradePriceMultiplier() {
+    public float getBuyPriceMultiplier() {
         return 1.0f + (BASE_VALUE - value) * 0.005f;
+    }
+
+    /**
+     * 获取 NPC 回收玩家物品时的价格系数。
+     *
+     * <p>该方向与买价相反：高心情既给予购买折扣，也会提高回收价。</p>
+     */
+    public float getSellPriceMultiplier() {
+        return 1.0f + (value - BASE_VALUE) * 0.005f;
     }
 
     /**

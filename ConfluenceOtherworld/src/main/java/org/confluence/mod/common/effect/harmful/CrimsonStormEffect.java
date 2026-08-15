@@ -4,6 +4,12 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
+/**
+ * 标记生物正在参与血肉山风暴遭遇。
+ *
+ * <p>具体牵引和区域伤害由施加效果的血肉山实例结算，避免在效果单例中保存某个 Boss
+ * 的可变引用而污染其他世界、其他遭遇或多玩家状态。该效果只负责状态展示与同步。</p>
+ */
 public class CrimsonStormEffect extends PortMobEffect {
     public CrimsonStormEffect() {
         super(MobEffectCategory.HARMFUL, 0x8B0000);
@@ -11,26 +17,11 @@ public class CrimsonStormEffect extends PortMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity living, int amplifier) {
-// todo effect       UnSyncableAttachment data = living.getData(TEAttachments.UNSYNC);
-//        HillOfFlesh flesh = data.getFightingHillOfFlesh();
-//        if (flesh == null || !flesh.isAlive()) {
-//            data.setFightingHillOfFlesh(null);
-//            return;
-//        }
-//        data.tickInvulnerableStorm();
-//
-//        if (data.isInvulnerableStormActive()) {
-//            return;
-//        }
-//
-//        Vec3 dir = flesh.position().subtract(living.position());
-//        double dist = 1 / dir.length() * 0.5f;
-//        dist = Math.min(dist, 0.03);
-//        living.addDeltaMovement(dir.normalize().scale(dist));
+        // 行为由对应的 HillOfFlesh 实例结算，这里不能保存跨实体的 Boss 状态。
     }
 
     @Override
     public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-        return true;
+        return false;
     }
 }

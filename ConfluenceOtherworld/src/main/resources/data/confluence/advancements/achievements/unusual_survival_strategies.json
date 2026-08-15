@@ -1,0 +1,30 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "runtime": {
+            "trigger": "minecraft:impossible"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.unusual_survival_strategies.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "minecraft:potion",
+            "nbt": "{Potion:\"minecraft:water\"}"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.unusual_survival_strategies.title"
+        }
+    },
+    "requirements": [
+        [
+            "runtime"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

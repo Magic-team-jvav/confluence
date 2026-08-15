@@ -20,7 +20,6 @@ public abstract class LocalEntityMixin implements SelfGetter<Entity> {
     @Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
     private void getTeamColor(CallbackInfoReturnable<Integer> cir) {
         Entity thiz = confluence$self();
-        /* todo summoner if (thiz instanceof IMinion || thiz instanceof ISummonMob) return;*/
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (!player.hasEffect(ModEffects.HUNTER)) return;

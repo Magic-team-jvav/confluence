@@ -24,6 +24,12 @@ public record WindSpeedPacketS2C(float x, float z) implements IPortPacket.S2C {
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
+    @Override
     public void work(Player player) {
         WeatherHandler.handleWindSpeed(this);
     }

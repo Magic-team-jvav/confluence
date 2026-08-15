@@ -38,20 +38,11 @@ public class StormSpearItem extends AbstractSpearItem {
             SpearProjectileComponent component = SpearProjectileComponent.STORM_SPEAR_PROJ.get();
             StormSpearProjectile projectile = new StormSpearProjectile(
                     ModEntities.STORM_SPEAR_SHOT.get(), level);
-
-            projectile.setOwner(owner);
-            projectile.setWeapon(owner.getMainHandItem());
-            // setProjComponent 自动从 owner 获取基础攻击伤害
-            projectile.setProjComponent(component, owner);
-
             // 初始位置：矛尖与玩家之间约1/3处
             Vec3 spawnPos = owner.getEyePosition().add(tipPos.subtract(owner.getEyePosition()).scale(0.33));
-            projectile.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
-
-            // 发射：设置方向、速度、击退，自动同步客户端
-            projectile.fire(owner.getLookAngle(), component.getVelocity(owner), (float) knockBackScale);
-
-            level.addFreshEntity(projectile);
+            fireDerivedProjectile(
+                    stack, level, owner, component, projectile, spawnPos,
+                    owner.getLookAngle(), (float) knockBackScale);
         }
     }
 }

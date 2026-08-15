@@ -9,37 +9,39 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
+import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.condition.IsDaytimeCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
+import org.confluence.mod.common.entity.ai.bt.leaf.*;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEye.Variant> {
+public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<DemonEye.Variant> {
     public static final String VARIANT_KEY = "Variant";
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(DemonEye.class, EntityDataSerializers.INT);
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
+    private DemonEyeSurroundAction surroundAction;
 
     public DemonEye(EntityType<? extends DemonEye> type, Level level) {
         this(type, level, Variant.NORMAL);
@@ -52,33 +54,87 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
 
     public static boolean checkDemonEyeSpawnRules(EntityType<DemonEye> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
         if (LibDateUtils.isDay(level) || pos.getY() < OverworldUtils.getSurfaceY()) return false;
-        return level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, reason, pos, random);
+        return level.canSeeSky(pos)
+                && SpawnPlacementChecks.checkMonsterSpawnRules(type, level, reason, pos, random);
     }
 
     private void applyVariantStats(Variant v) {
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(v.health);
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(v.damage);
         this.getAttribute(Attributes.ARMOR).setBaseValue(v.armor);
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(
+                v.isLarge() ? 0.1 : 0.2);
         this.setHealth(this.getMaxHealth());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return BaseFlyingMonster.createFlyingAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 18.0);
+                .add(Attributes.ATTACK_DAMAGE, 18.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
+    }
+
+    /**
+     * 恶魔眼始终使用飞行物理。这里直接返回无重力语义，与 1.21 侧一致，避免命令生成或
+     * NBT 读取覆盖实体标志后先坠落到地面，再由飞行行为勉强拉回目标高度。
+     */
+    @Override
+    public boolean isNoGravity() {
+        return true;
+    }
+
+    /**
+     * 恶魔眼体型决定受击后的位移幅度。
+     *
+     * <p>普通体型使用两倍击退，大型体型使用一点五倍击退；倍率先作用于原始强度，
+     * 再交给原版击退公式处理，保持伤害来源、附魔和其他模组施加的击退语义。</p>
+     */
+    @Override
+    public void knockback(double strength, double x, double z) {
+        super.knockback(strength * (getVariant().isLarge() ? 1.5 : 2.0),
+                x, z);
+    }
+
+    @Override
+    protected Vec3 reboundVelocity(Vec3 requested, Vec3 allowed) {
+        Vec3 rebound = requested;
+        if (allowed.x != requested.x) {
+            rebound = new Vec3(
+                    requested.x < 0.0 ? 0.22 : -0.22,
+                    rebound.y,
+                    rebound.z);
+        }
+        if (allowed.y != requested.y) {
+            boolean movingDown = requested.y < 0.0;
+            if (surroundAction != null) {
+                surroundAction.adjustTargetAfterVerticalCollision(movingDown);
+            }
+            rebound = new Vec3(
+                    rebound.x,
+                    movingDown
+                            ? Mth.clamp(-requested.y, 0.1, 0.22)
+                            : Mth.clamp(-requested.y, -0.22, -0.1),
+                    rebound.z);
+        }
+        if (allowed.z != requested.z) {
+            rebound = new Vec3(
+                    rebound.x,
+                    rebound.y,
+                    requested.z < 0.0 ? 0.3 : -0.3);
+        }
+        return rebound;
     }
 
     @Override
     protected BTRoot createBT() {
-        BTNode combat = SelectorNode.of(
-                SequenceNode.of(new CircleAroundTargetAction(this, 0.3, 4), new WaitAction(20)),
-                SequenceNode.of(new ChargeAttackAction(this, 0.5)));
+        surroundAction = new DemonEyeSurroundAction(this);
+        BTNode night = new ConditionalSwitchNode(
+                () -> getTarget() != null && getTarget().isAlive(),
+                surroundAction,
+                new DemonEyeWanderAction(this));
 
-        BTNode night = SelectorNode.of(
-                SequenceNode.of(new HasTargetCondition(this), combat),
-                new FlyWanderAction(this, 0.15, 10));
-
-        BTNode root = SelectorNode.of(
-                SequenceNode.of(new IsDaytimeCondition(this), new FlyWanderAction(this, 0.3, 20)),
+        BTNode root = new ConditionalSwitchNode(
+                () -> level().isDay(),
+                new DemonEyeLeaveAction(this),
                 night);
 
         return new BTRoot() {
@@ -89,7 +145,7 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
 
     @Override
     public Variant getVariant() {
-        return Variant.values()[this.entityData.get(DATA_VARIANT)];
+        return Variant.byId(this.entityData.get(DATA_VARIANT));
     }
 
     @Override
@@ -113,7 +169,23 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        if (!tag.contains(VARIANT_KEY)) {
+            setVariant(Variant.NORMAL);
+            return;
+        }
         PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+                                        MobSpawnType spawnType, @Nullable SpawnGroupData data,
+                                        @Nullable CompoundTag tag) {
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
+        if (tag == null || !tag.contains(VARIANT_KEY)) {
+            setVariant(Variant.random(random));
+        }
+        return result;
     }
 
     @Override
@@ -123,38 +195,52 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
 
     @Override
     public void tick() {
+        if (!level().isClientSide) {
+            setTarget(level().getNearestPlayer(this, 40.0));
+        }
         super.tick();
-        if (!level().isClientSide && getTarget() == null && tickCount % 40 == 0) {
-            setTarget(level().getNearestPlayer(this, 40));
+        Vec3 movement = getDeltaMovement();
+        if (movement.lengthSqr() > 1.0E-8) {
+            setYRot((float) Math.toDegrees(Mth.atan2(-movement.x, movement.z)));
+            setXRot((float) Math.toDegrees(Mth.atan2(
+                    movement.y, movement.horizontalDistance())));
         }
     }
 
     public enum Variant implements IVariant {
-        NORMAL("normal", 15.0, 3.5, 1, 1.0F),
-        NORMAL_BIG("normal_big", 12.0, 4.0, 2, 1.3F),
-        CATARACT("cataract", 11.5, 3.5, 2, 1.0F),
-        CATARACT_BIG("cataract_big", 14.0, 4.0, 2, 1.3F),
-        SLEEPY("sleepy", 15.0, 3.0, 1, 1.0F),
-        SLEEPY_BIG("sleepy_big", 16.0, 3.5, 1, 1.3F),
-        DILATED("dilated", 12.0, 3.5, 1, 1.0F),
-        DILATED_SMALL("dilated_small", 11.5, 3.0, 0, 0.7F),
-        GREEN("green", 15.0, 4.0, 0, 1.0F),
-        GREEN_SMALL("green_small", 12.5, 3.0, 0, 0.7F),
-        PURPLE("purple", 15.0, 3.0, 2, 1.0F),
-        PURPLE_BIG("purple_big", 16.0, 3.0, 2, 1.3F),
-        OWL("owl", 18.5, 3.0, 3, 1.0F),
-        SPACESHIP("spaceship", 15.0, 3.0, 2, 1.0F);
+        NORMAL("normal", false, 15.0, 3.5, 1, 1.0F),
+        NORMAL_BIG("normal_big", true, 12.0, 4.0, 2, 1.3F),
+        CATARACT("cataract", false, 11.5, 3.5, 2, 1.0F),
+        CATARACT_BIG("cataract_big", true, 14.0, 4.0, 2, 1.3F),
+        SLEEPY("sleepy", false, 15.0, 3.0, 1, 1.0F),
+        SLEEPY_BIG("sleepy_big", true, 16.0, 3.5, 1, 1.3F),
+        DILATED("dilated", true, 12.0, 3.5, 1, 1.0F),
+        DILATED_SMALL("dilated_small", false, 11.5, 3.0, 0, 0.7F),
+        GREEN("green", true, 15.0, 4.0, 0, 1.0F),
+        GREEN_SMALL("green_small", false, 12.5, 3.0, 0, 0.7F),
+        PURPLE("purple", false, 15.0, 3.0, 2, 1.0F),
+        PURPLE_BIG("purple_big", true, 16.0, 3.0, 2, 1.3F),
+        OWL("owl", false, 18.5, 3.0, 3, 1.0F),
+        SPACESHIP("spaceship", false, 15.0, 3.0, 2, 1.0F);
 
         public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
 
         private final String name;
+        private final boolean large;
         public final double health;
         public final double damage;
         public final int armor;
         private final float scale;
 
-        Variant(String name, double health, double damage, int armor, float scale) {
+        Variant(
+                String name,
+                boolean large,
+                double health,
+                double damage,
+                int armor,
+                float scale) {
             this.name = name;
+            this.large = large;
             this.health = health;
             this.damage = damage;
             this.armor = armor;
@@ -165,6 +251,10 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
         public String getSerializedName() { return name; }
 
         public float scale() { return scale; }
+
+        public boolean isLarge() {
+            return large;
+        }
 
         public int textureIndex() { return ordinal() / 2; }
 
@@ -179,7 +269,10 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
         }
 
         @Override
-        public ResourceLocation modelPath() { return Confluence.asResource("monster/demon_eye"); }
+        public ResourceLocation modelPath() {
+            return Confluence.asResource(
+                    "geo/entity/demon_eye.geo.json");
+        }
 
         @Override
         public ResourceLocation texturePath() {
@@ -187,10 +280,30 @@ public class DemonEye extends BaseFlyingMonster implements VariantHolder<DemonEy
             return Confluence.asResource("textures/entity/demon_eye/" + names[textureIndex()] + ".png");
         }
 
-        public ResourceLocation animationPath() { return Confluence.asResource("animations/entity/demon_eye"); }
+        public ResourceLocation animationPath() {
+            return Confluence.asResource(
+                    "animations/entity/demon_eye.animation.json");
+        }
+
+        public static Variant byId(int id) {
+            Variant[] variants = values();
+            return id >= 0 && id < variants.length ? variants[id] : NORMAL;
+        }
 
         public static Variant random(RandomSource random) {
-            if (random.nextInt(50) == 0) return random.nextBoolean() ? OWL : SPACESHIP;
+            return random(random, DateUtils.isHalloween(DateUtils.getCalendar()));
+        }
+
+        /**
+         * 按节日状态选择自然生成变种。
+         *
+         * <p>万圣节期间只生成猫头鹰和太空船外观，其余日期只从十二种常规恶魔眼中选择。
+         * 显式节日参数同时让生成规则可以在不依赖本机日期的情况下稳定测试。</p>
+         */
+        static Variant random(RandomSource random, boolean halloween) {
+            if (halloween) {
+                return random.nextBoolean() ? OWL : SPACESHIP;
+            }
             return values()[random.nextInt(12)];
         }
     }

@@ -59,10 +59,12 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModBiomeTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModWorldPresetTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModEntityTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModFluidTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new NPCShopProvider(output));
+        generator.addProvider(server, new NPCMoodProvider(output));
         generator.addProvider(server, new CollectRecipeProvider(Confluence.asPlainId("server"), output, lookup,
-//                NPCShopProvider::new,
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,
                 HeavyWorkBenchProvider::new,
@@ -114,7 +116,7 @@ public final class ModDataGenerator {
             return Optional.of(HolderSet.emptyNamed(wrapped, tagKey));
         }
 
-        // by coremod from portlib
+        // 此方法由 PortLib 的核心修改注入调用。
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof LookupWrapper<?> wrapper && wrapper.wrapped.equals(wrapped)) {

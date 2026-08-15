@@ -1,0 +1,30 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {},
+            "trigger": "confluence:shimmer_transmutation"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.a_shimmer_in_the_dark.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:bottomless_shimmer_bucket"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.a_shimmer_in_the_dark.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": false
+}

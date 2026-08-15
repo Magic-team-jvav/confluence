@@ -1,33 +1,118 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.data.entity.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.*;
+import org.confluence.mod.common.init.ModSoundEvents;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+
+import java.util.UUID;
 
 /**
- * 战士 AI 怪物——追击+近战+漫游。适用于僵尸、骷髅、木乃伊等大部分陆行怪。
+ * 通用陆行近战怪物，负责追击、近战、越障跃击和空闲漫游。
+ *
+ * <p>少数泰拉瑞亚怪物在发现目标后会额外加速。该差异由构造参数声明，
+ * 公共实现统一管理瞬时属性修饰符和疾跑状态，防止每种僵尸都复制一套
+ * 容易发生永久叠加的属性代码。</p>
  */
 public class BaseWarriorMonster extends BaseMonster {
-    private final double moveSpeed;
-    private final double followRange;
+    private static final UUID PURSUIT_SPEED_UUID =
+            UUID.fromString("90d2f39a-960e-48b2-bcf7-48a49b51d982");
+    private static final RawAnimation WALK =
+            RawAnimation.begin().thenLoop("move.walk");
+    private static final RawAnimation RUN =
+            RawAnimation.begin().thenLoop("move.run");
+    private static final RawAnimation IDLE =
+            RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation ATTACK =
+            RawAnimation.begin().thenLoop("attack.strike");
+    private final double pursuitSpeedBonus;
+    private final LandAnimationProfile animationProfile;
+    private final LandSoundProfile soundProfile;
 
-    public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double moveSpeed, double followRange) {
+    public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level) {
+        this(type, level, 0.0, LandAnimationProfile.NONE,
+                LandSoundProfile.ROUTINE);
+    }
+
+    /**
+     * 创建具有目标追击加速的陆行怪物。
+     *
+     * @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
+     */
+    public BaseWarriorMonster(
+            EntityType<? extends BaseWarriorMonster> type,
+            Level level,
+            double pursuitSpeedBonus) {
+        this(type, level, pursuitSpeedBonus, LandAnimationProfile.NONE,
+                LandSoundProfile.ROUTINE);
+    }
+
+    /**
+     * 创建使用指定基础移动动画的陆行怪物。
+     *
+     * <p>基础类不能默认播放走路和待机动画，因为冲锋怪、龙虾等子类使用的是另一套
+     * 动画键。由注册实体明确选择资源实际支持的档案，既保留通用控制器，也不会在
+     * 客户端持续请求不存在的动画。</p>
+     *
+     * @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
+     * @param animationProfile  该实体资源支持的基础移动动画
+     */
+    public BaseWarriorMonster(
+            EntityType<? extends BaseWarriorMonster> type,
+            Level level,
+            double pursuitSpeedBonus,
+            LandAnimationProfile animationProfile) {
+        this(type, level, pursuitSpeedBonus, animationProfile,
+                LandSoundProfile.ROUTINE);
+    }
+
+    /**
+     * 创建具有指定移动动画与音效表现的通用陆行怪物。
+     *
+     * <p>动画和音效档案只描述同一套近战行为的表现差异。实体注册处选择档案后，
+     * 不需要为仅有资源差异的变种创建空壳子类。</p>
+     *
+     * @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
+     * @param animationProfile  实体资源支持的基础移动动画
+     * @param soundProfile      实体使用的环境、受伤与死亡音效组合
+     */
+    public BaseWarriorMonster(
+            EntityType<? extends BaseWarriorMonster> type,
+            Level level,
+            double pursuitSpeedBonus,
+            LandAnimationProfile animationProfile,
+            LandSoundProfile soundProfile) {
         super(type, level);
-        this.moveSpeed = moveSpeed;
-        this.followRange = followRange;
+        if (pursuitSpeedBonus < 0.0) {
+            throw new IllegalArgumentException(
+                    "Pursuit speed bonus cannot be negative");
+        }
+        this.pursuitSpeedBonus = pursuitSpeedBonus;
+        this.animationProfile = animationProfile;
+        this.soundProfile = soundProfile;
+    }
+
+    /**
+     * 供特殊子类保留构造兼容；实际运行数值现在统一从实体属性读取。
+     */
+    protected BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level,
+                                 double ignoredMoveSpeed, double ignoredFollowRange) {
+        this(type, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -41,32 +126,186 @@ public class BaseWarriorMonster extends BaseMonster {
     @Override
     protected BTRoot createBT() {
         BaseWarriorMonster self = this;
+        CreatureDefinition.BehaviorOverrides behavior = creatureDefinition().behavior();
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
+                JumpProfile jump = jumpProfile();
+                if (jump != null) {
+                    return SelectorNode.of(
+                            SequenceNode.of(
+                                    new HasTargetCondition(self),
+                                    new JumpAttackAction(
+                                            self,
+                                            jump.speedMultiplier(),
+                                            jump.maximumDistance(),
+                                            jump.cooldownTicks(),
+                                            jump.windupTicks())),
+                            createMeleeSequence(self, behavior),
+                            createWanderSequence(self, behavior));
+                }
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(self),
-                                new MoveToTargetAction(self, moveSpeed, 2.0),
-                                new MeleeAttackAction(self, 1.0)),
-                        SequenceNode.of(new WaitAction(20 + self.random.nextInt(40)),
-                                new RandomStrollAction(self, 0.5, 8)));
+                        createMeleeSequence(self, behavior),
+                        createWanderSequence(self, behavior));
             }
         };
     }
 
+    protected JumpProfile jumpProfile() {
+        return null;
+    }
+
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
+    public void registerControllers(
+            AnimatableManager.ControllerRegistrar controllers) {
+        if (animationProfile == LandAnimationProfile.NONE) {
+            return;
+        }
+        controllers.add(new AnimationController<>(
+                this,
+                "Walk/Idle",
+                5,
+                state -> {
+                    state.setControllerSpeed(
+                            (float) (getAttributeValue(
+                                    Attributes.MOVEMENT_SPEED) / 0.25));
+                    if (state.isMoving()) {
+                        return state.setAndContinue(
+                                animationProfile
+                                        == LandAnimationProfile
+                                        .WALK_RUN_IDLE_ATTACK
+                                        && isSprinting()
+                                        ? RUN : WALK);
+                    }
+                    if (animationProfile
+                            != LandAnimationProfile.WALK_ONLY) {
+                        return state.setAndContinue(IDLE);
+                    }
+                    return PlayState.STOP;
+                }));
+        if (animationProfile
+                == LandAnimationProfile.WALK_RUN_IDLE_ATTACK) {
+            controllers.add(new AnimationController<>(
+                    this,
+                    "Attack",
+                    0,
+                    state -> swinging
+                            ? state.setAndContinue(ATTACK)
+                            : PlayState.STOP));
+        }
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide && getTarget() == null && tickCount % 20 == 0) {
-            Player nearest = level().getNearestPlayer(this, followRange);
-            if (nearest != null) setTarget(nearest);
+        if (level().isClientSide || pursuitSpeedBonus == 0.0) {
+            return;
         }
+
+        boolean pursuing = getTarget() != null && getTarget().isAlive();
+        var movementSpeed = getAttribute(Attributes.MOVEMENT_SPEED);
+        if (movementSpeed == null) {
+            return;
+        }
+        AttributeModifier modifier =
+                movementSpeed.getModifier(PURSUIT_SPEED_UUID);
+        if (pursuing && modifier == null) {
+            movementSpeed.addTransientModifier(new AttributeModifier(
+                    PURSUIT_SPEED_UUID,
+                    "Target pursuit speed",
+                    pursuitSpeedBonus,
+                    AttributeModifier.Operation.ADDITION));
+        } else if (!pursuing && modifier != null) {
+            movementSpeed.removeModifier(PURSUIT_SPEED_UUID);
+        }
+        setSprinting(pursuing);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return switch (soundProfile) {
+            case ZOMBIE -> ModSoundEvents.TR_ZOMBIE_FREE.get();
+            case FACE_MONSTER -> ModSoundEvents.FACE_HOOT.get();
+            default -> super.getAmbientSound();
+        };
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return soundProfile == LandSoundProfile.POSSESSED_ARMOR
+                ? ModSoundEvents.METAL_HURT.get()
+                : super.getHurtSound(source);
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return switch (soundProfile) {
+            case ZOMBIE, FACE_MONSTER -> ModSoundEvents.TR_ZOMBIE_DEATH.get();
+            case POSSESSED_ARMOR -> ModSoundEvents.SOUL_DEATH.get();
+            default -> super.getDeathSound();
+        };
+    }
+
+    private static BTNode createMeleeSequence(
+            BaseWarriorMonster self,
+            CreatureDefinition.BehaviorOverrides behavior) {
+        return SequenceNode.of(
+                new HasTargetCondition(self),
+                new MoveToTargetAction(
+                        self,
+                        behavior.moveSpeedOr(1.0),
+                        behavior.meleeRangeOr(2.0)),
+                new MeleeAttackAction(
+                        self,
+                        behavior.meleeRangeOr(1.0)));
+    }
+
+    private static BTNode createWanderSequence(
+            BaseWarriorMonster self,
+            CreatureDefinition.BehaviorOverrides behavior) {
+        return SequenceNode.of(
+                new WaitAction(
+                        behavior.idleTicksOr(20)
+                                + self.random.nextInt(40)),
+                new RandomStrollAction(
+                        self,
+                        behavior.wanderSpeedOr(0.5),
+                        behavior.wanderRadiusOr(8)));
+    }
+
+    /**
+     * 简单陆行怪的跃击参数。
+     */
+    public record JumpProfile(
+            double speedMultiplier,
+            double maximumDistance,
+            int cooldownTicks,
+            int windupTicks) {}
+
+    /**
+     * 通用陆行资源可用的基础动画组合。
+     *
+     * <p>{@link #NONE} 留给具有专用控制器或非标准动画键的子类；
+     * {@link #WALK_ONLY} 在静止时停止控制器；{@link #WALK_IDLE} 在移动与待机
+     * 之间平滑切换；{@link #WALK_RUN_IDLE_ATTACK} 额外提供追击奔跑和独立攻击层。</p>
+     */
+    public enum LandAnimationProfile {
+        NONE,
+        WALK_ONLY,
+        WALK_IDLE,
+        WALK_RUN_IDLE_ATTACK
+    }
+
+    /**
+     * 共用陆行行为的变种音效档案。
+     *
+     * <p>这里只保存有限的表现组合；基础档案继续使用 {@link BaseMonster}
+     * 的常规受伤与死亡音效。新增仅有音效差异的变种时，在注册处选择对应档案即可。</p>
+     */
+    public enum LandSoundProfile {
+        ROUTINE,
+        ZOMBIE,
+        FACE_MONSTER,
+        POSSESSED_ARMOR
     }
 }

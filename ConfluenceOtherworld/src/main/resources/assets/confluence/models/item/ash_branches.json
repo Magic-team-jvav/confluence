@@ -3,7 +3,7 @@
 	"textures": {
 		"0": "confluence:block/ash_log_top",
 		"1": "confluence:block/ash_log",
-		"particle": "confluence:block/ash_log_end"
+        "particle": "confluence:block/ash_log_top"
 	},
 	"elements": [
 		{

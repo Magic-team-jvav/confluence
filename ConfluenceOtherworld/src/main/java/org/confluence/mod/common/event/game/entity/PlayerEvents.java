@@ -42,6 +42,7 @@ import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
+import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
@@ -66,7 +67,10 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sword.StarSteelSword;
+import org.confluence.mod.common.item.yoyo.YoyoItem;
+import org.confluence.mod.common.mount.MountManager;
 import org.confluence.mod.common.menu.FletchingTableMenu;
+import org.confluence.mod.common.summon.SummonContainer;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
@@ -158,6 +162,9 @@ public final class PlayerEvents {
 
     private static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
+        MountManager.dismiss(player);
+        SummonContainer.of(player).clear(player);
+        SummonTargetCache.invalidate(player.serverLevel(), player.getUUID());
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
         PlayerSpecialData.of(player).setPvP(false);
@@ -246,7 +253,10 @@ public final class PlayerEvents {
     }
 
     private static void itemEntityPickup$Pre(PortItemEntityPickupEvent.Pre event) {
-        ServerPlayer player = (ServerPlayer) event.getPlayer();
+        // Forge 与测试框架允许自定义 Player 实现进入拾取事件；服务端附件逻辑只处理真实服务端玩家。
+        if (!(event.getPlayer() instanceof ServerPlayer player)) {
+            return;
+        }
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = itemEntity.getItem();
         if (IServerPlayer.of(player).confluence$isCouldPickupItem()) {
@@ -281,7 +291,9 @@ public final class PlayerEvents {
     }
 
     private static void itemEntityPickup$Post(PortItemEntityPickupEvent.Post event) {
-        ServerPlayer player = (ServerPlayer) event.getPlayer();
+        if (!(event.getPlayer() instanceof ServerPlayer player)) {
+            return;
+        }
         ItemEntity itemEntity = event.getItemEntity();
         ItemStack itemStack = event.getOriginalStack();
         CoinItem.onPickup(itemStack, itemEntity);
@@ -336,7 +348,9 @@ public final class PlayerEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             AccessoryItems.applyLuckyCoin(serverPlayer, event.getTarget());
         }
-        if (player.getMainHandItem().is(ModTags.Items.SPEAR)) {
+        if (player.getMainHandItem().is(ModTags.Items.SPEAR)
+                || player.getMainHandItem().getItem()
+                instanceof YoyoItem) {
             event.setCanceled(true);
         }
     }
@@ -350,14 +364,7 @@ public final class PlayerEvents {
 
     private static void respawn(PortPlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        EverBeneficial everBeneficial = EverBeneficial.of(player);
-        EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
-        EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
-        EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, player);
-        EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, player);
-        EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, player);
-        EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, player);
-
+        MountManager.dismiss(player);
         BoulderWorld.forceSetAccessory(player);
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);
@@ -382,15 +389,6 @@ public final class PlayerEvents {
         }
     }
 
-// todo advancement   private static void advancementProgress(PortAdvancementEvent.AdvancementProgressEvent event) {
-//        ServerPlayer player = (ServerPlayer) event.getEntity();
-//        if (!LibEntityUtils.isSingleplayerOwner(player) &&
-//                AchievementOffsetLoader.getDisplayOffset().containsKey(event.getAdvancement().id())
-//        ) {
-//            AchievementsDataSyncPacketS2C.sendToPlayer(player);
-//        }
-//    }
-
     private static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof ServerPlayer target) {
             ServerPlayer sendTo = (ServerPlayer) event.getEntity();
@@ -402,6 +400,12 @@ public final class PlayerEvents {
 
     private static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
+        ServerLevel previousLevel = player.server.getLevel(event.getFrom());
+        if (previousLevel != null) {
+            SummonTargetCache.transitionLevel(previousLevel, player.serverLevel(), player);
+        }
+        SummonContainer.of(player).clear(player);
+        MountManager.dismiss(player);
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);
     }

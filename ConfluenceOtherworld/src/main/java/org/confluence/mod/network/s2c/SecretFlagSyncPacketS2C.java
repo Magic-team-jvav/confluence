@@ -20,6 +20,12 @@ public record SecretFlagSyncPacketS2C(long flag) implements IPortPacket.S2C {
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
+    @Override
     public void work(Player player) {
         ClientPacketHandler.handleSecretFlag(this);
     }

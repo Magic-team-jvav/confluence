@@ -30,3 +30,75 @@ mandatory=true
 versionRange = "[${curios_version},)"
 ordering = "NONE"
 side = "BOTH"
+
+# Confluence 的腐化、血腥、发光蘑菇与灰烬系群系通过 TerraBlender 嵌入原版噪声路由。
+# 这不是可选联动：世界生成初始化会直接加载其 API 类，缺失时应由加载器提前拒绝启动。
+[[dependencies.${ mod_id }]]
+modId = "terrablender"
+mandatory = true
+versionRange = "[${terrablender_version},)"
+ordering = "AFTER"
+side = "BOTH"
+
+# 以下模块都被 Confluence 主代码直接引用。其中部分会以 Jar-in-Jar 随主包发布，
+# 但仍必须声明加载依赖：这既规定初始化顺序，也使裁剪或损坏的发布包能在启动前给出明确错误。
+[[dependencies.${ mod_id }]]
+modId = "portlib"
+mandatory = true
+versionRange = "[${portlib_version},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "confluence_magic_lib"
+mandatory = true
+versionRange = "[0.1.0,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "terra_curio"
+mandatory = true
+versionRange = "[1.3.1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "terra_furniture"
+mandatory = true
+versionRange = "[1.20.1-0.0.5,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "geckolib"
+mandatory = true
+versionRange = "[${geckolib_version},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "particlestorm"
+mandatory = true
+versionRange = "[${particle_storm_version},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "thr_dim_particle"
+mandatory = true
+versionRange = "[${thr_dim_particle_version},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "the_trackers"
+mandatory = true
+versionRange = "[${the_trackers_version},)"
+ordering = "AFTER"
+side = "CLIENT"
+
+# 矛类动画直接引用 MCLib 类型。MCLib 的类没有被合并进 GeckoLib 主 Jar，
+# 因此 build.gradle 必须保留显式的 modCompileOnly 编译依赖。当前 GeckoLib 4.8.3
+# 发布物在运行侧通过 Jar-in-Jar 携带 MCLib 20；而 MCLib 自身没有 mods.toml，
+# 不是可用 modId 声明的 Forge 模组，所以这里不能再添加一条 mclib dependencies 记录。

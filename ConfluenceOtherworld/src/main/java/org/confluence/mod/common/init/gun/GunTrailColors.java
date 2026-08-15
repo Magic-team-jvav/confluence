@@ -18,21 +18,22 @@ public class GunTrailColors {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public static void init() {
-        putColor(GunItems.MUSKET_BULLET, 0xFFFD3E03);
-        putColor(GunItems.METEOR_SHOT, 0xFFFD034A);
-        putColor(GunItems.SILVER_BULLET, 0xFFFFAF8B);
-        putColor(GunItems.CRYSTAL_BULLET, 0x2FF04058);
-        putColor(GunItems.CURSED_BULLET, 0xFF60F802);
-        putColor(GunItems.CHLOROPHYTE_BULLET, 0xFF01EB0F);
-        putColor(GunItems.HIGH_VELOCITY_BULLET, 0xFFFFDD17);
-        putColor(GunItems.ICHOR_BULLET, 0xFFFFEA01);
-        putColor(GunItems.VENOM_BULLET, 0xFF974FA2);
-        putColor(GunItems.PARTY_BULLET, 0xFFF0009E);
-        putColor(GunItems.NANO_BULLET, 0xFF00A7F0);
-        putColor(GunItems.EXPLODING_BULLET, 0xFFF03E00);
-        putColor(GunItems.GOLDEN_BULLET, 0xFFB9A417);
-        putColor(GunItems.LUMINITE_BULLET, 0xFF53FFC3);
-        putColor(GunItems.TUNGSTEN_BULLET, 0xFFFD3E03);
+        // 颜色取自对应物品贴图；透明度保持不透明，由轨迹和头部渲染器自行处理淡出。
+        putColor(GunItems.MUSKET_BULLET, 0xFF9A8E87);
+        putColor(GunItems.METEOR_SHOT, 0xFFD65A4B);
+        putColor(GunItems.SILVER_BULLET, 0xFFB4CDD8);
+        putColor(GunItems.CRYSTAL_BULLET, 0xFF9E68FF);
+        putColor(GunItems.CURSED_BULLET, 0xFFD8F53E);
+        putColor(GunItems.CHLOROPHYTE_BULLET, 0xFF65D64D);
+        putColor(GunItems.HIGH_VELOCITY_BULLET, 0xFFEAC76A);
+        putColor(GunItems.ICHOR_BULLET, 0xFFF4B951);
+        putColor(GunItems.VENOM_BULLET, 0xFFB277E0);
+        putColor(GunItems.PARTY_BULLET, 0xFF58D98B);
+        putColor(GunItems.NANO_BULLET, 0xFF14D5F0);
+        putColor(GunItems.EXPLODING_BULLET, 0xFFE34C42);
+        putColor(GunItems.GOLDEN_BULLET, 0xFFF0C86B);
+        putColor(GunItems.LUMINITE_BULLET, 0xFF5CE6C2);
+        putColor(GunItems.TUNGSTEN_BULLET, 0xFF85AA73);
     }
 
     public static void putColor(String item) {

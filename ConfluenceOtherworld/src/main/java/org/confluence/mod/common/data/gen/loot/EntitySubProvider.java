@@ -2,12 +2,14 @@ package org.confluence.mod.common.data.gen.loot;
 
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.loot.EntityLootSubProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -22,6 +24,8 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.entity.IVariant;
+import org.confluence.mod.common.entity.animal.Bunny;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -76,7 +80,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-// todo datagen       add(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), LootTable.lootTable()
+// 待迁移到数据生成：add(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), LootTable.lootTable()
 //                .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
 //                .withPool(LootPool.lootPool()
 //                        .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5))
@@ -87,10 +91,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
 //                        .add(EmptyLootItem.emptyItem())
 //                )
 //        );
-        add(BossEntities.CREEPER_OF_CTHULHU.get(), LootTable.lootTable()
+        add(BossEntities.THE_DESTROYER_PROBE.get(), LootTable.lootTable());
+        add(BossEntities.LUNATIC_CULTIST_CLONE.get(), LootTable.lootTable());
+        add(MonsterEntities.VISUAL_NEURON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem())))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
+                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
@@ -129,6 +136,20 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.MANDIBLE_BLADE).setWeight(2))
                         .add(emptyWeight98)
+                )
+        );
+        add(MonsterEntities.BASE_BONES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
+                        .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(9967))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
         add(MonsterEntities.ANGER_BONES.get(), LootTable.lootTable()
@@ -285,6 +306,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(995))
                 )
         );
+        add(MonsterEntities.WANDERING_EYE_FISH.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ENDER_EYE)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.RED_DYE)).apply(random0To1))
+        );
         add(MonsterEntities.BLOODY_SPORE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.BLOOD_CLOT_POWDER)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(random0To1)
@@ -298,8 +323,15 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
+        add(MonsterEntities.BLOOD_TUMORS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
+                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                )
+        );
         add(MonsterEntities.CAVE_BAT.get(), batCommon()
         );
+        add(MonsterEntities.GIANT_BAT.get(), batCommon());
         add(MonsterEntities.SPORE_BAT.get(), batCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(BoomerangItems.SHROOMERANG).setWeight(5).setQuality(1))
@@ -324,6 +356,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
                         .when(LootItemKilledByPlayerCondition.killedByPlayer())
                         .when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.01F))
+                )
+        );
+        add(MonsterEntities.ZOMBIE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
                 )
         );
         add(MonsterEntities.SPORE_SKELETON.get(), LootTable.lootTable()
@@ -518,6 +555,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
+        // Boss 附属实体不能重复生成主体 Boss 的掉落，因此显式登记为空掉落表。
+        add(MonsterEntities.THE_HUNGRY.get(), LootTable.lootTable());
+        add(MonsterEntities.HILL_HUNGRY.get(), LootTable.lootTable());
         add(MonsterEntities.HARPY.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.GIANT_HARPY_FEATHER))
@@ -584,6 +624,15 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
+        add(MonsterEntities.LITTLE_HORNET.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.STINGER)).apply(random0To1)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.BEZOAR).setWeight(2))
+                        .add(emptyWeight98)
+                )
+        );
         add(MonsterEntities.ICE_BAT.get(), batCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.ICE_CREAM)).apply(random0To1)
@@ -611,6 +660,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(967))
                 )
         );
+        add(MonsterEntities.ARAPAIMA.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(133))
+                        .add(EmptyLootItem.emptyItem().setWeight(9867))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.HOOK).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(967))
+                )
+        );
         add(MonsterEntities.SHARK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY).setWeight(2))
@@ -624,6 +683,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.TOMB_CRAWLER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL)).apply(count1To2).apply(random0To1)
+                )
+        );
+        add(MonsterEntities.LEECH.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.ROTTEN_FLESH)).apply(random0To1)
                 )
         );
         add(MonsterEntities.BONE_SERPENT.get(), LootTable.lootTable()
@@ -723,6 +787,28 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98).apply(random0To1)
                 )
         );
+        // 原作中没有死亡掉落的环境生物仍显式登记为空掉落表，
+        // 避免依赖“缺少掉落表”的隐式回退，并保持数据包行为稳定。
+        add(CritterEntities.JEWEL_BUNNY.get(), jewelCritterLoot());
+        add(CritterEntities.HOSTILE_BUNNY.get(), LootTable.lootTable());
+        add(CritterEntities.RED_SQUIRREL.get(), LootTable.lootTable());
+        add(CritterEntities.JEWEL_SQUIRREL.get(), jewelCritterLoot());
+        add(CritterEntities.WORM.get(), LootTable.lootTable());
+        add(CritterEntities.BUTTERFLY.get(), LootTable.lootTable());
+        add(CritterEntities.FAIRY.get(), LootTable.lootTable());
+        add(CritterEntities.FEALING.get(), LootTable.lootTable());
+        add(CritterEntities.GLOWING_SNAIL.get(), LootTable.lootTable());
+        add(CritterEntities.GRUBBY.get(), LootTable.lootTable());
+        add(CritterEntities.MAGGOT.get(), LootTable.lootTable());
+        add(CritterEntities.MAGMA_SNAIL.get(), LootTable.lootTable());
+        add(CritterEntities.SLUGGY.get(), LootTable.lootTable());
+        add(CritterEntities.SNAIL.get(), LootTable.lootTable());
+        add(CritterEntities.SCORPION.get(), LootTable.lootTable());
+        add(CritterEntities.HELL_BUTTERFLY.get(), LootTable.lootTable());
+        add(CritterEntities.PRISMATIC_LACEWING.get(), LootTable.lootTable());
+        add(CritterEntities.DRAGONFLY.get(), LootTable.lootTable());
+        add(CritterEntities.GRASSHOPPER.get(), LootTable.lootTable());
+        add(CritterEntities.LADYBUG.get(), LootTable.lootTable());
         add(MonsterEntities.GRANITE_ELEMENTAL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.SPAGHETTI).setWeight(2))
@@ -751,6 +837,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.PURPLE_SLIME.get(), slimeCommon(-6326333));
         add(MonsterEntities.RED_SLIME.get(), slimeCommon(-1079407));
         add(MonsterEntities.YELLOW_SLIME.get(), slimeCommon(-871089));
+        add(MonsterEntities.EVIL_SLIME.get(), slimeCommon(0xFF00FF));
+        add(MonsterEntities.LAVA_SLIME.get(), slimeCommon(0xF46B21));
+        add(MonsterEntities.FLESH_SLIME.get(), slimeCommon(0xA52929));
+        add(MonsterEntities.SLIMELING.get(), slimeCommon(0x50C878));
         add(MonsterEntities.JUNGLE_SLIME.get(), slimeCommon(-6570130));
         add(MonsterEntities.ICE_SLIME.get(), slimeCommon(-10628609)
                 .withPool(LootPool.lootPool()
@@ -888,6 +978,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
+        add(MonsterEntities.GHOST.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).setWeight(2))
+                        .add(emptyWeight98)
+                )
+        );
         add(MonsterEntities.GREEN_JELLYFISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).setWeight(2))
@@ -954,7 +1050,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(25)))
                 ))
         );
-        // todo秘密种子冰雪宝箱怪使用这个common
+        // 待补：秘密种子冰雪宝箱怪使用该公共掉落表
         /*
         add(MonsterEntities.ICE_MIMIC.get(),LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -1035,6 +1131,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(2)
                         ))
         );
+        // 重写中的困难模式人形怪暂时使用空掉落表，待各自专属物品完成后再补充真实掉落。
+        add(MonsterEntities.POSSESS_ARMOR.get(), LootTable.lootTable());
+        add(MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.get(), LootTable.lootTable());
+        add(MonsterEntities.DARK_LAMIA.get(), LootTable.lootTable());
+        add(MonsterEntities.LIGHT_LAMIA.get(), LootTable.lootTable());
         add(MonsterEntities.MUMMY.get(), mummyCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FAST_CLOCK))
@@ -1086,6 +1187,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(975))
                 )
         );
+        add(MonsterEntities.HERPLING.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.GRAPE).setWeight(25))
+                        .apply(random0To1)
+                        .add(EmptyLootItem.emptyItem().setWeight(975))
+                )
+        );
         add(MonsterEntities.GHOUL.get(), ghoulCommon()
         );
         add(MonsterEntities.VILE_GHOUL.get(), ghoulCommon()
@@ -1129,17 +1237,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
-        add(MonsterEntities.DREAMER_GHOUL.get(), ghoulCommon()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.LIGHT_SHARD).setWeight(667))
-                        .add(EmptyLootItem.emptyItem().setWeight(9333))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.ICHOR))
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
-                )
-        );
         add(MonsterEntities.SAND_POACHER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.FRIED_EGG).setWeight(333))
@@ -1147,6 +1244,30 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9667))
                 )
         );
+        add(MonsterEntities.GIANT_TORTOISE.get(), LootTable.lootTable());
+        add(MonsterEntities.GIANT_FLYING_FOX.get(), batCommon());
+        add(MonsterEntities.CORRUPTOR.get(), LootTable.lootTable());
+        add(MonsterEntities.SLIMER.get(), slimeCommon(0x50C878));
+        add(MonsterEntities.BLOOD_FEEDER.get(), LootTable.lootTable());
+        add(MonsterEntities.UNICORN.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.UNICORN_HORN))));
+        add(MonsterEntities.GASTROPOD.get(), LootTable.lootTable());
+        add(MonsterEntities.CHAOS_ELEMENTAL.get(), LootTable.lootTable());
+        add(MonsterEntities.ENCHANTED_SWORD.get(), LootTable.lootTable());
+        add(MonsterEntities.BLAZING_WHEEL.get(), LootTable.lootTable());
+        add(MonsterEntities.SPIKE_BALL.get(), LootTable.lootTable());
+        add(MonsterEntities.PALADIN.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.PALADINS_SHIELD))
+                        .add(EmptyLootItem.emptyItem().setWeight(14))));
+        add(MonsterEntities.BONE_LEE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.BLACK_BELT))
+                        .add(EmptyLootItem.emptyItem().setWeight(11))));
+        add(MonsterEntities.NECROMANCER.get(), LootTable.lootTable());
+        add(MonsterEntities.DIABOLIST.get(), LootTable.lootTable());
+        add(MonsterEntities.RAGGED_CASTER.get(), LootTable.lootTable());
+        add(MonsterEntities.ARCH_WYVERN.get(), LootTable.lootTable());
         LootPool.Builder rainbowSheep = LootPool.lootPool()
                 .add(LootItem.lootTableItem(Items.MUTTON)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 2.0F)))
@@ -1167,6 +1288,75 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         EntityPredicate.Builder.entity().equipment(EntityEquipmentPredicate.Builder.equipment().mainhand(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.FIRE_ASPECT, MinMaxBounds.Ints.ANY)).build()).build())
                 )
         );
+    }
+
+    /**
+     * 生成宝石兔与宝石松鼠共用的变体掉落表。
+     *
+     * <p>变体已经由实体保存为 {@code Variant} 字符串，因此直接使用原版
+     * 实体 NBT 条件即可完成数据驱动匹配，不需要再引入仅供掉落使用的
+     * 自定义运行时参数。所有宝石材料仅在玩家击杀时掉落。</p>
+     */
+    private static LootTable.Builder jewelCritterLoot() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(jewelVariantDrop(
+                                Items.COPPER_INGOT,
+                                Bunny.Variant.AMBER,
+                                true))
+                        .add(jewelVariantDrop(
+                                Items.AMETHYST_SHARD,
+                                Bunny.Variant.AMETHYST,
+                                true))
+                        .add(jewelVariantDrop(
+                                Items.DIAMOND,
+                                Bunny.Variant.DIAMOND,
+                                false))
+                        .add(jewelVariantDrop(
+                                Items.EMERALD,
+                                Bunny.Variant.EMERALD,
+                                false))
+                        .add(jewelVariantDrop(
+                                Items.GOLD_INGOT,
+                                Bunny.Variant.GOLD,
+                                true))
+                        .add(jewelVariantDrop(
+                                Items.REDSTONE,
+                                Bunny.Variant.RUBY,
+                                true))
+                        .add(jewelVariantDrop(
+                                Items.LAPIS_LAZULI,
+                                Bunny.Variant.SAPPHIRE,
+                                true))
+                        .add(jewelVariantDrop(
+                                Items.RAW_GOLD,
+                                Bunny.Variant.TOPAZ,
+                                true)));
+    }
+
+    private static LootPoolSingletonContainer.Builder<?> jewelVariantDrop(
+            ItemLike item,
+            IVariant variant,
+            boolean randomCount) {
+        LootPoolSingletonContainer.Builder<?> entry = LootItem
+                .lootTableItem(item)
+                .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                .when(jewelVariantCondition(variant));
+        if (randomCount) {
+            entry.apply(SetItemCountFunction.setCount(
+                    UniformGenerator.between(1, 2)));
+        }
+        return entry;
+    }
+
+    private static LootItemCondition.Builder jewelVariantCondition(
+            IVariant variant) {
+        CompoundTag tag = new CompoundTag();
+        tag.putString(variant.serializeKey(), variant.getSerializedName());
+        return LootItemEntityPropertyCondition.hasProperties(
+                LootContext.EntityTarget.THIS,
+                EntityPredicate.Builder.entity()
+                        .nbt(new NbtPredicate(tag)));
     }
 
     private static LootTable.Builder ghoulCommon() {
@@ -1228,7 +1418,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 ));
     }
 
-    private static LootTable.Builder mimicCommonSecret() {  // todo秘密种子宝箱怪使用这个common
+    private static LootTable.Builder mimicCommonSecret() {  // 待补：秘密种子宝箱怪使用该公共掉落表
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION))

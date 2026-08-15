@@ -1,0 +1,34 @@
+{
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "conditions": {
+                "item": {
+                    "tag": "confluence:wings"
+                }
+            },
+            "trigger": "terra_curio:curios_equipped"
+        }
+    },
+    "display": {
+        "announce_to_chat": false,
+        "description": {
+            "translate": "achievements.confluence.head_in_the_clouds.description"
+        },
+        "frame": "challenge",
+        "hidden": false,
+        "icon": {
+            "item": "confluence:fledgling_wings"
+        },
+        "show_toast": true,
+        "title": {
+            "translate": "achievements.confluence.head_in_the_clouds.title"
+        }
+    },
+    "requirements": [
+        [
+            "requirement"
+        ]
+    ],
+    "sends_telemetry_event": true
+}

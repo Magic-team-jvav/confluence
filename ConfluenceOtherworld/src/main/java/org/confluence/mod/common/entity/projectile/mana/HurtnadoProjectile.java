@@ -64,8 +64,7 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
         EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
         if (hitResult == null) return;
         Entity entity = hitResult.getEntity();
-        doHurtAndKnockback(entity, 0.5, 0.2);
-        if (doPenetrateCheck(entity)) {
+        if (doPenetrateCheck(entity) && doHurtAndKnockback(entity, 0.5, 0.2)) {
             doDiscardInMaxPenetrate(14);
         }
     }

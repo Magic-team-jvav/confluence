@@ -1,4 +1,4 @@
-{
+﻿{
     "base": {
         "credit": "Made with Blockbench",
         "parent": "builtin/entity",
@@ -52,7 +52,8 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/spear/titanium_trident_item"
+            "layer0": "confluence:item/spear/titanium_trident",
+            "particle": "confluence:item/spear/titanium_trident"
         }
     },
     "gui_light": "front",

@@ -51,14 +51,22 @@ public enum Bestiary implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(CODEC.parse(NbtOps.INSTANCE, tag.get("entries")),
-                result -> this.entries = new Object2ObjectOpenHashMap<>(result));
+        if (tag.isEmpty()) {
+            return;
+        }
+        Map<String, BestiaryEntry> decoded = PortDataResultExtension.getOrThrow(
+                CODEC.parse(NbtOps.INSTANCE, tag.get("entries")),
+                message -> new IllegalArgumentException(
+                        "Failed to decode bestiary entries: " + message));
+        this.entries = new Object2ObjectOpenHashMap<>(decoded);
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(CODEC.encodeStart(NbtOps.INSTANCE, entries),
-                nbt -> tag.put("entries", nbt));
+        tag.put("entries", PortDataResultExtension.getOrThrow(
+                CODEC.encodeStart(NbtOps.INSTANCE, entries),
+                message -> new IllegalStateException(
+                        "Failed to encode bestiary entries: " + message)));
     }
 
     @Override

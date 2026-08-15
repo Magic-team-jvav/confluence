@@ -112,7 +112,7 @@ public class AnglerNPC extends BaseNPC {
             if (!isWakeUp()) {
                 setWakeUp(true);
                 Confluence.NETWORK_HANDLER.sendToPlayer(sp,
-                        new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, ItemStack.EMPTY));
+                        new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, ItemStack.EMPTY));
                 return InteractionResult.sidedSuccess(level().isClientSide);
             }
 

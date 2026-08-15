@@ -6,7 +6,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -39,7 +38,7 @@ public class CrystalVileShardProjectile extends StripedProjectile implements Geo
 
     @Override
     protected void onTouchEntity(EntityHitResult result) {
-        result.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), getCalculatedDamage());
+        super.onHitEntity(result);
     }
 
     @Override

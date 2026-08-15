@@ -26,6 +26,15 @@ public record GameEventSyncPacketS2C(
             GameEventSyncPacketS2C::new
     );
 
+    /**
+     * 事件列表属于当前客户端世界状态，必须交给客户端主线程替换。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
     @Override
     public void work(Player player) {
         ClientGameEventSystem.handlePacket(player, keys, start);
@@ -57,6 +66,8 @@ public record GameEventSyncPacketS2C(
     }
 
     public static void sentToClient(ServerPlayer player, List<ResourceKey<? extends GameEvent>> started, List<ResourceKey<? extends GameEvent>> ended) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new GameEventSyncPacketS2C(started, true), new GameEventSyncPacketS2C(ended, false));
+        // PortBundledPacket 以数据包 ID 为键；同 ID 的开始与结束包必须分别发送，避免后者覆盖前者。
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new GameEventSyncPacketS2C(started, true));
+        Confluence.NETWORK_HANDLER.sendToPlayer(player, new GameEventSyncPacketS2C(ended, false));
     }
 }

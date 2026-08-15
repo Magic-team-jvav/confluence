@@ -32,6 +32,15 @@ public record BestiarySyncPacketS2C(
         return ID;
     }
 
+    /**
+     * 图鉴同步会替换客户端共享表，必须交给客户端主线程执行。
+     */
+    @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
     @Override
     public void work(Player player) {
         ClientBestiary.getInstance().handle(player.level(), either);

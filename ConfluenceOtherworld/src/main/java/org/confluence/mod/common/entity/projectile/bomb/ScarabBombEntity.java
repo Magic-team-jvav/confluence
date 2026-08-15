@@ -51,7 +51,7 @@ public class ScarabBombEntity extends StickyBombEntity {
         this.entityData.define(DATA_OWNER_ID, -1);
     }
 
-    // todo 新粒子
+    // 待补：新粒子
     @Override
     protected void explodeFunction(ServerLevel level) {
         Vec3 blastPos = getEyePosition();
@@ -108,8 +108,9 @@ public class ScarabBombEntity extends StickyBombEntity {
     @Override
     public void tick() {
         super.tick();
-        if (getOwner() != null && stickBlock != null) {
-            this.facingDir = getOwner().getEyePosition().subtract(position());
+        Entity owner = getOwner();
+        if (owner != null && stickBlock != null) {
+            this.facingDir = owner.getEyePosition().subtract(position());
             Vec3 vec3 = facingDir.normalize();
             float f = (float) vec3.horizontalDistance();
             setYRot(90 - (float) Math.atan2(vec3.z, vec3.x) * Mth.RAD_TO_DEG);

@@ -20,6 +20,12 @@ public record PiggyBankTotalMoneyPacket(long totalMoney) implements IPortPacket.
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        Player player = context.player();
+        if (player != null) context.enqueueWork(() -> work(player));
+    }
+
+    @Override
     public void work(Player player) {
         PlayerPiggyBankContainer.of(player).setTotalMoney(totalMoney);
     }

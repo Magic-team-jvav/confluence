@@ -107,6 +107,6 @@
     }
   },
   "textures": {
-    "particle": "confluence:item/texture"
+      "particle": "confluence:item/gun/space_gun"
   }
 }

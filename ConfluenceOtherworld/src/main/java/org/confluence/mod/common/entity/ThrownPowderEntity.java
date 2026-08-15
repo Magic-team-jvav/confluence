@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,12 +15,21 @@ import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.entity.ModEntities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+/**
+ * 净化粉、腐化粉等环境转化粉末的飞行实体。
+ *
+ * <p>实体的最大飞行距离同时也是一次投掷能够执行环境转化的预算。区块卸载后必须继续使用
+ * 已消耗的预算，否则玩家可以通过反复卸载区块让同一枚粉末无限延长作用范围。转化类型既保留
+ * 服务端字段，也写入同步实体数据，保证重载后的客户端粒子和服务端方块转化使用同一类型。</p>
+ */
 public class ThrownPowderEntity extends Entity {
+    private static final float MAX_TRAVEL_DISTANCE = 3.5F;
     private static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(ThrownPowderEntity.class, EntityDataSerializers.INT);
     private BlockPos lastPos;
-    private ISpreadable.Type type;
+    private ISpreadable.Type type = ISpreadable.Type.PURE;
     //    private ParticleEmitter emitter;
     private final Set<BlockPos> coveredPos = new HashSet<>();
 
@@ -29,12 +39,12 @@ public class ThrownPowderEntity extends Entity {
 
     public ThrownPowderEntity(Level level, ISpreadable.Type type) {
         super(ModEntities.THROWN_POWDER.get(), level);
-        this.type = type;
         setSpreadableType(type);
     }
 
     public void setSpreadableType(ISpreadable.Type type) {
-        entityData.set(DATA_TYPE, type.ordinal());
+        this.type = Objects.requireNonNull(type, "Spreadable type must not be null");
+        entityData.set(DATA_TYPE, this.type.ordinal());
     }
 
     public ISpreadable.Type getSpreadableType() {
@@ -79,7 +89,7 @@ public class ThrownPowderEntity extends Entity {
         double z = getZ() + motion.z;
         float length = (float) motion.length();
         this.moveDist += length;
-        if (moveDist >= 3.5F || length < Mth.EPSILON) {
+        if (moveDist >= MAX_TRAVEL_DISTANCE || length < Mth.EPSILON) {
             discard();
         } else {
             setPos(x, y, z);
@@ -104,12 +114,29 @@ public class ThrownPowderEntity extends Entity {
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
-        this.type = ISpreadable.Type.byId(compound.getInt("type"));
+        int typeId = compound.contains("Type", Tag.TAG_INT) ? compound.getInt("Type") : ISpreadable.Type.PURE.ordinal();
+        ISpreadable.Type[] types = ISpreadable.Type.values();
+        ISpreadable.Type restoredType = typeId >= 0 && typeId < types.length ? types[typeId] : ISpreadable.Type.PURE;
+        setSpreadableType(restoredType);
+
+        float savedDistance = compound.contains("MoveDistance", Tag.TAG_ANY_NUMERIC)
+                ? compound.getFloat("MoveDistance")
+                : 0.0F;
+        // 非有限数会污染后续距离比较；当前格式损坏时从尚未飞行的安全状态恢复。
+        this.moveDist = Float.isFinite(savedDistance)
+                ? Mth.clamp(savedDistance, 0.0F, MAX_TRAVEL_DISTANCE)
+                : 0.0F;
+        this.lastPos = null;
+        this.coveredPos.clear();
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
-        compound.putInt("type", type.ordinal());
+        ISpreadable.Type savedType = type == null ? getSpreadableType() : type;
+        compound.putInt("Type", savedType.ordinal());
+        compound.putFloat("MoveDistance", Float.isFinite(moveDist)
+                ? Mth.clamp(moveDist, 0.0F, MAX_TRAVEL_DISTANCE)
+                : 0.0F);
     }
 
     @Override

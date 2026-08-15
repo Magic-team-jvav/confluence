@@ -70,7 +70,11 @@ public class TombstoneBoulderEntity extends BoulderEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        PortDataResultExtension.ifSuccess(SignText.DIRECT_CODEC.parse(NbtOps.INSTANCE, tag.get("text")), result -> this.text = result);
+        if (tag.contains("text")) {
+            PortDataResultExtension.ifSuccess(
+                    SignText.DIRECT_CODEC.parse(NbtOps.INSTANCE, tag.get("text")),
+                    result -> this.text = result);
+        }
     }
 
     public static void createTombstoneEntity(LivingEntity living) {

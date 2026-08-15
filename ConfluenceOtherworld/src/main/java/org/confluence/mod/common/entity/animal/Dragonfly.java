@@ -13,42 +13,24 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
-import org.confluence.mod.common.entity.ai.bt.BTNode;
-import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.PlayerCloseCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.PanicFleeAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
-import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.Locale;
 
-public class Dragonfly extends BaseCritter implements VariantHolder<Dragonfly.Variant> {
+public class Dragonfly extends Bird implements VariantHolder<Dragonfly.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Dragonfly.class, EntityDataSerializers.INT);
     public static final String VARIANT_KEY = "Variant";
+    private static final Variant[] COMMON_SPAWN_VARIANTS = {
+            Variant.BLUE, Variant.GREEN, Variant.RED, Variant.YELLOW, Variant.BLACK, Variant.ORANGE
+    };
 
     public Dragonfly(EntityType<? extends Dragonfly> type, Level level) {
         super(type, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createCritterAttributes();
-    }
-
-    @Override
-    protected BTRoot createBT() {
-        return new BTRoot() {
-            @Override
-            protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(new PlayerCloseCondition(Dragonfly.this, 4.0), new PanicFleeAction(Dragonfly.this, 1.5)),
-                        SequenceNode.of(new WaitAction(10 + random.nextInt(30))));
-            }
-        };
+        return BaseFlyingCritter.createFlyingCritterAttributes();
     }
 
     @Override
@@ -58,7 +40,10 @@ public class Dragonfly extends BaseCritter implements VariantHolder<Dragonfly.Va
     }
 
     @Override
-    public Variant getVariant() {return Variant.values()[this.entityData.get(DATA_VARIANT)];}
+    public Variant getVariant() {
+        return CritterVariantUtil.byId(
+                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.BLUE);
+    }
 
     @Override
     public void setVariant(Variant v) {this.entityData.set(DATA_VARIANT, v.ordinal());}
@@ -72,7 +57,22 @@ public class Dragonfly extends BaseCritter implements VariantHolder<Dragonfly.Va
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        if (!tag.contains(VARIANT_KEY)) {
+            setVariant(Variant.BLUE);
+            return;
+        }
         PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
+    }
+
+    @Override
+    protected String variantSaveKey() {
+        return VARIANT_KEY;
+    }
+
+    @Override
+    protected void initializeSpawnVariant() {
+        setVariant(CritterVariantUtil.withRareVariant(
+                random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
     }
 
     @Override
@@ -83,7 +83,7 @@ public class Dragonfly extends BaseCritter implements VariantHolder<Dragonfly.Va
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(DefaultAnimations.genericWalkIdleController(this));
+        registerFlyOnlyController(controllers);
     }
 
     public enum Variant implements IVariant {
@@ -98,12 +98,13 @@ public class Dragonfly extends BaseCritter implements VariantHolder<Dragonfly.Va
 
         @Override
         public ResourceLocation modelPath() {
-            return Confluence.asResource("animal/dragonfly");
+            return IVariant.resource("animal/dragonfly");
         }
 
         @Override
         public ResourceLocation texturePath() {
-            return Confluence.asResource("textures/entity/dragonfly/" + getSerializedName() + ".png");
+            return IVariant.resource("textures/entity/animal/dragonfly/"
+                    + getSerializedName() + "_dragonfly.png");
         }
 
         @Override

@@ -2,40 +2,50 @@ package org.confluence.mod.common.data;
 
 import org.confluence.mod.common.component.BulletPropertyComponent;
 import org.confluence.mod.common.component.GunPropertyComponent;
+import org.confluence.mod.common.combat.gun.AmmoStats;
+import org.confluence.mod.common.combat.gun.Ballistics;
+import org.confluence.mod.common.combat.gun.BallisticsResolver;
+import org.confluence.mod.common.combat.gun.GunStats;
 
+/**
+ * @deprecated 使用 {@link BallisticsResolver}。保留本类只为兼容现有扩展源码，内部不再维护第二套计算公式。
+ */
+@Deprecated(forRemoval = true)
 public class AmmoDataContext {
-    private final GunPropertyComponent gunComponent;
-    private final BulletPropertyComponent bulletComponent;
-    private final float inaccuracy;
+    private final Ballistics ballistics;
 
     public AmmoDataContext(GunPropertyComponent gunComponent, BulletPropertyComponent bulletComponent, float inaccuracy) {
-        this.gunComponent = gunComponent;
-        this.bulletComponent = bulletComponent;
-        this.inaccuracy = inaccuracy;
+        this.ballistics = BallisticsResolver.resolve(
+                new GunStats(
+                        gunComponent.damage(), gunComponent.velocity(), gunComponent.knockback(),
+                        gunComponent.critical(), gunComponent.penetrate(), inaccuracy),
+                new AmmoStats(
+                        bulletComponent.damage(), bulletComponent.velocity(), bulletComponent.velocityMultiplier(),
+                        bulletComponent.knockback(), bulletComponent.penetrate())
+        );
     }
 
     public float getDamage() {
-        return gunComponent.damage() + bulletComponent.damage();
+        return ballistics.damage();
     }
 
     public float getCritical() {
-        return gunComponent.critical();
+        return ballistics.critical();
     }
 
     public float getVelocity() {
-        return (gunComponent.velocity() + bulletComponent.velocity()) * bulletComponent.velocityMultiplier();
+        return ballistics.velocity();
     }
 
     public float getKnockback() {
-        return gunComponent.knockback() + bulletComponent.knockback();
+        return ballistics.knockback();
     }
 
     public int getPenetrate() {
-        if (bulletComponent.penetrate() == -1 || gunComponent.penetrate() == -1) return -1;
-        return gunComponent.penetrate() + bulletComponent.penetrate();
+        return ballistics.penetrate();
     }
 
     public float getInaccuracy() {
-        return inaccuracy;
+        return ballistics.inaccuracy();
     }
 }

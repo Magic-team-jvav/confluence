@@ -53,6 +53,8 @@ public final class Confluence {
         CommonConfigs.register(context);
         NetworkEvents.init();
         ModEvents.init();
+        ModDataMaps.init();
+        PermanentUpgrades.init();
         EntityEvents.init();
         ItemEvents.init();
         LivingEntityEvents.init();
@@ -82,9 +84,7 @@ public final class Confluence {
         ModEnchantments.ENCHANTMENTS.register(eventBus);
         ModAdvancements.init();
 
-        ModCustomRegistries.init();
-        ModTrackTypeProviderTypes.TYPES.register(eventBus);
-        ModTradeConditions.TYPES.register(eventBus);
+        ModCustomRegistries.register(eventBus);
         TFReferences.init();
         ModFluids.initialize();
         ModPrefix.initialize();

@@ -57,6 +57,8 @@ public class ChunkBrushData implements IPortNBTSerializable<CompoundTag> {
             Map<BlockPos, int[]> value = new Hashtable<>();
             for (Tag data : map.getList("data", Tag.TAG_INT_ARRAY)) {
                 int[] array = ((IntArrayTag) data).getAsIntArray();
+                // 格式固定为“相对坐标 + 六个面的颜色”；缺项条目无法可靠恢复，直接跳过。
+                if (array.length != 7) continue;
                 int[] colors = new int[6];
                 System.arraycopy(array, 1, colors, 0, 6);
                 value.put(LibUtils.decompressRelativePos(chunkPos, array[0]), colors);

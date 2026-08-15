@@ -1,13 +1,14 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
-import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -39,13 +40,25 @@ import org.confluence.mod.util.TrapDamageHelper;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 
+/**
+ * 所有巨石变体共享的运动、碰撞和持久化基类。
+ *
+ * <p>机关、特殊种子及子类都可以在生成后调整巨石参数，因此这些参数属于实体实例的玩法状态，
+ * 不能只依赖构造器默认值。区块重载时还必须延续发射者、寿命和逐目标命中冷却；当前版本格式若
+ * 损坏则直接使实体失效，避免用部分默认值继续造成伤害或触发移除效果。</p>
+ */
 public class BoulderEntity extends Projectile implements IPortProjectileExtension {
     public static final float SEARCH_RANGE = 31.5F;
+
+    /**
+     * 当前 1.20 实现专用的巨石运行状态根，不读取早期扁平字段。
+     */
+    private static final String RUNTIME_TAG = "ConfluenceBoulderRuntime";
+    private static final int RUNTIME_VERSION = 1;
+    private static final float MIN_SAVED_RADIUS = 0.05F;
 
     private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BLOCK_STATE);
 
@@ -58,22 +71,34 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
         }
         return true;
     };
+    /**
+     * 同一巨石对每个目标已经消耗的碰撞冷却。它不是缓存：丢失后目标会在重载后立即再次受伤。
+     */
     private final Object2IntOpenHashMap<UUID> hitHistory = new Object2IntOpenHashMap<>();
+
+    /**
+     * 当前格式解析失败后仅允许实体无副作用地退出。
+     */
+    private boolean invalidRuntimeState;
 
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
 
-    // 可修改参数
-    public float radius = 0.5F; // 半径
-    public int maxRemoveTick = 1200; // 最大移除时间
-    public int maxStillTick = 20; // 最大静止时间
-    public double speed = 0.7; // 速度
-    public double minRemoveSpeed = 0.007; // 最小移除速度
+    // 以下字段是可由机关、特殊种子和子类修改的实例参数，必须整体参与存档。
+    public float radius = 0.5F;
+    public int maxRemoveTick = 1200;
+    public int maxStillTick = 20;
+    public double speed = 0.7;
+    public double minRemoveSpeed = 0.007;
     public double bounceFactor = 0.3;
     public double frictionFactor = 0.9;
-    public int generation = 0; // 分裂代数，0为原始巨石
+    /**
+     * 分裂代数，0 表示原始巨石。
+     */
+    public int generation = 0;
 
-    protected int stillTickCount; // 静止刻计时
+    /** 已连续低于移除速度阈值的 tick 数。 */
+    protected int stillTickCount;
 
     public BoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
         super(entityType, level);
@@ -118,6 +143,13 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
 
     @Override
     public void tick() {
+        // 损坏实体不能调用 onRemove，否则可能产生分裂、爆炸、掉落或大批粒子等玩法副作用。
+        if (invalidRuntimeState) {
+            if (!level().isClientSide) {
+                discard();
+            }
+            return;
+        }
         super.tick();
         moveAndUpdateNeighbors();
 
@@ -279,7 +311,7 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
         Entity entity = entityHitResult.getEntity();
         UUID uuid1 = entity.getUUID();
 
-        // TODO 需要重写
+        // 巨石会在短时间内忽略同一个目标，避免贴身碰撞时每 tick 重复结算伤害。
         int i = hitHistory.containsKey(uuid1) ? hitHistory.addTo(uuid1, -1) : 0;
         if (i <= 0) {
             float damage = 100.0F;
@@ -320,28 +352,157 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
-        entityData.set(DATA_BLOCK_STATE, PortDataResultExtension.getOrThrow(BlockState.CODEC.parse(NbtOps.INSTANCE, tag.get("BlockState"))));
-        tickCount = tag.getInt("Age");
-        stillTickCount = tag.getInt("StillAge");
+        // Projectile 的实现负责恢复稳定 owner UUID；省略 super 会让机关归属和伤害来源在重载后丢失。
+        super.readAdditionalSaveData(tag);
+        invalidRuntimeState = false;
+        tickCount = 0;
+        stillTickCount = 0;
+        hitHistory.clear();
 
-        if (tag.contains("Radius")) radius = tag.getFloat("Radius");
-        if (tag.contains("MaxRemoveTick")) maxRemoveTick = tag.getInt("MaxRemoveTick");
-        if (tag.contains("MaxStillTick")) maxStillTick = tag.getInt("MaxStillTick");
-        if (tag.contains("Speed")) speed = tag.getDouble("Speed");
-        if (tag.contains("MinRemoveSpeed")) minRemoveSpeed = tag.getDouble("MinRemoveSpeed");
-        if (tag.contains("Generation")) generation = tag.getInt("Generation");
+        if (!tag.contains(RUNTIME_TAG)) {
+            // 命令或代码新建的实体允许没有运行状态；1.20 不迁移早期扁平 NBT。
+            return;
+        }
+        if (!tag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) {
+            invalidRuntimeState = true;
+            return;
+        }
+
+        CompoundTag runtime = tag.getCompound(RUNTIME_TAG);
+        if (!hasCurrentRuntimeShape(runtime)) {
+            invalidRuntimeState = true;
+            return;
+        }
+
+        try {
+            BlockState blockState = BlockState.CODEC
+                    .parse(NbtOps.INSTANCE, runtime.get("BlockState"))
+                    .result()
+                    .orElse(null);
+            int savedAge = runtime.getInt("Age");
+            int savedStillAge = runtime.getInt("StillAge");
+            float savedRadius = runtime.getFloat("Radius");
+            int savedMaxRemoveTick = runtime.getInt("MaxRemoveTick");
+            int savedMaxStillTick = runtime.getInt("MaxStillTick");
+            double savedSpeed = runtime.getDouble("Speed");
+            double savedMinRemoveSpeed = runtime.getDouble("MinRemoveSpeed");
+            double savedBounceFactor = runtime.getDouble("BounceFactor");
+            double savedFrictionFactor = runtime.getDouble("FrictionFactor");
+            int savedGeneration = runtime.getInt("Generation");
+
+            if (blockState == null
+                    || !Float.isFinite(savedRadius)
+                    || savedRadius < MIN_SAVED_RADIUS
+                    || savedMaxRemoveTick < 0
+                    || savedMaxStillTick < 0
+                    || savedAge < 0
+                    || savedAge > savedMaxRemoveTick
+                    || savedStillAge < 0
+                    || savedStillAge > savedMaxStillTick
+                    || !isFiniteNonNegative(savedSpeed)
+                    || !isFiniteNonNegative(savedMinRemoveSpeed)
+                    || !isFiniteNonNegative(savedBounceFactor)
+                    || !isFiniteNonNegative(savedFrictionFactor)
+                    || savedGeneration < 0
+                    || !readHitHistory(runtime.getList("HitHistory", Tag.TAG_COMPOUND))) {
+                invalidRuntimeState = true;
+                hitHistory.clear();
+                return;
+            }
+
+            entityData.set(DATA_BLOCK_STATE, blockState);
+            tickCount = savedAge;
+            stillTickCount = savedStillAge;
+            radius = savedRadius;
+            maxRemoveTick = savedMaxRemoveTick;
+            maxStillTick = savedMaxStillTick;
+            speed = savedSpeed;
+            minRemoveSpeed = savedMinRemoveSpeed;
+            bounceFactor = savedBounceFactor;
+            frictionFactor = savedFrictionFactor;
+            generation = savedGeneration;
+        } catch (RuntimeException ignored) {
+            // Codec 或 NBT 访问异常都视作当前格式损坏，区块加载本身仍应继续。
+            invalidRuntimeState = true;
+            hitHistory.clear();
+        }
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.put("BlockState", PortDataResultExtension.getOrThrow(BlockState.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE))));
-        tag.putInt("Age", tickCount);
-        tag.putInt("StillAge", stillTickCount);
-        tag.putFloat("Radius", radius);
-        tag.putInt("MaxRemoveTick", maxRemoveTick);
-        tag.putInt("MaxStillTick", maxStillTick);
-        tag.putDouble("Speed", speed);
-        tag.putDouble("MinRemoveSpeed", minRemoveSpeed);
-        tag.putInt("Generation", generation);
+        super.addAdditionalSaveData(tag);
+        CompoundTag runtime = new CompoundTag();
+        runtime.putInt("Version", RUNTIME_VERSION);
+        runtime.put("BlockState", BlockState.CODEC
+                .encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE))
+                .result()
+                .orElseThrow(() -> new IllegalStateException("Failed to encode boulder block state")));
+        runtime.putInt("Age", tickCount);
+        runtime.putInt("StillAge", stillTickCount);
+        runtime.putFloat("Radius", radius);
+        runtime.putInt("MaxRemoveTick", maxRemoveTick);
+        runtime.putInt("MaxStillTick", maxStillTick);
+        runtime.putDouble("Speed", speed);
+        runtime.putDouble("MinRemoveSpeed", minRemoveSpeed);
+        runtime.putDouble("BounceFactor", bounceFactor);
+        runtime.putDouble("FrictionFactor", frictionFactor);
+        runtime.putInt("Generation", generation);
+
+        ListTag savedHitHistory = new ListTag();
+        for (Object2IntOpenHashMap.Entry<UUID> entry : hitHistory.object2IntEntrySet()) {
+            CompoundTag savedHit = new CompoundTag();
+            savedHit.putUUID("Target", entry.getKey());
+            savedHit.putInt("Cooldown", entry.getIntValue());
+            savedHitHistory.add(savedHit);
+        }
+        runtime.put("HitHistory", savedHitHistory);
+        tag.put(RUNTIME_TAG, runtime);
+    }
+
+    /**
+     * 当前版本要求字段和 NBT 类型完整，避免缺字段时静默混用构造器默认值。
+     */
+    private static boolean hasCurrentRuntimeShape(CompoundTag runtime) {
+        return runtime.contains("Version", Tag.TAG_INT)
+                && runtime.getInt("Version") == RUNTIME_VERSION
+                && runtime.contains("BlockState")
+                && runtime.contains("Age", Tag.TAG_INT)
+                && runtime.contains("StillAge", Tag.TAG_INT)
+                && runtime.contains("Radius", Tag.TAG_FLOAT)
+                && runtime.contains("MaxRemoveTick", Tag.TAG_INT)
+                && runtime.contains("MaxStillTick", Tag.TAG_INT)
+                && runtime.contains("Speed", Tag.TAG_DOUBLE)
+                && runtime.contains("MinRemoveSpeed", Tag.TAG_DOUBLE)
+                && runtime.contains("BounceFactor", Tag.TAG_DOUBLE)
+                && runtime.contains("FrictionFactor", Tag.TAG_DOUBLE)
+                && runtime.contains("Generation", Tag.TAG_INT)
+                && runtime.contains("HitHistory", Tag.TAG_LIST);
+    }
+
+    private static boolean isFiniteNonNegative(double value) {
+        return Double.isFinite(value) && value >= 0.0;
+    }
+
+    /**
+     * 先完整校验再提交到实例字段，防止半张有效表在后续校验失败时残留。
+     */
+    private boolean readHitHistory(ListTag savedHistory) {
+        Object2IntOpenHashMap<UUID> restoredHistory = new Object2IntOpenHashMap<>();
+        Set<UUID> seenTargets = new HashSet<>();
+        for (Tag savedTag : savedHistory) {
+            if (!(savedTag instanceof CompoundTag savedHit)
+                    || !savedHit.hasUUID("Target")
+                    || !savedHit.contains("Cooldown", Tag.TAG_INT)) {
+                return false;
+            }
+            UUID target = savedHit.getUUID("Target");
+            int cooldown = savedHit.getInt("Cooldown");
+            if (!seenTargets.add(target) || cooldown < 0) {
+                return false;
+            }
+            restoredHistory.put(target, cooldown);
+        }
+        hitHistory.putAll(restoredHistory);
+        return true;
     }
 }

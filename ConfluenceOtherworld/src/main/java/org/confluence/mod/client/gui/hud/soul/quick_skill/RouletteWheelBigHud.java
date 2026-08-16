@@ -19,7 +19,6 @@ import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.flail;
 
-import org.mesdag.particlestorm.ParticleStorm;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -17,6 +16,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.projectile.Flail.DripplerCripplerProjectile;
@@ -25,7 +25,6 @@ import org.confluence.mod.common.entity.projectile.Flail.FlowerProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.network.s2c.GuardianFlailBeamPacketS2C;
-import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

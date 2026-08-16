@@ -14,7 +14,6 @@ import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.ParticleStorm;
 
 /**
  * <h1>滴滴怪致残者投射物</h1>
@@ -94,7 +93,7 @@ public class DripplerCripplerProjectile extends BaseFlailProjectile {
         Vec3 normal = Vec3.atLowerCornerOf(face.getNormal());
         double verticalComponent = Math.abs(normal.y);
         // cos(45°) ≈ 0.707
-        if (verticalComponent > 0.707) { 
+        if (verticalComponent > 0.707) {
             bounceLeft--;
         }
         if (bounceLeft <= 0) {

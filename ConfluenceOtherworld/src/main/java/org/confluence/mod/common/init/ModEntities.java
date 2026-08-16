@@ -11,9 +11,13 @@ import org.confluence.mod.common.entity.fishing.BaseFishingHook;
 import org.confluence.mod.common.entity.fishing.BloodyFishingHook;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
+import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
 import org.confluence.mod.common.entity.projectile.*;
+import org.confluence.mod.common.entity.projectile.Flail.DripplerCripplerProjectile;
+import org.confluence.mod.common.entity.projectile.Flail.FlaironBubbleProjectile;
+import org.confluence.mod.common.entity.projectile.Flail.FlowerProjectile;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.entity.projectile.boulder.*;
 import org.confluence.mod.common.entity.projectile.mana.*;
@@ -21,12 +25,10 @@ import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.DriveAwayArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
+import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
-import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.sword.*;
-import org.confluence.mod.common.entity.flail.BaseFlailEntity;
-import org.confluence.mod.common.entity.projectile.Flail.*;
 import org.confluence.mod.integration.sable.SableHelper;
 
 /// Fast Link:

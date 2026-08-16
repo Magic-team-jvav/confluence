@@ -2,7 +2,6 @@ package org.confluence.mod.common.soulskill;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.Confluence;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

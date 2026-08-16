@@ -22,6 +22,7 @@ import org.confluence.mod.common.block.natural.DragonsBreathPepperBlock;
 import org.confluence.mod.common.block.natural.VoidTreeRootBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.joml.Vector3d;
+
 import java.util.ArrayList;
 import java.util.List;
 

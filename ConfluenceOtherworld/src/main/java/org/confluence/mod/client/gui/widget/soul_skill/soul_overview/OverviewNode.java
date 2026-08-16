@@ -2,9 +2,6 @@ package org.confluence.mod.client.gui.widget.soul_skill.soul_overview;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Tooltip;
-import net.minecraft.client.gui.narration.NarratedElementType;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec2;
@@ -14,7 +11,10 @@ import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.common.soulskill.SoulSkill;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /**

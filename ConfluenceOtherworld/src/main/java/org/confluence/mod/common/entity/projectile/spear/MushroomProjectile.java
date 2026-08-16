@@ -2,7 +2,10 @@ package org.confluence.mod.common.entity.projectile.spear;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;

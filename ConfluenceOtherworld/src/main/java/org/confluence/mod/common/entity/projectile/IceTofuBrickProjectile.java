@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terraentity.init.TEEffects;

@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.mod.Confluence;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;

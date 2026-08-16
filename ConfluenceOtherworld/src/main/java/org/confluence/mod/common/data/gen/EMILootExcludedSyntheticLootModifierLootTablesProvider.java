@@ -1,17 +1,15 @@
 package org.confluence.mod.common.data.gen;
 
-import net.minecraft.core.*;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.common.data.gen.loot.modifiers.EMILootDataTableExclusions;
 import org.confluence.mod.common.data.gen.loot.modifiers.*;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
 public class EMILootExcludedSyntheticLootModifierLootTablesProvider implements DataProvider {

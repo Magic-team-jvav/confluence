@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.range.arrow;
 
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.FlyingMob;
@@ -14,7 +13,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.terraentity.entity.monster.Harpy;
-import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.utils.DriveAwaySystem.DriveAwayArrowIntegration;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,13 +40,13 @@ public class DriveAwayArrow extends BaseArrowEntity {
     public void tick() {
         // 调用父类 tick（包括丢弃检测、粒子效果等）
         super.tick();
-        
+
         // 仅在服务端执行驱离逻辑
         if (!level().isClientSide()) {
             DriveAwayArrowIntegration.onArrowTick(this);
         }
     }
-    
+
     @Override
     public double getBaseDamage() {
         double damage = super.getBaseDamage();

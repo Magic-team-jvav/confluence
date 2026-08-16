@@ -23,7 +23,6 @@ import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
-import java.awt.*;
 import java.util.Map;
 
 public final class ClientBiomeEffectSystem {

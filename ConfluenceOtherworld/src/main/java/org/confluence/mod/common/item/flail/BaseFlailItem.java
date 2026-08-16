@@ -25,16 +25,16 @@ import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * <h1>连枷物品基类</h1>

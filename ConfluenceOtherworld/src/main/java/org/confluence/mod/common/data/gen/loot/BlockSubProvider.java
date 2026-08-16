@@ -15,8 +15,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -33,7 +31,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCon
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
@@ -48,7 +45,6 @@ import org.confluence.mod.common.init.item.*;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static net.minecraft.world.level.block.Blocks.WHITE_WOOL;
 import static net.minecraft.world.level.storage.loot.functions.SetItemCountFunction.setCount;
 import static net.minecraft.world.level.storage.loot.predicates.ExplosionCondition.survivesExplosion;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;

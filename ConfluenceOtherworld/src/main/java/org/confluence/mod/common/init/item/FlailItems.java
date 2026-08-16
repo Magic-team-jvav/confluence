@@ -5,8 +5,9 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.item.flail.*;
+import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.flail.FlailStrategy;
+import org.confluence.mod.common.item.flail.FlaironItem;
 
 /**
  * 连枷物品注册
@@ -28,12 +29,12 @@ public class FlailItems {
 
         /** 守卫链球 */
         public static final DeferredItem<BaseFlailItem> GUARDIAN_FLAIL = ITEMS.register("guardian_flail", () ->
-                new BaseFlailItem(FlailComponent.GUARDIAN_FLAIL, ModRarity.GREEN,() -> 
+                new BaseFlailItem(FlailComponent.GUARDIAN_FLAIL, ModRarity.GREEN,() ->
                 new FlailStrategy.GuardianAttackStrategy(false)));
 
         /** 远古守卫链球 */
         public static final DeferredItem<BaseFlailItem> ANCIENT_GUARDIAN_FLAIL = ITEMS.register("ancient_guardian_flail", () ->
-                new BaseFlailItem(FlailComponent.ANCIENT_GUARDIAN_FLAIL, ModRarity.ORANGE,() -> 
+                new BaseFlailItem(FlailComponent.ANCIENT_GUARDIAN_FLAIL, ModRarity.ORANGE,() ->
                 new FlailStrategy.GuardianAttackStrategy(true)));//三激光
 
         /** 链球 */
@@ -65,11 +66,11 @@ public class FlailItems {
         public static final DeferredItem<BaseFlailItem> DRIPPLER_CRIPPLER = ITEMS.register("drippler_crippler", () ->
                 new BaseFlailItem(FlailComponent.DRIPPLER_CRIPPLER, ModRarity.BLUE,
                         FlailStrategy.DripplerCripplerAttackStrategy::new));
-        
+
         /** 猪鲨链球 */
         public static final DeferredItem<FlaironItem> Flairon = ITEMS.register("flairon", () ->
                 new FlaironItem(FlailComponent.Flairon, ModRarity.ORANGE,
-                        FlailStrategy.FlaironAttackStrategy::new)); 
+                        FlailStrategy.FlaironAttackStrategy::new));
 
         /** 链刃 */
         public static final DeferredItem<BaseFlailItem> CHAIN_KNIFE = ITEMS.register("chain_knife", () ->

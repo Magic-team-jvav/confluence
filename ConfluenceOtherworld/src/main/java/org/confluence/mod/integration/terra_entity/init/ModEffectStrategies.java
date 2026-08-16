@@ -15,7 +15,6 @@ import org.confluence.terraentity.registries.hit_effect.variant.PrefabEffect;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 

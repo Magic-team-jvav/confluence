@@ -4,14 +4,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.soulskill.SoulSkill;
-import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 // TODO 需要重写

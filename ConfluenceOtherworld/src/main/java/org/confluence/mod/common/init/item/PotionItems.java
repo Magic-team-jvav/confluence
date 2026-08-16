@@ -12,7 +12,6 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;

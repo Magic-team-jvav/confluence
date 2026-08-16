@@ -3,10 +3,10 @@ package org.confluence.mod.common.summon.ground;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summon.GroundMeleeSummon;
 import org.confluence.mod.common.summon.SummonPose;
+import org.confluence.mod.common.summon.SummonStats;
 
 /// 保留 1.21 雪怪的跃击冷却和命中后突进。
 public final class SnowFlinxSummon extends GroundMeleeSummon {
@@ -16,7 +16,7 @@ public final class SnowFlinxSummon extends GroundMeleeSummon {
     private int leapForwardDelay;
     private int dashCooldown = 20;
 
-    public SnowFlinxSummon(ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot, SummonPose initialPose) {
+    public SnowFlinxSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
         super(Confluence.asResource("summon_snow_flinx"), owner, slotCost, snapshot, initialPose,
                 1.0, 1.0, 32.0, 0.8, 0.70);
     }

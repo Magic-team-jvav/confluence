@@ -6,7 +6,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 
 /// 带实体体积的逻辑召唤物基类。
 ///
@@ -21,9 +20,9 @@ public abstract class PhysicalSummon extends SummonInstance {
     private int repathCooldown;
     private net.minecraft.core.BlockPos lastGroundDestination;
 
-    protected PhysicalSummon(ResourceLocation type, ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot,
+    protected PhysicalSummon(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats,
                              SummonPose initialPose, double width, double height) {
-        super(type, owner, slotCost, snapshot, initialPose);
+        super(type, owner, slotCost, stats, initialPose);
         if (!Double.isFinite(width) || !Double.isFinite(height) || width <= 0.0 || height <= 0.0) {
             throw new IllegalArgumentException("Physical summon dimensions must be finite and positive");
         }

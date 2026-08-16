@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
 import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -185,7 +184,7 @@ public enum MeteoriteTracker {
         }
 
         if (placed) {
-            Component message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.meteorite"), GlobalColors.MESSAGE.get());
+            Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.get());
             level.getServer().getPlayerList().broadcastSystemMessage(message, false);
             Confluence.LOGGER.debug("A meteorite has been landed, which at [{}]", origin.toShortString());
         }

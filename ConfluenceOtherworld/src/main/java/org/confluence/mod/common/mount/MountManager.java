@@ -4,9 +4,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.lib.common.mount.AbstractMountEntity;
 import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.mount.MountItem;
 

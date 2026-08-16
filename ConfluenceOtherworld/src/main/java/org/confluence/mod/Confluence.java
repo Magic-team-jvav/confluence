@@ -54,7 +54,6 @@ public final class Confluence {
         NetworkEvents.init();
         ModEvents.init();
         ModDataMaps.init();
-        PermanentUpgrades.init();
         EntityEvents.init();
         ItemEvents.init();
         LivingEntityEvents.init();

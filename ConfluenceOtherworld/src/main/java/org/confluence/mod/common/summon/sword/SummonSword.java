@@ -7,7 +7,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.init.ModEffects;
@@ -27,7 +26,7 @@ public final class SummonSword extends SummonInstance {
     private boolean followingOwner;
     private int spinTicks;
 
-    public SummonSword(ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot, SummonPose initialPose, Kind kind) {
+    public SummonSword(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose, Kind kind) {
         super(kind.type(), owner, slotCost, snapshot, initialPose);
         this.kind = kind;
         this.slashGoal = new SwordSlashGoal(this);

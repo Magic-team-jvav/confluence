@@ -41,7 +41,6 @@
         "world.entity.player.PlayerMixin",
         "world.entity.projectile.AbstractArrowMixin",
         "world.entity.projectile.ArrowMixin",
-        "world.entity.projectile.FireworkRocketEntityMixin",
         "world.entity.projectile.FishingHookMixin",
         "world.entity.vehicle.AbstractMinecartMixin",
         "world.food.FoodDataMixin",
@@ -93,8 +92,8 @@
     ],
     "client": [
         "client.MinecraftMixin",
-        "client.accessor.MinecraftAccessor",
         "client.MouseHandlerMixin",
+        "client.accessor.MinecraftAccessor",
         "client.gui.DeathScreenMixin",
         "client.gui.GuiGraphicsMixin",
         "client.gui.GuiMixin",

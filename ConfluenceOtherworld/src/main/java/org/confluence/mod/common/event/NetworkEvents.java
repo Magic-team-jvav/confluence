@@ -25,10 +25,11 @@ public final class NetworkEvents {
         handler.registerInGameC2S(MountInputPacketC2S.class, MountInputPacketC2S.ID, MountInputPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(MountTogglePacketC2S.class, MountTogglePacketC2S.ID, MountTogglePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(OpenMenuPacketC2S.class, OpenMenuPacketC2S.ID, OpenMenuPacketC2S.STREAM_CODEC);
-        handler.registerInGameC2S(ProjectileFireIntentPacketC2S.class, ProjectileFireIntentPacketC2S.ID, ProjectileFireIntentPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SpearAttackPacketC2S.class, SpearAttackPacketC2S.ID, SpearAttackPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SwitchEffectEnabledPackedC2S.class, SwitchEffectEnabledPackedC2S.ID, SwitchEffectEnabledPackedC2S.STREAM_CODEC);
+        handler.registerInGameC2S(SwordProjectilePacketC2S.class, SwordProjectilePacketC2S.ID, SwordProjectilePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(WormholeToPlayerPacketC2S.class, WormholeToPlayerPacketC2S.ID, WormholeToPlayerPacketC2S.STREAM_CODEC);
+        handler.registerInGameC2S(ShootPacketC2S.class, ShootPacketC2S.ID, ShootPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(YoyoControlPacketC2S.class, YoyoControlPacketC2S.ID, YoyoControlPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(WeaponUseStatePacketC2S.class, WeaponUseStatePacketC2S.ID, WeaponUseStatePacketC2S.STREAM_CODEC);
         // S2C

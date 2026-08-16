@@ -28,6 +28,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
@@ -38,7 +39,6 @@ import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.PermanentUpgrades;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
@@ -106,7 +106,7 @@ public final class PlayerUtils {
         int delay = manaStorage.getRegenerateDelay();
         boolean notMove = isNotMove(player);
         if (delay > 0) {
-            if (PermanentUpgrades.ARCANE_CRYSTAL.getLevel(player) > 0)
+            if (manaStorage.isArcaneCrystalUsed())
                 delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && player.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
             int delayReduce = notMove ? 2 : 1;
@@ -193,7 +193,7 @@ public final class PlayerUtils {
         if (player.fishing != null) {
             base += player.fishing.luck;
         }
-        if (PermanentUpgrades.GUMMY_WORM.getLevel(player) > 0) {
+        if (EverBeneficial.of(player).isGummyWormUsed()) {
             base += 3.0F;
         }
         if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) {

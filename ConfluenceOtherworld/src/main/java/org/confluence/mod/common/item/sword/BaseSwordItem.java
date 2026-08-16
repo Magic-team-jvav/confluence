@@ -1,12 +1,12 @@
 package org.confluence.mod.common.item.sword;
 
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,13 +21,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolAction;
 import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.api.projectile.ProjectileFireAction;
-import org.confluence.lib.api.projectile.ProjectileFireContext;
-import org.confluence.lib.api.projectile.ProjectileWeaponAction;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.EffectStrategyComponent;
 import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.sword.legacy.*;
@@ -46,7 +45,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 // todo sword
-public class BaseSwordItem extends SwordItem implements ProjectileWeaponAction {
+public class BaseSwordItem extends SwordItem {
     public @Nullable ModifierBuilder modifier;
     private @Nullable TooltipComponent component;
 
@@ -83,15 +82,40 @@ public class BaseSwordItem extends SwordItem implements ProjectileWeaponAction {
     }
 
     public void applyHitEffects(ItemStack weapon, @Nullable Entity attacker, LivingEntity hurter, DamageSource damageSource) {
+//        if (modifier != null && damageSource.is(PortTags.DamageTypes.PANIC_CAUSES)) {
+//            EffectStrategyComponent data = weapon.getData(TEDataComponentTypes.EFFECT_STRATEGY);
+//            if (data != null) {
+//                if (attacker instanceof Player player
+//                        && damageSource.is(PortTags.DamageTypes.CAN_BREAK_ARMOR_STAND)
+//                        && damageSource.is(PortTags.DamageTypes.IS_PLAYER_ATTACK)
+//                ) {
+//                    if (player.getAttackStrengthScale(0.5f) > 0.95f) {
+//                        data.applyAll(player, hurter);
+//                    }
+//                } else if (attacker instanceof LivingEntity livingEntity) {
+//                    data.applyAll(livingEntity, hurter);
+//                }
+//            }
+//        }
     }
 
-    /// 从服务端重新读取的当前武器副本创建剑气动作。
-    ///
-    /// @return 当前物品没有剑气组件时返回 {@code null}
-    @Override
-    public @Nullable ProjectileFireAction createProjectileFireAction(ProjectileFireContext context) {
-        SwordProjectileComponent configuration = context.weapon().get(ModDataComponentTypes.SWORD_PROJECTILE);
-        return configuration == null ? null : SwordProjectileActionFactory.create(context, configuration);
+    public void genProjectile(LivingEntity living, ItemStack weapon, SwordProjectileComponent data) {
+        living.level().playSound(null, living.getX(), living.getY(), living.getZ(), data.getSoundEvent(), SoundSource.AMBIENT, 1.0F, 1.0F);
+
+        try {
+            data.generation().genProjectile(living, weapon, data.getVelocity(living), () -> {
+                if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile projectile) {
+                    projectile.setProjComponent(data);
+                    projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(LibAttributes.getAttackDamage())));
+                    return projectile;
+                } else {
+                    living.sendSystemMessage(Component.literal("Error DataComponent sword_projectile: projType must be a SwordProjectile"));
+                    return null;
+                }
+            });
+        } catch (Exception e) {
+            Confluence.LOGGER.error("Error DataComponent sword_projectile: projType must be a SwordProjectile");
+        }
     }
 
     @Override
@@ -132,6 +156,16 @@ public class BaseSwordItem extends SwordItem implements ProjectileWeaponAction {
             this.hasImage = true;
             return this;
         }
+
+        /// 添加击中效果组件
+        ///
+        /// 注意会覆盖原有组件
+        ///
+        /// @see EffectStrategyComponent
+//        public ModifierBuilder setOnHitEffect(EffectStrategyComponent onHit) {
+//            properties.component(TEDataComponentTypes.EFFECT_STRATEGY, onHit);
+//            return this;
+//        }
 
         /// 添加属性修改器
         public ModifierBuilder addAttributeModifier(Holder<Attribute> attribute, float amount, PortAttributeModifier.Operation operation) {
@@ -229,13 +263,17 @@ public class BaseSwordItem extends SwordItem implements ProjectileWeaponAction {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+//        EffectStrategyComponent hitEffects = stack.getData(TEDataComponentTypes.EFFECT_STRATEGY);
+//        if (hitEffects != null) {
+//            IEffectStrategy.appendDescription(tooltipComponents, hitEffects.effects(), Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
+//        }
         SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
         if (data != null) {
-            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj"), 0x57cdfb));
-            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()), 0x57cdfb));
-            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.speed").append(": " + data.baseSpeed()), 0x57cdfb));
-            tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.cooldown").append(": " + data.cooldown()), 0x57cdfb));
-            data.trackType().ifPresent(type -> tooltipComponents.add(PortMutableComponentExtension.withColor(Component.translatable("tooltip.item.confluence.has_proj.track_type").append(": ").append(Component.translatable(type.getName())), 0x57cdfb)));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0x57cdfb));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()).withColor(0x57cdfb));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.speed").append(": " + data.baseSpeed()).withColor(0x57cdfb));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.cooldown").append(": " + data.cooldown()).withColor(0x57cdfb));
+            data.trackType().ifPresent(type -> tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.track_type").append(": ").append(Component.translatable(type.getName())).withColor(0x57cdfb)));
         }
 
         if (modifier != null) {

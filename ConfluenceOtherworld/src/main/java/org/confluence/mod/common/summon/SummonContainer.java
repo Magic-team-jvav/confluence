@@ -59,7 +59,7 @@ public final class SummonContainer {
             return false;
         }
         if (mergeTarget != null) {
-            if (!mergeTarget.tryMergeAdditionalSummon(summon.slotCost(), summon.combatSnapshot())) {
+            if (!mergeTarget.tryMergeAdditionalSummon(summon.slotCost(), summon.stats())) {
                 summon.remove();
                 return false;
             }

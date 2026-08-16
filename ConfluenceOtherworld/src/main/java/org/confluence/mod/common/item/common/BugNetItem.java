@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundInteractPacket;
@@ -77,7 +76,7 @@ public class BugNetItem extends TooltipItem {
                     if (interactionTarget.hasCustomName()) {
                         itemStack.setCustomName(interactionTarget.getCustomName());
                     }
-                    PortItemStackExtension.removeData(itemStack, ConfluenceMagicLib.MOD_RARITY);
+                    itemStack.remove(ConfluenceMagicLib.MOD_RARITY);
                 }
                 if (!player.addItem(itemStack)) {
                     player.drop(itemStack, false);

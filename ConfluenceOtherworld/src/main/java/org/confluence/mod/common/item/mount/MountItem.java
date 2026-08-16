@@ -10,7 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.confluence.lib.common.mount.AbstractMountEntity;
+import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.mount.MountManager;
 import org.jetbrains.annotations.Nullable;
 

@@ -9,14 +9,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -25,15 +20,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.whip.WhipDefinition;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.api.whip.WhipFriendlyHitContext;
 import org.confluence.mod.api.whip.WhipTagTracker;
 import org.confluence.mod.api.whip.curve.WhipCurveSampler;
 import org.confluence.mod.api.whip.curve.WhipCurves;
-import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModEnchantments;
@@ -42,13 +36,7 @@ import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /// 一次鞭子挥动对应的短生命周期攻击实体。
 ///
@@ -473,8 +461,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         if (!canHitAgain(target.getUUID())) {
             return;
         }
-        ProjectileCombatSnapshot snapshot = getProjectileCombatSnapshot();
-        float baseDamage = snapshot == null ? definition.baseDamage() : snapshot.baseDamage();
+        float baseDamage = getDamage() > 0.0F ? getDamage() : definition.baseDamage();
         float multiplier = Math.max(
                 definition.minimumDamageMultiplier(),
                 (float) Math.pow(definition.damageFalloff(), successfulHits)
@@ -555,10 +542,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         WhipFriendlyHitContext context =
                 new WhipFriendlyHitContext(player, target, weapon());
         definition.friendlyHitEffects().forEach(effect -> effect.apply(context));
-        ProjectileCombatSnapshot snapshot = getProjectileCombatSnapshot();
-        float baseDamage = snapshot == null
-                ? definition.baseDamage()
-                : snapshot.baseDamage();
+        float baseDamage = getDamage() > 0.0F ? getDamage() : definition.baseDamage();
         target.hurt(
                 damageSources().mobProjectile(this, owner),
                 baseDamage * 0.2F

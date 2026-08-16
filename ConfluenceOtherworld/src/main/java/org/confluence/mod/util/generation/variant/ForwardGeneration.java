@@ -5,14 +5,12 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileLaunch;
+import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.common.init.ModGenerationProviderTypes;
 import org.confluence.mod.util.generation.GenerationProvider;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 /// # 直线弹幕
@@ -27,21 +25,14 @@ public record ForwardGeneration(float offsetY, float inaccuracy) implements IGen
     }
 
     @Override
-    public List<ProjectileLaunch> createLaunches(
-            LivingEntity owner,
-            float velocity,
-            Supplier<? extends @Nullable Projectile> projectileFactory
-    ) {
-        Projectile projectile = projectileFactory.get();
-        if (projectile == null) {
-            return List.of();
-        }
+    public void genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float velocity, Supplier<? extends @Nullable Projectile> proj) {
+        Projectile projectile = proj.get();
+        if (projectile == null) return;
         projectile.setOwner(owner);
-        // 调用实体自己的发射钩子，保留草剑等子类在发射瞬间初始化的运动参数。
+        // todo 计算yaw
+        projectile.setPos(owner.getX(), owner.getY() + owner.getEyeHeight() + offsetY, owner.getZ());
         projectile.shootFromRotation(owner, owner.getXRot(), owner.getYRot(), 0.0F, velocity, inaccuracy);
-        Vec3 direction = projectile.getDeltaMovement();
-        Vec3 position = new Vec3(owner.getX(), owner.getY() + owner.getEyeHeight() + offsetY, owner.getZ());
-        return List.of(new ProjectileLaunch(projectile, position, direction));
+        owner.level().addFreshEntity(projectile);
     }
 
     @Override

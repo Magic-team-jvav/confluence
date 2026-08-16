@@ -1,21 +1,21 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.item.GunItems;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEntityExtension;
 
-/// 带重力的枪械子弹变体。
-///
-/// <p>与 1.21 TerraGuns 保持一致：真实弹药始终保存在基础类的 {@code BULLET} 槽里，
-/// 本类只额外保存重力。这样命中行为、拖尾颜色、客户端渲染和保存恢复都会读取同一个弹药来源，
-/// 不会出现“看起来是一种子弹、实际执行另一种子弹行为”的错位。</p>
 public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier, IPortEntityExtension {
-    protected float gravity = 0.0F;
+    protected static final EntityDataAccessor<ItemStack> GRAVITY_BULLET = SynchedEntityData.defineId(CustomBulletEntity.class, EntityDataSerializers.ITEM_STACK);
+    protected float gravity = 0;
 
     public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, Level level) {
         super(type, level);
@@ -25,60 +25,39 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
         this(ModEntities.GRAVITY_BULLET_ENTITY.get(), owner, gravity, bullet);
     }
 
-    public CustomBulletEntity(
-            EntityType<? extends BaseBulletEntity> type,
-            LivingEntity owner,
-            float gravity,
-            ItemStack bullet
-    ) {
-        super(type, owner, bullet);
+    public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, LivingEntity owner, float gravity, ItemStack bullet) {
+        super(type, owner, GunItems.DUMMY_BULLET.toStack());
         this.gravity = gravity;
+        this.entityData.set(GRAVITY_BULLET, bullet);
     }
 
-    /// 创建派生弹丸时保留原弹丸的真实弹药与重力。
-    public CustomBulletEntity(
-            EntityType<? extends BaseBulletEntity> type,
-            Level level,
-            double x,
-            double y,
-            double z,
-            ItemStack bullet,
-            float gravity
-    ) {
-        super(type, level, x, y, z, bullet);
-        this.gravity = gravity;
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(GRAVITY_BULLET, this.getDefaultItem());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        if (getProjectileCombatSnapshot() == null) {
-            resetCustomRuntimeFields();
-            return;
-        }
-        try {
-            BulletRuntimeState.CustomState runtimeState = BulletRuntimeState.readCustom(compound);
-            this.gravity = runtimeState.gravity();
-        } catch (RuntimeException exception) {
-            resetCustomRuntimeFields();
-            invalidateRuntimeState(BulletRuntimeState.englishReason(
-                    exception, "Malformed custom bullet runtime state"));
+        if (compound.contains("GravityBullet", 10)) {
+            ItemStack itemStack = ItemStack.of(compound.getCompound("GravityBullet"));
+            this.setBullet(itemStack.isEmpty() ? getDefaultItem() : itemStack);
+        } else {
+            this.setBullet(this.getDefaultItem());
         }
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
-        BulletRuntimeState.writeCustom(compound, this.gravity, this.getBulletStack());
+        compound.put("GravityBullet", this.getBulletStack().save(new CompoundTag()));
     }
 
     @Override
-    protected void applyForces() {
+    public void tick() {
+        super.tick();
         this.applyGravity();
-    }
-
-    public float getBulletGravity() {
-        return gravity;
     }
 
     @Override
@@ -88,10 +67,6 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
 
     @Override
     public ItemStack getItem() {
-        return this.getBulletStack();
-    }
-
-    private void resetCustomRuntimeFields() {
-        this.gravity = 0.0F;
+        return this.entityData.get(GRAVITY_BULLET);
     }
 }

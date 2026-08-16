@@ -12,23 +12,20 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.*;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.whip.WhipAppearance;
 import org.confluence.mod.api.whip.WhipDefinition;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 /// 鞭子物品的公共实现。
 ///
 /// <p>普通鞭子只需要提供 {@link WhipDefinition}。左右键配置、服务端去重、冷却、耐久、召唤伤害与暴击
 /// 快照以及攻击实体生成均由此类统一处理；复杂鞭子可以通过定义中的两类效果接口扩展，不需要复制整套
 /// 发射和碰撞代码。</p>
-public class BaseWhipItem extends Item implements ProjectileWeaponAction {
+public class BaseWhipItem extends Item {
     private final WhipDefinition definition;
     private final WhipAppearance appearance;
 
@@ -57,56 +54,25 @@ public class BaseWhipItem extends Item implements ProjectileWeaponAction {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {
-            ServerProjectileFireService.fire(serverPlayer, hand, ProjectileFireTrigger.USE_PRESSED);
+            WhipAttackEntity attack = new WhipAttackEntity(ModEntities.WHIP_ATTACK.get(), level);
+            HumanoidArm arm = hand == InteractionHand.MAIN_HAND
+                    ? serverPlayer.getMainArm()
+                    : serverPlayer.getMainArm().getOpposite();
+            int durationTicks = resolveDurationTicks(serverPlayer);
+            Vec3 direction = serverPlayer.getViewVector(1.0F);
+            attack.setOwner(serverPlayer);
+            attack.setDamage(definition.baseDamage()
+                    * (float) serverPlayer.getAttributeValue(LibAttributes.getSummonDamage()));
+            attack.initialize(stack, direction, arm, durationTicks);
+            attack.setPos(serverPlayer.position()
+                    .add(0.0, serverPlayer.getBbHeight() * 0.5F, 0.0)
+                    .add(playerHandOffset(serverPlayer, arm)));
+            if (level.addFreshEntity(attack)) {
+                serverPlayer.getCooldowns().addCooldown(this, durationTicks);
+                serverPlayer.awardStat(Stats.ITEM_USED.get(this));
+            }
         }
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
-    }
-
-    @Override
-    public @Nullable ProjectileFireAction createProjectileFireAction(ProjectileFireContext context) {
-        Objects.requireNonNull(context, "Projectile fire context must not be null");
-        if (context.trigger() != ProjectileFireTrigger.ATTACK_PRESSED
-                && context.trigger() != ProjectileFireTrigger.USE_PRESSED) {
-            return null;
-        }
-
-        AtomicReference<WhipAttackEntity> created = new AtomicReference<>();
-        int durationTicks = resolveDurationTicks(context.player());
-        return ProjectileFireAction.builder(
-                        ProjectileDamageChannel.SUMMON,
-                        ProjectileCost.none(),
-                        (fireContext, snapshot) -> {
-                            WhipAttackEntity attack = new WhipAttackEntity(
-                                    ModEntities.WHIP_ATTACK.get(),
-                                    fireContext.level()
-                            );
-                            ServerPlayer player = fireContext.player();
-                            HumanoidArm arm = fireContext.hand() == InteractionHand.MAIN_HAND
-                                    ? player.getMainArm()
-                                    : player.getMainArm().getOpposite();
-                            attack.initialize(
-                                    fireContext.weapon(),
-                                    fireContext.viewVector(),
-                                    arm,
-                                    durationTicks);
-                            created.set(attack);
-                            return List.of(new ProjectileLaunch(
-                                    attack,
-                                    player.position()
-                                            .add(0.0, player.getBbHeight() * 0.5F, 0.0)
-                                            .add(playerHandOffset(player, arm)),
-                                    fireContext.viewVector(),
-                                    0.0F
-                            ));
-                        }
-                )
-                .baseDamage(definition.baseDamage())
-                .baseVelocity(0.05F)
-                .baseKnockback(0.0F)
-                .triggers(context.trigger())
-                .cooldownTicks(durationTicks)
-                .successAction(fireContext -> finishSuccessfulAttack(fireContext, created.get()))
-                .build();
     }
 
     /// 按 1.21 的公式把玩家当前攻击速度换算为一次完整挥鞭所需的 tick 数。
@@ -139,14 +105,4 @@ public class BaseWhipItem extends Item implements ProjectileWeaponAction {
         );
     }
 
-    private void finishSuccessfulAttack(
-            ProjectileFireContext context,
-            @Nullable WhipAttackEntity attack
-    ) {
-        if (attack == null) {
-            throw new IllegalStateException("Whip transaction completed without an attack entity");
-        }
-        ServerPlayer player = context.player();
-        player.awardStat(Stats.ITEM_USED.get(this));
-    }
 }

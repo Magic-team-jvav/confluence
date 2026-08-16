@@ -17,7 +17,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.extensions.IForgeAbstractMinecart;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.init.PermanentUpgrades;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -108,8 +108,7 @@ public class BaseMinecartEntity extends Minecart {
 
     @Override
     public void moveMinecartOnRail(BlockPos pos) {
-        boolean upgradeKit = driver instanceof ServerPlayer serverPlayer &&
-                PermanentUpgrades.MINECART_UPGRADE_KIT.getLevel(serverPlayer) > 0;
+        boolean upgradeKit = driver != null && EverBeneficial.of(driver).isMinecartUpgradeKitUsed();
         // 每次移动都从基础值重新选择，避免升级玩家离开后把加成永久残留在矿车实例上。
         setDragAir(upgradeKit ? getUpgradedDragAir() : baseDragAir);
         double d25 = upgradeKit ? getUpgradedMaxSpeed() : getMaxSpeedWithRail();

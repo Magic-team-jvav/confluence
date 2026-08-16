@@ -5,12 +5,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.FlyingSummon;
 import org.confluence.mod.common.summon.SummonGoal;
 import org.confluence.mod.common.summon.SummonPose;
+import org.confluence.mod.common.summon.SummonStats;
 
 /// 飞雀召唤物的运行实例。
 ///
@@ -22,7 +22,7 @@ public final class FinchSummon extends FlyingSummon {
     private int attackPhaseTicks;
     private int hitMovementCooldown;
 
-    public FinchSummon(ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot, SummonPose initialPose) {
+    public FinchSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
         super(Confluence.asResource("finch_baby"), owner, slotCost, snapshot, initialPose);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new FollowOwnerGoal(this));

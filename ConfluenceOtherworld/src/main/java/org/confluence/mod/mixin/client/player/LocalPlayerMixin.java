@@ -6,7 +6,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
-import org.confluence.lib.common.mount.AbstractMountEntity;
+import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.MountInputPacketC2S;

@@ -18,15 +18,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileAttributeResolver;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
-import org.confluence.lib.api.projectile.ProjectileDamageChannel;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.summon.SummonContainer;
-import org.confluence.mod.common.summon.SummonFactory;
-import org.confluence.mod.common.summon.SummonInstance;
-import org.confluence.mod.common.summon.SummonPose;
+import org.confluence.mod.common.summon.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -102,16 +99,18 @@ public class SummonItem extends Item {
         if (!(living instanceof ServerPlayer player) || getUseDuration(stack) - timeLeft >= 20) {
             return;
         }
-        ProjectileCombatSnapshot snapshot = ProjectileAttributeResolver.resolve(player, stack, ProjectileDamageChannel.SUMMON,
-                baseDamage, 1.0F, 0.0F, false);
-        summon(player, living.getUsedItemHand(), snapshot);
+        float damage = baseDamage * (float) player.getAttributeValue(LibAttributes.getSummonDamage());
+        float knockback = (float) player.getAttributeValue(ConfluenceMagicLib.SUMMON_KNOCKBACK);
+        boolean critical = LibMathUtils.checkChance(
+                player.getAttributeValue(LibAttributes.getCriticalChance()), player.getRandom());
+        summon(player, living.getUsedItemHand(), new SummonStats(damage, knockback, critical));
     }
 
-    private void summon(ServerPlayer player, InteractionHand hand, ProjectileCombatSnapshot snapshot) {
+    private void summon(ServerPlayer player, InteractionHand hand, SummonStats stats) {
         HitResult blockHit = player.pick(player.blockInteractionRange(), 1.0F, false);
         BlockPos spawn = BlockPos.containing(blockHit.getLocation()).above();
         SummonPose pose = new SummonPose(Vec3.atBottomCenterOf(spawn), player.getYRot(), 0.0F, 0.0F);
-        SummonInstance summon = summonFactory.create(player, slotCost, snapshot, pose);
+        SummonInstance summon = summonFactory.create(player, slotCost, stats, pose);
         if (!summon.type().equals(summonType)) {
             throw new IllegalStateException("Summon factory returned a mismatched runtime type");
         }

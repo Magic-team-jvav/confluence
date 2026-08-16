@@ -5,8 +5,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.lib.common.mount.AbstractMountEntity;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
+import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import software.bernie.geckolib.animatable.GeoEntity;
 
 /// 为 1.20 轻量坐骑实体补齐 GeckoLib 的水平朝向渲染。

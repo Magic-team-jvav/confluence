@@ -35,6 +35,7 @@ import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.whip.WhipTagTracker;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
@@ -59,7 +60,6 @@ import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.PermanentUpgrades;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -196,7 +196,7 @@ public final class LivingEntityEvents {
         if (living instanceof Player player) {
             amount = ModArmorBonus.applyHealAmount(player, amount);
         }
-        if (living instanceof ServerPlayer serverPlayer && PermanentUpgrades.VITAL_CRYSTAL.getLevel(serverPlayer) > 0) {
+        if (EverBeneficial.of(living).isVitalCrystalUsed()) {
             amount *= 1.2F;
         }
         if (living.hasEffect(ModEffects.COZY_FIRE.get())) {

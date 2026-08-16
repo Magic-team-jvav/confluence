@@ -10,7 +10,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.summon.SummonTargetCache;
@@ -35,7 +34,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     private final ServerPlayer owner;
     private int slotCost;
     private final long summonedAt;
-    private ProjectileCombatSnapshot combatSnapshot;
+    private SummonStats stats;
     private final SummonGoalSelector goalSelector = new SummonGoalSelector();
     private final Deque<SummonPose> history = new ArrayDeque<>();
     private SummonPath path;
@@ -48,10 +47,10 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     private int order;
     private int sameTypeCount = 1;
 
-    protected SummonInstance(ResourceLocation type, ServerPlayer owner, int slotCost, ProjectileCombatSnapshot combatSnapshot, SummonPose initialPose) {
+    protected SummonInstance(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         this.type = Objects.requireNonNull(type, "Summon type must not be null");
         this.owner = Objects.requireNonNull(owner, "Summon owner must not be null");
-        this.combatSnapshot = Objects.requireNonNull(combatSnapshot, "Summon snapshot must not be null");
+        this.stats = Objects.requireNonNull(stats, "Summon stats must not be null");
         if (slotCost <= 0) {
             throw new IllegalArgumentException("Summon slot cost must be positive");
         }
@@ -253,13 +252,13 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         if (Immunity.isActive(this, target)) {
             return false;
         }
-        float damage = WhipTagTracker.modifyDamage(owner, this, target, combatSnapshot.baseDamage() * damageMultiplier);
+        float damage = WhipTagTracker.modifyDamage(owner, this, target, stats.baseDamage() * damageMultiplier);
         DamageSource source = owner.damageSources().playerAttack(owner);
         ILibDamageSource extension = ILibDamageSource.of(source);
         if (extension == null) {
-            throw new IllegalStateException("DamageSource does not expose the MagicLib combat snapshot extension");
+            throw new IllegalStateException("DamageSource does not expose the MagicLib critical extension");
         }
-        extension.confluence$setCombatSnapshot(combatSnapshot);
+        extension.confluence$setCritical(stats.critical());
         int invulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
         try {
@@ -342,7 +341,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return false;
     }
 
-    public boolean tryMergeAdditionalSummon(int additionalSlots, ProjectileCombatSnapshot snapshot) {
+    public boolean tryMergeAdditionalSummon(int additionalSlots, SummonStats stats) {
         return false;
     }
 
@@ -353,8 +352,8 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         slotCost += additionalSlots;
     }
 
-    protected final void replaceCombatSnapshot(ProjectileCombatSnapshot snapshot) {
-        combatSnapshot = Objects.requireNonNull(snapshot, "Summon snapshot must not be null");
+    protected final void replaceStats(SummonStats stats) {
+        this.stats = Objects.requireNonNull(stats, "Summon stats must not be null");
     }
 
     public final UUID uuid() {
@@ -391,8 +390,8 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return summonedAt;
     }
 
-    public final ProjectileCombatSnapshot combatSnapshot() {
-        return combatSnapshot;
+    public final SummonStats stats() {
+        return stats;
     }
 
     public final SummonGoalSelector goalSelector() {

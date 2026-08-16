@@ -1,7 +1,6 @@
 package org.confluence.mod.util;
 
 import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.core.BlockPos;
@@ -268,7 +267,7 @@ public final class ModUtils {
     /// 不可破坏物品无法附魔耐久与经验修补
     public static boolean supportsEnchantment(ItemStack stack, Enchantment enchantment) {
         boolean supportedItem = enchantment.category.canEnchant(stack.getItem());
-        if (PortItemStackExtension.getUnbreakable(stack)) {
+        if (stack.getUnbreakable()) {
             return supportedItem && enchantment != Enchantments.UNBREAKING && enchantment != Enchantments.MENDING;
         }
         return supportedItem;

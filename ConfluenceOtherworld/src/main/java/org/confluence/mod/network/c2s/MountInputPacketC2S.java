@@ -3,8 +3,8 @@ package org.confluence.mod.network.c2s;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import org.confluence.lib.common.mount.AbstractMountEntity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 

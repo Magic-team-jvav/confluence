@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.saved;
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import PortLib.extensions.java.util.List.PortListExtension;
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
@@ -146,7 +145,7 @@ public enum HardmodeConvertor implements IGlobalData {
                 }
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), LibUtils.isDev());
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
-                print(server, PortMutableComponentExtension.withColor(Component.translatable("event.confluence.hardmode_conversion.welcome"), GlobalColors.EVENT.get()), true);
+                print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
                 MinecraftForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }
             this.started = false;

@@ -3,15 +3,14 @@ package org.confluence.mod.common.summon;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 
 /// 飞行召唤物的通用运行基类。
 ///
 /// <p>这类召唤物不会注册为世界实体，服务端只维护逻辑位置、速度和朝向，
 /// 再把表现状态同步给客户端渲染层。</p>
 public abstract class FlyingSummon extends SummonInstance {
-    protected FlyingSummon(ResourceLocation type, ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot, SummonPose initialPose) {
-        super(type, owner, slotCost, snapshot, initialPose);
+    protected FlyingSummon(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(type, owner, slotCost, stats, initialPose);
     }
 
     protected final void moveToward(Vec3 destination, double acceleration, double maximumSpeed) {

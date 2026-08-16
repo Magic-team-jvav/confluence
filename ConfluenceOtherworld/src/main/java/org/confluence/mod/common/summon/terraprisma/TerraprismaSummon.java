@@ -4,14 +4,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
-import org.confluence.mod.common.summon.SummonAnimation;
-import org.confluence.mod.common.summon.SummonCollision;
-import org.confluence.mod.common.summon.SummonInstance;
-import org.confluence.mod.common.summon.SummonPose;
-import org.confluence.mod.common.summon.SummonVisualState;
+import org.confluence.mod.common.summon.*;
 
 import java.util.List;
 
@@ -32,7 +27,7 @@ public final class TerraprismaSummon extends SummonInstance {
     private float scale = 1.0F;
     private float scaleY = 1.0F;
 
-    public TerraprismaSummon(ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot, SummonPose initialPose) {
+    public TerraprismaSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
         super(Confluence.asResource("terraprisma"), owner, slotCost, snapshot, initialPose);
         addGoal(0, slashGoal);
         addGoal(0, rotateGoal);

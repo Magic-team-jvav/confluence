@@ -6,10 +6,10 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileLaunch;
 import org.confluence.lib.util.AimUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.IGeneration;
@@ -17,7 +17,6 @@ import org.confluence.mod.common.init.ModGenerationProviderTypes;
 import org.confluence.mod.util.generation.GenerationProvider;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 /// 星怒弹幕发射方式
@@ -46,25 +45,11 @@ public record AboveFallenGeneration(
     ).apply(instance, AboveFallenGeneration::new));
 
     @Override
-    public List<ProjectileLaunch> createLaunches(
-            LivingEntity owner,
-            float speed,
-            Supplier<? extends @Nullable Projectile> projectileFactory
-    ) {
-        Projectile projectile = projectileFactory.get();
-        if (projectile == null) {
-            return List.of();
-        }
-        projectile.setOwner(owner);
+    public void genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float speed, Supplier<? extends @Nullable Projectile> proj) {
+        var projectile = proj.get();
+        if (projectile == null) return;
         Vec3 eye = owner.getEyePosition();
-        LivingEntity target = LibEntityUtils.getAABBAngleTarget(
-                eye,
-                eye.add(owner.getForward().normalize().scale(range)),
-                owner.level(),
-                owner,
-                range,
-                maxAngle,
-                entity -> LibEntityUtils.canHitEntity(entity, owner));
+        LivingEntity target = LibEntityUtils.getAABBAngleTarget(eye, eye.add(owner.getForward().normalize().scale(range)), owner.level(), owner, range, maxAngle, e -> LibEntityUtils.canHitEntity(e, projectile.getOwner()));
         float actualInaccuracy;
         Vec3 firePos, projVel;
         Vec3 fireLocOffset = new Vec3(
@@ -76,6 +61,7 @@ public record AboveFallenGeneration(
         if (target != null) {
             // 周围有目标 预判
             firePos = target.getEyePosition().add(fireLocOffset);
+            // 不准确性已在AimUtils中处理
             actualInaccuracy = 0;
             AimUtils.AimHelperOptions aimHelperOptions = new AimUtils.AimHelperOptions(projectile)
                     .setProjectileSpeed(speed)
@@ -87,17 +73,16 @@ public record AboveFallenGeneration(
             Vec3 end = ori.add(owner.getForward().normalize().scale(range));
             BlockHitResult blockHitResult = owner.level().clip(new ClipContext(ori, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, owner));
             firePos = blockHitResult.getLocation().add(fireLocOffset);
+            // 取中值
             actualInaccuracy = inAccuracy / 2;
+            // 速度是开火位置的反方向
             projVel = fireLocOffset.scale(-1);
         }
 
-        projectile.shoot(
-                projVel.get(Direction.Axis.X),
-                projVel.get(Direction.Axis.Y),
-                projVel.get(Direction.Axis.Z),
-                speed,
-                actualInaccuracy);
-        return List.of(new ProjectileLaunch(projectile, firePos, projectile.getDeltaMovement()));
+        projectile.setOwner(owner);
+        projectile.setPos(firePos);
+        projectile.shoot(projVel.get(Direction.Axis.X), projVel.get(Direction.Axis.Y), projVel.get(Direction.Axis.Z), speed, actualInaccuracy);
+        owner.level().addFreshEntity(projectile);
     }
 
 

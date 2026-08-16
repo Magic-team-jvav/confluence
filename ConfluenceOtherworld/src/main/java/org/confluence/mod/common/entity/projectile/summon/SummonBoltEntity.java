@@ -21,7 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
@@ -70,8 +69,7 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
         this.entityData.set(HIT_EFFECT, hitEffect.id);
         setOwner(source.owner());
         setPos(source.position());
-        ProjectileCombatSnapshot snapshot = source.combatSnapshot();
-        setProjectileCombatSnapshot(snapshot.derive(snapshot.baseDamage(), velocity, snapshot.knockback()));
+        setDamage(source.stats().baseDamage());
         Vec3 aimPoint = source.actualTarget() != null && source.actualTarget() != source.target()
                 ? source.targetPosition()
                 : new Vec3(target.getX(), target.getY() + target.getEyeHeight() * 0.5, target.getZ());

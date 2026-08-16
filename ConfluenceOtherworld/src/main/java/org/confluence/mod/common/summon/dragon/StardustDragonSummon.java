@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
@@ -27,7 +26,7 @@ public final class StardustDragonSummon extends FlyingSummon {
     private int bodyAttackCooldown;
     private float yawAcceleration;
 
-    public StardustDragonSummon(ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot, SummonPose initialPose) {
+    public StardustDragonSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
         super(Confluence.asResource("stardust_dragon"), owner, slotCost, snapshot, initialPose);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new IdleGoal(this));
@@ -64,12 +63,12 @@ public final class StardustDragonSummon extends FlyingSummon {
     }
 
     @Override
-    public boolean tryMergeAdditionalSummon(int additionalSlots, ProjectileCombatSnapshot snapshot) {
+    public boolean tryMergeAdditionalSummon(int additionalSlots, SummonStats snapshot) {
         if (additionalSlots <= 0) {
             return false;
         }
         increaseSlotCost(additionalSlots);
-        replaceCombatSnapshot(snapshot);
+        replaceStats(snapshot);
         return true;
     }
 

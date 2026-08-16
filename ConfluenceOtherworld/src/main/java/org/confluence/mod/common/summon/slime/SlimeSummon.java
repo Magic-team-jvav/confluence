@@ -5,7 +5,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
@@ -24,7 +23,7 @@ public final class SlimeSummon extends PhysicalSummon {
     private int jumpDelay;
     private boolean returningByFlight;
 
-    public SlimeSummon(ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot, SummonPose initialPose) {
+    public SlimeSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
         super(Confluence.asResource("slime_baby"), owner, slotCost, snapshot, initialPose, 0.5, 0.5);
         addGoal(1, new FluidGoal(this));
         addGoal(2, new AttackGoal(this));

@@ -7,24 +7,14 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.network.NetworkHooks;
-import org.confluence.lib.api.projectile.ProjectileAttributeResolver;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
-import org.confluence.lib.api.projectile.ProjectileDamageChannel;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -67,6 +57,7 @@ public final class YoyoEntity extends DamageSettableProjectile
     private final AnimatableInstanceCache animationCache =
             GeckoLibUtil.createInstanceCache(this);
     private int returnTicks;
+    private float knockback;
 
     public YoyoEntity(EntityType<? extends YoyoEntity> type, Level level) {
         super(type, level);
@@ -88,15 +79,8 @@ public final class YoyoEntity extends DamageSettableProjectile
         yoyo.setOwner(owner);
         yoyo.entityData.set(WEAPON, weapon.copyWithCount(1));
         yoyo.entityData.set(RANGE, item.maximumRange());
-        yoyo.setProjectileCombatSnapshot(
-                ProjectileAttributeResolver.resolve(
-                        owner,
-                        weapon,
-                        ProjectileDamageChannel.MELEE,
-                        item.attackDamage(),
-                        1.0F,
-                        0.1F,
-                        false));
+        yoyo.setDamage(item.attackDamage());
+        yoyo.knockback = 0.1F * (1.0F + (float) owner.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
         yoyo.setPos(owner.getX(), owner.getY(0.5F), owner.getZ());
         if (!owner.level().addFreshEntity(yoyo)) {
             yoyo.discard();
@@ -138,8 +122,7 @@ public final class YoyoEntity extends DamageSettableProjectile
             return;
         }
         YoyoItem item = getYoyoItem();
-        ProjectileCombatSnapshot snapshot = getProjectileCombatSnapshot();
-        if (item == null || snapshot == null) {
+        if (item == null || getDamage() <= 0.0F) {
             discard();
             return;
         }
@@ -175,7 +158,7 @@ public final class YoyoEntity extends DamageSettableProjectile
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
         if (!isReturning()) {
-            damageTouchingTargets(owner, item, liveWeapon, snapshot);
+            damageTouchingTargets(owner, item, liveWeapon);
         }
     }
 
@@ -226,8 +209,7 @@ public final class YoyoEntity extends DamageSettableProjectile
     private void damageTouchingTargets(
             ServerPlayer owner,
             YoyoItem item,
-            ItemStack liveWeapon,
-            ProjectileCombatSnapshot snapshot
+            ItemStack liveWeapon
     ) {
         for (LivingEntity target : level().getEntitiesOfClass(
                 LivingEntity.class,
@@ -244,12 +226,12 @@ public final class YoyoEntity extends DamageSettableProjectile
                             ModDamageTypes.SWORD_PROJECTILE,
                             this,
                             owner),
-                    snapshot.baseDamage())) {
+                    getDamage())) {
                 continue;
             }
             hitCooldowns.put(target.getUUID(), HIT_INTERVAL_TICKS);
             ProjectileHitRules.applyResolvedKnockback(
-                    this, target, snapshot.knockback(), 0.0);
+                    this, target, knockback, 0.0);
             if (liveWeapon.getItem() == item) {
                 liveWeapon.hurtAndBreak(1, owner, EquipmentSlot.MAINHAND);
             }

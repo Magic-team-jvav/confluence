@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,15 +7,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
-import org.confluence.lib.api.projectile.ProjectileLaunch;
-import org.confluence.lib.api.projectile.ServerProjectileFireService;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CrystalChargeProjectile extends AbstractManaProjectile {
     private ParticleEmitter emitter;
@@ -71,36 +64,20 @@ public class CrystalChargeProjectile extends AbstractManaProjectile {
 
     private void doSplit() {
         if (level().isClientSide) return;
-        if (!(getOwner() instanceof ServerPlayer player)) {
-            discard();
-            return;
-        }
-        ProjectileCombatSnapshot parentSnapshot = getProjectileCombatSnapshot();
-        if (parentSnapshot == null) {
-            discard();
-            return;
-        }
-
         int amount = random.nextIntBetweenInclusive(3, 5);
+        float damage = this.damage * 0.8F;
         float velocity = getDefaultVelocity();
-        Vec3 parentMotion = getDeltaMovement();
-        ProjectileCombatSnapshot childSnapshot = parentSnapshot.derive(
-                parentSnapshot.baseDamage() * 0.8F,
-                velocity,
-                0.0F);
-        List<ProjectileLaunch> launches = new ArrayList<>(amount);
+        Entity owner = getOwner();
+        Vec3 vec3 = getDeltaMovement();
         for (int i = 0; i < amount; i++) {
             CrystalChargeProjectile projectile = new CrystalChargeProjectile(ModEntities.CRYSTAL_CHARGE_2.get(), level());
+            projectile.setPos(getX(), getY(), getZ());
+            projectile.setDamage(damage);
             projectile.setDefaultVelocity(velocity);
-            // 先让原版 shoot 只负责抽取一次旧有的 10 度散布，再把得到的方向交给事务；
-            // 服务不会再次随机，因此子弹数量、散布和速度均保持原效果。
-            projectile.shoot(parentMotion.x, parentMotion.y, parentMotion.z, velocity, 10.0F);
-            launches.add(new ProjectileLaunch(
-                    projectile,
-                    position(),
-                    projectile.getDeltaMovement()));
+            projectile.setOwner(owner);
+            projectile.shoot(vec3.x, vec3.y, vec3.z, velocity, 10);
+            level().addFreshEntity(projectile);
         }
-        ServerProjectileFireService.spawnDerived(player, childSnapshot, launches);
         discard();
     }
 

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -57,11 +56,11 @@ public class HoeShovelItem extends DiggerItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         if (player instanceof ServerPlayer serverPlayer && getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE).getType() == HitResult.Type.MISS && player.isCrouching()) {
             ItemStack toolItem = player.getItemInHand(usedHand);
-            ToolMode toolMode = PortItemStackExtension.getData(toolItem, ConfluenceMagicLib.TOOL_MODE);
+            ToolMode toolMode = toolItem.get(ConfluenceMagicLib.TOOL_MODE);
             if (toolMode != null && toolMode.mode() == 0) {
-                PortItemStackExtension.setData(toolItem, ConfluenceMagicLib.TOOL_MODE, new ToolMode(1));
+                toolItem.set(ConfluenceMagicLib.TOOL_MODE, new ToolMode(1));
             } else if (toolMode == null || toolMode.mode() == 1) {
-                PortItemStackExtension.setData(toolItem, ConfluenceMagicLib.TOOL_MODE, new ToolMode(0));
+                toolItem.set(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0));
             }
             serverPlayer.sendSystemMessage(Component.translatable("message.confluence.toolmode.current").withStyle(ChatFormatting.GRAY).append(getModeName(toolItem)), true);
             level.playSound(null, player.blockPosition(), SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.PLAYERS, 0.4F, 0.6F);

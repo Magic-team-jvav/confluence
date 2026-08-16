@@ -6,7 +6,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.api.summon.SummonTargetCache;
 
 /// 地面近战召唤物的通用运行基类。
@@ -21,10 +20,10 @@ public abstract class GroundMeleeSummon extends PhysicalSummon {
     private int attackCooldown;
     private int attackAnimationTicks;
 
-    protected GroundMeleeSummon(ResourceLocation type, ServerPlayer owner, int slotCost, ProjectileCombatSnapshot snapshot,
+    protected GroundMeleeSummon(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats,
                                 SummonPose initialPose, double width, double height, double searchRange,
                                 double combatMoveSpeed, double followMoveSpeed) {
-        super(type, owner, slotCost, snapshot, initialPose, width, height);
+        super(type, owner, slotCost, stats, initialPose, width, height);
         this.searchRange = searchRange;
         this.combatMoveSpeed = combatMoveSpeed;
         this.followMoveSpeed = followMoveSpeed;

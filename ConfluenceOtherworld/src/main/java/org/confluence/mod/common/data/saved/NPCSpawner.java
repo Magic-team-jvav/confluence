@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.saved;
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import PortLib.extensions.net.minecraft.core.BlockPos.PortBlockPosExtension;
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.*;
@@ -194,9 +193,9 @@ public enum NPCSpawner implements IGlobalData {
                 if (!angler.isWakeUp()) return; // 渔夫未唤醒时死亡不广播
                 message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             } else if (living instanceof TravelingMerchantNPC) {
-                message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.traveling_merchant.departed", living.getName()), GlobalColors.NPC_ARRIVED.get());
+                message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName()).withColor(GlobalColors.NPC_ARRIVED.get());
             } else {
-                message = PortMutableComponentExtension.withColor(Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName()), GlobalColors.NPC_SLAIN.get());
+                message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             }
             broadcastMessageToRegion(living.level(), living, message);
         }

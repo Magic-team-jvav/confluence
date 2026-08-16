@@ -12,7 +12,12 @@ import net.minecraft.world.item.Items;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
+import org.confluence.mod.common.entity.npc.trade.conditions.HardmodeCondition;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.terra_curio.common.init.TCItems;
 
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
@@ -47,45 +52,45 @@ public final class NPCShopProvider implements DataProvider {
                 offer(ArmorItems.MINING_HELMET.toStack())
         ));
         shops.put(Confluence.asResource("dye_trader"), List.of(
-                offer(VanityArmorItems.DYE.toStack()),
-                offer(VanityArmorItems.RED_DYE.toStack()),
-                offer(VanityArmorItems.ORANGE_DYE.toStack()),
-                offer(VanityArmorItems.YELLOW_DYE.toStack()),
-                offer(VanityArmorItems.LIME_DYE.toStack()),
-                offer(VanityArmorItems.GREEN_DYE.toStack()),
-                offer(VanityArmorItems.TEAL_DYE.toStack()),
-                offer(VanityArmorItems.CYAN_DYE.toStack()),
-                offer(VanityArmorItems.SKY_BLUE_DYE.toStack()),
-                offer(VanityArmorItems.BLUE_DYE.toStack()),
-                offer(VanityArmorItems.PURPLE_DYE.toStack()),
-                offer(VanityArmorItems.VIOLET_DYE.toStack()),
-                offer(VanityArmorItems.PINK_DYE.toStack()),
-                offer(VanityArmorItems.BLACK_DYE.toStack()),
-                offer(VanityArmorItems.GRAY_DYE.toStack()),
+                offer(FunctionalBlocks.DYE_VAT.toStack()),
                 offer(VanityArmorItems.SILVER_DYE.toStack()),
-                offer(VanityArmorItems.BROWN_DYE.toStack())
+                offer(VanityArmorItems.BROWN_DYE.toStack()),
+                offer(VanityArmorItems.TEAM_DYE.toStack())
         ));
         shops.put(Confluence.asResource("painter"), List.of(
                 offer(PaintItems.PAINTBRUSH.toStack()),
                 offer(PaintItems.PAINT_ROLLER.toStack()),
                 offer(PaintItems.PAINT_SCRAPER.toStack()),
-                offer(PaintItems.PAINT.toStack()),
                 offer(PaintItems.RED_PAINT.toStack()),
+                offer(PaintItems.DEEP_RED_PAINT.toStack()),
                 offer(PaintItems.ORANGE_PAINT.toStack()),
+                offer(PaintItems.DEEP_ORANGE_PAINT.toStack()),
                 offer(PaintItems.YELLOW_PAINT.toStack()),
+                offer(PaintItems.DEEP_YELLOW_PAINT.toStack()),
                 offer(PaintItems.LIME_PAINT.toStack()),
+                offer(PaintItems.DEEP_LIME_PAINT.toStack()),
                 offer(PaintItems.GREEN_PAINT.toStack()),
+                offer(PaintItems.DEEP_GREEN_PAINT.toStack()),
                 offer(PaintItems.TEAL_PAINT.toStack()),
+                offer(PaintItems.DEEP_TEAL_PAINT.toStack()),
                 offer(PaintItems.CYAN_PAINT.toStack()),
+                offer(PaintItems.DEEP_CYAN_PAINT.toStack()),
                 offer(PaintItems.SKY_BLUE_PAINT.toStack()),
+                offer(PaintItems.DEEP_SKY_BLUE_PAINT.toStack()),
                 offer(PaintItems.BLUE_PAINT.toStack()),
+                offer(PaintItems.DEEP_BLUE_PAINT.toStack()),
                 offer(PaintItems.PURPLE_PAINT.toStack()),
+                offer(PaintItems.DEEP_PURPLE_PAINT.toStack()),
                 offer(PaintItems.VIOLET_PAINT.toStack()),
+                offer(PaintItems.DEEP_VIOLET_PAINT.toStack()),
                 offer(PaintItems.PINK_PAINT.toStack()),
+                offer(PaintItems.DEEP_PINK_PAINT.toStack()),
                 offer(PaintItems.BLACK_PAINT.toStack()),
                 offer(PaintItems.GRAY_PAINT.toStack()),
                 offer(PaintItems.WHITE_PAINT.toStack()),
-                offer(PaintItems.BROWN_PAINT.toStack())
+                offer(PaintItems.BROWN_PAINT.toStack()),
+                offer(PaintItems.SHADOW_PAINT.toStack(), HardmodeCondition.INSTANCE),
+                offer(PaintItems.NEGATIVE_PAINT.toStack(), HardmodeCondition.INSTANCE)
         ));
         shops.put(Confluence.asResource("dryad"), List.of(
                 offer(ModItems.GRASS_SEED.toStack()),
@@ -127,32 +132,53 @@ public final class NPCShopProvider implements DataProvider {
         ));
         shops.put(Confluence.asResource("mechanic"), List.of(
                 offer(ToolItems.RED_WRENCH.toStack()),
-                offer(ToolItems.GREEN_WRENCH.toStack()),
                 offer(ToolItems.BLUE_WRENCH.toStack()),
+                offer(ToolItems.GREEN_WRENCH.toStack()),
                 offer(ToolItems.YELLOW_WRENCH.toStack()),
                 offer(ToolItems.WIRE_CUTTER.toStack()),
-                offer(new ItemStack(Items.REPEATER, 5)),
-                offer(new ItemStack(Items.COMPARATOR, 5)),
-                offer(new ItemStack(Items.REDSTONE_LAMP, 5))
+                offer(FunctionalBlocks.SWITCH.toStack()),
+                offer(FunctionalBlocks.SIGNAL_ADAPTER.toStack()),
+                offer(FunctionalBlocks.TIMERS_BLOCK_1_1.toStack()),
+                offer(FunctionalBlocks.TIMERS_BLOCK_3_1.toStack()),
+                offer(FunctionalBlocks.TIMERS_BLOCK_5_1.toStack()),
+                offer(FunctionalBlocks.TIMERS_BLOCK_1_2.toStack()),
+                offer(FunctionalBlocks.TIMERS_BLOCK_1_4.toStack()),
+                offer(FunctionalBlocks.EVER_POWERED_RAIL.toStack()),
+                offer(AccessoryItems.MECHANICAL_LENS.toStack()),
+                offer(new ItemStack(Items.PISTON)),
+                offer(new ItemStack(Items.STICKY_PISTON)),
+                offer(new ItemStack(Items.REDSTONE_LAMP)),
+                offer(new ItemStack(Items.DAYLIGHT_DETECTOR))
         ));
         shops.put(Confluence.asResource("party_girl"), List.of(
-                offer(PaintItems.PINK_PAINT.toStack()),
-                offer(VanityArmorItems.BRIGHT_PINK_DYE.toStack()),
-                offer(new ItemStack(MaterialItems.CONFETTI.get(), 25)),
-                offer(new ItemStack(Items.CAKE)),
-                offer(new ItemStack(Items.COOKIE, 8))
+                offer(FunctionalBlocks.SILLY_BALLOON_MACHINE.toStack()),
+                offer(ConsumableItems.SMOKE_BOMB.toStack()),
+                offer(MaterialItems.CONFETTI.toStack()),
+                offer(MinecartItems.PARTY_WAGON.toStack()),
+                offer(FoodItems.BALLOON_SEED.toStack()),
+                offer(NatureBlocks.BALLOON_MELON.toStack()),
+                offer(DecorativeBlocks.WHITE_BALLOON.toStack()),
+                offer(DecorativeBlocks.LIGHT_GRAY_BALLOON.toStack()),
+                offer(DecorativeBlocks.GRAY_BALLOON.toStack()),
+                offer(DecorativeBlocks.BLACK_BALLOON.toStack()),
+                offer(DecorativeBlocks.BROWN_BALLOON.toStack()),
+                offer(DecorativeBlocks.RED_BALLOON.toStack()),
+                offer(DecorativeBlocks.ORANGE_BALLOON.toStack()),
+                offer(DecorativeBlocks.YELLOW_BALLOON.toStack()),
+                offer(DecorativeBlocks.LIME_BALLOON.toStack()),
+                offer(DecorativeBlocks.GREEN_BALLOON.toStack()),
+                offer(DecorativeBlocks.CYAN_BALLOON.toStack()),
+                offer(DecorativeBlocks.LIGHT_BLUE_BALLOON.toStack()),
+                offer(DecorativeBlocks.BLUE_BALLOON.toStack()),
+                offer(DecorativeBlocks.PURPLE_BALLOON.toStack()),
+                offer(DecorativeBlocks.MAGENTA_BALLOON.toStack()),
+                offer(DecorativeBlocks.PINK_BALLOON.toStack())
         ));
         shops.put(Confluence.asResource("stylist"), List.of(
                 offer(SwordItems.STYLISH_SCISSORS.toStack()),
                 offer(ToolItems.ICE_MIRROR.toStack()),
                 offer(VanityArmorItems.FAMILIAR_WIG.toStack()),
                 offer(VanityArmorItems.SUNGLASSES.toStack())
-        ));
-        shops.put(Confluence.asResource("tax_collector"), List.of(
-                offer(new ItemStack(ModItems.COPPER_COIN.get(), 100)),
-                offer(ModItems.SILVER_COIN.toStack()),
-                offer(ModItems.GOLD_COIN.toStack()),
-                offer(ModItems.PLATINUM_COIN.toStack())
         ));
         shops.put(Confluence.asResource("truffle"), List.of(
                 offer(ModItems.MUSHROOM_GRASS_SEED.toStack()),
@@ -190,15 +216,17 @@ public final class NPCShopProvider implements DataProvider {
         shops.put(Confluence.asResource("angler"), anglerSupplyOffers);
         shops.put(Confluence.asResource("female_angler"), anglerSupplyOffers);
         shops.put(Confluence.asResource("traveling_merchant"), List.of(
-                offer(new ItemStack(Items.LEATHER, 10)),
-                offer(new ItemStack(Items.COAL, 10)),
-                offer(new ItemStack(Items.COPPER_INGOT, 10)),
-                offer(new ItemStack(Items.IRON_INGOT, 8)),
-                offer(new ItemStack(Items.GOLD_INGOT, 4)),
-                offer(new ItemStack(Items.REDSTONE, 10)),
-                offer(new ItemStack(Items.LAPIS_LAZULI, 10)),
-                offer(new ItemStack(Items.AMETHYST_CLUSTER, 4)),
-                offer(new ItemStack(Items.DIAMOND, 2))
+                offer(AccessoryItems.PAINT_SPRAYER.toStack()),
+                offer(TCItems.PORTABLE_CEMENT_MIXER.toStack()),
+                offer(TCItems.EXTENDO_GRIP.toStack()),
+                offer(TCItems.BRICK_LAYER.toStack()),
+                offer(TCItems.STOPWATCH.toStack()),
+                offer(TCItems.LIFE_FORM_ANALYZER.toStack()),
+                offer(TCItems.DPS_METER.toStack()),
+                offer(SwordItems.KATANA.toStack()),
+                offer(FoodItems.PAD_THAI.toStack()),
+                offer(NatureBlocks.DYNASTY_LOG_BLOCKS.LOG.toStack()),
+                offer(FishingPoleItems.SITTING_DUCKS_FISHING_POLE.toStack())
         ));
 
         return CompletableFuture.allOf(shops.entrySet().stream()
@@ -225,5 +253,9 @@ public final class NPCShopProvider implements DataProvider {
 
     private static NPCTradeOffer offer(ItemStack result) {
         return new NPCTradeOffer(result, TradeCondition.alwaysTrue());
+    }
+
+    private static NPCTradeOffer offer(ItemStack result, TradeCondition condition) {
+        return new NPCTradeOffer(result, condition);
     }
 }

@@ -1960,6 +1960,7 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.SPEAR_TRAP, silver20)
                 .add(FunctionalBlocks.LOOM, 60)
                 .add(FunctionalBlocks.DYE_VAT, gold1)
+                .add(FunctionalBlocks.SILLY_BALLOON_MACHINE, gold1)
                 .add(FunctionalBlocks.EXTRACTINATOR, gold2)
                 .add(FunctionalBlocks.LEAD_ANVIL, 100)
 

@@ -16,10 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 蠕虫怪物基类——分段实体（头+体+尾），穿透方块移动。
- * 每 tick 头部移动，体节跟随前一个保持固定间距。
- */
+/// 蠕虫怪物基类——分段实体（头+体+尾），穿透方块移动。
+/// 每 tick 头部移动，体节跟随前一个保持固定间距。
 public abstract class BaseWormMonster extends BaseMonster implements WormSegment {
     private static final float COLLISION_DAMAGE = 10.0F;
     private static final int COLLISION_COOLDOWN = 8;
@@ -134,13 +132,6 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
 
     @Override
     public void updateSegmentPosition() {}
-
-    /// 供同包行为测试核对长虫头部是否保留穿墙移动能力。
-    ///
-    /// <p>该状态是长虫路径语义的一部分，但没有必要作为跨模组公共 API 暴露。</p>
-    boolean isPhasingThroughBlocks() {
-        return noPhysics;
-    }
 
     public static AttributeSupplier.Builder createWormAttributes() {
         return BaseMonster.createMonsterAttributes()

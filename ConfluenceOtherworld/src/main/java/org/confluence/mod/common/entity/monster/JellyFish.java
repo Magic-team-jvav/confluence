@@ -14,6 +14,10 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -23,6 +27,7 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.RandomSwimAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -74,18 +79,16 @@ public class JellyFish extends BaseAquaticMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
+                        new VanillaGoalAction(new TryFindWaterGoal(JellyFish.this)),
                         createCombatAction(),
-                        new RandomSwimAction(
-                                JellyFish.this,
-                                0.2,
-                                5,
-                                3));
+                        new RandomSwimAction(JellyFish.this, 1.0, 10, 3),
+                        new VanillaGoalAction(new RandomLookAroundGoal(JellyFish.this)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(JellyFish.this, Player.class, 6.0F)));
             }
         };
     }
 
-    /// 创建一轮独立战斗节点，包级入口供确定性行为测试使用。
-    BTNode createCombatAction() {
+    private BTNode createCombatAction() {
         return new JellyFishCombatAction(this);
     }
 

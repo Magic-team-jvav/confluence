@@ -42,9 +42,7 @@ import java.util.Locale;
 
 public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Bunny.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_WATCH_STATE =
-            SynchedEntityData.defineId(
-                    Bunny.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_WATCH_STATE = SynchedEntityData.defineId(Bunny.class, EntityDataSerializers.INT);
     public static final String VARIANT_KEY = "Variant";
     private static final RawAnimation WATCH_1 = RawAnimation.begin().thenPlay("watch_1");
     private static final RawAnimation WATCH_2 = RawAnimation.begin().thenPlay("watch_2");
@@ -58,77 +56,30 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
 
     public Bunny(EntityType<? extends Bunny> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension
-                .jumpStrength()
-                .value()).setBaseValue(0.6);
-        getAttribute(PortAttributesExtension
-                .safeFallDistance()
-                .value()).setBaseValue(6.0);
+        getAttribute(PortAttributesExtension.jumpStrength().get()).setBaseValue(0.6);
+        getAttribute(PortAttributesExtension.safeFallDistance().get()).setBaseValue(6.0);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.moveControl = new BunnyHopMoveControl(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Rabbit.createAttributes()
-                .add(PortAttributesExtension
-                        .jumpStrength()
-                        .value(), 0.6)
-                .add(PortAttributesExtension
-                        .safeFallDistance()
-                        .value(), 6.0);
+                .add(PortAttributesExtension.jumpStrength().get(), 0.6)
+                .add(PortAttributesExtension.safeFallDistance().get(), 6.0);
     }
 
     @Override
     protected BTRoot createBT() {
-        BTNode tree = withPassivePanic(
-                SelectorNode.of(
-                        new VanillaGoalAction(
-                                new FloatGoal(this)),
-                        new VanillaGoalAction(
-                                new ClimbOnTopOfPowderSnowGoal(
-                                        this, level())),
-                        new VanillaGoalAction(
-                                new BreedGoal(this, 0.8)),
-                        new VanillaGoalAction(
-                                new TemptGoal(
-                                        this,
-                                        1.0,
-                                        Ingredient.of(
-                                                Items.CARROT,
-                                                Items.GOLDEN_CARROT,
-                                                Items.DANDELION),
-                                        false)),
-                        new VanillaGoalAction(
-                                new AvoidEntityGoal<>(
-                                        this,
-                                        Player.class,
-                                        8.0F,
-                                        2.2,
-                                        2.2)),
-                        new VanillaGoalAction(
-                                new AvoidEntityGoal<>(
-                                        this,
-                                        Wolf.class,
-                                        10.0F,
-                                        2.2,
-                                        2.2)),
-                        new VanillaGoalAction(
-                                new AvoidEntityGoal<>(
-                                        this,
-                                        Monster.class,
-                                        4.0F,
-                                        2.2,
-                                        2.2)),
-                        new VanillaGoalAction(
-                                new WaterAvoidingRandomStrollGoal(
-                                        this,
-                                        0.6)),
-                        new VanillaGoalAction(
-                                new LookAtPlayerGoal(
-                                        this,
-                                        Player.class,
-                                        10.0F))),
-                2.2);
+        BTNode tree = withPassivePanic(SelectorNode.of(
+                new VanillaGoalAction(new FloatGoal(this)),
+                new VanillaGoalAction(new ClimbOnTopOfPowderSnowGoal(this, level())),
+                new VanillaGoalAction(new BreedGoal(this, 0.8)),
+                new VanillaGoalAction(new TemptGoal(this, 1.0, Ingredient.of(Items.CARROT, Items.GOLDEN_CARROT, Items.DANDELION), false)),
+                new VanillaGoalAction(new AvoidEntityGoal<>(this, Player.class, 8.0F, 2.2, 2.2)),
+                new VanillaGoalAction(new AvoidEntityGoal<>(this, Wolf.class, 10.0F, 2.2, 2.2)),
+                new VanillaGoalAction(new AvoidEntityGoal<>(this, Monster.class, 4.0F, 2.2, 2.2)),
+                new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(this, 0.6)),
+                new VanillaGoalAction(new LookAtPlayerGoal(this, Player.class, 10.0F))), 2.2);
         return new BTRoot() {
             @Override
             protected BTNode createTree() { return tree; }
@@ -152,10 +103,7 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
         this.entityData.define(DATA_WATCH_STATE, 20);
     }
 
-    /// 保持 1.21 的兔子待机节奏：导航结束后累计空闲时间，每一百刻安排一次短暂观察。
-    ///
-    /// <p>动画类型和剩余时长由服务端一次性确定，再通过同步数据发送给客户端。客户端只
-    /// 递减本地剩余时间，不会在每一帧重新随机，因此同一次观察动作始终使用同一动画。</p>
+    /// 保持 1.21 的兔子待机节奏。
     @Override
     public void tick() {
         super.tick();
@@ -172,7 +120,7 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
                 nextWatchTick = tickCount + random.nextInt(20);
             }
             if (tickCount == nextWatchTick) {
-                beginWatchCycle(50, random.nextInt(2));
+                beginWatchCycle(50 + 1000 * random.nextInt(2));
             }
         }
         if (watchTicksRemaining >= 0) {
@@ -180,13 +128,10 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
         }
     }
 
-    /// 以一个整数同步观察动画类型和持续时间，避免维护两份可能不同步的实体数据。
-    void beginWatchCycle(int duration, int animationType) {
-        int normalizedDuration = Math.max(0, Math.min(duration, 999));
-        int normalizedType = Mth.clamp(animationType, 0, 1);
-        entityData.set(
-                DATA_WATCH_STATE,
-                normalizedType * 1000 + normalizedDuration);
+    private void beginWatchCycle(int encodedDuration) {
+        watchTicksRemaining = encodedDuration;
+        watchAnimationType = encodedDuration / 1000;
+        entityData.set(DATA_WATCH_STATE, encodedDuration);
     }
 
     @Override
@@ -195,7 +140,7 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
         if (DATA_WATCH_STATE.equals(key)) {
             int packedState = entityData.get(DATA_WATCH_STATE);
             watchAnimationType = packedState / 1000;
-            watchTicksRemaining = packedState % 1000;
+            if (level().isClientSide) watchTicksRemaining = packedState % 1000;
         }
     }
 

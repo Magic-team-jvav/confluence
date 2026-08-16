@@ -51,6 +51,7 @@ import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.Skeletron;
+import org.confluence.mod.common.entity.monster.EaterOfSouls;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
@@ -284,6 +285,22 @@ public final class LivingEntityEvents {
             return;
         }
         @Nullable Entity attacker = damageSource.getEntity();
+
+        if (attacker != null && attacker.getType() == MonsterEntities.DECAYEDER.get()) {
+            if (!victim.hasEffect(ModEffects.DEMONIC_THOUGHTS.get())) {
+                victim.addEffect(new MobEffectInstance(ModEffects.DEMONIC_THOUGHTS.get(), 200), attacker);
+            } else {
+                victim.removeEffect(ModEffects.DEMONIC_THOUGHTS.get());
+                victim.hurt(damageSource, 6.0F);
+                EaterOfSouls eater = MonsterEntities.EATER_OF_SOULS.get().create(serverLevel);
+                if (eater != null) {
+                    eater.setPos(victim.getEyePosition());
+                    eater.setTarget(victim);
+                    serverLevel.addFreshEntity(eater);
+                }
+                victim.removeEffect(ModEffects.DEMONIC_THOUGHTS.get());
+            }
+        }
 
         FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);

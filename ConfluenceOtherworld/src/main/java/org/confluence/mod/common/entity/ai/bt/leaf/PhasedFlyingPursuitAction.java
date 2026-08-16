@@ -25,21 +25,9 @@ public final class PhasedFlyingPursuitAction extends BTNode {
     private final double maximumAggressiveTurn;
     private int remainingTicks;
 
-    public PhasedFlyingPursuitAction(
-            PathfinderMob mob,
-            int cycleTicks,
-            int approachThreshold,
-            int aggressiveThreshold,
-            double approachSpeed,
-            double aggressiveSpeed,
-            double maximumSpeed,
-            double minimumApproachDistance,
-            double maximumAggressiveTurn) {
-        if (cycleTicks <= approachThreshold
-                || approachThreshold <= aggressiveThreshold
-                || aggressiveThreshold <= 0) {
-            throw new IllegalArgumentException(
-                    "Flying pursuit phase thresholds must be positive and ordered");
+    public PhasedFlyingPursuitAction(PathfinderMob mob, int cycleTicks, int approachThreshold, int aggressiveThreshold, double approachSpeed, double aggressiveSpeed, double maximumSpeed, double minimumApproachDistance, double maximumAggressiveTurn) {
+        if (cycleTicks <= approachThreshold || approachThreshold <= aggressiveThreshold || aggressiveThreshold <= 0) {
+            throw new IllegalArgumentException("Flying pursuit phase thresholds must be positive and ordered");
         }
         this.mob = mob;
         this.cycleTicks = cycleTicks;
@@ -48,8 +36,7 @@ public final class PhasedFlyingPursuitAction extends BTNode {
         this.approachSpeed = approachSpeed;
         this.aggressiveSpeed = aggressiveSpeed;
         this.maximumSpeed = maximumSpeed;
-        this.minimumApproachDistanceSqr =
-                minimumApproachDistance * minimumApproachDistance;
+        this.minimumApproachDistanceSqr = minimumApproachDistance * minimumApproachDistance;
         this.maximumAggressiveTurn = maximumAggressiveTurn;
         resetCycle();
     }
@@ -69,8 +56,7 @@ public final class PhasedFlyingPursuitAction extends BTNode {
 
         remainingTicks--;
         mob.getLookControl().setLookAt(target, 10.0F, 90.0F);
-        Vec3 targetDirection =
-                target.getEyePosition().subtract(mob.getEyePosition()).normalize();
+        Vec3 targetDirection = target.getEyePosition().subtract(mob.getEyePosition()).normalize();
         boolean aggressive = remainingTicks < aggressiveThreshold;
         boolean shouldApproach = aggressive
                 || remainingTicks < approachThreshold
@@ -88,8 +74,7 @@ public final class PhasedFlyingPursuitAction extends BTNode {
         mob.setDeltaMovement(nextVelocity);
 
         if (aggressive && nextVelocity.lengthSqr() > 1.0E-8) {
-            double dot = Mth.clamp(
-                    nextVelocity.normalize().dot(targetDirection), -1.0, 1.0);
+            double dot = Mth.clamp(nextVelocity.normalize().dot(targetDirection), -1.0, 1.0);
             if (Math.acos(dot) > maximumAggressiveTurn) {
                 resetCycle();
             }
@@ -101,7 +86,4 @@ public final class PhasedFlyingPursuitAction extends BTNode {
         remainingTicks = cycleTicks;
     }
 
-    public int getRemainingTicks() {
-        return remainingTicks;
-    }
 }

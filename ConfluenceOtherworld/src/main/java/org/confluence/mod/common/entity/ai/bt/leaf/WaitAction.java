@@ -3,9 +3,7 @@ package org.confluence.mod.common.entity.ai.bt.leaf;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 等待指定 tick 数。
- */
+/// 等待指定 tick 数。
 public class WaitAction extends BTNode {
     private final int waitTicks;
     private int tick;

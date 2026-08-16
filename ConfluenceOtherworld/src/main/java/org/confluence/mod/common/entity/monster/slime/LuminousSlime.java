@@ -4,9 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
-/**
- * 夜明史莱姆 —— 持续发光并产生残影粒子。
- */
+/// 夜明史莱姆 —— 持续发光并产生残影粒子。
 public class LuminousSlime extends BaseSlime {
 
     public LuminousSlime(EntityType<? extends BaseSlime> type, Level level) {

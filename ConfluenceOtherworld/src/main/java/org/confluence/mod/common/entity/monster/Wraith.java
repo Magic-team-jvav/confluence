@@ -16,11 +16,7 @@ import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyingPursuitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.DirectFloatingPursuitAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -60,12 +56,7 @@ public class Wraith extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(Wraith.this),
-                                new FlyingPursuitAction(
-                                        Wraith.this, 0.02, 0.3)),
-                        new FlyWanderAction(Wraith.this, 0.15, 10));
+                return new DirectFloatingPursuitAction(Wraith.this);
             }
         };
     }

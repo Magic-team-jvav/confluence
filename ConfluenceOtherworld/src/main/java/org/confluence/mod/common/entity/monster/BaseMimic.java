@@ -63,7 +63,6 @@ public class BaseMimic extends BaseMonster {
     private int targetMissingTicks;
     private int jumpCooldown;
     private int attackCycle;
-    private boolean jumpAttackStarted;
 
     public BaseMimic(EntityType<? extends BaseMimic> type, Level level) {
         super(type, level);
@@ -105,6 +104,11 @@ public class BaseMimic extends BaseMonster {
     @Override
     protected boolean canTargetPlayer(LivingEntity target) {
         return false;
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
     }
 
     @Override
@@ -261,7 +265,6 @@ public class BaseMimic extends BaseMonster {
         setDeltaMovement(motionX, motionY, motionZ);
         hasImpulse = true;
         attackCycle++;
-        jumpAttackStarted = true;
         setMimicPose(MimicPose.JUMPING);
     }
 
@@ -336,11 +339,6 @@ public class BaseMimic extends BaseMonster {
         int id = Byte.toUnsignedInt(entityData.get(DATA_POSE));
         MimicPose[] values = MimicPose.values();
         return id < values.length ? values[id] : MimicPose.CLOSED;
-    }
-
-    /// 只用于回归验证“攻击已实际进入起跳阶段”，不参与网络或存档。
-    boolean hasStartedJumpAttack() {
-        return jumpAttackStarted;
     }
 
     @Override

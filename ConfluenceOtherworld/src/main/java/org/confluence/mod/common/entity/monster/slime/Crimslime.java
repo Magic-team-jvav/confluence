@@ -7,13 +7,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
-/**
- * 猩红史莱姆 —— 攻击致盲，生成时随机大小。
- */
+/// 猩红史莱姆 —— 攻击致盲，生成时随机大小。
 public class Crimslime extends BaseSlime {
 
     public Crimslime(EntityType<? extends BaseSlime> type, Level level) {
         super(type, level, 0x8B4949, false);
+        setSlimeSize(1 + random.nextInt(3));
     }
 
     public static AttributeSupplier.Builder createAttributes() {

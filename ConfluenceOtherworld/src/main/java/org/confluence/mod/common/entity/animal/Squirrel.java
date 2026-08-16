@@ -36,18 +36,14 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
 
     public Squirrel(EntityType<? extends Squirrel> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension
-                .safeFallDistance()
-                .value()).setBaseValue(6.0);
+        getAttribute(PortAttributesExtension.safeFallDistance().get()).setBaseValue(6.0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
-                .add(PortAttributesExtension
-                        .safeFallDistance()
-                        .value(), 6.0);
+                .add(PortAttributesExtension.safeFallDistance().get(), 6.0);
     }
 
     @Override

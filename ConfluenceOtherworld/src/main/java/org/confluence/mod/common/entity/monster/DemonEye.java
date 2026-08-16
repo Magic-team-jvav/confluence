@@ -284,8 +284,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
         /// 按节日状态选择自然生成变种。
         ///
-        /// <p>万圣节期间只生成猫头鹰和太空船外观，其余日期只从十二种常规恶魔眼中选择。
-        /// 显式节日参数同时让生成规则可以在不依赖本机日期的情况下稳定测试。</p>
+        /// <p>万圣节期间只生成猫头鹰和太空船外观，其余日期只从十二种常规恶魔眼中选择。</p>
         static Variant random(RandomSource random, boolean halloween) {
             if (halloween) {
                 return random.nextBoolean() ? OWL : SPACESHIP;

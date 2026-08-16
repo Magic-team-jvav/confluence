@@ -87,6 +87,11 @@ public final class Nymph extends BaseMonster {
         xpReward = 20;
     }
 
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return BaseMonster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 156.0)

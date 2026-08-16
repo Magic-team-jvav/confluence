@@ -43,8 +43,7 @@ public class Wyvern extends BaseWormMonster {
         };
     }
 
-    /// 创建独立飞龙运动节点，包级入口供确定性行为测试使用。
-    BTNode createMovementAction() {
+    private BTNode createMovementAction() {
         return new WyvernMovementAction(this);
     }
 

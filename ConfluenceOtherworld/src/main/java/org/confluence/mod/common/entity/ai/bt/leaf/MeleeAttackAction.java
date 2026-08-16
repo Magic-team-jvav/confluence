@@ -6,10 +6,8 @@ import net.minecraft.world.entity.Mob;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 近战攻击：在攻击范围内时 swing + doHurtTarget，带内置冷却。
- * 永远返回 SUCCESS，保证 BT 序列不会因距离不够而跌落到 idle 分支。
- */
+/// 近战攻击：在攻击范围内时 swing + doHurtTarget，带内置冷却。
+/// 永远返回 SUCCESS，保证 BT 序列不会因距离不够而跌落到 idle 分支。
 public class MeleeAttackAction extends BTNode {
     protected final Mob mob;
     protected final double attackRange;

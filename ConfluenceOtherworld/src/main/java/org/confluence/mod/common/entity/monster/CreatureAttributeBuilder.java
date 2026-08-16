@@ -27,7 +27,7 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
             double attackKnockback, double knockbackResistance) {
         double movementSpeed = 0.25;
         return new CreatureAttributeBuilder(Mob.createMobAttributes()
-                .add(LibAttributes.getAttackDamage().value(), attack)
+                .add(LibAttributes.getAttackDamage().get(), attack)
                 .add(Attributes.MAX_HEALTH, health)
                 .add(Attributes.ARMOR, armor)
                 .add(Attributes.MOVEMENT_SPEED, movementSpeed)
@@ -37,7 +37,7 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
                 .add(Attributes.ATTACK_KNOCKBACK, attackKnockback)
                 .add(Attributes.ATTACK_SPEED)
                 .add(Attributes.FLYING_SPEED)
-                .add(PortAttributesExtension.safeFallDistance().value(), 8.0)
+                .add(PortAttributesExtension.safeFallDistance().get(), 8.0)
                 .build(), movementSpeed);
     }
 
@@ -50,7 +50,7 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
             double attack, double health, double armor) {
         double movementSpeed = 1.0;
         return new CreatureAttributeBuilder(Mob.createMobAttributes()
-                .add(LibAttributes.getAttackDamage().value(), attack)
+                .add(LibAttributes.getAttackDamage().get(), attack)
                 .add(Attributes.MAX_HEALTH, health)
                 .add(Attributes.ARMOR, armor)
                 .add(Attributes.MOVEMENT_SPEED, movementSpeed)
@@ -59,14 +59,14 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
                 .add(Attributes.ATTACK_KNOCKBACK)
                 .add(Attributes.ATTACK_SPEED)
                 .add(Attributes.FLYING_SPEED)
-                .add(PortAttributesExtension.safeFallDistance().value(), 8.0)
+                .add(PortAttributesExtension.safeFallDistance().get(), 8.0)
                 .build(), movementSpeed);
     }
 
     public CreatureAttributeBuilder flying() {
         flying = true;
         add(Attributes.FLYING_SPEED, movementSpeed);
-        add(PortAttributesExtension.safeFallDistance().value(), 1000.0);
+        add(PortAttributesExtension.safeFallDistance().get(), 1000.0);
         return this;
     }
 
@@ -80,22 +80,22 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
     }
 
     public CreatureAttributeBuilder safeFallDistance(double value) {
-        add(PortAttributesExtension.safeFallDistance().value(), value);
+        add(PortAttributesExtension.safeFallDistance().get(), value);
         return this;
     }
 
     public CreatureAttributeBuilder gravity(double value) {
-        add(PortAttributesExtension.gravity().value(), value);
+        add(PortAttributesExtension.gravity().get(), value);
         return this;
     }
 
     public CreatureAttributeBuilder jumpStrength(double value) {
-        add(PortAttributesExtension.jumpStrength().value(), value);
+        add(PortAttributesExtension.jumpStrength().get(), value);
         return this;
     }
 
     public CreatureAttributeBuilder stepHeight(double value) {
-        add(PortAttributesExtension.stepHeight().value(), value);
+        add(PortAttributesExtension.stepHeight().get(), value);
         return this;
     }
 

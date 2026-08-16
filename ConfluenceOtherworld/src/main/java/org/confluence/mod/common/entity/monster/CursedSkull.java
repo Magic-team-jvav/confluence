@@ -60,14 +60,6 @@ public class CursedSkull extends BaseFlyingMonster {
         return super.doHurtTarget(target);
     }
 
-    int getPursuitPhaseTicks() {
-        return pursuit.getRemainingTicks();
-    }
-
-    boolean isPhasingThroughBlocks() {
-        return noPhysics;
-    }
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Fly", 0, state -> state.setAndContinue(FLY)));

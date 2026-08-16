@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster.slime;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,10 +31,8 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 
 public class BaseSlime extends BaseMonster {
     protected static final String SIZE_KEY = "SlimeSize";
-    private static final String HONEY_SOAK_TIME_KEY = "HoneySoakTime";
     private static final int HONEY_SOAK_CHECKS_REQUIRED = 120;
-    private static final EntityDataAccessor<Integer> DATA_SIZE =
-            SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_SIZE = SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
     protected final int slimeColor;
     protected final boolean passiveByDay;
     private float oldSquish;
@@ -132,7 +131,6 @@ public class BaseSlime extends BaseMonster {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt(SIZE_KEY, getSlimeSize());
-        tag.putInt(HONEY_SOAK_TIME_KEY, honeySoakTime);
     }
 
     @Override
@@ -140,10 +138,6 @@ public class BaseSlime extends BaseMonster {
         super.readAdditionalSaveData(tag);
         if (tag.contains(SIZE_KEY, net.minecraft.nbt.Tag.TAG_INT)) {
             setSlimeSize(tag.getInt(SIZE_KEY));
-        }
-        if (tag.contains(HONEY_SOAK_TIME_KEY, net.minecraft.nbt.Tag.TAG_INT)) {
-            honeySoakTime = Mth.clamp(
-                    tag.getInt(HONEY_SOAK_TIME_KEY), 0, HONEY_SOAK_CHECKS_REQUIRED);
         }
     }
 
@@ -343,7 +337,7 @@ public class BaseSlime extends BaseMonster {
 
     // === 子类可重写的行为钩子 ===
 
-    /** 攻击目标后触发，用于附加效果（如冰霜减速） */
+    /// 攻击目标后触发，用于附加效果（如冰霜减速）
     protected void onAttackTarget(LivingEntity target) {}
 
     @Override
@@ -386,9 +380,6 @@ public class BaseSlime extends BaseMonster {
         }
         honeySlime.setSlimeSize(2);
         honeySlime.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
-        if (hasCustomName()) {
-            honeySlime.setCustomName(getCustomName());
-        }
         level().addFreshEntity(honeySlime);
         discard();
     }
@@ -413,7 +404,7 @@ public class BaseSlime extends BaseMonster {
         }
     }
 
-    /** 是否免疫火焰伤害 */
+    /// 是否免疫火焰伤害
     protected boolean isFireImmune() {
         return false;
     }
@@ -423,12 +414,12 @@ public class BaseSlime extends BaseMonster {
         return isFireImmune();
     }
 
-    /** 在水中是否受伤 */
+    /// 在水中是否受伤
     protected boolean hurtByWater() {
         return false;
     }
 
-    /** 是否免疫溺水 */
+    /// 是否免疫溺水
     protected boolean ignoreDrowning() {
         return false;
     }
@@ -484,6 +475,7 @@ public class BaseSlime extends BaseMonster {
                 .add(Attributes.MAX_HEALTH, maxHealth)
                 .add(Attributes.ATTACK_DAMAGE, attackDamage)
                 .add(Attributes.ARMOR, (double) armor)
+                .add(PortAttributesExtension.waterMovementEfficiency().get(), 0.2)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.FOLLOW_RANGE, 16.0);
     }

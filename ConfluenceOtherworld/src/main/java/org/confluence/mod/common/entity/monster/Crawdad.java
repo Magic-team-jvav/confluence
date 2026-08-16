@@ -29,6 +29,11 @@ public final class Crawdad extends BaseWarriorMonster {
         super(type, level);
     }
 
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return BaseMonster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 26.0)

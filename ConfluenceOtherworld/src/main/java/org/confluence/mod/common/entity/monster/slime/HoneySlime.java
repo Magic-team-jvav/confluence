@@ -5,15 +5,15 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-/**
- * 蜂蜜史莱姆 —— 完全被动，随时间成长，玩家可用玻璃瓶采集蜂蜜。
- */
+/// 蜂蜜史莱姆 —— 完全被动，随时间成长，玩家可用玻璃瓶采集蜂蜜。
 public class HoneySlime extends BaseSlime {
     public static final int GROWTH_INTERVAL = 20000;
     private int growthTicksRemaining = GROWTH_INTERVAL;
@@ -25,6 +25,9 @@ public class HoneySlime extends BaseSlime {
     public static AttributeSupplier.Builder createAttributes() {
         return createSlimeAttributes(0f, 0, 16.0f);
     }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity target) {}
 
     @Override
     public void tick() {

@@ -8,10 +8,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 恐慌逃跑：向远离玩家的方向随机跑。
- * 持续 RUNNING 直到到达目标或超时。
- */
+/// 恐慌逃跑：向远离玩家的方向随机跑。
+/// 持续 RUNNING 直到到达目标或超时。
 public class PanicFleeAction extends BTNode {
     protected final PathfinderMob mob;
     protected final double speed;

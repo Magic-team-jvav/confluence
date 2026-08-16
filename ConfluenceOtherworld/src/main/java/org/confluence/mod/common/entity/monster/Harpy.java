@@ -1,7 +1,7 @@
 package org.confluence.mod.common.entity.monster;
 
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -12,8 +12,8 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyingVolleyCombatAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.FlyingVolleyCombatAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.SteeringDashAction;
 import org.confluence.mod.common.entity.projectile.HarpyFeatherProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -86,7 +86,7 @@ public class Harpy extends ReboundingFlyingMonster {
         controllers.add(new AnimationController<>(this, "Fly", 0, state -> state.setAndContinue(FLY)));
     }
 
-    HarpyFeatherProjectile createFeatherProjectile(LivingEntity target) {
+    private HarpyFeatherProjectile createFeatherProjectile(LivingEntity target) {
         HarpyFeatherProjectile projectile = new HarpyFeatherProjectile(
                 ModEntities.HARPY_FEATHER.get(), level());
         projectile.configure(

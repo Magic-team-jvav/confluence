@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.monster.slime;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -17,10 +16,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 黑史莱姆 —— 大小 1=Baby, 2=普通, 3=大型, 4=母体。
- * 攻击附加黑暗效果，母体死亡时分裂出 1-3 只小史莱姆。
- */
+/// 黑史莱姆 —— 大小 1=Baby, 2=普通, 3=大型, 4=母体。
+/// 攻击附加黑暗效果，母体死亡时分裂出 2-4 只普通黑史莱姆。
 public class BlackSlime extends BaseSlime {
     private static final int BABY_SIZE = 1;
     private static final int MOTHER_SIZE = 4;
@@ -98,12 +95,7 @@ public class BlackSlime extends BaseSlime {
         }
     }
 
-    /// 母体只在死亡实体真正移除时分裂，数量沿用原版史莱姆的二至四只。
-    ///
-    /// <p>1.21 侧通过原版 {@code Slime#remove} 完成这一过程，而本类不再继承原版
-    /// {@code Slime}，因此在相同生命周期节点补回等价逻辑。幼体只改变尺寸，继续使用
-    /// 黑史莱姆注册时的基础属性；不能提前在 {@link #die(DamageSource)} 中生成，也不能
-    /// 为幼体发明一套 1.21 中不存在的额外属性。</p>
+    /// 母体只在死亡实体真正移除时分裂，数量和位置沿用原版史莱姆。
     @Override
     public void remove(RemovalReason reason) {
         if (!level().isClientSide
@@ -111,18 +103,19 @@ public class BlackSlime extends BaseSlime {
                 && isDeadOrDying()
                 && isMotherSlime()) {
             int babies = 2 + random.nextInt(3);
+            float horizontalOffset = getBbWidth() / 4.0F;
+            float verticalOffset = getBbHeight() / 8.0F;
             for (int i = 0; i < babies; i++) {
                 BlackSlime baby = (BlackSlime) getType().create(level());
-                if (baby == null) {
-                    continue;
-                }
-                baby.setSlimeSize(BABY_SIZE);
-                baby.moveTo(
-                        getX() + random.nextGaussian() * 0.5,
-                        getY(),
-                        getZ() + random.nextGaussian() * 0.5,
-                        random.nextFloat() * 360.0F,
-                        0.0F);
+                if (baby == null) continue;
+                if (isPersistenceRequired()) baby.setPersistenceRequired();
+                if (hasCustomName()) baby.setCustomName(getCustomName());
+                baby.setNoAi(isNoAi());
+                baby.setInvulnerable(isInvulnerable());
+                baby.setSlimeSize(2);
+                float xOffset = (i % 2 - 0.5F) * horizontalOffset;
+                float zOffset = (i / 2 - 0.5F) * horizontalOffset;
+                baby.moveTo(getX() + xOffset, getY() + verticalOffset, getZ() + zOffset, random.nextFloat() * 360.0F, 0.0F);
                 level().addFreshEntity(baby);
             }
         }

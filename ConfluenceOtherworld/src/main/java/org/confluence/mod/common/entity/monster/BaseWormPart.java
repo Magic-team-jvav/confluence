@@ -21,9 +21,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-/**
- * 蠕虫体节。每 tick 跟随前一个体节（或头部），保持固定间距。
- */
+/// 蠕虫体节。每 tick 跟随前一个体节（或头部），保持固定间距。
 public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
     private static final float SEGMENT_SPACING = 1.6F;
     private static final float COLLISION_DAMAGE = 5.0F;

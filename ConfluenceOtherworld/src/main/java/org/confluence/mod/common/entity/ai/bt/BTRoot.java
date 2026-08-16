@@ -2,9 +2,7 @@ package org.confluence.mod.common.entity.ai.bt;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 
-/**
- * 行为树根节点，包装为 Forge Goal 注册到 goalSelector。
- */
+/// 行为树根节点，包装为 Forge Goal 注册到 goalSelector。
 public abstract class BTRoot extends Goal {
     protected BTNode rootNode;
 

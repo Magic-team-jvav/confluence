@@ -63,21 +63,7 @@ public class SandPoacher extends BaseMonster {
     protected void registerGoals() {
         super.registerGoals();
         // 沙贼原本继承蜘蛛，因此除玩家外也会主动攻击铁傀儡。
-        targetSelector.addGoal(3, new IronGolemTargetGoal(this));
-    }
-
-    /// 暴露稳定的行为契约供回归测试检查，避免测试世界里其他用例遗留的玩家
-    /// 抢占更高优先级目标后，把“当前没选中铁傀儡”误判成“没有铁傀儡目标行为”。
-    boolean hasIronGolemTargetGoal() {
-        return targetSelector.getAvailableGoals().stream()
-                .anyMatch(wrapped -> wrapped.getGoal() instanceof IronGolemTargetGoal);
-    }
-
-    private static final class IronGolemTargetGoal
-            extends NearestAttackableTargetGoal<IronGolem> {
-        private IronGolemTargetGoal(SandPoacher poacher) {
-            super(poacher, IronGolem.class, false);
-        }
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
     }
 
     @Override

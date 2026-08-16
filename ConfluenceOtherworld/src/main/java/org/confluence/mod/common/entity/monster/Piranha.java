@@ -1,19 +1,22 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomSwimAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -44,14 +47,26 @@ public class Piranha extends BaseAquaticMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(Piranha.this),
-                                new MoveToTargetAction(Piranha.this, 0.7, 2.0),
-                                new MeleeAttackAction(Piranha.this, 2.0),
-                                new WaitAction(10)),
-                        SequenceNode.of(new WaitAction(20 + random.nextInt(40)),
-                                new RandomSwimAction(Piranha.this, 0.4, 6, 3)));
+                        new VanillaGoalAction(new TryFindWaterGoal(Piranha.this)),
+                        new VanillaGoalAction(new MeleeAttackGoal(Piranha.this, 1.2, true)),
+                        new VanillaGoalAction(createStrollGoal()),
+                        new VanillaGoalAction(new RandomLookAroundGoal(Piranha.this)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(Piranha.this, Player.class, 6.0F)),
+                        new VanillaGoalAction(new FollowBoatGoal(Piranha.this)));
             }
         };
+    }
+
+    protected Goal createStrollGoal() {
+        return new RandomSwimmingGoal(this, 1.0, 10);
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable net.minecraft.nbt.CompoundTag tag) {
+        setAirSupply(getMaxAirSupply());
+        setXRot(0.0F);
+        return super.finalizeSpawn(level, difficulty, spawnType, data, tag);
     }
 
     @Override
@@ -89,8 +104,18 @@ public class Piranha extends BaseAquaticMonster {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void handleEntityEvent(byte id) {
+        if (id != 38) {
+            super.handleEntityEvent(id);
+            return;
+        }
+        for (int i = 0; i < 7; i++) {
+            level().addParticle(ParticleTypes.HAPPY_VILLAGER, getRandomX(1.0), getRandomY() + 0.2, getRandomZ(1.0), random.nextGaussian() * 0.01, random.nextGaussian() * 0.01, random.nextGaussian() * 0.01);
+        }
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "Swim/Attack",

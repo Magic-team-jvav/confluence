@@ -30,8 +30,7 @@ public abstract class BaseFlyingMonster extends BaseMonster {
 
     /// 1.21 的飞行怪接触伤害属于实体本身，而不是某个追击动作。
     ///
-    /// <p>因此行为树切换到施法或等待时，已经取得目标的实体仍按同一冷却检测身体碰撞。
-    /// 黄蜂等明确禁用接触攻击的远程实体应覆盖本方法。</p>
+    /// <p>因此行为树切换到施法或等待时，已经取得目标的实体仍按同一冷却检测身体碰撞。</p>
     @Override
     protected boolean hasEntityContactAttack() {
         return true;
@@ -73,11 +72,4 @@ public abstract class BaseFlyingMonster extends BaseMonster {
         return false;
     }
 
-    /// 供同包行为测试核对实体是否真正启用了穿墙移动。
-    ///
-    /// <p>穿墙是幽灵类生物的独立行为，不能因为实体会飞就统一开启。该方法保持包级可见，
-    /// 避免把内部碰撞开关扩散成公共 API。</p>
-    boolean isPhasingThroughBlocks() {
-        return noPhysics;
-    }
 }

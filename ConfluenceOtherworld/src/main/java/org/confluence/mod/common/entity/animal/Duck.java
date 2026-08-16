@@ -59,17 +59,13 @@ public class Duck extends BaseCritter
 
     public Duck(EntityType<? extends Duck> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension
-                .waterMovementEfficiency()
-                .value()).setBaseValue(1.0);
+        getAttribute(PortAttributesExtension.waterMovementEfficiency().get()).setBaseValue(1.0);
         setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Chicken.createAttributes()
-                .add(PortAttributesExtension
-                        .waterMovementEfficiency()
-                        .value(), 1.0);
+                .add(PortAttributesExtension.waterMovementEfficiency().get(), 1.0);
     }
 
     @Override

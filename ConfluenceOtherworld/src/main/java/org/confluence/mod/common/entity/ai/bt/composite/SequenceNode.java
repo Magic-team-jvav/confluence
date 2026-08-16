@@ -6,9 +6,7 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 顺序节点：依次执行子节点，任一失败则失败，全部成功则成功。
- */
+/// 顺序节点：依次执行子节点，任一失败则失败，全部成功则成功。
 public class SequenceNode extends BTNode {
     protected final List<BTNode> children;
     protected int currentIndex;

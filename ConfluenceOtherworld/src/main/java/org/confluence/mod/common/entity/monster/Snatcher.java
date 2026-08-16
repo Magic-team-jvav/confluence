@@ -122,7 +122,7 @@ public class Snatcher extends BaseMonster {
         return false;
     }
 
-    /// 设置根部和静止伸展方向。该入口同时供生成逻辑与行为测试使用。
+    /// 设置根部和静止伸展方向。
     public void initializeAnchor(Vec3 anchor, Vec3 restDirection) {
         if (restDirection.lengthSqr() < 1.0E-8) {
             throw new IllegalArgumentException(

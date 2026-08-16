@@ -3,9 +3,7 @@ package org.confluence.mod.common.entity.ai.bt;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 行为树节点间共享状态。
- */
+/// 行为树节点间共享状态。
 public class Blackboard {
     private final Map<String, Object> data = new HashMap<>();
 

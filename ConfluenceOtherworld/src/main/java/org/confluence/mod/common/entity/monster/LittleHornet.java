@@ -78,6 +78,11 @@ public final class LittleHornet extends Hornet {
     }
 
     @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
+
+    @Override
     protected BTRoot createBT() {
         return new BTRoot() {
             @Override

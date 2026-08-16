@@ -1,7 +1,12 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -108,8 +113,16 @@ public class Hornet extends BaseFlyingMonster {
     }
 
     @Override
-    protected boolean hasEntityContactAttack() {
-        return false;
+    public boolean doHurtTarget(Entity target) {
+        swing(InteractionHand.MAIN_HAND);
+        boolean hit = target.hurt(damageSources().sting(this), (float) (int) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        if (!hit || !(target instanceof LivingEntity living)) return hit;
+        living.setStingerCount(living.getStingerCount() + 1);
+        int duration = level().getDifficulty() == Difficulty.NORMAL ? 200 : level().getDifficulty() == Difficulty.HARD ? 360 : 0;
+        if (duration > 0)
+            living.addEffect(new MobEffectInstance(MobEffects.POISON, duration), this);
+        playSound(SoundEvents.BEE_STING, 1.0F, 1.0F);
+        return true;
     }
 
     private final class HornetCombatNode extends BTNode {

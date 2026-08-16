@@ -6,9 +6,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 直线冲刺：锁定方向后高速冲向目标，触碰造成伤害。
- */
+/// 直线冲刺：锁定方向后高速冲向目标，触碰造成伤害。
 public class DashAction extends BTNode {
     private final Mob mob;
     private final double speed;

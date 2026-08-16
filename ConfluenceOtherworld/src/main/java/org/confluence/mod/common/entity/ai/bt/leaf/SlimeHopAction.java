@@ -7,9 +7,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 
-/**
- * 史莱姆跳跃：蓄力→起跳→落地。towardTarget 决定向目标跳还是随机跳。
- */
+/// 史莱姆跳跃：蓄力→起跳→落地。towardTarget 决定向目标跳还是随机跳。
 public class SlimeHopAction extends BTNode {
     protected final Mob mob;
     protected final boolean towardTarget;

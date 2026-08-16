@@ -9,13 +9,14 @@ import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyingPursuitAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -42,8 +43,7 @@ public class Pixie extends BaseFlyingMonster {
                 return SelectorNode.of(
                         SequenceNode.of(
                                 new HasTargetCondition(Pixie.this),
-                                new FlyingPursuitAction(
-                                        Pixie.this, 0.045, 0.46)),
+                                new PixiePursuitAction()),
                         new FlyWanderAction(Pixie.this, 0.15, 10));
             }
         };
@@ -86,5 +86,26 @@ public class Pixie extends BaseFlyingMonster {
     @Override
     protected double contactAttackInflation() {
         return 0.5;
+    }
+
+    private final class PixiePursuitAction extends BTNode {
+        @Override
+        public BTStatus execute() {
+            var target = getTarget();
+            if (target == null || !target.isAlive()) return BTStatus.FAILURE;
+            Vec3 toTarget = target.position().subtract(position());
+            Vec3 movement = getDeltaMovement();
+            if (distanceToSqr(target) > 3.0 && angleBetween(movement, toTarget) > 0.6) {
+                setDeltaMovement(movement.scale(0.95));
+            }
+            getNavigation().moveTo(target.getX(), target.getY(), target.getZ(), 2.0);
+            return BTStatus.RUNNING;
+        }
+
+        private double angleBetween(Vec3 first, Vec3 second) {
+            double product = first.length() * second.length();
+            if (product < 1.0E-6) return 0.0;
+            return Math.acos(net.minecraft.util.Mth.clamp(first.dot(second) / product, -1.0, 1.0));
+        }
     }
 }

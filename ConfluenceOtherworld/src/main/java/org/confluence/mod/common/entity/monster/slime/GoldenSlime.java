@@ -7,9 +7,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 import org.joml.Vector3f;
 
-/**
- * 金色史莱姆 —— 高血量、快速跳跃、掉落金币，稀有。
- */
+/// 金色史莱姆 —— 高血量、快速跳跃、掉落金币，稀有。
 public class GoldenSlime extends BaseSlime {
 
     public GoldenSlime(EntityType<? extends BaseSlime> type, Level level) {
@@ -18,6 +16,11 @@ public class GoldenSlime extends BaseSlime {
 
     public static AttributeSupplier.Builder createAttributes() {
         return createSlimeAttributes(5.0f, 2, 97.0f);
+    }
+
+    @Override
+    protected void setSlimeSize(int size) {
+        super.setSlimeSize(2);
     }
 
     /// 金史莱姆在 1.21 侧锁定为八刻基础跳跃间隔；追击目标时由移动控制器取其三分之一。

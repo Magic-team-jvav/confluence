@@ -2,7 +2,9 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
@@ -20,9 +22,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 洞穴蝙蝠 —— 飞行 + 环绕冲刺攻击。与 DemonEye 共享同款 BT。
- */
+/// 洞穴蝙蝠 —— 飞行 + 环绕冲刺攻击。与 DemonEye 共享同款 BT。
 public class CaveBat extends BaseFlyingMonster {
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
 
@@ -72,6 +72,13 @@ public class CaveBat extends BaseFlyingMonster {
         } else if (getType() == MonsterEntities.ICE_BAT.get()) {
             spawnIceBatParticles();
         }
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (getType() == MonsterEntities.HELL_BAT.get() && source.is(DamageTypeTags.IS_FIRE))
+            return false;
+        return super.hurt(source, amount);
     }
 
     /// 保留 1.21 地狱蝙蝠分布在身体两侧的熔岩粒子轨迹。

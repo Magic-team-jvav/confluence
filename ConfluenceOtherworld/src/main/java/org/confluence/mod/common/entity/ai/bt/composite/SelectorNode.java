@@ -6,9 +6,7 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 选择器：依次执行子节点，任一成功则成功，全部失败则失败。
- */
+/// 选择器：依次执行子节点，任一成功则成功，全部失败则失败。
 public class SelectorNode extends BTNode {
     protected final List<BTNode> children;
     protected int currentIndex;

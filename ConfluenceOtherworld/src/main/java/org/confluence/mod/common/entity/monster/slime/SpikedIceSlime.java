@@ -7,10 +7,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
-/**
- * 尖刺冰雪史莱姆 —— 尖刺 + 攻击附加缓慢效果。
- */
+/// 尖刺冰雪史莱姆 —— 尖刺 + 攻击附加缓慢效果。
 public class SpikedIceSlime extends SpikedSlime {
 
     public SpikedIceSlime(EntityType<? extends BaseSlime> type, Level level) {
@@ -22,8 +21,13 @@ public class SpikedIceSlime extends SpikedSlime {
     }
 
     @Override
-    protected float spikeDamage() {
-        return 6.0f;
+    protected SlimeSpikeEntity.Variant spikeVariant() {
+        return SlimeSpikeEntity.Variant.ICE;
+    }
+
+    @Override
+    protected boolean canFireDistantSingleSpike() {
+        return true;
     }
 
     @Override

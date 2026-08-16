@@ -36,8 +36,7 @@ public abstract class BaseFlyingCritter extends BaseCritter {
 
     @Override
     protected PathNavigation createNavigation(Level level) {
-        FlyingPathNavigation navigation =
-                new FlyingPathNavigation(this, level);
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level);
         navigation.setCanOpenDoors(false);
         navigation.setCanFloat(true);
         navigation.setCanPassDoors(true);
@@ -45,10 +44,7 @@ public abstract class BaseFlyingCritter extends BaseCritter {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            net.minecraft.world.damagesource.DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, net.minecraft.world.damagesource.DamageSource source) {
         return false;
     }
 

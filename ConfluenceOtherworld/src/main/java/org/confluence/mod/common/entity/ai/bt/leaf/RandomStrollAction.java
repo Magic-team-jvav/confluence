@@ -6,9 +6,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 随机漫步：选一个附近的随机位置然后走过去。
- */
+/// 随机漫步：选一个附近的随机位置然后走过去。
 public class RandomStrollAction extends BTNode {
     protected final PathfinderMob mob;
     protected final double speed;

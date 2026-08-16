@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.monster.slime;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -19,9 +20,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 尖刺史莱姆 —— 有目标时发射 8 方向尖刺并跳跃追击。
- */
+/// 尖刺史莱姆 —— 有目标时发射 8 方向尖刺并跳跃追击。
 public class SpikedSlime extends BaseSlime {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation JUMP = RawAnimation.begin().thenPlay("jump");
@@ -32,8 +31,7 @@ public class SpikedSlime extends BaseSlime {
         this(type, level, 0x4B6E8C, false);
     }
 
-    protected SpikedSlime(EntityType<? extends BaseSlime> type, Level level,
-                          int color, boolean passiveByDay) {
+    protected SpikedSlime(EntityType<? extends BaseSlime> type, Level level, int color, boolean passiveByDay) {
         super(type, level, color, passiveByDay);
     }
 
@@ -46,7 +44,11 @@ public class SpikedSlime extends BaseSlime {
     }
 
     protected float spikeDamage() {
-        return 5.0f;
+        return (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
+    }
+
+    protected SlimeSpikeEntity.Variant spikeVariant() {
+        return SlimeSpikeEntity.Variant.NORMAL;
     }
 
     /// 丛林尖刺史莱姆可在远距离跳跃前偶尔补射一发；普通与冰雪变体保持纯追击。
@@ -59,22 +61,12 @@ public class SpikedSlime extends BaseSlime {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(SpikedSlime.this),
-                                createCombatAction()
-                        ),
-                        SequenceNode.of(
-                                new WaitAction(20 + random.nextInt(40)),
-                                new SlimeHopAction(SpikedSlime.this, false)
-                        )
-                );
+                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(SpikedSlime.this), createCombatAction()), SequenceNode.of(new WaitAction(20 + random.nextInt(40)), new SlimeHopAction(SpikedSlime.this, false)));
             }
         };
     }
 
-    /// 创建尖刺家族共用的完整战斗动作，供行为树和确定性回归测试使用。
-    protected BTNode createCombatAction() {
+    private BTNode createCombatAction() {
         return new CombatAction();
     }
 
@@ -84,12 +76,7 @@ public class SpikedSlime extends BaseSlime {
         double horizontalScale = Math.cos(verticalAngle);
         for (int i = 0; i < spikeCount(); i++) {
             double angle = baseAngle + Math.PI * 2.0 * i / spikeCount();
-            SlimeSpikeEntity spike = SlimeSpikeEntity.create(
-                    level(), this, ModEntities.SLIME_SPIKE.get(),
-                    Math.cos(angle) * horizontalScale,
-                    Math.sin(verticalAngle),
-                    Math.sin(angle) * horizontalScale,
-                    0.3F, 1.0F, spikeDamage());
+            SlimeSpikeEntity spike = SlimeSpikeEntity.create(level(), this, ModEntities.SLIME_SPIKE.get(), Math.cos(angle) * horizontalScale, Math.sin(verticalAngle), Math.sin(angle) * horizontalScale, 0.3F, 1.0F, spikeDamage(), spikeVariant(), true);
             spike.setPos(getBoundingBox().getCenter().offsetRandom(random, 0.2F));
             level().addFreshEntity(spike);
         }
@@ -97,10 +84,7 @@ public class SpikedSlime extends BaseSlime {
 
     private void fireDistantSpike(LivingEntity target) {
         Vec3 direction = target.getEyePosition().subtract(getEyePosition());
-        SlimeSpikeEntity spike = SlimeSpikeEntity.create(
-                level(), this, ModEntities.SLIME_SPIKE.get(),
-                direction.x, direction.y, direction.z,
-                0.3F, 1.0F, spikeDamage());
+        SlimeSpikeEntity spike = SlimeSpikeEntity.create(level(), this, ModEntities.SLIME_SPIKE.get(), direction.x, direction.y, direction.z, 0.3F, 1.0F, spikeDamage(), spikeVariant(), false);
         spike.setPos(getBoundingBox().getCenter().offsetRandom(random, 0.2F));
         level().addFreshEntity(spike);
     }
@@ -108,9 +92,7 @@ public class SpikedSlime extends BaseSlime {
     private void jumpToward(LivingEntity target) {
         Vec3 offset = target.position().subtract(position());
         double horizontalDistance = Math.sqrt(offset.x * offset.x + offset.z * offset.z);
-        Vec3 horizontal = horizontalDistance > 1.0E-4
-                ? new Vec3(offset.x / horizontalDistance, 0.0, offset.z / horizontalDistance)
-                : Vec3.ZERO;
+        Vec3 horizontal = horizontalDistance > 1.0E-4 ? new Vec3(offset.x / horizontalDistance, 0.0, offset.z / horizontalDistance) : Vec3.ZERO;
         double vertical = target.getY() + 4.0 < getY() ? 0.92 : 0.42;
         setDeltaMovement(horizontal.x, vertical, horizontal.z);
         hasImpulse = true;
@@ -132,8 +114,7 @@ public class SpikedSlime extends BaseSlime {
         public void start() {
             tick = 0;
             LivingEntity target = getTarget();
-            closeRange = target != null
-                    && distanceToSqr(target) < CLOSE_ATTACK_DISTANCE * CLOSE_ATTACK_DISTANCE;
+            closeRange = target != null && distanceToSqr(target) < CLOSE_ATTACK_DISTANCE * CLOSE_ATTACK_DISTANCE;
             if (!closeRange) {
                 distantShotBranch = canFireDistantSingleSpike() && random.nextInt(3) == 0;
                 int extraWait = canFireDistantSingleSpike() && !distantShotBranch ? 4 : 0;
@@ -183,9 +164,6 @@ public class SpikedSlime extends BaseSlime {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Controller", 5,
-                state -> state.setAndContinue(IDLE))
-                .triggerableAnim("jump", JUMP)
-                .triggerableAnim("attack", ATTACK));
+        controllers.add(new AnimationController<>(this, "Controller", 5, state -> state.setAndContinue(IDLE)).triggerableAnim("jump", JUMP).triggerableAnim("attack", ATTACK));
     }
 }

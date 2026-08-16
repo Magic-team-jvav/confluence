@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -34,12 +32,9 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// 进入动画、防御坠落和退出动画三个阶段。阶段由服务端推进并通过实体数据同步，客户端
 /// 只负责选择对应动画，避免多人环境中各客户端自行推算阶段而产生视觉分歧。</p>
 ///
-/// <p>防御阶段会暂时恢复重力、停止横向移动并吸收普通伤害。无视无敌帧的特殊伤害仍可
-/// 穿透防御，以保留原版伤害标签的语义。花岗岩元素具有正常碰撞，不能像幽灵类生物一样
+/// <p>防御阶段会暂时恢复重力、停止横向移动并吸收普通伤害。花岗岩元素具有正常碰撞，不能像幽灵类生物一样
 /// 穿墙，否则防御坠落会直接穿过地面。</p>
 public class GraniteElemental extends BaseFlyingMonster {
-    private static final String DEFENSE_PHASE_TAG = "DefensePhase";
-    private static final String DEFENSE_TICKS_TAG = "DefenseTicks";
     private static final EntityDataAccessor<Byte> DATA_DEFENSE_PHASE =
             SynchedEntityData.defineId(GraniteElemental.class, EntityDataSerializers.BYTE);
 
@@ -139,11 +134,7 @@ public class GraniteElemental extends BaseFlyingMonster {
         }
     }
 
-    /// 从普通追击切换到防御进入阶段。
-    ///
-    /// <p>包级可见性只供同包行为测试稳定触发状态，不作为对外扩展 API。附属模组不应直接
-    /// 操纵实体内部阶段。</p>
-    void beginDefenseSequence() {
+    private void beginDefenseSequence() {
         if (getDefensePhase() == DefensePhase.ACTIVE) {
             setDefensePhase(DefensePhase.ENTERING, TRANSITION_TICKS);
         }
@@ -152,52 +143,22 @@ public class GraniteElemental extends BaseFlyingMonster {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (!level().isClientSide
-                && getDefensePhase() == DefensePhase.DEFENDING
-                && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            return true;
+                && getDefensePhase() == DefensePhase.DEFENDING) {
+            return !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
         }
 
-        boolean hurt = super.hurt(source, amount);
-        if (hurt
-                && !level().isClientSide
-                && isAlive()
+        if (!level().isClientSide
                 && getDefensePhase() == DefensePhase.ACTIVE
                 && LibUtils.isAtLeastExpert(level(), blockPosition())
                 && random.nextFloat() < 0.2F) {
             beginDefenseSequence();
         }
-        return hurt;
+        return super.hurt(source, amount);
     }
 
     @Override
     public boolean onGround() {
         return getDefensePhase() != DefensePhase.ACTIVE && super.onGround();
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putByte(DEFENSE_PHASE_TAG, (byte) getDefensePhase().ordinal());
-        tag.putInt(DEFENSE_TICKS_TAG, defenseTicks);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (!tag.contains(DEFENSE_PHASE_TAG, Tag.TAG_BYTE)) {
-            setDefensePhase(DefensePhase.ACTIVE, 0);
-            return;
-        }
-        DefensePhase phase = DefensePhase.byId(tag.getByte(DEFENSE_PHASE_TAG));
-        int maximumTicks = switch (phase) {
-            case ACTIVE -> 0;
-            case ENTERING, EXITING -> TRANSITION_TICKS;
-            case DEFENDING -> DEFENDING_TICKS;
-        };
-        int ticks = phase == DefensePhase.ACTIVE
-                ? 0
-                : Mth.clamp(tag.getInt(DEFENSE_TICKS_TAG), 1, maximumTicks);
-        setDefensePhase(phase, ticks);
     }
 
     @Override

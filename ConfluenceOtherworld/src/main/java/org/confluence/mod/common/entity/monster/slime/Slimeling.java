@@ -4,9 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
-/**
- * 小史莱姆灵 —— 腐化史莱姆死亡时分裂出的碎片。
- */
+/// 小史莱姆灵 —— 腐化史莱姆死亡时分裂出的碎片。
 public class Slimeling extends BaseSlime {
 
     public Slimeling(EntityType<? extends BaseSlime> type, Level level) {

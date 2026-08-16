@@ -37,9 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * 小动物基类 —— 不可繁殖、无食物、行为树驱动。
- */
+/// 小动物基类 —— 不可繁殖、无食物、行为树驱动。
 public abstract class BaseCritter extends Animal implements GeoEntity {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private boolean behaviorTreeRegistered;
@@ -50,9 +48,7 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData data,
-                                        @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
         String key = variantSaveKey();
         if (key != null && (tag == null || !tag.contains(key))) {
@@ -80,27 +76,21 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
     public void onAddedToWorld() {
         super.onAddedToWorld();
         if (!level().isClientSide && !behaviorTreeRegistered) {
-            BTRoot behaviorTree = Objects.requireNonNull(createBT(),
-                    () -> "Missing behavior tree for " + getType());
+            BTRoot behaviorTree = Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
             goalSelector.addGoal(0, behaviorTree);
             behaviorTreeRegistered = true;
         }
     }
 
-    /** 子类重写以提供自己的行为树 */
+    /// 子类重写以提供自己的行为树
     protected abstract BTRoot createBT();
 
     /// 为被动小动物包装可抢占的恐慌分支。
     ///
     /// <p>原版 Panic 只在受伤或着火后触发，普通玩家靠近不会被视为威胁。条件切换节点会在
     /// 每个 tick 重新判断，因而小动物在巡游途中受伤时可以立即中断当前动作并逃离。</p>
-    protected final BTNode withPassivePanic(
-            BTNode routine,
-            double panicSpeed) {
-        return new ConditionalSwitchNode(
-                () -> getLastHurtByMob() != null || isOnFire(),
-                new PanicFleeAction(this, panicSpeed),
-                routine);
+    protected final BTNode withPassivePanic(BTNode routine, double panicSpeed) {
+        return new ConditionalSwitchNode(() -> getLastHurtByMob() != null || isOnFire(), new PanicFleeAction(this, panicSpeed), routine);
     }
 
     /// 创建 1.21 地面小动物共用的日常行为。
@@ -108,16 +98,12 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
     /// <p>漂浮始终具有最高优先级；物种可把繁殖、食物吸引或跟随亲代等动作插入其后；
     /// 最后再执行避水巡游、观察玩家和随机转头。共享顺序集中在基类中，新增同类生物
     /// 不需要复制一整套原版动作，也不会遗漏落水逃生。</p>
-    protected final BTNode createGroundCritterRoutine(
-            double strollSpeed,
-            BTNode... speciesActions) {
+    protected final BTNode createGroundCritterRoutine(double strollSpeed, BTNode... speciesActions) {
         List<BTNode> actions = new ArrayList<>();
         actions.add(new VanillaGoalAction(new FloatGoal(this)));
         actions.addAll(List.of(speciesActions));
-        actions.add(new VanillaGoalAction(
-                new WaterAvoidingRandomStrollGoal(this, strollSpeed)));
-        actions.add(new VanillaGoalAction(
-                new LookAtPlayerGoal(this, Player.class, 6.0F)));
+        actions.add(new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(this, strollSpeed)));
+        actions.add(new VanillaGoalAction(new LookAtPlayerGoal(this, Player.class, 6.0F)));
         actions.add(new VanillaGoalAction(new RandomLookAroundGoal(this)));
         return new SelectorNode(actions);
     }
@@ -165,7 +151,7 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 3.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.18)
-                .add(PortAttributesExtension.stepHeight().value(), 0.3);
+                .add(PortAttributesExtension.stepHeight().get(), 0.3);
     }
 
     @Override

@@ -6,9 +6,7 @@ import net.minecraft.world.phys.AABB;
 
 import java.util.List;
 
-/**
- * 附近是否有玩家（用于小动物的逃跑触发）
- */
+/// 附近是否有玩家（用于小动物的逃跑触发）
 public class PlayerCloseCondition extends Condition<Mob> {
     private final double range;
 

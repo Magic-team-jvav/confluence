@@ -2,15 +2,14 @@ package org.confluence.mod.common.entity.monster.slime;
 
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.ModTags;
 
-/**
- * 血肉史莱姆 —— 免疫火焰/熔岩/摔伤，不攻击血肉同盟生物。
- */
+/// 血肉史莱姆 —— 免疫火焰/熔岩/摔伤，不攻击血肉同盟生物。
 public class FleshSlime extends BaseSlime {
 
     public FleshSlime(EntityType<? extends BaseSlime> type, Level level) {
@@ -30,6 +29,7 @@ public class FleshSlime extends BaseSlime {
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return source.is(DamageTypeTags.IS_FIRE)
+                || source.is(DamageTypes.LAVA)
                 || source.is(DamageTypeTags.IS_FALL)
                 || super.isInvulnerableTo(source);
     }

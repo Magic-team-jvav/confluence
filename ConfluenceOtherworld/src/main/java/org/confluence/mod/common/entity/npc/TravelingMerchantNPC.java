@@ -19,6 +19,7 @@ public class TravelingMerchantNPC extends BaseNPC {
     private static final String STOCK_INITIALIZED_TAG = "TradeStockInitialized";
     private static final String STOCK_TAG = "TradeStock";
     private long spawnDayTime;
+    private boolean departing;
     private boolean tradeStockInitialized;
     private final List<ItemStack> tradeStock = new ArrayList<>();
 
@@ -67,6 +68,10 @@ public class TravelingMerchantNPC extends BaseNPC {
         super.customServerAiStep();
         long dayTime = level().getDayTime();
         if (dayTime < spawnDayTime || dayTime % 24000 >= 12000) {
+            if (!departing) {
+                departing = true;
+                NPCSpawner.INSTANCE.onNPCRemoved(this);
+            }
             discard();
         }
     }

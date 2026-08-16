@@ -8,9 +8,7 @@ import org.confluence.mod.common.entity.projectile.bomb.BaseGrenadeEntity;
 
 import java.util.EnumSet;
 
-/**
- * 爆破专家投掷手榴弹。
- */
+/// 爆破专家投掷手榴弹。
 public class NPCGrenadeGoal extends Goal {
     private final BaseNPC npc;
     private int attackTimer;
@@ -62,8 +60,8 @@ public class NPCGrenadeGoal extends Goal {
             npc.getNavigation().stop();
         }
 
-        if (--attackTimer <= 0 && seeTime >= 5) {
-            attackTimer = 40;
+        if (--attackTimer <= 0 && seeTime >= 10) {
+            attackTimer = 20;
             performAttack(target);
         }
     }

@@ -14,15 +14,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.Sensor;
@@ -90,6 +88,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
     protected boolean shouldInteract;
     protected BlockPos spawnAtPos = BlockPos.ZERO;
+    private boolean spawnAtPosInitialized;
 
     public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
@@ -111,6 +110,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 1.95));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.5));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -135,16 +135,14 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     // === 房屋查找 ===
 
-    private static final int FIND_HOUSE_INTERVAL = 600;
+    private static final int FIND_HOUSE_INTERVAL_MASK = 511;
 
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
         ServerLevel level = (ServerLevel) level();
         tickBrain(level);
-        if (!house.isValid()) {
-            tickFindHouse(level);
-        }
+        tickFindHouse(level);
         tickWalkToHome(level);
         tickMood();
 //        ChatManager.tickNPC(this);
@@ -193,11 +191,17 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         brain.tick(level, this);
     }
 
-    /// 每 600 tick 在当前位置及周边采样，尝试发现房屋。
+    /// 每 512 tick 重新验证已有房屋；无房时从当前位置尝试发现房屋。
     protected void tickFindHouse(ServerLevel level) {
-        if (tickCount % FIND_HOUSE_INTERVAL != 0) return;
-        HouseValidater.Result result = HouseValidater.scan(level, blockPosition());
-        House found = result.make(getUUID());
+        if ((tickCount & FIND_HOUSE_INTERVAL_MASK) != 0) return;
+        BlockPos scanPos = house.isValid() ? house.center() : blockPosition();
+        if (!level.isLoaded(scanPos)) return;
+
+        HouseHandler.INSTANCE.removeHouse(level.dimension(), getUUID());
+        House found = HouseValidater.scan(level, scanPos).make(getUUID());
+        if (found.isValid() && HouseHandler.INSTANCE.findHouseAt(level.dimension(), found.center()) != null) {
+            found = House.EMPTY;
+        }
         setHouse(found);
         HouseHandler.INSTANCE.setHouse(this, found);
     }
@@ -250,6 +254,12 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     public void setShouldInteract(boolean should) {
         this.shouldInteract = should;
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        if (target instanceof Player || target instanceof BaseNPC) return false;
+        return target.canBeSeenAsEnemy();
     }
 
     // === 交互 ===
@@ -332,7 +342,12 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("Region")), r -> this.region = r);
         }
         this.shouldInteract = tag.getBoolean("ShouldInteract");
-        PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), r -> this.spawnAtPos = r);
+        if (tag.contains("SpawnAtPos")) {
+            PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), r -> {
+                this.spawnAtPos = r;
+                this.spawnAtPosInitialized = true;
+            });
+        }
     }
 
     public BlockPos getSpawnAtPos() {
@@ -342,6 +357,9 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        this.spawnAtPos = blockPosition();
+        if (!spawnAtPosInitialized) {
+            this.spawnAtPos = blockPosition();
+            this.spawnAtPosInitialized = true;
+        }
     }
 }

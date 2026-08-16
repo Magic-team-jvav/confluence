@@ -1,13 +1,12 @@
 package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.npc.ai.NPCGrenadeGoal;
 
-/**
- * 爆破专家 —— 投掷手榴弹攻击 5 格内敌人。
- */
+/// 爆破专家 —— 投掷手榴弹攻击 5 格内敌人。
 public class DemolitionistNPC extends BaseNPC {
 
     public DemolitionistNPC(EntityType<? extends BaseNPC> type, Level level) {
@@ -17,7 +16,7 @@ public class DemolitionistNPC extends BaseNPC {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new NPCGrenadeGoal(this, 5));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.goalSelector.addGoal(2, new NPCGrenadeGoal(this, 5));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, true));
     }
 }

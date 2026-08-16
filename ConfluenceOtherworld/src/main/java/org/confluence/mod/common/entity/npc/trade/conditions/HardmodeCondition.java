@@ -12,7 +12,7 @@ public record HardmodeCondition() implements TradeCondition {
     public static final MapCodec<HardmodeCondition> CODEC = MapCodec.unit(INSTANCE);
 
     @Override public boolean test(ServerPlayer player, BaseNPC npc) {
-        return HardmodeConvertor.INSTANCE.isStarted();
+        return HardmodeConvertor.INSTANCE.isCompleted();
     }
     @Override public MapCodec<? extends TradeCondition> codec() { return ModTradeConditions.HARDMODE.get(); }
 }

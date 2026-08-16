@@ -43,6 +43,9 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     private final BaseNPC npc;
     private final Container tradeContainer = new SimpleContainer(TRADE_SIZE);
     private final List<NPCTradeOffer> offers;
+    private final int shopRevision;
+    private final float buyPriceMultiplier;
+    private final float sellPriceMultiplier;
     private final Map<Integer, SoldItem> soldItems = new HashMap<>();
     private final List<SlotState> slotStates = new ArrayList<>(TRADE_SIZE);
     private final SimpleContainerData pageData = new SimpleContainerData(3);
@@ -57,13 +60,20 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     }
 
     public NPCTradeMenu(int containerId, Inventory inventory, BaseNPC npc) {
-        this(containerId, inventory, npc, List.of());
+        this(containerId, inventory, npc, List.of(), -1);
     }
 
     public NPCTradeMenu(int containerId, Inventory inventory, BaseNPC npc, List<NPCTradeOffer> offers) {
+        this(containerId, inventory, npc, offers, NPCTradeList.getRevision());
+    }
+
+    public NPCTradeMenu(int containerId, Inventory inventory, BaseNPC npc, List<NPCTradeOffer> offers, int shopRevision) {
         super(ModMenuTypes.NPC_TRADE.get(), containerId);
         this.npc = npc;
         this.offers = List.copyOf(offers);
+        this.shopRevision = shopRevision;
+        this.buyPriceMultiplier = npc.getMood().getBuyPriceMultiplier();
+        this.sellPriceMultiplier = npc.getMood().getSellPriceMultiplier();
 
         for (int row = 0; row < TRADE_ROWS; row++) {
             for (int col = 0; col < TRADE_COLS; col++) {
@@ -113,7 +123,12 @@ public class NPCTradeMenu extends AbstractContainerMenu {
                 populatePage(getCurrentPage());
             }
         } else if (cursor.isEmpty() && state == SlotState.NPC_ITEM) {
-            ItemStack result = offers.get(absoluteSlot).stack();
+            NPCTradeOffer offer = offers.get(absoluteSlot);
+            if (!offer.isAvailable(serverPlayer, npc)) {
+                serverPlayer.closeContainer();
+                return;
+            }
+            ItemStack result = offer.stack();
             long price = getBuyPrice(result);
             if (price > 0 && PlayerMoneyTransaction.debit(serverPlayer, price, true)) {
                 setCarried(result.copy());
@@ -163,7 +178,8 @@ public class NPCTradeMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return npc.isAlive() && player.isAlive() && player.level() == npc.level() && player.distanceToSqr(npc) <= 64.0D;
+        return npc.isAlive() && player.isAlive() && player.level() == npc.level() && player.distanceToSqr(npc) <= 64.0D
+                && (!(player instanceof ServerPlayer) || shopRevision == NPCTradeList.getRevision());
     }
 
     private boolean canUseThisMenu(ServerPlayer player) {
@@ -228,7 +244,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         try {
             long value = ValueComponent.getValueLong(stack, 0);
             if (value <= 0) return 0;
-            return Math.max(1L, Math.round(Math.multiplyExact(value, 5L) * (double) npc.getMood().getBuyPriceMultiplier()));
+            return Math.max(1L, Math.round(Math.multiplyExact(value, 5L) * (double) buyPriceMultiplier));
         } catch (ArithmeticException ignored) {
             return 0;
         }
@@ -238,7 +254,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         try {
             long value = ValueComponent.getValueLong(stack, 0);
             if (value <= 0) return 0;
-            return Math.max(1L, Math.round(value * (double) npc.getMood().getSellPriceMultiplier()));
+            return Math.max(1L, Math.round(value * (double) sellPriceMultiplier));
         } catch (ArithmeticException ignored) {
             return 0;
         }

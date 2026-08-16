@@ -471,9 +471,9 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     }
 
     protected void performDefaultInteraction(ServerPlayer player) {
-        java.util.List<NPCTradeOffer> offers = NPCTradeList.getAvailableOffers(player, this);
-        if (!offers.isEmpty()) {
-            NetworkHooks.openScreen(player, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, offers), getDisplayName()), buf -> buf.writeInt(getId()));
+        var shop = NPCTradeList.getAvailableOffers(player, this);
+        if (!shop.offers().isEmpty()) {
+            NetworkHooks.openScreen(player, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, shop.offers(), shop.revision()), getDisplayName()), buf -> buf.writeInt(getId()));
         } else if (NPCDialogLoader.getInstance().getDialog(getType()) != null) {
             Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenNPCDialogPacketS2C(getId()));
         }

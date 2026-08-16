@@ -22,13 +22,18 @@ import java.util.Map;
 /// 从每个 NPC 对应的 JSON 文件加载固定商品列表。
 public final class NPCTradeList {
     private static final Codec<List<NPCTradeOffer>> SHOP_CODEC = NPCTradeOffer.CODEC.listOf().fieldOf("offers").codec();
-    private static volatile Map<EntityType<?>, List<NPCTradeOffer>> offerTable = Map.of();
+    private static volatile State state = new State(Map.of(), 0);
 
     private NPCTradeList() {}
 
-    public static List<NPCTradeOffer> getAvailableOffers(ServerPlayer player, BaseNPC npc) {
-        List<NPCTradeOffer> selected = npc.selectTradeOffers(offerTable.getOrDefault(npc.getType(), List.of()));
-        return selected.stream().filter(offer -> offer.isAvailable(player, npc)).toList();
+    public static ShopSnapshot getAvailableOffers(ServerPlayer player, BaseNPC npc) {
+        State current = state;
+        List<NPCTradeOffer> selected = npc.selectTradeOffers(current.table().getOrDefault(npc.getType(), List.of()));
+        return new ShopSnapshot(selected.stream().filter(offer -> offer.isAvailable(player, npc)).toList(), current.revision());
+    }
+
+    public static int getRevision() {
+        return state.revision();
     }
 
     private static ParseResult parse(Map<ResourceLocation, JsonElement> resources) {
@@ -56,6 +61,14 @@ public final class NPCTradeList {
     private record ParseResult(Map<EntityType<?>, List<NPCTradeOffer>> table,
                                List<String> errors) {}
 
+    private record State(Map<EntityType<?>, List<NPCTradeOffer>> table, int revision) {}
+
+    public record ShopSnapshot(List<NPCTradeOffer> offers, int revision) {
+        public ShopSnapshot {
+            offers = List.copyOf(offers);
+        }
+    }
+
     public static final class Loader extends SimpleJsonResourceReloadListener {
         private static final Loader INSTANCE = new Loader();
 
@@ -75,8 +88,9 @@ public final class NPCTradeList {
                 Confluence.LOGGER.error("NPC shop reload was rejected; the previous valid table remains active");
                 return;
             }
-            offerTable = result.table();
-            Confluence.LOGGER.info("Loaded {} NPC shop tables", offerTable.size());
+            State previous = state;
+            state = new State(result.table(), previous.revision() + 1);
+            Confluence.LOGGER.info("Loaded {} NPC shop tables", result.table().size());
         }
     }
 }

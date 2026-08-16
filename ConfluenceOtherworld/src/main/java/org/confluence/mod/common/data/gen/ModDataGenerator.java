@@ -64,6 +64,7 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModFluidTagsProvider(output, lookup, helper));
         generator.addProvider(server, new NPCShopProvider(output));
         generator.addProvider(server, new NPCMoodProvider(output));
+        generator.addProvider(server, new NPCChatProvider(output));
         generator.addProvider(server, new CollectRecipeProvider(Confluence.asPlainId("server"), output, lookup,
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,

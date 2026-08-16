@@ -8,15 +8,15 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,13 +26,18 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.entity.npc.chat.ChatLine;
+import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
@@ -49,7 +54,9 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /// 城镇 NPC 的公共实体基础。
 ///
@@ -57,6 +64,7 @@ import java.util.List;
 /// 数据包提供，实体只负责决定本次访问允许进入会话快照的报价集合；默认实现保留
 /// 全部报价，旅商等具有随机库存的 NPC 可以覆盖该选择步骤。</p>
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
+    private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final RawAnimation WALK =
             RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE =
@@ -89,10 +97,19 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected boolean shouldInteract;
     protected BlockPos spawnAtPos = BlockPos.ZERO;
     private boolean spawnAtPosInitialized;
+    private final Map<ChatLine, Integer> chatCooldowns = new HashMap<>();
+    private int chatForceCooldown = 50;
+    private int chatDisplayTicks;
 
     public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
         this.mood = new NPCMood(MoodData.getMoodsFor(type));
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(DATA_CHAT, new CompoundTag());
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -145,7 +162,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         tickFindHouse(level);
         tickWalkToHome(level);
         tickMood();
-//        ChatManager.tickNPC(this);
+        ChatManager.tickNPC(this);
 
         // 由于NPCHouseBehaviors#walkToHouse疑似不能触发，于是在tick里判断
         // 过远时传送回自己的出生点
@@ -176,13 +193,37 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     // === 对话 ===
 
-    public void setCurrentChat(NPCChat chat) {
+    public void setCurrentChat(@Nullable NPCChat chat) {
         this.currentChat = chat;
+        this.chatDisplayTicks = chat == null ? 0 : 100;
+        if (!level().isClientSide) {
+            CompoundTag encoded = chat == null ? new CompoundTag() : NPCChat.CODEC.encodeStart(NbtOps.INSTANCE, chat).result().filter(CompoundTag.class::isInstance).map(CompoundTag.class::cast).orElseGet(CompoundTag::new);
+            entityData.set(DATA_CHAT, encoded, true);
+        }
     }
 
     @Nullable
     public NPCChat getCurrentChat() {
         return currentChat;
+    }
+
+    public int getChatDisplayTicks() {
+        return chatDisplayTicks;
+    }
+
+    public void tickChatCooldowns() {
+        if (chatForceCooldown > 0) chatForceCooldown--;
+        chatCooldowns.replaceAll((line, ticks) -> ticks - 1);
+        chatCooldowns.entrySet().removeIf(entry -> entry.getValue() <= 0);
+    }
+
+    public boolean canTriggerChat(ChatLine line) {
+        return chatForceCooldown <= 0 && !chatCooldowns.containsKey(line);
+    }
+
+    public void markChatTriggered(ChatLine line) {
+        chatForceCooldown = 50;
+        chatCooldowns.put(line, Math.max(1, line.cooldownTicks()));
     }
 
     @SuppressWarnings("unchecked")
@@ -282,12 +323,60 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             }
             // 图鉴记录
             if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
+
+            if (hand == InteractionHand.OFF_HAND) return InteractionResult.SUCCESS;
+            setCustomNameVisible(hasCustomName());
+            ItemStack held = player.getItemInHand(hand);
+            if (held.getItem() instanceof ArmorItem armor) {
+                swapEquipment(player, hand, armor.getEquipmentSlot());
+                return InteractionResult.SUCCESS;
+            }
+            if (player.isShiftKeyDown()) {
+                if (!held.isEmpty()) {
+                    swapEquipment(player, hand, EquipmentSlot.MAINHAND);
+                    return InteractionResult.SUCCESS;
+                }
+                removeLookedAtEquipment(player, hand);
+                return InteractionResult.PASS;
+            }
+
             var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
             if (!shop.offers().isEmpty()) {
                 NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, shop.offers(), shop.revision()), getDisplayName()), buf -> buf.writeInt(getId()));
             }
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
+    }
+
+    private void swapEquipment(Player player, InteractionHand hand, EquipmentSlot slot) {
+        ItemStack npcItem = getItemBySlot(slot);
+        setItemSlot(slot, player.getItemInHand(hand));
+        player.setItemInHand(hand, npcItem);
+    }
+
+    private void removeLookedAtEquipment(Player player, InteractionHand hand) {
+        Vec3 start = player.getEyePosition();
+        getBoundingBox().clip(start, start.add(player.getViewVector(0.5F).scale(5))).ifPresent(hit -> {
+            double height = hit.y - getY();
+            if (height > 1.2) {
+                moveEquipmentToHand(player, hand, EquipmentSlot.HEAD);
+            } else if (height > 0.7) {
+                double edgeX = Math.max(hit.x - getBoundingBox().minX, getBoundingBox().maxX - hit.x);
+                double edgeZ = Math.max(hit.z - getBoundingBox().minZ, getBoundingBox().maxZ - hit.z);
+                moveEquipmentToHand(player, hand, Math.min(edgeX, edgeZ) > 0.5 ? EquipmentSlot.MAINHAND : EquipmentSlot.CHEST);
+            } else if (height > 0.3) {
+                moveEquipmentToHand(player, hand, EquipmentSlot.LEGS);
+            } else {
+                moveEquipmentToHand(player, hand, EquipmentSlot.FEET);
+            }
+        });
+    }
+
+    private void moveEquipmentToHand(Player player, InteractionHand hand, EquipmentSlot slot) {
+        ItemStack equipped = getItemBySlot(slot);
+        if (equipped.isEmpty()) return;
+        player.setItemInHand(hand, equipped);
+        setItemSlot(slot, ItemStack.EMPTY);
     }
 
     // === 杂项 ===
@@ -300,6 +389,22 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public boolean canBeLeashed(Player player) {
         return false;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (chatDisplayTicks > 0 && --chatDisplayTicks == 0) setCurrentChat(null);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (DATA_CHAT.equals(key) && level().isClientSide) {
+            CompoundTag encoded = entityData.get(DATA_CHAT);
+            this.currentChat = encoded.isEmpty() ? null : NPCChat.CODEC.parse(NbtOps.INSTANCE, encoded).result().orElse(null);
+            this.chatDisplayTicks = currentChat == null ? 0 : 100;
+        }
     }
 
     // === GeckoLib ===

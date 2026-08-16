@@ -59,6 +59,23 @@ public final class PlayerMoneyTransaction {
         }
     }
 
+    /// 从玩家主背包的指定槽位移除物品并结算售出所得。
+    public static boolean creditFromInventory(
+            Player player,
+            int sourceSlot,
+            ItemStack expectedStack,
+            long amount,
+            boolean includePiggyBank) {
+        if (sourceSlot < 0 || sourceSlot >= player.getInventory().items.size() || expectedStack.isEmpty() || amount <= 0) {
+            return false;
+        }
+        try {
+            return creditFromInventoryChecked(player, sourceSlot, expectedStack, amount, includePiggyBank);
+        } catch (ArithmeticException ignored) {
+            return false;
+        }
+    }
+
     private static boolean creditChecked(
             Player player,
             long amount,
@@ -95,6 +112,44 @@ public final class PlayerMoneyTransaction {
         if (piggyBank != null) {
             commitContainer(piggyBank, piggyCopy);
         }
+        return true;
+    }
+
+    private static boolean creditFromInventoryChecked(
+            Player player,
+            int sourceSlot,
+            ItemStack expectedStack,
+            long amount,
+            boolean includePiggyBank) {
+        Inventory inventory = player.getInventory();
+        ExtraInventory extraInventory = ExtraInventory.of(player);
+        PlayerPiggyBankContainer piggyBank = includePiggyBank ? PlayerPiggyBankContainer.of(player) : null;
+        ItemStack source = inventory.items.get(sourceSlot);
+        if (!ItemStack.matches(source, expectedStack)) return false;
+
+        List<ItemStack> inventoryCopy = copyStacks(inventory.items);
+        List<ItemStack> extraCopy = copyStacks(extraInventory.getAllCoins());
+        List<ItemStack> piggyCopy = piggyBank == null ? List.of() : copyContainer(piggyBank);
+        inventoryCopy.set(sourceSlot, ItemStack.EMPTY);
+
+        long current = Math.addExact(
+                sumAndClearCoins(inventoryCopy),
+                Math.addExact(sumAndClearCoins(extraCopy), sumAndClearCoins(piggyCopy)));
+        Optional<List<ItemStack>> encoded = encodeCoins(
+                Math.addExact(current, amount),
+                inventoryCopy.size() + extraCopy.size() + piggyCopy.size());
+        if (encoded.isEmpty()) return false;
+        for (ItemStack stack : encoded.get()) {
+            if (!placeIntoEmptySlot(stack, extraCopy)
+                    && !placeIntoEmptySlot(stack, piggyCopy)
+                    && !placeIntoEmptySlot(stack, inventoryCopy)) {
+                return false;
+            }
+        }
+
+        commitInventory(inventory, inventoryCopy);
+        commitExtraInventory(extraInventory, extraCopy);
+        if (piggyBank != null) commitContainer(piggyBank, piggyCopy);
         return true;
     }
 

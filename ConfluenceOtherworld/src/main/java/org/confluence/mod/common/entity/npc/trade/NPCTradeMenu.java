@@ -6,7 +6,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
@@ -15,188 +15,152 @@ import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.util.PlayerMoneyTransaction;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/// NPC 商店的服务端容器。
+/// NPC 商店菜单。
 ///
-/// <p>布局暂时复用四行箱子菜单，客户端只负责显示商品、分页按钮和玩家背包。真正的购买、出售与库存消耗
-/// 都在服务端按当前打开的菜单会话执行，客户端槽位里的物品展示不能被当作成交授权。</p>
-public class NPCTradeMenu extends ChestMenu {
+/// 商品槽保持三种状态：NPC 商品、空槽以及玩家刚刚售出的物品。购买结果和售回结果进入光标，
+/// 玩家售出的物品只在本次菜单中保留，关闭菜单后清空。
+public class NPCTradeMenu extends AbstractContainerMenu {
+    private static final int TRADE_COLS = 9;
     private static final int TRADE_ROWS = 4;
-    private static final int TRADE_SIZE = 9 * TRADE_ROWS;
+    private static final int TRADE_SIZE = TRADE_COLS * TRADE_ROWS;
     private static final int DATA_PAGE = 0;
     private static final int DATA_PAGE_COUNT = 1;
+    private static final int DATA_OFFER_COUNT = 2;
 
     private final BaseNPC npc;
-    private final @Nullable ServerPlayer player;
-    private final Container tradeContainer;
-    private final @Nullable NPCTradeSession session;
-    private final SimpleContainerData pageData = new SimpleContainerData(2);
+    private final Container tradeContainer = new SimpleContainer(TRADE_SIZE);
+    private final List<NPCTradeOffer> offers;
+    private final Map<Integer, SoldItem> soldItems = new HashMap<>();
+    private final List<SlotState> slotStates = new ArrayList<>(TRADE_SIZE);
+    private final SimpleContainerData pageData = new SimpleContainerData(3);
 
-    public static NPCTradeMenu fromNetwork(
-            int containerId,
-            Inventory inventory,
-            FriendlyByteBuf data) {
+    public static NPCTradeMenu fromNetwork(int containerId, Inventory inventory, FriendlyByteBuf data) {
         int entityId = data.readInt();
         var entity = inventory.player.level().getEntity(entityId);
         if (!(entity instanceof BaseNPC npc)) {
-            throw new IllegalArgumentException(
-                    "NPC trade menu requires a valid NPC entity, got entity id "
-                            + entityId);
+            throw new IllegalArgumentException("NPC trade menu requires a valid NPC entity, got entity id " + entityId);
         }
         return new NPCTradeMenu(containerId, inventory, npc);
     }
 
     public NPCTradeMenu(int containerId, Inventory inventory, BaseNPC npc) {
-        this(containerId, inventory, npc, new SimpleContainer(TRADE_SIZE), null);
+        this(containerId, inventory, npc, List.of());
     }
 
-    /// 使用服务端在交互发生时已经筛选完成的报价快照创建菜单。
-    ///
-    /// <p>生产环境通过此入口保证“判断是否需要打开商店”和“实际显示的报价”来自同一份快照；
-    /// 测试也可直接注入多页报价，不需要修改全局重载表。</p>
-    public NPCTradeMenu(
-            int containerId,
-            Inventory inventory,
-            BaseNPC npc,
-            List<NPCTradeOffer> definitions) {
-        this(
-                containerId,
-                inventory,
-                npc,
-                new SimpleContainer(TRADE_SIZE),
-                List.copyOf(definitions));
-    }
-
-    private NPCTradeMenu(
-            int containerId,
-            Inventory inventory,
-            BaseNPC npc,
-            Container tradeContainer,
-            @Nullable List<NPCTradeOffer> definitions) {
-        super(
-                ModMenuTypes.NPC_TRADE.get(),
-                containerId,
-                inventory,
-                tradeContainer,
-                TRADE_ROWS);
+    public NPCTradeMenu(int containerId, Inventory inventory, BaseNPC npc, List<NPCTradeOffer> offers) {
+        super(ModMenuTypes.NPC_TRADE.get(), containerId);
         this.npc = npc;
-        this.player = inventory.player instanceof ServerPlayer sp ? sp : null;
-        this.tradeContainer = tradeContainer;
-        this.session = player == null
-                ? null
-                : new NPCTradeSession(
-                player,
-                npc,
-                definitions == null
-                        ? NPCTradeList.getAvailableOffers(player, npc)
-                        : definitions,
-                this);
-        addDataSlots(pageData);
+        this.offers = List.copyOf(offers);
 
-        int offerCount = session == null ? 0 : session.size();
-        pageData.set(
-                DATA_PAGE_COUNT,
-                Math.max(1, (offerCount + TRADE_SIZE - 1) / TRADE_SIZE));
+        for (int row = 0; row < TRADE_ROWS; row++) {
+            for (int col = 0; col < TRADE_COLS; col++) {
+                int index = row * TRADE_COLS + col;
+                addSlot(new TradeSlot(tradeContainer, index, 8 + col * 18, 18 + row * 18));
+                slotStates.add(SlotState.EMPTY);
+            }
+        }
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                addSlot(new Slot(inventory, col + row * 9 + 9, 8 + col * 18, 86 + row * 18));
+            }
+        }
+        for (int col = 0; col < 9; col++) {
+            addSlot(new Slot(inventory, col, 8 + col * 18, 144));
+        }
+
+        addDataSlots(pageData);
+        pageData.set(DATA_OFFER_COUNT, this.offers.size());
+        pageData.set(DATA_PAGE_COUNT, Math.max(1, (this.offers.size() + TRADE_SIZE - 1) / TRADE_SIZE));
         populatePage(0);
     }
 
     @Override
-    public void clicked(
-            int slotIndex,
-            int button,
-            ClickType clickType,
-            Player player) {
+    public void clicked(int slotIndex, int button, ClickType clickType, Player player) {
         if (slotIndex < 0 || slotIndex >= TRADE_SIZE) {
             super.clicked(slotIndex, button, clickType, player);
             return;
         }
-        if (!(player instanceof ServerPlayer serverPlayer)
-                || !canUseThisMenu(serverPlayer)) {
-            return;
-        }
+        if (!(player instanceof ServerPlayer serverPlayer) || !canUseThisMenu(serverPlayer)) return;
 
+        int absoluteSlot = getCurrentPage() * TRADE_SIZE + slotIndex;
+        SlotState state = getState(absoluteSlot);
         ItemStack cursor = getCarried();
-        int offerIndex = getCurrentPage() * TRADE_SIZE + slotIndex;
-        boolean offerSlot =
-                session != null && offerIndex >= 0 && offerIndex < session.size();
-
-        if (!cursor.isEmpty() && !offerSlot) {
-            long value = ValueComponent.getValueLong(cursor, 0);
-            if (value <= 0) {
-                return;
-            }
-            long price = Math.max(
-                    1L,
-                    Math.round(
-                            value * (double) npc.getMood()
-                                    .getSellPriceMultiplier()));
-            if (PlayerMoneyTransaction.credit(serverPlayer, price, false)) {
+        if (!cursor.isEmpty() && state == SlotState.EMPTY) {
+            long price = getSellPrice(cursor);
+            if (price > 0 && PlayerMoneyTransaction.credit(serverPlayer, price, false)) {
+                soldItems.put(absoluteSlot, new SoldItem(cursor.copy(), price));
                 setCarried(ItemStack.EMPTY);
-                broadcastChanges();
+                populatePage(getCurrentPage());
             }
-        } else if (cursor.isEmpty() && offerSlot && session.purchase(offerIndex)) {
-            populatePage(getCurrentPage());
+        } else if (cursor.isEmpty() && state == SlotState.PLAYER_SOLD) {
+            SoldItem sold = soldItems.get(absoluteSlot);
+            if (sold != null && PlayerMoneyTransaction.debit(serverPlayer, sold.price(), true)) {
+                soldItems.remove(absoluteSlot);
+                setCarried(sold.stack().copy());
+                populatePage(getCurrentPage());
+            }
+        } else if (cursor.isEmpty() && state == SlotState.NPC_ITEM) {
+            ItemStack result = offers.get(absoluteSlot).stack();
+            long price = getBuyPrice(result);
+            if (price > 0 && PlayerMoneyTransaction.debit(serverPlayer, price, true)) {
+                setCarried(result.copy());
+            }
         }
     }
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        if (index < 0 || index >= slots.size()) {
+        if (index < TRADE_SIZE || index >= slots.size()) return ItemStack.EMPTY;
+        if (!(player instanceof ServerPlayer serverPlayer) || !canUseThisMenu(serverPlayer))
             return ItemStack.EMPTY;
-        }
-        if (!(player instanceof ServerPlayer serverPlayer)
-                || !canUseThisMenu(serverPlayer)) {
-            return ItemStack.EMPTY;
-        }
-        Slot slot = slots.get(index);
-        if (!slot.hasItem()) {
+
+        Slot source = slots.get(index);
+        if (!source.hasItem()) return ItemStack.EMPTY;
+        int emptySlot = findEmptySlotOnCurrentPage();
+        if (emptySlot < 0) return ItemStack.EMPTY;
+
+        ItemStack soldStack = source.getItem().copy();
+        long price = getSellPrice(soldStack);
+        if (price <= 0 || !PlayerMoneyTransaction.creditFromInventory(
+                serverPlayer, source.getContainerSlot(), soldStack, price, false)) {
             return ItemStack.EMPTY;
         }
 
-        ItemStack stack = slot.getItem().copy();
-        if (index >= TRADE_SIZE) {
-            long value = ValueComponent.getValueLong(stack, 0);
-            if (value <= 0) {
-                return ItemStack.EMPTY;
-            }
-            long price = Math.max(
-                    1L,
-                    Math.round(
-                            value * (double) npc.getMood()
-                                    .getSellPriceMultiplier()));
-            if (!PlayerMoneyTransaction.credit(serverPlayer, price, false)) {
-                return ItemStack.EMPTY;
-            }
-            slot.set(ItemStack.EMPTY);
-            broadcastChanges();
-            return stack;
-        }
-        // From trade slot → do nothing on shift-click (use normal click for buy/refund)
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return npc.isAlive()
-                && player.isAlive()
-                && player.level() == npc.level()
-                && player.distanceToSqr(npc) <= 64;
+        int absoluteSlot = getCurrentPage() * TRADE_SIZE + emptySlot;
+        soldItems.put(absoluteSlot, new SoldItem(soldStack, price));
+        populatePage(getCurrentPage());
+        return soldStack;
     }
 
     @Override
     public boolean clickMenuButton(Player player, int page) {
-        if (!(player instanceof ServerPlayer serverPlayer)
-                || !canUseThisMenu(serverPlayer)) {
+        if (!(player instanceof ServerPlayer serverPlayer) || !canUseThisMenu(serverPlayer))
             return false;
-        }
-        if (page < 0 || page >= getPageCount() || page == getCurrentPage()) {
-            return false;
-        }
+        if (page < 0 || page >= getPageCount() || page == getCurrentPage()) return false;
         populatePage(page);
         return true;
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        soldItems.clear();
+        tradeContainer.clearContent();
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return npc.isAlive() && player.isAlive() && player.level() == npc.level() && player.distanceToSqr(npc) <= 64.0D;
+    }
+
+    private boolean canUseThisMenu(ServerPlayer player) {
+        return player.containerMenu == this && stillValid(player);
     }
 
     public BaseNPC getNPC() {
@@ -211,39 +175,86 @@ public class NPCTradeMenu extends ChestMenu {
         return pageData.get(DATA_PAGE_COUNT);
     }
 
-    @Override
-    public void removed(Player player) {
-        super.removed(player);
-        if (session != null) {
-            session.invalidate();
+    public List<SlotState> getSlotStates() {
+        int firstSlot = getCurrentPage() * TRADE_SIZE;
+        for (int slot = 0; slot < TRADE_SIZE; slot++) {
+            int absoluteSlot = firstSlot + slot;
+            slotStates.set(slot, absoluteSlot < pageData.get(DATA_OFFER_COUNT)
+                    ? SlotState.NPC_ITEM
+                    : tradeContainer.getItem(slot).isEmpty() ? SlotState.EMPTY : SlotState.PLAYER_SOLD);
         }
+        return slotStates;
     }
 
-    /// 用打开菜单时生成的服务端报价快照填充指定页面。
     private void populatePage(int page) {
-        for (int slot = 0; slot < TRADE_SIZE; slot++) {
-            tradeContainer.setItem(slot, ItemStack.EMPTY);
-        }
-
         int firstOffer = page * TRADE_SIZE;
-        int availableOffers = session == null ? 0 : session.size();
-        int pageSize = Math.max(
-                0,
-                Math.min(TRADE_SIZE, availableOffers - firstOffer));
-        for (int slot = 0; slot < pageSize; slot++) {
-            tradeContainer.setItem(
-                    slot,
-                    session.getDisplayResult(firstOffer + slot));
+        for (int slot = 0; slot < TRADE_SIZE; slot++) {
+            int absoluteSlot = firstOffer + slot;
+            SlotState state = getState(absoluteSlot);
+            slotStates.set(slot, state);
+            if (absoluteSlot < offers.size()) {
+                tradeContainer.setItem(slot, offers.get(absoluteSlot).stack());
+            } else {
+                SoldItem sold = soldItems.get(absoluteSlot);
+                tradeContainer.setItem(slot, sold == null ? ItemStack.EMPTY : sold.stack().copy());
+            }
         }
         pageData.set(DATA_PAGE, page);
         broadcastChanges();
     }
 
-    /// 校验玩家仍然操作自己当前打开的这一份菜单。
-    ///
-    /// <p>距离、维度和实体存活由 {@link #stillValid(Player)} 判断；这里额外限制当前容器身份，
-    /// 防止已经关闭或被替换的旧菜单继续接受点击、出售和翻页请求。</p>
-    private boolean canUseThisMenu(ServerPlayer player) {
-        return player.containerMenu == this && stillValid(player);
+    private SlotState getState(int absoluteSlot) {
+        if (absoluteSlot < pageData.get(DATA_OFFER_COUNT)) return SlotState.NPC_ITEM;
+        return soldItems.containsKey(absoluteSlot) ? SlotState.PLAYER_SOLD : SlotState.EMPTY;
+    }
+
+    private int findEmptySlotOnCurrentPage() {
+        int firstSlot = getCurrentPage() * TRADE_SIZE;
+        for (int slot = 0; slot < TRADE_SIZE; slot++) {
+            if (getState(firstSlot + slot) == SlotState.EMPTY) return slot;
+        }
+        return -1;
+    }
+
+    private long getBuyPrice(ItemStack stack) {
+        try {
+            long value = ValueComponent.getValueLong(stack, 0);
+            if (value <= 0) return 0;
+            return Math.max(1L, Math.round(Math.multiplyExact(value, 5L) * (double) npc.getMood().getBuyPriceMultiplier()));
+        } catch (ArithmeticException ignored) {
+            return 0;
+        }
+    }
+
+    private long getSellPrice(ItemStack stack) {
+        try {
+            long value = ValueComponent.getValueLong(stack, 0);
+            if (value <= 0) return 0;
+            return Math.max(1L, Math.round(value * (double) npc.getMood().getSellPriceMultiplier()));
+        } catch (ArithmeticException ignored) {
+            return 0;
+        }
+    }
+
+    public enum SlotState {
+        EMPTY, NPC_ITEM, PLAYER_SOLD
+    }
+
+    private record SoldItem(ItemStack stack, long price) {}
+
+    private static final class TradeSlot extends Slot {
+        private TradeSlot(Container container, int slot, int x, int y) {
+            super(container, slot, x, y);
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return false;
+        }
+
+        @Override
+        public boolean mayPickup(Player player) {
+            return false;
+        }
     }
 }

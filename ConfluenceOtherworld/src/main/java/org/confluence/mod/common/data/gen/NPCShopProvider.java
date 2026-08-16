@@ -9,12 +9,14 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.BestiaryCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.DateCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.HardmodeCondition;
+import org.confluence.mod.common.entity.npc.trade.conditions.TimeCondition;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -124,12 +126,8 @@ public final class NPCShopProvider implements DataProvider {
                 offer(ModItems.HALLOWED_SEED.toStack(), HardmodeCondition.INSTANCE)
         ));
         shops.put(Confluence.asResource("witch_doctor"), List.of(
-                offer(PotionItems.BOTTLE.toStack()),
-                offer(PotionItems.BOTTLED_WATER.toStack()),
-                offer(PotionItems.FLASK_OF_FIRE.toStack()),
-                offer(PotionItems.FLASK_OF_GOLD.toStack()),
-                offer(PotionItems.THORNS_POTION.toStack()),
-                offer(PotionItems.WATER_WALKING_POTION.toStack())
+                offer(FunctionalBlocks.CAULDRON.toStack(), halloween()),
+                offer(AccessoryItems.PYGMY_NECKLACE.toStack(), new TimeCondition(LibDateUtils._19$30, LibDateUtils._04$30, false))
         ));
         shops.put(Confluence.asResource("clothier"), List.of(
                 offer(VanityArmorItems.FAMILIAR_WIG.toStack()),
@@ -199,18 +197,6 @@ public final class NPCShopProvider implements DataProvider {
                 offer(DecorativeBlocks.MAGENTA_BALLOON.toStack()),
                 offer(DecorativeBlocks.PINK_BALLOON.toStack())
         ));
-        shops.put(Confluence.asResource("stylist"), List.of(
-                offer(SwordItems.STYLISH_SCISSORS.toStack()),
-                offer(ToolItems.ICE_MIRROR.toStack()),
-                offer(VanityArmorItems.FAMILIAR_WIG.toStack()),
-                offer(VanityArmorItems.SUNGLASSES.toStack())
-        ));
-        shops.put(Confluence.asResource("truffle"), List.of(
-                offer(ModItems.MUSHROOM_GRASS_SEED.toStack()),
-                offer(new ItemStack(MaterialItems.GLOWING_MUSHROOM.get(), 10)),
-                offer(BaitItems.TRUFFLE_WORM.toStack()),
-                offer(MaterialItems.SHROOMITE_INGOT.toStack())
-        ));
         shops.put(Confluence.asResource("wizard"), List.of(
                 offer(FunctionalBlocks.CRYSTAL_BALL.toStack()),
                 offer(PotionItems.GREATER_MANA_POTION.toStack()),
@@ -236,15 +222,6 @@ public final class NPCShopProvider implements DataProvider {
                 offer(TCItems.WORKSHOP.toStack()),
                 offer(new ItemStack(ConsumableItems.SPIKY_BALL.get(), 25))
         ));
-        // 渔夫和渔女是微光外观变体，必须共享同一份商品定义，避免两侧内容逐渐产生差异。
-        List<NPCTradeOffer> anglerSupplyOffers = List.of(
-                offer(FishingPoleItems.WOOD_FISHING_POLE.toStack()),
-                offer(BaitItems.APPRENTICE_BAIT.toStack()),
-                offer(BaitItems.JOURNEYMAN_BAIT.toStack()),
-                offer(BaitItems.MASTER_BAIT.toStack())
-        );
-        shops.put(Confluence.asResource("angler"), anglerSupplyOffers);
-        shops.put(Confluence.asResource("female_angler"), anglerSupplyOffers);
         shops.put(Confluence.asResource("traveling_merchant"), List.of(
                 offer(AccessoryItems.PAINT_SPRAYER.toStack()),
                 offer(TCItems.PORTABLE_CEMENT_MIXER.toStack()),

@@ -91,8 +91,7 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
     }
 
     public record Entry(UUID id, ResourceLocation type, Vec3 position, float yaw, float pitch,
-                        float roll,
-                        boolean followingOwner, int order, SummonAnimation animation,
+                        float roll, boolean followingOwner, int order, SummonAnimation animation,
                         int animationTicks, int animationDuration, float animationDegrees,
                         float scale, float scaleY) {
         private static Entry from(org.confluence.mod.common.summon.SummonRenderPart part) {

@@ -20,8 +20,7 @@ final class AquaticAttributeProfiles {
     private AquaticAttributeProfiles() {}
 
     record Profile(double health, double armor, double damage, double followRange,
-                   double movementSpeed,
-                   double attackKnockback, double knockbackResistance) {
+                   double movementSpeed, double attackKnockback, double knockbackResistance) {
         AttributeSupplier.Builder createBuilder() {
             return Mob.createMobAttributes()
                     .add(Attributes.MAX_HEALTH, health)

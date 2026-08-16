@@ -176,7 +176,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return removingSubEntities;
     }
 
-    // === 难度 ===
+    // === Difficulty ===
 
     protected boolean isExpert() {
         return LibUtils.isAtLeastExpert(level(), blockPosition());
@@ -503,7 +503,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         }
     }
 
-    // === 存档 ===
+    // === Save ===
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {

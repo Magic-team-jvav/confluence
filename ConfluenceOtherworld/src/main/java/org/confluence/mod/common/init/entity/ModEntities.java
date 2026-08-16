@@ -658,7 +658,6 @@ public final class ModEntities {
                     .build(id.toString())
     );
 
-    //    public static final RegistryObject<EntityType<InverseEnderMan>> INVERSE_ENDERMAN = register("inverse_enderman", id -> InverseEntityType.create(InverseEnderMan::new, MobCategory.MONSTER, id.toString(), builder -> builder.sized(0.6F, 2.9F)/* todo .eyeHeight(2.55F).passengerAttachments(2.80625F)*/.clientTrackingRange(8)));
     public static final RegistryObject<EntityType<StarCannonBulletEntity>> STAR_CANNON_BULLET = register("star_cannon_bullet", id -> EntityType.Builder.<StarCannonBulletEntity>of(StarCannonBulletEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(id.toString()));
     public static final RegistryObject<EntityType<BeeGunBullet>> BEE_GUN_BULLET = register("bee_gun_bullet", id -> EntityType.Builder.<BeeGunBullet>of(BeeGunBullet::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build(id.toString()));
     public static final RegistryObject<EntityType<BaseBulletEntity>> BASE_BULLET_ENTITY = register("base_bullet", id -> EntityType.Builder.<BaseBulletEntity>of(BaseBulletEntity::new, MobCategory.MISC).sized(0.1f, 0.1f).build(id.toString()));

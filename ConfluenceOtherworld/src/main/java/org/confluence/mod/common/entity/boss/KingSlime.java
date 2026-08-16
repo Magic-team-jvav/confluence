@@ -81,7 +81,7 @@ public class KingSlime extends BaseBoss {
     public KingSlime(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.xpReward = 800;
-        setMaxUpStep(1.0F);
+        setMaxUpStep(1.0f);
     }
 
     @Override

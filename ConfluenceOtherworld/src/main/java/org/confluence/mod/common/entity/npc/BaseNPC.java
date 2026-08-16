@@ -51,6 +51,8 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
+
 /// 城镇 NPC 的公共实体基础。
 ///
 /// <p>本类统一管理房屋、区域、心情、基础移动以及服务端交互入口。商店报价仍由
@@ -252,12 +254,9 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     // === 交互 ===
 
-    public java.util.List<NPCTradeOffer> selectTradeOffers(
-            java.util.List<NPCTradeOffer> offers) {
-        return java.util.List.copyOf(offers);
+    public List<NPCTradeOffer> selectTradeOffers(List<NPCTradeOffer> offers) {
+        return List.copyOf(offers);
     }
-
-    // === 交互 ===
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {

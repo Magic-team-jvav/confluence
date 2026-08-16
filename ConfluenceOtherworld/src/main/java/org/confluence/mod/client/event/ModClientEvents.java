@@ -583,8 +583,7 @@ public final class ModClientEvents {
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
         event.registerEntityRenderer(VANILLA_MINECART.get(), provider);
-        // todo 模型
-        event.registerEntityRenderer(WOODEN_MINECART.get(), provider);
+        event.registerEntityRenderer(WOODEN_MINECART.get(), provider); // todo 模型
         event.registerEntityRenderer(GENERIC_MINECART.get(), provider);
         event.registerEntityRenderer(MECHANICAL_CART.get(), provider);
         event.registerEntityRenderer(MINECARP.get(), provider);
@@ -749,7 +748,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.NECROMANCER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
         event.registerEntityRenderer(MonsterEntities.DIABOLIST.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
         event.registerEntityRenderer(MonsterEntities.RAGGED_CASTER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
-        // Boss 渲染器
+        // Boss
         event.registerEntityRenderer(BossEntities.KING_SLIME.get(), KingSlimeRenderer::new);
         event.registerEntityRenderer(BossEntities.CROWN_OF_KING_SLIME_MODEL.get(),
                 CrownOfKingSlimeModelRenderer::new);

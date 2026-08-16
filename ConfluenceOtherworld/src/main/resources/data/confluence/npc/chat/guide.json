@@ -1,0 +1,38 @@
+[
+    {
+        "chat": {
+            "emoji": "confluence:textures/gui/sprites/random_gift.png"
+        },
+        "condition": {
+            "type": "confluence:attack_target"
+        },
+        "cooldown_ticks": 400
+    },
+    {
+        "chat": {
+            "emoji": "confluence:textures/gui/sprites/unknown.png"
+        },
+        "condition": {
+            "type": "confluence:weather",
+            "raining": true,
+            "thundering": false
+        },
+        "cooldown_ticks": 1000
+    },
+    {
+        "chat": {
+            "item": {
+                "Count": 1,
+                "id": "minecraft:bow"
+            }
+        },
+        "condition": {
+            "type": "confluence:not",
+            "inner": {
+                "type": "confluence:npc_item_in_hand",
+                "item": "minecraft:bow"
+            }
+        },
+        "cooldown_ticks": 600
+    }
+]

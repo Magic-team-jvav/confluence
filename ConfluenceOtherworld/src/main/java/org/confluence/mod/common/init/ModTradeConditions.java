@@ -23,6 +23,9 @@ public final class ModTradeConditions {
     public static final RegistryObject<MapCodec<DateCondition>> DATE = TYPES.register("date", () -> DateCondition.CODEC);
     public static final RegistryObject<MapCodec<PositionHeightCondition>> POSITION_HEIGHT = TYPES.register("position_height", () -> PositionHeightCondition.CODEC);
     public static final RegistryObject<MapCodec<FluidCondition>> FLUID = TYPES.register("fluid", () -> FluidCondition.CODEC);
+    public static final RegistryObject<MapCodec<AttackTargetCondition>> ATTACK_TARGET = TYPES.register("attack_target", () -> AttackTargetCondition.CODEC);
+    public static final RegistryObject<MapCodec<NPCItemInHandCondition>> NPC_ITEM_IN_HAND = TYPES.register("npc_item_in_hand", () -> NPCItemInHandCondition.CODEC);
+    public static final RegistryObject<MapCodec<WeatherCondition>> WEATHER = TYPES.register("weather", () -> WeatherCondition.CODEC);
     public static final RegistryObject<MapCodec<AndCondition>> AND = TYPES.register("and", () -> AndCondition.CODEC);
     public static final RegistryObject<MapCodec<OrCondition>> OR = TYPES.register("or", () -> OrCondition.CODEC);
     public static final RegistryObject<MapCodec<NotCondition>> NOT = TYPES.register("not", () -> NotCondition.CODEC);

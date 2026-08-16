@@ -3378,9 +3378,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.LAVA_BOMB.get(), "熔岩炸弹");
         add(ConsumableItems.HONEY_BOMB.get(), "蜂蜜炸弹");
         add(ConsumableItems.MANA_CRYSTAL.get(), "魔力水晶");
-        add(ConsumableItems.RECALL_MANA_CRYSTAL.get(), "回溯魔力水晶");
+//        add(ConsumableItems.RECALL_MANA_CRYSTAL.get(), "回溯魔力水晶");
         add(ConsumableItems.LIFE_CRYSTAL.get(), "生命水晶");
-        add(ConsumableItems.RECALL_LIFE_CRYSTAL.get(), "回溯生命水晶");
+//        add(ConsumableItems.RECALL_LIFE_CRYSTAL.get(), "回溯生命水晶");
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");

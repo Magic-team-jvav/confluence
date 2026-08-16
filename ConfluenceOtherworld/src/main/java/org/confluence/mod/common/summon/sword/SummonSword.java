@@ -11,13 +11,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summon.*;
+import org.confluence.mod.mixed.Immunity;
 
 /// 六种材质召唤剑共用的运行实例。
 ///
 /// <p>这里保留 1.21 侧的追击、斜劈和背部编队行为，材质差异只由 {@link Kind} 负责。
 /// 召唤剑属于同一行为分组，多把剑共享连续序号，方便服务端与客户端保持一致的背部排列。</p>
 public final class SummonSword extends SummonInstance {
-    private static final ResourceLocation GROUP_KEY = Confluence.asResource("summon_sword");
+    public static final ResourceLocation GROUP_KEY = Confluence.asResource("summon_sword");
     private static final double SEARCH_RANGE = 40.0;
     private static final AABB ATTACK_BOX = new AABB(-0.75, -0.75, -0.75, 0.75, 0.75, 1.5);
     private final Kind kind;
@@ -26,8 +27,8 @@ public final class SummonSword extends SummonInstance {
     private boolean followingOwner;
     private int spinTicks;
 
-    public SummonSword(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose, Kind kind) {
-        super(kind.type(), owner, slotCost, snapshot, initialPose);
+    public SummonSword(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose, Kind kind) {
+        super(kind.type(), owner, slotCost, stats, initialPose);
         this.kind = kind;
         this.slashGoal = new SwordSlashGoal(this);
         addGoal(0, slashGoal);
@@ -59,8 +60,9 @@ public final class SummonSword extends SummonInstance {
         for (SummonCollision.Hit hit : SummonCollision.sweep(owner().level(), previousPreviousPose, previousPose,
                 currentPose, ATTACK_BOX, candidate -> candidate == target()
                         || SummonTargetCache.isValidTarget(owner(), candidate, SEARCH_RANGE * 2.0, false))) {
-            if (hurtTarget(hit.target(), damageMultiplier)) {
+            if (!Immunity.isActive(this, hit.target())) {
                 kind.applyHitEffect(owner(), hit.target());
+                hurtTarget(hit.target(), damageMultiplier);
             }
         }
     }

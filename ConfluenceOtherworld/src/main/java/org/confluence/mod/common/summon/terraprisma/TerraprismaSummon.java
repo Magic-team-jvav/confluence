@@ -1,5 +1,6 @@
 package org.confluence.mod.common.summon.terraprisma;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -7,6 +8,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
+import org.confluence.mod.common.summon.sword.SummonSword;
 
 import java.util.List;
 
@@ -15,7 +17,6 @@ public final class TerraprismaSummon extends SummonInstance {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 18.0F;
     private static final double SEARCH_RANGE = 40.0;
-    private static final AABB ATTACK_BOX = new AABB(-0.15, -0.06, -0.35, 0.15, 0.06, 1.0);
     private final TerraprismaSlashGoal slashGoal = new TerraprismaSlashGoal(this);
     private final TerraprismaRotateGoal rotateGoal = new TerraprismaRotateGoal(this);
     private float skillDamageMultiplier = 1.0F;
@@ -27,8 +28,8 @@ public final class TerraprismaSummon extends SummonInstance {
     private float scale = 1.0F;
     private float scaleY = 1.0F;
 
-    public TerraprismaSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("terraprisma"), owner, slotCost, snapshot, initialPose);
+    public TerraprismaSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("terraprisma"), owner, slotCost, stats, initialPose);
         addGoal(0, slashGoal);
         addGoal(0, rotateGoal);
         addGoal(1, new TerraprismaChaseGoal(this));
@@ -64,27 +65,22 @@ public final class TerraprismaSummon extends SummonInstance {
             return;
         }
         for (SummonCollision.Hit hit : SummonCollision.sweep(owner().level(), previousPreviousPose, previousPose,
-                currentPose, ATTACK_BOX, candidate -> candidate == target()
+                currentPose, attackBox(), candidate -> candidate == target()
                         || SummonTargetCache.isValidTarget(owner(), candidate, SEARCH_RANGE * 2.0, false))) {
             hurtTarget(hit.target(), skillDamageMultiplier);
         }
     }
 
+    private AABB attackBox() {
+        double horizontalScale = scale;
+        double verticalScale = scale * scaleY;
+        return new AABB(-0.75 * horizontalScale, -0.75 * verticalScale, -0.75 * horizontalScale,
+                0.75 * horizontalScale, 0.75 * verticalScale, 1.5 * horizontalScale);
+    }
+
     public boolean hasValidTarget() {
         LivingEntity target = target();
         return target != null && target.isAlive() && !target.isRemoved() && target.level() == owner().level();
-    }
-
-    Vec3 followPosition() {
-        int sequence = order() + 1;
-        Vec3 forward = Vec3.directionFromRotation(0.0F, owner().yBodyRot).multiply(1.0, 0.0, 1.0).normalize();
-        Vec3 right = forward.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
-        int layer = sequence / 2;
-        float side = (sequence & 1) == 0 ? 1.0F : -1.0F;
-        double backDistance = Math.max(0.16, 0.24F - 0.012F * (sequence - 1));
-        return owner().position().subtract(forward.scale(backDistance))
-                .add(0.0, 1.0 + layer * 0.08F, 0.0)
-                .add(right.scale(0.32F * layer * side));
     }
 
     SummonPose followPose(Vec3 position, Vec3 targetPosition) {
@@ -109,10 +105,6 @@ public final class TerraprismaSummon extends SummonInstance {
         Vec3 direction = lookPosition.subtract(position());
         SummonPose aimed = direction.lengthSqr() < 1.0E-6 ? currentPose() : aimAt(position(), direction);
         moveTo(new SummonPose(position().add(movement), aimed.yaw(), aimed.pitch(), aimed.roll()));
-    }
-
-    void followOwner(Vec3 movement) {
-        moveTo(new SummonPose(position().add(movement), owner().yBodyRot, 0.0F, 0.0F));
     }
 
     void moveTo(SummonPose pose) {
@@ -204,5 +196,10 @@ public final class TerraprismaSummon extends SummonInstance {
 
     int rotateCooldown() {
         return rotateGoal.cooldown();
+    }
+
+    @Override
+    public ResourceLocation groupKey() {
+        return SummonSword.GROUP_KEY;
     }
 }

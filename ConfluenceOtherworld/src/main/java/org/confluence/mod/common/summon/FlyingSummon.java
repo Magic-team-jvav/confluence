@@ -9,6 +9,9 @@ import net.minecraft.world.phys.Vec3;
 /// <p>这类召唤物不会注册为世界实体，服务端只维护逻辑位置、速度和朝向，
 /// 再把表现状态同步给客户端渲染层。</p>
 public abstract class FlyingSummon extends SummonInstance {
+    private Vec3 hoverDestination;
+    private int hoverRepositionCooldown;
+
     protected FlyingSummon(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(type, owner, slotCost, stats, initialPose);
     }
@@ -79,13 +82,18 @@ public abstract class FlyingSummon extends SummonInstance {
     protected final void hoverNear(Vec3 targetPosition, Vec3 lookAtPosition, double horizontalDistance, double height,
                                    double replaceDistance, double chaseAcceleration, double hoverAcceleration,
                                    double maximumSpeed) {
-        Vec3 horizontal = position().subtract(targetPosition).multiply(1.0, 0.0, 1.0);
-        if (horizontal.lengthSqr() < 1.0E-4) horizontal = new Vec3(0.0, 0.0, 1.0);
-        Vec3 destination = targetPosition.add(horizontal.normalize().scale(horizontalDistance)).add(0.0, height, 0.0);
-        if (position().distanceToSqr(destination) > replaceDistance * replaceDistance) {
-            moveToward(destination, lookAtPosition, chaseAcceleration, maximumSpeed);
+        if (hoverDestination == null || --hoverRepositionCooldown <= 0) {
+            Vec3 horizontal = position().subtract(targetPosition).multiply(1.0, 0.0, 1.0);
+            if (horizontal.lengthSqr() < 1.0E-4) {
+                horizontal = new Vec3(0.0, 0.0, 1.0);
+            }
+            hoverDestination = targetPosition.add(horizontal.normalize().scale(horizontalDistance)).add(0.0, height, 0.0);
+            hoverRepositionCooldown = 20;
+        }
+        if (position().distanceToSqr(hoverDestination) > replaceDistance * replaceDistance) {
+            moveToward(hoverDestination, lookAtPosition, chaseAcceleration, maximumSpeed);
         } else if (owner().getRandom().nextFloat() < 0.5F) {
-            moveToward(destination, lookAtPosition, hoverAcceleration, maximumSpeed);
+            moveToward(hoverDestination, lookAtPosition, hoverAcceleration, maximumSpeed);
         } else {
             moveByFacing(velocity().scale(0.9), lookAtPosition);
         }

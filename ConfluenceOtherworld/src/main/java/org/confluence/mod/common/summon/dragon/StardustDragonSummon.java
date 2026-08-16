@@ -26,8 +26,8 @@ public final class StardustDragonSummon extends FlyingSummon {
     private int bodyAttackCooldown;
     private float yawAcceleration;
 
-    public StardustDragonSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("stardust_dragon"), owner, slotCost, snapshot, initialPose);
+    public StardustDragonSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("stardust_dragon"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new IdleGoal(this));
     }
@@ -63,12 +63,12 @@ public final class StardustDragonSummon extends FlyingSummon {
     }
 
     @Override
-    public boolean tryMergeAdditionalSummon(int additionalSlots, SummonStats snapshot) {
+    public boolean tryMergeAdditionalSummon(int additionalSlots, SummonStats stats) {
         if (additionalSlots <= 0) {
             return false;
         }
         increaseSlotCost(additionalSlots);
-        replaceStats(snapshot);
+        replaceStats(stats);
         return true;
     }
 

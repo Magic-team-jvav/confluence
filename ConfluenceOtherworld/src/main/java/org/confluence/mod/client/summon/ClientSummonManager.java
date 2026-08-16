@@ -182,7 +182,7 @@ public final class ClientSummonManager {
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         Vec3 position = state.interpolatedPosition(partialTick);
         if (state.current.followingOwner() && owner != null) {
-            position = summonSwordBackAnchor(owner, state.current.order(), partialTick, state.idlePhase(partialTick));
+            position = summonSwordBackAnchor(owner, state.current.order(), partialTick);
         }
         PoseStack poseStack = event.getPoseStack();
         poseStack.pushPose();
@@ -289,7 +289,7 @@ public final class ClientSummonManager {
         PoseStack poseStack = event.getPoseStack();
         poseStack.pushPose();
         if (state.current.followingOwner() && owner != null) {
-            position = terraprismaBackAnchor(owner, state.current.order(), partialTick, state.idlePhase(partialTick));
+            position = summonSwordBackAnchor(owner, state.current.order(), partialTick);
         }
         Vec3 camera = event.getCamera().getPosition();
         poseStack.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
@@ -322,33 +322,15 @@ public final class ClientSummonManager {
         applyBackSwordPose(poseStack, state, owner, partialTick, BACK_SWORD_TILT, BACK_SWORD_SWING_DEGREES, 15.0F);
     }
 
-    private static Vec3 summonSwordBackAnchor(Player owner, int order, float partialTick, float idlePhase) {
+    private static Vec3 summonSwordBackAnchor(Player owner, int order, float partialTick) {
         int sequence = order + 1;
         float bodyYaw = Mth.rotLerp(partialTick, owner.yBodyRotO, owner.yBodyRot);
         Vec3 forward = Vec3.directionFromRotation(0.0F, bodyYaw).multiply(1.0, 0.0, 1.0).normalize();
         Vec3 right = forward.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
         Vec3 ownerPosition = new Vec3(Mth.lerp(partialTick, owner.xo, owner.getX()),
                 Mth.lerp(partialTick, owner.yo, owner.getY()), Mth.lerp(partialTick, owner.zo, owner.getZ()));
-        double backDistance = Math.max(0.22, 0.5F - 0.04F * (sequence - 1));
-        return ownerPosition.subtract(forward.scale(backDistance))
-                .add(0.0, 1.0 + Mth.cos(idlePhase * 0.8F) * 0.04, 0.0)
-                .add(right.scale(0.24F * (sequence / 2) * ((sequence & 1) == 0 ? 1.0F : -1.0F)
-                        + Mth.sin(idlePhase) * 0.07F));
-    }
-
-    private static Vec3 terraprismaBackAnchor(Player owner, int order, float partialTick, float idlePhase) {
-        int sequence = order + 1;
-        float bodyYaw = Mth.rotLerp(partialTick, owner.yBodyRotO, owner.yBodyRot);
-        Vec3 forward = Vec3.directionFromRotation(0.0F, bodyYaw).multiply(1.0, 0.0, 1.0).normalize();
-        Vec3 right = forward.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
-        Vec3 ownerPosition = new Vec3(Mth.lerp(partialTick, owner.xo, owner.getX()),
-                Mth.lerp(partialTick, owner.yo, owner.getY()), Mth.lerp(partialTick, owner.zo, owner.getZ()));
-        int layer = sequence / 2;
-        float side = (sequence & 1) == 0 ? 1.0F : -1.0F;
-        double backDistance = Math.max(0.16, 0.24F - 0.012F * (sequence - 1));
-        return ownerPosition.subtract(forward.scale(backDistance))
-                .add(0.0, 1.0 + layer * 0.08F + Mth.cos(idlePhase * 0.8F) * 0.035F, 0.0)
-                .add(right.scale(0.32F * layer * side + Mth.sin(idlePhase) * 0.12F));
+        return ownerPosition.subtract(forward.scale(0.6F - 0.05F * (sequence - 1))).add(0.0, 1.0, 0.0)
+                .add(right.scale(0.2F * (sequence / 2) * ((sequence & 1) == 0 ? 1.0F : -1.0F)));
     }
 
     /// 将泰拉棱镜贴到玩家背部平面。

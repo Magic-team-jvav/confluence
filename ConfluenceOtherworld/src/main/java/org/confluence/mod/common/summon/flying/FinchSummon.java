@@ -22,8 +22,8 @@ public final class FinchSummon extends FlyingSummon {
     private int attackPhaseTicks;
     private int hitMovementCooldown;
 
-    public FinchSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("finch_baby"), owner, slotCost, snapshot, initialPose);
+    public FinchSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("finch_baby"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new FollowOwnerGoal(this));
     }

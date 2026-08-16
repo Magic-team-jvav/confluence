@@ -9,18 +9,18 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.LibAttributes;
-import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.summon.*;
@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 
 /// 召唤杖的通用物品实现。
 ///
-/// <p>物品层只负责使用流程、战斗属性快照和召唤实例创建。召唤物的移动、索敌、攻击和客户端表现
+/// <p>物品层只负责使用流程、基础伤害和召唤实例创建。召唤物的移动、索敌、攻击和客户端表现
 /// 由 {@link SummonInstance} 的具体实现负责，服务端不会为这些运行实例额外生成世界实体。</p>
 public class SummonItem extends Item {
     private final ResourceLocation summonType;
@@ -70,15 +70,22 @@ public class SummonItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (player instanceof ServerPlayer serverPlayer) {
-            SummonInstance aimedSummon = findAimedSummon(serverPlayer);
-            if (aimedSummon != null) {
-                SummonContainer.of(serverPlayer).remove(serverPlayer, aimedSummon.uuid());
-                return InteractionResultHolder.success(stack);
-            }
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return InteractionResultHolder.fail(stack);
+        }
+        EntityHitResult entityHit = findAimedEntity(serverPlayer);
+        double maximumDistance = entityHit == null ? Double.MAX_VALUE
+                : entityHit.getLocation().distanceToSqr(serverPlayer.getEyePosition(1.0F));
+        SummonInstance aimedSummon = findAimedSummon(serverPlayer, maximumDistance);
+        if (aimedSummon != null) {
+            SummonContainer.of(serverPlayer).remove(serverPlayer, aimedSummon.uuid());
+            return InteractionResultHolder.success(stack);
+        }
+        if (entityHit != null) {
+            return InteractionResultHolder.success(stack);
         }
         player.startUsingItem(hand);
-        return InteractionResultHolder.consume(stack);
+        return InteractionResultHolder.pass(stack);
     }
 
     @Override
@@ -99,11 +106,7 @@ public class SummonItem extends Item {
         if (!(living instanceof ServerPlayer player) || getUseDuration(stack) - timeLeft >= 20) {
             return;
         }
-        float damage = baseDamage * (float) player.getAttributeValue(LibAttributes.getSummonDamage());
-        float knockback = (float) player.getAttributeValue(ConfluenceMagicLib.SUMMON_KNOCKBACK);
-        boolean critical = LibMathUtils.checkChance(
-                player.getAttributeValue(LibAttributes.getCriticalChance()), player.getRandom());
-        summon(player, living.getUsedItemHand(), new SummonStats(damage, knockback, critical));
+        summon(player, living.getUsedItemHand(), new SummonStats(baseDamage));
     }
 
     private void summon(ServerPlayer player, InteractionHand hand, SummonStats stats) {
@@ -133,11 +136,19 @@ public class SummonItem extends Item {
         return this;
     }
 
-    private static SummonInstance findAimedSummon(ServerPlayer player) {
+    private static EntityHitResult findAimedEntity(ServerPlayer player) {
+        double range = player.entityInteractionRange();
+        Vec3 from = player.getEyePosition(1.0F);
+        Vec3 to = from.add(player.getViewVector(1.0F).scale(range));
+        return ProjectileUtil.getEntityHitResult(player.level(), player, from, to,
+                player.getBoundingBox().inflate(range), Entity::isPickable, 0.1F);
+    }
+
+    private static SummonInstance findAimedSummon(ServerPlayer player, double maximumDistance) {
         Vec3 from = player.getEyePosition(1.0F);
         Vec3 to = from.add(player.getViewVector(1.0F).scale(player.entityInteractionRange()));
         SummonInstance nearest = null;
-        double nearestDistance = Double.MAX_VALUE;
+        double nearestDistance = maximumDistance;
         for (SummonInstance summon : SummonContainer.of(player).entries()) {
             var hit = AABB.ofSize(summon.position(), 1.0, 1.0, 1.0).clip(from, to);
             if (hit.isEmpty()) {

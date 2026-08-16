@@ -21,7 +21,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.summon.OwnedSummon;
+import org.confluence.mod.api.whip.WhipTagTracker;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.summon.SummonInstance;
@@ -33,8 +35,8 @@ import java.util.UUID;
 
 /// 黄蜂与小鬼共用的轻量召唤弹幕。
 ///
-/// <p>弹幕使用召唤物生成时冻结的伤害快照，并直接保存玩家所有者 UUID，因此鞭痕、MagicLib
-/// 召唤倍率和无敌帧都只在命中链上处理一次。颜色只控制客户端可见轨迹，不参与行为判断。</p>
+/// <p>弹幕保存基础伤害和玩家所有者 UUID，命中时读取当前召唤伤害并结算鞭痕。
+/// 颜色只控制客户端可见轨迹，不参与行为判断。</p>
 public class SummonBoltEntity extends DamageSettableProjectile implements OwnedSummon, Immunity {
     private static final EntityDataAccessor<Integer> COLOR =
             SynchedEntityData.defineId(SummonBoltEntity.class, EntityDataSerializers.INT);
@@ -148,7 +150,7 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
                 int invulnerableTime = target.invulnerableTime;
                 target.invulnerableTime = 0;
                 try {
-                    if (target.hurt(source, getCalculatedDamage())) {
+                    if (target.hurt(source, summonDamage(target))) {
                         HitEffect.byId(entityData.get(HIT_EFFECT)).apply(target);
                         Immunity.apply(this, source, target);
                     }
@@ -158,6 +160,18 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
             }
             discard();
         }
+    }
+
+    private float summonDamage(LivingEntity target) {
+        if (!(level() instanceof ServerLevel serverLevel)) {
+            return getDamage();
+        }
+        Player owner = resolveSummonOwner(serverLevel);
+        if (owner == null) {
+            return getDamage();
+        }
+        float damage = getDamage() * (float) owner.getAttributeValue(LibAttributes.getSummonDamage());
+        return WhipTagTracker.modifyDamage(owner, this, target, damage);
     }
 
     @Override

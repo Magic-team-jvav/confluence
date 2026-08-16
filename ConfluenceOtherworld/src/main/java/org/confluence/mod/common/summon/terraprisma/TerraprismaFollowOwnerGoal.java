@@ -2,7 +2,6 @@ package org.confluence.mod.common.summon.terraprisma;
 
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summon.SummonGoal;
-import org.confluence.mod.common.summon.SummonPose;
 
 /// 让泰拉棱镜在没有目标时回到主人背后。
 ///
@@ -30,15 +29,23 @@ final class TerraprismaFollowOwnerGoal extends SummonGoal<TerraprismaSummon> {
 
     @Override
     public void tick() {
-        Vec3 targetPosition = summon.followPosition();
+        int sequence = summon.order() + 1;
+        Vec3 forward = Vec3.directionFromRotation(0.0F, summon.owner().yBodyRot).multiply(1.0, 0.0, 1.0).normalize();
+        Vec3 right = forward.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
+        double backDistance = 0.6F - 0.05F * (sequence - 1);
+        Vec3 targetPosition = summon.owner().position().subtract(forward.scale(backDistance))
+                .add(0.0, 1.0, 0.0)
+                .add(right.scale(0.2F * (sequence / 2) * ((sequence & 1) == 0 ? 1.0F : -1.0F)));
         Vec3 offset = targetPosition.subtract(summon.position());
         double distance = offset.length();
-        if (distance > 4.0) {
-            summon.moveTo(summon.followPose(targetPosition, targetPosition));
+        if (distance == 0.0) {
             return;
         }
-        double speed = Math.min(distance * 0.75, 1.2);
-        Vec3 movement = speed == 0.0 ? Vec3.ZERO : offset.normalize().scale(speed);
+        double speed = Math.min(distance * 0.5, 1.0);
+        Vec3 movement = summon.velocity().add(offset.normalize()).normalize().scale(speed)
+                .add(summon.owner().getRandom().nextGaussian() * 0.01,
+                        summon.owner().getRandom().nextGaussian() * 0.01,
+                        summon.owner().getRandom().nextGaussian() * 0.01);
         Vec3 nextPosition = summon.position().add(movement);
         summon.moveTo(summon.followPose(nextPosition, targetPosition));
     }

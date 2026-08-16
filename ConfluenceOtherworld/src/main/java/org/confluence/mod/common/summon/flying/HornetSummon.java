@@ -15,7 +15,7 @@ import org.confluence.terra_curio.util.TCUtils;
 
 /// 黄蜂召唤物的运行实例。
 ///
-/// <p>这里保留 1.21 侧的悬停、瞄准、短间隔毒刺射击和蜂巢背包攻速加成。
+/// <p>这里保留悬停、瞄准、短间隔毒刺射击和蜂巢背包攻速加成。
 /// 新架构只负责取消真实实体依赖，不能改变玩家能观察到的战斗节奏。</p>
 public final class HornetSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
@@ -27,8 +27,8 @@ public final class HornetSummon extends FlyingSummon {
     private int repositionCooldown;
     private Vec3 movementDestination;
 
-    public HornetSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("hornet_baby"), owner, slotCost, snapshot, initialPose);
+    public HornetSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("hornet_baby"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new FollowOwnerGoal(this));
     }

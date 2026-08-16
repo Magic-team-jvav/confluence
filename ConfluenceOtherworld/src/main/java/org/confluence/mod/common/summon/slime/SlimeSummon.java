@@ -23,8 +23,8 @@ public final class SlimeSummon extends PhysicalSummon {
     private int jumpDelay;
     private boolean returningByFlight;
 
-    public SlimeSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("slime_baby"), owner, slotCost, snapshot, initialPose, 0.5, 0.5);
+    public SlimeSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("slime_baby"), owner, slotCost, stats, initialPose, 0.5, 0.5);
         addGoal(1, new FluidGoal(this));
         addGoal(2, new AttackGoal(this));
         addGoal(3, new KeepJumpingGoal(this));
@@ -136,7 +136,7 @@ public final class SlimeSummon extends PhysicalSummon {
                 summon.moveWithCollision(new Vec3(0.0, summon.velocity().y - 0.08, 0.0));
             } else {
                 double distance = summon.position().distanceTo(summon.owner().position());
-                summon.hopToward(summon.owner().position(), true, distance < 6.0 ? 0.8 : 1.5);
+                summon.hopToward(summon.owner().position(), true, distance < 6.0 ? 0.56 : 1.05);
             }
         }
     }

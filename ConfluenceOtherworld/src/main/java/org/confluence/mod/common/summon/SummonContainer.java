@@ -1,10 +1,15 @@
 package org.confluence.mod.common.summon;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.network.s2c.SummonSyncPacketS2C;
+import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,10 +18,11 @@ import java.util.UUID;
 
 /// 维护玩家当前拥有的召唤物运行实例，并统一处理容量、顺序和生命周期。
 ///
-/// <p>调用方只负责创建新的召唤实例；交给容器之后，成功时由容器接管，失败时也由容器清理传入实例。
-/// 容器会先计算容量和可替换对象，再真正修改列表，避免多栏位召唤物或可合并召唤物失败后留下空位。</p>
-public final class SummonContainer {
+/// <p>调用方只负责创建新的召唤实例；交给容器之后，成功时由容器接管，失败时也由容器清理传入实例。</p>
+public final class SummonContainer implements IPortNBTSerializable<CompoundTag> {
+    private static final int FORMAT_VERSION = 1;
     private final List<SummonInstance> summons = new ArrayList<>();
+    private final List<SummonSavedState> pendingSummons = new ArrayList<>();
     private boolean clientHasEntries;
 
     public static SummonContainer of(Player player) {
@@ -28,52 +34,36 @@ public final class SummonContainer {
     }
 
     public int occupiedSlots() {
-        return summons.stream().filter(summon -> !summon.isRemoved()).mapToInt(SummonInstance::slotCost).sum();
+        return summons.stream().filter(summon -> !summon.isRemoved()).mapToInt(SummonInstance::slotCost).sum()
+                + pendingSummons.stream().mapToInt(SummonSavedState::slotCost).sum();
     }
 
     public boolean add(ServerPlayer owner, SummonInstance summon) {
+        restorePending(owner);
         if (summon.owner() != owner) {
             throw new IllegalArgumentException("Summon owner does not match container owner");
         }
         int capacity = Math.max(0, (int) Math.floor(owner.getAttributeValue(ConfluenceMagicLib.MINION_CAPACITY)));
-        if (summon.slotCost() > capacity) {
+        removeMarked();
+        if (occupiedSlots() + summon.slotCost() > capacity && !summons.isEmpty()) {
+            SummonInstance last = summons.remove(summons.size() - 1);
+            last.remove();
+        }
+        if (occupiedSlots() + summon.slotCost() > capacity) {
             summon.remove();
+            refreshGroupState();
             return false;
         }
-        removeMarked();
         SummonInstance mergeTarget = summons.stream().filter(existing -> existing.type().equals(summon.type()))
                 .filter(SummonInstance::canMergeAdditionalSummon).findFirst().orElse(null);
-        int requiredSlots = occupiedSlots() + summon.slotCost() - capacity;
-        List<SummonInstance> displaced = new ArrayList<>();
-        int releasedSlots = 0;
-        for (int index = summons.size() - 1; index >= 0 && releasedSlots < requiredSlots; index--) {
-            SummonInstance candidate = summons.get(index);
-            if (candidate == mergeTarget) {
-                continue;
-            }
-            displaced.add(candidate);
-            releasedSlots += candidate.slotCost();
-        }
-        if (releasedSlots < requiredSlots) {
-            summon.remove();
-            return false;
-        }
         if (mergeTarget != null) {
             if (!mergeTarget.tryMergeAdditionalSummon(summon.slotCost(), summon.stats())) {
                 summon.remove();
                 return false;
             }
-            for (SummonInstance candidate : displaced) {
-                summons.remove(candidate);
-                candidate.remove();
-            }
             summon.remove();
             refreshGroupState();
             return true;
-        }
-        for (SummonInstance candidate : displaced) {
-            summons.remove(candidate);
-            candidate.remove();
         }
         summons.add(summon);
         refreshGroupState();
@@ -100,9 +90,10 @@ public final class SummonContainer {
     }
 
     public int clear() {
-        int size = summons.size();
+        int size = summons.size() + pendingSummons.size();
         summons.forEach(SummonInstance::remove);
         summons.clear();
+        pendingSummons.clear();
         return size;
     }
 
@@ -125,6 +116,7 @@ public final class SummonContainer {
     }
 
     public void tick(ServerPlayer owner) {
+        restorePending(owner);
         summons.forEach(SummonInstance::tick);
         removeMarked();
         refreshGroupState();
@@ -154,6 +146,57 @@ public final class SummonContainer {
                 }
             }
             summon.updateGroupState(order, sameTypeCount);
+        }
+    }
+
+    private void restorePending(ServerPlayer owner) {
+        if (pendingSummons.isEmpty()) {
+            return;
+        }
+        List<UUID> restoredIds = summons.stream().map(SummonInstance::uuid).toList();
+        for (SummonSavedState savedState : pendingSummons) {
+            if (restoredIds.contains(savedState.uuid())) {
+                continue;
+            }
+            SummonInstance restored = savedState.restore(owner);
+            if (restored != null) {
+                summons.add(restored);
+            }
+        }
+        pendingSummons.clear();
+        refreshGroupState();
+    }
+
+    @Override
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        CompoundTag root = new CompoundTag();
+        root.putInt("Version", FORMAT_VERSION);
+        ListTag entries = new ListTag();
+        pendingSummons.forEach(savedState -> entries.add(savedState.toTag()));
+        for (SummonInstance summon : summons) {
+            if (!summon.isRemoved()) {
+                entries.add(SummonSavedState.capture(summon).toTag());
+            }
+        }
+        root.put("Entries", entries);
+        return root;
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag root) {
+        summons.forEach(SummonInstance::remove);
+        summons.clear();
+        pendingSummons.clear();
+        if (!root.contains("Version", Tag.TAG_INT) || root.getInt("Version") != FORMAT_VERSION
+                || !root.contains("Entries", Tag.TAG_LIST)) {
+            return;
+        }
+        ListTag entries = root.getList("Entries", Tag.TAG_COMPOUND);
+        for (Tag entry : entries) {
+            SummonSavedState savedState = SummonSavedState.fromTag((CompoundTag) entry);
+            if (savedState != null && pendingSummons.stream().noneMatch(existing -> existing.uuid().equals(savedState.uuid()))) {
+                pendingSummons.add(savedState);
+            }
         }
     }
 

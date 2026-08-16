@@ -18,8 +18,8 @@ public final class IronGolemSummon extends GroundMeleeSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 8.0F;
 
-    public IronGolemSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("i_32_iron_golem"), owner, slotCost, snapshot, initialPose,
+    public IronGolemSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("i_32_iron_golem"), owner, slotCost, stats, initialPose,
                 1.5, 3.0, 32.0, 0.72, 0.72);
     }
 

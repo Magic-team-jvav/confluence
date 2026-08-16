@@ -24,8 +24,8 @@ public final class ImpSummon extends FlyingSummon {
     private int delayedAttackTicks = -1;
     private LivingEntity delayedTarget;
 
-    public ImpSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("summon_imp"), owner, slotCost, snapshot, initialPose);
+    public ImpSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("summon_imp"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new FollowOwnerGoal(this));
     }

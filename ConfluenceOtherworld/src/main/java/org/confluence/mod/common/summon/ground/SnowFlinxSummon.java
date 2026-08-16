@@ -16,9 +16,9 @@ public final class SnowFlinxSummon extends GroundMeleeSummon {
     private int leapForwardDelay;
     private int dashCooldown = 20;
 
-    public SnowFlinxSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("summon_snow_flinx"), owner, slotCost, snapshot, initialPose,
-                1.0, 1.0, 32.0, 0.8, 0.70);
+    public SnowFlinxSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("summon_snow_flinx"), owner, slotCost, stats, initialPose,
+                1.0, 1.0, 32.0, 0.56, 0.70);
     }
 
     @Override
@@ -45,7 +45,7 @@ public final class SnowFlinxSummon extends GroundMeleeSummon {
         }
         if (leapForwardDelay == 1) {
             Vec3 direction = targetPosition.subtract(position()).multiply(1.0, 0.0, 1.0).normalize();
-            moveWithCollision(new Vec3(direction.x * 0.8, velocity().y, direction.z * 0.8));
+            moveWithCollision(new Vec3(direction.x * 0.7, velocity().y, direction.z * 0.7));
             return;
         }
         super.moveInCombat(target);

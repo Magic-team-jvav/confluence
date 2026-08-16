@@ -23,13 +23,10 @@ final class TerraprismaChaseGoal extends SummonGoal<TerraprismaSummon> {
         SummonPose aimed = summon.aimAt(summon.position(), direction);
         Vec3 currentDirection = Vec3.directionFromRotation(summon.currentPose().pitch(), summon.currentPose().yaw()).normalize();
         double angle = Math.acos(Mth.clamp(currentDirection.dot(direction), -1.0, 1.0));
-        float turnProgress = angle < 1.0E-5 ? 1.0F : (float) Math.min(1.0, Math.toRadians(45.0) / angle);
+        float turnProgress = angle < 1.0E-5 ? 1.0F : (float) Math.min(1.0, Math.toRadians(30.0) / angle);
         SummonPose turned = summon.currentPose().interpolate(aimed, turnProgress);
-        Vec3 desiredVelocity = direction.scale(2.6);
-        Vec3 movement = angle < 0.25 ? summon.velocity().lerp(desiredVelocity, 0.45) : summon.velocity().scale(0.85);
-        if (movement.lengthSqr() < 0.04) {
-            movement = desiredVelocity;
-        }
+        Vec3 movement = angle < 0.05 ? summon.velocity().add(direction).normalize().scale(0.6)
+                : summon.velocity().scale(0.9);
         summon.moveTo(new SummonPose(summon.position().add(movement), turned.yaw(), turned.pitch(), turned.roll()));
     }
 }

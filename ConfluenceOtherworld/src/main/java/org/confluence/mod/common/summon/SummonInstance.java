@@ -10,7 +10,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.mixed.ILibDamageSource;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.api.whip.WhipTagTracker;
@@ -26,7 +26,7 @@ import java.util.*;
 
 /// 由玩家持有的召唤物运行实例。
 ///
-/// <p>实例只负责服务端逻辑状态：目标、行为、轨迹、伤害快照以及用于客户端同步的表现状态。
+/// <p>实例只负责服务端逻辑状态：目标、行为、轨迹、基础伤害以及用于客户端同步的表现状态。
 /// 生命周期由 {@link SummonContainer} 统一维护，避免每个召唤物都依赖一个真实的世界实体。</p>
 public abstract class SummonInstance implements OwnedSummon, Immunity {
     private UUID uuid = UUID.randomUUID();
@@ -240,7 +240,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return points.get(0);
     }
 
-    /// 使用召唤时冻结的属性快照结算一次命中，并由局部无敌帧限制同一实例的命中频率。
+    /// 使用实例保存的基础伤害和主人当前召唤伤害结算命中，并由局部无敌帧限制同一实例的命中频率。
     protected final boolean hurtTarget(LivingEntity target, float damageMultiplier) {
         Objects.requireNonNull(target, "Summon damage target must not be null");
         if (!Float.isFinite(damageMultiplier) || damageMultiplier < 0.0F) {
@@ -252,13 +252,9 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         if (Immunity.isActive(this, target)) {
             return false;
         }
-        float damage = WhipTagTracker.modifyDamage(owner, this, target, stats.baseDamage() * damageMultiplier);
+        float damage = stats.baseDamage() * (float) owner.getAttributeValue(LibAttributes.getSummonDamage());
+        damage = WhipTagTracker.modifyDamage(owner, this, target, damage * damageMultiplier);
         DamageSource source = owner.damageSources().playerAttack(owner);
-        ILibDamageSource extension = ILibDamageSource.of(source);
-        if (extension == null) {
-            throw new IllegalStateException("DamageSource does not expose the MagicLib critical extension");
-        }
-        extension.confluence$setCritical(stats.critical());
         int invulnerableTime = target.invulnerableTime;
         target.invulnerableTime = 0;
         try {

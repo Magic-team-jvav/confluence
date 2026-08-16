@@ -22,8 +22,8 @@ public final class SculkWispSummon extends FlyingSummon {
     private int castTicks;
     private LivingEntity delayedTarget;
 
-    public SculkWispSummon(ServerPlayer owner, int slotCost, SummonStats snapshot, SummonPose initialPose) {
-        super(Confluence.asResource("sculk_wisp"), owner, slotCost, snapshot, initialPose);
+    public SculkWispSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
+        super(Confluence.asResource("sculk_wisp"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new FollowOwnerGoal(this));
     }

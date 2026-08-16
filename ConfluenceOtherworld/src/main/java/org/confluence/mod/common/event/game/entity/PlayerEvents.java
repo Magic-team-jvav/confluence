@@ -371,6 +371,8 @@ public final class PlayerEvents {
     private static void respawn(PortPlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         MountManager.dismiss(player);
+        SummonContainer.of(player).clear(player);
+        SummonTargetCache.invalidate(player.serverLevel(), player.getUUID());
         EverBeneficial everBeneficial = EverBeneficial.of(player);
         EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
         EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);

@@ -2121,7 +2121,7 @@ public final class ValueSubProvider {
                 .add(TFBlocks.BLUE_DUNGEON_SET.CLOCK, 60)
 
                 .add(Blocks.FLOWER_POT, 20)
-                .add(TFBlocks.HANGING_POT, 250)
+                .add(TFBlocks.HANGING_POT_ITEM, 250)
                 .add(TFBlocks.PIN_WHEEL, 400)
 
 

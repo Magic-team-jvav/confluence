@@ -12,14 +12,19 @@ import net.minecraft.world.item.Items;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
+import org.confluence.mod.common.entity.npc.trade.conditions.BestiaryCondition;
+import org.confluence.mod.common.entity.npc.trade.conditions.DateCondition;
 import org.confluence.mod.common.entity.npc.trade.conditions.HardmodeCondition;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_furniture.common.init.TFBlocks;
 
 import java.nio.file.Path;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,12 +49,26 @@ public final class NPCShopProvider implements DataProvider {
     public CompletableFuture<?> run(CachedOutput output) {
         Map<ResourceLocation, List<NPCTradeOffer>> shops = new LinkedHashMap<>();
         shops.put(Confluence.asResource("merchant"), List.of(
-                offer(new ItemStack(Items.TORCH)),
-                offer(new ItemStack(Items.ANVIL)),
-                offer(new ItemStack(Items.ARROW, 50)),
-                offer(ToolItems.ROPE_COIL.toStack()),
                 offer(ToolItems.BUG_NET.toStack()),
-                offer(ArmorItems.MINING_HELMET.toStack())
+                offer(ArmorItems.MINING_HELMET.toStack()),
+                offer(new ItemStack(Items.ANVIL)),
+                offer(new ItemStack(Items.TORCH)),
+                offer(new ItemStack(Items.ARROW)),
+                offer(new ItemStack(Items.ARROW, 100)),
+                offer(ModBlocks.ROPE.toStack()),
+                offer(ConsumableItems.SHURIKEN.toStack()),
+                offer(FunctionalBlocks.PIGGY_BANK.toStack()),
+                offer(FunctionalBlocks.SAFE.toStack()),
+                offer(PickaxeItems.COPPER_PICKAXE.toStack()),
+                offer(AxeItems.COPPER_AXE.toStack()),
+                offer(PotionItems.LESSER_HEALING_POTION.toStack()),
+                offer(PotionItems.LESSER_MANA_POTION.toStack()),
+                offer(FoodItems.MARSHMALLOW.toStack()),
+                offer(TFBlocks.PIN_WHEEL.toStack()),
+                offer(PotionItems.HEALING_POTION.toStack(), HardmodeCondition.INSTANCE),
+                offer(PotionItems.MANA_POTION.toStack(), HardmodeCondition.INSTANCE),
+                offer(FunctionalBlocks.SHARPENING_STATION.toStack(), HardmodeCondition.INSTANCE),
+                offer(MaterialItems.GOLD_DUST.toStack(), HardmodeCondition.INSTANCE)
         ));
         shops.put(Confluence.asResource("dye_trader"), List.of(
                 offer(FunctionalBlocks.DYE_VAT.toStack()),
@@ -93,13 +112,16 @@ public final class NPCShopProvider implements DataProvider {
                 offer(PaintItems.NEGATIVE_PAINT.toStack(), HardmodeCondition.INSTANCE)
         ));
         shops.put(Confluence.asResource("dryad"), List.of(
+                offer(ConsumableItems.PURIFICATION_POWDER.toStack()),
+                offer(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING.toStack()),
+                offer(new ItemStack(Items.OAK_SAPLING)),
+                offer(new ItemStack(Items.SUNFLOWER)),
+                offer(new ItemStack(Items.FLOWER_POT)),
+                offer(TFBlocks.HANGING_POT_ITEM.toStack()),
+                offer(new ItemStack(Items.PUMPKIN_SEEDS)),
                 offer(ModItems.GRASS_SEED.toStack()),
-                offer(ModItems.JUNGLE_GRASS_SEED.toStack()),
-                offer(ModItems.MUSHROOM_GRASS_SEED.toStack()),
-                offer(ModItems.CORRUPT_SEED.toStack()),
-                offer(ModItems.CRIMSON_SEED.toStack()),
-                offer(ModItems.HALLOWED_SEED.toStack()),
-                offer(ModItems.ASH_GRASS_SEED.toStack())
+                offer(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.toStack()),
+                offer(ModItems.HALLOWED_SEED.toStack(), HardmodeCondition.INSTANCE)
         ));
         shops.put(Confluence.asResource("witch_doctor"), List.of(
                 offer(PotionItems.BOTTLE.toStack()),
@@ -110,20 +132,23 @@ public final class NPCShopProvider implements DataProvider {
                 offer(PotionItems.WATER_WALKING_POTION.toStack())
         ));
         shops.put(Confluence.asResource("clothier"), List.of(
-                offer(VanityArmorItems.ROBE.toStack()),
-                offer(VanityArmorItems.TOP_HAT.toStack()),
-                offer(VanityArmorItems.TUXEDO_SHIRT.toStack()),
-                offer(VanityArmorItems.TUXEDO_PANTS.toStack()),
-                offer(VanityArmorItems.TUXEDO_SHOES.toStack()),
                 offer(VanityArmorItems.FAMILIAR_WIG.toStack()),
                 offer(VanityArmorItems.FAMILIAR_SHIRT.toStack()),
                 offer(VanityArmorItems.FAMILIAR_PANTS.toStack()),
-                offer(VanityArmorItems.FAMILIAR_SHOES.toStack())
+                offer(VanityArmorItems.FAMILIAR_SHOES.toStack()),
+                offer(VanityArmorItems.GUY_FAWKES_HAT.toStack(), halloween()),
+                offer(VanityArmorItems.GUY_FAWKES_MASK.toStack(), halloween()),
+                offer(VanityArmorItems.GUY_FAWKES_MASK_SET.toStack(), halloween()),
+                offer(VanityArmorItems.CLOTHIERS_JACKET.toStack(), halloween()),
+                offer(VanityArmorItems.CLOTHIERS_PANTS.toStack(), halloween()),
+                offer(VanityArmorItems.CLOTHIERS_SHOES.toStack(), halloween())
         ));
         shops.put(Confluence.asResource("demolitionist"), List.of(
                 offer(ConsumableItems.GRENADE.toStack()),
                 offer(ConsumableItems.BOMB.toStack()),
-                offer(ConsumableItems.DYNAMITE.toStack())
+                offer(ConsumableItems.DYNAMITE.toStack()),
+                offer(MaterialItems.EXPLOSIVE_POWDER.toStack(), HardmodeCondition.INSTANCE),
+                offer(ArrowItems.HELLFIRE_ARROW.toStack(), HardmodeCondition.INSTANCE)
         ));
         shops.put(Confluence.asResource("arms_dealer"), List.of(
                 offer(new ItemStack(GunItems.MUSKET_BULLET.get(), 50)),
@@ -187,23 +212,28 @@ public final class NPCShopProvider implements DataProvider {
                 offer(MaterialItems.SHROOMITE_INGOT.toStack())
         ));
         shops.put(Confluence.asResource("wizard"), List.of(
-                offer(PotionItems.BOTTLE.toStack()),
-                offer(PotionItems.LESSER_MANA_POTION.toStack()),
-                offer(PotionItems.MANA_POTION.toStack()),
+                offer(FunctionalBlocks.CRYSTAL_BALL.toStack()),
                 offer(PotionItems.GREATER_MANA_POTION.toStack()),
-                offer(ManaWeaponItems.WAND_OF_SPARKING.toStack()),
-                offer(ToolItems.ICE_MIRROR.toStack())
+                offer(MaterialItems.BELL.toStack()),
+                offer(MaterialItems.HARP.toStack()),
+                offer(MaterialItems.SPELL_TOME.toStack()),
+                offer(new ItemStack(Items.BOOK)),
+                offer(ToolItems.EMPTY_DROPPER.toStack()),
+                offer(VanityArmorItems.WIZARDS_HAT.toStack(), halloween())
         ));
         shops.put(Confluence.asResource("zoologist"), List.of(
-                offer(ToolItems.BUG_NET.toStack()),
                 offer(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.toStack()),
-                offer(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.toStack()),
-                offer(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.toStack()),
-                offer(VanityArmorItems.BUNNY_HOOD.toStack()),
-                offer(new ItemStack(Items.APPLE))
+                offer(WhipItems.LEATHER_WHIP.toStack(), new BestiaryCondition(16)),
+                offer(MinecartItems.DIGGING_MOLECART.toStack(), new BestiaryCondition(85)),
+                offer(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING.toStack()),
+                offer(new ItemStack(Items.CHERRY_SAPLING)),
+                offer(LanceItems.JOUSTING_LANCE.toStack(), HardmodeCondition.INSTANCE.and(new BestiaryCondition(75)))
         ));
         shops.put(Confluence.asResource("goblin_tinkerer"), List.of(
                 offer(HookItems.GRAPPLING_HOOK.toStack()),
+                offer(TCItems.ROCKET_BOOTS.toStack()),
+                offer(TCItems.TOOLBELT.toStack()),
+                offer(TCItems.WORKSHOP.toStack()),
                 offer(new ItemStack(ConsumableItems.SPIKY_BALL.get(), 25))
         ));
         // 渔夫和渔女是微光外观变体，必须共享同一份商品定义，避免两侧内容逐渐产生差异。
@@ -257,5 +287,9 @@ public final class NPCShopProvider implements DataProvider {
 
     private static NPCTradeOffer offer(ItemStack result, TradeCondition condition) {
         return new NPCTradeOffer(result, condition);
+    }
+
+    private static DateCondition halloween() {
+        return new DateCondition(Calendar.OCTOBER, 10, Calendar.NOVEMBER, 1);
     }
 }

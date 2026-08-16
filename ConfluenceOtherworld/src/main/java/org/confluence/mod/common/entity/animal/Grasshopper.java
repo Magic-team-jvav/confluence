@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.animal;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -43,7 +44,8 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createInsectAttributes();
+        return BaseCritter.createInsectAttributes()
+                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     @Override

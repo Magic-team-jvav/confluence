@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -72,7 +74,9 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
-                .add(Attributes.FLYING_SPEED, 0.4);
+                .add(Attributes.FLYING_SPEED, 0.4)
+                .add(LibAttributes.getAttackDamage().get(), 3.0)
+                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     /// 鸟类没有幼年模型和幼年行为，年龄数据不应改变客户端缩放、碰撞或行为选择。

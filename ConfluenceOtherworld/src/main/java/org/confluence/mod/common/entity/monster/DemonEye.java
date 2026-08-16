@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.monster;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -22,10 +21,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
-import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
@@ -33,7 +30,6 @@ import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeLeaveAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeSurroundAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeWanderAction;
 import org.confluence.mod.util.DateUtils;
-import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -52,12 +48,6 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     public DemonEye(EntityType<? extends DemonEye> type, Level level, Variant variant) {
         super(type, level);
         setVariant(variant);
-    }
-
-    public static boolean checkDemonEyeSpawnRules(EntityType<DemonEye> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        if (LibDateUtils.isDay(level) || pos.getY() < OverworldUtils.getSurfaceY()) return false;
-        return level.canSeeSky(pos)
-                && SpawnPlacementChecks.checkMonsterSpawnRules(type, level, reason, pos, random);
     }
 
     private void applyVariantStats(Variant v) {

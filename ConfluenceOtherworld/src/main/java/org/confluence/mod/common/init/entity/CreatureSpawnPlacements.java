@@ -7,7 +7,6 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
-import org.confluence.mod.common.entity.monster.DemonEye;
 import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 import org.confluence.mod.common.entity.monster.slime.BaseSlime;
 import org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent;
@@ -43,13 +42,10 @@ public final class CreatureSpawnPlacements {
                 CritterEntities.JEWEL_SQUIRREL, CritterEntities.DUCK, CritterEntities.CRAB,
                 CritterEntities.WORM, CritterEntities.BUTTERFLY, CritterEntities.FAIRY,
                 CritterEntities.FEALING, CritterEntities.GLOWING_SNAIL, CritterEntities.GRUBBY,
-                CritterEntities.MAGGOT, CritterEntities.SLUGGY,
+                CritterEntities.MAGGOT, CritterEntities.MAGMA_SNAIL, CritterEntities.SLUGGY,
                 CritterEntities.SNAIL, CritterEntities.SCORPION,
-                CritterEntities.PRISMATIC_LACEWING, CritterEntities.DRAGONFLY,
+                CritterEntities.HELL_BUTTERFLY, CritterEntities.PRISMATIC_LACEWING, CritterEntities.DRAGONFLY,
                 CritterEntities.GRASSHOPPER, CritterEntities.LADYBUG);
-        group(event, PortSpawnPlacementTypes.ON_GROUND,
-                SpawnPlacementChecks::checkNetherCritterSpawn,
-                CritterEntities.MAGMA_SNAIL, CritterEntities.HELL_BUTTERFLY);
     }
 
     private static void registerSlimes(PortRegisterSpawnPlacementsEvent event) {
@@ -67,7 +63,7 @@ public final class CreatureSpawnPlacements {
     }
 
     private static void registerPreHardmodeMonsters(PortRegisterSpawnPlacementsEvent event) {
-        group(event, PortSpawnPlacementTypes.ON_GROUND, DemonEye::checkDemonEyeSpawnRules,
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkDemonEyeSpawn,
                 MonsterEntities.DEMON_EYE);
         group(event, PortSpawnPlacementTypes.ON_GROUND, Zombie::checkZombieSpawnRules,
                 MonsterEntities.ZOMBIE);
@@ -75,13 +71,10 @@ public final class CreatureSpawnPlacements {
                 MonsterEntities.BLOODY_SPORE,
                 MonsterEntities.FACE_MONSTER, MonsterEntities.SPORE_SKELETON,
                 MonsterEntities.DECAYEDER, MonsterEntities.CRIMERA,
-                MonsterEntities.EATER_OF_SOULS, MonsterEntities.METEOR_HEAD,
+                MonsterEntities.EATER_OF_SOULS, MonsterEntities.BLOOD_CRAWLER,
                 MonsterEntities.DEVOURER, MonsterEntities.JUNGLE_BAT);
-        group(event, PortSpawnPlacementTypes.ON_GROUND,
-                SpawnPlacementChecks::checkGraveyardMonsterSpawn,
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkRoutineMonsterSpawn,
                 MonsterEntities.GHOST);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkBloodCrawlerSpawn,
-                MonsterEntities.BLOOD_CRAWLER);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkGroundSpawn,
                 MonsterEntities.BLOOD_ZOMBIE, MonsterEntities.SPORE_ZOMBIE,
                 MonsterEntities.HAT_SPORE_ZOMBIE, MonsterEntities.SNATCHER,
@@ -111,6 +104,8 @@ public final class CreatureSpawnPlacements {
 
         group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkHighLevelMonsterSpawn,
                 MonsterEntities.HARPY);
+        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkRoutineMonsterSpawn,
+                MonsterEntities.METEOR_HEAD);
         group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkNetherMonsterSpawn,
                 MonsterEntities.DEMON, MonsterEntities.VOODOO_DEMON,
                 MonsterEntities.WANDERING_EYE_FISH);
@@ -155,7 +150,7 @@ public final class CreatureSpawnPlacements {
                 SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkPossessedArmorSpawn),
                 MonsterEntities.POSSESS_ARMOR);
         group(event, PortSpawnPlacementTypes.ON_GROUND,
-                SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkNightSurfaceMonsterSpawn),
+                SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkDemonEyeSpawn),
                 MonsterEntities.WRAITH);
         group(event, PortSpawnPlacementTypes.ON_GROUND,
                 SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkCaveMonsterSpawn),

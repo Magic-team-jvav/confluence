@@ -9,9 +9,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.util.DynamicBiomeUtils;
 
 /// 自然生成使用的公共环境校验集合。
 ///
@@ -67,59 +65,18 @@ public final class SpawnPlacementChecks {
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    /// 检查墓地敌怪的自然生成条件。
-    ///
-    /// <p>墓地是按区块段实时统计出的环境，而不是一个可直接写入生物群系修饰器的固定群系。
-    /// 因此实体仍需进入主世界候选表，再在最终放置检查中同时验证墓地环境与原版怪物规则。</p>
-    public static boolean checkGraveyardMonsterSpawn(
-            EntityType<? extends Mob> type,
-            ServerLevelAccessor level,
-            MobSpawnType spawnType,
-            BlockPos pos,
-            RandomSource random) {
-        if (!(level instanceof Level world)) {
-            return false;
-        }
-        ILevelChunkSection section = DynamicBiomeUtils.getISection(world, pos);
-        return section != null && section.confluence$isGraveyard()
-                && checkMonsterSpawnRules(type, level, spawnType, pos, random);
-    }
-
-    /// 检查下界小动物的放置条件。
-    ///
-    /// <p>熔岩小动物不能复用 {@link net.minecraft.world.entity.animal.Animal#checkAnimalSpawnRules}：
-    /// 后者要求较高亮度与普通动物可生成方块，会让灰烬群系中的候选项始终无法落地。这里保留
-    /// 原版实体碰撞和承载方块检查，只额外限定下界与地狱高度带。</p>
-    public static boolean checkNetherCritterSpawn(
-            EntityType<? extends Mob> type,
-            ServerLevelAccessor level,
-            MobSpawnType spawnType,
-            BlockPos pos,
-            RandomSource random) {
-        return level instanceof Level world && world.dimension() == Level.NETHER
-                && pos.getY() >= 30 && pos.getY() <= 100
-                && Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
-    }
-
     public static boolean checkFlyingFishSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
                                                MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level instanceof Level world && world.isRaining()
                 && checkGroundSpawn(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkBloodCrawlerSpawn(EntityType<? extends Mob> type,
-                                                 ServerLevelAccessor level,
-                                                 MobSpawnType spawnType,
-                                                 BlockPos pos,
-                                                 RandomSource random) {
-        // 1.21 的血爬虫无视亮度，但只允许通过自然生成流程出现。
-        return spawnType == MobSpawnType.NATURAL;
-    }
-
-    public static boolean checkNightSurfaceMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                        MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level instanceof Level world && world.isNight() && level.canSeeSky(pos)
-                && checkGroundSpawn(type, level, spawnType, pos, random);
+    public static boolean checkDemonEyeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
+                                             MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!(level instanceof Level world) || !checkMonsterSpawnRules(type, level, spawnType, pos, random)
+                || pos.getY() < 60 || pos.getY() >= 260 || !world.isNight()) return false;
+        if (world.getMoonPhase() == 4) return hasClearColumn(world, pos);
+        return world.random.nextInt(99) < 80;
     }
 
     public static boolean checkPossessedArmorSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,

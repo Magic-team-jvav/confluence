@@ -8,9 +8,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 
-/**
- * 昆虫及简单小动物——共用的标准 flee+wander BT。
- */
+/// 昆虫及简单小动物——共用的标准 flee+wander BT。
 public class SimpleCritter extends BaseCritter {
 
     public SimpleCritter(EntityType<? extends SimpleCritter> type, Level level) {
@@ -21,7 +19,8 @@ public class SimpleCritter extends BaseCritter {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createInsectAttributes();
+        return BaseCritter.createInsectAttributes()
+                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     @Override
@@ -36,7 +35,7 @@ public class SimpleCritter extends BaseCritter {
         };
     }
 
-    /// 此类承载的蜗牛、幼虫、蛆虫和蝎子在 1.21 中使用零摔落伤害倍率。
+    /// 此类承载的蜗牛、幼虫和蛆虫在 1.21 中使用零摔落伤害倍率。
     @Override
     public boolean causeFallDamage(
             float fallDistance,

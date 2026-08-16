@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.animal;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -9,12 +10,11 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -33,7 +33,8 @@ public class Worm extends BaseCritter implements VariantHolder<Worm.Variant> {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createInsectAttributes();
+        return BaseCritter.createInsectAttributes()
+                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     @Override

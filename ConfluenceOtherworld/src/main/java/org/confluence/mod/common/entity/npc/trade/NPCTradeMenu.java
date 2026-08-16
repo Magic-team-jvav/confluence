@@ -129,10 +129,12 @@ public class NPCTradeMenu extends AbstractContainerMenu {
                 return;
             }
             ItemStack result = offer.stack();
-            long price = getBuyPrice(result);
-            if (price > 0 && PlayerMoneyTransaction.debit(serverPlayer, price, true)) {
-                setCarried(result.copy());
-            }
+            List<ItemStack> costs = offer.costs();
+            long price = costs.isEmpty() ? getBuyPrice(result) : 0;
+            boolean completed = costs.isEmpty()
+                    ? price > 0 && PlayerMoneyTransaction.debit(serverPlayer, price, true)
+                    : consumeCosts(serverPlayer, costs);
+            if (completed) setCarried(result.copy());
         }
     }
 
@@ -216,11 +218,12 @@ public class NPCTradeMenu extends AbstractContainerMenu {
             SlotState state = getState(absoluteSlot);
             slotStates.set(slot, state);
             if (absoluteSlot < offers.size()) {
-                ItemStack stack = offers.get(absoluteSlot).stack();
-                tradeContainer.setItem(slot, withPrice(stack, getBuyPrice(stack)));
+                NPCTradeOffer offer = offers.get(absoluteSlot);
+                ItemStack stack = offer.stack();
+                tradeContainer.setItem(slot, withTradeDetails(stack, offer.costs(), getBuyPrice(stack)));
             } else {
                 SoldItem sold = soldItems.get(absoluteSlot);
-                tradeContainer.setItem(slot, sold == null ? ItemStack.EMPTY : withPrice(sold.stack(), sold.price()));
+                tradeContainer.setItem(slot, sold == null ? ItemStack.EMPTY : withTradeDetails(sold.stack(), List.of(), sold.price()));
             }
         }
         pageData.set(DATA_PAGE, page);
@@ -260,13 +263,41 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         }
     }
 
-    private static ItemStack withPrice(ItemStack source, long price) {
-        if (price <= 0) return source.copy();
+    private static boolean consumeCosts(ServerPlayer player, List<ItemStack> costs) {
+        List<ItemStack> inventory = new ArrayList<>(player.getInventory().items.size());
+        player.getInventory().items.forEach(stack -> inventory.add(stack.copy()));
+        for (ItemStack cost : costs) {
+            int remaining = cost.getCount();
+            for (ItemStack stack : inventory) {
+                if (remaining == 0) break;
+                if (!ItemStack.isSameItemSameTags(stack, cost)) continue;
+                int consumed = Math.min(remaining, stack.getCount());
+                stack.shrink(consumed);
+                remaining -= consumed;
+            }
+            if (remaining > 0) return false;
+        }
+        for (int slot = 0; slot < inventory.size(); slot++) {
+            player.getInventory().items.set(slot, inventory.get(slot));
+        }
+        player.getInventory().setChanged();
+        return true;
+    }
+
+    private static ItemStack withTradeDetails(ItemStack source, List<ItemStack> costs, long price) {
         ItemStack display = source.copy();
         CompoundTag displayTag = display.getOrCreateTagElement("display");
         ListTag lore = displayTag.getList("Lore", Tag.TAG_STRING);
-        Component line = Component.translatable("tooltip.price.buy").withStyle(ChatFormatting.GRAY).append(MoneyText.format(price));
-        lore.add(StringTag.valueOf(Component.Serializer.toJson(line)));
+        if (costs.isEmpty()) {
+            if (price <= 0) return display;
+            Component line = Component.translatable("tooltip.price.buy").withStyle(ChatFormatting.GRAY).append(MoneyText.format(price));
+            lore.add(StringTag.valueOf(Component.Serializer.toJson(line)));
+        } else {
+            for (ItemStack cost : costs) {
+                Component line = Component.translatable("tooltip.trade.cost", cost.getCount(), cost.getHoverName()).withStyle(ChatFormatting.GRAY);
+                lore.add(StringTag.valueOf(Component.Serializer.toJson(line)));
+            }
+        }
         displayTag.put("Lore", lore);
         return display;
     }

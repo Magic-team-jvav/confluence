@@ -509,6 +509,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.copper", "Copper ");
         add("tooltip.price.sell", "Sell: ");
         add("tooltip.price.buy", "Buy: ");
+        add("tooltip.trade.cost", "Cost: %s × %s");
 
         add("tooltip.jei.state_properties", "Required State Properties:");
         add("tooltip.jei.count_range", "Count: %s-%s");

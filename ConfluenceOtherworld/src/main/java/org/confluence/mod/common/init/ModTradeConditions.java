@@ -26,6 +26,11 @@ public final class ModTradeConditions {
     public static final RegistryObject<MapCodec<AttackTargetCondition>> ATTACK_TARGET = TYPES.register("attack_target", () -> AttackTargetCondition.CODEC);
     public static final RegistryObject<MapCodec<NPCItemInHandCondition>> NPC_ITEM_IN_HAND = TYPES.register("npc_item_in_hand", () -> NPCItemInHandCondition.CODEC);
     public static final RegistryObject<MapCodec<WeatherCondition>> WEATHER = TYPES.register("weather", () -> WeatherCondition.CODEC);
+    public static final RegistryObject<MapCodec<DimensionCondition>> DIMENSION = TYPES.register("dimension", () -> DimensionCondition.CODEC);
+    public static final RegistryObject<MapCodec<GameEventCondition>> GAME_EVENT = TYPES.register("game_event", () -> GameEventCondition.CODEC);
+    public static final RegistryObject<MapCodec<GraveyardCondition>> GRAVEYARD = TYPES.register("graveyard", () -> GraveyardCondition.CODEC);
+    public static final RegistryObject<MapCodec<MoonPhaseCondition>> MOON_PHASE = TYPES.register("moon_phase", () -> MoonPhaseCondition.CODEC);
+    public static final RegistryObject<MapCodec<WorldFlagCondition>> WORLD_FLAG = TYPES.register("world_flag", () -> WorldFlagCondition.CODEC);
     public static final RegistryObject<MapCodec<AndCondition>> AND = TYPES.register("and", () -> AndCondition.CODEC);
     public static final RegistryObject<MapCodec<OrCondition>> OR = TYPES.register("or", () -> OrCondition.CODEC);
     public static final RegistryObject<MapCodec<NotCondition>> NOT = TYPES.register("not", () -> NotCondition.CODEC);

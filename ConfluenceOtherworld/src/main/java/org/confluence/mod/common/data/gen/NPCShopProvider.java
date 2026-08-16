@@ -11,17 +11,19 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
-import org.confluence.mod.common.entity.npc.trade.conditions.BestiaryCondition;
-import org.confluence.mod.common.entity.npc.trade.conditions.DateCondition;
-import org.confluence.mod.common.entity.npc.trade.conditions.HardmodeCondition;
-import org.confluence.mod.common.entity.npc.trade.conditions.TimeCondition;
+import org.confluence.mod.common.entity.npc.trade.conditions.*;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 
@@ -50,6 +52,10 @@ public final class NPCShopProvider implements DataProvider {
     @Override
     public CompletableFuture<?> run(CachedOutput output) {
         Map<ResourceLocation, List<NPCTradeOffer>> shops = new LinkedHashMap<>();
+        TradeCondition bloodMoon = new GameEventCondition(BloodMoonGameEvent.KEY);
+        TradeCondition graveyard = GraveyardCondition.INSTANCE;
+        TradeCondition corruptionWorld = new WorldFlagCondition(IWorldOptions.THE_CORRUPTION);
+        TradeCondition crimsonWorld = new WorldFlagCondition(IWorldOptions.THE_CRIMSON);
         shops.put(Confluence.asResource("merchant"), List.of(
                 offer(ToolItems.BUG_NET.toStack()),
                 offer(ArmorItems.MINING_HELMET.toStack()),
@@ -111,7 +117,8 @@ public final class NPCShopProvider implements DataProvider {
                 offer(PaintItems.WHITE_PAINT.toStack()),
                 offer(PaintItems.BROWN_PAINT.toStack()),
                 offer(PaintItems.SHADOW_PAINT.toStack(), HardmodeCondition.INSTANCE),
-                offer(PaintItems.NEGATIVE_PAINT.toStack(), HardmodeCondition.INSTANCE)
+                offer(PaintItems.NEGATIVE_PAINT.toStack(), HardmodeCondition.INSTANCE),
+                offer(PaintItems.ILLUMINANT_COATING.toStack(), graveyard)
         ));
         shops.put(Confluence.asResource("dryad"), List.of(
                 offer(ConsumableItems.PURIFICATION_POWDER.toStack()),
@@ -123,7 +130,13 @@ public final class NPCShopProvider implements DataProvider {
                 offer(new ItemStack(Items.PUMPKIN_SEEDS)),
                 offer(ModItems.GRASS_SEED.toStack()),
                 offer(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.toStack()),
-                offer(ModItems.HALLOWED_SEED.toStack(), HardmodeCondition.INSTANCE)
+                offer(ModItems.HALLOWED_SEED.toStack(), HardmodeCondition.INSTANCE),
+                offer(ModItems.ASH_GRASS_SEED.toStack(), new DimensionCondition(OverworldUtils.underworld())),
+                offer(ModItems.MUSHROOM_GRASS_SEED.toStack(), new BiomeCondition(List.of(ModBiomes.GLOWING_MUSHROOM), List.of())),
+                offer(ModItems.CRIMSON_SEED.toStack(), corruptionWorld.and(bloodMoon.or(graveyard))),
+                offer(ConsumableItems.VILE_POWDER.toStack(), corruptionWorld.and(bloodMoon)),
+                offer(ConsumableItems.VICIOUS_POWDER.toStack(), crimsonWorld.and(bloodMoon)),
+                offer(ModItems.CORRUPT_SEED.toStack(), crimsonWorld.and(bloodMoon.or(graveyard)))
         ));
         shops.put(Confluence.asResource("witch_doctor"), List.of(
                 offer(FunctionalBlocks.CAULDRON.toStack(), halloween()),
@@ -145,6 +158,7 @@ public final class NPCShopProvider implements DataProvider {
                 offer(ConsumableItems.GRENADE.toStack()),
                 offer(ConsumableItems.BOMB.toStack()),
                 offer(ConsumableItems.DYNAMITE.toStack()),
+                offer(new ItemStack(Items.GUNPOWDER), crimsonWorld.and(bloodMoon.or(graveyard))),
                 offer(MaterialItems.EXPLOSIVE_POWDER.toStack(), HardmodeCondition.INSTANCE),
                 offer(ArrowItems.HELLFIRE_ARROW.toStack(), HardmodeCondition.INSTANCE)
         ));
@@ -159,6 +173,7 @@ public final class NPCShopProvider implements DataProvider {
                 offer(ToolItems.GREEN_WRENCH.toStack()),
                 offer(ToolItems.YELLOW_WRENCH.toStack()),
                 offer(ToolItems.WIRE_CUTTER.toStack()),
+                offer(FishingPoleItems.MECHANICS_ROD.toStack(), new MoonPhaseCondition(MoonPhase.WANING_GIBBOUS, MoonPhase.WANING_CRESCENT, MoonPhase.WAXING_CRESCENT, MoonPhase.WAXING_GIBBOUS)),
                 offer(FunctionalBlocks.SWITCH.toStack()),
                 offer(FunctionalBlocks.SIGNAL_ADAPTER.toStack()),
                 offer(FunctionalBlocks.TIMERS_BLOCK_1_1.toStack()),
@@ -171,7 +186,8 @@ public final class NPCShopProvider implements DataProvider {
                 offer(new ItemStack(Items.PISTON)),
                 offer(new ItemStack(Items.STICKY_PISTON)),
                 offer(new ItemStack(Items.REDSTONE_LAMP)),
-                offer(new ItemStack(Items.DAYLIGHT_DETECTOR))
+                offer(new ItemStack(Items.DAYLIGHT_DETECTOR)),
+                offer(AccessoryItems.SPECTRE_GOGGLES.toStack(), graveyard)
         ));
         shops.put(Confluence.asResource("party_girl"), List.of(
                 offer(FunctionalBlocks.SILLY_BALLOON_MACHINE.toStack()),
@@ -213,14 +229,14 @@ public final class NPCShopProvider implements DataProvider {
                 offer(MinecartItems.DIGGING_MOLECART.toStack(), new BestiaryCondition(85)),
                 offer(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING.toStack()),
                 offer(new ItemStack(Items.CHERRY_SAPLING)),
-                offer(LanceItems.JOUSTING_LANCE.toStack(), HardmodeCondition.INSTANCE.and(new BestiaryCondition(75)))
+                offer(LanceItems.JOUSTING_LANCE.toStack(), new BestiaryCondition(75))
         ));
         shops.put(Confluence.asResource("goblin_tinkerer"), List.of(
                 offer(HookItems.GRAPPLING_HOOK.toStack()),
                 offer(TCItems.ROCKET_BOOTS.toStack()),
                 offer(TCItems.TOOLBELT.toStack()),
                 offer(TCItems.WORKSHOP.toStack()),
-                offer(new ItemStack(ConsumableItems.SPIKY_BALL.get(), 25))
+                offer(ConsumableItems.SPIKY_BALL.toStack())
         ));
         shops.put(Confluence.asResource("traveling_merchant"), List.of(
                 offer(AccessoryItems.PAINT_SPRAYER.toStack()),
@@ -232,8 +248,14 @@ public final class NPCShopProvider implements DataProvider {
                 offer(TCItems.DPS_METER.toStack()),
                 offer(SwordItems.KATANA.toStack()),
                 offer(FoodItems.PAD_THAI.toStack()),
+                offer(YoyoItems.CODE_1.toStack()),
                 offer(NatureBlocks.DYNASTY_LOG_BLOCKS.LOG.toStack()),
                 offer(FishingPoleItems.SITTING_DUCKS_FISHING_POLE.toStack())
+        ));
+        shops.put(Confluence.asResource("truffle"), List.of(
+                exchange(BoomerangItems.SHROOMERANG.toStack(), new ItemStack(Items.EMERALD, 10)),
+                exchange(new ItemStack(Items.EMERALD), new ItemStack(Items.BROWN_MUSHROOM, 10)),
+                exchange(new ItemStack(Items.EMERALD), new ItemStack(Items.RED_MUSHROOM, 10))
         ));
 
         return CompletableFuture.allOf(shops.entrySet().stream()
@@ -264,6 +286,10 @@ public final class NPCShopProvider implements DataProvider {
 
     private static NPCTradeOffer offer(ItemStack result, TradeCondition condition) {
         return new NPCTradeOffer(result, condition);
+    }
+
+    private static NPCTradeOffer exchange(ItemStack result, ItemStack... costs) {
+        return new NPCTradeOffer(result, List.of(costs), TradeCondition.alwaysTrue());
     }
 
     private static DateCondition halloween() {

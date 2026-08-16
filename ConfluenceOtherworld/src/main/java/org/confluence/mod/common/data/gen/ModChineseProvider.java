@@ -444,6 +444,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.price.copper", "铜 ");
         add("tooltip.price.sell", "卖出：");
         add("tooltip.price.buy", "买入：");
+        add("tooltip.trade.cost", "花费：%s × %s");
 
         add("tooltip.jei.state_properties", "需要的方块属性：");
         add("tooltip.jei.count_range", "数量：%s-%s");

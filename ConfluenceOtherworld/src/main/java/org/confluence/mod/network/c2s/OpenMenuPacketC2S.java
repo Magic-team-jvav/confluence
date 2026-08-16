@@ -36,11 +36,11 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     public static final byte DYE_VAT_MENU = 3;
     public static final byte DYE_MIX_MENU = 4;
     public static final ResourceLocation ID = Confluence.asResource("open_menu");
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC =
-            PortStreamCodec.composite(
-                    PortByteBufCodecs.BYTE, OpenMenuPacketC2S::menuId,
-                    PortItemStackExtension.optionalStreamCodec(), OpenMenuPacketC2S::stack,
-                    OpenMenuPacketC2S::new);
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.BYTE, OpenMenuPacketC2S::menuId,
+            PortItemStackExtension.optionalStreamCodec(), OpenMenuPacketC2S::stack,
+            OpenMenuPacketC2S::new
+    );
 
     /// 根据玩家当前的服务端菜单解析一次合法的菜单切换。
     ///

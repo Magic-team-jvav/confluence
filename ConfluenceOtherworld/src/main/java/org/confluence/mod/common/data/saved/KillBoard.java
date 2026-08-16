@@ -34,12 +34,8 @@ public enum KillBoard implements IGlobalData {
     INSTANCE;
     public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = PortCodecExtension.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec());
     public static final Codec<Object2BooleanMap<ResourceKey<? extends GameEvent>>> DEFEATED_EVENTS_CODEC = PortCodecExtension.object2BooleanMap(GameEvent.KEY_CODEC);
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC =
-            LibStreamCodecUtils.object2BooleanMap(
-                    PortByteBufCodecs.registry(Registries.ENTITY_TYPE));
-    public static final PortStreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<? extends GameEvent>>> DEFEATED_EVENTS_STREAM_CODEC =
-            LibStreamCodecUtils.object2BooleanMap(
-                    GameEvent.KEY_STREAM_CODEC);
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(PortByteBufCodecs.registry(Registries.ENTITY_TYPE));
+    public static final PortStreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<? extends GameEvent>>> DEFEATED_EVENTS_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(GameEvent.KEY_STREAM_CODEC);
 
     private Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
     private Object2BooleanMap<ResourceKey<? extends GameEvent>> defeatedEvents = new Object2BooleanOpenHashMap<>();

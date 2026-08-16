@@ -66,8 +66,7 @@ public class TheTongueEffect extends PortMobEffect {
     }
 
     @Override
-    public void onEffectStarted(
-            LivingEntity living, int amplifier) {
+    public void onEffectStarted(LivingEntity living, int amplifier) {
         super.onEffectStarted(living, amplifier);
         WallOfFlesh wall = HorrifiedEffect.resolve(living);
         if (wall == null) {
@@ -79,8 +78,7 @@ public class TheTongueEffect extends PortMobEffect {
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(
-            int duration, int amplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return true;
     }
 }

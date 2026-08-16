@@ -49,8 +49,7 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
             if (player != null) {
                 ItemStack stack = player.containerMenu.getCarried();
                 player.containerMenu.setCarried(ItemStack.EMPTY);
-                OpenMenuPacketC2S.sendToServer(
-                        OpenMenuPacketC2S.DYE_VAT_MENU, stack);
+                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.DYE_VAT_MENU, stack);
             }
         }).width(48).pos(leftPos + 109, topPos + 58).build());
         addRenderableWidget(this.editBox = new EditBox(minecraft.font, leftPos + 64, topPos + 24, 44, 10, Component.empty()));

@@ -32,7 +32,7 @@ public class BaseMinecartEntity extends Minecart {
 
     protected ResourceLocation dropItem = AIR_ITEM_ID; // both
     protected float maxSpeed = 0.0F; // both
-    protected double acceleration = 0.0; // 双端
+    protected double acceleration = 0.0; // both
     /// 未应用永久升级时的基础空气阻力，不能与临时乘客加成混为一体。
     protected double baseDragAir = IForgeAbstractMinecart.DEFAULT_AIR_DRAG; // both
     protected @Nullable LivingEntity driver; // server

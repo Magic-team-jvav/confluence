@@ -16,8 +16,7 @@ public class WoodenMimic extends BaseMimic {
 
     public static AttributeSupplier.Builder createAttributes() {
         return BaseMonster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0)
-                .add(Attributes.ATTACK_DAMAGE, 6.0);
+                .add(Attributes.MAX_HEALTH, 30.0).add(Attributes.ATTACK_DAMAGE, 6.0);
     }
 
     /// 普通宝箱怪不使用困难模式宝箱怪的特殊攻击轮次。

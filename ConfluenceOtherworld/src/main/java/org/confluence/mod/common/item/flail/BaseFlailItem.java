@@ -53,11 +53,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
     /// 右键未被方块或实体消耗时，进入链锤持续使用状态。
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(
-            @NotNull Level level,
-            @NotNull Player player,
-            @NotNull InteractionHand hand
-    ) {
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         player.startUsingItem(hand);
         if (!level.isClientSide()) {
@@ -170,12 +166,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
     /// 持有连枷时始终禁用挖掘
     @Override
-    public boolean canAttackBlock(
-            BlockState state,
-            Level level,
-            BlockPos pos,
-            Player player
-    ) {
+    public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return false;
     }
 

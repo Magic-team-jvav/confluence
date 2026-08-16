@@ -151,7 +151,5 @@ public class DungeonGuardian extends BaseBoss {
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
+    public boolean isPushable() {return false;}
 }

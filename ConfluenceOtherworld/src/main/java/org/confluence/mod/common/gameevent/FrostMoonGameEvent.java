@@ -35,7 +35,9 @@ public enum FrostMoonGameEvent implements GameEvent {
     }
 
     @Override
-    public void tick() {}
+    public void tick() {
+
+    }
 
     @Override
     public boolean canStart() {

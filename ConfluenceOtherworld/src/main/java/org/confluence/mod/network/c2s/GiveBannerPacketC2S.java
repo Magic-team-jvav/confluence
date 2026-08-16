@@ -18,9 +18,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("give_banner");
-    public static final PortStreamCodec<ByteBuf, GiveBannerPacketC2S> STREAM_CODEC =
-            PortByteBufCodecs.STRING_UTF8
-                    .map(GiveBannerPacketC2S::new, GiveBannerPacketC2S::key);
+    public static final PortStreamCodec<ByteBuf, GiveBannerPacketC2S> STREAM_CODEC = PortByteBufCodecs.STRING_UTF8.map(GiveBannerPacketC2S::new, GiveBannerPacketC2S::key);
 
     @Override
     public ResourceLocation identifier() {

@@ -355,9 +355,7 @@ public class BaseSlime extends BaseMonster {
         return result;
     }
 
-    /**
-     * 是否免疫火焰伤害
-     */
+    /// 对目标造成接触伤害。
     protected void dealContactDamage(LivingEntity target) {
         if (!level().isClientSide
                 && isAlive()

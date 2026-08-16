@@ -58,10 +58,7 @@ public abstract class BaseFlyingMonster extends BaseMonster {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance, float multiplier, DamageSource source) {
-        return false;
-    }
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {return false;}
 
     @Override
     public boolean isPushable() {

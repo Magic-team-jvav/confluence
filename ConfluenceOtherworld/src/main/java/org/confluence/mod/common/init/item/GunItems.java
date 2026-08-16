@@ -27,8 +27,7 @@ public class GunItems {
     public static final List<PortDeferredItem<BaseGun>> GUN_ITEMS = new ArrayList<>();
     public static final List<PortDeferredItem<BaseBullet>> BULLET_ITEMS = new ArrayList<>();
 
-    public static final PortDeferredItem<BaseGun> STAR_CANNON = registerGun("star_cannon", new BaseGun.Builder(4, 14.8f, 1.8f)
-            .knockback(0.15f)
+    public static final PortDeferredItem<BaseGun> STAR_CANNON = registerGun("star_cannon", new BaseGun.Builder(4, 14.8f, 1.8f).knockback(0.15f)
             .critical(0.04f)
             .penetrate(-1)
             .rarity(ModRarity.GREEN)

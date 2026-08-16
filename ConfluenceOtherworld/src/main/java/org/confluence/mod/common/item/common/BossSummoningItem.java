@@ -27,10 +27,7 @@ public class BossSummoningItem extends TooltipItem {
     private final Predicate<Player> condition;
     private final Function<Level, Mob> factory;
 
-    public BossSummoningItem(
-            Predicate<Player> condition,
-            Function<Level, Mob> factory,
-            List<Component> tooltips) {
+    public BossSummoningItem(Predicate<Player> condition, Function<Level, Mob> factory, List<Component> tooltips) {
         super(new Properties(), ModRarity.BLUE, tooltips);
         this.condition = condition;
         this.factory = factory;

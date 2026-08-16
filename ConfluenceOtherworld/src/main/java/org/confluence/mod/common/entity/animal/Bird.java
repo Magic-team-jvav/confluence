@@ -112,10 +112,7 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
     }
 
     @Override
-    public ResourceLocation getModelPath() {
-        return Confluence.asResource("animal/bird");
-    }
-
+    public ResourceLocation getModelPath() {return Confluence.asResource("animal/bird");}
     @Override
     public ResourceLocation getTexturePath() {
         return Confluence.asResource("textures/entity/animal/bird.png");

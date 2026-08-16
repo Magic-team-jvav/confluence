@@ -35,7 +35,9 @@ public enum PumpkinMoonGameEvent implements GameEvent {
     }
 
     @Override
-    public void tick() {}
+    public void tick() {
+
+    }
 
     @Override
     public boolean canStart() {

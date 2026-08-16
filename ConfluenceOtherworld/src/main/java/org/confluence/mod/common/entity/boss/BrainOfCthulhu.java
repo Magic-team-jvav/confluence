@@ -659,9 +659,7 @@ public class BrainOfCthulhu extends BaseBoss {
     }
 
     @Override
-    public boolean isPushable() {
-        return false;
-    }
+    public boolean isPushable() {return false;}
 
     @Override
     protected boolean shouldDiscardWhenNoTarget() {

@@ -32,17 +32,12 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
 
     private boolean hittingFlyingTarget;
 
-    public DriveAwayArrowEntity(
-            EntityType<? extends DriveAwayArrowEntity> entityType,
-            Level level) {
+    public DriveAwayArrowEntity(EntityType<? extends DriveAwayArrowEntity> entityType, Level level) {
         super(entityType, level);
     }
 
-    public DriveAwayArrowEntity(
-            EntityType<? extends DriveAwayArrowEntity> entityType,
-            LivingEntity owner,
-            ItemStack pickupItemStack,
-            @Nullable ItemStack firedFromWeapon) {
+    public DriveAwayArrowEntity(EntityType<? extends DriveAwayArrowEntity> entityType, LivingEntity owner,
+                                ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
         super(entityType, owner, pickupItemStack, firedFromWeapon);
     }
 
@@ -139,15 +134,8 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
                 || entity instanceof Harpy;
     }
 
-    public static BaseArrowEntity create(
-            EntityType<? extends AbstractArrow> type,
-            LivingEntity shooter,
-            ItemStack pickupItemStack,
-            ItemStack firedFromWeapon) {
-        return new DriveAwayArrowEntity(
-                (EntityType<? extends DriveAwayArrowEntity>) type,
-                shooter,
-                pickupItemStack,
-                firedFromWeapon);
+    public static BaseArrowEntity create(EntityType<? extends AbstractArrow> type, LivingEntity shooter,
+                                         ItemStack pickupItemStack, ItemStack firedFromWeapon) {
+        return new DriveAwayArrowEntity((EntityType<? extends DriveAwayArrowEntity>) type, shooter, pickupItemStack, firedFromWeapon);
     }
 }

@@ -13,8 +13,7 @@ import java.util.List;
 
 public record SyncEnemyBannerEntriesPacketS2C(List<String> entries) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("sync_enemy_banner_entries");
-    public static final PortStreamCodec<ByteBuf, SyncEnemyBannerEntriesPacketS2C> STREAM_CODEC = PortByteBufCodecs.STRING_UTF8
-            .apply(PortByteBufCodecs.list())
+    public static final PortStreamCodec<ByteBuf, SyncEnemyBannerEntriesPacketS2C> STREAM_CODEC = PortByteBufCodecs.STRING_UTF8.apply(PortByteBufCodecs.list())
             .map(SyncEnemyBannerEntriesPacketS2C::new, SyncEnemyBannerEntriesPacketS2C::entries);
 
     /// 敌怪旗帜条目会替换客户端玩家附件，必须交给客户端主线程执行。

@@ -49,16 +49,11 @@ public enum GlobalCloakData implements IGlobalData {
     });
 
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_STREAM_CODEC = PortByteBufCodecs.map(
-            HashMap::new,
-            LibStreamCodecUtils.BLOCK_STATE,
-            LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
+            HashMap::new, LibStreamCodecUtils.BLOCK_STATE, LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
     );
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Map<Item, BooleanObjectPair<Item>>> ITEM_MAP_STREAM_CODEC = LibStreamCodecUtils.lazyInitialized(() -> {
         PortStreamCodec<PortRegistryFriendlyByteBuf, Item> streamCodec = PortByteBufCodecs.registry(Registries.ITEM);
-        return PortByteBufCodecs.map(
-                HashMap::new,
-                streamCodec,
-                LibStreamCodecUtils.booleanObjectPair(streamCodec));
+        return PortByteBufCodecs.map(HashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
     });
     public static final int VERSION = 1;
 

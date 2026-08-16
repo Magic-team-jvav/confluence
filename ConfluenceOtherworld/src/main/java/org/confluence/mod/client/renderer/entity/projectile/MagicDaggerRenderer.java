@@ -17,14 +17,7 @@ public class MagicDaggerRenderer extends GeoNegativeVolumeRenderer<MagicDaggerPr
     }
 
     @Override
-    public void render(
-            MagicDaggerProjectile entity,
-            float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight
-    ) {
+    public void render(MagicDaggerProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         if (entity.tickCount > 1) {
             super.render(entity, entityYaw, partialTick, poseStack, bufferSource, 0xF000F0);
         }

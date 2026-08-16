@@ -11,9 +11,9 @@ public class CheckBannerAvailableEvent extends Event {
 
     public CheckBannerAvailableEvent(ClientBestiaryEntry entry) {
         this.entry = entry;
-        this.originalAvailalbe = this.available = entry.isCompleted()
-                && !entry.type.is(ModTags.EntityTypes.ENEMY_BANNER_BLACKLIST)
-                && entry.type.is(ModTags.EntityTypes.ENEMY_BANNER_WHITELIST);
+        this.originalAvailalbe = this.available = entry.isCompleted() &&
+                !entry.type.is(ModTags.EntityTypes.ENEMY_BANNER_BLACKLIST) &&
+                entry.type.is(ModTags.EntityTypes.ENEMY_BANNER_WHITELIST);
     }
 
     public ClientBestiaryEntry getEntry() {

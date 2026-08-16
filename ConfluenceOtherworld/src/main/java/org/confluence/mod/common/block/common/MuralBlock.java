@@ -159,8 +159,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                     BlockPos headWorldPos = pos.offset(-xOffset * relPos.getX(), -relPos.getY(), -zOffset * relPos.getX());
                     BlockEntity cachedHeadBe = BE_CACHE.get(headWorldPos);
                     if (cachedHeadBe instanceof BEntity headMuralEntity) {
-                        dropCount = Math.max(1, headMuralEntity.getMuralWidth())
-                                * Math.max(1, headMuralEntity.getMuralHeight());
+                        dropCount = Math.max(1, headMuralEntity.getMuralWidth()) * Math.max(1, headMuralEntity.getMuralHeight());
                         BE_CACHE.remove(headWorldPos);
                     }
                 }

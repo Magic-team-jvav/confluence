@@ -303,9 +303,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
      */
     // ===== 渲染元数据（子类覆写以实现一类一物品）=====
 
-    /**
-     * 弹射物模型纹理，默认 null（无模型）
-     */
+    /// 弹射物模型纹理，默认 null（无模型）。
     @Nullable
     public ResourceLocation getProjTexture() {return null;}
 

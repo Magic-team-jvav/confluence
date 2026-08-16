@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
@@ -24,11 +25,15 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
@@ -78,6 +83,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
                     MemoryModuleType.LOOK_TARGET,
                     MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
                     MemoryModuleType.NEAREST_LIVING_ENTITIES,
+                    MemoryModuleType.NEAREST_HOSTILE,
+                    MemoryModuleType.HURT_BY,
                     MemoryModuleType.HURT_BY_ENTITY
             );
 
@@ -88,6 +95,9 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
     protected boolean shouldInteract;
     protected BlockPos spawnAtPos = BlockPos.ZERO;
+    private int lastPanicHurtTimestamp;
+    private long panicUntil;
+    private boolean panicking;
 
     public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
@@ -112,6 +122,23 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.5));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        if (target instanceof Player || target instanceof BaseNPC) {
+            return false;
+        }
+        return target.canBeSeenAsEnemy();
+    }
+
+    @Override
+    public void setTarget(@Nullable LivingEntity target) {
+        super.setTarget(target != null && canAttack(target) ? target : null);
+    }
+
+    protected boolean canFightHostiles() {
+        return false;
     }
 
     // === Brain ===
@@ -140,10 +167,13 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         super.customServerAiStep();
         ServerLevel level = (ServerLevel) level();
         tickBrain(level);
+        tickHostileActivity(level);
         if (!house.isValid()) {
             tickFindHouse(level);
         }
-        tickWalkToHome(level);
+        if (!panicking && getTarget() == null) {
+            tickWalkToHome(level);
+        }
         tickMood();
 //        ChatManager.tickNPC(this);
 
@@ -189,6 +219,54 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected void tickBrain(ServerLevel level) {
         Brain<BaseNPC> brain = (Brain<BaseNPC>) getBrain();
         brain.tick(level, this);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void tickHostileActivity(ServerLevel level) {
+        Brain<BaseNPC> brain = (Brain<BaseNPC>) getBrain();
+        NearestVisibleLivingEntities visible = brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).orElse(NearestVisibleLivingEntities.empty());
+        java.util.Optional<LivingEntity> hostile = visible.findClosest(target -> target instanceof Enemy && distanceToSqr(target) <= 100.0);
+        brain.setMemory(MemoryModuleType.NEAREST_HOSTILE, hostile);
+
+        if (canFightHostiles()) {
+            panicking = false;
+            LivingEntity target = getTarget();
+            if (target == null || !target.isAlive() || !canAttack(target) || !hasLineOfSight(target) || distanceToSqr(target) > 100.0) {
+                setTarget(hostile.orElse(null));
+            }
+            return;
+        }
+
+        LivingEntity hurtBy = getLastHurtByMob();
+        int hurtTimestamp = getLastHurtByMobTimestamp();
+        if (hurtTimestamp != lastPanicHurtTimestamp) {
+            lastPanicHurtTimestamp = hurtTimestamp;
+            if (hurtBy instanceof Enemy) {
+                panicUntil = level.getGameTime() + 100;
+            }
+        }
+        if (hostile.isPresent()) {
+            panicUntil = Math.max(panicUntil, level.getGameTime() + 20);
+        }
+
+        boolean shouldPanic = level.getGameTime() < panicUntil;
+        if (!shouldPanic) {
+            if (panicking) {
+                getNavigation().stop();
+            }
+            panicking = false;
+            return;
+        }
+
+        panicking = true;
+        brain.eraseMemory(MemoryModuleType.WALK_TARGET);
+        LivingEntity threat = hostile.orElse(hurtBy instanceof Enemy ? hurtBy : null);
+        if (threat != null && (getNavigation().isDone() || tickCount % 10 == 0)) {
+            Vec3 destination = DefaultRandomPos.getPosAway(this, 16, 7, threat.position());
+            if (destination != null) {
+                getNavigation().moveTo(destination.x, destination.y, destination.z, 1.95);
+            }
+        }
     }
 
     /// 每 600 tick 在当前位置及周边采样，尝试发现房屋。

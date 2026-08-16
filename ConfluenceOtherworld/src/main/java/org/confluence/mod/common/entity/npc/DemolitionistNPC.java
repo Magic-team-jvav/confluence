@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.npc.ai.NPCGrenadeGoal;
 
@@ -18,6 +17,10 @@ public class DemolitionistNPC extends BaseNPC {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new NPCGrenadeGoal(this, 5));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+    }
+
+    @Override
+    protected boolean canFightHostiles() {
+        return true;
     }
 }

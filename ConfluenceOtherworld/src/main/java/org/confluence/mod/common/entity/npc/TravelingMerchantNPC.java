@@ -14,11 +14,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * 旅商 —— 随机到访、黄昏后离开。
- * 每天黎明有概率生成，黄昏(dayTime 12000)后消失。
- * 商贩背包可使商品数 +1。
- */
+/// 旅商 —— 随机到访、黄昏后离开。
+/// 每天黎明有概率生成，黄昏(dayTime 12000)后消失。
+/// 商贩背包可使商品数 +1。
 public class TravelingMerchantNPC extends BaseNPC {
     private static final String STOCK_INITIALIZED_TAG = "TradeStockInitialized";
     private static final String STOCK_TAG = "TradeStock";
@@ -71,6 +69,7 @@ public class TravelingMerchantNPC extends BaseNPC {
         super.customServerAiStep();
         long dayTime = level().getDayTime();
         if (dayTime < spawnDayTime || dayTime % 24000 >= 12000) {
+            NPCSpawner.INSTANCE.onNPCRemoved(this);
             discard();
         }
     }

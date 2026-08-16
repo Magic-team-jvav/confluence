@@ -95,6 +95,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
     protected boolean shouldInteract;
     protected BlockPos spawnAtPos = BlockPos.ZERO;
+    private boolean spawnAtPosInitialized;
+    private boolean lifecycleRemoved;
     private int lastPanicHurtTimestamp;
     private long panicUntil;
     private boolean panicking;
@@ -168,7 +170,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     // === 房屋查找 ===
 
-    private static final int FIND_HOUSE_INTERVAL = 600;
+    private static final int HOUSE_CHECK_MASK = 511;
 
     @Override
     protected void customServerAiStep() {
@@ -176,9 +178,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         ServerLevel level = (ServerLevel) level();
         tickBrain(level);
         tickHostileActivity(level);
-        if (!house.isValid()) {
-            tickFindHouse(level);
-        }
+        tickHouse(level);
         if (!panicking && getTarget() == null) {
             tickWalkToHome(level);
         }
@@ -278,13 +278,30 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         }
     }
 
-    /// 每 600 tick 在当前位置及周边采样，尝试发现房屋。
-    protected void tickFindHouse(ServerLevel level) {
-        if (tickCount % FIND_HOUSE_INTERVAL != 0) return;
-        HouseValidater.Result result = HouseValidater.scan(level, blockPosition());
+    /// 每 512 tick 重新验证已有房屋；没有房屋时从当前位置尝试发现。
+    protected void tickHouse(ServerLevel level) {
+        if ((tickCount & HOUSE_CHECK_MASK) != 0) return;
+        boolean hadHouse = house.isValid();
+        if (hadHouse && house.uuid().filter(getUUID()::equals).isEmpty()) {
+            releaseHouse();
+            return;
+        }
+        BlockPos start = hadHouse ? house.center() : blockPosition();
+        if (!level.isLoaded(start)) return;
+        HouseHandler.INSTANCE.removeHouse(level.dimension(), getUUID());
+        HouseValidater.Result result = HouseValidater.scan(level, start);
         House found = result.make(getUUID());
+        if (!found.isValid() || HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), found, getUUID())) {
+            setHouse(House.EMPTY);
+            return;
+        }
         setHouse(found);
         HouseHandler.INSTANCE.setHouse(this, found);
+    }
+
+    public void releaseHouse() {
+        HouseHandler.INSTANCE.removeHouse(level().dimension(), getUUID());
+        setHouse(House.EMPTY);
     }
 
     /// 有 HOME 记忆时向家移动。
@@ -432,16 +449,29 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("Region")), r -> this.region = r);
         }
         this.shouldInteract = tag.getBoolean("ShouldInteract");
-        PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), r -> this.spawnAtPos = r);
+        if (tag.contains("SpawnAtPos")) {
+            PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), this::setSpawnAtPos);
+        }
     }
 
     public BlockPos getSpawnAtPos() {
         return spawnAtPos;
     }
 
+    public void setSpawnAtPos(BlockPos spawnAtPos) {
+        this.spawnAtPos = spawnAtPos;
+        this.spawnAtPosInitialized = true;
+    }
+
+    public boolean markLifecycleRemoved() {
+        if (lifecycleRemoved) return false;
+        lifecycleRemoved = true;
+        return true;
+    }
+
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        this.spawnAtPos = blockPosition();
+        if (!spawnAtPosInitialized) setSpawnAtPos(blockPosition());
     }
 }

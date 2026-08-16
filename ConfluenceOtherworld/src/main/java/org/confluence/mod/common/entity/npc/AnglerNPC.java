@@ -6,9 +6,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -102,26 +105,30 @@ public class AnglerNPC extends BaseNPC {
     }
 
     @Override
-    protected void performDefaultInteraction(ServerPlayer player) {
-        if (!isWakeUp()) {
-            setWakeUp(true);
-            Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, ItemStack.EMPTY));
-            return;
-        }
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+            if (!isWakeUp()) {
+                setWakeUp(true);
+                Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, ItemStack.EMPTY));
+                return InteractionResult.sidedSuccess(level().isClientSide);
+            }
 
-        ServerLevel serverLevel = (ServerLevel) level();
-        AnglerData.INSTANCE.refreshIfNeeded(serverLevel);
-        PlayerSpecialData data = PlayerSpecialData.of(player);
-        if (data.hasCompletedAnglerQuestToday(serverLevel)) {
-            Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.COMPLETED, ItemStack.EMPTY));
-        } else if (!AnglerData.INSTANCE.hasValidQuest()) {
-            Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, ItemStack.EMPTY));
-        } else {
-            ItemStack questFish = AnglerData.INSTANCE.getQuestFish();
-            if (player.getInventory().contains(questFish)) submitQuest(player, questFish, data);
-            else
-                Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish));
+            ServerLevel serverLevel = (ServerLevel) level();
+            AnglerData.INSTANCE.refreshIfNeeded(serverLevel);
+            PlayerSpecialData data = PlayerSpecialData.of(serverPlayer);
+            if (data.hasCompletedAnglerQuestToday(serverLevel)) {
+                Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.COMPLETED, ItemStack.EMPTY));
+            } else if (!AnglerData.INSTANCE.hasValidQuest()) {
+                Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, ItemStack.EMPTY));
+            } else {
+                ItemStack questFish = AnglerData.INSTANCE.getQuestFish();
+                if (player.getInventory().contains(questFish))
+                    submitQuest(serverPlayer, questFish, data);
+                else
+                    Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish));
+            }
         }
+        return InteractionResult.sidedSuccess(level().isClientSide);
     }
 
     private void submitQuest(ServerPlayer player, ItemStack questFish, PlayerSpecialData data) {

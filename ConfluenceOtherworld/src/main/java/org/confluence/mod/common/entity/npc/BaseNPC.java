@@ -18,7 +18,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
@@ -33,23 +32,15 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.npc.InteractNPCEvent;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
-import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.common.entity.npc.mood.MoodData;
@@ -57,7 +48,6 @@ import org.confluence.mod.common.entity.npc.mood.NPCMood;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
-import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -327,73 +317,22 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
-        if (!hasCustomName()) setCustomName(getType().getDescription());
-        if (hand == InteractionHand.OFF_HAND) return InteractionResult.SUCCESS;
-        setCustomNameVisible(true);
-
-        ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof ArmorItem armor) {
-            swapItem(player, armor.getEquipmentSlot(), hand, stack);
-            return InteractionResult.SUCCESS;
+        if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+            if (shouldInteract) {
+                setShouldInteract(false);
+                region = NPCSpawner.getNpcSpawnRegion(serverPlayer);
+                NPCSpawner.INSTANCE.setNPCAlive(region, getType(), true);
+                NPCSpawner.INSTANCE.applyBenedictions(this);
+                NPCSpawner.INSTANCE.addSpawned(getType());
+                NPCSpawner.broadcastMessageToRegion(serverPlayer.level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
+            }
+            if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
+            var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
+            if (!shop.offers().isEmpty()) {
+                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, shop.offers(), shop.revision()), getDisplayName()), buf -> buf.writeInt(getId()));
+            }
         }
-        if (player.isShiftKeyDown()) {
-            if (!stack.isEmpty()) swapItem(player, EquipmentSlot.MAINHAND, hand, stack);
-            else removeHitEquipment(player, hand);
-            return InteractionResult.SUCCESS;
-        }
-
-        recordInteraction(serverPlayer);
-        InteractNPCEvent event = new InteractNPCEvent(this, serverPlayer);
-        if (MinecraftForge.EVENT_BUS.post(event)) return event.getInteractionResult();
-        event.execute(() -> performDefaultInteraction(serverPlayer));
-        return event.getInteractionResult();
-    }
-
-    private void swapItem(Player player, EquipmentSlot slot, InteractionHand hand, ItemStack stack) {
-        ItemStack previous = getItemBySlot(slot);
-        setItemSlot(slot, stack.copy());
-        player.setItemInHand(hand, previous);
-    }
-
-    private void removeHitEquipment(Player player, InteractionHand hand) {
-        Vec3 from = player.getEyePosition();
-        Vec3 hit = getBoundingBox().clip(from, from.add(player.getViewVector(0.5F).scale(6.0))).orElse(null);
-        if (hit == null) return;
-        AABB bounds = getBoundingBox();
-        double relativeHeight = (hit.y - bounds.minY) / bounds.getYsize();
-        EquipmentSlot slot;
-        if (relativeHeight > 0.75) slot = EquipmentSlot.HEAD;
-        else if (relativeHeight > 0.45) {
-            double edge = Math.min(Math.min(hit.x - bounds.minX, bounds.maxX - hit.x), Math.min(hit.z - bounds.minZ, bounds.maxZ - hit.z));
-            slot = edge < 0.15 ? EquipmentSlot.MAINHAND : EquipmentSlot.CHEST;
-        } else if (relativeHeight > 0.2) slot = EquipmentSlot.LEGS;
-        else slot = EquipmentSlot.FEET;
-        ItemStack equipped = getItemBySlot(slot);
-        if (equipped.isEmpty()) return;
-        player.setItemInHand(hand, equipped);
-        setItemSlot(slot, ItemStack.EMPTY);
-    }
-
-    private void recordInteraction(ServerPlayer player) {
-        if (shouldInteract) {
-            setShouldInteract(false);
-            region = NPCSpawner.getNpcSpawnRegion(player);
-            NPCSpawner.INSTANCE.setNPCAlive(region, getType(), true);
-            NPCSpawner.INSTANCE.applyBenedictions(this);
-            NPCSpawner.INSTANCE.addSpawned(getType());
-            NPCSpawner.broadcastMessageToRegion(player.level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
-        }
-        if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
-    }
-
-    protected void performDefaultInteraction(ServerPlayer player) {
-        var shop = NPCTradeList.getAvailableOffers(player, this);
-        if (!shop.offers().isEmpty()) {
-            NetworkHooks.openScreen(player, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, shop.offers(), shop.revision()), getDisplayName()), buf -> buf.writeInt(getId()));
-        } else if (NPCDialogLoader.getInstance().getDialog(getType()) != null) {
-            Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenNPCDialogPacketS2C(getId()));
-        }
+        return InteractionResult.sidedSuccess(level().isClientSide);
     }
 
     // === 杂项 ===

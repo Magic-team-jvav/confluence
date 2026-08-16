@@ -79,7 +79,7 @@ public class SkullProjectile extends AbstractManaProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!level().isClientSide) {
-            discard();
+            discardInTicks(1);
         }
     }
 

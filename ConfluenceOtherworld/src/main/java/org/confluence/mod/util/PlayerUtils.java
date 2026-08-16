@@ -93,15 +93,6 @@ public final class PlayerUtils {
         syncMana2Client(player, ManaStorage.of(player));
     }
 
-//    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
-//        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
-//        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
-//    }
-//
-//    public static void syncSoul2Client(ServerPlayer player) {
-//        syncSoul2Client(player, SoulStorage.of(player));
-//    }
-
     public static void regenerateMana(ServerPlayer player) {
         ManaStorage manaStorage = ManaStorage.of(player);
         if (!manaStorage.canReceive()) return;

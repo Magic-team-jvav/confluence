@@ -320,6 +320,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.DIAMOND_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_DIAMOND_ORE.asItem(), OreBlocks.CORRUPTION_DIAMOND_ORE.asItem(), OreBlocks.FLESHIFICATION_DIAMOND_ORE.asItem());
         tag(ModTags.Items.EMERALD_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_EMERALD_ORE.asItem(), OreBlocks.CORRUPTION_EMERALD_ORE.asItem(), OreBlocks.FLESHIFICATION_EMERALD_ORE.asItem());
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.asItem());
+        tag(ModTags.Items.LAPIS_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_LAPIS_ORE.asItem(), OreBlocks.CORRUPTION_LAPIS_ORE.asItem(), OreBlocks.FLESHIFICATION_LAPIS_ORE.asItem());
 
         tag(ModTags.Items.COBALT_ORE_SMELTING).addTag(ModTags.Items.ORES_COBALT).add(MaterialItems.RAW_COBALT.get());
         tag(ModTags.Items.PALLADIUM_ORE_SMELTING).addTag(ModTags.Items.ORES_PALLADIUM).add(MaterialItems.RAW_PALLADIUM.get());

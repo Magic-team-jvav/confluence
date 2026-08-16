@@ -154,15 +154,17 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         if (player != null) {
-            SoulSkillClientHolder.INSTANCE.handler();
-            boolean isSoulOverviewScreen = false;
-            while (ModKeyBindings.SOUL_OVERVIEW.get().consumeClick()) {
-                if (!isSoulOverviewScreen) {
-                    isSoulOverviewScreen = true;
+            if (Confluence.SOUL_SKILLS) {
+                SoulSkillClientHolder.INSTANCE.handler();
+                boolean isSoulOverviewScreen = false;
+                while (ModKeyBindings.SOUL_OVERVIEW.get().consumeClick()) {
+                    if (!isSoulOverviewScreen) {
+                        isSoulOverviewScreen = true;
+                    }
                 }
-            }
-            if (isSoulOverviewScreen) {
-                minecraft.setScreen(new SoulOverviewScreen());
+                if (isSoulOverviewScreen) {
+                    minecraft.setScreen(new SoulOverviewScreen());
+                }
             }
             WeatherHandler.handle();
             MeteorLandingHandler.handle(minecraft, player);
@@ -178,17 +180,18 @@ public final class GameClientEvents {
             ) {
                 SwordProjectilePacketC2S.sendToServer();
             }
-            // 连枷按键检测
-            boolean isFlail = player.getMainHandItem().getItem() instanceof BaseFlailItem;
-            boolean keyHeld = minecraft.options.keyAttack.isDown();
-            if (isFlail) {
-                if (keyHeld && !wasFlailKeyHeld) {
-                    FlailControlPacketC2S.sendHold();
-                } else if (!keyHeld && wasFlailKeyHeld) {
-                    FlailControlPacketC2S.sendRelease();
+            { // 连枷按键检测
+                boolean isFlail = player.getMainHandItem().getItem() instanceof BaseFlailItem;
+                boolean keyHeld = minecraft.options.keyAttack.isDown();
+                if (isFlail) {
+                    if (keyHeld && !wasFlailKeyHeld) {
+                        FlailControlPacketC2S.sendHold();
+                    } else if (!keyHeld && wasFlailKeyHeld) {
+                        FlailControlPacketC2S.sendRelease();
+                    }
                 }
+                wasFlailKeyHeld = keyHeld && isFlail;
             }
-            wasFlailKeyHeld = keyHeld && isFlail;
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
             ClientBiomeEffectSystem.tick(player);
@@ -263,8 +266,10 @@ public final class GameClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         double scrollDeltaY = event.getScrollDeltaY();
-        if (SoulSkillClientHolder.INSTANCE.scrolling(scrollDeltaY)) {
-            event.setCanceled(true);
+        if (Confluence.SOUL_SKILLS) {
+            if (SoulSkillClientHolder.INSTANCE.scrolling(scrollDeltaY)) {
+                event.setCanceled(true);
+            }
         }
     }
 

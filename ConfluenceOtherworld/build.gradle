@@ -207,8 +207,8 @@ dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
-    implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
-    implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")
+    implementation jarJar("org.mesdag:ParticleStorm-neoforge-${minecraft_version}:${particlestorm_version}")
+    implementation jarJar("org.mesdag:ThreeDimensionParticle-neoforge-${minecraft_version}:${thr_dim_particle_version}")
     implementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"

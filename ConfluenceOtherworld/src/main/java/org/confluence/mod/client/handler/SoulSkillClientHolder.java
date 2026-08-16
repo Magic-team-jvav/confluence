@@ -5,23 +5,19 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.gui.hud.soul.CurrentSelectedSkillHud;
-import org.confluence.mod.client.gui.hud.soul.quick_skill.*;
+import org.confluence.mod.client.gui.hud.soul.quick_skill.BasicSoulQuickSkillHud;
+import org.confluence.mod.client.gui.hud.soul.quick_skill.CardHorizontalHud;
+import org.confluence.mod.client.gui.hud.soul.quick_skill.RouletteWheelBigHud;
+import org.confluence.mod.client.gui.hud.soul.quick_skill.RouletteWheelSmallHud;
 import org.confluence.mod.client.util.SoulQuickSkillHudUtils;
 import org.confluence.mod.common.soulskill.SoulSkill;
 import org.confluence.mod.common.soulskill.SoulSkillStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
-/**
- * 客户端类，服务端请勿调用
- */
+/// 客户端类，服务端请勿调用
 public final class SoulSkillClientHolder {
     public static final SoulSkillClientHolder INSTANCE = new SoulSkillClientHolder();
     public static final RouletteWheelBigHud ROULETTE_WHEEL_BIG_HUD_INSTANCE = new RouletteWheelBigHud();

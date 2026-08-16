@@ -53,7 +53,7 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!level().isClientSide) {
-            discard();
+            discardInTicks(1);
         }
     }
 

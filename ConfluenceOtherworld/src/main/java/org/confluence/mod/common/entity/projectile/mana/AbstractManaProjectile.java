@@ -33,6 +33,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     protected int collideCount;
     protected ParticleEmitter emitter;
     private Runnable particleChecker = this::doNothing;
+    private int discardAge = -1;
 
     public AbstractManaProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
         super(entityType, level);
@@ -42,7 +43,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
 
     @Override
     public final void tick() {
-        if (getOwner() == null) {
+        if (discardAge == tickCount || getOwner() == null) {
             discard();
         } else {
             super.tick();
@@ -61,6 +62,10 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         } else if (hitresult$type == HitResult.Type.ENTITY) {
             onHitEntity((EntityHitResult) hitResult);
         }
+    }
+
+    protected void discardInTicks(int tick) {
+        this.discardAge = tickCount + tick;
     }
 
     /// common
@@ -85,7 +90,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         if (level().isClientSide) return;
         if (penetrateSet == null) return;
         if (getPenetrateSet().size() >= max) {
-            discard();
+            discardInTicks(1);
         }
     }
 
@@ -115,7 +120,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     /// @param maxCollide Inclusive
     protected void doCollisionCheck(int maxCollide) {
         if (this.collideCount++ >= maxCollide && !level().isClientSide) {
-            discard();
+            discardInTicks(1);
         }
     }
 
@@ -157,14 +162,14 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     /// @param maxAge Exclusive
     protected void doAgeCheck(int maxAge) {
         if (tickCount > maxAge && !level().isClientSide) {
-            discard();
+            discardInTicks(1);
         }
     }
 
     /// server side only
     protected void doFluidCheck(Predicate<FluidState> predicate) {
         if (!level().isClientSide && predicate.test(getInBlockState().getFluidState())) {
-            discard();
+            discardInTicks(1);
         }
     }
 
@@ -191,6 +196,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         super.addAdditionalSaveData(compound);
         compound.putInt("Age", tickCount);
         compound.putInt("CollideCount", collideCount);
+        compound.putInt("DiscardAge", discardAge);
     }
 
     @Override
@@ -198,6 +204,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
         super.readAdditionalSaveData(compound);
         this.tickCount = compound.getInt("Age");
         this.collideCount = compound.getInt("CollideCount");
+        this.discardAge = compound.getInt("DiscardAge");
     }
 
     @Override

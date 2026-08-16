@@ -82,6 +82,6 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
         for (LivingEntity living : level().getEntities(EntityTypeTest.forClass(LivingEntity.class), new AABB(blockPosition()).inflate(range / 2), this::canHitEntity)) {
             doHurtAndKnockback(living, knockback, 0.2);
         }
-        discard();
+        discardInTicks(1);
     }
 }

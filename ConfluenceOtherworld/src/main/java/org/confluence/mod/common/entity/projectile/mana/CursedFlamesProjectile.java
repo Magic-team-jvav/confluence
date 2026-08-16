@@ -26,7 +26,9 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
     @Override
     public void baseTick() {
         if (!level().getFluidState(blockPosition()).isEmpty()) {
-            discard();
+            if (!level().isClientSide) {
+                discardInTicks(1);
+            }
             return;
         }
         super.baseTick();
@@ -47,7 +49,9 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
         }
         doHurtAndKnockback(entity, 0.6, 0.2);
         if (this.penetrateCount++ >= 1) { // 击中就算一次
-            discard();
+            if (!level().isClientSide) {
+                discardInTicks(1);
+            }
         }
     }
 

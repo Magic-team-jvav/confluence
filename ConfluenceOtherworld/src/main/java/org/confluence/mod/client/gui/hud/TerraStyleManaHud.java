@@ -39,7 +39,6 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-//                if (minecraft.player != null && ClientPacketHandler.isFallenSoulCoreActive()) return;
                 int widthMana = guiGraphics.guiWidth() - 21 + ClientConfigs.manaOffsetX;
                 int heightMana = 4 + ClientConfigs.manaOffsetY;
                 float currentMana = ClientPacketHandler.getCurrentMana();
@@ -65,7 +64,6 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
         OVERLAY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-//                if (minecraft.player != null && ClientPacketHandler.isFallenSoulCoreActive()) return;
                 float currentMana = ClientPacketHandler.getCurrentMana() / 10.0F;
                 float maxMana = ClientPacketHandler.getMaxMana() / 10.0F;
                 int widthMana = guiGraphics.guiWidth() / 2 + 10 + ClientConfigs.manaOffsetX;

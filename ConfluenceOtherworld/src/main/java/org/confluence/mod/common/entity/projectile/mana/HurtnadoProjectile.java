@@ -33,7 +33,9 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
     @Override
     public void baseTick() {
         if (tickCount > 190) {
-            discard();
+            if (!level().isClientSide) {
+                discardInTicks(1);
+            }
             return;
         }
         super.baseTick();

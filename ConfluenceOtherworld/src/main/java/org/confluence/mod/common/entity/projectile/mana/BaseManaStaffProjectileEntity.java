@@ -101,7 +101,9 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        discard();
+        if (!level().isClientSide) {
+            discardInTicks(1);
+        }
     }
 
     @Override

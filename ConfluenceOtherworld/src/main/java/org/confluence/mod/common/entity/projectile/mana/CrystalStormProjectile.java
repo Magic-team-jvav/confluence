@@ -29,6 +29,8 @@ public class CrystalStormProjectile extends AbstractManaProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         doHurtAndKnockback(result.getEntity(), 0.5, 0.2);
-        discard();
+        if (!level().isClientSide) {
+            discardInTicks(1);
+        }
     }
 }

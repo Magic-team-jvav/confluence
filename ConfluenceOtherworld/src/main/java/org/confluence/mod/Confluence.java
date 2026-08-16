@@ -34,6 +34,8 @@ public final class Confluence {
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
+    public static final boolean SOUL_SKILLS = false;
+
     public Confluence(IEventBus eventBus, ModContainer container) {
         StartupConfigs.register(container);
         CommonConfigs.register(container);

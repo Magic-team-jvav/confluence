@@ -33,7 +33,7 @@ public class SkyFractureProjectile extends AbstractManaProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!level().isClientSide) {
-            discard();
+            discardInTicks(1);
         }
     }
 
@@ -41,7 +41,7 @@ public class SkyFractureProjectile extends AbstractManaProjectile {
     protected void onHitEntity(EntityHitResult result) {
         if (!level().isClientSide && doHurtAndKnockback(result.getEntity(), 0.6, 0.2)) {
             // todo 粒子
-            discard();
+            discardInTicks(1);
         }
     }
 }

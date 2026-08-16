@@ -25,7 +25,16 @@ public final class PhasedFlyingPursuitAction extends BTNode {
     private final double maximumAggressiveTurn;
     private int remainingTicks;
 
-    public PhasedFlyingPursuitAction(PathfinderMob mob, int cycleTicks, int approachThreshold, int aggressiveThreshold, double approachSpeed, double aggressiveSpeed, double maximumSpeed, double minimumApproachDistance, double maximumAggressiveTurn) {
+    public PhasedFlyingPursuitAction(
+            PathfinderMob mob,
+            int cycleTicks,
+            int approachThreshold,
+            int aggressiveThreshold,
+            double approachSpeed,
+            double aggressiveSpeed,
+            double maximumSpeed,
+            double minimumApproachDistance,
+            double maximumAggressiveTurn) {
         if (cycleTicks <= approachThreshold || approachThreshold <= aggressiveThreshold || aggressiveThreshold <= 0) {
             throw new IllegalArgumentException("Flying pursuit phase thresholds must be positive and ordered");
         }

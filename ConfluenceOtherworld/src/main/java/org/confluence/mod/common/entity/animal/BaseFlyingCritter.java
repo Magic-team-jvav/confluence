@@ -30,8 +30,8 @@ public abstract class BaseFlyingCritter extends BaseCritter {
     public static AttributeSupplier.Builder createFlyingCritterAttributes() {
         return BaseCritter.createInsectAttributes()
                 .add(Attributes.FLYING_SPEED, 0.25)
-                .add(LibAttributes.getAttackDamage(), 3.0)
-                .add(PortAttributesExtension.fallDamageMultiplier(), 0.0);
+                .add(LibAttributes.getAttackDamage().get(), 3.0)
+                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     @Override

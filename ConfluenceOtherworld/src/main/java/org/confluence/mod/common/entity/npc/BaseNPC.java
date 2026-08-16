@@ -141,6 +141,14 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         return false;
     }
 
+    protected double getHostileDetectionRange() {
+        return 10.0;
+    }
+
+    public boolean isPanicking() {
+        return panicking;
+    }
+
     // === Brain ===
 
     @Override
@@ -225,13 +233,14 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected void tickHostileActivity(ServerLevel level) {
         Brain<BaseNPC> brain = (Brain<BaseNPC>) getBrain();
         NearestVisibleLivingEntities visible = brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).orElse(NearestVisibleLivingEntities.empty());
-        java.util.Optional<LivingEntity> hostile = visible.findClosest(target -> target instanceof Enemy && distanceToSqr(target) <= 100.0);
+        double detectionRangeSqr = getHostileDetectionRange() * getHostileDetectionRange();
+        java.util.Optional<LivingEntity> hostile = visible.findClosest(target -> target instanceof Enemy && distanceToSqr(target) <= detectionRangeSqr);
         brain.setMemory(MemoryModuleType.NEAREST_HOSTILE, hostile);
 
         if (canFightHostiles()) {
             panicking = false;
             LivingEntity target = getTarget();
-            if (target == null || !target.isAlive() || !canAttack(target) || !hasLineOfSight(target) || distanceToSqr(target) > 100.0) {
+            if (target == null || !target.isAlive() || !canAttack(target) || !hasLineOfSight(target) || distanceToSqr(target) > detectionRangeSqr) {
                 setTarget(hostile.orElse(null));
             }
             return;

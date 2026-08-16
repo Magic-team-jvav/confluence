@@ -2,17 +2,15 @@ package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /// 旅商 —— 随机到访、黄昏后离开。
 /// 每天黎明有概率生成，黄昏(dayTime 12000)后消失。
@@ -22,7 +20,7 @@ public class TravelingMerchantNPC extends BaseNPC {
     private static final String STOCK_TAG = "TradeStock";
     private long spawnDayTime;
     private boolean tradeStockInitialized;
-    private final List<ResourceLocation> tradeStock = new ArrayList<>();
+    private final List<ItemStack> tradeStock = new ArrayList<>();
 
     public TravelingMerchantNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
@@ -51,17 +49,17 @@ public class TravelingMerchantNPC extends BaseNPC {
             int count = Math.min(getTradeCount(), shuffled.size());
             tradeStock.clear();
             for (int index = 0; index < count; index++) {
-                tradeStock.add(shuffled.get(index).id());
+                tradeStock.add(shuffled.get(index).stack());
             }
             tradeStockInitialized = true;
         }
-        if (!tradeStockInitialized) {
-            return List.of();
+        if (!tradeStockInitialized) return List.of();
+
+        List<NPCTradeOffer> selected = new ArrayList<>();
+        for (ItemStack stock : tradeStock) {
+            offers.stream().filter(offer -> ItemStack.matches(offer.stack(), stock)).findFirst().ifPresent(selected::add);
         }
-        Set<ResourceLocation> selectedIds = new HashSet<>(tradeStock);
-        return offers.stream()
-                .filter(offer -> selectedIds.contains(offer.id()))
-                .toList();
+        return List.copyOf(selected);
     }
 
     @Override
@@ -80,13 +78,12 @@ public class TravelingMerchantNPC extends BaseNPC {
         this.spawnDayTime = tag.getLong("SpawnDayTime");
         tradeStockInitialized = tag.getBoolean(STOCK_INITIALIZED_TAG);
         tradeStock.clear();
-        ListTag stock = tag.getList(STOCK_TAG, StringTag.TAG_STRING);
+        ListTag stock = tag.getList(STOCK_TAG, Tag.TAG_COMPOUND);
         for (int index = 0; index < stock.size(); index++) {
-            ResourceLocation id = ResourceLocation.tryParse(stock.getString(index));
-            if (id != null && !tradeStock.contains(id)) {
-                tradeStock.add(id);
-            }
+            ItemStack stack = ItemStack.of(stock.getCompound(index));
+            if (!stack.isEmpty()) tradeStock.add(stack);
         }
+        if (tradeStockInitialized && tradeStock.isEmpty()) tradeStockInitialized = false;
     }
 
     @Override
@@ -95,9 +92,7 @@ public class TravelingMerchantNPC extends BaseNPC {
         tag.putLong("SpawnDayTime", spawnDayTime);
         tag.putBoolean(STOCK_INITIALIZED_TAG, tradeStockInitialized);
         ListTag stock = new ListTag();
-        for (ResourceLocation id : tradeStock) {
-            stock.add(StringTag.valueOf(id.toString()));
-        }
+        for (ItemStack stack : tradeStock) stock.add(stack.save(new CompoundTag()));
         tag.put(STOCK_TAG, stock);
     }
 }

@@ -1,0 +1,43 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:bug_net"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:guide_to_critter_companionship"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:guide_to_environmental_preservation"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:guide_to_peaceful_coexistence"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:bunny_hood",
+                "tag": {
+                    "Damage": 0
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "minecraft:apple"
+            }
+        }
+    ]
+}

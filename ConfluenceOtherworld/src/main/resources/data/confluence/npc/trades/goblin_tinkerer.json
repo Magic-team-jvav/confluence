@@ -1,0 +1,16 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:grappling_hook"
+            }
+        },
+        {
+            "item": {
+                "Count": 25,
+                "id": "confluence:spiky_ball"
+            }
+        }
+    ]
+}

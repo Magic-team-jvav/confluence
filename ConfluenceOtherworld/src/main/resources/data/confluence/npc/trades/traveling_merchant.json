@@ -1,0 +1,58 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 10,
+                "id": "minecraft:leather"
+            }
+        },
+        {
+            "item": {
+                "Count": 10,
+                "id": "minecraft:coal"
+            }
+        },
+        {
+            "item": {
+                "Count": 10,
+                "id": "minecraft:copper_ingot"
+            }
+        },
+        {
+            "item": {
+                "Count": 8,
+                "id": "minecraft:iron_ingot"
+            }
+        },
+        {
+            "item": {
+                "Count": 4,
+                "id": "minecraft:gold_ingot"
+            }
+        },
+        {
+            "item": {
+                "Count": 10,
+                "id": "minecraft:redstone"
+            }
+        },
+        {
+            "item": {
+                "Count": 10,
+                "id": "minecraft:lapis_lazuli"
+            }
+        },
+        {
+            "item": {
+                "Count": 4,
+                "id": "minecraft:amethyst_cluster"
+            }
+        },
+        {
+            "item": {
+                "Count": 2,
+                "id": "minecraft:diamond"
+            }
+        }
+    ]
+}

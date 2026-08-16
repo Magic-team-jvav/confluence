@@ -1,0 +1,38 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:stylish_scissors",
+                "tag": {
+                    "Damage": 0,
+                    "Unbreakable": 1
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:ice_mirror"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:familiar_wig",
+                "tag": {
+                    "Damage": 0
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:sunglasses",
+                "tag": {
+                    "Damage": 0
+                }
+            }
+        }
+    ]
+}

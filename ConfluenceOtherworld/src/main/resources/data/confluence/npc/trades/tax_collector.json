@@ -1,0 +1,28 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 100,
+                "id": "confluence:copper_coin"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:silver_coin"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:gold_coin"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:platinum_coin"
+            }
+        }
+    ]
+}

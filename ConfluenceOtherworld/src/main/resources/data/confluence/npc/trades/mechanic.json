@@ -1,0 +1,52 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:red_wrench"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:green_wrench"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:blue_wrench"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:yellow_wrench"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:wire_cutter"
+            }
+        },
+        {
+            "item": {
+                "Count": 5,
+                "id": "minecraft:repeater"
+            }
+        },
+        {
+            "item": {
+                "Count": 5,
+                "id": "minecraft:comparator"
+            }
+        },
+        {
+            "item": {
+                "Count": 5,
+                "id": "minecraft:redstone_lamp"
+            }
+        }
+    ]
+}

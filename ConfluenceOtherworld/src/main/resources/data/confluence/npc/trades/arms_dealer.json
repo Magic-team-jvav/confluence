@@ -1,0 +1,22 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 50,
+                "id": "confluence:musket_bullet"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:flintlock_pistol"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:minishark"
+            }
+        }
+    ]
+}

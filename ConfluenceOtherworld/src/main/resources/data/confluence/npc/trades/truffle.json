@@ -1,0 +1,28 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:mushroom_grass_seed"
+            }
+        },
+        {
+            "item": {
+                "Count": 10,
+                "id": "confluence:glowing_mushroom"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:truffle_worm"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:shroomite_ingot"
+            }
+        }
+    ]
+}

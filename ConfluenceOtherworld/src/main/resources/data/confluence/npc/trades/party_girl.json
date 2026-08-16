@@ -1,0 +1,46 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:pink_paint",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 15536332
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:bright_pink_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 16741799
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 25,
+                "id": "confluence:confetti"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "minecraft:cake"
+            }
+        },
+        {
+            "item": {
+                "Count": 8,
+                "id": "minecraft:cookie"
+            }
+        }
+    ]
+}

@@ -1,0 +1,208 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 3786171
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:red_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 14354697
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:orange_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 15489543
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:yellow_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 15773703
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:lime_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 12050451
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:green_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 2940681
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:teal_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 247643
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:cyan_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 247714
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:sky_blue_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 432590
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:blue_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 2113214
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:purple_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 6427862
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:violet_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 12195030
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:pink_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 15536332
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:black_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 1973536
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:gray_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 6776676
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:silver_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 16776950
+                    }
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:brown_dye",
+                "tag": {
+                    "HideFlags": 0,
+                    "display": {
+                        "color": 9135423
+                    }
+                }
+            }
+        }
+    ]
+}

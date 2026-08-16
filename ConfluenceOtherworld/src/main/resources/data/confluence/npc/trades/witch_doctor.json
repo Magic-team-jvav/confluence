@@ -1,0 +1,40 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:bottle"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:bottled_water"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:flask_of_fire"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:flask_of_gold"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:thorns_potion"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:water_walking_potion"
+            }
+        }
+    ]
+}

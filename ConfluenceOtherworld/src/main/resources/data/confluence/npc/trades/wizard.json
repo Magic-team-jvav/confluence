@@ -1,0 +1,40 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:bottle"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:lesser_mana_potion"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:mana_potion"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:greater_mana_potion"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:wand_of_sparking"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:ice_mirror"
+            }
+        }
+    ]
+}

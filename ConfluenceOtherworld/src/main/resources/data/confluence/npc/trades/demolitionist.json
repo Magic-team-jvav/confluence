@@ -1,0 +1,22 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:grenade"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:bomb"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:dynamite"
+            }
+        }
+    ]
+}

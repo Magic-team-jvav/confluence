@@ -1,0 +1,31 @@
+{
+    "offers": [
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:wood_fishing_pole",
+                "tag": {
+                    "Damage": 0
+                }
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:apprentice_bait"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:journeyman_bait"
+            }
+        },
+        {
+            "item": {
+                "Count": 1,
+                "id": "confluence:master_bait"
+            }
+        }
+    ]
+}

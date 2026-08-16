@@ -27,7 +27,6 @@ public class NpcEntities {
     public static final RegistryObject<EntityType<SimpleNPC>> DRYAD = register("dryad");
     public static final RegistryObject<EntityType<SimpleNPC>> WITCH_DOCTOR = register("witch_doctor");
     public static final RegistryObject<EntityType<SimpleNPC>> CLOTHIER = register("clothier");
-    public static final RegistryObject<EntityType<SimpleNPC>> MECHANIC = register("mechanic");
     public static final RegistryObject<EntityType<SimpleNPC>> PARTY_GIRL = register("party_girl");
     public static final RegistryObject<EntityType<SimpleNPC>> STYLIST = register("stylist");
     public static final RegistryObject<EntityType<SimpleNPC>> TAX_COLLECTOR = register("tax_collector");
@@ -46,6 +45,8 @@ public class NpcEntities {
             id -> EntityType.Builder.of(ArmsDealerNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<GoblinTinkererNPC>> GOBLIN_TINKERER = PortDeferredRegisterExtension.register(ENTITIES, "goblin_tinkerer",
             id -> EntityType.Builder.of(GoblinTinkererNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
+    public static final RegistryObject<EntityType<MechanicNPC>> MECHANIC = PortDeferredRegisterExtension.register(ENTITIES, "mechanic",
+            id -> EntityType.Builder.of(MechanicNPC::new, MobCategory.CREATURE).sized(0.6F, 1.85F).clientTrackingRange(10).build(id.toString()));
 
     public static final RegistryObject<EntityType<AnglerNPC>> ANGLER = PortDeferredRegisterExtension.register(ENTITIES, "angler",
             id -> EntityType.Builder.of(AnglerNPC::new, MobCategory.CREATURE).sized(0.6F, 1.4F).clientTrackingRange(10).build(id.toString()));

@@ -18,10 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 从 {@code data/confluence/npc/moods.json} 加载心情数据。
- * 格式：{@code { "entity_id": [ {"mood": "like", "target": "confluence:guide"}, ... ] }}
- */
+/// 从 {@code data/confluence/npc/moods.json} 加载心情数据。
+/// 格式：{@code { "entity_id": [{"mood": "like", "target": "confluence:guide"}, ... ] }}
 public final class MoodData {
     static final Map<EntityType<?>, Mood> DEFAULT_MOODS = Map.of();
 

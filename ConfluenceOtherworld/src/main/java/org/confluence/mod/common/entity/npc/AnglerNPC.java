@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -19,9 +20,11 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.AnglerData;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
@@ -105,10 +108,21 @@ public class AnglerNPC extends BaseNPC {
     }
 
     @Override
+    public void checkDespawn() {
+        super.checkDespawn();
+        if (isRemoved() && !isWakeUp()) {
+            NPCSpawner.INSTANCE.setNPCAlive(getRegion(), getType(), false);
+        }
+    }
+
+    @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             if (!isWakeUp()) {
                 setWakeUp(true);
+                NPCSpawner.Region newRegion = NPCSpawner.getNpcSpawnRegion(serverPlayer);
+                NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, getRegion(), newRegion);
+                NPCSpawner.broadcastMessageToRegion(level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
                 Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, ItemStack.EMPTY));
                 return InteractionResult.sidedSuccess(level().isClientSide);
             }

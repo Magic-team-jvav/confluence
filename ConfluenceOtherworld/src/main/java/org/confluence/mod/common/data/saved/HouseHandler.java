@@ -43,6 +43,7 @@ public enum HouseHandler implements IGlobalData {
     }
 
     public void setHouse(ResourceKey<Level> dimension, NPCSpawner.Region region, UUID uuid, House house) {
+        removeHouse(dimension, uuid);
         getOrCreateHouses(dimension, region).put(uuid, house);
     }
 
@@ -59,14 +60,20 @@ public enum HouseHandler implements IGlobalData {
         UUID uuid = npc.getUUID();
         if (!house.isValid()) {
             removeHouse(dimension, uuid);
-        } else {
-            NPCSpawner.Region region = new NPCSpawner.Region(house.center());
-            setHouse(dimension, region, uuid, house);
+            return;
         }
+        NPCSpawner.Region region = new NPCSpawner.Region(house.center());
+        setHouse(dimension, region, uuid, house);
     }
 
     public @Nullable House getHouse(BaseNPC npc) {
-        return getHouse(npc.level().dimension(), new NPCSpawner.Region(npc.blockPosition()), npc.getUUID());
+        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(npc.level().dimension());
+        if (regions == null) return null;
+        for (Map<UUID, House> houses : regions.values()) {
+            House house = houses.get(npc.getUUID());
+            if (house != null) return house;
+        }
+        return null;
     }
 
     public void removeHouse(ResourceKey<Level> dimension, NPCSpawner.Region region, UUID uuid) {
@@ -75,6 +82,8 @@ public enum HouseHandler implements IGlobalData {
         Map<UUID, House> map1 = map.get(region);
         if (map1 == null) return;
         map1.remove(uuid);
+        if (map1.isEmpty()) map.remove(region);
+        if (map.isEmpty()) data.remove(dimension);
     }
 
     /// 在一个维度的所有区域中解除指定 NPC 的房屋。
@@ -86,15 +95,36 @@ public enum HouseHandler implements IGlobalData {
         if (regions == null) return;
         regions.values().forEach(houses -> houses.remove(uuid));
         regions.entrySet().removeIf(entry -> entry.getValue().isEmpty());
+        if (regions.isEmpty()) data.remove(dimension);
     }
 
     public @Nullable House findHouseAt(ResourceKey<Level> dimension, BlockPos pos) {
-        NPCSpawner.Region region = new NPCSpawner.Region(pos);
-        Map<UUID, House> houses = getOrCreateHouses(dimension, region);
-        for (House house : houses.values()) {
-            if (house.contains(pos)) return house;
+        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
+        if (regions == null) return null;
+        for (Map<UUID, House> houses : regions.values()) {
+            for (House house : houses.values()) {
+                if (house.contains(pos)) return house;
+            }
         }
         return null;
+    }
+
+    public boolean isOccupiedByOther(ResourceKey<Level> dimension, House candidate, UUID uuid) {
+        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
+        if (regions == null) return false;
+        for (Map<UUID, House> houses : regions.values()) {
+            for (Map.Entry<UUID, House> entry : houses.entrySet()) {
+                if (!entry.getKey().equals(uuid) && intersects(candidate, entry.getValue()))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean intersects(House first, House second) {
+        return first.min().getX() <= second.max().getX() && first.max().getX() >= second.min().getX()
+                && first.min().getY() <= second.max().getY() && first.max().getY() >= second.min().getY()
+                && first.min().getZ() <= second.max().getZ() && first.max().getZ() >= second.min().getZ();
     }
 
     @Override

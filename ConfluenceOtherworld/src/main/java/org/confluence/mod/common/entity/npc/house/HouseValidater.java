@@ -10,10 +10,8 @@ import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
 import java.util.*;
 
-/**
- * 3D BFS 房屋检测器。
- * 从候选起点扩散，遇空气/房屋构成方块继续，遇墙停止。
- */
+/// 3D BFS 房屋检测器。
+/// 从候选起点扩散，遇空气/房屋构成方块继续，遇墙停止。
 public final class HouseValidater {
     private static final int MAX_RADIUS = 15;
     private static final int MIN_VOLUME = 16;

@@ -240,7 +240,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
         HouseHandler.INSTANCE.removeHouse(level.dimension(), getUUID());
         House found = HouseValidater.scan(level, scanPos).make(getUUID());
-        if (found.isValid() && HouseHandler.INSTANCE.findHouseAt(level.dimension(), found.center()) != null) {
+        if (found.isValid() && HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), found, getUUID())) {
             found = House.EMPTY;
         }
         setHouse(found);
@@ -316,7 +316,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             if (shouldInteract) {
                 setShouldInteract(false);
                 region = NPCSpawner.getNpcSpawnRegion(serverPlayer);
-                NPCSpawner.INSTANCE.setNPCAlive(region, getType(), true);
                 NPCSpawner.INSTANCE.applyBenedictions(this);
                 NPCSpawner.INSTANCE.addSpawned(getType());
                 NPCSpawner.broadcastMessageToRegion(serverPlayer.level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));

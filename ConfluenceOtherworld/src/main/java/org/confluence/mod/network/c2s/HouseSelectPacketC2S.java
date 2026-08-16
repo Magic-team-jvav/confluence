@@ -64,7 +64,7 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
             } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof BaseNPC npc) { // 如果不是空房子，获取所有者并告知已被占领
                 player.sendSystemMessage(Component.translatable("message.confluence.house_detect.occupied", npc.getType().getDescription(), npc.getDisplayName()));
             } else {
-                HouseHandler.INSTANCE.removeHouse(dimension, region, house.uuid().get());
+                HouseHandler.INSTANCE.removeHouse(dimension, house.uuid().get());
                 player.sendSystemMessage(result.message());
             }
         } else if (!result.isValid()) { // 添加、删除房屋模式，但房屋检测失败
@@ -73,14 +73,13 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
             if (isEmptyHouse) { // 如果是空房子就为该类型的npc添加房屋
                 getNpc(player, selected, region, npc -> {
                     House maked = result.make(npc.getUUID());
-                    HouseHandler.INSTANCE.setHouse(dimension, region, npc.getUUID(), maked);
-                    NPCSpawner.INSTANCE.moveNPCToAnotherRegion(npc, npc.getRegion(), region);
+                    HouseHandler.INSTANCE.setHouse(npc, maked);
                     npc.setHouse(maked);
                     player.sendSystemMessage(Component.translatable("tooltip.confluence.house_detect.mode.add.success"));
                 });
             } else if (player.serverLevel().getEntity(house.uuid().get()) instanceof BaseNPC npc) { // 不是空房子，可以通过uuid获取到所有者
                 if (AvailableHouseSelectPacketS2C.matchesSelection(selected, npc.getType())) { // 是该NPC的房屋时删除房屋
-                    HouseHandler.INSTANCE.removeHouse(dimension, region, npc.getUUID());
+                    HouseHandler.INSTANCE.removeHouse(dimension, npc.getUUID());
                     npc.setHouse(House.EMPTY);
                     player.sendSystemMessage(Component.translatable("tooltip.confluence.house_detect.mode.delete.success"));
                 } else { // 告知已被占领

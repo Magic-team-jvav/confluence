@@ -9,13 +9,11 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEntityExtension;
 
-/**
- * 带重力的枪械子弹变体。
- *
- * <p>与 1.21 TerraGuns 保持一致：真实弹药始终保存在基础类的 {@code BULLET} 槽里，
- * 本类只额外保存重力。这样命中行为、拖尾颜色、客户端渲染和保存恢复都会读取同一个弹药来源，
- * 不会出现“看起来是一种子弹、实际执行另一种子弹行为”的错位。</p>
- */
+/// 带重力的枪械子弹变体。
+///
+/// <p>与 1.21 TerraGuns 保持一致：真实弹药始终保存在基础类的 {@code BULLET} 槽里，
+/// 本类只额外保存重力。这样命中行为、拖尾颜色、客户端渲染和保存恢复都会读取同一个弹药来源，
+/// 不会出现“看起来是一种子弹、实际执行另一种子弹行为”的错位。</p>
 public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier, IPortEntityExtension {
     protected float gravity = 0.0F;
 
@@ -37,9 +35,7 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
         this.gravity = gravity;
     }
 
-    /**
-     * 创建派生弹丸时保留原弹丸的真实弹药与重力。
-     */
+    /// 创建派生弹丸时保留原弹丸的真实弹药与重力。
     public CustomBulletEntity(
             EntityType<? extends BaseBulletEntity> type,
             Level level,

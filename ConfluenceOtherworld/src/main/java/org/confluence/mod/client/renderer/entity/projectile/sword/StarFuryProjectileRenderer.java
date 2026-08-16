@@ -13,9 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.sword.StarFuryProjectile;
 
-/**
- * 星怒落星的交叉面片渲染器；旋转角只由实体年龄决定，不保存共享可变帧计数。
- */
+/// 星怒落星的交叉面片渲染器；旋转角只由实体年龄决定，不保存共享可变帧计数。
 public final class StarFuryProjectileRenderer extends EntityRenderer<StarFuryProjectile> {
     private static final ResourceLocation TEXTURE =
             Confluence.asResource("textures/entity/star_fury_projectile.png");

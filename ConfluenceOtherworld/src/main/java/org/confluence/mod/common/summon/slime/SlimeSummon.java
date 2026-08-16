@@ -10,12 +10,10 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
 
-/**
- * 史莱姆召唤物的运行实例。
- *
- * <p>行为保留 1.21 侧的连续弹跳、攻击时强化跳跃、流体漂浮，以及距离主人过远时飞回主人附近。
- * 新架构只负责把真实实体 AI 改成玩家容器驱动，不能改变史莱姆召唤物可观察到的移动节奏。</p>
- */
+/// 史莱姆召唤物的运行实例。
+///
+/// <p>行为保留 1.21 侧的连续弹跳、攻击时强化跳跃、流体漂浮，以及距离主人过远时飞回主人附近。
+/// 新架构只负责把真实实体 AI 改成玩家容器驱动，不能改变史莱姆召唤物可观察到的移动节奏。</p>
 public final class SlimeSummon extends PhysicalSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 5.0F;

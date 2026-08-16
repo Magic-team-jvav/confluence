@@ -23,13 +23,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Comparator;
 import java.util.UUID;
 
-/**
- * 骷髅追踪弹幕。
- *
- * <p>存档保存稳定 UUID，运行时再解析实体并同步数字 ID 给客户端。读取必须先完整校验当前格式，
- * 再原子替换 UUID、服务端缓存和同步 ID，避免同一实体对象重复读取时残留旧目标。1.20 不读取
- * 旧扁平 UUID。</p>
- */
+/// 骷髅追踪弹幕。
+///
+/// <p>存档保存稳定 UUID，运行时再解析实体并同步数字 ID 给客户端。读取必须先完整校验当前格式，
+/// 再原子替换 UUID、服务端缓存和同步 ID，避免同一实体对象重复读取时残留旧目标。1.20 不读取
+/// 旧扁平 UUID。</p>
 public class SkullProjectile extends AbstractManaProjectile {
     private static final String RUNTIME_TAG = "ConfluenceSkullRuntime";
     private static final int RUNTIME_VERSION = 1;

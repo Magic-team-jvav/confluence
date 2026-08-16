@@ -19,12 +19,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/**
- * NPC 商店的服务端容器。
- *
- * <p>布局暂时复用四行箱子菜单，客户端只负责显示商品、分页按钮和玩家背包。真正的购买、出售与库存消耗
- * 都在服务端按当前打开的菜单会话执行，客户端槽位里的物品展示不能被当作成交授权。</p>
- */
+/// NPC 商店的服务端容器。
+///
+/// <p>布局暂时复用四行箱子菜单，客户端只负责显示商品、分页按钮和玩家背包。真正的购买、出售与库存消耗
+/// 都在服务端按当前打开的菜单会话执行，客户端槽位里的物品展示不能被当作成交授权。</p>
 public class NPCTradeMenu extends ChestMenu {
     private static final int TRADE_ROWS = 4;
     private static final int TRADE_SIZE = 9 * TRADE_ROWS;
@@ -55,12 +53,10 @@ public class NPCTradeMenu extends ChestMenu {
         this(containerId, inventory, npc, new SimpleContainer(TRADE_SIZE), null);
     }
 
-    /**
-     * 使用服务端在交互发生时已经筛选完成的报价快照创建菜单。
-     *
-     * <p>生产环境通过此入口保证“判断是否需要打开商店”和“实际显示的报价”来自同一份快照；
-     * 测试也可直接注入多页报价，不需要修改全局重载表。</p>
-     */
+    /// 使用服务端在交互发生时已经筛选完成的报价快照创建菜单。
+    ///
+    /// <p>生产环境通过此入口保证“判断是否需要打开商店”和“实际显示的报价”来自同一份快照；
+    /// 测试也可直接注入多页报价，不需要修改全局重载表。</p>
     public NPCTradeMenu(
             int containerId,
             Inventory inventory,
@@ -178,7 +174,7 @@ public class NPCTradeMenu extends ChestMenu {
             broadcastChanges();
             return stack;
         }
-        // 商品槽的 Shift 点击不能绕过正常购买事务。
+        // From trade slot → do nothing on shift-click (use normal click for buy/refund)
         return ItemStack.EMPTY;
     }
 
@@ -223,9 +219,7 @@ public class NPCTradeMenu extends ChestMenu {
         }
     }
 
-    /**
-     * 用打开菜单时生成的服务端报价快照填充指定页面。
-     */
+    /// 用打开菜单时生成的服务端报价快照填充指定页面。
     private void populatePage(int page) {
         for (int slot = 0; slot < TRADE_SIZE; slot++) {
             tradeContainer.setItem(slot, ItemStack.EMPTY);
@@ -245,12 +239,10 @@ public class NPCTradeMenu extends ChestMenu {
         broadcastChanges();
     }
 
-    /**
-     * 校验玩家仍然操作自己当前打开的这一份菜单。
-     *
-     * <p>距离、维度和实体存活由 {@link #stillValid(Player)} 判断；这里额外限制当前容器身份，
-     * 防止已经关闭或被替换的旧菜单继续接受点击、出售和翻页请求。</p>
-     */
+    /// 校验玩家仍然操作自己当前打开的这一份菜单。
+    ///
+    /// <p>距离、维度和实体存活由 {@link #stillValid(Player)} 判断；这里额外限制当前容器身份，
+    /// 防止已经关闭或被替换的旧菜单继续接受点击、出售和翻页请求。</p>
     private boolean canUseThisMenu(ServerPlayer player) {
         return player.containerMenu == this && stillValid(player);
     }

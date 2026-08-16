@@ -50,13 +50,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * 一次鞭子挥动对应的短生命周期攻击实体。
- *
- * <p>实体本身不飞行，发射瞬间的位置、视线方向、武器栈和战斗快照都会被冻结；
- * 之后即使玩家移动或切换物品，也不会改变本次挥动的伤害、暴击或轨迹。服务端碰撞和客户端渲染都调用
- * {@link #sampleWorldPoints(float)}，从根源上避免“看到的鞭子”和“实际命中区域”分离。</p>
- */
+/// 一次鞭子挥动对应的短生命周期攻击实体。
+///
+/// <p>实体本身不飞行，发射瞬间的位置、视线方向、武器栈和战斗快照都会被冻结；
+/// 之后即使玩家移动或切换物品，也不会改变本次挥动的伤害、暴击或轨迹。服务端碰撞和客户端渲染都调用
+/// {@link #sampleWorldPoints(float)}，从根源上避免“看到的鞭子”和“实际命中区域”分离。</p>
 public final class WhipAttackEntity extends DamageSettableProjectile {
     private static final EntityDataAccessor<ItemStack> WEAPON =
             SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.ITEM_STACK);
@@ -72,9 +70,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SWEEP_LEVEL =
             SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.INT);
-    /**
-     * 1.21 的轨迹以 16 个局部单位表示，因此每点鞭距属性对应 1.6 格世界距离。
-     */
+    /// 1.21 的轨迹以 16 个局部单位表示，因此每点鞭距属性对应 1.6 格世界距离。
     private static final double RANGE_ATTRIBUTE_SCALE = 1.6;
     public static final double RENDER_SEGMENT_SPACING = 0.22;
 
@@ -82,12 +78,10 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     private final Set<BlockPos> hitBlocks = new HashSet<>();
     private int successfulHits;
     private boolean durabilityConsumed;
-    /**
-     * 本次挥鞭的服务端判定原点。
-     *
-     * <p>1.21 会让鞭子实体自身向前运动并在后半程收回，但伤害关键点始终以生成位置为基准。
-     * 因此这里单独保存判定原点，不能直接拿不断变化的实体坐标计算命中区域。</p>
-     */
+    /// 本次挥鞭的服务端判定原点。
+    ///
+    /// <p>1.21 会让鞭子实体自身向前运动并在后半程收回，但伤害关键点始终以生成位置为基准。
+    /// 因此这里单独保存判定原点，不能直接拿不断变化的实体坐标计算命中区域。</p>
     private Vec3 attackOrigin;
 
     public WhipAttackEntity(EntityType<? extends WhipAttackEntity> type, Level level) {
@@ -96,9 +90,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         noPhysics = true;
     }
 
-    /**
-     * 在统一发射事务预构建阶段写入渲染和轨迹所需的不可变输入。
-     */
+    /// 在统一发射事务预构建阶段写入渲染和轨迹所需的不可变输入。
     public void initialize(ItemStack weapon, Vec3 direction, HumanoidArm arm) {
         if (!(weapon.getItem() instanceof BaseWhipItem item)) {
             throw new IllegalArgumentException("Whip attack weapon must be a BaseWhipItem");
@@ -106,9 +98,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         initialize(weapon, direction, arm, item.definition().durationTicks());
     }
 
-    /**
-     * 在服务端发射时冻结本次挥动实际使用的攻速时长。
-     */
+    /// 在服务端发射时冻结本次挥动实际使用的攻速时长。
     public void initialize(
             ItemStack weapon,
             Vec3 direction,
@@ -192,10 +182,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         }
     }
 
-    /**
-     * 还原 1.21 挥鞭实体的可见根部运动：前半程加速甩出，后半程逐渐收回玩家身边。
-     * 该位移只影响曲线外观，服务端命中仍由 {@link #attackOrigin} 固定在发射位置。
-     */
+    /// 还原 1.21 挥鞭实体的可见根部运动：前半程加速甩出，后半程逐渐收回玩家身边。
+    /// 该位移只影响曲线外观，服务端命中仍由 {@link #attackOrigin} 固定在发射位置。
     private void tickVisibleRootMotion(LivingEntity owner) {
         Vec3 movement = getDeltaMovement();
         setPos(getX() + movement.x, getY() + movement.y, getZ() + movement.z);
@@ -220,11 +208,9 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         setPos(getX() + returnStep.x, getY() + returnStep.y, getZ() + returnStep.z);
     }
 
-    /**
-     * 按当前逻辑 tick 和局部帧插值生成世界坐标折线。
-     *
-     * @param partialTick 客户端渲染帧的局部 tick；服务端碰撞传 {@code 0}
-     */
+    /// 按当前逻辑 tick 和局部帧插值生成世界坐标折线。
+    ///
+    /// @param partialTick 客户端渲染帧的局部 tick；服务端碰撞传 {@code 0}
     public List<Vec3> sampleWorldPoints(float partialTick) {
         WhipDefinition definition = definition();
         LivingEntity owner = getLivingOwner();
@@ -263,12 +249,10 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return List.copyOf(result);
     }
 
-    /**
-     * 返回客户端显示使用的曲线。
-     *
-     * <p>鞭根保持在持握点，后续控制点叠加实体的甩出/收回位移。这与 1.21 渲染器把
-     * “移动中的鞭实体关键点”和“玩家当前手部点”共同送入样条曲线的结构一致。</p>
-     */
+    /// 返回客户端显示使用的曲线。
+    ///
+    /// <p>鞭根保持在持握点，后续控制点叠加实体的甩出/收回位移。这与 1.21 渲染器把
+    /// “移动中的鞭实体关键点”和“玩家当前手部点”共同送入样条曲线的结构一致。</p>
     public List<Vec3> sampleRenderPoints(float partialTick) {
         List<Vec3> controls = sampleRenderControlPoints(partialTick);
         if (controls.size() < 2) {
@@ -277,13 +261,11 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return WhipCurveSampler.sampleControlPoints(controls, RENDER_SEGMENT_SPACING);
     }
 
-    /**
-     * 返回客户端显示使用的少量控制点。
-     *
-     * <p>服务端命中点需要冻结在发射时的手部位置；客户端显示则需要把后续控制点叠加
-     * 鞭实体的甩出/收回位移，再由渲染器把根部吸附到玩家当前手上。这样既保留
-     * 1.21 的“手部参与样条”的甩动观感，也不改变实际命中区域。</p>
-     */
+    /// 返回客户端显示使用的少量控制点。
+    ///
+    /// <p>服务端命中点需要冻结在发射时的手部位置；客户端显示则需要把后续控制点叠加
+    /// 鞭实体的甩出/收回位移，再由渲染器把根部吸附到玩家当前手上。这样既保留
+    /// 1.21 的“手部参与样条”的甩动观感，也不改变实际命中区域。</p>
     public List<Vec3> sampleRenderControlPoints(float partialTick) {
         WhipDefinition definition = definition();
         LivingEntity owner = getLivingOwner();
@@ -308,9 +290,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return List.copyOf(result);
     }
 
-    /**
-     * 将当前动画的少量控制点转换到世界坐标，供 1.21 方块命中语义使用。
-     */
+    /// 将当前动画的少量控制点转换到世界坐标，供 1.21 方块命中语义使用。
     private List<Vec3> sampleWorldControlPoints(
             LivingEntity owner,
             WhipDefinition definition
@@ -367,9 +347,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return entityData.get(WEAPON).copy();
     }
 
-    /**
-     * 返回本次攻击实际使用的手臂，供第三人称手部锚点计算使用。
-     */
+    /// 返回本次攻击实际使用的手臂，供第三人称手部锚点计算使用。
     public HumanoidArm attackArm() {
         return entityData.get(RIGHT_ARM) ? HumanoidArm.RIGHT : HumanoidArm.LEFT;
     }
@@ -378,16 +356,12 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return Mth.clamp((tickCount + partialTick) / durationTicks(), 0.0F, 1.0F);
     }
 
-    /**
-     * 返回本次挥动在发射瞬间冻结的完整时长。
-     */
+    /// 返回本次挥动在发射瞬间冻结的完整时长。
     public int durationTicks() {
         return Math.max(1, entityData.get(DURATION_TICKS));
     }
 
-    /**
-     * 返回本次挥动实际触发的横扫附魔等级；未触发时为零。
-     */
+    /// 返回本次挥动实际触发的横扫附魔等级；未触发时为零。
     public int sweepLevel() {
         return Math.max(0, entityData.get(SWEEP_LEVEL));
     }
@@ -444,12 +418,10 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return result;
     }
 
-    /**
-     * 还原 1.21 鞭子对附近方块触发 {@code onProjectileHit} 的行为。
-     *
-     * <p>方块扫描使用原始动画控制点而不是渲染插值点，否则提高鞭节精度会意外放大服务端工作量。
-     * 同一次挥动内按方块坐标去重，避免同一方块在相邻帧和相邻控制点被重复触发。</p>
-     */
+    /// 还原 1.21 鞭子对附近方块触发 {@code onProjectileHit} 的行为。
+    ///
+    /// <p>方块扫描使用原始动画控制点而不是渲染插值点，否则提高鞭节精度会意外放大服务端工作量。
+    /// 同一次挥动内按方块坐标去重，避免同一方块在相邻帧和相邻控制点被重复触发。</p>
     private void hitBlocksAlongControlPoints(
             LivingEntity owner,
             WhipDefinition definition
@@ -535,9 +507,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         nextHitTicks.put(targetId, tickCount + definition.hitCooldownTicks());
     }
 
-    /**
-     * 1.21 只在本次挥动首次确实伤害敌人后消耗一点耐久。
-     */
+    /// 1.21 只在本次挥动首次确实伤害敌人后消耗一点耐久。
     private void consumeDurabilityAfterFirstEnemyHit(Player player) {
         if (durabilityConsumed) {
             return;
@@ -628,12 +598,10 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return direction.lengthSqr() <= 1.0E-12 ? new Vec3(0.0, 0.0, 1.0) : direction.normalize();
     }
 
-    /**
-     * 一次挥鞭只在当前攻击时段存在，不能跨世界保存。
-     *
-     * <p>这与 1.21 的挥鞭实体一致，也避免重新载入时只恢复通用弹幕快照、却缺少挥动进度和
-     * 轨迹历史而生成残缺攻击。</p>
-     */
+    /// 一次挥鞭只在当前攻击时段存在，不能跨世界保存。
+    ///
+    /// <p>这与 1.21 的挥鞭实体一致，也避免重新载入时只恢复通用弹幕快照、却缺少挥动进度和
+    /// 轨迹历史而生成残缺攻击。</p>
     @Override
     public boolean shouldBeSaved() {
         return false;

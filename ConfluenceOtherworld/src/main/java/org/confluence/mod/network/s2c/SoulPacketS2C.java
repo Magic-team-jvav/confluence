@@ -1,12 +1,12 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record SoulPacketS2C(int maxSoul, float currentSoul,
@@ -24,9 +24,7 @@ public record SoulPacketS2C(int maxSoul, float currentSoul,
         return ID;
     }
 
-    /**
-     * 魂力缓存由客户端界面读取，必须在客户端主线程更新。
-     */
+    /// 魂力缓存由客户端界面读取，必须在客户端主线程更新。
     @Override
     public void handle(IPortPacket.Context context) {
         Player player = context.player();

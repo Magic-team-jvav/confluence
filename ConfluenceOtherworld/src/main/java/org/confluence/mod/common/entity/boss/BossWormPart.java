@@ -24,12 +24,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-/**
- * 由 {@link BaseWormBoss} 头部管理的临时身体或尾部实体。
- *
- * <p>体节把伤害转交给具有权威状态的头部；区块重新加载后也由头部重建整条体节链。
- * 因此体节只保存恢复归属所需的最小信息，不能独立决定 Boss 生命周期。</p>
- */
+/// 由 {@link BaseWormBoss} 头部管理的临时身体或尾部实体。
+///
+/// <p>体节把伤害转交给具有权威状态的头部；区块重新加载后也由头部重建整条体节链。
+/// 因此体节只保存恢复归属所需的最小信息，不能独立决定 Boss 生命周期。</p>
 public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     private static final float EATER_COLLISION_DAMAGE = 4.0F;
     private static final float DESTROYER_COLLISION_DAMAGE = 66.0F;
@@ -170,10 +168,8 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         }
     }
 
-    /**
-     * 同步毁灭者体节侧翼状态。体节是可随区块重建的临时实体，因此它只保存渲染所需
-     * 的镜像；阶段和探测器释放记录始终以头部为准。
-     */
+    /// 同步毁灭者体节侧翼状态。体节是可随区块重建的临时实体，因此它只保存渲染所需
+    /// 的镜像；阶段和探测器释放记录始终以头部为准。
     void updateDestroyerPresentation(TheDestroyer destroyer) {
         boolean insideSolid = level().getBlockState(blockPosition()).isSolid();
         boolean open = destroyer.getPhase() == TheDestroyer.Phase.SKY
@@ -231,11 +227,9 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         }
     }
 
-    /**
-     * 世界吞噬怪的每个体节都拥有独立射击冷却。冷却只在体节露天且主体持有
-     * 有效目标时推进，保持与 1.21 侧相同的条件；弹幕归属主体，以便统一使用
-     * Boss 的阵营过滤和伤害来源，但出生点仍取当前体节位置。
-     */
+    /// 世界吞噬怪的每个体节都拥有独立射击冷却。冷却只在体节露天且主体持有
+    /// 有效目标时推进，保持与 1.21 侧相同的条件；弹幕归属主体，以便统一使用
+    /// Boss 的阵营过滤和伤害来源，但出生点仍取当前体节位置。
     private void tickEaterRangedAttack(BaseWormBoss head) {
         if (!(head instanceof EaterOfWorlds eater)
                 || !(level() instanceof ServerLevel serverLevel)) {

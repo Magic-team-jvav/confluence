@@ -30,13 +30,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 猩红魔杖与雨云魔杖生成的母云弹幕，负责追踪落点并按固定周期派生雨滴。
- *
- * <p>雨滴实体类型、周期、穿透上限和目标 UUID 都会影响服务端玩法，因此必须作为一份版本化
- * 运行状态原子恢复。运行时实体数字 ID 只用于双端同步；未知注册 ID、错误类型或越界数值会
- * 使当前存档实体失效，不能借助默认注册表继续生成其他实体。</p>
- */
+/// 猩红魔杖与雨云魔杖生成的母云弹幕，负责追踪落点并按固定周期派生雨滴。
+///
+/// <p>雨滴实体类型、周期、穿透上限和目标 UUID 都会影响服务端玩法，因此必须作为一份版本化
+/// 运行状态原子恢复。运行时实体数字 ID 只用于双端同步；未知注册 ID、错误类型或越界数值会
+/// 使当前存档实体失效，不能借助默认注册表继续生成其他实体。</p>
 public class CloudProjectile extends AbstractManaProjectile implements GeoEntity {
     protected static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(CloudProjectile.class, EntityDataSerializers.INT);
     private static final String RUNTIME_TAG = "ConfluenceCloudRuntime";
@@ -50,13 +48,9 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     private EntityType<? extends RainProjectile> rainType;
     private int duration;
     private int maxPenetrate;
-    /**
-     * 当前格式损坏后只允许无副作用地销毁，不再进入派生雨滴路径。
-     */
+    /// 当前格式损坏后只允许无副作用地销毁，不再进入派生雨滴路径。
     private boolean invalidRuntimeState;
-    /**
-     * 仅重载实体需要验证云杖引用；新生成实体会在同一事务的成功回调中登记。
-     */
+    /// 仅重载实体需要验证云杖引用；新生成实体会在同一事务的成功回调中登记。
     private boolean requiresTrackingReference;
 
     public CloudProjectile(EntityType<? extends CloudProjectile> entityType, Level level) {
@@ -262,9 +256,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
         compound.put(RUNTIME_TAG, runtime);
     }
 
-    /**
-     * 根据母云自身类型提供 1.20 本地注册表默认值，不能复用 1.21 的 ID 字面量。
-     */
+    /// 根据母云自身类型提供 1.20 本地注册表默认值，不能复用 1.21 的 ID 字面量。
     private void applyLocalDefaults(EntityType<? extends CloudProjectile> cloudType) {
         if (cloudType == ModEntities.RAIN_CLOUD.get()) {
             rainType = ModEntities.RAIN.get();
@@ -277,9 +269,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
         }
     }
 
-    /**
-     * 公共构造路径尽早拒绝开发者传入的无效配置；异常文本保持英文。
-     */
+    /// 公共构造路径尽早拒绝开发者传入的无效配置；异常文本保持英文。
     private void configureRain(EntityType<? extends RainProjectile> type, int configuredDuration, int configuredMaxPenetrate) {
         if (type == null) {
             throw new IllegalArgumentException("Cloud rain type cannot be null");
@@ -295,10 +285,8 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
         maxPenetrate = configuredMaxPenetrate;
     }
 
-    /**
-     * 实体注册表有默认值，必须先走 Optional 查询；随后实例化一个未入世界的探针验证运行时类型，
-     * 防止泛型擦除或外部数据把任意实体类型伪装成雨滴。
-     */
+    /// 实体注册表有默认值，必须先走 Optional 查询；随后实例化一个未入世界的探针验证运行时类型，
+    /// 防止泛型擦除或外部数据把任意实体类型伪装成雨滴。
     @SuppressWarnings("unchecked")
     private @Nullable EntityType<? extends RainProjectile> resolveRainType(@Nullable ResourceLocation id) {
         if (id == null) return null;

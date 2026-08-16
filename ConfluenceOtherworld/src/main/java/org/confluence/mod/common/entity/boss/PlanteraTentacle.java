@@ -17,15 +17,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * 世纪之花第二阶段的附着触手。
- *
- * <p>触手不是一次性弹幕，也不会追逐生成瞬间保存的玩家坐标。每根触手拥有一个由
- * 世纪之花管理的固定槽位：前八根附着在本体，其余九根平均附着在三个钩爪上。
- * 槽位同时决定触手围绕锚点的基础方向，玩家吸引和同组触手排斥只负责连续修正方向，
- * 因此不会全部重叠到同一个点。</p>
- *
- * <p>实体本身不写入区块存档。世纪之花是唯一的生命周期权威，在进入第二阶段、
- * 重新加载或触手被击毁后的冷却结束时按槽位重建，避免临时部件重复加载。</p>
+ * 世纪之花触手——从方块表面伸出攻击玩家，短时间后消失。
  */
 public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntity {
     private static final String SLOT_TAG = "Slot";
@@ -49,9 +41,7 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
         this.noPhysics = true;
     }
 
-    /**
-     * 将新建触手绑定到指定槽位。槽位必须由世纪之花分配，外部调用者不应自行复用。
-     */
+    /// 将新建触手绑定到指定槽位。槽位必须由世纪之花分配，外部调用者不应自行复用。
     public void setMaster(Plantera master, int slot) {
         entityData.set(SLOT, Mth.clamp(slot, 0, Plantera.TENTACLE_COUNT - 1));
         bindTo(master);
@@ -141,10 +131,8 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
         }
     }
 
-    /**
-     * 绕当前偏移与目标偏移的叉积旋转指定角度；使用 Rodrigues 公式避免把
-     * 1.21 的 JOML 四元数实现原样搬进公共实体逻辑。
-     */
+    /// 绕当前偏移与目标偏移的叉积旋转指定角度；使用 Rodrigues 公式避免把
+    /// 1.21 的 JOML 四元数实现原样搬进公共实体逻辑。
     private static Vec3 rotateToward(
             Vec3 offset,
             Vec3 targetOffset,

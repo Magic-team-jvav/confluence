@@ -17,12 +17,10 @@ import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.mod.common.item.mana.FlamelashItem;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
-/**
- * 烈焰火鞭弹幕。
- *
- * <p>第一次命中造成直接伤害，之后的命中改为爆炸，因此 {@link #penetrated} 是不可丢失的
- * 服务端阶段状态。它与拖拽/已发射阶段分开保存，便于各层独立校验；1.20 不读取旧扁平字段。</p>
- */
+/// 烈焰火鞭弹幕。
+///
+/// <p>第一次命中造成直接伤害，之后的命中改为爆炸，因此 {@link #penetrated} 是不可丢失的
+/// 服务端阶段状态。它与拖拽/已发射阶段分开保存，便于各层独立校验；1.20 不读取旧扁平字段。</p>
 public class FlamelashProjectile extends BaseDraggingProjectile {
     private static final String RUNTIME_TAG = "ConfluenceFlamelashRuntime";
     private static final int RUNTIME_VERSION = 1;

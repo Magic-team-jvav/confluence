@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
 /**
- * 猩红史莱姆保持 1.21 侧实际生效的二号体型，并在成功接触攻击时有概率施加黑暗。
+ * 猩红史莱姆 —— 攻击致盲，生成时随机大小。
  */
 public class Crimslime extends BaseSlime {
 

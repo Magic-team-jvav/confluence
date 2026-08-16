@@ -15,12 +15,10 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEffects;
 import org.joml.Vector3f;
 
-/**
- * 独眼巨鹿远距离攻击抛出的冰块。
- *
- * <p>冰块保留 1.21 侧的高抛运动：生成时获得向上的随机速度，
- * 随后持续受重力影响并轻微衰减。伤害与霜冻效果只在服务端命中成功后结算。</p>
- */
+/// 独眼巨鹿远距离攻击抛出的冰块。
+///
+/// <p>冰块保留 1.21 侧的高抛运动：生成时获得向上的随机速度，
+/// 随后持续受重力影响并轻微衰减。伤害与霜冻效果只在服务端命中成功后结算。</p>
 public final class DeerclopsThrownIceProjectile extends StraightMonsterProjectile {
     private static final EntityDataAccessor<Vector3f> DATA_ROTATION_AXIS =
             SynchedEntityData.defineId(

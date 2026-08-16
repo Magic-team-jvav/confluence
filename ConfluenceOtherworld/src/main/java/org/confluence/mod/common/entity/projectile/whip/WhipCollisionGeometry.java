@@ -6,12 +6,10 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-/**
- * 鞭子折线的无状态碰撞几何。
- *
- * <p>这里不读取实体或世界状态，只判断目标包围盒是否与当前折线或相邻逻辑帧之间的扫掠区域相交。
- * 独立出来后，服务端攻击实体只负责收集候选和结算伤害，几何边界可以在普通单元测试中精确验证。</p>
- */
+/// 鞭子折线的无状态碰撞几何。
+///
+/// <p>这里不读取实体或世界状态，只判断目标包围盒是否与当前折线或相邻逻辑帧之间的扫掠区域相交。
+/// 独立出来后，服务端攻击实体只负责收集候选和结算伤害，几何边界可以在普通单元测试中精确验证。</p>
 final class WhipCollisionGeometry {
     private static final int SWEEP_SUBSTEPS = 4;
 
@@ -70,11 +68,9 @@ final class WhipCollisionGeometry {
         return false;
     }
 
-    /**
-     * 判断线段是否接触包围盒，同时覆盖线段整体位于盒内的情况。
-     * {@link AABB#clip(Vec3, Vec3)} 只返回线段与盒子边界的交点；当两个端点都已经
-     * 位于盒内时不存在“穿入边界”，因此必须先检查端点，否则近距离命中会被漏掉。
-     */
+    /// 判断线段是否接触包围盒，同时覆盖线段整体位于盒内的情况。
+    /// {@link AABB#clip(Vec3, Vec3)} 只返回线段与盒子边界的交点；当两个端点都已经
+    /// 位于盒内时不存在“穿入边界”，因此必须先检查端点，否则近距离命中会被漏掉。
     private static boolean intersectsSegment(
             AABB box,
             Vec3 from,

@@ -26,12 +26,10 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.UUID;
 
-/**
- * 在行走、缩壳和翻滚之间循环的巨大卷壳虫。
- *
- * <p>受到攻击会提前进入缩壳阶段；缩壳期间提高护甲，随后朝目标翻滚并以实体碰撞结算一次
- * 近战伤害。阶段与外观变种均同步并保存，客户端只根据同步状态选择动画，不参与战斗判定。</p>
- */
+/// 在行走、缩壳和翻滚之间循环的巨大卷壳虫。
+///
+/// <p>受到攻击会提前进入缩壳阶段；缩壳期间提高护甲，随后朝目标翻滚并以实体碰撞结算一次
+/// 近战伤害。阶段与外观变种均同步并保存，客户端只根据同步状态选择动画，不参与战斗判定。</p>
 public final class GiantShelly extends BaseMonster {
     private static final String PHASE_TAG = "Phase";
     private static final String PHASE_TICKS_TAG = "PhaseTicks";
@@ -177,12 +175,10 @@ public final class GiantShelly extends BaseMonster {
         }
     }
 
-    /**
-     * 缩壳、翻滚和复原阶段都保留 1.21 的扩大碰撞攻击。
-     *
-     * <p>命中后等待 20 tick；当前范围内没有玩家时只等待 1 tick 后重试。冷却仅在
-     * 封闭阶段推进，因此普通行走不会提前消耗下一次缩壳的首次检测时间。</p>
-     */
+    /// 缩壳、翻滚和复原阶段都保留 1.21 的扩大碰撞攻击。
+    ///
+    /// <p>命中后等待 20 tick；当前范围内没有玩家时只等待 1 tick 后重试。冷却仅在
+    /// 封闭阶段推进，因此普通行走不会提前消耗下一次缩壳的首次检测时间。</p>
     private void updateCollisionAttack() {
         if (getPhase().ordinal() <= Phase.WALK.ordinal()) {
             return;

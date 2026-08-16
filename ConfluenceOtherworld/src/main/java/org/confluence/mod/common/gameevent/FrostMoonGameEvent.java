@@ -11,12 +11,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
 
-/**
- * 霜月事件的基础生命周期。
- *
- * <p>当前工程还没有霜月完整波次和敌怪池，因此这里先只接管事件开关、存档同步和夜晚结束判定。
- * 后续补波次时可以直接围绕 {@link #started()} 挂载刷怪和进度结算，不需要再改调用入口。</p>
- */
+// todo
 public enum FrostMoonGameEvent implements GameEvent {
     INSTANCE;
     public static final ResourceKey<FrostMoonGameEvent> KEY = GameEvent.createKey(Confluence.asResource("frost_moon"));

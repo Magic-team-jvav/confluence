@@ -290,7 +290,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<Snatcher>> SNATCHER = registerEntity("snatcher", EntityType.Builder.of(Snatcher::new, MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Snatcher>> MAN_EATER = registerEntity("man_eater", EntityType.Builder.of(Snatcher::new, MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10));
 
-    // 幽灵与宝箱怪不使用预制行为配置，实体自身提供完整逻辑。
+    // Wraith + Mimics (non-prefab, self-contained)
     public static final RegistryObject<EntityType<Wraith>> WRAITH = registerEntity("wraith", EntityType.Builder.of(Wraith::new, MobCategory.MONSTER).sized(1F, 2F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<WoodenMimic>> WOODEN_MIMIC = registerEntity("wooden_mimic", EntityType.Builder.of(WoodenMimic::new, MobCategory.MONSTER).sized(0.8f, 0.8f).clientTrackingRange(10));
     public static final RegistryObject<EntityType<WoodenMimic>> GOLDEN_MIMIC = registerEntity("golden_mimic", EntityType.Builder.of(WoodenMimic::new, MobCategory.MONSTER).sized(0.8f, 0.8f).clientTrackingRange(10));
@@ -430,12 +430,10 @@ public class MonsterEntities {
                         .clientTrackingRange(10));
     }
 
-    /**
-     * 注册需要哥布林专用浮水行为的人形敌怪。
-     *
-     * <p>装备和动画仍由实体注册项直接声明；这里只把哥布林独有的水中行为与
-     * 普通人形怪分开，避免通过类型判断或注册表名称推测运行逻辑。</p>
-     */
+    /// 注册需要哥布林专用浮水行为的人形敌怪。
+    ///
+    /// <p>装备和动画仍由实体注册项直接声明；这里只把哥布林独有的水中行为与
+    /// 普通人形怪分开，避免通过类型判断或注册表名称推测运行逻辑。</p>
     private static RegistryObject<EntityType<GoblinMonster>>
     registerGoblinLand(
             String name,
@@ -456,9 +454,7 @@ public class MonsterEntities {
                         .clientTrackingRange(10));
     }
 
-    /**
-     * 注册发现目标后加速的普通陆行怪，实体仍复用通用近战行为。
-     */
+    /// 注册发现目标后加速的普通陆行怪，实体仍复用通用近战行为。
     private static RegistryObject<EntityType<BaseWarriorMonster>>
     registerAcceleratingLand(
             String name,

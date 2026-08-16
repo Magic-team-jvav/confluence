@@ -17,12 +17,10 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/**
- * 独眼巨鹿用于惩罚高处目标的暗影之手。
- *
- * <p>方向在生成时锁定，前十 tick 负责预警，随后十四 tick 快速突进，
- * 最后减速消散。它不会在飞行途中重新索敌，因此玩家仍可通过移动躲避。</p>
- */
+/// 独眼巨鹿用于惩罚高处目标的暗影之手。
+///
+/// <p>方向在生成时锁定，前十 tick 负责预警，随后十四 tick 快速突进，
+/// 最后减速消散。它不会在飞行途中重新索敌，因此玩家仍可通过移动躲避。</p>
 public final class DeerclopsShadowHandProjectile extends StraightMonsterProjectile
         implements GeoEntity {
     private static final EntityDataAccessor<Vector3f> DATA_ATTACK_DIRECTION =
@@ -66,11 +64,9 @@ public final class DeerclopsShadowHandProjectile extends StraightMonsterProjecti
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        /*
-         * 前十 tick 是纯预警阶段。此时弹幕尚未移动，方块射线可能因为出生点
-         * 紧贴墙面而立即报告命中；预警阶段不得因此少掉一只手。开始突进后
-         * 恢复通用方块碰撞，玩家仍可借助墙体阻挡攻击。
-         */
+        /// 前十 tick 是纯预警阶段。此时弹幕尚未移动，方块射线可能因为出生点
+        /// 紧贴墙面而立即报告命中；预警阶段不得因此少掉一只手。开始突进后
+        /// 恢复通用方块碰撞，玩家仍可借助墙体阻挡攻击。
         if (tickCount > 10) {
             super.onHitBlock(result);
         }

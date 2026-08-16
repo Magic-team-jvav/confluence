@@ -26,8 +26,8 @@ import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.entity.PortEntityJoinLevelEvent;
 import org.mesdag.portlib.event.entity.PortEntityInvulnerabilityCheckEvent;
+import org.mesdag.portlib.event.entity.PortEntityJoinLevelEvent;
 import org.mesdag.portlib.event.entity.PortEntityMountEvent;
 
 public final class EntityEvents {
@@ -37,13 +37,11 @@ public final class EntityEvents {
         PortEventHandler.addListener(EntityEvents::invulnerabilityCheck);
     }
 
-    /**
-     * 统一处理所有生成路径最终都会触发的实体加入事件。
-     *
-     * <p>从区块存档恢复的 Boss 不应再次发送苏醒消息。多人强化则始终进行
-     * 一次幂等检查，以兼容未经过 {@code finalizeSpawn} 的脚本生成和直接
-     * {@code addFreshEntity} 路径。</p>
-     */
+    /// 统一处理所有生成路径最终都会触发的实体加入事件。
+    ///
+    /// <p>从区块存档恢复的 Boss 不应再次发送苏醒消息。多人强化则始终进行
+    /// 一次幂等检查，以兼容未经过 {@code finalizeSpawn} 的脚本生成和直接
+    /// {@code addFreshEntity} 路径。</p>
     private static void joinLevel(PortEntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
         if (!(entity instanceof Boss boss) || entity.level().isClientSide) {

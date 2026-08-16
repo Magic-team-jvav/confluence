@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * 按弧长从鞭子折线上提取模型放置点。
- *
- * <p>该类只处理已经确定的世界坐标曲线，不参与挥动轨迹计算。固定间距与固定数量
- * 共用同一份累计弧长数据，避免两种模式在折线转角处使用不同的插值规则。</p>
- */
+/// 按弧长从鞭子折线上提取模型放置点。
+///
+/// <p>该类只处理已经确定的世界坐标曲线，不参与挥动轨迹计算。固定间距与固定数量
+/// 共用同一份累计弧长数据，避免两种模式在折线转角处使用不同的插值规则。</p>
 public final class WhipPolylineSamples {
     private static final double EPSILON = 1.0E-6;
 

@@ -18,9 +18,7 @@ import org.confluence.mod.common.init.ModEffects;
 
 import java.util.Comparator;
 
-/**
- * Confluence 自带弹药所使用的标准行为。
- */
+/// Confluence 自带弹药所使用的标准行为。
 public final class BulletBehaviors {
     public static final BulletBehavior NORMAL = simple("");
     public static final BulletBehavior SILVER_PARTICLES = simple("");

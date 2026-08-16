@@ -4,8 +4,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -16,11 +16,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * 骷髅王之手。
- *
- * <p>手在待机时停留于头部左右两侧；攻击时先从玩家方向向后蓄势，再穿过玩家到达另一侧。
- * 这两段位移与 1.21 侧使用相同的间隔和速度，不能简化成绕圈后直接冲向玩家，否则挥击方向、
- * 首次攻击时机和专家难度节奏都会发生变化。</p>
+ * 骷髅王之手。绕头部轨道运行，周期性挥击玩家。
  */
 public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity {
     private static final int CLASSIC_SLAP_INTERVAL = 45;
@@ -41,9 +37,7 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
     private int slapInterval;
     private double slapSpeed;
     private int slapTick;
-    /**
-     * -1 表示待机，0 表示向后蓄势，1 表示穿过目标。
-     */
+    /// -1 表示待机，0 表示向后蓄势，1 表示穿过目标。
     private int slapPhase = -1;
     private Vec3 phaseTarget = Vec3.ZERO;
 

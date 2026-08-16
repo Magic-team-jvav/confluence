@@ -7,13 +7,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 
-/**
- * 恶魔生物发射的镰刀弹幕。
- *
- * <p>它与玩家法杖生成的恶魔镰刀使用相同的外观和后段加速规律，
- * 但伤害来源、所有者约束和生命周期属于敌对生物攻击，二者不能共享
- * 玩家法力弹幕的持久化与战斗快照状态。</p>
- */
+/// 恶魔生物发射的镰刀弹幕。
+///
+/// <p>它与玩家法杖生成的恶魔镰刀使用相同的外观和后段加速规律，
+/// 但伤害来源、所有者约束和生命周期属于敌对生物攻击，二者不能共享
+/// 玩家法力弹幕的持久化与战斗快照状态。</p>
 public final class HostileDemonScytheProjectile
         extends StraightMonsterProjectile implements IAxisZRotate {
     private static final double MAX_SPEED_SQUARED = 2.18300625;

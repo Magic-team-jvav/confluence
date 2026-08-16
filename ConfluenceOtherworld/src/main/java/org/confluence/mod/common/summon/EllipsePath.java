@@ -6,9 +6,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-/**
- * 根据长轴端点、平面法线和短轴比例计算椭圆轨迹。
- */
+/// 根据长轴端点、平面法线和短轴比例计算椭圆轨迹。
 public final class EllipsePath {
     private final Vec3 center;
     private final Vec3 major;

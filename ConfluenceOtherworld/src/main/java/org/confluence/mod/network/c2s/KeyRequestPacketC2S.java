@@ -26,9 +26,7 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
         return ID;
     }
 
-    /**
-     * 快捷键请求会消耗物品或修改玩家效果，必须回到服务端主线程执行。
-     */
+    /// 快捷键请求会消耗物品或修改玩家效果，必须回到服务端主线程执行。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {
@@ -43,11 +41,9 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
         } else if (key == KEY_MANA) {
             ManaPotionItem.use(player);
         } else if (key == KEY_CLAIRVOYANCE) {
-            /*
-             * 客户端只能报告水晶球界面按钮被点击，不能直接授予效果。
-             * 服务端重新验证当前菜单及方块距离，关闭界面、破坏方块或伪造数据包
-             * 都不能绕过这一权限边界。
-             */
+            /// 客户端只能报告水晶球界面按钮被点击，不能直接授予效果。
+            /// 服务端重新验证当前菜单及方块距离，关闭界面、破坏方块或伪造数据包
+            /// 都不能绕过这一权限边界。
             if (!canGrantClairvoyance(player)) return;
             player.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE.get(), MobEffectInstance.INFINITE_DURATION));
             ManaStorage.of(player).flushAbility(player);

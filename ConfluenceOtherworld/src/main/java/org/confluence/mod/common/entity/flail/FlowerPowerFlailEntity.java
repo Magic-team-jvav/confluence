@@ -13,9 +13,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 import java.util.Comparator;
 
-/**
- * 花之力链锤实体，定期向最近的有效目标发射花瓣。
- */
+/// 花之力链锤实体，定期向最近的有效目标发射花瓣。
 public final class FlowerPowerFlailEntity extends BaseFlailEntity {
     private int shootTimer;
 

@@ -58,19 +58,15 @@ public interface Immunity {
         }
     }
 
-    /**
-     * 返回指定伤害来源是否仍处于目标的局部无敌时间内。
-     */
+    /// 返回指定伤害来源是否仍处于目标的局部无敌时间内。
     static boolean isActive(Immunity cause, LivingEntity victim) {
         return ILivingEntity.of(victim).confluence$getImmunityTicks().containsKey(cause);
     }
 
-    /**
-     * 为无法从 {@link DamageSource} 反查来源对象的伤害写入无敌时间。
-     *
-     * <p>非实体召唤物没有可放入伤害来源的直接实体，因此由运行对象在成功命中后显式调用。
-     * 普通实体与弹幕仍由伤害事件自动调用 {@link #calculateInvTicks(DamageSource, LivingEntity)}。</p>
-     */
+    /// 为无法从 {@link DamageSource} 反查来源对象的伤害写入无敌时间。
+    ///
+    /// <p>非实体召唤物没有可放入伤害来源的直接实体，因此由运行对象在成功命中后显式调用。
+    /// 普通实体与弹幕仍由伤害事件自动调用 {@link #calculateInvTicks(DamageSource, LivingEntity)}。</p>
     static void apply(Immunity cause, DamageSource damageSource, LivingEntity victim) {
         int duration = cause.confluence$getImmunityDuration(damageSource);
         if (duration > 0) {

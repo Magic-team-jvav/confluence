@@ -13,13 +13,11 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/**
- * 克苏鲁之脑进入第二阶段后生成的镜像幻象。
- *
- * <p>幻象不是另一只 Boss，也不复制本体的行为树、生命值或奖励逻辑。服务端只维护三个
- * 不同槽位，分别把本体位置沿目标的 X 轴、Z 轴以及 X/Z 两轴进行镜像，从而与本体共同
- * 组成围绕目标的四个候选位置。幻象完全不可交互，并作为临时 Boss 部件随本体统一清理。</p>
- */
+/// 克苏鲁之脑进入第二阶段后生成的镜像幻象。
+///
+/// <p>幻象不是另一只 Boss，也不复制本体的行为树、生命值或奖励逻辑。服务端只维护三个
+/// 不同槽位，分别把本体位置沿目标的 X 轴、Z 轴以及 X/Z 两轴进行镜像，从而与本体共同
+/// 组成围绕目标的四个候选位置。幻象完全不可交互，并作为临时 Boss 部件随本体统一清理。</p>
 public class BrainFake extends BaseBossPart<BrainOfCthulhu>
         implements GeoEntity {
     private static final EntityDataAccessor<Integer> ILLUSION_INDEX =
@@ -34,12 +32,10 @@ public class BrainFake extends BaseBossPart<BrainOfCthulhu>
         super(type, level);
     }
 
-    /**
-     * 将幻象绑定到本体以及固定镜像槽位。
-     *
-     * @param master 克苏鲁之脑本体
-     * @param index  镜像槽位，合法范围为 1 到 3
-     */
+    /// 将幻象绑定到本体以及固定镜像槽位。
+    ///
+    /// @param master 克苏鲁之脑本体
+    /// @param index  镜像槽位，合法范围为 1 到 3
     public void setMaster(BrainOfCthulhu master, int index) {
         setIllusionIndex(index);
         bindTo(master);

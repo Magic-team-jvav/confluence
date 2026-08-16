@@ -6,7 +6,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -28,9 +27,7 @@ public class BoomerangItem extends Item {
         this.settings = settings;
     }
 
-    /**
-     * 左键包和右键入口共用同一套发射逻辑，避免两个按键路径以后出现伤害、冷却或数量上限差异。
-     */
+    /// 左键包和右键入口共用同一套发射逻辑，避免两个按键路径以后出现伤害、冷却或数量上限差异。
     public void throwBoomerang(ServerPlayer player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         int maximumActive = settings.maxCount()

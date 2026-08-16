@@ -10,12 +10,10 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summon.GroundMeleeSummon;
 import org.confluence.mod.common.summon.SummonPose;
 
-/**
- * 铁傀儡召唤物运行实例。
- *
- * <p>逻辑保留 1.21 侧的铁傀儡式近战：主动接近目标，攻击时播放铁傀儡挥击音效，命中后给予上挑反馈。
- * 类型名使用 1.21 的 {@code i_32_iron_golem}，避免同一个召唤物在注册、同步和渲染层出现两套命名。</p>
- */
+/// 铁傀儡召唤物运行实例。
+///
+/// <p>逻辑保留 1.21 侧的铁傀儡式近战：主动接近目标，攻击时播放铁傀儡挥击音效，命中后给予上挑反馈。
+/// 类型名使用 1.21 的 {@code i_32_iron_golem}，避免同一个召唤物在注册、同步和渲染层出现两套命名。</p>
 public final class IronGolemSummon extends GroundMeleeSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 8.0F;

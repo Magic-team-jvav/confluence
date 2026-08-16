@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,17 +34,15 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.EnumMap;
 import java.util.List;
 
-/**
- * 本源末影龙的服务端权威战斗实现。
- *
- * <p>1.21 版本只有第一阶段行为：平滑追踪与惯性俯冲、短时头部激光、概率着陆，
- * 以及两轮游走后发射原版龙息弹。这里保留同样的可见行为，但把未完成的通用行为树
- * 改为可保存的显式状态机，避免重载后攻击循环、着陆状态或飞行目标丢失。</p>
- *
- * <p>主体负责渲染、生命、Boss 条、目标、移动和奖励；头、身体、三节尾巴和双翼
- * 使用七个无渲染临时部件提供真实受击区域。部件不保存且不独立结算奖励，主体重载后
- * 按槽位补齐，主动撤离或死亡时统一清理。</p>
- */
+/// 本源末影龙的服务端权威战斗实现。
+///
+/// <p>1.21 版本只有第一阶段行为：平滑追踪与惯性俯冲、短时头部激光、概率着陆，
+/// 以及两轮游走后发射原版龙息弹。这里保留同样的可见行为，但把未完成的通用行为树
+/// 改为可保存的显式状态机，避免重载后攻击循环、着陆状态或飞行目标丢失。</p>
+///
+/// <p>主体负责渲染、生命、Boss 条、目标、移动和奖励；头、身体、三节尾巴和双翼
+/// 使用七个无渲染临时部件提供真实受击区域。部件不保存且不独立结算奖励，主体重载后
+/// 按槽位补齐，主动撤离或死亡时统一清理。</p>
 public final class PrimeEnderDragon extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE =
             SynchedEntityData.defineId(
@@ -164,11 +161,9 @@ public final class PrimeEnderDragon extends BaseBoss {
     @Override
     public void setNoAi(boolean noAi) {
         super.setNoAi(noAi);
-        /*
-         * 本源末影龙的头部、身体、尾巴和双翼碰撞框是本体战斗能力的一部分，
-         * 不能因为调试、暂停或加载流程临时关闭 AI 就延后创建。1.21 侧这些部件
-         * 在构造期即存在；1.20 侧改为可重建实体后，也要保持“需要时始终可用”的语义。
-         */
+        /// 本源末影龙的头部、身体、尾巴和双翼碰撞框是本体战斗能力的一部分，
+        /// 不能因为调试、暂停或加载流程临时关闭 AI 就延后创建。1.21 侧这些部件
+        /// 在构造期即存在；1.20 侧改为可重建实体后，也要保持“需要时始终可用”的语义。
         ensureParts();
     }
 
@@ -457,22 +452,18 @@ public final class PrimeEnderDragon extends BaseBoss {
         return hits;
     }
 
-    /**
-     * 返回客户端绘制激光所需的权威长度。
-     *
-     * <p>长度由服务端逐 tick 增减并通过实体数据同步，客户端不得自行计时，
-     * 否则网络抖动或暂停会让可见光束与真实伤害距离分离。</p>
-     */
+    /// 返回客户端绘制激光所需的权威长度。
+    ///
+    /// <p>长度由服务端逐 tick 增减并通过实体数据同步，客户端不得自行计时，
+    /// 否则网络抖动或暂停会让可见光束与真实伤害距离分离。</p>
     public float getLaserRange() {
         return easeLaserRange(entityData.get(DATA_LASER_RANGE));
     }
 
-    /**
-     * 计算当前头部激光的世界坐标起点。
-     *
-     * <p>临时碰撞部件可能比主体晚一包到达客户端，因此渲染起点只依赖主体
-     * 姿态；服务端伤害仍优先使用真实头部碰撞箱中心。</p>
-     */
+    /// 计算当前头部激光的世界坐标起点。
+    ///
+    /// <p>临时碰撞部件可能比主体晚一包到达客户端，因此渲染起点只依赖主体
+    /// 姿态；服务端伤害仍优先使用真实头部碰撞箱中心。</p>
     public Vec3 getLaserOrigin(float partialTick) {
         double x = Mth.lerp(partialTick, xo, getX());
         double y = Mth.lerp(partialTick, yo, getY());
@@ -706,9 +697,7 @@ public final class PrimeEnderDragon extends BaseBoss {
         }
     }
 
-    /**
-     * 七个固定碰撞槽位及其 1.21 尺寸。
-     */
+    /// 七个固定碰撞槽位及其 1.21 尺寸。
     public enum PartSlot {
         HEAD(2.0F, 2.0F),
         BODY(6.0F, 3.0F),

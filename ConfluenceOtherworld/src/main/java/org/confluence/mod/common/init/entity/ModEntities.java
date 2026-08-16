@@ -608,7 +608,7 @@ public final class ModEntities {
                     .noSave()
                     .build(id.toString()));
 
-    // 悠悠球是玩家左键控制的临时武器实体，所有品种共用这一实体类型。
+    // 矿车
     public static final RegistryObject<EntityType<YoyoEntity>> YOYO =
             register("yoyo", id -> EntityType.Builder
                     .of(YoyoEntity::new, MobCategory.MISC)
@@ -619,7 +619,7 @@ public final class ModEntities {
                     .noSave()
                     .build(id.toString()));
 
-    // 矿车
+    // 子弹
     public static final RegistryObject<EntityType<BaseMinecartEntity>> VANILLA_MINECART = registerMinecart("vanilla_minecart", BaseMinecartEntity::new);
     public static final RegistryObject<EntityType<BaseMinecartEntity>> WOODEN_MINECART = registerMinecart("wooden_minecart", BaseMinecartEntity::new);
     public static final RegistryObject<EntityType<GenericMinecartEntity>> GENERIC_MINECART = registerMinecart("generic_minecart", GenericMinecartEntity::new);
@@ -629,9 +629,7 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<MeowmereMinecartEntity>> MEOWMERE_MINECART = registerMinecart("meowmere_minecart", MeowmereMinecartEntity::new);
     public static final RegistryObject<EntityType<DiggingMolecartEntity>> DIGGING_MOLECART = registerMinecart("digging_molecart", DiggingMolecartEntity::new);
 
-    /**
-     * 临时坐骑由坐骑物品创建，不参与自然生成或区块存档。
-     */
+    /// 临时坐骑由坐骑物品创建，不参与自然生成或区块存档。
     public static final RegistryObject<EntityType<RideableSlimeMountEntity>> RIDEABLE_SLIME =
             register("rideable_slime", id -> EntityType.Builder
                     .of(RideableSlimeMountEntity::new, MobCategory.MISC)
@@ -660,7 +658,7 @@ public final class ModEntities {
                     .build(id.toString())
     );
 
-    // 子弹
+    //    public static final RegistryObject<EntityType<InverseEnderMan>> INVERSE_ENDERMAN = register("inverse_enderman", id -> InverseEntityType.create(InverseEnderMan::new, MobCategory.MONSTER, id.toString(), builder -> builder.sized(0.6F, 2.9F)/* todo .eyeHeight(2.55F).passengerAttachments(2.80625F)*/.clientTrackingRange(8)));
     public static final RegistryObject<EntityType<StarCannonBulletEntity>> STAR_CANNON_BULLET = register("star_cannon_bullet", id -> EntityType.Builder.<StarCannonBulletEntity>of(StarCannonBulletEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(id.toString()));
     public static final RegistryObject<EntityType<BeeGunBullet>> BEE_GUN_BULLET = register("bee_gun_bullet", id -> EntityType.Builder.<BeeGunBullet>of(BeeGunBullet::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build(id.toString()));
     public static final RegistryObject<EntityType<BaseBulletEntity>> BASE_BULLET_ENTITY = register("base_bullet", id -> EntityType.Builder.<BaseBulletEntity>of(BaseBulletEntity::new, MobCategory.MISC).sized(0.1f, 0.1f).build(id.toString()));

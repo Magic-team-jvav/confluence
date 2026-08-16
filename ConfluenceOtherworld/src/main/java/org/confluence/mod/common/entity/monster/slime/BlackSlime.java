@@ -18,10 +18,8 @@ import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 黑史莱姆使用同一种实体表达幼体、普通个体和史莱姆之母。
- *
- * <p>母体死亡后会分裂出二至四只幼体。接触攻击在专家难度下有概率附加黑暗，
- * 大师难度则必定附加，以保持与 1.21 侧一致的难度语义。</p>
+ * 黑史莱姆 —— 大小 1=Baby, 2=普通, 3=大型, 4=母体。
+ * 攻击附加黑暗效果，母体死亡时分裂出 1-3 只小史莱姆。
  */
 public class BlackSlime extends BaseSlime {
     private static final int BABY_SIZE = 1;
@@ -69,16 +67,12 @@ public class BlackSlime extends BaseSlime {
         return createSlimeAttributes(6.0f, 4, 25.0f);
     }
 
-    /**
-     * 是否为击杀母体后生成的小史莱姆。
-     */
+    /// 是否为击杀母体后生成的小史莱姆。
     public boolean isBabySlime() {
         return getSlimeSize() == BABY_SIZE;
     }
 
-    /**
-     * 是否为会在死亡后分裂的史莱姆之母。
-     */
+    /// 是否为会在死亡后分裂的史莱姆之母。
     public boolean isMotherSlime() {
         return getSlimeSize() == MOTHER_SIZE;
     }
@@ -104,14 +98,12 @@ public class BlackSlime extends BaseSlime {
         }
     }
 
-    /**
-     * 母体只在死亡实体真正移除时分裂，数量沿用原版史莱姆的二至四只。
-     *
-     * <p>1.21 侧通过原版 {@code Slime#remove} 完成这一过程，而本类不再继承原版
-     * {@code Slime}，因此在相同生命周期节点补回等价逻辑。幼体只改变尺寸，继续使用
-     * 黑史莱姆注册时的基础属性；不能提前在 {@link #die(DamageSource)} 中生成，也不能
-     * 为幼体发明一套 1.21 中不存在的额外属性。</p>
-     */
+    /// 母体只在死亡实体真正移除时分裂，数量沿用原版史莱姆的二至四只。
+    ///
+    /// <p>1.21 侧通过原版 {@code Slime#remove} 完成这一过程，而本类不再继承原版
+    /// {@code Slime}，因此在相同生命周期节点补回等价逻辑。幼体只改变尺寸，继续使用
+    /// 黑史莱姆注册时的基础属性；不能提前在 {@link #die(DamageSource)} 中生成，也不能
+    /// 为幼体发明一套 1.21 中不存在的额外属性。</p>
     @Override
     public void remove(RemovalReason reason) {
         if (!level().isClientSide

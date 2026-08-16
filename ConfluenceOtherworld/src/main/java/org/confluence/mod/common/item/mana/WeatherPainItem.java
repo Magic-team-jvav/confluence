@@ -15,9 +15,7 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 
 import java.util.Optional;
 
-/**
- * 保留向上初速度，并在新龙卷风生成成功后替换旧实体的天气之痛。
- */
+/// 保留向上初速度，并在新龙卷风生成成功后替换旧实体的天气之痛。
 public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
     private TooltipComponent component;
 
@@ -39,7 +37,7 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
         return Optional.of(component);
     }
 
-    /** 返回旧实现“视角速度加 0.4Y”得到的实际运动方向。 */
+    /// 返回旧实现“视角速度加 0.4Y”得到的实际运动方向。
     @Override
     protected Vec3 launchDirection(
             ProjectileFireContext context,
@@ -49,7 +47,7 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
         return weatherMotion(context, snapshot);
     }
 
-    /** 用单枚速度倍率保留附加 Y 速度造成的总速度变化。 */
+    /// 用单枚速度倍率保留附加 Y 速度造成的总速度变化。
     @Override
     protected float velocityMultiplier(
             ProjectileFireContext context,
@@ -66,9 +64,7 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
         return context.viewVector().scale(snapshot.resolvedVelocity()).add(0.0, 0.4, 0.0);
     }
 
-    /**
-     * 新龙卷风已加入世界后才移除旧实体并写入新 UUID。
-     */
+    /// 新龙卷风已加入世界后才移除旧实体并写入新 UUID。
     @Override
     protected void onSuccessfulShot(ProjectileFireContext context, HurtnadoProjectile projectile) {
         ItemStack stack = context.currentWeaponForCommit();

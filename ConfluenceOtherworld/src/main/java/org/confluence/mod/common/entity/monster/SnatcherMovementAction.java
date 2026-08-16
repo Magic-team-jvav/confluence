@@ -7,16 +7,14 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 抓人草的两阶段锚定摆动行为。
- *
- * <p>一个完整周期持续 200 tick，前后半段使用不同的伸展倍率。头部同时叠加
- * 朝向、往复摆动和根部回拉速度，最终速度限制为 0.3，保持与 1.21 侧相同的
- * 藤蔓式运动，而不是直接追逐一个被硬截断的目标点。</p>
- *
- * <p>该状态只保存在行为节点内，不写入实体存档；这与 1.21 的阶段语义一致，
- * 重新加载后从新周期开始。根部和初始方向仍由实体同步与持久化。</p>
- */
+/// 抓人草的两阶段锚定摆动行为。
+///
+/// <p>一个完整周期持续 200 tick，前后半段使用不同的伸展倍率。头部同时叠加
+/// 朝向、往复摆动和根部回拉速度，最终速度限制为 0.3，保持与 1.21 侧相同的
+/// 藤蔓式运动，而不是直接追逐一个被硬截断的目标点。</p>
+///
+/// <p>该状态只保存在行为节点内，不写入实体存档；这与 1.21 的阶段语义一致，
+/// 重新加载后从新周期开始。根部和初始方向仍由实体同步与持久化。</p>
 final class SnatcherMovementAction extends BTNode {
     private static final int CYCLE_TICKS = 200;
     private static final double MAX_SPEED = 0.3;

@@ -14,18 +14,16 @@ import org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent;
 import org.mesdag.portlib.wrapper.world.entity.PortSpawnPlacementType;
 import org.mesdag.portlib.wrapper.world.entity.PortSpawnPlacementTypes;
 
-/**
- * 所有进入自然生成数据的生物放置规则注册中心。
- *
- * <p>注册通过 PortLib 事件完成，保持 Forge 1.20.1 与 NeoForge 1.21.1 的结构对应。任何被
- * 生物群系修饰器列为自然生成候选的实体，都必须在这里获得明确的放置类型和最终谓词；否则
- * 数据包看似包含该生物，运行时却可能沿用错误规则或完全无法生成。</p>
- *
- * <p>实体按生态角色和游戏进度分组。相同语义共用一个谓词，困难模式组再由
- * {@link SpawnPlacementChecks#hardmode(SpawnPlacements.SpawnPredicate)} 叠加进度门槛。
- * {@link PortRegisterSpawnPlacementsEvent.Operation#REPLACE} 用于明确覆盖默认规则，避免模组加载
- * 顺序导致多个谓词以不可预测方式组合。</p>
- */
+/// 所有进入自然生成数据的生物放置规则注册中心。
+///
+/// <p>注册通过 PortLib 事件完成，保持 Forge 1.20.1 与 NeoForge 1.21.1 的结构对应。任何被
+/// 生物群系修饰器列为自然生成候选的实体，都必须在这里获得明确的放置类型和最终谓词；否则
+/// 数据包看似包含该生物，运行时却可能沿用错误规则或完全无法生成。</p>
+///
+/// <p>实体按生态角色和游戏进度分组。相同语义共用一个谓词，困难模式组再由
+/// {@link SpawnPlacementChecks#hardmode(SpawnPlacements.SpawnPredicate)} 叠加进度门槛。
+/// {@link PortRegisterSpawnPlacementsEvent.Operation#REPLACE} 用于明确覆盖默认规则，避免模组加载
+/// 顺序导致多个谓词以不可预测方式组合。</p>
 public final class CreatureSpawnPlacements {
     private CreatureSpawnPlacements() {}
 

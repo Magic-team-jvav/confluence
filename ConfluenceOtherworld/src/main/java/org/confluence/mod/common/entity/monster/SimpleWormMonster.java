@@ -1,11 +1,11 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -15,13 +15,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-/**
- * 只需配置体节数量的通用蠕虫实体。
- *
- * <p>普通自然生成变种没有 Boss 所有者；由血肉类 Boss 召唤的血蛭可以显式绑定精确
- * UUID，并在区块反向加载后恢复双向关系。是否作为从属完全由实例数据决定，不需要为
- * 同一种血蛭再注册一套重复实体类型。</p>
- */
+/// 只需配置体节数量的通用蠕虫实体。
+///
+/// <p>普通自然生成变种没有 Boss 所有者；由血肉类 Boss 召唤的血蛭可以显式绑定精确
+/// UUID，并在区块反向加载后恢复双向关系。是否作为从属完全由实例数据决定，不需要为
+/// 同一种血蛭再注册一套重复实体类型。</p>
 public class SimpleWormMonster extends BaseWormMonster {
     private static final int OWNER_RESOLVE_GRACE_TICKS = 100;
 
@@ -117,9 +115,7 @@ public class SimpleWormMonster extends BaseWormMonster {
         }
     }
 
-    /**
-     * 血肉阵营蠕虫不得攻击同阵营实体；有明确所有者时还需服从所有者的目标过滤。
-     */
+    /// 血肉阵营蠕虫不得攻击同阵营实体；有明确所有者时还需服从所有者的目标过滤。
     @Override
     public boolean canAttack(LivingEntity target) {
         if (getType().is(ModTags.EntityTypes.FLESH_ALLIANCE)
@@ -151,9 +147,7 @@ public class SimpleWormMonster extends BaseWormMonster {
         super.remove(reason);
     }
 
-    /**
-     * 注册项选择实体自身已有的蠕虫行为族，不把运动参数散落到注册表。
-     */
+    /// 注册项选择实体自身已有的蠕虫行为族，不把运动参数散落到注册表。
     public enum Role {
         UNDERGROUND,
         SURFACE,

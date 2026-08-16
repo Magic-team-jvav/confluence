@@ -16,12 +16,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * 在所有者手边创建弹幕的纯布局。
- *
- * <p>“静止”表示生成点跟随手部偏移，并把本枚弹幕速度倍率降为 0。需要持续控制的实体应在自身
- * tick 状态机中接管后续运动。</p>
- */
+/// 在所有者手边创建弹幕的纯布局。
+///
+/// <p>“静止”表示生成点跟随手部偏移，并把本枚弹幕速度倍率降为 0。需要持续控制的实体应在自身
+/// tick 状态机中接管后续运动。</p>
 public record StillGeneration(Vec3 offset) implements IGeneration {
     public static final MapCodec<StillGeneration> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
             Vec3.CODEC.fieldOf("offset").forGetter(StillGeneration::offset)

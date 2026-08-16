@@ -3,15 +3,15 @@ package org.confluence.mod.client.summon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.core.BlockPos;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -26,26 +26,17 @@ import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.common.summon.SummonAnimation;
 import org.confluence.mod.network.s2c.SummonSyncPacketS2C;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
-/**
- * 保存服务端同步的召唤物状态，并在世界渲染阶段绘制对应的客户端表现。
- * 召唤物逻辑仍由服务端驱动；客户端只负责插值、拖尾、待机编队和模型动画。
- * 跟随玩家的召唤剑会直接使用玩家的渲染插值坐标，避免服务端同步间隔导致奔跑时模型和玩家拉开。
- */
+/// 保存服务端同步的召唤物状态，并在世界渲染阶段绘制对应的客户端表现。
+/// 召唤物逻辑仍由服务端驱动；客户端只负责插值、拖尾、待机编队和模型动画。
+/// 跟随玩家的召唤剑会直接使用玩家的渲染插值坐标，避免服务端同步间隔导致奔跑时模型和玩家拉开。
 public final class ClientSummonManager {
     private static final ResourceLocation TERRAPRISMA = Confluence.asResource("terraprisma");
     private static final ResourceLocation TERRAPRISMA_TEXTURE = Confluence.asResource("textures/entity/model/terraprisma_gray.png");
@@ -324,11 +315,9 @@ public final class ClientSummonManager {
         poseStack.popPose();
     }
 
-    /**
-     * 将本地长剑模型固定到玩家背部平面。
-     * 模型本地 Z 轴是剑身方向，X 轴是剑面法线；这里让剑面法线贴住玩家背部方向，
-     * 再把剑身摆成“剑柄在右上、剑刃在左下”，避免沿用追踪目标时的俯仰角。
-     */
+    /// 将本地长剑模型固定到玩家背部平面。
+    /// 模型本地 Z 轴是剑身方向，X 轴是剑面法线；这里让剑面法线贴住玩家背部方向，
+    /// 再把剑身摆成“剑柄在右上、剑刃在左下”，避免沿用追踪目标时的俯仰角。
     private static void applySummonSwordBackPose(PoseStack poseStack, State state, Player owner, float partialTick) {
         applyBackSwordPose(poseStack, state, owner, partialTick, BACK_SWORD_TILT, BACK_SWORD_SWING_DEGREES, 15.0F);
     }
@@ -362,10 +351,8 @@ public final class ClientSummonManager {
                 .add(right.scale(0.32F * layer * side + Mth.sin(idlePhase) * 0.12F));
     }
 
-    /**
-     * 将泰拉棱镜贴到玩家背部平面。
-     * 这里复用召唤剑的背负姿态，保证剑柄位于右上、剑刃位于左下；动态染色仍然由模型渲染阶段处理。
-     */
+    /// 将泰拉棱镜贴到玩家背部平面。
+    /// 这里复用召唤剑的背负姿态，保证剑柄位于右上、剑刃位于左下；动态染色仍然由模型渲染阶段处理。
     private static void applyTerraprismaBackPose(PoseStack poseStack, State state, Player owner, float partialTick) {
         applyBackSwordPose(poseStack, state, owner, partialTick, TERRAPRISMA_BACK_TILT, TERRAPRISMA_BACK_SWING_DEGREES, 12.0F);
     }

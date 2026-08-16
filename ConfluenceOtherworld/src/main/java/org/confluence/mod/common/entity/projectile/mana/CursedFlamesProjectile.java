@@ -12,13 +12,11 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 
-/**
- * 诅咒焰弹幕。
- *
- * <p>除公共魔法弹幕状态外，本类还保存已经消耗的穿透次数。该计数决定下一次命中是否销毁，
- * 属于服务端伤害预算；当前 1.20 格式不读取旧扁平字段，缺失、类型错误或越界时会在再次
- * 命中前通过公共战斗状态安全失效。</p>
- */
+/// 诅咒焰弹幕。
+///
+/// <p>除公共魔法弹幕状态外，本类还保存已经消耗的穿透次数。该计数决定下一次命中是否销毁，
+/// 属于服务端伤害预算；当前 1.20 格式不读取旧扁平字段，缺失、类型错误或越界时会在再次
+/// 命中前通过公共战斗状态安全失效。</p>
 public class CursedFlamesProjectile extends AbstractManaProjectile {
     private static final String RUNTIME_TAG = "ConfluenceCursedFlamesRuntime";
     private static final int RUNTIME_VERSION = 1;

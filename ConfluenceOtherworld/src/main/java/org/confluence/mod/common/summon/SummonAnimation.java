@@ -1,8 +1,6 @@
 package org.confluence.mod.common.summon;
 
-/**
- * 客户端表现层可以复用的基础召唤物动作。
- */
+/// 客户端表现层可以复用的基础召唤物动作。
 public enum SummonAnimation {
     NONE,
     SLASH,

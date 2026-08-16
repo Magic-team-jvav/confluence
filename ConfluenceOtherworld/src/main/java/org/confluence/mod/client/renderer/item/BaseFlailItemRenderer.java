@@ -18,12 +18,10 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 连枷物品手持渲染器。
- *
- * <p>1.21 侧会优先使用单个连枷自己的 Geo 模型，缺失时才回退到公共手柄。1.20
- * 现在暂时只有公共手柄资源，但这里仍保留同样的解析流程，避免以后补资源时还要改代码。</p>
- */
+/// 连枷物品手持渲染器。
+///
+/// <p>1.21 侧会优先使用单个连枷自己的 Geo 模型，缺失时才回退到公共手柄。1.20
+/// 现在暂时只有公共手柄资源，但这里仍保留同样的解析流程，避免以后补资源时还要改代码。</p>
 public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> {
     private static final ResourceLocation HANDLE_MODEL =
             Confluence.asResource("geo/item/flail/handle.geo.json");
@@ -38,13 +36,11 @@ public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> 
         this.model = (FlailItemModel) getGeoModel();
     }
 
-    /**
-     * 按当前物品更新模型和贴图。
-     *
-     * <p>模型优先查找 {@code geo/item/flail/<物品名>.geo.json}，没有时回退到
-     * {@code handle.geo.json}；贴图优先查找 {@code textures/item/flail/<物品名>.png}，
-     * 没有时使用实体连枷默认贴图。</p>
-     */
+    /// 按当前物品更新模型和贴图。
+    ///
+    /// <p>模型优先查找 {@code geo/item/flail/<物品名>.geo.json}，没有时回退到
+    /// {@code handle.geo.json}；贴图优先查找 {@code textures/item/flail/<物品名>.png}，
+    /// 没有时使用实体连枷默认贴图。</p>
     private void updateModelForStack(ItemStack stack) {
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         String name = itemId.getPath();
@@ -59,9 +55,7 @@ public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> 
         model.texture = resourceExists(texture) ? texture : FALLBACK_TEXTURE;
     }
 
-    /**
-     * 检查客户端资源是否存在；缺资源只回退，不在渲染帧里抛错。
-     */
+    /// 检查客户端资源是否存在；缺资源只回退，不在渲染帧里抛错。
     private static boolean resourceExists(ResourceLocation location) {
         return Minecraft.getInstance()
                 .getResourceManager()
@@ -108,9 +102,7 @@ public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> 
                 .orElse(-1);
     }
 
-    /**
-     * 运行时切换模型和贴图路径的轻量 GeoModel。
-     */
+    /// 运行时切换模型和贴图路径的轻量 GeoModel。
     private static final class FlailItemModel extends GeoModel<BaseFlailItem> {
         private ResourceLocation model;
         private ResourceLocation texture;

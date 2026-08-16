@@ -7,9 +7,7 @@ import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -36,9 +34,9 @@ import org.confluence.mod.common.entity.monster.slime.*;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.storage.StorageCompanionEntity;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModGunProperties;
-import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -63,7 +61,6 @@ import org.mesdag.portlib.event.lifecycle.PortFMLLoadCompleteEvent;
 import org.mesdag.portlib.event.other.PortAddPackFindersEvent;
 import org.mesdag.portlib.event.other.PortBlockEntityTypeAddBlocksEvent;
 import org.mesdag.portlib.event.other.PortBuildCreativeModeTabContentsEvent;
-import org.mesdag.portlib.wrapper.world.entity.PortSpawnPlacementTypes;
 
 public final class ModEvents {
     public static void init() {
@@ -90,7 +87,7 @@ public final class ModEvents {
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
-            // TerraBlender 要求 Region 与地表规则在通用初始化阶段、且在它开始构建维度噪声路由前完成注册。
+            //            ModBiomes.registerRegionAndSurface();
             ModBiomes.registerRegionAndSurface();
             if (StartupConfigs.forceAllowWipItemsDisplayInCreativeModeTab()) {
                 WipNotDisplayOutput.forceAllow();
@@ -154,7 +151,7 @@ public final class ModEvents {
         });
     }
 
-// 待接入事件：private static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
+// todo event  private static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
 //        event.register(ModBlocks.HONEY_CAULDRON.get(), ModFluids.HONEY.fluid().get(), FluidType.BUCKET_VOLUME, null);
 //        event.register(ModBlocks.AETHERIUM_CAULDRON.get(), ModFluids.SHIMMER.fluid().get(), FluidType.BUCKET_VOLUME, null);
 //    }
@@ -189,7 +186,7 @@ public final class ModEvents {
         }
     }
 
-// 待接入事件：private static void registerConfigurationTasks(PortRegisterConfigurationTasksEvent event) {
+// todo event  private static void registerConfigurationTasks(PortRegisterConfigurationTasksEvent event) {
 //        event.register(new AchievementsTask(event.getListener()));
 //    }
 
@@ -425,7 +422,7 @@ public final class ModEvents {
         event.put(BossEntities.PRIME_ENDER_DRAGON.get(), PrimeEnderDragon.createAttributes().build());
     }
 
-// 待接入事件：private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
+// todo event  private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
 //        new AttributeRegistration(event)
 //                .set(LibAttributes.getArmorPenetration())
 //                .register(TEBossEntities.QUEEN_BEE.get(), 2)
@@ -529,7 +526,7 @@ public final class ModEvents {
         event.modify(BlockEntityType.CAMPFIRE, FunctionalBlocks.LIFE_CAMPFIRE.get());
     }
 
-// 待接入事件：private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
+// todo event private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
 //        event.registerBlock(ForgeCapabilities.ITEM_HANDLER, (level, pos, state, blockEntity, side) -> {
 //            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
 //                return null;

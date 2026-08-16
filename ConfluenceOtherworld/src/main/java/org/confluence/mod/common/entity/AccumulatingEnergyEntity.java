@@ -34,9 +34,7 @@ public class AccumulatingEnergyEntity extends Entity {
 
     protected ParticleEmitter emitter;
     protected @Nullable LightningBolt lightningBolt;
-    /**
-     * 实体数字 ID 只用于双端同步；跨区块存档恢复必须使用稳定 UUID。
-     */
+    /// 实体数字 ID 只用于双端同步；跨区块存档恢复必须使用稳定 UUID。
     protected @Nullable UUID attachedEntityUUID;
 
     public AccumulatingEnergyEntity(EntityType<? extends AccumulatingEnergyEntity> entityType, Level level) {

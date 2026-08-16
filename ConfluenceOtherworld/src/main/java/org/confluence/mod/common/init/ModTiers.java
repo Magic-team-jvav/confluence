@@ -52,11 +52,9 @@ public final class ModTiers {
 
     // 给一些无限耐久的物品使用的
     public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 4, 1, 18, Ingredient::of);
-    /*
-     * 原版 DiggerItem 会把 Tier 的 uses 写入物品最大耐久，因此不能使用 -1
-     * 表示“无限耐久”：那会直接生成最大耐久为负数的非法物品栈。项目内工具
-     * 统一使用 10000 表示不需要玩家实际维护的超长耐久。
-     */
+    /// 原版 DiggerItem 会把 Tier 的 uses 写入物品最大耐久，因此不能使用 -1
+    /// 表示“无限耐久”：那会直接生成最大耐久为负数的非法物品栈。项目内工具
+    /// 统一使用 10000 表示不需要玩家实际维护的超长耐久。
     public static final Tier GRAVE_DIGGERS_TIER = new PoweredTier(40, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 5.0F, 2.0F, 14, Ingredient::of);
 
     /// @return 原版Tiers的对应镐力

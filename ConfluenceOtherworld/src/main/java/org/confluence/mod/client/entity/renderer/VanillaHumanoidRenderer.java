@@ -14,10 +14,8 @@ import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 import javax.annotation.Nullable;
 
-/**
- * 给复用原版肢体动画的人形 Geo 模型补上手持物品渲染。
- * 骨骼命名沿用 1.20 侧的 V 前缀，因此这里按前缀查找左右手；实际物品位姿保持和 1.21 的手持层一致。
- */
+/// 给复用原版肢体动画的人形 Geo 模型补上手持物品渲染。
+/// 骨骼命名沿用 1.20 侧的 V 前缀，因此这里按前缀查找左右手；实际物品位姿保持和 1.21 的手持层一致。
 public final class VanillaHumanoidRenderer<T extends Mob & GeoEntity> extends GeoNormalRenderer<T> {
     private static final String LEFT_ARM = "Vleft_arm";
     private static final String RIGHT_ARM = "Vright_arm";

@@ -8,12 +8,10 @@ import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.ModEffects;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
-/**
- * 将逃离追逐区域的参战者拉回血肉墙前方。
- *
- * <p>效果每次都从受影响实体保存的 UUID 解析血肉墙，不缓存可被其他战斗覆盖的全局引用。
- * 拉回点使用墙体的实际朝向计算，因此四个水平推进方向具有完全一致的行为。</p>
- */
+/// 将逃离追逐区域的参战者拉回血肉墙前方。
+///
+/// <p>效果每次都从受影响实体保存的 UUID 解析血肉墙，不缓存可被其他战斗覆盖的全局引用。
+/// 拉回点使用墙体的实际朝向计算，因此四个水平推进方向具有完全一致的行为。</p>
 public class TheTongueEffect extends PortMobEffect {
     private static final double EXECUTION_DISTANCE = 1000.0;
     private static final double RELEASE_DISTANCE = 9.0;

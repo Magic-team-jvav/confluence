@@ -7,9 +7,7 @@ import software.bernie.geckolib.animatable.GeoItem;
 
 import java.util.Objects;
 
-/**
- * 外部枪械触发标准手持动画的公共入口。
- */
+/// 外部枪械触发标准手持动画的公共入口。
 public final class HandAnimationApi {
     private HandAnimationApi() {
     }
@@ -34,9 +32,7 @@ public final class HandAnimationApi {
         return played;
     }
 
-    /**
-     * 停止所有声明了指定动作的动画通道。
-     */
+    /// 停止所有声明了指定动作的动画通道。
     public static boolean stop(
             GeoItem animatable,
             ItemStack itemStack,

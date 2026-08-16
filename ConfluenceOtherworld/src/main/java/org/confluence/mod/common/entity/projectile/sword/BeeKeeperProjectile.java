@@ -60,9 +60,7 @@ public class BeeKeeperProjectile extends SwordProjectile {
         return super.canHitEntity(target);
     }
 
-    /**
-     * 自动追踪只选择敌对生物，但飞行途中直接撞到的其他可攻击生物仍应正常受击。
-     */
+    /// 自动追踪只选择敌对生物，但飞行途中直接撞到的其他可攻击生物仍应正常受击。
     private boolean canAutoTarget(Entity target) {
         return target instanceof Enemy && canHitEntity(target);
     }

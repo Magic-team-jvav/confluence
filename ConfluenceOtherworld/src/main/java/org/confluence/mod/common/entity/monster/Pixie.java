@@ -14,8 +14,8 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyingPursuitAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.FlyingPursuitAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -74,9 +74,7 @@ public class Pixie extends BaseFlyingMonster {
         return true;
     }
 
-    /**
-     * 妖精与 1.21 一致，可以利用水面漂浮导航，但不会穿门。
-     */
+    /// 妖精与 1.21 一致，可以利用水面漂浮导航，但不会穿门。
     @Override
     protected PathNavigation createNavigation(Level level) {
         FlyingPathNavigation navigation = new FlyingPathNavigation(this, level);

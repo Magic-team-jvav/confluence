@@ -12,18 +12,12 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.SpawnProjectileAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.*;
 
-/**
- * 地面远程战斗模板。
- *
- * <p>在专用弹幕美术资源移植期间，实体仍使用统一的距离控制与射击参数，
- * 之后替换渲染资源不应改变服务端战斗逻辑。</p>
- */
+/// 地面远程战斗模板。
+///
+/// <p>在专用弹幕美术资源移植期间，实体仍使用统一的距离控制与射击参数，
+/// 之后替换渲染资源不应改变服务端战斗逻辑。</p>
 public abstract class RangedMonster extends BaseWarriorMonster {
     private final int shotCooldown;
     private final double shotMultiplier;
@@ -66,9 +60,7 @@ public abstract class RangedMonster extends BaseWarriorMonster {
         };
     }
 
-    /**
-     * 由具体怪物创建自己的弹幕，基类不根据实体 ID 猜测攻击类型。
-     */
+    /// 由具体怪物创建自己的弹幕，基类不根据实体 ID 猜测攻击类型。
     protected abstract Projectile createProjectile(LivingEntity target);
 
     protected final double shotMultiplier() {

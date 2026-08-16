@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
 /**
- * 尖刺丛林史莱姆使用更高的弹幕伤害，并可在远距离追击前偶尔补射单发尖刺。
+ * 尖刺丛林史莱姆 —— 战斗时发射 8 方向尖刺，游荡时也发射单发尖刺。
  */
 public class SpikedJungleSlime extends SpikedSlime {
 

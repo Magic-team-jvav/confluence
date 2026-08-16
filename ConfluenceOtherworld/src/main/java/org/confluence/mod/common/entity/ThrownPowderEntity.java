@@ -18,13 +18,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * 净化粉、腐化粉等环境转化粉末的飞行实体。
- *
- * <p>实体的最大飞行距离同时也是一次投掷能够执行环境转化的预算。区块卸载后必须继续使用
- * 已消耗的预算，否则玩家可以通过反复卸载区块让同一枚粉末无限延长作用范围。转化类型既保留
- * 服务端字段，也写入同步实体数据，保证重载后的客户端粒子和服务端方块转化使用同一类型。</p>
- */
+/// 净化粉、腐化粉等环境转化粉末的飞行实体。
+///
+/// <p>实体的最大飞行距离同时也是一次投掷能够执行环境转化的预算。区块卸载后必须继续使用
+/// 已消耗的预算，否则玩家可以通过反复卸载区块让同一枚粉末无限延长作用范围。转化类型既保留
+/// 服务端字段，也写入同步实体数据，保证重载后的客户端粒子和服务端方块转化使用同一类型。</p>
 public class ThrownPowderEntity extends Entity {
     private static final float MAX_TRAVEL_DISTANCE = 3.5F;
     private static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(ThrownPowderEntity.class, EntityDataSerializers.INT);

@@ -66,11 +66,11 @@ public final class NetworkEvents {
         handler.registerInGameS2C(VisibilityPacketS2C.class, VisibilityPacketS2C.ID, VisibilityPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(WindSpeedPacketS2C.class, WindSpeedPacketS2C.ID, WindSpeedPacketS2C.STREAM_CODEC);
 
-        // 双向业务包：同一协议对象可按发送方向执行不同处理。
+        // Bidirectional
         handler.registerInGameBidirectional(TeamPacket.class, TeamPacket.ID, TeamPacket.STREAM_CODEC);
         handler.registerInGameBidirectional(AskForSoftcorePacket.class, AskForSoftcorePacket.ID, AskForSoftcorePacket.STREAM_CODEC);
 
-        // 配置阶段同步包，必须在进入玩法阶段前完成协商。
+        // Configuration
 //        handler.registerConfigurationTask(RequestAchievementsPacketS2C.class, RequestAchievementsPacketS2C.ID, RequestAchievementsPacketS2C.STREAM_CODEC);
 //        handler.registerConfigurationTask(ReplyAchievementsPacketC2S.class, ReplyAchievementsPacketC2S.ID, ReplyAchievementsPacketC2S.STREAM_CODEC);
     }

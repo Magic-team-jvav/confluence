@@ -11,12 +11,10 @@ import org.confluence.mod.common.entity.boss.BrainOfCthulhu;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
-/**
- * 克苏鲁之脑专用的淡入淡出渲染器。
- *
- * <p>服务端只同步当前技能段和经过时间，客户端据此逐帧插值透明度。重新定位发生在完全淡出后，
- * 因而不会把服务端的瞬间坐标修改直接显示成模型跳切；实体深度关系仍由半透明实体通道处理。</p>
- */
+/// 克苏鲁之脑专用的淡入淡出渲染器。
+///
+/// <p>服务端只同步当前技能段和经过时间，客户端据此逐帧插值透明度。重新定位发生在完全淡出后，
+/// 因而不会把服务端的瞬间坐标修改直接显示成模型跳切；实体深度关系仍由半透明实体通道处理。</p>
 public final class BrainOfCthulhuRenderer
         extends BossGeoRenderer<BrainOfCthulhu> {
     public BrainOfCthulhuRenderer(EntityRendererProvider.Context context) {

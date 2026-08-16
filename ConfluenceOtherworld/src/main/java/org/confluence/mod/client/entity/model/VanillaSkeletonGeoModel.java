@@ -14,11 +14,9 @@ import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-/**
- * 给骷髅类 Geo 模型复用原版行走和头部动画，并按 1.21 侧的骨骼公式处理拉弓姿势。
- * 这里不直接使用 {@link HumanoidModel.ArmPose#BOW_AND_ARROW}，因为 Java 模型的完整手臂姿势写回
- * 当前 Geo 资源后容易出现手臂向后翻的问题；拉弓时只覆盖两条手臂的目标角度。
- */
+/// 给骷髅类 Geo 模型复用原版行走和头部动画，并按 1.21 侧的骨骼公式处理拉弓姿势。
+/// 这里不直接使用 {@link HumanoidModel.ArmPose#BOW_AND_ARROW}，因为 Java 模型的完整手臂姿势写回
+/// 当前 Geo 资源后容易出现手臂向后翻的问题；拉弓时只覆盖两条手臂的目标角度。
 public final class VanillaSkeletonGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
     private static final String HEAD = "Vhead";
     private static final String LEFT_ARM = "Vleft_arm";

@@ -39,12 +39,10 @@ public final class ConfluenceData extends SavedData {
         fillDefaultStarPhases();
     }
 
-    /**
-     * 从世界 SavedData 恢复 Confluence 的世界级状态。
-     *
-     * <p>先填入完整默认星相，再用存档中的合法条目覆盖。这样旧版本缺字段、列表不满十项，
-     * 或个别条目损坏时，其余槽位仍始终可读，不会把空映射传播给同步和渲染逻辑。</p>
-     */
+    /// 从世界 SavedData 恢复 Confluence 的世界级状态。
+    ///
+    /// <p>先填入完整默认星相，再用存档中的合法条目覆盖。这样旧版本缺字段、列表不满十项，
+    /// 或个别条目损坏时，其余槽位仍始终可读，不会把空映射传播给同步和渲染逻辑。</p>
     ConfluenceData(CompoundTag nbt) {
         fillDefaultStarPhases();
         this.initialized = nbt.getBoolean("initialized");
@@ -63,9 +61,7 @@ public final class ConfluenceData extends SavedData {
         this.stopAskForSoftcore = nbt.getBoolean("stopAskForSoftcore");
     }
 
-    /**
-     * 保证星相映射始终包含固定的十个槽位。
-     */
+    /// 保证星相映射始终包含固定的十个槽位。
     private void fillDefaultStarPhases() {
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             starPhases.put(i, StarPhase.DEFAULT);
@@ -81,12 +77,10 @@ public final class ConfluenceData extends SavedData {
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
-        /*
-         * 这些字段描述整台服务器的 Terraria 世界进度，而不是单个维度：陨石只在主世界落地，
-         * 邪恶方块破坏计数、揭示步骤和软核提示同样全局生效。调用者即使身处下界/末地，
-         * 也必须访问主世界 DataStorage；否则多个 SavedData 会争用 MeteoriteTracker 枚举单例，
-         * 后加载的维度将覆盖先加载维度的状态。
-         */
+        /// 这些字段描述整台服务器的 Terraria 世界进度，而不是单个维度：陨石只在主世界落地，
+        /// 邪恶方块破坏计数、揭示步骤和软核提示同样全局生效。调用者即使身处下界/末地，
+        /// 也必须访问主世界 DataStorage；否则多个 SavedData 会争用 MeteoriteTracker 枚举单例，
+        /// 后加载的维度将覆盖先加载维度的状态。
         ServerLevel canonicalLevel = serverLevel.getServer().overworld();
         ConfluenceData data = canonicalLevel.getDataStorage().computeIfAbsent(
                 ConfluenceData::new,
@@ -184,10 +178,7 @@ public final class ConfluenceData extends SavedData {
         return false;
     }
 
-    /**
-     * 当前已完成的揭示步骤；{@code -1} 表示尚未开始。
-     * 实际上限由 {@link StepRevealingBlock#PAIRS} 的运行时内容决定。
-     */
+    /// 一般为[-1, 8]
     public int getRevealStep() {
         return revealStep;
     }

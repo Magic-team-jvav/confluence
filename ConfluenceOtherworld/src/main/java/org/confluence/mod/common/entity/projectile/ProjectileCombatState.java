@@ -9,23 +9,16 @@ import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
-/**
- * Otherworld 玩家战斗弹幕共享的可持久化运行状态。
- *
- * <p>MagicLib 的 {@link ProjectileCombatSnapshot} 只负责不可变战斗数值；本类补充实体运行期的
- * 剩余寿命、命中预算和已成功命中的目标。它是组合式小委托，不要求剑气、长矛、子弹和魔法弹
- * 继承同一个庞大基类。</p>
- *
- * <p>这里只接受当前格式。缺失、版本不符或字段损坏都会进入安全失效状态，实体必须停止伤害并
- * 在服务端销毁；不会读取旧字段，也不会回退到玩家当前主手。</p>
- */
+/// Otherworld 玩家战斗弹幕共享的可持久化运行状态。
+///
+/// <p>MagicLib 的 {@link ProjectileCombatSnapshot} 只负责不可变战斗数值；本类补充实体运行期的
+/// 剩余寿命、命中预算和已成功命中的目标。它是组合式小委托，不要求剑气、长矛、子弹和魔法弹
+/// 继承同一个庞大基类。</p>
+///
+/// <p>这里只接受当前格式。缺失、版本不符或字段损坏都会进入安全失效状态，实体必须停止伤害并
+/// 在服务端销毁；不会读取旧字段，也不会回退到玩家当前主手。</p>
 public final class ProjectileCombatState {
     public static final String ROOT_TAG = "ConfluenceCombat";
     public static final int CURRENT_FORMAT_VERSION = 1;
@@ -44,33 +37,25 @@ public final class ProjectileCombatState {
     private @Nullable String invalidReason;
     private boolean loadedFromTag;
 
-    /**
-     * 安装发射事务解析出的不可变快照。只允许非空的已验证对象。
-     */
+    /// 安装发射事务解析出的不可变快照。只允许非空的已验证对象。
     public void installSnapshot(ProjectileCombatSnapshot snapshot) {
         this.snapshot = Objects.requireNonNull(snapshot, "Projectile combat snapshot must not be null");
     }
 
-    /**
-     * 返回当前快照；未初始化或读取失败时返回 {@code null}。
-     */
+    /// 返回当前快照；未初始化或读取失败时返回 {@code null}。
     public @Nullable ProjectileCombatSnapshot snapshot() {
         return snapshot;
     }
 
-    /**
-     * 判断目标是否仍可命中。
-     *
-     * @param allowRepeatedHits 特殊持续弹幕是否允许按自身冷却重复伤害同一目标
-     */
+    /// 判断目标是否仍可命中。
+    ///
+    /// @param allowRepeatedHits 特殊持续弹幕是否允许按自身冷却重复伤害同一目标
     public boolean canHit(UUID targetUuid, boolean allowRepeatedHits) {
         Objects.requireNonNull(targetUuid, "Target UUID must not be null");
         return !isInvalid() && (allowRepeatedHits || !successfulHitTargets.contains(targetUuid));
     }
 
-    /**
-     * 只在 {@code target.hurt(...)} 成功后调用，返回该 UUID 是否为首次成功命中。
-     */
+    /// 只在 {@code target.hurt(...)} 成功后调用，返回该 UUID 是否为首次成功命中。
     public boolean recordSuccessfulHit(UUID targetUuid) {
         return successfulHitTargets.add(Objects.requireNonNull(targetUuid, "Target UUID must not be null"));
     }
@@ -91,10 +76,8 @@ public final class ProjectileCombatState {
         return loadedFromTag;
     }
 
-    /**
-     * 写出完整当前格式。没有快照的新建实体不会伪造数据；若这种实体被保存后再读取，读取端会按
-     * 缺失当前格式安全销毁，等待对应武器族迁移到统一发射事务。
-     */
+    /// 写出完整当前格式。没有快照的新建实体不会伪造数据；若这种实体被保存后再读取，读取端会按
+    /// 缺失当前格式安全销毁，等待对应武器族迁移到统一发射事务。
     public void writeTo(CompoundTag entityTag, int remainingLifetime, int remainingHits) {
         Objects.requireNonNull(entityTag, "Entity tag must not be null");
         if (snapshot == null || isInvalid()) {
@@ -114,9 +97,7 @@ public final class ProjectileCombatState {
         entityTag.put(ROOT_TAG, combatTag);
     }
 
-    /**
-     * 读取当前格式并返回实体预算。任何异常都会被收敛为安全失效状态，不把损坏数据传播到 tick。
-     */
+    /// 读取当前格式并返回实体预算。任何异常都会被收敛为安全失效状态，不把损坏数据传播到 tick。
     public RestoredBudgets readFrom(CompoundTag entityTag) {
         Objects.requireNonNull(entityTag, "Entity tag must not be null");
         loadedFromTag = true;
@@ -159,9 +140,7 @@ public final class ProjectileCombatState {
         }
     }
 
-    /**
-     * 供实体自己的运动字段校验失败时复用同一安全失效通道。
-     */
+    /// 供实体自己的运动字段校验失败时复用同一安全失效通道。
     public void invalidate(String reason) {
         String checkedReason = Objects.requireNonNull(reason, "Invalid reason must not be null");
         if (checkedReason.isBlank()) {
@@ -172,9 +151,7 @@ public final class ProjectileCombatState {
         invalidReason = checkedReason;
     }
 
-    /**
-     * 在服务端限频记录英文诊断并销毁损坏实体。返回 {@code true} 便于 tick 入口直接结束。
-     */
+    /// 在服务端限频记录英文诊断并销毁损坏实体。返回 {@code true} 便于 tick 入口直接结束。
     public boolean discardIfInvalid(Entity projectile) {
         Objects.requireNonNull(projectile, "Projectile must not be null");
         if (!isInvalid() || projectile.level().isClientSide) {
@@ -218,9 +195,7 @@ public final class ProjectileCombatState {
         return message;
     }
 
-    /**
-     * 从 NBT 恢复出的剩余实体预算；{@code -1} 表示该维度不限。
-     */
+    /// 从 NBT 恢复出的剩余实体预算；{@code -1} 表示该维度不限。
     public record RestoredBudgets(int remainingLifetime, int remainingHits) {
         private static final RestoredBudgets INVALID = new RestoredBudgets(0, 0);
     }

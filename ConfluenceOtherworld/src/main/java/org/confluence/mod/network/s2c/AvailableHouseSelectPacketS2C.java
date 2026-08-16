@@ -28,9 +28,7 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
         return ID;
     }
 
-    /**
-     * 住房选择状态由客户端 HUD 持有，必须交给客户端主线程更新。
-     */
+    /// 住房选择状态由客户端 HUD 持有，必须交给客户端主线程更新。
     @Override
     public void handle(IPortPacket.Context context) {
         Player player = context.player();
@@ -94,9 +92,7 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
         return new AvailableHouseSelectPacketS2C(values);
     }
 
-    /**
-     * 判断实体类型是否属于指定住房槽位。
-     */
+    /// 判断实体类型是否属于指定住房槽位。
     public static boolean matchesSelection(int selected, EntityType<?> type) {
         if (selected == angler) {
             return type == NpcEntities.ANGLER.get()

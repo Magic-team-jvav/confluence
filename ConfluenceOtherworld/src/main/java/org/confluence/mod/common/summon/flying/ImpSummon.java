@@ -7,18 +7,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.entity.projectile.summon.SummonBoltEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.summon.FlyingSummon;
-import org.confluence.mod.common.summon.SummonAnimation;
-import org.confluence.mod.common.summon.SummonGoal;
-import org.confluence.mod.common.summon.SummonPose;
-import org.confluence.mod.common.summon.SummonVisualState;
+import org.confluence.mod.common.summon.*;
 
-/**
- * 小鬼召唤物的运行实例。
- *
- * <p>行为保留 1.21 侧的施法延迟、火焰弹命中效果和悬停射击节奏；这里只把真实实体 AI
- * 改成玩家召唤容器驱动的逻辑实例。</p>
- */
+/// 小鬼召唤物的运行实例。
+///
+/// <p>行为保留 1.21 侧的施法延迟、火焰弹命中效果和悬停射击节奏；这里只把真实实体 AI
+/// 改成玩家召唤容器驱动的逻辑实例。</p>
 public final class ImpSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 14.0F;

@@ -28,12 +28,10 @@ public final class ModCustomRegistries {
         public static final ResourceKey<Registry<MapCodec<? extends TradeCondition>>> TRADE_CONDITIONS = createRegistryKey(Confluence.asResource("trade_conditions"));
     }
 
-    /**
-     * 把三个自定义注册表的内容注册到同一模组事件总线。
-     *
-     * <p>注册表对象本身由 {@link PortCustomRegistration} 建立；对应的 DeferredRegister 仍必须全部
-     * 挂到事件总线。遗漏任意一项会在 codec dispatch 时表现为 “Registry Object not present”。</p>
-     */
+    /// 把三个自定义注册表的内容注册到同一模组事件总线。
+    ///
+    /// <p>注册表对象本身由 {@link PortCustomRegistration} 建立；对应的 DeferredRegister 仍必须全部
+    /// 挂到事件总线。遗漏任意一项会在 codec dispatch 时表现为 “Registry Object not present”。</p>
     public static void register(IEventBus bus) {
         ModTrackTypeProviderTypes.TYPES.register(bus);
         ModGenerationProviderTypes.TYPES.register(bus);

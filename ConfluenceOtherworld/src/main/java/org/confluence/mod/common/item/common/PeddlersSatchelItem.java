@@ -17,12 +17,10 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-/**
- * 把商贩背包作为当前世界的一次性永久升级提交到 {@link NPCSpawner}。
- *
- * <p>该状态属于世界而非玩家，因此不使用 MagicLib 的玩家永久升级附件。客户端只预测使用动作；
- * 状态检查、广播、音效和物品消耗全部由服务端在同一次提交中完成。</p>
- */
+/// 把商贩背包作为当前世界的一次性永久升级提交到 {@link NPCSpawner}。
+///
+/// <p>该状态属于世界而非玩家，因此不使用 MagicLib 的玩家永久升级附件。客户端只预测使用动作；
+/// 状态检查、广播、音效和物品消耗全部由服务端在同一次提交中完成。</p>
 public class PeddlersSatchelItem extends TooltipItem {
     public PeddlersSatchelItem() {
         super(new Properties(), ModRarity.LIGHT_PURPLE, Component.translatable("tooltip.item.confluence.peddlers_satchel.0").withStyle(ChatFormatting.GREEN));

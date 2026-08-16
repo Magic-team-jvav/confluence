@@ -12,7 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 /**
- * 蜂蜜史莱姆会随时间成长，玩家可用玻璃瓶采集蜂蜜。
+ * 蜂蜜史莱姆 —— 完全被动，随时间成长，玩家可用玻璃瓶采集蜂蜜。
  */
 public class HoneySlime extends BaseSlime {
     public static final int GROWTH_INTERVAL = 20000;

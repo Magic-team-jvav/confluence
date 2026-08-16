@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
 
 /**
- * 尖刺冰雪史莱姆保留远程尖刺攻击，并沿用冰雪史莱姆的难度限定减速效果。
+ * 尖刺冰雪史莱姆 —— 尖刺 + 攻击附加缓慢效果。
  */
 public class SpikedIceSlime extends SpikedSlime {
 

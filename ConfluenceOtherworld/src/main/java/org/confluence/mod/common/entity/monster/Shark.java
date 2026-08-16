@@ -1,12 +1,12 @@
 package org.confluence.mod.common.entity.monster;
 
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingMoveControl;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -15,13 +15,11 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.RandomSwimAction;
 
-/**
- * 鲨鱼使用带惯性的持续水下追击，而不是离散的蓄力技能。
- *
- * <p>泰拉瑞亚鲨鱼属于 Swimming AI：玩家浸水时持续高速追逐，玩家离水后停止追击。
- * 1.21 实现只在食人鱼基础上修改随机游泳高度，寻路会让大体型鲨鱼贴近目标后频繁抖动。
- * 这里保留原本语义，用速度插值表达惯性和有限转向，既不会瞬间掉头，也不额外发明蓄力冲刺。</p>
- */
+/// 鲨鱼使用带惯性的持续水下追击，而不是离散的蓄力技能。
+///
+/// <p>泰拉瑞亚鲨鱼属于 Swimming AI：玩家浸水时持续高速追逐，玩家离水后停止追击。
+/// 1.21 实现只在食人鱼基础上修改随机游泳高度，寻路会让大体型鲨鱼贴近目标后频繁抖动。
+/// 这里保留原本语义，用速度插值表达惯性和有限转向，既不会瞬间掉头，也不额外发明蓄力冲刺。</p>
 public class Shark extends Piranha {
     private static final double PURSUIT_SPEED = 0.46;
     private static final double PURSUIT_ACCELERATION = 0.12;

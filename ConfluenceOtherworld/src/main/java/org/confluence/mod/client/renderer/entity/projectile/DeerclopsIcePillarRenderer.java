@@ -13,9 +13,7 @@ import org.confluence.mod.common.entity.projectile.DeerclopsIcePillarProjectile;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-/**
- * 逐段升起并收回蓝冰方块，表现独眼巨鹿的地面冰柱。
- */
+/// 逐段升起并收回蓝冰方块，表现独眼巨鹿的地面冰柱。
 public final class DeerclopsIcePillarRenderer
         extends EntityRenderer<DeerclopsIcePillarProjectile> {
     public DeerclopsIcePillarRenderer(EntityRendererProvider.Context context) {

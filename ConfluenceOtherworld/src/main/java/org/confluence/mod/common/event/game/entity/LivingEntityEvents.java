@@ -24,8 +24,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
 import org.confluence.lib.api.entity.Boss;
-import org.confluence.mod.common.entity.boss.BaseBoss;
-import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
 import org.confluence.lib.common.LibTags;
@@ -49,6 +47,8 @@ import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -57,9 +57,9 @@ import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.PermanentUpgrades;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.PermanentUpgrades;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -256,13 +256,11 @@ public final class LivingEntityEvents {
         event.setNewDamage(amount);
     }
 
-    /**
-     * 在 MagicLib 处理召唤伤害倍率与暴击前加入玩家自己的鞭痕效果。
-     *
-     * <p>伤害来源的直接实体既可能是旧式实体召唤物，也可能是新架构使用的短生命周期弹丸。这里只识别
-     * 显式实现 {@link OwnedSummon} 的直接实体，普通驯服生物、坐骑和 Boss 部件不会误触发召唤标记。
-     * 非实体召唤物的近战伤害由运行时实例直接处理，不会在这里重复结算。</p>
-     */
+    /// 在 MagicLib 处理召唤伤害倍率与暴击前加入玩家自己的鞭痕效果。
+    ///
+    /// <p>伤害来源的直接实体既可能是旧式实体召唤物，也可能是新架构使用的短生命周期弹丸。这里只识别
+    /// 显式实现 {@link OwnedSummon} 的直接实体，普通驯服生物、坐骑和 Boss 部件不会误触发召唤标记。
+    /// 非实体召唤物的近战伤害由运行时实例直接处理，不会在这里重复结算。</p>
     private static void summonTagDamage(PortLivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F

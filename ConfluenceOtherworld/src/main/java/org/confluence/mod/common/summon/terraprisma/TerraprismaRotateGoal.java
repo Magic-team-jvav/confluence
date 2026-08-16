@@ -3,9 +3,7 @@ package org.confluence.mod.common.summon.terraprisma;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.Entity;
 
-/**
- * 泰拉棱镜的穿透环绕技能。
- */
+/// 泰拉棱镜的穿透环绕技能。
 final class TerraprismaRotateGoal extends TerraprismaSkillGoal {
     static final int DURATION = 20;
     static final int BASE_COOLDOWN = 30;
@@ -51,9 +49,7 @@ final class TerraprismaRotateGoal extends TerraprismaSkillGoal {
         elapsedTicks++;
     }
 
-    /**
-     * 读取目标当前速度进行短距离预判，避免高速目标在技能过程中持续脱离轨迹。
-     */
+    /// 读取目标当前速度进行短距离预判，避免高速目标在技能过程中持续脱离轨迹。
     private Vec3 predictedTargetPosition() {
         Entity target = summon.actualTarget();
         if (target == null) {

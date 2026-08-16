@@ -63,11 +63,9 @@ public class FlowerPetalProjectile extends Projectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        /*
-         * 所有者可能在弹幕加载后尚未恢复，也可能被外部代码替换为非生物实体。
-         * 花瓣伤害必须归属于穿戴山铜套装的生物；无法确认所有者时直接结束弹幕，
-         * 避免制造没有可靠伤害归属的攻击。
-         */
+        /// 所有者可能在弹幕加载后尚未恢复，也可能被外部代码替换为非生物实体。
+        /// 花瓣伤害必须归属于穿戴山铜套装的生物；无法确认所有者时直接结束弹幕，
+        /// 避免制造没有可靠伤害归属的攻击。
         if (!(getOwner() instanceof LivingEntity owner)) {
             discard();
             return;

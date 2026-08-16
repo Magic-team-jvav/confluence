@@ -21,7 +21,8 @@ public class TFReferences {
                 MobEffectInstance instance = livingEntity.getEffect(ModEffects.EXQUISITELY_STUFFED.get());
                 if (instance == null) return;
 
-                // 效果时长单位为 tick，先换算为分钟，再按等级折算产物数量；不足一分钟的余量与泰拉逻辑一致，直接舍去。
+                // Duration is tick, so duration / 20 / 60 is minutes. Then, minutes * level is what Terraria do.
+                // Don't worry about spare time, terraria is the same.
                 int foodTime = instance.duration / 1200 * (instance.amplifier + 1);
                 SimpleContainer container = new SimpleContainer(ModBlocks.POO.toStack(foodTime));
                 Containers.dropContents(serverLevel, pos, container);

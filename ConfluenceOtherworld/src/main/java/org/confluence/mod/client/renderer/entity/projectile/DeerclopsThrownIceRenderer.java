@@ -12,9 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.common.entity.projectile.DeerclopsThrownIceProjectile;
 import org.joml.Quaternionf;
 
-/**
- * 以蓝冰方块表现独眼巨鹿抛出的旋转冰块。
- */
+/// 以蓝冰方块表现独眼巨鹿抛出的旋转冰块。
 public final class DeerclopsThrownIceRenderer
         extends EntityRenderer<DeerclopsThrownIceProjectile> {
     public DeerclopsThrownIceRenderer(EntityRendererProvider.Context context) {

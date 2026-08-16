@@ -45,13 +45,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/**
- * Otherworld 剑类物品基类。
- *
- * <p>普通近战行为仍由原版 {@link SwordItem} 处理；带
- * {@link ModDataComponentTypes#SWORD_PROJECTILE} 的物品同时通过 MagicLib 公共接口声明一次
- * 服务端剑气动作。该类不创建实体、不解析客户端数值，也不直接写入冷却。</p>
- */
+// todo sword
 public class BaseSwordItem extends SwordItem implements ProjectileWeaponAction {
     public @Nullable ModifierBuilder modifier;
     private @Nullable TooltipComponent component;
@@ -91,11 +85,9 @@ public class BaseSwordItem extends SwordItem implements ProjectileWeaponAction {
     public void applyHitEffects(ItemStack weapon, @Nullable Entity attacker, LivingEntity hurter, DamageSource damageSource) {
     }
 
-    /**
-     * 从服务端重新读取的当前武器副本创建剑气动作。
-     *
-     * @return 当前物品没有剑气组件时返回 {@code null}
-     */
+    /// 从服务端重新读取的当前武器副本创建剑气动作。
+    ///
+    /// @return 当前物品没有剑气组件时返回 {@code null}
     @Override
     public @Nullable ProjectileFireAction createProjectileFireAction(ProjectileFireContext context) {
         SwordProjectileComponent configuration = context.weapon().get(ModDataComponentTypes.SWORD_PROJECTILE);

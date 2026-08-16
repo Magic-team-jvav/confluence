@@ -27,9 +27,7 @@ public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
         return ID;
     }
 
-    /**
-     * 领取旗帜会读取图鉴并修改玩家物品栏，必须回到服务端主线程执行。
-     */
+    /// 领取旗帜会读取图鉴并修改玩家物品栏，必须回到服务端主线程执行。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {

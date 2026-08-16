@@ -7,19 +7,13 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.HarpyFeatherProjectile;
 
-/**
- * 鸟妖羽毛弹幕的双羽片模型。
- *
- * <p>模型尺寸和贴图布局保持 1.21 侧的 48×48 结构，旋转交给渲染器根据弹幕速度统一处理。</p>
- */
+/// 鸟妖羽毛弹幕的双羽片模型。
+///
+/// <p>模型尺寸和贴图布局保持 1.21 侧的 48×48 结构，旋转交给渲染器根据弹幕速度统一处理。</p>
 public final class HarpyFeatherProjectileModel
         extends EntityModel<HarpyFeatherProjectile> {
     public static final ModelLayerLocation LAYER_LOCATION =

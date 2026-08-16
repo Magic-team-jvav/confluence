@@ -15,12 +15,10 @@ import org.joml.Matrix4f;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 永夜刃的客户端局部挥砍与双层轨迹渲染器。
- *
- * <p>轨迹由实体年龄和固定关键帧即时推导，不把客户端专用轨迹对象放进公共实体，
- * 也不会在渲染器单例中保存逐实体可变历史。</p>
- */
+/// 永夜刃的客户端局部挥砍与双层轨迹渲染器。
+///
+/// <p>轨迹由实体年龄和固定关键帧即时推导，不把客户端专用轨迹对象放进公共实体，
+/// 也不会在渲染器单例中保存逐实体可变历史。</p>
 public final class NightEdgeProjectileRenderer
         extends SwordItemProjectileRenderer<NightEdgeProjectile> {
     public NightEdgeProjectileRenderer(EntityRendererProvider.Context context) {

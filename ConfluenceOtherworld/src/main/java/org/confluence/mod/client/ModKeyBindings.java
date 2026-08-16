@@ -64,9 +64,7 @@ public final class ModKeyBindings {
             KEY_BINDINGS_CATEGORY
     ));
 
-    /**
-     * 快捷坐骑只发送切换请求，实际槽位物品和实体类型由服务端重新读取。
-     */
+    /// 快捷坐骑只发送切换请求，实际槽位物品和实体类型由服务端重新读取。
     public static final Lazy<KeyMapping> MOUNT = register(() -> new KeyMapping(
             "key.confluence.mount",
             KeyConflictContext.IN_GAME,

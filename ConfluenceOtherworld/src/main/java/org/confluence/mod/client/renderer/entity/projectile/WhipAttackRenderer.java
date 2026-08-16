@@ -28,23 +28,17 @@ import org.confluence.mod.common.item.whip.BaseWhipItem;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 沿攻击实体的曲线绘制可组合鞭子外观。
- *
- * <p>玩家手中的普通物品 JSON 模型负责显示手柄，本渲染器只处理手柄之后的曲线。
- * 每个外观分段独立选择固定像素间距或固定数量，并按声明顺序叠加；鞭梢和颜色线均为
- * 可选项。所有模型仍通过原版烘焙模型渲染，因此模型自身的面与背面剔除规则不会丢失。</p>
- */
+/// 沿攻击实体的曲线绘制可组合鞭子外观。
+///
+/// <p>玩家手中的普通物品 JSON 模型负责显示手柄，本渲染器只处理手柄之后的曲线。
+/// 每个外观分段独立选择固定像素间距或固定数量，并按声明顺序叠加；鞭梢和颜色线均为
+/// 可选项。所有模型仍通过原版烘焙模型渲染，因此模型自身的面与背面剔除规则不会丢失。</p>
 public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
-    /**
-     * 与 1.21 鞭子渲染器保持一致，物品模型按半格比例绘制。
-     */
+    /// 与 1.21 鞭子渲染器保持一致，物品模型按半格比例绘制。
     private static final float MODEL_SCALE = 0.5F;
     private static final float ROLL_DEGREES_PER_SEGMENT = 10.0F;
-    /*
-     * 模型经过 0.5 缩放后，一个 JSON 像素只占世界中的 1/32 格。
-     * 采样距离必须使用同一换算，否则四像素长的鞭节之间会留下半段空隙。
-     */
+    /// 模型经过 0.5 缩放后，一个 JSON 像素只占世界中的 1/32 格。
+    /// 采样距离必须使用同一换算，否则四像素长的鞭节之间会留下半段空隙。
     private static final double RENDERED_PIXELS_PER_BLOCK = 32.0;
 
     public WhipAttackRenderer(EntityRendererProvider.Context context) {
@@ -92,13 +86,11 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
                 poseStack, buffers, packedLight);
     }
 
-    /**
-     * 把玩家当前持手作为客户端样条根部。
-     *
-     * <p>服务端轨迹仍使用实体生成时冻结的世界坐标，本方法只修正客户端显示。1.21
-     * 是把玩家当前手部作为样条控制点参与插值，而不是对已经采样完的折线硬改第一个点。
-     * 这里保持同样的时机，避免第三人称看起来从错误手侧甩出。</p>
-     */
+    /// 把玩家当前持手作为客户端样条根部。
+    ///
+    /// <p>服务端轨迹仍使用实体生成时冻结的世界坐标，本方法只修正客户端显示。1.21
+    /// 是把玩家当前手部作为样条控制点参与插值，而不是对已经采样完的折线硬改第一个点。
+    /// 这里保持同样的时机，避免第三人称看起来从错误手侧甩出。</p>
     private List<Vec3> alignCurveToHand(
             WhipAttackEntity entity,
             List<Vec3> controlPoints,
@@ -127,9 +119,7 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
         return WhipCurveSampler.sampleControlPoints(result, WhipAttackEntity.RENDER_SEGMENT_SPACING);
     }
 
-    /**
-     * 按 1.21 的视场角和近裁剪面换算第一人称持鞭手位置。
-     */
+    /// 按 1.21 的视场角和近裁剪面换算第一人称持鞭手位置。
     private Vec3 getFirstPersonHandPosition(
             Player player,
             HumanoidArm arm,
@@ -149,9 +139,7 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
                 .add(0.0, player.getEyeHeight() * 0.8F, 0.0);
     }
 
-    /**
-     * 取得第三人称挥鞭手位置，并和服务端生成锚点保持相同的左右手约定。
-     */
+    /// 取得第三人称挥鞭手位置，并和服务端生成锚点保持相同的左右手约定。
     private static Vec3 getThirdPersonHandPosition(
             Player player,
             HumanoidArm arm,
@@ -200,7 +188,7 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
                 .distanceToSqr(tip.position()) <= 1.0E-10) {
             bodyCount--;
         }
-        /* fixedSpacing/fixedCount 已从第一个有效间隔开始取样，不包含曲线根点。 */
+        /// fixedSpacing/fixedCount 已从第一个有效间隔开始取样，不包含曲线根点。
         for (int index = 0; index < bodyCount; index++) {
             WhipPolylineSamples.Sample sample = samples.get(index);
             renderSegment(

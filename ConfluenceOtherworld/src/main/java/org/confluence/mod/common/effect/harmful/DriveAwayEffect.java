@@ -12,12 +12,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.monster.Harpy;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
-/**
- * 飞行生物被驱离后的短时失控效果。
- *
- * <p>箭矢负责写入最初的逃离方向，本效果在持续期间停止原有导航与攻击目标，并防止
- * 飞行 AI 立刻覆盖逃离速度。非飞行生物即使通过命令获得效果也不会被改写行为。</p>
- */
+// TODO: 移植 Harpy / DriveAwaySystem 后移除 terraentity 依赖
 public class DriveAwayEffect extends PortMobEffect {
     public static final MapCodec<DriveAwayEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.DOUBLE.fieldOf("base_speed").forGetter(effect -> effect.baseSpeed),

@@ -28,13 +28,11 @@ import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 
-/**
- * 三种水母共用的脉冲游动与两阶段战斗实现。
- *
- * <p>水母并不是持续贴身攻击的普通鱼类。发现水中的玩家后，它会先追逐 150 tick，
- * 再停止寻路并进入 80 tick 的快速脉冲阶段，随后主动释放目标并重新游荡。阶段字段由
- * 服务端同步，客户端只据此选择动画，不自行推算战斗时序。</p>
- */
+/// 三种水母共用的脉冲游动与两阶段战斗实现。
+///
+/// <p>水母并不是持续贴身攻击的普通鱼类。发现水中的玩家后，它会先追逐 150 tick，
+/// 再停止寻路并进入 80 tick 的快速脉冲阶段，随后主动释放目标并重新游荡。阶段字段由
+/// 服务端同步，客户端只据此选择动画，不自行推算战斗时序。</p>
 public class JellyFish extends BaseAquaticMonster {
     private static final int PURSUIT_TICKS = 150;
     private static final int PULSE_TICKS = 80;
@@ -43,9 +41,7 @@ public class JellyFish extends BaseAquaticMonster {
                     JellyFish.class,
                     EntityDataSerializers.BOOLEAN);
 
-    /**
-     * 渲染器使用相邻两次有效速度插值模型朝向，避免每次脉冲时突然翻转。
-     */
+    /// 渲染器使用相邻两次有效速度插值模型朝向，避免每次脉冲时突然翻转。
     public Vec3 lastMovement = Vec3.ZERO;
     public Vec3 currentMovement = Vec3.ZERO;
 
@@ -88,16 +84,12 @@ public class JellyFish extends BaseAquaticMonster {
         };
     }
 
-    /**
-     * 创建一轮独立战斗节点，包级入口供确定性行为测试使用。
-     */
+    /// 创建一轮独立战斗节点，包级入口供确定性行为测试使用。
     BTNode createCombatAction() {
         return new JellyFishCombatAction(this);
     }
 
-    /**
-     * 返回服务端同步的脉冲阶段，供动画与发光层选择表现。
-     */
+    /// 返回服务端同步的脉冲阶段，供动画与发光层选择表现。
     public boolean isAttackPhase() {
         return entityData.get(ATTACK_PHASE);
     }
@@ -146,9 +138,7 @@ public class JellyFish extends BaseAquaticMonster {
         return ModSoundEvents.JELLYFISH_DEATH.get();
     }
 
-    /**
-     * 复现 1.21 的追逐—脉冲循环，同时把状态切换保留在新的行为树架构内。
-     */
+    /// 复现 1.21 的追逐—脉冲循环，同时把状态切换保留在新的行为树架构内。
     private static final class JellyFishCombatAction extends BTNode {
         private final JellyFish jellyfish;
         private int phaseTicks;
@@ -202,12 +192,10 @@ public class JellyFish extends BaseAquaticMonster {
         }
     }
 
-    /**
-     * 水母以离散脉冲修正方向，而不是像普通鱼一样连续推进。
-     *
-     * <p>每次导航请求到达冷却边沿时才消费目标位置并重设速度；无目标时冷却范围更大，
-     * 战斗时则更频繁。等待期间仍面向当前目标，使脉冲间隔不会表现为完全静止。</p>
-     */
+    /// 水母以离散脉冲修正方向，而不是像普通鱼一样连续推进。
+    ///
+    /// <p>每次导航请求到达冷却边沿时才消费目标位置并重设速度；无目标时冷却范围更大，
+    /// 战斗时则更频繁。等待期间仍面向当前目标，使脉冲间隔不会表现为完全静止。</p>
     private static final class JellyFishMoveControl extends MoveControl {
         private static final int BASE_PULSE_COOLDOWN = 20;
         private int pulseCooldown;

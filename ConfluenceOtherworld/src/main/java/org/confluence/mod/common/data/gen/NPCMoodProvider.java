@@ -20,12 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * 生成当前 1.21 内容对应的 NPC 邻居偏好。
- *
- * <p>运行时按 NPC 实体 ID 读取独立文件，附属模组可在自己的命名空间提供同格式文件，
- * 不需要修改本体代码。这里仅迁移 1.21 当前已经声明的关系，尚未存在的 NPC 关系不提前补写。</p>
- */
+/// 生成当前 1.21 内容对应的 NPC 邻居偏好。
+///
+/// <p>运行时按 NPC 实体 ID 读取独立文件，附属模组可在自己的命名空间提供同格式文件，
+/// 不需要修改本体代码。这里仅迁移 1.21 当前已经声明的关系，尚未存在的 NPC 关系不提前补写。</p>
 public final class NPCMoodProvider implements DataProvider {
     private final PackOutput.PathProvider pathProvider;
 

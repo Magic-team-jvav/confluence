@@ -41,12 +41,10 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-/**
- * 同时支持陆地行走和水面活动的鸭子。
- *
- * <p>鸭子的外观、食物、后代工厂、落水表现和动画选择均由实体自身负责；
- * 通用小动物基类只提供行为树生命周期和默认的不可繁殖契约。</p>
- */
+/// 同时支持陆地行走和水面活动的鸭子。
+///
+/// <p>鸭子的外观、食物、后代工厂、落水表现和动画选择均由实体自身负责；
+/// 通用小动物基类只提供行为树生命周期和默认的不可繁殖契约。</p>
 public class Duck extends BaseCritter
         implements VariantHolder<Duck.Variant> {
     public static final String VARIANT_KEY = "Variant";
@@ -180,9 +178,7 @@ public class Duck extends BaseCritter
         return false;
     }
 
-    /**
-     * 鸭子保留 1.21 中从鸡继承的声音音量。
-     */
+    /// 鸭子保留 1.21 中从鸡继承的声音音量。
     @Override
     protected float getSoundVolume() {
         return 0.2F;
@@ -203,9 +199,7 @@ public class Duck extends BaseCritter
         }
     }
 
-    /**
-     * 还原 1.21 中通过鸡基类继承的空中缓降与成年产蛋行为。
-     */
+    /// 还原 1.21 中通过鸡基类继承的空中缓降与成年产蛋行为。
     @Override
     public void aiStep() {
         super.aiStep();
@@ -256,9 +250,7 @@ public class Duck extends BaseCritter
                 }));
     }
 
-    /**
-     * 鸭子的两种基础外观。枚举同时承担同步值、持久化值和纹理路径的解析。
-     */
+    /// 鸭子的两种基础外观。枚举同时承担同步值、持久化值和纹理路径的解析。
     public enum Variant implements IVariant {
         MALLARD("duck_1"),
         COMMON("duck_2");

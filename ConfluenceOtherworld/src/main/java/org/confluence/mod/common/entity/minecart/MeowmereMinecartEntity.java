@@ -12,8 +12,5 @@ public class MeowmereMinecartEntity extends BaseMinecartEntity {
         super(level, x, y, z, abilities);
     }
 
-    /*
-     * 喵星矿车的彩虹尾迹和喵刃弹射属于变体特效。
-     * 基础矿车只负责通用乘坐、速度和掉落；专属表现后续应集中写在本类，避免影响普通矿车。
-     */
+    // todo
 }

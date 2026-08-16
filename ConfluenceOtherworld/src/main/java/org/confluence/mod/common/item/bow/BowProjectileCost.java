@@ -9,12 +9,10 @@ import org.confluence.lib.api.projectile.ProjectileFireContext;
 
 import java.util.Optional;
 
-/**
- * 一次弓箭动作的弹药与耐久组合成本。
- *
- * <p>弹药引用和武器状态都在 prepare 时冻结，commit 前再次核对；世界生成失败时会精确恢复
- * 弹药数量、武器数量、耐久和 NBT。创造/无限弹药只提交耐久，仍使用标记为不可拾取的视觉箭。</p>
- */
+/// 一次弓箭动作的弹药与耐久组合成本。
+///
+/// <p>弹药引用和武器状态都在 prepare 时冻结，commit 前再次核对；世界生成失败时会精确恢复
+/// 弹药数量、武器数量、耐久和 NBT。创造/无限弹药只提交耐久，仍使用标记为不可拾取的视觉箭。</p>
 final class BowProjectileCost implements ProjectileCost {
     private final ItemStack selectedAmmo;
     private final boolean consumeAmmo;
@@ -74,9 +72,7 @@ final class BowProjectileCost implements ProjectileCost {
         }));
     }
 
-    /**
-     * 恢复同种物品栈的数量和完整 NBT；成本只会操作当前手中同一件武器。
-     */
+    /// 恢复同种物品栈的数量和完整 NBT；成本只会操作当前手中同一件武器。
     private static void restoreStackState(ItemStack target, ItemStack snapshot) {
         target.setCount(snapshot.getCount());
         CompoundTag tag = snapshot.getTag();

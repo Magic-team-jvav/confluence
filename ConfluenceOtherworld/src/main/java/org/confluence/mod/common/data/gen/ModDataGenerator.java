@@ -116,7 +116,7 @@ public final class ModDataGenerator {
             return Optional.of(HolderSet.emptyNamed(wrapped, tagKey));
         }
 
-        // 此方法由 PortLib 的核心修改注入调用。
+        // by coremod from portlib
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof LookupWrapper<?> wrapper && wrapper.wrapped.equals(wrapped)) {

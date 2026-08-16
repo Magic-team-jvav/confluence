@@ -7,9 +7,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-/**
- * 星尘龙头部或体节的纯客户端视觉状态。
- */
+/// 星尘龙头部或体节的纯客户端视觉状态。
 final class ClientStardustDragonVisual implements GeoAnimatable {
     private final UUID id;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);

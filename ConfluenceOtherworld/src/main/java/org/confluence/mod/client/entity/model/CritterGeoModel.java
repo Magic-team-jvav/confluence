@@ -37,12 +37,10 @@ public class CritterGeoModel<T extends BaseCritter> extends DefaultedEntityGeoMo
         return resolveAnimationResource(entity.getModelPath());
     }
 
-    /**
-     * 根据实体模型路径推导同名动画资源。
-     *
-     * <p>小动物渲染器会在多个实体和外观变体之间共享模型实例，因此不能使用构造器中的
-     * 占位路径查找动画。这里先把短路径规范化为完整模型路径，再映射到 GeckoLib 的动画目录。</p>
-     */
+    /// 根据实体模型路径推导同名动画资源。
+    ///
+    /// <p>小动物渲染器会在多个实体和外观变体之间共享模型实例，因此不能使用构造器中的
+    /// 占位路径查找动画。这里先把短路径规范化为完整模型路径，再映射到 GeckoLib 的动画目录。</p>
     public static ResourceLocation resolveAnimationResource(ResourceLocation path) {
         ResourceLocation model = resolveModelResource(path);
         String modelPath = model.getPath();

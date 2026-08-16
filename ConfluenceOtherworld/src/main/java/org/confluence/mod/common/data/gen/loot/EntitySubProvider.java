@@ -80,7 +80,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-// 待迁移到数据生成：add(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), LootTable.lootTable()
+// todo datagen       add(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), LootTable.lootTable()
 //                .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
 //                .withPool(LootPool.lootPool()
 //                        .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5))
@@ -1050,7 +1050,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(25)))
                 ))
         );
-        // 待补：秘密种子冰雪宝箱怪使用该公共掉落表
+        // todo秘密种子冰雪宝箱怪使用这个common
         /*
         add(MonsterEntities.ICE_MIMIC.get(),LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -1290,13 +1290,11 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
     }
 
-    /**
-     * 生成宝石兔与宝石松鼠共用的变体掉落表。
-     *
-     * <p>变体已经由实体保存为 {@code Variant} 字符串，因此直接使用原版
-     * 实体 NBT 条件即可完成数据驱动匹配，不需要再引入仅供掉落使用的
-     * 自定义运行时参数。所有宝石材料仅在玩家击杀时掉落。</p>
-     */
+    /// 生成宝石兔与宝石松鼠共用的变体掉落表。
+    ///
+    /// <p>变体已经由实体保存为 {@code Variant} 字符串，因此直接使用原版
+    /// 实体 NBT 条件即可完成数据驱动匹配，不需要再引入仅供掉落使用的
+    /// 自定义运行时参数。所有宝石材料仅在玩家击杀时掉落。</p>
     private static LootTable.Builder jewelCritterLoot() {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -1418,7 +1416,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 ));
     }
 
-    private static LootTable.Builder mimicCommonSecret() {  // 待补：秘密种子宝箱怪使用该公共掉落表
+    private static LootTable.Builder mimicCommonSecret() {  // todo秘密种子宝箱怪使用这个common
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION))

@@ -12,12 +12,10 @@ import org.confluence.mod.common.summon.FlyingSummon;
 import org.confluence.mod.common.summon.SummonGoal;
 import org.confluence.mod.common.summon.SummonPose;
 
-/**
- * 飞雀召唤物的运行实例。
- *
- * <p>这里保留 1.21 侧的短促俯冲、命中回旋和悬停起伏。
- * 新架构只负责把实体 AI 改为玩家容器驱动，不能改变飞雀贴近目标后再短距离冲刺的节奏。</p>
- */
+/// 飞雀召唤物的运行实例。
+///
+/// <p>这里保留 1.21 侧的短促俯冲、命中回旋和悬停起伏。
+/// 新架构只负责把实体 AI 改为玩家容器驱动，不能改变飞雀贴近目标后再短距离冲刺的节奏。</p>
 public final class FinchSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 2.0F;

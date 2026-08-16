@@ -9,11 +9,9 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * 子弹拖尾专用渲染类型。
- *
- * <p>仅供枪弹渲染器使用，避免把枪械 VFX 的混合模式扩散到全局渲染工具类。</p>
- */
+/// 子弹拖尾专用渲染类型。
+///
+/// <p>仅供枪弹渲染器使用，避免把枪械 VFX 的混合模式扩散到全局渲染工具类。</p>
 final class BulletRenderTypes extends RenderStateShard {
     private static final Map<String, RenderType> TRAILS = new ConcurrentHashMap<>();
 

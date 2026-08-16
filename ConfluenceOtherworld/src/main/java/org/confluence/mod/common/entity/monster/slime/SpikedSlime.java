@@ -20,10 +20,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 /**
- * 尖刺史莱姆拥有近距离连射和远距离追击两套战斗流程。
- *
- * <p>三种尖刺变体共用同一个内嵌状态机；弹幕伤害、数量和远距离附加射击仍由实体钩子
- * 提供。这样复杂时序只有一份实现，变体也不需要分别注册或复制行为类。</p>
+ * 尖刺史莱姆 —— 有目标时发射 8 方向尖刺并跳跃追击。
  */
 public class SpikedSlime extends BaseSlime {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
@@ -52,9 +49,7 @@ public class SpikedSlime extends BaseSlime {
         return 5.0f;
     }
 
-    /**
-     * 丛林尖刺史莱姆可在远距离跳跃前偶尔补射一发；普通与冰雪变体保持纯追击。
-     */
+    /// 丛林尖刺史莱姆可在远距离跳跃前偶尔补射一发；普通与冰雪变体保持纯追击。
     protected boolean canFireDistantSingleSpike() {
         return false;
     }
@@ -78,9 +73,7 @@ public class SpikedSlime extends BaseSlime {
         };
     }
 
-    /**
-     * 创建尖刺家族共用的完整战斗动作，供行为树和确定性回归测试使用。
-     */
+    /// 创建尖刺家族共用的完整战斗动作，供行为树和确定性回归测试使用。
     protected BTNode createCombatAction() {
         return new CombatAction();
     }
@@ -123,12 +116,10 @@ public class SpikedSlime extends BaseSlime {
         hasImpulse = true;
     }
 
-    /**
-     * 复刻 1.21 的尖刺史莱姆战斗时序。
-     *
-     * <p>近距离先瞄准二十刻，再蓄力五刻并以三刻间隔发射三轮八向弹幕；远距离
-     * 瞄准后蓄力跳向目标。目标在动作中途失效时立即失败，由选择节点重新决策。</p>
-     */
+    /// 复刻 1.21 的尖刺史莱姆战斗时序。
+    ///
+    /// <p>近距离先瞄准二十刻，再蓄力五刻并以三刻间隔发射三轮八向弹幕；远距离
+    /// 瞄准后蓄力跳向目标。目标在动作中途失效时立即失败，由选择节点重新决策。</p>
     private final class CombatAction extends BTNode {
         private int tick;
         private boolean closeRange;

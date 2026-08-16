@@ -1,15 +1,13 @@
 package org.confluence.mod.common.data;
 
-import org.confluence.mod.common.component.BulletPropertyComponent;
-import org.confluence.mod.common.component.GunPropertyComponent;
 import org.confluence.mod.common.combat.gun.AmmoStats;
 import org.confluence.mod.common.combat.gun.Ballistics;
 import org.confluence.mod.common.combat.gun.BallisticsResolver;
 import org.confluence.mod.common.combat.gun.GunStats;
+import org.confluence.mod.common.component.BulletPropertyComponent;
+import org.confluence.mod.common.component.GunPropertyComponent;
 
-/**
- * @deprecated 使用 {@link BallisticsResolver}。保留本类只为兼容现有扩展源码，内部不再维护第二套计算公式。
- */
+/// @deprecated 使用 {@link BallisticsResolver}。保留本类只为兼容现有扩展源码，内部不再维护第二套计算公式。
 @Deprecated(forRemoval = true)
 public class AmmoDataContext {
     private final Ballistics ballistics;

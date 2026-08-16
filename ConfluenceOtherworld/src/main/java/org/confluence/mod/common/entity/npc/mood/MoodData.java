@@ -13,18 +13,14 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.Confluence;
 
-import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 加载 NPC 心情数据。
- *
- * <p>每个文件对应同名 NPC 实体，例如
- * {@code data/confluence/npc/moods/merchant.json} 对应 {@code confluence:merchant}。
- * 附属模组可以在自己的命名空间下以相同规则追加 NPC。重载采用整批事务：任一文件损坏、
- * 实体未注册或目标重复时都保留上一份完整表，避免运行中的 NPC 读取到半份新数据。</p>
+ * 从 {@code data/confluence/npc/moods.json} 加载心情数据。
+ * 格式：{@code { "entity_id": [ {"mood": "like", "target": "confluence:guide"}, ... ] }}
  */
 public final class MoodData {
     static final Map<EntityType<?>, Mood> DEFAULT_MOODS = Map.of();

@@ -16,9 +16,7 @@ import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 管理普通粒子无法完整表达的短生命周期子弹命中特效。
- */
+/// 管理普通粒子无法完整表达的短生命周期子弹命中特效。
 public final class BulletVfxManager {
     private static final List<ActiveEffect> ACTIVE_EFFECTS = new ArrayList<>();
     private static final int[] CONFETTI_COLORS = {
@@ -66,9 +64,7 @@ public final class BulletVfxManager {
         buffers.endBatch(RenderStateShardAccessor.TRAIL_RENDER_TYPE);
     }
 
-    /**
-     * 保留 1.21 水晶弹命中时的数量、出生范围和速度分布。
-     */
+    /// 保留 1.21 水晶弹命中时的数量、出生范围和速度分布。
     private static void playCrystalImpact(Vec3 position) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) {
@@ -89,12 +85,10 @@ public final class BulletVfxManager {
         }
     }
 
-    /**
-     * 保留 1.21 夜明弹命中时的数量和运动参数。
-     *
-     * <p>1.20.1 没有 1.21 使用的 ominous trial spawner 粒子，因此仅将粒子类型替换为同样
-     * 不受重力影响的电火花；其余出生范围与速度分布保持一致。</p>
-     */
+    /// 保留 1.21 夜明弹命中时的数量和运动参数。
+    ///
+    /// <p>1.20.1 没有 1.21 使用的 ominous trial spawner 粒子，因此仅将粒子类型替换为同样
+    /// 不受重力影响的电火花；其余出生范围与速度分布保持一致。</p>
     private static void playLuminiteImpact(Vec3 position) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) {
@@ -115,9 +109,7 @@ public final class BulletVfxManager {
         }
     }
 
-    /**
-     * 保留 1.21 叶绿弹命中时的数量、出生范围和速度分布。
-     */
+    /// 保留 1.21 叶绿弹命中时的数量、出生范围和速度分布。
     private static void playChlorophyteImpact(Vec3 position) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) {

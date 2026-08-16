@@ -13,8 +13,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Nullable;
@@ -32,12 +32,10 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
         this(containerId, inventory, null);
     }
 
-    /**
-     * 创建由 NPC 交易会话授权的重铸菜单。
-     *
-     * <p>客户端注册工厂使用无 NPC 的构造器；服务端生产路径必须保留来源 NPC，
-     * 以便实体死亡、跨维度或玩家离开交互距离时立即关闭菜单。</p>
-     */
+    /// 创建由 NPC 交易会话授权的重铸菜单。
+    ///
+    /// <p>客户端注册工厂使用无 NPC 的构造器；服务端生产路径必须保留来源 NPC，
+    /// 以便实体死亡、跨维度或玩家离开交互距离时立即关闭菜单。</p>
     public NPCReforgeMenu(
             int containerId,
             Inventory inventory,
@@ -73,7 +71,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
 
     @Override
     public void slotsChanged(Container container) {
-        // 物品进入槽位时预先决定下一次重铸结果和费用，客户端只负责展示同步值。
+        // 提前决定下一个词条
         if (!player.level().isClientSide) {
             ItemStack itemStack = getReforgeItem();
             if (PrefixUtils.couldReforge(itemStack)) {
@@ -93,7 +91,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
 
     @Override
     public boolean clickMenuButton(Player player, int id) {
-        // 当前界面只有编号为 0 的重铸按钮，拒绝客户端构造的其他编号。
+        // 重铸
         if (id != 0) return false;
         int cost = data[DATA_REFORGE_COST];
         if (cost >= 0x3F3F3F3F) return false;

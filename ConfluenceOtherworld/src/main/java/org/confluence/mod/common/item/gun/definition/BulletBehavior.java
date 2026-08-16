@@ -4,12 +4,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 
-/**
- * 特殊子弹的开放行为接口。
- *
- * <p>附属模块可以为自己的弹药提供实现；枪械物品只保存定义，
- * 所有飞行与命中逻辑都由服务端弹幕实体统一调用。</p>
- */
+/// 特殊子弹的开放行为接口。
+///
+/// <p>附属模块可以为自己的弹药提供实现；枪械物品只保存定义，
+/// 所有飞行与命中逻辑都由服务端弹幕实体统一调用。</p>
 public interface BulletBehavior {
     BulletBehavior NORMAL = BulletBehaviors.NORMAL;
     BulletBehavior SILVER_PARTICLES = BulletBehaviors.SILVER_PARTICLES;
@@ -27,9 +25,7 @@ public interface BulletBehavior {
 
     default void tick(BaseBulletEntity entity) {}
 
-    /**
-     * @return 是否保留弹丸并继续飞行。
-     */
+    /// @return 是否保留弹丸并继续飞行。
     default boolean onHitBlock(BaseBulletEntity entity, BlockHitResult result) {
         return false;
     }

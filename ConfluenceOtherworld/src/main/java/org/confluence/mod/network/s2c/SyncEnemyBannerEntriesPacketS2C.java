@@ -17,9 +17,7 @@ public record SyncEnemyBannerEntriesPacketS2C(List<String> entries) implements I
             .apply(PortByteBufCodecs.list())
             .map(SyncEnemyBannerEntriesPacketS2C::new, SyncEnemyBannerEntriesPacketS2C::entries);
 
-    /**
-     * 敌怪旗帜条目会替换客户端玩家附件，必须交给客户端主线程执行。
-     */
+    /// 敌怪旗帜条目会替换客户端玩家附件，必须交给客户端主线程执行。
     @Override
     public void handle(IPortPacket.Context context) {
         Player player = context.player();

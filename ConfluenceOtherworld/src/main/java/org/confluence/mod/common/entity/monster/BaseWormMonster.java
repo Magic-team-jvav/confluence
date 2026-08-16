@@ -135,11 +135,9 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     @Override
     public void updateSegmentPosition() {}
 
-    /**
-     * 供同包行为测试核对长虫头部是否保留穿墙移动能力。
-     *
-     * <p>该状态是长虫路径语义的一部分，但没有必要作为跨模组公共 API 暴露。</p>
-     */
+    /// 供同包行为测试核对长虫头部是否保留穿墙移动能力。
+    ///
+    /// <p>该状态是长虫路径语义的一部分，但没有必要作为跨模组公共 API 暴露。</p>
     boolean isPhasingThroughBlocks() {
         return noPhysics;
     }
@@ -165,9 +163,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
         };
     }
 
-    /**
-     * 子类只声明所属蠕虫族的高度和速度边界，三维转向由公共节点完成。
-     */
+    /// 子类只声明所属蠕虫族的高度和速度边界，三维转向由公共节点完成。
     protected WormMovementAction.Profile movementProfile() {
         return WormMovementAction.Profile.underground();
     }

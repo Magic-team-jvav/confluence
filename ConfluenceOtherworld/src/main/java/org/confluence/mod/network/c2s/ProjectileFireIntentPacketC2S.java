@@ -13,13 +13,11 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Objects;
 
-/**
- * 玩家主动武器弹幕的统一客户端意图包。
- *
- * <p>负载严格固定为手和触发方式两个有限枚举，各占一个字节。包中不存在动作 ID、实体类型、
- * 伤害、速度、弹数、资源数量、目标坐标或客户端冷却；服务端收到后始终从对应手重新读取当前
- * 物品，并交给 MagicLib 的唯一发射事务入口解析。</p>
- */
+/// 玩家主动武器弹幕的统一客户端意图包。
+///
+/// <p>负载严格固定为手和触发方式两个有限枚举，各占一个字节。包中不存在动作 ID、实体类型、
+/// 伤害、速度、弹数、资源数量、目标坐标或客户端冷却；服务端收到后始终从对应手重新读取当前
+/// 物品，并交给 MagicLib 的唯一发射事务入口解析。</p>
 public record ProjectileFireIntentPacketC2S(
         InteractionHand hand,
         ProjectileFireTrigger trigger
@@ -48,10 +46,8 @@ public record ProjectileFireIntentPacketC2S(
         Objects.requireNonNull(trigger, "Projectile fire trigger must not be null");
     }
 
-    /**
-     * 发射事务会读取并修改服务端玩家的物品栏、冷却和世界实体，因此这个数据包必须显式切回
-     * 服务端主线程。PortLib 的默认数据包接口只负责转发，不替所有数据包猜测线程需求。
-     */
+    /// 发射事务会读取并修改服务端玩家的物品栏、冷却和世界实体，因此这个数据包必须显式切回
+    /// 服务端主线程。PortLib 的默认数据包接口只负责转发，不替所有数据包猜测线程需求。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {
@@ -59,9 +55,7 @@ public record ProjectileFireIntentPacketC2S(
         }
     }
 
-    /**
-     * 仅转交服务端权威事务，不在网络层复制任何武器玩法。
-     */
+    /// 仅转交服务端权威事务，不在网络层复制任何武器玩法。
     @Override
     public void work(ServerPlayer player) {
         ServerProjectileFireService.fire(player, hand, trigger);
@@ -72,9 +66,7 @@ public record ProjectileFireIntentPacketC2S(
         return ID;
     }
 
-    /**
-     * 从客户端发送一个不含数值与目标信息的固定意图。
-     */
+    /// 从客户端发送一个不含数值与目标信息的固定意图。
     public static void sendToServer(InteractionHand hand, ProjectileFireTrigger trigger) {
         Confluence.NETWORK_HANDLER.sendToServer(new ProjectileFireIntentPacketC2S(hand, trigger));
     }

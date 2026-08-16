@@ -23,12 +23,10 @@ import java.util.function.Supplier;
 
 import static org.confluence.mod.Confluence.MODID;
 
-/**
- * 生成结构固定、能够由注册信息完整推导的方块状态和模型。
- *
- * <p>主资源目录中的手写 JSON 始终拥有优先权。随机变体、特殊旋转、自定义几何等复杂资源
- * 不在这里重新描述，避免每增加一种复杂方块都继续扩充专用名单和分支。</p>
- */
+/// 生成结构固定、能够由注册信息完整推导的方块状态和模型。
+///
+/// <p>主资源目录中的手写 JSON 始终拥有优先权。随机变体、特殊旋转、自定义几何等复杂资源
+/// 不在这里重新描述，避免每增加一种复杂方块都继续扩充专用名单和分支。</p>
 public final class ModBlockStateProvider extends BlockStateProvider {
     private final ExistingFileHelper existingFileHelper;
 
@@ -221,10 +219,8 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         }
     }
 
-    /**
-     * 获取已有手写模型，或生成一个结构可由方块组定义完整推导的常规模型。
-     * 方块状态和模型分别判断所有权，部分手写时不会再把同组的其他模型一起跳过。
-     */
+    /// 获取已有手写模型，或生成一个结构可由方块组定义完整推导的常规模型。
+    /// 方块状态和模型分别判断所有权，部分手写时不会再把同组的其他模型一起跳过。
     private ModelFile modelOrGenerate(String path, Supplier<ModelFile> factory) {
         ResourceLocation location = Confluence.asResource("block/" + path);
         return hasHandwrittenModel(location)
@@ -241,11 +237,9 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         if (hasHandwrittenModel(model)) {
             simpleBlock(block, models().getExistingFile(model));
         } else if (hasTexture(model)) {
-            /*
-             * 只有存在同名纹理时才能从注册名完整推导 cube_all 模型。
-             * 没有同名纹理的方块通常复用其他纹理或需要复杂状态，应继续保留手写资源，
-             * 不能让通用生成规则猜测模型并阻断整个 DataGen。
-             */
+            /// 只有存在同名纹理时才能从注册名完整推导 cube_all 模型。
+            /// 没有同名纹理的方块通常复用其他纹理或需要复杂状态，应继续保留手写资源，
+            /// 不能让通用生成规则猜测模型并阻断整个 DataGen。
             simpleBlock(block);
         }
     }

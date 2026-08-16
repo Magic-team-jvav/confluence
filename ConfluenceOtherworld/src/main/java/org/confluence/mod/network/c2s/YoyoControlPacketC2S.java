@@ -10,11 +10,9 @@ import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * 悠悠球左键控制包。
- *
- * <p>客户端只提交按下、松开或一格距离调整；实体、目标、伤害和最大射程全部由服务端解析。</p>
- */
+/// 悠悠球左键控制包。
+///
+/// <p>客户端只提交按下、松开或一格距离调整；实体、目标、伤害和最大射程全部由服务端解析。</p>
 public record YoyoControlPacketC2S(Action action, int amount)
         implements IPortPacket.C2S {
     public enum Action {
@@ -66,9 +64,7 @@ public record YoyoControlPacketC2S(Action action, int amount)
         return ID;
     }
 
-    /**
-     * 悠悠球控制会创建、查找并修改世界实体，必须由本数据包显式切回服务端主线程。
-     */
+    /// 悠悠球控制会创建、查找并修改世界实体，必须由本数据包显式切回服务端主线程。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {

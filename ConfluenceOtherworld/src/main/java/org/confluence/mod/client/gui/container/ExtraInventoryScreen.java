@@ -134,7 +134,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 }
             }
         }
-        // 此处保留界面交互注入点，后续用于改善附加背包的操作体验。
+        // better experience mixin here
     }
 
     @Override

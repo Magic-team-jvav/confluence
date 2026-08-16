@@ -43,15 +43,7 @@ import org.confluence.mod.client.effect.connected.ModelSwapper;
 import org.confluence.mod.client.effect.connected.StitchedSprite;
 import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
-import org.confluence.mod.client.entity.model.ExplicitGeoModel;
-import org.confluence.mod.client.entity.model.BaseSlimeModel;
-import org.confluence.mod.client.entity.model.CrownOfKingSlimeModel;
-import org.confluence.mod.client.entity.model.VanillaSkeletonGeoModel;
-import org.confluence.mod.client.entity.model.VanillaGoblinGeoModel;
-import org.confluence.mod.client.entity.model.VanillaHumanoidGeoModel;
-import org.confluence.mod.client.entity.model.VanillaZombieGeoModel;
-import org.confluence.mod.client.entity.model.VariantTextureGeoModel;
-import org.confluence.mod.client.entity.model.WormPartGeoModel;
+import org.confluence.mod.client.entity.model.*;
 import org.confluence.mod.client.entity.renderer.*;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
@@ -88,7 +80,6 @@ import org.confluence.mod.client.renderer.entity.flail.BaseFlailRenderer;
 import org.confluence.mod.client.renderer.entity.flail.FlailModel;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
-import org.confluence.mod.client.renderer.entity.projectile.WhipSegmentModels;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.*;
 import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
@@ -98,11 +89,10 @@ import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.animal.Fairy;
+import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.mount.RideableBeeMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
-import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
-import org.confluence.mod.client.model.entity.projectile.SpearProjectileModels;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -127,11 +117,7 @@ import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
 import static org.confluence.mod.common.init.entity.ModEntities.*;
@@ -193,7 +179,7 @@ public final class ModClientEvents {
     }
 
     public static void registerMenuScreens(PortRegisterMenuScreensEvent event) {
-        // 方块容器界面
+        // block
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
         event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
         event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
@@ -210,7 +196,8 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.DYE_VAT.get(), DyeVatScreen::new);
         event.register(ModMenuTypes.DYE_MIX.get(), DyeMixScreen::new);
         event.register(ModMenuTypes.PIGGY_BANK.get(), PiggyBankScreen::new);
-        // NPC 交易当前使用箱子式界面，保留原版交易式界面作为后续可选方向。
+        // npc
+//  todo      event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
         event.register(ModMenuTypes.NPC_TRADE.get(), NPCTradeScreen::new);
     }
@@ -512,11 +499,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ICE_TOFU_BRICK.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
-        // 火焰云实体只负责范围点燃和客户端火焰粒子，本体不需要额外实体模型。
-        event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new);
+        event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(SUPER_SPIKY_BALL.get(), SuperSpikyBallProjectileRenderer::new);
-        // 长矛机关的伸缩碰撞已由实体同步，独立机关模型后续再按 1.21 侧统一补齐。
-        event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new);
+        event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BALL_OF_FROST.get(), NoopRenderer::new);
         event.registerEntityRenderer(DEMON_SCYTHE.get(), DemonScytheProjectileRenderer::new);
         event.registerEntityRenderer(SKULL.get(), SkullProjectileRenderer::new);
@@ -529,8 +514,7 @@ public final class ModClientEvents {
                         context, new RainCloudProjectileModel(), false, 2.0F, -0.2F));
         event.registerEntityRenderer(RAIN.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
         event.registerEntityRenderer(STORM_SPEAR_SHOT.get(), context -> new SpearProjectileRenderer(context, SpearProjectileModels.STORM));
-        // 孢子云当前由命中逻辑和粒子表现承担可视反馈，保持与 1.21 侧一致。
-        event.registerEntityRenderer(SPORE_CLOUD.get(), NoopRenderer::new);
+        event.registerEntityRenderer(SPORE_CLOUD.get(), NoopRenderer::new);//todo 贴图模型粒子
         event.registerEntityRenderer(NORTH_POLE.get(), context -> new SpearProjectileRenderer(context, SpearProjectileModels.NORTH_POLE));
         event.registerEntityRenderer(NORTH_POLE_SUB.get(), NoopRenderer::new);
         event.registerEntityRenderer(GHASTLY.get(), context -> new SpearProjectileRenderer(context, SpearProjectileModels.GHASTLY));
@@ -538,11 +522,10 @@ public final class ModClientEvents {
         event.registerEntityRenderer(GOLDEN_SHOWER.get(), NoopRenderer::new);
         event.registerEntityRenderer(MAGIC_MISSILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLAMELASH.get(), NoopRenderer::new);
-        // 这些法杖弹幕在 1.21 侧仍以逻辑实体为主，可视效果由粒子或后续专用模型接管。
-        event.registerEntityRenderer(RAINBOW.get(), NoopRenderer::new);
-        event.registerEntityRenderer(SKY_FRACTURE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(CRYSTAL_CHARGE_1.get(), NoopRenderer::new);
-        event.registerEntityRenderer(CRYSTAL_CHARGE_2.get(), NoopRenderer::new);
+        event.registerEntityRenderer(RAINBOW.get(), NoopRenderer::new); // todo 粒子
+        event.registerEntityRenderer(SKY_FRACTURE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(CRYSTAL_CHARGE_1.get(), NoopRenderer::new); // todo 粒子
+        event.registerEntityRenderer(CRYSTAL_CHARGE_2.get(), NoopRenderer::new); // todo 粒子
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);
@@ -600,7 +583,7 @@ public final class ModClientEvents {
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
         event.registerEntityRenderer(VANILLA_MINECART.get(), provider);
-        // 矿车实体复用原版矿车渲染器，具体外观由矿车类型与物品纹理继续补全。
+        // todo 模型
         event.registerEntityRenderer(WOODEN_MINECART.get(), provider);
         event.registerEntityRenderer(GENERIC_MINECART.get(), provider);
         event.registerEntityRenderer(MECHANICAL_CART.get(), provider);
@@ -619,7 +602,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(RAINBOW_SHEEP.get(), RainbowSheepRenderer::new);
 //        event.registerEntityRenderer(INVERSE_ENDERMAN.get(), EndermanRenderer::new);
 
-        // 小动物渲染器：兔子保留专用模型，其余实体复用通用小动物渲染器。
+        // Critter renderers — Bunny 保留自定义模型，其余用 CritterRenderer
         event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.JEWEL_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), BunnyRenderer::new);
@@ -834,7 +817,7 @@ public final class ModClientEvents {
                 BossEntities.PRIME_ENDER_DRAGON.get(),
                 PrimeEnderDragonRenderer::new);
         event.registerEntityRenderer(BossEntities.PRIME_ENDER_DRAGON_PART.get(), NoopRenderer::new);
-        // NPC 渲染器
+        // NPC
         event.registerEntityRenderer(NpcEntities.GUIDE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("npc/guide")));
         event.registerEntityRenderer(NpcEntities.MERCHANT.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("npc/merchant")));
         event.registerEntityRenderer(NpcEntities.NURSE.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("npc/nurse")));
@@ -968,7 +951,7 @@ public final class ModClientEvents {
                                 crawdad.getVariant() == 0
                                         ? "textures/entity/crawdad/blue.png"
                                         : "textures/entity/crawdad/red.png"))));
-        // 幽灵与宝箱怪
+        // Wraith + Mimics
         event.registerEntityRenderer(MonsterEntities.WRAITH.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GHOST.getId()));
         event.registerEntityRenderer(MonsterEntities.WOODEN_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WOODEN_MIMIC.getId()));
         event.registerEntityRenderer(MonsterEntities.GOLDEN_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GOLDEN_MIMIC.getId()));
@@ -1013,13 +996,11 @@ public final class ModClientEvents {
                 Confluence.asResource("animations/entity/jellyfish.animation.json"));
     }
 
-    /**
-     * 为暂时复用卷壳怪拓扑的生物提供完整且确定的资源组合。
-     *
-     * <p>卷壳怪纹理按变体存放在子目录中，不存在约定路径下的
-     * {@code textures/entity/giant_shelly.png}。这里显式选择紫色变体，避免复用模型的
-     * 巨型陆龟和腹足怪请求不存在的默认纹理。</p>
-     */
+    /// 为暂时复用卷壳怪拓扑的生物提供完整且确定的资源组合。
+    ///
+    /// <p>卷壳怪纹理按变体存放在子目录中，不存在约定路径下的
+    /// {@code textures/entity/giant_shelly.png}。这里显式选择紫色变体，避免复用模型的
+    /// 巨型陆龟和腹足怪请求不存在的默认纹理。</p>
     private static <T extends GeoEntity> ExplicitGeoModel<T> sharedGiantShellyModel() {
         return new ExplicitGeoModel<>(
                 Confluence.asResource("geo/entity/giant_shelly.geo.json"),

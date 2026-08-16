@@ -3,28 +3,22 @@ package org.confluence.mod.common.data.entity;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-/**
- * 简单生物的数据包定义。
- *
- * <p>该记录只保存可安全热重载的“数值配置”，不保存实体实例、行为树节点或 Forge 对象。
- * 生物实体的 Java 实现是默认值的唯一来源；数据包只保存需要改动的覆盖值。
- * KubeJS 也可以把相同结构放入 {@code kubejs/data/<实体命名空间>/entity_definition}，
- * 无需依赖本体内部 Java 类。未填写的字段统一以负数表示“沿用 Java 侧默认值”，
- * 从而允许整合包只覆盖自己关心的参数。</p>
- *
- * <p>这里是稳定的数据格式边界。外部模组与脚本应写入 JSON，而不是直接持有加载器的内部映射；
- * 这样既能参与标准资源包优先级，也能在 {@code /reload} 时与其他数据包一起原子生效。</p>
- */
+/// 简单生物的数据包定义。
+///
+/// <p>该记录只保存可安全热重载的“数值配置”，不保存实体实例、行为树节点或 Forge 对象。
+/// 生物实体的 Java 实现是默认值的唯一来源；数据包只保存需要改动的覆盖值。
+/// KubeJS 也可以把相同结构放入 {@code kubejs/data/<实体命名空间>/entity_definition}，
+/// 无需依赖本体内部 Java 类。未填写的字段统一以负数表示“沿用 Java 侧默认值”，
+/// 从而允许整合包只覆盖自己关心的参数。</p>
+///
+/// <p>这里是稳定的数据格式边界。外部模组与脚本应写入 JSON，而不是直接持有加载器的内部映射；
+/// 这样既能参与标准资源包优先级，也能在 {@code /reload} 时与其他数据包一起原子生效。</p>
 public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverrides behavior) {
-    /**
-     * 未找到定义或定义未提供任何覆盖值时使用的不可变空对象。
-     */
+    /// 未找到定义或定义未提供任何覆盖值时使用的不可变空对象。
     public static final CreatureDefinition EMPTY = new CreatureDefinition(
             AttributeOverrides.EMPTY, BehaviorOverrides.EMPTY);
 
-    /**
-     * 数据包编解码入口。属性与行为两个区块都可省略，便于数据包只调整一个维度。
-     */
+    /// 数据包编解码入口。属性与行为两个区块都可省略，便于数据包只调整一个维度。
     public static final Codec<CreatureDefinition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             AttributeOverrides.CODEC.optionalFieldOf("attributes", AttributeOverrides.EMPTY)
                     .forGetter(CreatureDefinition::attributes),
@@ -32,11 +26,9 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
                     .forGetter(CreatureDefinition::behavior)
     ).apply(instance, CreatureDefinition::new));
 
-    /**
-     * 可选的原版属性基础值覆盖。
-     *
-     * <p>这些数值在实体完成属性实例初始化后写入基础值，不创建永久修饰符，避免多次加载叠加。</p>
-     */
+    /// 可选的原版属性基础值覆盖。
+    ///
+    /// <p>这些数值在实体完成属性实例初始化后写入基础值，不创建永久修饰符，避免多次加载叠加。</p>
     public record AttributeOverrides(double maxHealth, double attackDamage, double armor,
                                      double movementSpeed, double followRange,
                                      double knockbackResistance) {
@@ -52,12 +44,10 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
         ).apply(instance, AttributeOverrides::new));
     }
 
-    /**
-     * 通用行为树参数覆盖。
-     *
-     * <p>字段按照行为能力而非具体生物命名：近战、冲锋、远程和飞行模板只读取自己需要的字段。
-     * 因此新增简单生物时可以复用同一格式，不必为每个实体增加独立 Codec。</p>
-     */
+    /// 通用行为树参数覆盖。
+    ///
+    /// <p>字段按照行为能力而非具体生物命名：近战、冲锋、远程和飞行模板只读取自己需要的字段。
+    /// 因此新增简单生物时可以复用同一格式，不必为每个实体增加独立 Codec。</p>
     public record BehaviorOverrides(double moveSpeed, double meleeRange, double wanderSpeed,
                                     int wanderRadius, int idleTicks, double chargeSpeed,
                                     int windupTicks, int shotCooldown, double shotMultiplier,

@@ -37,21 +37,11 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
- * 血肉山。
- *
- * <p>战斗区域由内圈和外圈构成。进入区域的生物会被登记为本次遭遇参与者：
- * 贴近中心或越过外圈都会承受周期伤害，内外圈之间是主要战斗带。二阶段会在
- * 专家及以上难度逐步扩大内圈，并开始召唤血蛭和熔岩柱。</p>
- *
- * <p>实体生成后的 150 tick 是展开阶段，眼睛、嘴和召唤物不会攻击。由巫毒娃娃
- * 正式召唤时还会启动分帧圆柱清场；刷怪蛋、命令和测试生成不会擅自破坏地形。</p>
+ * 肉丘——静止的地狱 Boss，拥有环形伤害区域、5 只眼睛 + 5 张嘴巴。
+ * Phase2 (HP<50%) 时外圈扩大、攻击加速。
  */
 public class HillOfFlesh extends BaseBoss {
     private static final RawAnimation IDLE =
@@ -116,9 +106,7 @@ public class HillOfFlesh extends BaseBoss {
         xpReward = 5000;
     }
 
-    /**
-     * 肉山丘陵的墙体布局由自身锚点控制，不接受原版重力。
-     */
+    /// 肉山丘陵的墙体布局由自身锚点控制，不接受原版重力。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -179,9 +167,7 @@ public class HillOfFlesh extends BaseBoss {
                 OUTER_RADIUS * 0.25F);
     }
 
-    /**
-     * 仅供正式召唤流程开启地形清场。
-     */
+    /// 仅供正式召唤流程开启地形清场。
     public void enableArenaDestruction() {
         terrainDestructionEnabled = true;
     }
@@ -203,11 +189,9 @@ public class HillOfFlesh extends BaseBoss {
             return null;
         }
         float radius = getOuterRadius();
-        /*
-         * 部件优先跟随主体当前锁定的目标，避免多人战斗或相邻测试场景中的其他玩家
-         * 仅因离某个部件更近就抢走仇恨。当前目标离开战斗区域后，才由部件独立寻找
-         * 区域内仍然有效的候选者。
-         */
+        /// 部件优先跟随主体当前锁定的目标，避免多人战斗或相邻测试场景中的其他玩家
+        /// 仅因离某个部件更近就抢走仇恨。当前目标离开战斗区域后，才由部件独立寻找
+        /// 区域内仍然有效的候选者。
         LivingEntity primaryTarget = getTarget();
         if (isValidPartTarget(primaryTarget, radius)) {
             return primaryTarget;
@@ -226,9 +210,7 @@ public class HillOfFlesh extends BaseBoss {
                 .orElse(null);
     }
 
-    /**
-     * 判断生物是否仍处于血肉山的圆形战斗区域内，并且可以成为攻击目标。
-     */
+    /// 判断生物是否仍处于血肉山的圆形战斗区域内，并且可以成为攻击目标。
     private boolean isValidPartTarget(
             @Nullable LivingEntity entity, float radius) {
         return entity != null
@@ -460,13 +442,11 @@ public class HillOfFlesh extends BaseBoss {
         }
     }
 
-    /**
-     * 对本次遭遇的每个参与者分别施加风暴牵引。
-     *
-     * <p>牵引由血肉山实体执行，而不是把可变的 Boss 引用保存在全局效果单例中，因此
-     * 多个血肉山或多名玩家同时存在时不会互相覆盖目标。距离越远时牵引越弱，主要用于
-     * 抑制持续向外逃离，同时保留玩家在主战斗带内调整位置的能力。</p>
-     */
+    /// 对本次遭遇的每个参与者分别施加风暴牵引。
+    ///
+    /// <p>牵引由血肉山实体执行，而不是把可变的 Boss 引用保存在全局效果单例中，因此
+    /// 多个血肉山或多名玩家同时存在时不会互相覆盖目标。距离越远时牵引越弱，主要用于
+    /// 抑制持续向外逃离，同时保留玩家在主战斗带内调整位置的能力。</p>
     void applyStormPull() {
         encounterEntities.removeIf(entity -> !entity.isAlive());
         for (LivingEntity entity : encounterEntities) {
@@ -615,12 +595,10 @@ public class HillOfFlesh extends BaseBoss {
         return spawnLavaPillarEntityAt(target) != null;
     }
 
-    /**
-     * 在目标当前位置生成熔岩柱，并返回已经加入世界的实体。
-     *
-     * <p>调用方需要继续配置表现或验证实例时，应直接使用返回值，避免在同一
-     * tick 内重新扫描世界实体列表时受到区块实体列表刷新顺序影响。</p>
-     */
+    /// 在目标当前位置生成熔岩柱，并返回已经加入世界的实体。
+    ///
+    /// <p>调用方需要继续配置表现或验证实例时，应直接使用返回值，避免在同一
+    /// tick 内重新扫描世界实体列表时受到区块实体列表刷新顺序影响。</p>
     @Nullable
     HillLavaPillarProjectile spawnLavaPillarEntityAt(
             LivingEntity target) {
@@ -653,12 +631,10 @@ public class HillOfFlesh extends BaseBoss {
                 .count();
     }
 
-    /**
-     * 血肉山本体资源只有持续蠕动的待机动画。
-     *
-     * <p>移动由整个战斗区域和子实体共同表达，因此不按位移切换动画；死亡阶段停止
-     * 控制器，避免模型消失过程中继续循环。</p>
-     */
+    /// 血肉山本体资源只有持续蠕动的待机动画。
+    ///
+    /// <p>移动由整个战斗区域和子实体共同表达，因此不按位移切换动画；死亡阶段停止
+    /// 控制器，避免模型消失过程中继续循环。</p>
     @Override
     public void registerControllers(
             AnimatableManager.ControllerRegistrar controllers) {

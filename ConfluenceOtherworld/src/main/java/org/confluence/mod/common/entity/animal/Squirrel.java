@@ -19,7 +19,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
 import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -125,9 +124,7 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
         controllers.add(DefaultAnimations.genericWalkIdleController(this));
     }
 
-    /**
-     * 松鼠当前没有可触发求偶的食物，但仍保留后代工厂，供命令、事件和附属模组调用。
-     */
+    /// 松鼠当前没有可触发求偶的食物，但仍保留后代工厂，供命令、事件和附属模组调用。
     @Override
     public Squirrel getBreedOffspring(
             ServerLevel level,

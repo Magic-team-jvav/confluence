@@ -34,14 +34,12 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.UUID;
 
-/**
- * 会伪装成迷失女孩、受到玩家攻击后显露真身的宁芙。
- *
- * <p>未显形时保持坐姿，不会移动或主动选择附近玩家；玩家造成实际伤害后，宁芙会锁定
- * 该攻击者，先播放显形动作，再高速追击。失去目标一段随机时间后会重新伪装。处于虚弱
- * 状态时可用金苹果净化，净化完成后不再敌对并允许拴系。显形、净化和驯服状态全部同步
- * 并保存，重载不会重新开始计时。</p>
- */
+/// 会伪装成迷失女孩、受到玩家攻击后显露真身的宁芙。
+///
+/// <p>未显形时保持坐姿，不会移动或主动选择附近玩家；玩家造成实际伤害后，宁芙会锁定
+/// 该攻击者，先播放显形动作，再高速追击。失去目标一段随机时间后会重新伪装。处于虚弱
+/// 状态时可用金苹果净化，净化完成后不再敌对并允许拴系。显形、净化和驯服状态全部同步
+/// 并保存，重载不会重新开始计时。</p>
 public final class Nymph extends BaseMonster {
     private static final double DISGUISED_FOLLOW_RANGE = 5.0;
     private static final double REVEALED_FOLLOW_RANGE = 32.0;

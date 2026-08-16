@@ -2,9 +2,7 @@ package org.confluence.mod.common.combat.gun;
 
 import net.minecraft.world.phys.Vec3;
 
-/**
- * 使用固定角速度转向，避免按速度分量插值产生抖动。
- */
+/// 使用固定角速度转向，避免按速度分量插值产生抖动。
 public final class HomingController {
     private static final double EPSILON = 1.0E-10D;
     private static final Vec3 UP = new Vec3(0.0D, 1.0D, 0.0D);
@@ -12,9 +10,7 @@ public final class HomingController {
 
     private HomingController() {}
 
-    /**
-     * 在保持速度大小不变的前提下，最多转过指定弧度。
-     */
+    /// 在保持速度大小不变的前提下，最多转过指定弧度。
     public static Vec3 rotateVelocityToward(Vec3 velocity, Vec3 targetOffset, double maxTurnRadians) {
         double speed = velocity.length();
         if (speed <= EPSILON || targetOffset.lengthSqr() <= EPSILON || maxTurnRadians <= 0.0D) {

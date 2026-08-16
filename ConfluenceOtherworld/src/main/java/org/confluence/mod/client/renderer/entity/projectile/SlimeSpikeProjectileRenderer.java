@@ -12,9 +12,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.SlimeSpikeProjectileModel;
 import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
-/**
- * 按弹丸当前运动方向绘制史莱姆尖刺。
- */
+/// 按弹丸当前运动方向绘制史莱姆尖刺。
 public class SlimeSpikeProjectileRenderer extends EntityRenderer<SlimeSpikeEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource(
             "textures/entity/proj/slime_spiked_projectile.png");

@@ -15,19 +15,13 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.BowCombatAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.*;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-/**
- * 腐骴远程骷髅。
- *
- * <p>生成时固定持弓，并使用与 1.21 远程骷髅相同的作战周期。若命令、数据包或其他
- * 模组替换了主手武器，腐骴会改用近战；重新拿到弓后无需重建实体即可恢复远程行为。</p>
- */
+/// 腐骴远程骷髅。
+///
+/// <p>生成时固定持弓，并使用与 1.21 远程骷髅相同的作战周期。若命令、数据包或其他
+/// 模组替换了主手武器，腐骴会改用近战；重新拿到弓后无需重建实体即可恢复远程行为。</p>
 public class Decayeder extends BaseMonster {
     public Decayeder(EntityType<? extends BaseMonster> type, Level level) {
         super(type, level);

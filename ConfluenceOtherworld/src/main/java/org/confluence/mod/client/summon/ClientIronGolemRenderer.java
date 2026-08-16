@@ -14,9 +14,7 @@ import net.minecraft.util.Mth;
 
 import java.util.Objects;
 
-/**
- * 直接使用原版铁傀儡模型部件绘制同步状态，不创建客户端实体。
- */
+/// 直接使用原版铁傀儡模型部件绘制同步状态，不创建客户端实体。
 final class ClientIronGolemRenderer {
     private static final ResourceLocation TEXTURE = Objects.requireNonNull(
             ResourceLocation.tryParse("minecraft:textures/entity/iron_golem/iron_golem.png"),

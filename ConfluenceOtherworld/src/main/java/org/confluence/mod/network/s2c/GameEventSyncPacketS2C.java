@@ -26,9 +26,7 @@ public record GameEventSyncPacketS2C(
             GameEventSyncPacketS2C::new
     );
 
-    /**
-     * 事件列表属于当前客户端世界状态，必须交给客户端主线程替换。
-     */
+    /// 事件列表属于当前客户端世界状态，必须交给客户端主线程替换。
     @Override
     public void handle(IPortPacket.Context context) {
         Player player = context.player();

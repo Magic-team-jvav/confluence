@@ -12,11 +12,9 @@ import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-/**
- * 给普通双足怪物复用原版人形模型的基础肢体动画。
- * 这个模型只负责通用的头部、手臂和腿部旋转，不处理僵尸攻击、骷髅拉弓或哥布林专属动作。
- * 只有名称以约定前缀开头的骨骼会接收原版旋转，附加装饰骨骼保持资源里写好的姿态。
- */
+/// 给普通双足怪物复用原版人形模型的基础肢体动画。
+/// 这个模型只负责通用的头部、手臂和腿部旋转，不处理僵尸攻击、骷髅拉弓或哥布林专属动作。
+/// 只有名称以约定前缀开头的骨骼会接收原版旋转，附加装饰骨骼保持资源里写好的姿态。
 public final class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
     private static final String HEAD = "Vhead";
     private static final String LEFT_ARM = "Vleft_arm";

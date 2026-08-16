@@ -9,14 +9,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.item.gun.definition.BulletImpactEffect;
-import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * 将服务端已经确认的子弹命中位置与表现类型同步给附近客户端。
- */
+/// 将服务端已经确认的子弹命中位置与表现类型同步给附近客户端。
 public record BulletImpactPacketS2C(double x, double y, double z, int effectId)
         implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("bullet_impact");
@@ -47,9 +45,7 @@ public record BulletImpactPacketS2C(double x, double y, double z, int effectId)
                 new Vec3(x, y, z), BulletImpactEffect.byId(effectId)));
     }
 
-    /**
-     * 仅向同维度且距离命中点六十四格内的玩家发送表现，避免无意义的全服广播。
-     */
+    /// 仅向同维度且距离命中点六十四格内的玩家发送表现，避免无意义的全服广播。
     public static void send(BaseBulletEntity entity, Vec3 position) {
         if (!(entity.level() instanceof ServerLevel level)) {
             return;

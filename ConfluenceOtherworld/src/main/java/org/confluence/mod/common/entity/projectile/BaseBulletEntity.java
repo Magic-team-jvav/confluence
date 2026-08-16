@@ -26,32 +26,25 @@ import org.confluence.lib.api.projectile.ProjectileCombatSnapshotCarrier;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.BulletEvent;
+import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.GunItems;
-import org.confluence.mod.network.s2c.BulletImpactPacketS2C;
 import org.confluence.mod.common.item.BaseBullet;
-import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.network.s2c.BulletImpactPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.world.entity.projectile.PortProjectileDeflection;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
-/**
- * 枪械子弹实体基类。
- *
- * <p>伤害、击退、暴击、穿透预算和成功命中 UUID 来自 MagicLib 发射事务安装的冻结快照；子弹
- * 物品继续负责轨迹颜色、每 tick 扩展和命中扩展。额外的外观与运动字段使用独立版本根节点，
- * 因而区块卸载不会把加速度、方块命中次数或行为物品重置成构造默认值。</p>
- *
- * <p>任何战斗或运行状态损坏都会清空可伤害快照，并在下一次服务端 tick 入口销毁实体。</p>
- */
+/// 枪械子弹实体基类。
+///
+/// <p>伤害、击退、暴击、穿透预算和成功命中 UUID 来自 MagicLib 发射事务安装的冻结快照；子弹
+/// 物品继续负责轨迹颜色、每 tick 扩展和命中扩展。额外的外观与运动字段使用独立版本根节点，
+/// 因而区块卸载不会把加速度、方块命中次数或行为物品重置成构造默认值。</p>
+///
+/// <p>任何战斗或运行状态损坏都会清空可伤害快照，并在下一次服务端 tick 入口销毁实体。</p>
 public class BaseBulletEntity extends Projectile implements ProjectileCombatSnapshotCarrier {
     private static final int MAX_LIFETIME = 200;
     private static final double MAX_OWNER_DISTANCE = 256.0D;
@@ -152,9 +145,7 @@ public class BaseBulletEntity extends Projectile implements ProjectileCombatSnap
         return damage;
     }
 
-    /**
-     * 更新穿透后的基础伤害，并同步更新 MagicLib 快照中的派生伤害。
-     */
+    /// 更新穿透后的基础伤害，并同步更新 MagicLib 快照中的派生伤害。
     public void setDamage(float damage) {
         this.damage = Math.max(0.0F, damage);
         ProjectileCombatSnapshot snapshot = combatState.snapshot();
@@ -182,12 +173,10 @@ public class BaseBulletEntity extends Projectile implements ProjectileCombatSnap
         this.penetrate = penetrate;
     }
 
-    /**
-     * 设置未经原版生成包压缩的初速度。
-     *
-     * <p>原版生成包会把每个速度分量限制在 3.9，泰拉枪械的高速弹会因此在客户端明显落后。
-     * 独立同步原始向量后，客户端会在第一次 tick 前恢复准确速度。</p>
-     */
+    /// 设置未经原版生成包压缩的初速度。
+    ///
+    /// <p>原版生成包会把每个速度分量限制在 3.9，泰拉枪械的高速弹会因此在客户端明显落后。
+    /// 独立同步原始向量后，客户端会在第一次 tick 前恢复准确速度。</p>
     public void setInitialVelocity(Vec3 velocity) {
         setDeltaMovement(velocity);
         hasImpulse = false;
@@ -233,9 +222,7 @@ public class BaseBulletEntity extends Projectile implements ProjectileCombatSnap
         return canHitEntity(target);
     }
 
-    /**
-     * 为分裂效果创建继承同一发射快照的派生弹丸。
-     */
+    /// 为分裂效果创建继承同一发射快照的派生弹丸。
     @SuppressWarnings("unchecked")
     public BaseBulletEntity createChild(Vec3 velocity, float damageMultiplier, int effectState) {
         return createChild(velocity, damageMultiplier, effectState, Vec3.ZERO);
@@ -283,9 +270,7 @@ public class BaseBulletEntity extends Projectile implements ProjectileCombatSnap
         return LibUtils.damageSource(level(), LibDamageTypes.GUN_BULLET, this, getOwner());
     }
 
-    /**
-     * 返回应用 MagicLib 主通道倍率之前的冻结基础伤害。
-     */
+    /// 返回应用 MagicLib 主通道倍率之前的冻结基础伤害。
     public float getCalculatedDamage() {
         ProjectileCombatSnapshot snapshot = combatState.snapshot();
         return snapshot == null ? damage : snapshot.baseDamage();
@@ -369,9 +354,7 @@ public class BaseBulletEntity extends Projectile implements ProjectileCombatSnap
         );
     }
 
-    /**
-     * 供子类的附加运行状态复用统一安全失效通道；原因必须是英文开发者诊断。
-     */
+    /// 供子类的附加运行状态复用统一安全失效通道；原因必须是英文开发者诊断。
     protected final void invalidateRuntimeState(String reason) {
         combatState.invalidate(reason);
         resetBulletRuntimeFields();
@@ -500,9 +483,7 @@ public class BaseBulletEntity extends Projectile implements ProjectileCombatSnap
         appliedInitialVelocity = true;
     }
 
-    /**
-     * 在本 tick 的完整位移线段上选择最先发生的方块或实体碰撞。
-     */
+    /// 在本 tick 的完整位移线段上选择最先发生的方块或实体碰撞。
     private HitResult findHitResult(Vec3 start, Vec3 end) {
         EntityHitResult entityHit = findEntityHit(start, end);
         BlockHitResult blockHit = ignoresBlockCollision() ? null : findBlockHit(start, end);
@@ -551,9 +532,7 @@ public class BaseBulletEntity extends Projectile implements ProjectileCombatSnap
         return position().add(getDeltaMovement()).distanceTo(owner.position()) > MAX_OWNER_DISTANCE;
     }
 
-    /**
-     * 供重力弹等变体在碰撞计算前应用本 tick 的外力。
-     */
+    /// 供重力弹等变体在碰撞计算前应用本 tick 的外力。
     protected void applyForces() {}
 
     protected float getInertia() {
@@ -669,10 +648,8 @@ public class BaseBulletEntity extends Projectile implements ProjectileCombatSnap
         }
     }
 
-    /**
-     * 宝箱怪反射枪弹后接管弹幕，并将伤害与剩余穿透限制为泰拉的反射规格。
-     * 所有权必须在服务端更换，否则弹回玩家时仍会被友方命中过滤拦截。
-     */
+    /// 宝箱怪反射枪弹后接管弹幕，并将伤害与剩余穿透限制为泰拉的反射规格。
+    /// 所有权必须在服务端更换，否则弹回玩家时仍会被友方命中过滤拦截。
     @Override
     public void onDeflection(@Nullable Entity entity, boolean deflectedByPlayer) {
         if (entity instanceof BaseMimic) {

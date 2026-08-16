@@ -23,19 +23,12 @@ import org.confluence.mod.mixed.Immunity;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
-/**
- * 由玩家持有的召唤物运行实例。
- *
- * <p>实例只负责服务端逻辑状态：目标、行为、轨迹、伤害快照以及用于客户端同步的表现状态。
- * 生命周期由 {@link SummonContainer} 统一维护，避免每个召唤物都依赖一个真实的世界实体。</p>
- */
+/// 由玩家持有的召唤物运行实例。
+///
+/// <p>实例只负责服务端逻辑状态：目标、行为、轨迹、伤害快照以及用于客户端同步的表现状态。
+/// 生命周期由 {@link SummonContainer} 统一维护，避免每个召唤物都依赖一个真实的世界实体。</p>
 public abstract class SummonInstance implements OwnedSummon, Immunity {
     private UUID uuid = UUID.randomUUID();
     private final ResourceLocation type;
@@ -100,10 +93,8 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     protected void beforeGoalTick() {
     }
 
-    /**
-     * 在不改变逻辑受伤本体的前提下，选择距离召唤物最近的可视部件作为移动和瞄准目标。
-     * 伤害仍然结算到 {@link #target()}，避免多部件 Boss 被重复计算伤害。
-     */
+    /// 在不改变逻辑受伤本体的前提下，选择距离召唤物最近的可视部件作为移动和瞄准目标。
+    /// 伤害仍然结算到 {@link #target()}，避免多部件 Boss 被重复计算伤害。
     private Entity resolveActualTarget(LivingEntity logicalTarget) {
         if (logicalTarget == null) {
             return null;
@@ -139,17 +130,13 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return owner.level().clip(context).getType() == HitResult.Type.MISS;
     }
 
-    /**
-     * 返回超过该距离平方后需要拉回所有者附近的阈值。
-     */
+    /// 返回超过该距离平方后需要拉回所有者附近的阈值。
     protected double ownerRecoveryDistanceSqr() {
         return 40.0 * 40.0;
     }
 
-    /**
-     * 判断召唤物能否恢复到候选位置。
-     * 飞行召唤物与无碰撞召唤物默认允许，具有实体碰撞体积的召唤物由子类继续检查方块碰撞。
-     */
+    /// 判断召唤物能否恢复到候选位置。
+    /// 飞行召唤物与无碰撞召唤物默认允许，具有实体碰撞体积的召唤物由子类继续检查方块碰撞。
     protected boolean canRecoverAt(Vec3 position) {
         return true;
     }
@@ -180,12 +167,10 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         }
     }
 
-    /**
-     * 路径推进后、历史姿态写回前调用。
-     *
-     * <p>三个姿态依次代表上上个游戏刻、上个游戏刻和当前游戏刻，可用于连续碰撞检测、拖尾采样等必须覆盖
-     * 两个游戏刻之间运动过程的逻辑。默认不执行额外操作。</p>
-     */
+    /// 路径推进后、历史姿态写回前调用。
+    ///
+    /// <p>三个姿态依次代表上上个游戏刻、上个游戏刻和当前游戏刻，可用于连续碰撞检测、拖尾采样等必须覆盖
+    /// 两个游戏刻之间运动过程的逻辑。默认不执行额外操作。</p>
     protected void afterPathAdvance(SummonPose previousPreviousPose, SummonPose previousPose, SummonPose currentPose) {
     }
 
@@ -256,9 +241,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return points.get(0);
     }
 
-    /**
-     * 使用召唤时冻结的属性快照结算一次命中，并由局部无敌帧限制同一实例的命中频率。
-     */
+    /// 使用召唤时冻结的属性快照结算一次命中，并由局部无敌帧限制同一实例的命中频率。
     protected final boolean hurtTarget(LivingEntity target, float damageMultiplier) {
         Objects.requireNonNull(target, "Summon damage target must not be null");
         if (!Float.isFinite(damageMultiplier) || damageMultiplier < 0.0F) {
@@ -290,9 +273,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         }
     }
 
-    /**
-     * 对指定范围内的全部合法目标结算接触伤害，命中频率仍由每个召唤实例的局部无敌帧控制。
-     */
+    /// 对指定范围内的全部合法目标结算接触伤害，命中频率仍由每个召唤实例的局部无敌帧控制。
     protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier) {
         boolean hit = false;
         for (LivingEntity candidate : owner().level().getEntitiesOfClass(LivingEntity.class, bounds,
@@ -346,23 +327,17 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         SummonTargetCache.invalidate(owner.serverLevel(), owner.getUUID(), uuid);
     }
 
-    /**
-     * 返回当前客户端表现状态；不需要额外动作的召唤物使用默认值。
-     */
+    /// 返回当前客户端表现状态；不需要额外动作的召唤物使用默认值。
     public SummonVisualState visualState() {
         return SummonVisualState.DEFAULT;
     }
 
-    /**
-     * 一个逻辑召唤物可以同步多个纯客户端可视部件，例如星尘龙的头部与体节。
-     */
+    /// 一个逻辑召唤物可以同步多个纯客户端可视部件，例如星尘龙的头部与体节。
     public List<SummonRenderPart> renderParts() {
         return List.of(new SummonRenderPart(uuid, type, currentPose, visualState(), order));
     }
 
-    /**
-     * 同类运行实例可以覆盖此方法，把新增槽位合并进自身。
-     */
+    /// 同类运行实例可以覆盖此方法，把新增槽位合并进自身。
     public boolean canMergeAdditionalSummon() {
         return false;
     }
@@ -399,9 +374,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return type;
     }
 
-    /**
-     * 返回编队排序使用的分组标识；同一行为家族可覆盖它以共享连续序号。
-     */
+    /// 返回编队排序使用的分组标识；同一行为家族可覆盖它以共享连续序号。
     public ResourceLocation groupKey() {
         return type;
     }

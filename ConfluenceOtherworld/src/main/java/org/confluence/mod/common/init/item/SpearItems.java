@@ -10,7 +10,7 @@ public class SpearItems {
     public static void init() {}
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
-    // 矛参考数值以泰拉 Wiki 中的伤害除以二为基础，击退值取十分之一。
+    // 矛参考数值为 泰拉wiki中的伤害÷2为基础值 击退值为一半
     public static final PortDeferredItem<SpearItem> SPEAR = ITEMS.register("spear", SpearItem::new);
     public static final PortDeferredItem<StormSpearItem> STORM_SPEAR = ITEMS.register("storm_spear", StormSpearItem::new);
     public static final PortDeferredItem<TheRottedForkItem> THE_ROTTED_FORK = ITEMS.register("the_rotted_fork", TheRottedForkItem::new);

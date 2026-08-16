@@ -15,9 +15,7 @@ import org.confluence.mod.common.summon.SummonVisualState;
 
 import java.util.List;
 
-/**
- * 泰拉棱镜召唤物的运行实例。
- */
+/// 泰拉棱镜召唤物的运行实例。
 public final class TerraprismaSummon extends SummonInstance {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 18.0F;

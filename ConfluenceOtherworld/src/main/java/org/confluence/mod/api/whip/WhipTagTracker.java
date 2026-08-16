@@ -17,15 +17,13 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
-/**
- * 按“玩家 + 目标”隔离的鞭子召唤标记存储。
- *
- * <p>鞭痕属于施加标记的玩家，而不是目标身上的全局增伤。两名玩家鞭打同一目标时，
- * 各自召唤物只能读取自己的最后一次标记；同一玩家的新标记会替换旧标记。</p>
- *
- * <p>这里仅保存短生命周期的战斗状态，不写入世界存档。世界卸载后由弱引用释放，
- * 每次读写同时清理过期项。</p>
- */
+/// 按“玩家 + 目标”隔离的鞭子召唤标记存储。
+///
+/// <p>鞭痕属于施加标记的玩家，而不是目标身上的全局增伤。两名玩家鞭打同一目标时，
+/// 各自召唤物只能读取自己的最后一次标记；同一玩家的新标记会替换旧标记。</p>
+///
+/// <p>这里仅保存短生命周期的战斗状态，不写入世界存档。世界卸载后由弱引用释放，
+/// 每次读写同时清理过期项。</p>
 public final class WhipTagTracker {
     public static final int DEFAULT_DURATION_TICKS = 80;
 
@@ -34,9 +32,7 @@ public final class WhipTagTracker {
 
     private WhipTagTracker() {}
 
-    /**
-     * 用当前鞭子的独立 Effect 替换该玩家对目标施加的旧标记。
-     */
+    /// 用当前鞭子的独立 Effect 替换该玩家对目标施加的旧标记。
     public static void apply(
             Player owner,
             LivingEntity target,
@@ -102,11 +98,9 @@ public final class WhipTagTracker {
         }
     }
 
-    /**
-     * 将该玩家最后施加的有效标记应用到一次召唤物伤害。
-     *
-     * @param baseDamage 已完成召唤物自身计算、尚未应用鞭痕的伤害
-     */
+    /// 将该玩家最后施加的有效标记应用到一次召唤物伤害。
+    ///
+    /// @param baseDamage 已完成召唤物自身计算、尚未应用鞭痕的伤害
     public static float modifyDamage(
             Player owner,
             OwnedSummon summon,
@@ -137,18 +131,14 @@ public final class WhipTagTracker {
         return damage;
     }
 
-    /**
-     * 查询该玩家对目标是否仍有有效标记。
-     */
+    /// 查询该玩家对目标是否仍有有效标记。
     public static boolean hasActiveTag(Player owner, LivingEntity target) {
         return find(owner, target) != null;
     }
 
-    /**
-     * 返回玩家最后鞭打且仍带有效标记的目标。
-     *
-     * <p>一次挥鞭可能在同一游戏刻命中多个目标，因此使用运行期递增序号还原真实命中顺序。</p>
-     */
+    /// 返回玩家最后鞭打且仍带有效标记的目标。
+    ///
+    /// <p>一次挥鞭可能在同一游戏刻命中多个目标，因此使用运行期递增序号还原真实命中顺序。</p>
     public static @Nullable LivingEntity lastTaggedTarget(Player owner) {
         if (!(owner.level() instanceof ServerLevel level)) {
             return null;
@@ -182,9 +172,7 @@ public final class WhipTagTracker {
         return latestTarget;
     }
 
-    /**
-     * 主动移除该玩家对目标施加的运行时标记。
-     */
+    /// 主动移除该玩家对目标施加的运行时标记。
     public static void remove(Player owner, LivingEntity target) {
         if (!(target.level() instanceof ServerLevel level)) {
             return;

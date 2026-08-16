@@ -19,16 +19,14 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.init.ModDamageTypes;
 
-/**
- * 地牢守卫。
- *
- * <p>该实体不是常规 Boss 战，而是阻止玩家过早深入地牢的追杀单位。它不会显示 Boss 条、
- * 不发送 Boss 战败消息、不保存到区块，并以固定速度直接追向玩家。生成后的五十 tick 内若
- * 始终找不到存活玩家便立即撤销，避免触发方离场后留下无目标守卫。</p>
- *
- * <p>接触伤害使用独立伤害类型并绕过护甲，不能用普通生物攻击再依赖夸张攻击数值间接模拟；
- * 溺水伤害被明确忽略。行为树只保留永久等待节点，防止通用冲锋动作改写追击速度。</p>
- */
+/// 地牢守卫。
+///
+/// <p>该实体不是常规 Boss 战，而是阻止玩家过早深入地牢的追杀单位。它不会显示 Boss 条、
+/// 不发送 Boss 战败消息、不保存到区块，并以固定速度直接追向玩家。生成后的五十 tick 内若
+/// 始终找不到存活玩家便立即撤销，避免触发方离场后留下无目标守卫。</p>
+///
+/// <p>接触伤害使用独立伤害类型并绕过护甲，不能用普通生物攻击再依赖夸张攻击数值间接模拟；
+/// 溺水伤害被明确忽略。行为树只保留永久等待节点，防止通用冲锋动作改写追击速度。</p>
 public class DungeonGuardian extends BaseBoss {
     private static final int INITIAL_PLAYER_CHECK_TICKS = 50;
     private static final double PURSUIT_SPEED = 0.80;
@@ -43,9 +41,7 @@ public class DungeonGuardian extends BaseBoss {
         xpReward = 0;
     }
 
-    /**
-     * 地牢守卫的直线追击不叠加原版重力。
-     */
+    /// 地牢守卫的直线追击不叠加原版重力。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -103,10 +99,8 @@ public class DungeonGuardian extends BaseBoss {
             setDeltaMovement(getDeltaMovement().scale(0.75));
         }
 
-        /*
-         * 与 1.21 保持一致：这是生成后的单次玩家存在性检查，并不是失去目标后的脱战倒计时。
-         * 成功命中会重新开始一次检查；计数越过零后不会反复扫描或因稍后失去目标而直接撤销。
-         */
+        /// 与 1.21 保持一致：这是生成后的单次玩家存在性检查，并不是失去目标后的脱战倒计时。
+        /// 成功命中会重新开始一次检查；计数越过零后不会反复扫描或因稍后失去目标而直接撤销。
         if (--playerCheckTicks == 0) {
             Player nearbyPlayer = level().getNearestPlayer(this, 100.0);
             if (nearbyPlayer == null || !nearbyPlayer.isAlive()) {

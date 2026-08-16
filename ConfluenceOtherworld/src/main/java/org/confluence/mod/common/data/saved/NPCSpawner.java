@@ -64,7 +64,10 @@ import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 /// 注：NPC默认生成在对应玩家出生点
@@ -264,7 +267,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     /// 醉酒世界则会生成派对女孩
-    /// 待补：其它秘密种子的特殊生成
+    /// todo 其它秘密种子的特殊生成
     public void trySpawnGuide(ServerPlayer player) {
         ServerLevel serverLevel = player.serverLevel();
         if (serverLevel.dimension() == OverworldUtils.dimension()) {
@@ -357,14 +360,14 @@ public enum NPCSpawner implements IGlobalData {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.GUIDE.get());
             }
         } else if (!hasNPCAlive(region, NpcEntities.PARTY_GIRL.get())) {
-            if (player.getRandom().nextInt(40) == 0 && getAliveNpcCount(region, entityType -> true/* 待调整：骷髅商人不计入 */) >= 14) {
+            if (player.getRandom().nextInt(40) == 0 && getAliveNpcCount(region, entityType -> true/* todo 骷髅商人不计入 */) >= 14) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.PARTY_GIRL.get());
             }
         }
         return false;
     }
 
-    /// 待补：旅行商人不会在日食期间生成。
+    /// todo 他不会在日食期间生成。
     private boolean trySpawnTravelingMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.TRAVELING_MERCHANT.get())) {
             if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils.getDayTime(12, 0), player.level())) {
@@ -405,7 +408,7 @@ public enum NPCSpawner implements IGlobalData {
         return false;
     }
 
-    // 待补：可用于做染料的物品
+    // todo 可用于做染料的物品
     private boolean trySpawnDyeTrader(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, NpcEntities.DYE_TRADER.get())) {
             if (hasNPCAlive(region, NpcEntities.MERCHANT.get()) && player.getInventory().hasAnyMatching(stack -> stack.is(Tags.Items.DYES))) {

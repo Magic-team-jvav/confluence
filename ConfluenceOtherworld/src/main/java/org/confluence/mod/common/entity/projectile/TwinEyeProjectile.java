@@ -10,12 +10,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-/**
- * 双子魔眼使用的真实直线弹幕。
- *
- * <p>激光与魔焰拥有独立注册类型，但共用碰撞和存活期；变种只负责外观与命中附加
- * 效果，避免两份几乎相同的弹道代码。</p>
- */
+/// 双子魔眼使用的真实直线弹幕。
+///
+/// <p>激光与魔焰拥有独立注册类型，但共用碰撞和存活期；变种只负责外观与命中附加
+/// 效果，避免两份几乎相同的弹道代码。</p>
 public final class TwinEyeProjectile
         extends StraightMonsterProjectile {
     private final Variant variant;

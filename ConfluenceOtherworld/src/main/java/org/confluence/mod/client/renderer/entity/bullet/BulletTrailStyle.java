@@ -2,12 +2,10 @@ package org.confluence.mod.client.renderer.entity.bullet;
 
 import net.minecraft.resources.ResourceLocation;
 
-/**
- * 描述一种子弹拖尾的客户端外观。
- *
- * <p>贴图本身使用白色遮罩，实际颜色仍然来自子弹类型。
- * 这样新增子弹时通常只需要补颜色，不需要为每一种弹药都新增一套贴图。</p>
- */
+/// 描述一种子弹拖尾的客户端外观。
+///
+/// <p>贴图本身使用白色遮罩，实际颜色仍然来自子弹类型。
+/// 这样新增子弹时通常只需要补颜色，不需要为每一种弹药都新增一套贴图。</p>
 record BulletTrailStyle(
         ResourceLocation trailTexture,
         ResourceLocation headTexture,

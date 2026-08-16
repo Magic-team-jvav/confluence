@@ -7,13 +7,11 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 在空中游走一段时间后，沿锁定方向持续冲刺的循环行为。
- *
- * <p>冲刺开始时只记录一次目标位置，之后不会每 tick 追踪转弯，因此玩家可以通过
- * 横向移动躲避。撞墙会立即结束本次冲刺并重新游走；接触伤害带独立冷却，避免实体
- * 包围盒持续相交时每 tick 重复结算。</p>
- */
+/// 在空中游走一段时间后，沿锁定方向持续冲刺的循环行为。
+///
+/// <p>冲刺开始时只记录一次目标位置，之后不会每 tick 追踪转弯，因此玩家可以通过
+/// 横向移动躲避。撞墙会立即结束本次冲刺并重新游走；接触伤害带独立冷却，避免实体
+/// 包围盒持续相交时每 tick 重复结算。</p>
 public final class WanderDashCycleAction extends BTNode {
     private final PathfinderMob mob;
     private final int wanderTicks;

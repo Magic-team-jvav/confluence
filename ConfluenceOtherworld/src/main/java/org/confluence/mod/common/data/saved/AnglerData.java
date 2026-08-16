@@ -24,10 +24,8 @@ public enum AnglerData implements IGlobalData {
         }
     }
 
-    /**
-     * 返回当前世界日期。渔夫任务跟随可被睡觉和时间指令推进的昼夜时间，
-     * 不能使用只记录服务器运行时长的 {@code gameTime}。
-     */
+    /// 返回当前世界日期。渔夫任务跟随可被睡觉和时间指令推进的昼夜时间，
+    /// 不能使用只记录服务器运行时长的 {@code gameTime}。
     public static long currentDay(ServerLevel level) {
         return Math.floorDiv(level.getDayTime(), 24000L);
     }
@@ -46,8 +44,8 @@ public enum AnglerData implements IGlobalData {
     private List<AnglerQuestEntry> getAvailableFish(ServerLevel level) {
         List<AnglerQuestEntry> allEntries = AnglerQuestPool.INSTANCE.getEntries();
         if (allEntries.isEmpty()) return allEntries;
-        // 所有任务鱼都可以被选为渔夫任务目标；实际能否钓到仍由钓鱼掉落表
-        // 根据生物群系、高度和流体条件判定，任务选择器不重复维护环境规则。
+        // All fish are always available as quest targets.
+        // Catchability is enforced by fishing loot tables per biome/height/fluid.
         return new ArrayList<>(allEntries);
     }
 

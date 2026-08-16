@@ -133,7 +133,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         return accessoryDye.size();
     }
 
-    // GeckoLib 盔甲渲染适配尚未迁入当前附加背包实现。
+    // todo geckolib
     public ItemStack getVanityArmor(int index, boolean dye) {
         validateIndex(index, SIZE_VANITY_ARMOR);
         IStackWithDye stack = vanityArmor.get(index);
@@ -199,9 +199,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         return getEquipment(HOOK_INDEX, dye);
     }
 
-    /**
-     * 返回坐骑槽或对应染料槽的当前物品。
-     */
+    /// 返回坐骑槽或对应染料槽的当前物品。
     public ItemStack getMount(boolean dye) {
         return getEquipment(MOUNT_INDEX, dye);
     }

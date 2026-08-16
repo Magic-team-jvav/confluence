@@ -7,11 +7,9 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.monster.slime.Slimeling;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
-/**
- * 困难模式飞行史莱姆，脆弱的翅膀受击破坏后会释放地面小史莱姆。
- *
- * <p>翅膀状态决定移动能力与分裂时机，不能仅作为客户端外观状态处理。</p>
- */
+/// 困难模式飞行史莱姆，脆弱的翅膀受击破坏后会释放地面小史莱姆。
+///
+/// <p>翅膀状态决定移动能力与分裂时机，不能仅作为客户端外观状态处理。</p>
 public class Slimer extends SimpleFlyMonster {
     public Slimer(EntityType<? extends Slimer> type, Level level) {
         super(type, level, 0.65, 0.2);

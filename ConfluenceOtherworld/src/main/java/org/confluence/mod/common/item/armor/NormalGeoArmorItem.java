@@ -60,11 +60,9 @@ public class NormalGeoArmorItem extends BaseArmorItem implements GeoItem {
                         this.renderer = new NormalArmorItemRenderer<>(name);
                     }
                 }
-                /*
-                 * GeckoLib 1.20 会复用盔甲渲染器，返回模型前必须写入本次渲染
-                 * 的实体、物品、槽位和原版模型。缺少这一步时 currentEntity
-                 * 为空，开启实体描边后会在发光判定中崩溃。
-                 */
+                /// GeckoLib 1.20 会复用盔甲渲染器，返回模型前必须写入本次渲染
+                /// 的实体、物品、槽位和原版模型。缺少这一步时 currentEntity
+                /// 为空，开启实体描边后会在发光判定中崩溃。
                 if (equipmentSlot != null) {
                     renderer.prepForRender(
                             livingEntity,

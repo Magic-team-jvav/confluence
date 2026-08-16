@@ -12,8 +12,8 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.terra_curio.common.init.TCEffects;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
@@ -1485,7 +1485,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.dragonfly.6", "黄蜻蜓");
         add("entity.confluence.rainbow_sheep", "彩虹羊");
 
-        // 特殊世界种子
+        // Special world seeds
         add("title.confluence.secret_seeds_selection.empty", "信息");
         add("description.confluence.secret_seeds_selection.empty", "请选择上述选项来构建你的世界。");
         add("title.confluence.secret_seeds_selection.normal", "常规世界");
@@ -1679,7 +1679,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.CRYSTAL_CHARGE_2.get(), "爆炸水晶2");
 
 
-        // region 方块
+        //region blocks
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");
         add(OreBlocks.CORRUPTION_COAL_ORE.get(), "腐化煤矿石");
         add(OreBlocks.FLESHIFICATION_COAL_ORE.get(), "血化煤矿石");
@@ -2853,9 +2853,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArrowItems.FLY_FISH_ARROW.get(), "飞鱼箭");
 
 
-        // endregion 方块
+        //endregion blocks
 
-        // region 物品
+        //region items
         add(MaterialItems.RAW_TIN.get(), "粗锡");
         add(MaterialItems.TIN_INGOT.get(), "锡锭");
         add(MaterialItems.TIN_NUGGET.get(), "锡粒");
@@ -3212,7 +3212,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ChainsawItems.ADAMANTITE_CHAINSAW.get(), "精金链锯");
         add(ChainsawItems.TITANIUM_CHAINSAW.get(), "钛金链锯");
 
-        // 锤类工具
+        // Hammers
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
         add(HammerItems.EBONWOOD_HAMMER.get(), "乌木锤");
         add(HammerItems.SHADEWOOD_HAMMER.get(), "暗影木锤");
@@ -4910,12 +4910,10 @@ public class ModChineseProvider extends LanguageProvider {
                 }));
     }
 
-    /**
-     * 添加链锤名称。
-     *
-     * <p>主翻译方法已经接近 JVM 单方法长度上限，因此按内容分组为同类私有方法；
-     * 名称仍直接绑定注册对象，不引入额外映射表或外部名称类。</p>
-     */
+    /// 添加链锤名称。
+    ///
+    /// <p>主翻译方法已经接近 JVM 单方法长度上限，因此按内容分组为同类私有方法；
+    /// 名称仍直接绑定注册对象，不引入额外映射表或外部名称类。</p>
     private void addFlailTranslations() {
         add(FlailItems.MACE.get(), "链球");
         add(FlailItems.FLAMING_MACE.get(), "火焰链锤");
@@ -4958,12 +4956,10 @@ public class ModChineseProvider extends LanguageProvider {
     }
 
 
-    /**
-     * 注册声音事件使用的中文字幕。
-     *
-     * <p>声音字幕没有可绑定的注册对象重载，因此直接登记固定语言键。
-     * 本方法只负责字幕文本，不承担旧命名空间兼容或运行时别名。</p>
-     */
+    /// 注册声音事件使用的中文字幕。
+    ///
+    /// <p>声音字幕没有可绑定的注册对象重载，因此直接登记固定语言键。
+    /// 本方法只负责字幕文本，不承担旧命名空间兼容或运行时别名。</p>
     private void addSoundTranslations() {
         add("confluence.subtitle.transmission", "传送魔法：开启");
         add("confluence.subtitle.lightsaber_open", "光剑：开启");
@@ -5078,12 +5074,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.wall_of_flesh_summon", "血肉墙：苏醒");
     }
 
-    /**
-     * 添加坐骑物品、坐骑实体和敌对生物弹幕名称。
-     *
-     * <p>这些翻译仍直接写在本 Provider 中。方法边界仅用于控制主翻译方法的字节码长度，
-     * 不引入额外名称表，也不改变 DataGen 的来源。</p>
-     */
+    /// 添加坐骑物品、坐骑实体和敌对生物弹幕名称。
+    ///
+    /// <p>这些翻译仍直接写在本 Provider 中。方法边界仅用于控制主翻译方法的字节码长度，
+    /// 不引入额外名称表，也不改变 DataGen 的来源。</p>
     private void addMountAndHostileProjectileTranslations() {
         add(NpcEntities.FEMALE_ANGLER.get(), "渔女");
         add("message.confluence.boss_spawn", "%s已苏醒！");
@@ -5117,13 +5111,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.SHADOW_HAND.get(), "暗影之手");
     }
 
-    /**
-     * 添加本体创造模式分页名称。
-     *
-     * <p>翻译仍直接维护在本类中；单独方法只是控制
-     * {@link #addTranslations()} 的 JVM 字节码长度，避免继续增加本体翻译时
-     * 触发单方法 64 KiB 上限。</p>
-     */
+    /// 添加本体创造模式分页名称。
+    ///
+    /// <p>翻译仍直接维护在本类中；单独方法只是控制
+    /// {@link #addTranslations()} 的 JVM 字节码长度，避免继续增加本体翻译时
+    /// 触发单方法 64 KiB 上限。</p>
     private void addCreativeTabTranslations() {
         add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
         add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");
@@ -5141,11 +5133,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
     }
 
-    /**
-     * 添加个人存钱罐的两种随身入口。
-     *
-     * <p>名称仍直接写在中文提供器中；分组方法仅用于控制主翻译方法的字节码长度。</p>
-     */
+    /// 添加个人存钱罐的两种随身入口。
+    ///
+    /// <p>名称仍直接写在中文提供器中；分组方法仅用于控制主翻译方法的字节码长度。</p>
     private void addStorageCompanionTranslations() {
         add(PetItems.CHESTER_STAFF.get(), "眼骨");
         add(PetItems.WALLET.get(), "钱币槽");
@@ -5154,9 +5144,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.chester", "切斯特");
     }
 
-    /**
-     * 重铸命令与哥布林工匠界面的文本。
-     */
+    /// 重铸命令与哥布林工匠界面的文本。
     private void addReforgeTranslations() {
         add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
         add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
@@ -5189,9 +5177,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip." + effect.getDescriptionId() + ".0", tooltip);
     }
 
-    /**
-     * 独立方法仅用于避免主翻译方法超过 JVM 的单方法字节码上限。
-     */
+    /// 独立方法仅用于避免主翻译方法超过 JVM 的单方法字节码上限。
     private void addWhipTagEffectTranslations() {
         addWhipTagEffect(WhipItems.LEATHER_WHIP.get());
         addWhipTagEffect(WhipItems.SLUB_WHIP.get());

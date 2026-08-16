@@ -24,16 +24,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 克苏鲁之脑第一阶段召唤的视神经元。
- *
- * <p>视神经元不会自行搜索玩家。克苏鲁之脑为每只神经元分配一个待命位置，并在攻击间隔到达时命令一只
- * 已就绪的神经元出击。出击中的神经元持续修正速度；一旦冲过目标、目标失效或受到伤害，便切换为返回状态。
- * 返回到待命位置附近后才会重新接受下一次出击命令。</p>
- *
- * <p>所有权使用 Boss UUID 持久化。区块卸载只会清除当前实例缓存，不会猜测附近的同类 Boss；
- * Boss 重新加载后，神经元会通过精确 UUID 恢复双向关系，从而避免多人同时挑战时串场。</p>
- */
+/// 克苏鲁之脑第一阶段召唤的视神经元。
+///
+/// <p>视神经元不会自行搜索玩家。克苏鲁之脑为每只神经元分配一个待命位置，并在攻击间隔到达时命令一只
+/// 已就绪的神经元出击。出击中的神经元持续修正速度；一旦冲过目标、目标失效或受到伤害，便切换为返回状态。
+/// 返回到待命位置附近后才会重新接受下一次出击命令。</p>
+///
+/// <p>所有权使用 Boss UUID 持久化。区块卸载只会清除当前实例缓存，不会猜测附近的同类 Boss；
+/// Boss 重新加载后，神经元会通过精确 UUID 恢复双向关系，从而避免多人同时挑战时串场。</p>
 public class VisualNeuron extends BaseFlyingMonster {
     @Override
     protected int contactDetectionInterval() {
@@ -45,9 +43,7 @@ public class VisualNeuron extends BaseFlyingMonster {
         return 0.2;
     }
 
-    /**
-     * 视神经元在当前版本属性注册中使用的基础最大生命。
-     */
+    /// 视神经元在当前版本属性注册中使用的基础最大生命。
     public static final double BASE_MAX_HEALTH = 44.0;
     private static final String INDEX_TAG = "NeuronIndex";
     private static final String STATE_TAG = "CombatState";
@@ -94,9 +90,7 @@ public class VisualNeuron extends BaseFlyingMonster {
                 BASE_MAX_HEALTH, 10.0, 9.0, 0.0, 0.0, 0.1).flying();
     }
 
-    /**
-     * 建立神经元与权威 Boss 的精确所有权，并记录其编队槽位。
-     */
+    /// 建立神经元与权威 Boss 的精确所有权，并记录其编队槽位。
     public void setOwner(BrainOfCthulhu owner, int index) {
         ownerTracker.bind(this, owner);
         entityData.set(OWNER_UUID, Optional.of(owner.getUUID()));
@@ -121,9 +115,7 @@ public class VisualNeuron extends BaseFlyingMonster {
         return index;
     }
 
-    /**
-     * 更新随 Boss 移动的待命位置。该位置由 Boss 统一计算，神经元只负责返回。
-     */
+    /// 更新随 Boss 移动的待命位置。该位置由 Boss 统一计算，神经元只负责返回。
     public void setHomePosition(Vec3 homePosition) {
         this.homePosition = homePosition;
     }
@@ -132,9 +124,7 @@ public class VisualNeuron extends BaseFlyingMonster {
         return homePosition;
     }
 
-    /**
-     * 保存相对本体的初始编队偏移，供本体还原 1.21 的随机摆动。
-     */
+    /// 保存相对本体的初始编队偏移，供本体还原 1.21 的随机摆动。
     public void setHomeOffset(Vec3 homeOffset) {
         this.homeOffset = homeOffset;
     }
@@ -143,11 +133,9 @@ public class VisualNeuron extends BaseFlyingMonster {
         return homeOffset;
     }
 
-    /**
-     * 命令当前已就绪的神经元攻击指定目标。
-     *
-     * @return 是否成功接受了这次命令
-     */
+    /// 命令当前已就绪的神经元攻击指定目标。
+    ///
+    /// @return 是否成功接受了这次命令
     public boolean attack(LivingEntity target) {
         if (!isReady() || !target.isAlive()) return false;
         setTarget(target);
@@ -181,9 +169,7 @@ public class VisualNeuron extends BaseFlyingMonster {
         };
     }
 
-    /**
-     * 神经元的状态更新只在服务端行为树内执行，客户端仅接收位置、朝向和状态同步。
-     */
+    /// 神经元的状态更新只在服务端行为树内执行，客户端仅接收位置、朝向和状态同步。
     private void tickCombatState() {
         BrainOfCthulhu owner = getOwner();
         if (owner == null) {

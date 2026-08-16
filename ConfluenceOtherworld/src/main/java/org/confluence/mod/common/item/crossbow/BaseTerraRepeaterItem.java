@@ -64,13 +64,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-/**
- * 1.20.1 连弩实现：右键装填弹仓，攻击键通过统一 RANGED 动作发射。
- *
- * <p>弹仓是不可变当前格式组件；并发箭作为同一批原子生成，后续 burst tick 复用首发冻结快照，
- * 但各自只在实际入世前扣除一枚弹药和一次耐久。切换武器、死亡或断开会让延迟任务停止，尚未
- * 执行的批次不会提前损失资源，也不能转移到另一把连弩。</p>
- */
+// todo crossbow
 public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbowItemExtension, ProjectileWeaponAction {
     public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
 
@@ -171,13 +165,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         return getReloadSpeed(shooter, shooter.getItemInHand(hand));
     }
 
-    /**
-     * 返回当前物品的实际装填时间。
-     *
-     * <p>原版 1.20.1 的快速装填每级减少 5 tick。连弩拥有各自的基础装填时间，
-     * 因而不能直接调用写死 25 tick 基准的原版静态方法，但必须保留相同的每级
-     * 修正语义，并保证异常高等级附魔也不会产生零或负时间。</p>
-     */
+    ///  获取装填速度
     public int getReloadSpeed(LivingEntity shooter, ItemStack stack) {
         int quickCharge = LibEnchantmentUtils.getEnchantmentLevel(
                 Enchantments.QUICK_CHARGE, stack);
@@ -208,10 +196,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         }
         int enchantmentBonus = LibEnchantmentUtils.getEnchantmentLevel(
                 Enchantments.MULTISHOT, shooter.getItemInHand(hand));
-        /*
-         * 原版多重射击一级把一枚弹丸扩展为三枚，即额外两枚。连弩将这两枚
-         * 转换为两个受控 burst tick，继续沿用逐次入世、逐次扣弹的事务语义。
-         */
+        /// 原版多重射击一级把一枚弹丸扩展为三枚，即额外两枚。连弩将这两枚
+        /// 转换为两个受控 burst tick，继续沿用逐次入世、逐次扣弹的事务语义。
         return Math.max(1, base + enchantmentBonus * 2);
     }
 
@@ -255,12 +241,10 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         return true;
     }
 
-    /**
-     * 把弹仓首组弹药完整移到空光标。
-     *
-     * <p>先要求光标槽接受物品，再提交新的不可变弹仓，避免槽位拒绝写入时已经
-     * 删除弹药。该操作只是取回真实弹药，创造模式也不能复制弹仓内容。</p>
-     */
+    /// 把弹仓首组弹药完整移到空光标。
+    ///
+    /// <p>先要求光标槽接受物品，再提交新的不可变弹仓，避免槽位拒绝写入时已经
+    /// 删除弹药。该操作只是取回真实弹药，创造模式也不能复制弹仓内容。</p>
     private boolean unloadFirstContents(
             ItemStack weapon,
             Player player,
@@ -339,9 +323,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         return false;
     }
 
-    /**
-     * 从当前不可变弹仓声明一次攻击键触发的 RANGED burst。
-     */
+    /// 从当前不可变弹仓声明一次攻击键触发的 RANGED burst。
     @Override
     public @Nullable ProjectileFireAction createProjectileFireAction(ProjectileFireContext context) {
         if (context.trigger() != ProjectileFireTrigger.ATTACK_PRESSED
@@ -395,9 +377,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
                 .build();
     }
 
-    /**
-     * 从弹仓头部拆出当前批次的一枚弹药，并保留尚未执行的 burst 次数。
-     */
+    /// 从弹仓头部拆出当前批次的一枚弹药，并保留尚未执行的 burst 次数。
     private @Nullable RepeaterShotPlan createShotPlan(ItemStack weapon, int requestedBurst) {
         RepeaterContents contents = weapon.getOrDefault(
                 ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
@@ -427,9 +407,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
                 requestedBurst - 1);
     }
 
-    /**
-     * 创建一次 burst tick 的并发箭矢；不播放声音、不改弹仓、不写世界。
-     */
+    /// 创建一次 burst tick 的并发箭矢；不播放声音、不改弹仓、不写世界。
     private List<ProjectileLaunch> createRepeaterLaunches(
             ServerPlayer shooter,
             InteractionHand hand,
@@ -478,9 +456,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         return List.copyOf(launches);
     }
 
-    /**
-     * 创建原版箭、泰拉箭或烟花，并在事务安装快照前完成纯实体配置。
-     */
+    /// 创建原版箭、泰拉箭或烟花，并在事务安装快照前完成纯实体配置。
     private Projectile createRepeaterProjectile(
             ServerLevel level,
             ServerPlayer shooter,
@@ -522,9 +498,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         return arrow;
     }
 
-    /**
-     * 在首批成功后按每 tick 一发继续 burst，所有子批次复用同一冻结快照。
-     */
+    /// 在首批成功后按每 tick 一发继续 burst，所有子批次复用同一冻结快照。
     private void scheduleBurst(
             ServerPlayer player,
             InteractionHand hand,
@@ -575,9 +549,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
                 }).build());
     }
 
-    /**
-     * 只在对应批次真正进入世界后运行声音、动画包、进度和统计。
-     */
+    /// 只在对应批次真正进入世界后运行声音、动画包、进度和统计。
     private void afterSuccessfulShot(ServerPlayer player, InteractionHand hand) {
         player.level().playSound(
                 null,
@@ -594,9 +566,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         player.awardStat(Stats.ITEM_USED.get(weapon.getItem()));
     }
 
-    /**
-     * 不可变 burst 内容；访问弹药时始终返回防御性副本。
-     */
+    /// 不可变 burst 内容；访问弹药时始终返回防御性副本。
     private record RepeaterShotPlan(
             RepeaterContents expectedContents,
             RepeaterContents remainingContents,
@@ -676,13 +646,11 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         completeLoading(entity, stack);
     }
 
-    /**
-     * 把本轮装填结果提交到当前连弩。
-     *
-     * <p>主动松手和达到完整装填时间会共用此入口。完整装填 tick 必须先提交弹仓再结束使用，
-     * 不能只依赖不同加载器版本对 {@code stopUsingItem()} 的回调细节，否则服务端可能已经
-     * 停止拉弩却没有写入弹药。</p>
-     */
+    /// 把本轮装填结果提交到当前连弩。
+    ///
+    /// <p>主动松手和达到完整装填时间会共用此入口。完整装填 tick 必须先提交弹仓再结束使用，
+    /// 不能只依赖不同加载器版本对 {@code stopUsingItem()} 的回调细节，否则服务端可能已经
+    /// 停止拉弩却没有写入弹药。</p>
     private boolean completeLoading(LivingEntity entity, ItemStack stack) {
         if (!tryLoadProjectiles(entity, stack)) {
             return false;
@@ -722,9 +690,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         return true;
     }
 
-    /**
-     * 向不可变弹仓插入同种弹药，返回实际插入数。
-     */
+    /// 向不可变弹仓插入同种弹药，返回实际插入数。
     private int insertIntoContents(ItemStack weapon, ItemStack ammunition, int requested) {
         if (requested <= 0 || ammunition.isEmpty()
                 || !getAllSupportedProjectiles(weapon).test(ammunition)) {

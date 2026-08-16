@@ -15,7 +15,6 @@ import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.IVariant;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
@@ -87,10 +86,8 @@ public class Ladybug extends Bird implements VariantHolder<Ladybug.Variant> {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        /*
-         * 瓢虫资源只定义 move.fly，没有空闲动画。始终循环翅膀动画可避免停顿阶段持续
-         * 查询不存在的 misc.idle，同时保持 1.21 侧的飞行观感。
-         */
+        /// 瓢虫资源只定义 move.fly，没有空闲动画。始终循环翅膀动画可避免停顿阶段持续
+        /// 查询不存在的 misc.idle，同时保持 1.21 侧的飞行观感。
         registerFlyOnlyController(controllers);
     }
 

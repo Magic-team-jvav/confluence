@@ -56,9 +56,7 @@ import java.util.function.Function;
 /// [困难模式转换](https://terraria.wiki.gg/zh/wiki/%E5%9B%B0%E9%9A%BE%E6%A8%A1%E5%BC%8F%E8%BD%AC%E6%8D%A2)
 public enum HardmodeConvertor implements IGlobalData {
     INSTANCE;
-    /**
-     * 每个区块固定包含 16×16 个水平列，存档协议必须恰好写满这些位置。
-     */
+    /// 每个区块固定包含 16×16 个水平列，存档协议必须恰好写满这些位置。
     private static final int COLUMN_COUNT = 16 * 16;
     public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> SANCTIFICATION_CODEC = PortCodecExtension.lazyInitialized(() -> {
         Codec<BlockPosColumn[][]> codec = new Codec<>() {

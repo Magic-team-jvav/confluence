@@ -25,7 +25,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
     private final int strikeEndTick;
     /// 收矛时孢子生成的最小间距（格），使收矛阶段密度与刺出阶段一致
     private static final double RETRACT_SPAWN_SPACING = 0.7;
-    /// 当前武器栈中记录的上一次孢子位置；避免物品单例在多个玩家之间串状态。
+    /// 上一次生成孢子时矛尖的 z 偏移，用于收矛间距控制
     private static final String LAST_SPAWN_TIP_Z_KEY = "confluence:mushroom_spear_last_tip_z";
 
     public MushroomSpearItem() {

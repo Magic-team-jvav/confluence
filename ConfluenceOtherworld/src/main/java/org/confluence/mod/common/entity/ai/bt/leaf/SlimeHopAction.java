@@ -1,17 +1,14 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.util.Mth;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.terra_curio.mixin.accessor.LivingEntityAccessor;
 
 /**
- * 负责史莱姆一次完整的蓄力、起跳与落地过程。
- *
- * <p>该节点只实现所有史莱姆共用的跳跃状态，不判断具体变种。蓄力时长由实体类传入，
- * 因而金史莱姆一类只有数值差异的变种无需复制整套行为节点。</p>
+ * 史莱姆跳跃：蓄力→起跳→落地。towardTarget 决定向目标跳还是随机跳。
  */
 public class SlimeHopAction extends BTNode {
     protected final Mob mob;

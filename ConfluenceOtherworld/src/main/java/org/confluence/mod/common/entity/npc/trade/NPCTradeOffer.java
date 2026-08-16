@@ -12,12 +12,10 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 
 import java.util.Objects;
 
-/**
- * 数据包声明的稳定 NPC 商品报价。
- *
- * <p>价格以铜币为最小单位并使用长整型；报价 ID 在网络请求、会话快照和附属扩展中
- * 保持稳定，不允许客户端用显示槽位或物品 NBT 代替服务端报价身份。</p>
- */
+/// 数据包声明的稳定 NPC 商品报价。
+///
+/// <p>价格以铜币为最小单位并使用长整型；报价 ID 在网络请求、会话快照和附属扩展中
+/// 保持稳定，不允许客户端用显示槽位或物品 NBT 代替服务端报价身份。</p>
 public record NPCTradeOffer(ResourceLocation id, ItemStack stack, long basePrice,
                             int maxUses, TradeCondition condition) {
     private static final Codec<Long> PRICE_CODEC = Codec.LONG.comapFlatMap(price -> {
@@ -54,13 +52,11 @@ public record NPCTradeOffer(ResourceLocation id, ItemStack stack, long basePrice
         stack = stack.copy();
     }
 
-    /**
-     * 返回商品结果的独立副本。
-     *
-     * <p>报价定义会被多个玩家会话和附属事件共享，外部调用方不能通过修改返回的
-     * {@link ItemStack} 间接污染已经加载的商店表。真正成交时仍会由会话再复制一次，
-     * 让显示、扣款和发货都各自持有独立物品栈。</p>
-     */
+    /// 返回商品结果的独立副本。
+    ///
+    /// <p>报价定义会被多个玩家会话和附属事件共享，外部调用方不能通过修改返回的
+    /// {@link ItemStack} 间接污染已经加载的商店表。真正成交时仍会由会话再复制一次，
+    /// 让显示、扣款和发货都各自持有独立物品栈。</p>
     @Override
     public ItemStack stack() {
         return stack.copy();

@@ -11,12 +11,10 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 
 import java.util.Optional;
 
-/**
- * 连弩弹仓与耐久的原子 prepared cost。
- *
- * <p>每个实际生成的 burst 批次各自预留一枚弹药和对应耐久；生成失败会恢复完整弹仓、数量、
- * 耐久和 NBT。尚未执行的延迟批次没有成本，因此取消连发不会吞掉剩余弹药。</p>
- */
+/// 连弩弹仓与耐久的原子 prepared cost。
+///
+/// <p>每个实际生成的 burst 批次各自预留一枚弹药和对应耐久；生成失败会恢复完整弹仓、数量、
+/// 耐久和 NBT。尚未执行的延迟批次没有成本，因此取消连发不会吞掉剩余弹药。</p>
 final class RepeaterContentsProjectileCost implements ProjectileCost {
     private final RepeaterContents expectedContents;
     private final RepeaterContents remainingContents;

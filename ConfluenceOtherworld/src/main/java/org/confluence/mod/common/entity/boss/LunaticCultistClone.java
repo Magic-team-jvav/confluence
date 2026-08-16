@@ -24,11 +24,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 拜月教邪教徒在仪式攻击中生成的可受击幻影。
- *
- * <p>幻影参与目标判断与受击反馈，但其生命周期和战斗归属始终由主体 Boss 管理。</p>
- */
+/// 拜月教邪教徒在仪式攻击中生成的可受击幻影。
+///
+/// <p>幻影参与目标判断与受击反馈，但其生命周期和战斗归属始终由主体 Boss 管理。</p>
 public final class LunaticCultistClone extends BaseFlyingMonster {
     private static final String AGE_TAG = "IllusionAge";
     private static final int LIFETIME = 240;

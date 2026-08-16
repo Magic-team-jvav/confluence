@@ -11,29 +11,23 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModDamageTypes;
 
-/**
- * 由一个移动头段和若干短寿命身体段组成的长条形弹幕。
- *
- * <p>头段沿发射方向移动，并按固定距离留下身体段；头段达到最大距离后消失，身体段停留在生成位置，
- * 在短时间内持续提供接触伤害。免疫类型应由数据生成器登记为 {@code static}，避免同一段弹幕在极短时间内
- * 重复触发目标的受伤无敌。</p>
- *
- * <p>本类只保存 1.20 重写后的运行时格式。恢复时如果战斗快照或运行时字段损坏，弹幕会进入安全失效状态，
- * 服务端销毁实体，不回退到玩家当前手持物。</p>
- *
- * @see org.confluence.mod.common.data.gen.data_map.ImmunitySubProvider
- */
+/// 由一个移动头段和若干短寿命身体段组成的长条形弹幕。
+///
+/// <p>头段沿发射方向移动，并按固定距离留下身体段；头段达到最大距离后消失，身体段停留在生成位置，
+/// 在短时间内持续提供接触伤害。免疫类型应由数据生成器登记为 {@code static}，避免同一段弹幕在极短时间内
+/// 重复触发目标的受伤无敌。</p>
+///
+/// <p>本类只保存 1.20 重写后的运行时格式。恢复时如果战斗快照或运行时字段损坏，弹幕会进入安全失效状态，
+/// 服务端销毁实体，不回退到玩家当前手持物。</p>
+///
+/// @see org.confluence.mod.common.data.gen.data_map.ImmunitySubProvider
 public abstract class StripedProjectile extends DamageSettableProjectile {
     protected static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(
             StripedProjectile.class,

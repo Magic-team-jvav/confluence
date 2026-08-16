@@ -12,9 +12,7 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoObjectRenderer;
 
-/**
- * 使用原有模型资源绘制非实体召唤物。
- */
+/// 使用原有模型资源绘制非实体召唤物。
 final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual> {
     private final ResourceLocation type;
     private final float scale;

@@ -11,14 +11,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.flail.DripplerCripplerProjectile;
-import org.confluence.mod.common.entity.projectile.flail.FlaironBubbleProjectile;
 import org.confluence.mod.common.entity.projectile.flail.FlailAuxiliaryProjectile;
+import org.confluence.mod.common.entity.projectile.flail.FlaironBubbleProjectile;
 
-/**
- * 将链锤附属弹幕按面向摄像机的精灵绘制。
- *
- * <p>泰拉瑞亚原始弹幕是平面像素图，不需要为每一种弹幕额外建立空的 GeckoLib 模型。</p>
- */
+/// 将链锤附属弹幕按面向摄像机的精灵绘制。
+///
+/// <p>泰拉瑞亚原始弹幕是平面像素图，不需要为每一种弹幕额外建立空的 GeckoLib 模型。</p>
 public final class FlailAuxiliaryProjectileRenderer<
         T extends FlailAuxiliaryProjectile>
         extends EntityRenderer<T> {

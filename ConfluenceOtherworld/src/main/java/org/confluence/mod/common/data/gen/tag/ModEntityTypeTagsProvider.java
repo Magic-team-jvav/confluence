@@ -36,7 +36,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 MonsterEntities.BIG_HELMET_ANGER_BONES.get()
         );
         tag(ModTags.EntityTypes.LAVA_BUG_NET_ALLOWS).add(
-                // 待补：熔岩萤火虫
+                // todo 熔岩萤火虫
                 CritterEntities.MAGMA_SNAIL.get(),
                 CritterEntities.HELL_BUTTERFLY.get()
         );
@@ -72,7 +72,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         );
         tag(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)
                 .addTag(PortTags.EntityTypes.ZOMBIES);
-        // .add(MonsterEntities.DEMON_EYE.get()); 暂不加入：恶魔之眼白天会飞走
+        //.add(MonsterEntities.DEMON_EYE.get()); fixme 恶魔之眼白天会飞走
         tag(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL).addTag(
                 Tags.EntityTypes.BOSSES
         ).add(

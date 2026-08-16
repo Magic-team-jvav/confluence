@@ -29,10 +29,8 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
         return create(level, shooter, type, dirX, dirY, dirZ, velocity, 0.0F, damage);
     }
 
-    /**
-     * 创建史莱姆尖刺并显式指定散布值。普通工厂保留零散布，尖刺史莱姆则使用
-     * 1.21 的 {@code 1.0F} 散布，避免把所有调用方的弹道一并改变。
-     */
+    /// 创建史莱姆尖刺并显式指定散布值。普通工厂保留零散布，尖刺史莱姆则使用
+    /// 1.21 的 {@code 1.0F} 散布，避免把所有调用方的弹道一并改变。
     public static SlimeSpikeEntity create(Level level, LivingEntity shooter,
                                           EntityType<? extends SlimeSpikeEntity> type,
                                           double dirX, double dirY, double dirZ,

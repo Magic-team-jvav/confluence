@@ -24,9 +24,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-/**
- * 在事务成功后替换旧云朵并记录新实体 UUID 的放置型法杖。
- */
+/// 在事务成功后替换旧云朵并记录新实体 UUID 的放置型法杖。
 public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
     private int maxCloud = 1;
 
@@ -54,7 +52,7 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
         return this;
     }
 
-    /** 目标搜索只读取服务端世界，不替换旧实体，也不写物品状态。 */
+    /// 目标搜索只读取服务端世界，不替换旧实体，也不写物品状态。
     @Override
     protected void configureProjectile(
             ProjectileFireContext context,
@@ -88,11 +86,9 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
         }
     }
 
-    /**
-     * 新云朵已加入世界后才淘汰最旧云朵并记录 UUID。
-     *
-     * <p>这样即使实体生成被事件拒绝，也不会提前删掉玩家原有云朵或污染物品状态。</p>
-     */
+    /// 新云朵已加入世界后才淘汰最旧云朵并记录 UUID。
+    ///
+    /// <p>这样即使实体生成被事件拒绝，也不会提前删掉玩家原有云朵或污染物品状态。</p>
     @Override
     protected void onSuccessfulShot(ProjectileFireContext context, CloudProjectile projectile) {
         ItemStack stack = context.currentWeaponForCommit();
@@ -114,12 +110,10 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
         tag.put("Clouds", clouds);
     }
 
-    /**
-     * 判断母云 UUID 是否仍被玩家背包中的任意云杖追踪。
-     *
-     * <p>这里不解析实体，也不加载区块。旧母云所在区块卸载期间，云杖可以安全淘汰它的 UUID；
-     * 旧实体以后重新加载时会自行发现引用已消失并销毁。</p>
-     */
+    /// 判断母云 UUID 是否仍被玩家背包中的任意云杖追踪。
+    ///
+    /// <p>这里不解析实体，也不加载区块。旧母云所在区块卸载期间，云杖可以安全淘汰它的 UUID；
+    /// 旧实体以后重新加载时会自行发现引用已消失并销毁。</p>
     public static boolean isTrackedCloud(Player player, CloudProjectile cloud) {
         UUID cloudId = cloud.getUUID();
         for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
@@ -139,13 +133,11 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
         return false;
     }
 
-    /**
-     * 重建仍属于当前玩家的活动云朵列表。
-     *
-     * <p>UUID 数组必须恰好包含四个整数；重复、类型错误或已加载后确认属于其他玩家的实体会被丢弃。
-     * 当前未解析的 UUID 会保留而不强加载区块，直至容量淘汰；这样既保留双云语义，
-     * 也不会因复制或损坏数据删除其他玩家的云朵。</p>
-     */
+    /// 重建仍属于当前玩家的活动云朵列表。
+    ///
+    /// <p>UUID 数组必须恰好包含四个整数；重复、类型错误或已加载后确认属于其他玩家的实体会被丢弃。
+    /// 当前未解析的 UUID 会保留而不强加载区块，直至容量淘汰；这样既保留双云语义，
+    /// 也不会因复制或损坏数据删除其他玩家的云朵。</p>
     static ListTag collectTrackedClouds(ListTag source, ServerLevel level, Player player) {
         ListTag result = new ListTag();
         Set<UUID> seen = new HashSet<>();

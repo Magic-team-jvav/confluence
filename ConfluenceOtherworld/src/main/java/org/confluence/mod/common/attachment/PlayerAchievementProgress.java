@@ -17,16 +17,14 @@ import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-/**
- * 保存无法直接由原版成就判据表达的玩家个人进度。
- *
- * <p>该附件只记录“尚未完成的组合条件”，成就是否已经完成仍以原版
- * {@code AdvancementProgress} 为唯一真相源。集合保存注册表 ID 而不是运行时整数 ID，
- * 从而允许存档在注册顺序变化后继续读取；未知或格式错误的 ID 会被忽略。</p>
- *
- * <p>1.20 侧只定义并读取当前格式，不兼容旧字段，也不从世界级 {@code KillBoard}
- * 反推个人战绩。世界曾经击败过某个 Boss，不代表当前玩家亲自参与过该场战斗。</p>
- */
+/// 保存无法直接由原版成就判据表达的玩家个人进度。
+///
+/// <p>该附件只记录“尚未完成的组合条件”，成就是否已经完成仍以原版
+/// {@code AdvancementProgress} 为唯一真相源。集合保存注册表 ID 而不是运行时整数 ID，
+/// 从而允许存档在注册顺序变化后继续读取；未知或格式错误的 ID 会被忽略。</p>
+///
+/// <p>1.20 侧只定义并读取当前格式，不兼容旧字段，也不从世界级 {@code KillBoard}
+/// 反推个人战绩。世界曾经击败过某个 Boss，不代表当前玩家亲自参与过该场战斗。</p>
 public final class PlayerAchievementProgress implements IPortNBTSerializable<CompoundTag> {
     private static final String MECHANICAL_BOSSES_TAG = "MechanicalBosses";
     private static final String MECHANICAL_MAYHEM_BOSSES_TAG = "MechanicalMayhemBosses";
@@ -35,11 +33,9 @@ public final class PlayerAchievementProgress implements IPortNBTSerializable<Com
     private final Set<ResourceLocation> defeatedMechanicalMayhemBosses = new LinkedHashSet<>();
     private final Set<ResourceLocation> defeatedSlimeVariants = new LinkedHashSet<>();
 
-    /**
-     * 记录玩家亲自参与并正常结算的机械 Boss。
-     *
-     * @return 当前记录是否已经覆盖机械三王
-     */
+    /// 记录玩家亲自参与并正常结算的机械 Boss。
+    ///
+    /// @return 当前记录是否已经覆盖机械三王
     public boolean recordMechanicalBoss(EntityType<?> bossType) {
         ResourceLocation bossId = mechanicalBossId(bossType);
         if (bossId == null) {
@@ -55,11 +51,9 @@ public final class PlayerAchievementProgress implements IPortNBTSerializable<Com
                 && defeatedMechanicalBosses.contains(idOf(BossEntities.SKELETRON_PRIME.get()));
     }
 
-    /**
-     * 记录一个已经满足“三王同时存活且玩家共同参战”的正常胜利。
-     *
-     * @return 当前记录是否已经覆盖机械三王
-     */
+    /// 记录一个已经满足“三王同时存活且玩家共同参战”的正常胜利。
+    ///
+    /// @return 当前记录是否已经覆盖机械三王
     public boolean recordMechanicalMayhemBoss(EntityType<?> bossType) {
         ResourceLocation bossId = mechanicalBossId(bossType);
         if (bossId == null) {
@@ -69,20 +63,16 @@ public final class PlayerAchievementProgress implements IPortNBTSerializable<Com
         return containsAllMechanicalBosses(defeatedMechanicalMayhemBosses);
     }
 
-    /**
-     * 返回不可修改快照，防止结算调用方绕过输入校验直接改写附件。
-     */
+    /// 返回不可修改快照，防止结算调用方绕过输入校验直接改写附件。
     public Set<ResourceLocation> defeatedMechanicalBosses() {
         return Set.copyOf(defeatedMechanicalBosses);
     }
 
-    /**
-     * 记录玩家击败的史莱姆种类。需要的种类由实体类型标签决定，因此附属模组可以直接扩展该集合。
-     *
-     * @param slimeType     本次击败的实体类型
-     * @param requiredTypes 当前数据包声明的全部史莱姆类型
-     * @return 当前记录是否已经覆盖全部必需类型
-     */
+    /// 记录玩家击败的史莱姆种类。需要的种类由实体类型标签决定，因此附属模组可以直接扩展该集合。
+    ///
+    /// @param slimeType     本次击败的实体类型
+    /// @param requiredTypes 当前数据包声明的全部史莱姆类型
+    /// @return 当前记录是否已经覆盖全部必需类型
     public boolean recordSlimeVariant(
             EntityType<?> slimeType, Set<ResourceLocation> requiredTypes) {
         ResourceLocation slimeId = ForgeRegistries.ENTITY_TYPES.getKey(slimeType);
@@ -93,9 +83,7 @@ public final class PlayerAchievementProgress implements IPortNBTSerializable<Com
         return defeatedSlimeVariants.containsAll(requiredTypes);
     }
 
-    /**
-     * 返回已击败史莱姆注册名的只读快照。
-     */
+    /// 返回已击败史莱姆注册名的只读快照。
     public Set<ResourceLocation> defeatedSlimeVariants() {
         return Set.copyOf(defeatedSlimeVariants);
     }
@@ -142,9 +130,7 @@ public final class PlayerAchievementProgress implements IPortNBTSerializable<Com
         }
     }
 
-    /**
-     * 只接收当前仍已注册并属于史莱姆标签的实体，避免脏数据污染进度。
-     */
+    /// 只接收当前仍已注册并属于史莱姆标签的实体，避免脏数据污染进度。
     private void loadSlimeVariants(CompoundTag tag) {
         ListTag slimeVariants = tag.getList(SLIME_VARIANTS_TAG, Tag.TAG_STRING);
         for (Tag value : slimeVariants) {

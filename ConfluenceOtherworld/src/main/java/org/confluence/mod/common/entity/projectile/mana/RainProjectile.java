@@ -15,13 +15,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.mixed.Immunity;
 
-/**
- * 血雨与普通雨滴共用的下落子弹幕。
- *
- * <p>雨滴离开母云后就是独立的可保存实体；最大穿透次数不能在重载时重新向母云查询。
- * 当前格式只接受版本化的雨滴运行状态，缺失、版本不符或越界时复用战斗状态的安全失效通道，
- * 保证实体在造成伤害前销毁。</p>
- */
+/// 血雨与普通雨滴共用的下落子弹幕。
+///
+/// <p>雨滴离开母云后就是独立的可保存实体；最大穿透次数不能在重载时重新向母云查询。
+/// 当前格式只接受版本化的雨滴运行状态，缺失、版本不符或越界时复用战斗状态的安全失效通道，
+/// 保证实体在造成伤害前销毁。</p>
 public class RainProjectile extends AbstractManaProjectile implements Immunity {
     private static final String RUNTIME_TAG = "ConfluenceRainRuntime";
     private static final int RUNTIME_VERSION = 1;
@@ -38,9 +36,7 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
         setPos(position);
     }
 
-    /**
-     * 设置本枚雨滴的总穿透上限；异常文本保持英文以便日志和外部调用方诊断。
-     */
+    /// 设置本枚雨滴的总穿透上限；异常文本保持英文以便日志和外部调用方诊断。
     public void setMaxPenetrate(int maxPenetrate) {
         if (maxPenetrate < 1) {
             throw new IllegalArgumentException("Rain penetration must be positive");

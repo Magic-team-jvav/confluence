@@ -11,12 +11,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
 
-/**
- * 南瓜月事件的基础生命周期。
- *
- * <p>当前工程还没有南瓜月完整波次和敌怪池，因此这里先只接管事件开关、存档同步和夜晚结束判定。
- * 这样召唤物、命令和后续刷怪器都有稳定入口，不会继续停留在永远无法开始的空实现。</p>
- */
+// todo
 public enum PumpkinMoonGameEvent implements GameEvent {
     INSTANCE;
     public static final ResourceKey<PumpkinMoonGameEvent> KEY = GameEvent.createKey(Confluence.asResource("pumpkin_moon"));

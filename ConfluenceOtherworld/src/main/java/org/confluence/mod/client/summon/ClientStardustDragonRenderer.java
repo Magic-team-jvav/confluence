@@ -6,9 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoObjectRenderer;
 
-/**
- * 复用巨型蠕虫美术资源绘制星尘龙，不创建头部或体节实体。
- */
+/// 复用巨型蠕虫美术资源绘制星尘龙，不创建头部或体节实体。
 final class ClientStardustDragonRenderer extends GeoObjectRenderer<ClientStardustDragonVisual> {
     ClientStardustDragonRenderer() {
         super(new Model());

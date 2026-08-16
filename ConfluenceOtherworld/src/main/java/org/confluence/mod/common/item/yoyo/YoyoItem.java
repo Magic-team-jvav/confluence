@@ -22,12 +22,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * 悠悠球物品。
- *
- * <p>物品只保存该品种自己的数值与命中扩展；运动、碰撞和网络控制由共享实体负责。普通悠悠球注册时
- * 传入 {@link HitEffect#NONE} 即可，附属模组也可以通过公开回调添加自己的命中效果，不需要修改公共实体。</p>
- */
+/// 悠悠球物品。
+///
+/// <p>物品只保存该品种自己的数值与命中扩展；运动、碰撞和网络控制由共享实体负责。普通悠悠球注册时
+/// 传入 {@link HitEffect#NONE} 即可，附属模组也可以通过公开回调添加自己的命中效果，不需要修改公共实体。</p>
 public class YoyoItem extends CustomRarityItem {
     private static final int USE_DURATION = 72_000;
 
@@ -80,9 +78,7 @@ public class YoyoItem extends CustomRarityItem {
                 hitEffect, "Yoyo hit effect must not be null");
     }
 
-    /**
-     * 主动作按键按下时由服务端输入包调用；每名玩家同时只保留一个悠悠球。
-     */
+    /// 主动作按键按下时由服务端输入包调用；每名玩家同时只保留一个悠悠球。
     public final void press(ServerPlayer player, ItemStack stack) {
         if (stack.getItem() != this
                 || !player.isAlive()
@@ -99,9 +95,7 @@ public class YoyoItem extends CustomRarityItem {
         }
     }
 
-    /**
-     * 主动作按键松开时按玩家所有权查找实体，并让现有悠悠球进入收回流程。
-     */
+    /// 主动作按键松开时按玩家所有权查找实体，并让现有悠悠球进入收回流程。
     public static void release(ServerPlayer player) {
         YoyoEntity existing = YoyoEntity.findOwned(player);
         if (existing != null) {
@@ -109,12 +103,10 @@ public class YoyoItem extends CustomRarityItem {
         }
     }
 
-    /**
-     * 右键被配置为主要动作时，复用原版物品使用流程，以保留方块交互优先级。
-     *
-     * <p>客户端进入持续使用姿态，服务端创建或恢复当前玩家的悠悠球。左键配置时，该入口会被客户端输入层跳过，
-     * 改由固定控制包调用 {@link #press(ServerPlayer, ItemStack)} 与 {@link #release(ServerPlayer)}。</p>
-     */
+    /// 右键被配置为主要动作时，复用原版物品使用流程，以保留方块交互优先级。
+    ///
+    /// <p>客户端进入持续使用姿态，服务端创建或恢复当前玩家的悠悠球。左键配置时，该入口会被客户端输入层跳过，
+    /// 改由固定控制包调用 {@link #press(ServerPlayer, ItemStack)} 与 {@link #release(ServerPlayer)}。</p>
     @Override
     public InteractionResultHolder<ItemStack> use(
             Level level,
@@ -129,9 +121,7 @@ public class YoyoItem extends CustomRarityItem {
         return InteractionResultHolder.consume(stack);
     }
 
-    /**
-     * 松开右键或切换物品时，让服务端现有悠悠球进入收回状态。
-     */
+    /// 松开右键或切换物品时，让服务端现有悠悠球进入收回状态。
     @Override
     public void releaseUsing(
             ItemStack stack,
@@ -162,9 +152,7 @@ public class YoyoItem extends CustomRarityItem {
         hitEffect.apply(yoyo, owner, target);
     }
 
-    /**
-     * 主动作由悠悠球控制，不允许左键配置时同时进入原版挖掘状态。
-     */
+    /// 主动作由悠悠球控制，不允许左键配置时同时进入原版挖掘状态。
     @Override
     public boolean canAttackBlock(
             BlockState state,

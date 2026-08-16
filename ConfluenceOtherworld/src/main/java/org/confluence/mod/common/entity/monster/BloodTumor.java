@@ -16,12 +16,10 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.List;
 
-/**
- * 血腥孢子爆裂后生成的静止肿瘤。
- *
- * <p>肿瘤不会寻路或主动近战，而是在短暂孵化后随机转化为血爬虫、脸怪或猩红喀迈拉。
- * 倒计时会保存到实体数据中，区块卸载与重载不会把孵化进度重置。</p>
- */
+/// 血腥孢子爆裂后生成的静止肿瘤。
+///
+/// <p>肿瘤不会寻路或主动近战，而是在短暂孵化后随机转化为血爬虫、脸怪或猩红喀迈拉。
+/// 倒计时会保存到实体数据中，区块卸载与重载不会把孵化进度重置。</p>
 public final class BloodTumor extends BaseMonster {
     private static final String TRANSFORMATION_TICKS_TAG =
             "TransformationTicks";

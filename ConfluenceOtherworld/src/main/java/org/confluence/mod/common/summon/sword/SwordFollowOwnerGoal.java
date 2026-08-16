@@ -2,14 +2,11 @@ package org.confluence.mod.common.summon.sword;
 
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summon.SummonGoal;
-import org.confluence.mod.common.summon.SummonPose;
 
-/**
- * 控制召唤剑在没有目标时回到玩家背后。
- *
- * <p>攻击行为仍保持 1.21 侧的追击与斜劈语义；这里仅负责待机跟随。
- * 服务端锚点需要与客户端背剑绘制使用同一套坐标，避免玩家移动时出现拉扯和错位。</p>
- */
+/// 控制召唤剑在没有目标时回到玩家背后。
+///
+/// <p>攻击行为仍保持 1.21 侧的追击与斜劈语义；这里仅负责待机跟随。
+/// 服务端锚点需要与客户端背剑绘制使用同一套坐标，避免玩家移动时出现拉扯和错位。</p>
 final class SwordFollowOwnerGoal extends SummonGoal<SummonSword> {
     SwordFollowOwnerGoal(SummonSword summon) {
         super(summon);

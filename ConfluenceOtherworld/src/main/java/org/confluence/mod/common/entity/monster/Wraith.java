@@ -26,9 +26,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 会穿过地形持续追逐玩家的怨魂。
- */
+/// 会穿过地形持续追逐玩家的怨魂。
 public class Wraith extends BaseFlyingMonster {
     private static final RawAnimation FLOAT = RawAnimation.begin().thenLoop("move.walk");
 
@@ -78,9 +76,7 @@ public class Wraith extends BaseFlyingMonster {
                 this, "Float", 3, state -> state.setAndContinue(FLOAT)));
     }
 
-    /**
-     * 怨魂的移动方式虽然是穿墙漂浮，近身攻击仍沿用人形敌怪的主手挥动。
-     */
+    /// 怨魂的移动方式虽然是穿墙漂浮，近身攻击仍沿用人形敌怪的主手挥动。
     @Override
     public boolean doHurtTarget(Entity target) {
         swing(InteractionHand.MAIN_HAND, true);
@@ -107,9 +103,7 @@ public class Wraith extends BaseFlyingMonster {
         return true;
     }
 
-    /**
-     * 怨魂与 1.21 一致，可以漂浮并穿过门洞。
-     */
+    /// 怨魂与 1.21 一致，可以漂浮并穿过门洞。
     @Override
     protected PathNavigation createNavigation(Level level) {
         FlyingPathNavigation navigation = new FlyingPathNavigation(this, level);

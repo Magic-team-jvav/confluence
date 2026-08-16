@@ -3,12 +3,10 @@ package org.confluence.mod.common.entity.flail;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
-/**
- * 直接发射型链锤实体。
- *
- * <p>链刃使用无重力版本；锚通过构造参数启用投出重力。
- * 两者共享“创建后立即投出、命中后立即收回”的稳定行为。</p>
- */
+/// 直接发射型链锤实体。
+///
+/// <p>链刃使用无重力版本；锚通过构造参数启用投出重力。
+/// 两者共享“创建后立即投出、命中后立即收回”的稳定行为。</p>
 public class LaunchedFlailEntity extends BaseFlailEntity {
     private final double thrownGravity;
 

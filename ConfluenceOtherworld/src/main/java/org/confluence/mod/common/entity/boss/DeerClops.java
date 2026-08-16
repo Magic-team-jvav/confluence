@@ -30,17 +30,15 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 import javax.annotation.Nullable;
 
-/**
- * 独眼巨鹿 Boss。
- *
- * <p>战斗流程由服务端状态机统一驱动：首次锁定玩家时依次播放咆哮准备和持续咆哮，
- * 随后在追击与冰击之间循环。冰击根据目标位置选择抛冰、暗影之手或地面冰柱；
- * 玩家离得过远时 Boss 会停止攻击并进入无敌状态，避免远距离无风险消耗。</p>
- *
- * <p>无目标期间会短暂寻找附近箱子并将其破坏，这一环境行为不会绕过
- * {@link BaseBoss} 的统一脱战计时。所有计时和弹幕生成都只在服务端执行，
- * 客户端仅根据同步状态选择动画和无敌纹理。</p>
- */
+/// 独眼巨鹿 Boss。
+///
+/// <p>战斗流程由服务端状态机统一驱动：首次锁定玩家时依次播放咆哮准备和持续咆哮，
+/// 随后在追击与冰击之间循环。冰击根据目标位置选择抛冰、暗影之手或地面冰柱；
+/// 玩家离得过远时 Boss 会停止攻击并进入无敌状态，避免远距离无风险消耗。</p>
+///
+/// <p>无目标期间会短暂寻找附近箱子并将其破坏，这一环境行为不会绕过
+/// {@link BaseBoss} 的统一脱战计时。所有计时和弹幕生成都只在服务端执行，
+/// 客户端仅根据同步状态选择动画和无敌纹理。</p>
 public class DeerClops extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE =
             SynchedEntityData.defineId(DeerClops.class, EntityDataSerializers.INT);
@@ -115,11 +113,9 @@ public class DeerClops extends BaseBoss {
 
     @Override
     protected BTRoot createBT() {
-        /*
-         * 具体战斗由 tick 中的显式状态机负责。保留一个永远等待的行为树，
-         * 是为了继续遵守 BaseMonster 的统一注册约定，同时避免原版 Goal
-         * 与状态机争抢导航、转向和攻击时序。
-         */
+        /// 具体战斗由 tick 中的显式状态机负责。保留一个永远等待的行为树，
+        /// 是为了继续遵守 BaseMonster 的统一注册约定，同时避免原版 Goal
+        /// 与状态机争抢导航、转向和攻击时序。
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
@@ -275,13 +271,11 @@ public class DeerClops extends BaseBoss {
         return spawned;
     }
 
-    /**
-     * 为暗影之手寻找不会一生成就卡进方块的位置。
-     *
-     * <p>1.21 侧直接在球面上随机取点，靠近洞壁或地面时会有部分黑手立刻撞墙消失。
-     * 这里先尝试随机球面，再退回四个均匀方向并逐格上移，保证一次攻击稳定形成
-     * 四向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。</p>
-     */
+    /// 为暗影之手寻找不会一生成就卡进方块的位置。
+    ///
+    /// <p>1.21 侧直接在球面上随机取点，靠近洞壁或地面时会有部分黑手立刻撞墙消失。
+    /// 这里先尝试随机球面，再退回四个均匀方向并逐格上移，保证一次攻击稳定形成
+    /// 四向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。</p>
     private Vec3 findShadowHandOrigin(
             Vec3 center,
             int handIndex,
@@ -318,10 +312,8 @@ public class DeerClops extends BaseBoss {
             }
         }
 
-        /*
-         * 测试结构边缘或极窄洞穴中，目标所在区块可能是唯一已加载区块。
-         * 最终回退必须留在目标正上方，而不能重新返回已经判定为未加载的方位点。
-         */
+        /// 测试结构边缘或极窄洞穴中，目标所在区块可能是唯一已加载区块。
+        /// 最终回退必须留在目标正上方，而不能重新返回已经判定为未加载的方位点。
         Vec3 verticalFallback = center.add(
                 (handIndex - 1.5) * 0.35,
                 3.0 + handIndex * 0.4,
@@ -471,16 +463,14 @@ public class DeerClops extends BaseBoss {
         return nearest;
     }
 
-    /**
-     * 在正常寻路无法跨越地形时执行一次受控跳跃。
-     *
-     * <p>1.21 侧只不断重发地面路径，大体型碰撞箱遇到台阶、短墙或无法生成完整路径时
-     * 会长时间贴住障碍。这里仍让原版导航决定路线，仅在水平碰撞、连续停滞，或目标
-     * 明显更高且本次寻路失败时介入。跳跃带有冷却并检查上方空间，因此不会退化成
-     * 持续兔子跳，也不会在低矮洞穴里把 Boss 反复顶向天花板。</p>
-     *
-     * @return 本 tick 是否真正提交了跳跃速度
-     */
+    /// 在正常寻路无法跨越地形时执行一次受控跳跃。
+    ///
+    /// <p>1.21 侧只不断重发地面路径，大体型碰撞箱遇到台阶、短墙或无法生成完整路径时
+    /// 会长时间贴住障碍。这里仍让原版导航决定路线，仅在水平碰撞、连续停滞，或目标
+    /// 明显更高且本次寻路失败时介入。跳跃带有冷却并检查上方空间，因此不会退化成
+    /// 持续兔子跳，也不会在低矮洞穴里把 Boss 反复顶向天花板。</p>
+    ///
+    /// @return 本 tick 是否真正提交了跳跃速度
     boolean tryTraversalJump(LivingEntity target, boolean pathStarted) {
         updateTraversalStuckState();
         boolean targetAbove = target.getY() - getY() > 0.75;
@@ -498,10 +488,8 @@ public class DeerClops extends BaseBoss {
         }
         Vec3 direction = horizontal.normalize();
 
-        /*
-         * 以跳过一格障碍后的包围盒检查净空。实体当前仍贴地，若只上移不足一格，
-         * 检查会把本来能够越过的台阶误判为阻挡。
-         */
+        /// 以跳过一格障碍后的包围盒检查净空。实体当前仍贴地，若只上移不足一格，
+        /// 检查会把本来能够越过的台阶误判为阻挡。
         if (!level().noCollision(
                 this,
                 getBoundingBox().move(
@@ -527,9 +515,7 @@ public class DeerClops extends BaseBoss {
         return true;
     }
 
-    /**
-     * 只按水平位移判断追击是否停滞，避免正常起跳和落地的垂直运动把计数清零。
-     */
+    /// 只按水平位移判断追击是否停滞，避免正常起跳和落地的垂直运动把计数清零。
     private void updateTraversalStuckState() {
         if (!hasLastChasePosition) {
             lastChaseX = getX();
@@ -597,9 +583,7 @@ public class DeerClops extends BaseBoss {
                 })));
     }
 
-    /**
-     * 客户端动画和测试共同使用的少量稳定战斗状态。
-     */
+    /// 客户端动画和测试共同使用的少量稳定战斗状态。
     public enum CombatState {
         IDLE,
         ROAR,
@@ -609,21 +593,17 @@ public class DeerClops extends BaseBoss {
         ATTACK_CHEST
     }
 
-    /**
-     * 冰击的位置分支。该类型只描述本次已经选中的攻击方式，不承担状态机推进。
-     */
+    /// 冰击的位置分支。该类型只描述本次已经选中的攻击方式，不承担状态机推进。
     enum AttackPattern {
         THROWN_ICE,
         SHADOW_HAND,
         ICE_PILLAR
     }
 
-    /**
-     * 一次冰击的服务端提交结果。
-     *
-     * <p>弹幕实体会先进入世界的待加入队列，因此测试或诊断代码不应依赖同一 tick
-     * 的实体快照来判断生成是否成功。这里保留实际被 {@code addFreshEntity}
-     * 接受的数量，使调用方可以观察确定的提交结果；正常战斗逻辑无需使用返回值。</p>
-     */
+    /// 一次冰击的服务端提交结果。
+    ///
+    /// <p>弹幕实体会先进入世界的待加入队列，因此测试或诊断代码不应依赖同一 tick
+    /// 的实体快照来判断生成是否成功。这里保留实际被 {@code addFreshEntity}
+    /// 接受的数量，使调用方可以观察确定的提交结果；正常战斗逻辑无需使用返回值。</p>
     record AttackResult(AttackPattern pattern, int spawnedEntities) {}
 }

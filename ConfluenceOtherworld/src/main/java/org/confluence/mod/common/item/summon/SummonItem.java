@@ -27,18 +27,15 @@ import org.confluence.mod.common.summon.SummonContainer;
 import org.confluence.mod.common.summon.SummonFactory;
 import org.confluence.mod.common.summon.SummonInstance;
 import org.confluence.mod.common.summon.SummonPose;
-import org.confluence.mod.common.summon.SummonRuntimeRegistry;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/**
- * 召唤杖的通用物品实现。
- *
- * <p>物品层只负责使用流程、战斗属性快照和召唤实例创建。召唤物的移动、索敌、攻击和客户端表现
- * 由 {@link SummonInstance} 的具体实现负责，服务端不会为这些运行实例额外生成世界实体。</p>
- */
+/// 召唤杖的通用物品实现。
+///
+/// <p>物品层只负责使用流程、战斗属性快照和召唤实例创建。召唤物的移动、索敌、攻击和客户端表现
+/// 由 {@link SummonInstance} 的具体实现负责，服务端不会为这些运行实例额外生成世界实体。</p>
 public class SummonItem extends Item {
     private final ResourceLocation summonType;
     private final SummonFactory summonFactory;
@@ -46,14 +43,11 @@ public class SummonItem extends Item {
     private final float baseDamage;
     private Supplier<SoundEvent> summonSound = ModSoundEvents.ROUTINE_SUMMON;
 
-    /**
-     * 类型标识同时用于同步、客户端渲染选择和提示文本。
-     */
+    /// 类型标识同时用于同步、客户端渲染选择和提示文本。
     public SummonItem(Properties properties, ResourceLocation summonType, SummonFactory summonFactory, int slotCost, float baseDamage) {
         super(properties.stacksTo(1));
         this.summonType = Objects.requireNonNull(summonType, "Summon type must not be null");
         this.summonFactory = Objects.requireNonNull(summonFactory, "Summon factory must not be null");
-        SummonRuntimeRegistry.register(summonType, summonFactory);
         if (slotCost <= 0) {
             throw new IllegalArgumentException("Summon slot cost must be positive");
         }

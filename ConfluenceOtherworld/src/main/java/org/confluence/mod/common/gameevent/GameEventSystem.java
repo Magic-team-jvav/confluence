@@ -127,11 +127,11 @@ public enum GameEventSystem implements IGlobalData {
         return events;
     }
 
-    /// 获取当前正在运行的事件数量。
+    /// 获取正在运行的事件数量
     ///
-    /// @param nonEnv 是否只统计会影响普通刷怪的非环境事件
-    /// @param reCal  是否立即重新扫描事件状态；为 false 时返回上一轮 tick 缓存值
-    /// @return 匹配条件的事件数量
+    /// @param nonEnv 非环境事件
+    /// @param reCal  重新计数
+    /// @return 数量
     public int getStartedEventAmount(boolean nonEnv, boolean reCal) {
         if (reCal) {
             int started = 0;
@@ -171,13 +171,11 @@ public enum GameEventSystem implements IGlobalData {
         return "confluence:game_event_system";
     }
 
-    /**
-     * 清除事件单例中属于上一张世界的运行状态。
-     *
-     * <p>事件系统会跨世界复用同一批枚举单例。服务器关闭时会先调用
-     * {@link #close(MinecraftServer)} 释放世界和实体引用，再在这里把“正在进行”
-     * 这类进程状态复位；存档读写负责恢复真正需要保存的进度。</p>
-     */
+    /// 清除事件单例中属于上一张世界的运行状态。
+    ///
+    /// <p>事件系统会跨世界复用同一批枚举单例。服务器关闭时会先调用
+    /// {@link #close(MinecraftServer)} 释放世界和实体引用，再在这里把“正在进行”
+    /// 这类进程状态复位；存档读写负责恢复真正需要保存的进度。</p>
     @Override
     public void clear() {
         for (GameEvent event : events.values()) {
@@ -191,7 +189,7 @@ public enum GameEventSystem implements IGlobalData {
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
         map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
-        // 海盗入侵和火星暴乱还没有对应事件实例，补齐后需要加入这里。
+        // todo 海盗，火星
     });
 
     public static boolean isInvasionEvent(ResourceKey<? extends GameEvent> key) {

@@ -7,9 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
-/**
- * 腐化史莱姆。1.21 侧使用普通史莱姆行为，不会在死亡时额外生成史莱姆灵。
- */
+/// 腐化史莱姆。1.21 侧使用普通史莱姆行为，不会在死亡时额外生成史莱姆灵。
 public class CorruptSlime extends BaseSlime {
 
     public CorruptSlime(EntityType<? extends BaseSlime> type, Level level) {

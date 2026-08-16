@@ -32,9 +32,7 @@ public class LunarHookItem extends BaseHookItem implements IHookFastThrow {
         return createHook(itemStack, item, player, level, pendingEviction);
     }
 
-    /**
-     * 按成功提交后的列表选择尚未占用的月钩外观；待淘汰实体仍留在世界中，直至新实体生成成功。
-     */
+    /// 按成功提交后的列表选择尚未占用的月钩外观；待淘汰实体仍留在世界中，直至新实体生成成功。
     private static LunarHookEntity createHook(
             ItemStack itemStack,
             BaseHookItem item,

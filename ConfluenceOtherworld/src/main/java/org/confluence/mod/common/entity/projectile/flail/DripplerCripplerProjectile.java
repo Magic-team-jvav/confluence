@@ -10,11 +10,9 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 
-/**
- * 滴滴怪致残者在开始收回时抛出的血肉弹。
- *
- * <p>弹幕承受额外重力，可反弹三次并穿透两个有效目标。</p>
- */
+/// 滴滴怪致残者在开始收回时抛出的血肉弹。
+///
+/// <p>弹幕承受额外重力，可反弹三次并穿透两个有效目标。</p>
 public final class DripplerCripplerProjectile
         extends FlailAuxiliaryProjectile {
     private static final double EXTRA_GRAVITY = 0.08;

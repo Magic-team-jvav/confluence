@@ -7,16 +7,14 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 复现幽灵和流星头使用的直接悬浮追击。
- *
- * <p>这类生物没有游荡阶段。每个游戏刻先叠加轻微的上下浮动；存在有效目标且自身未处于
- * 受伤硬直时，立即把速度改为指向目标的固定向量。固定速度来自移动速度属性的八成，
- * 因此数据包或难度系统修改属性后无需同步调整行为参数。</p>
- *
- * <p>接触伤害仍由服务端按游戏时间限流。运动向量不做平滑插值是有意保留的 1.21 行为，
- * 不能与需要转向惯性的普通飞行敌怪共用追踪节点。</p>
- */
+/// 复现幽灵和流星头使用的直接悬浮追击。
+///
+/// <p>这类生物没有游荡阶段。每个游戏刻先叠加轻微的上下浮动；存在有效目标且自身未处于
+/// 受伤硬直时，立即把速度改为指向目标的固定向量。固定速度来自移动速度属性的八成，
+/// 因此数据包或难度系统修改属性后无需同步调整行为参数。</p>
+///
+/// <p>接触伤害仍由服务端按游戏时间限流。运动向量不做平滑插值是有意保留的 1.21 行为，
+/// 不能与需要转向惯性的普通飞行敌怪共用追踪节点。</p>
 public final class DirectFloatingPursuitAction extends BTNode {
     private static final double SPEED_MULTIPLIER = 0.8;
     private static final double BOB_FREQUENCY = 0.2;

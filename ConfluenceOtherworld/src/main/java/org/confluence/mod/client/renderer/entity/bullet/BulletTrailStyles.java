@@ -4,11 +4,9 @@ import org.confluence.mod.Confluence;
 
 import java.util.Map;
 
-/**
- * 子弹家族的视觉风格表。
- *
- * <p>这里对齐 1.21 TerraGuns 的拖尾参数，但资源路径使用合并后的 confluence 命名空间。</p>
- */
+/// 子弹家族的视觉风格表。
+///
+/// <p>这里对齐 1.21 TerraGuns 的拖尾参数，但资源路径使用合并后的 confluence 命名空间。</p>
 final class BulletTrailStyles {
     private static final BulletTrailStyle STANDARD = style(
             "trace_01", "flare_01", 0.12F, 0.008F, 0.10F, 0.92F, 20, true);

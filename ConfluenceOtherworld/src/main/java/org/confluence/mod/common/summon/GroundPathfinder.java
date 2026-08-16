@@ -5,21 +5,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
-/**
- * 为非实体地面召唤物计算短距离方块路径。
- *
- * <p>寻路只处理当前召唤物需要的轻量场景：水平移动、一格上台阶和一格下落。</p>
- */
+/// 为非实体地面召唤物计算短距离方块路径。
+///
+/// <p>寻路只处理当前召唤物需要的轻量场景：水平移动、一格上台阶和一格下落。</p>
 final class GroundPathfinder {
     private static final int[][] DIRECTIONS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 

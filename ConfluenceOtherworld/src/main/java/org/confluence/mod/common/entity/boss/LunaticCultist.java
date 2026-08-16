@@ -1,7 +1,7 @@
 package org.confluence.mod.common.entity.boss;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.RoundRobinSelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
@@ -61,9 +60,7 @@ public class LunaticCultist extends BaseBoss {
         this.xpReward = 5000;
     }
 
-    /**
-     * 拜月教邪教徒的空中站位和传送由技能状态机控制。
-     */
+    /// 拜月教邪教徒的空中站位和传送由技能状态机控制。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -117,7 +114,7 @@ public class LunaticCultist extends BaseBoss {
                 if (replacement != null) setTarget(replacement);
             }
 
-            // 推进瞬移攻击循环。
+            // Teleport cycle
             teleportTimer--;
             if (teleportTimer <= 0 && getTarget() != null) {
                 teleportTimer = TELEPORT_TICKS + random.nextInt(40);
@@ -125,7 +122,7 @@ public class LunaticCultist extends BaseBoss {
                 if (++attackCycle % 3 == 0) spawnClones();
             }
 
-            // 达到召唤条件后生成归属于当前主体的幻影龙。
+            // Summon phantom dragon
             if (getTarget() != null) {
                 spellTimer--;
                 if (spellTimer <= 0) {
@@ -208,12 +205,10 @@ public class LunaticCultist extends BaseBoss {
         }
     }
 
-    /**
-     * 依次发射火球、冰雾与闪电球。
-     *
-     * <p>每次调用只创建一个真实碰撞实体，伤害不会在创建阶段直接结算。
-     * 三类弹幕都锁定发射瞬间的方向，玩家可以通过移动躲避。</p>
-     */
+    /// 依次发射火球、冰雾与闪电球。
+    ///
+    /// <p>每次调用只创建一个真实碰撞实体，伤害不会在创建阶段直接结算。
+    /// 三类弹幕都锁定发射瞬间的方向，玩家可以通过移动躲避。</p>
     boolean shootSpell() {
         if (!(level() instanceof ServerLevel serverLevel)
                 || getTarget() == null) {

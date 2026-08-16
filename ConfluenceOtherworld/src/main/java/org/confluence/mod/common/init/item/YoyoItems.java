@@ -14,12 +14,7 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-/**
- * 悠悠球物品注册。
- *
- * <p>普通品种只填写自身数值；共享实体、网络和渲染不需要重复注册。只有瀑布与蜂巢球
- * 在最后一个参数声明特殊命中回调。</p>
- */
+// todo yoyo
 public final class YoyoItems {
     private YoyoItems() {
     }
@@ -81,9 +76,7 @@ public final class YoyoItems {
                         hitEffect));
     }
 
-    /**
-     * 蜂巢球复用已有追踪蜂实体，但派生快照保持悠悠球的近战通道并把基础伤害减半。
-     */
+    /// 蜂巢球复用已有追踪蜂实体，但派生快照保持悠悠球的近战通道并把基础伤害减半。
     private static void spawnBee(
             YoyoEntity yoyo,
             ServerPlayer owner,

@@ -15,24 +15,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-/**
- * 在限定寿命内持续追踪同一目标的巨石。
- *
- * <p>运行时实体引用不能跨区块卸载保存，因此服务端存储目标 UUID 并在目标重新加载后懒解析。
- * 单独的追踪年龄延续原有 20 秒上限，不能因重载重新获得完整追踪时间。</p>
- */
+/// 在限定寿命内持续追踪同一目标的巨石。
+///
+/// <p>运行时实体引用不能跨区块卸载保存，因此服务端存储目标 UUID 并在目标重新加载后懒解析。
+/// 单独的追踪年龄延续原有 20 秒上限，不能因重载重新获得完整追踪时间。</p>
 public class FollowerBoulderEntity extends BoulderEntity {
     private static final String RUNTIME_TAG = "ConfluenceFollowerBoulderRuntime";
     private static final int RUNTIME_VERSION = 1;
     private static final int MAX_TRACKING_AGE = 20 * 20;
 
-    /**
-     * 已消耗的追踪寿命，与实体通用 tickCount 分开保存。
-     */
+    /// 已消耗的追踪寿命，与实体通用 tickCount 分开保存。
     private int trackingAge;
-    /**
-     * 仅在目标当前已加载时缓存，不能直接作为持久状态。
-     */
+    /// 仅在目标当前已加载时缓存，不能直接作为持久状态。
     private @Nullable Entity target;
     private @Nullable UUID targetUUID;
     private boolean invalidFollowerRuntimeState;
@@ -87,9 +81,7 @@ public class FollowerBoulderEntity extends BoulderEntity {
         }
     }
 
-    /**
-     * 优先复用已加载目标；服务端找不到 UUID 时保留身份，等待目标区块稍后加载。
-     */
+    /// 优先复用已加载目标；服务端找不到 UUID 时保留身份，等待目标区块稍后加载。
     private @Nullable Entity getTrackingTarget() {
         if (target != null && (targetUUID == null || targetUUID.equals(target.getUUID()))) {
             if (targetUUID == null) targetUUID = target.getUUID();

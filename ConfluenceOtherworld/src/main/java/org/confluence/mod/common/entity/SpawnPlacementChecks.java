@@ -3,13 +3,9 @@ package org.confluence.mod.common.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.common.CommonConfigs;
@@ -17,17 +13,15 @@ import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.DynamicBiomeUtils;
 
-/**
- * 自然生成使用的公共环境校验集合。
- *
- * <p>生物群系修饰器只负责把实体类型放入某个生物群系的候选表，真正生成前仍会经过这里注册的
- * 放置规则。因此高度、维度、昼夜、天气、视野和困难模式等硬约束必须集中在此处，不能只依赖
- * JSON 中的权重或生物群系选择。</p>
- *
- * <p>各方法先施加泰拉瑞亚语义对应的额外门槛，再委托原版怪物或水生动物规则完成亮度、碰撞、
- * 流体等基础检查。这样可以复用原版兼容逻辑，同时保证 1.20.1 与 1.21.1 反向同步时只需比较
- * 一套明确的生成语义。</p>
- */
+/// 自然生成使用的公共环境校验集合。
+///
+/// <p>生物群系修饰器只负责把实体类型放入某个生物群系的候选表，真正生成前仍会经过这里注册的
+/// 放置规则。因此高度、维度、昼夜、天气、视野和困难模式等硬约束必须集中在此处，不能只依赖
+/// JSON 中的权重或生物群系选择。</p>
+///
+/// <p>各方法先施加泰拉瑞亚语义对应的额外门槛，再委托原版怪物或水生动物规则完成亮度、碰撞、
+/// 流体等基础检查。这样可以复用原版兼容逻辑，同时保证 1.20.1 与 1.21.1 反向同步时只需比较
+/// 一套明确的生成语义。</p>
 public final class SpawnPlacementChecks {
     private SpawnPlacementChecks() {}
 
@@ -73,12 +67,10 @@ public final class SpawnPlacementChecks {
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    /**
-     * 检查墓地敌怪的自然生成条件。
-     *
-     * <p>墓地是按区块段实时统计出的环境，而不是一个可直接写入生物群系修饰器的固定群系。
-     * 因此实体仍需进入主世界候选表，再在最终放置检查中同时验证墓地环境与原版怪物规则。</p>
-     */
+    /// 检查墓地敌怪的自然生成条件。
+    ///
+    /// <p>墓地是按区块段实时统计出的环境，而不是一个可直接写入生物群系修饰器的固定群系。
+    /// 因此实体仍需进入主世界候选表，再在最终放置检查中同时验证墓地环境与原版怪物规则。</p>
     public static boolean checkGraveyardMonsterSpawn(
             EntityType<? extends Mob> type,
             ServerLevelAccessor level,
@@ -93,13 +85,11 @@ public final class SpawnPlacementChecks {
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    /**
-     * 检查下界小动物的放置条件。
-     *
-     * <p>熔岩小动物不能复用 {@link net.minecraft.world.entity.animal.Animal#checkAnimalSpawnRules}：
-     * 后者要求较高亮度与普通动物可生成方块，会让灰烬群系中的候选项始终无法落地。这里保留
-     * 原版实体碰撞和承载方块检查，只额外限定下界与地狱高度带。</p>
-     */
+    /// 检查下界小动物的放置条件。
+    ///
+    /// <p>熔岩小动物不能复用 {@link net.minecraft.world.entity.animal.Animal#checkAnimalSpawnRules}：
+    /// 后者要求较高亮度与普通动物可生成方块，会让灰烬群系中的候选项始终无法落地。这里保留
+    /// 原版实体碰撞和承载方块检查，只额外限定下界与地狱高度带。</p>
     public static boolean checkNetherCritterSpawn(
             EntityType<? extends Mob> type,
             ServerLevelAccessor level,
@@ -166,12 +156,10 @@ public final class SpawnPlacementChecks {
                 && predicate.test(type, level, spawnType, pos, random);
     }
 
-    /**
-     * 执行所有敌对生物共用的原版基础放置检查，并按配置决定是否保留亮度门槛。
-     *
-     * <p>具有额外昼夜、地形或进度条件的实体也必须在自身条件之后调用本方法，不能直接调用
-     * {@link Monster#checkMonsterSpawnRules}，否则它们会绕过统一的亮度配置。</p>
-     */
+    /// 执行所有敌对生物共用的原版基础放置检查，并按配置决定是否保留亮度门槛。
+    ///
+    /// <p>具有额外昼夜、地形或进度条件的实体也必须在自身条件之后调用本方法，不能直接调用
+    /// {@link Monster#checkMonsterSpawnRules}，否则它们会绕过统一的亮度配置。</p>
     @SuppressWarnings("unchecked")
     public static boolean checkMonsterSpawnRules(
             EntityType<? extends Mob> type, ServerLevelAccessor level,

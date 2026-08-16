@@ -8,9 +8,7 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.PermanentUpgrades;
 
-/**
- * 奥术水晶不再自建使用逻辑；一次性状态、失败反馈和消耗均由公共永久升级物品处理。
- */
+/// 奥术水晶不再自建使用逻辑；一次性状态、失败反馈和消耗均由公共永久升级物品处理。
 public class ArcaneCrystalItem extends PermanentUpgradeItem {
     public ArcaneCrystalItem() {
         super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_PURPLE),

@@ -20,14 +20,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-/// 星怒这一类“从上方坠落”的剑气布局。
+/// 星怒弹幕发射方式
 ///
-/// @param maxAngle   索敌允许的最大夹角
-/// @param range      索敌和视线落点的搜索范围
-/// @param predict    预判量，保留给后续更精确的目标预测
-/// @param inAccuracy 弹幕散布误差
-/// @param offsetV    生成点相对目标/视线落点的垂直偏移
-/// @param offsetH    生成点相对目标/视线落点的水平随机偏移
+/// @param maxAngle   索敌最大角度
+/// @param range      索敌范围
+/// @param predict    预判量
+/// @param inAccuracy 不精准度
+/// @param offsetV    发射时的高度偏移
+/// @param offsetH    发射时的xy偏移
 public record AboveFallenGeneration(
         float maxAngle,
         float range,
@@ -74,7 +74,7 @@ public record AboveFallenGeneration(
         );
 
         if (target != null) {
-            // 有有效目标时，从目标上方生成，并让 AimUtils 负责弹道修正与散布。
+            // 周围有目标 预判
             firePos = target.getEyePosition().add(fireLocOffset);
             actualInaccuracy = 0;
             AimUtils.AimHelperOptions aimHelperOptions = new AimUtils.AimHelperOptions(projectile)
@@ -82,7 +82,7 @@ public record AboveFallenGeneration(
                     .setRandomOffsetRadius(inAccuracy);
             projVel = AimUtils.helperAimEntity(firePos, target, aimHelperOptions);
         } else {
-            // 没有有效目标时，使用玩家视线命中的位置作为落点，让弹幕从上方随机偏移处下落。
+            // 周围无目标 获取视线指向点
             Vec3 ori = owner.getEyePosition().add(0, 1, 0);
             Vec3 end = ori.add(owner.getForward().normalize().scale(range));
             BlockHitResult blockHitResult = owner.level().clip(new ClipContext(ori, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, owner));

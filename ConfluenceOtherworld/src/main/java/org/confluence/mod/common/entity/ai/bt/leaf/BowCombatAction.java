@@ -11,16 +11,14 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 持弓敌怪的完整远程作战周期。
- *
- * <p>该节点重现 1.21 侧 {@code TERangedAttackGoal} 的可见性、转向、拉弓、射击冷却和
- * 射后走位。状态集中在同一个节点中，避免行为树每刻重启拉弓过程；具体箭实体仍由
- * {@link SpawnArrowAction} 创建。</p>
- *
- * <p>节点只在目标有效且实体仍持有弓时运行。失去弓后返回失败，由实体行为树切换到
- * 近战分支，这与 1.21 侧重新评估武器目标的结果一致。</p>
- */
+/// 持弓敌怪的完整远程作战周期。
+///
+/// <p>该节点重现 1.21 侧 {@code TERangedAttackGoal} 的可见性、转向、拉弓、射击冷却和
+/// 射后走位。状态集中在同一个节点中，避免行为树每刻重启拉弓过程；具体箭实体仍由
+/// {@link SpawnArrowAction} 创建。</p>
+///
+/// <p>节点只在目标有效且实体仍持有弓时运行。失去弓后返回失败，由实体行为树切换到
+/// 近战分支，这与 1.21 侧重新评估武器目标的结果一致。</p>
 public final class BowCombatAction extends BTNode {
     private static final int REQUIRED_VISIBLE_TICKS = 5;
     private static final double LOOK_WHILE_MOVING_ANGLE = 0.85;

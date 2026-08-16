@@ -18,12 +18,10 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-/**
- * 在抓人草头部与同步根部之间绘制连续藤蔓。
- *
- * <p>藤蔓由若干交叉面片组成，长度随实体插值位置实时变化，因此头部伸缩时不会出现整段
- * 瞬移。抓人草与食人怪分别使用自己的叶片纹理，但共享相同的分段和朝向算法。</p>
- */
+/// 在抓人草头部与同步根部之间绘制连续藤蔓。
+///
+/// <p>藤蔓由若干交叉面片组成，长度随实体插值位置实时变化，因此头部伸缩时不会出现整段
+/// 瞬移。抓人草与食人怪分别使用自己的叶片纹理，但共享相同的分段和朝向算法。</p>
 public final class SnatcherRenderer
         extends GeoNormalRenderer<Snatcher> {
     private static final ResourceLocation SNATCHER_VINE =

@@ -15,12 +15,10 @@ import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 
 import java.util.Objects;
 
-/**
- * 使用实体模型渲染直线剑气，并统一处理沿速度方向旋转、出生缩放和可选滚转。
- *
- * <p>本类只存在于客户端包。公共剑气实体不保存模型、纹理或任何渲染器状态，避免专用服务端
- * 链接客户端类型，也避免不同实体共享渲染器时互相污染动画进度。</p>
- */
+/// 使用实体模型渲染直线剑气，并统一处理沿速度方向旋转、出生缩放和可选滚转。
+///
+/// <p>本类只存在于客户端包。公共剑气实体不保存模型、纹理或任何渲染器状态，避免专用服务端
+/// 链接客户端类型，也避免不同实体共享渲染器时互相污染动画进度。</p>
 public class ForwardSwordProjectileRenderer<T extends SwordProjectile> extends EntityRenderer<T> {
     private final EntityModel<SwordProjectile> model;
     private final ResourceLocation texture;
@@ -89,16 +87,12 @@ public class ForwardSwordProjectileRenderer<T extends SwordProjectile> extends E
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
-    /**
-     * 出生前十 tick 平滑放大，消除模型在网络生成帧突然跳出的视觉闪烁。
-     */
+    /// 出生前十 tick 平滑放大，消除模型在网络生成帧突然跳出的视觉闪烁。
     protected float getAgeScale(T entity, float partialTick) {
         return Math.min((entity.tickCount + partialTick) * 0.1F, 1.0F);
     }
 
-    /**
-     * 按当前实际运动向量定向；渲染不依赖客户端自行猜测的武器朝向。
-     */
+    /// 按当前实际运动向量定向；渲染不依赖客户端自行猜测的武器朝向。
     protected void applyOrientation(T entity, float partialTick, PoseStack poseStack) {
         Vec3 motion = entity.getDeltaMovement();
         Vec3 orientation = motion.lengthSqr() > 1.0E-10 ? motion : entity.getProjectileDirection();

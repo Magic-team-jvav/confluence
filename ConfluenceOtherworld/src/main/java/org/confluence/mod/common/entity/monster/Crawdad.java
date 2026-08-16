@@ -13,9 +13,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-/**
- * 具有红、蓝两种外观并会中距离跃击的龙虾。
- */
+/// 具有红、蓝两种外观并会中距离跃击的龙虾。
 public final class Crawdad extends BaseWarriorMonster {
     private static final String VARIANT_TAG = "Variant";
     private static final EntityDataAccessor<Integer> VARIANT =

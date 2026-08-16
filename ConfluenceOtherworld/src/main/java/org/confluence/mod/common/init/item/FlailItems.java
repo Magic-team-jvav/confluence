@@ -10,29 +10,20 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-/**
- * 链锤物品注册。
- *
- * <p>共享运动参数由 {@link FlailComponent} 提供；带有命中特效的武器使用具体物品子类，
- * 不把具体武器判断堆进链锤实体状态机。</p>
- */
+/// 连枷物品注册
 public class FlailItems {
     public static void init() {}
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    /**
-     * 原版链球。
-     */
+    /// 致伤球
     public static final PortDeferredItem<BaseFlailItem> MACE = ITEMS.register(
             "mace",
             () -> new BaseFlailItem(
                     FlailComponent.MACE.get(),
                     ModRarity.WHITE));
 
-    /**
-     * 火焰链锤。
-     */
+    /// 火焰链锤。
     public static final PortDeferredItem<IgnitingFlailItem> FLAMING_MACE =
             ITEMS.register(
                     "flaming_mace",
@@ -41,9 +32,7 @@ public class FlailItems {
                             ModRarity.BLUE,
                             1.0F / 6.0F));
 
-    /**
-     * 风锚。
-     */
+    /// 风锚。
     public static final PortDeferredItem<BaseFlailItem> WIND_ANCHOR =
             ITEMS.register(
                     "wind_anchor",
@@ -51,9 +40,7 @@ public class FlailItems {
                             FlailComponent.WIND_ANCHOR.get(),
                             ModRarity.BLUE));
 
-    /**
-     * 守卫者链锤。
-     */
+    /// 守卫者链锤。
     public static final PortDeferredItem<BaseFlailItem> GUARDIAN_FLAIL =
             ITEMS.register(
                     "guardian_flail",
@@ -61,9 +48,7 @@ public class FlailItems {
                             FlailComponent.GUARDIAN_FLAIL.get(),
                             ModRarity.GREEN));
 
-    /**
-     * 远古守卫者链锤。
-     */
+    /// 远古守卫者链锤。
     public static final PortDeferredItem<BaseFlailItem> ANCIENT_GUARDIAN_FLAIL =
             ITEMS.register(
                     "ancient_guardian_flail",
@@ -71,9 +56,7 @@ public class FlailItems {
                             FlailComponent.ANCIENT_GUARDIAN_FLAIL.get(),
                             ModRarity.ORANGE));
 
-    /**
-     * 致伤球。
-     */
+    /// 致伤球。
     public static final PortDeferredItem<BaseFlailItem> BALL_O_HURT =
             ITEMS.register(
                     "ball_o_hurt",
@@ -81,9 +64,7 @@ public class FlailItems {
                             FlailComponent.BALL_O_HURT.get(),
                             ModRarity.BLUE));
 
-    /**
-     * 血肉之球。
-     */
+    /// 血肉之球。
     public static final PortDeferredItem<BaseFlailItem> THE_MEATBALL =
             ITEMS.register(
                     "the_meatball",
@@ -91,9 +72,7 @@ public class FlailItems {
                             FlailComponent.THE_MEATBALL.get(),
                             ModRarity.BLUE));
 
-    /**
-     * 蓝月。
-     */
+    /// 蓝月。
     public static final PortDeferredItem<BaseFlailItem> BLUE_MOON =
             ITEMS.register(
                     "blue_moon",
@@ -101,9 +80,7 @@ public class FlailItems {
                             FlailComponent.BLUE_MOON.get(),
                             ModRarity.GREEN));
 
-    /**
-     * 阳炎之怒。
-     */
+    /// 阳炎之怒。
     public static final PortDeferredItem<IgnitingFlailItem> SUNFURY =
             ITEMS.register(
                     "sunfury",
@@ -112,9 +89,7 @@ public class FlailItems {
                             ModRarity.ORANGE,
                             0.25F));
 
-    /**
-     * 太极连枷。
-     */
+    /// 太极连枷。
     public static final PortDeferredItem<DaoOfPowItem> DAO_OF_POW =
             ITEMS.register(
                     "dao_of_pow",
@@ -122,9 +97,7 @@ public class FlailItems {
                             FlailComponent.DAO_OF_POW.get(),
                             ModRarity.PINK));
 
-    /**
-     * 花之力。
-     */
+    /// 花之力。
     public static final PortDeferredItem<BaseFlailItem> FLOWER_POWER =
             ITEMS.register(
                     "flower_power",
@@ -132,9 +105,7 @@ public class FlailItems {
                             FlailComponent.FLOWER_POWER.get(),
                             ModRarity.BLUE));
 
-    /**
-     * 滴滴怪致残者。
-     */
+    /// 滴滴怪致残者。
     public static final PortDeferredItem<BaseFlailItem> DRIPPLER_CRIPPLER =
             ITEMS.register(
                     "drippler_crippler",
@@ -142,9 +113,7 @@ public class FlailItems {
                             FlailComponent.DRIPPLER_CRIPPLER.get(),
                             ModRarity.BLUE));
 
-    /**
-     * 猪鲨链球。
-     */
+    /// 猪鲨链球。
     public static final PortDeferredItem<BaseFlailItem> FLAIRON =
             ITEMS.register(
                     "flairon",
@@ -152,9 +121,7 @@ public class FlailItems {
                             FlailComponent.FLAIRON.get(),
                             ModRarity.ORANGE));
 
-    /**
-     * 链刃。
-     */
+    /// 链刃。
     public static final PortDeferredItem<BaseFlailItem> CHAIN_KNIFE =
             ITEMS.register(
                     "chain_knife",
@@ -162,9 +129,7 @@ public class FlailItems {
                             FlailComponent.CHAIN_KNIFE.get(),
                             ModRarity.WHITE));
 
-    /**
-     * 锚。
-     */
+    /// 锚。
     public static final PortDeferredItem<BaseFlailItem> ANCHOR =
             ITEMS.register(
                     "anchor",

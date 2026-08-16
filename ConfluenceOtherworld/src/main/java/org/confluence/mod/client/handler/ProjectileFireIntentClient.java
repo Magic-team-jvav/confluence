@@ -9,20 +9,16 @@ import org.confluence.mod.network.c2s.ProjectileFireIntentPacketC2S;
 
 import java.util.Objects;
 
-/**
- * 客户端主动弹幕触发门面。
- *
- * <p>客户端只判断手持物是否声明了公共动作能力，并发送固定意图。
- * 弹药、魔力、伤害、暴击、冷却和实际弹幕数量都必须由服务端事务重新读取与裁定。</p>
- */
+/// 客户端主动弹幕触发门面。
+///
+/// <p>客户端只判断手持物是否声明了公共动作能力，并发送固定意图。
+/// 弹药、魔力、伤害、暴击、冷却和实际弹幕数量都必须由服务端事务重新读取与裁定。</p>
 public final class ProjectileFireIntentClient {
     private ProjectileFireIntentClient() {}
 
-    /**
-     * 当前手持物支持公共动作时发送意图。
-     *
-     * @return 是否发送了统一意图包
-     */
+    /// 当前手持物支持公共动作时发送意图。
+    ///
+    /// @return 是否发送了统一意图包
     public static boolean sendIfSupported(
             LocalPlayer player,
             InteractionHand hand,

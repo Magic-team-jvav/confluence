@@ -19,22 +19,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * 将剑气组件转换为 MagicLib 通用弹幕发射动作。
- *
- * <p>这里是汇流来世自身的玩法适配层：MagicLib 只负责发射事务、伤害快照和资源消耗，
- * 不需要知道具体剑气实体或泰拉瑞亚式的武器数值。后续新增剑气武器时，只要声明组件，
- * 就能复用同一套服务端发射流程。</p>
- */
+/// 将剑气组件转换为 MagicLib 通用弹幕发射动作。
+///
+/// <p>这里是汇流来世自身的玩法适配层：MagicLib 只负责发射事务、伤害快照和资源消耗，
+/// 不需要知道具体剑气实体或泰拉瑞亚式的武器数值。后续新增剑气武器时，只要声明组件，
+/// 就能复用同一套服务端发射流程。</p>
 public final class SwordProjectileActionFactory {
     private SwordProjectileActionFactory() {}
 
-    /**
-     * 根据当前服务端手持状态创建一次不可变的发射动作。
-     *
-     * <p>近战攻击伤害只在这里读取一次，再乘以剑气自身的倍率。暴击、护甲穿透、击退等后续由
-     * MagicLib 从快照中解析。剑气固定使用近战通道，避免被误读为远程伤害或远程弹速。</p>
-     */
+    /// 根据当前服务端手持状态创建一次不可变的发射动作。
+    ///
+    /// <p>近战攻击伤害只在这里读取一次，再乘以剑气自身的倍率。暴击、护甲穿透、击退等后续由
+    /// MagicLib 从快照中解析。剑气固定使用近战通道，避免被误读为远程伤害或远程弹速。</p>
     public static ProjectileFireAction create(
             ProjectileFireContext context,
             SwordProjectileComponent configuration
@@ -68,12 +64,10 @@ public final class SwordProjectileActionFactory {
                 .build();
     }
 
-    /**
-     * 按组件声明创建完整的剑气布局。
-     *
-     * <p>布局每次需要弹幕时都会重新调用实体工厂，因此以后可以自然支持一次动作生成多枚剑气。
-     * 返回前会再次校验实体类型，防止自定义布局绕过剑气核心约束。</p>
-     */
+    /// 按组件声明创建完整的剑气布局。
+    ///
+    /// <p>布局每次需要弹幕时都会重新调用实体工厂，因此以后可以自然支持一次动作生成多枚剑气。
+    /// 返回前会再次校验实体类型，防止自定义布局绕过剑气核心约束。</p>
     public static List<ProjectileLaunch> createLaunches(
             ProjectileFireContext context,
             ProjectileCombatSnapshot snapshot,
@@ -111,9 +105,7 @@ public final class SwordProjectileActionFactory {
         return List.copyOf(normalizedLaunches);
     }
 
-    /**
-     * 创建一枚尚未加入世界、并已安装运动配置的剑气实体。
-     */
+    /// 创建一枚尚未加入世界、并已安装运动配置的剑气实体。
     public static SwordProjectile createProjectile(
             ProjectileFireContext context,
             SwordProjectileComponent configuration

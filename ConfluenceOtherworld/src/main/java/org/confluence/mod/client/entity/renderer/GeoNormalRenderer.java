@@ -51,12 +51,10 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         this.shadowRadius = 0.25F;
     }
 
-    /**
-     * 应用通用 Geo 渲染参数。
-     *
-     * <p>这里仅处理模型缩放、垂直偏移和沿俯仰方向旋转。它们只影响客户端显示，
-     * 不参与服务端实体碰撞箱、移动路径或伤害判定。</p>
-     */
+    /// 应用通用 Geo 渲染参数。
+    ///
+    /// <p>这里仅处理模型缩放、垂直偏移和沿俯仰方向旋转。它们只影响客户端显示，
+    /// 不参与服务端实体碰撞箱、移动路径或伤害判定。</p>
     @Override
     public void preRender(
             PoseStack poseStack,

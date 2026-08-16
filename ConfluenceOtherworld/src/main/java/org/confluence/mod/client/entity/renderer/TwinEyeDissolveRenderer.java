@@ -26,12 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * 双子魔眼变形时的局部噪声溶解渲染。
- *
- * <p>这里只叠加指定骨骼组的噪声边缘，不接管克苏鲁之脑那种整只实体淡出的透明度。
- * 这样变形特效能落在眼睛自己的结构上，也不会把主体、缆线或 Boss 血条相关渲染一起影响掉。</p>
- */
+/// 双子魔眼变形时的局部噪声溶解渲染。
+///
+/// <p>这里只叠加指定骨骼组的噪声边缘，不接管克苏鲁之脑那种整只实体淡出的透明度。
+/// 这样变形特效能落在眼睛自己的结构上，也不会把主体、缆线或 Boss 血条相关渲染一起影响掉。</p>
 public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
         extends BossGeoRenderer<T> {
     private static final int DISSOLVE_TICKS = 24;

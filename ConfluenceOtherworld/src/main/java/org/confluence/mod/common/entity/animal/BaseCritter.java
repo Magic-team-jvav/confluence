@@ -38,10 +38,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 行为树驱动的小动物基类。
- *
- * <p>基类提供变体初始化、行为树安装、通用受伤音效以及“默认不可繁殖”的安全契约。
- * 鸭子、兔子等确实支持繁殖的物种可在实体类中覆盖食物和后代工厂，而无需复制生命周期代码。</p>
+ * 小动物基类 —— 不可繁殖、无食物、行为树驱动。
  */
 public abstract class BaseCritter extends Animal implements GeoEntity {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -64,18 +61,14 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
         return result;
     }
 
-    /**
-     * 用于区分“明确请求的变体”和普通自然生成的 NBT 键。
-     */
+    /// 用于区分“明确请求的变体”和普通自然生成的 NBT 键。
     protected @Nullable String variantSaveKey() {
         return null;
     }
 
-    /**
-     * 为没有显式变体数据的自然生成实体选择初始外观。
-     *
-     * <p>具有变体的环境生物只需覆盖该方法；已有 NBT 明确指定变体时不会再次随机选择。</p>
-     */
+    /// 为没有显式变体数据的自然生成实体选择初始外观。
+    ///
+    /// <p>具有变体的环境生物只需覆盖该方法；已有 NBT 明确指定变体时不会再次随机选择。</p>
     protected void initializeSpawnVariant() {}
 
     @Override
@@ -97,12 +90,10 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
     /** 子类重写以提供自己的行为树 */
     protected abstract BTRoot createBT();
 
-    /**
-     * 为被动小动物包装可抢占的恐慌分支。
-     *
-     * <p>原版 Panic 只在受伤或着火后触发，普通玩家靠近不会被视为威胁。条件切换节点会在
-     * 每个 tick 重新判断，因而小动物在巡游途中受伤时可以立即中断当前动作并逃离。</p>
-     */
+    /// 为被动小动物包装可抢占的恐慌分支。
+    ///
+    /// <p>原版 Panic 只在受伤或着火后触发，普通玩家靠近不会被视为威胁。条件切换节点会在
+    /// 每个 tick 重新判断，因而小动物在巡游途中受伤时可以立即中断当前动作并逃离。</p>
     protected final BTNode withPassivePanic(
             BTNode routine,
             double panicSpeed) {
@@ -112,13 +103,11 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
                 routine);
     }
 
-    /**
-     * 创建 1.21 地面小动物共用的日常行为。
-     *
-     * <p>漂浮始终具有最高优先级；物种可把繁殖、食物吸引或跟随亲代等动作插入其后；
-     * 最后再执行避水巡游、观察玩家和随机转头。共享顺序集中在基类中，新增同类生物
-     * 不需要复制一整套原版动作，也不会遗漏落水逃生。</p>
-     */
+    /// 创建 1.21 地面小动物共用的日常行为。
+    ///
+    /// <p>漂浮始终具有最高优先级；物种可把繁殖、食物吸引或跟随亲代等动作插入其后；
+    /// 最后再执行避水巡游、观察玩家和随机转头。共享顺序集中在基类中，新增同类生物
+    /// 不需要复制一整套原版动作，也不会遗漏落水逃生。</p>
     protected final BTNode createGroundCritterRoutine(
             double strollSpeed,
             BTNode... speciesActions) {
@@ -143,12 +132,10 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
         return ModSoundEvents.ROUTINE_DEATH.get();
     }
 
-    /**
-     * 地面小动物沿用 1.21 简单动物与兔类的较低声音音量。
-     *
-     * <p>飞行动物和鸭子的原版继承值不同，由对应中间基类或具体实体覆盖；
-     * 这样新增地面小动物无需重复声明相同常量。</p>
-     */
+    /// 地面小动物沿用 1.21 简单动物与兔类的较低声音音量。
+    ///
+    /// <p>飞行动物和鸭子的原版继承值不同，由对应中间基类或具体实体覆盖；
+    /// 这样新增地面小动物无需重复声明相同常量。</p>
     @Override
     protected float getSoundVolume() {
         return 0.4F;
@@ -171,11 +158,9 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.18);
     }
 
-    /**
-     * 创建昆虫与同尺寸小型生物的基础属性。
-     *
-     * <p>该配置独立于普通小动物，避免新增昆虫时误用十点生命的通用配置。</p>
-     */
+    /// 创建昆虫与同尺寸小型生物的基础属性。
+    ///
+    /// <p>该配置独立于普通小动物，避免新增昆虫时误用十点生命的通用配置。</p>
     public static AttributeSupplier.Builder createInsectAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 3.0)

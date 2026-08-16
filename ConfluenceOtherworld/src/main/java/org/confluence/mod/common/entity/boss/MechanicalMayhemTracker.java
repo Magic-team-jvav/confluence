@@ -4,18 +4,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import org.confluence.mod.common.init.entity.BossEntities;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
-/**
- * 在机械三王同时存活期间冻结共同参战玩家。
- *
- * <p>这里记录的是“玩家曾在三场遭遇重叠时同时参与”这一事实，而不是最终胜利。最终是否把
- * 某一种机械 Boss 计入机甲混战，仍由该 Boss 的正常死亡结算决定；脱战丢弃不会进入结算。</p>
- */
+/// 在机械三王同时存活期间冻结共同参战玩家。
+///
+/// <p>这里记录的是“玩家曾在三场遭遇重叠时同时参与”这一事实，而不是最终胜利。最终是否把
+/// 某一种机械 Boss 计入机甲混战，仍由该 Boss 的正常死亡结算决定；脱战丢弃不会进入结算。</p>
 final class MechanicalMayhemTracker {
     private MechanicalMayhemTracker() {
     }

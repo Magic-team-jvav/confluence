@@ -17,8 +17,8 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -27,7 +27,6 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.jetbrains.annotations.Nullable;
 
 public class BaseSlime extends BaseMonster {
     protected static final String SIZE_KEY = "SlimeSize";
@@ -65,13 +64,11 @@ public class BaseSlime extends BaseMonster {
         setSlimeSize(size);
     }
 
-    /**
-     * 保留 1.21 侧原版史莱姆的索敌规则。
-     *
-     * <p>白天被动的颜色变体不会主动寻找玩家，但受击反击仍由
-     * {@link HurtByTargetGoal} 独立处理；玩家与史莱姆的高度差也必须不超过四格。
-     * 铁傀儡使用较低优先级，避免同时存在玩家时改变原有目标选择。</p>
-     */
+    /// 保留 1.21 侧原版史莱姆的索敌规则。
+    ///
+    /// <p>白天被动的颜色变体不会主动寻找玩家，但受击反击仍由
+    /// {@link HurtByTargetGoal} 独立处理；玩家与史莱姆的高度差也必须不超过四格。
+    /// 铁傀儡使用较低优先级，避免同时存在玩家时改变原有目标选择。</p>
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -88,9 +85,7 @@ public class BaseSlime extends BaseMonster {
                 this, IronGolem.class, true));
     }
 
-    /**
-     * 判断玩家是否满足史莱姆的主动索敌条件；受击反击不经过此方法。
-     */
+    /// 判断玩家是否满足史莱姆的主动索敌条件；受击反击不经过此方法。
     protected boolean canProactivelyTargetPlayer(LivingEntity player) {
         return Math.abs(player.getY() - getY()) <= 4.0
                 && (!passiveByDay || level().isNight());
@@ -102,11 +97,9 @@ public class BaseSlime extends BaseMonster {
         entityData.define(DATA_SIZE, 2);
     }
 
-    /**
-     * 返回服务端权威并同步到客户端的史莱姆大小。
-     *
-     * <p>该值同时驱动碰撞箱和模型尺寸；特殊变体只需修改这一处，不能再分别维护渲染缩放和逻辑体积。</p>
-     */
+    /// 返回服务端权威并同步到客户端的史莱姆大小。
+    ///
+    /// <p>该值同时驱动碰撞箱和模型尺寸；特殊变体只需修改这一处，不能再分别维护渲染缩放和逻辑体积。</p>
     public int getSlimeSize() {
         return entityData.get(DATA_SIZE);
     }
@@ -154,13 +147,11 @@ public class BaseSlime extends BaseMonster {
         }
     }
 
-    /**
-     * 按史莱姆类型执行 1.21 侧现有的自然生成分层规则。
-     *
-     * <p>生物群系数据只决定某种史莱姆能否进入候选列表；亮度、高度、昼夜和露天条件仍在
-     * 此处统一判定。未列入任何分支的类型保持不可自然生成，包括虽然注册了放置规则、但
-     * 1.21 当前没有为其提供有效环境分支的青团史莱姆。</p>
-     */
+    /// 按史莱姆类型执行 1.21 侧现有的自然生成分层规则。
+    ///
+    /// <p>生物群系数据只决定某种史莱姆能否进入候选列表；亮度、高度、昼夜和露天条件仍在
+    /// 此处统一判定。未列入任何分支的类型保持不可自然生成，包括虽然注册了放置规则、但
+    /// 1.21 当前没有为其提供有效环境分支的青团史莱姆。</p>
     public static boolean checkSlimeSpawn(EntityType<? extends Mob> type,
                                           ServerLevelAccessor level,
                                           MobSpawnType spawnType,
@@ -208,12 +199,10 @@ public class BaseSlime extends BaseMonster {
         };
     }
 
-    /**
-     * 返回下一次落地起跳前的等待时间。
-     *
-     * <p>普通史莱姆沿用原版的十至二十九刻随机间隔；进入攻击状态后，移动控制器会把
-     * 该间隔缩短为三分之一。仅金史莱姆等在 1.21 侧明确覆盖此值的变体需要重写。</p>
-     */
+    /// 返回下一次落地起跳前的等待时间。
+    ///
+    /// <p>普通史莱姆沿用原版的十至二十九刻随机间隔；进入攻击状态后，移动控制器会把
+    /// 该间隔缩短为三分之一。仅金史莱姆等在 1.21 侧明确覆盖此值的变体需要重写。</p>
     protected int getJumpDelay() {
         return random.nextInt(20) + 10;
     }
@@ -239,13 +228,11 @@ public class BaseSlime extends BaseMonster {
         wasOnGround = onGround();
     }
 
-    /**
-     * 连续驱动史莱姆移动的行为节点。
-     *
-     * <p>它对应 1.21 侧原版史莱姆同时运行的漂浮、攻击、随机转向和持续跳跃四个目标，
-     * 但仍作为新架构中的单一行为树节点执行。节点不会把一次跳跃拆成“蓄力—起跳—落地—
-     * 长时间等待”的离散任务，因此转向、追击速度和落地后的下一跳节奏与原实现一致。</p>
-     */
+    /// 连续驱动史莱姆移动的行为节点。
+    ///
+    /// <p>它对应 1.21 侧原版史莱姆同时运行的漂浮、攻击、随机转向和持续跳跃四个目标，
+    /// 但仍作为新架构中的单一行为树节点执行。节点不会把一次跳跃拆成“蓄力—起跳—落地—
+    /// 长时间等待”的离散任务，因此转向、追击速度和落地后的下一跳节奏与原实现一致。</p>
     private static final class SlimeLocomotionAction extends BTNode {
         private final BaseSlime slime;
         private float idleDirection;
@@ -291,10 +278,8 @@ public class BaseSlime extends BaseMonster {
         }
     }
 
-    /**
-     * 复刻原版史莱姆的移动控制器。行为树只提供朝向、速度和是否处于攻击状态；真正的
-     * 落地等待、起跳和空中续速都在这里连续推进，避免每一刻直接改写水平速度造成弹跳。
-     */
+    /// 复刻原版史莱姆的移动控制器。行为树只提供朝向、速度和是否处于攻击状态；真正的
+    /// 落地等待、起跳和空中续速都在这里连续推进，避免每一刻直接改写水平速度造成弹跳。
     private static final class SlimeMoveControl extends MoveControl {
         private final BaseSlime slime;
         private float wantedYRot;
@@ -371,10 +356,7 @@ public class BaseSlime extends BaseMonster {
     }
 
     /**
-     * 处理原版史莱姆式接触攻击。
-     *
-     * <p>跳跃行为树只负责移动；玩家碰撞和铁傀儡推挤才是攻击入口。这样不会把伤害
-     * 频率绑在某一种跳跃实现上，也能继续使用受伤无敌帧限制连续碰撞伤害。</p>
+     * 是否免疫火焰伤害
      */
     protected void dealContactDamage(LivingEntity target) {
         if (!level().isClientSide
@@ -388,10 +370,8 @@ public class BaseSlime extends BaseMonster {
         }
     }
 
-    /**
-     * 每秒检查一次蜂蜜浸泡状态。只有 1.21 侧明确支持的绿、蓝、紫三种史莱姆参与转化，
-     * 离开蜂蜜后进度立即清零；完成时由服务端原位替换为二号蜂蜜史莱姆。
-     */
+    /// 每秒检查一次蜂蜜浸泡状态。只有 1.21 侧明确支持的绿、蓝、紫三种史莱姆参与转化，
+    /// 离开蜂蜜后进度立即清零；完成时由服务端原位替换为二号蜂蜜史莱姆。
     private void updateHoneySoaking() {
         if (!canConvertFromHoney()
                 || !level().getBlockState(blockPosition()).is(ModTags.Blocks.HONEY)) {
@@ -477,31 +457,23 @@ public class BaseSlime extends BaseMonster {
         return super.isInWater();
     }
 
-    /**
-     * 客户端模型缩放值，供使用同一实体类型表达不同年龄的史莱姆家族使用。
-     */
+    /// 客户端模型缩放值，供使用同一实体类型表达不同年龄的史莱姆家族使用。
     public float getVisualScale() {
         return 1.0F;
     }
 
-    /**
-     * 普通史莱姆在 1.21 侧使用原版尺寸 2；年龄或特殊变体可继续通过
-     * {@link #getVisualScale()} 调整最终大小。
-     */
+    /// 普通史莱姆在 1.21 侧使用原版尺寸 2；年龄或特殊变体可继续通过
+    /// {@link #getVisualScale()} 调整最终大小。
     public float getVisualSize() {
         return getSlimeSize() * getVisualScale();
     }
 
-    /**
-     * 上一游戏刻的挤压值，供客户端在两刻之间插值。
-     */
+    /// 上一游戏刻的挤压值，供客户端在两刻之间插值。
     public float getOldSquish() {
         return oldSquish;
     }
 
-    /**
-     * 当前游戏刻的挤压值。
-     */
+    /// 当前游戏刻的挤压值。
     public float getSquish() {
         return squish;
     }

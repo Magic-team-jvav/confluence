@@ -44,12 +44,10 @@ public interface ModPrefix {
 
     ResourceLocation getModifierId();
 
-    /**
-     * 根据武器实际使用的伤害通道选择词缀属性。
-     * <p>
-     * 鞭子沿用近战词缀池，但直击属于召唤伤害；召唤杖沿用魔法词缀池，
-     * 同样应增加召唤伤害。这里只修正属性落点，不改变词缀池和词缀数值。
-     */
+    /// 根据武器实际使用的伤害通道选择词缀属性。
+    /// <p>
+    /// 鞭子沿用近战词缀池，但直击属于召唤伤害；召唤杖沿用魔法词缀池，
+    /// 同样应增加召唤伤害。这里只修正属性落点，不改变词缀池和词缀数值。
     private static Attribute resolveDamageAttribute(PrefixType prefixType, ItemStack stack) {
         if (!stack.isEmpty()
                 && (stack.is(ModTags.Items.SUMMONER_WEAPON)

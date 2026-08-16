@@ -39,9 +39,7 @@ public class TravelingMerchantNPC extends BaseNPC {
         return base;
     }
 
-    /**
-     * 首次打开商店时从当前数据包报价中抽取本次到访库存，之后固定到实体的新格式 NBT。
-     */
+    /// 首次打开商店时从当前数据包报价中抽取本次到访库存，之后固定到实体的新格式 NBT。
     @Override
     public List<NPCTradeOffer> selectTradeOffers(List<NPCTradeOffer> offers) {
         if (!tradeStockInitialized && !level().isClientSide) {

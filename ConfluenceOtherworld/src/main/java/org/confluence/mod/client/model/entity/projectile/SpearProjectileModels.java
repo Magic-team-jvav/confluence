@@ -2,20 +2,14 @@ package org.confluence.mod.client.model.entity.projectile;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 
-/**
- * 长矛衍生弹幕的纯客户端模型声明。
- *
- * <p>模型层和网格类型不得出现在公共实体类的字段或方法签名中，否则 Forge 专用服务端的
- * DistCleaner 会在加载实体类时拒绝客户端类型。这里集中保存渲染元数据，公共实体只保留运动、
- * 战斗状态和通用纹理标识。</p>
- */
+/// 长矛衍生弹幕的纯客户端模型声明。
+///
+/// <p>模型层和网格类型不得出现在公共实体类的字段或方法签名中，否则 Forge 专用服务端的
+/// DistCleaner 会在加载实体类时拒绝客户端类型。这里集中保存渲染元数据，公共实体只保留运动、
+/// 战斗状态和通用纹理标识。</p>
 public final class SpearProjectileModels {
     public static final ModelLayerLocation STORM = new ModelLayerLocation(
             Confluence.asResource("storm_spear_shot_projectile"), "main");
@@ -28,9 +22,7 @@ public final class SpearProjectileModels {
 
     private SpearProjectileModels() {}
 
-    /**
-     * 风暴长矛与北极矛共用的十字矛头网格。
-     */
+    /// 风暴长矛与北极矛共用的十字矛头网格。
     public static LayerDefinition createSpearLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
@@ -57,9 +49,7 @@ public final class SpearProjectileModels {
         return LayerDefinition.create(mesh, 32, 32);
     }
 
-    /**
-     * 蘑菇弹幕的扁盘菌盖与短菌柄网格。
-     */
+    /// 蘑菇弹幕的扁盘菌盖与短菌柄网格。
     public static LayerDefinition createMushroomLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
@@ -70,9 +60,7 @@ public final class SpearProjectileModels {
         return LayerDefinition.create(mesh, 32, 32);
     }
 
-    /**
-     * 恶魂弹幕的半透明方块体网格。
-     */
+    /// 恶魂弹幕的半透明方块体网格。
     public static LayerDefinition createGhastlyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         mesh.getRoot().addOrReplaceChild("body", CubeListBuilder.create()

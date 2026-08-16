@@ -5,11 +5,9 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summon.SummonGoal;
 import org.confluence.mod.common.summon.SummonPose;
 
-/**
- * 召唤剑的普通追击行为。
- *
- * <p>这里对齐 1.21 侧“先转向，角度足够接近后再加速”的逻辑，避免召唤剑在未瞄准目标时直接横向漂移。</p>
- */
+/// 召唤剑的普通追击行为。
+///
+/// <p>这里对齐 1.21 侧“先转向，角度足够接近后再加速”的逻辑，避免召唤剑在未瞄准目标时直接横向漂移。</p>
 final class SwordAttackGoal extends SummonGoal<SummonSword> {
     SwordAttackGoal(SummonSword summon) {
         super(summon);

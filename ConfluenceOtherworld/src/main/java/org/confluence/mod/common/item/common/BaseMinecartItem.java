@@ -21,9 +21,7 @@ public class BaseMinecartItem extends MinecartItem {
         this.factory = factory;
     }
 
-    /**
-     * 创建该物品对应的自定义矿车实体；其他矿车类型仍交给原版流程处理。
-     */
+    // todo
     public @Nullable AbstractMinecart createMinecart(ServerLevel level, double x, double y, double z, AbstractMinecart.Type type, ItemStack stack, @Nullable Player player) {
         if (type == AbstractMinecart.Type.RIDEABLE && stack.is(this)) {
             return factory.createMinecart(level, x, y, z, abilities);

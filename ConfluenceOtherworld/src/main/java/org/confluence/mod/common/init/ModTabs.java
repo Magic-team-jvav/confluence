@@ -1874,7 +1874,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(IconItems.ENTITY_ICON::toStack)
                     .title(Component.translatable("creativetab.confluence.entity"))
                     .displayItems((parameters, output) -> {
-                        // 该页签暂不展示物品，后续由内容分组接入。
+                        // todo
                     })
                     .withTabsBefore(SUMMONERS.getId())
                     .build());

@@ -19,12 +19,10 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.UUID;
 
-/**
- * 请求消耗虫洞药水并传送到同队玩家。
- *
- * <p>客户端只选择目标和入口来源；目标资格、药水消耗、跨维度位置以及玻璃瓶返还
- * 全部由服务端重新确认。白队表示尚未选择队伍，不能利用默认值互相传送。</p>
- */
+/// 请求消耗虫洞药水并传送到同队玩家。
+///
+/// <p>客户端只选择目标和入口来源；目标资格、药水消耗、跨维度位置以及玻璃瓶返还
+/// 全部由服务端重新确认。白队表示尚未选择队伍，不能利用默认值互相传送。</p>
 public record WormholeToPlayerPacketC2S(
         UUID targetPlayerId,
         ByMod byMod
@@ -42,9 +40,7 @@ public record WormholeToPlayerPacketC2S(
         return ID;
     }
 
-    /**
-     * 虫洞请求会消耗物品并跨维度传送玩家，必须回到服务端主线程执行。
-     */
+    /// 虫洞请求会消耗物品并跨维度传送玩家，必须回到服务端主线程执行。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {

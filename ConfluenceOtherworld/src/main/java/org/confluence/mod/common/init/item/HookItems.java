@@ -54,7 +54,7 @@ public class HookItems {
                     (itemStack, item, player, level) -> {
                         throw new UnsupportedOperationException("Static hook is not implemented");
                     }) {
-                /** 静止钩实体尚未实现，服务端网络入口必须在调用占位工厂前拒绝。 */
+                /// 静止钩实体尚未实现，服务端网络入口必须在调用占位工厂前拒绝。
                 @Override
                 public boolean isThrowAvailable() {
                     return false;

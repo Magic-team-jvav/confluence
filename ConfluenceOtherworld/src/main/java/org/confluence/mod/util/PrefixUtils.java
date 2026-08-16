@@ -63,7 +63,7 @@ public final class PrefixUtils {
             return PrefixType.UNIVERSAL;
         } else if (itemStack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
             return PrefixType.MELEE;
-        } else if (itemStack.is(ModTags.Items.PREFIX_RANGED_ONLY)) { // 待调整：三叉戟会从背包里飞出去，导致加成无法稳定生效
+        } else if (itemStack.is(ModTags.Items.PREFIX_RANGED_ONLY)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
             return PrefixType.RANGED;
         } else if (itemStack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
             return PrefixType.MAGIC;
@@ -418,8 +418,7 @@ public final class PrefixUtils {
         if (TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }
-// 交易系统恢复后，从玩家扩展中读取当前交易持有者：
-// ITradeHolder holder = ((IPlayer) player).confluence$getTradeHolder();
+// todo trade       ITradeHolder holder = ((IPlayer) player).terra_entity$getTradeHolder();
 //        float priceAdjustment = 1.0F;
 //        if (holder != null && holder.getMood() != null) {
 //            priceAdjustment = 100.0F / holder.getMood().getValue();

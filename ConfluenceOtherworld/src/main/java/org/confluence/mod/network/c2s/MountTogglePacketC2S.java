@@ -8,12 +8,10 @@ import org.confluence.mod.common.mount.MountManager;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * 客户端快捷坐骑请求。
- *
- * <p>数据包没有客户端可填写的参数。服务端收到后重新读取玩家的坐骑槽，
- * 决定召唤哪种坐骑或解除当前坐骑。</p>
- */
+/// 客户端快捷坐骑请求。
+///
+/// <p>数据包没有客户端可填写的参数。服务端收到后重新读取玩家的坐骑槽，
+/// 决定召唤哪种坐骑或解除当前坐骑。</p>
 public record MountTogglePacketC2S() implements IPortPacket.C2S {
     public static final MountTogglePacketC2S INSTANCE =
             new MountTogglePacketC2S();
@@ -26,9 +24,7 @@ public record MountTogglePacketC2S() implements IPortPacket.C2S {
         return ID;
     }
 
-    /**
-     * 坐骑切换会创建或移除实体，必须回到服务端主线程执行。
-     */
+    /// 坐骑切换会创建或移除实体，必须回到服务端主线程执行。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {

@@ -11,18 +11,12 @@ import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.summon.SummonAnimation;
-import org.confluence.mod.common.summon.SummonCollision;
-import org.confluence.mod.common.summon.SummonInstance;
-import org.confluence.mod.common.summon.SummonPose;
-import org.confluence.mod.common.summon.SummonVisualState;
+import org.confluence.mod.common.summon.*;
 
-/**
- * 六种材质召唤剑共用的运行实例。
- *
- * <p>这里保留 1.21 侧的追击、斜劈和背部编队行为，材质差异只由 {@link Kind} 负责。
- * 召唤剑属于同一行为分组，多把剑共享连续序号，方便服务端与客户端保持一致的背部排列。</p>
- */
+/// 六种材质召唤剑共用的运行实例。
+///
+/// <p>这里保留 1.21 侧的追击、斜劈和背部编队行为，材质差异只由 {@link Kind} 负责。
+/// 召唤剑属于同一行为分组，多把剑共享连续序号，方便服务端与客户端保持一致的背部排列。</p>
 public final class SummonSword extends SummonInstance {
     private static final ResourceLocation GROUP_KEY = Confluence.asResource("summon_sword");
     private static final double SEARCH_RANGE = 40.0;

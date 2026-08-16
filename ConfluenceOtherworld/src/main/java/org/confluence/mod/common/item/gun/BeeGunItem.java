@@ -16,20 +16,16 @@ import org.confluence.terra_curio.util.TCUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 蜜蜂枪的多弹幕魔力武器实现。
- *
- * <p>蜂巢背包会把每次生成数量从一至三只提升为一至四只，并保留随机巨蜂。所有蜜蜂共享同一次
- * 发射快照和魔力消耗，但实体列表只存在于本次请求局部，多个玩家之间不会串用。</p>
- */
+/// 蜜蜂枪的多弹幕魔力武器实现。
+///
+/// <p>蜂巢背包会把每次生成数量从一至三只提升为一至四只，并保留随机巨蜂。所有蜜蜂共享同一次
+/// 发射快照和魔力消耗，但实体列表只存在于本次请求局部，多个玩家之间不会串用。</p>
 public class BeeGunItem extends ManaGunItem {
     public BeeGunItem(Properties properties) {
         super(properties, 4, 4.6F, 1.0F, 0.01F, 0.04F, 2, 1.5F, ModRarity.GREEN, 5);
     }
 
-    /**
-     * 创建本次请求局部的蜜蜂弹幕，不在物品类中直接把实体加入世界。
-     */
+    /// 创建本次请求局部的蜜蜂弹幕，不在物品类中直接把实体加入世界。
     @Override
     protected List<ProjectileLaunch> createLaunches(
             ProjectileFireContext context,
@@ -58,18 +54,14 @@ public class BeeGunItem extends ManaGunItem {
         return List.copyOf(launches);
     }
 
-    /**
-     * 只有实际成功生成整批蜜蜂后才检查并授予成就。
-     */
+    /// 只有实际成功生成整批蜜蜂后才检查并授予成就。
     @Override
     protected void onSuccessfulShot(ProjectileFireContext context, ShotData shot) {
         super.onSuccessfulShot(context, shot);
         awardNotTheBees(context.player());
     }
 
-    /**
-     * 与 1.21 行为保持一致：穿戴任意一件蜜蜂套装即可触发成就。
-     */
+    /// 与 1.21 行为保持一致：穿戴任意一件蜜蜂套装即可触发成就。
     private static void awardNotTheBees(ServerPlayer player) {
         if (player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.BEE_HELMET.get())
                 || player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.BEE_CHESTPLATE.get())

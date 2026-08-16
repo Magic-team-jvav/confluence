@@ -37,11 +37,9 @@ public class CoinItem extends BlockItem {
         this.upgrade = upgrade;
     }
 
-    /**
-     * 返回本体钱币对应的铜币价值；不是本体钱币时返回 {@code 0}。
-     *
-     * <p>所有钱包统计与找零都通过这里读取面额，避免不同容器各自维护一套换算公式。</p>
-     */
+    /// 返回本体钱币对应的铜币价值；不是本体钱币时返回 {@code 0}。
+    ///
+    /// <p>所有钱包统计与找零都通过这里读取面额，避免不同容器各自维护一套换算公式。</p>
     public static long valueOf(Item item) {
         if (item == ModItems.COPPER_COIN.get()) return COPPER_VALUE;
         if (item == ModItems.SILVER_COIN.get()) return SILVER_VALUE;

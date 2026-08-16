@@ -8,9 +8,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.PaladinHammerProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 
-/**
- * 以旋转重锤进行远程攻击的地牢圣骑士。
- */
+/// 以旋转重锤进行远程攻击的地牢圣骑士。
 public final class Paladin extends RangedMonster {
     public Paladin(EntityType<? extends Paladin> type, Level level) {
         super(type, level, 50, 1.1);

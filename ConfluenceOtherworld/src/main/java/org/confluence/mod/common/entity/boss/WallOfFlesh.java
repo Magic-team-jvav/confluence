@@ -43,13 +43,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
-/**
- * 血肉墙的服务端战斗主体。
- *
- * <p>本体负责整面墙的推进、阶段和参战者管理；眼睛与嘴是可命中的临时部件，
- * 各自维护射击或吐出水蛭的节奏。墙面布局由一个持久化种子生成，因此仍保留
- * 1.21 的随机墙面外观，同时保证区块重载后不会换成另一套眼、嘴和饿鬼位置。</p>
- */
+/// 血肉墙的服务端战斗主体。
+///
+/// <p>本体负责整面墙的推进、阶段和参战者管理；眼睛与嘴是可命中的临时部件，
+/// 各自维护射击或吐出水蛭的节奏。墙面布局由一个持久化种子生成，因此仍保留
+/// 1.21 的随机墙面外观，同时保证区块重载后不会换成另一套眼、嘴和饿鬼位置。</p>
 public class WallOfFlesh extends BaseBoss {
     private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO =
             SynchedEntityData.defineId(
@@ -106,9 +104,7 @@ public class WallOfFlesh extends BaseBoss {
         xpReward = 3000;
     }
 
-    /**
-     * 血肉墙的高度由竞技场和墙体布局决定，不能被重力逐 tick 下拉。
-     */
+    /// 血肉墙的高度由竞技场和墙体布局决定，不能被重力逐 tick 下拉。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -140,10 +136,8 @@ public class WallOfFlesh extends BaseBoss {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                /*
-                 * 血肉墙使用自身的固定推进时序；行为树只保留空闲节点，避免通用追击
-                 * 行为在每个 tick 覆盖墙体的轴向速度。
-                 */
+                /// 血肉墙使用自身的固定推进时序；行为树只保留空闲节点，避免通用追击
+                /// 行为在每个 tick 覆盖墙体的轴向速度。
                 return new WaitAction(100);
             }
         };
@@ -153,9 +147,7 @@ public class WallOfFlesh extends BaseBoss {
         return entityData.get(DATA_PHASE_TWO);
     }
 
-    /**
-     * 返回当前固定前进方向。血肉墙只允许沿水平四个主方向移动。
-     */
+    /// 返回当前固定前进方向。血肉墙只允许沿水平四个主方向移动。
     public Vec3 getForwardVector() {
         Direction direction = getDirection();
         return new Vec3(
@@ -179,10 +171,8 @@ public class WallOfFlesh extends BaseBoss {
         super.onAddedToWorld();
         if (!level().isClientSide) {
             if (initialPosition == Vec3.ZERO) {
-                /*
-                 * Forge 1.20 在本回调执行时已把实体加入当前区段。此时跨区块移动会使
-                 * 实体脱离 ticking 列表，因此初始后移必须等到首个正式 tick 再执行。
-                 */
+                /// Forge 1.20 在本回调执行时已把实体加入当前区段。此时跨区块移动会使
+                /// 实体脱离 ticking 列表，因此初始后移必须等到首个正式 tick 再执行。
                 needsInitialPlacement = true;
             } else {
                 ensureWallLayout();
@@ -190,11 +180,9 @@ public class WallOfFlesh extends BaseBoss {
         }
     }
 
-    /**
-     * 在实体已经进入服务端 ticking 列表后完成与 1.21 相同的高度修正和后移。
-     * 移动完成后立即把区域票据迁移到落点；不能在服务器 tick 内同步等待区块生成，
-     * 否则巨型墙面的加载会阻塞整条服务器线程。
-     */
+    /// 在实体已经进入服务端 ticking 列表后完成与 1.21 相同的高度修正和后移。
+    /// 移动完成后立即把区域票据迁移到落点；不能在服务器 tick 内同步等待区块生成，
+    /// 否则巨型墙面的加载会阻塞整条服务器线程。
     private boolean applyInitialPlacement() {
         if (!needsInitialPlacement) {
             return true;
@@ -230,9 +218,7 @@ public class WallOfFlesh extends BaseBoss {
                 serverLevel, getUUID(), getWallBounds(), serverLevel.getGameTime());
     }
 
-    /**
-     * Real wall plane, excluding the much deeper pursuit/drag volume.
-     */
+    /// Real wall plane, excluding the much deeper pursuit/drag volume.
     AABB getWallBounds() {
         boolean movingAlongX = getDirection().getAxis() == Direction.Axis.X;
         double thickness = Math.max(1.0D, getBbWidth());
@@ -242,9 +228,7 @@ public class WallOfFlesh extends BaseBoss {
                 movingAlongX ? PURSUIT_WIDTH : thickness);
     }
 
-    /**
-     * Removal is an explicit teardown; abandoned refreshes otherwise expire after 30 seconds.
-     */
+    /// Removal is an explicit teardown; abandoned refreshes otherwise expire after 30 seconds.
     @Override
     public void remove(RemovalReason reason) {
         placementChunkTicket.release();
@@ -331,9 +315,7 @@ public class WallOfFlesh extends BaseBoss {
                 || horizontal.normalize().dot(getForwardVector()) >= 0.0);
     }
 
-    /**
-     * 返回血肉墙前方的追逐区域。区域会随四向朝向旋转，但不会随玩家视角改变。
-     */
+    /// 返回血肉墙前方的追逐区域。区域会随四向朝向旋转，但不会随玩家视角改变。
     public AABB getPursuitBox() {
         Vec3 center = position()
                 .add(getForwardVector().scale(PURSUIT_DEPTH * 0.5));
@@ -344,10 +326,8 @@ public class WallOfFlesh extends BaseBoss {
         return AABB.ofSize(center, xSize, PURSUIT_HEIGHT, zSize);
     }
 
-    /**
-     * Wall-only, non-persistent region-ticket ownership. Vanilla/admin forced chunks are never
-     * read or written, and overlapping walls retain independent UUID-keyed leases.
-     */
+    /// Wall-only, non-persistent region-ticket ownership. Vanilla/admin forced chunks are never
+    /// read or written, and overlapping walls retain independent UUID-keyed leases.
     static final class WallChunkRetention {
         private static final int TICKET_DISTANCE = 2;
         private static final TicketType<UUID> TYPE = TicketType.create(
@@ -447,17 +427,13 @@ public class WallOfFlesh extends BaseBoss {
         return CHUNK_REFRESH_INTERVAL;
     }
 
-    /**
-     * 返回包含完整墙面及其前方战斗带的客户端剔除范围。
-     */
+    /// 返回包含完整墙面及其前方战斗带的客户端剔除范围。
     @Override
     public AABB getBoundingBoxForCulling() {
         return getPursuitBox();
     }
 
-    /**
-     * 巨型墙面不能使用普通八格实体的默认距离剔除。
-     */
+    /// 巨型墙面不能使用普通八格实体的默认距离剔除。
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
         return true;
@@ -476,10 +452,8 @@ public class WallOfFlesh extends BaseBoss {
                 HorrifiedEffect.bind(player, this);
                 registerCombatParticipant(player);
             }
-            /*
-             * 离开区域后仍要续期，舌头才能持续把该参战者拉回；只给区域内玩家
-             * 续期会让其等待五秒后直接摆脱整场遭遇。
-             */
+            /// 离开区域后仍要续期，舌头才能持续把该参战者拉回；只给区域内玩家
+            /// 续期会让其等待五秒后直接摆脱整场遭遇。
             if (HorrifiedEffect.isBoundTo(player, this)) {
                 player.addEffect(new MobEffectInstance(
                         ModEffects.HORRIFIED.get(), 100), this);
@@ -488,17 +462,13 @@ public class WallOfFlesh extends BaseBoss {
     }
 
     private void updateMovement() {
-        /*
-         * 1.21 通过移动速度属性逐刻增加墙体推进量，半血时只把该属性提高 45%。
-         * 不能改成按失血比例直接写入 0.42 的固定速度，否则整场追逐节奏都会改变。
-         */
+        /// 1.21 通过移动速度属性逐刻增加墙体推进量，半血时只把该属性提高 45%。
+        /// 不能改成按失血比例直接写入 0.42 的固定速度，否则整场追逐节奏都会改变。
         addDeltaMovement(getForwardVector().scale(
                 getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.125));
     }
 
-    /**
-     * 根据持久化种子建立墙面布局，并补回不参与存档的眼睛与嘴部实体。
-     */
+    /// 根据持久化种子建立墙面布局，并补回不参与存档的眼睛与嘴部实体。
     private void ensureWallLayout() {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
@@ -764,9 +734,7 @@ public class WallOfFlesh extends BaseBoss {
                 anchor -> anchor.distanceToSqr(position) < distanceSquared);
     }
 
-    /**
-     * 在同列眼睛的较大空档中补嘴，保持 1.21 的墙面攻击分布。
-     */
+    /// 在同列眼睛的较大空档中补嘴，保持 1.21 的墙面攻击分布。
     private void generateMouthsBetweenEyes(RandomSource layoutRandom) {
         Map<Integer, List<Vec3>> eyesByColumn = new HashMap<>();
         for (Vec3 eye : List.copyOf(eyeAnchors)) {
@@ -872,9 +840,7 @@ public class WallOfFlesh extends BaseBoss {
                 .add(getForwardVector().scale(offset.z));
     }
 
-    /**
-     * 把部件的世界坐标还原为墙面局部坐标，供客户端按同一布局绘制模型。
-     */
+    /// 把部件的世界坐标还原为墙面局部坐标，供客户端按同一布局绘制模型。
     public Vec3 getLocalOffset(Entity part) {
         Vec3 delta = part.position().subtract(position());
         Vec3 forward = getForwardVector();
@@ -936,9 +902,7 @@ public class WallOfFlesh extends BaseBoss {
         return false;
     }
 
-    /**
-     * 墙体背景不直接承受点击和弹幕命中，伤害由眼睛与嘴部转发。
-     */
+    /// 墙体背景不直接承受点击和弹幕命中，伤害由眼睛与嘴部转发。
     @Override
     public boolean isPickable() {
         return false;

@@ -124,12 +124,10 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
         }
     }
 
-    /**
-     * 读取当前版本唯一的海螺位置格式。
-     *
-     * <p>两个坐标必须从零开始连续出现；任一字段类型、版本或坐标损坏都会让整组状态失效，
-     * 避免损坏的第一个槽位永久占住容量，或被默认解释成世界原点。</p>
-     */
+    /// 读取当前版本唯一的海螺位置格式。
+    ///
+    /// <p>两个坐标必须从零开始连续出现；任一字段类型、版本或坐标损坏都会让整组状态失效，
+    /// 避免损坏的第一个槽位永久占住容量，或被默认解释成世界原点。</p>
     static List<BlockPos> readStoredPositions(ItemStack stack) {
         CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
         if (itemTag == null || !itemTag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) {
@@ -161,9 +159,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
         return positions;
     }
 
-    /**
-     * 写入完整快照并清除不再使用的早期扁平键；1.20 不承担旧格式迁移。
-     */
+    /// 写入完整快照并清除不再使用的早期扁平键；1.20 不承担旧格式迁移。
     static void writeStoredPositions(ItemStack stack, List<BlockPos> positions) {
         if (positions.size() > 2) {
             throw new IllegalArgumentException("Magic conch supports at most two positions");

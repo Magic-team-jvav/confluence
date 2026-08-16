@@ -7,13 +7,11 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 从中距离向目标发起一次有前摇的跃击。
- *
- * <p>节点只有在生物落地、冷却结束且目标位于有效距离内时才接管行为树；条件不满足会立即
- * 失败，使后续普通追击分支继续运行。起跳后节点持续到落地或超时，并在飞行过程中至多结算
- * 一次近战命中，避免每 tick 重复伤害。</p>
- */
+/// 从中距离向目标发起一次有前摇的跃击。
+///
+/// <p>节点只有在生物落地、冷却结束且目标位于有效距离内时才接管行为树；条件不满足会立即
+/// 失败，使后续普通追击分支继续运行。起跳后节点持续到落地或超时，并在飞行过程中至多结算
+/// 一次近战命中，避免每 tick 重复伤害。</p>
 public final class JumpAttackAction extends BTNode {
     private static final double MINIMUM_DISTANCE = 4.0;
     private static final int MAXIMUM_AIR_TICKS = 40;

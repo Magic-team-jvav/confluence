@@ -59,12 +59,10 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private boolean playerDropped = false;
     @Nullable
     private FlailComponent cachedComponent;
-    /**
-     * 客户端渲染链条时使用的平滑方向。
-     *
-     * <p>连枷阶段切换或服务端同步位置时，弹球位置可能在相邻帧内出现小幅跳变。如果链条
-     * 直接使用瞬时方向，会表现为手部端点弹动；该字段只参与客户端渲染，不保存到实体数据。</p>
-     */
+    /// 客户端渲染链条时使用的平滑方向。
+    ///
+    /// <p>连枷阶段切换或服务端同步位置时，弹球位置可能在相邻帧内出现小幅跳变。如果链条
+    /// 直接使用瞬时方向，会表现为手部端点弹动；该字段只参与客户端渲染，不保存到实体数据。</p>
     @Nullable
     public Vec3 smoothedChainDir;
     private final AnimatableInstanceCache animationCache =
@@ -187,10 +185,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         tickSpecialBehavior(player, component, getPhase());
 
         if (!level().isClientSide() && hitCooldown <= 0) {
-            /*
-             * 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
-             * 否则直接发射型链锤撞墙后仍会在同一 tick 以投出伤害命中附近实体。
-             */
+            /// 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
+            /// 否则直接发射型链锤撞墙后仍会在同一 tick 以投出伤害命中附近实体。
             doCollisionCheck(player, getPhase(), component);
         }
 
@@ -381,36 +377,28 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         }
     }
 
-    /**
-     * 返回当前连枷是否属于直接发射型。
-     *
-     * <p>普通链锤先旋转再投出；链刃、锚等直接发射型由实体子类覆盖，
-     * 其参数和行为无需再写入物品注册或额外定义表。</p>
-     */
+    /// 返回当前连枷是否属于直接发射型。
+    ///
+    /// <p>普通链锤先旋转再投出；链刃、锚等直接发射型由实体子类覆盖，
+    /// 其参数和行为无需再写入物品注册或额外定义表。</p>
     protected boolean startsLaunched() {
         return false;
     }
 
-    /**
-     * 返回链锤头部是否按泰拉瑞亚原始平面精灵绘制。
-     */
+    /// 返回链锤头部是否按泰拉瑞亚原始平面精灵绘制。
     public boolean usesSpriteHead() {
         return false;
     }
 
-    /**
-     * 返回投出阶段每 tick 额外施加的重力。
-     */
+    /// 返回投出阶段每 tick 额外施加的重力。
     protected double getThrownGravity() {
         return 0.0;
     }
 
-    /**
-     * 按指定方向同步实体朝向。
-     *
-     * <p>渲染器会根据实体朝向决定球体姿态。旋转、投出和收回阶段都维护朝向后，
-     * 连枷不会再因为服务端位置变化而出现球体横躺、正反面乱跳或链条接到模型侧面的错觉。</p>
-     */
+    /// 按指定方向同步实体朝向。
+    ///
+    /// <p>渲染器会根据实体朝向决定球体姿态。旋转、投出和收回阶段都维护朝向后，
+    /// 连枷不会再因为服务端位置变化而出现球体横躺、正反面乱跳或链条接到模型侧面的错觉。</p>
     private void faceDirection(Vec3 direction) {
         if (direction.lengthSqr() < 1.0E-7) {
             return;
@@ -423,11 +411,9 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
                 Math.atan2(-direction.y, horizontal)));
     }
 
-    /**
-     * 在共享移动、碰撞和状态转换完成后执行具体武器行为。
-     *
-     * <p>特殊链锤只需覆盖此扩展点发射附属弹幕；普通链锤保持空实现。</p>
-     */
+    /// 在共享移动、碰撞和状态转换完成后执行具体武器行为。
+    ///
+    /// <p>特殊链锤只需覆盖此扩展点发射附属弹幕；普通链锤保持空实现。</p>
     protected void tickSpecialBehavior(
             Player player,
             FlailComponent component,
@@ -435,9 +421,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     ) {
     }
 
-    /**
-     * 直接发射型链锤撞击方块时的扩展点。
-     */
+    /// 直接发射型链锤撞击方块时的扩展点。
     protected void onLaunchedBlockImpact(
             Player player,
             FlailComponent component,
@@ -445,9 +429,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     ) {
     }
 
-    /**
-     * 投出阶段首次进入收回阶段时的扩展点。
-     */
+    /// 投出阶段首次进入收回阶段时的扩展点。
     protected void onThrownToRetract(
             Player player,
             FlailComponent component

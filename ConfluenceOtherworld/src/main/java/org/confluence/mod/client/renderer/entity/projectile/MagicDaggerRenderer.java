@@ -30,9 +30,7 @@ public class MagicDaggerRenderer extends GeoNegativeVolumeRenderer<MagicDaggerPr
         }
     }
 
-    /**
-     * 在父类开始 Geo 渲染后使用本帧实体计算飞刀朝向，避免读取尚未绑定的渲染状态。
-     */
+    /// 在父类开始 Geo 渲染后使用本帧实体计算飞刀朝向，避免读取尚未绑定的渲染状态。
     @Override
     protected void adjustPose(
             PoseStack poseStack,

@@ -39,24 +39,16 @@ import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.portlib.wrapper.PortEnvironment;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * 开发环境使用的客户端实测场景命令。
- *
- * <p>测试场景不维护一份容易遗漏的手写物品或实体清单，而是在执行时读取实际注册表。这样新增
- * 生物、武器、工具、普通道具或方块后，会自动进入对应测试序列。生物和方块采用逐个切换方式，
- * 避免多个 Boss、环境生物及功能方块同时运行，互相干扰行为判断。</p>
- *
- * <p>该命令只在开发环境注册，并且仍要求二级命令权限，不会成为正式游戏内容或服务器管理接口。</p>
- */
+/// 开发环境使用的客户端实测场景命令。
+///
+/// <p>测试场景不维护一份容易遗漏的手写物品或实体清单，而是在执行时读取实际注册表。这样新增
+/// 生物、武器、工具、普通道具或方块后，会自动进入对应测试序列。生物和方块采用逐个切换方式，
+/// 避免多个 Boss、环境生物及功能方块同时运行，互相干扰行为判断。</p>
+///
+/// <p>该命令只在开发环境注册，并且仍要求二级命令权限，不会成为正式游戏内容或服务器管理接口。</p>
 public final class DeveloperTestSceneCommands {
     static final String TEST_ENTITY_TAG = "confluence_client_test_entity";
     private static final int BARREL_CAPACITY = 27;
@@ -133,10 +125,8 @@ public final class DeveloperTestSceneCommands {
                         .executes(context -> showStatus(context.getSource())));
     }
 
-    /**
-     * 在执行者附近建立互相分离的战斗区、水域、飞行区、方块区和完整物品库。
-     * 这里只搭建可重复使用的基础设施，不主动生成生物，也不会清除玩家原有建筑。
-     */
+    /// 在执行者附近建立互相分离的战斗区、水域、飞行区、方块区和完整物品库。
+    /// 这里只搭建可重复使用的基础设施，不主动生成生物，也不会清除玩家原有建筑。
     static SceneSummary buildScene(ServerLevel level, BlockPos origin) {
         BlockPos combat = origin.offset(0, 0, 20);
         BlockPos water = origin.offset(-24, 0, 0);
@@ -234,10 +224,8 @@ public final class DeveloperTestSceneCommands {
         return 1;
     }
 
-    /**
-     * 在战斗区生成一只高生命、无 AI 的原版僵尸，用于反复检查武器伤害、弹道、
-     * 暴击和命中特效。测试目标不会替代真实生物测试，只提供稳定的伤害参照物。
-     */
+    /// 在战斗区生成一只高生命、无 AI 的原版僵尸，用于反复检查武器伤害、弹道、
+    /// 暴击和命中特效。测试目标不会替代真实生物测试，只提供稳定的伤害参照物。
     private static int spawnCombatTarget(CommandSourceStack source)
             throws CommandSyntaxException {
         ServerPlayer player = source.getPlayerOrException();
@@ -291,10 +279,8 @@ public final class DeveloperTestSceneCommands {
         return id == null ? 0 : giveItem(source, id);
     }
 
-    /**
-     * 切换主手物品，让客户端真实加载每个注册物品的手持模型、第一人称变换和物品属性。
-     * 与 {@code item next} 分开，避免模型烟测把数千个物品堆进背包或散落到世界中。
-     */
+    /// 切换主手物品，让客户端真实加载每个注册物品的手持模型、第一人称变换和物品属性。
+    /// 与 {@code item next} 分开，避免模型烟测把数千个物品堆进背包或散落到世界中。
     private static int changeHeldItem(CommandSourceStack source, int direction)
             throws CommandSyntaxException {
         ServerPlayer player = source.getPlayerOrException();
@@ -392,13 +378,11 @@ public final class DeveloperTestSceneCommands {
         return entities + items + blocks;
     }
 
-    /**
-     * 强制完成目标自然区块并输出可复查的世界生成样本。
-     *
-     * <p>该命令不放置任何特征，只读取完整生成后的区块：记录指定列的地表、区块内出现的
-     * 本体生物群系、本体方块首次坐标以及有效结构起点。固定种子专用服务端可以据此把
-     * {@code locate} 的候选位置转成“实际区块已经生成”的证据。</p>
-     */
+    /// 强制完成目标自然区块并输出可复查的世界生成样本。
+    ///
+    /// <p>该命令不放置任何特征，只读取完整生成后的区块：记录指定列的地表、区块内出现的
+    /// 本体生物群系、本体方块首次坐标以及有效结构起点。固定种子专用服务端可以据此把
+    /// {@code locate} 的候选位置转成“实际区块已经生成”的证据。</p>
     private static int sampleGeneratedChunk(
             CommandSourceStack source, int blockX, int blockZ) {
         ServerLevel level = source.getLevel();
@@ -507,10 +491,8 @@ public final class DeveloperTestSceneCommands {
         return SCENE_ORIGINS.getOrDefault(player.getUUID(), player.blockPosition());
     }
 
-    /**
-     * 按生物的基本运动环境选择场地。水生生物进入水箱，飞行生物进入净空区，
-     * 其余生物进入战斗区；这样顺序遍历注册表时不会把鲨鱼生成在陆地上。
-     */
+    /// 按生物的基本运动环境选择场地。水生生物进入水箱，飞行生物进入净空区，
+    /// 其余生物进入战斗区；这样顺序遍历注册表时不会把鲨鱼生成在陆地上。
     private static Vec3 selectEntityTestPosition(
             ServerPlayer player, LivingEntity entity) {
         BlockPos origin = sceneOrigin(player);
@@ -546,9 +528,7 @@ public final class DeveloperTestSceneCommands {
         }
     }
 
-    /**
-     * 在战斗区标出 5、10、20 格射击距离，便于检查散布、射程、下坠和穿透。
-     */
+    /// 在战斗区标出 5、10、20 格射击距离，便于检查散布、射程、下坠和穿透。
     private static void buildRangeMarkers(ServerLevel level, BlockPos center) {
         int[] distances = {5, 10, 20};
         Block[] markers = {
@@ -565,9 +545,7 @@ public final class DeveloperTestSceneCommands {
         }
     }
 
-    /**
-     * 依次铺设常见挖掘材料，供镐、斧、锹、锤及特殊工具在同一地点实测。
-     */
+    /// 依次铺设常见挖掘材料，供镐、斧、锹、锤及特殊工具在同一地点实测。
     private static void buildToolLane(ServerLevel level, BlockPos start) {
         Block[] materials = {
                 Blocks.STONE,

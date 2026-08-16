@@ -33,16 +33,14 @@ import org.joml.Vector3f;
 import java.util.Comparator;
 import java.util.Objects;
 
-/**
- * 玩家近战武器剑气的统一实体核心。
- *
- * <p>数值由服务端发射事务在生成时冻结为 {@link ProjectileCombatSnapshot}；实体只负责运动、
- * 原版移动向量 swept collision、目标过滤、命中预算和表现钩子。命中阶段不再读取玩家当前武器、
- * 前缀或攻击击退属性。</p>
- *
- * <p>飞行剑气应沿用父类的原版移动向量碰撞；区域剑气可以接管扫描范围，但仍必须通过
- * {@link #doHurt(Entity)} 完成 UUID 记录、命中预算和击退结算，避免同一实体出现两套伤害规则。</p>
- */
+/// 玩家近战武器剑气的统一实体核心。
+///
+/// <p>数值由服务端发射事务在生成时冻结为 {@link ProjectileCombatSnapshot}；实体只负责运动、
+/// 原版移动向量 swept collision、目标过滤、命中预算和表现钩子。命中阶段不再读取玩家当前武器、
+/// 前缀或攻击击退属性。</p>
+///
+/// <p>飞行剑气应沿用父类的原版移动向量碰撞；区域剑气可以接管扫描范围，但仍必须通过
+/// {@link #doHurt(Entity)} 完成 UUID 记录、命中预算和击退结算，避免同一实体出现两套伤害规则。</p>
 public abstract class SwordProjectile extends AbstractHurtingProjectile
         implements ProjectileCombatSnapshotCarrier {
     private static final String MOTION_TAG = "Motion";
@@ -61,19 +59,15 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile
     protected static final EntityDataAccessor<Integer> DATA_LIFETIME =
             SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.INT);
 
-    /**
-     * 总寿命；保存时会换算为剩余寿命。
-     */
+    // 可调参数
     public int lifetime = 40;
-    /** 剩余成功命中预算；只在伤害实际生效后递减。 */
+    /// 剩余成功命中预算；只在伤害实际生效后递减。
     public int hitCount = 1;
     protected float attackDamageFactor = 1.0F;
     protected float baseAttackDamage;
     protected float knockBack;
     protected float baseKnockBack;
-    /**
-     * 原字段名保留兼容现有子类，语义是是否允许穿过方块。
-     */
+    /// 原字段名保留兼容现有子类，语义是是否允许穿过方块。
     protected boolean canPenalize;
     protected @Nullable SwordProjectileComponent projComponent;
     protected @Nullable ItemStack firedFromWeapon;
@@ -106,7 +100,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile
         entityData.define(DATA_LIFETIME, lifetime);
     }
 
-    /** 客户端只恢复渲染与运动数据，战斗判定始终留在服务端。 */
+    /// 客户端只恢复渲染与运动数据，战斗判定始终留在服务端。
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
         super.onSyncedDataUpdated(data);
@@ -128,10 +122,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile
         }
     }
 
-    /**
-     * 保留原版 {@link AbstractHurtingProjectile#tick()} 的单一 swept collision 链。
-     * 追踪在本 tick 命中后调整下一 tick 的速度，保持现有剑气运动表现。
-     */
+    /// 保留原版 {@link AbstractHurtingProjectile#tick()} 的单一 swept collision 链。
+    /// 追踪在本 tick 命中后调整下一 tick 的速度，保持现有剑气运动表现。
     @Override
     public void tick() {
         if (!level().isClientSide && combatState.discardIfInvalid(this)) {
@@ -193,16 +185,12 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile
         return combatState.canHit(targetEntity.getUUID(), allowsRepeatedHits());
     }
 
-    /**
-     * 特殊持续弹幕可以覆写为 {@code true}，并自行提供命中冷却；普通剑气永久 UUID 去重。
-     */
+    /// 特殊持续弹幕可以覆写为 {@code true}，并自行提供命中冷却；普通剑气永久 UUID 去重。
     protected boolean allowsRepeatedHits() {
         return false;
     }
 
-    /**
-     * 唯一实体命中入口，由原版移动向量碰撞调用。
-     */
+    /// 唯一实体命中入口，由原版移动向量碰撞调用。
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (!level().isClientSide) {
@@ -210,9 +198,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile
         }
     }
 
-    /**
-     * 执行一次服务端命中。只有伤害成功才应用效果、记录 UUID、击退并扣减预算。
-     */
+    /// 执行一次服务端命中。只有伤害成功才应用效果、记录 UUID、击退并扣减预算。
     protected boolean doHurt(Entity rawTarget) {
         if (!canHitEntity(rawTarget)) {
             return false;
@@ -233,9 +219,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile
         return true;
     }
 
-    /**
-     * 子类命中特效钩子；基础实现暂不附加效果。
-     */
+    /// 子类命中特效钩子；基础实现暂不附加效果。
     protected void applyHitEffect(Entity target) {
         // 基础弹幕不附带命中特效；具体弹幕应覆写此方法，并只使用已冻结的弹幕状态。
     }
@@ -464,9 +448,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile
         entityData.set(DATA_LIFETIME, lifetime);
     }
 
-    /**
-     * 由纯生成布局写入服务端视线方向；速度仍交给统一发射事务决定。
-     */
+    /// 由纯生成布局写入服务端视线方向；速度仍交给统一发射事务决定。
     public void setProjectileDirection(Vec3 launchDirection) {
         Objects.requireNonNull(launchDirection, "Projectile launch direction must not be null");
         if (launchDirection.lengthSqr() <= 1.0E-12) {

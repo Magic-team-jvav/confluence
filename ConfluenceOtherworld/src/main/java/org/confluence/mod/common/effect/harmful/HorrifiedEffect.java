@@ -9,17 +9,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.ModEffects;
-import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
 import java.util.UUID;
 
-/**
- * 标记正在参与血肉墙战斗的实体。
- *
- * <p>归属写在受影响实体自身，而不是写进全局效果单例。这样同一服务器不同维度中的
- * 血肉墙不会互相覆盖目标，多人也能各自稳定解析到施加效果的那一只 Boss。</p>
- */
+/// 标记正在参与血肉墙战斗的实体。
+///
+/// <p>归属写在受影响实体自身，而不是写进全局效果单例。这样同一服务器不同维度中的
+/// 血肉墙不会互相覆盖目标，多人也能各自稳定解析到施加效果的那一只 Boss。</p>
 public class HorrifiedEffect extends PortMobEffect {
     private static final String WALL_UUID_TAG =
             "ConfluenceWallOfFlesh";

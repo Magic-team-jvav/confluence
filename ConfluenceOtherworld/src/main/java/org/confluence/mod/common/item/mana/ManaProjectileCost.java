@@ -19,15 +19,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-/**
- * Otherworld 魔力武器共用的可回滚弹幕成本。
- *
- * <p>本类复用旧法杖的魔力前缀、高效魔法、饰品减耗、自动魔力药水和魔力修补语义，但把它们
- * 拆成可补偿的两个阶段：准备阶段只计算并锁定准确成本；提交阶段才扣魔力和药水；弹幕生成失败时精确
- * 恢复；药水负面效果、空瓶和魔力修补只在整次动作成功后发生。</p>
- *
- * <p>实例只能服务一次武器动作，不得缓存在物品单例或玩家全局状态中。</p>
- */
+/// Otherworld 魔力武器共用的可回滚弹幕成本。
+///
+/// <p>本类复用旧法杖的魔力前缀、高效魔法、饰品减耗、自动魔力药水和魔力修补语义，但把它们
+/// 拆成可补偿的两个阶段：准备阶段只计算并锁定准确成本；提交阶段才扣魔力和药水；弹幕生成失败时精确
+/// 恢复；药水负面效果、空瓶和魔力修补只在整次动作成功后发生。</p>
+///
+/// <p>实例只能服务一次武器动作，不得缓存在物品单例或玩家全局状态中。</p>
 public final class ManaProjectileCost implements ProjectileCost {
     private final float baseManaCost;
     private final Predicate<ProjectileFireContext> freeCondition;
@@ -35,9 +33,7 @@ public final class ManaProjectileCost implements ProjectileCost {
     private PreparedProjectileCost preparedCost;
     private boolean successFinished;
 
-    /**
-     * 创建一笔以当前武器前缀和玩家魔力能力为准的成本。
-     */
+    /// 创建一笔以当前武器前缀和玩家魔力能力为准的成本。
     public ManaProjectileCost(float baseManaCost, Predicate<ProjectileFireContext> freeCondition) {
         if (!Float.isFinite(baseManaCost) || baseManaCost < 0.0F) {
             throw new IllegalArgumentException("Base mana cost must be finite and non-negative");
@@ -81,11 +77,9 @@ public final class ManaProjectileCost implements ProjectileCost {
         return Optional.of(preparedCost);
     }
 
-    /**
-     * 完成只属于成功动作的副作用。
-     *
-     * <p>必须由动作的成功回调调用；若成本尚未提交、已经回滚或重复调用，则不会产生副作用。</p>
-     */
+    /// 完成只属于成功动作的副作用。
+    ///
+    /// <p>必须由动作的成功回调调用；若成本尚未提交、已经回滚或重复调用，则不会产生副作用。</p>
     public void finishSuccessfulAction() {
         if (successFinished || preparedState == null || preparedCost == null
                 || !preparedCost.isCommitted() || preparedCost.isRolledBack()) {
@@ -106,9 +100,7 @@ public final class ManaProjectileCost implements ProjectileCost {
         return resolved;
     }
 
-    /**
-     * 按旧自动喝药规则选择能够覆盖本次成本的最小魔力药水。
-     */
+    /// 按旧自动喝药规则选择能够覆盖本次成本的最小魔力药水。
     private static PotionSelection selectAutomaticPotion(
             ServerPlayer player,
             ManaStorage storage,
@@ -149,9 +141,7 @@ public final class ManaProjectileCost implements ProjectileCost {
         }
     }
 
-    /**
-     * 准备阶段冻结的请求局部状态；所有布尔标记只由服务端主线程访问。
-     */
+    /// 准备阶段冻结的请求局部状态；所有布尔标记只由服务端主线程访问。
     private static final class PreparedState {
         private final ServerPlayer player;
         private final ManaStorage storage;

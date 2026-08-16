@@ -42,12 +42,10 @@ public enum MeteoriteTracker {
     @NotNull BlockPos location = BlockPos.ZERO;
     int tickUntilLanding = 0;
 
-    /**
-     * 清除上一世界可能遗留在枚举单例中的运行状态。
-     *
-     * <p>集成服务器会在同一 JVM 内连续打开多个世界，而枚举不会随世界卸载。新世界创建、
-     * 或旧世界反序列化前都必须先回到安全默认值。</p>
-     */
+    /// 清除上一世界可能遗留在枚举单例中的运行状态。
+    ///
+    /// <p>集成服务器会在同一 JVM 内连续打开多个世界，而枚举不会随世界卸载。新世界创建、
+    /// 或旧世界反序列化前都必须先回到安全默认值。</p>
     void reset() {
         this.shouldGenerate = true;
         this.spawnAtNextNight = false;
@@ -105,7 +103,7 @@ public enum MeteoriteTracker {
         for (int i = 0; i < 4; i++) if (counts[i] < counts[min]) min = i;
         int xStep = quadrant[min][0];
         int zStep = quadrant[min][1];
-        // 先离开所有玩家的视距，再沿玩家最少的象限寻找可用地表。
+        // 获取未被加载的区块
         int x = 0, z = 0;
         List<ServerPlayer> players = new ArrayList<>(level.players());
         ChunkMap chunkMap = level.getChunkSource().chunkMap;
@@ -236,9 +234,7 @@ public enum MeteoriteTracker {
         return spawnAtNextNight;
     }
 
-    /**
-     * 更新下一夜陨石调度，并同步标记主世界 SavedData。
-     */
+    /// 更新下一夜陨石调度，并同步标记主世界 SavedData。
     public void setSpawnAtNextNight(ServerLevel level, boolean scheduled) {
         ConfluenceData data = ConfluenceData.get(level);
         if (this.spawnAtNextNight == scheduled) return;
@@ -246,16 +242,12 @@ public enum MeteoriteTracker {
         data.setDirty();
     }
 
-    /**
-     * 所有坐标检查都发生在请求区块前，损坏存档不能借此加载世界边缘或边界外区块。
-     */
+    /// 所有坐标检查都发生在请求区块前，损坏存档不能借此加载世界边缘或边界外区块。
     private static boolean isValidLandingPosition(ServerLevel level, BlockPos position) {
         return level.isInWorldBounds(position) && level.getWorldBorder().isWithinBounds(position);
     }
 
-    /**
-     * 搜索失败时恢复调度状态，避免本次失败永久阻止后续陨石事件。
-     */
+    /// 搜索失败时恢复调度状态，避免本次失败永久阻止后续陨石事件。
     private void resetLandingSearch(ServerLevel level, String warning) {
         this.shouldGenerate = true;
         this.location = BlockPos.ZERO;

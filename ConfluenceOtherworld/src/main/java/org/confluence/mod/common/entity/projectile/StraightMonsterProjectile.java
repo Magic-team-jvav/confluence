@@ -14,13 +14,11 @@ import net.minecraft.world.phys.Vec3;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
-/**
- * 敌对生物直线弹幕的公共运行时。
- *
- * <p>本类统一处理飞行、实体与方块碰撞、伤害来源、阵营过滤和寿命。
- * 具体弹幕只需要提供初始参数，并可通过 {@link #modifyVelocity(Vec3)}
- * 实现加速、减速等运动差异，避免每种远程生物重复一整套碰撞代码。</p>
- */
+/// 敌对生物直线弹幕的公共运行时。
+///
+/// <p>本类统一处理飞行、实体与方块碰撞、伤害来源、阵营过滤和寿命。
+/// 具体弹幕只需要提供初始参数，并可通过 {@link #modifyVelocity(Vec3)}
+/// 实现加速、减速等运动差异，避免每种远程生物重复一整套碰撞代码。</p>
 public abstract class StraightMonsterProjectile extends Projectile
         implements IPortProjectileExtension {
     private float damage;
@@ -33,12 +31,10 @@ public abstract class StraightMonsterProjectile extends Projectile
         setNoGravity(true);
     }
 
-    /**
-     * 在弹幕入世前保存本次攻击参数。
-     *
-     * <p>伤害取自发射瞬间的生物属性，之后即使发射者属性发生变化，
-     * 已存在的弹幕也不会被追溯修改。</p>
-     */
+    /// 在弹幕入世前保存本次攻击参数。
+    ///
+    /// <p>伤害取自发射瞬间的生物属性，之后即使发射者属性发生变化，
+    /// 已存在的弹幕也不会被追溯修改。</p>
     public final void configure(
             Mob owner,
             LivingEntity target,
@@ -58,10 +54,8 @@ public abstract class StraightMonsterProjectile extends Projectile
                 maximumLifetime);
     }
 
-    /**
-     * 使用调用方给出的出生点和瞄准向量配置带散布的直线弹幕。
-     * 该入口用于保留少数 1.21 实体并非朝目标眼睛射击的原始行为。
-     */
+    /// 使用调用方给出的出生点和瞄准向量配置带散布的直线弹幕。
+    /// 该入口用于保留少数 1.21 实体并非朝目标眼睛射击的原始行为。
     protected final void configureAimed(
             Mob owner,
             Vec3 origin,
@@ -77,13 +71,11 @@ public abstract class StraightMonsterProjectile extends Projectile
         shoot(aim.x, aim.y, aim.z, velocity, inaccuracy);
     }
 
-    /**
-     * 按明确的出生点和速度配置一次射击。
-     *
-     * <p>该入口供抛射物、延迟突进物等不直接瞄准目标的弹幕使用。
-     * 调用方仍然必须显式提供伤害快照和寿命，弹幕不会在后续 tick
-     * 重新读取发射者属性。</p>
-     */
+    /// 按明确的出生点和速度配置一次射击。
+    ///
+    /// <p>该入口供抛射物、延迟突进物等不直接瞄准目标的弹幕使用。
+    /// 调用方仍然必须显式提供伤害快照和寿命，弹幕不会在后续 tick
+    /// 重新读取发射者属性。</p>
     public final void configure(
             Mob owner,
             Vec3 origin,
@@ -129,9 +121,7 @@ public abstract class StraightMonsterProjectile extends Projectile
         updateRotation();
     }
 
-    /**
-     * 允许子类在每个 tick 修改速度；默认保持匀速。
-     */
+    /// 允许子类在每个 tick 修改速度；默认保持匀速。
     protected Vec3 modifyVelocity(Vec3 velocity) {
         return velocity;
     }
@@ -149,12 +139,10 @@ public abstract class StraightMonsterProjectile extends Projectile
         discard();
     }
 
-    /**
-     * 在服务端确认伤害结算成功后附加弹幕专属效果。
-     *
-     * <p>中毒、着火等效果应放在这里，而不是在通用行为树中判断弹幕种类。
-     * 这样免疫、无敌帧或阵营过滤阻止伤害时，也不会错误施加状态。</p>
-     */
+    /// 在服务端确认伤害结算成功后附加弹幕专属效果。
+    ///
+    /// <p>中毒、着火等效果应放在这里，而不是在通用行为树中判断弹幕种类。
+    /// 这样免疫、无敌帧或阵营过滤阻止伤害时，也不会错误施加状态。</p>
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {}
 
     @Override

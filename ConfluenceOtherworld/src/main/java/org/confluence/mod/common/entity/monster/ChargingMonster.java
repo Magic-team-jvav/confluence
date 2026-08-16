@@ -12,12 +12,10 @@ import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.*;
 
-/**
- * 巨型陆龟、独角兽、李小骨等敌怪共用的冲锋循环实现。
- *
- * <p>基类统一管理蓄力、冲刺和恢复阶段，具体生物只提供数据化参数，
- * 避免每个实体复制一套容易产生时序差异的状态机。</p>
- */
+/// 巨型陆龟、独角兽、李小骨等敌怪共用的冲锋循环实现。
+///
+/// <p>基类统一管理蓄力、冲刺和恢复阶段，具体生物只提供数据化参数，
+/// 避免每个实体复制一套容易产生时序差异的状态机。</p>
 public class ChargingMonster extends BaseWarriorMonster {
     private final double chargeSpeed;
     private final int windupTicks;

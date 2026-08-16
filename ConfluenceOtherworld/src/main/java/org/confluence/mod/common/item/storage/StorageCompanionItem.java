@@ -20,13 +20,11 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/**
- * 随身储物入口实体的召唤物品。
- *
- * <p>注册时直接传入对应实体类型。普通使用负责召唤或重新放置入口，潜行使用只取消同类入口；
- * 两种操作不会因为准星是否碰到实体而改变含义。重复召唤只替换世界中的入口实体，
- * 玩家库存始终保存在自己的存钱罐数据中。</p>
- */
+/// 随身储物入口实体的召唤物品。
+///
+/// <p>注册时直接传入对应实体类型。普通使用负责召唤或重新放置入口，潜行使用只取消同类入口；
+/// 两种操作不会因为准星是否碰到实体而改变含义。重复召唤只替换世界中的入口实体，
+/// 玩家库存始终保存在自己的存钱罐数据中。</p>
 public final class StorageCompanionItem<T extends StorageCompanionEntity> extends Item {
     private final Supplier<EntityType<T>> entityType;
 

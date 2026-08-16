@@ -13,9 +13,7 @@ import java.util.List;
 
 import static org.confluence.lib.common.component.ModRarity.BLUE;
 
-/**
- * 满蓄力命中后通过父箭冻结快照生成固定七点基础伤害的腐化剑气。
- */
+/// 满蓄力命中后通过父箭冻结快照生成固定七点基础伤害的腐化剑气。
 public class DemonBow extends BaseTerraBowItem {
     public DemonBow() {
         super(4.9F, new Properties().component(ConfluenceMagicLib.MOD_RARITY, BLUE));

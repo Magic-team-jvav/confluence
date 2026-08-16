@@ -21,8 +21,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.advancement.AchievementAwardService;
+import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -39,10 +39,8 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
     public Fairy(EntityType<? extends Fairy> type, Level level) {
         super(type, level);
-        /*
-         * 仙灵需要跨越普通方块把玩家引向宝箱。该标记只改变实体碰撞，
-         * 导航目标、脱离距离和移动节奏仍由行为树负责。
-         */
+        /// 仙灵需要跨越普通方块把玩家引向宝箱。该标记只改变实体碰撞，
+        /// 导航目标、脱离距离和移动节奏仍由行为树负责。
         this.noPhysics = true;
     }
 
@@ -56,10 +54,8 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
             @Override
             protected BTNode createTree() {
                 FairyGuideAction guide = new FairyGuideAction(Fairy.this);
-                /*
-                 * 引导玩家是妖精的最高优先级行为。实时分支可以在玩家进入十格范围的
-                 * 当个行为 tick 中打断巡游，也会在玩家死亡或离开三十格后立即恢复巡游。
-                 */
+                /// 引导玩家是妖精的最高优先级行为。实时分支可以在玩家进入十格范围的
+                /// 当个行为 tick 中打断巡游，也会在玩家死亡或离开三十格后立即恢复巡游。
                 return withPassivePanic(
                         new ConditionalSwitchNode(
                                 guide::canGuidePlayer,
@@ -70,14 +66,12 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
         };
     }
 
-    /**
-     * 实现妖精“发现玩家、建立跟随、寻找宝箱并带路”的完整状态机。
-     *
-     * <p>动作以十格为首次发现范围；玩家靠近到三格内后，妖精进入持续引导状态，
-     * 此后允许双方拉开到三十格。宝箱搜索范围与 1.21 实现一致，为妖精所在区块
-     * 周围一圈区块。若宝箱距离玩家超过十格，当前导航点会限制在玩家前方十格，
-     * 从而让妖精逐段带路，而不是直接飞走。</p>
-     */
+    /// 实现妖精“发现玩家、建立跟随、寻找宝箱并带路”的完整状态机。
+    ///
+    /// <p>动作以十格为首次发现范围；玩家靠近到三格内后，妖精进入持续引导状态，
+    /// 此后允许双方拉开到三十格。宝箱搜索范围与 1.21 实现一致，为妖精所在区块
+    /// 周围一圈区块。若宝箱距离玩家超过十格，当前导航点会限制在玩家前方十格，
+    /// 从而让妖精逐段带路，而不是直接飞走。</p>
     private static final class FairyGuideAction extends BTNode {
         private static final double ACQUIRE_RANGE = 10.0;
         private static final double ABANDON_RANGE = 30.0;
@@ -97,12 +91,10 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
             this.fairy = fairy;
         }
 
-        /**
-         * 供实时分支每 tick 判断是否需要占用移动控制。
-         *
-         * <p>首次进入时只接纳十格内玩家；一旦完成近距离接触，则沿用同一玩家，
-         * 直到玩家死亡或离开三十格，避免引导途中在多个玩家之间来回切换。</p>
-         */
+        /// 供实时分支每 tick 判断是否需要占用移动控制。
+        ///
+        /// <p>首次进入时只接纳十格内玩家；一旦完成近距离接触，则沿用同一玩家，
+        /// 直到玩家死亡或离开三十格，避免引导途中在多个玩家之间来回切换。</p>
         private boolean canGuidePlayer() {
             if (target != null) {
                 if (target.isAlive()
@@ -145,10 +137,8 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
             if (!isChestStillPresent()) {
                 guidePos = findNearestChest();
-                /*
-                 * 发现宝箱的这一 tick 只更新目标，下一 tick 再开始移动。
-                 * 这样可以保持两侧实现相同的状态切换节奏。
-                 */
+                /// 发现宝箱的这一 tick 只更新目标，下一 tick 再开始移动。
+                /// 这样可以保持两侧实现相同的状态切换节奏。
                 if (guidePos != null) {
                     return BTStatus.RUNNING;
                 }
@@ -196,10 +186,8 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
             }
         }
 
-        /**
-         * 只检查已经加载的区块，避免一只小动物在巡游时主动生成新区块。
-         * 在已加载范围内，按距离选择最近的宝箱，使多人或多宝箱场景结果稳定。
-         */
+        /// 只检查已经加载的区块，避免一只小动物在巡游时主动生成新区块。
+        /// 在已加载范围内，按距离选择最近的宝箱，使多人或多宝箱场景结果稳定。
         private BlockPos findNearestChest() {
             BlockPos origin = fairy.blockPosition();
             int centerChunkX = origin.getX() >> 4;
@@ -252,21 +240,17 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
         }
     }
 
-    /**
-     * 妖精在服务端确认首次发现玩家后结算相遇成就。
-     */
+    /// 妖精在服务端确认首次发现玩家后结算相遇成就。
     static AchievementAwardService.Result awardEncounterAchievement(
             ServerPlayer player
     ) {
         return AchievementAwardService.award(player, "hey_listen");
     }
 
-    /**
-     * 仙灵是引导实体而不是可被普通攻击清除的小动物。
-     *
-     * <p>仅放行带有“绕过无敌”标签的伤害；同时保留强制清除伤害的显式判断，
-     * 确保管理命令和世界清理流程仍能移除实体。</p>
-     */
+    /// 仙灵是引导实体而不是可被普通攻击清除的小动物。
+    ///
+    /// <p>仅放行带有“绕过无敌”标签的伤害；同时保留强制清除伤害的显式判断，
+    /// 确保管理命令和世界清理流程仍能移除实体。</p>
     @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean bypassesInvulnerability =

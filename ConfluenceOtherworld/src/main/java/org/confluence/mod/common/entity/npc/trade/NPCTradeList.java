@@ -14,19 +14,13 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.npc.GatherNPCTradeOffersEvent;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
+import java.util.*;
 
-/**
- * 保存数据包定义的 NPC 商品表。
- *
- * <p>重载时先在临时映射中完整解析全部文件，只有所有文件都合法时才一次性替换当前表。
- * 这样某个附属包的错误条目不会把已经可用的商店清空，也不会留下只更新了一半的报价表。
- * 当前版本只接受新格式，不承担旧交易数据迁移。</p>
- */
+/// 保存数据包定义的 NPC 商品表。
+///
+/// <p>重载时先在临时映射中完整解析全部文件，只有所有文件都合法时才一次性替换当前表。
+/// 这样某个附属包的错误条目不会把已经可用的商店清空，也不会留下只更新了一半的报价表。
+/// 当前版本只接受新格式，不承担旧交易数据迁移。</p>
 public final class NPCTradeList {
     private static volatile Map<EntityType<?>, List<NPCTradeOffer>> offerTable = Map.of();
 
@@ -34,9 +28,6 @@ public final class NPCTradeList {
 
     /**
      * 获取指定 NPC 当前可用的商品列表。
-     *
-     * <p>顺序固定为：数据包整表快照、附属事件修饰、NPC 特有库存选择、玩家条件过滤。
-     * 该顺序使旅商能够从附属追加的商品中抽取库存，同时保证条件只负责可用性判断。</p>
      */
     public static List<NPCTradeOffer> getAvailableOffers(ServerPlayer player, BaseNPC npc) {
         List<NPCTradeOffer> modified = applyOfferModifiers(
@@ -49,16 +40,12 @@ public final class NPCTradeList {
                 .toList();
     }
 
-    /**
-     * 返回当前已提交商品表的只读快照，供服务端诊断与契约测试使用。
-     */
+    /// 返回当前已提交商品表的只读快照，供服务端诊断与契约测试使用。
     static Map<EntityType<?>, List<NPCTradeOffer>> snapshotOfferTable() {
         return offerTable;
     }
 
-    /**
-     * 发布代码扩展事件并取得稳定快照，包级入口同时供契约测试使用。
-     */
+    /// 发布代码扩展事件并取得稳定快照，包级入口同时供契约测试使用。
     static List<NPCTradeOffer> applyOfferModifiers(
             ServerPlayer player,
             BaseNPC npc,
@@ -69,12 +56,10 @@ public final class NPCTradeList {
         return event.getOffers();
     }
 
-    /**
-     * 纯解析全部商店贡献，供重载提交和回归测试共用。
-     *
-     * <p>解析阶段不修改当前商店表，也不写日志。调用方只有在错误列表为空时才能提交结果，
-     * 从而保证损坏数据不会留下半张新表。</p>
-     */
+    /// 纯解析全部商店贡献，供重载提交和回归测试共用。
+    ///
+    /// <p>解析阶段不修改当前商店表，也不写日志。调用方只有在错误列表为空时才能提交结果，
+    /// 从而保证损坏数据不会留下半张新表。</p>
     static ParseResult parseContributions(Map<ResourceLocation, JsonElement> resources) {
         Map<EntityType<?>, List<NPCTradeOffer>> contributions = new HashMap<>();
         Map<EntityType<?>, HashSet<ResourceLocation>> offerIds = new HashMap<>();

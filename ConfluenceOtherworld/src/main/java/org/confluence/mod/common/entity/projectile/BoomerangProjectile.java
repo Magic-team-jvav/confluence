@@ -35,9 +35,7 @@ public class BoomerangProjectile extends Projectile {
             SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.FLOAT);
 
     private final Set<UUID> hitEntities = new HashSet<>();
-    /**
-     * 仅用于错开不同回旋镖的视觉摆动相位，不参与服务端运动计算。
-     */
+    /// 仅用于错开不同回旋镖的视觉摆动相位，不参与服务端运动计算。
     private final int visualRotationOffset = random.nextInt(114514);
     private float backSpeed = 1.5F;
     private int forwardTicks = 15;

@@ -1,8 +1,6 @@
 package org.confluence.mod.common.summon;
 
-/**
- * 召唤物的一项可独立切换的行为。
- */
+/// 召唤物的一项可独立切换的行为。
 public abstract class SummonGoal<T extends SummonInstance> {
     protected final T summon;
 

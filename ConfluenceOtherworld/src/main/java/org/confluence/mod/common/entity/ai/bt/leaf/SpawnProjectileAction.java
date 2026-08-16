@@ -10,12 +10,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 import java.util.function.Function;
 
-/**
- * 生成一个由具体生物配置好的实体弹幕。
- *
- * <p>本节点只负责行为树的一次性执行语义和服务端入世，不假设弹幕种类、伤害、速度或命中特效。
- * 这些参数由实体自己的工厂方法保存，避免通用 AI 层逐渐堆积鸟妖、黄蜂、恶魔等具体玩法分支。</p>
- */
+/// 生成一个由具体生物配置好的实体弹幕。
+///
+/// <p>本节点只负责行为树的一次性执行语义和服务端入世，不假设弹幕种类、伤害、速度或命中特效。
+/// 这些参数由实体自己的工厂方法保存，避免通用 AI 层逐渐堆积鸟妖、黄蜂、恶魔等具体玩法分支。</p>
 public final class SpawnProjectileAction extends BTNode {
     private final Mob shooter;
     private final Function<LivingEntity, @Nullable Projectile> projectileFactory;

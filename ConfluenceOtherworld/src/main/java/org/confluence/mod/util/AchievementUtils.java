@@ -15,9 +15,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.confluence.lib.common.LibTags;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -32,8 +33,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import net.minecraftforge.registries.ForgeRegistries;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
@@ -57,10 +56,8 @@ public final class AchievementUtils {
         AchievementAwardService.award(player, path);
     }
 
-    /**
-     * 记录玩家击败的史莱姆种类，并在覆盖当前标签中的全部类型后授予成就。
-     * 标签是需要击败哪些实体的唯一配置入口，外部模组无需修改本体代码。
-     */
+    /// 记录玩家击败的史莱姆种类，并在覆盖当前标签中的全部类型后授予成就。
+    /// 标签是需要击败哪些实体的唯一配置入口，外部模组无需修改本体代码。
     public static boolean gelatinWorldTour(
             ServerPlayer player, EntityType<?> defeatedType) {
         if (player.isSpectator()
@@ -98,7 +95,7 @@ public final class AchievementUtils {
         }
     }
 
-    // 泰拉瑞亚原成就按“跑完马拉松距离”统计；这里合并疾跑、潜行和普通步行距离，单位仍沿用原版厘米统计。
+    // todo
     public static boolean marathonMedalist(ServerPlayer player, ServerStatsCounter stats) {
         if (achievedAchievement(player, "marathon_medalist")) return true;
         int sprint = stats.getValue(Stats.CUSTOM.get(Stats.SPRINT_ONE_CM));

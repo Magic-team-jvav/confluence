@@ -13,15 +13,11 @@ import org.confluence.mod.common.entity.boss.BossWormPart;
 import org.confluence.mod.common.entity.monster.BaseWormPart;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 玩家武器弹幕共用的所有者、队伍、PvP 与快照击退规则。
- */
+/// 玩家武器弹幕共用的所有者、队伍、PvP 与快照击退规则。
 public final class ProjectileHitRules {
     private ProjectileHitRules() {}
 
-    /**
-     * 校验原始碰撞实体及其真正受击本体。原版可攻击性、同载具、队伍友伤和服务器 PvP 均在此处理。
-     */
+    /// 校验原始碰撞实体及其真正受击本体。原版可攻击性、同载具、队伍友伤和服务器 PvP 均在此处理。
     public static boolean canHit(@Nullable Entity owner, Entity rawTarget) {
         if (!LibEntityUtils.canHitEntity(rawTarget, owner)) {
             return false;
@@ -39,9 +35,7 @@ public final class ProjectileHitRules {
         return true;
     }
 
-    /**
-     * 多部件实体统一返回真正承受伤害和 UUID 去重的本体。
-     */
+    /// 多部件实体统一返回真正承受伤害和 UUID 去重的本体。
     public static Entity impactedEntity(Entity rawTarget) {
         Entity impacted = LibEntityUtils.tryFindBeImpacted(rawTarget);
         if (impacted != null && impacted != rawTarget) {
@@ -64,12 +58,10 @@ public final class ProjectileHitRules {
         return rawTarget;
     }
 
-    /**
-     * 应用已经在发射快照中解析完成的击退。
-     *
-     * <p>这里故意不再读取攻击者当前 {@code ATTACK_KNOCKBACK}，只保留受击者的击退抗性，
-     * 从而避免换武器后改变已发射弹幕或把攻击击退属性计算两次。</p>
-     */
+    /// 应用已经在发射快照中解析完成的击退。
+    ///
+    /// <p>这里故意不再读取攻击者当前 {@code ATTACK_KNOCKBACK}，只保留受击者的击退抗性，
+    /// 从而避免换武器后改变已发射弹幕或把攻击击退属性计算两次。</p>
     public static void applyResolvedKnockback(Entity projectile, Entity target, float strength, double motionY) {
         if (strength <= 0.0F && motionY <= 0.0) {
             return;

@@ -10,14 +10,12 @@ import org.confluence.mod.client.entity.model.ExplicitGeoModel;
 import org.confluence.mod.common.entity.boss.SkeletronPrimeArm;
 import software.bernie.geckolib.cache.object.GeoBone;
 
-/**
- * 从机械骷髅王共享模型中绘制单个机械臂武器分支。
- *
- * <p>四类机械臂共用一个实体类和一份模型，通过同步的 {@code armType} 只放行激光、锯刃、
- * 钳子或火炮中的对应骨骼。头部与未使用分支始终跳过。非激光武器在原始组合模型中沿 Z 轴
- * 分层摆放，渲染独立实体时需要抵消该层偏移；矩阵严格成对入栈/出栈，不能把偏移传给
- * 后续骨骼。</p>
- */
+/// 从机械骷髅王共享模型中绘制单个机械臂武器分支。
+///
+/// <p>四类机械臂共用一个实体类和一份模型，通过同步的 {@code armType} 只放行激光、锯刃、
+/// 钳子或火炮中的对应骨骼。头部与未使用分支始终跳过。非激光武器在原始组合模型中沿 Z 轴
+/// 分层摆放，渲染独立实体时需要抵消该层偏移；矩阵严格成对入栈/出栈，不能把偏移传给
+/// 后续骨骼。</p>
 public class SkeletronPrimeArmRenderer extends BossGeoRenderer<SkeletronPrimeArm> {
     private static final String[] WEAPON_BONES = {
             "prime_laser", "prime_saw", "prime_vice", "prime_cannon"

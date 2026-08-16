@@ -29,15 +29,13 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 全部宝箱怪共用的伪装与跳跃战斗状态机。
- *
- * <p>闭合、开箱、跳跃和重新闭合都是服务端权威状态，并通过实体数据同步给客户端。
- * 客户端只按同步姿态播放动画，不推测目标或落地时刻，因此多人环境下不会出现不同玩家
- * 看到不同开合状态的问题。全部宝箱怪在伪装时都不会因玩家靠近而主动索敌，只有玩家
- * 造成实际伤害后才会锁定该攻击者并开箱。木、金、冰和暗影宝箱怪使用普通跳跃节奏；
- * 四种困难宝箱怪复用同一状态机，但会按血量与攻击轮次提高连续跳跃强度。</p>
- */
+/// 全部宝箱怪共用的伪装与跳跃战斗状态机。
+///
+/// <p>闭合、开箱、跳跃和重新闭合都是服务端权威状态，并通过实体数据同步给客户端。
+/// 客户端只按同步姿态播放动画，不推测目标或落地时刻，因此多人环境下不会出现不同玩家
+/// 看到不同开合状态的问题。全部宝箱怪在伪装时都不会因玩家靠近而主动索敌，只有玩家
+/// 造成实际伤害后才会锁定该攻击者并开箱。木、金、冰和暗影宝箱怪使用普通跳跃节奏；
+/// 四种困难宝箱怪复用同一状态机，但会按血量与攻击轮次提高连续跳跃强度。</p>
 public class BaseMimic extends BaseMonster {
     private static final String IDLE_ANGLE_TAG = "MimicIdleAngle";
     private static final EntityDataAccessor<Byte> DATA_POSE = SynchedEntityData.defineId(BaseMimic.class, EntityDataSerializers.BYTE);
@@ -52,10 +50,8 @@ public class BaseMimic extends BaseMonster {
     private static final int LOST_TARGET_TICKS = 20;
     private static final int CLOSING_TICKS = 13;
     private static final int DEFENDING_TICKS = 8;
-    /**
-     * 困难宝箱怪闭合时保持弹幕原速反向飞行。PortLib 的通用反弹会将速度减半，
-     * 但泰拉的 50% 反射伤害应由伤害值承担，不能再叠加一次速度衰减。
-     */
+    /// 困难宝箱怪闭合时保持弹幕原速反向飞行。PortLib 的通用反弹会将速度减半，
+    /// 但泰拉的 50% 反射伤害应由伤害值承担，不能再叠加一次速度衰减。
     private static final PortProjectileDeflection MIMIC_REFLECTION = (projectile, entity, random) -> {
         projectile.setDeltaMovement(projectile.getDeltaMovement().scale(-1.0));
         projectile.setYRot(projectile.getYRot() + 180.0F);
@@ -94,9 +90,7 @@ public class BaseMimic extends BaseMonster {
         super.onAddedToWorld();
     }
 
-    /**
-     * 宝箱怪的移动由自身状态机控制，行为树根只负责保持调度槽位。
-     */
+    /// 宝箱怪的移动由自身状态机控制，行为树根只负责保持调度槽位。
     @Override
     protected BTRoot createBT() {
         return new BTRoot() {
@@ -107,9 +101,7 @@ public class BaseMimic extends BaseMonster {
         };
     }
 
-    /**
-     * 伪装状态下不会因玩家靠近而主动索敌，只能由玩家的实际攻击唤醒。
-     */
+    /// 伪装状态下不会因玩家靠近而主动索敌，只能由玩家的实际攻击唤醒。
     @Override
     protected boolean canTargetPlayer(LivingEntity target) {
         return false;
@@ -202,19 +194,15 @@ public class BaseMimic extends BaseMonster {
         }
     }
 
-    /**
-     * 宝箱怪没有普通怪物的主动玩家索敌目标。这里只保留受击反击目标，伪装唤醒与
-     * 后续开合仍由本类的服务端状态机处理，避免继承的最近玩家目标任务清除外部刚设置的攻击者。
-     */
+    /// 宝箱怪没有普通怪物的主动玩家索敌目标。这里只保留受击反击目标，伪装唤醒与
+    /// 后续开合仍由本类的服务端状态机处理，避免继承的最近玩家目标任务清除外部刚设置的攻击者。
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
-    /**
-     * 困难模式宝箱怪完成三次跳跃后短暂闭合。闭合期间完全停止移动并免疫伤害；
-     * 专家难度下，箭和枪弹还会由投射物自身按宝箱怪所有权反射。
-     */
+    /// 困难模式宝箱怪完成三次跳跃后短暂闭合。闭合期间完全停止移动并免疫伤害；
+    /// 专家难度下，箭和枪弹还会由投射物自身按宝箱怪所有权反射。
     protected void beginDefense() {
         navigation.stop();
         setDeltaMovement(Vec3.ZERO);
@@ -235,10 +223,8 @@ public class BaseMimic extends BaseMonster {
         MimicPose pose = getMimicPose();
         if (pose != MimicPose.CLOSED && pose != MimicPose.CLOSING) {
             targetMissingTicks++;
-            /*
-             * 脱战不能依赖落地。宝箱怪可能在跳跃时越过坡面或悬崖；若把落地作为前置条件，
-             * 它会在持续下落期间永久停留于跳跃姿态，也与 1.21 的定时闭合行为不一致。
-             */
+            /// 脱战不能依赖落地。宝箱怪可能在跳跃时越过坡面或悬崖；若把落地作为前置条件，
+            /// 它会在持续下落期间永久停留于跳跃姿态，也与 1.21 的定时闭合行为不一致。
             if (targetMissingTicks >= LOST_TARGET_TICKS) {
                 navigation.stop();
                 setHorizontalMotion(0.0, 0.0);
@@ -279,9 +265,7 @@ public class BaseMimic extends BaseMonster {
         setMimicPose(MimicPose.JUMPING);
     }
 
-    /**
-     * 困难宝箱怪每三轮使用更强的扑击；半血后普通跳跃也会加快。
-     */
+    /// 困难宝箱怪每三轮使用更强的扑击；半血后普通跳跃也会加快。
     private double jumpHorizontalPower() {
         if (!isHardmodeVariant()) return attackCycle % 3 == 2 ? 0.62 : 0.46;
         if (attackCycle % 3 == 2) return 0.95;
@@ -302,9 +286,7 @@ public class BaseMimic extends BaseMonster {
         return true;
     }
 
-    /**
-     * 困难宝箱怪仅在专家及以上难度反射可反射弹幕。
-     */
+    /// 困难宝箱怪仅在专家及以上难度反射可反射弹幕。
     protected boolean canReflectProjectiles() {
         return isHardmodeVariant() && LibUtils.isAtLeastExpert(level(), blockPosition());
     }
@@ -356,9 +338,7 @@ public class BaseMimic extends BaseMonster {
         return id < values.length ? values[id] : MimicPose.CLOSED;
     }
 
-    /**
-     * 只用于回归验证“攻击已实际进入起跳阶段”，不参与网络或存档。
-     */
+    /// 只用于回归验证“攻击已实际进入起跳阶段”，不参与网络或存档。
     boolean hasStartedJumpAttack() {
         return jumpAttackStarted;
     }

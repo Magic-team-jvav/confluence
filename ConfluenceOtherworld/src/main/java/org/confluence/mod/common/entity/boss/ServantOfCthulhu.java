@@ -26,13 +26,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 克苏鲁之眼生成的短命仆从。
- *
- * <p>仆从拥有独立实体类型以便 1.20 的所有权追踪和区块恢复，但战斗数值仍与
- * 1.21 侧临时恶魔眼一致：仅有 3 点生命。它优先继承主人的目标，主人暂时卸载时
- * 保留精确 UUID，不能误绑定到附近另一个同类 Boss。</p>
- */
+/// 克苏鲁之眼生成的短命仆从。
+///
+/// <p>仆从拥有独立实体类型以便 1.20 的所有权追踪和区块恢复，但战斗数值仍与
+/// 1.21 侧临时恶魔眼一致：仅有 3 点生命。它优先继承主人的目标，主人暂时卸载时
+/// 保留精确 UUID，不能误绑定到附近另一个同类 Boss。</p>
 public class ServantOfCthulhu extends BaseFlyingMonster {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
             SynchedEntityData.defineId(ServantOfCthulhu.class, EntityDataSerializers.OPTIONAL_UUID);

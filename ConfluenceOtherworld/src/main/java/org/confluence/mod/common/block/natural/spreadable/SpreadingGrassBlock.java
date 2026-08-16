@@ -22,12 +22,10 @@ public class SpreadingGrassBlock extends SpreadingBlock {
         } else {
             Type spreadType = getSpreadType();
             ThornBlock thorn = null;
-            /*
-             * 这里刻意不使用枚举 switch。编译器会为 switch 生成额外的 $1
-             * 映射类，开发环境热替换主类时该合成类可能没有同步进入活动模块，
-             * 随机刻随后便会因缺类崩溃。直接比较也更准确地表达只有两种草地
-             * 会尝试生成荆棘。
-             */
+            /// 这里刻意不使用枚举 switch。编译器会为 switch 生成额外的 $1
+            /// 映射类，开发环境热替换主类时该合成类可能没有同步进入活动模块，
+            /// 随机刻随后便会因缺类崩溃。直接比较也更准确地表达只有两种草地
+            /// 会尝试生成荆棘。
             if (spreadType == Type.CRIMSON) {
                 thorn = NatureBlocks.CRIMSON_THORN.get();
             } else if (spreadType == Type.CORRUPT) {

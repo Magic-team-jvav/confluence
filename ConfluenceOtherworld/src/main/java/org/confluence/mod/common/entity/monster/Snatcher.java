@@ -23,13 +23,11 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 固定在地形表面、通过藤蔓伸缩接近目标的抓人草。
- *
- * <p>实体头部可以穿过方块，但根部一经生成便不会移动。无目标时头部在根部前方缓慢摆动；
- * 发现目标后会朝目标伸长，并受最大藤蔓长度限制。根部与静止方向均同步并保存，因而客户端
- * 渲染、区块重载和服务端命中判定始终使用同一组数据。</p>
- */
+/// 固定在地形表面、通过藤蔓伸缩接近目标的抓人草。
+///
+/// <p>实体头部可以穿过方块，但根部一经生成便不会移动。无目标时头部在根部前方缓慢摆动；
+/// 发现目标后会朝目标伸长，并受最大藤蔓长度限制。根部与静止方向均同步并保存，因而客户端
+/// 渲染、区块重载和服务端命中判定始终使用同一组数据。</p>
 public class Snatcher extends BaseMonster {
     private static final String ANCHORED_TAG = "Anchored";
     private static final String ANCHOR_X_TAG = "AnchorX";
@@ -124,9 +122,7 @@ public class Snatcher extends BaseMonster {
         return false;
     }
 
-    /**
-     * 设置根部和静止伸展方向。该入口同时供生成逻辑与行为测试使用。
-     */
+    /// 设置根部和静止伸展方向。该入口同时供生成逻辑与行为测试使用。
     public void initializeAnchor(Vec3 anchor, Vec3 restDirection) {
         if (restDirection.lengthSqr() < 1.0E-8) {
             throw new IllegalArgumentException(
@@ -157,9 +153,7 @@ public class Snatcher extends BaseMonster {
                 : super.getBoundingBoxForCulling().inflate(10.0);
     }
 
-    /**
-     * 捕人草在 1.21 中使用独立的五 tick 接触检测与 0.3 格扩展范围。
-     */
+    /// 捕人草在 1.21 中使用独立的五 tick 接触检测与 0.3 格扩展范围。
     @Override
     protected boolean hasEntityContactAttack() {
         return true;

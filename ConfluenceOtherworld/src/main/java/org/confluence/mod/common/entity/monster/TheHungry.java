@@ -36,13 +36,11 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 饿鬼的公共实体实现，同时服务于血肉墙从属、肉丘嘴部从属和独立生成变体。
- *
- * <p>Boss 从属使用精确 UUID 恢复主体，并围绕生成锚点活动；没有绑定记录的实体
- * 才作为独立野怪寻找玩家。这样区块反向加载不会把暂时找不到主体的从属错误转换成
- * 永久野怪，也不需要再注册一套重复的 {@code hungry} 实体。</p>
- */
+/// 饿鬼的公共实体实现，同时服务于血肉墙从属、肉丘嘴部从属和独立生成变体。
+///
+/// <p>Boss 从属使用精确 UUID 恢复主体，并围绕生成锚点活动；没有绑定记录的实体
+/// 才作为独立野怪寻找玩家。这样区块反向加载不会把暂时找不到主体的从属错误转换成
+/// 永久野怪，也不需要再注册一套重复的 {@code hungry} 实体。</p>
 public class TheHungry extends BaseFlyingMonster {
     @Override
     protected int contactDetectionInterval() {
@@ -76,10 +74,8 @@ public class TheHungry extends BaseFlyingMonster {
 
     public TheHungry(EntityType<? extends TheHungry> type, Level level) {
         super(type, level);
-        /*
-         * 1.21 的饿鬼直接更新位置，不参与方块碰撞。这里使用原版 noPhysics
-         * 表达相同能力，避免系绳扑击被墙面或血肉墙周围地形卡住。
-         */
+        /// 1.21 的饿鬼直接更新位置，不参与方块碰撞。这里使用原版 noPhysics
+        /// 表达相同能力，避免系绳扑击被墙面或血肉墙周围地形卡住。
         noPhysics = true;
     }
 
@@ -134,12 +130,10 @@ public class TheHungry extends BaseFlyingMonster {
         };
     }
 
-    /**
-     * 饿鬼资源只有持续摆动的 {@code bait} 动画。
-     *
-     * <p>从属状态、独立野怪状态和返回锚点阶段共用同一套身体摆动，因此控制器持续播放，
-     * 不根据水平速度停顿。这样既与 1.21 行为一致，也避免悬停时模型变成静态贴图。</p>
-     */
+    /// 饿鬼资源只有持续摆动的 {@code bait} 动画。
+    ///
+    /// <p>从属状态、独立野怪状态和返回锚点阶段共用同一套身体摆动，因此控制器持续播放，
+    /// 不根据水平速度停顿。这样既与 1.21 行为一致，也避免悬停时模型变成静态贴图。</p>
     @Override
     public void registerControllers(
             AnimatableManager.ControllerRegistrar controllers) {
@@ -217,10 +211,8 @@ public class TheHungry extends BaseFlyingMonster {
         Vec3 relative = position().subtract(anchor);
         double horizontal = Math.sqrt(
                 relative.x * relative.x + relative.z * relative.z);
-        /*
-         * 沿用 1.21 的扁长活动区域：水平方向最多六十四格，
-         * 垂直方向允许两倍距离。两项之和超过一才进入强制回收。
-         */
+        /// 沿用 1.21 的扁长活动区域：水平方向最多六十四格，
+        /// 垂直方向允许两倍距离。两项之和超过一才进入强制回收。
         return horizontal / horizontalLeashDistance()
                 + Math.abs(relative.y) / verticalLeashDistance() > 1.0;
     }
@@ -253,10 +245,8 @@ public class TheHungry extends BaseFlyingMonster {
         return super.hurt(source, amount);
     }
 
-    /**
-     * 血肉墙上的饿鬼被击败后会脱离系绳，生成一个不再掉落战利品的自由饿鬼。
-     * 肉丘使用独立的槽位恢复规则，因此只对血肉墙注册的饿鬼类型执行该转换。
-     */
+    /// 血肉墙上的饿鬼被击败后会脱离系绳，生成一个不再掉落战利品的自由饿鬼。
+    /// 肉丘使用独立的槽位恢复规则，因此只对血肉墙注册的饿鬼类型执行该转换。
     @Override
     public void die(DamageSource source) {
         BaseBoss master = getMaster();

@@ -6,16 +6,14 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/**
- * 水生生物的限时随机游动节点。
- *
- * <p>{@link #start()} 只从附近可游泳的位置中选择目的地，并把路径交给实体当前的水中导航器；
- * 找不到候选点或导航器拒绝路径时，本轮直接失败，允许上层行为树尝试其他节点。路径完成后
- * 返回成功。</p>
- *
- * <p>即使导航器因为动态地形或流体变化始终无法结束，节点也会在
- * {@value #TIMEOUT_TICKS} tick 后退出，防止一次坏路径永久占用行为树。</p>
- */
+/// 水生生物的限时随机游动节点。
+///
+/// <p>{@link #start()} 只从附近可游泳的位置中选择目的地，并把路径交给实体当前的水中导航器；
+/// 找不到候选点或导航器拒绝路径时，本轮直接失败，允许上层行为树尝试其他节点。路径完成后
+/// 返回成功。</p>
+///
+/// <p>即使导航器因为动态地形或流体变化始终无法结束，节点也会在
+/// {@value #TIMEOUT_TICKS} tick 后退出，防止一次坏路径永久占用行为树。</p>
 public class RandomSwimAction extends BTNode {
     private static final int TIMEOUT_TICKS = 100;
 

@@ -85,9 +85,7 @@ public class AnglerDialogScreen extends NPCDialogScreen {
         }
     }
 
-    /**
-     * 两种渔夫共用任务界面，但人物语气使用各自的翻译前缀。
-     */
+    /// 两种渔夫共用任务界面，但人物语气使用各自的翻译前缀。
     private static String anglerDialogPrefix(BaseNPC npc) {
         return npc.getType() == NpcEntities.FEMALE_ANGLER.get()
                 ? "dialogs.confluence.female_angler"

@@ -19,12 +19,10 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 法师怪物基类：三次远程施法后向目标方向重新选取安全落点。
- *
- * <p>施法生成具有飞行时间和方块碰撞的真实弹幕。子类只需覆盖
- * {@link #projectileType()} 就能选择自己的法术类型，攻击节奏和瞬移流程不必复制。</p>
- */
+/// 法师怪物基类：三次远程施法后向目标方向重新选取安全落点。
+///
+/// <p>施法生成具有飞行时间和方块碰撞的真实弹幕。子类只需覆盖
+/// {@link #projectileType()} 就能选择自己的法术类型，攻击节奏和瞬移流程不必复制。</p>
 public abstract class BaseCasterMonster extends BaseMonster {
     private static final RawAnimation WALK =
             RawAnimation.begin().thenLoop("move.walk");
@@ -113,9 +111,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
         return accepted;
     }
 
-    /**
-     * 返回当前法师固定使用的弹幕类型。
-     */
+    /// 返回当前法师固定使用的弹幕类型。
     protected EntityType<HostileParticleProjectile> projectileType() {
         return ModEntities.DARK_CASTER_PROJECTILE.get();
     }
@@ -142,9 +138,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
         return projectile;
     }
 
-    /**
-     * 施法挥手期间播放法术动作，其余时间按实际移动状态选择行走或待机。
-     */
+    /// 施法挥手期间播放法术动作，其余时间按实际移动状态选择行走或待机。
     @Override
     public void registerControllers(
             AnimatableManager.ControllerRegistrar controllers) {
@@ -164,9 +158,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
                 }));
     }
 
-    /**
-     * 1.21 共有怪使用预施法周期；只存在于 1.20 的旧怪暂时保留当前节奏。
-     */
+    /// 1.21 共有怪使用预施法周期；只存在于 1.20 的旧怪暂时保留当前节奏。
     protected enum CycleMode {
         SHARED_1_21,
         LEGACY_1_20

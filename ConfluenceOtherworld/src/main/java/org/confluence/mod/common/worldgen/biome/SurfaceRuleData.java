@@ -9,13 +9,7 @@ import net.minecraft.world.level.levelgen.placement.CaveSurface;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-/**
- * 为 TerraBlender 构造 Confluence 的地表材料规则。
- *
- * <p>这些规则只决定已选定群系中顶层与次表层方块的替换方式，不负责决定群系出现位置；
- * 群系的噪声分布由各 {@link terrablender.api.Region} 实现提供。规则保持为方法延迟构造，
- * 避免在 Forge 注册完成前过早调用模组方块的 {@code RegistryObject#get()}。</p>
- */
+// todo terrablender
 public final class SurfaceRuleData {
     private static SurfaceRules.RuleSource state(Block block) {
         return SurfaceRules.state(block.defaultBlockState());

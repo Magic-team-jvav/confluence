@@ -6,17 +6,11 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
 
-/**
- * 黄蜂毒刺弹幕模型，与 1.21 侧的十字薄片网格保持一致。
- */
+/// 黄蜂毒刺弹幕模型，与 1.21 侧的十字薄片网格保持一致。
 public final class HornetStingerProjectileModel
         extends EntityModel<HornetStingerProjectile> {
     public static final ModelLayerLocation LAYER_LOCATION =

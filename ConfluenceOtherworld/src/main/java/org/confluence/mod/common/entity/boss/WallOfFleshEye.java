@@ -9,9 +9,7 @@ import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 血肉墙的眼睛；每只眼睛独立锁定目标并维持自己的射击节奏。
- */
+/// 血肉墙的眼睛；每只眼睛独立锁定目标并维持自己的射击节奏。
 public final class WallOfFleshEye extends WallOfFleshPart {
     private static final int FIRST_SHOT_DELAY = 10;
     private static final int NORMAL_SHOT_INTERVAL = 20;

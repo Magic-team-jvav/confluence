@@ -24,13 +24,13 @@ import org.confluence.mod.api.client.animation.HandAnimationApi;
 import org.confluence.mod.api.client.animation.HandAnimationChannel;
 import org.confluence.mod.api.client.animation.HandAnimationProfile;
 import org.confluence.mod.api.event.GunEvent;
-import org.confluence.mod.common.component.BulletPropertyComponent;
-import org.confluence.mod.common.component.GunPropertyComponent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.combat.gun.AmmoStats;
 import org.confluence.mod.common.combat.gun.Ballistics;
 import org.confluence.mod.common.combat.gun.BallisticsResolver;
 import org.confluence.mod.common.combat.gun.GunStats;
+import org.confluence.mod.common.component.BulletPropertyComponent;
+import org.confluence.mod.common.component.GunPropertyComponent;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.entity.projectile.CustomBulletEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -57,27 +57,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * 枪械的统一服务端动作实现。
- *
- * <p>物品实例只保存不可变声明，不缓存某次射击创建的实体。每次请求都会重新选择服务端弹药、
- * 发布枪械数据事件、准备可回滚成本，并创建本次射击独有的弹幕布局。属性快照、冷却、实体加入世界、
- * 动画和声音由统一发射服务按固定顺序处理。</p>
- */
+/// 枪械的统一服务端动作实现。
+///
+/// <p>物品实例只保存不可变声明，不缓存某次射击创建的实体。每次请求都会重新选择服务端弹药、
+/// 发布枪械数据事件、准备可回滚成本，并创建本次射击独有的弹幕布局。属性快照、冷却、实体加入世界、
+/// 动画和声音由统一发射服务按固定顺序处理。</p>
 public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
     private static final int USE_DURATION = 72_000;
 
-    /**
-     * 创建一枚尚未加入世界的具体子弹实体。
-     */
+    /// 创建一枚尚未加入世界的具体子弹实体。
     @FunctionalInterface
     public interface BulletEntityFactory {
         BaseBulletEntity create(ServerPlayer player, ItemStack bullet);
     }
 
-    /**
-     * 一次请求在事件处理后冻结的本体枪械数据。
-     */
+    /// 一次请求在事件处理后冻结的本体枪械数据。
     protected record ShotData(
             ItemStack ammo,
             float damage,
@@ -105,12 +99,10 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         }
     }
 
-    /**
-     * 一次枪械动作的资源成本及成功后的附加操作。
-     *
-     * <p>成本对象负责准备、提交和失败回滚；成功回调只在整批弹幕全部加入世界后运行，适合处理
-     * 魔力修补、自动魔力药水负面效果等不应在生成失败时发生的副作用。</p>
-     */
+    /// 一次枪械动作的资源成本及成功后的附加操作。
+    ///
+    /// <p>成本对象负责准备、提交和失败回滚；成功回调只在整批弹幕全部加入世界后运行，适合处理
+    /// 魔力修补、自动魔力药水负面效果等不应在生成失败时发生的副作用。</p>
     protected record ShotCost(ProjectileCost cost, Runnable successAction) {
         protected ShotCost {
             Objects.requireNonNull(cost, "Gun projectile cost must not be null");
@@ -145,9 +137,7 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 
-    /**
-     * 从当前服务端武器、弹药和事件结果声明一次完整枪械动作。
-     */
+    /// 从当前服务端武器、弹药和事件结果声明一次完整枪械动作。
     @Override
     public @Nullable ProjectileFireAction createProjectileFireAction(ProjectileFireContext context) {
         GunEvent.UseGunEvent useEvent = PortEventHandler.postEventWithReturn(
@@ -182,12 +172,10 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
                 .build();
     }
 
-    /**
-     * 在原版方块与实体交互均未消耗右键后开始枪械动作。
-     *
-     * <p>该入口由原版物品使用流程调用，因此箱子、门和工作台等交互天然优先。客户端只进入持续使用姿态；
-     * 是否存在弹药、能否扣除资源以及是否生成弹幕，全部由服务端统一发射服务重新判断。</p>
-     */
+    /// 在原版方块与实体交互均未消耗右键后开始枪械动作。
+    ///
+    /// <p>该入口由原版物品使用流程调用，因此箱子、门和工作台等交互天然优先。客户端只进入持续使用姿态；
+    /// 是否存在弹药、能否扣除资源以及是否生成弹幕，全部由服务端统一发射服务重新判断。</p>
     @Override
     public InteractionResultHolder<ItemStack> use(
             Level level,
@@ -205,12 +193,10 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         return InteractionResultHolder.consume(weapon);
     }
 
-    /**
-     * 自动枪在玩家持续按住右键时，按服务端冷却尝试后续射击。
-     *
-     * <p>标记为手动枪的物品只响应首次按下，不会因持续使用而重复发射。冷却、资源与同 tick 去重
-     * 仍由统一发射服务负责，本方法不缓存任何玩家状态。</p>
-     */
+    /// 自动枪在玩家持续按住右键时，按服务端冷却尝试后续射击。
+    ///
+    /// <p>标记为手动枪的物品只响应首次按下，不会因持续使用而重复发射。冷却、资源与同 tick 去重
+    /// 仍由统一发射服务负责，本方法不缓存任何玩家状态。</p>
     @Override
     public void onUseTick(
             Level level,
@@ -238,16 +224,12 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         return UseAnim.NONE;
     }
 
-    /**
-     * 普通枪械使用远程伤害通道；魔力枪覆写为魔法伤害通道。
-     */
+    /// 普通枪械使用远程伤害通道；魔力枪覆写为魔法伤害通道。
     protected ProjectileDamageChannel damageChannel() {
         return ProjectileDamageChannel.RANGED;
     }
 
-    /**
-     * 服务端选择本次实际弹药；空栈会由成本准备阶段明确拒绝。
-     */
+    /// 服务端选择本次实际弹药；空栈会由成本准备阶段明确拒绝。
     protected ItemStack selectAmmo(ProjectileFireContext context) {
         ItemStack ammo = ModGunUtils.getAmmo(context.player(), context.weapon());
         GunEvent.GunFireEvent event = PortEventHandler.postEventWithReturn(
@@ -258,9 +240,7 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         return Objects.requireNonNull(event.getAmmo(), "Gun fire event ammo must not be null");
     }
 
-    /**
-     * 合并枪械与弹药数据，再由现有枪械事件扩展点给出最终动作数值。
-     */
+    /// 合并枪械与弹药数据，再由现有枪械事件扩展点给出最终动作数值。
     protected ShotData resolveShotData(ProjectileFireContext context, ItemStack ammo) {
         GunPropertyComponent gun = context.weapon().get(ModDataComponentTypes.GUN_PROPERTY);
         if (gun == null) {
@@ -291,9 +271,7 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
                 event.getInaccuracy(), criticalChance);
     }
 
-    /**
-     * 普通枪械准备精确一份弹药成本；创造、无限与取消消耗返回空成本。
-     */
+    /// 普通枪械准备精确一份弹药成本；创造、无限与取消消耗返回空成本。
     protected ProjectileCost createProjectileCost(ProjectileFireContext context, ItemStack selectedAmmo) {
         if (selectedAmmo.isEmpty()) {
             return ignored -> Optional.empty();
@@ -301,12 +279,10 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         return ignored -> prepareAmmoCost(context.player(), context.weapon(), selectedAmmo);
     }
 
-    /**
-     * 创建本次请求独占的成本计划。
-     *
-     * <p>普通枪械只有弹药成本；魔力枪可覆写本方法，返回同时带有成功后副作用的请求局部计划。
-     * 该对象不得缓存到物品单例字段。</p>
-     */
+    /// 创建本次请求独占的成本计划。
+    ///
+    /// <p>普通枪械只有弹药成本；魔力枪可覆写本方法，返回同时带有成功后副作用的请求局部计划。
+    /// 该对象不得缓存到物品单例字段。</p>
     protected ShotCost createShotCost(ProjectileFireContext context, ItemStack selectedAmmo) {
         return new ShotCost(createProjectileCost(context, selectedAmmo), () -> {});
     }
@@ -352,9 +328,7 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         }));
     }
 
-    /**
-     * 创建只属于本次发射的一组子弹布局。
-     */
+    /// 创建只属于本次发射的一组子弹布局。
     protected List<ProjectileLaunch> createLaunches(
             ProjectileFireContext context,
             ProjectileCombatSnapshot snapshot,
@@ -387,9 +361,7 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         return List.copyOf(launches);
     }
 
-    /**
-     * 创建普通、重力或注册工厂指定的子弹实体。
-     */
+    /// 创建普通、重力或注册工厂指定的子弹实体。
     protected BaseBulletEntity createBulletEntity(ServerPlayer player, ItemStack bullet) {
         if (bulletEntityFactory != null) {
             return bulletEntityFactory.create(player, bullet);
@@ -399,9 +371,7 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
                 : new CustomBulletEntity(player, gravity, bullet);
     }
 
-    /**
-     * 只在整批实体成功加入世界后执行声音、动画和武器特有成功效果。
-     */
+    /// 只在整批实体成功加入世界后执行声音、动画和武器特有成功效果。
     protected void onSuccessfulShot(ProjectileFireContext context, ShotData shot) {
         SoundEvent sound = GunSounds.getSound(this);
         if (sound == null) {
@@ -414,9 +384,7 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         }
     }
 
-    /**
-     * 魔力枪没有实体弹药时使用的纯表现弹药；普通枪不会借此绕过成本。
-     */
+    /// 魔力枪没有实体弹药时使用的纯表现弹药；普通枪不会借此绕过成本。
     protected ItemStack defaultVisualAmmo() {
         return org.confluence.mod.common.init.item.GunItems.DUMMY_BULLET.toStack();
     }
@@ -526,12 +494,10 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
                 || isAnimationPlaying(instanceId, HandAnimationAction.SHOOT);
     }
 
-    /**
-     * 查询当前物品栈是否仍在播放收枪动画。
-     *
-     * <p>该方法供第一人称手持修正使用，使收枪补帧期间继续保持 1.21 TerraGuns 的遮挡行为。
-     * 动作和通道声明由公共动画档案提供，渲染层只负责查询当前播放状态。</p>
-     */
+    /// 查询当前物品栈是否仍在播放收枪动画。
+    ///
+    /// <p>该方法供第一人称手持修正使用，使收枪补帧期间继续保持 1.21 TerraGuns 的遮挡行为。
+    /// 动作和通道声明由公共动画档案提供，渲染层只负责查询当前播放状态。</p>
     public boolean isPutAwayAnimationPlaying(ItemStack stack) {
         return isAnimationPlaying(GeoItem.getId(stack), HandAnimationAction.PUT_AWAY);
     }
@@ -576,7 +542,7 @@ public class BaseGun extends Item implements GeoItem, ProjectileWeaponAction {
         return value;
     }
 
-    /** 枪械不可变声明的构建器。 */
+    /// 枪械不可变声明的构建器。
     public static class Builder {
         private final int cooldown;
         private final float damage;

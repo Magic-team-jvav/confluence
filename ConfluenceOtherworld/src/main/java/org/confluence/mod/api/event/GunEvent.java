@@ -26,11 +26,7 @@ public class GunEvent extends Event {
         return player;
     }
 
-    /**
-     * 在服务端准备一次射击动作时发布。
-     *
-     * <p>取消事件会阻止本次射击；监听器也可以调整成功射击后使用的冷却时间。</p>
-     */
+    /// 初始化开火事件
     @Cancelable
     public static class UseGunEvent extends GunEvent {
         private int cooldowns;
@@ -49,12 +45,7 @@ public class GunEvent extends Event {
         }
     }
 
-    /**
-     * 在完成默认弹药选择后发布。
-     *
-     * <p>监听器可以替换本次弹药，或通过 {@link #setFire(boolean)} 决定是否允许继续射击。
-     * 该事件本身不可取消，避免同时存在两套含义相同的控制方式。</p>
-     */
+    /// 开火事件
     public static class GunFireEvent extends GunEvent {
         private ItemStack bullet;
         private boolean fire;
@@ -82,11 +73,7 @@ public class GunEvent extends Event {
         }
     }
 
-    /**
-     * 检查一个物品栈是否可作为当前枪械的弹药时发布。
-     *
-     * <p>默认判定已经写入 {@link #isSelected()}，监听器可以补充或覆盖该结果。</p>
-     */
+    /// 初始化开火事件
     public static class AmmoSelectionEvent extends GunEvent {
         private final ItemStack ammo;
         private boolean selected;
@@ -110,12 +97,7 @@ public class GunEvent extends Event {
         }
     }
 
-    /**
-     * 在枪械扫描玩家弹药前发布，用于向默认物品栏列表补充其他弹药来源。
-     *
-     * <p>列表中的元素仍然指向真实物品栈，因此只应调整搜索顺序或增删候选项，
-     * 不应复制候选物品后再期望消耗原库存。</p>
-     */
+    /// 初始化开火事件
     public static class InventoryExtraEvent extends GunEvent {
         private final List<ItemStack> ammoList;
 
@@ -145,12 +127,7 @@ public class GunEvent extends Event {
         }
     }
 
-    /**
-     * 枪械与弹药数值合并完成后、生成弹丸前发布。
-     *
-     * <p>监听器可调整本次射击的伤害、暴击率、击退、速度、穿透与散布；修改仅作用于
-     * 当前射击，不会反写枪械物品的定义或组件。</p>
-     */
+    /// 射击时，子弹数据计算事件
     public static class AmmoDataEvent extends GunEvent {
         private float damage;
         private float critical;
@@ -224,12 +201,7 @@ public class GunEvent extends Event {
         }
     }
 
-    /**
-     * 弹丸成功生成后、提交弹药消耗前发布。
-     *
-     * <p>取消事件或将无限弹药设为 {@code true} 都会跳过消耗；监听器还可以替换实际
-     * 被消耗的物品栈并调整消耗数量。</p>
-     */
+    /// 子弹消耗事件
     @Cancelable
     public static class ShrinkBulletEvent extends GunEvent {
         private int shrink = 1;

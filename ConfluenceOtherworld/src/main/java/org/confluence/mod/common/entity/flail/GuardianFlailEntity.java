@@ -21,12 +21,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * 守卫者链锤的实体实现。
- *
- * <p>锁定目标、攻击周期和普通/远古变体都属于当前实体，物品只负责通过组件选择实体类型。
- * 目标实体 ID 使用原版同步数据传给客户端，因此不需要额外网络包或全局缓存。</p>
- */
+/// 守卫者链锤的实体实现。
+///
+/// <p>锁定目标、攻击周期和普通/远古变体都属于当前实体，物品只负责通过组件选择实体类型。
+/// 目标实体 ID 使用原版同步数据传给客户端，因此不需要额外网络包或全局缓存。</p>
 public class GuardianFlailEntity extends BaseFlailEntity {
     private static final int ATTACK_INTERVAL = 40;
     private static final EntityDataAccessor<Integer> TARGET_ONE =
@@ -191,9 +189,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
         entityData.set(ATTACK_TIME, 0);
     }
 
-    /**
-     * 返回客户端当前可以解析的光束目标。
-     */
+    /// 返回客户端当前可以解析的光束目标。
     public List<LivingEntity> getBeamTargets() {
         List<LivingEntity> targets = new ArrayList<>(3);
         addTarget(targets, entityData.get(TARGET_ONE));
@@ -216,9 +212,7 @@ public class GuardianFlailEntity extends BaseFlailEntity {
         return elder;
     }
 
-    /**
-     * 返回客户端光束由暗到亮的暖机进度。
-     */
+    /// 返回客户端光束由暗到亮的暖机进度。
     public float getAttackProgress(float partialTick) {
         return Math.min(
                 (entityData.get(ATTACK_TIME) + partialTick) / 20.0F,

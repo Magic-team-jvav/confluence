@@ -12,9 +12,7 @@ import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
-/**
- * Boss 蠕虫共用体节渲染器；毁灭者体节额外应用滚转角。
- */
+/// Boss 蠕虫共用体节渲染器；毁灭者体节额外应用滚转角。
 public final class BossWormPartRenderer extends BossGeoRenderer<BossWormPart> {
     public BossWormPartRenderer(EntityRendererProvider.Context context) {
         super(context, new WormPartGeoModel<>(

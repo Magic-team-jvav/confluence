@@ -4,12 +4,10 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summon.SummonGoal;
 import org.confluence.mod.common.summon.SummonPose;
 
-/**
- * 召唤剑的斜劈技能。
- *
- * <p>技能语义复现 1.21 侧：先接近目标，进入攻击距离后再开始十刻下劈；
- * 接近阶段不消耗实际挥砍时长，结束后按原有冷却区间重新计时。</p>
- */
+/// 召唤剑的斜劈技能。
+///
+/// <p>技能语义复现 1.21 侧：先接近目标，进入攻击距离后再开始十刻下劈；
+/// 接近阶段不消耗实际挥砍时长，结束后按原有冷却区间重新计时。</p>
 final class SwordSlashGoal extends SummonGoal<SummonSword> {
     private static final int DURATION = 10;
     private static final int BASE_COOLDOWN = 150;

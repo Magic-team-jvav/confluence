@@ -6,9 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * 枪械所使用的一组动画控制器声明。
- */
+/// 枪械所使用的一组动画控制器声明。
 public final class HandAnimationProfile {
     private final List<HandAnimationChannel> channels;
 
@@ -36,9 +34,7 @@ public final class HandAnimationProfile {
         return new Builder();
     }
 
-    /**
-     * 保留旧枪械资源所使用的单控制器动画命名。
-     */
+    /// 保留旧枪械资源所使用的单控制器动画命名。
     public static HandAnimationProfile legacy() {
         return builder()
                 .channel(HandAnimationChannel.builder("gun")
@@ -49,9 +45,7 @@ public final class HandAnimationProfile {
                 .build();
     }
 
-    /**
-     * 1.21 TerraGuns 新手枪资源使用的手部、枪体双通道配置。
-     */
+    /// 1.21 TerraGuns 新手枪资源使用的手部、枪体双通道配置。
     public static HandAnimationProfile handgun() {
         return builder()
                 .channel(HandAnimationChannel.builder("hand_pose")

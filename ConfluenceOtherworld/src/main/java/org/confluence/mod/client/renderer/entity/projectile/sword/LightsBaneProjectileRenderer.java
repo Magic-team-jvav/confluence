@@ -6,9 +6,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.EnchantedSwordProjectileModel;
 import org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile;
 
-/**
- * 魔光剑气渲染器：使用能量流纹理，并按实体寿命完成出现和消隐。
- */
+/// 魔光剑气渲染器：使用能量流纹理，并按实体寿命完成出现和消隐。
 public final class LightsBaneProjectileRenderer
         extends ForwardSwordProjectileRenderer<LightBaneProjectile> {
     public LightsBaneProjectileRenderer(EntityRendererProvider.Context context) {

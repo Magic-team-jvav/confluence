@@ -77,12 +77,10 @@ public enum HouseHandler implements IGlobalData {
         map1.remove(uuid);
     }
 
-    /**
-     * 在一个维度的所有区域中解除指定 NPC 的房屋。
-     *
-     * <p>清空房屋时已经没有可用于反推区域的房屋中心，不能再拿 {@link House#EMPTY}
-     * 的零坐标删除，否则只会清理世界原点区域并留下幽灵占用记录。</p>
-     */
+    /// 在一个维度的所有区域中解除指定 NPC 的房屋。
+    ///
+    /// <p>清空房屋时已经没有可用于反推区域的房屋中心，不能再拿 {@link House#EMPTY}
+    /// 的零坐标删除，否则只会清理世界原点区域并留下幽灵占用记录。</p>
     public void removeHouse(ResourceKey<Level> dimension, UUID uuid) {
         Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
         if (regions == null) return;

@@ -9,9 +9,7 @@ import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.projectile.flail.FlaironBubbleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 
-/**
- * 猪鲨链球实体，按当前状态发射可追踪气泡。
- */
+/// 猪鲨链球实体，按当前状态发射可追踪气泡。
 public final class FlaironFlailEntity extends BaseFlailEntity {
     private static final double CONE_HALF_ANGLE =
             Math.toRadians(30.0);

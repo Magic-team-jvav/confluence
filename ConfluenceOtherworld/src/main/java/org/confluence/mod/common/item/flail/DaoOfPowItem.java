@@ -8,9 +8,7 @@ import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.terra_curio.common.init.TCEffects;
 
-/**
- * 太极连枷：命中时有较高概率使目标短暂困惑。
- */
+/// 太极连枷：命中时有较高概率使目标短暂困惑。
 public class DaoOfPowItem extends BaseFlailItem {
     private static final int CONFUSE_TICKS = 40;
     private final float confuseChance;

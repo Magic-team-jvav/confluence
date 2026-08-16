@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
 /**
- * 夜明史莱姆。其行为与 1.21 侧普通白色史莱姆一致。
+ * 夜明史莱姆 —— 持续发光并产生残影粒子。
  */
 public class LuminousSlime extends BaseSlime {
 

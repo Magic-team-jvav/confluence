@@ -7,9 +7,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 
-/**
- * 花之力发射的直线花瓣。
- */
+/// 花之力发射的直线花瓣。
 public final class FlowerPowerPetalProjectile
         extends FlailAuxiliaryProjectile {
     public FlowerPowerPetalProjectile(

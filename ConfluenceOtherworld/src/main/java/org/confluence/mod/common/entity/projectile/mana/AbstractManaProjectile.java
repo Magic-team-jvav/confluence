@@ -25,13 +25,11 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-/**
- * Otherworld 魔法弹幕的公共运行骨架。
- *
- * <p>本类统一处理所有者存活、粒子挂接、移动辅助、寿命与碰撞计数。年龄和已完成碰撞次数
- * 会直接决定弹幕何时销毁，属于服务端玩法状态；当前 1.20 格式将它们保存在独立版本根中，
- * 不读取旧扁平字段。缺失、类型错误或越界数据会复用战斗状态的安全失效通道。</p>
- */
+/// Otherworld 魔法弹幕的公共运行骨架。
+///
+/// <p>本类统一处理所有者存活、粒子挂接、移动辅助、寿命与碰撞计数。年龄和已完成碰撞次数
+/// 会直接决定弹幕何时销毁，属于服务端玩法状态；当前 1.20 格式将它们保存在独立版本根中，
+/// 不读取旧扁平字段。缺失、类型错误或越界数据会复用战斗状态的安全失效通道。</p>
 public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     private static final String RUNTIME_TAG = "ConfluenceManaRuntime";
     private static final int RUNTIME_VERSION = 1;

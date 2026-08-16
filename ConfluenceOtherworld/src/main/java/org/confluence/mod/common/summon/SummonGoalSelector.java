@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * 为一个召唤物选择当前行为。
- *
- * <p>数值越小优先级越高。高优先级行为可以中断允许中断的当前行为；相同优先级按注册顺序执行。</p>
- */
+/// 为一个召唤物选择当前行为。
+///
+/// <p>数值越小优先级越高。高优先级行为可以中断允许中断的当前行为；相同优先级按注册顺序执行。</p>
 public final class SummonGoalSelector {
     private final List<PrioritizedGoal> availableGoals = new ArrayList<>();
     private PrioritizedGoal currentGoal;

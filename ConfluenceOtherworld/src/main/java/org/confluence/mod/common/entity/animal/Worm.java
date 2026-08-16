@@ -92,10 +92,8 @@ public class Worm extends BaseCritter implements VariantHolder<Worm.Variant> {
                 random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
     }
 
-    /**
-     * 蚯蚓的三种外观共用模型，但纹理存放在独立子目录中。
-     * 通用小动物的平铺纹理规则不适用于这里，因此直接返回当前同步变体声明的纹理。
-     */
+    /// 蚯蚓的三种外观共用模型，但纹理存放在独立子目录中。
+    /// 通用小动物的平铺纹理规则不适用于这里，因此直接返回当前同步变体声明的纹理。
     @Override
     public ResourceLocation getTexturePath() {
         return getVariant().texturePath();

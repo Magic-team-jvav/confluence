@@ -1,12 +1,12 @@
 package org.confluence.mod.common.entity.projectile.summon;
 
 import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -32,12 +32,10 @@ import org.joml.Vector3f;
 
 import java.util.UUID;
 
-/**
- * 黄蜂与小鬼共用的轻量召唤弹幕。
- *
- * <p>弹幕使用召唤物生成时冻结的伤害快照，并直接保存玩家所有者 UUID，因此鞭痕、MagicLib
- * 召唤倍率和无敌帧都只在命中链上处理一次。颜色只控制客户端可见轨迹，不参与行为判断。</p>
- */
+/// 黄蜂与小鬼共用的轻量召唤弹幕。
+///
+/// <p>弹幕使用召唤物生成时冻结的伤害快照，并直接保存玩家所有者 UUID，因此鞭痕、MagicLib
+/// 召唤倍率和无敌帧都只在命中链上处理一次。颜色只控制客户端可见轨迹，不参与行为判断。</p>
 public class SummonBoltEntity extends DamageSettableProjectile implements OwnedSummon, Immunity {
     private static final EntityDataAccessor<Integer> COLOR =
             SynchedEntityData.defineId(SummonBoltEntity.class, EntityDataSerializers.INT);
@@ -63,9 +61,7 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
         entityData.define(HIT_EFFECT, HitEffect.NONE.id);
     }
 
-    /**
-     * 由非实体召唤物运行实例生成弹幕；弹幕实体仅承担飞行、同步和碰撞。
-     */
+    /// 由非实体召唤物运行实例生成弹幕；弹幕实体仅承担飞行、同步和碰撞。
     public void configure(SummonInstance source, LivingEntity target, int color, HitEffect hitEffect,
                           float velocity, float inaccuracy) {
         this.summonOwnerId = source.getSummonOwnerId();
@@ -92,10 +88,8 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
         throw new IllegalStateException("Summon projectile owner has not been initialized");
     }
 
-    /**
-     * 尝试解析玩家所有者，但允许客户端生成包刚到达、所有者尚未进入关卡的短暂窗口。
-     * 服务端在 {@link #configure} 中已经写入 UUID，因此权威伤害路径仍会立即失败，而不是静默降级。
-     */
+    /// 尝试解析玩家所有者，但允许客户端生成包刚到达、所有者尚未进入关卡的短暂窗口。
+    /// 服务端在 {@link #configure} 中已经写入 UUID，因此权威伤害路径仍会立即失败，而不是静默降级。
     private @Nullable UUID resolveSummonOwnerId() {
         if (summonOwnerId != null) {
             return summonOwnerId;
@@ -135,9 +129,7 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
         return true;
     }
 
-    /**
-     * 读取另一召唤实体的玩家所有者时，同样容忍客户端生成顺序造成的短暂缺省。
-     */
+    /// 读取另一召唤实体的玩家所有者时，同样容忍客户端生成顺序造成的短暂缺省。
     private static @Nullable UUID resolveOwnedSummonOwner(Entity entity) {
         if (entity instanceof SummonBoltEntity bolt) {
             return bolt.resolveSummonOwnerId();
@@ -221,24 +213,20 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
         }
     }
 
-    /**
-     * 召唤弹幕只在当前战斗中短暂存在，不应随区块写入存档。
-     *
-     * <p>这与 1.21 侧基础弹幕的生命周期一致，也避免重载后把召唤物所有者误当成
-     * 玩家弹幕所有者进行恢复。</p>
-     */
+    /// 召唤弹幕只在当前战斗中短暂存在，不应随区块写入存档。
+    ///
+    /// <p>这与 1.21 侧基础弹幕的生命周期一致，也避免重载后把召唤物所有者误当成
+    /// 玩家弹幕所有者进行恢复。</p>
     @Override
     public boolean shouldBeSaved() {
         return false;
     }
 
-    /**
-     * 补充基础弹幕缺少的宽度扫掠检测。
-     *
-     * <p>召唤弹幕只有 0.2 格宽，而目标与弹丸都可能在同一 tick 内移动。原版移动向量检测
-     * 未命中时，再按弹丸实际半径扩展扫掠盒；仍然使用同一个敌我过滤器，并选择路径上最先
-     * 相交的目标，因此不会变成范围伤害或自动索敌。</p>
-     */
+    /// 补充基础弹幕缺少的宽度扫掠检测。
+    ///
+    /// <p>召唤弹幕只有 0.2 格宽，而目标与弹丸都可能在同一 tick 内移动。原版移动向量检测
+    /// 未命中时，再按弹丸实际半径扩展扫掠盒；仍然使用同一个敌我过滤器，并选择路径上最先
+    /// 相交的目标，因此不会变成范围伤害或自动索敌。</p>
     private HitResult findLivingEntityHit(Vec3 velocity) {
         Vec3 start = position();
         Vec3 end = start.add(velocity);
@@ -246,10 +234,8 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
         Vec3 nearestHit = null;
         double nearestDistance = Double.MAX_VALUE;
 
-        /*
-         * 实体刚跨分区时，Level 的空间索引可能到下一 tick 才更新。原始瞄准目标通过 UUID
-         * 直接解析，但仍必须与当前直线段相交；这里只修复索引延迟，不改变弹道方向。
-         */
+        /// 实体刚跨分区时，Level 的空间索引可能到下一 tick 才更新。原始瞄准目标通过 UUID
+        /// 直接解析，但仍必须与当前直线段相交；这里只修复索引延迟，不改变弹道方向。
         if (intendedTargetId != null
                 && level() instanceof ServerLevel serverLevel
                 && serverLevel.getEntity(intendedTargetId) instanceof LivingEntity intended
@@ -310,12 +296,10 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
         );
     }
 
-    /**
-     * 普通召唤弹幕可携带的少量固有命中特效。
-     *
-     * <p>这里只保存弹幕飞行期间必须同步的数据；哪种召唤物选择哪种效果仍在召唤物实例
-     * 自身声明。幽灵飞灵使用专用声波实体逻辑，因此不会进入这个枚举。</p>
-     */
+    /// 普通召唤弹幕可携带的少量固有命中特效。
+    ///
+    /// <p>这里只保存弹幕飞行期间必须同步的数据；哪种召唤物选择哪种效果仍在召唤物实例
+    /// 自身声明。幽灵飞灵使用专用声波实体逻辑，因此不会进入这个枚举。</p>
     @Override
     public Type confluence$getImmunityType() {return Type.LOCAL;}
 

@@ -314,7 +314,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
         output.accept(Confluence.asResource("gameplay/crate/golden_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.LIFE_CRYSTAL).setWeight(10))
-                        // 待补：海龟鞍
+                        // todo 海龟鞍
                         .add(EmptyLootItem.emptyItem().setWeight(70))
                 )
                 .withPool(LootPool.lootPool()
@@ -498,8 +498,8 @@ public record GiftSubProvider() implements LootTableSubProvider {
         );
         output.accept(Confluence.asResource("gameplay/crate/pearlwood_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        // 待补：锚
-                        // 待补：附魔日晷
+                        // todo 锚
+                        // todo 附魔日晷
                         .add(LootItem.lootTableItem(TCItems.SAILFISH_BOOTS).setWeight(250))
                         .add(LootItem.lootTableItem(TCItems.TSUNAMI_IN_A_BOTTLE).setWeight(244))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(186))
@@ -622,8 +622,8 @@ public record GiftSubProvider() implements LootTableSubProvider {
         output.accept(Confluence.asResource("gameplay/crate/titanium_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.LIFE_CRYSTAL).setWeight(10))
-                        // 待补：海龟鞍
-                        // 待补：附魔日晷
+                        // todo 海龟鞍
+                        // todo 附魔日晷
                         .add(EmptyLootItem.emptyItem().setWeight(70))
                 )
                 .withPool(LootPool.lootPool()
@@ -1622,7 +1622,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                 .withPool(LootPool.lootPool()
                                 .add(LootItem.lootTableItem(SwordItems.BREAKER_BLADE))
                                 .add(LootItem.lootTableItem(WhipItems.FIRECRACKER))
-                        // 待补：另外三个圣诞专属掉落
+                        // todo 另外三个
                 );
     }
 

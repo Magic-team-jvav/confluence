@@ -33,11 +33,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 由可独立破坏体节和可分裂链条组成的世界吞噬怪战斗实体。
- *
- * <p>体节被摧毁后，剩余链条会重新选举头尾并继续战斗；Boss 栏则由主头部统一汇总。</p>
- */
+/// 由可独立破坏体节和可分裂链条组成的世界吞噬怪战斗实体。
+///
+/// <p>体节被摧毁后，剩余链条会重新选举头尾并继续战斗；Boss 栏则由主头部统一汇总。</p>
 public class EaterOfWorlds extends BaseWormBoss {
     public static final int INITIAL_SEGMENT_COUNT = 60;
     public static final float HEAD_MAX_HEALTH = 54.0F;
@@ -115,12 +113,10 @@ public class EaterOfWorlds extends BaseWormBoss {
         return 2.8F;
     }
 
-    /**
-     * 复现 1.21 出生时的盘曲链，而不是把六十个碰撞体叠在头部中心。
-     *
-     * <p>每一节都以头部反向为基准逐渐增加偏航角；这样完整身体在有限区块内展开，
-     * 同时首刻就具备正确间距，不会产生模型堆叠和批量接触伤害。</p>
-     */
+    /// 复现 1.21 出生时的盘曲链，而不是把六十个碰撞体叠在头部中心。
+    ///
+    /// <p>每一节都以头部反向为基准逐渐增加偏航角；这样完整身体在有限区块内展开，
+    /// 同时首刻就具备正确间距，不会产生模型堆叠和批量接触伤害。</p>
     @Override
     protected Vec3 getInitialSegmentPosition(int index, Vec3 previousPosition) {
         Vec3 direction = getLookAngle().multiply(1.0, 0.0, 1.0);
@@ -153,12 +149,10 @@ public class EaterOfWorlds extends BaseWormBoss {
         return true;
     }
 
-    /**
-     * 世界吞噬怪不能使用原版地面导航。
-     *
-     * <p>它始终在三维空间中穿过方块移动，因此行为树只保留生命周期时钟，具体移动由
-     * 本类的服务端状态机统一处理。这样不会在地面路径创建失败后静止。</p>
-     */
+    /// 世界吞噬怪不能使用原版地面导航。
+    ///
+    /// <p>它始终在三维空间中穿过方块移动，因此行为树只保留生命周期时钟，具体移动由
+    /// 本类的服务端状态机统一处理。这样不会在地面路径创建失败后静止。</p>
     @Override
     protected BTRoot createBT() {
         return new BTRoot() {
@@ -227,12 +221,10 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
         head.setHealth(Mth.clamp(headHealth, 0.1F, (float) head.getMaxHealth()));
         if (getTarget() != null) head.setTarget(getTarget());
-        /*
-         * 分裂头是现有 Boss 链的一部分，必须继承 Boss 的持久生命周期。原版 Mob
-         * 会在和平难度的首次 AI 检查中丢弃未标记为持久的怪物；这会让刚完成分裂、
-         * 尚未来得及进入第一个实体 tick 的新头直接消失。遭遇退出仍由 BaseBoss 的
-         * 脱战计时统一控制，因此这里不会让已经无人参与的战斗永久滞留。
-         */
+        /// 分裂头是现有 Boss 链的一部分，必须继承 Boss 的持久生命周期。原版 Mob
+        /// 会在和平难度的首次 AI 检查中丢弃未标记为持久的怪物；这会让刚完成分裂、
+        /// 尚未来得及进入第一个实体 tick 的新头直接消失。遭遇退出仍由 BaseBoss 的
+        /// 脱战计时统一控制，因此这里不会让已经无人参与的战斗永久滞留。
         head.setPersistenceRequired();
         if (!serverLevel.addFreshEntity(head)) {
             head.discard();

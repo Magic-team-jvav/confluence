@@ -274,11 +274,9 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         private BlockPos headPos = BlockPos.ZERO;
         private List<Component> lore = null;
         private GroupItem.BelongsTo belongsToGroup = null;
-        /**
-         * Vanilla 区块恢复会先构造方块实体并调用 load，随后才把它安装进 LevelChunk。
-         * 壁画数据的 Component/物品组件 codec 需要动态注册表，因此 level 尚为空时先保存原始标签，
-         * 等 onLoad 获得 registryAccess 后再一次性解码。
-         */
+        /// Vanilla 区块恢复会先构造方块实体并调用 load，随后才把它安装进 LevelChunk。
+        /// 壁画数据的 Component/物品组件 codec 需要动态注册表，因此 level 尚为空时先保存原始标签，
+        /// 等 onLoad 获得 registryAccess 后再一次性解码。
         private CompoundTag pendingLoadTag;
 
         public BEntity(BlockPos pos, BlockState blockState) {

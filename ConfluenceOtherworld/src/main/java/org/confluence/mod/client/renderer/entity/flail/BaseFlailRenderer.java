@@ -27,13 +27,11 @@ import org.joml.Quaternionf;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-/**
- * 连枷实体渲染器。
- *
- * <p>普通连枷头优先使用 1.21 同步过来的具体 Geo 模型；没有具体模型的直接发射型连枷
- * 仍使用平面精灵回退。链条保持 1.20 新架构里的分段渲染和方向平滑，只修正外观资源缺失，
- * 不改变连枷实体状态机、伤害频率和飞行行为。</p>
- */
+/// 连枷实体渲染器。
+///
+/// <p>普通连枷头优先使用 1.21 同步过来的具体 Geo 模型；没有具体模型的直接发射型连枷
+/// 仍使用平面精灵回退。链条保持 1.20 新架构里的分段渲染和方向平滑，只修正外观资源缺失，
+/// 不改变连枷实体状态机、伤害频率和飞行行为。</p>
 public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
     private static final ResourceLocation DEFAULT_BALL_MODEL =
             Confluence.asResource("geo/entity/flail/flail.geo.json");
@@ -325,9 +323,7 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
         }
     }
 
-    /**
-     * 渲染一段 X 形交叉平面链条。
-     */
+    /// 渲染一段 X 形交叉平面链条。
     private static void renderChainSegment(
             PoseStack poseStack,
             MultiBufferSource buffer,

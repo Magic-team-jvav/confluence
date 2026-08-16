@@ -15,12 +15,10 @@ import java.util.function.Consumer;
 
 import static terrablender.api.ParameterUtils.*;
 
-/**
- * 灰烬森林的下界噪声区域。
- *
- * <p>区域覆盖中性至炎热、干燥至湿润的内陆参数，主要落在第 3 和第 5 档侵蚀度。
- * 它与灰烬荒原的侵蚀度、怪异度取值不同，以保证两种灰烬地形能在下界稳定分布。</p>
- */
+/// 灰烬森林的下界噪声区域。
+///
+/// <p>区域覆盖中性至炎热、干燥至湿润的内陆参数，主要落在第 3 和第 5 档侵蚀度。
+/// 它与灰烬荒原的侵蚀度、怪异度取值不同，以保证两种灰烬地形能在下界稳定分布。</p>
 public final class AshForestRegion extends Region {
     public AshForestRegion(ResourceLocation name, int weight) {
         super(name, RegionType.NETHER, weight);

@@ -10,20 +10,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.entity.projectile.summon.SummonBoltEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.summon.FlyingSummon;
-import org.confluence.mod.common.summon.SummonAnimation;
-import org.confluence.mod.common.summon.SummonGoal;
-import org.confluence.mod.common.summon.SummonPose;
-import org.confluence.mod.common.summon.SummonVisualState;
+import org.confluence.mod.common.summon.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 
-/**
- * 黄蜂召唤物的运行实例。
- *
- * <p>这里保留 1.21 侧的悬停、瞄准、短间隔毒刺射击和蜂巢背包攻速加成。
- * 新架构只负责取消真实实体依赖，不能改变玩家能观察到的战斗节奏。</p>
- */
+/// 黄蜂召唤物的运行实例。
+///
+/// <p>这里保留 1.21 侧的悬停、瞄准、短间隔毒刺射击和蜂巢背包攻速加成。
+/// 新架构只负责取消真实实体依赖，不能改变玩家能观察到的战斗节奏。</p>
 public final class HornetSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 8.0F;
@@ -83,11 +77,9 @@ public final class HornetSummon extends FlyingSummon {
         return TCUtils.hasType(owner(), TCItems.HIVE$PACK) ? HIVE_PACK_ATTACK_COOLDOWN : ATTACK_COOLDOWN;
     }
 
-    /**
-     * 在当前视线前方寻找新的悬停点，对应 1.21 侧 {@code HoverRandomPos} 的可观察行为。
-     *
-     * <p>新架构没有用于导航的世界实体，因此直接检查候选位置的方块碰撞。</p>
-     */
+    /// 在当前视线前方寻找新的悬停点，对应 1.21 侧 {@code HoverRandomPos} 的可观察行为。
+    ///
+    /// <p>新架构没有用于导航的世界实体，因此直接检查候选位置的方块碰撞。</p>
     private Vec3 findHoverDestination() {
         double facing = Math.toRadians(currentPose().yaw());
         Vec3 fallback = position().add(Vec3.directionFromRotation(0.0F, currentPose().yaw()).scale(4.0));

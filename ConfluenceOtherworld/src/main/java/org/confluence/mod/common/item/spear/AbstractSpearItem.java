@@ -39,9 +39,9 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.component.SpearProjectileComponent;
 import org.confluence.mod.common.entity.projectile.spear.SpearProjectile;
+import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
@@ -73,9 +73,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     public static final String LAST_ATTACK_TIME_KEY = "confluence:last_attack_time";
-    /**
-     * 当前格式动作版本；1.20.1 不读取或迁移任何旧命中集合。
-     */
+    /// 当前格式动作版本；1.20.1 不读取或迁移任何旧命中集合。
     public static final String SPEAR_ACTION_VERSION_KEY = "confluence:spear_action_version";
     public static final String SPEAR_ACTION_HITS_KEY = "confluence:spear_action_hits";
     private static final int SPEAR_ACTION_VERSION = 1;
@@ -164,10 +162,8 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
                 Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
-                /*
-                 * 粗筛必须覆盖后续精确射线允许的 0.3 格命中容差，否则目标只要
-                 * 略微高于或低于零厚度射线，就会在执行扩张碰撞箱裁剪前被遗漏。
-                 */
+                /// 粗筛必须覆盖后续精确射线允许的 0.3 格命中容差，否则目标只要
+                /// 略微高于或低于零厚度射线，就会在执行扩张碰撞箱裁剪前被遗漏。
                 AABB searchBox = new AABB(startVec, endVec).inflate(0.3);
 
                 level.getEntities(owner, searchBox, target -> canHitEntity(target, owner)).stream()
@@ -187,9 +183,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
         }
     }
 
-    /**
-     * 读取当前挥击的命中集合；版本缺失或不符时直接创建全新当前格式。
-     */
+    /// 读取当前挥击的命中集合；版本缺失或不符时直接创建全新当前格式。
     private static IntSet readActionHits(CompoundTag tag) {
         if (tag.getInt(SPEAR_ACTION_VERSION_KEY) != SPEAR_ACTION_VERSION) {
             tag.putInt(SPEAR_ACTION_VERSION_KEY, SPEAR_ACTION_VERSION);
@@ -198,9 +192,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
         return new IntArraySet(tag.getIntArray(SPEAR_ACTION_HITS_KEY));
     }
 
-    /**
-     * 把短生命周期命中集合写回当前武器栈，彻底隔离不同玩家和不同长矛。
-     */
+    /// 把短生命周期命中集合写回当前武器栈，彻底隔离不同玩家和不同长矛。
     private static void writeActionHits(ItemStack stack, IntSet hits) {
         LibUtils.updateItemStackNbt(stack, tag -> {
             tag.putInt(SPEAR_ACTION_VERSION_KEY, SPEAR_ACTION_VERSION);
@@ -222,12 +214,10 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
 
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
 
-    /**
-     * 通过统一 MELEE 事务生成一枚长矛衍生弹幕。
-     *
-     * <p>伤害在动作创建时冻结为当前攻击伤害乘组件系数；组件只配置运动、寿命、穿透和特效。
-     * 零速孢子使用零 launch 倍率静止生成，仍携带完整战斗快照。</p>
-     */
+    /// 通过统一 MELEE 事务生成一枚长矛衍生弹幕。
+    ///
+    /// <p>伤害在动作创建时冻结为当前攻击伤害乘组件系数；组件只配置运动、寿命、穿透和特效。
+    /// 零速孢子使用零 launch 倍率静止生成，仍携带完整战斗快照。</p>
     protected final <P extends SpearProjectile> ProjectileFireResult fireDerivedProjectile(
             ItemStack weapon,
             ServerLevel level,
@@ -275,9 +265,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
                 action);
     }
 
-    /**
-     * 无额外实体配置时使用的简化重载。
-     */
+    /// 无额外实体配置时使用的简化重载。
     protected final <P extends SpearProjectile> ProjectileFireResult fireDerivedProjectile(
             ItemStack weapon,
             ServerLevel level,
@@ -337,11 +325,9 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                /*
-                 * 部分矛目前只有普通 item model，没有 geo/item/spear/<id>.geo.json。
-                 * 这种情况下不能强行返回 GeoItemRenderer，否则第一/第三人称会因为模型资源缺失
-                 * 直接空手；资源补齐后这里会自动启用 Geo 渲染。
-                 */
+                /// 部分矛目前只有普通 item model，没有 geo/item/spear/<id>.geo.json。
+                /// 这种情况下不能强行返回 GeoItemRenderer，否则第一/第三人称会因为模型资源缺失
+                /// 直接空手；资源补齐后这里会自动启用 Geo 渲染。
                 if (hasGeoModel == null) {
                     hasGeoModel = Minecraft.getInstance()
                             .getResourceManager()
@@ -364,10 +350,8 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
                     InteractionHand hand,
                     ItemStack stack
             ) {
-                /*
-                 * Forge 1.20.1 的 GeoItemRenderer 与手臂姿态共用同一个客户端扩展。
-                 * 必须在这里同时提供两者，后续再注册一个仅含姿态的扩展会覆盖 Geo 渲染器。
-                 */
+                /// Forge 1.20.1 的 GeoItemRenderer 与手臂姿态共用同一个客户端扩展。
+                /// 必须在这里同时提供两者，后续再注册一个仅含姿态的扩展会覆盖 Geo 渲染器。
                 return ModArmPoses.SPEAR;
             }
         });

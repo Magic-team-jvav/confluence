@@ -139,9 +139,7 @@ public abstract class AbstractArrowMixin implements IAbstractArrow, ProjectileCo
         }
     }
 
-    /**
-     * 损坏的当前格式快照必须在任何移动或伤害逻辑前失效关闭。
-     */
+    /// 损坏的当前格式快照必须在任何移动或伤害逻辑前失效关闭。
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void discardInvalidSnapshot(CallbackInfo ci) {
         if (confluence$invalidCombatSnapshot && !confluence$self().level().isClientSide) {

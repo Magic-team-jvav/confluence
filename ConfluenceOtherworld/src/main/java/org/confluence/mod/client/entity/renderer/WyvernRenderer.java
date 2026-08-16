@@ -11,9 +11,7 @@ import org.confluence.mod.common.entity.monster.BaseWormMonster;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
-/**
- * 飞龙头部渲染器。飞龙模型同时保存了头部和三种体节，因此渲染头部时必须隐藏所有体节分组。
- */
+/// 飞龙头部渲染器。飞龙模型同时保存了头部和三种体节，因此渲染头部时必须隐藏所有体节分组。
 public final class WyvernRenderer<T extends BaseWormMonster>
         extends GeoNormalRenderer<T> {
     public WyvernRenderer(EntityRendererProvider.Context context, float scale) {

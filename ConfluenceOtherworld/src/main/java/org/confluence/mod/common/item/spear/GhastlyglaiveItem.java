@@ -39,12 +39,10 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
         LibEntityUtils.knockBackA2B(owner, victim, 0.31, 0.2);
     }
 
-    /**
-     * 使用当前挥击已经传入的武器栈生成恶魂弹幕。
-     *
-     * <p>这里不能在命中后重新读取玩家主手，否则玩家切换物品或未来扩展副手攻击时，派生弹幕
-     * 可能冻结错误武器。基础实现仍负责伤害、击退回调和附魔后处理。</p>
-     */
+    /// 使用当前挥击已经传入的武器栈生成恶魂弹幕。
+    ///
+    /// <p>这里不能在命中后重新读取玩家主手，否则玩家切换物品或未来扩展副手攻击时，派生弹幕
+    /// 可能冻结错误武器。基础实现仍负责伤害、击退回调和附魔后处理。</p>
     @Override
     protected void onHitEntity(
             ItemStack stack,
@@ -94,9 +92,7 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
                 new Vec3(spawnX, spawnY, spawnZ), dir, component, nearestEnemy);
     }
 
-    /**
-     * 在世界提交前锁定目标，再由统一事务安装 MELEE 快照并生成实体。
-     */
+    /// 在世界提交前锁定目标，再由统一事务安装 MELEE 快照并生成实体。
     private GhastlyProjectile spawnProjectile(
             ItemStack weapon,
             ServerLevel level,

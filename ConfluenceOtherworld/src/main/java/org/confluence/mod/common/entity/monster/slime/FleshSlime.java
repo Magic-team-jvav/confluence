@@ -26,9 +26,7 @@ public class FleshSlime extends BaseSlime {
         return true;
     }
 
-    /**
-     * 1.21 侧除关闭摔落结算外，还直接屏蔽所有带摔落标签的伤害来源。
-     */
+    /// 1.21 侧除关闭摔落结算外，还直接屏蔽所有带摔落标签的伤害来源。
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return source.is(DamageTypeTags.IS_FIRE)
@@ -36,9 +34,7 @@ public class FleshSlime extends BaseSlime {
                 || super.isInvulnerableTo(source);
     }
 
-    /**
-     * 按血肉山当前阶段配置召唤体型。
-     */
+    /// 按血肉山当前阶段配置召唤体型。
     public void configureSummonedSize(int size) {
         setSlimeSize(size);
         setHealth(getMaxHealth());

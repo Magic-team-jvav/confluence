@@ -9,9 +9,7 @@ import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.projectile.flail.DripplerCripplerProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 
-/**
- * 滴滴怪致残者链锤实体。
- */
+/// 滴滴怪致残者链锤实体。
 public final class DripplerCripplerFlailEntity extends BaseFlailEntity {
     public DripplerCripplerFlailEntity(
             EntityType<? extends DripplerCripplerFlailEntity> type,

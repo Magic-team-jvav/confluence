@@ -13,12 +13,10 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.BeeProjectileModel;
 import org.confluence.terra_curio.common.entity.BeeProjectile;
 
-/**
- * 蜜蜂类弹幕的通用渲染器。
- *
- * <p>渲染角度按 1.21 侧的实体旋转插值处理，不额外改用看向相机的公告板渲染。这样蜜蜂会沿实体
- * 自身同步到客户端的朝向飞行，而不会全部正面朝向玩家。</p>
- */
+/// 蜜蜂类弹幕的通用渲染器。
+///
+/// <p>渲染角度按 1.21 侧的实体旋转插值处理，不额外改用看向相机的公告板渲染。这样蜜蜂会沿实体
+/// 自身同步到客户端的朝向飞行，而不会全部正面朝向玩家。</p>
 public final class BeeProjectileRenderer<T extends Entity> extends EntityRenderer<T> {
     private static final ResourceLocation TEXTURE =
             Confluence.asResource("textures/entity/bee_projectile.png");

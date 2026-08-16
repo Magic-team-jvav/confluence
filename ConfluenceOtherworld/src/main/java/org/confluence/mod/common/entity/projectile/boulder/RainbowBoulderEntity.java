@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-// 彩虹巨石负责在玩家、敌对生物和稀有方块之间切换目标；渲染层再根据轨迹绘制彩虹残影。
+// TODO 彩虹
 public class RainbowBoulderEntity extends BoulderEntity {
     private Player protectedPlayer = null;
     private Object target = null;

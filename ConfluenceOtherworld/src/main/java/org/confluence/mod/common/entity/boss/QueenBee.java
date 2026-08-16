@@ -31,17 +31,15 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 蜂王 Boss。
- *
- * <p>战斗流程由服务端状态机统一推进：初次出现、短暂悬停、召唤黄蜂、连续发射毒刺，
- * 随后完成四轮“调整位置—蓄力—水平冲刺”。冲刺方向只在蓄力结束时计算一次，
- * 因而不会在冲刺途中自动追踪或突然转向。客户端只读取同步状态播放动画，不参与攻击判定。</p>
- *
- * <p>蜂王最多保有十只直属小黄蜂。上限依据明确的所有权关系统计，不会误计附近其他蜂王的
- * 随从；重复召唤和难度提高只能更快补足空位，不能突破上限。蜂王离开丛林后进入愤怒状态，
- * 专家及以上难度的冲刺速度和毒素强度随之提高。</p>
- */
+/// 蜂王 Boss。
+///
+/// <p>战斗流程由服务端状态机统一推进：初次出现、短暂悬停、召唤黄蜂、连续发射毒刺，
+/// 随后完成四轮“调整位置—蓄力—水平冲刺”。冲刺方向只在蓄力结束时计算一次，
+/// 因而不会在冲刺途中自动追踪或突然转向。客户端只读取同步状态播放动画，不参与攻击判定。</p>
+///
+/// <p>蜂王最多保有十只直属小黄蜂。上限依据明确的所有权关系统计，不会误计附近其他蜂王的
+/// 随从；重复召唤和难度提高只能更快补足空位，不能突破上限。蜂王离开丛林后进入愤怒状态，
+/// 专家及以上难度的冲刺速度和毒素强度随之提高。</p>
 public class QueenBee extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE =
             SynchedEntityData.defineId(QueenBee.class, EntityDataSerializers.INT);
@@ -114,9 +112,7 @@ public class QueenBee extends BaseBoss {
         return BossEvent.BossBarColor.YELLOW;
     }
 
-    /**
-     * 蜂王的悬停与水平冲刺均由战斗状态机控制。
-     */
+    // === BT ===
     @Override
     public boolean isNoGravity() {
         return true;
@@ -124,10 +120,8 @@ public class QueenBee extends BaseBoss {
 
     @Override
     protected BTRoot createBT() {
-        /*
-         * 具体战斗行为完全由本类状态机管理。永久等待节点只用于满足 BaseMonster
-         * 的行为树契约，避免通用移动动作与锁定方向的冲刺相互覆盖。
-         */
+        /// 具体战斗行为完全由本类状态机管理。永久等待节点只用于满足 BaseMonster
+        /// 的行为树契约，避免通用移动动作与锁定方向的冲刺相互覆盖。
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
@@ -275,10 +269,8 @@ public class QueenBee extends BaseBoss {
         }
     }
 
-    /**
-     * 复现 1.21 蜂王的悬挂移动：加速度与实际偏移成正比，而不是先归一化成固定推力。
-     * 这样远处会快速回位，贴近目标后会自然减速，召蜂与冲刺准备阶段的速度也能分别保留。
-     */
+    /// 复现 1.21 蜂王的悬挂移动：加速度与实际偏移成正比，而不是先归一化成固定推力。
+    /// 这样远处会快速回位，贴近目标后会自然减速，召蜂与冲刺准备阶段的速度也能分别保留。
     private void hangOnTarget(
             LivingEntity target,
             double horizontalDistance,
@@ -300,9 +292,7 @@ public class QueenBee extends BaseBoss {
         getLookControl().setLookAt(target, 30.0F, 30.0F);
     }
 
-    /**
-     * 根据目标当前速度预判十刻后的位置，并丢弃垂直分量，保证整段冲刺保持水平。
-     */
+    /// 根据目标当前速度预判十刻后的位置，并丢弃垂直分量，保证整段冲刺保持水平。
     private Vec3 createHorizontalDashDirection(LivingEntity target) {
         Vec3 predictedPosition = target.position()
                 .add(target.getDeltaMovement().scale(10.0));
@@ -317,9 +307,7 @@ public class QueenBee extends BaseBoss {
         return direction.normalize();
     }
 
-    /**
-     * 兼容既有调用：一次补充当前难度对应数量的小黄蜂，但永远不突破十只上限。
-     */
+    /// 兼容既有调用：一次补充当前难度对应数量的小黄蜂，但永远不突破十只上限。
     void spawnBees() {
         int requested = isMaster() ? 6 : isExpert() ? 4 : 2;
         int available = MAX_OWNED_HORNETS - countOwnedHornets();
@@ -343,10 +331,8 @@ public class QueenBee extends BaseBoss {
         hornet.setYRot(getYRot());
         hornet.setMaster(this);
         if (serverLevel.addFreshEntity(hornet)) {
-            /*
-             * 幼蜂生成当刻只登记蜂王归属。目标要等幼蜂自己的 32 tick 同步周期继承，
-             * 否则蜂王刚生成幼蜂时会跳过 1.21 侧可观察到的短暂游荡窗口。
-             */
+            /// 幼蜂生成当刻只登记蜂王归属。目标要等幼蜂自己的 32 tick 同步周期继承，
+            /// 否则蜂王刚生成幼蜂时会跳过 1.21 侧可观察到的短暂游荡窗口。
             hornet.setTarget(null);
             return true;
         }

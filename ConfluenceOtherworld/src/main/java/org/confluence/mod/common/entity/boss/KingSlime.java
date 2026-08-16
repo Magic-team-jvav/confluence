@@ -8,12 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -30,17 +25,15 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
-/**
- * 史莱姆王。
- *
- * <p>服务端以三个显式阶段推进战斗：常态跳跃、缩小传送、重新膨胀。常态阶段按固定节奏完成
- * 四次跳跃后传送；专家及以上且生命不足一半时，会连续完成两轮跳跃再传送。阶段、计时器和
- * 当前轮次会一起存档，避免区块卸载后出现尺寸、无敌状态和碰撞箱彼此不一致。</p>
- *
- * <p>逻辑尺寸与 1.21 侧一致，满血为 16、濒死最低为 6。尺寸同时决定碰撞箱和客户端模型
- * 缩放，不能只改变其中一侧。缩放阶段拒绝伤害和接触攻击；常态受伤时按生命阈值生成蓝史莱姆，
- * 并按难度额外生成尖刺史莱姆。</p>
- */
+/// 史莱姆王。
+///
+/// <p>服务端以三个显式阶段推进战斗：常态跳跃、缩小传送、重新膨胀。常态阶段按固定节奏完成
+/// 四次跳跃后传送；专家及以上且生命不足一半时，会连续完成两轮跳跃再传送。阶段、计时器和
+/// 当前轮次会一起存档，避免区块卸载后出现尺寸、无敌状态和碰撞箱彼此不一致。</p>
+///
+/// <p>逻辑尺寸与 1.21 侧一致，满血为 16、濒死最低为 6。尺寸同时决定碰撞箱和客户端模型
+/// 缩放，不能只改变其中一侧。缩放阶段拒绝伤害和接触攻击；常态受伤时按生命阈值生成蓝史莱姆，
+/// 并按难度额外生成尖刺史莱姆。</p>
 public class KingSlime extends BaseBoss {
     private static final String RUNTIME_TAG = "ConfluenceKingSlimeRuntime";
     private static final int RUNTIME_VERSION = 2;
@@ -48,10 +41,8 @@ public class KingSlime extends BaseBoss {
     private static final int NORMAL_CYCLE_END = 85;
     private static final int MIN_SIZE = 6;
     private static final int MAX_HEALTH_SIZE_BONUS = 10;
-    /**
-     * 1.21 侧实体类型的基础尺寸为 0.6，每一级体型都在该尺寸上等比放大。
-     * 碰撞箱必须与客户端使用的史莱姆模型同步缩放，否则会出现模型远大于实际判定箱的问题。
-     */
+    /// 1.21 侧实体类型的基础尺寸为 0.6，每一级体型都在该尺寸上等比放大。
+    /// 碰撞箱必须与客户端使用的史莱姆模型同步缩放，否则会出现模型远大于实际判定箱的问题。
     private static final float BASE_DIMENSION_PER_SIZE = 0.6F;
 
     private static final EntityDataAccessor<Byte> DATA_PHASE =
@@ -115,10 +106,7 @@ public class KingSlime extends BaseBoss {
         return BossEvent.BossBarColor.BLUE;
     }
 
-    /**
-     * 史莱姆王的阶段本身就是一个长期运行的行为节点。目标选择仍由原版目标选择器负责，
-     * 节点只消费当前目标并推进确定性的战斗节奏。
-     */
+    // === BT ===
     @Override
     protected BTRoot createBT() {
         return new BTRoot() {
@@ -154,10 +142,8 @@ public class KingSlime extends BaseBoss {
         }
     }
 
-    /**
-     * 只在落地或液体中推进节拍，保证一次跳跃不会因滞空时间不同而被重复触发。
-     * 20、40、60 为普通跳，80 为更高的收尾跳，85 后进入下一轮或开始传送。
-     */
+    /// 只在落地或液体中推进节拍，保证一次跳跃不会因滞空时间不同而被重复触发。
+    /// 20、40、60 为普通跳，80 为更高的收尾跳，85 后进入下一轮或开始传送。
     private void tickNormalPhase() {
         if (!(onGround() || isInWater() || isInLava())) {
             return;
@@ -181,9 +167,7 @@ public class KingSlime extends BaseBoss {
         finishNormalCycle();
     }
 
-    /**
-     * 结算当前常态周期。陆地跳跃和液体漂浮只改变移动方式，使用同一套轮次与传送节拍。
-     */
+    /// 结算当前常态周期。陆地跳跃和液体漂浮只改变移动方式，使用同一套轮次与传送节拍。
     private void finishNormalCycle() {
         if (normalTicks < NORMAL_CYCLE_END) {
             return;
@@ -336,9 +320,7 @@ public class KingSlime extends BaseBoss {
         return Mth.clamp(Math.round(maximum * factor), 1, maximum);
     }
 
-    /**
-     * 客户端渲染器使用连续值插值，避免同步的整数碰撞尺寸造成逐格缩放。
-     */
+    /// 客户端渲染器使用连续值插值，避免同步的整数碰撞尺寸造成逐格缩放。
     public float getVisualSize(float partialTick) {
         float maximum = getHealth() / getMaxHealth() * MAX_HEALTH_SIZE_BONUS + MIN_SIZE;
         float ticks = getPhaseTicks() + partialTick;
@@ -351,16 +333,12 @@ public class KingSlime extends BaseBoss {
         };
     }
 
-    /**
-     * 上一游戏刻的挤压值，供客户端在两刻之间平滑插值。
-     */
+    /// 上一游戏刻的挤压值，供客户端在两刻之间平滑插值。
     public float getOldSquish() {
         return oldSquish;
     }
 
-    /**
-     * 当前游戏刻的挤压值。
-     */
+    /// 当前游戏刻的挤压值。
     public float getSquish() {
         return squish;
     }

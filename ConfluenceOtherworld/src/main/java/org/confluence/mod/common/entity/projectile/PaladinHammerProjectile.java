@@ -8,12 +8,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.item.HammerItems;
 
-/**
- * 圣骑士投掷的旋转重锤。
- *
- * <p>重锤具有真实飞行时间并会被实心方块阻挡。当前使用已有神锤物品作为三维视觉，
- * 等专用圣骑士锤资源补齐时只需替换 {@link #getItem()}，服务端碰撞与伤害行为无需改动。</p>
- */
+/// 圣骑士投掷的旋转重锤。
+///
+/// <p>重锤具有真实飞行时间并会被实心方块阻挡。当前使用已有神锤物品作为三维视觉，
+/// 等专用圣骑士锤资源补齐时只需替换 {@link #getItem()}，服务端碰撞与伤害行为无需改动。</p>
 public final class PaladinHammerProjectile extends StraightMonsterProjectile
         implements ItemSupplier {
 

@@ -59,13 +59,11 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
 
     protected abstract BTRoot createBT();
 
-    /**
-     * 推进由实体持有的接触攻击计时器。
-     *
-     * <p>1.21 的接触伤害并不属于某个追击动作：只要实体当前处于战斗状态，等待、施法或切换
-     * 行为都不会清空冷却。这里将相同语义放在实体基类中，同时默认关闭，避免让原本通过普通
-     * 近战目标执行伤害的陆地生物额外获得一次碰撞攻击。</p>
-     */
+    /// 推进由实体持有的接触攻击计时器。
+    ///
+    /// <p>1.21 的接触伤害并不属于某个追击动作：只要实体当前处于战斗状态，等待、施法或切换
+    /// 行为都不会清空冷却。这里将相同语义放在实体基类中，同时默认关闭，避免让原本通过普通
+    /// 近战目标执行伤害的陆地生物额外获得一次碰撞攻击。</p>
     @Override
     public void tick() {
         super.tick();
@@ -88,9 +86,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         }
     }
 
-    /**
-     * 仅由 1.21 中启用了实体接触攻击的生物覆盖。
-     */
+    /// 仅由 1.21 中启用了实体接触攻击的生物覆盖。
     protected boolean hasEntityContactAttack() {
         return false;
     }
@@ -107,9 +103,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         return 0.0;
     }
 
-    /**
-     * 保留 1.21 的筛选规则：同类和敌对生物不会因身体重叠而互伤。
-     */
+    /// 保留 1.21 的筛选规则：同类和敌对生物不会因身体重叠而互伤。
     protected boolean canContactAttack(Entity entity) {
         return entity instanceof LivingEntity living
                 && living.canBeSeenAsEnemy()

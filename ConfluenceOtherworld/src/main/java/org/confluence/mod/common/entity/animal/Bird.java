@@ -41,13 +41,11 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import javax.annotation.Nullable;
 import java.util.Iterator;
 
-/**
- * 能够起飞、降落并在三维空间巡游的普通鸟类。
- *
- * <p>鸟类保留重力，因此停止飞行后会自然落地；飞行移动控制器只负责空中的转向与加速。
- * 原版成熟的漂浮、观察、树冠巡游与跟随动作通过叶节点接入行为树，实体本身仍只有一个
- * 行为调度器，不会重新安装第二套 Goal 组合。</p>
- */
+/// 能够起飞、降落并在三维空间巡游的普通鸟类。
+///
+/// <p>鸟类保留重力，因此停止飞行后会自然落地；飞行移动控制器只负责空中的转向与加速。
+/// 原版成熟的漂浮、观察、树冠巡游与跟随动作通过叶节点接入行为树，实体本身仍只有一个
+/// 行为调度器，不会重新安装第二套 Goal 组合。</p>
 public class Bird extends BaseFlyingCritter implements FlyingAnimal {
     private static final RawAnimation FLY_ONLY =
             RawAnimation.begin().thenLoop("move.fly");
@@ -77,17 +75,13 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
                 .add(Attributes.FLYING_SPEED, 0.4);
     }
 
-    /**
-     * 鸟类没有幼年模型和幼年行为，年龄数据不应改变客户端缩放、碰撞或行为选择。
-     */
+    /// 鸟类没有幼年模型和幼年行为，年龄数据不应改变客户端缩放、碰撞或行为选择。
     @Override
     public boolean isBaby() {
         return false;
     }
 
-    /**
-     * 鸟类在 1.21 侧只作为可捕捉的小动物存在，不参与原版繁殖流程。
-     */
+    /// 鸟类在 1.21 侧只作为可捕捉的小动物存在，不参与原版繁殖流程。
     @Override
     public boolean canMate(net.minecraft.world.entity.animal.Animal other) {
         return false;
@@ -103,12 +97,10 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
         };
     }
 
-    /**
-     * 创建鸟类日常行为分支，供继承鸟类运动语义的昆虫与仙灵复用。
-     *
-     * <p>恐慌分支由具体实体包在最外层，以便仙灵在受伤时优先逃生，同时仍可在平常状态下
-     * 用引导玩家的动作抢占日常巡游。</p>
-     */
+    /// 创建鸟类日常行为分支，供继承鸟类运动语义的昆虫与仙灵复用。
+    ///
+    /// <p>恐慌分支由具体实体包在最外层，以便仙灵在受伤时优先逃生，同时仍可在平常状态下
+    /// 用引导玩家的动作抢占日常巡游。</p>
     protected final BTNode createBirdDailyRoutine() {
         return SelectorNode.of(
                 new VanillaGoalAction(new FloatGoal(this)),
@@ -134,12 +126,10 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
         controllers.add(DefaultAnimations.genericFlyIdleController(this));
     }
 
-    /**
-     * 为只提供 {@code move.fly} 的昆虫资源安装持续飞行动画。
-     *
-     * <p>这些资源没有 {@code move.walk} 或 {@code misc.idle}，使用通用走路控制器会持续输出
-     * 缺失动画警告，并在停顿阶段让翅膀完全静止。</p>
-     */
+    /// 为只提供 {@code move.fly} 的昆虫资源安装持续飞行动画。
+    ///
+    /// <p>这些资源没有 {@code move.walk} 或 {@code misc.idle}，使用通用走路控制器会持续输出
+    /// 缺失动画警告，并在停顿阶段让翅膀完全静止。</p>
     protected final void registerFlyOnlyController(
             AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
@@ -167,9 +157,7 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
         partyBird = isPartying;
     }
 
-    /**
-     * 返回唱片机互动状态，供动画、渲染和附属模组复用。
-     */
+    /// 返回唱片机互动状态，供动画、渲染和附属模组复用。
     public boolean isPartyBird() {
         return partyBird;
     }
@@ -179,9 +167,7 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
         return !onGround();
     }
 
-    /**
-     * 更新翅膀相位并限制空中下落速度。公开相位字段供模型与附属渲染器平滑插值。
-     */
+    /// 更新翅膀相位并限制空中下落速度。公开相位字段供模型与附属渲染器平滑插值。
     private void calculateFlapping() {
         oFlap = flap;
         oFlapSpeed = flapSpeed;
@@ -243,9 +229,7 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
         return (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F;
     }
 
-    /**
-     * 鸟类巡游会优先寻找附近树冠落脚点，找不到时再退回普通随机飞行。
-     */
+    /// 鸟类巡游会优先寻找附近树冠落脚点，找不到时再退回普通随机飞行。
     static final class BirdWanderGoal
             extends WaterAvoidingRandomFlyingGoal {
         BirdWanderGoal(PathfinderMob mob, double speedModifier) {

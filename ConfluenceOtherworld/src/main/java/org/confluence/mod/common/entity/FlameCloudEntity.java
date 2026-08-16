@@ -19,9 +19,7 @@ public class FlameCloudEntity extends Entity {
     private static final String RUNTIME_TAG = "ConfluenceFlameCloudRuntime";
     private static final int RUNTIME_VERSION = 1;
     private static final int MAX_AGE = 40;
-    /**
-     * 损坏存档必须在点燃或伤害附近实体前销毁。
-     */
+    /// 损坏存档必须在点燃或伤害附近实体前销毁。
     private boolean invalidRuntimeState;
 
     public FlameCloudEntity(EntityType<FlameCloudEntity> entityType, Level level) {

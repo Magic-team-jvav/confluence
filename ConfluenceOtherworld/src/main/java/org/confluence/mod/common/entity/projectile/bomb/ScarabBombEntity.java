@@ -51,7 +51,7 @@ public class ScarabBombEntity extends StickyBombEntity {
         this.entityData.define(DATA_OWNER_ID, -1);
     }
 
-    // 待补：新粒子
+    // todo 新粒子
     @Override
     protected void explodeFunction(ServerLevel level) {
         Vec3 blastPos = getEyePosition();

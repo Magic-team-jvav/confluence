@@ -6,19 +6,13 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 
-/**
- * 史莱姆王王冠的原版模型定义，与 1.21 侧使用同一组几何数据。
- */
+/// 史莱姆王王冠的原版模型定义，与 1.21 侧使用同一组几何数据。
 public class CrownOfKingSlimeModel extends EntityModel<CrownOfKingSlimeModelEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
             Confluence.asResource("crown_of_king_slime"), "main");

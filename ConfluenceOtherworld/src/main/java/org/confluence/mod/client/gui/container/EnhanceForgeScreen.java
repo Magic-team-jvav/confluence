@@ -12,10 +12,8 @@ import org.mesdag.portlib.client.gui.components.PortSprite;
 
 public abstract class EnhanceForgeScreen<M extends EnhancedForgeMenu> extends AbstractContainerScreen<M> {
     public static final ResourceLocation SUPER_LIT_PROGRESS = Confluence.asResource("textures/gui/container/super_lit_progress.png");
-    /**
-     * 1.20.1 尚未把熔炉进度拆分为独立 GUI sprite，因此从原版熔炉纹理中截取箭头区域。
-     * 路径保留 png 后缀可让 PortSprite 将其视为完整纹理，而不是 1.21 风格的 sprite 标识。
-     */
+    /// 1.20.1 尚未把熔炉进度拆分为独立 GUI sprite，因此从原版熔炉纹理中截取箭头区域。
+    /// 路径保留 png 后缀可让 PortSprite 将其视为完整纹理，而不是 1.21 风格的 sprite 标识。
     public static final PortSprite BURN_PROGRESS_SPRITE = new PortSprite(
             ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png"),
             256,

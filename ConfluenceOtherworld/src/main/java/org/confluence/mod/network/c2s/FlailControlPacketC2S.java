@@ -10,10 +10,8 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /**
- * 链锤按下与松开控制包。
- *
- * <p>客户端只提交输入边沿；服务端重新读取主手并调用链锤物品的共享状态转换，
- * 不接受客户端提供的实体、阶段、伤害或冷却数据。</p>
+ * <h1>连枷控制包C2S</h1>
+ * 玩家按住/松开攻击键时发送，控制连枷 SPIN/THROWN/STAY/RETRACT 状态
  */
 public record FlailControlPacketC2S(Action action)
         implements IPortPacket.C2S {
@@ -51,9 +49,7 @@ public record FlailControlPacketC2S(Action action)
         return ID;
     }
 
-    /**
-     * 链锤控制会生成实体并切换其状态，必须由本数据包显式切回服务端主线程。
-     */
+    /// 链锤控制会生成实体并切换其状态，必须由本数据包显式切回服务端主线程。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {

@@ -5,12 +5,10 @@ import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.common.attachment.PlayerAchievementProgress;
 import org.confluence.mod.common.init.entity.BossEntities;
 
-/**
- * 结算单名参战玩家在一次 Boss 正常死亡中获得的成就进度。
- *
- * <p>调用方负责先冻结遭遇参与者快照；本类只处理个人进度，不更新世界击杀账本、不生成
- * 宝藏袋，也不会被 Boss 脱战路径调用。这样个人奖励范围与世界阶段推进保持明确分离。</p>
- */
+/// 结算单名参战玩家在一次 Boss 正常死亡中获得的成就进度。
+///
+/// <p>调用方负责先冻结遭遇参与者快照；本类只处理个人进度，不更新世界击杀账本、不生成
+/// 宝藏袋，也不会被 Boss 脱战路径调用。这样个人奖励范围与世界阶段推进保持明确分离。</p>
 public final class BossAchievementSettlement {
     private BossAchievementSettlement() {
     }

@@ -26,15 +26,13 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 
-/**
- * 机械骷髅王本体及四条可破坏机械臂的权威控制器。
- *
- * <p>夜间战斗由悬浮追踪和旋转冲锋两个阶段组成。摧毁机械臂只会移除对应武器威胁，
- * 不会凭空改变头部护甲或产生额外阶段。白天会跳过普通周期，直接进入狂暴追击。</p>
- *
- * <p>机械臂实体是可重建的临时部件。本体只保存各槽位的摧毁状态和剩余生命，
- * 因而区块重载不会复制仍存活的部件，也不会复活已经摧毁的部件。</p>
- */
+/// 机械骷髅王本体及四条可破坏机械臂的权威控制器。
+///
+/// <p>夜间战斗由悬浮追踪和旋转冲锋两个阶段组成。摧毁机械臂只会移除对应武器威胁，
+/// 不会凭空改变头部护甲或产生额外阶段。白天会跳过普通周期，直接进入狂暴追击。</p>
+///
+/// <p>机械臂实体是可重建的临时部件。本体只保存各槽位的摧毁状态和剩余生命，
+/// 因而区块重载不会复制仍存活的部件，也不会复活已经摧毁的部件。</p>
 public class SkeletronPrime extends BaseBoss {
     private static final int ARM_COUNT = 4;
     private static final int ALL_ARMS_DESTROYED = (1 << ARM_COUNT) - 1;
@@ -88,9 +86,7 @@ public class SkeletronPrime extends BaseBoss {
         return BossEvent.BossBarColor.RED;
     }
 
-    /**
-     * 行为树只维持调度生命周期，实际阶段状态由服务端 tick 的单一计时源控制。
-     */
+    /// 行为树只维持调度生命周期，实际阶段状态由服务端 tick 的单一计时源控制。
     @Override
     protected BTRoot createBT() {
         return new BTRoot() {
@@ -149,24 +145,20 @@ public class SkeletronPrime extends BaseBoss {
         applyAirResistance();
     }
 
-    /**
-     * 还原 1.21 通用 Boss 基类在行为树执行后的空气阻力。
-     *
-     * <p>悬浮阶段会把旧速度乘以 1.1 后再叠加追踪力；如果缺少这一步阻力，实体一旦越过玩家，
-     * 旧速度就会稳定卡在最大值，无法重新转向并最终飞出有效高度。旋转阶段同样需要经过该阻力，
-     * 因而必须统一放在本轮运动计算之后，而不能只修正悬浮分支。</p>
-     */
+    /// 还原 1.21 通用 Boss 基类在行为树执行后的空气阻力。
+    ///
+    /// <p>悬浮阶段会把旧速度乘以 1.1 后再叠加追踪力；如果缺少这一步阻力，实体一旦越过玩家，
+    /// 旧速度就会稳定卡在最大值，无法重新转向并最终飞出有效高度。旋转阶段同样需要经过该阻力，
+    /// 因而必须统一放在本轮运动计算之后，而不能只修正悬浮分支。</p>
     private void applyAirResistance() {
         setDeltaMovement(getDeltaMovement().scale(0.95));
     }
 
-    /**
-     * 复用 1.21 侧简单追踪器的速度合成参数。
-     *
-     * <p>当前速度先乘 1.1，再叠加朝向目标的 0.12 吸引力，最终限制在
-     * 0.3 至 2.5 的速度区间。这里不能改成追逐目标上方固定点，否则悬浮轨迹、
-     * 转向半径和机械臂相对位置都会与原实现不同。</p>
-     */
+    /// 复用 1.21 侧简单追踪器的速度合成参数。
+    ///
+    /// <p>当前速度先乘 1.1，再叠加朝向目标的 0.12 吸引力，最终限制在
+    /// 0.3 至 2.5 的速度区间。这里不能改成追逐目标上方固定点，否则悬浮轨迹、
+    /// 转向半径和机械臂相对位置都会与原实现不同。</p>
     private void updateHoverMovement(LivingEntity target) {
         Vec3 current = getDeltaMovement();
         Vec3 targetDirection = target.position().subtract(position());
@@ -190,9 +182,7 @@ public class SkeletronPrime extends BaseBoss {
         setDeltaMovement(result);
     }
 
-    /**
-     * 旋转阶段持续朝目标追击；白天狂暴使用更高速度和致命接触伤害。
-     */
+    /// 旋转阶段持续朝目标追击；白天狂暴使用更高速度和致命接触伤害。
     private void updateSpinningMovement(
             LivingEntity target, boolean enraged) {
         Vec3 direction = target.getEyePosition().subtract(position());
@@ -245,9 +235,7 @@ public class SkeletronPrime extends BaseBoss {
         return entityData.get(DATA_SPINNING);
     }
 
-    /**
-     * 机械骷髅王的悬停和旋转追击不叠加原版重力。
-     */
+    /// 机械骷髅王的悬停和旋转追击不叠加原版重力。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -317,9 +305,7 @@ public class SkeletronPrime extends BaseBoss {
         return destroyedArms;
     }
 
-    /**
-     * 返回头部和四条机械臂共同组成的遭遇生命比例。
-     */
+    /// 返回头部和四条机械臂共同组成的遭遇生命比例。
     float getEncounterProgress() {
         float current = getHealth();
         for (float health : armHealth) {

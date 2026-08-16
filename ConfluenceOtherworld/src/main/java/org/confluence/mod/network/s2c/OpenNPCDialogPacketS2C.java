@@ -14,9 +14,7 @@ public record OpenNPCDialogPacketS2C(int entityId) implements IPortPacket.S2C {
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenNPCDialogPacketS2C> STREAM_CODEC =
             PortStreamCodec.composite(PortByteBufCodecs.VAR_INT, OpenNPCDialogPacketS2C::entityId, OpenNPCDialogPacketS2C::new);
 
-    /**
-     * 创建界面属于客户端主线程操作。
-     */
+    /// 创建界面属于客户端主线程操作。
     @Override
     public void handle(IPortPacket.Context context) {
         Player player = context.player();

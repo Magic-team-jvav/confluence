@@ -8,25 +8,14 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
-import org.confluence.mod.common.summon.FlyingSummon;
-import org.confluence.mod.common.summon.SummonAnimation;
-import org.confluence.mod.common.summon.SummonGoal;
-import org.confluence.mod.common.summon.SummonPose;
-import org.confluence.mod.common.summon.SummonRenderPart;
-import org.confluence.mod.common.summon.SummonVisualState;
+import org.confluence.mod.common.summon.*;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-/**
- * 星尘龙召唤物的运行实例。
- *
- * <p>重复召唤时只增加沿历史轨迹跟随的龙身长度，不再为每一节身体创建独立实体。
- * 这样既保留 1.21 侧“越召越长”的行为，也能避免多实体同步和碰撞带来的额外不稳定性。</p>
- */
+/// 星尘龙召唤物的运行实例。
+///
+/// <p>重复召唤时只增加沿历史轨迹跟随的龙身长度，不再为每一节身体创建独立实体。
+/// 这样既保留 1.21 侧“越召越长”的行为，也能避免多实体同步和碰撞带来的额外不稳定性。</p>
 public final class StardustDragonSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 1.0F;
@@ -108,9 +97,7 @@ public final class StardustDragonSummon extends FlyingSummon {
         steerToward(movementTarget, 0.3F, 0.3);
     }
 
-    /**
-     * 按 1.21 龙类移动保留航向惯性与转向速度差异。
-     */
+    /// 按 1.21 龙类移动保留航向惯性与转向速度差异。
     private void steerToward(Vec3 destination, float turnSpeed, double movementSpeed) {
         Vec3 offset = destination.subtract(position());
         if (offset.lengthSqr() < 1.0E-6) {

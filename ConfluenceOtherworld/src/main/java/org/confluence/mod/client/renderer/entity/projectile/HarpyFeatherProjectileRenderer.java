@@ -12,9 +12,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.HarpyFeatherProjectileModel;
 import org.confluence.mod.common.entity.projectile.HarpyFeatherProjectile;
 
-/**
- * 按当前飞行方向绘制鸟妖羽毛弹幕。
- */
+/// 按当前飞行方向绘制鸟妖羽毛弹幕。
 public final class HarpyFeatherProjectileRenderer
         extends EntityRenderer<HarpyFeatherProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource(

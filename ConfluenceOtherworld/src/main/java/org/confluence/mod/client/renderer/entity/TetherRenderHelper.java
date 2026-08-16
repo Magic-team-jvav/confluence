@@ -12,12 +12,10 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * 玩家手部与受控实体之间的通用绳线绘制工具。
- *
- * <p>调用方只提供实体、玩家和颜色；第一人称近裁剪面、第三人称身体旋转、蹲伏偏移、
- * 实体插值及绳线下垂均在这里统一处理。</p>
- */
+/// 玩家手部与受控实体之间的通用绳线绘制工具。
+///
+/// <p>调用方只提供实体、玩家和颜色；第一人称近裁剪面、第三人称身体旋转、蹲伏偏移、
+/// 实体插值及绳线下垂均在这里统一处理。</p>
 public final class TetherRenderHelper {
     private TetherRenderHelper() {
     }

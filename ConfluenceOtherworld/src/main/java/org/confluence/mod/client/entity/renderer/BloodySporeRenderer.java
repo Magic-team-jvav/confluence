@@ -9,9 +9,7 @@ import net.minecraft.util.Mth;
 import org.confluence.mod.common.entity.monster.BloodySpore;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
-/**
- * 根据服务端同步引信进度绘制血腥芽孢的膨胀效果。
- */
+/// 根据服务端同步引信进度绘制血腥芽孢的膨胀效果。
 public final class BloodySporeRenderer extends GeoNormalRenderer<BloodySpore> {
     public BloodySporeRenderer(
             EntityRendererProvider.Context context,

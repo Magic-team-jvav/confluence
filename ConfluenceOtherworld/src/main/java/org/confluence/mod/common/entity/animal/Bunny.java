@@ -152,12 +152,10 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
         this.entityData.define(DATA_WATCH_STATE, 20);
     }
 
-    /**
-     * 保持 1.21 的兔子待机节奏：导航结束后累计空闲时间，每一百刻安排一次短暂观察。
-     *
-     * <p>动画类型和剩余时长由服务端一次性确定，再通过同步数据发送给客户端。客户端只
-     * 递减本地剩余时间，不会在每一帧重新随机，因此同一次观察动作始终使用同一动画。</p>
-     */
+    /// 保持 1.21 的兔子待机节奏：导航结束后累计空闲时间，每一百刻安排一次短暂观察。
+    ///
+    /// <p>动画类型和剩余时长由服务端一次性确定，再通过同步数据发送给客户端。客户端只
+    /// 递减本地剩余时间，不会在每一帧重新随机，因此同一次观察动作始终使用同一动画。</p>
     @Override
     public void tick() {
         super.tick();
@@ -182,9 +180,7 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
         }
     }
 
-    /**
-     * 以一个整数同步观察动画类型和持续时间，避免维护两份可能不同步的实体数据。
-     */
+    /// 以一个整数同步观察动画类型和持续时间，避免维护两份可能不同步的实体数据。
     void beginWatchCycle(int duration, int animationType) {
         int normalizedDuration = Math.max(0, Math.min(duration, 999));
         int normalizedType = Mth.clamp(animationType, 0, 1);
@@ -211,9 +207,7 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
         return watchAnimationType;
     }
 
-    /**
-     * 将普通地面导航转换为兔子式间歇跳跃；空中继续沿当前目标推进，落地后短暂停顿。
-     */
+    /// 将普通地面导航转换为兔子式间歇跳跃；空中继续沿当前目标推进，落地后短暂停顿。
     static final class BunnyHopMoveControl extends MoveControl {
         private final Bunny bunny;
         private int jumpDelay;

@@ -44,8 +44,8 @@ public class SwordItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    // 铂金及以上剑的参考数值为泰拉 Wiki 伤害除以 2 后再加 2 作为基础值。
-    // 普通短剑。
+    // 铂金以上剑参考数值为 泰拉wiki中的伤害÷2后 + 2为基础值
+    // 普通短剑
     public static final PortDeferredItem<BaseSwordItem> COPPER_SHORT_SWORD = register("copper_short_sword", ModTiers.COPPER, 2, 3, ModRarity.WHITE, () -> SHORT_SWORD.get()
             .addTooltip(p -> p.withColor(0x984c11))
             .addTooltip(p -> p.withColor(0x984c11)));

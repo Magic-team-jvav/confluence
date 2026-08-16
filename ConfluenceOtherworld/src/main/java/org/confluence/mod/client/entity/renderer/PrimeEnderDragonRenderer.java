@@ -16,14 +16,12 @@ import org.confluence.mod.common.entity.boss.PrimeEnderDragon;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-/**
- * 本源末影龙专用渲染器。
- *
- * <p>通用 GeckoLib 生物渲染器只处理水平身体朝向，而本源末影龙会沿三维速度
- * 改变俯仰角，因此这里额外插值实体俯仰，避免模型水平飞行而碰撞部件已经上下转向。
- * 激光使用服务端同步的长度绘制为四面封闭光束，既能从任意观察方向看到，也不会用
- * 半透明粒子冒充实际攻击范围。</p>
- */
+/// 本源末影龙专用渲染器。
+///
+/// <p>通用 GeckoLib 生物渲染器只处理水平身体朝向，而本源末影龙会沿三维速度
+/// 改变俯仰角，因此这里额外插值实体俯仰，避免模型水平飞行而碰撞部件已经上下转向。
+/// 激光使用服务端同步的长度绘制为四面封闭光束，既能从任意观察方向看到，也不会用
+/// 半透明粒子冒充实际攻击范围。</p>
 public final class PrimeEnderDragonRenderer
         extends BossGeoRenderer<PrimeEnderDragon> {
     private static final ResourceLocation BEAM_TEXTURE =
@@ -82,9 +80,7 @@ public final class PrimeEnderDragonRenderer
         renderLaser(dragon, partialTick, poseStack, buffers);
     }
 
-    /**
-     * 在实体世界坐标系中绘制光束，避免模型骨骼动画改变攻击结算起点。
-     */
+    /// 在实体世界坐标系中绘制光束，避免模型骨骼动画改变攻击结算起点。
     private static void renderLaser(
             PrimeEnderDragon dragon,
             float partialTick,
@@ -138,10 +134,8 @@ public final class PrimeEnderDragonRenderer
         poseStack.popPose();
     }
 
-    /**
-     * 提交四个侧面和远端封口。每个面的顶点顺序保持朝外，继续使用渲染类型
-     * 自带的背面剔除，不会在相反方向额外绘制一层重叠面。
-     */
+    /// 提交四个侧面和远端封口。每个面的顶点顺序保持朝外，继续使用渲染类型
+    /// 自带的背面剔除，不会在相反方向额外绘制一层重叠面。
     private static void renderBeamLayer(
             PoseStack.Pose pose,
             VertexConsumer consumer,

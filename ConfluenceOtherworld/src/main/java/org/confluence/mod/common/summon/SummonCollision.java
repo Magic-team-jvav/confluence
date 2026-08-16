@@ -10,26 +10,18 @@ import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Predicate;
 
-/**
- * 为高速移动的召唤物计算两个游戏刻之间的连续定向碰撞。
- */
+/// 为高速移动的召唤物计算两个游戏刻之间的连续定向碰撞。
 public final class SummonCollision {
     private SummonCollision() {
     }
 
-    /**
-     * 沿二次贝塞尔曲线采样定向碰撞箱，并按首次命中点到运动起点的距离返回命中目标。
-     *
-     * <p>采样间距不超过碰撞箱最短边的一半，让相邻碰撞箱保留约一半重叠，避免高速移动时目标刚好位于两个游戏刻端点之间而被漏判。
-     * 粗筛只查询扫掠包围盒中的生物，精确阶段再使用分离轴定理。</p>
-     */
+    /// 沿二次贝塞尔曲线采样定向碰撞箱，并按首次命中点到运动起点的距离返回命中目标。
+    ///
+    /// <p>采样间距不超过碰撞箱最短边的一半，让相邻碰撞箱保留约一半重叠，避免高速移动时目标刚好位于两个游戏刻端点之间而被漏判。
+    /// 粗筛只查询扫掠包围盒中的生物，精确阶段再使用分离轴定理。</p>
     public static List<Hit> sweep(Level level, SummonPose previousPreviousPose, SummonPose previousPose,
                                   SummonPose currentPose, AABB localBox, Predicate<LivingEntity> targetFilter) {
         if (level == null || previousPreviousPose == null || previousPose == null || currentPose == null
@@ -101,15 +93,11 @@ public final class SummonCollision {
                 entry.getValue().distanceToSqr(start))).map(entry -> new Hit(entry.getKey(), entry.getValue())).toList();
     }
 
-    /**
-     * 一次连续碰撞命中的目标与近似命中位置。
-     */
+    /// 一次连续碰撞命中的目标与近似命中位置。
     public record Hit(LivingEntity target, Vec3 position) {
     }
 
-    /**
-     * 仅在连续碰撞实现内部使用的定向碰撞箱。
-     */
+    /// 仅在连续碰撞实现内部使用的定向碰撞箱。
     private static final class OrientedBox {
         private static final float EPSILON = 1.0E-5F;
         private final Vector3f center;

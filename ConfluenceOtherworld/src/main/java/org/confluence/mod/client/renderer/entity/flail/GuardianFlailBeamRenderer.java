@@ -13,9 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.flail.GuardianFlailEntity;
 
-/**
- * 使用原版守卫者光束纹理渲染链锤与同步目标之间的实体光束。
- */
+/// 使用原版守卫者光束纹理渲染链锤与同步目标之间的实体光束。
 public final class GuardianFlailBeamRenderer {
     private static final ResourceLocation BEAM_TEXTURE =
             ResourceLocation.withDefaultNamespace(

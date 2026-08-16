@@ -9,12 +9,10 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
-/**
- * 血肉山二阶段生成的熔岩柱。
- *
- * <p>前 50 tick 只显示烟雾预警，随后持续 40 tick 喷发，并且每 10 tick
- * 结算一次范围伤害。伤害区域固定在生成位置，不会追踪目标，因此玩家能够在预警期间主动离开。</p>
- */
+/// 血肉山二阶段生成的熔岩柱。
+///
+/// <p>前 50 tick 只显示烟雾预警，随后持续 40 tick 喷发，并且每 10 tick
+/// 结算一次范围伤害。伤害区域固定在生成位置，不会追踪目标，因此玩家能够在预警期间主动离开。</p>
 public final class HillLavaPillarProjectile extends Projectile {
     private static final int WARNING_TICKS = 50;
     private static final int ACTIVE_TICKS = 40;
@@ -28,17 +26,13 @@ public final class HillLavaPillarProjectile extends Projectile {
         setNoGravity(true);
     }
 
-    /**
-     * 绑定生成该熔岩柱的 Boss，并保存服务端伤害值。
-     */
+    /// 绑定生成该熔岩柱的 Boss，并保存服务端伤害值。
     public void configure(Mob owner, float damage) {
         setOwner(owner);
         this.damage = damage;
     }
 
-    /**
-     * 返回预警阶段是否已经结束，供测试和客户端表现判断。
-     */
+    /// 返回预警阶段是否已经结束，供测试和客户端表现判断。
     public boolean isTriggered() {
         return tickCount >= WARNING_TICKS;
     }
@@ -79,11 +73,9 @@ public final class HillLavaPillarProjectile extends Projectile {
         }
     }
 
-    /**
-     * 对固定柱体范围内、可被所有者攻击的生物结算伤害。
-     *
-     * <p>喷发后半段会向水平方向扩张一格，让视觉上的熔岩外溅与判定范围保持一致。</p>
-     */
+    /// 对固定柱体范围内、可被所有者攻击的生物结算伤害。
+    ///
+    /// <p>喷发后半段会向水平方向扩张一格，让视觉上的熔岩外溅与判定范围保持一致。</p>
     private void damageEntities() {
         AABB area = getBoundingBox().inflate(
                 tickCount > WARNING_TICKS + ACTIVE_TICKS / 2

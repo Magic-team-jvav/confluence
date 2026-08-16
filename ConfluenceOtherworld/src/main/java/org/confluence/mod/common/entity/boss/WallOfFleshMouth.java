@@ -9,9 +9,7 @@ import org.confluence.mod.common.entity.monster.SimpleWormMonster;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 血肉墙的嘴；每张嘴独立分批吐出水蛭。
- */
+/// 血肉墙的嘴；每张嘴独立分批吐出水蛭。
 public final class WallOfFleshMouth extends WallOfFleshPart {
     private static final int BASE_SUMMON_INTERVAL = 400;
     private static final int SPAWN_INTERVAL = 10;

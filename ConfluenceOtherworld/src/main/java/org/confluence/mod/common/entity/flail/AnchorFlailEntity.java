@@ -16,9 +16,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 
-/**
- * 锚的直接发射、重力和落点冲击行为。
- */
+/// 锚的直接发射、重力和落点冲击行为。
 public final class AnchorFlailEntity extends LaunchedFlailEntity {
     public AnchorFlailEntity(
             EntityType<? extends AnchorFlailEntity> type,

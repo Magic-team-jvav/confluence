@@ -10,9 +10,7 @@ import org.confluence.mod.common.entity.boss.TheDestroyer;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
-/**
- * 为毁灭者头部应用沿运动轴线的滚转动画。
- */
+/// 为毁灭者头部应用沿运动轴线的滚转动画。
 public final class DestroyerRenderer extends BossGeoRenderer<TheDestroyer> {
     public DestroyerRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("boss/eater_of_worlds"));

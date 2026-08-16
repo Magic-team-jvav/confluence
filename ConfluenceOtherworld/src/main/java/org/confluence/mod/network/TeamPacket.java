@@ -1,6 +1,5 @@
 package org.confluence.mod.network;
 
-import PortLib.extensions.net.minecraft.network.chat.MutableComponent.PortMutableComponentExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,12 +12,10 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * 玩家队伍与 PvP 状态的双向同步包。
- *
- * <p>S2C 使用 {@code playerId} 定位被同步玩家；C2S 则永远忽略该编号并以发包者为目标，
- * 防止客户端修改其他玩家。服务端更新后重新构造权威包广播，不原样转发客户端数据。</p>
- */
+/// 玩家队伍与 PvP 状态的双向同步包。
+///
+/// <p>S2C 使用 {@code playerId} 定位被同步玩家；C2S 则永远忽略该编号并以发包者为目标，
+/// 防止客户端修改其他玩家。服务端更新后重新构造权威包广播，不原样转发客户端数据。</p>
 public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortPacket {
     public static final byte TEAM_MASK = 0b0000_1111;
     public static final byte PVP_MASK = 0b0100_0000;
@@ -70,17 +67,13 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortP
                         "message.confluence.leave_team", target.getName()
                 ).withColor(textColor);
             } else {
-                msg = PortMutableComponentExtension.withColor(Component.translatable(
-                        "message.confluence.join_team", target.getName(), team.getLowerCaseName()
-                ), textColor);
+                msg = Component.translatable("message.confluence.join_team", target.getName(), team.getLowerCaseName()).withColor(textColor);
             }
             playerList.broadcastSystemMessage(msg, false);
             data.setTeam(team);
         }
         if (data.isPvP() != pvp) {
-            Component msg = PortMutableComponentExtension.withColor(Component.translatable(
-                    pvp ? "message.confluence.enable_pvp" : "message.confluence.disable_pvp", target.getName()
-            ), textColor);
+            Component msg = Component.translatable(pvp ? "message.confluence.enable_pvp" : "message.confluence.disable_pvp", target.getName()).withColor(textColor);
             playerList.broadcastSystemMessage(msg, false);
             data.setPvP(pvp);
         }

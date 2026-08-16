@@ -17,12 +17,10 @@ import org.confluence.mod.common.entity.IVariant;
 
 import java.util.Locale;
 
-/**
- * 同时承载普通蝎子与黑蝎子的同步变体实体。
- *
- * <p>两种外观共享模型、属性和行为，只把自然生成选择、存档值与纹理映射留在本类。
- * 捕捉物品可以显式写入变体，客户端与重新加载后的服务端仍会得到相同外观。</p>
- */
+/// 同时承载普通蝎子与黑蝎子的同步变体实体。
+///
+/// <p>两种外观共享模型、属性和行为，只把自然生成选择、存档值与纹理映射留在本类。
+/// 捕捉物品可以显式写入变体，客户端与重新加载后的服务端仍会得到相同外观。</p>
 public class Scorpion extends SimpleCritter
         implements VariantHolder<Scorpion.Variant> {
     public static final String VARIANT_KEY = "Variant";

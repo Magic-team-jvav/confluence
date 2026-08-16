@@ -15,12 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * 从所有者视线方向发射的纯布局。
- *
- * @param offsetY    相对眼睛高度的纵向偏移
- * @param inaccuracy 原版散布角度
- */
+/// # 直线弹幕
 public record ForwardGeneration(float offsetY, float inaccuracy) implements IGeneration {
     public static final MapCodec<ForwardGeneration> CODEC = RecordCodecBuilder.mapCodec((instance) -> instance.group(
             Codec.FLOAT.fieldOf("offsetY").forGetter(ForwardGeneration::offsetY),

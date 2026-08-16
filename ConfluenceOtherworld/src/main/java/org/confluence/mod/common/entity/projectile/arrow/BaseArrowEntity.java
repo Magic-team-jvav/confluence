@@ -25,27 +25,25 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.mixed.IAbstractArrow;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
-import org.mesdag.portlib.wrapper.world.entity.projectile.PortAbstractArrow;
 import org.mesdag.portlib.diff.IPortEntity;
 import org.mesdag.portlib.diff.IPortProjectile;
+import org.mesdag.portlib.wrapper.world.entity.projectile.PortAbstractArrow;
 import org.mesdag.portlib.wrapper.world.entity.projectile.PortProjectileDeflection;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * 泰拉箭矢的通用运行实体。
- *
- * <p>PortLib 只补足 1.20 缺失的拾取物与发射武器字段；本类负责满蓄力、剩余寿命、穿透次数
- * 和已命中目标等具体玩法状态。箭矢跨区块重载后必须继续消耗原预算，不能重新获得命中次数或
- * 把同一目标当作首次命中。</p>
- */
+/// 泰拉箭矢的通用运行实体。
+///
+/// <p>PortLib 只补足 1.20 缺失的拾取物与发射武器字段；本类负责满蓄力、剩余寿命、穿透次数
+/// 和已命中目标等具体玩法状态。箭矢跨区块重载后必须继续消耗原预算，不能重新获得命中次数或
+/// 把同一目标当作首次命中。</p>
 public class BaseArrowEntity extends PortAbstractArrow {
     private static final String RUNTIME_TAG = "ConfluenceArrowRuntime";
     private static final int CURRENT_FORMAT_VERSION = 1;
@@ -324,9 +322,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
         }
     }
 
-    /**
-     * 缺少当前格式时保留安全默认值；存在但损坏的当前格式则在下一服务端 tick 销毁。
-     */
+    /// 缺少当前格式时保留安全默认值；存在但损坏的当前格式则在下一服务端 tick 销毁。
     private void resetRuntimeState() {
         this.fullPull = false;
         this.autoDiscardTick = Math.max(getAutoDiscardTick(), 0);

@@ -2,7 +2,8 @@ package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.monster.HillHungry;
@@ -15,13 +16,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-/**
- * 肉丘之嘴——定位在肉丘周围，并维持一只与当前嘴部锚点绑定的饿鬼。
- *
- * <p>嘴部本身不进入区块存档，因此重建后先按 Boss 身份和相对锚点认领
- * 已保存的饿鬼。只有上一只确实死亡或被移除后才进入再次生成计时，
- * 避免每个周期无上限堆积从属。</p>
- */
+/// 肉丘之嘴——定位在肉丘周围，并维持一只与当前嘴部锚点绑定的饿鬼。
+///
+/// <p>嘴部本身不进入区块存档，因此重建后先按 Boss 身份和相对锚点认领
+/// 已保存的饿鬼。只有上一只确实死亡或被移除后才进入再次生成计时，
+/// 避免每个周期无上限堆积从属。</p>
 public class HillOfFleshMouth extends BaseBossPart<HillOfFlesh> implements GeoEntity {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int summonTimer;

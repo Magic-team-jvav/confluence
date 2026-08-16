@@ -19,13 +19,11 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.object.PlayState;
 
-/**
- * 食人鱼及其共用水生近战变体。
- *
- * <p>移动和离水扑腾由水生基类处理；食人鱼本身补充持续咬合表现、攻击动作周期
- * 与长时间水下供气。持续设置挥击状态是 1.21 的模型语义，用于让嘴部和尾部
- * 始终播放快速咬合动画，并不代表每 tick 都结算一次伤害。</p>
- */
+/// 食人鱼及其共用水生近战变体。
+///
+/// <p>移动和离水扑腾由水生基类处理；食人鱼本身补充持续咬合表现、攻击动作周期
+/// 与长时间水下供气。持续设置挥击状态是 1.21 的模型语义，用于让嘴部和尾部
+/// 始终播放快速咬合动画，并不代表每 tick 都结算一次伤害。</p>
 public class Piranha extends BaseAquaticMonster {
 
     public Piranha(EntityType<? extends Piranha> type, Level level) {

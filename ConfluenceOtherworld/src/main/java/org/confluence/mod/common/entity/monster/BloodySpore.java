@@ -28,12 +28,10 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-/**
- * 接近目标后膨胀爆裂并散播血肿瘤的血腥芽孢。
- *
- * <p>引信进度由服务端同步，客户端渲染器据此平滑膨胀；目标在爆炸前离开时会取消引信。
- * 爆炸本身不破坏方块，随后生成二至三个血肿瘤并给它们不同的抛射方向。</p>
- */
+/// 接近目标后膨胀爆裂并散播血肿瘤的血腥芽孢。
+///
+/// <p>引信进度由服务端同步，客户端渲染器据此平滑膨胀；目标在爆炸前离开时会取消引信。
+/// 爆炸本身不破坏方块，随后生成二至三个血肿瘤并给它们不同的抛射方向。</p>
 public class BloodySpore extends BaseMonster {
     private static final EntityDataAccessor<Integer> SWELL =
             SynchedEntityData.defineId(

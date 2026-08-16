@@ -30,14 +30,12 @@ public class BaseMinecartEntity extends Minecart {
     public static final double MECHANICAL_CART_DRAG_AIR = 0.99;
     private static final ResourceLocation AIR_ITEM_ID = ResourceLocation.withDefaultNamespace("air");
 
-    protected ResourceLocation dropItem = AIR_ITEM_ID; // 双端
-    protected float maxSpeed = 0.0F; // 双端
+    protected ResourceLocation dropItem = AIR_ITEM_ID; // both
+    protected float maxSpeed = 0.0F; // both
     protected double acceleration = 0.0; // 双端
-    /**
-     * 未应用永久升级时的基础空气阻力，不能与临时乘客加成混为一体。
-     */
-    protected double baseDragAir = IForgeAbstractMinecart.DEFAULT_AIR_DRAG; // 双端
-    protected @Nullable LivingEntity driver; // 服务端
+    /// 未应用永久升级时的基础空气阻力，不能与临时乘客加成混为一体。
+    protected double baseDragAir = IForgeAbstractMinecart.DEFAULT_AIR_DRAG; // both
+    protected @Nullable LivingEntity driver; // server
 
     public BaseMinecartEntity(EntityType<? extends BaseMinecartEntity> entityType, Level level) {
         super(entityType, level);

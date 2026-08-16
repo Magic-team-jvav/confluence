@@ -21,10 +21,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 /**
- * 洞穴蝙蝠。
- *
- * <p>蝙蝠会随飞行周期轻微上下起伏，并在对准玩家后快速掠过。与恶魔眼的环绕蓄力不同，
- * 蝙蝠没有固定的长时间等待；冲过目标后会保留短暂惯性，再重新校正航向。</p>
+ * 洞穴蝙蝠 —— 飞行 + 环绕冲刺攻击。与 DemonEye 共享同款 BT。
  */
 public class CaveBat extends BaseFlyingMonster {
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
@@ -77,9 +74,7 @@ public class CaveBat extends BaseFlyingMonster {
         }
     }
 
-    /**
-     * 保留 1.21 地狱蝙蝠分布在身体两侧的熔岩粒子轨迹。
-     */
+    /// 保留 1.21 地狱蝙蝠分布在身体两侧的熔岩粒子轨迹。
     private void spawnHellBatParticles() {
         int offset = getId() * 3;
         float wave = Mth.cos((offset + tickCount) * 7.448451F
@@ -96,9 +91,7 @@ public class CaveBat extends BaseFlyingMonster {
                 0.0, 0.0, 0.0);
     }
 
-    /**
-     * 保留 1.21 冰蝙蝠围绕身体随机散落的成对雪花粒子。
-     */
+    /// 保留 1.21 冰蝙蝠围绕身体随机散落的成对雪花粒子。
     private void spawnIceBatParticles() {
         float side = getBbWidth() * 0.2F;
         float x = Mth.cos(getYRot() * Mth.DEG_TO_RAD

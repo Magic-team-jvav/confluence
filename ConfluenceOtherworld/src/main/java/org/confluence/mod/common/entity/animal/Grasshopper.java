@@ -182,9 +182,7 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
                 * (1.0F + random.nextFloat() * 0.5F);
     }
 
-    /**
-     * 把地面导航目标转换为间歇跳跃，避免蚱蜢像普通昆虫一样贴地滑行。
-     */
+    /// 把地面导航目标转换为间歇跳跃，避免蚱蜢像普通昆虫一样贴地滑行。
     static final class JumpMoveControl extends MoveControl {
         private final Grasshopper grasshopper;
         private int jumpDelay;

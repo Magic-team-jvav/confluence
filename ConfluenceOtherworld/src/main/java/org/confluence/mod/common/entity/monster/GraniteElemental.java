@@ -28,17 +28,15 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 花岗岩元素。
- *
- * <p>普通状态下会持续追逐目标；专家难度受到攻击时有概率进入防御循环。防御循环包含
- * 进入动画、防御坠落和退出动画三个阶段。阶段由服务端推进并通过实体数据同步，客户端
- * 只负责选择对应动画，避免多人环境中各客户端自行推算阶段而产生视觉分歧。</p>
- *
- * <p>防御阶段会暂时恢复重力、停止横向移动并吸收普通伤害。无视无敌帧的特殊伤害仍可
- * 穿透防御，以保留原版伤害标签的语义。花岗岩元素具有正常碰撞，不能像幽灵类生物一样
- * 穿墙，否则防御坠落会直接穿过地面。</p>
- */
+/// 花岗岩元素。
+///
+/// <p>普通状态下会持续追逐目标；专家难度受到攻击时有概率进入防御循环。防御循环包含
+/// 进入动画、防御坠落和退出动画三个阶段。阶段由服务端推进并通过实体数据同步，客户端
+/// 只负责选择对应动画，避免多人环境中各客户端自行推算阶段而产生视觉分歧。</p>
+///
+/// <p>防御阶段会暂时恢复重力、停止横向移动并吸收普通伤害。无视无敌帧的特殊伤害仍可
+/// 穿透防御，以保留原版伤害标签的语义。花岗岩元素具有正常碰撞，不能像幽灵类生物一样
+/// 穿墙，否则防御坠落会直接穿过地面。</p>
 public class GraniteElemental extends BaseFlyingMonster {
     private static final String DEFENSE_PHASE_TAG = "DefensePhase";
     private static final String DEFENSE_TICKS_TAG = "DefenseTicks";
@@ -108,12 +106,10 @@ public class GraniteElemental extends BaseFlyingMonster {
         }
     }
 
-    /**
-     * 推进防御状态，并在行为树之后再次固定防御速度。
-     *
-     * <p>速度约束放在实体逻辑末尾，可确保其他移动控制器不会在同一 tick 覆盖防御坠落。
-     * 进入与退出阶段仍保持悬浮；只有完整防御阶段启用重力并以固定速度向下落。</p>
-     */
+    /// 推进防御状态，并在行为树之后再次固定防御速度。
+    ///
+    /// <p>速度约束放在实体逻辑末尾，可确保其他移动控制器不会在同一 tick 覆盖防御坠落。
+    /// 进入与退出阶段仍保持悬浮；只有完整防御阶段启用重力并以固定速度向下落。</p>
     void advanceDefenseState() {
         DefensePhase phase = getDefensePhase();
         if (phase == DefensePhase.ACTIVE) {
@@ -143,12 +139,10 @@ public class GraniteElemental extends BaseFlyingMonster {
         }
     }
 
-    /**
-     * 从普通追击切换到防御进入阶段。
-     *
-     * <p>包级可见性只供同包行为测试稳定触发状态，不作为对外扩展 API。附属模组不应直接
-     * 操纵实体内部阶段。</p>
-     */
+    /// 从普通追击切换到防御进入阶段。
+    ///
+    /// <p>包级可见性只供同包行为测试稳定触发状态，不作为对外扩展 API。附属模组不应直接
+    /// 操纵实体内部阶段。</p>
     void beginDefenseSequence() {
         if (getDefensePhase() == DefensePhase.ACTIVE) {
             setDefensePhase(DefensePhase.ENTERING, TRANSITION_TICKS);
@@ -233,9 +227,7 @@ public class GraniteElemental extends BaseFlyingMonster {
         return !noPhysics;
     }
 
-    /**
-     * 花岗精在防御阶段会落地，其他阶段仍按飞行怪物处理。
-     */
+    /// 花岗精在防御阶段会落地，其他阶段仍按飞行怪物处理。
     @Override
     public boolean isNoGravity() {
         return getDefensePhase() != DefensePhase.DEFENDING;

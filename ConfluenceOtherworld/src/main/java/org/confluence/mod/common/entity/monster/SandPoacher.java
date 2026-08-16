@@ -28,12 +28,10 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 
-/**
- * 能攀爬墙面并高速贴近目标的沙贼。
- *
- * <p>攀爬标记由服务端根据水平碰撞更新并同步，移动属性则与 1.21 实体的实际数值对齐。
- * 这保留了蜘蛛式地形通过能力，同时继续使用本项目统一的行为树处理追击和近战。</p>
- */
+/// 能攀爬墙面并高速贴近目标的沙贼。
+///
+/// <p>攀爬标记由服务端根据水平碰撞更新并同步，移动属性则与 1.21 实体的实际数值对齐。
+/// 这保留了蜘蛛式地形通过能力，同时继续使用本项目统一的行为树处理追击和近战。</p>
 public class SandPoacher extends BaseMonster {
     private static final EntityDataAccessor<Byte> CLIMBING =
             SynchedEntityData.defineId(
@@ -68,10 +66,8 @@ public class SandPoacher extends BaseMonster {
         targetSelector.addGoal(3, new IronGolemTargetGoal(this));
     }
 
-    /**
-     * 暴露稳定的行为契约供回归测试检查，避免测试世界里其他用例遗留的玩家
-     * 抢占更高优先级目标后，把“当前没选中铁傀儡”误判成“没有铁傀儡目标行为”。
-     */
+    /// 暴露稳定的行为契约供回归测试检查，避免测试世界里其他用例遗留的玩家
+    /// 抢占更高优先级目标后，把“当前没选中铁傀儡”误判成“没有铁傀儡目标行为”。
     boolean hasIronGolemTargetGoal() {
         return targetSelector.getAvailableGoals().stream()
                 .anyMatch(wrapped -> wrapped.getGoal() instanceof IronGolemTargetGoal);

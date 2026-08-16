@@ -36,16 +36,14 @@ import org.joml.Vector3f;
 import java.util.Comparator;
 import java.util.Objects;
 
-/**
- * 长矛武器衍生弹幕的统一实体核心。
- *
- * <p>子类只实现 {@link #updateMotion()} 和必要表现。服务端先计算本 tick 速度，再交给原版
- * {@link AbstractHurtingProjectile} 对完整移动向量执行一次 swept collision，避免旧实现先移动一次、
- * 再手动移动一次却只检测第一段路径的问题。</p>
- *
- * <p>发射事务安装快照后，伤害、击退、暴击与穿甲均来自冻结数据；换手、前缀变化或玩家属性变化
- * 不会影响飞行中的长矛弹幕。</p>
- */
+/// 长矛武器衍生弹幕的统一实体核心。
+///
+/// <p>子类只实现 {@link #updateMotion()} 和必要表现。服务端先计算本 tick 速度，再交给原版
+/// {@link AbstractHurtingProjectile} 对完整移动向量执行一次 swept collision，避免旧实现先移动一次、
+/// 再手动移动一次却只检测第一段路径的问题。</p>
+///
+/// <p>发射事务安装快照后，伤害、击退、暴击与穿甲均来自冻结数据；换手、前缀变化或玩家属性变化
+/// 不会影响飞行中的长矛弹幕。</p>
 public abstract class SpearProjectile extends AbstractHurtingProjectile
         implements ProjectileCombatSnapshotCarrier {
     private static final String MOTION_TAG = "Motion";
@@ -63,9 +61,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile
             SynchedEntityData.defineId(SpearProjectile.class, EntityDataSerializers.FLOAT);
 
     public int lifetime = 40;
-    /**
-     * {@code -1} 表示不限；正数只在成功伤害后递减。
-     */
+    /// {@code -1} 表示不限；正数只在成功伤害后递减。
     public int pierceRemaining = 1;
     protected float attackDamageFactor = 1.0F;
     protected float baseAttackDamage;
@@ -105,7 +101,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile
         entityData.define(DATA_DIRECTION, new Vector3f());
     }
 
-    /** 客户端同步只服务运动和渲染，不参与战斗数值判定。 */
+    /// 客户端同步只服务运动和渲染，不参与战斗数值判定。
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
         super.onSyncedDataUpdated(data);
@@ -124,10 +120,8 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile
         }
     }
 
-    /**
-     * 注入旧组件声明。当前武器族迁移完成前，尚未走统一事务的旧生成器仍在这里于“生成时”读取一次
-     * 所有者基础伤害；命中阶段不会再读取。统一事务安装快照后快照始终具有最高优先级。
-     */
+    /// 注入旧组件声明。当前武器族迁移完成前，尚未走统一事务的旧生成器仍在这里于“生成时”读取一次
+    /// 所有者基础伤害；命中阶段不会再读取。统一事务安装快照后快照始终具有最高优先级。
     public void setProjComponent(SpearProjectileComponent component, @Nullable LivingEntity owner) {
         projComponent = Objects.requireNonNull(component, "Projectile component must not be null");
         gravity = component.gravity();
@@ -139,11 +133,12 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile
         }
     }
 
-    /** 子类更新 {@link #velocity}，不得在这里直接移动实体或另做碰撞扫描。 */
+    /// 子类更新 {@link #velocity}，不得在这里直接移动实体或另做碰撞扫描。
     protected abstract void updateMotion();
 
     /**
-     * 计算生成时初速度；子类可以调整速度但不能解析命中伤害。
+     * 计算初始速度。默认返回direction.scale(speed)
+     * 子类可覆写以实现不同的初始速度计算方式。
      */
     protected Vec3 initVelocity(@Nullable LivingEntity owner, Vec3 direction, float speed) {
         return direction.scale(speed);
@@ -246,16 +241,12 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile
         return combatState.canHit(impacted.getUUID(), allowsRepeatedHits());
     }
 
-    /**
-     * 持续云雾类子弹幕可开启重复命中，并必须自行实现明确的 tick 冷却。
-     */
+    /// 持续云雾类子弹幕可开启重复命中，并必须自行实现明确的 tick 冷却。
     protected boolean allowsRepeatedHits() {
         return false;
     }
 
-    /**
-     * 唯一实体命中入口，由原版 swept collision 调用。
-     */
+    /// 唯一实体命中入口，由原版 swept collision 调用。
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (!level().isClientSide) {
@@ -273,13 +264,13 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile
     }
 
     /**
-     * 子类命中特效钩子；只在伤害成功后执行。
+     * 应用击中特效。子类可覆写以自定义特效。
      */
     protected void applyHitEffect(LivingEntity owner, Entity target) {
         // 基础长矛不附带命中特效；具体长矛应覆写此方法，并沿用已确认的命中结果。
     }
 
-    /** 只在伤害成功后扣减穿透预算。 */
+    /// 只在伤害成功后扣减穿透预算。
     protected void applyPenetration() {
         if (pierceRemaining > 0 && --pierceRemaining == 0 && !level().isClientSide) {
             discard();
@@ -287,7 +278,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile
     }
 
     /**
-     * 执行一次命中。返回值只代表伤害是否真正成功，供带额外粒子/冷却的子类可靠编排。
+     * 造成伤害。编排子方法调用，子类可按需覆写 {@link #getDamage()} / {@link #applyHitEffect} / {@link #applyPenetration()}。
      */
     protected boolean doHurt(Entity rawTarget) {
         if (!canHitEntity(rawTarget)) {
@@ -577,7 +568,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile
         return 1.0F;
     }
 
-    /** 重力由 {@link #prepareServerMotion()} 精确应用一次，阻止原版再次叠加。 */
+    /// 重力由 {@link #prepareServerMotion()} 精确应用一次，阻止原版再次叠加。
     @Override
     public double getDefaultGravity() {
         return 0.0;

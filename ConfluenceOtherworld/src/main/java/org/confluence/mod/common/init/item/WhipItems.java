@@ -26,17 +26,13 @@ import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifier
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 鞭子物品注册。
- *
- * <p>每种普通鞭子只在这里声明数值和效果差异。发射、轨迹、碰撞、耐久和按键配置由
- * {@link BaseWhipItem} 统一处理；对应的独立鞭痕效果也在同一次声明中注册。</p>
- */
+/// 鞭子物品注册。
+///
+/// <p>每种普通鞭子只在这里声明数值和效果差异。发射、轨迹、碰撞、耐久和按键配置由
+/// {@link BaseWhipItem} 统一处理；对应的独立鞭痕效果也在同一次声明中注册。</p>
 public final class WhipItems {
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
-    /**
-     * 当前鞭节模型沿纵轴占四个像素，因此使用四像素间距首尾衔接。
-     */
+    /// 当前鞭节模型沿纵轴占四个像素，因此使用四像素间距首尾衔接。
     private static final int DEFAULT_SEGMENT_SPACING_PIXELS = 4;
     private static final List<RegistryObject<WhipTagEffect>> TAG_EFFECTS = new ArrayList<>();
 
@@ -117,9 +113,7 @@ public final class WhipItems {
 
     public static void init() {}
 
-    /**
-     * 返回本体注册的全部鞭痕效果，供免疫 DataMap 和覆盖检查复用。
-     */
+    /// 返回本体注册的全部鞭痕效果，供免疫 DataMap 和覆盖检查复用。
     public static List<RegistryObject<WhipTagEffect>> whipTagEffects() {
         return List.copyOf(TAG_EFFECTS);
     }

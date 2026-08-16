@@ -167,23 +167,17 @@ public enum KillBoard implements IGlobalData {
         }
     }
 
-    /**
-     * 为网络编码创建稳定快照，避免编码过程读取到正在变化的服务端集合。
-     */
+    /// 为网络编码创建稳定快照，避免编码过程读取到正在变化的服务端集合。
     public Object2BooleanMap<EntityType<?>> defeatedBossesSnapshot() {
         return new Object2BooleanOpenHashMap<>(defeatedBosses);
     }
 
-    /**
-     * 为网络编码创建稳定的事件进度快照。
-     */
+    /// 为网络编码创建稳定的事件进度快照。
     public Object2BooleanMap<ResourceKey<? extends GameEvent>> defeatedEventsSnapshot() {
         return new Object2BooleanOpenHashMap<>(defeatedEvents);
     }
 
-    /**
-     * 在客户端主线程一次性应用完整击杀榜状态。
-     */
+    /// 在客户端主线程一次性应用完整击杀榜状态。
     public void applyNetworkState(
             Object2BooleanMap<EntityType<?>> bosses,
             Object2BooleanMap<ResourceKey<? extends GameEvent>> events,

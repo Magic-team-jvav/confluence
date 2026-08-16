@@ -21,9 +21,7 @@ import java.util.Map;
 public class NPCDialogLoader extends SimpleJsonResourceReloadListener {
     private static final Codec<Map<EntityType<?>, NPCDialog>> CODEC =
             Codec.unboundedMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec(), NPCDialog.CODEC);
-    /**
-     * SimpleJsonResourceReloadListener 会移除监听目录和 .json 后缀。
-     */
+    /// SimpleJsonResourceReloadListener 会移除监听目录和 .json 后缀。
     private static final ResourceLocation PATH = Confluence.asResource("dialogs");
     private static NPCDialogLoader INSTANCE;
     private Map<EntityType<?>, NPCDialog> dialogs = ImmutableMap.of();

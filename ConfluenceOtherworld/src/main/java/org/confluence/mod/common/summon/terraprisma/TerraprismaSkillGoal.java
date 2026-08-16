@@ -2,9 +2,7 @@ package org.confluence.mod.common.summon.terraprisma;
 
 import org.confluence.mod.common.summon.SummonGoal;
 
-/**
- * 为泰拉棱镜技能提供持续时间与冷却。
- */
+/// 为泰拉棱镜技能提供持续时间与冷却。
 abstract class TerraprismaSkillGoal extends SummonGoal<TerraprismaSummon> {
     private final int duration;
     private final int baseCooldown;

@@ -6,15 +6,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
 
-/**
- * 本体生物注册共用的属性模板构建器。
- *
- * <p>这里保存的是从 1.21.1 侧迁移过来的基础数值。具体实体仍然可以继续覆盖移动速度、
- * 击退抗性等差异项，但不应该把这些零散数值重新塞回每个实体类里。</p>
- *
- * <p>原版飞行移动控制在实体离地后读取 {@link Attributes#FLYING_SPEED}，因此标记为飞行的
- * 实体必须同步写入飞行速度，否则会出现空中移动速度为零、贴地滑行或无法追击的问题。</p>
- */
+/// 本体生物注册共用的属性模板构建器。
+///
+/// <p>这里保存的是从 1.21.1 侧迁移过来的基础数值。具体实体仍然可以继续覆盖移动速度、
+/// 击退抗性等差异项，但不应该把这些零散数值重新塞回每个实体类里。</p>
+///
+/// <p>原版飞行移动控制在实体离地后读取 {@link Attributes#FLYING_SPEED}，因此标记为飞行的
+/// 实体必须同步写入飞行速度，否则会出现空中移动速度为零、贴地滑行或无法追击的问题。</p>
 public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
     private double movementSpeed;
     private boolean flying;

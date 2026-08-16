@@ -4,12 +4,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
@@ -17,9 +15,7 @@ import org.confluence.mod.common.init.ModDamageTypes;
 
 import java.util.Comparator;
 
-/**
- * 猪鲨链球发射的可追踪气泡。
- */
+/// 猪鲨链球发射的可追踪气泡。
 public final class FlaironBubbleProjectile
         extends FlailAuxiliaryProjectile {
     private static final EntityDataAccessor<Float> SCALE =
@@ -46,9 +42,7 @@ public final class FlaironBubbleProjectile
         entityData.define(SCALE, 0.25F);
     }
 
-    /**
-     * 服务端创建时随机确定尺寸，随后由实体同步数据传给客户端。
-     */
+    /// 服务端创建时随机确定尺寸，随后由实体同步数据传给客户端。
     public void randomizeScale() {
         entityData.set(SCALE, 0.25F + random.nextFloat() * 0.15F);
     }
@@ -74,10 +68,8 @@ public final class FlaironBubbleProjectile
         Vec3 velocity = getDeltaMovement();
         if (target != null) {
             if (!hasHadTarget) {
-                /*
-                 * 与 1.21 行为一致：首次找到目标后，从当前时刻起再保留最多
-                 * 160 tick，避免默认四十 tick 在追踪途中提前消失。
-                 */
+                /// 与 1.21 行为一致：首次找到目标后，从当前时刻起再保留最多
+                /// 160 tick，避免默认四十 tick 在追踪途中提前消失。
                 hasHadTarget = true;
                 setMaximumLifetime(getLifetime() + TARGET_LIFETIME);
             }

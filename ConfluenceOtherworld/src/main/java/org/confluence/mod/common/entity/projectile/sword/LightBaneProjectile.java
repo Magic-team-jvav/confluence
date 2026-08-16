@@ -10,12 +10,10 @@ import org.confluence.mod.common.init.ModParticleTypes;
 
 import javax.annotation.Nullable;
 
-/**
- * 魔光剑剑气。
- *
- * <p>这里不再表现为一把随机游走的飞剑，而是在玩家视线前方短暂展开一段暗影判定。
- * 命中、击退和伤害仍然复用剑气通用快照；显示则交给客户端渲染器和粒子。</p>
- */
+/// 魔光剑剑气。
+///
+/// <p>这里不再表现为一把随机游走的飞剑，而是在玩家视线前方短暂展开一段暗影判定。
+/// 命中、击退和伤害仍然复用剑气通用快照；显示则交给客户端渲染器和粒子。</p>
 public class LightBaneProjectile extends AreaSwordProjectile {
     public LightBaneProjectile(EntityType<LightBaneProjectile> entityType, Level pLevel) {
         super(entityType, pLevel, 2.4, 1.45, 1.0, 0.65, -0.15);

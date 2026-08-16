@@ -23,13 +23,11 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 丛林黄蜂。
- *
- * <p>黄蜂的射击与战斗走位是 1.21 中独立于普通飞行预制体的特例：射击前停止导航并
- * 转正，发射后按固定周期重新寻找悬空路径。相关计时保留在实体专用节点中，避免为单个
- * 特例增加公共飞行参数。</p>
- */
+/// 丛林黄蜂。
+///
+/// <p>黄蜂的射击与战斗走位是 1.21 中独立于普通飞行预制体的特例：射击前停止导航并
+/// 转正，发射后按固定周期重新寻找悬空路径。相关计时保留在实体专用节点中，避免为单个
+/// 特例增加公共飞行参数。</p>
 public class Hornet extends BaseFlyingMonster {
     private static final RawAnimation IDLE =
             RawAnimation.begin().thenLoop("misc.idle");
@@ -94,9 +92,7 @@ public class Hornet extends BaseFlyingMonster {
         return true;
     }
 
-    /**
-     * 黄蜂可以穿过门洞，但不会把水面当作可漂浮路径。
-     */
+    /// 黄蜂可以穿过门洞，但不会把水面当作可漂浮路径。
     @Override
     protected PathNavigation createNavigation(Level level) {
         FlyingPathNavigation navigation = new FlyingPathNavigation(this, level) {
@@ -178,10 +174,8 @@ public class Hornet extends BaseFlyingMonster {
         }
     }
 
-    /**
-     * 无战斗目标时使用的原版黄蜂悬空游荡节点。
-     * 幼蜂沿用同一套路径选择，只替换战斗节点。
-     */
+    /// 无战斗目标时使用的原版黄蜂悬空游荡节点。
+    /// 幼蜂沿用同一套路径选择，只替换战斗节点。
     protected class HornetWanderNode extends BTNode {
         private boolean moving;
 

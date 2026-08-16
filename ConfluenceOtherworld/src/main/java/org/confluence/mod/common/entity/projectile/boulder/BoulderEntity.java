@@ -43,19 +43,15 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 import java.util.*;
 import java.util.function.Predicate;
 
-/**
- * 所有巨石变体共享的运动、碰撞和持久化基类。
- *
- * <p>机关、特殊种子及子类都可以在生成后调整巨石参数，因此这些参数属于实体实例的玩法状态，
- * 不能只依赖构造器默认值。区块重载时还必须延续发射者、寿命和逐目标命中冷却；当前版本格式若
- * 损坏则直接使实体失效，避免用部分默认值继续造成伤害或触发移除效果。</p>
- */
+/// 所有巨石变体共享的运动、碰撞和持久化基类。
+///
+/// <p>机关、特殊种子及子类都可以在生成后调整巨石参数，因此这些参数属于实体实例的玩法状态，
+/// 不能只依赖构造器默认值。区块重载时还必须延续发射者、寿命和逐目标命中冷却；当前版本格式若
+/// 损坏则直接使实体失效，避免用部分默认值继续造成伤害或触发移除效果。</p>
 public class BoulderEntity extends Projectile implements IPortProjectileExtension {
     public static final float SEARCH_RANGE = 31.5F;
 
-    /**
-     * 当前 1.20 实现专用的巨石运行状态根，不读取早期扁平字段。
-     */
+    /// 当前 1.20 实现专用的巨石运行状态根，不读取早期扁平字段。
     private static final String RUNTIME_TAG = "ConfluenceBoulderRuntime";
     private static final int RUNTIME_VERSION = 1;
     private static final float MIN_SAVED_RADIUS = 0.05F;
@@ -71,20 +67,16 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
         }
         return true;
     };
-    /**
-     * 同一巨石对每个目标已经消耗的碰撞冷却。它不是缓存：丢失后目标会在重载后立即再次受伤。
-     */
+    /// 同一巨石对每个目标已经消耗的碰撞冷却。它不是缓存：丢失后目标会在重载后立即再次受伤。
     private final Object2IntOpenHashMap<UUID> hitHistory = new Object2IntOpenHashMap<>();
 
-    /**
-     * 当前格式解析失败后仅允许实体无副作用地退出。
-     */
+    /// 当前格式解析失败后仅允许实体无副作用地退出。
     private boolean invalidRuntimeState;
 
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
 
-    // 以下字段是可由机关、特殊种子和子类修改的实例参数，必须整体参与存档。
+    // 可修改参数
     public float radius = 0.5F;
     public int maxRemoveTick = 1200;
     public int maxStillTick = 20;
@@ -92,12 +84,10 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
     public double minRemoveSpeed = 0.007;
     public double bounceFactor = 0.3;
     public double frictionFactor = 0.9;
-    /**
-     * 分裂代数，0 表示原始巨石。
-     */
+    /// 分裂代数，0 表示原始巨石。
     public int generation = 0;
 
-    /** 已连续低于移除速度阈值的 tick 数。 */
+    // 分裂代数，0为原始巨石
     protected int stillTickCount;
 
     public BoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
@@ -311,7 +301,7 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
         Entity entity = entityHitResult.getEntity();
         UUID uuid1 = entity.getUUID();
 
-        // 巨石会在短时间内忽略同一个目标，避免贴身碰撞时每 tick 重复结算伤害。
+        // TODO 需要重写
         int i = hitHistory.containsKey(uuid1) ? hitHistory.addTo(uuid1, -1) : 0;
         if (i <= 0) {
             float damage = 100.0F;
@@ -459,9 +449,7 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
         tag.put(RUNTIME_TAG, runtime);
     }
 
-    /**
-     * 当前版本要求字段和 NBT 类型完整，避免缺字段时静默混用构造器默认值。
-     */
+    /// 当前版本要求字段和 NBT 类型完整，避免缺字段时静默混用构造器默认值。
     private static boolean hasCurrentRuntimeShape(CompoundTag runtime) {
         return runtime.contains("Version", Tag.TAG_INT)
                 && runtime.getInt("Version") == RUNTIME_VERSION
@@ -483,9 +471,7 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
         return Double.isFinite(value) && value >= 0.0;
     }
 
-    /**
-     * 先完整校验再提交到实例字段，防止半张有效表在后续校验失败时残留。
-     */
+    /// 先完整校验再提交到实例字段，防止半张有效表在后续校验失败时残留。
     private boolean readHitHistory(ListTag savedHistory) {
         Object2IntOpenHashMap<UUID> restoredHistory = new Object2IntOpenHashMap<>();
         Set<UUID> seenTargets = new HashSet<>();

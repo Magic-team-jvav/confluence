@@ -5,9 +5,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summon.SummonGoal;
 import org.confluence.mod.common.summon.SummonPose;
 
-/**
- * 控制泰拉棱镜的普通追击。
- */
+/// 控制泰拉棱镜的普通追击。
 final class TerraprismaChaseGoal extends SummonGoal<TerraprismaSummon> {
     TerraprismaChaseGoal(TerraprismaSummon summon) {
         super(summon);

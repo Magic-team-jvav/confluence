@@ -95,11 +95,9 @@ public final class HouseValidater {
                 if (dx > MAX_RADIUS || dy > MAX_RADIUS || dz > MAX_RADIUS) continue;
 
                 BlockState nbState = level.getBlockState(neighbor);
-                /*
-                 * 桌椅和墙面光源通常是房间边界的一部分，不应加入可行走空间的洪泛集合，
-                 * 但必须在检查边界时计入设施。旧实现只检查已经入队的空气节点，导致普通
-                 * 楼梯椅、工作台和火把永远无法被发现，合法房屋因此必然失败。
-                 */
+                /// 桌椅和墙面光源通常是房间边界的一部分，不应加入可行走空间的洪泛集合，
+                /// 但必须在检查边界时计入设施。旧实现只检查已经入队的空气节点，导致普通
+                /// 楼梯椅、工作台和火把永远无法被发现，合法房屋因此必然失败。
                 if (!hasLight && level.getLightEmission(neighbor) >= MIN_LIGHT) hasLight = true;
                 if (!hasChair && nbState.is(ModTags.Blocks.NPC_HOUSE_CHAIR)) hasChair = true;
                 if (!hasTable && nbState.is(ModTags.Blocks.NPC_HOUSE_TABLE)) hasTable = true;

@@ -25,12 +25,10 @@ public class JewelSquirrel extends Squirrel {
         setVariant(CritterVariantUtil.uniform(random, JEWEL_VARIANTS));
     }
 
-    /**
-     * 宝石松鼠的后代必须保留宝石松鼠实体类型。
-     *
-     * <p>这里显式覆盖普通松鼠的后代工厂，避免附属模组或运行时繁殖调用
-     * 把宝石松鼠错误地转换成普通松鼠。</p>
-     */
+    /// 宝石松鼠的后代必须保留宝石松鼠实体类型。
+    ///
+    /// <p>这里显式覆盖普通松鼠的后代工厂，避免附属模组或运行时繁殖调用
+    /// 把宝石松鼠错误地转换成普通松鼠。</p>
     @Override
     public JewelSquirrel getBreedOffspring(
             ServerLevel level,

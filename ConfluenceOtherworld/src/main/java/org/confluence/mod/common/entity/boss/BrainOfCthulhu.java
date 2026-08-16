@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.boss;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,19 +18,10 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.BTStatus;
-import org.confluence.mod.common.entity.ai.bt.composite.RoundRobinSelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.DashAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.VisualNeuron;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -40,16 +32,14 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.*;
 
-/**
- * 克苏鲁之脑及其两阶段战斗控制器。
- *
- * <p>第一阶段会分批召唤二十只视神经元。Boss 维护每只神经元的精确 UUID、编队位置和出击节奏，
- * 本体在所有神经元被击败前不可受伤。神经元不会自主索敌，只有处于待命状态的个体才会接受 Boss
- * 发出的攻击命令。第二阶段才由本体执行瞬移、冲刺与追击行为。</p>
- *
- * <p>神经元是可独立存档的实体，因此阶段推进不能只依赖附近实体数量。权威 UUID 集合会持久化；
- * 子实体在 Boss 区块卸载期间死亡时通过世界账本回报，Boss 重新加载后再统一结算。</p>
- */
+/// 克苏鲁之脑及其两阶段战斗控制器。
+///
+/// <p>第一阶段会分批召唤二十只视神经元。Boss 维护每只神经元的精确 UUID、编队位置和出击节奏，
+/// 本体在所有神经元被击败前不可受伤。神经元不会自主索敌，只有处于待命状态的个体才会接受 Boss
+/// 发出的攻击命令。第二阶段才由本体执行瞬移、冲刺与追击行为。</p>
+///
+/// <p>神经元是可独立存档的实体，因此阶段推进不能只依赖附近实体数量。权威 UUID 集合会持久化；
+/// 子实体在 Boss 区块卸载期间死亡时通过世界账本回报，Boss 重新加载后再统一结算。</p>
 public class BrainOfCthulhu extends BaseBoss {
     private static final RawAnimation CLOSED =
             RawAnimation.begin().thenLoop("close");
@@ -189,10 +179,8 @@ public class BrainOfCthulhu extends BaseBoss {
         entityData.define(DATA_PHASE_TWO_STATE_TICKS, 0);
     }
 
-    /**
-     * 第一阶段使用与 1.21 相同的技能段循环：靠近、淡出惯性、重新定位、淡入靠近。
-     * 飞眼怪不会随本体瞬移，而是继续追逐更新后的编队位置，形成跨越玩家的大范围扫掠轨迹。
-     */
+    /// 第一阶段使用与 1.21 相同的技能段循环：靠近、淡出惯性、重新定位、淡入靠近。
+    /// 飞眼怪不会随本体瞬移，而是继续追逐更新后的编队位置，形成跨越玩家的大范围扫掠轨迹。
     private void tickPhaseOneCycle(List<VisualNeuron> loadedNeurons) {
         switch (phaseOneState) {
             case SUMMONING -> {
@@ -234,9 +222,7 @@ public class BrainOfCthulhu extends BaseBoss {
         entityData.set(DATA_PHASE_ONE_STATE_TICKS, 0);
     }
 
-    /**
-     * 复刻 1.21 的首次登场节奏：第 21 刻开始，每两刻召唤一只神经元。
-     */
+    /// 复刻 1.21 的首次登场节奏：第 21 刻开始，每两刻召唤一只神经元。
     private void tickNeuronSummoning() {
         if (summoningComplete()) return;
         summonTicks++;
@@ -266,9 +252,7 @@ public class BrainOfCthulhu extends BaseBoss {
         }
     }
 
-    /**
-     * 按照 1.21 的球坐标范围生成神经元初始编队偏移。
-     */
+    /// 按照 1.21 的球坐标范围生成神经元初始编队偏移。
     private Vec3 createNeuronHomeOffset() {
         double radius = random.nextFloat() + 5.0;
         double theta = random.nextFloat() * Math.PI;
@@ -329,10 +313,8 @@ public class BrainOfCthulhu extends BaseBoss {
         }
     }
 
-    /**
-     * 第二阶段沿用 1.21 的技能顺序：短暂变形、曲线绕行、冲刺、淡出、重新定位并淡入。
-     * 额外冲刺前会重新经过绕行段，不能直接在上一段冲刺结束的位置再次启动冲刺。
-     */
+    /// 第二阶段沿用 1.21 的技能顺序：短暂变形、曲线绕行、冲刺、淡出、重新定位并淡入。
+    /// 额外冲刺前会重新经过绕行段，不能直接在上一段冲刺结束的位置再次启动冲刺。
     private void tickPhaseTwoCycle() {
         Player target = getTarget() instanceof Player player && player.isAlive()
                 ? player
@@ -416,9 +398,7 @@ public class BrainOfCthulhu extends BaseBoss {
         entityData.set(DATA_PHASE_TWO_STATE_TICKS, 0);
     }
 
-    /**
-     * 构造第二阶段绕行曲线。控制点位于玩家周围，终点略高于控制点，形成 1.21 的掠过轨迹。
-     */
+    /// 构造第二阶段绕行曲线。控制点位于玩家周围，终点略高于控制点，形成 1.21 的掠过轨迹。
     private void initializeStalkingCurve(Player target) {
         double radius = 16.0 + random.nextDouble();
         double angle = random.nextDouble() * Mth.TWO_PI;
@@ -431,9 +411,7 @@ public class BrainOfCthulhu extends BaseBoss {
         setDeltaMovement(Vec3.ZERO);
     }
 
-    /**
-     * 冲刺曲线先穿过玩家附近，再延伸到玩家另一侧，避免自动索敌式折线追踪。
-     */
+    /// 冲刺曲线先穿过玩家附近，再延伸到玩家另一侧，避免自动索敌式折线追踪。
     private void initializeDashCurve(Player target) {
         Vec3 fromTarget = target.position().subtract(position());
         Vec3 horizontal = fromTarget.multiply(1.0, 0.0, 1.0);
@@ -479,12 +457,10 @@ public class BrainOfCthulhu extends BaseBoss {
         ensureIllusions();
     }
 
-    /**
-     * 保证第二阶段始终存在三个不同槽位的镜像幻象。
-     *
-     * <p>幻象不写入区块存档，因此本体从存档恢复、幻象被外部命令移除或实体生成暂时失败时，
-     * 都由这里按槽位补齐。已有幻象会先从本体的部件列表中恢复引用，避免重复生成。</p>
-     */
+    /// 保证第二阶段始终存在三个不同槽位的镜像幻象。
+    ///
+    /// <p>幻象不写入区块存档，因此本体从存档恢复、幻象被外部命令移除或实体生成暂时失败时，
+    /// 都由这里按槽位补齐。已有幻象会先从本体的部件列表中恢复引用，避免重复生成。</p>
     private void ensureIllusions() {
         if (!phase2 || !(level() instanceof ServerLevel serverLevel)) {
             return;
@@ -546,9 +522,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 0.0, Math.PI, 0.0, 16);
     }
 
-    /**
-     * 第二阶段在玩家较远处重新显现，并保留安全碰撞检查，避免传送进方块或贴到玩家脸上。
-     */
+    /// 第二阶段在玩家较远处重新显现，并保留安全碰撞检查，避免传送进方块或贴到玩家脸上。
     private void doPhaseTwoTeleport() {
         teleportAroundTarget(
                 10.0, 11.0,
@@ -556,9 +530,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 2.0, 24);
     }
 
-    /**
-     * 保留 1.21 的球坐标取样范围，同时跳过会把实体放进方块或液体的位置。
-     */
+    /// 保留 1.21 的球坐标取样范围，同时跳过会把实体放进方块或液体的位置。
     private void teleportAroundTarget(
             double minimumRadius,
             double maximumRadius,
@@ -640,14 +612,12 @@ public class BrainOfCthulhu extends BaseBoss {
         bossEvent.setProgress(getEncounterProgress());
     }
 
-    /**
-     * 第一阶段 Boss 条使用固定的遭遇总生命上限。
-     *
-     * <p>神经元死亡后只能减少当前生命，不能同时从最大生命中移除；否则每击杀一只神经元，
-     * 分母也随之缩小，Boss 条就会错误回升。仍被追踪但暂未加载的神经元按满生命计入当前值，
-     * 避免区块短暂卸载被误判为已经击败；开场尚未生成的神经元也预占完整生命，防止召唤阶段
-     * Boss 条从半血反向增长。</p>
-     */
+    /// 第一阶段 Boss 条使用固定的遭遇总生命上限。
+    ///
+    /// <p>神经元死亡后只能减少当前生命，不能同时从最大生命中移除；否则每击杀一只神经元，
+    /// 分母也随之缩小，Boss 条就会错误回升。仍被追踪但暂未加载的神经元按满生命计入当前值，
+    /// 避免区块短暂卸载被误判为已经击败；开场尚未生成的神经元也预占完整生命，防止召唤阶段
+    /// Boss 条从半血反向增长。</p>
     public float getEncounterProgress() {
         if (phase2) return getHealth() / getMaxHealth();
         List<VisualNeuron> loaded = findOwnedLoadedNeurons();
@@ -677,9 +647,7 @@ public class BrainOfCthulhu extends BaseBoss {
         return phase2;
     }
 
-    /**
-     * 脑的两阶段位移都由自身曲线控制，不叠加原版重力。
-     */
+    /// 脑的两阶段位移都由自身曲线控制，不叠加原版重力。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -704,9 +672,7 @@ public class BrainOfCthulhu extends BaseBoss {
         return level().isClientSide ? entityData.get(DATA_PHASE_TWO) : phase2;
     }
 
-    /**
-     * 返回客户端插值后的显隐进度。第一阶段生成时由半透明逐渐显现，重新定位前后分别淡出和淡入。
-     */
+    /// 返回客户端插值后的显隐进度。第一阶段生成时由半透明逐渐显现，重新定位前后分别淡出和淡入。
     public float getFadeProgress(float partialTick) {
         if (isPhase2()) {
             PhaseTwoState state = level().isClientSide

@@ -14,13 +14,11 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-/**
- * 飞龙的十二段实体链、空中盘旋与往返突袭行为。
- *
- * <p>飞龙没有目标时围绕定期更换的高空中心做圆周运动，最低巡航中心位于 Y=105；
- * 发现目标后停止盘旋，先以有限角速度调整朝向，再沿身体正前方高速穿过目标。近距离且
- * 玩家脚下悬空时会进入更快的俯冲段，避免把飞龙退化成普通蠕虫的直接追踪。</p>
- */
+/// 飞龙的十二段实体链、空中盘旋与往返突袭行为。
+///
+/// <p>飞龙没有目标时围绕定期更换的高空中心做圆周运动，最低巡航中心位于 Y=105；
+/// 发现目标后停止盘旋，先以有限角速度调整朝向，再沿身体正前方高速穿过目标。近距离且
+/// 玩家脚下悬空时会进入更快的俯冲段，避免把飞龙退化成普通蠕虫的直接追踪。</p>
 public class Wyvern extends BaseWormMonster {
     public Wyvern(
             EntityType<? extends BaseWormMonster> type,
@@ -47,9 +45,7 @@ public class Wyvern extends BaseWormMonster {
         };
     }
 
-    /**
-     * 创建独立飞龙运动节点，包级入口供确定性行为测试使用。
-     */
+    /// 创建独立飞龙运动节点，包级入口供确定性行为测试使用。
     BTNode createMovementAction() {
         return new WyvernMovementAction(this);
     }
@@ -64,9 +60,7 @@ public class Wyvern extends BaseWormMonster {
         return ModSoundEvents.WYVERN_DEATH.get();
     }
 
-    /**
-     * 把 1.21 的盘旋与往返突袭状态收敛到一个持续运行的行为树节点。
-     */
+    /// 把 1.21 的盘旋与往返突袭状态收敛到一个持续运行的行为树节点。
     private static final class WyvernMovementAction extends BTNode {
         private static final double TURN_DISTANCE_SQR = 16.0 * 16.0;
         private static final double CIRCLE_RADIUS = 20.0;

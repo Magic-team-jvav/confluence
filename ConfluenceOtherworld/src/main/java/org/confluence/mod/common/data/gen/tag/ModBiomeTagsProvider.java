@@ -1,10 +1,10 @@
 package org.confluence.mod.common.data.gen.tag;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBiomeTagsProvider extends BiomeTagsProvider {
-    /**
-     * 常规地表与浅层地下结构允许出现的温带群系。
-     */
+    /// 常规地表与浅层地下结构允许出现的温带群系。
     private static final List<ResourceKey<Biome>> TEMPERATE_STRUCTURE_BIOMES = List.of(
             Biomes.BIRCH_FOREST,
             Biomes.CHERRY_GROVE,
@@ -47,9 +45,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
             Biomes.OLD_GROWTH_PINE_TAIGA
     );
 
-    /**
-     * 冰雪地下小屋及宽泛地下结构允许出现的寒冷群系。
-     */
+    /// 冰雪地下小屋及宽泛地下结构允许出现的寒冷群系。
     private static final List<ResourceKey<Biome>> ICY_STRUCTURE_BIOMES = List.of(
             Biomes.FROZEN_PEAKS,
             Biomes.FROZEN_RIVER,
@@ -62,9 +58,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
             Biomes.SNOWY_TAIGA
     );
 
-    /**
-     * 丛林地下小屋及宽泛地下结构允许出现的湿润群系。
-     */
+    /// 丛林地下小屋及宽泛地下结构允许出现的湿润群系。
     private static final List<ResourceKey<Biome>> JUNGLE_STRUCTURE_BIOMES = List.of(
             Biomes.JUNGLE,
             Biomes.SPARSE_JUNGLE,
@@ -222,9 +216,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         addStructureBiomeTags();
     }
 
-    /**
-     * 生成结构白名单标签。群系集合集中维护，避免多个手写 JSON 在加入或删除群系时产生偏差。
-     */
+    /// 生成结构白名单标签。群系集合集中维护，避免多个手写 JSON 在加入或删除群系时产生偏差。
     private void addStructureBiomeTags() {
         TagsProvider.TagAppender<Biome> enchantedSwordShrine = tag(ModTags.Biomes.HAS_STRUCTURE_ENCHANTED_SWORD_SHRINE);
         addBiomeGroups(enchantedSwordShrine, TEMPERATE_STRUCTURE_BIOMES, ICY_STRUCTURE_BIOMES, JUNGLE_STRUCTURE_BIOMES);
@@ -250,9 +242,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         );
     }
 
-    /**
-     * 将若干语义群系集合按声明顺序写入同一个标签。
-     */
+    /// 将若干语义群系集合按声明顺序写入同一个标签。
     @SafeVarargs
     private static void addBiomeGroups(
             TagsProvider.TagAppender<Biome> appender,

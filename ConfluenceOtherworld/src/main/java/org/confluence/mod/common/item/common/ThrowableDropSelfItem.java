@@ -26,13 +26,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/**
- * 可回收投掷武器的不可变动作声明。
- *
- * <p>物品不再自行生成实体或提前扣除堆叠，而是把伤害、弹速、成本、冷却与弹幕布局交给
- * MagicLib 的服务端事务。这样暴击和远程属性只解析一次，同时获得成本回滚、同 tick 幂等和
- * 冻结战斗快照；声音与使用统计也只在实体确实加入世界后提交。</p>
- */
+/// 可回收投掷武器的不可变动作声明。
+///
+/// <p>物品不再自行生成实体或提前扣除堆叠，而是把伤害、弹速、成本、冷却与弹幕布局交给
+/// MagicLib 的服务端事务。这样暴击和远程属性只解析一次，同时获得成本回滚、同 tick 幂等和
+/// 冻结战斗快照；声音与使用统计也只在实体确实加入世界后提交。</p>
 public class ThrowableDropSelfItem extends Item implements ProjectileWeaponAction {
     protected final Supplier<EntityType<? extends ThrowableDropSelfProjectile>> typeSup;
     protected final boolean dropSelf;
@@ -66,9 +64,7 @@ public class ThrowableDropSelfItem extends Item implements ProjectileWeaponActio
         return InteractionResultHolder.sidedSuccess(stack, false);
     }
 
-    /**
-     * 为本次服务端使用请求创建一份没有可变共享状态的发射动作。
-     */
+    /// 为本次服务端使用请求创建一份没有可变共享状态的发射动作。
     @Override
     public ProjectileFireAction createProjectileFireAction(ProjectileFireContext context) {
         return ProjectileFireAction.builder(
@@ -85,9 +81,7 @@ public class ThrowableDropSelfItem extends Item implements ProjectileWeaponActio
                 .build();
     }
 
-    /**
-     * 创建并配置一枚尚未加入世界的投掷物，保留原有散布计算。
-     */
+    /// 创建并配置一枚尚未加入世界的投掷物，保留原有散布计算。
     private ProjectileLaunch createLaunch(
             ProjectileFireContext context,
             ProjectileCombatSnapshot snapshot
@@ -110,9 +104,7 @@ public class ThrowableDropSelfItem extends Item implements ProjectileWeaponActio
         return new ProjectileLaunch(projectile, projectile.position(), projectile.getDeltaMovement());
     }
 
-    /**
-     * 仅在成本、冷却和实体生成全部成功后播放原有声音并记录统计。
-     */
+    /// 仅在成本、冷却和实体生成全部成功后播放原有声音并记录统计。
     private void onSuccessfulThrow(ProjectileFireContext context) {
         context.level().playSound(
                 null,

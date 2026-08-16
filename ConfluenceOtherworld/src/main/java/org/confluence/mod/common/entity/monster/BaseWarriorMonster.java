@@ -22,13 +22,11 @@ import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.UUID;
 
-/**
- * 通用陆行近战怪物，负责追击、近战、越障跃击和空闲漫游。
- *
- * <p>少数泰拉瑞亚怪物在发现目标后会额外加速。该差异由构造参数声明，
- * 公共实现统一管理瞬时属性修饰符和疾跑状态，防止每种僵尸都复制一套
- * 容易发生永久叠加的属性代码。</p>
- */
+/// 通用陆行近战怪物，负责追击、近战、越障跃击和空闲漫游。
+///
+/// <p>少数泰拉瑞亚怪物在发现目标后会额外加速。该差异由构造参数声明，
+/// 公共实现统一管理瞬时属性修饰符和疾跑状态，防止每种僵尸都复制一套
+/// 容易发生永久叠加的属性代码。</p>
 public class BaseWarriorMonster extends BaseMonster {
     private static final UUID PURSUIT_SPEED_UUID =
             UUID.fromString("90d2f39a-960e-48b2-bcf7-48a49b51d982");
@@ -49,11 +47,9 @@ public class BaseWarriorMonster extends BaseMonster {
                 LandSoundProfile.ROUTINE);
     }
 
-    /**
-     * 创建具有目标追击加速的陆行怪物。
-     *
-     * @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
-     */
+    /// 创建具有目标追击加速的陆行怪物。
+    ///
+    /// @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
     public BaseWarriorMonster(
             EntityType<? extends BaseWarriorMonster> type,
             Level level,
@@ -62,16 +58,14 @@ public class BaseWarriorMonster extends BaseMonster {
                 LandSoundProfile.ROUTINE);
     }
 
-    /**
-     * 创建使用指定基础移动动画的陆行怪物。
-     *
-     * <p>基础类不能默认播放走路和待机动画，因为冲锋怪、龙虾等子类使用的是另一套
-     * 动画键。由注册实体明确选择资源实际支持的档案，既保留通用控制器，也不会在
-     * 客户端持续请求不存在的动画。</p>
-     *
-     * @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
-     * @param animationProfile  该实体资源支持的基础移动动画
-     */
+    /// 创建使用指定基础移动动画的陆行怪物。
+    ///
+    /// <p>基础类不能默认播放走路和待机动画，因为冲锋怪、龙虾等子类使用的是另一套
+    /// 动画键。由注册实体明确选择资源实际支持的档案，既保留通用控制器，也不会在
+    /// 客户端持续请求不存在的动画。</p>
+    ///
+    /// @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
+    /// @param animationProfile  该实体资源支持的基础移动动画
     public BaseWarriorMonster(
             EntityType<? extends BaseWarriorMonster> type,
             Level level,
@@ -81,16 +75,14 @@ public class BaseWarriorMonster extends BaseMonster {
                 LandSoundProfile.ROUTINE);
     }
 
-    /**
-     * 创建具有指定移动动画与音效表现的通用陆行怪物。
-     *
-     * <p>动画和音效档案只描述同一套近战行为的表现差异。实体注册处选择档案后，
-     * 不需要为仅有资源差异的变种创建空壳子类。</p>
-     *
-     * @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
-     * @param animationProfile  实体资源支持的基础移动动画
-     * @param soundProfile      实体使用的环境、受伤与死亡音效组合
-     */
+    /// 创建具有指定移动动画与音效表现的通用陆行怪物。
+    ///
+    /// <p>动画和音效档案只描述同一套近战行为的表现差异。实体注册处选择档案后，
+    /// 不需要为仅有资源差异的变种创建空壳子类。</p>
+    ///
+    /// @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
+    /// @param animationProfile  实体资源支持的基础移动动画
+    /// @param soundProfile      实体使用的环境、受伤与死亡音效组合
     public BaseWarriorMonster(
             EntityType<? extends BaseWarriorMonster> type,
             Level level,
@@ -107,9 +99,7 @@ public class BaseWarriorMonster extends BaseMonster {
         this.soundProfile = soundProfile;
     }
 
-    /**
-     * 供特殊子类保留构造兼容；实际运行数值现在统一从实体属性读取。
-     */
+    /// 供特殊子类保留构造兼容；实际运行数值现在统一从实体属性读取。
     protected BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level,
                                  double ignoredMoveSpeed, double ignoredFollowRange) {
         this(type, level);
@@ -273,22 +263,18 @@ public class BaseWarriorMonster extends BaseMonster {
                         behavior.wanderRadiusOr(8)));
     }
 
-    /**
-     * 简单陆行怪的跃击参数。
-     */
+    /// 简单陆行怪的跃击参数。
     public record JumpProfile(
             double speedMultiplier,
             double maximumDistance,
             int cooldownTicks,
             int windupTicks) {}
 
-    /**
-     * 通用陆行资源可用的基础动画组合。
-     *
-     * <p>{@link #NONE} 留给具有专用控制器或非标准动画键的子类；
-     * {@link #WALK_ONLY} 在静止时停止控制器；{@link #WALK_IDLE} 在移动与待机
-     * 之间平滑切换；{@link #WALK_RUN_IDLE_ATTACK} 额外提供追击奔跑和独立攻击层。</p>
-     */
+    /// 通用陆行资源可用的基础动画组合。
+    ///
+    /// <p>{@link #NONE} 留给具有专用控制器或非标准动画键的子类；
+    /// {@link #WALK_ONLY} 在静止时停止控制器；{@link #WALK_IDLE} 在移动与待机
+    /// 之间平滑切换；{@link #WALK_RUN_IDLE_ATTACK} 额外提供追击奔跑和独立攻击层。</p>
     public enum LandAnimationProfile {
         NONE,
         WALK_ONLY,
@@ -296,12 +282,10 @@ public class BaseWarriorMonster extends BaseMonster {
         WALK_RUN_IDLE_ATTACK
     }
 
-    /**
-     * 共用陆行行为的变种音效档案。
-     *
-     * <p>这里只保存有限的表现组合；基础档案继续使用 {@link BaseMonster}
-     * 的常规受伤与死亡音效。新增仅有音效差异的变种时，在注册处选择对应档案即可。</p>
-     */
+    /// 共用陆行行为的变种音效档案。
+    ///
+    /// <p>这里只保存有限的表现组合；基础档案继续使用 {@link BaseMonster}
+    /// 的常规受伤与死亡音效。新增仅有音效差异的变种时，在注册处选择对应档案即可。</p>
     public enum LandSoundProfile {
         ROUTINE,
         ZOMBIE,

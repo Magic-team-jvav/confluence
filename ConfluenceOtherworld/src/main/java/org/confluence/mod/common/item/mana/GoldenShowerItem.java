@@ -17,9 +17,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.GoldenShowerProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-/**
- * 保留原有脉冲节奏、但让每一发都独立提交魔力事务的黄金雨法杖。
- */
+/// 保留原有脉冲节奏、但让每一发都独立提交魔力事务的黄金雨法杖。
 public class GoldenShowerItem extends ManaStaffItem<GoldenShowerProjectile> {
     public GoldenShowerItem() {
         super(ModRarity.LIGHT_RED, GoldenShowerProjectile::new, 20, 7, 30, 0, 0.04);
@@ -41,17 +39,13 @@ public class GoldenShowerItem extends ManaStaffItem<GoldenShowerProjectile> {
         return trigger == ProjectileFireTrigger.CONTINUOUS_USE_TICK;
     }
 
-    /**
-     * 持续脉冲只接受服务端确认仍在使用当前权杖的请求。
-     */
+    /// 持续脉冲只接受服务端确认仍在使用当前权杖的请求。
     @Override
     protected boolean validateAction(ProjectileFireContext context) {
         return isActivelyUsingCurrentWeapon(context);
     }
 
-    /**
-     * 每枚黄金雨只承担原始七点魔力成本的三分之一。
-     */
+    /// 每枚黄金雨只承担原始七点魔力成本的三分之一。
     @Override
     protected float resolveManaCost(ProjectileFireContext context) {
         return manaCost / 3.0F;
@@ -67,9 +61,7 @@ public class GoldenShowerItem extends ManaStaffItem<GoldenShowerProjectile> {
         }
     }
 
-    /**
-     * 保留原有每六 tick 一次的声音节奏。
-     */
+    /// 保留原有每六 tick 一次的声音节奏。
     @Override
     protected void playSuccessfulShot(ProjectileFireContext context, GoldenShowerProjectile projectile) {
         if (context.player().getUseItemRemainingTicks() % 6 == 0) {

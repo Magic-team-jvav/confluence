@@ -11,19 +11,17 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 
 import java.util.UUID;
 
-/**
- * 负责为 Boss 应用与难度、当前维度玩家数量有关的属性倍率。
- *
- * <p>基础属性以专家难度单人战为基准。经典、专家和大师难度分别使用
- * {@code 0.66}、{@code 1.0} 和 {@code 1.5} 倍属性；最大生命值还会乘以
- * 当前维度中的玩家数量，最多计算八名玩家。攻击伤害只随难度变化，与
- * 玩家数量无关。默认行为与 1.21 实现保持一致；具有原作特殊生命基准或多人公式的
- * Boss 可以只覆写生命倍率，不会改变公共攻击倍率。</p>
- *
- * <p>属性修饰符使用固定 UUID 并永久保存。无论 Boss 经由自然生成、
- * 召唤物品、事件脚本还是直接加入世界创建，这套逻辑都可以安全调用；
- * 区块重新加载时也不会重复叠加或把受伤的 Boss 重新回满生命值。</p>
- */
+/// 负责为 Boss 应用与难度、当前维度玩家数量有关的属性倍率。
+///
+/// <p>基础属性以专家难度单人战为基准。经典、专家和大师难度分别使用
+/// {@code 0.66}、{@code 1.0} 和 {@code 1.5} 倍属性；最大生命值还会乘以
+/// 当前维度中的玩家数量，最多计算八名玩家。攻击伤害只随难度变化，与
+/// 玩家数量无关。默认行为与 1.21 实现保持一致；具有原作特殊生命基准或多人公式的
+/// Boss 可以只覆写生命倍率，不会改变公共攻击倍率。</p>
+///
+/// <p>属性修饰符使用固定 UUID 并永久保存。无论 Boss 经由自然生成、
+/// 召唤物品、事件脚本还是直接加入世界创建，这套逻辑都可以安全调用；
+/// 区块重新加载时也不会重复叠加或把受伤的 Boss 重新回满生命值。</p>
 public final class BossMultiplayerEnhancement {
     private static final int MAX_PLAYER_COUNT = 8;
     private static final UUID HEALTH_MODIFIER_ID = PortAttributeModifier.rl2uuid(
@@ -37,11 +35,9 @@ public final class BossMultiplayerEnhancement {
 
     private BossMultiplayerEnhancement() {}
 
-    /**
-     * 按 Boss 所在位置的有效难度和当前维度玩家数量应用倍率。
-     *
-     * @param boss 需要强化的 Boss 主体
-     */
+    /// 按 Boss 所在位置的有效难度和当前维度玩家数量应用倍率。
+    ///
+    /// @param boss 需要强化的 Boss 主体
     public static void apply(LivingEntity boss) {
         if (boss.level().isClientSide) {
             return;

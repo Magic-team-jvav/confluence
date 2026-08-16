@@ -12,9 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * 让连弩烟花与箭矢使用同一当前格式冻结战斗快照。
- */
+/// 让连弩烟花与箭矢使用同一当前格式冻结战斗快照。
 @Mixin(FireworkRocketEntity.class)
 public abstract class FireworkRocketEntityMixin implements ProjectileCombatSnapshotCarrier {
     @Unique

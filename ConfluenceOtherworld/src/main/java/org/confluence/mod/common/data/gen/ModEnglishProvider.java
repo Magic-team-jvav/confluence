@@ -1860,12 +1860,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
     }
 
-    /**
-     * 注册生物与战斗相关声音的英文字幕。
-     *
-     * <p>字幕键与声音事件注册时声明的语言键保持一致；集中放在 Provider 内，
-     * 便于数据生成阶段直接检查重复键，并避免额外维护中间映射类。</p>
-     */
+    /// 注册生物与战斗相关声音的英文字幕。
+    ///
+    /// <p>字幕键与声音事件注册时声明的语言键保持一致；集中放在 Provider 内，
+    /// 便于数据生成阶段直接检查重复键，并避免额外维护中间映射类。</p>
     private void addCreatureSoundTranslations() {
         add("confluence.subtitle.routine_hurt", "Mob: Hurt");
         add("confluence.subtitle.routine_death", "Mob: Death");
@@ -1942,9 +1940,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.wall_of_flesh_summon", "Wall of Flesh: Awakens");
     }
 
-    /**
-     * 添加创造模式分页的英文名称，并控制主翻译方法的字节码长度。
-     */
+    /// 添加创造模式分页的英文名称，并控制主翻译方法的字节码长度。
     private void addCreativeTabTranslations() {
         add("creativetab.confluence.building_blocks", "Confluence | Buildings");
         add("creativetab.confluence.natural_blocks", "Confluence | Naturals");

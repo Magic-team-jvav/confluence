@@ -10,9 +10,7 @@ import org.confluence.mod.util.generation.variant.AboveFallenGeneration;
 import org.confluence.mod.util.generation.variant.ForwardGeneration;
 import org.confluence.mod.util.generation.variant.StillGeneration;
 
-/**
- * 注册可序列化纯弹幕布局的多态编解码器。
- */
+/// 注册追踪编解码器的类型
 public final class ModGenerationProviderTypes {
     public static final DeferredRegister<GenerationProvider> TYPES =
             DeferredRegister.create(ModCustomRegistries.Keys.GENERATION_PROVIDER, Confluence.MODID);

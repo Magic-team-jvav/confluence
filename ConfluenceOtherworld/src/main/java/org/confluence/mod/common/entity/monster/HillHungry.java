@@ -28,10 +28,8 @@ public class HillHungry extends TheHungry {
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
     }
 
-    /**
-     * 肉丘嘴部的饿鬼只负责守卫单个嘴部锚点，活动范围比血肉墙饿鬼短。
-     * 参数保留在具体实体中，避免共用父类再次把两种 Boss 的运动语义合并。
-     */
+    /// 肉丘嘴部的饿鬼只负责守卫单个嘴部锚点，活动范围比血肉墙饿鬼短。
+    /// 参数保留在具体实体中，避免共用父类再次把两种 Boss 的运动语义合并。
     @Override
     protected double horizontalLeashDistance() {
         return HORIZONTAL_LEASH_DISTANCE;

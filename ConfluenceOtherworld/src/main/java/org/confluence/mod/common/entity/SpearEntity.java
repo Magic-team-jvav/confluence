@@ -28,19 +28,13 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TrapDamageHelper;
 
 /**
- * 长矛机关的伸缩碰撞实体。
- *
- * <p>来源机关位置、伸缩方向和当前阶段共同组成一次机关动作。实体可能随所在区块一起保存，
- * 因而这些字段必须完整持久化；否则重载后实体会直接消失，来源机关也不会重新进入冷却调度。
- * 回缩结束时仍会再次确认来源方块确实是长矛机关，避免损坏存档把任意方块当作机关修改。</p>
+ * 长矛机关的发射物
  */
 public class SpearEntity extends Entity {
     private static final EntityDataAccessor<Direction> DATA_DIRECTION = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.DIRECTION);
     private static final EntityDataAccessor<Boolean> DATA_OPENED = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DATA_PROGRESS = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.FLOAT);
-    /**
-     * 生成该实体的机关位置。由机关在生成时写入，并随实体存档恢复。
-     */
+    /// 生成该实体的机关位置。由机关在生成时写入，并随实体存档恢复。
     public BlockPos trapPos;
 
     public SpearEntity(EntityType<SpearEntity> entityType, Level level) {

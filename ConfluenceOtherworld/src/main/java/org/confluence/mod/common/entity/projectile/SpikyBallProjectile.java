@@ -11,22 +11,20 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.lib.common.entitiy.IAxisZRotate;
-import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.lib.api.projectile.ProjectileCombatSnapshotCarrier;
+import org.confluence.lib.common.entitiy.IAxisZRotate;
+import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 普通尖刺球弹幕。
- *
- * <p>弹幕保留原有的重力、弹性、静态无敌帧和 3.2 点伤害；每个实体 UUID 只会计入一次穿透预算，
- * 第七个唯一目标会使弹幕销毁。年龄与已命中 UUID 由独立运行状态持久化，区块卸载或存档重载后
- * 不会重置寿命和穿透次数。</p>
- */
+/// 普通尖刺球弹幕。
+///
+/// <p>弹幕保留原有的重力、弹性、静态无敌帧和 3.2 点伤害；每个实体 UUID 只会计入一次穿透预算，
+/// 第七个唯一目标会使弹幕销毁。年龄与已命中 UUID 由独立运行状态持久化，区块卸载或存档重载后
+/// 不会重置寿命和穿透次数。</p>
 public class SpikyBallProjectile extends Projectile
         implements Immunity, IAxisZRotate, IBouncy, ProjectileCombatSnapshotCarrier {
     private static final int MAXIMUM_SAVED_AGE = 1597;
@@ -123,10 +121,8 @@ public class SpikyBallProjectile extends Projectile
         runtime.writeTo(compound, tickCount, MAXIMUM_SAVED_AGE, MAXIMUM_TRACKED_HIT_TARGETS);
     }
 
-    /**
-     * 存档恢复后等待所有者 UUID 解析一 tick；仍为空或被篡改成非玩家时安全失效。
-     * 新生成弹幕不走该分支，超级尖刺球也完全不复用这套玩家所有者规则。
-     */
+    /// 存档恢复后等待所有者 UUID 解析一 tick；仍为空或被篡改成非玩家时安全失效。
+    /// 新生成弹幕不走该分支，超级尖刺球也完全不复用这套玩家所有者规则。
     private boolean waitForLoadedOwner() {
         if (level().isClientSide || !combatState.wasLoadedFromTag()
                 || combatState.snapshot() == null) {

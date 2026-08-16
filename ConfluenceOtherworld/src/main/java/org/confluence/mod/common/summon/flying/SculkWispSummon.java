@@ -12,12 +12,10 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
 
-/**
- * 幽匿飞灵召唤物的运行实例。
- *
- * <p>1.21 侧使用延迟声波攻击，而不是普通直线弹幕；这里保留同样的蓄力、粒子轨迹、音效和击退节奏。
- * 声波从近似眼位发出，避免新架构只使用中心点时让轨迹贴近脚底。</p>
- */
+/// 幽匿飞灵召唤物的运行实例。
+///
+/// <p>1.21 侧使用延迟声波攻击，而不是普通直线弹幕；这里保留同样的蓄力、粒子轨迹、音效和击退节奏。
+/// 声波从近似眼位发出，避免新架构只使用中心点时让轨迹贴近脚底。</p>
 public final class SculkWispSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 7.0F;

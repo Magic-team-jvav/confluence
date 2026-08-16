@@ -8,9 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summon.GroundMeleeSummon;
 import org.confluence.mod.common.summon.SummonPose;
 
-/**
- * 保留 1.21 雪怪的跃击冷却和命中后突进。
- */
+/// 保留 1.21 雪怪的跃击冷却和命中后突进。
 public final class SnowFlinxSummon extends GroundMeleeSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 7.0F;

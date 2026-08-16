@@ -12,11 +12,7 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
 
-/**
- * 困难模式砧菜单。
- * <p>当前只处理秘银砧和山铜砧自己的配方列表；若后续需要把工作台类配方合并进同一界面，
- * 应在配方查询层统一扩展，而不是在菜单有效性判断里硬编码更多方块。</p>
- */
+// todo 支持工作台
 public class HardmodeAnvilMenu extends EitherAmountContainerMenu4x<MenuRecipeInput, HardmodeAnvilRecipe, ToggleAmountResultSlot<HardmodeAnvilRecipe>, ContainerLevelAccess> {
     public HardmodeAnvilMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);

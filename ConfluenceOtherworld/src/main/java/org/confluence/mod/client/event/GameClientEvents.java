@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -46,11 +45,11 @@ import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
+import org.confluence.mod.client.animation.GunCameraAnimation;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
-import org.confluence.mod.client.animation.GunCameraAnimation;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
@@ -60,10 +59,10 @@ import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
-import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.summon.ClientSummonManager;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
@@ -78,8 +77,8 @@ import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
-import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.boomerang.BoomerangItem;
+import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.mana.ManaStaffItem;
@@ -88,12 +87,7 @@ import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
-import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
-import org.confluence.mod.network.c2s.FlailControlPacketC2S;
-import org.confluence.mod.network.c2s.LeftClickItemActionPacketC2S;
-import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
-import org.confluence.mod.network.c2s.WeaponUseStatePacketC2S;
-import org.confluence.mod.network.c2s.YoyoControlPacketC2S;
+import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModAttributeUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -248,10 +242,8 @@ public final class GameClientEvents {
             }
             wasYoyoKeyHeld = leftYoyoHeld;
 
-            /*
-             * 法杖和枪械使用原版持续使用状态驱动连续动作。配置为左键时，
-             * 客户端只同步输入边沿，服务端仍按真实手持物执行每 tick 校验。
-             */
+            /// 法杖和枪械使用原版持续使用状态驱动连续动作。配置为左键时，
+            /// 客户端只同步输入边沿，服务端仍按真实手持物执行每 tick 校验。
             boolean leftContinuousWeaponHeld = attackHeld
                     && ClientConfigs.usesLeftWeaponButton(mainHandItem)
                     && (mainHandItem.getItem() instanceof ManaStaffItem<?>
@@ -326,22 +318,18 @@ public final class GameClientEvents {
             } else {
                 ItemStack stack = player.getMainHandItem();
                 if (event.isAttack() && stack.getItem() instanceof BaseTerraRepeaterItem) {
-                    /*
-                     * 连弩沿用泰拉的“右键装填、左键持续发射”手感。左键命中方块时如果继续交给原版，
-                     * 客户端会开始挖掘/普通攻击，导致发射输入和原版动作抢同一帧，实际游玩时表现为卡顿或吞输入。
-                     * 真正的发射意图由 clientTick$Post 的持续按键入口发送，服务端再校验弹仓、冷却和弹幕事务。
-                     */
+                    /// 连弩沿用泰拉的“右键装填、左键持续发射”手感。左键命中方块时如果继续交给原版，
+                    /// 客户端会开始挖掘/普通攻击，导致发射输入和原版动作抢同一帧，实际游玩时表现为卡顿或吞输入。
+                    /// 真正的发射意图由 clientTick$Post 的持续按键入口发送，服务端再校验弹仓、冷却和弹幕事务。
                     event.setCanceled(true);
                     event.setSwingHand(false);
                 } else if (ClientConfigs.usesLeftWeaponButton(stack)
                         && event.isAttack()) {
                     if (stack.getItem() instanceof YoyoItem) {
-                        /*
-                         * 悠悠球必须在原版报告本次攻击按键时立即提交按下动作。
-                         * 仅在客户端 tick 末尾轮询 isDown 会漏掉同一 tick 内完成的短按，
-                         * 表现为左键偶发甚至完全没有反应。持续按住和松开仍由下方
-                         * clientTick$Post 的边沿状态负责，避免每 tick 重复创建实体。
-                         */
+                        /// 悠悠球必须在原版报告本次攻击按键时立即提交按下动作。
+                        /// 仅在客户端 tick 末尾轮询 isDown 会漏掉同一 tick 内完成的短按，
+                        /// 表现为左键偶发甚至完全没有反应。持续按住和松开仍由下方
+                        /// clientTick$Post 的边沿状态负责，避免每 tick 重复创建实体。
                         YoyoControlPacketC2S.sendPress();
                         wasYoyoKeyHeld = true;
                     } else if (stack.getItem()
@@ -500,10 +488,8 @@ public final class GameClientEvents {
                         widget.getMessage().getContents() instanceof TranslatableContents contents &&
                         "menu.online".equals(contents.getKey())
                 ) {
-                    /*
-                     * Forge 会在 Realms 左侧放置模组列表图标，沿用 1.21 的左侧坐标会让两个按钮重叠，
-                     * 结果只能点开模组列表。1.20 将成就按钮放到 Realms 右侧的空位，保持两者都可操作。
-                     */
+                    /// Forge 会在 Realms 左侧放置模组列表图标，沿用 1.21 的左侧坐标会让两个按钮重叠，
+                    /// 结果只能点开模组列表。1.20 将成就按钮放到 Realms 右侧的空位，保持两者都可操作。
                     event.addListener(new PortImageButton(
                             widget.getX() + widget.getWidth() + 4,
                             widget.getY(),
@@ -521,10 +507,10 @@ public final class GameClientEvents {
             }
         }
 
-//  对话系统恢复后，在这里转发对话界面的按键输入。
+//  todo      if (screen instanceof DialogScreen) {
 //            LocalPlayer player = Minecraft.getInstance().player;
 //            if (player != null) {
-//                @Nullable ITradeHolder holder = IPlayer.of(player).confluence$getTradeHolder();
+//                @Nullable ITradeHolder holder = IPlayer.of(player).terra_entity$getTradeHolder();
 //                if (holder instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()) {
 //                    event.addListener(WithForgeTradeScreen.createReforgeButton(screen.width * 2 / 3, screen.height / 2 + 25));
 //                }
@@ -578,9 +564,7 @@ public final class GameClientEvents {
         GunCameraAnimation.apply(event);
     }
 
-    /**
-     * 将公共命中特效事件交给本体渲染管理器；附属也可独立监听同一事件。
-     */
+    /// 将公共命中特效事件交给本体渲染管理器；附属也可独立监听同一事件。
     private static void bulletImpact(BulletEvent.ImpactEffectEvent event) {
         BulletVfxManager.play(event.getEffect(), event.getPosition());
     }
@@ -597,19 +581,19 @@ public final class GameClientEvents {
         }
     }
 
-//  NPC 对话体系恢复后，在这里处理客户端对话事件。
+//  todo  private static void npc$Dialog(NPCEvent.NPCDialogEvent event) {
 //        LocalPlayer player = Minecraft.getInstance().player;
 //        if (player == null) return;
 //        EntityType<?> type = event.getNPC().getType();
 //        if (!ModClientSetups.guideCheckedJEI && type == TENpcEntities.GUIDE.get()) {
-//            event.setNeoDialog(Component.translatable("dialogs.confluence.guide.jei_check"));
+//            event.setNeoDialog(Component.translatable("dialogs.terra_entity.guide.jei_check"));
 //            ModClientSetups.guideCheckedJEI = true;
 //        } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
 //            StatsCounter stats = player.getStats();
 //            for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
 //                int value = stats.getValue(stat);
 //                if (value >= 50) {
-//                    event.setNeoDialog(Component.translatable("dialogs.confluence.nurse.player_killed_by", stat.getValue().getDescription(), value));
+//                    event.setNeoDialog(Component.translatable("dialogs.terra_entity.nurse.player_killed_by", stat.getValue().getDescription(), value));
 //                    break;
 //                }
 //            }
@@ -669,10 +653,8 @@ public final class GameClientEvents {
         }
         if (ClientConfigs.usesLeftWeaponButton(player.getMainHandItem())
                 && player.getMainHandItem().getItem() instanceof YoyoItem) {
-            /*
-             * 空挥事件是原版攻击键最稳定的兜底入口。悠悠球按键边沿仍由客户端 tick
-             * 负责释放，但这里补一次按下包，避免鼠标短按只产生空挥事件时没有召唤实体。
-             */
+            /// 空挥事件是原版攻击键最稳定的兜底入口。悠悠球按键边沿仍由客户端 tick
+            /// 负责释放，但这里补一次按下包，避免鼠标短按只产生空挥事件时没有召唤实体。
             YoyoControlPacketC2S.sendPress();
             wasYoyoKeyHeld = true;
             return;
@@ -690,10 +672,8 @@ public final class GameClientEvents {
         }
         if (ClientConfigs.usesLeftWeaponButton(player.getMainHandItem())
                 && player.getMainHandItem().getItem() instanceof YoyoItem) {
-            /*
-             * 对着方块点击时也要显式提交悠悠球按下意图。事件会在稍早的交互阶段被取消，
-             * 这里不再触发空目标横扫，避免同一左键同时变成普通近战攻击。
-             */
+            /// 对着方块点击时也要显式提交悠悠球按下意图。事件会在稍早的交互阶段被取消，
+            /// 这里不再触发空目标横扫，避免同一左键同时变成普通近战攻击。
             YoyoControlPacketC2S.sendPress();
             wasYoyoKeyHeld = true;
             return;
@@ -703,12 +683,10 @@ public final class GameClientEvents {
         }
     }
 
-    /**
-     * 武器配置为左键时只禁止物品接管右键，仍保留方块自身的交互。
-     *
-     * <p>因此手持悠悠球、枪械、法杖或链锤仍能打开箱子和工作台；
-     * 但方块交互通过后不会继续调用该武器的右键动作。</p>
-     */
+    /// 武器配置为左键时只禁止物品接管右键，仍保留方块自身的交互。
+    ///
+    /// <p>因此手持悠悠球、枪械、法杖或链锤仍能打开箱子和工作台；
+    /// 但方块交互通过后不会继续调用该武器的右键动作。</p>
     private static void playerInteract$RightClickBlockWeaponInput(
             PortPlayerInteractEvent.RightClickBlock event
     ) {
@@ -719,12 +697,10 @@ public final class GameClientEvents {
         }
     }
 
-    /**
-     * 右键武器命中带菜单的方块时，优先保留箱子、工作台、保险箱等原版方块交互。
-     *
-     * <p>只在非潜行时处理，因为潜行右键本来就是玩家主动绕过方块交互、改用手中物品的方式。
-     * 普通方块没有菜单，因此仍允许枪械、法杖等右键武器对着方块方向发射。</p>
-     */
+    /// 右键武器命中带菜单的方块时，优先保留箱子、工作台、保险箱等原版方块交互。
+    ///
+    /// <p>只在非潜行时处理，因为潜行右键本来就是玩家主动绕过方块交互、改用手中物品的方式。
+    /// 普通方块没有菜单，因此仍允许枪械、法杖等右键武器对着方块方向发射。</p>
     private static boolean shouldPreserveMenuBlockInteraction(
             PortPlayerInteractEvent.RightClickBlock event
     ) {
@@ -736,18 +712,14 @@ public final class GameClientEvents {
                 .getMenuProvider(event.getLevel(), event.getPos()) != null;
     }
 
-    /**
-     * 配置为左键的武器对空气右键时，不进入其原版物品使用入口。
-     */
+    /// 配置为左键的武器对空气右键时，不进入其原版物品使用入口。
     private static void playerInteract$RightClickItemWeaponInput(
             PortPlayerInteractEvent.RightClickItem event
     ) {
         if (event.getHand() == InteractionHand.MAIN_HAND
                 && ClientConfigs.usesLeftWeaponButton(event.getItemStack())) {
-            /*
-             * 返回 PASS 只跳过主手武器自身的右键动作，仍允许原版继续尝试副手物品；
-             * FAIL 会连副手使用一起阻断。
-             */
+            /// 返回 PASS 只跳过主手武器自身的右键动作，仍允许原版继续尝试副手物品；
+            /// FAIL 会连副手使用一起阻断。
             event.setCancellationResult(InteractionResult.PASS);
             event.setCanceled(true);
         }

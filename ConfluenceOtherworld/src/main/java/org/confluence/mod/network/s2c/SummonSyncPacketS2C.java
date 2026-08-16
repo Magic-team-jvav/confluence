@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * 同步一个玩家当前持有的召唤物姿态。
- */
+/// 同步一个玩家当前持有的召唤物姿态。
 public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements IPortPacket.S2C {
     private static final int MAX_ENTRIES = 128;
     public static final ResourceLocation ID = Confluence.asResource("summon_sync");
@@ -85,9 +83,7 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
         }
     }
 
-    /**
-     * 判断观察者是否位于召唤者或任一召唤物可视部分的同步范围内。
-     */
+    /// 判断观察者是否位于召唤者或任一召唤物可视部分的同步范围内。
     public static boolean shouldSendTo(Vec3 ownerPosition, List<Entry> entries, Vec3 viewerPosition, double radius) {
         double radiusSqr = radius * radius;
         if (ownerPosition.distanceToSqr(viewerPosition) <= radiusSqr) return true;

@@ -120,19 +120,15 @@ public class ConsumableItems {
     public static final PortDeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
     public static final PortDeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));
 
-    /**
-     * 本体注册永久增益物品时只提供声明式定义和展示信息，实际事务统一复用 MagicLib。
-     */
+    /// 本体注册永久增益物品时只提供声明式定义和展示信息，实际事务统一复用 MagicLib。
     private static PermanentUpgradeItem permanent(ModRarity rarity, PermanentUpgrade upgrade,
                                                   Supplier<SoundEvent> sound,
                                                   String tooltipId, int tooltipLines) {
         return permanent(rarity, upgrade, 1, sound, tooltipId, tooltipLines, ChatFormatting.GREEN, 64);
     }
 
-    /**
-     * 声明正向或回溯永久物品的统一入口。回溯物品复用同一个稳定升级 ID，
-     * 只用负增量修改等级，因此不会产生第二份互相矛盾的玩家状态。
-     */
+    /// 声明正向或回溯永久物品的统一入口。回溯物品复用同一个稳定升级 ID，
+    /// 只用负增量修改等级，因此不会产生第二份互相矛盾的玩家状态。
     private static PermanentUpgradeItem permanent(
             ModRarity rarity,
             PermanentUpgrade upgrade,

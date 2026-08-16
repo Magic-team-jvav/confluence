@@ -118,14 +118,12 @@ public class DyeMixMenu extends AbstractContainerMenu {
         return stillValid(access, player, FunctionalBlocks.DYE_VAT.get());
     }
 
-    /**
-     * 严格验证服务端菜单是否仍绑定在玩家附近的染缸上。
-     *
-     * <p>原版 {@link ContainerLevelAccess#NULL} 为了兼容客户端菜单，会让通用
-     * {@code stillValid} 使用宽松默认值。网络事务不能采用这个默认值，否则一个
-     * 没有真实方块位置的菜单也可能通过校验。本方法只在访问对象能提供真实世界和
-     * 坐标、目标方块仍是染缸且玩家距离不超过八格时返回 {@code true}。</p>
-     */
+    /// 严格验证服务端菜单是否仍绑定在玩家附近的染缸上。
+    ///
+    /// <p>原版 {@link ContainerLevelAccess#NULL} 为了兼容客户端菜单，会让通用
+    /// {@code stillValid} 使用宽松默认值。网络事务不能采用这个默认值，否则一个
+    /// 没有真实方块位置的菜单也可能通过校验。本方法只在访问对象能提供真实世界和
+    /// 坐标、目标方块仍是染缸且玩家距离不超过八格时返回 {@code true}。</p>
     public boolean hasValidServerAccess(Player player) {
         return access.evaluate((level, blockPos) ->
                         level.hasChunkAt(blockPos)
@@ -138,12 +136,10 @@ public class DyeMixMenu extends AbstractContainerMenu {
                 false);
     }
 
-    /**
-     * 返回由服务端方块交互建立的工作站访问对象。
-     *
-     * <p>页面切换必须复用这个位置，不能在玩家已经打开界面后重新依赖视线追踪。
-     * 调用方仍须先通过 {@link #hasValidServerAccess(Player)} 验证其有效性。</p>
-     */
+    /// 返回由服务端方块交互建立的工作站访问对象。
+    ///
+    /// <p>页面切换必须复用这个位置，不能在玩家已经打开界面后重新依赖视线追踪。
+    /// 调用方仍须先通过 {@link #hasValidServerAccess(Player)} 验证其有效性。</p>
     public ContainerLevelAccess workstationAccess() {
         return access;
     }

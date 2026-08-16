@@ -128,63 +128,63 @@ public class StatueBlocks {
         zombie.setItemInHand(InteractionHand.MAIN_HAND, SwordItems.ZOMBIE_ARM.toStack());
         return zombie;
     }));
-    // 蝙蝠雕像
-    // 血腥僵尸雕像
+    // Bat Statue
+    // Blood Zombie Statue
     public static final PortDeferredBlock<BehaviourStatueBlock> BONE_SKELETON_STATUE = registerSimpleSummon("bone_skeleton_statue", true, EntityType.SKELETON::create);
-    // 宝箱雕像
+    // Chest Statue
     public static final PortDeferredBlock<BehaviourStatueBlock> CORRUPT_STATUE = registerSimpleSummon("corrupt_statue", true, level -> MonsterEntities.EATER_OF_SOULS.get().create(level));
-    // 螃蟹雕像
+    // Crab Statue
     public static final PortDeferredBlock<BehaviourStatueBlock> DRIPPLER_STATUE = registerSimpleSummon("drippler_statue", true, level -> MonsterEntities.DRIPPLER.get().create(level));
     public static final PortDeferredBlock<BehaviourStatueBlock> EYEBALL_STATUE = registerSimpleSummon("eyeball_statue", true, level -> MonsterEntities.DEMON_EYE.get().create(level));
-    // 哥布林雕像
-    // 花岗岩巨人雕像
-    // 鸟妖雕像
-    // 重装步兵雕像
-    // 黄蜂雕像
-    // 小鬼雕像
-    // 水母雕像
-    // 蛇发女妖雕像
-    // 猪鲨雕像
-    // 食人鱼雕像
-    // 鲨鱼雕像
+    // Goblin Statue
+    // Granite Golem Statue
+    // Harpy Statue
+    // Hoplite Statue
+    // Hornet Statue
+    // Imp Statue
+    // Jellyfish Statue
+    // Medusa Statue
+    // Pigron Statue
+    // Piranha Statue
+    // Shark Statue
     public static final PortDeferredBlock<BehaviourStatueBlock> SKELETON_STATUE = registerBehaviour("skeleton_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, true, (state, level, pos) -> {
         Skeleton skeleton = new Skeleton(EntityType.SKELETON, level);
         skeleton.setPos(pos);
         return skeleton;
     }, entity -> entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY)));
     public static final PortDeferredBlock<BehaviourStatueBlock> SLIME_STATUE = registerSimpleSummon("slime_statue", false, level -> MonsterEntities.BLUE_SLIME.get().create(level));
-    // 不死维京海盗雕像
-    // 独角兽雕像
-    // 爬墙蜘蛛雕像
-    // 幽灵雕像
+    // Undead Viking Statue
+    // Unicorn Statue
+    // Wall Creeper Statue
+    // Wraith Statue
 
 
-    // 鸟雕像
-    // 虫虫雕像
-    // 兔兔雕像
-    // 蝴蝶雕像
-    // 鸡尾鹦鹉雕像
-    // 蜻蜓雕像
-    // 鸭子雕像
-    // 萤火虫雕像
-    // 鱼雕像
-    // 青蛙雕像
-    // 蚱蜢雕像
-    // 金刚鹦鹉雕像
-    // 老鼠雕像
-    // 猫头鹰雕像
-    // 企鹅雕像
-    // 蝎子雕像
-    // 海鸥雕像
-    // 蜗牛雕像
-    // 松鼠雕像
-    // 巨嘴鸟雕像
-    // 海龟雕像
-    // 蠕虫雕像
+    // Bird Statue
+    // Buggy Statue
+    // Bunny Statue
+    // Butterfly Statue
+    // Cockatiel Statue
+    // Dragonfly Statue
+    // Duck Statue
+    // Firefly Statue
+    // Fish Statue
+    // Frog Statue
+    // Grasshopper Statue
+    // Macaw Statue
+    // Mouse Statue
+    // Owl Statue
+    // Penguin Statue
+    // Scorpion Statue
+    // Seagull Statue
+    // Snail Statue
+    // Squirrel Statue
+    // Toucan Statue
+    // Turtle Statue
+    // Worm Statue
 
 
-    // 国王雕像
-    // 女王雕像
+    // King Statue
+    // Queen Statue
     public static final PortDeferredBlock<BehaviourStatueBlock> BOMB_STATUE = registerBehaviour("bomb_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, false, 200, (state, level, pos) -> {
         ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ConsumableItems.BOMB.get().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
@@ -200,8 +200,8 @@ public class StatueBlocks {
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));
-    // 蘑菇雕像
-    // 巨石雕像
+    // Mushroom Statue
+    // Boulder Statue
     public static final PortDeferredBlock<BehaviourStatueBlock> BOULDER_3X_STATUE = registerBehaviour("boulder_3x_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, true, 200, (state, level, pos) -> {
         Direction facing = state.getValue(StatueBlock.FACING);
         Boulder3x3Entity entity = new Boulder3x3Entity(level, pos.relative(facing, 1).add(0, Mth.EPSILON - 0.5, 0), FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState());
@@ -233,7 +233,7 @@ public class StatueBlocks {
             return state.setValue(StateProperties.DRIVE, true);
         }
     });
-    // 天使雕像
+    // Angel Statue
 
     public static final Supplier<BlockEntityType<BehaviourStatueBlock.BEntity>> BLOCK_ENTITY = BLOCK_ENTITIES.register("behaviour_statue_entity", () -> {
         BehaviourStatueBlock[] validBlocks = BEHAVIOUR_STATUES.stream().map(Supplier::get).toArray(BehaviourStatueBlock[]::new);

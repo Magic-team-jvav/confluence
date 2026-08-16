@@ -41,7 +41,7 @@ public final class ChestSubProvider implements LootTableSubProvider {
 
     @Override
     public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
-        // 原版宝箱战利品
+        // VanillaChestLoot
         LootPoolSingletonContainer.Builder<?> manaEnchantedBookBuilder = LootItem.lootTableItem(Items.BOOK)
                 .apply(manaEnchantment());
 
@@ -917,9 +917,7 @@ public final class ChestSubProvider implements LootTableSubProvider {
                 );
     }
 
-    /**
-     * 使用原版构建器创建只会抽取本模组魔力附魔的随机附魔函数。
-     */
+    /// 使用原版构建器创建只会抽取本模组魔力附魔的随机附魔函数。
     private static LootItemFunction.Builder manaEnchantment() {
         EnchantRandomlyFunction.Builder builder = EnchantRandomlyFunction.randomEnchantment();
         MANA_ENCHANTMENTS.forEach(builder::withEnchantment);

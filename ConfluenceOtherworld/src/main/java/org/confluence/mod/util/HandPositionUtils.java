@@ -6,30 +6,24 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * 玩家手部位置计算工具。
- *
- * <p>这里按肩膀基准、身体朝向和侧向偏移估算物品实际持握点，供链锤、悠悠球等
- * 需要从玩家手部发出连接线或弹幕的武器复用。身体朝向比视线方向更稳定，不会因为玩家
- * 抬头/低头导致连接线从头顶或脚下穿出。</p>
- */
+/// 玩家手部位置计算工具。
+///
+/// <p>这里按肩膀基准、身体朝向和侧向偏移估算物品实际持握点，供链锤、悠悠球等
+/// 需要从玩家手部发出连接线或弹幕的武器复用。身体朝向比视线方向更稳定，不会因为玩家
+/// 抬头/低头导致连接线从头顶或脚下穿出。</p>
 public final class HandPositionUtils {
     private HandPositionUtils() {}
 
-    /**
-     * 获取玩家主手掌，也就是物品实际持握点的世界坐标。
-     */
+    /// 获取玩家主手掌，也就是物品实际持握点的世界坐标。
     public static Vec3 getPalmPosition(Player player, float partialTick) {
         return getPalmPosition(player, partialTick, null);
     }
 
-    /**
-     * 获取玩家主手掌，也就是物品实际持握点的世界坐标。
-     *
-     * @param player      玩家
-     * @param partialTick 部分 tick
-     * @param localOffset 手掌局部偏移，按“侧向、上下、前后”解释；传入 {@code null} 表示不追加偏移
-     */
+    /// 获取玩家主手掌，也就是物品实际持握点的世界坐标。
+    ///
+    /// @param player      玩家
+    /// @param partialTick 部分 tick
+    /// @param localOffset 手掌局部偏移，按“侧向、上下、前后”解释；传入 {@code null} 表示不追加偏移
     public static Vec3 getPalmPosition(Player player, float partialTick, Vec3 localOffset) {
         float bodyYaw = Mth.rotLerp(partialTick, player.yBodyRotO, player.yBodyRot);
         float yawRad = bodyYaw * Mth.DEG_TO_RAD;
@@ -68,7 +62,7 @@ public final class HandPositionUtils {
         return palmPos;
     }
 
-    /** 获取任意活体实体的手部近似位置；玩家使用更精确的主手位置，其余实体退回眼部下方。 */
+    /// 通用手部（手掌）位置，自动处理 Player 检查。
     public static Vec3 getHandPosition(LivingEntity owner) {
         if (owner instanceof Player player) {
             return getPalmPosition(player, 1.0F);

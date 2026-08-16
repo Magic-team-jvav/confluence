@@ -6,16 +6,14 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Objects;
 
-/**
- * 条纹弹幕头段/身体段共用的严格运行状态。
- *
- * <p>起点决定头段何时达到最大距离，分段进度决定下一个身体段的生成间距，年龄与头部标志决定
- * 身体寿命和碰撞分支；四者都属于不可缺失的玩法状态。当前格式使用直接双精度坐标，避免编解码
- * 失败被静默忽略。</p>
- *
- * <p>身体段年龄按具体变体的销毁边界校验，头段只要求年龄非负。字段损坏会抛出英文
- * 原因，由 {@link StripedProjectile} 清空战斗快照并安全销毁。</p>
- */
+/// 条纹弹幕头段/身体段共用的严格运行状态。
+///
+/// <p>起点决定头段何时达到最大距离，分段进度决定下一个身体段的生成间距，年龄与头部标志决定
+/// 身体寿命和碰撞分支；四者都属于不可缺失的玩法状态。当前格式使用直接双精度坐标，避免编解码
+/// 失败被静默忽略。</p>
+///
+/// <p>身体段年龄按具体变体的销毁边界校验，头段只要求年龄非负。字段损坏会抛出英文
+/// 原因，由 {@link StripedProjectile} 清空战斗快照并安全销毁。</p>
 final class StripedProjectileRuntime {
     static final String ROOT_TAG = "ConfluenceStripedRuntime";
 
@@ -31,9 +29,7 @@ final class StripedProjectileRuntime {
 
     private StripedProjectileRuntime() {}
 
-    /**
-     * 写出经过变体边界校验的完整当前状态。
-     */
+    /// 写出经过变体边界校验的完整当前状态。
     static void write(
             CompoundTag entityTag,
             Vec3 startPos,
@@ -57,9 +53,7 @@ final class StripedProjectileRuntime {
         entityTag.put(ROOT_TAG, runtimeTag);
     }
 
-    /**
-     * 先完整验证临时值，再返回一次性应用的不可变状态。
-     */
+    /// 先完整验证临时值，再返回一次性应用的不可变状态。
     static State read(CompoundTag entityTag, int maximumBodyAge, double maximumSpacingProgress) {
         Objects.requireNonNull(entityTag, "Entity tag must not be null");
         requireTag(entityTag, ROOT_TAG, Tag.TAG_COMPOUND);
@@ -88,9 +82,7 @@ final class StripedProjectileRuntime {
         return new State(startPos, spacingProgress, age, head);
     }
 
-    /**
-     * 将异常消息收敛为 ASCII 英文开发者诊断。
-     */
+    /// 将异常消息收敛为 ASCII 英文开发者诊断。
     static String englishReason(RuntimeException exception) {
         Objects.requireNonNull(exception, "Runtime exception must not be null");
         String message = exception.getMessage();
@@ -135,8 +127,6 @@ final class StripedProjectileRuntime {
         }
     }
 
-    /**
-     * 完整校验后交给实体原子应用的值。
-     */
+    /// 完整校验后交给实体原子应用的值。
     record State(Vec3 startPos, double spacingProgress, int age, boolean head) {}
 }

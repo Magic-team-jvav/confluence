@@ -28,13 +28,11 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 
-/**
- * 毁灭者头部，负责体节链、激光和探测器的统一生命周期。
- *
- * <p>奇数编号体节是探测器舱。每个舱室最多释放一次探测器，释放记录由头部持久化，
- * 所以体节因区块卸载而重建时不会重置。未释放的探测器舱会按照 1.21 侧的顺序射击
- * 与高空齐射节奏发射真实激光弹幕。</p>
- */
+/// 毁灭者头部，负责体节链、激光和探测器的统一生命周期。
+///
+/// <p>奇数编号体节是探测器舱。每个舱室最多释放一次探测器，释放记录由头部持久化，
+/// 所以体节因区块卸载而重建时不会重置。未释放的探测器舱会按照 1.21 侧的顺序射击
+/// 与高空齐射节奏发射真实激光弹幕。</p>
 public class TheDestroyer extends BaseWormBoss {
     private static final String RELEASED_PROBE_SEGMENTS_TAG =
             "ReleasedProbeSegments";
@@ -101,13 +99,11 @@ public class TheDestroyer extends BaseWormBoss {
         return SEGMENT_SPACING;
     }
 
-    /**
-     * 在头部附近盘曲生成完整机械体节链。
-     *
-     * <p>1.21 会以直线生成八十节身体，但在 Minecraft 中这会跨越十六个区块，
-     * 超出 Boss 当前强加载区域后导致尾部创建失败。这里保留相同数量和间距，
-     * 只把初始形状改成盘曲布局；进入战斗后仍由统一跟随物理自然展开。</p>
-     */
+    /// 在头部附近盘曲生成完整机械体节链。
+    ///
+    /// <p>1.21 会以直线生成八十节身体，但在 Minecraft 中这会跨越十六个区块，
+    /// 超出 Boss 当前强加载区域后导致尾部创建失败。这里保留相同数量和间距，
+    /// 只把初始形状改成盘曲布局；进入战斗后仍由统一跟随物理自然展开。</p>
     @Override
     protected Vec3 getInitialSegmentPosition(
             int index,
@@ -122,9 +118,7 @@ public class TheDestroyer extends BaseWormBoss {
                         .yRot(index * 0.16F));
     }
 
-    /**
-     * 毁灭者和世界吞噬怪一样不能依赖地面路径。
-     */
+    /// 毁灭者和世界吞噬怪一样不能依赖地面路径。
     @Override
     protected BTRoot createBT() {
         return new BTRoot() {
@@ -198,12 +192,10 @@ public class TheDestroyer extends BaseWormBoss {
         }
     }
 
-    /**
-     * 按目标高度执行地下钻击、地表跃出和高空俯冲。
-     *
-     * <p>1.20 仅调整为连续三维转向；阶段边界、主要目标点与速度倍率保持 1.21
-     * 语义。速度交给原版实体同步消费，不通过逐刻传送移动。</p>
-     */
+    /// 按目标高度执行地下钻击、地表跃出和高空俯冲。
+    ///
+    /// <p>1.20 仅调整为连续三维转向；阶段边界、主要目标点与速度倍率保持 1.21
+    /// 语义。速度交给原版实体同步消费，不通过逐刻传送移动。</p>
     private void tickPhaseMovement(LivingEntity target) {
         phaseTimer++;
         switch (getPhase()) {
@@ -377,9 +369,7 @@ public class TheDestroyer extends BaseWormBoss {
         }
     }
 
-    /**
-     * 地表与高空阶段在 1.21 中会立即朝向目标点，并沿新的正前方移动。
-     */
+    /// 地表与高空阶段在 1.21 中会立即朝向目标点，并沿新的正前方移动。
     private void moveDirectlyToward(Vec3 destination, double speed) {
         Vec3 direction = destination.subtract(getEyePosition());
         if (direction.lengthSqr() <= 1.0E-7) return;
@@ -400,9 +390,7 @@ public class TheDestroyer extends BaseWormBoss {
         setBodyRoll(Math.abs(roll) > 2.0F ? roll * 0.8F : 0.0F);
     }
 
-    /**
-     * 按照头部到尾部的顺序平滑传递滚转角，形成 1.21 的螺旋效果。
-     */
+    /// 按照头部到尾部的顺序平滑传递滚转角，形成 1.21 的螺旋效果。
     private void updateSegmentRolls() {
         float previousRoll = getBodyRoll();
         for (BossWormPart segment : getSegments()) {
@@ -459,10 +447,8 @@ public class TheDestroyer extends BaseWormBoss {
         return true;
     }
 
-    /**
-     * 推进体节激光控制器。地表阶段偶尔从头到尾依次检查体节；高空阶段额外执行整链
-     * 齐射。只有侧翼已经打开、尚未释放探测器且不在实心方块中的探测器舱能够开火。
-     */
+    /// 推进体节激光控制器。地表阶段偶尔从头到尾依次检查体节；高空阶段额外执行整链
+    /// 齐射。只有侧翼已经打开、尚未释放探测器且不在实心方块中的探测器舱能够开火。
     private void tickLaserControl(LivingEntity target) {
         if (getPhase() == Phase.UNDERGROUND) {
             return;
@@ -503,9 +489,7 @@ public class TheDestroyer extends BaseWormBoss {
         return fireLaser(this, origin, target, getLaserDamage());
     }
 
-    /**
-     * 供回归测试和显式攻击事件使用：从首个满足条件的探测器舱发射一枚激光。
-     */
+    /// 供回归测试和显式攻击事件使用：从首个满足条件的探测器舱发射一枚激光。
     int shootFromBody() {
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive()) {
@@ -541,10 +525,8 @@ public class TheDestroyer extends BaseWormBoss {
                 : isExpert() ? 18.0F : 14.0F;
     }
 
-    /**
-     * 测试和显式战斗事件使用的批量入口。它按体节顺序释放尚未使用的探测器舱，
-     * 不会绕过每个舱室仅能释放一次的约束。
-     */
+    /// 测试和显式战斗事件使用的批量入口。它按体节顺序释放尚未使用的探测器舱，
+    /// 不会绕过每个舱室仅能释放一次的约束。
     void spawnProbes() {
         int requested = isMaster() ? 6 : isExpert() ? 4 : 2;
         for (BossWormPart segment : getSegments()) {

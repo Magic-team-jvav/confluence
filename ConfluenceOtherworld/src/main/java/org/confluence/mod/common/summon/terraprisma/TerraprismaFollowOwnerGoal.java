@@ -4,12 +4,10 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summon.SummonGoal;
 import org.confluence.mod.common.summon.SummonPose;
 
-/**
- * 让泰拉棱镜在没有目标时回到主人背后。
- *
- * <p>服务端只负责把运行位置收回背部锚点，并同步“正在跟随主人”的状态。
- * 背负角度、层级摆动和动态染色由客户端根据玩家身体朝向绘制，避免服务端与客户端重复叠加姿态。</p>
- */
+/// 让泰拉棱镜在没有目标时回到主人背后。
+///
+/// <p>服务端只负责把运行位置收回背部锚点，并同步“正在跟随主人”的状态。
+/// 背负角度、层级摆动和动态染色由客户端根据玩家身体朝向绘制，避免服务端与客户端重复叠加姿态。</p>
 final class TerraprismaFollowOwnerGoal extends SummonGoal<TerraprismaSummon> {
     TerraprismaFollowOwnerGoal(TerraprismaSummon summon) {
         super(summon);

@@ -28,7 +28,7 @@ public class CritterEntities {
     public static final RegistryObject<EntityType<Worm>> WORM =
             registerCompact("worm", Worm::new);
 
-    // 昆虫与同尺寸的小型地表生物
+    // Insects
     public static final RegistryObject<EntityType<Butterfly>> BUTTERFLY = registerInsect("butterfly", Butterfly::new);
     public static final RegistryObject<EntityType<Fairy>> FAIRY = registerInsect("fairy", Fairy::new);
     public static final RegistryObject<EntityType<Fealing>> FEALING = registerInsect("fealing", Fealing::new);
@@ -60,9 +60,7 @@ public class CritterEntities {
         return register(name, factory, 0.5F, 0.3F, 8);
     }
 
-    /**
-     * 集中创建普通小动物实体类型，保证尺寸和追踪距离只在注册入口声明一次。
-     */
+    /// 集中创建普通小动物实体类型，保证尺寸和追踪距离只在注册入口声明一次。
     private static <T extends BaseCritter> RegistryObject<EntityType<T>> register(
             String name,
             EntityType.EntityFactory<T> factory,

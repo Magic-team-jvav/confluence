@@ -12,9 +12,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.HornetStingerProjectileModel;
 import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
 
-/**
- * 按实际飞行方向绘制黄蜂毒刺。
- */
+/// 按实际飞行方向绘制黄蜂毒刺。
 public final class HornetStingerProjectileRenderer
         extends EntityRenderer<HornetStingerProjectile> {
     private static final ResourceLocation TEXTURE =

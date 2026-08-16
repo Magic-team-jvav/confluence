@@ -20,9 +20,7 @@ public class GoldenSlime extends BaseSlime {
         return createSlimeAttributes(5.0f, 2, 97.0f);
     }
 
-    /**
-     * 金史莱姆在 1.21 侧锁定为八刻基础跳跃间隔；追击目标时由移动控制器取其三分之一。
-     */
+    /// 金史莱姆在 1.21 侧锁定为八刻基础跳跃间隔；追击目标时由移动控制器取其三分之一。
     @Override
     protected int getJumpDelay() {
         return 8;

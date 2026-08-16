@@ -32,19 +32,15 @@ public class ThrownWaterProjectile extends ThrowableItemProjectile {
         setConversionType(type);
     }
 
-    /**
-     * 水弹类型必须进入原版实体同步数据，因为客户端只会调用实体类型构造器，
-     * 不会重放服务端物品工厂携带的构造参数。
-     */
+    /// 水弹类型必须进入原版实体同步数据，因为客户端只会调用实体类型构造器，
+    /// 不会重放服务端物品工厂携带的构造参数。
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DATA_CONVERSION_TYPE, ISpreadable.Type.PURE.ordinal());
     }
 
-    /**
-     * 设置当前水弹允许的三种环境转化类型。
-     */
+    /// 设置当前水弹允许的三种环境转化类型。
     public void setConversionType(ISpreadable.Type type) {
         if (!isSupportedType(type)) {
             throw new IllegalArgumentException("Thrown water only supports pure, corrupt, or crimson conversion");
@@ -52,9 +48,7 @@ public class ThrownWaterProjectile extends ThrowableItemProjectile {
         entityData.set(DATA_CONVERSION_TYPE, type.ordinal());
     }
 
-    /**
-     * 返回经过白名单保护的同步类型；损坏的网络值不会获得其他环境转化能力。
-     */
+    /// 返回经过白名单保护的同步类型；损坏的网络值不会获得其他环境转化能力。
     public ISpreadable.Type getConversionType() {
         int typeId = entityData.get(DATA_CONVERSION_TYPE);
         ISpreadable.Type[] values = ISpreadable.Type.values();
@@ -93,10 +87,8 @@ public class ThrownWaterProjectile extends ThrowableItemProjectile {
         return 0x0000FF;
     }
 
-    /**
-     * 只读取 1.20 当前版本根；缺失、错类型或未知版本都清空为安全的圣水状态，
-     * 不尝试迁移旧键，也不会保留复用实体对象上的陈旧类型。
-     */
+    /// 只读取 1.20 当前版本根；缺失、错类型或未知版本都清空为安全的圣水状态，
+    /// 不尝试迁移旧键，也不会保留复用实体对象上的陈旧类型。
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
@@ -116,9 +108,7 @@ public class ThrownWaterProjectile extends ThrowableItemProjectile {
         }
     }
 
-    /**
-     * 保存水弹独有的最小当前格式，避免把环境玩法状态塞进 PortLib。
-     */
+    /// 保存水弹独有的最小当前格式，避免把环境玩法状态塞进 PortLib。
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);

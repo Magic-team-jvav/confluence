@@ -7,12 +7,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * 短时区域剑气基类，用于魔光剑这类“在玩家前方出现一段判定”的攻击。
- *
- * <p>它不走原版弹幕的直线碰撞，而是在每 tick 根据所有者朝向刷新一个有厚度的局部判定盒。
- * 这样可以保留泰拉瑞亚的瞬时挥砍/暗影判定效果，同时避免把它伪装成一把会乱飞的剑。</p>
- */
+/// 短时区域剑气基类，用于魔光剑这类“在玩家前方出现一段判定”的攻击。
+///
+/// <p>它不走原版弹幕的直线碰撞，而是在每 tick 根据所有者朝向刷新一个有厚度的局部判定盒。
+/// 这样可以保留泰拉瑞亚的瞬时挥砍/暗影判定效果，同时避免把它伪装成一把会乱飞的剑。</p>
 public abstract class AreaSwordProjectile extends SwordProjectile {
     private final double reach;
     private final double halfWidth;
@@ -72,20 +70,16 @@ public abstract class AreaSwordProjectile extends SwordProjectile {
         }
     }
 
-    /**
-     * 区域剑气的客户端表现钩子。
-     *
-     * <p>基础类只定义判定，不强制具体显示方式。子类可以在这里生成粒子、同步模型姿态，
-     * 或者什么都不做，避免把“伤害盒”和“渲染资源”绑死在同一层。</p>
-     */
+    /// 区域剑气的客户端表现钩子。
+    ///
+    /// <p>基础类只定义判定，不强制具体显示方式。子类可以在这里生成粒子、同步模型姿态，
+    /// 或者什么都不做，避免把“伤害盒”和“渲染资源”绑死在同一层。</p>
     protected void clientTickVisuals(Vec3 center, Vec3 forward, Vec3 right, Vec3 up) {}
 
-    /**
-     * 给统一发射流程使用的出生点。
-     *
-     * <p>区域剑气实际每 tick 都会贴回所有者视线前方；提前把入世位置放到同一个中心点，
-     * 可以避免实体刚同步到客户端时先出现在手边、下一帧再跳到判定盒中心。</p>
-     */
+    /// 给统一发射流程使用的出生点。
+    ///
+    /// <p>区域剑气实际每 tick 都会贴回所有者视线前方；提前把入世位置放到同一个中心点，
+    /// 可以避免实体刚同步到客户端时先出现在手边、下一帧再跳到判定盒中心。</p>
     public Vec3 initialCenter(LivingEntity owner, Vec3 launchDirection) {
         Vec3 forward = launchDirection.lengthSqr() <= 1.0E-8
                 ? owner.getLookAngle()
@@ -139,12 +133,10 @@ public abstract class AreaSwordProjectile extends SwordProjectile {
                 && overlapsAxis(targetCenter, pose.up(), halfHeight, extentX, extentY, extentZ);
     }
 
-    /**
-     * 用目标 AABB 在局部轴上的投影半径做相交判断。
-     *
-     * <p>只检查角点时，目标从判定盒边缘掠过可能没有任何角点落入盒内，表现为距离合适却偶尔打不中。
-     * 投影判断仍然很轻量，但对斜向和贴边判定都更稳定。</p>
-     */
+    /// 用目标 AABB 在局部轴上的投影半径做相交判断。
+    ///
+    /// <p>只检查角点时，目标从判定盒边缘掠过可能没有任何角点落入盒内，表现为距离合适却偶尔打不中。
+    /// 投影判断仍然很轻量，但对斜向和贴边判定都更稳定。</p>
     private static boolean overlapsAxis(
             Vec3 centerOffset,
             Vec3 axis,

@@ -21,13 +21,11 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 import javax.annotation.Nullable;
 
-/**
- * 手里剑、飞刀和标枪等可回收投掷物的共享实体实现。
- *
- * <p>初始伤害、弹速、伤害通道和暴击由 MagicLib 发射事务冻结；本类只维护每次成功命中后
- * 递减的当前伤害、最多四次命中的穿透阶段、重力延迟和掉落物。共享战斗状态统一负责成功命中
- * UUID 去重，因而这些规则在区块卸载和服务器重启后仍保持一致。</p>
- */
+/// 手里剑、飞刀和标枪等可回收投掷物的共享实体实现。
+///
+/// <p>初始伤害、弹速、伤害通道和暴击由 MagicLib 发射事务冻结；本类只维护每次成功命中后
+/// 递减的当前伤害、最多四次命中的穿透阶段、重力延迟和掉落物。共享战斗状态统一负责成功命中
+/// UUID 去重，因而这些规则在区块卸载和服务器重启后仍保持一致。</p>
 public class ThrowableDropSelfProjectile extends DamageSettableProjectile implements IPortProjectileExtension {
     protected static final EntityDataAccessor<Integer> DATA_FLY_TICKS = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.ITEM_STACK);
@@ -107,9 +105,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
         return damage;
     }
 
-    /**
-     * 每次安装冻结快照时同步建立不可变的百分之十递减步长。
-     */
+    /// 每次安装冻结快照时同步建立不可变的百分之十递减步长。
     @Override
     public void setProjectileCombatSnapshot(ProjectileCombatSnapshot snapshot) {
         super.setProjectileCombatSnapshot(snapshot);
@@ -181,9 +177,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile implem
         return 0.08;
     }
 
-    /**
-     * 普通投掷物已经成功命中三次后，第四次命中会立即结束实体。
-     */
+    /// 普通投掷物已经成功命中三次后，第四次命中会立即结束实体。
     protected int maximumPenetrationPhase() {
         return 3;
     }

@@ -25,12 +25,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 毁灭者体节释放的远程附属探测器。
- *
- * <p>探测器独立保持射击距离，但目标和生命周期归属于精确的毁灭者 UUID。主人暂时
- * 卸载时探测器停止攻击并等待恢复，不会转化成永久游荡的独立怪物。</p>
- */
+/// 毁灭者体节释放的远程附属探测器。
+///
+/// <p>探测器独立保持射击距离，但目标和生命周期归属于精确的毁灭者 UUID。主人暂时
+/// 卸载时探测器停止攻击并等待恢复，不会转化成永久游荡的独立怪物。</p>
 public final class TheDestroyerProbe
         extends BaseFlyingMonster {
     private static final String SHOT_TIMER_TAG = "ShotTimer";

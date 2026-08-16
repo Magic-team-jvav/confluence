@@ -1,7 +1,7 @@
 package org.confluence.mod.common.entity.boss;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,13 +17,11 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * 双子魔眼中的魔焰眼。
- *
- * <p>一阶段以短魔焰齐射衔接冲刺，半血变形后改为贴近目标的连续火流和更快冲刺。
- * 另一只魔眼死亡后，本体继续执行当前阶段的独立循环；当前 1.21 实现没有额外的单眼
- * 狂暴参数，因此这里也不虚构第三套战斗数值。</p>
- */
+/// 双子魔眼中的魔焰眼。
+///
+/// <p>一阶段以短魔焰齐射衔接冲刺，半血变形后改为贴近目标的连续火流和更快冲刺。
+/// 另一只魔眼死亡后，本体继续执行当前阶段的独立循环；当前 1.21 实现没有额外的单眼
+/// 狂暴参数，因此这里也不虚构第三套战斗数值。</p>
 public class Spazmatism extends AbstractTwinEye {
     private static final String STATE_TAG = "CombatState";
     private static final String STATE_TICKS_TAG = "StateTicks";
@@ -190,10 +188,8 @@ public class Spazmatism extends AbstractTwinEye {
         return serverLevel.addFreshEntity(flame);
     }
 
-    /**
-     * 半血后的魔焰眼使用十格连续火流，而不是把火流替换成自动追踪弹丸。
-     * 每个刻度只对同一生物结算一次伤害，采样间距和碰撞半径与 1.21 保持一致。
-     */
+    /// 半血后的魔焰眼使用十格连续火流，而不是把火流替换成自动追踪弹丸。
+    /// 每个刻度只对同一生物结算一次伤害，采样间距和碰撞半径与 1.21 保持一致。
     private boolean fireContinuousFlame(ServerLevel serverLevel) {
         Vec3 direction = getLookAngle();
         if (direction.lengthSqr() <= 1.0E-7) {

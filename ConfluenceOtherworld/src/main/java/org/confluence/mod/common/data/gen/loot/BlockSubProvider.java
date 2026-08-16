@@ -1062,10 +1062,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(block, lootTable);
     }
 
-    /**
-     * 青团方块的 {@code piece} 表示从零开始的堆叠下标，因此实际掉落数量始终为属性值加一。
-     * 由属性定义遍历可用值，可以让日后扩展堆叠层数时不再手工复制战利品池。
-     */
+    /// 青团方块的 {@code piece} 表示从零开始的堆叠下标，因此实际掉落数量始终为属性值加一。
+    /// 由属性定义遍历可用值，可以让日后扩展堆叠层数时不再手工复制战利品池。
     private void addGreenDumplingDrop() {
         GreenDumplingBlock block = GREEN_DUMPLING.get();
         LootTable.Builder lootTable = LootTable.lootTable();

@@ -10,19 +10,15 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 
-/**
- * 本体坐骑相关物品。
- *
- * <p>普通坐骑物品只填写对应实体的延迟引用。移动速度、能力数值和环境规则
- * 直接写在对应实体类中，不在物品表重复声明。</p>
- */
+/// 本体坐骑相关物品。
+///
+/// <p>普通坐骑物品只填写对应实体的延迟引用。移动速度、能力数值和环境规则
+/// 直接写在对应实体类中，不在物品表重复声明。</p>
 public final class MountItems {
     private MountItems() {
     }
 
-    /**
-     * 触发类加载，使 PortLib 收集本类的延迟注册项。
-     */
+    /// 触发类加载，使 PortLib 收集本类的延迟注册项。
     public static void init() {
     }
 

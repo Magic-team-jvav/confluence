@@ -22,10 +22,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.UUID;
 
 /**
- * 由 {@link BaseWormMonster} 头部管理的临时身体或尾部实体。
- *
- * <p>头部是持久化权威来源，区块重新加载后由它重建完整体节链。
- * 体节仅保存重新解析归属所需的信息，避免多份实体同时维护相互冲突的链状态。</p>
+ * 蠕虫体节。每 tick 跟随前一个体节（或头部），保持固定间距。
  */
 public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
     private static final float SEGMENT_SPACING = 1.6F;
@@ -117,18 +114,14 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
         super.tick();
         BaseWormMonster head = getOwner();
         if (head != null && !head.isAlive()) {
-            /*
-             * 死亡头部已经完成过所有权解析，不需要等待网络实体的加入顺序。
-             * 保留二十刻死亡阶段后清理体节，既避免尸体长期残留，也不会截断受伤死亡表现。
-             */
+            /// 死亡头部已经完成过所有权解析，不需要等待网络实体的加入顺序。
+            /// 保留二十刻死亡阶段后清理体节，既避免尸体长期残留，也不会截断受伤死亡表现。
             if (++unresolvedOwnerTicks > DEAD_OWNER_REMOVAL_TICKS) discard();
             return;
         }
         if (head == null) {
-            /*
-             * 客户端可能先收到体节、后收到头部，因此真正未解析到所有者时仍保留较长宽限期。
-             * 该分支不能与“已确认头部死亡”共用时长，否则无 AI 蠕虫会留下可选中的体节尸体。
-             */
+            /// 客户端可能先收到体节、后收到头部，因此真正未解析到所有者时仍保留较长宽限期。
+            /// 该分支不能与“已确认头部死亡”共用时长，否则无 AI 蠕虫会留下可选中的体节尸体。
             if (++unresolvedOwnerTicks > OWNER_RESOLUTION_GRACE_TICKS) discard();
             return;
         }
@@ -198,11 +191,9 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
 
     private void resolveOwner() {
         if (owner != null) {
-            /*
-             * 已经解析过的头部即使进入移除状态，也必须保留到 tick 中判断死亡。
-             * 若在这里先清空引用，体节会把“头部已死亡”误判成“客户端尚未收到头部”，
-             * 从而错误等待完整的网络解析宽限期。
-             */
+            /// 已经解析过的头部即使进入移除状态，也必须保留到 tick 中判断死亡。
+            /// 若在这里先清空引用，体节会把“头部已死亡”误判成“客户端尚未收到头部”，
+            /// 从而错误等待完整的网络解析宽限期。
             return;
         }
         owner = null;

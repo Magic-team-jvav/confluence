@@ -337,7 +337,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.YELLOW_EEL.get(),
                 FoodItems.TILAPIA.get()
         );
-        // 这些标签用于承接跨版本常用物品分类，方便配方和联动统一查询。
+        // neoforge
         tag(PortTags.Items.POTION_BOTTLE).add(
                 PotionItems.BOTTLE.get(),
                 PotionItems.BOTTLED_WATER.get()

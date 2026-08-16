@@ -18,13 +18,11 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 仅通过参数区分冲撞节奏的简单飞行敌怪。
- *
- * <p>滴滴怪、飞鱼和游荡眼球鱼的行为结构相同，区别仅是惯性、最高速度、转向锥和
- * 掠过后的滑行时间，因此保留为同一个实体类并使用不可变冲撞参数。真正具有额外状态或
- * 特殊攻击的生物仍应使用独立子类，不能继续向本类堆叠类型判断。</p>
- */
+/// 仅通过参数区分冲撞节奏的简单飞行敌怪。
+///
+/// <p>滴滴怪、飞鱼和游荡眼球鱼的行为结构相同，区别仅是惯性、最高速度、转向锥和
+/// 掠过后的滑行时间，因此保留为同一个实体类并使用不可变冲撞参数。真正具有额外状态或
+/// 特殊攻击的生物仍应使用独立子类，不能继续向本类堆叠类型判断。</p>
 public class SimpleFlyMonster extends BaseFlyingMonster {
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
 
@@ -89,10 +87,8 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
         };
     }
 
-    /**
-     * 普通转向飞行怪使用未扩张的实体包围盒。只有 1.21 明确声明了特殊范围
-     * 或检测周期的实体才覆盖这三个方法，避免在注册点追加难以辨认的布尔值和数字参数。
-     */
+    /// 普通转向飞行怪使用未扩张的实体包围盒。只有 1.21 明确声明了特殊范围
+    /// 或检测周期的实体才覆盖这三个方法，避免在注册点追加难以辨认的布尔值和数字参数。
     @Override
     protected double contactAttackInflation() {
         return 0.0;
@@ -130,9 +126,7 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
                 : super.getDeathSound();
     }
 
-    /**
-     * 一组只描述转向冲撞物理的数据。
-     */
+    /// 一组只描述转向冲撞物理的数据。
     public record DashProfile(
             double friction,
             double maxSpeed,

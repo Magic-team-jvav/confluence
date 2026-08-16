@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import org.confluence.mod.common.item.gun.BaseGun;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -30,12 +29,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 枪械专用 GeoItem 渲染器。
- *
- * <p>枪械资源以 1.21 TerraGuns 为权威：第一人称根节点、GUI、展示框和地面姿态都使用同一套
- * Geo 模型。1.20 侧只在 Forge 与 GeckoLib 4.3 的渲染入口上做适配，不改变枪械数值和行为。</p>
- */
+/// 枪械专用 GeoItem 渲染器。
+///
+/// <p>枪械资源以 1.21 TerraGuns 为权威：第一人称根节点、GUI、展示框和地面姿态都使用同一套
+/// Geo 模型。1.20 侧只在 Forge 与 GeckoLib 4.3 的渲染入口上做适配，不改变枪械数值和行为。</p>
 public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer<T> {
     private static final float FIRST_PERSON_X = 0.54F;
     private static final float FIRST_PERSON_Y = -0.10F;
@@ -270,13 +267,11 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
         return Math.abs(actual - expected) < 0.0001F;
     }
 
-    /**
-     * 手臂定位骨骼通常是隐藏标记。若 GeckoLib 当前遍历路径没有回调隐藏骨骼，
-     * 就从动画后的骨骼层级手动重建一次定位矩阵。
-     *
-     * <p>普通枪没有手臂定位骨骼。为了避免第一人称只剩枪械模型，这里为缺失定位的侧手提供固定兜底姿态；
-     * 带定位骨骼的新枪仍完全以模型标记为准。</p>
-     */
+    /// 手臂定位骨骼通常是隐藏标记。若 GeckoLib 当前遍历路径没有回调隐藏骨骼，
+    /// 就从动画后的骨骼层级手动重建一次定位矩阵。
+    ///
+    /// <p>普通枪没有手臂定位骨骼。为了避免第一人称只剩枪械模型，这里为缺失定位的侧手提供固定兜底姿态；
+    /// 带定位骨骼的新枪仍完全以模型标记为准。</p>
     private void queueMissingModelHands() {
         if (queuedLeftArmPose == null || queuedLeftArmNormal == null) {
             if (lastLeftArmLocalPose != null && lastLeftArmLocalNormal != null) {
@@ -379,9 +374,7 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
         renderPlayerArmDirect(renderer, player, armPose, bufferSource, packedLight, arm);
     }
 
-    /**
-     * 只渲染当前枪械需要的第一人称手臂，避免再次经过原版手臂事件造成取消或重复渲染。
-     */
+    /// 只渲染当前枪械需要的第一人称手臂，避免再次经过原版手臂事件造成取消或重复渲染。
     @SuppressWarnings("unchecked")
     private static void renderPlayerArmDirect(PlayerRenderer renderer, AbstractClientPlayer player,
                                               PoseStack poseStack, MultiBufferSource bufferSource,

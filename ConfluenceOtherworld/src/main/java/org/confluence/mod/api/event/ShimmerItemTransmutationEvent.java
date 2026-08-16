@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/// 微光物品转化事件，仅在服务端触发。
+/// This event is Server side only.
 public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
     protected int coolDown;
     protected int shrink = 0;
@@ -24,7 +24,7 @@ public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
         return getEntity();
     }
 
-    /// 设置源物品堆需要消耗的数量，默认不消耗。
+    /// Shrink item stack's count. Defaults to 0.
     public void setShrink(int count) {
         this.shrink = count;
     }
@@ -33,9 +33,9 @@ public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
         return shrink;
     }
 
-    /// 设置该物品实体下次允许转化前的冷却时间。
+    /// Determines how long could ItemEntity transmutation next time.
     ///
-    /// 默认值取物品实体自身寿命；多数情况下为 6000 tick。
+    /// Defaults to ItemEntity's lifespan(most of the time it is 6000).
     public void setCoolDown(int coolDown) {
         this.coolDown = coolDown;
     }
@@ -52,9 +52,9 @@ public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
         return speedY;
     }
 
-    /// 物品实体刚进入微光并准备开始转化时触发。
+    /// This event fired when an ItemEntity toss in shimmer.
     ///
-    /// 该事件可取消；取消后不会进入本次转化流程。
+    /// This event is [Cancelable]
     @Cancelable
     public static class Pre extends ShimmerItemTransmutationEvent {
         private int transformTime = 20;
@@ -63,7 +63,7 @@ public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
             super(source);
         }
 
-        /// 设置物品实体在真正转化前需要等待的时间。
+        /// Determines how long should ItemEntity transmutation before.
         public void setTransformTime(int transformTime) {
             this.transformTime = transformTime;
         }
@@ -73,7 +73,7 @@ public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
         }
     }
 
-    /// 物品实体完成等待并尝试生成转化结果时触发。
+    /// This event fired when an ItemEntity trying to transmutation.
     public static class Post extends ShimmerItemTransmutationEvent {
         private @Nullable List<ItemStack> targets;
 
@@ -85,7 +85,9 @@ public abstract class ShimmerItemTransmutationEvent extends ItemEvent {
             this.targets = targets;
         }
 
-        /// 获取最终转化目标；若事件监听者未设置目标，系统会继续按内置规则生成。
+        /// Determines what will ItemEntity transmutation to,
+        ///
+        /// If targets have not set yet, it will try to generate targets.
         public @Nullable List<ItemStack> getTargets() {
             return targets;
         }

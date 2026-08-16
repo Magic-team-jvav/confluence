@@ -113,10 +113,8 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
     public static class BEntity extends AbstractMechanicalBlock.BEntity {
         private static final int MAX_TRACKED_ENTITIES = 3;
-        /**
-         * 该列表必须属于具体方块实体，而不能放在 Behaviour 中。Behaviour 随方块注册只创建一次，
-         * 若由它持有 UUID，同种雕像会跨坐标、跨维度甚至跨存档共享同一份召唤记录。
-         */
+        /// 该列表必须属于具体方块实体，而不能放在 Behaviour 中。Behaviour 随方块注册只创建一次，
+        /// 若由它持有 UUID，同种雕像会跨坐标、跨维度甚至跨存档共享同一份召唤记录。
         private final List<UUID> summonedEntities = new ArrayList<>();
 
         public BEntity(BlockPos pos, BlockState state) {

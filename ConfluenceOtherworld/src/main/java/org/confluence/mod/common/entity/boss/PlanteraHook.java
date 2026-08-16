@@ -18,12 +18,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Optional;
 
-/**
- * 世纪之花用于移动的三个临时抓钩之一。
- *
- * <p>抓钩锚定方块并为主体提供移动目标；它不独立持有 Boss 生命周期，
- * 主体消失、脱战或重新构建附属实体时必须一并清理。</p>
- */
+/// 世纪之花用于移动的三个临时抓钩之一。
+///
+/// <p>抓钩锚定方块并为主体提供移动目标；它不独立持有 Boss 生命周期，
+/// 主体消失、脱战或重新构建附属实体时必须一并清理。</p>
 public class PlanteraHook extends BaseBossPart<Plantera> implements GeoEntity {
     static final int STATE_IDLE = 0;
     static final int STATE_EXTENDING = 1;

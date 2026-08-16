@@ -19,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
 
 import static org.confluence.mod.Confluence.MODID;
 import static org.confluence.mod.common.init.block.ChestBlocks.*;
@@ -1874,10 +1874,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WHITE_PAPER_PANE_LAMP.get(),
                 MALACHITE_PAPER_PANE_LAMP.get()
         );
-        /*
-         * 1.20 侧先用原版可稳定识别的家具语义承载房屋判定，避免把房屋系统绑定到
-         * TerraFurniture。附属模组仍可通过同名数据标签加入自己的桌椅。
-         */
+        /// 1.20 侧先用原版可稳定识别的家具语义承载房屋判定，避免把房屋系统绑定到
+        /// TerraFurniture。附属模组仍可通过同名数据标签加入自己的桌椅。
         tag(ModTags.Blocks.NPC_HOUSE_CHAIR).addTag(BlockTags.STAIRS);
         tag(ModTags.Blocks.NPC_HOUSE_TABLE).add(Blocks.CRAFTING_TABLE);
         tag(ModTags.Blocks.CACTUS).add(

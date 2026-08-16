@@ -695,7 +695,7 @@ public class ModDataProvider {
             register(context, MineTunnelsStructure.RAIL_DART, ModFeatures.RAIL_TRAP.get(), new RailTrapFeature.Config(BlockStateProvider.simple(FunctionalBlocks.DART_TRAP.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.DOWN))));
             register(context, MineTunnelsStructure.RAIL_SPRUCE_LOG, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(BlockStateProvider.simple(Blocks.SPRUCE_LOG), true, 1, 1, Direction.DOWN, false));
             register(context, MineTunnelsStructure.RAIL_STONE_BRICKS, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(BlockStateProvider.simple(Blocks.STONE_BRICKS), true, 1, 1, Direction.DOWN, false));
-            register(context, MineTunnelsStructure.RAIL_TUFF_BRICKS, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(BlockStateProvider.simple(Blocks./* 暂用：1.20.1 没有凝灰岩砖 */TUFF), true, 1, 1, Direction.DOWN, false));
+            register(context, MineTunnelsStructure.RAIL_TUFF_BRICKS, ModFeatures.BLOCK_POST.get(), new BlockPostFeature.Config(BlockStateProvider.simple(Blocks./* todo TUFF_BRICKS*/TUFF), true, 1, 1, Direction.DOWN, false));
             register(context, PLATINUM_VEIN_WITH_DETONATOR, ModFeatures.DETONATOR_FEATURE.get(), new DetonatorFeature.Config(Holder.direct(new ConfiguredFeature<>(Feature.ORE,
                     new OreConfiguration(List.of(
                             OreConfiguration.target(stoneOreReplaceables, OreBlocks.PLATINUM_ORE.get().defaultBlockState()),
@@ -1250,7 +1250,7 @@ public class ModDataProvider {
                     PlacedFeatures.DESERT_FOSSIL
             ), GenerationStep.Decoration.UNDERGROUND_ORES);
             addFeatures(context, "desert_badlands_ud", desertBadlands, HolderSet.direct(factory,
-                    // PlacedFeatures.CAVE_CHESTS_SMALL、PlacedFeatures.UNDERGROUND_CHESTS_SMALL 会与下方产生 feature order cycle
+                    //PlacedFeatures.CAVE_CHESTS_SMALL, PlacedFeatures.UNDERGROUND_CHESTS_SMALL, todo 会与下方产生feature order cycle
                     PlacedFeatures.UNDERGROUND_DESERT_POT,
                     PlacedFeatures.ROLLING_CACTUS,
                     PlacedFeatures.CAVE_SANDSTONE_CHESTS, PlacedFeatures.UNDERGROUND_SANDSTONE_CHESTS
@@ -1266,7 +1266,7 @@ public class ModDataProvider {
             ), GenerationStep.Decoration.UNDERGROUND_ORES);
             addFeatures(context, "snowy_icy_ud", snowyIcy, HolderSet.direct(factory,
                     PlacedFeatures.THIN_ICE_PATCH, PlacedFeatures.POWDER_SNOW_PATCH,
-                    // PlacedFeatures.CAVE_CHESTS_SMALL、PlacedFeatures.UNDERGROUND_CHESTS_SMALL 会与上方产生 feature order cycle
+                    //PlacedFeatures.CAVE_CHESTS_SMALL, PlacedFeatures.UNDERGROUND_CHESTS_SMALL, todo 会与上方产生feature order cycle
                     PlacedFeatures.TUNDRA_POT,
                     PlacedFeatures.CAVE_FROZEN_CHESTS, PlacedFeatures.UNDERGROUND_FROZEN_CHESTS
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
@@ -1403,7 +1403,7 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(MonsterEntities.GIANT_FLYING_FOX.get(), 60, 1, 2),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.WOODEN_MIMIC.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(MonsterEntities.GOLDEN_MIMIC.get(), 2, 1, 1)
-                            // 待接入：仅 Celebrationmk10 和 Get fixed boi 世界生成 new MobSpawnSettings.SpawnerData(MonsterEntities.JUNGLE_MIMIC.get(), 3, 1, 1)
+                            // todo 仅 Celebrationmk10 和 Get fixed boi 世界生成 new MobSpawnSettings.SpawnerData(MonsterEntities.JUNGLE_MIMIC.get(), 3, 1, 1)
 
                     )
             ));

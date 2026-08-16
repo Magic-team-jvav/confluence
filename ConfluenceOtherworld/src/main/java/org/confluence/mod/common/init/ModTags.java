@@ -15,9 +15,7 @@ import org.confluence.mod.Confluence;
 
 public final class ModTags {
     public static class Blocks {
-        /**
-         * 可使常见史莱姆逐渐转化为蜂蜜史莱姆的方块。
-         */
+        // NPC 房屋相关
         public static final TagKey<Block> HONEY = register("honey");
 
         // NPC 房屋相关
@@ -352,7 +350,7 @@ public final class ModTags {
 
         public static final TagKey<Item> TOOLS_SHEAR = common("tools/shear");
 
-        public static final TagKey<Item> SPEAR = register("spear"); // 1.21 侧同类标签会并入三叉戟体系。
+        public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
         public static final TagKey<Item> FLAIL = register("flail");
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
@@ -360,13 +358,11 @@ public final class ModTags {
         public static final TagKey<Item> LIGHT_PET = register("light_pet");
         public static final TagKey<Item> MINECART = register("minecart");
         public static final TagKey<Item> HOOK = register("hook");
-        /**
-         * 允许作为坐骑物品处理的物品。
-         *
-         * <p>标签只负责给数据包和联动物品一个统一分类；真正要召唤的实体类型由
-         * {@link org.confluence.mod.common.item.mount.MountItem} 显式绑定，坐骑参数
-         * 仍由对应坐骑实体自己维护。</p>
-         */
+        /// 允许作为坐骑物品处理的物品。
+        ///
+        /// <p>标签只负责给数据包和联动物品一个统一分类；真正要召唤的实体类型由
+        /// {@link org.confluence.mod.common.item.mount.MountItem} 显式绑定，坐骑参数
+        /// 仍由对应坐骑实体自己维护。</p>
         public static final TagKey<Item> MOUNT = register("mount");
         public static final TagKey<Item> DYE = register("dye");
         public static final TagKey<Item> SHORT_SWORD = register("short_sword");

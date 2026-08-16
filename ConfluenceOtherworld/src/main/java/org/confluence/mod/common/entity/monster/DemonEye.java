@@ -29,7 +29,9 @@ import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
-import org.confluence.mod.common.entity.ai.bt.leaf.*;
+import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeLeaveAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeSurroundAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.DemonEyeWanderAction;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
@@ -73,21 +75,17 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
     }
 
-    /**
-     * 恶魔眼始终使用飞行物理。这里直接返回无重力语义，与 1.21 侧一致，避免命令生成或
-     * NBT 读取覆盖实体标志后先坠落到地面，再由飞行行为勉强拉回目标高度。
-     */
+    /// 恶魔眼始终使用飞行物理。这里直接返回无重力语义，与 1.21 侧一致，避免命令生成或
+    /// NBT 读取覆盖实体标志后先坠落到地面，再由飞行行为勉强拉回目标高度。
     @Override
     public boolean isNoGravity() {
         return true;
     }
 
-    /**
-     * 恶魔眼体型决定受击后的位移幅度。
-     *
-     * <p>普通体型使用两倍击退，大型体型使用一点五倍击退；倍率先作用于原始强度，
-     * 再交给原版击退公式处理，保持伤害来源、附魔和其他模组施加的击退语义。</p>
-     */
+    /// 恶魔眼体型决定受击后的位移幅度。
+    ///
+    /// <p>普通体型使用两倍击退，大型体型使用一点五倍击退；倍率先作用于原始强度，
+    /// 再交给原版击退公式处理，保持伤害来源、附魔和其他模组施加的击退语义。</p>
     @Override
     public void knockback(double strength, double x, double z) {
         super.knockback(strength * (getVariant().isLarge() ? 1.5 : 2.0),
@@ -294,12 +292,10 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
             return random(random, DateUtils.isHalloween(DateUtils.getCalendar()));
         }
 
-        /**
-         * 按节日状态选择自然生成变种。
-         *
-         * <p>万圣节期间只生成猫头鹰和太空船外观，其余日期只从十二种常规恶魔眼中选择。
-         * 显式节日参数同时让生成规则可以在不依赖本机日期的情况下稳定测试。</p>
-         */
+        /// 按节日状态选择自然生成变种。
+        ///
+        /// <p>万圣节期间只生成猫头鹰和太空船外观，其余日期只从十二种常规恶魔眼中选择。
+        /// 显式节日参数同时让生成规则可以在不依赖本机日期的情况下稳定测试。</p>
         static Variant random(RandomSource random, boolean halloween) {
             if (halloween) {
                 return random.nextBoolean() ? OWL : SPACESHIP;

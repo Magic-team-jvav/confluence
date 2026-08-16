@@ -52,9 +52,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 pathProvider().json(Confluence.asResource("bestiary"))).addRecipe(entries.map);
     }
 
-    /**
-     * 按 1.21 图鉴顺序显式登记当前版本已经实现的 NPC。
-     */
+    /// 按 1.21 图鉴顺序显式登记当前版本已经实现的 NPC。
     private static void registerNpcs(Builder entries) {
         entries.add(NpcEntities.GUIDE, builder -> builder.order(100).rarity(1)
                 .background(SURFACE).filters(FilterEntry.SURFACE));
@@ -97,10 +95,8 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON));
     }
 
-    /**
-     * 小动物的顺序、稀有度、背景和变体均逐项来自 1.21。
-     * 1.20 的变体 NBT 使用枚举序列化，因此这里只保留 1.21 的图鉴数字键，不照搬其整数 NBT。
-     */
+    /// 小动物的顺序、稀有度、背景和变体均逐项来自 1.21。
+    /// 1.20 的变体 NBT 使用枚举序列化，因此这里只保留 1.21 的图鉴数字键，不照搬其整数 NBT。
     private static void registerCritters(Builder entries) {
         FilterEntry[] surfaceDaytime = {FilterEntry.SURFACE, FilterEntry.DAYTIME};
         entries.add(CritterEntities.BUNNY, builder -> builder.order(4200).rarity(1)
@@ -261,9 +257,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 builder -> cave(builder, 10100, 1));
     }
 
-    /**
-     * 按 1.21 已登记条目逐项配置当前版本存在的普通敌怪。
-     */
+    /// 按 1.21 已登记条目逐项配置当前版本存在的普通敌怪。
     private static void registerMonsters(Builder entries) {
         FilterEntry[] surfaceDaytime = {FilterEntry.SURFACE, FilterEntry.DAYTIME};
         FilterEntry[] surfaceNighttime = {FilterEntry.SURFACE, FilterEntry.NIGHTTIME};
@@ -502,9 +496,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
         entries.add(MonsterEntities.WITHER_BONE_SERPENT, builder -> nether(builder, 70300, 3));
     }
 
-    /**
-     * Boss 仅登记 1.21 当前已经正式写入图鉴的主体与随从。
-     */
+    /// Boss 仅登记 1.21 当前已经正式写入图鉴的主体与随从。
     private static void registerBosses(Builder entries) {
         entries.add(BossEntities.EYE_OF_CTHULHU, builder -> builder.order(50400).rarity(2)
                 .background(SURFACE_MOON).filters(FilterEntry.BOSS_ENEMY, FilterEntry.NIGHTTIME));
@@ -543,9 +535,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .background(THE_DUNGEON).filters(FilterEntry.THE_DUNGEON));
     }
 
-    /**
-     * 登记 1.20 中存在、且 1.21 图鉴已经显式配置的原版生物。
-     */
+    /// 登记 1.20 中存在、且 1.21 图鉴已经显式配置的原版生物。
     private static void registerVanillaCreatures(Builder entries) {
         FilterEntry[] night = {FilterEntry.SURFACE, FilterEntry.NIGHTTIME};
         entries.add(EntityType.ALLAY, builder -> vanillaDay(builder, 60000, 4));

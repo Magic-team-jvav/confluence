@@ -15,12 +15,10 @@ import java.util.function.Consumer;
 
 import static terrablender.api.ParameterUtils.*;
 
-/**
- * 地下发光蘑菇群系的主世界噪声区域。
- *
- * <p>深度被限定在地下区间，同时需要远内陆、中等湿度和较高侵蚀度。
- * 因此它是洞穴内的自然群系，而不会把地表大面积替换成蘑菇地形。</p>
- */
+/// 地下发光蘑菇群系的主世界噪声区域。
+///
+/// <p>深度被限定在地下区间，同时需要远内陆、中等湿度和较高侵蚀度。
+/// 因此它是洞穴内的自然群系，而不会把地表大面积替换成蘑菇地形。</p>
 public final class GlowingMushroomRegion extends Region {
     public GlowingMushroomRegion(ResourceLocation name, int weight) {
         super(name, RegionType.OVERWORLD, weight);

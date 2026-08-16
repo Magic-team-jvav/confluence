@@ -11,12 +11,10 @@ import org.confluence.mod.common.item.mana.ManaStaffItem;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * 左键配置下，法杖与枪械的持续使用状态包。
- *
- * <p>数据包只携带按下或松开，不携带物品、数值或目标。服务端会重新读取主手，并且只允许已经接入
- * 统一武器动作的法杖与枪械进入使用状态。</p>
- */
+/// 左键配置下，法杖与枪械的持续使用状态包。
+///
+/// <p>数据包只携带按下或松开，不携带物品、数值或目标。服务端会重新读取主手，并且只允许已经接入
+/// 统一武器动作的法杖与枪械进入使用状态。</p>
 public record WeaponUseStatePacketC2S(boolean pressed)
         implements IPortPacket.C2S {
     public static final ResourceLocation ID =
@@ -42,9 +40,7 @@ public record WeaponUseStatePacketC2S(boolean pressed)
         return ID;
     }
 
-    /**
-     * 使用状态属于玩家实体状态，只能在服务端主线程修改。
-     */
+    /// 使用状态属于玩家实体状态，只能在服务端主线程修改。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {
@@ -55,10 +51,8 @@ public record WeaponUseStatePacketC2S(boolean pressed)
     @Override
     public void work(ServerPlayer player) {
         if (!pressed) {
-            /*
-             * 松开包只能结束本体系统自己启动的持续使用，不能让伪造数据包中断弓、盾牌或其他模组物品的
-             * 正常使用。
-             */
+            /// 松开包只能结束本体系统自己启动的持续使用，不能让伪造数据包中断弓、盾牌或其他模组物品的
+            /// 正常使用。
             ItemStack usingStack = player.getUseItem();
             if (isSupported(usingStack)) {
                 player.releaseUsingItem();

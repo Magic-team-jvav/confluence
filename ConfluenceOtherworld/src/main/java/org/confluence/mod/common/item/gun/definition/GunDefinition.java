@@ -3,9 +3,7 @@ package org.confluence.mod.common.item.gun.definition;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.GunPropertyComponent;
 
-/**
- * 一把枪与单次请求无关的注册定义。
- */
+/// 一把枪与单次请求无关的注册定义。
 public record GunDefinition(
         int cooldown,
         float damage,
@@ -41,9 +39,7 @@ public record GunDefinition(
         }
     }
 
-    /**
-     * 兼容旧的单弹幕枪械定义写法。
-     */
+    /// 兼容旧的单弹幕枪械定义写法。
     public GunDefinition(int cooldown, float damage, float velocity, float knockback, float critical,
                          int penetrate, float inaccuracy, ModRarity rarity, FireMode fireMode) {
         this(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity, fireMode,

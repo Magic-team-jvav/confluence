@@ -16,9 +16,7 @@ import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifier
 
 import java.util.function.Consumer;
 
-/**
- * 持续按住使用键拖拽弹幕、松手后才按冻结弹速射出的法杖基类。
- */
+/// 持续按住使用键拖拽弹幕、松手后才按冻结弹速射出的法杖基类。
 public class BaseDraggingStaffItem<E extends BaseDraggingProjectile> extends ManaStaffItem<E> {
     public BaseDraggingStaffItem(Properties properties, ModRarity rarity, ProjectileFactory<E> factory,
                                  float damage, int manaCost, float rawVelocity, int cooldown) {
@@ -52,7 +50,7 @@ public class BaseDraggingStaffItem<E extends BaseDraggingProjectile> extends Man
         return UseAnim.BOW;
     }
 
-    /** 保留原有水平前置生成位置，垂直拖拽由弹幕实体在后续 tick 接管。 */
+    /// 保留原有水平前置生成位置，垂直拖拽由弹幕实体在后续 tick 接管。
     @Override
     protected Vec3 launchPosition(
             ProjectileFireContext context,
@@ -66,7 +64,7 @@ public class BaseDraggingStaffItem<E extends BaseDraggingProjectile> extends Man
                 context.player().getZ() + horizontalView.z);
     }
 
-    /** 拖拽阶段必须静止；实体在玩家停止使用后自行恢复冻结弹速。 */
+    /// 拖拽阶段必须静止；实体在玩家停止使用后自行恢复冻结弹速。
     @Override
     protected float velocityMultiplier(
             ProjectileFireContext context,
@@ -76,14 +74,12 @@ public class BaseDraggingStaffItem<E extends BaseDraggingProjectile> extends Man
         return velocityMultiplier(0.0F);
     }
 
-    /**
-     * 保留可搜索的显式零倍率声明，避免后续重构误把拖拽弹幕立即射出。
-     */
+    /// 保留可搜索的显式零倍率声明，避免后续重构误把拖拽弹幕立即射出。
     private static float velocityMultiplier(float value) {
         return value;
     }
 
-    /** 冷却由弹幕检测到松手时提交，而不是在拖拽开始时提交。 */
+    /// 冷却由弹幕检测到松手时提交，而不是在拖拽开始时提交。
     @Override
     protected int resolveCooldown(ProjectileFireContext context) {
         return 0;

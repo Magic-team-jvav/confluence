@@ -38,11 +38,11 @@ import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
-import org.confluence.mod.common.entity.npc.mood.NPCMood;
 import org.confluence.mod.common.entity.npc.mood.MoodData;
+import org.confluence.mod.common.entity.npc.mood.NPCMood;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
-import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -51,13 +51,11 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/**
- * 城镇 NPC 的公共实体基础。
- *
- * <p>本类统一管理房屋、区域、心情、基础移动以及服务端交互入口。商店报价仍由
- * 数据包提供，实体只负责决定本次访问允许进入会话快照的报价集合；默认实现保留
- * 全部报价，旅商等具有随机库存的 NPC 可以覆盖该选择步骤。</p>
- */
+/// 城镇 NPC 的公共实体基础。
+///
+/// <p>本类统一管理房屋、区域、心情、基础移动以及服务端交互入口。商店报价仍由
+/// 数据包提供，实体只负责决定本次访问允许进入会话快照的报价集合；默认实现保留
+/// 全部报价，旅商等具有随机库存的 NPC 可以覆盖该选择步骤。</p>
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private static final RawAnimation WALK =
             RawAnimation.begin().thenLoop("move.walk");
@@ -252,12 +250,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         this.shouldInteract = should;
     }
 
-    /**
-     * 选择本次访问可进入会话的报价。
-     *
-     * <p>输入列表已经按稳定报价 ID 排序，但尚未判断玩家条件。返回值会在会话创建时
-     * 再复制，因此实现不得依赖调用方随后修改该列表。</p>
-     */
+    // === 交互 ===
     public java.util.List<NPCTradeOffer> selectTradeOffers(
             java.util.List<NPCTradeOffer> offers) {
         return java.util.List.copyOf(offers);
@@ -283,10 +276,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             if (!Bestiary.INSTANCE.containsKey(this)) {
                 Bestiary.INSTANCE.updateEntry(this, false);
             }
-            /*
-             * 对话、治疗或召唤服务尚未迁移的 NPC 可能没有普通商品。先在服务端冻结本次报价，
-             * 避免它们打开一个没有任何内容的箱子界面，同时保证菜单显示与是否打开使用同一份快照。
-             */
+            /// 对话、治疗或召唤服务尚未迁移的 NPC 可能没有普通商品。先在服务端冻结本次报价，
+            /// 避免它们打开一个没有任何内容的箱子界面，同时保证菜单显示与是否打开使用同一份快照。
             java.util.List<NPCTradeOffer> offers =
                     NPCTradeList.getAvailableOffers(sp, this);
             if (!offers.isEmpty()) {

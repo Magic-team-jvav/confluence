@@ -17,13 +17,11 @@ import org.confluence.mod.common.entity.monster.Harpy;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 惊弓专用箭矢，会沿飞行路径驱散附近的飞行生物。
- *
- * <p>驱离完全由服务端计算。箭矢飞行时提供较弱的持续推力，命中实体或方块时产生一次
- * 范围更大的冲击；客户端只接收实体速度和效果同步，不能指定受影响目标。直接命中的
- * 飞行生物仍然承受 1.5 倍箭矢伤害。</p>
- */
+/// 惊弓专用箭矢，会沿飞行路径驱散附近的飞行生物。
+///
+/// <p>驱离完全由服务端计算。箭矢飞行时提供较弱的持续推力，命中实体或方块时产生一次
+/// 范围更大的冲击；客户端只接收实体速度和效果同步，不能指定受影响目标。直接命中的
+/// 飞行生物仍然承受 1.5 倍箭矢伤害。</p>
 public class DriveAwayArrowEntity extends BaseArrowEntity {
     private static final double TRAIL_RADIUS = 2.5;
     private static final double TRAIL_SPEED = 0.18;
@@ -98,9 +96,7 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
         }
     }
 
-    /**
-     * 从给定中心驱散范围内的飞行生物，供命中与飞行路径共用同一套规则。
-     */
+    /// 从给定中心驱散范围内的飞行生物，供命中与飞行路径共用同一套规则。
     void driveAwayNearby(
             Vec3 center, double radius, double speed, int duration) {
         if (level().isClientSide || radius <= 0.0

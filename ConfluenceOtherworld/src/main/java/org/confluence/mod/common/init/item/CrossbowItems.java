@@ -17,7 +17,7 @@ public class CrossbowItems {
     // 弩
 
     // 连弩
-    // 攻击间隔逐级减小，面板取自泰拉面板的一半，击退取十分之一。
+    // 攻击间隔逐级减小，面板取自泰拉面板一半-2 ，击退十分之一，
     public static final PortDeferredItem<BaseTerraRepeaterItem> COBALT_REPEATER = register("cobalt_repeater", 15, new BaseTerraRepeaterItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(60).arrowSpeed(2.6f).shootInterval(8).reloadTick(30).knockback(0.25f));
     public static final PortDeferredItem<BaseTerraRepeaterItem> PALLADIUM_REPEATER = register("palladium_repeater", 16, new BaseTerraRepeaterItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(80).arrowSpeed(2.6f).shootInterval(8).reloadTick(30).knockback(0.25f));
     public static final PortDeferredItem<BaseTerraRepeaterItem> MYTHRIL_REPEATER = register("mythril_repeater", 17, new BaseTerraRepeaterItem.ModifyArrowBuilder().setUnBreakable().setRarity(ModRarity.LIGHT_RED), new BaseTerraRepeaterItem.Builder().capacity(100).arrowSpeed(2.7f).shootInterval(6).reloadTick(28).knockback(0.25f));

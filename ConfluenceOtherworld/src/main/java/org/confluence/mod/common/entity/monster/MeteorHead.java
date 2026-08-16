@@ -13,9 +13,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 穿过地形高速追逐玩家的陨石怪。
- */
+/// 穿过地形高速追逐玩家的陨石怪。
 public class MeteorHead extends BaseFlyingMonster {
     private static final RawAnimation FLOAT = RawAnimation.begin().thenLoop("move.walk");
 

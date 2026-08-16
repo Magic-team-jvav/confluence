@@ -12,11 +12,9 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 会瞬移并投掷火球的地狱法师。
- *
- * <p>火焰免疫、环境火星和火球点燃效果均属于该生物自身，不由通用法师基类猜测。</p>
- */
+/// 会瞬移并投掷火球的地狱法师。
+///
+/// <p>火焰免疫、环境火星和火球点燃效果均属于该生物自身，不由通用法师基类猜测。</p>
 public class FireImp extends BaseCasterMonster {
     private static final RawAnimation IDLE =
             RawAnimation.begin().thenLoop("misc.idle");
@@ -41,12 +39,10 @@ public class FireImp extends BaseCasterMonster {
         return ModEntities.FIRE_IMP_PROJECTILE.get();
     }
 
-    /**
-     * 火焰小鬼资源没有普通行走动画，移动和等待阶段都维持悬浮待机。
-     *
-     * <p>施法时仍使用与其他法师一致的挥手窗口。这里覆盖通用法师控制器，避免移动时
-     * 请求不存在的 {@code move.walk} 并持续输出 GeckoLib 警告。</p>
-     */
+    /// 火焰小鬼资源没有普通行走动画，移动和等待阶段都维持悬浮待机。
+    ///
+    /// <p>施法时仍使用与其他法师一致的挥手窗口。这里覆盖通用法师控制器，避免移动时
+    /// 请求不存在的 {@code move.walk} 并持续输出 GeckoLib 警告。</p>
     @Override
     public void registerControllers(
             AnimatableManager.ControllerRegistrar controllers) {

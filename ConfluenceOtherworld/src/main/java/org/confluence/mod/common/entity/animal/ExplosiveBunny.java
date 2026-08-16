@@ -32,12 +32,10 @@ public class ExplosiveBunny extends Bunny {
         setVariant(Variant.EXPLOSIVE);
     }
 
-    /**
-     * 爆炸兔死亡后产生一次只伤害实体、不破坏方块的爆炸。
-     *
-     * <p>爆炸状态保存在具体实体中，使普通兔无需识别爆炸变体；显式幂等
-     * 保护也能兼容伤害链、清理逻辑或附属模组重复调用死亡入口的场景。</p>
-     */
+    /// 爆炸兔死亡后产生一次只伤害实体、不破坏方块的爆炸。
+    ///
+    /// <p>爆炸状态保存在具体实体中，使普通兔无需识别爆炸变体；显式幂等
+    /// 保护也能兼容伤害链、清理逻辑或附属模组重复调用死亡入口的场景。</p>
     @Override
     public void die(DamageSource source) {
         super.die(source);

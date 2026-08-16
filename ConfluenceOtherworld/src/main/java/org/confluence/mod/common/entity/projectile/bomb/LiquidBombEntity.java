@@ -96,9 +96,7 @@ public class LiquidBombEntity extends BaseBombEntity {
         compound.putInt("FillRadius", Mth.clamp(radius, 1, MAX_FILL_RADIUS));
     }
 
-    /**
-     * 当前格式缺字段或字段损坏时，从实体注册 ID 恢复安全默认流体。
-     */
+    /// 当前格式缺字段或字段损坏时，从实体注册 ID 恢复安全默认流体。
     private Fluid defaultFluidForType() {
         if (getType() == ModEntities.LAVA_BOMB.get()) return Fluids.LAVA;
         if (getType() == ModEntities.HONEY_BOMB.get()) return ModFluids.HONEY.fluid().get();

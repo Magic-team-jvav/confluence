@@ -12,10 +12,8 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import org.confluence.mod.Confluence;
 
-/**
- * 泰拉棱镜的长剑模型。
- * 模型原点放在护手附近，待命姿态和攻击轨迹都以这个锚点计算，避免剑刃长度变化后重新调整跟随算法。
- */
+/// 泰拉棱镜的长剑模型。
+/// 模型原点放在护手附近，待命姿态和攻击轨迹都以这个锚点计算，避免剑刃长度变化后重新调整跟随算法。
 public final class TerraprismaModel {
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(Confluence.asResource("terraprisma"), "main");

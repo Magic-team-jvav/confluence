@@ -14,9 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/**
- * 只在客户端确认成功放置方块后应用放置速度，不影响容器和普通物品的右键行为。
- */
+/// 只在客户端确认成功放置方块后应用放置速度，不影响容器和普通物品的右键行为。
 @Mixin(BlockItem.class)
 public abstract class BlockItemMixin {
     @Unique

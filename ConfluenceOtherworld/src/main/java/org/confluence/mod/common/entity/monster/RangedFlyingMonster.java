@@ -18,16 +18,14 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 
-/**
- * 以环绕目标和周期性弹幕为主要战斗方式的飞行怪物基类。
- *
- * <p>构造参数提供没有数据包覆盖时的射击间隔与伤害倍率，行为树创建时再读取当前
- * {@link CreatureDefinition}。因此数据包可以调整同一实体的盘旋速度、盘旋半径、射击节奏
- * 和游荡范围，而实体注册代码仍保留一套始终可用的安全默认值。</p>
- *
- * <p>射击行为复用实体攻击伤害属性生成弹幕快照；本类只编排移动与发射时机，不重复实现
- * 弹幕命中、暴击或伤害结算。</p>
- */
+/// 以环绕目标和周期性弹幕为主要战斗方式的飞行怪物基类。
+///
+/// <p>构造参数提供没有数据包覆盖时的射击间隔与伤害倍率，行为树创建时再读取当前
+/// {@link CreatureDefinition}。因此数据包可以调整同一实体的盘旋速度、盘旋半径、射击节奏
+/// 和游荡范围，而实体注册代码仍保留一套始终可用的安全默认值。</p>
+///
+/// <p>射击行为复用实体攻击伤害属性生成弹幕快照；本类只编排移动与发射时机，不重复实现
+/// 弹幕命中、暴击或伤害结算。</p>
 public class RangedFlyingMonster extends BaseFlyingMonster {
     private final int shotCooldown;
     private final double shotMultiplier;

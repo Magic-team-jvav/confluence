@@ -20,6 +20,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -27,7 +28,6 @@ import org.confluence.mod.common.entity.projectile.PlanteraProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.lib.util.LibUtils;
 
 public class Plantera extends BaseBoss {
     static final int HOOK_COUNT = 3;
@@ -73,9 +73,7 @@ public class Plantera extends BaseBoss {
         this.xpReward = 2000;
     }
 
-    /**
-     * 世纪之花的位置由钩爪约束和阶段移动共同决定。
-     */
+    /// 世纪之花的位置由钩爪约束和阶段移动共同决定。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -106,10 +104,8 @@ public class Plantera extends BaseBoss {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                /*
-                 * 世纪之花的位移由服务端 tick 统一计算。行为树只保持存活，不能再
-                 * 并行写入速度，否则钩爪牵引会与冲刺节点互相覆盖并产生瞬时加速。
-                 */
+                /// 世纪之花的位移由服务端 tick 统一计算。行为树只保持存活，不能再
+                /// 并行写入速度，否则钩爪牵引会与冲刺节点互相覆盖并产生瞬时加速。
                 return new WaitAction(20);
             }
         };
@@ -177,13 +173,11 @@ public class Plantera extends BaseBoss {
         return entityData.get(DATA_PHASE);
     }
 
-    /**
-     * 按生命阶段分别推进种子、刺球和孢子的独立发射节拍。
-     *
-     * <p>出生后的前 100 tick 只允许世纪之花接近并展开钩爪，避免玩家在实体刚加载时
-     * 遭遇无法预判的零帧弹幕。第一阶段的种子与刺球互不占用冷却，因此同一 tick
-     * 可以同时发射；第二阶段才会完全切换为孢子。</p>
-     */
+    /// 按生命阶段分别推进种子、刺球和孢子的独立发射节拍。
+    ///
+    /// <p>出生后的前 100 tick 只允许世纪之花接近并展开钩爪，避免玩家在实体刚加载时
+    /// 遭遇无法预判的零帧弹幕。第一阶段的种子与刺球互不占用冷却，因此同一 tick
+    /// 可以同时发射；第二阶段才会完全切换为孢子。</p>
     private void tickProjectileAttacks() {
         if (attackTicks <= ATTACK_WARMUP_TICKS) {
             return;
@@ -232,12 +226,10 @@ public class Plantera extends BaseBoss {
         }
     }
 
-    /**
-     * 立即执行一次当前阶段的基础射击。
-     *
-     * <p>自然战斗不通过此入口推进冷却；它保留为遭遇脚本和行为测试可调用的单次动作。
-     * 第一阶段发射种子，第二阶段发射孢子，刺球仍只由独立自然节拍负责。</p>
-     */
+    /// 立即执行一次当前阶段的基础射击。
+    ///
+    /// <p>自然战斗不通过此入口推进冷却；它保留为遭遇脚本和行为测试可调用的单次动作。
+    /// 第一阶段发射种子，第二阶段发射孢子，刺球仍只由独立自然节拍负责。</p>
     boolean shootAtTarget() {
         return getPhase() == 0
                 ? spawnProjectile(
@@ -350,10 +342,8 @@ public class Plantera extends BaseBoss {
         return null;
     }
 
-    /**
-     * 以 1.21 侧相同的加速度和阶段速度上限追踪玩家，同时叠加已抓牢钩爪的牵引。
-     * 所有加速度先合并、再统一限速，保证任意难度和生命阶段都不会产生额外冲刺。
-     */
+    /// 以 1.21 侧相同的加速度和阶段速度上限追踪玩家，同时叠加已抓牢钩爪的牵引。
+    /// 所有加速度先合并、再统一限速，保证任意难度和生命阶段都不会产生额外冲刺。
     private void updateMovement() {
         LivingEntity target = getTarget();
         if (target == null) {
@@ -386,10 +376,8 @@ public class Plantera extends BaseBoss {
         setDeltaMovement(velocity);
     }
 
-    /**
-     * 进入或刷新 200 tick 的狂暴窗口。只有首次进入时播放咆哮；
-     * 持续缺少锚点或玩家仍在范围外只刷新计时，不会每 tick 重复播放声音。
-     */
+    /// 进入或刷新 200 tick 的狂暴窗口。只有首次进入时播放咆哮；
+    /// 持续缺少锚点或玩家仍在范围外只刷新计时，不会每 tick 重复播放声音。
     private void enrage() {
         if (enragedTicks <= 0) {
             playSound(ModSoundEvents.ROAR.get());
@@ -401,12 +389,10 @@ public class Plantera extends BaseBoss {
         return enragedTicks > 0;
     }
 
-    /**
-     * 补齐第二阶段缺失的触手槽位。
-     *
-     * <p>首次转阶段会一次生成全部 17 根；之后若有触手被击毁，则按当前存活数量
-     * 延长重建间隔。触手是临时实体，区块重新加载后同样从这些权威槽位恢复。</p>
-     */
+    /// 补齐第二阶段缺失的触手槽位。
+    ///
+    /// <p>首次转阶段会一次生成全部 17 根；之后若有触手被击毁，则按当前存活数量
+    /// 延长重建间隔。触手是临时实体，区块重新加载后同样从这些权威槽位恢复。</p>
     private void ensureTentacles() {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
@@ -432,12 +418,10 @@ public class Plantera extends BaseBoss {
         }
     }
 
-    /**
-     * 每 50 tick 展开空闲钩爪，并在周期中点收回离目标最远的一根。
-     *
-     * <p>钩爪不再定时瞬间改写锚点，而是完整经过空闲、伸展、抓牢和收回四态。
-     * 主体牵引只读取真正抓牢的钩爪，客户端因此能获得连续的伸缩运动。</p>
-     */
+    /// 每 50 tick 展开空闲钩爪，并在周期中点收回离目标最远的一根。
+    ///
+    /// <p>钩爪不再定时瞬间改写锚点，而是完整经过空闲、伸展、抓牢和收回四态。
+    /// 主体牵引只读取真正抓牢的钩爪，客户端因此能获得连续的伸缩运动。</p>
     private void updateHookCycle() {
         LivingEntity target = getTarget();
         if (target == null) {
@@ -486,10 +470,8 @@ public class Plantera extends BaseBoss {
         }
     }
 
-    /**
-     * 返回触手槽位当前附着的锚点。钩爪尚未完成重建时退回本体的对应方向，
-     * 避免触手短暂出现在世界原点或错误玩家身边。
-     */
+    /// 返回触手槽位当前附着的锚点。钩爪尚未完成重建时退回本体的对应方向，
+    /// 避免触手短暂出现在世界原点或错误玩家身边。
     Vec3 getTentacleAnchor(int slot) {
         if (slot < BODY_TENTACLE_COUNT) {
             return getEyePosition();
@@ -501,9 +483,7 @@ public class Plantera extends BaseBoss {
                 : hook.getEyePosition();
     }
 
-    /**
-     * 返回触手所属本体或钩爪的当前速度。
-     */
+    /// 返回触手所属本体或钩爪的当前速度。
     Vec3 getTentacleAnchorVelocity(int slot) {
         if (slot < BODY_TENTACLE_COUNT) {
             return getDeltaMovement();
@@ -516,10 +496,8 @@ public class Plantera extends BaseBoss {
                 : hook.getDeltaMovement();
     }
 
-    /**
-     * 用黄金角为刚生成且尚无朝向的触手提供稳定初始方向；进入运动后仍由
-     * 1.21 的吸引和排斥公式连续调整，不会锁死在固定槽位上。
-     */
+    /// 用黄金角为刚生成且尚无朝向的触手提供稳定初始方向；进入运动后仍由
+    /// 1.21 的吸引和排斥公式连续调整，不会锁死在固定槽位上。
     Vec3 getTentacleBaseDirection(int slot) {
         int localSlot;
         int count;

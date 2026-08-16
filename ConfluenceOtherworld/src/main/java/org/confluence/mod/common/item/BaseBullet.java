@@ -10,8 +10,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.BulletPropertyComponent;
-import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.gun.definition.BulletBehavior;
 import org.confluence.mod.common.item.gun.definition.BulletDefinition;
@@ -52,11 +52,9 @@ public class BaseBullet extends Item {
         }
     }
 
-    /**
-     * 执行子弹物品的实际伤害。
-     *
-     * @return 目标确实接受伤害时为 {@code true}；只有此时实体才记录 UUID、击退并消耗穿透
-     */
+    /// 执行子弹物品的实际伤害。
+    ///
+    /// @return 目标确实接受伤害时为 {@code true}；只有此时实体才记录 UUID、击退并消耗穿透
     public boolean onHitEntity(BaseBulletEntity bulletEntity, EntityHitResult result) {
         boolean damaged = result.getEntity().hurt(bulletEntity.getDamageSource(), bulletEntity.getCalculatedDamage());
         // 被困难宝箱怪反射的弹丸只保留 50% 直接伤害，不再携带原弹药的减益或分裂效果。

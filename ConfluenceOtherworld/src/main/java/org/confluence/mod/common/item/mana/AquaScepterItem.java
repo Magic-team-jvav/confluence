@@ -17,9 +17,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.WaterStreamProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-/**
- * 每三 tick 提交一次独立魔力事务的持续水流法杖。
- */
+/// 每三 tick 提交一次独立魔力事务的持续水流法杖。
 public class AquaScepterItem extends ManaStaffItem<WaterStreamProjectile> {
     public AquaScepterItem() {
         super(ModRarity.GREEN, WaterStreamProjectile::new, 11, 7, 37.5F, 0, 0.04);
@@ -41,17 +39,13 @@ public class AquaScepterItem extends ManaStaffItem<WaterStreamProjectile> {
         return trigger == ProjectileFireTrigger.CONTINUOUS_USE_TICK;
     }
 
-    /**
-     * 持续脉冲只接受服务端确认仍在使用当前权杖的请求。
-     */
+    /// 持续脉冲只接受服务端确认仍在使用当前权杖的请求。
     @Override
     protected boolean validateAction(ProjectileFireContext context) {
         return isActivelyUsingCurrentWeapon(context);
     }
 
-    /**
-     * 每枚水流只承担原始七点魔力成本的三分之一。
-     */
+    /// 每枚水流只承担原始七点魔力成本的三分之一。
     @Override
     protected float resolveManaCost(ProjectileFireContext context) {
         return manaCost / 3.0F;
@@ -67,9 +61,7 @@ public class AquaScepterItem extends ManaStaffItem<WaterStreamProjectile> {
         }
     }
 
-    /**
-     * 保留原有每六 tick 一次的声音节奏。
-     */
+    /// 保留原有每六 tick 一次的声音节奏。
     @Override
     protected void playSuccessfulShot(ProjectileFireContext context, WaterStreamProjectile projectile) {
         if (context.player().getUseItemRemainingTicks() % 6 == 0) {

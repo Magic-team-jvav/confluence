@@ -171,9 +171,7 @@ public class VoidCrystalItem extends Item {
         return false;
     }
 
-    /**
-     * 只接受位置与面同时存在的当前版本快照，损坏或早期扁平字段不会默认成原点和 DOWN。
-     */
+    /// 只接受位置与面同时存在的当前版本快照，损坏或早期扁平字段不会默认成原点和 DOWN。
     static @Nullable Mark readMark(ItemStack stack) {
         CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
         if (itemTag == null || !itemTag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) return null;
@@ -190,9 +188,7 @@ public class VoidCrystalItem extends Item {
                 Direction.from3DDataValue(faceId));
     }
 
-    /**
-     * 写入当前格式完整快照并删除旧扁平键；异常文本由调用边界保持英文。
-     */
+    /// 写入当前格式完整快照并删除旧扁平键；异常文本由调用边界保持英文。
     static void writeMark(ItemStack stack, Mark mark) {
         if (mark == null) {
             throw new IllegalArgumentException("Void crystal mark cannot be null");
@@ -208,9 +204,7 @@ public class VoidCrystalItem extends Item {
         });
     }
 
-    /**
-     * 仅移除本物品的运行状态，保留其他组件使用者的 NBT。
-     */
+    /// 仅移除本物品的运行状态，保留其他组件使用者的 NBT。
     static void clearMark(ItemStack stack) {
         CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
         if (itemTag == null) return;

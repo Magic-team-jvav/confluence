@@ -268,9 +268,7 @@ public final class ClientConfigs {
         context.registerConfig(ModConfig.Type.CLIENT, builder.build());
     }
 
-    /**
-     * 返回当前物品配置的主要动作键；不属于这五类武器时返回 {@code null}。
-     */
+    /// 返回当前物品配置的主要动作键；不属于这五类武器时返回 {@code null}。
     public static @Nullable WeaponUseButton weaponUseButton(ItemStack stack) {
         if (stack.getItem() instanceof ManaStaffItem<?>) {
             return staffUseButton;

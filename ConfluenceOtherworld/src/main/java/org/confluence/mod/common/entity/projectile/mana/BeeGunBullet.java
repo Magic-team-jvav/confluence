@@ -24,13 +24,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-/**
- * 蜜蜂枪专用弹幕。
- *
- * <p>1.21 侧只负责蜜蜂本身的运动与追踪；1.20 合并侧还需要接入 MagicLib 的发射快照，
- * 因此在 Otherworld 内补充当前格式的战斗状态。伤害、暴击、魔法倍率、穿透、击退和命中 UUID
- * 都冻结在发射瞬间，成功命中后才记录目标，避免同一只蜜蜂重复伤害同一个实体。</p>
- */
+/// 蜜蜂枪专用弹幕。
+///
+/// <p>1.21 侧只负责蜜蜂本身的运动与追踪；1.20 合并侧还需要接入 MagicLib 的发射快照，
+/// 因此在 Otherworld 内补充当前格式的战斗状态。伤害、暴击、魔法倍率、穿透、击退和命中 UUID
+/// 都冻结在发射瞬间，成功命中后才记录目标，避免同一只蜜蜂重复伤害同一个实体。</p>
 public class BeeGunBullet extends BeeProjectile implements ProjectileCombatSnapshotCarrier {
     private static final String BEE_STATE_TAG = "BeeGunState";
     private static final int BEE_STATE_VERSION = 1;
@@ -92,9 +90,7 @@ public class BeeGunBullet extends BeeProjectile implements ProjectileCombatSnaps
         }
     }
 
-    /**
-     * 所有者、队伍、PvP 与成功命中 UUID 均在追踪和碰撞阶段统一过滤。
-     */
+    /// 所有者、队伍、PvP 与成功命中 UUID 均在追踪和碰撞阶段统一过滤。
     @Override
     protected boolean canHitEntity(Entity target) {
         if (!ProjectileHitRules.canHit(getOwner(), target)) {
@@ -104,11 +100,9 @@ public class BeeGunBullet extends BeeProjectile implements ProjectileCombatSnaps
         return combatState.canHit(impacted.getUUID(), false);
     }
 
-    /**
-     * 使用冻结基础伤害命中；巨蜂原有的一至三点随机加伤和额外推动保持不变。
-     *
-     * <p>MagicLib 会在伤害事件中根据本实体携带的 MAGIC 快照应用一次通道倍率和暴击。</p>
-     */
+    /// 使用冻结基础伤害命中；巨蜂原有的一至三点随机加伤和额外推动保持不变。
+    ///
+    /// <p>MagicLib 会在伤害事件中根据本实体携带的 MAGIC 快照应用一次通道倍率和暴击。</p>
     @Override
     protected void onHitEntity(EntityHitResult result) {
         if (level().isClientSide || isRemoved()) {
@@ -144,9 +138,7 @@ public class BeeGunBullet extends BeeProjectile implements ProjectileCombatSnaps
         return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 
-    /**
-     * 只写当前战斗格式；TerraCurio 父类字段继续负责蜜蜂运动与反弹状态。
-     */
+    /// 只写当前战斗格式；TerraCurio 父类字段继续负责蜜蜂运动与反弹状态。
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
@@ -158,9 +150,7 @@ public class BeeGunBullet extends BeeProjectile implements ProjectileCombatSnaps
         compound.put(BEE_STATE_TAG, beeState);
     }
 
-    /**
-     * 当前格式战斗状态是伤害权威来源，父类保存的基础伤害不会参与恢复后的计算。
-     */
+    /// 当前格式战斗状态是伤害权威来源，父类保存的基础伤害不会参与恢复后的计算。
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);

@@ -260,10 +260,8 @@ public class ModItemModelProvider extends ItemModelProvider {
             withExistingParent(name, "item/generated").texture("layer0", Confluence.asResource("item/compass/" + name));
         }
 
-        /*
-         * 原版刷怪蛋由颜色层动态绘制，不读取模组贴图。统一指向原版模板，
-         * 避免通用物品兜底把它们生成为缺失纹理模型。
-         */
+        /// 原版刷怪蛋由颜色层动态绘制，不读取模组贴图。统一指向原版模板，
+        /// 避免通用物品兜底把它们生成为缺失纹理模型。
         for (PortRegistryEntry<Item, ?> entry :
                 SpawnEggItems.ITEMS.getEntries()) {
             withExistingParent(
@@ -273,12 +271,10 @@ public class ModItemModelProvider extends ItemModelProvider {
             skip.add(entry.get());
         }
 
-        /*
-         * 通用规则只能生成常规父模型和纹理引用，不能覆盖 Blockbench 几何、特殊 display、
-         * predicate overrides 或 forge:separate_transforms。ExistingFileHelper 的资源管理器
-         * 只查询 --existing 输入，不会把本轮刚登记的 generatedModels 当作手写资源，因此可在
-         * 所有规则执行后统一撤销误生成项，同时仍允许其他生成模型引用这些手写模型。
-         */
+        /// 通用规则只能生成常规父模型和纹理引用，不能覆盖 Blockbench 几何、特殊 display、
+        /// predicate overrides 或 forge:separate_transforms。ExistingFileHelper 的资源管理器
+        /// 只查询 --existing 输入，不会把本轮刚登记的 generatedModels 当作手写资源，因此可在
+        /// 所有规则执行后统一撤销误生成项，同时仍允许其他生成模型引用这些手写模型。
         generatedModels.keySet().removeIf(this::hasHandwrittenModel);
     }
 
@@ -303,9 +299,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         skip.add(deferredItem.get());
     }
 
-    /**
-     * 连枷在手中交给 Geo 手柄渲染器，物品栏与展示场景继续使用紧凑二维图标。
-     */
+    /// 连枷在手中交给 Geo 手柄渲染器，物品栏与展示场景继续使用紧凑二维图标。
     private void flailModel(PortDeferredItem<?> deferredItem) {
         String path = deferredItem.getId().getPath();
         ResourceLocation none = Confluence.asResource("");
@@ -359,12 +353,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         }
     }
 
-    /**
-     * 判断指定物品模型是否已经由主资源目录提供。
-     *
-     * <p>复杂模型继续由手写 JSON 持有；只有没有手写定义的常规模型才由本 Provider 接管。
-     * 这避免通用兜底在生成目录留下同路径但功能退化的副本。</p>
-     */
+    /// 判断指定物品模型是否已经由主资源目录提供。
+    ///
+    /// <p>复杂模型继续由手写 JSON 持有；只有没有手写定义的常规模型才由本 Provider 接管。
+    /// 这避免通用兜底在生成目录留下同路径但功能退化的副本。</p>
     private boolean hasHandwrittenModel(ResourceLocation model) {
         try {
             existingFileHelper.getResource(model, PackType.CLIENT_RESOURCES, ".json", "models");

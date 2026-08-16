@@ -2,9 +2,7 @@ package org.confluence.mod.common.summon.terraprisma;
 
 import net.minecraft.world.phys.Vec3;
 
-/**
- * 控制泰拉棱镜移动到目标处并向下斜劈。
- */
+/// 控制泰拉棱镜移动到目标处并向下斜劈。
 final class TerraprismaSlashGoal extends TerraprismaSkillGoal {
     static final int BASE_COOLDOWN = 45;
     private boolean triggered;

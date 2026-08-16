@@ -9,12 +9,10 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.mod.api.summon.SummonTargetCache;
 
-/**
- * 地面近战召唤物的通用运行基类。
- *
- * <p>这里沉淀寻路、跟随、近战判定和攻击节奏；具体召唤物仍然通过子类提供体型、
- * 搜索范围、移动速度和命中反馈，避免把铁傀儡、雪怪等行为差异硬塞进同一组分支判断。</p>
- */
+/// 地面近战召唤物的通用运行基类。
+///
+/// <p>这里沉淀寻路、跟随、近战判定和攻击节奏；具体召唤物仍然通过子类提供体型、
+/// 搜索范围、移动速度和命中反馈，避免把铁傀儡、雪怪等行为差异硬塞进同一组分支判断。</p>
 public abstract class GroundMeleeSummon extends PhysicalSummon {
     private static final double FOLLOW_START_DISTANCE_SQR = 32.0 * 32.0;
     private final double searchRange;
@@ -75,17 +73,13 @@ public abstract class GroundMeleeSummon extends PhysicalSummon {
         }
     }
 
-    /**
-     * 使用原版近战距离公式，让召唤物和目标的体型都参与判定。
-     */
+    /// 使用原版近战距离公式，让召唤物和目标的体型都参与判定。
     private double meleeAttackRangeSqr() {
         double ownReach = width() * 2.0;
         return ownReach * ownReach + targetBounds().getXsize();
     }
 
-    /**
-     * 近战命中保留 1.21 的视线限制，避免召唤物隔着完整方块直接结算伤害。
-     */
+    /// 近战命中保留 1.21 的视线限制，避免召唤物隔着完整方块直接结算伤害。
     private boolean hasAttackLineOfSight() {
         Vec3 start = position().add(0.0, height() * 0.5, 0.0);
         Vec3 end = targetBounds().getCenter();

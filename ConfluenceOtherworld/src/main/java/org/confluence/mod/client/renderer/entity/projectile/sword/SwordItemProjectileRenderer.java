@@ -15,9 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 
-/**
- * 用冻结武器副本渲染没有独立实体模型的剑气。
- */
+/// 用冻结武器副本渲染没有独立实体模型的剑气。
 public class SwordItemProjectileRenderer<T extends SwordProjectile> extends EntityRenderer<T> {
     private final float scale;
 
@@ -62,9 +60,7 @@ public class SwordItemProjectileRenderer<T extends SwordProjectile> extends Enti
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
-    /**
-     * 默认沿运动方向定向，并以实体年龄滚转；特殊剑气可以覆写为自己的局部动画。
-     */
+    /// 默认沿运动方向定向，并以实体年龄滚转；特殊剑气可以覆写为自己的局部动画。
     protected void applyTransform(T entity, float partialTick, PoseStack poseStack) {
         Vec3 motion = entity.getDeltaMovement();
         if (motion.lengthSqr() > 1.0E-10) {

@@ -10,20 +10,16 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.mount.MountItem;
 
-/**
- * 本体坐骑的创建与清理入口。
- *
- * <p>坐骑物品直接保存实体类型，管理器只负责从手中或坐骑槽找到物品、创建实体、
- * 切换骑乘状态，以及在槽位物品失效时清理实体。各坐骑的移动参数和特殊能力
- * 均留在自己的实体类中。</p>
- */
+/// 本体坐骑的创建与清理入口。
+///
+/// <p>坐骑物品直接保存实体类型，管理器只负责从手中或坐骑槽找到物品、创建实体、
+/// 切换骑乘状态，以及在槽位物品失效时清理实体。各坐骑的移动参数和特殊能力
+/// 均留在自己的实体类中。</p>
 public final class MountManager {
     private MountManager() {
     }
 
-    /**
-     * 使用手中坐骑物品时召唤该物品绑定的坐骑；已经骑乘时不重复处理。
-     */
+    /// 使用手中坐骑物品时召唤该物品绑定的坐骑；已经骑乘时不重复处理。
     public static void summonFromHand(ServerPlayer player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (stack.getItem() instanceof MountItem<?> item) {
@@ -31,9 +27,7 @@ public final class MountManager {
         }
     }
 
-    /**
-     * 按下快捷键时使用坐骑槽内的物品。
-     */
+    /// 按下快捷键时使用坐骑槽内的物品。
     public static void toggleFromSlot(ServerPlayer player) {
         if (player.getVehicle() instanceof AbstractMountEntity) {
             dismiss(player);
@@ -79,12 +73,10 @@ public final class MountManager {
         AchievementAwardService.award(player, "the_cavalry");
     }
 
-    /**
-     * 每个服务端 tick 校验当前临时坐骑。
-     *
-     * <p>手持物品召唤的坐骑无需一直持有原物品；坐骑槽召唤的坐骑则要求槽位
-     * 仍是同一实体类型的坐骑物品。</p>
-     */
+    /// 每个服务端 tick 校验当前临时坐骑。
+    ///
+    /// <p>手持物品召唤的坐骑无需一直持有原物品；坐骑槽召唤的坐骑则要求槽位
+    /// 仍是同一实体类型的坐骑物品。</p>
     public static void validate(ServerPlayer player) {
         if (!(player.getVehicle() instanceof AbstractMountEntity mount)) {
             return;
@@ -106,9 +98,7 @@ public final class MountManager {
         }
     }
 
-    /**
-     * 清理玩家当前拥有并骑乘的临时坐骑。
-     */
+    /// 清理玩家当前拥有并骑乘的临时坐骑。
     public static void dismiss(ServerPlayer player) {
         if (!(player.getVehicle() instanceof AbstractMountEntity mount)
                 || mount.getOwnerUUID() == null

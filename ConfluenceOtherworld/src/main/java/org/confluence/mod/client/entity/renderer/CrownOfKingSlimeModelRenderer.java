@@ -13,9 +13,7 @@ import org.confluence.mod.client.entity.model.CrownOfKingSlimeModel;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 import org.joml.Quaternionf;
 
-/**
- * 渲染史莱姆王传送时抛出的独立王冠。
- */
+/// 渲染史莱姆王传送时抛出的独立王冠。
 public class CrownOfKingSlimeModelRenderer extends EntityRenderer<CrownOfKingSlimeModelEntity> {
     public static final Quaternionf FLIP_Y = Axis.ZP.rotation(Mth.PI);
     private final CrownOfKingSlimeModel model;

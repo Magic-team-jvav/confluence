@@ -61,9 +61,7 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
         }
     }
 
-    /**
-     * 魔法飞刀在第三次成功命中时销毁，因此存档只允许阶段 0..2。
-     */
+    /// 魔法飞刀在第三次成功命中时销毁，因此存档只允许阶段 0..2。
     @Override
     protected int maximumPenetrationPhase() {
         return 2;

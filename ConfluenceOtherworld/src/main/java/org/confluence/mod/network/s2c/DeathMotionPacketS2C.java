@@ -1,7 +1,6 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,6 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record DeathMotionPacketS2C(int entityId, float x, float y,
@@ -32,9 +32,7 @@ public record DeathMotionPacketS2C(int entityId, float x, float y,
         return ID;
     }
 
-    /**
-     * 死亡运动同步会查找并修改客户端实体，必须交给客户端主线程执行。
-     */
+    /// 死亡运动同步会查找并修改客户端实体，必须交给客户端主线程执行。
     @Override
     public void handle(IPortPacket.Context context) {
         Player player = context.player();

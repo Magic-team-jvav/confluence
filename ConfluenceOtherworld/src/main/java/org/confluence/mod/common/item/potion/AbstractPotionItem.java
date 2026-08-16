@@ -107,11 +107,9 @@ public abstract class AbstractPotionItem extends Item {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         String key = "tooltip." + stack.getDescriptionId() + ".0";
-        /*
-         * 物品类会同时加载在客户端与专用服务端，不能在这里通过客户端 I18n
-         * 判断翻译键是否存在。基础药水的说明键由语言数据生成器统一提供，直接
-         * 保存为可翻译组件既能延迟到客户端解析，也允许服务端安全构造提示信息。
-         */
+        /// 物品类会同时加载在客户端与专用服务端，不能在这里通过客户端 I18n
+        /// 判断翻译键是否存在。基础药水的说明键由语言数据生成器统一提供，直接
+        /// 保存为可翻译组件既能延迟到客户端解析，也允许服务端安全构造提示信息。
         tooltipComponents.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
     }
 

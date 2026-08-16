@@ -5,8 +5,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -25,9 +25,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 /**
- * 机械骷髅王四条可破坏机械臂之一。
- *
- * <p>每条机械臂拥有独立武器职责和生命值，但脱战、归属与清理由主体 Boss 统一控制。</p>
+ * 机械骷髅王手臂。4 种模式：0=锯子, 1=钳子, 2=加农炮, 3=激光。
  */
 public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements GeoEntity {
     public static final int LASER = 0;
@@ -86,10 +84,8 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         damageContactTargets(master);
     }
 
-    /**
-     * 按主体头部朝向旋转 1.21 的四个固定机械臂槽位，并以该职责原有速度跟随。
-     * 到达距离小于单刻速度时直接贴合，避免持续越过目标点造成抖动。
-     */
+    /// 按主体头部朝向旋转 1.21 的四个固定机械臂槽位，并以该职责原有速度跟随。
+    /// 到达距离小于单刻速度时直接贴合，避免持续越过目标点造成抖动。
     private void followPinnedSlot(
             SkeletronPrime master, float distance, float speed) {
         Vec3 unitOffset = switch (getArmType()) {
@@ -116,10 +112,8 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         moveToNextPosition();
     }
 
-    /**
-     * 还原两条远程机械臂的行为树阶段：悬停时准备三十刻，主体旋转时
-     * 重新从十刻准备开始。阶段切换必须清空旧进度，不能继承上一分支的冷却。
-     */
+    /// 还原两条远程机械臂的行为树阶段：悬停时准备三十刻，主体旋转时
+    /// 重新从十刻准备开始。阶段切换必须清空旧进度，不能继承上一分支的冷却。
     private void tickRangedArm(SkeletronPrime master, boolean laser) {
         LivingEntity target = master.getTarget();
         float distance = laser ? 6.0F : 7.0F;
@@ -158,9 +152,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         rangedBehaviorTick = 0;
     }
 
-    /**
-     * 生成一枚机械激光弹幕，并在创建或加入世界失败时完整回收实体。
-     */
+    /// 生成一枚机械激光弹幕，并在创建或加入世界失败时完整回收实体。
     boolean shootLaser(
             SkeletronPrime master, LivingEntity target) {
         if (!(level() instanceof ServerLevel serverLevel)) {
@@ -199,13 +191,11 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         return false;
     }
 
-    /**
-     * 还原 1.21 两条近战机械臂的固定行为树时间轴。
-     *
-     * <p>非旋转阶段是三十刻准备，然后重复两次“五刻瞄准、十刻锁向冲刺、
-     * 三十刻回位”。旋转阶段则分别使用锯臂两轮、钳臂三轮的短回位序列。
-     * 冲刺方向只在每个十刻冲刺开始时锁定，不能因距离接近或目标横移提前结束。</p>
-     */
+    /// 还原 1.21 两条近战机械臂的固定行为树时间轴。
+    ///
+    /// <p>非旋转阶段是三十刻准备，然后重复两次“五刻瞄准、十刻锁向冲刺、
+    /// 三十刻回位”。旋转阶段则分别使用锯臂两轮、钳臂三轮的短回位序列。
+    /// 冲刺方向只在每个十刻冲刺开始时锁定，不能因距离接近或目标横移提前结束。</p>
     private void tickMeleeArm(
             SkeletronPrime master, boolean vice) {
         LivingEntity target = master.getTarget();
@@ -331,10 +321,8 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
                 * Mth.RAD_TO_DEG));
     }
 
-    /**
-     * 四条机械臂沿用 1.21 普通敌怪的接触攻击节奏。未碰到目标时十刻后复查，
-     * 命中或完成一次有效攻击尝试后等待二十刻；检测范围不额外膨胀。
-     */
+    /// 四条机械臂沿用 1.21 普通敌怪的接触攻击节奏。未碰到目标时十刻后复查，
+    /// 命中或完成一次有效攻击尝试后等待二十刻；检测范围不额外膨胀。
     private void damageContactTargets(SkeletronPrime master) {
         if (contactCooldown > 0 || master.getTarget() == null) {
             return;

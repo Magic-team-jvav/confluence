@@ -7,9 +7,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.MagicDaggerProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-/**
- * 为统一法杖事务补充投掷物品外观和初始穿透阶段。
- */
+/// 为统一法杖事务补充投掷物品外观和初始穿透阶段。
 public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
     public MagicDaggerItem() {
         super(ModRarity.LIGHT_RED, MagicDaggerProjectile::new, 20, 6, 12, 2, 0.04);

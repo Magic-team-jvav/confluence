@@ -16,12 +16,10 @@ import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
 import org.confluence.lib.api.projectile.ProjectileCombatSnapshotCarrier;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 允许武器在生成阶段设置基础伤害的弹幕基类。
- *
- * <p>统一发射事务安装快照后，{@link #getCalculatedDamage()} 只返回快照基础伤害；伤害通道倍率、
- * 暴击和护甲穿透由 MagicLib 的伤害链各应用一次。旧的“命中时读取所有者当前主手前缀”路径已删除。</p>
- */
+/// 允许武器在生成阶段设置基础伤害的弹幕基类。
+///
+/// <p>统一发射事务安装快照后，{@link #getCalculatedDamage()} 只返回快照基础伤害；伤害通道倍率、
+/// 暴击和护甲穿透由 MagicLib 的伤害链各应用一次。旧的“命中时读取所有者当前主手前缀”路径已删除。</p>
 public abstract class DamageSettableProjectile extends Projectile implements ProjectileCombatSnapshotCarrier {
     private static final String RUNTIME_TAG = "ConfluenceProjectileRuntime";
     private static final int RUNTIME_VERSION = 1;
@@ -67,19 +65,15 @@ public abstract class DamageSettableProjectile extends Projectile implements Pro
                 && combatState.canHit(impacted.getUUID(), false);
     }
 
-    /**
-     * 记录一次已经成功造成伤害的目标，供发射瞬间的额外命中补偿复用去重状态。
-     */
+    /// 记录一次已经成功造成伤害的目标，供发射瞬间的额外命中补偿复用去重状态。
     public final boolean recordSuccessfulHit(Entity target) {
         return combatState.recordSuccessfulHit(ProjectileHitRules.impactedEntity(target).getUUID());
     }
 
-    /**
-     * 记录武器发射事务冻结下来的初始速度。
-     *
-     * <p>该数值会被云分裂弹幕、蓄力弹幕和拖拽弹幕继续使用，因此不能允许 NaN、无穷大或
-     * 不合理的负值进入后续向量计算。</p>
-     */
+    /// 记录武器发射事务冻结下来的初始速度。
+    ///
+    /// <p>该数值会被云分裂弹幕、蓄力弹幕和拖拽弹幕继续使用，因此不能允许 NaN、无穷大或
+    /// 不合理的负值进入后续向量计算。</p>
     public void setDefaultVelocity(float defaultVelocity) {
         if (!isSupportedDefaultVelocity(defaultVelocity)) {
             throw new IllegalArgumentException("Default projectile velocity is outside the supported range");
@@ -175,20 +169,16 @@ public abstract class DamageSettableProjectile extends Projectile implements Pro
         this.damage = snapshot.baseDamage();
     }
 
-    /**
-     * 供魔法弹等组合层共享 UUID 去重和保存状态。
-     */
+    /// 供魔法弹等组合层共享 UUID 去重和保存状态。
     protected final ProjectileCombatState combatState() {
         return combatState;
     }
 
-    /**
-     * 子类在调用 {@code super.tick()} 后判断是否必须立即返回。
-     *
-     * <p>除已销毁和坏状态外，存档恢复后的所有者 UUID 还可能需要一个 tick 才解析为实体。基类在
-     * 该宽限 tick 主动返回，但 Java 不会因此终止子类覆盖方法，所以有自定义碰撞循环的子类必须
-     * 查询本方法，避免无主弹幕继续移动或造成伤害。</p>
-     */
+    /// 子类在调用 {@code super.tick()} 后判断是否必须立即返回。
+    ///
+    /// <p>除已销毁和坏状态外，存档恢复后的所有者 UUID 还可能需要一个 tick 才解析为实体。基类在
+    /// 该宽限 tick 主动返回，但 Java 不会因此终止子类覆盖方法，所以有自定义碰撞循环的子类必须
+    /// 查询本方法，避免无主弹幕继续移动或造成伤害。</p>
     protected final boolean shouldAbortSubclassTick() {
         return isRemoved()
                 || combatState.isInvalid()

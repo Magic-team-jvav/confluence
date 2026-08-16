@@ -65,11 +65,7 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.BowItems;
-import org.confluence.mod.common.init.item.CrossbowItems;
-import org.confluence.mod.common.init.item.FishingPoleItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
@@ -99,7 +95,7 @@ public final class ModClientSetups {
     public static final PortSprite LEGACY_SPRITE = new PortSprite(Confluence.asResource("hud/icon"), LEGACY_SIZE, LEGACY_SIZE);
     public static final int OVERLAY_SIZE = 128;
     public static final PortSprite OVERLAY_SPRITE = new PortSprite(Confluence.asResource("hud/overlay"), OVERLAY_SIZE, OVERLAY_SIZE);
-    // 太阳纹理当前沿用静态资源；动态纹理需要等环境渲染整体重构时统一接入。
+    // region sun todo dynamic texture
     public static final ResourceLocation SUNGLASSES_TEXTURE = Confluence.asResource("textures/environment/sunglasses.png");
     public static final ResourceLocation BOULDER_SUN_TEXTURE = Confluence.asResource("textures/environment/boulder.png");
     public static final ResourceLocation SUNGLASSES_BOULDER_TEXTURE = Confluence.asResource("textures/environment/sunglasses_boulder.png");
@@ -423,7 +419,8 @@ public final class ModClientSetups {
     }
 
     public static String wrapFile(String result, ResourceLocation location) {
-        // 请尊重模型的著作权，不要公开传播加密模型文件。
+        // Please respect the copyright of the model and do not attempt to publicly disseminate encrypted files.
+        // 请尊重模型的著作权，加密文件请不要试图公开传播。
         if (shouldSe(location, result)) {
             if (seKey == null) {
                 seKey = Suppliers.memoize(() -> {

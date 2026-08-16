@@ -17,21 +17,17 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * 请求服务端混合当前染料槽中的三原色。
- *
- * <p>客户端只上传用户输入的 RGB 值；输出物品种类、组件和数量全部由服务端根据当前
- * {@link DyeMixMenu} 的输入槽重新计算。菜单还必须仍然绑定附近的染缸，关闭界面、离开
- * 方块或方块被破坏后收到的延迟消息都不能继续消耗材料。</p>
- */
+/// 请求服务端混合当前染料槽中的三原色。
+///
+/// <p>客户端只上传用户输入的 RGB 值；输出物品种类、组件和数量全部由服务端根据当前
+/// {@link DyeMixMenu} 的输入槽重新计算。菜单还必须仍然绑定附近的染缸，关闭界面、离开
+/// 方块或方块被破坏后收到的延迟消息都不能继续消耗材料。</p>
 public record DyeMixPacketC2S(int rgb) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("dye_mix");
     public static final PortStreamCodec<ByteBuf, DyeMixPacketC2S> STREAM_CODEC =
             PortByteBufCodecs.INT.map(DyeMixPacketC2S::new, DyeMixPacketC2S::rgb);
 
-    /**
-     * 混合操作会修改菜单槽位与玩家携带物品，必须回到服务端主线程执行。
-     */
+    /// 混合操作会修改菜单槽位与玩家携带物品，必须回到服务端主线程执行。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {

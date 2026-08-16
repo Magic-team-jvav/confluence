@@ -14,12 +14,10 @@ public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
         super(renderManager, path);
     }
 
-    /**
-     * 在 Geo 渲染器已经绑定本帧实体后修正箭矢模型朝向。
-     *
-     * <p>不能在 {@code render} 调用父类之前读取渲染器的 {@code animatable} 字段，
-     * 因为 GeckoLib 此时尚未为本帧赋值；直接读取会在首次渲染箭矢时触发空指针。</p>
-     */
+    /// 在 Geo 渲染器已经绑定本帧实体后修正箭矢模型朝向。
+    ///
+    /// <p>不能在 {@code render} 调用父类之前读取渲染器的 {@code animatable} 字段，
+    /// 因为 GeckoLib 此时尚未为本帧赋值；直接读取会在首次渲染箭矢时触发空指针。</p>
     @Override
     protected void adjustPose(
             PoseStack poseStack,

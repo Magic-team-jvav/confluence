@@ -14,20 +14,13 @@ import org.confluence.mod.api.whip.WhipTagTracker;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
-/**
- * 按玩家共享的召唤物目标缓存。
- *
- * <p>玩家战斗事件由全部召唤物读取，每个运行实例独立保存已处理的事件时间与自动目标，避免不同索敌范围
- * 互相覆盖。优先级与 1.21 一致：最后被鞭子标记的目标最高，其次是刚伤害玩家的目标，然后是玩家刚攻击的
- * 目标，最后才是召唤物自身附近能够看见的敌对生物。缓存只存在于服务端运行期，不写入存档。</p>
- */
+/// 按玩家共享的召唤物目标缓存。
+///
+/// <p>玩家战斗事件由全部召唤物读取，每个运行实例独立保存已处理的事件时间与自动目标，避免不同索敌范围
+/// 互相覆盖。优先级与 1.21 一致：最后被鞭子标记的目标最高，其次是刚伤害玩家的目标，然后是玩家刚攻击的
+/// 目标，最后才是召唤物自身附近能够看见的敌对生物。缓存只存在于服务端运行期，不写入存档。</p>
 public final class SummonTargetCache {
     private static final int REFRESH_INTERVAL = 5;
     private static final Map<ServerLevel, Map<SummonKey, CommandState>> COMMANDS = new WeakHashMap<>();
@@ -43,9 +36,7 @@ public final class SummonTargetCache {
         return acquire(level, owner, owner.getUUID(), owner.position(), automaticRange);
     }
 
-    /**
-     * 按指定召唤物的位置选择目标。玩家战斗指令由同一玩家的召唤物共享，自动索敌则由每个运行实例独立维护。
-     */
+    /// 按指定召唤物的位置选择目标。玩家战斗指令由同一玩家的召唤物共享，自动索敌则由每个运行实例独立维护。
     public static @Nullable LivingEntity acquire(ServerLevel level, ServerPlayer owner, UUID summonId, Vec3 origin, double automaticRange) {
         SummonKey key = new SummonKey(owner.getUUID(), summonId);
         boolean changedLevel = invalidateOtherLevels(level, key);
@@ -111,11 +102,9 @@ public final class SummonTargetCache {
         if (targets != null) targets.keySet().removeIf(key -> key.ownerId.equals(ownerId));
     }
 
-    /**
-     * Moves an owner's live summon command keys to the destination level while treating the
-     * owner's existing combat timestamps as the baseline. Runtime summons removed immediately
-     * after the transfer will invalidate their migrated keys individually.
-     */
+    /// Moves an owner's live summon command keys to the destination level while treating the
+    /// owner's existing combat timestamps as the baseline. Runtime summons removed immediately
+    /// after the transfer will invalidate their migrated keys individually.
     public static void transitionLevel(ServerLevel previousLevel, ServerLevel currentLevel, ServerPlayer owner) {
         UUID ownerId = owner.getUUID();
         Set<SummonKey> keys = new HashSet<>();
@@ -152,9 +141,7 @@ public final class SummonTargetCache {
         });
     }
 
-    /**
-     * 清理一个已经移除的召唤物所持有的索敌状态，不影响同一玩家的其他召唤物。
-     */
+    /// 清理一个已经移除的召唤物所持有的索敌状态，不影响同一玩家的其他召唤物。
     public static void invalidate(ServerLevel level, UUID ownerId, UUID summonId) {
         SummonKey key = new SummonKey(ownerId, summonId);
         Map<SummonKey, CommandState> commands = COMMANDS.get(level);
@@ -189,9 +176,7 @@ public final class SummonTargetCache {
                 ClipContext.Fluid.NONE, owner)).getType() == HitResult.Type.MISS;
     }
 
-    /**
-     * 判断目标是否符合召唤物的阵营、PVP、距离与存活规则。
-     */
+    /// 判断目标是否符合召唤物的阵营、PVP、距离与存活规则。
     public static boolean isValidTarget(
             ServerPlayer owner,
             @Nullable LivingEntity target,
@@ -201,9 +186,7 @@ public final class SummonTargetCache {
         return isValidTarget(owner, target, owner.position(), range, explicitTarget);
     }
 
-    /**
-     * 判断目标是否符合召唤物的阵营、PVP、距离与存活规则。
-     */
+    /// 判断目标是否符合召唤物的阵营、PVP、距离与存活规则。
     public static boolean isValidTarget(ServerPlayer owner, @Nullable LivingEntity target, Vec3 origin, double range,
                                         boolean explicitTarget) {
         if (target == null

@@ -84,20 +84,16 @@ public class GrassSwordProjectile extends SwordProjectile {
         this.entityData.set(DATA_PITCH, pitchSpeed);
     }
 
-    /**
-     * 恢复 1.21 草剑剑气的专属命中效果。该参数只属于草剑，不进入通用剑气组件，
-     * 以免其他剑气为了一个特例承担额外字段和序列化分支。
-     */
+    /// 恢复 1.21 草剑剑气的专属命中效果。该参数只属于草剑，不进入通用剑气组件，
+    /// 以免其他剑气为了一个特例承担额外字段和序列化分支。
     @Override
     protected void applyHitEffect(Entity target) {
         applyPoisonForRoll(target, getRandom().nextFloat());
     }
 
-    /**
-     * 按给定随机值应用中毒，包级入口用于精确验证五成概率的边界。
-     *
-     * @return 是否成功向生物写入中毒效果
-     */
+    /// 按给定随机值应用中毒，包级入口用于精确验证五成概率的边界。
+    ///
+    /// @return 是否成功向生物写入中毒效果
     boolean applyPoisonForRoll(Entity target, float roll) {
         if (!(target instanceof LivingEntity living) || roll < 0.0F || roll >= POISON_CHANCE) {
             return false;

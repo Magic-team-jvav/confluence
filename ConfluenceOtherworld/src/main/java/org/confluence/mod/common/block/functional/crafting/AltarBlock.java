@@ -228,11 +228,9 @@ public class AltarBlock extends BaseEntityBlock {
         public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pos, blockState);
             this.itemHandler = new ItemStackHandlerRecipeInput(this, CONTAINER_SIZE);
-            /*
-             * BlockEntityType 的工厂会直接调用本构造器，不能只依赖
-             * AltarBlock#newBlockEntity 在之后补写变体。根据当前方块状态恢复
-             * 默认变体，保证新建实例在首次保存前也始终完整。
-             */
+            /// BlockEntityType 的工厂会直接调用本构造器，不能只依赖
+            /// AltarBlock#newBlockEntity 在之后补写变体。根据当前方块状态恢复
+            /// 默认变体，保证新建实例在首次保存前也始终完整。
             if (blockState.getBlock() instanceof AltarBlock altarBlock) {
                 this.variant = altarBlock.variant;
             }

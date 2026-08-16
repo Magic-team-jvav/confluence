@@ -206,23 +206,17 @@ public enum GlobalCloakData implements IGlobalData {
         return "confluence:global_cloak_data";
     }
 
-    /**
-     * 为网络编码创建稳定的方块伪装快照。
-     */
+    /// 为网络编码创建稳定的方块伪装快照。
     public Map<BlockState, BooleanObjectPair<BlockState>> blockMapSnapshot() {
         return new IdentityHashMap<>(blockMap);
     }
 
-    /**
-     * 为网络编码创建稳定的物品伪装快照。
-     */
+    /// 为网络编码创建稳定的物品伪装快照。
     public Map<Item, BooleanObjectPair<Item>> itemMapSnapshot() {
         return new IdentityHashMap<>(itemMap);
     }
 
-    /**
-     * 在客户端主线程一次性替换网络同步的伪装映射。
-     */
+    /// 在客户端主线程一次性替换网络同步的伪装映射。
     public void applyNetworkState(
             Map<BlockState, BooleanObjectPair<BlockState>> blocks,
             Map<Item, BooleanObjectPair<Item>> items) {

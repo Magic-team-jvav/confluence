@@ -24,13 +24,11 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 蜂王召唤的近战幼蜂。
- *
- * <p>幼蜂沿用 1.21 的可观察行为：只响应受击或蜂王每 32 tick 下发的目标，使用飞行导航
- * 追近后近战；离蜂王超过 30 格且蜂王所在位置可容纳实体时，回到蜂王上方。所有者追踪器
- * 只负责跨存档恢复归属，不额外增加持续追踪、强制返航或独立索敌。</p>
- */
+/// 蜂王召唤的近战幼蜂。
+///
+/// <p>幼蜂沿用 1.21 的可观察行为：只响应受击或蜂王每 32 tick 下发的目标，使用飞行导航
+/// 追近后近战；离蜂王超过 30 格且蜂王所在位置可容纳实体时，回到蜂王上方。所有者追踪器
+/// 只负责跨存档恢复归属，不额外增加持续追踪、强制返航或独立索敌。</p>
 public final class LittleHornet extends Hornet {
     private static final RawAnimation WING =
             RawAnimation.begin().thenLoop("wing");
@@ -66,18 +64,14 @@ public final class LittleHornet extends Hornet {
         return entityData.get(OWNER_UUID).orElse(null);
     }
 
-    /**
-     * 与 1.21 的幼蜂一致，只保留受击反击目标。蜂王每 32 tick 下发的目标不能被
-     * 普通黄蜂的最近玩家目标任务覆盖或清除。
-     */
+    /// 与 1.21 的幼蜂一致，只保留受击反击目标。蜂王每 32 tick 下发的目标不能被
+    /// 普通黄蜂的最近玩家目标任务覆盖或清除。
     @Override
     protected void registerGoals() {
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
-    /**
-     * 幼蜂没有普通怪物的自主玩家索敌，只接受受击目标和蜂王下发的目标。
-     */
+    /// 幼蜂没有普通怪物的自主玩家索敌，只接受受击目标和蜂王下发的目标。
     @Override
     protected boolean canTargetPlayer(LivingEntity target) {
         return false;
@@ -123,9 +117,7 @@ public final class LittleHornet extends Hornet {
         return super.hurt(source, amount);
     }
 
-    /**
-     * 幼蜂不继承普通黄蜂的远程施法动画，只持续播放振翅动画。
-     */
+    /// 幼蜂不继承普通黄蜂的远程施法动画，只持续播放振翅动画。
     @Override
     public void registerControllers(
             AnimatableManager.ControllerRegistrar controllers) {
@@ -157,10 +149,8 @@ public final class LittleHornet extends Hornet {
         super.remove(reason);
     }
 
-    /**
-     * 对应 1.21 的 {@code MeleeAttackGoal(speed=2, followingTargetEvenIfNotSeen=true)}。
-     * 节点只保留追路和攻击冷却，不加入冲锋蓄力或锁定方向。
-     */
+    /// 对应 1.21 的 {@code MeleeAttackGoal(speed=2, followingTargetEvenIfNotSeen=true)}。
+    /// 节点只保留追路和攻击冷却，不加入冲锋蓄力或锁定方向。
     private final class LittleHornetMeleeNode extends BTNode {
         private static final double MOVE_SPEED = 2.0;
         private static final int ATTACK_INTERVAL = 20;

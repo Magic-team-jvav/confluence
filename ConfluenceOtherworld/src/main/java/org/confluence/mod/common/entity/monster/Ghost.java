@@ -13,9 +13,7 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 无视地形并持续追逐玩家的幽灵。
- */
+/// 无视地形并持续追逐玩家的幽灵。
 public class Ghost extends BaseFlyingMonster {
     private static final RawAnimation FLOAT = RawAnimation.begin().thenLoop("move.walk");
 

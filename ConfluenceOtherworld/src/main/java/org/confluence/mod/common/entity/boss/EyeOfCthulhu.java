@@ -30,19 +30,17 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/**
- * 克苏鲁之眼 Boss。
- *
- * <p>服务端显式状态机复现两阶段战斗：第一阶段在目标上方悬停并召唤仆从，
- * 每轮完成三次定向冲刺；所有难度低于 50% 生命时
- * 播放不可跳过的变身阶段并移除护甲，
- * 再进入按当前生命和难度计算冲刺次数的第二阶段。白天离场优先级最高，会立即
- * 清除目标并终止正在执行的悬停、变身或冲刺。</p>
- *
- * <p>战斗状态和阶段通过实体数据同步，客户端动画不读取本地生命值猜测阶段。
- * 保存时保留当前循环位置和锁定的冲刺方向，世界重载不会把第二阶段错误恢复成
- * 第一阶段，也不会在冲刺中途突然改为追踪玩家。</p>
- */
+/// 克苏鲁之眼 Boss。
+///
+/// <p>服务端显式状态机复现两阶段战斗：第一阶段在目标上方悬停并召唤仆从，
+/// 每轮完成三次定向冲刺；所有难度低于 50% 生命时
+/// 播放不可跳过的变身阶段并移除护甲，
+/// 再进入按当前生命和难度计算冲刺次数的第二阶段。白天离场优先级最高，会立即
+/// 清除目标并终止正在执行的悬停、变身或冲刺。</p>
+///
+/// <p>战斗状态和阶段通过实体数据同步，客户端动画不读取本地生命值猜测阶段。
+/// 保存时保留当前循环位置和锁定的冲刺方向，世界重载不会把第二阶段错误恢复成
+/// 第一阶段，也不会在冲刺中途突然改为追踪玩家。</p>
 public class EyeOfCthulhu extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE =
             SynchedEntityData.defineId(
@@ -122,10 +120,8 @@ public class EyeOfCthulhu extends BaseBoss {
 
     @Override
     protected BTRoot createBT() {
-        /*
-         * 具体战斗由 tick 状态机推进。保留永远等待的根节点以继续遵守
-         * BaseMonster 的行为树注册契约，同时避免通用 Goal 改写锁定冲刺方向。
-         */
+        /// 具体战斗由 tick 状态机推进。保留永远等待的根节点以继续遵守
+        /// BaseMonster 的行为树注册契约，同时避免通用 Goal 改写锁定冲刺方向。
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
@@ -190,10 +186,8 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     private void tickStaring(LivingEntity target) {
-        /*
-         * 1.21 侧在经典难度且目标距离较远时，有一半概率暂停二阶段凝视计时。
-         * 这会给远处玩家留下追赶窗口，但专家难度不会因此降低进攻频率。
-         */
+        /// 1.21 侧在经典难度且目标距离较远时，有一半概率暂停二阶段凝视计时。
+        /// 这会给远处玩家留下追赶窗口，但专家难度不会因此降低进攻频率。
         if (getCombatStage() != 2
                 || isExpert()
                 || distanceTo(target) <= 8.0F
@@ -204,10 +198,8 @@ public class EyeOfCthulhu extends BaseBoss {
             if (getHealth() / getMaxHealth() < 0.15F) {
                 stateTicks++;
             }
-            /*
-             * 1.21 在这里连续调用两次带冷却的生成入口；效果是冷却每 tick 推进两次，
-             * 不是无冷却地直接生成两只实体。
-             */
+            /// 1.21 在这里连续调用两次带冷却的生成入口；效果是冷却每 tick 推进两次，
+            /// 不是无冷却地直接生成两只实体。
             tickServantSummoning(PHASE_ONE_SERVANT_COOLDOWN);
             tickServantSummoning(PHASE_ONE_SERVANT_COOLDOWN);
         }
@@ -308,10 +300,8 @@ public class EyeOfCthulhu extends BaseBoss {
         remainingDashCount = calculatePhaseTwoDashCount();
         lockedDashDirection = Vec3.ZERO;
         setBaseAttribute(Attributes.ARMOR, 0.0);
-        /*
-         * 变身动画期间仍保留一阶段接触伤害；1.21 侧是在动画结束回调中
-         * 才切换疯狂阶段的基础伤害。
-         */
+        /// 变身动画期间仍保留一阶段接触伤害；1.21 侧是在动画结束回调中
+        /// 才切换疯狂阶段的基础伤害。
         setBaseAttribute(Attributes.ATTACK_DAMAGE, PHASE_ONE_DAMAGE);
         setCombatState(CombatState.TRANSFORMING);
         playSound(ModSoundEvents.HURRIED_ROARING.get(), 1.0F, 1.0F);
@@ -350,21 +340,17 @@ public class EyeOfCthulhu extends BaseBoss {
         }
     }
 
-    /**
-     * 克苏鲁之眼在所有阶段都属于真正的飞行实体。
-     *
-     * <p>不能只在构造器调用一次 {@link #setNoGravity(boolean)}：实体加入世界后的通用
-     * 状态恢复、微光处理以及网络标志同步都可能重新写入该标志。1.21 侧同样通过覆盖
-     * 此查询保持永久无重力，否则在水体中或没有合格目标时会逐渐沉底。</p>
-     */
+    /// 克苏鲁之眼在所有阶段都属于真正的飞行实体。
+    ///
+    /// <p>不能只在构造器调用一次 {@link #setNoGravity(boolean)}：实体加入世界后的通用
+    /// 状态恢复、微光处理以及网络标志同步都可能重新写入该标志。1.21 侧同样通过覆盖
+    /// 此查询保持永久无重力，否则在水体中或没有合格目标时会逐渐沉底。</p>
     @Override
     public boolean isNoGravity() {
         return true;
     }
 
-    /**
-     * 把悬停目标设置在玩家上方，并使用惯性收敛避免每 tick 瞬间改向。
-     */
+    /// 把悬停目标设置在玩家上方，并使用惯性收敛避免每 tick 瞬间改向。
     private void hoverAboveTarget(LivingEntity target) {
         Vec3 destination = target.position().add(0.0, 3.0, 0.0);
         Vec3 offset = destination.subtract(position());
@@ -380,18 +366,14 @@ public class EyeOfCthulhu extends BaseBoss {
         faceTowards(target.getEyePosition(), 30.0F, 30.0F);
     }
 
-    /**
-     * 冲刺方向只在蓄力结束时计算一次。第二阶段会根据玩家当前速度加入有限预判，
-     * 低血量专家冲刺再增加随机偏差，保持泰拉瑞亚狂暴阶段“更快但不精确”的特征。
-     */
-    /**
-     * 将实体真实旋转同步到目标位置。
-     *
-     * <p>克苏鲁之眼的 Geo 模型会读取实体的 {@code YRot/XRot} 来决定朝向和俯仰。
-     * 如果只设置 LookControl，服务端本 tick 计算出的悬停、蓄力和冲刺方向不会稳定写入同步旋转，
-     * 客户端就可能看到 Boss 贴地滑行、侧脸滑动或不正面朝向玩家。这里不改变速度、阶段时长、
-     * 召唤物和伤害，只补齐渲染所依赖的朝向数据。</p>
-     */
+    /// 冲刺方向只在蓄力结束时计算一次。第二阶段会根据玩家当前速度加入有限预判，
+    /// 低血量专家冲刺再增加随机偏差，保持泰拉瑞亚狂暴阶段“更快但不精确”的特征。
+    /// 将实体真实旋转同步到目标位置。
+    ///
+    /// <p>克苏鲁之眼的 Geo 模型会读取实体的 {@code YRot/XRot} 来决定朝向和俯仰。
+    /// 如果只设置 LookControl，服务端本 tick 计算出的悬停、蓄力和冲刺方向不会稳定写入同步旋转，
+    /// 客户端就可能看到 Boss 贴地滑行、侧脸滑动或不正面朝向玩家。这里不改变速度、阶段时长、
+    /// 召唤物和伤害，只补齐渲染所依赖的朝向数据。</p>
     private void faceTowards(Vec3 targetPosition, float maxYawChange, float maxPitchChange) {
         Vec3 direction = targetPosition.subtract(position());
         if (direction.lengthSqr() < 1.0E-6) {
@@ -406,9 +388,7 @@ public class EyeOfCthulhu extends BaseBoss {
         yHeadRot = getYRot();
     }
 
-    /**
-     * 没有明确目标时沿当前速度方向修正朝向，用于脱战离场和短暂失去目标的惯性阶段。
-     */
+    /// 没有明确目标时沿当前速度方向修正朝向，用于脱战离场和短暂失去目标的惯性阶段。
     private void faceAlongMovement(float maxYawChange, float maxPitchChange) {
         Vec3 velocity = getDeltaMovement();
         if (velocity.lengthSqr() < 1.0E-6) {
@@ -491,11 +471,9 @@ public class EyeOfCthulhu extends BaseBoss {
                         ? PHASE_ONE_DAMAGE : PHASE_TWO_DAMAGE);
     }
 
-    /**
-     * 专家难度下，克苏鲁之眼会在极低生命值时进入负防御区间。原版护甲属性
-     * 不能表达负数，因此把泰拉瑞亚的负防御换算成每次命中的等效额外伤害。
-     * 低于 40% 时增加 15 点，低于 12% 时再增加 7 点。
-     */
+    /// 专家难度下，克苏鲁之眼会在极低生命值时进入负防御区间。原版护甲属性
+    /// 不能表达负数，因此把泰拉瑞亚的负防御换算成每次命中的等效额外伤害。
+    /// 低于 40% 时增加 15 点，低于 12% 时再增加 7 点。
     @Override
     public boolean hurt(DamageSource source, float amount) {
         amount += getLowHealthDamageBonus(
@@ -503,16 +481,12 @@ public class EyeOfCthulhu extends BaseBoss {
         return super.hurt(source, amount);
     }
 
-    /**
-     * 返回进入第二阶段的生命值比例。当前与泰拉瑞亚一致，所有难度均为 50%。
-     */
+    /// 返回进入第二阶段的生命值比例。当前与泰拉瑞亚一致，所有难度均为 50%。
     static float getTransformationHealthThreshold(boolean expert) {
         return 0.5F;
     }
 
-    /**
-     * 计算负防御对应的额外受伤数值。该换算只在专家及大师难度生效。
-     */
+    /// 计算负防御对应的额外受伤数值。该换算只在专家及大师难度生效。
     static float getLowHealthDamageBonus(
             boolean expert, float healthRatio) {
         if (!expert) {
@@ -561,10 +535,8 @@ public class EyeOfCthulhu extends BaseBoss {
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        /*
-         * 1.21 的仆从直接使用 DemonEye 子类，因此原实现排除 DemonEye 就不会误伤仆从。
-         * 1.20 为了持久化所有权使用独立实体类型，必须同时排除该等价类型。
-         */
+        /// 1.21 的仆从直接使用 DemonEye 子类，因此原实现排除 DemonEye 就不会误伤仆从。
+        /// 1.20 为了持久化所有权使用独立实体类型，必须同时排除该等价类型。
         return super.canAttack(target)
                 && !(target instanceof DemonEye)
                 && !(target instanceof ServantOfCthulhu);
@@ -646,9 +618,7 @@ public class EyeOfCthulhu extends BaseBoss {
         resetAttackDamage();
     }
 
-    /**
-     * 客户端动画、存档和测试共同使用的稳定战斗状态。
-     */
+    /// 客户端动画、存档和测试共同使用的稳定战斗状态。
     public enum CombatState {
         IDLE,
         STARING,

@@ -6,9 +6,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 
-/**
- * 命中时按固定概率点燃目标的链锤。
- */
+/// 命中时按固定概率点燃目标的链锤。
 public class IgnitingFlailItem extends BaseFlailItem {
     private static final int FIRE_TICKS = 60;
     private final float igniteChance;

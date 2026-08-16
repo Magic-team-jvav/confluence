@@ -1,7 +1,7 @@
 package org.confluence.mod.common.item.flail;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -13,8 +13,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.client.renderer.item.BaseFlailItemRenderer;
@@ -30,13 +30,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-/**
- * 链锤物品的共享输入与状态转换入口。
- *
- * <p>按下主动作键时创建并旋转链锤，松开时投出；再次按下可让投出或回收中的链锤落入停留阶段，
- * 再次松开则收回。左键配置通过控制包调用同一组方法，右键配置通过原版物品使用生命周期调用，
- * 因此不会绕过箱子、门与工作台的方块交互优先级。</p>
- */
+/// 链锤物品的共享输入与状态转换入口。
+///
+/// <p>按下主动作键时创建并旋转链锤，松开时投出；再次按下可让投出或回收中的链锤落入停留阶段，
+/// 再次松开则收回。左键配置通过控制包调用同一组方法，右键配置通过原版物品使用生命周期调用，
+/// 因此不会绕过箱子、门与工作台的方块交互优先级。</p>
 public class BaseFlailItem extends TooltipItem implements GeoItem {
     private static final int USE_DURATION = 72_000;
     private final AnimatableInstanceCache animationCache =
@@ -53,9 +51,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
                 "");
     }
 
-    /**
-     * 右键未被方块或实体消耗时，进入链锤持续使用状态。
-     */
+    /// 右键未被方块或实体消耗时，进入链锤持续使用状态。
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(
             @NotNull Level level,
@@ -70,9 +66,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         return InteractionResultHolder.consume(stack);
     }
 
-    /**
-     * 按下主动作键时创建链锤，或让已投出与回收中的链锤落入停留阶段。
-     */
+    /// 按下主动作键时创建链锤，或让已投出与回收中的链锤落入停留阶段。
     public static void press(Player player, ItemStack stack) {
         FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
         if (component == null) {
@@ -110,9 +104,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         player.swing(InteractionHand.MAIN_HAND, true);
     }
 
-    /**
-     * 松开主动作键时投出旋转中的链锤，或收回停留中的链锤。
-     */
+    /// 松开主动作键时投出旋转中的链锤，或收回停留中的链锤。
     public static void release(Player player, ItemStack stack) {
         FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
         BaseFlailEntity existing = findExistingFlail(player);
@@ -131,9 +123,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         }
     }
 
-    /**
-     * 松开右键或切换物品时，复用与左键控制包完全相同的释放语义。
-     */
+    /// 松开右键或切换物品时，复用与左键控制包完全相同的释放语义。
     @Override
     public void releaseUsing(
             ItemStack stack,
@@ -156,9 +146,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         return UseAnim.NONE;
     }
 
-    /**
-     * 查找当前玩家唯一仍在世界中的链锤实体。
-     */
+    /// 查找当前玩家唯一仍在世界中的链锤实体。
     public static @Nullable BaseFlailEntity findExistingFlail(Player player) {
         return player.level().getEntitiesOfClass(
                         BaseFlailEntity.class,
@@ -169,12 +157,10 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
                 .orElse(null);
     }
 
-    /**
-     * 链锤实体成功造成伤害后的物品扩展点。
-     *
-     * <p>普通链锤保持空实现；拥有点燃、减益或附属弹幕的链锤通过具体物品子类覆盖。
-     * 该回调只在服务端真实伤害成功后执行一次，不参与组件序列化。</p>
-     */
+    /// 链锤实体成功造成伤害后的物品扩展点。
+    ///
+    /// <p>普通链锤保持空实现；拥有点燃、减益或附属弹幕的链锤通过具体物品子类覆盖。
+    /// 该回调只在服务端真实伤害成功后执行一次，不参与组件序列化。</p>
     public void onFlailHit(
             Player owner,
             LivingEntity target,
@@ -182,9 +168,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
     ) {
     }
 
-    /**
-     * 链锤动作由实体状态机负责，手持时不进入原版挖掘流程。
-     */
+    /// 持有连枷时始终禁用挖掘
     @Override
     public boolean canAttackBlock(
             BlockState state,
@@ -206,12 +190,10 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         return animationCache;
     }
 
-    /**
-     * 手持时仅由公共 Geo 渲染器绘制连枷手柄。
-     *
-     * <p>弹头和锁链属于世界中的连枷实体，不能再次作为完整物品贴在玩家手上；物品栏、掉落物
-     * 与展示框仍由物品模型中的二维图标负责。</p>
-     */
+    /// 手持时仅由公共 Geo 渲染器绘制连枷手柄。
+    ///
+    /// <p>弹头和锁链属于世界中的连枷实体，不能再次作为完整物品贴在玩家手上；物品栏、掉落物
+    /// 与展示框仍由物品模型中的二维图标负责。</p>
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {

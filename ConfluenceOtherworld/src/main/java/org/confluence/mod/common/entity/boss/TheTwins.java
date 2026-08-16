@@ -24,9 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-/**
- * 双子魔眼——两个机械眼球共享 Boss 条，并分别执行各自的战斗阶段。
- */
+/// 双子魔眼——两个机械眼球共享 Boss 条，并分别执行各自的战斗阶段。
 public class TheTwins extends BaseBoss {
     private static final int RETINAZER_DEFEATED = 1;
     private static final int SPAZMATISM_DEFEATED = 2;
@@ -50,9 +48,7 @@ public class TheTwins extends BaseBoss {
         this.xpReward = 2000;
     }
 
-    /**
-     * 双子魔眼的管理本体不应被原版重力拖动。
-     */
+    /// 双子魔眼的管理本体不应被原版重力拖动。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -68,7 +64,7 @@ public class TheTwins extends BaseBoss {
                 && (spazmatismUUID != null || spazmatism != null && spazmatism.isAlive());
     }
 
-    // === 共享 Boss 条 ===
+    // === Boss bar ===
 
     @Override
     protected BossEvent.BossBarColor getBossBarColor() {
@@ -85,7 +81,7 @@ public class TheTwins extends BaseBoss {
         bossEvent.setProgress(totalMax > 0 ? total / totalMax : 0);
     }
 
-    // === 管理实体保持待机，两个眼球独立执行战斗行为树 ===
+    // === BT (idle — eyes do all the work) ===
 
     @Override
     protected BTRoot createBT() {
@@ -97,7 +93,7 @@ public class TheTwins extends BaseBoss {
         };
     }
 
-    // === 眼球生成、身份恢复与死亡结算 ===
+    // === Spawn eyes ===
 
     @Override
     public void tick() {
@@ -122,10 +118,8 @@ public class TheTwins extends BaseBoss {
         }
     }
 
-    /**
-     * 保留 1.21 侧管理实体的空间职责：双眼都存在时位于二者中点，只剩一只时
-     * 位于存活眼球上方。双眼均未索敌且相距过远时，还会互相拉近以防止永久失散。
-     */
+    /// 保留 1.21 侧管理实体的空间职责：双眼都存在时位于二者中点，只剩一只时
+    /// 位于存活眼球上方。双眼均未索敌且相距过远时，还会互相拉近以防止永久失散。
     void updateManagerPosition() {
         boolean retinazerAlive = retinazer != null && retinazer.isAlive();
         boolean spazmatismAlive = spazmatism != null && spazmatism.isAlive();
@@ -218,9 +212,7 @@ public class TheTwins extends BaseBoss {
         }
     }
 
-    /**
-     * 与 1.21 保持一致：双眼在半径五格、顶角不超过 0.7 弧度的球冠上生成。
-     */
+    /// 与 1.21 保持一致：双眼在半径五格、顶角不超过 0.7 弧度的球冠上生成。
     private Vec3 createEyeSpawnOffset() {
         double theta = random.nextFloat() * 6.28F;
         double beta = random.nextFloat() * 0.7F;
@@ -240,10 +232,8 @@ public class TheTwins extends BaseBoss {
                 retinazer = eye;
                 return false;
             }
-            /*
-             * 已保存的 UUID 代表精确身份。实体可能只是所在区块尚未加载，不能在等待期间
-             * 生成替身，否则重载后会出现两个身份不同但同属一个管理实体的眼球。
-             */
+            /// 已保存的 UUID 代表精确身份。实体可能只是所在区块尚未加载，不能在等待期间
+            /// 生成替身，否则重载后会出现两个身份不同但同属一个管理实体的眼球。
             return false;
         }
         return true;
@@ -258,9 +248,7 @@ public class TheTwins extends BaseBoss {
                 spazmatism = eye;
                 return false;
             }
-            /*
-             * 与激光眼相同，UUID 存在时优先等待原实体加载，避免补出替身破坏持久化身份。
-             */
+            /// 与激光眼相同，UUID 存在时优先等待原实体加载，避免补出替身破坏持久化身份。
             return false;
         }
         return true;
@@ -345,7 +333,7 @@ public class TheTwins extends BaseBoss {
         spazmatism = null;
     }
 
-    // === 不可见、不可交互的权威管理实体 ===
+    // === Invisible manager ===
 
     @Override public boolean isPickable() { return false; }
     @Override public boolean canBeCollidedWith() { return false; }
@@ -353,18 +341,14 @@ public class TheTwins extends BaseBoss {
     @Override public boolean displayFireAnimation() { return false; }
     @Override public boolean causeFallDamage(float f, float m, DamageSource s) {return false;}
 
-    /**
-     * 管理实体本身不移动，战斗范围必须覆盖两个眼球的实际位置。
-     */
+    /// 管理实体本身不移动，战斗范围必须覆盖两个眼球的实际位置。
     @Override
     protected double getCombatPlayerRange() {
         return 64.0;
     }
 
-    /**
-     * 玩家死亡或多人目标切换时，把管理实体选出的权威目标同步给仍存活的两个眼球；目标为空
-     * 则立即让眼球停止攻击，随后由本体统一完成 10 秒撤离计时。
-     */
+    /// 玩家死亡或多人目标切换时，把管理实体选出的权威目标同步给仍存活的两个眼球；目标为空
+    /// 则立即让眼球停止攻击，随后由本体统一完成 10 秒撤离计时。
     @Override
     protected void onCombatTargetChanged(@Nullable Player target) {
         super.onCombatTargetChanged(target);

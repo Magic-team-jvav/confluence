@@ -13,10 +13,8 @@ import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-/**
- * 给僵尸类 Geo 模型复用原版僵尸的行走、转头和前伸手臂动作。
- * 这个实现和普通人形族分开，避免把僵尸特有的攻击姿态施加到其他双足怪物。
- */
+/// 给僵尸类 Geo 模型复用原版僵尸的行走、转头和前伸手臂动作。
+/// 这个实现和普通人形族分开，避免把僵尸特有的攻击姿态施加到其他双足怪物。
 public class VanillaZombieGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
     private static final String HEAD = "Vhead";
     private static final String LEFT_ARM = "Vleft_arm";

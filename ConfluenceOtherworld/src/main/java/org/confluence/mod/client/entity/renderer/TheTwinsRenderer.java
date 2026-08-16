@@ -20,13 +20,11 @@ import org.joml.Matrix4f;
 
 import java.util.UUID;
 
-/**
- * 双子魔眼主控实体的客户端视觉层。
- *
- * <p>主控实体本身只负责生命、归属和结算，两只眼睛依然分别用自己的 Boss 模型渲染。
- * 这里补上 1.21 侧已有的“两眼连接线”表现，避免主控完全空渲染导致双子魔眼少一层视觉反馈。
- * 客户端不会直接持有服务端字段，因此优先使用已同步的所属 UUID 从附近实体中恢复两只眼的位置。</p>
- */
+/// 双子魔眼主控实体的客户端视觉层。
+///
+/// <p>主控实体本身只负责生命、归属和结算，两只眼睛依然分别用自己的 Boss 模型渲染。
+/// 这里补上 1.21 侧已有的“两眼连接线”表现，避免主控完全空渲染导致双子魔眼少一层视觉反馈。
+/// 客户端不会直接持有服务端字段，因此优先使用已同步的所属 UUID 从附近实体中恢复两只眼的位置。</p>
 public final class TheTwinsRenderer extends EntityRenderer<TheTwins> {
     private static final double SEARCH_RANGE = 128.0;
     private static final float MAIN_ALPHA = 0.95F;

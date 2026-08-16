@@ -41,12 +41,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * 悠悠球共享实体。
- *
- * <p>该类只负责生命周期、准星方向运动、方块反弹、接触伤害与收回。具体命中特效回调给
- * {@link YoyoItem}，因此公共运动实现不依赖任何具体悠悠球或衍生弹幕。</p>
- */
+/// 悠悠球共享实体。
+///
+/// <p>该类只负责生命周期、准星方向运动、方块反弹、接触伤害与收回。具体命中特效回调给
+/// {@link YoyoItem}，因此公共运动实现不依赖任何具体悠悠球或衍生弹幕。</p>
 public final class YoyoEntity extends DamageSettableProjectile
         implements GeoEntity {
     private static final EntityDataAccessor<Integer> OWNER_ID =
@@ -75,9 +73,7 @@ public final class YoyoEntity extends DamageSettableProjectile
         setNoGravity(true);
     }
 
-    /**
-     * 创建实体并冻结发射瞬间的近战、暴击与穿甲上下文。
-     */
+    /// 创建实体并冻结发射瞬间的近战、暴击与穿甲上下文。
     public static @Nullable YoyoEntity spawn(
             ServerPlayer owner,
             ItemStack weapon
@@ -183,9 +179,7 @@ public final class YoyoEntity extends DamageSettableProjectile
         }
     }
 
-    /**
-     * 只吸附准星射线实际穿过的实体，不搜索视野外或附近目标。
-     */
+    /// 只吸附准星射线实际穿过的实体，不搜索视野外或附近目标。
     private Vec3 resolveAim(ServerPlayer owner) {
         float range = entityData.get(RANGE);
         Vec3 from = owner.getEyePosition();
@@ -322,13 +316,11 @@ public final class YoyoEntity extends DamageSettableProjectile
                 : null;
     }
 
-    /**
-     * 服务端仍使用原版弹幕拥有者；客户端通过同步的实体 ID 解析玩家。
-     *
-     * <p>原版 {@link net.minecraft.world.entity.projectile.Projectile} 只保存拥有者 UUID，
-     * 自定义 Forge 生成包不会自动传递其客户端缓存。悠悠球渲染绳线又必须取得玩家，
-     * 因此仅为该实体同步网络实体 ID，避免修改全部弹幕的生成协议。</p>
-     */
+    /// 服务端仍使用原版弹幕拥有者；客户端通过同步的实体 ID 解析玩家。
+    ///
+    /// <p>原版 {@link net.minecraft.world.entity.projectile.Projectile} 只保存拥有者 UUID，
+    /// 自定义 Forge 生成包不会自动传递其客户端缓存。悠悠球渲染绳线又必须取得玩家，
+    /// 因此仅为该实体同步网络实体 ID，避免修改全部弹幕的生成协议。</p>
     @Override
     public @Nullable Entity getOwner() {
         if (!level().isClientSide) {

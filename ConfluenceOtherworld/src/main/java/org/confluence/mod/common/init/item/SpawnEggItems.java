@@ -16,11 +16,9 @@ public class SpawnEggItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    /*
-     * 这些物品必须是真正的 Forge 刷怪蛋。普通 Item 即使注册名以
-     * “spawn_egg”结尾，也不会获得对方块使用、刷怪笼改写或实体 NBT
-     * 应用能力。颜色暂与 1.21 一样使用白色，后续只需调整两个颜色值。
-     */
+    /// 这些物品必须是真正的 Forge 刷怪蛋。普通 Item 即使注册名以
+    /// “spawn_egg”结尾，也不会获得对方块使用、刷怪笼改写或实体 NBT
+    /// 应用能力。颜色暂与 1.21 一样使用白色，后续只需调整两个颜色值。
     public static final PortDeferredItem<ForgeSpawnEggItem>
             RETINAZER_SPAWN_EGG = ITEMS.register(
             "retinazer_spawn_egg",

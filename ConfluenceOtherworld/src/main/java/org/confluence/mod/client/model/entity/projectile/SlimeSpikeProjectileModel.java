@@ -6,20 +6,14 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
-/**
- * 史莱姆尖刺弹丸的客户端模型。
- *
- * <p>网格与 1.21.1 侧的尖刺保持一致，模型层只在客户端注册，避免公共实体类引用
- * 客户端类型而导致专用服务器加载失败。</p>
- */
+/// 史莱姆尖刺弹丸的客户端模型。
+///
+/// <p>网格与 1.21.1 侧的尖刺保持一致，模型层只在客户端注册，避免公共实体类引用
+/// 客户端类型而导致专用服务器加载失败。</p>
 public class SlimeSpikeProjectileModel extends EntityModel<SlimeSpikeEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
             Confluence.asResource("slime_spike_projectile"), "main");

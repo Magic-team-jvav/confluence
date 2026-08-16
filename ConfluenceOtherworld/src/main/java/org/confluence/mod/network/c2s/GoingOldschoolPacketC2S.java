@@ -8,11 +8,9 @@ import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * 请求授予“致敬经典”成就。
- *
- * <p>消息不携带可由客户端伪造的成就编号，服务端只处理这一项固定行为。
- */
+/// 请求授予“致敬经典”成就。
+///
+/// <p>消息不携带可由客户端伪造的成就编号，服务端只处理这一项固定行为。
 public enum GoingOldschoolPacketC2S implements IPortPacket.C2S {
     INSTANCE;
 
@@ -25,9 +23,7 @@ public enum GoingOldschoolPacketC2S implements IPortPacket.C2S {
         return ID;
     }
 
-    /**
-     * 成就进度属于服务端玩家状态，必须回到服务端主线程修改。
-     */
+    /// 成就进度属于服务端玩家状态，必须回到服务端主线程修改。
     @Override
     public void handle(IPortPacket.Context context) {
         if (context.player() instanceof ServerPlayer player) {

@@ -5,12 +5,10 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * 挥鞭时间轴上的一帧归一化局部控制点。
- *
- * @param progress      处于 {@code [0, 1]} 的动画进度
- * @param controlPoints 以玩家手部锚点为原点的局部控制点
- */
+/// 挥鞭时间轴上的一帧归一化局部控制点。
+///
+/// @param progress      处于 {@code [0, 1]} 的动画进度
+/// @param controlPoints 以玩家手部锚点为原点的局部控制点
 public record WhipFrame(float progress, List<Vec3> controlPoints) {
     public WhipFrame {
         if (!Float.isFinite(progress)

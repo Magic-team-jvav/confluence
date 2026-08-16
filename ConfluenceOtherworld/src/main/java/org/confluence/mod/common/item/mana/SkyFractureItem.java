@@ -15,24 +15,18 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.api.projectile.ProjectileCombatSnapshot;
-import org.confluence.lib.api.projectile.ProjectileFireContext;
-import org.confluence.lib.api.projectile.ProjectileFireResult;
-import org.confluence.lib.api.projectile.ProjectileLaunch;
-import org.confluence.lib.api.projectile.ServerProjectileFireService;
+import org.confluence.lib.api.projectile.*;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.mana.SkyFractureProjectile;
 
 import java.util.List;
 
-/**
- * 以一次魔力成本发射四枚、间隔三 tick 的裂天剑弹幕。
- *
- * <p>首枚弹幕进入完整法杖事务并冻结伤害、暴击、穿甲和弹速；成功后玩家服务端状态仅保存
- * 当前格式的延迟批次。后三枚在第 3、6、9 tick 通过 MagicLib 的可信延迟批次入口生成，复用
- * 同一战斗快照，不重新扣魔力、抽暴击或叠加冷却。批次不写入武器栈，避免把计划递归嵌套进
- * 快照中的武器副本。</p>
- */
+/// 以一次魔力成本发射四枚、间隔三 tick 的裂天剑弹幕。
+///
+/// <p>首枚弹幕进入完整法杖事务并冻结伤害、暴击、穿甲和弹速；成功后玩家服务端状态仅保存
+/// 当前格式的延迟批次。后三枚在第 3、6、9 tick 通过 MagicLib 的可信延迟批次入口生成，复用
+/// 同一战斗快照，不重新扣魔力、抽暴击或叠加冷却。批次不写入武器栈，避免把计划递归嵌套进
+/// 快照中的武器副本。</p>
 public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
     private static final String BURSTS_TAG = "SkyFractureBursts";
     private static final int BURST_FORMAT_VERSION = 1;
@@ -43,9 +37,7 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         super(ModRarity.LIGHT_RED, SkyFractureProjectile::new, 24, 17, 17.5F, 6, 0.24);
     }
 
-    /**
-     * 首发使用原有随机近身生成位置。
-     */
+    /// 首发使用原有随机近身生成位置。
     @Override
     protected Vec3 launchPosition(
             ProjectileFireContext context,
@@ -55,9 +47,7 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         return randomLaunchPosition(context.player());
     }
 
-    /**
-     * 首发与后续弹幕共享施法瞬间由服务端确定的锁定方向。
-     */
+    /// 首发与后续弹幕共享施法瞬间由服务端确定的锁定方向。
     @Override
     protected Vec3 launchDirection(
             ProjectileFireContext context,
@@ -67,26 +57,20 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         return findAimDirection(context);
     }
 
-    /**
-     * 使用武器声明的六 tick 冷却，不再由旧实现额外硬编码十 tick。
-     */
+    /// 使用武器声明的六 tick 冷却，不再由旧实现额外硬编码十 tick。
     @Override
     protected int resolveCooldown(ProjectileFireContext context) {
         return cooldown;
     }
 
-    /**
-     * 原实现不会在裂天剑批次开始时播放普通法杖声音。
-     */
+    /// 原实现不会在裂天剑批次开始时播放普通法杖声音。
     @Override
     protected void playSuccessfulShot(
             ProjectileFireContext context,
             SkyFractureProjectile projectile
     ) {}
 
-    /**
-     * 首发确认加入世界后才写入可继续的当前格式批次状态。
-     */
+    /// 首发确认加入世界后才写入可继续的当前格式批次状态。
     @Override
     protected void onSuccessfulShot(
             ProjectileFireContext context,
@@ -112,12 +96,10 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         root.put(BURSTS_TAG, bursts);
     }
 
-    /**
-     * 只在精确到期 tick 生成后续弹幕；玩家切走武器时对应时间点会按旧行为直接错过。
-     *
-     * <p>重新选中时会先跳过全部已经错过的时间点，防止集中补发。批次保存在玩家服务端状态，
-     * 因而同种武器的另一物品栈不能复制计划或绕过物品级冷却。</p>
-     */
+    /// 只在精确到期 tick 生成后续弹幕；玩家切走武器时对应时间点会按旧行为直接错过。
+    ///
+    /// <p>重新选中时会先跳过全部已经错过的时间点，防止集中补发。批次保存在玩家服务端状态，
+    /// 因而同种武器的另一物品栈不能复制计划或绕过物品级冷却。</p>
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (!(entity instanceof ServerPlayer player) || level.isClientSide || !isSelected) {
@@ -172,9 +154,7 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         }
     }
 
-    /**
-     * 生成一个已经付费批次的单枚后续弹幕。
-     */
+    /// 生成一个已经付费批次的单枚后续弹幕。
     private boolean continueBurst(ServerPlayer player, BurstState state) {
         SkyFractureProjectile projectile = factory.create(player);
         projectile.setDefaultVelocity(state.snapshot().resolvedVelocity());
@@ -223,9 +203,7 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         burst.putInt("Remaining", remaining);
     }
 
-    /**
-     * 仅在首发时执行一次的服务端视线锁定。
-     */
+    /// 仅在首发时执行一次的服务端视线锁定。
     private static Vec3 findAimDirection(ProjectileFireContext context) {
         double reach = 64.0;
         double squaredReach = Mth.square(reach);
@@ -270,9 +248,7 @@ public class SkyFractureItem extends ManaStaffItem<SkyFractureProjectile> {
         return false;
     }
 
-    /**
-     * 已校验并归一化的当前格式延迟批次状态。
-     */
+    /// 已校验并归一化的当前格式延迟批次状态。
     private record BurstState(
             long nextTick,
             int remaining,

@@ -18,13 +18,11 @@ import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.mod.util.track.variant.BasisTrack;
 
-/**
- * 支持“按住拖拽、松开后追踪”两阶段行为的魔法弹幕基类。
- *
- * <p>{@link #shot} 决定弹幕是继续贴近施法者，还是进入自主追踪与碰撞阶段。该状态不能从
- * 当前速度或玩家是否仍在使用物品可靠推断，因此使用独立的当前格式根保存；缺失或损坏时
- * 复用玩家弹幕的安全失效通道。</p>
- */
+/// 支持“按住拖拽、松开后追踪”两阶段行为的魔法弹幕基类。
+///
+/// <p>{@link #shot} 决定弹幕是继续贴近施法者，还是进入自主追踪与碰撞阶段。该状态不能从
+/// 当前速度或玩家是否仍在使用物品可靠推断，因此使用独立的当前格式根保存；缺失或损坏时
+/// 复用玩家弹幕的安全失效通道。</p>
 public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
     private static final String RUNTIME_TAG = "ConfluenceDraggingRuntime";
     private static final int RUNTIME_VERSION = 1;

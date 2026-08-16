@@ -1,6 +1,12 @@
 package org.confluence.mod.common.entity.npc.trade;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -14,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModMenuTypes;
+import org.confluence.mod.util.MoneyText;
 import org.confluence.mod.util.PlayerMoneyTransaction;
 
 import java.util.ArrayList;
@@ -193,10 +200,11 @@ public class NPCTradeMenu extends AbstractContainerMenu {
             SlotState state = getState(absoluteSlot);
             slotStates.set(slot, state);
             if (absoluteSlot < offers.size()) {
-                tradeContainer.setItem(slot, offers.get(absoluteSlot).stack());
+                ItemStack stack = offers.get(absoluteSlot).stack();
+                tradeContainer.setItem(slot, withPrice(stack, getBuyPrice(stack)));
             } else {
                 SoldItem sold = soldItems.get(absoluteSlot);
-                tradeContainer.setItem(slot, sold == null ? ItemStack.EMPTY : sold.stack().copy());
+                tradeContainer.setItem(slot, sold == null ? ItemStack.EMPTY : withPrice(sold.stack(), sold.price()));
             }
         }
         pageData.set(DATA_PAGE, page);
@@ -234,6 +242,17 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         } catch (ArithmeticException ignored) {
             return 0;
         }
+    }
+
+    private static ItemStack withPrice(ItemStack source, long price) {
+        if (price <= 0) return source.copy();
+        ItemStack display = source.copy();
+        CompoundTag displayTag = display.getOrCreateTagElement("display");
+        ListTag lore = displayTag.getList("Lore", Tag.TAG_STRING);
+        Component line = Component.translatable("tooltip.price.buy").withStyle(ChatFormatting.GRAY).append(MoneyText.format(price));
+        lore.add(StringTag.valueOf(Component.Serializer.toJson(line)));
+        displayTag.put("Lore", lore);
+        return display;
     }
 
     public enum SlotState {

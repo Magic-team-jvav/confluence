@@ -14,8 +14,7 @@ import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 
 /// 使用原版箱子纹理显示 NPC 商店。
 ///
-/// <p>该类只提供分页按钮和页码，不读取条件、计算价格或决定成交。按钮复用原版菜单
-/// 按钮数据包，请求服务端切换已经冻结的会话报价页。</p>
+/// 客户端只显示服务端同步的商品、价格说明和页码，不参与报价与成交计算。
 public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
     private static final ResourceLocation CONTAINER_TEXTURE =
             ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");

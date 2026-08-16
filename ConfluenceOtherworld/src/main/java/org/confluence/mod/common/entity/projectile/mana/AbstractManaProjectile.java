@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.joml.Matrix4f;
+import org.joml.Matrix4x3f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -154,7 +154,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
 
     /// client side only
     protected void withParticle(ResourceLocation particleId) {
-        withParticle(particleId, () -> emitter.parentSpace = new Matrix4f().setTranslation(0, getBbHeight() * 0.5F, 0));
+        withParticle(particleId, () -> emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0)));
     }
 
     /// server side only

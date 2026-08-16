@@ -17,7 +17,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
+import org.joml.Matrix4x3f;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
@@ -123,7 +123,7 @@ public class AccumulatingEnergyEntity extends Entity {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("accumulating_energy"));
             emitter.attachEntity(this);
             emitter.hideOutline = true;
-            emitter.parentSpace = new Matrix4f().setTranslation(0, 0.5F, 0);
+            emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, 0.5F, 0));
             MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
     }

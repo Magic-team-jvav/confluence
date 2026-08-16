@@ -22,7 +22,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Matrix4f;
+import org.joml.Matrix4x3f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -95,7 +95,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
                 this.rotateO = rotate;
                 this.rotate += r / Mth.PI;
                 if (emitter != null && emitter.isLocalSpace()) {
-                    emitter.parentSpace.rotationXYZ(0, Mth.HALF_PI, rotate);
+                    emitter.getLocalSpace().rotationXYZ(0, Mth.HALF_PI, rotate);
                 }
             } else {
                 this.rotateO = rotate;
@@ -116,7 +116,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
             this.emitter = new ParticleEmitter(level(), position(), getLeadParticle());
             emitter.attachEntity(this);
             emitter.hideOutline = true;
-            emitter.parentSpace = new Matrix4f().setTranslation(0, DIAMETER, 0);
+            emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, DIAMETER, 0));
             MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
     }

@@ -6,9 +6,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
-/**
- * 单条 NPC 对话——可选的文本、可选的表情 ID、可选的物品展示。
- */
+/// 单条 NPC 对话——可选的文本、可选的表情 ID、可选的物品展示。
 public record NPCChat(Optional<String> text, Optional<String> emoji, Optional<ItemStack> item) {
     public static final Codec<NPCChat> CODEC = RecordCodecBuilder.create(b -> b.group(
             Codec.STRING.optionalFieldOf("text").forGetter(NPCChat::text),

@@ -7,16 +7,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -32,15 +33,23 @@ import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.npc.InteractNPCEvent;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
+import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.common.entity.npc.mood.MoodData;
@@ -48,6 +57,7 @@ import org.confluence.mod.common.entity.npc.mood.NPCMood;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
+import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -62,6 +72,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 /// 数据包提供，实体只负责决定本次访问允许进入会话快照的报价集合；默认实现保留
 /// 全部报价，旅商等具有随机库存的 NPC 可以覆盖该选择步骤。</p>
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
+    private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final RawAnimation WALK =
             RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE =
@@ -92,6 +103,9 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected NPCMood mood;
     @Nullable
     protected NPCChat currentChat;
+    private final ChatManager.Runtime chatRuntime = ChatManager.createRuntime(this);
+    private int chatRevision;
+    private int chatDisplayTicks;
     protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
     protected boolean shouldInteract;
     protected BlockPos spawnAtPos = BlockPos.ZERO;
@@ -168,6 +182,12 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     protected void registerBrainGoals(Brain<BaseNPC> brain) {}
 
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(DATA_CHAT, new CompoundTag());
+    }
+
     // === 房屋查找 ===
 
     private static final int HOUSE_CHECK_MASK = 511;
@@ -183,7 +203,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             tickWalkToHome(level);
         }
         tickMood();
-//        ChatManager.tickNPC(this);
+        chatRuntime.tick();
 
         // 由于NPCHouseBehaviors#walkToHouse疑似不能触发，于是在tick里判断
         // 过远时传送回自己的出生点
@@ -216,11 +236,38 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     public void setCurrentChat(NPCChat chat) {
         this.currentChat = chat;
+        if (level().isClientSide) {
+            chatDisplayTicks = 100;
+            return;
+        }
+        CompoundTag data = new CompoundTag();
+        NPCChat.CODEC.encodeStart(NbtOps.INSTANCE, chat).result().ifPresent(encoded -> data.put("Chat", encoded));
+        data.putInt("Revision", ++chatRevision);
+        entityData.set(DATA_CHAT, data);
     }
 
     @Nullable
     public NPCChat getCurrentChat() {
         return currentChat;
+    }
+
+    public int getChatDisplayTicks() {
+        return chatDisplayTicks;
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (key != DATA_CHAT || !level().isClientSide) return;
+        CompoundTag data = entityData.get(DATA_CHAT);
+        if (!data.contains("Chat", Tag.TAG_COMPOUND)) return;
+        NPCChat.CODEC.parse(NbtOps.INSTANCE, data.get("Chat")).result().ifPresent(this::setCurrentChat);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide && chatDisplayTicks > 0) chatDisplayTicks--;
     }
 
     @SuppressWarnings("unchecked")
@@ -354,7 +401,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         this.shouldInteract = should;
     }
 
-    // === 交互 ===
     public java.util.List<NPCTradeOffer> selectTradeOffers(
             java.util.List<NPCTradeOffer> offers) {
         return java.util.List.copyOf(offers);
@@ -364,37 +410,73 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!level().isClientSide && player instanceof ServerPlayer sp) {
-            // 被"救援"的 NPC 首次交互时，将其正式加入区域
-            if (shouldInteract) {
-                setShouldInteract(false);
-                region = NPCSpawner.getNpcSpawnRegion(sp);
-                NPCSpawner.INSTANCE.setNPCAlive(region, getType(), true);
-                NPCSpawner.INSTANCE.applyBenedictions(this);
-                NPCSpawner.INSTANCE.addSpawned(getType());
-                NPCSpawner.broadcastMessageToRegion(sp.level(), this,
-                        Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName())
-                                .withColor(GlobalColors.NPC_ARRIVED.get()));
-            }
-            // 图鉴记录
-            if (!Bestiary.INSTANCE.containsKey(this)) {
-                Bestiary.INSTANCE.updateEntry(this, false);
-            }
-            /// 对话、治疗或召唤服务尚未迁移的 NPC 可能没有普通商品。先在服务端冻结本次报价，
-            /// 避免它们打开一个没有任何内容的箱子界面，同时保证菜单显示与是否打开使用同一份快照。
-            java.util.List<NPCTradeOffer> offers =
-                    NPCTradeList.getAvailableOffers(sp, this);
-            if (!offers.isEmpty()) {
-                NetworkHooks.openScreen(sp,
-                        new SimpleMenuProvider(
-                                (id, inv, p) ->
-                                        new NPCTradeMenu(
-                                                id, inv, this, offers),
-                                getDisplayName()),
-                        buf -> buf.writeInt(getId()));
-            }
+        if (!(player instanceof ServerPlayer serverPlayer)) return InteractionResult.SUCCESS;
+        if (!hasCustomName()) setCustomName(getType().getDescription());
+        if (hand == InteractionHand.OFF_HAND) return InteractionResult.SUCCESS;
+        setCustomNameVisible(true);
+
+        ItemStack stack = player.getItemInHand(hand);
+        if (stack.getItem() instanceof ArmorItem armor) {
+            swapItem(player, armor.getEquipmentSlot(), hand, stack);
+            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.sidedSuccess(level().isClientSide);
+        if (player.isShiftKeyDown()) {
+            if (!stack.isEmpty()) swapItem(player, EquipmentSlot.MAINHAND, hand, stack);
+            else removeHitEquipment(player, hand);
+            return InteractionResult.SUCCESS;
+        }
+
+        recordInteraction(serverPlayer);
+        InteractNPCEvent event = new InteractNPCEvent(this, serverPlayer);
+        if (MinecraftForge.EVENT_BUS.post(event)) return event.getInteractionResult();
+        event.execute(() -> performDefaultInteraction(serverPlayer));
+        return event.getInteractionResult();
+    }
+
+    private void swapItem(Player player, EquipmentSlot slot, InteractionHand hand, ItemStack stack) {
+        ItemStack previous = getItemBySlot(slot);
+        setItemSlot(slot, stack.copy());
+        player.setItemInHand(hand, previous);
+    }
+
+    private void removeHitEquipment(Player player, InteractionHand hand) {
+        Vec3 from = player.getEyePosition();
+        Vec3 hit = getBoundingBox().clip(from, from.add(player.getViewVector(0.5F).scale(6.0))).orElse(null);
+        if (hit == null) return;
+        AABB bounds = getBoundingBox();
+        double relativeHeight = (hit.y - bounds.minY) / bounds.getYsize();
+        EquipmentSlot slot;
+        if (relativeHeight > 0.75) slot = EquipmentSlot.HEAD;
+        else if (relativeHeight > 0.45) {
+            double edge = Math.min(Math.min(hit.x - bounds.minX, bounds.maxX - hit.x), Math.min(hit.z - bounds.minZ, bounds.maxZ - hit.z));
+            slot = edge < 0.15 ? EquipmentSlot.MAINHAND : EquipmentSlot.CHEST;
+        } else if (relativeHeight > 0.2) slot = EquipmentSlot.LEGS;
+        else slot = EquipmentSlot.FEET;
+        ItemStack equipped = getItemBySlot(slot);
+        if (equipped.isEmpty()) return;
+        player.setItemInHand(hand, equipped);
+        setItemSlot(slot, ItemStack.EMPTY);
+    }
+
+    private void recordInteraction(ServerPlayer player) {
+        if (shouldInteract) {
+            setShouldInteract(false);
+            region = NPCSpawner.getNpcSpawnRegion(player);
+            NPCSpawner.INSTANCE.setNPCAlive(region, getType(), true);
+            NPCSpawner.INSTANCE.applyBenedictions(this);
+            NPCSpawner.INSTANCE.addSpawned(getType());
+            NPCSpawner.broadcastMessageToRegion(player.level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
+        }
+        if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
+    }
+
+    protected void performDefaultInteraction(ServerPlayer player) {
+        java.util.List<NPCTradeOffer> offers = NPCTradeList.getAvailableOffers(player, this);
+        if (!offers.isEmpty()) {
+            NetworkHooks.openScreen(player, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, offers), getDisplayName()), buf -> buf.writeInt(getId()));
+        } else if (NPCDialogLoader.getInstance().getDialog(getType()) != null) {
+            Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenNPCDialogPacketS2C(getId()));
+        }
     }
 
     // === 杂项 ===

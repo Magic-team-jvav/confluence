@@ -6,12 +6,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -33,10 +30,8 @@ import org.confluence.mod.util.AchievementUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 渔夫 NPC —— 每日钓鱼任务。
- * 自然生成于海洋时处于躺下（睡眠）状态，玩家交互后唤醒。
- */
+/// 渔夫 NPC —— 每日钓鱼任务。
+/// 自然生成于海洋时处于躺下（睡眠）状态，玩家交互后唤醒。
 public class AnglerNPC extends BaseNPC {
     private static final EntityDataAccessor<Boolean> DATA_WAKE_UP = SynchedEntityData.defineId(AnglerNPC.class, EntityDataSerializers.BOOLEAN);
     public static final String WAKE_UP_KEY = "WakeUp";
@@ -107,37 +102,26 @@ public class AnglerNPC extends BaseNPC {
     }
 
     @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        if (!level().isClientSide && player instanceof ServerPlayer sp) {
-            if (!isWakeUp()) {
-                setWakeUp(true);
-                Confluence.NETWORK_HANDLER.sendToPlayer(sp,
-                        new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, ItemStack.EMPTY));
-                return InteractionResult.sidedSuccess(level().isClientSide);
-            }
-
-            ServerLevel serverLevel = (ServerLevel) level();
-            AnglerData.INSTANCE.refreshIfNeeded(serverLevel);
-            PlayerSpecialData data = PlayerSpecialData.of(sp);
-
-            if (data.hasCompletedAnglerQuestToday(serverLevel)) {
-                Confluence.NETWORK_HANDLER.sendToPlayer(sp,
-                        new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.COMPLETED, ItemStack.EMPTY));
-            } else if (!AnglerData.INSTANCE.hasValidQuest()) {
-                Confluence.NETWORK_HANDLER.sendToPlayer(sp,
-                        new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, ItemStack.EMPTY));
-            } else {
-                ItemStack questFish = AnglerData.INSTANCE.getQuestFish();
-                if (player.getInventory().contains(questFish)) {
-                    submitQuest(sp, questFish, data);
-                    return InteractionResult.sidedSuccess(level().isClientSide);
-                } else {
-                    Confluence.NETWORK_HANDLER.sendToPlayer(sp,
-                            new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish));
-                }
-            }
+    protected void performDefaultInteraction(ServerPlayer player) {
+        if (!isWakeUp()) {
+            setWakeUp(true);
+            Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, ItemStack.EMPTY));
+            return;
         }
-        return InteractionResult.sidedSuccess(level().isClientSide);
+
+        ServerLevel serverLevel = (ServerLevel) level();
+        AnglerData.INSTANCE.refreshIfNeeded(serverLevel);
+        PlayerSpecialData data = PlayerSpecialData.of(player);
+        if (data.hasCompletedAnglerQuestToday(serverLevel)) {
+            Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.COMPLETED, ItemStack.EMPTY));
+        } else if (!AnglerData.INSTANCE.hasValidQuest()) {
+            Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, ItemStack.EMPTY));
+        } else {
+            ItemStack questFish = AnglerData.INSTANCE.getQuestFish();
+            if (player.getInventory().contains(questFish)) submitQuest(player, questFish, data);
+            else
+                Confluence.NETWORK_HANDLER.sendToPlayer(player, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish));
+        }
     }
 
     private void submitQuest(ServerPlayer player, ItemStack questFish, PlayerSpecialData data) {

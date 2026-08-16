@@ -29,7 +29,6 @@ public class NPCHealGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        if (npc.isPanicking()) return false;
         if (cooldown > 0) {
             cooldown--;
             return false;
@@ -59,7 +58,7 @@ public class NPCHealGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return !npc.isPanicking() && healTarget != null && healTarget.isAlive()
+        return healTarget != null && healTarget.isAlive()
                 && healTarget.getHealth() < healTarget.getMaxHealth()
                 && (healTarget == npc || npc.distanceToSqr(healTarget) <= range * range && npc.hasLineOfSight(healTarget));
     }

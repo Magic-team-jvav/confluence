@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -26,11 +27,7 @@ public class GoblinTinkererNPC extends BaseNPC implements RangedAttackMob {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new RangedBowAttackGoal<>(this, 0.5, 20, 15));
-    }
-
-    @Override
-    protected boolean canFightHostiles() {
-        return true;
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.npc;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -30,16 +31,7 @@ public class ArmsDealerNPC extends BaseNPC implements RangedAttackMob {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(1, new NPCRangedAttackGoal(this, 0.6, 13.0F, 10, 30));
-    }
-
-    @Override
-    protected boolean canFightHostiles() {
-        return true;
-    }
-
-    @Override
-    protected double getHostileDetectionRange() {
-        return 18.0;
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 
     @Override

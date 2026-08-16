@@ -17,7 +17,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,12 +29,9 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
@@ -94,8 +94,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
                     MemoryModuleType.LOOK_TARGET,
                     MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
                     MemoryModuleType.NEAREST_LIVING_ENTITIES,
-                    MemoryModuleType.NEAREST_HOSTILE,
-                    MemoryModuleType.HURT_BY,
                     MemoryModuleType.HURT_BY_ENTITY
             );
 
@@ -110,9 +108,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected BlockPos spawnAtPos = BlockPos.ZERO;
     private boolean spawnAtPosInitialized;
     private boolean lifecycleRemoved;
-    private int lastPanicHurtTimestamp;
-    private long panicUntil;
-    private boolean panicking;
 
     public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
@@ -137,31 +132,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.5));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
-    }
-
-    @Override
-    public boolean canAttack(LivingEntity target) {
-        if (target instanceof Player || target instanceof BaseNPC) {
-            return false;
-        }
-        return target.canBeSeenAsEnemy();
-    }
-
-    @Override
-    public void setTarget(@Nullable LivingEntity target) {
-        super.setTarget(target != null && canAttack(target) ? target : null);
-    }
-
-    protected boolean canFightHostiles() {
-        return false;
-    }
-
-    protected double getHostileDetectionRange() {
-        return 10.0;
-    }
-
-    public boolean isPanicking() {
-        return panicking;
     }
 
     // === Brain ===
@@ -196,11 +166,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         super.customServerAiStep();
         ServerLevel level = (ServerLevel) level();
         tickBrain(level);
-        tickHostileActivity(level);
         tickHouse(level);
-        if (!panicking && getTarget() == null) {
-            tickWalkToHome(level);
-        }
+        tickWalkToHome(level);
         tickMood();
         ChatManager.tickNPC(this);
 
@@ -273,55 +240,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected void tickBrain(ServerLevel level) {
         Brain<BaseNPC> brain = (Brain<BaseNPC>) getBrain();
         brain.tick(level, this);
-    }
-
-    @SuppressWarnings("unchecked")
-    protected void tickHostileActivity(ServerLevel level) {
-        Brain<BaseNPC> brain = (Brain<BaseNPC>) getBrain();
-        NearestVisibleLivingEntities visible = brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).orElse(NearestVisibleLivingEntities.empty());
-        double detectionRangeSqr = getHostileDetectionRange() * getHostileDetectionRange();
-        java.util.Optional<LivingEntity> hostile = visible.findClosest(target -> target instanceof Enemy && distanceToSqr(target) <= detectionRangeSqr);
-        brain.setMemory(MemoryModuleType.NEAREST_HOSTILE, hostile);
-
-        if (canFightHostiles()) {
-            panicking = false;
-            LivingEntity target = getTarget();
-            if (target == null || !target.isAlive() || !canAttack(target) || !hasLineOfSight(target) || distanceToSqr(target) > detectionRangeSqr) {
-                setTarget(hostile.orElse(null));
-            }
-            return;
-        }
-
-        LivingEntity hurtBy = getLastHurtByMob();
-        int hurtTimestamp = getLastHurtByMobTimestamp();
-        if (hurtTimestamp != lastPanicHurtTimestamp) {
-            lastPanicHurtTimestamp = hurtTimestamp;
-            if (hurtBy instanceof Enemy) {
-                panicUntil = level.getGameTime() + 100;
-            }
-        }
-        if (hostile.isPresent()) {
-            panicUntil = Math.max(panicUntil, level.getGameTime() + 20);
-        }
-
-        boolean shouldPanic = level.getGameTime() < panicUntil;
-        if (!shouldPanic) {
-            if (panicking) {
-                getNavigation().stop();
-            }
-            panicking = false;
-            return;
-        }
-
-        panicking = true;
-        brain.eraseMemory(MemoryModuleType.WALK_TARGET);
-        LivingEntity threat = hostile.orElse(hurtBy instanceof Enemy ? hurtBy : null);
-        if (threat != null && (getNavigation().isDone() || tickCount % 10 == 0)) {
-            Vec3 destination = DefaultRandomPos.getPosAway(this, 16, 7, threat.position());
-            if (destination != null) {
-                getNavigation().moveTo(destination.x, destination.y, destination.z, 1.95);
-            }
-        }
     }
 
     /// 每 512 tick 重新验证已有房屋；没有房屋时从当前位置尝试发现。

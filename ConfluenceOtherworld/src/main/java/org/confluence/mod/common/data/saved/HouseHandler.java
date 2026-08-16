@@ -57,10 +57,12 @@ public enum HouseHandler implements IGlobalData {
     public void setHouse(BaseNPC npc, House house) {
         ResourceKey<Level> dimension = npc.level().dimension();
         UUID uuid = npc.getUUID();
-        removeHouse(dimension, uuid);
-        if (!house.isValid()) return;
-        NPCSpawner.Region region = new NPCSpawner.Region(house.center());
-        setHouse(dimension, region, uuid, house);
+        if (house == House.EMPTY) {
+            removeHouse(dimension, uuid);
+        } else {
+            NPCSpawner.Region region = new NPCSpawner.Region(house.center());
+            setHouse(dimension, region, uuid, house);
+        }
     }
 
     public @Nullable House getHouse(BaseNPC npc) {
@@ -84,37 +86,15 @@ public enum HouseHandler implements IGlobalData {
         if (regions == null) return;
         regions.values().forEach(houses -> houses.remove(uuid));
         regions.entrySet().removeIf(entry -> entry.getValue().isEmpty());
-        if (regions.isEmpty()) data.remove(dimension);
     }
 
     public @Nullable House findHouseAt(ResourceKey<Level> dimension, BlockPos pos) {
         NPCSpawner.Region region = new NPCSpawner.Region(pos);
-        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
-        if (regions == null) return null;
-        Map<UUID, House> houses = regions.get(region);
-        if (houses == null) return null;
+        Map<UUID, House> houses = getOrCreateHouses(dimension, region);
         for (House house : houses.values()) {
             if (house.contains(pos)) return house;
         }
         return null;
-    }
-
-    public boolean isOccupiedByOther(ResourceKey<Level> dimension, House candidate, UUID uuid) {
-        Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
-        if (regions == null) return false;
-        for (Map<UUID, House> houses : regions.values()) {
-            for (Map.Entry<UUID, House> entry : houses.entrySet()) {
-                if (!entry.getKey().equals(uuid) && intersects(candidate, entry.getValue()))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    private static boolean intersects(House first, House second) {
-        return first.min().getX() <= second.max().getX() && first.max().getX() >= second.min().getX()
-                && first.min().getY() <= second.max().getY() && first.max().getY() >= second.min().getY()
-                && first.min().getZ() <= second.max().getZ() && first.max().getZ() >= second.min().getZ();
     }
 
     @Override

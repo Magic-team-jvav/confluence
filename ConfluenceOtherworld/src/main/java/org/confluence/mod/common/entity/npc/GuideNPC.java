@@ -4,6 +4,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.goal.RangedBowAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -11,7 +12,6 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.entity.npc.ai.NPCRangedAttackGoal;
 
 /// 向导 —— 使用弓攻击敌人。
 public class GuideNPC extends BaseNPC implements RangedAttackMob {
@@ -24,7 +24,7 @@ public class GuideNPC extends BaseNPC implements RangedAttackMob {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(1, new NPCRangedAttackGoal(this, 0.5, 8.0F, 10, 30));
+        this.goalSelector.addGoal(1, new RangedBowAttackGoal<>(this, 0.5, 20, 15));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     }
 

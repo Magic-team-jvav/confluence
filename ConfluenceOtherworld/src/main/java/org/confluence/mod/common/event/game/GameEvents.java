@@ -7,7 +7,6 @@ import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.entity.CreatureDefinitionLoader;
-import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.entity.npc.mood.MoodData;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
@@ -73,7 +72,6 @@ public final class GameEvents {
     private static void addReloadListener(PortAddReloadListenerEvent event) {
         event.addListener(AchievementOffsetLoader.getInstance());
         event.addListener(NPCDialogLoader.getInstance());
-        event.addListener(ChatManager.Loader.getInstance());
         event.addListener(new MoodData.Loader());
         event.addListener(new CreatureDefinitionLoader());
         event.addListener(NPCTradeList.Loader.getInstance());

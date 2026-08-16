@@ -7,11 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -39,7 +35,6 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
@@ -62,7 +57,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 /// 数据包提供，实体只负责决定本次访问允许进入会话快照的报价集合；默认实现保留
 /// 全部报价，旅商等具有随机库存的 NPC 可以覆盖该选择步骤。</p>
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
-    private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final RawAnimation WALK =
             RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE =
@@ -91,13 +85,9 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected NPCMood mood;
     @Nullable
     protected NPCChat currentChat;
-    private int chatRevision;
-    private int chatDisplayTicks;
     protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
     protected boolean shouldInteract;
     protected BlockPos spawnAtPos = BlockPos.ZERO;
-    private boolean spawnAtPosInitialized;
-    private boolean lifecycleRemoved;
 
     public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
@@ -141,25 +131,21 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     protected void registerBrainGoals(Brain<BaseNPC> brain) {}
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(DATA_CHAT, new CompoundTag());
-    }
-
     // === 房屋查找 ===
 
-    private static final int HOUSE_CHECK_MASK = 511;
+    private static final int FIND_HOUSE_INTERVAL = 600;
 
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
         ServerLevel level = (ServerLevel) level();
         tickBrain(level);
-        tickHouse(level);
+        if (!house.isValid()) {
+            tickFindHouse(level);
+        }
         tickWalkToHome(level);
         tickMood();
-        ChatManager.tickNPC(this);
+//        ChatManager.tickNPC(this);
 
         // 由于NPCHouseBehaviors#walkToHouse疑似不能触发，于是在tick里判断
         // 过远时传送回自己的出生点
@@ -192,38 +178,11 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     public void setCurrentChat(NPCChat chat) {
         this.currentChat = chat;
-        if (level().isClientSide) {
-            chatDisplayTicks = 100;
-            return;
-        }
-        CompoundTag data = new CompoundTag();
-        NPCChat.CODEC.encodeStart(NbtOps.INSTANCE, chat).result().ifPresent(encoded -> data.put("Chat", encoded));
-        data.putInt("Revision", ++chatRevision);
-        entityData.set(DATA_CHAT, data);
     }
 
     @Nullable
     public NPCChat getCurrentChat() {
         return currentChat;
-    }
-
-    public int getChatDisplayTicks() {
-        return chatDisplayTicks;
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-        super.onSyncedDataUpdated(key);
-        if (key != DATA_CHAT || !level().isClientSide) return;
-        CompoundTag data = entityData.get(DATA_CHAT);
-        if (!data.contains("Chat", Tag.TAG_COMPOUND)) return;
-        NPCChat.CODEC.parse(NbtOps.INSTANCE, data.get("Chat")).result().ifPresent(this::setCurrentChat);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (level().isClientSide && chatDisplayTicks > 0) chatDisplayTicks--;
     }
 
     @SuppressWarnings("unchecked")
@@ -232,30 +191,13 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         brain.tick(level, this);
     }
 
-    /// 每 512 tick 重新验证已有房屋；没有房屋时从当前位置尝试发现。
-    protected void tickHouse(ServerLevel level) {
-        if ((tickCount & HOUSE_CHECK_MASK) != 0) return;
-        boolean hadHouse = house.isValid();
-        if (hadHouse && house.uuid().filter(getUUID()::equals).isEmpty()) {
-            releaseHouse();
-            return;
-        }
-        BlockPos start = hadHouse ? house.center() : blockPosition();
-        if (!level.isLoaded(start)) return;
-        HouseHandler.INSTANCE.removeHouse(level.dimension(), getUUID());
-        HouseValidater.Result result = HouseValidater.scan(level, start);
+    /// 每 600 tick 在当前位置及周边采样，尝试发现房屋。
+    protected void tickFindHouse(ServerLevel level) {
+        if (tickCount % FIND_HOUSE_INTERVAL != 0) return;
+        HouseValidater.Result result = HouseValidater.scan(level, blockPosition());
         House found = result.make(getUUID());
-        if (!found.isValid() || HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), found, getUUID())) {
-            setHouse(House.EMPTY);
-            return;
-        }
         setHouse(found);
         HouseHandler.INSTANCE.setHouse(this, found);
-    }
-
-    public void releaseHouse() {
-        HouseHandler.INSTANCE.removeHouse(level().dimension(), getUUID());
-        setHouse(House.EMPTY);
     }
 
     /// 有 HOME 记忆时向家移动。
@@ -308,6 +250,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         this.shouldInteract = should;
     }
 
+    // === 交互 ===
+
     public java.util.List<NPCTradeOffer> selectTradeOffers(
             java.util.List<NPCTradeOffer> offers) {
         return java.util.List.copyOf(offers);
@@ -318,6 +262,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+            // 被"救援"的 NPC 首次交互时，将其正式加入区域
             if (shouldInteract) {
                 setShouldInteract(false);
                 region = NPCSpawner.getNpcSpawnRegion(serverPlayer);
@@ -326,6 +271,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
                 NPCSpawner.INSTANCE.addSpawned(getType());
                 NPCSpawner.broadcastMessageToRegion(serverPlayer.level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
             }
+            // 图鉴记录
             if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
             var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
             if (!shop.offers().isEmpty()) {
@@ -387,29 +333,16 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("Region")), r -> this.region = r);
         }
         this.shouldInteract = tag.getBoolean("ShouldInteract");
-        if (tag.contains("SpawnAtPos")) {
-            PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), this::setSpawnAtPos);
-        }
+        PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), r -> this.spawnAtPos = r);
     }
 
     public BlockPos getSpawnAtPos() {
         return spawnAtPos;
     }
 
-    public void setSpawnAtPos(BlockPos spawnAtPos) {
-        this.spawnAtPos = spawnAtPos;
-        this.spawnAtPosInitialized = true;
-    }
-
-    public boolean markLifecycleRemoved() {
-        if (lifecycleRemoved) return false;
-        lifecycleRemoved = true;
-        return true;
-    }
-
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if (!spawnAtPosInitialized) setSpawnAtPos(blockPosition());
+        this.spawnAtPos = blockPosition();
     }
 }

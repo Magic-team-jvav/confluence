@@ -30,11 +30,13 @@ public class OldManNPC extends BaseNPC {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             if (isNight()) {
+                // 召唤骷髅王
                 Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level());
                 skeletron.finalizeSpawn((ServerLevel) level(), level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.EVENT, null, null);
                 ModUtils.summonBoss((ServerLevel) level(), blockPosition(), skeletron, serverPlayer);
                 discard();
             } else {
+                // 白天只显示对话
                 Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId()));
             }
         }

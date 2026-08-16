@@ -186,8 +186,6 @@ public enum NPCSpawner implements IGlobalData {
     ///   - 渔夫、公主、或城镇宠物死亡时，会改为显示讯息“<渔夫/宠物/公主的名字>已离开！”。
     ///   - 两种情况下，都会使用 #ff1919 颜色。
     public void onNPCRemoved(BaseNPC living) {
-        if (!living.markLifecycleRemoved()) return;
-        living.releaseHouse();
         setNPCAlive(living.getRegion(), living.getType(), false);
         if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != NpcEntities.OLD_MAN.get()) {
             MutableComponent message;

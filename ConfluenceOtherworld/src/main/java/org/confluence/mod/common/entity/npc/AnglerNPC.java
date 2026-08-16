@@ -122,10 +122,12 @@ public class AnglerNPC extends BaseNPC {
                 Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, ItemStack.EMPTY));
             } else {
                 ItemStack questFish = AnglerData.INSTANCE.getQuestFish();
-                if (player.getInventory().contains(questFish))
+                if (player.getInventory().contains(questFish)) {
                     submitQuest(serverPlayer, questFish, data);
-                else
+                    return InteractionResult.sidedSuccess(level().isClientSide);
+                } else {
                     Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish));
+                }
             }
         }
         return InteractionResult.sidedSuccess(level().isClientSide);

@@ -67,7 +67,6 @@ public class TravelingMerchantNPC extends BaseNPC {
         super.customServerAiStep();
         long dayTime = level().getDayTime();
         if (dayTime < spawnDayTime || dayTime % 24000 >= 12000) {
-            NPCSpawner.INSTANCE.onNPCRemoved(this);
             discard();
         }
     }

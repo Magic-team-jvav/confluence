@@ -103,7 +103,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected NPCMood mood;
     @Nullable
     protected NPCChat currentChat;
-    private final ChatManager.Runtime chatRuntime = ChatManager.createRuntime(this);
     private int chatRevision;
     private int chatDisplayTicks;
     protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
@@ -203,7 +202,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             tickWalkToHome(level);
         }
         tickMood();
-        chatRuntime.tick();
+        ChatManager.tickNPC(this);
 
         // 由于NPCHouseBehaviors#walkToHouse疑似不能触发，于是在tick里判断
         // 过远时传送回自己的出生点

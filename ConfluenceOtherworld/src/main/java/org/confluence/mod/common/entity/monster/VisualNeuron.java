@@ -86,8 +86,7 @@ public class VisualNeuron extends BaseFlyingMonster {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return CreatureAttributeBuilder.creature(
-                BASE_MAX_HEALTH, 10.0, 9.0, 0.0, 0.0, 0.1).flying();
+        return CreatureAttributeBuilder.creature(BASE_MAX_HEALTH, 10.0, 9.0, 0.0, 0.0, 0.1);
     }
 
     /// 建立神经元与权威 Boss 的精确所有权，并记录其编队槽位。

@@ -42,7 +42,7 @@ public abstract class DamageSettableProjectile extends Projectile {
         PrefixComponent component = itemStack.get(ModDataComponentTypes.PREFIX);
         if (component == null) return damage;
         double d0 = damage;
-        for (AttributeModifier modifier : component.modifiers().get().get(LibAttributes.getAttackDamage().value())) {
+        for (AttributeModifier modifier : component.modifiers().get().get(LibAttributes.getAttackDamage().get())) {
             if (modifier.getOperation() == AttributeModifier.Operation.ADDITION) {
                 d0 += modifier.getAmount();
             }
@@ -55,7 +55,7 @@ public abstract class DamageSettableProjectile extends Projectile {
             }
             d0 = d1;
         }
-        return (float) LibAttributes.getAttackDamage().value().sanitizeValue(d0);
+        return (float) LibAttributes.getAttackDamage().get().sanitizeValue(d0);
     }
 
     public float getDamage() {

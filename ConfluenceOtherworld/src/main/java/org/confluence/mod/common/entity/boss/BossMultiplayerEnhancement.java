@@ -95,7 +95,7 @@ public final class BossMultiplayerEnhancement {
         }
 
         AttributeInstance attackDamage = boss.getAttribute(
-                LibAttributes.getAttackDamage().value());
+                LibAttributes.getAttackDamage().get());
         if (attackDamage != null
                 && !attackDamage.hasModifier(DAMAGE_MODIFIER_ID)) {
             attackDamage.addPermanentModifier(new AttributeModifier(

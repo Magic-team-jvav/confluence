@@ -3,6 +3,7 @@ package org.confluence.mod.common.init.entity;
 import PortLib.extensions.net.minecraftforge.registries.DeferredRegister.PortDeferredRegisterExtension;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
@@ -21,8 +22,7 @@ public class CritterEntities {
     public static final RegistryObject<EntityType<Squirrel>> SQUIRREL = register("squirrel", Squirrel::new);
     public static final RegistryObject<EntityType<RedSquirrel>> RED_SQUIRREL = register("red_squirrel", RedSquirrel::new);
     public static final RegistryObject<EntityType<JewelSquirrel>> JEWEL_SQUIRREL = register("jewel_squirrel", JewelSquirrel::new);
-    public static final RegistryObject<EntityType<Duck>> DUCK =
-            register("duck", Duck::new, 0.4F, 0.7F, 10);
+    public static final RegistryObject<EntityType<Duck>> DUCK = PortDeferredRegisterExtension.register(ENTITIES, "duck", id -> EntityType.Builder.of(Duck::new, MobCategory.CREATURE).sized(0.4F, 0.7F).eyeHeight(0.644F).passengerAttachments(new Vec3(0.0, 0.7, -0.1)).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<Crab>> CRAB =
             registerCompact("crab", Crab::new);
     public static final RegistryObject<EntityType<Worm>> WORM =

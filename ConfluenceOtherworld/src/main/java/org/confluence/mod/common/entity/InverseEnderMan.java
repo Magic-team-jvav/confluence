@@ -21,7 +21,7 @@ public class InverseEnderMan extends EnderMan {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        Attribute value = PortAttributesExtension.gravity().value();
+        Attribute value = PortAttributesExtension.gravity().get();
         return EnderMan.createAttributes().add(value, -value.getDefaultValue());
     }
 

@@ -103,7 +103,7 @@ public final class ModEvents {
                 if (Attributes.MAX_HEALTH instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 65536;
                 }
-                if (LibAttributes.getAttackDamage().value() instanceof RangedAttribute rangedAttribute) {
+                if (LibAttributes.getAttackDamage().get() instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 65536;
                 }
             }
@@ -229,10 +229,10 @@ public final class ModEvents {
         event.put(CritterEntities.LADYBUG.get(), Ladybug.createAttributes().build());
         event.put(MonsterEntities.DEMON_EYE.get(), DemonEye.createAttributes().build());
         event.put(MonsterEntities.HARPY.get(), CreatureAttributeBuilder.creature(41, 8, 13).flying().build());
-        event.put(MonsterEntities.PIXIE.get(), CreatureAttributeBuilder.creature(78, 20, 28, 16, 1, 0.46).flying().build());
+        event.put(MonsterEntities.PIXIE.get(), CreatureAttributeBuilder.creature(78, 20, 28, 16, 1, 0.46).build());
         event.put(MonsterEntities.EATER_OF_SOULS.get(), CreatureAttributeBuilder.creature(20, 6, 11, 30, 0.5, 0.1).flying().build());
         event.put(MonsterEntities.CRIMERA.get(), CreatureAttributeBuilder.creature(20, 6, 11, 30, 0.5, 0.1).flying().build());
-        event.put(MonsterEntities.CURSED_SKULL.get(), CreatureAttributeBuilder.creature(21, 6, 18, 32, 1, 0.82).flying().build());
+        event.put(MonsterEntities.CURSED_SKULL.get(), CreatureAttributeBuilder.creature(21, 6, 18, 32, 1, 0.82).build());
         event.put(MonsterEntities.CORRUPTOR.get(), CreatureAttributeBuilder.creature(156, 18, 32, 48, 1, 0.73).flying().build());
         event.put(MonsterEntities.SLIMER.get(), CreatureAttributeBuilder.creature(156, 20, 45, 48, 1, 0.73).flying().build());
         event.put(MonsterEntities.ENCHANTED_SWORD.get(), CreatureAttributeBuilder.creature(208, 20, 41, 48, 1, 0.82).flying().build());
@@ -276,7 +276,7 @@ public final class ModEvents {
         event.put(MonsterEntities.GIANT_TORTOISE.get(), CreatureAttributeBuilder.creature(366, 30, 55, 48, 1, 0.82).movementSpeed(0.2).build());
         event.put(MonsterEntities.UNICORN.get(), CreatureAttributeBuilder.creature(416, 30, 65, 64, 1, 0.82).movementSpeed(0.35).build());
         event.put(MonsterEntities.GASTROPOD.get(), CreatureAttributeBuilder.creature(143, 20, 40, 48, 1, 0.64).build());
-        event.put(MonsterEntities.WYVERN.get(), CreatureAttributeBuilder.creature(2080, 10, 41, 50, 1, 0.28).flying().build());
+        event.put(MonsterEntities.WYVERN.get(), CreatureAttributeBuilder.creature(2080, 10, 41, 50, 1, 0.28).build());
         event.put(MonsterEntities.ARCH_WYVERN.get(), CreatureAttributeBuilder.creature(3120, 18, 52, 64, 1, 0.37).flying().build());
         event.put(MonsterEntities.DEVOURER.get(), CreatureAttributeBuilder.creature(52, 2, 8).build());
         event.put(MonsterEntities.TOMB_CRAWLER.get(), CreatureAttributeBuilder.creature(16, 2, 4).build());

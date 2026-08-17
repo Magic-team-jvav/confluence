@@ -1,14 +1,22 @@
 package org.confluence.mod.common.init.entity;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
+import org.confluence.mod.common.entity.animal.Worm;
 import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 import org.confluence.mod.common.entity.monster.slime.BaseSlime;
+import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent;
 import org.mesdag.portlib.wrapper.world.entity.PortSpawnPlacementType;
 import org.mesdag.portlib.wrapper.world.entity.PortSpawnPlacementTypes;
@@ -40,12 +48,13 @@ public final class CreatureSpawnPlacements {
                 CritterEntities.BIRD, CritterEntities.BLUE_JAY, CritterEntities.CARDINAL,
                 CritterEntities.SQUIRREL, CritterEntities.RED_SQUIRREL,
                 CritterEntities.JEWEL_SQUIRREL, CritterEntities.DUCK, CritterEntities.CRAB,
-                CritterEntities.WORM, CritterEntities.BUTTERFLY, CritterEntities.FAIRY,
+                CritterEntities.BUTTERFLY, CritterEntities.FAIRY,
                 CritterEntities.FEALING, CritterEntities.GLOWING_SNAIL, CritterEntities.GRUBBY,
                 CritterEntities.MAGGOT, CritterEntities.MAGMA_SNAIL, CritterEntities.SLUGGY,
                 CritterEntities.SNAIL, CritterEntities.SCORPION,
                 CritterEntities.HELL_BUTTERFLY, CritterEntities.PRISMATIC_LACEWING, CritterEntities.DRAGONFLY,
                 CritterEntities.GRASSHOPPER, CritterEntities.LADYBUG);
+        event.register(CritterEntities.WORM.get(), PortSpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, CreatureSpawnPlacements::checkWormSpawn, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 
     private static void registerSlimes(PortRegisterSpawnPlacementsEvent event) {
@@ -169,6 +178,15 @@ public final class CreatureSpawnPlacements {
                 SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkWaterMonsterSpawn),
                 MonsterEntities.GREEN_JELLYFISH, MonsterEntities.ARAPAIMA,
                 MonsterEntities.BLOOD_FEEDER);
+    }
+
+    private static boolean checkWormSpawn(EntityType<Worm> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!(level instanceof ServerLevel serverLevel)) return false;
+        int y = pos.getY();
+        int surfaceY = OverworldUtils.getSurfaceY();
+        if (y > surfaceY && y < OverworldUtils.getSpaceY() && ModUtils.isRainingAt(serverLevel, pos))
+            return true;
+        return y > OverworldUtils.getUndergroundY() && y < surfaceY;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

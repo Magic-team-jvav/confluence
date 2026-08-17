@@ -65,10 +65,7 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
         ScryingOrb.stopSpectating();
     }
 
-    /// 把所有本体坐骑共用的跳跃键边沿发送给服务端。
-    ///
-    /// <p>首次骑上坐骑时即使按键为松开也发送一次初始状态，避免客户端在切换
-    /// 坐骑时沿用上一会话的按住状态。方向输入由原版玩家输入包负责。</p>
+    /// 把本体坐骑共用的跳跃键边沿发送给服务端。首次骑乘时也发送松开状态，避免沿用上一会话的输入。
     @Inject(method = "aiStep", at = @At("TAIL"))
     private void forwardMountInput(CallbackInfo ci) {
         LocalPlayer player = (LocalPlayer) (Object) this;
@@ -76,8 +73,7 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
         int mountId = vehicle instanceof AbstractMountEntity ? vehicle.getId() : -1;
         boolean jumping = mountId >= 0 && input.jumping;
         if (vehicle instanceof AbstractMountEntity mount) {
-            /// 先更新本地预测状态，再按边沿把同一意图发送给服务端。客户端只
-            /// 预演运动；服务端仍独立读取原版方向输入并裁决最终结果。
+            /// 客户端只预演运动，最终结果仍由服务端裁决。
             mount.setLocalJumpInput(player, jumping);
         }
         if (mountId >= 0 && (mountId != confluence$inputMountId || jumping != confluence$mountJumping)) {

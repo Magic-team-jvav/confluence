@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 public interface ContainerMixin {
     /// @author Confluence Team
     /// @reason 1.20.1 的接口注入器无法作用于 Container 默认方法，只能在这里覆盖同一个默认值入口。
+    @SuppressWarnings("overwrite")
     @Overwrite
     default int getMaxStackSize() {
         return LibUtils.getMaxStackSize(64);

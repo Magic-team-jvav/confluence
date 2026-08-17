@@ -19,10 +19,7 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Geo负体积/局部发光渲染器。主 pass 渲染轮廓（只显非发光骨骼），
- * 二次 pass 用 eyes shader 渲染发光骨骼。
- */
+/// Geo负体积/局部发光渲染器。主 pass 渲染轮廓，二次 pass 用 eyes shader 渲染发光骨骼。
 public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends GeoNormalRenderer<T> {
 
     private boolean init;

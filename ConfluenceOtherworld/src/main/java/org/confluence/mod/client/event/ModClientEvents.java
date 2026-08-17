@@ -230,10 +230,8 @@ public final class ModClientEvents {
     }
 
     public static void registerEntityLayers(PortEntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(BaseSlimeModel.INNER_LAYER,
-                BaseSlimeModel::createInnerBodyLayer);
-        event.registerLayerDefinition(BaseSlimeModel.OUTER_LAYER,
-                BaseSlimeModel::createOuterBodyLayer);
+        event.registerLayerDefinition(BaseSlimeModel.INNER_LAYER, BaseSlimeModel::createInnerBodyLayer);
+        event.registerLayerDefinition(BaseSlimeModel.OUTER_LAYER, BaseSlimeModel::createOuterBodyLayer);
         event.registerLayerDefinition(BaseBombEntityModel.LAYER_LOCATION, BaseBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(BouncyBombEntityModel.LAYER_LOCATION, BouncyBombEntityModel::createBodyLayer);
         event.registerLayerDefinition(ScarabBombEntityModel.LAYER_LOCATION, ScarabBombEntityModel::createBodyLayer);
@@ -254,12 +252,9 @@ public final class ModClientEvents {
         event.registerLayerDefinition(BeenadeEntityModel.LAYER_LOCATION, BeenadeEntityModel::createBodyLayer);
         event.registerLayerDefinition(TitaniumShardsProjectileModel.LAYER_LOCATION, TitaniumShardsProjectileModel::createBodyLayer);
         event.registerLayerDefinition(SlimeSpikeProjectileModel.LAYER_LOCATION, SlimeSpikeProjectileModel::createBodyLayer);
-        event.registerLayerDefinition(HarpyFeatherProjectileModel.LAYER_LOCATION,
-                HarpyFeatherProjectileModel::createBodyLayer);
-        event.registerLayerDefinition(HornetStingerProjectileModel.LAYER_LOCATION,
-                HornetStingerProjectileModel::createBodyLayer);
-        event.registerLayerDefinition(BeeProjectileModel.LAYER_LOCATION,
-                BeeProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(HarpyFeatherProjectileModel.LAYER_LOCATION, HarpyFeatherProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(HornetStingerProjectileModel.LAYER_LOCATION, HornetStingerProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(BeeProjectileModel.LAYER_LOCATION, BeeProjectileModel::createBodyLayer);
 
         event.registerLayerDefinition(BaseFishingHookModel.WOOD, BaseFishingHookModel::createWoodLayer);
         event.registerLayerDefinition(BaseFishingHookModel.REINFORCED, BaseFishingHookModel::createReinforcedLayer);
@@ -298,8 +293,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(BaseHookModel.LAYER_LOCATION, BaseHookModel::createBodyLayer);
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);
         event.registerLayerDefinition(SkeletronHandModel.LAYER_LOCATION, SkeletronHandModel::createBodyLayer);
-        event.registerLayerDefinition(CrownOfKingSlimeModel.LAYER_LOCATION,
-                CrownOfKingSlimeModel::createBodyLayer);
+        event.registerLayerDefinition(CrownOfKingSlimeModel.LAYER_LOCATION, CrownOfKingSlimeModel::createBodyLayer);
 
         event.registerLayerDefinition(FlailModel.LAYER_LOCATION, FlailModel::createBodyLayer);
         event.registerLayerDefinition(TerraprismaModel.LAYER_LOCATION, TerraprismaModel::createBodyLayer);
@@ -449,42 +443,24 @@ public final class ModClientEvents {
         event.registerEntityRenderer(CRYSTAL_STORM.get(), NoopRenderer::new);
         event.registerEntityRenderer(CURSED_FLAMES.get(), NoopRenderer::new);
         event.registerEntityRenderer(FLOWER_PETAL.get(), NoopRenderer::new);
-        event.registerEntityRenderer(HARPY_FEATHER.get(),
-                HarpyFeatherProjectileRenderer::new);
-        event.registerEntityRenderer(HOSTILE_DEMON_SCYTHE.get(),
-                HostileDemonScytheProjectileRenderer::new);
-        event.registerEntityRenderer(HORNET_STINGER.get(),
-                HornetStingerProjectileRenderer::new);
-        event.registerEntityRenderer(SKELETRON_SKULL.get(),
-                SkullProjectileRenderer::new);
-        event.registerEntityRenderer(HILL_LAVA_PILLAR.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(WALL_OF_FLESH_LASER.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(DESTROYER_LASER.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(PRIME_LASER.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(PLANTERA_SEED.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(PLANTERA_THORN_BALL.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(PLANTERA_SPORE.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(RETINAZER_LASER.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(SPAZMATISM_FLAME.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(DARK_CASTER_PROJECTILE.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(VILE_SPIT_PROJECTILE.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(FIRE_IMP_PROJECTILE.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(GASTROPOD_PROJECTILE.get(),
-                NoopRenderer::new);
-        event.registerEntityRenderer(PALADIN_HAMMER_PROJECTILE.get(),
-                PaladinHammerProjectileRenderer::new);
+        event.registerEntityRenderer(HARPY_FEATHER.get(), HarpyFeatherProjectileRenderer::new);
+        event.registerEntityRenderer(HOSTILE_DEMON_SCYTHE.get(), HostileDemonScytheProjectileRenderer::new);
+        event.registerEntityRenderer(HORNET_STINGER.get(), HornetStingerProjectileRenderer::new);
+        event.registerEntityRenderer(SKELETRON_SKULL.get(), SkullProjectileRenderer::new);
+        event.registerEntityRenderer(HILL_LAVA_PILLAR.get(), NoopRenderer::new);
+        event.registerEntityRenderer(WALL_OF_FLESH_LASER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(DESTROYER_LASER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(PRIME_LASER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(PLANTERA_SEED.get(), NoopRenderer::new);
+        event.registerEntityRenderer(PLANTERA_THORN_BALL.get(), NoopRenderer::new);
+        event.registerEntityRenderer(PLANTERA_SPORE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(RETINAZER_LASER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(SPAZMATISM_FLAME.get(), NoopRenderer::new);
+        event.registerEntityRenderer(DARK_CASTER_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(VILE_SPIT_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(FIRE_IMP_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(GASTROPOD_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(PALADIN_HAMMER_PROJECTILE.get(), PaladinHammerProjectileRenderer::new);
         event.registerEntityRenderer(ANCIENT_LIGHT.get(), NoopRenderer::new);
         event.registerEntityRenderer(CULTIST_FIREBALL.get(), NoopRenderer::new);
         event.registerEntityRenderer(CULTIST_ICE_MIST.get(), NoopRenderer::new);
@@ -549,36 +525,16 @@ public final class ModClientEvents {
         event.registerEntityRenderer(CHRISTMAS_HOOK.get(), ChristmasHookRenderer::new);
         event.registerEntityRenderer(LUNAR_HOOK.get(), LunarHookRenderer::new);
         event.registerEntityRenderer(FLAIL_ENTITY.get(), BaseFlailRenderer::new);
-        event.registerEntityRenderer(
-                GUARDIAN_FLAIL_ENTITY.get(),
-                BaseFlailRenderer::new);
-        event.registerEntityRenderer(
-                ANCIENT_GUARDIAN_FLAIL_ENTITY.get(),
-                BaseFlailRenderer::new);
-        event.registerEntityRenderer(
-                FLOWER_POWER_FLAIL.get(),
-                BaseFlailRenderer::new);
-        event.registerEntityRenderer(
-                DRIPPLER_CRIPPLER_FLAIL.get(),
-                BaseFlailRenderer::new);
-        event.registerEntityRenderer(
-                FLAIRON_FLAIL.get(),
-                BaseFlailRenderer::new);
-        event.registerEntityRenderer(
-                CHAIN_KNIFE_FLAIL.get(),
-                BaseFlailRenderer::new);
-        event.registerEntityRenderer(
-                ANCHOR_FLAIL.get(),
-                BaseFlailRenderer::new);
-        event.registerEntityRenderer(
-                FLOWER_POWER_PETAL.get(),
-                FlailAuxiliaryProjectileRenderer::new);
-        event.registerEntityRenderer(
-                DRIPPLER_CRIPPLER_PROJECTILE.get(),
-                FlailAuxiliaryProjectileRenderer::new);
-        event.registerEntityRenderer(
-                FLAIRON_BUBBLE.get(),
-                FlailAuxiliaryProjectileRenderer::new);
+        event.registerEntityRenderer(GUARDIAN_FLAIL_ENTITY.get(), BaseFlailRenderer::new);
+        event.registerEntityRenderer(ANCIENT_GUARDIAN_FLAIL_ENTITY.get(), BaseFlailRenderer::new);
+        event.registerEntityRenderer(FLOWER_POWER_FLAIL.get(), BaseFlailRenderer::new);
+        event.registerEntityRenderer(DRIPPLER_CRIPPLER_FLAIL.get(), BaseFlailRenderer::new);
+        event.registerEntityRenderer(FLAIRON_FLAIL.get(), BaseFlailRenderer::new);
+        event.registerEntityRenderer(CHAIN_KNIFE_FLAIL.get(), BaseFlailRenderer::new);
+        event.registerEntityRenderer(ANCHOR_FLAIL.get(), BaseFlailRenderer::new);
+        event.registerEntityRenderer(FLOWER_POWER_PETAL.get(), FlailAuxiliaryProjectileRenderer::new);
+        event.registerEntityRenderer(DRIPPLER_CRIPPLER_PROJECTILE.get(), FlailAuxiliaryProjectileRenderer::new);
+        event.registerEntityRenderer(FLAIRON_BUBBLE.get(), FlailAuxiliaryProjectileRenderer::new);
         event.registerEntityRenderer(YOYO.get(), YoyoRenderer::new);
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
@@ -728,11 +684,9 @@ public final class ModClientEvents {
                         c, MonsterEntities.UNDEAD_VIKING.getId())));
         // 这些规划中的生态生物在专用泰拉瑞亚纹理补齐前，暂用拓扑兼容的合并资源，
         // 以保证实体始终可见，而不是因缺少资源被静默隐藏。
-        event.registerEntityRenderer(MonsterEntities.GIANT_TORTOISE.get(),
-                c -> new GeoNormalRenderer<>(c, sharedGiantShellyModel()).withScale(1.4F));
+        event.registerEntityRenderer(MonsterEntities.GIANT_TORTOISE.get(), c -> new GeoNormalRenderer<>(c, sharedGiantShellyModel()).withScale(1.4F));
         event.registerEntityRenderer(MonsterEntities.UNICORN.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DERPLING.getId()).withScale(1.3F));
-        event.registerEntityRenderer(MonsterEntities.GASTROPOD.get(),
-                c -> new GeoNormalRenderer<>(c, sharedGiantShellyModel()));
+        event.registerEntityRenderer(MonsterEntities.GASTROPOD.get(), c -> new GeoNormalRenderer<>(c, sharedGiantShellyModel()));
         event.registerEntityRenderer(MonsterEntities.WORM_SEGMENT.get(), WormPartRenderer::new);
         event.registerEntityRenderer(MonsterEntities.WYVERN.get(), c -> new WyvernRenderer(c, 1.0F));
         event.registerEntityRenderer(MonsterEntities.ARCH_WYVERN.get(), c -> new WyvernRenderer(c, 1.25F));
@@ -750,8 +704,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.RAGGED_CASTER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
         // Boss
         event.registerEntityRenderer(BossEntities.KING_SLIME.get(), KingSlimeRenderer::new);
-        event.registerEntityRenderer(BossEntities.CROWN_OF_KING_SLIME_MODEL.get(),
-                CrownOfKingSlimeModelRenderer::new);
+        event.registerEntityRenderer(BossEntities.CROWN_OF_KING_SLIME_MODEL.get(), CrownOfKingSlimeModelRenderer::new);
         event.registerEntityRenderer(BossEntities.EYE_OF_CTHULHU.get(), c ->
                 new BossGeoRenderer<>(
                         c,
@@ -760,22 +713,16 @@ public final class ModClientEvents {
                         1.0F,
                         1.5F));
         event.registerEntityRenderer(BossEntities.SERVANT_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("servant_of_cthulhu")));
-        event.registerEntityRenderer(
-                BossEntities.WORM_SEGMENT.get(),
-                BossWormPartRenderer::new);
+        event.registerEntityRenderer(BossEntities.WORM_SEGMENT.get(), BossWormPartRenderer::new);
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c ->
                 new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds")).withScale(2.2F));
         event.registerEntityRenderer(BossEntities.QUEEN_BEE.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/queen_bee")));
-        event.registerEntityRenderer(
-                BossEntities.BRAIN_OF_CTHULHU.get(),
-                BrainOfCthulhuRenderer::new);
+        event.registerEntityRenderer(BossEntities.BRAIN_OF_CTHULHU.get(), BrainOfCthulhuRenderer::new);
         event.registerEntityRenderer(BossEntities.BRAIN_FAKE.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/brain_of_cthulhu")));
         event.registerEntityRenderer(BossEntities.SKELETRON.get(), SkeletronBossRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_HAND.get(), SkeletronBossHandRenderer::new);
         event.registerEntityRenderer(BossEntities.DUNGEON_GUARDIAN.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/skeletron")));
-        event.registerEntityRenderer(
-                BossEntities.THE_DESTROYER.get(),
-                DestroyerRenderer::new);
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
         event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("visual_neuron")));
         event.registerEntityRenderer(BossEntities.RETINAZER.get(), TwinEyeDissolveRenderer::retinazer);
         event.registerEntityRenderer(BossEntities.SPAZMATISM.get(), TwinEyeDissolveRenderer::spazmatism);
@@ -812,9 +759,7 @@ public final class ModClientEvents {
         // 父实体模型已经包含全部眼睛和嘴部网格，这些子实体只承担命中判定，不单独渲染。
         event.registerEntityRenderer(BossEntities.HILL_OF_FLESH_EYE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BossEntities.HILL_OF_FLESH_MOUTH.get(), NoopRenderer::new);
-        event.registerEntityRenderer(
-                BossEntities.PRIME_ENDER_DRAGON.get(),
-                PrimeEnderDragonRenderer::new);
+        event.registerEntityRenderer(BossEntities.PRIME_ENDER_DRAGON.get(), PrimeEnderDragonRenderer::new);
         event.registerEntityRenderer(BossEntities.PRIME_ENDER_DRAGON_PART.get(), NoopRenderer::new);
         // NPC
         event.registerEntityRenderer(NpcEntities.GUIDE.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/guide")));

@@ -35,7 +35,8 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
         if (chat.text().isPresent()) {
             renderText(Component.translatable(chat.text().get()), poseStack, bufferSource, packedLight);
         } else if (chat.emoji().isPresent()) {
-            renderEmoji(new ResourceLocation(chat.emoji().get()), poseStack, bufferSource, packedLight);
+            ResourceLocation texture = ResourceLocation.tryParse(chat.emoji().get());
+            if (texture != null) renderEmoji(texture, poseStack, bufferSource, packedLight);
         } else
             chat.item().ifPresent(item -> renderItem(entity, item, poseStack, bufferSource, packedLight));
         poseStack.popPose();

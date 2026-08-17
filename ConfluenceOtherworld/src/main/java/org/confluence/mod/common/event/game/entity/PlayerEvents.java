@@ -348,9 +348,7 @@ public final class PlayerEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             AccessoryItems.applyLuckyCoin(serverPlayer, event.getTarget());
         }
-        if (player.getMainHandItem().is(ModTags.Items.SPEAR)
-                || player.getMainHandItem().getItem()
-                instanceof YoyoItem) {
+        if (player.getMainHandItem().is(ModTags.Items.SPEAR) || player.getMainHandItem().getItem() instanceof YoyoItem) {
             event.setCanceled(true);
         }
     }

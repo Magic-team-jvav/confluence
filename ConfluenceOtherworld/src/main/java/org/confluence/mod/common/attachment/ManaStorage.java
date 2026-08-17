@@ -51,7 +51,6 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        // 对缺失或损坏字段采用安全默认值；1.20 侧只维护当前格式，不承担任何旧存档迁移。
         if (nbt.contains("stars")) {
             this.stars = Mth.clamp(nbt.getInt("stars"), MIN_STARS, MAX_STARS);
         }
@@ -65,7 +64,6 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         }
         this.fastManaRegeneration = nbt.getBoolean("fastManaRegeneration");
         this.arcaneCrystalUsed = nbt.getBoolean("arcaneCrystalUsed");
-        // maxMana 是运行时缓存，不从 NBT 信任；重算同时把当前魔力收敛到合法上限。
         this.maxMana = -1;
         freshMaxMana();
     }
@@ -93,45 +91,6 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         this.currentMana = Mth.clamp(currentMana - extract, 0.0F, getMaxMana());
         if (extract > 0.0F) setRegenerateDelay();
         return true;
-    }
-
-    /// 为统一弹幕事务提交一笔已经预先解析的魔力成本。
-    ///
-    /// <p>调用方必须传入准备阶段观察到的魔力值；若期间有事件修改了魔力，本方法会拒绝提交，
-    /// 防止基于过期状态透支。自动魔力药水只把恢复量作为本次提交的临时输入，药水物品本身仍由
-    /// Otherworld 的具体成本实现负责扣除和回滚。</p>
-    ///
-    /// @return 是否从准备阶段的同一状态精确完成了提交
-    @ApiStatus.Internal
-    public boolean commitProjectileCost(float expectedCurrentMana, float restoredByPotion, float amount) {
-        requireFiniteMana(expectedCurrentMana, "Expected current mana");
-        requireFiniteMana(restoredByPotion, "Potion mana restoration");
-        requireFiniteMana(amount, "Projectile mana cost");
-        if (Float.compare(currentMana, expectedCurrentMana) != 0) {
-            return false;
-        }
-        float available = Math.min(getMaxMana(), currentMana + restoredByPotion);
-        if (available < amount) {
-            return false;
-        }
-        currentMana = available - amount;
-        if (amount > 0.0F) {
-            setRegenerateDelay();
-        }
-        return true;
-    }
-
-    /// 精确恢复统一弹幕事务提交前的魔力与再生延迟。
-    ///
-    /// <p>仅供同一服务端线程中的补偿回滚使用；它不会触发药水、附魔或饰品副作用。</p>
-    @ApiStatus.Internal
-    public void restoreProjectileCostState(float mana, int delay) {
-        requireFiniteMana(mana, "Restored current mana");
-        if (mana > getMaxMana()) {
-            throw new IllegalArgumentException("Restored current mana must not exceed maximum mana");
-        }
-        currentMana = mana;
-        regenerateDelay = delay;
     }
 
     public float getCurrentMana() {
@@ -181,22 +140,6 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         return false;
     }
 
-    /// MagicLib 永久升级 API 使用的零基等级：0 代表初始一颗星，9 代表十颗星上限。
-    public int getStarUpgrades() {
-        return stars - MIN_STARS;
-    }
-
-    /// 自定义 levelAccess 的权威写入口。正向升级保留当前魔力；反向回溯按每颗星 20 点同步扣减当前魔力，
-    /// 与 1.21 的 decreaseStar 语义一致，最后统一刷新并夹紧最大魔力缓存。
-    public void setStarUpgrades(int upgrades) {
-        int targetStars = Mth.clamp(upgrades + MIN_STARS, MIN_STARS, MAX_STARS);
-        if (targetStars < this.stars) {
-            this.currentMana = Math.max(0.0F, this.currentMana - (this.stars - targetStars) * 20.0F);
-        }
-        this.stars = targetStars;
-        freshMaxMana();
-    }
-
     @ApiStatus.Internal
     public void clearStars() {
         this.stars = 1;
@@ -235,11 +178,5 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
 
     public static ManaStorage of(LivingEntity living) {
         return living.getData(ModAttachmentTypes.MANA_STORAGE);
-    }
-
-    private static void requireFiniteMana(float value, String fieldName) {
-        if (!Float.isFinite(value) || value < 0.0F) {
-            throw new IllegalArgumentException(fieldName + " must be finite and non-negative");
-        }
     }
 }

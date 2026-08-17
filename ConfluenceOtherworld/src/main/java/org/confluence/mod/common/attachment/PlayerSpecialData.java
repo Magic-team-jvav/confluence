@@ -213,7 +213,6 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
             }
         }
 
-        // 换装只刷新由护甲/饰品计算出的临时值；钓鱼任务、队伍和玩家开关必须跨换装保留。
         super.setToDefaultValue();
         this.armorSetBonusKey = ArmorSetBonusKey.NONE;
         ArmorSetBonusData data = ModArmorBonus.getArmorSetBonusData(player, key);
@@ -264,7 +263,6 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
-        // 附件对象可能被复用；先恢复完整默认值，再由确实存在的旧存档字段逐项覆盖。
         setToDefaultValue();
         super.deserializeNBT(provider, nbt);
 

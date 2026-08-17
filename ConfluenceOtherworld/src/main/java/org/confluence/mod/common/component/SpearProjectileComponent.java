@@ -63,9 +63,7 @@ public record SpearProjectileComponent(
             Codec.INT.optionalFieldOf("pierceCount").forGetter(SpearProjectileComponent::pierceCount)
     ).apply(instance, SpearProjectileComponent::new));
 
-    /**
-     * 风暴长矛 — 直线加速弹射物
-     */
+    /// 风暴长矛 — 直线加速弹射物
     public static final Supplier<SpearProjectileComponent> STORM_SPEAR_PROJ =
             () -> new SpearProjectileComponent(1.5f, 0.1f, 1.0f, 40, 0.0f, 15,
                     ModSoundEvents.FROZEN_ARROW.getId(),
@@ -73,18 +71,14 @@ public record SpearProjectileComponent(
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty());
 
-    /**
-     * 直线标准弹射物
-     */
+    /// 直线标准弹射物
     public static final Supplier<SpearProjectileComponent> ORICHALCUM_HALBERD_PROJ =
             () -> new SpearProjectileComponent(1.2f, 1.2f, 0.95f, 20, 0.0f, 12,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
                     Confluence.asResource("orichalcum_halberd_projectile"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty());
-    /**
-     * 蘑菇孢子 - 自旋悬浮弹射物
-     */
+    /// 蘑菇孢子 - 自旋悬浮弹射物
     public static final Supplier<SpearProjectileComponent> MUSHROOM_SPEAR_PROJ =
             () -> new SpearProjectileComponent(1.0f, 0.0f, 0.95f, 20, 0.0f, 12,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
@@ -92,9 +86,7 @@ public record SpearProjectileComponent(
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty());
 
-    /**
-     * 北极 — 弧形雪花弹射物
-     */
+    /// 北极 — 弧形雪花弹射物
     public static final Supplier<SpearProjectileComponent> NORTH_POLE_PROJ =
             () -> new SpearProjectileComponent(1.0f, 1.0f, 0.99f, 120, 0.03f, 18,
                     ModSoundEvents.FROZEN_ARROW.getId(),
@@ -102,9 +94,7 @@ public record SpearProjectileComponent(
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.of(3));
 
-    /**
-     * 叶绿长戟 — 孢子云弹射物
-     */
+    /// 叶绿长戟 — 孢子云弹射物
     public static final Supplier<SpearProjectileComponent> SPORE_CLOUD_PROJ =
             () -> new SpearProjectileComponent(0.8f, 1.2f, 1.0f, 200, 0.0f, 20,//注意，该弹射物的生命管理使用速度控制。
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
@@ -112,9 +102,7 @@ public record SpearProjectileComponent(
                     Optional.empty(), ForwardGeneration.of(0, (float) 1.5),
                     Optional.of(Integer.MAX_VALUE));
 
-    /**
-     * 恶魂长戟 — 恶魂弹射物，水平飞行，无限穿透穿墙
-     */
+    /// 恶魂长戟 — 恶魂弹射物，水平飞行，无限穿透穿墙
     public static final Supplier<SpearProjectileComponent> GHASTLY_PROJECTILE =
             () -> new SpearProjectileComponent(0.9f, 0.5f, 1.0f, 10, 0.0f, 15,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
@@ -163,9 +151,7 @@ public record SpearProjectileComponent(
         return result;
     }
 
-    /**
-     * 计算实际速度（受远程速度属性影响）
-     */
+    /// 计算实际速度（受远程速度属性影响）
     public float getVelocity(LivingEntity living) {
         float velocity = baseSpeed();
         AttributeInstance attributeInstance = living.getAttribute(LibAttributes.getRangedVelocity().value());
@@ -173,9 +159,7 @@ public record SpearProjectileComponent(
         return velocity;
     }
 
-    /**
-     * 计算实际冷却（受攻击速度属性影响）
-     */
+    /// 计算实际冷却（受攻击速度属性影响）
     public int getAttackSpeed(LivingEntity living) {
         int cooldown = cooldown();
         AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_SPEED);

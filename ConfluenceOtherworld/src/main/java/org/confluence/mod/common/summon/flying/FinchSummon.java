@@ -41,6 +41,9 @@ public final class FinchSummon extends FlyingSummon {
 
     @Override
     protected void afterPathAdvance(SummonPose previousPreviousPose, SummonPose previousPose, SummonPose currentPose) {
+        if (target() == null) {
+            return;
+        }
         boolean hit = hurtTouchingTargets(AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75),
                 32.0, 1.0F);
         if (hit && hitMovementCooldown <= -5) hitMovementCooldown = 10;

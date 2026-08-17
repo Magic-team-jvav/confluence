@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -23,6 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.summon.OwnedSummon;
+import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.api.whip.WhipTagTracker;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
@@ -121,10 +123,12 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
             return false;
         }
         Entity impacted = ProjectileHitRules.impactedEntity(target);
-        if (impacted instanceof Player
-                && level() instanceof ServerLevel serverLevel) {
-            var player = resolveSummonOwner(serverLevel);
-            return player != null && ProjectileHitRules.canHit(player, target);
+        if (level() instanceof ServerLevel serverLevel) {
+            Player player = resolveSummonOwner(serverLevel);
+            return player instanceof ServerPlayer owner
+                    && impacted instanceof LivingEntity living
+                    && SummonTargetCache.isValidTarget(owner, living, Double.MAX_VALUE, true)
+                    && ProjectileHitRules.canHit(owner, target);
         }
         return true;
     }
@@ -144,7 +148,9 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity impacted = ProjectileHitRules.impactedEntity(result.getEntity());
-        if (!level().isClientSide && impacted instanceof LivingEntity target) {
+        if (!level().isClientSide && impacted instanceof LivingEntity target && level() instanceof ServerLevel serverLevel
+                && resolveSummonOwner(serverLevel) instanceof ServerPlayer owner
+                && SummonTargetCache.isValidTarget(owner, target, Double.MAX_VALUE, true)) {
             DamageSource source = getDamageSource();
             if (!Immunity.isActive(this, target)) {
                 int invulnerableTime = target.invulnerableTime;
@@ -193,8 +199,7 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
             return;
         }
 
-        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(
-                this, this::canHitEntity);
+        HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (hitResult.getType() == HitResult.Type.MISS) {
             hitResult = findLivingEntityHit(getDeltaMovement());
         }
@@ -212,16 +217,9 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
 
         if (level().isClientSide) {
             int color = entityData.get(COLOR);
-            Vector3f rgb = new Vector3f(
-                    ((color >> 16) & 0xFF) / 255.0F,
-                    ((color >> 8) & 0xFF) / 255.0F,
-                    (color & 0xFF) / 255.0F
-            );
-            level().addParticle(
-                    new DustParticleOptions(rgb, 0.8F),
-                    getX(), getY(), getZ(),
-                    0.0, 0.0, 0.0
-            );
+            Vector3f rgb = new Vector3f(((color >> 16) & 0xFF) / 255.0F, ((color >> 8) & 0xFF) / 255.0F,
+                    (color & 0xFF) / 255.0F);
+            level().addParticle(new DustParticleOptions(rgb, 0.8F), getX(), getY(), getZ(), 0.0, 0.0, 0.0);
         }
     }
 
@@ -260,10 +258,8 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
             }
         }
 
-        for (LivingEntity candidate : level().getEntitiesOfClass(
-                LivingEntity.class,
-                getBoundingBox().expandTowards(velocity).inflate(0.35),
-                this::canHitEntity)) {
+        for (LivingEntity candidate : level().getEntitiesOfClass(LivingEntity.class,
+                getBoundingBox().expandTowards(velocity).inflate(0.35), this::canHitEntity)) {
             Vec3 intersection = intersection(candidate, start, end);
             if (intersection == null) {
                 continue;
@@ -280,11 +276,7 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
                 : new EntityHitResult(nearest, nearestHit);
     }
 
-    private static @Nullable Vec3 intersection(
-            LivingEntity target,
-            Vec3 start,
-            Vec3 end
-    ) {
+    private static @Nullable Vec3 intersection(LivingEntity target, Vec3 start, Vec3 end) {
         var hitBox = target.getBoundingBox().inflate(0.35);
         return hitBox.clip(start, end).orElse(hitBox.contains(start) ? start : null);
     }
@@ -293,19 +285,8 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         Entity owner = getOwner();
         int ownerId = owner == null ? 0 : owner.getId();
-        return new ClientboundAddEntityPacket(
-                getId(),
-                getUUID(),
-                getX(),
-                getY(),
-                getZ(),
-                getXRot(),
-                getYRot(),
-                getType(),
-                ownerId,
-                getDeltaMovement(),
-                0.0
-        );
+        return new ClientboundAddEntityPacket(getId(), getUUID(), getX(), getY(), getZ(), getXRot(), getYRot(),
+                getType(), ownerId, getDeltaMovement(), 0.0);
     }
 
     /// 普通召唤弹幕可携带的少量固有命中特效。

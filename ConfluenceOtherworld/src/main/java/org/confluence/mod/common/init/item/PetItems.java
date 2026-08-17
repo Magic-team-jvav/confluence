@@ -15,12 +15,8 @@ public class PetItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    public static final PortDeferredItem<StorageCompanionItem<ChesterEntity>>
-            CHESTER_STAFF = ITEMS.register("chester_staff",
-            () -> new StorageCompanionItem<>(
-                    new Item.Properties(), ModEntities.CHESTER));
-    public static final PortDeferredItem<StorageCompanionItem<FlyingPiggyBankEntity>>
-            WALLET = ITEMS.register("wallet",
-            () -> new StorageCompanionItem<>(
-                    new Item.Properties(), ModEntities.FLYING_PIGGY_BANK));
+    public static final PortDeferredItem<StorageCompanionItem<ChesterEntity>> CHESTER_STAFF = ITEMS.register(
+            "chester_staff", () -> new StorageCompanionItem<>(new Item.Properties(), ModEntities.CHESTER));
+    public static final PortDeferredItem<StorageCompanionItem<FlyingPiggyBankEntity>> WALLET = ITEMS.register(
+            "wallet", () -> new StorageCompanionItem<>(new Item.Properties(), ModEntities.FLYING_PIGGY_BANK));
 }

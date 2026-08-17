@@ -93,9 +93,7 @@ public final class ModEntities {
 
     public static final RegistryObject<EntityType<ChesterEntity>> CHESTER =
             registerStorageCompanion("chester", ChesterEntity::new);
-    public static final RegistryObject<EntityType<FlyingPiggyBankEntity>>
-            FLYING_PIGGY_BANK = registerStorageCompanion(
-            "piggy_bank", FlyingPiggyBankEntity::new);
+    public static final RegistryObject<EntityType<FlyingPiggyBankEntity>> FLYING_PIGGY_BANK = registerStorageCompanion("piggy_bank", FlyingPiggyBankEntity::new);
     public static final RegistryObject<EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF = register("base_mana_staff", id -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<VilethronProjectile>> VILETHRON = register("vilethron", id -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = register("crystal_vile_shard", id -> EntityType.Builder.<CrystalVileShardProjectile>of(CrystalVileShardProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
@@ -698,11 +696,8 @@ public final class ModEntities {
         return register(name, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(size, size).clientTrackingRange(4).updateInterval(10).fireImmune().build(id.toString()));
     }
 
-    private static <E extends Entity>
-    RegistryObject<EntityType<E>> registerStorageCompanion(
-            String name,
-            EntityType.EntityFactory<E> factory
-    ) {
+    private static <E extends Entity> RegistryObject<EntityType<E>> registerStorageCompanion(
+            String name, EntityType.EntityFactory<E> factory) {
         return register(name, id -> EntityType.Builder.of(factory, MobCategory.MISC)
                 .sized(1.0F, 1.0F)
                 .clientTrackingRange(10)

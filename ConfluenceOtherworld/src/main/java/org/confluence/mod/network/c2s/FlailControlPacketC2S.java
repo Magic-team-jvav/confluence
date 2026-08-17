@@ -9,39 +9,28 @@ import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * <h1>连枷控制包C2S</h1>
- * 玩家按住/松开攻击键时发送，控制连枷 SPIN/THROWN/STAY/RETRACT 状态
- */
-public record FlailControlPacketC2S(Action action)
-        implements IPortPacket.C2S {
+/// 玩家按住或松开攻击键时发送，控制连枷状态。
+public record FlailControlPacketC2S(Action action) implements IPortPacket.C2S {
     public enum Action {
         HOLD,
         RELEASE
     }
 
-    public static final ResourceLocation ID =
-            Confluence.asResource("flail_control");
-    public static final PortStreamCodec<ByteBuf, FlailControlPacketC2S>
-            STREAM_CODEC = new PortStreamCodec<>() {
+    public static final ResourceLocation ID = Confluence.asResource("flail_control");
+    public static final PortStreamCodec<ByteBuf, FlailControlPacketC2S> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public FlailControlPacketC2S decode(ByteBuf buffer) {
-            return new FlailControlPacketC2S(
-                    buffer.readBoolean() ? Action.HOLD : Action.RELEASE);
+            return new FlailControlPacketC2S(buffer.readBoolean() ? Action.HOLD : Action.RELEASE);
         }
 
         @Override
-        public void encode(
-                ByteBuf buffer,
-                FlailControlPacketC2S packet
-        ) {
+        public void encode(ByteBuf buffer, FlailControlPacketC2S packet) {
             buffer.writeBoolean(packet.action == Action.HOLD);
         }
     };
 
     public FlailControlPacketC2S {
-        java.util.Objects.requireNonNull(
-                action, "Flail control action must not be null");
+        java.util.Objects.requireNonNull(action, "Flail control action must not be null");
     }
 
     @Override
@@ -71,12 +60,10 @@ public record FlailControlPacketC2S(Action action)
     }
 
     public static void sendHold() {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new FlailControlPacketC2S(Action.HOLD));
+        Confluence.NETWORK_HANDLER.sendToServer(new FlailControlPacketC2S(Action.HOLD));
     }
 
     public static void sendRelease() {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new FlailControlPacketC2S(Action.RELEASE));
+        Confluence.NETWORK_HANDLER.sendToServer(new FlailControlPacketC2S(Action.RELEASE));
     }
 }

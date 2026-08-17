@@ -1,6 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-
 import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,10 +11,8 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * @see SelectionsScreen
- * @see org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C
- */
+/// @see SelectionsScreen
+/// @see org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C
 public record ApplySelectionPacketC2S(byte selected) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("apply_selection_c2s");
     public static final PortStreamCodec<ByteBuf, ApplySelectionPacketC2S> STREAM_CODEC = PortByteBufCodecs.BYTE.map(ApplySelectionPacketC2S::new, ApplySelectionPacketC2S::selected);

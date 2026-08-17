@@ -25,6 +25,13 @@ public final class SwordProjectilePacketC2S implements IPortPacket.C2S {
     }
 
     @Override
+    public void handle(IPortPacket.Context context) {
+        if (context.player() instanceof ServerPlayer player) {
+            context.enqueueWork(() -> work(player));
+        }
+    }
+
+    @Override
     public void work(ServerPlayer player) {
         // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
         ItemStack stack = player.getMainHandItem();

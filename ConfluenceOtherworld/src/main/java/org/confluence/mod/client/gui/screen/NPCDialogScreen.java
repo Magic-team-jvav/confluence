@@ -10,10 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-/**
- * NPC 对话界面基类 —— 渲染对话文本 + 按 E 关闭。
- * 子类自行添加按钮（交易/任务/对话等）。
- */
+/// NPC 对话界面基类 —— 渲染对话文本 + 按 E 关闭。
+/// 子类自行添加按钮（交易/任务/对话等）。
 public class NPCDialogScreen extends Screen {
     protected static final int DIALOG_WIDTH = 200;
     protected final int entityId;

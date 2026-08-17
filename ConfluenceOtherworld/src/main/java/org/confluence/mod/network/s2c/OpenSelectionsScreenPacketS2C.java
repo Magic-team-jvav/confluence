@@ -11,10 +11,8 @@ import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/**
- * @see SelectionsScreen
- * @see org.confluence.mod.network.c2s.ApplySelectionPacketC2S
- */
+/// @see SelectionsScreen
+/// @see org.confluence.mod.network.c2s.ApplySelectionPacketC2S
 public record OpenSelectionsScreenPacketS2C(Component[] selections,
                                             boolean[] enables) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("open_selections_screen_s2c");

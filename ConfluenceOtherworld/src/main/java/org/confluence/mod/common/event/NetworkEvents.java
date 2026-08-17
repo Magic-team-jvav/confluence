@@ -55,6 +55,7 @@ public final class NetworkEvents {
         handler.registerInGameS2C(ManaPacketS2C.class, ManaPacketS2C.ID, ManaPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(MeteoriteLocationPacketS2C.class, MeteoriteLocationPacketS2C.ID, MeteoriteLocationPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(OpenAnglerDialogPacketS2C.class, OpenAnglerDialogPacketS2C.ID, OpenAnglerDialogPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(OpenNPCDialogPacketS2C.class, OpenNPCDialogPacketS2C.ID, OpenNPCDialogPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(OpenSelectionsScreenPacketS2C.class, OpenSelectionsScreenPacketS2C.ID, OpenSelectionsScreenPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(PiggyBankTotalMoneyPacket.class, PiggyBankTotalMoneyPacket.ID, PiggyBankTotalMoneyPacket.STREAM_CODEC);
         handler.registerInGameS2C(PlayerDeathInfoPacketS2C.class, PlayerDeathInfoPacketS2C.ID, PlayerDeathInfoPacketS2C.STREAM_CODEC);

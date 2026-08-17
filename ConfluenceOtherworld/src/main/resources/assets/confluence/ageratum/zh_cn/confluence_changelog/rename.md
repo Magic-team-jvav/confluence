@@ -136,7 +136,7 @@
 
 | 原名称                              | 修改后名称                       |
 |----------------------------------|-----------------------------|
-| `confluence:blowpipe`            | `confluence:blowgun`        |
+| `terra_guns:blowpipe`            | `terra_guns:blowgun`        |
 | `confluence:crystal_shards_item` | `confluence:crystal_shards` |
 | `confluence:throwing_knives`     | `confluence:throwing_knive` |
 | `confluence:golden_coin`         | `confluence:gold_coin`      |
@@ -187,10 +187,10 @@
 | `terra_curio:generic.ranged_damage`     | `confluence_magic_lib:generic.ranged_damage`     |
 | `terra_curio:generic.ranged_velocity`   | `confluence_magic_lib:generic.ranged_velocity`   |
 | `terra_curio:player.aggro`              | `confluence_magic_lib:player.aggro`              |
-| `confluence:player.mark_damage`         | `confluence_magic_lib:player.mark_damage`        |
-| `confluence:player.minion_capacity`     | `confluence_magic_lib:player.minion_capacity`    |
+| `terra_entity:player.mark_damage`       | `confluence_magic_lib:player.mark_damage`        |
+| `terra_entity:player.minion_capacity`   | `confluence_magic_lib:player.minion_capacity`    |
 | `terra_curio:player.pickup_range`       | `confluence_magic_lib:player.pickup_range`       |
-| `confluence:player.sentry_capacity`     | `confluence_magic_lib:player.sentry_capacity`    |
-| `confluence:player.summon_damage`       | `confluence_magic_lib:player.summon_damage`      |
-| `confluence:player.summon_knockback`    | `confluence_magic_lib:player.summon_knockback`   |
-| `confluence:player.whip_range`          | `confluence_magic_lib:player.whip_range`         |
+| `terra_entity:player.sentry_capacity`   | `confluence_magic_lib:player.sentry_capacity`    |
+| `terra_entity:player.summon_damage`     | `confluence_magic_lib:player.summon_damage`      |
+| `terra_entity:player.summon_knockback`  | `confluence_magic_lib:player.summon_knockback`   |
+| `terra_entity:player.whip_range`        | `confluence_magic_lib:player.whip_range`         |

@@ -138,7 +138,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (shouldAbortSubclassTick()) {
+        if (isRemoved()) {
             return;
         }
         LivingEntity owner = getLivingOwner();

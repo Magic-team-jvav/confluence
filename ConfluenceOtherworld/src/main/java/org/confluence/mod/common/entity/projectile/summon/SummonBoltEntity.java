@@ -191,7 +191,7 @@ public class SummonBoltEntity extends DamageSettableProjectile implements OwnedS
     @Override
     public void tick() {
         super.tick();
-        if (shouldAbortSubclassTick()) {
+        if (isRemoved()) {
             return;
         }
         if (tickCount > MAX_LIFETIME) {

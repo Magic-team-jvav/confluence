@@ -112,7 +112,7 @@ public final class YoyoEntity extends DamageSettableProjectile
     @Override
     public void tick() {
         super.tick();
-        if (shouldAbortSubclassTick() || level().isClientSide) {
+        if (isRemoved() || level().isClientSide) {
             return;
         }
         if (!(getOwner() instanceof ServerPlayer owner)

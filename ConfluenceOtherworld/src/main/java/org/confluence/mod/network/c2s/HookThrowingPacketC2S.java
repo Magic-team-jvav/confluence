@@ -16,6 +16,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.mesdag.portlib.network.IPortPacket;
@@ -67,6 +68,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id,
     public void work(ServerPlayer player) {
         ServerLevel level = player.serverLevel();
         if (throwing) {
+            if (player.hasEffect(ModEffects.SHIMMER)) return;
             ExtraInventory extraInventory = ExtraInventory.of(player);
             ItemStack itemStack = extraInventory.getHook(false);
             if (!(itemStack.getItem() instanceof BaseHookItem item)) return;

@@ -16,9 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class LunarHookItem extends BaseHookItem implements IHookFastThrow {
     public LunarHookItem() {
-        super(ModRarity.RED, 4, 22.92F, 1.8F, HookType.SIMULTANEOUS,
-                (itemStack, item, player, level) -> createHook(
-                        itemStack, item, player, level, null));
+        super(ModRarity.RED, 4, 22.92F, 1.8F, HookType.SIMULTANEOUS, (itemStack, item, player, level) -> createHook(itemStack, item, player, level, null));
     }
 
     @Override

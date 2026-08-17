@@ -14,12 +14,9 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class TCClientPacketHandlerMixin {
     @ModifyExpressionValue(method = "applyAutoAttack", at = @At(value = "INVOKE", target = "Lorg/confluence/terra_curio/client/handler/TCClientPacketHandler;couldAutoAttack()Z"))
     private static boolean extraAutoAttack(boolean original, @Local(name = "itemStack") ItemStack stack) {
-        if (!(stack.getItem() instanceof SwordItem)
-                || stack.is(ModTags.Items.AUTO_ATTACK_BLACKLIST)) {
+        if (!(stack.getItem() instanceof SwordItem) || stack.is(ModTags.Items.AUTO_ATTACK_BLACKLIST)) {
             return false;
         }
-        return CommonConfigs.AUTO_SWING_ALL_SWORDS.get()
-                || stack.is(ModTags.Items.AUTO_ATTACK_WHITELIST)
-                || original;
+        return CommonConfigs.AUTO_SWING_ALL_SWORDS.get() || stack.is(ModTags.Items.AUTO_ATTACK_WHITELIST) || original;
     }
 }

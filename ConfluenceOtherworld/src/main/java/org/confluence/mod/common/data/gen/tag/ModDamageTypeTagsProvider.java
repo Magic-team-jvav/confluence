@@ -36,10 +36,7 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
                 DamageTypes.STING
         );
         tag(PortTags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
-        tag(DamageTypeTags.IS_PROJECTILE).add(
-                LibDamageTypes.GUN_BULLET,
-                ModDamageTypes.MAGICAL_PROJECTILE
-        );
+        tag(DamageTypeTags.IS_PROJECTILE).add(LibDamageTypes.GUN_BULLET, ModDamageTypes.MAGICAL_PROJECTILE);
         tag(DamageTypeTags.BYPASSES_ARMOR).add(ModDamageTypes.DUNGEON_GUARDIAN);
     }
 }

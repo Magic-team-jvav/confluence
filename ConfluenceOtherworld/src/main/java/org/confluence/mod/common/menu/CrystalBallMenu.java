@@ -92,45 +92,21 @@ public class CrystalBallMenu extends AbstractContainerMenu {
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack originalStack = sourceStack.copy();
         if (index == RESULT_SLOT) {
-            sourceStack.getItem().onCraftedBy(
-                    sourceStack, player.level(), player);
-            if (!moveItemStackTo(
-                    sourceStack,
-                    INVENTORY_SLOT_START,
-                    HOTBAR_SLOT_END,
-                    true)) {
+            sourceStack.getItem().onCraftedBy(sourceStack, player.level(), player);
+            if (!moveItemStackTo(sourceStack, INVENTORY_SLOT_START, HOTBAR_SLOT_END, true)) {
                 return ItemStack.EMPTY;
             }
             sourceSlot.onQuickCraft(sourceStack, originalStack);
         } else if (index >= INPUT_SLOT_START && index < INPUT_SLOT_END) {
-            if (!moveItemStackTo(
-                    sourceStack,
-                    INVENTORY_SLOT_START,
-                    HOTBAR_SLOT_END,
-                    false)) {
+            if (!moveItemStackTo(sourceStack, INVENTORY_SLOT_START, HOTBAR_SLOT_END, false)) {
                 return ItemStack.EMPTY;
             }
-        } else if (!moveItemStackTo(
-                sourceStack,
-                INPUT_SLOT_START,
-                INPUT_SLOT_END,
-                false)) {
-            if (index >= INVENTORY_SLOT_START
-                    && index < INVENTORY_SLOT_END) {
-                if (!moveItemStackTo(
-                        sourceStack,
-                        HOTBAR_SLOT_START,
-                        HOTBAR_SLOT_END,
-                        false)) {
+        } else if (!moveItemStackTo(sourceStack, INPUT_SLOT_START, INPUT_SLOT_END, false)) {
+            if (index >= INVENTORY_SLOT_START && index < INVENTORY_SLOT_END) {
+                if (!moveItemStackTo(sourceStack, HOTBAR_SLOT_START, HOTBAR_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= HOTBAR_SLOT_START
-                    && index < HOTBAR_SLOT_END
-                    && !moveItemStackTo(
-                    sourceStack,
-                    INVENTORY_SLOT_START,
-                    INVENTORY_SLOT_END,
-                    false)) {
+            } else if (index >= HOTBAR_SLOT_START && index < HOTBAR_SLOT_END && !moveItemStackTo(sourceStack, INVENTORY_SLOT_START, INVENTORY_SLOT_END, false)) {
                 return ItemStack.EMPTY;
             }
         }

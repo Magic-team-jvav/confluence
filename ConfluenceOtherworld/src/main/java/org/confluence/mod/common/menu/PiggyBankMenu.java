@@ -25,12 +25,7 @@ public class PiggyBankMenu extends AbstractContainerMenu {
         this(containerId, inventory, access, true);
     }
 
-    private PiggyBankMenu(
-            int containerId,
-            Inventory inventory,
-            ContainerLevelAccess access,
-            boolean requiresBlockAccess
-    ) {
+    private PiggyBankMenu(int containerId, Inventory inventory, ContainerLevelAccess access, boolean requiresBlockAccess) {
         super(ModMenuTypes.PIGGY_BANK.get(), containerId);
         this.player = inventory.player;
         this.access = access;
@@ -94,8 +89,7 @@ public class PiggyBankMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         // 方块打开的存钱罐需要校验距离；切斯特和飞行存钱罐只是入口实体，不能反查世界中是否存在存钱罐方块。
-        return !requiresBlockAccess
-                || stillValid(access, player, FunctionalBlocks.PIGGY_BANK.get());
+        return !requiresBlockAccess || stillValid(access, player, FunctionalBlocks.PIGGY_BANK.get());
     }
 
     @Override

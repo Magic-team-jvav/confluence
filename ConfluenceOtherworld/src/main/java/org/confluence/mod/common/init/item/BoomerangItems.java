@@ -24,16 +24,6 @@ public class BoomerangItems {
     public static final PortDeferredItem<BoomerangItem> DEVELOPER_BOOMERANG = register("developer_boomerang", 9999.0F, 2.0F, 2.0F, 50, 0, 10, 8, false, 0);
 
     private static PortDeferredItem<BoomerangItem> register(String id, float damage, float flySpeed, float backSpeed, int forwardTicks, int cooldown, int maxCount, int penetration, boolean fire, int durability) {
-        return ITEMS.register(id, () -> new BoomerangItem(new BoomerangItem.Settings(
-                damage,
-                flySpeed,
-                backSpeed,
-                forwardTicks,
-                cooldown,
-                maxCount,
-                penetration,
-                fire,
-                durability > 0 ? new Item.Properties().durability(durability).stacksTo(1) : new Item.Properties().stacksTo(1)
-        )));
+        return ITEMS.register(id, () -> new BoomerangItem(new BoomerangItem.Settings(damage, flySpeed, backSpeed, forwardTicks, cooldown, maxCount, penetration, fire, durability > 0 ? new Item.Properties().durability(durability).stacksTo(1) : new Item.Properties().stacksTo(1))));
     }
 }

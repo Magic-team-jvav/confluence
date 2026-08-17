@@ -36,9 +36,7 @@ public class NorthPoleItem extends AbstractSpearItem {
             NorthPoleProjectile projectile = new NorthPoleProjectile(
                     ModEntities.NORTH_POLE.get(), level);
             Vec3 spawnPos = owner.getEyePosition().add(tipPos.subtract(owner.getEyePosition()).scale(0.33));
-            fireDerivedProjectile(
-                    stack, level, owner, component, projectile, spawnPos,
-                    owner.getLookAngle(), 0.1F);
+            fireDerivedProjectile(stack, level, owner, component, projectile, spawnPos, owner.getLookAngle(), 0.1F);
         }
     }
 }

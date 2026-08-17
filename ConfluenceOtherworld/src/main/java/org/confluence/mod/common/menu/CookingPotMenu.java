@@ -83,17 +83,9 @@ public class CookingPotMenu extends AbstractContainerMenu {
 
                 slot.onQuickCraft(itemstack1, itemstack);
             } else if (index > CONTAINER_SLOT) {
-                boolean movedToPot = moveItemStackTo(
-                        itemstack1,
-                        INPUT_SLOT_1,
-                        CONTAINER_SLOT,
-                        false);
+                boolean movedToPot = moveItemStackTo(itemstack1, INPUT_SLOT_1, CONTAINER_SLOT, false);
                 if (!itemstack1.isEmpty()) {
-                    movedToPot |= moveItemStackTo(
-                            itemstack1,
-                            CONTAINER_SLOT,
-                            RESULT_SLOT,
-                            false);
+                    movedToPot |= moveItemStackTo(itemstack1, CONTAINER_SLOT, RESULT_SLOT, false);
                 }
                 if (!movedToPot) {
                     if (index < INV_SLOT_END) {

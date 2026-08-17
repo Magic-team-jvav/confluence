@@ -43,13 +43,7 @@ public final class ModEnchantments {
             return holder.is(PortTags.Items.ARMORS) || holder.is(ModTags.Items.MANA_WEAPON);
         });
         public static final EnchantmentCategory MANA = EnchantmentCategory.create("CONFLUENCE_MANA", item -> item.builtInRegistryHolder().is(ModTags.Items.MANA_WEAPON));
-        public static final EnchantmentCategory WHIP = EnchantmentCategory.create(
-                "CONFLUENCE_WHIP",
-                item -> item.builtInRegistryHolder().is(ModTags.Items.WHIP)
-        );
-        public static final EnchantmentCategory BOOMERANG = EnchantmentCategory.create(
-                "CONFLUENCE_BOOMERANG",
-                item -> item instanceof org.confluence.mod.common.item.boomerang.BoomerangItem
-        );
+        public static final EnchantmentCategory WHIP = EnchantmentCategory.create("CONFLUENCE_WHIP", item -> item.builtInRegistryHolder().is(ModTags.Items.WHIP));
+        public static final EnchantmentCategory BOOMERANG = EnchantmentCategory.create("CONFLUENCE_BOOMERANG", item -> item instanceof org.confluence.mod.common.item.boomerang.BoomerangItem);
     }
 }

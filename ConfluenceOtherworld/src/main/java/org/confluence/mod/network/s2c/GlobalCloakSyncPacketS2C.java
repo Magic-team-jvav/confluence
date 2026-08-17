@@ -16,17 +16,14 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Map;
 
-public record GlobalCloakSyncPacketS2C(
-        Map<BlockState, BooleanObjectPair<BlockState>> blocks,
-        Map<Item, BooleanObjectPair<Item>> items) implements IPortPacket.S2C {
+public record GlobalCloakSyncPacketS2C(Map<BlockState, BooleanObjectPair<BlockState>> blocks,
+                                       Map<Item, BooleanObjectPair<Item>> items) implements IPortPacket.S2C {
 
     public static final ResourceLocation ID = Confluence.asResource("global_cloak_sync");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, GlobalCloakSyncPacketS2C> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public GlobalCloakSyncPacketS2C decode(PortRegistryFriendlyByteBuf buffer) {
-            return new GlobalCloakSyncPacketS2C(
-                    GlobalCloakData.BLOCK_MAP_STREAM_CODEC.decode(buffer),
-                    GlobalCloakData.ITEM_MAP_STREAM_CODEC.decode(buffer));
+            return new GlobalCloakSyncPacketS2C(GlobalCloakData.BLOCK_MAP_STREAM_CODEC.decode(buffer), GlobalCloakData.ITEM_MAP_STREAM_CODEC.decode(buffer));
         }
 
         @Override
@@ -64,8 +61,6 @@ public record GlobalCloakSyncPacketS2C(
     }
 
     private static GlobalCloakSyncPacketS2C current() {
-        return new GlobalCloakSyncPacketS2C(
-                GlobalCloakData.INSTANCE.blockMapSnapshot(),
-                GlobalCloakData.INSTANCE.itemMapSnapshot());
+        return new GlobalCloakSyncPacketS2C(GlobalCloakData.INSTANCE.blockMapSnapshot(), GlobalCloakData.INSTANCE.itemMapSnapshot());
     }
 }

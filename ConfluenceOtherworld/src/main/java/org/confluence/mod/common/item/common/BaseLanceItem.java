@@ -49,7 +49,7 @@ import java.util.function.Consumer;
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
 /// 通用骑枪类。需要注意的是baseAttackDamage*0.1才是基础伤害，原算法是有问题的，后面可能会改动。
-public class BaseLanceItem extends CustomRarityItem implements GeoItem {
+public class BaseLanceItem extends CustomRarityItem implements /* todo leftclick ILeftClickStateItem,*/ GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackInterval;
     private final double attackDistance;
@@ -76,10 +76,30 @@ public class BaseLanceItem extends CustomRarityItem implements GeoItem {
         return Optional.of(component);
     }
 
+// todo leftclick   @Override
+//    public void onLeftClick(Player player, ItemStack itemStack) {
+//        if (!player.level().isClientSide && !player.getCooldowns().isOnCooldown(this)) {
+//            triggerAnim(player, GeoItem.getOrAssignId(itemStack, (ServerLevel) player.level()), "lance", "sting");
+//        }
+//    }
+//
+//    @Override
+//    public void onLeftRelease(Player player, ItemStack itemStack) {
+//        if (!player.level().isClientSide) {
+//            stopTriggeredAnim(player, GeoItem.getOrAssignId(itemStack, (ServerLevel) player.level()), "lance", "sting");
+//        }
+//    }
+//
+//    @Override
+//    public boolean canSwitchWithoutRelease(Player player, ItemStack itemStack) {
+//        return false;
+//    }
+
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (isSelected &&
                 entity instanceof ServerPlayer owner &&
+                /* todo leftclick WeaponStorage.of(owner).leftClicking &&*/
                 !owner.getCooldowns().isOnCooldown(this) &&
                 (attackInterval <= 1 || owner.level().getGameTime() % attackInterval == 0)
         ) {

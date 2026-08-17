@@ -119,7 +119,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     public static void summon(Entity entity, ServerLevel level, boolean isWall, Supplier<@Nullable Direction> forward) {
         EntityType<WallOfFlesh> wof = BossEntities.WALL_OF_FLESH.get();
         EntityType<HillOfFlesh> hof = BossEntities.HILL_OF_FLESH.get();
-        if (Streams.stream(level.getAllEntities()).filter(java.util.Objects::nonNull).anyMatch(entity1 -> {
+        if (Streams.stream(level.getAllEntities()).anyMatch(entity1 -> {
             EntityType<?> type = entity1.getType();
             return type == wof || type == hof;
         })) return;
@@ -153,8 +153,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
                 wallOfFlesh.setForward(direction);
             }
         } else {
-            HillOfFlesh hill =
-                    hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
+            HillOfFlesh hill = hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
             if (hill != null) {
                 hill.enableArenaDestruction();
             }

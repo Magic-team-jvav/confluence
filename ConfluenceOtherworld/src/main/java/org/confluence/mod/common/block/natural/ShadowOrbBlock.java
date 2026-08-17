@@ -79,11 +79,7 @@ public class ShadowOrbBlock extends Block {
             }
 
             if (data.updateEvilBrokenCount()) {
-                ModUtils.summonBoss(
-                        serverLevel,
-                        pos,
-                        new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level),
-                        false);
+                ModUtils.summonBoss(serverLevel, pos, new EaterOfWorlds(BossEntities.EATER_OF_WORLDS.get(), level), false);
             }
         }
     }

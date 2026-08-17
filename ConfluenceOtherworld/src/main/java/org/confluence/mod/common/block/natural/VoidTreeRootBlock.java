@@ -10,7 +10,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -246,10 +245,7 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
                 ListTag list = tag.getList("Links", Tag.TAG_COMPOUND);
                 for (int i = 0; i < list.size(); i++) {
                     CompoundTag e = list.getCompound(i);
-                    int directionOrdinal = e.getInt("d");
-                    if (directionOrdinal >= 0 && directionOrdinal < Direction.values().length) {
-                        linkedPositions.put(Direction.values()[directionOrdinal], BlockPos.of(e.getLong("p")));
-                    }
+                    linkedPositions.put(Direction.values()[e.getInt("d")], BlockPos.of(e.getLong("p")));
                 }
             }
             remotePowerSources.clear();
@@ -257,11 +253,10 @@ public class VoidTreeRootBlock extends Block implements EntityBlock {
                 ListTag list = tag.getList("RemotePowers", Tag.TAG_COMPOUND);
                 for (int i = 0; i < list.size(); i++) {
                     CompoundTag e = list.getCompound(i);
-                    int power = Mth.clamp(e.getInt("p"), 0, 15);
-                    if (power > 0) remotePowerSources.put(BlockPos.of(e.getLong("pos")), power);
+                    remotePowerSources.put(BlockPos.of(e.getLong("pos")), e.getInt("p"));
                 }
             }
-            localInputPower = Mth.clamp(tag.getInt("LP"), 0, 15);
+            localInputPower = tag.getInt("LP");
             lastMaxRemotePower = getMaxRemotePower();
         }
     }

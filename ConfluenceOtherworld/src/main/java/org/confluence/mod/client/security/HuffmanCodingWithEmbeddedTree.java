@@ -13,7 +13,7 @@ class HuffmanCodingWithEmbeddedTree {
 
     private void buildTree(String text) {
         if (text == null || text.isEmpty()) {
-            throw new IllegalArgumentException("Huffman source text must not be empty");
+            throw new IllegalArgumentException();
         }
 
         Map<Character, Integer> frequencyMap = new HashMap<>();
@@ -153,14 +153,14 @@ class HuffmanCodingWithEmbeddedTree {
             HuffmanNode right = deserializeTreeFromString(reader);
             return new HuffmanNode(frequency, left, right);
         } else {
-            throw new IOException("Unknown Huffman node type: " + type);
+            throw new IOException(String.valueOf(type));
         }
     }
 
     String decodeWithEmbeddedTree(String encodedTextWithTree) throws IOException {
         String[] parts = encodedTextWithTree.split("\\|", 2);
         if (parts.length != 2) {
-            throw new IllegalArgumentException("Encoded Huffman payload must contain a tree and body");
+            throw new IllegalArgumentException();
         }
 
         String treeString = parts[0];
@@ -177,7 +177,7 @@ class HuffmanCodingWithEmbeddedTree {
 
     private String encode(String text) {
         if (huffmanCodes == null || huffmanCodes.isEmpty()) {
-            throw new IllegalStateException("Huffman code table has not been built");
+            throw new IllegalStateException();
         }
 
         StringBuilder encodedText = new StringBuilder();
@@ -189,7 +189,7 @@ class HuffmanCodingWithEmbeddedTree {
 
     private String decode(String encodedText) {
         if (root == null) {
-            throw new IllegalStateException("Huffman tree has not been loaded");
+            throw new IllegalStateException();
         }
 
         StringBuilder decodedText = new StringBuilder();
@@ -209,7 +209,7 @@ class HuffmanCodingWithEmbeddedTree {
         }
 
         if (current != root) {
-            throw new IllegalArgumentException("Encoded Huffman payload ended inside a partial code");
+            throw new IllegalArgumentException();
         }
 
         return decodedText.toString();

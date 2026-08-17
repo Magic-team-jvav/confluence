@@ -40,9 +40,7 @@ public class StormSpearItem extends AbstractSpearItem {
                     ModEntities.STORM_SPEAR_SHOT.get(), level);
             // 初始位置：矛尖与玩家之间约1/3处
             Vec3 spawnPos = owner.getEyePosition().add(tipPos.subtract(owner.getEyePosition()).scale(0.33));
-            fireDerivedProjectile(
-                    stack, level, owner, component, projectile, spawnPos,
-                    owner.getLookAngle(), (float) knockBackScale);
+            fireDerivedProjectile(stack, level, owner, component, projectile, spawnPos, owner.getLookAngle(), (float) knockBackScale);
         }
     }
 }

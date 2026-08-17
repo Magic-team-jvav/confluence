@@ -43,11 +43,7 @@ public class FamiliarVanityArmorItem extends BaseVanityArmorItem {
                     };
                 }
                 if (equipmentSlot != null) {
-                    renderer.prepForRender(
-                            livingEntity,
-                            itemStack,
-                            equipmentSlot,
-                            original);
+                    renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
                 }
                 return renderer;
             }

@@ -1031,9 +1031,7 @@ public final class ModTabs {
 
                         CreativeModeTab.Output gain = GroupItem.belongsTo("gain", output);
                         gain.accept(ConsumableItems.MANA_CRYSTAL.get());
-                        gain.accept(ConsumableItems.RECALL_MANA_CRYSTAL.get());
                         gain.accept(ConsumableItems.LIFE_CRYSTAL.get());
-                        gain.accept(ConsumableItems.RECALL_LIFE_CRYSTAL.get());
                         gain.accept(ConsumableItems.LIFE_FRUIT.get());
                         gain.accept(ConsumableItems.VITAL_CRYSTAL.get());
                         gain.accept(ConsumableItems.ARCANE_CRYSTAL.get());

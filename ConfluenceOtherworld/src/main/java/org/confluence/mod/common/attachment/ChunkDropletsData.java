@@ -97,9 +97,7 @@ public class ChunkDropletsData implements IPortNBTSerializable<CompoundTag> {
             Map<BlockPos, ParticleOptions> value = new Hashtable<>();
             for (Tag data : map.getList("data", Tag.TAG_COMPOUND)) {
                 CompoundTag compoundTag = (CompoundTag) data;
-                Tag particleTag = compoundTag.get("particle");
-                if (particleTag == null) continue;
-                PortDataResultExtension.ifSuccess(ParticleTypes.CODEC.parse(ops, particleTag), result -> value.put(
+                PortDataResultExtension.ifSuccess(ParticleTypes.CODEC.parse(ops, compoundTag.get("particle")), result -> value.put(
                         LibUtils.decompressRelativePos(chunkPos, compoundTag.getInt("pos")), result
                 ));
             }

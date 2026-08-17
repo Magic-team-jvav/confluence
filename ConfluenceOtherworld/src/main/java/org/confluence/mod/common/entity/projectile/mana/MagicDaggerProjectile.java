@@ -11,7 +11,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -40,7 +39,7 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
         if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
-            combatState().recordSuccessfulHit(ProjectileHitRules.impactedEntity(entity).getUUID());
+            hitSet.add(entity.getUUID());
             this.damage -= deltaDamage;
             LibEntityUtils.knockBackA2B(this, entity, 0.5, 0.2);
             if (penetrate >= 2) {
@@ -59,12 +58,6 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile implement
         if (!level().isClientSide) {
             discard();
         }
-    }
-
-    /// 魔法飞刀在第三次成功命中时销毁，因此存档只允许阶段 0..2。
-    @Override
-    protected int maximumPenetrationPhase() {
-        return 2;
     }
 
     @Override

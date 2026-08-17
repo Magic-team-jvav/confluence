@@ -76,7 +76,7 @@ public class LogBlockSet {
 
     LogBlockSet(Builder builder) {
         if ((builder.log == null && builder.strippedLog != null) || (builder.wood == null && builder.strippedWood != null))
-            throw new NullPointerException("Stripped log and stripped wood require their base log or wood");
+            throw new NullPointerException();
         this.id = builder.id;
         this.ignitedByLava = builder.ignitedByLava;
         MapColor baseColor = MapColor.WOOD;

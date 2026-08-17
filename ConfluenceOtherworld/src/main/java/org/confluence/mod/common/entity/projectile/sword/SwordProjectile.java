@@ -15,10 +15,12 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -185,11 +187,14 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (hitCount <= 0) {
-            return false;
-        }
+        return hitCount > 0 && ProjectileHitRules.canHit(getOwner(), target);
+    }
 
-        return true/* todo projectile TEUtils.projectileCanHitEntityTest.test(this, target)*/;
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        if (!level().isClientSide) {
+            doHurt(result.getEntity());
+        }
     }
 
     @Override
@@ -203,38 +208,27 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     }
 
     protected boolean doHurt(Entity target) {
-        if (true/* todo projectile TEUtils.projectileCanHurtEntityTest.test(this, target)*/) {
-            float damage = getBaseDamage() * (attackDamageFactor);
-            DamageSource damageSource = damageSource();
-
-            if (true/* todo projectile IAttackableProjectile.tryHit(target, damageSource)*/) {
-                return true;
-            }
-
-            LivingEntity hurter;
-            if (LibEntityUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
-                hurter = living;
-            } else {
-                return false;
-            }
-
-            if (getOwner() instanceof LivingEntity owner && projComponent != null) {
-//  todo component               projComponent.hitEffect().ifPresent(effect -> {
-//                    effect.applyAll(owner, hurter);
-//                });
-            }
-
-            if (target.hurt(damageSource, damage)) {
-                float attackKnockBack = getBaseKnockBack() + knockBack;
-                LibEntityUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
-
-                if (--hitCount <= 0 && !level().isClientSide) {
-                    discard();
-                }
-            }
-            return true;
+        if (!canHitEntity(target)) {
+            return false;
         }
-        return false;
+        Entity impacted = ProjectileHitRules.impactedEntity(target);
+        if (!(impacted instanceof LivingEntity living)) {
+            return false;
+        }
+        float damage = getBaseDamage() * attackDamageFactor;
+        if (!impacted.hurt(damageSource(), damage)) {
+            return false;
+        }
+        applyHitEffect(impacted);
+        float attackKnockBack = getBaseKnockBack() + knockBack;
+        LibEntityUtils.knockBackA2B(this, living, attackKnockBack * 0.5, 0.2);
+        if (--hitCount <= 0) {
+            discard();
+        }
+        return true;
+    }
+
+    protected void applyHitEffect(Entity target) {
     }
 
     @Override
@@ -276,5 +270,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     public SwordProjectile setExistTime(int time) {
         lifetime = time;
         return this;
+    }
+
+    public Vec3 getProjectileDirection() {
+        return direction;
     }
 }

@@ -549,8 +549,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(writer, "", "_from_slime_ball", new ItemStack(Items.TORCH, 3), Ingredient.of(Items.SLIME_BALL), Ingredient.of(Items.STICK));
 
         shapeless(writer, ConsumableItems.MANA_CRYSTAL.toStack(), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR));
-        shapeless(writer, ConsumableItems.RECALL_MANA_CRYSTAL.toStack(), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(Items.ECHO_SHARD));
-        shapeless(writer, ConsumableItems.RECALL_LIFE_CRYSTAL.toStack(), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(Items.ECHO_SHARD));
         shapeless(writer, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
         shapeless(writer, FoodItems.CLOUD_DOUGH.toStack(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
         shapeless(writer, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));

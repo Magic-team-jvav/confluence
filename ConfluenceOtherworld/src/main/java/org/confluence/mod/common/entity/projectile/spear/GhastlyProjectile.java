@@ -101,12 +101,6 @@ public class GhastlyProjectile extends SpearProjectile {
                 && super.canHitEntity(target);
     }
 
-    /// 恶魂弹幕按自身 4 tick 冷却重复伤害，不采用普通弹幕的永久 UUID 去重。
-    @Override
-    protected boolean allowsRepeatedHits() {
-        return true;
-    }
-
     /**
      * 检查伤害冷却后调用父类伤害逻辑。
      * 同一实体每 {@link #DAMAGE_INTERVAL} tick 最多受伤一次。

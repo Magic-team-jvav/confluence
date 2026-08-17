@@ -26,6 +26,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
     private transient int regenerateDelay;
     private transient int maxMana;
     private boolean fastManaRegeneration;
+    private boolean arcaneCrystalUsed;
 
     public ManaStorage() {
         this.stars = 1;
@@ -34,7 +35,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         this.regenerateDelay = 0;
         this.maxMana = -1;
         this.fastManaRegeneration = false;
-
+        this.arcaneCrystalUsed = false;
     }
 
     @Override
@@ -44,6 +45,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         nbt.putInt("additionalMana", additionalMana);
         nbt.putFloat("currentMana", currentMana);
         nbt.putBoolean("fastManaRegeneration", fastManaRegeneration);
+        nbt.putBoolean("arcaneCrystalUsed", arcaneCrystalUsed);
         return nbt;
     }
 
@@ -62,6 +64,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
             this.currentMana = Float.isFinite(savedMana) ? Math.max(0.0F, savedMana) : 0.0F;
         }
         this.fastManaRegeneration = nbt.getBoolean("fastManaRegeneration");
+        this.arcaneCrystalUsed = nbt.getBoolean("arcaneCrystalUsed");
         // maxMana 是运行时缓存，不从 NBT 信任；重算同时把当前魔力收敛到合法上限。
         this.maxMana = -1;
         freshMaxMana();
@@ -218,6 +221,16 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
 
     public boolean isFastManaRegeneration() {
         return fastManaRegeneration;
+    }
+
+    public boolean setArcaneCrystalUsed() {
+        if (arcaneCrystalUsed) return false;
+        arcaneCrystalUsed = true;
+        return true;
+    }
+
+    public boolean isArcaneCrystalUsed() {
+        return arcaneCrystalUsed;
     }
 
     public static ManaStorage of(LivingEntity living) {

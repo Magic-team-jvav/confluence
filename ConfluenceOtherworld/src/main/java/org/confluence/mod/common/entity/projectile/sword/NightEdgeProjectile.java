@@ -52,12 +52,6 @@ public class NightEdgeProjectile extends SwordProjectile {
 
     @Override
     public void tick() {
-        if (!level().isClientSide && combatState().discardIfInvalid(this)) {
-            return;
-        }
-        if (waitForLoadedOwner()) {
-            return;
-        }
         if (!level().isClientSide && (hitCount == 0 || tickCount >= lifetime)) {
             discard();
             return;

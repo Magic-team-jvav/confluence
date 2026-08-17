@@ -91,9 +91,7 @@ public enum SlimeRainGameEvent implements GameEvent {
         if (duration <= 0) return;
         --this.duration;
         if (duration % 20 == 4) {
-            this.haveKingSlime = Streams.stream(level.getAllEntities())
-                    .filter(java.util.Objects::nonNull)
-                    .anyMatch(entity -> entity.getType() == BossEntities.KING_SLIME.get());
+            this.haveKingSlime = Streams.stream(level.getAllEntities()).anyMatch(entity -> entity.getType() == BossEntities.KING_SLIME.get());
         }
         Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {

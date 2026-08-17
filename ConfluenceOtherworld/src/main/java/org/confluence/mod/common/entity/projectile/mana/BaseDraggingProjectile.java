@@ -1,7 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -18,15 +16,7 @@ import org.confluence.mod.api.ITrackType;
 import org.confluence.mod.common.item.mana.BaseDraggingStaffItem;
 import org.confluence.mod.util.track.variant.BasisTrack;
 
-/// 支持“按住拖拽、松开后追踪”两阶段行为的魔法弹幕基类。
-///
-/// <p>{@link #shot} 决定弹幕是继续贴近施法者，还是进入自主追踪与碰撞阶段。该状态不能从
-/// 当前速度或玩家是否仍在使用物品可靠推断，因此使用独立的当前格式根保存；缺失或损坏时
-/// 复用玩家弹幕的安全失效通道。</p>
 public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
-    private static final String RUNTIME_TAG = "ConfluenceDraggingRuntime";
-    private static final int RUNTIME_VERSION = 1;
-
     protected boolean shot;
     protected ITrackType trackType = new BasisTrack(90, 0.4F);
 
@@ -93,36 +83,5 @@ public abstract class BaseDraggingProjectile extends AbstractManaProjectile {
             doHurtAndKnockback(living, knockback, 0.2);
         }
         discard();
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        CompoundTag runtime = new CompoundTag();
-        runtime.putInt("Version", RUNTIME_VERSION);
-        runtime.putBoolean("Shot", shot);
-        compound.put(RUNTIME_TAG, runtime);
-    }
-
-    @Override
-    protected void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        if (combatState().isInvalid()) {
-            return;
-        }
-
-        // 1.20 的重写不迁移旧实体；阶段不明确时禁止重新发射和重复结算冷却。
-        if (!compound.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) {
-            combatState().invalidate("Missing or invalid dragging projectile runtime state");
-            return;
-        }
-        CompoundTag runtime = compound.getCompound(RUNTIME_TAG);
-        if (!runtime.contains("Version", Tag.TAG_INT)
-                || runtime.getInt("Version") != RUNTIME_VERSION
-                || !runtime.contains("Shot", Tag.TAG_BYTE)) {
-            combatState().invalidate("Malformed dragging projectile runtime state");
-            return;
-        }
-        shot = runtime.getBoolean("Shot");
     }
 }

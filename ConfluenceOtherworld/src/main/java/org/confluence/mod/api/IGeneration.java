@@ -20,5 +20,5 @@ public interface IGeneration {
     /// @return 编解码器
     GenerationProvider getCodec();
 
-    Codec<IGeneration> TYPED_CODEC = ModCustomRegistries.GENERATION_PROVIERS.byNameCodec().dispatch(IGeneration::getCodec, p -> p.codec().codec());
+    Codec<IGeneration> TYPED_CODEC = ModCustomRegistries.GENERATION_PROVIDERS.byNameCodec().dispatch(IGeneration::getCodec, p -> p.codec().codec());
 }

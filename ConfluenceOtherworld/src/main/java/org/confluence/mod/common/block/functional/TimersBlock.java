@@ -31,7 +31,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
 
     public TimersBlock(int duration) {
         super(Properties.copy(Blocks.COMPARATOR));
-        if (duration <= 0) throw new IllegalArgumentException("Timer duration must be positive");
+        if (duration <= 0) throw new RuntimeException("Duration cannot less equal 0!");
         this.duration = duration;
         registerDefaultState(stateDefinition.any().setValue(DRIVE, false).setValue(SIGNAL, false));
     }

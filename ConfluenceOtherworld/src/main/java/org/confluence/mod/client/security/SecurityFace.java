@@ -43,7 +43,7 @@ public enum SecurityFace implements IWithKeySecurity {
             byte[] finalBytes = Base64.getDecoder().decode(key.getBytes());
             return new String(new SecurityKeys().toKey(hasher, i-> finalBytes).get());
         } catch (IOException e) {
-            throw new RuntimeException("Failed to read license key", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -52,8 +52,9 @@ public enum SecurityFace implements IWithKeySecurity {
         try (FileOutputStream dos  =
                      new FileOutputStream("license.bin")) {
             dos.write(finalText.getBytes());
+            System.out.println("写入文件！");
         } catch (IOException e) {
-            throw new IllegalStateException("Failed to write license key", e);
+            System.err.println("写入文件时出错: " + e.getMessage());
         }
     }
 

@@ -36,6 +36,8 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.component.SpearProjectileComponent;
+import org.confluence.mod.common.entity.projectile.spear.SpearProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
@@ -184,6 +186,20 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     }
 
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
+
+    protected final <P extends SpearProjectile> void fireDerivedProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, SpearProjectileComponent component, P projectile, Vec3 position, Vec3 direction, float baseKnockback, Consumer<P> configurator) {
+        projectile.setOwner(owner);
+        projectile.setWeapon(weapon);
+        projectile.setProjComponent(component, owner);
+        projectile.setPos(position);
+        projectile.fire(direction, component.getVelocity(owner), baseKnockback);
+        configurator.accept(projectile);
+        level.addFreshEntity(projectile);
+    }
+
+    protected final <P extends SpearProjectile> void fireDerivedProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, SpearProjectileComponent component, P projectile, Vec3 position, Vec3 direction, float baseKnockback) {
+        fireDerivedProjectile(weapon, level, owner, component, projectile, position, direction, baseKnockback, ignored -> {});
+    }
 
     protected boolean hurtVictim(DamageSource damageSource, LivingEntity owner, Entity victim) {
         return victim.hurt(damageSource, (float) owner.getAttributeValue(LibAttributes.getAttackDamage()));

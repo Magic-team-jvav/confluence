@@ -103,7 +103,7 @@ public class BaseSwordItem extends SwordItem {
         living.level().playSound(null, living.getX(), living.getY(), living.getZ(), data.getSoundEvent(), SoundSource.AMBIENT, 1.0F, 1.0F);
 
         try {
-            data.generation().genProjectile(living, weapon, data.getVelocity(living), () -> {
+            data.generation().genProjectile(living, weapon, data.baseSpeed(), () -> {
                 if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile projectile) {
                     projectile.setProjComponent(data);
                     projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(LibAttributes.getAttackDamage())));

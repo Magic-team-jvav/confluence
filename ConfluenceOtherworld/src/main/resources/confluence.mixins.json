@@ -93,7 +93,6 @@
     "client": [
         "client.MinecraftMixin",
         "client.MouseHandlerMixin",
-        "client.accessor.MinecraftAccessor",
         "client.gui.DeathScreenMixin",
         "client.gui.GuiGraphicsMixin",
         "client.gui.GuiMixin",
@@ -131,7 +130,6 @@
         "client.renderer.texture.SpriteLoaderMixin",
         "client.resources.model.ModelBakeryMixin",
         "client.resources.model.ModelManagerMixin",
-        "client.world.item.BlockItemMixin",
         "integration.geckolib.FileLoaderMixin",
         "integration.geckolib.GeoCubeMixin",
         "integration.terracurio.InformationHandlerMixin",

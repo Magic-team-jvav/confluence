@@ -34,11 +34,7 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.BEntity> 
 
     @Override
     public void render(E blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-        // 世界切换期间 level 可能被清空，局部快照保证判空与取时间针对同一对象。
-        var level = Minecraft.getInstance().level;
-        long gameTime = level == null
-                ? System.currentTimeMillis() / 50
-                : level.getGameTime();
+        long gameTime = Minecraft.getInstance().level == null ? System.currentTimeMillis() / 50 : Minecraft.getInstance().level.getGameTime();
         Vec3 vec31 = blockEntity.getBlockPos().getCenter();
         for (Int2ObjectMap.Entry<Set<BlockPos>> entry : blockEntity.getConnectedPoses().int2ObjectEntrySet()) {
             int color = entry.getIntKey();

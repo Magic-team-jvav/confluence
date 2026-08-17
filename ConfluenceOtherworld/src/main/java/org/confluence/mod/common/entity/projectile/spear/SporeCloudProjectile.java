@@ -76,12 +76,6 @@ public class SporeCloudProjectile extends SpearProjectile {
                 && super.canHitEntity(target);
     }
 
-    /// 孢子云按自身间隔重复伤害，不采用普通弹幕的永久 UUID 去重。
-    @Override
-    protected boolean allowsRepeatedHits() {
-        return true;
-    }
-
     /// 孢子云按速度和寿命管理，不因单次成功命中消耗穿透。
     @Override
     protected void applyPenetration() {

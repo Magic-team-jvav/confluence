@@ -202,8 +202,7 @@ dependencies {
     modImplementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
     modImplementation("top.theillusivec4.curios:curios-forge:${curios_version}")
-    // 只作为辅助开发
-    modRuntimeOnly('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-' + terrablender_version)
+    modImplementation('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-' + terrablender_version)
 
 //    implementation jarJar(files('libs/LanguageFixer.jar'))
 
@@ -237,7 +236,13 @@ tasks.withType(ProcessResources).configureEach {
             mod_version            : mod_version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
-            curios_version         : curios_version
+            curios_version          : curios_version,
+            terrablender_version    : terrablender_version,
+            geckolib_version        : geckolib_version,
+            particle_storm_version  : particle_storm_version,
+            thr_dim_particle_version: thr_dim_particle_version,
+            the_trackers_version    : the_trackers_version,
+            portlib_version         : portlib_version
     ]
     inputs.properties replaceProperties
 

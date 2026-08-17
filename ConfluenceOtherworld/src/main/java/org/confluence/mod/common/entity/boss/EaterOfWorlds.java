@@ -175,7 +175,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         if (source.getEntity() instanceof ServerPlayer player) {
             params.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player).withLuck(player.getLuck());
         }
-        LootTable table = serverLevel.getServer().getLootData().getLootTable(BossEntities.WORM_SEGMENT.get().getDefaultLootTable());
+        LootTable table = serverLevel.getServer().getLootData().getLootTable(BossEntities.EATER_OF_WORLDS.get().getDefaultLootTable());
         for (ItemStack stack : table.getRandomItems(params.create(LootContextParamSets.ENTITY))) {
             serverLevel.addFreshEntity(new ItemEntity(serverLevel, segment.getX(), segment.getY(), segment.getZ(), stack));
         }

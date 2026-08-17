@@ -15,12 +15,4 @@ public abstract class AbstractMinecartMixin implements IAbstractMinecart {
     public Item confluence$getDropItem() {
         return getDropItem();
     }
-
-//    @Inject(method = "createMinecart", at = @At("HEAD"), cancellable = true)
-//    private static void replaceMinecart(Level level, double x, double y, double z, AbstractMinecart.Type type, CallbackInfoReturnable<AbstractMinecart> cir) {
-//        if (stack.getItem() instanceof BaseMinecartItem baseMinecartItem) {
-//            AbstractMinecart minecart = baseMinecartItem.createMinecart(level, x, y, z, type, stack, player);
-//            if (minecart != null) cir.setReturnValue(minecart);
-//        }
-//    }
 }

@@ -60,12 +60,7 @@ public final class PlayerMoneyTransaction {
     }
 
     /// 从玩家主背包的指定槽位移除物品并结算售出所得。
-    public static boolean creditFromInventory(
-            Player player,
-            int sourceSlot,
-            ItemStack expectedStack,
-            long amount,
-            boolean includePiggyBank) {
+    public static boolean creditFromInventory(Player player, int sourceSlot, ItemStack expectedStack, long amount, boolean includePiggyBank) {
         if (sourceSlot < 0 || sourceSlot >= player.getInventory().items.size() || expectedStack.isEmpty() || amount <= 0) {
             return false;
         }
@@ -76,19 +71,13 @@ public final class PlayerMoneyTransaction {
         }
     }
 
-    private static boolean creditChecked(
-            Player player,
-            long amount,
-            boolean includePiggyBank) {
+    private static boolean creditChecked(Player player, long amount, boolean includePiggyBank) {
         Inventory inventory = player.getInventory();
         ExtraInventory extraInventory = ExtraInventory.of(player);
-        PlayerPiggyBankContainer piggyBank =
-                includePiggyBank ? PlayerPiggyBankContainer.of(player) : null;
+        PlayerPiggyBankContainer piggyBank = includePiggyBank ? PlayerPiggyBankContainer.of(player) : null;
         List<ItemStack> inventoryCopy = copyStacks(inventory.items);
         List<ItemStack> extraCopy = copyStacks(extraInventory.getAllCoins());
-        List<ItemStack> piggyCopy = piggyBank == null
-                ? List.of()
-                : copyContainer(piggyBank);
+        List<ItemStack> piggyCopy = piggyBank == null ? List.of() : copyContainer(piggyBank);
 
         long current = Math.addExact(
                 sumAndClearCoins(inventoryCopy),
@@ -115,12 +104,7 @@ public final class PlayerMoneyTransaction {
         return true;
     }
 
-    private static boolean creditFromInventoryChecked(
-            Player player,
-            int sourceSlot,
-            ItemStack expectedStack,
-            long amount,
-            boolean includePiggyBank) {
+    private static boolean creditFromInventoryChecked(Player player, int sourceSlot, ItemStack expectedStack, long amount, boolean includePiggyBank) {
         Inventory inventory = player.getInventory();
         ExtraInventory extraInventory = ExtraInventory.of(player);
         PlayerPiggyBankContainer piggyBank = includePiggyBank ? PlayerPiggyBankContainer.of(player) : null;
@@ -132,17 +116,11 @@ public final class PlayerMoneyTransaction {
         List<ItemStack> piggyCopy = piggyBank == null ? List.of() : copyContainer(piggyBank);
         inventoryCopy.set(sourceSlot, ItemStack.EMPTY);
 
-        long current = Math.addExact(
-                sumAndClearCoins(inventoryCopy),
-                Math.addExact(sumAndClearCoins(extraCopy), sumAndClearCoins(piggyCopy)));
-        Optional<List<ItemStack>> encoded = encodeCoins(
-                Math.addExact(current, amount),
-                inventoryCopy.size() + extraCopy.size() + piggyCopy.size());
+        long current = Math.addExact(sumAndClearCoins(inventoryCopy), Math.addExact(sumAndClearCoins(extraCopy), sumAndClearCoins(piggyCopy)));
+        Optional<List<ItemStack>> encoded = encodeCoins(Math.addExact(current, amount), inventoryCopy.size() + extraCopy.size() + piggyCopy.size());
         if (encoded.isEmpty()) return false;
         for (ItemStack stack : encoded.get()) {
-            if (!placeIntoEmptySlot(stack, extraCopy)
-                    && !placeIntoEmptySlot(stack, piggyCopy)
-                    && !placeIntoEmptySlot(stack, inventoryCopy)) {
+            if (!placeIntoEmptySlot(stack, extraCopy) && !placeIntoEmptySlot(stack, piggyCopy) && !placeIntoEmptySlot(stack, inventoryCopy)) {
                 return false;
             }
         }
@@ -166,25 +144,16 @@ public final class PlayerMoneyTransaction {
         }
     }
 
-    private static boolean executeChecked(
-            Player player,
-            long cost,
-            boolean includePiggyBank,
-            ItemStack result) {
+    private static boolean executeChecked(Player player, long cost, boolean includePiggyBank, ItemStack result) {
         Inventory inventory = player.getInventory();
         ExtraInventory extraInventory = ExtraInventory.of(player);
-        PlayerPiggyBankContainer piggyBank =
-                includePiggyBank ? PlayerPiggyBankContainer.of(player) : null;
+        PlayerPiggyBankContainer piggyBank = includePiggyBank ? PlayerPiggyBankContainer.of(player) : null;
 
         List<ItemStack> inventoryCopy = copyStacks(inventory.items);
         List<ItemStack> extraCopy = copyStacks(extraInventory.getAllCoins());
-        List<ItemStack> piggyCopy = piggyBank == null
-                ? List.of()
-                : copyContainer(piggyBank);
+        List<ItemStack> piggyCopy = piggyBank == null ? List.of() : copyContainer(piggyBank);
 
-        long total = Math.addExact(
-                sumAndClearCoins(inventoryCopy),
-                Math.addExact(sumAndClearCoins(extraCopy), sumAndClearCoins(piggyCopy)));
+        long total = Math.addExact(sumAndClearCoins(inventoryCopy), Math.addExact(sumAndClearCoins(extraCopy), sumAndClearCoins(piggyCopy)));
         if (total < cost) {
             return false;
         }
@@ -193,16 +162,12 @@ public final class PlayerMoneyTransaction {
             return false;
         }
 
-        Optional<List<ItemStack>> change = encodeCoins(
-                total - cost,
-                inventoryCopy.size() + extraCopy.size() + piggyCopy.size());
+        Optional<List<ItemStack>> change = encodeCoins(total - cost, inventoryCopy.size() + extraCopy.size() + piggyCopy.size());
         if (change.isEmpty()) {
             return false;
         }
         for (ItemStack stack : change.get()) {
-            if (!placeIntoEmptySlot(stack, extraCopy)
-                    && !placeIntoEmptySlot(stack, piggyCopy)
-                    && !placeIntoEmptySlot(stack, inventoryCopy)) {
+            if (!placeIntoEmptySlot(stack, extraCopy) && !placeIntoEmptySlot(stack, piggyCopy) && !placeIntoEmptySlot(stack, inventoryCopy)) {
                 return false;
             }
         }
@@ -267,19 +232,11 @@ public final class PlayerMoneyTransaction {
         return amount < 0 ? Optional.empty() : Optional.of(result);
     }
 
-    private static long appendCoins(
-            List<ItemStack> output,
-            Item coin,
-            long amount,
-            long value,
-            int maxStacks
-    ) {
+    private static long appendCoins(List<ItemStack> output, Item coin, long amount, long value, int maxStacks) {
         long count = amount / value;
         long remaining = amount % value;
         int maxStackSize = coin.getMaxStackSize();
-        long requiredStacks = count == 0
-                ? 0
-                : ((count - 1L) / maxStackSize) + 1L;
+        long requiredStacks = count == 0 ? 0 : ((count - 1L) / maxStackSize) + 1L;
         if (requiredStacks > maxStacks - output.size()) {
             return -1L;
         }
@@ -311,9 +268,7 @@ public final class PlayerMoneyTransaction {
             if (existing.isEmpty() || !ItemStack.isSameItemSameTags(existing, remaining)) {
                 continue;
             }
-            int transferable = Math.min(
-                    remaining.getCount(),
-                    existing.getMaxStackSize() - existing.getCount());
+            int transferable = Math.min(remaining.getCount(), existing.getMaxStackSize() - existing.getCount());
             if (transferable <= 0) {
                 continue;
             }

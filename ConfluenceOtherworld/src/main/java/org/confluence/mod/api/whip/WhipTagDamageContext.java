@@ -11,10 +11,6 @@ import org.confluence.mod.api.summon.OwnedSummon;
 /// @param summon    发起伤害的召唤物
 /// @param target    被攻击的标记目标
 /// @param whipStack 施加当前标记时保存的鞭子快照
-public record WhipTagDamageContext(
-        Player owner,
-        OwnedSummon summon,
-        LivingEntity target,
-        ItemStack whipStack
-) {
+public record WhipTagDamageContext(Player owner, OwnedSummon summon, LivingEntity target,
+                                   ItemStack whipStack) {
 }

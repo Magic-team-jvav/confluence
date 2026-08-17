@@ -97,17 +97,9 @@ public class BoomerangItem extends Item {
         return Math.max(0, count);
     }
 
-    public record Settings(
-            float damage,
-            float flySpeed,
-            float backSpeed,
-            int forwardTicks,
-            int cooldown,
-            int maxCount,
-            int penetration,
-            boolean fire,
-            Item.Properties properties
-    ) {
+    public record Settings(float damage, float flySpeed, float backSpeed, int forwardTicks,
+                           int cooldown, int maxCount, int penetration, boolean fire,
+                           Item.Properties properties) {
         private static final double DEFAULT_ACTIVE_SEARCH_RANGE = 96.0;
 
         public Settings {

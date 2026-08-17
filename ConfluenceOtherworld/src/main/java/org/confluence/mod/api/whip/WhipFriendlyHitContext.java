@@ -9,9 +9,5 @@ import net.minecraft.world.item.ItemStack;
 /// @param owner     鞭子的使用者，也是召唤物的主人
 /// @param summon    被鞭子命中的友方召唤物
 /// @param whipStack 本次挥鞭开始时保存的物品快照
-public record WhipFriendlyHitContext(
-        Player owner,
-        LivingEntity summon,
-        ItemStack whipStack
-) {
+public record WhipFriendlyHitContext(Player owner, LivingEntity summon, ItemStack whipStack) {
 }

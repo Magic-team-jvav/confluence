@@ -71,11 +71,7 @@ public final class WhipPolylineSamples {
         }
     }
 
-    private record ArcLength(
-            List<Vec3> points,
-            double[] cumulative,
-            double totalLength
-    ) {
+    private record ArcLength(List<Vec3> points, double[] cumulative, double totalLength) {
         private static ArcLength of(List<Vec3> curve) {
             Objects.requireNonNull(curve, "Whip curve must not be null");
             if (curve.size() < 2) {

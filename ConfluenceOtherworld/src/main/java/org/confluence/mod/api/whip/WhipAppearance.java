@@ -12,10 +12,7 @@ import java.util.OptionalInt;
 /// <p>分段按列表顺序绘制，因此同一根鞭子可以叠加任意数量、任意模式的模型分段。
 /// 手柄不属于这里：玩家手中的鞭子物品仍使用自身普通的物品 JSON 模型。曲线颜色使用
 /// ARGB 格式；未设置时不绘制额外线条。</p>
-public record WhipAppearance(
-        List<WhipSegment> segments,
-        @Nullable Integer lineColor
-) {
+public record WhipAppearance(List<WhipSegment> segments, @Nullable Integer lineColor) {
     public WhipAppearance {
         segments = List.copyOf(
                 Objects.requireNonNull(

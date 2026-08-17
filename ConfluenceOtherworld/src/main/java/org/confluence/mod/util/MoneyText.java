@@ -34,17 +34,11 @@ public final class MoneyText {
         return result;
     }
 
-    private static void append(
-            MutableComponent target,
-            long amount,
-            String translationKey,
-            int color
-    ) {
+    private static void append(MutableComponent target, long amount, String translationKey, int color) {
         if (amount <= 0L) {
             return;
         }
-        MutableComponent part = Component.literal(amount + " ")
-                .append(Component.translatable(translationKey));
+        MutableComponent part = Component.literal(amount + " ").append(Component.translatable(translationKey));
         target.append(part.withColor(color));
     }
 }

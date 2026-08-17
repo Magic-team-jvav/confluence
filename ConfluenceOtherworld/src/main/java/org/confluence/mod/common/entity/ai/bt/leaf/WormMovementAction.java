@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -107,13 +106,9 @@ public final class WormMovementAction extends BTNode {
     }
 
     /// 不同蠕虫族只声明移动边界，公共节点统一处理平滑转向和三维速度。
-    public record Profile(
-            double attackSpeed,
-            double wanderSpeed,
-            double maximumAttackHeight,
-            double maximumWanderHeight,
-            double wanderHeightOffset,
-            boolean surfaceWander) {
+    public record Profile(double attackSpeed, double wanderSpeed, double maximumAttackHeight,
+                          double maximumWanderHeight, double wanderHeightOffset,
+                          boolean surfaceWander) {
         public Profile {
             if (attackSpeed <= 0.0 || wanderSpeed <= 0.0) {
                 throw new IllegalArgumentException(

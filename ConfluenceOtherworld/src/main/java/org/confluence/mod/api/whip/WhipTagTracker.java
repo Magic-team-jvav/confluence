@@ -10,12 +10,7 @@ import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.WeakHashMap;
+import java.util.*;
 
 /// 按“玩家 + 目标”隔离的鞭子召唤标记存储。
 ///
@@ -238,12 +233,8 @@ public final class WhipTagTracker {
 
     private record Key(UUID ownerId, UUID targetId) {}
 
-    private record Entry(
-            ItemStack whipStack,
-            WhipTagEffect effect,
-            long expiresAt,
-            long applicationSequence
-    ) {
+    private record Entry(ItemStack whipStack, WhipTagEffect effect, long expiresAt,
+                         long applicationSequence) {
         private Entry {
             whipStack = whipStack.copyWithCount(1);
             Objects.requireNonNull(effect, "Whip tag effect must not be null");

@@ -11,11 +11,6 @@ import net.minecraft.world.item.ItemStack;
 /// @param weapon   本次攻击开始时保存的武器快照
 /// @param damage   本次直接命中的最终伤害
 /// @param hitIndex 本次挥动中合法敌人的命中序号
-public record WhipDirectHitContext(
-        Player owner,
-        LivingEntity target,
-        ItemStack weapon,
-        float damage,
-        int hitIndex
-) {
+public record WhipDirectHitContext(Player owner, LivingEntity target, ItemStack weapon,
+                                   float damage, int hitIndex) {
 }

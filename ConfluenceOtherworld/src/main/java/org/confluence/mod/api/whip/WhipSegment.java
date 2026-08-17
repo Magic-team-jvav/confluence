@@ -17,12 +17,8 @@ import java.util.Optional;
 /// @param mode     分段沿曲线的排列方式
 /// @param value    像素间距或固定分段数，具体含义由 {@code mode} 决定
 /// @param tipModel 可选的鞭梢物品 JSON 模型位置
-public record WhipSegment(
-        ResourceLocation model,
-        Mode mode,
-        int value,
-        @Nullable ResourceLocation tipModel
-) {
+public record WhipSegment(ResourceLocation model, Mode mode, int value,
+                          @Nullable ResourceLocation tipModel) {
     public WhipSegment {
         model = Objects.requireNonNull(model, "Whip segment model must not be null");
         mode = Objects.requireNonNull(mode, "Whip segment mode must not be null");

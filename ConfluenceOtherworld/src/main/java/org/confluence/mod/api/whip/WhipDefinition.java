@@ -22,19 +22,12 @@ import java.util.function.Supplier;
 /// @param directHitEffects        直接命中敌人时执行的效果
 /// @param friendlyHitEffects      命中己方召唤物时执行的效果
 /// @param tagEffect               施加到敌人身上的独立召唤标记
-public record WhipDefinition(
-        int durationTicks,
-        int hitCooldownTicks,
-        float baseDamage,
-        float rangeMultiplier,
-        float damageFalloff,
-        float minimumDamageMultiplier,
-        boolean penetratesBlocks,
-        WhipCurve curve,
-        List<WhipDirectHitEffect> directHitEffects,
-        List<WhipFriendlyHitEffect> friendlyHitEffects,
-        Supplier<? extends WhipTagEffect> tagEffect
-) {
+public record WhipDefinition(int durationTicks, int hitCooldownTicks, float baseDamage,
+                             float rangeMultiplier, float damageFalloff,
+                             float minimumDamageMultiplier, boolean penetratesBlocks,
+                             WhipCurve curve, List<WhipDirectHitEffect> directHitEffects,
+                             List<WhipFriendlyHitEffect> friendlyHitEffects,
+                             Supplier<? extends WhipTagEffect> tagEffect) {
     public WhipDefinition {
         if (durationTicks <= 0) {
             throw new IllegalArgumentException("Whip duration must be positive");

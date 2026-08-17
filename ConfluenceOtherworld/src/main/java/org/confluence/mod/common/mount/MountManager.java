@@ -34,7 +34,6 @@ public final class MountManager {
             return;
         }
         if (player.getVehicle() != null) {
-            player.stopRiding();
             return;
         }
         ItemStack stack = ExtraInventory.of(player).getMount(false);

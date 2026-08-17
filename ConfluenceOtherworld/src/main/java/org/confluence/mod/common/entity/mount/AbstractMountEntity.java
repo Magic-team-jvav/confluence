@@ -220,7 +220,7 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
 
     @Override
     public double getPassengersRidingOffset() {
-        return getBbHeight();
+        return getBbHeight() * 0.75 + 0.2;
     }
 
     @Override

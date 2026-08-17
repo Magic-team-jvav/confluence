@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibEntityUtils;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -33,11 +34,8 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
     private static final double JUMP_VELOCITY = 2.0;
     private static final double GRAVITY = 0.12;
     private static final float STOMP_DAMAGE = 5.0F;
-    private static final double STOMP_RADIUS = 2.5;
-    private static final int STOMP_COOLDOWN = 10;
-    private static final double GROUNDED_RIDER_OFFSET = 0.55;
-    private static final double MINIMUM_GROUNDED_RIDER_OFFSET = 0.35;
-    private static final double AIRBORNE_RIDER_OFFSET = 0.62;
+    private static final double GROUNDED_RIDER_OFFSET = 0.2;
+    private static final double AIRBORNE_RIDER_OFFSET = 0.2;
 
     private static final EntityDataAccessor<Boolean> JUMPING = SynchedEntityData.defineId(RideableSlimeMountEntity.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation JUMP = RawAnimation.begin().thenPlay("jump");
@@ -50,7 +48,6 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
     private boolean wasOnGround;
     private int movingTicks;
     private int airborneTicks;
-    private long nextStompTick;
 
     public RideableSlimeMountEntity(
             EntityType<? extends RideableSlimeMountEntity> type,
@@ -86,7 +83,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
             entityData.set(JUMPING, true);
             jumpQueued = false;
         }
-        if (isInWater()) {
+        if (!level().isClientSide && isInWater()) {
             vertical = Math.min(
                     JUMP_VELOCITY,
                     vertical + (getRandom().nextFloat() < 0.8F
@@ -104,25 +101,15 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
             wasOnGround = grounded;
             return;
         }
-        if (!level().isClientSide && jumpActive && !grounded && level().getGameTime() >= nextStompTick) {
-            LivingEntity target = level().getEntitiesOfClass(
-                            LivingEntity.class,
-                            getBoundingBox().inflate(STOMP_RADIUS),
-                            candidate -> candidate != player
-                                    && candidate.isAlive()
-                                    && candidate.isAttackable()
-                                    && candidate.getY() < getY())
-                    .stream()
-                    .min(java.util.Comparator.comparingDouble(
-                            candidate -> candidate.distanceToSqr(this)))
-                    .orElse(null);
+        if (!level().isClientSide && jumpActive && !grounded) {
+            LivingEntity target = LibEntityUtils.getAABBAngleTarget(
+                    position(), position().add(0.5, -1.0, 0.5), level(), player,
+                    1.0, 40.0, entity -> entity instanceof LivingEntity && entity.isAttackable());
             if (target != null && target.hurt(
-                    damageSources().playerAttack(player), STOMP_DAMAGE)) {
+                    damageSources().generic(), STOMP_DAMAGE)) {
                 Vec3 velocity = getDeltaMovement();
                 setDeltaMovement(
                         velocity.x, JUMP_VELOCITY, velocity.z);
-                nextStompTick =
-                        level().getGameTime() + STOMP_COOLDOWN;
                 playSound(
                         SoundEvents.SLIME_BLOCK_PLACE, 0.5F, 2.0F);
             }
@@ -130,11 +117,13 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
         if (!wasOnGround && grounded) {
             jumpActive = false;
             entityData.set(JUMPING, false);
-            playSound(
-                    SoundEvents.SLIME_SQUISH_SMALL, 0.7F, 1.0F);
+            if (!level().isClientSide) {
+                playSound(SoundEvents.SLIME_SQUISH_SMALL, 0.7F, 1.0F);
+            }
         } else if (wasOnGround && !grounded) {
-            playSound(
-                    SoundEvents.SLIME_BLOCK_HIT, 0.5F, 1.0F);
+            if (!level().isClientSide) {
+                playSound(SoundEvents.SLIME_BLOCK_HIT, 0.5F, 1.0F);
+            }
         }
         wasOnGround = grounded;
     }
@@ -162,23 +151,17 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
     public double getPassengersRidingOffset() {
         double base = super.getPassengersRidingOffset();
         if (!entityData.get(JUMPING)) {
-            double phase =
-                    (Math.cos(movingTicks * 0.6) - 1.0) * 0.3;
-            return Math.max(
-                    base + MINIMUM_GROUNDED_RIDER_OFFSET,
-                    base + GROUNDED_RIDER_OFFSET
-                            + Math.sin(phase) * 0.35);
+            double phase = (Math.cos(movingTicks * 0.6) - 1.0) * 0.3;
+            return base + GROUNDED_RIDER_OFFSET + Math.sin(phase) * 0.6;
         }
         double phase = Math.min(airborneTicks * 0.5, Math.PI);
-        return base + AIRBORNE_RIDER_OFFSET
-                + Math.sin(phase) * 0.3;
+        return base + AIRBORNE_RIDER_OFFSET + Math.sin(phase) * 0.5;
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
         Entity attacker = source.getEntity();
-        if (jumpActive
-                && !onGround()
+        if (!onGround()
                 && attacker != null
                 && source.is(DamageTypes.MOB_ATTACK)
                 && attacker.getY() < getY() - 0.5) {

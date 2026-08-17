@@ -399,7 +399,7 @@ public final class ModEvents {
         event.put(NpcEntities.ZOOLOGIST.get(), BaseNPC.createAttributes().build());
         event.put(BossEntities.KING_SLIME.get(), KingSlime.createAttributes().build());
         event.put(BossEntities.EYE_OF_CTHULHU.get(), EyeOfCthulhu.createAttributes().build());
-        event.put(BossEntities.SERVANT_OF_CTHULHU.get(), CreatureAttributeBuilder.creature(3, 1, 3, 30, 0.5, 0.3).flying().build());
+        event.put(BossEntities.SERVANT_OF_CTHULHU.get(), ServantOfCthulhu.createAttributes().build());
         // 每个世界吞噬怪体节独立持有生命值，主头部只负责把分裂后的全部链条汇总到同一 Boss 栏。
         event.put(BossEntities.EATER_OF_WORLDS.get(), EaterOfWorlds.createAttributes().build());
         event.put(BossEntities.QUEEN_BEE.get(), QueenBee.createAttributes().build());
@@ -407,10 +407,10 @@ public final class ModEvents {
         event.put(BossEntities.SKELETRON.get(), Skeletron.createAttributes().build());
         event.put(BossEntities.DUNGEON_GUARDIAN.get(), DungeonGuardian.createAttributes().build());
         event.put(BossEntities.THE_DESTROYER.get(), TheDestroyer.createAttributes().build());
-        event.put(BossEntities.THE_DESTROYER_PROBE.get(), CreatureAttributeBuilder.boss(12, 100, 10).flying().build());
+        event.put(BossEntities.THE_DESTROYER_PROBE.get(), CreatureAttributeBuilder.boss(12, 100, 10).build());
         event.put(BossEntities.THE_TWINS.get(), TheTwins.createAttributes().build());
-        event.put(BossEntities.RETINAZER.get(), CreatureAttributeBuilder.boss(19, 7800, 10).flying().build());
-        event.put(BossEntities.SPAZMATISM.get(), CreatureAttributeBuilder.boss(22, 8970, 10).flying().build());
+        event.put(BossEntities.RETINAZER.get(), CreatureAttributeBuilder.boss(19, 7800, 10).build());
+        event.put(BossEntities.SPAZMATISM.get(), CreatureAttributeBuilder.boss(22, 8970, 10).build());
         event.put(BossEntities.SKELETRON_PRIME.get(), SkeletronPrime.createAttributes().build());
         event.put(BossEntities.WALL_OF_FLESH.get(), WallOfFlesh.createAttributes().build());
         event.put(BossEntities.PLANTERA.get(), Plantera.createAttributes().build());

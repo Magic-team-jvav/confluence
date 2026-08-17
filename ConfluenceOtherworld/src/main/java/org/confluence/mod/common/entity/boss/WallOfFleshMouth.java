@@ -1,7 +1,10 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -11,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 /// 血肉墙的嘴；每张嘴独立分批吐出水蛭。
 public final class WallOfFleshMouth extends WallOfFleshPart {
+    private static final float LOCAL_ARMOR = 12.0F;
     private static final int BASE_SUMMON_INTERVAL = 400;
     private static final int SPAWN_INTERVAL = 10;
 
@@ -59,6 +63,12 @@ public final class WallOfFleshMouth extends WallOfFleshPart {
                 0.0F,
                 1.0F);
         return 1 + Mth.floor(progress * 4.0F);
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        float appliedDamage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount : CombatRules.getDamageAfterAbsorb(amount, LOCAL_ARMOR, 0.0F);
+        return appliedDamage > 0.0F && super.hurt(source, appliedDamage);
     }
 
     private void spawnLeech(

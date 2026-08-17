@@ -26,9 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * 幻影龙——拜月教邪教徒召唤的飞龙仆从。
- */
+/// 幻影龙——拜月教邪教徒召唤的飞龙仆从。
 public class PhantasmDragon extends BaseFlyingMonster {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
             SynchedEntityData.defineId(PhantasmDragon.class, EntityDataSerializers.OPTIONAL_UUID);

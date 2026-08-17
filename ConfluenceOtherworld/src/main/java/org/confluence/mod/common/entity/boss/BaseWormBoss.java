@@ -24,9 +24,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 蠕虫型 Boss 基类。穿透方块移动，体节跟随。
- */
+/// 蠕虫型 Boss 基类。穿透方块移动，体节跟随。
 public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
     private static final int COLLISION_COOLDOWN = 8;
 

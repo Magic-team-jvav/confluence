@@ -9,8 +9,10 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,9 +20,16 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -40,8 +49,8 @@ public class EaterOfWorlds extends BaseWormBoss {
     public static final int INITIAL_SEGMENT_COUNT = 60;
     public static final float HEAD_MAX_HEALTH = 54.0F;
     public static final float NODE_MAX_HEALTH = 50.0F;
-    private static final float ENCOUNTER_MAX_HEALTH =
-            HEAD_MAX_HEALTH + NODE_MAX_HEALTH * INITIAL_SEGMENT_COUNT;
+    private static final float NODE_ARMOR = 6.0F;
+    private static final float ENCOUNTER_MAX_HEALTH = HEAD_MAX_HEALTH + NODE_MAX_HEALTH * INITIAL_SEGMENT_COUNT;
     private static final String ENCOUNTER_TAG = "Encounter";
     private static final String PRIMARY_TAG = "PrimaryHead";
     private static final String SEGMENT_COUNT_TAG = "ActiveSegmentCount";
@@ -140,13 +149,36 @@ public class EaterOfWorlds extends BaseWormBoss {
         int index = segment.getSegmentIndex();
         if (index < 1 || index > segmentHealths.size()) return false;
 
-        float remaining = Math.max(0.0F, segmentHealths.get(index - 1) - amount);
+        float appliedDamage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount : CombatRules.getDamageAfterAbsorb(amount, NODE_ARMOR, 0.0F);
+        if (appliedDamage <= 0.0F) return false;
+        float remaining = Math.max(0.0F, segmentHealths.get(index - 1) - appliedDamage);
         segmentHealths.set(index - 1, remaining);
         segment.setPartHealth(remaining);
         if (source.getEntity() instanceof LivingEntity attacker && canAttack(attacker))
             setTarget(attacker);
-        if (remaining <= 0.0F) splitAt(index);
+        if (remaining <= 0.0F) {
+            dropSegmentLoot(segment, source);
+            splitAt(index);
+        }
         return true;
+    }
+
+    private void dropSegmentLoot(BossWormPart segment, DamageSource source) {
+        if (!(level() instanceof ServerLevel serverLevel) || !serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
+            return;
+        LootParams.Builder params = new LootParams.Builder(serverLevel)
+                .withParameter(LootContextParams.ORIGIN, segment.position())
+                .withParameter(LootContextParams.THIS_ENTITY, segment)
+                .withParameter(LootContextParams.DAMAGE_SOURCE, source)
+                .withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, source.getDirectEntity())
+                .withOptionalParameter(LootContextParams.KILLER_ENTITY, source.getEntity());
+        if (source.getEntity() instanceof ServerPlayer player) {
+            params.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player).withLuck(player.getLuck());
+        }
+        LootTable table = serverLevel.getServer().getLootData().getLootTable(BossEntities.WORM_SEGMENT.get().getDefaultLootTable());
+        for (ItemStack stack : table.getRandomItems(params.create(LootContextParamSets.ENTITY))) {
+            serverLevel.addFreshEntity(new ItemEntity(serverLevel, segment.getX(), segment.getY(), segment.getZ(), stack));
+        }
     }
 
     /// 世界吞噬怪不能使用原版地面导航。

@@ -4,7 +4,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,13 +18,12 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/**
- * 世纪之花触手——从方块表面伸出攻击玩家，短时间后消失。
- */
+/// 世纪之花触手——从方块表面伸出攻击玩家，短时间后消失。
 public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntity {
     private static final String SLOT_TAG = "Slot";
     private static final float DAMAGE = 15.6F;
     private static final float MAX_HEALTH = 260.0F;
+    private static final float ARMOR = 20.0F;
     private static final double DISTANCE_FROM_ANCHOR = 6.0;
     private static final double RADIAL_STEP = 0.15;
     private static final double TARGET_ATTRACTION_RADIUS = 24.0;
@@ -187,7 +188,18 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        return hurtOwnerAndPart(source, amount, 0.3F);
+        Plantera owner = getOwner();
+        if (owner == null || !owner.isAlive() || isRemoved() || isInvulnerableTo(source))
+            return false;
+        float appliedDamage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount : CombatRules.getDamageAfterAbsorb(amount, ARMOR, 0.0F);
+        if (appliedDamage <= 0.0F) return false;
+        float remaining = Math.max(0.0F, getPartHealth() - appliedDamage);
+        setPartHealth(remaining);
+        if (remaining <= 0.0F) {
+            onPartDestroyed(owner);
+            discard();
+        }
+        return true;
     }
 
     @Override

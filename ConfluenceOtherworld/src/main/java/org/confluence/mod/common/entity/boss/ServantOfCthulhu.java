@@ -8,7 +8,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -21,6 +20,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
+import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -29,7 +29,7 @@ import java.util.UUID;
 /// 克苏鲁之眼生成的短命仆从。
 ///
 /// <p>仆从拥有独立实体类型以便 1.20 的所有权追踪和区块恢复，但战斗数值仍与
-/// 1.21 侧临时恶魔眼一致：仅有 3 点生命。它优先继承主人的目标，主人暂时卸载时
+/// 1.21 侧临时恶魔眼一致。它优先继承主人的目标，主人暂时卸载时
 /// 保留精确 UUID，不能误绑定到附近另一个同类 Boss。</p>
 public class ServantOfCthulhu extends BaseFlyingMonster {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
@@ -61,11 +61,7 @@ public class ServantOfCthulhu extends BaseFlyingMonster {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseFlyingMonster.createFlyingAttributes()
-                .add(Attributes.MAX_HEALTH, 3.0)
-                .add(Attributes.ATTACK_DAMAGE, 5.0)
-                .add(Attributes.ARMOR, 0.0)
-                .add(Attributes.FOLLOW_RANGE, 32.0);
+        return CreatureAttributeBuilder.creature(10.0, 1.0, 3.0, 30.0, 0.5, 0.3).flying();
     }
 
     @Override

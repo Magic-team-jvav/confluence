@@ -39,10 +39,8 @@ import software.bernie.geckolib.core.object.PlayState;
 import javax.annotation.Nullable;
 import java.util.*;
 
-/**
- * 肉丘——静止的地狱 Boss，拥有环形伤害区域、5 只眼睛 + 5 张嘴巴。
- * Phase2 (HP<50%) 时外圈扩大、攻击加速。
- */
+/// 肉丘——静止的地狱 Boss，拥有环形伤害区域、5 只眼睛 + 5 张嘴巴。
+/// Phase2 (HP<50%) 时外圈扩大、攻击加速。
 public class HillOfFlesh extends BaseBoss {
     private static final RawAnimation IDLE =
             RawAnimation.begin().thenLoop("misc.idle");

@@ -76,17 +76,17 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-// todo datagen       add(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), LootTable.lootTable()
-//                .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
-//                .withPool(LootPool.lootPool()
-//                        .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5))
-//                        .add(EmptyLootItem.emptyItem())
-//                )
-//                .withPool(LootPool.lootPool()
-//                        .add(LootItem.lootTableItem(SHADOW_SCALE).apply(count1To2))
-//                        .add(EmptyLootItem.emptyItem())
-//                )
-//        );
+        add(BossEntities.WORM_SEGMENT.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool().add(hearts.append(EmptyLootItem.emptyItem().setWeight(3))))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(RAW_DEMONITE).apply(count2To5))
+                        .add(EmptyLootItem.emptyItem())
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SHADOW_SCALE).apply(count1To2))
+                        .add(EmptyLootItem.emptyItem())
+                )
+        );
         add(BossEntities.THE_DESTROYER_PROBE.get(), LootTable.lootTable());
         add(BossEntities.LUNATIC_CULTIST_CLONE.get(), LootTable.lootTable());
         add(MonsterEntities.VISUAL_NEURON.get(), LootTable.lootTable()

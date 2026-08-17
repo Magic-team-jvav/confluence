@@ -1,7 +1,8 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -9,9 +10,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/**
- * 肉丘之眼——定位在肉丘周围，向环形范围内的玩家射击。
- */
+/// 肉丘之眼——定位在肉丘周围，向环形范围内的玩家射击。
 public class HillOfFleshEye extends BaseBossPart<HillOfFlesh> implements GeoEntity {
     private static final float DAMAGE = 10.0F;
 

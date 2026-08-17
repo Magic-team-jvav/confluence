@@ -3,10 +3,12 @@ package org.confluence.mod.common.entity.boss;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 /// 本源末影龙的服务端碰撞部件。
@@ -63,7 +65,10 @@ public final class PrimeEnderDragonPart
         float forwarded = getSlot() == PrimeEnderDragon.PartSlot.HEAD
                 ? amount
                 : amount * 0.25F + Math.min(amount, 1.0F);
-        return owner.hurt(source, forwarded);
+        if (forwarded < 0.01F) return false;
+        if (source.getEntity() instanceof Player || source.is(DamageTypeTags.ALWAYS_HURTS_ENDER_DRAGONS))
+            owner.hurt(source, forwarded);
+        return true;
     }
 
     @Override

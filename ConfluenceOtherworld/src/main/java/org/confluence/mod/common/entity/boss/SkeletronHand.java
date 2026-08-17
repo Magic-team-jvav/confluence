@@ -4,7 +4,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,9 +17,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-/**
- * 骷髅王之手。绕头部轨道运行，周期性挥击玩家。
- */
+/// 骷髅王之手。绕头部轨道运行，周期性挥击玩家。
 public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity {
     private static final int CLASSIC_SLAP_INTERVAL = 45;
     private static final int EXPERT_SLAP_INTERVAL = 30;
@@ -29,6 +29,7 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
     private static final double ARRIVAL_DISTANCE_SQUARED = 1.5;
     private static final float DAMAGE = 10.0F;
     private static final float MAX_PART_HEALTH = 405.0F;
+    private static final float PART_ARMOR = 4.0F;
     private static final String HAND_INDEX_TAG = "HandIndex";
     private static final EntityDataAccessor<Integer> HAND_INDEX =
             SynchedEntityData.defineId(SkeletronHand.class, EntityDataSerializers.INT);
@@ -151,7 +152,19 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        return hurtOwnerAndPart(source, amount, 0.5F);
+        Skeletron owner = getOwner();
+        if (owner == null || !owner.isAlive() || isRemoved() || isInvulnerableTo(source))
+            return false;
+        float appliedDamage = source.is(DamageTypeTags.BYPASSES_ARMOR) ? amount : CombatRules.getDamageAfterAbsorb(amount, PART_ARMOR, 0.0F);
+        if (appliedDamage <= 0.0F) return false;
+        float remaining = Math.max(0.0F, getPartHealth() - appliedDamage);
+        setPartHealth(remaining);
+        onPartHealthChanged(owner, remaining);
+        if (remaining <= 0.0F) {
+            onPartDestroyed(owner);
+            discard();
+        }
+        return true;
     }
 
     @Override

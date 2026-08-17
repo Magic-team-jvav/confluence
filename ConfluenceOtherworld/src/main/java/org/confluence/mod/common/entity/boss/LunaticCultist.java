@@ -30,9 +30,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 import java.util.List;
 
-/**
- * 拜月教邪教徒——传送+弹幕+召唤幻影龙。
- */
+/// 拜月教邪教徒——传送+弹幕+召唤幻影龙。
 public class LunaticCultist extends BaseBoss {
     static final int CLONE_COUNT = 2;
     private static final int TELEPORT_TICKS = 60;

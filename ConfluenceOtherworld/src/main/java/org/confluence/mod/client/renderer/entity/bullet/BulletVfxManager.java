@@ -6,9 +6,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.item.gun.definition.BulletImpactEffect;
 import org.joml.Matrix4f;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
@@ -19,6 +22,8 @@ import java.util.List;
 /// 管理普通粒子无法完整表达的短生命周期子弹命中特效。
 public final class BulletVfxManager {
     private static final List<ActiveEffect> ACTIVE_EFFECTS = new ArrayList<>();
+    private static final ResourceLocation SILVER_CROSS_TEXTURE =
+            Confluence.asResource("textures/vfx/particles/star_06.png");
     private static final int[] CONFETTI_COLORS = {
             0xEBFF4BB4, 0xEBFFE042, 0xEB44D7FF,
             0xEB697DFF, 0xEB58DC6F, 0xEBFF8B3D
@@ -62,6 +67,7 @@ public final class BulletVfxManager {
             effect.render(event.getPoseStack(), buffers, cameraPosition);
         }
         buffers.endBatch(RenderStateShardAccessor.TRAIL_RENDER_TYPE);
+        buffers.endBatch(BulletRenderTypes.trail(SILVER_CROSS_TEXTURE, true));
     }
 
     /// 保留 1.21 水晶弹命中时的数量、出生范围和速度分布。
@@ -85,10 +91,7 @@ public final class BulletVfxManager {
         }
     }
 
-    /// 保留 1.21 夜明弹命中时的数量和运动参数。
-    ///
-    /// <p>1.20.1 没有 1.21 使用的 ominous trial spawner 粒子，因此仅将粒子类型替换为同样
-    /// 不受重力影响的电火花；其余出生范围与速度分布保持一致。</p>
+    /// 保留 1.21 夜明弹命中时的粒子、数量和运动参数。
     private static void playLuminiteImpact(Vec3 position) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) {
@@ -99,7 +102,7 @@ public final class BulletVfxManager {
             double angle = Math.PI * 2.0D * index / count;
             double speed = 0.025D + level.random.nextDouble() * 0.05D;
             level.addParticle(
-                    ParticleTypes.ELECTRIC_SPARK,
+                    ModParticleTypes.LUMINITE_IMPACT.get(),
                     position.x + (level.random.nextDouble() - 0.5D) * 0.20D,
                     position.y + (level.random.nextDouble() - 0.5D) * 0.20D,
                     position.z + (level.random.nextDouble() - 0.5D) * 0.20D,
@@ -155,10 +158,7 @@ public final class BulletVfxManager {
             float fade = 1.0F - age / (float) LIFETIME;
             int color = FastColor.ARGB32.color(Math.round(255.0F * fade), 255, 255, 255);
             float size = 0.36F + age * 0.004F;
-            renderRectangle(poseStack, bufferSource, cameraPosition, position,
-                    color, size, 0.045F, 0.0F);
-            renderRectangle(poseStack, bufferSource, cameraPosition, position,
-                    color, size, 0.045F, (float) (Math.PI * 0.5D));
+            renderSprite(poseStack, bufferSource, cameraPosition, position, color, size);
         }
     }
 
@@ -275,9 +275,46 @@ public final class BulletVfxManager {
         vertex(buffer, matrix, center.subtract(lengthOffset).add(widthOffset), color);
     }
 
+    private static void renderSprite(
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            Vec3 cameraPosition,
+            Vec3 worldPosition,
+            int color,
+            float size
+    ) {
+        Vec3 facing = cameraPosition.subtract(worldPosition);
+        if (facing.lengthSqr() <= 1.0E-7D) return;
+        facing = facing.normalize();
+        Vec3 up = Math.abs(facing.y) > 0.98D
+                ? new Vec3(1.0D, 0.0D, 0.0D)
+                : new Vec3(0.0D, 1.0D, 0.0D);
+        Vec3 right = facing.cross(up).normalize();
+        up = right.cross(facing).normalize();
+        Vec3 center = worldPosition.subtract(cameraPosition);
+        Vec3 rightOffset = right.scale(size * 0.5D);
+        Vec3 upOffset = up.scale(size * 0.5D);
+        Matrix4f matrix = poseStack.last().pose();
+        VertexConsumer buffer = bufferSource.getBuffer(
+                BulletRenderTypes.trail(SILVER_CROSS_TEXTURE, true));
+        spriteVertex(buffer, matrix, center.subtract(rightOffset).subtract(upOffset), color, 0.0F, 1.0F);
+        spriteVertex(buffer, matrix, center.add(rightOffset).subtract(upOffset), color, 1.0F, 1.0F);
+        spriteVertex(buffer, matrix, center.add(rightOffset).add(upOffset), color, 1.0F, 0.0F);
+        spriteVertex(buffer, matrix, center.subtract(rightOffset).add(upOffset), color, 0.0F, 0.0F);
+    }
+
     private static void vertex(VertexConsumer buffer, Matrix4f matrix, Vec3 position, int color) {
         buffer.vertex(matrix, (float) position.x, (float) position.y, (float) position.z)
                 .color(color)
+                .endVertex();
+    }
+
+    private static void spriteVertex(VertexConsumer buffer, Matrix4f matrix, Vec3 position,
+                                     int color, float u, float v) {
+        buffer.vertex(matrix, (float) position.x, (float) position.y, (float) position.z)
+                .color(color)
+                .uv(u, v)
+                .uv2(0xF000F0)
                 .endVertex();
     }
 }

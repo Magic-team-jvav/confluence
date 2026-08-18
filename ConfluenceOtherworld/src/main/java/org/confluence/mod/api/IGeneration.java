@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 /// # 发射方式
 public interface IGeneration {
     /// 生成弹道实体
-    void genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float velocity, Supplier<? extends @Nullable Projectile> proj);
+    int genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float velocity, Supplier<? extends @Nullable Projectile> proj);
 
     /// 获取编解码器
     ///

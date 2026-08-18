@@ -42,9 +42,11 @@ import org.confluence.lib.client.animate.ExpertColorAnimation;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
+import org.confluence.mod.api.event.BulletEvent;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
+import org.confluence.mod.client.animation.GunCameraAnimation;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
@@ -58,6 +60,7 @@ import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
@@ -78,7 +81,6 @@ import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
@@ -94,6 +96,7 @@ import org.mesdag.portlib.event.client.*;
 import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
 import org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Iterator;
@@ -131,6 +134,9 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::playerEmptyAutoAttack);
         PortEventHandler.addListener(GameClientEvents::afterFlushArmorSetBonus);
         PortEventHandler.addListener(GameClientEvents::gunShot);
+        PortEventHandler.addListener(GameClientEvents::inspectGun);
+        PortEventHandler.addListener(GameClientEvents::applyGunCamera);
+        PortEventHandler.addListener(GameClientEvents::bulletImpact);
         PortEventHandler.addListener(GameClientEvents::cancelSwap);
     }
 
@@ -184,12 +190,7 @@ public final class GameClientEvents {
             DropletsHandler.handle(minecraft, player);
             DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
-            if (minecraft.options.keyAttack.isDown() &&
-                    player.getMainHandItem().getItem() instanceof BaseSwordItem sword &&
-                    !player.getCooldowns().isOnCooldown(sword)
-            ) {
-                SwordProjectilePacketC2S.sendToServer();
-            }
+            SwordProjectileInputHandler.handle(player, minecraft.options.keyAttack.isDown());
             //连枷按键检测
             ItemStack mainHandItem = player.getMainHandItem();
             boolean isFlail = mainHandItem.has(ModDataComponentTypes.FLAIL);
@@ -340,6 +341,7 @@ public final class GameClientEvents {
     }
 
     private static void renderLevelStage(PortRenderLevelStageEvent event) {
+        BulletVfxManager.render(event);
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) return;
@@ -542,26 +544,56 @@ public final class GameClientEvents {
     }
 
     private static void gunShot(PortClientTickEvent.Post event) {
+        BulletVfxManager.tick();
         KeyMapping shoot = ModKeyBindings.GUN_SHOOT.get();
-        if (shoot.isDown()) {
-            LocalPlayer player = Minecraft.getInstance().player;
-            if (player == null || player.isSpectator()) return;
-
-            ItemStack mainHandItem = player.getMainHandItem();
-            ItemCooldowns cooldowns = player.getCooldowns();
-            if (mainHandItem.getItem() instanceof BaseGun baseGun && !cooldowns.isOnCooldown(baseGun)) {
-                if (mainHandItem.is(ModTags.Items.MANUAL_GUN) && !shoot.consumeClick()) return;
-
-                GunEvent.UseGunEvent useGunEvent = new GunEvent.UseGunEvent(player, baseGun, baseGun.getCooldown());
-                PortEventHandler.postEvent(useGunEvent);
-                if (useGunEvent.isCanceled() || !ModGunUtils.canShoot(player, mainHandItem))
-                    return;
-
-                player.playSound(GunSounds.getSound(mainHandItem), 1f, 1f);
-                ShootPacketC2S.sendToServer();
-                cooldowns.addCooldown(baseGun, useGunEvent.getCooldowns());
-            }
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) {
+            GunCameraAnimation.clear();
+            return;
         }
+
+        updateGunCameraAnimation(player);
+        if (player.isSpectator() || !shoot.isDown()) return;
+
+        ItemStack mainHandItem = player.getMainHandItem();
+        ItemCooldowns cooldowns = player.getCooldowns();
+        if (!(mainHandItem.getItem() instanceof BaseGun baseGun) || cooldowns.isOnCooldown(baseGun))
+            return;
+        if (!ModGunUtils.canShoot(player, mainHandItem)) return;
+        if (!baseGun.isAutomatic(mainHandItem) && !shoot.consumeClick()) return;
+
+        GunEvent.UseGunEvent useGunEvent = new GunEvent.UseGunEvent(player, baseGun, baseGun.getCooldown());
+        PortEventHandler.postEvent(useGunEvent);
+        if (useGunEvent.isCanceled()) return;
+
+        player.playSound(GunSounds.getSound(mainHandItem), 1f, 1f);
+        ShootPacketC2S.sendToServer();
+        cooldowns.addCooldown(baseGun, Math.max(0, useGunEvent.getCooldowns()));
+    }
+
+    private static void updateGunCameraAnimation(LocalPlayer player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        if (!(mainHandItem.getItem() instanceof BaseGun gun)
+                || !gun.isCameraAnimationPlaying(GeoItem.getId(mainHandItem))) {
+            GunCameraAnimation.clear();
+        }
+    }
+
+    private static void inspectGun(PortClientTickEvent.Post event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null || player.isSpectator() || !ModKeyBindings.GUN_INSPECT.get().consumeClick())
+            return;
+        if (player.getMainHandItem().getItem() instanceof BaseGun) {
+            InspectPacketC2S.sendToServer();
+        }
+    }
+
+    private static void applyGunCamera(PortViewportEvent.ComputeCameraAngles event) {
+        GunCameraAnimation.apply(event);
+    }
+
+    private static void bulletImpact(BulletEvent.ImpactEffectEvent event) {
+        BulletVfxManager.play(event.getEffect(), event.getPosition());
     }
 
     private static void cancelSwap(PortInputEvent.InteractionKeyMappingTriggered event) {

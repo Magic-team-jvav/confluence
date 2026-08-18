@@ -22,7 +22,6 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
@@ -30,7 +29,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.PhasebladeRenderer;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.mesdag.portlib.diff.Diff;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -56,12 +54,7 @@ public class Phaseblade extends BaseSwordItem implements GeoItem {
     public int frame = 0;
 
     public Phaseblade(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, String color) {
-        super(tier, rarity, rawDamage, rawSpeed, SwordPrefabs.withSpecialSweep(0.8F, new ModifierBuilder() {
-            @Override
-            public Properties buildProperties(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
-                return properties.durability(tier.getUses()).component(ConfluenceMagicLib.MOD_RARITY, rarity);
-            }
-        }));
+        super(tier, rarity, rawDamage, rawSpeed, SwordDefinition.builder().specialSweep(0.8F).withoutBaseAttributes());
         this.color = color;
         this.turnOnModifiers = createAttributes(tier, rawDamage, rawSpeed);
         this.turnOffModifiers = createAttributes(tier, 0, 2);

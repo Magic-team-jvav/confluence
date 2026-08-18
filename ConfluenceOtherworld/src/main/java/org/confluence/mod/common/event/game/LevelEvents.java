@@ -20,6 +20,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.data.saved.SpaceSpawner;
+import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
@@ -51,6 +52,9 @@ public final class LevelEvents {
 
     private static void explosion$Detonate(PortExplosionEvent.Detonate event) {
         BaseBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
+        if (event.getExplosion().getDirectSourceEntity() instanceof BaseBulletEntity bullet && bullet.getOwner() != null) {
+            event.getAffectedEntities().removeIf(entity -> entity == bullet.getOwner() || entity.isPassengerOfSameVehicle(bullet.getOwner()));
+        }
         NoTraps.entityInvulnerableToExplosion(event.getLevel(), event.getAffectedEntities());
     }
 

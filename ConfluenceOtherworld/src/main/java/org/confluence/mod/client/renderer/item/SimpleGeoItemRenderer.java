@@ -35,9 +35,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
     private BlockEntityWithoutLevelRenderer renderer;
     private GunRenderer<T> activeGunRenderer;
 
-    /**
-     * 通用 GeoItem 渲染器
-     */
+    /// 通用 GeoItem 渲染器。
     public SimpleGeoItemRenderer(ResourceLocation model, ResourceLocation texture, @Nullable ResourceLocation animation) {
         this.model = model;
         this.texture = texture;
@@ -45,9 +43,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
         this.gunRenderer = false;
     }
 
-    /**
-     * 枪械专用渲染器（带 fire bones 隐藏逻辑）
-     */
+    /// 枪械专用渲染器，包含开火骨骼隐藏逻辑。
     public SimpleGeoItemRenderer(DefaultedItemGeoModel<T> gunItemModel) {
         this.model = gunItemModel.getModelResource(null);
         this.texture = gunItemModel.getTextureResource(null);

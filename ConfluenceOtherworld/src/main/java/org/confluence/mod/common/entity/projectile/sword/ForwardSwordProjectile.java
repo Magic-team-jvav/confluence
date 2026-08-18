@@ -18,7 +18,7 @@ public class ForwardSwordProjectile extends SwordProjectile {
         if (isRemoved()) {
             return;
         }
-        float acceleration = projComponent == null ? 0.8F : projComponent.acceleration();
+        float acceleration = getProjectileComponent() == null ? 0.8F : getProjectileComponent().acceleration();
         setDeltaMovement(getDeltaMovement().scale(acceleration));
     }
 }

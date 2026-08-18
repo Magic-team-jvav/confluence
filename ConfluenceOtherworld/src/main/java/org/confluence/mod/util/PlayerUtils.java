@@ -389,7 +389,7 @@ public final class PlayerUtils {
         if (!player.isAutoSpinAttack()) {
             ItemStack stack = player.getMainHandItem();
 //            if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
-            return stack.canPerformAction(ToolActions.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
+            return stack.canPerformAction(ToolActions.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.hasSpecialSweep();
         }
         return false;
     }

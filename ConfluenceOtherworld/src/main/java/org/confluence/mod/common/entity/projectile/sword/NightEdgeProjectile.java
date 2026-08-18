@@ -26,9 +26,8 @@ public class NightEdgeProjectile extends SwordProjectile {
     public NightEdgeProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
 
-        this.canPenalize = true;
-        this.hitCount = 9999;
-        this.setExistTime(11);
+        survivesBlockHit = true;
+        remainingHits = 9999;
     }
 
     @Override
@@ -52,7 +51,7 @@ public class NightEdgeProjectile extends SwordProjectile {
 
     @Override
     public void tick() {
-        if (!level().isClientSide && (hitCount == 0 || tickCount >= lifetime)) {
+        if (!level().isClientSide && (remainingHits == 0 || tickCount >= lifetime)) {
             discard();
             return;
         }
@@ -108,7 +107,7 @@ public class NightEdgeProjectile extends SwordProjectile {
             Vec3 point = position().add(rotateLocalPoint(owner.getYRot(), sampleLocalPoint(time)));
             AABB box = new AABB(point, point).inflate(HIT_RADIUS);
             for (Entity target : level().getEntities(this, box, this::canHitEntity)) {
-                doHurt(target);
+                hurtTarget(target);
             }
         }
     }

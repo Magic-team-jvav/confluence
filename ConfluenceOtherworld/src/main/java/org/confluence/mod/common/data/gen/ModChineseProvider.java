@@ -814,6 +814,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.confluence.attack_interval", "下次攻击间隔：%s");
         add("tooltip.confluence.attack_distance", "攻击距离：%s");
         add("tooltip.confluence.knockback", "击退：%s");
+        addGunTranslations();
         add("tooltip.confluence.disabled", "已禁用");
         add("tooltip.confluence.pickaxe_power", "镐力：%s%%");
         add("tooltip.confluence.hammer_power", "锤力：%s%%");
@@ -5200,5 +5201,20 @@ public class ModChineseProvider extends LanguageProvider {
                 ? "召唤物优先攻击该目标"
                 : "召唤物额外造成伤害";
         addEffect(whip.definition().tagEffect().get(), "狩猎", tooltip);
+    }
+
+    private void addGunTranslations() {
+        add("key.confluence.inspect", "检视");
+        add("tooltip.confluence.ability.party_confetti", "特殊效果：命中敌怪或方块时释放彩纸");
+        add("tooltip.confluence.ability.crystal_split", "特殊效果：命中后向后分裂为 2 枚碎片，伤害为原弹 50%，可穿过方块");
+        add("tooltip.confluence.ability.chlorophyte_homing", "特殊效果：会追踪附近的目标，并留下明亮的绿色轨迹");
+        add("tooltip.confluence.ability.meteor_ricochet", "特殊效果：可反弹 1 次或穿透 1 个敌怪，但不能同时进行");
+        add("tooltip.confluence.ability.nano_ricochet", "特殊效果：击中方块后弹向最近敌怪，造成 66% 伤害，最多弹射 1 次");
+        add("tooltip.confluence.ability.high_velocity_damage_decay", "特殊效果：每次命中后伤害降低 15%");
+        add("tooltip.confluence.ability.explosive", "特殊效果：命中后爆炸");
+        add("tooltip.confluence.ability.ichor_debuff", "特殊效果：施加灵液，降低目标护甲");
+        add("tooltip.confluence.ability.cursed_debuff", "特殊效果：施加凋零");
+        add("tooltip.confluence.ability.venom_debuff", "特殊效果：施加中毒");
+        add("tooltip.confluence.ability.luminite_damage_decay", "特殊效果：每次命中后伤害降低 4%，最低降至 0");
     }
 }

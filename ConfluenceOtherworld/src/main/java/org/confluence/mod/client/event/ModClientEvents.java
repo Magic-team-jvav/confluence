@@ -50,6 +50,7 @@ import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.client.handler.StarPhaseHandler;
+import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
@@ -81,7 +82,7 @@ import org.confluence.mod.client.renderer.entity.flail.FlailModel;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
-import org.confluence.mod.client.renderer.entity.projectile.sword.*;
+import org.confluence.mod.client.renderer.entity.projectile.sword.SwordProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
 import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
@@ -153,6 +154,7 @@ public final class ModClientEvents {
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();
             ArrowInBowRenderer.initAdaptionMap();
+            SwordProjectileVisualHandler.install();
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();
@@ -378,27 +380,17 @@ public final class ModClientEvents {
         event.registerEntityRenderer(WATER_BOLT.get(), NoopRenderer::new);
         event.registerEntityRenderer(BALL_OF_FIRE.get(), NoopRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_BLADE_SWORD.get(), context -> new ForwardSwordProjectileRenderer<>(
-                context,
-                new IceBladeSwordProjectileModel(context.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)),
-                Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"),
-                1.0F,
-                0.0F));
-        event.registerEntityRenderer(STAR_FURY.get(), StarFuryProjectileRenderer::new);
-        event.registerEntityRenderer(ENCHANTED_SWORD.get(), context -> new ForwardSwordProjectileRenderer<>(
-                context,
-                new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)),
-                Confluence.asResource("textures/entity/enchanted_sword_projectile.png"),
-                1.0F,
-                0.2F,
-                0.89F));
-        event.registerEntityRenderer(LIGHTS_BANE.get(), LightsBaneProjectileRenderer::new);
-        event.registerEntityRenderer(GRASS.get(), context -> new SwordItemProjectileRenderer<>(context, 0.8F));
+        event.registerEntityRenderer(GEO_SWORD_PROJECTILE.get(), SwordProjectileRenderer::new);
+        event.registerEntityRenderer(ICE_BLADE_SWORD.get(), SwordProjectileRenderer::new);
+        event.registerEntityRenderer(STAR_FURY.get(), SwordProjectileRenderer::new);
+        event.registerEntityRenderer(ENCHANTED_SWORD.get(), SwordProjectileRenderer::new);
+        event.registerEntityRenderer(LIGHTS_BANE.get(), SwordProjectileRenderer::new);
+        event.registerEntityRenderer(GRASS.get(), SwordProjectileRenderer::new);
         event.registerEntityRenderer(BEE.get(), context -> new ForwardProjectileRenderer<>(
                 context,
                 new BeeProjectileModel<>(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)),
                 Confluence.asResource("textures/entity/bee_projectile.png")));
-        event.registerEntityRenderer(NIGHTS_EDGE.get(), NightEdgeProjectileRenderer::new);
+        event.registerEntityRenderer(NIGHTS_EDGE.get(), SwordProjectileRenderer::new);
         event.registerEntityRenderer(BASE_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjectileRenderer<>(
                 context,
@@ -1023,6 +1015,7 @@ public final class ModClientEvents {
         // 原版伤害弹丸不接受 null 尾迹；返回 null 粒子实例可明确表达“不渲染尾迹”。
         event.registerSpecial(ModParticleTypes.NO_TRAIL.get(),
                 (type, level, x, y, z, xSpeed, ySpeed, zSpeed) -> null);
+        event.registerSpriteSet(ModParticleTypes.LUMINITE_IMPACT.get(), LuminiteImpactParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.LEAVES.get(), BiomeColorParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.RED_SAND.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.SAND.get(), SimpleTextureSheetParticle.Provider::new);

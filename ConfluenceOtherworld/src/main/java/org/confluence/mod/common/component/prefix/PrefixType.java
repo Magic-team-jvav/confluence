@@ -34,7 +34,7 @@ public enum PrefixType implements StringRepresentable {
 
         @Override
         public ModPrefix randomPrefix(RandomSource random) {
-            throw new UnsupportedOperationException("Unknown prefix type cannot choose a random prefix");
+            throw new UnsupportedOperationException();
         }
 
         @Override

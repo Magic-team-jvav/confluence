@@ -71,6 +71,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.BaseLanceItem;
+import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
@@ -355,6 +356,12 @@ public final class LivingEntityEvents {
 
     private static void equipmentChange(PortLivingEquipmentChangeEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        if (event.getSlot() == EquipmentSlot.MAINHAND && event.getFrom().getItem() instanceof BaseGun gun) {
+            gun.putAwayAnimator(event.getFrom(), player);
+        }
+        if (event.getSlot() == EquipmentSlot.MAINHAND && event.getTo().getItem() instanceof BaseGun gun) {
+            gun.pickAnimator(event.getTo(), player);
+        }
         AchievementUtils.matchingAttire_fashionStatement(event.getSlot().getType(), player);
         if (event.getSlot().getType() == EquipmentSlot.Type.HAND) {
             VisibilityPacketS2C.sendSignal(player, event.getTo().is(ModTags.Items.SHOW_SIGNAL));

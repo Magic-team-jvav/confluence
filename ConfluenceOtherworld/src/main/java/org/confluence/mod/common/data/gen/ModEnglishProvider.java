@@ -877,6 +877,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.attack_interval", "Attack Interval: %s");
         add("tooltip.confluence.attack_distance", "Attack Distance: %s");
         add("tooltip.confluence.knockback", "Knockback: %s");
+        addGunTranslations();
         add("tooltip.confluence.disabled", "Disabled");
         add("tooltip.confluence.pickaxe_power", "Pickaxe Power: %s%%");
         add("tooltip.confluence.hammer_power", "Hammer Power: %s%%");
@@ -2009,6 +2010,21 @@ public class ModEnglishProvider extends LanguageProvider {
                 ? "Minions focus on this target"
                 : "Minions deal additional damage";
         addEffect(whip.definition().tagEffect().get(), tooltip);
+    }
+
+    private void addGunTranslations() {
+        add("key.confluence.inspect", "Inspect");
+        add("tooltip.confluence.ability.party_confetti", "Special Effect: Releases confetti when hitting an enemy or block");
+        add("tooltip.confluence.ability.crystal_split", "Special Effect: Splits backward into 2 shards at 50% damage; shards pass through blocks");
+        add("tooltip.confluence.ability.chlorophyte_homing", "Special Effect: Homes in on nearby targets and leaves a bright green trail");
+        add("tooltip.confluence.ability.meteor_ricochet", "Special Effect: Bounces once or pierces one enemy, but cannot do both");
+        add("tooltip.confluence.ability.nano_ricochet", "Special Effect: Redirects toward the nearest enemy after hitting a block at 66% damage, once");
+        add("tooltip.confluence.ability.high_velocity_damage_decay", "Special Effect: Damage drops by 15% after each hit");
+        add("tooltip.confluence.ability.explosive", "Special Effect: Explodes on impact");
+        add("tooltip.confluence.ability.ichor_debuff", "Special Effect: Applies Ichor and reduces armor");
+        add("tooltip.confluence.ability.cursed_debuff", "Special Effect: Applies Wither");
+        add("tooltip.confluence.ability.venom_debuff", "Special Effect: Applies Poison");
+        add("tooltip.confluence.ability.luminite_damage_decay", "Special Effect: Damage drops by 4% after each hit, down to 0");
     }
 
 //    private String formatLocation(ResourceLocation location) {

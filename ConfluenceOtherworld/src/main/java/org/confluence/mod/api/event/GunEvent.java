@@ -2,12 +2,17 @@ package org.confluence.mod.api.event;
 
 import PortLib.extensions.java.util.List.PortListExtension;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.Cancelable;
 import net.minecraftforge.eventbus.api.Event;
+import org.confluence.mod.common.combat.gun.ShotContext;
 import org.confluence.mod.common.item.gun.BaseGun;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class GunEvent extends Event {
     private final Player player;
@@ -42,6 +47,19 @@ public class GunEvent extends Event {
 
         public void setCooldowns(int cooldowns) {
             this.cooldowns = cooldowns;
+        }
+    }
+
+    /// 服务端确认并生成射击后在客户端发布。
+    public static class ShotConfirmedEvent extends Event {
+        private final Player player;
+
+        public ShotConfirmedEvent(Player player) {
+            this.player = player;
+        }
+
+        public Player getPlayer() {
+            return player;
         }
     }
 
@@ -198,6 +216,33 @@ public class GunEvent extends Event {
 
         public void setInaccuracy(float inaccuracy) {
             this.inaccuracy = inaccuracy;
+        }
+    }
+
+    /// 允许主项目和附属模块替换一次射击生成的投射物。
+    public static class ProjectileCreationEvent extends GunEvent {
+        private final ShotContext context;
+        private final List<Projectile> projectiles;
+
+        public ProjectileCreationEvent(BaseGun gun, ShotContext context, Collection<? extends Projectile> projectiles) {
+            super(context.shooter(), gun);
+            this.context = context;
+            this.projectiles = new ArrayList<>(projectiles);
+        }
+
+        public ShotContext getContext() {
+            return context;
+        }
+
+        public List<Projectile> getProjectiles() {
+            return projectiles;
+        }
+
+        public void setProjectiles(Collection<? extends Projectile> projectiles) {
+            List<Projectile> replacements = new ArrayList<>(Objects.requireNonNull(projectiles, "projectiles"));
+            replacements.removeIf(Objects::isNull);
+            this.projectiles.clear();
+            this.projectiles.addAll(replacements);
         }
     }
 

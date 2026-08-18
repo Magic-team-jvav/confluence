@@ -1,6 +1,9 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -17,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
@@ -27,132 +31,237 @@ import org.joml.Vector3f;
 
 import java.util.Comparator;
 
-// todo projectile
+/// 剑气实体的服务端运行时，负责运动、追踪、碰撞、伤害与快照同步。
+public abstract class SwordProjectile extends AbstractHurtingProjectile implements IEntityAdditionalSpawnData {
+    private static final EntityDataAccessor<Vector3f> DATA_INITIAL_VELOCITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Float> DATA_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Integer> DATA_LIFETIME = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.INT);
+    private static final byte EVENT_ENTITY_HIT = 61;
+    private static final byte EVENT_BLOCK_HIT = 62;
 
-/// 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
-public abstract class SwordProjectile extends AbstractHurtingProjectile {
-    // 可调参数
-    public int lifetime = 40;
-    public int hitCount = 1;
-    protected float attackDamageFactor = 1F;
-    protected float baseAttackDamage = 0;
-    protected float knockBack = 0.0F;
-    protected float baseKnockBack = 0.0F;
-    protected boolean canPenalize = false;
-    protected SwordProjectileComponent projComponent;
+    private @Nullable SwordProjectileComponent component;
+    private ItemStack firedFromWeapon = ItemStack.EMPTY;
+    private @Nullable LivingEntity trackingTarget;
+    private float gravity;
+    private float baseAttackDamage;
+    private float baseKnockback;
 
-    protected ItemStack firedFromWeapon;
+    protected Vec3 direction = Vec3.ZERO;
+    protected int lifetime = 40;
+    protected int remainingHits = 1;
+    protected float bonusKnockback;
+    protected boolean survivesBlockHit;
 
-    public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
-        super(entityType, pLevel);
-        if (!level().isClientSide()) {
-            direction = new Vec3(this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f);
-//            direction = new Vec3(1,0,0);
-            this.entityData.set(DATA_DIRECTION, direction.toVector3f());
+    protected SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level level) {
+        super(entityType, level);
+        if (!level.isClientSide) {
+            direction = new Vec3(random.nextFloat() - 0.5F, random.nextFloat() - 0.5F, random.nextFloat() - 0.5F);
+            entityData.set(DATA_DIRECTION, direction.toVector3f());
         }
-    }
-
-    // 数据同步
-    float gravity = 0;
-    Vec3 initSpeed = new Vec3(0, 0, 0);
-    public Vec3 direction = new Vec3(0, 0, 0);
-    public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
-    protected static final EntityDataAccessor<Vector3f> DATA_INIT_SPEED = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
-    protected static final EntityDataAccessor<Float> DATA_INIT_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
-    protected static final EntityDataAccessor<Integer> DATA_LIFETIME = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.INT);
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
-        super.onSyncedDataUpdated(data);
-        if (level().isClientSide) {
-            if (data == DATA_INIT_SPEED) {
-                this.initSpeed = new Vec3(this.entityData.get(DATA_INIT_SPEED));
-                this.setDeltaMovement(initSpeed);
-            } else if (data == DATA_INIT_GRAVITY) {
-                this.gravity = this.entityData.get(DATA_INIT_GRAVITY);
-            } else if (DATA_DIRECTION.equals(data)) {
-                direction = new Vec3(this.entityData.get(DATA_DIRECTION));
-                float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
-                this.setYRot(yaw);
-                yRotO = yaw;
-            } else if (DATA_LIFETIME.equals(data)) {
-                this.lifetime = this.entityData.get(DATA_LIFETIME);
-            }
-        }
-    }
-
-    @Override
-    public boolean fireImmune() {
-        return true;
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
-        this.entityData.define(DATA_INIT_GRAVITY, 0.0F);
-        this.entityData.define(DATA_DIRECTION, new Vector3f());
-        this.entityData.define(DATA_LIFETIME, lifetime);
+        entityData.define(DATA_INITIAL_VELOCITY, new Vector3f());
+        entityData.define(DATA_GRAVITY, 0.0F);
+        entityData.define(DATA_DIRECTION, new Vector3f());
+        entityData.define(DATA_LIFETIME, lifetime);
     }
 
     @Override
-    @Nullable
-    public ItemStack getWeaponItem() {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
+        super.onSyncedDataUpdated(data);
+        if (!level().isClientSide) return;
+        if (data == DATA_INITIAL_VELOCITY) {
+            setDeltaMovement(new Vec3(entityData.get(DATA_INITIAL_VELOCITY)));
+        } else if (data == DATA_GRAVITY) {
+            gravity = entityData.get(DATA_GRAVITY);
+        } else if (data == DATA_DIRECTION) {
+            direction = new Vec3(entityData.get(DATA_DIRECTION));
+            float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
+            setYRot(yaw);
+            yRotO = yaw;
+        } else if (data == DATA_LIFETIME) {
+            lifetime = entityData.get(DATA_LIFETIME);
+        }
+    }
+
+    public final void configure(LivingEntity owner, ItemStack weapon, SwordProjectileComponent component, float damage) {
+        setOwner(owner);
+        firedFromWeapon = weapon.copy();
+        setProjectileComponent(component);
+        baseAttackDamage = damage;
+        AttributeInstance knockback = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
+        baseKnockback = knockback == null ? 0.0F : (float) knockback.getValue();
+    }
+
+    public final void setProjectileComponent(SwordProjectileComponent component) {
+        this.component = component;
+        gravity = component.gravity();
+        lifetime = component.existTicks();
+        entityData.set(DATA_GRAVITY, gravity);
+        entityData.set(DATA_LIFETIME, lifetime);
+    }
+
+    public final @Nullable SwordProjectileComponent getProjectileComponent() {
+        return component;
+    }
+
+    @Override
+    public @Nullable ItemStack getWeaponItem() {
         return firedFromWeapon;
     }
 
-    public void setWeapon(ItemStack weapon) {
-        firedFromWeapon = weapon;
+    public final int getLifetime() {
+        return lifetime;
     }
 
-    protected float getBaseDamage() {
-        return baseAttackDamage;
-    }
-
-    protected float getBaseKnockBack() {
-        return baseKnockBack;
-    }
-
-    public SwordProjectile addAttackDamage(float attackDamage) {
-        this.baseAttackDamage += attackDamage;
+    public final SwordProjectile addAttackDamage(float damage) {
+        baseAttackDamage += damage;
         return this;
     }
 
-    public SwordProjectile addKnockBack(float knockBack) {
-        this.baseKnockBack += knockBack;
-        return this;
+    protected final void clearKnockback() {
+        baseKnockback = 0.0F;
+        bonusKnockback = 0.0F;
     }
-
-    public void setProjComponent(SwordProjectileComponent projComponent) {
-        this.projComponent = projComponent;
-        this.gravity = projComponent.gravity();
-        this.lifetime = projComponent.existTicks();
-        this.entityData.set(DATA_INIT_GRAVITY, gravity);
-        this.entityData.set(DATA_LIFETIME, lifetime);
-    }
-
-    LivingEntity target;
 
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        var owner1 = getOwner();
-        if (owner1 instanceof LivingEntity owner) {
-            AttributeInstance instance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
-            if (instance != null) {
-                this.knockBack += (float) instance.getValue();
-            }
+        if (!level().isClientSide && component != null && component.trackType().isPresent())
+            acquireTrackingTarget();
+    }
 
-            var entities = level().getEntities(this, getBoundingBox().inflate(50), e -> e instanceof LivingEntity living && living.isAlive() && e != owner1);
-            entities.sort(Comparator.comparingDouble(a -> a.distanceToSqr(this)));
-            for (Entity entity : entities) {
-                if (entity instanceof LivingEntity living) {
-                    target = living;
-                    break;
-                }
-            }
+    private void acquireTrackingTarget() {
+        if (!(getOwner() instanceof LivingEntity owner)) return;
+        trackingTarget = level().getEntities(this, getBoundingBox().inflate(50.0), entity -> entity instanceof LivingEntity living
+                        && living.isAlive() && ProjectileHitRules.canHit(owner, living)).stream()
+                .map(LivingEntity.class::cast)
+                .min(Comparator.comparingDouble(this::distanceToSqr))
+                .orElse(null);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level().isClientSide) SwordProjectileVisualBridge.tick(this);
+        if (component != null) {
+            applyGravity();
+            updateTracking(component);
         }
+        if (!level().isClientSide && tickCount >= lifetime) discard();
+    }
 
+    private void updateTracking(SwordProjectileComponent component) {
+        if (trackingTarget == null || !trackingTarget.isAlive() || component.trackType().isEmpty())
+            return;
+        Vec3 motion = getDeltaMovement();
+        Vec3 targetDirection = trackingTarget.getBoundingBox().getCenter().subtract(position()).normalize().scale(motion.length());
+        double angle = LibMathUtils.angleBetween(motion, targetDirection);
+        setDeltaMovement(component.trackType().get().calDeltaMovement(motion, targetDirection, angle));
+    }
+
+    @Override
+    protected boolean canHitEntity(Entity target) {
+        return remainingHits > 0 && ProjectileHitRules.canHit(getOwner(), target);
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        if (!level().isClientSide) hurtTarget(result.getEntity());
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        if (level().isClientSide) return;
+        level().broadcastEntityEvent(this, EVENT_BLOCK_HIT);
+        if (!survivesBlockHit) discard();
+    }
+
+    protected boolean hurtTarget(Entity target) {
+        if (!canHitEntity(target)) return false;
+        Entity impacted = ProjectileHitRules.impactedEntity(target);
+        if (!(impacted instanceof LivingEntity living) || !impacted.hurt(damageSource(), baseAttackDamage))
+            return false;
+        applyHitEffect(impacted);
+        level().broadcastEntityEvent(this, EVENT_ENTITY_HIT);
+        LibEntityUtils.knockBackA2B(this, living, (baseKnockback + bonusKnockback) * 0.5, 0.2);
+        if (--remainingHits <= 0) discard();
+        return true;
+    }
+
+    protected void applyHitEffect(Entity target) {}
+
+    public DamageSource damageSource() {
+        return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, getOwner());
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == EVENT_ENTITY_HIT) SwordProjectileVisualBridge.entityHit(this);
+        else if (id == EVENT_BLOCK_HIT) SwordProjectileVisualBridge.blockHit(this);
+        else super.handleEntityEvent(id);
+    }
+
+    @Override
+    public void shootFromRotation(Entity shooter, float x, float y, float z, float velocity, float inaccuracy) {
+        float directionX = -Mth.sin(y * Mth.DEG_TO_RAD) * Mth.cos(x * Mth.DEG_TO_RAD);
+        float directionY = -Mth.sin((x + z) * Mth.DEG_TO_RAD);
+        float directionZ = Mth.cos(y * Mth.DEG_TO_RAD) * Mth.cos(x * Mth.DEG_TO_RAD);
+        shoot(directionX, directionY, directionZ, velocity, inaccuracy);
+        Vec3 ownerMovement = shooter.getKnownMovement().scale(0.25F);
+        setDeltaMovement(getDeltaMovement().add(ownerMovement.x, shooter.onGround() ? 0.0 : ownerMovement.y, ownerMovement.z));
+        entityData.set(DATA_INITIAL_VELOCITY, getDeltaMovement().toVector3f());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (component != null)
+            SwordProjectileComponent.CODEC.encodeStart(NbtOps.INSTANCE, component).result()
+                    .ifPresent(value -> tag.put("ProjectileComponent", value));
+        if (!firedFromWeapon.isEmpty()) tag.put("Weapon", firedFromWeapon.save(new CompoundTag()));
+        tag.putFloat("BaseDamage", baseAttackDamage);
+        tag.putFloat("BaseKnockback", baseKnockback);
+        tag.putFloat("BonusKnockback", bonusKnockback);
+        tag.putInt("RemainingHits", remainingHits);
+        tag.putBoolean("SurvivesBlockHit", survivesBlockHit);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("ProjectileComponent"))
+            SwordProjectileComponent.CODEC.parse(NbtOps.INSTANCE, tag.get("ProjectileComponent")).result()
+                    .ifPresent(this::setProjectileComponent);
+        firedFromWeapon = tag.contains("Weapon") ? ItemStack.of(tag.getCompound("Weapon")) : ItemStack.EMPTY;
+        baseAttackDamage = tag.getFloat("BaseDamage");
+        baseKnockback = tag.getFloat("BaseKnockback");
+        bonusKnockback = tag.getFloat("BonusKnockback");
+        remainingHits = tag.getInt("RemainingHits");
+        survivesBlockHit = tag.getBoolean("SurvivesBlockHit");
+    }
+
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        buffer.writeBoolean(component != null);
+        if (component != null) SwordProjectileComponent.STREAM_CODEC.encode(buffer, component);
+        buffer.writeItem(firedFromWeapon);
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf buffer) {
+        if (buffer.readBoolean())
+            setProjectileComponent(SwordProjectileComponent.STREAM_CODEC.decode(buffer));
+        firedFromWeapon = buffer.readItem();
+    }
+
+    public Vec3 getProjectileDirection() {
+        return direction;
     }
 
     @Override
@@ -161,85 +270,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (projComponent != null) {
-            if (!level().isClientSide() && tickCount >= projComponent.existTicks())
-                discard();
-            this.applyGravity();
-            if (target != null && target.isAlive()) {
-
-                Vec3 motion = getDeltaMovement();
-                Vec3 dir = target.position().add(0, target.getBoundingBox().getYsize() * 0.5, 0).subtract(this.position())
-                        .normalize().scale(motion.length());
-                double angle = LibMathUtils.angleBetween(motion, dir);
-
-                if (projComponent.trackType().isPresent()) {
-                    this.setDeltaMovement(projComponent.trackType().get().calDeltaMovement(motion, dir, angle));
-                }
-            }
-        }
-        if (!level().isClientSide && tickCount >= lifetime) {
-            discard();
-        }
-// todo projectile doCollisionAttack(this::canHitEntity, this::doHurt);
-    }
-
-    @Override
-    protected boolean canHitEntity(Entity target) {
-        return hitCount > 0 && ProjectileHitRules.canHit(getOwner(), target);
-    }
-
-    @Override
-    protected void onHitEntity(EntityHitResult result) {
-        if (!level().isClientSide) {
-            doHurt(result.getEntity());
-        }
-    }
-
-    @Override
-    protected void onHitBlock(BlockHitResult result) {
-        super.onHitBlock(result);
-        if (!canPenalize && !level().isClientSide) discard();
-    }
-
-    public DamageSource damageSource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, getOwner());
-    }
-
-    protected boolean doHurt(Entity target) {
-        if (!canHitEntity(target)) {
-            return false;
-        }
-        Entity impacted = ProjectileHitRules.impactedEntity(target);
-        if (!(impacted instanceof LivingEntity living)) {
-            return false;
-        }
-        float damage = getBaseDamage() * attackDamageFactor;
-        if (!impacted.hurt(damageSource(), damage)) {
-            return false;
-        }
-        applyHitEffect(impacted);
-        float attackKnockBack = getBaseKnockBack() + knockBack;
-        LibEntityUtils.knockBackA2B(this, living, attackKnockBack * 0.5, 0.2);
-        if (--hitCount <= 0) {
-            discard();
-        }
+    public boolean fireImmune() {
         return true;
-    }
-
-    protected void applyHitEffect(Entity target) {
-    }
-
-    @Override
-    public void shootFromRotation(Entity shooter, float x, float y, float z, float velocity, float inaccuracy) {
-        float f = -Mth.sin(y * 0.017453292F) * Mth.cos(x * 0.017453292F);
-        float f1 = -Mth.sin((x + z) * 0.017453292F);
-        float f2 = Mth.cos(y * 0.017453292F) * Mth.cos(x * 0.017453292F);
-        this.shoot(f, f1, f2, velocity, inaccuracy);
-        Vec3 vec3 = shooter.getKnownMovement().scale(0.25f);
-        this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, shooter.onGround() ? 0.0 : vec3.y, vec3.z));
-        this.entityData.set(DATA_INIT_SPEED, getDeltaMovement().toVector3f());
     }
 
     @Override
@@ -257,22 +289,13 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile {
         return false;
     }
 
-    @Override//空气阻力
+    @Override
     protected float getInertia() {
-        return 1;
+        return 1.0F;
     }
 
     @Override
     protected ParticleOptions getTrailParticle() {
         return null;
-    }
-
-    public SwordProjectile setExistTime(int time) {
-        lifetime = time;
-        return this;
-    }
-
-    public Vec3 getProjectileDirection() {
-        return direction;
     }
 }

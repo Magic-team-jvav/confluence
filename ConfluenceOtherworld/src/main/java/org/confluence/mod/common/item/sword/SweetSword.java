@@ -9,8 +9,8 @@ import org.confluence.mod.common.init.ModEffects;
 import org.mesdag.portlib.event.entity.living.PortMobEffectEvent;
 
 public class SweetSword extends BaseSwordItem {
-    public SweetSword(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifierBuilder) {
-        super(tier, rarity, rawDamage, rawSpeed, modifierBuilder);
+    public SweetSword(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, SwordDefinition.Builder definition) {
+        super(tier, rarity, rawDamage, rawSpeed, definition);
     }
 
     public static void applyEffects(PortMobEffectEvent.Applicable event) {

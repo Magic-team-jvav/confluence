@@ -33,12 +33,12 @@ public abstract class AreaSwordProjectile extends SwordProjectile {
         this.halfHeight = requirePositive(halfHeight, "Area sword half height");
         this.halfDepth = requirePositive(halfDepth, "Area sword half depth");
         this.verticalOffset = requireFinite(verticalOffset, "Area sword vertical offset");
-        canPenalize = true;
+        survivesBlockHit = true;
     }
 
     @Override
     public void tick() {
-        if (!level().isClientSide && (hitCount == 0 || tickCount >= lifetime)) {
+        if (!level().isClientSide && (remainingHits == 0 || tickCount >= lifetime)) {
             discard();
             return;
         }
@@ -112,7 +112,7 @@ public abstract class AreaSwordProjectile extends SwordProjectile {
         AABB searchBox = new AABB(pose.center(), pose.center()).inflate(radius);
         for (Entity target : level().getEntities(this, searchBox, this::canHitEntity)) {
             if (isInsideArea(pose, target.getBoundingBox())) {
-                doHurt(target);
+                hurtTarget(target);
             }
         }
     }

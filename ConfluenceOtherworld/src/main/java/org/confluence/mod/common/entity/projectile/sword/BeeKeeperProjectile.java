@@ -72,7 +72,6 @@ public class BeeKeeperProjectile extends SwordProjectile {
             this.direction = new Vec3(Mth.sin(random.nextFloat() * Mth.TWO_PI) * 0.001f, 0.002f * random.nextFloat() + 0.004f, Mth.cos(random.nextFloat() * Mth.TWO_PI) * 0.001f);
             this.entityData.set(DATA_DIRECTION, direction.toVector3f());
         }
-        this.knockBack = 0;
-        this.baseKnockBack = 0;
+        clearKnockback();
     }
 }

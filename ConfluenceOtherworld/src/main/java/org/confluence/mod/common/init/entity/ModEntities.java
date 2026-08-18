@@ -121,6 +121,7 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<CrystalChargeProjectile>> CRYSTAL_CHARGE_2 = register("crystal_charge_2", id -> EntityType.Builder.<CrystalChargeProjectile>of(CrystalChargeProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
 
     // 剑气
+    public static final RegistryObject<EntityType<GeoSwordProjectile>> GEO_SWORD_PROJECTILE = register("geo_sword_projectile", id -> EntityType.Builder.of(GeoSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<IceBladeSwordProjectile>> ICE_BLADE_SWORD = register("ice_blade_sword", id -> EntityType.Builder.of(IceBladeSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<StarFuryProjectile>> STAR_FURY = register("star_fury", id -> EntityType.Builder.of(StarFuryProjectile::new, MobCategory.MISC).sized(1F, 1F).build(id.toString()));//星怒弹幕
     public static final RegistryObject<EntityType<EnchantedSwordProjectile>> ENCHANTED_SWORD = register("enchanted_sword", id -> EntityType.Builder.of(EnchantedSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));

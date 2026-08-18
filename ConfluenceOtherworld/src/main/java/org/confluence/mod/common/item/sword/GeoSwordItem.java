@@ -17,10 +17,6 @@ import java.util.function.Consumer;
 public class GeoSwordItem extends BaseSwordItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public GeoSwordItem(Tier tier, int rawDamage, float rawSpeed, Properties properties) {
-        super(tier, rawDamage, rawSpeed, properties);
-    }
-
     public GeoSwordItem(Tier tier, int rawDamage, float rawSpeed) {
         super(tier, rawDamage, rawSpeed);
     }
@@ -29,8 +25,8 @@ public class GeoSwordItem extends BaseSwordItem implements GeoItem {
         super(tier, rarity, rawDamage, rawSpeed);
     }
 
-    public GeoSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifier) {
-        super(tier, rarity, rawDamage, rawSpeed, modifier);
+    public GeoSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, SwordDefinition.Builder definition) {
+        super(tier, rarity, rawDamage, rawSpeed, definition);
     }
 
     @Override

@@ -45,9 +45,9 @@ public record AboveFallenGeneration(
     ).apply(instance, AboveFallenGeneration::new));
 
     @Override
-    public void genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float speed, Supplier<? extends @Nullable Projectile> proj) {
+    public int genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float speed, Supplier<? extends @Nullable Projectile> proj) {
         var projectile = proj.get();
-        if (projectile == null) return;
+        if (projectile == null) return 0;
         Vec3 eye = owner.getEyePosition();
         LivingEntity target = LibEntityUtils.getAABBAngleTarget(eye, eye.add(owner.getForward().normalize().scale(range)), owner.level(), owner, range, maxAngle, e -> LibEntityUtils.canHitEntity(e, projectile.getOwner()));
         float actualInaccuracy;
@@ -82,7 +82,7 @@ public record AboveFallenGeneration(
         projectile.setOwner(owner);
         projectile.setPos(firePos);
         projectile.shoot(projVel.get(Direction.Axis.X), projVel.get(Direction.Axis.Y), projVel.get(Direction.Axis.Z), speed, actualInaccuracy);
-        owner.level().addFreshEntity(projectile);
+        return owner.level().addFreshEntity(projectile) ? 1 : 0;
     }
 
 

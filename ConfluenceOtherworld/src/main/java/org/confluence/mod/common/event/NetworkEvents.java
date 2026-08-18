@@ -19,6 +19,7 @@ public final class NetworkEvents {
         handler.registerInGameC2S(GiveBannerPacketC2S.class, GiveBannerPacketC2S.ID, GiveBannerPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(GoingOldschoolPacketC2S.class, GoingOldschoolPacketC2S.ID, GoingOldschoolPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(HookThrowingPacketC2S.class, HookThrowingPacketC2S.ID, HookThrowingPacketC2S.STREAM_CODEC);
+        handler.registerInGameC2S(InspectPacketC2S.class, InspectPacketC2S.ID, InspectPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(HouseSelectPacketC2S.class, HouseSelectPacketC2S.ID, HouseSelectPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(LeftClickItemActionPacketC2S.class, LeftClickItemActionPacketC2S.ID, LeftClickItemActionPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(KeyRequestPacketC2S.class, KeyRequestPacketC2S.ID, KeyRequestPacketC2S.STREAM_CODEC);
@@ -61,6 +62,7 @@ public final class NetworkEvents {
         handler.registerInGameS2C(PlayerDeathInfoPacketS2C.class, PlayerDeathInfoPacketS2C.ID, PlayerDeathInfoPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(RepeaterShootingPayloadS2C.class, RepeaterShootingPayloadS2C.ID, RepeaterShootingPayloadS2C.STREAM_CODEC);
         handler.registerInGameS2C(SecretFlagSyncPacketS2C.class, SecretFlagSyncPacketS2C.ID, SecretFlagSyncPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(ShotFeedbackPacketS2C.class, ShotFeedbackPacketS2C.ID, ShotFeedbackPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(StarPhasesPacketS2C.class, StarPhasesPacketS2C.ID, StarPhasesPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SummonSyncPacketS2C.class, SummonSyncPacketS2C.ID, SummonSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SyncEnemyBannerEntriesPacketS2C.class, SyncEnemyBannerEntriesPacketS2C.ID, SyncEnemyBannerEntriesPacketS2C.STREAM_CODEC);

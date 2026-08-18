@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -13,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
@@ -56,7 +58,9 @@ public final class ItemEvents {
         PortEventHandler.addListener(ItemEvents::attributeModifier);
         PortEventHandler.addListener(ItemEvents::toss);
         PortEventHandler.addListener(ItemEvents::gunFire);
+        PortEventHandler.addListener(ItemEvents::gun$Use);
         PortEventHandler.addListener(ItemEvents::gun$ShrinkBullet);
+        PortEventHandler.addListener(ItemEvents::gun$AmmoData);
         PortEventHandler.addListener(ItemEvents::gun$AmmoSelection);
         PortEventHandler.addListener(ItemEvents::gun$InventoryExtra);
         PortEventHandler.addListener(ItemEvents::shimmerItemTransmutation$Pre);
@@ -119,7 +123,16 @@ public final class ItemEvents {
 
     private static void gunFire(GunEvent.GunFireEvent event) {
         if (event.getGun() instanceof ManaGunItem) {
+            event.setAmmo(ItemStack.EMPTY);
             event.setFire(true);
+        }
+    }
+
+    private static void gun$Use(GunEvent.UseGunEvent event) {
+        if (event.getGun() instanceof ManaGunItem manaGun
+                && event.getPlayer() instanceof ServerPlayer player
+                && !manaGun.consumeMana(player, player.getMainHandItem())) {
+            event.setCanceled(true);
         }
     }
 
@@ -129,6 +142,14 @@ public final class ItemEvents {
         } else if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
             event.setCanceled(true);
         }
+    }
+
+    private static void gun$AmmoData(GunEvent.AmmoDataEvent event) {
+        Player player = event.getPlayer();
+        event.setVelocity(event.getVelocity()
+                * (float) player.getAttributeValue(LibAttributes.getRangedVelocity().value()));
+        event.setKnockback(event.getKnockback()
+                * (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
     }
 
     private static void gun$AmmoSelection(GunEvent.AmmoSelectionEvent event) {

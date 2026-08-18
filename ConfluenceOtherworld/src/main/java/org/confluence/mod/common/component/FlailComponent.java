@@ -20,11 +20,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.function.Supplier;
 
-/// 链锤物品与实体共同使用的同步参数。
-///
-/// <p>球体纹理和链条纹理必须分别保存：球体纹理贴在实体模型上，链条纹理只用于连接玩家手部
-/// 与球体的分段四边形。将两者混在同一字段会让球体引用不存在的链条文件，也无法为不同链锤
-/// 正确选择链条外观。</p>
+/// 链锤物品与实体共同使用的参数。
 ///
 /// @param damageFactor 伤害系数，基于玩家对应攻击属性计算
 /// @param spinRadius   旋转阶段绕玩家手部运动的半径
@@ -91,72 +87,21 @@ public record FlailComponent(
             FlailComponent::new
     );
 
-    /// 致伤球 Ball O' Hurt 预制数据
-    public static final Supplier<FlailComponent> MACE = preset(
-            "mace", 11.0F, 1.2F, 1.2F, 1.2F, 8.0F, 1.0F, 0.05F, false);
-
-    /// 火焰链锤；点燃效果由物品子类处理。
-    public static final Supplier<FlailComponent> FLAMING_MACE = preset(
-            "flaming_mace", 11.0F, 1.2F, 1.2F, 1.2F, 8.0F, 1.0F, 0.05F, false);
-
-    /// 风锚。
-    public static final Supplier<FlailComponent> WIND_ANCHOR = preset(
-            "wind_anchor", 13.0F, 1.2F, 0.9F, 1.0F, 10.0F, 0.9F, 0.05F, true);
-
-    /// 守卫者链锤；光束行为由专用实体持有。
-    public static final Supplier<FlailComponent> GUARDIAN_FLAIL = preset(
-            "guardian_flail", 15.0F, 1.3F, 1.3F, 1.3F, 11.0F, 1.2F, 0.04F,
-            true, ModEntities.GUARDIAN_FLAIL_ENTITY.getId());
-
-    /// 远古守卫者链锤；专用实体最多同时维护三条光束。
-    public static final Supplier<FlailComponent> ANCIENT_GUARDIAN_FLAIL = preset(
-            "ancient_guardian_flail", 15.0F, 1.3F, 1.3F, 1.3F, 14.0F, 1.2F,
-            0.04F, true, ModEntities.ANCIENT_GUARDIAN_FLAIL_ENTITY.getId());
-
-    /// 致伤球。
-    public static final Supplier<FlailComponent> BALL_O_HURT = preset(
-            "ball_o_hurt", 17.0F, 1.2F, 1.5F, 1.3F, 11.0F, 1.0F, 0.2F, true);
-
-    /// 血肉之球。
-    public static final Supplier<FlailComponent> THE_MEATBALL = preset(
-            "the_meatball", 19.0F, 1.2F, 1.5F, 1.3F, 13.0F, 1.0F, 0.2F, true);
-
-    /// 蓝月。
-    public static final Supplier<FlailComponent> BLUE_MOON = preset(
-            "blue_moon", 29.0F, 1.2F, 1.5F, 1.3F, 20.0F, 1.0F, 0.2F, true);
-
-    /// 阳炎之怒；点燃效果由物品子类处理。
-    public static final Supplier<FlailComponent> SUNFURY = preset(
-            "sunfury", 34.0F, 1.2F, 1.5F, 1.3F, 23.0F, 1.0F, 0.2F, true);
-
-    /// 太极连枷；困惑效果由物品子类处理。
-    public static final Supplier<FlailComponent> DAO_OF_POW = preset(
-            "dao_of_pow", 52.0F, 1.2F, 1.5F, 1.3F, 26.0F, 1.0F, 0.2F, true);
-
-    /// 花之力；花瓣发射周期由专用实体负责。
-    public static final Supplier<FlailComponent> FLOWER_POWER = preset(
-            "flower_power", 67.0F, 1.2F, 1.5F, 1.3F, 26.0F, 1.0F, 0.2F,
-            true, ModEntities.FLOWER_POWER_FLAIL.getId());
-
-    /// 滴滴怪致残者；收回时的血肉弹由专用实体负责。
-    public static final Supplier<FlailComponent> DRIPPLER_CRIPPLER = preset(
-            "drippler_crippler", 55.0F, 1.2F, 1.5F, 1.3F, 20.0F, 1.0F,
-            0.2F, true, ModEntities.DRIPPLER_CRIPPLER_FLAIL.getId());
-
-    /// 猪鲨链球；气泡发射由专用实体负责。
-    public static final Supplier<FlailComponent> FLAIRON = preset(
-            "flairon", 67.0F, 1.2F, 1.8F, 1.8F, 25.0F, 1.5F, 0.2F,
-            true, ModEntities.FLAIRON_FLAIL.getId());
-
-    /// 链刃；实体创建后直接投出。
-    public static final Supplier<FlailComponent> CHAIN_KNIFE = preset(
-            "chain_knife", 6.0F, 1.2F, 1.2F, 1.3F, 10.0F, 1.0F, 0.0F,
-            true, ModEntities.CHAIN_KNIFE_FLAIL.getId());
-
-    /// 锚；实体创建后直接投出并受重力影响。
-    public static final Supplier<FlailComponent> ANCHOR = preset(
-            "anchor", 35.0F, 1.2F, 1.2F, 1.3F, 100.0F, 1.0F, 0.05F,
-            true, ModEntities.ANCHOR_FLAIL.getId());
+    public static final Supplier<FlailComponent> MACE = preset("mace", 11.0F, 1.2F, 1.2F, 1.2F, 8.0F, 1.0F, 0.05F, false);
+    public static final Supplier<FlailComponent> FLAMING_MACE = preset("flaming_mace", 11.0F, 1.2F, 1.2F, 1.2F, 8.0F, 1.0F, 0.05F, false);
+    public static final Supplier<FlailComponent> WIND_ANCHOR = preset("wind_anchor", 13.0F, 1.2F, 0.9F, 1.0F, 10.0F, 0.9F, 0.05F, true);
+    public static final Supplier<FlailComponent> GUARDIAN_FLAIL = preset("guardian_flail", 15.0F, 1.3F, 1.3F, 1.3F, 11.0F, 1.2F, 0.04F, true, ModEntities.GUARDIAN_FLAIL_ENTITY.getId());
+    public static final Supplier<FlailComponent> ANCIENT_GUARDIAN_FLAIL = preset("ancient_guardian_flail", 15.0F, 1.3F, 1.3F, 1.3F, 14.0F, 1.2F, 0.04F, true, ModEntities.ANCIENT_GUARDIAN_FLAIL_ENTITY.getId());
+    public static final Supplier<FlailComponent> BALL_O_HURT = preset("ball_o_hurt", 17.0F, 1.2F, 1.5F, 1.3F, 11.0F, 1.0F, 0.2F, true);
+    public static final Supplier<FlailComponent> THE_MEATBALL = preset("the_meatball", 19.0F, 1.2F, 1.5F, 1.3F, 13.0F, 1.0F, 0.2F, true);
+    public static final Supplier<FlailComponent> BLUE_MOON = preset("blue_moon", 29.0F, 1.2F, 1.5F, 1.3F, 20.0F, 1.0F, 0.2F, true);
+    public static final Supplier<FlailComponent> SUNFURY = preset("sunfury", 34.0F, 1.2F, 1.5F, 1.3F, 23.0F, 1.0F, 0.2F, true);
+    public static final Supplier<FlailComponent> DAO_OF_POW = preset("dao_of_pow", 52.0F, 1.2F, 1.5F, 1.3F, 26.0F, 1.0F, 0.2F, true);
+    public static final Supplier<FlailComponent> FLOWER_POWER = preset("flower_power", 67.0F, 1.2F, 1.5F, 1.3F, 26.0F, 1.0F, 0.2F, true, ModEntities.FLOWER_POWER_FLAIL.getId());
+    public static final Supplier<FlailComponent> DRIPPLER_CRIPPLER = preset("drippler_crippler", 55.0F, 1.2F, 1.5F, 1.3F, 20.0F, 1.0F, 0.2F, true, ModEntities.DRIPPLER_CRIPPLER_FLAIL.getId());
+    public static final Supplier<FlailComponent> FLAIRON = preset("flairon", 67.0F, 1.2F, 1.8F, 1.8F, 25.0F, 1.5F, 0.2F, true, ModEntities.FLAIRON_FLAIL.getId());
+    public static final Supplier<FlailComponent> CHAIN_KNIFE = preset("chain_knife", 6.0F, 1.2F, 1.2F, 1.3F, 10.0F, 1.0F, 0.0F, true, ModEntities.CHAIN_KNIFE_FLAIL.getId());
+    public static final Supplier<FlailComponent> ANCHOR = preset("anchor", 35.0F, 1.2F, 1.2F, 1.3F, 100.0F, 1.0F, 0.05F, true, ModEntities.ANCHOR_FLAIL.getId());
 
     private static Supplier<FlailComponent> preset(
             String id,
@@ -169,17 +114,7 @@ public record FlailComponent(
             float gravity,
             boolean customChain
     ) {
-        return preset(
-                id,
-                damageFactor,
-                spinRadius,
-                spinSpeed,
-                throwSpeed,
-                maxDistance,
-                retractSpeed,
-                gravity,
-                customChain,
-                ModEntities.FLAIL_ENTITY.getId());
+        return preset(id, damageFactor, spinRadius, spinSpeed, throwSpeed, maxDistance, retractSpeed, gravity, customChain, ModEntities.FLAIL_ENTITY.getId());
     }
 
     private static Supplier<FlailComponent> preset(
@@ -194,28 +129,12 @@ public record FlailComponent(
             boolean customChain,
             ResourceLocation entityType
     ) {
-        ResourceLocation ballTexture =
-                Confluence.asResource("textures/entity/flail/" + id + ".png");
+        ResourceLocation ballTexture = Confluence.asResource("textures/entity/flail/" + id + ".png");
         ResourceLocation chainTexture = customChain
-                ? Confluence.asResource(
-                "textures/block/chain/" + id + ".png")
-                : ResourceLocation.withDefaultNamespace(
-                "textures/block/chain.png");
-        return () -> new FlailComponent(
-                damageFactor,
-                spinRadius,
-                spinSpeed,
-                throwSpeed,
-                maxDistance,
-                retractSpeed,
-                gravity,
-                20,
-                0.3F,
-                3,
-                ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                entityType,
-                ballTexture,
-                chainTexture);
+                ? Confluence.asResource("textures/block/chain/" + id + ".png")
+                : ResourceLocation.withDefaultNamespace("textures/block/chain.png");
+        return () -> new FlailComponent(damageFactor, spinRadius, spinSpeed, throwSpeed, maxDistance, retractSpeed,
+                gravity, 20, 0.3F, 3, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), entityType, ballTexture, chainTexture);
     }
 
     public SoundEvent getSoundEvent() {

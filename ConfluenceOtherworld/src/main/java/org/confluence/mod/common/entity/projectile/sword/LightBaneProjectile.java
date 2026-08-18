@@ -17,12 +17,12 @@ import javax.annotation.Nullable;
 public class LightBaneProjectile extends AreaSwordProjectile {
     public LightBaneProjectile(EntityType<LightBaneProjectile> entityType, Level pLevel) {
         super(entityType, pLevel, 2.4, 1.45, 1.0, 0.65, -0.15);
-        hitCount = 99999;
+        remainingHits = 99999;
     }
 
     @Override
-    protected boolean doHurt(Entity target) {
-        if (super.doHurt(target)) {
+    protected boolean hurtTarget(Entity target) {
+        if (super.hurtTarget(target)) {
             ((ServerLevel) level()).sendParticles(
                     ModParticleTypes.LIGHT_BANE.get(),
                     target.getX(),

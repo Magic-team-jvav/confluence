@@ -10,8 +10,8 @@ import org.confluence.mod.mixed.Immunity;
 public class StarFuryProjectile extends SwordProjectile implements Immunity {
     public StarFuryProjectile(EntityType<? extends SwordProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        hitCount = 2;
-        canPenalize = true;
+        remainingHits = 2;
+        survivesBlockHit = true;
     }
 
     @Override

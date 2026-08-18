@@ -29,6 +29,16 @@ public final class ModKeyBindings {
 
     // region 魔法系列
 
+    public static final Lazy<KeyMapping> GUN_SHOOT = register(() -> new KeyMapping(
+            "key.confluence.shoot", KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE,
+            GLFW.GLFW_MOUSE_BUTTON_LEFT, KEY_BINDINGS_CATEGORY));
+    public static final Lazy<KeyMapping> GUN_AIM = register(() -> new KeyMapping(
+            "key.confluence.aim", KeyConflictContext.IN_GAME, InputConstants.Type.MOUSE,
+            GLFW.GLFW_MOUSE_BUTTON_RIGHT, KEY_BINDINGS_CATEGORY));
+    public static final Lazy<KeyMapping> GUN_INSPECT = register(() -> new KeyMapping(
+            "key.confluence.inspect", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_R, KEY_BINDINGS_CATEGORY));
+
     /// 灵魂总览
     public static final Lazy<KeyMapping> SOUL_OVERVIEW = register(() -> new KeyMapping(
             "key.confluence.soul.overview",

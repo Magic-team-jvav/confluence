@@ -1,21 +1,17 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.item.GunItems;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEntityExtension;
 
+/// 带重力的通用子弹实体。
 public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier, IPortEntityExtension {
-    protected static final EntityDataAccessor<ItemStack> GRAVITY_BULLET = SynchedEntityData.defineId(CustomBulletEntity.class, EntityDataSerializers.ITEM_STACK);
-    protected float gravity = 0;
+    private float gravity;
 
     public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, Level level) {
         super(type, level);
@@ -26,38 +22,23 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
     }
 
     public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, LivingEntity owner, float gravity, ItemStack bullet) {
-        super(type, owner, GunItems.DUMMY_BULLET.toStack());
+        super(type, owner, bullet);
         this.gravity = gravity;
-        this.entityData.set(GRAVITY_BULLET, bullet);
+    }
+
+    public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, Level level, double x, double y, double z,
+                              ItemStack bullet, float gravity) {
+        super(type, level, x, y, z, bullet);
+        this.gravity = gravity;
+    }
+
+    public float getBulletGravity() {
+        return gravity;
     }
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        entityData.define(GRAVITY_BULLET, this.getDefaultItem());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        if (compound.contains("GravityBullet", 10)) {
-            ItemStack itemStack = ItemStack.of(compound.getCompound("GravityBullet"));
-            this.setBullet(itemStack.isEmpty() ? getDefaultItem() : itemStack);
-        } else {
-            this.setBullet(this.getDefaultItem());
-        }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.put("GravityBullet", this.getBulletStack().save(new CompoundTag()));
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        this.applyGravity();
+    protected void applyForces() {
+        applyGravity();
     }
 
     @Override
@@ -67,6 +48,18 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
 
     @Override
     public ItemStack getItem() {
-        return this.entityData.get(GRAVITY_BULLET);
+        return getBulletStack();
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        gravity = tag.getFloat("Gravity");
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putFloat("Gravity", gravity);
     }
 }

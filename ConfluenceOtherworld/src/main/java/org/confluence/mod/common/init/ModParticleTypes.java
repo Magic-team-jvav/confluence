@@ -18,6 +18,7 @@ public final class ModParticleTypes {
     public static final PortRegistryEntry<ParticleType<?>, ParticleType<WholeItemParticleOptions>> WHOLE_ITEM = PARTICLES.register("whole_item", true, WholeItemParticleOptions.CODEC, WholeItemParticleOptions.STREAM_CODEC);
     /// 满足原版弹丸的非空尾迹契约，但客户端不会为它创建可见粒子。
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> NO_TRAIL = PARTICLES.register("no_trail", false);
+    public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> LUMINITE_IMPACT = PARTICLES.register("luminite_impact", false);
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> LEAVES = PARTICLES.register("leaves", true);
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> RED_SAND = PARTICLES.register("red_sand", true);
     public static final PortRegistryEntry<ParticleType<?>, SimpleParticleType> SAND = PARTICLES.register("sand", true);

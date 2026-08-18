@@ -14,7 +14,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.ModParticleTypes;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -30,8 +29,8 @@ public class GrassSwordProjectile extends SwordProjectile {
 
     public GrassSwordProjectile(EntityType<GrassSwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
-        this.canPenalize = true;
-        this.hitCount = 99999;
+        survivesBlockHit = true;
+        remainingHits = 99999;
     }
 
     @Override
@@ -69,9 +68,6 @@ public class GrassSwordProjectile extends SwordProjectile {
 
             Vec3 transformed = new Vec3(q.transform(new Vector3f(0, 0, 1)));
             setDeltaMovement(transformed);
-        }
-        if (tickCount % 2 == 0 && level().isClientSide) {
-            level().addParticle(ModParticleTypes.LEAVES.get(), getX(), getY(), getZ(), 0, 0, 0);
         }
     }
 

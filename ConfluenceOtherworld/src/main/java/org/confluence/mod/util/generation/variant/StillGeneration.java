@@ -25,17 +25,16 @@ public record StillGeneration(Vec3 offset) implements IGeneration {
     }
 
     @Override
-    public void genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float velocity, Supplier<? extends @Nullable Projectile> proj) {
+    public int genProjectile(LivingEntity owner, @Nullable ItemStack weapon, float velocity, Supplier<? extends @Nullable Projectile> proj) {
         Projectile projectile = proj.get();
-        if (projectile == null) return;
+        if (projectile == null) return 0;
         projectile.setOwner(owner);
-        // todo 计算yaw
         Vec3 pos = owner.position().add(0, 1, 0);
         if (owner instanceof Player player) {
             pos = pos.add(LibEntityUtils.getPlayerHandPos(player));
         }
         projectile.setPos(pos);
-        owner.level().addFreshEntity(projectile);
+        return owner.level().addFreshEntity(projectile) ? 1 : 0;
     }
 
     @Override

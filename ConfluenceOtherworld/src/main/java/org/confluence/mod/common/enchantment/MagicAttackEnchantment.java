@@ -4,7 +4,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
-public class MagicAttackEnchantment extends AbstractEnchantment {
+public class MagicAttackEnchantment extends AbstractManaEnchantment {
     public MagicAttackEnchantment(EnchantmentCategory category, EquipmentSlot[] applicableSlots, int maxLevel) {
         super(category, applicableSlots, maxLevel);
     }

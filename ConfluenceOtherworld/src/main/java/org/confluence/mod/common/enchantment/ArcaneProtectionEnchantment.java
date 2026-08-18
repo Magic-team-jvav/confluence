@@ -5,7 +5,7 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import org.confluence.lib.util.LibEnchantmentUtils;
 
-public class ArcaneProtectionEnchantment extends AbstractEnchantment {
+public class ArcaneProtectionEnchantment extends AbstractManaEnchantment {
     public ArcaneProtectionEnchantment() {
         super(EnchantmentCategory.ARMOR, LibEnchantmentUtils.SlotGroups.ARMOR, 4);
     }

@@ -7,7 +7,7 @@ import org.confluence.lib.util.LibEnchantmentUtils;
 import org.confluence.lib.util.consumer.Consumer3;
 import org.confluence.mod.common.init.ModEnchantments;
 
-public class ManaAffectiveEnchantment extends AbstractEnchantment {
+public class ManaAffectiveEnchantment extends AbstractManaEnchantment {
     private final Consumer3<LivingEntity, Entity, Integer> affective;
 
     public ManaAffectiveEnchantment(int maxLevel, Consumer3<LivingEntity, Entity, Integer> affective) {

@@ -5,7 +5,7 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.MendingEnchantment;
 import org.confluence.lib.util.LibEnchantmentUtils;
 
-public class ManaMendingEnchantment extends AbstractEnchantment {
+public class ManaMendingEnchantment extends AbstractManaEnchantment {
     public ManaMendingEnchantment() {
         super(EnchantmentCategory.BREAKABLE, LibEnchantmentUtils.SlotGroups.ANY, 3);
     }

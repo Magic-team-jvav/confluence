@@ -4,10 +4,10 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
-public abstract class AbstractEnchantment extends Enchantment {
+public abstract class AbstractManaEnchantment extends Enchantment {
     private final int maxLevel;
 
-    public AbstractEnchantment(EnchantmentCategory category, EquipmentSlot[] applicableSlots, int maxLevel) {
+    public AbstractManaEnchantment(EnchantmentCategory category, EquipmentSlot[] applicableSlots, int maxLevel) {
         super(Rarity.UNCOMMON, category, applicableSlots);
         this.maxLevel = maxLevel;
     }

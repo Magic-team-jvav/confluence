@@ -29,7 +29,6 @@ public class HellFireEffect extends PortMobEffect {
 
     @Override
     public void onEffectStarted(LivingEntity living, int amplifier) {
-        super.onEffectStarted(living, amplifier);
         living.setRemainingFireTicks(1);
         living.level().explode(
                 living,

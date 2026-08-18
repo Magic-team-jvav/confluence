@@ -182,6 +182,12 @@ public class MaterialItems {
     public static final DeferredItem<Item> MECHANICAL_WAGON_PIECE = register("mechanical_wagon_piece", ModRarity.MASTER);
     public static final DeferredItem<Item> MECHANICAL_BATTERY_PIECE = register("mechanical_battery_piece", ModRarity.MASTER);
 
+    public static final DeferredItem<Item> SOLAR_FRAGMENT = register("solar_fragment", ModRarity.CYAN);
+    public static final DeferredItem<Item> VORTEX_FRAGMENT = register("vortex_fragment", ModRarity.CYAN);
+    public static final DeferredItem<Item> NEBULA_FRAGMENT = register("nebula_fragment", ModRarity.CYAN);
+    public static final DeferredItem<Item> STARDUST_FRAGMENT = register("stardust_fragment", ModRarity.CYAN);
+
+
     public static DeferredItem<Item> register(String id) {
         return ITEMS.register(id, () -> new Item(new Item.Properties()));
 

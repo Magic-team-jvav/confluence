@@ -3023,6 +3023,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.MECHANICAL_WHEEL_PIECE.get(), "机械车轮片");
         add(MaterialItems.MECHANICAL_WAGON_PIECE.get(), "机械车体片");
         add(MaterialItems.MECHANICAL_BATTERY_PIECE.get(), "机械电池片");
+        add(MaterialItems.SOLAR_FRAGMENT.get(), "日耀碎片");
+        add(MaterialItems.VORTEX_FRAGMENT.get(), "星旋碎片");
+        add(MaterialItems.NEBULA_FRAGMENT.get(), "星云碎片");
+        add(MaterialItems.STARDUST_FRAGMENT.get(), "星尘碎片");
         add(MaterialItems.SPECTRE_INGOT.get(), "幽灵锭");
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");
@@ -4587,6 +4591,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.RUNE_ROBE.get(), "符文长袍");
         add(VanityArmorItems.WEDDING_VEIL.get(), "面纱");
         add(VanityArmorItems.WEDDING_DRESS.get(), "婚裙");
+
+        add(VanityArmorItems.ALIEN_HAT.get(), "外星人猫帽");
+
         // add(VanityArmorItems.BUCKET_HAT.get(), "水桶帽");
         add(VanityArmorItems.DYE.get(), "染料");
         add(VanityArmorItems.RED_DYE.get(), "红染料");

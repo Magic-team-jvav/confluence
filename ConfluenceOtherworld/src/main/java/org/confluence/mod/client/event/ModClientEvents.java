@@ -536,6 +536,12 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FLIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_VOIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_BRIGHT);
+
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOLAR_FRAGMENT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.VORTEX_FRAGMENT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.NEBULA_FRAGMENT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.STARDUST_FRAGMENT);
+
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(new EnemyBannerItemRenderer(), ModItems.ENEMY_BANNER);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
@@ -597,6 +603,12 @@ public final class ModClientEvents {
                 MaterialItems.SOUL_OF_FLIGHT,
                 MaterialItems.SOUL_OF_BRIGHT,
                 MaterialItems.SOUL_OF_VOIGHT,
+
+                MaterialItems.SOLAR_FRAGMENT,
+                MaterialItems.VORTEX_FRAGMENT,
+                MaterialItems.NEBULA_FRAGMENT,
+                MaterialItems.STARDUST_FRAGMENT,
+
                 AxeItems.LUCY_THE_AXE
         );
         ModClientSetups.asCustomModel(modelRegistry, TreasureBagItems.ITEMS.getEntries().toArray(DeferredHolder[]::new));

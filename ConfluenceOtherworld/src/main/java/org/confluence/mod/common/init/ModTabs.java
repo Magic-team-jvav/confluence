@@ -940,9 +940,14 @@ public final class ModTabs {
                         monster_drops.accept(MaterialItems.ANCIENT_CLOTH.get());
                         monster_drops.accept(MaterialItems.ECTOPLASM.get());
                         monster_drops.accept(ModItems.WHOOPIE_CUSHION.get());
+                        monster_drops.accept(MaterialItems.FIRE_FEATHER.get());
                         monster_drops.accept(MaterialItems.MECHANICAL_WHEEL_PIECE.get());
                         monster_drops.accept(MaterialItems.MECHANICAL_WAGON_PIECE.get());
                         monster_drops.accept(MaterialItems.MECHANICAL_BATTERY_PIECE.get());
+                        monster_drops.accept(MaterialItems.SOLAR_FRAGMENT.get());
+                        monster_drops.accept(MaterialItems.VORTEX_FRAGMENT.get());
+                        monster_drops.accept(MaterialItems.NEBULA_FRAGMENT.get());
+                        monster_drops.accept(MaterialItems.STARDUST_FRAGMENT.get());
 
                         CreativeModeTab.Output plants_herbs = GroupItem.belongsTo("plants_herbs", output);
                         plants_herbs.accept(MaterialItems.WATERLEAF.get());
@@ -1658,6 +1663,7 @@ public final class ModTabs {
                         // output.accept(VanityArmorItems.BUCKET_HAT.get());
                         output.accept(VanityArmorItems.WEDDING_VEIL.get());
                         output.accept(VanityArmorItems.WEDDING_DRESS.get());
+                        output.accept(VanityArmorItems.ALIEN_HAT.get());
                         output.accept(TCItems.DIVING_HELMET);
 
                         CreativeModeTab.Output dyes = GroupItem.belongsTo("dyes", output);

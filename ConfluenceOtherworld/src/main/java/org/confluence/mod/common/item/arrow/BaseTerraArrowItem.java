@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseTerraArrowItem extends ArrowItem {
@@ -25,18 +24,8 @@ public class BaseTerraArrowItem extends ArrowItem {
 
     @Override
     public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter, @Nullable ItemStack weapon) {
-        if (weapon != null && stack.getItem() instanceof BaseTerraArrowItem arrowItem) {
-            BaseArrowEntity arrow = null;
-            if (weapon.getItem() instanceof BaseTerraBowItem bow) {
-                arrow = bow.createCustomArrow(shooter, stack, weapon);
-            }
-            if (arrow == null) {
-                arrow = arrowItem.createArrowEntity(shooter, stack, weapon);
-            }
-            if (weapon.getItem() instanceof BaseTerraBowItem bow) {
-                bow.modifyArrowEntity(arrow);
-            }
-            return arrow;
+        if (stack.getItem() instanceof BaseTerraArrowItem arrowItem) {
+            return arrowItem.createArrowEntity(shooter, stack, weapon);
         }
         return super.createArrow(level, stack, shooter, weapon);
     }

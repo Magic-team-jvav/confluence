@@ -2,6 +2,9 @@ package org.confluence.mod.common.item.bow;
 
 import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -9,15 +12,20 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
+import org.mesdag.portlib.wrapper.common.extensions.IPortArrowItemExtension;
 import org.mesdag.portlib.wrapper.common.extensions.IPortBowItemExtension;
+import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileWeaponItemExtension;
 
 import java.util.List;
 
@@ -50,6 +58,10 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
 
     public void modifyArrowEntity(BaseArrowEntity entity) {}
 
+    protected boolean shouldCreateCustomArrow(ItemStack ammo) {
+        return !(ammo.getItem() instanceof BaseTerraArrowItem);
+    }
+
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return ModUtils.supportsEnchantment(stack, enchantment);
@@ -67,16 +79,60 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
-        releaseUsing1211(stack, level, living, timeLeft);
-        if (!stack.is(ModTags.Items.FAST_BOW) || !(living instanceof Player player)) {
-            return;
+    public Projectile createProjectile(Level level, LivingEntity shooter, ItemStack weapon, ItemStack ammo, boolean isCrit) {
+        BaseArrowEntity custom = shouldCreateCustomArrow(ammo) ? createCustomArrow(shooter, ammo, weapon) : null;
+        AbstractArrow arrow;
+        if (custom != null) {
+            arrow = custom;
+        } else {
+            IPortArrowItemExtension arrowItem = ammo.getItem() instanceof IPortArrowItemExtension extension
+                    ? extension : (IPortArrowItemExtension) Items.ARROW;
+            arrow = arrowItem.createArrow(level, ammo, shooter, weapon);
         }
+        if (arrow instanceof BaseArrowEntity terraArrow) {
+            terraArrow.fullPull = isCrit;
+            modifyArrowEntity(terraArrow);
+        }
+        if (isCrit) {
+            arrow.setCritArrow(true);
+        }
+        return customArrow(arrow, ammo, weapon);
+    }
+
+    @Override
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeLeft) {
+        if (!(living instanceof Player player)) return;
+        ItemStack ammunition = player.getProjectile(stack);
+        boolean hasAmmunition = !ammunition.isEmpty();
+        int chargeTicks = getUseDuration(stack) - timeLeft;
+        chargeTicks = ForgeEventFactory.onArrowLoose(stack, level, player, chargeTicks, hasAmmunition || player.getAbilities().instabuild);
+        if (chargeTicks < 0) return;
+        float power = getPowerForCharge(stack, chargeTicks);
+        if (power < 0.1F) return;
+        if (!hasAmmunition) {
+            if (!player.getAbilities().instabuild) return;
+            ammunition = Items.ARROW.getDefaultInstance();
+        }
+        List<ItemStack> projectiles = IPortProjectileWeaponItemExtension.draw(stack, ammunition, player);
+        if (level instanceof ServerLevel serverLevel && !projectiles.isEmpty()) {
+            float velocity = this instanceof ShortBowItem shortBow ? power * shortBow.getVelocityMultiplier() : power * 3.0F;
+            shoot(serverLevel, player, player.getUsedItemHand(), stack, projectiles, velocity, 1.0F, power == 1.0F, null);
+        }
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS,
+                1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + power * 0.5F);
+        player.awardStat(Stats.ITEM_USED.get(this));
+        if (!stack.is(ModTags.Items.FAST_BOW)) return;
         player.getCooldowns().addCooldown(this, 5);
         ItemStack offHandItem = player.getOffhandItem();
-        if (offHandItem.getItem() instanceof BowItem) {
+        if (offHandItem.getItem() instanceof BowItem)
             player.getCooldowns().addCooldown(offHandItem.getItem(), 5);
-        }
+    }
+
+    protected float getPowerForCharge(ItemStack stack, int chargeTicks) {
+        if (this instanceof ShortBowItem shortBow)
+            return shortBow.getShortPowerForTime(chargeTicks);
+        if (stack.is(ModTags.Items.FAST_BOW)) return getFastBowPowerForTime(chargeTicks);
+        return BowItem.getPowerForTime(chargeTicks);
     }
 
     @Override

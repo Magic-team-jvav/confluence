@@ -59,12 +59,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
     );
 
     /// 丛林地下小屋及宽泛地下结构允许出现的湿润群系。
-    private static final List<ResourceKey<Biome>> JUNGLE_STRUCTURE_BIOMES = List.of(
-            Biomes.JUNGLE,
-            Biomes.SPARSE_JUNGLE,
-            Biomes.BAMBOO_JUNGLE,
-            Biomes.LUSH_CAVES
-    );
+    private static final List<ResourceKey<Biome>> JUNGLE_STRUCTURE_BIOMES = List.of(Biomes.JUNGLE, Biomes.SPARSE_JUNGLE, Biomes.BAMBOO_JUNGLE, Biomes.LUSH_CAVES);
 
     public ModBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, provider, Confluence.MODID, existingFileHelper);
@@ -236,18 +231,12 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
         addBiomeGroups(tag(ModTags.Biomes.HAS_STRUCTURE_ICE_UNDERGROUND_CABINS), ICY_STRUCTURE_BIOMES);
         addBiomeGroups(tag(ModTags.Biomes.HAS_STRUCTURE_JUNGLE_UNDERGROUND_CABINS), JUNGLE_STRUCTURE_BIOMES);
-        tag(ModTags.Biomes.HAS_STRUCTURE_NETHER_TOWER).add(
-                Biomes.NETHER_WASTES,
-                ModBiomes.ASH_WASTELAND
-        );
+        tag(ModTags.Biomes.HAS_STRUCTURE_NETHER_TOWER).add(Biomes.NETHER_WASTES, ModBiomes.ASH_WASTELAND);
     }
 
     /// 将若干语义群系集合按声明顺序写入同一个标签。
     @SafeVarargs
-    private static void addBiomeGroups(
-            TagsProvider.TagAppender<Biome> appender,
-            List<ResourceKey<Biome>>... groups
-    ) {
+    private static void addBiomeGroups(TagsProvider.TagAppender<Biome> appender, List<ResourceKey<Biome>>... groups) {
         for (List<ResourceKey<Biome>> group : groups) {
             group.forEach(appender::add);
         }

@@ -125,12 +125,8 @@ public class TheTwins extends BaseBoss {
         boolean spazmatismAlive = spazmatism != null && spazmatism.isAlive();
         if (retinazerAlive && spazmatismAlive) {
             setPos(retinazer.position().add(spazmatism.position()).scale(0.5));
-            if (retinazer.getTarget() == null
-                    && spazmatism.getTarget() == null
-                    && retinazer.distanceTo(spazmatism) > 50.0F) {
-                Vec3 direction = spazmatism.position()
-                        .subtract(position())
-                        .normalize();
+            if (retinazer.getTarget() == null && spazmatism.getTarget() == null && retinazer.distanceTo(spazmatism) > 50.0F) {
+                Vec3 direction = spazmatism.position().subtract(position()).normalize();
                 spazmatism.addDeltaMovement(direction.scale(-1.0));
                 retinazer.addDeltaMovement(direction);
             }
@@ -186,8 +182,7 @@ public class TheTwins extends BaseBoss {
                 created.setPos(position().add(createEyeSpawnOffset()));
                 created.setMaster(this);
                 if (getTarget() != null) created.setTarget(getTarget());
-                if (prepareEyeSpawn(serverLevel, created)
-                        && serverLevel.addFreshEntity(created)) {
+                if (prepareEyeSpawn(serverLevel, created) && serverLevel.addFreshEntity(created)) {
                     retinazer = created;
                     retinazerUUID = created.getUUID();
                 } else {
@@ -201,8 +196,7 @@ public class TheTwins extends BaseBoss {
                 created.setPos(position().add(createEyeSpawnOffset()));
                 created.setMaster(this);
                 if (getTarget() != null) created.setTarget(getTarget());
-                if (prepareEyeSpawn(serverLevel, created)
-                        && serverLevel.addFreshEntity(created)) {
+                if (prepareEyeSpawn(serverLevel, created) && serverLevel.addFreshEntity(created)) {
                     spazmatism = created;
                     spazmatismUUID = created.getUUID();
                 } else {
@@ -217,10 +211,7 @@ public class TheTwins extends BaseBoss {
         double theta = random.nextFloat() * 6.28F;
         double beta = random.nextFloat() * 0.7F;
         double horizontal = 5.0 * Math.sin(beta);
-        return new Vec3(
-                horizontal * Math.cos(theta),
-                5.0 * Math.cos(beta),
-                horizontal * Math.sin(theta));
+        return new Vec3(horizontal * Math.cos(theta), 5.0 * Math.cos(beta), horizontal * Math.sin(theta));
     }
 
     private boolean needsRetinazerSpawn(ServerLevel serverLevel) {
@@ -257,13 +248,7 @@ public class TheTwins extends BaseBoss {
     private static boolean prepareEyeSpawn(ServerLevel serverLevel, Mob mob) {
         mob.yHeadRot = mob.getYRot();
         mob.yBodyRot = mob.getYRot();
-        ForgeEventFactory.onFinalizeSpawn(
-                mob,
-                serverLevel,
-                serverLevel.getCurrentDifficultyAt(mob.blockPosition()),
-                MobSpawnType.SPAWNER,
-                null,
-                null);
+        ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWNER, null, null);
         if (mob.isSpawnCancelled()) {
             mob.discard();
             return false;

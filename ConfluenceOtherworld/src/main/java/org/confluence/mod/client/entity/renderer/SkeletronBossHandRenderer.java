@@ -17,11 +17,7 @@ import software.bernie.geckolib.cache.object.GeoBone;
 /// 保证多个手实体同帧渲染时互不污染。</p>
 public class SkeletronBossHandRenderer extends BossGeoRenderer<SkeletronHand> {
     public SkeletronBossHandRenderer(EntityRendererProvider.Context context) {
-        super(context, new ExplicitGeoModel<>(
-                Confluence.asResource("geo/entity/boss/skeletron.geo.json"),
-                Confluence.asResource("textures/entity/boss/skeletron.png"),
-                null
-        ));
+        super(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/boss/skeletron.geo.json"), Confluence.asResource("textures/entity/boss/skeletron.png"), null));
         this.shadowRadius = 0.5F;
     }
 
@@ -33,7 +29,6 @@ public class SkeletronBossHandRenderer extends BossGeoRenderer<SkeletronHand> {
         if (bone.getName().equals("bone2")) {
             return;
         }
-        super.renderRecursively(poseStack, hand, bone, renderType, bufferSource, buffer, isReRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderRecursively(poseStack, hand, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

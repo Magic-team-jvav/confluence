@@ -39,51 +39,36 @@ public final class DemonEyeSurroundAction extends BTNode {
         ticksLeft = 40;
         mob.setDeltaMovement(mob.getDeltaMovement().with(Direction.Axis.Y, 0.0));
 
-        Vec3 horizontalDirection = mob.position()
-                .with(Direction.Axis.Y, target.getY())
-                .vectorTo(target.position());
-        float yaw = (float) Math.toDegrees(Mth.atan2(
-                -horizontalDirection.x, horizontalDirection.z));
+        Vec3 horizontalDirection = mob.position().with(Direction.Axis.Y, target.getY()).vectorTo(target.position());
+        float yaw = (float) Math.toDegrees(Mth.atan2(-horizontalDirection.x, horizontalDirection.z));
         if (mob.getRandom().nextInt(3) == 0) {
             yaw += mob.getRandom().nextBoolean() ? 20.0F : -20.0F;
         }
         Vec3 direction = Vec3.directionFromRotation(0.0F, yaw);
-        targetPos = direction.normalize().scale(4.0)
-                .with(Direction.Axis.Y, offsetY())
-                .add(target.position());
+        targetPos = direction.normalize().scale(4.0).with(Direction.Axis.Y, offsetY()).add(target.position());
     }
 
     @Override
     public BTStatus execute() {
         LivingEntity target = mob.getTarget();
-        if (target == null || !target.isAlive() || !mob.level().isNight()
-                || targetPos == null || ticksLeft <= 0
-                || mob.position().distanceToSqr(targetPos) <= 0.09
-                || target.position().distanceToSqr(targetPos) >= 100.0) {
+        if (target == null || !target.isAlive() || !mob.level().isNight() || targetPos == null || ticksLeft <= 0 || mob.position().distanceToSqr(targetPos) <= 0.09 || target.position().distanceToSqr(targetPos) >= 100.0) {
             return BTStatus.SUCCESS;
         }
 
         Vec3 position = mob.position();
-        if (Math.abs(position.x - targetPos.x) <= 0.1
-                || Math.abs(position.y - targetPos.y) <= 0.1
-                || Math.abs(position.z - targetPos.z) <= 0.1) {
+        if (Math.abs(position.x - targetPos.x) <= 0.1 || Math.abs(position.y - targetPos.y) <= 0.1 || Math.abs(position.z - targetPos.z) <= 0.1) {
             return BTStatus.SUCCESS;
         }
 
         Vec3 movement = mob.getDeltaMovement();
-        Vec3 acceleration = position.vectorTo(targetPos).normalize()
-                .multiply(0.08, 0.03, 0.08);
+        Vec3 acceleration = position.vectorTo(targetPos).normalize().multiply(0.08, 0.03, 0.08);
         Vec3 nextMovement = movement.add(acceleration);
-        if (angleBetween(acceleration, movement) > 15.0
-                || nextMovement.length() < 0.4) {
+        if (angleBetween(acceleration, movement) > 15.0 || nextMovement.length() < 0.4) {
             mob.setDeltaMovement(nextMovement);
             mob.hasImpulse = true;
         }
 
-        List<Player> players = mob.level().getEntities(
-                EntityType.PLAYER,
-                mob.getBoundingBox().expandTowards(nextMovement).inflate(0.15),
-                player -> !player.isSpectator());
+        List<Player> players = mob.level().getEntities(EntityType.PLAYER, mob.getBoundingBox().expandTowards(nextMovement).inflate(0.15), player -> !player.isSpectator());
         for (Player player : players) {
             mob.doHurtTarget(player);
         }

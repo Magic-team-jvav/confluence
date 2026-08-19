@@ -39,19 +39,7 @@ public class CaveBat extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(CaveBat.this),
-                                new SteeringDashAction(
-                                        CaveBat.this,
-                                        1.0,
-                                        0.5,
-                                        0.02,
-                                        20.0,
-                                        20.0,
-                                        45.0,
-                                        30)),
-                        new FlyWanderAction(CaveBat.this, 0.15, 10));
+                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(CaveBat.this), new SteeringDashAction(CaveBat.this, 1.0, 0.5, 0.02, 20.0, 20.0, 45.0, 30)), new FlyWanderAction(CaveBat.this, 0.15, 10));
             }
         };
     }
@@ -65,8 +53,7 @@ public class CaveBat extends BaseFlyingMonster {
     public void aiStep() {
         super.aiStep();
         if (!level().isClientSide) {
-            addDeltaMovement(new Vec3(
-                    0.0, Math.sin(tickCount * 0.2) * 0.03, 0.0));
+            addDeltaMovement(new Vec3(0.0, Math.sin(tickCount * 0.2) * 0.03, 0.0));
         } else if (getType() == MonsterEntities.HELL_BAT.get()) {
             spawnHellBatParticles();
         } else if (getType() == MonsterEntities.ICE_BAT.get()) {
@@ -84,37 +71,23 @@ public class CaveBat extends BaseFlyingMonster {
     /// 保留 1.21 地狱蝙蝠分布在身体两侧的熔岩粒子轨迹。
     private void spawnHellBatParticles() {
         int offset = getId() * 3;
-        float wave = Mth.cos((offset + tickCount) * 7.448451F
-                * Mth.DEG_TO_RAD + Mth.PI);
+        float wave = Mth.cos((offset + tickCount) * 7.448451F * Mth.DEG_TO_RAD + Mth.PI);
         float side = getBbWidth() * 0.5F;
         float x = Mth.cos(getYRot() * Mth.DEG_TO_RAD) * side;
         float z = Mth.sin(getYRot() * Mth.DEG_TO_RAD) * side;
         float y = (0.3F + wave * 0.45F) * getBbHeight() * 0.5F;
-        level().addParticle(
-                ParticleTypes.LAVA, getX() + x, getY() + y, getZ() + z,
-                0.0, 0.0, 0.0);
-        level().addParticle(
-                ParticleTypes.LAVA, getX() - x, getY() + y, getZ() - z,
-                0.0, 0.0, 0.0);
+        level().addParticle(ParticleTypes.LAVA, getX() + x, getY() + y, getZ() + z, 0.0, 0.0, 0.0);
+        level().addParticle(ParticleTypes.LAVA, getX() - x, getY() + y, getZ() - z, 0.0, 0.0, 0.0);
     }
 
     /// 保留 1.21 冰蝙蝠围绕身体随机散落的成对雪花粒子。
     private void spawnIceBatParticles() {
         float side = getBbWidth() * 0.2F;
-        float x = Mth.cos(getYRot() * Mth.DEG_TO_RAD
-                + getRandom().nextFloat()) * side;
-        float z = Mth.sin(getYRot() * Mth.DEG_TO_RAD
-                + getRandom().nextFloat()) * side;
-        float y = 0.6F * (getBbHeight()
-                + getRandom().nextFloat() - 0.5F);
-        level().addParticle(
-                ParticleTypes.SNOWFLAKE,
-                getX() + x, getY() + y, getZ() + z,
-                0.0, 0.0, 0.0);
-        level().addParticle(
-                ParticleTypes.SNOWFLAKE,
-                getX() - x, getY() + y, getZ() - z,
-                0.0, 0.0, 0.0);
+        float x = Mth.cos(getYRot() * Mth.DEG_TO_RAD + getRandom().nextFloat()) * side;
+        float z = Mth.sin(getYRot() * Mth.DEG_TO_RAD + getRandom().nextFloat()) * side;
+        float y = 0.6F * (getBbHeight() + getRandom().nextFloat() - 0.5F);
+        level().addParticle(ParticleTypes.SNOWFLAKE, getX() + x, getY() + y, getZ() + z, 0.0, 0.0, 0.0);
+        level().addParticle(ParticleTypes.SNOWFLAKE, getX() - x, getY() + y, getZ() - z, 0.0, 0.0, 0.0);
     }
 
     @Override

@@ -36,10 +36,7 @@ public final class HandPositionUtils {
         boolean rightHanded = player.getMainArm() == HumanoidArm.RIGHT;
         double sideOffset = rightHanded ? 0.35 : -0.35;
 
-        Vec3 palmPos = shoulder
-                .add(0.0, -0.75, 0.0)
-                .add(forward.scale(0.4))
-                .add(side.scale(sideOffset));
+        Vec3 palmPos = shoulder.add(0.0, -0.75, 0.0).add(forward.scale(0.4)).add(side.scale(sideOffset));
 
         if (player.isShiftKeyDown()) {
             palmPos = palmPos.add(forward.scale(-0.12)).add(0.0, -0.1875, 0.0);
@@ -53,10 +50,7 @@ public final class HandPositionUtils {
         }
 
         if (localOffset != null) {
-            palmPos = palmPos
-                    .add(side.scale(localOffset.x))
-                    .add(0.0, localOffset.y, 0.0)
-                    .add(forward.scale(localOffset.z));
+            palmPos = palmPos.add(side.scale(localOffset.x)).add(0.0, localOffset.y, 0.0).add(forward.scale(localOffset.z));
         }
 
         return palmPos;

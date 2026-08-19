@@ -24,8 +24,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 /// 方块或方块被破坏后收到的延迟消息都不能继续消耗材料。</p>
 public record DyeMixPacketC2S(int rgb) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("dye_mix");
-    public static final PortStreamCodec<ByteBuf, DyeMixPacketC2S> STREAM_CODEC =
-            PortByteBufCodecs.INT.map(DyeMixPacketC2S::new, DyeMixPacketC2S::rgb);
+    public static final PortStreamCodec<ByteBuf, DyeMixPacketC2S> STREAM_CODEC = PortByteBufCodecs.INT.map(DyeMixPacketC2S::new, DyeMixPacketC2S::rgb);
 
     /// 混合操作会修改菜单槽位与玩家携带物品，必须回到服务端主线程执行。
     @Override
@@ -38,8 +37,7 @@ public record DyeMixPacketC2S(int rgb) implements IPortPacket.C2S {
     @Override
     public void work(ServerPlayer player) {
         AbstractContainerMenu menu = player.containerMenu;
-        if (!(menu instanceof DyeMixMenu dyeMixMenu)
-                || !dyeMixMenu.hasValidServerAccess(player)) {
+        if (!(menu instanceof DyeMixMenu dyeMixMenu) || !dyeMixMenu.hasValidServerAccess(player)) {
             return;
         }
         // 颜色组件统一使用不透明 ARGB，拒绝界面能力之外的透明度。
@@ -51,9 +49,7 @@ public record DyeMixPacketC2S(int rgb) implements IPortPacket.C2S {
         if (!red.hasItem() || !green.hasItem() || !blue.hasItem()) return;
 
         ItemStack output;
-        if (red.getItem().is(VanityArmorItems.RED_DYE.get())
-                && green.getItem().is(VanityArmorItems.GREEN_DYE.get())
-                && blue.getItem().is(VanityArmorItems.BLUE_DYE.get())) {
+        if (red.getItem().is(VanityArmorItems.RED_DYE.get()) && green.getItem().is(VanityArmorItems.GREEN_DYE.get()) && blue.getItem().is(VanityArmorItems.BLUE_DYE.get())) {
             output = VanityArmorItems.DYE.get().getDefaultInstance();
             BaseDyeItem.setRGB(output, rgb);
         } else if (red.getItem().is(PaintItems.RED_PAINT.get())
@@ -66,9 +62,7 @@ public record DyeMixPacketC2S(int rgb) implements IPortPacket.C2S {
         }
 
         ItemStack carried = dyeMixMenu.getCarried();
-        if (!carried.isEmpty()
-                && (!PortItemStackExtension.isSameItemSameComponents(carried, output)
-                || carried.getCount() >= carried.getMaxStackSize())) {
+        if (!carried.isEmpty() && (!PortItemStackExtension.isSameItemSameComponents(carried, output) || carried.getCount() >= carried.getMaxStackSize())) {
             return;
         }
 

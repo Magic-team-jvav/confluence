@@ -7,8 +7,7 @@ import net.minecraft.world.level.Level;
 ///
 /// <p>穿墙能力只改变路径与碰撞约束，蓄力和冲锋阶段仍复用标准冲锋状态机。</p>
 public class PhasingChargeMonster extends SimpleFlyMonster {
-    public PhasingChargeMonster(EntityType<? extends PhasingChargeMonster> type, Level level,
-                                double chargeSpeed, double wanderSpeed) {
+    public PhasingChargeMonster(EntityType<? extends PhasingChargeMonster> type, Level level, double chargeSpeed, double wanderSpeed) {
         super(type, level, chargeSpeed, wanderSpeed);
         this.noPhysics = true;
     }

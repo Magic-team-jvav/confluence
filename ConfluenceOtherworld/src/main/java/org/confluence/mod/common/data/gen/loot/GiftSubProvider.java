@@ -1128,12 +1128,9 @@ public record GiftSubProvider() implements LootTableSubProvider {
 
         // 肉墙
         // 毁灭者
-        output.accept(Confluence.asResource("treasure_bag/the_destroyer/classic"),
-                theDestroyerTreasureBag(15, 30, 12, null));
-        output.accept(Confluence.asResource("treasure_bag/the_destroyer/expert"),
-                theDestroyerTreasureBag(20, 35, 42, MaterialItems.MECHANICAL_WAGON_PIECE));
-        output.accept(Confluence.asResource("treasure_bag/the_destroyer/master"),
-                theDestroyerTreasureBag(20, 35, 42, MaterialItems.MECHANICAL_WAGON_PIECE));
+        output.accept(Confluence.asResource("treasure_bag/the_destroyer/classic"), theDestroyerTreasureBag(15, 30, 12, null));
+        output.accept(Confluence.asResource("treasure_bag/the_destroyer/expert"), theDestroyerTreasureBag(20, 35, 42, MaterialItems.MECHANICAL_WAGON_PIECE));
+        output.accept(Confluence.asResource("treasure_bag/the_destroyer/master"), theDestroyerTreasureBag(20, 35, 42, MaterialItems.MECHANICAL_WAGON_PIECE));
 
         // 世纪之花
         output.accept(Confluence.asResource("treasure_bag/plantera/classic"), planteraTreasureBag(15));
@@ -1723,8 +1720,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
     }
 
     // 困难模式前匣子通用
-    private static LootTable.Builder theDestroyerTreasureBag(int hallowedMin, int hallowedMax,
-                                                             int goldCoins, ItemLike difficultyBonus) {
+    private static LootTable.Builder theDestroyerTreasureBag(int hallowedMin, int hallowedMax, int goldCoins, ItemLike difficultyBonus) {
         LootTable.Builder table = LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_MIGHT)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 40)))))

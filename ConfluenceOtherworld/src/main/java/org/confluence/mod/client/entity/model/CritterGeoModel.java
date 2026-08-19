@@ -44,10 +44,8 @@ public class CritterGeoModel<T extends BaseCritter> extends DefaultedEntityGeoMo
     public static ResourceLocation resolveAnimationResource(ResourceLocation path) {
         ResourceLocation model = resolveModelResource(path);
         String modelPath = model.getPath();
-        String relativePath = modelPath.substring(
-                "geo/entity/".length(), modelPath.length() - ".geo.json".length());
-        return ResourceLocation.fromNamespaceAndPath(
-                model.getNamespace(), "animations/entity/" + relativePath + ".animation.json");
+        String relativePath = modelPath.substring("geo/entity/".length(), modelPath.length() - ".geo.json".length());
+        return ResourceLocation.fromNamespaceAndPath(model.getNamespace(), "animations/entity/" + relativePath + ".animation.json");
     }
 
     @Override

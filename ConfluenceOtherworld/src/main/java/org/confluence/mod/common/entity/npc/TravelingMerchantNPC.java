@@ -43,8 +43,7 @@ public class TravelingMerchantNPC extends BaseNPC {
             List<NPCTradeOffer> shuffled = new ArrayList<>(offers);
             for (int index = shuffled.size() - 1; index > 0; index--) {
                 int swapIndex = random.nextInt(index + 1);
-                NPCTradeOffer previous = shuffled.set(
-                        index, shuffled.get(swapIndex));
+                NPCTradeOffer previous = shuffled.set(index, shuffled.get(swapIndex));
                 shuffled.set(swapIndex, previous);
             }
             int count = Math.min(getTradeCount(), shuffled.size());

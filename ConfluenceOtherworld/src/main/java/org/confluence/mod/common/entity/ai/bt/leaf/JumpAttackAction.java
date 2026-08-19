@@ -25,24 +25,15 @@ public final class JumpAttackAction extends BTNode {
     private boolean launched;
     private boolean dealtDamage;
 
-    public JumpAttackAction(
-            PathfinderMob mob,
-            double speedMultiplier,
-            double maximumDistance,
-            int cooldownTicks,
-            int windupTicks) {
+    public JumpAttackAction(PathfinderMob mob, double speedMultiplier, double maximumDistance, int cooldownTicks, int windupTicks) {
         if (!Double.isFinite(speedMultiplier) || speedMultiplier <= 0.0) {
-            throw new IllegalArgumentException(
-                    "Jump speed multiplier must be finite and positive");
+            throw new IllegalArgumentException("Jump speed multiplier must be finite and positive");
         }
-        if (!Double.isFinite(maximumDistance)
-                || maximumDistance <= MINIMUM_DISTANCE) {
-            throw new IllegalArgumentException(
-                    "Jump maximum distance must be finite and greater than four");
+        if (!Double.isFinite(maximumDistance) || maximumDistance <= MINIMUM_DISTANCE) {
+            throw new IllegalArgumentException("Jump maximum distance must be finite and greater than four");
         }
         if (cooldownTicks < 0 || windupTicks < 0) {
-            throw new IllegalArgumentException(
-                    "Jump cooldown and windup must be non-negative");
+            throw new IllegalArgumentException("Jump cooldown and windup must be non-negative");
         }
         this.mob = mob;
         this.speedMultiplier = speedMultiplier;
@@ -79,8 +70,7 @@ public final class JumpAttackAction extends BTNode {
         }
 
         tryDealContactDamage(target);
-        if ((mob.onGround() && elapsedTicks > windupTicks + 1)
-                || elapsedTicks > windupTicks + MAXIMUM_AIR_TICKS) {
+        if ((mob.onGround() && elapsedTicks > windupTicks + 1) || elapsedTicks > windupTicks + MAXIMUM_AIR_TICKS) {
             mob.setAggressive(false);
             return BTStatus.SUCCESS;
         }
@@ -88,8 +78,7 @@ public final class JumpAttackAction extends BTNode {
     }
 
     private boolean canLaunch(LivingEntity target) {
-        if (!mob.onGround()
-                || mob.tickCount - lastLaunchTick < cooldownTicks) {
+        if (!mob.onGround() || mob.tickCount - lastLaunchTick < cooldownTicks) {
             return false;
         }
         double distanceSqr = mob.distanceToSqr(target);
@@ -98,8 +87,7 @@ public final class JumpAttackAction extends BTNode {
     }
 
     private void launchAt(LivingEntity target) {
-        Vec3 horizontal = target.position().subtract(mob.position())
-                .multiply(1.0, 0.0, 1.0);
+        Vec3 horizontal = target.position().subtract(mob.position()).multiply(1.0, 0.0, 1.0);
         if (horizontal.lengthSqr() < 1.0E-8) {
             return;
         }

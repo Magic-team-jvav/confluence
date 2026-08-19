@@ -28,34 +28,24 @@ import java.util.UUID;
 /// 公共实现统一管理瞬时属性修饰符和疾跑状态，防止每种僵尸都复制一套
 /// 容易发生永久叠加的属性代码。</p>
 public class BaseWarriorMonster extends BaseMonster {
-    private static final UUID PURSUIT_SPEED_UUID =
-            UUID.fromString("90d2f39a-960e-48b2-bcf7-48a49b51d982");
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("move.walk");
-    private static final RawAnimation RUN =
-            RawAnimation.begin().thenLoop("move.run");
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
-    private static final RawAnimation ATTACK =
-            RawAnimation.begin().thenLoop("attack.strike");
+    private static final UUID PURSUIT_SPEED_UUID = UUID.fromString("90d2f39a-960e-48b2-bcf7-48a49b51d982");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
+    private static final RawAnimation RUN = RawAnimation.begin().thenLoop("move.run");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenLoop("attack.strike");
     private final double pursuitSpeedBonus;
     private final LandAnimationProfile animationProfile;
     private final LandSoundProfile soundProfile;
 
     public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level) {
-        this(type, level, 0.0, LandAnimationProfile.NONE,
-                LandSoundProfile.ROUTINE);
+        this(type, level, 0.0, LandAnimationProfile.NONE, LandSoundProfile.ROUTINE);
     }
 
     /// 创建具有目标追击加速的陆行怪物。
     ///
     /// @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
-    public BaseWarriorMonster(
-            EntityType<? extends BaseWarriorMonster> type,
-            Level level,
-            double pursuitSpeedBonus) {
-        this(type, level, pursuitSpeedBonus, LandAnimationProfile.NONE,
-                LandSoundProfile.ROUTINE);
+    public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double pursuitSpeedBonus) {
+        this(type, level, pursuitSpeedBonus, LandAnimationProfile.NONE, LandSoundProfile.ROUTINE);
     }
 
     /// 创建使用指定基础移动动画的陆行怪物。
@@ -66,13 +56,8 @@ public class BaseWarriorMonster extends BaseMonster {
     ///
     /// @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
     /// @param animationProfile  该实体资源支持的基础移动动画
-    public BaseWarriorMonster(
-            EntityType<? extends BaseWarriorMonster> type,
-            Level level,
-            double pursuitSpeedBonus,
-            LandAnimationProfile animationProfile) {
-        this(type, level, pursuitSpeedBonus, animationProfile,
-                LandSoundProfile.ROUTINE);
+    public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double pursuitSpeedBonus, LandAnimationProfile animationProfile) {
+        this(type, level, pursuitSpeedBonus, animationProfile, LandSoundProfile.ROUTINE);
     }
 
     /// 创建具有指定移动动画与音效表现的通用陆行怪物。
@@ -83,16 +68,10 @@ public class BaseWarriorMonster extends BaseMonster {
     /// @param pursuitSpeedBonus 发现有效目标后附加的移动速度；零表示不启用
     /// @param animationProfile  实体资源支持的基础移动动画
     /// @param soundProfile      实体使用的环境、受伤与死亡音效组合
-    public BaseWarriorMonster(
-            EntityType<? extends BaseWarriorMonster> type,
-            Level level,
-            double pursuitSpeedBonus,
-            LandAnimationProfile animationProfile,
-            LandSoundProfile soundProfile) {
+    public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double pursuitSpeedBonus, LandAnimationProfile animationProfile, LandSoundProfile soundProfile) {
         super(type, level);
         if (pursuitSpeedBonus < 0.0) {
-            throw new IllegalArgumentException(
-                    "Pursuit speed bonus cannot be negative");
+            throw new IllegalArgumentException("Pursuit speed bonus cannot be negative");
         }
         this.pursuitSpeedBonus = pursuitSpeedBonus;
         this.animationProfile = animationProfile;
@@ -100,8 +79,7 @@ public class BaseWarriorMonster extends BaseMonster {
     }
 
     /// 供特殊子类保留构造兼容；实际运行数值现在统一从实体属性读取。
-    protected BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level,
-                                 double ignoredMoveSpeed, double ignoredFollowRange) {
+    protected BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double ignoredMoveSpeed, double ignoredFollowRange) {
         this(type, level);
     }
 
@@ -134,9 +112,7 @@ public class BaseWarriorMonster extends BaseMonster {
                             createMeleeSequence(self, behavior),
                             createWanderSequence(self, behavior));
                 }
-                return SelectorNode.of(
-                        createMeleeSequence(self, behavior),
-                        createWanderSequence(self, behavior));
+                return SelectorNode.of(createMeleeSequence(self, behavior), createWanderSequence(self, behavior));
             }
         };
     }
@@ -146,8 +122,7 @@ public class BaseWarriorMonster extends BaseMonster {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         if (animationProfile == LandAnimationProfile.NONE) {
             return;
         }
@@ -167,14 +142,12 @@ public class BaseWarriorMonster extends BaseMonster {
                                         && isSprinting()
                                         ? RUN : WALK);
                     }
-                    if (animationProfile
-                            != LandAnimationProfile.WALK_ONLY) {
+                    if (animationProfile != LandAnimationProfile.WALK_ONLY) {
                         return state.setAndContinue(IDLE);
                     }
                     return PlayState.STOP;
                 }));
-        if (animationProfile
-                == LandAnimationProfile.WALK_RUN_IDLE_ATTACK) {
+        if (animationProfile == LandAnimationProfile.WALK_RUN_IDLE_ATTACK) {
             controllers.add(new AnimationController<>(
                     this,
                     "Attack",
@@ -197,14 +170,9 @@ public class BaseWarriorMonster extends BaseMonster {
         if (movementSpeed == null) {
             return;
         }
-        AttributeModifier modifier =
-                movementSpeed.getModifier(PURSUIT_SPEED_UUID);
+        AttributeModifier modifier = movementSpeed.getModifier(PURSUIT_SPEED_UUID);
         if (pursuing && modifier == null) {
-            movementSpeed.addTransientModifier(new AttributeModifier(
-                    PURSUIT_SPEED_UUID,
-                    "Target pursuit speed",
-                    pursuitSpeedBonus,
-                    AttributeModifier.Operation.ADDITION));
+            movementSpeed.addTransientModifier(new AttributeModifier(PURSUIT_SPEED_UUID, "Target pursuit speed", pursuitSpeedBonus, AttributeModifier.Operation.ADDITION));
         } else if (!pursuing && modifier != null) {
             movementSpeed.removeModifier(PURSUIT_SPEED_UUID);
         }
@@ -236,31 +204,12 @@ public class BaseWarriorMonster extends BaseMonster {
         };
     }
 
-    private static BTNode createMeleeSequence(
-            BaseWarriorMonster self,
-            CreatureDefinition.BehaviorOverrides behavior) {
-        return SequenceNode.of(
-                new HasTargetCondition(self),
-                new MoveToTargetAction(
-                        self,
-                        behavior.moveSpeedOr(1.0),
-                        behavior.meleeRangeOr(2.0)),
-                new MeleeAttackAction(
-                        self,
-                        behavior.meleeRangeOr(1.0)));
+    private static BTNode createMeleeSequence(BaseWarriorMonster self, CreatureDefinition.BehaviorOverrides behavior) {
+        return SequenceNode.of(new HasTargetCondition(self), new MoveToTargetAction(self, behavior.moveSpeedOr(1.0), behavior.meleeRangeOr(2.0)), new MeleeAttackAction(self, behavior.meleeRangeOr(1.0)));
     }
 
-    private static BTNode createWanderSequence(
-            BaseWarriorMonster self,
-            CreatureDefinition.BehaviorOverrides behavior) {
-        return SequenceNode.of(
-                new WaitAction(
-                        behavior.idleTicksOr(20)
-                                + self.random.nextInt(40)),
-                new RandomStrollAction(
-                        self,
-                        behavior.wanderSpeedOr(0.5),
-                        behavior.wanderRadiusOr(8)));
+    private static BTNode createWanderSequence(BaseWarriorMonster self, CreatureDefinition.BehaviorOverrides behavior) {
+        return SequenceNode.of(new WaitAction(behavior.idleTicksOr(20) + self.random.nextInt(40)), new RandomStrollAction(self, behavior.wanderSpeedOr(0.5), behavior.wanderRadiusOr(8)));
     }
 
     /// 简单陆行怪的跃击参数。

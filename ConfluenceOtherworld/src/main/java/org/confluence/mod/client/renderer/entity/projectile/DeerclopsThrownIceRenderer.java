@@ -13,8 +13,7 @@ import org.confluence.mod.common.entity.projectile.DeerclopsThrownIceProjectile;
 import org.joml.Quaternionf;
 
 /// 以蓝冰方块表现独眼巨鹿抛出的旋转冰块。
-public final class DeerclopsThrownIceRenderer
-        extends EntityRenderer<DeerclopsThrownIceProjectile> {
+public final class DeerclopsThrownIceRenderer extends EntityRenderer<DeerclopsThrownIceProjectile> {
     public DeerclopsThrownIceRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
@@ -25,23 +24,12 @@ public final class DeerclopsThrownIceRenderer
     }
 
     @Override
-    public void render(
-            DeerclopsThrownIceProjectile entity,
-            float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight) {
+    public void render(DeerclopsThrownIceProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         float angle = (entity.tickCount + partialTick) * entity.getRotationSpeed();
         poseStack.mulPose(new Quaternionf().rotationAxis(angle, entity.getRotationAxis()));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
-        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(
-                Blocks.BLUE_ICE.defaultBlockState(),
-                poseStack,
-                bufferSource,
-                packedLight,
-                OverlayTexture.NO_OVERLAY);
+        Minecraft.getInstance().getBlockRenderer().renderSingleBlock(Blocks.BLUE_ICE.defaultBlockState(), poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }

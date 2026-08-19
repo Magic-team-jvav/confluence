@@ -14,9 +14,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.joml.Matrix4f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -170,7 +170,7 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
 
     @Override
     public DamageSource getDamageSource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+        return LibDamageTypes.of(level(), LibDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 
     @Override

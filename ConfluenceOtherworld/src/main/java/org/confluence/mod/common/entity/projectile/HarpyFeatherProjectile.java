@@ -12,19 +12,11 @@ import net.minecraft.world.level.Level;
 public final class HarpyFeatherProjectile extends StraightMonsterProjectile {
     public static final int MAX_LIFETIME = 100;
 
-    public HarpyFeatherProjectile(
-            EntityType<? extends HarpyFeatherProjectile> type,
-            Level level) {
+    public HarpyFeatherProjectile(EntityType<? extends HarpyFeatherProjectile> type, Level level) {
         super(type, level);
     }
 
-    public void configure(
-            Mob owner,
-            LivingEntity target,
-            float damage,
-            float velocity,
-            float inaccuracy) {
-        super.configure(
-                owner, target, damage, velocity, inaccuracy, MAX_LIFETIME);
+    public void configure(Mob owner, LivingEntity target, float damage, float velocity, float inaccuracy) {
+        super.configure(owner, target, damage, velocity, inaccuracy, MAX_LIFETIME);
     }
 }

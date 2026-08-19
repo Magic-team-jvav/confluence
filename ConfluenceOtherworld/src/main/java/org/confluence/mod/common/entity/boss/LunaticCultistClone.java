@@ -30,13 +30,10 @@ import java.util.UUID;
 public final class LunaticCultistClone extends BaseFlyingMonster {
     private static final String AGE_TAG = "IllusionAge";
     private static final int LIFETIME = 240;
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
-            SynchedEntityData.defineId(LunaticCultistClone.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Integer> CLONE_INDEX =
-            SynchedEntityData.defineId(LunaticCultistClone.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(LunaticCultistClone.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> CLONE_INDEX = SynchedEntityData.defineId(LunaticCultistClone.class, EntityDataSerializers.INT);
 
-    private final BossOwnerTracker<LunaticCultist> ownerTracker =
-            new BossOwnerTracker<>(LunaticCultist.class);
+    private final BossOwnerTracker<LunaticCultist> ownerTracker = new BossOwnerTracker<>(LunaticCultist.class);
     private int illusionAge;
 
     public LunaticCultistClone(EntityType<? extends LunaticCultistClone> type, Level level) {
@@ -83,11 +80,7 @@ public final class LunaticCultistClone extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SequenceNode.of(
-                        new HasTargetCondition(LunaticCultistClone.this),
-                        new CircleAroundTargetAction(LunaticCultistClone.this, 0.45, 8.0),
-                        new WaitAction(24)
-                );
+                return SequenceNode.of(new HasTargetCondition(LunaticCultistClone.this), new CircleAroundTargetAction(LunaticCultistClone.this, 0.45, 8.0), new WaitAction(24));
             }
         };
     }

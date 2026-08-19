@@ -61,8 +61,7 @@ public class HillOfFleshMouth extends BaseBossPart<HillOfFlesh> implements GeoEn
             return null;
         }
 
-        HillHungry hungry =
-                MonsterEntities.HILL_HUNGRY.get().create(level());
+        HillHungry hungry = MonsterEntities.HILL_HUNGRY.get().create(level());
         if (hungry != null) {
             hungry.setPos(position());
             hungry.setMaster(master, getRelativeAnchor(master));
@@ -79,11 +78,7 @@ public class HillOfFleshMouth extends BaseBossPart<HillOfFlesh> implements GeoEn
         if (!(level() instanceof ServerLevel serverLevel)) {
             return null;
         }
-        if (hungryUUID != null
-                && serverLevel.getEntity(hungryUUID)
-                instanceof HillHungry hungry
-                && hungry.isAlive()
-                && hungry.isOwnedBy(master)) {
+        if (hungryUUID != null && serverLevel.getEntity(hungryUUID) instanceof HillHungry hungry && hungry.isAlive() && hungry.isOwnedBy(master)) {
             return hungry;
         }
         hungryUUID = null;

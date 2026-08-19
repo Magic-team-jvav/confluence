@@ -9,17 +9,24 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/// 子弹拖尾专用渲染类型。
-///
-/// <p>仅供枪弹渲染器使用，避免把枪械 VFX 的混合模式扩散到全局渲染工具类。</p>
-final class BulletRenderTypes extends RenderStateShard {
+public final class BulletRenderTypes extends RenderStateShard {
     private static final Map<String, RenderType> TRAILS = new ConcurrentHashMap<>();
+    private static final RenderType COLORED_TRANSLUCENT = RenderType.create(
+            "confluence_gun_colored_translucent", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS,
+            1536, false, true, RenderType.CompositeState.builder()
+                    .setShaderState(POSITION_COLOR_SHADER)
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setDepthTestState(LEQUAL_DEPTH_TEST)
+                    .setCullState(NO_CULL)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .setOutputState(TRANSLUCENT_TARGET)
+                    .createCompositeState(false));
 
     private BulletRenderTypes() {
         super(null, null, null);
     }
 
-    static RenderType trail(ResourceLocation texture, boolean additive) {
+    public static RenderType trail(ResourceLocation texture, boolean additive) {
         String key = texture + (additive ? ":additive" : ":translucent");
         return TRAILS.computeIfAbsent(key, ignored -> RenderType.create(
                 "confluence_bullet_trail_" + Integer.toHexString(key.hashCode()),
@@ -29,14 +36,23 @@ final class BulletRenderTypes extends RenderStateShard {
                 false,
                 true,
                 RenderType.CompositeState.builder()
-                        .setShaderState(RENDERTYPE_TEXT_SHADER)
+                        .setShaderState(POSITION_COLOR_TEX_LIGHTMAP_SHADER)
                         .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
-                        .setTransparencyState(additive ? LIGHTNING_TRANSPARENCY : TRANSLUCENT_TRANSPARENCY)
+                        .setTransparencyState(additive ? ADDITIVE_TRANSPARENCY : TRANSLUCENT_TRANSPARENCY)
                         .setDepthTestState(LEQUAL_DEPTH_TEST)
                         .setCullState(NO_CULL)
                         .setLightmapState(LIGHTMAP)
                         .setWriteMaskState(COLOR_WRITE)
+                        .setOutputState(TRANSLUCENT_TARGET)
                         .createCompositeState(false)
         ));
+    }
+
+    public static RenderType confetti() {
+        return COLORED_TRANSLUCENT;
+    }
+
+    public static RenderType coloredTrail() {
+        return COLORED_TRANSLUCENT;
     }
 }

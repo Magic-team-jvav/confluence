@@ -26,8 +26,7 @@ public class SkeletronPrimeBossRenderer extends BossGeoRenderer<SkeletronPrime> 
         if (!rendersHeadBone(bone.getName())) {
             return;
         }
-        super.renderRecursively(poseStack, boss, bone, renderType, bufferSource, buffer, isReRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderRecursively(poseStack, boss, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     static boolean rendersHeadBone(String boneName) {

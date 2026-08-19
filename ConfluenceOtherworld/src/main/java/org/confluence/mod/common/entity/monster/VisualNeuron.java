@@ -59,13 +59,10 @@ public class VisualNeuron extends BaseFlyingMonster {
     private static final double READY_DISTANCE_SQR = 4.0;
     private static final double TURN_BACK_ANGLE = Math.PI / 4.0;
 
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
-            SynchedEntityData.defineId(VisualNeuron.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Integer> COMBAT_STATE =
-            SynchedEntityData.defineId(VisualNeuron.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(VisualNeuron.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> COMBAT_STATE = SynchedEntityData.defineId(VisualNeuron.class, EntityDataSerializers.INT);
 
-    private final BossOwnerTracker<BrainOfCthulhu> ownerTracker =
-            new BossOwnerTracker<>(BrainOfCthulhu.class);
+    private final BossOwnerTracker<BrainOfCthulhu> ownerTracker = new BossOwnerTracker<>(BrainOfCthulhu.class);
     private @Nullable Vec3 homePosition;
     private @Nullable Vec3 homeOffset;
     private int index;
@@ -203,8 +200,7 @@ public class VisualNeuron extends BaseFlyingMonster {
         }
 
         Vec3 desiredDirection = toTarget.normalize();
-        Vec3 velocity = getDeltaMovement().add(
-                desiredDirection.scale(ATTACK_ACCELERATION));
+        Vec3 velocity = getDeltaMovement().add(desiredDirection.scale(ATTACK_ACCELERATION));
         setDeltaMovement(velocity);
         getLookControl().setLookAt(target, 30.0F, 30.0F);
 
@@ -223,19 +219,13 @@ public class VisualNeuron extends BaseFlyingMonster {
             ready = true;
         }
         if (toHome.lengthSqr() > 1.0E-6) {
-            setDeltaMovement(getDeltaMovement().add(
-                    toHome.normalize().scale(RETURN_ACCELERATION)));
+            setDeltaMovement(getDeltaMovement().add(toHome.normalize().scale(RETURN_ACCELERATION)));
         }
         LivingEntity target = getTarget();
         if (target != null && target.isAlive()) {
             getLookControl().setLookAt(target, 30.0F, 30.0F);
         } else {
-            getLookControl().setLookAt(
-                    position().x * 2.0 - owner.getX(),
-                    position().y * 2.0 - owner.getY(),
-                    position().z * 2.0 - owner.getZ(),
-                    30.0F,
-                    30.0F);
+            getLookControl().setLookAt(position().x * 2.0 - owner.getX(), position().y * 2.0 - owner.getY(), position().z * 2.0 - owner.getZ(), 30.0F, 30.0F);
         }
     }
 
@@ -300,20 +290,12 @@ public class VisualNeuron extends BaseFlyingMonster {
         setCombatState(CombatState.byId(tag.getInt(STATE_TAG)));
         attackTicks = Math.max(0, tag.getInt(ATTACK_TICKS_TAG));
         if (tag.contains(HOME_X_TAG) && tag.contains(HOME_Y_TAG) && tag.contains(HOME_Z_TAG)) {
-            homePosition = new Vec3(
-                    tag.getDouble(HOME_X_TAG),
-                    tag.getDouble(HOME_Y_TAG),
-                    tag.getDouble(HOME_Z_TAG));
+            homePosition = new Vec3(tag.getDouble(HOME_X_TAG), tag.getDouble(HOME_Y_TAG), tag.getDouble(HOME_Z_TAG));
         } else {
             homePosition = null;
         }
-        if (tag.contains(HOME_OFFSET_X_TAG)
-                && tag.contains(HOME_OFFSET_Y_TAG)
-                && tag.contains(HOME_OFFSET_Z_TAG)) {
-            homeOffset = new Vec3(
-                    tag.getDouble(HOME_OFFSET_X_TAG),
-                    tag.getDouble(HOME_OFFSET_Y_TAG),
-                    tag.getDouble(HOME_OFFSET_Z_TAG));
+        if (tag.contains(HOME_OFFSET_X_TAG) && tag.contains(HOME_OFFSET_Y_TAG) && tag.contains(HOME_OFFSET_Z_TAG)) {
+            homeOffset = new Vec3(tag.getDouble(HOME_OFFSET_X_TAG), tag.getDouble(HOME_OFFSET_Y_TAG), tag.getDouble(HOME_OFFSET_Z_TAG));
         } else {
             homeOffset = null;
         }

@@ -51,13 +51,14 @@ public interface SwordProjectileAppearance {
     }
 
     record Model(ResourceLocation model, ResourceLocation texture, float scale, float offsetY,
-                 float rollSpeed,
-                 Lifecycle lifecycle, Material material) implements SwordProjectileAppearance {
+                 float offsetZ, float rollSpeed, Lifecycle lifecycle,
+                 Material material) implements SwordProjectileAppearance {
         public static final Codec<Model> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ResourceLocation.CODEC.fieldOf("model").forGetter(Model::model),
                 ResourceLocation.CODEC.fieldOf("texture").forGetter(Model::texture),
                 Codec.FLOAT.optionalFieldOf("scale", 1.0F).forGetter(Model::scale),
                 Codec.FLOAT.optionalFieldOf("offsetY", 0.0F).forGetter(Model::offsetY),
+                Codec.FLOAT.optionalFieldOf("offsetZ", 0.0F).forGetter(Model::offsetZ),
                 Codec.FLOAT.optionalFieldOf("rollSpeed", 0.0F).forGetter(Model::rollSpeed),
                 Lifecycle.CODEC.optionalFieldOf("lifecycle", Lifecycle.GROW).forGetter(Model::lifecycle),
                 Material.CODEC.optionalFieldOf("material", Material.CUTOUT).forGetter(Model::material)
@@ -68,6 +69,7 @@ public interface SwordProjectileAppearance {
             texture = Objects.requireNonNull(texture, "texture");
             scale = positive(scale, "scale");
             offsetY = finite(offsetY, "offsetY");
+            offsetZ = finite(offsetZ, "offsetZ");
             rollSpeed = finite(rollSpeed, "rollSpeed");
             lifecycle = Objects.requireNonNull(lifecycle, "lifecycle");
             material = Objects.requireNonNull(material, "material");
@@ -100,19 +102,21 @@ public interface SwordProjectileAppearance {
     }
 
     record Cross(ResourceLocation texture, int color, float scale, float spinSpeed,
-                 boolean fullBright) implements SwordProjectileAppearance {
+                 int blockLight) implements SwordProjectileAppearance {
         public static final Codec<Cross> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ResourceLocation.CODEC.fieldOf("texture").forGetter(Cross::texture),
                 Codec.INT.optionalFieldOf("color", 0xFFFFFFFF).forGetter(Cross::color),
                 Codec.FLOAT.optionalFieldOf("scale", 1.0F).forGetter(Cross::scale),
                 Codec.FLOAT.optionalFieldOf("spinSpeed", 0.0F).forGetter(Cross::spinSpeed),
-                Codec.BOOL.optionalFieldOf("fullBright", false).forGetter(Cross::fullBright)
+                Codec.INT.optionalFieldOf("blockLight", -1).forGetter(Cross::blockLight)
         ).apply(instance, Cross::new));
 
         public Cross {
             texture = Objects.requireNonNull(texture, "texture");
             scale = positive(scale, "scale");
             spinSpeed = finite(spinSpeed, "spinSpeed");
+            if (blockLight < -1 || blockLight > 15)
+                throw new IllegalArgumentException("blockLight must be between -1 and 15");
         }
 
         @Override

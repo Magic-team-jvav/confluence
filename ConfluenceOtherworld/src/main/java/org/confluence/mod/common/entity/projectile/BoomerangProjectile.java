@@ -27,12 +27,9 @@ import java.util.Set;
 import java.util.UUID;
 
 public class BoomerangProjectile extends Projectile {
-    private static final EntityDataAccessor<ItemStack> DATA_WEAPON =
-            SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<Boolean> DATA_RETURNING =
-            SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Float> DATA_DAMAGE =
-            SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<ItemStack> DATA_WEAPON = SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Boolean> DATA_RETURNING = SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_DAMAGE = SynchedEntityData.defineId(BoomerangProjectile.class, EntityDataSerializers.FLOAT);
 
     private final Set<UUID> hitEntities = new HashSet<>();
     /// 仅用于错开不同回旋镖的视觉摆动相位，不参与服务端运动计算。

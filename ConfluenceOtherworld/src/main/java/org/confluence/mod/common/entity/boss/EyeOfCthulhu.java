@@ -42,23 +42,14 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// 保存时保留当前循环位置和锁定的冲刺方向，世界重载不会把第二阶段错误恢复成
 /// 第一阶段，也不会在冲刺中途突然改为追踪玩家。</p>
 public class EyeOfCthulhu extends BaseBoss {
-    private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE =
-            SynchedEntityData.defineId(
-                    EyeOfCthulhu.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_COMBAT_STAGE =
-            SynchedEntityData.defineId(
-                    EyeOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(EyeOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_COMBAT_STAGE = SynchedEntityData.defineId(EyeOfCthulhu.class, EntityDataSerializers.INT);
 
-    private static final RawAnimation PHASE_ONE_IDLE =
-            RawAnimation.begin().thenLoop("type_1");
-    private static final RawAnimation PHASE_ONE_DASH =
-            RawAnimation.begin().thenLoop("type_1_run");
-    private static final RawAnimation TRANSFORM =
-            RawAnimation.begin().thenPlay("switching");
-    private static final RawAnimation PHASE_TWO_IDLE =
-            RawAnimation.begin().thenLoop("type_2");
-    private static final RawAnimation PHASE_TWO_DASH =
-            RawAnimation.begin().thenLoop("type_2_run");
+    private static final RawAnimation PHASE_ONE_IDLE = RawAnimation.begin().thenLoop("type_1");
+    private static final RawAnimation PHASE_ONE_DASH = RawAnimation.begin().thenLoop("type_1_run");
+    private static final RawAnimation TRANSFORM = RawAnimation.begin().thenPlay("switching");
+    private static final RawAnimation PHASE_TWO_IDLE = RawAnimation.begin().thenLoop("type_2");
+    private static final RawAnimation PHASE_TWO_DASH = RawAnimation.begin().thenLoop("type_2_run");
 
     private static final int PHASE_ONE_STARE_TICKS = 100;
     private static final int PHASE_TWO_STARE_TICKS = 60;
@@ -134,9 +125,7 @@ public class EyeOfCthulhu extends BaseBoss {
     protected void registerGoals() {
         super.registerGoals();
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2,
-                new NearestAttackableTargetGoal<>(
-                        this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     @Override
@@ -160,9 +149,7 @@ public class EyeOfCthulhu extends BaseBoss {
             return;
         }
 
-        if (getCombatStage() == 1
-                && getHealth() / getMaxHealth()
-                < getTransformationHealthThreshold(isExpert())) {
+        if (getCombatStage() == 1 && getHealth() / getMaxHealth() < getTransformationHealthThreshold(isExpert())) {
             beginTransformation();
         }
 
@@ -188,10 +175,7 @@ public class EyeOfCthulhu extends BaseBoss {
     private void tickStaring(LivingEntity target) {
         /// 1.21 侧在经典难度且目标距离较远时，有一半概率暂停二阶段凝视计时。
         /// 这会给远处玩家留下追赶窗口，但专家难度不会因此降低进攻频率。
-        if (getCombatStage() != 2
-                || isExpert()
-                || distanceTo(target) <= 8.0F
-                || random.nextFloat() >= 0.5F) {
+        if (getCombatStage() != 2 || isExpert() || distanceTo(target) <= 8.0F || random.nextFloat() >= 0.5F) {
             stateTicks++;
         }
         if (getCombatStage() == 2 && isFtw()) {
@@ -224,9 +208,7 @@ public class EyeOfCthulhu extends BaseBoss {
 
     private void tickDashWindup(LivingEntity target) {
         stateTicks++;
-        if (getCombatStage() == 2
-                && isEnhancedDash()
-                && random.nextFloat() < 0.3F) {
+        if (getCombatStage() == 2 && isEnhancedDash() && random.nextFloat() < 0.3F) {
             stateTicks++;
         }
         getLookControl().setLookAt(target, 360.0F, 360.0F);
@@ -266,8 +248,7 @@ public class EyeOfCthulhu extends BaseBoss {
                 : PHASE_TWO_DASH_SPEED;
         setDeltaMovement(lockedDashDirection.scale(speed));
         Vec3 lookPosition = position().add(lockedDashDirection);
-        getLookControl().setLookAt(
-                lookPosition.x, lookPosition.y, lookPosition.z);
+        getLookControl().setLookAt(lookPosition.x, lookPosition.y, lookPosition.z);
         faceTowards(lookPosition, 360.0F, 360.0F);
         if (getBoundingBox().inflate(0.35)
                 .intersects(target.getBoundingBox())) {
@@ -330,10 +311,7 @@ public class EyeOfCthulhu extends BaseBoss {
         navigation.stop();
         leavingTicks++;
         double angle = tickCount * 0.1;
-        setDeltaMovement(
-                Math.cos(angle) * 0.55,
-                0.45,
-                Math.sin(angle) * 0.55);
+        setDeltaMovement(Math.cos(angle) * 0.55, 0.45, Math.sin(angle) * 0.55);
         faceAlongMovement(60.0F, 60.0F);
         if (leavingTicks >= LEAVE_DISCARD_TICKS) {
             discard();
@@ -418,11 +396,8 @@ public class EyeOfCthulhu extends BaseBoss {
         if (!isExpert()) {
             return PHASE_ONE_DASH_COUNT;
         }
-        float healthRatio = Mth.clamp(
-                getHealth() / getMaxHealth(), 0.0F, 0.5F);
-        return Math.max(
-                PHASE_ONE_DASH_COUNT,
-                Mth.floor((-2.0F + 10.0F - healthRatio * 10.0F) * 1.5F));
+        float healthRatio = Mth.clamp(getHealth() / getMaxHealth(), 0.0F, 0.5F);
+        return Math.max(PHASE_ONE_DASH_COUNT, Mth.floor((-2.0F + 10.0F - healthRatio * 10.0F) * 1.5F));
     }
 
     private boolean isEnhancedDash() {
@@ -442,8 +417,7 @@ public class EyeOfCthulhu extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        ServantOfCthulhu servant =
-                BossEntities.SERVANT_OF_CTHULHU.get().create(level());
+        ServantOfCthulhu servant = BossEntities.SERVANT_OF_CTHULHU.get().create(level());
         if (servant == null) {
             return;
         }
@@ -460,8 +434,7 @@ public class EyeOfCthulhu extends BaseBoss {
     private void setDashAttackDamage() {
         float baseDamage = getCombatStage() == 1
                 ? PHASE_ONE_DAMAGE : PHASE_TWO_DAMAGE;
-        setBaseAttribute(
-                Attributes.ATTACK_DAMAGE, baseDamage * DASH_DAMAGE_FACTOR);
+        setBaseAttribute(Attributes.ATTACK_DAMAGE, baseDamage * DASH_DAMAGE_FACTOR);
     }
 
     private void resetAttackDamage() {
@@ -476,8 +449,7 @@ public class EyeOfCthulhu extends BaseBoss {
     /// 低于 40% 时增加 15 点，低于 12% 时再增加 7 点。
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        amount += getLowHealthDamageBonus(
-                isExpert(), getHealth() / getMaxHealth());
+        amount += getLowHealthDamageBonus(isExpert(), getHealth() / getMaxHealth());
         return super.hurt(source, amount);
     }
 
@@ -487,8 +459,7 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     /// 计算负防御对应的额外受伤数值。该换算只在专家及大师难度生效。
-    static float getLowHealthDamageBonus(
-            boolean expert, float healthRatio) {
+    static float getLowHealthDamageBonus(boolean expert, float healthRatio) {
         if (!expert) {
             return 0.0F;
         }
@@ -502,14 +473,10 @@ public class EyeOfCthulhu extends BaseBoss {
         return bonus;
     }
 
-    private void setBaseAttribute(
-            net.minecraft.world.entity.ai.attributes.Attribute attribute,
-            double value) {
+    private void setBaseAttribute(net.minecraft.world.entity.ai.attributes.Attribute attribute, double value) {
         AttributeInstance instance = getAttribute(attribute);
         if (instance == null) {
-            throw new IllegalStateException(
-                    "Eye of Cthulhu is missing required attribute "
-                            + attribute.getDescriptionId());
+            throw new IllegalStateException("Eye of Cthulhu is missing required attribute " + attribute.getDescriptionId());
         }
         instance.setBaseValue(value);
     }
@@ -543,8 +510,7 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance, float multiplier, DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
@@ -559,13 +525,8 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Controller",
-                5,
-                state -> state.setAndContinue(animationForCurrentState())));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Controller", 5, state -> state.setAndContinue(animationForCurrentState())));
     }
 
     private RawAnimation animationForCurrentState() {
@@ -603,14 +564,10 @@ public class EyeOfCthulhu extends BaseBoss {
         setCombatState(stateOrdinal >= 0 && stateOrdinal < states.length
                 ? states[stateOrdinal] : CombatState.IDLE);
         stateTicks = Math.max(0, tag.getInt("EyeStateTicks"));
-        remainingDashCount = Math.max(
-                0, tag.getInt("EyeRemainingDashes"));
+        remainingDashCount = Math.max(0, tag.getInt("EyeRemainingDashes"));
         servantTimer = Math.max(0, tag.getInt("EyeServantTimer"));
         leavingTicks = Math.max(0, tag.getInt("EyeLeavingTicks"));
-        lockedDashDirection = new Vec3(
-                tag.getDouble("EyeDashX"),
-                tag.getDouble("EyeDashY"),
-                tag.getDouble("EyeDashZ"));
+        lockedDashDirection = new Vec3(tag.getDouble("EyeDashX"), tag.getDouble("EyeDashY"), tag.getDouble("EyeDashZ"));
 
         if (stage == 2) {
             setBaseAttribute(Attributes.ARMOR, 0.0);

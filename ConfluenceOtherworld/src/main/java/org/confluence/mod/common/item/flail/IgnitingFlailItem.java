@@ -11,25 +11,16 @@ public class IgnitingFlailItem extends BaseFlailItem {
     private static final int FIRE_TICKS = 60;
     private final float igniteChance;
 
-    public IgnitingFlailItem(
-            FlailComponent component,
-            ModRarity rarity,
-            float igniteChance
-    ) {
+    public IgnitingFlailItem(FlailComponent component, ModRarity rarity, float igniteChance) {
         super(component, rarity);
         if (igniteChance < 0.0F || igniteChance > 1.0F) {
-            throw new IllegalArgumentException(
-                    "Flail ignite chance must be between zero and one");
+            throw new IllegalArgumentException("Flail ignite chance must be between zero and one");
         }
         this.igniteChance = igniteChance;
     }
 
     @Override
-    public void onFlailHit(
-            Player owner,
-            LivingEntity target,
-            BaseFlailEntity flail
-    ) {
+    public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
         if (target.getRandom().nextFloat() < igniteChance) {
             target.setRemainingFireTicks(FIRE_TICKS);
         }

@@ -65,8 +65,8 @@ public class AnglerDialogScreen extends NPCDialogScreen {
                 String key = "dialogs.confluence.angler.item." + questFish.getDescriptionId();
                 dialogText = Component.translatable(key);
             }
-            case WAKE_UP -> dialogText = Component.translatable(
-                    anglerDialogPrefix(npc) + ".wakeup." + npc.getRandom().nextInt(3));
+            case WAKE_UP ->
+                    dialogText = Component.translatable(anglerDialogPrefix(npc) + ".wakeup." + npc.getRandom().nextInt(3));
         }
     }
 
@@ -78,8 +78,7 @@ public class AnglerDialogScreen extends NPCDialogScreen {
             case WAKE_UP -> {
                 Entity entity = minecraft.level.getEntity(entityId);
                 if (entity instanceof BaseNPC npc) {
-                    dialogText = Component.translatable(
-                            anglerDialogPrefix(npc) + ".wakeup." + npc.getRandom().nextInt(3));
+                    dialogText = Component.translatable(anglerDialogPrefix(npc) + ".wakeup." + npc.getRandom().nextInt(3));
                 }
             }
         }

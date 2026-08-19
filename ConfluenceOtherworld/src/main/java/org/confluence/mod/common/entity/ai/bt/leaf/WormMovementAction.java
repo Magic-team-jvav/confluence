@@ -38,16 +38,14 @@ public final class WormMovementAction extends BTNode {
     @Override
     public BTStatus execute() {
         LivingEntity target = worm.getTarget();
-        if (target != null && target.isAlive()
-                && worm.getY() <= profile.maximumAttackHeight()) {
+        if (target != null && target.isAlive() && worm.getY() <= profile.maximumAttackHeight()) {
             steerTowards(target.getEyePosition(), profile.attackSpeed());
             wanderTarget = null;
             wanderTicks = 0;
             return BTStatus.RUNNING;
         }
 
-        if (wanderTarget == null || --wanderTicks <= 0
-                || worm.distanceToSqr(wanderTarget) < 4.0) {
+        if (wanderTarget == null || --wanderTicks <= 0 || worm.distanceToSqr(wanderTarget) < 4.0) {
             wanderTarget = chooseWanderTarget();
             wanderTicks = WANDER_RESELECT_TICKS;
         }
@@ -65,22 +63,13 @@ public final class WormMovementAction extends BTNode {
         if (current.lengthSqr() < 1.0E-6) {
             current = worm.getLookAngle();
         }
-        Vec3 direction = current.normalize()
-                .scale(1.0 - TURN_WEIGHT)
-                .add(desired.scale(TURN_WEIGHT))
-                .normalize();
+        Vec3 direction = current.normalize().scale(1.0 - TURN_WEIGHT).add(desired.scale(TURN_WEIGHT)).normalize();
         worm.setDeltaMovement(direction.scale(speed));
 
         Vec3 lookPoint = worm.position().add(direction.scale(8.0));
-        worm.getLookControl().setLookAt(
-                lookPoint.x, lookPoint.y, lookPoint.z, 10.0F, 30.0F);
-        float yaw = (float) (Mth.atan2(direction.z, direction.x)
-                * Mth.RAD_TO_DEG) - 90.0F;
-        float pitch = (float) (-(Mth.atan2(
-                direction.y,
-                Math.sqrt(direction.x * direction.x
-                        + direction.z * direction.z))
-                * Mth.RAD_TO_DEG));
+        worm.getLookControl().setLookAt(lookPoint.x, lookPoint.y, lookPoint.z, 10.0F, 30.0F);
+        float yaw = (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
+        float pitch = (float) (-(Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * Mth.RAD_TO_DEG));
         worm.setYRot(Mth.rotLerp(0.2F, worm.getYRot(), yaw));
         worm.setXRot(Mth.rotLerp(0.2F, worm.getXRot(), pitch));
         worm.setYBodyRot(worm.getYRot());
@@ -92,16 +81,12 @@ public final class WormMovementAction extends BTNode {
         double radius = 8.0 + worm.getRandom().nextDouble() * 12.0;
         double x = worm.getX() + forward.x + Math.cos(angle) * radius;
         double z = worm.getZ() + forward.z + Math.sin(angle) * radius;
-        int surface = worm.level().getHeight(
-                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Mth.floor(x), Mth.floor(z));
+        int surface = worm.level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mth.floor(x), Mth.floor(z));
         double baseY = profile.surfaceWander()
                 ? surface + profile.wanderHeightOffset()
                 : Math.min(surface, profile.maximumWanderHeight())
                 + profile.wanderHeightOffset();
-        double y = Math.max(
-                worm.level().getMinBuildHeight() + 2.0,
-                baseY + worm.getRandom().nextInt(9) - 3.0);
+        double y = Math.max(worm.level().getMinBuildHeight() + 2.0, baseY + worm.getRandom().nextInt(9) - 3.0);
         return new Vec3(x, y, z);
     }
 
@@ -111,8 +96,7 @@ public final class WormMovementAction extends BTNode {
                           boolean surfaceWander) {
         public Profile {
             if (attackSpeed <= 0.0 || wanderSpeed <= 0.0) {
-                throw new IllegalArgumentException(
-                        "Worm movement speeds must be positive");
+                throw new IllegalArgumentException("Worm movement speeds must be positive");
             }
         }
 
@@ -121,21 +105,15 @@ public final class WormMovementAction extends BTNode {
         }
 
         public static Profile surface() {
-            return new Profile(
-                    0.4, 0.34, Double.POSITIVE_INFINITY,
-                    Double.POSITIVE_INFINITY, 2.0, true);
+            return new Profile(0.4, 0.34, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, 2.0, true);
         }
 
         public static Profile flying() {
-            return new Profile(
-                    0.4, 0.34, Double.POSITIVE_INFINITY,
-                    Double.POSITIVE_INFINITY, 0.0, false);
+            return new Profile(0.4, 0.34, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, 0.0, false);
         }
 
         public static Profile boneSerpent() {
-            return new Profile(
-                    0.4, 0.34, Double.POSITIVE_INFINITY,
-                    Double.POSITIVE_INFINITY, 7.0, false);
+            return new Profile(0.4, 0.34, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, 7.0, false);
         }
     }
 }

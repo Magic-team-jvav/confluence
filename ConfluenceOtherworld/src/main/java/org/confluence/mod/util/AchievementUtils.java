@@ -58,10 +58,8 @@ public final class AchievementUtils {
 
     /// 记录玩家击败的史莱姆种类，并在覆盖当前标签中的全部类型后授予成就。
     /// 标签是需要击败哪些实体的唯一配置入口，外部模组无需修改本体代码。
-    public static boolean gelatinWorldTour(
-            ServerPlayer player, EntityType<?> defeatedType) {
-        if (player.isSpectator()
-                || !defeatedType.is(LibTags.EntityTypes.SLIME)) {
+    public static boolean gelatinWorldTour(ServerPlayer player, EntityType<?> defeatedType) {
+        if (player.isSpectator() || !defeatedType.is(LibTags.EntityTypes.SLIME)) {
             return false;
         }
         Set<ResourceLocation> requiredTypes = new LinkedHashSet<>();

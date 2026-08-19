@@ -13,7 +13,7 @@ final class TerraprismaChaseGoal extends SummonGoal<TerraprismaSummon> {
 
     @Override
     public boolean canUse() {
-        return summon.hasValidTarget() && summon.position().distanceToSqr(summon.owner().position()) < 40.0 * 40.0;
+        return summon.hasValidTarget() && summon.position().distanceToSqr(summon.owner().position()) < 16.0 * 16.0;
     }
 
     @Override

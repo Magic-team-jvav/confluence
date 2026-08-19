@@ -13,15 +13,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 /// 剑气在指定时机生成的客户端粒子。
-public record SwordProjectileParticleEffect(
-        Event event,
-        Optional<ParticleOptions> particle,
-        Optional<ResourceLocation> emitter,
-        int interval,
-        int count,
-        float spread,
-        float velocityScale
-) {
+public record SwordProjectileParticleEffect(Event event, Optional<ParticleOptions> particle,
+                                            Optional<ResourceLocation> emitter, int interval,
+                                            int count, float spread, float velocityScale) {
     public static final Codec<SwordProjectileParticleEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Event.CODEC.fieldOf("event").forGetter(SwordProjectileParticleEffect::event),
             ParticleTypes.CODEC.optionalFieldOf("particle").forGetter(SwordProjectileParticleEffect::particle),

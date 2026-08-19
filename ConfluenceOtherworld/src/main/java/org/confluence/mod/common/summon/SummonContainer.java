@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.summon.projectile.SummonProjectileInstance;
 import org.confluence.mod.network.s2c.SummonSyncPacketS2C;
 import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
@@ -22,6 +23,7 @@ import java.util.UUID;
 public final class SummonContainer implements IPortNBTSerializable<CompoundTag> {
     private static final int FORMAT_VERSION = 1;
     private final List<SummonInstance> summons = new ArrayList<>();
+    private final List<SummonProjectileInstance> projectiles = new ArrayList<>();
     private final List<SummonSavedState> pendingSummons = new ArrayList<>();
     private boolean clientHasEntries;
 
@@ -45,7 +47,11 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
         }
         int capacity = Math.max(0, (int) Math.floor(owner.getAttributeValue(ConfluenceMagicLib.MINION_CAPACITY)));
         removeMarked();
-        if (occupiedSlots() + summon.slotCost() > capacity && !summons.isEmpty()) {
+        if (summon.slotCost() > capacity) {
+            summon.remove();
+            return false;
+        }
+        while (occupiedSlots() + summon.slotCost() > capacity && !summons.isEmpty()) {
             SummonInstance last = summons.remove(summons.size() - 1);
             last.remove();
         }
@@ -89,10 +95,15 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
         return true;
     }
 
+    public void addProjectile(SummonProjectileInstance projectile) {
+        projectiles.add(projectile);
+    }
+
     public int clear() {
-        int size = summons.size() + pendingSummons.size();
+        int size = summons.size() + projectiles.size() + pendingSummons.size();
         summons.forEach(SummonInstance::remove);
         summons.clear();
+        projectiles.clear();
         pendingSummons.clear();
         return size;
     }
@@ -111,16 +122,17 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
     /// <p>召唤失败、长按清空、准星收回等入口都通过这里同步，避免物品层直接发包后遗漏容器自身的
     /// 客户端状态记录，造成客户端残留旧召唤物或短暂空位。</p>
     public void sync(ServerPlayer owner) {
-        SummonSyncPacketS2C.send(owner, summons);
-        clientHasEntries = !summons.isEmpty();
+        SummonSyncPacketS2C.send(owner, summons, projectiles);
+        clientHasEntries = !summons.isEmpty() || !projectiles.isEmpty();
     }
 
     public void tick(ServerPlayer owner) {
         restorePending(owner);
+        projectiles.forEach(SummonProjectileInstance::tick);
         summons.forEach(SummonInstance::tick);
         removeMarked();
         refreshGroupState();
-        if (!summons.isEmpty()) {
+        if (!summons.isEmpty() || !projectiles.isEmpty()) {
             sync(owner);
         } else if (clientHasEntries) {
             sync(owner);
@@ -129,6 +141,7 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
 
     private void removeMarked() {
         summons.removeIf(SummonInstance::isRemoved);
+        projectiles.removeIf(SummonProjectileInstance::isRemoved);
     }
 
     private void refreshGroupState() {

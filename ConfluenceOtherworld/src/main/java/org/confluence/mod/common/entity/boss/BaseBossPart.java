@@ -32,10 +32,8 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
     private static final String OWNER_TAG = "Owner";
     private static final String HEALTH_TAG = "PartHealth";
 
-    private static final EntityDataAccessor<Integer> OWNER_ID =
-            SynchedEntityData.defineId(BaseBossPart.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> PART_HEALTH =
-            SynchedEntityData.defineId(BaseBossPart.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(BaseBossPart.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> PART_HEALTH = SynchedEntityData.defineId(BaseBossPart.class, EntityDataSerializers.FLOAT);
 
     private @Nullable T owner;
     private @Nullable UUID ownerUUID;

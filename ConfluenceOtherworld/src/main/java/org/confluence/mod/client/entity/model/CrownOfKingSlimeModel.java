@@ -14,10 +14,8 @@ import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 
 /// 史莱姆王王冠的原版模型定义，与 1.21 侧使用同一组几何数据。
 public class CrownOfKingSlimeModel extends EntityModel<CrownOfKingSlimeModelEntity> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
-            Confluence.asResource("crown_of_king_slime"), "main");
-    public static final ResourceLocation TEXTURE = Confluence.asResource(
-            "textures/entity/model/crown_of_king_slime.png");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("crown_of_king_slime"), "main");
+    public static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/model/crown_of_king_slime.png");
     public static final RenderType RENDER_TYPE = RenderType.entityCutout(TEXTURE);
     private final ModelPart crown;
 
@@ -46,8 +44,7 @@ public class CrownOfKingSlimeModel extends EntityModel<CrownOfKingSlimeModelEnti
         crown.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(0, 0)
                         .addBox(-7.0F, 1.6016F, -2.7967F, 14.0F, 20.0F, 5.0F, new CubeDeformation(0.5313F)),
                 PartPose.offsetAndRotation(0.0F, -23.1016F, -20.4533F, -0.1309F, 0.0F, 0.0F));
-        PartDefinition front = crown.addOrReplaceChild("bone", CubeListBuilder.create(),
-                PartPose.offsetAndRotation(-4.0F, -25.0F, -24.0F, -0.3927F, 0.0F, 0.0F));
+        PartDefinition front = crown.addOrReplaceChild("bone", CubeListBuilder.create(), PartPose.offsetAndRotation(-4.0F, -25.0F, -24.0F, -0.3927F, 0.0F, 0.0F));
         front.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(0, 79)
                         .addBox(-9.1669F, -9.1669F, -5.6614F, 6.0F, 6.0F, 5.0F, new CubeDeformation(1.25F)),
                 PartPose.offsetAndRotation(4.0F, 2.6672F, 4.6497F, -0.0928F, 0.0924F, 0.7811F));
@@ -83,8 +80,7 @@ public class CrownOfKingSlimeModel extends EntityModel<CrownOfKingSlimeModelEnti
                           float ageInTicks, float netHeadYaw, float headPitch) {}
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight,
-                               int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         crown.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

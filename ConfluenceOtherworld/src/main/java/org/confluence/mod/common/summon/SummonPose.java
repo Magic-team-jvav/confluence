@@ -18,7 +18,6 @@ public record SummonPose(Vec3 position, float yaw, float pitch, float roll) {
 
     public SummonPose interpolate(SummonPose target, float progress) {
         float clamped = Mth.clamp(progress, 0.0F, 1.0F);
-        return new SummonPose(position.lerp(target.position, clamped), Mth.rotLerp(clamped, yaw, target.yaw),
-                Mth.rotLerp(clamped, pitch, target.pitch), Mth.rotLerp(clamped, roll, target.roll));
+        return new SummonPose(position.lerp(target.position, clamped), Mth.rotLerp(clamped, yaw, target.yaw), Mth.rotLerp(clamped, pitch, target.pitch), Mth.rotLerp(clamped, roll, target.roll));
     }
 }

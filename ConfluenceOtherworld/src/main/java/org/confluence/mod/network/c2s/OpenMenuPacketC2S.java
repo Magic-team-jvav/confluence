@@ -50,24 +50,13 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     /// 重铸界面只能从哥布林工匠的有效交易会话进入，不能作为通用菜单直接打开。</p>
     private static MenuRequest resolveMenu(ServerPlayer player, byte menuId) {
         if (menuId == EXTRA_INVENTORY) {
-            return new MenuRequest(
-                    (containerId, inventory, owner) ->
-                            new ExtraInventoryMenu(containerId, inventory),
-                    Component.empty());
+            return new MenuRequest((containerId, inventory, owner) -> new ExtraInventoryMenu(containerId, inventory), Component.empty());
         }
         if (menuId == NPC_REFORGE_MENU) {
-            if (!(player.containerMenu instanceof NPCTradeMenu tradeMenu)
-                    || !(tradeMenu.getNPC() instanceof GoblinTinkererNPC)
-                    || !tradeMenu.stillValid(player)) {
+            if (!(player.containerMenu instanceof NPCTradeMenu tradeMenu) || !(tradeMenu.getNPC() instanceof GoblinTinkererNPC) || !tradeMenu.stillValid(player)) {
                 return null;
             }
-            return new MenuRequest(
-                    (containerId, inventory, owner) ->
-                            new NPCReforgeMenu(
-                                    containerId,
-                                    inventory,
-                                    tradeMenu.getNPC()),
-                    Component.translatable("container.confluence.reforge"));
+            return new MenuRequest((containerId, inventory, owner) -> new NPCReforgeMenu(containerId, inventory, tradeMenu.getNPC()), Component.translatable("container.confluence.reforge"));
         }
         if (menuId != DYE_VAT_MENU && menuId != DYE_MIX_MENU) {
             return null;
@@ -78,25 +67,16 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
             return null;
         }
         if (menuId == DYE_VAT_MENU) {
-            return new MenuRequest(
-                    (containerId, inventory, owner) ->
-                            new DyeVatMenu(containerId, inventory, access),
-                    Component.translatable("container.confluence.dye_vat"));
+            return new MenuRequest((containerId, inventory, owner) -> new DyeVatMenu(containerId, inventory, access), Component.translatable("container.confluence.dye_vat"));
         }
-        return new MenuRequest(
-                (containerId, inventory, owner) ->
-                        new DyeMixMenu(containerId, inventory, access),
-                Component.translatable("container.confluence.dye_mix"));
+        return new MenuRequest((containerId, inventory, owner) -> new DyeMixMenu(containerId, inventory, access), Component.translatable("container.confluence.dye_mix"));
     }
 
-    private static ContainerLevelAccess currentDyeVatAccess(
-            ServerPlayer player) {
-        if (player.containerMenu instanceof DyeVatMenu menu
-                && menu.hasValidServerAccess(player)) {
+    private static ContainerLevelAccess currentDyeVatAccess(ServerPlayer player) {
+        if (player.containerMenu instanceof DyeVatMenu menu && menu.hasValidServerAccess(player)) {
             return menu.workstationAccess();
         }
-        if (player.containerMenu instanceof DyeMixMenu menu
-                && menu.hasValidServerAccess(player)) {
+        if (player.containerMenu instanceof DyeMixMenu menu && menu.hasValidServerAccess(player)) {
             return menu.workstationAccess();
         }
         return null;
@@ -129,8 +109,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
                     ? stack.copy()
                     : player.containerMenu.getCarried().copy();
             player.containerMenu.setCarried(ItemStack.EMPTY);
-            player.openMenu(new SimpleMenuProvider(
-                    request.constructor(), request.title()));
+            player.openMenu(new SimpleMenuProvider(request.constructor(), request.title()));
             Confluence.NETWORK_HANDLER.sendToPlayer(player, AvailableHouseSelectPacketS2C.collectPacket(player));
             if (!itemStack.isEmpty()) {
                 player.containerMenu.setCarried(itemStack);
@@ -144,8 +123,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     }
 
     public static void sendToServer(byte menuId, ItemStack stack) {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new OpenMenuPacketC2S(menuId, stack.copy()));
+        Confluence.NETWORK_HANDLER.sendToServer(new OpenMenuPacketC2S(menuId, stack.copy()));
     }
 
     private record MenuRequest(

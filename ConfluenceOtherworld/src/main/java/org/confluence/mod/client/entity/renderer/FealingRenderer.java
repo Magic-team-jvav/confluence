@@ -24,28 +24,19 @@ public final class FealingRenderer extends FairyRenderer<Fealing> {
     private static final int FULL_BRIGHT = 0xF000F0;
 
     public FealingRenderer(EntityRendererProvider.Context context) {
-        super(context, new CritterGeoModel<>(
-                Confluence.asResource("geo/animal/dummy")));
-        setBoneToGlow(
-                List.of("Outline", "Outline2", "Outline3", "Outline4", "Outline5"),
-                List.of("Body", "Internal", "Internal2", "Internal3", "Internal4"));
+        super(context, new CritterGeoModel<>(Confluence.asResource("geo/animal/dummy")));
+        setBoneToGlow(List.of("Outline", "Outline2", "Outline3", "Outline4", "Outline5"), List.of("Body", "Internal", "Internal2", "Internal3", "Internal4"));
     }
 
     /// 裁切通道会丢弃完全透明的纹理像素，同时保留立方体的深度、遮挡和背面剔除语义。
     @Override
-    protected RenderType getGlowRenderType(
-            Fealing animatable,
-            ResourceLocation texture) {
+    protected RenderType getGlowRenderType(Fealing animatable, ResourceLocation texture) {
         return RenderType.entityCutout(texture);
     }
 
     /// 内部骨骼与外层立方体采用相同的实体表面语义，避免主阶段继续继承半透明轮廓通道。
     @Override
-    public RenderType getRenderType(
-            Fealing animatable,
-            ResourceLocation texture,
-            @Nullable MultiBufferSource bufferSource,
-            float partialTick) {
+    public RenderType getRenderType(Fealing animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         return RenderType.entityCutout(texture);
     }
 
@@ -66,20 +57,6 @@ public final class FealingRenderer extends FairyRenderer<Fealing> {
             float green,
             float blue,
             float alpha) {
-        super.actuallyRender(
-                poseStack,
-                animatable,
-                model,
-                renderType,
-                bufferSource,
-                buffer,
-                isReRender,
-                partialTick,
-                FULL_BRIGHT,
-                packedOverlay,
-                red,
-                green,
-                blue,
-                alpha);
+        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, FULL_BRIGHT, packedOverlay, red, green, blue, alpha);
     }
 }

@@ -17,8 +17,7 @@ public class SimpleCritter extends BaseCritter {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createInsectAttributes()
-                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
+        return BaseCritter.createInsectAttributes().add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     @Override
@@ -26,19 +25,14 @@ public class SimpleCritter extends BaseCritter {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return withPassivePanic(
-                        createGroundCritterRoutine(1.0),
-                        1.5);
+                return withPassivePanic(createGroundCritterRoutine(1.0), 1.5);
             }
         };
     }
 
     /// 此类承载的蜗牛、幼虫和蛆虫在 1.21 中使用零摔落伤害倍率。
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 }

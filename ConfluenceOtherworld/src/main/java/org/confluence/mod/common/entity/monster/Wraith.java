@@ -40,15 +40,8 @@ public class Wraith extends BaseFlyingMonster {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
-                this, IronGolem.class, true));
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
-                this,
-                Turtle.class,
-                10,
-                true,
-                false,
-                Turtle.BABY_ON_LAND_SELECTOR));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
     }
 
     @Override
@@ -63,8 +56,7 @@ public class Wraith extends BaseFlyingMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this, "Float", 3, state -> state.setAndContinue(FLOAT)));
+        controllers.add(new AnimationController<>(this, "Float", 3, state -> state.setAndContinue(FLOAT)));
     }
 
     /// 怨魂的移动方式虽然是穿墙漂浮，近身攻击仍沿用人形敌怪的主手挥动。

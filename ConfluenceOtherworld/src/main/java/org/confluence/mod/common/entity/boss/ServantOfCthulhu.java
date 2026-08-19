@@ -32,10 +32,8 @@ import java.util.UUID;
 /// 1.21 侧临时恶魔眼一致。它优先继承主人的目标，主人暂时卸载时
 /// 保留精确 UUID，不能误绑定到附近另一个同类 Boss。</p>
 public class ServantOfCthulhu extends BaseFlyingMonster {
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
-            SynchedEntityData.defineId(ServantOfCthulhu.class, EntityDataSerializers.OPTIONAL_UUID);
-    private final BossOwnerTracker<EyeOfCthulhu> ownerTracker =
-            new BossOwnerTracker<>(EyeOfCthulhu.class);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(ServantOfCthulhu.class, EntityDataSerializers.OPTIONAL_UUID);
+    private final BossOwnerTracker<EyeOfCthulhu> ownerTracker = new BossOwnerTracker<>(EyeOfCthulhu.class);
 
     public ServantOfCthulhu(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);

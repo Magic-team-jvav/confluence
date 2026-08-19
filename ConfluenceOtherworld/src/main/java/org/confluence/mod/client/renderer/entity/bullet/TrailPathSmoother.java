@@ -17,8 +17,8 @@ final class TrailPathSmoother {
         List<Vec3> controls = new ArrayList<>(Math.min(maxControlPoints, history.size() + 1));
         for (int index = start; index < history.size(); index++)
             appendDistinct(controls, history.get(index));
-        if (controls.isEmpty()) controls.add(head);
-        else controls.set(controls.size() - 1, head);
+        appendDistinct(controls, head);
+        if (controls.size() > maxControlPoints) controls.remove(0);
         if (controls.size() < 2) return controls;
         List<Vec3> curve = quadraticBezierChain(controls);
         curve.set(curve.size() - 1, head);
@@ -43,9 +43,7 @@ final class TrailPathSmoother {
 
     private static Vec3 quadraticBezier(Vec3 start, Vec3 control, Vec3 end, double value) {
         double inverse = 1.0D - value;
-        return start.scale(inverse * inverse)
-                .add(control.scale(2.0D * inverse * value))
-                .add(end.scale(value * value));
+        return start.scale(inverse * inverse).add(control.scale(2.0D * inverse * value)).add(end.scale(value * value));
     }
 
     private static Vec3 midpoint(Vec3 first, Vec3 second) {return first.add(second).scale(0.5D);}

@@ -45,21 +45,16 @@ public class SkeletronPrime extends BaseBoss {
     private static final String ARM_HEALTH_TAG = "ArmHealth";
     private static final String COMBAT_CYCLE_TAG = "CombatCycle";
 
-    private static final EntityDataAccessor<Boolean> DATA_SPINNING =
-            SynchedEntityData.defineId(
-                    SkeletronPrime.class,
-                    EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_SPINNING = SynchedEntityData.defineId(SkeletronPrime.class, EntityDataSerializers.BOOLEAN);
 
-    private final SkeletronPrimeArm[] arms =
-            new SkeletronPrimeArm[ARM_COUNT];
+    private final SkeletronPrimeArm[] arms = new SkeletronPrimeArm[ARM_COUNT];
     private final float[] armHealth =
             {-1.0F, -1.0F, -1.0F, -1.0F};
     private int destroyedArms;
     private int combatCycle;
     private int contactCooldown = 20;
 
-    public SkeletronPrime(
-            EntityType<? extends Monster> type, Level level) {
+    public SkeletronPrime(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         setNoGravity(true);
         noPhysics = true;
@@ -101,12 +96,8 @@ public class SkeletronPrime extends BaseBoss {
     protected void registerGoals() {
         super.registerGoals();
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(
-                2, new NearestAttackableTargetGoal<>(
-                        this, Player.class, false));
-        targetSelector.addGoal(
-                4, new NearestAttackableTargetGoal<>(
-                        this, IronGolem.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
     }
 
     @Override
@@ -170,8 +161,7 @@ public class SkeletronPrime extends BaseBoss {
         } else if (targetDirection.lengthSqr() <= 1.0E-9) {
             result = current;
         } else {
-            result = current.scale(1.1)
-                    .add(targetDirection.normalize().scale(0.12));
+            result = current.scale(1.1).add(targetDirection.normalize().scale(0.12));
         }
         double speed = result.length();
         if (speed > 2.5) {
@@ -183,8 +173,7 @@ public class SkeletronPrime extends BaseBoss {
     }
 
     /// 旋转阶段持续朝目标追击；白天狂暴使用更高速度和致命接触伤害。
-    private void updateSpinningMovement(
-            LivingEntity target, boolean enraged) {
+    private void updateSpinningMovement(LivingEntity target, boolean enraged) {
         Vec3 direction = target.getEyePosition().subtract(position());
         if (direction.lengthSqr() <= 1.0E-7) {
             setDeltaMovement(Vec3.ZERO);
@@ -208,11 +197,7 @@ public class SkeletronPrime extends BaseBoss {
         }
         float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE)
                 + (enraged ? 999.0F : 0.0F);
-        for (LivingEntity target : level().getEntitiesOfClass(
-                LivingEntity.class,
-                getBoundingBox(),
-                living -> living.canBeSeenAsEnemy()
-                        && canAttack(living))) {
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox(), living -> living.canBeSeenAsEnemy() && canAttack(living))) {
             target.hurt(damageSources().mobAttack(this), damage);
             contactCooldown = 20;
             return;
@@ -250,18 +235,15 @@ public class SkeletronPrime extends BaseBoss {
             return;
         }
         for (int index = 0; index < ARM_COUNT; index++) {
-            if ((destroyedArms & 1 << index) != 0
-                    || arms[index] != null && arms[index].isAlive()) {
+            if ((destroyedArms & 1 << index) != 0 || arms[index] != null && arms[index].isAlive()) {
                 continue;
             }
             arms[index] = spawnArm(serverLevel, index);
         }
     }
 
-    private SkeletronPrimeArm spawnArm(
-            ServerLevel serverLevel, int index) {
-        SkeletronPrimeArm arm =
-                BossEntities.SKELETRON_PRIME_ARM.get().create(level());
+    private SkeletronPrimeArm spawnArm(ServerLevel serverLevel, int index) {
+        SkeletronPrimeArm arm = BossEntities.SKELETRON_PRIME_ARM.get().create(level());
         if (arm == null) {
             return null;
         }
@@ -348,11 +330,8 @@ public class SkeletronPrime extends BaseBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        destroyedArms =
-                tag.getInt(DESTROYED_ARMS_TAG) & ALL_ARMS_DESTROYED;
-        combatCycle = Mth.clamp(
-                tag.getInt(COMBAT_CYCLE_TAG),
-                0, COMBAT_CYCLE_TICKS - 1);
+        destroyedArms = tag.getInt(DESTROYED_ARMS_TAG) & ALL_ARMS_DESTROYED;
+        combatCycle = Mth.clamp(tag.getInt(COMBAT_CYCLE_TAG), 0, COMBAT_CYCLE_TICKS - 1);
         for (int index = 0; index < ARM_COUNT; index++) {
             String key = ARM_HEALTH_TAG + index;
             armHealth[index] = (destroyedArms & 1 << index) != 0
@@ -365,10 +344,7 @@ public class SkeletronPrime extends BaseBoss {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 

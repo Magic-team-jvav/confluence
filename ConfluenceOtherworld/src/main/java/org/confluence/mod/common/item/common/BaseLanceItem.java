@@ -21,12 +21,12 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.Tags;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.mixed.IServerPlayer;
@@ -111,7 +111,7 @@ public class BaseLanceItem extends CustomRarityItem implements /* todo leftclick
                 if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
                 victim = LibEntityUtils.tryFindBeImpacted(victim);
                 owner.setLastHurtMob(victim);
-                DamageSource damageSource = ModDamageTypes.of(level, DamageTypes.STING, owner);
+                DamageSource damageSource = LibDamageTypes.of(level, DamageTypes.STING, owner);
 
                 Vec3 attackerVelocity = new Vec3(IServerPlayer.of(owner).confluence$getMovementSpeed()); // 使用者速度
                 Vec3 relativeVelocity = attackerVelocity.subtract(victim.getPosition(1).subtract(victim.getPosition(0))); // 计算相对速度，不再使用加速度

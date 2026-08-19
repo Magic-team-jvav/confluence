@@ -33,8 +33,7 @@ public class Worm extends BaseCritter implements VariantHolder<Worm.Variant> {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createInsectAttributes()
-                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
+        return BaseCritter.createInsectAttributes().add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     @Override
@@ -42,17 +41,14 @@ public class Worm extends BaseCritter implements VariantHolder<Worm.Variant> {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return withPassivePanic(
-                        createGroundCritterRoutine(1.0),
-                        1.5);
+                return withPassivePanic(createGroundCritterRoutine(1.0), 1.5);
             }
         };
     }
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.NORMAL);
+        return CritterVariantUtil.byId(Variant.values(), this.entityData.get(DATA_VARIANT), Variant.NORMAL);
     }
 
     @Override
@@ -89,8 +85,7 @@ public class Worm extends BaseCritter implements VariantHolder<Worm.Variant> {
 
     @Override
     protected void initializeSpawnVariant() {
-        setVariant(CritterVariantUtil.withRareVariant(
-                random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
+        setVariant(CritterVariantUtil.withRareVariant(random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
     }
 
     /// 蚯蚓的三种外观共用模型，但纹理存放在独立子目录中。
@@ -101,10 +96,7 @@ public class Worm extends BaseCritter implements VariantHolder<Worm.Variant> {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 

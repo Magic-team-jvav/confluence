@@ -12,19 +12,14 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 /// 飞龙头部渲染器。飞龙模型同时保存了头部和三种体节，因此渲染头部时必须隐藏所有体节分组。
-public final class WyvernRenderer<T extends BaseWormMonster>
-        extends GeoNormalRenderer<T> {
+public final class WyvernRenderer<T extends BaseWormMonster> extends GeoNormalRenderer<T> {
     public WyvernRenderer(EntityRendererProvider.Context context, float scale) {
         super(context, Confluence.asResource("wyvern"));
         withScale(scale);
     }
 
     @Override
-    public RenderType getRenderType(
-            T wyvern,
-            ResourceLocation texture,
-            @Nullable MultiBufferSource buffers,
-            float partialTick) {
+    public RenderType getRenderType(T wyvern, ResourceLocation texture, @Nullable MultiBufferSource buffers, float partialTick) {
         return RenderType.entityCutoutNoCull(texture);
     }
 
@@ -47,7 +42,6 @@ public final class WyvernRenderer<T extends BaseWormMonster>
         model.getBone("Bone2").ifPresent(bone -> bone.setHidden(true));
         model.getBone("Bone3").ifPresent(bone -> bone.setHidden(true));
         model.getBone("Bone4").ifPresent(bone -> bone.setHidden(true));
-        super.preRender(poseStack, wyvern, model, buffers, buffer, reRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, wyvern, model, buffers, buffer, reRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

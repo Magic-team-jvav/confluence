@@ -36,8 +36,7 @@ public final class ShootingService {
 
     private static void consumeAmmo(ServerPlayer player, BaseGun gun, ItemStack gunStack, ItemStack ammo) {
         if (ammo.isEmpty()) return;
-        GunEvent.ShrinkBulletEvent event = new GunEvent.ShrinkBulletEvent(player, gun, gunStack, ammo,
-                GunFiringService.isInfinite(ammo));
+        GunEvent.ShrinkBulletEvent event = new GunEvent.ShrinkBulletEvent(player, gun, gunStack, ammo, GunFiringService.isInfinite(ammo));
         PortEventHandler.postEvent(event);
         ItemStack bulletStack = event.getBulletStack();
         int shrink = Math.max(0, event.getShrink());

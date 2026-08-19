@@ -26,20 +26,11 @@ public final class SpawnArrowAction extends BTNode {
     private final Float explicitInaccuracy;
     private boolean done;
 
-    public SpawnArrowAction(
-            Mob shooter,
-            double damage,
-            float velocity,
-            float inaccuracy) {
+    public SpawnArrowAction(Mob shooter, double damage, float velocity, float inaccuracy) {
         this(shooter, () -> damage, 1.0F, velocity, inaccuracy);
     }
 
-    private SpawnArrowAction(
-            Mob shooter,
-            DoubleSupplier explicitDamage,
-            float bowPower,
-            float velocity,
-            Float explicitInaccuracy) {
+    private SpawnArrowAction(Mob shooter, DoubleSupplier explicitDamage, float bowPower, float velocity, Float explicitInaccuracy) {
         this.shooter = shooter;
         this.explicitDamage = explicitDamage;
         this.bowPower = bowPower;
@@ -47,23 +38,12 @@ public final class SpawnArrowAction extends BTNode {
         this.explicitInaccuracy = explicitInaccuracy;
     }
 
-    public static SpawnArrowAction usingAttackDamage(
-            Mob shooter,
-            double multiplier,
-            float velocity,
-            float inaccuracy) {
-        return new SpawnArrowAction(
-                shooter,
-                () -> shooter.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier,
-                1.0F,
-                velocity,
-                inaccuracy);
+    public static SpawnArrowAction usingAttackDamage(Mob shooter, double multiplier, float velocity, float inaccuracy) {
+        return new SpawnArrowAction(shooter, () -> shooter.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier, 1.0F, velocity, inaccuracy);
     }
 
-    public static SpawnArrowAction mobBowShot(
-            Mob shooter, float bowPower, float velocity) {
-        return new SpawnArrowAction(
-                shooter, null, bowPower, velocity, null);
+    public static SpawnArrowAction mobBowShot(Mob shooter, float bowPower, float velocity) {
+        return new SpawnArrowAction(shooter, null, bowPower, velocity, null);
     }
 
     @Override
@@ -89,27 +69,18 @@ public final class SpawnArrowAction extends BTNode {
         float inaccuracy = explicitInaccuracy != null
                 ? explicitInaccuracy
                 : 14.0F - shooter.level().getDifficulty().getId() * 4.0F;
-        arrow.shoot(
-                dx,
-                dy + horizontalDistance * 0.20000000298023224,
-                dz,
-                velocity,
-                inaccuracy);
+        arrow.shoot(dx, dy + horizontalDistance * 0.20000000298023224, dz, velocity, inaccuracy);
         if (!shooter.level().addFreshEntity(arrow)) {
             return BTStatus.FAILURE;
         }
-        shooter.playSound(
-                SoundEvents.SKELETON_SHOOT,
-                1.0F,
-                1.0F / (shooter.getRandom().nextFloat() * 0.4F + 0.8F));
+        shooter.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (shooter.getRandom().nextFloat() * 0.4F + 0.8F));
         done = true;
         return BTStatus.SUCCESS;
     }
 
     private AbstractArrow createArrow() {
         if (explicitDamage == null) {
-            return ProjectileUtil.getMobArrow(
-                    shooter, new ItemStack(Items.ARROW), bowPower);
+            return ProjectileUtil.getMobArrow(shooter, new ItemStack(Items.ARROW), bowPower);
         }
         Arrow arrow = new Arrow(shooter.level(), shooter);
         arrow.setBaseDamage(explicitDamage.getAsDouble());

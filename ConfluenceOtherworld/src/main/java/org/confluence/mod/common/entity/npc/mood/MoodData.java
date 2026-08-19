@@ -63,9 +63,7 @@ public final class MoodData {
                 DataResult<List<Entry>> decoded = listCodec.parse(JsonOps.INSTANCE, resource.getValue());
                 var entries = decoded.result();
                 if (entries.isEmpty()) {
-                    String reason = decoded.error()
-                            .map(DataResult.PartialResult::message)
-                            .orElse("unknown decode error");
+                    String reason = decoded.error().map(DataResult.PartialResult::message).orElse("unknown decode error");
                     errors.add("Cannot load NPC mood " + npcId + ": " + reason);
                     continue;
                 }
@@ -74,8 +72,7 @@ public final class MoodData {
                 for (Entry entry : entries.get()) {
                     if (moods.putIfAbsent(entry.target(), entry.mood()) != null) {
                         ResourceLocation targetId = BuiltInRegistries.ENTITY_TYPE.getKey(entry.target());
-                        errors.add("Cannot load NPC mood " + npcId
-                                + ": duplicate target " + targetId);
+                        errors.add("Cannot load NPC mood " + npcId + ": duplicate target " + targetId);
                     }
                 }
                 newTable.put(npcType, Map.copyOf(moods));
@@ -83,8 +80,7 @@ public final class MoodData {
 
             if (!errors.isEmpty()) {
                 errors.forEach(Confluence.LOGGER::error);
-                Confluence.LOGGER.error(
-                        "NPC mood reload was rejected; the previous valid table remains active");
+                Confluence.LOGGER.error("NPC mood reload was rejected; the previous valid table remains active");
                 return;
             }
 

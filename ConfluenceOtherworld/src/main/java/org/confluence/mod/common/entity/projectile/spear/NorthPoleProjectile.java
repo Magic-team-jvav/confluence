@@ -114,12 +114,6 @@ public class NorthPoleProjectile extends SpearProjectile {
     }
 
     @Override
-    @org.jetbrains.annotations.Nullable
-    protected net.minecraft.core.particles.ParticleOptions getTrailParticle() {
-        return null;
-    }
-
-    @Override
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
         if (!level().isClientSide && level() instanceof ServerLevel serverLevel) {

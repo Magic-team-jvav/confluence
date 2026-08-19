@@ -61,13 +61,7 @@ public abstract class ItemInHandRendererMixin {
     }
 
     /// 魔镜保留长按使用时间，但第一人称不套用望远镜的贴脸模型变换。
-    @WrapOperation(
-            method = "renderArmWithItem",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/item/ItemStack;getUseAnimation()Lnet/minecraft/world/item/UseAnim;"
-            )
-    )
+    @WrapOperation(method = "renderArmWithItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getUseAnimation()Lnet/minecraft/world/item/UseAnim;"))
     private UseAnim useNormalFirstPersonTransformForMagicMirror(ItemStack stack, Operation<UseAnim> original) {
         return stack.getItem() instanceof MagicMirror ? UseAnim.NONE : original.call(stack);
     }

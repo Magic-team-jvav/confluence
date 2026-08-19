@@ -36,18 +36,9 @@ public final class BowCombatAction extends BTNode {
     private int attackCooldown;
     private int drawTicks;
 
-    public BowCombatAction(
-            PathfinderMob mob,
-            double movementSpeed,
-            int normalAttackInterval,
-            int hardAttackInterval,
-            double attackRadius,
-            int drawDuration,
-            float arrowVelocity) {
-        if (normalAttackInterval <= 0 || hardAttackInterval <= 0
-                || attackRadius <= 0.0 || drawDuration <= 0) {
-            throw new IllegalArgumentException(
-                    "Bow combat timing and radius must be positive");
+    public BowCombatAction(PathfinderMob mob, double movementSpeed, int normalAttackInterval, int hardAttackInterval, double attackRadius, int drawDuration, float arrowVelocity) {
+        if (normalAttackInterval <= 0 || hardAttackInterval <= 0 || attackRadius <= 0.0 || drawDuration <= 0) {
+            throw new IllegalArgumentException("Bow combat timing and radius must be positive");
         }
         this.mob = mob;
         this.movementSpeed = movementSpeed;
@@ -77,11 +68,9 @@ public final class BowCombatAction extends BTNode {
         boolean canSee = mob.getSensing().hasLineOfSight(target);
         visibleTicks = canSee ? visibleTicks + 1 : 0;
         double distanceSqr = mob.distanceToSqr(target);
-        double angle = angleBetween(
-                mob.getLookAngle(), target.position().subtract(mob.position()));
+        double angle = angleBetween(mob.getLookAngle(), target.position().subtract(mob.position()));
 
-        if (distanceSqr > attackRadiusSqr
-                || visibleTicks < REQUIRED_VISIBLE_TICKS) {
+        if (distanceSqr > attackRadiusSqr || visibleTicks < REQUIRED_VISIBLE_TICKS) {
             mob.getNavigation().moveTo(target, movementSpeed);
         }
         if (mob.getNavigation().isDone() || angle < LOOK_WHILE_MOVING_ANGLE) {
@@ -102,8 +91,7 @@ public final class BowCombatAction extends BTNode {
         }
 
         if (--attackCooldown <= 0) {
-            InteractionHand bowHand = ProjectileUtil.getWeaponHoldingHand(
-                    mob, item -> item instanceof BowItem);
+            InteractionHand bowHand = ProjectileUtil.getWeaponHoldingHand(mob, item -> item instanceof BowItem);
             mob.startUsingItem(bowHand);
             drawTicks = 0;
         }
@@ -122,8 +110,7 @@ public final class BowCombatAction extends BTNode {
 
     private void fire(LivingEntity target, double distanceSqr) {
         mob.stopUsingItem();
-        SpawnArrowAction shot = SpawnArrowAction.mobBowShot(
-                mob, BowItem.getPowerForTime(drawTicks), arrowVelocity);
+        SpawnArrowAction shot = SpawnArrowAction.mobBowShot(mob, BowItem.getPowerForTime(drawTicks), arrowVelocity);
         shot.start();
         if (shot.execute() == BTStatus.SUCCESS) {
             attackCooldown = mob.level().getDifficulty() == Difficulty.HARD
@@ -136,25 +123,21 @@ public final class BowCombatAction extends BTNode {
         drawTicks = 0;
     }
 
-    private void choosePostShotMovement(
-            LivingEntity target, double distanceSqr) {
+    private void choosePostShotMovement(LivingEntity target, double distanceSqr) {
         Vec3 destination;
         double speed;
         if (distanceSqr < 25.0) {
-            destination = LandRandomPos.getPosAway(
-                    mob, 5, 5, target.position());
+            destination = LandRandomPos.getPosAway(mob, 5, 5, target.position());
             speed = movementSpeed * 1.2;
         } else if (distanceSqr > 49.0) {
-            destination = LandRandomPos.getPosTowards(
-                    mob, 7, 5, target.position());
+            destination = LandRandomPos.getPosTowards(mob, 7, 5, target.position());
             speed = movementSpeed;
         } else {
             destination = LandRandomPos.getPos(mob, 3, 2);
             speed = movementSpeed * 0.9;
         }
         if (destination != null) {
-            mob.getNavigation().moveTo(
-                    destination.x, destination.y, destination.z, speed);
+            mob.getNavigation().moveTo(destination.x, destination.y, destination.z, speed);
         }
     }
 

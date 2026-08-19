@@ -46,19 +46,9 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
     }
 
     @Override
-    public void render(
-            WhipAttackEntity entity,
-            float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource buffers,
-            int packedLight
-    ) {
+    public void render(WhipAttackEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
         ItemStack weapon = entity.weapon();
-        List<Vec3> points = alignCurveToHand(
-                entity,
-                entity.sampleRenderControlPoints(partialTick),
-                partialTick);
+        List<Vec3> points = alignCurveToHand(entity, entity.sampleRenderControlPoints(partialTick), partialTick);
         if (weapon.isEmpty() || points.size() < 2) {
             return;
         }
@@ -69,21 +59,12 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
         Vec3 origin = entity.getPosition(partialTick);
 
         for (WhipSegment segment : appearance.segments()) {
-            renderLayer(
-                    weapon, segment, points, origin,
-                    poseStack, buffers, packedLight);
+            renderLayer(weapon, segment, points, origin, poseStack, buffers, packedLight);
         }
         if (appearance.optionalLineColor().isPresent()) {
-            renderCurveLine(
-                    points,
-                    origin,
-                    appearance.optionalLineColor().getAsInt(),
-                    poseStack,
-                    buffers);
+            renderCurveLine(points, origin, appearance.optionalLineColor().getAsInt(), poseStack, buffers);
         }
-        super.render(
-                entity, entityYaw, partialTick,
-                poseStack, buffers, packedLight);
+        super.render(entity, entityYaw, partialTick, poseStack, buffers, packedLight);
     }
 
     /// 把玩家当前持手作为客户端样条根部。
@@ -91,23 +72,16 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
     /// <p>服务端轨迹仍使用实体生成时冻结的世界坐标，本方法只修正客户端显示。1.21
     /// 是把玩家当前手部作为样条控制点参与插值，而不是对已经采样完的折线硬改第一个点。
     /// 这里保持同样的时机，避免第三人称看起来从错误手侧甩出。</p>
-    private List<Vec3> alignCurveToHand(
-            WhipAttackEntity entity,
-            List<Vec3> controlPoints,
-            float partialTick
-    ) {
-        if (controlPoints.isEmpty()
-                || !(entity.getOwner() instanceof Player player)) {
+    private List<Vec3> alignCurveToHand(WhipAttackEntity entity, List<Vec3> controlPoints, float partialTick) {
+        if (controlPoints.isEmpty() || !(entity.getOwner() instanceof Player player)) {
             return controlPoints;
         }
         float attack = player.getAttackAnim(partialTick);
         float swing = Mth.sin(Mth.sqrt(attack) * Mth.PI);
         Vec3 hand = player == Minecraft.getInstance().player
                 && entityRenderDispatcher.options.getCameraType().isFirstPerson()
-                ? getFirstPersonHandPosition(
-                player, entity.attackArm(), swing, partialTick)
-                : getThirdPersonHandPosition(
-                player, entity.attackArm(), partialTick);
+                ? getFirstPersonHandPosition(player, entity.attackArm(), swing, partialTick)
+                : getThirdPersonHandPosition(player, entity.attackArm(), partialTick);
         if (controlPoints.size() == 1) {
             return List.of(hand);
         }
@@ -120,12 +94,7 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
     }
 
     /// 按 1.21 的视场角和近裁剪面换算第一人称持鞭手位置。
-    private Vec3 getFirstPersonHandPosition(
-            Player player,
-            HumanoidArm arm,
-            float swing,
-            float partialTick
-    ) {
+    private Vec3 getFirstPersonHandPosition(Player player, HumanoidArm arm, float swing, float partialTick) {
         int side = arm == HumanoidArm.RIGHT ? 1 : -1;
         double fovScale = 960.0
                 / entityRenderDispatcher.options.fov().get();
@@ -134,48 +103,27 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
                 .scale(fovScale)
                 .yRot(swing * 0.5F - 1.0F)
                 .xRot(-swing * 0.7F);
-        return player.getPosition(partialTick)
-                .add(offset)
-                .add(0.0, player.getEyeHeight() * 0.8F, 0.0);
+        return player.getPosition(partialTick).add(offset).add(0.0, player.getEyeHeight() * 0.8F, 0.0);
     }
 
     /// 取得第三人称挥鞭手位置，并和服务端生成锚点保持相同的左右手约定。
-    private static Vec3 getThirdPersonHandPosition(
-            Player player,
-            HumanoidArm arm,
-            float partialTick
-    ) {
+    private static Vec3 getThirdPersonHandPosition(Player player, HumanoidArm arm, float partialTick) {
         int side = arm == HumanoidArm.RIGHT ? 1 : -1;
-        float bodyYaw = Mth.lerp(
-                partialTick, player.yBodyRotO, player.yBodyRot)
+        float bodyYaw = Mth.lerp(partialTick, player.yBodyRotO, player.yBodyRot)
                 * Mth.DEG_TO_RAD;
         double sin = Mth.sin(bodyYaw);
         double cos = Mth.cos(bodyYaw);
         float scale = player.getScale();
         double sideOffset = side * 0.5 * scale;
         double crouchOffset = player.isCrouching() ? -0.1875 : 0.0;
-        return player.getEyePosition(partialTick).add(
-                -cos * sideOffset,
-                crouchOffset - scale,
-                -sin * sideOffset);
+        return player.getEyePosition(partialTick).add(-cos * sideOffset, crouchOffset - scale, -sin * sideOffset);
     }
 
-    private static void renderLayer(
-            ItemStack weapon,
-            WhipSegment segment,
-            List<Vec3> curve,
-            Vec3 origin,
-            PoseStack poseStack,
-            MultiBufferSource buffers,
-            int packedLight
-    ) {
+    private static void renderLayer(ItemStack weapon, WhipSegment segment, List<Vec3> curve, Vec3 origin, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
         List<WhipPolylineSamples.Sample> samples =
                 segment.mode() == WhipSegment.Mode.FIXED_SPACING
-                        ? WhipPolylineSamples.fixedSpacing(
-                        curve,
-                        segment.value() / RENDERED_PIXELS_PER_BLOCK)
-                        : WhipPolylineSamples.fixedCount(
-                        curve, segment.value());
+                        ? WhipPolylineSamples.fixedSpacing(curve, segment.value() / RENDERED_PIXELS_PER_BLOCK)
+                        : WhipPolylineSamples.fixedCount(curve, segment.value());
         BakedModel body = WhipSegmentModels.model(segment.model());
         boolean hasTip = segment.tipModel() != null;
         WhipPolylineSamples.Sample tip = hasTip
@@ -191,79 +139,34 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
         /// fixedSpacing/fixedCount 已从第一个有效间隔开始取样，不包含曲线根点。
         for (int index = 0; index < bodyCount; index++) {
             WhipPolylineSamples.Sample sample = samples.get(index);
-            renderSegment(
-                    weapon,
-                    body,
-                    sample.position().subtract(origin),
-                    sample.tangent(),
-                    index + 1,
-                    poseStack,
-                    buffers,
-                    packedLight);
+            renderSegment(weapon, body, sample.position().subtract(origin), sample.tangent(), index + 1, poseStack, buffers, packedLight);
         }
         if (hasTip) {
-            renderSegment(
-                    weapon,
-                    WhipSegmentModels.model(segment.tipModel()),
-                    tip.position().subtract(origin),
-                    tip.tangent(),
-                    bodyCount + 1,
-                    poseStack,
-                    buffers,
-                    packedLight);
+            renderSegment(weapon, WhipSegmentModels.model(segment.tipModel()), tip.position().subtract(origin), tip.tangent(), bodyCount + 1, poseStack, buffers, packedLight);
         }
     }
 
-    private static void renderSegment(
-            ItemStack weapon,
-            BakedModel model,
-            Vec3 offset,
-            Vec3 tangent,
-            int index,
-            PoseStack poseStack,
-            MultiBufferSource buffers,
-            int packedLight
-    ) {
+    private static void renderSegment(ItemStack weapon, BakedModel model, Vec3 offset, Vec3 tangent, int index, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(offset.x, offset.y, offset.z);
         poseStack.scale(MODEL_SCALE, MODEL_SCALE, MODEL_SCALE);
 
         float yaw = (float) (Math.PI - Math.atan2(tangent.z, tangent.x));
-        float pitch = (float) -Math.atan2(
-                tangent.y, tangent.horizontalDistance());
+        float pitch = (float) -Math.atan2(tangent.y, tangent.horizontalDistance());
         poseStack.mulPose(Axis.YP.rotation(yaw));
-        poseStack.mulPose(Axis.ZP.rotation(
-                pitch + (float) Math.PI * 0.5F));
+        poseStack.mulPose(Axis.ZP.rotation(pitch + (float) Math.PI * 0.5F));
         poseStack.translate(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(
-                index * ROLL_DEGREES_PER_SEGMENT));
+        poseStack.mulPose(Axis.YP.rotationDegrees(index * ROLL_DEGREES_PER_SEGMENT));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
 
         for (RenderType renderType : model.getRenderTypes(weapon, false)) {
-            VertexConsumer consumer = ItemRenderer.getFoilBuffer(
-                    buffers,
-                    renderType,
-                    false,
-                    weapon.hasFoil());
-            Minecraft.getInstance().getItemRenderer().renderModelLists(
-                    model,
-                    weapon,
-                    packedLight,
-                    OverlayTexture.NO_OVERLAY,
-                    poseStack,
-                    consumer
-            );
+            VertexConsumer consumer = ItemRenderer.getFoilBuffer(buffers, renderType, false, weapon.hasFoil());
+            Minecraft.getInstance().getItemRenderer().renderModelLists(model, weapon, packedLight, OverlayTexture.NO_OVERLAY, poseStack, consumer);
         }
         poseStack.popPose();
     }
 
-    private static void renderCurveLine(
-            List<Vec3> points,
-            Vec3 origin,
-            int color,
-            PoseStack poseStack,
-            MultiBufferSource buffers
-    ) {
+    private static void renderCurveLine(List<Vec3> points, Vec3 origin, int color, PoseStack poseStack, MultiBufferSource buffers) {
         VertexConsumer consumer = buffers.getBuffer(RenderType.lineStrip());
         PoseStack.Pose pose = poseStack.last();
         for (int index = 0; index < points.size(); index++) {
@@ -278,29 +181,15 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
                 continue;
             }
             tangent = tangent.normalize();
-            consumer.vertex(
-                            pose.pose(),
-                            (float) point.x,
-                            (float) point.y,
-                            (float) point.z)
+            consumer.vertex(pose.pose(), (float) point.x, (float) point.y, (float) point.z)
                     .color(color)
-                    .normal(
-                            pose.normal(),
-                            (float) tangent.x,
-                            (float) tangent.y,
-                            (float) tangent.z)
+                    .normal(pose.normal(), (float) tangent.x, (float) tangent.y, (float) tangent.z)
                     .endVertex();
         }
     }
 
     @Override
-    public boolean shouldRender(
-            WhipAttackEntity entity,
-            Frustum frustum,
-            double cameraX,
-            double cameraY,
-            double cameraZ
-    ) {
+    public boolean shouldRender(WhipAttackEntity entity, Frustum frustum, double cameraX, double cameraY, double cameraZ) {
         // 实体锚点在玩家手边，但鞭梢可能进入视锥，因此不能只按实体本身的小包围盒裁剪。
         return true;
     }

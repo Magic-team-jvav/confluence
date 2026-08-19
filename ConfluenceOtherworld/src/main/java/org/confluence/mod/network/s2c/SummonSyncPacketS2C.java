@@ -13,6 +13,7 @@ import org.confluence.mod.common.summon.SummonAnimation;
 import org.confluence.mod.common.summon.SummonInstance;
 import org.confluence.mod.common.summon.SummonPose;
 import org.confluence.mod.common.summon.SummonVisualState;
+import org.confluence.mod.common.summon.projectile.SummonProjectileInstance;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortVarInt;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -24,7 +25,7 @@ import java.util.UUID;
 
 /// 同步一个玩家当前持有的召唤物姿态。
 public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements IPortPacket.S2C {
-    private static final int MAX_ENTRIES = 128;
+    private static final int MAX_ENTRIES = 512;
     public static final ResourceLocation ID = Confluence.asResource("summon_sync");
     public static final PortStreamCodec<ByteBuf, SummonSyncPacketS2C> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
@@ -53,8 +54,11 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
         }
     };
 
-    public SummonSyncPacketS2C(ServerPlayer owner, List<SummonInstance> summons) {
-        this(owner.getUUID(), summons.stream().flatMap(summon -> summon.renderParts().stream()).map(Entry::from).toList());
+    public SummonSyncPacketS2C(ServerPlayer owner, List<SummonInstance> summons,
+                               List<SummonProjectileInstance> projectiles) {
+        this(owner.getUUID(), java.util.stream.Stream.concat(
+                summons.stream().flatMap(summon -> summon.renderParts().stream()),
+                projectiles.stream().map(SummonProjectileInstance::renderPart)).map(Entry::from).toList());
     }
 
     @Override
@@ -73,8 +77,9 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
         ClientSummonManager.accept(ownerId, entries);
     }
 
-    public static void send(ServerPlayer owner, List<SummonInstance> summons) {
-        SummonSyncPacketS2C packet = new SummonSyncPacketS2C(owner, summons);
+    public static void send(ServerPlayer owner, List<SummonInstance> summons,
+                            List<SummonProjectileInstance> projectiles) {
+        SummonSyncPacketS2C packet = new SummonSyncPacketS2C(owner, summons, projectiles);
         Vec3 ownerPosition = owner.position();
         for (ServerPlayer viewer : owner.serverLevel().players()) {
             if (shouldSendTo(ownerPosition, packet.entries, viewer.position(), 96.0)) {
@@ -117,8 +122,7 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
             if (animationOrdinal < 0 || animationOrdinal >= animations.length) {
                 throw new DecoderException("Unknown summon animation state: " + animationOrdinal);
             }
-            return new Entry(id, type, position, yaw, pitch, roll, followingOwner, order, animations[animationOrdinal],
-                    PortVarInt.read(buffer), PortVarInt.read(buffer), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+            return new Entry(id, type, position, yaw, pitch, roll, followingOwner, order, animations[animationOrdinal], PortVarInt.read(buffer), PortVarInt.read(buffer), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
         }
 
         private void encode(ByteBuf buffer) {

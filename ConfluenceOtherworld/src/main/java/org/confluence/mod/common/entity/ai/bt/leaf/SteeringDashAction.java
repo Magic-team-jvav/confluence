@@ -33,15 +33,7 @@ public final class SteeringDashAction extends BTNode {
     private int pointBlankCooldown;
     private Vec3 lastDirection = Vec3.ZERO;
 
-    public SteeringDashAction(
-            PathfinderMob mob,
-            double friction,
-            double maxSpeed,
-            double acceleration,
-            double turnSpeedDegrees,
-            double triggerAngleDegrees,
-            double steeringAngleDegrees,
-            int backDuration) {
+    public SteeringDashAction(PathfinderMob mob, double friction, double maxSpeed, double acceleration, double turnSpeedDegrees, double triggerAngleDegrees, double steeringAngleDegrees, int backDuration) {
         this.mob = mob;
         this.friction = friction;
         this.maxSpeed = maxSpeed;
@@ -67,9 +59,7 @@ public final class SteeringDashAction extends BTNode {
         }
 
         double distance = mob.position().distanceTo(target.getEyePosition());
-        if (distance < 0.5
-                && mob.swingTime == 0
-                && pointBlankCooldown <= 0) {
+        if (distance < 0.5 && mob.swingTime == 0 && pointBlankCooldown <= 0) {
             mob.doHurtTarget(target);
             mob.swing(InteractionHand.MAIN_HAND);
             phase = Phase.AWAY;
@@ -122,18 +112,14 @@ public final class SteeringDashAction extends BTNode {
 
         lookAtTarget(target);
         Vec3 velocity = mob.getDeltaMovement();
-        double speed = Math.min(
-                maxSpeed,
-                velocity.add(velocity.normalize().scale(acceleration)).length());
+        double speed = Math.min(maxSpeed, velocity.add(velocity.normalize().scale(acceleration)).length());
         if (speed < 0.1) {
             mob.setDeltaMovement(mob.getForward().normalize().scale(0.1));
             return;
         }
 
         Vec3 forward = mob.getForward().normalize();
-        Vec3 towardTarget = target.getEyePosition()
-                .subtract(mob.position())
-                .normalize();
+        Vec3 towardTarget = target.getEyePosition().subtract(mob.position()).normalize();
         mob.setDeltaMovement(forward.add(towardTarget).normalize().scale(speed));
     }
 
@@ -159,8 +145,7 @@ public final class SteeringDashAction extends BTNode {
     private double angleToTarget(LivingEntity target) {
         Vec3 targetDirection = target.position().subtract(mob.position());
         Vec3 forward = mob.getForward();
-        if (targetDirection.lengthSqr() < 1.0E-6
-                || forward.lengthSqr() < 1.0E-6) {
+        if (targetDirection.lengthSqr() < 1.0E-6 || forward.lengthSqr() < 1.0E-6) {
             return 0.0;
         }
         double dot = targetDirection.normalize().dot(forward.normalize());

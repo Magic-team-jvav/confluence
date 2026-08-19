@@ -17,9 +17,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.FlailComponent;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.mixed.Immunity;
@@ -65,8 +65,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     /// 直接使用瞬时方向，会表现为手部端点弹动；该字段只参与客户端渲染，不保存到实体数据。</p>
     @Nullable
     public Vec3 smoothedChainDir;
-    private final AnimatableInstanceCache animationCache =
-            GeckoLibUtil.createInstanceCache(this);
+    private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
 
     public BaseFlailEntity(EntityType<? extends BaseFlailEntity> entityType, Level level) {
         super(entityType, level);
@@ -103,10 +102,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     public void setPhase(int phase) {
         int previous = entityData.get(DATA_PHASE);
         entityData.set(DATA_PHASE, phase);
-        if (!level().isClientSide()
-                && previous == PHASE_THROWN
-                && phase == PHASE_RETRACT
-                && getOwner() instanceof Player player) {
+        if (!level().isClientSide() && previous == PHASE_THROWN && phase == PHASE_RETRACT && getOwner() instanceof Player player) {
             FlailComponent component = getComponent();
             if (component != null) {
                 onThrownToRetract(player, component);
@@ -204,10 +200,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         setNoGravity(true);
         // 默认 SPIN：绕玩家肩部，在玩家面朝方向的竖直平面内圆周运动
         spinAngle += component.getSpinSpeed(player);
-        Vec3 pivot = HandPositionUtils.getPalmPosition(
-                player,
-                1.0F,
-                new Vec3(0.25, 0.25, -0.2));
+        Vec3 pivot = HandPositionUtils.getPalmPosition(player, 1.0F, new Vec3(0.25, 0.25, -0.2));
         float yawRad = (float) Math.toRadians(player.yBodyRot);
         float cosYaw = (float) Math.cos(yawRad);
         float sinYaw = (float) Math.sin(yawRad);
@@ -228,10 +221,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             move(MoverType.SELF, getDeltaMovement());
         }
         setDeltaMovement(Vec3.ZERO);
-        faceDirection(new Vec3(
-                sinYaw * Math.sin(spinAngle),
-                Math.cos(spinAngle),
-                -cosYaw * Math.sin(spinAngle)));
+        faceDirection(new Vec3(sinYaw * Math.sin(spinAngle), Math.cos(spinAngle), -cosYaw * Math.sin(spinAngle)));
 
         // 客户端持续播放挥动动画
         if (level().isClientSide()) {
@@ -249,8 +239,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     }
 
     private void tickThrown(Player player, FlailComponent component) {
-        Vec3 motion = getDeltaMovement().add(
-                0.0, -getThrownGravity(), 0.0);
+        Vec3 motion = getDeltaMovement().add(0.0, -getThrownGravity(), 0.0);
 
         // 速度过低直接收回（仅服务端判断）
         if (!level().isClientSide() && motion.lengthSqr() < 0.1) {
@@ -352,15 +341,12 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         if (damageMultiplier <= 0) return;
 
         AABB checkBox = getBoundingBox().inflate(1.5);
-        var entities = level().getEntitiesOfClass(
-                LivingEntity.class,
-                checkBox,
-                e -> e != player && e.isAlive());
+        var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox, e -> e != player && e.isAlive());
 
         for (LivingEntity target : entities) {
             float baseDamage = (float) (component.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
             float finalDamage = baseDamage * damageMultiplier;
-            DamageSource source = ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player);
+            DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {
                 LibEntityUtils.knockBackA2B(this, target, 0.3f, 0.15f);
@@ -403,37 +389,23 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         if (direction.lengthSqr() < 1.0E-7) {
             return;
         }
-        double horizontal = Math.sqrt(
-                direction.x * direction.x + direction.z * direction.z);
-        setYRot((float) Math.toDegrees(
-                Math.atan2(-direction.x, direction.z)));
-        setXRot((float) Math.toDegrees(
-                Math.atan2(-direction.y, horizontal)));
+        double horizontal = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
+        setYRot((float) Math.toDegrees(Math.atan2(-direction.x, direction.z)));
+        setXRot((float) Math.toDegrees(Math.atan2(-direction.y, horizontal)));
     }
 
     /// 在共享移动、碰撞和状态转换完成后执行具体武器行为。
     ///
     /// <p>特殊链锤只需覆盖此扩展点发射附属弹幕；普通链锤保持空实现。</p>
-    protected void tickSpecialBehavior(
-            Player player,
-            FlailComponent component,
-            int phase
-    ) {
+    protected void tickSpecialBehavior(Player player, FlailComponent component, int phase) {
     }
 
     /// 直接发射型链锤撞击方块时的扩展点。
-    protected void onLaunchedBlockImpact(
-            Player player,
-            FlailComponent component,
-            BlockHitResult hit
-    ) {
+    protected void onLaunchedBlockImpact(Player player, FlailComponent component, BlockHitResult hit) {
     }
 
     /// 投出阶段首次进入收回阶段时的扩展点。
-    protected void onThrownToRetract(
-            Player player,
-            FlailComponent component
-    ) {
+    protected void onThrownToRetract(Player player, FlailComponent component) {
     }
 
     /// SPIN 切换THROWN
@@ -516,8 +488,6 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers
-    ) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 }

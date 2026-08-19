@@ -22,8 +22,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 /// 自转，并把绳线锚到球体上方的同一个视觉中心。这样可以避免实体运动角度影响模型，
 /// 造成“球绕着绳线旋转”的错误观感。</p>
 public final class YoyoRenderer extends GeoEntityRenderer<YoyoEntity> {
-    private static final ResourceLocation MODEL =
-            Confluence.asResource("geo/entity/yoyos.geo.json");
+    private static final ResourceLocation MODEL = Confluence.asResource("geo/entity/yoyos.geo.json");
 
     public YoyoRenderer(EntityRendererProvider.Context context) {
         super(context, new Model());
@@ -31,57 +30,27 @@ public final class YoyoRenderer extends GeoEntityRenderer<YoyoEntity> {
     }
 
     @Override
-    public boolean shouldRender(
-            YoyoEntity entity,
-            Frustum frustum,
-            double cameraX,
-            double cameraY,
-            double cameraZ
-    ) {
+    public boolean shouldRender(YoyoEntity entity, Frustum frustum, double cameraX, double cameraY, double cameraZ) {
         return entity.getOwner() != null
-                && super.shouldRender(
-                entity, frustum, cameraX, cameraY, cameraZ);
+                && super.shouldRender(entity, frustum, cameraX, cameraY, cameraZ);
     }
 
     @Override
-    public void render(
-            YoyoEntity entity,
-            float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource buffers,
-            int packedLight
-    ) {
+    public void render(YoyoEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
         YoyoItem item = entity.getYoyoItem();
         if (item == null || !(entity.getOwner() instanceof Player player)) {
             return;
         }
 
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(
-                -Mth.lerp(partialTick, player.yHeadRotO, player.yHeadRot)));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTick, player.yHeadRotO, player.yHeadRot)));
         poseStack.translate(0.0F, 0.25F, 0.0F);
-        poseStack.mulPose(Axis.XN.rotationDegrees(
-                (entity.tickCount + partialTick) * 45.0F));
+        poseStack.mulPose(Axis.XN.rotationDegrees((entity.tickCount + partialTick) * 45.0F));
         poseStack.translate(0.0F, -0.5F, 0.0F);
-        super.render(
-                entity,
-                entityYaw,
-                partialTick,
-                poseStack,
-                buffers,
-                packedLight);
+        super.render(entity, entityYaw, partialTick, poseStack, buffers, packedLight);
         poseStack.popPose();
 
-        TetherRenderHelper.renderMainHandString(
-                entityRenderDispatcher,
-                entity,
-                player,
-                0.25F,
-                item.stringColor(),
-                partialTick,
-                poseStack,
-                buffers);
+        TetherRenderHelper.renderMainHandString(entityRenderDispatcher, entity, player, 0.25F, item.stringColor(), partialTick, poseStack, buffers);
     }
 
     private static final class Model extends GeoModel<YoyoEntity> {
@@ -96,14 +65,11 @@ public final class YoyoRenderer extends GeoEntityRenderer<YoyoEntity> {
             ResourceLocation id =
                     item == null ? null : ForgeRegistries.ITEMS.getKey(item);
             String name = id == null ? "wooden_yoyo" : id.getPath();
-            return Confluence.asResource(
-                    "textures/entity/yoyos/" + name + ".png");
+            return Confluence.asResource("textures/entity/yoyos/" + name + ".png");
         }
 
         @Override
-        public ResourceLocation getAnimationResource(
-                YoyoEntity animatable
-        ) {
+        public ResourceLocation getAnimationResource(YoyoEntity animatable) {
             return null;
         }
     }

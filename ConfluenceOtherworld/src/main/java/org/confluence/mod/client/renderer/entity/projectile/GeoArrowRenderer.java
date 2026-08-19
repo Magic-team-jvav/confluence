@@ -19,17 +19,10 @@ public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
     /// <p>不能在 {@code render} 调用父类之前读取渲染器的 {@code animatable} 字段，
     /// 因为 GeckoLib 此时尚未为本帧赋值；直接读取会在首次渲染箭矢时触发空指针。</p>
     @Override
-    protected void adjustPose(
-            PoseStack poseStack,
-            HellBatArrowEntity entity,
-            BakedGeoModel model,
-            float partialTick
-    ) {
+    protected void adjustPose(PoseStack poseStack, HellBatArrowEntity entity, BakedGeoModel model, float partialTick) {
         poseStack.translate(0, 0F, 0.0F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(
-                Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(
-                Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
         poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
         poseStack.mulPose(Axis.XP.rotationDegrees(60F));
         poseStack.translate(0F, -0.5, -0.3F);

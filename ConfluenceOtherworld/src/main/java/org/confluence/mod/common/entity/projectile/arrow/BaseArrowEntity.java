@@ -35,9 +35,7 @@ import org.mesdag.portlib.diff.IPortProjectile;
 import org.mesdag.portlib.wrapper.world.entity.projectile.PortAbstractArrow;
 import org.mesdag.portlib.wrapper.world.entity.projectile.PortProjectileDeflection;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /// 泰拉箭矢的通用运行实体。
 ///
@@ -51,6 +49,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     private int penetrate;
     private final Set<UUID> havenBeen = new HashSet<>();
+    private final List<ArrowHitEffect> weaponHitEffects = new ArrayList<>();
     public boolean fullPull;
 
     private int autoDiscardTick;
@@ -157,8 +156,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
         PortProjectileDeflection deflection = IPortEntity.of(entity).deflection(this);
         if (deflection != PortProjectileDeflection.NONE) {
             IPortProjectile portProjectile = IPortProjectile.of(this);
-            if (entity != portProjectile.portlib$getLastDeflectedBy()
-                    && deflect(deflection, entity, entity, false)) {
+            if (entity != portProjectile.portlib$getLastDeflectedBy() && deflect(deflection, entity, entity, false)) {
                 portProjectile.portlib$setLastDeflectedBy(entity);
             }
             return;
@@ -216,11 +214,21 @@ public class BaseArrowEntity extends PortAbstractArrow {
     protected void doPostHurtEffects(LivingEntity living) {
         if (getOwner() instanceof LivingEntity owner) {
             onHit(owner, living, fullPull);
+            weaponHitEffects.forEach(effect -> effect.apply(owner, living, fullPull));
         }
         super.doPostHurtEffects(living);
     }
 
     protected void onHit(LivingEntity owner, LivingEntity target, boolean fullPull) {}
+
+    public final void addWeaponHitEffect(ArrowHitEffect effect) {
+        weaponHitEffects.add(effect);
+    }
+
+    @FunctionalInterface
+    public interface ArrowHitEffect {
+        void apply(LivingEntity owner, LivingEntity target, boolean fullPull);
+    }
 
     protected SoundEvent getSound() {
         return SoundEvents.TRIDENT_HIT_GROUND;
@@ -302,8 +310,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
                 throw new IllegalArgumentException("Arrow penetrated count is out of range");
             }
             Tag rawTargets = runtimeTag.get("HitTargets");
-            if (!(rawTargets instanceof ListTag targetsTag)
-                    || !targetsTag.isEmpty() && targetsTag.getElementType() != Tag.TAG_INT_ARRAY) {
+            if (!(rawTargets instanceof ListTag targetsTag) || !targetsTag.isEmpty() && targetsTag.getElementType() != Tag.TAG_INT_ARRAY) {
                 throw new IllegalArgumentException("Arrow hit targets must be a UUID list");
             }
             for (Tag targetTag : targetsTag) {

@@ -44,8 +44,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Spawning.button", "Spawning Mechanism");
         add("confluence.configuration.Spawning.tooltip", "Settings related to entity spawning");
         add("confluence.configuration.spawnWithoutLight", "Ignore Light for Enemy Spawns");
-        add("confluence.configuration.spawnWithoutLight.tooltip",
-                "Allows Confluence enemies to spawn without the vanilla darkness requirement.");
+        add("confluence.configuration.spawnWithoutLight.tooltip", "Allows Confluence enemies to spawn without the vanilla darkness requirement.");
         add("confluence.configuration.Falling Star", "Falling Star");
         add("confluence.configuration.Falling Star.button", "Falling Star");
         add("confluence.configuration.Falling Star.tooltip", "Settings controlling the spawning of falling stars");
@@ -184,8 +183,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.shimmerDecompose", "Shimmer Decomposition");
         add("confluence.configuration.shimmerDecompose.tooltip", "When enabled, Shimmer can decompose items into raw materials.");
         add("confluence.configuration.shimmerDecomposeFirstTagItem", "Use First Tag Item for Shimmer Decomposition");
-        add("confluence.configuration.shimmerDecomposeFirstTagItem.tooltip",
-                "When enabled, Shimmer decomposition uses the first matching ingredient item instead of randomly selecting from tag candidates.");
+        add("confluence.configuration.shimmerDecomposeFirstTagItem.tooltip", "When enabled, Shimmer decomposition uses the first matching ingredient item instead of randomly selecting from tag candidates.");
         add("confluence.configuration.starPhase", "Stellar Phase");
         add("confluence.configuration.starPhase.tooltip", "Currently has no function. Not recommended to enable.");
         add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
@@ -282,8 +280,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.customTitle", "Custom Title");
         add("confluence.configuration.WeaponInput", "Weapon Input");
         add("confluence.configuration.WeaponInput.button", "Weapon Input");
-        add("confluence.configuration.WeaponInput.tooltip",
-                "Choose the primary action button for each weapon category.");
+        add("confluence.configuration.WeaponInput.tooltip", "Choose the primary action button for each weapon category.");
         add("confluence.configuration.weaponInputButton.left", "Left Mouse Button");
         add("confluence.configuration.weaponInputButton.right", "Right Mouse Button");
         add("confluence.configuration.staffUseButton", "Staff Action Button");
@@ -297,8 +294,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
     public void chinese() {
         add("confluence.configuration.WeaponInput", "武器输入");
         add("confluence.configuration.WeaponInput.button", "武器输入");
-        add("confluence.configuration.WeaponInput.tooltip",
-                "分别设置各类武器主要动作使用鼠标左键还是右键。");
+        add("confluence.configuration.WeaponInput.tooltip", "分别设置各类武器主要动作使用鼠标左键还是右键。");
         add("confluence.configuration.weaponInputButton.left", "鼠标左键");
         add("confluence.configuration.weaponInputButton.right", "鼠标右键");
         add("confluence.configuration.staffUseButton", "法杖动作按键");
@@ -338,8 +334,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.Spawning.button", "生成机制");
         add("confluence.configuration.Spawning.tooltip", "一些生成相关设置");
         add("confluence.configuration.spawnWithoutLight", "敌怪生成忽略光照");
-        add("confluence.configuration.spawnWithoutLight.tooltip",
-                "允许本体敌怪跳过原版暗度要求，其余生成条件不受影响。");
+        add("confluence.configuration.spawnWithoutLight.tooltip", "允许本体敌怪跳过原版暗度要求，其余生成条件不受影响。");
         add("confluence.configuration.Falling Star", "坠落之星");
         add("confluence.configuration.Falling Star.button", "坠落之星");
         add("confluence.configuration.Falling Star.tooltip", "控制坠落之星生成相关设置");
@@ -388,8 +383,7 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.shimmerDecompose", "微光分解");
         add("confluence.configuration.shimmerDecompose.tooltip", "启用时，微光液体能将物品分解为原材料");
         add("confluence.configuration.shimmerDecomposeFirstTagItem", "微光分解优先首个标签物品");
-        add("confluence.configuration.shimmerDecomposeFirstTagItem.tooltip",
-                "启用后，微光分解遇到标签原料时固定使用第一个可用候选，而不是在候选中随机选择。");
+        add("confluence.configuration.shimmerDecomposeFirstTagItem.tooltip", "启用后，微光分解遇到标签原料时固定使用第一个可用候选，而不是在候选中随机选择。");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
         add("confluence.configuration.rightClickRideMinecart", "右键上矿车");

@@ -19,14 +19,12 @@ public final class IronGolemSummon extends GroundMeleeSummon {
     public static final float BASE_DAMAGE = 8.0F;
 
     public IronGolemSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
-        super(Confluence.asResource("i_32_iron_golem"), owner, slotCost, stats, initialPose,
-                1.5, 3.0, 32.0, 0.72, 0.72);
+        super(Confluence.asResource("i_32_iron_golem"), owner, slotCost, stats, initialPose, 1.5, 3.0, 32.0, 0.72, 0.72);
     }
 
     @Override
     protected void onAttackAttempt(LivingEntity target) {
-        owner().level().playSound(null, net.minecraft.core.BlockPos.containing(position()), SoundEvents.IRON_GOLEM_ATTACK,
-                SoundSource.NEUTRAL, 1.0F, 1.0F);
+        owner().level().playSound(null, net.minecraft.core.BlockPos.containing(position()), SoundEvents.IRON_GOLEM_ATTACK, SoundSource.NEUTRAL, 1.0F, 1.0F);
     }
 
     @Override

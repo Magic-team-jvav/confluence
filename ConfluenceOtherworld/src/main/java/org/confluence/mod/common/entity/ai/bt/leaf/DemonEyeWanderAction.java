@@ -36,25 +36,20 @@ public final class DemonEyeWanderAction extends BTNode {
         if (horizontal.lengthSqr() < 1.0E-8) {
             horizontal = new Vec3(1.0, 0.0, 0.0);
         }
-        targetPos = horizontal.normalize().scale(15.0).add(mob.position())
-                .with(Direction.Axis.Y, anchorY + offsetY() + 5.0);
+        targetPos = horizontal.normalize().scale(15.0).add(mob.position()).with(Direction.Axis.Y, anchorY + offsetY() + 5.0);
         ticksLeft = 30;
     }
 
     @Override
     public BTStatus execute() {
-        if (mob.getTarget() != null || !mob.level().isNight()
-                || targetPos == null || ticksLeft <= 0
-                || mob.position().distanceToSqr(targetPos) <= 2.25) {
+        if (mob.getTarget() != null || !mob.level().isNight() || targetPos == null || ticksLeft <= 0 || mob.position().distanceToSqr(targetPos) <= 2.25) {
             return BTStatus.SUCCESS;
         }
 
         Vec3 movement = mob.getDeltaMovement();
-        Vec3 acceleration = mob.position().vectorTo(targetPos).normalize()
-                .multiply(0.08, 0.03, 0.08);
+        Vec3 acceleration = mob.position().vectorTo(targetPos).normalize().multiply(0.08, 0.03, 0.08);
         Vec3 nextMovement = movement.add(acceleration);
-        if (angleBetween(acceleration, movement) > 15.0
-                || nextMovement.length() < 0.2) {
+        if (angleBetween(acceleration, movement) > 15.0 || nextMovement.length() < 0.2) {
             mob.setDeltaMovement(nextMovement);
             mob.hasImpulse = true;
         }

@@ -32,7 +32,6 @@ import org.confluence.mod.common.entity.projectile.mana.*;
 import org.confluence.mod.common.entity.projectile.spear.*;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
-import org.confluence.mod.common.entity.projectile.summon.SummonBoltEntity;
 import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.entity.storage.ChesterEntity;
@@ -79,20 +78,7 @@ public final class ModEntities {
                     .noSave()
                     .build(id.toString())
     );
-    public static final RegistryObject<EntityType<SummonBoltEntity>> SUMMON_BOLT = register(
-            "summon_bolt",
-            id -> EntityType.Builder.of(
-                            SummonBoltEntity::new, MobCategory.MISC)
-                    .sized(0.2F, 0.2F)
-                    .clientTrackingRange(10)
-                    .updateInterval(1)
-                    .noSummon()
-                    .noSave()
-                    .build(id.toString())
-    );
-
-    public static final RegistryObject<EntityType<ChesterEntity>> CHESTER =
-            registerStorageCompanion("chester", ChesterEntity::new);
+    public static final RegistryObject<EntityType<ChesterEntity>> CHESTER = registerStorageCompanion("chester", ChesterEntity::new);
     public static final RegistryObject<EntityType<FlyingPiggyBankEntity>> FLYING_PIGGY_BANK = registerStorageCompanion("piggy_bank", FlyingPiggyBankEntity::new);
     public static final RegistryObject<EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF = register("base_mana_staff", id -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<VilethronProjectile>> VILETHRON = register("vilethron", id -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
@@ -659,8 +645,8 @@ public final class ModEntities {
 
     public static final RegistryObject<EntityType<StarCannonBulletEntity>> STAR_CANNON_BULLET = register("star_cannon_bullet", id -> EntityType.Builder.<StarCannonBulletEntity>of(StarCannonBulletEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(id.toString()));
     public static final RegistryObject<EntityType<BeeGunBullet>> BEE_GUN_BULLET = register("bee_gun_bullet", id -> EntityType.Builder.<BeeGunBullet>of(BeeGunBullet::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build(id.toString()));
-    public static final RegistryObject<EntityType<BaseBulletEntity>> BASE_BULLET_ENTITY = register("base_bullet", id -> EntityType.Builder.<BaseBulletEntity>of(BaseBulletEntity::new, MobCategory.MISC).sized(0.1f, 0.1f).build(id.toString()));
-    public static final RegistryObject<EntityType<CustomBulletEntity>> GRAVITY_BULLET_ENTITY = register("gravity_bullet", id -> EntityType.Builder.<CustomBulletEntity>of(CustomBulletEntity::new, MobCategory.MISC).sized(0.1f, 0.1f).build(id.toString()));
+    public static final RegistryObject<EntityType<BaseBulletEntity>> BASE_BULLET_ENTITY = register("base_bullet", id -> EntityType.Builder.<BaseBulletEntity>of(BaseBulletEntity::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(16).updateInterval(1).setShouldReceiveVelocityUpdates(false).build(id.toString()));
+    public static final RegistryObject<EntityType<CustomBulletEntity>> GRAVITY_BULLET_ENTITY = register("gravity_bullet", id -> EntityType.Builder.<CustomBulletEntity>of(CustomBulletEntity::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(16).updateInterval(1).setShouldReceiveVelocityUpdates(false).build(id.toString()));
 
     public static final RegistryObject<EntityType<RainbowSheep>> RAINBOW_SHEEP = register("rainbow_sheep",
             id -> EntityType.Builder.of(RainbowSheep::new, MobCategory.CREATURE)
@@ -697,8 +683,7 @@ public final class ModEntities {
         return register(name, id -> EntityType.Builder.of(supplier, MobCategory.MISC).sized(size, size).clientTrackingRange(4).updateInterval(10).fireImmune().build(id.toString()));
     }
 
-    private static <E extends Entity> RegistryObject<EntityType<E>> registerStorageCompanion(
-            String name, EntityType.EntityFactory<E> factory) {
+    private static <E extends Entity> RegistryObject<EntityType<E>> registerStorageCompanion(String name, EntityType.EntityFactory<E> factory) {
         return register(name, id -> EntityType.Builder.of(factory, MobCategory.MISC)
                 .sized(1.0F, 1.0F)
                 .clientTrackingRange(10)

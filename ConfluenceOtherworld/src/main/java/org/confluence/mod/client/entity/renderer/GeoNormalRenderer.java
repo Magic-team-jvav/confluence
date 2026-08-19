@@ -25,12 +25,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         this(context, path, false, 1.0F, 0.0F);
     }
 
-    public GeoNormalRenderer(
-            EntityRendererProvider.Context context,
-            ResourceLocation path,
-            boolean rotateAlongPitch,
-            float modelScale,
-            float modelOffsetY) {
+    public GeoNormalRenderer(EntityRendererProvider.Context context, ResourceLocation path, boolean rotateAlongPitch, float modelScale, float modelOffsetY) {
         this(context, new GeoNormalModel<>(path), rotateAlongPitch, modelScale, modelOffsetY);
     }
 
@@ -38,12 +33,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         this(context, model, false, 1.0F, 0.0F);
     }
 
-    public GeoNormalRenderer(
-            EntityRendererProvider.Context context,
-            GeoModel<T> model,
-            boolean rotateAlongPitch,
-            float modelScale,
-            float modelOffsetY) {
+    public GeoNormalRenderer(EntityRendererProvider.Context context, GeoModel<T> model, boolean rotateAlongPitch, float modelScale, float modelOffsetY) {
         super(context, model);
         this.rotateAlongPitch = rotateAlongPitch;
         this.modelScale = modelScale;
@@ -76,13 +66,10 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
             double yaw = Mth.lerp(partialTick, animatable.yRotO, animatable.getYRot())
                     * Mth.DEG_TO_RAD;
             Vector3f axis = new Vector3f((float) Math.cos(yaw), 0.0F, (float) Math.sin(yaw));
-            poseStack.mulPose(Axis.of(axis).rotationDegrees(
-                    Mth.lerp(partialTick, animatable.xRotO, animatable.getXRot())));
+            poseStack.mulPose(Axis.of(axis).rotationDegrees(Mth.lerp(partialTick, animatable.xRotO, animatable.getXRot())));
         }
         adjustPose(poseStack, animatable, model, partialTick);
-        super.preRender(
-                poseStack, animatable, model, bufferSource, buffer, isReRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     protected void adjustPose(

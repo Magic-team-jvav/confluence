@@ -26,8 +26,7 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
     public static final float DAMAGE = 16.0F;
     private static final int HOMING_TICKS = 30;
     private static final double MAX_SPEED = 0.95;
-    private static final EntityDataAccessor<Integer> TARGET_ID =
-            SynchedEntityData.defineId(AncientLightProjectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(AncientLightProjectile.class, EntityDataSerializers.INT);
 
     public AncientLightProjectile(EntityType<? extends AncientLightProjectile> type, Level level) {
         super(type, level);
@@ -42,10 +41,7 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
         Vec3 aim = target.getEyePosition().subtract(position()).normalize();
         double cosine = Math.cos(spreadAngle);
         double sine = Math.sin(spreadAngle);
-        Vec3 spread = new Vec3(
-                aim.x * cosine - aim.z * sine,
-                aim.y,
-                aim.x * sine + aim.z * cosine).normalize();
+        Vec3 spread = new Vec3(aim.x * cosine - aim.z * sine, aim.y, aim.x * sine + aim.z * cosine).normalize();
         setDeltaMovement(spread.scale(0.62));
     }
 
@@ -75,8 +71,7 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
 
         homeTowardTarget();
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        if (hitResult.getType() != HitResult.Type.MISS
-                && !PortProjectileImpactEvent.onProjectileImpact(this, hitResult)) {
+        if (hitResult.getType() != HitResult.Type.MISS && !PortProjectileImpactEvent.onProjectileImpact(this, hitResult)) {
             hitTargetOrDeflectSelf(hitResult);
         }
         if (isRemoved()) return;
@@ -101,9 +96,7 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (result.getEntity() instanceof LivingEntity target
-                && getOwner() instanceof LunaticCultist cultist
-                && cultist.canAttack(target)) {
+        if (result.getEntity() instanceof LivingEntity target && getOwner() instanceof LunaticCultist cultist && cultist.canAttack(target)) {
             target.hurt(damageSources().mobProjectile(this, cultist), DAMAGE);
         }
         discard();

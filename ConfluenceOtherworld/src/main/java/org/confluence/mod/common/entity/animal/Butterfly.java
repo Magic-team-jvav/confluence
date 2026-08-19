@@ -42,8 +42,7 @@ public class Butterfly extends Bird implements VariantHolder<Butterfly.Variant> 
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.RED_ADMIRAL);
+        return CritterVariantUtil.byId(Variant.values(), this.entityData.get(DATA_VARIANT), Variant.RED_ADMIRAL);
     }
 
     @Override
@@ -72,8 +71,7 @@ public class Butterfly extends Bird implements VariantHolder<Butterfly.Variant> 
 
     @Override
     protected void initializeSpawnVariant() {
-        setVariant(CritterVariantUtil.withRareVariant(
-                random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
+        setVariant(CritterVariantUtil.withRareVariant(random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
     }
 
     @Override
@@ -112,8 +110,7 @@ public class Butterfly extends Bird implements VariantHolder<Butterfly.Variant> 
 
         @Override
         public ResourceLocation texturePath() {
-            return IVariant.resource("textures/entity/animal/butterfly/"
-                    + getSerializedName() + "_butterfly.png");
+            return IVariant.resource("textures/entity/animal/butterfly/" + getSerializedName() + "_butterfly.png");
         }
 
         @Override

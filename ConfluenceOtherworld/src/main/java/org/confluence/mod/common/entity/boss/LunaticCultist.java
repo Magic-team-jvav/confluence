@@ -153,8 +153,7 @@ public class LunaticCultist extends BaseBoss {
     }
 
     void spawnDragon() {
-        if (!(level() instanceof ServerLevel serverLevel)
-                || hasLivingDragon()) {
+        if (!(level() instanceof ServerLevel serverLevel) || hasLivingDragon()) {
             return;
         }
         PhantasmDragon dragon = BossEntities.PHANTASM_DRAGON.get().create(level());
@@ -208,8 +207,7 @@ public class LunaticCultist extends BaseBoss {
     /// <p>每次调用只创建一个真实碰撞实体，伤害不会在创建阶段直接结算。
     /// 三类弹幕都锁定发射瞬间的方向，玩家可以通过移动躲避。</p>
     boolean shootSpell() {
-        if (!(level() instanceof ServerLevel serverLevel)
-                || getTarget() == null) {
+        if (!(level() instanceof ServerLevel serverLevel) || getTarget() == null) {
             return false;
         }
 
@@ -280,8 +278,7 @@ public class LunaticCultist extends BaseBoss {
         teleportTimer = Math.max(0, tag.getInt(TELEPORT_TIMER_TAG));
         spellTimer = Math.max(0, tag.getInt(SPELL_TIMER_TAG));
         dragonTimer = Math.max(0, tag.getInt(DRAGON_TIMER_TAG));
-        ancientLightTimer = Math.max(
-                0, tag.getInt(ANCIENT_LIGHT_TIMER_TAG));
+        ancientLightTimer = Math.max(0, tag.getInt(ANCIENT_LIGHT_TIMER_TAG));
         attackCycle = Math.max(0, tag.getInt(ATTACK_CYCLE_TAG));
         spellPattern = Math.max(0, tag.getInt(SPELL_PATTERN_TAG));
     }

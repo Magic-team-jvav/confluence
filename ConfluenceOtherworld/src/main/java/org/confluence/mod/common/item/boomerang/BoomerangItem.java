@@ -31,15 +31,11 @@ public class BoomerangItem extends Item {
     public void throwBoomerang(ServerPlayer player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         int maximumActive = settings.maxCount()
-                + EnchantmentHelper.getItemEnchantmentLevel(
-                ModEnchantments.MULTI_BOOMERANG.get(), stack);
-        if (player.getCooldowns().isOnCooldown(this)
-                || activeCount(player, stack) >= maximumActive) {
+                + EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MULTI_BOOMERANG.get(), stack);
+        if (player.getCooldowns().isOnCooldown(this) || activeCount(player, stack) >= maximumActive) {
             return;
         }
-        BoomerangProjectile projectile = new BoomerangProjectile(
-                ModEntities.BOOMERANG_PROJECTILE.get(),
-                player.level());
+        BoomerangProjectile projectile = new BoomerangProjectile(ModEntities.BOOMERANG_PROJECTILE.get(), player.level());
         projectile.configure(player, stack, settings);
         projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, settings.flySpeed(), 0.0F);
         player.level().addFreshEntity(projectile);
@@ -87,9 +83,7 @@ public class BoomerangItem extends Item {
 
     private int activeCount(Player player, ItemStack stack) {
         int count = 0;
-        for (BoomerangProjectile projectile : player.level().getEntitiesOfClass(
-                BoomerangProjectile.class,
-                player.getBoundingBox().inflate(settings.activeSearchRange()))) {
+        for (BoomerangProjectile projectile : player.level().getEntitiesOfClass(BoomerangProjectile.class, player.getBoundingBox().inflate(settings.activeSearchRange()))) {
             if (projectile.belongsTo(player) && ItemStack.isSameItem(projectile.getWeapon(), stack)) {
                 count++;
             }

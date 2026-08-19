@@ -49,18 +49,10 @@ final class SnatcherMovementAction extends BTNode {
                 : updateTargetDirection(target, stage);
 
         double frequencyMultiplier = target == null ? 1.0 : 2.0;
-        Vec3 forward = direction.normalize().scale(
-                0.2 * Math.sin(
-                        snatcher.tickCount * 0.05 * frequencyMultiplier));
+        Vec3 forward = direction.normalize().scale(0.2 * Math.sin(snatcher.tickCount * 0.05 * frequencyMultiplier));
         double lengthMultiplier = target == null ? 1.0 : stage;
-        Vec3 returnPosition = snatcher.getAnchor().add(
-                direction.scale(
-                        5.0 * lengthMultiplier * 0.5
-                                * (3.0 + Math.sin(
-                                snatcher.tickCount * 0.05
-                                        * frequencyMultiplier))));
-        Vec3 returnVelocity = returnPosition.subtract(
-                snatcher.position()).scale(0.1);
+        Vec3 returnPosition = snatcher.getAnchor().add(direction.scale(5.0 * lengthMultiplier * 0.5 * (3.0 + Math.sin(snatcher.tickCount * 0.05 * frequencyMultiplier))));
+        Vec3 returnVelocity = returnPosition.subtract(snatcher.position()).scale(0.1);
         Vec3 finalVelocity = extraVelocity.add(forward).add(returnVelocity);
         if (finalVelocity.lengthSqr() > MAX_SPEED * MAX_SPEED) {
             finalVelocity = finalVelocity.normalize().scale(MAX_SPEED);
@@ -71,22 +63,16 @@ final class SnatcherMovementAction extends BTNode {
         return BTStatus.RUNNING;
     }
 
-    private Vec3 updateTargetDirection(
-            LivingEntity target, int stage) {
-        Vec3 targetPosition = target.position().add(
-                0.0, target.getEyeHeight() * 0.5, 0.0);
+    private Vec3 updateTargetDirection(LivingEntity target, int stage) {
+        Vec3 targetPosition = target.position().add(0.0, target.getEyeHeight() * 0.5, 0.0);
         snatcher.getLookControl().setLookAt(target, 200.0F, 85.0F);
         snatcher.lookAt(target, 200.0F, 85.0F);
 
-        Vec3 fromHeadToAnchor = snatcher.getAnchor().subtract(
-                snatcher.position());
-        Vec3 fromHeadToTarget = targetPosition.subtract(
-                snatcher.position());
-        Vec3 fromAnchorToTarget = targetPosition.subtract(
-                snatcher.getAnchor());
+        Vec3 fromHeadToAnchor = snatcher.getAnchor().subtract(snatcher.position());
+        Vec3 fromHeadToTarget = targetPosition.subtract(snatcher.position());
+        Vec3 fromAnchorToTarget = targetPosition.subtract(snatcher.getAnchor());
         double divisor = direction.subtract(targetPosition).length();
-        Vec3 perpendicular = fromHeadToAnchor.cross(fromHeadToTarget)
-                .cross(fromAnchorToTarget);
+        Vec3 perpendicular = fromHeadToAnchor.cross(fromHeadToTarget).cross(fromAnchorToTarget);
         Vec3 velocity = Vec3.ZERO;
         if (divisor > 1.0E-6 && perpendicular.lengthSqr() > 1.0E-8) {
             double scale = fromHeadToAnchor.dot(fromHeadToTarget)
@@ -104,19 +90,14 @@ final class SnatcherMovementAction extends BTNode {
             return Vec3.ZERO;
         }
         directionSwitchTicks = snatcher.getRandom().nextInt(200) + 100;
-        Vec3 candidate = new Vec3(
-                snatcher.getRandom().nextDouble() - 0.5,
-                snatcher.getRandom().nextDouble() - 0.5,
-                snatcher.getRandom().nextDouble() - 0.5);
+        Vec3 candidate = new Vec3(snatcher.getRandom().nextDouble() - 0.5, snatcher.getRandom().nextDouble() - 0.5, snatcher.getRandom().nextDouble() - 0.5);
         if (candidate.lengthSqr() < 1.0E-8) {
             return Vec3.ZERO;
         }
         candidate = candidate.normalize();
-        BlockPos testPosition = BlockPos.containing(
-                snatcher.position().add(candidate.scale(5.0)));
+        BlockPos testPosition = BlockPos.containing(snatcher.position().add(candidate.scale(5.0)));
         BlockState state = snatcher.level().getBlockState(testPosition);
-        if (state.isAir()
-                && testPosition.getY() > -65) {
+        if (state.isAir() && testPosition.getY() > -65) {
             direction = candidate;
         }
         return Vec3.ZERO;

@@ -18,8 +18,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ConsumableItems;
 
 public class ThrownWaterProjectile extends ThrowableItemProjectile {
-    private static final EntityDataAccessor<Integer> DATA_CONVERSION_TYPE =
-            SynchedEntityData.defineId(ThrownWaterProjectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_CONVERSION_TYPE = SynchedEntityData.defineId(ThrownWaterProjectile.class, EntityDataSerializers.INT);
     private static final String RUNTIME_TAG = "ConfluenceThrownWaterRuntime";
     private static final int CURRENT_VERSION = 1;
 

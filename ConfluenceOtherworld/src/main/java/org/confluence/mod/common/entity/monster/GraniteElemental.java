@@ -35,8 +35,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// <p>防御阶段会暂时恢复重力、停止横向移动并吸收普通伤害。花岗岩元素具有正常碰撞，不能像幽灵类生物一样
 /// 穿墙，否则防御坠落会直接穿过地面。</p>
 public class GraniteElemental extends BaseFlyingMonster {
-    private static final EntityDataAccessor<Byte> DATA_DEFENSE_PHASE =
-            SynchedEntityData.defineId(GraniteElemental.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Byte> DATA_DEFENSE_PHASE = SynchedEntityData.defineId(GraniteElemental.class, EntityDataSerializers.BYTE);
 
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation TO_DEFENSE = RawAnimation.begin().thenPlayAndHold("to_defense");
@@ -68,16 +67,8 @@ public class GraniteElemental extends BaseFlyingMonster {
                 return BTStatus.RUNNING;
             }
         };
-        BTNode active = SelectorNode.of(
-                SequenceNode.of(
-                        new HasTargetCondition(GraniteElemental.this),
-                        new FlyingPursuitAction(
-                                GraniteElemental.this, 0.04, 0.4)),
-                new FlyWanderAction(GraniteElemental.this, 0.2, 12));
-        BTNode root = new ConditionalSwitchNode(
-                GraniteElemental.this::isInDefenseSequence,
-                defense,
-                active);
+        BTNode active = SelectorNode.of(SequenceNode.of(new HasTargetCondition(GraniteElemental.this), new FlyingPursuitAction(GraniteElemental.this, 0.04, 0.4)), new FlyWanderAction(GraniteElemental.this, 0.2, 12));
+        BTNode root = new ConditionalSwitchNode(GraniteElemental.this::isInDefenseSequence, defense, active);
 
         return new BTRoot() {
             @Override
@@ -142,15 +133,11 @@ public class GraniteElemental extends BaseFlyingMonster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!level().isClientSide
-                && getDefensePhase() == DefensePhase.DEFENDING) {
+        if (!level().isClientSide && getDefensePhase() == DefensePhase.DEFENDING) {
             return !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
         }
 
-        if (!level().isClientSide
-                && getDefensePhase() == DefensePhase.ACTIVE
-                && LibUtils.isAtLeastExpert(level(), blockPosition())
-                && random.nextFloat() < 0.2F) {
+        if (!level().isClientSide && getDefensePhase() == DefensePhase.ACTIVE && LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextFloat() < 0.2F) {
             beginDefenseSequence();
         }
         return super.hurt(source, amount);

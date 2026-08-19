@@ -107,8 +107,7 @@ final class SpikyBallRuntime {
 
     private static Set<UUID> readHitTargets(CompoundTag runtimeTag, int maximumHitTargets) {
         Tag rawTargets = runtimeTag.get(HIT_TARGETS_TAG);
-        if (!(rawTargets instanceof ListTag targetsTag)
-                || !targetsTag.isEmpty() && targetsTag.getElementType() != Tag.TAG_INT_ARRAY) {
+        if (!(rawTargets instanceof ListTag targetsTag) || !targetsTag.isEmpty() && targetsTag.getElementType() != Tag.TAG_INT_ARRAY) {
             throw new IllegalArgumentException("Spiky ball hit targets must be a UUID list");
         }
         validateHitTargetCount(targetsTag.size(), maximumHitTargets, "load");

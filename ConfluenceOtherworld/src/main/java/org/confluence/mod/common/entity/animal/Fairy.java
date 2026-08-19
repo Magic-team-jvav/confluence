@@ -56,12 +56,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
                 FairyGuideAction guide = new FairyGuideAction(Fairy.this);
                 /// 引导玩家是妖精的最高优先级行为。实时分支可以在玩家进入十格范围的
                 /// 当个行为 tick 中打断巡游，也会在玩家死亡或离开三十格后立即恢复巡游。
-                return withPassivePanic(
-                        new ConditionalSwitchNode(
-                                guide::canGuidePlayer,
-                                guide,
-                                createBirdDailyRoutine()),
-                        1.25);
+                return withPassivePanic(new ConditionalSwitchNode(guide::canGuidePlayer, guide, createBirdDailyRoutine()), 1.25);
             }
         };
     }
@@ -97,9 +92,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
         /// 直到玩家死亡或离开三十格，避免引导途中在多个玩家之间来回切换。</p>
         private boolean canGuidePlayer() {
             if (target != null) {
-                if (target.isAlive()
-                        && !target.isSpectator()
-                        && fairy.distanceTo(target) <= ABANDON_RANGE) {
+                if (target.isAlive() && !target.isSpectator() && fairy.distanceTo(target) <= ABANDON_RANGE) {
                     return true;
                 }
                 clearState();
@@ -110,8 +103,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
                 target = null;
                 return false;
             }
-            if (fairy.getType() == CritterEntities.FAIRY.get()
-                    && target instanceof ServerPlayer serverPlayer) {
+            if (fairy.getType() == CritterEntities.FAIRY.get() && target instanceof ServerPlayer serverPlayer) {
                 awardEncounterAchievement(serverPlayer);
             }
             return true;
@@ -172,15 +164,8 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
         private void moveAround(Vec3 destination) {
             double distance = fairy.position().distanceTo(destination);
-            Vec3 orbitPosition = destination.add(
-                    Math.sin(angle) * ORBIT_RADIUS,
-                    ORBIT_HEIGHT,
-                    Math.cos(angle) * ORBIT_RADIUS);
-            fairy.getNavigation().moveTo(
-                    orbitPosition.x,
-                    orbitPosition.y,
-                    orbitPosition.z,
-                    1.0 + distance);
+            Vec3 orbitPosition = destination.add(Math.sin(angle) * ORBIT_RADIUS, ORBIT_HEIGHT, Math.cos(angle) * ORBIT_RADIUS);
+            fairy.getNavigation().moveTo(orbitPosition.x, orbitPosition.y, orbitPosition.z, 1.0 + distance);
             if (distance < FOLLOW_DISTANCE) {
                 following = true;
             }
@@ -195,16 +180,11 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
             BlockPos nearest = null;
             double nearestDistance = Double.MAX_VALUE;
 
-            for (int offsetX = -CHEST_CHUNK_RADIUS;
-                 offsetX <= CHEST_CHUNK_RADIUS;
-                 offsetX++) {
-                for (int offsetZ = -CHEST_CHUNK_RADIUS;
-                     offsetZ <= CHEST_CHUNK_RADIUS;
-                     offsetZ++) {
+            for (int offsetX = -CHEST_CHUNK_RADIUS; offsetX <= CHEST_CHUNK_RADIUS; offsetX++) {
+                for (int offsetZ = -CHEST_CHUNK_RADIUS; offsetZ <= CHEST_CHUNK_RADIUS; offsetZ++) {
                     int chunkX = centerChunkX + offsetX;
                     int chunkZ = centerChunkZ + offsetZ;
-                    BlockPos chunkProbe = new BlockPos(
-                            chunkX << 4, origin.getY(), chunkZ << 4);
+                    BlockPos chunkProbe = new BlockPos(chunkX << 4, origin.getY(), chunkZ << 4);
                     if (!fairy.level().hasChunkAt(chunkProbe)) {
                         continue;
                     }
@@ -215,8 +195,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
                         if (!(blockEntity instanceof ChestBlockEntity)) {
                             continue;
                         }
-                        double distance = blockEntity.getBlockPos()
-                                .distSqr(origin);
+                        double distance = blockEntity.getBlockPos().distSqr(origin);
                         if (distance < nearestDistance) {
                             nearestDistance = distance;
                             nearest = blockEntity.getBlockPos().immutable();
@@ -241,9 +220,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
     }
 
     /// 妖精在服务端确认首次发现玩家后结算相遇成就。
-    static AchievementAwardService.Result awardEncounterAchievement(
-            ServerPlayer player
-    ) {
+    static AchievementAwardService.Result awardEncounterAchievement(ServerPlayer player) {
         return AchievementAwardService.award(player, "hey_listen");
     }
 
@@ -253,9 +230,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
     /// 确保管理命令和世界清理流程仍能移除实体。</p>
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        boolean bypassesInvulnerability =
-                source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)
-                        || source == damageSources().genericKill();
+        boolean bypassesInvulnerability = source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || source == damageSources().genericKill();
         return bypassesInvulnerability && super.hurt(source, amount);
     }
 
@@ -267,8 +242,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.BLUE);
+        return CritterVariantUtil.byId(Variant.values(), this.entityData.get(DATA_VARIANT), Variant.BLUE);
     }
 
     @Override
@@ -328,8 +302,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
         @Override
         public ResourceLocation texturePath() {
-            return IVariant.resource("textures/entity/animal/fairy/"
-                    + getSerializedName() + "_fairy.png");
+            return IVariant.resource("textures/entity/animal/fairy/" + getSerializedName() + "_fairy.png");
         }
 
         @Override

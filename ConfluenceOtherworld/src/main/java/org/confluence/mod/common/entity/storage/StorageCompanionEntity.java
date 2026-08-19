@@ -32,8 +32,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 /// {@link PlayerPiggyBankContainer} 中。这样方块存钱罐、切斯特和飞行存钱罐会打开同一份固定槽位数据，
 /// 实体消失、换维度或重新召唤时不会复制出第二份库存。</p>
 public abstract class StorageCompanionEntity extends TamableAnimal implements GeoEntity {
-    private static final EntityDataAccessor<Boolean> OPEN = SynchedEntityData.defineId(
-            StorageCompanionEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> OPEN = SynchedEntityData.defineId(StorageCompanionEntity.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
@@ -99,11 +98,7 @@ public abstract class StorageCompanionEntity extends TamableAnimal implements Ge
             return;
         }
         if (followsOwner()) {
-            if (!(level() instanceof ServerLevel)
-                    || !(getOwner() instanceof ServerPlayer owner)
-                    || !owner.isAlive()
-                    || owner.isSpectator()
-                    || owner.level() != level()) {
+            if (!(level() instanceof ServerLevel) || !(getOwner() instanceof ServerPlayer owner) || !owner.isAlive() || owner.isSpectator() || owner.level() != level()) {
                 if (++missingOwnerTicks >= OWNER_GRACE_TICKS) {
                     discard();
                 }

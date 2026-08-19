@@ -18,11 +18,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.component.SpearProjectileComponent;
-import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.init.ModParticleTypes;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -132,9 +133,8 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
     // ===== 粒子 =====
 
     @Override
-    @Nullable
     protected ParticleOptions getTrailParticle() {
-        return null;
+        return ModParticleTypes.NO_TRAIL.get();
     }
 
     // ===== 核心 Tick =====
@@ -198,7 +198,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
             }
         } else {
             // 客户端：生成拖尾粒子
-            if (getTrailParticle() != null && random.nextInt(2) == 0) {
+            if (random.nextInt(2) == 0) {
                 level().addParticle(getTrailParticle(), getX(), getY(), getZ(), 0, 0, 0);
             }
             rotate.old = rotate.neo;
@@ -288,7 +288,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
     }
 
     public DamageSource damageSource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.SPEAR_PROJECTILE, this, getOwner());
+        return LibDamageTypes.of(level(), LibDamageTypes.SPEAR_PROJECTILE, this, getOwner());
     }
 
     // ===== 发射 =====

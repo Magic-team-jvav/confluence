@@ -22,21 +22,16 @@ import java.util.Locale;
 ///
 /// <p>两种外观共享模型、属性和行为，只把自然生成选择、存档值与纹理映射留在本类。
 /// 捕捉物品可以显式写入变体，客户端与重新加载后的服务端仍会得到相同外观。</p>
-public class Scorpion extends SimpleCritter
-        implements VariantHolder<Scorpion.Variant> {
+public class Scorpion extends SimpleCritter implements VariantHolder<Scorpion.Variant> {
     public static final String VARIANT_KEY = "Variant";
-    private static final EntityDataAccessor<Integer> DATA_VARIANT =
-            SynchedEntityData.defineId(
-                    Scorpion.class,
-                    EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Scorpion.class, EntityDataSerializers.INT);
 
     public Scorpion(EntityType<? extends Scorpion> type, Level level) {
         super(type, level);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createInsectAttributes()
-                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
+        return BaseCritter.createInsectAttributes().add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     @Override
@@ -47,10 +42,7 @@ public class Scorpion extends SimpleCritter
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(),
-                entityData.get(DATA_VARIANT),
-                Variant.NORMAL);
+        return CritterVariantUtil.byId(Variant.values(), entityData.get(DATA_VARIANT), Variant.NORMAL);
     }
 
     @Override
@@ -81,9 +73,7 @@ public class Scorpion extends SimpleCritter
             setVariant(Variant.NORMAL);
             return;
         }
-        PortDataResultExtension.ifSuccess(
-                Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)),
-                this::setVariant);
+        PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
     }
 
     @Override
@@ -100,8 +90,7 @@ public class Scorpion extends SimpleCritter
         BLACK,
         NORMAL;
 
-        public static final Codec<Variant> CODEC =
-                StringRepresentable.fromEnum(Variant::values);
+        public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
 
         @Override
         public String getSerializedName() {
@@ -116,8 +105,7 @@ public class Scorpion extends SimpleCritter
         @Override
         public ResourceLocation texturePath() {
             String name = this == BLACK ? "black_scorpion" : "scorpion";
-            return IVariant.resource(
-                    "textures/entity/animal/scorpion/" + name + ".png");
+            return IVariant.resource("textures/entity/animal/scorpion/" + name + ".png");
         }
 
         @Override

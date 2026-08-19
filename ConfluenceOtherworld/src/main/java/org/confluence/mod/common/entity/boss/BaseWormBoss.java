@@ -70,18 +70,14 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
         if (forward.lengthSqr() <= 1.0E-7) {
             forward = new Vec3(0.0, 0.0, 1.0);
         }
-        return previousPosition.subtract(
-                forward.normalize().scale(getSegmentSpacing()));
+        return previousPosition.subtract(forward.normalize().scale(getSegmentSpacing()));
     }
 
     /// 以有限角速度朝三维目标修正，并写入原版同步速度。
     ///
     /// <p>蠕虫 Boss 都穿过方块移动，不能复用地面导航。该方法只负责连续转向和速度，
     /// 阶段选择、目标点和速度常量仍由具体 Boss 自己决定。</p>
-    protected final void steerInThreeDimensions(
-            Vec3 destination,
-            double speed,
-            float maximumTurnDegrees) {
+    protected final void steerInThreeDimensions(Vec3 destination, double speed, float maximumTurnDegrees) {
         Vec3 desired = destination.subtract(position());
         if (desired.lengthSqr() <= 1.0E-7) {
             return;
@@ -100,19 +96,11 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
             direction = desired;
         } else {
             double blend = Math.toRadians(maximumTurnDegrees) / angle;
-            direction = current.scale(1.0 - blend)
-                    .add(desired.scale(blend))
-                    .normalize();
+            direction = current.scale(1.0 - blend).add(desired.scale(blend)).normalize();
         }
 
-        float yaw = (float) (
-                Mth.atan2(direction.z, direction.x)
-                        * Mth.RAD_TO_DEG) - 90.0F;
-        float pitch = (float) (-Mth.atan2(
-                direction.y,
-                Math.sqrt(direction.x * direction.x
-                        + direction.z * direction.z))
-                * Mth.RAD_TO_DEG);
+        float yaw = (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
+        float pitch = (float) (-Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * Mth.RAD_TO_DEG);
         setYRot(yaw);
         setXRot(Mth.clamp(pitch, -85.0F, 85.0F));
         yBodyRot = yaw;
@@ -120,17 +108,11 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
         setDeltaMovement(direction.scale(speed));
     }
 
-    protected static double angleBetween(
-            Vec3 first,
-            Vec3 second) {
-        if (first.lengthSqr() <= 1.0E-7
-                || second.lengthSqr() <= 1.0E-7) {
+    protected static double angleBetween(Vec3 first, Vec3 second) {
+        if (first.lengthSqr() <= 1.0E-7 || second.lengthSqr() <= 1.0E-7) {
             return Math.PI;
         }
-        return Math.acos(Mth.clamp(
-                first.normalize().dot(second.normalize()),
-                -1.0,
-                1.0));
+        return Math.acos(Mth.clamp(first.normalize().dot(second.normalize()), -1.0, 1.0));
     }
 
     protected boolean hurtSegment(BossWormPart segment, DamageSource source, float amount) {

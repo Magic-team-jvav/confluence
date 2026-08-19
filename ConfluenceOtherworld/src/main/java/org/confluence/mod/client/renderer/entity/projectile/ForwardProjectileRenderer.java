@@ -24,22 +24,11 @@ public class ForwardProjectileRenderer<T extends Entity, M extends EntityModel<T
     private final float yOffset;
     private final float zSpinSpeed;
 
-    public ForwardProjectileRenderer(
-            EntityRendererProvider.Context context,
-            M model,
-            ResourceLocation texture
-    ) {
+    public ForwardProjectileRenderer(EntityRendererProvider.Context context, M model, ResourceLocation texture) {
         this(context, model, texture, 1.0F, 0.0F, 0.0F);
     }
 
-    public ForwardProjectileRenderer(
-            EntityRendererProvider.Context context,
-            M model,
-            ResourceLocation texture,
-            float scale,
-            float yOffset,
-            float zSpinSpeed
-    ) {
+    public ForwardProjectileRenderer(EntityRendererProvider.Context context, M model, ResourceLocation texture, float scale, float yOffset, float zSpinSpeed) {
         super(context);
         this.model = model;
         this.texture = texture;
@@ -54,14 +43,7 @@ public class ForwardProjectileRenderer<T extends Entity, M extends EntityModel<T
     }
 
     @Override
-    public void render(
-            T entity,
-            float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight
-    ) {
+    public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0.0F, yOffset, 0.0F);
         poseStack.scale(scale, scale, scale);
@@ -77,12 +59,7 @@ public class ForwardProjectileRenderer<T extends Entity, M extends EntityModel<T
             poseStack.mulPose(Axis.ZN.rotation((entity.tickCount + partialTick) * zSpinSpeed));
         }
 
-        model.renderToBuffer(
-                poseStack,
-                bufferSource.getBuffer(model.renderType(texture)),
-                packedLight,
-                OverlayTexture.NO_OVERLAY,
-                1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(texture)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }

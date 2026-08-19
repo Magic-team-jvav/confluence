@@ -44,23 +44,13 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
     /// <p>这里不能在命中后重新读取玩家主手，否则玩家切换物品或未来扩展副手攻击时，派生弹幕
     /// 可能冻结错误武器。基础实现仍负责伤害、击退回调和附魔后处理。</p>
     @Override
-    protected void onHitEntity(
-            ItemStack stack,
-            ServerLevel level,
-            LivingEntity owner,
-            Entity victim
-    ) {
+    protected void onHitEntity(ItemStack stack, ServerLevel level, LivingEntity owner, Entity victim) {
         super.onHitEntity(stack, level, owner, victim);
         spawnGhastlyProjectile(stack, level, owner, victim);
     }
 
     /// 在受害者周围搜寻最近敌人，并在其周围圆形区域生成 [GhastlyProjectile]。
-    private void spawnGhastlyProjectile(
-            ItemStack weapon,
-            ServerLevel level,
-            LivingEntity owner,
-            Entity victim
-    ) {
+    private void spawnGhastlyProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, Entity victim) {
         Vec3 victimPos = victim.position();
         AABB searchBox = new AABB(victimPos.add(-SEARCH_RANGE, -SEARCH_RANGE, -SEARCH_RANGE),
                 victimPos.add(SEARCH_RANGE, SEARCH_RANGE, SEARCH_RANGE));
@@ -88,24 +78,13 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
         ).normalize();
 
         SpearProjectileComponent component = SpearProjectileComponent.GHASTLY_PROJECTILE.get();
-        spawnProjectile(weapon, level, owner,
-                new Vec3(spawnX, spawnY, spawnZ), dir, component, nearestEnemy);
+        spawnProjectile(weapon, level, owner, new Vec3(spawnX, spawnY, spawnZ), dir, component, nearestEnemy);
     }
 
     /// 在世界提交前锁定目标，再由统一事务安装 MELEE 快照并生成实体。
-    private GhastlyProjectile spawnProjectile(
-            ItemStack weapon,
-            ServerLevel level,
-            LivingEntity owner,
-            Vec3 pos,
-            Vec3 direction,
-            SpearProjectileComponent component,
-            LivingEntity target
-    ) {
+    private GhastlyProjectile spawnProjectile(ItemStack weapon, ServerLevel level, LivingEntity owner, Vec3 pos, Vec3 direction, SpearProjectileComponent component, LivingEntity target) {
         GhastlyProjectile projectile = new GhastlyProjectile(ModEntities.GHASTLY.get(), level);
-        fireDerivedProjectile(
-                weapon, level, owner, component, projectile,
-                pos, direction, 0.0F, value -> value.setLockedTarget(target));
+        fireDerivedProjectile(weapon, level, owner, component, projectile, pos, direction, 0.0F, value -> value.setLockedTarget(target));
         return projectile;
     }
 

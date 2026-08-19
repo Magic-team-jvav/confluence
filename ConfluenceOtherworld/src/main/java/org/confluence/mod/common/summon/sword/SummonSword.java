@@ -19,7 +19,7 @@ import org.confluence.mod.mixed.Immunity;
 /// 召唤剑属于同一行为分组，多把剑共享连续序号，方便服务端与客户端保持一致的背部排列。</p>
 public final class SummonSword extends SummonInstance {
     public static final ResourceLocation GROUP_KEY = Confluence.asResource("summon_sword");
-    private static final double SEARCH_RANGE = 40.0;
+    private static final double SEARCH_RANGE = 16.0;
     private static final AABB ATTACK_BOX = new AABB(-0.75, -0.75, -0.75, 0.75, 0.75, 1.5);
     private final Kind kind;
     private final SwordSlashGoal slashGoal;
@@ -84,14 +84,14 @@ public final class SummonSword extends SummonInstance {
         return poseFromAxes(position, direction, normal);
     }
 
-    SummonPose followPose(Vec3 position, Vec3 targetPosition) {
+    SummonPose followPose(Vec3 nextPosition, Vec3 targetPosition) {
         int sequence = order() + 1;
         Vec3 forward = Vec3.directionFromRotation(0.0F, owner().yBodyRot).multiply(1.0, 0.0, 1.0).normalize();
-        Vec3 lookPosition = position.subtract(forward.scale(5.0))
+        Vec3 lookPosition = position().subtract(forward.scale(5.0))
                 .add(0.0, -8.0 - (sequence - 1) / 2.0, 0.0)
-                .add(position.subtract(targetPosition).scale(20.0));
-        Vec3 direction = lookPosition.subtract(position);
-        return direction.lengthSqr() < 1.0E-6 ? currentPose() : aimAt(position, direction);
+                .add(position().subtract(targetPosition).scale(20.0));
+        Vec3 direction = lookPosition.subtract(position());
+        return direction.lengthSqr() < 1.0E-6 ? currentPose() : aimAt(nextPosition, direction);
     }
 
     void setDamageMultiplier(float damageMultiplier) {

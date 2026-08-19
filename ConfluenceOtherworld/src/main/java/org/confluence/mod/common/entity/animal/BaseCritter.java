@@ -174,7 +174,6 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
     }
 
     public ResourceLocation getTexturePath() {
-        return getType().builtInRegistryHolder().key().location()
-                .withPrefix("textures/entity/animal/").withSuffix(".png");
+        return getType().builtInRegistryHolder().key().location().withPrefix("textures/entity/animal/").withSuffix(".png");
     }
 }

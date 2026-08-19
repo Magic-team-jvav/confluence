@@ -19,7 +19,7 @@ public final class SlimeSummon extends PhysicalSummon {
     private static final double SEARCH_RANGE = 10.0;
     private static final double RETURN_FLIGHT_DISTANCE = 25.0;
     private static final double RETURN_FLIGHT_STOP_DISTANCE = 4.0;
-    private static final double JUMP_FOLLOW_DISTANCE = 16.0;
+    private static final double JUMP_FOLLOW_DISTANCE = RETURN_FLIGHT_DISTANCE;
     private int jumpDelay;
     private boolean returningByFlight;
 
@@ -33,7 +33,9 @@ public final class SlimeSummon extends PhysicalSummon {
     }
 
     @Override
-    protected LivingEntity findTarget() {return SummonTargetCache.acquire(owner().serverLevel(), owner(), uuid(), position(), SEARCH_RANGE);}
+    protected LivingEntity findTarget() {
+        return SummonTargetCache.acquire(owner().serverLevel(), owner(), uuid(), position(), SEARCH_RANGE);
+    }
 
     @Override
     public SummonVisualState visualState() {
@@ -65,8 +67,9 @@ public final class SlimeSummon extends PhysicalSummon {
         Vec3 horizontal = new Vec3(destination.x - position().x, 0.0, destination.z - position().z);
         double speed = horizontal.lengthSqr() < 0.01 ? 0.0 : movementSpeed;
         Vec3 direction = speed == 0.0 ? Vec3.ZERO : horizontal.normalize().scale(speed);
-        boolean enhancedJump = aggressive && destination.distanceTo(position()) < 8.0
-                && destination.y > position().y + 2.0;
+        LivingEntity target = target();
+        boolean enhancedJump = aggressive && target != null && target.distanceToSqr(position()) < 64.0
+                && target.getY() > position().y + 2.0;
         double jumpStrength = enhancedJump ? 1.0 : 0.5;
         moveWithCollision(new Vec3(direction.x, jumpStrength, direction.z));
         int delay = owner().getRandom().nextInt(10) + 5;
@@ -149,8 +152,7 @@ public final class SlimeSummon extends PhysicalSummon {
 
         @Override
         public void tick() {
-            summon.moveWithCollision(new Vec3(summon.velocity().x * 0.6, summon.velocity().y - 0.08,
-                    summon.velocity().z * 0.6));
+            summon.moveWithCollision(new Vec3(summon.velocity().x * 0.6, summon.velocity().y - 0.08, summon.velocity().z * 0.6));
         }
     }
 }

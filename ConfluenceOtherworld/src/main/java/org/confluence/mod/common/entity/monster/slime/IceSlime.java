@@ -20,8 +20,7 @@ public class IceSlime extends BaseSlime {
 
     @Override
     protected void onAttackTarget(LivingEntity target) {
-        if (LibUtils.isMaster(level(), blockPosition())
-                || (LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextBoolean())) {
+        if (LibUtils.isMaster(level(), blockPosition()) || (LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextBoolean())) {
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 0), this);
         }
     }

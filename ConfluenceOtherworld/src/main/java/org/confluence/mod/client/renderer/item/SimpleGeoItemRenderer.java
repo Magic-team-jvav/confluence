@@ -52,21 +52,13 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
     }
 
     @Override
-    public boolean applyForgeHandTransform(
-            PoseStack poseStack,
-            LocalPlayer player,
-            HumanoidArm arm,
-            ItemStack itemStack,
-            float partialTick,
-            float equippedProgress,
-            float swingProgress
-    ) {
-        if (!gunRenderer || !(itemStack.getItem() instanceof BaseGun)) {
+    public boolean applyForgeHandTransform(PoseStack poseStack, LocalPlayer player, HumanoidArm arm, ItemStack itemStack, float partialTick, float equippedProgress, float swingProgress) {
+        if (!gunRenderer || !(itemStack.getItem() instanceof BaseGun gun) || !gun.getAnimationProfile().usesLocatorTransforms()) {
             return false;
         }
 
-        // 枪械第一人称姿态由 GunRenderer 统一接管。Forge 调用这里时原版视角摆动
-        // 已经进入矩阵栈，因此只撤销视角摆动；模型位置、相机和手臂渲染继续交给枪械渲染器。
+        /// 使用定位骨骼的枪械由 GunRenderer 接管第一人称姿态。Forge 调用这里时原版视角摆动
+        /// 已经进入矩阵栈，因此只撤销视角摆动；旧枪械仍使用物品 JSON 的 display 变换。
         removeVanillaViewBobbing(poseStack, player, partialTick);
         return true;
     }
@@ -128,8 +120,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
                 setHidden(List.of("Shell", "shell", "Shell1", "shell1"), !firing);
                 setHidden(List.of("lefthand_pos", "righthand_pos"), true);
 
-                if (firstPerson && animatable instanceof BaseGun baseGun
-                        && baseGun.isCameraAnimationPlaying(instanceId)) {
+                if (firstPerson && animatable instanceof BaseGun baseGun && baseGun.isCameraAnimationPlaying(instanceId)) {
                     GunCameraAnimation.capture(getAnimationProcessor().getBone("camera"));
                 }
             }

@@ -72,13 +72,7 @@ public class BossSummoningItem extends TooltipItem {
     private static boolean prepareSummonedMob(ServerLevel serverLevel, Mob mob) {
         mob.yHeadRot = mob.getYRot();
         mob.yBodyRot = mob.getYRot();
-        ForgeEventFactory.onFinalizeSpawn(
-                mob,
-                serverLevel,
-                serverLevel.getCurrentDifficultyAt(mob.blockPosition()),
-                MobSpawnType.SPAWNER,
-                null,
-                null);
+        ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWNER, null, null);
         if (mob.isSpawnCancelled()) {
             mob.discard();
             return false;

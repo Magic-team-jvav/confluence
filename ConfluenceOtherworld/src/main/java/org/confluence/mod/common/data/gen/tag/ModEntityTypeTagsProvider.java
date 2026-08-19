@@ -211,11 +211,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 MonsterEntities.VILE_GHOUL.get(),
                 MonsterEntities.UNDEAD_VIKING.get()
         );
-        tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).add(
-                MonsterEntities.SNOW_FLINX.get(),
-                MonsterEntities.ICE_MIMIC.get(),
-                MonsterEntities.UNDEAD_VIKING.get()
-        );
+        tag(EntityTypeTags.POWDER_SNOW_WALKABLE_MOBS).add(MonsterEntities.SNOW_FLINX.get(), MonsterEntities.ICE_MIMIC.get(), MonsterEntities.UNDEAD_VIKING.get());
         tag(EntityTypeTags.AXOLOTL_ALWAYS_HOSTILES).add(
                 MonsterEntities.PIRANHA.get(),
                 MonsterEntities.BLUE_JELLYFISH.get(),
@@ -224,21 +220,9 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 MonsterEntities.CRAWDAD.get(),
                 MonsterEntities.ARAPAIMA.get()
         );
-        tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS).add(
-                MonsterEntities.PIRANHA.get(),
-                MonsterEntities.ARAPAIMA.get(),
-                MonsterEntities.CRAWDAD.get()
-        ).addTag(ModTags.EntityTypes.JELLY_FISH);
-        tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(
-                MonsterEntities.SNOW_FLINX.get(),
-                MonsterEntities.ICE_MIMIC.get(),
-                MonsterEntities.UNDEAD_VIKING.get()
-        );
-        tag(PortTags.EntityTypes.CAN_BREATHE_UNDER_WATER).add(
-                MonsterEntities.PIRANHA.get(),
-                MonsterEntities.ARAPAIMA.get(),
-                MonsterEntities.CRAWDAD.get()
-        ).addTag(ModTags.EntityTypes.JELLY_FISH);
+        tag(EntityTypeTags.AXOLOTL_HUNT_TARGETS).add(MonsterEntities.PIRANHA.get(), MonsterEntities.ARAPAIMA.get(), MonsterEntities.CRAWDAD.get()).addTag(ModTags.EntityTypes.JELLY_FISH);
+        tag(EntityTypeTags.FREEZE_IMMUNE_ENTITY_TYPES).add(MonsterEntities.SNOW_FLINX.get(), MonsterEntities.ICE_MIMIC.get(), MonsterEntities.UNDEAD_VIKING.get());
+        tag(PortTags.EntityTypes.CAN_BREATHE_UNDER_WATER).add(MonsterEntities.PIRANHA.get(), MonsterEntities.ARAPAIMA.get(), MonsterEntities.CRAWDAD.get()).addTag(ModTags.EntityTypes.JELLY_FISH);
         tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
                 MonsterEntities.GIANT_SHELLY.get(),
                 MonsterEntities.POSSESS_ARMOR.get(),
@@ -247,11 +231,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 MonsterEntities.SAND_POACHER.get(),
                 MonsterEntities.HERPLING.get()
         );
-        tag(ModTags.EntityTypes.JELLY_FISH).add(
-                MonsterEntities.PINK_JELLYFISH.get(),
-                MonsterEntities.GREEN_JELLYFISH.get(),
-                MonsterEntities.BLUE_JELLYFISH.get()
-        );
+        tag(ModTags.EntityTypes.JELLY_FISH).add(MonsterEntities.PINK_JELLYFISH.get(), MonsterEntities.GREEN_JELLYFISH.get(), MonsterEntities.BLUE_JELLYFISH.get());
 
         tag(ModTags.EntityTypes.CORRUPT).add(
                 MonsterEntities.EATER_OF_SOULS.get(),

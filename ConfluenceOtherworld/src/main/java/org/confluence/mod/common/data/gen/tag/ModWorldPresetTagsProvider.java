@@ -17,19 +17,12 @@ import java.util.concurrent.CompletableFuture;
 /// <p>预设本身由内置注册表 Provider 生成，这里复用同一组 {@code ResourceKey} 将其加入世界
 /// 创建界面的“普通”预设集合，避免注册 ID 与手写标签各自维护。</p>
 public final class ModWorldPresetTagsProvider extends TagsProvider<WorldPreset> {
-    public ModWorldPresetTagsProvider(
-            PackOutput output,
-            CompletableFuture<HolderLookup.Provider> lookup,
-            ExistingFileHelper helper
-    ) {
+    public ModWorldPresetTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup, ExistingFileHelper helper) {
         super(output, Registries.WORLD_PRESET, lookup, Confluence.MODID, helper);
     }
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(WorldPresetTags.NORMAL).add(
-                ModDataProvider.WorldPresetz.THE_CORRUPTION,
-                ModDataProvider.WorldPresetz.THE_CRIMSON
-        );
+        tag(WorldPresetTags.NORMAL).add(ModDataProvider.WorldPresetz.THE_CORRUPTION, ModDataProvider.WorldPresetz.THE_CRIMSON);
     }
 }

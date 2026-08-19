@@ -47,9 +47,7 @@ public class Skeletron extends BaseBoss {
     private static final String PHASE_TWO_TAG = "PhaseTwo";
     private static final String HAND_HEALTH_TAG = "HandHealth";
     private static final String COMBAT_CYCLE_TAG = "CombatCycle";
-    private static final EntityDataAccessor<Boolean> DATA_SPINNING =
-            SynchedEntityData.defineId(
-                    Skeletron.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_SPINNING = SynchedEntityData.defineId(Skeletron.class, EntityDataSerializers.BOOLEAN);
 
     private SkeletronHand leftHand;
     private SkeletronHand rightHand;
@@ -103,9 +101,7 @@ public class Skeletron extends BaseBoss {
     protected void registerGoals() {
         super.registerGoals();
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(
-                2, new NearestAttackableTargetGoal<>(
-                        this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     @Override
@@ -159,22 +155,16 @@ public class Skeletron extends BaseBoss {
         double maximumSpeed = isExpert() ? 1.0 : 0.7;
         Vec3 targetPosition = target.position().add(0.0, 5.0, 0.0);
         Vec3 dampedVelocity = getDeltaMovement().scale(10.0);
-        double horizontalDistance = target.position()
-                .subtract(position()).length();
-        Vec3 correction = targetPosition
-                .subtract(position())
-                .subtract(dampedVelocity);
+        double horizontalDistance = target.position().subtract(position()).length();
+        Vec3 correction = targetPosition.subtract(position()).subtract(dampedVelocity);
         if (correction.lengthSqr() <= 1.0E-7) {
             return;
         }
 
-        double strength = Math.max(
-                acceleration * (0.07 * horizontalDistance - 0.29), 0.01);
-        Vec3 result = getDeltaMovement()
-                .add(correction.normalize().scale(strength));
+        double strength = Math.max(acceleration * (0.07 * horizontalDistance - 0.29), 0.01);
+        Vec3 result = getDeltaMovement().add(correction.normalize().scale(strength));
         if (floatingCrazy) {
-            result = result.add(
-                    target.position().subtract(position()).scale(0.01));
+            result = result.add(target.position().subtract(position()).scale(0.01));
         }
         if (result.length() > maximumSpeed) {
             result = result.normalize().scale(maximumSpeed);
@@ -186,8 +176,7 @@ public class Skeletron extends BaseBoss {
     ///
     /// <p>白天狂暴固定为最高速度；夜间普通难度保持较慢追击，专家及以上则根据
     /// 距离和剩余手数提高速度，与 1.21 实现保持同一组核心公式。</p>
-    private void updateSpinningMovement(
-            LivingEntity target, boolean enraged) {
+    private void updateSpinningMovement(LivingEntity target, boolean enraged) {
         Vec3 direction = target.position().subtract(position());
         if (direction.lengthSqr() <= 1.0E-7) {
             setDeltaMovement(Vec3.ZERO);
@@ -198,8 +187,7 @@ public class Skeletron extends BaseBoss {
         if (enraged) {
             speed = 1.0;
         } else if (isExpert()) {
-            speed = Mth.clamp(
-                    0.01 * direction.length() + 0.16, 0.22, 0.48);
+            speed = Mth.clamp(0.01 * direction.length() + 0.16, 0.22, 0.48);
             if (isFtw()) {
                 speed *= 1.3;
             }
@@ -220,8 +208,7 @@ public class Skeletron extends BaseBoss {
         if (velocity.horizontalDistanceSqr() <= 1.0E-7) {
             return;
         }
-        float yaw = (float) (
-                Mth.atan2(velocity.z, velocity.x) * Mth.RAD_TO_DEG) - 90.0F;
+        float yaw = (float) (Mth.atan2(velocity.z, velocity.x) * Mth.RAD_TO_DEG) - 90.0F;
         setYRot(yaw);
         yBodyRot = yaw;
         yHeadRot = yaw;
@@ -265,16 +252,14 @@ public class Skeletron extends BaseBoss {
 
     private boolean shouldShootSkull() {
         return isExpert()
-                && (getHealth() / getMaxHealth() < 0.75F
-                || getRemainingHandCount() < 2);
+                && (getHealth() / getMaxHealth() < 0.75F || getRemainingHandCount() < 2);
     }
 
     /// 生成一枚持续追踪本次目标的敌对骷髅弹。
     ///
     /// @return 实体成功创建并加入世界时为 {@code true}
     boolean shootSkull(LivingEntity target) {
-        SkeletronSkullProjectile projectile =
-                ModEntities.SKELETRON_SKULL.get().create(level());
+        SkeletronSkullProjectile projectile = ModEntities.SKELETRON_SKULL.get().create(level());
         if (projectile == null) {
             return false;
         }
@@ -286,19 +271,16 @@ public class Skeletron extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        if ((destroyedHands & 1) == 0
-                && (leftHand == null || !leftHand.isAlive())) {
+        if ((destroyedHands & 1) == 0 && (leftHand == null || !leftHand.isAlive())) {
             leftHand = spawnHand(serverLevel, 0);
         }
-        if ((destroyedHands & 2) == 0
-                && (rightHand == null || !rightHand.isAlive())) {
+        if ((destroyedHands & 2) == 0 && (rightHand == null || !rightHand.isAlive())) {
             rightHand = spawnHand(serverLevel, 1);
         }
     }
 
     private SkeletronHand spawnHand(ServerLevel serverLevel, int index) {
-        SkeletronHand hand =
-                BossEntities.SKELETRON_HAND.get().create(level());
+        SkeletronHand hand = BossEntities.SKELETRON_HAND.get().create(level());
         if (hand == null) {
             return null;
         }
@@ -348,8 +330,7 @@ public class Skeletron extends BaseBoss {
     }
 
     private int getRemainingHandCount() {
-        return 2 - Integer.bitCount(
-                destroyedHands & ALL_HANDS_DESTROYED);
+        return 2 - Integer.bitCount(destroyedHands & ALL_HANDS_DESTROYED);
     }
 
     public SkeletronHand getHand(int index) {
@@ -410,12 +391,10 @@ public class Skeletron extends BaseBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        destroyedHands =
-                tag.getInt(DESTROYED_HANDS_TAG) & ALL_HANDS_DESTROYED;
+        destroyedHands = tag.getInt(DESTROYED_HANDS_TAG) & ALL_HANDS_DESTROYED;
         phase2 = tag.getBoolean(PHASE_TWO_TAG)
                 || destroyedHands == ALL_HANDS_DESTROYED;
-        combatCycle = Mth.clamp(
-                tag.getInt(COMBAT_CYCLE_TAG), 0, COMBAT_CYCLE_END);
+        combatCycle = Mth.clamp(tag.getInt(COMBAT_CYCLE_TAG), 0, COMBAT_CYCLE_END);
         if (phase2) {
             destroyedHands = ALL_HANDS_DESTROYED;
             if (getAttribute(Attributes.ARMOR) != null) {
@@ -434,10 +413,7 @@ public class Skeletron extends BaseBoss {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 

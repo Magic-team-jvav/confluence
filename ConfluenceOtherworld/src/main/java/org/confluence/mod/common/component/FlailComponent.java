@@ -103,17 +103,7 @@ public record FlailComponent(
     public static final Supplier<FlailComponent> CHAIN_KNIFE = preset("chain_knife", 6.0F, 1.2F, 1.2F, 1.3F, 10.0F, 1.0F, 0.0F, true, ModEntities.CHAIN_KNIFE_FLAIL.getId());
     public static final Supplier<FlailComponent> ANCHOR = preset("anchor", 35.0F, 1.2F, 1.2F, 1.3F, 100.0F, 1.0F, 0.05F, true, ModEntities.ANCHOR_FLAIL.getId());
 
-    private static Supplier<FlailComponent> preset(
-            String id,
-            float damageFactor,
-            float spinRadius,
-            float spinSpeed,
-            float throwSpeed,
-            float maxDistance,
-            float retractSpeed,
-            float gravity,
-            boolean customChain
-    ) {
+    private static Supplier<FlailComponent> preset(String id, float damageFactor, float spinRadius, float spinSpeed, float throwSpeed, float maxDistance, float retractSpeed, float gravity, boolean customChain) {
         return preset(id, damageFactor, spinRadius, spinSpeed, throwSpeed, maxDistance, retractSpeed, gravity, customChain, ModEntities.FLAIL_ENTITY.getId());
     }
 
@@ -133,8 +123,7 @@ public record FlailComponent(
         ResourceLocation chainTexture = customChain
                 ? Confluence.asResource("textures/block/chain/" + id + ".png")
                 : ResourceLocation.withDefaultNamespace("textures/block/chain.png");
-        return () -> new FlailComponent(damageFactor, spinRadius, spinSpeed, throwSpeed, maxDistance, retractSpeed,
-                gravity, 20, 0.3F, 3, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), entityType, ballTexture, chainTexture);
+        return () -> new FlailComponent(damageFactor, spinRadius, spinSpeed, throwSpeed, maxDistance, retractSpeed, gravity, 20, 0.3F, 3, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), entityType, ballTexture, chainTexture);
     }
 
     public SoundEvent getSoundEvent() {

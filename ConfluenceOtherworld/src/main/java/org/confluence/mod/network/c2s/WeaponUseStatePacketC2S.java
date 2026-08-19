@@ -17,8 +17,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 /// 统一武器动作的法杖与枪械进入使用状态。</p>
 public record WeaponUseStatePacketC2S(boolean pressed)
         implements IPortPacket.C2S {
-    public static final ResourceLocation ID =
-            Confluence.asResource("weapon_use_state");
+    public static final ResourceLocation ID = Confluence.asResource("weapon_use_state");
     public static final PortStreamCodec<ByteBuf, WeaponUseStatePacketC2S>
             STREAM_CODEC = new PortStreamCodec<>() {
         @Override
@@ -27,10 +26,7 @@ public record WeaponUseStatePacketC2S(boolean pressed)
         }
 
         @Override
-        public void encode(
-                ByteBuf buffer,
-                WeaponUseStatePacketC2S packet
-        ) {
+        public void encode(ByteBuf buffer, WeaponUseStatePacketC2S packet) {
             buffer.writeBoolean(packet.pressed);
         }
     };
@@ -71,12 +67,10 @@ public record WeaponUseStatePacketC2S(boolean pressed)
     }
 
     public static void sendPressed() {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new WeaponUseStatePacketC2S(true));
+        Confluence.NETWORK_HANDLER.sendToServer(new WeaponUseStatePacketC2S(true));
     }
 
     public static void sendReleased() {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new WeaponUseStatePacketC2S(false));
+        Confluence.NETWORK_HANDLER.sendToServer(new WeaponUseStatePacketC2S(false));
     }
 }

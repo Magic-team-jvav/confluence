@@ -29,15 +29,10 @@ public class BaseWhipItem extends Item {
     private final WhipDefinition definition;
     private final WhipAppearance appearance;
 
-    public BaseWhipItem(
-            Properties properties,
-            WhipDefinition definition,
-            WhipAppearance appearance
-    ) {
+    public BaseWhipItem(Properties properties, WhipDefinition definition, WhipAppearance appearance) {
         super(properties);
         this.definition = Objects.requireNonNull(definition, "Whip definition must not be null");
-        this.appearance = Objects.requireNonNull(
-                appearance, "Whip appearance must not be null");
+        this.appearance = Objects.requireNonNull(appearance, "Whip appearance must not be null");
     }
 
     public WhipDefinition definition() {
@@ -61,12 +56,9 @@ public class BaseWhipItem extends Item {
             int durationTicks = resolveDurationTicks(serverPlayer);
             Vec3 direction = serverPlayer.getViewVector(1.0F);
             attack.setOwner(serverPlayer);
-            attack.setDamage(definition.baseDamage()
-                    * (float) serverPlayer.getAttributeValue(LibAttributes.getSummonDamage()));
+            attack.setDamage(definition.baseDamage() * (float) serverPlayer.getAttributeValue(LibAttributes.getSummonDamage()));
             attack.initialize(stack, direction, arm, durationTicks);
-            attack.setPos(serverPlayer.position()
-                    .add(0.0, serverPlayer.getBbHeight() * 0.5F, 0.0)
-                    .add(playerHandOffset(serverPlayer, arm)));
+            attack.setPos(serverPlayer.position().add(0.0, serverPlayer.getBbHeight() * 0.5F, 0.0).add(playerHandOffset(serverPlayer, arm)));
             if (level.addFreshEntity(attack)) {
                 serverPlayer.getCooldowns().addCooldown(this, durationTicks);
                 serverPlayer.awardStat(Stats.ITEM_USED.get(this));
@@ -98,11 +90,7 @@ public class BaseWhipItem extends Item {
         float scale = player.getScale();
         double sideOffset = side * 0.25 * scale;
         double forwardOffset = 0.8 * scale;
-        return new Vec3(
-                -cos * sideOffset - sin * forwardOffset,
-                0.0,
-                -sin * sideOffset + cos * forwardOffset
-        );
+        return new Vec3(-cos * sideOffset - sin * forwardOffset, 0.0, -sin * sideOffset + cos * forwardOffset);
     }
 
 }

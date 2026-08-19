@@ -49,8 +49,7 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
     }
 
     public final boolean mountPlayer(Player player) {
-        if (level().isClientSide || getOwnerUUID() == null
-                || !getOwnerUUID().equals(player.getUUID())) {
+        if (level().isClientSide || getOwnerUUID() == null || !getOwnerUUID().equals(player.getUUID())) {
             return false;
         }
         boolean mounted = player.startRiding(this, true);
@@ -87,8 +86,7 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
             return null;
         }
         Entity passenger = getFirstPassenger();
-        if (passenger instanceof LivingEntity living
-                && owner.equals(living.getUUID())) {
+        if (passenger instanceof LivingEntity living && owner.equals(living.getUUID())) {
             return living;
         }
         return level().getPlayerByUUID(owner);
@@ -120,8 +118,7 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
             }
             return;
         }
-        if (!level().isClientSide
-                && (getOwner() == null || !player.isAlive())) {
+        if (!level().isClientSide && (getOwner() == null || !player.isAlive())) {
             discard();
             return;
         }
@@ -133,13 +130,8 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
     protected abstract void tickRidden(Player player);
 
     /// 服务端只接受当前控制乘客的跳跃键状态。
-    public final void setControllerJumpInput(
-            Player player,
-            boolean jumping
-    ) {
-        if (!level().isClientSide
-                && player == getControllingPassenger()
-                && entityData.get(JUMP_INPUT) != jumping) {
+    public final void setControllerJumpInput(Player player, boolean jumping) {
+        if (!level().isClientSide && player == getControllingPassenger() && entityData.get(JUMP_INPUT) != jumping) {
             entityData.set(JUMP_INPUT, jumping);
             onJumpInputChanged(player, jumping);
         }
@@ -147,9 +139,7 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
 
     /// 本地预测只记录按键，不修改任何服务端能力数值。
     public final void setLocalJumpInput(Player player, boolean jumping) {
-        if (level().isClientSide
-                && player == getControllingPassenger()
-                && localJumpInput != jumping) {
+        if (level().isClientSide && player == getControllingPassenger() && localJumpInput != jumping) {
             localJumpInput = jumping;
             onJumpInputChanged(player, jumping);
         }
@@ -165,30 +155,21 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
     }
 
     /// 把玩家局部横向输入转换为世界方向，并以固定加速度逼近目标速度。
-    protected final Vec3 accelerateHorizontal(
-            Player player,
-            double localStrafe,
-            double localForward,
-            double maximumSpeed,
-            double acceleration
-    ) {
+    protected final Vec3 accelerateHorizontal(Player player, double localStrafe, double localForward, double maximumSpeed, double acceleration) {
         Vec3 current = getDeltaMovement();
         // 坐骑方向键表达的是当前移动意图，不是带惯性的油门。松开方向键时
         // 必须在同一 tick 清除水平速度，否则高速度坐骑会继续滑行数 tick，
         // 客户端看起来就像按键被粘住。这里只保留垂直分量，跳跃、飞行与
         // 自然下落仍由具体坐骑按自己的规则继续计算。
-        if (Math.abs(localStrafe) < 1.0E-6
-                && Math.abs(localForward) < 1.0E-6) {
+        if (Math.abs(localStrafe) < 1.0E-6 && Math.abs(localForward) < 1.0E-6) {
             return new Vec3(0.0, current.y, 0.0);
         }
 
         double yaw = Math.toRadians(player.getYRot());
         double sin = Math.sin(yaw);
         double cos = Math.cos(yaw);
-        double targetX =
-                (localStrafe * cos - localForward * sin) * maximumSpeed;
-        double targetZ =
-                (localForward * cos + localStrafe * sin) * maximumSpeed;
+        double targetX = (localStrafe * cos - localForward * sin) * maximumSpeed;
+        double targetZ = (localForward * cos + localStrafe * sin) * maximumSpeed;
         double length = Math.sqrt(targetX * targetX + targetZ * targetZ);
         if (length > maximumSpeed && length > 0.0) {
             targetX = targetX / length * maximumSpeed;

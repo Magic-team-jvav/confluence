@@ -1,66 +1,52 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
 
-import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
-/// 魔光剑剑气。
-///
-/// <p>这里不再表现为一把随机游走的飞剑，而是在玩家视线前方短暂展开一段暗影判定。
-/// 命中、击退和伤害仍然复用剑气通用快照；显示则交给客户端渲染器和粒子。</p>
-public class LightBaneProjectile extends AreaSwordProjectile {
+public class LightBaneProjectile extends SwordProjectile {
+    private final Set<UUID> hitTargets = new HashSet<>();
+
     public LightBaneProjectile(EntityType<LightBaneProjectile> entityType, Level pLevel) {
-        super(entityType, pLevel, 2.4, 1.45, 1.0, 0.65, -0.15);
+        super(entityType, pLevel);
         remainingHits = 99999;
     }
 
     @Override
-    protected boolean hurtTarget(Entity target) {
-        if (super.hurtTarget(target)) {
-            ((ServerLevel) level()).sendParticles(
-                    ModParticleTypes.LIGHT_BANE.get(),
-                    target.getX(),
-                    target.getY() + target.getBbHeight() * 0.5,
-                    target.getZ(),
-                    1,
-                    0.0,
-                    0.0,
-                    0.0,
-                    0.0);
-            return true;
-        }
-        return false;
+    public void tick() {
+        super.tick();
+        if (isRemoved() || direction.lengthSqr() <= 1.0E-8) return;
+        float midpoint = 10.0F;
+        float speed = Math.min(Math.abs(tickCount - midpoint), midpoint) * (tickCount < midpoint ? -0.02F : 0.02F);
+        setDeltaMovement(direction.normalize().scale(speed));
+        lookAt(EntityAnchorArgument.Anchor.EYES, getEyePosition().subtract(direction));
     }
 
     @Override
-    protected void clientTickVisuals(Vec3 center, Vec3 forward, Vec3 right, Vec3 up) {
-        if (tickCount % 2 != 0) {
-            return;
-        }
-        for (int index = 0; index < 3; index++) {
-            double side = (random.nextDouble() - 0.5) * 2.4;
-            double height = (random.nextDouble() - 0.5) * 1.1;
-            double depth = (random.nextDouble() - 0.5) * 0.8;
-            Vec3 position = center.add(right.scale(side)).add(up.scale(height)).add(forward.scale(depth));
-            ParticleOptions particle = getTrailParticle();
-            level().addParticle(
-                    particle,
-                    position.x,
-                    position.y,
-                    position.z,
-                    -forward.x * 0.01,
-                    0.0,
-                    -forward.z * 0.01);
-        }
+    protected boolean canHitEntity(Entity target) {
+        Entity impacted = ProjectileHitRules.impactedEntity(target);
+        return !hitTargets.contains(impacted.getUUID()) && super.canHitEntity(target);
     }
 
-    @Nullable
+    @Override
+    protected boolean hurtTarget(Entity target) {
+        Entity impacted = ProjectileHitRules.impactedEntity(target);
+        if (!super.hurtTarget(target)) return false;
+        hitTargets.add(impacted.getUUID());
+        ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(), getX(), getY(), getZ(), 1, 0.0, 0.0, 0.0, 0.0);
+        return true;
+    }
+
+    @Override
     protected ParticleOptions getTrailParticle() {
         return random.nextBoolean() ? ModParticleTypes.LIGHT_BANE_FADE.get() : ModParticleTypes.LIGHT_BANE_DUST.get();
     }

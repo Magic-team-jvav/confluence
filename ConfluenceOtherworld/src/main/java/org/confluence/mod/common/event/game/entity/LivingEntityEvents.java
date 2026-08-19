@@ -105,10 +105,7 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(LivingEntityEvents::death);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
         PortEventHandler.addListener(LivingEntityEvents::incomingDamage);
-        PortEventHandler.addListener(
-                PortEventPriority.HIGH,
-                LivingEntityEvents::summonTagDamage
-        );
+        PortEventHandler.addListener(PortEventPriority.HIGH, LivingEntityEvents::summonTagDamage);
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::damage$Pre);
         PortEventHandler.addListener(LivingEntityEvents::damage$Post);
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::processCriticalDamage);
@@ -143,10 +140,8 @@ public final class LivingEntityEvents {
 
             if (attacker instanceof ServerPlayer player) {
                 AchievementUtils.gelatinWorldTour(player, victim.getType());
-                if (victim instanceof Enemy &&
-                        CommonConfigs.ENEMY_DROPS_MONEY.get() &&
-                        level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
-                ) ModUtils.enemyDropMoney(victim, level);
+                if (victim instanceof Enemy && CommonConfigs.ENEMY_DROPS_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
+                    ModUtils.enemyDropMoney(victim, level);
                 Bestiary.INSTANCE.updateEntry(victim, true);
             }
             if (attacker != null && attacker.getType().is(ModTags.EntityTypes.CORRUPT)) {
@@ -265,9 +260,7 @@ public final class LivingEntityEvents {
     /// 非实体召唤物的近战伤害由运行时实例直接处理，不会在这里重复结算。</p>
     private static void summonTagDamage(PortLivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
-        if (amount <= 0.0F
-                || !(event.getEntity().level() instanceof ServerLevel level)
-                || !(event.getSource().getDirectEntity() instanceof OwnedSummon summon)) {
+        if (amount <= 0.0F || !(event.getEntity().level() instanceof ServerLevel level) || !(event.getSource().getDirectEntity() instanceof OwnedSummon summon)) {
             return;
         }
         Player owner = event.getSource().getEntity() instanceof Player player
@@ -510,9 +503,7 @@ public final class LivingEntityEvents {
 
         if (!event.isCanceled()) {
             GamePhase2AttributeModifiers.applyModifiers(mob);
-            if (mob instanceof Boss boss
-                    && boss.isMainBody()
-                    && boss.shouldEnhanceMultiplayer()) {
+            if (mob instanceof Boss boss && boss.isMainBody() && boss.shouldEnhanceMultiplayer()) {
                 BossMultiplayerEnhancement.apply(mob);
             }
         }

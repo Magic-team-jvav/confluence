@@ -30,12 +30,9 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// 发射五枚镰刀。挥手状态持续 30 tick，与投掷动画长度一致；受伤动作优先于投掷，
 /// 二者结束后回到悬浮待机。</p>
 public class Demon extends Harpy {
-    private static final RawAnimation HURT =
-            RawAnimation.begin().thenPlay("hurt");
-    private static final RawAnimation ATTACK_THROW =
-            RawAnimation.begin().thenPlay("attack.throw");
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation HURT = RawAnimation.begin().thenPlay("hurt");
+    private static final RawAnimation ATTACK_THROW = RawAnimation.begin().thenPlay("attack.throw");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
 
     public Demon(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
@@ -70,22 +67,14 @@ public class Demon extends Harpy {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(Demon.this), combat),
-                        new FlyWanderAction(Demon.this, 0.2, 8));
+                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(Demon.this), combat), new FlyWanderAction(Demon.this, 0.2, 8));
             }
         };
     }
 
     HostileDemonScytheProjectile createDemonScythe(LivingEntity target) {
-        HostileDemonScytheProjectile projectile =
-                new HostileDemonScytheProjectile(
-                        ModEntities.HOSTILE_DEMON_SCYTHE.get(), level());
-        projectile.configure(
-                this,
-                target,
-                (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        HostileDemonScytheProjectile projectile = new HostileDemonScytheProjectile(ModEntities.HOSTILE_DEMON_SCYTHE.get(), level());
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         swing(InteractionHand.MAIN_HAND);
         playSound(ModSoundEvents.WAVING.get());
         return projectile;
@@ -97,8 +86,7 @@ public class Demon extends Harpy {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "Fly/Hurt/Throw",

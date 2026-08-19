@@ -16,8 +16,7 @@ public final class LuminiteImpactParticle extends TextureSheetParticle {
     private static final int BASE_LIFETIME = 8;
     private final SpriteSet sprites;
 
-    private LuminiteImpactParticle(ClientLevel level, double x, double y, double z,
-                                   double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
+    private LuminiteImpactParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, SpriteSet sprites) {
         super(level, x, y, z, xSpeed, 0.0D, 0.0D);
         this.sprites = sprites;
         friction = 0.96F;
@@ -27,8 +26,7 @@ public final class LuminiteImpactParticle extends TextureSheetParticle {
         yd = yd * 0.9D + ySpeed;
         zd = zSpeed;
         quadSize *= 1.125F;
-        lifetime = Math.max((int) (BASE_LIFETIME
-                / Mth.randomBetween(random, 0.5F, 1.0F) * 1.5F), 1);
+        lifetime = Math.max((int) (BASE_LIFETIME / Mth.randomBetween(random, 0.5F, 1.0F) * 1.5F), 1);
         setSpriteFromAge(sprites);
         hasPhysics = true;
     }
@@ -99,11 +97,8 @@ public final class LuminiteImpactParticle extends TextureSheetParticle {
         }
 
         @Override
-        public @Nullable Particle createParticle(SimpleParticleType type, ClientLevel level,
-                                                 double x, double y, double z,
-                                                 double xSpeed, double ySpeed, double zSpeed) {
-            return new LuminiteImpactParticle(
-                    level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
+        public @Nullable Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new LuminiteImpactParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }
 }

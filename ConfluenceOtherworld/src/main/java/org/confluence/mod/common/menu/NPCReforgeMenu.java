@@ -36,10 +36,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
     ///
     /// <p>客户端注册工厂使用无 NPC 的构造器；服务端生产路径必须保留来源 NPC，
     /// 以便实体死亡、跨维度或玩家离开交互距离时立即关闭菜单。</p>
-    public NPCReforgeMenu(
-            int containerId,
-            Inventory inventory,
-            @Nullable BaseNPC npc) {
+    public NPCReforgeMenu(int containerId, Inventory inventory, @Nullable BaseNPC npc) {
         super(ModMenuTypes.REFORGE_MENU.get(), containerId);
         this.player = inventory.player;
         this.npc = npc;

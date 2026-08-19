@@ -24,14 +24,12 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// 横向躲避不会让实体瞬间转弯。碰撞或阶段结束会返回游走状态。两个注册变种共享行为
 /// 和动画资源，仅由注册尺寸与属性表表达体型、强度差异。</p>
 public class AntlionSwarmer extends BaseFlyingMonster {
-    private static final RawAnimation FLY =
-            RawAnimation.begin().thenLoop("move.fly");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
     private final WanderDashCycleAction combatCycle;
 
     public AntlionSwarmer(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
-        combatCycle = new WanderDashCycleAction(
-                this, 100, 100, 0.3, 10, 0.2);
+        combatCycle = new WanderDashCycleAction(this, 100, 100, 0.3, 10, 0.2);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -45,12 +43,7 @@ public class AntlionSwarmer extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(AntlionSwarmer.this),
-                                combatCycle),
-                        new FlyWanderAction(AntlionSwarmer.this, 0.3, 10)
-                );
+                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(AntlionSwarmer.this), combatCycle), new FlyWanderAction(AntlionSwarmer.this, 0.3, 10));
             }
         };
     }
@@ -79,12 +72,7 @@ public class AntlionSwarmer extends BaseFlyingMonster {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Fly",
-                2,
-                state -> state.setAndContinue(FLY)));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Fly", 2, state -> state.setAndContinue(FLY)));
     }
 }

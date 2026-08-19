@@ -23,9 +23,7 @@ public final class MaintainRangedDistanceAction extends BTNode {
     private int ticks;
     private double orbitDirection;
 
-    public MaintainRangedDistanceAction(
-            PathfinderMob mob, double minimumDistance, double maximumDistance,
-            double speed, int duration) {
+    public MaintainRangedDistanceAction(PathfinderMob mob, double minimumDistance, double maximumDistance, double speed, int duration) {
         if (minimumDistance <= 0 || maximumDistance <= minimumDistance) {
             throw new IllegalArgumentException("Ranged distance band must be positive and ordered");
         }
@@ -68,14 +66,12 @@ public final class MaintainRangedDistanceAction extends BTNode {
         } else if (distanceSqr > maximumDistanceSqr) {
             direction = horizontalAway.scale(-1.0);
         } else {
-            direction = new Vec3(-horizontalAway.z * orbitDirection, 0.0,
-                    horizontalAway.x * orbitDirection);
+            direction = new Vec3(-horizontalAway.z * orbitDirection, 0.0, horizontalAway.x * orbitDirection);
         }
 
         // 以目标视线略上方为飞行高度，减少贴地卡碰撞和远程弹道被地形遮挡的概率。
         double verticalCorrection = (target.getEyeY() + 1.5 - mob.getY()) * 0.08;
-        Vec3 acceleration = direction.add(0.0, verticalCorrection, 0.0)
-                .normalize().scale(speed * 0.08);
+        Vec3 acceleration = direction.add(0.0, verticalCorrection, 0.0).normalize().scale(speed * 0.08);
         mob.setDeltaMovement(mob.getDeltaMovement().scale(0.82).add(acceleration));
         mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         return BTStatus.RUNNING;

@@ -18,15 +18,10 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 /// <p>幻象不是另一只 Boss，也不复制本体的行为树、生命值或奖励逻辑。服务端只维护三个
 /// 不同槽位，分别把本体位置沿目标的 X 轴、Z 轴以及 X/Z 两轴进行镜像，从而与本体共同
 /// 组成围绕目标的四个候选位置。幻象完全不可交互，并作为临时 Boss 部件随本体统一清理。</p>
-public class BrainFake extends BaseBossPart<BrainOfCthulhu>
-        implements GeoEntity {
-    private static final EntityDataAccessor<Integer> ILLUSION_INDEX =
-            SynchedEntityData.defineId(
-                    BrainFake.class,
-                    EntityDataSerializers.INT);
+public class BrainFake extends BaseBossPart<BrainOfCthulhu> implements GeoEntity {
+    private static final EntityDataAccessor<Integer> ILLUSION_INDEX = SynchedEntityData.defineId(BrainFake.class, EntityDataSerializers.INT);
 
-    private final AnimatableInstanceCache cache =
-            GeckoLibUtil.createInstanceCache(this);
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public BrainFake(EntityType<?> type, Level level) {
         super(type, level);

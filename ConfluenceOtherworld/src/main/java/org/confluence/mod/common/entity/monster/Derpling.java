@@ -12,10 +12,8 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 public class Derpling extends BaseMonster {
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation JUMP =
-            RawAnimation.begin().thenPlay("jump");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation JUMP = RawAnimation.begin().thenPlay("jump");
 
     public Derpling(EntityType<? extends BaseMonster> type, Level level) {
         super(type, level);
@@ -33,21 +31,13 @@ public class Derpling extends BaseMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return new JumpingMonsterCycleAction(
-                        Derpling.this,
-                        () -> triggerAnim("Controller", "jump"));
+                return new JumpingMonsterCycleAction(Derpling.this, () -> triggerAnim("Controller", "jump"));
             }
         };
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Controller",
-                5,
-                state -> state.setAndContinue(IDLE))
-                .triggerableAnim("jump", JUMP));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Controller", 5, state -> state.setAndContinue(IDLE)).triggerableAnim("jump", JUMP));
     }
 }

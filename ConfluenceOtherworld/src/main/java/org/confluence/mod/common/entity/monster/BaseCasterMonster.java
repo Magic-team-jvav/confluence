@@ -24,10 +24,8 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// <p>施法生成具有飞行时间和方块碰撞的真实弹幕。子类只需覆盖
 /// {@link #projectileType()} 就能选择自己的法术类型，攻击节奏和瞬移流程不必复制。</p>
 public abstract class BaseCasterMonster extends BaseMonster {
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("move.walk");
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private final CycleMode cycleMode;
     private CasterCycleAction sharedCycleAction;
 
@@ -35,10 +33,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
         this(type, level, CycleMode.SHARED_1_21);
     }
 
-    protected BaseCasterMonster(
-            EntityType<? extends BaseCasterMonster> type,
-            Level level,
-            CycleMode cycleMode) {
+    protected BaseCasterMonster(EntityType<? extends BaseCasterMonster> type, Level level, CycleMode cycleMode) {
         super(type, level);
         this.cycleMode = cycleMode;
     }
@@ -54,8 +49,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
     protected BTRoot createBT() {
         if (cycleMode == CycleMode.SHARED_1_21) {
             if (sharedCycleAction == null) {
-                sharedCycleAction = new CasterCycleAction(
-                        this, this::createProjectile);
+                sharedCycleAction = new CasterCycleAction(this, this::createProjectile);
             }
             return createSharedCycleTree(sharedCycleAction);
         }
@@ -66,10 +60,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        cycleAction,
-                        new RandomStrollAction(
-                                BaseCasterMonster.this, 0.8, 8));
+                return SelectorNode.of(cycleAction, new RandomStrollAction(BaseCasterMonster.this, 0.8, 8));
             }
         };
     }
@@ -91,10 +82,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
                                         BaseCasterMonster.this
                                                 ::createImmediateProjectile),
                                 new WaitAction(50),
-                                new SpawnProjectileAction(
-                                        BaseCasterMonster.this,
-                                        BaseCasterMonster.this
-                                                ::createImmediateProjectile),
+                                new SpawnProjectileAction(BaseCasterMonster.this, BaseCasterMonster.this::createImmediateProjectile),
                                 new WaitAction(80),
                                 new TeleportNearTargetAction(BaseCasterMonster.this, 20, 5, 8)),
                         new RandomStrollAction(BaseCasterMonster.this, 0.8, 8));
@@ -117,20 +105,15 @@ public abstract class BaseCasterMonster extends BaseMonster {
     }
 
     HostileParticleProjectile createProjectile(LivingEntity target) {
-        HostileParticleProjectile projectile =
-                projectileType().create(level());
+        HostileParticleProjectile projectile = projectileType().create(level());
         if (projectile == null) {
             return null;
         }
-        projectile.configure(
-                this,
-                target,
-                (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         return projectile;
     }
 
-    private HostileParticleProjectile createImmediateProjectile(
-            LivingEntity target) {
+    private HostileParticleProjectile createImmediateProjectile(LivingEntity target) {
         HostileParticleProjectile projectile = createProjectile(target);
         if (projectile != null) {
             swing(net.minecraft.world.InteractionHand.MAIN_HAND);
@@ -140,8 +123,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
 
     /// 施法挥手期间播放法术动作，其余时间按实际移动状态选择行走或待机。
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "caster_state",

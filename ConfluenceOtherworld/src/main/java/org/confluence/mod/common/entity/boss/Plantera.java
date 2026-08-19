@@ -33,8 +33,7 @@ public class Plantera extends BaseBoss {
     static final int HOOK_COUNT = 3;
     static final int BODY_TENTACLE_COUNT = 8;
     static final int TENTACLES_PER_HOOK = 3;
-    static final int TENTACLE_COUNT =
-            BODY_TENTACLE_COUNT + HOOK_COUNT * TENTACLES_PER_HOOK;
+    static final int TENTACLE_COUNT = BODY_TENTACLE_COUNT + HOOK_COUNT * TENTACLES_PER_HOOK;
     private static final double HOOK_SEARCH_RANGE = 48.0;
     private static final double HOOK_TETHER_LENGTH = 48.0;
     private static final double PHASE_ONE_MOVE_SPEED = 0.1;
@@ -56,12 +55,9 @@ public class Plantera extends BaseBoss {
     private static final String ATTACK_TICKS_TAG = "AttackTicks";
     private static final String TENTACLE_TIMER_TAG = "TentacleTimer";
     private static final String ENRAGED_TICKS_TAG = "EnragedTicks";
-    private static final EntityDataAccessor<Integer> DATA_PHASE =
-            SynchedEntityData.defineId(
-                    Plantera.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_PHASE = SynchedEntityData.defineId(Plantera.class, EntityDataSerializers.INT);
     private final PlanteraHook[] hooks = new PlanteraHook[HOOK_COUNT];
-    private final PlanteraTentacle[] tentacles =
-            new PlanteraTentacle[TENTACLE_COUNT];
+    private final PlanteraTentacle[] tentacles = new PlanteraTentacle[TENTACLE_COUNT];
     private int attackTicks;
     private int tentacleTimer;
     private int enragedTicks;
@@ -138,8 +134,7 @@ public class Plantera extends BaseBoss {
             // 1.21 侧从出生起推进全局 AI 刻，取得目标后直接读取同一条时间轴。
             attackTicks++;
             if (getTarget() != null) {
-                if (distanceToSqr(getTarget())
-                        > HOOK_SEARCH_RANGE * HOOK_SEARCH_RANGE) {
+                if (distanceToSqr(getTarget()) > HOOK_SEARCH_RANGE * HOOK_SEARCH_RANGE) {
                     enrage();
                 }
                 tickProjectileAttacks();
@@ -161,8 +156,7 @@ public class Plantera extends BaseBoss {
     }
 
     private void updatePhase() {
-        if (getPhase() == 0
-                && getHealth() / getMaxHealth() < 0.5F) {
+        if (getPhase() == 0 && getHealth() / getMaxHealth() < 0.5F) {
             entityData.set(DATA_PHASE, 1);
             tentacleTimer = 0;
             broadcastPhaseTransition();
@@ -196,16 +190,9 @@ public class Plantera extends BaseBoss {
         }
         float healthRatio = getHealth() / getMaxHealth();
         if (getPhase() == 0) {
-            float firstPhaseProgress =
-                    Mth.clamp(healthRatio * 2.0F - 1.0F, 0.0F, 1.0F);
-            int seedInterval = Math.round(Mth.lerp(
-                    firstPhaseProgress,
-                    SEED_INTERVAL_LIMIT,
-                    SEED_INTERVAL_FULL_HEALTH));
-            int thornInterval = Math.round(Mth.lerp(
-                    firstPhaseProgress,
-                    THORN_INTERVAL_LIMIT,
-                    THORN_INTERVAL_FULL_HEALTH));
+            float firstPhaseProgress = Mth.clamp(healthRatio * 2.0F - 1.0F, 0.0F, 1.0F);
+            int seedInterval = Math.round(Mth.lerp(firstPhaseProgress, SEED_INTERVAL_LIMIT, SEED_INTERVAL_FULL_HEALTH));
+            int thornInterval = Math.round(Mth.lerp(firstPhaseProgress, THORN_INTERVAL_LIMIT, THORN_INTERVAL_FULL_HEALTH));
             if (attackTicks % seedInterval == 0) {
                 spawnProjectile(ModEntities.PLANTERA_SEED.get(), getSeedDamage(), SEED_SPEED, 0.02F);
             }
@@ -215,12 +202,8 @@ public class Plantera extends BaseBoss {
             return;
         }
 
-        float secondPhaseProgress =
-                Mth.clamp(healthRatio * 2.0F, 0.0F, 1.0F);
-        int sporeInterval = Math.round(Mth.lerp(
-                secondPhaseProgress,
-                SPORE_INTERVAL_LIMIT,
-                SPORE_INTERVAL_HALF_HEALTH));
+        float secondPhaseProgress = Mth.clamp(healthRatio * 2.0F, 0.0F, 1.0F);
+        int sporeInterval = Math.round(Mth.lerp(secondPhaseProgress, SPORE_INTERVAL_LIMIT, SPORE_INTERVAL_HALF_HEALTH));
         if (attackTicks % sporeInterval == 0) {
             spawnProjectile(ModEntities.PLANTERA_SPORE.get(), getSporeDamage(), SPORE_SPEED, 0.04F);
         }
@@ -232,34 +215,23 @@ public class Plantera extends BaseBoss {
     /// 第一阶段发射种子，第二阶段发射孢子，刺球仍只由独立自然节拍负责。</p>
     boolean shootAtTarget() {
         return getPhase() == 0
-                ? spawnProjectile(
-                ModEntities.PLANTERA_SEED.get(),
-                getSeedDamage(), SEED_SPEED, 0.02F)
-                : spawnProjectile(
-                ModEntities.PLANTERA_SPORE.get(),
-                getSporeDamage(), SPORE_SPEED, 0.04F);
+                ? spawnProjectile(ModEntities.PLANTERA_SEED.get(), getSeedDamage(), SEED_SPEED, 0.02F)
+                : spawnProjectile(ModEntities.PLANTERA_SPORE.get(), getSporeDamage(), SPORE_SPEED, 0.04F);
     }
 
     private float getSeedDamage() {
-        return LibUtils.switchByDifficulty(
-                level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
+        return LibUtils.switchByDifficulty(level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
     }
 
     private float getThornDamage() {
-        return LibUtils.switchByDifficulty(
-                level(), blockPosition(), 18.0F, 28.0F, 42.0F, 42.0F);
+        return LibUtils.switchByDifficulty(level(), blockPosition(), 18.0F, 28.0F, 42.0F, 42.0F);
     }
 
     private float getSporeDamage() {
-        return LibUtils.switchByDifficulty(
-                level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
+        return LibUtils.switchByDifficulty(level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
     }
 
-    private boolean spawnProjectile(
-            EntityType<? extends PlanteraProjectile> type,
-            float damage,
-            float velocity,
-            float inaccuracy) {
+    private boolean spawnProjectile(EntityType<? extends PlanteraProjectile> type, float damage, float velocity, float inaccuracy) {
         LivingEntity target = getTarget();
         if (target == null) {
             return false;
@@ -269,12 +241,7 @@ public class Plantera extends BaseBoss {
         if (projectile == null) {
             return false;
         }
-        projectile.configure(
-                this,
-                target,
-                damage,
-                velocity,
-                inaccuracy);
+        projectile.configure(this, target, damage, velocity, inaccuracy);
         if (level().addFreshEntity(projectile)) {
             return true;
         }
@@ -359,9 +326,7 @@ public class Plantera extends BaseBoss {
             Vec3 offset = hook.position().subtract(position());
             double distance = offset.length();
             if (distance <= HOOK_TETHER_LENGTH) continue;
-            acceleration = acceleration.add(offset.scale(
-                    (distance - HOOK_TETHER_LENGTH)
-                            * MOVE_ACCELERATION / (distance * 25.0)));
+            acceleration = acceleration.add(offset.scale((distance - HOOK_TETHER_LENGTH) * MOVE_ACCELERATION / (distance * 25.0)));
         }
 
         double maximumSpeed = isEnraged()
@@ -403,8 +368,7 @@ public class Plantera extends BaseBoss {
                 continue;
             }
 
-            PlanteraTentacle created =
-                    BossEntities.PLANTERA_TENTACLE.get().create(level());
+            PlanteraTentacle created = BossEntities.PLANTERA_TENTACLE.get().create(level());
             if (created == null) {
                 continue;
             }
@@ -431,8 +395,7 @@ public class Plantera extends BaseBoss {
         if (cycleTick == 0) {
             for (int index = 0; index < hooks.length; index++) {
                 PlanteraHook hook = hooks[index];
-                if (hook == null || hook.isRemoved()
-                        || hook.getState() != PlanteraHook.STATE_IDLE) {
+                if (hook == null || hook.isRemoved() || hook.getState() != PlanteraHook.STATE_IDLE) {
                     continue;
                 }
                 BlockPos anchor = findHookAnchor(index);
@@ -453,8 +416,7 @@ public class Plantera extends BaseBoss {
         PlanteraHook farthest = null;
         double farthestDistance = -1.0;
         for (PlanteraHook hook : hooks) {
-            if (hook == null || hook.isRemoved()
-                    || hook.getState() != PlanteraHook.STATE_GRABBED) {
+            if (hook == null || hook.isRemoved() || hook.getState() != PlanteraHook.STATE_GRABBED) {
                 continue;
             }
             grabbed++;
@@ -528,9 +490,7 @@ public class Plantera extends BaseBoss {
                 alive++;
             }
         }
-        tentacleTimer = Math.max(
-                tentacleTimer,
-                TENTACLE_REBUILD_BASE_COOLDOWN * Math.max(1, alive + 1));
+        tentacleTimer = Math.max(tentacleTimer, TENTACLE_REBUILD_BASE_COOLDOWN * Math.max(1, alive + 1));
     }
 
     @Override
@@ -545,14 +505,10 @@ public class Plantera extends BaseBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        entityData.set(
-                DATA_PHASE,
-                Mth.clamp(tag.getInt(PHASE_TAG), 0, 1));
+        entityData.set(DATA_PHASE, Mth.clamp(tag.getInt(PHASE_TAG), 0, 1));
         attackTicks = Math.max(0, tag.getInt(ATTACK_TICKS_TAG));
-        tentacleTimer = Math.max(
-                0, tag.getInt(TENTACLE_TIMER_TAG));
-        enragedTicks = Mth.clamp(
-                tag.getInt(ENRAGED_TICKS_TAG), 0, 200);
+        tentacleTimer = Math.max(0, tag.getInt(TENTACLE_TIMER_TAG));
+        enragedTicks = Mth.clamp(tag.getInt(ENRAGED_TICKS_TAG), 0, 200);
         java.util.Arrays.fill(hooks, null);
         java.util.Arrays.fill(tentacles, null);
     }

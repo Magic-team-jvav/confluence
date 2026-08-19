@@ -78,9 +78,7 @@ public class LiquidBombEntity extends BaseBombEntity {
         if (compound.contains("FillFluid", CompoundTag.TAG_STRING)) {
             ResourceLocation id = ResourceLocation.tryParse(compound.getString("FillFluid"));
             if (id != null) {
-                BuiltInRegistries.FLUID.getOptional(id)
-                        .filter(fluid -> fluid == expected)
-                        .ifPresent(fluid -> this.toFill = fluid);
+                BuiltInRegistries.FLUID.getOptional(id).filter(fluid -> fluid == expected).ifPresent(fluid -> this.toFill = fluid);
             }
         }
         if (compound.contains("FillRadius", CompoundTag.TAG_INT)) {

@@ -16,20 +16,14 @@ import net.minecraft.world.level.Level;
 /// <p>模型仍由主体一次性绘制，七个部件只负责头、躯干、尾部和双翼的精确受击区域。
 /// 部件不独立保存生命或战利品，伤害始终转发给主体；非头部沿用 1.21 的减伤公式，
 /// 区块卸载后由主体按固定槽位重建。</p>
-public final class PrimeEnderDragonPart
-        extends BaseBossPart<PrimeEnderDragon> {
-    private static final EntityDataAccessor<Integer> SLOT =
-            SynchedEntityData.defineId(
-                    PrimeEnderDragonPart.class,
-                    EntityDataSerializers.INT);
+public final class PrimeEnderDragonPart extends BaseBossPart<PrimeEnderDragon> {
+    private static final EntityDataAccessor<Integer> SLOT = SynchedEntityData.defineId(PrimeEnderDragonPart.class, EntityDataSerializers.INT);
 
     public PrimeEnderDragonPart(EntityType<?> type, Level level) {
         super(type, level);
     }
 
-    public void setMaster(
-            PrimeEnderDragon master,
-            PrimeEnderDragon.PartSlot slot) {
+    public void setMaster(PrimeEnderDragon master, PrimeEnderDragon.PartSlot slot) {
         entityData.set(SLOT, slot.ordinal());
         refreshDimensions();
         bindTo(master);
@@ -37,8 +31,7 @@ public final class PrimeEnderDragonPart
     }
 
     public PrimeEnderDragon.PartSlot getSlot() {
-        return PrimeEnderDragon.PartSlot.fromOrdinal(
-                entityData.get(SLOT));
+        return PrimeEnderDragon.PartSlot.fromOrdinal(entityData.get(SLOT));
     }
 
     @Override

@@ -10,11 +10,7 @@ import net.minecraft.world.level.Level;
 public class LaunchedFlailEntity extends BaseFlailEntity {
     private final double thrownGravity;
 
-    public LaunchedFlailEntity(
-            EntityType<? extends LaunchedFlailEntity> type,
-            Level level,
-            double thrownGravity
-    ) {
+    public LaunchedFlailEntity(EntityType<? extends LaunchedFlailEntity> type, Level level, double thrownGravity) {
         super(type, level);
         this.thrownGravity = thrownGravity;
     }

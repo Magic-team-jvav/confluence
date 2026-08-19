@@ -105,14 +105,12 @@ public class MushroomSpearItem extends AbstractSpearItem {
             SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
             Vec3 forwardOffset = viewVector.scale(1.0);
             spawnProjectile(stack, owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
-            LibUtils.updateItemStackNbt(stack,
-                    tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, getDistance(tickCount, owner)));
+            LibUtils.updateItemStackNbt(stack, tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, getDistance(tickCount, owner)));
         }
         // 收矛阶段：按间距控制生成密度，与刺出阶段保持一致
         else if (tickCount > strikeEndTick && tickCount <= strikeEndTick + 6) {
             double currentTipZ = getDistance(tickCount, owner);
-            double lastSpawnTipZ = LibUtils.getItemStackNbtNoCopy(stack)
-                    .getDouble(LAST_SPAWN_TIP_Z_KEY);
+            double lastSpawnTipZ = LibUtils.getItemStackNbtNoCopy(stack).getDouble(LAST_SPAWN_TIP_Z_KEY);
             if (Math.abs(currentTipZ - lastSpawnTipZ) >= RETRACT_SPAWN_SPACING) {
                 Vec3 viewVector = owner.getViewVector(1.0F);
                 Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
@@ -120,17 +118,14 @@ public class MushroomSpearItem extends AbstractSpearItem {
                 SpearProjectileComponent component = SpearProjectileComponent.MUSHROOM_SPEAR_PROJ.get();
                 Vec3 forwardOffset = viewVector.scale(1.0);
                 spawnProjectile(stack, owner.serverLevel(), owner, tipPos.add(forwardOffset), component, viewVector);
-                LibUtils.updateItemStackNbt(stack,
-                        tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, currentTipZ));
+                LibUtils.updateItemStackNbt(stack, tag -> tag.putDouble(LAST_SPAWN_TIP_Z_KEY, currentTipZ));
             }
         }
     }
 
-    private void spawnProjectile(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 pos,
-                                 SpearProjectileComponent component, Vec3 direction) {
+    private void spawnProjectile(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 pos, SpearProjectileComponent component, Vec3 direction) {
         MushroomProjectile projectile = new MushroomProjectile(
                 ModEntities.MUSHROOM.get(), level);
-        fireDerivedProjectile(
-                stack, level, owner, component, projectile, pos, direction, 0.0F);
+        fireDerivedProjectile(stack, level, owner, component, projectile, pos, direction, 0.0F);
     }
 }

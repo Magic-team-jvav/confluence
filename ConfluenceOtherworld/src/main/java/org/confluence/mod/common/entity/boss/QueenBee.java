@@ -41,23 +41,15 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// 随从；重复召唤和难度提高只能更快补足空位，不能突破上限。蜂王离开丛林后进入愤怒状态，
 /// 专家及以上难度的冲刺速度和毒素强度随之提高。</p>
 public class QueenBee extends BaseBoss {
-    private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE =
-            SynchedEntityData.defineId(QueenBee.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DATA_ANGRY =
-            SynchedEntityData.defineId(QueenBee.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(QueenBee.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_ANGRY = SynchedEntityData.defineId(QueenBee.class, EntityDataSerializers.BOOLEAN);
 
-    private static final RawAnimation INITIALIZATION =
-            RawAnimation.begin().thenPlay("initialization");
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation SUMMON =
-            RawAnimation.begin().thenLoop("summon");
-    private static final RawAnimation PRE_DASH =
-            RawAnimation.begin().thenPlayAndHold("pre_dash");
-    private static final RawAnimation DASH =
-            RawAnimation.begin().thenLoop("dash");
-    private static final RawAnimation WING =
-            RawAnimation.begin().thenLoop("wing");
+    private static final RawAnimation INITIALIZATION = RawAnimation.begin().thenPlay("initialization");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation SUMMON = RawAnimation.begin().thenLoop("summon");
+    private static final RawAnimation PRE_DASH = RawAnimation.begin().thenPlayAndHold("pre_dash");
+    private static final RawAnimation DASH = RawAnimation.begin().thenLoop("dash");
+    private static final RawAnimation WING = RawAnimation.begin().thenLoop("wing");
 
     private static final int INITIALIZATION_TICKS = 50;
     private static final int IDLE_TICKS = 50;
@@ -134,8 +126,7 @@ public class QueenBee extends BaseBoss {
     protected void registerGoals() {
         super.registerGoals();
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2,
-                new NearestAttackableTargetGoal<>(this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     @Override
@@ -180,9 +171,7 @@ public class QueenBee extends BaseBoss {
         stateTicks++;
         setDeltaMovement(idleDirection.scale(IDLE_SPEED));
         getLookControl().setLookAt(target, 30.0F, 30.0F);
-        if (stateTicks >= IDLE_TICKS
-                || stateTicks > 10
-                && distanceToSqr(target) > DASH_END_RANGE_SQR) {
+        if (stateTicks >= IDLE_TICKS || stateTicks > 10 && distanceToSqr(target) > DASH_END_RANGE_SQR) {
             enterState(CombatState.SUMMONING_BEES);
         }
     }
@@ -246,9 +235,7 @@ public class QueenBee extends BaseBoss {
         }
         setDeltaMovement(lockedDashDirection.scale(speed));
         Vec3 lookPosition = position().add(lockedDashDirection);
-        getLookControl().setLookAt(
-                lookPosition.x, lookPosition.y, lookPosition.z,
-                360.0F, 360.0F);
+        getLookControl().setLookAt(lookPosition.x, lookPosition.y, lookPosition.z, 360.0F, 360.0F);
         if (getBoundingBox().inflate(0.35).intersects(target.getBoundingBox())) {
             doHurtTarget(target);
         }
@@ -271,19 +258,12 @@ public class QueenBee extends BaseBoss {
 
     /// 复现 1.21 蜂王的悬挂移动：加速度与实际偏移成正比，而不是先归一化成固定推力。
     /// 这样远处会快速回位，贴近目标后会自然减速，召蜂与冲刺准备阶段的速度也能分别保留。
-    private void hangOnTarget(
-            LivingEntity target,
-            double horizontalDistance,
-            double height,
-            double speed) {
-        Vec3 horizontal = position().subtract(target.position())
-                .multiply(1.0, 0.0, 1.0);
+    private void hangOnTarget(LivingEntity target, double horizontalDistance, double height, double speed) {
+        Vec3 horizontal = position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
         if (horizontal.lengthSqr() < 1.0E-6) {
             horizontal = new Vec3(1.0, 0.0, 0.0);
         }
-        Vec3 destination = target.position()
-                .add(horizontal.normalize().scale(horizontalDistance))
-                .add(0.0, height, 0.0);
+        Vec3 destination = target.position().add(horizontal.normalize().scale(horizontalDistance)).add(0.0, height, 0.0);
         Vec3 offset = destination.subtract(position());
         setDeltaMovement(getDeltaMovement().add(offset.scale(speed * 0.01)));
         if (distanceToSqr(target) < 2.0) {
@@ -294,10 +274,8 @@ public class QueenBee extends BaseBoss {
 
     /// 根据目标当前速度预判十刻后的位置，并丢弃垂直分量，保证整段冲刺保持水平。
     private Vec3 createHorizontalDashDirection(LivingEntity target) {
-        Vec3 predictedPosition = target.position()
-                .add(target.getDeltaMovement().scale(10.0));
-        Vec3 direction = predictedPosition.subtract(position())
-                .multiply(1.0, 0.0, 1.0);
+        Vec3 predictedPosition = target.position().add(target.getDeltaMovement().scale(10.0));
+        Vec3 direction = predictedPosition.subtract(position()).multiply(1.0, 0.0, 1.0);
         if (direction.lengthSqr() < 1.0E-6) {
             direction = getLookAngle().multiply(1.0, 0.0, 1.0);
         }
@@ -319,8 +297,7 @@ public class QueenBee extends BaseBoss {
     }
 
     private boolean spawnOneBee() {
-        if (!(level() instanceof ServerLevel serverLevel)
-                || countOwnedHornets() >= MAX_OWNED_HORNETS) {
+        if (!(level() instanceof ServerLevel serverLevel) || countOwnedHornets() >= MAX_OWNED_HORNETS) {
             return false;
         }
         LittleHornet hornet = MonsterEntities.LITTLE_HORNET.get().create(level());
@@ -343,10 +320,7 @@ public class QueenBee extends BaseBoss {
     private int countOwnedHornets() {
         int count = 0;
         for (var entity : subEntities) {
-            if (entity instanceof LittleHornet hornet
-                    && hornet.isAlive()
-                    && hornet.getMasterUUID() != null
-                    && hornet.getMasterUUID().equals(getUUID())) {
+            if (entity instanceof LittleHornet hornet && hornet.isAlive() && hornet.getMasterUUID() != null && hornet.getMasterUUID().equals(getUUID())) {
                 count++;
             }
         }
@@ -357,8 +331,7 @@ public class QueenBee extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return false;
         }
-        HornetStingerProjectile projectile =
-                ModEntities.HORNET_STINGER.get().create(level());
+        HornetStingerProjectile projectile = ModEntities.HORNET_STINGER.get().create(level());
         if (projectile == null) {
             return false;
         }
@@ -421,8 +394,7 @@ public class QueenBee extends BaseBoss {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance, float multiplier, DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
@@ -437,19 +409,8 @@ public class QueenBee extends BaseBoss {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(
-                new AnimationController<>(
-                        this,
-                        "action",
-                        5,
-                        state -> state.setAndContinue(animationForCurrentState())),
-                new AnimationController<>(
-                        this,
-                        "wing",
-                        0,
-                        state -> state.setAndContinue(WING)));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "action", 5, state -> state.setAndContinue(animationForCurrentState())), new AnimationController<>(this, "wing", 0, state -> state.setAndContinue(WING)));
     }
 
     private RawAnimation animationForCurrentState() {
@@ -485,17 +446,10 @@ public class QueenBee extends BaseBoss {
         setCombatState(ordinal >= 0 && ordinal < values.length
                 ? values[ordinal] : CombatState.IDLE);
         stateTicks = Math.max(0, tag.getInt("QueenStateTicks"));
-        completedDashCycles = Mth.clamp(
-                tag.getInt("QueenCompletedDashes"), 0, DASH_CYCLES - 1);
+        completedDashCycles = Mth.clamp(tag.getInt("QueenCompletedDashes"), 0, DASH_CYCLES - 1);
         setAngry(tag.getBoolean("QueenAngry"));
-        idleDirection = new Vec3(
-                tag.getDouble("QueenIdleX"),
-                tag.getDouble("QueenIdleY"),
-                tag.getDouble("QueenIdleZ"));
-        lockedDashDirection = new Vec3(
-                tag.getDouble("QueenDashX"),
-                tag.getDouble("QueenDashY"),
-                tag.getDouble("QueenDashZ"));
+        idleDirection = new Vec3(tag.getDouble("QueenIdleX"), tag.getDouble("QueenIdleY"), tag.getDouble("QueenIdleZ"));
+        lockedDashDirection = new Vec3(tag.getDouble("QueenDashX"), tag.getDouble("QueenDashY"), tag.getDouble("QueenDashZ"));
     }
 
     public enum CombatState {

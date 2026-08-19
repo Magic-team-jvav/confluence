@@ -20,41 +20,21 @@ public class SpawnEggItems {
     /// “spawn_egg”结尾，也不会获得对方块使用、刷怪笼改写或实体 NBT
     /// 应用能力。颜色暂与 1.21 一样使用白色，后续只需调整两个颜色值。
     public static final PortDeferredItem<ForgeSpawnEggItem>
-            RETINAZER_SPAWN_EGG = ITEMS.register(
-            "retinazer_spawn_egg",
-            () -> egg(BossEntities.RETINAZER));
+            RETINAZER_SPAWN_EGG = ITEMS.register("retinazer_spawn_egg", () -> egg(BossEntities.RETINAZER));
     public static final PortDeferredItem<ForgeSpawnEggItem>
-            SPAZMATISM_SPAWN_EGG = ITEMS.register(
-            "spazmatism_spawn_egg",
-            () -> egg(BossEntities.SPAZMATISM));
+            SPAZMATISM_SPAWN_EGG = ITEMS.register("spazmatism_spawn_egg", () -> egg(BossEntities.SPAZMATISM));
     public static final PortDeferredItem<ForgeSpawnEggItem>
-            THE_DESTROYER_SPAWN_EGG = ITEMS.register(
-            "the_destroyer_spawn_egg",
-            () -> egg(BossEntities.THE_DESTROYER));
+            THE_DESTROYER_SPAWN_EGG = ITEMS.register("the_destroyer_spawn_egg", () -> egg(BossEntities.THE_DESTROYER));
     public static final PortDeferredItem<ForgeSpawnEggItem>
-            THE_TWINS_SPAWN_EGG = ITEMS.register(
-            "the_twins_spawn_egg",
-            () -> egg(BossEntities.THE_TWINS));
+            THE_TWINS_SPAWN_EGG = ITEMS.register("the_twins_spawn_egg", () -> egg(BossEntities.THE_TWINS));
     public static final PortDeferredItem<ForgeSpawnEggItem>
-            SKELETRON_PRIME_SPAWN_EGG = ITEMS.register(
-            "skeletron_prime_spawn_egg",
-            () -> egg(BossEntities.SKELETRON_PRIME));
+            SKELETRON_PRIME_SPAWN_EGG = ITEMS.register("skeletron_prime_spawn_egg", () -> egg(BossEntities.SKELETRON_PRIME));
     public static final PortDeferredItem<ForgeSpawnEggItem>
-            PLANTERA_SPAWN_EGG = ITEMS.register(
-            "plantera_spawn_egg",
-            () -> egg(BossEntities.PLANTERA));
+            PLANTERA_SPAWN_EGG = ITEMS.register("plantera_spawn_egg", () -> egg(BossEntities.PLANTERA));
     public static final PortDeferredItem<ForgeSpawnEggItem>
-            PRIME_ENDER_DRAGON_SPAWN_EGG = ITEMS.register(
-            "prime_ender_dragon_spawn_egg",
-            () -> egg(BossEntities.PRIME_ENDER_DRAGON));
+            PRIME_ENDER_DRAGON_SPAWN_EGG = ITEMS.register("prime_ender_dragon_spawn_egg", () -> egg(BossEntities.PRIME_ENDER_DRAGON));
 
-    private static ForgeSpawnEggItem egg(
-            RegistryObject<? extends EntityType<? extends Mob>>
-                    entityType) {
-        return new ForgeSpawnEggItem(
-                entityType,
-                0xFFFFFF,
-                0xFFFFFF,
-                new Item.Properties());
+    private static ForgeSpawnEggItem egg(RegistryObject<? extends EntityType<? extends Mob>> entityType) {
+        return new ForgeSpawnEggItem(entityType, 0xFFFFFF, 0xFFFFFF, new Item.Properties());
     }
 }

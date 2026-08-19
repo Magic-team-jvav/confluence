@@ -79,19 +79,13 @@ public final class PlayerMoneyTransaction {
         List<ItemStack> extraCopy = copyStacks(extraInventory.getAllCoins());
         List<ItemStack> piggyCopy = piggyBank == null ? List.of() : copyContainer(piggyBank);
 
-        long current = Math.addExact(
-                sumAndClearCoins(inventoryCopy),
-                Math.addExact(sumAndClearCoins(extraCopy), sumAndClearCoins(piggyCopy)));
-        Optional<List<ItemStack>> encoded = encodeCoins(
-                Math.addExact(current, amount),
-                inventoryCopy.size() + extraCopy.size() + piggyCopy.size());
+        long current = Math.addExact(sumAndClearCoins(inventoryCopy), Math.addExact(sumAndClearCoins(extraCopy), sumAndClearCoins(piggyCopy)));
+        Optional<List<ItemStack>> encoded = encodeCoins(Math.addExact(current, amount), inventoryCopy.size() + extraCopy.size() + piggyCopy.size());
         if (encoded.isEmpty()) {
             return false;
         }
         for (ItemStack stack : encoded.get()) {
-            if (!placeIntoEmptySlot(stack, extraCopy)
-                    && !placeIntoEmptySlot(stack, piggyCopy)
-                    && !placeIntoEmptySlot(stack, inventoryCopy)) {
+            if (!placeIntoEmptySlot(stack, extraCopy) && !placeIntoEmptySlot(stack, piggyCopy) && !placeIntoEmptySlot(stack, inventoryCopy)) {
                 return false;
             }
         }

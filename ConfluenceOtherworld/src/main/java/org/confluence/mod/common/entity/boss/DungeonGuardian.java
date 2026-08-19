@@ -14,10 +14,10 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
-import org.confluence.mod.common.init.ModDamageTypes;
 
 /// 地牢守卫。
 ///
@@ -69,8 +69,7 @@ public class DungeonGuardian extends BaseBoss {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        targetSelector.addGoal(1,
-                new NearestAttackableTargetGoal<>(this, Player.class, false));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     @Override
@@ -87,9 +86,7 @@ public class DungeonGuardian extends BaseBoss {
                 Vec3 velocity = direction.normalize().scale(PURSUIT_SPEED);
                 setDeltaMovement(velocity);
                 Vec3 lookPosition = position().add(velocity);
-                getLookControl().setLookAt(
-                        lookPosition.x, lookPosition.y, lookPosition.z,
-                        360.0F, 360.0F);
+                getLookControl().setLookAt(lookPosition.x, lookPosition.y, lookPosition.z, 360.0F, 360.0F);
             }
             if (getBoundingBox().inflate(0.25)
                     .intersects(target.getBoundingBox())) {
@@ -111,10 +108,8 @@ public class DungeonGuardian extends BaseBoss {
 
     @Override
     public boolean doHurtTarget(Entity target) {
-        DamageSource source = ModDamageTypes.of(
-                level(), ModDamageTypes.DUNGEON_GUARDIAN, this);
-        boolean hurt = target.hurt(
-                source, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.DUNGEON_GUARDIAN, this);
+        boolean hurt = target.hurt(source, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         if (hurt) {
             playerCheckTicks = INITIAL_PLAYER_CHECK_TICKS;
         }
@@ -145,8 +140,7 @@ public class DungeonGuardian extends BaseBoss {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance, float multiplier, DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 

@@ -11,13 +11,13 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -50,9 +50,7 @@ public final class EntityEvents {
         if (!event.loadedFromDisk()) {
             Boss.sendBossSpawnMessage(entity);
         }
-        if (boss.isMainBody()
-                && boss.shouldEnhanceMultiplayer()
-                && entity instanceof LivingEntity living) {
+        if (boss.isMainBody() && boss.shouldEnhanceMultiplayer() && entity instanceof LivingEntity living) {
             BossMultiplayerEnhancement.apply(living);
         }
     }
@@ -92,7 +90,7 @@ public final class EntityEvents {
         }
         @Nullable Entity attacker = damageSource.getEntity();
 
-        if (damageSource.is(ModDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {
+        if (damageSource.is(LibDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {
             event.setInvulnerable(true);
             return;
         }

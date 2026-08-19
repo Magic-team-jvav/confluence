@@ -67,8 +67,7 @@ final class GroundPathfinder {
         return reversed;
     }
 
-    private static BlockPos findWalkableNeighbor(ServerLevel level, BlockPos current, int offsetX, int offsetZ,
-                                                 double width, double height) {
+    private static BlockPos findWalkableNeighbor(ServerLevel level, BlockPos current, int offsetX, int offsetZ, double width, double height) {
         for (int offsetY : new int[]{1, 0, -1}) {
             BlockPos candidate = current.offset(offsetX, offsetY, offsetZ);
             if (walkable(level, candidate, width, height)) {

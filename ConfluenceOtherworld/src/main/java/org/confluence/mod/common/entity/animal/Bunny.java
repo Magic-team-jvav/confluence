@@ -167,25 +167,19 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
             double deltaX = wantedX - bunny.getX();
             double deltaY = wantedY - bunny.getY();
             double deltaZ = wantedZ - bunny.getZ();
-            double distanceSquared =
-                    deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
-            if (operation != Operation.MOVE_TO
-                    || distanceSquared < MIN_SPEED_SQR) {
+            double distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+            if (operation != Operation.MOVE_TO || distanceSquared < MIN_SPEED_SQR) {
                 bunny.setXxa(0.0F);
                 bunny.setZza(0.0F);
                 bunny.setSpeed(0.0F);
                 return;
             }
 
-            float targetYaw = (float) (Mth.atan2(deltaZ, deltaX)
-                    * Mth.RAD_TO_DEG) - 90.0F;
-            bunny.setYRot(rotlerp(
-                    bunny.getYRot(), targetYaw, 90.0F));
+            float targetYaw = (float) (Mth.atan2(deltaZ, deltaX) * Mth.RAD_TO_DEG) - 90.0F;
+            bunny.setYRot(rotlerp(bunny.getYRot(), targetYaw, 90.0F));
             bunny.yHeadRot = bunny.getYRot();
             bunny.yBodyRot = bunny.getYRot();
-            bunny.setSpeed((float) (speedModifier
-                    * bunny.getAttributeValue(
-                    Attributes.MOVEMENT_SPEED)));
+            bunny.setSpeed((float) (speedModifier * bunny.getAttributeValue(Attributes.MOVEMENT_SPEED)));
 
             if (!bunny.onGround()) {
                 return;
@@ -200,14 +194,9 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
 
             jumpDelay = 10;
             bunny.getJumpControl().jump();
-            double horizontalDistance =
-                    Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+            double horizontalDistance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
             if (horizontalDistance > 1.0E-5) {
-                bunny.addDeltaMovement(
-                        new net.minecraft.world.phys.Vec3(
-                                deltaX / horizontalDistance * 0.1,
-                                0.0,
-                                deltaZ / horizontalDistance * 0.1));
+                bunny.addDeltaMovement(new net.minecraft.world.phys.Vec3(deltaX / horizontalDistance * 0.1, 0.0, deltaZ / horizontalDistance * 0.1));
             }
             bunny.setJumping(true);
         }
@@ -236,8 +225,7 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
 
     @Override
     protected void initializeSpawnVariant() {
-        setVariant(CritterVariantUtil.withRareVariant(
-                random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
+        setVariant(CritterVariantUtil.withRareVariant(random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
     }
 
     @Override
@@ -267,9 +255,7 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
     }
 
     @Override
-    public Bunny getBreedOffspring(
-            ServerLevel level,
-            net.minecraft.world.entity.AgeableMob otherParent) {
+    public Bunny getBreedOffspring(ServerLevel level, net.minecraft.world.entity.AgeableMob otherParent) {
         return CritterEntities.BUNNY.get().create(level);
     }
 

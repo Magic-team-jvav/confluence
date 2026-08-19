@@ -11,14 +11,10 @@ import org.confluence.mod.Confluence;
 /// DistCleaner 会在加载实体类时拒绝客户端类型。这里集中保存渲染元数据，公共实体只保留运动、
 /// 战斗状态和通用纹理标识。</p>
 public final class SpearProjectileModels {
-    public static final ModelLayerLocation STORM = new ModelLayerLocation(
-            Confluence.asResource("storm_spear_shot_projectile"), "main");
-    public static final ModelLayerLocation NORTH_POLE = new ModelLayerLocation(
-            Confluence.asResource("north_pole_projectile"), "main");
-    public static final ModelLayerLocation MUSHROOM = new ModelLayerLocation(
-            Confluence.asResource("mushroom_projectile"), "main");
-    public static final ModelLayerLocation GHASTLY = new ModelLayerLocation(
-            Confluence.asResource("ghastly_projectile"), "main");
+    public static final ModelLayerLocation STORM = new ModelLayerLocation(Confluence.asResource("storm_spear_shot_projectile"), "main");
+    public static final ModelLayerLocation NORTH_POLE = new ModelLayerLocation(Confluence.asResource("north_pole_projectile"), "main");
+    public static final ModelLayerLocation MUSHROOM = new ModelLayerLocation(Confluence.asResource("mushroom_projectile"), "main");
+    public static final ModelLayerLocation GHASTLY = new ModelLayerLocation(Confluence.asResource("ghastly_projectile"), "main");
 
     private SpearProjectileModels() {}
 

@@ -40,21 +40,14 @@ import javax.annotation.Nullable;
 /// {@link BaseBoss} 的统一脱战计时。所有计时和弹幕生成都只在服务端执行，
 /// 客户端仅根据同步状态选择动画和无敌纹理。</p>
 public class DeerClops extends BaseBoss {
-    private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE =
-            SynchedEntityData.defineId(DeerClops.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DATA_FAR_INVULNERABLE =
-            SynchedEntityData.defineId(DeerClops.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(DeerClops.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_FAR_INVULNERABLE = SynchedEntityData.defineId(DeerClops.class, EntityDataSerializers.BOOLEAN);
 
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("Walk");
-    private static final RawAnimation STAND =
-            RawAnimation.begin().thenLoop("Stand");
-    private static final RawAnimation ICE =
-            RawAnimation.begin().thenPlay("Ice");
-    private static final RawAnimation ROAR =
-            RawAnimation.begin().thenPlay("Roar");
-    private static final RawAnimation ROARING =
-            RawAnimation.begin().thenLoop("Roaring");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("Walk");
+    private static final RawAnimation STAND = RawAnimation.begin().thenLoop("Stand");
+    private static final RawAnimation ICE = RawAnimation.begin().thenPlay("Ice");
+    private static final RawAnimation ROAR = RawAnimation.begin().thenPlay("Roar");
+    private static final RawAnimation ROARING = RawAnimation.begin().thenLoop("Roaring");
 
     private static final int INTRO_STAGE_TICKS = 10;
     private static final int ATTACK_WINDUP_TICKS = 12;
@@ -128,8 +121,7 @@ public class DeerClops extends BaseBoss {
     protected void registerGoals() {
         super.registerGoals();
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2,
-                new NearestAttackableTargetGoal<>(this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     @Override
@@ -181,8 +173,7 @@ public class DeerClops extends BaseBoss {
 
     private void tickCombat(LivingEntity target) {
         double distanceSqr = distanceToSqr(target);
-        boolean outsideAttackRange =
-                distanceSqr > MAXIMUM_ATTACK_RANGE * MAXIMUM_ATTACK_RANGE;
+        boolean outsideAttackRange = distanceSqr > MAXIMUM_ATTACK_RANGE * MAXIMUM_ATTACK_RANGE;
         setFarInvulnerable(outsideAttackRange);
         getLookControl().setLookAt(target, 30.0F, 30.0F);
 
@@ -218,8 +209,7 @@ public class DeerClops extends BaseBoss {
     }
 
     private AttackResult performIceAttack(LivingEntity target) {
-        Vec3 horizontalOffset = target.position().subtract(position())
-                .multiply(1.0, 0.0, 1.0);
+        Vec3 horizontalOffset = target.position().subtract(position()).multiply(1.0, 0.0, 1.0);
         if (horizontalOffset.length() >= THROWN_ICE_RANGE) {
             return new AttackResult(AttackPattern.THROWN_ICE, spawnThrownIce());
         } else if (target.getY() - getY() > SHADOW_HAND_HEIGHT) {
@@ -233,15 +223,11 @@ public class DeerClops extends BaseBoss {
     private int spawnThrownIce() {
         int spawned = 0;
         for (int index = 0; index < THROWN_ICE_COUNT; index++) {
-            DeerclopsThrownIceProjectile projectile =
-                    ModEntities.THROWN_ICE_PROJECTILE.get().create(level());
+            DeerclopsThrownIceProjectile projectile = ModEntities.THROWN_ICE_PROJECTILE.get().create(level());
             if (projectile == null) {
                 continue;
             }
-            Vec3 origin = position().add(
-                    random.nextDouble() * 2.0 - 1.0,
-                    random.nextDouble() * 2.0 + 1.0,
-                    random.nextDouble() * 2.0 - 1.0);
+            Vec3 origin = position().add(random.nextDouble() * 2.0 - 1.0, random.nextDouble() * 2.0 + 1.0, random.nextDouble() * 2.0 - 1.0);
             projectile.configure(this, origin, RANGE_DAMAGE);
             if (level().addFreshEntity(projectile)) {
                 spawned++;
@@ -255,13 +241,11 @@ public class DeerClops extends BaseBoss {
         double formationRotation = random.nextDouble() * Math.PI * 2.0;
         int spawned = 0;
         for (int index = 0; index < 4; index++) {
-            DeerclopsShadowHandProjectile projectile =
-                    ModEntities.SHADOW_HAND.get().create(level());
+            DeerclopsShadowHandProjectile projectile = ModEntities.SHADOW_HAND.get().create(level());
             if (projectile == null) {
                 continue;
             }
-            Vec3 origin = findShadowHandOrigin(
-                    center, index, formationRotation, projectile);
+            Vec3 origin = findShadowHandOrigin(center, index, formationRotation, projectile);
             Vec3 direction = center.subtract(origin);
             projectile.configure(this, origin, direction, SHADOW_HAND_DAMAGE);
             if (level().addFreshEntity(projectile)) {
@@ -276,11 +260,7 @@ public class DeerClops extends BaseBoss {
     /// <p>1.21 侧直接在球面上随机取点，靠近洞壁或地面时会有部分黑手立刻撞墙消失。
     /// 这里先尝试随机球面，再退回四个均匀方向并逐格上移，保证一次攻击稳定形成
     /// 四向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。</p>
-    private Vec3 findShadowHandOrigin(
-            Vec3 center,
-            int handIndex,
-            double formationRotation,
-            DeerclopsShadowHandProjectile projectile) {
+    private Vec3 findShadowHandOrigin(Vec3 center, int handIndex, double formationRotation, DeerclopsShadowHandProjectile projectile) {
         double formationAngle = formationRotation + handIndex * Math.PI * 0.5;
         Vec3 formationOrigin = center.add(
                 Math.cos(formationAngle) * 4.5,
@@ -300,10 +280,7 @@ public class DeerClops extends BaseBoss {
         }
 
         double angle = handIndex * Math.PI * 0.5;
-        Vec3 fallback = center.add(
-                Math.cos(angle) * 5.0,
-                2.0,
-                Math.sin(angle) * 5.0);
+        Vec3 fallback = center.add(Math.cos(angle) * 5.0, 2.0, Math.sin(angle) * 5.0);
         for (int upward = 0; upward < 6; upward++) {
             Vec3 candidate = fallback.add(0.0, upward, 0.0);
             projectile.setPos(candidate);
@@ -314,17 +291,12 @@ public class DeerClops extends BaseBoss {
 
         /// 测试结构边缘或极窄洞穴中，目标所在区块可能是唯一已加载区块。
         /// 最终回退必须留在目标正上方，而不能重新返回已经判定为未加载的方位点。
-        Vec3 verticalFallback = center.add(
-                (handIndex - 1.5) * 0.35,
-                3.0 + handIndex * 0.4,
-                0.0);
+        Vec3 verticalFallback = center.add((handIndex - 1.5) * 0.35, 3.0 + handIndex * 0.4, 0.0);
         projectile.setPos(verticalFallback);
         return verticalFallback;
     }
 
-    private boolean isUsableShadowHandOrigin(
-            DeerclopsShadowHandProjectile projectile,
-            Vec3 origin) {
+    private boolean isUsableShadowHandOrigin(DeerclopsShadowHandProjectile projectile, Vec3 origin) {
         return level().hasChunkAt(BlockPos.containing(origin))
                 && level().noCollision(projectile, projectile.getBoundingBox());
     }
@@ -333,10 +305,7 @@ public class DeerClops extends BaseBoss {
         double azimuth = random.nextDouble() * Math.PI * 2.0;
         double cosine = random.nextDouble() * 2.0 - 1.0;
         double horizontal = Math.sqrt(1.0 - cosine * cosine);
-        return new Vec3(
-                Math.cos(azimuth) * horizontal * radius,
-                cosine * radius,
-                Math.sin(azimuth) * horizontal * radius);
+        return new Vec3(Math.cos(azimuth) * horizontal * radius, cosine * radius, Math.sin(azimuth) * horizontal * radius);
     }
 
     private void beginIcePillarWave(Vec3 horizontalOffset) {
@@ -358,33 +327,21 @@ public class DeerClops extends BaseBoss {
         }
         int rowWidth = iceWaveStep * 2 + 1;
         for (int column = 0; column < rowWidth; column++) {
-            createIcePillar(
-                    column - 3,
-                    Math.max(column, 5),
-                    iceWaveOrigin,
-                    iceWaveDirection);
+            createIcePillar(column - 3, Math.max(column, 5), iceWaveOrigin, iceWaveDirection);
         }
         if (++iceWaveStep >= ICE_WAVE_STEPS) {
             iceWaveStep = -1;
         }
     }
 
-    private void createIcePillar(
-            int forwardOffset,
-            int horizontalRange,
-            Vec3 center,
-            Vec3 direction) {
-        DeerclopsIcePillarProjectile projectile =
-                ModEntities.ICE_PILLAR.get().create(level());
+    private void createIcePillar(int forwardOffset, int horizontalRange, Vec3 center, Vec3 direction) {
+        DeerclopsIcePillarProjectile projectile = ModEntities.ICE_PILLAR.get().create(level());
         if (projectile == null) {
             return;
         }
         Vec3 side = direction.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
         Vec3 origin = center.add(direction.scale(forwardOffset))
-                .add(
-                        random.nextDouble() - 0.5,
-                        random.nextDouble() - 0.5,
-                        random.nextDouble() - 0.5)
+                .add(random.nextDouble() - 0.5, random.nextDouble() - 0.5, random.nextDouble() - 0.5)
                 .add(side.scale((random.nextDouble() - 0.5) * horizontalRange));
         projectile.configure(this, origin, ATTACK_DAMAGE);
         level().addFreshEntity(projectile);
@@ -402,8 +359,7 @@ public class DeerClops extends BaseBoss {
             return;
         }
         setCombatState(CombatState.IDLE);
-        if (chestTarget == null || !(level().getBlockEntity(chestTarget)
-                instanceof ChestBlockEntity)) {
+        if (chestTarget == null || !(level().getBlockEntity(chestTarget) instanceof ChestBlockEntity)) {
             chestTarget = findNearbyChest();
         }
         if (chestTarget == null) {
@@ -416,11 +372,7 @@ public class DeerClops extends BaseBoss {
             chestAttackTicks = 0;
             setCombatState(CombatState.ATTACK_CHEST);
         } else {
-            navigation.moveTo(
-                    chestTarget.getX() + 0.5,
-                    chestTarget.getY(),
-                    chestTarget.getZ() + 0.5,
-                    1.0);
+            navigation.moveTo(chestTarget.getX() + 0.5, chestTarget.getY(), chestTarget.getZ() + 0.5, 1.0);
         }
     }
 
@@ -432,9 +384,7 @@ public class DeerClops extends BaseBoss {
             setCombatState(CombatState.ROAR);
             return;
         }
-        if (++chestAttackTicks == 7
-                && chestTarget != null
-                && level().getBlockEntity(chestTarget) instanceof ChestBlockEntity) {
+        if (++chestAttackTicks == 7 && chestTarget != null && level().getBlockEntity(chestTarget) instanceof ChestBlockEntity) {
             level().destroyBlock(chestTarget, true, this);
         }
         if (chestAttackTicks > ATTACK_TOTAL_TICKS) {
@@ -448,9 +398,7 @@ public class DeerClops extends BaseBoss {
         BlockPos origin = blockPosition();
         BlockPos nearest = null;
         double nearestDistanceSqr = Double.MAX_VALUE;
-        for (BlockPos candidate : BlockPos.betweenClosed(
-                origin.offset(-CHEST_SEARCH_RADIUS, -4, -CHEST_SEARCH_RADIUS),
-                origin.offset(CHEST_SEARCH_RADIUS, 4, CHEST_SEARCH_RADIUS))) {
+        for (BlockPos candidate : BlockPos.betweenClosed(origin.offset(-CHEST_SEARCH_RADIUS, -4, -CHEST_SEARCH_RADIUS), origin.offset(CHEST_SEARCH_RADIUS, 4, CHEST_SEARCH_RADIUS))) {
             if (!(level().getBlockEntity(candidate) instanceof ChestBlockEntity)) {
                 continue;
             }
@@ -481,8 +429,7 @@ public class DeerClops extends BaseBoss {
             return false;
         }
 
-        Vec3 horizontal = target.position().subtract(position())
-                .multiply(1.0, 0.0, 1.0);
+        Vec3 horizontal = target.position().subtract(position()).multiply(1.0, 0.0, 1.0);
         if (horizontal.lengthSqr() < 1.0E-6) {
             return false;
         }
@@ -490,24 +437,15 @@ public class DeerClops extends BaseBoss {
 
         /// 以跳过一格障碍后的包围盒检查净空。实体当前仍贴地，若只上移不足一格，
         /// 检查会把本来能够越过的台阶误判为阻挡。
-        if (!level().noCollision(
-                this,
-                getBoundingBox().move(
-                        direction.x * 0.8,
-                        1.1,
-                        direction.z * 0.8))) {
+        if (!level().noCollision(this, getBoundingBox().move(direction.x * 0.8, 1.1, direction.z * 0.8))) {
             return false;
         }
 
         Vec3 movement = getDeltaMovement();
         double currentForward = movement.x * direction.x
                 + movement.z * direction.z;
-        double addedForward = Math.max(
-                0.0, TRAVERSAL_FORWARD_SPEED - currentForward);
-        setDeltaMovement(
-                movement.x + direction.x * addedForward,
-                Math.max(movement.y, TRAVERSAL_JUMP_SPEED),
-                movement.z + direction.z * addedForward);
+        double addedForward = Math.max(0.0, TRAVERSAL_FORWARD_SPEED - currentForward);
+        setDeltaMovement(movement.x + direction.x * addedForward, Math.max(movement.y, TRAVERSAL_JUMP_SPEED), movement.z + direction.z * addedForward);
         hasImpulse = true;
         traversalJumpCooldown = TRAVERSAL_JUMP_COOLDOWN;
         stuckTicks = 0;

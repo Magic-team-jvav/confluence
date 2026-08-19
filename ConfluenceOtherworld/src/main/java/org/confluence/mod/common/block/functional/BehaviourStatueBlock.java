@@ -216,8 +216,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
         @Override
         public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
-            if (!state.getValue(StateProperties.DRIVE) && state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() &&
-                    networkEntity.getSelf() instanceof BEntity blockEntity) {
+            if (!state.getValue(StateProperties.DRIVE) && state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() && networkEntity.getSelf() instanceof BEntity blockEntity) {
                 List<UUID> entities = blockEntity.getSummonedEntities();
                 entities.removeIf(entity -> {
                     net.minecraft.world.entity.Entity entity1 = level.getEntity(entity);

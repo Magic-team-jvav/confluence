@@ -386,8 +386,7 @@ public final class ModClientSetups {
             if (living != null && living.isUsingItem() && living.getUseItem() == itemStack) {
                 return 1.0F;
             }
-            RepeaterContents contents = itemStack.getOrDefault(
-                    ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
+            RepeaterContents contents = itemStack.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS.get(), RepeaterContents.EMPTY);
             return contents.isEmpty() ? 0.0F : 1.0F;
         };
         CrossbowItems.ITEMS.getEntries().forEach(item -> ItemProperties.register(item.get(), pulling, repeaterPulling));

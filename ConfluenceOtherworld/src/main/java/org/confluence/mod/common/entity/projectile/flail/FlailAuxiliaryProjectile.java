@@ -24,21 +24,12 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
     private int lifetime;
     private int maximumLifetime = 100;
 
-    protected FlailAuxiliaryProjectile(
-            EntityType<? extends FlailAuxiliaryProjectile> type,
-            Level level
-    ) {
+    protected FlailAuxiliaryProjectile(EntityType<? extends FlailAuxiliaryProjectile> type, Level level) {
         super(type, level);
     }
 
     /// 由链锤实体在服务端创建弹幕后写入本次攻击数据。
-    public void initialize(
-            BaseFlailEntity flail,
-            Player owner,
-            Vec3 velocity,
-            float damage,
-            int maximumLifetime
-    ) {
+    public void initialize(BaseFlailEntity flail, Player owner, Vec3 velocity, float damage, int maximumLifetime) {
         setOwner(owner);
         setPos(flail.position());
         setDeltaMovement(velocity);
@@ -53,18 +44,15 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
     @Override
     public void tick() {
         Entity owner = getOwner();
-        if (!level().isClientSide()
-                && (owner == null || owner.isRemoved())) {
+        if (!level().isClientSide() && (owner == null || owner.isRemoved())) {
             discard();
             return;
         }
 
         super.tick();
 
-        HitResult hit = ProjectileUtil.getHitResultOnMoveVector(
-                this, this::canHitEntity);
-        if (hit instanceof EntityHitResult entityHit
-                && entityHit.getEntity() instanceof LivingEntity living) {
+        HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        if (hit instanceof EntityHitResult entityHit && entityHit.getEntity() instanceof LivingEntity living) {
             onHitLiving(living);
         } else if (hit instanceof BlockHitResult blockHit
                 && !onHitBlockAndContinue(blockHit)) {

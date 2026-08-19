@@ -47,10 +47,7 @@ public class TheTongueEffect extends PortMobEffect {
         }
 
         double wallSpeed = wall.getDeltaMovement().horizontalDistance();
-        double strength = Mth.clamp(
-                distance / 15.0 + wallSpeed + 0.35,
-                wallSpeed + 0.15,
-                wallSpeed + 0.5);
+        double strength = Mth.clamp(distance / 15.0 + wallSpeed + 0.35, wallSpeed + 0.15, wallSpeed + 0.5);
         living.setDeltaMovement(living.getDeltaMovement().add(toTarget.normalize().scale(strength)));
         living.hurtMarked = true;
         if (living.tickCount % 10 == 0) {

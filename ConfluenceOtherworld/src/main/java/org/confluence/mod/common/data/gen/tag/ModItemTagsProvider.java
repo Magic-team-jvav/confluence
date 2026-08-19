@@ -91,9 +91,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.GOLDEN_SHORT_SWORD.get(),
                 SwordItems.PLATINUM_SHORT_SWORD.get()
         );
-        tag(ModTags.Items.MOUNT).add(
-                MountItems.SLIMY_SADDLE.get(),
-                MountItems.HONEYED_GOGGLES.get());
+        tag(ModTags.Items.MOUNT).add(MountItems.SLIMY_SADDLE.get(), MountItems.HONEYED_GOGGLES.get());
 //        tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
 //        tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
         LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
@@ -512,15 +510,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
                 .add(BoomerangItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new));
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
-                .addTags(
-                        ItemTags.SWORDS,
-                        ItemTags.AXES,
-                        ItemTags.PICKAXES,
-                        ItemTags.SHOVELS,
-                        ItemTags.HOES,
-                        ModTags.Items.FLAIL,
-                        ModTags.Items.SPEAR,
-                        ModTags.Items.TOOLS_LANCE)
+                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL, ModTags.Items.SPEAR, ModTags.Items.TOOLS_LANCE)
                 .add(WhipItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
                 .add(YoyoItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
         /*.add(Items.MACE)*/;
@@ -1498,8 +1488,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             whip.add(value);
             melee_weapon_tools.add(value);
         });
-        YoyoItems.ITEMS.getEntries().forEach(item ->
-                melee_weapon_tools.add(item.get()));
+        YoyoItems.ITEMS.getEntries().forEach(item -> melee_weapon_tools.add(item.get()));
         IntrinsicTagAppender<Item> bullet = tag(ModTags.Items.BULLET);
         GunItems.BULLET_ITEMS.forEach(item -> bullet.add(item.get()));
         tag(ModTags.Items.SNOW_AMMO).add(Items.SNOWBALL);

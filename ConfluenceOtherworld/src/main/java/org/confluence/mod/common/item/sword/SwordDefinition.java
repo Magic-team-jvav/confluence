@@ -36,7 +36,8 @@ public record SwordDefinition(boolean canSweep, boolean specialSweep, boolean to
         return new Builder();
     }
 
-    public record BuildResult(SwordDefinition definition, Item.Properties properties) {}
+    public record BuildResult(SwordDefinition definition, Item.Properties properties,
+                              SwordProjectileComponent projectile) {}
 
     private record AttributeEntry(Holder<Attribute> attribute, PortAttributeModifier modifier) {}
 
@@ -45,6 +46,7 @@ public record SwordDefinition(boolean canSweep, boolean specialSweep, boolean to
         private boolean specialSweep;
         private boolean tooltipImage;
         private boolean baseAttributes = true;
+        private SwordProjectileComponent projectile;
         private int modifierIndex;
         private final List<SwordBehavior> behaviors = new ArrayList<>();
         private final List<Consumer<MutableComponent>> tooltips = new ArrayList<>();
@@ -79,6 +81,7 @@ public record SwordDefinition(boolean canSweep, boolean specialSweep, boolean to
         }
 
         public Builder projectile(SwordProjectileComponent projectile) {
+            this.projectile = projectile;
             return properties(value -> value.component(ModDataComponentTypes.SWORD_PROJECTILE, projectile));
         }
 
@@ -125,7 +128,7 @@ public record SwordDefinition(boolean canSweep, boolean specialSweep, boolean to
                 attributesBuilder.add(Attributes.ATTACK_SPEED, new PortAttributeModifier(ModItems.BASE_ATTACK_SPEED_ID, rawSpeed - 4, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND);
             }
             properties.attributes(attributesBuilder.build());
-            return new BuildResult(new SwordDefinition(canSweep, specialSweep, tooltipImage, behaviors, tooltips), properties);
+            return new BuildResult(new SwordDefinition(canSweep, specialSweep, tooltipImage, behaviors, tooltips), properties, projectile);
         }
     }
 }

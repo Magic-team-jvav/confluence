@@ -20,26 +20,13 @@ public class LunarHookItem extends BaseHookItem implements IHookFastThrow {
     }
 
     @Override
-    public AbstractHookEntity getHook(
-            ItemStack itemStack,
-            BaseHookItem item,
-            Player player,
-            Level level,
-            @Nullable UUID pendingEviction
-    ) {
+    public AbstractHookEntity getHook(ItemStack itemStack, BaseHookItem item, Player player, Level level, @Nullable UUID pendingEviction) {
         return createHook(itemStack, item, player, level, pendingEviction);
     }
 
     /// 按成功提交后的列表选择尚未占用的月钩外观；待淘汰实体仍留在世界中，直至新实体生成成功。
-    private static LunarHookEntity createHook(
-            ItemStack itemStack,
-            BaseHookItem item,
-            Player player,
-            Level level,
-            @Nullable UUID pendingEviction
-    ) {
-        ListTag list = LibUtils.getItemStackNbtNoCopy(itemStack)
-                .getList("hooks", Tag.TAG_COMPOUND);
+    private static LunarHookEntity createHook(ItemStack itemStack, BaseHookItem item, Player player, Level level, @Nullable UUID pendingEviction) {
+        ListTag list = LibUtils.getItemStackNbtNoCopy(itemStack).getList("hooks", Tag.TAG_COMPOUND);
         AtomicBoolean nebula = new AtomicBoolean(true);
         AtomicBoolean solar = new AtomicBoolean(true);
         AtomicBoolean stardust = new AtomicBoolean(true);

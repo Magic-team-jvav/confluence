@@ -44,13 +44,8 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide && !isRemoved()
-                && tickCount % 2 == 0) {
-            driveAwayNearby(
-                    position(),
-                    TRAIL_RADIUS,
-                    TRAIL_SPEED,
-                    TRAIL_DURATION);
+        if (!level().isClientSide && !isRemoved() && tickCount % 2 == 0) {
+            driveAwayNearby(position(), TRAIL_RADIUS, TRAIL_SPEED, TRAIL_DURATION);
         }
     }
 
@@ -62,20 +57,14 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        hittingFlyingTarget =
-                result.getEntity() instanceof LivingEntity living
-                        && isDriveAwayTarget(living);
+        hittingFlyingTarget = result.getEntity() instanceof LivingEntity living && isDriveAwayTarget(living);
         try {
             super.onHitEntity(result);
         } finally {
             hittingFlyingTarget = false;
         }
         if (!level().isClientSide) {
-            driveAwayNearby(
-                    result.getLocation(),
-                    IMPACT_RADIUS,
-                    IMPACT_SPEED,
-                    IMPACT_DURATION);
+            driveAwayNearby(result.getLocation(), IMPACT_RADIUS, IMPACT_SPEED, IMPACT_DURATION);
         }
     }
 
@@ -83,48 +72,30 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!level().isClientSide) {
-            driveAwayNearby(
-                    result.getLocation(),
-                    IMPACT_RADIUS,
-                    IMPACT_SPEED,
-                    IMPACT_DURATION);
+            driveAwayNearby(result.getLocation(), IMPACT_RADIUS, IMPACT_SPEED, IMPACT_DURATION);
         }
     }
 
     /// 从给定中心驱散范围内的飞行生物，供命中与飞行路径共用同一套规则。
-    void driveAwayNearby(
-            Vec3 center, double radius, double speed, int duration) {
-        if (level().isClientSide || radius <= 0.0
-                || speed <= 0.0 || duration <= 0) {
+    void driveAwayNearby(Vec3 center, double radius, double speed, int duration) {
+        if (level().isClientSide || radius <= 0.0 || speed <= 0.0 || duration <= 0) {
             return;
         }
-        AABB area = AABB.ofSize(
-                center, radius * 2.0, radius * 2.0, radius * 2.0);
-        for (LivingEntity target : level().getEntitiesOfClass(
-                LivingEntity.class,
-                area,
-                entity -> entity != getOwner()
-                        && entity.isAlive()
-                        && isDriveAwayTarget(entity))) {
+        AABB area = AABB.ofSize(center, radius * 2.0, radius * 2.0, radius * 2.0);
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area, entity -> entity != getOwner() && entity.isAlive() && isDriveAwayTarget(entity))) {
             Vec3 away = target.position().subtract(center);
             if (away.lengthSqr() < 1.0E-6) {
                 double angle = random.nextDouble() * Math.PI * 2.0;
-                away = new Vec3(
-                        Math.cos(angle), 0.2, Math.sin(angle));
+                away = new Vec3(Math.cos(angle), 0.2, Math.sin(angle));
             }
-            Vec3 impulse = away.normalize()
-                    .add(0.0, 0.15, 0.0)
-                    .normalize()
-                    .scale(speed);
-            target.setDeltaMovement(
-                    target.getDeltaMovement().scale(0.25).add(impulse));
+            Vec3 impulse = away.normalize().add(0.0, 0.15, 0.0).normalize().scale(speed);
+            target.setDeltaMovement(target.getDeltaMovement().scale(0.25).add(impulse));
             target.hasImpulse = true;
             if (target instanceof Mob mob) {
                 mob.setTarget(null);
                 mob.getNavigation().stop();
             }
-            target.addEffect(new MobEffectInstance(
-                    ModEffects.SCARED.get(), duration, 0), getOwner());
+            target.addEffect(new MobEffectInstance(ModEffects.SCARED.get(), duration, 0), getOwner());
         }
     }
 

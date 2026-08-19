@@ -30,8 +30,7 @@ import java.util.Set;
 ///
 /// <p>这里只叠加指定骨骼组的噪声边缘，不接管克苏鲁之脑那种整只实体淡出的透明度。
 /// 这样变形特效能落在眼睛自己的结构上，也不会把主体、缆线或 Boss 血条相关渲染一起影响掉。</p>
-public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
-        extends BossGeoRenderer<T> {
+public class TwinEyeDissolveRenderer<T extends AbstractTwinEye> extends BossGeoRenderer<T> {
     private static final int DISSOLVE_TICKS = 24;
 
     private final Set<String> dissolveRoots;
@@ -41,11 +40,7 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
     private final Map<Integer, Float> transformStarts = new HashMap<>();
     private int selectedDepth;
 
-    private TwinEyeDissolveRenderer(
-            EntityRendererProvider.Context context,
-            ResourceLocation path,
-            Set<String> dissolveRoots,
-            int edgeColor) {
+    private TwinEyeDissolveRenderer(EntityRendererProvider.Context context, ResourceLocation path, Set<String> dissolveRoots, int edgeColor) {
         super(context, path);
         this.dissolveRoots = dissolveRoots;
         this.edgeRed = ((edgeColor >> 16) & 0xFF) / 255.0F;
@@ -53,17 +48,11 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
         this.edgeBlue = (edgeColor & 0xFF) / 255.0F;
     }
 
-    public static TwinEyeDissolveRenderer<Retinazer> retinazer(
-            EntityRendererProvider.Context context) {
-        return new TwinEyeDissolveRenderer<>(
-                context,
-                Confluence.asResource("boss/retinazer"),
-                Set.of("bone26", "bone31"),
-                0xFF3030);
+    public static TwinEyeDissolveRenderer<Retinazer> retinazer(EntityRendererProvider.Context context) {
+        return new TwinEyeDissolveRenderer<>(context, Confluence.asResource("boss/retinazer"), Set.of("bone26", "bone31"), 0xFF3030);
     }
 
-    public static TwinEyeDissolveRenderer<Spazmatism> spazmatism(
-            EntityRendererProvider.Context context) {
+    public static TwinEyeDissolveRenderer<Spazmatism> spazmatism(EntityRendererProvider.Context context) {
         return new TwinEyeDissolveRenderer<>(
                 context,
                 Confluence.asResource("boss/spazmatism"),
@@ -110,65 +99,25 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
             float alpha) {
         poseStack.pushPose();
         RenderUtils.prepMatrixForBone(poseStack, bone);
-        renderCubesOfBone(
-                poseStack,
-                bone,
-                buffer,
-                packedLight,
-                packedOverlay,
-                red,
-                green,
-                blue,
-                alpha);
+        renderCubesOfBone(poseStack, bone, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 
         if (!isReRender) {
-            applyRenderLayersForBone(
-                    poseStack,
-                    animatable,
-                    bone,
-                    renderType,
-                    bufferSource,
-                    buffer,
-                    partialTick,
-                    packedLight,
-                    packedOverlay);
+            applyRenderLayersForBone(poseStack, animatable, bone, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
         }
 
         boolean selected = selectedDepth > 0
                 || dissolveRoots.contains(bone.getName());
         float dissolveProgress = dissolveProgress(animatable, partialTick);
         if (!isReRender && selected && dissolveProgress >= 0.0F) {
-            VertexConsumer dissolveBuffer = bufferSource.getBuffer(
-                    RenderType.entityTranslucent(
-                            getTextureLocation(animatable)));
-            renderDissolveCubesOfBone(
-                    poseStack,
-                    bone,
-                    dissolveBuffer,
-                    packedOverlay,
-                    dissolveProgress,
-                    animatable.tickCount + partialTick);
+            VertexConsumer dissolveBuffer = bufferSource.getBuffer(RenderType.entityTranslucent(getTextureLocation(animatable)));
+            renderDissolveCubesOfBone(poseStack, bone, dissolveBuffer, packedOverlay, dissolveProgress, animatable.tickCount + partialTick);
         }
 
         int previousDepth = selectedDepth;
         if (selected) {
             selectedDepth++;
         }
-        renderChildBones(
-                poseStack,
-                animatable,
-                bone,
-                renderType,
-                bufferSource,
-                buffer,
-                isReRender,
-                partialTick,
-                packedLight,
-                packedOverlay,
-                red,
-                green,
-                blue,
-                alpha);
+        renderChildBones(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
         selectedDepth = previousDepth;
         poseStack.popPose();
     }
@@ -179,9 +128,7 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
             return -1.0F;
         }
         float now = animatable.tickCount + partialTick;
-        float start = transformStarts.computeIfAbsent(
-                animatable.getId(),
-                ignored -> now);
+        float start = transformStarts.computeIfAbsent(animatable.getId(), ignored -> now);
         float age = now - start;
         if (age > DISSOLVE_TICKS) {
             return -1.0F;
@@ -189,13 +136,7 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
         return Mth.clamp(age / DISSOLVE_TICKS, 0.0F, 1.0F);
     }
 
-    private void renderDissolveCubesOfBone(
-            PoseStack poseStack,
-            GeoBone bone,
-            VertexConsumer buffer,
-            int packedOverlay,
-            float progress,
-            float time) {
+    private void renderDissolveCubesOfBone(PoseStack poseStack, GeoBone bone, VertexConsumer buffer, int packedOverlay, float progress, float time) {
         if (bone.isHidden()) {
             return;
         }
@@ -207,24 +148,14 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
             if (distance <= width) {
                 float alpha = (1.0F - distance / width) * 0.82F;
                 poseStack.pushPose();
-                renderDissolveCube(
-                        poseStack,
-                        cube,
-                        buffer,
-                        packedOverlay,
-                        alpha);
+                renderDissolveCube(poseStack, cube, buffer, packedOverlay, alpha);
                 poseStack.popPose();
             }
             cubeIndex++;
         }
     }
 
-    private void renderDissolveCube(
-            PoseStack poseStack,
-            GeoCube cube,
-            VertexConsumer buffer,
-            int packedOverlay,
-            float alpha) {
+    private void renderDissolveCube(PoseStack poseStack, GeoCube cube, VertexConsumer buffer, int packedOverlay, float alpha) {
         RenderUtils.translateToPivotPoint(poseStack, cube);
         RenderUtils.rotateMatrixAroundCube(poseStack, cube);
         RenderUtils.translateAwayFromPivotPoint(poseStack, cube);
@@ -239,27 +170,8 @@ public class TwinEyeDissolveRenderer<T extends AbstractTwinEye>
             RenderUtils.fixInvertedFlatCube(cube, normal);
             for (GeoVertex vertex : quad.vertices()) {
                 Vector3f position = vertex.position();
-                Vector4f transformed = poseState.transform(
-                        new Vector4f(
-                                position.x(),
-                                position.y(),
-                                position.z(),
-                                1.0F));
-                buffer.vertex(
-                        transformed.x(),
-                        transformed.y(),
-                        transformed.z(),
-                        edgeRed,
-                        edgeGreen,
-                        edgeBlue,
-                        alpha,
-                        vertex.texU(),
-                        vertex.texV(),
-                        packedOverlay,
-                        LightTexture.FULL_BRIGHT,
-                        normal.x(),
-                        normal.y(),
-                        normal.z());
+                Vector4f transformed = poseState.transform(new Vector4f(position.x(), position.y(), position.z(), 1.0F));
+                buffer.vertex(transformed.x(), transformed.y(), transformed.z(), edgeRed, edgeGreen, edgeBlue, alpha, vertex.texU(), vertex.texV(), packedOverlay, LightTexture.FULL_BRIGHT, normal.x(), normal.y(), normal.z());
             }
         }
     }

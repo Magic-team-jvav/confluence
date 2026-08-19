@@ -18,14 +18,12 @@ import org.confluence.terra_curio.common.entity.BeeProjectile;
 /// <p>渲染角度按 1.21 侧的实体旋转插值处理，不额外改用看向相机的公告板渲染。这样蜜蜂会沿实体
 /// 自身同步到客户端的朝向飞行，而不会全部正面朝向玩家。</p>
 public final class BeeProjectileRenderer<T extends Entity> extends EntityRenderer<T> {
-    private static final ResourceLocation TEXTURE =
-            Confluence.asResource("textures/entity/bee_projectile.png");
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/bee_projectile.png");
     private final BeeProjectileModel<T> model;
 
     public BeeProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new BeeProjectileModel<>(
-                context.bakeLayer(BeeProjectileModel.LAYER_LOCATION));
+        this.model = new BeeProjectileModel<>(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION));
     }
 
     @Override
@@ -34,29 +32,16 @@ public final class BeeProjectileRenderer<T extends Entity> extends EntityRendere
     }
 
     @Override
-    public void render(
-            T entity,
-            float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight) {
+    public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.125F, -0.125F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(
-                Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(
-                Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
         poseStack.mulPose(Axis.YP.rotation(-Mth.HALF_PI));
         if (entity instanceof BeeProjectile bee && bee.isGiant()) {
             poseStack.scale(1.5F, 1.5F, 1.5F);
         }
-        model.renderToBuffer(
-                poseStack,
-                bufferSource.getBuffer(model.renderType(TEXTURE)),
-                packedLight,
-                OverlayTexture.NO_OVERLAY,
-                1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }

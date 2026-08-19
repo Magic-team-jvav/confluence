@@ -45,10 +45,8 @@ public class KingSlime extends BaseBoss {
     /// 碰撞箱必须与客户端使用的史莱姆模型同步缩放，否则会出现模型远大于实际判定箱的问题。
     private static final float BASE_DIMENSION_PER_SIZE = 0.6F;
 
-    private static final EntityDataAccessor<Byte> DATA_PHASE =
-            SynchedEntityData.defineId(KingSlime.class, EntityDataSerializers.BYTE);
-    private static final EntityDataAccessor<Integer> DATA_PHASE_TICKS =
-            SynchedEntityData.defineId(KingSlime.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Byte> DATA_PHASE = SynchedEntityData.defineId(KingSlime.class, EntityDataSerializers.BYTE);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_TICKS = SynchedEntityData.defineId(KingSlime.class, EntityDataSerializers.INT);
 
     private CombatPhase phase = CombatPhase.NORMAL;
     private int normalTicks;
@@ -127,8 +125,7 @@ public class KingSlime extends BaseBoss {
     protected void registerGoals() {
         super.registerGoals();
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2,
-                new NearestAttackableTargetGoal<>(this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     void tickCombatState() {
@@ -206,16 +203,12 @@ public class KingSlime extends BaseBoss {
             }
         }
 
-        double horizontalSpeed = LibUtils.switchByDifficulty(
-                level(), blockPosition(), 1.1F, 1.35F, 1.55F, 1.8F);
+        double horizontalSpeed = LibUtils.switchByDifficulty(level(), blockPosition(), 1.1F, 1.35F, 1.55F, 1.8F);
         double baseVerticalSpeed = finishingJump
-                ? LibUtils.switchByDifficulty(
-                level(), blockPosition(), 2.0F, 2.25F, 2.5F, 2.75F)
-                : LibUtils.switchByDifficulty(
-                level(), blockPosition(), 1.5F, 1.75F, 2.0F, 2.25F);
+                ? LibUtils.switchByDifficulty(level(), blockPosition(), 2.0F, 2.25F, 2.5F, 2.75F)
+                : LibUtils.switchByDifficulty(level(), blockPosition(), 1.5F, 1.75F, 2.0F, 2.25F);
         double verticalSpeed = baseVerticalSpeed * (getLogicalSize() + 127.0) / 256.0;
-        setDeltaMovement(direction.x * horizontalSpeed, verticalSpeed,
-                direction.z * horizontalSpeed);
+        setDeltaMovement(direction.x * horizontalSpeed, verticalSpeed, direction.z * horizontalSpeed);
         hasImpulse = true;
     }
 
@@ -225,8 +218,7 @@ public class KingSlime extends BaseBoss {
                 ? Vec3.ZERO
                 : new Vec3(target.getX() - getX(), 0.0, target.getZ() - getZ());
         if (direction.lengthSqr() > 1.0E-6) {
-            direction = direction.normalize().scale(LibUtils.switchByDifficulty(
-                    level(), blockPosition(), 0.1F, 0.15F, 0.2F, 0.25F));
+            direction = direction.normalize().scale(LibUtils.switchByDifficulty(level(), blockPosition(), 0.1F, 0.15F, 0.2F, 0.25F));
         }
         setHorizontalMovement(direction);
         setDeltaMovement(getDeltaMovement().add(0.0, 0.05, 0.0));
@@ -269,9 +261,7 @@ public class KingSlime extends BaseBoss {
         Vec3 targetPosition = target == null
                 ? randomPlayer.getOnPos().getCenter()
                 : target.getOnPos().getCenter();
-        serverLevel.addFreshEntity(new CrownOfKingSlimeModelEntity(
-                serverLevel,
-                position().add(0.0, getDimensions(getPose()).height, 0.0)));
+        serverLevel.addFreshEntity(new CrownOfKingSlimeModelEntity(serverLevel, position().add(0.0, getDimensions(getPose()).height, 0.0)));
 
         Vec3 destination;
         if (!isExpert()) {
@@ -279,10 +269,7 @@ public class KingSlime extends BaseBoss {
             destination = targetPosition.add(direction.scale(5.0));
         } else {
             float angle = random.nextFloat() * 3.14F;
-            destination = targetPosition.add(
-                    Mth.cos(angle) * 10.0,
-                    0.0,
-                    Mth.sin(angle) * 10.0);
+            destination = targetPosition.add(Mth.cos(angle) * 10.0, 0.0, Mth.sin(angle) * 10.0);
         }
         teleportTo(destination.x, destination.y + 2.0, destination.z);
         setDeltaMovement(Vec3.ZERO);
@@ -326,10 +313,8 @@ public class KingSlime extends BaseBoss {
         float ticks = getPhaseTicks() + partialTick;
         return switch (phase) {
             case NORMAL -> maximum;
-            case SHRINKING -> Math.max(0.0F,
-                    maximum * (1.0F - ticks / TRANSFORM_TICKS));
-            case ENLARGING -> Math.min(maximum,
-                    maximum * ticks / TRANSFORM_TICKS);
+            case SHRINKING -> Math.max(0.0F, maximum * (1.0F - ticks / TRANSFORM_TICKS));
+            case ENLARGING -> Math.min(maximum, maximum * ticks / TRANSFORM_TICKS);
         };
     }
 
@@ -385,8 +370,7 @@ public class KingSlime extends BaseBoss {
     }
 
     private int getTotalSplits() {
-        return LibUtils.switchByDifficulty(
-                level(), blockPosition(), 30, 50, 75, 100);
+        return LibUtils.switchByDifficulty(level(), blockPosition(), 30, 50, 75, 100);
     }
 
     private void spawnSplitSlimes() {
@@ -394,8 +378,7 @@ public class KingSlime extends BaseBoss {
             return;
         }
         spawnSlime(serverLevel, MonsterEntities.BLUE_SLIME.get());
-        float spikedChance = LibUtils.switchByDifficulty(
-                level(), blockPosition(), 0.0F, 0.5F, 0.75F, 1.0F);
+        float spikedChance = LibUtils.switchByDifficulty(level(), blockPosition(), 0.0F, 0.5F, 0.75F, 1.0F);
         if (random.nextFloat() < spikedChance) {
             spawnSlime(serverLevel, MonsterEntities.SPIKED_SLIME.get());
         }
@@ -406,8 +389,7 @@ public class KingSlime extends BaseBoss {
         if (!(entity instanceof Mob slime)) {
             return;
         }
-        slime.setPos(getX() + (random.nextFloat() - 0.5F) * 2.0F,
-                getY() + 0.5, getZ() + (random.nextFloat() - 0.5F) * 2.0F);
+        slime.setPos(getX() + (random.nextFloat() - 0.5F) * 2.0F, getY() + 0.5, getZ() + (random.nextFloat() - 0.5F) * 2.0F);
         slime.setTarget(getTarget());
         serverLevel.addFreshEntity(slime);
     }

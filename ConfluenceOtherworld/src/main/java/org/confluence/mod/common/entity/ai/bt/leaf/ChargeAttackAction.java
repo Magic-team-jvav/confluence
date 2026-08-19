@@ -24,18 +24,13 @@ public class ChargeAttackAction extends BTNode {
         this(mob, speed, 0.0);
     }
 
-    public ChargeAttackAction(
-            PathfinderMob mob,
-            double speed,
-            double contactInflation) {
+    public ChargeAttackAction(PathfinderMob mob, double speed, double contactInflation) {
         if (!Double.isFinite(speed) || speed <= 0.0) {
-            throw new IllegalArgumentException(
-                    "Charge speed must be finite and positive");
+            throw new IllegalArgumentException("Charge speed must be finite and positive");
         }
         this.mob = mob;
         this.speed = speed;
-        this.contactAttack = new ContactAttackTimer(
-                contactInflation, 10, 20);
+        this.contactAttack = new ContactAttackTimer(contactInflation, 10, 20);
     }
 
     @Override
@@ -66,8 +61,7 @@ public class ChargeAttackAction extends BTNode {
             }
         }
         Vec3 acceleration = lockedDirection.scale(speed * 0.08);
-        mob.setDeltaMovement(
-                mob.getDeltaMovement().add(acceleration).scale(0.95));
+        mob.setDeltaMovement(mob.getDeltaMovement().add(acceleration).scale(0.95));
         mob.hasImpulse = true;
 
         return BTStatus.RUNNING;

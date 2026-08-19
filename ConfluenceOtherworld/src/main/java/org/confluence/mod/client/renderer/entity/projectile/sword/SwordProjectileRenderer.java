@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -31,9 +32,7 @@ import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /// 按剑气组件选择 Geo、实体模型、物品或交叉面片表现。
@@ -43,10 +42,8 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
 
     public SwordProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
-        models.put(Confluence.asResource("ice_blade_sword_projectile"),
-                new IceBladeSwordProjectileModel(context.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)));
-        models.put(Confluence.asResource("enchanted_sword_projectile"),
-                new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)));
+        models.put(Confluence.asResource("ice_blade_sword_projectile"), new IceBladeSwordProjectileModel(context.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)));
+        models.put(Confluence.asResource("enchanted_sword_projectile"), new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)));
         geoRenderer = new GeoRenderer(context);
         shadowRadius = 0.0F;
     }
@@ -68,37 +65,34 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
-    private void renderModel(T entity, SwordProjectileAppearance.Model appearance, float partialTick, PoseStack poseStack,
-                             MultiBufferSource bufferSource, int packedLight) {
+    private void renderModel(T entity, SwordProjectileAppearance.Model appearance, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         EntityModel<SwordProjectile> model = models.get(appearance.model());
         if (model == null) return;
         poseStack.pushPose();
         float scale = appearance.scale() * lifecycleScale(entity, appearance.lifecycle(), partialTick);
         poseStack.scale(scale, scale, scale);
-        poseStack.translate(0.0F, appearance.offsetY(), 0.0F);
+        poseStack.translate(0.0F, appearance.offsetY(), appearance.offsetZ());
         orientAlongMotion(entity, partialTick, appearance.rollSpeed(), poseStack);
         model.setupAnim(entity, 0.0F, 0.0F, entity.tickCount + partialTick, entity.getYRot(), entity.getXRot());
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(renderType(appearance, entity.tickCount + partialTick)), packedLight,
+        model.renderToBuffer(poseStack,
+                bufferSource.getBuffer(renderType(appearance, entity.tickCount + partialTick)), packedLight,
                 OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
     }
 
-    private void renderItem(T entity, SwordProjectileAppearance.Item appearance, float partialTick, PoseStack poseStack,
-                            MultiBufferSource bufferSource, int packedLight) {
-        ItemStack weapon = entity.getWeaponItem();
-        if (weapon == null || weapon.isEmpty()) return;
+    private void renderItem(T entity, SwordProjectileAppearance.Item appearance, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         boolean nightEdgeEffect = appearance.effect().filter(Confluence.asResource("nights_edge")::equals).isPresent() && entity instanceof NightEdgeProjectile;
         if (nightEdgeEffect) {
-            NightEdgeProjectile nightEdge = (NightEdgeProjectile) entity;
-            float age = Math.min(entity.tickCount + partialTick, NightEdgeProjectile.maxTrailTime());
-            renderNightEdgeTrail(nightEdge, age, poseStack, bufferSource, 0xB4570EFD, 0.32F, 0.0F);
-            renderNightEdgeTrail(nightEdge, age, poseStack, bufferSource, 0x80E4E0FF, 0.18F, 0.14F);
+            renderNightEdge((NightEdgeProjectile) entity, partialTick, poseStack, bufferSource, packedLight);
+            return;
         }
+        ItemStack weapon = entity.getWeaponItem();
+        if (weapon == null || weapon.isEmpty()) return;
         poseStack.pushPose();
         poseStack.scale(appearance.scale(), appearance.scale(), appearance.scale());
         if (appearance.transform() == SwordProjectileAppearance.Transform.OWNER_SWING && entity instanceof NightEdgeProjectile nightEdge) {
             float age = Math.min(entity.tickCount + partialTick, NightEdgeProjectile.maxTrailTime());
-            Vec3 point = rotateForOwner(nightEdge, NightEdgeProjectile.sampleLocalPoint(age));
+            Vec3 point = nightEdgeRelativePosition(nightEdge, age);
             poseStack.translate(point.x, point.y, point.z);
             Entity owner = entity.getOwner();
             float ownerYaw = owner == null ? entity.getYRot() : Mth.lerp(partialTick, owner.yRotO, owner.getYRot());
@@ -112,22 +106,52 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
             }
             poseStack.mulPose(Axis.ZP.rotation((entity.tickCount + partialTick) * 0.25F));
         }
-        Minecraft.getInstance().getItemRenderer().renderStatic(weapon, ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY,
-                poseStack, bufferSource, entity.level(), entity.getId());
+        Minecraft.getInstance().getItemRenderer().renderStatic(weapon, ItemDisplayContext.FIXED, packedLight,
+                OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), entity.getId());
         poseStack.popPose();
     }
 
-    private void renderCross(T entity, SwordProjectileAppearance.Cross appearance, float partialTick, PoseStack poseStack,
-                             MultiBufferSource bufferSource, int packedLight) {
+    private static void renderNightEdge(NightEdgeProjectile entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        Entity owner = entity.getOwner();
+        float yaw = -(owner == null ? entity.getYRot() : Mth.lerp(partialTick, owner.yRotO, owner.getYRot())) + 70.0F;
+        Vec3 entityPosition = owner == null ? Vec3.ZERO : new Vec3(
+                Mth.lerp(partialTick, entity.xo - owner.xo, entity.getX() - owner.getX()),
+                Mth.lerp(partialTick, entity.yo - owner.yo, entity.getY() - owner.getY()),
+                Mth.lerp(partialTick, entity.zo - owner.zo, entity.getZ() - owner.getZ()));
+
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+        poseStack.mulPose(Axis.XP.rotationDegrees(-15.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-yaw));
+        renderNightEdgeTrail(entity, entityPosition, partialTick, poseStack, bufferSource, packedLight);
+        poseStack.popPose();
+
+        poseStack.pushPose();
+        poseStack.translate(-entityPosition.x, -entityPosition.y, -entityPosition.z);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+        poseStack.scale(1.0F, 1.0F, -1.0F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-yaw));
+        poseStack.translate(entityPosition.x, entityPosition.y, entityPosition.z);
+        poseStack.translate(0.0F, 0.1F, 0.0F);
+        poseStack.scale(0.8F, 0.8F, 0.8F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(yaw + 180.0F));
+        poseStack.mulPose(Axis.XP.rotationDegrees(25.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-yaw - 180.0F));
+        renderNightEdgeTrail(entity, entityPosition, partialTick, poseStack, bufferSource, packedLight);
+        poseStack.popPose();
+    }
+
+    private void renderCross(T entity, SwordProjectileAppearance.Cross appearance, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
         float age = entity.tickCount + partialTick;
         float scale = Math.min(age * 0.2F, 1.0F) * appearance.scale();
         poseStack.scale(scale, scale, scale);
         poseStack.mulPose(Axis.YP.rotationDegrees(age * appearance.spinSpeed()));
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(appearance.texture()));
-        renderPlane(consumer, poseStack.last(), appearance.fullBright() ? 0xF000F0 : packedLight, appearance.color());
+        int light = appearance.blockLight() < 0 ? packedLight : LightTexture.pack(appearance.blockLight(), LightTexture.sky(packedLight));
+        renderPlane(consumer, poseStack.last(), light, appearance.color());
         poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-        renderPlane(consumer, poseStack.last(), appearance.fullBright() ? 0xF000F0 : packedLight, appearance.color());
+        renderPlane(consumer, poseStack.last(), light, appearance.color());
         poseStack.popPose();
     }
 
@@ -169,40 +193,57 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
                 .uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), 0.0F, 1.0F, 0.0F).endVertex();
     }
 
-    private static void renderNightEdgeTrail(NightEdgeProjectile entity, float age, PoseStack poseStack,
-                                             MultiBufferSource bufferSource, int argb, float width, float yOffset) {
-        List<Vec3> points = new ArrayList<>();
-        float start = Math.max(0.0F, age - 5.0F);
-        for (float time = start; time < age; time += 0.5F)
-            points.add(rotateForOwner(entity, NightEdgeProjectile.sampleLocalPoint(time)).add(0.0, yOffset, 0.0));
-        points.add(rotateForOwner(entity, NightEdgeProjectile.sampleLocalPoint(age)).add(0.0, yOffset, 0.0));
-        if (points.size() < 2) return;
-        VertexConsumer consumer = bufferSource.getBuffer(RenderStateShardAccessor.TRAIL_RENDER_TYPE);
+    private static void renderNightEdgeTrail(NightEdgeProjectile entity, Vec3 entityPosition, float partialTick,
+                                             PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        if (!(entity.getOwner() instanceof net.minecraft.world.entity.LivingEntity owner)) return;
+        float age = Math.min(entity.tickCount + partialTick, NightEdgeProjectile.maxTrailTime());
+        int pointCount = Mth.floor(age * 2.0F) + 1;
+        if (pointCount < 2) return;
+        VertexConsumer consumer = bufferSource.getBuffer(RenderStateShardAccessor.ENTITY_TRANSLUCENT_EMISSIVE);
         Matrix4f matrix = poseStack.last().pose();
-        for (int index = 1; index < points.size(); index++) {
-            Vec3 previous = points.get(index - 1);
-            Vec3 current = points.get(index);
-            Vec3 segment = current.subtract(previous);
-            if (segment.lengthSqr() <= 1.0E-10) continue;
-            float progress = index / (float) (points.size() - 1);
-            Vec3 side = segment.normalize().cross(new Vec3(0.0, 1.0, 0.0));
-            if (side.lengthSqr() <= 1.0E-10) side = new Vec3(1.0, 0.0, 0.0);
-            side = side.normalize().scale(width * progress);
-            int color = (argb & 0x00FFFFFF) | Math.round(((argb >>> 24) & 0xFF) * progress) << 24;
-            trailVertex(consumer, matrix, previous.add(side), color);
-            trailVertex(consumer, matrix, previous.subtract(side), color);
-            trailVertex(consumer, matrix, current.subtract(side), color);
-            trailVertex(consumer, matrix, current.add(side), color);
+        Vec3 previousLeft = null;
+        Vec3 previousRight = null;
+        int previousColor = 0x00FFFFFF;
+        float previousProgress = 0.0F;
+        Vec3 previous = NightEdgeProjectile.worldPosition(owner, 0.0F).subtract(owner.position()).subtract(entityPosition);
+        for (int index = 1; index < pointCount; index++) {
+            float time = Math.min(index * 0.5F, age);
+            Vec3 current = NightEdgeProjectile.worldPosition(owner, time).subtract(owner.position()).subtract(entityPosition);
+            float progress = (index - 1) / (float) pointCount;
+            org.joml.Vector3f normal = new org.joml.Vector3f(0.0F, 0.0F, 1.0F);
+            float xRot = owner.getXRot() * 0.8F * Mth.DEG_TO_RAD;
+            float yRot = (NightEdgeProjectile.sampleYaw(time) + owner.getYRot()) * Mth.DEG_TO_RAD;
+            new org.joml.Quaternionf().rotateY(-yRot).rotateX(xRot).transform(normal);
+            Vec3 side = new Vec3(normal.normalize()).scale(1.5F * progress);
+            Vec3 left = current.add(side);
+            Vec3 right = current.subtract(side);
+            if (previousLeft == null) {
+                previousLeft = previous.add(side);
+                previousRight = previous.subtract(side);
+            }
+            int alpha = index == pointCount - 1 ? 20 : Math.round(200.0F * progress);
+            int color = 0x00FFFFFF | alpha << 24;
+            trailVertex(consumer, poseStack.last(), matrix, previousLeft, previousColor, 0.0F, previousProgress, packedLight);
+            trailVertex(consumer, poseStack.last(), matrix, previousRight, previousColor, 1.0F, previousProgress, packedLight);
+            trailVertex(consumer, poseStack.last(), matrix, right, color, 1.0F, progress, packedLight);
+            trailVertex(consumer, poseStack.last(), matrix, left, color, 0.0F, progress, packedLight);
+            previousLeft = left;
+            previousRight = right;
+            previousColor = color;
+            previousProgress = progress;
         }
     }
 
-    private static Vec3 rotateForOwner(NightEdgeProjectile entity, Vec3 point) {
+    private static Vec3 nightEdgeRelativePosition(NightEdgeProjectile entity, float time) {
         Entity owner = entity.getOwner();
-        return NightEdgeProjectile.rotateLocalPoint(owner == null ? entity.getYRot() : owner.getYRot(), point);
+        if (!(owner instanceof net.minecraft.world.entity.LivingEntity living)) return Vec3.ZERO;
+        return NightEdgeProjectile.worldPosition(living, time).subtract(entity.position());
     }
 
-    private static void trailVertex(VertexConsumer consumer, Matrix4f matrix, Vec3 point, int argb) {
-        consumer.vertex(matrix, (float) point.x, (float) point.y, (float) point.z).color(argb).endVertex();
+    private static void trailVertex(VertexConsumer consumer, PoseStack.Pose pose, Matrix4f matrix, Vec3 point, int argb,
+                                    float u, float v, int packedLight) {
+        consumer.vertex(matrix, (float) point.x, (float) point.y, (float) point.z).color(argb).uv(u, v)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(pose.normal(), 0.0F, 1.0F, 0.0F).endVertex();
     }
 
     @Override

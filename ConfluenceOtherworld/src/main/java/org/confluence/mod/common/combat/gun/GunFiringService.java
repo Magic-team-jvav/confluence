@@ -31,9 +31,7 @@ public final class GunFiringService {
                 ballistics.critical(), ballistics.knockback(), ballistics.velocity(), ballistics.penetrate(), ballistics.inaccuracy());
         PortEventHandler.postEvent(event);
         float damage = LibMathUtils.criticalDamageTotal(event.getCritical(), event.getDamage(), player.getRandom());
-        ShotContext context = new ShotContext(player, gunStack, ammo, damage, event.getKnockback(), event.getVelocity(),
-                event.getPenetrate(), event.getInaccuracy());
-        return GunProjectileFactory.spawn(context, gun.getDefinition().projectilePattern());
+        return GunProjectileFactory.spawn(new ShotContext(player, gunStack, ammo, damage, event.getKnockback(), event.getVelocity(), event.getPenetrate(), event.getInaccuracy()), gun.getDefinition().projectilePattern());
     }
 
     public static boolean isInfinite(ItemStack ammo) {

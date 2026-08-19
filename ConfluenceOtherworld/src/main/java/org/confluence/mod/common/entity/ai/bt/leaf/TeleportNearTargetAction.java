@@ -41,8 +41,7 @@ public class TeleportNearTargetAction extends BTNode {
         if (target == null || !target.isAlive()) return BTStatus.FAILURE;
 
         for (int attempt = 0; attempt < attempts; attempt++) {
-            Vec3 candidate = LandRandomPos.getPosTowards(
-                    mob, horizontalRange, verticalRange, target.position());
+            Vec3 candidate = LandRandomPos.getPosTowards(mob, horizontalRange, verticalRange, target.position());
             if (candidate == null) continue;
             if (!canTeleportTo(candidate)) continue;
 
@@ -59,10 +58,7 @@ public class TeleportNearTargetAction extends BTNode {
             return false;
         }
         // 原版随机点只代表脚下坐标，真正传送前仍要验证整个实体碰撞箱是否能放下。
-        AABB destinationBox = mob.getBoundingBox().move(
-                candidate.x - mob.getX(),
-                candidate.y - mob.getY(),
-                candidate.z - mob.getZ());
+        AABB destinationBox = mob.getBoundingBox().move(candidate.x - mob.getX(), candidate.y - mob.getY(), candidate.z - mob.getZ());
         return mob.level().noCollision(mob, destinationBox);
     }
 }

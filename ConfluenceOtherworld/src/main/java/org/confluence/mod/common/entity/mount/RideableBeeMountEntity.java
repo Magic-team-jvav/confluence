@@ -22,8 +22,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 ///
 /// <p>飞行速度、升力、重力、能量和水体限制全部在实体内直接维护，
 /// 不再通过通用 locomotion 配置解释。</p>
-public final class RideableBeeMountEntity
-        extends AbstractMountEntity implements GeoEntity {
+public final class RideableBeeMountEntity extends AbstractMountEntity implements GeoEntity {
     public static final float RENDER_SCALE = 1.15F;
 
     private static final double MAX_HORIZONTAL_SPEED = 0.225;
@@ -34,41 +33,26 @@ public final class RideableBeeMountEntity
     private static final double GRAVITY = 0.03;
     private static final int MAX_FLIGHT_ENERGY = 200;
     private static final int GROUND_RECOVERY = 5;
-    private static final String PLAYER_FLIGHT_ENERGY =
-            "confluence.rideable_bee.flight_energy";
+    private static final String PLAYER_FLIGHT_ENERGY = "confluence.rideable_bee.flight_energy";
     private static final double MOVING_RIDER_OFFSET = 0.1;
     private static final double STOPPED_RIDER_OFFSET = 0.4;
     private static final int LOWER_RIDER_DURATION = 12;
     private static final int RAISE_RIDER_DURATION = 7;
 
-    private static final EntityDataAccessor<Integer> FLIGHT_ENERGY =
-            SynchedEntityData.defineId(
-                    RideableBeeMountEntity.class,
-                    EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> ASCENDING =
-            SynchedEntityData.defineId(
-                    RideableBeeMountEntity.class,
-                    EntityDataSerializers.BOOLEAN);
-    private static final RawAnimation WING =
-            RawAnimation.begin().thenLoop("wing");
-    private static final RawAnimation FLY =
-            RawAnimation.begin().thenLoop("move.fly");
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("move.walk");
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
+    private static final EntityDataAccessor<Integer> FLIGHT_ENERGY = SynchedEntityData.defineId(RideableBeeMountEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> ASCENDING = SynchedEntityData.defineId(RideableBeeMountEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final RawAnimation WING = RawAnimation.begin().thenLoop("wing");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
 
-    private final AnimatableInstanceCache animationCache =
-            GeckoLibUtil.createInstanceCache(this);
+    private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private boolean energyLoaded;
     private int movingTicks;
     private int stoppedTicks;
     private boolean moving;
 
-    public RideableBeeMountEntity(
-            EntityType<? extends RideableBeeMountEntity> type,
-            Level level
-    ) {
+    public RideableBeeMountEntity(EntityType<? extends RideableBeeMountEntity> type, Level level) {
         super(type, level);
     }
 
@@ -81,11 +65,8 @@ public final class RideableBeeMountEntity
     @Override
     protected void tickRidden(Player player) {
         if (!level().isClientSide && !energyLoaded) {
-            int energy = player.getPersistentData().contains(
-                    PLAYER_FLIGHT_ENERGY, Tag.TAG_INT)
-                    ? Mth.clamp(player.getPersistentData().getInt(
-                            PLAYER_FLIGHT_ENERGY),
-                    0, MAX_FLIGHT_ENERGY)
+            int energy = player.getPersistentData().contains(PLAYER_FLIGHT_ENERGY, Tag.TAG_INT)
+                    ? Mth.clamp(player.getPersistentData().getInt(PLAYER_FLIGHT_ENERGY), 0, MAX_FLIGHT_ENERGY)
                     : MAX_FLIGHT_ENERGY;
             setFlightEnergy(player, energy);
             energyLoaded = true;
@@ -106,12 +87,7 @@ public final class RideableBeeMountEntity
         } else {
             strafe *= 0.25;
         }
-        Vec3 velocity = accelerateHorizontal(
-                player,
-                strafe,
-                forward,
-                MAX_HORIZONTAL_SPEED,
-                HORIZONTAL_ACCELERATION);
+        Vec3 velocity = accelerateHorizontal(player, strafe, forward, MAX_HORIZONTAL_SPEED, HORIZONTAL_ACCELERATION);
 
         int energy = flightEnergy();
         double vertical = velocity.y;
@@ -124,21 +100,15 @@ public final class RideableBeeMountEntity
                 setFlightEnergy(player, energy - 1);
             }
         } else {
-            vertical = Math.max(
-                    -MAX_VERTICAL_SPEED, vertical - GRAVITY);
+            vertical = Math.max(-MAX_VERTICAL_SPEED, vertical - GRAVITY);
         }
         if (!level().isClientSide && onGround()) {
-            setFlightEnergy(
-                    player,
-                    Math.min(MAX_FLIGHT_ENERGY,
-                            flightEnergy() + GROUND_RECOVERY));
+            setFlightEnergy(player, Math.min(MAX_FLIGHT_ENERGY, flightEnergy() + GROUND_RECOVERY));
         }
 
         moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z));
         updateMovementState();
-        if (!level().isClientSide
-                && isJumpInputDown()
-                && (tickCount & 1) == 0) {
+        if (!level().isClientSide && isJumpInputDown() && (tickCount & 1) == 0) {
             playSound(SoundEvents.BEEHIVE_WORK, 0.5F, 2.0F);
         }
     }
@@ -158,8 +128,7 @@ public final class RideableBeeMountEntity
         int bounded = Mth.clamp(energy, 0, MAX_FLIGHT_ENERGY);
         entityData.set(FLIGHT_ENERGY, bounded);
         if (!level().isClientSide) {
-            player.getPersistentData().putInt(
-                    PLAYER_FLIGHT_ENERGY, bounded);
+            player.getPersistentData().putInt(PLAYER_FLIGHT_ENERGY, bounded);
         }
     }
 
@@ -201,9 +170,7 @@ public final class RideableBeeMountEntity
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers
-    ) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(
                 new AnimationController<>(
                         this, "wings", 2,

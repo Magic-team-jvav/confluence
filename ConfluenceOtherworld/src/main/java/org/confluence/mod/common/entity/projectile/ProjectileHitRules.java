@@ -26,8 +26,7 @@ public final class ProjectileHitRules {
         if (target == owner || owner != null && owner.isAlliedTo(target)) {
             return false;
         }
-        if (owner instanceof Player attackingPlayer
-                && target instanceof Player targetPlayer) {
+        if (owner instanceof Player attackingPlayer && target instanceof Player targetPlayer) {
             return attackingPlayer.canHarmPlayer(targetPlayer)
                     && PlayerSpecialData.of(attackingPlayer).isPvP()
                     && PlayerSpecialData.of(targetPlayer).isPvP();
@@ -43,16 +42,13 @@ public final class ProjectileHitRules {
         }
         // 这些 1.20 重写部件是独立 Entity，不是 Forge PartEntity，
         // 因此需要显式解析到唯一的生命与去重权威。
-        if (rawTarget instanceof BaseBossPart<?> part
-                && part.getOwner() != null) {
+        if (rawTarget instanceof BaseBossPart<?> part && part.getOwner() != null) {
             return part.getOwner();
         }
-        if (rawTarget instanceof BossWormPart part
-                && part.getOwner() != null) {
+        if (rawTarget instanceof BossWormPart part && part.getOwner() != null) {
             return part.getOwner();
         }
-        if (rawTarget instanceof BaseWormPart part
-                && part.getOwner() != null) {
+        if (rawTarget instanceof BaseWormPart part && part.getOwner() != null) {
             return part.getOwner();
         }
         return rawTarget;

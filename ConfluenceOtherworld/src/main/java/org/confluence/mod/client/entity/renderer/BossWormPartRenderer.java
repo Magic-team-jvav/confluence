@@ -24,21 +24,11 @@ public final class BossWormPartRenderer extends BossGeoRenderer<BossWormPart> {
     }
 
     @Override
-    protected void adjustPose(
-            PoseStack poseStack,
-            BossWormPart segment,
-            BakedGeoModel model,
-            float partialTick) {
+    protected void adjustPose(PoseStack poseStack, BossWormPart segment, BakedGeoModel model, float partialTick) {
         if (!(segment.getOwner() instanceof TheDestroyer)) return;
         Vec3 axis = segment.getLookAngle();
         if (axis.lengthSqr() <= 1.0E-7) return;
-        float roll = Mth.lerp(
-                partialTick,
-                segment.getPreviousSegmentRoll(),
-                segment.getSegmentRoll());
-        poseStack.mulPose(Axis.of(new Vector3f(
-                (float) axis.x,
-                (float) axis.y,
-                (float) axis.z)).rotationDegrees(roll));
+        float roll = Mth.lerp(partialTick, segment.getPreviousSegmentRoll(), segment.getSegmentRoll());
+        poseStack.mulPose(Axis.of(new Vector3f((float) axis.x, (float) axis.y, (float) axis.z)).rotationDegrees(roll));
     }
 }

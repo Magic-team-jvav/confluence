@@ -28,20 +28,13 @@ public final class WhipTagTracker {
     private WhipTagTracker() {}
 
     /// 用当前鞭子的独立 Effect 替换该玩家对目标施加的旧标记。
-    public static void apply(
-            Player owner,
-            LivingEntity target,
-            ItemStack whipStack,
-            WhipTagEffect effect
-    ) {
+    public static void apply(Player owner, LivingEntity target, ItemStack whipStack, WhipTagEffect effect) {
         Objects.requireNonNull(owner, "Whip tag owner must not be null");
         Objects.requireNonNull(target, "Whip tag target must not be null");
         Objects.requireNonNull(whipStack, "Whip tag weapon must not be null");
         Objects.requireNonNull(effect, "Whip tag effect must not be null");
         if (!(target.level() instanceof ServerLevel level)) {
-            throw new IllegalStateException(
-                    "Whip tags can only be applied on the logical server"
-            );
+            throw new IllegalStateException("Whip tags can only be applied on the logical server");
         }
         if (whipStack.isEmpty()) {
             throw new IllegalArgumentException("Whip tag weapon must not be empty");
@@ -54,21 +47,11 @@ public final class WhipTagTracker {
             return;
         }
 
-        target.addEffect(new MobEffectInstance(
-                effect,
-                DEFAULT_DURATION_TICKS,
-                0,
-                false,
-                true
-        ), owner);
+        target.addEffect(new MobEffectInstance(effect, DEFAULT_DURATION_TICKS, 0, false, true), owner);
         if (!target.hasEffect(effect)) {
             Map<Key, Entry> levelTags = TAGS.get(level);
             if (levelTags != null) {
-                removeEntry(
-                        levelTags,
-                        new Key(owner.getUUID(), target.getUUID()),
-                        target
-                );
+                removeEntry(levelTags, new Key(owner.getUUID(), target.getUUID()), target);
             }
             return;
         }
@@ -77,18 +60,8 @@ public final class WhipTagTracker {
         long gameTime = level.getGameTime();
         purgeExpired(levelTags, gameTime);
         Key key = new Key(owner.getUUID(), target.getUUID());
-        Entry previous = levelTags.put(
-                key,
-                new Entry(
-                        whipStack,
-                        effect,
-                        gameTime + DEFAULT_DURATION_TICKS,
-                        nextApplicationSequence++
-                )
-        );
-        if (previous != null
-                && previous.effect() != effect
-                && !isEffectUsedByAnotherTag(levelTags, key.targetId(), previous.effect())) {
+        Entry previous = levelTags.put(key, new Entry(whipStack, effect, gameTime + DEFAULT_DURATION_TICKS, nextApplicationSequence++));
+        if (previous != null && previous.effect() != effect && !isEffectUsedByAnotherTag(levelTags, key.targetId(), previous.effect())) {
             target.removeEffect(previous.effect());
         }
     }
@@ -96,32 +69,21 @@ public final class WhipTagTracker {
     /// 将该玩家最后施加的有效标记应用到一次召唤物伤害。
     ///
     /// @param baseDamage 已完成召唤物自身计算、尚未应用鞭痕的伤害
-    public static float modifyDamage(
-            Player owner,
-            OwnedSummon summon,
-            LivingEntity target,
-            float baseDamage
-    ) {
+    public static float modifyDamage(Player owner, OwnedSummon summon, LivingEntity target, float baseDamage) {
         Objects.requireNonNull(owner, "Whip tag owner must not be null");
         Objects.requireNonNull(summon, "Whip tag summon must not be null");
         Objects.requireNonNull(target, "Whip tag target must not be null");
         if (!Float.isFinite(baseDamage) || baseDamage < 0.0F) {
-            throw new IllegalArgumentException(
-                    "Whip tag base damage must be finite and non-negative"
-            );
+            throw new IllegalArgumentException("Whip tag base damage must be finite and non-negative");
         }
         Entry entry = find(owner, target);
         if (entry == null) {
             return baseDamage;
         }
 
-        WhipTagDamageContext context =
-                new WhipTagDamageContext(owner, summon, target, entry.whipStack());
-        float damage = entry.effect().modifyDamage(context, baseDamage);
+        float damage = entry.effect().modifyDamage(new WhipTagDamageContext(owner, summon, target, entry.whipStack()), baseDamage);
         if (!Float.isFinite(damage) || damage < 0.0F) {
-            throw new IllegalStateException(
-                    "Whip tag effect returned invalid damage"
-            );
+            throw new IllegalStateException("Whip tag effect returned invalid damage");
         }
         return damage;
     }
@@ -153,9 +115,7 @@ public final class WhipTagTracker {
                 continue;
             }
             Entity entity = level.getEntity(tagged.getKey().targetId());
-            if (!(entity instanceof LivingEntity target)
-                    || !target.isAlive()
-                    || !target.hasEffect(tagged.getValue().effect())) {
+            if (!(entity instanceof LivingEntity target) || !target.isAlive() || !target.hasEffect(tagged.getValue().effect())) {
                 iterator.remove();
                 continue;
             }
@@ -174,11 +134,7 @@ public final class WhipTagTracker {
         }
         Map<Key, Entry> levelTags = TAGS.get(level);
         if (levelTags != null) {
-            removeEntry(
-                    levelTags,
-                    new Key(owner.getUUID(), target.getUUID()),
-                    target
-            );
+            removeEntry(levelTags, new Key(owner.getUUID(), target.getUUID()), target);
         }
     }
 
@@ -209,24 +165,13 @@ public final class WhipTagTracker {
         tags.entrySet().removeIf(entry -> entry.getValue().expiresAt() <= gameTime);
     }
 
-    private static boolean isEffectUsedByAnotherTag(
-            Map<Key, Entry> tags,
-            UUID targetId,
-            WhipTagEffect effect
-    ) {
-        return tags.entrySet().stream().anyMatch(entry ->
-                entry.getKey().targetId().equals(targetId)
-                        && entry.getValue().effect() == effect);
+    private static boolean isEffectUsedByAnotherTag(Map<Key, Entry> tags, UUID targetId, WhipTagEffect effect) {
+        return tags.entrySet().stream().anyMatch(entry -> entry.getKey().targetId().equals(targetId) && entry.getValue().effect() == effect);
     }
 
-    private static void removeEntry(
-            Map<Key, Entry> tags,
-            Key key,
-            LivingEntity target
-    ) {
+    private static void removeEntry(Map<Key, Entry> tags, Key key, LivingEntity target) {
         Entry removed = tags.remove(key);
-        if (removed != null
-                && !isEffectUsedByAnotherTag(tags, key.targetId(), removed.effect())) {
+        if (removed != null && !isEffectUsedByAnotherTag(tags, key.targetId(), removed.effect())) {
             target.removeEffect(removed.effect());
         }
     }

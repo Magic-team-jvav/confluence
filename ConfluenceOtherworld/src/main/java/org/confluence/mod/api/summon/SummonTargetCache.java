@@ -19,8 +19,8 @@ import java.util.*;
 /// 按玩家共享的召唤物目标缓存。
 ///
 /// <p>玩家战斗事件由全部召唤物读取，每个运行实例独立保存已处理的事件时间与自动目标，避免不同索敌范围
-/// 互相覆盖。优先级与 1.21 一致：最后被鞭子标记的目标最高，其次是刚伤害玩家的目标，然后是玩家刚攻击的
-/// 目标，最后才是召唤物自身附近能够看见的敌对生物。缓存只存在于服务端运行期，不写入存档。</p>
+/// 互相覆盖。最后被鞭子标记的目标拥有最高优先级，其次是刚伤害玩家的目标，最后才是召唤物自身附近能够
+/// 看见的敌对生物。玩家的普通攻击不会向召唤物下达目标指令。缓存只存在于服务端运行期，不写入存档。</p>
 public final class SummonTargetCache {
     private static final int REFRESH_INTERVAL = 5;
     private static final Map<ServerLevel, Map<SummonKey, CommandState>> COMMANDS = new WeakHashMap<>();
@@ -28,11 +28,7 @@ public final class SummonTargetCache {
 
     private SummonTargetCache() {}
 
-    public static @Nullable LivingEntity acquire(
-            ServerLevel level,
-            ServerPlayer owner,
-            double automaticRange
-    ) {
+    public static @Nullable LivingEntity acquire(ServerLevel level, ServerPlayer owner, double automaticRange) {
         return acquire(level, owner, owner.getUUID(), owner.position(), automaticRange);
     }
 
@@ -43,12 +39,10 @@ public final class SummonTargetCache {
         Map<SummonKey, CommandState> levelCommands = COMMANDS.computeIfAbsent(level, ignored -> new HashMap<>());
         CommandState command;
         if (changedLevel) {
-            command = new CommandState(
-                    owner.getLastHurtByMobTimestamp(),
-                    owner.getLastHurtMobTimestamp());
+            command = new CommandState(owner.getLastHurtByMobTimestamp());
             levelCommands.put(key, command);
         } else {
-            command = levelCommands.computeIfAbsent(key, ignored -> new CommandState());
+            command = levelCommands.computeIfAbsent(key, ignored -> new CommandState(owner.getLastHurtByMobTimestamp()));
         }
         long gameTime = level.getGameTime();
         LivingEntity whipTarget = WhipTagTracker.lastTaggedTarget(owner);
@@ -58,17 +52,11 @@ public final class SummonTargetCache {
         }
 
         int hurtByTimestamp = owner.getLastHurtByMobTimestamp();
-        int hurtTimestamp = owner.getLastHurtMobTimestamp();
         boolean hurtByChanged = hurtByTimestamp != command.lastHurtByTimestamp;
-        boolean hurtChanged = hurtTimestamp != command.lastHurtTimestamp;
         command.lastHurtByTimestamp = hurtByTimestamp;
-        command.lastHurtTimestamp = hurtTimestamp;
         LivingEntity attacker = owner.getLastHurtByMob();
-        LivingEntity attacked = owner.getLastHurtMob();
         if (hurtByChanged && isValidTarget(owner, attacker, origin, Double.MAX_VALUE, true)) {
             command.target = attacker;
-        } else if (hurtChanged && isValidTarget(owner, attacked, origin, Double.MAX_VALUE, true)) {
-            command.target = attacked;
         }
         if (isValidTarget(owner, command.target, origin, Double.MAX_VALUE, true))
             return command.target;
@@ -102,9 +90,8 @@ public final class SummonTargetCache {
         if (targets != null) targets.keySet().removeIf(key -> key.ownerId.equals(ownerId));
     }
 
-    /// Moves an owner's live summon command keys to the destination level while treating the
-    /// owner's existing combat timestamps as the baseline. Runtime summons removed immediately
-    /// after the transfer will invalidate their migrated keys individually.
+    /// 将玩家现有召唤物的目标缓存迁移到新维度，并以当前受击时间作为新的事件基线。
+    /// 随后被移除的运行实例仍会逐个清理自己的缓存键。
     public static void transitionLevel(ServerLevel previousLevel, ServerLevel currentLevel, ServerPlayer owner) {
         UUID ownerId = owner.getUUID();
         Set<SummonKey> keys = new HashSet<>();
@@ -115,20 +102,14 @@ public final class SummonTargetCache {
         if (keys.isEmpty()) {
             return;
         }
-        Map<SummonKey, CommandState> currentCommands =
-                COMMANDS.computeIfAbsent(currentLevel, ignored -> new HashMap<>());
+        Map<SummonKey, CommandState> currentCommands = COMMANDS.computeIfAbsent(currentLevel, ignored -> new HashMap<>());
         int hurtByTimestamp = owner.getLastHurtByMobTimestamp();
-        int hurtTimestamp = owner.getLastHurtMobTimestamp();
         for (SummonKey key : keys) {
-            currentCommands.put(key, new CommandState(hurtByTimestamp, hurtTimestamp));
+            currentCommands.put(key, new CommandState(hurtByTimestamp));
         }
     }
 
-    private static void collectAndRemoveOwnerKeys(
-            @Nullable Map<SummonKey, ?> entries,
-            UUID ownerId,
-            Set<SummonKey> collected
-    ) {
+    private static void collectAndRemoveOwnerKeys(@Nullable Map<SummonKey, ?> entries, UUID ownerId, Set<SummonKey> collected) {
         if (entries == null) {
             return;
         }
@@ -150,16 +131,12 @@ public final class SummonTargetCache {
         if (targets != null) targets.remove(key);
     }
 
-    private static @Nullable LivingEntity selectAutomaticTarget(ServerLevel level, ServerPlayer owner, Vec3 origin,
-                                                                double automaticRange) {
+    private static @Nullable LivingEntity selectAutomaticTarget(ServerLevel level, ServerPlayer owner, Vec3 origin, double automaticRange) {
         AABB searchBox = AABB.ofSize(origin, automaticRange * 2.0, automaticRange * 2.0, automaticRange * 2.0);
         LivingEntity nearest = null;
         double nearestDistance = Double.MAX_VALUE;
         for (LivingEntity candidate : level.getEntitiesOfClass(LivingEntity.class, searchBox)) {
-            if (!isValidTarget(owner, candidate, origin, automaticRange, false)
-                    || !(candidate instanceof Enemy)
-                    || candidate instanceof NeutralMob
-                    || !hasLineOfSight(level, owner, origin, candidate)) {
+            if (!isValidTarget(owner, candidate, origin, automaticRange, false) || !(candidate instanceof Enemy) || candidate instanceof NeutralMob || !hasLineOfSight(level, owner, origin, candidate)) {
                 continue;
             }
             double distance = candidate.position().distanceToSqr(origin);
@@ -172,23 +149,16 @@ public final class SummonTargetCache {
     }
 
     private static boolean hasLineOfSight(ServerLevel level, ServerPlayer owner, Vec3 origin, LivingEntity target) {
-        return level.clip(new ClipContext(origin, target.getEyePosition(), ClipContext.Block.COLLIDER,
-                ClipContext.Fluid.NONE, owner)).getType() == HitResult.Type.MISS;
+        return level.clip(new ClipContext(origin, target.getEyePosition(), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner)).getType() == HitResult.Type.MISS;
     }
 
     /// 判断目标是否符合召唤物的阵营、PVP、距离与存活规则。
-    public static boolean isValidTarget(
-            ServerPlayer owner,
-            @Nullable LivingEntity target,
-            double range,
-            boolean explicitTarget
-    ) {
+    public static boolean isValidTarget(ServerPlayer owner, @Nullable LivingEntity target, double range, boolean explicitTarget) {
         return isValidTarget(owner, target, owner.position(), range, explicitTarget);
     }
 
     /// 判断目标是否符合召唤物的阵营、PVP、距离与存活规则。
-    public static boolean isValidTarget(ServerPlayer owner, @Nullable LivingEntity target, Vec3 origin, double range,
-                                        boolean explicitTarget) {
+    public static boolean isValidTarget(ServerPlayer owner, @Nullable LivingEntity target, Vec3 origin, double range, boolean explicitTarget) {
         if (target == null
                 || !target.isAlive()
                 || target.isRemoved()
@@ -199,10 +169,7 @@ public final class SummonTargetCache {
                 || target.position().distanceToSqr(origin) > range * range) {
             return false;
         }
-        if (target instanceof Player targetPlayer
-                && (!owner.canHarmPlayer(targetPlayer)
-                || !PlayerSpecialData.of(owner).isPvP()
-                || !PlayerSpecialData.of(targetPlayer).isPvP())) {
+        if (target instanceof Player targetPlayer && (!owner.canHarmPlayer(targetPlayer) || !PlayerSpecialData.of(owner).isPvP() || !PlayerSpecialData.of(targetPlayer).isPvP())) {
             return false;
         }
         return explicitTarget || target instanceof Enemy;
@@ -210,16 +177,10 @@ public final class SummonTargetCache {
 
     private static final class CommandState {
         private int lastHurtByTimestamp;
-        private int lastHurtTimestamp;
         private LivingEntity target;
 
-        private CommandState() {
-            this(-1, -1);
-        }
-
-        private CommandState(int lastHurtByTimestamp, int lastHurtTimestamp) {
+        private CommandState(int lastHurtByTimestamp) {
             this.lastHurtByTimestamp = lastHurtByTimestamp;
-            this.lastHurtTimestamp = lastHurtTimestamp;
         }
     }
 

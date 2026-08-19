@@ -82,8 +82,7 @@ public class CrownOfKingSlimeModelEntity extends Entity {
             float sinBeta = Mth.sin(beta);
             float cosBeta = Mth.cos(beta);
             float cosAlphaSubBeta = Mth.cos(alpha - beta);
-            omega = Mth.sqrt((4.0F * 0.08F * sinAlpha * cosAlpha)
-                    / (RADIUS * sinBeta * (cosAlphaSubBeta + 5.0F * cosAlpha * cosBeta)));
+            omega = Mth.sqrt((4.0F * 0.08F * sinAlpha * cosAlpha) / (RADIUS * sinBeta * (cosAlphaSubBeta + 5.0F * cosAlpha * cosBeta)));
             omega1 = omega * cosAlphaSubBeta / cosAlpha;
             omega2 = omega * sinBeta / cosAlpha;
             rotate1 += omega1;

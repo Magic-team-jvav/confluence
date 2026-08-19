@@ -41,8 +41,7 @@ public class Dragonfly extends Bird implements VariantHolder<Dragonfly.Variant> 
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.BLUE);
+        return CritterVariantUtil.byId(Variant.values(), this.entityData.get(DATA_VARIANT), Variant.BLUE);
     }
 
     @Override
@@ -71,8 +70,7 @@ public class Dragonfly extends Bird implements VariantHolder<Dragonfly.Variant> 
 
     @Override
     protected void initializeSpawnVariant() {
-        setVariant(CritterVariantUtil.withRareVariant(
-                random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
+        setVariant(CritterVariantUtil.withRareVariant(random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
     }
 
     @Override
@@ -103,8 +101,7 @@ public class Dragonfly extends Bird implements VariantHolder<Dragonfly.Variant> 
 
         @Override
         public ResourceLocation texturePath() {
-            return IVariant.resource("textures/entity/animal/dragonfly/"
-                    + getSerializedName() + "_dragonfly.png");
+            return IVariant.resource("textures/entity/animal/dragonfly/" + getSerializedName() + "_dragonfly.png");
         }
 
         @Override

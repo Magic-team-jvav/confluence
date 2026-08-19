@@ -110,8 +110,7 @@ public abstract class AbstractHookEntity extends Projectile {
         }
         if (!level().isClientSide) {
             ItemStack hook = ExtraInventory.of(player).getHook(false);
-            if (!(hook.getItem() instanceof BaseHookItem)
-                    || !BaseHookItem.containsHook(hook, level(), player, this)) {
+            if (!(hook.getItem() instanceof BaseHookItem) || !BaseHookItem.containsHook(hook, level(), player, this)) {
                 // 物品被替换、移出装备槽或运行时条目损坏后，实体不能脱离物品生命周期继续存在。
                 discard();
                 return;

@@ -193,11 +193,9 @@ public final class ModEvents {
     private static void entityAttributeCreation(PortEntityAttributeCreationEvent event) {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
         event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
-        var storageCompanionAttributes =
-                StorageCompanionEntity.createAttributes().build();
+        var storageCompanionAttributes = StorageCompanionEntity.createAttributes().build();
         event.put(ModEntities.CHESTER.get(), storageCompanionAttributes);
-        event.put(ModEntities.FLYING_PIGGY_BANK.get(),
-                storageCompanionAttributes);
+        event.put(ModEntities.FLYING_PIGGY_BANK.get(), storageCompanionAttributes);
 //        event.put(ModEntities.INVERSE_ENDERMAN.get(), InverseEnderMan.createAttributes().build());
         event.put(CritterEntities.BUNNY.get(), Bunny.createAttributes().build());
         event.put(CritterEntities.JEWEL_BUNNY.get(), Bunny.createAttributes().build());
@@ -303,8 +301,7 @@ public final class ModEvents {
         event.put(MonsterEntities.DRIPPLER.get(), CreatureAttributeBuilder.creature(26, 7, 14, 64, 0.5, 0.2).flying().build());
         event.put(MonsterEntities.FLYING_FISH.get(), CreatureAttributeBuilder.creature(10, 1, 2, 30, 0.5, 0.3).flying().build());
         event.put(MonsterEntities.WANDERING_EYE_FISH.get(), CreatureAttributeBuilder.creature(156, 18, 15, 60, 1, 1).movementSpeed(2.2).flying().build());
-        event.put(MonsterEntities.VISUAL_NEURON.get(),
-                VisualNeuron.createAttributes().build());
+        event.put(MonsterEntities.VISUAL_NEURON.get(), VisualNeuron.createAttributes().build());
         event.put(MonsterEntities.BLAZING_WHEEL.get(), CreatureAttributeBuilder.creature(260, 30, 42, 48, 1, 1).flying().build());
         event.put(MonsterEntities.SPIKE_BALL.get(), CreatureAttributeBuilder.creature(208, 25, 36, 48, 1, 1).flying().build());
         event.put(MonsterEntities.DEMON.get(), CreatureAttributeBuilder.creature(62, 8, 20, 16, 1, 0.28).flying().build());
@@ -620,10 +617,8 @@ public final class ModEvents {
         });
         event.register(CritterEntities.SCORPION.get(), (type, scorpion) -> type.getDescriptionId() + '.'
                 + (scorpion.getVariant() == Scorpion.Variant.BLACK ? 0 : 1));
-        event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) ->
-                type.getDescriptionId() + '.' + eye.getVariant().getSerializedName());
-        event.register(BossEntities.SERVANT_OF_CTHULHU.get(), (type, servant) ->
-                "entity.confluence.demon_eye.minion");
+        event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) -> type.getDescriptionId() + '.' + eye.getVariant().getSerializedName());
+        event.register(BossEntities.SERVANT_OF_CTHULHU.get(), (type, servant) -> "entity.confluence.demon_eye.minion");
         event.register(MonsterEntities.BLACK_SLIME.get(), (type, slime) -> {
             if (slime.getSlimeSize() == 1) return "entity.confluence.baby_slime";
             if (slime.getSlimeSize() == 4) return "entity.confluence.mother_slime";

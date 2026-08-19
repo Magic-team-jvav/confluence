@@ -45,16 +45,12 @@ import java.util.Locale;
 ///
 /// <p>鸭子的外观、食物、后代工厂、落水表现和动画选择均由实体自身负责；
 /// 通用小动物基类只提供行为树生命周期和默认的不可繁殖契约。</p>
-public class Duck extends BaseCritter
-        implements VariantHolder<Duck.Variant> {
+public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
     public static final String VARIANT_KEY = "Variant";
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation SWIM = RawAnimation.begin().thenLoop("move.swim");
-    private static final EntityDataAccessor<Integer> DATA_VARIANT =
-            SynchedEntityData.defineId(
-                    Duck.class,
-                    EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Duck.class, EntityDataSerializers.INT);
     private int eggLayTime = random.nextInt(6000) + 6000;
 
     public Duck(EntityType<? extends Duck> type, Level level) {
@@ -64,8 +60,7 @@ public class Duck extends BaseCritter
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Chicken.createAttributes()
-                .add(PortAttributesExtension.waterMovementEfficiency().get(), 1.0);
+        return Chicken.createAttributes().add(PortAttributesExtension.waterMovementEfficiency().get(), 1.0);
     }
 
     @Override
@@ -107,10 +102,7 @@ public class Duck extends BaseCritter
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(),
-                entityData.get(DATA_VARIANT),
-                Variant.MALLARD);
+        return CritterVariantUtil.byId(Variant.values(), entityData.get(DATA_VARIANT), Variant.MALLARD);
     }
 
     @Override
@@ -142,11 +134,7 @@ public class Duck extends BaseCritter
         if (!tag.contains(VARIANT_KEY)) {
             setVariant(Variant.MALLARD);
         } else {
-            PortDataResultExtension.ifSuccess(
-                    Variant.CODEC.parse(
-                            NbtOps.INSTANCE,
-                            tag.get(VARIANT_KEY)),
-                    this::setVariant);
+            PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
         }
         if (tag.contains("EggLayTime")) {
             eggLayTime = tag.getInt("EggLayTime");
@@ -160,17 +148,12 @@ public class Duck extends BaseCritter
 
     @Nullable
     @Override
-    public Duck getBreedOffspring(
-            ServerLevel level,
-            net.minecraft.world.entity.AgeableMob otherParent) {
+    public Duck getBreedOffspring(ServerLevel level, net.minecraft.world.entity.AgeableMob otherParent) {
         return CritterEntities.DUCK.get().create(level);
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
@@ -184,14 +167,7 @@ public class Duck extends BaseCritter
     public void tick() {
         super.tick();
         if (level().isClientSide && isInWater() && tickCount % 16 == 0) {
-            level().addParticle(
-                    ParticleTypes.BUBBLE_POP,
-                    getX(),
-                    getY(),
-                    getZ(),
-                    0.0,
-                    0.0,
-                    0.0);
+            level().addParticle(ParticleTypes.BUBBLE_POP, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
         }
     }
 
@@ -203,15 +179,8 @@ public class Duck extends BaseCritter
         if (!onGround() && movement.y < 0.0) {
             setDeltaMovement(movement.multiply(1.0, 0.6, 1.0));
         }
-        if (!level().isClientSide
-                && isAlive()
-                && !isBaby()
-                && --eggLayTime <= 0) {
-            playSound(
-                    SoundEvents.CHICKEN_EGG,
-                    1.0F,
-                    (random.nextFloat() - random.nextFloat())
-                            * 0.2F + 1.0F);
+        if (!level().isClientSide && isAlive() && !isBaby() && --eggLayTime <= 0) {
+            playSound(SoundEvents.CHICKEN_EGG, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
             spawnAtLocation(Items.EGG);
             gameEvent(GameEvent.ENTITY_PLACE);
             eggLayTime = random.nextInt(6000) + 6000;
@@ -229,8 +198,7 @@ public class Duck extends BaseCritter
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "Swim/Idle/Move",
@@ -251,8 +219,7 @@ public class Duck extends BaseCritter
         MALLARD("duck_1"),
         COMMON("duck_2");
 
-        public static final Codec<Variant> CODEC =
-                StringRepresentable.fromEnum(Variant::values);
+        public static final Codec<Variant> CODEC = StringRepresentable.fromEnum(Variant::values);
         private final String textureName;
 
         Variant(String textureName) {
@@ -271,10 +238,7 @@ public class Duck extends BaseCritter
 
         @Override
         public ResourceLocation texturePath() {
-            return IVariant.resource(
-                    "textures/entity/animal/duck/"
-                            + textureName
-                            + ".png");
+            return IVariant.resource("textures/entity/animal/duck/" + textureName + ".png");
         }
 
         @Override

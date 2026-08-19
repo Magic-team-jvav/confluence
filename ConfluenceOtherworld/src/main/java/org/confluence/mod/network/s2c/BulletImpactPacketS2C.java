@@ -41,8 +41,7 @@ public record BulletImpactPacketS2C(double x, double y, double z, int effectId)
 
     @Override
     public void work(Player player) {
-        PortEventHandler.postEvent(new BulletEvent.ImpactEffectEvent(
-                new Vec3(x, y, z), BulletImpactEffect.byId(effectId)));
+        PortEventHandler.postEvent(new BulletEvent.ImpactEffectEvent(new Vec3(x, y, z), BulletImpactEffect.byId(effectId)));
     }
 
     /// 仅向同维度且距离命中点六十四格内的玩家发送表现，避免无意义的全服广播。
@@ -54,9 +53,6 @@ public record BulletImpactPacketS2C(double x, double y, double z, int effectId)
         if (effect == BulletImpactEffect.NONE) {
             return;
         }
-        Confluence.NETWORK_HANDLER.sendToPlayersNear(
-                level.dimension(), null,
-                position.x, position.y, position.z, 64.0D,
-                new BulletImpactPacketS2C(position.x, position.y, position.z, effect.id()));
+        Confluence.NETWORK_HANDLER.sendToPlayersNear(level.dimension(), null, position.x, position.y, position.z, 64.0D, new BulletImpactPacketS2C(position.x, position.y, position.z, effect.id()));
     }
 }

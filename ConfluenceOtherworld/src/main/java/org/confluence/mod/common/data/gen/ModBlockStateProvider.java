@@ -54,42 +54,27 @@ public final class ModBlockStateProvider extends BlockStateProvider {
 
         ResourceLocation logSide = Confluence.asResource("block/" + id + "_log");
         ResourceLocation logTop = Confluence.asResource("block/" + id + "_log_top");
-        if (blockSet.LOG.isBound()
-                && shouldGenerate(blockSet.LOG.get())
-                && hasTexture(logSide)
-                && hasTexture(logTop)) {
+        if (blockSet.LOG.isBound() && shouldGenerate(blockSet.LOG.get()) && hasTexture(logSide) && hasTexture(logTop)) {
             logBlock(blockSet.LOG.get());
         }
         ResourceLocation strippedLogSide = Confluence.asResource("block/stripped_" + id + "_log");
         ResourceLocation strippedLogTop = Confluence.asResource("block/stripped_" + id + "_log_top");
-        if (blockSet.STRIPPED_LOG.isBound()
-                && shouldGenerate(blockSet.STRIPPED_LOG.get())
-                && hasTexture(strippedLogSide)
-                && hasTexture(strippedLogTop)) {
+        if (blockSet.STRIPPED_LOG.isBound() && shouldGenerate(blockSet.STRIPPED_LOG.get()) && hasTexture(strippedLogSide) && hasTexture(strippedLogTop)) {
             logBlock(blockSet.STRIPPED_LOG.get());
         }
         ResourceLocation leavesTexture = Confluence.asResource("block/" + id + "_leaves");
-        if (blockSet.LEAVES.isBound()
-                && shouldGenerate(blockSet.LEAVES.get())
-                && hasTexture(leavesTexture)) {
+        if (blockSet.LEAVES.isBound() && shouldGenerate(blockSet.LEAVES.get()) && hasTexture(leavesTexture)) {
             ModelFile leaves = models().withExistingParent(id + "_leaves", "block/leaves")
                     .texture("all", leavesTexture);
             getVariantBuilder(blockSet.LEAVES.get()).partialState()
                     .setModels(new ConfiguredModel(leaves));
         }
-        if (blockSet.WOOD.isBound()
-                && shouldGenerate(blockSet.WOOD.get())
-                && hasTexture(logSide)) {
+        if (blockSet.WOOD.isBound() && shouldGenerate(blockSet.WOOD.get()) && hasTexture(logSide)) {
             ModelFile model = models().cubeColumn(id + "_wood", logSide, logSide);
             axisBlock(blockSet.WOOD.get(), model, model);
         }
-        if (blockSet.STRIPPED_WOOD.isBound()
-                && shouldGenerate(blockSet.STRIPPED_WOOD.get())
-                && hasTexture(strippedLogSide)) {
-            ModelFile model = models().cubeColumn(
-                    "stripped_" + id + "_wood",
-                    strippedLogSide,
-                    strippedLogSide);
+        if (blockSet.STRIPPED_WOOD.isBound() && shouldGenerate(blockSet.STRIPPED_WOOD.get()) && hasTexture(strippedLogSide)) {
+            ModelFile model = models().cubeColumn("stripped_" + id + "_wood", strippedLogSide, strippedLogSide);
             axisBlock(blockSet.STRIPPED_WOOD.get(), model, model);
         }
 
@@ -116,45 +101,26 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         if (blockSet.STAIRS.isBound() && shouldGenerate(blockSet.STAIRS.get())) {
             stairsBlock(blockSet.STAIRS.get(), planks);
         }
-        if (blockSet.SIGN.isBound()
-                && shouldGenerate(blockSet.SIGN.get())
-                && shouldGenerate(blockSet.WALL_SIGN.get())) {
+        if (blockSet.SIGN.isBound() && shouldGenerate(blockSet.SIGN.get()) && shouldGenerate(blockSet.WALL_SIGN.get())) {
             signBlock(blockSet.SIGN.get(), blockSet.WALL_SIGN.get(), planks);
         }
         ResourceLocation trapdoor = Confluence.asResource("block/" + id + "_trapdoor");
-        if (blockSet.TRAPDOOR.isBound()
-                && shouldGenerate(blockSet.TRAPDOOR.get())
-                && hasTexture(trapdoor)) {
-            trapdoorBlockWithRenderType(
-                    blockSet.TRAPDOOR.get(),
-                    trapdoor,
-                    true,
-                    "cutout");
+        if (blockSet.TRAPDOOR.isBound() && shouldGenerate(blockSet.TRAPDOOR.get()) && hasTexture(trapdoor)) {
+            trapdoorBlockWithRenderType(blockSet.TRAPDOOR.get(), trapdoor, true, "cutout");
         }
         ResourceLocation doorBottom = Confluence.asResource("block/" + id + "_door_bottom");
         ResourceLocation doorTop = Confluence.asResource("block/" + id + "_door_top");
-        if (blockSet.DOOR.isBound()
-                && shouldGenerate(blockSet.DOOR.get())
-                && hasTexture(doorBottom)
-                && hasTexture(doorTop)) {
-            doorBlockWithRenderType(
-                    blockSet.DOOR.get(),
-                    doorBottom,
-                    doorTop,
-                    "cutout");
+        if (blockSet.DOOR.isBound() && shouldGenerate(blockSet.DOOR.get()) && hasTexture(doorBottom) && hasTexture(doorTop)) {
+            doorBlockWithRenderType(blockSet.DOOR.get(), doorBottom, doorTop, "cutout");
         }
-        if (blockSet.HANGING_SIGN.isBound()
-                && shouldGenerate(blockSet.HANGING_SIGN.get())
-                && shouldGenerate(blockSet.WALL_HANGING_SIGN.get())) {
+        if (blockSet.HANGING_SIGN.isBound() && shouldGenerate(blockSet.HANGING_SIGN.get()) && shouldGenerate(blockSet.WALL_HANGING_SIGN.get())) {
             hangingSignBlock(blockSet.HANGING_SIGN.get(), blockSet.WALL_HANGING_SIGN.get(), planks);
         }
         if (blockSet.CHISELED_PLANKS.isBound()) {
             simpleBlockIfAbsent(blockSet.CHISELED_PLANKS.get());
         }
         ResourceLocation sapling = Confluence.asResource("block/" + id + "_sapling");
-        if (blockSet.SAPLING.isBound()
-                && !hasHandwrittenModel(sapling)
-                && hasTexture(sapling)) {
+        if (blockSet.SAPLING.isBound() && !hasHandwrittenModel(sapling) && hasTexture(sapling)) {
             models().withExistingParent(id + "_sapling", "block/cross")
                     .texture("cross", sapling);
         }
@@ -166,39 +132,16 @@ public final class ModBlockStateProvider extends BlockStateProvider {
             return;
         }
 
-        ModelFile full = modelOrGenerate(
-                blockSet.id,
-                () -> models().cubeAll(blockSet.id, texture));
-        ModelFile stairs = modelOrGenerate(
-                blockSet.id + "_stairs",
-                () -> models().stairs(blockSet.id + "_stairs", texture, texture, texture));
-        ModelFile stairsInner = modelOrGenerate(
-                blockSet.id + "_stairs_inner",
-                () -> models().stairsInner(
-                        blockSet.id + "_stairs_inner", texture, texture, texture));
-        ModelFile stairsOuter = modelOrGenerate(
-                blockSet.id + "_stairs_outer",
-                () -> models().stairsOuter(
-                        blockSet.id + "_stairs_outer", texture, texture, texture));
-        ModelFile slab = modelOrGenerate(
-                blockSet.id + "_slab",
-                () -> models().slab(blockSet.id + "_slab", texture, texture, texture));
-        ModelFile slabTop = modelOrGenerate(
-                blockSet.id + "_slab_top",
-                () -> models().slabTop(
-                        blockSet.id + "_slab_top", texture, texture, texture));
-        ModelFile slabFull = modelOrGenerate(
-                blockSet.id + "_slab_full",
-                () -> models().cubeAll(blockSet.id + "_slab_full", texture));
-        ModelFile wallPost = modelOrGenerate(
-                blockSet.id + "_wall_post",
-                () -> models().wallPost(blockSet.id + "_wall_post", texture));
-        ModelFile wallSide = modelOrGenerate(
-                blockSet.id + "_wall_side",
-                () -> models().wallSide(blockSet.id + "_wall_side", texture));
-        ModelFile wallSideTall = modelOrGenerate(
-                blockSet.id + "_wall_side_tall",
-                () -> models().wallSideTall(blockSet.id + "_wall_side_tall", texture));
+        ModelFile full = modelOrGenerate(blockSet.id, () -> models().cubeAll(blockSet.id, texture));
+        ModelFile stairs = modelOrGenerate(blockSet.id + "_stairs", () -> models().stairs(blockSet.id + "_stairs", texture, texture, texture));
+        ModelFile stairsInner = modelOrGenerate(blockSet.id + "_stairs_inner", () -> models().stairsInner(blockSet.id + "_stairs_inner", texture, texture, texture));
+        ModelFile stairsOuter = modelOrGenerate(blockSet.id + "_stairs_outer", () -> models().stairsOuter(blockSet.id + "_stairs_outer", texture, texture, texture));
+        ModelFile slab = modelOrGenerate(blockSet.id + "_slab", () -> models().slab(blockSet.id + "_slab", texture, texture, texture));
+        ModelFile slabTop = modelOrGenerate(blockSet.id + "_slab_top", () -> models().slabTop(blockSet.id + "_slab_top", texture, texture, texture));
+        ModelFile slabFull = modelOrGenerate(blockSet.id + "_slab_full", () -> models().cubeAll(blockSet.id + "_slab_full", texture));
+        ModelFile wallPost = modelOrGenerate(blockSet.id + "_wall_post", () -> models().wallPost(blockSet.id + "_wall_post", texture));
+        ModelFile wallSide = modelOrGenerate(blockSet.id + "_wall_side", () -> models().wallSide(blockSet.id + "_wall_side", texture));
+        ModelFile wallSideTall = modelOrGenerate(blockSet.id + "_wall_side_tall", () -> models().wallSideTall(blockSet.id + "_wall_side_tall", texture));
         modelOrGenerate(
                 blockSet.id + "_wall_inventory",
                 () -> models().withExistingParent(
@@ -232,8 +175,7 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         if (!shouldGenerate(block)) {
             return;
         }
-        ResourceLocation model = Confluence.asResource(
-                "block/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
+        ResourceLocation model = Confluence.asResource("block/" + BuiltInRegistries.BLOCK.getKey(block).getPath());
         if (hasHandwrittenModel(model)) {
             simpleBlock(block, models().getExistingFile(model));
         } else if (hasTexture(model)) {
@@ -244,13 +186,8 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         }
     }
 
-    public void hangingSignBlock(
-            CeilingHangingSignBlock hangingSign,
-            WallHangingSignBlock wallHangingSign,
-            ResourceLocation texture
-    ) {
-        ModelFile model = models().sign(
-                ForgeRegistries.BLOCKS.getKey(hangingSign).getPath(), texture);
+    public void hangingSignBlock(CeilingHangingSignBlock hangingSign, WallHangingSignBlock wallHangingSign, ResourceLocation texture) {
+        ModelFile model = models().sign(ForgeRegistries.BLOCKS.getKey(hangingSign).getPath(), texture);
         simpleBlock(hangingSign, model);
         simpleBlock(wallHangingSign, model);
     }
@@ -276,11 +213,7 @@ public final class ModBlockStateProvider extends BlockStateProvider {
 
     private boolean hasTexture(ResourceLocation model) {
         try {
-            existingFileHelper.getResource(
-                    model,
-                    PackType.CLIENT_RESOURCES,
-                    ".png",
-                    "textures");
+            existingFileHelper.getResource(model, PackType.CLIENT_RESOURCES, ".png", "textures");
             return true;
         } catch (FileNotFoundException ignored) {
             return false;

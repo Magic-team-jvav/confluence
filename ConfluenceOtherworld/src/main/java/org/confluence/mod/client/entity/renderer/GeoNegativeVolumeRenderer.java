@@ -62,12 +62,7 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
         this(context, model, false, 1.0F, 0.0F);
     }
 
-    public GeoNegativeVolumeRenderer(
-            EntityRendererProvider.Context context,
-            GeoModel<T> model,
-            boolean rotateAlongPitch,
-            float modelScale,
-            float modelOffsetY) {
+    public GeoNegativeVolumeRenderer(EntityRendererProvider.Context context, GeoModel<T> model, boolean rotateAlongPitch, float modelScale, float modelOffsetY) {
         super(context, model, rotateAlongPitch, modelScale, modelOffsetY);
         this.shadowRadius = 0;
         this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {

@@ -9,14 +9,10 @@ import java.util.function.Function;
 ///
 /// <p>变种判定由实体负责同步，模型只负责选择纹理。这样服务端行为、存档数据和客户端外观
 /// 之间不会出现第二套变种状态，也不需要为每一种双色生物单独编写渲染器。</p>
-public final class VariantTextureGeoModel<T extends GeoEntity>
-        extends ExplicitGeoModel<T> {
+public final class VariantTextureGeoModel<T extends GeoEntity> extends ExplicitGeoModel<T> {
     private final Function<T, ResourceLocation> textureSelector;
 
-    public VariantTextureGeoModel(
-            ResourceLocation model,
-            ResourceLocation animation,
-            Function<T, ResourceLocation> textureSelector) {
+    public VariantTextureGeoModel(ResourceLocation model, ResourceLocation animation, Function<T, ResourceLocation> textureSelector) {
         super(model, null, animation);
         this.textureSelector = textureSelector;
     }
@@ -25,8 +21,7 @@ public final class VariantTextureGeoModel<T extends GeoEntity>
     public ResourceLocation getTextureResource(T animatable) {
         ResourceLocation texture = textureSelector.apply(animatable);
         if (texture == null) {
-            throw new IllegalStateException(
-                    "Variant texture selector returned null");
+            throw new IllegalStateException("Variant texture selector returned null");
         }
         return texture;
     }

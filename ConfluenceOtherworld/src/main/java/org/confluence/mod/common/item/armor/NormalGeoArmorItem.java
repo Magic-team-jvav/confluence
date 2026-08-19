@@ -64,11 +64,7 @@ public class NormalGeoArmorItem extends BaseArmorItem implements GeoItem {
                 /// 的实体、物品、槽位和原版模型。缺少这一步时 currentEntity
                 /// 为空，开启实体描边后会在发光判定中崩溃。
                 if (equipmentSlot != null) {
-                    renderer.prepForRender(
-                            livingEntity,
-                            itemStack,
-                            equipmentSlot,
-                            original);
+                    renderer.prepForRender(livingEntity, itemStack, equipmentSlot, original);
                 }
                 return renderer;
             }

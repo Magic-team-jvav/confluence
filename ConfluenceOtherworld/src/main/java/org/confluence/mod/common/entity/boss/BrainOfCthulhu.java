@@ -41,25 +41,13 @@ import java.util.*;
 /// <p>神经元是可独立存档的实体，因此阶段推进不能只依赖附近实体数量。权威 UUID 集合会持久化；
 /// 子实体在 Boss 区块卸载期间死亡时通过世界账本回报，Boss 重新加载后再统一结算。</p>
 public class BrainOfCthulhu extends BaseBoss {
-    private static final RawAnimation CLOSED =
-            RawAnimation.begin().thenLoop("close");
-    private static final RawAnimation OPEN =
-            RawAnimation.begin().thenPlay("to_open").thenLoop("open");
-    private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO =
-            SynchedEntityData.defineId(
-                    BrainOfCthulhu.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_PHASE_ONE_STATE =
-            SynchedEntityData.defineId(
-                    BrainOfCthulhu.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_PHASE_ONE_STATE_TICKS =
-            SynchedEntityData.defineId(
-                    BrainOfCthulhu.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE =
-            SynchedEntityData.defineId(
-                    BrainOfCthulhu.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE_TICKS =
-            SynchedEntityData.defineId(
-                    BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final RawAnimation CLOSED = RawAnimation.begin().thenLoop("close");
+    private static final RawAnimation OPEN = RawAnimation.begin().thenPlay("to_open").thenLoop("open");
+    private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_ONE_STATE = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_ONE_STATE_TICKS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE_TICKS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
     private static final int NEURON_COUNT = 20;
     private static final int SUMMON_START_TICK = 21;
     private static final int SUMMON_INTERVAL_TICKS = 2;
@@ -226,8 +214,7 @@ public class BrainOfCthulhu extends BaseBoss {
     private void tickNeuronSummoning() {
         if (summoningComplete()) return;
         summonTicks++;
-        if (summonTicks < SUMMON_START_TICK
-                || (summonTicks - SUMMON_START_TICK) % SUMMON_INTERVAL_TICKS != 0) {
+        if (summonTicks < SUMMON_START_TICK || (summonTicks - SUMMON_START_TICK) % SUMMON_INTERVAL_TICKS != 0) {
             return;
         }
         spawnNeuron(spawnedNeuronCount);
@@ -258,10 +245,7 @@ public class BrainOfCthulhu extends BaseBoss {
         double theta = random.nextFloat() * Math.PI;
         double beta = random.nextFloat() * Math.PI;
         double sinBeta = Math.sin(beta);
-        return new Vec3(
-                radius * sinBeta * Math.cos(theta),
-                radius * Math.cos(beta),
-                radius * sinBeta * Math.sin(theta));
+        return new Vec3(radius * sinBeta * Math.cos(theta), radius * Math.cos(beta), radius * sinBeta * Math.sin(theta));
     }
 
     private void updateNeuronHomes(List<VisualNeuron> loadedNeurons) {
@@ -276,10 +260,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 double angle = random.nextDouble() * 20.0;
                 double cosine = Math.cos(angle);
                 double sine = Math.sin(angle);
-                currentOffset = new Vec3(
-                        baseOffset.x * cosine + baseOffset.z * sine,
-                        baseOffset.y,
-                        -baseOffset.x * sine + baseOffset.z * cosine);
+                currentOffset = new Vec3(baseOffset.x * cosine + baseOffset.z * sine, baseOffset.y, -baseOffset.x * sine + baseOffset.z * cosine);
             }
             neuron.setHomePosition(position().add(currentOffset));
         }
@@ -293,8 +274,7 @@ public class BrainOfCthulhu extends BaseBoss {
         if (away.lengthSqr() < 1.0E-6) {
             away = new Vec3(1.0, 0.0, 0.0);
         }
-        Vec3 destination = target.position().add(away.normalize().scale(10.0))
-                .add(0.0, verticalOffset, 0.0);
+        Vec3 destination = target.position().add(away.normalize().scale(10.0)).add(0.0, verticalOffset, 0.0);
         Vec3 offset = destination.subtract(position());
         if (offset.lengthSqr() > 2.0) {
             // 1.21 侧每刻直接写入固定速度，不保留上一刻惯性。
@@ -346,8 +326,7 @@ public class BrainOfCthulhu extends BaseBoss {
                 } else {
                     if (phaseTwoCurveStart == null) initializeDashCurve(target);
                     double dashTicks = phaseTwoStateTicks - PHASE2_DASH_WINDUP_TICKS + 1.0;
-                    moveAlongPhaseTwoCurve(dashTicks
-                            / (PHASE2_DASH_TICKS - PHASE2_DASH_WINDUP_TICKS));
+                    moveAlongPhaseTwoCurve(dashTicks / (PHASE2_DASH_TICKS - PHASE2_DASH_WINDUP_TICKS));
                 }
                 lookAtTarget(target);
                 if (++phaseTwoStateTicks >= PHASE2_DASH_TICKS) {
@@ -403,10 +382,7 @@ public class BrainOfCthulhu extends BaseBoss {
         double radius = 16.0 + random.nextDouble();
         double angle = random.nextDouble() * Mth.TWO_PI;
         phaseTwoCurveStart = position();
-        phaseTwoCurveControl = target.position().add(
-                Math.sin(angle) * radius,
-                2.0,
-                Math.cos(angle) * radius);
+        phaseTwoCurveControl = target.position().add(Math.sin(angle) * radius, 2.0, Math.cos(angle) * radius);
         phaseTwoCurveEnd = phaseTwoCurveControl.add(0.0, 3.0, 0.0);
         setDeltaMovement(Vec3.ZERO);
     }
@@ -417,20 +393,13 @@ public class BrainOfCthulhu extends BaseBoss {
         Vec3 horizontal = fromTarget.multiply(1.0, 0.0, 1.0);
         if (horizontal.lengthSqr() < 1.0E-6) horizontal = new Vec3(1.0, 0.0, 0.0);
         phaseTwoCurveStart = position();
-        phaseTwoCurveControl = target.position().add(
-                random.nextDouble() - 0.5,
-                -2.0,
-                random.nextDouble() - 0.5);
-        phaseTwoCurveEnd = target.position()
-                .add(horizontal.normalize().scale(10.0))
-                .add(0.0, 2.0, 0.0);
+        phaseTwoCurveControl = target.position().add(random.nextDouble() - 0.5, -2.0, random.nextDouble() - 0.5);
+        phaseTwoCurveEnd = target.position().add(horizontal.normalize().scale(10.0)).add(0.0, 2.0, 0.0);
         setDeltaMovement(Vec3.ZERO);
     }
 
     private void moveAlongPhaseTwoCurve(double progress) {
-        if (phaseTwoCurveStart == null
-                || phaseTwoCurveControl == null
-                || phaseTwoCurveEnd == null) {
+        if (phaseTwoCurveStart == null || phaseTwoCurveControl == null || phaseTwoCurveEnd == null) {
             return;
         }
         double t = Mth.clamp(progress, 0.0, 1.0);
@@ -467,9 +436,7 @@ public class BrainOfCthulhu extends BaseBoss {
         }
 
         for (Entity entity : List.copyOf(getSubEntities())) {
-            if (entity instanceof BrainFake fake
-                    && !fake.isRemoved()
-                    && fake.getOwner() == this) {
+            if (entity instanceof BrainFake fake && !fake.isRemoved() && fake.getOwner() == this) {
                 bindIllusion(fake);
             }
         }
@@ -498,8 +465,7 @@ public class BrainOfCthulhu extends BaseBoss {
         int slot = illusion.getIllusionIndex() - 1;
         if (slot >= 0 && slot < illusions.length) {
             BrainFake previous = illusions[slot];
-            if (previous == null || previous.isRemoved()
-                    || previous.getId() > illusion.getId()) {
+            if (previous == null || previous.isRemoved() || previous.getId() > illusion.getId()) {
                 illusions[slot] = illusion;
             } else if (previous != illusion && !illusion.isRemoved()) {
                 illusion.discard();
@@ -509,64 +475,36 @@ public class BrainOfCthulhu extends BaseBoss {
 
     void onIllusionRemoved(BrainFake illusion) {
         int slot = illusion.getIllusionIndex() - 1;
-        if (slot >= 0 && slot < illusions.length
-                && illusions[slot] == illusion) {
+        if (slot >= 0 && slot < illusions.length && illusions[slot] == illusion) {
             illusions[slot] = null;
         }
     }
 
     private void doTeleport() {
         double minimumRadius = isExpert() ? 7.0 : 9.0;
-        teleportAroundTarget(
-                minimumRadius, minimumRadius + 1.0,
-                0.0, Math.PI, 0.0, 16);
+        teleportAroundTarget(minimumRadius, minimumRadius + 1.0, 0.0, Math.PI, 0.0, 16);
     }
 
     /// 第二阶段在玩家较远处重新显现，并保留安全碰撞检查，避免传送进方块或贴到玩家脸上。
     private void doPhaseTwoTeleport() {
-        teleportAroundTarget(
-                10.0, 11.0,
-                Math.PI * 0.35, Math.PI * 0.65,
-                2.0, 24);
+        teleportAroundTarget(10.0, 11.0, Math.PI * 0.35, Math.PI * 0.65, 2.0, 24);
     }
 
     /// 保留 1.21 的球坐标取样范围，同时跳过会把实体放进方块或液体的位置。
-    private void teleportAroundTarget(
-            double minimumRadius,
-            double maximumRadius,
-            double minimumBeta,
-            double maximumBeta,
-            double verticalOffset,
-            int attempts) {
+    private void teleportAroundTarget(double minimumRadius, double maximumRadius, double minimumBeta, double maximumBeta, double verticalOffset, int attempts) {
         Player target = getTarget() instanceof Player player ? player : null;
         if (target == null || !(level() instanceof ServerLevel serverLevel)) return;
 
         for (int attempt = 0; attempt < attempts; attempt++) {
-            double radius = Mth.lerp(
-                    random.nextDouble(), minimumRadius, maximumRadius);
+            double radius = Mth.lerp(random.nextDouble(), minimumRadius, maximumRadius);
             double theta = random.nextDouble() * Mth.TWO_PI;
-            double beta = Mth.lerp(
-                    random.nextDouble(), minimumBeta, maximumBeta);
+            double beta = Mth.lerp(random.nextDouble(), minimumBeta, maximumBeta);
             double sinBeta = Math.sin(beta);
-            Vec3 destination = target.position().add(
-                    radius * sinBeta * Math.cos(theta),
-                    radius * Math.cos(beta) + verticalOffset,
-                    radius * sinBeta * Math.sin(theta));
-            destination = new Vec3(
-                    destination.x,
-                    Mth.clamp(
-                            destination.y,
-                            serverLevel.getMinBuildHeight() + 1.0,
-                            serverLevel.getMaxBuildHeight() - getBbHeight() - 1.0),
-                    destination.z);
+            Vec3 destination = target.position().add(radius * sinBeta * Math.cos(theta), radius * Math.cos(beta) + verticalOffset, radius * sinBeta * Math.sin(theta));
+            destination = new Vec3(destination.x, Mth.clamp(destination.y, serverLevel.getMinBuildHeight() + 1.0, serverLevel.getMaxBuildHeight() - getBbHeight() - 1.0), destination.z);
             BlockPos blockPosition = BlockPos.containing(destination);
-            AABB destinationBounds = getBoundingBox().move(
-                    destination.x - getX(),
-                    destination.y - getY(),
-                    destination.z - getZ());
-            if (serverLevel.hasChunkAt(blockPosition)
-                    && serverLevel.noCollision(this, destinationBounds)
-                    && !serverLevel.containsAnyLiquid(destinationBounds)) {
+            AABB destinationBounds = getBoundingBox().move(destination.x - getX(), destination.y - getY(), destination.z - getZ());
+            if (serverLevel.hasChunkAt(blockPosition) && serverLevel.noCollision(this, destinationBounds) && !serverLevel.containsAnyLiquid(destinationBounds)) {
                 teleportTo(destination.x, destination.y, destination.z);
                 return;
             }
@@ -576,16 +514,11 @@ public class BrainOfCthulhu extends BaseBoss {
     private List<VisualNeuron> findOwnedLoadedNeurons() {
         Set<VisualNeuron> found = new LinkedHashSet<>();
         for (Entity entity : getSubEntities()) {
-            if (entity instanceof VisualNeuron neuron
-                    && neuron.isAlive()
-                    && neuron.isOwnedBy(this)) {
+            if (entity instanceof VisualNeuron neuron && neuron.isAlive() && neuron.isOwnedBy(this)) {
                 found.add(neuron);
             }
         }
-        found.addAll(level().getEntitiesOfClass(
-                VisualNeuron.class,
-                getBoundingBox().inflate(96.0),
-                neuron -> neuron.isAlive() && neuron.isOwnedBy(this)));
+        found.addAll(level().getEntitiesOfClass(VisualNeuron.class, getBoundingBox().inflate(96.0), neuron -> neuron.isAlive() && neuron.isOwnedBy(this)));
         return List.copyOf(found);
     }
 
@@ -599,10 +532,7 @@ public class BrainOfCthulhu extends BaseBoss {
         activeNeuronUUIDs.remove(neuron.getUUID());
     }
 
-    public static void recordDetachedNeuronDeath(
-            ServerLevel level,
-            UUID ownerUUID,
-            UUID neuronUUID) {
+    public static void recordDetachedNeuronDeath(ServerLevel level, UUID ownerUUID, UUID neuronUUID) {
         BossChildDeathLedger.record(level, ownerUUID, neuronUUID);
     }
 
@@ -680,10 +610,8 @@ public class BrainOfCthulhu extends BaseBoss {
                     ? entityData.get(DATA_PHASE_TWO_STATE_TICKS)
                     : phaseTwoStateTicks) + partialTick;
             return switch (state) {
-                case FADING_OUT -> 1.0F - Mth.clamp(
-                        ticks / PHASE2_FADE_OUT_TICKS, 0.0F, 1.0F);
-                case FADING_IN -> Mth.clamp(
-                        ticks / PHASE2_FADE_OUT_TICKS, 0.0F, 1.0F);
+                case FADING_OUT -> 1.0F - Mth.clamp(ticks / PHASE2_FADE_OUT_TICKS, 0.0F, 1.0F);
+                case FADING_IN -> Mth.clamp(ticks / PHASE2_FADE_OUT_TICKS, 0.0F, 1.0F);
                 default -> 1.0F;
             };
         }
@@ -696,16 +624,13 @@ public class BrainOfCthulhu extends BaseBoss {
         return switch (state) {
             case SUMMONING -> Mth.clamp(tickCount / 51.0F, 0.0F, 1.0F);
             case APPROACHING -> 1.0F;
-            case FADING_OUT -> 1.0F - Mth.clamp(
-                    ticks / PHASE1_FADE_OUT_TICKS, 0.0F, 1.0F);
-            case FADING_IN -> Mth.clamp(
-                    ticks / PHASE1_FADE_IN_TICKS, 0.0F, 1.0F);
+            case FADING_OUT -> 1.0F - Mth.clamp(ticks / PHASE1_FADE_OUT_TICKS, 0.0F, 1.0F);
+            case FADING_IN -> Mth.clamp(ticks / PHASE1_FADE_IN_TICKS, 0.0F, 1.0F);
         };
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "Brain",
@@ -772,8 +697,7 @@ public class BrainOfCthulhu extends BaseBoss {
         phaseTwoStateTicks = Math.max(0, tag.getInt(PHASE_TWO_STATE_TICKS_TAG));
         phaseTwoDashRemaining = Math.max(0, tag.getInt(PHASE_TWO_DASH_REMAINING_TAG));
         // 曲线控制点不写入存档；恢复后从当前位置重新开始当前曲线段，避免跨版本坐标残留。
-        if (phaseTwoState == PhaseTwoState.STALKING
-                || phaseTwoState == PhaseTwoState.DASHING) {
+        if (phaseTwoState == PhaseTwoState.STALKING || phaseTwoState == PhaseTwoState.DASHING) {
             phaseTwoStateTicks = 0;
         }
         phaseTwoCurveStart = null;
@@ -781,10 +705,7 @@ public class BrainOfCthulhu extends BaseBoss {
         phaseTwoCurveEnd = null;
         phaseOneState = PhaseOneState.byId(tag.getInt(PHASE_ONE_STATE_TAG));
         phaseOneStateTicks = Math.max(0, tag.getInt(PHASE_ONE_STATE_TICKS_TAG));
-        phaseOneInertia = new Vec3(
-                tag.getDouble(PHASE_ONE_INERTIA_X_TAG),
-                tag.getDouble(PHASE_ONE_INERTIA_Y_TAG),
-                tag.getDouble(PHASE_ONE_INERTIA_Z_TAG));
+        phaseOneInertia = new Vec3(tag.getDouble(PHASE_ONE_INERTIA_X_TAG), tag.getDouble(PHASE_ONE_INERTIA_Y_TAG), tag.getDouble(PHASE_ONE_INERTIA_Z_TAG));
         entityData.set(DATA_PHASE_TWO, phase2);
         entityData.set(DATA_PHASE_TWO_STATE, phaseTwoState.id);
         entityData.set(DATA_PHASE_TWO_STATE_TICKS, phaseTwoStateTicks);

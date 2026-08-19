@@ -21,6 +21,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.whip.WhipDefinition;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
@@ -44,20 +45,13 @@ import java.util.*;
 /// 之后即使玩家移动或切换物品，也不会改变本次挥动的伤害、暴击或轨迹。服务端碰撞和客户端渲染都调用
 /// {@link #sampleWorldPoints(float)}，从根源上避免“看到的鞭子”和“实际命中区域”分离。</p>
 public final class WhipAttackEntity extends DamageSettableProjectile {
-    private static final EntityDataAccessor<ItemStack> WEAPON =
-            SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<Float> DIRECTION_X =
-            SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> DIRECTION_Y =
-            SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> DIRECTION_Z =
-            SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> RIGHT_ARM =
-            SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DURATION_TICKS =
-            SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> SWEEP_LEVEL =
-            SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<ItemStack> WEAPON = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<Float> DIRECTION_X = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DIRECTION_Y = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DIRECTION_Z = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> RIGHT_ARM = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DURATION_TICKS = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SWEEP_LEVEL = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.INT);
     /// 1.21 的轨迹以 16 个局部单位表示，因此每点鞭距属性对应 1.6 格世界距离。
     private static final double RANGE_ATTRIBUTE_SCALE = 1.6;
     public static final double RENDER_SEGMENT_SPACING = 0.22;
@@ -87,19 +81,11 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     }
 
     /// 在服务端发射时冻结本次挥动实际使用的攻速时长。
-    public void initialize(
-            ItemStack weapon,
-            Vec3 direction,
-            HumanoidArm arm,
-            int durationTicks
-    ) {
+    public void initialize(ItemStack weapon, Vec3 direction, HumanoidArm arm, int durationTicks) {
         if (!(weapon.getItem() instanceof BaseWhipItem)) {
             throw new IllegalArgumentException("Whip attack weapon must be a BaseWhipItem");
         }
-        if (!Double.isFinite(direction.x)
-                || !Double.isFinite(direction.y)
-                || !Double.isFinite(direction.z)
-                || direction.lengthSqr() <= 1.0E-12) {
+        if (!Double.isFinite(direction.x) || !Double.isFinite(direction.y) || !Double.isFinite(direction.z) || direction.lengthSqr() <= 1.0E-12) {
             throw new IllegalArgumentException("Whip attack direction must be finite and non-zero");
         }
         Vec3 normalized = direction.normalize();
@@ -112,8 +98,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             throw new IllegalArgumentException("Whip duration must be positive");
         }
         entityData.set(DURATION_TICKS, durationTicks);
-        int enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(
-                ModEnchantments.WHIP_SWEEP.get(), weapon);
+        int enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.WHIP_SWEEP.get(), weapon);
         entityData.set(
                 SWEEP_LEVEL,
                 enchantmentLevel > 0 && getRandom().nextFloat() < 0.2F
@@ -159,11 +144,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             return;
         }
         if (tickCount == (int) (durationTicks() * 0.3F)) {
-            owner.playSound(
-                    ModSoundEvents.WHIP_ATTACK.get(),
-                    0.6F + getRandom().nextFloat() * 0.2F,
-                    1.0F
-            );
+            owner.playSound(ModSoundEvents.WHIP_ATTACK.get(), 0.6F + getRandom().nextFloat() * 0.2F, 1.0F);
         }
         if (!level().isClientSide) {
             hitAlongCurrentCurve(owner, definition);
@@ -185,13 +166,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         }
         double denominator = Math.max(1, durationTicks() - drawBackTick);
         double progress = (tickCount - drawBackTick) / denominator;
-        Vec3 target = new Vec3(
-                owner.getX(),
-                owner.getY() + owner.getEyeHeight() * 0.5,
-                owner.getZ());
-        Vec3 returnStep = position().lerp(target, progress)
-                .subtract(position())
-                .scale(0.5);
+        Vec3 target = new Vec3(owner.getX(), owner.getY() + owner.getEyeHeight() * 0.5, owner.getZ());
+        Vec3 returnStep = position().lerp(target, progress).subtract(position()).scale(0.5);
         setDeltaMovement(Vec3.ZERO);
         setPos(getX() + returnStep.x, getY() + returnStep.y, getZ() + returnStep.z);
     }
@@ -205,11 +181,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         if (definition == null || owner == null) {
             return List.of(position());
         }
-        double progress = Mth.clamp(
-                (tickCount + partialTick) / durationTicks(),
-                0.0F,
-                1.0F
-        );
+        double progress = Mth.clamp((tickCount + partialTick) / durationTicks(), 0.0F, 1.0F);
         return sampleWorldPointsAtProgress(owner, definition, progress);
     }
 
@@ -265,10 +237,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             return points;
         }
         Vec3 origin = attackOrigin == null ? position() : attackOrigin;
-        Vec3 interpolatedPosition = new Vec3(
-                Mth.lerp(partialTick, xOld, getX()),
-                Mth.lerp(partialTick, yOld, getY()),
-                Mth.lerp(partialTick, zOld, getZ()));
+        Vec3 interpolatedPosition = new Vec3(Mth.lerp(partialTick, xOld, getX()), Mth.lerp(partialTick, yOld, getY()), Mth.lerp(partialTick, zOld, getZ()));
         Vec3 visibleOffset = interpolatedPosition.subtract(origin);
         ArrayList<Vec3> result = new ArrayList<>(points.size());
         result.add(points.get(0));
@@ -279,37 +248,21 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     }
 
     /// 将当前动画的少量控制点转换到世界坐标，供 1.21 方块命中语义使用。
-    private List<Vec3> sampleWorldControlPoints(
-            LivingEntity owner,
-            WhipDefinition definition
-    ) {
+    private List<Vec3> sampleWorldControlPoints(LivingEntity owner, WhipDefinition definition) {
         return sampleWorldControlPoints(owner, definition, 0.0F);
     }
 
-    private List<Vec3> sampleWorldControlPoints(
-            LivingEntity owner,
-            WhipDefinition definition,
-            float partialTick
-    ) {
-        double progress = Mth.clamp(
-                (tickCount + partialTick) / durationTicks(),
-                0.0,
-                1.0
-        );
+    private List<Vec3> sampleWorldControlPoints(LivingEntity owner, WhipDefinition definition, float partialTick) {
+        double progress = Mth.clamp((tickCount + partialTick) / durationTicks(), 0.0, 1.0);
         List<Vec3> localPoints = (
                 sweepLevel() > 0 ? WhipCurves.SWEEP : definition.curve()
         ).controlPoints(progress).stream()
-                .map(point -> point.scale(
-                        RANGE_ATTRIBUTE_SCALE * owner.getAttributeValue(
-                                ConfluenceMagicLib.WHIP_RANGE.get())))
+                .map(point -> point.scale(RANGE_ATTRIBUTE_SCALE * owner.getAttributeValue(ConfluenceMagicLib.WHIP_RANGE.get())))
                 .toList();
         return transformLocalPointsLike121(localPoints);
     }
 
-    private List<Vec3> transformLocalPoints(
-            LivingEntity owner,
-            List<Vec3> localPoints
-    ) {
+    private List<Vec3> transformLocalPoints(LivingEntity owner, List<Vec3> localPoints) {
         Vec3 forward = launchDirection();
         // Minecraft 面向 +Z 时，模型右手位于 -X，因此右向量必须使用 forward × up。
         Vec3 right = forward.cross(new Vec3(0.0, 1.0, 0.0));
@@ -323,10 +276,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         Vec3 origin = fixedOrigin;
         ArrayList<Vec3> result = new ArrayList<>(localPoints.size());
         for (Vec3 point : localPoints) {
-            result.add(origin
-                    .add(forward.scale(point.x))
-                    .add(up.scale(point.y))
-                    .add(right.scale(point.z)));
+            result.add(origin.add(forward.scale(point.x)).add(up.scale(point.y)).add(right.scale(point.z)));
         }
         return List.copyOf(result);
     }
@@ -378,10 +328,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             if (!(impacted instanceof LivingEntity target) || !canHitAgain(impacted.getUUID())) {
                 continue;
             }
-            if (!WhipCollisionGeometry.intersectsSweptCurve(
-                    previousCurve,
-                    currentCurve,
-                    rawTarget.getBoundingBox().inflate(radius))) {
+            if (!WhipCollisionGeometry.intersectsSweptCurve(previousCurve, currentCurve, rawTarget.getBoundingBox().inflate(radius))) {
                 continue;
             }
             if (!definition.penetratesBlocks() && !canReachTarget(owner, rawTarget)) {
@@ -410,66 +357,32 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     ///
     /// <p>方块扫描使用原始动画控制点而不是渲染插值点，否则提高鞭节精度会意外放大服务端工作量。
     /// 同一次挥动内按方块坐标去重，避免同一方块在相邻帧和相邻控制点被重复触发。</p>
-    private void hitBlocksAlongControlPoints(
-            LivingEntity owner,
-            WhipDefinition definition
-    ) {
+    private void hitBlocksAlongControlPoints(LivingEntity owner, WhipDefinition definition) {
         double radius = 1.5 + (sweepLevel() > 0 ? 0.5 : 0.0);
-        Direction direction = Direction.getNearest(
-                (float) launchDirection().x,
-                (float) launchDirection().y,
-                (float) launchDirection().z
-        );
+        Direction direction = Direction.getNearest((float) launchDirection().x, (float) launchDirection().y, (float) launchDirection().z);
         for (Vec3 point : sampleWorldControlPoints(owner, definition)) {
-            BlockPos min = BlockPos.containing(
-                    point.x - radius,
-                    point.y - radius,
-                    point.z - radius
-            );
-            BlockPos max = BlockPos.containing(
-                    point.x + radius,
-                    point.y + radius,
-                    point.z + radius
-            );
+            BlockPos min = BlockPos.containing(point.x - radius, point.y - radius, point.z - radius);
+            BlockPos max = BlockPos.containing(point.x + radius, point.y + radius, point.z + radius);
             for (BlockPos candidate : BlockPos.betweenClosed(min, max)) {
                 BlockPos blockPos = candidate.immutable();
                 if (!hitBlocks.add(blockPos)) {
                     continue;
                 }
                 BlockState state = level().getBlockState(blockPos);
-                state.onProjectileHit(
-                        level(),
-                        state,
-                        new BlockHitResult(
-                                blockPos.getCenter(),
-                                direction,
-                                blockPos,
-                                true
-                        ),
-                        this
-                );
+                state.onProjectileHit(level(), state, new BlockHitResult(blockPos.getCenter(), direction, blockPos, true), this);
             }
         }
     }
 
-    private void hitTarget(
-            LivingEntity owner,
-            Entity rawTarget,
-            LivingEntity target,
-            WhipDefinition definition
-    ) {
+    private void hitTarget(LivingEntity owner, Entity rawTarget, LivingEntity target, WhipDefinition definition) {
         if (!canHitAgain(target.getUUID())) {
             return;
         }
         float baseDamage = getDamage() > 0.0F ? getDamage() : definition.baseDamage();
-        float multiplier = Math.max(
-                definition.minimumDamageMultiplier(),
-                (float) Math.pow(definition.damageFalloff(), successfulHits)
-        );
+        float multiplier = Math.max(definition.minimumDamageMultiplier(), (float) Math.pow(definition.damageFalloff(), successfulHits));
         float damage = baseDamage * multiplier
                 * (1.0F + sweepLevel() * 0.2F);
-        if (!rawTarget.hurt(
-                damageSources().mobProjectile(this, owner), damage)) {
+        if (!rawTarget.hurt(LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), damage)) {
             return;
         }
         // 只有实际造成伤害后才消耗本次挥动的命中名额；被无敌帧或事件拒绝时，
@@ -480,8 +393,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             consumeDurabilityAfterFirstEnemyHit(player);
             player.setLastHurtMob(target);
             WhipTagTracker.apply(player, target, weapon(), definition.tagEffect().get());
-            WhipDirectHitContext context =
-                    new WhipDirectHitContext(player, target, weapon(), damage, hitIndex);
+            WhipDirectHitContext context = new WhipDirectHitContext(player, target, weapon(), damage, hitIndex);
             definition.directHitEffects().forEach(effect -> effect.apply(context));
         }
     }
@@ -505,48 +417,30 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
                 ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         ItemStack liveWeapon = player.getItemInHand(hand);
         ItemStack firedWeapon = weapon();
-        if (!liveWeapon.isDamageableItem()
-                || !ItemStack.isSameItemSameTags(liveWeapon, firedWeapon)) {
+        if (!liveWeapon.isDamageableItem() || !ItemStack.isSameItemSameTags(liveWeapon, firedWeapon)) {
             return;
         }
         EquipmentSlot slot = hand == InteractionHand.MAIN_HAND
                 ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-        liveWeapon.hurtAndBreak(
-                1, player, broken -> broken.broadcastBreakEvent(slot));
+        liveWeapon.hurtAndBreak(1, player, broken -> broken.broadcastBreakEvent(slot));
         durabilityConsumed = true;
     }
 
-    private boolean isFriendlySummon(
-            LivingEntity owner,
-            LivingEntity target,
-            WhipDefinition definition
-    ) {
-        if (definition.friendlyHitEffects().isEmpty()
-                || !(owner instanceof Player player)
-                || !(level() instanceof ServerLevel serverLevel)
-                || !(target instanceof OwnedSummon summon)) {
+    private boolean isFriendlySummon(LivingEntity owner, LivingEntity target, WhipDefinition definition) {
+        if (definition.friendlyHitEffects().isEmpty() || !(owner instanceof Player player) || !(level() instanceof ServerLevel serverLevel) || !(target instanceof OwnedSummon summon)) {
             return false;
         }
         return summon.resolveSummonOwner(serverLevel) == player;
     }
 
-    private boolean applyFriendlyHit(
-            LivingEntity owner,
-            LivingEntity target,
-            WhipDefinition definition
-    ) {
-        if (!isFriendlySummon(owner, target, definition)
-                || !(owner instanceof Player player)) {
+    private boolean applyFriendlyHit(LivingEntity owner, LivingEntity target, WhipDefinition definition) {
+        if (!isFriendlySummon(owner, target, definition) || !(owner instanceof Player player)) {
             return false;
         }
-        WhipFriendlyHitContext context =
-                new WhipFriendlyHitContext(player, target, weapon());
+        WhipFriendlyHitContext context = new WhipFriendlyHitContext(player, target, weapon());
         definition.friendlyHitEffects().forEach(effect -> effect.apply(context));
         float baseDamage = getDamage() > 0.0F ? getDamage() : definition.baseDamage();
-        target.hurt(
-                damageSources().mobProjectile(this, owner),
-                baseDamage * 0.2F
-        );
+        target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), baseDamage * 0.2F);
         return true;
     }
 
@@ -574,11 +468,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     }
 
     private Vec3 launchDirection() {
-        Vec3 direction = new Vec3(
-                entityData.get(DIRECTION_X),
-                entityData.get(DIRECTION_Y),
-                entityData.get(DIRECTION_Z)
-        );
+        Vec3 direction = new Vec3(entityData.get(DIRECTION_X), entityData.get(DIRECTION_Y), entityData.get(DIRECTION_Z));
         return direction.lengthSqr() <= 1.0E-12 ? new Vec3(0.0, 0.0, 1.0) : direction.normalize();
     }
 
@@ -595,19 +485,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         Entity owner = getOwner();
         int ownerId = owner == null ? 0 : owner.getId();
-        return new ClientboundAddEntityPacket(
-                getId(),
-                getUUID(),
-                getX(),
-                getY(),
-                getZ(),
-                getXRot(),
-                getYRot(),
-                getType(),
-                ownerId,
-                getDeltaMovement(),
-                0.0
-        );
+        return new ClientboundAddEntityPacket(getId(), getUUID(), getX(), getY(), getZ(), getXRot(), getYRot(), getType(), ownerId, getDeltaMovement(), 0.0);
     }
 
     @Override

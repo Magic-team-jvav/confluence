@@ -18,14 +18,11 @@ import java.util.Map;
 /// 不需要使用固定目录或物品同名约定。Forge 1.20.1 必须使用 {@code inventory} 变体
 /// 注册这类独立物品模型，否则模型烘焙器会把位置误当成方块状态。</p>
 public final class WhipSegmentModels {
-    private static final Map<ResourceLocation, ModelResourceLocation> MODELS =
-            new HashMap<>();
+    private static final Map<ResourceLocation, ModelResourceLocation> MODELS = new HashMap<>();
 
     private WhipSegmentModels() {}
 
-    public static void registerAdditionalModels(
-            PortModelEvent.RegisterAdditional event
-    ) {
+    public static void registerAdditionalModels(PortModelEvent.RegisterAdditional event) {
         MODELS.clear();
         ForgeRegistries.ITEMS.getValues().stream()
                 .filter(BaseWhipItem.class::isInstance)
@@ -41,19 +38,12 @@ public final class WhipSegmentModels {
                 : Minecraft.getInstance().getModelManager().getModel(model);
     }
 
-    private static void registerSegment(
-            PortModelEvent.RegisterAdditional event,
-            WhipSegment segment
-    ) {
+    private static void registerSegment(PortModelEvent.RegisterAdditional event, WhipSegment segment) {
         registerModel(event, segment.model());
-        segment.optionalTipModel().ifPresent(
-                tip -> registerModel(event, tip));
+        segment.optionalTipModel().ifPresent(tip -> registerModel(event, tip));
     }
 
-    private static void registerModel(
-            PortModelEvent.RegisterAdditional event,
-            ResourceLocation location
-    ) {
+    private static void registerModel(PortModelEvent.RegisterAdditional event, ResourceLocation location) {
         MODELS.computeIfAbsent(location, ignored -> {
             ModelResourceLocation model = inventoryLocation(location);
             event.register(model);
@@ -66,18 +56,13 @@ public final class WhipSegmentModels {
     /// <p>例如 {@code confluence:item/whip_segments/snapthorn} 在 1.20.1 中必须注册成
     /// {@code confluence:whip_segments/snapthorn#inventory}。若保留 {@code item/} 前缀，
     /// 模型烘焙器会再次补上物品目录并静默返回缺失模型。</p>
-    private static ModelResourceLocation inventoryLocation(
-            ResourceLocation location
-    ) {
+    private static ModelResourceLocation inventoryLocation(ResourceLocation location) {
         String path = location.getPath();
         String prefix = "item/";
         if (!path.startsWith(prefix) || path.length() == prefix.length()) {
-            throw new IllegalArgumentException(
-                    "Whip segment model must use an item model path: " + location);
+            throw new IllegalArgumentException("Whip segment model must use an item model path: " + location);
         }
-        ResourceLocation itemModel = ResourceLocation.fromNamespaceAndPath(
-                location.getNamespace(),
-                path.substring(prefix.length()));
+        ResourceLocation itemModel = ResourceLocation.fromNamespaceAndPath(location.getNamespace(), path.substring(prefix.length()));
         return new ModelResourceLocation(itemModel, "inventory");
     }
 }

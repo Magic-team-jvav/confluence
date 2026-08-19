@@ -6,12 +6,8 @@ import net.minecraft.util.RandomSource;
 ///
 /// <p>这个定义只描述枪械数据，不负责创建具体实体；服务端发射流程会根据它解释为单发、
 /// 带重力弹丸，或霰弹式多弹丸。</p>
-public record GunProjectilePattern(
-        Type type,
-        float gravity,
-        int minProjectiles,
-        int maxProjectiles
-) {
+public record GunProjectilePattern(Type type, float gravity, int minProjectiles,
+                                   int maxProjectiles) {
     public GunProjectilePattern {
         if (type == null) {
             throw new IllegalArgumentException("projectile pattern type is required");

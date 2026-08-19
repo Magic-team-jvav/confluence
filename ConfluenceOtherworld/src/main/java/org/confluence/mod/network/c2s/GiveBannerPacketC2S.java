@@ -39,11 +39,7 @@ public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
         if (entry == null || !entry.isCompleted()) return;
 
         ItemStack stack = ModItems.ENEMY_BANNER.get().getDefaultInstance();
-        stack.set(
-                ConfluenceMagicLib.NBT,
-                NbtComponent.create(tag -> tag.putString(
-                        AbstractEnemyBannerBlock.TAG_ENTRY_KEY,
-                        key)));
+        stack.set(ConfluenceMagicLib.NBT, NbtComponent.create(tag -> tag.putString(AbstractEnemyBannerBlock.TAG_ENTRY_KEY, key)));
         player.addItem(stack);
     }
 

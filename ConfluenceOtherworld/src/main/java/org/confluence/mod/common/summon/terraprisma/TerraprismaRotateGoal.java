@@ -19,9 +19,7 @@ final class TerraprismaRotateGoal extends TerraprismaSkillGoal {
 
     @Override
     public void tick() {
-        summon.moveTo(new SummonPose(
-                summon.position().add(summon.velocity()), summon.currentPose().yaw(),
-                summon.currentPose().pitch(), summon.currentPose().roll()));
+        summon.moveTo(new SummonPose(summon.position().add(summon.velocity()), summon.currentPose().yaw(), summon.currentPose().pitch(), summon.currentPose().roll()));
         elapsedTicks++;
     }
 

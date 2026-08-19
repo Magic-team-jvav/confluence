@@ -154,19 +154,12 @@ public enum GlobalCloakData implements IGlobalData {
         }
         int decodedVersion = tag.getInt("Version");
         if (decodedVersion != VERSION) {
-            throw new IllegalArgumentException(
-                    "Unsupported global cloak data version: " + decodedVersion);
+            throw new IllegalArgumentException("Unsupported global cloak data version: " + decodedVersion);
         }
         Map<BlockState, BooleanObjectPair<BlockState>> decodedBlocks =
-                PortDataResultExtension.getOrThrow(
-                        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")),
-                        message -> new IllegalArgumentException(
-                                "Failed to decode cloaked block data: " + message));
+                PortDataResultExtension.getOrThrow(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")), message -> new IllegalArgumentException("Failed to decode cloaked block data: " + message));
         Map<Item, BooleanObjectPair<Item>> decodedItems =
-                PortDataResultExtension.getOrThrow(
-                        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")),
-                        message -> new IllegalArgumentException(
-                                "Failed to decode cloaked item data: " + message));
+                PortDataResultExtension.getOrThrow(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")), message -> new IllegalArgumentException("Failed to decode cloaked item data: " + message));
         this.blockMap = new IdentityHashMap<>(decodedBlocks);
         this.itemMap = new IdentityHashMap<>(decodedItems);
         this.version = decodedVersion;
@@ -175,14 +168,8 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("BlockMap", PortDataResultExtension.getOrThrow(
-                BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap),
-                message -> new IllegalStateException(
-                        "Failed to encode cloaked block data: " + message)));
-        tag.put("ItemMap", PortDataResultExtension.getOrThrow(
-                ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap),
-                message -> new IllegalStateException(
-                        "Failed to encode cloaked item data: " + message)));
+        tag.put("BlockMap", PortDataResultExtension.getOrThrow(BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap), message -> new IllegalStateException("Failed to encode cloaked block data: " + message)));
+        tag.put("ItemMap", PortDataResultExtension.getOrThrow(ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap), message -> new IllegalStateException("Failed to encode cloaked item data: " + message)));
         tag.putInt("Version", version);
     }
 
@@ -212,9 +199,7 @@ public enum GlobalCloakData implements IGlobalData {
     }
 
     /// 在客户端主线程一次性替换网络同步的伪装映射。
-    public void applyNetworkState(
-            Map<BlockState, BooleanObjectPair<BlockState>> blocks,
-            Map<Item, BooleanObjectPair<Item>> items) {
+    public void applyNetworkState(Map<BlockState, BooleanObjectPair<BlockState>> blocks, Map<Item, BooleanObjectPair<Item>> items) {
         this.blockMap = new IdentityHashMap<>(blocks);
         this.itemMap = new IdentityHashMap<>(items);
     }

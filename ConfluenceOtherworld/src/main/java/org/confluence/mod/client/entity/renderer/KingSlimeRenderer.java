@@ -16,17 +16,13 @@ import org.confluence.mod.common.entity.boss.KingSlime;
 /// <p>1.21 侧使用原版史莱姆的内核、面部和半透明外壳，再在顶部单独绘制王冠。1.20
 /// 重写后的实体不再继承原版史莱姆，因此这里复用本体已有的史莱姆模型，并直接读取同步的
 /// 连续尺寸。不能用尖刺史莱姆骨骼代替身体，否则客户端只会看到王冠和少量装饰骨骼。</p>
-public final class KingSlimeRenderer
-        extends MobRenderer<KingSlime, BaseSlimeModel<KingSlime>> {
+public final class KingSlimeRenderer extends MobRenderer<KingSlime, BaseSlimeModel<KingSlime>> {
     private final CrownOfKingSlimeModel crownModel;
 
     public KingSlimeRenderer(EntityRendererProvider.Context context) {
-        super(context,
-                new BaseSlimeModel<>(context.bakeLayer(BaseSlimeModel.INNER_LAYER)),
-                0.25F);
+        super(context, new BaseSlimeModel<>(context.bakeLayer(BaseSlimeModel.INNER_LAYER)), 0.25F);
         addLayer(new BaseSlimeOuterLayer<>(this, context.getModelSet()));
-        this.crownModel = new CrownOfKingSlimeModel(
-                context.bakeLayer(CrownOfKingSlimeModel.LAYER_LOCATION));
+        this.crownModel = new CrownOfKingSlimeModel(context.bakeLayer(CrownOfKingSlimeModel.LAYER_LOCATION));
     }
 
     @Override
@@ -35,18 +31,13 @@ public final class KingSlimeRenderer
     }
 
     @Override
-    public void render(KingSlime slime, float entityYaw, float partialTick, PoseStack poseStack,
-                       MultiBufferSource buffer, int packedLight) {
+    public void render(KingSlime slime, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0.0F, 0.9F + slime.getDimensions(slime.getPose()).height, 0.0F);
         float bodyRotation = Mth.lerp(partialTick, slime.yBodyRotO, slime.yBodyRot);
-        poseStack.mulPose(CrownOfKingSlimeModelRenderer.FLIP_Y
-                .rotateY(bodyRotation * Mth.DEG_TO_RAD + Mth.PI, new org.joml.Quaternionf()));
+        poseStack.mulPose(CrownOfKingSlimeModelRenderer.FLIP_Y.rotateY(bodyRotation * Mth.DEG_TO_RAD + Mth.PI, new org.joml.Quaternionf()));
         poseStack.translate(0.0F, 1.0F, 0.0F);
-        crownModel.renderToBuffer(poseStack,
-                buffer.getBuffer(CrownOfKingSlimeModel.RENDER_TYPE),
-                packedLight, OverlayTexture.NO_OVERLAY,
-                1.0F, 1.0F, 1.0F, 1.0F);
+        crownModel.renderToBuffer(poseStack, buffer.getBuffer(CrownOfKingSlimeModel.RENDER_TYPE), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(slime, entityYaw, partialTick, poseStack, buffer, packedLight);
     }
@@ -57,9 +48,7 @@ public final class KingSlimeRenderer
         float squish = Mth.lerp(partialTick, slime.getOldSquish(), slime.getSquish())
                 / (visualSize * 0.5F + 1.0F);
         float inverse = 1.0F / (squish + 1.0F);
-        poseStack.scale(inverse * visualSize,
-                visualSize / inverse,
-                inverse * visualSize);
+        poseStack.scale(inverse * visualSize, visualSize / inverse, inverse * visualSize);
         shadowRadius = visualSize * 0.25F;
     }
 }

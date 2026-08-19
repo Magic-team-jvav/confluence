@@ -26,8 +26,7 @@ public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier
         this.gravity = gravity;
     }
 
-    public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, Level level, double x, double y, double z,
-                              ItemStack bullet, float gravity) {
+    public CustomBulletEntity(EntityType<? extends BaseBulletEntity> type, Level level, double x, double y, double z, ItemStack bullet, float gravity) {
         super(type, level, x, y, z, bullet);
         this.gravity = gravity;
     }

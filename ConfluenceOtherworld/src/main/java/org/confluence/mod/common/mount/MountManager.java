@@ -42,22 +42,14 @@ public final class MountManager {
         }
     }
 
-    private static void summon(
-            ServerPlayer player,
-            MountItem<?> item,
-            boolean slotBound
-    ) {
-        if (player.getVehicle() != null || !player.isAlive()
-                || player.isSpectator()) {
+    private static void summon(ServerPlayer player, MountItem<?> item, boolean slotBound) {
+        if (player.getVehicle() != null || !player.isAlive() || player.isSpectator()) {
             return;
         }
 
-        AbstractMountEntity mount = item.entityType().create(
-                player.serverLevel());
+        AbstractMountEntity mount = item.entityType().create(player.serverLevel());
         if (mount == null) {
-            throw new IllegalStateException(
-                    "Mount entity type failed to create an entity: "
-                            + item.entityType());
+            throw new IllegalStateException("Mount entity type failed to create an entity: " + item.entityType());
         }
         mount.initialize(player, slotBound);
         if (!player.serverLevel().addFreshEntity(mount)) {
@@ -80,9 +72,7 @@ public final class MountManager {
         if (!(player.getVehicle() instanceof AbstractMountEntity mount)) {
             return;
         }
-        if (!player.isAlive() || player.isSpectator()
-                || mount.getOwnerUUID() == null
-                || !mount.getOwnerUUID().equals(player.getUUID())) {
+        if (!player.isAlive() || player.isSpectator() || mount.getOwnerUUID() == null || !mount.getOwnerUUID().equals(player.getUUID())) {
             dismiss(player);
             return;
         }
@@ -91,17 +81,14 @@ public final class MountManager {
         }
 
         ItemStack stack = ExtraInventory.of(player).getMount(false);
-        if (!(stack.getItem() instanceof MountItem<?> item)
-                || item.entityType() != mount.getType()) {
+        if (!(stack.getItem() instanceof MountItem<?> item) || item.entityType() != mount.getType()) {
             dismiss(player);
         }
     }
 
     /// 清理玩家当前拥有并骑乘的临时坐骑。
     public static void dismiss(ServerPlayer player) {
-        if (!(player.getVehicle() instanceof AbstractMountEntity mount)
-                || mount.getOwnerUUID() == null
-                || !mount.getOwnerUUID().equals(player.getUUID())) {
+        if (!(player.getVehicle() instanceof AbstractMountEntity mount) || mount.getOwnerUUID() == null || !mount.getOwnerUUID().equals(player.getUUID())) {
             return;
         }
         player.stopRiding();

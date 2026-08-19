@@ -19,52 +19,31 @@ import net.minecraft.world.level.Level;
 /// <p>默认主手物品属于实体自身的稳定配置。注册新的人形变种时只需传入物品和
 /// 音效档案，不需要再在注册事件或生成回调中重复设置装备。</p>
 public class HumanoidWarriorMonster extends BaseWarriorMonster {
-    public HumanoidWarriorMonster(
-            EntityType<? extends HumanoidWarriorMonster> type,
-            Level level,
-            ItemStack defaultMainHand) {
+    public HumanoidWarriorMonster(EntityType<? extends HumanoidWarriorMonster> type, Level level, ItemStack defaultMainHand) {
         this(type, level, defaultMainHand, LandSoundProfile.ROUTINE);
     }
 
-    public HumanoidWarriorMonster(
-            EntityType<? extends HumanoidWarriorMonster> type,
-            Level level,
-            ItemStack defaultMainHand,
-            LandSoundProfile soundProfile) {
-        this(type, level, defaultMainHand, soundProfile,
-                LandAnimationProfile.WALK_IDLE);
+    public HumanoidWarriorMonster(EntityType<? extends HumanoidWarriorMonster> type, Level level, ItemStack defaultMainHand, LandSoundProfile soundProfile) {
+        this(type, level, defaultMainHand, soundProfile, LandAnimationProfile.WALK_IDLE);
     }
 
     /// 创建由指定客户端动画方案驱动的人形怪物。
     ///
     /// <p>使用原版人形桥接模型的实体传入 {@link LandAnimationProfile#NONE}；仍使用自身
     /// GeckoLib 动画资源的哥布林继续沿用 {@link LandAnimationProfile#WALK_IDLE}。</p>
-    public HumanoidWarriorMonster(
-            EntityType<? extends HumanoidWarriorMonster> type,
-            Level level,
-            ItemStack defaultMainHand,
-            LandSoundProfile soundProfile,
-            LandAnimationProfile animationProfile) {
+    public HumanoidWarriorMonster(EntityType<? extends HumanoidWarriorMonster> type, Level level, ItemStack defaultMainHand, LandSoundProfile soundProfile, LandAnimationProfile animationProfile) {
         super(type, level, 0.0, animationProfile, soundProfile);
         ItemStack equipment = defaultMainHand.copy();
         if (!equipment.isEmpty()) {
-            setItemSlot(EquipmentSlot.MAINHAND,
-                    equipment);
+            setItemSlot(EquipmentSlot.MAINHAND, equipment);
         }
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
-                this, IronGolem.class, true));
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
-                this,
-                Turtle.class,
-                10,
-                true,
-                false,
-                Turtle.BABY_ON_LAND_SELECTOR));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
     }
 
     @Override

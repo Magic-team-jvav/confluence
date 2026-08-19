@@ -45,22 +45,17 @@ public class LavaSlime extends BaseSlime {
     @Override
     protected void tickDeath() {
         super.tickDeath();
-        if (!(level() instanceof ServerLevel serverLevel)
-                || !LibUtils.isAtLeastExpert(serverLevel, blockPosition())) {
+        if (!(level() instanceof ServerLevel serverLevel) || !LibUtils.isAtLeastExpert(serverLevel, blockPosition())) {
             return;
         }
 
         BlockPos pos = BlockPos.containing(position());
         BlockState state = serverLevel.getBlockState(pos);
-        if (!state.canBeReplaced(Fluids.LAVA)
-                || state.getFluidState().isSourceOfType(Fluids.LAVA)) {
+        if (!state.canBeReplaced(Fluids.LAVA) || state.getFluidState().isSourceOfType(Fluids.LAVA)) {
             return;
         }
 
-        serverLevel.setBlock(
-                pos,
-                Blocks.LAVA.defaultBlockState().setValue(BlockStateProperties.LEVEL, 14),
-                Block.UPDATE_ALL);
+        serverLevel.setBlock(pos, Blocks.LAVA.defaultBlockState().setValue(BlockStateProperties.LEVEL, 14), Block.UPDATE_ALL);
         serverLevel.scheduleTick(pos, Blocks.LAVA, 2);
     }
 }

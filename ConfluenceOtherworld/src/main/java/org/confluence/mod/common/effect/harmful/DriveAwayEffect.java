@@ -55,10 +55,7 @@ public class DriveAwayEffect extends PortMobEffect {
     }
 
     private void applyDriveAway(LivingEntity entity, int amplifier) {
-        if (!(entity instanceof FlyingAnimal
-                || entity instanceof FlyingMob
-                || entity instanceof Harpy)
-                || !(entity instanceof Mob mob)) {
+        if (!(entity instanceof FlyingAnimal || entity instanceof FlyingMob || entity instanceof Harpy) || !(entity instanceof Mob mob)) {
             return;
         }
         mob.setTarget(null);
@@ -68,12 +65,10 @@ public class DriveAwayEffect extends PortMobEffect {
         Vec3 movement = entity.getDeltaMovement();
         if (movement.lengthSqr() < 1.0E-6) {
             double angle = entity.getRandom().nextDouble() * Math.PI * 2.0;
-            movement = new Vec3(
-                    Math.cos(angle), 0.15, Math.sin(angle));
+            movement = new Vec3(Math.cos(angle), 0.15, Math.sin(angle));
         }
         if (movement.length() < minimumSpeed) {
-            entity.setDeltaMovement(
-                    movement.normalize().scale(minimumSpeed));
+            entity.setDeltaMovement(movement.normalize().scale(minimumSpeed));
             entity.hasImpulse = true;
         }
     }

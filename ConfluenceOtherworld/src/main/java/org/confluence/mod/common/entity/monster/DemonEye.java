@@ -60,9 +60,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseFlyingMonster.createFlyingAttributes()
-                .add(Attributes.ATTACK_DAMAGE, 18.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
+        return BaseFlyingMonster.createFlyingAttributes().add(Attributes.ATTACK_DAMAGE, 18.0).add(Attributes.KNOCKBACK_RESISTANCE, 0.0);
     }
 
     /// 恶魔眼始终使用飞行物理。这里直接返回无重力语义，与 1.21 侧一致，避免命令生成或
@@ -115,15 +113,9 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     @Override
     protected BTRoot createBT() {
         surroundAction = new DemonEyeSurroundAction(this);
-        BTNode night = new ConditionalSwitchNode(
-                () -> getTarget() != null && getTarget().isAlive(),
-                surroundAction,
-                new DemonEyeWanderAction(this));
+        BTNode night = new ConditionalSwitchNode(() -> getTarget() != null && getTarget().isAlive(), surroundAction, new DemonEyeWanderAction(this));
 
-        BTNode root = new ConditionalSwitchNode(
-                () -> level().isDay(),
-                new DemonEyeLeaveAction(this),
-                night);
+        BTNode root = new ConditionalSwitchNode(() -> level().isDay(), new DemonEyeLeaveAction(this), night);
 
         return new BTRoot() {
             @Override
@@ -166,9 +158,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData data,
-                                        @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
         if (tag == null || !tag.contains(VARIANT_KEY)) {
             setVariant(Variant.random(random));
@@ -190,8 +180,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         Vec3 movement = getDeltaMovement();
         if (movement.lengthSqr() > 1.0E-8) {
             setYRot((float) Math.toDegrees(Mth.atan2(-movement.x, movement.z)));
-            setXRot((float) Math.toDegrees(Mth.atan2(
-                    movement.y, movement.horizontalDistance())));
+            setXRot((float) Math.toDegrees(Mth.atan2(movement.y, movement.horizontalDistance())));
         }
     }
 
@@ -220,13 +209,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         public final int armor;
         private final float scale;
 
-        Variant(
-                String name,
-                boolean large,
-                double health,
-                double damage,
-                int armor,
-                float scale) {
+        Variant(String name, boolean large, double health, double damage, int armor, float scale) {
             this.name = name;
             this.large = large;
             this.health = health;
@@ -258,8 +241,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
         @Override
         public ResourceLocation modelPath() {
-            return Confluence.asResource(
-                    "geo/entity/demon_eye.geo.json");
+            return Confluence.asResource("geo/entity/demon_eye.geo.json");
         }
 
         @Override
@@ -269,8 +251,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         }
 
         public ResourceLocation animationPath() {
-            return Confluence.asResource(
-                    "animations/entity/demon_eye.animation.json");
+            return Confluence.asResource("animations/entity/demon_eye.animation.json");
         }
 
         public static Variant byId(int id) {

@@ -145,8 +145,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     @Override
     public void remove(RemovalReason reason) {
-        if (level() instanceof ServerLevel serverLevel
-                && (reason == RemovalReason.DISCARDED || reason.shouldDestroy())) {
+        if (level() instanceof ServerLevel serverLevel && (reason == RemovalReason.DISCARDED || reason.shouldDestroy())) {
             // Boss 永久离场后不会再消费从属死亡邮箱，必须同时清除其持久化记录。
             BossChildDeathLedger.clear(serverLevel, getUUID());
         }
@@ -156,8 +155,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
                 /// 区块卸载时只清理可重建的临时部件；主动撤离和真正销毁必须
                 /// 清理全部尚未移除的从属。不能用 isAlive() 过滤，因为已经
                 /// 进入死亡动画但仍留在世界中的从属同样属于本场遭遇。
-                if (!part.isRemoved() && (part instanceof BaseBossPart<?>
-                        || reason == RemovalReason.DISCARDED || reason.shouldDestroy())) {
+                if (!part.isRemoved() && (part instanceof BaseBossPart<?> || reason == RemovalReason.DISCARDED || reason.shouldDestroy())) {
                     part.remove(reason);
                 }
             }
@@ -284,9 +282,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             return;
         }
 
-        if (++noTargetTicks > DISENGAGE_TICKS
-                && CommonConfigs.BOSS_CLEAR_WHEN_NO_TARGET.get()
-                && shouldDiscardWhenNoTarget()) {
+        if (++noTargetTicks > DISENGAGE_TICKS && CommonConfigs.BOSS_CLEAR_WHEN_NO_TARGET.get() && shouldDiscardWhenNoTarget()) {
             onDisengageComplete();
         }
     }
@@ -306,8 +302,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         double maximumAggro = Double.NEGATIVE_INFINITY;
         List<Player> maximumPlayers = new ArrayList<>();
         for (Player player : candidates) {
-            if (!isEligibleRetargetCandidate(player)
-                    || distanceToSqr(player) >= rangeSqr) continue;
+            if (!isEligibleRetargetCandidate(player) || distanceToSqr(player) >= rangeSqr) continue;
             var aggro = player.getAttribute(ConfluenceMagicLib.AGGRO.get());
             double value = aggro == null ? 0.0D : aggro.getValue();
             int comparison = Double.compare(value, maximumAggro);
@@ -420,25 +415,17 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// <p>这里不能使用世界高度图：高度图只返回整列最高表面，地下 Boss 会因此穿出洞穴或
     /// 竞技场。候选点以目标当前高度为中心，并同时检查区块加载、实体碰撞和液体占用；
     /// 找不到安全位置时返回 {@code null}，调用方应保持原位等待下一次尝试。</p>
-    protected final @Nullable Vec3 findFlyingTeleportPosition(
-            LivingEntity target, double minimumRadius, double maximumRadius,
-            double verticalRadius, int attempts) {
+    protected final @Nullable Vec3 findFlyingTeleportPosition(LivingEntity target, double minimumRadius, double maximumRadius, double verticalRadius, int attempts) {
         if (!(level() instanceof ServerLevel serverLevel)) return null;
         for (int attempt = 0; attempt < attempts; attempt++) {
             double angle = random.nextDouble() * Mth.TWO_PI;
             double radius = Mth.lerp(random.nextDouble(), minimumRadius, maximumRadius);
             double x = target.getX() + Math.cos(angle) * radius;
-            double y = Mth.clamp(
-                    target.getY() + Mth.lerp(random.nextDouble(), -verticalRadius, verticalRadius),
-                    serverLevel.getMinBuildHeight() + 1.0,
-                    serverLevel.getMaxBuildHeight() - getBbHeight() - 1.0);
+            double y = Mth.clamp(target.getY() + Mth.lerp(random.nextDouble(), -verticalRadius, verticalRadius), serverLevel.getMinBuildHeight() + 1.0, serverLevel.getMaxBuildHeight() - getBbHeight() - 1.0);
             double z = target.getZ() + Math.sin(angle) * radius;
             BlockPos blockPos = BlockPos.containing(x, y, z);
-            AABB destinationBounds = getBoundingBox().move(
-                    x - getX(), y - getY(), z - getZ());
-            if (serverLevel.hasChunkAt(blockPos)
-                    && serverLevel.noCollision(this, destinationBounds)
-                    && !serverLevel.containsAnyLiquid(destinationBounds)) {
+            AABB destinationBounds = getBoundingBox().move(x - getX(), y - getY(), z - getZ());
+            if (serverLevel.hasChunkAt(blockPos) && serverLevel.noCollision(this, destinationBounds) && !serverLevel.containsAnyLiquid(destinationBounds)) {
                 return new Vec3(x, y, z);
             }
         }
@@ -496,10 +483,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             double x = getX() + (random.nextDouble() - 0.5) * getBbWidth();
             double y = getY() + random.nextDouble() * getBbHeight();
             double z = getZ() + (random.nextDouble() - 0.5) * getBbWidth();
-            level().addParticle(particle, x, y, z,
-                    random.nextGaussian() * speed * radius,
-                    random.nextGaussian() * speed,
-                    random.nextGaussian() * speed * radius);
+            level().addParticle(particle, x, y, z, random.nextGaussian() * speed * radius, random.nextGaussian() * speed, random.nextGaussian() * speed * radius);
         }
     }
 

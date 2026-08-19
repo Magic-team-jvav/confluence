@@ -12,7 +12,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 public enum ShootPacketC2S implements IPortPacket.C2S {
     INSTANCE;
 
-    public static final ResourceLocation ID = Confluence.asResource("gun_shoot");
+    public static final ResourceLocation ID = Confluence.asResource("shoot");
     public static final PortStreamCodec<ByteBuf, ShootPacketC2S> STREAM_CODEC = PortStreamCodec.unit(INSTANCE);
 
     @Override

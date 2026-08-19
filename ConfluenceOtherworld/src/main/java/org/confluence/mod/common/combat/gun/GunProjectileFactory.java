@@ -25,11 +25,8 @@ public final class GunProjectileFactory {
         projectiles = event.getProjectiles();
         projectiles.removeIf(Objects::isNull);
         projectiles.forEach(projectile -> configureProjectile(context, projectile));
-        int spawned = 0;
-        for (Projectile projectile : projectiles) {
-            if (context.level().addFreshEntity(projectile)) spawned++;
-        }
-        return spawned;
+        projectiles.forEach(context.level()::addFreshEntity);
+        return projectiles.size();
     }
 
     public static List<BaseBulletEntity> create(ShotContext context, GunProjectilePattern pattern) {
@@ -68,8 +65,6 @@ public final class GunProjectileFactory {
         bullet.setDamage(context.damage());
         bullet.setKnockback(context.knockback());
         bullet.setPenetrate(context.penetrate());
-        String color = ((BaseGun) context.gun().getItem()).getColorID();
-        if (!color.isEmpty()) bullet.setColorID(color);
         Vec3 direction = shooter.getViewVector(1.0F);
         bullet.shoot(direction.x, direction.y, direction.z, speed, inaccuracy);
         bullet.setInitialVelocity(bullet.getDeltaMovement());

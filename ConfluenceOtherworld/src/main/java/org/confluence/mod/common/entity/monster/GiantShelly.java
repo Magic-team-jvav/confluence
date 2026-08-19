@@ -34,36 +34,20 @@ public final class GiantShelly extends BaseMonster {
     private static final String PHASE_TAG = "Phase";
     private static final String PHASE_TICKS_TAG = "PhaseTicks";
     private static final String VARIANT_TAG = "Variant";
-    private static final UUID SHELL_ARMOR_UUID =
-            UUID.fromString("a7cb55a9-27cf-4dad-a5c1-56fc96c504ea");
-    private static final AttributeModifier SHELL_ARMOR =
-            new AttributeModifier(
-                    SHELL_ARMOR_UUID,
-                    "Giant shelly shell armor",
-                    2.0,
-                    AttributeModifier.Operation.ADDITION);
-    private static final EntityDataAccessor<Integer> PHASE =
-            SynchedEntityData.defineId(
-                    GiantShelly.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> VARIANT =
-            SynchedEntityData.defineId(
-                    GiantShelly.class, EntityDataSerializers.INT);
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation ENTER_SHELL =
-            RawAnimation.begin().thenPlayAndHold("shrinking_shell");
-    private static final RawAnimation ROLL =
-            RawAnimation.begin().thenLoop("turn");
-    private static final RawAnimation RECOVER =
-            RawAnimation.begin().thenPlayAndHold("turn2");
+    private static final UUID SHELL_ARMOR_UUID = UUID.fromString("a7cb55a9-27cf-4dad-a5c1-56fc96c504ea");
+    private static final AttributeModifier SHELL_ARMOR = new AttributeModifier(SHELL_ARMOR_UUID, "Giant shelly shell armor", 2.0, AttributeModifier.Operation.ADDITION);
+    private static final EntityDataAccessor<Integer> PHASE = SynchedEntityData.defineId(GiantShelly.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(GiantShelly.class, EntityDataSerializers.INT);
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation ENTER_SHELL = RawAnimation.begin().thenPlayAndHold("shrinking_shell");
+    private static final RawAnimation ROLL = RawAnimation.begin().thenLoop("turn");
+    private static final RawAnimation RECOVER = RawAnimation.begin().thenPlayAndHold("turn2");
     private int phaseTicks;
     private boolean variantInitialized;
     private int collisionAttackTicks = 20;
     private Vec3 wanderTarget;
 
-    public GiantShelly(
-            EntityType<? extends GiantShelly> type,
-            Level level) {
+    public GiantShelly(EntityType<? extends GiantShelly> type, Level level) {
         super(type, level);
     }
 
@@ -145,17 +129,11 @@ public final class GiantShelly extends BaseMonster {
             getNavigation().moveTo(target, 1.0);
             return;
         }
-        if (wanderTarget == null
-                || position().distanceToSqr(wanderTarget) < 1.0
-                || phaseTicks % 40 == 0) {
+        if (wanderTarget == null || position().distanceToSqr(wanderTarget) < 1.0 || phaseTicks % 40 == 0) {
             wanderTarget = LandRandomPos.getPos(this, 15, 7);
         }
         if (wanderTarget != null) {
-            getNavigation().moveTo(
-                    wanderTarget.x,
-                    wanderTarget.y,
-                    wanderTarget.z,
-                    1.0);
+            getNavigation().moveTo(wanderTarget.x, wanderTarget.y, wanderTarget.z, 1.0);
         }
     }
 
@@ -167,8 +145,7 @@ public final class GiantShelly extends BaseMonster {
         if (target == null || !target.isAlive()) {
             return;
         }
-        Vec3 direction = target.position().add(0.0, 1.0, 0.0)
-                .subtract(position());
+        Vec3 direction = target.position().add(0.0, 1.0, 0.0).subtract(position());
         if (direction.lengthSqr() > 1.0E-8) {
             setDeltaMovement(direction.scale(0.5));
             hasImpulse = true;
@@ -188,10 +165,7 @@ public final class GiantShelly extends BaseMonster {
             return;
         }
 
-        var players = level().getEntitiesOfClass(
-                Player.class,
-                getBoundingBox().inflate(1.0),
-                player -> player.isAlive() && canAttack(player));
+        var players = level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(1.0), player -> player.isAlive() && canAttack(player));
         if (players.isEmpty()) {
             collisionAttackTicks = 1;
             return;
@@ -263,8 +237,7 @@ public final class GiantShelly extends BaseMonster {
         super.readAdditionalSaveData(tag);
         Phase[] phases = Phase.values();
         int savedPhase = tag.getInt(PHASE_TAG);
-        setPhase(phases[Math.max(
-                0, Math.min(savedPhase, phases.length - 1))]);
+        setPhase(phases[Math.max(0, Math.min(savedPhase, phases.length - 1))]);
         phaseTicks = Math.max(0, tag.getInt(PHASE_TICKS_TAG));
         setVariant(tag.getInt(VARIANT_TAG));
         variantInitialized = true;
@@ -288,8 +261,7 @@ public final class GiantShelly extends BaseMonster {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "phase",

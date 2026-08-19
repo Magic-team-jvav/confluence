@@ -30,9 +30,7 @@ public class JewelSquirrel extends Squirrel {
     /// <p>这里显式覆盖普通松鼠的后代工厂，避免附属模组或运行时繁殖调用
     /// 把宝石松鼠错误地转换成普通松鼠。</p>
     @Override
-    public JewelSquirrel getBreedOffspring(
-            ServerLevel level,
-            AgeableMob otherParent) {
+    public JewelSquirrel getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         return CritterEntities.JEWEL_SQUIRREL.get().create(level);
     }
 }

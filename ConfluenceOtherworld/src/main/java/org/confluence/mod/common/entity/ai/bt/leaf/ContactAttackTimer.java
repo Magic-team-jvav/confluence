@@ -15,21 +15,15 @@ final class ContactAttackTimer {
     private final int attackInterval;
     private int remainingTicks;
 
-    ContactAttackTimer(
-            double contactInflation,
-            int detectionInterval,
-            int attackInterval) {
+    ContactAttackTimer(double contactInflation, int detectionInterval, int attackInterval) {
         if (contactInflation < 0.0) {
-            throw new IllegalArgumentException(
-                    "Contact inflation must not be negative");
+            throw new IllegalArgumentException("Contact inflation must not be negative");
         }
         if (detectionInterval <= 0) {
-            throw new IllegalArgumentException(
-                    "Detection interval must be positive");
+            throw new IllegalArgumentException("Detection interval must be positive");
         }
         if (attackInterval <= 0) {
-            throw new IllegalArgumentException(
-                    "Attack interval must be positive");
+            throw new IllegalArgumentException("Attack interval must be positive");
         }
         this.contactInflation = contactInflation;
         this.detectionInterval = detectionInterval;

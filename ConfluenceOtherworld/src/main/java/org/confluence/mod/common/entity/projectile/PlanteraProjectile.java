@@ -20,36 +20,20 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
     private final Variant variant;
     private int remainingBounces = 4;
 
-    public PlanteraProjectile(
-            EntityType<? extends PlanteraProjectile> type,
-            Level level,
-            Variant variant) {
+    public PlanteraProjectile(EntityType<? extends PlanteraProjectile> type, Level level, Variant variant) {
         super(type, level);
         this.variant = variant;
     }
 
     /// 按当前目标位置快照一条弹道。
-    public void configure(
-            Mob owner,
-            LivingEntity target,
-            float damage,
-            float velocity,
-            float inaccuracy) {
+    public void configure(Mob owner, LivingEntity target, float damage, float velocity, float inaccuracy) {
         if (variant == Variant.SPORE) {
-            Vec3 origin = new Vec3(
-                    owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-            Vec3 horizontalAim = target.position()
-                    .subtract(origin)
-                    .multiply(1.0, 0.0, 1.0);
+            Vec3 origin = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
+            Vec3 horizontalAim = target.position().subtract(origin).multiply(1.0, 0.0, 1.0);
             Vec3 initialVelocity = horizontalAim.lengthSqr() < 1.0E-8
                     ? Vec3.ZERO
                     : horizontalAim.normalize().scale(velocity);
-            super.configure(
-                    owner,
-                    origin,
-                    initialVelocity,
-                    damage,
-                    100);
+            super.configure(owner, origin, initialVelocity, damage, 100);
             return;
         }
         super.configure(
@@ -70,8 +54,7 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
-        if (variant != Variant.THORN_BALL
-                || remainingBounces-- <= 0) {
+        if (variant != Variant.THORN_BALL || remainingBounces-- <= 0) {
             super.onHitBlock(result);
             return;
         }
@@ -85,9 +68,7 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
         double z = direction.getAxis() == Direction.Axis.Z
                 ? -velocity.z : velocity.z;
         setDeltaMovement(new Vec3(x, y, z).scale(0.78));
-        setPos(result.getLocation().add(
-                Vec3.atLowerCornerOf(direction.getNormal())
-                        .scale(0.08)));
+        setPos(result.getLocation().add(Vec3.atLowerCornerOf(direction.getNormal()).scale(0.08)));
     }
 
     @Override
@@ -97,20 +78,13 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
             return;
         }
         for (int index = 0; index < 3; index++) {
-            level().addParticle(
-                    variant.particle,
-                    getRandomX(0.3),
-                    getRandomY(),
-                    getRandomZ(0.3),
-                    0.0, 0.0, 0.0);
+            level().addParticle(variant.particle, getRandomX(0.3), getRandomY(), getRandomZ(0.3), 0.0, 0.0, 0.0);
         }
     }
 
     public enum Variant {
-        SEED(new DustParticleOptions(
-                new Vector3f(0.25F, 0.85F, 0.12F), 1.0F)),
-        THORN_BALL(new DustParticleOptions(
-                new Vector3f(0.1F, 0.5F, 0.08F), 1.35F)),
+        SEED(new DustParticleOptions(new Vector3f(0.25F, 0.85F, 0.12F), 1.0F)),
+        THORN_BALL(new DustParticleOptions(new Vector3f(0.1F, 0.5F, 0.08F), 1.35F)),
         SPORE(ParticleTypes.SPORE_BLOSSOM_AIR);
 
         private final ParticleOptions particle;

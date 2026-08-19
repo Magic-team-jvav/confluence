@@ -16,10 +16,7 @@ public final class FlyingPursuitAction extends BTNode {
     private final double acceleration;
     private final double maxSpeed;
 
-    public FlyingPursuitAction(
-            PathfinderMob mob,
-            double acceleration,
-            double maxSpeed) {
+    public FlyingPursuitAction(PathfinderMob mob, double acceleration, double maxSpeed) {
         this.mob = mob;
         this.acceleration = acceleration;
         this.maxSpeed = maxSpeed;
@@ -34,9 +31,7 @@ public final class FlyingPursuitAction extends BTNode {
 
         Vec3 offset = target.getEyePosition().subtract(mob.getEyePosition());
         if (offset.lengthSqr() > 1.0E-6) {
-            Vec3 velocity = mob.getDeltaMovement()
-                    .scale(0.96)
-                    .add(offset.normalize().scale(acceleration));
+            Vec3 velocity = mob.getDeltaMovement().scale(0.96).add(offset.normalize().scale(acceleration));
             if (velocity.lengthSqr() > maxSpeed * maxSpeed) {
                 velocity = velocity.normalize().scale(maxSpeed);
             }

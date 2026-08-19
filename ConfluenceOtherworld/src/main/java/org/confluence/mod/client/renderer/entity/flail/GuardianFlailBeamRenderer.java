@@ -15,21 +15,13 @@ import org.confluence.mod.common.entity.flail.GuardianFlailEntity;
 
 /// 使用原版守卫者光束纹理渲染链锤与同步目标之间的实体光束。
 public final class GuardianFlailBeamRenderer {
-    private static final ResourceLocation BEAM_TEXTURE =
-            ResourceLocation.withDefaultNamespace(
-                    "textures/entity/guardian_beam.png");
-    private static final RenderType BEAM_RENDER_TYPE =
-            RenderType.entityCutoutNoCull(BEAM_TEXTURE);
+    private static final ResourceLocation BEAM_TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/guardian_beam.png");
+    private static final RenderType BEAM_RENDER_TYPE = RenderType.entityCutoutNoCull(BEAM_TEXTURE);
 
     private GuardianFlailBeamRenderer() {
     }
 
-    public static void render(
-            GuardianFlailEntity entity,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            float partialTick
-    ) {
+    public static void render(GuardianFlailEntity entity, PoseStack poseStack, MultiBufferSource bufferSource, float partialTick) {
         float warmup = entity.getAttackProgress(partialTick);
         float intensity = warmup * warmup;
         int red;
@@ -48,26 +40,12 @@ public final class GuardianFlailBeamRenderer {
 
         Vec3 renderPosition = entity.getPosition(partialTick);
         for (LivingEntity target : entity.getBeamTargets()) {
-            Vec3 beam = target.getBoundingBox().getCenter()
-                    .subtract(renderPosition);
-            renderSingleBeam(
-                    poseStack,
-                    bufferSource,
-                    new Vec3(0.0, 0.25, 0.0),
-                    beam,
-                    color,
-                    entity.tickCount + partialTick);
+            Vec3 beam = target.getBoundingBox().getCenter().subtract(renderPosition);
+            renderSingleBeam(poseStack, bufferSource, new Vec3(0.0, 0.25, 0.0), beam, color, entity.tickCount + partialTick);
         }
     }
 
-    private static void renderSingleBeam(
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            Vec3 source,
-            Vec3 beam,
-            int color,
-            float time
-    ) {
+    private static void renderSingleBeam(PoseStack poseStack, MultiBufferSource bufferSource, Vec3 source, Vec3 beam, int color, float time) {
         double length = beam.length();
         if (length < 0.01) {
             return;
@@ -82,18 +60,15 @@ public final class GuardianFlailBeamRenderer {
         Vec3 direction = beam.normalize();
         float pitch = (float) Math.acos(direction.y);
         float yaw = (float) Math.atan2(direction.z, direction.x);
-        poseStack.mulPose(Axis.YP.rotationDegrees(
-                ((float) Math.PI / 2.0F - yaw) * Mth.RAD_TO_DEG));
-        poseStack.mulPose(Axis.XP.rotationDegrees(
-                pitch * Mth.RAD_TO_DEG));
+        poseStack.mulPose(Axis.YP.rotationDegrees(((float) Math.PI / 2.0F - yaw) * Mth.RAD_TO_DEG));
+        poseStack.mulPose(Axis.XP.rotationDegrees(pitch * Mth.RAD_TO_DEG));
 
         float end = (float) length + 1.0F;
         float rotation = time * -0.075F;
         float startV = -1.0F + time * 0.5F % 1.0F;
         float endV = end * 2.5F + startV;
         PoseStack.Pose pose = poseStack.last();
-        VertexConsumer consumer =
-                bufferSource.getBuffer(BEAM_RENDER_TYPE);
+        VertexConsumer consumer = bufferSource.getBuffer(BEAM_RENDER_TYPE);
 
         float firstX = Mth.cos(rotation + (float) Math.PI) * 0.2F;
         float firstZ = Mth.sin(rotation + (float) Math.PI) * 0.2F;
@@ -104,23 +79,15 @@ public final class GuardianFlailBeamRenderer {
         float fourthX = Mth.cos(rotation + Mth.HALF_PI * 3.0F) * 0.2F;
         float fourthZ = Mth.sin(rotation + Mth.HALF_PI * 3.0F) * 0.2F;
 
-        vertex(consumer, pose, firstX, end, firstZ,
-                red, green, blue, 0.4999F, endV);
-        vertex(consumer, pose, firstX, 0.0F, firstZ,
-                red, green, blue, 0.4999F, startV);
-        vertex(consumer, pose, secondX, 0.0F, secondZ,
-                red, green, blue, 0.0F, startV);
-        vertex(consumer, pose, secondX, end, secondZ,
-                red, green, blue, 0.0F, endV);
+        vertex(consumer, pose, firstX, end, firstZ, red, green, blue, 0.4999F, endV);
+        vertex(consumer, pose, firstX, 0.0F, firstZ, red, green, blue, 0.4999F, startV);
+        vertex(consumer, pose, secondX, 0.0F, secondZ, red, green, blue, 0.0F, startV);
+        vertex(consumer, pose, secondX, end, secondZ, red, green, blue, 0.0F, endV);
 
-        vertex(consumer, pose, thirdX, end, thirdZ,
-                red, green, blue, 0.4999F, endV);
-        vertex(consumer, pose, thirdX, 0.0F, thirdZ,
-                red, green, blue, 0.4999F, startV);
-        vertex(consumer, pose, fourthX, 0.0F, fourthZ,
-                red, green, blue, 0.0F, startV);
-        vertex(consumer, pose, fourthX, end, fourthZ,
-                red, green, blue, 0.0F, endV);
+        vertex(consumer, pose, thirdX, end, thirdZ, red, green, blue, 0.4999F, endV);
+        vertex(consumer, pose, thirdX, 0.0F, thirdZ, red, green, blue, 0.4999F, startV);
+        vertex(consumer, pose, fourthX, 0.0F, fourthZ, red, green, blue, 0.0F, startV);
+        vertex(consumer, pose, fourthX, end, fourthZ, red, green, blue, 0.0F, endV);
         // 封住光束末端，避免从目标方向观察时看到中空截面。
         float endFrameV = ((int) time & 1) == 0 ? 0.5F : 0.0F;
         float endFirstX = Mth.cos(rotation + 2.3561945F) * 0.282F;
@@ -132,29 +99,14 @@ public final class GuardianFlailBeamRenderer {
         float endFourthX = Mth.cos(rotation + 5.4977875F) * 0.282F;
         float endFourthZ = Mth.sin(rotation + 5.4977875F) * 0.282F;
 
-        vertex(consumer, pose, endFirstX, end, endFirstZ,
-                red, green, blue, 0.5F, endFrameV + 0.5F);
-        vertex(consumer, pose, endSecondX, end, endSecondZ,
-                red, green, blue, 1.0F, endFrameV + 0.5F);
-        vertex(consumer, pose, endFourthX, end, endFourthZ,
-                red, green, blue, 1.0F, endFrameV);
-        vertex(consumer, pose, endThirdX, end, endThirdZ,
-                red, green, blue, 0.5F, endFrameV);
+        vertex(consumer, pose, endFirstX, end, endFirstZ, red, green, blue, 0.5F, endFrameV + 0.5F);
+        vertex(consumer, pose, endSecondX, end, endSecondZ, red, green, blue, 1.0F, endFrameV + 0.5F);
+        vertex(consumer, pose, endFourthX, end, endFourthZ, red, green, blue, 1.0F, endFrameV);
+        vertex(consumer, pose, endThirdX, end, endThirdZ, red, green, blue, 0.5F, endFrameV);
         poseStack.popPose();
     }
 
-    private static void vertex(
-            VertexConsumer consumer,
-            PoseStack.Pose pose,
-            float x,
-            float y,
-            float z,
-            int red,
-            int green,
-            int blue,
-            float u,
-            float v
-    ) {
+    private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, float x, float y, float z, int red, int green, int blue, float u, float v) {
         consumer.vertex(pose.pose(), x, y, z)
                 .color(red, green, blue, 255)
                 .uv(u, v)

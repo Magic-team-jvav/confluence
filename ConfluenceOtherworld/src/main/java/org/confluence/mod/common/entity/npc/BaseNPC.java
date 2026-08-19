@@ -65,10 +65,8 @@ import java.util.Map;
 /// 全部报价，旅商等具有随机库存的 NPC 可以覆盖该选择步骤。</p>
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("move.walk");
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
 
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 

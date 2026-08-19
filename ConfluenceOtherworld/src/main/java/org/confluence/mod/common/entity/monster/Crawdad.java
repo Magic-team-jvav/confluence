@@ -16,13 +16,9 @@ import software.bernie.geckolib.core.object.PlayState;
 /// 具有红、蓝两种外观并会中距离跃击的龙虾。
 public final class Crawdad extends BaseWarriorMonster {
     private static final String VARIANT_TAG = "Variant";
-    private static final EntityDataAccessor<Integer> VARIANT =
-            SynchedEntityData.defineId(
-                    Crawdad.class, EntityDataSerializers.INT);
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation ATTACK =
-            RawAnimation.begin().thenPlay("attack");
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Crawdad.class, EntityDataSerializers.INT);
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack");
     private boolean variantInitialized;
 
     public Crawdad(EntityType<? extends Crawdad> type, Level level) {
@@ -85,8 +81,7 @@ public final class Crawdad extends BaseWarriorMonster {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "movement_and_attack",

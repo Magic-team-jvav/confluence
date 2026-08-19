@@ -17,11 +17,18 @@ import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 @SuppressWarnings("all")
 public interface Immunity {
+    ThreadLocal<Deque<Immunity>> EXPLICIT_CAUSES = ThreadLocal.withInitial(ArrayDeque::new);
+
     static @Nullable Immunity getCause(DamageSource damageSource) {
+        Deque<Immunity> causes = EXPLICIT_CAUSES.get();
+        if (!causes.isEmpty()) return causes.peek();
         Entity directEntity = damageSource.getDirectEntity();
         ItemStack weaponItemStack = damageSource.getWeaponItem();
         if (weaponItemStack != null) {
@@ -71,6 +78,19 @@ public interface Immunity {
         int duration = cause.confluence$getImmunityDuration(damageSource);
         if (duration > 0) {
             ILivingEntity.of(victim).confluence$getImmunityTicks().put(cause, duration);
+        }
+    }
+
+    /// 在同步伤害结算期间显式指定局部无敌帧来源。
+    /// 非实体运行对象不能写入 DamageSource 的直接实体字段，通过这个作用域仍可复用全局受伤事件与无敌帧存储。
+    static <T> T withCause(Immunity cause, Supplier<T> action) {
+        Deque<Immunity> causes = EXPLICIT_CAUSES.get();
+        causes.push(cause);
+        try {
+            return action.get();
+        } finally {
+            causes.pop();
+            if (causes.isEmpty()) EXPLICIT_CAUSES.remove();
         }
     }
 

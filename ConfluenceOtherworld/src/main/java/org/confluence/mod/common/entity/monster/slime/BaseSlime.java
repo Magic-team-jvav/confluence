@@ -54,8 +54,7 @@ public class BaseSlime extends BaseMonster {
         this(type, level, slimeColor, passiveByDay, 2);
     }
 
-    public BaseSlime(EntityType<? extends BaseSlime> type, Level level,
-                     int slimeColor, boolean passiveByDay, int size) {
+    public BaseSlime(EntityType<? extends BaseSlime> type, Level level, int slimeColor, boolean passiveByDay, int size) {
         super(type, level);
         this.slimeColor = slimeColor;
         this.passiveByDay = passiveByDay;
@@ -73,15 +72,8 @@ public class BaseSlime extends BaseMonster {
         super.registerGoals();
         targetSelector.removeAllGoals(goal -> true);
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(
-                this,
-                Player.class,
-                10,
-                true,
-                false,
-                this::canProactivelyTargetPlayer));
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
-                this, IronGolem.class, true));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, 10, true, false, this::canProactivelyTargetPlayer));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 
     /// 判断玩家是否满足史莱姆的主动索敌条件；受击反击不经过此方法。
@@ -146,25 +138,16 @@ public class BaseSlime extends BaseMonster {
     /// <p>生物群系数据只决定某种史莱姆能否进入候选列表；亮度、高度、昼夜和露天条件仍在
     /// 此处统一判定。未列入任何分支的类型保持不可自然生成，包括虽然注册了放置规则、但
     /// 1.21 当前没有为其提供有效环境分支的青团史莱姆。</p>
-    public static boolean checkSlimeSpawn(EntityType<? extends Mob> type,
-                                          ServerLevelAccessor level,
-                                          MobSpawnType spawnType,
-                                          BlockPos pos,
-                                          RandomSource random) {
-        if (!(level instanceof Level world)
-                || !SpawnPlacementChecks.checkMonsterSpawnRules(
-                type, level, spawnType, pos, random)) {
+    public static boolean checkSlimeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!(level instanceof Level world) || !SpawnPlacementChecks.checkMonsterSpawnRules(type, level, spawnType, pos, random)) {
             return false;
         }
 
         int y = pos.getY();
-        if (type == MonsterEntities.YELLOW_SLIME.get()
-                || type == MonsterEntities.RED_SLIME.get()
-                || type == MonsterEntities.DESERT_SLIME.get()) {
+        if (type == MonsterEntities.YELLOW_SLIME.get() || type == MonsterEntities.RED_SLIME.get() || type == MonsterEntities.DESERT_SLIME.get()) {
             return level.getBrightness(LightLayer.SKY, pos) == 0 && y >= 0 && y < 40;
         }
-        if (type == MonsterEntities.BLACK_SLIME.get()
-                || type == MonsterEntities.DUNGEON_SLIME.get()) {
+        if (type == MonsterEntities.BLACK_SLIME.get() || type == MonsterEntities.DUNGEON_SLIME.get()) {
             return level.getBrightness(LightLayer.SKY, pos) == 0 && y <= 40;
         }
         if (type == MonsterEntities.LAVA_SLIME.get()) {
@@ -259,8 +242,7 @@ public class BaseSlime extends BaseMonster {
                 return BTStatus.RUNNING;
             }
 
-            if (!slime.isPassenger()
-                    && (slime.onGround() || slime.hasEffect(net.minecraft.world.effect.MobEffects.LEVITATION))) {
+            if (!slime.isPassenger() && (slime.onGround() || slime.hasEffect(net.minecraft.world.effect.MobEffects.LEVITATION))) {
                 if (--directionChangeDelay <= 0) {
                     directionChangeDelay = 40 + slime.getRandom().nextInt(60);
                     idleDirection = slime.getRandom().nextInt(360);
@@ -307,8 +289,7 @@ public class BaseSlime extends BaseMonster {
             }
 
             operation = Operation.WAIT;
-            float speed = (float) (speedModifier
-                    * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
+            float speed = (float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
             if (!mob.onGround()) {
                 mob.setSpeed(speed);
                 return;
@@ -321,11 +302,7 @@ public class BaseSlime extends BaseMonster {
                     jumpDelay /= 3;
                 }
                 slime.getJumpControl().jump();
-                slime.playSound(
-                        SoundEvents.SLIME_JUMP,
-                        slime.getSoundVolume(),
-                        ((slime.getRandom().nextFloat() - slime.getRandom().nextFloat())
-                                * 0.2F + 1.0F) * 0.8F);
+                slime.playSound(SoundEvents.SLIME_JUMP, slime.getSoundVolume(), ((slime.getRandom().nextFloat() - slime.getRandom().nextFloat()) * 0.2F + 1.0F) * 0.8F);
                 return;
             }
 
@@ -351,22 +328,15 @@ public class BaseSlime extends BaseMonster {
 
     /// 对目标造成接触伤害。
     protected void dealContactDamage(LivingEntity target) {
-        if (!level().isClientSide
-                && isAlive()
-                && isEffectiveAi()
-                && isWithinMeleeAttackRange(target)
-                && hasLineOfSight(target)
-                && doHurtTarget(target)) {
-            playSound(SoundEvents.SLIME_ATTACK, 1.0F,
-                    (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+        if (!level().isClientSide && isAlive() && isEffectiveAi() && isWithinMeleeAttackRange(target) && hasLineOfSight(target) && doHurtTarget(target)) {
+            playSound(SoundEvents.SLIME_ATTACK, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
     }
 
     /// 每秒检查一次蜂蜜浸泡状态。只有 1.21 侧明确支持的绿、蓝、紫三种史莱姆参与转化，
     /// 离开蜂蜜后进度立即清零；完成时由服务端原位替换为二号蜂蜜史莱姆。
     private void updateHoneySoaking() {
-        if (!canConvertFromHoney()
-                || !level().getBlockState(blockPosition()).is(ModTags.Blocks.HONEY)) {
+        if (!canConvertFromHoney() || !level().getBlockState(blockPosition()).is(ModTags.Blocks.HONEY)) {
             honeySoakTime = 0;
             return;
         }
@@ -469,8 +439,7 @@ public class BaseSlime extends BaseMonster {
 
     // === 属性工厂方法 ===
 
-    protected static AttributeSupplier.Builder createSlimeAttributes(
-            float attackDamage, int armor, float maxHealth) {
+    protected static AttributeSupplier.Builder createSlimeAttributes(float attackDamage, int armor, float maxHealth) {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, maxHealth)
                 .add(Attributes.ATTACK_DAMAGE, attackDamage)

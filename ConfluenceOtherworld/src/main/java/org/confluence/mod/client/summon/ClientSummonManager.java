@@ -12,21 +12,22 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.WalkAnimationState;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.client.model.entity.projectile.HornetStingerProjectileModel;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.common.summon.SummonAnimation;
+import org.confluence.mod.common.summon.projectile.SummonProjectileTypes;
 import org.confluence.mod.network.s2c.SummonSyncPacketS2C;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -36,20 +37,22 @@ import java.util.*;
 
 /// 保存服务端同步的召唤物状态，并在世界渲染阶段绘制对应的客户端表现。
 /// 召唤物逻辑仍由服务端驱动；客户端只负责插值、拖尾、待机编队和模型动画。
-/// 跟随玩家的召唤剑会直接使用玩家的渲染插值坐标，避免服务端同步间隔导致奔跑时模型和玩家拉开。
 public final class ClientSummonManager {
     private static final ResourceLocation TERRAPRISMA = Confluence.asResource("terraprisma");
     private static final ResourceLocation TERRAPRISMA_TEXTURE = Confluence.asResource("textures/entity/model/terraprisma_gray.png");
-    private static final float BACK_SWORD_TILT = 25.0F;
-    private static final float BACK_SWORD_SWING_DEGREES = 4.0F;
-    private static final float TERRAPRISMA_BACK_TILT = 25.0F;
-    private static final float TERRAPRISMA_BACK_SWING_DEGREES = 7.0F;
+    private static final ResourceLocation HORNET_STINGER = SummonProjectileTypes.HORNET_STINGER.id();
+    private static final ResourceLocation IMP_FIREBALL = SummonProjectileTypes.IMP_FIREBALL.id();
+    private static final ResourceLocation STINGER_TEXTURE = Confluence.asResource("textures/entity/model/stinger.png");
+    private static final int BACK_TRANSITION_TICKS = 20;
+    private static final double INTERPOLATION_TICKS = 1.0;
+    private static final double TELEPORT_DISTANCE_SQR = 16.0 * 16.0;
     private static final Map<UUID, State> STATES = new HashMap<>();
     private static final Map<UUID, ClientSummonVisual> GEO_VISUALS = new HashMap<>();
     private static final Map<UUID, ClientStardustDragonVisual> STARDUST_DRAGON_VISUALS = new HashMap<>();
     private static final Map<ResourceLocation, ClientSummonGeoRenderer> GEO_RENDERERS = new HashMap<>();
     private static final ClientStardustDragonRenderer STARDUST_DRAGON_RENDERER = new ClientStardustDragonRenderer();
     private static TerraprismaModel terraprismaModel;
+    private static HornetStingerProjectileModel hornetStingerModel;
     private static ClientIronGolemRenderer ironGolemRenderer;
 
     private ClientSummonManager() {}
@@ -95,7 +98,11 @@ public final class ClientSummonManager {
         MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
         RenderType terraprismaRenderType = RenderType.energySwirl(TERRAPRISMA_TEXTURE, 0.0F, 0.0F);
         for (State state : STATES.values()) {
-            if (state.current.type().equals(TERRAPRISMA)) {
+            if (state.current.type().equals(HORNET_STINGER)) {
+                renderHornetStinger(state, event, buffers);
+            } else if (state.current.type().equals(IMP_FIREBALL)) {
+                continue;
+            } else if (state.current.type().equals(TERRAPRISMA)) {
                 renderTerraprisma(state, event, buffers, terraprismaRenderType);
                 if (!state.current.followingOwner())
                     renderTrail(state, event, buffers, 0.25F, state.rgb());
@@ -111,12 +118,10 @@ public final class ClientSummonManager {
                 renderIronGolemVisual(state, event, buffers);
             }
         }
-        buffers.endBatch(terraprismaRenderType);
-        buffers.endBatch(RenderStateShardAccessor.TRAIL_RENDER_TYPE);
+        buffers.endBatch();
     }
 
-    private static void renderGeoVisual(State state, PortRenderLevelStageEvent event,
-                                        MultiBufferSource bufferSource) {
+    private static void renderGeoVisual(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null) {
@@ -124,17 +129,20 @@ public final class ClientSummonManager {
         }
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         Vec3 position = state.interpolatedPosition(partialTick);
-        ClientSummonVisual visual = GEO_VISUALS.computeIfAbsent(state.current.id(), id ->
-                new ClientSummonVisual(id, state.current.type()));
-        visual.update(state.current.animation(), state.current.position().distanceToSqr(state.previous.position()) > 1.0E-5,
-                state.lastUpdate + partialTick);
+        ClientSummonVisual visual = GEO_VISUALS.computeIfAbsent(state.current.id(), id -> new ClientSummonVisual(id, state.current.type()));
+        visual.update(state.current.animation(), state.current.position().distanceToSqr(state.previous.position()) > 1.0E-5, state.lastUpdate + partialTick);
         Vec3 camera = event.getCamera().getPosition();
         int packedLight = LevelRenderer.getLightColor(level, BlockPos.containing(position));
         PoseStack poseStack = event.getPoseStack();
         poseStack.pushPose();
         poseStack.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
-        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - state.interpolatedYaw(partialTick)));
-        poseStack.mulPose(Axis.XP.rotationDegrees(state.interpolatedPitch(partialTick)));
+        float yaw = state.interpolatedYaw(partialTick);
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
+        if (rotatesWithPitch(state.current.type())) {
+            double radians = yaw * Mth.DEG_TO_RAD;
+            poseStack.mulPose(Axis.of(new Vector3f((float) Math.cos(radians), 0.0F, (float) Math.sin(radians)))
+                    .rotationDegrees(state.interpolatedPitch(partialTick)));
+        }
         poseStack.scale(state.current.scale(), state.current.scaleY(), state.current.scale());
         GEO_RENDERERS.computeIfAbsent(state.current.type(), ClientSummonGeoRenderer::new)
                 .render(poseStack, visual, bufferSource, null, null, packedLight);
@@ -149,8 +157,33 @@ public final class ClientSummonManager {
         };
     }
 
-    private static void renderIronGolemVisual(State state, PortRenderLevelStageEvent event,
-                                              MultiBufferSource bufferSource) {
+    private static void renderHornetStinger(State state, PortRenderLevelStageEvent event,
+                                            MultiBufferSource bufferSource) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level == null) return;
+        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        Vec3 position = state.interpolatedPosition(partialTick);
+        Vec3 camera = event.getCamera().getPosition();
+        PoseStack poseStack = event.getPoseStack();
+        poseStack.pushPose();
+        poseStack.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
+        poseStack.mulPose(Axis.YP.rotationDegrees(-state.interpolatedYaw(partialTick)));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(state.interpolatedPitch(partialTick)));
+        int packedLight = LevelRenderer.getLightColor(minecraft.level, BlockPos.containing(position));
+        HornetStingerProjectileModel model = hornetStingerModel(minecraft.getEntityModels());
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(STINGER_TEXTURE)),
+                packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        poseStack.popPose();
+    }
+
+    private static boolean rotatesWithPitch(ResourceLocation type) {
+        return switch (type.getPath()) {
+            case "finch_baby", "hornet_baby", "sculk_wisp", "summon_imp" -> true;
+            default -> false;
+        };
+    }
+
+    private static void renderIronGolemVisual(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null) {
@@ -172,33 +205,25 @@ public final class ClientSummonManager {
         poseStack.popPose();
     }
 
-    private static void renderSummonSword(State state, PortRenderLevelStageEvent event,
-                                          MultiBufferSource bufferSource) {
+    private static void renderSummonSword(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) {
             return;
         }
-        Player owner = minecraft.level.getPlayerByUUID(state.ownerId);
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         Vec3 position = state.interpolatedPosition(partialTick);
-        if (state.current.followingOwner() && owner != null) {
-            position = summonSwordBackAnchor(owner, state.current.order(), partialTick);
-        }
         PoseStack poseStack = event.getPoseStack();
         poseStack.pushPose();
         Vec3 camera = event.getCamera().getPosition();
         poseStack.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
-        if (state.current.followingOwner() && owner != null) {
-            applySummonSwordBackPose(poseStack, state, owner, partialTick);
-        } else {
-            poseStack.mulPose(Axis.YN.rotationDegrees(state.interpolatedYaw(partialTick) - 90.0F));
-            poseStack.mulPose(Axis.ZN.rotationDegrees(-state.interpolatedPitch(partialTick)));
-            poseStack.mulPose(Axis.XN.rotationDegrees(state.interpolatedRoll(partialTick)));
-            poseStack.mulPose(Axis.ZN.rotationDegrees(-45.0F));
-        }
-        if (!state.current.followingOwner()) {
-            applyAnimation(state, partialTick, poseStack);
-        }
+        poseStack.mulPose(Axis.YN.rotationDegrees(state.interpolatedYaw(partialTick) - 90.0F));
+        poseStack.mulPose(Axis.ZN.rotationDegrees(-state.interpolatedPitch(partialTick)));
+        poseStack.mulPose(Axis.XN.rotationDegrees(state.interpolatedRoll(partialTick)));
+        float backProgress = state.backProgress(partialTick);
+        poseStack.mulPose(Axis.XP.rotationDegrees(90.0F * backProgress));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(state.current.order() / 2 * ((state.current.order() & 1) == 0 ? -1.0F : 1.0F) * 15.0F * backProgress));
+        applySummonSwordAnimation(state, partialTick, poseStack);
+        poseStack.mulPose(Axis.ZN.rotationDegrees(-45.0F));
         int packedLight = LevelRenderer.getLightColor(minecraft.level, BlockPos.containing(position));
         minecraft.getItemRenderer().renderStatic(swordItem(state.current.type()), ItemDisplayContext.FIXED,
                 packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, minecraft.level,
@@ -215,8 +240,7 @@ public final class ClientSummonManager {
         };
     }
 
-    private static void renderStardustDragonPart(State state, PortRenderLevelStageEvent event,
-                                                 MultiBufferSource bufferSource) {
+    private static void renderStardustDragonPart(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null) {
@@ -227,8 +251,7 @@ public final class ClientSummonManager {
                 ? ClientStardustDragonVisual.Part.HEAD
                 : state.current.order() == lastPart
                 ? ClientStardustDragonVisual.Part.TAIL : ClientStardustDragonVisual.Part.BODY;
-        ClientStardustDragonVisual visual = STARDUST_DRAGON_VISUALS.computeIfAbsent(state.current.id(),
-                id -> new ClientStardustDragonVisual(id, part));
+        ClientStardustDragonVisual visual = STARDUST_DRAGON_VISUALS.computeIfAbsent(state.current.id(), id -> new ClientStardustDragonVisual(id, part));
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         visual.update(part, state.lastUpdate + partialTick);
         Vec3 position = state.interpolatedPosition(partialTick);
@@ -280,29 +303,21 @@ public final class ClientSummonManager {
         };
     }
 
-    private static void renderTerraprisma(State state, PortRenderLevelStageEvent event,
-                                          MultiBufferSource bufferSource, RenderType renderType) {
+    private static void renderTerraprisma(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource, RenderType renderType) {
         Minecraft minecraft = Minecraft.getInstance();
-        Player owner = minecraft.level == null ? null : minecraft.level.getPlayerByUUID(state.ownerId);
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         Vec3 position = state.interpolatedPosition(partialTick);
         PoseStack poseStack = event.getPoseStack();
         poseStack.pushPose();
-        if (state.current.followingOwner() && owner != null) {
-            position = summonSwordBackAnchor(owner, state.current.order(), partialTick);
-        }
         Vec3 camera = event.getCamera().getPosition();
         poseStack.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
-        if (state.current.followingOwner() && owner != null) {
-            applyTerraprismaBackPose(poseStack, state, owner, partialTick);
-        } else {
-            poseStack.mulPose(Axis.YN.rotationDegrees(state.interpolatedYaw(partialTick)));
-            poseStack.mulPose(Axis.XN.rotationDegrees(-state.interpolatedPitch(partialTick) + 180.0F));
-            poseStack.mulPose(Axis.ZN.rotationDegrees(state.interpolatedRoll(partialTick)));
-        }
-        if (!state.current.followingOwner()) {
-            applyAnimation(state, partialTick, poseStack);
-        }
+        poseStack.mulPose(Axis.YN.rotationDegrees(state.interpolatedYaw(partialTick)));
+        poseStack.mulPose(Axis.XN.rotationDegrees(-state.interpolatedPitch(partialTick) + 180.0F));
+        poseStack.mulPose(Axis.ZN.rotationDegrees(state.interpolatedRoll(partialTick)));
+        float backProgress = state.backProgress(partialTick);
+        poseStack.mulPose(Axis.ZP.rotationDegrees(90.0F * backProgress));
+        poseStack.mulPose(Axis.XP.rotationDegrees(state.current.order() / 2 * ((state.current.order() & 1) == 0 ? -1.0F : 1.0F) * 15.0F * backProgress));
+        applyAnimation(state, partialTick, poseStack);
         poseStack.scale(state.current.scale(), state.current.scaleY(), state.current.scale());
         int rgb = state.rgb();
         int packedLight = minecraft.level == null ? LightTexture.FULL_BRIGHT
@@ -310,56 +325,11 @@ public final class ClientSummonManager {
         float red = (rgb >> 16 & 255) / 255.0F;
         float green = (rgb >> 8 & 255) / 255.0F;
         float blue = (rgb & 255) / 255.0F;
-        model(minecraft.getEntityModels()).renderToBuffer(poseStack, bufferSource.getBuffer(renderType),
-                packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        model(minecraft.getEntityModels()).renderToBuffer(poseStack, bufferSource.getBuffer(renderType), packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
         poseStack.popPose();
     }
 
-    /// 将本地长剑模型固定到玩家背部平面。
-    /// 模型本地 Z 轴是剑身方向，X 轴是剑面法线；这里让剑面法线贴住玩家背部方向，
-    /// 再把剑身摆成“剑柄在右上、剑刃在左下”，避免沿用追踪目标时的俯仰角。
-    private static void applySummonSwordBackPose(PoseStack poseStack, State state, Player owner, float partialTick) {
-        applyBackSwordPose(poseStack, state, owner, partialTick, BACK_SWORD_TILT, BACK_SWORD_SWING_DEGREES, 15.0F);
-    }
-
-    private static Vec3 summonSwordBackAnchor(Player owner, int order, float partialTick) {
-        int sequence = order + 1;
-        float bodyYaw = Mth.rotLerp(partialTick, owner.yBodyRotO, owner.yBodyRot);
-        Vec3 forward = Vec3.directionFromRotation(0.0F, bodyYaw).multiply(1.0, 0.0, 1.0).normalize();
-        Vec3 right = forward.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
-        Vec3 ownerPosition = new Vec3(Mth.lerp(partialTick, owner.xo, owner.getX()),
-                Mth.lerp(partialTick, owner.yo, owner.getY()), Mth.lerp(partialTick, owner.zo, owner.getZ()));
-        return ownerPosition.subtract(forward.scale(0.6F - 0.05F * (sequence - 1))).add(0.0, 1.0, 0.0)
-                .add(right.scale(0.2F * (sequence / 2) * ((sequence & 1) == 0 ? 1.0F : -1.0F)));
-    }
-
-    /// 将泰拉棱镜贴到玩家背部平面。
-    /// 这里复用召唤剑的背负姿态，保证剑柄位于右上、剑刃位于左下；动态染色仍然由模型渲染阶段处理。
-    private static void applyTerraprismaBackPose(PoseStack poseStack, State state, Player owner, float partialTick) {
-        applyBackSwordPose(poseStack, state, owner, partialTick, TERRAPRISMA_BACK_TILT, TERRAPRISMA_BACK_SWING_DEGREES, 12.0F);
-    }
-
-    private static void applyBackSwordPose(PoseStack poseStack, State state, Player owner, float partialTick, float baseTilt, float swingDegrees, float stackSpread) {
-        int sequence = state.current.order() + 1;
-        int layer = sequence / 2;
-        float side = (sequence & 1) == 0 ? -1.0F : 1.0F;
-        float bodyYaw = Mth.rotLerp(partialTick, owner.yBodyRotO, owner.yBodyRot);
-        Vec3 forward = Vec3.directionFromRotation(0.0F, bodyYaw).multiply(1.0, 0.0, 1.0).normalize();
-        Vec3 right = forward.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
-        float tilt = baseTilt + layer * side * stackSpread + Mth.sin(state.idlePhase(partialTick)) * swingDegrees;
-        double radians = tilt * Mth.DEG_TO_RAD;
-        Vector3f localX = new Vector3f((float) -forward.x, 0.0F, (float) -forward.z).normalize();
-        Vector3f localZ = new Vector3f((float) (right.x * Math.sin(radians)), (float) Math.cos(radians),
-                (float) (right.z * Math.sin(radians))).normalize();
-        Vector3f localY = new Vector3f(localZ).cross(localX).normalize();
-        poseStack.mulPose(new Quaternionf().setFromNormalized(new Matrix3f(
-                localX.x, localY.x, localZ.x,
-                localX.y, localY.y, localZ.y,
-                localX.z, localY.z, localZ.z)));
-    }
-
-    private static void renderTrail(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource,
-                                    float width, int rgb) {
+    private static void renderTrail(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource, float width, int rgb) {
         if (state.trailSamples.size() < 2) {
             return;
         }
@@ -429,11 +399,25 @@ public final class ClientSummonManager {
         }
     }
 
+    private static void applySummonSwordAnimation(State state, float partialTick, PoseStack poseStack) {
+        int duration = state.current.animationDuration();
+        if (duration <= 0 || state.current.animation() != SummonAnimation.SPIN_X) return;
+        float progress = Mth.clamp((state.current.animationTicks() + partialTick) / duration, 0.0F, 1.0F);
+        poseStack.mulPose(Axis.ZN.rotationDegrees(state.current.animationDegrees() * progress));
+    }
+
     private static TerraprismaModel model(EntityModelSet models) {
         if (terraprismaModel == null) {
             terraprismaModel = new TerraprismaModel(models.bakeLayer(TerraprismaModel.LAYER_LOCATION));
         }
         return terraprismaModel;
+    }
+
+    private static HornetStingerProjectileModel hornetStingerModel(EntityModelSet models) {
+        if (hornetStingerModel == null) {
+            hornetStingerModel = new HornetStingerProjectileModel(models.bakeLayer(HornetStingerProjectileModel.LAYER_LOCATION));
+        }
+        return hornetStingerModel;
     }
 
     private static ClientIronGolemRenderer ironGolemRenderer(EntityModelSet models) {
@@ -447,8 +431,14 @@ public final class ClientSummonManager {
         private SummonSyncPacketS2C.Entry previous;
         private SummonSyncPacketS2C.Entry current;
         private long lastUpdate;
+        private Vec3 interpolationStartPosition;
+        private float interpolationStartYaw;
+        private float interpolationStartPitch;
+        private float interpolationStartRoll;
+        private double interpolationStartTime;
         private float colorProgress;
         private float sliderProgress;
+        private int backTicks;
         private final WalkAnimationState walkAnimation = new WalkAnimationState();
         private final Deque<TrailSample> trailSamples = new ArrayDeque<>(8);
 
@@ -457,18 +447,49 @@ public final class ClientSummonManager {
             this.previous = entry;
             this.current = entry;
             this.lastUpdate = lastUpdate;
+            this.interpolationStartPosition = entry.position();
+            this.interpolationStartYaw = entry.yaw();
+            this.interpolationStartPitch = entry.pitch();
+            this.interpolationStartRoll = entry.roll();
+            this.interpolationStartTime = lastUpdate;
             this.random = RandomSource.create(entry.id().getMostSignificantBits() ^ entry.id().getLeastSignificantBits());
             this.colorProgress = random.nextFloat();
+            this.backTicks = 0;
             updateTrail(entry);
+            emitProjectileParticles(entry, entry.position());
         }
 
         private State update(UUID ownerId, SummonSyncPacketS2C.Entry entry, long lastUpdate) {
             if (!this.ownerId.equals(ownerId)) {
                 throw new IllegalStateException("Summon owner changed without replacing its runtime id");
             }
+            double updateTime = lastUpdate + Minecraft.getInstance().getFrameTime();
+            Vec3 displayedPosition = interpolatedPosition(updateTime);
+            float displayedYaw = interpolatedYaw(updateTime);
+            float displayedPitch = interpolatedPitch(updateTime);
+            float displayedRoll = interpolatedRoll(updateTime);
             previous = current;
             current = entry;
+            if (previous.followingOwner() != current.followingOwner()) {
+                backTicks = current.followingOwner() ? 0 : BACK_TRANSITION_TICKS;
+            } else if (current.followingOwner()) {
+                backTicks = Math.min(BACK_TRANSITION_TICKS, backTicks + 1);
+            } else {
+                backTicks = Math.max(0, backTicks - 1);
+            }
             this.lastUpdate = lastUpdate;
+            if (displayedPosition.distanceToSqr(entry.position()) > TELEPORT_DISTANCE_SQR) {
+                interpolationStartPosition = entry.position();
+                interpolationStartYaw = entry.yaw();
+                interpolationStartPitch = entry.pitch();
+                interpolationStartRoll = entry.roll();
+            } else {
+                interpolationStartPosition = displayedPosition;
+                interpolationStartYaw = displayedYaw;
+                interpolationStartPitch = displayedPitch;
+                interpolationStartRoll = displayedRoll;
+            }
+            interpolationStartTime = updateTime;
             walkAnimation.update((float) Math.min(1.0, current.position().subtract(previous.position()).horizontalDistance() * 4.0), 0.4F);
             float change = (random.nextFloat() - 0.5F) * 0.05F;
             colorProgress = Mth.clamp(colorProgress + change + sliderProgress, 0.0F, 1.0F);
@@ -478,7 +499,22 @@ public final class ClientSummonManager {
                 sliderProgress = 0.01F;
             }
             updateTrail(entry);
+            emitProjectileParticles(entry, previous.position());
             return this;
+        }
+
+        private static void emitProjectileParticles(SummonSyncPacketS2C.Entry entry, Vec3 previousPosition) {
+            if (!entry.type().equals(IMP_FIREBALL)) return;
+            ClientLevel level = Minecraft.getInstance().level;
+            if (level == null) return;
+            Vec3 velocity = entry.position().subtract(previousPosition);
+            RandomSource random = level.random;
+            for (int index = 0; index < 3; index++) {
+                double x = entry.position().x + (random.nextDouble() - 0.5) * 0.5;
+                double y = entry.position().y + (random.nextDouble() - 0.5) * 0.5;
+                double z = entry.position().z + (random.nextDouble() - 0.5) * 0.5;
+                level.addParticle(ParticleTypes.FLAME, x, y, z, velocity.x, velocity.y, velocity.z);
+            }
         }
 
         private void updateTrail(SummonSyncPacketS2C.Entry entry) {
@@ -492,15 +528,52 @@ public final class ClientSummonManager {
             }
         }
 
-        private Vec3 interpolatedPosition(float partialTick) {return previous.position().lerp(current.position(), partialTick);}
+        private Vec3 interpolatedPosition(float partialTick) {
+            return interpolatedPosition(renderTime(partialTick));
+        }
 
-        private float interpolatedYaw(float partialTick) {return Mth.rotLerp(partialTick, previous.yaw(), current.yaw());}
+        private Vec3 interpolatedPosition(double time) {
+            return interpolationStartPosition.lerp(current.position(), interpolationProgress(time));
+        }
 
-        private float interpolatedPitch(float partialTick) {return Mth.rotLerp(partialTick, previous.pitch(), current.pitch());}
+        private float interpolatedYaw(float partialTick) {
+            return interpolatedYaw(renderTime(partialTick));
+        }
 
-        private float interpolatedRoll(float partialTick) {return Mth.rotLerp(partialTick, previous.roll(), current.roll());}
+        private float interpolatedYaw(double time) {
+            return Mth.rotLerp(interpolationProgress(time), interpolationStartYaw, current.yaw());
+        }
 
-        private float idlePhase(float partialTick) {return (lastUpdate + partialTick) * 0.075F + current.order() * 0.65F;}
+        private float interpolatedPitch(float partialTick) {
+            return interpolatedPitch(renderTime(partialTick));
+        }
+
+        private float interpolatedPitch(double time) {
+            return Mth.rotLerp(interpolationProgress(time), interpolationStartPitch, current.pitch());
+        }
+
+        private float interpolatedRoll(float partialTick) {
+            return interpolatedRoll(renderTime(partialTick));
+        }
+
+        private float interpolatedRoll(double time) {
+            return Mth.rotLerp(interpolationProgress(time), interpolationStartRoll, current.roll());
+        }
+
+        private float backProgress(float partialTick) {
+            float ticks = current.followingOwner() ? backTicks + partialTick : backTicks - partialTick;
+            float progress = Mth.clamp(ticks / BACK_TRANSITION_TICKS, 0.0F, 1.0F);
+            return progress < 0.5F ? 2.0F * progress * progress : 1.0F - Mth.square(-2.0F * progress + 2.0F) * 0.5F;
+        }
+
+        private double renderTime(float partialTick) {
+            ClientLevel level = Minecraft.getInstance().level;
+            return (level == null ? lastUpdate : level.getGameTime()) + partialTick;
+        }
+
+        private float interpolationProgress(double time) {
+            return Mth.clamp((float) ((time - interpolationStartTime) / INTERPOLATION_TICKS), 0.0F, 1.0F);
+        }
 
         private int rgb() {
             int from = 0x1FE6C0;

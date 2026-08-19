@@ -13,17 +13,13 @@ import org.confluence.mod.client.model.entity.projectile.HornetStingerProjectile
 import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
 
 /// 按实际飞行方向绘制黄蜂毒刺。
-public final class HornetStingerProjectileRenderer
-        extends EntityRenderer<HornetStingerProjectile> {
-    private static final ResourceLocation TEXTURE =
-            Confluence.asResource("textures/entity/model/stinger.png");
+public final class HornetStingerProjectileRenderer extends EntityRenderer<HornetStingerProjectile> {
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/model/stinger.png");
     private final HornetStingerProjectileModel model;
 
-    public HornetStingerProjectileRenderer(
-            EntityRendererProvider.Context context) {
+    public HornetStingerProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new HornetStingerProjectileModel(
-                context.bakeLayer(HornetStingerProjectileModel.LAYER_LOCATION));
+        this.model = new HornetStingerProjectileModel(context.bakeLayer(HornetStingerProjectileModel.LAYER_LOCATION));
     }
 
     @Override
@@ -32,33 +28,16 @@ public final class HornetStingerProjectileRenderer
     }
 
     @Override
-    public void render(
-            HornetStingerProjectile entity,
-            float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight) {
+    public void render(HornetStingerProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         Vec3 velocity = entity.getDeltaMovement();
         poseStack.pushPose();
         if (velocity.lengthSqr() > 1.0E-7) {
-            double horizontal = Math.sqrt(
-                    velocity.x * velocity.x + velocity.z * velocity.z);
-            poseStack.mulPose(Axis.YN.rotation(
-                    (float) (Math.atan2(velocity.z, velocity.x)
-                            - Math.PI / 2.0)));
-            poseStack.mulPose(Axis.ZN.rotation(
-                    (float) Math.atan2(velocity.y, horizontal)));
+            double horizontal = Math.sqrt(velocity.x * velocity.x + velocity.z * velocity.z);
+            poseStack.mulPose(Axis.YN.rotation((float) (Math.atan2(velocity.z, velocity.x) - Math.PI / 2.0)));
+            poseStack.mulPose(Axis.ZN.rotation((float) Math.atan2(velocity.y, horizontal)));
         }
-        model.renderToBuffer(
-                poseStack,
-                bufferSource.getBuffer(model.renderType(TEXTURE)),
-                packedLight,
-                OverlayTexture.NO_OVERLAY,
-                1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
-        super.render(
-                entity, entityYaw, partialTick, poseStack,
-                bufferSource, packedLight);
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 }

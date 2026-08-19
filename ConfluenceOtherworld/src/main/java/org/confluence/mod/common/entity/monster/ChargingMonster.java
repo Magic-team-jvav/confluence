@@ -20,17 +20,14 @@ public class ChargingMonster extends BaseWarriorMonster {
     private final double chargeSpeed;
     private final int windupTicks;
 
-    public ChargingMonster(EntityType<? extends ChargingMonster> type, Level level,
-                           double chargeSpeed, int windupTicks) {
+    public ChargingMonster(EntityType<? extends ChargingMonster> type, Level level, double chargeSpeed, int windupTicks) {
         super(type, level);
         this.chargeSpeed = chargeSpeed;
         this.windupTicks = windupTicks;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseWarriorMonster.createAttributes()
-                .add(Attributes.MOVEMENT_SPEED, 0.28)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.6);
+        return BaseWarriorMonster.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.28).add(Attributes.KNOCKBACK_RESISTANCE, 0.6);
     }
 
     @Override

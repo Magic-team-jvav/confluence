@@ -147,9 +147,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return new WormMovementAction(
-                        BaseWormMonster.this,
-                        movementProfile());
+                return new WormMovementAction(BaseWormMonster.this, movementProfile());
             }
         };
     }

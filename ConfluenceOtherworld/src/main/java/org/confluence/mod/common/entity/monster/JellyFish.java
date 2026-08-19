@@ -41,10 +41,7 @@ import software.bernie.geckolib.core.animation.AnimationController;
 public class JellyFish extends BaseAquaticMonster {
     private static final int PURSUIT_TICKS = 150;
     private static final int PULSE_TICKS = 80;
-    private static final EntityDataAccessor<Boolean> ATTACK_PHASE =
-            SynchedEntityData.defineId(
-                    JellyFish.class,
-                    EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ATTACK_PHASE = SynchedEntityData.defineId(JellyFish.class, EntityDataSerializers.BOOLEAN);
 
     /// 渲染器使用相邻两次有效速度插值模型朝向，避免每次脉冲时突然翻转。
     public Vec3 lastMovement = Vec3.ZERO;
@@ -103,8 +100,7 @@ public class JellyFish extends BaseAquaticMonster {
 
     @Override
     public void tick() {
-        if (level().isClientSide
-                && getDeltaMovement().length() > 0.08) {
+        if (level().isClientSide && getDeltaMovement().length() > 0.08) {
             lastMovement = getDeltaMovement();
         }
         super.tick();
@@ -114,8 +110,7 @@ public class JellyFish extends BaseAquaticMonster {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "Swim/Pulse",
@@ -159,9 +154,7 @@ public class JellyFish extends BaseAquaticMonster {
         @Override
         public BTStatus execute() {
             var target = jellyfish.getTarget();
-            if (target == null
-                    || !target.isInWater()
-                    || !jellyfish.canAttack(target)) {
+            if (target == null || !target.isInWater() || !jellyfish.canAttack(target)) {
                 jellyfish.setAttackPhase(false);
                 jellyfish.getNavigation().stop();
                 return BTStatus.FAILURE;
@@ -210,12 +203,10 @@ public class JellyFish extends BaseAquaticMonster {
         @Override
         public void tick() {
             if (mob.isInWater()) {
-                mob.setDeltaMovement(
-                        mob.getDeltaMovement().add(0.0, 0.005, 0.0));
+                mob.setDeltaMovement(mob.getDeltaMovement().add(0.0, 0.005, 0.0));
             }
 
-            if (--pulseCooldown <= 0
-                    && operation == Operation.MOVE_TO) {
+            if (--pulseCooldown <= 0 && operation == Operation.MOVE_TO) {
                 operation = Operation.WAIT;
                 double xDistance = wantedX - mob.getX();
                 double zDistance = wantedZ - mob.getZ();
@@ -228,38 +219,16 @@ public class JellyFish extends BaseAquaticMonster {
                     return;
                 }
 
-                float targetYaw = (float) (
-                        Mth.atan2(zDistance, xDistance)
-                                * Mth.RAD_TO_DEG) - 90.0F;
-                mob.setYRot(rotlerp(
-                        mob.getYRot(),
-                        targetYaw,
-                        90.0F));
-                mob.setSpeed((float) (
-                        speedModifier
-                                * mob.getAttributeValue(
-                                Attributes.MOVEMENT_SPEED)));
-                mob.setDeltaMovement(
-                        mob.getDeltaMovement().normalize().scale(0.5));
+                float targetYaw = (float) (Mth.atan2(zDistance, xDistance) * Mth.RAD_TO_DEG) - 90.0F;
+                mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
+                mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+                mob.setDeltaMovement(mob.getDeltaMovement().normalize().scale(0.5));
 
                 BlockPos blockPos = mob.blockPosition();
                 BlockState blockState = mob.level().getBlockState(blockPos);
-                VoxelShape collisionShape = blockState.getCollisionShape(
-                        mob.level(),
-                        blockPos);
-                boolean targetAboveStep =
-                        yDistance > mob.maxUpStep()
-                                && xDistance * xDistance
-                                + zDistance * zDistance
-                                < Math.max(1.0F, mob.getBbWidth());
-                boolean blockedAbove =
-                        !collisionShape.isEmpty()
-                                && mob.getY()
-                                < collisionShape.max(
-                                Direction.Axis.Y)
-                                + blockPos.getY()
-                                && !blockState.is(BlockTags.DOORS)
-                                && !blockState.is(BlockTags.FENCES);
+                VoxelShape collisionShape = blockState.getCollisionShape(mob.level(), blockPos);
+                boolean targetAboveStep = yDistance > mob.maxUpStep() && xDistance * xDistance + zDistance * zDistance < Math.max(1.0F, mob.getBbWidth());
+                boolean blockedAbove = !collisionShape.isEmpty() && mob.getY() < collisionShape.max(Direction.Axis.Y) + blockPos.getY() && !blockState.is(BlockTags.DOORS) && !blockState.is(BlockTags.FENCES);
                 if (targetAboveStep || blockedAbove) {
                     mob.getJumpControl().jump();
                 }
@@ -273,10 +242,7 @@ public class JellyFish extends BaseAquaticMonster {
             }
 
             if (mob.getTarget() != null) {
-                mob.getLookControl().setLookAt(
-                        mob.getTarget(),
-                        10.0F,
-                        10.0F);
+                mob.getLookControl().setLookAt(mob.getTarget(), 10.0F, 10.0F);
             }
         }
     }

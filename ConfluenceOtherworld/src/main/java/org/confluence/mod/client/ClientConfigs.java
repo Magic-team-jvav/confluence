@@ -252,16 +252,11 @@ public final class ClientConfigs {
         }
         {
             builder.push("WeaponInput");
-            STAFF_USE_BUTTON = builder.defineEnum(
-                    "staffUseButton", WeaponUseButton.RIGHT);
-            WHIP_USE_BUTTON = builder.defineEnum(
-                    "whipUseButton", WeaponUseButton.LEFT);
-            YOYO_USE_BUTTON = builder.defineEnum(
-                    "yoyoUseButton", WeaponUseButton.LEFT);
-            GUN_USE_BUTTON = builder.defineEnum(
-                    "gunUseButton", WeaponUseButton.LEFT);
-            FLAIL_USE_BUTTON = builder.defineEnum(
-                    "flailUseButton", WeaponUseButton.LEFT);
+            STAFF_USE_BUTTON = builder.defineEnum("staffUseButton", WeaponUseButton.RIGHT);
+            WHIP_USE_BUTTON = builder.defineEnum("whipUseButton", WeaponUseButton.LEFT);
+            YOYO_USE_BUTTON = builder.defineEnum("yoyoUseButton", WeaponUseButton.LEFT);
+            GUN_USE_BUTTON = builder.defineEnum("gunUseButton", WeaponUseButton.LEFT);
+            FLAIL_USE_BUTTON = builder.defineEnum("flailUseButton", WeaponUseButton.LEFT);
             builder.pop();
         }
 
@@ -298,9 +293,7 @@ public final class ClientConfigs {
 
         @Override
         public Component getTranslatedName() {
-            return Component.translatable(
-                    "confluence.configuration.weaponInputButton."
-                            + name().toLowerCase(Locale.ROOT));
+            return Component.translatable("confluence.configuration.weaponInputButton." + name().toLowerCase(Locale.ROOT));
         }
     }
 

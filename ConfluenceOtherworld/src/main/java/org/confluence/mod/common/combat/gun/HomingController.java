@@ -32,9 +32,6 @@ public final class HomingController {
         }
         turnDirection = turnDirection.normalize();
         double turn = Math.min(Math.PI, maxTurnRadians);
-        return current.scale(Math.cos(turn))
-                .add(turnDirection.scale(Math.sin(turn)))
-                .normalize()
-                .scale(speed);
+        return current.scale(Math.cos(turn)).add(turnDirection.scale(Math.sin(turn))).normalize().scale(speed);
     }
 }

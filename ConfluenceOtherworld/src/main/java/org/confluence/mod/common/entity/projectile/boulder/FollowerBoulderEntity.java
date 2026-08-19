@@ -114,9 +114,7 @@ public class FollowerBoulderEntity extends BoulderEntity {
             return;
         }
         CompoundTag runtime = tag.getCompound(RUNTIME_TAG);
-        if (!runtime.contains("Version", Tag.TAG_INT)
-                || runtime.getInt("Version") != RUNTIME_VERSION
-                || !runtime.contains("Age", Tag.TAG_INT)) {
+        if (!runtime.contains("Version", Tag.TAG_INT) || runtime.getInt("Version") != RUNTIME_VERSION || !runtime.contains("Age", Tag.TAG_INT)) {
             invalidFollowerRuntimeState = true;
             return;
         }

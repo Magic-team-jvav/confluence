@@ -11,6 +11,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.api.whip.WhipTagTracker;
@@ -125,8 +126,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     }
 
     private boolean hasLineOfSight(Vec3 targetPosition) {
-        ClipContext context = new ClipContext(position(), targetPosition, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner);
-        return owner.level().clip(context).getType() == HitResult.Type.MISS;
+        return owner.level().clip(new ClipContext(position(), targetPosition, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner)).getType() == HitResult.Type.MISS;
     }
 
     /// 返回超过该距离平方后需要拉回所有者附近的阈值。
@@ -152,10 +152,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
                 continue;
             }
             int offsetY = owner.getRandom().nextIntBetweenInclusive(-1, 1);
-            Vec3 candidate = new Vec3(
-                    ownerBlockPosition.getX() + offsetX + 0.5D,
-                    ownerBlockPosition.getY() + offsetY,
-                    ownerBlockPosition.getZ() + offsetZ + 0.5D);
+            Vec3 candidate = new Vec3(ownerBlockPosition.getX() + offsetX + 0.5D, ownerBlockPosition.getY() + offsetY, ownerBlockPosition.getZ() + offsetZ + 0.5D);
             if (!canRecoverAt(candidate)) {
                 continue;
             }
@@ -218,12 +215,10 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         float pitch = (float) Math.toDegrees(Math.asin(-forward.y));
         float pitchRadians = (float) Math.toRadians(pitch);
         float yawRadians = (float) Math.toRadians(yaw);
-        Vec3 localUp = new Vec3(-Math.sin(yawRadians) * Math.sin(pitchRadians), Math.cos(pitchRadians),
-                Math.cos(yawRadians) * Math.sin(pitchRadians));
+        Vec3 localUp = new Vec3(-Math.sin(yawRadians) * Math.sin(pitchRadians), Math.cos(pitchRadians), Math.cos(yawRadians) * Math.sin(pitchRadians));
         Vec3 projectedLocalUp = localUp.subtract(forward.scale(localUp.dot(forward))).normalize();
         Vec3 projectedUp = up.subtract(forward.scale(up.dot(forward))).normalize();
-        float roll = (float) Math.toDegrees(Math.atan2(projectedLocalUp.cross(projectedUp).dot(forward),
-                projectedLocalUp.dot(projectedUp)));
+        float roll = (float) Math.toDegrees(Math.atan2(projectedLocalUp.cross(projectedUp).dot(forward), projectedLocalUp.dot(projectedUp)));
         return new SummonPose(position, yaw, pitch, roll);
     }
 
@@ -254,25 +249,15 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         }
         float damage = stats.baseDamage() * (float) owner.getAttributeValue(LibAttributes.getSummonDamage());
         damage = WhipTagTracker.modifyDamage(owner, this, target, damage * damageMultiplier);
-        DamageSource source = owner.damageSources().playerAttack(owner);
-        int invulnerableTime = target.invulnerableTime;
-        target.invulnerableTime = 0;
-        try {
-            boolean hurt = target.hurt(source, damage);
-            if (hurt) {
-                Immunity.apply(this, source, target);
-            }
-            return hurt;
-        } finally {
-            target.invulnerableTime = invulnerableTime;
-        }
+        float finalDamage = damage;
+        DamageSource source = LibDamageTypes.of(owner.level(), LibDamageTypes.SUMMONER, owner);
+        return Immunity.withCause(this, () -> target.hurt(source, finalDamage));
     }
 
     /// 对指定范围内的全部合法目标结算接触伤害，命中频率仍由每个召唤实例的局部无敌帧控制。
     protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier) {
         boolean hit = false;
-        for (LivingEntity candidate : owner().level().getEntitiesOfClass(LivingEntity.class, bounds,
-                candidate -> candidate == target() || SummonTargetCache.isValidTarget(owner(), candidate, targetRange, false))) {
+        for (LivingEntity candidate : owner().level().getEntitiesOfClass(LivingEntity.class, bounds, candidate -> candidate == target() || SummonTargetCache.isValidTarget(owner(), candidate, targetRange, false))) {
             hit |= hurtTarget(candidate, damageMultiplier);
         }
         return hit;

@@ -29,27 +29,21 @@ public class CrownOfKingSlimeModelRenderer extends EntityRenderer<CrownOfKingSli
     }
 
     @Override
-    public void render(CrownOfKingSlimeModelEntity entity, float entityYaw, float partialTick,
-                       PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(CrownOfKingSlimeModelEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotation(Mth.lerp(partialTick, entity.rotateO2, entity.rotate2)));
         poseStack.translate(0.0F, -0.5F, entity.radius);
-        poseStack.mulPose(entity.quaternion.rotationXYZ(
-                Mth.lerp(partialTick, entity.rotO.x, entity.rot.x),
-                Mth.lerp(partialTick, entity.rotO.y, entity.rot.y),
-                Mth.lerp(partialTick, entity.rotO.z, entity.rot.z)));
+        poseStack.mulPose(entity.quaternion.rotationXYZ(Mth.lerp(partialTick, entity.rotO.x, entity.rot.x), Mth.lerp(partialTick, entity.rotO.y, entity.rot.y), Mth.lerp(partialTick, entity.rotO.z, entity.rot.z)));
         poseStack.mulPose(Axis.YN.rotation(Mth.lerp(partialTick, entity.rotateO1, entity.rotate1)));
         poseStack.translate(0.0F, 1.9375F + entity.height, 0.0F);
         poseStack.mulPose(FLIP_Y);
-        model.renderToBuffer(poseStack, buffer.getBuffer(CrownOfKingSlimeModel.RENDER_TYPE),
-                packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, buffer.getBuffer(CrownOfKingSlimeModel.RENDER_TYPE), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);
     }
 
     @Override
-    public boolean shouldRender(CrownOfKingSlimeModelEntity entity, Frustum camera,
-                                double camX, double camY, double camZ) {
+    public boolean shouldRender(CrownOfKingSlimeModelEntity entity, Frustum camera, double camX, double camY, double camZ) {
         return true;
     }
 }

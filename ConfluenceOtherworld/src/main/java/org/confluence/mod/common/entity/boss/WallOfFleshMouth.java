@@ -28,8 +28,7 @@ public final class WallOfFleshMouth extends WallOfFleshPart {
     }
 
     @Override
-    protected void tickAttack(
-            WallOfFlesh master, @Nullable LivingEntity target) {
+    protected void tickAttack(WallOfFlesh master, @Nullable LivingEntity target) {
         if (target == null || !master.isValidFrontTarget(target)) {
             return;
         }
@@ -58,10 +57,7 @@ public final class WallOfFleshMouth extends WallOfFleshPart {
         if (!master.isPhaseTwo()) {
             return 1;
         }
-        float progress = Mth.clamp(
-                (0.5F - master.getHealth() / master.getMaxHealth()) / 0.5F,
-                0.0F,
-                1.0F);
+        float progress = Mth.clamp((0.5F - master.getHealth() / master.getMaxHealth()) / 0.5F, 0.0F, 1.0F);
         return 1 + Mth.floor(progress * 4.0F);
     }
 
@@ -71,18 +67,15 @@ public final class WallOfFleshMouth extends WallOfFleshPart {
         return appliedDamage > 0.0F && super.hurt(source, appliedDamage);
     }
 
-    private void spawnLeech(
-            WallOfFlesh master, LivingEntity target) {
+    private void spawnLeech(WallOfFlesh master, LivingEntity target) {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        SimpleWormMonster leech =
-                MonsterEntities.LEECH.get().create(serverLevel);
+        SimpleWormMonster leech = MonsterEntities.LEECH.get().create(serverLevel);
         if (leech == null) {
             return;
         }
-        leech.setPos(position().add(
-                master.getForwardVector().normalize()));
+        leech.setPos(position().add(master.getForwardVector().normalize()));
         leech.setTarget(target);
         leech.setBossOwner(master);
         if (!serverLevel.addFreshEntity(leech)) {

@@ -30,18 +30,12 @@ import java.util.UUID;
 /// 追近后近战；离蜂王超过 30 格且蜂王所在位置可容纳实体时，回到蜂王上方。所有者追踪器
 /// 只负责跨存档恢复归属，不额外增加持续追踪、强制返航或独立索敌。</p>
 public final class LittleHornet extends Hornet {
-    private static final RawAnimation WING =
-            RawAnimation.begin().thenLoop("wing");
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
-            SynchedEntityData.defineId(
-                    LittleHornet.class,
-                    EntityDataSerializers.OPTIONAL_UUID);
+    private static final RawAnimation WING = RawAnimation.begin().thenLoop("wing");
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(LittleHornet.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    private final BossOwnerTracker<QueenBee> ownerTracker =
-            new BossOwnerTracker<>(QueenBee.class);
+    private final BossOwnerTracker<QueenBee> ownerTracker = new BossOwnerTracker<>(QueenBee.class);
 
-    public LittleHornet(
-            EntityType<? extends LittleHornet> type, Level level) {
+    public LittleHornet(EntityType<? extends LittleHornet> type, Level level) {
         super(type, level);
     }
 
@@ -87,9 +81,7 @@ public final class LittleHornet extends Hornet {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        new LittleHornetMeleeNode(),
-                        new HornetWanderNode());
+                return SelectorNode.of(new LittleHornetMeleeNode(), new HornetWanderNode());
             }
         };
     }
@@ -97,8 +89,7 @@ public final class LittleHornet extends Hornet {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide || !isAlive()
-                || (tickCount & 31) != 0) {
+        if (level().isClientSide || !isAlive() || (tickCount & 31) != 0) {
             return;
         }
 
@@ -107,8 +98,7 @@ public final class LittleHornet extends Hornet {
             return;
         }
         setTarget(master.getTarget());
-        if (distanceTo(master) > 30.0
-                && level().getBlockState(master.blockPosition()).isAir()) {
+        if (distanceTo(master) > 30.0 && level().getBlockState(master.blockPosition()).isAir()) {
             setPos(master.getX(), master.getY() + 0.5, master.getZ());
         }
     }
@@ -124,13 +114,8 @@ public final class LittleHornet extends Hornet {
 
     /// 幼蜂不继承普通黄蜂的远程施法动画，只持续播放振翅动画。
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Wing",
-                0,
-                state -> state.setAndContinue(WING)));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Wing", 0, state -> state.setAndContinue(WING)));
     }
 
     @Override
@@ -143,9 +128,7 @@ public final class LittleHornet extends Hornet {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
-        entityData.set(
-                OWNER_UUID,
-                Optional.ofNullable(ownerTracker.getOwnerUUID()));
+        entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
     }
 
     @Override
@@ -186,8 +169,7 @@ public final class LittleHornet extends Hornet {
 
             double reach = getBbWidth() * 2.0F;
             double attackReachSqr = reach * reach + target.getBbWidth();
-            if (distanceToSqr(target) <= attackReachSqr
-                    && attackCooldown <= 0) {
+            if (distanceToSqr(target) <= attackReachSqr && attackCooldown <= 0) {
                 attackCooldown = ATTACK_INTERVAL;
                 swing(InteractionHand.MAIN_HAND);
                 doHurtTarget(target);

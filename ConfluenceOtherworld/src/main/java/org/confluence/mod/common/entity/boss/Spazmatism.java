@@ -42,9 +42,7 @@ public class Spazmatism extends AbstractTwinEye {
     private int dashesRemaining;
     private Vec3 dashDirection = Vec3.ZERO;
 
-    public Spazmatism(
-            EntityType<? extends BaseFlyingMonster> type,
-            Level level) {
+    public Spazmatism(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
     }
 
@@ -92,10 +90,7 @@ public class Spazmatism extends AbstractTwinEye {
     }
 
     private void tickFlameVolley(LivingEntity target) {
-        moveTowardTarget(
-                target,
-                movementSpeed(),
-                followDistance());
+        moveTowardTarget(target, movementSpeed(), followDistance());
         if (--stateTicks > 0) {
             return;
         }
@@ -114,13 +109,10 @@ public class Spazmatism extends AbstractTwinEye {
         if (--stateTicks > 0) {
             return;
         }
-        dashDirection =
-                target.getEyePosition().subtract(getEyePosition())
-                        .normalize();
+        dashDirection = target.getEyePosition().subtract(getEyePosition()).normalize();
         combatState = DASH;
         stateTicks = 10;
-        setDeltaMovement(
-                dashDirection.scale(dashSpeed()));
+        setDeltaMovement(dashDirection.scale(dashSpeed()));
     }
 
     private void tickDash() {
@@ -142,10 +134,7 @@ public class Spazmatism extends AbstractTwinEye {
         dashDirection = Vec3.ZERO;
     }
 
-    private void moveTowardTarget(
-            LivingEntity target,
-            double speed,
-            double distance) {
+    private void moveTowardTarget(LivingEntity target, double speed, double distance) {
         if (distance <= 0.0) {
             Vec3 direction = target.position().subtract(position());
             setDeltaMovement(direction.lengthSqr() < 1.0E-7
@@ -153,13 +142,11 @@ public class Spazmatism extends AbstractTwinEye {
                     : direction.normalize().scale(speed));
             return;
         }
-        Vec3 away = position().subtract(target.position())
-                .multiply(1.0, 0.0, 1.0);
+        Vec3 away = position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
         Vec3 desiredPosition = target.position()
                 .add(away.normalize().scale(distance))
                 .add(0.0, isTransformed() ? 0.0 : 1.0, 0.0);
-        addDeltaMovement(desiredPosition.subtract(position())
-                .scale(speed * 0.01));
+        addDeltaMovement(desiredPosition.subtract(position()).scale(speed * 0.01));
         if (distanceToSqr(target) < 2.0) {
             setDeltaMovement(getDeltaMovement().scale(0.95));
         }
@@ -172,19 +159,11 @@ public class Spazmatism extends AbstractTwinEye {
         if (isTransformed()) {
             return fireContinuousFlame(serverLevel);
         }
-        TwinEyeProjectile flame =
-                ModEntities.SPAZMATISM_FLAME.get()
-                        .create(serverLevel);
+        TwinEyeProjectile flame = ModEntities.SPAZMATISM_FLAME.get().create(serverLevel);
         if (flame == null) {
             return false;
         }
-        flame.configure(
-                this,
-                target,
-                (float) getAttributeValue(
-                        Attributes.ATTACK_DAMAGE),
-                1.5F,
-                10.0F);
+        flame.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 1.5F, 10.0F);
         return serverLevel.addFreshEntity(flame);
     }
 
@@ -200,22 +179,11 @@ public class Spazmatism extends AbstractTwinEye {
         Set<LivingEntity> hitEntities = new HashSet<>();
         for (int step = 0; step < 10; step++) {
             Vec3 point = origin.add(direction.scale(step));
-            serverLevel.sendParticles(
-                    ParticleTypes.FLAME,
-                    point.x, point.y, point.z,
-                    3,
-                    0.3, 0.3, 0.3,
-                    0.02);
-            AABB hitBox = new AABB(
-                    point.add(-0.5, -0.5, -0.5),
-                    point.add(0.5, 0.5, 0.5));
-            hitEntities.addAll(serverLevel.getEntitiesOfClass(
-                    LivingEntity.class,
-                    hitBox,
-                    entity -> entity != this));
+            serverLevel.sendParticles(ParticleTypes.FLAME, point.x, point.y, point.z, 3, 0.3, 0.3, 0.3, 0.02);
+            AABB hitBox = new AABB(point.add(-0.5, -0.5, -0.5), point.add(0.5, 0.5, 0.5));
+            hitEntities.addAll(serverLevel.getEntitiesOfClass(LivingEntity.class, hitBox, entity -> entity != this));
         }
-        float damage = (float) getAttributeValue(
-                Attributes.ATTACK_DAMAGE);
+        float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
         for (LivingEntity entity : hitEntities) {
             if (canAttack(entity)) {
                 entity.hurt(damageSources().inFire(), damage);
@@ -263,9 +231,6 @@ public class Spazmatism extends AbstractTwinEye {
         stateTicks = tag.getInt(STATE_TICKS_TAG);
         shotsRemaining = tag.getInt(SHOTS_TAG);
         dashesRemaining = tag.getInt(DASHES_TAG);
-        dashDirection = new Vec3(
-                tag.getDouble(DASH_X_TAG),
-                tag.getDouble(DASH_Y_TAG),
-                tag.getDouble(DASH_Z_TAG));
+        dashDirection = new Vec3(tag.getDouble(DASH_X_TAG), tag.getDouble(DASH_Y_TAG), tag.getDouble(DASH_Z_TAG));
     }
 }

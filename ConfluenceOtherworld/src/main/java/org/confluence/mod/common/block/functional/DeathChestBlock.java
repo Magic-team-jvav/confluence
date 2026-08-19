@@ -77,9 +77,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         InteractionResult result = super.use(state, level, pos, player, hand, hitResult);
         // 1.20.1 没有 1.21 的 default_block_use 成就触发器，因此在服务端成功处理
         // 死人金箱交互时显式授予。普通死人木箱仍不满足该成就的 Terraria 语义。
-        if (result.consumesAction()
-                && state.is(ChestBlocks.DEATH_GOLDEN_CHEST.get())
-                && player instanceof ServerPlayer serverPlayer) {
+        if (result.consumesAction() && state.is(ChestBlocks.DEATH_GOLDEN_CHEST.get()) && player instanceof ServerPlayer serverPlayer) {
             AchievementUtils.awardAchievement(serverPlayer, "dead_men_tell_no_tales");
         }
         return result;

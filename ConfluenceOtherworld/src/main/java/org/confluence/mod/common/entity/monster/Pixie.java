@@ -40,11 +40,7 @@ public class Pixie extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(Pixie.this),
-                                new PixiePursuitAction()),
-                        new FlyWanderAction(Pixie.this, 0.15, 10));
+                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(Pixie.this), new PixiePursuitAction()), new FlyWanderAction(Pixie.this, 0.15, 10));
             }
         };
     }

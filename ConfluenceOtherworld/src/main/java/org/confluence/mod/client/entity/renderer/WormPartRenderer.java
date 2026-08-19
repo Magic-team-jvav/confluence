@@ -29,19 +29,13 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
                 Confluence.asResource("textures/entity/giant_worm_tail.png")));
     }
 
-    private WormPartRenderer(
-            EntityRendererProvider.Context context,
-            WormPartGeoModel<BaseWormPart> model) {
+    private WormPartRenderer(EntityRendererProvider.Context context, WormPartGeoModel<BaseWormPart> model) {
         super(context, model);
         this.wormModel = model;
     }
 
     @Override
-    public RenderType getRenderType(
-            BaseWormPart segment,
-            ResourceLocation texture,
-            @Nullable MultiBufferSource buffers,
-            float partialTick) {
+    public RenderType getRenderType(BaseWormPart segment, ResourceLocation texture, @Nullable MultiBufferSource buffers, float partialTick) {
         return RenderType.entityCutoutNoCull(texture);
     }
 
@@ -62,8 +56,7 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
             float alpha) {
         if (wormModel.usesWyvernGeometry(segment)) {
             boolean tail = segment.isTail();
-            boolean wing = !tail && (segment.getSegmentIndex() == 3
-                    || segment.getSegmentIndex() == 9);
+            boolean wing = !tail && (segment.getSegmentIndex() == 3 || segment.getSegmentIndex() == 9);
             setHidden(model, "Bone", true);
             setHidden(model, "Bone2", tail || wing);
             setHidden(model, "Bone3", tail || !wing);
@@ -77,8 +70,7 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
                 poseStack.scale(1.25F, 1.25F, 1.25F);
             }
         }
-        super.preRender(poseStack, segment, model, buffers, buffer, reRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, segment, model, buffers, buffer, reRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     private static void setHidden(BakedGeoModel model, String name, boolean hidden) {

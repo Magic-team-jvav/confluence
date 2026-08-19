@@ -65,10 +65,8 @@ public class EaterOfWorlds extends BaseWormBoss {
     private static final double WANDER_SPEED = 0.4;
     private static final double PURSUIT_SPEED = 0.55;
 
-    private static final EntityDataAccessor<Optional<UUID>> ENCOUNTER_UUID =
-            SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Boolean> PRIMARY_HEAD =
-            SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Optional<UUID>> ENCOUNTER_UUID = SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Boolean> PRIMARY_HEAD = SynchedEntityData.defineId(EaterOfWorlds.class, EntityDataSerializers.BOOLEAN);
 
     private final List<Float> segmentHealths = new ArrayList<>();
     private int activeSegmentCount = INITIAL_SEGMENT_COUNT;
@@ -132,10 +130,8 @@ public class EaterOfWorlds extends BaseWormBoss {
         if (direction.lengthSqr() <= 1.0E-7) {
             direction = new Vec3(0.0, 0.0, 1.0);
         }
-        float curve = (0.2F
-                - index * 0.08F / INITIAL_SEGMENT_COUNT) * index;
-        return previousPosition.add(
-                direction.normalize().scale(-getSegmentSpacing()).yRot(curve));
+        float curve = (0.2F - index * 0.08F / INITIAL_SEGMENT_COUNT) * index;
+        return previousPosition.add(direction.normalize().scale(-getSegmentSpacing()).yRot(curve));
     }
 
     @Override
@@ -196,8 +192,8 @@ public class EaterOfWorlds extends BaseWormBoss {
     }
 
     private void splitAt(int destroyedIndex) {
-        if (!(level() instanceof ServerLevel) || destroyedIndex < 1
-                || destroyedIndex > activeSegmentCount || restructuring) return;
+        if (!(level() instanceof ServerLevel) || destroyedIndex < 1 || destroyedIndex > activeSegmentCount || restructuring)
+            return;
         restructuring = true;
         try {
             List<Float> oldHealths = List.copyOf(segmentHealths);
@@ -207,11 +203,8 @@ public class EaterOfWorlds extends BaseWormBoss {
             if (destroyedIndex < activeSegmentCount) {
                 BossWormPart rearHeadPart = segments.get(destroyedIndex);
                 float rearHeadHealth = oldHealths.get(destroyedIndex);
-                List<Float> rearHealths = new ArrayList<>(oldHealths.subList(
-                        destroyedIndex + 1, oldHealths.size()));
-                rearHead = spawnSplitHead(
-                        rearHeadPart.position(), rearHeadPart.getYRot(), rearHeadPart.getXRot(),
-                        rearHeadHealth, rearHealths, false);
+                List<Float> rearHealths = new ArrayList<>(oldHealths.subList(destroyedIndex + 1, oldHealths.size()));
+                rearHead = spawnSplitHead(rearHeadPart.position(), rearHeadPart.getYRot(), rearHeadPart.getXRot(), rearHeadHealth, rearHealths, false);
                 if (rearHead == null) {
                     frontHealths.add(rearHeadHealth);
                     frontHealths.addAll(rearHealths);
@@ -235,9 +228,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         initSegments();
     }
 
-    private @Nullable EaterOfWorlds spawnSplitHead(
-            Vec3 position, float yaw, float pitch, float headHealth,
-            List<Float> bodyHealths, boolean primary) {
+    private @Nullable EaterOfWorlds spawnSplitHead(Vec3 position, float yaw, float pitch, float headHealth, List<Float> bodyHealths, boolean primary) {
         if (!(level() instanceof ServerLevel serverLevel)) return null;
         EaterOfWorlds head = BossEntities.EATER_OF_WORLDS.get().create(level());
         if (head == null) return null;
@@ -270,9 +261,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         if (!level().isClientSide && !restructuring && activeSegmentCount > 0 && !segments.isEmpty()) {
             BossWormPart promotedPart = segments.get(0);
             List<Float> remainingBody = new ArrayList<>(segmentHealths.subList(1, segmentHealths.size()));
-            EaterOfWorlds promoted = spawnSplitHead(
-                    promotedPart.position(), promotedPart.getYRot(), promotedPart.getXRot(),
-                    segmentHealths.get(0), remainingBody, isMainBody());
+            EaterOfWorlds promoted = spawnSplitHead(promotedPart.position(), promotedPart.getYRot(), promotedPart.getXRot(), segmentHealths.get(0), remainingBody, isMainBody());
             if (promoted != null) {
                 setPrimaryHead(false);
                 discard();
@@ -347,8 +336,7 @@ public class EaterOfWorlds extends BaseWormBoss {
     private List<EaterOfWorlds> encounterHeads() {
         UUID encounter = getEncounterUUID();
         if (encounter == null) return isAlive() ? List.of(this) : List.of();
-        return level().getEntitiesOfClass(EaterOfWorlds.class, getBoundingBox().inflate(512.0),
-                candidate -> encounter.equals(candidate.getEncounterUUID()));
+        return level().getEntitiesOfClass(EaterOfWorlds.class, getBoundingBox().inflate(512.0), candidate -> encounter.equals(candidate.getEncounterUUID()));
     }
 
     private void resetSegmentHealths(int count) {
@@ -390,15 +378,9 @@ public class EaterOfWorlds extends BaseWormBoss {
             float health = index < healths.size() ? healths.getFloat(index) : NODE_MAX_HEALTH;
             segmentHealths.add(Float.isFinite(health) ? Mth.clamp(health, 0.0F, NODE_MAX_HEALTH) : NODE_MAX_HEALTH);
         }
-        int phaseIndex = Mth.clamp(
-                tag.getInt(MOVEMENT_PHASE_TAG),
-                0,
-                MovementPhase.values().length - 1);
+        int phaseIndex = Mth.clamp(tag.getInt(MOVEMENT_PHASE_TAG), 0, MovementPhase.values().length - 1);
         movementPhase = MovementPhase.values()[phaseIndex];
-        movementTicks = Mth.clamp(
-                tag.getInt(MOVEMENT_TICKS_TAG),
-                0,
-                phaseDuration(movementPhase));
+        movementTicks = Mth.clamp(tag.getInt(MOVEMENT_TICKS_TAG), 0, phaseDuration(movementPhase));
         if (tag.contains(WANDER_TARGET_TAG, Tag.TAG_LIST)) {
             ListTag target = tag.getList(WANDER_TARGET_TAG, FloatTag.TAG_FLOAT);
             wanderTarget = target.size() == 3
@@ -472,9 +454,7 @@ public class EaterOfWorlds extends BaseWormBoss {
                         target.position(),
                         isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED,
                         5.0F);
-                if (movementTicks >= ALIGN_TICKS
-                        || angle < Math.PI / 8.0
-                        && toTarget.lengthSqr() < 20.0) {
+                if (movementTicks >= ALIGN_TICKS || angle < Math.PI / 8.0 && toTarget.lengthSqr() < 20.0) {
                     beginPhase(MovementPhase.DASH);
                 }
             }
@@ -506,10 +486,7 @@ public class EaterOfWorlds extends BaseWormBoss {
                 ? -10.0 - random.nextDouble() * 4.0
                 : 5.0 + random.nextDouble() * 2.0;
         nextWanderBelow = !nextWanderBelow;
-        wanderTarget = target.position().add(
-                Math.sin(angle) * radius,
-                verticalOffset,
-                Math.cos(angle) * radius);
+        wanderTarget = target.position().add(Math.sin(angle) * radius, verticalOffset, Math.cos(angle) * radius);
     }
 
     private static int phaseDuration(MovementPhase phase) {

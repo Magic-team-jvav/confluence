@@ -48,8 +48,7 @@ final class MechanicalMayhemTracker {
         }
     }
 
-    private static void confirmCommonParticipants(
-            BaseBoss twins, BaseBoss destroyer, BaseBoss skeletronPrime) {
+    private static void confirmCommonParticipants(BaseBoss twins, BaseBoss destroyer, BaseBoss skeletronPrime) {
         Set<UUID> commonParticipants = new LinkedHashSet<>(twins.combatParticipantIdsSnapshot());
         commonParticipants.retainAll(destroyer.combatParticipantIdsSnapshot());
         commonParticipants.retainAll(skeletronPrime.combatParticipantIdsSnapshot());

@@ -48,8 +48,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
         registerMonsters(entries);
         registerBosses(entries);
         registerVanillaCreatures(entries);
-        recipe(Codec.unboundedMap(Codec.STRING, ClientBestiaryEntry.CODEC),
-                pathProvider().json(Confluence.asResource("bestiary"))).addRecipe(entries.map);
+        recipe(Codec.unboundedMap(Codec.STRING, ClientBestiaryEntry.CODEC), pathProvider().json(Confluence.asResource("bestiary"))).addRecipe(entries.map);
     }
 
     /// 按 1.21 图鉴顺序显式登记当前版本已经实现的 NPC。
@@ -105,8 +104,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .background(SURFACE_SUN).filters(surfaceDaytime));
         entries.add(CritterEntities.EXPLOSIVE_BUNNY, builder -> builder.order(4250).rarity(1)
                 .background(SURFACE_SUN).filters(surfaceDaytime));
-        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 4, Bunny.Variant.GOLD,
-                builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime));
+        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 4, Bunny.Variant.GOLD, builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime));
         entries.add(CritterEntities.BIRD, builder -> builder.order(4800).rarity(1)
                 .background(SURFACE_SUN).filters(surfaceDaytime));
         entries.add(CritterEntities.BLUE_JAY, builder -> builder.order(4900).rarity(1)
@@ -115,22 +113,17 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .background(SURFACE_SUN).filters(surfaceDaytime));
         entries.add(EntityType.PARROT, builder -> builder.order(5200).rarity(3)
                 .background(THE_JUNGLE_SUN).filters(FilterEntry.THE_JUNGLE, FilterEntry.DAYTIME));
-        entries.numberedVariant(CritterEntities.SQUIRREL, 0, Squirrel.Variant.NORMAL,
-                builder -> builder.order(5900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime));
+        entries.numberedVariant(CritterEntities.SQUIRREL, 0, Squirrel.Variant.NORMAL, builder -> builder.order(5900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime));
         entries.numberedVariant(CritterEntities.RED_SQUIRREL, "entity.confluence.squirrel", 1,
                 Squirrel.Variant.RED, builder -> builder.order(6000).rarity(1)
                         .background(SURFACE_SUN).filters(surfaceDaytime));
-        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 1, Squirrel.Variant.GOLD,
-                builder -> builder.order(6100).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime));
+        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 1, Squirrel.Variant.GOLD, builder -> builder.order(6100).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime));
         entries.add(EntityType.FROG, builder -> builder.order(6400).rarity(1)
                 .background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE));
 
-        entries.numberedVariant(CritterEntities.GRASSHOPPER, 0, Grasshopper.Variant.GOLD,
-                builder -> builder.order(6700).rarity(5).background(SURFACE).filters(FilterEntry.SURFACE));
-        entries.numberedVariant(CritterEntities.GRASSHOPPER, 1, Grasshopper.Variant.GREEN,
-                builder -> builder.order(6600).rarity(1).background(SURFACE).filters(FilterEntry.SURFACE));
-        entries.numberedVariant(CritterEntities.BUTTERFLY, 0, Butterfly.Variant.GOLD,
-                builder -> builder.order(6900).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime));
+        entries.numberedVariant(CritterEntities.GRASSHOPPER, 0, Grasshopper.Variant.GOLD, builder -> builder.order(6700).rarity(5).background(SURFACE).filters(FilterEntry.SURFACE));
+        entries.numberedVariant(CritterEntities.GRASSHOPPER, 1, Grasshopper.Variant.GREEN, builder -> builder.order(6600).rarity(1).background(SURFACE).filters(FilterEntry.SURFACE));
+        entries.numberedVariant(CritterEntities.BUTTERFLY, 0, Butterfly.Variant.GOLD, builder -> builder.order(6900).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime));
         Butterfly.Variant[] butterflyVariants = {
                 Butterfly.Variant.JULIA, Butterfly.Variant.MONARCH,
                 Butterfly.Variant.PURPLE_EMPEROR, Butterfly.Variant.RED_ADMIRAL,
@@ -161,12 +154,9 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
         entries.numberedVariant(CritterEntities.LADYBUG, 1, Ladybug.Variant.RED,
                 builder -> builder.order(7800).rarity(3).background(SURFACE)
                         .filters(FilterEntry.WINDY_DAY));
-        entries.numberedVariant(CritterEntities.FEALING, 0, Fairy.Variant.PINK,
-                builder -> builder.order(8100).rarity(5).background(CAVE).filters(FilterEntry.CAVE));
-        entries.numberedVariant(CritterEntities.DUCK, 0, Duck.Variant.MALLARD,
-                builder -> builder.order(8200).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime));
-        entries.numberedVariant(CritterEntities.DUCK, 1, Duck.Variant.COMMON,
-                builder -> builder.order(8300).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime));
+        entries.numberedVariant(CritterEntities.FEALING, 0, Fairy.Variant.PINK, builder -> builder.order(8100).rarity(5).background(CAVE).filters(FilterEntry.CAVE));
+        entries.numberedVariant(CritterEntities.DUCK, 0, Duck.Variant.MALLARD, builder -> builder.order(8200).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime));
+        entries.numberedVariant(CritterEntities.DUCK, 1, Duck.Variant.COMMON, builder -> builder.order(8300).rarity(2).background(SURFACE_SUN).filters(surfaceDaytime));
         entries.numberedVariant(CritterEntities.FAIRY, 0, Fairy.Variant.PINK,
                 builder -> builder.order(8800).rarity(4)
                         .background(SURFACE_NIGHTTIME).filters(FilterEntry.NIGHTTIME));
@@ -226,35 +216,21 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
     }
 
     private static void addJewelCritters(Builder entries) {
-        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 0, Squirrel.Variant.AMBER,
-                builder -> cave(builder, 9900, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 2, Squirrel.Variant.AMETHYST,
-                builder -> cave(builder, 9300, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 3, Squirrel.Variant.DIAMOND,
-                builder -> cave(builder, 9800, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 4, Squirrel.Variant.EMERALD,
-                builder -> cave(builder, 9600, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 5, Squirrel.Variant.RUBY,
-                builder -> cave(builder, 9700, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 6, Squirrel.Variant.SAPPHIRE,
-                builder -> cave(builder, 9500, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 7, Squirrel.Variant.TOPAZ,
-                builder -> cave(builder, 9400, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 0, Squirrel.Variant.AMBER, builder -> cave(builder, 9900, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 2, Squirrel.Variant.AMETHYST, builder -> cave(builder, 9300, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 3, Squirrel.Variant.DIAMOND, builder -> cave(builder, 9800, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 4, Squirrel.Variant.EMERALD, builder -> cave(builder, 9600, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 5, Squirrel.Variant.RUBY, builder -> cave(builder, 9700, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 6, Squirrel.Variant.SAPPHIRE, builder -> cave(builder, 9500, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_SQUIRREL, 7, Squirrel.Variant.TOPAZ, builder -> cave(builder, 9400, 1));
 
-        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 0, Bunny.Variant.AMBER,
-                builder -> cave(builder, 10600, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 1, Bunny.Variant.AMETHYST,
-                builder -> cave(builder, 10000, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 2, Bunny.Variant.DIAMOND,
-                builder -> cave(builder, 10500, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 3, Bunny.Variant.EMERALD,
-                builder -> cave(builder, 10300, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 5, Bunny.Variant.RUBY,
-                builder -> cave(builder, 10400, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 6, Bunny.Variant.SAPPHIRE,
-                builder -> cave(builder, 10200, 1));
-        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 7, Bunny.Variant.TOPAZ,
-                builder -> cave(builder, 10100, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 0, Bunny.Variant.AMBER, builder -> cave(builder, 10600, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 1, Bunny.Variant.AMETHYST, builder -> cave(builder, 10000, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 2, Bunny.Variant.DIAMOND, builder -> cave(builder, 10500, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 3, Bunny.Variant.EMERALD, builder -> cave(builder, 10300, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 5, Bunny.Variant.RUBY, builder -> cave(builder, 10400, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 6, Bunny.Variant.SAPPHIRE, builder -> cave(builder, 10200, 1));
+        entries.numberedVariant(CritterEntities.JEWEL_BUNNY, 7, Bunny.Variant.TOPAZ, builder -> cave(builder, 10100, 1));
     }
 
     /// 按 1.21 已登记条目逐项配置当前版本存在的普通敌怪。
@@ -717,24 +693,12 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
             return variant(type.get(), variant, consumer);
         }
 
-        public <E extends Enum<E> & IVariant> Builder numberedVariant(
-                Supplier<? extends EntityType<?>> type,
-                int displayVariant,
-                E entityVariant,
-                Consumer<ClientBestiaryEntry.Builder> consumer
-        ) {
+        public <E extends Enum<E> & IVariant> Builder numberedVariant(Supplier<? extends EntityType<?>> type, int displayVariant, E entityVariant, Consumer<ClientBestiaryEntry.Builder> consumer) {
             return numberedVariant(type, type.get().getDescriptionId(), displayVariant, entityVariant, consumer);
         }
 
-        public <E extends Enum<E> & IVariant> Builder numberedVariant(
-                Supplier<? extends EntityType<?>> type,
-                String typeKey,
-                int displayVariant,
-                E entityVariant,
-                Consumer<ClientBestiaryEntry.Builder> consumer
-        ) {
-            return add(type, typeKey, Integer.toString(displayVariant),
-                    consumer.andThen(builder -> builder.entityNbt(entityVariant::serialize)));
+        public <E extends Enum<E> & IVariant> Builder numberedVariant(Supplier<? extends EntityType<?>> type, String typeKey, int displayVariant, E entityVariant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return add(type, typeKey, Integer.toString(displayVariant), consumer.andThen(builder -> builder.entityNbt(entityVariant::serialize)));
         }
 
         /// @param armorItems \[鞋子，裤子，衣服，帽子\]

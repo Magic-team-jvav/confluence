@@ -170,10 +170,8 @@ public class BaseBulletEntity extends Projectile {
     public BaseBulletEntity createChild(Vec3 velocity, float damageMultiplier, int effectState, Vec3 spawnOffset) {
         EntityType<? extends BaseBulletEntity> type = (EntityType<? extends BaseBulletEntity>) getType();
         BaseBulletEntity child = this instanceof CustomBulletEntity custom
-                ? new CustomBulletEntity(type, level(), getX() + spawnOffset.x, getY() + spawnOffset.y,
-                getZ() + spawnOffset.z, getBulletStack(), custom.getBulletGravity())
-                : new BaseBulletEntity(type, level(), getX() + spawnOffset.x, getY() + spawnOffset.y,
-                getZ() + spawnOffset.z, getBulletStack());
+                ? new CustomBulletEntity(type, level(), getX() + spawnOffset.x, getY() + spawnOffset.y, getZ() + spawnOffset.z, getBulletStack(), custom.getBulletGravity())
+                : new BaseBulletEntity(type, level(), getX() + spawnOffset.x, getY() + spawnOffset.y, getZ() + spawnOffset.z, getBulletStack());
         child.setOwner(getOwner());
         child.setColorID(getColorID());
         child.setDamage(damage * Math.max(0.0F, damageMultiplier));
@@ -264,8 +262,7 @@ public class BaseBulletEntity extends Projectile {
                 break;
             Vec3 continuation = remaining.normalize();
             double offset = Math.min(COLLISION_EPSILON, remaining.length() * 0.5D);
-            setPos(hitPosition.x + continuation.x * offset, hitPosition.y + continuation.y * offset,
-                    hitPosition.z + continuation.z * offset);
+            setPos(hitPosition.x + continuation.x * offset, hitPosition.y + continuation.y * offset, hitPosition.z + continuation.z * offset);
             movement = segmentEnd.subtract(position());
         }
         setDeltaMovement(velocity);

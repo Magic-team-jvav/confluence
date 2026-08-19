@@ -67,23 +67,19 @@ public final class CreatureSpawnPlacements {
                 MonsterEntities.BLACK_SLIME, MonsterEntities.LAVA_SLIME,
                 MonsterEntities.SWAMP_SLIME, MonsterEntities.DUNGEON_SLIME,
                 MonsterEntities.GREEN_DUMPLING_SLIME);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkUndergroundMonsterSpawn,
-                MonsterEntities.SPIKED_JUNGLE_SLIME, MonsterEntities.SPIKED_ICE_SLIME);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkUndergroundMonsterSpawn, MonsterEntities.SPIKED_JUNGLE_SLIME, MonsterEntities.SPIKED_ICE_SLIME);
     }
 
     private static void registerPreHardmodeMonsters(PortRegisterSpawnPlacementsEvent event) {
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkDemonEyeSpawn,
-                MonsterEntities.DEMON_EYE);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, Zombie::checkZombieSpawnRules,
-                MonsterEntities.ZOMBIE);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkDemonEyeSpawn, MonsterEntities.DEMON_EYE);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, Zombie::checkZombieSpawnRules, MonsterEntities.ZOMBIE);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkRoutineMonsterSpawn,
                 MonsterEntities.BLOODY_SPORE,
                 MonsterEntities.FACE_MONSTER, MonsterEntities.SPORE_SKELETON,
                 MonsterEntities.DECAYEDER, MonsterEntities.CRIMERA,
                 MonsterEntities.EATER_OF_SOULS, MonsterEntities.BLOOD_CRAWLER,
                 MonsterEntities.DEVOURER, MonsterEntities.JUNGLE_BAT);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkRoutineMonsterSpawn,
-                MonsterEntities.GHOST);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkRoutineMonsterSpawn, MonsterEntities.GHOST);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkGroundSpawn,
                 MonsterEntities.BLOOD_ZOMBIE, MonsterEntities.SPORE_ZOMBIE,
                 MonsterEntities.HAT_SPORE_ZOMBIE, MonsterEntities.SNATCHER,
@@ -91,8 +87,7 @@ public final class CreatureSpawnPlacements {
                 MonsterEntities.GOBLIN_PEON, MonsterEntities.GOBLIN_ARCHER,
                 MonsterEntities.GOBLIN_WARRIOR, MonsterEntities.GOBLIN_THIEF,
                 MonsterEntities.ANGER_GOBLIN);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkGoblinScoutSpawn,
-                MonsterEntities.GOBLIN_SCOUT);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkGoblinScoutSpawn, MonsterEntities.GOBLIN_SCOUT);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkUndergroundMonsterSpawn,
                 MonsterEntities.GIANT_SHELLY, MonsterEntities.CRAWDAD, MonsterEntities.NYMPH,
                 MonsterEntities.MAN_EATER, MonsterEntities.SNOW_FLINX, MonsterEntities.HORNET,
@@ -103,34 +98,20 @@ public final class CreatureSpawnPlacements {
                 MonsterEntities.BIG_BONES, MonsterEntities.BIG_ANGER_BONES,
                 MonsterEntities.BIG_MUSCLE_ANGER_BONES, MonsterEntities.BIG_HELMET_ANGER_BONES,
                 MonsterEntities.CURSED_SKULL, MonsterEntities.DARK_CASTER);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkCaveMonsterSpawn,
-                MonsterEntities.GIANT_WORM, MonsterEntities.TOMB_CRAWLER);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkNetherMonsterSpawn,
-                MonsterEntities.BONE_SERPENT, MonsterEntities.WITHER_BONE_SERPENT,
-                MonsterEntities.HELL_BAT, MonsterEntities.FIRE_IMP);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkFlyingFishSpawn,
-                MonsterEntities.FLYING_FISH);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkCaveMonsterSpawn, MonsterEntities.GIANT_WORM, MonsterEntities.TOMB_CRAWLER);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkNetherMonsterSpawn, MonsterEntities.BONE_SERPENT, MonsterEntities.WITHER_BONE_SERPENT, MonsterEntities.HELL_BAT, MonsterEntities.FIRE_IMP);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkFlyingFishSpawn, MonsterEntities.FLYING_FISH);
 
-        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkHighLevelMonsterSpawn,
-                MonsterEntities.HARPY);
-        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkRoutineMonsterSpawn,
-                MonsterEntities.METEOR_HEAD);
-        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkNetherMonsterSpawn,
-                MonsterEntities.DEMON, MonsterEntities.VOODOO_DEMON,
-                MonsterEntities.WANDERING_EYE_FISH);
-        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkUndergroundMonsterSpawn,
-                MonsterEntities.ANTLION_SWARMER, MonsterEntities.GIANT_ANTLION_SWARMER,
-                MonsterEntities.GRANITE_ELEMENTAL);
+        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkHighLevelMonsterSpawn, MonsterEntities.HARPY);
+        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkRoutineMonsterSpawn, MonsterEntities.METEOR_HEAD);
+        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkNetherMonsterSpawn, MonsterEntities.DEMON, MonsterEntities.VOODOO_DEMON, MonsterEntities.WANDERING_EYE_FISH);
+        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks::checkUndergroundMonsterSpawn, MonsterEntities.ANTLION_SWARMER, MonsterEntities.GIANT_ANTLION_SWARMER, MonsterEntities.GRANITE_ELEMENTAL);
 
-        group(event, PortSpawnPlacementTypes.IN_WATER, SpawnPlacementChecks::checkWaterMonsterSpawn,
-                MonsterEntities.PIRANHA, MonsterEntities.SHARK,
-                MonsterEntities.BLUE_JELLYFISH, MonsterEntities.PINK_JELLYFISH);
+        group(event, PortSpawnPlacementTypes.IN_WATER, SpawnPlacementChecks::checkWaterMonsterSpawn, MonsterEntities.PIRANHA, MonsterEntities.SHARK, MonsterEntities.BLUE_JELLYFISH, MonsterEntities.PINK_JELLYFISH);
     }
 
     private static void registerHardmodeMonsters(PortRegisterSpawnPlacementsEvent event) {
-        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS,
-                SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkHighLevelMonsterSpawn),
-                MonsterEntities.WYVERN, MonsterEntities.ARCH_WYVERN);
+        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkHighLevelMonsterSpawn), MonsterEntities.WYVERN, MonsterEntities.ARCH_WYVERN);
         group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS,
                 SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkRoutineMonsterSpawn),
                 MonsterEntities.CORRUPTOR, MonsterEntities.ENCHANTED_SWORD,
@@ -152,32 +133,21 @@ public final class CreatureSpawnPlacements {
                 MonsterEntities.PALADIN, MonsterEntities.BONE_LEE,
                 MonsterEntities.NECROMANCER, MonsterEntities.DIABOLIST,
                 MonsterEntities.RAGGED_CASTER);
-        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS,
-                SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkDungeonMonsterSpawn),
-                MonsterEntities.BLAZING_WHEEL, MonsterEntities.SPIKE_BALL);
-        group(event, PortSpawnPlacementTypes.ON_GROUND,
-                SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkPossessedArmorSpawn),
-                MonsterEntities.POSSESS_ARMOR);
-        group(event, PortSpawnPlacementTypes.ON_GROUND,
-                SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkDemonEyeSpawn),
-                MonsterEntities.WRAITH);
+        group(event, PortSpawnPlacementTypes.NO_RESTRICTIONS, SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkDungeonMonsterSpawn), MonsterEntities.BLAZING_WHEEL, MonsterEntities.SPIKE_BALL);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkPossessedArmorSpawn), MonsterEntities.POSSESS_ARMOR);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkDemonEyeSpawn), MonsterEntities.WRAITH);
         group(event, PortSpawnPlacementTypes.ON_GROUND,
                 SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkCaveMonsterSpawn),
                 MonsterEntities.GOLDEN_MIMIC, MonsterEntities.ICE_MIMIC,
                 MonsterEntities.CRIMSON_MIMIC, MonsterEntities.CORRUPT_MIMIC,
                 MonsterEntities.HALLOWED_MIMIC, MonsterEntities.JUNGLE_MIMIC);
-        group(event, PortSpawnPlacementTypes.ON_GROUND,
-                SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkNetherMonsterSpawn),
-                MonsterEntities.SHADOW_MIMIC);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkNetherMonsterSpawn), MonsterEntities.SHADOW_MIMIC);
         group(event, PortSpawnPlacementTypes.ON_GROUND,
                 SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkRoutineMonsterSpawn),
                 MonsterEntities.MUMMY, MonsterEntities.DARK_MUMMY,
                 MonsterEntities.BLOOD_MUMMY, MonsterEntities.LIGHT_MUMMY,
                 MonsterEntities.DERPLING, MonsterEntities.HERPLING);
-        group(event, PortSpawnPlacementTypes.IN_WATER,
-                SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkWaterMonsterSpawn),
-                MonsterEntities.GREEN_JELLYFISH, MonsterEntities.ARAPAIMA,
-                MonsterEntities.BLOOD_FEEDER);
+        group(event, PortSpawnPlacementTypes.IN_WATER, SpawnPlacementChecks.<Mob>hardmode(SpawnPlacementChecks::checkWaterMonsterSpawn), MonsterEntities.GREEN_JELLYFISH, MonsterEntities.ARAPAIMA, MonsterEntities.BLOOD_FEEDER);
     }
 
     private static boolean checkWormSpawn(EntityType<Worm> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -190,14 +160,10 @@ public final class CreatureSpawnPlacements {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private static void group(PortRegisterSpawnPlacementsEvent event,
-                              PortSpawnPlacementType placement,
-                              SpawnPlacements.SpawnPredicate predicate,
-                              RegistryObject<? extends EntityType<?>>... types) {
+    private static void group(PortRegisterSpawnPlacementsEvent event, PortSpawnPlacementType placement, SpawnPlacements.SpawnPredicate predicate, RegistryObject<? extends EntityType<?>>... types) {
         // 泛型在 RegistryObject<?> 边界被擦除；所有调用点都只传入 Mob 类型，并由测试审计覆盖。
         for (RegistryObject<? extends EntityType<?>> type : types) {
-            event.register((EntityType) type.get(), placement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    predicate, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
+            event.register((EntityType) type.get(), placement, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, predicate, PortRegisterSpawnPlacementsEvent.Operation.REPLACE);
         }
     }
 }

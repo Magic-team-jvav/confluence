@@ -49,8 +49,7 @@ import java.util.Iterator;
 /// 原版成熟的漂浮、观察、树冠巡游与跟随动作通过叶节点接入行为树，实体本身仍只有一个
 /// 行为调度器，不会重新安装第二套 Goal 组合。</p>
 public class Bird extends BaseFlyingCritter implements FlyingAnimal {
-    private static final RawAnimation FLY_ONLY =
-            RawAnimation.begin().thenLoop("move.fly");
+    private static final RawAnimation FLY_ONLY = RawAnimation.begin().thenLoop("move.fly");
     public float flap;
     public float flapSpeed;
     public float oFlapSpeed;
@@ -131,20 +130,13 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
     ///
     /// <p>这些资源没有 {@code move.walk} 或 {@code misc.idle}，使用通用走路控制器会持续输出
     /// 缺失动画警告，并在停顿阶段让翅膀完全静止。</p>
-    protected final void registerFlyOnlyController(
-            AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Fly",
-                5,
-                state -> state.setAndContinue(FLY_ONLY)));
+    protected final void registerFlyOnlyController(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Fly", 5, state -> state.setAndContinue(FLY_ONLY)));
     }
 
     @Override
     public void aiStep() {
-        if (jukebox == null
-                || !jukebox.closerToCenterThan(position(), 3.46)
-                || !level().getBlockState(jukebox).is(Blocks.JUKEBOX)) {
+        if (jukebox == null || !jukebox.closerToCenterThan(position(), 3.46) || !level().getBlockState(jukebox).is(Blocks.JUKEBOX)) {
             partyBird = false;
             jukebox = null;
         }
@@ -216,10 +208,7 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
 
     @Override
     public Vec3 getLeashOffset() {
-        return new Vec3(
-                0.0,
-                0.5F * getEyeHeight(),
-                getBbWidth() * 0.4F);
+        return new Vec3(0.0, 0.5F * getEyeHeight(), getBbWidth() * 0.4F);
     }
 
     public float getVoicePitch() {
@@ -253,10 +242,8 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
         @Nullable
         private Vec3 findTreePosition() {
             BlockPos origin = mob.blockPosition();
-            BlockPos.MutableBlockPos above =
-                    new BlockPos.MutableBlockPos();
-            BlockPos.MutableBlockPos below =
-                    new BlockPos.MutableBlockPos();
+            BlockPos.MutableBlockPos above = new BlockPos.MutableBlockPos();
+            BlockPos.MutableBlockPos below = new BlockPos.MutableBlockPos();
             Iterator<BlockPos> candidates = BlockPos.betweenClosed(
                     Mth.floor(mob.getX() - 3.0),
                     Mth.floor(mob.getY() - 6.0),
@@ -270,14 +257,10 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
                 if (origin.equals(candidate)) {
                     continue;
                 }
-                BlockState support = mob.level().getBlockState(
-                        below.setWithOffset(candidate, Direction.DOWN));
+                BlockState support = mob.level().getBlockState(below.setWithOffset(candidate, Direction.DOWN));
                 boolean tree = support.getBlock() instanceof LeavesBlock
                         || support.is(BlockTags.LOGS);
-                if (tree
-                        && mob.level().isEmptyBlock(candidate)
-                        && mob.level().isEmptyBlock(
-                        above.setWithOffset(candidate, Direction.UP))) {
+                if (tree && mob.level().isEmptyBlock(candidate) && mob.level().isEmptyBlock(above.setWithOffset(candidate, Direction.UP))) {
                     return Vec3.atBottomCenterOf(candidate);
                 }
             }

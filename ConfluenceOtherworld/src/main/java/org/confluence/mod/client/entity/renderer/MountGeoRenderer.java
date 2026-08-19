@@ -17,36 +17,18 @@ import software.bernie.geckolib.animatable.GeoEntity;
 /// 本渲染器只为坐骑补回身体朝向，不改变通用实体渲染器，避免影响已经自行处理旋转的
 /// 弹幕和其他非生物实体。存在玩家乘客时优先读取玩家已经过帧间插值的视角朝向，防止
 /// 本地连续鼠标输入与每 tick 更新的坐骑实体朝向互相追赶；没有乘客时才退回实体朝向。</p>
-public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity>
-        extends GeoNormalRenderer<T> {
-    public MountGeoRenderer(
-            EntityRendererProvider.Context context,
-            ExplicitGeoModel<T> model
-    ) {
+public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity> extends GeoNormalRenderer<T> {
+    public MountGeoRenderer(EntityRendererProvider.Context context, ExplicitGeoModel<T> model) {
         super(context, model);
     }
 
     @Override
-    protected void applyRotations(
-            T mount,
-            PoseStack poseStack,
-            float ageInTicks,
-            float ignoredBodyYaw,
-            float partialTick
-    ) {
+    protected void applyRotations(T mount, PoseStack poseStack, float ageInTicks, float ignoredBodyYaw, float partialTick) {
         Entity passenger = mount.getFirstPassenger();
         float bodyYaw = passenger instanceof Player player
                 ? player.getViewYRot(partialTick)
-                : Mth.rotLerp(
-                partialTick,
-                mount.yRotO,
-                mount.getYRot());
-        super.applyRotations(
-                mount,
-                poseStack,
-                ageInTicks,
-                bodyYaw,
-                partialTick);
+                : Mth.rotLerp(partialTick, mount.yRotO, mount.getYRot());
+        super.applyRotations(mount, poseStack, ageInTicks, bodyYaw, partialTick);
     }
 
     @Override

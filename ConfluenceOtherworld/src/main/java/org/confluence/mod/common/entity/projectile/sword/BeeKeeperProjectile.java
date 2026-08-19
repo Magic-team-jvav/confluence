@@ -33,11 +33,7 @@ public class BeeKeeperProjectile extends SwordProjectile {
             } else if (tickCount < 10) {
                 setDeltaMovement(getDeltaMovement().scale(0.8f));
             } else {
-                LivingEntity target = LibEntityUtils.getAABBAngleTarget(
-                        position(),
-                        position().add(getDeltaMovement().normalize()),
-                        level(), getOwner(), 10, 180,
-                        this::canAutoTarget);
+                LivingEntity target = LibEntityUtils.getAABBAngleTarget(position(), position().add(getDeltaMovement().normalize()), level(), getOwner(), 10, 180, this::canHitEntity);
                 if (target != null) {
                     Vec3 motion = getDeltaMovement();
                     Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(position());
@@ -57,12 +53,7 @@ public class BeeKeeperProjectile extends SwordProjectile {
         if (tickCount <= 10) {
             return false;
         }
-        return super.canHitEntity(target);
-    }
-
-    /// 自动追踪只选择敌对生物，但飞行途中直接撞到的其他可攻击生物仍应正常受击。
-    private boolean canAutoTarget(Entity target) {
-        return target instanceof Enemy && canHitEntity(target);
+        return target instanceof Enemy && super.canHitEntity(target);
     }
 
     @Override

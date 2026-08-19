@@ -23,10 +23,8 @@ public class CritterEntities {
     public static final RegistryObject<EntityType<RedSquirrel>> RED_SQUIRREL = register("red_squirrel", RedSquirrel::new);
     public static final RegistryObject<EntityType<JewelSquirrel>> JEWEL_SQUIRREL = register("jewel_squirrel", JewelSquirrel::new);
     public static final RegistryObject<EntityType<Duck>> DUCK = PortDeferredRegisterExtension.register(ENTITIES, "duck", id -> EntityType.Builder.of(Duck::new, MobCategory.CREATURE).sized(0.4F, 0.7F).eyeHeight(0.644F).passengerAttachments(new Vec3(0.0, 0.7, -0.1)).clientTrackingRange(10).build(id.toString()));
-    public static final RegistryObject<EntityType<Crab>> CRAB =
-            registerCompact("crab", Crab::new);
-    public static final RegistryObject<EntityType<Worm>> WORM =
-            registerCompact("worm", Worm::new);
+    public static final RegistryObject<EntityType<Crab>> CRAB = registerCompact("crab", Crab::new);
+    public static final RegistryObject<EntityType<Worm>> WORM = registerCompact("worm", Worm::new);
 
     // Insects
     public static final RegistryObject<EntityType<Butterfly>> BUTTERFLY = registerInsect("butterfly", Butterfly::new);
@@ -38,8 +36,7 @@ public class CritterEntities {
     public static final RegistryObject<EntityType<SimpleCritter>> MAGMA_SNAIL = registerInsect("magma_snail", SimpleCritter::new);
     public static final RegistryObject<EntityType<Sluggy>> SLUGGY = registerInsect("sluggy", Sluggy::new);
     public static final RegistryObject<EntityType<SimpleCritter>> SNAIL = registerInsect("snail", SimpleCritter::new);
-    public static final RegistryObject<EntityType<Scorpion>> SCORPION =
-            registerInsect("scorpion", Scorpion::new);
+    public static final RegistryObject<EntityType<Scorpion>> SCORPION = registerInsect("scorpion", Scorpion::new);
     public static final RegistryObject<EntityType<HellButterfly>> HELL_BUTTERFLY = registerInsect("hell_butterfly", HellButterfly::new);
     public static final RegistryObject<EntityType<PrismaticLacewing>> PRISMATIC_LACEWING = registerInsect("prismatic_lacewing", PrismaticLacewing::new);
     public static final RegistryObject<EntityType<Dragonfly>> DRAGONFLY = registerInsect("dragonfly", Dragonfly::new);
@@ -54,19 +51,12 @@ public class CritterEntities {
         return registerCompact(name, factory);
     }
 
-    private static <T extends BaseCritter> RegistryObject<EntityType<T>> registerCompact(
-            String name,
-            EntityType.EntityFactory<T> factory) {
+    private static <T extends BaseCritter> RegistryObject<EntityType<T>> registerCompact(String name, EntityType.EntityFactory<T> factory) {
         return register(name, factory, 0.5F, 0.3F, 8);
     }
 
     /// 集中创建普通小动物实体类型，保证尺寸和追踪距离只在注册入口声明一次。
-    private static <T extends BaseCritter> RegistryObject<EntityType<T>> register(
-            String name,
-            EntityType.EntityFactory<T> factory,
-            float width,
-            float height,
-            int trackingRange) {
+    private static <T extends BaseCritter> RegistryObject<EntityType<T>> register(String name, EntityType.EntityFactory<T> factory, float width, float height, int trackingRange) {
         return PortDeferredRegisterExtension.register(ENTITIES, name,
                 id -> EntityType.Builder.of(factory, MobCategory.CREATURE)
                         .sized(width, height)

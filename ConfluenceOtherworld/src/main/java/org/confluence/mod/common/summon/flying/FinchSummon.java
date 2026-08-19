@@ -7,10 +7,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
-import org.confluence.mod.common.summon.FlyingSummon;
-import org.confluence.mod.common.summon.SummonGoal;
-import org.confluence.mod.common.summon.SummonPose;
-import org.confluence.mod.common.summon.SummonStats;
+import org.confluence.mod.common.summon.*;
 
 /// 飞雀召唤物的运行实例。
 ///
@@ -25,7 +22,7 @@ public final class FinchSummon extends FlyingSummon {
     public FinchSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("finch_baby"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
-        addGoal(9, new FollowOwnerGoal(this));
+        addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.02, 0.70));
     }
 
     @Override
@@ -44,8 +41,7 @@ public final class FinchSummon extends FlyingSummon {
         if (target() == null) {
             return;
         }
-        boolean hit = hurtTouchingTargets(AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75),
-                32.0, 1.0F);
+        boolean hit = hurtTouchingTargets(AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 32.0, 1.0F);
         if (hit && hitMovementCooldown <= -5) hitMovementCooldown = 10;
     }
 
@@ -59,41 +55,32 @@ public final class FinchSummon extends FlyingSummon {
             if (angleBetween(look, direction) < 0.5 && movement.length() < 1.0) {
                 movement = movement.add(direction.normalize().scale(0.1));
             }
-            moveBy(movement.add(0.0, verticalBob(), 0.0), rotation.yaw(), rotation.pitch());
+            moveBy(movement.scale(0.91).add(0.0, verticalBob(), 0.0), rotation.yaw(), rotation.pitch());
             if (distanceSqr < 3.0 && hitMovementCooldown < 0) attackPhaseTicks = 20;
         } else {
             Vec3 forward = Vec3.directionFromRotation(currentPose().pitch(), currentPose().yaw()).normalize();
             Rotation rotation = turnToward(direction, 10.0F, 85.0F);
-            Vec3 movement = velocity().add(forward.scale(0.03)).add(0.0,
-                    Math.min(0.02, 1.0 / distanceSqr) + verticalBob(), 0.0);
+            Vec3 movement = velocity().add(forward.scale(0.03)).add(0.0, Math.min(0.02, 1.0 / distanceSqr), 0.0)
+                    .scale(0.91).add(0.0, verticalBob(), 0.0);
             moveBy(movement, rotation.yaw(), rotation.pitch());
         }
-    }
-
-    private void followOwner() {
-        Vec3 destination = owner().position().add(0.0, 1.8, 0.0);
-        Vec3 offset = destination.subtract(position());
-        Vec3 movement = velocity().scale(0.88);
-        if (offset.lengthSqr() >= 32.0 * 32.0)
-            movement = movement.add(offset.normalize().scale(0.10));
-        if (movement.length() > 0.70) {
-            movement = movement.normalize().scale(0.70);
-        }
-        moveBy(movement.add(0.0, verticalBob(), 0.0));
     }
 
     private double verticalBob() {
         return Math.sin(tickCount() * 0.5F) * 0.03F;
     }
 
+    @Override
+    protected Vec3 idleVelocity() {
+        return super.idleVelocity().add(0.0, verticalBob(), 0.0);
+    }
+
     private Rotation turnToward(Vec3 direction, float maximumYawChange, float maximumPitchChange) {
         Vec3 normalized = direction.normalize();
         float desiredYaw = (float) Math.toDegrees(Math.atan2(-normalized.x, normalized.z));
         float desiredPitch = (float) Math.toDegrees(Math.asin(-normalized.y));
-        float yaw = currentPose().yaw() + Mth.clamp(Mth.wrapDegrees(desiredYaw - currentPose().yaw()),
-                -maximumYawChange, maximumYawChange);
-        float pitch = currentPose().pitch() + Mth.clamp(Mth.wrapDegrees(desiredPitch - currentPose().pitch()),
-                -maximumPitchChange, maximumPitchChange);
+        float yaw = currentPose().yaw() + Mth.clamp(Mth.wrapDegrees(desiredYaw - currentPose().yaw()), -maximumYawChange, maximumYawChange);
+        float pitch = currentPose().pitch() + Mth.clamp(Mth.wrapDegrees(desiredPitch - currentPose().pitch()), -maximumPitchChange, maximumPitchChange);
         return new Rotation(yaw, pitch);
     }
 
@@ -118,22 +105,6 @@ public final class FinchSummon extends FlyingSummon {
         @Override
         public void tick() {
             summon.attack(summon.target());
-        }
-    }
-
-    private static final class FollowOwnerGoal extends SummonGoal<FinchSummon> {
-        private FollowOwnerGoal(FinchSummon summon) {
-            super(summon);
-        }
-
-        @Override
-        public boolean canUse() {
-            return true;
-        }
-
-        @Override
-        public void tick() {
-            summon.followOwner();
         }
     }
 

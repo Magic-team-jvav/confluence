@@ -12,8 +12,7 @@ import org.confluence.mod.common.init.ModSoundEvents;
 
 public class AngerGoblin extends GoblinMonster {
     public AngerGoblin(EntityType<? extends AngerGoblin> type, Level level) {
-        super(type, level, Items.GOLDEN_SWORD.getDefaultInstance(),
-                LandAnimationProfile.NONE);
+        super(type, level, Items.GOLDEN_SWORD.getDefaultInstance(), LandAnimationProfile.NONE);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

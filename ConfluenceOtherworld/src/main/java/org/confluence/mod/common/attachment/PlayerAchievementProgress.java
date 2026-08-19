@@ -114,9 +114,7 @@ public final class PlayerAchievementProgress implements IPortNBTSerializable<Com
     }
 
     private static ResourceLocation mechanicalBossId(EntityType<?> bossType) {
-        if (bossType != BossEntities.THE_TWINS.get()
-                && bossType != BossEntities.THE_DESTROYER.get()
-                && bossType != BossEntities.SKELETRON_PRIME.get()) {
+        if (bossType != BossEntities.THE_TWINS.get() && bossType != BossEntities.THE_DESTROYER.get() && bossType != BossEntities.SKELETRON_PRIME.get()) {
             return null;
         }
         return idOf(bossType);

@@ -64,13 +64,7 @@ public class Wyvern extends BaseWormMonster {
         private static final double CIRCLE_ANGLE_STEP = 0.015;
         private static final double CIRCLE_VERTICAL_STEP = 0.2;
         private static final double CIRCLE_VERTICAL_LIMIT = 6.0;
-        private static final double CIRCLE_SPEED =
-                Math.sqrt(
-                        CIRCLE_ANGLE_STEP * CIRCLE_RADIUS
-                                * CIRCLE_ANGLE_STEP * CIRCLE_RADIUS
-                                + CIRCLE_VERTICAL_STEP
-                                * CIRCLE_VERTICAL_STEP)
-                        * 0.9;
+        private static final double CIRCLE_SPEED = Math.sqrt(CIRCLE_ANGLE_STEP * CIRCLE_RADIUS * CIRCLE_ANGLE_STEP * CIRCLE_RADIUS + CIRCLE_VERTICAL_STEP * CIRCLE_VERTICAL_STEP) * 0.9;
 
         private final Wyvern wyvern;
         private Vec3 center;
@@ -95,9 +89,7 @@ public class Wyvern extends BaseWormMonster {
         @Override
         public BTStatus execute() {
             LivingEntity target = wyvern.getTarget();
-            if (target != null
-                    && target.isAlive()
-                    && wyvern.canAttack(target)) {
+            if (target != null && target.isAlive() && wyvern.canAttack(target)) {
                 attack(target);
             } else {
                 circle();
@@ -111,12 +103,7 @@ public class Wyvern extends BaseWormMonster {
                 angleStep = wyvern.random.nextBoolean()
                         ? CIRCLE_ANGLE_STEP
                         : -CIRCLE_ANGLE_STEP;
-                center = new Vec3(
-                        wyvern.getX()
-                                + (wyvern.random.nextDouble() - 0.5) * 10.0,
-                        Math.max(wyvern.getY(), 95.0) + 10.0,
-                        wyvern.getZ()
-                                + (wyvern.random.nextDouble() - 0.5) * 10.0);
+                center = new Vec3(wyvern.getX() + (wyvern.random.nextDouble() - 0.5) * 10.0, Math.max(wyvern.getY(), 95.0) + 10.0, wyvern.getZ() + (wyvern.random.nextDouble() - 0.5) * 10.0);
             }
 
             angle += angleStep;
@@ -136,60 +123,43 @@ public class Wyvern extends BaseWormMonster {
             Vec3 destination = circlePosition(angle, verticalOffset);
             Vec3 direction = destination.subtract(wyvern.position());
             if (direction.lengthSqr() > 1.0E-6) {
-                wyvern.setDeltaMovement(
-                        direction.normalize().scale(CIRCLE_SPEED));
+                wyvern.setDeltaMovement(direction.normalize().scale(CIRCLE_SPEED));
             }
-            lookAlong(circlePosition(angle + angleStep * 5.0, 0.0)
-                    .subtract(wyvern.position()));
+            lookAlong(circlePosition(angle + angleStep * 5.0, 0.0).subtract(wyvern.position()));
         }
 
         private Vec3 circlePosition(double targetAngle, double yOffset) {
-            return center.add(
-                    CIRCLE_RADIUS * Math.cos(targetAngle),
-                    yOffset,
-                    CIRCLE_RADIUS * Math.sin(targetAngle));
+            return center.add(CIRCLE_RADIUS * Math.cos(targetAngle), yOffset, CIRCLE_RADIUS * Math.sin(targetAngle));
         }
 
         private void attack(LivingEntity target) {
-            Vec3 targetDirection =
-                    target.position().subtract(wyvern.position());
+            Vec3 targetDirection = target.position().subtract(wyvern.position());
             if (targetDirection.lengthSqr() < 1.0E-6) {
                 return;
             }
             Vec3 forward = wyvern.getLookAngle().normalize();
             Vec3 desired = targetDirection.normalize();
-            double turnAngle = Math.acos(Mth.clamp(
-                    forward.dot(desired),
-                    -1.0,
-                    1.0));
+            double turnAngle = Math.acos(Mth.clamp(forward.dot(desired), -1.0, 1.0));
             double distanceSqr = wyvern.distanceToSqr(target);
 
-            if (distanceSqr > TURN_DISTANCE_SQR
-                    && turnAngle > Math.PI / 6.0) {
+            if (distanceSqr > TURN_DISTANCE_SQR && turnAngle > Math.PI / 6.0) {
                 lookAt(target, 5.0F);
-                wyvern.setDeltaMovement(
-                        forward.scale(0.4).add(0.0, 0.4, 0.0));
+                wyvern.setDeltaMovement(forward.scale(0.4).add(0.0, 0.4, 0.0));
                 return;
             }
 
             if (turnAngle < Math.PI / 2.0) {
                 lookAt(target, closeDashTicks > 0 ? 0.0F : 2.0F);
             }
-            if (distanceSqr < 25.0
-                    && target.level().getBlockState(
-                    target.blockPosition().below()).isAir()) {
+            if (distanceSqr < 25.0 && target.level().getBlockState(target.blockPosition().below()).isAir()) {
                 closeDashTicks = 15;
             }
 
             if (closeDashTicks > 0) {
                 closeDashTicks--;
-                wyvern.setDeltaMovement(
-                        wyvern.getLookAngle().normalize()
-                                .scale(1.0)
-                                .add(0.0, 0.1, 0.0));
+                wyvern.setDeltaMovement(wyvern.getLookAngle().normalize().scale(1.0).add(0.0, 0.1, 0.0));
             } else {
-                wyvern.setDeltaMovement(
-                        wyvern.getLookAngle().normalize().scale(0.8));
+                wyvern.setDeltaMovement(wyvern.getLookAngle().normalize().scale(0.8));
             }
         }
 
@@ -204,27 +174,12 @@ public class Wyvern extends BaseWormMonster {
             if (direction.lengthSqr() < 1.0E-6) {
                 return;
             }
-            Vec3 lookPosition = wyvern.position()
-                    .add(direction.normalize().scale(8.0));
-            wyvern.getLookControl().setLookAt(
-                    lookPosition.x,
-                    lookPosition.y,
-                    lookPosition.z,
-                    10.0F,
-                    30.0F);
-            float yaw = (float) (
-                    Mth.atan2(direction.z, direction.x)
-                            * Mth.RAD_TO_DEG) - 90.0F;
-            float pitch = (float) (-(Mth.atan2(
-                    direction.y,
-                    Math.sqrt(
-                            direction.x * direction.x
-                                    + direction.z * direction.z))
-                    * Mth.RAD_TO_DEG));
-            wyvern.setYRot(Mth.rotLerp(
-                    0.2F, wyvern.getYRot(), yaw));
-            wyvern.setXRot(Mth.rotLerp(
-                    0.2F, wyvern.getXRot(), pitch));
+            Vec3 lookPosition = wyvern.position().add(direction.normalize().scale(8.0));
+            wyvern.getLookControl().setLookAt(lookPosition.x, lookPosition.y, lookPosition.z, 10.0F, 30.0F);
+            float yaw = (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
+            float pitch = (float) (-(Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * Mth.RAD_TO_DEG));
+            wyvern.setYRot(Mth.rotLerp(0.2F, wyvern.getYRot(), yaw));
+            wyvern.setXRot(Mth.rotLerp(0.2F, wyvern.getXRot(), pitch));
             wyvern.setYBodyRot(wyvern.getYRot());
         }
     }

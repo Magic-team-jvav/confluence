@@ -27,7 +27,6 @@ public class SkeletronBossRenderer extends BossGeoRenderer<Skeletron> {
         if (bone.getName().equals("bone3")) {
             return;
         }
-        super.renderRecursively(poseStack, boss, bone, renderType, bufferSource, buffer, isReRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderRecursively(poseStack, boss, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

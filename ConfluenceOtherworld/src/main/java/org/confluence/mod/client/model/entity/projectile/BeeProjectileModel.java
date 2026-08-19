@@ -15,8 +15,7 @@ import org.confluence.mod.Confluence;
 /// <p>剑类蜜蜂弹幕、蜜蜂箭和蜜蜂枪弹使用的实体类型并不相同，但外观都应该是同一个小蜜蜂。
 /// 因此模型只依赖原版 Entity，不把渲染层绑死到某一种弹幕类上，后续新增蜜蜂类弹幕时可以直接复用。</p>
 public final class BeeProjectileModel<T extends Entity> extends EntityModel<T> {
-    public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(Confluence.asResource("bee_projectile"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("bee_projectile"), "main");
     private final ModelPart root;
 
     public BeeProjectileModel(ModelPart root) {
@@ -59,17 +58,7 @@ public final class BeeProjectileModel<T extends Entity> extends EntityModel<T> {
             float headPitch) {}
 
     @Override
-    public void renderToBuffer(
-            PoseStack poseStack,
-            VertexConsumer buffer,
-            int packedLight,
-            int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        root.render(
-                poseStack, buffer, packedLight, packedOverlay,
-                red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

@@ -25,14 +25,8 @@ public class MagicDaggerRenderer extends GeoNegativeVolumeRenderer<MagicDaggerPr
 
     /// 在父类开始 Geo 渲染后使用本帧实体计算飞刀朝向，避免读取尚未绑定的渲染状态。
     @Override
-    protected void adjustPose(
-            PoseStack poseStack,
-            MagicDaggerProjectile entity,
-            BakedGeoModel model,
-            float partialTick
-    ) {
+    protected void adjustPose(PoseStack poseStack, MagicDaggerProjectile entity, BakedGeoModel model, float partialTick) {
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() + 180));
-        poseStack.mulPose(Axis.XP.rotationDegrees(
-                Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
+        poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
     }
 }

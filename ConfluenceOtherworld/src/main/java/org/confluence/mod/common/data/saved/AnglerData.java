@@ -62,11 +62,8 @@ public enum AnglerData implements IGlobalData {
         if (tag.isEmpty()) {
             return;
         }
-        if (!tag.contains("QuestGameDay", Tag.TAG_LONG)
-                || !tag.contains("SelectedIndex", Tag.TAG_INT)
-                || !tag.contains("QuestFish", Tag.TAG_COMPOUND)) {
-            throw new IllegalArgumentException(
-                    "Angler data is missing a required field or contains an invalid field type");
+        if (!tag.contains("QuestGameDay", Tag.TAG_LONG) || !tag.contains("SelectedIndex", Tag.TAG_INT) || !tag.contains("QuestFish", Tag.TAG_COMPOUND)) {
+            throw new IllegalArgumentException("Angler data is missing a required field or contains an invalid field type");
         }
         this.questGameDay = tag.getLong("QuestGameDay");
         this.selectedIndex = tag.getInt("SelectedIndex");

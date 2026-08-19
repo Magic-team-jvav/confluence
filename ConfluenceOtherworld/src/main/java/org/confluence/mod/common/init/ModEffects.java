@@ -172,14 +172,8 @@ public final class ModEffects {
     /// 为一种鞭子注册独立召唤标记。
     ///
     /// <p>物品声明仍是鞭子数值和行为的唯一入口，本方法只负责将对应效果加入本体注册表。</p>
-    public static RegistryObject<WhipTagEffect> registerWhipTag(
-            String whipName,
-            float fixedDamage
-    ) {
-        return EFFECTS.register(
-                whipName + "_tag",
-                () -> new WhipTagEffect(0xABAB11, fixedDamage)
-        );
+    public static RegistryObject<WhipTagEffect> registerWhipTag(String whipName, float fixedDamage) {
+        return EFFECTS.register(whipName + "_tag", () -> new WhipTagEffect(0xABAB11, fixedDamage));
     }
 
     private static double exquisitelyStuffed(int v, double v0, double v1, double v2) {

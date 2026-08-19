@@ -64,6 +64,7 @@ import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
+import org.confluence.mod.client.summon.ClientSummonManager;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -79,8 +80,10 @@ import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.ScryingOrb;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
@@ -105,6 +108,7 @@ import java.util.Optional;
 
 public final class GameClientEvents {
     private static boolean wasFlailKeyHeld = false;
+    private static boolean wasRepeaterKeyHeld = false;
 
     public static void init() {
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
@@ -193,8 +197,15 @@ public final class GameClientEvents {
             SwordProjectileInputHandler.handle(player, minecraft.options.keyAttack.isDown());
             //连枷按键检测
             ItemStack mainHandItem = player.getMainHandItem();
-            boolean isFlail = mainHandItem.has(ModDataComponentTypes.FLAIL);
             boolean keyHeld = minecraft.options.keyAttack.isDown();
+            boolean isRepeater = mainHandItem.getItem() instanceof BaseTerraRepeaterItem;
+            if (isRepeater && keyHeld && !wasRepeaterKeyHeld) {
+                LeftClickItemActionPacketC2S.sendPressed();
+            } else if (wasRepeaterKeyHeld && (!isRepeater || !keyHeld)) {
+                LeftClickItemActionPacketC2S.sendReleased();
+            }
+            wasRepeaterKeyHeld = keyHeld && isRepeater;
+            boolean isFlail = mainHandItem.has(ModDataComponentTypes.FLAIL);
             if (isFlail) {
                 if (keyHeld && !wasFlailKeyHeld) {
                     FlailControlPacketC2S.sendHold();
@@ -259,6 +270,9 @@ public final class GameClientEvents {
                 }
             } else {
                 ItemStack stack = player.getMainHandItem();
+                if (event.isAttack() && stack.getItem() instanceof BaseSwordItem) {
+                    SwordProjectileInputHandler.handle(player, true);
+                }
                 if (stack.is(ModTags.Items.SPEAR)) {
                     if (event.isAttack()) {
                         event.setCanceled(true);
@@ -342,6 +356,7 @@ public final class GameClientEvents {
 
     private static void renderLevelStage(PortRenderLevelStageEvent event) {
         BulletVfxManager.render(event);
+        ClientSummonManager.render(event);
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) return;
@@ -545,8 +560,9 @@ public final class GameClientEvents {
 
     private static void gunShot(PortClientTickEvent.Post event) {
         BulletVfxManager.tick();
+        Minecraft minecraft = Minecraft.getInstance();
         KeyMapping shoot = ModKeyBindings.GUN_SHOOT.get();
-        LocalPlayer player = Minecraft.getInstance().player;
+        LocalPlayer player = minecraft.player;
         if (player == null) {
             GunCameraAnimation.clear();
             return;
@@ -573,8 +589,7 @@ public final class GameClientEvents {
 
     private static void updateGunCameraAnimation(LocalPlayer player) {
         ItemStack mainHandItem = player.getMainHandItem();
-        if (!(mainHandItem.getItem() instanceof BaseGun gun)
-                || !gun.isCameraAnimationPlaying(GeoItem.getId(mainHandItem))) {
+        if (!(mainHandItem.getItem() instanceof BaseGun gun) || !gun.isCameraAnimationPlaying(GeoItem.getId(mainHandItem))) {
             GunCameraAnimation.clear();
         }
     }

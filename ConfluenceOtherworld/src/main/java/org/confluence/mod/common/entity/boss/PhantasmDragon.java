@@ -28,10 +28,8 @@ import java.util.UUID;
 
 /// 幻影龙——拜月教邪教徒召唤的飞龙仆从。
 public class PhantasmDragon extends BaseFlyingMonster {
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
-            SynchedEntityData.defineId(PhantasmDragon.class, EntityDataSerializers.OPTIONAL_UUID);
-    private final BossOwnerTracker<LunaticCultist> ownerTracker =
-            new BossOwnerTracker<>(LunaticCultist.class);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(PhantasmDragon.class, EntityDataSerializers.OPTIONAL_UUID);
+    private final BossOwnerTracker<LunaticCultist> ownerTracker = new BossOwnerTracker<>(LunaticCultist.class);
 
     public PhantasmDragon(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);

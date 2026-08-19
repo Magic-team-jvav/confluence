@@ -44,27 +44,13 @@ import java.util.List;
 /// 使用七个无渲染临时部件提供真实受击区域。部件不保存且不独立结算奖励，主体重载后
 /// 按槽位补齐，主动撤离或死亡时统一清理。</p>
 public final class PrimeEnderDragon extends BaseBoss {
-    private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE =
-            SynchedEntityData.defineId(
-                    PrimeEnderDragon.class,
-                    EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DATA_LASER_ACTIVE =
-            SynchedEntityData.defineId(
-                    PrimeEnderDragon.class,
-                    EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> DATA_LANDING =
-            SynchedEntityData.defineId(
-                    PrimeEnderDragon.class,
-                    EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DATA_LASER_RANGE =
-            SynchedEntityData.defineId(
-                    PrimeEnderDragon.class,
-                    EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(PrimeEnderDragon.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> DATA_LASER_ACTIVE = SynchedEntityData.defineId(PrimeEnderDragon.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_LANDING = SynchedEntityData.defineId(PrimeEnderDragon.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_LASER_RANGE = SynchedEntityData.defineId(PrimeEnderDragon.class, EntityDataSerializers.INT);
 
-    private static final RawAnimation FLY =
-            RawAnimation.begin().thenLoop("fly");
-    private static final RawAnimation LAND =
-            RawAnimation.begin().thenPlayAndHold("down");
+    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
+    private static final RawAnimation LAND = RawAnimation.begin().thenPlayAndHold("down");
 
     private static final String STATE_TAG = "CombatState";
     private static final String STATE_TICKS_TAG = "CombatStateTicks";
@@ -90,8 +76,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     private static final double APPROACH_ANGLE = Math.PI / 4.0;
     private static final double LASER_ANGLE = Math.PI / 6.0;
 
-    private final EnumMap<PartSlot, PrimeEnderDragonPart> parts =
-            new EnumMap<>(PartSlot.class);
+    private final EnumMap<PartSlot, PrimeEnderDragonPart> parts = new EnumMap<>(PartSlot.class);
     private CombatState combatState = CombatState.OPENING_WAIT;
     private int combatStateTicks;
     private int fireRounds;
@@ -102,9 +87,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     private Vec3 flightTarget;
     private boolean hadCombatTarget;
 
-    public PrimeEnderDragon(
-            EntityType<? extends Monster> type,
-            Level level) {
+    public PrimeEnderDragon(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         setNoGravity(true);
         noPhysics = true;
@@ -125,9 +108,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        entityData.define(
-                DATA_COMBAT_STATE,
-                CombatState.OPENING_WAIT.ordinal());
+        entityData.define(DATA_COMBAT_STATE, CombatState.OPENING_WAIT.ordinal());
         entityData.define(DATA_LASER_ACTIVE, false);
         entityData.define(DATA_LANDING, false);
         entityData.define(DATA_LASER_RANGE, 0);
@@ -153,9 +134,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     protected void registerGoals() {
         super.registerGoals();
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2,
-                new NearestAttackableTargetGoal<>(
-                        this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     @Override
@@ -212,8 +191,7 @@ public final class PrimeEnderDragon extends BaseBoss {
             case APPROACH -> {
                 if (combatStateTicks % TARGET_REFRESH_TICKS == 0) {
                     flightTarget = target.position();
-                    if (isWithinAttackCone(target, LASER_ANGLE, 20.0)
-                            && random.nextInt(6) < 5) {
+                    if (isWithinAttackCone(target, LASER_ANGLE, 20.0) && random.nextInt(6) < 5) {
                         setLaserActive(true);
                     }
                 }
@@ -262,8 +240,7 @@ public final class PrimeEnderDragon extends BaseBoss {
                 }
             }
             case WANDER_FIRE -> {
-                if (combatStateTicks >= wanderFireDuration
-                        || isNearFlightTarget(10.0)) {
+                if (combatStateTicks >= wanderFireDuration || isNearFlightTarget(10.0)) {
                     shootDragonFireball(target);
                     fireRounds++;
                     if (fireRounds >= 2) {
@@ -298,20 +275,12 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     private void chooseWanderTarget() {
-        flightTarget = AirRandomPos.getPosTowards(
-                this,
-                100,
-                30,
-                5,
-                blockPosition().getBottomCenter(),
-                Mth.PI * 0.1F);
+        flightTarget = AirRandomPos.getPosTowards(this, 100, 30, 5, blockPosition().getBottomCenter(), Mth.PI * 0.1F);
     }
 
     private void updateIdleWander() {
         idleWanderTicks++;
-        if (flightTarget == null
-                || isNearFlightTarget(10.0)
-                || idleWanderTicks >= idleWanderDuration) {
+        if (flightTarget == null || isNearFlightTarget(10.0) || idleWanderTicks >= idleWanderDuration) {
             chooseWanderTarget();
             idleWanderTicks = 0;
             idleWanderDuration = 100 + random.nextInt(101);
@@ -324,25 +293,16 @@ public final class PrimeEnderDragon extends BaseBoss {
                 < distance * distance;
     }
 
-    private boolean isWithinAttackCone(
-            LivingEntity target,
-            double maximumAngle,
-            double maximumDistance) {
+    private boolean isWithinAttackCone(LivingEntity target, double maximumAngle, double maximumDistance) {
         if (distanceToSqr(target) > maximumDistance * maximumDistance) {
             return false;
         }
         Vec3 velocity = getDeltaMovement();
         Vec3 targetDirection = target.position().subtract(position());
-        if (velocity.lengthSqr() < 1.0E-8
-                || targetDirection.lengthSqr() < 1.0E-8) {
+        if (velocity.lengthSqr() < 1.0E-8 || targetDirection.lengthSqr() < 1.0E-8) {
             return false;
         }
-        double cosine = Mth.clamp(
-                velocity.dot(targetDirection)
-                        / Math.sqrt(velocity.lengthSqr()
-                        * targetDirection.lengthSqr()),
-                -1.0,
-                1.0);
+        double cosine = Mth.clamp(velocity.dot(targetDirection) / Math.sqrt(velocity.lengthSqr() * targetDirection.lengthSqr()), -1.0, 1.0);
         return Math.acos(cosine) < maximumAngle;
     }
 
@@ -351,18 +311,11 @@ public final class PrimeEnderDragon extends BaseBoss {
             return;
         }
 
-        Vec3 offset = flightTarget.subtract(
-                getBoundingBox().getCenter());
+        Vec3 offset = flightTarget.subtract(getBoundingBox().getCenter());
         if (offset.lengthSqr() > 1.0E-6) {
-            Vec3 velocity = getDeltaMovement()
-                    .scale(0.94)
-                    .add(offset.normalize()
-                            .scale(FLIGHT_ACCELERATION));
-            if (velocity.lengthSqr()
-                    > MAXIMUM_FLIGHT_SPEED
-                    * MAXIMUM_FLIGHT_SPEED) {
-                velocity = velocity.normalize()
-                        .scale(MAXIMUM_FLIGHT_SPEED);
+            Vec3 velocity = getDeltaMovement().scale(0.94).add(offset.normalize().scale(FLIGHT_ACCELERATION));
+            if (velocity.lengthSqr() > MAXIMUM_FLIGHT_SPEED * MAXIMUM_FLIGHT_SPEED) {
+                velocity = velocity.normalize().scale(MAXIMUM_FLIGHT_SPEED);
             }
             setDeltaMovement(velocity);
             hasImpulse = true;
@@ -377,12 +330,8 @@ public final class PrimeEnderDragon extends BaseBoss {
         if (velocity.lengthSqr() < 1.0E-6) {
             return;
         }
-        float targetYaw = (float) (
-                Mth.atan2(-velocity.x, velocity.z)
-                        * Mth.RAD_TO_DEG);
-        float targetPitch = (float) (
-                -Mth.atan2(velocity.y, horizontal)
-                        * Mth.RAD_TO_DEG);
+        float targetYaw = (float) (Mth.atan2(-velocity.x, velocity.z) * Mth.RAD_TO_DEG);
+        float targetPitch = (float) (-Mth.atan2(velocity.y, horizontal) * Mth.RAD_TO_DEG);
         setYRot(Mth.approachDegrees(getYRot(), targetYaw, yawStep));
         setXRot(Mth.approachDegrees(getXRot(), targetPitch, 4.0F));
         setYHeadRot(getYRot());
@@ -421,30 +370,21 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     static float easeLaserRange(int chargeTicks) {
-        float clamped = Mth.clamp(
-                chargeTicks, 0, (int) LASER_MAXIMUM_RANGE);
+        float clamped = Mth.clamp(chargeTicks, 0, (int) LASER_MAXIMUM_RANGE);
         return clamped * clamped / (float) LASER_MAXIMUM_RANGE;
     }
 
     int performLaserAttack(double range) {
         Vec3 start = getHeadPosition();
         Vec3 direction = getViewVector(1.0F).normalize();
-        Vec3 end = start.add(direction.scale(
-                Math.min(range, LASER_MAXIMUM_RANGE)));
+        Vec3 end = start.add(direction.scale(Math.min(range, LASER_MAXIMUM_RANGE)));
         AABB area = new AABB(start, end).inflate(LASER_RADIUS);
         int hits = 0;
-        for (LivingEntity entity : level().getEntitiesOfClass(
-                LivingEntity.class,
-                area,
-                entity -> entity != this && canAttack(entity))) {
-            if (distanceToSegmentSqr(
-                    entity.getBoundingBox().getCenter(),
-                    start,
-                    end) > LASER_RADIUS * LASER_RADIUS) {
+        for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, area, entity -> entity != this && canAttack(entity))) {
+            if (distanceToSegmentSqr(entity.getBoundingBox().getCenter(), start, end) > LASER_RADIUS * LASER_RADIUS) {
                 continue;
             }
-            if (entity.hurt(
-                    damageSources().magic(), 5.0F)) {
+            if (entity.hurt(damageSources().magic(), 5.0F)) {
                 entity.setRemainingFireTicks(100);
                 hits++;
             }
@@ -471,26 +411,17 @@ public final class PrimeEnderDragon extends BaseBoss {
         float pitch = Mth.rotLerp(partialTick, xRotO, getXRot());
         float yaw = Mth.rotLerp(partialTick, yRotO, getYRot());
         Vec3 forward = Vec3.directionFromRotation(pitch, yaw);
-        return new Vec3(x, y, z)
-                .add(forward.scale(4.5))
-                .add(0.0, 3.0, 0.0);
+        return new Vec3(x, y, z).add(forward.scale(4.5)).add(0.0, 3.0, 0.0);
     }
 
-    private static double distanceToSegmentSqr(
-            Vec3 point,
-            Vec3 start,
-            Vec3 end) {
+    private static double distanceToSegmentSqr(Vec3 point, Vec3 start, Vec3 end) {
         Vec3 segment = end.subtract(start);
         double lengthSqr = segment.lengthSqr();
         if (lengthSqr < 1.0E-8) {
             return point.distanceToSqr(start);
         }
-        double factor = Mth.clamp(
-                point.subtract(start).dot(segment) / lengthSqr,
-                0.0,
-                1.0);
-        return point.distanceToSqr(
-                start.add(segment.scale(factor)));
+        double factor = Mth.clamp(point.subtract(start).dot(segment) / lengthSqr, 0.0, 1.0);
+        return point.distanceToSqr(start.add(segment.scale(factor)));
     }
 
     boolean shootDragonFireball(LivingEntity target) {
@@ -498,21 +429,14 @@ public final class PrimeEnderDragon extends BaseBoss {
             return false;
         }
         Vec3 start = getHeadPosition();
-        Vec3 direction = target.getBoundingBox()
-                .getCenter().subtract(start).normalize();
-        DragonFireball projectile =
-                EntityType.DRAGON_FIREBALL.create(serverLevel);
+        Vec3 direction = target.getBoundingBox().getCenter().subtract(start).normalize();
+        DragonFireball projectile = EntityType.DRAGON_FIREBALL.create(serverLevel);
         if (projectile == null) {
             return false;
         }
         projectile.setOwner(this);
         projectile.setPos(start);
-        projectile.shoot(
-                direction.x,
-                direction.y,
-                direction.z,
-                1.0F,
-                0.0F);
+        projectile.shoot(direction.x, direction.y, direction.z, 1.0F, 0.0F);
         return serverLevel.addFreshEntity(projectile);
     }
 
@@ -520,12 +444,8 @@ public final class PrimeEnderDragon extends BaseBoss {
         if (tickCount % CONTACT_INTERVAL != 0) {
             return;
         }
-        for (PrimeEnderDragonPart part :
-                List.copyOf(parts.values())) {
-            for (Player player : level().getEntitiesOfClass(
-                    Player.class,
-                    part.getBoundingBox().inflate(0.2),
-                    this::canAttack)) {
+        for (PrimeEnderDragonPart part : List.copyOf(parts.values())) {
+            for (Player player : level().getEntitiesOfClass(Player.class, part.getBoundingBox().inflate(0.2), this::canAttack)) {
                 doHurtTarget(player);
             }
         }
@@ -537,14 +457,10 @@ public final class PrimeEnderDragon extends BaseBoss {
         }
         for (PartSlot slot : PartSlot.values()) {
             PrimeEnderDragonPart existing = parts.get(slot);
-            if (existing != null
-                    && existing.isAlive()
-                    && !existing.isRemoved()) {
+            if (existing != null && existing.isAlive() && !existing.isRemoved()) {
                 continue;
             }
-            PrimeEnderDragonPart part =
-                    BossEntities.PRIME_ENDER_DRAGON_PART
-                            .get().create(serverLevel);
+            PrimeEnderDragonPart part = BossEntities.PRIME_ENDER_DRAGON_PART.get().create(serverLevel);
             if (part == null) {
                 continue;
             }
@@ -576,20 +492,13 @@ public final class PrimeEnderDragon extends BaseBoss {
             right = right.normalize();
         }
         Vec3 offset = switch (part.getSlot()) {
-            case HEAD -> forward.scale(4.5)
-                    .add(0.0, 2.0, 0.0);
-            case BODY -> forward.scale(0.5)
-                    .add(0.0, 2.0, 0.0);
-            case TAIL_ONE -> forward.scale(-3.0)
-                    .add(0.0, 2.0, 0.0);
-            case TAIL_TWO -> forward.scale(-5.0)
-                    .add(0.0, 2.0, 0.0);
-            case TAIL_THREE -> forward.scale(-7.0)
-                    .add(0.0, 2.0, 0.0);
-            case LEFT_WING -> right.scale(4.5)
-                    .add(0.0, 4.0, 0.0);
-            case RIGHT_WING -> right.scale(-4.5)
-                    .add(0.0, 4.0, 0.0);
+            case HEAD -> forward.scale(4.5).add(0.0, 2.0, 0.0);
+            case BODY -> forward.scale(0.5).add(0.0, 2.0, 0.0);
+            case TAIL_ONE -> forward.scale(-3.0).add(0.0, 2.0, 0.0);
+            case TAIL_TWO -> forward.scale(-5.0).add(0.0, 2.0, 0.0);
+            case TAIL_THREE -> forward.scale(-7.0).add(0.0, 2.0, 0.0);
+            case LEFT_WING -> right.scale(4.5).add(0.0, 4.0, 0.0);
+            case RIGHT_WING -> right.scale(-4.5).add(0.0, 4.0, 0.0);
         };
         part.setPos(position().add(offset));
         part.setYRot(getYRot());
@@ -605,10 +514,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
@@ -640,23 +546,14 @@ public final class PrimeEnderDragon extends BaseBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        combatState = CombatState.fromOrdinal(
-                tag.getInt(STATE_TAG));
-        combatStateTicks = Math.max(
-                0, tag.getInt(STATE_TICKS_TAG));
-        fireRounds = Mth.clamp(
-                tag.getInt(FIRE_ROUNDS_TAG), 0, 1);
-        wanderFireDuration = Mth.clamp(
-                tag.getInt(WANDER_DURATION_TAG), 100, 200);
+        combatState = CombatState.fromOrdinal(tag.getInt(STATE_TAG));
+        combatStateTicks = Math.max(0, tag.getInt(STATE_TICKS_TAG));
+        fireRounds = Mth.clamp(tag.getInt(FIRE_ROUNDS_TAG), 0, 1);
+        wanderFireDuration = Mth.clamp(tag.getInt(WANDER_DURATION_TAG), 100, 200);
         flightTarget = tag.getBoolean(HAS_TARGET_TAG)
-                ? new Vec3(
-                tag.getDouble(TARGET_X_TAG),
-                tag.getDouble(TARGET_Y_TAG),
-                tag.getDouble(TARGET_Z_TAG))
+                ? new Vec3(tag.getDouble(TARGET_X_TAG), tag.getDouble(TARGET_Y_TAG), tag.getDouble(TARGET_Z_TAG))
                 : null;
-        entityData.set(
-                DATA_COMBAT_STATE,
-                combatState.ordinal());
+        entityData.set(DATA_COMBAT_STATE, combatState.ordinal());
         setLaserActive(false);
         setLanding(combatState == CombatState.LAND);
     }
@@ -670,8 +567,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "action",
@@ -692,8 +588,7 @@ public final class PrimeEnderDragon extends BaseBoss {
 
         static CombatState fromOrdinal(int ordinal) {
             CombatState[] values = values();
-            return values[Mth.clamp(
-                    ordinal, 0, values.length - 1)];
+            return values[Mth.clamp(ordinal, 0, values.length - 1)];
         }
     }
 
@@ -725,8 +620,7 @@ public final class PrimeEnderDragon extends BaseBoss {
 
         static PartSlot fromOrdinal(int ordinal) {
             PartSlot[] values = values();
-            return values[Mth.clamp(
-                    ordinal, 0, values.length - 1)];
+            return values[Mth.clamp(ordinal, 0, values.length - 1)];
         }
     }
 }

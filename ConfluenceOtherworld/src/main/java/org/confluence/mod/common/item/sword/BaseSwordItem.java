@@ -41,6 +41,7 @@ import java.util.Optional;
 
 public class BaseSwordItem extends SwordItem {
     private final SwordDefinition definition;
+    private final @Nullable SwordProjectileComponent projectileDefinition;
     private @Nullable TooltipComponent tooltipImage;
 
     public BaseSwordItem(Tier tier, int rawDamage, float rawSpeed) {
@@ -58,6 +59,7 @@ public class BaseSwordItem extends SwordItem {
     private BaseSwordItem(Tier tier, int rawDamage, float rawSpeed, SwordDefinition.BuildResult result) {
         super(tier, (int) ModItems.getAttackDamage(tier, rawDamage), ModItems.getAttackSpeed(rawSpeed), result.properties());
         definition = result.definition();
+        projectileDefinition = result.projectile();
     }
 
     @Override
@@ -81,14 +83,18 @@ public class BaseSwordItem extends SwordItem {
     public boolean tryFireProjectile(ServerPlayer player, InteractionHand hand) {
         ItemStack weapon = player.getItemInHand(hand);
         if (weapon.getItem() != this || player.getCooldowns().isOnCooldown(this)) return false;
-        SwordProjectileComponent component = weapon.get(ModDataComponentTypes.SWORD_PROJECTILE);
+        SwordProjectileComponent component = projectile(weapon);
         if (component == null) return false;
-        int spawned = component.generation().genProjectile(player, weapon, component.baseSpeed(), () -> createProjectile(player, weapon, component));
+        int spawned = component.generation().genProjectile(player, weapon, component.getVelocity(player), () -> createProjectile(player, weapon, component));
         if (spawned == 0) return false;
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), component.getSoundEvent(), SoundSource.AMBIENT, 1.0F, 1.0F);
         player.getCooldowns().addCooldown(this, component.getCooldownTicks(player));
         player.swing(hand, true);
         return true;
+    }
+
+    public @Nullable SwordProjectileComponent projectile(ItemStack stack) {
+        return stack.getOrDefault(ModDataComponentTypes.SWORD_PROJECTILE, projectileDefinition);
     }
 
     private @Nullable SwordProjectile createProjectile(LivingEntity owner, ItemStack weapon, SwordProjectileComponent component) {
@@ -121,7 +127,7 @@ public class BaseSwordItem extends SwordItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
+        SwordProjectileComponent data = projectile(stack);
         if (data != null) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0x57CDFB));
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x" + data.damageFactor()).withColor(0x57CDFB));

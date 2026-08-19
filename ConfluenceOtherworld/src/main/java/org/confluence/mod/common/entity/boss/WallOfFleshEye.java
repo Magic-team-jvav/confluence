@@ -24,8 +24,7 @@ public final class WallOfFleshEye extends WallOfFleshPart {
     }
 
     @Override
-    protected void tickAttack(
-            WallOfFlesh master, @Nullable LivingEntity target) {
+    protected void tickAttack(WallOfFlesh master, @Nullable LivingEntity target) {
         if (target == null || !master.isValidFrontTarget(target)) {
             return;
         }
@@ -52,29 +51,20 @@ public final class WallOfFleshEye extends WallOfFleshPart {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        HostileParticleProjectile projectile =
-                ModEntities.WALL_OF_FLESH_LASER.get().create(serverLevel);
+        HostileParticleProjectile projectile = ModEntities.WALL_OF_FLESH_LASER.get().create(serverLevel);
         if (projectile == null) {
             return;
         }
 
         Vec3 origin = position().add(0.0, getBbHeight() * 0.5, 0.0);
-        Vec3 targetCenter = target.position().add(
-                0.0, target.getBbHeight() * 0.5, 0.0);
+        Vec3 targetCenter = target.position().add(0.0, target.getBbHeight() * 0.5, 0.0);
         double flightTicks = origin.distanceTo(targetCenter) / 1.5;
-        Vec3 predictedTarget = targetCenter.add(
-                target.getDeltaMovement().scale(
-                        Math.min(flightTicks, 12.0)));
+        Vec3 predictedTarget = targetCenter.add(target.getDeltaMovement().scale(Math.min(flightTicks, 12.0)));
         Vec3 direction = predictedTarget.subtract(origin);
         if (direction.lengthSqr() < 1.0E-6) {
             return;
         }
-        projectile.configure(
-                master,
-                origin,
-                direction.normalize().scale(1.5),
-                master.getLaserDamage(),
-                100);
+        projectile.configure(master, origin, direction.normalize().scale(1.5), master.getLaserDamage(), 100);
         serverLevel.addFreshEntity(projectile);
     }
 }

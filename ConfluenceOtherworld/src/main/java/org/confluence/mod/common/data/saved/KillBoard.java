@@ -174,10 +174,7 @@ public enum KillBoard implements IGlobalData {
     }
 
     /// 在客户端主线程一次性应用完整击杀榜状态。
-    public void applyNetworkState(
-            Object2BooleanMap<EntityType<?>> bosses,
-            Object2BooleanMap<ResourceKey<? extends GameEvent>> events,
-            GamePhase phase) {
+    public void applyNetworkState(Object2BooleanMap<EntityType<?>> bosses, Object2BooleanMap<ResourceKey<? extends GameEvent>> events, GamePhase phase) {
         this.defeatedBosses = new Object2BooleanOpenHashMap<>(bosses);
         this.defeatedEvents = new Object2BooleanOpenHashMap<>(events);
         this.gamePhase = phase;
@@ -188,29 +185,17 @@ public enum KillBoard implements IGlobalData {
         if (tag.isEmpty()) {
             return;
         }
-        if (!tag.contains("defeated_bosses")
-                || !tag.contains("defeated_events")
-                || !tag.contains("game_phase", Tag.TAG_INT)) {
-            throw new IllegalArgumentException(
-                    "Kill-board data is missing a required field or contains an invalid field type");
+        if (!tag.contains("defeated_bosses") || !tag.contains("defeated_events") || !tag.contains("game_phase", Tag.TAG_INT)) {
+            throw new IllegalArgumentException("Kill-board data is missing a required field or contains an invalid field type");
         }
         Object2BooleanMap<EntityType<?>> decodedBosses =
-                PortDataResultExtension.getOrThrow(
-                        DEFEATED_BOSSES_CODEC.parse(
-                                NbtOps.INSTANCE, tag.get("defeated_bosses")),
-                        message -> new IllegalArgumentException(
-                                "Failed to decode defeated bosses: " + message));
+                PortDataResultExtension.getOrThrow(DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_bosses")), message -> new IllegalArgumentException("Failed to decode defeated bosses: " + message));
         Object2BooleanMap<ResourceKey<? extends GameEvent>> decodedEvents =
-                PortDataResultExtension.getOrThrow(
-                        DEFEATED_EVENTS_CODEC.parse(
-                                NbtOps.INSTANCE, tag.get("defeated_events")),
-                        message -> new IllegalArgumentException(
-                                "Failed to decode defeated events: " + message));
+                PortDataResultExtension.getOrThrow(DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events")), message -> new IllegalArgumentException("Failed to decode defeated events: " + message));
         int phaseOrder = tag.getInt("game_phase");
         GamePhase decodedPhase = GamePhase.getByOrder(phaseOrder);
         if (decodedPhase.getOrder() != phaseOrder) {
-            throw new IllegalArgumentException(
-                    "Unsupported game phase order: " + phaseOrder);
+            throw new IllegalArgumentException("Unsupported game phase order: " + phaseOrder);
         }
         this.defeatedBosses = new Object2BooleanOpenHashMap<>(decodedBosses);
         this.defeatedEvents = new Object2BooleanOpenHashMap<>(decodedEvents);
@@ -219,16 +204,8 @@ public enum KillBoard implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("defeated_bosses", PortDataResultExtension.getOrThrow(
-                DEFEATED_BOSSES_CODEC.encodeStart(
-                        NbtOps.INSTANCE, defeatedBosses),
-                message -> new IllegalStateException(
-                        "Failed to encode defeated bosses: " + message)));
-        tag.put("defeated_events", PortDataResultExtension.getOrThrow(
-                DEFEATED_EVENTS_CODEC.encodeStart(
-                        NbtOps.INSTANCE, defeatedEvents),
-                message -> new IllegalStateException(
-                        "Failed to encode defeated events: " + message)));
+        tag.put("defeated_bosses", PortDataResultExtension.getOrThrow(DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses), message -> new IllegalStateException("Failed to encode defeated bosses: " + message)));
+        tag.put("defeated_events", PortDataResultExtension.getOrThrow(DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents), message -> new IllegalStateException("Failed to encode defeated events: " + message)));
         tag.putInt("game_phase", gamePhase.getOrder());
     }
 

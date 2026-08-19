@@ -33,12 +33,9 @@ public class PlanteraHook extends BaseBossPart<Plantera> implements GeoEntity {
     private static final String STATE_TAG = "State";
     private static final double HOOK_SPEED = 2.0;
 
-    private static final EntityDataAccessor<Integer> HOOK_INDEX =
-            SynchedEntityData.defineId(PlanteraHook.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Optional<BlockPos>> ANCHOR =
-            SynchedEntityData.defineId(PlanteraHook.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
-    private static final EntityDataAccessor<Integer> STATE =
-            SynchedEntityData.defineId(PlanteraHook.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> HOOK_INDEX = SynchedEntityData.defineId(PlanteraHook.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Optional<BlockPos>> ANCHOR = SynchedEntityData.defineId(PlanteraHook.class, EntityDataSerializers.OPTIONAL_BLOCK_POS);
+    private static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(PlanteraHook.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -71,9 +68,7 @@ public class PlanteraHook extends BaseBossPart<Plantera> implements GeoEntity {
     }
 
     public void setState(int state) {
-        entityData.set(
-                STATE,
-                Mth.clamp(state, STATE_IDLE, STATE_RETRACTING));
+        entityData.set(STATE, Mth.clamp(state, STATE_IDLE, STATE_RETRACTING));
     }
 
     public boolean hasReachedAnchor() {
@@ -98,8 +93,7 @@ public class PlanteraHook extends BaseBossPart<Plantera> implements GeoEntity {
 
         int state = getState();
         BlockPos anchor = getAnchor();
-        if ((state == STATE_EXTENDING || state == STATE_GRABBED)
-                && (anchor == null || !master.isValidHookAnchor(anchor))) {
+        if ((state == STATE_EXTENDING || state == STATE_GRABBED) && (anchor == null || !master.isValidHookAnchor(anchor))) {
             setAnchor(null);
             setState(STATE_RETRACTING);
             state = STATE_RETRACTING;
@@ -109,8 +103,7 @@ public class PlanteraHook extends BaseBossPart<Plantera> implements GeoEntity {
                 || state == STATE_RETRACTING
                 ? master.getBoundingBox().getCenter()
                 : Vec3.atCenterOf(anchor);
-        Vec3 offset = targetCenter.subtract(
-                getBoundingBox().getCenter());
+        Vec3 offset = targetCenter.subtract(getBoundingBox().getCenter());
         if (offset.lengthSqr() <= HOOK_SPEED * HOOK_SPEED) {
             if (state == STATE_RETRACTING) {
                 setState(STATE_IDLE);

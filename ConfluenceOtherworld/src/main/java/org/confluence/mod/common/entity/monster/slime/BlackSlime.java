@@ -89,8 +89,7 @@ public class BlackSlime extends BaseSlime {
 
     @Override
     protected void onAttackTarget(LivingEntity target) {
-        if (LibUtils.isMaster(level(), blockPosition())
-                || (LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextBoolean())) {
+        if (LibUtils.isMaster(level(), blockPosition()) || (LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextBoolean())) {
             target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 300, 0), this);
         }
     }
@@ -98,10 +97,7 @@ public class BlackSlime extends BaseSlime {
     /// 母体只在死亡实体真正移除时分裂，数量和位置沿用原版史莱姆。
     @Override
     public void remove(RemovalReason reason) {
-        if (!level().isClientSide
-                && !isRemoved()
-                && isDeadOrDying()
-                && isMotherSlime()) {
+        if (!level().isClientSide && !isRemoved() && isDeadOrDying() && isMotherSlime()) {
             int babies = 2 + random.nextInt(3);
             float horizontalOffset = getBbWidth() / 4.0F;
             float verticalOffset = getBbHeight() / 8.0F;

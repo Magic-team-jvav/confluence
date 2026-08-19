@@ -5,18 +5,13 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 
 /// 泰拉棱镜的长剑模型。
 /// 模型原点放在护手附近，待命姿态和攻击轨迹都以这个锚点计算，避免剑刃长度变化后重新调整跟随算法。
 public final class TerraprismaModel {
-    public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(Confluence.asResource("terraprisma"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("terraprisma"), "main");
 
     private final ModelPart main;
 
@@ -56,11 +51,7 @@ public final class TerraprismaModel {
         return LayerDefinition.create(mesh, 64, 64);
     }
 
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer,
-                               int packedLight, int packedOverlay,
-                               float red, float green, float blue,
-                               float alpha) {
-        main.render(poseStack, consumer, packedLight, packedOverlay,
-                red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        main.render(poseStack, consumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

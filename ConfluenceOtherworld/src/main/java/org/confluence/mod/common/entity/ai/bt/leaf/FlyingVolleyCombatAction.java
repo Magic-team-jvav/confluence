@@ -28,31 +28,21 @@ public final class FlyingVolleyCombatAction extends BTNode {
     private final int[] shotTicks;
     private int cycleTick;
 
-    public FlyingVolleyCombatAction(
-            PathfinderMob mob,
-            SteeringDashAction approachAction,
-            Function<LivingEntity, @Nullable Projectile> projectileFactory,
-            int approachTicks,
-            int... shotTicks) {
+    public FlyingVolleyCombatAction(PathfinderMob mob, SteeringDashAction approachAction, Function<LivingEntity, @Nullable Projectile> projectileFactory, int approachTicks, int... shotTicks) {
         this.mob = Objects.requireNonNull(mob, "mob");
-        this.approachAction = Objects.requireNonNull(
-                approachAction, "approachAction");
-        this.projectileFactory = Objects.requireNonNull(
-                projectileFactory, "projectileFactory");
+        this.approachAction = Objects.requireNonNull(approachAction, "approachAction");
+        this.projectileFactory = Objects.requireNonNull(projectileFactory, "projectileFactory");
         if (approachTicks < 0) {
-            throw new IllegalArgumentException(
-                    "Approach time cannot be negative");
+            throw new IllegalArgumentException("Approach time cannot be negative");
         }
         if (shotTicks.length == 0) {
-            throw new IllegalArgumentException(
-                    "Volley schedule must contain at least one shot");
+            throw new IllegalArgumentException("Volley schedule must contain at least one shot");
         }
         this.shotTicks = shotTicks.clone();
         int previous = approachTicks;
         for (int shotTick : this.shotTicks) {
             if (shotTick <= previous) {
-                throw new IllegalArgumentException(
-                        "Volley shot ticks must be strictly increasing and after the approach phase");
+                throw new IllegalArgumentException("Volley shot ticks must be strictly increasing and after the approach phase");
             }
             previous = shotTick;
         }
@@ -79,8 +69,7 @@ public final class FlyingVolleyCombatAction extends BTNode {
 
         mob.getLookControl().setLookAt(target, 5.0F, 80.0F);
         mob.setDeltaMovement(mob.getDeltaMovement().scale(0.95));
-        if (Arrays.binarySearch(shotTicks, cycleTick) >= 0
-                && !spawnProjectile(target)) {
+        if (Arrays.binarySearch(shotTicks, cycleTick) >= 0 && !spawnProjectile(target)) {
             return BTStatus.FAILURE;
         }
 

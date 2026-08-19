@@ -31,41 +31,25 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
     private static final String TRANSITION_TICKS_TAG = "TransitionTicks";
     /// 1.21 侧由十刻变形前段和二十刻变形后段组成。
     private static final int TRANSITION_DURATION_TICKS = 30;
-    private static final RawAnimation PHASE_ONE =
-            RawAnimation.begin().thenLoop("type_1");
-    private static final RawAnimation PHASE_ONE_DASH =
-            RawAnimation.begin().thenLoop("type_1_run");
-    private static final RawAnimation TRANSFORM =
-            RawAnimation.begin()
-                    .thenPlay("switching")
-                    .thenLoop("type_2");
-    private static final RawAnimation PHASE_TWO =
-            RawAnimation.begin().thenLoop("type_2");
-    private static final RawAnimation PHASE_TWO_DASH =
-            RawAnimation.begin().thenLoop("type_2_run");
+    private static final RawAnimation PHASE_ONE = RawAnimation.begin().thenLoop("type_1");
+    private static final RawAnimation PHASE_ONE_DASH = RawAnimation.begin().thenLoop("type_1_run");
+    private static final RawAnimation TRANSFORM = RawAnimation.begin().thenPlay("switching").thenLoop("type_2");
+    private static final RawAnimation PHASE_TWO = RawAnimation.begin().thenLoop("type_2");
+    private static final RawAnimation PHASE_TWO_DASH = RawAnimation.begin().thenLoop("type_2_run");
 
     private static final EntityDataAccessor<Optional<UUID>>
-            OWNER_UUID = SynchedEntityData.defineId(
-            AbstractTwinEye.class,
-            EntityDataSerializers.OPTIONAL_UUID);
+            OWNER_UUID = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Boolean>
-            DATA_TRANSFORMED = SynchedEntityData.defineId(
-            AbstractTwinEye.class,
-            EntityDataSerializers.BOOLEAN);
+            DATA_TRANSFORMED = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean>
-            DATA_DASHING = SynchedEntityData.defineId(
-            AbstractTwinEye.class,
-            EntityDataSerializers.BOOLEAN);
+            DATA_DASHING = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
 
-    private final BossOwnerTracker<TheTwins> ownerTracker =
-            new BossOwnerTracker<>(TheTwins.class);
+    private final BossOwnerTracker<TheTwins> ownerTracker = new BossOwnerTracker<>(TheTwins.class);
     private boolean reportedDeath;
     private boolean playedTransformAnimation;
     private int transitionTicks;
 
-    protected AbstractTwinEye(
-            EntityType<? extends BaseFlyingMonster> type,
-            Level level) {
+    protected AbstractTwinEye(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
     }
 
@@ -79,8 +63,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
 
     public final void setMaster(TheTwins master) {
         ownerTracker.bind(this, master);
-        entityData.set(
-                OWNER_UUID, Optional.of(master.getUUID()));
+        entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
     }
 
     public final @Nullable TheTwins getMaster() {
@@ -128,8 +111,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
             setTarget(masterTarget);
         }
 
-        if (!isTransformed()
-                && getHealth() < getMaxHealth() * 0.5F) {
+        if (!isTransformed() && getHealth() < getMaxHealth() * 0.5F) {
             entityData.set(DATA_TRANSFORMED, true);
             transitionTicks = TRANSITION_DURATION_TICKS;
             onCombatProfileChanged();
@@ -161,8 +143,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
     /// <p>半血后先完整播放一次变形，再进入二阶段循环；冲刺状态由服务端同步，确保
     /// 多人客户端看到的动画与真实伤害窗口一致，而不是根据可能有插值误差的速度猜测。</p>
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "combat",
@@ -212,8 +193,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
                 master.onTwinDefeated(isRetinazer(), this);
             }
         } else if (level() instanceof ServerLevel serverLevel) {
-            BossChildDeathLedger.record(
-                    serverLevel, ownerUUID, getUUID());
+            BossChildDeathLedger.record(serverLevel, ownerUUID, getUUID());
         }
     }
 
@@ -239,14 +219,9 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
-        entityData.set(
-                OWNER_UUID,
-                Optional.ofNullable(ownerTracker.getOwnerUUID()));
-        entityData.set(
-                DATA_TRANSFORMED,
-                tag.getBoolean(TRANSFORMED_TAG));
-        transitionTicks = Math.max(
-                0, tag.getInt(TRANSITION_TICKS_TAG));
+        entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
+        entityData.set(DATA_TRANSFORMED, tag.getBoolean(TRANSFORMED_TAG));
+        transitionTicks = Math.max(0, tag.getInt(TRANSITION_TICKS_TAG));
         reportedDeath = false;
         onCombatProfileChanged();
         loadTwinCombat(tag);
@@ -264,10 +239,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 }

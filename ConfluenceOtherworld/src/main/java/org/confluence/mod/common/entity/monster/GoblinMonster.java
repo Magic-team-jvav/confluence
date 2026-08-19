@@ -12,20 +12,12 @@ import net.minecraft.world.level.Level;
 /// 行为，但交由原版浮水目标统一控制跳跃与离水过程。普通人形敌怪不继承该目标，
 /// 避免装甲幻影魔等实体被无关的哥布林水中规则影响。</p>
 public class GoblinMonster extends HumanoidWarriorMonster {
-    public GoblinMonster(
-            EntityType<? extends GoblinMonster> type,
-            Level level,
-            ItemStack defaultMainHand) {
+    public GoblinMonster(EntityType<? extends GoblinMonster> type, Level level, ItemStack defaultMainHand) {
         this(type, level, defaultMainHand, LandAnimationProfile.WALK_IDLE);
     }
 
-    public GoblinMonster(
-            EntityType<? extends GoblinMonster> type,
-            Level level,
-            ItemStack defaultMainHand,
-            LandAnimationProfile animationProfile) {
-        super(type, level, defaultMainHand, LandSoundProfile.ROUTINE,
-                animationProfile);
+    public GoblinMonster(EntityType<? extends GoblinMonster> type, Level level, ItemStack defaultMainHand, LandAnimationProfile animationProfile) {
+        super(type, level, defaultMainHand, LandSoundProfile.ROUTINE, animationProfile);
     }
 
     @Override

@@ -37,12 +37,9 @@ public class NPCDialogLoader extends SimpleJsonResourceReloadListener {
         DataResult<Map<EntityType<?>, NPCDialog>> decoded = CODEC.parse(JsonOps.INSTANCE, json);
         var parsed = decoded.result();
         if (parsed.isEmpty()) {
-            String reason = decoded.error()
-                    .map(DataResult.PartialResult::message)
-                    .orElse("unknown decode error");
+            String reason = decoded.error().map(DataResult.PartialResult::message).orElse("unknown decode error");
             Confluence.LOGGER.error("Cannot load npc/dialogs.json: {}", reason);
-            Confluence.LOGGER.error(
-                    "NPC dialog reload was rejected; the previous valid table remains active");
+            Confluence.LOGGER.error("NPC dialog reload was rejected; the previous valid table remains active");
             return;
         }
         this.dialogs = ImmutableMap.copyOf(parsed.get());

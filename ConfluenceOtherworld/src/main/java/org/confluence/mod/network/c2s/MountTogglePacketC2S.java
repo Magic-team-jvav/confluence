@@ -13,11 +13,9 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 /// <p>数据包没有客户端可填写的参数。服务端收到后重新读取玩家的坐骑槽，
 /// 决定召唤哪种坐骑或解除当前坐骑。</p>
 public record MountTogglePacketC2S() implements IPortPacket.C2S {
-    public static final MountTogglePacketC2S INSTANCE =
-            new MountTogglePacketC2S();
+    public static final MountTogglePacketC2S INSTANCE = new MountTogglePacketC2S();
     public static final ResourceLocation ID = Confluence.asResource("mount_toggle");
-    public static final PortStreamCodec<ByteBuf, MountTogglePacketC2S> STREAM_CODEC =
-            PortStreamCodec.unit(INSTANCE);
+    public static final PortStreamCodec<ByteBuf, MountTogglePacketC2S> STREAM_CODEC = PortStreamCodec.unit(INSTANCE);
 
     @Override
     public ResourceLocation identifier() {

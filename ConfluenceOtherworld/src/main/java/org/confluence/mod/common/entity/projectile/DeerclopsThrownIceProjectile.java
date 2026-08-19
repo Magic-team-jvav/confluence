@@ -20,24 +20,16 @@ import org.joml.Vector3f;
 /// <p>冰块保留 1.21 侧的高抛运动：生成时获得向上的随机速度，
 /// 随后持续受重力影响并轻微衰减。伤害与霜冻效果只在服务端命中成功后结算。</p>
 public final class DeerclopsThrownIceProjectile extends StraightMonsterProjectile {
-    private static final EntityDataAccessor<Vector3f> DATA_ROTATION_AXIS =
-            SynchedEntityData.defineId(
-                    DeerclopsThrownIceProjectile.class,
-                    EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Vector3f> DATA_ROTATION_AXIS = SynchedEntityData.defineId(DeerclopsThrownIceProjectile.class, EntityDataSerializers.VECTOR3);
     private static final int LIFETIME = 200;
     private static final double GRAVITY = 0.108;
     private static final double DRAG = 0.98;
 
     private final float rotationSpeed;
 
-    public DeerclopsThrownIceProjectile(
-            EntityType<? extends DeerclopsThrownIceProjectile> type,
-            Level level) {
+    public DeerclopsThrownIceProjectile(EntityType<? extends DeerclopsThrownIceProjectile> type, Level level) {
         super(type, level);
-        Vector3f rotationAxis = new Vector3f(
-                random.nextFloat() - 0.5F,
-                random.nextFloat() - 0.5F,
-                random.nextFloat() - 0.5F);
+        Vector3f rotationAxis = new Vector3f(random.nextFloat() - 0.5F, random.nextFloat() - 0.5F, random.nextFloat() - 0.5F);
         if (rotationAxis.lengthSquared() < 1.0E-4F) {
             rotationAxis.set(0.0F, 1.0F, 0.0F);
         }
@@ -52,20 +44,12 @@ public final class DeerclopsThrownIceProjectile extends StraightMonsterProjectil
     }
 
     public void configure(Mob owner, Vec3 origin, float damage) {
-        Vec3 randomDirection = new Vec3(
-                random.nextDouble() - 0.5,
-                random.nextDouble() * 0.3,
-                random.nextDouble() - 0.5);
+        Vec3 randomDirection = new Vec3(random.nextDouble() - 0.5, random.nextDouble() * 0.3, random.nextDouble() - 0.5);
         if (randomDirection.lengthSqr() < 1.0E-4) {
             randomDirection = new Vec3(0.0, 0.1, 0.0);
         }
         double speed = 0.3 + random.nextDouble() * 0.3;
-        super.configure(
-                owner,
-                origin,
-                randomDirection.normalize().scale(speed).add(0.0, 1.0, 0.0),
-                damage,
-                LIFETIME);
+        super.configure(owner, origin, randomDirection.normalize().scale(speed).add(0.0, 1.0, 0.0), damage, LIFETIME);
     }
 
     public Vector3f getRotationAxis() {
@@ -89,16 +73,7 @@ public final class DeerclopsThrownIceProjectile extends StraightMonsterProjectil
     @Override
     protected void onHitBlock(BlockHitResult result) {
         if (level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(
-                    ParticleTypes.SNOWFLAKE,
-                    getX(),
-                    getY(),
-                    getZ(),
-                    50,
-                    0.3,
-                    0.3,
-                    0.3,
-                    0.2);
+            serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, getX(), getY(), getZ(), 50, 0.3, 0.3, 0.3, 0.2);
         }
         super.onHitBlock(result);
     }

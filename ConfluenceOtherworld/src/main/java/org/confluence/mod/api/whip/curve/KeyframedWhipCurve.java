@@ -20,9 +20,7 @@ public final class KeyframedWhipCurve implements WhipCurve {
     public KeyframedWhipCurve(List<WhipFrame> frames) {
         Objects.requireNonNull(frames, "frames");
         if (frames.size() < 2) {
-            throw new IllegalArgumentException(
-                    "Whip curve requires at least two frames"
-            );
+            throw new IllegalArgumentException("Whip curve requires at least two frames");
         }
 
         ArrayList<WhipFrame> sorted = new ArrayList<>(frames);
@@ -31,22 +29,15 @@ public final class KeyframedWhipCurve implements WhipCurve {
         float previousProgress = -1.0F;
         for (WhipFrame frame : sorted) {
             if (frame.controlPoints().size() != pointCount) {
-                throw new IllegalArgumentException(
-                        "Every whip frame must contain the same number of control points"
-                );
+                throw new IllegalArgumentException("Every whip frame must contain the same number of control points");
             }
             if (frame.progress() <= previousProgress) {
-                throw new IllegalArgumentException(
-                        "Whip frame progress values must be unique"
-                );
+                throw new IllegalArgumentException("Whip frame progress values must be unique");
             }
             previousProgress = frame.progress();
         }
-        if (sorted.get(0).progress() != 0.0F
-                || sorted.get(sorted.size() - 1).progress() != 1.0F) {
-            throw new IllegalArgumentException(
-                    "Whip curve must start at 0 and end at 1"
-            );
+        if (sorted.get(0).progress() != 0.0F || sorted.get(sorted.size() - 1).progress() != 1.0F) {
+            throw new IllegalArgumentException("Whip curve must start at 0 and end at 1");
         }
         this.frames = List.copyOf(sorted);
     }
@@ -73,13 +64,9 @@ public final class KeyframedWhipCurve implements WhipCurve {
 
         double local = (clamped - left.progress())
                 / (right.progress() - left.progress());
-        ArrayList<Vec3> result =
-                new ArrayList<>(left.controlPoints().size());
+        ArrayList<Vec3> result = new ArrayList<>(left.controlPoints().size());
         for (int index = 0; index < left.controlPoints().size(); index++) {
-            result.add(left.controlPoints().get(index).lerp(
-                    right.controlPoints().get(index),
-                    local
-            ));
+            result.add(left.controlPoints().get(index).lerp(right.controlPoints().get(index), local));
         }
         return List.copyOf(result);
     }

@@ -48,8 +48,7 @@ final class ClientSummonVisual implements GeoAnimatable {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "summon_visual", transitionTicks(), state ->
-                state.setAndContinue(selectedAnimation())));
+        controllers.add(new AnimationController<>(this, "summon_visual", transitionTicks(), state -> state.setAndContinue(selectedAnimation())));
     }
 
     private int transitionTicks() {
@@ -61,8 +60,7 @@ final class ClientSummonVisual implements GeoAnimatable {
         if (path.equals("finch_baby")) return FLY;
         if (path.equals("slime_baby"))
             return animation == SummonAnimation.FLY ? FLY : moving ? WALK : IDLE;
-        if (animation == SummonAnimation.MELEE_ATTACK &&
-                (path.equals("hornet_baby") || path.equals("sculk_wisp") || path.equals("summon_imp")))
+        if (animation == SummonAnimation.MELEE_ATTACK && (path.equals("hornet_baby") || path.equals("sculk_wisp") || path.equals("summon_imp")))
             return CAST;
         if (path.equals("hornet_baby")) return IDLE;
         return moving ? WALK : IDLE;

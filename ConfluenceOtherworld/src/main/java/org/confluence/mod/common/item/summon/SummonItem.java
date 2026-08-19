@@ -3,7 +3,6 @@ package org.confluence.mod.common.item.summon;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;
@@ -34,17 +33,15 @@ import java.util.function.Supplier;
 /// <p>物品层只负责使用流程、基础伤害和召唤实例创建。召唤物的移动、索敌、攻击和客户端表现
 /// 由 {@link SummonInstance} 的具体实现负责，服务端不会为这些运行实例额外生成世界实体。</p>
 public class SummonItem extends Item {
-    private final ResourceLocation summonType;
-    private final SummonFactory summonFactory;
+    private final SummonType summonType;
     private final int slotCost;
     private final float baseDamage;
     private Supplier<SoundEvent> summonSound = ModSoundEvents.ROUTINE_SUMMON;
 
     /// 类型标识同时用于同步、客户端渲染选择和提示文本。
-    public SummonItem(Properties properties, ResourceLocation summonType, SummonFactory summonFactory, int slotCost, float baseDamage) {
+    public SummonItem(Properties properties, SummonType summonType, int slotCost, float baseDamage) {
         super(properties.stacksTo(1));
         this.summonType = Objects.requireNonNull(summonType, "Summon type must not be null");
-        this.summonFactory = Objects.requireNonNull(summonFactory, "Summon factory must not be null");
         if (slotCost <= 0) {
             throw new IllegalArgumentException("Summon slot cost must be positive");
         }
@@ -53,10 +50,6 @@ public class SummonItem extends Item {
         }
         this.slotCost = slotCost;
         this.baseDamage = baseDamage;
-    }
-
-    public SummonItem(ResourceLocation summonType, SummonFactory summonFactory, int slotCost, float baseDamage) {
-        this(new Properties(), summonType, summonFactory, slotCost, baseDamage);
     }
 
     public int slotCost() {
@@ -70,9 +63,11 @@ public class SummonItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!(player instanceof ServerPlayer serverPlayer)) {
-            return InteractionResultHolder.fail(stack);
+        if (level.isClientSide) {
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(stack);
         }
+        ServerPlayer serverPlayer = (ServerPlayer) player;
         EntityHitResult entityHit = findAimedEntity(serverPlayer);
         double maximumDistance = entityHit == null ? Double.MAX_VALUE
                 : entityHit.getLocation().distanceToSqr(serverPlayer.getEyePosition(1.0F));
@@ -85,7 +80,7 @@ public class SummonItem extends Item {
             return InteractionResultHolder.success(stack);
         }
         player.startUsingItem(hand);
-        return InteractionResultHolder.pass(stack);
+        return InteractionResultHolder.consume(stack);
     }
 
     @Override
@@ -95,8 +90,7 @@ public class SummonItem extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity living, ItemStack stack, int remainingUseDuration) {
-        if (getUseDuration(stack) - remainingUseDuration == 20 && living instanceof ServerPlayer player
-                && SummonContainer.of(player).clear(player) > 0) {
+        if (getUseDuration(stack) - remainingUseDuration == 20 && living instanceof ServerPlayer player && SummonContainer.of(player).clear(player) > 0) {
             player.swing(player.getUsedItemHand(), true);
         }
     }
@@ -112,11 +106,8 @@ public class SummonItem extends Item {
     private void summon(ServerPlayer player, InteractionHand hand, SummonStats stats) {
         HitResult blockHit = player.pick(player.blockInteractionRange(), 1.0F, false);
         BlockPos spawn = BlockPos.containing(blockHit.getLocation()).above();
-        SummonPose pose = new SummonPose(Vec3.atBottomCenterOf(spawn), player.getYRot(), 0.0F, 0.0F);
-        SummonInstance summon = summonFactory.create(player, slotCost, stats, pose);
-        if (!summon.type().equals(summonType)) {
-            throw new IllegalStateException("Summon factory returned a mismatched runtime type");
-        }
+        SummonPose pose = new SummonPose(new Vec3(spawn.getX(), spawn.getY(), spawn.getZ()), player.getYRot(), 0.0F, 0.0F);
+        SummonInstance summon = summonType.create(player, slotCost, stats, pose);
         SummonContainer container = SummonContainer.of(player);
         if (!container.add(player, summon)) {
             container.sync(player);
@@ -140,8 +131,7 @@ public class SummonItem extends Item {
         double range = player.entityInteractionRange();
         Vec3 from = player.getEyePosition(1.0F);
         Vec3 to = from.add(player.getViewVector(1.0F).scale(range));
-        return ProjectileUtil.getEntityHitResult(player.level(), player, from, to,
-                player.getBoundingBox().inflate(range), Entity::isPickable, 0.1F);
+        return ProjectileUtil.getEntityHitResult(player.level(), player, from, to, player.getBoundingBox().inflate(range), Entity::isPickable, 0.1F);
     }
 
     private static SummonInstance findAimedSummon(ServerPlayer player, double maximumDistance) {
@@ -167,7 +157,7 @@ public class SummonItem extends Item {
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("tooltip.confluence.summon.damage", baseDamage).withStyle(ChatFormatting.GREEN));
         tooltip.add(Component.translatable("tooltip.confluence.summon.slots", slotCost).withStyle(ChatFormatting.YELLOW));
-        tooltip.add(Component.translatable("entity." + summonType.getNamespace() + "." + summonType.getPath()).withStyle(ChatFormatting.BLUE));
+        tooltip.add(Component.translatable("entity." + summonType.id().getNamespace() + "." + summonType.id().getPath()).withStyle(ChatFormatting.BLUE));
         tooltip.add(Component.translatable("tooltip.confluence.summon.retrieve").withStyle(ChatFormatting.GRAY));
     }
 }

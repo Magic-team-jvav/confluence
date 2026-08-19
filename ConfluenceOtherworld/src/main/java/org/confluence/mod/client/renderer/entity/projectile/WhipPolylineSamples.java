@@ -15,35 +15,25 @@ public final class WhipPolylineSamples {
 
     private WhipPolylineSamples() {}
 
-    public static List<Sample> fixedSpacing(
-            List<Vec3> curve,
-            double spacing
-    ) {
+    public static List<Sample> fixedSpacing(List<Vec3> curve, double spacing) {
         if (!Double.isFinite(spacing) || spacing <= 0.0) {
-            throw new IllegalArgumentException(
-                    "Whip segment spacing must be finite and positive");
+            throw new IllegalArgumentException("Whip segment spacing must be finite and positive");
         }
         ArcLength arc = ArcLength.of(curve);
         if (arc.totalLength() <= EPSILON) {
             return List.of();
         }
-        int count = (int) Math.floor(
-                (arc.totalLength() + EPSILON) / spacing);
+        int count = (int) Math.floor((arc.totalLength() + EPSILON) / spacing);
         ArrayList<Sample> result = new ArrayList<>(count);
         for (int index = 1; index <= count; index++) {
-            result.add(arc.sample(
-                    Math.min(index * spacing, arc.totalLength())));
+            result.add(arc.sample(Math.min(index * spacing, arc.totalLength())));
         }
         return List.copyOf(result);
     }
 
-    public static List<Sample> fixedCount(
-            List<Vec3> curve,
-            int count
-    ) {
+    public static List<Sample> fixedCount(List<Vec3> curve, int count) {
         if (count <= 0) {
-            throw new IllegalArgumentException(
-                    "Whip segment count must be positive");
+            throw new IllegalArgumentException("Whip segment count must be positive");
         }
         ArcLength arc = ArcLength.of(curve);
         if (arc.totalLength() <= EPSILON) {
@@ -51,8 +41,7 @@ public final class WhipPolylineSamples {
         }
         ArrayList<Sample> result = new ArrayList<>(count);
         for (int index = 1; index <= count; index++) {
-            result.add(arc.sample(
-                    arc.totalLength() * index / count));
+            result.add(arc.sample(arc.totalLength() * index / count));
         }
         return List.copyOf(result);
     }
@@ -64,10 +53,8 @@ public final class WhipPolylineSamples {
 
     public record Sample(Vec3 position, Vec3 tangent) {
         public Sample {
-            position = Objects.requireNonNull(
-                    position, "Whip sample position must not be null");
-            tangent = Objects.requireNonNull(
-                    tangent, "Whip sample tangent must not be null");
+            position = Objects.requireNonNull(position, "Whip sample position must not be null");
+            tangent = Objects.requireNonNull(tangent, "Whip sample tangent must not be null");
         }
     }
 
@@ -75,8 +62,7 @@ public final class WhipPolylineSamples {
         private static ArcLength of(List<Vec3> curve) {
             Objects.requireNonNull(curve, "Whip curve must not be null");
             if (curve.size() < 2) {
-                throw new IllegalArgumentException(
-                        "Whip curve must contain at least two points");
+                throw new IllegalArgumentException("Whip curve must contain at least two points");
             }
             List<Vec3> points = List.copyOf(curve);
             double[] cumulative = new double[points.size()];
@@ -84,8 +70,7 @@ public final class WhipPolylineSamples {
                 cumulative[index] = cumulative[index - 1]
                         + points.get(index).distanceTo(points.get(index - 1));
             }
-            return new ArcLength(
-                    points, cumulative, cumulative[cumulative.length - 1]);
+            return new ArcLength(points, cumulative, cumulative[cumulative.length - 1]);
         }
 
         private Sample sample(double distance) {
@@ -103,9 +88,7 @@ public final class WhipPolylineSamples {
                 }
                 double local = (target - cumulative[index - 1])
                         / edgeLength;
-                return new Sample(
-                        from.lerp(to, Math.max(0.0, Math.min(local, 1.0))),
-                        edge.scale(1.0 / edgeLength));
+                return new Sample(from.lerp(to, Math.max(0.0, Math.min(local, 1.0))), edge.scale(1.0 / edgeLength));
             }
             Vec3 to = points.get(points.size() - 1);
             for (int index = points.size() - 2; index >= 0; index--) {

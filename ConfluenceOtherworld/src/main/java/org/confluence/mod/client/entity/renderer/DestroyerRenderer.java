@@ -18,20 +18,10 @@ public final class DestroyerRenderer extends BossGeoRenderer<TheDestroyer> {
     }
 
     @Override
-    protected void adjustPose(
-            PoseStack poseStack,
-            TheDestroyer destroyer,
-            BakedGeoModel model,
-            float partialTick) {
+    protected void adjustPose(PoseStack poseStack, TheDestroyer destroyer, BakedGeoModel model, float partialTick) {
         Vec3 axis = destroyer.getLookAngle();
         if (axis.lengthSqr() <= 1.0E-7) return;
-        float roll = Mth.lerp(
-                partialTick,
-                destroyer.getPreviousBodyRoll(),
-                destroyer.getBodyRoll());
-        poseStack.mulPose(Axis.of(new Vector3f(
-                (float) axis.x,
-                (float) axis.y,
-                (float) axis.z)).rotationDegrees(roll));
+        float roll = Mth.lerp(partialTick, destroyer.getPreviousBodyRoll(), destroyer.getBodyRoll());
+        poseStack.mulPose(Axis.of(new Vector3f((float) axis.x, (float) axis.y, (float) axis.z)).rotationDegrees(roll));
     }
 }

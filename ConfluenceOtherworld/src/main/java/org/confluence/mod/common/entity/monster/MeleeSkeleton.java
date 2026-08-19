@@ -88,9 +88,7 @@ public class MeleeSkeleton extends BaseHumanoidMonster {
     }
 
     @Override
-    public boolean addEffect(
-            MobEffectInstance effect,
-            @Nullable Entity source) {
+    public boolean addEffect(MobEffectInstance effect, @Nullable Entity source) {
         return effect.getEffect() != MobEffects.POISON
                 && super.addEffect(effect, source);
     }

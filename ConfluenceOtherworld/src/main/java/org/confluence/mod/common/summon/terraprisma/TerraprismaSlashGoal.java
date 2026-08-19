@@ -24,9 +24,7 @@ final class TerraprismaSlashGoal extends TerraprismaSkillGoal {
         Vec3 baseTargetPosition = summon.targetPosition();
         Vec3 distance = baseTargetPosition.subtract(summon.position());
         if (distance.length() > 3.0 && !triggered) {
-            summon.moveTo(new SummonPose(
-                    summon.position().add(distance.normalize().scale(0.5)),
-                    summon.currentPose().yaw(), summon.currentPose().pitch(), summon.currentPose().roll()));
+            summon.moveTo(new SummonPose(summon.position().add(distance.normalize().scale(0.5)), summon.currentPose().yaw(), summon.currentPose().pitch(), summon.currentPose().roll()));
             return;
         }
         Vec3 targetPosition = baseTargetPosition.add(0.0, 10.0 - elapsedTicks, 0.0);

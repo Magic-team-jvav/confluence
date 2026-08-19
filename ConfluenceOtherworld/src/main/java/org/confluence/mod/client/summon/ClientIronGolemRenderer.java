@@ -16,9 +16,7 @@ import java.util.Objects;
 
 /// 直接使用原版铁傀儡模型部件绘制同步状态，不创建客户端实体。
 final class ClientIronGolemRenderer {
-    private static final ResourceLocation TEXTURE = Objects.requireNonNull(
-            ResourceLocation.tryParse("minecraft:textures/entity/iron_golem/iron_golem.png"),
-            "Iron golem texture location must be valid");
+    private static final ResourceLocation TEXTURE = Objects.requireNonNull(ResourceLocation.tryParse("minecraft:textures/entity/iron_golem/iron_golem.png"), "Iron golem texture location must be valid");
     private final ModelPart root;
     private final ModelPart head;
     private final ModelPart rightArm;
@@ -35,8 +33,7 @@ final class ClientIronGolemRenderer {
         leftLeg = root.getChild("left_leg");
     }
 
-    void render(PoseStack poseStack, MultiBufferSource buffers, int packedLight, float yaw, float pitch,
-                float walkPosition, float walkSpeed, int attackTicks, float partialTick) {
+    void render(PoseStack poseStack, MultiBufferSource buffers, int packedLight, float yaw, float pitch, float walkPosition, float walkSpeed, int attackTicks, float partialTick) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
         if (walkSpeed >= 0.01F) {

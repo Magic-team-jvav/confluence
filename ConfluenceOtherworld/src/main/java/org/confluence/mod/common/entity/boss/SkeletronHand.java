@@ -31,8 +31,7 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
     private static final float MAX_PART_HEALTH = 405.0F;
     private static final float PART_ARMOR = 4.0F;
     private static final String HAND_INDEX_TAG = "HandIndex";
-    private static final EntityDataAccessor<Integer> HAND_INDEX =
-            SynchedEntityData.defineId(SkeletronHand.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> HAND_INDEX = SynchedEntityData.defineId(SkeletronHand.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int slapInterval;
@@ -83,10 +82,7 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
         float yaw = master.yBodyRot * Mth.DEG_TO_RAD;
         double side = getHandIndex() == 0 ? 1.0 : -1.0;
         double vertical = master.isSpinning() ? 4.0 : -3.5;
-        Vec3 target = master.position().add(
-                Mth.cos(yaw) * 5.0 * side,
-                vertical,
-                Mth.sin(yaw) * 5.0 * side);
+        Vec3 target = master.position().add(Mth.cos(yaw) * 5.0 * side, vertical, Mth.sin(yaw) * 5.0 * side);
         moveToward(target, master.isExpert() ? 1.0 : 0.7);
     }
 
@@ -115,8 +111,7 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
                 if (through.lengthSqr() <= 1.0E-7) {
                     through = new Vec3(0.0, 0.0, 1.0);
                 }
-                phaseTarget = target.position().add(
-                        through.normalize().scale(PASS_DISTANCE));
+                phaseTarget = target.position().add(through.normalize().scale(PASS_DISTANCE));
                 slapPhase = 1;
             } else {
                 finishSlap();
@@ -124,8 +119,7 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
             }
         }
         moveToward(phaseTarget, slapSpeed);
-        for (LivingEntity entity : level().getEntitiesOfClass(
-                LivingEntity.class, getBoundingBox().inflate(0.5))) {
+        for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.5))) {
             if (entity != master && master.canAttack(entity)) {
                 entity.hurt(damageSources().mobAttack(master), DAMAGE);
             }

@@ -34,8 +34,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
     private static final float MAX_PART_HEALTH = 2080.0F;
     private static final float PART_ARMOR = 26.0F;
     private static final String ARM_TYPE_TAG = "ArmType";
-    private static final EntityDataAccessor<Integer> ARM_TYPE =
-            SynchedEntityData.defineId(SkeletronPrimeArm.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ARM_TYPE = SynchedEntityData.defineId(SkeletronPrimeArm.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int contactCooldown = 20;
@@ -84,22 +83,18 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
 
     /// 按主体头部朝向旋转 1.21 的四个固定机械臂槽位，并以该职责原有速度跟随。
     /// 到达距离小于单刻速度时直接贴合，避免持续越过目标点造成抖动。
-    private void followPinnedSlot(
-            SkeletronPrime master, float distance, float speed) {
+    private void followPinnedSlot(SkeletronPrime master, float distance, float speed) {
         Vec3 unitOffset = switch (getArmType()) {
             case LASER -> new Vec3(-1.0, 1.0, 0.0);
             case SAW -> new Vec3(-1.0, -1.0, 0.0);
             case VICE -> new Vec3(1.0, -1.0, 0.0);
             case CANNON -> new Vec3(1.0, 1.0, 0.0);
-            default -> throw new IllegalStateException(
-                    "Unsupported Prime arm type " + getArmType());
+            default ->
+                    throw new IllegalStateException("Unsupported Prime arm type " + getArmType());
         };
         Vector3f rotatedOffset = unitOffset.scale(distance).toVector3f();
-        new Quaternionf()
-                .rotateY(-master.getYHeadRot() * Mth.DEG_TO_RAD)
-                .transform(rotatedOffset);
-        Vec3 targetPosition = master.position().add(
-                new Vec3(rotatedOffset));
+        new Quaternionf().rotateY(-master.getYHeadRot() * Mth.DEG_TO_RAD).transform(rotatedOffset);
+        Vec3 targetPosition = master.position().add(new Vec3(rotatedOffset));
         Vec3 offset = targetPosition.subtract(position());
         if (offset.length() < speed) {
             setPos(targetPosition);
@@ -151,15 +146,12 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
     }
 
     /// 生成一枚机械激光弹幕，并在创建或加入世界失败时完整回收实体。
-    boolean shootLaser(
-            SkeletronPrime master, LivingEntity target) {
+    boolean shootLaser(SkeletronPrime master, LivingEntity target) {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return false;
         }
-        Vec3 origin =
-                position().add(0.0, getBbHeight() * 0.5, 0.0);
-        PrimeLaserProjectile laser =
-                ModEntities.PRIME_LASER.get().create(level());
+        Vec3 origin = position().add(0.0, getBbHeight() * 0.5, 0.0);
+        PrimeLaserProjectile laser = ModEntities.PRIME_LASER.get().create(level());
         if (laser == null) {
             return false;
         }
@@ -171,8 +163,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         return false;
     }
 
-    private boolean shootCannon(
-            SkeletronPrime master, LivingEntity target) {
+    private boolean shootCannon(SkeletronPrime master, LivingEntity target) {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return false;
         }
@@ -180,8 +171,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         if (cannonball == null) {
             return false;
         }
-        cannonball.configure(master, position().add(
-                0.0, getBbHeight() * 0.5, 0.0), target);
+        cannonball.configure(master, position().add(0.0, getBbHeight() * 0.5, 0.0), target);
         if (serverLevel.addFreshEntity(cannonball)) {
             return true;
         }
@@ -194,8 +184,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
     /// <p>非旋转阶段是三十刻准备，然后重复两次“五刻瞄准、十刻锁向冲刺、
     /// 三十刻回位”。旋转阶段则分别使用锯臂两轮、钳臂三轮的短回位序列。
     /// 冲刺方向只在每个十刻冲刺开始时锁定，不能因距离接近或目标横移提前结束。</p>
-    private void tickMeleeArm(
-            SkeletronPrime master, boolean vice) {
+    private void tickMeleeArm(SkeletronPrime master, boolean vice) {
         LivingEntity target = master.getTarget();
         if (target == null || !target.isAlive()) {
             followPinnedSlot(master, 5.0F, 0.4F);
@@ -230,10 +219,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         }
     }
 
-    private void tickHoveringMeleeTimeline(
-            SkeletronPrime master,
-            LivingEntity target,
-            boolean vice) {
+    private void tickHoveringMeleeTimeline(SkeletronPrime master, LivingEntity target, boolean vice) {
         int tick = meleeBehaviorTick;
         if (tick < 30) {
             face(target.getEyePosition());
@@ -257,10 +243,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         }
     }
 
-    private void tickSpinningMeleeTimeline(
-            SkeletronPrime master,
-            LivingEntity target,
-            boolean vice) {
+    private void tickSpinningMeleeTimeline(SkeletronPrime master, LivingEntity target, boolean vice) {
         int tick = meleeBehaviorTick;
         int preparation = vice ? 10 : 15;
         int repeats = vice ? 3 : 2;
@@ -290,11 +273,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         }
     }
 
-    private void dashTowardLockedTarget(
-            SkeletronPrime master,
-            LivingEntity target,
-            boolean lockDirection,
-            float speed) {
+    private void dashTowardLockedTarget(SkeletronPrime master, LivingEntity target, boolean lockDirection, float speed) {
         if (lockDirection) {
             Vec3 direction = target.getEyePosition().subtract(position());
             dashDirection = direction.lengthSqr() <= 1.0E-9
@@ -313,10 +292,8 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
             return;
         }
         double horizontal = direction.horizontalDistance();
-        setYRot((float) (Mth.atan2(direction.z, direction.x)
-                * Mth.RAD_TO_DEG) - 90.0F);
-        setXRot((float) -(Mth.atan2(direction.y, horizontal)
-                * Mth.RAD_TO_DEG));
+        setYRot((float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F);
+        setXRot((float) -(Mth.atan2(direction.y, horizontal) * Mth.RAD_TO_DEG));
     }
 
     /// 四条机械臂沿用 1.21 普通敌怪的接触攻击节奏。未碰到目标时十刻后复查，
@@ -325,12 +302,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         if (contactCooldown > 0 || master.getTarget() == null) {
             return;
         }
-        for (LivingEntity target : level().getEntitiesOfClass(
-                LivingEntity.class,
-                getBoundingBox(),
-                living -> living.canBeSeenAsEnemy()
-                        && !(living instanceof Enemy)
-                        && master.canAttack(living))) {
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox(), living -> living.canBeSeenAsEnemy() && !(living instanceof Enemy) && master.canAttack(living))) {
             target.hurt(damageSources().mobAttack(master), 8.0F);
             contactCooldown = 20;
             return;
@@ -346,19 +318,16 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
     @Override
     public boolean hurt(DamageSource source, float amount) {
         SkeletronPrime owner = getOwner();
-        if (owner == null || !owner.isAlive() || isRemoved()
-                || isInvulnerableTo(source)) {
+        if (owner == null || !owner.isAlive() || isRemoved() || isInvulnerableTo(source)) {
             return false;
         }
         float appliedDamage = source.is(DamageTypeTags.BYPASSES_ARMOR)
                 ? amount
-                : CombatRules.getDamageAfterAbsorb(
-                amount, PART_ARMOR, 0.0F);
+                : CombatRules.getDamageAfterAbsorb(amount, PART_ARMOR, 0.0F);
         if (appliedDamage <= 0.0F) {
             return false;
         }
-        float remaining = Math.max(
-                0.0F, getPartHealth() - appliedDamage);
+        float remaining = Math.max(0.0F, getPartHealth() - appliedDamage);
         setPartHealth(remaining);
         onPartHealthChanged(owner, remaining);
         if (remaining <= 0.0F) {

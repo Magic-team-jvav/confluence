@@ -41,11 +41,7 @@ public class MountItem<T extends AbstractMountEntity> extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(
-            Level level,
-            Player player,
-            InteractionHand hand
-    ) {
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
             MountManager.summonFromHand(serverPlayer, hand);

@@ -37,13 +37,9 @@ import java.util.function.Consumer;
 /// 因此不会绕过箱子、门与工作台的方块交互优先级。</p>
 public class BaseFlailItem extends TooltipItem implements GeoItem {
     private static final int USE_DURATION = 72_000;
-    private final AnimatableInstanceCache animationCache =
-            GeckoLibUtil.createInstanceCache(this);
+    private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
 
-    public BaseFlailItem(
-            FlailComponent flailComponent,
-            ModRarity rarity
-    ) {
+    public BaseFlailItem(FlailComponent flailComponent, ModRarity rarity) {
         super(new Properties()
                         .stacksTo(1)
                         .component(ModDataComponentTypes.FLAIL, flailComponent),
@@ -70,8 +66,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         }
         BaseFlailEntity existing = findExistingFlail(player);
         if (existing != null) {
-            if (existing.getPhase() == BaseFlailEntity.PHASE_THROWN
-                    || existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
+            if (existing.getPhase() == BaseFlailEntity.PHASE_THROWN || existing.getPhase() == BaseFlailEntity.PHASE_RETRACT) {
                 existing.playerDrop();
             }
             return;
@@ -88,15 +83,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         }
         flail.init(player, stack, component);
         player.level().addFreshEntity(flail);
-        player.level().playSound(
-                null,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
-                component.getSoundEvent(),
-                SoundSource.PLAYERS,
-                1.0F,
-                1.0F);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), component.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
         player.swing(InteractionHand.MAIN_HAND, true);
     }
 
@@ -109,8 +96,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         }
         if (existing.getPhase() == BaseFlailEntity.PHASE_SPIN) {
             existing.launch(player);
-            player.getCooldowns().addCooldown(
-                    stack.getItem(), component.getCooldown(player));
+            player.getCooldowns().addCooldown(stack.getItem(), component.getCooldown(player));
         } else if (existing.getPhase() == BaseFlailEntity.PHASE_STAY) {
             existing.forceRetract();
         } else if (existing.getPhase()
@@ -121,12 +107,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
     /// 松开右键或切换物品时，复用与左键控制包完全相同的释放语义。
     @Override
-    public void releaseUsing(
-            ItemStack stack,
-            Level level,
-            LivingEntity living,
-            int remainingUseDuration
-    ) {
+    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int remainingUseDuration) {
         if (!level.isClientSide() && living instanceof Player player) {
             release(player, stack);
         }
@@ -144,10 +125,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
     /// 查找当前玩家唯一仍在世界中的链锤实体。
     public static @Nullable BaseFlailEntity findExistingFlail(Player player) {
-        return player.level().getEntitiesOfClass(
-                        BaseFlailEntity.class,
-                        player.getBoundingBox().inflate(30.0),
-                        entity -> entity.getOwner() == player)
+        return player.level().getEntitiesOfClass(BaseFlailEntity.class, player.getBoundingBox().inflate(30.0), entity -> entity.getOwner() == player)
                 .stream()
                 .findFirst()
                 .orElse(null);
@@ -157,11 +135,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
     ///
     /// <p>普通链锤保持空实现；拥有点燃、减益或附属弹幕的链锤通过具体物品子类覆盖。
     /// 该回调只在服务端真实伤害成功后执行一次，不参与组件序列化。</p>
-    public void onFlailHit(
-            Player owner,
-            LivingEntity target,
-            BaseFlailEntity flail
-    ) {
+    public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
     }
 
     /// 持有连枷时始终禁用挖掘
@@ -171,9 +145,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers
-    ) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
     }
 
     @Override

@@ -3,9 +3,9 @@ package org.confluence.mod.common.item.gun;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.item.gun.definition.GunDefinition;
 import org.confluence.mod.util.PlayerUtils;
 
@@ -13,11 +13,8 @@ import org.confluence.mod.util.PlayerUtils;
 public class ManaGunItem extends BaseGun {
     private final int manaCost;
 
-    public ManaGunItem(Properties properties, int cooldown, float damage, float velocity, float knockback,
-                       float critical, int penetrate, float inaccuracy, ModRarity rarity, int manaCost) {
-        super(properties,
-                GunDefinition.manual(cooldown, damage, velocity, knockback, critical,
-                        penetrate, inaccuracy, rarity));
+    public ManaGunItem(Properties properties, int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity, int manaCost) {
+        super(properties, GunDefinition.manual(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity));
         this.manaCost = manaCost;
     }
 
@@ -29,7 +26,7 @@ public class ManaGunItem extends BaseGun {
         return new BaseBulletEntity(player, bullet) {
             @Override
             public DamageSource getDamageSource() {
-                return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+                return LibDamageTypes.of(level(), LibDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
             }
         };
     }

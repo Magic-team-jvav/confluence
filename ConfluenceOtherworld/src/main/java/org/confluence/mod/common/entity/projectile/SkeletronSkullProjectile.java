@@ -17,9 +17,7 @@ public final class SkeletronSkullProjectile extends StraightMonsterProjectile {
 
     private LivingEntity target;
 
-    public SkeletronSkullProjectile(
-            EntityType<? extends SkeletronSkullProjectile> type,
-            Level level) {
+    public SkeletronSkullProjectile(EntityType<? extends SkeletronSkullProjectile> type, Level level) {
         super(type, level);
     }
 
@@ -28,26 +26,17 @@ public final class SkeletronSkullProjectile extends StraightMonsterProjectile {
     /// <p>目标引用只参与服务端轨迹计算；客户端依靠实体速度同步显示，不另行执行索敌。</p>
     public void configure(Mob owner, LivingEntity target, float damage) {
         this.target = target;
-        Vec3 direction = target.position()
-                .subtract(owner.position())
-                .normalize();
-        super.configure(
-                owner,
-                owner.position(),
-                direction.scale(INITIAL_SPEED),
-                damage,
-                100);
+        Vec3 direction = target.position().subtract(owner.position()).normalize();
+        super.configure(owner, owner.position(), direction.scale(INITIAL_SPEED), damage, 100);
     }
 
     @Override
     protected Vec3 modifyVelocity(Vec3 velocity) {
-        if (level().isClientSide || target == null
-                || velocity.lengthSqr() <= 1.0E-12) {
+        if (level().isClientSide || target == null || velocity.lengthSqr() <= 1.0E-12) {
             return velocity;
         }
 
-        Vec3 toTarget = target.position().add(0.0, 1.0, 0.0)
-                .subtract(position());
+        Vec3 toTarget = target.position().add(0.0, 1.0, 0.0).subtract(position());
         double projection = velocity.dot(toTarget) / velocity.lengthSqr();
         Vec3 lateralCorrection = toTarget.subtract(velocity.scale(projection));
         if (lateralCorrection.lengthSqr() <= 1.0E-12) {

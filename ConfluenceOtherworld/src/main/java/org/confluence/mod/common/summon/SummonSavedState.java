@@ -5,17 +5,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.common.summon.dragon.StardustDragonSummon;
-import org.confluence.mod.common.summon.flying.FinchSummon;
-import org.confluence.mod.common.summon.flying.HornetSummon;
-import org.confluence.mod.common.summon.flying.ImpSummon;
-import org.confluence.mod.common.summon.flying.SculkWispSummon;
-import org.confluence.mod.common.summon.ground.IronGolemSummon;
-import org.confluence.mod.common.summon.ground.SnowFlinxSummon;
-import org.confluence.mod.common.summon.slime.SlimeSummon;
-import org.confluence.mod.common.summon.sword.SummonSword;
-import org.confluence.mod.common.summon.terraprisma.TerraprismaSummon;
 
 import java.util.UUID;
 
@@ -75,38 +64,7 @@ record SummonSavedState(ResourceLocation type, UUID uuid, int slotCost, SummonSt
     }
 
     private SummonInstance create(ServerPlayer owner) {
-        if (type.equals(Confluence.asResource("finch_baby"))) {
-            return new FinchSummon(owner, slotCost, stats, pose);
-        }
-        if (type.equals(Confluence.asResource("i_32_iron_golem"))) {
-            return new IronGolemSummon(owner, slotCost, stats, pose);
-        }
-        if (type.equals(Confluence.asResource("slime_baby"))) {
-            return new SlimeSummon(owner, slotCost, stats, pose);
-        }
-        if (type.equals(Confluence.asResource("hornet_baby"))) {
-            return new HornetSummon(owner, slotCost, stats, pose);
-        }
-        if (type.equals(Confluence.asResource("sculk_wisp"))) {
-            return new SculkWispSummon(owner, slotCost, stats, pose);
-        }
-        if (type.equals(Confluence.asResource("summon_imp"))) {
-            return new ImpSummon(owner, slotCost, stats, pose);
-        }
-        if (type.equals(Confluence.asResource("summon_snow_flinx"))) {
-            return new SnowFlinxSummon(owner, slotCost, stats, pose);
-        }
-        for (SummonSword.Kind kind : SummonSword.Kind.values()) {
-            if (type.equals(kind.type())) {
-                return new SummonSword(owner, slotCost, stats, pose, kind);
-            }
-        }
-        if (type.equals(Confluence.asResource("terraprisma"))) {
-            return new TerraprismaSummon(owner, slotCost, stats, pose);
-        }
-        if (type.equals(Confluence.asResource("stardust_dragon"))) {
-            return new StardustDragonSummon(owner, slotCost, stats, pose);
-        }
-        return null;
+        SummonType summonType = SummonTypes.byId(type);
+        return summonType == null ? null : summonType.create(owner, slotCost, stats, pose);
     }
 }

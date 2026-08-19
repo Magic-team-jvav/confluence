@@ -29,8 +29,7 @@ public class HellButterfly extends Bird {
 
     @Override
     public ResourceLocation getTexturePath() {
-        return Confluence.asResource(
-                "textures/entity/animal/butterfly/hell_butterfly.png");
+        return Confluence.asResource("textures/entity/animal/butterfly/hell_butterfly.png");
     }
 
     @Override

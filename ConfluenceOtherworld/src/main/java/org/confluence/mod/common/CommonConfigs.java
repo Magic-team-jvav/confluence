@@ -225,10 +225,8 @@ public final class CommonConfigs {
                 EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
                 DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
                 BOSS_CLEAR_WHEN_NO_TARGET = builder.define("bossClearWhenNoTarget", true);
-                BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder.defineInRange(
-                        "bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
-                BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = builder.defineInRange(
-                        "bossAttributesMultiplierDamage", 1.0D, 0.0625D, 10.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder.defineInRange("bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
+                BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = builder.defineInRange("bossAttributesMultiplierDamage", 1.0D, 0.0625D, 10.0D);
                 builder.pop();
             }
             DO_METEORITE_SPAWNING = builder.define("doMeteoriteSpawning", true);

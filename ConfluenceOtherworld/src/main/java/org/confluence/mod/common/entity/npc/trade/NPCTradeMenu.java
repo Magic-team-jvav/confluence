@@ -151,8 +151,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
 
         ItemStack soldStack = source.getItem().copy();
         long price = getSellPrice(soldStack);
-        if (price <= 0 || !PlayerMoneyTransaction.creditFromInventory(
-                serverPlayer, source.getContainerSlot(), soldStack, price, false)) {
+        if (price <= 0 || !PlayerMoneyTransaction.creditFromInventory(serverPlayer, source.getContainerSlot(), soldStack, price, false)) {
             return ItemStack.EMPTY;
         }
 

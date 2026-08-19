@@ -57,9 +57,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                     @Override
                     public boolean mayPickup(Player player) {
                         ItemStack itemstack = getItem();
-                        return (itemstack.isEmpty()
-                                || player.isCreative()
-                                || !EnchantmentHelper.hasBindingCurse(itemstack))
+                        return (itemstack.isEmpty() || player.isCreative() || !EnchantmentHelper.hasBindingCurse(itemstack))
                                 && super.mayPickup(player);
                     }
                 });

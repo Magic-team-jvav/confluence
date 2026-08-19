@@ -16,7 +16,7 @@ import java.util.List;
 public final class TerraprismaSummon extends SummonInstance {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 18.0F;
-    private static final double SEARCH_RANGE = 40.0;
+    private static final double SEARCH_RANGE = 16.0;
     private final TerraprismaSlashGoal slashGoal = new TerraprismaSlashGoal(this);
     private final TerraprismaRotateGoal rotateGoal = new TerraprismaRotateGoal(this);
     private float skillDamageMultiplier = 1.0F;
@@ -43,7 +43,7 @@ public final class TerraprismaSummon extends SummonInstance {
 
     @Override
     protected double ownerRecoveryDistanceSqr() {
-        return 40.0 * 40.0;
+        return 16.0 * 16.0;
     }
 
     @Override
@@ -74,8 +74,7 @@ public final class TerraprismaSummon extends SummonInstance {
     private AABB attackBox() {
         double horizontalScale = scale;
         double verticalScale = scale * scaleY;
-        return new AABB(-0.75 * horizontalScale, -0.75 * verticalScale, -0.75 * horizontalScale,
-                0.75 * horizontalScale, 0.75 * verticalScale, 1.5 * horizontalScale);
+        return new AABB(-0.75 * horizontalScale, -0.75 * verticalScale, -0.75 * horizontalScale, 0.75 * horizontalScale, 0.75 * verticalScale, 1.5 * horizontalScale);
     }
 
     public boolean hasValidTarget() {
@@ -83,14 +82,14 @@ public final class TerraprismaSummon extends SummonInstance {
         return target != null && target.isAlive() && !target.isRemoved() && target.level() == owner().level();
     }
 
-    SummonPose followPose(Vec3 position, Vec3 targetPosition) {
+    SummonPose followPose(Vec3 nextPosition, Vec3 targetPosition) {
         int sequence = order() + 1;
         Vec3 forward = Vec3.directionFromRotation(0.0F, owner().yBodyRot).multiply(1.0, 0.0, 1.0).normalize();
-        Vec3 lookPosition = position.subtract(forward.scale(5.0))
+        Vec3 lookPosition = position().subtract(forward.scale(5.0))
                 .add(0.0, -8.0 - (sequence - 1) / 2.0, 0.0)
-                .add(position.subtract(targetPosition).scale(20.0));
-        Vec3 direction = lookPosition.subtract(position);
-        return direction.lengthSqr() < 1.0E-6 ? currentPose() : aimAt(position, direction);
+                .add(position().subtract(targetPosition).scale(20.0));
+        Vec3 direction = lookPosition.subtract(position());
+        return direction.lengthSqr() < 1.0E-6 ? currentPose() : aimAt(nextPosition, direction);
     }
 
     SummonPose aimAt(Vec3 position, Vec3 direction) {
@@ -162,8 +161,7 @@ public final class TerraprismaSummon extends SummonInstance {
 
     @Override
     public SummonVisualState visualState() {
-        return new SummonVisualState(followingOwner, animationState, animationTicks, animationDuration,
-                animationDegrees, scale, scaleY);
+        return new SummonVisualState(followingOwner, animationState, animationTicks, animationDuration, animationDegrees, scale, scaleY);
     }
 
     public SummonAnimation animationState() {

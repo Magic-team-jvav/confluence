@@ -18,19 +18,12 @@ import net.minecraft.world.phys.Vec3;
 public final class CultistProjectile extends StraightMonsterProjectile {
     private final Variant variant;
 
-    public CultistProjectile(
-            EntityType<? extends CultistProjectile> type,
-            Level level,
-            Variant variant) {
+    public CultistProjectile(EntityType<? extends CultistProjectile> type, Level level, Variant variant) {
         super(type, level);
         this.variant = variant;
     }
 
-    public void configure(
-            Mob owner,
-            LivingEntity target,
-            float damage,
-            float velocity) {
+    public void configure(Mob owner, LivingEntity target, float damage, float velocity) {
         super.configure(owner, target, damage, velocity, 0.0F, 120);
     }
 
@@ -50,8 +43,7 @@ public final class CultistProjectile extends StraightMonsterProjectile {
         if (variant == Variant.FIREBALL) {
             target.setSecondsOnFire(4);
         } else if (variant == Variant.ICE_MIST) {
-            target.addEffect(new MobEffectInstance(
-                    MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
+            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 1));
         }
     }
 
@@ -62,12 +54,7 @@ public final class CultistProjectile extends StraightMonsterProjectile {
             return;
         }
         for (int index = 0; index < variant.particleCount; index++) {
-            level().addParticle(
-                    variant.particle,
-                    getRandomX(0.35),
-                    getRandomY(),
-                    getRandomZ(0.35),
-                    0.0, 0.0, 0.0);
+            level().addParticle(variant.particle, getRandomX(0.35), getRandomY(), getRandomZ(0.35), 0.0, 0.0, 0.0);
         }
     }
 

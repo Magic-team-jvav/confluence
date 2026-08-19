@@ -14,12 +14,9 @@ import java.util.OptionalInt;
 /// ARGB 格式；未设置时不绘制额外线条。</p>
 public record WhipAppearance(List<WhipSegment> segments, @Nullable Integer lineColor) {
     public WhipAppearance {
-        segments = List.copyOf(
-                Objects.requireNonNull(
-                        segments, "Whip appearance segments must not be null"));
+        segments = List.copyOf(Objects.requireNonNull(segments, "Whip appearance segments must not be null"));
         if (segments.isEmpty() && lineColor == null) {
-            throw new IllegalArgumentException(
-                    "Whip appearance must contain segments or a curve line");
+            throw new IllegalArgumentException("Whip appearance must contain segments or a curve line");
         }
     }
 
@@ -27,10 +24,7 @@ public record WhipAppearance(List<WhipSegment> segments, @Nullable Integer lineC
         return new WhipAppearance(Arrays.asList(segments), null);
     }
 
-    public static WhipAppearance segmentsAndLine(
-            int argb,
-            WhipSegment... segments
-    ) {
+    public static WhipAppearance segmentsAndLine(int argb, WhipSegment... segments) {
         return new WhipAppearance(Arrays.asList(segments), argb);
     }
 

@@ -14,8 +14,7 @@ public class ExplicitGeoModel<T extends GeoEntity> extends GeoNormalModel<T> {
     private final ResourceLocation texture;
     private final @Nullable ResourceLocation animation;
 
-    public ExplicitGeoModel(ResourceLocation model, ResourceLocation texture,
-                            @Nullable ResourceLocation animation) {
+    public ExplicitGeoModel(ResourceLocation model, ResourceLocation texture, @Nullable ResourceLocation animation) {
         super(model, false);
         this.model = model;
         this.texture = texture;

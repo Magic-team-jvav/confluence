@@ -276,26 +276,17 @@ public enum HardmodeConvertor implements IGlobalData {
         if (tag.isEmpty()) {
             return;
         }
-        if (!tag.contains("sanctification")
-                || !tag.contains("started", Tag.TAG_BYTE)
-                || !tag.contains("completed", Tag.TAG_BYTE)) {
-            throw new IllegalArgumentException(
-                    "Hardmode conversion data is missing a required field or contains an invalid field type");
+        if (!tag.contains("sanctification") || !tag.contains("started", Tag.TAG_BYTE) || !tag.contains("completed", Tag.TAG_BYTE)) {
+            throw new IllegalArgumentException("Hardmode conversion data is missing a required field or contains an invalid field type");
         }
         this.shouldContinue = false;
         try {
             Tag storedQueue = tag.get("sanctification");
             if (storedQueue == null) {
-                throw new IllegalArgumentException(
-                        "Hardmode conversion data is missing the sanctification queue");
+                throw new IllegalArgumentException("Hardmode conversion data is missing the sanctification queue");
             }
             List<Tuple<ChunkPos, BlockPosColumn[][]>> decoded =
-                    PortDataResultExtension.getOrThrow(
-                            SANCTIFICATION_CODEC.parse(
-                                    NbtOps.INSTANCE, storedQueue),
-                            message -> new IllegalArgumentException(
-                                    "Failed to decode hardmode conversion queue: "
-                                            + message));
+                    PortDataResultExtension.getOrThrow(SANCTIFICATION_CODEC.parse(NbtOps.INSTANCE, storedQueue), message -> new IllegalArgumentException("Failed to decode hardmode conversion queue: " + message));
             this.sanctification = new LinkedList<>(decoded);
             this.started = tag.getBoolean("started");
             this.completed = tag.getBoolean("completed");

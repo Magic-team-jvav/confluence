@@ -60,13 +60,7 @@ public class BaseHookItem extends Item {
     ///
     /// <p>普通钩爪无需关心该提示；需要选择唯一外观的实现可据此计算“提交后的列表视图”，
     /// 但旧实体和物品 NBT 仍只能在新实体成功加入世界后真正修改。</p>
-    public AbstractHookEntity getHook(
-            ItemStack itemStack,
-            BaseHookItem item,
-            Player player,
-            Level level,
-            @Nullable UUID pendingEviction
-    ) {
+    public AbstractHookEntity getHook(ItemStack itemStack, BaseHookItem item, Player player, Level level, @Nullable UUID pendingEviction) {
         return getHook(itemStack, item, player, level);
     }
 
@@ -94,8 +88,7 @@ public class BaseHookItem extends Item {
 
     public void onUnequip(Player player, ItemStack newStack, ItemStack stack) {
         // 回调已经表示原物品栈离开槽位；即使替换成同种物品，也不能让旧栈的实体继续存活。
-        if (player.level() instanceof ServerLevel level
-                && LibUtils.getItemStackNbtNoCopy(stack).get("hooks") instanceof ListTag list) {
+        if (player.level() instanceof ServerLevel level && LibUtils.getItemStackNbtNoCopy(stack).get("hooks") instanceof ListTag list) {
             discardAllHooks(list, level, player);
         }
     }
@@ -118,17 +111,14 @@ public class BaseHookItem extends Item {
 
     @Nullable
     public static AbstractHookEntity getHookEntity(Tag tag, Level level) {
-        if (!(tag instanceof CompoundTag compound)
-                || !compound.contains("id", Tag.TAG_INT)
-                || !compound.hasUUID("uuid")) {
+        if (!(tag instanceof CompoundTag compound) || !compound.contains("id", Tag.TAG_INT) || !compound.hasUUID("uuid")) {
             return null;
         }
         UUID uuid = compound.getUUID("uuid");
         Entity entity = level.getEntity(compound.getInt("id"));
         AbstractHookEntity hookEntity = entity instanceof AbstractHookEntity hook ? hook : null;
         if (hookEntity == null || !uuid.equals(hookEntity.getUUID())) {
-            if (!(level instanceof ServerLevel serverLevel)
-                    || !(serverLevel.getEntity(uuid) instanceof AbstractHookEntity resolved)) {
+            if (!(level instanceof ServerLevel serverLevel) || !(serverLevel.getEntity(uuid) instanceof AbstractHookEntity resolved)) {
                 return null;
             }
             hookEntity = resolved;

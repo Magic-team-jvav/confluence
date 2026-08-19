@@ -10,28 +10,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
-import org.confluence.mod.common.init.ModDamageTypes;
 
 import java.util.Comparator;
 
 /// 猪鲨链球发射的可追踪气泡。
-public final class FlaironBubbleProjectile
-        extends FlailAuxiliaryProjectile {
-    private static final EntityDataAccessor<Float> SCALE =
-            SynchedEntityData.defineId(
-                    FlaironBubbleProjectile.class,
-                    EntityDataSerializers.FLOAT);
+public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
+    private static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(FlaironBubbleProjectile.class, EntityDataSerializers.FLOAT);
     private static final double TARGET_RANGE = 12.0;
     private static final double ACCELERATION = 0.05;
     private static final int TARGET_LIFETIME = 160;
     private int bouncesLeft = 1;
     private boolean hasHadTarget;
 
-    public FlaironBubbleProjectile(
-            EntityType<? extends FlaironBubbleProjectile> type,
-            Level level
-    ) {
+    public FlaironBubbleProjectile(EntityType<? extends FlaironBubbleProjectile> type, Level level) {
         super(type, level);
         setNoGravity(true);
     }
@@ -56,11 +49,7 @@ public final class FlaironBubbleProjectile
         if (level().isClientSide()) {
             return;
         }
-        LivingEntity target = level().getEntitiesOfClass(
-                        LivingEntity.class,
-                        getBoundingBox().inflate(TARGET_RANGE),
-                        candidate -> LibEntityUtils.canHitEntity(
-                                candidate, getOwner()))
+        LivingEntity target = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(TARGET_RANGE), candidate -> LibEntityUtils.canHitEntity(candidate, getOwner()))
                 .stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr))
                 .orElse(null);
@@ -73,14 +62,10 @@ public final class FlaironBubbleProjectile
                 hasHadTarget = true;
                 setMaximumLifetime(getLifetime() + TARGET_LIFETIME);
             }
-            Vec3 direction = target.getBoundingBox().getCenter()
-                    .subtract(position())
-                    .normalize();
-            setDeltaMovement(velocity.add(
-                    direction.scale(ACCELERATION)));
+            Vec3 direction = target.getBoundingBox().getCenter().subtract(position()).normalize();
+            setDeltaMovement(velocity.add(direction.scale(ACCELERATION)));
         } else if (velocity.length() > 0.005) {
-            setDeltaMovement(velocity.normalize().scale(
-                    velocity.length() - 0.005));
+            setDeltaMovement(velocity.normalize().scale(velocity.length() - 0.005));
         } else {
             setDeltaMovement(Vec3.ZERO);
         }
@@ -112,13 +97,7 @@ public final class FlaironBubbleProjectile
             discard();
             return;
         }
-        if (target.hurt(
-                ModDamageTypes.of(
-                        level(),
-                        ModDamageTypes.SWORD_PROJECTILE,
-                        this,
-                        player),
-                damage)) {
+        if (target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage)) {
             LibEntityUtils.knockBackA2B(this, target, 0.1F, 0.05F);
         }
         discard();

@@ -30,16 +30,14 @@ public class RangedFlyingMonster extends BaseFlyingMonster {
     private final int shotCooldown;
     private final double shotMultiplier;
 
-    public RangedFlyingMonster(EntityType<? extends RangedFlyingMonster> type, Level level,
-                               int shotCooldown, double shotMultiplier) {
+    public RangedFlyingMonster(EntityType<? extends RangedFlyingMonster> type, Level level, int shotCooldown, double shotMultiplier) {
         super(type, level);
         this.shotCooldown = shotCooldown;
         this.shotMultiplier = shotMultiplier;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseFlyingMonster.createFlyingAttributes()
-                .add(Attributes.FOLLOW_RANGE, 32.0);
+        return BaseFlyingMonster.createFlyingAttributes().add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
     @Override
@@ -63,17 +61,11 @@ public class RangedFlyingMonster extends BaseFlyingMonster {
     }
 
     HostileParticleProjectile createVileSpit(LivingEntity target) {
-        HostileParticleProjectile projectile =
-                ModEntities.VILE_SPIT_PROJECTILE.get().create(level());
+        HostileParticleProjectile projectile = ModEntities.VILE_SPIT_PROJECTILE.get().create(level());
         if (projectile == null) {
             return null;
         }
-        projectile.configure(
-                this,
-                target,
-                (float) (getAttributeValue(Attributes.ATTACK_DAMAGE)
-                        * creatureDefinition().behavior()
-                        .shotMultiplierOr(shotMultiplier)));
+        projectile.configure(this, target, (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * creatureDefinition().behavior().shotMultiplierOr(shotMultiplier)));
         return projectile;
     }
 }

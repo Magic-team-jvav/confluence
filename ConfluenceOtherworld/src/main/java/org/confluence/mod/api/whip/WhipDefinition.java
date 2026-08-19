@@ -36,36 +36,20 @@ public record WhipDefinition(int durationTicks, int hitCooldownTicks, float base
             throw new IllegalArgumentException("Whip hit cooldown must be positive");
         }
         if (!Float.isFinite(baseDamage) || baseDamage < 0.0F) {
-            throw new IllegalArgumentException(
-                    "Whip damage must be finite and non-negative"
-            );
+            throw new IllegalArgumentException("Whip damage must be finite and non-negative");
         }
         if (!Float.isFinite(rangeMultiplier) || rangeMultiplier <= 0.0F) {
-            throw new IllegalArgumentException(
-                    "Whip range multiplier must be finite and positive"
-            );
+            throw new IllegalArgumentException("Whip range multiplier must be finite and positive");
         }
-        if (!Float.isFinite(damageFalloff)
-                || damageFalloff <= 0.0F
-                || damageFalloff > 1.0F) {
-            throw new IllegalArgumentException(
-                    "Whip damage falloff must be in (0, 1]"
-            );
+        if (!Float.isFinite(damageFalloff) || damageFalloff <= 0.0F || damageFalloff > 1.0F) {
+            throw new IllegalArgumentException("Whip damage falloff must be in (0, 1]");
         }
-        if (!Float.isFinite(minimumDamageMultiplier)
-                || minimumDamageMultiplier < 0.0F
-                || minimumDamageMultiplier > 1.0F) {
-            throw new IllegalArgumentException(
-                    "Whip minimum damage multiplier must be in [0, 1]"
-            );
+        if (!Float.isFinite(minimumDamageMultiplier) || minimumDamageMultiplier < 0.0F || minimumDamageMultiplier > 1.0F) {
+            throw new IllegalArgumentException("Whip minimum damage multiplier must be in [0, 1]");
         }
         curve = Objects.requireNonNull(curve, "Whip curve must not be null");
-        directHitEffects = List.copyOf(
-                Objects.requireNonNull(directHitEffects, "directHitEffects")
-        );
-        friendlyHitEffects = List.copyOf(
-                Objects.requireNonNull(friendlyHitEffects, "friendlyHitEffects")
-        );
+        directHitEffects = List.copyOf(Objects.requireNonNull(directHitEffects, "directHitEffects"));
+        friendlyHitEffects = List.copyOf(Objects.requireNonNull(friendlyHitEffects, "friendlyHitEffects"));
         tagEffect = Objects.requireNonNull(tagEffect, "tagEffect");
     }
 }

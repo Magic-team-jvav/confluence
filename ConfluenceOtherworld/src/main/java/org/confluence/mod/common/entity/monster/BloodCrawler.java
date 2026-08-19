@@ -37,14 +37,10 @@ import software.bernie.geckolib.core.object.PlayState;
 /// <p>环境声、受伤声和死亡声都使用血爬虫自己的声音组，不能退回通用怪物声音；
 /// 这些声音同样是该生物身份的一部分。</p>
 public class BloodCrawler extends BaseMonster {
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("move.walk");
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
-    private static final RawAnimation ATTACK =
-            RawAnimation.begin().thenPlay("attack.strike");
-    private static final EntityDataAccessor<Byte> CLIMBING =
-            SynchedEntityData.defineId(BloodCrawler.class, EntityDataSerializers.BYTE);
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack.strike");
+    private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(BloodCrawler.class, EntityDataSerializers.BYTE);
 
     public BloodCrawler(EntityType<? extends BloodCrawler> type, Level level) {
         super(type, level);
@@ -65,8 +61,7 @@ public class BloodCrawler extends BaseMonster {
     protected void registerGoals() {
         super.registerGoals();
         // 1.21 继承蜘蛛时会主动攻击铁傀儡；重写后必须显式保留该目标族。
-        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
-                this, IronGolem.class, false));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
     }
 
     @Override
@@ -120,8 +115,7 @@ public class BloodCrawler extends BaseMonster {
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         // 移动与攻击分层播放，使攻击时仍能保留蜘蛛腿部的行走节奏。
         controllers.add(new AnimationController<>(
                 this,

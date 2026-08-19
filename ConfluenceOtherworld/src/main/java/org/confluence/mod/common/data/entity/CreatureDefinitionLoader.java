@@ -30,9 +30,7 @@ import java.util.Set;
 /// {@code kubejs/data/confluence/entity_definition/face_monster.json}
 /// 对应 {@code confluence:face_monster}。若要覆盖其他模组实体，则将目录中的命名空间换成目标模组 ID。</p>
 public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadListener {
-    private static final Set<String> ATTRIBUTE_FIELDS = Set.of(
-            "max_health", "attack_damage", "armor", "movement_speed",
-            "follow_range", "knockback_resistance");
+    private static final Set<String> ATTRIBUTE_FIELDS = Set.of("max_health", "attack_damage", "armor", "movement_speed", "follow_range", "knockback_resistance");
     private static final Set<String> BEHAVIOR_FIELDS = Set.of(
             "move_speed", "melee_range", "wander_speed", "wander_radius",
             "idle_ticks", "charge_speed", "windup_ticks", "shot_cooldown",
@@ -75,8 +73,7 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
     }
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> resources, ResourceManager resourceManager,
-                         ProfilerFiller profiler) {
+    protected void apply(Map<ResourceLocation, JsonElement> resources, ResourceManager resourceManager, ProfilerFiller profiler) {
         // 先验证整批文件，再一次性替换快照。任意文件损坏时保留上一轮完整结果，
         // 避免拼写或类型错误让部分实体静默恢复默认值。
         Map<EntityType<?>, CreatureDefinition> loaded = new HashMap<>();
@@ -94,8 +91,7 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
                 continue;
             }
 
-            DataResult<CreatureDefinition> result = CreatureDefinition.CODEC
-                    .parse(JsonOps.INSTANCE, entry.getValue());
+            DataResult<CreatureDefinition> result = CreatureDefinition.CODEC.parse(JsonOps.INSTANCE, entry.getValue());
             CreatureDefinition definition = result
                     .resultOrPartial(message -> Confluence.LOGGER.warn(
                             "Invalid creature definition {}: {}", id, message))
@@ -107,8 +103,7 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
             loaded.put(type, definition);
         }
         if (invalidBatch) {
-            Confluence.LOGGER.warn(
-                    "Creature definition reload was rejected; the previous valid snapshot remains active");
+            Confluence.LOGGER.warn("Creature definition reload was rejected; the previous valid snapshot remains active");
             return;
         }
         definitions = Map.copyOf(loaded);
@@ -122,15 +117,12 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
             Confluence.LOGGER.warn("Creature definition {} must be a JSON object", id);
             return false;
         }
-        boolean attributesValid = hasNumericFields(
-                id, element, "attributes", ATTRIBUTE_FIELDS);
-        boolean behaviorValid = hasNumericFields(
-                id, element, "behavior", BEHAVIOR_FIELDS);
+        boolean attributesValid = hasNumericFields(id, element, "attributes", ATTRIBUTE_FIELDS);
+        boolean behaviorValid = hasNumericFields(id, element, "behavior", BEHAVIOR_FIELDS);
         return attributesValid && behaviorValid;
     }
 
-    private static boolean hasNumericFields(ResourceLocation id, JsonElement root,
-                                            String sectionName, Set<String> fields) {
+    private static boolean hasNumericFields(ResourceLocation id, JsonElement root, String sectionName, Set<String> fields) {
         JsonElement section = root.getAsJsonObject().get(sectionName);
         if (section == null) {
             return true;
@@ -143,8 +135,7 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
         boolean valid = true;
         for (String field : fields) {
             JsonElement value = section.getAsJsonObject().get(field);
-            if (value != null && (!value.isJsonPrimitive()
-                    || !value.getAsJsonPrimitive().isNumber())) {
+            if (value != null && (!value.isJsonPrimitive() || !value.getAsJsonPrimitive().isNumber())) {
                 Confluence.LOGGER.warn(
                         "Creature definition {} field '{}.{}' must be a number",
                         id, sectionName, field);

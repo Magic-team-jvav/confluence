@@ -21,8 +21,7 @@ import java.util.function.Function;
 /// 传送时刻拆成多个互相产生一 tick 偏差的顺序节点。节点只负责公共时序；
 /// 弹幕种类、伤害和命中特效仍由具体实体提供的工厂决定。</p>
 public final class CasterCycleAction extends BTNode {
-    private static final UUID BATTLE_RANGE_UUID =
-            UUID.fromString("538db362-46e6-46b2-aa64-d674065dfc41");
+    private static final UUID BATTLE_RANGE_UUID = UUID.fromString("538db362-46e6-46b2-aa64-d674065dfc41");
     private static final int CYCLE_TICKS = 200;
     private static final int RELEASE_DELAY_TICKS = 8;
     private static final int[] CAST_PHASES = {180, 130, 80};
@@ -34,14 +33,10 @@ public final class CasterCycleAction extends BTNode {
     private int releaseDelay = -1;
     private int lastCastPhase = CYCLE_TICKS;
 
-    public CasterCycleAction(
-            PathfinderMob caster,
-            Function<LivingEntity, @Nullable Projectile> projectileFactory) {
+    public CasterCycleAction(PathfinderMob caster, Function<LivingEntity, @Nullable Projectile> projectileFactory) {
         this.caster = Objects.requireNonNull(caster, "caster");
-        this.projectileFactory = Objects.requireNonNull(
-                projectileFactory, "projectileFactory");
-        this.teleportAction = new TeleportNearTargetAction(
-                caster, 20, 5, 4);
+        this.projectileFactory = Objects.requireNonNull(projectileFactory, "projectileFactory");
+        this.teleportAction = new TeleportNearTargetAction(caster, 20, 5, 4);
     }
 
     @Override
@@ -69,8 +64,7 @@ public final class CasterCycleAction extends BTNode {
         }
         if (--releaseDelay == 0) {
             Projectile projectile = projectileFactory.apply(target);
-            if (projectile == null
-                    || !caster.level().addFreshEntity(projectile)) {
+            if (projectile == null || !caster.level().addFreshEntity(projectile)) {
                 return BTStatus.FAILURE;
             }
         }
@@ -104,23 +98,15 @@ public final class CasterCycleAction extends BTNode {
     }
 
     private void addBattleRange() {
-        AttributeInstance followRange =
-                caster.getAttribute(Attributes.FOLLOW_RANGE);
-        if (followRange != null
-                && followRange.getModifier(BATTLE_RANGE_UUID) == null) {
-            followRange.addTransientModifier(new AttributeModifier(
-                    BATTLE_RANGE_UUID,
-                    "Caster battle range",
-                    1.0,
-                    AttributeModifier.Operation.MULTIPLY_BASE));
+        AttributeInstance followRange = caster.getAttribute(Attributes.FOLLOW_RANGE);
+        if (followRange != null && followRange.getModifier(BATTLE_RANGE_UUID) == null) {
+            followRange.addTransientModifier(new AttributeModifier(BATTLE_RANGE_UUID, "Caster battle range", 1.0, AttributeModifier.Operation.MULTIPLY_BASE));
         }
     }
 
     private void removeBattleRange() {
-        AttributeInstance followRange =
-                caster.getAttribute(Attributes.FOLLOW_RANGE);
-        if (followRange != null
-                && followRange.getModifier(BATTLE_RANGE_UUID) != null) {
+        AttributeInstance followRange = caster.getAttribute(Attributes.FOLLOW_RANGE);
+        if (followRange != null && followRange.getModifier(BATTLE_RANGE_UUID) != null) {
             followRange.removeModifier(BATTLE_RANGE_UUID);
         }
     }

@@ -19,9 +19,7 @@ public final class SpawnProjectileAction extends BTNode {
     private final Function<LivingEntity, @Nullable Projectile> projectileFactory;
     private boolean done;
 
-    public SpawnProjectileAction(
-            Mob shooter,
-            Function<LivingEntity, @Nullable Projectile> projectileFactory) {
+    public SpawnProjectileAction(Mob shooter, Function<LivingEntity, @Nullable Projectile> projectileFactory) {
         this.shooter = Objects.requireNonNull(shooter, "shooter");
         this.projectileFactory = Objects.requireNonNull(projectileFactory, "projectileFactory");
     }

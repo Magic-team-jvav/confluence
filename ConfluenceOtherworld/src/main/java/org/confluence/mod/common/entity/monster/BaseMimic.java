@@ -69,9 +69,7 @@ public class BaseMimic extends BaseMonster {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseMonster.createMonsterAttributes()
-                .add(Attributes.MAX_HEALTH, 80.0)
-                .add(Attributes.ATTACK_DAMAGE, 15.0);
+        return BaseMonster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 80.0).add(Attributes.ATTACK_DAMAGE, 15.0);
     }
 
     @Override
@@ -117,9 +115,7 @@ public class BaseMimic extends BaseMonster {
             return false;
         }
         boolean damaged = super.hurt(source, amount);
-        if (damaged && !level().isClientSide
-                && source.getEntity() instanceof Player player
-                && !player.isCreative() && !player.isSpectator()) {
+        if (damaged && !level().isClientSide && source.getEntity() instanceof Player player && !player.isCreative() && !player.isSpectator()) {
             setTarget(player);
         }
         return damaged;
@@ -215,9 +211,7 @@ public class BaseMimic extends BaseMonster {
 
     @Override
     public PortProjectileDeflection deflection(Projectile projectile) {
-        if (getMimicPose() == MimicPose.DEFENDING
-                && canReflectProjectiles()
-                && (projectile instanceof AbstractArrow || projectile instanceof BaseBulletEntity)) {
+        if (getMimicPose() == MimicPose.DEFENDING && canReflectProjectiles() && (projectile instanceof AbstractArrow || projectile instanceof BaseBulletEntity)) {
             return MIMIC_REFLECTION;
         }
         return PortProjectileDeflection.NONE;

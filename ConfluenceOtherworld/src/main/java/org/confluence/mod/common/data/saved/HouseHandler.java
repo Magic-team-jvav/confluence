@@ -133,15 +133,11 @@ public enum HouseHandler implements IGlobalData {
             return;
         }
         Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> decoded =
-                PortDataResultExtension.getOrThrow(
-                        DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")),
-                        message -> new IllegalArgumentException(
-                                "Failed to decode NPC house data: " + message));
+                PortDataResultExtension.getOrThrow(DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")), message -> new IllegalArgumentException("Failed to decode NPC house data: " + message));
         Object2ObjectOpenHashMap<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>>
                 mutableData = new Object2ObjectOpenHashMap<>();
         decoded.forEach((dimension, regions) -> {
-            Object2ObjectOpenHashMap<NPCSpawner.Region, Map<UUID, House>> mutableRegions =
-                    new Object2ObjectOpenHashMap<>();
+            Object2ObjectOpenHashMap<NPCSpawner.Region, Map<UUID, House>> mutableRegions = new Object2ObjectOpenHashMap<>();
             regions.forEach((region, houses) -> mutableRegions.put(
                     region,
                     new Object2ObjectOpenHashMap<>(houses)));
@@ -153,10 +149,7 @@ public enum HouseHandler implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("data", PortDataResultExtension.getOrThrow(
-                DATA_CODEC.encodeStart(NbtOps.INSTANCE, data),
-                message -> new IllegalStateException(
-                        "Failed to encode NPC house data: " + message)));
+        tag.put("data", PortDataResultExtension.getOrThrow(DATA_CODEC.encodeStart(NbtOps.INSTANCE, data), message -> new IllegalStateException("Failed to encode NPC house data: " + message)));
     }
 
     @Override

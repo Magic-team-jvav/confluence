@@ -29,21 +29,12 @@ public final class IncrementalCylinderDestruction {
     private Column currentColumn;
     private int currentY;
 
-    public IncrementalCylinderDestruction(
-            Level level,
-            int centerX,
-            int centerZ,
-            int minY,
-            int maxY,
-            int startRadius,
-            int maximumRadius) {
+    public IncrementalCylinderDestruction(Level level, int centerX, int centerZ, int minY, int maxY, int startRadius, int maximumRadius) {
         if (minY > maxY) {
-            throw new IllegalArgumentException(
-                    "Cylinder minimum Y must not exceed maximum Y");
+            throw new IllegalArgumentException("Cylinder minimum Y must not exceed maximum Y");
         }
         if (startRadius < 0 || maximumRadius < startRadius) {
-            throw new IllegalArgumentException(
-                    "Cylinder radius range is invalid");
+            throw new IllegalArgumentException("Cylinder radius range is invalid");
         }
         this.level = level;
         this.centerX = centerX;
@@ -90,26 +81,21 @@ public final class IncrementalCylinderDestruction {
         int outerSquared = radius * radius;
         for (int offsetX = -radius; offsetX <= radius; offsetX++) {
             for (int offsetZ = -radius; offsetZ <= radius; offsetZ++) {
-                int distanceSquared =
-                        offsetX * offsetX + offsetZ * offsetZ;
-                if (distanceSquared > innerSquared
-                        && distanceSquared <= outerSquared) {
-                    pendingColumns.add(new Column(
-                            centerX + offsetX, centerZ + offsetZ));
+                int distanceSquared = offsetX * offsetX + offsetZ * offsetZ;
+                if (distanceSquared > innerSquared && distanceSquared <= outerSquared) {
+                    pendingColumns.add(new Column(centerX + offsetX, centerZ + offsetZ));
                 }
             }
         }
     }
 
     private void processCurrentBlock() {
-        BlockPos pos = new BlockPos(
-                currentColumn.x(), currentY, currentColumn.z());
+        BlockPos pos = new BlockPos(currentColumn.x(), currentY, currentColumn.z());
         BlockState state = level.getBlockState(pos);
         if (!state.is(BlockTags.FEATURES_CANNOT_REPLACE)) {
             if (currentY == minY) {
                 if (!state.is(Blocks.NETHERRACK)) {
-                    level.setBlock(
-                            pos, Blocks.NETHERRACK.defaultBlockState(), 3);
+                    level.setBlock(pos, Blocks.NETHERRACK.defaultBlockState(), 3);
                 }
             } else if (!state.isAir()) {
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);

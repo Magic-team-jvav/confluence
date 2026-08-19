@@ -37,17 +37,10 @@ public class Snatcher extends BaseMonster {
     private static final String REST_Y_TAG = "RestY";
     private static final String REST_Z_TAG = "RestZ";
     private static final double SEARCH_DISTANCE = 50.0;
-    private static final EntityDataAccessor<Boolean> ANCHORED =
-            SynchedEntityData.defineId(
-                    Snatcher.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Vector3f> ANCHOR =
-            SynchedEntityData.defineId(
-                    Snatcher.class, EntityDataSerializers.VECTOR3);
-    private static final EntityDataAccessor<Vector3f> REST_DIRECTION =
-            SynchedEntityData.defineId(
-                    Snatcher.class, EntityDataSerializers.VECTOR3);
-    private static final List<Vec3> SEARCH_DIRECTIONS =
-            createSearchDirections();
+    private static final EntityDataAccessor<Boolean> ANCHORED = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Vector3f> ANCHOR = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Vector3f> REST_DIRECTION = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.VECTOR3);
+    private static final List<Vec3> SEARCH_DIRECTIONS = createSearchDirections();
     public Snatcher(EntityType<? extends Snatcher> type, Level level) {
         super(type, level);
         noPhysics = true;
@@ -72,8 +65,7 @@ public class Snatcher extends BaseMonster {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if (!level().isClientSide && !isAnchored()
-                && !findAndSetAnchor()) {
+        if (!level().isClientSide && !isAnchored() && !findAndSetAnchor()) {
             discard();
         }
     }
@@ -96,26 +88,17 @@ public class Snatcher extends BaseMonster {
         List<Vec3> directions = new ArrayList<>(SEARCH_DIRECTIONS);
         for (int index = directions.size() - 1; index > 0; index--) {
             int swapIndex = random.nextInt(index + 1);
-            Vec3 previous = directions.set(
-                    index, directions.get(swapIndex));
+            Vec3 previous = directions.set(index, directions.get(swapIndex));
             directions.set(swapIndex, previous);
         }
         Vec3 origin = position();
         for (Vec3 direction : directions) {
-            BlockHitResult hit = level().clip(new ClipContext(
-                    origin,
-                    origin.add(direction.scale(SEARCH_DISTANCE)),
-                    ClipContext.Block.OUTLINE,
-                    ClipContext.Fluid.NONE,
-                    this));
+            BlockHitResult hit = level().clip(new ClipContext(origin, origin.add(direction.scale(SEARCH_DISTANCE)), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
             if (hit.getType() != HitResult.Type.BLOCK) {
                 continue;
             }
-            Vec3 normal = Vec3.atLowerCornerOf(
-                    hit.getDirection().getNormal());
-            Vec3 anchor = hit.getBlockPos().getCenter()
-                    .add(normal.scale(0.5))
-                    .add(0.0, 0.5, 0.0);
+            Vec3 normal = Vec3.atLowerCornerOf(hit.getDirection().getNormal());
+            Vec3 anchor = hit.getBlockPos().getCenter().add(normal.scale(0.5)).add(0.0, 0.5, 0.0);
             initializeAnchor(anchor, direction.normalize());
             return true;
         }
@@ -125,12 +108,10 @@ public class Snatcher extends BaseMonster {
     /// 设置根部和静止伸展方向。
     public void initializeAnchor(Vec3 anchor, Vec3 restDirection) {
         if (restDirection.lengthSqr() < 1.0E-8) {
-            throw new IllegalArgumentException(
-                    "Snatcher rest direction must not be zero");
+            throw new IllegalArgumentException("Snatcher rest direction must not be zero");
         }
         entityData.set(ANCHOR, anchor.toVector3f());
-        entityData.set(REST_DIRECTION,
-                restDirection.normalize().toVector3f());
+        entityData.set(REST_DIRECTION, restDirection.normalize().toVector3f());
         entityData.set(ANCHORED, true);
     }
 
@@ -199,21 +180,12 @@ public class Snatcher extends BaseMonster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.getBoolean(ANCHORED_TAG)) {
-            initializeAnchor(
-                    new Vec3(
-                            tag.getDouble(ANCHOR_X_TAG),
-                            tag.getDouble(ANCHOR_Y_TAG),
-                            tag.getDouble(ANCHOR_Z_TAG)),
-                    new Vec3(
-                            tag.getDouble(REST_X_TAG),
-                            tag.getDouble(REST_Y_TAG),
-                            tag.getDouble(REST_Z_TAG)));
+            initializeAnchor(new Vec3(tag.getDouble(ANCHOR_X_TAG), tag.getDouble(ANCHOR_Y_TAG), tag.getDouble(ANCHOR_Z_TAG)), new Vec3(tag.getDouble(REST_X_TAG), tag.getDouble(REST_Y_TAG), tag.getDouble(REST_Z_TAG)));
         }
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(DefaultAnimations.genericIdleController(this));
     }
 
@@ -223,8 +195,7 @@ public class Snatcher extends BaseMonster {
             for (int y = -1; y <= 1; y++) {
                 for (int z = -1; z <= 1; z++) {
                     if (x != 0 || y != 0 || z != 0) {
-                        directions.add(
-                                new Vec3(x, y, z));
+                        directions.add(new Vec3(x, y, z));
                     }
                 }
             }

@@ -50,8 +50,7 @@ final class BossChildDeathLedger extends SavedData {
     }
 
     private static BossChildDeathLedger get(ServerLevel level) {
-        return level.getDataStorage().computeIfAbsent(
-                BossChildDeathLedger::load, BossChildDeathLedger::new, DATA_NAME);
+        return level.getDataStorage().computeIfAbsent(BossChildDeathLedger::load, BossChildDeathLedger::new, DATA_NAME);
     }
 
     static BossChildDeathLedger load(CompoundTag tag) {
@@ -61,8 +60,7 @@ final class BossChildDeathLedger extends SavedData {
             CompoundTag entry = entries.getCompound(index);
             if (!entry.hasUUID(OWNER_TAG) || !entry.hasUUID(CHILD_TAG)) continue;
             UUID ownerUUID = entry.getUUID(OWNER_TAG);
-            ledger.deathsByOwner.computeIfAbsent(ownerUUID, ignored -> new HashSet<>())
-                    .add(entry.getUUID(CHILD_TAG));
+            ledger.deathsByOwner.computeIfAbsent(ownerUUID, ignored -> new HashSet<>()).add(entry.getUUID(CHILD_TAG));
         }
         return ledger;
     }

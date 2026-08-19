@@ -32,12 +32,8 @@ public class FairyRenderer<T extends Entity & GeoEntity> extends GeoNegativeVolu
     /// <p>占位资源只用于初始化 GeckoLib 模型对象，实际渲染时会由
     /// {@link CritterGeoModel} 查询实体当前的模型与纹理。集中在这里可以避免
     /// 客户端注册表把占位键误认为必须存在的最终资源文件。</p>
-    public static <T extends BaseCritter> FairyRenderer<T> forCritter(
-            EntityRendererProvider.Context context) {
-        return new FairyRenderer<>(
-                context,
-                new CritterGeoModel<>(
-                        Confluence.asResource("geo/animal/dummy")));
+    public static <T extends BaseCritter> FairyRenderer<T> forCritter(EntityRendererProvider.Context context) {
+        return new FairyRenderer<>(context, new CritterGeoModel<>(Confluence.asResource("geo/animal/dummy")));
     }
 
     @Override
@@ -47,7 +43,6 @@ public class FairyRenderer<T extends Entity & GeoEntity> extends GeoNegativeVolu
                                int packedLight, int packedOverlay, float red, float green,
                                float blue, float alpha) {
         int effectiveLight = isReRender ? packedLight : 0xF000F0;
-        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer,
-                isReRender, partialTick, effectiveLight, packedOverlay, red, green, blue, alpha);
+        super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, effectiveLight, packedOverlay, red, green, blue, alpha);
     }
 }

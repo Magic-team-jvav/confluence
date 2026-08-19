@@ -8,8 +8,7 @@ import org.confluence.mod.common.item.gun.definition.GunDefinition;
 
 public class StarCannonItem extends BaseGun {
     public StarCannonItem(Properties properties) {
-        super(properties,
-                GunDefinition.manual(4, 14.8F, 1.8F, 0.15F, 0.04F, -1, 0.0F, ModRarity.GREEN));
+        super(properties, GunDefinition.manual(4, 14.8F, 1.8F, 0.15F, 0.04F, -1, 0.0F, ModRarity.GREEN));
     }
 
     public StarCannonBulletEntity createProjectile(ServerPlayer player, ItemStack bullet) {

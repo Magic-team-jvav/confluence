@@ -4,18 +4,9 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.GunPropertyComponent;
 
 /// 一把枪与单次请求无关的注册定义。
-public record GunDefinition(
-        int cooldown,
-        float damage,
-        float velocity,
-        float knockback,
-        float critical,
-        int penetrate,
-        float inaccuracy,
-        ModRarity rarity,
-        FireMode fireMode,
-        GunProjectilePattern projectilePattern
-) {
+public record GunDefinition(int cooldown, float damage, float velocity, float knockback,
+                            float critical, int penetrate, float inaccuracy, ModRarity rarity,
+                            FireMode fireMode, GunProjectilePattern projectilePattern) {
     public GunDefinition {
         if (cooldown < 0) throw new IllegalArgumentException("cooldown must be non-negative");
         if (!Float.isFinite(damage) || damage < 0) {
@@ -40,27 +31,20 @@ public record GunDefinition(
     }
 
     /// 兼容旧的单弹幕枪械定义写法。
-    public GunDefinition(int cooldown, float damage, float velocity, float knockback, float critical,
-                         int penetrate, float inaccuracy, ModRarity rarity, FireMode fireMode) {
-        this(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity, fireMode,
-                GunProjectilePattern.single());
+    public GunDefinition(int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity, FireMode fireMode) {
+        this(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity, fireMode, GunProjectilePattern.single());
     }
 
-    public static GunDefinition manual(int cooldown, float damage, float velocity, float knockback,
-                                       float critical, int penetrate, float inaccuracy, ModRarity rarity) {
-        return new GunDefinition(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy,
-                rarity, FireMode.MANUAL);
+    public static GunDefinition manual(int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity) {
+        return new GunDefinition(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity, FireMode.MANUAL);
     }
 
-    public static GunDefinition automatic(int cooldown, float damage, float velocity, float knockback,
-                                          float critical, int penetrate, float inaccuracy, ModRarity rarity) {
-        return new GunDefinition(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy,
-                rarity, FireMode.AUTOMATIC);
+    public static GunDefinition automatic(int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity) {
+        return new GunDefinition(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity, FireMode.AUTOMATIC);
     }
 
     public GunDefinition withProjectilePattern(GunProjectilePattern projectilePattern) {
-        return new GunDefinition(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy,
-                rarity, fireMode, projectilePattern);
+        return new GunDefinition(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity, fireMode, projectilePattern);
     }
 
     public GunDefinition withGravity(float gravity) {

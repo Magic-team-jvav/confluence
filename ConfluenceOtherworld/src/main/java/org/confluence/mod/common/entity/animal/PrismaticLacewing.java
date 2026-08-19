@@ -24,8 +24,7 @@ public class PrismaticLacewing extends Bird {
 
     @Override
     public ResourceLocation getTexturePath() {
-        return Confluence.asResource(
-                "textures/entity/animal/butterfly/prismatic_lacewing.png");
+        return Confluence.asResource("textures/entity/animal/butterfly/prismatic_lacewing.png");
     }
 
     @Override

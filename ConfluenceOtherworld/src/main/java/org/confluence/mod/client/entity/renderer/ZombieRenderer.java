@@ -33,7 +33,6 @@ public class ZombieRenderer extends GeoNormalRenderer<Zombie> {
                           int packedOverlay, float red, float green, float blue, float alpha) {
         float scale = zombie.getVariant().scale();
         poseStack.scale(scale, scale, scale);
-        super.preRender(poseStack, zombie, model, bufferSource, buffer, isReRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, zombie, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

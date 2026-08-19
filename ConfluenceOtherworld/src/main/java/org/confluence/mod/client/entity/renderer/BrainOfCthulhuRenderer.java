@@ -15,18 +15,13 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 ///
 /// <p>服务端只同步当前技能段和经过时间，客户端据此逐帧插值透明度。重新定位发生在完全淡出后，
 /// 因而不会把服务端的瞬间坐标修改直接显示成模型跳切；实体深度关系仍由半透明实体通道处理。</p>
-public final class BrainOfCthulhuRenderer
-        extends BossGeoRenderer<BrainOfCthulhu> {
+public final class BrainOfCthulhuRenderer extends BossGeoRenderer<BrainOfCthulhu> {
     public BrainOfCthulhuRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("boss/brain_of_cthulhu"));
     }
 
     @Override
-    public RenderType getRenderType(
-            BrainOfCthulhu brain,
-            ResourceLocation texture,
-            @Nullable MultiBufferSource bufferSource,
-            float partialTick) {
+    public RenderType getRenderType(BrainOfCthulhu brain, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         return RenderType.entityTranslucent(texture);
     }
 
@@ -45,19 +40,6 @@ public final class BrainOfCthulhuRenderer
             float green,
             float blue,
             float alpha) {
-        super.preRender(
-                poseStack,
-                brain,
-                model,
-                buffers,
-                buffer,
-                reRender,
-                partialTick,
-                packedLight,
-                packedOverlay,
-                red,
-                green,
-                blue,
-                alpha * brain.getFadeProgress(partialTick));
+        super.preRender(poseStack, brain, model, buffers, buffer, reRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha * brain.getFadeProgress(partialTick));
     }
 }

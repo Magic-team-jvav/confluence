@@ -14,12 +14,8 @@ import org.confluence.mod.common.entity.projectile.HarpyFeatherProjectile;
 /// 鸟妖羽毛弹幕的双羽片模型。
 ///
 /// <p>模型尺寸和贴图布局保持 1.21 侧的 48×48 结构，旋转交给渲染器根据弹幕速度统一处理。</p>
-public final class HarpyFeatherProjectileModel
-        extends EntityModel<HarpyFeatherProjectile> {
-    public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(
-                    Confluence.asResource("harpy_feather_projectile"),
-                    "main");
+public final class HarpyFeatherProjectileModel extends EntityModel<HarpyFeatherProjectile> {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("harpy_feather_projectile"), "main");
     private final ModelPart bone;
 
     public HarpyFeatherProjectileModel(ModelPart root) {
@@ -29,12 +25,7 @@ public final class HarpyFeatherProjectileModel
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        PartDefinition bone = root.addOrReplaceChild(
-                "bone",
-                CubeListBuilder.create(),
-                PartPose.offsetAndRotation(
-                        3.0F, 22.75F, 0.0F,
-                        0.1745F, 0.0F, 0.0F));
+        PartDefinition bone = root.addOrReplaceChild("bone", CubeListBuilder.create(), PartPose.offsetAndRotation(3.0F, 22.75F, 0.0F, 0.1745F, 0.0F, 0.0F));
         bone.addOrReplaceChild(
                 "right_feather",
                 CubeListBuilder.create().texOffs(0, 16)
@@ -66,19 +57,9 @@ public final class HarpyFeatherProjectileModel
             float headPitch) {}
 
     @Override
-    public void renderToBuffer(
-            PoseStack poseStack,
-            VertexConsumer buffer,
-            int packedLight,
-            int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         poseStack.mulPose(Axis.ZN.rotationDegrees(180.0F));
         poseStack.translate(0.0, -1.45, 0.0);
-        bone.render(
-                poseStack, buffer, packedLight, packedOverlay,
-                red, green, blue, alpha);
+        bone.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

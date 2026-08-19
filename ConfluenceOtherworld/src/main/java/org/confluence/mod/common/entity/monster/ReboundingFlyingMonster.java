@@ -17,9 +17,7 @@ import org.confluence.mod.mixin.world.entity.EntityAccessor;
 /// Forge 1.20 的移动收尾还可能清零受阻速度轴，因此这里在移动前写入反弹向量以还原位移，
 /// 并在移动后再次写回同一向量以保留下一刻速度。两次写入只是在不同版本间保持同一轨迹。</p>
 public abstract class ReboundingFlyingMonster extends BaseFlyingMonster {
-    protected ReboundingFlyingMonster(
-            EntityType<? extends Monster> type,
-            Level level) {
+    protected ReboundingFlyingMonster(EntityType<? extends Monster> type, Level level) {
         super(type, level);
     }
 
@@ -38,7 +36,5 @@ public abstract class ReboundingFlyingMonster extends BaseFlyingMonster {
     }
 
     /// 根据请求位移与碰撞后允许位移计算下一刻速度。
-    protected abstract Vec3 reboundVelocity(
-            Vec3 requested,
-            Vec3 allowed);
+    protected abstract Vec3 reboundVelocity(Vec3 requested, Vec3 allowed);
 }

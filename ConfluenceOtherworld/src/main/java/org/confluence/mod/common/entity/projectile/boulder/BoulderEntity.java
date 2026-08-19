@@ -29,10 +29,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.boulder.BoulderBlock;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
@@ -308,7 +308,7 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
             if (entity instanceof LivingEntity living) {
                 damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
             }
-            entity.hurt(ModDamageTypes.of(entity.level(), ModDamageTypes.BOULDER, this), damage);
+            entity.hurt(LibDamageTypes.of(entity.level(), LibDamageTypes.BOULDER, this), damage);
             hitHistory.put(uuid1, 5);
         }
     }
@@ -365,10 +365,7 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
         }
 
         try {
-            BlockState blockState = BlockState.CODEC
-                    .parse(NbtOps.INSTANCE, runtime.get("BlockState"))
-                    .result()
-                    .orElse(null);
+            BlockState blockState = BlockState.CODEC.parse(NbtOps.INSTANCE, runtime.get("BlockState")).result().orElse(null);
             int savedAge = runtime.getInt("Age");
             int savedStillAge = runtime.getInt("StillAge");
             float savedRadius = runtime.getFloat("Radius");
@@ -476,9 +473,7 @@ public class BoulderEntity extends Projectile implements IPortProjectileExtensio
         Object2IntOpenHashMap<UUID> restoredHistory = new Object2IntOpenHashMap<>();
         Set<UUID> seenTargets = new HashSet<>();
         for (Tag savedTag : savedHistory) {
-            if (!(savedTag instanceof CompoundTag savedHit)
-                    || !savedHit.hasUUID("Target")
-                    || !savedHit.contains("Cooldown", Tag.TAG_INT)) {
+            if (!(savedTag instanceof CompoundTag savedHit) || !savedHit.hasUUID("Target") || !savedHit.contains("Cooldown", Tag.TAG_INT)) {
                 return false;
             }
             UUID target = savedHit.getUUID("Target");

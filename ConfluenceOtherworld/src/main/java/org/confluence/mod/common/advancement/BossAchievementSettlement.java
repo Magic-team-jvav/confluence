@@ -13,19 +13,14 @@ public final class BossAchievementSettlement {
     private BossAchievementSettlement() {
     }
 
-    public static void settle(
-            ServerPlayer player,
-            EntityType<?> bossType,
-            boolean stickySituation,
-            boolean mechanicalMayhemParticipant) {
+    public static void settle(ServerPlayer player, EntityType<?> bossType, boolean stickySituation, boolean mechanicalMayhemParticipant) {
         if (bossType == BossEntities.EATER_OF_WORLDS.get()) {
             AchievementAwardService.award(player, "worm_fodder");
         }
         if (stickySituation) {
             AchievementAwardService.award(player, "sticky_situation");
         }
-        if (bossType == BossEntities.WALL_OF_FLESH.get()
-                || bossType == BossEntities.HILL_OF_FLESH.get()) {
+        if (bossType == BossEntities.WALL_OF_FLESH.get() || bossType == BossEntities.HILL_OF_FLESH.get()) {
             AchievementAwardService.award(player, "still_hungry");
         }
         if (bossType == BossEntities.PLANTERA.get()) {

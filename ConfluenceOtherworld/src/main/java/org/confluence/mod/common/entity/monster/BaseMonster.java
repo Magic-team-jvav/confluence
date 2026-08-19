@@ -37,8 +37,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     protected void registerGoals() {
         super.registerGoals();
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
-                this, Player.class, false, this::canTargetPlayer));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, this::canTargetPlayer));
     }
 
     protected boolean canTargetPlayer(LivingEntity target) {
@@ -50,8 +49,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         super.onAddedToWorld();
         if (!level().isClientSide && !behaviorTreeRegistered) {
             CreatureDefinitionLoader.applyAttributes(this);
-            BTRoot behaviorTree = Objects.requireNonNull(createBT(),
-                    () -> "Missing behavior tree for " + getType());
+            BTRoot behaviorTree = Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
             this.goalSelector.addGoal(0, behaviorTree);
             behaviorTreeRegistered = true;
         }
@@ -67,15 +65,11 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide || !isAlive() || !hasEntityContactAttack()
-                || getTarget() == null || --contactAttackTicks > 0) {
+        if (level().isClientSide || !isAlive() || !hasEntityContactAttack() || getTarget() == null || --contactAttackTicks > 0) {
             return;
         }
 
-        var entities = level().getEntities(
-                this,
-                getBoundingBox().inflate(contactAttackInflation()),
-                this::canContactAttack);
+        var entities = level().getEntities(this, getBoundingBox().inflate(contactAttackInflation()), this::canContactAttack);
         if (entities.isEmpty()) {
             contactAttackTicks = contactDetectionInterval();
             return;

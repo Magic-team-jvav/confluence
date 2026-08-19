@@ -87,8 +87,7 @@ public class VoidCrystalItem extends Item {
         Direction firstFace = mark.face();
 
         if (player == null) return;
-        if (!level.isInWorldBounds(firstPos)
-                || !level.getWorldBorder().isWithinBounds(firstPos)) {
+        if (!level.isInWorldBounds(firstPos) || !level.getWorldBorder().isWithinBounds(firstPos)) {
             clearMark(stack);
             notifyError(player, level, pos, "chat.confluence.link_failed_generic");
             return;
@@ -176,16 +175,12 @@ public class VoidCrystalItem extends Item {
         CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
         if (itemTag == null || !itemTag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) return null;
         CompoundTag runtime = itemTag.getCompound(RUNTIME_TAG);
-        if (!runtime.contains("Version", Tag.TAG_INT)
-                || runtime.getInt("Version") != RUNTIME_VERSION
-                || !runtime.contains("Position", Tag.TAG_LONG)
-                || !runtime.contains("Face", Tag.TAG_INT)) {
+        if (!runtime.contains("Version", Tag.TAG_INT) || runtime.getInt("Version") != RUNTIME_VERSION || !runtime.contains("Position", Tag.TAG_LONG) || !runtime.contains("Face", Tag.TAG_INT)) {
             return null;
         }
         int faceId = runtime.getInt("Face");
         if (faceId < 0 || faceId >= Direction.values().length) return null;
-        return new Mark(BlockPos.of(runtime.getLong("Position")),
-                Direction.from3DDataValue(faceId));
+        return new Mark(BlockPos.of(runtime.getLong("Position")), Direction.from3DDataValue(faceId));
     }
 
     /// 写入当前格式完整快照并删除旧扁平键；异常文本由调用边界保持英文。

@@ -17,8 +17,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.*;
 /// 原版目标。</p>
 public class GoblinArcher extends GoblinMonster {
     public GoblinArcher(EntityType<? extends GoblinArcher> type, Level level) {
-        super(type, level, Items.BOW.getDefaultInstance(),
-                LandAnimationProfile.NONE);
+        super(type, level, Items.BOW.getDefaultInstance(), LandAnimationProfile.NONE);
     }
 
     @Override

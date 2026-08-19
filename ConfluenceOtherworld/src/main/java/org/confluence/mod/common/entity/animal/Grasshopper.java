@@ -32,10 +32,7 @@ import java.util.Locale;
 
 public class Grasshopper extends BaseCritter implements VariantHolder<Grasshopper.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Grasshopper.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> DATA_JUMPING =
-            SynchedEntityData.defineId(
-                    Grasshopper.class,
-                    EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_JUMPING = SynchedEntityData.defineId(Grasshopper.class, EntityDataSerializers.BOOLEAN);
     public static final String VARIANT_KEY = "Variant";
 
     public Grasshopper(EntityType<? extends Grasshopper> type, Level level) {
@@ -44,8 +41,7 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseCritter.createInsectAttributes()
-                .add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
+        return BaseCritter.createInsectAttributes().add(PortAttributesExtension.fallDamageMultiplier().get(), 0.0);
     }
 
     @Override
@@ -53,12 +49,7 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return withPassivePanic(
-                        SequenceNode.of(new RandomStrollAction(
-                                Grasshopper.this,
-                                1.0,
-                                10)),
-                        0.9);
+                return withPassivePanic(SequenceNode.of(new RandomStrollAction(Grasshopper.this, 1.0, 10)), 0.9);
             }
         };
     }
@@ -72,8 +63,7 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.GREEN);
+        return CritterVariantUtil.byId(Variant.values(), this.entityData.get(DATA_VARIANT), Variant.GREEN);
     }
 
     @Override
@@ -133,10 +123,7 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 
@@ -199,8 +186,7 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
             double deltaX = wantedX - mob.getX();
             double deltaY = wantedY - mob.getY();
             double deltaZ = wantedZ - mob.getZ();
-            double distanceSquared =
-                    deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+            double distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
             if (distanceSquared < 2.500000277905201E-7) {
                 mob.setZza(0.0F);
                 return;
@@ -214,8 +200,7 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
                 return;
             }
 
-            float targetYaw = (float) (Mth.atan2(deltaZ, deltaX)
-                    * Mth.RAD_TO_DEG) - 90.0F;
+            float targetYaw = (float) (Mth.atan2(deltaZ, deltaX) * Mth.RAD_TO_DEG) - 90.0F;
             if (distanceSquared > 1.0 && grasshopper.onGround()) {
                 mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
                 mob.yHeadRot = mob.getYRot();
@@ -223,14 +208,11 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
             }
 
             if (!grasshopper.onGround()) {
-                mob.setSpeed((float) (speedModifier
-                        * mob.getAttributeValue(
-                        Attributes.MOVEMENT_SPEED)));
+                mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
                 return;
             }
 
-            mob.setSpeed((float) (speedModifier
-                    * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+            mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
             if (jumpDelay-- > 0) {
                 mob.setXxa(0.0F);
                 mob.setZza(0.0F);
@@ -240,18 +222,11 @@ public class Grasshopper extends BaseCritter implements VariantHolder<Grasshoppe
 
             jumpDelay = randomDelay();
             mob.getJumpControl().jump();
-            double horizontalDistance =
-                    Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+            double horizontalDistance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
             if (horizontalDistance > 1.0E-5) {
-                double impulse = Math.min(
-                        distanceSquared * 0.4,
-                        0.5)
+                double impulse = Math.min(distanceSquared * 0.4, 0.5)
                         + grasshopper.getRandom().nextDouble() * 0.5;
-                grasshopper.addDeltaMovement(
-                        new net.minecraft.world.phys.Vec3(
-                                deltaX / horizontalDistance * impulse,
-                                0.0,
-                                deltaZ / horizontalDistance * impulse));
+                grasshopper.addDeltaMovement(new net.minecraft.world.phys.Vec3(deltaX / horizontalDistance * impulse, 0.0, deltaZ / horizontalDistance * impulse));
             }
             grasshopper.setJumping(true);
         }

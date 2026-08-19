@@ -91,13 +91,11 @@ public class BaseMinecartItem extends MinecartItem {
         ItemStack stack = context.getItemInHand();
         if (context.getLevel() instanceof ServerLevel level) {
             double offset = getRailShape(level, pos, state).isAscending() ? 0.5 : 0.0;
-            AbstractMinecart minecart = createMinecart(level, pos.getX() + 0.5, pos.getY() + 0.0625 + offset,
-                    pos.getZ() + 0.5, AbstractMinecart.Type.RIDEABLE, stack, context.getPlayer());
+            AbstractMinecart minecart = createMinecart(level, pos.getX() + 0.5, pos.getY() + 0.0625 + offset, pos.getZ() + 0.5, AbstractMinecart.Type.RIDEABLE, stack, context.getPlayer());
             if (minecart == null) return InteractionResult.FAIL;
             if (stack.hasCustomHoverName()) minecart.setCustomName(stack.getHoverName());
             level.addFreshEntity(minecart);
-            level.gameEvent(GameEvent.ENTITY_PLACE, pos,
-                    GameEvent.Context.of(context.getPlayer(), level.getBlockState(pos.below())));
+            level.gameEvent(GameEvent.ENTITY_PLACE, pos, GameEvent.Context.of(context.getPlayer(), level.getBlockState(pos.below())));
         }
         stack.shrink(1);
         return InteractionResult.sidedSuccess(context.getLevel().isClientSide);

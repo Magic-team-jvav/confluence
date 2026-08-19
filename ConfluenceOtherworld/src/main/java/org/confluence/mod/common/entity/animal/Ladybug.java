@@ -29,10 +29,7 @@ public class Ladybug extends Bird implements VariantHolder<Ladybug.Variant> {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 3.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.18)
-                .add(Attributes.FLYING_SPEED, 0.25);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 3.0).add(Attributes.MOVEMENT_SPEED, 0.18).add(Attributes.FLYING_SPEED, 0.25);
     }
 
     @Override
@@ -43,8 +40,7 @@ public class Ladybug extends Bird implements VariantHolder<Ladybug.Variant> {
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.RED);
+        return CritterVariantUtil.byId(Variant.values(), this.entityData.get(DATA_VARIANT), Variant.RED);
     }
 
     @Override

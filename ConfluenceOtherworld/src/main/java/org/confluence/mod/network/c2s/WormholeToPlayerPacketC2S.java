@@ -1,7 +1,6 @@
 package org.confluence.mod.network.c2s;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,7 +13,6 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.mesdag.portlib.network.IPortPacket;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.UUID;
@@ -23,10 +21,8 @@ import java.util.UUID;
 ///
 /// <p>客户端只选择目标和入口来源；目标资格、药水消耗、跨维度位置以及玻璃瓶返还
 /// 全部由服务端重新确认。白队表示尚未选择队伍，不能利用默认值互相传送。</p>
-public record WormholeToPlayerPacketC2S(
-        UUID targetPlayerId,
-        ByMod byMod
-) implements IPortPacket.C2S {
+public record WormholeToPlayerPacketC2S(UUID targetPlayerId,
+                                        ByMod byMod) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("wormhole_to_player");
     public static final PortStreamCodec<FriendlyByteBuf, WormholeToPlayerPacketC2S> STREAM_CODEC = PortStreamCodec.composite(
             LibStreamCodecUtils.UUID,
@@ -51,8 +47,7 @@ public record WormholeToPlayerPacketC2S(
     @Override
     public void work(ServerPlayer player) {
         if (!byMod.enabled()) return;
-        ServerPlayer target =
-                player.server.getPlayerList().getPlayer(targetPlayerId);
+        ServerPlayer target = player.server.getPlayerList().getPlayer(targetPlayerId);
         if (!isTrackable(player, target)) return;
 
         ItemStack potion = getWormholePotion(player);
@@ -73,13 +68,7 @@ public record WormholeToPlayerPacketC2S(
     }
 
     public static boolean isTrackable(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {
-        if (trackingPlayer == null
-                || trackedPlayer == null
-                || trackingPlayer == trackedPlayer
-                || !trackingPlayer.isAlive()
-                || !trackedPlayer.isAlive()
-                || trackingPlayer.isSpectator()
-                || trackedPlayer.isSpectator()) {
+        if (trackingPlayer == null || trackedPlayer == null || trackingPlayer == trackedPlayer || !trackingPlayer.isAlive() || !trackedPlayer.isAlive() || trackingPlayer.isSpectator() || trackedPlayer.isSpectator()) {
             return false;
         }
         Team trackingTeam = PlayerSpecialData.of(trackingPlayer).getTeam();
@@ -103,13 +92,7 @@ public record WormholeToPlayerPacketC2S(
     }
 
     private void teleport(ServerPlayer serverPlayer, ServerPlayer target) {
-        serverPlayer.teleportTo(
-                target.serverLevel(),
-                target.getX(),
-                target.getY(),
-                target.getZ(),
-                serverPlayer.getYRot(),
-                serverPlayer.getXRot());
+        serverPlayer.teleportTo(target.serverLevel(), target.getX(), target.getY(), target.getZ(), serverPlayer.getYRot(), serverPlayer.getXRot());
     }
 
     public enum ByMod {
@@ -127,8 +110,7 @@ public record WormholeToPlayerPacketC2S(
         };
 
         public static final ByMod[] VALUES = values();
-        public static final PortStreamCodec<FriendlyByteBuf, ByMod> STREAM_CODEC =
-                LibStreamCodecUtils.fromEnum(VALUES);
+        public static final PortStreamCodec<FriendlyByteBuf, ByMod> STREAM_CODEC = LibStreamCodecUtils.fromEnum(VALUES);
 
         public abstract boolean enabled();
     }

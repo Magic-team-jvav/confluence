@@ -23,16 +23,7 @@ public class CursedSkull extends BaseFlyingMonster {
     public CursedSkull(EntityType<? extends CursedSkull> type, Level level) {
         super(type, level);
         noPhysics = true;
-        pursuit = new PhasedFlyingPursuitAction(
-                this,
-                200,
-                150,
-                80,
-                0.02,
-                0.05,
-                0.5,
-                5.0,
-                0.3);
+        pursuit = new PhasedFlyingPursuitAction(this, 200, 150, 80, 0.02, 0.05, 0.5, 5.0, 0.3);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -45,11 +36,7 @@ public class CursedSkull extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(CursedSkull.this),
-                                pursuit),
-                        new FlyWanderAction(CursedSkull.this, 0.15, 10));
+                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(CursedSkull.this), pursuit), new FlyWanderAction(CursedSkull.this, 0.15, 10));
             }
         };
     }

@@ -15,8 +15,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 /// 这样既能参与标准资源包优先级，也能在 {@code /reload} 时与其他数据包一起原子生效。</p>
 public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverrides behavior) {
     /// 未找到定义或定义未提供任何覆盖值时使用的不可变空对象。
-    public static final CreatureDefinition EMPTY = new CreatureDefinition(
-            AttributeOverrides.EMPTY, BehaviorOverrides.EMPTY);
+    public static final CreatureDefinition EMPTY = new CreatureDefinition(AttributeOverrides.EMPTY, BehaviorOverrides.EMPTY);
 
     /// 数据包编解码入口。属性与行为两个区块都可省略，便于数据包只调整一个维度。
     public static final Codec<CreatureDefinition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -52,8 +51,7 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
                                     int wanderRadius, int idleTicks, double chargeSpeed,
                                     int windupTicks, int shotCooldown, double shotMultiplier,
                                     double preferredRange, double orbitSpeed, double orbitRadius) {
-        public static final BehaviorOverrides EMPTY = new BehaviorOverrides(
-                -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+        public static final BehaviorOverrides EMPTY = new BehaviorOverrides(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
         public static final Codec<BehaviorOverrides> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.DOUBLE.optionalFieldOf("move_speed", -1.0).forGetter(BehaviorOverrides::moveSpeed),
                 Codec.DOUBLE.optionalFieldOf("melee_range", -1.0).forGetter(BehaviorOverrides::meleeRange),

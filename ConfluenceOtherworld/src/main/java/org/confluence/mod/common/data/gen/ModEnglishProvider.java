@@ -72,8 +72,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
         add("tooltip.confluence.summon.damage", "Base summon damage: %s");
         add("tooltip.confluence.summon.slots", "Minion slots: %s");
-        add("tooltip.confluence.summon.retrieve",
-                "Use while sneaking to retrieve all combat summons");
+        add("tooltip.confluence.summon.retrieve", "Use while sneaking to retrieve all combat summons");
         add(YoyoItems.AMAZON.get(), "Amazon");
         add(YoyoItems.ARTERY.get(), "Artery");
         add(YoyoItems.CASCADE.get(), "Cascade");
@@ -90,16 +89,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add(ModEntities.RIDEABLE_BEE.get(), "Bee Mount");
         add(ModEntities.YOYO.get(), "Yoyo");
         add(ModEntities.HARPY_FEATHER.get(), "Harpy Feather Projectile");
-        add(ModEntities.HOSTILE_DEMON_SCYTHE.get(),
-                "Hostile Demon Scythe Projectile");
+        add(ModEntities.HOSTILE_DEMON_SCYTHE.get(), "Hostile Demon Scythe Projectile");
         add(ModEntities.HORNET_STINGER.get(), "Hornet Stinger Projectile");
-        add(ModEntities.DARK_CASTER_PROJECTILE.get(),
-                "Dark Caster Projectile");
+        add(ModEntities.DARK_CASTER_PROJECTILE.get(), "Dark Caster Projectile");
         add(ModEntities.VILE_SPIT_PROJECTILE.get(), "Vile Spit Projectile");
         add(ModEntities.FIRE_IMP_PROJECTILE.get(), "Fire Imp Projectile");
         add(ModEntities.GASTROPOD_PROJECTILE.get(), "Gastropod Projectile");
-        add(ModEntities.PALADIN_HAMMER_PROJECTILE.get(),
-                "Paladin Hammer Projectile");
+        add(ModEntities.PALADIN_HAMMER_PROJECTILE.get(), "Paladin Hammer Projectile");
         add(ModEntities.THROWN_ICE_PROJECTILE.get(), "Thrown Ice Projectile");
         add(ModEntities.ICE_PILLAR.get(), "Ice Pillar");
         add(ModEntities.SHADOW_HAND.get(), "Shadow Hand");

@@ -15,12 +15,7 @@ public class BossGeoRenderer<T extends Entity & GeoEntity> extends GeoNormalRend
         super(context, path);
     }
 
-    public BossGeoRenderer(
-            EntityRendererProvider.Context context,
-            ResourceLocation path,
-            boolean rotateAlongPitch,
-            float modelScale,
-            float modelOffsetY) {
+    public BossGeoRenderer(EntityRendererProvider.Context context, ResourceLocation path, boolean rotateAlongPitch, float modelScale, float modelOffsetY) {
         super(context, path, rotateAlongPitch, modelScale, modelOffsetY);
     }
 

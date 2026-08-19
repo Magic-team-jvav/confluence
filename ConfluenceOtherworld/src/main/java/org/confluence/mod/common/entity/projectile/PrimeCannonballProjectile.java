@@ -51,8 +51,7 @@ public final class PrimeCannonballProjectile extends Projectile implements IPort
         }
 
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        if (hitResult.getType() != HitResult.Type.MISS
-                && !PortProjectileImpactEvent.onProjectileImpact(this, hitResult)) {
+        if (hitResult.getType() != HitResult.Type.MISS && !PortProjectileImpactEvent.onProjectileImpact(this, hitResult)) {
             hitTargetOrDeflectSelf(hitResult);
         }
         if (isRemoved()) return;
@@ -77,8 +76,7 @@ public final class PrimeCannonballProjectile extends Projectile implements IPort
     private void explodeWithoutTerrainDamage() {
         if (!level().isClientSide && getOwner() instanceof SkeletronPrime prime) {
             AABB blast = getBoundingBox().inflate(BLAST_RADIUS);
-            for (LivingEntity target : level().getEntitiesOfClass(
-                    LivingEntity.class, blast, prime::canAttack)) {
+            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, blast, prime::canAttack)) {
                 double distance = Math.sqrt(distanceToSqr(target));
                 float scale = (float) Math.max(0.4, 1.0 - distance / (BLAST_RADIUS * 1.6));
                 target.hurt(damageSources().mobProjectile(this, prime), BLAST_DAMAGE * scale);

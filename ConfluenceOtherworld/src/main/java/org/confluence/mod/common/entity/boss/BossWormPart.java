@@ -75,9 +75,7 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         destroyerDimensions = owner instanceof TheDestroyer;
         refreshDimensions();
         if (owner instanceof TheDestroyer destroyer) {
-            this.entityData.set(
-                    DESTROYER_PROBE_RELEASED,
-                    destroyer.hasReleasedProbe(index));
+            this.entityData.set(DESTROYER_PROBE_RELEASED, destroyer.hasReleasedProbe(index));
         }
         this.setPos(owner.position());
     }
@@ -126,8 +124,7 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         Vec3 previousPosition = position();
         Vec3 difference = previousPosition.subtract(leader.position());
         if (difference.lengthSqr() < 0.001) difference = new Vec3(0, 1, 0);
-        Vec3 destination = leader.position().add(
-                difference.normalize().scale(head.getSegmentSpacing()));
+        Vec3 destination = leader.position().add(difference.normalize().scale(head.getSegmentSpacing()));
 
         double dx = destination.x - previousPosition.x;
         double dy = destination.y - previousPosition.y;
@@ -176,9 +173,7 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
                 || destroyer.getPhase() == TheDestroyer.Phase.GROUND
                 && !insideSolid;
         entityData.set(DESTROYER_FLAPS_OPEN, open);
-        entityData.set(
-                DESTROYER_PROBE_RELEASED,
-                destroyer.hasReleasedProbe(getSegmentIndex()));
+        entityData.set(DESTROYER_PROBE_RELEASED, destroyer.hasReleasedProbe(getSegmentIndex()));
     }
 
     public boolean isDestroyerProbeSegment() {
@@ -231,14 +226,11 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     /// 有效目标时推进，保持与 1.21 侧相同的条件；弹幕归属主体，以便统一使用
     /// Boss 的阵营过滤和伤害来源，但出生点仍取当前体节位置。
     private void tickEaterRangedAttack(BaseWormBoss head) {
-        if (!(head instanceof EaterOfWorlds eater)
-                || !(level() instanceof ServerLevel serverLevel)) {
+        if (!(head instanceof EaterOfWorlds eater) || !(level() instanceof ServerLevel serverLevel)) {
             return;
         }
         LivingEntity target = eater.getTarget();
-        if (target == null
-                || !target.isAlive()
-                || !level().canSeeSky(blockPosition())) {
+        if (target == null || !target.isAlive() || !level().canSeeSky(blockPosition())) {
             return;
         }
         if (--eaterSpitCooldown > 0) {
@@ -247,8 +239,7 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         eaterSpitCooldown = EATER_SPIT_INTERVAL
                 + random.nextInt(EATER_SPIT_RANDOM_DELAY);
 
-        HostileParticleProjectile projectile =
-                ModEntities.VILE_SPIT_PROJECTILE.get().create(level());
+        HostileParticleProjectile projectile = ModEntities.VILE_SPIT_PROJECTILE.get().create(level());
         if (projectile == null) {
             return;
         }

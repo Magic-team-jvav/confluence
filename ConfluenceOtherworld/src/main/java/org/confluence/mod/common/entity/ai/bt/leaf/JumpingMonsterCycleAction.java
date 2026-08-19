@@ -28,9 +28,7 @@ public final class JumpingMonsterCycleAction extends BTNode {
     private int elapsedTicks;
     private Vec3 randomLookPosition = Vec3.ZERO;
 
-    public JumpingMonsterCycleAction(
-            PathfinderMob mob,
-            Runnable animationTrigger) {
+    public JumpingMonsterCycleAction(PathfinderMob mob, Runnable animationTrigger) {
         this.mob = mob;
         this.animationTrigger = animationTrigger;
     }
@@ -44,8 +42,7 @@ public final class JumpingMonsterCycleAction extends BTNode {
         elapsedTicks = 0;
 
         double angle = mob.getRandom().nextDouble() * Math.PI * 2.0;
-        randomLookPosition = mob.getEyePosition().add(
-                Math.cos(angle), 0.0, Math.sin(angle));
+        randomLookPosition = mob.getEyePosition().add(Math.cos(angle), 0.0, Math.sin(angle));
     }
 
     @Override

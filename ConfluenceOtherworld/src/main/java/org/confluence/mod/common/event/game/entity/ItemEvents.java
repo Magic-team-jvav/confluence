@@ -50,8 +50,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public final class ItemEvents {
-    private static final ResourceLocation SUMMONER_PACT_MODIFIER_ID =
-            org.confluence.mod.Confluence.asResource("enchantment.summoner_pact");
+    private static final ResourceLocation SUMMONER_PACT_MODIFIER_ID = org.confluence.mod.Confluence.asResource("enchantment.summoner_pact");
 
     public static void init() {
         PortEventHandler.addListener(PortEventPriority.NORMAL, true, ItemEvents::itemStackedOnOther);
@@ -129,9 +128,7 @@ public final class ItemEvents {
     }
 
     private static void gun$Use(GunEvent.UseGunEvent event) {
-        if (event.getGun() instanceof ManaGunItem manaGun
-                && event.getPlayer() instanceof ServerPlayer player
-                && !manaGun.consumeMana(player, player.getMainHandItem())) {
+        if (event.getGun() instanceof ManaGunItem manaGun && event.getPlayer() instanceof ServerPlayer player && !manaGun.consumeMana(player, player.getMainHandItem())) {
             event.setCanceled(true);
         }
     }
@@ -146,10 +143,16 @@ public final class ItemEvents {
 
     private static void gun$AmmoData(GunEvent.AmmoDataEvent event) {
         Player player = event.getPlayer();
-        event.setVelocity(event.getVelocity()
-                * (float) player.getAttributeValue(LibAttributes.getRangedVelocity().value()));
-        event.setKnockback(event.getKnockback()
-                * (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
+        if (event.getGun() instanceof ManaGunItem manaGun) {
+            event.setDamage(manaGun.getDamage());
+            event.setInaccuracy(manaGun.getInaccuracy());
+            event.setVelocity(manaGun.getVelocity());
+            event.setPenetrate(manaGun.getPenetrate());
+            event.setKnockback(manaGun.getKnockback());
+            event.setCritical(manaGun.getCritical());
+        }
+        event.setVelocity(event.getVelocity() * (float) player.getAttributeValue(LibAttributes.getRangedVelocity().value()));
+        event.setKnockback(event.getKnockback() * (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
     }
 
     private static void gun$AmmoSelection(GunEvent.AmmoSelectionEvent event) {

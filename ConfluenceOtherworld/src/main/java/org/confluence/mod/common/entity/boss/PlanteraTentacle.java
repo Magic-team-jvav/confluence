@@ -31,8 +31,7 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
     private static final double TENTACLE_REPULSION = 2.5;
     private static final int CONTACT_COOLDOWN = 20;
 
-    private static final EntityDataAccessor<Integer> SLOT =
-            SynchedEntityData.defineId(PlanteraTentacle.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SLOT = SynchedEntityData.defineId(PlanteraTentacle.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int contactCooldown;
@@ -68,24 +67,16 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
         Vec3 offset = getEyePosition().subtract(anchor);
         double distance = offset.length();
         if (distance < 1.0E-6) {
-            offset = master.getTentacleBaseDirection(getSlot())
-                    .scale(DISTANCE_FROM_ANCHOR);
+            offset = master.getTentacleBaseDirection(getSlot()).scale(DISTANCE_FROM_ANCHOR);
         } else {
-            double radialChange = Mth.clamp(
-                    DISTANCE_FROM_ANCHOR - distance,
-                    -RADIAL_STEP,
-                    RADIAL_STEP);
-            offset = offset.scale(
-                    Math.min(distance + radialChange,
-                            DISTANCE_FROM_ANCHOR) / distance);
+            double radialChange = Mth.clamp(DISTANCE_FROM_ANCHOR - distance, -RADIAL_STEP, RADIAL_STEP);
+            offset = offset.scale(Math.min(distance + radialChange, DISTANCE_FROM_ANCHOR) / distance);
         }
 
         LivingEntity target = master.getTarget();
         if (target != null) {
             Vec3 targetOffset = target.getEyePosition().subtract(anchor);
-            double attraction = Math.max(
-                    TARGET_ATTRACTION_RADIUS - targetOffset.length(),
-                    0.0) * TARGET_ATTRACTION;
+            double attraction = Math.max(TARGET_ATTRACTION_RADIUS - targetOffset.length(), 0.0) * TARGET_ATTRACTION;
             offset = rotateToward(offset, targetOffset, attraction);
         }
 
@@ -95,37 +86,27 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
                 continue;
             }
             Vec3 otherOffset = other.getEyePosition().subtract(anchor);
-            double separation = other.getEyePosition()
-                    .distanceTo(getEyePosition());
-            offset = rotateToward(
-                    offset,
-                    otherOffset,
-                    -TENTACLE_REPULSION / Math.max(separation, 1.0));
+            double separation = other.getEyePosition().distanceTo(getEyePosition());
+            offset = rotateToward(offset, otherOffset, -TENTACLE_REPULSION / Math.max(separation, 1.0));
         }
 
         Vec3 desiredEyePosition = anchor.add(offset);
-        Vec3 movement = master.getTentacleAnchorVelocity(getSlot())
-                .add(desiredEyePosition.subtract(getEyePosition()));
+        Vec3 movement = master.getTentacleAnchorVelocity(getSlot()).add(desiredEyePosition.subtract(getEyePosition()));
         setDeltaMovement(movement);
         move(MoverType.SELF, movement);
 
         Vec3 lookDirection = getEyePosition().subtract(anchor);
         if (lookDirection.lengthSqr() > 1.0E-6) {
-            setYRot((float) (Mth.atan2(lookDirection.z, lookDirection.x)
-                    * Mth.RAD_TO_DEG) - 90.0F);
-            setXRot((float) (-Mth.atan2(lookDirection.y,
-                    lookDirection.horizontalDistance())
-                    * Mth.RAD_TO_DEG));
+            setYRot((float) (Mth.atan2(lookDirection.z, lookDirection.x) * Mth.RAD_TO_DEG) - 90.0F);
+            setXRot((float) (-Mth.atan2(lookDirection.y, lookDirection.horizontalDistance()) * Mth.RAD_TO_DEG));
         }
 
         if (contactCooldown > 0) {
             contactCooldown--;
             return;
         }
-        for (LivingEntity entity : level().getEntitiesOfClass(
-                LivingEntity.class, getBoundingBox().inflate(0.25))) {
-            if (entity != master && master.canAttack(entity)
-                    && entity.hurt(damageSources().mobAttack(master), DAMAGE)) {
+        for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.25))) {
+            if (entity != master && master.canAttack(entity) && entity.hurt(damageSources().mobAttack(master), DAMAGE)) {
                 contactCooldown = CONTACT_COOLDOWN;
                 break;
             }
@@ -134,13 +115,8 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
 
     /// 绕当前偏移与目标偏移的叉积旋转指定角度；使用 Rodrigues 公式避免把
     /// 1.21 的 JOML 四元数实现原样搬进公共实体逻辑。
-    private static Vec3 rotateToward(
-            Vec3 offset,
-            Vec3 targetOffset,
-            double degrees) {
-        if (Math.abs(degrees) < 1.0E-9
-                || offset.lengthSqr() < 1.0E-9
-                || targetOffset.lengthSqr() < 1.0E-9) {
+    private static Vec3 rotateToward(Vec3 offset, Vec3 targetOffset, double degrees) {
+        if (Math.abs(degrees) < 1.0E-9 || offset.lengthSqr() < 1.0E-9 || targetOffset.lengthSqr() < 1.0E-9) {
             return offset;
         }
         Vec3 axis = offset.cross(targetOffset);
@@ -151,9 +127,7 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
         double radians = Math.toRadians(degrees);
         double cosine = Math.cos(radians);
         double sine = Math.sin(radians);
-        return offset.scale(cosine)
-                .add(axis.cross(offset).scale(sine))
-                .add(axis.scale(axis.dot(offset) * (1.0 - cosine)));
+        return offset.scale(cosine).add(axis.cross(offset).scale(sine)).add(axis.scale(axis.dot(offset) * (1.0 - cosine)));
     }
 
     @Override

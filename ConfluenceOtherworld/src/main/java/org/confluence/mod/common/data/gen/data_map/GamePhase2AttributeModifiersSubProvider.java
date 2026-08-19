@@ -536,9 +536,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(NpcEntities.ANGLER, Map.of(
                         GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
                 ))
-                .add(NpcEntities.FEMALE_ANGLER, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
+                .add(NpcEntities.FEMALE_ANGLER, Map.of(GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH))
                 .add(NpcEntities.DRYAD, Map.of(
                         GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
                 ))

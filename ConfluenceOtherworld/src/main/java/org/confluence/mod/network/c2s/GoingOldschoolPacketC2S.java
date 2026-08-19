@@ -15,8 +15,7 @@ public enum GoingOldschoolPacketC2S implements IPortPacket.C2S {
     INSTANCE;
 
     public static final ResourceLocation ID = Confluence.asResource("going_oldschool");
-    public static final PortStreamCodec<ByteBuf, GoingOldschoolPacketC2S> STREAM_CODEC =
-            PortStreamCodec.unit(INSTANCE);
+    public static final PortStreamCodec<ByteBuf, GoingOldschoolPacketC2S> STREAM_CODEC = PortStreamCodec.unit(INSTANCE);
 
     @Override
     public ResourceLocation identifier() {

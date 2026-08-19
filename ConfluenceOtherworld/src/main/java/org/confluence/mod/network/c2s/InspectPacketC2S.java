@@ -11,7 +11,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 public enum InspectPacketC2S implements IPortPacket.C2S {
     INSTANCE;
 
-    public static final ResourceLocation ID = Confluence.asResource("inspect_gun");
+    public static final ResourceLocation ID = Confluence.asResource("inspect");
     public static final PortStreamCodec<ByteBuf, InspectPacketC2S> STREAM_CODEC = PortStreamCodec.unit(INSTANCE);
 
     @Override

@@ -16,10 +16,8 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 ///
 /// <p>火焰免疫、环境火星和火球点燃效果均属于该生物自身，不由通用法师基类猜测。</p>
 public class FireImp extends BaseCasterMonster {
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
-    private static final RawAnimation CAST =
-            RawAnimation.begin().thenLoop("attack.cast");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation CAST = RawAnimation.begin().thenLoop("attack.cast");
 
     public FireImp(EntityType<? extends BaseCasterMonster> type, Level level) {
         super(type, level);
@@ -44,8 +42,7 @@ public class FireImp extends BaseCasterMonster {
     /// <p>施法时仍使用与其他法师一致的挥手窗口。这里覆盖通用法师控制器，避免移动时
     /// 请求不存在的 {@code move.walk} 并持续输出 GeckoLib 警告。</p>
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "imp_state",
@@ -61,23 +58,8 @@ public class FireImp extends BaseCasterMonster {
             return;
         }
         if (random.nextInt(24) == 0 && !isSilent()) {
-            level().playLocalSound(
-                    getX(),
-                    getY(),
-                    getZ(),
-                    SoundEvents.BLAZE_BURN,
-                    getSoundSource(),
-                    1.0F + random.nextFloat(),
-                    random.nextFloat() * 0.7F + 0.3F,
-                    false);
+            level().playLocalSound(getX(), getY(), getZ(), SoundEvents.BLAZE_BURN, getSoundSource(), 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
         }
-        level().addParticle(
-                ParticleTypes.FLAME,
-                getRandomX(0.5),
-                getRandomY(),
-                getRandomZ(0.5),
-                0.0,
-                0.02,
-                0.0);
+        level().addParticle(ParticleTypes.FLAME, getRandomX(0.5), getRandomY(), getRandomZ(0.5), 0.0, 0.02, 0.0);
     }
 }

@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -55,19 +55,14 @@ public class TheHungry extends BaseFlyingMonster {
     private static final double MAX_HORIZONTAL_LEASH = 64.0;
     private static final double MAX_VERTICAL_LEASH = 128.0;
     private static final int OWNER_RESOLVE_GRACE_TICKS = 100;
-    private static final RawAnimation BAIT =
-            RawAnimation.begin().thenLoop("bait");
+    private static final RawAnimation BAIT = RawAnimation.begin().thenLoop("bait");
     private static final String LEASH_X_TAG = "LeashX";
     private static final String LEASH_Y_TAG = "LeashY";
     private static final String LEASH_Z_TAG = "LeashZ";
     private static final String SUPPRESS_LOOT_TAG = "SuppressLoot";
-    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID =
-            SynchedEntityData.defineId(
-                    TheHungry.class,
-                    EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    private final BossOwnerTracker<BaseBoss> ownerTracker =
-            new BossOwnerTracker<>(BaseBoss.class);
+    private final BossOwnerTracker<BaseBoss> ownerTracker = new BossOwnerTracker<>(BaseBoss.class);
     private Vec3 leashPos = Vec3.ZERO;
     private int unresolvedOwnerTicks;
     private boolean suppressLoot;
@@ -119,13 +114,7 @@ public class TheHungry extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(TheHungry.this),
-                                new ChargeAttackAction(
-                                        TheHungry.this, 0.6, 0.3)),
-                        SequenceNode.of(new WaitAction(10),
-                                new FlyWanderAction(TheHungry.this, 0.3, 6))
-                );
+                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(TheHungry.this), new ChargeAttackAction(TheHungry.this, 0.6, 0.3)), SequenceNode.of(new WaitAction(10), new FlyWanderAction(TheHungry.this, 0.3, 6)));
             }
         };
     }
@@ -135,13 +124,8 @@ public class TheHungry extends BaseFlyingMonster {
     /// <p>从属状态、独立野怪状态和返回锚点阶段共用同一套身体摆动，因此控制器持续播放，
     /// 不根据水平速度停顿。这样既与 1.21 行为一致，也避免悬停时模型变成静态贴图。</p>
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "bait",
-                0,
-                state -> state.setAndContinue(BAIT)));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "bait", 0, state -> state.setAndContinue(BAIT)));
     }
 
     @Override
@@ -189,28 +173,22 @@ public class TheHungry extends BaseFlyingMonster {
         if (isOutsideLeash(anchor)) {
             setTarget(null);
             getNavigation().stop();
-            Vec3 returnVelocity =
-                    returnDirection.normalize().scale(0.35);
-            setDeltaMovement(getDeltaMovement().lerp(
-                    returnVelocity, 0.35));
+            Vec3 returnVelocity = returnDirection.normalize().scale(0.35);
+            setDeltaMovement(getDeltaMovement().lerp(returnVelocity, 0.35));
             return;
         }
 
-        if (getTarget() == null
-                && master.getTarget() != null
-                && master.getTarget().isAlive()) {
+        if (getTarget() == null && master.getTarget() != null && master.getTarget().isAlive()) {
             setTarget(master.getTarget());
         }
         if (getTarget() == null && distanceSquared > 4.0) {
-            setDeltaMovement(getDeltaMovement().add(
-                    returnDirection.normalize().scale(0.1)));
+            setDeltaMovement(getDeltaMovement().add(returnDirection.normalize().scale(0.1)));
         }
     }
 
     private boolean isOutsideLeash(Vec3 anchor) {
         Vec3 relative = position().subtract(anchor);
-        double horizontal = Math.sqrt(
-                relative.x * relative.x + relative.z * relative.z);
+        double horizontal = Math.sqrt(relative.x * relative.x + relative.z * relative.z);
         /// 沿用 1.21 的扁长活动区域：水平方向最多六十四格，
         /// 垂直方向允许两倍距离。两项之和超过一才进入强制回收。
         return horizontal / horizontalLeashDistance()
@@ -237,9 +215,7 @@ public class TheHungry extends BaseFlyingMonster {
     public boolean hurt(DamageSource source, float amount) {
         Entity attacker = source.getEntity();
         BaseBoss master = getMaster();
-        if (master != null
-                && (attacker == master
-                || attacker instanceof TheHungry)) {
+        if (master != null && (attacker == master || attacker instanceof TheHungry)) {
             return false;
         }
         return super.hurt(source, amount);
@@ -252,14 +228,10 @@ public class TheHungry extends BaseFlyingMonster {
         BaseBoss master = getMaster();
         Vec3 deathPosition = position();
         super.die(source);
-        if (!(level() instanceof ServerLevel serverLevel)
-                || master == null
-                || !master.isAlive()
-                || getType() != MonsterEntities.THE_HUNGRY.get()) {
+        if (!(level() instanceof ServerLevel serverLevel) || master == null || !master.isAlive() || getType() != MonsterEntities.THE_HUNGRY.get()) {
             return;
         }
-        TheHungry freeHungry =
-                MonsterEntities.THE_HUNGRY.get().create(serverLevel);
+        TheHungry freeHungry = MonsterEntities.THE_HUNGRY.get().create(serverLevel);
         if (freeHungry == null) {
             return;
         }
@@ -288,13 +260,8 @@ public class TheHungry extends BaseFlyingMonster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
-        entityData.set(
-                OWNER_UUID,
-                Optional.ofNullable(ownerTracker.getOwnerUUID()));
-        leashPos = new Vec3(
-                tag.getDouble(LEASH_X_TAG),
-                tag.getDouble(LEASH_Y_TAG),
-                tag.getDouble(LEASH_Z_TAG));
+        entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
+        leashPos = new Vec3(tag.getDouble(LEASH_X_TAG), tag.getDouble(LEASH_Y_TAG), tag.getDouble(LEASH_Z_TAG));
         suppressLoot = tag.getBoolean(SUPPRESS_LOOT_TAG);
     }
 

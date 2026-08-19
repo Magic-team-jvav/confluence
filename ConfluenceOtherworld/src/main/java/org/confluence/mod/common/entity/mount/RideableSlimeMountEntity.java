@@ -49,10 +49,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
     private int movingTicks;
     private int airborneTicks;
 
-    public RideableSlimeMountEntity(
-            EntityType<? extends RideableSlimeMountEntity> type,
-            Level level
-    ) {
+    public RideableSlimeMountEntity(EntityType<? extends RideableSlimeMountEntity> type, Level level) {
         super(type, level);
     }
 
@@ -73,8 +70,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
             strafe *= 0.5;
         }
 
-        Vec3 velocity = accelerateHorizontal(
-                player, strafe, forward, MAX_SPEED, ACCELERATION);
+        Vec3 velocity = accelerateHorizontal(player, strafe, forward, MAX_SPEED, ACCELERATION);
         double vertical = groundedBeforeMove
                 ? jumpQueued ? JUMP_VELOCITY : -GRAVITY
                 : velocity.y - GRAVITY;
@@ -102,16 +98,11 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
             return;
         }
         if (!level().isClientSide && jumpActive && !grounded) {
-            LivingEntity target = LibEntityUtils.getAABBAngleTarget(
-                    position(), position().add(0.5, -1.0, 0.5), level(), player,
-                    1.0, 40.0, entity -> entity instanceof LivingEntity && entity.isAttackable());
-            if (target != null && target.hurt(
-                    damageSources().generic(), STOMP_DAMAGE)) {
+            LivingEntity target = LibEntityUtils.getAABBAngleTarget(position(), position().add(0.5, -1.0, 0.5), level(), player, 1.0, 40.0, entity -> entity instanceof LivingEntity && entity.isAttackable());
+            if (target != null && target.hurt(damageSources().generic(), STOMP_DAMAGE)) {
                 Vec3 velocity = getDeltaMovement();
-                setDeltaMovement(
-                        velocity.x, JUMP_VELOCITY, velocity.z);
-                playSound(
-                        SoundEvents.SLIME_BLOCK_PLACE, 0.5F, 2.0F);
+                setDeltaMovement(velocity.x, JUMP_VELOCITY, velocity.z);
+                playSound(SoundEvents.SLIME_BLOCK_PLACE, 0.5F, 2.0F);
             }
         }
         if (!wasOnGround && grounded) {
@@ -129,8 +120,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
     }
 
     private void updateAnimationCounters() {
-        if (getDeltaMovement().horizontalDistanceSqr() > 0.001
-                && !isJumpInputDown()) {
+        if (getDeltaMovement().horizontalDistanceSqr() > 0.001 && !isJumpInputDown()) {
             movingTicks++;
         } else {
             movingTicks = 0;
@@ -161,10 +151,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
     @Override
     public boolean hurt(DamageSource source, float amount) {
         Entity attacker = source.getEntity();
-        if (!onGround()
-                && attacker != null
-                && source.is(DamageTypes.MOB_ATTACK)
-                && attacker.getY() < getY() - 0.5) {
+        if (!onGround() && attacker != null && source.is(DamageTypes.MOB_ATTACK) && attacker.getY() < getY() - 0.5) {
             return false;
         }
         return super.hurt(source, amount);
@@ -176,9 +163,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers
-    ) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this, "movement", 0, state -> {
             if (entityData.get(JUMPING) && airborneTicks < 20) {

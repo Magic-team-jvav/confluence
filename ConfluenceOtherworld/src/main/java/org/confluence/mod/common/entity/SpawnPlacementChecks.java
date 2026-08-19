@@ -23,64 +23,54 @@ import org.confluence.mod.mixed.IMinecraftServer;
 public final class SpawnPlacementChecks {
     private SpawnPlacementChecks() {}
 
-    public static boolean checkRoutineMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                   MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkRoutineMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() < 260 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkGroundSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                           MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkGroundSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() >= 60 && pos.getY() < 260
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkUndergroundMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                       MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkUndergroundMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() >= -55 && pos.getY() <= 30
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkCaveMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkCaveMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() >= -55 && pos.getY() <= -20
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkDungeonMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                   MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkDungeonMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() >= -35 && pos.getY() <= 40
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkHighLevelMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                     MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkHighLevelMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() >= 280 && pos.getY() < level.getMaxBuildHeight()
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkNetherMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                  MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkNetherMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level instanceof Level world && world.dimension() == Level.NETHER
                 && pos.getY() >= 30 && pos.getY() <= 100
                 && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkFlyingFishSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                               MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkFlyingFishSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level instanceof Level world && world.isRaining()
                 && checkGroundSpawn(type, level, spawnType, pos, random);
     }
 
-    public static boolean checkDemonEyeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                             MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!(level instanceof Level world) || !checkMonsterSpawnRules(type, level, spawnType, pos, random)
-                || pos.getY() < 60 || pos.getY() >= 260 || !world.isNight()) return false;
+    public static boolean checkDemonEyeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!(level instanceof Level world) || !checkMonsterSpawnRules(type, level, spawnType, pos, random) || pos.getY() < 60 || pos.getY() >= 260 || !world.isNight())
+            return false;
         if (world.getMoonPhase() == 4) return hasClearColumn(world, pos);
         return world.random.nextInt(99) < 80;
     }
 
-    public static boolean checkPossessedArmorSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                   MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkPossessedArmorSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!checkMonsterSpawnRules(type, level, spawnType, pos, random)) {
             return false;
         }
@@ -92,21 +82,16 @@ public final class SpawnPlacementChecks {
     }
 
     @SuppressWarnings("unchecked")
-    public static boolean checkWaterMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                 MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return WaterAnimal.checkSurfaceWaterAnimalSpawnRules(
-                (EntityType<? extends WaterAnimal>) (EntityType<?>) type,
-                level, spawnType, pos, random);
+    public static boolean checkWaterMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return WaterAnimal.checkSurfaceWaterAnimalSpawnRules((EntityType<? extends WaterAnimal>) (EntityType<?>) type, level, spawnType, pos, random);
     }
 
-    public static boolean checkGoblinScoutSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level,
-                                                MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkGoblinScoutSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level instanceof Level world && world.isDay()
                 && checkGroundSpawn(type, level, spawnType, pos, random);
     }
 
-    public static <T extends Entity> SpawnPlacements.SpawnPredicate<T> hardmode(
-            SpawnPlacements.SpawnPredicate<T> predicate) {
+    public static <T extends Entity> SpawnPlacements.SpawnPredicate<T> hardmode(SpawnPlacements.SpawnPredicate<T> predicate) {
         // 包装既有规则而不是复制一份，确保开启困难模式只增加进度门槛，不改变环境语义。
         return (type, level, spawnType, pos, random) -> level instanceof ServerLevel serverLevel
                 && IMinecraftServer.isHardmode(serverLevel.getServer())
@@ -118,9 +103,7 @@ public final class SpawnPlacementChecks {
     /// <p>具有额外昼夜、地形或进度条件的实体也必须在自身条件之后调用本方法，不能直接调用
     /// {@link Monster#checkMonsterSpawnRules}，否则它们会绕过统一的亮度配置。</p>
     @SuppressWarnings("unchecked")
-    public static boolean checkMonsterSpawnRules(
-            EntityType<? extends Mob> type, ServerLevelAccessor level,
-            MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+    public static boolean checkMonsterSpawnRules(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         // 忽略光照时仍调用原版 Mob 规则，保留碰撞、刷怪方块和世界边界等基础安全检查。
         if (CommonConfigs.SPAWN_WITHOUT_LIGHT.get()) {
             return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);

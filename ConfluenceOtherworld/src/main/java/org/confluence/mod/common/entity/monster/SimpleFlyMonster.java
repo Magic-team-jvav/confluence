@@ -31,22 +31,11 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
     private final boolean playFlyAnimation;
     private final SoundProfile soundProfile;
 
-    public SimpleFlyMonster(
-            EntityType<? extends SimpleFlyMonster> type,
-            Level level,
-            double chargeSpeed,
-            double wanderSpeed) {
-        this(type, level, DashProfile.standard(chargeSpeed), wanderSpeed, false,
-                SoundProfile.ROUTINE);
+    public SimpleFlyMonster(EntityType<? extends SimpleFlyMonster> type, Level level, double chargeSpeed, double wanderSpeed) {
+        this(type, level, DashProfile.standard(chargeSpeed), wanderSpeed, false, SoundProfile.ROUTINE);
     }
 
-    public SimpleFlyMonster(
-            EntityType<? extends SimpleFlyMonster> type,
-            Level level,
-            DashProfile dashProfile,
-            double wanderSpeed,
-            boolean playFlyAnimation,
-            SoundProfile soundProfile) {
+    public SimpleFlyMonster(EntityType<? extends SimpleFlyMonster> type, Level level, DashProfile dashProfile, double wanderSpeed, boolean playFlyAnimation, SoundProfile soundProfile) {
         super(type, level);
         this.dashProfile = dashProfile;
         this.wanderSpeed = wanderSpeed;
@@ -62,8 +51,7 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
     protected BTRoot createBT() {
         SimpleFlyMonster self = this;
         CreatureDefinition.BehaviorOverrides behavior = creatureDefinition().behavior();
-        DashProfile profile = dashProfile.withMaxSpeed(
-                behavior.chargeSpeedOr(dashProfile.maxSpeed()));
+        DashProfile profile = dashProfile.withMaxSpeed(behavior.chargeSpeedOr(dashProfile.maxSpeed()));
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
@@ -107,8 +95,7 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         if (playFlyAnimation) {
-            controllers.add(new AnimationController<>(
-                    this, "Fly", 0, state -> state.setAndContinue(FLY)));
+            controllers.add(new AnimationController<>(this, "Fly", 0, state -> state.setAndContinue(FLY)));
         }
     }
 
@@ -127,48 +114,30 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
     }
 
     /// 一组只描述转向冲撞物理的数据。
-    public record DashProfile(
-            double friction,
-            double maxSpeed,
-            double acceleration,
-            double turnSpeedDegrees,
-            double triggerAngleDegrees,
-            double steeringAngleDegrees,
-            int coastTicks) {
+    public record DashProfile(double friction, double maxSpeed, double acceleration,
+                              double turnSpeedDegrees, double triggerAngleDegrees,
+                              double steeringAngleDegrees, int coastTicks) {
 
         public DashProfile {
             if (friction < 0.0 || friction > 1.0) {
                 throw new IllegalArgumentException("Dash friction must be within [0, 1]");
             }
             if (maxSpeed <= 0.0 || acceleration <= 0.0) {
-                throw new IllegalArgumentException(
-                        "Dash speed and acceleration must be positive");
+                throw new IllegalArgumentException("Dash speed and acceleration must be positive");
             }
-            if (turnSpeedDegrees <= 0.0
-                    || triggerAngleDegrees <= 0.0
-                    || steeringAngleDegrees <= 0.0
-                    || coastTicks < 0) {
-                throw new IllegalArgumentException(
-                        "Dash angles must be positive and coast time cannot be negative");
+            if (turnSpeedDegrees <= 0.0 || triggerAngleDegrees <= 0.0 || steeringAngleDegrees <= 0.0 || coastTicks < 0) {
+                throw new IllegalArgumentException("Dash angles must be positive and coast time cannot be negative");
             }
         }
 
         public static DashProfile standard(double maxSpeed) {
-            return new DashProfile(
-                    0.95, maxSpeed, 0.02, 10.0, 10.0, 45.0, 15);
+            return new DashProfile(0.95, maxSpeed, 0.02, 10.0, 10.0, 45.0, 15);
         }
 
         DashProfile withMaxSpeed(double value) {
             return value == maxSpeed
                     ? this
-                    : new DashProfile(
-                    friction,
-                    value,
-                    acceleration,
-                    turnSpeedDegrees,
-                    triggerAngleDegrees,
-                    steeringAngleDegrees,
-                    coastTicks);
+                    : new DashProfile(friction, value, acceleration, turnSpeedDegrees, triggerAngleDegrees, steeringAngleDegrees, coastTicks);
         }
     }
 

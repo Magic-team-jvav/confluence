@@ -55,10 +55,7 @@ public abstract class BaseAquaticMonster extends BaseMonster {
     public void tick() {
         super.tick();
         if (!isNoAi() && !isInWaterRainOrBubble() && onGround()) {
-            setDeltaMovement(getDeltaMovement().add(
-                    (random.nextFloat() * 2.0F - 1.0F) * 0.2F,
-                    0.5,
-                    (random.nextFloat() * 2.0F - 1.0F) * 0.2F));
+            setDeltaMovement(getDeltaMovement().add((random.nextFloat() * 2.0F - 1.0F) * 0.2F, 0.5, (random.nextFloat() * 2.0F - 1.0F) * 0.2F));
             setYRot(random.nextFloat() * 360.0F);
             setOnGround(false);
             hasImpulse = true;

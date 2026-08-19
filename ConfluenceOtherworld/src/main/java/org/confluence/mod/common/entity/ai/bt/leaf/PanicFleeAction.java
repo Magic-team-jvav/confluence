@@ -27,9 +27,7 @@ public class PanicFleeAction extends BTNode {
     public void start() {
         tick = 0;
         LivingEntity attacker = mob.getLastHurtByMob();
-        Player nearbyPlayer = mob.level().getNearestPlayer(
-                mob.getX(), mob.getY(), mob.getZ(), 16.0,
-                entity -> entity instanceof Player player && !player.isSpectator() && !player.isCreative());
+        Player nearbyPlayer = mob.level().getNearestPlayer(mob.getX(), mob.getY(), mob.getZ(), 16.0, entity -> entity instanceof Player player && !player.isSpectator() && !player.isCreative());
         /// 受伤后的攻击者比附近旁观玩家更可信。只有“玩家靠近”分支主动使用本节点时，
         /// 才回退到最近玩家；着火但没有攻击者时仍应寻找普通安全点，不能原地烧死。
         Vec3 threatPosition = attacker != null

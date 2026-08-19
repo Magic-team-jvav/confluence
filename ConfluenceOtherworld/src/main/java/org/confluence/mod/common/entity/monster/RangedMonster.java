@@ -22,16 +22,14 @@ public abstract class RangedMonster extends BaseWarriorMonster {
     private final int shotCooldown;
     private final double shotMultiplier;
 
-    public RangedMonster(EntityType<? extends RangedMonster> type, Level level,
-                         int shotCooldown, double shotMultiplier) {
+    public RangedMonster(EntityType<? extends RangedMonster> type, Level level, int shotCooldown, double shotMultiplier) {
         super(type, level);
         this.shotCooldown = shotCooldown;
         this.shotMultiplier = shotMultiplier;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return BaseWarriorMonster.createAttributes()
-                .add(Attributes.FOLLOW_RANGE, 32.0);
+        return BaseWarriorMonster.createAttributes().add(Attributes.FOLLOW_RANGE, 32.0);
     }
 
     @Override
@@ -64,7 +62,6 @@ public abstract class RangedMonster extends BaseWarriorMonster {
     protected abstract Projectile createProjectile(LivingEntity target);
 
     protected final double shotMultiplier() {
-        return creatureDefinition().behavior()
-                .shotMultiplierOr(shotMultiplier);
+        return creatureDefinition().behavior().shotMultiplierOr(shotMultiplier);
     }
 }

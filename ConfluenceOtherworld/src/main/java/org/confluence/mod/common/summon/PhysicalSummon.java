@@ -20,8 +20,7 @@ public abstract class PhysicalSummon extends SummonInstance {
     private int repathCooldown;
     private net.minecraft.core.BlockPos lastGroundDestination;
 
-    protected PhysicalSummon(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats,
-                             SummonPose initialPose, double width, double height) {
+    protected PhysicalSummon(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose, double width, double height) {
         super(type, owner, slotCost, stats, initialPose);
         if (!Double.isFinite(width) || !Double.isFinite(height) || width <= 0.0 || height <= 0.0) {
             throw new IllegalArgumentException("Physical summon dimensions must be finite and positive");
@@ -35,8 +34,7 @@ public abstract class PhysicalSummon extends SummonInstance {
     /// <p>这里直接复用原版碰撞计算，但不会把召唤物注册进世界实体列表。</p>
     protected final Vec3 moveWithCollision(Vec3 requestedMovement) {
         AABB box = collisionBox();
-        Vec3 movement = Entity.collideBoundingBox(null, requestedMovement, box, owner().level(),
-                owner().level().getEntityCollisions(null, box.expandTowards(requestedMovement)));
+        Vec3 movement = Entity.collideBoundingBox(null, requestedMovement, box, owner().level(), owner().level().getEntityCollisions(null, box.expandTowards(requestedMovement)));
         onGround = requestedMovement.y < 0.0 && movement.y != requestedMovement.y;
         Vec3 nextPosition = position().add(movement);
         float yaw = horizontalYaw(movement, currentPose().yaw());
@@ -51,8 +49,7 @@ public abstract class PhysicalSummon extends SummonInstance {
         onGround = false;
         Vec3 nextPosition = position().add(movement);
         float yaw = horizontalYaw(movement, currentPose().yaw());
-        setPath("physical_no_collision_move", java.util.List.of(new SummonPose(nextPosition, yaw,
-                currentPose().pitch(), currentPose().roll())));
+        setPath("physical_no_collision_move", java.util.List.of(new SummonPose(nextPosition, yaw, currentPose().pitch(), currentPose().roll())));
         return movement;
     }
 

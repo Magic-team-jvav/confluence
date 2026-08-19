@@ -137,8 +137,7 @@ public enum MeteoriteTracker {
         BlockPos.MutableBlockPos landingPos = new BlockPos.MutableBlockPos();
         LongSet forcedChunks = level.getForcedChunks();
         while (true) {
-            while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null
-                    && chunkHolder.getTicketLevel() >= 34) {
+            while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34) {
                 if (level.random.nextBoolean()) x += xStep;
                 else z += zStep;
             }
@@ -194,10 +193,7 @@ public enum MeteoriteTracker {
         reset();
         if (!nbt.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) return;
         CompoundTag runtime = nbt.getCompound(RUNTIME_TAG);
-        if (!runtime.contains("Version", Tag.TAG_INT)
-                || runtime.getInt("Version") != RUNTIME_VERSION
-                || !runtime.contains("Scheduled", Tag.TAG_BYTE)
-                || !runtime.contains("LandingDelay", Tag.TAG_INT)) {
+        if (!runtime.contains("Version", Tag.TAG_INT) || runtime.getInt("Version") != RUNTIME_VERSION || !runtime.contains("Scheduled", Tag.TAG_BYTE) || !runtime.contains("LandingDelay", Tag.TAG_INT)) {
             return;
         }
 

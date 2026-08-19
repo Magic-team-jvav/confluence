@@ -41,12 +41,9 @@ public class ManaPotionItem extends AbstractPotionItem {
     public static void applyAutomaticUseEffects(ServerPlayer player) {
         MobEffectInstance instance = player.getEffect(ModEffects.MANA_SICKNESS.get());
         if (instance == null) {
-            instance = new MobEffectInstance(
-                    ModEffects.MANA_SICKNESS.get(),
-                    EnchantmentUtils.processManaSicknessDuration(player, 100));
+            instance = new MobEffectInstance(ModEffects.MANA_SICKNESS.get(), EnchantmentUtils.processManaSicknessDuration(player, 100));
         } else {
-            int duration = Math.min(
-                    EnchantmentUtils.processManaSicknessDuration(player, instance.duration + 100), 200);
+            int duration = Math.min(EnchantmentUtils.processManaSicknessDuration(player, instance.duration + 100), 200);
             instance = new MobEffectInstance(instance); // 复制一份，保证能正常更新
             instance.duration = duration;
         }

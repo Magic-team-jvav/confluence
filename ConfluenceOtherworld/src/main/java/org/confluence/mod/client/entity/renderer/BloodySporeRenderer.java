@@ -11,9 +11,7 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 /// 根据服务端同步引信进度绘制血腥芽孢的膨胀效果。
 public final class BloodySporeRenderer extends GeoNormalRenderer<BloodySpore> {
-    public BloodySporeRenderer(
-            EntityRendererProvider.Context context,
-            ResourceLocation path) {
+    public BloodySporeRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
         super(context, path);
     }
 
@@ -42,19 +40,6 @@ public final class BloodySporeRenderer extends GeoNormalRenderer<BloodySpore> {
         float horizontal = (1.0F + swelling * 0.4F) * wobble;
         float vertical = (1.0F + swelling * 0.1F) / wobble;
         poseStack.scale(horizontal, vertical, horizontal);
-        super.preRender(
-                poseStack,
-                spore,
-                model,
-                buffers,
-                buffer,
-                reRender,
-                partialTick,
-                packedLight,
-                packedOverlay,
-                red,
-                green,
-                blue,
-                alpha);
+        super.preRender(poseStack, spore, model, buffers, buffer, reRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

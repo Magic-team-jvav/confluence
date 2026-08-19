@@ -7,9 +7,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
@@ -53,7 +53,7 @@ public class TheConstant extends SecretSeed {
                     }
                     data.putInt("confluence:in_darkness_tick", tick);
                 } else {
-                    player.hurt(ModDamageTypes.of(level, ModDamageTypes.DARKNESS), 50);
+                    player.hurt(LibDamageTypes.of(level, LibDamageTypes.DARKNESS), 50);
                 }
             } else if (tick != 0) {
                 data.putInt("confluence:in_darkness_tick", 0);

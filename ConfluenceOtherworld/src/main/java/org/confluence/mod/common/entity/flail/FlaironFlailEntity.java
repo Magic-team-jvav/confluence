@@ -11,14 +11,10 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 /// 猪鲨链球实体，按当前状态发射可追踪气泡。
 public final class FlaironFlailEntity extends BaseFlailEntity {
-    private static final double CONE_HALF_ANGLE =
-            Math.toRadians(30.0);
+    private static final double CONE_HALF_ANGLE = Math.toRadians(30.0);
     private int shootTimer;
 
-    public FlaironFlailEntity(
-            EntityType<? extends FlaironFlailEntity> type,
-            Level level
-    ) {
+    public FlaironFlailEntity(EntityType<? extends FlaironFlailEntity> type, Level level) {
         super(type, level);
     }
 
@@ -28,11 +24,7 @@ public final class FlaironFlailEntity extends BaseFlailEntity {
     }
 
     @Override
-    protected void tickSpecialBehavior(
-            Player player,
-            FlailComponent component,
-            int phase
-    ) {
+    protected void tickSpecialBehavior(Player player, FlailComponent component, int phase) {
         if (level().isClientSide()) {
             return;
         }
@@ -51,30 +43,18 @@ public final class FlaironFlailEntity extends BaseFlailEntity {
         Vec3 direction = randomInCone(facing);
         double speed = 0.1 + random.nextDouble() * 0.15;
 
-        FlaironBubbleProjectile bubble =
-                ModEntities.FLAIRON_BUBBLE.get().create(level());
+        FlaironBubbleProjectile bubble = ModEntities.FLAIRON_BUBBLE.get().create(level());
         if (bubble == null) {
             return;
         }
-        bubble.initialize(
-                this,
-                player,
-                direction.scale(speed),
-                component.damageFactor()
-                        * (float) player.getAttributeValue(
-                        LibAttributes.getAttackDamage())
-                        * 0.5F,
-                40);
+        bubble.initialize(this, player, direction.scale(speed), component.damageFactor() * (float) player.getAttributeValue(LibAttributes.getAttackDamage()) * 0.5F, 40);
         bubble.randomizeScale();
         bubble.setPos(position().add(0.0, getBbHeight() * 0.5, 0.0));
         level().addFreshEntity(bubble);
     }
 
     private Vec3 movementDirection(Player player) {
-        Vec3 movement = new Vec3(
-                getX() - xo,
-                getY() - yo,
-                getZ() - zo);
+        Vec3 movement = new Vec3(getX() - xo, getY() - yo, getZ() - zo);
         return movement.lengthSqr() > 1.0E-6
                 ? movement.normalize()
                 : player.getViewVector(1.0F);
@@ -89,9 +69,6 @@ public final class FlaironFlailEntity extends BaseFlailEntity {
                 : new Vec3(0.0, 1.0, 0.0);
         Vec3 right = axis.cross(perpendicular).normalize();
         Vec3 up = axis.cross(right);
-        return axis.scale(Math.cos(theta))
-                .add(right.scale(sinTheta * Math.cos(phi)))
-                .add(up.scale(sinTheta * Math.sin(phi)))
-                .normalize();
+        return axis.scale(Math.cos(theta)).add(right.scale(sinTheta * Math.cos(phi))).add(up.scale(sinTheta * Math.sin(phi))).normalize();
     }
 }

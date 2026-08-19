@@ -17,29 +17,18 @@ public class DaoOfPowItem extends BaseFlailItem {
         this(component, rarity, 0.8F);
     }
 
-    DaoOfPowItem(
-            FlailComponent component,
-            ModRarity rarity,
-            float confuseChance
-    ) {
+    DaoOfPowItem(FlailComponent component, ModRarity rarity, float confuseChance) {
         super(component, rarity);
         if (confuseChance < 0.0F || confuseChance > 1.0F) {
-            throw new IllegalArgumentException(
-                    "Flail confuse chance must be between zero and one");
+            throw new IllegalArgumentException("Flail confuse chance must be between zero and one");
         }
         this.confuseChance = confuseChance;
     }
 
     @Override
-    public void onFlailHit(
-            Player owner,
-            LivingEntity target,
-            BaseFlailEntity flail
-    ) {
+    public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
         if (target.getRandom().nextFloat() < confuseChance) {
-            target.addEffect(new MobEffectInstance(
-                    TCEffects.CONFUSED.get(),
-                    CONFUSE_TICKS));
+            target.addEffect(new MobEffectInstance(TCEffects.CONFUSED.get(), CONFUSE_TICKS));
         }
     }
 }

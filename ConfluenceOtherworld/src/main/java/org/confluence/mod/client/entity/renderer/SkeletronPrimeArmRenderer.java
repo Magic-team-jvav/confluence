@@ -22,11 +22,7 @@ public class SkeletronPrimeArmRenderer extends BossGeoRenderer<SkeletronPrimeArm
     };
 
     public SkeletronPrimeArmRenderer(EntityRendererProvider.Context context) {
-        super(context, new ExplicitGeoModel<>(
-                Confluence.asResource("geo/entity/boss/skeletron_prime.geo.json"),
-                Confluence.asResource("textures/entity/boss/skeletron_prime.png"),
-                null
-        ));
+        super(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/boss/skeletron_prime.geo.json"), Confluence.asResource("textures/entity/boss/skeletron_prime.png"), null));
         this.shadowRadius = 0.5F;
     }
 
@@ -49,14 +45,12 @@ public class SkeletronPrimeArmRenderer extends BossGeoRenderer<SkeletronPrimeArm
                 }
                 poseStack.pushPose();
                 poseStack.translate(0.0D, 0.0D, weaponModelOffset(armType));
-                super.renderRecursively(poseStack, arm, bone, renderType, bufferSource, buffer, isReRender,
-                        partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+                super.renderRecursively(poseStack, arm, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
                 poseStack.popPose();
                 return;
             }
         }
-        super.renderRecursively(poseStack, arm, bone, renderType, bufferSource, buffer, isReRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderRecursively(poseStack, arm, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     static double weaponModelOffset(int armType) {

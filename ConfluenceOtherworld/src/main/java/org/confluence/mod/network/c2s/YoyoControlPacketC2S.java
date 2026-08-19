@@ -21,41 +21,29 @@ public record YoyoControlPacketC2S(Action action, int amount)
         ADJUST_RANGE
     }
 
-    public static final ResourceLocation ID =
-            Confluence.asResource("yoyo_control");
+    public static final ResourceLocation ID = Confluence.asResource("yoyo_control");
     public static final PortStreamCodec<ByteBuf, YoyoControlPacketC2S>
             STREAM_CODEC = new PortStreamCodec<>() {
         @Override
         public YoyoControlPacketC2S decode(ByteBuf buffer) {
             int ordinal = buffer.readUnsignedByte();
             if (ordinal >= Action.values().length) {
-                throw new IllegalArgumentException(
-                        "Unknown yoyo control action");
+                throw new IllegalArgumentException("Unknown yoyo control action");
             }
-            return new YoyoControlPacketC2S(
-                    Action.values()[ordinal],
-                    buffer.readByte());
+            return new YoyoControlPacketC2S(Action.values()[ordinal], buffer.readByte());
         }
 
         @Override
-        public void encode(
-                ByteBuf buffer,
-                YoyoControlPacketC2S packet
-        ) {
+        public void encode(ByteBuf buffer, YoyoControlPacketC2S packet) {
             buffer.writeByte(packet.action.ordinal());
             buffer.writeByte(packet.amount);
         }
     };
 
     public YoyoControlPacketC2S {
-        java.util.Objects.requireNonNull(
-                action, "Yoyo control action must not be null");
-        if (action == Action.ADJUST_RANGE
-                && amount != -1
-                && amount != 1
-                || action != Action.ADJUST_RANGE && amount != 0) {
-            throw new IllegalArgumentException(
-                    "Invalid yoyo control amount");
+        java.util.Objects.requireNonNull(action, "Yoyo control action must not be null");
+        if (action == Action.ADJUST_RANGE && amount != -1 && amount != 1 || action != Action.ADJUST_RANGE && amount != 0) {
+            throw new IllegalArgumentException("Invalid yoyo control amount");
         }
     }
 
@@ -84,9 +72,7 @@ public record YoyoControlPacketC2S(Action action, int amount)
             case RELEASE -> YoyoItem.release(player);
             case ADJUST_RANGE -> {
                 YoyoEntity yoyo = YoyoEntity.findOwned(player);
-                if (yoyo != null
-                        && player.getMainHandItem().getItem()
-                        == yoyo.getYoyoItem()) {
+                if (yoyo != null && player.getMainHandItem().getItem() == yoyo.getYoyoItem()) {
                     yoyo.adjustRange(amount);
                 }
             }
@@ -94,17 +80,14 @@ public record YoyoControlPacketC2S(Action action, int amount)
     }
 
     public static void sendPress() {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new YoyoControlPacketC2S(Action.PRESS, 0));
+        Confluence.NETWORK_HANDLER.sendToServer(new YoyoControlPacketC2S(Action.PRESS, 0));
     }
 
     public static void sendRelease() {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new YoyoControlPacketC2S(Action.RELEASE, 0));
+        Confluence.NETWORK_HANDLER.sendToServer(new YoyoControlPacketC2S(Action.RELEASE, 0));
     }
 
     public static void sendRangeAdjustment(int amount) {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new YoyoControlPacketC2S(Action.ADJUST_RANGE, amount));
+        Confluence.NETWORK_HANDLER.sendToServer(new YoyoControlPacketC2S(Action.ADJUST_RANGE, amount));
     }
 }

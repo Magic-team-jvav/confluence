@@ -23,49 +23,24 @@ public record WhipSegment(ResourceLocation model, Mode mode, int value,
         model = Objects.requireNonNull(model, "Whip segment model must not be null");
         mode = Objects.requireNonNull(mode, "Whip segment mode must not be null");
         if (value <= 0) {
-            throw new IllegalArgumentException(
-                    "Whip segment spacing or count must be positive");
+            throw new IllegalArgumentException("Whip segment spacing or count must be positive");
         }
     }
 
-    public static WhipSegment fixedSpacing(
-            ResourceLocation model,
-            int spacingPixels
-    ) {
+    public static WhipSegment fixedSpacing(ResourceLocation model, int spacingPixels) {
         return new WhipSegment(model, Mode.FIXED_SPACING, spacingPixels, null);
     }
 
-    public static WhipSegment fixedSpacing(
-            ResourceLocation model,
-            int spacingPixels,
-            ResourceLocation tipModel
-    ) {
-        return new WhipSegment(
-                model,
-                Mode.FIXED_SPACING,
-                spacingPixels,
-                Objects.requireNonNull(
-                        tipModel, "Whip tip model must not be null"));
+    public static WhipSegment fixedSpacing(ResourceLocation model, int spacingPixels, ResourceLocation tipModel) {
+        return new WhipSegment(model, Mode.FIXED_SPACING, spacingPixels, Objects.requireNonNull(tipModel, "Whip tip model must not be null"));
     }
 
-    public static WhipSegment fixedCount(
-            ResourceLocation model,
-            int segmentCount
-    ) {
+    public static WhipSegment fixedCount(ResourceLocation model, int segmentCount) {
         return new WhipSegment(model, Mode.FIXED_COUNT, segmentCount, null);
     }
 
-    public static WhipSegment fixedCount(
-            ResourceLocation model,
-            int segmentCount,
-            ResourceLocation tipModel
-    ) {
-        return new WhipSegment(
-                model,
-                Mode.FIXED_COUNT,
-                segmentCount,
-                Objects.requireNonNull(
-                        tipModel, "Whip tip model must not be null"));
+    public static WhipSegment fixedCount(ResourceLocation model, int segmentCount, ResourceLocation tipModel) {
+        return new WhipSegment(model, Mode.FIXED_COUNT, segmentCount, Objects.requireNonNull(tipModel, "Whip tip model must not be null"));
     }
 
     public Optional<ResourceLocation> optionalTipModel() {

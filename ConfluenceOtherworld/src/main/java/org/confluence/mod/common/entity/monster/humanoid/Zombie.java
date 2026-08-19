@@ -33,8 +33,8 @@ import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
-import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 /// 拥有同步外观和属性变体的泰拉瑞亚僵尸。
@@ -120,9 +120,7 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        PortDataResultExtension.ifSuccess(
-                Variant.CODEC.encodeStart(NbtOps.INSTANCE, getVariant()),
-                t -> tag.put(VARIANT_KEY, t));
+        PortDataResultExtension.ifSuccess(Variant.CODEC.encodeStart(NbtOps.INSTANCE, getVariant()), t -> tag.put(VARIANT_KEY, t));
     }
 
     @Override
@@ -132,9 +130,7 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
             setVariant(Variant.NORMAL);
             return;
         }
-        PortDataResultExtension.ifSuccess(
-                Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)),
-                this::setVariant);
+        PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
     }
 
     @Override
@@ -149,9 +145,7 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData data,
-                                        @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
         if (tag == null || !tag.contains(VARIANT_KEY)) {
             setVariant(Variant.random(random));
@@ -209,18 +203,15 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
         }
 
         public ResourceLocation modelPath() {
-            return ResourceLocation.fromNamespaceAndPath(
-                    Confluence.MODID, "geo/entity/blood_zombie.geo.json");
+            return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "geo/entity/blood_zombie.geo.json");
         }
 
         public ResourceLocation texturePath() {
-            return ResourceLocation.fromNamespaceAndPath(
-                    Confluence.MODID, "textures/entity/blood_zombie.png");
+            return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "textures/entity/blood_zombie.png");
         }
 
         public ResourceLocation animationPath() {
-            return ResourceLocation.fromNamespaceAndPath(
-                    Confluence.MODID, "animations/entity/blood_zombie.animation.json");
+            return ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "animations/entity/blood_zombie.animation.json");
         }
 
         public int tint() {

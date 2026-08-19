@@ -27,8 +27,7 @@ final class BossChunkTicket {
     private static final int FAILSAFE_TIMEOUT_TICKS = 300;
     /// 保持包内可见，供同包的 GameTest 直接核对底层区块管理器中的真实票据。
     /// 这里不公开为玩法 API，外部代码仍只通过 Boss 生命周期间接管理票据。
-    static final TicketType<UUID> TYPE = TicketType.create(
-            "confluence:boss_encounter", UUID::compareTo, FAILSAFE_TIMEOUT_TICKS);
+    static final TicketType<UUID> TYPE = TicketType.create("confluence:boss_encounter", UUID::compareTo, FAILSAFE_TIMEOUT_TICKS);
 
     private final UUID bossId;
     private @Nullable ServerLevel ticketLevel;
@@ -51,16 +50,10 @@ final class BossChunkTicket {
 
     /// 刷新指定区块的票据。巨型 Boss 可在本体迁移前预载落点，或用少量票据
     /// 组合出非正方形战斗区域，避免为了覆盖长条实体而加载整片无关区块。
-    void refresh(
-            ServerLevel currentLevel,
-            ChunkPos currentChunk,
-            int regionDistance) {
+    void refresh(ServerLevel currentLevel, ChunkPos currentChunk, int regionDistance) {
 
-        if (ticketLevel != currentLevel
-                || !currentChunk.equals(ticketedChunk)
-                || ticketedDistance != regionDistance) {
-            currentLevel.getChunkSource().addRegionTicket(
-                    TYPE, currentChunk, regionDistance, bossId, true);
+        if (ticketLevel != currentLevel || !currentChunk.equals(ticketedChunk) || ticketedDistance != regionDistance) {
+            currentLevel.getChunkSource().addRegionTicket(TYPE, currentChunk, regionDistance, bossId, true);
             release();
             ticketLevel = currentLevel;
             ticketedChunk = currentChunk;
@@ -69,15 +62,13 @@ final class BossChunkTicket {
         }
 
         // addOrGet 会更新同一票据的创建 tick，从而刷新故障保险超时。
-        currentLevel.getChunkSource().addRegionTicket(
-                TYPE, currentChunk, regionDistance, bossId, true);
+        currentLevel.getChunkSource().addRegionTicket(TYPE, currentChunk, regionDistance, bossId, true);
     }
 
     /// 主动释放当前票据；重复调用安全。
     void release() {
         if (ticketLevel != null && ticketedChunk != null) {
-            ticketLevel.getChunkSource().removeRegionTicket(
-                    TYPE, ticketedChunk, ticketedDistance, bossId, true);
+            ticketLevel.getChunkSource().removeRegionTicket(TYPE, ticketedChunk, ticketedDistance, bossId, true);
         }
         ticketLevel = null;
         ticketedChunk = null;

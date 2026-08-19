@@ -9,6 +9,7 @@ import org.joml.Vector3f;
 
 /// 金色史莱姆 —— 高血量、快速跳跃、掉落金币，稀有。
 public class GoldenSlime extends BaseSlime {
+    private static final DustParticleOptions GOLD_DUST = new DustParticleOptions(new Vector3f(1.0F, 0.666F, 0.0F), 1.0F);
 
     public GoldenSlime(EntityType<? extends BaseSlime> type, Level level) {
         super(type, level, 0xFCF8BD, false);
@@ -33,12 +34,7 @@ public class GoldenSlime extends BaseSlime {
     public void tick() {
         super.tick();
         if (tickCount % 22 == 0 && level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(
-                    new DustParticleOptions(new Vector3f(1.0F, 0.666F, 0.0F), 1.0F),
-                    getX(), getY(), getZ(),
-                    12,
-                    random.nextFloat(), random.nextFloat(), random.nextFloat(),
-                    0.01);
+            serverLevel.sendParticles(GOLD_DUST, getX(), getY(), getZ(), 12, random.nextFloat(), random.nextFloat(), random.nextFloat(), 0.01);
         }
     }
 }

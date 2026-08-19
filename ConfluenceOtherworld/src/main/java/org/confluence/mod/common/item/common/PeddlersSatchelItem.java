@@ -32,28 +32,16 @@ public class PeddlersSatchelItem extends TooltipItem {
         if (level.isClientSide) {
             return InteractionResultHolder.consume(itemStack);
         }
-        if (!(level instanceof ServerLevel serverLevel)
-                || NPCSpawner.INSTANCE.isPeddlersSatchelUsed()) {
+        if (!(level instanceof ServerLevel serverLevel) || NPCSpawner.INSTANCE.isPeddlersSatchelUsed()) {
             return InteractionResultHolder.fail(itemStack);
         }
 
         NPCSpawner.INSTANCE.setPeddlersSatchelUsed(true);
-        MutableComponent component = Component
-                .translatable("message.confluence.peddlers_satchel")
-                .withColor(GlobalColors.MESSAGE.get());
-        for (ServerPlayer serverPlayer :
-                serverLevel.getServer().getPlayerList().getPlayers()) {
+        MutableComponent component = Component.translatable("message.confluence.peddlers_satchel").withColor(GlobalColors.MESSAGE.get());
+        for (ServerPlayer serverPlayer : serverLevel.getServer().getPlayerList().getPlayers()) {
             serverPlayer.sendSystemMessage(component);
         }
-        serverLevel.playSound(
-                null,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
-                ModSoundEvents.TRANSMUTATION_USE.get(),
-                SoundSource.PLAYERS,
-                1.0F,
-                1.0F);
+        serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.TRANSMUTATION_USE.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
         if (!player.hasInfiniteMaterials()) {
             itemStack.shrink(1);
         }

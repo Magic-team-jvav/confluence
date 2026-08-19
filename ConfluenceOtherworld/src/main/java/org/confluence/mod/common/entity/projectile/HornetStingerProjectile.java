@@ -16,9 +16,7 @@ public final class HornetStingerProjectile extends StraightMonsterProjectile {
     private static final int POISON_DURATION = 100;
     private int poisonAmplifier;
 
-    public HornetStingerProjectile(
-            EntityType<? extends HornetStingerProjectile> type,
-            Level level) {
+    public HornetStingerProjectile(EntityType<? extends HornetStingerProjectile> type, Level level) {
         super(type, level);
     }
 
@@ -30,38 +28,20 @@ public final class HornetStingerProjectile extends StraightMonsterProjectile {
     ///
     /// <p>弹道、阵营和生命周期仍由直线怪物弹幕基类统一处理；中毒等级由发射者在生成时明确
     /// 传入，便于蜂王愤怒状态和普通黄蜂复用同一种弹幕实体。</p>
-    public void configure(
-            Mob owner,
-            LivingEntity target,
-            float damage,
-            int poisonAmplifier) {
-        configure(
-                owner,
-                owner.position(),
-                target.getEyePosition().subtract(owner.position()),
-                damage,
-                5.0F,
-                poisonAmplifier);
+    public void configure(Mob owner, LivingEntity target, float damage, int poisonAmplifier) {
+        configure(owner, owner.position(), target.getEyePosition().subtract(owner.position()), damage, 5.0F, poisonAmplifier);
     }
 
     /// 使用调用方明确提供的出生点和瞄准向量生成毒刺。
     /// 蜂王瞄准目标眼睛，普通黄蜂瞄准目标身体中部；两种 1.21 行为不能被同一个
     /// 通用“从发射者眼睛射击”入口合并，否则出生高度和弹道都会发生偏移。
-    public void configure(
-            Mob owner,
-            Vec3 origin,
-            Vec3 aim,
-            float damage,
-            float inaccuracy,
-            int poisonAmplifier) {
-        configureAimed(
-                owner, origin, aim, damage, 1.0F, inaccuracy, 100);
+    public void configure(Mob owner, Vec3 origin, Vec3 aim, float damage, float inaccuracy, int poisonAmplifier) {
+        configureAimed(owner, origin, aim, damage, 1.0F, inaccuracy, 100);
         this.poisonAmplifier = Math.max(0, poisonAmplifier);
     }
 
     @Override
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {
-        target.addEffect(new MobEffectInstance(
-                MobEffects.POISON, POISON_DURATION, poisonAmplifier), owner);
+        target.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION, poisonAmplifier), owner);
     }
 }

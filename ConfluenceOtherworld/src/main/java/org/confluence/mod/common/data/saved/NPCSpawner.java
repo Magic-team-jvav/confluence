@@ -209,14 +209,10 @@ public enum NPCSpawner implements IGlobalData {
         }
         int version = tag.getInt("Version");
         if (version != CURRENT_VERSION) {
-            throw new IllegalArgumentException(
-                    "Unsupported NPC spawner data version: " + version);
+            throw new IllegalArgumentException("Unsupported NPC spawner data version: " + version);
         }
         Map<Region, Object2BooleanMap<EntityType<?>>> decodedAlive =
-                PortDataResultExtension.getOrThrow(
-                        NPC_ALIVE_CODEC_V1.parse(NbtOps.INSTANCE, tag.get("NpcAlive")),
-                        message -> new IllegalArgumentException(
-                                "Failed to decode living NPC data: " + message));
+                PortDataResultExtension.getOrThrow(NPC_ALIVE_CODEC_V1.parse(NbtOps.INSTANCE, tag.get("NpcAlive")), message -> new IllegalArgumentException("Failed to decode living NPC data: " + message));
         Set<EntityType<?>> decodedSpawned = PortDataResultExtension.getOrThrow(
                 NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned")),
                 message -> new IllegalArgumentException(
@@ -239,14 +235,8 @@ public enum NPCSpawner implements IGlobalData {
                 iterator.remove();
             }
         }
-        tag.put("NpcAlive", PortDataResultExtension.getOrThrow(
-                NPC_ALIVE_CODEC_V1.encodeStart(NbtOps.INSTANCE, npcAlive),
-                message -> new IllegalStateException(
-                        "Failed to encode living NPC data: " + message)));
-        tag.put("NpcSpawned", PortDataResultExtension.getOrThrow(
-                NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned),
-                message -> new IllegalStateException(
-                        "Failed to encode spawned NPC data: " + message)));
+        tag.put("NpcAlive", PortDataResultExtension.getOrThrow(NPC_ALIVE_CODEC_V1.encodeStart(NbtOps.INSTANCE, npcAlive), message -> new IllegalStateException("Failed to encode living NPC data: " + message)));
+        tag.put("NpcSpawned", PortDataResultExtension.getOrThrow(NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned), message -> new IllegalStateException("Failed to encode spawned NPC data: " + message)));
         tag.putBoolean("AdvancedCombatTechniquesUsed", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("AdvancedCombatTechniquesVolumeTwoUsed", isAdvancedCombatTechniquesVolumeTwoUsed);
         tag.putBoolean("PeddlersSatchelUsed", isPeddlersSatchelUsed);

@@ -35,8 +35,7 @@ public final class HandAnimationChannel {
     }
 
     public Optional<HandAnimationClip> clip(HandAnimationAction action) {
-        return Optional.ofNullable(animations.get(
-                Objects.requireNonNull(action, "Animation action must not be null")));
+        return Optional.ofNullable(animations.get(Objects.requireNonNull(action, "Animation action must not be null")));
     }
 
     /// 构造触发动画队列。
@@ -44,11 +43,9 @@ public final class HandAnimationChannel {
     /// <p>一次性动画结束后立即在同一队列中衔接待机阶段，避免 GeckoLib 在控制器切换的
     /// 一帧内把骨骼恢复到初始快照。</p>
     public RawAnimation triggeredAnimation(HandAnimationAction action) {
-        HandAnimationClip clip = animations.get(
-                Objects.requireNonNull(action, "Animation action must not be null"));
+        HandAnimationClip clip = animations.get(Objects.requireNonNull(action, "Animation action must not be null"));
         if (clip == null) {
-            throw new IllegalArgumentException(
-                    "No animation " + action + " configured for channel " + name);
+            throw new IllegalArgumentException("No animation " + action + " configured for channel " + name);
         }
 
         RawAnimation animation = clip.rawAnimation();
@@ -68,8 +65,7 @@ public final class HandAnimationChannel {
 
     public static final class Builder {
         private final String name;
-        private final EnumMap<HandAnimationAction, HandAnimationClip> animations =
-                new EnumMap<>(HandAnimationAction.class);
+        private final EnumMap<HandAnimationAction, HandAnimationClip> animations = new EnumMap<>(HandAnimationAction.class);
         private HandAnimationClip idle;
 
         private Builder(String name) {
@@ -92,11 +88,7 @@ public final class HandAnimationChannel {
             return animation(action, new HandAnimationClip(animation, Animation.LoopType.DEFAULT));
         }
 
-        public Builder animation(
-                HandAnimationAction action,
-                String animation,
-                Animation.LoopType loopType
-        ) {
+        public Builder animation(HandAnimationAction action, String animation, Animation.LoopType loopType) {
             return animation(action, new HandAnimationClip(animation, loopType));
         }
 
@@ -105,8 +97,7 @@ public final class HandAnimationChannel {
             if (action == HandAnimationAction.IDLE) {
                 throw new IllegalArgumentException("IDLE must be configured with idle()");
             }
-            animations.put(action,
-                    Objects.requireNonNull(animation, "Animation clip must not be null"));
+            animations.put(action, Objects.requireNonNull(animation, "Animation clip must not be null"));
             return this;
         }
 

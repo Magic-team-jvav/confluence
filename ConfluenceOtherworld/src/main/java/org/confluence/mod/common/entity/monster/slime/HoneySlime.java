@@ -50,8 +50,7 @@ public class HoneySlime extends BaseSlime {
             if (!player.getAbilities().instabuild) {
                 held.shrink(1);
             }
-            level().playSound(null, getX(), getY(), getZ(),
-                    SoundEvents.HONEY_DRINK, SoundSource.AMBIENT, 3.0F, 1.5F);
+            level().playSound(null, getX(), getY(), getZ(), SoundEvents.HONEY_DRINK, SoundSource.AMBIENT, 3.0F, 1.5F);
             dropFromLootTable(damageSources().playerAttack(player), true);
             return InteractionResult.CONSUME;
         }

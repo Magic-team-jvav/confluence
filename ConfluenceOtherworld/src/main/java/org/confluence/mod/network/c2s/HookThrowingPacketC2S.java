@@ -74,8 +74,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id,
             if (!(itemStack.getItem() instanceof BaseHookItem item)) return;
             long gameTime = level.getGameTime();
             CompoundTag playerData = player.getPersistentData();
-            if (playerData.contains(LAST_THROW_TICK_KEY, Tag.TAG_LONG)
-                    && playerData.getLong(LAST_THROW_TICK_KEY) == gameTime) {
+            if (playerData.contains(LAST_THROW_TICK_KEY, Tag.TAG_LONG) && playerData.getLong(LAST_THROW_TICK_KEY) == gameTime) {
                 return;
             }
             // 玩家级门禁先于 NBT 扫描和实体工厂，换用不同钩爪也不能在同 tick 绕过。
@@ -86,14 +85,10 @@ public record HookThrowingPacketC2S(boolean throwing, int id,
             if (item.canHook(level, player, extraInventory, itemStack)) {
                 ListTag listTag = LibUtils.getItemStackNbt(itemStack).getList("hooks", Tag.TAG_COMPOUND);
                 UUID pendingEviction = null;
-                if (item.getHookType() == BaseHookItem.HookType.SIMULTANEOUS
-                        && listTag.size() == item.getHookAmount()
-                        && PortListExtension.getFirst(listTag) instanceof CompoundTag first
-                        && first.hasUUID("uuid")) {
+                if (item.getHookType() == BaseHookItem.HookType.SIMULTANEOUS && listTag.size() == item.getHookAmount() && PortListExtension.getFirst(listTag) instanceof CompoundTag first && first.hasUUID("uuid")) {
                     pendingEviction = first.getUUID("uuid");
                 }
-                AbstractHookEntity hook = item.getHook(
-                        itemStack, item, player, level, pendingEviction);
+                AbstractHookEntity hook = item.getHook(itemStack, item, player, level, pendingEviction);
                 hook.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, item.getHookVelocity(), 0.5F);
                 // 无论实体加入是否被事件拒绝，本 tick 都不再接受第二次创建请求。
                 player.getCooldowns().addCooldown(item, 1);
@@ -104,8 +99,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id,
                     BaseHookItem.discardAllHooks(listTag, level, player);
                 } else if (hookType == BaseHookItem.HookType.SIMULTANEOUS
                         && listTag.size() == item.getHookAmount()) {
-                    AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(
-                            PortListExtension.getFirst(listTag), level, player);
+                    AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(PortListExtension.getFirst(listTag), level, player);
                     if (hookEntity != null)
                         hookEntity.setHookState(AbstractHookEntity.HookState.POP);
                     PortListExtension.removeFirst(listTag);
@@ -139,7 +133,6 @@ public record HookThrowingPacketC2S(boolean throwing, int id,
     }
 
     public static void pop(AbstractHookEntity hook) {
-        Confluence.NETWORK_HANDLER.sendToServer(
-                new HookThrowingPacketC2S(false, hook.getId(), hook.getUUID()));
+        Confluence.NETWORK_HANDLER.sendToServer(new HookThrowingPacketC2S(false, hook.getId(), hook.getUUID()));
     }
 }

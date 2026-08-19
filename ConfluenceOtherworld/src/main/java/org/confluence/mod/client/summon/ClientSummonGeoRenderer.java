@@ -49,10 +49,10 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
                           MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender,
                           float partialTick, int packedLight, int packedOverlay, float red, float green,
                           float blue, float alpha) {
-        scaleModelForRender(scale, scale, poseStack, visual, model, isReRender, partialTick,
-                packedLight, packedOverlay);
+        scaleModelForRender(scale, scale, poseStack, visual, model, isReRender, partialTick, packedLight, packedOverlay);
         poseStack.translate(0.0F, offsetY, 0.0F);
         if (yawOffset != 0.0F) poseStack.mulPose(Axis.YP.rotationDegrees(yawOffset));
+        super.preRender(poseStack, visual, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     @Override
@@ -64,8 +64,7 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
             renderType = RenderType.entityCutout(getTextureLocation(visual));
             buffer = bufferSource.getBuffer(renderType);
         }
-        super.renderRecursively(poseStack, visual, bone, renderType, bufferSource, buffer, isReRender, partialTick,
-                packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderRecursively(poseStack, visual, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
     private static final class Model extends GeoModel<ClientSummonVisual> {
@@ -74,10 +73,16 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
         private final ResourceLocation animation;
 
         private Model(ResourceLocation type) {
-            String path = type.getPath().equals("hornet_baby") ? "hornet" : "summon/" + type.getPath();
-            model = Confluence.asResource("geo/entity/" + path + ".geo.json");
-            texture = Confluence.asResource("textures/entity/" + path + ".png");
-            animation = Confluence.asResource("animations/entity/" + path + ".animation.json");
+            if (type.getPath().equals("hornet_baby")) {
+                model = Confluence.asResource("geo/entity/summon/hornet_baby.geo.json");
+                texture = Confluence.asResource("textures/entity/summon/hornet_baby.png");
+                animation = Confluence.asResource("animations/entity/hornet.animation.json");
+            } else {
+                String path = "summon/" + type.getPath();
+                model = Confluence.asResource("geo/entity/" + path + ".geo.json");
+                texture = Confluence.asResource("textures/entity/" + path + ".png");
+                animation = Confluence.asResource("animations/entity/" + path + ".animation.json");
+            }
         }
 
         @Override
@@ -93,6 +98,11 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
         @Override
         public ResourceLocation getAnimationResource(ClientSummonVisual visual) {
             return animation;
+        }
+
+        @Override
+        public RenderType getRenderType(ClientSummonVisual visual, ResourceLocation texture) {
+            return RenderType.entityTranslucent(texture);
         }
     }
 }

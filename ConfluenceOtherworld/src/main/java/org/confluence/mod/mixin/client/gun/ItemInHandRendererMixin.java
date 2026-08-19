@@ -33,10 +33,7 @@ public class ItemInHandRendererMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void confluence$finishGunPutAway(CallbackInfo callbackInfo) {
-        if (minecraft.player == null
-                || mainHandItem.isEmpty()
-                || ItemStack.matches(mainHandItem, minecraft.player.getMainHandItem())
-                || !(mainHandItem.getItem() instanceof BaseGun gun)) {
+        if (minecraft.player == null || mainHandItem.isEmpty() || ItemStack.matches(mainHandItem, minecraft.player.getMainHandItem()) || !(mainHandItem.getItem() instanceof BaseGun gun)) {
             confluence$gunPutAwayWasObserved = false;
             return;
         }
@@ -66,11 +63,7 @@ public class ItemInHandRendererMixin {
             int packedLight,
             CallbackInfo callbackInfo
     ) {
-        if (hand != InteractionHand.MAIN_HAND
-                || !confluence$gunPutAwayWasObserved
-                || mainHandItem.isEmpty()
-                || ItemStack.matches(mainHandItem, player.getMainHandItem())
-                || !(mainHandItem.getItem() instanceof BaseGun gun)) {
+        if (hand != InteractionHand.MAIN_HAND || !confluence$gunPutAwayWasObserved || mainHandItem.isEmpty() || ItemStack.matches(mainHandItem, player.getMainHandItem()) || !(mainHandItem.getItem() instanceof BaseGun gun)) {
             return;
         }
 

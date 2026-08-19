@@ -21,10 +21,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibMathUtils;
-import org.confluence.mod.common.entity.projectile.DestroyerLaserProjectile;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.projectile.DestroyerLaserProjectile;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 
@@ -34,12 +34,10 @@ import org.confluence.mod.common.init.entity.ModEntities;
 /// 所以体节因区块卸载而重建时不会重置。未释放的探测器舱会按照 1.21 侧的顺序射击
 /// 与高空齐射节奏发射真实激光弹幕。</p>
 public class TheDestroyer extends BaseWormBoss {
-    private static final String RELEASED_PROBE_SEGMENTS_TAG =
-            "ReleasedProbeSegments";
+    private static final String RELEASED_PROBE_SEGMENTS_TAG = "ReleasedProbeSegments";
     private static final String PHASE_TAG = "Phase";
     private static final String PHASE_TIMER_TAG = "PhaseTimer";
-    private static final String LASER_SEQUENCE_INDEX_TAG =
-            "LaserSequenceIndex";
+    private static final String LASER_SEQUENCE_INDEX_TAG = "LaserSequenceIndex";
     private static final String VOLLEY_COOLDOWN_TAG = "VolleyCooldown";
     private static final String CAVE_ATTACK_STATE_TAG = "CaveAttackState";
     private static final String GROUND_ATTACK_STATE_TAG = "GroundAttackState";
@@ -51,14 +49,8 @@ public class TheDestroyer extends BaseWormBoss {
     private static final int SKY_Y = 100;
     private static final double BASE_MOVE_SPEED = 1.0;
     private static final float BASE_TURN_SPEED = 9.0F;
-    private static final EntityDataAccessor<Integer> DATA_PHASE =
-            SynchedEntityData.defineId(
-                    TheDestroyer.class,
-                    EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> DATA_BODY_ROLL =
-            SynchedEntityData.defineId(
-                    TheDestroyer.class,
-                    EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> DATA_PHASE = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DATA_BODY_ROLL = SynchedEntityData.defineId(TheDestroyer.class, EntityDataSerializers.FLOAT);
 
     private final long[] releasedProbeSegments = new long[2];
     private int phaseTimer;
@@ -76,8 +68,7 @@ public class TheDestroyer extends BaseWormBoss {
         SKY
     }
 
-    public TheDestroyer(
-            EntityType<? extends Monster> type, Level level) {
+    public TheDestroyer(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         xpReward = 2000;
     }
@@ -105,17 +96,12 @@ public class TheDestroyer extends BaseWormBoss {
     /// 超出 Boss 当前强加载区域后导致尾部创建失败。这里保留相同数量和间距，
     /// 只把初始形状改成盘曲布局；进入战斗后仍由统一跟随物理自然展开。</p>
     @Override
-    protected Vec3 getInitialSegmentPosition(
-            int index,
-            Vec3 previousPosition) {
+    protected Vec3 getInitialSegmentPosition(int index, Vec3 previousPosition) {
         Vec3 direction = getLookAngle().multiply(1.0, 0.0, 1.0);
         if (direction.lengthSqr() <= 1.0E-7) {
             direction = new Vec3(0.0, 0.0, 1.0);
         }
-        return previousPosition.add(
-                direction.normalize()
-                        .scale(-SEGMENT_SPACING)
-                        .yRot(index * 0.16F));
+        return previousPosition.add(direction.normalize().scale(-SEGMENT_SPACING).yRot(index * 0.16F));
     }
 
     /// 毁灭者和世界吞噬怪一样不能依赖地面路径。
@@ -146,9 +132,7 @@ public class TheDestroyer extends BaseWormBoss {
     protected void registerGoals() {
         super.registerGoals();
         targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        targetSelector.addGoal(2,
-                new NearestAttackableTargetGoal<>(
-                        this, Player.class, false));
+        targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     @Override
@@ -223,11 +207,9 @@ public class TheDestroyer extends BaseWormBoss {
                 if (phaseTimer > 20) {
                     caveAttackState = 2;
                     phaseTimer = 0;
-                    Vec3 direction = target.getEyePosition()
-                            .subtract(getEyePosition());
+                    Vec3 direction = target.getEyePosition().subtract(getEyePosition());
                     if (direction.lengthSqr() > 1.0E-7) {
-                        setDeltaMovement(direction.normalize()
-                                .scale(BASE_MOVE_SPEED * 1.5));
+                        setDeltaMovement(direction.normalize().scale(BASE_MOVE_SPEED * 1.5));
                     }
                 }
             }
@@ -244,8 +226,7 @@ public class TheDestroyer extends BaseWormBoss {
                 double progress = phaseTimer / 20.0;
                 rollSpeed = (float) (15.0 * (2.5 - 1.5 * progress));
                 speed = BASE_MOVE_SPEED * (1.5 - 0.5 * progress);
-                turn = (float) (BASE_TURN_SPEED
-                        * (0.05 + 0.95 * progress));
+                turn = (float) (BASE_TURN_SPEED * (0.05 + 0.95 * progress));
                 if (phaseTimer > 20) {
                     caveAttackState = 0;
                     phaseTimer = 0;
@@ -253,16 +234,11 @@ public class TheDestroyer extends BaseWormBoss {
             }
             default -> caveAttackState = 0;
         }
-        Vec3 targetVelocity = target.getEyePosition()
-                .subtract(getEyePosition());
+        Vec3 targetVelocity = target.getEyePosition().subtract(getEyePosition());
         if (targetVelocity.lengthSqr() > 1.0E-7) {
             targetVelocity = targetVelocity.normalize().scale(speed);
             double maximumTurn = turn * Mth.DEG_TO_RAD;
-            Vec3 velocity = LibMathUtils.interpolateBasis(
-                    getDeltaMovement(),
-                    targetVelocity,
-                    angle -> Math.min(angle, maximumTurn),
-                    difference -> difference * 0.25);
+            Vec3 velocity = LibMathUtils.interpolateBasis(getDeltaMovement(), targetVelocity, angle -> Math.min(angle, maximumTurn), difference -> difference * 0.25);
             faceVelocity(velocity);
             setDeltaMovement(velocity);
         }
@@ -273,16 +249,9 @@ public class TheDestroyer extends BaseWormBoss {
         switch (groundAttackState) {
             case 0 -> {
                 Vec3 targetPosition = target.getEyePosition();
-                double surfaceY = level().getHeight(
-                        Heightmap.Types.WORLD_SURFACE,
-                        Mth.floor(targetPosition.x),
-                        Mth.floor(targetPosition.z));
-                targetPosition = new Vec3(
-                        targetPosition.x,
-                        surfaceY - 20.0,
-                        targetPosition.z);
-                moveDirectlyToward(
-                        targetPosition, BASE_MOVE_SPEED * 1.35);
+                double surfaceY = level().getHeight(Heightmap.Types.WORLD_SURFACE, Mth.floor(targetPosition.x), Mth.floor(targetPosition.z));
+                targetPosition = new Vec3(targetPosition.x, surfaceY - 20.0, targetPosition.z);
+                moveDirectlyToward(targetPosition, BASE_MOVE_SPEED * 1.35);
                 setBodyRoll(getBodyRoll() + 20.0F);
                 if (distanceToSqr(targetPosition) < 16.0) {
                     groundAttackState = 1;
@@ -291,8 +260,7 @@ public class TheDestroyer extends BaseWormBoss {
             }
             case 1 -> {
                 Vec3 targetPosition = target.getEyePosition();
-                moveDirectlyToward(
-                        targetPosition, BASE_MOVE_SPEED * 1.5);
+                moveDirectlyToward(targetPosition, BASE_MOVE_SPEED * 1.5);
                 setBodyRoll(getBodyRoll() + 12.5F);
                 if (targetPosition.distanceToSqr(getEyePosition()) < 36.0) {
                     groundAttackState = 2;
@@ -303,8 +271,7 @@ public class TheDestroyer extends BaseWormBoss {
                 // 1.21 此状态会额外推进一次计时，保持同样的下坠起点与恢复节奏。
                 phaseTimer++;
                 if (phaseTimer > 45) {
-                    setDeltaMovement(getDeltaMovement()
-                            .subtract(0.0, 0.05, 0.0));
+                    setDeltaMovement(getDeltaMovement().subtract(0.0, 0.05, 0.0));
                     setBodyRoll(getBodyRoll() + 5.0F);
                 } else {
                     smoothResetRoll();
@@ -335,10 +302,8 @@ public class TheDestroyer extends BaseWormBoss {
         switch (skyAttackState) {
             case 0 -> {
                 Vec3 hoverTarget = target.position().add(0.0, 25.0, 0.0);
-                moveDirectlyToward(
-                        hoverTarget, BASE_MOVE_SPEED * 1.5);
-                if (distanceToSqr(hoverTarget) < 256.0
-                        || phaseTimer > 60) {
+                moveDirectlyToward(hoverTarget, BASE_MOVE_SPEED * 1.5);
+                if (distanceToSqr(hoverTarget) < 256.0 || phaseTimer > 60) {
                     skyAttackState = 1;
                     phaseTimer = 0;
                     volleyCooldown = 20;
@@ -346,20 +311,15 @@ public class TheDestroyer extends BaseWormBoss {
             }
             case 1 -> {
                 float angle = tickCount * 6.0F * Mth.DEG_TO_RAD;
-                Vec3 attackPosition = target.position().add(
-                        Mth.sin(angle) * 15.0,
-                        10.0,
-                        Mth.cos(angle) * 15.0);
-                moveDirectlyToward(
-                        attackPosition, BASE_MOVE_SPEED * 2.25);
+                Vec3 attackPosition = target.position().add(Mth.sin(angle) * 15.0, 10.0, Mth.cos(angle) * 15.0);
+                moveDirectlyToward(attackPosition, BASE_MOVE_SPEED * 2.25);
                 if (phaseTimer > 60) {
                     skyAttackState = 2;
                     phaseTimer = 0;
                 }
             }
             case 2 -> {
-                moveDirectlyToward(
-                        target.getEyePosition(), BASE_MOVE_SPEED * 1.6);
+                moveDirectlyToward(target.getEyePosition(), BASE_MOVE_SPEED * 1.6);
                 if (phaseTimer > 40) {
                     skyAttackState = 0;
                     phaseTimer = 0;
@@ -380,9 +340,7 @@ public class TheDestroyer extends BaseWormBoss {
 
     private void faceVelocity(Vec3 velocity) {
         if (velocity.lengthSqr() <= 1.0E-7) return;
-        lookAt(
-                EntityAnchorArgument.Anchor.EYES,
-                getEyePosition().add(velocity));
+        lookAt(EntityAnchorArgument.Anchor.EYES, getEyePosition().add(velocity));
     }
 
     private void smoothResetRoll() {
@@ -422,26 +380,16 @@ public class TheDestroyer extends BaseWormBoss {
     }
 
     public Phase getPhase() {
-        return Phase.values()[Mth.clamp(
-                entityData.get(DATA_PHASE),
-                0,
-                Phase.values().length - 1)];
+        return Phase.values()[Mth.clamp(entityData.get(DATA_PHASE), 0, Phase.values().length - 1)];
     }
 
     @Override
-    protected boolean hurtSegment(
-            BossWormPart segment,
-            DamageSource source,
-            float amount) {
-        boolean hurt = super.hurtSegment(
-                segment, source, amount);
+    protected boolean hurtSegment(BossWormPart segment, DamageSource source, float amount) {
+        boolean hurt = super.hurtSegment(segment, source, amount);
         if (!hurt || level().isClientSide) {
             return hurt;
         }
-        if (getPhase() != Phase.UNDERGROUND
-                && segment.isDestroyerProbeSegment()
-                && !hasReleasedProbe(segment.getSegmentIndex())
-                && random.nextFloat() < 0.2F) {
+        if (getPhase() != Phase.UNDERGROUND && segment.isDestroyerProbeSegment() && !hasReleasedProbe(segment.getSegmentIndex()) && random.nextFloat() < 0.2F) {
             releaseProbe(segment);
         }
         return true;
@@ -462,9 +410,7 @@ public class TheDestroyer extends BaseWormBoss {
         }
         if (laserSequenceIndex >= 0) {
             if (laserSequenceIndex < getSegments().size()) {
-                shootFromSegment(
-                        getSegments().get(laserSequenceIndex),
-                        target);
+                shootFromSegment(getSegments().get(laserSequenceIndex), target);
                 laserSequenceIndex++;
             } else {
                 laserSequenceIndex = -1;
@@ -474,18 +420,11 @@ public class TheDestroyer extends BaseWormBoss {
         }
     }
 
-    private boolean shootFromSegment(
-            BossWormPart segment,
-            LivingEntity target) {
-        if (!segment.isAlive()
-                || !segment.isDestroyerProbeSegment()
-                || hasReleasedProbe(segment.getSegmentIndex())
-                || !segment.areDestroyerFlapsOpen()
-                || level().getBlockState(segment.blockPosition()).isSolid()) {
+    private boolean shootFromSegment(BossWormPart segment, LivingEntity target) {
+        if (!segment.isAlive() || !segment.isDestroyerProbeSegment() || hasReleasedProbe(segment.getSegmentIndex()) || !segment.areDestroyerFlapsOpen() || level().getBlockState(segment.blockPosition()).isSolid()) {
             return false;
         }
-        Vec3 origin = segment.position().add(
-                0.0, segment.getBbHeight() * 0.5, 0.0);
+        Vec3 origin = segment.position().add(0.0, segment.getBbHeight() * 0.5, 0.0);
         return fireLaser(this, origin, target, getLaserDamage());
     }
 
@@ -503,16 +442,11 @@ public class TheDestroyer extends BaseWormBoss {
         return 0;
     }
 
-    static boolean fireLaser(
-            Monster owner,
-            Vec3 origin,
-            LivingEntity target,
-            float damage) {
+    static boolean fireLaser(Monster owner, Vec3 origin, LivingEntity target, float damage) {
         if (!(owner.level() instanceof ServerLevel serverLevel)) {
             return false;
         }
-        DestroyerLaserProjectile laser =
-                ModEntities.DESTROYER_LASER.get().create(serverLevel);
+        DestroyerLaserProjectile laser = ModEntities.DESTROYER_LASER.get().create(serverLevel);
         if (laser == null) {
             return false;
         }
@@ -533,9 +467,7 @@ public class TheDestroyer extends BaseWormBoss {
             if (requested <= 0) {
                 break;
             }
-            if (segment.isDestroyerProbeSegment()
-                    && !hasReleasedProbe(segment.getSegmentIndex())
-                    && releaseProbe(segment)) {
+            if (segment.isDestroyerProbeSegment() && !hasReleasedProbe(segment.getSegmentIndex()) && releaseProbe(segment)) {
                 requested--;
             }
         }
@@ -543,16 +475,12 @@ public class TheDestroyer extends BaseWormBoss {
 
     boolean releaseProbe(BossWormPart segment) {
         int index = segment.getSegmentIndex();
-        if (!(level() instanceof ServerLevel serverLevel)
-                || !segment.isDestroyerProbeSegment()
-                || hasReleasedProbe(index)) {
+        if (!(level() instanceof ServerLevel serverLevel) || !segment.isDestroyerProbeSegment() || hasReleasedProbe(index)) {
             return false;
         }
         markProbeReleased(index);
         segment.setReleasedDestroyerProbe(true);
-        TheDestroyerProbe probe =
-                BossEntities.THE_DESTROYER_PROBE.get()
-                        .create(serverLevel);
+        TheDestroyerProbe probe = BossEntities.THE_DESTROYER_PROBE.get().create(serverLevel);
         if (probe == null) {
             return false;
         }
@@ -573,14 +501,12 @@ public class TheDestroyer extends BaseWormBoss {
             return false;
         }
         int bitIndex = segmentIndex - 1;
-        return (releasedProbeSegments[bitIndex >>> 6]
-                & 1L << (bitIndex & 63)) != 0L;
+        return (releasedProbeSegments[bitIndex >>> 6] & 1L << (bitIndex & 63)) != 0L;
     }
 
     private void markProbeReleased(int segmentIndex) {
         int bitIndex = segmentIndex - 1;
-        releasedProbeSegments[bitIndex >>> 6] |=
-                1L << (bitIndex & 63);
+        releasedProbeSegments[bitIndex >>> 6] |= 1L << (bitIndex & 63);
     }
 
     @Override
@@ -593,9 +519,7 @@ public class TheDestroyer extends BaseWormBoss {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putLongArray(
-                RELEASED_PROBE_SEGMENTS_TAG,
-                releasedProbeSegments);
+        tag.putLongArray(RELEASED_PROBE_SEGMENTS_TAG, releasedProbeSegments);
         tag.putInt(PHASE_TAG, getPhase().ordinal());
         tag.putInt(PHASE_TIMER_TAG, phaseTimer);
         tag.putInt(LASER_SEQUENCE_INDEX_TAG, laserSequenceIndex);
@@ -608,38 +532,18 @@ public class TheDestroyer extends BaseWormBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        long[] savedSegments = tag.getLongArray(
-                RELEASED_PROBE_SEGMENTS_TAG);
-        for (int index = 0;
-             index < releasedProbeSegments.length;
-             index++) {
+        long[] savedSegments = tag.getLongArray(RELEASED_PROBE_SEGMENTS_TAG);
+        for (int index = 0; index < releasedProbeSegments.length; index++) {
             releasedProbeSegments[index] =
                     index < savedSegments.length
                             ? savedSegments[index] : 0L;
         }
-        entityData.set(
-                DATA_PHASE,
-                Mth.clamp(
-                        tag.getInt(PHASE_TAG),
-                        0,
-                        Phase.values().length - 1));
-        phaseTimer = Mth.clamp(
-                tag.getInt(PHASE_TIMER_TAG),
-                0,
-                10000);
-        laserSequenceIndex = Mth.clamp(
-                tag.getInt(LASER_SEQUENCE_INDEX_TAG),
-                -1,
-                SEGMENT_COUNT);
-        volleyCooldown = Mth.clamp(
-                tag.getInt(VOLLEY_COOLDOWN_TAG),
-                0,
-                120);
-        caveAttackState = Mth.clamp(
-                tag.getInt(CAVE_ATTACK_STATE_TAG), 0, 3);
-        groundAttackState = Mth.clamp(
-                tag.getInt(GROUND_ATTACK_STATE_TAG), 0, 2);
-        skyAttackState = Mth.clamp(
-                tag.getInt(SKY_ATTACK_STATE_TAG), 0, 2);
+        entityData.set(DATA_PHASE, Mth.clamp(tag.getInt(PHASE_TAG), 0, Phase.values().length - 1));
+        phaseTimer = Mth.clamp(tag.getInt(PHASE_TIMER_TAG), 0, 10000);
+        laserSequenceIndex = Mth.clamp(tag.getInt(LASER_SEQUENCE_INDEX_TAG), -1, SEGMENT_COUNT);
+        volleyCooldown = Mth.clamp(tag.getInt(VOLLEY_COOLDOWN_TAG), 0, 120);
+        caveAttackState = Mth.clamp(tag.getInt(CAVE_ATTACK_STATE_TAG), 0, 3);
+        groundAttackState = Mth.clamp(tag.getInt(GROUND_ATTACK_STATE_TAG), 0, 2);
+        skyAttackState = Mth.clamp(tag.getInt(SKY_ATTACK_STATE_TAG), 0, 2);
     }
 }

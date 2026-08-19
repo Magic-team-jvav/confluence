@@ -59,11 +59,6 @@ public final class ModBiomes {
         // 对默认方块为末地石的噪声设置进行组合，避免伪造不存在的 RuleCategory.END。
 
         // 这组兼容规则在原版基岩层规则之前执行，使泰拉地表材料能覆盖匹配的原版群系。
-        SurfaceRuleManager.addToDefaultSurfaceRulesAtStage(
-                SurfaceRuleManager.RuleCategory.OVERWORLD,
-                SurfaceRuleManager.RuleStage.BEFORE_BEDROCK,
-                0,
-                SurfaceRuleData.makeMinecraftOverWorldRules()
-        );
+        SurfaceRuleManager.addToDefaultSurfaceRulesAtStage(SurfaceRuleManager.RuleCategory.OVERWORLD, SurfaceRuleManager.RuleStage.BEFORE_BEDROCK, 0, SurfaceRuleData.makeMinecraftOverWorldRules());
     }
 }

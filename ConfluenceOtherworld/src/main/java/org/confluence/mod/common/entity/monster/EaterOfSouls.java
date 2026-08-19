@@ -34,19 +34,7 @@ public class EaterOfSouls extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(EaterOfSouls.this),
-                                new SteeringDashAction(
-                                        EaterOfSouls.this,
-                                        0.98,
-                                        0.4,
-                                        0.01,
-                                        10.0,
-                                        10.0,
-                                        10.0,
-                                        15)),
-                        new FlyWanderAction(EaterOfSouls.this, 0.15, 10));
+                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(EaterOfSouls.this), new SteeringDashAction(EaterOfSouls.this, 0.98, 0.4, 0.01, 10.0, 10.0, 10.0, 15)), new FlyWanderAction(EaterOfSouls.this, 0.15, 10));
             }
         };
     }

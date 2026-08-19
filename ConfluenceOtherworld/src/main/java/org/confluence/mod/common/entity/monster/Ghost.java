@@ -40,8 +40,7 @@ public class Ghost extends BaseFlyingMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this, "Float", 3, state -> state.setAndContinue(FLOAT)));
+        controllers.add(new AnimationController<>(this, "Float", 3, state -> state.setAndContinue(FLOAT)));
     }
 
     @Override

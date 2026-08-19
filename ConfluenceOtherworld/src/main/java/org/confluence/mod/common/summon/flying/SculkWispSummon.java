@@ -25,7 +25,7 @@ public final class SculkWispSummon extends FlyingSummon {
     public SculkWispSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("sculk_wisp"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
-        addGoal(9, new FollowOwnerGoal(this));
+        addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.02, 0.70));
     }
 
     @Override
@@ -65,12 +65,10 @@ public final class SculkWispSummon extends FlyingSummon {
             Vec3 particle = origin.add(direction.scale(index));
             level.sendParticles(ParticleTypes.SONIC_BOOM, particle.x, particle.y, particle.z, 1, 0.0, 0.0, 0.0, 0.0);
         }
-        level.playSound(null, origin.x, origin.y, origin.z, SoundEvents.WARDEN_SONIC_BOOM,
-                net.minecraft.sounds.SoundSource.NEUTRAL, 3.0F, 1.0F);
+        level.playSound(null, origin.x, origin.y, origin.z, SoundEvents.WARDEN_SONIC_BOOM, net.minecraft.sounds.SoundSource.NEUTRAL, 3.0F, 1.0F);
         if (hurtTarget(target, 1.0F)) {
             double resistance = target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
-            target.push(direction.x * 2.5 * (1.0 - resistance), direction.y * 0.5 * (1.0 - resistance),
-                    direction.z * 2.5 * (1.0 - resistance));
+            target.push(direction.x * 2.5 * (1.0 - resistance), direction.y * 0.5 * (1.0 - resistance), direction.z * 2.5 * (1.0 - resistance));
         }
     }
 
@@ -100,19 +98,4 @@ public final class SculkWispSummon extends FlyingSummon {
         }
     }
 
-    private static final class FollowOwnerGoal extends SummonGoal<SculkWispSummon> {
-        private FollowOwnerGoal(SculkWispSummon summon) {
-            super(summon);
-        }
-
-        @Override
-        public boolean canUse() {
-            return true;
-        }
-
-        @Override
-        public void tick() {
-            summon.followOwner(32.0, 0.10, 0.75);
-        }
-    }
 }

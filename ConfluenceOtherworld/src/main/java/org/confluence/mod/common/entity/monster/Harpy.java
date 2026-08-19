@@ -24,9 +24,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 public class Harpy extends ReboundingFlyingMonster {
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
 
-    public Harpy(
-            EntityType<? extends BaseFlyingMonster> type,
-            Level level) {
+    public Harpy(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
     }
 
@@ -34,16 +32,10 @@ public class Harpy extends ReboundingFlyingMonster {
     protected Vec3 reboundVelocity(Vec3 requested, Vec3 allowed) {
         Vec3 rebound = requested;
         if (allowed.x != requested.x) {
-            rebound = new Vec3(
-                    -requested.x * 0.8,
-                    rebound.y + 0.2,
-                    rebound.z);
+            rebound = new Vec3(-requested.x * 0.8, rebound.y + 0.2, rebound.z);
         }
         if (allowed.z != requested.z) {
-            rebound = new Vec3(
-                    rebound.x,
-                    rebound.y + 0.2,
-                    -requested.z * 0.8);
+            rebound = new Vec3(rebound.x, rebound.y + 0.2, -requested.z * 0.8);
         }
         return rebound;
     }
@@ -55,22 +47,7 @@ public class Harpy extends ReboundingFlyingMonster {
 
     @Override
     protected BTRoot createBT() {
-        BTNode combat = new FlyingVolleyCombatAction(
-                this,
-                new SteeringDashAction(
-                        this,
-                        0.95,
-                        0.5,
-                        0.02,
-                        10.0,
-                        90.0,
-                        30.0,
-                        30),
-                this::createFeatherProjectile,
-                150,
-                171,
-                192,
-                213);
+        BTNode combat = new FlyingVolleyCombatAction(this, new SteeringDashAction(this, 0.95, 0.5, 0.02, 10.0, 90.0, 30.0, 30), this::createFeatherProjectile, 150, 171, 192, 213);
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
@@ -87,14 +64,8 @@ public class Harpy extends ReboundingFlyingMonster {
     }
 
     private HarpyFeatherProjectile createFeatherProjectile(LivingEntity target) {
-        HarpyFeatherProjectile projectile = new HarpyFeatherProjectile(
-                ModEntities.HARPY_FEATHER.get(), level());
-        projectile.configure(
-                this,
-                target,
-                (float) getAttributeValue(Attributes.ATTACK_DAMAGE),
-                0.5F,
-                2.0F);
+        HarpyFeatherProjectile projectile = new HarpyFeatherProjectile(ModEntities.HARPY_FEATHER.get(), level());
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 0.5F, 2.0F);
         swing(InteractionHand.MAIN_HAND);
         return projectile;
     }

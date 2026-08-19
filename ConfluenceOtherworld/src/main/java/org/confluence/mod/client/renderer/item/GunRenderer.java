@@ -69,7 +69,8 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
                                   MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender,
                                   float partialTick, int packedLight, int packedOverlay,
                                   float red, float green, float blue, float alpha) {
-        boolean firstPersonRoot = isFirstPersonPerspective() && bone.getParent() == null;
+        GeoBone idleView = isFirstPersonPerspective() ? findModelBone("idle_view") : null;
+        boolean firstPersonRoot = idleView != null && bone.getParent() == null;
         GeoBone displayPosition = !isFirstPersonPerspective() && bone.getParent() == null
                 ? findDisplayPositionBone()
                 : null;
@@ -89,7 +90,7 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
 
             float side = renderPerspective == ItemDisplayContext.FIRST_PERSON_LEFT_HAND ? -1.0F : 1.0F;
             poseStack.translate(side * FIRST_PERSON_X, FIRST_PERSON_Y, FIRST_PERSON_Z);
-            TaczFirstPersonTransform.applyIdleViewInverse(poseStack, findModelBone("idle_view"));
+            TaczFirstPersonTransform.applyIdleViewInverse(poseStack, idleView);
 
             if (firstPersonBasePose == null) {
                 firstPersonBasePose = new Matrix4f(poseStack.last().pose());
@@ -113,8 +114,7 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
             }
         }
 
-        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender,
-                partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 
         if (firstPersonRoot || displayRoot) {
             poseStack.popPose();
@@ -127,10 +127,8 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
             queueMissingModelHands();
             rememberArmPose(HumanoidArm.LEFT, queuedLeftArmPose, queuedLeftArmNormal);
             rememberArmPose(HumanoidArm.RIGHT, queuedRightArmPose, queuedRightArmNormal);
-            renderQueuedArm(firstPersonBufferSource, firstPersonArmLight,
-                    queuedLeftArmPose, queuedLeftArmNormal, HumanoidArm.LEFT);
-            renderQueuedArm(firstPersonBufferSource, firstPersonArmLight,
-                    queuedRightArmPose, queuedRightArmNormal, HumanoidArm.RIGHT);
+            renderQueuedArm(firstPersonBufferSource, firstPersonArmLight, queuedLeftArmPose, queuedLeftArmNormal, HumanoidArm.LEFT);
+            renderQueuedArm(firstPersonBufferSource, firstPersonArmLight, queuedRightArmPose, queuedRightArmNormal, HumanoidArm.RIGHT);
         }
 
         finishModelPoseFrame();
@@ -354,8 +352,7 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
         }
     }
 
-    private void renderQueuedArm(MultiBufferSource bufferSource, int packedLight,
-                                 Matrix4f pose, Matrix3f normal, HumanoidArm arm) {
+    private void renderQueuedArm(MultiBufferSource bufferSource, int packedLight, Matrix4f pose, Matrix3f normal, HumanoidArm arm) {
         if (pose == null || normal == null) {
             return;
         }
@@ -363,8 +360,7 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
         if (player == null) {
             return;
         }
-        if (!(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player)
-                instanceof PlayerRenderer renderer)) {
+        if (!(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer renderer)) {
             return;
         }
 
@@ -376,9 +372,7 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
 
     /// 只渲染当前枪械需要的第一人称手臂，避免再次经过原版手臂事件造成取消或重复渲染。
     @SuppressWarnings("unchecked")
-    private static void renderPlayerArmDirect(PlayerRenderer renderer, AbstractClientPlayer player,
-                                              PoseStack poseStack, MultiBufferSource bufferSource,
-                                              int packedLight, HumanoidArm arm) {
+    private static void renderPlayerArmDirect(PlayerRenderer renderer, AbstractClientPlayer player, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, HumanoidArm arm) {
         PlayerModel<AbstractClientPlayer> model = renderer.getModel();
         model.setAllVisible(false);
         model.attackTime = 0.0F;
@@ -401,10 +395,8 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
         sleevePart.xRot = 0.0F;
 
         ResourceLocation skinTexture = player.getSkinTextureLocation();
-        armPart.render(poseStack, bufferSource.getBuffer(RenderType.entitySolid(skinTexture)),
-                packedLight, OverlayTexture.NO_OVERLAY);
-        sleevePart.render(poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(skinTexture)),
-                packedLight, OverlayTexture.NO_OVERLAY);
+        armPart.render(poseStack, bufferSource.getBuffer(RenderType.entitySolid(skinTexture)), packedLight, OverlayTexture.NO_OVERLAY);
+        sleevePart.render(poseStack, bufferSource.getBuffer(RenderType.entityTranslucent(skinTexture)), packedLight, OverlayTexture.NO_OVERLAY);
     }
 
     private void clearQueuedArms() {
@@ -433,13 +425,10 @@ public class GunRenderer<T extends Item & GeoAnimatable> extends GeoItemRenderer
         modelPoseBeforeOverride.clear();
     }
 
-    private record BonePose(float posX, float posY, float posZ,
-                            float rotX, float rotY, float rotZ,
+    private record BonePose(float posX, float posY, float posZ, float rotX, float rotY, float rotZ,
                             float scaleX, float scaleY, float scaleZ) {
         private static BonePose capture(GeoBone bone) {
-            return new BonePose(bone.getPosX(), bone.getPosY(), bone.getPosZ(),
-                    bone.getRotX(), bone.getRotY(), bone.getRotZ(),
-                    bone.getScaleX(), bone.getScaleY(), bone.getScaleZ());
+            return new BonePose(bone.getPosX(), bone.getPosY(), bone.getPosZ(), bone.getRotX(), bone.getRotY(), bone.getRotZ(), bone.getScaleX(), bone.getScaleY(), bone.getScaleZ());
         }
 
         private void applyTo(GeoBone bone) {

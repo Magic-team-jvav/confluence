@@ -23,10 +23,8 @@ import java.util.Map;
 /// <p>1.21 侧会优先使用单个连枷自己的 Geo 模型，缺失时才回退到公共手柄。1.20
 /// 现在暂时只有公共手柄资源，但这里仍保留同样的解析流程，避免以后补资源时还要改代码。</p>
 public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> {
-    private static final ResourceLocation HANDLE_MODEL =
-            Confluence.asResource("geo/item/flail/handle.geo.json");
-    private static final ResourceLocation FALLBACK_TEXTURE =
-            Confluence.asResource("textures/entity/flail/flail.png");
+    private static final ResourceLocation HANDLE_MODEL = Confluence.asResource("geo/item/flail/handle.geo.json");
+    private static final ResourceLocation FALLBACK_TEXTURE = Confluence.asResource("textures/entity/flail/flail.png");
 
     private final FlailItemModel model;
     private final Map<String, ResourceLocation> modelCache = new HashMap<>();
@@ -45,43 +43,29 @@ public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> 
         ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(stack.getItem());
         String name = itemId.getPath();
         model.model = modelCache.computeIfAbsent(name, key -> {
-            ResourceLocation specific =
-                    Confluence.asResource("geo/item/flail/" + key + ".geo.json");
+            ResourceLocation specific = Confluence.asResource("geo/item/flail/" + key + ".geo.json");
             return resourceExists(specific) ? specific : HANDLE_MODEL;
         });
 
-        ResourceLocation texture =
-                Confluence.asResource("textures/item/flail/" + name + ".png");
+        ResourceLocation texture = Confluence.asResource("textures/item/flail/" + name + ".png");
         model.texture = resourceExists(texture) ? texture : FALLBACK_TEXTURE;
     }
 
     /// 检查客户端资源是否存在；缺资源只回退，不在渲染帧里抛错。
     private static boolean resourceExists(ResourceLocation location) {
-        return Minecraft.getInstance()
-                .getResourceManager()
-                .getResource(location)
-                .isPresent();
+        return Minecraft.getInstance().getResourceManager().getResource(location).isPresent();
     }
 
     @Override
-    public void renderByItem(
-            ItemStack stack,
-            ItemDisplayContext displayContext,
-            PoseStack poseStack,
-            MultiBufferSource buffer,
-            int packedLight,
-            int packedOverlay
-    ) {
+    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         updateModelForStack(stack);
         if (isHand(displayContext)) {
             Player player = Minecraft.getInstance().player;
-            if (player == null || activePhase(player)
-                    != BaseFlailEntity.PHASE_SPIN) {
+            if (player == null || activePhase(player) != BaseFlailEntity.PHASE_SPIN) {
                 return;
             }
         }
-        super.renderByItem(stack, displayContext, poseStack, buffer,
-                packedLight, packedOverlay);
+        super.renderByItem(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
     }
 
     private static boolean isHand(ItemDisplayContext context) {
@@ -92,10 +76,7 @@ public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> 
     }
 
     private static int activePhase(Player player) {
-        return player.level().getEntitiesOfClass(
-                        BaseFlailEntity.class,
-                        player.getBoundingBox().inflate(30.0),
-                        entity -> entity.getOwner() == player)
+        return player.level().getEntitiesOfClass(BaseFlailEntity.class, player.getBoundingBox().inflate(30.0), entity -> entity.getOwner() == player)
                 .stream()
                 .findFirst()
                 .map(BaseFlailEntity::getPhase)
@@ -123,9 +104,7 @@ public final class BaseFlailItemRenderer extends GeoItemRenderer<BaseFlailItem> 
         }
 
         @Override
-        public @Nullable ResourceLocation getAnimationResource(
-                BaseFlailItem animatable
-        ) {
+        public @Nullable ResourceLocation getAnimationResource(BaseFlailItem animatable) {
             return null;
         }
     }

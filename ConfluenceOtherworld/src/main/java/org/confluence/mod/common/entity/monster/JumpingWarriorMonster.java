@@ -10,29 +10,16 @@ import net.minecraft.world.level.Level;
 public final class JumpingWarriorMonster extends BaseWarriorMonster {
     private final JumpProfile jumpProfile;
 
-    public JumpingWarriorMonster(
-            EntityType<? extends JumpingWarriorMonster> type,
-            Level level,
-            JumpProfile jumpProfile) {
+    public JumpingWarriorMonster(EntityType<? extends JumpingWarriorMonster> type, Level level, JumpProfile jumpProfile) {
         this(type, level, jumpProfile, LandAnimationProfile.WALK_ONLY);
     }
 
-    public JumpingWarriorMonster(
-            EntityType<? extends JumpingWarriorMonster> type,
-            Level level,
-            JumpProfile jumpProfile,
-            LandAnimationProfile animationProfile) {
-        this(type, level, jumpProfile, animationProfile,
-                LandSoundProfile.ROUTINE);
+    public JumpingWarriorMonster(EntityType<? extends JumpingWarriorMonster> type, Level level, JumpProfile jumpProfile, LandAnimationProfile animationProfile) {
+        this(type, level, jumpProfile, animationProfile, LandSoundProfile.ROUTINE);
     }
 
     /// 创建同时具有跳跃参数、动画档案和音效档案的陆行怪物变种。
-    public JumpingWarriorMonster(
-            EntityType<? extends JumpingWarriorMonster> type,
-            Level level,
-            JumpProfile jumpProfile,
-            LandAnimationProfile animationProfile,
-            LandSoundProfile soundProfile) {
+    public JumpingWarriorMonster(EntityType<? extends JumpingWarriorMonster> type, Level level, JumpProfile jumpProfile, LandAnimationProfile animationProfile, LandSoundProfile soundProfile) {
         super(type, level, 0.0, animationProfile, soundProfile);
         this.jumpProfile = jumpProfile;
     }

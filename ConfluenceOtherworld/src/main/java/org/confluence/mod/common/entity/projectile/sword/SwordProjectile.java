@@ -4,6 +4,8 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,18 +23,22 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
-import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Comparator;
 
 /// 剑气实体的服务端运行时，负责运动、追踪、碰撞、伤害与快照同步。
-public abstract class SwordProjectile extends AbstractHurtingProjectile implements IEntityAdditionalSpawnData {
+public abstract class SwordProjectile extends AbstractHurtingProjectile implements IEntityAdditionalSpawnData, Immunity {
     private static final EntityDataAccessor<Vector3f> DATA_INITIAL_VELOCITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     private static final EntityDataAccessor<Float> DATA_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
@@ -46,6 +52,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     private float gravity;
     private float baseAttackDamage;
     private float baseKnockback;
+    private int collisionInterval = 1;
+    private int collisionCooldown = 1;
+    private double collisionInflation = 0.5;
 
     protected Vec3 direction = Vec3.ZERO;
     protected int lifetime = 40;
@@ -137,8 +146,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     private void acquireTrackingTarget() {
         if (!(getOwner() instanceof LivingEntity owner)) return;
-        trackingTarget = level().getEntities(this, getBoundingBox().inflate(50.0), entity -> entity instanceof LivingEntity living
-                        && living.isAlive() && ProjectileHitRules.canHit(owner, living)).stream()
+        trackingTarget = level().getEntities(this, getBoundingBox().inflate(50.0), entity -> entity instanceof LivingEntity living && living.isAlive() && ProjectileHitRules.canHit(owner, living)).stream()
                 .map(LivingEntity.class::cast)
                 .min(Comparator.comparingDouble(this::distanceToSqr))
                 .orElse(null);
@@ -153,6 +161,29 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
             updateTracking(component);
         }
         if (!level().isClientSide && tickCount >= lifetime) discard();
+        if (!level().isClientSide && !isRemoved() && usesDefaultCollisionDamage())
+            tickCollisionDamage();
+    }
+
+    protected boolean usesDefaultCollisionDamage() {
+        return true;
+    }
+
+    private void tickCollisionDamage() {
+        if (--collisionCooldown > 0) return;
+        collisionCooldown = collisionInterval;
+        for (Entity target : level().getEntities(this, getBoundingBox().inflate(collisionInflation), this::canHitEntity)) {
+            hurtTarget(target);
+        }
+    }
+
+    protected final void configureCollision(int interval, double inflation) {
+        if (interval < 1 || !Double.isFinite(inflation) || inflation < 0.0) {
+            throw new IllegalArgumentException("Invalid sword projectile collision settings");
+        }
+        collisionInterval = interval;
+        collisionCooldown = interval;
+        collisionInflation = inflation;
     }
 
     private void updateTracking(SwordProjectileComponent component) {
@@ -170,9 +201,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {
-        if (!level().isClientSide) hurtTarget(result.getEntity());
-    }
+    protected void onHitEntity(EntityHitResult result) {}
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
@@ -185,9 +214,10 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected boolean hurtTarget(Entity target) {
         if (!canHitEntity(target)) return false;
         Entity impacted = ProjectileHitRules.impactedEntity(target);
-        if (!(impacted instanceof LivingEntity living) || !impacted.hurt(damageSource(), baseAttackDamage))
+        if (!(impacted instanceof LivingEntity living))
             return false;
         applyHitEffect(impacted);
+        if (!impacted.hurt(damageSource(), baseAttackDamage)) return false;
         level().broadcastEntityEvent(this, EVENT_ENTITY_HIT);
         LibEntityUtils.knockBackA2B(this, living, (baseKnockback + bonusKnockback) * 0.5, 0.2);
         if (--remainingHits <= 0) discard();
@@ -197,7 +227,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected void applyHitEffect(Entity target) {}
 
     public DamageSource damageSource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, getOwner());
+        return LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, getOwner());
     }
 
     @Override
@@ -215,6 +245,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         shoot(directionX, directionY, directionZ, velocity, inaccuracy);
         Vec3 ownerMovement = shooter.getKnownMovement().scale(0.25F);
         setDeltaMovement(getDeltaMovement().add(ownerMovement.x, shooter.onGround() ? 0.0 : ownerMovement.y, ownerMovement.z));
+        direction = getDeltaMovement().normalize();
+        entityData.set(DATA_DIRECTION, direction.toVector3f());
         entityData.set(DATA_INITIAL_VELOCITY, getDeltaMovement().toVector3f());
     }
 
@@ -222,8 +254,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (component != null)
-            SwordProjectileComponent.CODEC.encodeStart(NbtOps.INSTANCE, component).result()
-                    .ifPresent(value -> tag.put("ProjectileComponent", value));
+            SwordProjectileComponent.CODEC.encodeStart(NbtOps.INSTANCE, component).result().ifPresent(value -> tag.put("ProjectileComponent", value));
         if (!firedFromWeapon.isEmpty()) tag.put("Weapon", firedFromWeapon.save(new CompoundTag()));
         tag.putFloat("BaseDamage", baseAttackDamage);
         tag.putFloat("BaseKnockback", baseKnockback);
@@ -236,8 +267,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("ProjectileComponent"))
-            SwordProjectileComponent.CODEC.parse(NbtOps.INSTANCE, tag.get("ProjectileComponent")).result()
-                    .ifPresent(this::setProjectileComponent);
+            SwordProjectileComponent.CODEC.parse(NbtOps.INSTANCE, tag.get("ProjectileComponent")).result().ifPresent(this::setProjectileComponent);
         firedFromWeapon = tag.contains("Weapon") ? ItemStack.of(tag.getCompound("Weapon")) : ItemStack.EMPTY;
         baseAttackDamage = tag.getFloat("BaseDamage");
         baseKnockback = tag.getFloat("BaseKnockback");
@@ -258,6 +288,11 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         if (buffer.readBoolean())
             setProjectileComponent(SwordProjectileComponent.STREAM_CODEC.decode(buffer));
         firedFromWeapon = buffer.readItem();
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public Vec3 getProjectileDirection() {
@@ -296,6 +331,16 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     protected ParticleOptions getTrailParticle() {
-        return null;
+        return ModParticleTypes.NO_TRAIL.get();
+    }
+
+    @Override
+    public Type confluence$getImmunityType() {
+        return ImmunityDataMap.getImmunityType(this);
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
+        return ImmunityDataMap.getImmunityDuration(this, damageSource, source -> 1);
     }
 }

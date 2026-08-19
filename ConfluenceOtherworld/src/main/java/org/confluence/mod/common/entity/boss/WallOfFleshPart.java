@@ -55,18 +55,14 @@ public abstract class WallOfFleshPart extends BaseBossPart<WallOfFlesh> {
         tickContactDamage(master);
     }
 
-    protected abstract void tickAttack(
-            WallOfFlesh master, @Nullable LivingEntity target);
+    protected abstract void tickAttack(WallOfFlesh master, @Nullable LivingEntity target);
 
     private void tickContactDamage(WallOfFlesh master) {
         if (contactCooldown > 0) {
             contactCooldown--;
             return;
         }
-        for (LivingEntity living : level().getEntitiesOfClass(
-                LivingEntity.class,
-                getBoundingBox(),
-                entity -> entity != master && master.canAttack(entity))) {
+        for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox(), entity -> entity != master && master.canAttack(entity))) {
             if (master.doHurtTarget(living)) {
                 contactCooldown = CONTACT_INTERVAL;
                 return;

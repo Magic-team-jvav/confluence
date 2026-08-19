@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.SpearTrapBlock;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TrapDamageHelper;
@@ -101,7 +101,7 @@ public class SpearEntity extends Entity {
             AABB aabb = entity1.getBoundingBox().inflate(0.3);
             if (aabb.clip(startVec, endVec).isPresent()) {
                 float damage = LibUtils.switchByDifficulty(level(), blockPosition(), 24, 48, 72);
-                entity1.hurt(ModDamageTypes.of(level(), DamageTypes.STING), TrapDamageHelper.applyDeadMansSweaterReduction((LivingEntity) entity1, damage));
+                entity1.hurt(LibDamageTypes.of(level(), DamageTypes.STING), TrapDamageHelper.applyDeadMansSweaterReduction((LivingEntity) entity1, damage));
             }
         }
     }

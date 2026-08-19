@@ -16,16 +16,11 @@ public final class Paladin extends RangedMonster {
 
     @Override
     protected Projectile createProjectile(LivingEntity target) {
-        PaladinHammerProjectile projectile =
-                ModEntities.PALADIN_HAMMER_PROJECTILE.get().create(level());
+        PaladinHammerProjectile projectile = ModEntities.PALADIN_HAMMER_PROJECTILE.get().create(level());
         if (projectile == null) {
             return null;
         }
-        projectile.configure(
-                this,
-                target,
-                (float) (getAttributeValue(Attributes.ATTACK_DAMAGE)
-                        * shotMultiplier()));
+        projectile.configure(this, target, (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * shotMultiplier()));
         return projectile;
     }
 }

@@ -29,23 +29,17 @@ import java.util.UUID;
 ///
 /// <p>探测器独立保持射击距离，但目标和生命周期归属于精确的毁灭者 UUID。主人暂时
 /// 卸载时探测器停止攻击并等待恢复，不会转化成永久游荡的独立怪物。</p>
-public final class TheDestroyerProbe
-        extends BaseFlyingMonster {
+public final class TheDestroyerProbe extends BaseFlyingMonster {
     private static final String SHOT_TIMER_TAG = "ShotTimer";
     private static final int SHOT_INTERVAL = 60;
 
     private static final EntityDataAccessor<Optional<UUID>>
-            OWNER_UUID = SynchedEntityData.defineId(
-            TheDestroyerProbe.class,
-            EntityDataSerializers.OPTIONAL_UUID);
+            OWNER_UUID = SynchedEntityData.defineId(TheDestroyerProbe.class, EntityDataSerializers.OPTIONAL_UUID);
 
-    private final BossOwnerTracker<TheDestroyer> ownerTracker =
-            new BossOwnerTracker<>(TheDestroyer.class);
+    private final BossOwnerTracker<TheDestroyer> ownerTracker = new BossOwnerTracker<>(TheDestroyer.class);
     private int shotTimer = SHOT_INTERVAL;
 
-    public TheDestroyerProbe(
-            EntityType<? extends TheDestroyerProbe> type,
-            Level level) {
+    public TheDestroyerProbe(EntityType<? extends TheDestroyerProbe> type, Level level) {
         super(type, level);
         xpReward = 5;
     }
@@ -58,8 +52,7 @@ public final class TheDestroyerProbe
 
     public void setMaster(TheDestroyer master) {
         ownerTracker.bind(this, master);
-        entityData.set(
-                OWNER_UUID, Optional.of(master.getUUID()));
+        entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
     }
 
     public @Nullable TheDestroyer getMaster() {
@@ -107,28 +100,16 @@ public final class TheDestroyerProbe
             return;
         }
         LivingEntity masterTarget = master.getTarget();
-        if (masterTarget != null && masterTarget.isAlive()
-                && getTarget() != masterTarget) {
+        if (masterTarget != null && masterTarget.isAlive() && getTarget() != masterTarget) {
             setTarget(masterTarget);
         }
         if (distanceToSqr(master) > 4096.0) {
-            Vec3 towardMaster = master.position()
-                    .add(0.0, 2.0, 0.0)
-                    .subtract(position());
-            setDeltaMovement(
-                    getDeltaMovement().scale(0.4)
-                            .add(towardMaster.normalize()
-                                    .scale(0.45)));
+            Vec3 towardMaster = master.position().add(0.0, 2.0, 0.0).subtract(position());
+            setDeltaMovement(getDeltaMovement().scale(0.4).add(towardMaster.normalize().scale(0.45)));
         }
         if (getTarget() != null && --shotTimer <= 0) {
             shotTimer = SHOT_INTERVAL;
-            TheDestroyer.fireLaser(
-                    this,
-                    getEyePosition(),
-                    getTarget(),
-                    (float) getAttributeValue(
-                            net.minecraft.world.entity.ai.attributes
-                                    .Attributes.ATTACK_DAMAGE));
+            TheDestroyer.fireLaser(this, getEyePosition(), getTarget(), (float) getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE));
         }
     }
 
@@ -169,10 +150,7 @@ public final class TheDestroyerProbe
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
-        entityData.set(
-                OWNER_UUID,
-                Optional.ofNullable(
-                        ownerTracker.getOwnerUUID()));
+        entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
         shotTimer = tag.getInt(SHOT_TIMER_TAG);
     }
 

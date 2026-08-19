@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
@@ -35,18 +35,11 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(@NotNull BaseBulletEntity entity) {
-        return TextureAtlas.LOCATION_BLOCKS;
+        return BuiltInRegistries.ITEM.getKey(entity.getBulletStack().getItem());
     }
 
     @Override
-    public void render(
-            BaseBulletEntity entity,
-            float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight
-    ) {
+    public void render(BaseBulletEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         String bulletId = entity.getColorID();
         BulletTrailStyle style = BulletTrailStyles.get(bulletId);
         int color = GunTrailColors.getColor(bulletId);
@@ -74,16 +67,7 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
-    private static void renderTrail(
-            List<Vec3> trails,
-            Vec3 entityPosition,
-            Vec3 cameraPosition,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int color,
-            BulletTrailStyle style,
-            float fadePower
-    ) {
+    private static void renderTrail(List<Vec3> trails, Vec3 entityPosition, Vec3 cameraPosition, PoseStack poseStack, MultiBufferSource bufferSource, int color, BulletTrailStyle style, float fadePower) {
         List<Vec3> points = TrailPathSmoother.smooth(trails, entityPosition, style.maxPoints());
         int pointCount = points.size();
         if (pointCount < 2) return;
@@ -93,8 +77,7 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
         int blue = FastColor.ARGB32.blue(color);
         float colorOpacity = FastColor.ARGB32.alpha(color) / 255.0F;
         Matrix4f matrix = poseStack.last().pose();
-        VertexConsumer buffer = bufferSource.getBuffer(BulletRenderTypes.trail(
-                style.trailTexture(), style.additive()));
+        VertexConsumer buffer = bufferSource.getBuffer(BulletRenderTypes.trail(style.trailTexture(), style.additive()));
 
         double[] distance = cumulativeDistance(points);
         double totalDistance = distance[pointCount - 1];
@@ -107,9 +90,7 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
         for (int index = 0; index < pointCount; index++) {
             progress[index] = (float) (distance[index] / totalDistance);
             widths[index] = widthAt(style, progress[index]);
-            colors[index] = colorAt(
-                    red, green, blue, colorOpacity,
-                    style.opacity(), progress[index], fadePower);
+            colors[index] = colorAt(red, green, blue, colorOpacity, style.opacity(), progress[index], fadePower);
         }
 
         for (int index = 1; index < pointCount; index++) {
@@ -156,51 +137,18 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
         return result;
     }
 
-    private static void renderHead(
-            Vec3 entityPosition,
-            Vec3 cameraPosition,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int color,
-            BulletTrailStyle style,
-            float visibility
-    ) {
-        int alpha = Math.round(255.0F * style.opacity() * visibility
-                * FastColor.ARGB32.alpha(color) / 255.0F);
-        int headColor = FastColor.ARGB32.color(
-                alpha,
-                FastColor.ARGB32.red(color),
-                FastColor.ARGB32.green(color),
-                FastColor.ARGB32.blue(color));
-        renderSprite(
-                entityPosition,
-                entityPosition,
-                cameraPosition,
-                poseStack,
-                bufferSource,
-                style.headTexture(),
-                headColor,
-                style.headSize() * (0.65F + visibility * 0.35F),
-                style.additive());
+    private static void renderHead(Vec3 entityPosition, Vec3 cameraPosition, PoseStack poseStack, MultiBufferSource bufferSource, int color, BulletTrailStyle style, float visibility) {
+        int alpha = Math.round(255.0F * style.opacity() * visibility * FastColor.ARGB32.alpha(color) / 255.0F);
+        int headColor = FastColor.ARGB32.color(alpha, FastColor.ARGB32.red(color), FastColor.ARGB32.green(color), FastColor.ARGB32.blue(color));
+        renderSprite(entityPosition, entityPosition, cameraPosition, poseStack, bufferSource, style.headTexture(), headColor, style.headSize() * (0.65F + visibility * 0.35F), style.additive());
     }
 
     private static float headVisibility(Vec3 entityPosition, Vec3 cameraPosition) {
         double distance = entityPosition.distanceTo(cameraPosition);
-        return Mth.clamp((float) ((distance - HEAD_FADE_START_DISTANCE)
-                / (HEAD_FULL_DISTANCE - HEAD_FADE_START_DISTANCE)), 0.0F, 1.0F);
+        return Mth.clamp((float) ((distance - HEAD_FADE_START_DISTANCE) / (HEAD_FULL_DISTANCE - HEAD_FADE_START_DISTANCE)), 0.0F, 1.0F);
     }
 
-    private static void renderSprite(
-            Vec3 worldPosition,
-            Vec3 entityPosition,
-            Vec3 cameraPosition,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            ResourceLocation texture,
-            int color,
-            float size,
-            boolean additive
-    ) {
+    private static void renderSprite(Vec3 worldPosition, Vec3 entityPosition, Vec3 cameraPosition, PoseStack poseStack, MultiBufferSource bufferSource, ResourceLocation texture, int color, float size, boolean additive) {
         Vec3 facing = cameraPosition.subtract(worldPosition);
         if (facing.lengthSqr() <= EPSILON) return;
         facing = facing.normalize();
@@ -226,23 +174,14 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
         return Mth.lerp(eased, style.tailWidth(), style.headWidth());
     }
 
-    private static int colorAt(
-            int red,
-            int green,
-            int blue,
-            float baseOpacity,
-            float opacity,
-            float progress,
-            float fadePower
-    ) {
+    private static int colorAt(int red, int green, int blue, float baseOpacity, float opacity, float progress, float fadePower) {
         float eased = Mth.clamp(progress, 0.0F, 1.0F);
         int alpha = Math.round(255.0F * baseOpacity * opacity * (float) Math.pow(eased, fadePower));
         return FastColor.ARGB32.color(alpha, red, green, blue);
     }
 
     private static float chlorophytePulse(BaseBulletEntity entity, float partialTick) {
-        return 0.55F + 0.45F * (0.5F + 0.5F * Mth.sin(
-                (entity.tickCount + partialTick) * 2.8F + entity.getId() * 0.63F));
+        return 0.55F + 0.45F * (0.5F + 0.5F * Mth.sin((entity.tickCount + partialTick) * 2.8F + entity.getId() * 0.63F));
     }
 
     private static int scaleRgb(int color, float scale) {
@@ -254,14 +193,7 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
         );
     }
 
-    private static void addVertex(
-            VertexConsumer buffer,
-            Matrix4f matrix,
-            Vec3 position,
-            int color,
-            float u,
-            float v
-    ) {
+    private static void addVertex(VertexConsumer buffer, Matrix4f matrix, Vec3 position, int color, float u, float v) {
         buffer.vertex(matrix, (float) position.x, (float) position.y, (float) position.z)
                 .color(color)
                 .uv(u, v)
@@ -270,10 +202,6 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
     }
 
     private static Vec3 interpolatedPosition(BaseBulletEntity entity, float partialTick) {
-        return new Vec3(
-                Mth.lerp(partialTick, entity.xo, entity.getX()),
-                Mth.lerp(partialTick, entity.yo, entity.getY()),
-                Mth.lerp(partialTick, entity.zo, entity.getZ())
-        );
+        return new Vec3(Mth.lerp(partialTick, entity.xo, entity.getX()), Mth.lerp(partialTick, entity.yo, entity.getY()), Mth.lerp(partialTick, entity.zo, entity.getZ()));
     }
 }

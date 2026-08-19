@@ -51,18 +51,7 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return withPassivePanic(
-                        createGroundCritterRoutine(
-                                1.0,
-                                new VanillaGoalAction(
-                                        new BreedGoal(
-                                                Squirrel.this,
-                                                1.0)),
-                                new VanillaGoalAction(
-                                        new FollowParentGoal(
-                                                Squirrel.this,
-                                                1.25))),
-                        2.0);
+                return withPassivePanic(createGroundCritterRoutine(1.0, new VanillaGoalAction(new BreedGoal(Squirrel.this, 1.0)), new VanillaGoalAction(new FollowParentGoal(Squirrel.this, 1.25))), 2.0);
             }
         };
     }
@@ -75,8 +64,7 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
 
     @Override
     public Variant getVariant() {
-        return CritterVariantUtil.byId(
-                Variant.values(), this.entityData.get(DATA_VARIANT), Variant.NORMAL);
+        return CritterVariantUtil.byId(Variant.values(), this.entityData.get(DATA_VARIANT), Variant.NORMAL);
     }
 
     @Override
@@ -105,8 +93,7 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
 
     @Override
     protected void initializeSpawnVariant() {
-        setVariant(CritterVariantUtil.withRareVariant(
-                random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
+        setVariant(CritterVariantUtil.withRareVariant(random, COMMON_SPAWN_VARIANTS, Variant.GOLD));
     }
 
     @Override
@@ -122,9 +109,7 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
 
     /// 松鼠当前没有可触发求偶的食物，但仍保留后代工厂，供命令、事件和附属模组调用。
     @Override
-    public Squirrel getBreedOffspring(
-            ServerLevel level,
-            net.minecraft.world.entity.AgeableMob otherParent) {
+    public Squirrel getBreedOffspring(ServerLevel level, net.minecraft.world.entity.AgeableMob otherParent) {
         return CritterEntities.SQUIRREL.get().create(level);
     }
 

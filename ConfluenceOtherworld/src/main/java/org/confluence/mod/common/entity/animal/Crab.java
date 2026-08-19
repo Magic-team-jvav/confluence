@@ -32,9 +32,7 @@ public class Crab extends BaseCritter {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return withPassivePanic(
-                        createGroundCritterRoutine(1.0),
-                        1.5);
+                return withPassivePanic(createGroundCritterRoutine(1.0), 1.5);
             }
         };
     }
@@ -52,12 +50,8 @@ public class Crab extends BaseCritter {
 
     /// 略微提高横向步态克服地面摩擦的能力，使螃蟹不会在方块边缘反复丢失导航速度。
     @Override
-    public Vec3 handleRelativeFrictionAndCalculateMovement(
-            Vec3 movement,
-            float friction) {
-        return super.handleRelativeFrictionAndCalculateMovement(
-                movement,
-                friction * 1.2F);
+    public Vec3 handleRelativeFrictionAndCalculateMovement(Vec3 movement, float friction) {
+        return super.handleRelativeFrictionAndCalculateMovement(movement, friction * 1.2F);
     }
 
     /// 把普通“面朝目标向前走”转换为“身体侧面朝向目标横着走”。
@@ -65,8 +59,7 @@ public class Crab extends BaseCritter {
     /// <p>除了朝向和输入轴以外，控制器仍保留原版的速度属性、台阶检测和跳跃控制，
     /// 因而可以继续使用通用导航，也能跨越一格高差和较低的碰撞体。</p>
     static final class SidewaysMoveControl extends MoveControl {
-        private static final double MINIMUM_DISTANCE_SQUARED =
-                2.500000277905201E-7;
+        private static final double MINIMUM_DISTANCE_SQUARED = 2.500000277905201E-7;
 
         SidewaysMoveControl(Mob mob) {
             super(mob);
@@ -86,25 +79,20 @@ public class Crab extends BaseCritter {
             double deltaX = wantedX - mob.getX();
             double deltaY = wantedY - mob.getY();
             double deltaZ = wantedZ - mob.getZ();
-            double distanceSquared =
-                    deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+            double distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
             if (distanceSquared < MINIMUM_DISTANCE_SQUARED) {
                 mob.setXxa(0.0F);
                 mob.setZza(0.0F);
                 return;
             }
 
-            float targetYaw = (float) (Mth.atan2(deltaZ, deltaX)
-                    * Mth.RAD_TO_DEG);
+            float targetYaw = (float) (Mth.atan2(deltaZ, deltaX) * Mth.RAD_TO_DEG);
             mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
-            mob.setSpeed((float) (speedModifier
-                    * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+            mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
 
             BlockPos currentPos = mob.blockPosition();
             BlockState currentState = mob.level().getBlockState(currentPos);
-            VoxelShape collision = currentState.getCollisionShape(
-                    mob.level(),
-                    currentPos);
+            VoxelShape collision = currentState.getCollisionShape(mob.level(), currentPos);
             boolean targetAboveStep = deltaY > mob.maxUpStep()
                     && deltaX * deltaX + deltaZ * deltaZ
                     < Math.max(1.0F, mob.getBbWidth());

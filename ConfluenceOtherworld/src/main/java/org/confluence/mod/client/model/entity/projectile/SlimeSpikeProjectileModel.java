@@ -15,8 +15,7 @@ import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 /// <p>网格与 1.21.1 侧的尖刺保持一致，模型层只在客户端注册，避免公共实体类引用
 /// 客户端类型而导致专用服务器加载失败。</p>
 public class SlimeSpikeProjectileModel extends EntityModel<SlimeSpikeEntity> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(
-            Confluence.asResource("slime_spike_projectile"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("slime_spike_projectile"), "main");
     private final ModelPart root;
 
     public SlimeSpikeProjectileModel(ModelPart root) {
@@ -26,8 +25,7 @@ public class SlimeSpikeProjectileModel extends EntityModel<SlimeSpikeEntity> {
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        PartDefinition slime = root.addOrReplaceChild(
-                "slime", CubeListBuilder.create(), PartPose.ZERO);
+        PartDefinition slime = root.addOrReplaceChild("slime", CubeListBuilder.create(), PartPose.ZERO);
         slime.addOrReplaceChild("spike", CubeListBuilder.create()
                         .texOffs(0, 0)
                         .addBox(-0.5F, 0.0F, -0.5F, 1.0F, 4.0F, 1.0F,
@@ -42,16 +40,11 @@ public class SlimeSpikeProjectileModel extends EntityModel<SlimeSpikeEntity> {
     }
 
     @Override
-    public void setupAnim(SlimeSpikeEntity entity, float limbSwing,
-                          float limbSwingAmount, float ageInTicks,
-                          float netHeadYaw, float headPitch) {
+    public void setupAnim(SlimeSpikeEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer,
-                               int packedLight, int packedOverlay,
-                               float red, float green, float blue, float alpha) {
-        root.render(poseStack, buffer, packedLight, packedOverlay,
-                red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

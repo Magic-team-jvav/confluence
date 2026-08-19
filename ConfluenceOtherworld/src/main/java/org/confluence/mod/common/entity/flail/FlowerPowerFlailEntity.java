@@ -17,10 +17,7 @@ import java.util.Comparator;
 public final class FlowerPowerFlailEntity extends BaseFlailEntity {
     private int shootTimer;
 
-    public FlowerPowerFlailEntity(
-            EntityType<? extends FlowerPowerFlailEntity> type,
-            Level level
-    ) {
+    public FlowerPowerFlailEntity(EntityType<? extends FlowerPowerFlailEntity> type, Level level) {
         super(type, level);
     }
 
@@ -30,11 +27,7 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
     }
 
     @Override
-    protected void tickSpecialBehavior(
-            Player player,
-            FlailComponent component,
-            int phase
-    ) {
+    protected void tickSpecialBehavior(Player player, FlailComponent component, int phase) {
         if (level().isClientSide()) {
             return;
         }
@@ -44,11 +37,7 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
         }
         shootTimer = 0;
 
-        LivingEntity target = level().getEntitiesOfClass(
-                        LivingEntity.class,
-                        getBoundingBox().inflate(component.maxDistance()),
-                        candidate -> LibEntityUtils.canHitEntity(
-                                candidate, this))
+        LivingEntity target = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(component.maxDistance()), candidate -> LibEntityUtils.canHitEntity(candidate, this))
                 .stream()
                 .min(Comparator.comparingDouble(this::distanceToSqr))
                 .orElse(null);
@@ -56,23 +45,12 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
             return;
         }
 
-        Vec3 direction = target.getBoundingBox().getCenter()
-                .subtract(position())
-                .normalize();
-        FlowerPowerPetalProjectile petal =
-                ModEntities.FLOWER_POWER_PETAL.get().create(level());
+        Vec3 direction = target.getBoundingBox().getCenter().subtract(position()).normalize();
+        FlowerPowerPetalProjectile petal = ModEntities.FLOWER_POWER_PETAL.get().create(level());
         if (petal == null) {
             return;
         }
-        petal.initialize(
-                this,
-                player,
-                direction.scale(component.throwSpeed()),
-                component.damageFactor()
-                        * (float) player.getAttributeValue(
-                        LibAttributes.getAttackDamage())
-                        / 3.0F,
-                100);
+        petal.initialize(this, player, direction.scale(component.throwSpeed()), component.damageFactor() * (float) player.getAttributeValue(LibAttributes.getAttackDamage()) / 3.0F, 100);
         level().addFreshEntity(petal);
     }
 }

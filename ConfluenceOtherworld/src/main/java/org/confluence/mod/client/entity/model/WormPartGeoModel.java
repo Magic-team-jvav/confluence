@@ -25,8 +25,7 @@ public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNorm
     private final String textureDirectory;
     private final String fallbackFamily;
 
-    public WormPartGeoModel(ResourceLocation bodyModel, ResourceLocation bodyTexture,
-                            ResourceLocation tailModel, ResourceLocation tailTexture) {
+    public WormPartGeoModel(ResourceLocation bodyModel, ResourceLocation bodyTexture, ResourceLocation tailModel, ResourceLocation tailTexture) {
         super(bodyModel, false);
         this.bodyModel = bodyModel;
         this.bodyTexture = bodyTexture;
@@ -44,8 +43,7 @@ public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNorm
             return segment.isTail() ? tailModel : bodyModel;
         }
         if (isWyvernFamily(family)) {
-            return ResourceLocation.fromNamespaceAndPath(
-                    bodyModel.getNamespace(), modelDirectory + "wyvern.geo.json");
+            return ResourceLocation.fromNamespaceAndPath(bodyModel.getNamespace(), modelDirectory + "wyvern.geo.json");
         }
         return ResourceLocation.fromNamespaceAndPath(bodyModel.getNamespace(), modelDirectory + family
                 + (segment.isTail() ? "_tail.geo.json" : "_segment.geo.json"));
@@ -58,8 +56,7 @@ public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNorm
             return segment.isTail() ? tailTexture : bodyTexture;
         }
         if (isWyvernFamily(family)) {
-            return ResourceLocation.fromNamespaceAndPath(
-                    bodyTexture.getNamespace(), textureDirectory + "wyvern.png");
+            return ResourceLocation.fromNamespaceAndPath(bodyTexture.getNamespace(), textureDirectory + "wyvern.png");
         }
         return ResourceLocation.fromNamespaceAndPath(bodyTexture.getNamespace(), textureDirectory + family
                 + (segment.isTail() ? "_tail.png" : "_segment.png"));

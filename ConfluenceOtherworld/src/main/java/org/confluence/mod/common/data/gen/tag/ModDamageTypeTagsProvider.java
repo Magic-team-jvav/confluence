@@ -9,7 +9,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
@@ -23,20 +22,10 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(TCTags.HARMFUL_EFFECT).add(
-                ModDamageTypes.ACID_VENOM,
-                ModDamageTypes.CURSED_INFERNO,
-                ModDamageTypes.FROST_BURN
-        );
-        tag(LibTags.DamageTypes.AS_MELEE_ATTACK).add(
-                ModDamageTypes.SWORD_PROJECTILE,
-                DamageTypes.MOB_ATTACK,
-                DamageTypes.MOB_ATTACK_NO_AGGRO,
-                DamageTypes.PLAYER_ATTACK,
-                DamageTypes.STING
-        );
-        tag(PortTags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
-        tag(DamageTypeTags.IS_PROJECTILE).add(LibDamageTypes.GUN_BULLET, ModDamageTypes.MAGICAL_PROJECTILE);
-        tag(DamageTypeTags.BYPASSES_ARMOR).add(ModDamageTypes.DUNGEON_GUARDIAN);
+        tag(TCTags.HARMFUL_EFFECT).add(LibDamageTypes.ACID_VENOM, LibDamageTypes.CURSED_INFERNO, LibDamageTypes.FROST_BURN);
+        tag(LibTags.DamageTypes.AS_MELEE_ATTACK).add(LibDamageTypes.SWORD_PROJECTILE, DamageTypes.MOB_ATTACK, DamageTypes.MOB_ATTACK_NO_AGGRO, DamageTypes.PLAYER_ATTACK, DamageTypes.STING);
+        tag(PortTags.DamageTypes.IS_MAGIC).add(LibDamageTypes.MAGICAL_PROJECTILE);
+        tag(DamageTypeTags.IS_PROJECTILE).add(LibDamageTypes.GUN_BULLET, LibDamageTypes.MAGICAL_PROJECTILE);
+        tag(DamageTypeTags.BYPASSES_ARMOR).add(LibDamageTypes.DUNGEON_GUARDIAN);
     }
 }

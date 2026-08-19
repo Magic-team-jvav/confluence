@@ -49,8 +49,8 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
         if (!player.serverLevel().hasChunkAt(pos)) return;
         // 房屋工具只允许操作玩家附近的已加载区域，不能借坐标包跨区修改远处存档。
         double maxDistance = Math.max(64.0, player.blockInteractionRange());
-        if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5)
-                > maxDistance * maxDistance) return;
+        if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > maxDistance * maxDistance)
+            return;
 
         ResourceKey<Level> dimension = player.level().dimension();
         House house = HouseHandler.INSTANCE.findHouseAt(dimension, pos);

@@ -4,9 +4,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
-import org.confluence.mod.common.entity.projectile.summon.SummonBoltEntity;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.summon.*;
+import org.confluence.mod.common.summon.projectile.SummonProjectileTypes;
 
 /// 小鬼召唤物的运行实例。
 ///
@@ -27,7 +26,7 @@ public final class ImpSummon extends FlyingSummon {
     public ImpSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("summon_imp"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
-        addGoal(9, new FollowOwnerGoal(this));
+        addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.02, 0.70));
     }
 
     @Override
@@ -49,12 +48,7 @@ public final class ImpSummon extends FlyingSummon {
     }
 
     private void fire(LivingEntity target) {
-        SummonBoltEntity projectile = ModEntities.SUMMON_BOLT.get().create(owner().level());
-        if (projectile == null) {
-            throw new IllegalStateException("Summon projectile type returned null");
-        }
-        projectile.configure(this, target, 0xFF632E, SummonBoltEntity.HitEffect.IGNITE, 1.0F, 1.0F);
-        owner().level().addFreshEntity(projectile);
+        SummonContainer.of(owner()).addProjectile(SummonProjectileTypes.IMP_FIREBALL.create(this, target));
     }
 
     private void combat(LivingEntity target) {
@@ -90,19 +84,4 @@ public final class ImpSummon extends FlyingSummon {
         }
     }
 
-    private static final class FollowOwnerGoal extends SummonGoal<ImpSummon> {
-        private FollowOwnerGoal(ImpSummon summon) {
-            super(summon);
-        }
-
-        @Override
-        public boolean canUse() {
-            return true;
-        }
-
-        @Override
-        public void tick() {
-            summon.followOwner(32.0, 0.10, 0.80);
-        }
-    }
 }

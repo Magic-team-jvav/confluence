@@ -82,11 +82,7 @@ public final class ConfluenceData extends SavedData {
         /// 也必须访问主世界 DataStorage；否则多个 SavedData 会争用 MeteoriteTracker 枚举单例，
         /// 后加载的维度将覆盖先加载维度的状态。
         ServerLevel canonicalLevel = serverLevel.getServer().overworld();
-        ConfluenceData data = canonicalLevel.getDataStorage().computeIfAbsent(
-                ConfluenceData::new,
-                ConfluenceData::new,
-                Confluence.MODID
-        );
+        ConfluenceData data = canonicalLevel.getDataStorage().computeIfAbsent(ConfluenceData::new, ConfluenceData::new, Confluence.MODID);
         initialize(canonicalLevel, data);
         return data;
     }

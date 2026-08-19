@@ -83,8 +83,7 @@ public final class StardustDragonSummon extends FlyingSummon {
     private void idle() {
         if (movementTarget == null || movementTargetTicks-- <= 0) {
             var random = owner().getRandom();
-            movementTarget = owner().position().add((random.nextDouble() - 0.5) * 5.0,
-                    (random.nextDouble() - 0.5) * 5.0 + 2.0, (random.nextDouble() - 0.5) * 5.0);
+            movementTarget = owner().position().add((random.nextDouble() - 0.5) * 5.0, (random.nextDouble() - 0.5) * 5.0 + 2.0, (random.nextDouble() - 0.5) * 5.0);
             movementTargetTicks = 10;
         }
         if (position().distanceToSqr(owner().position()) > 128.0 * 128.0) {
@@ -170,20 +169,19 @@ public final class StardustDragonSummon extends FlyingSummon {
     @Override
     public List<SummonRenderPart> renderParts() {
         List<SummonRenderPart> parts = new ArrayList<>(slotCost() + 1);
-        parts.add(new SummonRenderPart(uuid(), type(), currentPose(),
-                new SummonVisualState(false, SummonAnimation.NONE, 0, 0, 0.0F, 0.5F, 0.5F), 0));
+        parts.add(new SummonRenderPart(uuid(), type(), currentPose(), new SummonVisualState(false, SummonAnimation.NONE, 0, 0, 0.0F, 0.5F, 0.5F), 0));
         Vec3 previous = position();
         List<Vec3> segments = segmentPositions();
         for (int index = 0; index < segments.size(); index++) {
             Vec3 segment = segments.get(index);
-            Vec3 facing = previous.subtract(segment);
+            Vec3 next = index + 1 < segments.size() ? segments.get(index + 1) : segment;
+            Vec3 facing = previous.subtract(next);
             float yaw = facing.horizontalDistanceSqr() < 1.0E-8 ? currentPose().yaw()
                     : (float) Math.toDegrees(Math.atan2(-facing.x, facing.z));
             float pitch = facing.lengthSqr() < 1.0E-8 ? currentPose().pitch()
                     : (float) Math.toDegrees(Math.asin(-facing.normalize().y));
             UUID partId = new UUID(uuid().getMostSignificantBits(), uuid().getLeastSignificantBits() ^ (index + 1L));
-            parts.add(new SummonRenderPart(partId, type(), new SummonPose(segment, yaw, pitch, 0.0F),
-                    new SummonVisualState(false, SummonAnimation.NONE, 0, 0, 0.0F, 0.5F, 0.5F), index + 1));
+            parts.add(new SummonRenderPart(partId, type(), new SummonPose(segment, yaw, pitch, 0.0F), new SummonVisualState(false, SummonAnimation.NONE, 0, 0, 0.0F, 0.5F, 0.5F), index + 1));
             previous = segment;
         }
         return List.copyOf(parts);

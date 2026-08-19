@@ -21,18 +21,12 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 ///
 /// <p>方向在生成时锁定，前十 tick 负责预警，随后十四 tick 快速突进，
 /// 最后减速消散。它不会在飞行途中重新索敌，因此玩家仍可通过移动躲避。</p>
-public final class DeerclopsShadowHandProjectile extends StraightMonsterProjectile
-        implements GeoEntity {
-    private static final EntityDataAccessor<Vector3f> DATA_ATTACK_DIRECTION =
-            SynchedEntityData.defineId(
-                    DeerclopsShadowHandProjectile.class,
-                    EntityDataSerializers.VECTOR3);
+public final class DeerclopsShadowHandProjectile extends StraightMonsterProjectile implements GeoEntity {
+    private static final EntityDataAccessor<Vector3f> DATA_ATTACK_DIRECTION = SynchedEntityData.defineId(DeerclopsShadowHandProjectile.class, EntityDataSerializers.VECTOR3);
     private static final int LIFETIME = 40;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    public DeerclopsShadowHandProjectile(
-            EntityType<? extends DeerclopsShadowHandProjectile> type,
-            Level level) {
+    public DeerclopsShadowHandProjectile(EntityType<? extends DeerclopsShadowHandProjectile> type, Level level) {
         super(type, level);
     }
 
@@ -40,8 +34,7 @@ public final class DeerclopsShadowHandProjectile extends StraightMonsterProjecti
         Vec3 attackDirection = direction.normalize();
         entityData.set(DATA_ATTACK_DIRECTION, attackDirection.toVector3f());
         super.configure(owner, origin, Vec3.ZERO, damage, LIFETIME);
-        setYRot((float) (Math.toDegrees(Math.atan2(
-                attackDirection.z, attackDirection.x)) - 90.0));
+        setYRot((float) (Math.toDegrees(Math.atan2(attackDirection.z, attackDirection.x)) - 90.0));
         setXRot((float) -Math.toDegrees(Math.asin(attackDirection.y)));
     }
 

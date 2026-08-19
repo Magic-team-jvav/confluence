@@ -35,13 +35,7 @@ public final class TheTwinsRenderer extends EntityRenderer<TheTwins> {
     }
 
     @Override
-    public void render(
-            @NotNull TheTwins entity,
-            float entityYaw,
-            float partialTick,
-            @NotNull PoseStack poseStack,
-            @NotNull MultiBufferSource bufferSource,
-            int packedLight) {
+    public void render(@NotNull TheTwins entity, float entityYaw, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight) {
         AbstractTwinEye retinazer = findEye(entity, true);
         AbstractTwinEye spazmatism = findEye(entity, false);
         if (retinazer == null || spazmatism == null) {
@@ -50,12 +44,8 @@ public final class TheTwinsRenderer extends EntityRenderer<TheTwins> {
         }
 
         Vec3 origin = interpolatedPosition(entity, partialTick);
-        Vec3 from = interpolatedPosition(retinazer, partialTick)
-                .add(0.0, retinazer.getBbHeight() * 0.5F, 0.0)
-                .subtract(origin);
-        Vec3 to = interpolatedPosition(spazmatism, partialTick)
-                .add(0.0, spazmatism.getBbHeight() * 0.5F, 0.0)
-                .subtract(origin);
+        Vec3 from = interpolatedPosition(retinazer, partialTick).add(0.0, retinazer.getBbHeight() * 0.5F, 0.0).subtract(origin);
+        Vec3 to = interpolatedPosition(spazmatism, partialTick).add(0.0, spazmatism.getBbHeight() * 0.5F, 0.0).subtract(origin);
 
         PoseStack.Pose pose = poseStack.last();
         VertexConsumer lines = bufferSource.getBuffer(RenderType.lines());
@@ -73,38 +63,21 @@ public final class TheTwinsRenderer extends EntityRenderer<TheTwins> {
         UUID owner = entity.getUUID();
         Class<? extends AbstractTwinEye> type = retinazer ? Retinazer.class : Spazmatism.class;
         return entity.level()
-                .getEntitiesOfClass(type, entity.getBoundingBox().inflate(SEARCH_RANGE),
-                        eye -> eye.isAlive() && owner.equals(eye.getMasterUUID()))
+                .getEntitiesOfClass(type, entity.getBoundingBox().inflate(SEARCH_RANGE), eye -> eye.isAlive() && owner.equals(eye.getMasterUUID()))
                 .stream()
                 .findFirst()
                 .orElse(null);
     }
 
     private static Vec3 interpolatedPosition(AbstractTwinEye entity, float partialTick) {
-        return new Vec3(
-                Mth.lerp(partialTick, entity.xOld, entity.getX()),
-                Mth.lerp(partialTick, entity.yOld, entity.getY()),
-                Mth.lerp(partialTick, entity.zOld, entity.getZ()));
+        return new Vec3(Mth.lerp(partialTick, entity.xOld, entity.getX()), Mth.lerp(partialTick, entity.yOld, entity.getY()), Mth.lerp(partialTick, entity.zOld, entity.getZ()));
     }
 
     private static Vec3 interpolatedPosition(TheTwins entity, float partialTick) {
-        return new Vec3(
-                Mth.lerp(partialTick, entity.xOld, entity.getX()),
-                Mth.lerp(partialTick, entity.yOld, entity.getY()),
-                Mth.lerp(partialTick, entity.zOld, entity.getZ()));
+        return new Vec3(Mth.lerp(partialTick, entity.xOld, entity.getX()), Mth.lerp(partialTick, entity.yOld, entity.getY()), Mth.lerp(partialTick, entity.zOld, entity.getZ()));
     }
 
-    private static void drawOffsetLine(
-            VertexConsumer consumer,
-            Matrix4f pose,
-            Matrix3f normal,
-            Vec3 from,
-            Vec3 to,
-            float offset,
-            int red,
-            int green,
-            int blue,
-            float alpha) {
+    private static void drawOffsetLine(VertexConsumer consumer, Matrix4f pose, Matrix3f normal, Vec3 from, Vec3 to, float offset, int red, int green, int blue, float alpha) {
         Vec3 direction = to.subtract(from);
         Vec3 side = direction.cross(new Vec3(0.0, 1.0, 0.0));
         if (side.lengthSqr() < 1.0E-4) {
@@ -114,31 +87,13 @@ public final class TheTwinsRenderer extends EntityRenderer<TheTwins> {
         drawLine(consumer, pose, normal, from.add(side), to.add(side), red, green, blue, alpha);
     }
 
-    private static void drawLine(
-            VertexConsumer consumer,
-            Matrix4f pose,
-            Matrix3f normal,
-            Vec3 from,
-            Vec3 to,
-            int red,
-            int green,
-            int blue,
-            float alpha) {
+    private static void drawLine(VertexConsumer consumer, Matrix4f pose, Matrix3f normal, Vec3 from, Vec3 to, int red, int green, int blue, float alpha) {
         Vec3 direction = to.subtract(from).normalize();
         addLineVertex(consumer, pose, normal, from, direction, red, green, blue, alpha);
         addLineVertex(consumer, pose, normal, to, direction, red, green, blue, alpha);
     }
 
-    private static void addLineVertex(
-            VertexConsumer consumer,
-            Matrix4f pose,
-            Matrix3f normal,
-            Vec3 position,
-            Vec3 lineNormal,
-            int red,
-            int green,
-            int blue,
-            float alpha) {
+    private static void addLineVertex(VertexConsumer consumer, Matrix4f pose, Matrix3f normal, Vec3 position, Vec3 lineNormal, int red, int green, int blue, float alpha) {
         consumer.vertex(pose, (float) position.x, (float) position.y, (float) position.z)
                 .color(red, green, blue, (int) (alpha * 255.0F))
                 .normal(normal, (float) lineNormal.x, (float) lineNormal.y, (float) lineNormal.z)

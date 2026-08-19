@@ -50,31 +50,15 @@ public final class Nymph extends BaseMonster {
     private static final String RECOVERY_TIME_TAG = "RecoveryTime";
     private static final String RECOVERY_LIMIT_TAG = "RecoveryLimit";
     private static final String REVEAL_TIME_TAG = "RevealTime";
-    private static final UUID PURSUIT_SPEED_UUID =
-            UUID.fromString("4c62d2c5-5ea3-48a2-a73c-1bf9957e6d02");
-    private static final AttributeModifier PURSUIT_SPEED =
-            new AttributeModifier(
-                    PURSUIT_SPEED_UUID,
-                    "Nymph revealed pursuit speed",
-                    0.25,
-                    AttributeModifier.Operation.ADDITION);
-    private static final EntityDataAccessor<Boolean> TRIGGERED =
-            SynchedEntityData.defineId(
-                    Nymph.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> TAMED =
-            SynchedEntityData.defineId(
-                    Nymph.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> CONVERTING =
-            SynchedEntityData.defineId(
-                    Nymph.class, EntityDataSerializers.BOOLEAN);
-    private static final RawAnimation SIT =
-            RawAnimation.begin().thenLoop("sit");
-    private static final RawAnimation DASH =
-            RawAnimation.begin().thenLoop("dash");
-    private static final RawAnimation WALK =
-            RawAnimation.begin().thenLoop("move.walk");
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
+    private static final UUID PURSUIT_SPEED_UUID = UUID.fromString("4c62d2c5-5ea3-48a2-a73c-1bf9957e6d02");
+    private static final AttributeModifier PURSUIT_SPEED = new AttributeModifier(PURSUIT_SPEED_UUID, "Nymph revealed pursuit speed", 0.25, AttributeModifier.Operation.ADDITION);
+    private static final EntityDataAccessor<Boolean> TRIGGERED = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> TAMED = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CONVERTING = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
+    private static final RawAnimation SIT = RawAnimation.begin().thenLoop("sit");
+    private static final RawAnimation DASH = RawAnimation.begin().thenLoop("dash");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private int revealTime;
     private int recoveryTime;
     private int recoveryLimit;
@@ -119,9 +103,7 @@ public final class Nymph extends BaseMonster {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean damaged = super.hurt(source, amount);
-        if (damaged && !level().isClientSide && !isTamed()
-                && source.getEntity() instanceof Player player
-                && !player.isCreative() && !player.isSpectator()) {
+        if (damaged && !level().isClientSide && !isTamed() && source.getEntity() instanceof Player player && !player.isCreative() && !player.isSpectator()) {
             setTarget(player);
             setTriggered(true);
         }
@@ -165,8 +147,7 @@ public final class Nymph extends BaseMonster {
             revealTime = 0;
             getNavigation().stop();
         }
-        updatePursuitSpeed(
-                isTriggered() && hasLiveTarget && revealTime > 20);
+        updatePursuitSpeed(isTriggered() && hasLiveTarget && revealTime > 20);
     }
 
     private void tickConversion() {
@@ -180,8 +161,7 @@ public final class Nymph extends BaseMonster {
         entityData.set(CONVERTING, false);
         setTamed(true);
         setTriggered(false);
-        addEffect(new MobEffectInstance(
-                MobEffects.CONFUSION, 200, 0));
+        addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
         if (!isSilent()) {
             level().levelEvent(null, 1027, blockPosition(), 0);
         }
@@ -192,8 +172,7 @@ public final class Nymph extends BaseMonster {
         if (speed == null) {
             return;
         }
-        if (pursuing
-                && speed.getModifier(PURSUIT_SPEED_UUID) == null) {
+        if (pursuing && speed.getModifier(PURSUIT_SPEED_UUID) == null) {
             speed.addTransientModifier(PURSUIT_SPEED);
         } else if (!pursuing) {
             speed.removeModifier(PURSUIT_SPEED_UUID);
@@ -236,42 +215,32 @@ public final class Nymph extends BaseMonster {
 
     void startConverting(UUID starter, int ticks) {
         if (ticks <= 0) {
-            throw new IllegalArgumentException(
-                    "Nymph conversion time must be positive");
+            throw new IllegalArgumentException("Nymph conversion time must be positive");
         }
         conversionStarter = starter;
         conversionTime = ticks;
         entityData.set(CONVERTING, true);
         removeEffect(MobEffects.WEAKNESS);
-        addEffect(new MobEffectInstance(
-                MobEffects.DAMAGE_BOOST,
-                ticks,
-                Math.max(0, level().getDifficulty().getId() - 1)));
+        addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, ticks, Math.max(0, level().getDifficulty().getId() - 1)));
         level().broadcastEntityEvent(this, (byte) 16);
     }
 
     @Override
-    protected InteractionResult mobInteract(
-            Player player,
-            InteractionHand hand) {
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (!stack.is(Items.GOLDEN_APPLE)) {
             return super.mobInteract(player, hand);
         }
-        if (!hasEffect(MobEffects.WEAKNESS)
-                || isTamed() || isConverting()) {
+        if (!hasEffect(MobEffects.WEAKNESS) || isTamed() || isConverting()) {
             return InteractionResult.CONSUME;
         }
         if (!level().isClientSide) {
             if (!player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
-            startConverting(
-                    player.getUUID(),
-                    2000 + random.nextInt(500));
+            startConverting(player.getUUID(), 2000 + random.nextInt(500));
         }
-        return InteractionResult.sidedSuccess(
-                level().isClientSide);
+        return InteractionResult.sidedSuccess(level().isClientSide);
     }
 
     @Override
@@ -337,23 +306,17 @@ public final class Nymph extends BaseMonster {
         super.readAdditionalSaveData(tag);
         setTamed(tag.getBoolean(TAMED_TAG));
         setTriggered(tag.getBoolean(TRIGGERED_TAG) && !isTamed());
-        conversionTime = Math.max(
-                0, tag.getInt(CONVERSION_TIME_TAG));
-        recoveryTime = Math.max(
-                0, tag.getInt(RECOVERY_TIME_TAG));
-        recoveryLimit = Math.max(
-                1, tag.getInt(RECOVERY_LIMIT_TAG));
-        revealTime = Math.max(
-                0, tag.getInt(REVEAL_TIME_TAG));
+        conversionTime = Math.max(0, tag.getInt(CONVERSION_TIME_TAG));
+        recoveryTime = Math.max(0, tag.getInt(RECOVERY_TIME_TAG));
+        recoveryLimit = Math.max(1, tag.getInt(RECOVERY_LIMIT_TAG));
+        revealTime = Math.max(0, tag.getInt(REVEAL_TIME_TAG));
         conversionStarter = tag.hasUUID(CONVERSION_STARTER_TAG)
                 ? tag.getUUID(CONVERSION_STARTER_TAG) : null;
-        entityData.set(CONVERTING,
-                conversionTime > 0 && !isTamed());
+        entityData.set(CONVERTING, conversionTime > 0 && !isTamed());
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "state",

@@ -5,10 +5,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.api.ITrackType;
-import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.track.variant.BasisTrack;
 import org.confluence.mod.util.track.variant.SimpleTrack;
@@ -46,6 +46,6 @@ public class BeeGunBullet extends BeeProjectile {
 
     @Override
     protected DamageSource getDamageSource() {
-        return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+        return LibDamageTypes.of(level(), LibDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
     }
 }

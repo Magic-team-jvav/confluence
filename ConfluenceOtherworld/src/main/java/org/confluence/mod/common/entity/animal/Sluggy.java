@@ -20,10 +20,6 @@ public class Sluggy extends SimpleCritter {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Crawl",
-                4,
-                state -> state.setAndContinue(CRAWL)));
+        controllers.add(new AnimationController<>(this, "Crawl", 4, state -> state.setAndContinue(CRAWL)));
     }
 }

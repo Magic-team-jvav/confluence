@@ -117,9 +117,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
         BlockPos pos = getSelected(index, itemStack);
         // 合法物品只会记录玩家点击过的位置；这里仍需防御手工篡改的极端坐标，
         // 避免选择包借物品 NBT 请求世界边界外区块。
-        if (pos != null
-                && serverPlayer.serverLevel().isInWorldBounds(pos)
-                && serverPlayer.serverLevel().getWorldBorder().isWithinBounds(pos)) {
+        if (pos != null && serverPlayer.serverLevel().isInWorldBounds(pos) && serverPlayer.serverLevel().getWorldBorder().isWithinBounds(pos)) {
             serverPlayer.teleportTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
         }
     }
@@ -134,9 +132,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
             return new ArrayList<>();
         }
         CompoundTag runtime = itemTag.getCompound(RUNTIME_TAG);
-        if (!runtime.contains("Version", Tag.TAG_INT)
-                || runtime.getInt("Version") != RUNTIME_VERSION
-                || !runtime.contains("Count", Tag.TAG_INT)) {
+        if (!runtime.contains("Version", Tag.TAG_INT) || runtime.getInt("Version") != RUNTIME_VERSION || !runtime.contains("Count", Tag.TAG_INT)) {
             return new ArrayList<>();
         }
         int count = runtime.getInt("Count");
@@ -147,9 +143,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
             if (!runtime.contains(key, Tag.TAG_COMPOUND)) return new ArrayList<>();
             CompoundTag positionTag = runtime.getCompound(key);
             // NbtUtils.readBlockPos 会把缺失或类型错误的坐标分量读成零，必须先逐项验型。
-            if (!positionTag.contains("X", Tag.TAG_INT)
-                    || !positionTag.contains("Y", Tag.TAG_INT)
-                    || !positionTag.contains("Z", Tag.TAG_INT)) {
+            if (!positionTag.contains("X", Tag.TAG_INT) || !positionTag.contains("Y", Tag.TAG_INT) || !positionTag.contains("Z", Tag.TAG_INT)) {
                 return new ArrayList<>();
             }
             BlockPos position = NbtUtils.readBlockPos(positionTag);

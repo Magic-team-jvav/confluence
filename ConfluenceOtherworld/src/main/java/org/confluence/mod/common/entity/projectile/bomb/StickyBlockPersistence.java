@@ -37,16 +37,13 @@ final class StickyBlockPersistence {
     static Attachment load(CompoundTag entityTag, Entity entity) {
         if (!entityTag.contains(ROOT_KEY, Tag.TAG_COMPOUND)) return Attachment.EMPTY;
         CompoundTag stickyTag = entityTag.getCompound(ROOT_KEY);
-        if (!stickyTag.contains(POSITION_KEY, Tag.TAG_LONG)
-                || !stickyTag.contains(BLOCK_STATE_KEY, Tag.TAG_COMPOUND)) {
+        if (!stickyTag.contains(POSITION_KEY, Tag.TAG_LONG) || !stickyTag.contains(BLOCK_STATE_KEY, Tag.TAG_COMPOUND)) {
             return Attachment.EMPTY;
         }
 
         BlockPos position = BlockPos.of(stickyTag.getLong(POSITION_KEY));
         Level level = entity.level();
-        if (!level.isInWorldBounds(position)
-                || !level.getWorldBorder().isWithinBounds(position)
-                || position.distToCenterSqr(entity.position()) > MAX_ATTACHMENT_DISTANCE_SQUARED) {
+        if (!level.isInWorldBounds(position) || !level.getWorldBorder().isWithinBounds(position) || position.distToCenterSqr(entity.position()) > MAX_ATTACHMENT_DISTANCE_SQUARED) {
             return Attachment.EMPTY;
         }
 

@@ -40,9 +40,7 @@ public class Retinazer extends AbstractTwinEye {
     private int dashesRemaining;
     private Vec3 dashDirection = Vec3.ZERO;
 
-    public Retinazer(
-            EntityType<? extends BaseFlyingMonster> type,
-            Level level) {
+    public Retinazer(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
     }
 
@@ -165,8 +163,7 @@ public class Retinazer extends AbstractTwinEye {
         if (--stateTicks > 0) {
             return;
         }
-        Vec3 direction =
-                target.getEyePosition().subtract(getEyePosition());
+        Vec3 direction = target.getEyePosition().subtract(getEyePosition());
         dashDirection = direction.lengthSqr() < 1.0E-7
                 ? Vec3.ZERO : direction.normalize();
         combatState = DASH;
@@ -193,23 +190,15 @@ public class Retinazer extends AbstractTwinEye {
         dashDirection = Vec3.ZERO;
     }
 
-    private void moveToward(
-            LivingEntity target,
-            double horizontalDistance,
-            double height,
-            double speed) {
+    private void moveToward(LivingEntity target, double horizontalDistance, double height, double speed) {
         Vec3 desiredPosition;
         if (horizontalDistance <= 0.0) {
             desiredPosition = target.position().add(0.0, height, 0.0);
         } else {
-            Vec3 away = position().subtract(target.position())
-                    .multiply(1.0, 0.0, 1.0);
-            desiredPosition = target.position()
-                    .add(away.normalize().scale(horizontalDistance))
-                    .add(0.0, height, 0.0);
+            Vec3 away = position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
+            desiredPosition = target.position().add(away.normalize().scale(horizontalDistance)).add(0.0, height, 0.0);
         }
-        addDeltaMovement(desiredPosition.subtract(position())
-                .scale(speed * 0.01));
+        addDeltaMovement(desiredPosition.subtract(position()).scale(speed * 0.01));
         if (distanceToSqr(target) < 2.0) {
             setDeltaMovement(getDeltaMovement().scale(0.95));
         }
@@ -219,8 +208,7 @@ public class Retinazer extends AbstractTwinEye {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return false;
         }
-        TwinEyeProjectile laser =
-                ModEntities.RETINAZER_LASER.get().create(serverLevel);
+        TwinEyeProjectile laser = ModEntities.RETINAZER_LASER.get().create(serverLevel);
         if (laser == null) {
             return false;
         }
@@ -255,9 +243,6 @@ public class Retinazer extends AbstractTwinEye {
         stateTicks = tag.getInt(STATE_TICKS_TAG);
         shotsRemaining = tag.getInt(SHOTS_TAG);
         dashesRemaining = tag.getInt(DASHES_TAG);
-        dashDirection = new Vec3(
-                tag.getDouble(DASH_X_TAG),
-                tag.getDouble(DASH_Y_TAG),
-                tag.getDouble(DASH_Z_TAG));
+        dashDirection = new Vec3(tag.getDouble(DASH_X_TAG), tag.getDouble(DASH_Y_TAG), tag.getDouble(DASH_Z_TAG));
     }
 }

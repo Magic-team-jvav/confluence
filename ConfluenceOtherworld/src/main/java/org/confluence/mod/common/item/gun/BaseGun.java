@@ -54,14 +54,11 @@ public class BaseGun extends Item implements GeoItem {
         return properties.stacksTo(1).component(ModDataComponentTypes.GUN_PROPERTY, definition.component());
     }
 
-    public BaseGun(Properties properties, int cooldown, float damage, float velocity, float knockback,
-                   float critical, int penetrate, float inaccuracy, ModRarity rarity) {
-        this(properties, new GunDefinition(cooldown, damage, velocity, knockback, critical, penetrate,
-                inaccuracy, rarity, FireMode.MANUAL));
+    public BaseGun(Properties properties, int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity) {
+        this(properties, new GunDefinition(cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity, FireMode.MANUAL));
     }
 
-    public BaseGun(Properties properties, int cooldown, float damage, float velocity, float knockback,
-                   float critical, float inaccuracy, ModRarity rarity) {
+    public BaseGun(Properties properties, int cooldown, float damage, float velocity, float knockback, float critical, float inaccuracy, ModRarity rarity) {
         this(properties, cooldown, damage, velocity, knockback, critical, 0, inaccuracy, rarity);
     }
 
@@ -82,18 +79,11 @@ public class BaseGun extends Item implements GeoItem {
                 && (definition.fireMode() == FireMode.AUTOMATIC || stack.is(ModTags.Items.AUTOMATIC_GUN));
     }
 
-    public String getColorID() {
-        return "";
-    }
-
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.confluence.ranged_damage", definition.damage())
-                .withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("tooltip.confluence.critical_chance",
-                String.format("%.1f", definition.critical() * 100)).withStyle(ChatFormatting.GRAY));
-        tooltipComponents.add(Component.translatable("tooltip.confluence.knockback", definition.knockback())
-                .withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("tooltip.confluence.ranged_damage", definition.damage()).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("tooltip.confluence.critical_chance", String.format("%.1f", definition.critical() * 100)).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("tooltip.confluence.knockback", definition.knockback()).withStyle(ChatFormatting.GRAY));
     }
 
     @Override

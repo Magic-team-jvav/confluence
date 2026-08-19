@@ -16,8 +16,7 @@ import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 ///
 /// 客户端只显示服务端同步的商品、价格说明和页码，不参与报价与成交计算。
 public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
-    private static final ResourceLocation CONTAINER_TEXTURE =
-            ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
+    private static final ResourceLocation CONTAINER_TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
     private static final int TRADE_ROWS = 4;
     private static final int TOP_HEIGHT = TRADE_ROWS * 18 + 17;
 
@@ -76,8 +75,7 @@ public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         graphics.blit(CONTAINER_TEXTURE, leftPos, topPos, 0, 0, imageWidth, TOP_HEIGHT);
-        graphics.blit(CONTAINER_TEXTURE, leftPos, topPos + TOP_HEIGHT, 0, 126,
-                imageWidth, 96);
+        graphics.blit(CONTAINER_TEXTURE, leftPos, topPos + TOP_HEIGHT, 0, 126, imageWidth, 96);
     }
 
     @Override

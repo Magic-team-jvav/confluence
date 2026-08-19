@@ -7,21 +7,17 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
-import org.confluence.mod.common.entity.projectile.summon.SummonBoltEntity;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.summon.*;
-import org.confluence.terra_curio.common.init.TCItems;
-import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.mod.common.summon.projectile.SummonProjectileTypes;
 
 /// 黄蜂召唤物的运行实例。
 ///
-/// <p>这里保留悬停、瞄准、短间隔毒刺射击和蜂巢背包攻速加成。
+/// <p>这里保留悬停、瞄准和短间隔毒刺射击。
 /// 新架构只负责取消真实实体依赖，不能改变玩家能观察到的战斗节奏。</p>
 public final class HornetSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 8.0F;
     private static final int ATTACK_COOLDOWN = 10;
-    private static final int HIVE_PACK_ATTACK_COOLDOWN = 7;
     private int attackCooldown;
     private int attackAnimationTicks;
     private int repositionCooldown;
@@ -30,7 +26,7 @@ public final class HornetSummon extends FlyingSummon {
     public HornetSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("hornet_baby"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
-        addGoal(9, new FollowOwnerGoal(this));
+        addGoal(9, new MomentumSummonIdleGoal<>(this, 2.0, 0.02, 0.70));
     }
 
     @Override
@@ -62,18 +58,9 @@ public final class HornetSummon extends FlyingSummon {
     }
 
     private void shoot(LivingEntity target) {
-        attackCooldown = attackCooldownAfterShot();
+        attackCooldown = ATTACK_COOLDOWN;
         attackAnimationTicks = 10;
-        SummonBoltEntity projectile = ModEntities.SUMMON_BOLT.get().create(owner().level());
-        if (projectile == null) {
-            throw new IllegalStateException("Summon projectile type returned null");
-        }
-        projectile.configure(this, target, 0xE8C83A, SummonBoltEntity.HitEffect.POISON, 1.0F, 0.0F);
-        owner().level().addFreshEntity(projectile);
-    }
-
-    private int attackCooldownAfterShot() {
-        return TCUtils.hasType(owner(), TCItems.HIVE$PACK) ? HIVE_PACK_ATTACK_COOLDOWN : ATTACK_COOLDOWN;
+        SummonContainer.of(owner()).addProjectile(SummonProjectileTypes.HORNET_STINGER.create(this, target));
     }
 
     /// 在当前视线前方寻找新的悬停点，对应 1.21 侧 {@code HoverRandomPos} 的可观察行为。
@@ -86,8 +73,7 @@ public final class HornetSummon extends FlyingSummon {
             double angle = facing + Mth.nextDouble(owner().getRandom(), -Math.PI * 0.5, Math.PI * 0.5);
             double distance = Mth.nextDouble(owner().getRandom(), 3.0, 8.0);
             Vec3 candidate = position().add(-Math.sin(angle) * distance, Mth.nextDouble(owner().getRandom(), -3.0, 7.0), Math.cos(angle) * distance);
-            if (owner().level().noCollision(new AABB(candidate.x - 0.3, candidate.y - 0.3, candidate.z - 0.3,
-                    candidate.x + 0.3, candidate.y + 0.3, candidate.z + 0.3))) {
+            if (owner().level().noCollision(new AABB(candidate.x - 0.3, candidate.y - 0.3, candidate.z - 0.3, candidate.x + 0.3, candidate.y + 0.3, candidate.z + 0.3))) {
                 return candidate;
             }
         }
@@ -116,19 +102,4 @@ public final class HornetSummon extends FlyingSummon {
         }
     }
 
-    private static final class FollowOwnerGoal extends SummonGoal<HornetSummon> {
-        private FollowOwnerGoal(HornetSummon summon) {
-            super(summon);
-        }
-
-        @Override
-        public boolean canUse() {
-            return true;
-        }
-
-        @Override
-        public void tick() {
-            summon.followOwner(32.0, 0.10, 0.80, 2.0);
-        }
-    }
 }

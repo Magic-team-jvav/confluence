@@ -34,10 +34,8 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// 转正，发射后按固定周期重新寻找悬空路径。相关计时保留在实体专用节点中，避免为单个
 /// 特例增加公共飞行参数。</p>
 public class Hornet extends BaseFlyingMonster {
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
-    private static final RawAnimation ATTACK =
-            RawAnimation.begin().thenPlay("attack.cast");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack.cast");
 
     public Hornet(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
@@ -55,35 +53,22 @@ public class Hornet extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        new HornetCombatNode(),
-                        new HornetWanderNode());
+                return SelectorNode.of(new HornetCombatNode(), new HornetWanderNode());
             }
         };
     }
 
     HornetStingerProjectile createStinger(LivingEntity target) {
-        HornetStingerProjectile projectile = new HornetStingerProjectile(
-                ModEntities.HORNET_STINGER.get(), level());
+        HornetStingerProjectile projectile = new HornetStingerProjectile(ModEntities.HORNET_STINGER.get(), level());
         Vec3 origin = position();
-        Vec3 aim = new Vec3(
-                target.getX() - getX(),
-                target.getY() + target.getEyeHeight() * 0.5F - getY(),
-                target.getZ() - getZ());
-        projectile.configure(
-                this,
-                origin,
-                aim,
-                (float) getAttributeValue(Attributes.ATTACK_DAMAGE),
-                5.0F,
-                0);
+        Vec3 aim = new Vec3(target.getX() - getX(), target.getY() + target.getEyeHeight() * 0.5F - getY(), target.getZ() - getZ());
+        projectile.configure(this, origin, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 5.0F, 0);
         swing(InteractionHand.MAIN_HAND);
         return projectile;
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "Idle/Attack",
@@ -150,10 +135,7 @@ public class Hornet extends BaseFlyingMonster {
 
             if (aiming) {
                 lookAtTarget(target, 10.0F, 89.0F);
-                if (angleBetween(
-                        getLookAngle(),
-                        target.getEyePosition().subtract(getEyePosition()))
-                        < FIRE_ANGLE) {
+                if (angleBetween(getLookAngle(), target.getEyePosition().subtract(getEyePosition())) < FIRE_ANGLE) {
                     HornetStingerProjectile projectile = createStinger(target);
                     level().addFreshEntity(projectile);
                     shootCooldown = SHOOT_INTERVAL;
@@ -172,8 +154,7 @@ public class Hornet extends BaseFlyingMonster {
                 Vec3 destination = findFlightPosition(6, 3);
                 if (destination != null) {
                     swing(InteractionHand.MAIN_HAND);
-                    getNavigation().moveTo(destination.x, destination.y,
-                            destination.z, 1.5);
+                    getNavigation().moveTo(destination.x, destination.y, destination.z, 1.5);
                 }
                 repathTicks = REPATH_RESET;
             }
@@ -214,26 +195,20 @@ public class Hornet extends BaseFlyingMonster {
             if (destination == null) {
                 return BTStatus.SUCCESS;
             }
-            moving = getNavigation().moveTo(
-                    destination.x, destination.y, destination.z, 1.0);
+            moving = getNavigation().moveTo(destination.x, destination.y, destination.z, 1.0);
             return moving ? BTStatus.RUNNING : BTStatus.SUCCESS;
         }
     }
 
-    protected final Vec3 findFlightPosition(
-            int verticalRange, int minimumHeight) {
+    protected final Vec3 findFlightPosition(int verticalRange, int minimumHeight) {
         Vec3 view = getViewVector(0.0F);
-        Vec3 destination = HoverRandomPos.getPos(
-                this, 8, 7, view.x, view.z,
-                (float) (Math.PI / 2.0), verticalRange, minimumHeight);
+        Vec3 destination = HoverRandomPos.getPos(this, 8, 7, view.x, view.z, (float) (Math.PI / 2.0), verticalRange, minimumHeight);
         return destination != null
                 ? destination
-                : AirAndWaterRandomPos.getPos(
-                this, 8, 4, -2, view.x, view.z, Math.PI / 2.0);
+                : AirAndWaterRandomPos.getPos(this, 8, 4, -2, view.x, view.z, Math.PI / 2.0);
     }
 
-    private void lookAtTarget(
-            LivingEntity target, float yawLimit, float pitchLimit) {
+    private void lookAtTarget(LivingEntity target, float yawLimit, float pitchLimit) {
         lookAt(target, yawLimit, pitchLimit);
         getLookControl().setLookAt(target);
     }

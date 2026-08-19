@@ -12,10 +12,7 @@ public class DarkCaster extends BaseCasterMonster {
     }
 
     /// 为仅存在于 1.20 的法师变种保留既有战斗节奏。
-    public DarkCaster(
-            EntityType<? extends BaseCasterMonster> type,
-            Level level,
-            boolean legacyCycle) {
+    public DarkCaster(EntityType<? extends BaseCasterMonster> type, Level level, boolean legacyCycle) {
         super(type, level,
                 legacyCycle ? CycleMode.LEGACY_1_20
                         : CycleMode.SHARED_1_21);

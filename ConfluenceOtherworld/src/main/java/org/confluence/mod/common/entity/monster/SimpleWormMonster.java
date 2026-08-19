@@ -25,22 +25,14 @@ public class SimpleWormMonster extends BaseWormMonster {
 
     private final int segments;
     private final Role role;
-    private final BossOwnerTracker<BaseBoss> ownerTracker =
-            new BossOwnerTracker<>(BaseBoss.class);
+    private final BossOwnerTracker<BaseBoss> ownerTracker = new BossOwnerTracker<>(BaseBoss.class);
     private int unresolvedOwnerTicks;
 
-    public SimpleWormMonster(
-            EntityType<? extends SimpleWormMonster> type,
-            Level level,
-            int segments) {
+    public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, int segments) {
         this(type, level, segments, Role.UNDERGROUND);
     }
 
-    public SimpleWormMonster(
-            EntityType<? extends SimpleWormMonster> type,
-            Level level,
-            int segments,
-            Role role) {
+    public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, int segments, Role role) {
         super(type, level);
         this.segments = segments;
         this.role = role;
@@ -67,8 +59,7 @@ public class SimpleWormMonster extends BaseWormMonster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (role == Role.BONE_SERPENT
-                && source.is(DamageTypeTags.IS_FIRE)) {
+        if (role == Role.BONE_SERPENT && source.is(DamageTypeTags.IS_FIRE)) {
             return false;
         }
         return super.hurt(source, amount);
@@ -94,23 +85,19 @@ public class SimpleWormMonster extends BaseWormMonster {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide
-                || getBossOwnerUUID() == null) {
+        if (level().isClientSide || getBossOwnerUUID() == null) {
             return;
         }
         BaseBoss owner = getBossOwner();
         if (owner != null && owner.isAlive()) {
             unresolvedOwnerTicks = 0;
-            if (getTarget() == null
-                    && owner.getTarget() != null
-                    && owner.getTarget().isAlive()) {
+            if (getTarget() == null && owner.getTarget() != null && owner.getTarget().isAlive()) {
                 setTarget(owner.getTarget());
             }
             return;
         }
         setTarget(null);
-        if (++unresolvedOwnerTicks
-                > OWNER_RESOLVE_GRACE_TICKS) {
+        if (++unresolvedOwnerTicks > OWNER_RESOLVE_GRACE_TICKS) {
             discard();
         }
     }
@@ -118,9 +105,7 @@ public class SimpleWormMonster extends BaseWormMonster {
     /// 血肉阵营蠕虫不得攻击同阵营实体；有明确所有者时还需服从所有者的目标过滤。
     @Override
     public boolean canAttack(LivingEntity target) {
-        if (getType().is(ModTags.EntityTypes.FLESH_ALLIANCE)
-                && target.getType().is(
-                ModTags.EntityTypes.FLESH_ALLIANCE)) {
+        if (getType().is(ModTags.EntityTypes.FLESH_ALLIANCE) && target.getType().is(ModTags.EntityTypes.FLESH_ALLIANCE)) {
             return false;
         }
         BaseBoss owner = getBossOwner();

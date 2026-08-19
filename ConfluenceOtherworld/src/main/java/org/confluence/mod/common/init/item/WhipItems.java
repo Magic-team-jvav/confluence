@@ -7,12 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.whip.WhipAppearance;
-import org.confluence.mod.api.whip.WhipDefinition;
-import org.confluence.mod.api.whip.WhipDirectHitEffect;
-import org.confluence.mod.api.whip.WhipFriendlyHitEffect;
-import org.confluence.mod.api.whip.WhipSegment;
-import org.confluence.mod.api.whip.WhipTagEffect;
+import org.confluence.mod.api.whip.*;
 import org.confluence.mod.api.whip.curve.WhipCurves;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
@@ -51,22 +46,14 @@ public final class WhipItems {
                             context.owner()
                     ))
             );
-    public static final PortDeferredItem<BaseWhipItem> SLUB_WHIP =
-            register("slub_whip", 8.0F, 1.0F, 0.2F, 0.5F, 15, 300);
-    public static final PortDeferredItem<BaseWhipItem> RUBY_WHIP =
-            register("ruby_whip", 12.7F, 1.0F, 0.5F, 0.8F, 15, 760);
-    public static final PortDeferredItem<BaseWhipItem> AMBER_WHIP =
-            register("amber_whip", 12.7F, 1.0F, 0.5F, 0.8F, 15, 740);
-    public static final PortDeferredItem<BaseWhipItem> TOPAZ_WHIP =
-            register("topaz_whip", 12.5F, 1.0F, 0.5F, 0.8F, 15, 700);
-    public static final PortDeferredItem<BaseWhipItem> JADE_WHIP =
-            register("jade_whip", 12.6F, 1.0F, 0.5F, 0.8F, 15, 900);
-    public static final PortDeferredItem<BaseWhipItem> DIAMOND_WHIP =
-            register("diamond_whip", 12.8F, 1.0F, 0.5F, 0.8F, 15, 1000);
-    public static final PortDeferredItem<BaseWhipItem> SAPPHIRE_WHIP =
-            register("sapphire_whip", 12.6F, 1.0F, 0.5F, 0.8F, 15, 720);
-    public static final PortDeferredItem<BaseWhipItem> AMETHYST_WHIP =
-            register("amethyst_whip", 12.5F, 1.0F, 0.5F, 0.8F, 15, 700);
+    public static final PortDeferredItem<BaseWhipItem> SLUB_WHIP = register("slub_whip", 8.0F, 1.0F, 0.2F, 0.5F, 15, 300);
+    public static final PortDeferredItem<BaseWhipItem> RUBY_WHIP = register("ruby_whip", 12.7F, 1.0F, 0.5F, 0.8F, 15, 760);
+    public static final PortDeferredItem<BaseWhipItem> AMBER_WHIP = register("amber_whip", 12.7F, 1.0F, 0.5F, 0.8F, 15, 740);
+    public static final PortDeferredItem<BaseWhipItem> TOPAZ_WHIP = register("topaz_whip", 12.5F, 1.0F, 0.5F, 0.8F, 15, 700);
+    public static final PortDeferredItem<BaseWhipItem> JADE_WHIP = register("jade_whip", 12.6F, 1.0F, 0.5F, 0.8F, 15, 900);
+    public static final PortDeferredItem<BaseWhipItem> DIAMOND_WHIP = register("diamond_whip", 12.8F, 1.0F, 0.5F, 0.8F, 15, 1000);
+    public static final PortDeferredItem<BaseWhipItem> SAPPHIRE_WHIP = register("sapphire_whip", 12.6F, 1.0F, 0.5F, 0.8F, 15, 720);
+    public static final PortDeferredItem<BaseWhipItem> AMETHYST_WHIP = register("amethyst_whip", 12.5F, 1.0F, 0.5F, 0.8F, 15, 700);
     public static final PortDeferredItem<BaseWhipItem> SWAMP_WHIP = register(
             "swamp_whip",
             16.0F,
@@ -93,8 +80,7 @@ public final class WhipItems {
                     context.owner()
             )
     );
-    public static final PortDeferredItem<BaseWhipItem> SPINAL_TAP =
-            register("spinal_tap", 29.0F, 4.0F, 0.8F, 1.6F, 13, 3600);
+    public static final PortDeferredItem<BaseWhipItem> SPINAL_TAP = register("spinal_tap", 29.0F, 4.0F, 0.8F, 1.6F, 13, 3600);
     public static final PortDeferredItem<BaseWhipItem> FIRECRACKER = register(
             "firecracker",
             37.0F,
@@ -118,27 +104,8 @@ public final class WhipItems {
         return List.copyOf(TAG_EFFECTS);
     }
 
-    private static PortDeferredItem<BaseWhipItem> register(
-            String name,
-            float damage,
-            float tagDamage,
-            float attackSpeedModifier,
-            float range,
-            int hitCooldownTicks,
-            int durability,
-            WhipDirectHitEffect... directEffects
-    ) {
-        return register(
-                name,
-                damage,
-                tagDamage,
-                attackSpeedModifier,
-                range,
-                hitCooldownTicks,
-                durability,
-                List.of(directEffects),
-                List.of()
-        );
+    private static PortDeferredItem<BaseWhipItem> register(String name, float damage, float tagDamage, float attackSpeedModifier, float range, int hitCooldownTicks, int durability, WhipDirectHitEffect... directEffects) {
+        return register(name, damage, tagDamage, attackSpeedModifier, range, hitCooldownTicks, durability, List.of(directEffects), List.of());
     }
 
     private static PortDeferredItem<BaseWhipItem> register(
@@ -152,40 +119,13 @@ public final class WhipItems {
             List<WhipDirectHitEffect> directEffects,
             List<WhipFriendlyHitEffect> friendlyEffects
     ) {
-        int baseDurationTicks = Math.max(
-                1,
-                (int) (80.0 / (4.0 * (1.0 + attackSpeedModifier))));
-        RegistryObject<WhipTagEffect> tagEffect =
-                ModEffects.registerWhipTag(name, tagDamage);
+        int baseDurationTicks = Math.max(1, (int) (80.0 / (4.0 * (1.0 + attackSpeedModifier))));
+        RegistryObject<WhipTagEffect> tagEffect = ModEffects.registerWhipTag(name, tagDamage);
         TAG_EFFECTS.add(tagEffect);
-        WhipDefinition definition = new WhipDefinition(
-                baseDurationTicks,
-                hitCooldownTicks,
-                damage,
-                range,
-                0.8F,
-                0.2F,
-                false,
-                WhipCurves.DEFAULT,
-                directEffects,
-                friendlyEffects,
-                tagEffect
-        );
+        WhipDefinition definition = new WhipDefinition(baseDurationTicks, hitCooldownTicks, damage, range, 0.8F, 0.2F, false, WhipCurves.DEFAULT, directEffects, friendlyEffects, tagEffect);
         PortItemAttributeModifiers attributes = PortItemAttributeModifiers.builder()
-                .add(
-                        Attributes.ATTACK_SPEED,
-                        new PortAttributeModifier(
-                                Confluence.asResource("whip_attack_speed_modifier"),
-                                attackSpeedModifier,
-                                PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE),
-                        PortEquipmentSlotGroup.MAINHAND)
-                .add(
-                        ConfluenceMagicLib.WHIP_RANGE,
-                        new PortAttributeModifier(
-                                Confluence.asResource("whip_range_modifier"),
-                                range,
-                                PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE),
-                        PortEquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_SPEED, new PortAttributeModifier(Confluence.asResource("whip_attack_speed_modifier"), attackSpeedModifier, PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE), PortEquipmentSlotGroup.MAINHAND)
+                .add(ConfluenceMagicLib.WHIP_RANGE, new PortAttributeModifier(Confluence.asResource("whip_range_modifier"), range, PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE), PortEquipmentSlotGroup.MAINHAND)
                 .build();
         return ITEMS.register(name, () -> new BaseWhipItem(
                 new Item.Properties()

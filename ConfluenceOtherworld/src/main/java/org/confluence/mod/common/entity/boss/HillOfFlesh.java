@@ -42,8 +42,7 @@ import java.util.*;
 /// 肉丘——静止的地狱 Boss，拥有环形伤害区域、5 只眼睛 + 5 张嘴巴。
 /// Phase2 (HP<50%) 时外圈扩大、攻击加速。
 public class HillOfFlesh extends BaseBoss {
-    private static final RawAnimation IDLE =
-            RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     static final float INNER_RADIUS = 14.0F;
     static final float OUTER_RADIUS = 75.0F;
     private static final float ATTACHED_DAMAGE = 10.0F;
@@ -64,18 +63,13 @@ public class HillOfFlesh extends BaseBoss {
     private static final String PHASE_TWO_TAG = "PhaseTwo";
     private static final String EXPANDING_TICKS_TAG = "ExpandingTicks";
     private static final String OUTER_RADIUS_TAG = "OuterRadius";
-    private static final String TERRAIN_DESTRUCTION_TAG =
-            "TerrainDestruction";
+    private static final String TERRAIN_DESTRUCTION_TAG = "TerrainDestruction";
     private static final String FLESH_SLIME_TIMER_TAG = "FleshSlimeTimer";
     private static final String LEECH_TIMER_TAG = "LeechTimer";
     private static final String LAVA_PILLAR_TIMER_TAG = "LavaPillarTimer";
 
-    private static final EntityDataAccessor<Boolean> DATA_INITIALIZING =
-            SynchedEntityData.defineId(
-                    HillOfFlesh.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Float> DATA_OUTER_RADIUS =
-            SynchedEntityData.defineId(
-                    HillOfFlesh.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> DATA_INITIALIZING = SynchedEntityData.defineId(HillOfFlesh.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DATA_OUTER_RADIUS = SynchedEntityData.defineId(HillOfFlesh.class, EntityDataSerializers.FLOAT);
 
     private static final double[][] PART_OFFSETS = {
             {8, 13, 5}, {-8, 10, 8}, {7, 8, -7},
@@ -97,8 +91,7 @@ public class HillOfFlesh extends BaseBoss {
     private int lavaPillarTimer = LAVA_PILLAR_INTERVAL;
     private IncrementalCylinderDestruction destructionTask;
 
-    public HillOfFlesh(
-            EntityType<? extends Monster> type, Level level) {
+    public HillOfFlesh(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         setNoGravity(true);
         xpReward = 5000;
@@ -157,12 +150,7 @@ public class HillOfFlesh extends BaseBoss {
         if (!phase2 || !isExpert()) {
             return INNER_RADIUS;
         }
-        return Mth.lerp(
-                Mth.clamp(
-                        expandingTicks / (float) INNER_EXPANSION_TICKS,
-                        0.0F, 1.0F),
-                INNER_RADIUS,
-                OUTER_RADIUS * 0.25F);
+        return Mth.lerp(Mth.clamp(expandingTicks / (float) INNER_EXPANSION_TICKS, 0.0F, 1.0F), INNER_RADIUS, OUTER_RADIUS * 0.25F);
     }
 
     /// 仅供正式召唤流程开启地形清场。
@@ -194,28 +182,20 @@ public class HillOfFlesh extends BaseBoss {
         if (isValidPartTarget(primaryTarget, radius)) {
             return primaryTarget;
         }
-        List<LivingEntity> candidates = level().getEntitiesOfClass(
-                LivingEntity.class,
-                AABB.ofSize(
-                        position(), radius * 2.0, ARENA_HEIGHT,
-                        radius * 2.0),
-                entity -> isValidPartTarget(entity, radius));
+        List<LivingEntity> candidates = level().getEntitiesOfClass(LivingEntity.class, AABB.ofSize(position(), radius * 2.0, ARENA_HEIGHT, radius * 2.0), entity -> isValidPartTarget(entity, radius));
         return candidates.stream()
                 .min(Comparator.<LivingEntity>comparingInt(
                                 entity -> entity instanceof Player ? 0 : 1)
                         .thenComparingDouble(
-                                entity -> entity.distanceToSqr(partPosition)))
-                .orElse(null);
+                                entity -> entity.distanceToSqr(partPosition))).orElse(null);
     }
 
     /// 判断生物是否仍处于血肉山的圆形战斗区域内，并且可以成为攻击目标。
-    private boolean isValidPartTarget(
-            @Nullable LivingEntity entity, float radius) {
+    private boolean isValidPartTarget(@Nullable LivingEntity entity, float radius) {
         return entity != null
                 && entity.isAlive()
                 && canAttack(entity)
-                && entity.position().subtract(position())
-                .horizontalDistanceSqr() <= radius * radius;
+                && entity.position().subtract(position()).horizontalDistanceSqr() <= radius * radius;
     }
 
     @Override
@@ -246,8 +226,7 @@ public class HillOfFlesh extends BaseBoss {
             return null;
         }
         double[] offset = PART_OFFSETS[index];
-        part.setPos(position().add(
-                offset[0], offset[1], offset[2]));
+        part.setPos(position().add(offset[0], offset[1], offset[2]));
         if (part instanceof HillOfFleshEye eye) {
             eye.setMaster(this);
         } else if (part instanceof HillOfFleshMouth mouth) {
@@ -290,8 +269,7 @@ public class HillOfFlesh extends BaseBoss {
     }
 
     private void updateInitialization() {
-        if (isInitializing()
-                && encounterTicks >= INITIALIZATION_TICKS) {
+        if (isInitializing() && encounterTicks >= INITIALIZATION_TICKS) {
             entityData.set(DATA_INITIALIZING, false);
         }
     }
@@ -301,16 +279,13 @@ public class HillOfFlesh extends BaseBoss {
             phase2 = true;
             broadcastPhaseTransition();
         }
-        if (phase2 && isExpert()
-                && expandingTicks < INNER_EXPANSION_TICKS) {
+        if (phase2 && isExpert() && expandingTicks < INNER_EXPANSION_TICKS) {
             expandingTicks++;
         }
     }
 
     private void updateArenaDestruction() {
-        if (!terrainDestructionEnabled
-                || encounterTicks < DESTRUCTION_START_TICK
-                || getOuterRadius() >= OUTER_RADIUS) {
+        if (!terrainDestructionEnabled || encounterTicks < DESTRUCTION_START_TICK || getOuterRadius() >= OUTER_RADIUS) {
             return;
         }
         if (destructionTask == null) {
@@ -324,9 +299,7 @@ public class HillOfFlesh extends BaseBoss {
                     Mth.floor(OUTER_RADIUS));
         }
         boolean complete = destructionTask.tick();
-        entityData.set(
-                DATA_OUTER_RADIUS,
-                (float) destructionTask.getCurrentRadius());
+        entityData.set(DATA_OUTER_RADIUS, (float) destructionTask.getCurrentRadius());
         if (complete) {
             entityData.set(DATA_OUTER_RADIUS, OUTER_RADIUS);
             destructionTask = null;
@@ -340,13 +313,8 @@ public class HillOfFlesh extends BaseBoss {
                 continue;
             }
             double[] offset = PART_OFFSETS[index];
-            Vec3 rotated = new Vec3(
-                    offset[0], offset[1], offset[2])
-                    .yRot(-getYRot() * Mth.DEG_TO_RAD);
-            part.setPos(
-                    getX() + rotated.x,
-                    getY() + rotated.y,
-                    getZ() + rotated.z);
+            Vec3 rotated = new Vec3(offset[0], offset[1], offset[2]).yRot(-getYRot() * Mth.DEG_TO_RAD);
+            part.setPos(getX() + rotated.x, getY() + rotated.y, getZ() + rotated.z);
         }
     }
 
@@ -354,8 +322,7 @@ public class HillOfFlesh extends BaseBoss {
         if (getTarget() != null || tickCount % 30 != 0) {
             return;
         }
-        Player nearest =
-                level().getNearestPlayer(this, getOuterRadius());
+        Player nearest = level().getNearestPlayer(this, getOuterRadius());
         if (nearest != null && canAttack(nearest)) {
             registerCombatParticipant(nearest);
             setTarget(nearest);
@@ -381,27 +348,22 @@ public class HillOfFlesh extends BaseBoss {
                                     || !canAttack(entity)) {
                                 return false;
                             }
-                            double horizontalDistance = entity.position()
-                                    .subtract(position())
-                                    .horizontalDistanceSqr();
+                            double horizontalDistance = entity.position().subtract(position()).horizontalDistanceSqr();
                             if (horizontalDistance < innerSquared) {
                                 markEncounterEntity(entity);
                             }
-                            boolean insideArena =
-                                    horizontalDistance <= outerSquared;
+                            boolean insideArena = horizontalDistance <= outerSquared;
                             if (insideArena) {
                                 markEncounterEntity(entity);
                             }
                             return insideArena;
                         }));
-        nearbyLivingEntities.sort(
-                Comparator.comparingDouble(this::distanceToSqr));
+        nearbyLivingEntities.sort(Comparator.comparingDouble(this::distanceToSqr));
     }
 
     void markEncounterEntity(LivingEntity entity) {
         encounterEntities.add(entity);
-        entity.addEffect(new MobEffectInstance(
-                ModEffects.CRIMSON_STORM.get(), 200, 0), this);
+        entity.addEffect(new MobEffectInstance(ModEffects.CRIMSON_STORM.get(), 200, 0), this);
         if (entity instanceof Player player) {
             registerCombatParticipant(player);
         }
@@ -421,21 +383,16 @@ public class HillOfFlesh extends BaseBoss {
         float innerRadius = getInnerRadius();
         encounterEntities.removeIf(entity -> !entity.isAlive());
         for (LivingEntity entity : List.copyOf(encounterEntities)) {
-            double distanceSquared = entity.position()
-                    .subtract(position()).horizontalDistanceSqr();
-            if (distanceSquared
-                    > outerRadius * outerRadius) {
-                entity.hurt(
-                        damageSources().magic(), OUTER_DAMAGE);
+            double distanceSquared = entity.position().subtract(position()).horizontalDistanceSqr();
+            if (distanceSquared > outerRadius * outerRadius) {
+                entity.hurt(damageSources().magic(), OUTER_DAMAGE);
             } else if (distanceSquared
                     < (innerRadius - 5.0F)
                     * (innerRadius - 5.0F)) {
-                entity.hurt(
-                        damageSources().magic(), ATTACHED_DAMAGE);
+                entity.hurt(damageSources().magic(), ATTACHED_DAMAGE);
             } else if (distanceSquared
                     < innerRadius * innerRadius) {
-                entity.hurt(
-                        damageSources().magic(), INNER_DAMAGE);
+                entity.hurt(damageSources().magic(), INNER_DAMAGE);
             }
         }
     }
@@ -454,8 +411,7 @@ public class HillOfFlesh extends BaseBoss {
                 continue;
             }
             double strength = Math.min(0.03, 0.5 / distance);
-            entity.addDeltaMovement(
-                    direction.scale(strength / distance));
+            entity.addDeltaMovement(direction.scale(strength / distance));
             entity.hasImpulse = true;
         }
     }
@@ -468,8 +424,7 @@ public class HillOfFlesh extends BaseBoss {
 
         fleshSlimeTimer--;
         if (fleshSlimeTimer <= 0) {
-            fleshSlimeTimer = getSummonInterval(
-                    FLESH_SLIME_INTERVAL);
+            fleshSlimeTimer = getSummonInterval(FLESH_SLIME_INTERVAL);
             spawnFleshSlimes(target);
         }
         if (!phase2) {
@@ -508,8 +463,7 @@ public class HillOfFlesh extends BaseBoss {
                 isMaster() ? 3 : isExpert() ? 2 : 1);
         int spawned = 0;
         for (int index = 0; index < requested; index++) {
-            FleshSlime slime =
-                    MonsterEntities.FLESH_SLIME.get().create(level());
+            FleshSlime slime = MonsterEntities.FLESH_SLIME.get().create(level());
             if (slime == null) {
                 continue;
             }
@@ -533,20 +487,17 @@ public class HillOfFlesh extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return 0;
         }
-        int livingCount =
-                countLivingSubEntities(SimpleWormMonster.class);
+        int livingCount = countLivingSubEntities(SimpleWormMonster.class);
         int requested = Math.min(
                 getSummonLimit() - livingCount,
                 isMaster() ? 3 : isExpert() ? 2 : 1);
         int spawned = 0;
         for (int index = 0; index < requested; index++) {
-            SimpleWormMonster leech =
-                    MonsterEntities.LEECH.get().create(level());
+            SimpleWormMonster leech = MonsterEntities.LEECH.get().create(level());
             if (leech == null) {
                 continue;
             }
-            Vec3 offset = target.position()
-                    .subtract(position()).normalize();
+            Vec3 offset = target.position().subtract(position()).normalize();
             leech.setPos(position().add(offset));
             leech.setTarget(target);
             if (serverLevel.addFreshEntity(leech)) {
@@ -563,10 +514,8 @@ public class HillOfFlesh extends BaseBoss {
         if (!(level() instanceof ServerLevel)) {
             return 0;
         }
-        List<LivingEntity> candidates = new ArrayList<>(
-                nearbyLivingEntities);
-        candidates.removeIf(entity ->
-                Math.abs(entity.getY() - getY()) >= 3.0);
+        List<LivingEntity> candidates = new ArrayList<>(nearbyLivingEntities);
+        candidates.removeIf(entity -> Math.abs(entity.getY() - getY()) >= 3.0);
         if (candidates.isEmpty()) {
             return 0;
         }
@@ -576,9 +525,7 @@ public class HillOfFlesh extends BaseBoss {
             candidates.set(index, candidates.get(swapIndex));
             candidates.set(swapIndex, value);
         }
-        int count = Math.min(
-                candidates.size(),
-                Math.min(getSummonLimit(), 1 + random.nextInt(4)));
+        int count = Math.min(candidates.size(), Math.min(getSummonLimit(), 1 + random.nextInt(4)));
         int spawned = 0;
         for (int index = 0; index < count; index++) {
             LivingEntity target = candidates.get(index);
@@ -598,17 +545,12 @@ public class HillOfFlesh extends BaseBoss {
     /// <p>调用方需要继续配置表现或验证实例时，应直接使用返回值，避免在同一
     /// tick 内重新扫描世界实体列表时受到区块实体列表刷新顺序影响。</p>
     @Nullable
-    HillLavaPillarProjectile spawnLavaPillarEntityAt(
-            LivingEntity target) {
-        HillLavaPillarProjectile pillar =
-                ModEntities.HILL_LAVA_PILLAR.get().create(level());
+    HillLavaPillarProjectile spawnLavaPillarEntityAt(LivingEntity target) {
+        HillLavaPillarProjectile pillar = ModEntities.HILL_LAVA_PILLAR.get().create(level());
         if (pillar == null) {
             return null;
         }
-        pillar.setPos(
-                target.getX(),
-                Math.min(getY(), target.getY()),
-                target.getZ());
+        pillar.setPos(target.getX(), Math.min(getY(), target.getY()), target.getZ());
         pillar.configure(
                 this,
                 isMaster() ? 20.0F
@@ -620,8 +562,7 @@ public class HillOfFlesh extends BaseBoss {
         return null;
     }
 
-    private int countLivingSubEntities(
-            Class<? extends LivingEntity> type) {
+    private int countLivingSubEntities(Class<? extends LivingEntity> type) {
         return (int) getSubEntities().stream()
                 .filter(type::isInstance)
                 .map(type::cast)
@@ -634,8 +575,7 @@ public class HillOfFlesh extends BaseBoss {
     /// <p>移动由整个战斗区域和子实体共同表达，因此不按位移切换动画；死亡阶段停止
     /// 控制器，避免模型消失过程中继续循环。</p>
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(
                 this,
                 "idle",
@@ -647,8 +587,7 @@ public class HillOfFlesh extends BaseBoss {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (source.getEntity() != null
-                && !encounterEntities.contains(source.getEntity())) {
+        if (source.getEntity() != null && !encounterEntities.contains(source.getEntity())) {
             return false;
         }
         return super.hurt(source, amount * 0.5F);
@@ -661,8 +600,7 @@ public class HillOfFlesh extends BaseBoss {
         tag.putBoolean(PHASE_TWO_TAG, phase2);
         tag.putInt(EXPANDING_TICKS_TAG, expandingTicks);
         tag.putFloat(OUTER_RADIUS_TAG, getOuterRadius());
-        tag.putBoolean(
-                TERRAIN_DESTRUCTION_TAG, terrainDestructionEnabled);
+        tag.putBoolean(TERRAIN_DESTRUCTION_TAG, terrainDestructionEnabled);
         tag.putInt(FLESH_SLIME_TIMER_TAG, fleshSlimeTimer);
         tag.putInt(LEECH_TIMER_TAG, leechTimer);
         tag.putInt(LAVA_PILLAR_TIMER_TAG, lavaPillarTimer);
@@ -671,38 +609,22 @@ public class HillOfFlesh extends BaseBoss {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        encounterTicks = Math.max(
-                0, tag.getInt(ENCOUNTER_TICKS_TAG));
+        encounterTicks = Math.max(0, tag.getInt(ENCOUNTER_TICKS_TAG));
         phase2 = tag.getBoolean(PHASE_TWO_TAG);
-        expandingTicks = Mth.clamp(
-                tag.getInt(EXPANDING_TICKS_TAG),
-                0, INNER_EXPANSION_TICKS);
-        entityData.set(
-                DATA_OUTER_RADIUS,
-                Mth.clamp(
-                        tag.getFloat(OUTER_RADIUS_TAG),
-                        INNER_RADIUS, OUTER_RADIUS));
-        terrainDestructionEnabled =
-                tag.getBoolean(TERRAIN_DESTRUCTION_TAG);
-        fleshSlimeTimer = restoreTimer(
-                tag, FLESH_SLIME_TIMER_TAG,
-                FLESH_SLIME_INTERVAL);
-        leechTimer = restoreTimer(
-                tag, LEECH_TIMER_TAG, LEECH_INTERVAL);
-        lavaPillarTimer = restoreTimer(
-                tag, LAVA_PILLAR_TIMER_TAG,
-                LAVA_PILLAR_INTERVAL);
-        entityData.set(
-                DATA_INITIALIZING,
-                encounterTicks < INITIALIZATION_TICKS);
+        expandingTicks = Mth.clamp(tag.getInt(EXPANDING_TICKS_TAG), 0, INNER_EXPANSION_TICKS);
+        entityData.set(DATA_OUTER_RADIUS, Mth.clamp(tag.getFloat(OUTER_RADIUS_TAG), INNER_RADIUS, OUTER_RADIUS));
+        terrainDestructionEnabled = tag.getBoolean(TERRAIN_DESTRUCTION_TAG);
+        fleshSlimeTimer = restoreTimer(tag, FLESH_SLIME_TIMER_TAG, FLESH_SLIME_INTERVAL);
+        leechTimer = restoreTimer(tag, LEECH_TIMER_TAG, LEECH_INTERVAL);
+        lavaPillarTimer = restoreTimer(tag, LAVA_PILLAR_TIMER_TAG, LAVA_PILLAR_INTERVAL);
+        entityData.set(DATA_INITIALIZING, encounterTicks < INITIALIZATION_TICKS);
         destructionTask = null;
         nearbyLivingEntities = List.of();
         encounterEntities.clear();
         java.util.Arrays.fill(parts, null);
     }
 
-    private static int restoreTimer(
-            CompoundTag tag, String key, int fallback) {
+    private static int restoreTimer(CompoundTag tag, String key, int fallback) {
         return tag.contains(key)
                 ? Math.max(0, tag.getInt(key)) : fallback;
     }
@@ -713,10 +635,7 @@ public class HillOfFlesh extends BaseBoss {
     }
 
     @Override
-    public boolean causeFallDamage(
-            float fallDistance,
-            float multiplier,
-            DamageSource source) {
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
 

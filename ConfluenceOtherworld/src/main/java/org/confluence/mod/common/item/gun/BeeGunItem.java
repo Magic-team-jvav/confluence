@@ -27,8 +27,7 @@ public class BeeGunItem extends ManaGunItem {
         int count = 1 + player.getRandom().nextInt(hivePack ? 4 : 3);
         List<Projectile> projectiles = new ArrayList<>(count);
         for (int index = 0; index < count; index++) {
-            projectiles.add(new BeeGunBullet(player.serverLevel(), player,
-                    hivePack && player.getRandom().nextBoolean()));
+            projectiles.add(new BeeGunBullet(player.serverLevel(), player, hivePack && player.getRandom().nextBoolean()));
         }
         notTheBees(player);
         return projectiles;
@@ -42,9 +41,7 @@ public class BeeGunItem extends ManaGunItem {
                     player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BEE_LEGGINGS.get()) ||
                     player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BEE_BOOTS.get())) {
                 ServerPlayer serverPlayer = (ServerPlayer) player;
-                PortAdvancementHolder advancement = PortAdvancementHolder.wrap(
-                        serverPlayer.server.getAdvancements().getAdvancement(
-                                AchievementUtils.asAchievement("not_the_bees")));
+                PortAdvancementHolder advancement = PortAdvancementHolder.wrap(serverPlayer.server.getAdvancements().getAdvancement(AchievementUtils.asAchievement("not_the_bees")));
                 if (advancement != null) {
                     serverPlayer.getAdvancements().award(advancement.value(), "never");
                 }

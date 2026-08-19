@@ -19,9 +19,7 @@ public final class HillLavaPillarProjectile extends Projectile {
     private static final int MAX_LIFETIME = WARNING_TICKS + ACTIVE_TICKS;
     private float damage;
 
-    public HillLavaPillarProjectile(
-            EntityType<? extends HillLavaPillarProjectile> type,
-            Level level) {
+    public HillLavaPillarProjectile(EntityType<? extends HillLavaPillarProjectile> type, Level level) {
         super(type, level);
         setNoGravity(true);
     }
@@ -51,22 +49,14 @@ public final class HillLavaPillarProjectile extends Projectile {
             return;
         }
         if (tickCount < WARNING_TICKS) {
-            if (tickCount % 4 == 0
-                    && level() instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(
-                        ParticleTypes.SMOKE,
-                        getX(), getY() + 0.2, getZ(),
-                        4, 0.0, 0.5, 0.0, 0.0);
+            if (tickCount % 4 == 0 && level() instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.SMOKE, getX(), getY() + 0.2, getZ(), 4, 0.0, 0.5, 0.0, 0.0);
             }
             return;
         }
 
-        if (tickCount % 8 == 0
-                && level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(
-                    ParticleTypes.LAVA,
-                    getX(), getY() + 1.0, getZ(),
-                    10, 0.0, 1.0, 0.0, 0.0);
+        if (tickCount % 8 == 0 && level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(ParticleTypes.LAVA, getX(), getY() + 1.0, getZ(), 10, 0.0, 1.0, 0.0, 0.0);
         }
         if (tickCount % 10 == 0) {
             damageEntities();
@@ -81,13 +71,9 @@ public final class HillLavaPillarProjectile extends Projectile {
                 tickCount > WARNING_TICKS + ACTIVE_TICKS / 2
                         ? 1.0 : 0.0);
         area = area.setMaxY(getY() + 3.0);
-        for (LivingEntity target :
-                level().getEntitiesOfClass(LivingEntity.class, area)) {
-            if (getOwner() instanceof Mob owner
-                    && owner.canAttack(target)) {
-                target.hurt(
-                        damageSources().mobProjectile(this, owner),
-                        damage);
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area)) {
+            if (getOwner() instanceof Mob owner && owner.canAttack(target)) {
+                target.hurt(damageSources().mobProjectile(this, owner), damage);
             }
         }
     }

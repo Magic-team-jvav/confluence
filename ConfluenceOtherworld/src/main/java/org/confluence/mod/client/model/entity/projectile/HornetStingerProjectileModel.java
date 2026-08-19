@@ -11,10 +11,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
 
 /// 黄蜂毒刺弹幕模型，与 1.21 侧的十字薄片网格保持一致。
-public final class HornetStingerProjectileModel
-        extends EntityModel<HornetStingerProjectile> {
-    public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(Confluence.asResource("hornet_stinger"), "main");
+public final class HornetStingerProjectileModel extends EntityModel<HornetStingerProjectile> {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("hornet_stinger"), "main");
     private final ModelPart root;
 
     public HornetStingerProjectileModel(ModelPart root) {
@@ -47,17 +45,7 @@ public final class HornetStingerProjectileModel
             float headPitch) {}
 
     @Override
-    public void renderToBuffer(
-            PoseStack poseStack,
-            VertexConsumer buffer,
-            int packedLight,
-            int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        root.render(
-                poseStack, buffer, packedLight, packedOverlay,
-                red, green, blue, alpha);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        root.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }

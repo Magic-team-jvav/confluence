@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.api.IGeneration;
 import org.confluence.mod.api.ITrackType;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -61,8 +62,7 @@ public record SwordProjectileComponent(
             SwordProjectileParticleEffect.CODEC.listOf().optionalFieldOf("particleEffects", List.of()).forGetter(SwordProjectileComponent::particleEffects)
     ).apply(instance, SwordProjectileComponent::new));
 
-    public static final PortStreamCodec<ByteBuf, SwordProjectileComponent> STREAM_CODEC =
-            PortByteBufCodecs.fromCodec(CODEC);
+    public static final PortStreamCodec<ByteBuf, SwordProjectileComponent> STREAM_CODEC = PortByteBufCodecs.fromCodec(CODEC);
 
     public SwordProjectileComponent {
         damageFactor = requireNonNegative(damageFactor, "damageFactor");
@@ -80,12 +80,16 @@ public record SwordProjectileComponent(
     }
 
     public SwordProjectileComponent(float damageFactor, float baseSpeed, float acceleration, int existTicks, float gravity, int cooldown, ResourceLocation soundEvent, ResourceLocation projType, Optional<ITrackType> trackType, IGeneration generation, SwordProjectileAppearance appearance) {
-        this(damageFactor, baseSpeed, acceleration, existTicks, gravity, cooldown, soundEvent, projType,
-                trackType, generation, appearance, List.of());
+        this(damageFactor, baseSpeed, acceleration, existTicks, gravity, cooldown, soundEvent, projType, trackType, generation, appearance, List.of());
     }
 
     public SoundEvent getSoundEvent() {
         return BuiltInRegistries.SOUND_EVENT.getOptional(soundEvent).orElseThrow(() -> new IllegalStateException("Unknown sword projectile sound: " + soundEvent));
+    }
+
+    public float getVelocity(LivingEntity living) {
+        AttributeInstance rangedVelocity = living.getAttribute(LibAttributes.getRangedVelocity());
+        return rangedVelocity == null ? baseSpeed : baseSpeed * (float) rangedVelocity.getValue();
     }
 
     public int getCooldownTicks(LivingEntity living) {

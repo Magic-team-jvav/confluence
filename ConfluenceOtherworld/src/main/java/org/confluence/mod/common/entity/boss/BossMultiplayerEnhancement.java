@@ -24,14 +24,10 @@ import java.util.UUID;
 /// 区块重新加载时也不会重复叠加或把受伤的 Boss 重新回满生命值。</p>
 public final class BossMultiplayerEnhancement {
     private static final int MAX_PLAYER_COUNT = 8;
-    private static final UUID HEALTH_MODIFIER_ID = PortAttributeModifier.rl2uuid(
-            Confluence.asResource("boss_difficulty_player_count_max_health"));
-    private static final UUID DAMAGE_MODIFIER_ID = PortAttributeModifier.rl2uuid(
-            Confluence.asResource("boss_difficulty_attack_damage"));
-    private static final UUID HEALTH_CONFIG_MODIFIER_ID = PortAttributeModifier.rl2uuid(
-            Confluence.asResource("boss_server_config_max_health"));
-    private static final UUID DAMAGE_CONFIG_MODIFIER_ID = PortAttributeModifier.rl2uuid(
-            Confluence.asResource("boss_server_config_attack_damage"));
+    private static final UUID HEALTH_MODIFIER_ID = PortAttributeModifier.rl2uuid(Confluence.asResource("boss_difficulty_player_count_max_health"));
+    private static final UUID DAMAGE_MODIFIER_ID = PortAttributeModifier.rl2uuid(Confluence.asResource("boss_difficulty_attack_damage"));
+    private static final UUID HEALTH_CONFIG_MODIFIER_ID = PortAttributeModifier.rl2uuid(Confluence.asResource("boss_server_config_max_health"));
+    private static final UUID DAMAGE_CONFIG_MODIFIER_ID = PortAttributeModifier.rl2uuid(Confluence.asResource("boss_server_config_attack_damage"));
 
     private BossMultiplayerEnhancement() {}
 
@@ -42,39 +38,22 @@ public final class BossMultiplayerEnhancement {
         if (boss.level().isClientSide) {
             return;
         }
-        double difficultyMultiplier = LibUtils.switchByDifficulty(
-                boss.level(),
-                boss.blockPosition(),
-                0.66D,
-                1.0D,
-                1.5D);
+        double difficultyMultiplier = LibUtils.switchByDifficulty(boss.level(), boss.blockPosition(), 0.66D, 1.0D, 1.5D);
         int playerCount = Math.min(boss.level().players().size(), MAX_PLAYER_COUNT);
-        apply(boss, difficultyMultiplier, playerCount,
-                org.confluence.mod.common.CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_HEALTH.get(),
-                org.confluence.mod.common.CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get());
+        apply(boss, difficultyMultiplier, playerCount, org.confluence.mod.common.CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_HEALTH.get(), org.confluence.mod.common.CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get());
     }
 
-    static void apply(
-            LivingEntity boss,
-            double difficultyMultiplier,
-            int playerCount) {
+    static void apply(LivingEntity boss, double difficultyMultiplier, int playerCount) {
         apply(boss, difficultyMultiplier, playerCount, 1.0D, 1.0D);
     }
 
-    static void apply(
-            LivingEntity boss,
-            double difficultyMultiplier,
-            int playerCount,
-            double healthConfigMultiplier,
-            double damageConfigMultiplier) {
+    static void apply(LivingEntity boss, double difficultyMultiplier, int playerCount, double healthConfigMultiplier, double damageConfigMultiplier) {
         int clampedPlayerCount = Math.max(0, Math.min(playerCount, MAX_PLAYER_COUNT));
         double healthDifficultyMultiplier = difficultyMultiplier;
         double healthPlayerMultiplier = clampedPlayerCount;
         if (boss instanceof BaseBoss baseBoss) {
-            healthDifficultyMultiplier = baseBoss.getBossHealthDifficultyMultiplier(
-                    difficultyMultiplier);
-            healthPlayerMultiplier = baseBoss.getBossHealthPlayerMultiplier(
-                    clampedPlayerCount);
+            healthDifficultyMultiplier = baseBoss.getBossHealthDifficultyMultiplier(difficultyMultiplier);
+            healthPlayerMultiplier = baseBoss.getBossHealthPlayerMultiplier(clampedPlayerCount);
         }
 
         AttributeInstance maxHealth = boss.getAttribute(Attributes.MAX_HEALTH);
@@ -86,31 +65,16 @@ public final class BossMultiplayerEnhancement {
                     AttributeModifier.Operation.MULTIPLY_BASE));
         }
         if (maxHealth != null && !maxHealth.hasModifier(HEALTH_CONFIG_MODIFIER_ID)) {
-            maxHealth.addPermanentModifier(new AttributeModifier(
-                    HEALTH_CONFIG_MODIFIER_ID,
-                    "Boss server config max health",
-                    healthConfigMultiplier - 1.0D,
-                    AttributeModifier.Operation.MULTIPLY_TOTAL));
+            maxHealth.addPermanentModifier(new AttributeModifier(HEALTH_CONFIG_MODIFIER_ID, "Boss server config max health", healthConfigMultiplier - 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL));
             boss.setHealth(boss.getMaxHealth());
         }
 
-        AttributeInstance attackDamage = boss.getAttribute(
-                LibAttributes.getAttackDamage().get());
-        if (attackDamage != null
-                && !attackDamage.hasModifier(DAMAGE_MODIFIER_ID)) {
-            attackDamage.addPermanentModifier(new AttributeModifier(
-                    DAMAGE_MODIFIER_ID,
-                    "Boss difficulty attack damage",
-                    difficultyMultiplier - 1.0D,
-                    AttributeModifier.Operation.MULTIPLY_BASE));
+        AttributeInstance attackDamage = boss.getAttribute(LibAttributes.getAttackDamage().get());
+        if (attackDamage != null && !attackDamage.hasModifier(DAMAGE_MODIFIER_ID)) {
+            attackDamage.addPermanentModifier(new AttributeModifier(DAMAGE_MODIFIER_ID, "Boss difficulty attack damage", difficultyMultiplier - 1.0D, AttributeModifier.Operation.MULTIPLY_BASE));
         }
-        if (attackDamage != null
-                && !attackDamage.hasModifier(DAMAGE_CONFIG_MODIFIER_ID)) {
-            attackDamage.addPermanentModifier(new AttributeModifier(
-                    DAMAGE_CONFIG_MODIFIER_ID,
-                    "Boss server config attack damage",
-                    damageConfigMultiplier - 1.0D,
-                    AttributeModifier.Operation.MULTIPLY_TOTAL));
+        if (attackDamage != null && !attackDamage.hasModifier(DAMAGE_CONFIG_MODIFIER_ID)) {
+            attackDamage.addPermanentModifier(new AttributeModifier(DAMAGE_CONFIG_MODIFIER_ID, "Boss server config attack damage", damageConfigMultiplier - 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL));
         }
     }
 }

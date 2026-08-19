@@ -85,11 +85,9 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> TIN_BROADSWORD = register("tin_broadsword", ModTiers.TIN, 5, 1.6F, SwordDefinition::builder);
     public static final PortDeferredItem<BaseSwordItem> LEAD_BROADSWORD = register("lead_broadsword", ModTiers.LEAD, 6, 1.6F, SwordDefinition::builder);
     public static final PortDeferredItem<BaseSwordItem> SILVER_BROADSWORD = register("silver_broadsword", ModTiers.SILVER, 6, 1.6F, SwordDefinition::builder);
-    public static final PortDeferredItem<BaseSwordItem> TUNGSTEN_BROADSWORD = register("tungsten_broadsword", ModTiers.TUNGSTEN, 6, 1.6F,
-            SwordDefinition::builder);
+    public static final PortDeferredItem<BaseSwordItem> TUNGSTEN_BROADSWORD = register("tungsten_broadsword", ModTiers.TUNGSTEN, 6, 1.6F, SwordDefinition::builder);
     public static final PortDeferredItem<BaseSwordItem> GOLDEN_BROADSWORD = register("golden_broadsword", ModTiers.GOLD, 7, 1.6F, SwordDefinition::builder);
-    public static final PortDeferredItem<BaseSwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", ModTiers.PLATINUM, 8, 1.6F,
-            SwordDefinition::builder);
+    public static final PortDeferredItem<BaseSwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", ModTiers.PLATINUM, 8, 1.6F, SwordDefinition::builder);
     public static final PortDeferredItem<BaseSwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 15, 3,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
@@ -127,8 +125,7 @@ public class SwordItems {
                     .attribute(PortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
 
-    public static final PortDeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY,
-            SwordDefinition::builder);
+    public static final PortDeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, SwordDefinition::builder);
     public static final PortDeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", ModTiers.CANDY_CANE, 5, 1.8F,
             () -> SwordDefinition.builder()
                     .specialSweep(0.5F)
@@ -243,20 +240,13 @@ public class SwordItems {
                     .projectile(SwordProjectileDefinitions.ICE_BLADE)
                     .tooltipImage());
 
-    public static final PortDeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade",
-            () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
-    public static final PortDeferredItem<BaseSwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade",
-            () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));
-    public static final PortDeferredItem<BaseSwordItem> YELLOW_PHASEBLADE = register("yellow_phaseblade",
-            () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "yellow"));
-    public static final PortDeferredItem<BaseSwordItem> GREEN_PHASEBLADE = register("green_phaseblade",
-            () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "green"));
-    public static final PortDeferredItem<BaseSwordItem> BLUE_PHASEBLADE = register("blue_phaseblade",
-            () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "blue"));
-    public static final PortDeferredItem<BaseSwordItem> PURPLE_PHASEBLADE = register("purple_phaseblade",
-            () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "purple"));
-    public static final PortDeferredItem<BaseSwordItem> WHITE_PHASEBLADE = register("white_phaseblade",
-            () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "white"));
+    public static final PortDeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
+    public static final PortDeferredItem<BaseSwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));
+    public static final PortDeferredItem<BaseSwordItem> YELLOW_PHASEBLADE = register("yellow_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "yellow"));
+    public static final PortDeferredItem<BaseSwordItem> GREEN_PHASEBLADE = register("green_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "green"));
+    public static final PortDeferredItem<BaseSwordItem> BLUE_PHASEBLADE = register("blue_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "blue"));
+    public static final PortDeferredItem<BaseSwordItem> PURPLE_PHASEBLADE = register("purple_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "purple"));
+    public static final PortDeferredItem<BaseSwordItem> WHITE_PHASEBLADE = register("white_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "white"));
 
     // 特殊剑
     public static final PortDeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER,
@@ -292,13 +282,11 @@ public class SwordItems {
         return ITEMS.register(name, supplier::get);
     }
 
-    public static PortDeferredItem<BaseSwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed,
-                                                           Supplier<SwordDefinition.Builder> modifierBuilder) {
+    public static PortDeferredItem<BaseSwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed, Supplier<SwordDefinition.Builder> modifierBuilder) {
         return register(name, tier, rawDamage, rawSpeed, ModRarity.WHITE, modifierBuilder);
     }
 
-    public static PortDeferredItem<BaseSwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed, ModRarity rarity,
-                                                           Supplier<SwordDefinition.Builder> modifierBuilder) {
+    public static PortDeferredItem<BaseSwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed, ModRarity rarity, Supplier<SwordDefinition.Builder> modifierBuilder) {
         return register(name, () -> {
             SwordDefinition.Builder builder = modifierBuilder.get();
             if (tier == ModTiers.UNBREAKABLE) {

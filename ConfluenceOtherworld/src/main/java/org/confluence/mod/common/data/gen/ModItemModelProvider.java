@@ -41,6 +41,11 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        GunItems.BULLET_ITEMS.forEach(item -> {
+            String path = item.getId().getPath();
+            withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));
+        });
+
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
 
@@ -264,10 +269,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         /// 避免通用物品兜底把它们生成为缺失纹理模型。
         for (PortRegistryEntry<Item, ?> entry :
                 SpawnEggItems.ITEMS.getEntries()) {
-            withExistingParent(
-                    entry.getId().getPath(),
-                    ResourceLocation.withDefaultNamespace(
-                            "item/template_spawn_egg"));
+            withExistingParent(entry.getId().getPath(), ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));
             skip.add(entry.get());
         }
 
@@ -303,10 +305,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     private void flailModel(PortDeferredItem<?> deferredItem) {
         String path = deferredItem.getId().getPath();
         ResourceLocation none = Confluence.asResource("");
-        ResourceLocation icon = Confluence.asResource(
-                "item/flail/" + path + "_inventory");
-        ModelFile builtinEntity = new ModelFile.UncheckedModelFile(
-                ResourceLocation.withDefaultNamespace("builtin/entity"));
+        ResourceLocation icon = Confluence.asResource("item/flail/" + path + "_inventory");
+        ModelFile builtinEntity = new ModelFile.UncheckedModelFile(ResourceLocation.withDefaultNamespace("builtin/entity"));
         getBuilder(path).guiLight(BlockModel.GuiLight.FRONT)
                 .customLoader((builder, helper) -> {
                     ItemModelBuilder iconModel = new ItemModelBuilder(none, helper)

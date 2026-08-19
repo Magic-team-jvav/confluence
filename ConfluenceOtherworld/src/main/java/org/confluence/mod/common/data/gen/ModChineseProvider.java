@@ -276,6 +276,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.guy_fawkes_set", "盖伊·福克斯套装");
         add("itemGroup.confluence.mummy_set", "木乃伊套装");
         add("itemGroup.confluence.clown_set", "小丑套装");
+        add("itemGroup.confluence.sailor_set", "水手套装");
 
         add("itemGroup.confluence.boomerang", "回旋镖");
         add("itemGroup.confluence.spear", "长矛");
@@ -4591,6 +4592,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.RUNE_ROBE.get(), "符文长袍");
         add(VanityArmorItems.WEDDING_VEIL.get(), "面纱");
         add(VanityArmorItems.WEDDING_DRESS.get(), "婚裙");
+        add(VanityArmorItems.BALLA_HAT.get(), "巴拉帽");
+        add(VanityArmorItems.GANGSTA_HAT.get(), "黑帮帽");
+        add(VanityArmorItems.SAILOR_HAT.get(), "水手帽");
+        add(VanityArmorItems.SAILOR_SHIRT.get(), "水手衣");
+        add(VanityArmorItems.SAILOR_PANTS.get(), "水手裤");
 
         add(VanityArmorItems.ALIEN_HAT.get(), "外星人猫帽");
 

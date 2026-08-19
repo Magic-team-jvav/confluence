@@ -1664,6 +1664,8 @@ public final class ModTabs {
                         output.accept(VanityArmorItems.WEDDING_VEIL.get());
                         output.accept(VanityArmorItems.WEDDING_DRESS.get());
                         output.accept(VanityArmorItems.ALIEN_HAT.get());
+                        output.accept(VanityArmorItems.GANGSTA_HAT.get());
+                        output.accept(VanityArmorItems.BALLA_HAT.get());
                         output.accept(TCItems.DIVING_HELMET);
 
                         CreativeModeTab.Output dyes = GroupItem.belongsTo("dyes", output);
@@ -1754,6 +1756,11 @@ public final class ModTabs {
                         clown_set.accept(VanityArmorItems.CLOWN_SHIRT.get());
                         clown_set.accept(VanityArmorItems.CLOWN_PANTS.get());
                         clown_set.accept(VanityArmorItems.CLOWN_SHOES.get());
+
+                        CreativeModeTab.Output sailor_set = GroupItem.belongsTo("sailor_set", output);
+                        sailor_set.accept(VanityArmorItems.SAILOR_HAT.get());
+                        sailor_set.accept(VanityArmorItems.SAILOR_SHIRT.get());
+                        sailor_set.accept(VanityArmorItems.SAILOR_PANTS.get());
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
 

@@ -91,8 +91,12 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> CLOWN_SHIRT = registerVanityArmor("clown_shirt", "vanity_armor/clown_set", ArmorItem.Type.CHESTPLATE, ModRarity.GREEN);
     public static final DeferredItem<BaseVanityArmorItem> CLOWN_PANTS = registerVanityArmor("clown_pants", "vanity_armor/clown_set", ArmorItem.Type.LEGGINGS, ModRarity.GREEN);
     public static final DeferredItem<BaseVanityArmorItem> CLOWN_SHOES = registerVanityArmor("clown_shoes", "vanity_armor/clown_set", ArmorItem.Type.BOOTS, ModRarity.GREEN);
-
     public static final DeferredItem<BaseVanityArmorItem> ALIEN_HAT = registerVanityArmor("alien_hat", "vanity_armor/alien_hat", ArmorItem.Type.HELMET, ModRarity.MASTER);
+    public static final DeferredItem<BaseVanityArmorItem> GANGSTA_HAT = registerVanityArmor("gangsta_hat", "vanity_armor/gangsta_hat", ArmorItem.Type.HELMET, ModRarity.BLUE);
+    public static final DeferredItem<BaseVanityArmorItem> BALLA_HAT = registerVanityArmor("balla_hat", "vanity_armor/balla_hat", ArmorItem.Type.HELMET, ModRarity.BLUE);
+    public static final DeferredItem<BaseVanityArmorItem> SAILOR_HAT = registerVanityArmor("sailor_hat", "vanity_armor/sailor_set", ArmorItem.Type.HELMET, ModRarity.BLUE);
+    public static final DeferredItem<BaseVanityArmorItem> SAILOR_SHIRT = registerVanityArmor("sailor_shirt", "vanity_armor/sailor_set", ArmorItem.Type.CHESTPLATE, ModRarity.BLUE);
+    public static final DeferredItem<BaseVanityArmorItem> SAILOR_PANTS = registerVanityArmor("sailor_pants", "vanity_armor/sailor_set", ArmorItem.Type.LEGGINGS, ModRarity.BLUE);
     public static final DeferredItem<BaseDyeItem> DYE = registerColoredDye("dye", 0x39C5BB);
     public static final DeferredItem<BaseDyeItem> RED_DYE = registerColoredDye("red_dye", 0xDB0909);
     public static final DeferredItem<BaseDyeItem> BRIGHT_RED_DYE = registerColoredDye("bright_red_dye", 0xFF4F4F);

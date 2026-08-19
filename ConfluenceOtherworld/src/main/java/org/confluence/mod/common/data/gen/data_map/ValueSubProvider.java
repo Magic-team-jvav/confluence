@@ -1229,6 +1229,9 @@ public final class ValueSubProvider {
                 .add(VanityArmorItems.CLOWN_SHIRT, silver20)
                 .add(VanityArmorItems.CLOWN_PANTS, silver20)
                 .add(VanityArmorItems.CLOWN_SHOES, silver20)
+                .add(VanityArmorItems.SAILOR_HAT, silver50 + silver10)
+                .add(VanityArmorItems.SAILOR_SHIRT, silver50 + silver10)
+                .add(VanityArmorItems.SAILOR_PANTS, silver50 + silver10)
                 .add(VanityArmorItems.DEAD_MANS_SWEATER, silver20);
         builder
                 .add(Items.LEATHER_HORSE_ARMOR, 14)
@@ -1441,6 +1444,8 @@ public final class ValueSubProvider {
                 .add(VanityArmorItems.RUNE_ROBE, gold1)
                 .add(VanityArmorItems.WEDDING_VEIL, silver10)
                 .add(VanityArmorItems.WEDDING_DRESS, silver10)
+                .add(VanityArmorItems.GANGSTA_HAT, silver20)
+                .add(VanityArmorItems.BALLA_HAT, silver20)
                 .add(VanityArmorItems.PEDDLERS_HAT, silver20 + silver5)
                 .add(VanityArmorItems.RED_DYE, silver20)
                 .add(VanityArmorItems.BRIGHT_RED_DYE, silver20)

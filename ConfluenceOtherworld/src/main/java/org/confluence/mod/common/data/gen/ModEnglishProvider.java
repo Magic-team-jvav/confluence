@@ -317,6 +317,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.guy_fawkes_set", "Guy Fawkes Set");
         add("itemGroup.confluence.mummy_set", "Mummy Set");
         add("itemGroup.confluence.clown_set", " Clown Set");
+        add("itemGroup.confluence.sailor_set", " Sailor Set");
 
         add("itemGroup.confluence.boomerang", "Boomerang");
         add("itemGroup.confluence.spear", "Spear");

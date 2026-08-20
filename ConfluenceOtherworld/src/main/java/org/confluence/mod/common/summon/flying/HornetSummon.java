@@ -22,11 +22,14 @@ public final class HornetSummon extends FlyingSummon {
     private int attackAnimationTicks;
     private int repositionCooldown;
     private Vec3 movementDestination;
+    private boolean preparingShot;
+    private boolean shotThisTick;
+    private LivingEntity preparedTarget;
 
     public HornetSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("hornet_baby"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
-        addGoal(9, new MomentumSummonIdleGoal<>(this, 2.0, 0.02, 0.70));
+        addGoal(9, new MomentumSummonIdleGoal<>(this, 2.0, 0.035, 0.70, 0));
     }
 
     @Override
@@ -35,18 +38,36 @@ public final class HornetSummon extends FlyingSummon {
     }
 
     @Override
+    protected int ownerRecoveryInterval() {
+        return 1;
+    }
+
+    @Override
     protected void beforeGoalTick() {
         repositionCooldown--;
         attackAnimationTicks = Math.max(0, attackAnimationTicks - 1);
+        if (preparingShot) {
+            preparingShot = false;
+            LivingEntity target = preparedTarget;
+            preparedTarget = null;
+            if (target != null && target.isAlive()) shoot(target);
+        }
     }
 
     private void combat(LivingEntity target) {
-        if (attackCooldown > 0 && --attackCooldown > 0) {
+        if (shotThisTick) {
+            shotThisTick = false;
             keepOnTarget();
             return;
         }
+        if (attackCooldown > 0) {
+            attackCooldown--;
+            keepOnTarget();
+            return;
+        }
+        preparingShot = true;
+        preparedTarget = target;
         keepOnTarget();
-        shoot(target);
     }
 
     private void keepOnTarget() {
@@ -54,12 +75,13 @@ public final class HornetSummon extends FlyingSummon {
             movementDestination = findHoverDestination();
             repositionCooldown = 20;
         }
-        moveToward(movementDestination, targetPosition(), 0.10, 1.5);
+        moveToward(movementDestination, targetPosition(), 0.0525, 1.05, 10.0F, 89.0F);
     }
 
     private void shoot(LivingEntity target) {
         attackCooldown = ATTACK_COOLDOWN;
-        attackAnimationTicks = 10;
+        shotThisTick = true;
+        attackAnimationTicks = 6;
         SummonContainer.of(owner()).addProjectile(SummonProjectileTypes.HORNET_STINGER.create(this, target));
     }
 
@@ -83,7 +105,7 @@ public final class HornetSummon extends FlyingSummon {
     @Override
     public SummonVisualState visualState() {
         return new SummonVisualState(false, attackAnimationTicks > 0 ? SummonAnimation.MELEE_ATTACK : SummonAnimation.NONE,
-                10 - attackAnimationTicks, 10, 0.0F, 1.0F, 1.0F);
+                6 - attackAnimationTicks, 6, 0.0F, 1.0F, 1.0F);
     }
 
     private static final class AttackGoal extends SummonGoal<HornetSummon> {

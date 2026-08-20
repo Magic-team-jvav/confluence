@@ -45,6 +45,8 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     private Vec3 velocity = Vec3.ZERO;
     private boolean removed;
     private int tickCount;
+    private boolean trackingOwnerRecovery;
+    private int ownerRecoveryCooldown;
     private int order;
     private int sameTypeCount = 1;
 
@@ -65,13 +67,14 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
             remove();
             return;
         }
-        recoverNearOwnerIfNeeded();
+        updateOwnerRecovery();
         LivingEntity previousTarget = target;
         target = findTarget();
         actualTarget = resolveActualTarget(target);
         onTargetChanged(previousTarget, target);
         beforeGoalTick();
         goalSelector.tick();
+        afterGoalTick();
         advancePath();
         SummonPose previousPose = history.peekFirst();
         SummonPose previousPreviousPose = history.stream().skip(1).findFirst().orElse(previousPose);
@@ -93,7 +96,10 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     protected void beforeGoalTick() {
     }
 
-    /// 在不改变逻辑受伤本体的前提下，选择距离召唤物最近的可视部件作为移动和瞄准目标。
+    protected void afterGoalTick() {
+    }
+
+    /// 在不改变逻辑受伤本体的前提下，按部件注册顺序选择首个可视部件作为移动和瞄准目标。
     /// 伤害仍然结算到 {@link #target()}，避免多部件 Boss 被重复计算伤害。
     private Entity resolveActualTarget(LivingEntity logicalTarget) {
         if (logicalTarget == null) {
@@ -109,20 +115,14 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         } else {
             return logicalTarget;
         }
-        Entity nearest = logicalTarget;
-        double nearestDistance = logicalTarget.getBoundingBox().getCenter().distanceToSqr(position());
         for (Entity part : parts) {
             Vec3 partCenter = part.getBoundingBox().getCenter();
             if (part.isRemoved() || ProjectileHitRules.impactedEntity(part) != logicalTarget || !hasLineOfSight(partCenter)) {
                 continue;
             }
-            double distance = partCenter.distanceToSqr(position());
-            if (distance < nearestDistance) {
-                nearest = part;
-                nearestDistance = distance;
-            }
+            return part;
         }
-        return nearest;
+        return logicalTarget;
     }
 
     private boolean hasLineOfSight(Vec3 targetPosition) {
@@ -134,16 +134,29 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return 40.0 * 40.0;
     }
 
+    protected int ownerRecoveryInterval() {
+        return 10;
+    }
+
     /// 判断召唤物能否恢复到候选位置。
     /// 飞行召唤物与无碰撞召唤物默认允许，具有实体碰撞体积的召唤物由子类继续检查方块碰撞。
     protected boolean canRecoverAt(Vec3 position) {
         return true;
     }
 
-    private void recoverNearOwnerIfNeeded() {
-        if (position().distanceToSqr(owner.position()) < ownerRecoveryDistanceSqr()) {
+    private void updateOwnerRecovery() {
+        double distanceSqr = position().distanceToSqr(owner.position());
+        if (distanceSqr < 32.0 * 32.0) {
+            trackingOwnerRecovery = false;
             return;
         }
+        if (!trackingOwnerRecovery) {
+            trackingOwnerRecovery = true;
+            ownerRecoveryCooldown = 0;
+        }
+        if (--ownerRecoveryCooldown > 0) return;
+        ownerRecoveryCooldown = Math.max(1, ownerRecoveryInterval());
+        if (distanceSqr < ownerRecoveryDistanceSqr()) return;
         BlockPos ownerBlockPosition = owner.blockPosition();
         for (int attempt = 0; attempt < 10; attempt++) {
             int offsetX = owner.getRandom().nextIntBetweenInclusive(-3, 3);
@@ -257,7 +270,8 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     /// 对指定范围内的全部合法目标结算接触伤害，命中频率仍由每个召唤实例的局部无敌帧控制。
     protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier) {
         boolean hit = false;
-        for (LivingEntity candidate : owner().level().getEntitiesOfClass(LivingEntity.class, bounds, candidate -> candidate == target() || SummonTargetCache.isValidTarget(owner(), candidate, targetRange, false))) {
+        for (LivingEntity candidate : owner().level().getEntitiesOfClass(LivingEntity.class, bounds,
+                candidate -> candidate == target() || SummonTargetCache.isValidTarget(owner(), candidate, position(), targetRange, false))) {
             hit |= hurtTarget(candidate, damageMultiplier);
         }
         return hit;

@@ -13,12 +13,15 @@ import org.confluence.mod.api.summon.SummonTargetCache;
 /// <p>这里沉淀寻路、跟随、近战判定和攻击节奏；具体召唤物仍然通过子类提供体型、
 /// 搜索范围、移动速度和命中反馈，避免把铁傀儡、雪怪等行为差异硬塞进同一组分支判断。</p>
 public abstract class GroundMeleeSummon extends PhysicalSummon {
-    private static final double FOLLOW_START_DISTANCE_SQR = 3.0 * 3.0;
+    private static final double FOLLOW_START_DISTANCE_SQR = 32.0 * 32.0;
+    private static final double FOLLOW_STOP_DISTANCE_SQR = 2.0 * 2.0;
     private final double searchRange;
     private final double combatMoveSpeed;
     private final double followMoveSpeed;
     private int attackCooldown;
     private int attackAnimationTicks;
+    private int combatRepathCooldown;
+    private Vec3 lastCombatTargetPosition;
 
     protected GroundMeleeSummon(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats,
                                 SummonPose initialPose, double width, double height, double searchRange,
@@ -46,7 +49,17 @@ public abstract class GroundMeleeSummon extends PhysicalSummon {
     protected void beforeGroundGoalTick() {}
 
     protected void moveInCombat(LivingEntity target) {
-        navigateGround(targetBasePosition(), combatMoveSpeed, 0.5);
+        Vec3 targetPosition = targetBasePosition();
+        boolean targetMoved = lastCombatTargetPosition == null || targetPosition.distanceToSqr(lastCombatTargetPosition) >= 1.0;
+        if (--combatRepathCooldown <= 0 && (targetMoved || owner().getRandom().nextFloat() < 0.05F)) {
+            double distanceSqr = position().distanceToSqr(targetPosition);
+            combatRepathCooldown = 4 + owner().getRandom().nextInt(7);
+            if (distanceSqr > 1024.0) combatRepathCooldown += 10;
+            else if (distanceSqr > 256.0) combatRepathCooldown += 5;
+            lastCombatTargetPosition = targetPosition;
+            resetGroundPath(combatRepathCooldown);
+        }
+        navigateGround(targetPosition, combatMoveSpeed, 0.5);
     }
 
     protected void onAttackAttempt(LivingEntity target) {}
@@ -102,6 +115,8 @@ public abstract class GroundMeleeSummon extends PhysicalSummon {
     }
 
     private static final class FollowOwnerGoal extends SummonGoal<GroundMeleeSummon> {
+        private boolean followingOwner;
+
         private FollowOwnerGoal(GroundMeleeSummon summon) {
             super(summon);
         }
@@ -113,10 +128,13 @@ public abstract class GroundMeleeSummon extends PhysicalSummon {
 
         @Override
         public void tick() {
-            if (summon.position().distanceToSqr(summon.owner().position()) >= FOLLOW_START_DISTANCE_SQR) {
+            double distanceSqr = summon.position().distanceToSqr(summon.owner().position());
+            if (!followingOwner && distanceSqr >= FOLLOW_START_DISTANCE_SQR) followingOwner = true;
+            if (followingOwner && distanceSqr <= FOLLOW_STOP_DISTANCE_SQR) followingOwner = false;
+            if (followingOwner) {
                 summon.navigateGround(summon.owner().position(), summon.followMoveSpeed, 0.5);
             } else {
-                summon.moveWithCollision(new Vec3(summon.velocity().x * 0.6, summon.velocity().y - 0.08, summon.velocity().z * 0.6));
+                summon.applyIdlePhysics();
             }
         }
     }

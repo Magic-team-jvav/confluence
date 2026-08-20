@@ -31,7 +31,7 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
     private final UUID intendedTargetId;
     private final float baseDamage;
     private Vec3 position;
-    private final Vec3 velocity;
+    private final Vec3 initialVelocity;
     private boolean removed;
     private int tickCount;
 
@@ -46,10 +46,10 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
                 ? source.targetPosition()
                 : new Vec3(target.getX(), target.getY() + target.getEyeHeight() * 0.5, target.getZ());
         Vec3 direction = aimPoint.subtract(position).normalize();
-        double spread = 0.0075 * inaccuracy;
+        double spread = 0.0172275 * inaccuracy;
         direction = direction.add(owner.getRandom().triangle(0.0, spread), owner.getRandom().triangle(0.0, spread),
                 owner.getRandom().triangle(0.0, spread)).normalize();
-        this.velocity = direction.scale(velocity);
+        this.initialVelocity = direction.scale(velocity);
     }
 
     public final void tick() {
@@ -57,13 +57,15 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
             removed = true;
             return;
         }
-        Vec3 end = position.add(velocity);
-        BlockHitResult blockHit = owner.level().clip(new ClipContext(position, end, ClipContext.Block.COLLIDER,
+        Vec3 movement = initialVelocity.scale(2.0);
+        Vec3 collisionStart = position.add(initialVelocity);
+        Vec3 end = position.add(movement);
+        BlockHitResult blockHit = owner.level().clip(new ClipContext(collisionStart, end, ClipContext.Block.COLLIDER,
                 ClipContext.Fluid.NONE, owner));
-        EntityHitResult entityHit = findEntityHit(end);
+        EntityHitResult entityHit = findEntityHit(collisionStart, end);
         double blockDistance = blockHit.getType() == HitResult.Type.BLOCK
-                ? position.distanceToSqr(blockHit.getLocation()) : Double.MAX_VALUE;
-        double entityDistance = entityHit == null ? Double.MAX_VALUE : position.distanceToSqr(entityHit.getLocation());
+                ? collisionStart.distanceToSqr(blockHit.getLocation()) : Double.MAX_VALUE;
+        double entityDistance = entityHit == null ? Double.MAX_VALUE : collisionStart.distanceToSqr(entityHit.getLocation());
         if (entityDistance <= blockDistance) {
             position = entityHit.getLocation();
             hit(entityHit.getEntity());
@@ -75,24 +77,24 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
         }
     }
 
-    private @Nullable EntityHitResult findEntityHit(Vec3 end) {
+    private @Nullable EntityHitResult findEntityHit(Vec3 start, Vec3 end) {
         Entity nearest = null;
         Vec3 nearestHit = null;
         double nearestDistance = Double.MAX_VALUE;
         Entity intended = owner.serverLevel().getEntity(intendedTargetId);
         if (intended != null && canHit(intended)) {
-            Vec3 hit = intersection(intended, end);
+            Vec3 hit = intersection(intended, start, end);
             if (hit != null) {
                 nearest = intended;
                 nearestHit = hit;
-                nearestDistance = position.distanceToSqr(hit);
+                nearestDistance = start.distanceToSqr(hit);
             }
         }
-        AABB search = AABB.ofSize(position, 0.5, 0.5, 0.5).expandTowards(velocity).inflate(0.35);
+        AABB search = AABB.ofSize(start, 0.5, 0.5, 0.5).expandTowards(end.subtract(start)).inflate(0.35);
         for (Entity candidate : owner.level().getEntities((Entity) null, search, this::canHit)) {
-            Vec3 hit = intersection(candidate, end);
+            Vec3 hit = intersection(candidate, start, end);
             if (hit == null) continue;
-            double distance = position.distanceToSqr(hit);
+            double distance = start.distanceToSqr(hit);
             if (distance < nearestDistance) {
                 nearest = candidate;
                 nearestHit = hit;
@@ -109,9 +111,9 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
                 && ProjectileHitRules.canHit(owner, candidate);
     }
 
-    private @Nullable Vec3 intersection(Entity target, Vec3 end) {
+    private static @Nullable Vec3 intersection(Entity target, Vec3 start, Vec3 end) {
         AABB box = target.getBoundingBox().inflate(0.35);
-        return box.clip(position, end).orElse(box.contains(position) ? position : null);
+        return box.clip(start, end).orElse(box.contains(start) ? start : null);
     }
 
     private void hit(Entity rawTarget) {
@@ -136,7 +138,7 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
     }
 
     public final SummonRenderPart renderPart() {
-        Vec3 direction = velocity.normalize();
+        Vec3 direction = initialVelocity.normalize();
         float yaw = (float) Math.toDegrees(Math.atan2(-direction.x, direction.z));
         float pitch = (float) Math.toDegrees(Math.asin(-direction.y));
         return new SummonRenderPart(uuid, type, new SummonPose(position, yaw, pitch, 0.0F),

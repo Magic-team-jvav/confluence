@@ -43,13 +43,17 @@ public final class SummonSword extends SummonInstance {
 
     @Override
     protected double ownerRecoveryDistanceSqr() {
-        return 16.0 * 16.0;
+        return Double.POSITIVE_INFINITY;
     }
 
     @Override
     protected void beforeGoalTick() {
-        slashGoal.updateCooldown();
         spinTicks = Math.max(0, spinTicks - 1);
+    }
+
+    @Override
+    protected void afterGoalTick() {
+        slashGoal.updateCooldown();
     }
 
     @Override
@@ -77,11 +81,14 @@ public final class SummonSword extends SummonInstance {
     }
 
     SummonPose aimAt(Vec3 position, Vec3 direction) {
-        Vec3 normal = direction.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
-        if (normal.lengthSqr() < 1.0E-6) {
-            normal = new Vec3(1.0, 0.0, 0.0);
-        }
-        return poseFromAxes(position, direction, normal);
+        Vec3 normalized = direction.normalize();
+        float yaw = (float) Math.toDegrees(Math.atan2(-normalized.x, normalized.z));
+        float pitch = (float) Math.toDegrees(Math.asin(-normalized.y));
+        return new SummonPose(position, yaw, pitch, 0.0F);
+    }
+
+    Vec3 eyePosition() {
+        return position().add(0.0, 0.85, 0.0);
     }
 
     SummonPose followPose(Vec3 nextPosition, Vec3 targetPosition) {

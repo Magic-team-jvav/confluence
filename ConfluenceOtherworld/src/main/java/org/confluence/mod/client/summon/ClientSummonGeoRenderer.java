@@ -74,8 +74,8 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
 
         private Model(ResourceLocation type) {
             if (type.getPath().equals("hornet_baby")) {
-                model = Confluence.asResource("geo/entity/summon/hornet_baby.geo.json");
-                texture = Confluence.asResource("textures/entity/summon/hornet_baby.png");
+                model = Confluence.asResource("geo/entity/hornet.geo.json");
+                texture = Confluence.asResource("textures/entity/hornet.png");
                 animation = Confluence.asResource("animations/entity/hornet.animation.json");
             } else {
                 String path = "summon/" + type.getPath();
@@ -102,7 +102,7 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
 
         @Override
         public RenderType getRenderType(ClientSummonVisual visual, ResourceLocation texture) {
-            return RenderType.entityTranslucent(texture);
+            return RenderType.entityCutoutNoCull(texture);
         }
     }
 }

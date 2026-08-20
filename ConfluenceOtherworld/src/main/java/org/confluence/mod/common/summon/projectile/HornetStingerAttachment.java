@@ -8,7 +8,7 @@ import org.confluence.mod.common.summon.SummonInstance;
 /// 召唤黄蜂的毒刺附件弹幕。
 public final class HornetStingerAttachment extends SummonProjectileInstance {
     public HornetStingerAttachment(SummonInstance source, LivingEntity target) {
-        super(SummonProjectileTypes.HORNET_STINGER.id(), source, target, 2.0F, 0.0F);
+        super(SummonProjectileTypes.HORNET_STINGER.id(), source, target, 1.0F, 0.0F);
     }
 
     @Override

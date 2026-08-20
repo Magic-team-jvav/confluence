@@ -22,6 +22,7 @@ public final class StardustDragonSummon extends FlyingSummon {
     private static final int SAMPLES_PER_SEGMENT = 10;
     private final Deque<Vec3> pathHistory = new ArrayDeque<>();
     private Vec3 movementTarget;
+    private Vec3 dragonVelocity = Vec3.ZERO;
     private int movementTargetTicks;
     private int bodyAttackCooldown;
     private float yawAcceleration;
@@ -50,11 +51,11 @@ public final class StardustDragonSummon extends FlyingSummon {
         if (target() == null || bodyAttackCooldown > 0) {
             return;
         }
-        hurtTouchingTargets(AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 40.0, 1.0F);
+        boolean hit = hurtTouchingTargets(AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 40.0, 1.0F);
         for (Vec3 segment : segmentPositions()) {
-            hurtTouchingTargets(AABB.ofSize(segment.add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 40.0, 1.0F);
+            hit |= hurtTouchingTargets(AABB.ofSize(segment.add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 40.0, 1.0F);
         }
-        bodyAttackCooldown = 5;
+        if (hit) bodyAttackCooldown = 5;
     }
 
     @Override
@@ -73,7 +74,7 @@ public final class StardustDragonSummon extends FlyingSummon {
     }
 
     private void attack(LivingEntity target) {
-        if (movementTarget == null || movementTargetTicks-- <= 0) {
+        if (movementTarget == null || --movementTargetTicks <= 0) {
             movementTarget = targetBounds().getCenter();
             movementTargetTicks = 5;
         }
@@ -81,16 +82,10 @@ public final class StardustDragonSummon extends FlyingSummon {
     }
 
     private void idle() {
-        if (movementTarget == null || movementTargetTicks-- <= 0) {
+        if (movementTarget == null || --movementTargetTicks <= 0) {
             var random = owner().getRandom();
             movementTarget = owner().position().add((random.nextDouble() - 0.5) * 5.0, (random.nextDouble() - 0.5) * 5.0 + 2.0, (random.nextDouble() - 0.5) * 5.0);
             movementTargetTicks = 10;
-        }
-        if (position().distanceToSqr(owner().position()) > 128.0 * 128.0) {
-            initializePose(new SummonPose(owner().getBoundingBox().getCenter(), currentPose().yaw(), 0.0F, 0.0F));
-            pathHistory.clear();
-            movementTarget = null;
-            return;
         }
         steerToward(movementTarget, 0.3F, 0.3);
     }
@@ -103,32 +98,34 @@ public final class StardustDragonSummon extends FlyingSummon {
         }
         Vec3 directionToTarget = offset.normalize();
         double yawRadians = currentPose().yaw() * Mth.DEG_TO_RAD;
-        Vec3 forwardDirection = new Vec3(Mth.sin((float) yawRadians), velocity().y, Mth.cos((float) yawRadians)).normalize();
+        Vec3 accelerated = dragonVelocity;
+        Vec3 forwardDirection = new Vec3(Mth.sin((float) yawRadians), accelerated.y, Mth.cos((float) yawRadians)).normalize();
         float alignmentFactor = Math.max(((float) forwardDirection.dot(directionToTarget) + 0.5F) / 1.5F, 0.0F);
         double horizontal = Math.max(1.0E-5, offset.horizontalDistance());
         double vertical = Mth.clamp(offset.y / horizontal, -movementSpeed, movementSpeed);
-        Vec3 accelerated = velocity().add(0.0, vertical * 0.05, 0.0);
+        accelerated = accelerated.add(0.0, vertical * 0.05, 0.0);
         float targetYaw = -(float) Mth.atan2(offset.x, offset.z) * Mth.RAD_TO_DEG;
         float yawError = Mth.clamp(Mth.wrapDegrees(targetYaw - currentPose().yaw()), -50.0F, 50.0F);
-        float speedFactor = (float) velocity().horizontalDistance() + 1.0F;
+        float speedFactor = (float) dragonVelocity.horizontalDistance() + 1.0F;
         yawAcceleration = yawAcceleration * 0.8F + yawError * turnSpeed / Math.min(speedFactor, 40.0F) / speedFactor;
         accelerated = accelerated.add(0.0, yawAcceleration * 0.0002F, 0.0);
         float yaw = currentPose().yaw() + yawAcceleration * 0.1F;
         Vec3 forward = Vec3.directionFromRotation(0.0F, yaw).scale(0.06F * (alignmentFactor + 1.5F));
-        Vec3 moving = accelerated.add(forward);
-        Vec3 movingDirection = moving.lengthSqr() > 1.0E-8 ? moving.normalize() : Vec3.ZERO;
+        Vec3 movement = accelerated.add(forward);
+        if (position().distanceToSqr(owner().position()) >= 32.0 * 32.0) {
+            Vec3 ownerDirection = owner().position().add(0.0, 1.8, 0.0).subtract(position());
+            if (ownerDirection.lengthSqr() > 1.0E-8)
+                movement = movement.add(ownerDirection.normalize().scale(0.02));
+        }
+        Vec3 movingDirection = movement.lengthSqr() > 1.0E-8 ? movement.normalize() : Vec3.ZERO;
         double directionMatch = 0.8 + 0.15 * (movingDirection.dot(forwardDirection) + 1.0) / 2.0;
-        Vec3 nextVelocity = moving.multiply(directionMatch * movementSpeed, 0.91, directionMatch * movementSpeed);
-        float pitch = nextVelocity.lengthSqr() < 1.0E-8 ? currentPose().pitch()
-                : (float) Math.toDegrees(Math.asin(-nextVelocity.normalize().y));
-        moveBy(nextVelocity, yaw, pitch);
+        dragonVelocity = movement.multiply(directionMatch * movementSpeed, 0.91, directionMatch * movementSpeed);
+        moveBy(movement, yaw, currentPose().pitch());
     }
 
     private void recordPath() {
-        if (pathHistory.isEmpty() || pathHistory.peekFirst().distanceToSqr(position()) > 1.0E-5) {
-            pathHistory.addFirst(position());
-        }
-        int maximumSamples = Math.max(40, slotCost() * SAMPLES_PER_SEGMENT + 20);
+        pathHistory.addFirst(position());
+        int maximumSamples = slotCost() * SAMPLES_PER_SEGMENT;
         while (pathHistory.size() > maximumSamples) {
             pathHistory.removeLast();
         }

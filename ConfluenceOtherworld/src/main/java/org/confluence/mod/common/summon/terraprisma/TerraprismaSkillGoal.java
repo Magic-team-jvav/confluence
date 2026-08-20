@@ -17,7 +17,7 @@ abstract class TerraprismaSkillGoal extends SummonGoal<TerraprismaSummon> {
 
     @Override
     public boolean canUse() {
-        return cooldown == 0 && summon.hasValidTarget();
+        return cooldown == 0 && summon.canUseSkill(this) && summon.hasValidTarget();
     }
 
     @Override
@@ -42,6 +42,7 @@ abstract class TerraprismaSkillGoal extends SummonGoal<TerraprismaSummon> {
         summon.setSkillDamageMultiplier(1.0F);
         int randomRange = Math.max(1, (int) (baseCooldown * 0.3F));
         cooldown = baseCooldown + summon.owner().getRandom().nextInt(randomRange);
+        summon.finishSkill(this);
     }
 
     final void updateCooldown() {

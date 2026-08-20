@@ -22,7 +22,7 @@ public final class FinchSummon extends FlyingSummon {
     public FinchSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("finch_baby"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
-        addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.02, 0.70));
+        addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.035, 0.70));
     }
 
     @Override
@@ -41,8 +41,11 @@ public final class FinchSummon extends FlyingSummon {
         if (target() == null) {
             return;
         }
-        boolean hit = hurtTouchingTargets(AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 32.0, 1.0F);
-        if (hit && hitMovementCooldown <= -5) hitMovementCooldown = 10;
+        AABB bounds = AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75);
+        boolean touching = !owner().level().getEntitiesOfClass(LivingEntity.class, bounds,
+                candidate -> candidate == target() || SummonTargetCache.isValidTarget(owner(), candidate, position(), 32.0, false)).isEmpty();
+        hurtTouchingTargets(bounds, 32.0, 1.0F);
+        if (touching && hitMovementCooldown <= -5) hitMovementCooldown = 10;
     }
 
     private void attack(LivingEntity target) {
@@ -50,29 +53,35 @@ public final class FinchSummon extends FlyingSummon {
         double distanceSqr = Math.max(0.001, direction.lengthSqr());
         if (attackPhaseTicks <= 0) {
             Rotation rotation = turnToward(direction, 90.0F, 85.0F);
-            Vec3 movement = velocity();
+            Vec3 movement = velocity().scale(0.91).add(0.0, previousVerticalBob(), 0.0);
             Vec3 look = Vec3.directionFromRotation(rotation.pitch(), rotation.yaw());
             if (angleBetween(look, direction) < 0.5 && movement.length() < 1.0) {
                 movement = movement.add(direction.normalize().scale(0.1));
             }
-            moveBy(movement.scale(0.91).add(0.0, verticalBob(), 0.0), rotation.yaw(), rotation.pitch());
+            moveBy(addOwnerFollow(movement), rotation.yaw(), rotation.pitch());
             if (distanceSqr < 3.0 && hitMovementCooldown < 0) attackPhaseTicks = 20;
         } else {
             Vec3 forward = Vec3.directionFromRotation(currentPose().pitch(), currentPose().yaw()).normalize();
             Rotation rotation = turnToward(direction, 10.0F, 85.0F);
-            Vec3 movement = velocity().add(forward.scale(0.03)).add(0.0, Math.min(0.02, 1.0 / distanceSqr), 0.0)
-                    .scale(0.91).add(0.0, verticalBob(), 0.0);
-            moveBy(movement, rotation.yaw(), rotation.pitch());
+            Vec3 movement = velocity().scale(0.91).add(forward.scale(0.03)).add(0.0, Math.min(0.02, 1.0 / distanceSqr), 0.0)
+                    .add(0.0, previousVerticalBob(), 0.0);
+            moveBy(addOwnerFollow(movement), rotation.yaw(), rotation.pitch());
         }
     }
 
-    private double verticalBob() {
-        return Math.sin(tickCount() * 0.5F) * 0.03F;
+    private Vec3 addOwnerFollow(Vec3 movement) {
+        if (position().distanceToSqr(owner().position()) < 32.0 * 32.0) return movement;
+        Vec3 direction = owner().position().add(0.0, 1.8, 0.0).subtract(position());
+        return direction.lengthSqr() < 1.0E-8 ? movement : movement.add(direction.normalize().scale(0.035));
+    }
+
+    private double previousVerticalBob() {
+        return Math.sin((tickCount() - 1) * 0.5F) * 0.03F;
     }
 
     @Override
     protected Vec3 idleVelocity() {
-        return super.idleVelocity().add(0.0, verticalBob(), 0.0);
+        return super.idleVelocity().add(0.0, previousVerticalBob(), 0.0);
     }
 
     private Rotation turnToward(Vec3 direction, float maximumYawChange, float maximumPitchChange) {

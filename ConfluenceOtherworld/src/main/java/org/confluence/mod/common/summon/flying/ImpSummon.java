@@ -26,7 +26,7 @@ public final class ImpSummon extends FlyingSummon {
     public ImpSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("summon_imp"), owner, slotCost, stats, initialPose);
         addGoal(1, new AttackGoal(this));
-        addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.02, 0.70));
+        addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.035, 0.70));
     }
 
     @Override
@@ -52,14 +52,14 @@ public final class ImpSummon extends FlyingSummon {
     }
 
     private void combat(LivingEntity target) {
-        hoverNear(targetBasePosition(), targetPosition(), 5.0, 3.0, 5.0, 0.08, 0.03, 0.75);
+        hoverNear(targetBasePosition(), targetPosition(), 5.0, 3.0, 5.0, 0.0525, 0.03, 1.05);
         if (--attackCooldown > 0) {
             return;
         }
         attackCooldown = ATTACK_COOLDOWN;
         attackAnimationTicks = ATTACK_ANIMATION_TICKS;
         delayedTarget = target;
-        delayedAttackTicks = ATTACK_DELAY;
+        delayedAttackTicks = ATTACK_DELAY - 1;
     }
 
     @Override

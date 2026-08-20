@@ -19,6 +19,7 @@ public final class TerraprismaSummon extends SummonInstance {
     private static final double SEARCH_RANGE = 16.0;
     private final TerraprismaSlashGoal slashGoal = new TerraprismaSlashGoal(this);
     private final TerraprismaRotateGoal rotateGoal = new TerraprismaRotateGoal(this);
+    private TerraprismaSkillGoal nextSkill;
     private float skillDamageMultiplier = 1.0F;
     private boolean followingOwner;
     private SummonAnimation animationState = SummonAnimation.NONE;
@@ -27,6 +28,7 @@ public final class TerraprismaSummon extends SummonInstance {
     private float animationDegrees;
     private float scale = 1.0F;
     private float scaleY = 1.0F;
+    private int scaleYTicks;
 
     public TerraprismaSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("terraprisma"), owner, slotCost, stats, initialPose);
@@ -43,13 +45,12 @@ public final class TerraprismaSummon extends SummonInstance {
 
     @Override
     protected double ownerRecoveryDistanceSqr() {
-        return 16.0 * 16.0;
+        return Double.POSITIVE_INFINITY;
     }
 
     @Override
     protected void beforeGoalTick() {
-        slashGoal.updateCooldown();
-        rotateGoal.updateCooldown();
+        if (scaleYTicks > 0 && --scaleYTicks == 0) scaleY = 1.0F;
         if (animationTicks < animationDuration) {
             animationTicks++;
         } else if (animationState != SummonAnimation.NONE) {
@@ -57,6 +58,13 @@ public final class TerraprismaSummon extends SummonInstance {
             scale = 1.0F;
             scaleY = 1.0F;
         }
+    }
+
+    @Override
+    protected void afterGoalTick() {
+        slashGoal.updateCooldown();
+        rotateGoal.updateCooldown();
+        if (nextSkill == null) nextSkill = slashGoal;
     }
 
     @Override
@@ -93,15 +101,18 @@ public final class TerraprismaSummon extends SummonInstance {
     }
 
     SummonPose aimAt(Vec3 position, Vec3 direction) {
-        Vec3 normal = direction.cross(new Vec3(0.0, 1.0, 0.0)).normalize();
-        if (normal.lengthSqr() < 1.0E-6) {
-            normal = new Vec3(1.0, 0.0, 0.0);
-        }
-        return poseFromAxes(position, direction, normal);
+        Vec3 normalized = direction.normalize();
+        float yaw = (float) Math.toDegrees(Math.atan2(-normalized.x, normalized.z));
+        float pitch = (float) Math.toDegrees(Math.asin(-normalized.y));
+        return new SummonPose(position, yaw, pitch, 0.0F);
+    }
+
+    Vec3 eyePosition() {
+        return position().add(0.0, 0.85, 0.0);
     }
 
     void moveAndLook(Vec3 movement, Vec3 lookPosition) {
-        Vec3 direction = lookPosition.subtract(position());
+        Vec3 direction = lookPosition.subtract(eyePosition());
         SummonPose aimed = direction.lengthSqr() < 1.0E-6 ? currentPose() : aimAt(position(), direction);
         moveTo(new SummonPose(position().add(movement), aimed.yaw(), aimed.pitch(), aimed.roll()));
     }
@@ -134,6 +145,7 @@ public final class TerraprismaSummon extends SummonInstance {
             animationDuration = 12 * cycles;
             animationDegrees = (owner().getRandom().nextBoolean() ? 1.0F : -1.0F) * 360.0F * cycles;
             scaleY = 2.0F;
+            scaleYTicks = 1;
         }
     }
 
@@ -194,6 +206,14 @@ public final class TerraprismaSummon extends SummonInstance {
 
     int rotateCooldown() {
         return rotateGoal.cooldown();
+    }
+
+    boolean canUseSkill(TerraprismaSkillGoal skill) {
+        return nextSkill == skill;
+    }
+
+    void finishSkill(TerraprismaSkillGoal skill) {
+        nextSkill = skill == slashGoal ? rotateGoal : slashGoal;
     }
 
     @Override

@@ -37,13 +37,13 @@ public final class SnowFlinxSummon extends GroundMeleeSummon {
         Vec3 targetPosition = targetBasePosition();
         if (onGround() && leapCooldown <= 0 && position().distanceToSqr(targetPosition) < 25.0 && position().y < targetPosition.y + 2.0) {
             moveWithCollision(new Vec3(0.0, 0.8, 0.0));
-            leapForwardDelay = 2;
+            leapForwardDelay = 3;
             leapCooldown = 80 + owner().getRandom().nextInt(40);
             return;
         }
         if (leapForwardDelay == 1) {
             Vec3 direction = targetPosition.subtract(position()).multiply(1.0, 0.0, 1.0).normalize();
-            moveWithCollision(new Vec3(direction.x * 0.7, velocity().y, direction.z * 0.7));
+            moveWithCollision(new Vec3(direction.x * 0.56, velocity().y, direction.z * 0.56));
             return;
         }
         super.moveInCombat(target);

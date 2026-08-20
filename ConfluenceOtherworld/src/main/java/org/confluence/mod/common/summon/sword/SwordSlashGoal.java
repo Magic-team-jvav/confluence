@@ -21,7 +21,7 @@ final class SwordSlashGoal extends SummonGoal<SummonSword> {
 
     @Override
     public boolean canUse() {
-        return cooldown == 0 && summon.hasValidTarget();
+        return summon.tickCount() > 0 && cooldown == 0 && summon.hasValidTarget();
     }
 
     @Override
@@ -47,16 +47,16 @@ final class SwordSlashGoal extends SummonGoal<SummonSword> {
         Vec3 distance = targetPosition.subtract(summon.position());
         if (distance.length() > 3.0 && !triggered) {
             Vec3 movement = distance.normalize().scale(0.5);
-            SummonPose aimed = summon.aimAt(summon.position(), movement);
-            summon.moveTo(new SummonPose(summon.position().add(movement), aimed.yaw(), aimed.pitch(), aimed.roll()));
+            summon.moveTo(new SummonPose(summon.position().add(movement), summon.currentPose().yaw(),
+                    summon.currentPose().pitch(), summon.currentPose().roll()));
             return;
         }
         Vec3 lookPosition = targetPosition.add(0.0, 10.0 - slashTicks, 0.0);
-        Vec3 direction = lookPosition.subtract(summon.position()).normalize();
+        Vec3 direction = lookPosition.subtract(summon.eyePosition()).normalize();
         SummonPose aimed = summon.aimAt(summon.position(), direction);
         triggered = true;
         slashTicks++;
-        summon.moveTo(new SummonPose(summon.position().add(summon.velocity().scale(0.7)), aimed.yaw(), aimed.pitch(), aimed.roll()));
+        summon.moveTo(new SummonPose(summon.position().add(summon.velocity().scale(0.637)), aimed.yaw(), aimed.pitch(), aimed.roll()));
     }
 
     @Override

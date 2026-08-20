@@ -38,8 +38,11 @@ final class TerraprismaFollowOwnerGoal extends SummonGoal<TerraprismaSummon> {
                 .add(right.scale(0.2F * (sequence / 2) * ((sequence & 1) == 0 ? 1.0F : -1.0F)));
         Vec3 direction = targetPosition.subtract(summon.position());
         double speed = Math.min(direction.length() * 0.5, 1.0);
-        Vec3 nextVelocity = direction.lengthSqr() < 1.0E-8 ? Vec3.ZERO
-                : summon.velocity().add(direction.normalize()).normalize().scale(speed);
+        if (speed == 0.0) {
+            summon.moveTo(summon.followPose(summon.position().add(summon.velocity().scale(0.91)), targetPosition));
+            return;
+        }
+        Vec3 nextVelocity = summon.velocity().scale(0.91).add(direction.normalize()).normalize().scale(speed);
         Vec3 wiggle = new Vec3(summon.owner().getRandom().nextGaussian(), summon.owner().getRandom().nextGaussian(),
                 summon.owner().getRandom().nextGaussian()).scale(0.01);
         Vec3 nextPosition = summon.position().add(nextVelocity).add(wiggle);

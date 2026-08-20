@@ -1,5 +1,6 @@
 package org.confluence.mod.common.summon;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -18,6 +19,7 @@ public abstract class PhysicalSummon extends SummonInstance {
     private java.util.List<Vec3> groundPath = java.util.List.of();
     private int groundPathIndex;
     private int repathCooldown;
+    private int nextRepathDelay = 10;
     private net.minecraft.core.BlockPos lastGroundDestination;
 
     protected PhysicalSummon(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose, double width, double height) {
@@ -78,7 +80,8 @@ public abstract class PhysicalSummon extends SummonInstance {
         if (lastGroundDestination == null || !lastGroundDestination.closerThan(destinationBlock, 2.0) || repathCooldown-- <= 0) {
             groundPath = GroundPathfinder.find(owner().serverLevel(), position(), destination, width, height);
             groundPathIndex = 0;
-            repathCooldown = 10;
+            repathCooldown = nextRepathDelay;
+            nextRepathDelay = 10;
             lastGroundDestination = destinationBlock;
         }
         while (groundPathIndex < groundPath.size() && position().distanceToSqr(groundPath.get(groundPathIndex)) < 0.36) {
@@ -86,10 +89,29 @@ public abstract class PhysicalSummon extends SummonInstance {
         }
         Vec3 waypoint = groundPathIndex < groundPath.size() ? groundPath.get(groundPathIndex) : destination;
         Vec3 horizontal = new Vec3(waypoint.x - position().x, 0.0, waypoint.z - position().z);
-        Vec3 horizontalMovement = horizontal.lengthSqr() < 1.0E-6 ? Vec3.ZERO : horizontal.normalize().scale(speed);
-        double vertical = velocity().y - 0.08;
+        Vec3 direction = horizontal.lengthSqr() < 1.0E-6 ? Vec3.ZERO : horizontal.normalize();
+        double damping = onGround ? groundDamping() : 0.91;
+        double acceleration = onGround ? speed * 0.216 / (damping * damping * damping) : 0.02;
+        Vec3 horizontalMovement = velocity().multiply(damping, 0.0, damping).add(direction.scale(acceleration));
+        double vertical = velocity().y * 0.98 - 0.08;
         if (onGround && waypoint.y > position().y + 0.35) vertical = jumpStrength;
         return moveWithCollision(new Vec3(horizontalMovement.x, vertical, horizontalMovement.z));
+    }
+
+    protected final Vec3 applyIdlePhysics() {
+        double damping = onGround ? groundDamping() : 0.91;
+        return moveWithCollision(new Vec3(velocity().x * damping, velocity().y * 0.98 - 0.08,
+                velocity().z * damping));
+    }
+
+    private double groundDamping() {
+        return owner().level().getBlockState(BlockPos.containing(position()).below()).getBlock().getFriction() * 0.91;
+    }
+
+    protected final void resetGroundPath(int nextRepathDelay) {
+        repathCooldown = 0;
+        lastGroundDestination = null;
+        this.nextRepathDelay = nextRepathDelay;
     }
 
     protected static float horizontalYaw(Vec3 movement, float fallback) {

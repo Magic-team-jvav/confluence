@@ -19,7 +19,7 @@ public final class SlimeSummon extends PhysicalSummon {
     private static final double SEARCH_RANGE = 10.0;
     private static final double RETURN_FLIGHT_DISTANCE = 25.0;
     private static final double RETURN_FLIGHT_STOP_DISTANCE = 4.0;
-    private static final double JUMP_FOLLOW_DISTANCE = RETURN_FLIGHT_DISTANCE;
+    private static final double JUMP_FOLLOW_DISTANCE = 16.0;
     private int jumpDelay;
     private boolean returningByFlight;
 
@@ -56,22 +56,25 @@ public final class SlimeSummon extends PhysicalSummon {
 
     private void hopToward(Vec3 destination, boolean aggressive, double movementSpeed) {
         Vec3 velocity = velocity();
+        Vec3 horizontal = new Vec3(destination.x - position().x, 0.0, destination.z - position().z);
+        Vec3 direction = horizontal.lengthSqr() < 0.01 ? Vec3.ZERO : horizontal.normalize();
         if (!onGround()) {
-            moveWithCollision(new Vec3(velocity.x * 0.98, velocity.y - 0.08, velocity.z * 0.98));
+            double acceleration = 0.02 * Math.min(1.0, movementSpeed);
+            moveWithCollision(new Vec3(velocity.x * 0.91 + direction.x * acceleration,
+                    velocity.y * 0.98 - 0.08, velocity.z * 0.91 + direction.z * acceleration));
             return;
         }
         if (jumpDelay-- > 0) {
-            moveWithCollision(new Vec3(0.0, -0.08, 0.0));
+            moveWithCollision(new Vec3(velocity.x * 0.546, -0.08, velocity.z * 0.546));
             return;
         }
-        Vec3 horizontal = new Vec3(destination.x - position().x, 0.0, destination.z - position().z);
-        double speed = horizontal.lengthSqr() < 0.01 ? 0.0 : movementSpeed;
-        Vec3 direction = speed == 0.0 ? Vec3.ZERO : horizontal.normalize().scale(speed);
+        double acceleration = movementSpeed > 1.0 ? movementSpeed * 0.1 : movementSpeed * movementSpeed * 0.1;
         LivingEntity target = target();
         boolean enhancedJump = aggressive && target != null && target.distanceToSqr(position()) < 64.0
                 && target.getY() > position().y + 2.0;
         double jumpStrength = enhancedJump ? 1.0 : 0.5;
-        moveWithCollision(new Vec3(direction.x, jumpStrength, direction.z));
+        moveWithCollision(new Vec3(velocity.x * 0.546 + direction.x * acceleration,
+                jumpStrength, velocity.z * 0.546 + direction.z * acceleration));
         int delay = owner().getRandom().nextInt(10) + 5;
         jumpDelay = aggressive ? Math.max(1, delay / 3) : delay;
     }
@@ -107,21 +110,45 @@ public final class SlimeSummon extends PhysicalSummon {
 
         @Override
         public void tick() {
-            Vec3 destination = summon.target() == null ? summon.owner().position() : summon.targetBasePosition();
-            Vec3 direction = destination.subtract(summon.position()).normalize().scale(0.84);
-            double vertical = summon.owner().getRandom().nextFloat() < 0.8F ? 0.3 : direction.y;
-            summon.moveWithCollision(new Vec3(direction.x, vertical, direction.z));
+            Vec3 horizontal = Vec3.directionFromRotation(0.0F, summon.currentPose().yaw()).scale(0.84);
+            Vec3 velocity = summon.velocity();
+            double jump = summon.owner().getRandom().nextFloat() < 0.8F ? 0.04 : 0.0;
+            summon.moveWithCollision(new Vec3(velocity.x * 0.8 + horizontal.x * 0.02,
+                    velocity.y * 0.8 + jump, velocity.z * 0.8 + horizontal.z * 0.02));
         }
     }
 
     private static final class AttackGoal extends SummonGoal<SlimeSummon> {
+        private int growTiredTimer;
+        private boolean restartBlocked;
+
         private AttackGoal(SlimeSummon summon) {super(summon);}
 
         @Override
-        public boolean canUse() {return summon.target() != null && summon.position().distanceTo(summon.owner().position()) <= RETURN_FLIGHT_DISTANCE;}
+        public boolean canUse() {
+            if (restartBlocked) {
+                restartBlocked = false;
+                return false;
+            }
+            return summon.target() != null && summon.position().distanceTo(summon.owner().position()) <= RETURN_FLIGHT_DISTANCE;
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+            return summon.target() != null && summon.position().distanceTo(summon.owner().position()) <= RETURN_FLIGHT_DISTANCE
+                    && --growTiredTimer > 0;
+        }
+
+        @Override
+        public void start() {growTiredTimer = 300;}
 
         @Override
         public void tick() {summon.hopToward(summon.targetBasePosition(), true, 1.05);}
+
+        @Override
+        public void stop() {
+            if (growTiredTimer <= 0) restartBlocked = true;
+        }
     }
 
     private static final class KeepJumpingGoal extends SummonGoal<SlimeSummon> {
@@ -152,7 +179,10 @@ public final class SlimeSummon extends PhysicalSummon {
 
         @Override
         public void tick() {
-            summon.moveWithCollision(new Vec3(summon.velocity().x * 0.6, summon.velocity().y - 0.08, summon.velocity().z * 0.6));
+            Vec3 velocity = summon.velocity();
+            double horizontalDamping = summon.onGround() ? 0.546 : 0.91;
+            summon.moveWithCollision(new Vec3(velocity.x * horizontalDamping, velocity.y * 0.98 - 0.08,
+                    velocity.z * horizontalDamping));
         }
     }
 }

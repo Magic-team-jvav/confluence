@@ -19,10 +19,9 @@ import java.util.*;
 /// 按玩家共享的召唤物目标缓存。
 ///
 /// <p>玩家战斗事件由全部召唤物读取，每个运行实例独立保存已处理的事件时间与自动目标，避免不同索敌范围
-/// 互相覆盖。最后被鞭子标记的目标拥有最高优先级，其次是刚伤害玩家的目标，最后才是召唤物自身附近能够
-/// 看见的敌对生物。玩家的普通攻击不会向召唤物下达目标指令。缓存只存在于服务端运行期，不写入存档。</p>
+/// 互相覆盖。鞭子标记拥有最高优先级，其次是刚伤害玩家的目标和玩家刚攻击的目标，最后才是召唤物附近
+/// 能够看见的敌对生物。缓存只存在于服务端运行期，不写入存档。</p>
 public final class SummonTargetCache {
-    private static final int REFRESH_INTERVAL = 5;
     private static final Map<ServerLevel, Map<SummonKey, CommandState>> COMMANDS = new WeakHashMap<>();
     private static final Map<ServerLevel, Map<SummonKey, AutomaticEntry>> AUTOMATIC_TARGETS = new WeakHashMap<>();
 
@@ -39,12 +38,11 @@ public final class SummonTargetCache {
         Map<SummonKey, CommandState> levelCommands = COMMANDS.computeIfAbsent(level, ignored -> new HashMap<>());
         CommandState command;
         if (changedLevel) {
-            command = new CommandState(owner.getLastHurtByMobTimestamp());
+            command = new CommandState(owner.getLastHurtByMobTimestamp(), owner.getLastHurtMobTimestamp());
             levelCommands.put(key, command);
         } else {
-            command = levelCommands.computeIfAbsent(key, ignored -> new CommandState(owner.getLastHurtByMobTimestamp()));
+            command = levelCommands.computeIfAbsent(key, ignored -> new CommandState(owner.getLastHurtByMobTimestamp(), owner.getLastHurtMobTimestamp()));
         }
-        long gameTime = level.getGameTime();
         LivingEntity whipTarget = WhipTagTracker.lastTaggedTarget(owner);
         if (isValidTarget(owner, whipTarget, origin, automaticRange, true)) {
             command.target = null;
@@ -54,21 +52,32 @@ public final class SummonTargetCache {
         int hurtByTimestamp = owner.getLastHurtByMobTimestamp();
         boolean hurtByChanged = hurtByTimestamp != command.lastHurtByTimestamp;
         command.lastHurtByTimestamp = hurtByTimestamp;
+        int attackTimestamp = owner.getLastHurtMobTimestamp();
+        boolean attackChanged = attackTimestamp != command.lastAttackTimestamp;
+        command.lastAttackTimestamp = attackTimestamp;
         LivingEntity attacker = owner.getLastHurtByMob();
         if (hurtByChanged && isValidTarget(owner, attacker, origin, Double.MAX_VALUE, true)) {
             command.target = attacker;
+            command.priority = 2;
+        } else if (!(command.priority == 2 && isValidTarget(owner, command.target, origin, Double.MAX_VALUE, true))) {
+            LivingEntity attacked = owner.getLastHurtMob();
+            if (attackChanged && isValidTarget(owner, attacked, origin, Double.MAX_VALUE, true)) {
+                command.target = attacked;
+                command.priority = 3;
+            }
         }
         if (isValidTarget(owner, command.target, origin, Double.MAX_VALUE, true))
             return command.target;
         command.target = null;
+        command.priority = Integer.MAX_VALUE;
 
         Map<SummonKey, AutomaticEntry> levelTargets = AUTOMATIC_TARGETS.computeIfAbsent(level, ignored -> new HashMap<>());
         AutomaticEntry cached = levelTargets.get(key);
         if (cached != null && isValidTarget(owner, cached.target, origin, automaticRange, false))
             return cached.target;
-        if (cached != null && gameTime - cached.gameTime < REFRESH_INTERVAL) return null;
+        if (level.random.nextInt(10) != 0) return null;
         LivingEntity selected = selectAutomaticTarget(level, owner, origin, automaticRange);
-        levelTargets.put(key, new AutomaticEntry(gameTime, selected));
+        levelTargets.put(key, new AutomaticEntry(selected));
         return selected;
     }
 
@@ -105,7 +114,7 @@ public final class SummonTargetCache {
         Map<SummonKey, CommandState> currentCommands = COMMANDS.computeIfAbsent(currentLevel, ignored -> new HashMap<>());
         int hurtByTimestamp = owner.getLastHurtByMobTimestamp();
         for (SummonKey key : keys) {
-            currentCommands.put(key, new CommandState(hurtByTimestamp));
+            currentCommands.put(key, new CommandState(hurtByTimestamp, owner.getLastHurtMobTimestamp()));
         }
     }
 
@@ -177,14 +186,17 @@ public final class SummonTargetCache {
 
     private static final class CommandState {
         private int lastHurtByTimestamp;
+        private int lastAttackTimestamp;
+        private int priority = Integer.MAX_VALUE;
         private LivingEntity target;
 
-        private CommandState(int lastHurtByTimestamp) {
+        private CommandState(int lastHurtByTimestamp, int lastAttackTimestamp) {
             this.lastHurtByTimestamp = lastHurtByTimestamp;
+            this.lastAttackTimestamp = lastAttackTimestamp;
         }
     }
 
     private record SummonKey(UUID ownerId, UUID summonId) {}
 
-    private record AutomaticEntry(long gameTime, @Nullable LivingEntity target) {}
+    private record AutomaticEntry(@Nullable LivingEntity target) {}
 }

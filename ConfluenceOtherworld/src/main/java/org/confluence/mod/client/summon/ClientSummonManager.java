@@ -220,8 +220,9 @@ public final class ClientSummonManager {
         poseStack.mulPose(Axis.ZN.rotationDegrees(-state.interpolatedPitch(partialTick)));
         poseStack.mulPose(Axis.XN.rotationDegrees(state.interpolatedRoll(partialTick)));
         float backProgress = state.backProgress(partialTick);
+        int sequence = state.current.order() + 1;
         poseStack.mulPose(Axis.XP.rotationDegrees(90.0F * backProgress));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(state.current.order() / 2 * ((state.current.order() & 1) == 0 ? -1.0F : 1.0F) * 15.0F * backProgress));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(sequence / 2 * ((sequence & 1) == 0 ? -1.0F : 1.0F) * 15.0F * backProgress));
         applySummonSwordAnimation(state, partialTick, poseStack);
         poseStack.mulPose(Axis.ZN.rotationDegrees(-45.0F));
         int packedLight = LevelRenderer.getLightColor(minecraft.level, BlockPos.containing(position));
@@ -315,8 +316,9 @@ public final class ClientSummonManager {
         poseStack.mulPose(Axis.XN.rotationDegrees(-state.interpolatedPitch(partialTick) + 180.0F));
         poseStack.mulPose(Axis.ZN.rotationDegrees(state.interpolatedRoll(partialTick)));
         float backProgress = state.backProgress(partialTick);
+        int sequence = state.current.order() + 1;
         poseStack.mulPose(Axis.ZP.rotationDegrees(90.0F * backProgress));
-        poseStack.mulPose(Axis.XP.rotationDegrees(state.current.order() / 2 * ((state.current.order() & 1) == 0 ? -1.0F : 1.0F) * 15.0F * backProgress));
+        poseStack.mulPose(Axis.XP.rotationDegrees(sequence / 2 * ((sequence & 1) == 0 ? -1.0F : 1.0F) * 15.0F * backProgress));
         applyAnimation(state, partialTick, poseStack);
         poseStack.scale(state.current.scale(), state.current.scaleY(), state.current.scale());
         int rgb = state.rgb();
@@ -507,7 +509,8 @@ public final class ClientSummonManager {
             if (!entry.type().equals(IMP_FIREBALL)) return;
             ClientLevel level = Minecraft.getInstance().level;
             if (level == null) return;
-            Vec3 velocity = entry.position().subtract(previousPosition);
+            Vec3 movement = entry.position().subtract(previousPosition);
+            Vec3 velocity = movement.lengthSqr() < 1.0E-8 ? Vec3.ZERO : movement.normalize().scale(1.1);
             RandomSource random = level.random;
             for (int index = 0; index < 3; index++) {
                 double x = entry.position().x + (random.nextDouble() - 0.5) * 0.5;

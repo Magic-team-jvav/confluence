@@ -737,14 +737,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.arcane_flower.0", "Reduces mana usage by 8%");
         add("tooltip.item.terra_curio.arcane_flower.1", "Automatically uses mana potions when needed");
         add("tooltip.item.terra_curio.arcane_flower.2", "Enemies are less likely to target you");
-        add("tooltip.item.confluence.band_of_starpower.0", "Increases maximum mana by 20");
-        add("tooltip.item.confluence.mana_regeneration_band.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.band_of_starpower.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.mana_regeneration_band.0", "Increases maximum mana by 40");
         add("tooltip.item.terra_curio.mana_regeneration_band.1", "Increases mana regeneration speed");
-        add("tooltip.item.confluence.magic_cuffs.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.magic_cuffs.0", "Increases maximum mana by 40");
         add("tooltip.item.terra_curio.magic_cuffs.1", "Restores mana when damaged");
         add("tooltip.item.confluence.celestial_cuffs.0", "Increases pickup range for mana stars");
         add("tooltip.item.terra_curio.celestial_cuffs.1", "Restores mana when damaged");
-        add("tooltip.item.terra_curio.celestial_cuffs.2", "Increases maximum mana by 20");
+        add("tooltip.item.terra_curio.celestial_cuffs.2", "Increases maximum mana by 40");
         add("tooltip.item.confluence.mana_cloak.0", "Collecting stars restores mana");
         add("tooltip.item.terra_curio.mana_cloak.1", "Reduces mana usage by 8%");
         add("tooltip.item.terra_curio.mana_cloak.2", "Automatically uses mana potions when needed");
@@ -791,7 +791,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.recall_life_crystal.0", "Permanently reduces maximum life by 4");
         add("tooltip.item.confluence.recall_mana_crystal.0", "Permanently reduces maximum mana by 20");
         add("tooltip.item.confluence.life_fruit.0", "Permanently increases maximum life by 1");
-        add("tooltip.item.confluence.mana_crystal.0", "Permanently increases maximum mana by 20");
+        add("tooltip.item.confluence.mana_crystal.0", "Permanently Increases maximum mana by 40");
         add("tooltip.item.confluence.arcane_crystal.0", "Permanently increases mana regeneration");
         add("tooltip.item.confluence.vital_crystal.0", "Permanently boosts life regeneration");
         add("tooltip.item.confluence.aegis_apple.0", "Permanently increases defense");
@@ -1303,8 +1303,8 @@ public class ModEnglishProvider extends LanguageProvider {
         // Fossil Set
         add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
         // Cold Crystal Set
-        add("tooltip.item.confluence.cold_crystal_helmet.0", "Increases maximum mana by 20");
-        add("tooltip.item.confluence.cold_crystal_chestplate.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "Increases maximum mana by 40");
         add("armor_set_bonus.confluence.cold_crystal_set.0", "Magic Attack will have an additional Frostbite effect");
         // Spore Root Set
         add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1");
@@ -1333,7 +1333,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.sapphire_robe.1", "9% reduced mana cost");
         add("tooltip.item.confluence.topaz_robe.0", "Increases maximum mana by 40");
         add("tooltip.item.confluence.topaz_robe.1", "7% reduced mana cost");
-        add("tooltip.item.confluence.amethyst_robe.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.amethyst_robe.0", "Increases maximum mana by 40");
         add("tooltip.item.confluence.amethyst_robe.1", "5% reduced mana cost");
         add("tooltip.item.confluence.wizard_hat.0", "5% increased magic damage");
         add("tooltip.item.confluence.magic_hat.0", "6% increased magic damage and critical strike chance");
@@ -1341,8 +1341,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.meteor_set.0", "Space Gun magic consumption reduced to 0");
         // Jungle Set
         add("tooltip.item.confluence.jungle_helmet.0", "Increases maximum mana by 40");
-        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 20");
-        add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 40");
         add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs");
         // Necro Set
         add("armor_set_bonus.confluence.necro_set.0", "10% increased critical strike chance");

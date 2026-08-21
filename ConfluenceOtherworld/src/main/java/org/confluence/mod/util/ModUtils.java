@@ -185,7 +185,7 @@ public final class ModUtils {
         double amount = getLivingBaseMoneyDrops(living, level);
 
         if (living.hasEffect(ModEffects.MIDAS)) {
-            amount *= Mth.nextDouble(living.getRandom(), 1.1, 1.49);
+            amount *= Mth.nextDouble(living.getRandom(), 1.3, 1.49);
         }
         if (IMinecraftServer.isHardmode(level.getServer())) {
             amount *= 1.6;

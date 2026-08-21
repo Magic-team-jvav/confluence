@@ -730,14 +730,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.arcane_flower.0", "魔力消耗降低8%");
         add("tooltip.item.terra_curio.arcane_flower.1", "需要时自动使用魔力药水");
         add("tooltip.item.terra_curio.arcane_flower.2", "敌人不太可能以你为目标");
-        add("tooltip.item.confluence.band_of_starpower.0", "最大魔力增加20");
-        add("tooltip.item.confluence.mana_regeneration_band.0", "最大魔力值增加20");
+        add("tooltip.item.confluence.band_of_starpower.0", "最大魔力增加40");
+        add("tooltip.item.confluence.mana_regeneration_band.0", "最大魔力增加40");
         add("tooltip.item.terra_curio.mana_regeneration_band.1", "提高魔力再生速度");
-        add("tooltip.item.confluence.magic_cuffs.0", "最大魔力值增加20");
+        add("tooltip.item.confluence.magic_cuffs.0", "最大魔力增加40");
         add("tooltip.item.terra_curio.magic_cuffs.1", "受伤时恢复魔力");
         add("tooltip.item.confluence.celestial_cuffs.0", "扩大魔力星的拾取范围");
         add("tooltip.item.terra_curio.celestial_cuffs.1", "受到伤害时会恢复魔力");
-        add("tooltip.item.terra_curio.celestial_cuffs.2", "最大魔力增加20");
+        add("tooltip.item.terra_curio.celestial_cuffs.2", "最大魔力增加40");
         add("tooltip.item.confluence.mana_cloak.0", "收集星星会恢复魔力");
         add("tooltip.item.terra_curio.mana_cloak.1", "魔力消耗降低8%");
         add("tooltip.item.terra_curio.mana_cloak.2", "需要时自动使用魔力药水");
@@ -1341,8 +1341,8 @@ public class ModChineseProvider extends LanguageProvider {
         // 化石
         add("armor_set_bonus.confluence.fossil_set.0", "20%几率省下弹药");
         // 寒晶
-        add("tooltip.item.confluence.cold_crystal_helmet.0", "最大魔力值增加20");
-        add("tooltip.item.confluence.cold_crystal_chestplate.0", "最大魔力值增加20");
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "最大魔力增加40");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "最大魔力增加40");
         add("armor_set_bonus.confluence.cold_crystal_set.0", "魔法攻击会有附带霜冻效果");
         // 孢根
         add("armor_set_bonus.confluence.spore_root_set.0", "仆从数量上限增加1");
@@ -1371,14 +1371,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.sapphire_robe.1", "魔力消耗降低9%");
         add("tooltip.item.confluence.topaz_robe.0", "最大魔力增加40");
         add("tooltip.item.confluence.topaz_robe.1", "魔力消耗降低7%");
-        add("tooltip.item.confluence.amethyst_robe.0", "最大魔力增加20");
+        add("tooltip.item.confluence.amethyst_robe.0", "最大魔力增加40");
         add("tooltip.item.confluence.amethyst_robe.1", "魔力消耗降低5%");
         // 流星
         add("armor_set_bonus.confluence.meteor_set.0", "太空枪魔力消耗降低为0");
         // 丛林
         add("tooltip.item.confluence.jungle_helmet.0", "最大魔力增加40");
-        add("tooltip.item.confluence.jungle_chestplate.0", "最大魔力增加20");
-        add("tooltip.item.confluence.jungle_leggings.0", "最大魔力增加20");
+        add("tooltip.item.confluence.jungle_chestplate.0", "最大魔力增加40");
+        add("tooltip.item.confluence.jungle_leggings.0", "最大魔力增加40");
         add("armor_set_bonus.confluence.jungle_set.0", "魔力消耗降低16%");
         // 死灵
         add("armor_set_bonus.confluence.necro_set.0", "暴击率提高10%");
@@ -4649,7 +4649,7 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.LESSER_MANA_POTION.get(), "弱效魔力药水", "恢复50魔力");
         addPotion(PotionItems.MANA_POTION.get(), "魔力药水", "恢复100魔力");
         addPotion(PotionItems.GREATER_MANA_POTION.get(), "强效魔力药水", "恢复200魔力");
-        addPotion(PotionItems.SUPER_MANA_POTION.get(), "超级魔力药水", "恢复300魔力");
+        addPotion(PotionItems.SUPER_MANA_POTION.get(), "超级魔力药水", "恢复400魔力");
         addPotion(PotionItems.GRAVITATION_POTION.get(), "重力药水", "可控制重力");
         addPotion(PotionItems.SHINE_POTION.get(), "光芒药水", "发出光芒");
         addPotion(PotionItems.IRON_SKIN_POTION.get(), "铁皮药水", "防御力增加4");

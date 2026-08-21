@@ -96,7 +96,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> LESSER_MANA_POTION = ITEMS.register("lesser_mana_potion", () -> new ManaPotionItem(50, ModRarity.WHITE));
     public static final DeferredItem<AbstractPotionItem> MANA_POTION = ITEMS.register("mana_potion", () -> new ManaPotionItem(100, ModRarity.BLUE));
     public static final DeferredItem<AbstractPotionItem> GREATER_MANA_POTION = ITEMS.register("greater_mana_potion", () -> new ManaPotionItem(200, ModRarity.ORANGE));
-    public static final DeferredItem<AbstractPotionItem> SUPER_MANA_POTION = ITEMS.register("super_mana_potion", () -> new ManaPotionItem(300, ModRarity.LIGHT_RED));
+    public static final DeferredItem<AbstractPotionItem> SUPER_MANA_POTION = ITEMS.register("super_mana_potion", () -> new ManaPotionItem(400, ModRarity.LIGHT_RED));
     public static final DeferredItem<AbstractPotionItem> RANDOM_TELEPORT_POTION = ITEMS.register("random_teleport_potion", RandomTeleportPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> CRATE_POTION = ITEMS.register("crate_potion", () -> new EffectPotionItem(ModEffects.CRATE, 4800));
     public static final DeferredItem<AbstractPotionItem> STINK_POTION = ITEMS.register("stink_potion", () -> new EffectThrowablePotionItem(ModRarity.WHITE, ModEffects.STINKY, 600));

@@ -420,21 +420,23 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 抑郁球
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ModTags.Items.INGOTS_DEMONITE),
                 'S', AmountIngredient.of(3, ModTags.Items.INGOTS_DEMONITE),
                 '/', Ingredient.of(Items.STRING)
         ), List.of(
                 " SS",
-                "/SS",
+                "/aS",
                 "/  "
         )), TEYoyosItems.MALAISE.toStack());
 
         // 血脉球
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ModTags.Items.INGOTS_CRIMTANE),
                 'S', AmountIngredient.of(3, ModTags.Items.INGOTS_CRIMTANE),
                 '/', Ingredient.of(Items.STRING)
         ), List.of(
                 " SS",
-                "/SS",
+                "/aS",
                 "/  "
         )), TEYoyosItems.ARTERY.toStack());
 

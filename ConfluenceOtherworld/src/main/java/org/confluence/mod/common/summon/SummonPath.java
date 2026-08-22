@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Objects;
 
 /// 保存召唤物尚待执行的离散轨迹。
-///
-/// <p>重新规划只替换后续节点，不重置已经完成的进度，因此攻击动作可以持续追踪移动目标。</p>
 public final class SummonPath {
     private final String identifier;
     private List<SummonPose> nodes;

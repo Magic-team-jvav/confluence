@@ -33,7 +33,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.Objects;
 
-/// 枪械物品只保存不可变定义与动画声明，服务端射击由 combat 服务处理。
 public class BaseGun extends Item implements GeoItem {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final GunDefinition definition;

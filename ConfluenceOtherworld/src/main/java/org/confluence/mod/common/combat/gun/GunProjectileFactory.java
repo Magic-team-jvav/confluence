@@ -15,14 +15,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/// 根据已解析的射击快照创建并生成投射物。
+/// Creates projectile entities from already-resolved shot data.
+///
+/// <p>Gun items do not know about entity constructors. That makes a new firing
+/// pattern a combat concern instead of another Item subclass.</p>
 public final class GunProjectileFactory {
     public static int spawn(ShotContext context, GunProjectilePattern pattern) {
-        List<Projectile> projectiles = new ArrayList<>(createDefaults(context, pattern));
         BaseGun gun = (BaseGun) context.gun().getItem();
-        GunEvent.ProjectileCreationEvent event = new GunEvent.ProjectileCreationEvent(gun, context, projectiles);
+        GunEvent.ProjectileCreationEvent event = new GunEvent.ProjectileCreationEvent(gun, context, createDefaults(context, pattern));
         PortEventHandler.postEvent(event);
-        projectiles = event.getProjectiles();
+        List<Projectile> projectiles = event.getProjectiles();
         projectiles.removeIf(Objects::isNull);
         projectiles.forEach(projectile -> configureProjectile(context, projectile));
         projectiles.forEach(context.level()::addFreshEntity);

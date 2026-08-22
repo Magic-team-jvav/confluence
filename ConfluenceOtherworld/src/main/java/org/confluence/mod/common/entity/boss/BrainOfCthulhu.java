@@ -228,7 +228,7 @@ public class BrainOfCthulhu extends BaseBoss {
         Vec3 homeOffset = createNeuronHomeOffset();
         Vec3 home = position().add(homeOffset);
         neuron.setPos(home);
-        neuron.setOwner(this, index);
+        neuron.setOwner(this);
         neuron.setHomeOffset(homeOffset);
         neuron.setHomePosition(home);
         if (serverLevel.addFreshEntity(neuron)) {
@@ -631,31 +631,7 @@ public class BrainOfCthulhu extends BaseBoss {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Brain",
-                0,
-                state -> state.setAndContinue(isPhase2() ? OPEN : CLOSED)));
-    }
-
-    public int getAliveNeurons() {
-        return aliveNeurons;
-    }
-
-    public int getTrackedNeuronCount() {
-        return activeNeuronUUIDs.size();
-    }
-
-    public int getSpawnedNeuronCount() {
-        return spawnedNeuronCount;
-    }
-
-    PhaseOneState getPhaseOneState() {
-        return phaseOneState;
-    }
-
-    PhaseTwoState getPhaseTwoState() {
-        return phaseTwoState;
+        controllers.add(new AnimationController<>(this, "Brain", 0, state -> state.setAndContinue(isPhase2() ? OPEN : CLOSED)));
     }
 
     int getPhaseTwoDashRemaining() {

@@ -20,18 +20,17 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.api.event.SummonEvent;
 import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.summon.*;
+import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
 /// 召唤杖的通用物品实现。
-///
-/// <p>物品层只负责使用流程、基础伤害和召唤实例创建。召唤物的移动、索敌、攻击和客户端表现
-/// 由 {@link SummonInstance} 的具体实现负责，服务端不会为这些运行实例额外生成世界实体。</p>
 public class SummonItem extends Item {
     private final SummonType summonType;
     private final int slotCost;
@@ -64,8 +63,7 @@ public class SummonItem extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (level.isClientSide) {
-            player.startUsingItem(hand);
-            return InteractionResultHolder.consume(stack);
+            return InteractionResultHolder.fail(stack);
         }
         ServerPlayer serverPlayer = (ServerPlayer) player;
         EntityHitResult entityHit = findAimedEntity(serverPlayer);
@@ -90,7 +88,8 @@ public class SummonItem extends Item {
 
     @Override
     public void onUseTick(Level level, LivingEntity living, ItemStack stack, int remainingUseDuration) {
-        if (getUseDuration(stack) - remainingUseDuration == 20 && living instanceof ServerPlayer player && SummonContainer.of(player).clear(player) > 0) {
+        if (getUseDuration(stack) - remainingUseDuration == 20 && living instanceof ServerPlayer player) {
+            SummonContainer.of(player).clear(player);
             player.swing(player.getUsedItemHand(), true);
         }
     }
@@ -100,14 +99,20 @@ public class SummonItem extends Item {
         if (!(living instanceof ServerPlayer player) || getUseDuration(stack) - timeLeft >= 20) {
             return;
         }
+        player.swing(living.getUsedItemHand(), true);
         summon(player, living.getUsedItemHand(), new SummonStats(baseDamage));
     }
 
     private void summon(ServerPlayer player, InteractionHand hand, SummonStats stats) {
+        ItemStack stack = player.getItemInHand(hand);
+        SummonEvent.Pre preEvent = new SummonEvent.Pre(player, stack, summonType);
+        PortEventHandler.postEvent(preEvent);
+        if (preEvent.isCanceled()) return;
         HitResult blockHit = player.pick(player.blockInteractionRange(), 1.0F, false);
         BlockPos spawn = BlockPos.containing(blockHit.getLocation()).above();
         SummonPose pose = new SummonPose(new Vec3(spawn.getX(), spawn.getY(), spawn.getZ()), player.getYRot(), 0.0F, 0.0F);
         SummonInstance summon = summonType.create(player, slotCost, stats, pose);
+        PortEventHandler.postEvent(new SummonEvent(player, stack, summon));
         SummonContainer container = SummonContainer.of(player);
         if (!container.add(player, summon)) {
             container.sync(player);
@@ -116,7 +121,6 @@ public class SummonItem extends Item {
         container.sync(player);
         player.playSound(summonSound.get(), 1.0F, 1.0F);
         player.awardStat(Stats.ITEM_USED.get(this));
-        player.swing(hand, true);
         if (container.occupiedSlots() >= 9) {
             AchievementAwardService.award(player, "you_and_what_army");
         }

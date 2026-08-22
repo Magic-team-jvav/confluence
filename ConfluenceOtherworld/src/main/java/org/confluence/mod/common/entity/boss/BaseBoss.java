@@ -295,15 +295,14 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return selectCombatPlayer(level().players());
     }
 
-    /// Package-visible pure candidate selection seam used by deterministic GameTests.
-    final @Nullable Player selectCombatPlayer(List<? extends Player> candidates) {
+    private @Nullable Player selectCombatPlayer(List<? extends Player> candidates) {
         double range = getCombatPlayerRange();
         double rangeSqr = range * range;
         double maximumAggro = Double.NEGATIVE_INFINITY;
         List<Player> maximumPlayers = new ArrayList<>();
         for (Player player : candidates) {
             if (!isEligibleRetargetCandidate(player) || distanceToSqr(player) >= rangeSqr) continue;
-            var aggro = player.getAttribute(ConfluenceMagicLib.AGGRO.get());
+            var aggro = player.getAttribute(ConfluenceMagicLib.AGGRO);
             double value = aggro == null ? 0.0D : aggro.getValue();
             int comparison = Double.compare(value, maximumAggro);
             if (comparison > 0) {
@@ -318,9 +317,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
                 ? null : maximumPlayers.get(random.nextInt(maximumPlayers.size()));
     }
 
-    /// 把玩家登记为本场遭遇参与者。正常游戏中由锁定目标和玩家伤害自动登记；包级可见性还让
-    /// GameTest 能登记不属于 {@link ServerLevel#players()} 的生存模拟玩家，而无需放宽生产规则。
-    final void registerCombatParticipant(Player player) {
+    /// 把玩家登记为本场遭遇参与者。正常游戏中由锁定目标和玩家伤害自动登记。
+    protected final void registerCombatParticipant(Player player) {
         combatParticipantIds.add(player.getUUID());
     }
 
@@ -358,8 +356,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return resolveOnlineCombatParticipants(serverLevel.players());
     }
 
-    /// Package-visible pure online-resolution seam used without mutating the server player list.
-    final List<ServerPlayer> resolveOnlineCombatParticipants(List<ServerPlayer> onlinePlayers) {
+    private List<ServerPlayer> resolveOnlineCombatParticipants(List<ServerPlayer> onlinePlayers) {
         List<ServerPlayer> participants = new ArrayList<>(combatParticipantIds.size());
         for (UUID participantId : combatParticipantIds) {
             for (ServerPlayer player : onlinePlayers) {

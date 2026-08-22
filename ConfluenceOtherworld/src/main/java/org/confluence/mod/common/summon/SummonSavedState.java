@@ -51,8 +51,7 @@ record SummonSavedState(ResourceLocation type, UUID uuid, int slotCost, SummonSt
                 || !Float.isFinite(yaw) || !Float.isFinite(pitch) || !Float.isFinite(roll)) {
             return null;
         }
-        return new SummonSavedState(type, tag.getUUID("UUID"), slotCost, new SummonStats(baseDamage),
-                new SummonPose(new Vec3(x, y, z), yaw, pitch, roll));
+        return new SummonSavedState(type, tag.getUUID("UUID"), slotCost, new SummonStats(baseDamage), new SummonPose(new Vec3(x, y, z), yaw, pitch, roll));
     }
 
     SummonInstance restore(ServerPlayer owner) {

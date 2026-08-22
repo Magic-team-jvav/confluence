@@ -11,15 +11,20 @@ import org.confluence.mod.common.item.BaseBullet;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.mesdag.portlib.event.PortEventHandler;
 
-/// 解析枪械与弹药数值，并交给投射物工厂。
+/// Resolves one gun/ammunition pair and sends it to the projectile factory.
+/// Inventory, cooldown and input validation remain in {@link ShootingService}.
 public final class GunFiringService {
     public static int fire(ServerPlayer player, BaseGun gun, ItemStack gunStack, ItemStack ammo) {
         if (ammo == null) return 0;
         GunPropertyComponent gunProperties = gunStack.get(ModDataComponentTypes.GUN_PROPERTY);
         if (gunProperties == null) gunProperties = gun.getDefinition().component();
         BulletPropertyComponent ammoProperties = ammo.get(ModDataComponentTypes.BULLET_PROPERTY);
-        if (ammoProperties == null && ammo.getItem() instanceof BaseBullet bullet)
+        if (ammoProperties == null && ammo.getItem() instanceof BaseBullet bullet) {
+            // Item stacks saved before the data component was introduced may
+            // not carry the component. Use the immutable item definition so
+            // their damage, velocity and penetration are still respected.
             ammoProperties = bullet.getDefinition().component();
+        }
         if (ammoProperties == null) ammoProperties = BulletPropertyComponent.EMPTY;
 
         Ballistics ballistics = BallisticsResolver.resolve(

@@ -9,15 +9,13 @@ import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/// 枪械物品栈持久化的基础射击数值。
-///
-/// @param cooldown  使用间隔，单位为 tick
-/// @param damage    枪械提供的基础伤害
-/// @param velocity  枪械提供的基础弹速
-/// @param knockback 枪械提供的基础击退
-/// @param critical  基础暴击率，使用 0 到 1 的小数表示
-/// @param penetrate 枪械额外提供的穿透次数，-1 表示无限穿透
-/// @param rarity    枪械稀有度
+/// @param cooldown  使用时间
+/// @param damage    子弹伤害
+/// @param velocity  射弹速度
+/// @param knockback 击退
+/// @param critical  暴击
+/// @param penetrate 穿透
+/// @param rarity    稀有度
 public record GunPropertyComponent(
         int cooldown,
         float damage,
@@ -25,8 +23,7 @@ public record GunPropertyComponent(
         float knockback,
         float critical,
         int penetrate,
-        ModRarity rarity
-) {
+        ModRarity rarity) {
     public static final Codec<GunPropertyComponent> CODEC = RecordCodecBuilder.create(ins -> ins.group(
             Codec.INT.fieldOf("cooldown").forGetter(GunPropertyComponent::cooldown),
             Codec.FLOAT.fieldOf("damage").forGetter(GunPropertyComponent::damage),

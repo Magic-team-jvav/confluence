@@ -292,12 +292,6 @@ public class TheTwins extends BaseBoss {
 
     public Spazmatism getSpazmatism() {return spazmatism;}
 
-    public int getDefeatedEyesMask() {return defeatedEyes;}
-
-    public UUID getRetinazerUUID() {return retinazerUUID;}
-
-    public UUID getSpazmatismUUID() {return spazmatismUUID;}
-
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);

@@ -13,7 +13,7 @@ public class SimpleCritter extends BaseCritter {
 
     public SimpleCritter(EntityType<? extends SimpleCritter> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension.stepHeight().get()).setBaseValue(0.3);
+        getAttribute(PortAttributesExtension.stepHeight()).setBaseValue(0.3);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

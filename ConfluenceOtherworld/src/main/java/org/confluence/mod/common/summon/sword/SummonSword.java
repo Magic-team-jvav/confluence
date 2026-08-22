@@ -11,16 +11,13 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.summon.*;
-import org.confluence.mod.mixed.Immunity;
 
 /// 六种材质召唤剑共用的运行实例。
-///
-/// <p>这里保留 1.21 侧的追击、斜劈和背部编队行为，材质差异只由 {@link Kind} 负责。
-/// 召唤剑属于同一行为分组，多把剑共享连续序号，方便服务端与客户端保持一致的背部排列。</p>
 public final class SummonSword extends SummonInstance {
     public static final ResourceLocation GROUP_KEY = Confluence.asResource("summon_sword");
     private static final double SEARCH_RANGE = 16.0;
     private static final AABB ATTACK_BOX = new AABB(-0.75, -0.75, -0.75, 0.75, 0.75, 1.5);
+    private static final SummonVisualState FOLLOWING_VISUAL_STATE = new SummonVisualState(true, SummonAnimation.NONE, 0, 0, 0.0F, 1.0F, 1.0F);
     private final Kind kind;
     private final SwordSlashGoal slashGoal;
     private float damageMultiplier = 1.0F;
@@ -42,8 +39,8 @@ public final class SummonSword extends SummonInstance {
     }
 
     @Override
-    protected double ownerRecoveryDistanceSqr() {
-        return Double.POSITIVE_INFINITY;
+    protected boolean usesOwnerRecovery() {
+        return false;
     }
 
     @Override
@@ -64,10 +61,8 @@ public final class SummonSword extends SummonInstance {
         for (SummonCollision.Hit hit : SummonCollision.sweep(owner().level(), previousPreviousPose, previousPose,
                 currentPose, ATTACK_BOX, candidate -> candidate == target()
                         || SummonTargetCache.isValidTarget(owner(), candidate, SEARCH_RANGE * 2.0, false))) {
-            if (!Immunity.isActive(this, hit.target())) {
-                kind.applyHitEffect(owner(), hit.target());
-                hurtTarget(hit.target(), damageMultiplier);
-            }
+            kind.applyHitEffect(owner(), hit.target());
+            hurtTarget(hit.target(), damageMultiplier);
         }
     }
 
@@ -77,7 +72,7 @@ public final class SummonSword extends SummonInstance {
     }
 
     void moveTo(SummonPose pose) {
-        setPath("summon_sword_move", java.util.List.of(pose));
+        advanceTo(pose);
     }
 
     SummonPose aimAt(Vec3 position, Vec3 direction) {
@@ -121,7 +116,7 @@ public final class SummonSword extends SummonInstance {
         if (spinTicks > 0) {
             return new SummonVisualState(followingOwner, SummonAnimation.SPIN_X, 15 - spinTicks, 15, 360.0F, 1.0F, 1.0F);
         }
-        return new SummonVisualState(followingOwner, SummonAnimation.NONE, 0, 0, 0.0F, 1.0F, 1.0F);
+        return followingOwner ? FOLLOWING_VISUAL_STATE : SummonVisualState.DEFAULT;
     }
 
     public Kind kind() {
@@ -134,16 +129,13 @@ public final class SummonSword extends SummonInstance {
     }
 
     public enum Kind {
-        WOODEN("summon_wooden_sword", 0x714C11), STONE("summon_stone_sword", 0x8E9797),
-        IRON("summon_iron_sword", 0xE6F0F3), GOLDEN("summon_golden_sword", 0xE3D529),
-        DIAMOND("summon_diamond_sword", 0x17CFC1), NETHERITE("summon_netherite_sword", 0x8136D2);
+        WOODEN("summon_wooden_sword"), STONE("summon_stone_sword"), IRON("summon_iron_sword"),
+        GOLDEN("summon_golden_sword"), DIAMOND("summon_diamond_sword"), NETHERITE("summon_netherite_sword");
 
         private final ResourceLocation type;
-        private final int trailColor;
 
-        Kind(String path, int trailColor) {
+        Kind(String path) {
             this.type = Confluence.asResource(path);
-            this.trailColor = trailColor;
         }
 
         void applyHitEffect(ServerPlayer owner, LivingEntity target) {
@@ -162,10 +154,6 @@ public final class SummonSword extends SummonInstance {
 
         public ResourceLocation type() {
             return type;
-        }
-
-        public int trailColor() {
-            return trailColor;
         }
     }
 }

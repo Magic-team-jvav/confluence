@@ -5,7 +5,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.Objects;
 
-/// 一个动画名称及其 GeckoLib 循环方式。
 public record HandAnimationClip(String animation, Animation.LoopType loopType) {
     public HandAnimationClip {
         if (animation == null || animation.isBlank()) {

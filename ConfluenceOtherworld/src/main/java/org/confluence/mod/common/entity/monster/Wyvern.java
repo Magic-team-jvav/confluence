@@ -112,13 +112,7 @@ public class Wyvern extends BaseWormMonster {
             } else if (verticalOffset <= -CIRCLE_VERTICAL_LIMIT) {
                 rising = true;
             }
-            verticalOffset = Mth.clamp(
-                    verticalOffset
-                            + (rising
-                            ? CIRCLE_VERTICAL_STEP
-                            : -CIRCLE_VERTICAL_STEP),
-                    -CIRCLE_VERTICAL_LIMIT,
-                    CIRCLE_VERTICAL_LIMIT);
+            verticalOffset = Mth.clamp(verticalOffset + (rising ? CIRCLE_VERTICAL_STEP : -CIRCLE_VERTICAL_STEP), -CIRCLE_VERTICAL_LIMIT, CIRCLE_VERTICAL_LIMIT);
 
             Vec3 destination = circlePosition(angle, verticalOffset);
             Vec3 direction = destination.subtract(wyvern.position());

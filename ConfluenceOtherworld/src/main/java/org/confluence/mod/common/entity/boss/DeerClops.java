@@ -262,10 +262,7 @@ public class DeerClops extends BaseBoss {
     /// 四向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。</p>
     private Vec3 findShadowHandOrigin(Vec3 center, int handIndex, double formationRotation, DeerclopsShadowHandProjectile projectile) {
         double formationAngle = formationRotation + handIndex * Math.PI * 0.5;
-        Vec3 formationOrigin = center.add(
-                Math.cos(formationAngle) * 4.5,
-                handIndex % 2 == 0 ? 2.0 : -2.0,
-                Math.sin(formationAngle) * 4.5);
+        Vec3 formationOrigin = center.add(Math.cos(formationAngle) * 4.5, handIndex % 2 == 0 ? 2.0 : -2.0, Math.sin(formationAngle) * 4.5);
         projectile.setPos(formationOrigin);
         if (isUsableShadowHandOrigin(projectile, formationOrigin)) {
             return formationOrigin;
@@ -509,11 +506,7 @@ public class DeerClops extends BaseBoss {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Controller",
-                5,
-                state -> state.setAndContinue(switch (getCombatState()) {
+        controllers.add(new AnimationController<>(this, "Controller", 5, state -> state.setAndContinue(switch (getCombatState()) {
                     case ROAR -> ROAR;
                     case ROARING -> ROARING;
                     case ATTACK, ATTACK_CHEST -> ICE;

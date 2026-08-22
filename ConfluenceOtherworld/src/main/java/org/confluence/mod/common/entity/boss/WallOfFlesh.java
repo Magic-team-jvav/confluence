@@ -289,14 +289,14 @@ public class WallOfFlesh extends BaseBoss {
 
     /// Wall-only, non-persistent region-ticket ownership. Vanilla/admin forced chunks are never
     /// read or written, and overlapping walls retain independent UUID-keyed leases.
-    static final class WallChunkRetention {
+    private static final class WallChunkRetention {
         private static final int TICKET_DISTANCE = 2;
         private static final TicketType<UUID> TYPE = TicketType.create("confluence:wall_of_flesh", UUID::compareTo, CHUNK_RETENTION_TICKS);
         private static final Map<ServerLevel, Map<UUID, OwnerLease>> LEVELS = new WeakHashMap<>();
 
         private WallChunkRetention() {}
 
-        static void refresh(ServerLevel level, UUID owner, AABB bounds, long now) {
+        private static void refresh(ServerLevel level, UUID owner, AABB bounds, long now) {
             expire(level, now);
             Map<UUID, OwnerLease> owners = LEVELS.computeIfAbsent(level, ignored -> new HashMap<>());
             OwnerLease lease = owners.computeIfAbsent(owner, ignored -> new OwnerLease());
@@ -313,7 +313,7 @@ public class WallOfFlesh extends BaseBoss {
             }
         }
 
-        static void expire(ServerLevel level, long now) {
+        private static void expire(ServerLevel level, long now) {
             Map<UUID, OwnerLease> owners = LEVELS.get(level);
             if (owners == null) return;
             var ownerIterator = owners.entrySet().iterator();
@@ -335,7 +335,7 @@ public class WallOfFlesh extends BaseBoss {
             if (owners.isEmpty()) LEVELS.remove(level);
         }
 
-        static void release(ServerLevel level, UUID owner) {
+        private static void release(ServerLevel level, UUID owner) {
             Map<UUID, OwnerLease> owners = LEVELS.get(level);
             if (owners == null) return;
             OwnerLease lease = owners.remove(owner);
@@ -347,31 +347,9 @@ public class WallOfFlesh extends BaseBoss {
             if (owners.isEmpty()) LEVELS.remove(level);
         }
 
-        static boolean hasLease(ServerLevel level, UUID owner, ChunkPos chunk) {
-            Map<UUID, OwnerLease> owners = LEVELS.get(level);
-            if (owners == null) return false;
-            OwnerLease lease = owners.get(owner);
-            return lease != null && lease.expirations.containsKey(chunk);
-        }
-
-        static int leaseCount(ServerLevel level, UUID owner) {
-            Map<UUID, OwnerLease> owners = LEVELS.get(level);
-            if (owners == null) return 0;
-            OwnerLease lease = owners.get(owner);
-            return lease == null ? 0 : lease.expirations.size();
-        }
-
         private static final class OwnerLease {
             final Map<ChunkPos, Long> expirations = new HashMap<>();
         }
-    }
-
-    boolean hasActivePlacementChunkTicket() {
-        return placementChunkTicket.isActive();
-    }
-
-    static int wallChunkRefreshInterval() {
-        return CHUNK_REFRESH_INTERVAL;
     }
 
     /// 返回包含完整墙面及其前方战斗带的客户端剔除范围。
@@ -777,8 +755,7 @@ public class WallOfFlesh extends BaseBoss {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         entityData.set(DATA_PHASE_TWO, tag.getBoolean(PHASE_TWO_TAG));
-        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(
-                isPhaseTwo() ? BASE_SPEED * 1.45 : BASE_SPEED);
+        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(isPhaseTwo() ? BASE_SPEED * 1.45 : BASE_SPEED);
         initialPosition = new Vec3(tag.getDouble(INITIAL_X_TAG), tag.getDouble(INITIAL_Y_TAG), tag.getDouble(INITIAL_Z_TAG));
         layoutSeed = tag.getLong(LAYOUT_SEED_TAG);
         hungryTimer = tag.getInt(HUNGRY_TIMER_TAG);

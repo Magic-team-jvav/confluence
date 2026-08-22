@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.gun.definition;
 
-/// 客户端收到命中反馈后播放的视觉效果类型。
 public enum BulletImpactEffect {
     NONE(0),
     SILVER_CROSS(1),

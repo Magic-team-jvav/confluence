@@ -3,7 +3,6 @@ package org.confluence.mod.common.item.gun.definition;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.BulletPropertyComponent;
 
-/// 弹药数值、服务端行为与命中表现的完整注册定义。
 public record BulletDefinition(float damage, float velocity, float velocityMultiplier,
                                float knockback, int penetrate, ModRarity rarity, boolean infinity,
                                BulletBehavior behavior, BulletImpactEffect impactEffect) {
@@ -26,12 +25,11 @@ public record BulletDefinition(float damage, float velocity, float velocityMulti
         }
     }
 
-    /// 兼容旧的普通弹药定义写法。
+    /// Compatibility constructor for the original normal projectile definition.
     public BulletDefinition(float damage, float velocity, float velocityMultiplier, float knockback, int penetrate, ModRarity rarity, boolean infinity) {
         this(damage, velocity, velocityMultiplier, knockback, penetrate, rarity, infinity, BulletBehavior.NORMAL, BulletImpactEffect.NONE);
     }
 
-    /// 兼容 1.21 侧新增的“只指定行为，不指定命中特效”写法。
     public BulletDefinition(float damage, float velocity, float velocityMultiplier, float knockback, int penetrate, ModRarity rarity, boolean infinity, BulletBehavior behavior) {
         this(damage, velocity, velocityMultiplier, knockback, penetrate, rarity, infinity, behavior, BulletImpactEffect.NONE);
     }

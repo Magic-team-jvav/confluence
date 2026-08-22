@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.npc.house;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,6 +14,7 @@ import java.util.*;
 /// 3D BFS 房屋检测器。
 /// 从候选起点扩散，遇空气/房屋构成方块继续，遇墙停止。
 public final class HouseValidater {
+    private static final Direction[] DIRECTIONS = Direction.values();
     private static final int MAX_RADIUS = 15;
     private static final int MIN_VOLUME = 16;
     private static final int MAX_VOLUME = 1500;
@@ -85,7 +87,8 @@ public final class HouseValidater {
             minZ = Math.min(minZ, pos.getZ());
             maxZ = Math.max(maxZ, pos.getZ());
 
-            for (BlockPos neighbor : neighbors(pos)) {
+            for (Direction direction : DIRECTIONS) {
+                BlockPos neighbor = pos.relative(direction);
                 if (visited.contains(neighbor)) continue;
                 int dx = Math.abs(neighbor.getX() - start.getX());
                 int dy = Math.abs(neighbor.getY() - start.getY());
@@ -122,11 +125,4 @@ public final class HouseValidater {
                 new BlockPos(maxX, maxY, maxZ));
     }
 
-    private static BlockPos[] neighbors(BlockPos pos) {
-        return new BlockPos[]{
-                pos.above(), pos.below(),
-                pos.north(), pos.south(),
-                pos.east(), pos.west()
-        };
-    }
 }

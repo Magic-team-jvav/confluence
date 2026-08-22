@@ -124,20 +124,12 @@ public abstract class BaseCasterMonster extends BaseMonster {
     /// 施法挥手期间播放法术动作，其余时间按实际移动状态选择行走或待机。
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "caster_state",
-                5,
-                state -> {
-                    if (swingTime > 0) {
-                        return state.setAndContinue(
-                                DefaultAnimations.ATTACK_CAST);
-                    }
-                    return state.setAndContinue(
-                            state.isMoving()
-                                    ? WALK
-                                    : IDLE);
-                }));
+        controllers.add(new AnimationController<>(this, "caster_state", 5, state -> {
+            if (swingTime > 0) {
+                return state.setAndContinue(DefaultAnimations.ATTACK_CAST);
+            }
+            return state.setAndContinue(state.isMoving() ? WALK : IDLE);
+        }));
     }
 
     /// 1.21 共有怪使用预施法周期；只存在于 1.20 的旧怪暂时保留当前节奏。

@@ -2,6 +2,8 @@ package org.confluence.mod.common.entity.projectile.spear;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
@@ -23,7 +26,10 @@ import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.common.component.SpearProjectileComponent;
+import org.confluence.mod.common.data.map.ImmunityDataMap;
+import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
@@ -33,7 +39,7 @@ import java.util.Comparator;
 ///
 /// 子类应覆写[#updateMotion()] 方法实现自定义运动曲线，
 /// 可选覆写[#getTrailParticle()] 提供拖尾粒子效果。
-public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo projectile implements ICollisionAttackEntity*/ {
+public abstract class SpearProjectile extends AbstractHurtingProjectile implements Immunity {
     // 可调参数
     public int lifetime = 40;
     public int pierceRemaining = 1;
@@ -52,7 +58,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
     public Vec3 initSpeed = new Vec3(0, 0, 0);
     public float gravity = 0.0F;
 
-    protected ItemStack firedFromWeapon;
+    protected ItemStack firedFromWeapon = ItemStack.EMPTY;
     protected LivingEntity target;
 
     // 数据同步
@@ -66,9 +72,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
     public SpearProjectile(EntityType<? extends SpearProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
         if (!level().isClientSide()) {
-            this.direction = new Vec3(this.getRandom().nextFloat() - 0.5f,
-                    this.getRandom().nextFloat() - 0.5f,
-                    this.getRandom().nextFloat() - 0.5f);
+            this.direction = new Vec3(this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f);
             this.entityData.set(DATA_DIRECTION, direction.toVector3f());
         }
     }
@@ -102,30 +106,26 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
 
     // ===== 配置注入 =====
 
-    /**
-     * 注入弹射物配置组件，初始化字段。
-     */
+    /// 注入弹射物配置组件并初始化字段。
     public void setProjComponent(SpearProjectileComponent projComponent, LivingEntity owner) {
+        applyComponent(projComponent);
+        this.baseAttackDamage = (float) owner.getAttributeValue(LibAttributes.getAttackDamage());
+    }
+
+    protected final void applyComponent(SpearProjectileComponent projComponent) {
         this.projComponent = projComponent;
         this.gravity = projComponent.gravity();
         this.lifetime = projComponent.existTicks();
         this.entityData.set(DATA_INIT_GRAVITY, gravity);
         this.pierceRemaining = projComponent.pierceCount().orElse(1);
-        // 自动从持有者获取基础攻击伤害
-        this.baseAttackDamage = (float) owner.getAttributeValue(LibAttributes.getAttackDamage());
     }
 
     // ===== 运动逻辑（子类覆写） =====
 
-    /**
-     * 更新当前速度向量。子类必须实现此方法以提供自定义运动曲线。
-     */
+    /// 更新当前速度向量。子类必须实现此方法以提供自定义运动曲线。
     protected abstract void updateMotion();
 
-    /**
-     * 计算初始速度。默认返回direction.scale(speed)
-     * 子类可覆写以实现不同的初始速度计算方式。
-     */
+    /// 计算初始速度。默认返回 `direction.scale(speed)`，子类可覆写以实现不同的初始速度计算方式。
     protected Vec3 initVelocity(LivingEntity owner, Vec3 direction, float speed) {
         return direction.scale(speed);
     }
@@ -141,6 +141,16 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
 
     @Override
     public void tick() {
+        if (!level().isClientSide) {
+            updateMotion();
+            if (gravity != 0.0F) velocity = velocity.add(0.0, -gravity, 0.0);
+            if (projComponent != null && projComponent.acceleration() != 1.0F) {
+                velocity = velocity.scale(projComponent.acceleration());
+            }
+            updateTracking();
+            setDeltaMovement(velocity);
+        }
+
         super.tick();
 
         // 覆盖 AbstractHurtingProjectile.tick() 自动计算yRot/xRot
@@ -156,43 +166,6 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
         }
 
         if (!level().isClientSide) {
-            // 1. 更新运动（子类实现）
-            updateMotion();
-
-            // 2. 应用重力
-            if (gravity != 0) {
-                velocity = velocity.add(0, -gravity, 0);
-            }
-
-            // 3. 应用加速度
-            if (projComponent != null && projComponent.acceleration() != 1.0f) {
-                velocity = velocity.scale(projComponent.acceleration());
-            }
-
-            // 4. 应用速度
-            setDeltaMovement(velocity);
-
-            // 5. 追踪逻辑（如果有）
-            if (projComponent != null && projComponent.trackType().isPresent()
-                    && target != null && target.isAlive()) {
-                Vec3 dir = target.position()
-                        .add(0, target.getBoundingBox().getYsize() * 0.5, 0)
-                        .subtract(position())
-                        .normalize()
-                        .scale(velocity.length());
-                double angle = LibMathUtils.angleBetween(velocity, dir);
-                setDeltaMovement(projComponent.trackType().get()
-                        .calDeltaMovement(velocity, dir, angle));
-                velocity = getDeltaMovement();
-            }
-
-            // 6. 移动实体
-            setPos(getX() + velocity.x, getY() + velocity.y, getZ() + velocity.z);
-
-            // 7. 碰撞检测
-//            doCollisionAttack(this::canHitEntity, this::doHurt);
-
-            // 8. 超时销毁
             if (ticksAlive++ >= (projComponent != null ? projComponent.existTicks() : lifetime)) {
                 discard();
             }
@@ -209,82 +182,55 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
         }
     }
 
+    private void updateTracking() {
+        if (projComponent == null || projComponent.trackType().isEmpty() || target == null || !target.isAlive()
+                || velocity.lengthSqr() < 1.0E-10) return;
+        Vec3 targetDirection = target.getBoundingBox().getCenter().subtract(position()).normalize().scale(velocity.length());
+        double angle = LibMathUtils.angleBetween(velocity, targetDirection);
+        velocity = projComponent.trackType().get().calDeltaMovement(velocity, targetDirection, angle);
+    }
+
     // ===== 碰撞与伤害 =====
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if (pierceRemaining <= 0) {
-            return false;
-        }
-        return true /*TEUtils.projectileCanHitEntityTest.test(this, target)*/;
+        return pierceRemaining > 0 && ProjectileHitRules.canHit(getOwner(), target);
     }
 
-//    @Override
-//    public boolean shouldDoCollision() {
-//        return true;
-//    }
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        if (!level().isClientSide) doHurt(result.getEntity());
+    }
 
     // ===== 伤害计算（子类可覆写） =====
 
-    /**
-     * 计算伤害值。子类可覆写以实现自定义伤害公式。
-     * 默认：基础攻击伤害× 组件伤害系数
-     */
+    /// 计算伤害值。默认是基础攻击伤害乘以组件伤害系数。
     protected float getDamage() {
         float factor = projComponent != null ? projComponent.damageFactor() : attackDamageFactor;
         return getBaseDamage() * factor;
     }
 
-    /**
-     * 应用击中特效。子类可覆写以自定义特效。
-     */
-    protected void applyHitEffect(LivingEntity owner, LivingEntity target) {
-//  todo component       if (projComponent != null) {
-//            projComponent.hitEffect().ifPresent(effect -> effect.applyAll(owner, target));
-//        }
-    }
+    /// 应用击中特效。子类可覆写以自定义特效。
+    protected void applyHitEffect(LivingEntity owner, LivingEntity target) {}
 
-    /**
-     * 处理穿透逻辑。减少剩余穿透次数，归零时销毁
-     * 子类（如无限穿透的弹射物）可覆写为空实现。
-     */
+    /// 处理穿透逻辑。剩余穿透次数归零时销毁；无限穿透弹幕可覆写为空实现。
     protected void applyPenetration() {
         if (--pierceRemaining <= 0 && !level().isClientSide) {
             discard();
         }
     }
 
-    /**
-     * 造成伤害。编排子方法调用，子类可按需覆写 {@link #getDamage()} / {@link #applyHitEffect} / {@link #applyPenetration()}。
-     */
+    /// 造成伤害。子类可按需覆写 `getDamage`、`applyHitEffect` 或 `applyPenetration`。
     protected boolean doHurt(Entity target) {
-        if (true/*TEUtils.projectileCanHurtEntityTest.test(this, target)*/) {
-            float damage = getDamage();
-            DamageSource damageSource = damageSource();
-
-            if (true/*IAttackableProjectile.tryHit(target, damageSource)*/) {
-                return true;
-            }
-
-            LivingEntity hurter;
-            if (LibEntityUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
-                hurter = living;
-            } else {
-                return false;
-            }
-
-            if (getOwner() instanceof LivingEntity owner) {
-                applyHitEffect(owner, hurter);
-            }
-
-            if (target.hurt(damageSource, damage)) {
-                float attackKnockBack = getBaseKnockBack() + knockBack;
-                LibEntityUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
-                applyPenetration();
-            }
-            return true;
-        }
-        return false;
+        if (!canHitEntity(target)) return false;
+        Entity impacted = ProjectileHitRules.impactedEntity(target);
+        if (!(impacted instanceof LivingEntity living)) return false;
+        DamageSource source = damageSource();
+        if (!Immunity.hurt(this, living, source, getDamage())) return false;
+        if (getOwner() instanceof LivingEntity owner) applyHitEffect(owner, living);
+        LibEntityUtils.knockBackA2B(this, living, (getBaseKnockBack() + knockBack) * 0.5, 0.2);
+        applyPenetration();
+        return true;
     }
 
     public DamageSource damageSource() {
@@ -293,51 +239,40 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
 
     // ===== 发射 =====
 
-    /**
-     * 发射弹射物：设置方向、速度，并立即同步 deltaMovement 和实体数据，
-     * 确保首帧即可正确移动（无卡顿）。
-     *
-     * @param direction 发射方向（应为归一化向量）
-     * @param speed     速度大小
-     * @param knockBack 击退距离
-     */
-    // ===== 渲染元数据（子类覆写以实现一类一物品）=====
-
-    /// 弹射物模型纹理，默认 null（无模型）。
-    @Nullable
-    public ResourceLocation getProjTexture() {return null;}
-
-    /**
-     * 弹射物模型层，默认null
-     */
-    @Nullable
-    public ModelLayerLocation getModelLayer() {return null;}
-
-    /**
-     * 飞行轴自旋角度，默认 0
-     */
-    public float getSpinRotation(float partialTick) {
-        return Mth.lerp(partialTick, rotate.old, rotate.neo);
-    }
-
-    /**
-     * 自旋轴，默认是Z 轴。子类可覆写此方法以使用不同的旋转轴
-     */
-    public com.mojang.math.Axis getSpinAxis() {
-        return com.mojang.math.Axis.ZP;
-    }
-
+    /// 发射弹射物并立即同步速度，保证首帧正常移动。
+    ///
+    /// @param direction 归一化后的发射方向
+    /// @param speed     速度大小
+    /// @param knockBack 击退距离
     public void fire(Vec3 direction, float speed, float knockBack) {
         this.direction = direction;
         Vec3 initialVelocity = initVelocity(null, direction, speed);
         this.velocity = initialVelocity;
         this.initSpeed = initialVelocity;
         this.addKnockBack(knockBack);
-
-        // 立即设置 deltaMovement 并同步到客户端，避免首帧卡顿
         this.setDeltaMovement(initialVelocity);
         this.entityData.set(DATA_DIRECTION, direction.toVector3f());
         this.entityData.set(DATA_INIT_SPEED, initialVelocity.toVector3f());
+    }
+
+    // ===== 渲染元数据（子类覆写以实现一类一物品）=====
+
+    /// 弹射物模型纹理，默认 null（无模型）。
+    @Nullable
+    public ResourceLocation getProjTexture() {return null;}
+
+    /// 弹射物模型层，默认没有模型。
+    @Nullable
+    public ModelLayerLocation getModelLayer() {return null;}
+
+    /// 飞行轴自旋角度，默认是 0。
+    public float getSpinRotation(float partialTick) {
+        return Mth.lerp(partialTick, rotate.old, rotate.neo);
+    }
+
+    /// 自旋轴，默认是 Z 轴。
+    public com.mojang.math.Axis getSpinAxis() {
+        return com.mojang.math.Axis.ZP;
     }
 
     @Override
@@ -348,8 +283,7 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
         float f2 = Mth.cos(y * 0.017453292F) * Mth.cos(x * 0.017453292F);
         this.shoot(f, f1, f2, velocity, inaccuracy);
         Vec3 vec3 = shooter.getKnownMovement().scale(0.25f);
-        this.setDeltaMovement(this.getDeltaMovement().add(
-                vec3.x, shooter.onGround() ? 0.0 : vec3.y, vec3.z));
+        this.setDeltaMovement(this.getDeltaMovement().add(vec3.x, shooter.onGround() ? 0.0 : vec3.y, vec3.z));
         this.velocity = getDeltaMovement();
         this.entityData.set(DATA_INIT_SPEED, getDeltaMovement().toVector3f());
     }
@@ -366,9 +300,8 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
                 this.knockBack += (float) instance.getValue();
             }
 
-            var entities = level().getEntities(this,
-                    getBoundingBox().inflate(50),
-                    e -> e instanceof LivingEntity living && living.isAlive() && e != owner1);
+            var entities = level().getEntities(this, getBoundingBox().inflate(50),
+                    entity -> entity instanceof LivingEntity living && living.isAlive() && ProjectileHitRules.canHit(owner1, living));
             entities.sort(Comparator.comparingDouble(a -> a.distanceToSqr(this)));
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity living) {
@@ -405,12 +338,53 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
     }
 
     public void setWeapon(ItemStack weapon) {
-        firedFromWeapon = weapon;
+        firedFromWeapon = weapon.copy();
     }
 
     public SpearProjectile setExistTime(int time) {
         lifetime = time;
         return this;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (projComponent != null) {
+            SpearProjectileComponent.CODEC.encodeStart(NbtOps.INSTANCE, projComponent).result()
+                    .ifPresent(value -> tag.put("ProjectileComponent", value));
+        }
+        if (!firedFromWeapon.isEmpty()) tag.put("Weapon", firedFromWeapon.save(new CompoundTag()));
+        tag.putFloat("BaseDamage", baseAttackDamage);
+        tag.putFloat("BaseKnockback", baseKnockBack);
+        tag.putFloat("Knockback", knockBack);
+        tag.putInt("PierceRemaining", pierceRemaining);
+        tag.putInt("TicksAlive", ticksAlive);
+        tag.putDouble("VelocityX", velocity.x);
+        tag.putDouble("VelocityY", velocity.y);
+        tag.putDouble("VelocityZ", velocity.z);
+        tag.putDouble("DirectionX", direction.x);
+        tag.putDouble("DirectionY", direction.y);
+        tag.putDouble("DirectionZ", direction.z);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("ProjectileComponent")) {
+            SpearProjectileComponent.CODEC.parse(NbtOps.INSTANCE, tag.get("ProjectileComponent")).result()
+                    .ifPresent(this::applyComponent);
+        }
+        firedFromWeapon = tag.contains("Weapon") ? ItemStack.of(tag.getCompound("Weapon")) : ItemStack.EMPTY;
+        baseAttackDamage = tag.getFloat("BaseDamage");
+        baseKnockBack = tag.getFloat("BaseKnockback");
+        knockBack = tag.getFloat("Knockback");
+        pierceRemaining = tag.getInt("PierceRemaining");
+        ticksAlive = tag.getInt("TicksAlive");
+        velocity = new Vec3(tag.getDouble("VelocityX"), tag.getDouble("VelocityY"), tag.getDouble("VelocityZ"));
+        direction = new Vec3(tag.getDouble("DirectionX"), tag.getDouble("DirectionY"), tag.getDouble("DirectionZ"));
+        setDeltaMovement(velocity);
+        entityData.set(DATA_INIT_SPEED, velocity.toVector3f());
+        entityData.set(DATA_DIRECTION, direction.toVector3f());
     }
 
     // ===== 不可攻击/不可拾取/免疫火焰 =====
@@ -443,6 +417,16 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile /* todo 
     @Override
     public double getDefaultGravity() {
         return 0;
+    }
+
+    @Override
+    public Type confluence$getImmunityType() {
+        return ImmunityDataMap.getImmunityType(this);
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
+        return ImmunityDataMap.getImmunityDuration(this, damageSource, source -> 1);
     }
 
 //    @Override

@@ -11,27 +11,17 @@ import org.confluence.mod.Confluence;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
-/**
- * <h1>风暴长矛弹射物</h1>
- * <p>
- * 直线加速弹射物，单次命中后销毁。
- * 移除时播放闪电粒子特效。
- */
+/// 风暴长矛弹射物。
+/// 直线加速飞行，单次命中后销毁，移除时播放闪电粒子特效。
 public class StormSpearProjectile extends SpearProjectile {
-    /**
-     * 风暴长矛额外伤害倍率
-     */
+    /// 风暴长矛额外伤害倍率。
     private static final float STORM_DAMAGE_MULTIPLIER = 1.6f;
 
-    /**
-     * 模型层定义位置
-     */
+    /// 模型层定义位置。
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(Confluence.asResource("storm_spear_shot_projectile"), "main");
 
-    /**
-     * 模型网格定义
-     */
+    /// 模型网格定义。
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -64,17 +54,10 @@ public class StormSpearProjectile extends SpearProjectile {
         return direction.scale(1.92f);
     }
 
-    /**
-     * 风暴长矛额外 1.6 倍伤害，叠加上基类的组件伤害系数。
-     */
+    /// 风暴长矛额外 1.6 倍伤害，叠加基类的组件伤害系数。
     @Override
     protected float getDamage() {
         return super.getDamage() * STORM_DAMAGE_MULTIPLIER;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
     }
 
     // ===== 渲染元数据 =====
@@ -89,16 +72,11 @@ public class StormSpearProjectile extends SpearProjectile {
         return LAYER_LOCATION;
     }
 
-
     @Override
     public void onRemovedFromWorld() {
         super.onRemovedFromWorld();
         if (!level().isClientSide) {
-            EmitterCreationPacketS2C.sendToAll(
-                    Confluence.asResource("thunder_zapper_expiration"),
-                    position().toVector3f(),
-                    MolangExp.EMPTY,
-                    null);
+            EmitterCreationPacketS2C.sendToAll(Confluence.asResource("thunder_zapper_expiration"), position().toVector3f(), MolangExp.EMPTY, null);
         }
     }
 }

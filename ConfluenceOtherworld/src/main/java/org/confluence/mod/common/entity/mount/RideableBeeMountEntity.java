@@ -92,10 +92,7 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
         int energy = flightEnergy();
         double vertical = velocity.y;
         if (isJumpInputDown()) {
-            vertical = Math.min(
-                    MAX_VERTICAL_SPEED,
-                    vertical + (energy > 0
-                            ? POWERED_LIFT : EXHAUSTED_LIFT));
+            vertical = Math.min(MAX_VERTICAL_SPEED, vertical + (energy > 0 ? POWERED_LIFT : EXHAUSTED_LIFT));
             if (!level().isClientSide && energy > 0) {
                 setFlightEnergy(player, energy - 1);
             }
@@ -171,20 +168,14 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(
-                new AnimationController<>(
-                        this, "wings", 2,
-                        state -> isAscending()
-                                ? state.setAndContinue(WING)
-                                : PlayState.STOP),
-                new AnimationController<>(
-                        this, "movement", 10, state -> {
+        controllers.add(new AnimationController<>(this, "wings", 2,
+                        state -> isAscending() ? state.setAndContinue(WING) : PlayState.STOP),
+                new AnimationController<>(this, "movement", 10, state -> {
                     if (moving) {
                         return state.setAndContinue(isJumpInputDown() ? FLY : WALK);
                     }
                     return state.setAndContinue(IDLE);
-                })
-        );
+                }));
     }
 
     @Override

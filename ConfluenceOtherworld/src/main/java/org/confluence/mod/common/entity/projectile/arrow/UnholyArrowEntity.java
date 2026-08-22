@@ -30,6 +30,11 @@ public class UnholyArrowEntity extends BaseArrowEntity {
     }
 
     @Override
+    protected double getAdditionalKnockback() {
+        return 1.5;
+    }
+
+    @Override
     public ResourceLocation getTexturePath() {
         return TEXTURE;
     }

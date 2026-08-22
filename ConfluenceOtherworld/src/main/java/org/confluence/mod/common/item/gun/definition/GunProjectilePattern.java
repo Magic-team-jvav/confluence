@@ -2,10 +2,11 @@ package org.confluence.mod.common.item.gun.definition;
 
 import net.minecraft.util.RandomSource;
 
-/// 描述一次射击应生成怎样的弹幕布局。
+/// Describes how a gun turns one resolved shot into projectile entities.
 ///
-/// <p>这个定义只描述枪械数据，不负责创建具体实体；服务端发射流程会根据它解释为单发、
-/// 带重力弹丸，或霰弹式多弹丸。</p>
+/// <p>This is deliberately part of the gun definition instead of a gun item
+/// subclass. A gun item keeps its data; the combat pipeline interprets this
+/// value when the server fires.</p>
 public record GunProjectilePattern(Type type, float gravity, int minProjectiles,
                                    int maxProjectiles) {
     public GunProjectilePattern {

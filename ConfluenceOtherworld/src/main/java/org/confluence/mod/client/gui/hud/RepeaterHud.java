@@ -86,7 +86,7 @@ public class RepeaterHud implements PortGuiLayer {
 
         int x = guiGraphics.guiWidth() / 2;
         int y = guiGraphics.guiHeight() / 2;
-        int slotSize = repeaterContents.getUedSlotSize();
+        int slotSize = repeaterContents.getUsedSlotSize();
         PoseStack pose = guiGraphics.pose();
         pose.pushPose();
 

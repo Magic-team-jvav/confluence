@@ -80,10 +80,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
             jumpQueued = false;
         }
         if (!level().isClientSide && isInWater()) {
-            vertical = Math.min(
-                    JUMP_VELOCITY,
-                    vertical + (getRandom().nextFloat() < 0.8F
-                            ? 0.2 : 0.1));
+            vertical = Math.min(JUMP_VELOCITY, vertical + (getRandom().nextFloat() < 0.8F ? 0.2 : 0.1));
         }
         moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z));
         updateGroundState(player);
@@ -164,8 +161,7 @@ public final class RideableSlimeMountEntity extends AbstractMountEntity implemen
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this, "movement", 0, state -> {
+        controllers.add(new AnimationController<>(this, "movement", 0, state -> {
             if (entityData.get(JUMPING) && airborneTicks < 20) {
                 return state.setAndContinue(JUMP);
             }

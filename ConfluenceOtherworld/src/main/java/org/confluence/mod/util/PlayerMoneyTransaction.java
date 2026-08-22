@@ -18,10 +18,6 @@ import java.util.Optional;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 
 /// 为玩家钱币提供先规划、后提交的原子扣款。
-///
-/// <p>旧实现会先清空真钱币，再尝试把找零塞回背包；空间不足时 {@code Inventory#add}
-/// 的失败结果被忽略，因而可能在返回成功的同时吞掉找零。本类只操作物品快照，只有
-/// 资金充足且全部找零都能放入时才统一覆盖真实容器。</p>
 public final class PlayerMoneyTransaction {
     private PlayerMoneyTransaction() {}
 
@@ -33,8 +29,6 @@ public final class PlayerMoneyTransaction {
     }
 
     /// 在同一事务中扣款并把商品放入玩家主背包。
-    ///
-    /// <p>商品无法完整合并或放入空槽时，钱币快照也不会提交。</p>
     public static boolean purchase(Player player, long cost, boolean includePiggyBank, ItemStack result) {
         if (result.isEmpty()) {
             throw new IllegalArgumentException("Purchase result cannot be empty");
@@ -205,9 +199,6 @@ public final class PlayerMoneyTransaction {
     }
 
     /// 在明确的槽位预算内拆分钱币。
-    ///
-    /// <p>先计算每种币值需要的物品组数，再创建物品栈。这样即使附属数据提供接近
-    /// {@link Long#MAX_VALUE} 的金额，也只会快速返回失败，不会构造数十亿个临时栈。</p>
     private static Optional<List<ItemStack>> encodeCoins(long amount, int maxStacks) {
         if (amount < 0) {
             throw new IllegalArgumentException("Money amount cannot be negative");

@@ -69,12 +69,7 @@ public class Hornet extends BaseFlyingMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Idle/Attack",
-                3,
-                state -> state.setAndContinue(
-                        swinging ? ATTACK : IDLE)));
+        controllers.add(new AnimationController<>(this, "Idle/Attack", 3, state -> state.setAndContinue(swinging ? ATTACK : IDLE)));
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,18 +19,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
-import org.mesdag.portlib.wrapper.common.extensions.IPortArrowItemExtension;
-import org.mesdag.portlib.wrapper.common.extensions.IPortBowItemExtension;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileWeaponItemExtension;
 
 import java.util.List;
 
-public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
+public class BaseTerraBowItem extends BowItem {
     private final float baseDamage;
 
     public BaseTerraBowItem(float baseDamage) {
@@ -54,13 +53,11 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
 
     protected float getInaccuracy() {return 0;}
 
+    protected boolean hasFullPullHitEffect() {return false;}
+
     // endregion
 
     public void modifyArrowEntity(BaseArrowEntity entity) {}
-
-    protected boolean shouldCreateCustomArrow(ItemStack ammo) {
-        return !(ammo.getItem() instanceof BaseTerraArrowItem);
-    }
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
@@ -80,17 +77,20 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
 
     @Override
     public Projectile createProjectile(Level level, LivingEntity shooter, ItemStack weapon, ItemStack ammo, boolean isCrit) {
-        BaseArrowEntity custom = shouldCreateCustomArrow(ammo) ? createCustomArrow(shooter, ammo, weapon) : null;
+        return createProjectile(level, shooter, weapon, ammo, isCrit, isCrit);
+    }
+
+    private Projectile createProjectile(Level level, LivingEntity shooter, ItemStack weapon, ItemStack ammo, boolean isCrit, boolean fullPull) {
+        BaseArrowEntity custom = createCustomArrow(shooter, ammo, weapon);
         AbstractArrow arrow;
         if (custom != null) {
             arrow = custom;
         } else {
-            IPortArrowItemExtension arrowItem = ammo.getItem() instanceof IPortArrowItemExtension extension
-                    ? extension : (IPortArrowItemExtension) Items.ARROW;
+            ArrowItem arrowItem = ammo.getItem() instanceof ArrowItem item ? item : (ArrowItem) Items.ARROW;
             arrow = arrowItem.createArrow(level, ammo, shooter, weapon);
         }
         if (arrow instanceof BaseArrowEntity terraArrow) {
-            terraArrow.fullPull = isCrit;
+            terraArrow.fullPull = fullPull;
             modifyArrowEntity(terraArrow);
         }
         if (isCrit) {
@@ -116,7 +116,7 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
         List<ItemStack> projectiles = IPortProjectileWeaponItemExtension.draw(stack, ammunition, player);
         if (level instanceof ServerLevel serverLevel && !projectiles.isEmpty()) {
             float velocity = this instanceof ShortBowItem shortBow ? power * shortBow.getVelocityMultiplier() : power * 3.0F;
-            shoot(serverLevel, player, player.getUsedItemHand(), stack, projectiles, velocity, 1.0F, power == 1.0F, null);
+            shoot(serverLevel, player, player.getUsedItemHand(), stack, projectiles, velocity, 1.0F, power == 1.0F, chargeTicks >= 16, null);
         }
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS,
                 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + power * 0.5F);
@@ -136,11 +136,25 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
     }
 
     @Override
+    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
+        if (hasFullPullHitEffect() && getUseDuration(stack, entity) - remainingUseDuration == 16 && level.isClientSide) {
+            entity.playSound(ModSoundEvents.BOW_COOLDOWN_RECOVERY.get());
+        }
+    }
+
+    @Override
     public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
+        shoot(level, shooter, hand, weapon, projectileItems, velocity, inaccuracy, isCrit, isCrit, target);
+    }
+
+    private void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon,
+                       List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit,
+                       boolean fullPull, @Nullable LivingEntity target) {
         float processProjectileSpread = 1;
         float angleIncrement = projectileItems.size() == 1 ? 0.0F : 2.0F * processProjectileSpread / (float) (projectileItems.size() - 1);
         float initialAngleOffset = (float) ((projectileItems.size() - 1) % 2) * angleIncrement / 2.0F;
         float signFactor = 1.0F;
+        boolean fullPullAvailable = fullPull;
 
         for (int itemstackIndex = 0; itemstackIndex < projectileItems.size(); ++itemstackIndex) {
             ItemStack itemstack = projectileItems.get(itemstackIndex);
@@ -152,7 +166,11 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
 
             int multiShootCount = !canMultiShoot(itemstack) ? 1 : getMultiShootCount();
             for (int projectileIndex = 0; projectileIndex < multiShootCount; projectileIndex++) {
-                Projectile projectile = createProjectile(level, shooter, weapon, itemstack, isCrit);
+                Projectile projectile = createProjectile(level, shooter, weapon, itemstack, isCrit, false);
+                if (fullPullAvailable && projectile instanceof BaseArrowEntity terraArrow) {
+                    terraArrow.fullPull = true;
+                    fullPullAvailable = false;
+                }
                 shootProjectile(shooter, projectile, itemstackIndex, velocity * 2.0F, inaccuracy + getInaccuracy(), angleY, target);
                 var multiShootOffset = getMultiShootOffset(projectileIndex, multiShootCount);
                 if (multiShootOffset != null) {
@@ -187,18 +205,12 @@ public class BaseTerraBowItem extends BowItem implements IPortBowItemExtension {
         if (multiShootCount > 1 && !terraArrow.hasAutoDiscard()) {
             terraArrow.setAutoDiscard(100);
         }
-// todo bow       WeaponStorage data = WeaponStorage.of(shooter);
-//        if (data.bowFullPull) {
-//            terraArrow.fullPull = true;
-//            data.bowFullPull = false;
-//        }
     }
 
     public static void transformAndApplyOffsetToProjectile(Projectile projectile, Vec3 offset) {
         Vec3 initDirection = projectile.getDeltaMovement();
         float yaw = (float) (-Math.atan2(initDirection.z, initDirection.x));
-        float pitch = (float) (Math.atan2(initDirection.y,
-                Math.sqrt(initDirection.x * initDirection.x + initDirection.z * initDirection.z)));
+        float pitch = (float) Math.atan2(initDirection.y, Math.sqrt(initDirection.x * initDirection.x + initDirection.z * initDirection.z));
         Quaternionf q = new Quaternionf().rotateY(yaw).rotateZ(pitch);
         offset = new Vec3(q.transform(offset.toVector3f()));
         projectile.setPos(projectile.position().add(offset));

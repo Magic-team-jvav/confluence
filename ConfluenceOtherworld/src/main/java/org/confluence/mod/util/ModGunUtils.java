@@ -49,7 +49,7 @@ public final class ModGunUtils {
         PortEventHandler.postEvent(inventoryExtraEvent);
 
         for (ItemStack item : inventoryExtraEvent.getAmmoList()) {
-            if (item == null || item.is(Items.AIR)) continue;
+            if (item == null || item.isEmpty() || item.is(Items.AIR)) continue;
             if (item.is(ModTags.Items.AMMO) && isCompatible(player, item, gun)) {
                 ammo = item;
                 break;

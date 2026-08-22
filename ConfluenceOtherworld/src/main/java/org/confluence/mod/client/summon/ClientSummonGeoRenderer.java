@@ -45,10 +45,9 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
     }
 
     @Override
-    public void preRender(PoseStack poseStack, ClientSummonVisual visual, BakedGeoModel model,
-                          MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender,
-                          float partialTick, int packedLight, int packedOverlay, float red, float green,
-                          float blue, float alpha) {
+    public void preRender(PoseStack poseStack, ClientSummonVisual visual, BakedGeoModel model, MultiBufferSource bufferSource,
+                          VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay,
+                          float red, float green, float blue, float alpha) {
         scaleModelForRender(scale, scale, poseStack, visual, model, isReRender, partialTick, packedLight, packedOverlay);
         poseStack.translate(0.0F, offsetY, 0.0F);
         if (yawOffset != 0.0F) poseStack.mulPose(Axis.YP.rotationDegrees(yawOffset));
@@ -56,9 +55,8 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
     }
 
     @Override
-    public void renderRecursively(PoseStack poseStack, ClientSummonVisual visual, GeoBone bone, RenderType renderType,
-                                  MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender,
-                                  float partialTick, int packedLight, int packedOverlay,
+    public void renderRecursively(PoseStack poseStack, ClientSummonVisual visual, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource,
+                                  VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                                   float red, float green, float blue, float alpha) {
         if (type.getPath().equals("slime_baby") && !bone.getName().equals("outer") && !bone.getName().equals("slime")) {
             renderType = RenderType.entityCutout(getTextureLocation(visual));
@@ -102,7 +100,7 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
 
         @Override
         public RenderType getRenderType(ClientSummonVisual visual, ResourceLocation texture) {
-            return RenderType.entityCutoutNoCull(texture);
+            return RenderType.entityTranslucent(texture);
         }
     }
 }

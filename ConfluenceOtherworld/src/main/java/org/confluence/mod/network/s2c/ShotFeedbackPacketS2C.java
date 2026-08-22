@@ -10,7 +10,7 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-/// 服务端确认射击后驱动客户端反馈。
+/// Server acknowledgement used to drive client-only fire feedback.
 public enum ShotFeedbackPacketS2C implements IPortPacket.S2C {
     INSTANCE;
 

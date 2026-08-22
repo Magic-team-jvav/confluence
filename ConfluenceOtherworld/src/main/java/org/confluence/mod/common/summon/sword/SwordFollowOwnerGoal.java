@@ -4,9 +4,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summon.SummonGoal;
 
 /// 控制召唤剑在没有目标时回到玩家背后。
-///
-/// <p>攻击行为仍保持 1.21 侧的追击与斜劈语义；这里仅负责待机跟随。
-/// 服务端锚点需要与客户端背剑绘制使用同一套坐标，避免玩家移动时出现拉扯和错位。</p>
 final class SwordFollowOwnerGoal extends SummonGoal<SummonSword> {
     SwordFollowOwnerGoal(SummonSword summon) {
         super(summon);
@@ -39,12 +36,11 @@ final class SwordFollowOwnerGoal extends SummonGoal<SummonSword> {
         Vec3 direction = targetPosition.subtract(summon.position());
         double speed = Math.min(direction.length() * 0.5, 1.0);
         if (speed == 0.0) {
-            summon.moveTo(summon.followPose(summon.position().add(summon.velocity().scale(0.91)), targetPosition));
+            summon.moveTo(summon.followPose(summon.position(), targetPosition));
             return;
         }
-        Vec3 nextVelocity = summon.velocity().scale(0.91).add(direction.normalize()).normalize().scale(speed);
-        Vec3 wiggle = new Vec3(summon.owner().getRandom().nextGaussian(), summon.owner().getRandom().nextGaussian(),
-                summon.owner().getRandom().nextGaussian()).scale(0.01);
+        Vec3 nextVelocity = summon.velocity().add(direction.normalize()).normalize().scale(speed);
+        Vec3 wiggle = new Vec3(summon.owner().getRandom().nextGaussian(), summon.owner().getRandom().nextGaussian(), summon.owner().getRandom().nextGaussian()).scale(0.01);
         Vec3 nextPosition = summon.position().add(nextVelocity).add(wiggle);
         summon.moveTo(summon.followPose(nextPosition, targetPosition));
     }

@@ -11,9 +11,6 @@ import org.confluence.mod.common.summon.*;
 import org.confluence.mod.common.summon.projectile.SummonProjectileTypes;
 
 /// 黄蜂召唤物的运行实例。
-///
-/// <p>这里保留悬停、瞄准和短间隔毒刺射击。
-/// 新架构只负责取消真实实体依赖，不能改变玩家能观察到的战斗节奏。</p>
 public final class HornetSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 8.0F;
@@ -23,11 +20,10 @@ public final class HornetSummon extends FlyingSummon {
     private int repositionCooldown;
     private Vec3 movementDestination;
     private boolean preparingShot;
-    private boolean shotThisTick;
     private LivingEntity preparedTarget;
 
     public HornetSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
-        super(Confluence.asResource("hornet_baby"), owner, slotCost, stats, initialPose);
+        super(Confluence.asResource("hornet_baby"), owner, slotCost, stats, initialPose, 0.5, 0.8);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new MomentumSummonIdleGoal<>(this, 2.0, 0.035, 0.70, 0));
     }
@@ -38,11 +34,6 @@ public final class HornetSummon extends FlyingSummon {
     }
 
     @Override
-    protected int ownerRecoveryInterval() {
-        return 1;
-    }
-
-    @Override
     protected void beforeGoalTick() {
         repositionCooldown--;
         attackAnimationTicks = Math.max(0, attackAnimationTicks - 1);
@@ -50,18 +41,12 @@ public final class HornetSummon extends FlyingSummon {
             preparingShot = false;
             LivingEntity target = preparedTarget;
             preparedTarget = null;
-            if (target != null && target.isAlive()) shoot(target);
+            if (target != null) shoot(target);
         }
     }
 
     private void combat(LivingEntity target) {
-        if (shotThisTick) {
-            shotThisTick = false;
-            keepOnTarget();
-            return;
-        }
-        if (attackCooldown > 0) {
-            attackCooldown--;
+        if (attackCooldown > 0 && --attackCooldown > 0) {
             keepOnTarget();
             return;
         }
@@ -71,7 +56,7 @@ public final class HornetSummon extends FlyingSummon {
     }
 
     private void keepOnTarget() {
-        if (repositionCooldown <= 0 || movementDestination == null || position().distanceToSqr(movementDestination) < 1.0) {
+        if (repositionCooldown <= 0 || movementDestination == null) {
             movementDestination = findHoverDestination();
             repositionCooldown = 20;
         }
@@ -80,14 +65,11 @@ public final class HornetSummon extends FlyingSummon {
 
     private void shoot(LivingEntity target) {
         attackCooldown = ATTACK_COOLDOWN;
-        shotThisTick = true;
         attackAnimationTicks = 6;
         SummonContainer.of(owner()).addProjectile(SummonProjectileTypes.HORNET_STINGER.create(this, target));
     }
 
     /// 在当前视线前方寻找新的悬停点，对应 1.21 侧 {@code HoverRandomPos} 的可观察行为。
-    ///
-    /// <p>新架构没有用于导航的世界实体，因此直接检查候选位置的方块碰撞。</p>
     private Vec3 findHoverDestination() {
         double facing = Math.toRadians(currentPose().yaw());
         Vec3 fallback = position().add(Vec3.directionFromRotation(0.0F, currentPose().yaw()).scale(4.0));
@@ -104,8 +86,9 @@ public final class HornetSummon extends FlyingSummon {
 
     @Override
     public SummonVisualState visualState() {
-        return new SummonVisualState(false, attackAnimationTicks > 0 ? SummonAnimation.MELEE_ATTACK : SummonAnimation.NONE,
-                6 - attackAnimationTicks, 6, 0.0F, 1.0F, 1.0F);
+        return attackAnimationTicks > 0
+                ? new SummonVisualState(false, SummonAnimation.MELEE_ATTACK, 6 - attackAnimationTicks, 6, 0.0F, 1.0F, 1.0F)
+                : SummonVisualState.DEFAULT;
     }
 
     private static final class AttackGoal extends SummonGoal<HornetSummon> {

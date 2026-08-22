@@ -26,9 +26,6 @@ import org.joml.Vector3f;
 import java.util.*;
 
 /// 由玩家持有的召唤物运行实例。
-///
-/// <p>实例只负责服务端逻辑状态：目标、行为、轨迹、基础伤害以及用于客户端同步的表现状态。
-/// 生命周期由 {@link SummonContainer} 统一维护，避免每个召唤物都依赖一个真实的世界实体。</p>
 public abstract class SummonInstance implements OwnedSummon, Immunity {
     private UUID uuid = UUID.randomUUID();
     private final ResourceLocation type;
@@ -37,9 +34,10 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     private final long summonedAt;
     private SummonStats stats;
     private final SummonGoalSelector goalSelector = new SummonGoalSelector();
-    private final Deque<SummonPose> history = new ArrayDeque<>();
     private SummonPath path;
     private SummonPose currentPose;
+    private SummonPose previousPose;
+    private SummonPose previousPreviousPose;
     private LivingEntity target;
     private Entity actualTarget;
     private Vec3 velocity = Vec3.ZERO;
@@ -76,28 +74,19 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         goalSelector.tick();
         afterGoalTick();
         advancePath();
-        SummonPose previousPose = history.peekFirst();
-        SummonPose previousPreviousPose = history.stream().skip(1).findFirst().orElse(previousPose);
-        if (previousPose != null && previousPreviousPose != null) {
-            afterPathAdvance(previousPreviousPose, previousPose, currentPose);
-        }
-        history.addFirst(currentPose);
-        while (history.size() > historyLength()) {
-            history.removeLast();
-        }
+        afterPathAdvance(previousPreviousPose, previousPose, currentPose);
+        previousPreviousPose = previousPose;
+        previousPose = currentPose;
         tickCount++;
     }
 
     protected abstract LivingEntity findTarget();
 
-    protected void onTargetChanged(LivingEntity previousTarget, LivingEntity currentTarget) {
-    }
+    protected void onTargetChanged(LivingEntity previousTarget, LivingEntity currentTarget) {}
 
-    protected void beforeGoalTick() {
-    }
+    protected void beforeGoalTick() {}
 
-    protected void afterGoalTick() {
-    }
+    protected void afterGoalTick() {}
 
     /// 在不改变逻辑受伤本体的前提下，按部件注册顺序选择首个可视部件作为移动和瞄准目标。
     /// 伤害仍然结算到 {@link #target()}，避免多部件 Boss 被重复计算伤害。
@@ -117,7 +106,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         }
         for (Entity part : parts) {
             Vec3 partCenter = part.getBoundingBox().getCenter();
-            if (part.isRemoved() || ProjectileHitRules.impactedEntity(part) != logicalTarget || !hasLineOfSight(partCenter)) {
+            if (!part.isAlive() || !part.isPickable() || ProjectileHitRules.impactedEntity(part) != logicalTarget || !hasLineOfSight(partCenter)) {
                 continue;
             }
             return part;
@@ -138,6 +127,10 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return 10;
     }
 
+    protected boolean usesOwnerRecovery() {
+        return true;
+    }
+
     /// 判断召唤物能否恢复到候选位置。
     /// 飞行召唤物与无碰撞召唤物默认允许，具有实体碰撞体积的召唤物由子类继续检查方块碰撞。
     protected boolean canRecoverAt(Vec3 position) {
@@ -145,6 +138,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     }
 
     private void updateOwnerRecovery() {
+        if (!usesOwnerRecovery()) return;
         double distanceSqr = position().distanceToSqr(owner.position());
         if (distanceSqr < 32.0 * 32.0) {
             trackingOwnerRecovery = false;
@@ -176,19 +170,11 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         }
     }
 
-    /// 路径推进后、历史姿态写回前调用。
-    ///
-    /// <p>三个姿态依次代表上上个游戏刻、上个游戏刻和当前游戏刻，可用于连续碰撞检测、拖尾采样等必须覆盖
-    /// 两个游戏刻之间运动过程的逻辑。默认不执行额外操作。</p>
-    protected void afterPathAdvance(SummonPose previousPreviousPose, SummonPose previousPose, SummonPose currentPose) {
-    }
+    /// 路径推进后、上一刻姿态更新前调用。
+    protected void afterPathAdvance(SummonPose previousPreviousPose, SummonPose previousPose, SummonPose currentPose) {}
 
     protected final void addGoal(int priority, SummonGoal<?> goal) {
         goalSelector.addGoal(priority, goal);
-    }
-
-    protected int historyLength() {
-        return 16;
     }
 
     public final void setPath(SummonPath path) {
@@ -201,6 +187,14 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
 
     public final boolean isExecutingPath() {
         return path != null && !path.isFinished();
+    }
+
+    /// 直接推进一个游戏刻的姿态；多节点轨迹仍使用 {@link #setPath(SummonPath)}。
+    protected final void advanceTo(SummonPose pose) {
+        SummonPose next = Objects.requireNonNull(pose, "Next summon pose must not be null");
+        path = null;
+        velocity = next.position().subtract(currentPose.position());
+        currentPose = next;
     }
 
     public final Vec3 currentVelocity() {
@@ -235,19 +229,6 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return new SummonPose(position, yaw, pitch, roll);
     }
 
-    public static Vec3 bezier(float progress, Vec3... controlPoints) {
-        if (controlPoints.length == 0) {
-            return Vec3.ZERO;
-        }
-        List<Vec3> points = new ArrayList<>(List.of(controlPoints));
-        for (int remaining = points.size() - 1; remaining > 0; remaining--) {
-            for (int index = 0; index < remaining; index++) {
-                points.set(index, points.get(index).lerp(points.get(index + 1), progress));
-            }
-        }
-        return points.get(0);
-    }
-
     /// 使用实例保存的基础伤害和主人当前召唤伤害结算命中，并由局部无敌帧限制同一实例的命中频率。
     protected final boolean hurtTarget(LivingEntity target, float damageMultiplier) {
         Objects.requireNonNull(target, "Summon damage target must not be null");
@@ -257,14 +238,10 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         if (!SummonTargetCache.isValidTarget(owner, target, Double.MAX_VALUE, true)) {
             return false;
         }
-        if (Immunity.isActive(this, target)) {
-            return false;
-        }
         float damage = stats.baseDamage() * (float) owner.getAttributeValue(LibAttributes.getSummonDamage());
         damage = WhipTagTracker.modifyDamage(owner, this, target, damage * damageMultiplier);
-        float finalDamage = damage;
         DamageSource source = LibDamageTypes.of(owner.level(), LibDamageTypes.SUMMONER, owner);
-        return Immunity.withCause(this, () -> target.hurt(source, finalDamage));
+        return Immunity.hurt(this, target, source, damage);
     }
 
     /// 对指定范围内的全部合法目标结算接触伤害，命中频率仍由每个召唤实例的局部无敌帧控制。
@@ -300,14 +277,12 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
 
     public final void initializePose(SummonPose pose) {
         currentPose = Objects.requireNonNull(pose, "Initial summon pose must not be null");
-        history.clear();
-        history.addFirst(pose);
-        history.addFirst(pose);
+        previousPose = pose;
+        previousPreviousPose = pose;
     }
 
     public final SummonPose renderPose(float partialTick) {
-        SummonPose previous = history.size() < 2 ? currentPose : history.stream().skip(1).findFirst().orElse(currentPose);
-        return previous.interpolate(currentPose, partialTick);
+        return previousPose.interpolate(currentPose, partialTick);
     }
 
     public final void remove() {
@@ -326,9 +301,9 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return SummonVisualState.DEFAULT;
     }
 
-    /// 一个逻辑召唤物可以同步多个纯客户端可视部件，例如星尘龙的头部与体节。
-    public List<SummonRenderPart> renderParts() {
-        return List.of(new SummonRenderPart(uuid, type, currentPose, visualState(), order));
+    /// 向同步批次追加纯客户端可视部件；星尘龙等复合召唤物可追加多个部件。
+    public void appendRenderParts(List<SummonRenderPart> output) {
+        output.add(new SummonRenderPart(uuid, type, currentPose, visualState(), order));
     }
 
     /// 同类运行实例可以覆盖此方法，把新增槽位合并进自身。

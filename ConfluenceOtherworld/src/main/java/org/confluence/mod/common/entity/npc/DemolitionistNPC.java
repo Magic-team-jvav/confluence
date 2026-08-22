@@ -1,8 +1,9 @@
 package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.npc.ai.NPCGrenadeGoal;
 
@@ -17,6 +18,6 @@ public class DemolitionistNPC extends BaseNPC {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(2, new NPCGrenadeGoal(this, 5));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Monster.class, true));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, target -> target instanceof Enemy));
     }
 }

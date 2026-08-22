@@ -12,6 +12,7 @@ import org.confluence.mod.client.summon.ClientSummonManager;
 import org.confluence.mod.common.summon.SummonAnimation;
 import org.confluence.mod.common.summon.SummonInstance;
 import org.confluence.mod.common.summon.SummonPose;
+import org.confluence.mod.common.summon.SummonRenderPart;
 import org.confluence.mod.common.summon.SummonVisualState;
 import org.confluence.mod.common.summon.projectile.SummonProjectileInstance;
 import org.mesdag.portlib.network.IPortPacket;
@@ -26,6 +27,7 @@ import java.util.UUID;
 /// 同步一个玩家当前持有的召唤物姿态。
 public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements IPortPacket.S2C {
     private static final int MAX_ENTRIES = 512;
+    private static final double TRACKING_RANGE = 160.0;
     public static final ResourceLocation ID = Confluence.asResource("summon_sync");
     public static final PortStreamCodec<ByteBuf, SummonSyncPacketS2C> STREAM_CODEC = new PortStreamCodec<>() {
         @Override
@@ -54,11 +56,18 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
         }
     };
 
-    public SummonSyncPacketS2C(ServerPlayer owner, List<SummonInstance> summons,
-                               List<SummonProjectileInstance> projectiles) {
-        this(owner.getUUID(), java.util.stream.Stream.concat(
-                summons.stream().flatMap(summon -> summon.renderParts().stream()),
-                projectiles.stream().map(SummonProjectileInstance::renderPart)).map(Entry::from).toList());
+    public SummonSyncPacketS2C(ServerPlayer owner, List<SummonInstance> summons, List<SummonProjectileInstance> projectiles) {
+        this(owner.getUUID(), createEntries(summons, projectiles));
+    }
+
+    private static List<Entry> createEntries(List<SummonInstance> summons, List<SummonProjectileInstance> projectiles) {
+        List<SummonRenderPart> parts = new ArrayList<>(summons.size());
+        for (SummonInstance summon : summons) summon.appendRenderParts(parts);
+        List<Entry> entries = new ArrayList<>(parts.size() + projectiles.size());
+        for (var part : parts) entries.add(Entry.from(part));
+        for (SummonProjectileInstance projectile : projectiles)
+            entries.add(Entry.from(projectile.renderPart()));
+        return entries;
     }
 
     @Override
@@ -77,12 +86,11 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
         ClientSummonManager.accept(ownerId, entries);
     }
 
-    public static void send(ServerPlayer owner, List<SummonInstance> summons,
-                            List<SummonProjectileInstance> projectiles) {
+    public static void send(ServerPlayer owner, List<SummonInstance> summons, List<SummonProjectileInstance> projectiles) {
         SummonSyncPacketS2C packet = new SummonSyncPacketS2C(owner, summons, projectiles);
         Vec3 ownerPosition = owner.position();
         for (ServerPlayer viewer : owner.serverLevel().players()) {
-            if (shouldSendTo(ownerPosition, packet.entries, viewer.position(), 96.0)) {
+            if (shouldSendTo(ownerPosition, packet.entries, viewer.position(), TRACKING_RANGE)) {
                 Confluence.NETWORK_HANDLER.sendToPlayer(viewer, packet);
             }
         }
@@ -92,13 +100,27 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
     public static boolean shouldSendTo(Vec3 ownerPosition, List<Entry> entries, Vec3 viewerPosition, double radius) {
         double radiusSqr = radius * radius;
         if (ownerPosition.distanceToSqr(viewerPosition) <= radiusSqr) return true;
-        return entries.stream().anyMatch(entry -> entry.position.distanceToSqr(viewerPosition) <= radiusSqr);
+        for (Entry entry : entries) {
+            if (entry.position.distanceToSqr(viewerPosition) <= radiusSqr) return true;
+        }
+        return false;
     }
 
-    public record Entry(UUID id, ResourceLocation type, Vec3 position, float yaw, float pitch,
-                        float roll, boolean followingOwner, int order, SummonAnimation animation,
-                        int animationTicks, int animationDuration, float animationDegrees,
-                        float scale, float scaleY) {
+    public record Entry(
+            UUID id,
+            ResourceLocation type,
+            Vec3 position,
+            float yaw,
+            float pitch,
+            float roll,
+            boolean followingOwner,
+            int order,
+            SummonAnimation animation,
+            int animationTicks,
+            int animationDuration,
+            float animationDegrees,
+            float scale,
+            float scaleY) {
         private static Entry from(org.confluence.mod.common.summon.SummonRenderPart part) {
             SummonPose pose = part.pose();
             SummonVisualState visual = part.visualState();

@@ -337,10 +337,6 @@ public class Skeletron extends BaseBoss {
         return index == 0 ? leftHand : index == 1 ? rightHand : null;
     }
 
-    public int getDestroyedHandsMask() {
-        return destroyedHands;
-    }
-
     public boolean isPhase2() {
         return phase2;
     }

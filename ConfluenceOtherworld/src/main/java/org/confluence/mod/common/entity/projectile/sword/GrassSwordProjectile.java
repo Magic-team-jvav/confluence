@@ -55,8 +55,7 @@ public class GrassSwordProjectile extends SwordProjectile {
         if (tickCount > 5) {
             Vec3 motion = getDeltaMovement();
             float yaw = Mth.HALF_PI - (float) Mth.atan2(motion.z, motion.x);
-            float pitch = (float) -Mth.atan2(motion.y,
-                    Math.sqrt(motion.x * motion.x + motion.z * motion.z));
+            float pitch = (float) -Mth.atan2(motion.y, Math.sqrt(motion.x * motion.x + motion.z * motion.z));
             Quaternionf q = new Quaternionf()
                     .rotateY(yaw)
                     .rotateX(pitch)

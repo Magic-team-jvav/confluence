@@ -11,11 +11,9 @@ import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * 渔夫对话界面 —— 任务按钮 + 对话按钮，无交易。
- * 三个状态: COMPLETED(今日已完成) / NO_QUEST(无可用任务) / SHOW_HINT(展示任务鱼提示)
- * CAN_SUBMIT 状态不经过此界面，AnglerNPC 直接处理。
- */
+/// 渔夫对话界面 —— 任务按钮 + 对话按钮，无交易。
+/// 三个状态: COMPLETED(今日已完成) / NO_QUEST(无可用任务) / SHOW_HINT(展示任务鱼提示)
+/// CAN_SUBMIT 状态不经过此界面，AnglerNPC 直接处理。
 public class AnglerDialogScreen extends NPCDialogScreen {
     public enum State {COMPLETED, NO_QUEST, SHOW_HINT, WAKE_UP}
 

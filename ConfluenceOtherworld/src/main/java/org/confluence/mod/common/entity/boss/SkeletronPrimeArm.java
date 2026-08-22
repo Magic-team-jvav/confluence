@@ -38,7 +38,6 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private int contactCooldown = 20;
-    private int attackExecutions;
     private int rangedBehaviorTick;
     private int meleeBehaviorTick;
     private boolean previousOwnerSpinning;
@@ -59,10 +58,6 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
 
     public int getArmType() {
         return entityData.get(ARM_TYPE);
-    }
-
-    public int getAttackExecutions() {
-        return attackExecutions;
     }
 
     @Override
@@ -136,47 +131,30 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         if (++rangedBehaviorTick <= preparationTicks) {
             return;
         }
-        boolean fired = laser
-                ? shootLaser(master, target)
-                : shootCannon(master, target);
-        if (fired) {
-            attackExecutions++;
+        if (laser) {
+            shootLaser(master, target);
+        } else {
+            shootCannon(master, target);
         }
         rangedBehaviorTick = 0;
     }
 
     /// 生成一枚机械激光弹幕，并在创建或加入世界失败时完整回收实体。
-    boolean shootLaser(SkeletronPrime master, LivingEntity target) {
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            return false;
-        }
+    private void shootLaser(SkeletronPrime master, LivingEntity target) {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
         Vec3 origin = position().add(0.0, getBbHeight() * 0.5, 0.0);
         PrimeLaserProjectile laser = ModEntities.PRIME_LASER.get().create(level());
-        if (laser == null) {
-            return false;
-        }
+        if (laser == null) return;
         laser.configure(master, origin, target, 8.0F);
-        if (serverLevel.addFreshEntity(laser)) {
-            return true;
-        }
-        laser.discard();
-        return false;
+        if (!serverLevel.addFreshEntity(laser)) laser.discard();
     }
 
-    private boolean shootCannon(SkeletronPrime master, LivingEntity target) {
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            return false;
-        }
+    private void shootCannon(SkeletronPrime master, LivingEntity target) {
+        if (!(level() instanceof ServerLevel serverLevel)) return;
         PrimeCannonballProjectile cannonball = ModEntities.PRIME_CANNONBALL.get().create(level());
-        if (cannonball == null) {
-            return false;
-        }
+        if (cannonball == null) return;
         cannonball.configure(master, position().add(0.0, getBbHeight() * 0.5, 0.0), target);
-        if (serverLevel.addFreshEntity(cannonball)) {
-            return true;
-        }
-        cannonball.discard();
-        return false;
+        if (!serverLevel.addFreshEntity(cannonball)) cannonball.discard();
     }
 
     /// 还原 1.21 两条近战机械臂的固定行为树时间轴。
@@ -262,14 +240,9 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
             face(target.getEyePosition());
             moveToNextPosition();
         } else if (localTick < 15) {
-            dashTowardLockedTarget(
-                    master,
-                    target,
-                    localTick == 5,
-                    vice ? 2.5F : 1.5F);
+            dashTowardLockedTarget(master, target, localTick == 5, vice ? 2.5F : 1.5F);
         } else {
-            followPinnedSlot(
-                    master, 2.0F, vice ? 1.5F : 0.5F);
+            followPinnedSlot(master, 2.0F, vice ? 1.5F : 0.5F);
         }
     }
 
@@ -279,7 +252,6 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
             dashDirection = direction.lengthSqr() <= 1.0E-9
                     ? getLookAngle()
                     : direction.normalize();
-            attackExecutions++;
         }
         setDeltaMovement(dashDirection.scale(speed));
         face(position().add(dashDirection));

@@ -43,12 +43,7 @@ public class FireImp extends BaseCasterMonster {
     /// 请求不存在的 {@code move.walk} 并持续输出 GeckoLib 警告。</p>
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "imp_state",
-                5,
-                state -> state.setAndContinue(
-                        swingTime > 0 ? CAST : IDLE)));
+        controllers.add(new AnimationController<>(this, "imp_state", 5, state -> state.setAndContinue(swingTime > 0 ? CAST : IDLE)));
     }
 
     @Override

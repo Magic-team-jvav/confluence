@@ -83,7 +83,6 @@ import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
@@ -109,6 +108,7 @@ import java.util.Optional;
 public final class GameClientEvents {
     private static boolean wasFlailKeyHeld = false;
     private static boolean wasRepeaterKeyHeld = false;
+    private static boolean wasDefaultGunShootHeld = false;
 
     public static void init() {
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
@@ -161,11 +161,7 @@ public final class GameClientEvents {
 
         EctoMistHelper.tick(minecraft, player);
 
-        ModClientSetups.GLINT_RAINBOW.setGlintColor(
-                ExpertColorAnimation.INSTANCE.getRed(),
-                ExpertColorAnimation.INSTANCE.getGreen(),
-                ExpertColorAnimation.INSTANCE.getBlue()
-        );
+        ModClientSetups.GLINT_RAINBOW.setGlintColor(ExpertColorAnimation.INSTANCE.getRed(), ExpertColorAnimation.INSTANCE.getGreen(), ExpertColorAnimation.INSTANCE.getBlue());
 
         if (ExtraInventoryScreen.teamCooldown > 0) {
             --ExtraInventoryScreen.teamCooldown;
@@ -228,13 +224,16 @@ public final class GameClientEvents {
         BackgroundLayer.tickLayers();
     }
 
-
     private static void clientPlayerNetwork$LoggingIn(PortClientPlayerNetworkEvent.LoggingIn event) {
         WeatherHandler.initialize(event.getPlayer());
     }
 
-
     private static void clientPlayerNetwork$LoggingOut(PortClientPlayerNetworkEvent.LoggingOut event) {
+        wasFlailKeyHeld = false;
+        wasRepeaterKeyHeld = false;
+        wasDefaultGunShootHeld = false;
+        GunCameraAnimation.clear();
+        ClientSummonManager.reset();
         WeatherHandler.reset();
         MeteorLandingHandler.reset();
         LocalBrushData.reset();
@@ -247,7 +246,6 @@ public final class GameClientEvents {
         ClientGameEventSystem.reset();
 //        AchievementUtils.saveData();
     }
-
 
     private static void input$InteractionKeyMappingTriggered(PortInputEvent.InteractionKeyMappingTriggered event) {
         LocalPlayer player = Minecraft.getInstance().player;
@@ -270,9 +268,6 @@ public final class GameClientEvents {
                 }
             } else {
                 ItemStack stack = player.getMainHandItem();
-                if (event.isAttack() && stack.getItem() instanceof BaseSwordItem) {
-                    SwordProjectileInputHandler.handle(player, true);
-                }
                 if (stack.is(ModTags.Items.SPEAR)) {
                     if (event.isAttack()) {
                         event.setCanceled(true);
@@ -452,14 +447,9 @@ public final class GameClientEvents {
 
     private static void renderArm(PortRenderArmEvent event) {
         AbstractClientPlayer player = event.getPlayer();
-        if (ZombieArmRenderer.getInstance().renderHand(
-                (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player),
-                event.getPoseStack(),
-                event.getMultiBufferSource(),
-                event.getPackedLight(),
-                player,
-                event.getArm()
-        )) event.setCanceled(true);
+        PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+        if (ZombieArmRenderer.getInstance().renderHand(renderer, event.getPoseStack(), event.getMultiBufferSource(),
+                event.getPackedLight(), player, event.getArm())) event.setCanceled(true);
     }
 
 //  todo  private static void npc$Dialog(NPCEvent.NPCDialogEvent event) {
@@ -565,18 +555,24 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
         if (player == null) {
             GunCameraAnimation.clear();
+            wasDefaultGunShootHeld = false;
             return;
         }
 
         updateGunCameraAnimation(player);
-        if (player.isSpectator() || !shoot.isDown()) return;
+        boolean defaultBindingHeld = shoot.isDefault() && minecraft.options.keyAttack.isDown();
+        boolean shootHeld = shoot.isDown() || defaultBindingHeld;
+        boolean defaultBindingPressed = defaultBindingHeld && !wasDefaultGunShootHeld;
+        wasDefaultGunShootHeld = defaultBindingHeld;
+        if (player.isSpectator() || !shootHeld) return;
 
         ItemStack mainHandItem = player.getMainHandItem();
         ItemCooldowns cooldowns = player.getCooldowns();
         if (!(mainHandItem.getItem() instanceof BaseGun baseGun) || cooldowns.isOnCooldown(baseGun))
             return;
         if (!ModGunUtils.canShoot(player, mainHandItem)) return;
-        if (!baseGun.isAutomatic(mainHandItem) && !shoot.consumeClick()) return;
+        if (!baseGun.isAutomatic(mainHandItem) && !shoot.consumeClick() && !defaultBindingPressed)
+            return;
 
         GunEvent.UseGunEvent useGunEvent = new GunEvent.UseGunEvent(player, baseGun, baseGun.getCooldown());
         PortEventHandler.postEvent(useGunEvent);

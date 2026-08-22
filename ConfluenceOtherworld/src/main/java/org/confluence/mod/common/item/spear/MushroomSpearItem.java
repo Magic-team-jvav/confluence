@@ -39,9 +39,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
         this.strikeEndTick = computeStrikeEndTick();
     }
 
-    /**
-     * 从关键帧中计算刺击前摇结束时刻：z 值达到最大（蓄力最远）的累积 tick。
-     */
+    /// 从关键帧中计算刺击前摇结束时刻：z 值达到最大（蓄力最远）的累积 tick。
     private int computeWindUpEndTick() {
         double maxZ = Double.NEGATIVE_INFINITY;
         int maxZTime = 0;
@@ -57,9 +55,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
         return maxZTime;
     }
 
-    /**
-     * 从关键帧中计算刺击结束时刻：z 值达到最小（前刺最远）的累积 tick。
-     */
+    /// 从关键帧中计算刺击结束时刻：z 值达到最小（前刺最远）的累积 tick。
     private int computeStrikeEndTick() {
         double minZ = Double.POSITIVE_INFINITY;
         int minZTime = 0;
@@ -124,8 +120,7 @@ public class MushroomSpearItem extends AbstractSpearItem {
     }
 
     private void spawnProjectile(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 pos, SpearProjectileComponent component, Vec3 direction) {
-        MushroomProjectile projectile = new MushroomProjectile(
-                ModEntities.MUSHROOM.get(), level);
+        MushroomProjectile projectile = new MushroomProjectile(ModEntities.MUSHROOM.get(), level);
         fireDerivedProjectile(stack, level, owner, component, projectile, pos, direction, 0.0F);
     }
 }

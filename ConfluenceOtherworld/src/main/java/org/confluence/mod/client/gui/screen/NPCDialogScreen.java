@@ -6,6 +6,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,6 +22,15 @@ public class NPCDialogScreen extends Screen {
     public NPCDialogScreen(int entityId) {
         super(Component.empty());
         this.entityId = entityId;
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        if (minecraft == null || minecraft.level == null) return;
+        if (!(minecraft.level.getEntity(entityId) instanceof BaseNPC npc)) return;
+        String key = NPCDialogLoader.getInstance().getRandomDialogKey(npc.getRandom(), npc.getType());
+        if (key != null) dialogText = Component.translatable(key);
     }
 
     @Override

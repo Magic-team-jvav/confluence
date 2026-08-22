@@ -25,7 +25,10 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.common.item.bow.BaseTerraBowItem;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.mixed.IAbstractArrow;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
@@ -39,9 +42,9 @@ import java.util.*;
 
 /// 泰拉箭矢的通用运行实体。
 ///
-/// <p>PortLib 只补足 1.20 缺失的拾取物与发射武器字段；本类负责满蓄力、剩余寿命、穿透次数
+/// PortLib 只补足 1.20 缺失的拾取物与发射武器字段；本类负责满蓄力、剩余寿命、穿透次数
 /// 和已命中目标等具体玩法状态。箭矢跨区块重载后必须继续消耗原预算，不能重新获得命中次数或
-/// 把同一目标当作首次命中。</p>
+/// 把同一目标当作首次命中。
 public class BaseArrowEntity extends PortAbstractArrow {
     private static final String RUNTIME_TAG = "ConfluenceArrowRuntime";
     private static final int CURRENT_FORMAT_VERSION = 1;
@@ -75,6 +78,10 @@ public class BaseArrowEntity extends PortAbstractArrow {
         IAbstractArrow.of(this).confluence$setDamageNotAffectedBySpeedBonus(true);
     }
 
+    public void initializeProjectile(ItemStack pickupItemStack, @Nullable ItemStack firedFromWeapon) {
+        setup(pickupItemStack, firedFromWeapon);
+    }
+
     @Override
     public double getDefaultGravity() {
         return 0.05;
@@ -86,6 +93,10 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     protected int getPenetrationCount() {
         return 0;
+    }
+
+    protected double getAdditionalKnockback() {
+        return 0.0;
     }
 
     protected int getAutoDiscardTick() {
@@ -179,6 +190,11 @@ public class BaseArrowEntity extends PortAbstractArrow {
                 living.setArrowCount(living.getArrowCount() + 1);
             }
             doKnockback(living, damageSource);
+            double additionalKnockback = getAdditionalKnockback();
+            if (additionalKnockback > 0.0) {
+                Vec3 knockback = getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(0.6 * additionalKnockback);
+                if (knockback.lengthSqr() > 0.0) living.push(knockback.x, 0.1, knockback.z);
+            }
             if (!reflectedByMimic && !level().isClientSide && owner instanceof LivingEntity) {
                 PortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damageSource);
             }
@@ -288,6 +304,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
     public void readAdditionalSaveData(CompoundTag entityTag) {
         super.readAdditionalSaveData(entityTag);
         resetRuntimeState();
+        restoreWeaponHitEffects();
         if (!entityTag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) {
             return;
         }
@@ -335,7 +352,18 @@ public class BaseArrowEntity extends PortAbstractArrow {
         this.autoDiscardTick = Math.max(getAutoDiscardTick(), 0);
         this.penetrate = 0;
         this.havenBeen.clear();
+        this.weaponHitEffects.clear();
         this.invalidRuntimeState = false;
+    }
+
+    private void restoreWeaponHitEffects() {
+        ItemStack weapon = getWeaponItem();
+        if (weapon == null || weapon.isEmpty()) return;
+        if (weapon.getItem() instanceof BaseTerraBowItem bow) {
+            bow.modifyArrowEntity(this);
+        } else if (weapon.getItem() instanceof BaseTerraRepeaterItem repeater) {
+            repeater.modifyArrowEntity(this);
+        }
     }
 
     private static void requireTag(CompoundTag tag, String key, int expectedType) {

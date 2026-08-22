@@ -15,13 +15,9 @@ import java.util.function.Predicate;
 
 /// 为高速移动的召唤物计算两个游戏刻之间的连续定向碰撞。
 public final class SummonCollision {
-    private SummonCollision() {
-    }
+    private SummonCollision() {}
 
     /// 沿二次贝塞尔曲线采样定向碰撞箱，并按首次命中点到运动起点的距离返回命中目标。
-    ///
-    /// <p>采样间距不超过碰撞箱最短边的一半，让相邻碰撞箱保留约一半重叠，避免高速移动时目标刚好位于两个游戏刻端点之间而被漏判。
-    /// 粗筛只查询扫掠包围盒中的生物，精确阶段再使用分离轴定理。</p>
     public static List<Hit> sweep(Level level, SummonPose previousPreviousPose, SummonPose previousPose, SummonPose currentPose, AABB localBox, Predicate<LivingEntity> targetFilter) {
         if (level == null || previousPreviousPose == null || previousPose == null || currentPose == null || localBox == null || targetFilter == null) {
             throw new IllegalArgumentException("Summon collision arguments must not be null");
@@ -35,7 +31,7 @@ public final class SummonCollision {
         Vec3 end = currentPose.position();
         Vec3 control = start.add(start.subtract(previousPreviousPose.position()).scale(0.5));
         int steps = Math.max(2, (int) Math.ceil(start.distanceTo(end) / (shortestSide * 0.5)));
-        List<OrientedBox> samples = new ArrayList<>(steps + 1);
+        OrientedBox[] samples = new OrientedBox[steps + 1];
         AABB sweepBounds = null;
         Vec3 centerOffset = localBox.getCenter();
         for (int index = 0; index <= steps; index++) {
@@ -49,7 +45,7 @@ public final class SummonCollision {
                 position = position.add(centerOffset.xRot((float) Math.toRadians(-pitch)).yRot((float) Math.toRadians(-yaw)));
             }
             OrientedBox sample = new OrientedBox(position, size, yaw, pitch, roll);
-            samples.add(sample);
+            samples[index] = sample;
             sweepBounds = sweepBounds == null ? sample.bounds() : sweepBounds.minmax(sample.bounds());
         }
         if (sweepBounds == null) {
@@ -80,15 +76,20 @@ public final class SummonCollision {
                 }
             }
             if (closestHit != null) {
-                hitPoints.put(candidate, closestHit);
+                Vec3 previousHit = hitPoints.get(candidate);
+                if (previousHit == null || closestHit.distanceToSqr(start) < previousHit.distanceToSqr(start)) {
+                    hitPoints.put(candidate, closestHit);
+                }
             }
         }
-        return hitPoints.entrySet().stream().sorted(Comparator.comparingDouble(entry -> entry.getValue().distanceToSqr(start))).map(entry -> new Hit(entry.getKey(), entry.getValue())).toList();
+        List<Hit> hits = new ArrayList<>(hitPoints.size());
+        hitPoints.forEach((target, position) -> hits.add(new Hit(target, position)));
+        hits.sort(Comparator.comparingDouble(hit -> hit.position.distanceToSqr(start)));
+        return hits;
     }
 
     /// 一次连续碰撞命中的目标与近似命中位置。
-    public record Hit(LivingEntity target, Vec3 position) {
-    }
+    public record Hit(LivingEntity target, Vec3 position) {}
 
     /// 仅在连续碰撞实现内部使用的定向碰撞箱。
     private static final class OrientedBox {
@@ -96,6 +97,8 @@ public final class SummonCollision {
         private final Vector3f center;
         private final Vector3f extents;
         private final Vector3f[] axes;
+        private final float[][] rotation = new float[3][3];
+        private final float[][] absolute = new float[3][3];
 
         private OrientedBox(Vec3 center, Vec3 size, float yaw, float pitch, float roll) {
             this.center = new Vector3f((float) center.x, (float) center.y, (float) center.z);
@@ -105,6 +108,12 @@ public final class SummonCollision {
             this.axes = new Vector3f[]{new Vector3f(1.0F, 0.0F, 0.0F).rotate(rotation),
                     new Vector3f(0.0F, 1.0F, 0.0F).rotate(rotation),
                     new Vector3f(0.0F, 0.0F, 1.0F).rotate(rotation)};
+            for (int row = 0; row < 3; row++) {
+                for (int column = 0; column < 3; column++) {
+                    this.rotation[row][column] = axisComponent(axes[column], row);
+                    this.absolute[row][column] = Math.abs(this.rotation[row][column]) + EPSILON;
+                }
+            }
         }
 
         private Vec3 center() {
@@ -119,28 +128,26 @@ public final class SummonCollision {
         }
 
         private boolean intersects(AABB box) {
-            Vector3f boxCenter = new Vector3f((float) box.getCenter().x, (float) box.getCenter().y, (float) box.getCenter().z);
-            Vector3f boxExtents = new Vector3f((float) box.getXsize() * 0.5F, (float) box.getYsize() * 0.5F, (float) box.getZsize() * 0.5F);
-            Vector3f offset = new Vector3f(center).sub(boxCenter);
-            float[][] rotation = new float[3][3];
-            float[][] absolute = new float[3][3];
+            float translationX = center.x - (float) ((box.minX + box.maxX) * 0.5);
+            float translationY = center.y - (float) ((box.minY + box.maxY) * 0.5);
+            float translationZ = center.z - (float) ((box.minZ + box.maxZ) * 0.5);
+            float boxExtentX = (float) box.getXsize() * 0.5F;
+            float boxExtentY = (float) box.getYsize() * 0.5F;
+            float boxExtentZ = (float) box.getZsize() * 0.5F;
             for (int row = 0; row < 3; row++) {
-                for (int column = 0; column < 3; column++) {
-                    rotation[row][column] = axisComponent(axes[column], row);
-                    absolute[row][column] = Math.abs(rotation[row][column]) + EPSILON;
-                }
-            }
-            float[] translation = {offset.x, offset.y, offset.z};
-            float[] a = {boxExtents.x, boxExtents.y, boxExtents.z};
-            float[] b = {extents.x, extents.y, extents.z};
-            for (int row = 0; row < 3; row++) {
-                if (Math.abs(translation[row]) > a[row] + b[0] * absolute[row][0] + b[1] * absolute[row][1] + b[2] * absolute[row][2]) {
+                float translation = component(translationX, translationY, translationZ, row);
+                float boxExtent = component(boxExtentX, boxExtentY, boxExtentZ, row);
+                if (Math.abs(translation) > boxExtent + extents.x * absolute[row][0]
+                        + extents.y * absolute[row][1] + extents.z * absolute[row][2]) {
                     return false;
                 }
             }
             for (int column = 0; column < 3; column++) {
-                float projected = Math.abs(translation[0] * rotation[0][column] + translation[1] * rotation[1][column] + translation[2] * rotation[2][column]);
-                if (projected > a[0] * absolute[0][column] + a[1] * absolute[1][column] + a[2] * absolute[2][column] + b[column]) {
+                float projected = Math.abs(translationX * rotation[0][column] + translationY * rotation[1][column]
+                        + translationZ * rotation[2][column]);
+                float extent = component(extents.x, extents.y, extents.z, column);
+                if (projected > boxExtentX * absolute[0][column] + boxExtentY * absolute[1][column]
+                        + boxExtentZ * absolute[2][column] + extent) {
                     return false;
                 }
             }
@@ -150,11 +157,12 @@ public final class SummonCollision {
                 for (int bAxis = 0; bAxis < 3; bAxis++) {
                     int nextB = (bAxis + 1) % 3;
                     int lastB = (bAxis + 2) % 3;
-                    float projected = Math.abs(translation[lastA] * rotation[nextA][bAxis] - translation[nextA] * rotation[lastA][bAxis]);
-                    float radiusA = a[nextA] * absolute[lastA][bAxis]
-                            + a[lastA] * absolute[nextA][bAxis];
-                    float radiusB = b[nextB] * absolute[aAxis][lastB]
-                            + b[lastB] * absolute[aAxis][nextB];
+                    float projected = Math.abs(component(translationX, translationY, translationZ, lastA) * rotation[nextA][bAxis]
+                            - component(translationX, translationY, translationZ, nextA) * rotation[lastA][bAxis]);
+                    float radiusA = component(boxExtentX, boxExtentY, boxExtentZ, nextA) * absolute[lastA][bAxis]
+                            + component(boxExtentX, boxExtentY, boxExtentZ, lastA) * absolute[nextA][bAxis];
+                    float radiusB = component(extents.x, extents.y, extents.z, nextB) * absolute[aAxis][lastB]
+                            + component(extents.x, extents.y, extents.z, lastB) * absolute[aAxis][nextB];
                     if (projected > radiusA + radiusB) {
                         return false;
                     }
@@ -165,6 +173,10 @@ public final class SummonCollision {
 
         private static float axisComponent(Vector3f axis, int component) {
             return component == 0 ? axis.x : component == 1 ? axis.y : axis.z;
+        }
+
+        private static float component(float x, float y, float z, int component) {
+            return component == 0 ? x : component == 1 ? y : z;
         }
     }
 }

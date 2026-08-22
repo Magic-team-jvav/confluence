@@ -15,10 +15,12 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibDamageTypes;
@@ -99,12 +101,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         }
         entityData.set(DURATION_TICKS, durationTicks);
         int enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.WHIP_SWEEP.get(), weapon);
-        entityData.set(
-                SWEEP_LEVEL,
-                enchantmentLevel > 0 && getRandom().nextFloat() < 0.2F
-                        ? enchantmentLevel
-                        : 0
-        );
+        entityData.set(SWEEP_LEVEL, enchantmentLevel > 0 && getRandom().nextFloat() < 0.2F ? enchantmentLevel : 0);
         setDeltaMovement(normalized.scale(0.05));
     }
 
@@ -189,7 +186,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         List<Vec3> localPoints = WhipCurveSampler.sample(
                 sweepLevel() > 0 ? WhipCurves.SWEEP : definition.curve(),
                 progress,
-                RANGE_ATTRIBUTE_SCALE * owner.getAttributeValue(ConfluenceMagicLib.WHIP_RANGE.get()),
+                RANGE_ATTRIBUTE_SCALE * owner.getAttributeValue(ConfluenceMagicLib.WHIP_RANGE),
                 RENDER_SEGMENT_SPACING);
         return transformLocalPointsLike121(localPoints);
     }
@@ -207,18 +204,6 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             result.add(origin.add(local.x(), local.y(), local.z()));
         }
         return List.copyOf(result);
-    }
-
-    /// 返回客户端显示使用的曲线。
-    ///
-    /// <p>鞭根保持在持握点，后续控制点叠加实体的甩出/收回位移。这与 1.21 渲染器把
-    /// “移动中的鞭实体关键点”和“玩家当前手部点”共同送入样条曲线的结构一致。</p>
-    public List<Vec3> sampleRenderPoints(float partialTick) {
-        List<Vec3> controls = sampleRenderControlPoints(partialTick);
-        if (controls.size() < 2) {
-            return controls;
-        }
-        return WhipCurveSampler.sampleControlPoints(controls, RENDER_SEGMENT_SPACING);
     }
 
     /// 返回客户端显示使用的少量控制点。
@@ -254,10 +239,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
 
     private List<Vec3> sampleWorldControlPoints(LivingEntity owner, WhipDefinition definition, float partialTick) {
         double progress = Mth.clamp((tickCount + partialTick) / durationTicks(), 0.0, 1.0);
-        List<Vec3> localPoints = (
-                sweepLevel() > 0 ? WhipCurves.SWEEP : definition.curve()
-        ).controlPoints(progress).stream()
-                .map(point -> point.scale(RANGE_ATTRIBUTE_SCALE * owner.getAttributeValue(ConfluenceMagicLib.WHIP_RANGE.get())))
+        List<Vec3> localPoints = (sweepLevel() > 0 ? WhipCurves.SWEEP : definition.curve()).controlPoints(progress).stream()
+                .map(point -> point.scale(RANGE_ATTRIBUTE_SCALE * owner.getAttributeValue(ConfluenceMagicLib.WHIP_RANGE)))
                 .toList();
         return transformLocalPointsLike121(localPoints);
     }
@@ -288,10 +271,6 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     /// 返回本次攻击实际使用的手臂，供第三人称手部锚点计算使用。
     public HumanoidArm attackArm() {
         return entityData.get(RIGHT_ARM) ? HumanoidArm.RIGHT : HumanoidArm.LEFT;
-    }
-
-    public float animationProgress(float partialTick) {
-        return Mth.clamp((tickCount + partialTick) / durationTicks(), 0.0F, 1.0F);
     }
 
     /// 返回本次挥动在发射瞬间冻结的完整时长。
@@ -382,11 +361,6 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         float multiplier = Math.max(definition.minimumDamageMultiplier(), (float) Math.pow(definition.damageFalloff(), successfulHits));
         float damage = baseDamage * multiplier
                 * (1.0F + sweepLevel() * 0.2F);
-        if (!rawTarget.hurt(LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), damage)) {
-            return;
-        }
-        // 只有实际造成伤害后才消耗本次挥动的命中名额；被无敌帧或事件拒绝时，
-        // 后续扫掠帧仍应有机会重新命中同一目标。
         delayNextHit(target.getUUID(), definition);
         int hitIndex = successfulHits++;
         if (owner instanceof Player player) {
@@ -396,6 +370,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             WhipDirectHitContext context = new WhipDirectHitContext(player, target, weapon(), damage, hitIndex);
             definition.directHitEffects().forEach(effect -> effect.apply(context));
         }
+        LibDamageTypes.hurtWithoutKnockback(rawTarget, LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), damage);
     }
 
     private boolean canHitAgain(UUID targetId) {
@@ -406,7 +381,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         nextHitTicks.put(targetId, tickCount + definition.hitCooldownTicks());
     }
 
-    /// 1.21 只在本次挥动首次确实伤害敌人后消耗一点耐久。
+    /// 1.21 只在本次挥动首次命中合法敌人后消耗一点耐久。
     private void consumeDurabilityAfterFirstEnemyHit(Player player) {
         if (durabilityConsumed) {
             return;
@@ -440,18 +415,12 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         WhipFriendlyHitContext context = new WhipFriendlyHitContext(player, target, weapon());
         definition.friendlyHitEffects().forEach(effect -> effect.apply(context));
         float baseDamage = getDamage() > 0.0F ? getDamage() : definition.baseDamage();
-        target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), baseDamage * 0.2F);
+        LibDamageTypes.hurtWithoutKnockback(target, LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), baseDamage * 0.2F);
         return true;
     }
 
     private boolean hasLineOfSight(Vec3 from, Vec3 to) {
-        return level().clip(new net.minecraft.world.level.ClipContext(
-                from,
-                to,
-                net.minecraft.world.level.ClipContext.Block.COLLIDER,
-                net.minecraft.world.level.ClipContext.Fluid.NONE,
-                this
-        )).getType() == net.minecraft.world.phys.HitResult.Type.MISS;
+        return level().clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
     }
 
     private boolean canReachTarget(LivingEntity owner, Entity target) {

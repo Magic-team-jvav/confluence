@@ -23,30 +23,13 @@ public final class TerraprismaModel {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
 
-        PartDefinition main = root.addOrReplaceChild("main",
-                CubeListBuilder.create()
-                        .texOffs(0, 7)
-                        .addBox(-1.0F, -3.0F, 1.0F,
-                                2.0F, 6.0F, 2.0F,
-                                new CubeDeformation(0.0F))
-                        .texOffs(0, 0)
-                        .addBox(-0.5F, -2.0F, -15.0F,
-                                1.0F, 4.0F, 16.0F,
-                                new CubeDeformation(0.0F))
-                        .texOffs(0, 0)
-                        .addBox(-1.0F, -1.0F, 3.0F,
-                                2.0F, 2.0F, 5.0F,
-                                new CubeDeformation(0.0F)),
-                PartPose.ZERO);
-
-        main.addOrReplaceChild("tip",
-                CubeListBuilder.create()
-                        .texOffs(8, 7)
-                        .addBox(-0.5F, -2.0F, -1.0F,
-                                1.0F, 3.0F, 3.0F,
-                                new CubeDeformation(0.01F)),
-                PartPose.offsetAndRotation(0.0F, 0.0F, -15.75F,
-                        -0.7854F, 0.0F, 0.0F));
+        PartDefinition main = root.addOrReplaceChild("main", CubeListBuilder.create()
+                .texOffs(0, 7).addBox(-1.0F, -3.0F, 1.0F, 2.0F, 6.0F, 2.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 0).addBox(-0.5F, -2.0F, -15.0F, 1.0F, 4.0F, 16.0F, new CubeDeformation(0.0F))
+                .texOffs(0, 0).addBox(-1.0F, -1.0F, 3.0F, 2.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.ZERO);
+        main.addOrReplaceChild("tip", CubeListBuilder.create().texOffs(8, 7)
+                        .addBox(-0.5F, -2.0F, -1.0F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.01F)),
+                PartPose.offsetAndRotation(0.0F, 0.0F, -15.75F, -0.7854F, 0.0F, 0.0F));
 
         return LayerDefinition.create(mesh, 64, 64);
     }

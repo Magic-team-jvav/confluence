@@ -4,9 +4,10 @@ import org.confluence.mod.Confluence;
 
 import java.util.Map;
 
-/// 子弹家族的视觉风格表。
+/// Visual language for the ammunition families in TerraGuns.
 ///
-/// <p>这里对齐 1.21 TerraGuns 的拖尾参数，但资源路径使用合并后的 confluence 命名空间。</p>
+/// <p>The textures are white masks, so the existing per-ammo trail colors can
+/// tint them without requiring a separate PNG for every bullet.</p>
 final class BulletTrailStyles {
     private static final BulletTrailStyle STANDARD = style("trace_01", "flare_01", 0.12F, 0.008F, 0.10F, 0.92F, 20, true);
     private static final BulletTrailStyle ENERGY = style("trace_05", "flare_01", 0.15F, 0.012F, 0.12F, 0.96F, 20, true);
@@ -25,8 +26,7 @@ final class BulletTrailStyles {
             Map.entry("nano_bullet", ENERGY),
             Map.entry("exploding_bullet", style("trace_05", "flare_01", 0.17F, 0.014F, 0.14F, 0.96F, 20, true)),
             Map.entry("golden_bullet", style("trace_01", "flare_01", 0.13F, 0.008F, 0.11F, 0.94F, 20, true)),
-            Map.entry("luminite_bullet", BEAM)
-    );
+            Map.entry("luminite_bullet", BEAM));
 
     private BulletTrailStyles() {}
 

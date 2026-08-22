@@ -7,7 +7,7 @@ import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.util.ModGunUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 
-/// 所有枪械射击请求的服务端权威入口。
+/// Server-authoritative entry point for every gun shot.
 public final class ShootingService {
     public static boolean tryShoot(ServerPlayer player) {
         if (player.isSpectator()) return false;

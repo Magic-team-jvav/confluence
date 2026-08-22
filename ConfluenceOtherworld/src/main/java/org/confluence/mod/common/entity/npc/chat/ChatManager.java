@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.Confluence;
@@ -28,10 +27,10 @@ public final class ChatManager {
     /// 每 tick 更新该 NPC 自己的聊天冷却，并在附近有玩家时尝试触发一条可用对话。
     public static void tickNPC(BaseNPC npc) {
         if (npc.level().isClientSide) return;
-        npc.tickChatCooldowns();
-
         List<ChatLine> lines = chatTable.get(npc.getType());
-        if (lines == null || lines.isEmpty()) return;
+        if (lines == null) lines = List.of();
+        npc.tickChatCooldowns(lines);
+        if (lines.isEmpty()) return;
 
         ServerLevel level = (ServerLevel) npc.level();
         ServerPlayer player = null;
@@ -45,10 +44,7 @@ public final class ChatManager {
         }
         if (player == null) return;
 
-        RandomSource random = npc.getRandom();
-        int start = random.nextInt(lines.size());
-        for (int offset = 0; offset < lines.size(); offset++) {
-            ChatLine line = lines.get((start + offset) % lines.size());
+        for (ChatLine line : lines) {
             if (npc.canTriggerChat(line) && line.canTrigger(player, npc)) {
                 npc.setCurrentChat(line.chat());
                 npc.markChatTriggered(line);

@@ -116,7 +116,6 @@ public abstract class BulletEvent extends Event {
         }
     }
 
-    /// 在子弹即将对目标结算实际伤害前发布；取消后跳过本次伤害与后续命中效果。
     @Cancelable
     public static class DamageEntityEvent extends BulletEvent {
         private final Entity shooter;
@@ -137,7 +136,6 @@ public abstract class BulletEvent extends Event {
         }
     }
 
-    /// 客户端收到服务端确认的子弹命中表现后发布，供渲染器或附属模组消费。
     public static class ImpactEffectEvent extends Event {
         private final Vec3 position;
         private final BulletImpactEffect effect;

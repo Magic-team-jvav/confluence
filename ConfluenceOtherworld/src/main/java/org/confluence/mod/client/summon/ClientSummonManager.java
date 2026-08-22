@@ -1,5 +1,6 @@
 package org.confluence.mod.client.summon;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -11,6 +12,8 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
@@ -32,6 +35,7 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
+import org.mesdag.portlib.event.client.PortModelEvent;
 
 import java.util.*;
 
@@ -39,9 +43,12 @@ import java.util.*;
 /// 召唤物逻辑仍由服务端驱动；客户端只负责插值、拖尾、待机编队和模型动画。
 public final class ClientSummonManager {
     private static final ResourceLocation TERRAPRISMA = Confluence.asResource("terraprisma");
+    private static final ResourceLocation STARDUST_DRAGON = Confluence.asResource("stardust_dragon");
+    private static final ResourceLocation IRON_GOLEM = Confluence.asResource("i_32_iron_golem");
     private static final ResourceLocation TERRAPRISMA_TEXTURE = Confluence.asResource("textures/entity/model/terraprisma_gray.png");
     private static final ResourceLocation HORNET_STINGER = SummonProjectileTypes.HORNET_STINGER.id();
     private static final ResourceLocation IMP_FIREBALL = SummonProjectileTypes.IMP_FIREBALL.id();
+    private static final ModelResourceLocation FINCH_STAFF_EMPTY_MODEL = new ModelResourceLocation(Confluence.asResource("finch_staff_empty"), "inventory");
     private static final ResourceLocation STINGER_TEXTURE = Confluence.asResource("textures/entity/model/stinger.png");
     private static final int BACK_TRANSITION_TICKS = 20;
     private static final double INTERPOLATION_TICKS = 1.0;
@@ -49,13 +56,50 @@ public final class ClientSummonManager {
     private static final Map<UUID, State> STATES = new HashMap<>();
     private static final Map<UUID, ClientSummonVisual> GEO_VISUALS = new HashMap<>();
     private static final Map<UUID, ClientStardustDragonVisual> STARDUST_DRAGON_VISUALS = new HashMap<>();
+    private static final Map<UUID, Integer> STARDUST_DRAGON_LAST_PARTS = new HashMap<>();
     private static final Map<ResourceLocation, ClientSummonGeoRenderer> GEO_RENDERERS = new HashMap<>();
+    private static final Map<ResourceLocation, ItemStack> SUMMON_SWORD_ITEMS = Map.of(
+            Confluence.asResource("summon_wooden_sword"), new ItemStack(Items.WOODEN_SWORD),
+            Confluence.asResource("summon_stone_sword"), new ItemStack(Items.STONE_SWORD),
+            Confluence.asResource("summon_iron_sword"), new ItemStack(Items.IRON_SWORD),
+            Confluence.asResource("summon_golden_sword"), new ItemStack(Items.GOLDEN_SWORD),
+            Confluence.asResource("summon_diamond_sword"), new ItemStack(Items.DIAMOND_SWORD),
+            Confluence.asResource("summon_netherite_sword"), new ItemStack(Items.NETHERITE_SWORD));
     private static final ClientStardustDragonRenderer STARDUST_DRAGON_RENDERER = new ClientStardustDragonRenderer();
+    private static boolean externalShaderPipeline;
+    private static long synchronizationSequence;
     private static TerraprismaModel terraprismaModel;
     private static HornetStingerProjectileModel hornetStingerModel;
     private static ClientIronGolemRenderer ironGolemRenderer;
 
     private ClientSummonManager() {}
+
+    public static void reset() {
+        STATES.clear();
+        GEO_VISUALS.clear();
+        STARDUST_DRAGON_VISUALS.clear();
+        STARDUST_DRAGON_LAST_PARTS.clear();
+        synchronizationSequence = 0L;
+    }
+
+    public static void registerAdditionalModels(PortModelEvent.RegisterAdditional event) {
+        event.register(FINCH_STAFF_EMPTY_MODEL);
+    }
+
+    public static BakedModel finchStaffEmptyModel() {
+        return Minecraft.getInstance().getModelManager().getModel(FINCH_STAFF_EMPTY_MODEL);
+    }
+
+    public static boolean hasAvailableSlots(UUID ownerId, int requestedSlots, int capacity) {
+        int occupiedSlots = 0;
+        for (State state : STATES.values()) {
+            if (!state.ownerId.equals(ownerId) || state.current.type().equals(HORNET_STINGER)
+                    || state.current.type().equals(IMP_FIREBALL)) continue;
+            if (!state.current.type().equals(STARDUST_DRAGON) || state.current.order() > 0)
+                occupiedSlots++;
+        }
+        return occupiedSlots + requestedSlots <= capacity;
+    }
 
     public static void accept(UUID ownerId, List<SummonSyncPacketS2C.Entry> entries) {
         ClientLevel level = Minecraft.getInstance().level;
@@ -65,19 +109,32 @@ public final class ClientSummonManager {
             STARDUST_DRAGON_VISUALS.clear();
             return;
         }
-        Set<UUID> retained = new HashSet<>();
+        long sequence = ++synchronizationSequence;
         for (SummonSyncPacketS2C.Entry entry : entries) {
-            retained.add(entry.id());
-            STATES.compute(entry.id(), (id, state) -> state == null
-                    ? new State(ownerId, entry, level.getGameTime())
-                    : state.update(ownerId, entry, level.getGameTime()));
+            State state = STATES.get(entry.id());
+            if (state == null) {
+                state = new State(ownerId, entry, level.getGameTime());
+                STATES.put(entry.id(), state);
+            } else {
+                state.update(ownerId, entry, level.getGameTime());
+            }
+            state.lastSynchronization = sequence;
         }
-        STATES.entrySet().removeIf(state -> state.getValue().ownerId.equals(ownerId) && !retained.contains(state.getKey()));
-        GEO_VISUALS.keySet().removeIf(id -> !STATES.containsKey(id));
-        STARDUST_DRAGON_VISUALS.keySet().removeIf(id -> !STATES.containsKey(id));
+        Iterator<Map.Entry<UUID, State>> iterator = STATES.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, State> state = iterator.next();
+            if (state.getValue().ownerId.equals(ownerId) && state.getValue().lastSynchronization != sequence) {
+                removeVisuals(state.getKey());
+                iterator.remove();
+            }
+        }
     }
 
     public static void render(PortRenderLevelStageEvent event) {
+        if (event.getStage() == PortRenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+            externalShaderPipeline = RenderSystem.getShader() != null
+                    && RenderSystem.getShader().getClass().getSimpleName().equals("ExtendedShader");
+        }
         if (event.getStage() != PortRenderLevelStageEvent.Stage.AFTER_PARTICLES || STATES.isEmpty()) {
             return;
         }
@@ -89,36 +146,51 @@ public final class ClientSummonManager {
             STARDUST_DRAGON_VISUALS.clear();
             return;
         }
-        STATES.entrySet().removeIf(entry -> level.getGameTime() - entry.getValue().lastUpdate > 5L);
-        GEO_VISUALS.keySet().removeIf(id -> !STATES.containsKey(id));
-        STARDUST_DRAGON_VISUALS.keySet().removeIf(id -> !STATES.containsKey(id));
+        Iterator<Map.Entry<UUID, State>> iterator = STATES.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, State> state = iterator.next();
+            if (level.getGameTime() - state.getValue().lastUpdate > 5L) {
+                removeVisuals(state.getKey());
+                iterator.remove();
+            }
+        }
         if (STATES.isEmpty()) {
             return;
         }
+        STARDUST_DRAGON_LAST_PARTS.clear();
+        for (State state : STATES.values()) {
+            if (state.current.type().equals(STARDUST_DRAGON)) {
+                STARDUST_DRAGON_LAST_PARTS.merge(state.visualGroupId, state.current.order(), Math::max);
+            }
+        }
         MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
-        RenderType terraprismaRenderType = RenderType.energySwirl(TERRAPRISMA_TEXTURE, 0.0F, 0.0F);
         for (State state : STATES.values()) {
             if (state.current.type().equals(HORNET_STINGER)) {
                 renderHornetStinger(state, event, buffers);
             } else if (state.current.type().equals(IMP_FIREBALL)) {
                 continue;
             } else if (state.current.type().equals(TERRAPRISMA)) {
-                renderTerraprisma(state, event, buffers, terraprismaRenderType);
+                renderTerraprisma(state, event, buffers);
                 if (!state.current.followingOwner())
                     renderTrail(state, event, buffers, 0.25F, state.rgb());
             } else if (isSummonSword(state.current.type())) {
                 renderSummonSword(state, event, buffers);
                 if (!state.current.followingOwner())
                     renderTrail(state, event, buffers, 0.15F, summonSwordColor(state.current.type()));
-            } else if (state.current.type().equals(Confluence.asResource("stardust_dragon"))) {
+            } else if (state.current.type().equals(STARDUST_DRAGON)) {
                 renderStardustDragonPart(state, event, buffers);
             } else if (usesGeoVisual(state.current.type())) {
                 renderGeoVisual(state, event, buffers);
-            } else if (state.current.type().equals(Confluence.asResource("i_32_iron_golem"))) {
+            } else if (state.current.type().equals(IRON_GOLEM)) {
                 renderIronGolemVisual(state, event, buffers);
             }
         }
         buffers.endBatch();
+    }
+
+    private static void removeVisuals(UUID id) {
+        GEO_VISUALS.remove(id);
+        STARDUST_DRAGON_VISUALS.remove(id);
     }
 
     private static void renderGeoVisual(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
@@ -157,8 +229,7 @@ public final class ClientSummonManager {
         };
     }
 
-    private static void renderHornetStinger(State state, PortRenderLevelStageEvent event,
-                                            MultiBufferSource bufferSource) {
+    private static void renderHornetStinger(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) return;
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
@@ -200,8 +271,7 @@ public final class ClientSummonManager {
                 state.interpolatedYaw(partialTick), state.interpolatedPitch(partialTick),
                 state.walkAnimation.position(partialTick), state.walkAnimation.speed(partialTick),
                 state.current.animation() == SummonAnimation.MELEE_ATTACK
-                        ? Math.max(0, state.current.animationDuration() - state.current.animationTicks()) : 0,
-                partialTick);
+                        ? Math.max(0, state.current.animationDuration() - state.current.animationTicks()) : 0, partialTick);
         poseStack.popPose();
     }
 
@@ -227,18 +297,12 @@ public final class ClientSummonManager {
         poseStack.mulPose(Axis.ZN.rotationDegrees(-45.0F));
         int packedLight = LevelRenderer.getLightColor(minecraft.level, BlockPos.containing(position));
         minecraft.getItemRenderer().renderStatic(swordItem(state.current.type()), ItemDisplayContext.FIXED,
-                packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, minecraft.level,
-                state.current.id().hashCode());
+                packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, minecraft.level, state.current.id().hashCode());
         poseStack.popPose();
     }
 
     private static boolean isSummonSword(ResourceLocation type) {
-        return type.getNamespace().equals(Confluence.MODID) && switch (type.getPath()) {
-            case "summon_wooden_sword", "summon_stone_sword", "summon_iron_sword",
-                 "summon_golden_sword",
-                 "summon_diamond_sword", "summon_netherite_sword" -> true;
-            default -> false;
-        };
+        return SUMMON_SWORD_ITEMS.containsKey(type);
     }
 
     private static void renderStardustDragonPart(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
@@ -269,27 +333,13 @@ public final class ClientSummonManager {
     }
 
     private static int lastStardustDragonPart(State state) {
-        UUID headId = stardustDragonHeadId(state.current.id(), state.current.order());
-        return STATES.values().stream().filter(candidate -> candidate.ownerId.equals(state.ownerId)
-                        && candidate.current.type().equals(state.current.type())
-                        && stardustDragonHeadId(candidate.current.id(), candidate.current.order()).equals(headId))
-                .mapToInt(candidate -> candidate.current.order()).max().orElse(0);
-    }
-
-    private static UUID stardustDragonHeadId(UUID partId, int order) {
-        return order == 0 ? partId : new UUID(partId.getMostSignificantBits(), partId.getLeastSignificantBits() ^ order);
+        return STARDUST_DRAGON_LAST_PARTS.getOrDefault(state.visualGroupId, 0);
     }
 
     private static ItemStack swordItem(ResourceLocation type) {
-        return new ItemStack(switch (type.getPath()) {
-            case "summon_wooden_sword" -> Items.WOODEN_SWORD;
-            case "summon_stone_sword" -> Items.STONE_SWORD;
-            case "summon_iron_sword" -> Items.IRON_SWORD;
-            case "summon_golden_sword" -> Items.GOLDEN_SWORD;
-            case "summon_diamond_sword" -> Items.DIAMOND_SWORD;
-            case "summon_netherite_sword" -> Items.NETHERITE_SWORD;
-            default -> throw new IllegalArgumentException("Unknown summon sword type: " + type);
-        });
+        ItemStack stack = SUMMON_SWORD_ITEMS.get(type);
+        if (stack == null) throw new IllegalArgumentException("Unknown summon sword type: " + type);
+        return stack;
     }
 
     private static int summonSwordColor(ResourceLocation type) {
@@ -304,7 +354,7 @@ public final class ClientSummonManager {
         };
     }
 
-    private static void renderTerraprisma(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource, RenderType renderType) {
+    private static void renderTerraprisma(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         Vec3 position = state.interpolatedPosition(partialTick);
@@ -327,7 +377,19 @@ public final class ClientSummonManager {
         float red = (rgb >> 16 & 255) / 255.0F;
         float green = (rgb >> 8 & 255) / 255.0F;
         float blue = (rgb & 255) / 255.0F;
-        model(minecraft.getEntityModels()).renderToBuffer(poseStack, bufferSource.getBuffer(renderType), packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        TerraprismaModel model = model(minecraft.getEntityModels());
+        if (externalShaderPipeline) {
+            poseStack.pushPose();
+            poseStack.scale(0.9F, 0.9F, 0.9F);
+            model.renderToBuffer(poseStack, bufferSource.getBuffer(RenderType.entityCutoutNoCull(TERRAPRISMA_TEXTURE)),
+                    packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 47.0F / 255.0F);
+            poseStack.popPose();
+            model.renderToBuffer(poseStack, bufferSource.getBuffer(RenderType.entityTranslucentEmissive(TERRAPRISMA_TEXTURE)),
+                    packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        } else {
+            model.renderToBuffer(poseStack, bufferSource.getBuffer(RenderType.energySwirl(TERRAPRISMA_TEXTURE, 0.0F, 0.0F)),
+                    packedLight, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0F);
+        }
         poseStack.popPose();
     }
 
@@ -341,7 +403,17 @@ public final class ClientSummonManager {
         TrailSample previous = null;
         Vec3 previousLeft = null;
         Vec3 previousRight = null;
+        Vec3 previousFadedLeft = null;
         int sampleCount = state.trailSamples.size();
+        boolean terraprisma = state.current.type().equals(TERRAPRISMA);
+        TrailSample first = state.trailSamples.peekFirst();
+        int fadeRed = first.color >> 16 & 255;
+        int fadeGreen = first.color >> 8 & 255;
+        int fadeBlue = first.color & 255;
+        int red = rgb >> 16 & 255;
+        int green = rgb >> 8 & 255;
+        int blue = rgb & 255;
+        int lastColor = rgb;
         int index = 0;
         for (TrailSample current : state.trailSamples) {
             if (previous == null) {
@@ -349,29 +421,42 @@ public final class ClientSummonManager {
                 continue;
             }
             float progress = index++ / (float) sampleCount * 0.6F + 0.4F;
-            Vec3 side = trailSide(current).scale(width * progress);
+            float currentWidth = width * progress;
+            Vec3 side = trailSide(current, terraprisma);
             Vec3 previousPosition = previous.position.subtract(camera);
             Vec3 currentPosition = current.position.subtract(camera);
-            Vec3 currentLeft = currentPosition.add(side);
-            Vec3 currentRight = currentPosition.subtract(side);
-            Vec3 startLeft = previousLeft == null ? previousPosition.add(side) : previousLeft;
-            Vec3 startRight = previousRight == null ? previousPosition.subtract(side) : previousRight;
+            Vec3 currentFadedLeft = currentPosition.add(side.scale(currentWidth * 5.0F));
+            Vec3 currentLeft = currentPosition.add(side.scale(currentWidth * 5.25F));
+            Vec3 currentRight = currentPosition.subtract(side.scale(currentWidth));
+            Vec3 startLeft = previousLeft == null ? previousPosition.add(side.scale(currentWidth)) : previousLeft;
+            Vec3 startRight = previousRight == null ? previousPosition.subtract(side.scale(currentWidth)) : previousRight;
+            Vec3 startFadedLeft = previousFadedLeft == null ? startLeft : previousFadedLeft;
             int alpha = current == state.trailSamples.peekLast() ? 20 : Mth.floor(200.0F * progress);
-            int color = alpha << 24 | rgb;
-            vertex(consumer, matrix, startLeft, color);
-            vertex(consumer, matrix, startRight, color & 0x00FFFFFF);
-            vertex(consumer, matrix, currentRight, color & 0x00FFFFFF);
+            int color = alpha << 24 | Mth.floor(Mth.lerp(progress, red, fadeRed)) << 16
+                    | Mth.floor(Mth.lerp(progress, green, fadeGreen)) << 8
+                    | Mth.floor(Mth.lerp(progress, blue, fadeBlue));
+            vertex(consumer, matrix, startLeft, lastColor);
+            vertex(consumer, matrix, startFadedLeft, lastColor);
+            vertex(consumer, matrix, currentFadedLeft, color);
             vertex(consumer, matrix, currentLeft, color);
+            vertex(consumer, matrix, startFadedLeft, lastColor & 0xA0FFFFFF);
+            vertex(consumer, matrix, startRight, lastColor & 0x00FFFFFF);
+            vertex(consumer, matrix, currentRight, color & 0x00FFFFFF);
+            vertex(consumer, matrix, currentFadedLeft, color & 0xA0FFFFFF);
             previous = current;
             previousLeft = currentLeft;
             previousRight = currentRight;
+            previousFadedLeft = currentFadedLeft;
+            lastColor = color;
+            current.color = color;
         }
     }
 
-    private static Vec3 trailSide(TrailSample sample) {
+    private static Vec3 trailSide(TrailSample sample, boolean terraprisma) {
+        if (terraprisma && sample.side != null) return sample.side;
         Quaternionf rotation = new Quaternionf().rotateY(-sample.yaw * Mth.DEG_TO_RAD)
-                .rotateX(sample.pitch * Mth.DEG_TO_RAD).rotateZ(sample.roll * Mth.DEG_TO_RAD);
-        Vector3f normal = rotation.transform(new Vector3f(0.0F, 1.0F, 0.0F));
+                .rotateX((terraprisma ? sample.pitch - 180.0F : sample.pitch) * Mth.DEG_TO_RAD);
+        Vector3f normal = rotation.transform(new Vector3f(0.0F, 0.0F, terraprisma ? -1.0F : 1.0F));
         return normal.lengthSquared() < 1.0E-8F ? new Vec3(0.0, 1.0, 0.0)
                 : new Vec3(normal.x, normal.y, normal.z).normalize();
     }
@@ -396,8 +481,7 @@ public final class ClientSummonManager {
                         : progress > 5.0F / 6.0F ? (1.0F - progress) * 6.0F * 90.0F : 90.0F;
                 poseStack.mulPose(Axis.ZN.rotationDegrees(tilt));
             }
-            default -> {
-            }
+            default -> {}
         }
     }
 
@@ -429,10 +513,12 @@ public final class ClientSummonManager {
 
     private static final class State {
         private final UUID ownerId;
+        private final UUID visualGroupId;
         private final RandomSource random;
         private SummonSyncPacketS2C.Entry previous;
         private SummonSyncPacketS2C.Entry current;
         private long lastUpdate;
+        private long lastSynchronization;
         private Vec3 interpolationStartPosition;
         private float interpolationStartYaw;
         private float interpolationStartPitch;
@@ -446,6 +532,8 @@ public final class ClientSummonManager {
 
         private State(UUID ownerId, SummonSyncPacketS2C.Entry entry, long lastUpdate) {
             this.ownerId = ownerId;
+            this.visualGroupId = !entry.type().equals(STARDUST_DRAGON) || entry.order() == 0 ? entry.id()
+                    : new UUID(entry.id().getMostSignificantBits(), entry.id().getLeastSignificantBits() ^ entry.order());
             this.previous = entry;
             this.current = entry;
             this.lastUpdate = lastUpdate;
@@ -510,7 +598,7 @@ public final class ClientSummonManager {
             ClientLevel level = Minecraft.getInstance().level;
             if (level == null) return;
             Vec3 movement = entry.position().subtract(previousPosition);
-            Vec3 velocity = movement.lengthSqr() < 1.0E-8 ? Vec3.ZERO : movement.normalize().scale(1.1);
+            Vec3 velocity = movement.scale(0.55);
             RandomSource random = level.random;
             for (int index = 0; index < 3; index++) {
                 double x = entry.position().x + (random.nextDouble() - 0.5) * 0.5;
@@ -522,13 +610,40 @@ public final class ClientSummonManager {
 
         private void updateTrail(SummonSyncPacketS2C.Entry entry) {
             if (entry.followingOwner()) {
-                trailSamples.clear();
+                trailSamples.pollFirst();
                 return;
             }
-            trailSamples.addLast(new TrailSample(entry.position(), entry.yaw(), entry.pitch(), entry.roll()));
+            TrailSample sample = new TrailSample(entry.position(), entry.yaw(), entry.pitch(), entry.roll());
+            if (entry.type().equals(TERRAPRISMA))
+                sample.side = terraprismaTrailSide(entry, backProgress(0.0F));
+            trailSamples.addLast(sample);
             while (trailSamples.size() > 8) {
                 trailSamples.removeFirst();
             }
+        }
+
+        private static Vec3 terraprismaTrailSide(SummonSyncPacketS2C.Entry entry, float backProgress) {
+            int sequence = entry.order() + 1;
+            float tilt = sequence / 2 * ((sequence & 1) == 0 ? -1.0F : 1.0F) * 15.0F * backProgress;
+            Quaternionf rotation = new Quaternionf().rotateY(-entry.yaw() * Mth.DEG_TO_RAD)
+                    .rotateX((entry.pitch() - 180.0F) * Mth.DEG_TO_RAD)
+                    .rotateZ(90.0F * backProgress * Mth.DEG_TO_RAD).rotateX(tilt * Mth.DEG_TO_RAD);
+            int duration = entry.animationDuration();
+            float progress = duration <= 0 ? 0.0F : Mth.clamp(entry.animationTicks() / (float) duration, 0.0F, 1.0F);
+            float degrees = entry.animationDegrees() * progress;
+            switch (entry.animation()) {
+                case SPIN_X -> rotation.rotateX(-degrees * Mth.DEG_TO_RAD);
+                case ROTATE_Z -> rotation.rotateZ(-degrees * Mth.DEG_TO_RAD);
+                case SPIN_Y -> {
+                    rotation.rotateY(-degrees * Mth.DEG_TO_RAD);
+                    float zTilt = progress < 1.0F / 6.0F ? progress * 540.0F
+                            : progress > 5.0F / 6.0F ? (1.0F - progress) * 540.0F : 90.0F;
+                    rotation.rotateZ(-zTilt * Mth.DEG_TO_RAD);
+                }
+                default -> {}
+            }
+            Vector3f side = rotation.transform(new Vector3f(0.0F, 0.0F, -1.0F)).normalize();
+            return new Vec3(side.x, side.y, side.z);
         }
 
         private Vec3 interpolatedPosition(float partialTick) {
@@ -588,5 +703,19 @@ public final class ClientSummonManager {
         }
     }
 
-    private record TrailSample(Vec3 position, float yaw, float pitch, float roll) {}
+    private static final class TrailSample {
+        private final Vec3 position;
+        private final float yaw;
+        private final float pitch;
+        private final float roll;
+        private Vec3 side;
+        private int color;
+
+        private TrailSample(Vec3 position, float yaw, float pitch, float roll) {
+            this.position = position;
+            this.yaw = yaw;
+            this.pitch = pitch;
+            this.roll = roll;
+        }
+    }
 }

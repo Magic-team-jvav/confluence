@@ -12,9 +12,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.UUID;
 
 /// 普通召唤物的客户端动画状态。
-///
-/// <p>它不是 Minecraft 实体，也不会进入客户端世界。服务端同步的姿态和动作只在渲染前写入此对象，
-/// GeckoLib 据此计算骨骼动画，从而避免为了显示模型而保留第二套召唤实体。</p>
 final class ClientSummonVisual implements GeoAnimatable {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");

@@ -45,8 +45,7 @@ public record SwordProjectileComponent(
         Optional<ITrackType> trackType,
         IGeneration generation,
         SwordProjectileAppearance appearance,
-        List<SwordProjectileParticleEffect> particleEffects
-) {
+        List<SwordProjectileParticleEffect> particleEffects) {
     public static final Codec<SwordProjectileComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(SwordProjectileComponent::damageFactor),
             Codec.FLOAT.fieldOf("baseSpeed").forGetter(SwordProjectileComponent::baseSpeed),

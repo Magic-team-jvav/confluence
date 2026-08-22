@@ -6,6 +6,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -14,6 +15,9 @@ import org.confluence.lib.common.particle.CrossDustParticleOptions;
 import org.confluence.lib.util.LibMathUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class NightEdgeProjectile extends SwordProjectile {
     private static final float[] TIMES = {0.0F, 3.0F, 6.0F, 9.0F, 12.0F};
@@ -30,7 +34,12 @@ public class NightEdgeProjectile extends SwordProjectile {
     private static final BakedCurve X_CURVE = new BakedCurve(X, X_SLOPES, POSITION_TENSIONS);
     private static final BakedCurve Z_CURVE = new BakedCurve(Z, Z_SLOPES, POSITION_TENSIONS);
     private static final BakedCurve YAW_CURVE = new BakedCurve(YAW, ZERO_SLOPES, ROTATION_TENSIONS);
-    private static final double HIT_RADIUS = 0.9;
+    private static final double HIT_BOX_HALF_WIDTH = 0.875;
+    private static final double HIT_BOX_HALF_LENGTH = 5.0;
+    private static final double HIT_BOX_FORWARD_OFFSET = 3.75;
+    private static final double BROAD_PHASE_INFLATION = 12.0;
+    private final Deque<TrailSample> trailSamples = new ArrayDeque<>();
+
     public NightEdgeProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
 
@@ -53,10 +62,6 @@ public class NightEdgeProjectile extends SwordProjectile {
         return 0;
     }
 
-    public boolean isControlledByLocalInstance() {
-        return true;
-    }
-
     @Override
     protected boolean usesDefaultCollisionDamage() {
         return false;
@@ -71,55 +76,109 @@ public class NightEdgeProjectile extends SwordProjectile {
             if (!level().isClientSide) discard();
             return;
         }
+        Level level = level();
+        if (level.isClientSide) recordTrail(livingOwner);
+        else hitOrientedBlade();
+        if (level.isClientSide && tickCount <= 14 && level.random.nextBoolean())
+            emitParticles(level);
+
         setDeltaMovement(Vec3.ZERO);
         setPos(worldPosition(livingOwner, Math.min(tickCount, maxTrailTime())));
         xRotO = getXRot();
         yRotO = getYRot();
         setXRot(livingOwner.getXRot() * 0.8F);
         setYRot(sampleYaw(tickCount) + livingOwner.getYRot());
-
-        Level level = level();
-        if (!level.isClientSide) {
-            hitSweptTrail(livingOwner);
-            return;
-        }
-        if (level.isClientSide() && tickCount <= 14 && level.random.nextBoolean()) {
-            Vec3 pos = position().offsetRandom(level.random, 0.3f);
-            Entity particleOwner = getOwner();
-            if (particleOwner != null) {
-                Vec3 facing = LibMathUtils.rotToDir(particleOwner.getYHeadRot(), particleOwner.getXRot()).scale(0.05);
-                Vector4f curve = new Vector4f(0, 1f, 1f, 1);
-                boolean dark = level.random.nextBoolean();
-                CrossDustParticleOptions lightParticle = new CrossDustParticleOptions(false,
-                        dark ? 0xff570EFD : 0xffE4E0FF, dark ? 0xff411EA3 : 0xffC55BFF, facing.toVector3f(), curve,
-                        level.random.nextFloat() * 0.15f + 0.15f, 10, 60, curve,
-                        true, true, true, false);
-                level.addParticle(lightParticle, pos.x, pos.y, pos.z, 0, 0, 0);
-            }
-
-            Vector4f curve = new Vector4f(0, 0.7f, 0.9f, 1);
-            CrossDustParticleOptions darkParticle = new CrossDustParticleOptions(level.random.nextBoolean(),
-                    0x66DD99FF, 0x7f714E82, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.005f + 0.01f).toVector3f(),
-                    curve, level.random.nextFloat() * 0.6f + 0.4f, 30, level.random.nextInt(-40, 40),
-                    curve, true, true, false, false);
-            level.addParticle(darkParticle, pos.x, pos.y, pos.z, 0, 0, 0);
-        }
     }
 
-    private void hitSweptTrail(LivingEntity owner) {
-        float age = Math.min(tickCount, TIMES[TIMES.length - 1]);
-        float start = Math.max(0.0F, age - 1.5F);
-        for (float time = start; time <= age + 0.001F; time += 0.5F) {
-            Vec3 point = worldPosition(owner, time);
-            AABB box = new AABB(point, point).inflate(HIT_RADIUS);
-            for (Entity target : level().getEntities(this, box, this::canHitEntity)) {
+    private void emitParticles(Level level) {
+        Vec3 pos = position().offsetRandom(level.random, 0.3f);
+        Entity particleOwner = getOwner();
+        if (particleOwner != null) {
+            Vec3 facing = LibMathUtils.rotToDir(particleOwner.getYHeadRot(), particleOwner.getXRot()).scale(0.05);
+            Vector4f curve = new Vector4f(0, 1f, 1f, 1);
+            boolean dark = level.random.nextBoolean();
+            CrossDustParticleOptions lightParticle = new CrossDustParticleOptions(false,
+                    dark ? 0xff570EFD : 0xffE4E0FF, dark ? 0xff411EA3 : 0xffC55BFF, facing.toVector3f(), curve,
+                    level.random.nextFloat() * 0.15f + 0.15f, 10, 60, curve, true, true, true, false);
+            level.addParticle(lightParticle, pos.x, pos.y, pos.z, 0, 0, 0);
+        }
+
+        Vector4f curve = new Vector4f(0, 0.7f, 0.9f, 1);
+        CrossDustParticleOptions darkParticle = new CrossDustParticleOptions(level.random.nextBoolean(),
+                0x66DD99FF, 0x7f714E82, Vec3.ZERO.offsetRandom(level.random, level.random.nextFloat() * 0.005f + 0.01f).toVector3f(),
+                curve, level.random.nextFloat() * 0.6f + 0.4f, 30, level.random.nextInt(-40, 40), curve, true, true, false, false);
+        level.addParticle(darkParticle, pos.x, pos.y, pos.z, 0, 0, 0);
+    }
+
+    private void hitOrientedBlade() {
+        Vec3 axisZ = Vec3.directionFromRotation(getXRot(), getYRot()).normalize();
+        Vec3 axisY = Vec3.directionFromRotation(getXRot() + 90.0F, getYRot()).reverse().normalize();
+        Vec3 axisX = axisZ.cross(axisY).normalize();
+        Vec3 center = position().add(axisZ.scale(HIT_BOX_FORWARD_OFFSET));
+        AABB searchBox = getBoundingBox().inflate(BROAD_PHASE_INFLATION);
+        for (Entity target : level().getEntities(this, searchBox, target -> !(target instanceof Player) && canHitEntity(target))) {
+            if (intersects(center, axisX, axisY, axisZ, target.getBoundingBox(), getDeltaMovement(), target.getDeltaMovement())) {
                 hurtTarget(target);
             }
         }
     }
 
-    public static Vec3 sampleLocalPoint(float time) {
+    private static boolean intersects(Vec3 center, Vec3 axisX, Vec3 axisY, Vec3 axisZ, AABB box, Vec3 bladeMotion, Vec3 targetMotion) {
+        return overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion,
+                axisX.x, axisX.y, axisX.z)
+                && overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion,
+                axisY.x, axisY.y, axisY.z)
+                && overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion,
+                axisZ.x, axisZ.y, axisZ.z)
+                && overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion, 1.0, 0.0, 0.0)
+                && overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion, 0.0, 1.0, 0.0)
+                && overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion, 0.0, 0.0, 1.0)
+                && overlapsCrossAxes(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion, axisX)
+                && overlapsCrossAxes(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion, axisY)
+                && overlapsCrossAxes(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion, axisZ);
+    }
+
+    private static boolean overlapsCrossAxes(Vec3 center, Vec3 axisX, Vec3 axisY, Vec3 axisZ, AABB box, Vec3 bladeMotion, Vec3 targetMotion, Vec3 localAxis) {
+        return overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion,
+                0.0, localAxis.z, -localAxis.y)
+                && overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion,
+                -localAxis.z, 0.0, localAxis.x)
+                && overlapsOnAxis(center, axisX, axisY, axisZ, box, bladeMotion, targetMotion,
+                localAxis.y, -localAxis.x, 0.0);
+    }
+
+    private static boolean overlapsOnAxis(Vec3 center, Vec3 axisX, Vec3 axisY, Vec3 axisZ, AABB box, Vec3 bladeMotion, Vec3 targetMotion, double x, double y, double z) {
+        if (x * x + y * y + z * z <= 1.0E-12) return true;
+        double bladeCenter = center.x * x + center.y * y + center.z * z;
+        double bladeRadius = HIT_BOX_HALF_WIDTH * Math.abs(axisX.x * x + axisX.y * y + axisX.z * z)
+                + HIT_BOX_HALF_WIDTH * Math.abs(axisY.x * x + axisY.y * y + axisY.z * z)
+                + HIT_BOX_HALF_LENGTH * Math.abs(axisZ.x * x + axisZ.y * y + axisZ.z * z);
+        double targetCenter = (box.minX + box.maxX) * 0.5 * x + (box.minY + box.maxY) * 0.5 * y + (box.minZ + box.maxZ) * 0.5 * z;
+        double targetRadius = box.getXsize() * 0.5 * Math.abs(x) + box.getYsize() * 0.5 * Math.abs(y) + box.getZsize() * 0.5 * Math.abs(z);
+        double bladeVelocity = bladeMotion.x * x + bladeMotion.y * y + bladeMotion.z * z;
+        double targetVelocity = targetMotion.x * x + targetMotion.y * y + targetMotion.z * z;
+        double bladeMin = bladeCenter - bladeRadius + Math.min(0.0, bladeVelocity);
+        double bladeMax = bladeCenter + bladeRadius + Math.max(0.0, bladeVelocity);
+        double targetMin = targetCenter - targetRadius + Math.min(0.0, targetVelocity);
+        double targetMax = targetCenter + targetRadius + Math.max(0.0, targetVelocity);
+        return bladeMin <= targetMax && targetMin <= bladeMax;
+    }
+
+    private static Vec3 sampleLocalPoint(float time) {
         return new Vec3(X_CURVE.sample(time), interpolate(Y, time), Z_CURVE.sample(time));
+    }
+
+    private void recordTrail(LivingEntity owner) {
+        if (trailSamples.size() >= 100) trailSamples.pollFirst();
+        if (lifetime - tickCount <= 0) {
+            trailSamples.pollFirst();
+        } else if (tickCount > 1) {
+            trailSamples.addLast(new TrailSample(position().subtract(owner.position()), getXRot() * Mth.DEG_TO_RAD, getYRot() * Mth.DEG_TO_RAD));
+        }
+    }
+
+    public Deque<TrailSample> getTrailSamples() {
+        return trailSamples;
     }
 
     public static Vec3 worldPosition(LivingEntity owner, float time) {
@@ -146,6 +205,8 @@ public class NightEdgeProjectile extends SwordProjectile {
     public static float maxTrailTime() {
         return TIMES[TIMES.length - 1];
     }
+
+    public record TrailSample(Vec3 position, float xRot, float yRot) {}
 
     private static float interpolate(float[] values, float time) {
         if (time <= TIMES[0]) {

@@ -50,7 +50,7 @@ public class GunEvent extends Event {
         }
     }
 
-    /// 服务端确认并生成射击后在客户端发布。
+    /// Posted on the client after the server has accepted and spawned a shot.
     public static class ShotConfirmedEvent extends Event {
         private final Player player;
 
@@ -219,7 +219,12 @@ public class GunEvent extends Event {
         }
     }
 
-    /// 允许主项目和附属模块替换一次射击生成的投射物。
+    /// Posted after the default projectiles are selected and before their
+    /// common launch data is applied.
+    ///
+    /// <p>Listeners may replace the list with arbitrary projectile entities.
+    /// This supports guns whose projectiles are entities rather than registered
+    /// {@code BaseBullet} items while keeping spawning server-authoritative.</p>
     public static class ProjectileCreationEvent extends GunEvent {
         private final ShotContext context;
         private final List<Projectile> projectiles;

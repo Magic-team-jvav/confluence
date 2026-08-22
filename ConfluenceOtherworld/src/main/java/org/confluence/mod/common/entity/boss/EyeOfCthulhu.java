@@ -231,12 +231,7 @@ public class EyeOfCthulhu extends BaseBoss {
         stateTicks = 0;
         setDashAttackDamage();
         setCombatState(CombatState.DASHING);
-        playSound(
-                isEnhancedDash()
-                        ? ModSoundEvents.HURRIED_ROARING.get()
-                        : ModSoundEvents.ROAR.get(),
-                1.0F,
-                1.0F);
+        playSound(isEnhancedDash() ? ModSoundEvents.HURRIED_ROARING.get() : ModSoundEvents.ROAR.get(), 1.0F, 1.0F);
     }
 
     private void tickDashing(LivingEntity target) {
@@ -438,10 +433,7 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     private void resetAttackDamage() {
-        setBaseAttribute(
-                Attributes.ATTACK_DAMAGE,
-                getCombatStage() == 1
-                        ? PHASE_ONE_DAMAGE : PHASE_TWO_DAMAGE);
+        setBaseAttribute(Attributes.ATTACK_DAMAGE, getCombatStage() == 1 ? PHASE_ONE_DAMAGE : PHASE_TWO_DAMAGE);
     }
 
     /// 专家难度下，克苏鲁之眼会在极低生命值时进入负防御区间。原版护甲属性

@@ -10,16 +10,14 @@ import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
 import org.confluence.mod.common.summon.sword.SummonSword;
 
-import java.util.List;
-
 /// 泰拉棱镜召唤物的运行实例。
 public final class TerraprismaSummon extends SummonInstance {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 18.0F;
     private static final double SEARCH_RANGE = 16.0;
+    private static final SummonVisualState FOLLOWING_VISUAL_STATE = new SummonVisualState(true, SummonAnimation.NONE, 0, 0, 0.0F, 1.0F, 1.0F);
     private final TerraprismaSlashGoal slashGoal = new TerraprismaSlashGoal(this);
     private final TerraprismaRotateGoal rotateGoal = new TerraprismaRotateGoal(this);
-    private TerraprismaSkillGoal nextSkill;
     private float skillDamageMultiplier = 1.0F;
     private boolean followingOwner;
     private SummonAnimation animationState = SummonAnimation.NONE;
@@ -44,8 +42,8 @@ public final class TerraprismaSummon extends SummonInstance {
     }
 
     @Override
-    protected double ownerRecoveryDistanceSqr() {
-        return Double.POSITIVE_INFINITY;
+    protected boolean usesOwnerRecovery() {
+        return false;
     }
 
     @Override
@@ -64,7 +62,6 @@ public final class TerraprismaSummon extends SummonInstance {
     protected void afterGoalTick() {
         slashGoal.updateCooldown();
         rotateGoal.updateCooldown();
-        if (nextSkill == null) nextSkill = slashGoal;
     }
 
     @Override
@@ -118,7 +115,7 @@ public final class TerraprismaSummon extends SummonInstance {
     }
 
     void moveTo(SummonPose pose) {
-        setPath("terraprisma_move", List.of(pose));
+        advanceTo(pose);
     }
 
     void setSkillDamageMultiplier(float multiplier) {
@@ -167,53 +164,11 @@ public final class TerraprismaSummon extends SummonInstance {
         }
     }
 
-    public boolean isFollowingOwner() {
-        return followingOwner;
-    }
-
     @Override
     public SummonVisualState visualState() {
+        if (animationState == SummonAnimation.NONE && scale == 1.0F && scaleY == 1.0F)
+            return followingOwner ? FOLLOWING_VISUAL_STATE : SummonVisualState.DEFAULT;
         return new SummonVisualState(followingOwner, animationState, animationTicks, animationDuration, animationDegrees, scale, scaleY);
-    }
-
-    public SummonAnimation animationState() {
-        return animationState;
-    }
-
-    public int animationTicks() {
-        return animationTicks;
-    }
-
-    public int animationDuration() {
-        return animationDuration;
-    }
-
-    public float animationDegrees() {
-        return animationDegrees;
-    }
-
-    public float scale() {
-        return scale;
-    }
-
-    public float scaleY() {
-        return scaleY;
-    }
-
-    int slashCooldown() {
-        return slashGoal.cooldown();
-    }
-
-    int rotateCooldown() {
-        return rotateGoal.cooldown();
-    }
-
-    boolean canUseSkill(TerraprismaSkillGoal skill) {
-        return nextSkill == skill;
-    }
-
-    void finishSkill(TerraprismaSkillGoal skill) {
-        nextSkill = skill == slashGoal ? rotateGoal : slashGoal;
     }
 
     @Override

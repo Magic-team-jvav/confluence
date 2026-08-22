@@ -33,8 +33,7 @@ public final class TheDestroyerProbe extends BaseFlyingMonster {
     private static final String SHOT_TIMER_TAG = "ShotTimer";
     private static final int SHOT_INTERVAL = 60;
 
-    private static final EntityDataAccessor<Optional<UUID>>
-            OWNER_UUID = SynchedEntityData.defineId(TheDestroyerProbe.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(TheDestroyerProbe.class, EntityDataSerializers.OPTIONAL_UUID);
 
     private final BossOwnerTracker<TheDestroyer> ownerTracker = new BossOwnerTracker<>(TheDestroyer.class);
     private int shotTimer = SHOT_INTERVAL;
@@ -70,19 +69,10 @@ public final class TheDestroyerProbe extends BaseFlyingMonster {
             protected BTNode createTree() {
                 return SelectorNode.of(
                         SequenceNode.of(
-                                new HasTargetCondition(
-                                        TheDestroyerProbe.this),
-                                new MaintainRangedDistanceAction(
-                                        TheDestroyerProbe.this,
-                                        10.0,
-                                        16.0,
-                                        0.7,
-                                        40),
+                                new HasTargetCondition(TheDestroyerProbe.this),
+                                new MaintainRangedDistanceAction(TheDestroyerProbe.this, 10.0, 16.0, 0.7, 40),
                                 new WaitAction(20)),
-                        new FlyWanderAction(
-                                TheDestroyerProbe.this,
-                                0.3,
-                                8));
+                        new FlyWanderAction(TheDestroyerProbe.this, 0.3, 8));
             }
         };
     }

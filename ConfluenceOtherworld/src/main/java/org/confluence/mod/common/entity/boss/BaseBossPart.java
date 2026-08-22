@@ -70,10 +70,6 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
         entityData.set(PART_HEALTH, Math.max(0.0F, Math.min(health, getMaxPartHealth())));
     }
 
-    public final float getMaxPartHealthValue() {
-        return getMaxPartHealth();
-    }
-
     protected float getMaxPartHealth() {
         return 0.0F;
     }

@@ -5,10 +5,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
@@ -25,6 +25,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,7 +39,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.lib.util.LibEnchantmentUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -52,10 +52,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
-import org.mesdag.portlib.wrapper.common.extensions.IPortArrowItemExtension;
-import org.mesdag.portlib.wrapper.common.extensions.IPortCrossbowItemExtension;
 import org.mesdag.portlib.wrapper.common.extensions.IPortItemPropertiesExtension;
-import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +61,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbowItemExtension {
+public class BaseTerraRepeaterItem extends CrossbowItem {
     public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
 
     public static final String ATTACK_SPEED_TEXT = "attribute.name.repeater.attack_speed";
@@ -78,72 +75,43 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
     public static final String REPEATER_CONTINUOUS_SHOOTING = "repeater.continuous_shooting";
     public static final String REPEATER_SHOOTING = "repeater.shooting";
 
-    private static final ResourceLocation ID = Confluence.asResource(PortEquipmentSlotGroup.MAINHAND.getSerializedName());
-    private boolean startSoundPlayed = false;
-    private boolean midLoadSoundPlayed = false;
+    private boolean startSoundPlayed;
+    private boolean midLoadSoundPlayed;
 
-    /**
-     * 基础伤害
-     */
+    /// 基础伤害
     private final float baseDamage;
-    /**
-     * 击退
-     */
+    /// 击退
     private final float baseKnockback;
-    /**
-     * 装弹速度
-     */
+    /// 装弹速度
     private final int baseReloadSpeed;
-    /**
-     * 射击间隔
-     */
+    /// 射击间隔
     private final int baseShootInterval;
-    /**
-     * 容量
-     */
+    /// 容量
     private final int baseCapacity;
-    /**
-     * 基础箭矢速度
-     */
+    /// 基础箭矢速度
     private final float baseArrowSpeed;
-    /**
-     * 连发个数（每次射击会射出多少支箭，每个间隔一帧）
-     */
+    /// 连发个数（每次射击会射出多少支箭，每个间隔一帧）
     private final IRandomCount baseBurstCount;
-    /**
-     * 并发个数（同时射出多少支箭，有一定的散射角度）
-     */
+    /// 并发个数（同时射出多少支箭，有一定的散射角度）
     private final IRandomCount baseConcurrentCount;
-    /**
-     * 并发角度（并发个数时，每个箭的偏移角度）
-     */
+    /// 并发角度（并发个数时，每个箭的偏移角度）
     private final IRandomCount baseConcurrentAngle;
-    /**
-     * 并发间隔（并发个数时，每个箭的间隔）
-     */
+    /// 并发间隔（并发个数时，每个箭的间隔）
     private final IRandomCount baseConcurrentInterval;
-    /**
-     * 弹药限制
-     */
+    /// 弹药限制
     private final AmmunitionRestrictions ammunitionRestrictions;
 
     private final ModifyArrowBuilder modifyArrowBuilder;
 
-    /**
-     * 构造连弩
-     *
-     * @param properties         物品属性
-     * @param baseDamage         基础伤害
-     * @param modifyArrowBuilder 箭矢修改构建器
-     * @param repeaterBuilder    连弩构建器
-     */
+    /// 构造连弩
+    ///
+    /// @param properties         物品属性
+    /// @param baseDamage         基础伤害
+    /// @param modifyArrowBuilder 箭矢修改构建器
+    /// @param repeaterBuilder    连弩构建器
     public BaseTerraRepeaterItem(Properties properties, float baseDamage, ModifyArrowBuilder modifyArrowBuilder, Builder repeaterBuilder) {
         super(modifyArrowBuilder.buildProperties(properties.stacksTo(1)
-                        .component(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.fromItems(repeaterBuilder.capacity))
-                /*.attributes(ItemAttributeModifiers.builder().add(Attributes.ATTACK_KNOCKBACK,
-                        new AttributeModifier(ID, repeaterBuilder.knockback, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build()
-                )*/)
-        );
+                .component(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.fromItems(repeaterBuilder.capacity))));
         this.baseReloadSpeed = repeaterBuilder.reloadSpeed;
         this.baseShootInterval = repeaterBuilder.shootInterval;
         this.baseCapacity = repeaterBuilder.capacity;
@@ -173,8 +141,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
 
     ///  获取装填速度
     public int getReloadSpeed(LivingEntity shooter, ItemStack stack) {
-        float f = baseReloadSpeed / 20f;
-        return Mth.floor(f * 20.0F);
+        int quickChargeLevel = LibEnchantmentUtils.getEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
+        return Math.max(1, baseReloadSpeed - quickChargeLevel * 5);
     }
 
     public int getShootInterval(LivingEntity shooter, InteractionHand hand) {
@@ -198,8 +166,8 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         int processProjectileCount;
         if (shooter.level() instanceof ServerLevel) {
             ItemStack stack = shooter.getItemInHand(hand);
-            int count = 1;
             int level = LibEnchantmentUtils.getEnchantmentLevel(Enchantments.MULTISHOT, stack);
+            int count = level > 0 ? 3 : 1;
             processProjectileCount = count - level;
         } else {
             processProjectileCount = 0;
@@ -246,18 +214,14 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
 
     private boolean unloadFirstContents(ItemStack weapon, Player player, SlotAccess access) {
         RepeaterContents contents = getContents(weapon);
-        List<ItemStack> stored = contents.nonEmptyStream().toList();
+        List<ItemStack> stored = copyContents(contents);
         if (stored.isEmpty()) {
             return false;
         }
-        if (!access.set(stored.get(0).copy())) {
+        if (!access.set(stored.remove(0))) {
             return false;
         }
-        List<ItemStack> remaining = new ArrayList<>(stored.size() - 1);
-        for (int i = 1; i < stored.size(); i++) {
-            remaining.add(stored.get(i).copy());
-        }
-        setContents(weapon, RepeaterContents.fromItems(remaining, contents.getMaxItemCapacity()));
+        setContents(weapon, RepeaterContents.fromItems(stored, contents.getMaxItemCapacity()));
         playRemoveSound(player);
         return true;
     }
@@ -456,13 +420,12 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         RepeaterContents contents = getContents(itemstack);
-        if (!contents.isFull() && !player.getProjectile(itemstack).isEmpty()) {
+        if (contents.isEmpty() && !player.getProjectile(itemstack).isEmpty()) {
             startSoundPlayed = false;
             midLoadSoundPlayed = false;
             player.startUsingItem(hand);
-            return InteractionResultHolder.consume(itemstack);
         }
-        return InteractionResultHolder.pass(itemstack);
+        return InteractionResultHolder.consume(itemstack);
     }
 
     @Override
@@ -476,51 +439,42 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
 
     @Override
     public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
-        int i = this.getUseDuration(stack, entity) - count;
+        int i = getUseDuration(stack, entity) - count;
         float f = getPowerForTime(i, stack, entity);
         if (f < 1.0F || !tryLoadProjectiles(entity, stack)) {
             return;
         }
         Level level = entity.level();
-//        WeaponStorage.of(entity).bowFullPull = true;
         if (level.isClientSide) {
             entity.playSound(ModSoundEvents.BOW_COOLDOWN_RECOVERY.get());
         }
-//        ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
-//        crossbowitem$chargingsounds.end().ifPresent(p_352852_ -> level.playSound(
-//                null,
-//                entity.getX(),
-//                entity.getY(),
-//                entity.getZ(),
-//                p_352852_.value(),
-//                entity.getSoundSource(),
-//                1.0F,
-//                1.0F / (level.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F
-//        ));
+        level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CROSSBOW_LOADING_END,
+                entity.getSoundSource(), 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.5F + 1.0F) + 0.2F);
     }
 
     protected boolean tryLoadProjectiles(LivingEntity shooter, ItemStack weapon) {
         if (shooter.level().isClientSide) {
             return true;
         }
-        ItemStack ammunition = shooter.getProjectile(weapon);
-        if (ammunition.isEmpty() || !getAllSupportedProjectiles(weapon).test(ammunition)) {
-            return false;
-        }
-        RepeaterContents contents = getContents(weapon);
-        int available = contents.getMaxItemCapacity() - contents.getItemsTotalCount();
-        if (available <= 0) {
-            return false;
-        }
         boolean creative = shooter instanceof Player player && player.isCreative();
-        int inserted = insertIntoContents(weapon, ammunition, creative ? available : Math.min(available, ammunition.getCount()));
-        if (inserted == 0) {
-            return false;
-        }
-        if (!creative) {
+        boolean loaded = false;
+        while (!getContents(weapon).isFull()) {
+            ItemStack ammunition = shooter.getProjectile(weapon);
+            if (ammunition.isEmpty() || !getAllSupportedProjectiles(weapon).test(ammunition)) {
+                break;
+            }
+            int available = getContents(weapon).getMaxItemCapacity() - getContents(weapon).getItemsTotalCount();
+            int inserted = insertIntoContents(weapon, ammunition, creative ? available : Math.min(available, ammunition.getCount()));
+            if (inserted == 0) {
+                break;
+            }
+            loaded = true;
+            if (creative) {
+                break;
+            }
             ammunition.shrink(inserted);
         }
-        return true;
+        return loaded;
     }
 
     private int insertIntoContents(ItemStack weapon, ItemStack ammunition, int requested) {
@@ -532,7 +486,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         if (inserted <= 0) {
             return 0;
         }
-        List<ItemStack> stored = new ArrayList<>(contents.nonEmptyStream().toList());
+        List<ItemStack> stored = copyContents(contents);
         for (int i = 0; i < stored.size(); i++) {
             ItemStack current = stored.get(i);
             if (ItemStack.isSameItemSameTags(current, ammunition)) {
@@ -551,7 +505,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         if (amount <= 0 || contents.isEmpty()) {
             return List.of();
         }
-        List<ItemStack> stored = new ArrayList<>(contents.nonEmptyStream().toList());
+        List<ItemStack> stored = copyContents(contents);
         List<ItemStack> extracted = new ArrayList<>();
         int remaining = amount;
         for (int i = 0; i < stored.size() && remaining > 0; i++) {
@@ -569,6 +523,12 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
 
     private static RepeaterContents getContents(ItemStack weapon) {
         return weapon.getOrDefault(ModDataComponentTypes.REPEATER_CONTENTS, RepeaterContents.EMPTY);
+    }
+
+    private static List<ItemStack> copyContents(RepeaterContents contents) {
+        List<ItemStack> stored = new ArrayList<>(contents.getUsedSlotSize());
+        for (ItemStack item : contents.nonEmptyItemsCopy()) stored.add(item);
+        return stored;
     }
 
     private static void setContents(ItemStack weapon, RepeaterContents contents) {
@@ -591,40 +551,17 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         }
         float f = (float) (stack.getUseDuration(livingEntity) - count) / (float) getReloadSpeed(livingEntity, stack);
         if (f < 0.2F) {
-//            WeaponStorage.of(livingEntity).bowFullPull = false;
-            this.startSoundPlayed = false;
-            this.midLoadSoundPlayed = false;
+            startSoundPlayed = false;
+            midLoadSoundPlayed = false;
         }
-
-//        ChargingSounds crossbowitem$chargingsounds = this.getChargingSounds(stack);
-        if (f >= 0.2F && !this.startSoundPlayed) {
-            this.startSoundPlayed = true;
-//            crossbowitem$chargingsounds.start().ifPresent(p_352849_ -> level.playSound(
-//                    null,
-//                    livingEntity.getX(),
-//                    livingEntity.getY(),
-//                    livingEntity.getZ(),
-//                    p_352849_.value(),
-//                    SoundSource.PLAYERS,
-//                    0.5F,
-//                    1.0F
-//            ));
+        if (f >= 0.2F && !startSoundPlayed) {
+            startSoundPlayed = true;
+            level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.CROSSBOW_LOADING_START, SoundSource.PLAYERS, 0.5F, 1.0F);
         }
-
-        if (f >= 0.5F && !this.midLoadSoundPlayed) {
-            this.midLoadSoundPlayed = true;
-//            crossbowitem$chargingsounds.mid().ifPresent(p_352855_ -> level.playSound(
-//                    null,
-//                    livingEntity.getX(),
-//                    livingEntity.getY(),
-//                    livingEntity.getZ(),
-//                    p_352855_.value(),
-//                    SoundSource.PLAYERS,
-//                    0.5F,
-//                    1.0F
-//            ));
+        if (f >= 0.5F && !midLoadSoundPlayed) {
+            midLoadSoundPlayed = true;
+            level.playSound(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), SoundEvents.CROSSBOW_LOADING_MIDDLE, SoundSource.PLAYERS, 0.5F, 1.0F);
         }
-
         if (f >= 1) {
             livingEntity.stopUsingItem();
         }
@@ -665,11 +602,6 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         return ItemStack.isSameItem(oldStack, newStack);
     }
 
-//    @Override
-//    public boolean canSwitchWithoutRelease(Player player, ItemStack itemStack) {
-//        return false;
-//    }
-
     public void modifyArrowEntity(BaseArrowEntity entity) {
         modifyArrowBuilder.applyModifiers(entity);
     }
@@ -679,10 +611,10 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         if (ammo.is(Items.FIREWORK_ROCKET)) {
             return new FireworkRocketEntity(level, ammo, shooter, shooter.getX(), shooter.getEyeY() - 0.15F, shooter.getZ(), true);
         }
-        IPortArrowItemExtension arrowItem = ammo.getItem() instanceof IPortArrowItemExtension extension
-                ? extension : (IPortArrowItemExtension) Items.ARROW;
+        ArrowItem arrowItem = ammo.getItem() instanceof ArrowItem item ? item : (ArrowItem) Items.ARROW;
         AbstractArrow arrow = arrowItem.createArrow(level, ammo, shooter, weapon);
         if (arrow instanceof BaseArrowEntity terraArrow) {
+            terraArrow.fullPull = isCrit;
             modifyArrowEntity(terraArrow);
         }
         if (isCrit) {
@@ -732,45 +664,25 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         public static final AmmunitionRestrictions DEFAULT_AMMUNITION_RESTRICTIONS_FIREWORK_ROCKET =
                 (ammunitionStack, weaponStack) -> ammunitionStack.is(Items.FIREWORK_ROCKET);
 
-        /**
-         * 装弹速度
-         */
+        /// 装弹速度
         private int reloadSpeed = Mth.floor(1.25F * 20);
-        /**
-         * 射击间隔
-         */
+        /// 射击间隔
         private int shootInterval = 5;
-        /**
-         * 容量
-         */
+        /// 容量
         private int capacity = 5;
-        /**
-         * 基础箭矢速度
-         */
+        /// 基础箭矢速度
         private float arrowSpeed = 3.15F;
-        /**
-         * 击退
-         */
+        /// 击退
         private float knockback = 0;
-        /**
-         * 连发个数（每次射击会射出多少支箭，每个间隔一帧）
-         */
+        /// 连发个数（每次射击会射出多少支箭，每个间隔一帧）
         private IRandomCount burstCount = IRandomCount.DEFAULT;
-        /**
-         * 并发个数（同时射出多少支箭，有一定的散射角度）
-         */
+        /// 并发个数（同时射出多少支箭，有一定的散射角度）
         private IRandomCount concurrentCount = IRandomCount.DEFAULT;
-        /**
-         * 并发角度（并发个数时，每个箭的偏移角度）
-         */
+        /// 并发角度（并发个数时，每个箭的偏移角度）
         private IRandomCount concurrentAngle = IRandomCount.DEFAULT_EMPTY;
-        /**
-         * 并发间隔（并发个数时，每个箭的间隔）
-         */
+        /// 并发间隔（并发个数时，每个箭的间隔）
         private IRandomCount concurrentInterval = IRandomCount.DEFAULT_EMPTY;
-        /**
-         * 弹药限制
-         */
+        /// 弹药限制
         private AmmunitionRestrictions ammunitionRestrictions = DEFAULT_AMMUNITION_RESTRICTIONS;
 
         public Builder reloadTick(int reloadSpeed) {
@@ -824,7 +736,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements IPortCrossbow
         }
 
         public Builder concurrentInterval(IRandomCount concurrentInterval) {
-            this.concurrentInterval = concurrentAngle;
+            this.concurrentInterval = concurrentInterval;
             return this;
         }
 

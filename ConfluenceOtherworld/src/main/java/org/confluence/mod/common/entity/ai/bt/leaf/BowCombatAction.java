@@ -113,9 +113,7 @@ public final class BowCombatAction extends BTNode {
         SpawnArrowAction shot = SpawnArrowAction.mobBowShot(mob, BowItem.getPowerForTime(drawTicks), arrowVelocity);
         shot.start();
         if (shot.execute() == BTStatus.SUCCESS) {
-            attackCooldown = mob.level().getDifficulty() == Difficulty.HARD
-                    ? hardAttackInterval
-                    : normalAttackInterval;
+            attackCooldown = mob.level().getDifficulty() == Difficulty.HARD ? hardAttackInterval : normalAttackInterval;
             choosePostShotMovement(target, distanceSqr);
         } else {
             attackCooldown = 1;

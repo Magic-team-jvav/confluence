@@ -50,8 +50,7 @@ public record FlailComponent(
         ResourceLocation soundEvent,
         ResourceLocation projType,
         ResourceLocation ballTexture,
-        ResourceLocation chainTexture
-) {
+        ResourceLocation chainTexture) {
 
     public static final Codec<FlailComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(FlailComponent::damageFactor),
@@ -117,8 +116,7 @@ public record FlailComponent(
             float retractSpeed,
             float gravity,
             boolean customChain,
-            ResourceLocation entityType
-    ) {
+            ResourceLocation entityType) {
         ResourceLocation ballTexture = Confluence.asResource("textures/entity/flail/" + id + ".png");
         ResourceLocation chainTexture = customChain
                 ? Confluence.asResource("textures/block/chain/" + id + ".png")

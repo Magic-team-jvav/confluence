@@ -25,9 +25,7 @@ final class BossChunkTicket {
     /// 即使异常路径漏掉主动释放，停止刷新 15 秒后票据也会自行过期。
     /// 正常脱战宽限为 10 秒，因此故障保险必须略长于宽限时间。
     private static final int FAILSAFE_TIMEOUT_TICKS = 300;
-    /// 保持包内可见，供同包的 GameTest 直接核对底层区块管理器中的真实票据。
-    /// 这里不公开为玩法 API，外部代码仍只通过 Boss 生命周期间接管理票据。
-    static final TicketType<UUID> TYPE = TicketType.create("confluence:boss_encounter", UUID::compareTo, FAILSAFE_TIMEOUT_TICKS);
+    private static final TicketType<UUID> TYPE = TicketType.create("confluence:boss_encounter", UUID::compareTo, FAILSAFE_TIMEOUT_TICKS);
 
     private final UUID bossId;
     private @Nullable ServerLevel ticketLevel;
@@ -75,11 +73,4 @@ final class BossChunkTicket {
         ticketedDistance = 0;
     }
 
-    boolean isActive() {
-        return ticketLevel != null && ticketedChunk != null;
-    }
-
-    @Nullable ChunkPos ticketedChunk() {
-        return ticketedChunk;
-    }
 }

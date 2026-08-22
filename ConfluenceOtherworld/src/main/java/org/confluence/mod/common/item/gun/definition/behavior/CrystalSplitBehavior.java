@@ -37,8 +37,7 @@ public final class CrystalSplitBehavior extends AbstractBulletBehavior {
             double angle = index * 0.32D;
             double cos = Math.cos(angle);
             double sin = Math.sin(angle);
-            Vec3 shardDirection = new Vec3(direction.x * cos + direction.z * sin, direction.y,
-                    direction.z * cos - direction.x * sin).normalize();
+            Vec3 shardDirection = new Vec3(direction.x * cos + direction.z * sin, direction.y, direction.z * cos - direction.x * sin).normalize();
             BaseBulletEntity shard = entity.createChild(shardDirection.scale(shardSpeed), 0.5F, 1, spawnOffset);
             shard.setIgnoresBlockCollision(true);
             entity.level().addFreshEntity(shard);

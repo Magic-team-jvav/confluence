@@ -5,13 +5,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /// 带实体体积的逻辑召唤物基类。
-///
-/// <p>召唤物本身不进入世界实体列表，但仍然需要按 Minecraft 的方块碰撞、重力和落地规则移动。
-/// 地面召唤物、史莱姆一类有真实体积感的召唤物都应该从这里继承。</p>
 public abstract class PhysicalSummon extends SummonInstance {
     private final double width;
     private final double height;
@@ -32,26 +31,22 @@ public abstract class PhysicalSummon extends SummonInstance {
     }
 
     /// 按实体碰撞规则推进一次。
-    ///
-    /// <p>这里直接复用原版碰撞计算，但不会把召唤物注册进世界实体列表。</p>
     protected final Vec3 moveWithCollision(Vec3 requestedMovement) {
         AABB box = collisionBox();
         Vec3 movement = Entity.collideBoundingBox(null, requestedMovement, box, owner().level(), owner().level().getEntityCollisions(null, box.expandTowards(requestedMovement)));
         onGround = requestedMovement.y < 0.0 && movement.y != requestedMovement.y;
         Vec3 nextPosition = position().add(movement);
         float yaw = horizontalYaw(movement, currentPose().yaw());
-        setPath("physical_move", java.util.List.of(new SummonPose(nextPosition, yaw, currentPose().pitch(), currentPose().roll())));
+        advanceTo(new SummonPose(nextPosition, yaw, currentPose().pitch(), currentPose().roll()));
         return movement;
     }
 
     /// 无碰撞移动入口。
-    ///
-    /// <p>仅供原行为明确要求穿行或飞回主人时使用，例如史莱姆距离主人过远后的飞回阶段。</p>
     protected final Vec3 moveWithoutCollision(Vec3 movement) {
         onGround = false;
         Vec3 nextPosition = position().add(movement);
         float yaw = horizontalYaw(movement, currentPose().yaw());
-        setPath("physical_no_collision_move", java.util.List.of(new SummonPose(nextPosition, yaw, currentPose().pitch(), currentPose().roll())));
+        advanceTo(new SummonPose(nextPosition, yaw, currentPose().pitch(), currentPose().roll()));
         return movement;
     }
 
@@ -66,15 +61,16 @@ public abstract class PhysicalSummon extends SummonInstance {
         if (!owner().level().noCollision(null, destination)) {
             return false;
         }
-        var floorPosition = net.minecraft.core.BlockPos.containing(candidatePosition).below();
+        BlockPos candidateBlock = BlockPos.containing(candidatePosition);
+        if (WalkNodeEvaluator.getBlockPathTypeStatic(owner().level(), candidateBlock.mutable()) != BlockPathTypes.WALKABLE) {
+            return false;
+        }
+        BlockPos floorPosition = candidateBlock.below();
         var floorState = owner().level().getBlockState(floorPosition);
-        return !(floorState.getBlock() instanceof LeavesBlock)
-                && floorState.isCollisionShapeFullBlock(owner().level(), floorPosition);
+        return !(floorState.getBlock() instanceof LeavesBlock);
     }
 
     /// 沿短距离方块路径行走。
-    ///
-    /// <p>路径会定期刷新；目标跨方块移动时也会尽快重新寻路，避免地面召唤物卡在旧路径上。</p>
     protected final Vec3 navigateGround(Vec3 destination, double speed, double jumpStrength) {
         var destinationBlock = net.minecraft.core.BlockPos.containing(destination);
         if (lastGroundDestination == null || !lastGroundDestination.closerThan(destinationBlock, 2.0) || repathCooldown-- <= 0) {
@@ -100,8 +96,7 @@ public abstract class PhysicalSummon extends SummonInstance {
 
     protected final Vec3 applyIdlePhysics() {
         double damping = onGround ? groundDamping() : 0.91;
-        return moveWithCollision(new Vec3(velocity().x * damping, velocity().y * 0.98 - 0.08,
-                velocity().z * damping));
+        return moveWithCollision(new Vec3(velocity().x * damping, velocity().y * 0.98 - 0.08, velocity().z * damping));
     }
 
     private double groundDamping() {

@@ -126,12 +126,6 @@ public class SandPoacher extends BaseMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "movement",
-                4,
-                state -> state.isMoving()
-                        ? state.setAndContinue(WALK)
-                        : PlayState.STOP));
+        controllers.add(new AnimationController<>(this, "movement", 4, state -> state.isMoving() ? state.setAndContinue(WALK) : PlayState.STOP));
     }
 }

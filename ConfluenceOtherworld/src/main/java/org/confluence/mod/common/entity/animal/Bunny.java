@@ -56,8 +56,8 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
 
     public Bunny(EntityType<? extends Bunny> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension.jumpStrength().get()).setBaseValue(0.6);
-        getAttribute(PortAttributesExtension.safeFallDistance().get()).setBaseValue(6.0);
+        getAttribute(PortAttributesExtension.jumpStrength()).setBaseValue(0.6);
+        getAttribute(PortAttributesExtension.safeFallDistance()).setBaseValue(6.0);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.moveControl = new BunnyHopMoveControl(this);
     }
@@ -144,14 +144,6 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
         }
     }
 
-    public int getWatchTicksRemaining() {
-        return watchTicksRemaining;
-    }
-
-    public int getWatchAnimationType() {
-        return watchAnimationType;
-    }
-
     /// 将普通地面导航转换为兔子式间歇跳跃；空中继续沿当前目标推进，落地后短暂停顿。
     static final class BunnyHopMoveControl extends MoveControl {
         private final Bunny bunny;
@@ -232,13 +224,9 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Idle/Move", 5, state -> {
             if (watchTicksRemaining > 0) {
-                return state.setAndContinue(
-                        watchAnimationType == 0 ? WATCH_1 : WATCH_2);
+                return state.setAndContinue(watchAnimationType == 0 ? WATCH_1 : WATCH_2);
             }
-            return state.setAndContinue(
-                    state.isMoving()
-                            ? WALK
-                            : IDLE);
+            return state.setAndContinue(state.isMoving() ? WALK : IDLE);
         }));
     }
 

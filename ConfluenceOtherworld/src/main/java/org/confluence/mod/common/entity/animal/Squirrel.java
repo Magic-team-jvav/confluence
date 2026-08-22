@@ -36,7 +36,7 @@ public class Squirrel extends BaseCritter implements VariantHolder<Squirrel.Vari
 
     public Squirrel(EntityType<? extends Squirrel> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension.safeFallDistance().get()).setBaseValue(6.0);
+        getAttribute(PortAttributesExtension.safeFallDistance()).setBaseValue(6.0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

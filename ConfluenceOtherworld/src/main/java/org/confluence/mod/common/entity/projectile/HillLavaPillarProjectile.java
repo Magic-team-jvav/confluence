@@ -30,11 +30,6 @@ public final class HillLavaPillarProjectile extends Projectile {
         this.damage = damage;
     }
 
-    /// 返回预警阶段是否已经结束，供测试和客户端表现判断。
-    public boolean isTriggered() {
-        return tickCount >= WARNING_TICKS;
-    }
-
     @Override
     protected void defineSynchedData() {}
 
@@ -67,9 +62,7 @@ public final class HillLavaPillarProjectile extends Projectile {
     ///
     /// <p>喷发后半段会向水平方向扩张一格，让视觉上的熔岩外溅与判定范围保持一致。</p>
     private void damageEntities() {
-        AABB area = getBoundingBox().inflate(
-                tickCount > WARNING_TICKS + ACTIVE_TICKS / 2
-                        ? 1.0 : 0.0);
+        AABB area = getBoundingBox().inflate(tickCount > WARNING_TICKS + ACTIVE_TICKS / 2 ? 1.0 : 0.0);
         area = area.setMaxY(getY() + 3.0);
         for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area)) {
             if (getOwner() instanceof Mob owner && owner.canAttack(target)) {

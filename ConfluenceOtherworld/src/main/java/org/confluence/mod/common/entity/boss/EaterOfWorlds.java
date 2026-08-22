@@ -289,11 +289,6 @@ public class EaterOfWorlds extends BaseWormBoss {
         entityData.set(ENCOUNTER_UUID, Optional.of(uuid));
     }
 
-    public boolean isSameEncounter(EaterOfWorlds other) {
-        UUID encounter = getEncounterUUID();
-        return encounter != null && encounter.equals(other.getEncounterUUID());
-    }
-
     private void setPrimaryHead(boolean primary) {
         entityData.set(PRIMARY_HEAD, primary);
         if (level().isClientSide) return;
@@ -450,19 +445,13 @@ public class EaterOfWorlds extends BaseWormBoss {
             case ALIGN -> {
                 Vec3 toTarget = target.position().subtract(position());
                 double angle = angleBetween(getLookAngle(), toTarget);
-                steerInThreeDimensions(
-                        target.position(),
-                        isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED,
-                        5.0F);
+                steerInThreeDimensions(target.position(), isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED, 5.0F);
                 if (movementTicks >= ALIGN_TICKS || angle < Math.PI / 8.0 && toTarget.lengthSqr() < 20.0) {
                     beginPhase(MovementPhase.DASH);
                 }
             }
             case DASH -> {
-                steerInThreeDimensions(
-                        target.position(),
-                        isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED,
-                        5.0F);
+                steerInThreeDimensions(target.position(), isFtw() ? PURSUIT_SPEED * (1.5 / 1.1) : PURSUIT_SPEED, 5.0F);
                 if (movementTicks >= DASH_TICKS) {
                     beginPhase(MovementPhase.WANDER);
                     chooseWanderTarget(target);

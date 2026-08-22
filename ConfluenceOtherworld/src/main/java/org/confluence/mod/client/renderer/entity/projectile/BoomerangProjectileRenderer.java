@@ -26,8 +26,7 @@ public class BoomerangProjectileRenderer extends EntityRenderer<BoomerangProject
         double horizontal = motion.x * motion.x + motion.z * motion.z;
         if (horizontal > 1.0E-7) {
             float yaw = (float) Math.atan2(motion.z, motion.x);
-            poseStack.mulPose(Axis.YN.rotation(
-                    yaw + (entity.isReturning() ? (float) Math.PI : 0.0F)));
+            poseStack.mulPose(Axis.YN.rotation(yaw + (entity.isReturning() ? (float) Math.PI : 0.0F)));
         }
 
         /// 回旋镖应该像水平抛出的片状武器，而不是竖起来的盾牌。

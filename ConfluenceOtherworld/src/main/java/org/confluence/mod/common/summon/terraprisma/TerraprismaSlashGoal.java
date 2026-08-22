@@ -30,7 +30,7 @@ final class TerraprismaSlashGoal extends TerraprismaSkillGoal {
         Vec3 targetPosition = baseTargetPosition.add(0.0, 10.0 - elapsedTicks, 0.0);
         triggered = true;
         elapsedTicks++;
-        summon.moveAndLook(summon.velocity().scale(0.637), targetPosition);
+        summon.moveAndLook(summon.velocity().scale(0.7), targetPosition);
     }
 
     @Override

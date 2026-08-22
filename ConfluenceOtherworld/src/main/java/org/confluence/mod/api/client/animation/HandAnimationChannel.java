@@ -8,9 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-/// 一条独立的 GeckoLib 动画控制器声明。
-///
-/// <p>同一枪械可以把手部姿态和枪体动作分到不同通道，互不覆盖地播放。</p>
 public final class HandAnimationChannel {
     private final String name;
     private final HandAnimationClip idle;
@@ -38,10 +35,13 @@ public final class HandAnimationChannel {
         return Optional.ofNullable(animations.get(Objects.requireNonNull(action, "Animation action must not be null")));
     }
 
-    /// 构造触发动画队列。
+    /// Build the raw animation used by GeckoLib's trigger system.
     ///
-    /// <p>一次性动画结束后立即在同一队列中衔接待机阶段，避免 GeckoLib 在控制器切换的
-    /// 一帧内把骨骼恢复到初始快照。</p>
+    /// <p>GeckoLib does not evaluate the controller's new idle animation until
+    /// the next animation tick after a play-once stage stops. That leaves one
+    /// tick in which its bone reset pass can restore the model's initial
+    /// snapshot. Keep the hand-off in the same raw-animation queue so the
+    /// next stage is evaluated during the completion tick itself.</p>
     public RawAnimation triggeredAnimation(HandAnimationAction action) {
         HandAnimationClip clip = animations.get(Objects.requireNonNull(action, "Animation action must not be null"));
         if (clip == null) {

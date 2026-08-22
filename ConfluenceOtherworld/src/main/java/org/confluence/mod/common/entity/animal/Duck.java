@@ -55,7 +55,7 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
 
     public Duck(EntityType<? extends Duck> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension.waterMovementEfficiency().get()).setBaseValue(1.0);
+        getAttribute(PortAttributesExtension.waterMovementEfficiency()).setBaseValue(1.0);
         setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
@@ -73,22 +73,10 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
                                 1.0,
                                 new VanillaGoalAction(
                                         new BreedGoal(Duck.this, 1.0)),
-                                new VanillaGoalAction(
-                                        new TemptGoal(
-                                                Duck.this,
-                                                1.0,
-                                                Ingredient.of(
-                                                        Items.WHEAT_SEEDS,
-                                                        Items.MELON_SEEDS,
-                                                        Items.PUMPKIN_SEEDS,
-                                                        Items.BEETROOT_SEEDS,
-                                                        Items.TORCHFLOWER_SEEDS,
-                                                        Items.PITCHER_POD),
-                                                false)),
-                                new VanillaGoalAction(
-                                        new FollowParentGoal(
-                                                Duck.this,
-                                                1.1))),
+                                new VanillaGoalAction(new TemptGoal(Duck.this, 1.0, Ingredient.of(
+                                        Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS,
+                                        Items.BEETROOT_SEEDS, Items.TORCHFLOWER_SEEDS, Items.PITCHER_POD), false)),
+                                new VanillaGoalAction(new FollowParentGoal(Duck.this, 1.1))),
                         1.4);
             }
         };
@@ -199,19 +187,12 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Swim/Idle/Move",
-                5,
-                state -> {
-                    if (isInWater()) {
-                        return state.setAndContinue(SWIM);
-                    }
-                    return state.setAndContinue(
-                            state.isMoving()
-                                    ? WALK
-                                    : IDLE);
-                }));
+        controllers.add(new AnimationController<>(this, "Swim/Idle/Move", 5, state -> {
+            if (isInWater()) {
+                return state.setAndContinue(SWIM);
+            }
+            return state.setAndContinue(state.isMoving() ? WALK : IDLE);
+        }));
     }
 
     /// 鸭子的两种基础外观。枚举同时承担同步值、持久化值和纹理路径的解析。

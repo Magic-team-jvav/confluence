@@ -41,8 +41,6 @@ public class EaterOfSouls extends BaseFlyingMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this, "Movement", 0, state -> state.setAndContinue(
-                getType() == MonsterEntities.CRIMERA.get() ? FLY : SPAWN)));
+        controllers.add(new AnimationController<>(this, "Movement", 0, state -> state.setAndContinue(getType() == MonsterEntities.CRIMERA.get() ? FLY : SPAWN)));
     }
 }

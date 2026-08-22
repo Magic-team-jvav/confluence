@@ -225,10 +225,6 @@ public final class YoyoEntity extends DamageSettableProjectile implements GeoEnt
         return entityData.get(RETURNING);
     }
 
-    public float getCurrentRange() {
-        return entityData.get(RANGE);
-    }
-
     public ItemStack getWeapon() {
         return entityData.get(WEAPON);
     }

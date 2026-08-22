@@ -12,7 +12,7 @@ public final class HornetStingerAttachment extends SummonProjectileInstance {
     }
 
     @Override
-    protected void onSuccessfulHit(LivingEntity target) {
+    protected void onImpact(LivingEntity target) {
         target.addEffect(new MobEffectInstance(MobEffects.POISON, 100), owner());
     }
 }

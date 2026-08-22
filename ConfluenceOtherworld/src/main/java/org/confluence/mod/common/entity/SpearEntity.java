@@ -27,9 +27,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TrapDamageHelper;
 
-/**
- * 长矛机关的发射物
- */
+/// 长矛机关的发射物
 public class SpearEntity extends Entity {
     private static final EntityDataAccessor<Direction> DATA_DIRECTION = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.DIRECTION);
     private static final EntityDataAccessor<Boolean> DATA_OPENED = SynchedEntityData.defineId(SpearEntity.class, EntityDataSerializers.BOOLEAN);

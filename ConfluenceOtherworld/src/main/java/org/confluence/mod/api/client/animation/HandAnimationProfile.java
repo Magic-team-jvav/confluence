@@ -6,25 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/// 枪械所使用的一组动画控制器声明。
 public final class HandAnimationProfile {
     private final List<HandAnimationChannel> channels;
-    private final boolean locatorTransforms;
 
     private HandAnimationProfile(Builder builder) {
         if (builder.channels.isEmpty()) {
             throw new IllegalArgumentException("An animation profile needs at least one channel");
         }
         this.channels = List.copyOf(builder.channels);
-        this.locatorTransforms = builder.locatorTransforms;
     }
 
     public List<HandAnimationChannel> channels() {
         return channels;
-    }
-
-    public boolean usesLocatorTransforms() {
-        return locatorTransforms;
     }
 
     public boolean isAnimation(HandAnimationAction action, String animationName) {
@@ -38,7 +31,6 @@ public final class HandAnimationProfile {
         return new Builder();
     }
 
-    /// 保留旧枪械资源所使用的单控制器动画命名。
     public static HandAnimationProfile legacy() {
         return builder()
                 .channel(HandAnimationChannel.builder("gun")
@@ -49,10 +41,8 @@ public final class HandAnimationProfile {
                 .build();
     }
 
-    /// 1.21 TerraGuns 新手枪资源使用的手部、枪体双通道配置。
     public static HandAnimationProfile handgun() {
         return builder()
-                .locatorTransforms()
                 .channel(HandAnimationChannel.builder("hand_pose")
                         .idle("static_idle")
                         .animation(HandAnimationAction.DRAW, "draw", Animation.LoopType.PLAY_ONCE)
@@ -67,12 +57,6 @@ public final class HandAnimationProfile {
 
     public static final class Builder {
         private final List<HandAnimationChannel> channels = new ArrayList<>();
-        private boolean locatorTransforms;
-
-        public Builder locatorTransforms() {
-            locatorTransforms = true;
-            return this;
-        }
 
         public Builder channel(HandAnimationChannel channel) {
             HandAnimationChannel candidate = Objects.requireNonNull(channel, "Animation channel must not be null");

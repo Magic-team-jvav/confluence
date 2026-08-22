@@ -9,10 +9,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 
-/**
- * <h1>蘑菇弹射物</h1>
- * 自旋悬浮弹射物，可穿墙，单次命中后销毁，无击退。
- */
+/// <h1>蘑菇弹射物</h1>
+/// 自旋悬浮弹射物，可穿墙，单次命中后销毁，无击退。
 public class MushroomProjectile extends SpearProjectile {
 
     public MushroomProjectile(EntityType<? extends MushroomProjectile> entityType, Level level) {
@@ -48,16 +46,12 @@ public class MushroomProjectile extends SpearProjectile {
         }
     }
 
-    /**
-     * 可穿墙 — 不销毁
-     */
+    /// 可穿墙 — 不销毁
     @Override
     protected void onHitBlock(BlockHitResult result) {
     }
 
-    /**
-     * 无视所有伤害
-     */
+    /// 无视所有伤害
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return false;

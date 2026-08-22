@@ -111,14 +111,8 @@ public class JellyFish extends BaseAquaticMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "Swim/Pulse",
-                2,
-                state -> state.setAndContinue(
-                        isAttackPhase()
-                                ? DefaultAnimations.ATTACK_STRIKE
-                                : DefaultAnimations.SWIM)));
+        controllers.add(new AnimationController<>(this, "Swim/Pulse", 2, state -> state.setAndContinue(isAttackPhase()
+                ? DefaultAnimations.ATTACK_STRIKE : DefaultAnimations.SWIM)));
     }
 
     @Override

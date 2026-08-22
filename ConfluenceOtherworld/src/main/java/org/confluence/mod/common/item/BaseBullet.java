@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.component.BulletPropertyComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.gun.definition.BulletBehavior;
@@ -37,9 +38,8 @@ public class BaseBullet extends Item {
 
     private static Properties setup(Properties properties, BulletDefinition definition) {
         properties.component(ModDataComponentTypes.BULLET_PROPERTY, definition.component());
-        // 1.21 的 TerraGuns 在独立运行时以 99 为基础栈上限，
-        // 但被 Confluence 加载时会把普通弹药扩展到 9999；1.20 侧是合并态，直接使用合并后的上限。
-        return properties.stacksTo(definition.infinity() ? 1 : 9999);
+        if (properties.maxStackSize == 99) properties.stacksTo(LibUtils.MAX_STACK_SIZE);
+        return properties;
     }
 
     @Override

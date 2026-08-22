@@ -32,7 +32,6 @@ import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.*;
 
-/// 子弹的服务端权威运行时，负责高速碰撞、穿透、行为链和同步。
 public class BaseBulletEntity extends Projectile {
     private static final int MAX_LIFETIME = 200;
     private static final double MAX_OWNER_DISTANCE = 256.0D;

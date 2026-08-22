@@ -37,12 +37,9 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
     private static final RawAnimation PHASE_TWO = RawAnimation.begin().thenLoop("type_2");
     private static final RawAnimation PHASE_TWO_DASH = RawAnimation.begin().thenLoop("type_2_run");
 
-    private static final EntityDataAccessor<Optional<UUID>>
-            OWNER_UUID = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.OPTIONAL_UUID);
-    private static final EntityDataAccessor<Boolean>
-            DATA_TRANSFORMED = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean>
-            DATA_DASHING = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Boolean> DATA_TRANSFORMED = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DATA_DASHING = SynchedEntityData.defineId(AbstractTwinEye.class, EntityDataSerializers.BOOLEAN);
 
     private final BossOwnerTracker<TheTwins> ownerTracker = new BossOwnerTracker<>(TheTwins.class);
     private boolean reportedDeath;
@@ -144,25 +141,17 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster {
     /// 多人客户端看到的动画与真实伤害窗口一致，而不是根据可能有插值误差的速度猜测。</p>
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "combat",
-                5,
-                state -> {
-                    if (!isTransformed()) {
-                        playedTransformAnimation = false;
-                        return state.setAndContinue(
-                                entityData.get(DATA_DASHING)
-                                        ? PHASE_ONE_DASH : PHASE_ONE);
-                    }
-                    if (!playedTransformAnimation) {
-                        playedTransformAnimation = true;
-                        return state.setAndContinue(TRANSFORM);
-                    }
-                    return state.setAndContinue(
-                            entityData.get(DATA_DASHING)
-                                    ? PHASE_TWO_DASH : PHASE_TWO);
-                }));
+        controllers.add(new AnimationController<>(this, "combat", 5, state -> {
+            if (!isTransformed()) {
+                playedTransformAnimation = false;
+                return state.setAndContinue(entityData.get(DATA_DASHING) ? PHASE_ONE_DASH : PHASE_ONE);
+            }
+            if (!playedTransformAnimation) {
+                playedTransformAnimation = true;
+                return state.setAndContinue(TRANSFORM);
+            }
+            return state.setAndContinue(entityData.get(DATA_DASHING) ? PHASE_TWO_DASH : PHASE_TWO);
+        }));
     }
 
     @Override

@@ -1,10 +1,9 @@
 package org.confluence.mod.common.entity.npc;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
@@ -18,10 +17,11 @@ import java.util.List;
 public class TravelingMerchantNPC extends BaseNPC {
     private static final String STOCK_INITIALIZED_TAG = "TradeStockInitialized";
     private static final String STOCK_TAG = "TradeStock";
+    private static final Codec<List<NPCTradeOffer>> STOCK_CODEC = NPCTradeOffer.CODEC.listOf();
     private long spawnDayTime;
     private boolean departing;
     private boolean tradeStockInitialized;
-    private final List<ItemStack> tradeStock = new ArrayList<>();
+    private final List<NPCTradeOffer> tradeStock = new ArrayList<>();
 
     public TravelingMerchantNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
@@ -36,7 +36,7 @@ public class TravelingMerchantNPC extends BaseNPC {
         return base;
     }
 
-    /// 首次打开商店时从当前数据包报价中抽取本次到访库存，之后固定到实体的新格式 NBT。
+    /// 首次打开商店时从当前数据包报价中抽取本次到访库存，之后以完整报价固定到实体 NBT。
     @Override
     public List<NPCTradeOffer> selectTradeOffers(List<NPCTradeOffer> offers) {
         if (!tradeStockInitialized && !level().isClientSide) {
@@ -48,18 +48,11 @@ public class TravelingMerchantNPC extends BaseNPC {
             }
             int count = Math.min(getTradeCount(), shuffled.size());
             tradeStock.clear();
-            for (int index = 0; index < count; index++) {
-                tradeStock.add(shuffled.get(index).stack());
-            }
+            tradeStock.addAll(shuffled.subList(0, count));
             tradeStockInitialized = true;
         }
         if (!tradeStockInitialized) return List.of();
-
-        List<NPCTradeOffer> selected = new ArrayList<>();
-        for (ItemStack stock : tradeStock) {
-            offers.stream().filter(offer -> ItemStack.matches(offer.stack(), stock)).findFirst().ifPresent(selected::add);
-        }
-        return List.copyOf(selected);
+        return List.copyOf(tradeStock);
     }
 
     @Override
@@ -81,10 +74,8 @@ public class TravelingMerchantNPC extends BaseNPC {
         this.spawnDayTime = tag.getLong("SpawnDayTime");
         tradeStockInitialized = tag.getBoolean(STOCK_INITIALIZED_TAG);
         tradeStock.clear();
-        ListTag stock = tag.getList(STOCK_TAG, Tag.TAG_COMPOUND);
-        for (int index = 0; index < stock.size(); index++) {
-            ItemStack stack = ItemStack.of(stock.getCompound(index));
-            if (!stack.isEmpty()) tradeStock.add(stack);
+        if (tag.contains(STOCK_TAG)) {
+            STOCK_CODEC.parse(NbtOps.INSTANCE, tag.get(STOCK_TAG)).result().ifPresent(tradeStock::addAll);
         }
         if (tradeStockInitialized && tradeStock.isEmpty()) tradeStockInitialized = false;
     }
@@ -94,8 +85,6 @@ public class TravelingMerchantNPC extends BaseNPC {
         super.addAdditionalSaveData(tag);
         tag.putLong("SpawnDayTime", spawnDayTime);
         tag.putBoolean(STOCK_INITIALIZED_TAG, tradeStockInitialized);
-        ListTag stock = new ListTag();
-        for (ItemStack stack : tradeStock) stock.add(stack.save(new CompoundTag()));
-        tag.put(STOCK_TAG, stock);
+        STOCK_CODEC.encodeStart(NbtOps.INSTANCE, tradeStock).result().ifPresent(stock -> tag.put(STOCK_TAG, stock));
     }
 }

@@ -45,7 +45,6 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> TAIL = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> SEGMENT_HEALTH = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Boolean> DESTROYER_PROBE_RELEASED = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DESTROYER_FLAPS_OPEN = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DESTROYER_SEGMENT_ROLL = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.FLOAT);
 
@@ -74,9 +73,6 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         this.entityData.set(SEGMENT_HEALTH, owner.getInitialSegmentHealth(index));
         destroyerDimensions = owner instanceof TheDestroyer;
         refreshDimensions();
-        if (owner instanceof TheDestroyer destroyer) {
-            this.entityData.set(DESTROYER_PROBE_RELEASED, destroyer.hasReleasedProbe(index));
-        }
         this.setPos(owner.position());
     }
 
@@ -173,16 +169,11 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
                 || destroyer.getPhase() == TheDestroyer.Phase.GROUND
                 && !insideSolid;
         entityData.set(DESTROYER_FLAPS_OPEN, open);
-        entityData.set(DESTROYER_PROBE_RELEASED, destroyer.hasReleasedProbe(getSegmentIndex()));
     }
 
     public boolean isDestroyerProbeSegment() {
         return getSegmentIndex() > 0
                 && (getSegmentIndex() - 1) % 2 == 0;
-    }
-
-    public boolean hasReleasedDestroyerProbe() {
-        return entityData.get(DESTROYER_PROBE_RELEASED);
     }
 
     public boolean areDestroyerFlapsOpen() {
@@ -199,10 +190,6 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
 
     void setSegmentRoll(float roll) {
         entityData.set(DESTROYER_SEGMENT_ROLL, roll);
-    }
-
-    void setReleasedDestroyerProbe(boolean released) {
-        entityData.set(DESTROYER_PROBE_RELEASED, released);
     }
 
     private void tickCollisionAttack(BaseWormBoss head) {
@@ -277,7 +264,6 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         entityData.define(INDEX, 0);
         entityData.define(TAIL, false);
         entityData.define(SEGMENT_HEALTH, 0.0F);
-        entityData.define(DESTROYER_PROBE_RELEASED, false);
         entityData.define(DESTROYER_FLAPS_OPEN, false);
         entityData.define(DESTROYER_SEGMENT_ROLL, 0.0F);
     }

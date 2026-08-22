@@ -10,11 +10,7 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 /// 实际属性修饰值由统一的物品属性事件根据附魔等级追加。</p>
 public final class SummonerPactEnchantment extends Enchantment {
     public SummonerPactEnchantment() {
-        super(
-                Rarity.VERY_RARE,
-                EnchantmentCategory.ARMOR_HEAD,
-                new EquipmentSlot[]{EquipmentSlot.HEAD}
-        );
+        super(Rarity.VERY_RARE, EnchantmentCategory.ARMOR_HEAD, new EquipmentSlot[]{EquipmentSlot.HEAD});
     }
 
     @Override

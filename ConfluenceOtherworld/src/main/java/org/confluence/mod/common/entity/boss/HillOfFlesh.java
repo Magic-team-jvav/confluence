@@ -458,9 +458,7 @@ public class HillOfFlesh extends BaseBoss {
             return 0;
         }
         int livingCount = countLivingSubEntities(FleshSlime.class);
-        int requested = Math.min(
-                getSummonLimit() - livingCount,
-                isMaster() ? 3 : isExpert() ? 2 : 1);
+        int requested = Math.min(getSummonLimit() - livingCount, isMaster() ? 3 : isExpert() ? 2 : 1);
         int spawned = 0;
         for (int index = 0; index < requested; index++) {
             FleshSlime slime = MonsterEntities.FLESH_SLIME.get().create(level());
@@ -468,10 +466,8 @@ public class HillOfFlesh extends BaseBoss {
                 continue;
             }
             Entity mouth = parts[5 + random.nextInt(5)];
-            slime.setPos(mouth != null
-                    ? mouth.position() : position());
-            slime.configureSummonedSize(
-                    phase2 && isExpert() ? 4 : 2);
+            slime.setPos(mouth != null ? mouth.position() : position());
+            slime.configureSummonedSize(phase2 && isExpert() ? 4 : 2);
             slime.setTarget(target);
             if (serverLevel.addFreshEntity(slime)) {
                 addSubEntity(slime);
@@ -488,9 +484,7 @@ public class HillOfFlesh extends BaseBoss {
             return 0;
         }
         int livingCount = countLivingSubEntities(SimpleWormMonster.class);
-        int requested = Math.min(
-                getSummonLimit() - livingCount,
-                isMaster() ? 3 : isExpert() ? 2 : 1);
+        int requested = Math.min(getSummonLimit() - livingCount, isMaster() ? 3 : isExpert() ? 2 : 1);
         int spawned = 0;
         for (int index = 0; index < requested; index++) {
             SimpleWormMonster leech = MonsterEntities.LEECH.get().create(level());
@@ -551,10 +545,7 @@ public class HillOfFlesh extends BaseBoss {
             return null;
         }
         pillar.setPos(target.getX(), Math.min(getY(), target.getY()), target.getZ());
-        pillar.configure(
-                this,
-                isMaster() ? 20.0F
-                        : isExpert() ? 17.0F : 14.0F);
+        pillar.configure(this, isMaster() ? 20.0F : isExpert() ? 17.0F : 14.0F);
         if (level().addFreshEntity(pillar)) {
             return pillar;
         }
@@ -572,17 +563,11 @@ public class HillOfFlesh extends BaseBoss {
 
     /// 血肉山本体资源只有持续蠕动的待机动画。
     ///
-    /// <p>移动由整个战斗区域和子实体共同表达，因此不按位移切换动画；死亡阶段停止
-    /// 控制器，避免模型消失过程中继续循环。</p>
+    /// 移动由整个战斗区域和子实体共同表达，因此不按位移切换动画；死亡阶段停止控制器，避免模型消失过程中继续循环。
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "idle",
-                10,
-                state -> deathTime <= 0
-                        ? state.setAndContinue(IDLE)
-                        : PlayState.STOP));
+        controllers.add(new AnimationController<>(this, "idle", 10,
+                state -> deathTime <= 0 ? state.setAndContinue(IDLE) : PlayState.STOP));
     }
 
     @Override

@@ -30,9 +30,9 @@ public final class SwordProjectileDefinitions {
             List.of(SwordProjectileParticleEffect.emitter(Confluence.asResource("falling_star"))));
     public static final SwordProjectileComponent BLADE_OF_GRASS = new SwordProjectileComponent(0.25F, 0.8F, 0.9F, 20, 0.0F, 10,
             ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 20.0F),
-            new SwordProjectileAppearance.Item(0.8F, SwordProjectileAppearance.Transform.FORWARD_SPIN, Optional.empty()),
+            SwordProjectileAppearance.Hidden.INSTANCE,
             List.of(SwordProjectileParticleEffect.particle(SwordProjectileParticleEffect.Event.TRAIL, ModParticleTypes.LEAVES.get(), 2, 1, 0.0F, 0.0F)));
-    public static final SwordProjectileComponent NIGHTS_EDGE = new SwordProjectileComponent(1.0F, 0.8F, 0.9F, 11, 0.0F, 10,
+    public static final SwordProjectileComponent NIGHTS_EDGE = new SwordProjectileComponent(1.0F, 0.8F, 0.9F, 20, 0.0F, 10,
             ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHTS_EDGE.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 20.0F),
             new SwordProjectileAppearance.Item(0.8F, SwordProjectileAppearance.Transform.OWNER_SWING, Optional.of(Confluence.asResource("nights_edge"))));
     public static final SwordProjectileComponent LIGHTS_BANE = new SwordProjectileComponent(1.0F, 0.8F, 0.9F, 100, 0.0F, 20,

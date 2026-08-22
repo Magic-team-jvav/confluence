@@ -128,16 +128,13 @@ public class YoyoItem extends CustomRarityItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable(
-                        "attribute.name.generic.attack_damage")
+        tooltip.add(Component.translatable("attribute.name.generic.attack_damage")
                 .append(Component.literal(" " + attackDamage))
                 .withStyle(ChatFormatting.GREEN));
-        tooltip.add(Component.translatable(
-                        "tooltip.confluence.yoyo.max_range")
+        tooltip.add(Component.translatable("tooltip.confluence.yoyo.max_range")
                 .append(Component.literal(" " + maximumRange))
                 .withStyle(ChatFormatting.GREEN));
-        tooltip.add(Component.translatable(
-                        "tooltip.confluence.yoyo.exist_time")
+        tooltip.add(Component.translatable("tooltip.confluence.yoyo.exist_time")
                 .append(Component.literal(" " + lifetimeTicks / 20.0F))
                 .withStyle(ChatFormatting.GREEN));
     }

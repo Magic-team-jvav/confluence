@@ -15,8 +15,8 @@ import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// 将服务端已经确认的子弹命中位置与表现类型同步给附近客户端。
-public record BulletImpactPacketS2C(double x, double y, double z, int effectId)
-        implements IPortPacket.S2C {
+public record BulletImpactPacketS2C(double x, double y, double z,
+                                    int effectId) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("bullet_impact");
     public static final PortStreamCodec<ByteBuf, BulletImpactPacketS2C> STREAM_CODEC =
             PortStreamCodec.composite(

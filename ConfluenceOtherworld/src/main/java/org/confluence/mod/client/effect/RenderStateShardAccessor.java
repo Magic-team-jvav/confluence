@@ -25,8 +25,7 @@ public class RenderStateShardAccessor extends RenderStateShard {
                     .setTransparencyState(LIGHTNING_TRANSPARENCY)
                     .setLightmapState(NO_LIGHTMAP)
                     .setOutputState(WEATHER_TARGET)
-                    .createCompositeState(false)
-    );
+                    .createCompositeState(false));
     public static final RenderType ENTITY_TRANSLUCENT_EMISSIVE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
             RenderType.CompositeState.builder()
                     .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
@@ -45,10 +44,8 @@ public class RenderStateShardAccessor extends RenderStateShard {
                                 .setTextureState(textureStateShard)
                                 .setTransparencyState(transparencyStateShard)
                                 .setWriteMaskState(COLOR_WRITE)
-                                .createCompositeState(false)
-                );
-            }
-    );
+                                .createCompositeState(false));
+            });
 
     public static RenderType createTextOutline(ResourceLocation texture) {
         return RenderType.create("confluence_outline_text", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, true,
@@ -83,10 +80,8 @@ public class RenderStateShardAccessor extends RenderStateShard {
                         .setTexturingState(GLINT_TEXTURING)
                         .setColorLogicState(new ColorLogicStateShard("set_color",
                                 () -> RenderSystem.setShaderColor(glintColor[0], glintColor[1], glintColor[2], 1.0F),
-                                () -> RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F)
-                        ))
-                        .createCompositeState(false)
-        ), glintColor);
+                                () -> RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F)))
+                        .createCompositeState(false)), glintColor);
         ColoredGlintContext.COLORED_GLINT_CONTEXTS.add(context);
         return context;
     }

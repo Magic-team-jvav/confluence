@@ -12,9 +12,6 @@ import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
 
 /// 幽匿飞灵召唤物的运行实例。
-///
-/// <p>1.21 侧使用延迟声波攻击，而不是普通直线弹幕；这里保留同样的蓄力、粒子轨迹、音效和击退节奏。
-/// 声波从近似眼位发出，避免新架构只使用中心点时让轨迹贴近脚底。</p>
 public final class SculkWispSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 7.0F;
@@ -23,7 +20,7 @@ public final class SculkWispSummon extends FlyingSummon {
     private LivingEntity delayedTarget;
 
     public SculkWispSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
-        super(Confluence.asResource("sculk_wisp"), owner, slotCost, stats, initialPose);
+        super(Confluence.asResource("sculk_wisp"), owner, slotCost, stats, initialPose, 1.0, 1.0);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.035, 0.70));
     }
@@ -38,7 +35,7 @@ public final class SculkWispSummon extends FlyingSummon {
         if (castTicks > 0 && --castTicks == 0) {
             LivingEntity target = delayedTarget;
             delayedTarget = null;
-            if (target != null && target.isAlive()) {
+            if (target != null) {
                 sonicBoom(target);
             }
         }
@@ -78,8 +75,9 @@ public final class SculkWispSummon extends FlyingSummon {
 
     @Override
     public SummonVisualState visualState() {
-        return new SummonVisualState(false, castTicks > 0 ? SummonAnimation.MELEE_ATTACK : SummonAnimation.NONE,
-                20 - castTicks, 20, 0.0F, 1.0F, 1.0F);
+        return castTicks > 0
+                ? new SummonVisualState(false, SummonAnimation.MELEE_ATTACK, 20 - castTicks, 20, 0.0F, 1.0F, 1.0F)
+                : SummonVisualState.DEFAULT;
     }
 
     private static final class AttackGoal extends SummonGoal<SculkWispSummon> {

@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -14,17 +15,21 @@ import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /// 维护玩家当前拥有的召唤物运行实例，并统一处理容量、顺序和生命周期。
-///
-/// <p>调用方只负责创建新的召唤实例；交给容器之后，成功时由容器接管，失败时也由容器清理传入实例。</p>
 public final class SummonContainer implements IPortNBTSerializable<CompoundTag> {
     private static final int FORMAT_VERSION = 1;
     private final List<SummonInstance> summons = new ArrayList<>();
     private final List<SummonProjectileInstance> projectiles = new ArrayList<>();
     private final List<SummonSavedState> pendingSummons = new ArrayList<>();
+    private final Map<ResourceLocation, Integer> groupCounts = new HashMap<>();
+    private final Map<ResourceLocation, Integer> groupOrders = new HashMap<>();
     private boolean clientHasEntries;
 
     public static SummonContainer of(Player player) {
@@ -36,8 +41,12 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
     }
 
     public int occupiedSlots() {
-        return summons.stream().filter(summon -> !summon.isRemoved()).mapToInt(SummonInstance::slotCost).sum()
-                + pendingSummons.stream().mapToInt(SummonSavedState::slotCost).sum();
+        int occupied = 0;
+        for (SummonInstance summon : summons) {
+            if (!summon.isRemoved()) occupied += summon.slotCost();
+        }
+        for (SummonSavedState pending : pendingSummons) occupied += pending.slotCost();
+        return occupied;
     }
 
     public boolean add(ServerPlayer owner, SummonInstance summon) {
@@ -47,11 +56,7 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
         }
         int capacity = Math.max(0, (int) Math.floor(owner.getAttributeValue(ConfluenceMagicLib.MINION_CAPACITY)));
         removeMarked();
-        if (summon.slotCost() > capacity) {
-            summon.remove();
-            return false;
-        }
-        while (occupiedSlots() + summon.slotCost() > capacity && !summons.isEmpty()) {
+        if (occupiedSlots() + summon.slotCost() > capacity && !summons.isEmpty()) {
             SummonInstance last = summons.remove(summons.size() - 1);
             last.remove();
         }
@@ -60,8 +65,13 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
             refreshGroupState();
             return false;
         }
-        SummonInstance mergeTarget = summons.stream().filter(existing -> existing.type().equals(summon.type()))
-                .filter(SummonInstance::canMergeAdditionalSummon).findFirst().orElse(null);
+        SummonInstance mergeTarget = null;
+        for (SummonInstance existing : summons) {
+            if (existing.type().equals(summon.type()) && existing.canMergeAdditionalSummon()) {
+                mergeTarget = existing;
+                break;
+            }
+        }
         if (mergeTarget != null) {
             if (!mergeTarget.tryMergeAdditionalSummon(summon.slotCost(), summon.stats())) {
                 summon.remove();
@@ -118,9 +128,6 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
     }
 
     /// 主动刷新客户端召唤物列表。
-    ///
-    /// <p>召唤失败、长按清空、准星收回等入口都通过这里同步，避免物品层直接发包后遗漏容器自身的
-    /// 客户端状态记录，造成客户端残留旧召唤物或短暂空位。</p>
     public void sync(ServerPlayer owner) {
         SummonSyncPacketS2C.send(owner, summons, projectiles);
         clientHasEntries = !summons.isEmpty() || !projectiles.isEmpty();
@@ -145,20 +152,14 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
     }
 
     private void refreshGroupState() {
-        for (int index = 0; index < summons.size(); index++) {
-            SummonInstance summon = summons.get(index);
-            int order = 0;
-            int sameTypeCount = 0;
-            for (int otherIndex = 0; otherIndex < summons.size(); otherIndex++) {
-                SummonInstance other = summons.get(otherIndex);
-                if (other.groupKey().equals(summon.groupKey())) {
-                    if (otherIndex < index) {
-                        order++;
-                    }
-                    sameTypeCount++;
-                }
-            }
-            summon.updateGroupState(order, sameTypeCount);
+        groupCounts.clear();
+        groupOrders.clear();
+        for (SummonInstance summon : summons) groupCounts.merge(summon.groupKey(), 1, Integer::sum);
+        for (SummonInstance summon : summons) {
+            ResourceLocation group = summon.groupKey();
+            int order = groupOrders.getOrDefault(group, 0);
+            summon.updateGroupState(order, groupCounts.get(group));
+            groupOrders.put(group, order + 1);
         }
     }
 
@@ -166,11 +167,10 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
         if (pendingSummons.isEmpty()) {
             return;
         }
-        List<UUID> restoredIds = summons.stream().map(SummonInstance::uuid).toList();
+        Set<UUID> restoredIds = new HashSet<>();
+        for (SummonInstance summon : summons) restoredIds.add(summon.uuid());
         for (SummonSavedState savedState : pendingSummons) {
-            if (restoredIds.contains(savedState.uuid())) {
-                continue;
-            }
+            if (!restoredIds.add(savedState.uuid())) continue;
             SummonInstance restored = savedState.restore(owner);
             if (restored != null) {
                 summons.add(restored);
@@ -205,9 +205,10 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
             return;
         }
         ListTag entries = root.getList("Entries", Tag.TAG_COMPOUND);
+        Set<UUID> pendingIds = new HashSet<>();
         for (Tag entry : entries) {
             SummonSavedState savedState = SummonSavedState.fromTag((CompoundTag) entry);
-            if (savedState != null && pendingSummons.stream().noneMatch(existing -> existing.uuid().equals(savedState.uuid()))) {
+            if (savedState != null && pendingIds.add(savedState.uuid())) {
                 pendingSummons.add(savedState);
             }
         }

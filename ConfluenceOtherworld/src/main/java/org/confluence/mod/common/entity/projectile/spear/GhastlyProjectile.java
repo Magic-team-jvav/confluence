@@ -11,24 +11,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 
-/**
- * <h1>恶魂弹射物</h1>
- * 从锁定目标周围圆形区域（半径5）生成，沿水平方向飞向目标。
- * 可无限穿透、穿墙，每 4 tick 对同一实体最多造成一次伤害。
- */
+/// <h1>恶魂弹射物</h1>
+/// 从锁定目标周围圆形区域（半径5）生成，沿水平方向飞向目标。
+/// 可无限穿透、穿墙，每 4 tick 对同一实体最多造成一次伤害。
 public class GhastlyProjectile extends SpearProjectile {
-    /**
-     * 对同一实体的伤害冷却间隔（tick）
-     */
+    /// 对同一实体的伤害冷却间隔（tick）
     private static final int DAMAGE_INTERVAL = 4;
 
-    /**
-     * 记录每个实体上次受伤的 tick 时间，用于伤害冷却
-     */
+    /// 记录每个实体上次受伤的 tick 时间，用于伤害冷却
     private final Object2IntMap<Entity> lastHitTicks = new Object2IntOpenHashMap<>();
-    /**
-     * 是否已穿过目标，穿过不再索敌折返
-     */
+    /// 是否已穿过目标，穿过不再索敌折返
     private boolean hasPassedTarget = false;
 
     public GhastlyProjectile(EntityType<? extends GhastlyProjectile> entityType, Level level) {
@@ -45,10 +37,8 @@ public class GhastlyProjectile extends SpearProjectile {
         this.target = target;
     }
 
-    /**
-     * 水平飞向锁定目标，y 轴速度恒为零。
-     * 穿过目标不再折返，继续沿原方向飞行。
-     */
+    /// 水平飞向锁定目标，y 轴速度恒为零。
+    /// 穿过目标不再折返，继续沿原方向飞行。
     @Override
     protected void updateMotion() {
         if (!hasPassedTarget && target != null && target.isAlive()) {
@@ -73,17 +63,13 @@ public class GhastlyProjectile extends SpearProjectile {
 
     // ===== 穿透与穿墙 =====
 
-    /**
-     * 无限穿透 — 不减少穿透次数，不销毁
-     */
+    /// 无限穿透 — 不减少穿透次数，不销毁
     @Override
     protected void applyPenetration() {
         // 空实现：无限穿透
     }
 
-    /**
-     * 穿墙 — 撞墙时不销毁
-     */
+    /// 穿墙 — 撞墙时不销毁
     @Override
     protected void onHitBlock(BlockHitResult result) {
         // 空实现：穿墙
@@ -91,9 +77,7 @@ public class GhastlyProjectile extends SpearProjectile {
 
     // ===== 伤害与碰撞 =====
 
-    /**
-     * 始终可命中存活、可拾取的非主人实体
-     */
+    /// 始终可命中存活、可拾取的非主人实体
     @Override
     protected boolean canHitEntity(Entity target) {
         return target.isAlive()
@@ -101,10 +85,8 @@ public class GhastlyProjectile extends SpearProjectile {
                 && super.canHitEntity(target);
     }
 
-    /**
-     * 检查伤害冷却后调用父类伤害逻辑。
-     * 同一实体每 {@link #DAMAGE_INTERVAL} tick 最多受伤一次。
-     */
+    /// 检查伤害冷却后调用父类伤害逻辑。
+    /// 同一实体每 {@link #DAMAGE_INTERVAL} tick 最多受伤一次。
     @Override
     protected boolean doHurt(Entity target) {
         int currentTick = tickCount;
@@ -128,9 +110,7 @@ public class GhastlyProjectile extends SpearProjectile {
         }
     }
 
-    /**
-     * 免疫所有外部伤害
-     */
+    /// 免疫所有外部伤害
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return false;

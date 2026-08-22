@@ -25,8 +25,7 @@ import java.util.*;
 public class AchievementScreen extends Screen {
     public static final PortWidgetSprites SPRITES = new PortWidgetSprites(
             new PortSprite(Confluence.asResource("achievement_icon"), 20, 20),
-            new PortSprite(Confluence.asResource("achievement_icon_highlighted"), 20, 20)
-    );
+            new PortSprite(Confluence.asResource("achievement_icon_highlighted"), 20, 20));
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/achievement.png");
     private static final int ENTRY_X = 4;
     private static final int ENTRY_Y = 22;
@@ -78,7 +77,6 @@ public class AchievementScreen extends Screen {
     private Iterable<Map.Entry<ResourceLocation, AchievementOffset>> rendered;
     private int lines;
     private int skip;
-    // todo advancement   private Map<ResourceLocation, AdvancementProgress> data;
 //    private boolean completedGoingOldSchool;
     private boolean[] categoriesDisabled;
 

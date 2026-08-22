@@ -15,7 +15,7 @@ public final class MomentumSummonIdleGoal<T extends FlyingSummon> extends Summon
     private Vec3 followDestination;
 
     public MomentumSummonIdleGoal(T summon, double height, double acceleration, double maximumSpeed) {
-        this(summon, height, acceleration, maximumSpeed, 10);
+        this(summon, height, acceleration, maximumSpeed, 0);
     }
 
     public MomentumSummonIdleGoal(T summon, double height, double acceleration, double maximumSpeed, int recalculateInterval) {

@@ -36,12 +36,7 @@ import java.util.concurrent.CompletableFuture;
 
 /// 生成内置 NPC 商店的当前格式数据。
 ///
-/// <p>交易系统运行时直接读取这里生成的 JSON，生成端与加载端共用
-/// {@link NPCTradeOffer#CODEC}。这样字段名、
-/// 商品栈或条件声明一旦写错，会在数据生成或测试阶段直接失败，不会拖到玩家打开商店时才暴露。</p>
-///
-/// <p>这里先覆盖适合普通买卖语义的 NPC。向导、老人、护士这类以对话、召唤或服务为主的 NPC
-/// 后续应接到对应系统，不在这里硬塞成普通商品表。</p>
+/// 生成端与加载端共用 {@link NPCTradeOffer#CODEC}。
 public final class NPCShopProvider implements DataProvider {
     private final PackOutput.PathProvider pathProvider;
 
@@ -139,6 +134,7 @@ public final class NPCShopProvider implements DataProvider {
                 offer(ModItems.CORRUPT_SEED.toStack(), crimsonWorld.and(bloodMoon.or(graveyard)))
         ));
         shops.put(Confluence.asResource("witch_doctor"), List.of(
+                offer(GunItems.BLOWGUN.toStack()),
                 offer(FunctionalBlocks.CAULDRON.toStack(), halloween()),
                 offer(AccessoryItems.PYGMY_NECKLACE.toStack(), new TimeCondition(LibDateUtils._19$30, LibDateUtils._04$30, false))
         ));
@@ -163,7 +159,16 @@ public final class NPCShopProvider implements DataProvider {
                 offer(ArrowItems.HELLFIRE_ARROW.toStack(), HardmodeCondition.INSTANCE)
         ));
         shops.put(Confluence.asResource("arms_dealer"), List.of(
-                offer(new ItemStack(GunItems.MUSKET_BULLET.get(), 50)),
+                offer(GunItems.MUSKET_BULLET.toStack()),
+                offer(new ItemStack(GunItems.MUSKET_BULLET.get(), 100)),
+                offer(GunItems.SILVER_BULLET.toStack(), HardmodeCondition.INSTANCE),
+                offer(new ItemStack(GunItems.SILVER_BULLET.get(), 100), HardmodeCondition.INSTANCE),
+                offer(GunItems.TUNGSTEN_BULLET.toStack(), HardmodeCondition.INSTANCE),
+                offer(new ItemStack(GunItems.TUNGSTEN_BULLET.get(), 100), HardmodeCondition.INSTANCE),
+                offer(MaterialItems.EMPTY_BULLET.toStack(), HardmodeCondition.INSTANCE),
+                offer(FunctionalBlocks.AMMO_BOX.toStack(), HardmodeCondition.INSTANCE),
+                offer(GunItems.SHOTGUN.toStack(), HardmodeCondition.INSTANCE),
+                offer(ArrowItems.UNHOLY_ARROW.toStack(), HardmodeCondition.INSTANCE),
                 offer(GunItems.FLINTLOCK_PISTOL.toStack()),
                 offer(GunItems.MINISHARK.toStack())
         ));

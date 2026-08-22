@@ -25,8 +25,7 @@ public final class RepeaterContents implements TooltipComponent {
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, RepeaterContents> STREAM_CODEC = PortStreamCodec.composite(
             PortItemStackExtension.listStreamCodec(), RepeaterContents::asItems,
             PortByteBufCodecs.INT, RepeaterContents::getMaxItemCapacity,
-            RepeaterContents::new
-    );
+            RepeaterContents::new);
     private final int maxItemCapacity;
     private final NonNullList<ItemStack> items;
     private final int hashCode;
@@ -56,10 +55,10 @@ public final class RepeaterContents implements TooltipComponent {
         this.items = items;
         this.maxItemCapacity = maxItemCapacity;
         this.itemsTotalCount = items.stream().filter(itemStack -> !itemStack.isEmpty()).mapToInt(ItemStack::getCount).sum();
-        this.isEmpty = nonEmptyStream().toList().isEmpty();
-        this.isFull = getItemsTotalCount() >= getMaxItemCapacity();
+        this.isEmpty = itemsTotalCount == 0;
+        this.isFull = itemsTotalCount >= maxItemCapacity;
         this.slotSize = items.size();
-        this.hashCode = PortItemStackExtension.hashStackList(items);
+        this.hashCode = 31 * PortItemStackExtension.hashStackList(items) + maxItemCapacity;
     }
 
     public static RepeaterContents fromItems(int capacity) {
@@ -101,8 +100,12 @@ public final class RepeaterContents implements TooltipComponent {
         return slotSize;
     }
 
-    public int getUedSlotSize() {
-        return nonEmptyStream().toList().size();
+    public int getUsedSlotSize() {
+        int used = 0;
+        for (ItemStack item : items) {
+            if (!item.isEmpty()) used++;
+        }
+        return used;
     }
 
     @Override
@@ -134,7 +137,8 @@ public final class RepeaterContents implements TooltipComponent {
         if (!(other instanceof RepeaterContents contents)) {
             return false;
         }
-        return PortItemStackExtension.listMatches(items, contents.items);
+        return maxItemCapacity == contents.maxItemCapacity
+                && PortItemStackExtension.listMatches(items, contents.items);
     }
 
     public ItemStack getStackInSlot(int slot) {

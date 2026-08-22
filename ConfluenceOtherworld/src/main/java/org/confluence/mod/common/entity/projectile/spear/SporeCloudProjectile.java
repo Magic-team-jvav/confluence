@@ -35,11 +35,7 @@ public class SporeCloudProjectile extends SpearProjectile {
     public void onAddedToWorld() {
         super.onAddedToWorld();
         if (!level().isClientSide) {
-            EmitterCreationPacketS2C.sendToAll(
-                    Confluence.asResource("spore_cloud"),
-                    position().toVector3f(),
-                    MolangExp.EMPTY,
-                    this);
+            EmitterCreationPacketS2C.sendToAll(Confluence.asResource("spore_cloud"), position().toVector3f(), MolangExp.EMPTY, this);
         }
     }
 

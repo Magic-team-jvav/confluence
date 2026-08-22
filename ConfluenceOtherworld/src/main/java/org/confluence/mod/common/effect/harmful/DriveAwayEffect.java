@@ -30,11 +30,7 @@ public class DriveAwayEffect extends PortMobEffect {
     private final double baseOffsetMax;
     private final double baseCubeRange;
 
-    public DriveAwayEffect(
-            double baseSpeed, double baseTime,
-            double baseRangeRandomMin, double baseRangeRandomMax,
-            double baseOffsetMax, double baseCubeRange
-    ) {
+    public DriveAwayEffect(double baseSpeed, double baseTime, double baseRangeRandomMin, double baseRangeRandomMax, double baseOffsetMax, double baseCubeRange) {
         super(MobEffectCategory.HARMFUL, 0x5d478b);
         this.baseSpeed = baseSpeed;
         this.baseTime = baseTime;

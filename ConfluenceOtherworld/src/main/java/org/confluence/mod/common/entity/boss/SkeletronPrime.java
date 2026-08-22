@@ -283,10 +283,6 @@ public class SkeletronPrime extends BaseBoss {
                 ? arms[index] : null;
     }
 
-    public int getDestroyedArmsMask() {
-        return destroyedArms;
-    }
-
     /// 返回头部和四条机械臂共同组成的遭遇生命比例。
     float getEncounterProgress() {
         float current = getHealth();

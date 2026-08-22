@@ -69,7 +69,7 @@ public final class BossMultiplayerEnhancement {
             boss.setHealth(boss.getMaxHealth());
         }
 
-        AttributeInstance attackDamage = boss.getAttribute(LibAttributes.getAttackDamage().get());
+        AttributeInstance attackDamage = boss.getAttribute(LibAttributes.getAttackDamage());
         if (attackDamage != null && !attackDamage.hasModifier(DAMAGE_MODIFIER_ID)) {
             attackDamage.addPermanentModifier(new AttributeModifier(DAMAGE_MODIFIER_ID, "Boss difficulty attack damage", difficultyMultiplier - 1.0D, AttributeModifier.Operation.MULTIPLY_BASE));
         }

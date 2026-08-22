@@ -201,7 +201,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult result) {}
+    protected void onHitEntity(EntityHitResult result) {
+        if (!level().isClientSide && usesDefaultCollisionDamage()) hurtTarget(result.getEntity());
+    }
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
@@ -216,8 +218,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         Entity impacted = ProjectileHitRules.impactedEntity(target);
         if (!(impacted instanceof LivingEntity living))
             return false;
+        if (!Immunity.hurt(this, living, damageSource(), baseAttackDamage)) return false;
         applyHitEffect(impacted);
-        if (!impacted.hurt(damageSource(), baseAttackDamage)) return false;
         level().broadcastEntityEvent(this, EVENT_ENTITY_HIT);
         LibEntityUtils.knockBackA2B(this, living, (baseKnockback + bonusKnockback) * 0.5, 0.2);
         if (--remainingHits <= 0) discard();
@@ -261,6 +263,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         tag.putFloat("BonusKnockback", bonusKnockback);
         tag.putInt("RemainingHits", remainingHits);
         tag.putBoolean("SurvivesBlockHit", survivesBlockHit);
+        tag.putDouble("DirectionX", direction.x);
+        tag.putDouble("DirectionY", direction.y);
+        tag.putDouble("DirectionZ", direction.z);
     }
 
     @Override
@@ -274,6 +279,12 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         bonusKnockback = tag.getFloat("BonusKnockback");
         remainingHits = tag.getInt("RemainingHits");
         survivesBlockHit = tag.getBoolean("SurvivesBlockHit");
+        Vec3 savedDirection = new Vec3(tag.getDouble("DirectionX"), tag.getDouble("DirectionY"), tag.getDouble("DirectionZ"));
+        if (!Double.isFinite(savedDirection.x) || !Double.isFinite(savedDirection.y) || !Double.isFinite(savedDirection.z)
+                || savedDirection.lengthSqr() <= 1.0E-7) savedDirection = getDeltaMovement();
+        if (savedDirection.lengthSqr() > 1.0E-7) direction = savedDirection.normalize();
+        entityData.set(DATA_DIRECTION, direction.toVector3f());
+        entityData.set(DATA_INITIAL_VELOCITY, getDeltaMovement().toVector3f());
     }
 
     @Override

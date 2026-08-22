@@ -73,10 +73,9 @@ import java.util.function.Predicate;
 public enum NPCSpawner implements IGlobalData {
     INSTANCE;
     public static final int CURRENT_VERSION = 1;
-    public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC_V1 = LibCodecUtils.notStringKeyMap(
+    public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = LibCodecUtils.notStringKeyMap(
             "region", Region.CODEC,
-            "alive", PortCodecExtension.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec())
-    );
+            "alive", PortCodecExtension.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec()));
     public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC = BuiltInRegistries.ENTITY_TYPE.byNameCodec().listOf()
             .xmap(ObjectOpenHashSet::new, ObjectArrayList::new);
 
@@ -212,11 +211,10 @@ public enum NPCSpawner implements IGlobalData {
             throw new IllegalArgumentException("Unsupported NPC spawner data version: " + version);
         }
         Map<Region, Object2BooleanMap<EntityType<?>>> decodedAlive =
-                PortDataResultExtension.getOrThrow(NPC_ALIVE_CODEC_V1.parse(NbtOps.INSTANCE, tag.get("NpcAlive")), message -> new IllegalArgumentException("Failed to decode living NPC data: " + message));
+                PortDataResultExtension.getOrThrow(NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcAlive")), message -> new IllegalArgumentException("Failed to decode living NPC data: " + message));
         Set<EntityType<?>> decodedSpawned = PortDataResultExtension.getOrThrow(
                 NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned")),
-                message -> new IllegalArgumentException(
-                        "Failed to decode spawned NPC data: " + message));
+                message -> new IllegalArgumentException("Failed to decode spawned NPC data: " + message));
         this.npcAlive = new Object2ObjectOpenHashMap<>(decodedAlive);
         this.npcSpawned = new ObjectOpenHashSet<>(decodedSpawned);
         this.isAdvancedCombatTechniquesUsed = tag.getBoolean("AdvancedCombatTechniquesUsed");
@@ -235,7 +233,7 @@ public enum NPCSpawner implements IGlobalData {
                 iterator.remove();
             }
         }
-        tag.put("NpcAlive", PortDataResultExtension.getOrThrow(NPC_ALIVE_CODEC_V1.encodeStart(NbtOps.INSTANCE, npcAlive), message -> new IllegalStateException("Failed to encode living NPC data: " + message)));
+        tag.put("NpcAlive", PortDataResultExtension.getOrThrow(NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive), message -> new IllegalStateException("Failed to encode living NPC data: " + message)));
         tag.put("NpcSpawned", PortDataResultExtension.getOrThrow(NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned), message -> new IllegalStateException("Failed to encode spawned NPC data: " + message)));
         tag.putBoolean("AdvancedCombatTechniquesUsed", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("AdvancedCombatTechniquesVolumeTwoUsed", isAdvancedCombatTechniquesVolumeTwoUsed);
@@ -563,7 +561,7 @@ public enum NPCSpawner implements IGlobalData {
     public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
         if (!(entityType.create(level) instanceof BaseNPC npc)) return false;
         npc.setPos(adjustSpawnLocation(level, pos, npc).getBottomCenter());
-        level.addFreshEntity(npc);
+        if (!level.addFreshEntity(npc)) return false;
         if (npc instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来
         }

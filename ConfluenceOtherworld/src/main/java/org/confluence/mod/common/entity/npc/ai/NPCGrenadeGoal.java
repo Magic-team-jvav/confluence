@@ -1,15 +1,25 @@
 package org.confluence.mod.common.entity.npc.ai;
 
-import net.minecraft.sounds.SoundEvents;
+import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.level.ExplosionDamageCalculator;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.damage.IgnoreThrowerExplosionDamageCalculator;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.bomb.BaseGrenadeEntity;
+import org.confluence.mod.common.init.item.ConsumableItems;
+import org.confluence.mod.util.TerraStyleExplosion;
 
 import java.util.EnumSet;
 
-/// 爆破专家投掷手榴弹。
+/// 爆破专家瞄准目标后，在目标附近放置不会伤害友方的炸药。
 public class NPCGrenadeGoal extends Goal {
+    private static final int PREPARE_TICKS = 10;
+    private static final int ATTACK_COOLDOWN_TICKS = 30;
     private final BaseNPC npc;
     private int attackTimer;
     private int seeTime;
@@ -60,20 +70,45 @@ public class NPCGrenadeGoal extends Goal {
             npc.getNavigation().stop();
         }
 
-        if (--attackTimer <= 0 && seeTime >= 10) {
-            attackTimer = 20;
+        if (--attackTimer <= 0 && seeTime >= PREPARE_TICKS) {
+            attackTimer = ATTACK_COOLDOWN_TICKS;
+            seeTime = 0;
             performAttack(target);
         }
     }
 
     private void performAttack(LivingEntity target) {
-        BaseGrenadeEntity grenade = new BaseGrenadeEntity(npc);
-        double dx = target.getX() - npc.getX();
-        double dy = target.getY(0.333) - grenade.getY();
-        double dz = target.getZ() - npc.getZ();
-        double dist = Math.sqrt(dx * dx + dz * dz);
-        grenade.shoot(dx, dy + dist * 0.2, dz, 1.2f, 1.0f);
-        npc.playSound(SoundEvents.SNOWBALL_THROW, 1.0f, 1.0f / (npc.getRandom().nextFloat() * 0.4f + 0.8f));
+        double distance = npc.distanceTo(target);
+        Vec3 position = distance < 5.0
+                ? target.getEyePosition()
+                : target.position().subtract(npc.position()).normalize().scale(5.0).add(npc.getEyePosition());
+        NPCExplosive grenade = new NPCExplosive(npc);
+        grenade.setItem(ConsumableItems.BOMB.toStack());
+        grenade.setPos(position);
         npc.level().addFreshEntity(grenade);
+    }
+
+    private static final class NPCExplosive extends BaseGrenadeEntity {
+        private final BaseNPC thrower;
+
+        private NPCExplosive(BaseNPC thrower) {
+            super(thrower);
+            this.thrower = thrower;
+            delay = 80;
+        }
+
+        @Override
+        protected void explodeFunction(ServerLevel level) {
+            TerraStyleExplosion.terraExplode(level, this, PortExplosionExtension.getDefaultDamageSource(level, this),
+                    getExplosionDamageCalculator(), getX(), getY(), getZ(), 4.0F, Level.ExplosionInteraction.NONE);
+        }
+
+        @Override
+        protected void onHitEntity(EntityHitResult result) {}
+
+        @Override
+        protected ExplosionDamageCalculator getExplosionDamageCalculator() {
+            return new IgnoreThrowerExplosionDamageCalculator(1.0F, thrower);
+        }
     }
 }

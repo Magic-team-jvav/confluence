@@ -92,10 +92,7 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
             }
 
             DataResult<CreatureDefinition> result = CreatureDefinition.CODEC.parse(JsonOps.INSTANCE, entry.getValue());
-            CreatureDefinition definition = result
-                    .resultOrPartial(message -> Confluence.LOGGER.warn(
-                            "Invalid creature definition {}: {}", id, message))
-                    .orElse(null);
+            CreatureDefinition definition = result.resultOrPartial(message -> Confluence.LOGGER.warn("Invalid creature definition {}: {}", id, message)).orElse(null);
             if (definition == null || result.error().isPresent()) {
                 invalidBatch = true;
                 continue;
@@ -128,8 +125,7 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
             return true;
         }
         if (!section.isJsonObject()) {
-            Confluence.LOGGER.warn(
-                    "Creature definition {} field '{}' must be a JSON object", id, sectionName);
+            Confluence.LOGGER.warn("Creature definition {} field '{}' must be a JSON object", id, sectionName);
             return false;
         }
         boolean valid = true;

@@ -538,6 +538,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> gun = tag(ModTags.Items.GUN);
         GunItems.GUN_ITEMS.forEach(item -> gun.add(item.get()));
+        ranged_weapon_tools.addTag(ModTags.Items.GUN);
 
         IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
         ManaWeaponItems.ITEMS.getEntries().forEach(item -> mana_weapon.add(item.get()));
@@ -1494,8 +1495,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.SNOW_AMMO).add(Items.SNOWBALL);
         tag(ModTags.Items.SEED_AMMO).addTag(PortTags.Items.SEEDS);
         tag(ModTags.Items.AMMO)
-                .addTags(ModTags.Items.SEED_AMMO, ModTags.Items.SNOW_AMMO, ModTags.Items.BULLET)
-                .add(MaterialItems.FALLING_STAR.get());
+                .addTags(ModTags.Items.SEED_AMMO, ModTags.Items.SNOW_AMMO, ModTags.Items.BULLET);
         IntrinsicTagAppender<Item> death = tag(ModTags.Items.DEATH);
         death.add(
                 FunctionalBlocks.SHIMMER_TRAP.asItem(),

@@ -44,8 +44,6 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     private final Container tradeContainer = new SimpleContainer(TRADE_SIZE);
     private final List<NPCTradeOffer> offers;
     private final int shopRevision;
-    private final float buyPriceMultiplier;
-    private final float sellPriceMultiplier;
     private final Map<Integer, SoldItem> soldItems = new HashMap<>();
     private final List<SlotState> slotStates = new ArrayList<>(TRADE_SIZE);
     private final SimpleContainerData pageData = new SimpleContainerData(3);
@@ -72,8 +70,6 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         this.npc = npc;
         this.offers = List.copyOf(offers);
         this.shopRevision = shopRevision;
-        this.buyPriceMultiplier = npc.getMood().getBuyPriceMultiplier();
-        this.sellPriceMultiplier = npc.getMood().getSellPriceMultiplier();
 
         for (int row = 0; row < TRADE_ROWS; row++) {
             for (int col = 0; col < TRADE_COLS; col++) {
@@ -246,7 +242,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         try {
             long value = ValueComponent.getValueLong(stack, 0);
             if (value <= 0) return 0;
-            return Math.max(1L, Math.round(Math.multiplyExact(value, 5L) * (double) buyPriceMultiplier));
+            return (long) (Math.multiplyExact(value, 5L) * (double) npc.getMood().getBuyPriceMultiplier());
         } catch (ArithmeticException ignored) {
             return 0;
         }
@@ -256,7 +252,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         try {
             long value = ValueComponent.getValueLong(stack, 0);
             if (value <= 0) return 0;
-            return Math.max(1L, Math.round(value * (double) sellPriceMultiplier));
+            return (long) (value * (double) npc.getMood().getSellPriceMultiplier());
         } catch (ArithmeticException ignored) {
             return 0;
         }

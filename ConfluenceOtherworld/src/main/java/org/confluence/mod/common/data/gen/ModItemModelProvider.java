@@ -280,9 +280,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         generatedModels.keySet().removeIf(this::hasHandwrittenModel);
     }
 
-    /**
-     * 手持高清但是物品栏16x
-     */
+    /// 手持高清但是物品栏16x
     private void separateModel(PortDeferredItem<?> deferredItem, ModelFile parentModel, String parentPath) {
         String path = deferredItem.getId().getPath();
         getBuilder(path).guiLight(BlockModel.GuiLight.FRONT).customLoader((builder, helper) -> {

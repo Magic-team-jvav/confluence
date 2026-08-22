@@ -8,8 +8,8 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /// 召唤附件弹幕的运行类型。
-public record SummonProjectileType<T extends SummonProjectileInstance>(
-        ResourceLocation id, BiFunction<SummonInstance, LivingEntity, T> factory) {
+public record SummonProjectileType<T extends SummonProjectileInstance>(ResourceLocation id,
+                                                                       BiFunction<SummonInstance, LivingEntity, T> factory) {
     public SummonProjectileType {
         Objects.requireNonNull(id, "Summon projectile type id must not be null");
         Objects.requireNonNull(factory, "Summon projectile factory must not be null");

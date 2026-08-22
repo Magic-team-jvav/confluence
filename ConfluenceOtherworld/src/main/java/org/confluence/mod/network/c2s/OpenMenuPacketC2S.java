@@ -126,7 +126,5 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
         Confluence.NETWORK_HANDLER.sendToServer(new OpenMenuPacketC2S(menuId, stack.copy()));
     }
 
-    private record MenuRequest(
-            MenuConstructor constructor,
-            Component title) {}
+    private record MenuRequest(MenuConstructor constructor, Component title) {}
 }

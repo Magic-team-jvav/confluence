@@ -9,7 +9,6 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEntityExtension;
 
-/// 带重力的通用子弹实体。
 public class CustomBulletEntity extends BaseBulletEntity implements ItemSupplier, IPortEntityExtension {
     private float gravity;
 

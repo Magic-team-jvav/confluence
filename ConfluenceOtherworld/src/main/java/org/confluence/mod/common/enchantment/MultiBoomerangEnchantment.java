@@ -10,11 +10,7 @@ import org.confluence.mod.common.init.ModEnchantments;
 /// 实际数量检查仍留在回旋镖的统一投掷入口中。</p>
 public final class MultiBoomerangEnchantment extends Enchantment {
     public MultiBoomerangEnchantment() {
-        super(
-                Rarity.VERY_RARE,
-                ModEnchantments.Categories.BOOMERANG,
-                new EquipmentSlot[]{EquipmentSlot.MAINHAND}
-        );
+        super(Rarity.VERY_RARE, ModEnchantments.Categories.BOOMERANG, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     @Override

@@ -126,35 +126,18 @@ public class BaseWarriorMonster extends BaseMonster {
         if (animationProfile == LandAnimationProfile.NONE) {
             return;
         }
-        controllers.add(new AnimationController<>(
-                this,
-                "Walk/Idle",
-                5,
-                state -> {
-                    state.setControllerSpeed(
-                            (float) (getAttributeValue(
-                                    Attributes.MOVEMENT_SPEED) / 0.25));
-                    if (state.isMoving()) {
-                        return state.setAndContinue(
-                                animationProfile
-                                        == LandAnimationProfile
-                                        .WALK_RUN_IDLE_ATTACK
-                                        && isSprinting()
-                                        ? RUN : WALK);
-                    }
-                    if (animationProfile != LandAnimationProfile.WALK_ONLY) {
-                        return state.setAndContinue(IDLE);
-                    }
-                    return PlayState.STOP;
-                }));
+        controllers.add(new AnimationController<>(this, "Walk/Idle", 5, state -> {
+            state.setControllerSpeed((float) (getAttributeValue(Attributes.MOVEMENT_SPEED) / 0.25));
+            if (state.isMoving()) {
+                return state.setAndContinue(animationProfile == LandAnimationProfile.WALK_RUN_IDLE_ATTACK && isSprinting() ? RUN : WALK);
+            }
+            if (animationProfile != LandAnimationProfile.WALK_ONLY) {
+                return state.setAndContinue(IDLE);
+            }
+            return PlayState.STOP;
+        }));
         if (animationProfile == LandAnimationProfile.WALK_RUN_IDLE_ATTACK) {
-            controllers.add(new AnimationController<>(
-                    this,
-                    "Attack",
-                    0,
-                    state -> swinging
-                            ? state.setAndContinue(ATTACK)
-                            : PlayState.STOP));
+            controllers.add(new AnimationController<>(this, "Attack", 0, state -> swinging ? state.setAndContinue(ATTACK) : PlayState.STOP));
         }
     }
 
@@ -213,11 +196,8 @@ public class BaseWarriorMonster extends BaseMonster {
     }
 
     /// 简单陆行怪的跃击参数。
-    public record JumpProfile(
-            double speedMultiplier,
-            double maximumDistance,
-            int cooldownTicks,
-            int windupTicks) {}
+    public record JumpProfile(double speedMultiplier, double maximumDistance, int cooldownTicks,
+                              int windupTicks) {}
 
     /// 通用陆行资源可用的基础动画组合。
     ///

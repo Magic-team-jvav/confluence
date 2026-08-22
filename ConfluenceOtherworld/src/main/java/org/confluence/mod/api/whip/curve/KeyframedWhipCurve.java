@@ -71,7 +71,4 @@ public final class KeyframedWhipCurve implements WhipCurve {
         return List.copyOf(result);
     }
 
-    public List<WhipFrame> frames() {
-        return frames;
-    }
 }

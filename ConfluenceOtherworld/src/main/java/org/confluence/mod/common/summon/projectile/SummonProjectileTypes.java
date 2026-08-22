@@ -20,8 +20,7 @@ public final class SummonProjectileTypes {
 
     private SummonProjectileTypes() {}
 
-    private static <T extends SummonProjectileInstance> SummonProjectileType<T> register(
-            String path, BiFunction<SummonInstance, LivingEntity, T> factory) {
+    private static <T extends SummonProjectileInstance> SummonProjectileType<T> register(String path, BiFunction<SummonInstance, LivingEntity, T> factory) {
         SummonProjectileType<T> type = new SummonProjectileType<>(Confluence.asResource(path), factory);
         if (TYPES.putIfAbsent(type.id(), type) != null) {
             throw new IllegalStateException("Duplicate summon projectile type: " + type.id());

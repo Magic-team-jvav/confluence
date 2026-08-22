@@ -5,7 +5,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 
-/// 根据空间采样点生成仅用于渲染的二次贝塞尔平滑轨迹。
+/// Builds a render-only quadratic Bezier curve from spatial trail samples.
 final class TrailPathSmoother {
     private static final int SUBDIVISIONS = 5;
     private static final double DUPLICATE_EPSILON_SQR = 1.0E-8D;

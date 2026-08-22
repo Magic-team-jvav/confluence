@@ -479,7 +479,6 @@ public class TheDestroyer extends BaseWormBoss {
             return false;
         }
         markProbeReleased(index);
-        segment.setReleasedDestroyerProbe(true);
         TheDestroyerProbe probe = BossEntities.THE_DESTROYER_PROBE.get().create(serverLevel);
         if (probe == null) {
             return false;

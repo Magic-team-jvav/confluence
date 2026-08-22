@@ -320,8 +320,7 @@ public final class PrimeEnderDragon extends BaseBoss {
             setDeltaMovement(velocity);
             hasImpulse = true;
         }
-        updateRotationFromVelocity(
-                combatState == CombatState.INERTIA ? 2.0F : 7.0F);
+        updateRotationFromVelocity(combatState == CombatState.INERTIA ? 2.0F : 7.0F);
     }
 
     private void updateRotationFromVelocity(float yawStep) {
@@ -361,11 +360,7 @@ public final class PrimeEnderDragon extends BaseBoss {
         if (attackRange > 3.0) {
             performLaserAttack(attackRange);
         }
-        laserChargeTicks = Mth.clamp(
-                laserChargeTicks
-                        + (isLaserActive() ? 1 : -1),
-                0,
-                (int) LASER_MAXIMUM_RANGE);
+        laserChargeTicks = Mth.clamp(laserChargeTicks + (isLaserActive() ? 1 : -1), 0, (int) LASER_MAXIMUM_RANGE);
         entityData.set(DATA_LASER_RANGE, laserChargeTicks);
     }
 
@@ -568,12 +563,7 @@ public final class PrimeEnderDragon extends BaseBoss {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "action",
-                10,
-                state -> state.setAndContinue(
-                        isLanding() ? LAND : FLY)));
+        controllers.add(new AnimationController<>(this, "action", 10, state -> state.setAndContinue(isLanding() ? LAND : FLY)));
     }
 
     enum CombatState {

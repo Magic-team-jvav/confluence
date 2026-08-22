@@ -13,8 +13,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.renderer.item.SpecialItemRenderingUtil;
+import org.confluence.mod.client.summon.ClientSummonManager;
+import org.confluence.mod.common.init.item.SummonItems;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +27,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin implements SelfGetter<ItemRenderer> {
@@ -36,6 +40,15 @@ public abstract class ItemRendererMixin implements SelfGetter<ItemRenderer> {
 
     @Shadow
     public abstract BakedModel getModel(ItemStack stack, @Nullable Level level, @Nullable LivingEntity entity, int seed);
+
+    @Inject(method = "getModel", at = @At("HEAD"), cancellable = true)
+    private void useEmptyFinchStaffModel(ItemStack stack, @Nullable Level level, @Nullable LivingEntity entity, int seed, CallbackInfoReturnable<BakedModel> callback) {
+        if (!(entity instanceof Player player) || !stack.is(SummonItems.FINCH_STAFF)) return;
+        int capacity = Math.max(0, (int) Math.floor(player.getAttributeValue(ConfluenceMagicLib.MINION_CAPACITY)));
+        if (!ClientSummonManager.hasAvailableSlots(player.getUUID(), 1, capacity)) {
+            callback.setReturnValue(ClientSummonManager.finchStaffEmptyModel());
+        }
+    }
 
     @Inject(method = "renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V", shift = At.Shift.AFTER))
     private void renderArrowInBow(

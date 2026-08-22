@@ -36,13 +36,7 @@ public final class PlanteraProjectile extends StraightMonsterProjectile {
             super.configure(owner, origin, initialVelocity, damage, 100);
             return;
         }
-        super.configure(
-                owner,
-                target,
-                damage,
-                velocity,
-                inaccuracy,
-                variant == Variant.THORN_BALL ? 160 : 100);
+        super.configure(owner, target, damage, velocity, inaccuracy, variant == Variant.THORN_BALL ? 160 : 100);
     }
 
     @Override

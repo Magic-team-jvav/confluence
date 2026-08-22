@@ -25,6 +25,11 @@ public class BoneArrowEntity extends BaseArrowEntity {
     }
 
     @Override
+    protected double getAdditionalKnockback() {
+        return 1.75;
+    }
+
+    @Override
     public ResourceLocation getTexturePath() {
         return TEXTURE;
     }

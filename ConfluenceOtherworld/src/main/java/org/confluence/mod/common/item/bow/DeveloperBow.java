@@ -18,9 +18,4 @@ public class DeveloperBow extends BaseTerraBowItem {
     public BaseArrowEntity createCustomArrow(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
         return new DeveloperArrowEntity(ModEntities.DEVELOPER_ARROW.get(), shooter, ammo, weapon);
     }
-
-    @Override
-    protected boolean shouldCreateCustomArrow(ItemStack ammo) {
-        return true;
-    }
 }

@@ -45,7 +45,6 @@ public class VisualNeuron extends BaseFlyingMonster {
 
     /// 视神经元在当前版本属性注册中使用的基础最大生命。
     public static final double BASE_MAX_HEALTH = 44.0;
-    private static final String INDEX_TAG = "NeuronIndex";
     private static final String STATE_TAG = "CombatState";
     private static final String ATTACK_TICKS_TAG = "AttackTicks";
     private static final String HOME_X_TAG = "HomeX";
@@ -65,7 +64,6 @@ public class VisualNeuron extends BaseFlyingMonster {
     private final BossOwnerTracker<BrainOfCthulhu> ownerTracker = new BossOwnerTracker<>(BrainOfCthulhu.class);
     private @Nullable Vec3 homePosition;
     private @Nullable Vec3 homeOffset;
-    private int index;
     private boolean ready = true;
     private int attackTicks;
     private boolean reportedDeath;
@@ -86,11 +84,10 @@ public class VisualNeuron extends BaseFlyingMonster {
         return CreatureAttributeBuilder.creature(BASE_MAX_HEALTH, 10.0, 9.0, 0.0, 0.0, 0.1);
     }
 
-    /// 建立神经元与权威 Boss 的精确所有权，并记录其编队槽位。
-    public void setOwner(BrainOfCthulhu owner, int index) {
+    /// 建立神经元与权威 Boss 的精确所有权。
+    public void setOwner(BrainOfCthulhu owner) {
         ownerTracker.bind(this, owner);
         entityData.set(OWNER_UUID, Optional.of(owner.getUUID()));
-        this.index = index;
         // Boss 随从不能套用普通怪物按玩家距离随机消失的规则，否则第一阶段会无故丢失编队成员。
         setPersistenceRequired();
     }
@@ -105,10 +102,6 @@ public class VisualNeuron extends BaseFlyingMonster {
 
     public boolean isOwnedBy(BrainOfCthulhu owner) {
         return owner.getUUID().equals(getOwnerUUID());
-    }
-
-    public int getNeuronIndex() {
-        return index;
     }
 
     /// 更新随 Boss 移动的待命位置。该位置由 Boss 统一计算，神经元只负责返回。
@@ -266,7 +259,6 @@ public class VisualNeuron extends BaseFlyingMonster {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         ownerTracker.save(tag);
-        tag.putInt(INDEX_TAG, index);
         tag.putInt(STATE_TAG, getCombatState().id);
         tag.putInt(ATTACK_TICKS_TAG, attackTicks);
         if (homePosition != null) {
@@ -286,7 +278,6 @@ public class VisualNeuron extends BaseFlyingMonster {
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
         entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
-        index = tag.getInt(INDEX_TAG);
         setCombatState(CombatState.byId(tag.getInt(STATE_TAG)));
         attackTicks = Math.max(0, tag.getInt(ATTACK_TICKS_TAG));
         if (tag.contains(HOME_X_TAG) && tag.contains(HOME_Y_TAG) && tag.contains(HOME_Z_TAG)) {

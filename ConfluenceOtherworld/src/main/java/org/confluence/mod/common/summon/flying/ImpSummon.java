@@ -8,9 +8,6 @@ import org.confluence.mod.common.summon.*;
 import org.confluence.mod.common.summon.projectile.SummonProjectileTypes;
 
 /// 小鬼召唤物的运行实例。
-///
-/// <p>行为保留 1.21 侧的施法延迟、火焰弹命中效果和悬停射击节奏；这里只把真实实体 AI
-/// 改成玩家召唤容器驱动的逻辑实例。</p>
 public final class ImpSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 14.0F;
@@ -24,7 +21,7 @@ public final class ImpSummon extends FlyingSummon {
     private LivingEntity delayedTarget;
 
     public ImpSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
-        super(Confluence.asResource("summon_imp"), owner, slotCost, stats, initialPose);
+        super(Confluence.asResource("summon_imp"), owner, slotCost, stats, initialPose, 1.0, 1.0);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.035, 0.70));
     }
@@ -41,7 +38,7 @@ public final class ImpSummon extends FlyingSummon {
             LivingEntity target = delayedTarget;
             delayedTarget = null;
             delayedAttackTicks = -1;
-            if (target != null && target.isAlive()) {
+            if (target != null) {
                 fire(target);
             }
         }
@@ -64,8 +61,10 @@ public final class ImpSummon extends FlyingSummon {
 
     @Override
     public SummonVisualState visualState() {
-        return new SummonVisualState(false, attackAnimationTicks > 0 ? SummonAnimation.MELEE_ATTACK : SummonAnimation.NONE,
-                ATTACK_ANIMATION_TICKS - attackAnimationTicks, ATTACK_ANIMATION_TICKS, 0.0F, 1.0F, 1.0F);
+        return attackAnimationTicks > 0
+                ? new SummonVisualState(false, SummonAnimation.MELEE_ATTACK,
+                ATTACK_ANIMATION_TICKS - attackAnimationTicks, ATTACK_ANIMATION_TICKS, 0.0F, 1.0F, 1.0F)
+                : SummonVisualState.DEFAULT;
     }
 
     private static final class AttackGoal extends SummonGoal<ImpSummon> {

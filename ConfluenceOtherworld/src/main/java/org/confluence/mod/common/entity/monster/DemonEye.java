@@ -54,8 +54,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(v.health);
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(v.damage);
         this.getAttribute(Attributes.ARMOR).setBaseValue(v.armor);
-        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(
-                v.isLarge() ? 0.1 : 0.2);
+        this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(v.isLarge() ? 0.1 : 0.2);
         this.setHealth(this.getMaxHealth());
     }
 
@@ -84,28 +83,17 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     protected Vec3 reboundVelocity(Vec3 requested, Vec3 allowed) {
         Vec3 rebound = requested;
         if (allowed.x != requested.x) {
-            rebound = new Vec3(
-                    requested.x < 0.0 ? 0.22 : -0.22,
-                    rebound.y,
-                    rebound.z);
+            rebound = new Vec3(requested.x < 0.0 ? 0.22 : -0.22, rebound.y, rebound.z);
         }
         if (allowed.y != requested.y) {
             boolean movingDown = requested.y < 0.0;
             if (surroundAction != null) {
                 surroundAction.adjustTargetAfterVerticalCollision(movingDown);
             }
-            rebound = new Vec3(
-                    rebound.x,
-                    movingDown
-                            ? Mth.clamp(-requested.y, 0.1, 0.22)
-                            : Mth.clamp(-requested.y, -0.22, -0.1),
-                    rebound.z);
+            rebound = new Vec3(rebound.x, movingDown ? Mth.clamp(-requested.y, 0.1, 0.22) : Mth.clamp(-requested.y, -0.22, -0.1), rebound.z);
         }
         if (allowed.z != requested.z) {
-            rebound = new Vec3(
-                    rebound.x,
-                    rebound.y,
-                    requested.z < 0.0 ? 0.3 : -0.3);
+            rebound = new Vec3(rebound.x, rebound.y, requested.z < 0.0 ? 0.3 : -0.3);
         }
         return rebound;
     }

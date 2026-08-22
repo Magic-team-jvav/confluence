@@ -1,11 +1,9 @@
 package org.confluence.mod.common.item.arrow;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.EntityType;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
-import org.confluence.mod.common.entity.projectile.arrow.UnholyArrowEntity;
 import org.confluence.mod.common.init.entity.ModEntities;
 
 public class UnholyArrowItem extends BaseTerraArrowItem {
@@ -14,7 +12,7 @@ public class UnholyArrowItem extends BaseTerraArrowItem {
     }
 
     @Override
-    protected BaseArrowEntity createArrowEntity(LivingEntity shooter, ItemStack ammo, ItemStack weapon) {
-        return new UnholyArrowEntity(ModEntities.UNHOLY_ARROW.get(), shooter, ammo, weapon);
+    protected EntityType<? extends BaseArrowEntity> getEntityType() {
+        return ModEntities.UNHOLY_ARROW.get();
     }
 }

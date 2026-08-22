@@ -22,13 +22,13 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
-import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.color.GlobalColors;
@@ -41,11 +41,11 @@ import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
-import org.confluence.mod.common.entity.npc.mood.MoodData;
 import org.confluence.mod.common.entity.npc.mood.NPCMood;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
+import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -59,10 +59,6 @@ import java.util.List;
 import java.util.Map;
 
 /// 城镇 NPC 的公共实体基础。
-///
-/// <p>本类统一管理房屋、区域、心情、基础移动以及服务端交互入口。商店报价仍由
-/// 数据包提供，实体只负责决定本次访问允许进入会话快照的报价集合；默认实现保留
-/// 全部报价，旅商等具有随机库存的 NPC 可以覆盖该选择步骤。</p>
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
@@ -70,22 +66,17 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    protected static final ImmutableList<SensorType<? extends Sensor<? super BaseNPC>>> SENSOR_TYPES =
-            ImmutableList.of(
-                    SensorType.NEAREST_LIVING_ENTITIES,
-                    SensorType.NEAREST_PLAYERS,
-                    SensorType.HURT_BY
-            );
+    protected static final ImmutableList<SensorType<? extends Sensor<? super BaseNPC>>> SENSOR_TYPES = ImmutableList.of(
+            SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY);
 
-    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES =
-            ImmutableList.of(
-                    MemoryModuleType.HOME,
-                    MemoryModuleType.WALK_TARGET,
-                    MemoryModuleType.LOOK_TARGET,
-                    MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
-                    MemoryModuleType.NEAREST_LIVING_ENTITIES,
-                    MemoryModuleType.HURT_BY_ENTITY
-            );
+    protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
+            MemoryModuleType.HOME,
+            MemoryModuleType.WALK_TARGET,
+            MemoryModuleType.LOOK_TARGET,
+            MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES,
+            MemoryModuleType.NEAREST_LIVING_ENTITIES,
+            MemoryModuleType.HURT_BY_ENTITY
+    );
 
     protected House house = House.EMPTY;
     protected NPCMood mood;
@@ -101,7 +92,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
         super(type, level);
-        this.mood = new NPCMood(MoodData.getMoodsFor(type));
+        this.mood = new NPCMood(type);
     }
 
     @Override
@@ -182,11 +173,13 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     }
 
     protected void tickMood() {
-        if (tickCount % 1200 == 0) { // 每 60 秒
-            mood.evaluate(level().getEntitiesOfClass(BaseNPC.class,
-                    getBoundingBox().inflate(16),
-                    n -> n != this));
-        }
+        if (tickCount % 20 != 0) return;
+        getBrain().getMemory(MemoryModuleType.HOME)
+                .filter(home -> home.dimension().equals(level().dimension()))
+                .map(GlobalPos::pos)
+                .ifPresentOrElse(home -> mood.evaluate(level().getEntitiesOfClass(BaseNPC.class,
+                                new AABB(home.offset(-16, -16, -16).getCenter(), home.offset(16, 16, 16).getCenter()))),
+                        () -> mood.evaluate(getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).orElseGet(List::of)));
     }
 
     // === 对话 ===
@@ -209,19 +202,22 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         return chatDisplayTicks;
     }
 
-    public void tickChatCooldowns() {
+    public void tickChatCooldowns(List<ChatLine> lines) {
         if (chatForceCooldown > 0) chatForceCooldown--;
-        chatCooldowns.replaceAll((line, ticks) -> ticks - 1);
-        chatCooldowns.entrySet().removeIf(entry -> entry.getValue() <= 0);
+        chatCooldowns.keySet().retainAll(lines);
+        for (ChatLine line : lines) {
+            chatCooldowns.putIfAbsent(line, Math.max(1, line.cooldownTicks()));
+        }
+        chatCooldowns.replaceAll((line, ticks) -> Math.max(0, ticks - 1));
     }
 
     public boolean canTriggerChat(ChatLine line) {
-        return chatForceCooldown <= 0 && !chatCooldowns.containsKey(line);
+        return chatForceCooldown <= 0 && chatCooldowns.getOrDefault(line, Integer.MAX_VALUE) == 0;
     }
 
     public void markChatTriggered(ChatLine line) {
         chatForceCooldown = 50;
-        chatCooldowns.put(line, Math.max(1, line.cooldownTicks()));
+        chatCooldowns.put(line, Math.max(1, (int) (line.cooldownTicks() * (1.0F + random.nextFloat() * 0.5F))));
     }
 
     @SuppressWarnings("unchecked")
@@ -255,8 +251,9 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             teleportTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5);
             return;
         }
-        getBrain().setMemory(MemoryModuleType.WALK_TARGET,
-                new WalkTarget(homePos, 0.8F, 2));
+        if (getTarget() == null && (tickCount % 20 == 0 || getNavigation().isDone())) {
+            getNavigation().moveTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, 0.8);
+        }
     }
 
     // === 房屋 ===
@@ -264,10 +261,12 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     public void setHouse(House house) {
         this.house = house;
         if (house.isValid()) {
-            getBrain().setMemory(MemoryModuleType.HOME,
-                    GlobalPos.of(level().dimension(), house.center()));
+            this.spawnAtPos = house.center();
+            this.spawnAtPosInitialized = true;
+            getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), house.center()));
             NPCSpawner.Region newRegion = new NPCSpawner.Region(house.center());
             NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, region, newRegion);
+            AchievementUtils.noHobo(this, newRegion);
         } else {
             getBrain().eraseMemory(MemoryModuleType.HOME);
         }
@@ -310,6 +309,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+            initName();
             // 被"救援"的 NPC 首次交互时，将其正式加入区域
             if (shouldInteract) {
                 setShouldInteract(false);
@@ -343,6 +343,12 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             }
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
+    }
+
+    private void initName() {
+        if (hasCustomName()) return;
+        String name = NPCNames.Loader.getInstance().getRandomName(getType(), getRandom());
+        if (name != null) setCustomName(Component.literal(name));
     }
 
     private void swapEquipment(Player player, InteractionHand hand, EquipmentSlot slot) {
@@ -413,11 +419,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "movement",
-                5,
-                state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
+        controllers.add(new AnimationController<>(this, "movement", 5, state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
     }
 
     // === 持久化（Brain + House） ===

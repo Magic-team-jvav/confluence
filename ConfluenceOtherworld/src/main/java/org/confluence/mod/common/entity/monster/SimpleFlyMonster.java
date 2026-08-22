@@ -67,10 +67,7 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
                                         profile.triggerAngleDegrees(),
                                         profile.steeringAngleDegrees(),
                                         profile.coastTicks())),
-                        new FlyWanderAction(
-                                self,
-                                behavior.wanderSpeedOr(wanderSpeed),
-                                behavior.wanderRadiusOr(8)));
+                        new FlyWanderAction(self, behavior.wanderSpeedOr(wanderSpeed), behavior.wanderRadiusOr(8)));
             }
         };
     }

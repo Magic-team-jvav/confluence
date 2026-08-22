@@ -12,6 +12,11 @@ public class DemonBow extends BaseTerraBowItem {
     }
 
     @Override
+    protected boolean hasFullPullHitEffect() {
+        return true;
+    }
+
+    @Override
     public void modifyArrowEntity(BaseArrowEntity entity) {
         entity.addWeaponHitEffect((owner, target, fullPull) -> {
             if (!fullPull) return;

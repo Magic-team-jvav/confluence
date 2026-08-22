@@ -13,25 +13,17 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.entity.ModEntities;
 
-/**
- * <h1>北极矛弹射物</h1>
- * 直线弹射物，有重力，不可穿墙，间歇生成子弹射物。
- */
+/// 北极矛弹射物。
+/// 直线飞行、受重力影响、不可穿墙，并间歇生成子弹射物。
 public class NorthPoleProjectile extends SpearProjectile {
-    /**
-     * 子弹射物生成间隔（tick）
-     */
+    /// 子弹射物生成间隔（tick）。
     private static final int SUB_SPAWN_INTERVAL = 5;
 
-    /**
-     * 模型层定义（暂用风暴长矛模型）
-     */
+    /// 模型层定义（暂用风暴长矛模型）。
     public static final ModelLayerLocation LAYER_LOCATION =
             new ModelLayerLocation(Confluence.asResource("north_pole_projectile"), "main");
 
-    /**
-     * 模型网格定义（暂用风暴长矛模型网格）
-     */
+    /// 模型网格定义（暂用风暴长矛模型网格）。
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
@@ -79,12 +71,12 @@ public class NorthPoleProjectile extends SpearProjectile {
     }
 
     private void spawnSubProjectile() {
-        NorthPoleSubProjectile sub = new NorthPoleSubProjectile(
-                ModEntities.NORTH_POLE_SUB.get(), level());
+        NorthPoleSubProjectile sub = new NorthPoleSubProjectile(ModEntities.NORTH_POLE_SUB.get(), level());
         sub.setOwner(getOwner());
         sub.setWeapon(getWeaponItem());
         if (projComponent != null) {
-            sub.setProjComponent(projComponent, getOwner() instanceof LivingEntity living ? living : null);
+            sub.applyComponent(projComponent);
+            sub.baseAttackDamage = baseAttackDamage;
         }
         sub.setPos(getX(), getY(), getZ());
         // 子射物初始速度为零,仅受重力下落

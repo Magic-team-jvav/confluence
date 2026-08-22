@@ -30,6 +30,11 @@ public class StarArrowEntity extends BaseArrowEntity {
     }
 
     @Override
+    protected double getAdditionalKnockback() {
+        return 2.0;
+    }
+
+    @Override
     public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
         super.shoot(x, y, z, velocity, inaccuracy);
         setDeltaMovement(getDeltaMovement().scale(0.8));

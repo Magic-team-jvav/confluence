@@ -10,9 +10,6 @@ import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
 
 /// 飞雀召唤物的运行实例。
-///
-/// <p>这里保留 1.21 侧的短促俯冲、命中回旋和悬停起伏。
-/// 新架构只负责把实体 AI 改为玩家容器驱动，不能改变飞雀贴近目标后再短距离冲刺的节奏。</p>
 public final class FinchSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 2.0F;
@@ -20,7 +17,7 @@ public final class FinchSummon extends FlyingSummon {
     private int hitMovementCooldown;
 
     public FinchSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
-        super(Confluence.asResource("finch_baby"), owner, slotCost, stats, initialPose);
+        super(Confluence.asResource("finch_baby"), owner, slotCost, stats, initialPose, 0.5, 0.5);
         addGoal(1, new AttackGoal(this));
         addGoal(9, new MomentumSummonIdleGoal<>(this, 1.8, 0.035, 0.70));
     }
@@ -32,7 +29,6 @@ public final class FinchSummon extends FlyingSummon {
 
     @Override
     protected void beforeGoalTick() {
-        attackPhaseTicks--;
         hitMovementCooldown--;
     }
 
@@ -51,7 +47,7 @@ public final class FinchSummon extends FlyingSummon {
     private void attack(LivingEntity target) {
         Vec3 direction = targetPosition().subtract(position());
         double distanceSqr = Math.max(0.001, direction.lengthSqr());
-        if (attackPhaseTicks <= 0) {
+        if (--attackPhaseTicks <= 0) {
             Rotation rotation = turnToward(direction, 90.0F, 85.0F);
             Vec3 movement = velocity().scale(0.91).add(0.0, previousVerticalBob(), 0.0);
             Vec3 look = Vec3.directionFromRotation(rotation.pitch(), rotation.yaw());

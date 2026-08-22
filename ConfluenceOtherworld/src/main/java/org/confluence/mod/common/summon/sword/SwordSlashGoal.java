@@ -5,9 +5,6 @@ import org.confluence.mod.common.summon.SummonGoal;
 import org.confluence.mod.common.summon.SummonPose;
 
 /// 召唤剑的斜劈技能。
-///
-/// <p>技能语义复现 1.21 侧：先接近目标，进入攻击距离后再开始十刻下劈；
-/// 接近阶段不消耗实际挥砍时长，结束后按原有冷却区间重新计时。</p>
 final class SwordSlashGoal extends SummonGoal<SummonSword> {
     private static final int DURATION = 10;
     private static final int BASE_COOLDOWN = 150;
@@ -47,8 +44,7 @@ final class SwordSlashGoal extends SummonGoal<SummonSword> {
         Vec3 distance = targetPosition.subtract(summon.position());
         if (distance.length() > 3.0 && !triggered) {
             Vec3 movement = distance.normalize().scale(0.5);
-            summon.moveTo(new SummonPose(summon.position().add(movement), summon.currentPose().yaw(),
-                    summon.currentPose().pitch(), summon.currentPose().roll()));
+            summon.moveTo(new SummonPose(summon.position().add(movement), summon.currentPose().yaw(), summon.currentPose().pitch(), summon.currentPose().roll()));
             return;
         }
         Vec3 lookPosition = targetPosition.add(0.0, 10.0 - slashTicks, 0.0);
@@ -56,7 +52,7 @@ final class SwordSlashGoal extends SummonGoal<SummonSword> {
         SummonPose aimed = summon.aimAt(summon.position(), direction);
         triggered = true;
         slashTicks++;
-        summon.moveTo(new SummonPose(summon.position().add(summon.velocity().scale(0.637)), aimed.yaw(), aimed.pitch(), aimed.roll()));
+        summon.moveTo(new SummonPose(summon.position().add(summon.velocity().scale(0.7)), aimed.yaw(), aimed.pitch(), aimed.roll()));
     }
 
     @Override

@@ -117,19 +117,8 @@ public class BloodCrawler extends BaseMonster {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         // 移动与攻击分层播放，使攻击时仍能保留蜘蛛腿部的行走节奏。
-        controllers.add(new AnimationController<>(
-                this,
-                "Movement",
-                5,
-                state -> state.setAndContinue(
-                        state.isMoving() ? WALK : IDLE)));
-        controllers.add(new AnimationController<>(
-                this,
-                "Attack",
-                0,
-                state -> swinging
-                        ? state.setAndContinue(ATTACK)
-                        : PlayState.STOP));
+        controllers.add(new AnimationController<>(this, "Movement", 5, state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
+        controllers.add(new AnimationController<>(this, "Attack", 0, state -> swinging ? state.setAndContinue(ATTACK) : PlayState.STOP));
     }
 
     @Override

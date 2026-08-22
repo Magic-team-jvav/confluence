@@ -18,10 +18,6 @@ import org.joml.Matrix4f;
 
 import java.util.List;
 
-/// 普通枪弹的泰拉风格拖尾渲染器。
-///
-/// <p>视觉参数对齐 1.21 TerraGuns，同时继续使用 1.20 侧已经修过的高速弹同步、拖尾采样与命中逻辑。
-/// 渲染器只负责把实体轨迹表现出来，不参与服务端伤害、穿透或弹药消耗计算。</p>
 public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
     private static final double EPSILON = 1.0E-7D;
     private static final double HEAD_FADE_START_DISTANCE = 0.90D;
@@ -50,15 +46,7 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
 
         Vec3 renderPosition = interpolatedPosition(entity, partialTick);
         Vec3 cameraPosition = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
-        renderTrail(
-                entity.getTrails(),
-                renderPosition,
-                cameraPosition,
-                poseStack,
-                bufferSource,
-                color,
-                style,
-                chlorophyte ? 0.65F : 2.0F);
+        renderTrail(entity.getTrails(), renderPosition, cameraPosition, poseStack, bufferSource, color, style, chlorophyte ? 0.65F : 2.0F);
 
         float headVisibility = headVisibility(renderPosition, cameraPosition);
         if (headVisibility > 0.0F) {
@@ -185,12 +173,10 @@ public class BulletRenderer extends EntityRenderer<BaseBulletEntity> {
     }
 
     private static int scaleRgb(int color, float scale) {
-        return FastColor.ARGB32.color(
-                FastColor.ARGB32.alpha(color),
+        return FastColor.ARGB32.color(FastColor.ARGB32.alpha(color),
                 Mth.clamp(Math.round(FastColor.ARGB32.red(color) * scale), 0, 255),
                 Mth.clamp(Math.round(FastColor.ARGB32.green(color) * scale), 0, 255),
-                Mth.clamp(Math.round(FastColor.ARGB32.blue(color) * scale), 0, 255)
-        );
+                Mth.clamp(Math.round(FastColor.ARGB32.blue(color) * scale), 0, 255));
     }
 
     private static void addVertex(VertexConsumer buffer, Matrix4f matrix, Vec3 position, int color, float u, float v) {

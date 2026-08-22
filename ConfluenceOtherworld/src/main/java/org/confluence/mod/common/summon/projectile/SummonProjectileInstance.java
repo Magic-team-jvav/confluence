@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.common.LibAttributes;
@@ -25,19 +26,21 @@ import java.util.UUID;
 /// 由玩家召唤附件容器维护的非实体弹幕。
 public abstract class SummonProjectileInstance implements OwnedSummon, Immunity {
     private static final int MAX_LIFETIME = 100;
+    private static final double COLLISION_INFLATION = 0.75;
     private final UUID uuid = UUID.randomUUID();
     private final ResourceLocation type;
+    private final SummonInstance source;
     private final ServerPlayer owner;
     private final UUID intendedTargetId;
     private final float baseDamage;
     private Vec3 position;
-    private final Vec3 initialVelocity;
+    private Vec3 velocity;
     private boolean removed;
     private int tickCount;
 
-    protected SummonProjectileInstance(ResourceLocation type, SummonInstance source, LivingEntity target,
-                                       float velocity, float inaccuracy) {
+    protected SummonProjectileInstance(ResourceLocation type, SummonInstance source, LivingEntity target, float velocity, float inaccuracy) {
         this.type = type;
+        this.source = source;
         this.owner = source.owner();
         intendedTargetId = target.getUUID();
         baseDamage = source.stats().baseDamage();
@@ -47,21 +50,19 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
                 : new Vec3(target.getX(), target.getY() + target.getEyeHeight() * 0.5, target.getZ());
         Vec3 direction = aimPoint.subtract(position).normalize();
         double spread = 0.0172275 * inaccuracy;
-        direction = direction.add(owner.getRandom().triangle(0.0, spread), owner.getRandom().triangle(0.0, spread),
-                owner.getRandom().triangle(0.0, spread)).normalize();
-        this.initialVelocity = direction.scale(velocity);
+        direction = direction.add(owner.getRandom().triangle(0.0, spread), owner.getRandom().triangle(0.0, spread), owner.getRandom().triangle(0.0, spread)).normalize();
+        this.velocity = direction.scale(velocity);
     }
 
     public final void tick() {
-        if (removed || !owner.isAlive() || owner.isRemoved() || ++tickCount > MAX_LIFETIME) {
+        if (removed || source.isRemoved() || !owner.isAlive() || owner.isRemoved()) {
             removed = true;
             return;
         }
-        Vec3 movement = initialVelocity.scale(2.0);
-        Vec3 collisionStart = position.add(initialVelocity);
-        Vec3 end = position.add(movement);
-        BlockHitResult blockHit = owner.level().clip(new ClipContext(collisionStart, end, ClipContext.Block.COLLIDER,
-                ClipContext.Fluid.NONE, owner));
+        tickCount++;
+        Vec3 collisionStart = position;
+        Vec3 end = position.add(velocity.scale(2.0));
+        BlockHitResult blockHit = owner.level().clip(new ClipContext(collisionStart, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner));
         EntityHitResult entityHit = findEntityHit(collisionStart, end);
         double blockDistance = blockHit.getType() == HitResult.Type.BLOCK
                 ? collisionStart.distanceToSqr(blockHit.getLocation()) : Double.MAX_VALUE;
@@ -75,6 +76,7 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
         } else {
             position = end;
         }
+        if (tickCount > MAX_LIFETIME) removed = true;
     }
 
     private @Nullable EntityHitResult findEntityHit(Vec3 start, Vec3 end) {
@@ -90,7 +92,7 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
                 nearestDistance = start.distanceToSqr(hit);
             }
         }
-        AABB search = AABB.ofSize(start, 0.5, 0.5, 0.5).expandTowards(end.subtract(start)).inflate(0.35);
+        AABB search = AABB.ofSize(start, 0.5, 0.5, 0.5).expandTowards(end.subtract(start)).inflate(COLLISION_INFLATION);
         for (Entity candidate : owner.level().getEntities((Entity) null, search, this::canHit)) {
             Vec3 hit = intersection(candidate, start, end);
             if (hit == null) continue;
@@ -107,42 +109,55 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
     private boolean canHit(Entity candidate) {
         Entity impacted = ProjectileHitRules.impactedEntity(candidate);
         return impacted instanceof LivingEntity target
+                && canHitTarget(target)
                 && SummonTargetCache.isValidTarget(owner, target, Double.MAX_VALUE, true)
                 && ProjectileHitRules.canHit(owner, candidate);
     }
 
+    protected boolean canHitTarget(LivingEntity target) {
+        return true;
+    }
+
     private static @Nullable Vec3 intersection(Entity target, Vec3 start, Vec3 end) {
-        AABB box = target.getBoundingBox().inflate(0.35);
+        AABB box = target.getBoundingBox().inflate(COLLISION_INFLATION);
         return box.clip(start, end).orElse(box.contains(start) ? start : null);
     }
 
     private void hit(Entity rawTarget) {
         Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
-        if (!(impacted instanceof LivingEntity target) || Immunity.isActive(this, target)) {
+        if (!(impacted instanceof LivingEntity target)) {
             removed = true;
             return;
         }
         float damage = baseDamage * (float) owner.getAttributeValue(LibAttributes.getSummonDamage());
         damage = WhipTagTracker.modifyDamage(owner, this, target, damage);
         DamageSource damageSource = LibDamageTypes.of(owner.level(), LibDamageTypes.SUMMONER, owner);
-        float finalDamage = damage;
-        if (Immunity.withCause(this, () -> target.hurt(damageSource, finalDamage)))
-            onSuccessfulHit(target);
+        onImpact(target);
+        if (Immunity.hurt(this, target, damageSource, damage)) applyKnockback(target);
         removed = true;
     }
 
-    protected abstract void onSuccessfulHit(LivingEntity target);
+    protected abstract void onImpact(LivingEntity target);
+
+    private void applyKnockback(LivingEntity target) {
+        double resistance = Math.max(0.0, 1.0 - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+        target.setDeltaMovement(velocity.normalize().scale((velocity.length() + 0.1) * 0.3));
+        Vec3 horizontal = target.position().subtract(source.position()).multiply(1.0, 0.0, 1.0);
+        if (horizontal.lengthSqr() > 0.0) {
+            Vec3 push = horizontal.normalize().scale(0.04 * resistance);
+            target.push(push.x, 0.3, push.z);
+        }
+    }
 
     protected final ServerPlayer owner() {
         return owner;
     }
 
     public final SummonRenderPart renderPart() {
-        Vec3 direction = initialVelocity.normalize();
+        Vec3 direction = velocity.normalize();
         float yaw = (float) Math.toDegrees(Math.atan2(-direction.x, direction.z));
         float pitch = (float) Math.toDegrees(Math.asin(-direction.y));
-        return new SummonRenderPart(uuid, type, new SummonPose(position, yaw, pitch, 0.0F),
-                SummonVisualState.DEFAULT, 0);
+        return new SummonRenderPart(uuid, type, new SummonPose(position, yaw, pitch, 0.0F), SummonVisualState.DEFAULT, 0);
     }
 
     public final boolean isRemoved() {

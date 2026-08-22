@@ -24,9 +24,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /// 剑在运行时使用的不可变能力定义。
-public record SwordDefinition(boolean canSweep, boolean specialSweep, boolean tooltipImage,
-                              List<SwordBehavior> behaviors,
-                              List<Consumer<MutableComponent>> tooltips) {
+public record SwordDefinition(
+        boolean canSweep,
+        boolean specialSweep,
+        boolean tooltipImage,
+        List<SwordBehavior> behaviors,
+        List<Consumer<MutableComponent>> tooltips) {
     public SwordDefinition {
         behaviors = List.copyOf(behaviors);
         tooltips = List.copyOf(tooltips);

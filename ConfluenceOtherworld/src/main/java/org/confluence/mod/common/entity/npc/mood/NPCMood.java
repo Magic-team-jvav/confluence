@@ -1,74 +1,51 @@
 package org.confluence.mod.common.entity.npc.mood;
 
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
-import java.util.EnumMap;
-import java.util.IdentityHashMap;
 import java.util.Map;
 
-/// NPC 心情系统。心情值影响交易价格系数：
-/// - 100 为基准，系数 1.0
-/// - 每 +10 心情，买入价格 -5%、卖出价格 +5%（系数 0.75 ~ 1.5）
-public class NPCMood {
+/// NPC 心情系统。100 为基准值；购买价格按 100 / 心情值计算，售回价格按心情值 / 100 计算。
+public final class NPCMood {
     private static final int BASE_VALUE = 100;
-    private static final int MIN_VALUE = 50;
-    private static final int MAX_VALUE = 150;
 
-    private final Map<EntityType<?>, Mood> moodMap = new IdentityHashMap<>();
+    private final EntityType<?> ownerType;
     private int value = BASE_VALUE;
 
-    public NPCMood() {
-        moodMap.putAll(MoodData.DEFAULT_MOODS);
-    }
-
-    public NPCMood(Map<EntityType<?>, Mood> customMoods) {
-        moodMap.putAll(MoodData.DEFAULT_MOODS);
-        moodMap.putAll(customMoods);
+    public NPCMood(EntityType<?> ownerType) {
+        this.ownerType = ownerType;
     }
 
     /// 获取心情值。
     public int getValue() {
-        return value;
+        return Math.max(value, 50);
     }
 
-    /// 获取交易价格系数（0.75 ~ 1.5）。
-    /// 100 心情 = 1.0，每 +10 心情 → 0.05 偏移。
+    /// 获取 NPC 向玩家出售商品时的价格系数。
     public float getBuyPriceMultiplier() {
-        return 1.0f + (BASE_VALUE - value) * 0.005f;
+        return (float) BASE_VALUE / getValue();
     }
 
     /// 获取 NPC 回收玩家物品时的价格系数。
-    ///
-    /// <p>该方向与买价相反：高心情既给予购买折扣，也会提高回收价。</p>
     public float getSellPriceMultiplier() {
-        return 1.0f + (value - BASE_VALUE) * 0.005f;
+        return (float) getValue() / BASE_VALUE;
     }
 
     /// 根据附近 NPC 重新计算心情值。
-    public void evaluate(Iterable<BaseNPC> nearbyNPCs) {
-        MoodCount counts = new MoodCount();
-        for (BaseNPC npc : nearbyNPCs) {
-            Mood mood = moodMap.getOrDefault(npc.getType(), Mood.NEUTRAL);
-            counts.add(mood);
+    public void evaluate(Iterable<? extends LivingEntity> nearbyEntities) {
+        Map<EntityType<?>, Mood> moods = MoodData.getMoodsFor(ownerType);
+        int total = BASE_VALUE;
+        for (LivingEntity entity : nearbyEntities) {
+            if (!(entity instanceof BaseNPC npc)) continue;
+            total += switch (moods.getOrDefault(npc.getType(), Mood.NEUTRAL)) {
+                case LOVER -> 20;
+                case LIKE -> 10;
+                case NEUTRAL -> 0;
+                case DISLIKE -> -10;
+                case HATE -> -20;
+            };
         }
-        value = Mth.clamp(BASE_VALUE + counts.sum(), MIN_VALUE, MAX_VALUE);
-    }
-
-    private static class MoodCount {
-        private final EnumMap<Mood, Integer> counts = new EnumMap<>(Mood.class);
-
-        void add(Mood mood) {
-            counts.merge(mood, 1, Integer::sum);
-        }
-
-        int sum() {
-            return counts.getOrDefault(Mood.LOVER, 0) * 20
-                    + counts.getOrDefault(Mood.LIKE, 0) * 10
-                    + counts.getOrDefault(Mood.NEUTRAL, 0) * 0
-                    + counts.getOrDefault(Mood.DISLIKE, 0) * -10
-                    + counts.getOrDefault(Mood.HATE, 0) * -20;
-        }
+        value = total;
     }
 }

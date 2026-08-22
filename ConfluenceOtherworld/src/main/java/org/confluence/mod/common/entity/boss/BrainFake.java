@@ -118,8 +118,7 @@ public class BrainFake extends BaseBossPart<BrainOfCthulhu> implements GeoEntity
     }
 
     @Override
-    public void registerControllers(
-            AnimatableManager.ControllerRegistrar controllers) {}
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {

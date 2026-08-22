@@ -26,11 +26,7 @@ public enum HouseHandler implements IGlobalData {
             "regions", LibCodecUtils.notStringKeyMap(
                     "region", NPCSpawner.Region.CODEC,
                     "houses", LibCodecUtils.notStringKeyMap(
-                            "uuid", UUIDUtil.CODEC,
-                            "house", House.CODEC
-                    )
-            )
-    );
+                            "uuid", UUIDUtil.CODEC, "house", House.CODEC)));
 
     private Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> data = new Object2ObjectOpenHashMap<>();
 
@@ -88,8 +84,8 @@ public enum HouseHandler implements IGlobalData {
 
     /// 在一个维度的所有区域中解除指定 NPC 的房屋。
     ///
-    /// <p>清空房屋时已经没有可用于反推区域的房屋中心，不能再拿 {@link House#EMPTY}
-    /// 的零坐标删除，否则只会清理世界原点区域并留下幽灵占用记录。</p>
+    /// 清空房屋时已经没有可用于反推区域的房屋中心，不能再拿 {@link House#EMPTY}
+    /// 的零坐标删除，否则只会清理世界原点区域并留下幽灵占用记录。
     public void removeHouse(ResourceKey<Level> dimension, UUID uuid) {
         Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
         if (regions == null) return;
@@ -132,15 +128,13 @@ public enum HouseHandler implements IGlobalData {
         if (tag.isEmpty()) {
             return;
         }
-        Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> decoded =
-                PortDataResultExtension.getOrThrow(DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")), message -> new IllegalArgumentException("Failed to decode NPC house data: " + message));
-        Object2ObjectOpenHashMap<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>>
-                mutableData = new Object2ObjectOpenHashMap<>();
+        Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> decoded = PortDataResultExtension.getOrThrow(
+                DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")),
+                message -> new IllegalArgumentException("Failed to decode NPC house data: " + message));
+        Object2ObjectOpenHashMap<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> mutableData = new Object2ObjectOpenHashMap<>();
         decoded.forEach((dimension, regions) -> {
             Object2ObjectOpenHashMap<NPCSpawner.Region, Map<UUID, House>> mutableRegions = new Object2ObjectOpenHashMap<>();
-            regions.forEach((region, houses) -> mutableRegions.put(
-                    region,
-                    new Object2ObjectOpenHashMap<>(houses)));
+            regions.forEach((region, houses) -> mutableRegions.put(region, new Object2ObjectOpenHashMap<>(houses)));
             mutableData.put(dimension, mutableRegions);
         });
         // Codec 可能返回不可变的嵌套映射；住房数据在运行期需要增删，三层都必须复制。

@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+/// 收枪动画结束后再替换原版手持物品缓存，避免较长的动画被提前截断。
 @Mixin(ItemInHandRenderer.class)
 public class ItemInHandRendererMixin {
     @Shadow
@@ -40,35 +41,26 @@ public class ItemInHandRendererMixin {
 
         if (gun.isPutAwayAnimationPlaying(mainHandItem)) {
             confluence$gunPutAwayWasObserved = true;
-            // 收枪动画还在播放时，把旧物品缓存高度维持在原版替换阈值之上，避免动画被提前切断。
+            // 收枪动画播放时维持旧物品缓存，结束后恢复原版更新。
             mainHandHeight = Math.max(mainHandHeight, 0.6F);
         } else if (confluence$gunPutAwayWasObserved) {
-            // 收枪动画结束后，让原版在本 tick 替换缓存物品，避免旧枪回到 idle 后多渲染一帧。
+            // 收枪动画结束后在本刻替换缓存，避免旧枪回到待机姿态后多渲染一帧。
             mainHandHeight = 0.0F;
             confluence$gunPutAwayWasObserved = false;
         }
     }
 
     @Inject(method = "renderArmWithItem", at = @At("HEAD"), cancellable = true)
-    private void confluence$skipCompletedPutAwayFrame(
-            AbstractClientPlayer player,
-            float partialTick,
-            float pitch,
-            InteractionHand hand,
-            float swingProgress,
-            ItemStack itemStack,
-            float equippedProgress,
-            PoseStack poseStack,
-            MultiBufferSource bufferSource,
-            int packedLight,
-            CallbackInfo callbackInfo
-    ) {
+    private void confluence$skipCompletedPutAwayFrame(AbstractClientPlayer player, float partialTick, float pitch,
+                                                      InteractionHand hand, float swingProgress, ItemStack itemStack,
+                                                      float equippedProgress, PoseStack poseStack, MultiBufferSource bufferSource,
+                                                      int packedLight, CallbackInfo callbackInfo) {
         if (hand != InteractionHand.MAIN_HAND || !confluence$gunPutAwayWasObserved || mainHandItem.isEmpty() || ItemStack.matches(mainHandItem, player.getMainHandItem()) || !(mainHandItem.getItem() instanceof BaseGun gun)) {
             return;
         }
 
         if (!gun.isPutAwayAnimationPlaying(mainHandItem)) {
-            // tick 会立刻替换旧栈；这里先跳过这一帧，避免已完成的控制器短暂回到 idle 姿态。
+            // 旧栈即将由 tick 替换，跳过控制器恢复待机姿态的这一帧。
             mainHandHeight = 0.0F;
             callbackInfo.cancel();
         }

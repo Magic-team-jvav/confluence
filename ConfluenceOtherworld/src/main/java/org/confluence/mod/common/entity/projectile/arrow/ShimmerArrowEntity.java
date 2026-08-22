@@ -30,6 +30,11 @@ public class ShimmerArrowEntity extends BaseArrowEntity {
     }
 
     @Override
+    protected double getAdditionalKnockback() {
+        return 1.5;
+    }
+
+    @Override
     protected int getAutoDiscardTick() {
         return 1200;
     }

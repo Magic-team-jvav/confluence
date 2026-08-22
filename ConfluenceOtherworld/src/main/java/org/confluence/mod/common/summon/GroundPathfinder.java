@@ -8,13 +8,10 @@ import net.minecraft.world.phys.Vec3;
 import java.util.*;
 
 /// 为非实体地面召唤物计算短距离方块路径。
-///
-/// <p>寻路只处理当前召唤物需要的轻量场景：水平移动、一格上台阶和一格下落。</p>
 final class GroundPathfinder {
     private static final int[][] DIRECTIONS = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
-    private GroundPathfinder() {
-    }
+    private GroundPathfinder() {}
 
     static List<Vec3> find(ServerLevel level, Vec3 startPosition, Vec3 destination, double width, double height) {
         BlockPos start = BlockPos.containing(startPosition);
@@ -90,6 +87,5 @@ final class GroundPathfinder {
                 + Math.abs(from.getY() - to.getY()) * 1.5;
     }
 
-    private record Node(BlockPos position, double score) {
-    }
+    private record Node(BlockPos position, double score) {}
 }

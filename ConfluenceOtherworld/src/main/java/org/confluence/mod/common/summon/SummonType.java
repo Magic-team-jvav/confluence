@@ -13,9 +13,7 @@ public record SummonType(ResourceLocation id, SummonFactory factory) {
     }
 
     public SummonInstance create(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose pose) {
-        SummonInstance summon = Objects.requireNonNull(
-                factory.create(owner, slotCost, stats, pose),
-                "Summon factory must not return null");
+        SummonInstance summon = Objects.requireNonNull(factory.create(owner, slotCost, stats, pose), "Summon factory must not return null");
         if (!summon.type().equals(id)) {
             throw new IllegalStateException("Summon factory returned " + summon.type() + " for " + id);
         }

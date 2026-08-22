@@ -16,6 +16,16 @@ public interface SwordProjectileAppearance {
 
     Type type();
 
+    record Hidden() implements SwordProjectileAppearance {
+        public static final Hidden INSTANCE = new Hidden();
+        public static final Codec<Hidden> CODEC = Codec.unit(INSTANCE);
+
+        @Override
+        public Type type() {
+            return Type.HIDDEN;
+        }
+    }
+
     record Geo(ResourceLocation model, ResourceLocation texture,
                Optional<ResourceLocation> animation, Optional<String> animationClip,
                float scale, float offsetY, float rollSpeed, Lifecycle lifecycle,
@@ -126,6 +136,7 @@ public interface SwordProjectileAppearance {
     }
 
     enum Type implements StringRepresentable {
+        HIDDEN,
         GEO,
         MODEL,
         ITEM,
@@ -135,6 +146,7 @@ public interface SwordProjectileAppearance {
 
         private Codec<? extends SwordProjectileAppearance> codec() {
             return switch (this) {
+                case HIDDEN -> Hidden.CODEC;
                 case GEO -> Geo.CODEC;
                 case MODEL -> Model.CODEC;
                 case ITEM -> Item.CODEC;

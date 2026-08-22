@@ -253,7 +253,7 @@ public final class PlayerEvents {
     }
 
     private static void itemEntityPickup$Pre(PortItemEntityPickupEvent.Pre event) {
-        // Forge 与测试框架允许自定义 Player 实现进入拾取事件；服务端附件逻辑只处理真实服务端玩家。
+        // Forge 事件可能收到自定义 Player 实现；服务端附件逻辑只处理真实服务端玩家。
         if (!(event.getPlayer() instanceof ServerPlayer player)) {
             return;
         }
@@ -409,7 +409,7 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ServerLevel previousLevel = player.server.getLevel(event.getFrom());
         if (previousLevel != null) {
-            SummonTargetCache.transitionLevel(previousLevel, player.serverLevel(), player);
+            SummonTargetCache.invalidate(previousLevel, player.getUUID());
         }
         SummonContainer.of(player).clear(player);
         MountManager.dismiss(player);
@@ -542,7 +542,6 @@ public final class PlayerEvents {
             PlayerUtils.flushPrimitiveValueData(player);
         }
     }
-
 
     private static void switchItemFunction$Post(SwitchItemFunctionEvent.Post event) {
         Player player = event.getEntity();

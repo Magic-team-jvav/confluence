@@ -13,6 +13,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -72,8 +73,8 @@ public interface Immunity {
 
     /// 为无法从 {@link DamageSource} 反查来源对象的伤害写入无敌时间。
     ///
-    /// <p>非实体召唤物没有可放入伤害来源的直接实体，因此由运行对象在成功命中后显式调用。
-    /// 普通实体与弹幕仍由伤害事件自动调用 {@link #calculateInvTicks(DamageSource, LivingEntity)}。</p>
+    /// 非实体召唤物没有可放入伤害来源的直接实体，因此由运行对象在成功命中后显式调用。
+    /// 普通实体与弹幕仍由伤害事件自动调用 {@link #calculateInvTicks(DamageSource, LivingEntity)}。
     static void apply(Immunity cause, DamageSource damageSource, LivingEntity victim) {
         int duration = cause.confluence$getImmunityDuration(damageSource);
         if (duration > 0) {
@@ -91,6 +92,18 @@ public interface Immunity {
         } finally {
             causes.pop();
             if (causes.isEmpty()) EXPLICIT_CAUSES.remove();
+        }
+    }
+
+    /// 使用项目局部无敌帧结算伤害，同时保留目标原有的原版受伤帧。
+    static boolean hurt(Immunity cause, LivingEntity target, DamageSource source, float amount) {
+        if (isActive(cause, target)) return false;
+        int invulnerableTime = target.invulnerableTime;
+        target.invulnerableTime = 0;
+        try {
+            return withCause(cause, () -> LibDamageTypes.hurtWithoutKnockback(target, source, amount));
+        } finally {
+            target.invulnerableTime = invulnerableTime;
         }
     }
 

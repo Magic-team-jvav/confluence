@@ -35,7 +35,6 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
     private BlockEntityWithoutLevelRenderer renderer;
     private GunRenderer<T> activeGunRenderer;
 
-    /// 通用 GeoItem 渲染器。
     public SimpleGeoItemRenderer(ResourceLocation model, ResourceLocation texture, @Nullable ResourceLocation animation) {
         this.model = model;
         this.texture = texture;
@@ -43,7 +42,6 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
         this.gunRenderer = false;
     }
 
-    /// 枪械专用渲染器，包含开火骨骼隐藏逻辑。
     public SimpleGeoItemRenderer(DefaultedItemGeoModel<T> gunItemModel) {
         this.model = gunItemModel.getModelResource(null);
         this.texture = gunItemModel.getTextureResource(null);
@@ -53,12 +51,14 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
 
     @Override
     public boolean applyForgeHandTransform(PoseStack poseStack, LocalPlayer player, HumanoidArm arm, ItemStack itemStack, float partialTick, float equippedProgress, float swingProgress) {
-        if (!gunRenderer || !(itemStack.getItem() instanceof BaseGun gun) || !gun.getAnimationProfile().usesLocatorTransforms()) {
-            return false;
-        }
+        if (!gunRenderer) return false;
 
-        /// 使用定位骨骼的枪械由 GunRenderer 接管第一人称姿态。Forge 调用这里时原版视角摆动
-        /// 已经进入矩阵栈，因此只撤销视角摆动；旧枪械仍使用物品 JSON 的 display 变换。
+        // Forge calls this hook before the vanilla per-item hand transform.
+        // Returning true transfers that entire transform to GunRenderer, so
+        // applying its inverse here would add a second, unwanted hand pose.
+        // ItemInHandRenderer has already applied view bob, however. TACZ-
+        // style first-person transforms are camera-relative, so remove only
+        // that matrix before the custom renderer runs.
         removeVanillaViewBobbing(poseStack, player, partialTick);
         return true;
     }

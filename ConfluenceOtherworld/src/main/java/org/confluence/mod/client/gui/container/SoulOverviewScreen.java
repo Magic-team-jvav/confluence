@@ -40,9 +40,7 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * 灵魂技能总览界面 — 类似原版进度界面的技能树视图
- */
+/// 灵魂技能总览界面 — 类似原版进度界面的技能树视图
 public class SoulOverviewScreen extends Screen {
     private static final SoulSkillClientHolder HOLDER = SoulSkillClientHolder.INSTANCE;
 
@@ -91,13 +89,8 @@ public class SoulOverviewScreen extends Screen {
         }
     }
 
-    private record CachedDot(
-            float baseX, float baseY,
-            float rotationRad,
-            float halfSize,
-            float r, float g, float b, float a,
-            float offsetFactor) {
-    }
+    private record CachedDot(float baseX, float baseY, float rotationRad, float halfSize, float r,
+                             float g, float b, float a, float offsetFactor) {}
 
     private List<CachedDot> cachedDots;
 

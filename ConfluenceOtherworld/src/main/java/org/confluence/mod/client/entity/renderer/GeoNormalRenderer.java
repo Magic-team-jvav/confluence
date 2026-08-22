@@ -72,11 +72,7 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
-    protected void adjustPose(
-            PoseStack poseStack,
-            T animatable,
-            BakedGeoModel model,
-            float partialTick) {}
+    protected void adjustPose(PoseStack poseStack, T animatable, BakedGeoModel model, float partialTick) {}
 
     @Override
     public float getMotionAnimThreshold(T animatable) {

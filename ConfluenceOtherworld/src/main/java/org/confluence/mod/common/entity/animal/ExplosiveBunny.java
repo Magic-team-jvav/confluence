@@ -47,25 +47,13 @@ public class ExplosiveBunny extends Bunny {
             return;
         }
         exploded = true;
-        level().explode(
-                this,
-                PortExplosionExtension.getDefaultDamageSource(level(), this),
+        level().explode(this, PortExplosionExtension.getDefaultDamageSource(level(), this),
                 new MultiplyExplosionDamageCalculator(1.0F) {
                     @Override
-                    public boolean shouldBlockExplode(
-                            Explosion explosion,
-                            BlockGetter level,
-                            BlockPos pos,
-                            BlockState state,
-                            float power) {
+                    public boolean shouldBlockExplode(Explosion explosion, BlockGetter level, BlockPos pos, BlockState state, float power) {
                         return false;
                     }
                 },
-                getX(),
-                getY(),
-                getZ(),
-                EXPLOSION_RADIUS,
-                false,
-                Level.ExplosionInteraction.MOB);
+                getX(), getY(), getZ(), EXPLOSION_RADIUS, false, Level.ExplosionInteraction.MOB);
     }
 }

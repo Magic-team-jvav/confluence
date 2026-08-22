@@ -33,7 +33,11 @@ public class NPCDialogLoader extends SimpleJsonResourceReloadListener {
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
         JsonElement json = map.get(PATH);
-        if (json == null) return;
+        if (json == null) {
+            this.dialogs = ImmutableMap.of();
+            Confluence.LOGGER.info("Loaded 0 NPC dialog tables");
+            return;
+        }
         DataResult<Map<EntityType<?>, NPCDialog>> decoded = CODEC.parse(JsonOps.INSTANCE, json);
         var parsed = decoded.result();
         if (parsed.isEmpty()) {

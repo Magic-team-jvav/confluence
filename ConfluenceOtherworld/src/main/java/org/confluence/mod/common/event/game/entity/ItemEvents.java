@@ -79,22 +79,14 @@ public final class ItemEvents {
         ItemStack itemStack = event.getItemStack();
         int summonerPactLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SUMMONER_PACT.get(), itemStack);
         if (summonerPactLevel > 0) {
-            event.addModifier(
-                    ConfluenceMagicLib.MINION_CAPACITY,
-                    new PortAttributeModifier(
-                            SUMMONER_PACT_MODIFIER_ID,
-                            1.0 + 0.5 * (summonerPactLevel - 1),
-                            PortAttributeModifier.Operation.ADD_VALUE
-                    ),
-                    PortEquipmentSlotGroup.HEAD
-            );
+            event.addModifier(ConfluenceMagicLib.MINION_CAPACITY,
+                    new PortAttributeModifier(SUMMONER_PACT_MODIFIER_ID, 1.0 + 0.5 * (summonerPactLevel - 1), PortAttributeModifier.Operation.ADD_VALUE),
+                    PortEquipmentSlotGroup.HEAD);
         }
         PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
-        if (prefix == null ||
-                prefix.type() == PrefixType.UNKNOWN ||
-                prefix.type() == PrefixType.ACCESSORY || // 通过curios的事件添加
-                prefix.modifiers().isEmpty()
-        ) return;
+        if (prefix == null || prefix.type() == PrefixType.UNKNOWN
+                || prefix.type() == PrefixType.ACCESSORY // 通过curios的事件添加
+                || prefix.modifiers().isEmpty()) return;
         for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Attribute attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {
@@ -151,7 +143,7 @@ public final class ItemEvents {
             event.setKnockback(manaGun.getKnockback());
             event.setCritical(manaGun.getCritical());
         }
-        event.setVelocity(event.getVelocity() * (float) player.getAttributeValue(LibAttributes.getRangedVelocity().value()));
+        event.setVelocity(event.getVelocity() * (float) player.getAttributeValue(LibAttributes.getRangedVelocity()));
         event.setKnockback(event.getKnockback() * (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
     }
 

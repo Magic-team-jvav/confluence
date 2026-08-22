@@ -212,12 +212,7 @@ public class Retinazer extends AbstractTwinEye {
         if (laser == null) {
             return false;
         }
-        laser.configure(
-                this,
-                target,
-                (float) getAttributeValue(Attributes.ATTACK_DAMAGE),
-                1.5F,
-                isTransformed() ? 10.0F : 30.0F);
+        laser.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 1.5F, isTransformed() ? 10.0F : 30.0F);
         return serverLevel.addFreshEntity(laser);
     }
 

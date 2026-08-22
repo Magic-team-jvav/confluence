@@ -11,13 +11,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCDataMaps;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -41,7 +41,7 @@ public class AccessoriesSubProvider {
                 MobEffects.WEAKNESS,
                 ModEffects.BLEEDING.get(),
                 ModEffects.BROKEN_ARMOR.get(),
-                TCEffects.CONFUSED.get(),
+                LibEffects.CONFUSED.get(),
                 ModEffects.CURSED.get(),
                 ModEffects.SILENCED.get(),
                 ModEffects.STONED.get()

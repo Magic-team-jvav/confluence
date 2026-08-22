@@ -9,11 +9,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
@@ -55,7 +55,7 @@ public final class SwordBehaviors {
         }
     };
 
-    public static final SwordBehavior PURPLE_CLUBBERFISH = effect(TCEffects.CONFUSED, 40, 1, 0.5F);
+    public static final SwordBehavior PURPLE_CLUBBERFISH = effect(LibEffects.CONFUSED, 40, 1, 0.5F);
     public static final SwordBehavior BLOOD_BUTCHERER = effect(ModEffects.BLOOD_BUTCHERED, 180, 4, 1.0F);
     public static final SwordBehavior TENTACLE_MACE = effect(ModEffects.TENTACLE_SPIKES, 180, 4, 1.0F);
     public static final SwordBehavior BAT_BAT = new SwordBehavior() {
@@ -82,7 +82,7 @@ public final class SwordBehaviors {
                 projectile.addAttackDamage(2.0F);
                 attacker.level().addFreshEntity(projectile);
             }
-            applyEffect(victim, TCEffects.CONFUSED, 40, 1, 1.0F);
+            applyEffect(victim, LibEffects.CONFUSED, 40, 1, 1.0F);
         }
     };
 

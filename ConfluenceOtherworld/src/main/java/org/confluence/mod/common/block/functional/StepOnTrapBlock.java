@@ -14,9 +14,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.VanityArmorItems;
-import org.confluence.terra_curio.common.init.TCEffects;
 
 public class StepOnTrapBlock extends Block {
     public static final Behaviour SHIMMER = new Behaviour() {
@@ -42,7 +42,7 @@ public class StepOnTrapBlock extends Block {
                 if (living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
                     duration /= 2;
                 }
-                living.addEffect(new MobEffectInstance(TCEffects.GRAVITATION.get(), duration, 1));
+                living.addEffect(new MobEffectInstance(LibEffects.GRAVITATION.get(), duration, 1));
             }
         }
     };

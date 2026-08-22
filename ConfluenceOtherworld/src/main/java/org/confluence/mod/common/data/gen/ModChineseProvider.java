@@ -4,7 +4,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
-import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.language.*;
@@ -14,7 +13,6 @@ import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
-import org.confluence.terra_curio.common.init.TCEffects;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -4668,12 +4666,6 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.SUMMONING.get(), "召唤", "仆从数量上限增加1");
         addEffect(ModEffects.AROMATIC_SATIATION.get(), "芳息饱腹", "持续回复饥饿与饱和");
 
-        addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");
-        addEffect(TCEffects.HONEY.get(), "蜂蜜", "生命再生速度提高");
-        addEffect(TCEffects.CONFUSED.get(), "困惑", "移动方向逆转");
-        addEffect(TCEffects.GRAVITATION.get(), "重力", "按[%s]可逆转重力");
-        addEffect(TCEffects.PALADINS_SHIELD.get(), "圣骑士护盾", "所受伤害的25%将被转移到另一名玩家身上");
-
         addEffect(ModEffects.DEMONIC_THOUGHTS.get(), "邪念", "再次被赋予邪念时会生成噬魂怪");
         addWhipTagEffectTranslations();
         addEffect(ModEffects.HELLFIRE.get(), "狱炎", "持续损失生命值");
@@ -5160,13 +5152,9 @@ public class ModChineseProvider extends LanguageProvider {
 
     @Override
     public void add(String key, String value) {
-        addIfAbsent(key, value);
-    }
-
-    private void addIfAbsent(String key, String value) {
-        if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
+        try {
             super.add(key, value);
-        }
+        } catch (Exception ignored) {}
     }
 
     private void addPotion(Item potion, String name, String tooltip) {

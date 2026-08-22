@@ -6,7 +6,8 @@
     "refmap": "confluence.refmap.json",
     "mixins": [
         "data.loot.EntityLootSubProviderAccessor",
-        "integration.magiclib.common.recipe.EnvironmentLevelAccess$MatcherMixin",
+        "integration.magiclib.EnvironmentLevelAccess$MatcherMixin",
+        "integration.magiclib.LibKeyBindingsMixin",
         "integration.terracurio.AccessoriesAttachmentMixin",
         "integration.terracurio.DemonHeartMixin",
         "integration.terracurio.StarClockEntityMixin",
@@ -50,7 +51,6 @@
         "world.item.BowItemMixin",
         "world.item.CrossbowItemMixin",
         "world.item.FishingRodItemMixin",
-        "world.item.HoneyBottleItemMixin",
         "world.item.ItemMixin",
         "world.item.ItemStackMixin",
         "world.item.ItemUtilsMixin",

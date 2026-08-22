@@ -50,6 +50,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
@@ -78,7 +79,6 @@ import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -232,7 +232,7 @@ public final class ModUtils {
                     debuff = ModEffects.BLEEDING.get();
                     min = master ? 9.38F : 7.5F;
                 } else if (i < 37) {
-                    debuff = TCEffects.CONFUSED.get();
+                    debuff = LibEffects.CONFUSED.get();
                     min = master ? 1.88F : 1.5F;
                 } else if (i < 48) {
                     debuff = MobEffects.MOVEMENT_SLOWDOWN;
@@ -360,7 +360,7 @@ public final class ModUtils {
 
     public static boolean isSwitchableEffect(MobEffectInstance instance) {
         MobEffect effect = instance.getEffect();
-        boolean switchable = effect == TCEffects.GRAVITATION.get() ? instance.getAmplifier() <= 0 : effect.isBeneficial();
+        boolean switchable = effect == LibEffects.GRAVITATION.get() ? instance.getAmplifier() <= 0 : effect.isBeneficial();
         return PortEventHandler.postEventWithReturn(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
     }
 

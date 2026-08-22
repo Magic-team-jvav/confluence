@@ -6,7 +6,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
-import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -18,7 +17,6 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.mesdag.portlib.registries.PortBlockRegistration;
 import org.mesdag.portlib.registries.PortItemRegistration;
 
@@ -1828,12 +1826,6 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.SUMMONING.get(), "Increased your max number of minions by 1");
         addEffect(ModEffects.AROMATIC_SATIATION.get(), "Continuous response to hunger and satiety");
 
-        addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
-        addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");
-        addEffect(TCEffects.CONFUSED.get(), "Movement is reversed");
-        addEffect(TCEffects.GRAVITATION.get(), "Press UP to reverse gravity");
-        addEffect(TCEffects.PALADINS_SHIELD.get(), "25% of damage taken will be redirected to another player");
-
         addEffect(ModEffects.DEMONIC_THOUGHTS.get(), "Being inflicted with Demonic Thoughts again spawns Eater of Souls");
         addWhipTagEffectTranslations();
         addEffect(ModEffects.HELLFIRE.get(), "Losing life");
@@ -1968,13 +1960,9 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     public void add(String key, String value) {
-        addIfAbsent(key, value);
-    }
-
-    private void addIfAbsent(String key, String value) {
-        if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
+        try {
             super.add(key, value);
-        }
+        } catch (Exception ignored) {}
     }
 
     private void addPotion(Item potion, String tooltip) {

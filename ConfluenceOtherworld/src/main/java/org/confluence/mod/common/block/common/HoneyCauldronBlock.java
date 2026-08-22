@@ -11,9 +11,9 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.common.effect.HoneyEffect;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.terra_curio.common.effect.HoneyEffect;
 
 import java.util.Map;
 

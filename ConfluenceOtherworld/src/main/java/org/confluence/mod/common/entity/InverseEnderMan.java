@@ -12,12 +12,12 @@ import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.confluence.terra_curio.mixed.IEntity;
+import org.confluence.lib.mixed.ILibEntity;
 
 public class InverseEnderMan extends EnderMan {
     public InverseEnderMan(EntityType<? extends InverseEnderMan> type, Level level) {
         super(type, level);
-        IEntity.of(this).terra_curio$setShouldRot(true);
+        ILibEntity.of(this).confluence$setShouldRot(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

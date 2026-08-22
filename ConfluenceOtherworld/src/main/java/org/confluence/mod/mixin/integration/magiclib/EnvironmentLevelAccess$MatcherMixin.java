@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.integration.magiclib.common.recipe;
+package org.confluence.mod.mixin.integration.magiclib;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;

@@ -38,7 +38,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.confluence.lib.client.LibKeyBindings;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
@@ -89,8 +91,6 @@ import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
-import org.confluence.terra_curio.client.TCKeyBindings;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.mesdag.portlib.client.gui.components.PortImageButton;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
@@ -369,7 +369,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void screen$Render$Post(PortScreenEvent.PortRender.Post event) {
+    private static void screen$Render$Post(PortScreenEvent.Render.Post event) {
         LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
     }
 
@@ -379,7 +379,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void screen$Init$Post(PortScreenEvent.PortInit.Post event) {
+    private static void screen$Init$Post(PortScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         boolean isInventoryScreen = screen instanceof InventoryScreen;
         // 额外槽
@@ -491,8 +491,8 @@ public final class GameClientEvents {
                 tooltip.add(Component.translatable(key, component).withStyle(ChatFormatting.GRAY));
             } else if (effect.equals(ModEffects.DANGER_SENSE.get()) || effect.equals(ModEffects.SPELUNKER.get())) {
                 tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR.get())));
-            } else if (effect.equals(TCEffects.GRAVITATION.get())) {
-                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(TCKeyBindings.FLIP_GRAVITATION.get())));
+            } else if (effect.equals(LibEffects.GRAVITATION.get())) {
+                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(LibKeyBindings.FLIP_GRAVITATION.get())));
             } else {
                 tooltip.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
             }

@@ -3,10 +3,10 @@ package org.confluence.mod.common.item.flail;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
-import org.confluence.terra_curio.common.init.TCEffects;
 
 /// 太极连枷：命中时有较高概率使目标短暂困惑。
 public class DaoOfPowItem extends BaseFlailItem {
@@ -28,7 +28,7 @@ public class DaoOfPowItem extends BaseFlailItem {
     @Override
     public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
         if (target.getRandom().nextFloat() < confuseChance) {
-            target.addEffect(new MobEffectInstance(TCEffects.CONFUSED.get(), CONFUSE_TICKS));
+            target.addEffect(new MobEffectInstance(LibEffects.CONFUSED.get(), CONFUSE_TICKS));
         }
     }
 }

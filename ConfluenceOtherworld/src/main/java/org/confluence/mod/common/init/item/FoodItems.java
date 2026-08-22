@@ -8,6 +8,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
@@ -18,7 +19,6 @@ import org.confluence.mod.common.item.food.BaseFoodItem;
 import org.confluence.mod.common.item.food.ModFoodProperties;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder.EffectData;
-import org.confluence.terra_curio.common.init.TCEffects;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortDeferredItem;
@@ -379,7 +379,7 @@ public class FoodItems {
             ).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING);
 
     public static final PortDeferredItem<BaseFoodItem> HONEY_GUMMI = registerFood("honey_gummi",
-            builder -> builder.rarity(ModRarity.ORANGE).food(hasEffectProperties(12, 6.0f, new ModFoodPropertiesBuilder.EffectData(TCEffects.HONEY.get(), 200, 0, 1.0f)))
+            builder -> builder.rarity(ModRarity.ORANGE).food(hasEffectProperties(12, 6.0f, new ModFoodPropertiesBuilder.EffectData(LibEffects.HONEY.get(), 200, 0, 1.0f)))
                     .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT));
 
     public static final PortDeferredItem<BaseFoodItem> ICE_MELON_SLICE = registerFood("ice_melon_slice", builder -> builder.rarity(ModRarity.BLUE)

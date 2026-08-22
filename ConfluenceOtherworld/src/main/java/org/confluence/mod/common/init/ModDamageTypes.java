@@ -11,7 +11,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
-@ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
+@ScheduledForMove(since = "1.2.0", inVersion = "1.4.0")
 public final class ModDamageTypes {
     public static final ResourceKey<DamageType> ACID_VENOM = register("acid_venom");
     public static final ResourceKey<DamageType> BOULDER = register("boulder");

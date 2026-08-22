@@ -3,7 +3,6 @@ package org.confluence.mod.client.event;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -17,7 +16,6 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -37,10 +35,8 @@ import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.confluence.lib.client.LibKeyBindings;
+import org.confluence.lib.api.event.OnGatherEffectScreenTooltipsEvent;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
-import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
@@ -87,7 +83,6 @@ import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
-import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
@@ -131,7 +126,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::renderPlayer$Pre);
         PortEventHandler.addListener(GameClientEvents::renderArm);
 //        PortEventHandler.addListener(GameClientEvents::npc$Dialog);
-        PortEventHandler.addListener(GameClientEvents::gatherEffectScreenTooltips);
+        PortEventHandler.addListener(GameClientEvents::onGatherEffectScreenTooltips);
         PortEventHandler.addListener(GameClientEvents::renderNameTag);
         PortEventHandler.addListener(GameClientEvents::playerInteract$LeftClickEmpty);
         PortEventHandler.addListener(GameClientEvents::playerInteract$LeftClickBlock);
@@ -471,34 +466,23 @@ public final class GameClientEvents {
 //        }
 //    }
 
-    private static void gatherEffectScreenTooltips(PortGatherEffectScreenTooltipsEvent event) {
-        MobEffect effect = event.getEffectInstance().getEffect();
-        ResourceLocation id = ForgeRegistries.MOB_EFFECTS.getKey(effect);
-        List<Component> tooltip = event.getTooltip();
-        if (id != null) l:{
-            String key = Util.makeDescriptionId("tooltip.effect", id) + ".0";
-            if (!I18n.exists(key)) break l;
-            if (effect.equals(ModEffects.ENEMY_BANNER.get())) {
-                LocalPlayer player = Minecraft.getInstance().player;
-                if (player == null) break l;
-                Iterator<String> iterator = PlayerSpecialData.of(player).getEnemyBannerEntries().iterator();
-                if (!iterator.hasNext()) break l;
-                MutableComponent component = Component.translatable(iterator.next()).withStyle(ChatFormatting.GREEN);
-                while (iterator.hasNext()) {
-                    component.append(Component.literal(", "));
-                    component.append(Component.translatable(iterator.next()));
-                }
-                tooltip.add(Component.translatable(key, component).withStyle(ChatFormatting.GRAY));
-            } else if (effect.equals(ModEffects.DANGER_SENSE.get()) || effect.equals(ModEffects.SPELUNKER.get())) {
-                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR.get())));
-            } else if (effect.equals(LibEffects.GRAVITATION.get())) {
-                tooltip.add(Component.translatable(key, LibClientUtils.keyMappingComponent(LibKeyBindings.FLIP_GRAVITATION.get())));
-            } else {
-                tooltip.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+    private static void onGatherEffectScreenTooltips(OnGatherEffectScreenTooltipsEvent event) {
+        MobEffect effect = event.getEffect();
+        if (effect.equals(ModEffects.ENEMY_BANNER.get())) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player == null) return;
+            Iterator<String> iterator = PlayerSpecialData.of(player).getEnemyBannerEntries().iterator();
+            if (!iterator.hasNext()) return;
+            MutableComponent component = Component.translatable(iterator.next()).withStyle(ChatFormatting.GREEN);
+            while (iterator.hasNext()) {
+                component.append(Component.literal(", "));
+                component.append(Component.translatable(iterator.next()));
             }
-        }
-        if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
-            tooltip.add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));
+            event.append(Component.translatable(event.getKey(), component).withStyle(ChatFormatting.GRAY));
+            event.setCanceled(true);
+        } else if (effect.equals(ModEffects.DANGER_SENSE.get()) || effect.equals(ModEffects.SPELUNKER.get())) {
+            event.append(Component.translatable(event.getKey(), LibClientUtils.keyMappingComponent(ModKeyBindings.SHOW_DETAIL_SPECULAR.get())));
+            event.setCanceled(true);
         }
     }
 

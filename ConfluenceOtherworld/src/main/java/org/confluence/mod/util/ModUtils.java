@@ -8,7 +8,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -56,7 +55,6 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.EffectSwitchableCheckEvent;
 import org.confluence.mod.common.advancement.BossAchievementSettlement;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
@@ -80,14 +78,11 @@ import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_furniture.TerraFurniture;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 public final class ModUtils {
     public static final Set<String> CONFLUENCE_NAMESPACES = Set.of(Confluence.MODID, TerraCurio.MODID, TerraFurniture.MODID);
@@ -258,12 +253,6 @@ public final class ModUtils {
         }
     }
 
-    @Deprecated(since = "1.3.0", forRemoval = true)
-    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
-    public static Component formatPrice(int price) {
-        return ClientUtils.formatPrice(price);
-    }
-
     /// 不可破坏物品无法附魔耐久与经验修补
     public static boolean supportsEnchantment(ItemStack stack, Enchantment enchantment) {
         boolean supportedItem = enchantment.category.canEnchant(stack.getItem());
@@ -358,12 +347,6 @@ public final class ModUtils {
                 !PortMobEffectInstanceExtension.getCures(instance).contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }
 
-    public static boolean isSwitchableEffect(MobEffectInstance instance) {
-        MobEffect effect = instance.getEffect();
-        boolean switchable = effect == LibEffects.GRAVITATION.get() ? instance.getAmplifier() <= 0 : effect.isBeneficial();
-        return PortEventHandler.postEventWithReturn(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
-    }
-
     public static boolean useKey(ItemStack carried, ItemStack onSlot, Player player) {
         if ((carried.is(ToolItems.GOLDEN_DUNGEON_KEY) && onSlot.is(ConsumableItems.GOLDEN_LOCK_BOX)) ||
                 (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX))
@@ -384,34 +367,5 @@ public final class ModUtils {
     public static boolean shouldDisplayTeam() {
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         return server != null && !server.isSingleplayer();
-    }
-
-    public static <T> T getRandomByWeightInt(List<T> items, List<Integer> weights) {
-        if (items == null || weights == null || items.size() != weights.size() || items.isEmpty()) {
-            throw new IllegalArgumentException("Items and weights must be non-null, non-empty, and of the same size.");
-        }
-
-        // 计算总权重
-        float totalWeight = 0.0f;
-        for (var weight : weights) {
-            totalWeight += weight;
-        }
-
-        if (totalWeight == 0.0f) {
-            throw new IllegalArgumentException("Total weight cannot be zero.");
-        }
-
-        float randomValue = ThreadLocalRandom.current().nextFloat(0, totalWeight);
-
-        // 遍历物品，累积权重，直到累积权重超过随机数
-        float cumulativeWeight = 0.0f;
-        for (int i = 0; i < items.size(); i++) {
-            cumulativeWeight += weights.get(i);
-            if (cumulativeWeight >= randomValue) {
-                return items.get(i);
-            }
-        }
-        // 理论上不会走到这里
-        throw new IllegalStateException("Failed to find random item.");
     }
 }

@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.effect.MobEffectInstance;
-import org.confluence.mod.mixed.IAbstractContainerScreen;
+import org.confluence.lib.mixed.ILibAbstractContainerScreen;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EffectRenderingInventoryScreen.class)
-public abstract class EffectRenderingInventoryScreenMixin implements IAbstractContainerScreen {
+public abstract class EffectRenderingInventoryScreenMixin implements ILibAbstractContainerScreen {
     @Unique
     private boolean confluence$mouseClicked = false;
 
@@ -27,9 +27,9 @@ public abstract class EffectRenderingInventoryScreenMixin implements IAbstractCo
     }
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", shift = At.Shift.AFTER))
-    private void switchEnabled(CallbackInfo ci, @Local(ordinal = 0) MobEffectInstance instance) {
+    private void switchEnabled(CallbackInfo ci, @Local(name = "mobeffectinstance") MobEffectInstance mobeffectinstance) {
         if (confluence$mouseClicked) {
-            IAbstractContainerScreen.switchEnabled(instance);
+            ILibAbstractContainerScreen.switchEnabled(mobeffectinstance);
         }
     }
 
@@ -40,6 +40,6 @@ public abstract class EffectRenderingInventoryScreenMixin implements IAbstractCo
 
     @WrapOperation(method = "renderIcons", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(IIIIILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"))
     private void makeTranslucent(GuiGraphics guiGraphics, int x, int y, int blitOffset, int width, int height, TextureAtlasSprite sprite, Operation<Void> original, @Local MobEffectInstance instance) {
-        IAbstractContainerScreen.makeTranslucent(guiGraphics, instance, () -> original.call(guiGraphics, x, y, blitOffset, width, height, sprite));
+        ILibAbstractContainerScreen.makeTranslucent(guiGraphics, instance, () -> original.call(guiGraphics, x, y, blitOffset, width, height, sprite));
     }
 }

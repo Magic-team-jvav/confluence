@@ -1,8 +1,6 @@
 package org.confluence.mod.mixin.world.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -11,13 +9,10 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,7 +29,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.mixed.ILivingEntity;
-import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
@@ -49,9 +43,6 @@ import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
-    @Shadow
-    public abstract Map<MobEffect, MobEffectInstance> getActiveEffectsMap();
-
     @Shadow
     public abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 
@@ -144,21 +135,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDiscardFriction()Z"))
     private boolean discardWhenHasAnyHooked(boolean original) {
         return original || (confluence$self() instanceof Player player && !player.isCrouching() && BaseHookItem.hasAnyHooked(player));
-    }
-
-    @WrapWithCondition(method = "onEffectUpdated", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
-    private boolean shouldAdd(MobEffect instance, LivingEntity livingEntity, AttributeMap attributeMap, int amplifier, @Local(argsOnly = true) MobEffectInstance effectInstance) {
-        return IMobEffectInstance.of(effectInstance).confluence$isEnabled();
-    }
-
-    @WrapMethod(method = "hasEffect")
-    private boolean hasEffect(MobEffect effect, Operation<Boolean> original) {
-        return ILivingEntity.hasEffect(getActiveEffectsMap(), effect);
-    }
-
-    @WrapMethod(method = "getEffect")
-    private MobEffectInstance getEffect(MobEffect effect, Operation<MobEffectInstance> original) {
-        return ILivingEntity.getEffect(getActiveEffectsMap(), effect);
     }
 
     @Inject(method = "handleEquipmentChanges", at = @At("HEAD"))

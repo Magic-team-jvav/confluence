@@ -80,7 +80,6 @@ import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.ILevelChunkSection;
-import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
@@ -121,7 +120,6 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(LivingEntityEvents::useItem$Finish);
         PortEventHandler.addListener(LivingEntityEvents::mobSpawn$PositionCheck);
         PortEventHandler.addListener(LivingEntityEvents::mobSpawn$SpawnPlacementCheck);
-        PortEventHandler.addListener(LivingEntityEvents::effectParticleModification);
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::spawnClusterSize);
         PortEventHandler.addListener(LivingEntityEvents::afterAccessoryAbilitiesFlushed);
         PortEventHandler.addListener(LivingEntityEvents::curioChange);
@@ -579,12 +577,6 @@ public final class LivingEntityEvents {
                     event.setResult(PortMobSpawnEvent.SpawnPlacementCheck.PortResult.SUCCEED.unwrap());
                 }
             }
-        }
-    }
-
-    private static void effectParticleModification(PortEffectParticleModificationEvent event) {
-        if (event.isVisible() && !IMobEffectInstance.of(event.getEffect()).confluence$isEnabled()) {
-            event.setVisible(false);
         }
     }
 

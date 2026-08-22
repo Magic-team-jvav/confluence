@@ -310,32 +310,9 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             initName();
-            // 被"救援"的 NPC 首次交互时，将其正式加入区域
-            if (shouldInteract) {
-                setShouldInteract(false);
-                region = NPCSpawner.getNpcSpawnRegion(serverPlayer);
-                NPCSpawner.INSTANCE.applyBenedictions(this);
-                NPCSpawner.INSTANCE.addSpawned(getType());
-                NPCSpawner.broadcastMessageToRegion(serverPlayer.level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
-            }
-            // 图鉴记录
-            if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
-
-            if (hand == InteractionHand.OFF_HAND) return InteractionResult.SUCCESS;
-            setCustomNameVisible(hasCustomName());
-            ItemStack held = player.getItemInHand(hand);
-            if (held.getItem() instanceof ArmorItem armor) {
-                swapEquipment(player, hand, armor.getEquipmentSlot());
-                return InteractionResult.SUCCESS;
-            }
-            if (player.isShiftKeyDown()) {
-                if (!held.isEmpty()) {
-                    swapEquipment(player, hand, EquipmentSlot.MAINHAND);
-                    return InteractionResult.SUCCESS;
-                }
-                removeLookedAtEquipment(player, hand);
-                return InteractionResult.PASS;
-            }
+            InteractionResult commonResult = handleCommonInteraction(serverPlayer, hand);
+            if (commonResult != null) return commonResult;
+            recordInteraction(serverPlayer);
 
             var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
             if (!shop.offers().isEmpty()) {
@@ -345,7 +322,40 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         return InteractionResult.sidedSuccess(level().isClientSide);
     }
 
-    private void initName() {
+    @Nullable
+    protected InteractionResult handleCommonInteraction(ServerPlayer player, InteractionHand hand) {
+        if (hand == InteractionHand.OFF_HAND) return InteractionResult.SUCCESS;
+        setCustomNameVisible(hasCustomName());
+        ItemStack held = player.getItemInHand(hand);
+        if (held.getItem() instanceof ArmorItem armor) {
+            swapEquipment(player, hand, armor.getEquipmentSlot());
+            return InteractionResult.SUCCESS;
+        }
+        if (player.isShiftKeyDown()) {
+            if (!held.isEmpty()) {
+                swapEquipment(player, hand, EquipmentSlot.MAINHAND);
+                return InteractionResult.SUCCESS;
+            }
+            removeLookedAtEquipment(player, hand);
+            return InteractionResult.PASS;
+        }
+        return null;
+    }
+
+    protected void recordInteraction(ServerPlayer player) {
+        // 被"救援"的 NPC 首次交互时，将其正式加入区域
+        if (shouldInteract) {
+            setShouldInteract(false);
+            region = NPCSpawner.getNpcSpawnRegion(player);
+            NPCSpawner.INSTANCE.applyBenedictions(this);
+            NPCSpawner.INSTANCE.addSpawned(getType());
+            NPCSpawner.broadcastMessageToRegion(player.level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
+        }
+        // 图鉴记录
+        if (!Bestiary.INSTANCE.containsKey(this)) Bestiary.INSTANCE.updateEntry(this, false);
+    }
+
+    protected final void initName() {
         if (hasCustomName()) return;
         String name = NPCNames.Loader.getInstance().getRandomName(getType(), getRandom());
         if (name != null) setCustomName(Component.literal(name));

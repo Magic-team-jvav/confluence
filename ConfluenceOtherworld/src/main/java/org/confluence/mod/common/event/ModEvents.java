@@ -1,10 +1,12 @@
 package org.confluence.mod.common.event;
 
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -55,6 +57,7 @@ import org.confluence.terra_curio.common.init.TCTabs;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.PortEntityAttributeCreationEvent;
+import org.mesdag.portlib.event.entity.PortEntityAttributeModificationEvent;
 import org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLCommonSetupEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLLoadCompleteEvent;
@@ -68,15 +71,13 @@ public final class ModEvents {
         PortEventHandler.addListener(ModEvents::modConfig$Loading);
         PortEventHandler.addListener(ModEvents::modConfig$Reloading);
         PortEventHandler.addListener(ModEvents::loadComplete);
-//        PortEventHandler.addListener(ModEvents::registerCauldronFluidContent);
         PortEventHandler.addListener(ModEvents::addPackFinders);
-//        PortEventHandler.addListener(ModEvents::registerConfigurationTasks);
         PortEventHandler.addListener(ModEvents::entityAttributeCreation);
+        PortEventHandler.addListener(ModEvents::entityAttributeModification);
         PortEventHandler.addListener(ModEvents::registerAccessoriesComponentUnitValueTypeLocalSync);
         PortEventHandler.addListener(PortEventPriority.LOW, ModEvents::buildCreativeModeTabContents);
         PortEventHandler.addListener(ModEvents::blockEntityTypeAddBlocks);
         PortEventHandler.addListener(ModEvents::registerBestiaryKeys);
-//        PortEventHandler.addListener(ModEvents::registerCapabilities);
         PortEventHandler.addListener(PortEventPriority.LOW, ModEvents::registerSpawnReplacements);
         PortEventHandler.addListener(ModEvents::registerEvilMaterialReplaces);
     }
@@ -151,11 +152,6 @@ public final class ModEvents {
         });
     }
 
-// todo event  private static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
-//        event.register(ModBlocks.HONEY_CAULDRON.get(), ModFluids.HONEY.fluid().get(), FluidType.BUCKET_VOLUME, null);
-//        event.register(ModBlocks.AETHERIUM_CAULDRON.get(), ModFluids.SHIMMER.fluid().get(), FluidType.BUCKET_VOLUME, null);
-//    }
-
     private static void addPackFinders(PortAddPackFindersEvent event) {
         if (event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFile modFile = ModList.get().getModFileById(Confluence.MODID).getFile();
@@ -185,10 +181,6 @@ public final class ModEvents {
             });
         }
     }
-
-// todo event  private static void registerConfigurationTasks(PortRegisterConfigurationTasksEvent event) {
-//        event.register(new AchievementsTask(event.getListener()));
-//    }
 
     private static void entityAttributeCreation(PortEntityAttributeCreationEvent event) {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
@@ -419,88 +411,76 @@ public final class ModEvents {
         event.put(BossEntities.PRIME_ENDER_DRAGON.get(), PrimeEnderDragon.createAttributes().build());
     }
 
-// todo event  private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
-//        new AttributeRegistration(event)
-//                .set(LibAttributes.getArmorPenetration())
-//                .register(TEBossEntities.QUEEN_BEE.get(), 2)
-//                .register(TEBossEntities.SKELETRON.get(), 4)
-//                .register(TEBossEntities.SKELETRON_HAND.get(), 4)
-//                .register(TEBossEntities.HILL_OF_FLESH.get(), 4)
-//                .register(TEBossEntities.WALL_OF_FLESH.get(), 6)
-//                // 肉后
-//                .register(TEMonsterEntities.PIXIE.get(), 8)
-//                .register(TEMonsterEntities.WYVERN.get(), 8)
-//                .register(TEMonsterEntities.WRAITH.get(), 8)
-//                .register(TEMonsterEntities.POSSESS_ARMOR.get(), 8)
-//                .register(TEMonsterEntities.CORRUPT_SLIME.get(), 8)
-//                .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 8)
-//                .register(TEMonsterEntities.CRIMSLIME.get(), 8)
-//                .register(TEMonsterEntities.WOODEN_MIMIC.get(), 8)
-//                .register(TEMonsterEntities.GOLDEN_MIMIC.get(), 8)
-//                .register(TEMonsterEntities.SHADOW_MIMIC.get(), 8)
-//                .register(TEMonsterEntities.ICE_MIMIC.get(), 8)
-//                .register(TEMonsterEntities.CRIMSON_MIMIC.get(), 8)
-//                .register(TEMonsterEntities.CORRUPT_MIMIC.get(), 8)
-//                .register(TEMonsterEntities.HALLOWED_MIMIC.get(), 8)
-//                .register(TEMonsterEntities.JUNGLE_MIMIC.get(), 8)
-//
-//                .register(TEMonsterEntities.MUMMY.get(), 8)
-//                .register(TEMonsterEntities.DARK_MUMMY.get(), 8)
-//                .register(TEMonsterEntities.BLOOD_MUMMY.get(), 8)
-//                .register(TEMonsterEntities.LIGHT_MUMMY.get(), 8)
-//                .register(TEMonsterEntities.DARK_LAMIA.get(), 8)
-//                .register(TEMonsterEntities.LIGHT_LAMIA.get(), 8)
-//                .register(TEMonsterEntities.DERPLING.get(), 8)
-//                .register(TEMonsterEntities.HERPLING.get(), 8)
-//                .register(TEMonsterEntities.GHOUL.get(), 8)
-//                .register(TEMonsterEntities.VILE_GHOUL.get(), 8)
-//                .register(TEMonsterEntities.TAINTED_GHOUL.get(), 8)
-//                .register(TEMonsterEntities.DREAMER_GHOUL.get(), 8)
-//                .register(TEMonsterEntities.SAND_POACHER.get(), 8)
-//
-//                .register(TEBossEntities.RETINAZER.get(), 8)
-//                .register(TEBossEntities.SPAZMATISM.get(), 8)
-//                .register(TEBossEntities.PLANTERA.get(), 8)
-//                .register(TEBossEntities.PLANTERA_TENTACLE.get(), 8)
-//                .register(TEBossEntities.PLANTERA_HOOK.get(), 8)
-//
-//
-//                .set(Attributes.ARMOR_TOUGHNESS)
-//                .register(TEMonsterEntities.PIXIE.get(), 2)
-//                .register(TEMonsterEntities.WYVERN.get(), 2)
-//                .register(TEMonsterEntities.CORRUPT_SLIME.get(), 2)
-//                .register(TEMonsterEntities.LUMINOUS_SLIME.get(), 2)
-//                .register(TEMonsterEntities.CRIMSLIME.get(), 2)
-//                .register(TEMonsterEntities.WOODEN_MIMIC.get(), 2)
-//                .register(TEMonsterEntities.GOLDEN_MIMIC.get(), 2)
-//                .register(TEMonsterEntities.SHADOW_MIMIC.get(), 2)
-//                .register(TEMonsterEntities.ICE_MIMIC.get(), 2)
-//                .register(TEMonsterEntities.CRIMSON_MIMIC.get(), 2)
-//                .register(TEMonsterEntities.CORRUPT_MIMIC.get(), 2)
-//                .register(TEMonsterEntities.HALLOWED_MIMIC.get(), 2)
-//                .register(TEMonsterEntities.JUNGLE_MIMIC.get(), 2)
-//
-//                .register(TEMonsterEntities.MUMMY.get(), 2)
-//                .register(TEMonsterEntities.DARK_MUMMY.get(), 2)
-//                .register(TEMonsterEntities.BLOOD_MUMMY.get(), 2)
-//                .register(TEMonsterEntities.LIGHT_MUMMY.get(), 2)
-//                .register(TEMonsterEntities.DARK_LAMIA.get(), 2)
-//                .register(TEMonsterEntities.LIGHT_LAMIA.get(), 2)
-//                .register(TEMonsterEntities.DERPLING.get(), 2)
-//                .register(TEMonsterEntities.HERPLING.get(), 2)
-//                .register(TEMonsterEntities.GHOUL.get(), 2)
-//                .register(TEMonsterEntities.VILE_GHOUL.get(), 2)
-//                .register(TEMonsterEntities.TAINTED_GHOUL.get(), 2)
-//                .register(TEMonsterEntities.DREAMER_GHOUL.get(), 2)
-//                .register(TEMonsterEntities.SAND_POACHER.get(), 2)
-//
-//                .register(TEBossEntities.RETINAZER.get(), 2)
-//                .register(TEBossEntities.SPAZMATISM.get(), 2)
-//                .register(TEBossEntities.PLANTERA.get(), 2)
-//                .register(TEBossEntities.PLANTERA_TENTACLE.get(), 2)
-//                .register(TEBossEntities.PLANTERA_HOOK.get(), 2)
-//        ;
-//    }
+    private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
+        Holder<Attribute> armorPenetration = LibAttributes.getArmorPenetration();
+        event.add(BossEntities.QUEEN_BEE.get(), armorPenetration, 2);
+        event.add(BossEntities.SKELETRON.get(), armorPenetration, 4);
+        event.add(BossEntities.HILL_OF_FLESH.get(), armorPenetration, 4);
+        event.add(BossEntities.WALL_OF_FLESH.get(), armorPenetration, 6);
+
+        event.add(MonsterEntities.PIXIE.get(), armorPenetration, 8);
+        event.add(MonsterEntities.WYVERN.get(), armorPenetration, 8);
+        event.add(MonsterEntities.WRAITH.get(), armorPenetration, 8);
+        event.add(MonsterEntities.POSSESS_ARMOR.get(), armorPenetration, 8);
+        event.add(MonsterEntities.CORRUPT_SLIME.get(), armorPenetration, 8);
+        event.add(MonsterEntities.LUMINOUS_SLIME.get(), armorPenetration, 8);
+        event.add(MonsterEntities.CRIMSLIME.get(), armorPenetration, 8);
+        event.add(MonsterEntities.WOODEN_MIMIC.get(), armorPenetration, 8);
+        event.add(MonsterEntities.GOLDEN_MIMIC.get(), armorPenetration, 8);
+        event.add(MonsterEntities.SHADOW_MIMIC.get(), armorPenetration, 8);
+        event.add(MonsterEntities.ICE_MIMIC.get(), armorPenetration, 8);
+        event.add(MonsterEntities.CRIMSON_MIMIC.get(), armorPenetration, 8);
+        event.add(MonsterEntities.CORRUPT_MIMIC.get(), armorPenetration, 8);
+        event.add(MonsterEntities.HALLOWED_MIMIC.get(), armorPenetration, 8);
+        event.add(MonsterEntities.JUNGLE_MIMIC.get(), armorPenetration, 8);
+        event.add(MonsterEntities.MUMMY.get(), armorPenetration, 8);
+        event.add(MonsterEntities.DARK_MUMMY.get(), armorPenetration, 8);
+        event.add(MonsterEntities.BLOOD_MUMMY.get(), armorPenetration, 8);
+        event.add(MonsterEntities.LIGHT_MUMMY.get(), armorPenetration, 8);
+        event.add(MonsterEntities.DARK_LAMIA.get(), armorPenetration, 8);
+        event.add(MonsterEntities.LIGHT_LAMIA.get(), armorPenetration, 8);
+        event.add(MonsterEntities.DERPLING.get(), armorPenetration, 8);
+        event.add(MonsterEntities.HERPLING.get(), armorPenetration, 8);
+        event.add(MonsterEntities.GHOUL.get(), armorPenetration, 8);
+        event.add(MonsterEntities.VILE_GHOUL.get(), armorPenetration, 8);
+        event.add(MonsterEntities.TAINTED_GHOUL.get(), armorPenetration, 8);
+        event.add(MonsterEntities.DREAMER_GHOUL.get(), armorPenetration, 8);
+        event.add(MonsterEntities.SAND_POACHER.get(), armorPenetration, 8);
+        event.add(BossEntities.RETINAZER.get(), armorPenetration, 8);
+        event.add(BossEntities.SPAZMATISM.get(), armorPenetration, 8);
+        event.add(BossEntities.PLANTERA.get(), armorPenetration, 8);
+
+        Holder<Attribute> armorToughness = Holder.direct(Attributes.ARMOR_TOUGHNESS);
+        event.add(MonsterEntities.PIXIE.get(), armorToughness, 2);
+        event.add(MonsterEntities.WYVERN.get(), armorToughness, 2);
+        event.add(MonsterEntities.CORRUPT_SLIME.get(), armorToughness, 2);
+        event.add(MonsterEntities.LUMINOUS_SLIME.get(), armorToughness, 2);
+        event.add(MonsterEntities.CRIMSLIME.get(), armorToughness, 2);
+        event.add(MonsterEntities.WOODEN_MIMIC.get(), armorToughness, 2);
+        event.add(MonsterEntities.GOLDEN_MIMIC.get(), armorToughness, 2);
+        event.add(MonsterEntities.SHADOW_MIMIC.get(), armorToughness, 2);
+        event.add(MonsterEntities.ICE_MIMIC.get(), armorToughness, 2);
+        event.add(MonsterEntities.CRIMSON_MIMIC.get(), armorToughness, 2);
+        event.add(MonsterEntities.CORRUPT_MIMIC.get(), armorToughness, 2);
+        event.add(MonsterEntities.HALLOWED_MIMIC.get(), armorToughness, 2);
+        event.add(MonsterEntities.JUNGLE_MIMIC.get(), armorToughness, 2);
+        event.add(MonsterEntities.MUMMY.get(), armorToughness, 2);
+        event.add(MonsterEntities.DARK_MUMMY.get(), armorToughness, 2);
+        event.add(MonsterEntities.BLOOD_MUMMY.get(), armorToughness, 2);
+        event.add(MonsterEntities.LIGHT_MUMMY.get(), armorToughness, 2);
+        event.add(MonsterEntities.DARK_LAMIA.get(), armorToughness, 2);
+        event.add(MonsterEntities.LIGHT_LAMIA.get(), armorToughness, 2);
+        event.add(MonsterEntities.DERPLING.get(), armorToughness, 2);
+        event.add(MonsterEntities.HERPLING.get(), armorToughness, 2);
+        event.add(MonsterEntities.GHOUL.get(), armorToughness, 2);
+        event.add(MonsterEntities.VILE_GHOUL.get(), armorToughness, 2);
+        event.add(MonsterEntities.TAINTED_GHOUL.get(), armorToughness, 2);
+        event.add(MonsterEntities.DREAMER_GHOUL.get(), armorToughness, 2);
+        event.add(MonsterEntities.SAND_POACHER.get(), armorToughness, 2);
+        event.add(BossEntities.RETINAZER.get(), armorToughness, 2);
+        event.add(BossEntities.SPAZMATISM.get(), armorToughness, 2);
+        event.add(BossEntities.PLANTERA.get(), armorToughness, 2);
+    }
 
     private static void registerAccessoriesComponentUnitValueTypeLocalSync(RegisterAccessoriesComponentUnitValueTypeLocalSyncEvent event) {
         AccessoryItems.AFK_INDEX = event.register(AccessoryItems.$AFK);
@@ -522,26 +502,6 @@ public final class ModEvents {
         event.modify(BlockEntityType.SCULK_SENSOR, FunctionalBlocks.SCULK_TRAP.get());
         event.modify(BlockEntityType.CAMPFIRE, FunctionalBlocks.LIFE_CAMPFIRE.get());
     }
-
-// todo event private static void registerCapabilities(PortRegisterCapabilitiesEvent event) {
-//        event.registerBlock(ForgeCapabilities.ITEM_HANDLER, (level, pos, state, blockEntity, side) -> {
-//            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) {
-//                return null;
-//            }
-//            Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
-//            return container == null ? null : new InvWrapper(container);
-//        }, ChestBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new));
-//
-//        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
-//
-//        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBottomlessBucketWrapper(stack),
-//                ToolItems.BOTTOMLESS_WATER_BUCKET,
-//                ToolItems.BOTTOMLESS_LAVA_BUCKET,
-//                ToolItems.BOTTOMLESS_HONEY_BUCKET,
-//                ToolItems.BOTTOMLESS_SHIMMER_BUCKET
-//        );
-//        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ToolItems.HONEY_BUCKET);
-//    }
 
     private static void registerSpawnReplacements(PortRegisterSpawnPlacementsEvent event) {
         CreatureSpawnPlacements.register(event);

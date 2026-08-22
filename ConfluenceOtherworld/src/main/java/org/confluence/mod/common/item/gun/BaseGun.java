@@ -1,9 +1,13 @@
 package org.confluence.mod.common.item.gun;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -11,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.client.animation.HandAnimationAction;
 import org.confluence.mod.api.client.animation.HandAnimationApi;
@@ -95,6 +100,15 @@ public class BaseGun extends Item implements GeoItem {
                 return PlayState.CONTINUE;
             });
             channel.animations().forEach((action, clip) -> controller.triggerableAnim(action.id(), channel.triggeredAnimation(action)));
+            controller.setSoundKeyframeHandler(event -> {
+                ResourceLocation key = ResourceLocation.tryParse(event.getKeyframeData().getSound());
+                if (key == null) return;
+                SoundEvent value = ForgeRegistries.SOUND_EVENTS.getValue(key);
+                if (value == null) return;
+                Player player = Minecraft.getInstance().player;
+                if (player == null) return;
+                player.level().playLocalSound(player.getX(), player.getEyeY(), player.getZ(), value, SoundSource.PLAYERS, 1, 1, false);
+            });
             controllers.add(controller);
         }
     }

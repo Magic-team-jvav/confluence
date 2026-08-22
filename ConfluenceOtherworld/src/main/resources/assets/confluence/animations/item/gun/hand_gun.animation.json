@@ -10830,64 +10830,64 @@
             },
             "sound_effects": {
                 "0.0": {
-                    "effect": "tacz:deagle/deagle_inspect_raise"
+                    "effect": "confluence:deagle/deagle_inspect_raise"
                 },
                 "0.3": {
-                    "effect": "tacz:deagle/deagle_inspect_pivot"
+                    "effect": "confluence:deagle/deagle_inspect_pivot"
                 },
                 "0.3333": {
-                    "effect": "tacz:deagle/deagle_inspect_selectburst_off_switch"
+                    "effect": "confluence:deagle/deagle_inspect_selectburst_off_switch"
                 },
                 "0.8667": {
-                    "effect": "tacz:deagle/deagle_inspect_raise_up"
+                    "effect": "confluence:deagle/deagle_inspect_raise_up"
                 },
                 "0.9": {
-                    "effect": "tacz:deagle/deagle_inspect_rotate"
+                    "effect": "confluence:deagle/deagle_inspect_rotate"
                 },
                 "1.2": {
-                    "effect": "tacz:deagle/deagle_inspect_raise_rattle"
+                    "effect": "confluence:deagle/deagle_inspect_raise_rattle"
                 },
                 "2.0": {
-                    "effect": "tacz:deagle/deagle_inspect_drop_quick_rattle"
+                    "effect": "confluence:deagle/deagle_inspect_drop_quick_rattle"
                 },
                 "2.4": {
-                    "effect": "tacz:deagle/deagle_inspect_magrelease"
+                    "effect": "confluence:deagle/deagle_inspect_magrelease"
                 },
                 "2.4333": {
-                    "effect": "tacz:deagle/deagle_inspect_magout"
+                    "effect": "confluence:deagle/deagle_inspect_magout"
                 },
                 "3.4": {
-                    "effect": "tacz:deagle/deagle_inspect_magfindwell"
+                    "effect": "confluence:deagle/deagle_inspect_magfindwell"
                 },
                 "3.5667": {
-                    "effect": "tacz:deagle/deagle_inspect_magin"
+                    "effect": "confluence:deagle/deagle_inspect_magin"
                 },
                 "3.9": {
-                    "effect": "tacz:deagle/deagle_inspect_rotate"
+                    "effect": "confluence:deagle/deagle_inspect_rotate"
                 },
                 "4.2667": {
-                    "effect": "tacz:deagle/deagle_inspect_slideback"
+                    "effect": "confluence:deagle/deagle_inspect_slideback"
                 },
                 "5.0": {
-                    "effect": "tacz:deagle/deagle_inspect_slideclose"
+                    "effect": "confluence:deagle/deagle_inspect_slideclose"
                 },
                 "5.1": {
-                    "effect": "tacz:deagle/deagle_inspect_end"
+                    "effect": "confluence:deagle/deagle_inspect_end"
                 },
                 "6.1333": {
-                    "effect": "tacz:deagle/deagle_inspect_rotate"
+                    "effect": "confluence:deagle/deagle_inspect_rotate"
                 },
                 "6.8333": {
-                    "effect": "tacz:deagle/deagle_inspect_rattle"
+                    "effect": "confluence:deagle/deagle_inspect_rattle"
                 },
                 "7.6333": {
-                    "effect": "tacz:deagle/deagle_inspect_reload_rattle"
+                    "effect": "confluence:deagle/deagle_inspect_reload_rattle"
                 },
                 "8.1": {
-                    "effect": "tacz:deagle/deagle_inspect_selectburst_on_switch"
+                    "effect": "confluence:deagle/deagle_inspect_selectburst_on_switch"
                 },
                 "8.4667": {
-                    "effect": "tacz:deagle/deagle_inspect_empty_end"
+                    "effect": "confluence:deagle/deagle_inspect_empty_end"
                 }
             }
         },
@@ -11363,10 +11363,10 @@
             },
             "sound_effects": {
                 "0.0": {
-                    "effect": "weap_decho_fire_first_plr_03"
+                    "effect": "confluence:weap_decho_fire_first_plr_03"
                 },
                 "0.0333": {
-                    "effect": "weap_deagle_fire_npc_mech_02"
+                    "effect": "confluence:weap_deagle_fire_npc_mech_02"
                 }
             }
         }

@@ -6,18 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public final class HandAnimationProfile {
-    private final List<HandAnimationChannel> channels;
-
-    private HandAnimationProfile(Builder builder) {
-        if (builder.channels.isEmpty()) {
-            throw new IllegalArgumentException("An animation profile needs at least one channel");
-        }
-        this.channels = List.copyOf(builder.channels);
+public record HandAnimationProfile(List<HandAnimationChannel> channels) {
+    public HandAnimationProfile(Builder channels) {
+        this(validateAndCopy(channels));
     }
 
-    public List<HandAnimationChannel> channels() {
-        return channels;
+    private static List<HandAnimationChannel> validateAndCopy(Builder channels) {
+        if (channels.channels.isEmpty()) {
+            throw new IllegalArgumentException("An animation profile needs at least one channel");
+        }
+        return List.copyOf(channels.channels);
     }
 
     public boolean isAnimation(HandAnimationAction action, String animationName) {

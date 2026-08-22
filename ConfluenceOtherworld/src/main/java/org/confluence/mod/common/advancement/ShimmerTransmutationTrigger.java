@@ -6,12 +6,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import org.confluence.mod.Confluence;
+import org.mesdag.portlib.diff.Diff;
 
 public class ShimmerTransmutationTrigger extends SimpleCriterionTrigger<ShimmerTransmutationTrigger.TriggerInstance> {
+    @Diff
     public static final ResourceLocation ID = Confluence.asResource("shimmer_transmutation");
+    @Diff
+    public static final ShimmerTransmutationTrigger INSTANCE = new ShimmerTransmutationTrigger();
 
-    public void trigger(ServerPlayer pPlayer, Entity entity) {
-        trigger(pPlayer, instance -> instance.matches(pPlayer, entity));
+    private ShimmerTransmutationTrigger() {}
+
+    public void trigger(ServerPlayer player, Entity entity) {
+        trigger(player, instance -> instance.matches(player, entity));
     }
 
     @Override

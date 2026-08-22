@@ -13,7 +13,6 @@
         "integration.terracurio.DemonHeartMixin",
         "integration.terracurio.StarClockEntityMixin",
         "integration.terrafurniture.TFPinWheelMixin",
-        "neoforge.common.loot.LootModifierManagerMixin",
         "neoforge.items.ItemStackHandlerMixin",
         "server.MinecraftServerMixin",
         "server.PlayerAdvancementsMixin",

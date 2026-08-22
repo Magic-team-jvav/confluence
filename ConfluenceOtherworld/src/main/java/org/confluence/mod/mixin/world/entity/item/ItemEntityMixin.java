@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.init.ModAdvancements;
+import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
@@ -91,7 +91,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
                     }
                     level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
                     if (serverPlayer != null) {
-                        ModAdvancements.SHIMMER_TRANSMUTATION.trigger(serverPlayer, self);
+                        ShimmerTransmutationTrigger.INSTANCE.trigger(serverPlayer, self);
                     }
                 }
             }

@@ -50,13 +50,12 @@ public enum BackgroundLayer {
                 float g = color[1];
                 float b = color[2];
                 float a = color[3];
-                builder.vertex(matrix4f, minX, minY, 0).color(r, g, b, 0);
-                builder.vertex(matrix4f, minX, maxY, 0).color(r, g, b, a);
-                builder.vertex(matrix4f, maxX, maxY, 0).color(r, g, b, a);
-                builder.vertex(matrix4f, maxX, minY, 0).color(r, g, b, 0);
+                builder.vertex(matrix4f, minX, minY, 0).color(r, g, b, 0).endVertex();
+                builder.vertex(matrix4f, minX, maxY, 0).color(r, g, b, a).endVertex();
+                builder.vertex(matrix4f, maxX, maxY, 0).color(r, g, b, a).endVertex();
+                builder.vertex(matrix4f, maxX, minY, 0).color(r, g, b, 0).endVertex();
                 BufferUploader.drawWithShader(builder.end());
                 poseStack.popPose();
-                RenderSystem.setShaderColor(1, 1, 1, 1);
                 if (shader != null) {
                     RenderSystem.setShader(() -> shader);
                 }

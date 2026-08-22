@@ -8,7 +8,7 @@ public abstract class AbstractManaEnchantment extends Enchantment {
     private final int maxLevel;
 
     public AbstractManaEnchantment(EnchantmentCategory category, EquipmentSlot[] applicableSlots, int maxLevel) {
-        super(Rarity.UNCOMMON, category, applicableSlots);
+        super(Rarity.VERY_RARE, category, applicableSlots);
         this.maxLevel = maxLevel;
     }
 

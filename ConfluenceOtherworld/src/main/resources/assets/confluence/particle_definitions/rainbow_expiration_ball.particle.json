@@ -23,10 +23,6 @@
 			}
 		},
 		"components": {
-			"minecraft:emitter_local_space": {
-				"position": true,
-				"rotation": false
-			},
 			"minecraft:emitter_rate_instant": {
 				"num_particles": 100
 			},

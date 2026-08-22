@@ -1,6 +1,7 @@
 package org.confluence.mod;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +20,7 @@ import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.client.event.ModClientEvents;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.event.ItemGroupEvents;
 import org.confluence.mod.common.event.ModEvents;
@@ -79,7 +81,7 @@ public final class Confluence {
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
         ModEnchantments.ENCHANTMENTS.register(eventBus);
-        ModAdvancements.init();
+        CriteriaTriggers.register(ShimmerTransmutationTrigger.INSTANCE);
 
         ModCustomRegistries.register(eventBus);
         TFReferences.init();

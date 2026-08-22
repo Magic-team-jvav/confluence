@@ -119,6 +119,7 @@ public class AnglerNPC extends BaseNPC {
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             if (!isWakeUp()) {
+                initName();
                 setWakeUp(true);
                 NPCSpawner.Region newRegion = NPCSpawner.getNpcSpawnRegion(serverPlayer);
                 NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, getRegion(), newRegion);
@@ -126,6 +127,10 @@ public class AnglerNPC extends BaseNPC {
                 Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, ItemStack.EMPTY));
                 return InteractionResult.sidedSuccess(level().isClientSide);
             }
+            initName();
+            InteractionResult commonResult = handleCommonInteraction(serverPlayer, hand);
+            if (commonResult != null) return commonResult;
+            recordInteraction(serverPlayer);
 
             ServerLevel serverLevel = (ServerLevel) level();
             AnglerData.INSTANCE.refreshIfNeeded(serverLevel);

@@ -54,7 +54,10 @@ legacyForge {
             ])
         }
         configureEach {
-            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            systemProperties.putAll([
+                    'forge.logging.markers'    : 'REGISTRIES',
+                    'geckolib.disable_examples': 'true'
+            ])
             logLevel = org.slf4j.event.Level.DEBUG
             jvmArguments.addAll([
                     // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
@@ -193,11 +196,11 @@ dependencies {
     modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     modCompileOnly("com.eliotlash.mclib:mclib:20")
 
-    modImplementation("org.mesdag:ParticleStorm:${particle_storm_version}-forge")
-    jarJar("org.mesdag:ParticleStorm:${particle_storm_version}-forge")
+    modImplementation("org.mesdag:ParticleStorm-forge-${minecraft_version}:${particlestorm_version}")
+    jarJar("org.mesdag:ParticleStorm-forge-${minecraft_version}:${particlestorm_version}")
 
-    modImplementation("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}-forge")
-    jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}-forge")
+    modImplementation("org.mesdag:ThreeDimensionParticle-forge-${minecraft_version}:${thr_dim_particle_version}")
+    jarJar("org.mesdag:ThreeDimensionParticle-forge-${minecraft_version}:${thr_dim_particle_version}")
 
     modImplementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
@@ -237,13 +240,10 @@ tasks.withType(ProcessResources).configureEach {
             mod_version            : mod_version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
-            curios_version          : curios_version,
-            terrablender_version    : terrablender_version,
-            geckolib_version        : geckolib_version,
-            particle_storm_version  : particle_storm_version,
-            thr_dim_particle_version: thr_dim_particle_version,
-            the_trackers_version    : the_trackers_version,
-            portlib_version         : portlib_version
+            curios_version         : curios_version,
+            terrablender_version   : terrablender_version,
+            geckolib_version       : geckolib_version,
+            portlib_version        : portlib_version
     ]
     inputs.properties replaceProperties
 

@@ -19,8 +19,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 独眼巨鹿用于惩罚高处目标的暗影之手。
 ///
-/// <p>方向在生成时锁定，前十 tick 负责预警，随后十四 tick 快速突进，
-/// 最后减速消散。它不会在飞行途中重新索敌，因此玩家仍可通过移动躲避。</p>
+/// 方向在生成时锁定，前十 tick 负责预警，随后十四 tick 快速突进，
+/// 最后减速消散。它不会在飞行途中重新索敌，因此玩家仍可通过移动躲避。
 public final class DeerclopsShadowHandProjectile extends StraightMonsterProjectile implements GeoEntity {
     private static final EntityDataAccessor<Vector3f> DATA_ATTACK_DIRECTION = SynchedEntityData.defineId(DeerclopsShadowHandProjectile.class, EntityDataSerializers.VECTOR3);
     private static final int LIFETIME = 40;

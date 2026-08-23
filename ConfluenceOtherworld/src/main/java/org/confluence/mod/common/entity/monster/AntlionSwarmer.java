@@ -20,9 +20,9 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 蚁狮蜂及巨型蚁狮蜂共用的游走—冲刺实现。
 ///
-/// <p>发现玩家后先保持三维游走，再锁定一次目标方向进行直线冲刺；玩家在冲刺开始后
+/// 发现玩家后先保持三维游走，再锁定一次目标方向进行直线冲刺；玩家在冲刺开始后
 /// 横向躲避不会让实体瞬间转弯。碰撞或阶段结束会返回游走状态。两个注册变种共享行为
-/// 和动画资源，仅由注册尺寸与属性表表达体型、强度差异。</p>
+/// 和动画资源，仅由注册尺寸与属性表表达体型、强度差异。
 public class AntlionSwarmer extends BaseFlyingMonster {
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
     private final WanderDashCycleAction combatCycle;

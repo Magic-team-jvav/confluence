@@ -71,8 +71,8 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
     /// 恶魔眼体型决定受击后的位移幅度。
     ///
-    /// <p>普通体型使用两倍击退，大型体型使用一点五倍击退；倍率先作用于原始强度，
-    /// 再交给原版击退公式处理，保持伤害来源、附魔和其他模组施加的击退语义。</p>
+    /// 普通体型使用两倍击退，大型体型使用一点五倍击退；倍率先作用于原始强度，
+    /// 再交给原版击退公式处理，保持伤害来源、附魔和其他模组施加的击退语义。
     @Override
     public void knockback(double strength, double x, double z) {
         super.knockback(strength * (getVariant().isLarge() ? 1.5 : 2.0),
@@ -253,7 +253,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
         /// 按节日状态选择自然生成变种。
         ///
-        /// <p>万圣节期间只生成猫头鹰和太空船外观，其余日期只从十二种常规恶魔眼中选择。</p>
+        /// 万圣节期间只生成猫头鹰和太空船外观，其余日期只从十二种常规恶魔眼中选择。
         static Variant random(RandomSource random, boolean halloween) {
             if (halloween) {
                 return random.nextBoolean() ? OWL : SPACESHIP;

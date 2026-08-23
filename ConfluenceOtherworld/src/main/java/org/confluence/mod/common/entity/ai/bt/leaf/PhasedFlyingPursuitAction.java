@@ -9,10 +9,10 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 按周期逐步增强追击力度的飞行行为。
 ///
-/// <p>初始阶段先蓄势，再只对较远目标缓慢接近，最后进入不受距离限制的强追阶段。
+/// 初始阶段先蓄势，再只对较远目标缓慢接近，最后进入不受距离限制的强追阶段。
 /// 强追时如果当前速度方向与目标方向偏差过大，则重新开始蓄势，避免高速实体瞬间折返。
 /// 强追不会因为计时降到零而自行结束；命中目标的实体可以调用
-/// {@link #resetCycle()} 主动开启下一轮。</p>
+/// {@link #resetCycle()} 主动开启下一轮。
 public final class PhasedFlyingPursuitAction extends BTNode {
     private final PathfinderMob mob;
     private final int cycleTicks;

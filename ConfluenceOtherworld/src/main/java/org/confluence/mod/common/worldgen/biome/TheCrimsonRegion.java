@@ -23,8 +23,8 @@ import static terrablender.api.ParameterUtils.Weirdness;
 
 /// 血腥之地的主世界噪声区域。
 ///
-/// <p>它覆盖偏暖到炎热、内陆、地表至地下的大范围湿度组合，但只接管第 4—5 档侵蚀度。
-/// 这使血腥之地与腐化之地在参数空间中保持不同形状，而不是单纯随机替换任意原版群系。</p>
+/// 它覆盖偏暖到炎热、内陆、地表至地下的大范围湿度组合，但只接管第 4—5 档侵蚀度。
+/// 这使血腥之地与腐化之地在参数空间中保持不同形状，而不是单纯随机替换任意原版群系。
 public final class TheCrimsonRegion extends Region {
     public TheCrimsonRegion(ResourceLocation name, int weight) {
         super(name, RegionType.OVERWORLD, weight);

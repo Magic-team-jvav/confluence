@@ -16,9 +16,9 @@ import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 
 /// 哥布林弓箭手。
 ///
-/// <p>持弓时使用与 1.21 一致的拉弓、瞄准、难度冷却和射后走位；武器被替换后自动
+/// 持弓时使用与 1.21 一致的拉弓、瞄准、难度冷却和射后走位；武器被替换后自动
 /// 回退到人形怪物的近战追击。两条分支共用现有行为树，不需要在装备变化时重新注册
-/// 原版目标。</p>
+/// 原版目标。
 public class GoblinArcher extends GoblinMonster {
     public GoblinArcher(EntityType<? extends GoblinArcher> type, Level level) {
         super(type, level, Items.BOW.getDefaultInstance(), LandAnimationProfile.NONE);

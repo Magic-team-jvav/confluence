@@ -22,13 +22,13 @@ import java.util.Set;
 
 /// 生物定义的数据包重载器，读取 {@code data/<namespace>/entity_definition/*.json}。
 ///
-/// <p>监听器通过 PortLib 的通用重载事件安装，因此 Forge 1.20.1 与后续 1.21 同步侧共享相同的数据目录语义。
+/// 监听器通过 PortLib 的通用重载事件安装，因此 Forge 1.20.1 与后续 1.21 同步侧共享相同的数据目录语义。
 /// KubeJS 的 {@code kubejs/data} 本身就是数据包来源，因此也会经过同一条加载链，不需要专用分支。
-/// 每轮重载先构造完整的新映射，再以不可变快照一次性替换，避免服务器线程读取到半成品。</p>
+/// 每轮重载先构造完整的新映射，再以不可变快照一次性替换，避免服务器线程读取到半成品。
 ///
-/// <p>文件的资源位置必须与目标实体注册 ID 完全一致。例如
+/// 文件的资源位置必须与目标实体注册 ID 完全一致。例如
 /// {@code kubejs/data/confluence/entity_definition/face_monster.json}
-/// 对应 {@code confluence:face_monster}。若要覆盖其他模组实体，则将目录中的命名空间换成目标模组 ID。</p>
+/// 对应 {@code confluence:face_monster}。若要覆盖其他模组实体，则将目录中的命名空间换成目标模组 ID。
 public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadListener {
     private static final Set<String> ATTRIBUTE_FIELDS = Set.of("max_health", "attack_damage", "armor", "movement_speed", "follow_range", "knockback_resistance");
     private static final Set<String> BEHAVIOR_FIELDS = Set.of(
@@ -50,8 +50,8 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
 
     /// 将定义中的属性基础值应用到新建生物。
     ///
-    /// <p>若实体应用前处于满血，则最大生命变化后继续保持满血；否则只在旧生命超过新上限时截断，
-    /// 防止重载或构造阶段意外治疗受伤实体。</p>
+    /// 若实体应用前处于满血，则最大生命变化后继续保持满血；否则只在旧生命超过新上限时截断，
+    /// 防止重载或构造阶段意外治疗受伤实体。
     public static void applyAttributes(Mob mob) {
         CreatureDefinition.AttributeOverrides overrides = get(mob.getType()).attributes();
         float oldHealth = mob.getHealth();

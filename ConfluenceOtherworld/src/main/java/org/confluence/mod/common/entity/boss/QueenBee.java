@@ -33,13 +33,13 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 蜂王 Boss。
 ///
-/// <p>战斗流程由服务端状态机统一推进：初次出现、短暂悬停、召唤黄蜂、连续发射毒刺，
+/// 战斗流程由服务端状态机统一推进：初次出现、短暂悬停、召唤黄蜂、连续发射毒刺，
 /// 随后完成四轮“调整位置—蓄力—水平冲刺”。冲刺方向只在蓄力结束时计算一次，
-/// 因而不会在冲刺途中自动追踪或突然转向。客户端只读取同步状态播放动画，不参与攻击判定。</p>
+/// 因而不会在冲刺途中自动追踪或突然转向。客户端只读取同步状态播放动画，不参与攻击判定。
 ///
-/// <p>蜂王最多保有十只直属小黄蜂。上限依据明确的所有权关系统计，不会误计附近其他蜂王的
+/// 蜂王最多保有十只直属小黄蜂。上限依据明确的所有权关系统计，不会误计附近其他蜂王的
 /// 随从；重复召唤和难度提高只能更快补足空位，不能突破上限。蜂王离开丛林后进入愤怒状态，
-/// 专家及以上难度的冲刺速度和毒素强度随之提高。</p>
+/// 专家及以上难度的冲刺速度和毒素强度随之提高。
 public class QueenBee extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(QueenBee.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_ANGRY = SynchedEntityData.defineId(QueenBee.class, EntityDataSerializers.BOOLEAN);

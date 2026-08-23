@@ -34,12 +34,12 @@ import java.util.*;
 
 /// 克苏鲁之脑及其两阶段战斗控制器。
 ///
-/// <p>第一阶段会分批召唤二十只视神经元。Boss 维护每只神经元的精确 UUID、编队位置和出击节奏，
+/// 第一阶段会分批召唤二十只视神经元。Boss 维护每只神经元的精确 UUID、编队位置和出击节奏，
 /// 本体在所有神经元被击败前不可受伤。神经元不会自主索敌，只有处于待命状态的个体才会接受 Boss
-/// 发出的攻击命令。第二阶段才由本体执行瞬移、冲刺与追击行为。</p>
+/// 发出的攻击命令。第二阶段才由本体执行瞬移、冲刺与追击行为。
 ///
-/// <p>神经元是可独立存档的实体，因此阶段推进不能只依赖附近实体数量。权威 UUID 集合会持久化；
-/// 子实体在 Boss 区块卸载期间死亡时通过世界账本回报，Boss 重新加载后再统一结算。</p>
+/// 神经元是可独立存档的实体，因此阶段推进不能只依赖附近实体数量。权威 UUID 集合会持久化；
+/// 子实体在 Boss 区块卸载期间死亡时通过世界账本回报，Boss 重新加载后再统一结算。
 public class BrainOfCthulhu extends BaseBoss {
     private static final RawAnimation CLOSED = RawAnimation.begin().thenLoop("close");
     private static final RawAnimation OPEN = RawAnimation.begin().thenPlay("to_open").thenLoop("open");
@@ -428,8 +428,8 @@ public class BrainOfCthulhu extends BaseBoss {
 
     /// 保证第二阶段始终存在三个不同槽位的镜像幻象。
     ///
-    /// <p>幻象不写入区块存档，因此本体从存档恢复、幻象被外部命令移除或实体生成暂时失败时，
-    /// 都由这里按槽位补齐。已有幻象会先从本体的部件列表中恢复引用，避免重复生成。</p>
+    /// 幻象不写入区块存档，因此本体从存档恢复、幻象被外部命令移除或实体生成暂时失败时，
+    /// 都由这里按槽位补齐。已有幻象会先从本体的部件列表中恢复引用，避免重复生成。
     private void ensureIllusions() {
         if (!phase2 || !(level() instanceof ServerLevel serverLevel)) {
             return;
@@ -544,10 +544,10 @@ public class BrainOfCthulhu extends BaseBoss {
 
     /// 第一阶段 Boss 条使用固定的遭遇总生命上限。
     ///
-    /// <p>神经元死亡后只能减少当前生命，不能同时从最大生命中移除；否则每击杀一只神经元，
+    /// 神经元死亡后只能减少当前生命，不能同时从最大生命中移除；否则每击杀一只神经元，
     /// 分母也随之缩小，Boss 条就会错误回升。仍被追踪但暂未加载的神经元按满生命计入当前值，
     /// 避免区块短暂卸载被误判为已经击败；开场尚未生成的神经元也预占完整生命，防止召唤阶段
-    /// Boss 条从半血反向增长。</p>
+    /// Boss 条从半血反向增长。
     public float getEncounterProgress() {
         if (phase2) return getHealth() / getMaxHealth();
         List<VisualNeuron> loaded = findOwnedLoadedNeurons();

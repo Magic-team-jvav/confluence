@@ -27,8 +27,8 @@ import software.bernie.geckolib.core.object.PlayState;
 
 /// 能攀爬墙面并高速贴近目标的沙贼。
 ///
-/// <p>攀爬标记由服务端根据水平碰撞更新并同步，移动属性则与 1.21 实体的实际数值对齐。
-/// 这保留了蜘蛛式地形通过能力，同时继续使用本项目统一的行为树处理追击和近战。</p>
+/// 攀爬标记由服务端根据水平碰撞更新并同步，移动属性则与 1.21 实体的实际数值对齐。
+/// 这保留了蜘蛛式地形通过能力，同时继续使用本项目统一的行为树处理追击和近战。
 public class SandPoacher extends BaseMonster {
     private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(SandPoacher.class, EntityDataSerializers.BYTE);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");

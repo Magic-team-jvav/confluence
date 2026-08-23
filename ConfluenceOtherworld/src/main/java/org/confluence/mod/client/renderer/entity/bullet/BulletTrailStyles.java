@@ -6,8 +6,8 @@ import java.util.Map;
 
 /// Visual language for the ammunition families in TerraGuns.
 ///
-/// <p>The textures are white masks, so the existing per-ammo trail colors can
-/// tint them without requiring a separate PNG for every bullet.</p>
+/// The textures are white masks, so the existing per-ammo trail colors can
+/// tint them without requiring a separate PNG for every bullet.
 final class BulletTrailStyles {
     private static final BulletTrailStyle STANDARD = style("trace_01", "flare_01", 0.12F, 0.008F, 0.10F, 0.92F, 20, true);
     private static final BulletTrailStyle ENERGY = style("trace_05", "flare_01", 0.15F, 0.012F, 0.12F, 0.96F, 20, true);

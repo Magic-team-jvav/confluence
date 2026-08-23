@@ -14,8 +14,8 @@ import org.confluence.mod.common.entity.projectile.HostileDemonScytheProjectile;
 
 /// 生物恶魔镰刀的客户端渲染器。
 ///
-/// <p>与玩家武器弹幕共享模型和贴图，但读取各自独立的旋转状态，
-/// 从而不让客户端表现反向耦合玩家法力弹幕的运行时实现。</p>
+/// 与玩家武器弹幕共享模型和贴图，但读取各自独立的旋转状态，
+/// 从而不让客户端表现反向耦合玩家法力弹幕的运行时实现。
 public final class HostileDemonScytheProjectileRenderer extends EntityRenderer<HostileDemonScytheProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/demon_scythe_projectile.png");
     private final DemonScytheProjectileModel model;

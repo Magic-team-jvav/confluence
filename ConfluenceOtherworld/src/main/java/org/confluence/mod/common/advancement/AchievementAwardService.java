@@ -14,10 +14,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /// 服务端成就授予的唯一入口。
 ///
-/// <p>调用方只需要提供成就路径，不需要知道数据文件使用了哪些判据名。服务会读取原版
+/// 调用方只需要提供成就路径，不需要知道数据文件使用了哪些判据名。服务会读取原版
 /// {@link AdvancementProgress}，授予全部尚未完成的判据，并以原版玩家成就进度作为唯一完成状态。
 /// 找不到数据生成的成就时不会写入任何替代完成标记，避免玩家永久进入“数据称已完成、实际没有
-/// 成就”的不一致状态。</p>
+/// 成就”的不一致状态。
 public final class AchievementAwardService {
     private static final Set<ResourceLocation> REPORTED_MISSING_ADVANCEMENTS = ConcurrentHashMap.newKeySet();
 

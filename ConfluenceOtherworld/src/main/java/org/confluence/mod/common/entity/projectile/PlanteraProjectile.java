@@ -14,8 +14,8 @@ import org.joml.Vector3f;
 
 /// 世纪之花三类基础弹幕的共享实现。
 ///
-/// <p>种子和孢子保持发射瞬间的直线方向；刺球受轻微重力影响，并可在方块表面
-/// 有限次数反弹。三种注册类型共享碰撞与伤害流程，但不会通过运行时字段混淆表现。</p>
+/// 种子和孢子保持发射瞬间的直线方向；刺球受轻微重力影响，并可在方块表面
+/// 有限次数反弹。三种注册类型共享碰撞与伤害流程，但不会通过运行时字段混淆表现。
 public final class PlanteraProjectile extends StraightMonsterProjectile {
     private final Variant variant;
     private int remainingBounces = 4;

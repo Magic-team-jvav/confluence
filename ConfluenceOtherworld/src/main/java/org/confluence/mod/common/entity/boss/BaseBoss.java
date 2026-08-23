@@ -41,14 +41,14 @@ import java.util.*;
 
 /// 所有可独立结束战斗的 Boss 本体基类。
 ///
-/// <p>Boss 本体是生命值、Boss 条、行为树和子实体生命周期的服务端权威。客户端只接收正常的
+/// Boss 本体是生命值、Boss 条、行为树和子实体生命周期的服务端权威。客户端只接收正常的
 /// 实体同步与事件，不参与玩家选择或撤离计时。手、机械臂、触手等临时部件登记在
-/// {@link #subEntities} 中，本体销毁时会统一级联清理；普通区块卸载则保留可存档从属的恢复机会。</p>
+/// {@link #subEntities} 中，本体销毁时会统一级联清理；普通区块卸载则保留可存档从属的恢复机会。
 ///
-/// <p>战斗是否仍在继续只由合格玩家决定，而不是由铁傀儡等任意存活目标决定。当前玩家死亡、
+/// 战斗是否仍在继续只由合格玩家决定，而不是由铁傀儡等任意存活目标决定。当前玩家死亡、
 /// 切换到创造/旁观、离开维度或离开战斗范围时，服务器立即在本维度追踪范围内选择仇恨值最高
 /// 的其他存活玩家。多人战中只要仍有一名合格玩家，撤离计时就会清零；全部玩家离场后 Boss
-/// 脱战 {@value #DISENGAGE_TICKS} tick，随后无死亡奖励、无击杀消息地消失。</p>
+/// 脱战 {@value #DISENGAGE_TICKS} tick，随后无死亡奖励、无击杀消息地消失。
 public abstract class BaseBoss extends BaseMonster implements Boss {
     protected final ServerBossEvent bossEvent;
     protected final Blackboard blackboard = new Blackboard();
@@ -123,8 +123,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 返回生成时玩家数量对应的最大生命倍率。
     ///
-    /// <p>默认保持 1.21 侧按玩家数量线性放大的行为；需要复现原作特殊多人公式的 Boss
-    /// 可以单独覆写。传入值已经限制在一至八人。</p>
+    /// 默认保持 1.21 侧按玩家数量线性放大的行为；需要复现原作特殊多人公式的 Boss
+    /// 可以单独覆写。传入值已经限制在一至八人。
     double getBossHealthPlayerMultiplier(int playerCount) {
         return playerCount;
     }
@@ -168,8 +168,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 当前是否正由本体级联移除子实体。
     ///
-    /// <p>可破坏的从属生物会在正常死亡时回报本体；Boss 撤离时的级联移除不是“子实体被玩家
-    /// 击败”，不得写入死亡账本或触发阶段推进。</p>
+    /// 可破坏的从属生物会在正常死亡时回报本体；Boss 撤离时的级联移除不是“子实体被玩家
+    /// 击败”，不得写入死亡账本或触发阶段推进。
     final boolean isRemovingSubEntities() {
         return removingSubEntities;
     }
@@ -186,8 +186,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 当前世界是否启用了“受够了”特殊种子规则。
     ///
-    /// <p>1.21 侧通过 TerraEntity 的工具方法再由本体 Mixin 接入世界种子；合并到 1.20 后
-    /// 直接读取同一个本体种子标志，避免重新引入只为一次查询服务的桥接层。</p>
+    /// 1.21 侧通过 TerraEntity 的工具方法再由本体 Mixin 接入世界种子；合并到 1.20 后
+    /// 直接读取同一个本体种子标志，避免重新引入只为一次查询服务的桥接层。
     protected boolean isFtw() {
         return level() instanceof ServerLevel serverLevel
                 && ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel);
@@ -263,9 +263,9 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 更新多人目标与脱战计时。该方法只在服务端调用。
     ///
-    /// <p>已有合格目标时保持仇恨稳定，不会因为另一名玩家仇恨值更高就每 tick 来回换目标；只有当前
+    /// 已有合格目标时保持仇恨稳定，不会因为另一名玩家仇恨值更高就每 tick 来回换目标；只有当前
     /// 目标失效时才选择追踪范围内仇恨值最高的替代玩家。没有替代者时立即清空目标，使行为树停止
-    /// 攻击，再进入宽限计时。</p>
+    /// 攻击，再进入宽限计时。
     private void updateCombatLifecycle(@Nullable LivingEntity targetBeforeAi) {
         LivingEntity currentTarget = targetBeforeAi != null ? targetBeforeAi : getTarget();
         Player combatPlayer = currentTarget instanceof Player player
@@ -289,8 +289,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 从本维度追踪范围内的在线玩家中寻找替代目标。
     ///
-    /// <p>只比较玩家的 AGGRO 属性；距离和奖励参与者登记都不影响排序。多个玩家并列最高值时，
-    /// 在并列集合内随机选择。</p>
+    /// 只比较玩家的 AGGRO 属性；距离和奖励参与者登记都不影响排序。多个玩家并列最高值时，
+    /// 在并列集合内随机选择。
     protected @Nullable Player findCombatPlayer() {
         return selectCombatPlayer(level().players());
     }
@@ -324,8 +324,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 由 Boss 召唤道具创建实体时，立即把使用者绑定到本次遭遇。
     ///
-    /// <p>自然生成的 Boss 仍然可以依靠附近玩家搜索接管战斗；召唤道具路径则必须显式登记召唤者，
-    /// 否则刚生成的 Boss 会短暂进入无目标分支，飞行 Boss 在客户端实测中会表现为沉底或贴地滑行。</p>
+    /// 自然生成的 Boss 仍然可以依靠附近玩家搜索接管战斗；召唤道具路径则必须显式登记召唤者，
+    /// 否则刚生成的 Boss 会短暂进入无目标分支，飞行 Boss 在客户端实测中会表现为沉底或贴地滑行。
     public final void initializeSummonedCombat(Player player) {
         registerCombatParticipant(player);
         setTarget(player);
@@ -346,9 +346,9 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 取得本场遭遇当前仍在线的参战玩家快照。
     ///
-    /// <p>返回值按照首次登记顺序生成且不可修改。玩家死亡、切换游戏模式或离开战斗半径不会
+    /// 返回值按照首次登记顺序生成且不可修改。玩家死亡、切换游戏模式或离开战斗半径不会
     /// 抹掉已经发生的参战事实；已经离线、离开 Boss 所在维度或从未登记过的玩家不会进入本次
-    /// 即时结算。调用方必须保存本次返回值完成整轮结算，不能在发放过程中反复读取。</p>
+    /// 即时结算。调用方必须保存本次返回值完成整轮结算，不能在发放过程中反复读取。
     public final List<ServerPlayer> getOnlineCombatParticipants() {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return List.of();
@@ -371,8 +371,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 尝试取得本场遭遇的死亡结算权。
     ///
-    /// <p>死亡事件、部件转发或外部联动可能在同一 tick 重复请求结算。只有第一次调用返回
-    /// {@code true}，后续调用不得再次生成奖励或推进击败记录。</p>
+    /// 死亡事件、部件转发或外部联动可能在同一 tick 重复请求结算。只有第一次调用返回
+    /// {@code true}，后续调用不得再次生成奖励或推进击败记录。
     public final boolean tryBeginDeathRewardSettlement() {
         if (deathRewardsSettled) return false;
         deathRewardsSettled = true;
@@ -409,9 +409,9 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 在目标周围寻找适合飞行 Boss 的传送点。
     ///
-    /// <p>这里不能使用世界高度图：高度图只返回整列最高表面，地下 Boss 会因此穿出洞穴或
+    /// 这里不能使用世界高度图：高度图只返回整列最高表面，地下 Boss 会因此穿出洞穴或
     /// 竞技场。候选点以目标当前高度为中心，并同时检查区块加载、实体碰撞和液体占用；
-    /// 找不到安全位置时返回 {@code null}，调用方应保持原位等待下一次尝试。</p>
+    /// 找不到安全位置时返回 {@code null}，调用方应保持原位等待下一次尝试。
     protected final @Nullable Vec3 findFlyingTeleportPosition(LivingEntity target, double minimumRadius, double maximumRadius, double verticalRadius, int attempts) {
         if (!(level() instanceof ServerLevel serverLevel)) return null;
         for (int attempt = 0; attempt < attempts; attempt++) {

@@ -13,13 +13,13 @@ import org.confluence.mod.mixed.IMinecraftServer;
 
 /// 自然生成使用的公共环境校验集合。
 ///
-/// <p>生物群系修饰器只负责把实体类型放入某个生物群系的候选表，真正生成前仍会经过这里注册的
+/// 生物群系修饰器只负责把实体类型放入某个生物群系的候选表，真正生成前仍会经过这里注册的
 /// 放置规则。因此高度、维度、昼夜、天气、视野和困难模式等硬约束必须集中在此处，不能只依赖
-/// JSON 中的权重或生物群系选择。</p>
+/// JSON 中的权重或生物群系选择。
 ///
-/// <p>各方法先施加泰拉瑞亚语义对应的额外门槛，再委托原版怪物或水生动物规则完成亮度、碰撞、
+/// 各方法先施加泰拉瑞亚语义对应的额外门槛，再委托原版怪物或水生动物规则完成亮度、碰撞、
 /// 流体等基础检查。这样可以复用原版兼容逻辑，同时保证 1.20.1 与 1.21.1 反向同步时只需比较
-/// 一套明确的生成语义。</p>
+/// 一套明确的生成语义。
 public final class SpawnPlacementChecks {
     private SpawnPlacementChecks() {}
 
@@ -100,8 +100,8 @@ public final class SpawnPlacementChecks {
 
     /// 执行所有敌对生物共用的原版基础放置检查，并按配置决定是否保留亮度门槛。
     ///
-    /// <p>具有额外昼夜、地形或进度条件的实体也必须在自身条件之后调用本方法，不能直接调用
-    /// {@link Monster#checkMonsterSpawnRules}，否则它们会绕过统一的亮度配置。</p>
+    /// 具有额外昼夜、地形或进度条件的实体也必须在自身条件之后调用本方法，不能直接调用
+    /// {@link Monster#checkMonsterSpawnRules}，否则它们会绕过统一的亮度配置。
     @SuppressWarnings("unchecked")
     public static boolean checkMonsterSpawnRules(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         // 忽略光照时仍调用原版 Mob 规则，保留碰撞、刷怪方块和世界边界等基础安全检查。

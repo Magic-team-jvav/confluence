@@ -399,9 +399,9 @@ public class HillOfFlesh extends BaseBoss {
 
     /// 对本次遭遇的每个参与者分别施加风暴牵引。
     ///
-    /// <p>牵引由血肉山实体执行，而不是把可变的 Boss 引用保存在全局效果单例中，因此
+    /// 牵引由血肉山实体执行，而不是把可变的 Boss 引用保存在全局效果单例中，因此
     /// 多个血肉山或多名玩家同时存在时不会互相覆盖目标。距离越远时牵引越弱，主要用于
-    /// 抑制持续向外逃离，同时保留玩家在主战斗带内调整位置的能力。</p>
+    /// 抑制持续向外逃离，同时保留玩家在主战斗带内调整位置的能力。
     void applyStormPull() {
         encounterEntities.removeIf(entity -> !entity.isAlive());
         for (LivingEntity entity : encounterEntities) {
@@ -536,8 +536,8 @@ public class HillOfFlesh extends BaseBoss {
 
     /// 在目标当前位置生成熔岩柱，并返回已经加入世界的实体。
     ///
-    /// <p>调用方需要继续配置表现或验证实例时，应直接使用返回值，避免在同一
-    /// tick 内重新扫描世界实体列表时受到区块实体列表刷新顺序影响。</p>
+    /// 调用方需要继续配置表现或验证实例时，应直接使用返回值，避免在同一
+    /// tick 内重新扫描世界实体列表时受到区块实体列表刷新顺序影响。
     @Nullable
     HillLavaPillarProjectile spawnLavaPillarEntityAt(LivingEntity target) {
         HillLavaPillarProjectile pillar = ModEntities.HILL_LAVA_PILLAR.get().create(level());

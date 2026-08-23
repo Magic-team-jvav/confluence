@@ -8,10 +8,10 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 驱动跳跳兽家族的定时起跳循环。
 ///
-/// <p>有目标时先持续转头 15 tick，播放蓄力动画并等待 10 tick，然后以 2 格/tick
+/// 有目标时先持续转头 15 tick，播放蓄力动画并等待 10 tick，然后以 2 格/tick
 /// 的水平冲量跃向当前朝向。无目标时先随机观察 20 tick，以 0.5 格/tick 做一次短跳，
 /// 落地前额外等待 30 tick 再开始下一轮。运动数值和时序与 1.21 的专用行为树一致，
-/// 但状态集中在单一节点内，避免通用近战树先把距离缩短后反而让跃击条件失效。</p>
+/// 但状态集中在单一节点内，避免通用近战树先把距离缩短后反而让跃击条件失效。
 public final class JumpingMonsterCycleAction extends BTNode {
     private static final int COMBAT_LOOK_TICKS = 15;
     private static final int IDLE_LOOK_TICKS = 20;

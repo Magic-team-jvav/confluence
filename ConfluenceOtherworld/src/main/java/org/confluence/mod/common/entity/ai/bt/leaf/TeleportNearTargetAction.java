@@ -11,9 +11,9 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 将地面生物移动到原版陆地随机算法给出的目标附近位置。
 ///
-/// <p>这段行为对应 1.21 侧法师类生物的传送循环：最多尝试指定次数，遇到第一个可用候选点就立即传送。
+/// 这段行为对应 1.21 侧法师类生物的传送循环：最多尝试指定次数，遇到第一个可用候选点就立即传送。
 /// {@link LandRandomPos} 负责按照陆地寻路条件选点，本节点只补充实际落点的区块与碰撞检查，
-/// 避免候选点在未加载区域或实体碰撞箱插进方块时造成实测中的错误传送。</p>
+/// 避免候选点在未加载区域或实体碰撞箱插进方块时造成实测中的错误传送。
 public class TeleportNearTargetAction extends BTNode {
     private final PathfinderMob mob;
     private final int horizontalRange;

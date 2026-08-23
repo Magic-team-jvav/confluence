@@ -20,8 +20,8 @@ import java.util.UUID;
 
 /// 独眼巨鹿近距离攻击形成的短时冰柱。
 ///
-/// <p>冰柱本身不移动，也不会因为接触方块而提前消失。实体只会被同一根冰柱
-/// 命中一次；碰撞高度随可见冰块逐步增长，避免画面尚未升起时提前伤到玩家。</p>
+/// 冰柱本身不移动，也不会因为接触方块而提前消失。实体只会被同一根冰柱
+/// 命中一次；碰撞高度随可见冰块逐步增长，避免画面尚未升起时提前伤到玩家。
 public final class DeerclopsIcePillarProjectile extends Projectile {
     private static final EntityDataAccessor<Vector3f> DATA_AXIS = SynchedEntityData.defineId(DeerclopsIcePillarProjectile.class, EntityDataSerializers.VECTOR3);
     private static final int LIFETIME = 40;

@@ -27,9 +27,9 @@ import java.util.List;
 
 /// 固定在地形表面、通过藤蔓伸缩接近目标的抓人草。
 ///
-/// <p>实体头部可以穿过方块，但根部一经生成便不会移动。无目标时头部在根部前方缓慢摆动；
+/// 实体头部可以穿过方块，但根部一经生成便不会移动。无目标时头部在根部前方缓慢摆动；
 /// 发现目标后会朝目标伸长，并受最大藤蔓长度限制。根部与静止方向均同步并保存，因而客户端
-/// 渲染、区块重载和服务端命中判定始终使用同一组数据。</p>
+/// 渲染、区块重载和服务端命中判定始终使用同一组数据。
 public class Snatcher extends BaseMonster {
     private static final String ANCHORED_TAG = "Anchored";
     private static final String ANCHOR_X_TAG = "AnchorX";

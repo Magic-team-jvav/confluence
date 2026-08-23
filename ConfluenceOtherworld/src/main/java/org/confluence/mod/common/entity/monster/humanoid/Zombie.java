@@ -39,12 +39,12 @@ import org.jetbrains.annotations.Nullable;
 
 /// 拥有同步外观和属性变体的泰拉瑞亚僵尸。
 ///
-/// <p>服务端在自然生成时选择变体，并将枚举序号通过实体数据同步给客户端；存档使用稳定的
+/// 服务端在自然生成时选择变体，并将枚举序号通过实体数据同步给客户端；存档使用稳定的
 /// 字符串编解码，避免枚举顺序改变后把旧索引解释为另一种外观。变体同时决定基础生命、攻击、
-/// 护甲、渲染色与缩放，加载存档或接收生成数据后都通过 {@link #setVariant(Variant)} 统一应用。</p>
+/// 护甲、渲染色与缩放，加载存档或接收生成数据后都通过 {@link #setVariant(Variant)} 统一应用。
 ///
-/// <p>当前十种变体共用已迁移的血腥僵尸模型、纹理和动画，客户端差异由颜色与缩放表达。
-/// 资源方法返回的是 GeckoLib 可直接读取的完整文件路径，后续补入独立素材时只需修改枚举映射。</p>
+/// 当前十种变体共用已迁移的血腥僵尸模型、纹理和动画，客户端差异由颜色与缩放表达。
+/// 资源方法返回的是 GeckoLib 可直接读取的完整文件路径，后续补入独立素材时只需修改枚举映射。
 public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.Variant> {
     public static final String VARIANT_KEY = "Variant";
     private static final EntityDataAccessor<Integer> DATA_VARIANT =

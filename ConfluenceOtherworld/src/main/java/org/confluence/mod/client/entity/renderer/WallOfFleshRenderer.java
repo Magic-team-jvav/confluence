@@ -21,8 +21,8 @@ import java.util.List;
 
 /// 根据血肉墙的运行时部件建立完整墙面模型。
 ///
-/// <p>资源中的五种血肉格、眼睛和嘴只是模板，本渲染器把模板复制到墙面网格与服务端
-/// 已生成的部件位置。碰撞与攻击仍由对应部件实体负责，渲染骨骼不参与任何服务端判定。</p>
+/// 资源中的五种血肉格、眼睛和嘴只是模板，本渲染器把模板复制到墙面网格与服务端
+/// 已生成的部件位置。碰撞与攻击仍由对应部件实体负责，渲染骨骼不参与任何服务端判定。
 public final class WallOfFleshRenderer extends BossGeoRenderer<WallOfFlesh> {
     private static final String[] WALL_VARIANTS = {
             "bone0", "bone1", "bone2", "bone3", "bone4"

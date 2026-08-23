@@ -20,9 +20,9 @@ import org.jetbrains.annotations.Nullable;
 
 /// 惊弓专用箭矢，会沿飞行路径驱散附近的飞行生物。
 ///
-/// <p>驱离完全由服务端计算。箭矢飞行时提供较弱的持续推力，命中实体或方块时产生一次
+/// 驱离完全由服务端计算。箭矢飞行时提供较弱的持续推力，命中实体或方块时产生一次
 /// 范围更大的冲击；客户端只接收实体速度和效果同步，不能指定受影响目标。直接命中的
-/// 飞行生物仍然承受 1.5 倍箭矢伤害。</p>
+/// 飞行生物仍然承受 1.5 倍箭矢伤害。
 public class DriveAwayArrowEntity extends BaseArrowEntity {
     private static final double TRAIL_RADIUS = 3.0;
     private static final double TRAIL_SPEED = 1.3;

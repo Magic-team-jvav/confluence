@@ -10,7 +10,7 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 
 public class LightPetItems {
     /// 光宠物物品注册。
-    /// <p>当前阶段只保留与 1.21 侧一致的物品与标签接入，实际跟随光源实体会在光宠系统统一迁移时补齐。</p>
+    /// 当前阶段只保留与 1.21 侧一致的物品与标签接入，实际跟随光源实体会在光宠系统统一迁移时补齐。
     public static void init() {}
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);

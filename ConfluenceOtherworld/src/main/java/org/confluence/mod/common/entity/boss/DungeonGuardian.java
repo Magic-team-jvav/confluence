@@ -21,12 +21,12 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 
 /// 地牢守卫。
 ///
-/// <p>该实体不是常规 Boss 战，而是阻止玩家过早深入地牢的追杀单位。它不会显示 Boss 条、
+/// 该实体不是常规 Boss 战，而是阻止玩家过早深入地牢的追杀单位。它不会显示 Boss 条、
 /// 不发送 Boss 战败消息、不保存到区块，并以固定速度直接追向玩家。生成后的五十 tick 内若
-/// 始终找不到存活玩家便立即撤销，避免触发方离场后留下无目标守卫。</p>
+/// 始终找不到存活玩家便立即撤销，避免触发方离场后留下无目标守卫。
 ///
-/// <p>接触伤害使用独立伤害类型并绕过护甲，不能用普通生物攻击再依赖夸张攻击数值间接模拟；
-/// 溺水伤害被明确忽略。行为树只保留永久等待节点，防止通用冲锋动作改写追击速度。</p>
+/// 接触伤害使用独立伤害类型并绕过护甲，不能用普通生物攻击再依赖夸张攻击数值间接模拟；
+/// 溺水伤害被明确忽略。行为树只保留永久等待节点，防止通用冲锋动作改写追击速度。
 public class DungeonGuardian extends BaseBoss {
     private static final int INITIAL_PLAYER_CHECK_TICKS = 50;
     private static final double PURSUIT_SPEED = 0.80;

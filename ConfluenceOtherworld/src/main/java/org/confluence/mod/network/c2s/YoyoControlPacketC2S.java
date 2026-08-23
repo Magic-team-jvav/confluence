@@ -12,7 +12,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// 悠悠球左键控制包。
 ///
-/// <p>客户端只提交按下、松开或一格距离调整；实体、目标、伤害和最大射程全部由服务端解析。</p>
+/// 客户端只提交按下、松开或一格距离调整；实体、目标、伤害和最大射程全部由服务端解析。
 public record YoyoControlPacketC2S(Action action, int amount)
         implements IPortPacket.C2S {
     public enum Action {

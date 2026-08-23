@@ -40,7 +40,7 @@ public final class ArrowInBowRenderer {
          *  原理：1. 若初始off = null，使用默认参数 + abc。
          *          改变参数abc，热重载测试，将abc参数put offsets中。
          *          下次游戏off！=null，使用修改后的参数。
-         * <p>
+         *
          *       2. 若初始off ！= null，使用原始参数 + abc。
          *          改变参数abc，热重载测试，将abc参数加到offsets中。
          *          下次游戏off ！= null，使用修改后的参数。

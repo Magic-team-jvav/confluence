@@ -12,8 +12,8 @@ import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
 /// 史莱姆尖刺弹丸的客户端模型。
 ///
-/// <p>网格与 1.21.1 侧的尖刺保持一致，模型层只在客户端注册，避免公共实体类引用
-/// 客户端类型而导致专用服务器加载失败。</p>
+/// 网格与 1.21.1 侧的尖刺保持一致，模型层只在客户端注册，避免公共实体类引用
+/// 客户端类型而导致专用服务器加载失败。
 public class SlimeSpikeProjectileModel extends EntityModel<SlimeSpikeEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("slime_spike_projectile"), "main");
     private final ModelPart root;

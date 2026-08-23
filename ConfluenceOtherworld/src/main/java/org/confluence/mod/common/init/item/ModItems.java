@@ -132,8 +132,8 @@ public final class ModItems {
     public static final PortDeferredItem<Item> MYSTERIOUS_SLATE = HIDDEN.register("mysterious_slate", () -> new Item(new Item.Properties()));
     /// 临时开放魂师界面的开发者物品。
     ///
-    /// <p>该物品不进入正常获取流程，仅用于隔离尚未完成的魂师界面。
-    /// 魂师体系正式接入玩家进度后，应移除界面门禁，而不是把它变成正式解锁条件。</p>
+    /// 该物品不进入正常获取流程，仅用于隔离尚未完成的魂师界面。
+    /// 魂师体系正式接入玩家进度后，应移除界面门禁，而不是把它变成正式解锁条件。
     public static final PortDeferredItem<Item> TEST_SOUL_GUI = HIDDEN.registerSimpleItem("test_soul_gui", new Item.Properties().stacksTo(1));
 
     public static final PortDeferredItem<BestiaryItem> BESTIARY = HIDDEN.register("bestiary", BestiaryItem::new);

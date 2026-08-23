@@ -27,12 +27,12 @@ import software.bernie.geckolib.core.object.PlayState;
 
 /// 血爬虫的服务端行为实现。
 ///
-/// <p>血爬虫沿用普通近战怪物的行为树，但会把水平碰撞状态同步为攀爬标记，
+/// 血爬虫沿用普通近战怪物的行为树，但会把水平碰撞状态同步为攀爬标记，
 /// 从而像蜘蛛一样越过垂直表面。攀爬判断以服务端为准，客户端只读取同步结果，
-/// 避免多人游戏中各端根据局部碰撞状态产生不同的移动表现。</p>
+/// 避免多人游戏中各端根据局部碰撞状态产生不同的移动表现。
 ///
-/// <p>环境声、受伤声和死亡声都使用血爬虫自己的声音组，不能退回通用怪物声音；
-/// 这些声音同样是该生物身份的一部分。</p>
+/// 环境声、受伤声和死亡声都使用血爬虫自己的声音组，不能退回通用怪物声音；
+/// 这些声音同样是该生物身份的一部分。
 public class BloodCrawler extends BaseMonster {
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");

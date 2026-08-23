@@ -32,15 +32,15 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 克苏鲁之眼 Boss。
 ///
-/// <p>服务端显式状态机复现两阶段战斗：第一阶段在目标上方悬停并召唤仆从，
+/// 服务端显式状态机复现两阶段战斗：第一阶段在目标上方悬停并召唤仆从，
 /// 每轮完成三次定向冲刺；所有难度低于 50% 生命时
 /// 播放不可跳过的变身阶段并移除护甲，
 /// 再进入按当前生命和难度计算冲刺次数的第二阶段。白天离场优先级最高，会立即
-/// 清除目标并终止正在执行的悬停、变身或冲刺。</p>
+/// 清除目标并终止正在执行的悬停、变身或冲刺。
 ///
-/// <p>战斗状态和阶段通过实体数据同步，客户端动画不读取本地生命值猜测阶段。
+/// 战斗状态和阶段通过实体数据同步，客户端动画不读取本地生命值猜测阶段。
 /// 保存时保留当前循环位置和锁定的冲刺方向，世界重载不会把第二阶段错误恢复成
-/// 第一阶段，也不会在冲刺中途突然改为追踪玩家。</p>
+/// 第一阶段，也不会在冲刺中途突然改为追踪玩家。
 public class EyeOfCthulhu extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(EyeOfCthulhu.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STAGE = SynchedEntityData.defineId(EyeOfCthulhu.class, EntityDataSerializers.INT);
@@ -315,9 +315,9 @@ public class EyeOfCthulhu extends BaseBoss {
 
     /// 克苏鲁之眼在所有阶段都属于真正的飞行实体。
     ///
-    /// <p>不能只在构造器调用一次 {@link #setNoGravity(boolean)}：实体加入世界后的通用
+    /// 不能只在构造器调用一次 {@link #setNoGravity(boolean)}：实体加入世界后的通用
     /// 状态恢复、微光处理以及网络标志同步都可能重新写入该标志。1.21 侧同样通过覆盖
-    /// 此查询保持永久无重力，否则在水体中或没有合格目标时会逐渐沉底。</p>
+    /// 此查询保持永久无重力，否则在水体中或没有合格目标时会逐渐沉底。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -343,10 +343,10 @@ public class EyeOfCthulhu extends BaseBoss {
     /// 低血量专家冲刺再增加随机偏差，保持泰拉瑞亚狂暴阶段“更快但不精确”的特征。
     /// 将实体真实旋转同步到目标位置。
     ///
-    /// <p>克苏鲁之眼的 Geo 模型会读取实体的 {@code YRot/XRot} 来决定朝向和俯仰。
+    /// 克苏鲁之眼的 Geo 模型会读取实体的 {@code YRot/XRot} 来决定朝向和俯仰。
     /// 如果只设置 LookControl，服务端本 tick 计算出的悬停、蓄力和冲刺方向不会稳定写入同步旋转，
     /// 客户端就可能看到 Boss 贴地滑行、侧脸滑动或不正面朝向玩家。这里不改变速度、阶段时长、
-    /// 召唤物和伤害，只补齐渲染所依赖的朝向数据。</p>
+    /// 召唤物和伤害，只补齐渲染所依赖的朝向数据。
     private void faceTowards(Vec3 targetPosition, float maxYawChange, float maxPitchChange) {
         Vec3 direction = targetPosition.subtract(position());
         if (direction.lengthSqr() < 1.0E-6) {

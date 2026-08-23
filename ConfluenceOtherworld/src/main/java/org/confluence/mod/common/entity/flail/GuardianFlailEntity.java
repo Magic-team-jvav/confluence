@@ -23,8 +23,8 @@ import java.util.List;
 
 /// 守卫者链锤的实体实现。
 ///
-/// <p>锁定目标、攻击周期和普通/远古变体都属于当前实体，物品只负责通过组件选择实体类型。
-/// 目标实体 ID 使用原版同步数据传给客户端，因此不需要额外网络包或全局缓存。</p>
+/// 锁定目标、攻击周期和普通/远古变体都属于当前实体，物品只负责通过组件选择实体类型。
+/// 目标实体 ID 使用原版同步数据传给客户端，因此不需要额外网络包或全局缓存。
 public class GuardianFlailEntity extends BaseFlailEntity {
     private static final int ATTACK_INTERVAL = 40;
     private static final EntityDataAccessor<Integer> TARGET_ONE = SynchedEntityData.defineId(GuardianFlailEntity.class, EntityDataSerializers.INT);

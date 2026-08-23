@@ -25,8 +25,8 @@ import static org.confluence.mod.Confluence.MODID;
 
 /// 生成结构固定、能够由注册信息完整推导的方块状态和模型。
 ///
-/// <p>主资源目录中的手写 JSON 始终拥有优先权。随机变体、特殊旋转、自定义几何等复杂资源
-/// 不在这里重新描述，避免每增加一种复杂方块都继续扩充专用名单和分支。</p>
+/// 主资源目录中的手写 JSON 始终拥有优先权。随机变体、特殊旋转、自定义几何等复杂资源
+/// 不在这里重新描述，避免每增加一种复杂方块都继续扩充专用名单和分支。
 public final class ModBlockStateProvider extends BlockStateProvider {
     private final ExistingFileHelper existingFileHelper;
 

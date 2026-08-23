@@ -7,9 +7,9 @@ import org.confluence.mod.Confluence;
 
 /// 长矛衍生弹幕的纯客户端模型声明。
 ///
-/// <p>模型层和网格类型不得出现在公共实体类的字段或方法签名中，否则 Forge 专用服务端的
+/// 模型层和网格类型不得出现在公共实体类的字段或方法签名中，否则 Forge 专用服务端的
 /// DistCleaner 会在加载实体类时拒绝客户端类型。这里集中保存渲染元数据，公共实体只保留运动、
-/// 战斗状态和通用纹理标识。</p>
+/// 战斗状态和通用纹理标识。
 public final class SpearProjectileModels {
     public static final ModelLayerLocation STORM = new ModelLayerLocation(Confluence.asResource("storm_spear_shot_projectile"), "main");
     public static final ModelLayerLocation NORTH_POLE = new ModelLayerLocation(Confluence.asResource("north_pole_projectile"), "main");

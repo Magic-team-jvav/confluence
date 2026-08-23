@@ -16,8 +16,8 @@ import org.confluence.mod.common.entity.ai.bt.leaf.*;
 
 /// 地面远程战斗模板。
 ///
-/// <p>在专用弹幕美术资源移植期间，实体仍使用统一的距离控制与射击参数，
-/// 之后替换渲染资源不应改变服务端战斗逻辑。</p>
+/// 在专用弹幕美术资源移植期间，实体仍使用统一的距离控制与射击参数，
+/// 之后替换渲染资源不应改变服务端战斗逻辑。
 public abstract class RangedMonster extends BaseWarriorMonster {
     private final int shotCooldown;
     private final double shotMultiplier;

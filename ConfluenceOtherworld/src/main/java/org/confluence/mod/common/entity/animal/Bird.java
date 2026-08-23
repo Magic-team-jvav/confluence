@@ -45,9 +45,9 @@ import java.util.Iterator;
 
 /// 能够起飞、降落并在三维空间巡游的普通鸟类。
 ///
-/// <p>鸟类保留重力，因此停止飞行后会自然落地；飞行移动控制器只负责空中的转向与加速。
+/// 鸟类保留重力，因此停止飞行后会自然落地；飞行移动控制器只负责空中的转向与加速。
 /// 原版成熟的漂浮、观察、树冠巡游与跟随动作通过叶节点接入行为树，实体本身仍只有一个
-/// 行为调度器，不会重新安装第二套 Goal 组合。</p>
+/// 行为调度器，不会重新安装第二套 Goal 组合。
 public class Bird extends BaseFlyingCritter implements FlyingAnimal {
     private static final RawAnimation FLY_ONLY = RawAnimation.begin().thenLoop("move.fly");
     public float flap;
@@ -102,8 +102,8 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
 
     /// 创建鸟类日常行为分支，供继承鸟类运动语义的昆虫与仙灵复用。
     ///
-    /// <p>恐慌分支由具体实体包在最外层，以便仙灵在受伤时优先逃生，同时仍可在平常状态下
-    /// 用引导玩家的动作抢占日常巡游。</p>
+    /// 恐慌分支由具体实体包在最外层，以便仙灵在受伤时优先逃生，同时仍可在平常状态下
+    /// 用引导玩家的动作抢占日常巡游。
     protected final BTNode createBirdDailyRoutine() {
         return SelectorNode.of(
                 new VanillaGoalAction(new FloatGoal(this)),
@@ -128,8 +128,8 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
 
     /// 为只提供 {@code move.fly} 的昆虫资源安装持续飞行动画。
     ///
-    /// <p>这些资源没有 {@code move.walk} 或 {@code misc.idle}，使用通用走路控制器会持续输出
-    /// 缺失动画警告，并在停顿阶段让翅膀完全静止。</p>
+    /// 这些资源没有 {@code move.walk} 或 {@code misc.idle}，使用通用走路控制器会持续输出
+    /// 缺失动画警告，并在停顿阶段让翅膀完全静止。
     protected final void registerFlyOnlyController(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Fly", 5, state -> state.setAndContinue(FLY_ONLY)));
     }

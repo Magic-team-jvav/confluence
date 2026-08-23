@@ -22,8 +22,8 @@ import org.confluence.mod.util.TrapDamageHelper;
 
 /// 地牢机关使用的超级尖刺球弹幕。
 ///
-/// <p>它保留原有的难度伤害、死人毛衣减伤、刺伤来源、重力与弹性，并且没有普通尖刺球的七目标
-/// 销毁预算。两种尖刺球只共享带版本校验的年龄存档格式，战斗和运动逻辑保持独立。</p>
+/// 它保留原有的难度伤害、死人毛衣减伤、刺伤来源、重力与弹性，并且没有普通尖刺球的七目标
+/// 销毁预算。两种尖刺球只共享带版本校验的年龄存档格式，战斗和运动逻辑保持独立。
 public class SuperSpikyBallProjectile extends Projectile implements Immunity, IAxisZRotate, IBouncy {
     private static final int MAXIMUM_SAVED_AGE = 1201;
     private static final int MAXIMUM_TRACKED_HIT_TARGETS = 0;

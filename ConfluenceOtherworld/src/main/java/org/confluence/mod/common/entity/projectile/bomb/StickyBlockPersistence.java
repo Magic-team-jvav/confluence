@@ -15,8 +15,8 @@ import org.jetbrains.annotations.Nullable;
 
 /// 黏性爆炸物共享的当前版本存档格式。
 ///
-/// <p>位置和方块状态必须成对出现；任一字段损坏都按“未黏附”处理。
-/// 这样重新加载后既能继续检测原方块是否改变，也不会把缺省坐标误当作世界原点。</p>
+/// 位置和方块状态必须成对出现；任一字段损坏都按“未黏附”处理。
+/// 这样重新加载后既能继续检测原方块是否改变，也不会把缺省坐标误当作世界原点。
 final class StickyBlockPersistence {
     /// 黏附点只可能位于弹体附近；该上限同时阻止损坏 NBT 指向远端区块。
     private static final double MAX_ATTACHMENT_DISTANCE_SQUARED = 8.0 * 8.0;

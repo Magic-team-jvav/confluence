@@ -16,8 +16,8 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 /// 在同一个体节实体类型上选择各蠕虫家族的模型，并处理飞龙模型内部的体节分组。
 ///
-/// <p>普通蠕虫分别使用身体和尾部文件；飞龙则与 1.21 实现一致，复用 {@code wyvern.geo.json}，
-/// 根据体节位置仅显示普通身体、带翼身体或尾部中的一个分组。</p>
+/// 普通蠕虫分别使用身体和尾部文件；飞龙则与 1.21 实现一致，复用 {@code wyvern.geo.json}，
+/// 根据体节位置仅显示普通身体、带翼身体或尾部中的一个分组。
 public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
     private final WormPartGeoModel<BaseWormPart> wormModel;
 

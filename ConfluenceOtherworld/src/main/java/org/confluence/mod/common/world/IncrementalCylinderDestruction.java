@@ -11,9 +11,9 @@ import java.util.Queue;
 
 /// 将大型圆柱清场拆分到多个服务端 tick 执行。
 ///
-/// <p>任务按半径逐圈扩张，每次只处理固定数量的方块。底层铺设下界岩，其余高度
+/// 任务按半径逐圈扩张，每次只处理固定数量的方块。底层铺设下界岩，其余高度
 /// 清为空气；带有 {@link BlockTags#FEATURES_CANNOT_REPLACE} 标签的结构核心不会被
-/// 改写。该类不保存世界引用之外的实体状态，调用方只需持久化当前半径。</p>
+/// 改写。该类不保存世界引用之外的实体状态，调用方只需持久化当前半径。
 public final class IncrementalCylinderDestruction {
     private static final int BLOCK_BUDGET_PER_TICK = 4096;
 

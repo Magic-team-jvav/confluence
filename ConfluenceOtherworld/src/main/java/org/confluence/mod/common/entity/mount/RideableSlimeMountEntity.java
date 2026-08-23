@@ -24,8 +24,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 史莱姆坐骑。
 ///
-/// <p>速度、跳跃、水中浮力、踩踏和座位高度都直接属于本实体。新增或调整
-/// 史莱姆行为只改这里，避免为了一个坐骑来回维护多套外部参数和行为注册入口。</p>
+/// 速度、跳跃、水中浮力、踩踏和座位高度都直接属于本实体。新增或调整
+/// 史莱姆行为只改这里，避免为了一个坐骑来回维护多套外部参数和行为注册入口。
 public final class RideableSlimeMountEntity extends AbstractMountEntity implements GeoEntity {
     public static final float RENDER_SCALE = 2.4F;
 

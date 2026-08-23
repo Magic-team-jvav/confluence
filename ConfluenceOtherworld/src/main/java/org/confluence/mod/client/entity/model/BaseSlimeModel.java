@@ -13,8 +13,8 @@ import org.confluence.mod.Confluence;
 
 /// 普通史莱姆的原版形状模型。
 ///
-/// <p>泰拉瑞亚史莱姆纹理沿用 Minecraft 史莱姆的内外层布局，因此普通史莱姆应当使用
-/// 方形内核、眼睛和半透明外壳。尖刺史莱姆拥有独立骨骼模型，不应复用到这里。</p>
+/// 泰拉瑞亚史莱姆纹理沿用 Minecraft 史莱姆的内外层布局，因此普通史莱姆应当使用
+/// 方形内核、眼睛和半透明外壳。尖刺史莱姆拥有独立骨骼模型，不应复用到这里。
 public final class BaseSlimeModel<T extends LivingEntity> extends HierarchicalModel<T> {
     public static final ModelLayerLocation INNER_LAYER = new ModelLayerLocation(Confluence.asResource("base_slime"), "inner");
     public static final ModelLayerLocation OUTER_LAYER = new ModelLayerLocation(Confluence.asResource("base_slime"), "outer");

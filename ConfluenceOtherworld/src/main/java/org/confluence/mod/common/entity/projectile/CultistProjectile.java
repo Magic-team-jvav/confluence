@@ -12,9 +12,9 @@ import net.minecraft.world.phys.Vec3;
 
 /// 拜月教邪教徒三种基础法术的共享真实弹幕。
 ///
-/// <p>火球、冰雾与闪电球使用独立注册类型，客户端无需依赖额外同步字段判断表现。
+/// 火球、冰雾与闪电球使用独立注册类型，客户端无需依赖额外同步字段判断表现。
 /// 三者都在发射时锁定弹道，不会因为玩家随后移动而自动转向；差异只保留在速度变化、
-/// 命中效果和粒子表现中。</p>
+/// 命中效果和粒子表现中。
 public final class CultistProjectile extends StraightMonsterProjectile {
     private final Variant variant;
 

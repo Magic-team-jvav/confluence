@@ -9,9 +9,9 @@ import java.util.List;
 
 /// 负责反向应用枪械模型中的 TACZ 风格定位骨骼。
 ///
-/// <p>1.21 侧部分枪械不再完全依赖物品 JSON 的 display，而是把第一人称、GUI、展示框和地面
+/// 1.21 侧部分枪械不再完全依赖物品 JSON 的 display，而是把第一人称、GUI、展示框和地面
 /// 等位置写进 geo 的定位骨骼中。GeckoLib 会先把这些骨骼烘焙进模型坐标，渲染时需要把定位骨骼
-/// 自身的位移和旋转抵消掉，真正可见的枪械模型才会落在 1.21 设计的位置上。</p>
+/// 自身的位移和旋转抵消掉，真正可见的枪械模型才会落在 1.21 设计的位置上。
 final class TaczFirstPersonTransform {
     private static final float MODEL_UNIT = 1.0F / 16.0F;
 

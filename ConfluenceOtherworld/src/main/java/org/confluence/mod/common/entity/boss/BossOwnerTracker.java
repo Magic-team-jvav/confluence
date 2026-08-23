@@ -9,12 +9,12 @@ import java.util.UUID;
 
 /// 可正常进入区块存档的 Boss 生物从属所有权跟踪器。
 ///
-/// <p>强引用只是当前加载周期的缓存，UUID 才是服务端权威身份。Boss 卸载不等于 Boss 死亡：
+/// 强引用只是当前加载周期的缓存，UUID 才是服务端权威身份。Boss 卸载不等于 Boss 死亡：
 /// 从属会保留 UUID，并在同一 {@link ServerLevel} 重新出现后恢复双向关系。只有权威 Boss
-/// 的死亡、撤离或显式清理路径才负责级联移除已加载从属。</p>
+/// 的死亡、撤离或显式清理路径才负责级联移除已加载从属。
 ///
-/// <p>该类不搜索附近“类似”Boss，也不在跨维度时猜测所有者，从而避免多场同类 Boss
-/// 战同时进行时从属串场。</p>
+/// 该类不搜索附近“类似”Boss，也不在跨维度时猜测所有者，从而避免多场同类 Boss
+/// 战同时进行时从属串场。
 public final class BossOwnerTracker<T extends BaseBoss> {
     private static final String OWNER_TAG = "BossOwner";
 

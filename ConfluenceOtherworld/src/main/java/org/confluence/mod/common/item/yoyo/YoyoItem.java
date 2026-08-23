@@ -24,7 +24,7 @@ import java.util.Objects;
 
 /// 悠悠球物品。
 ///
-/// <p>物品只持有不可变定义；输入状态由玩家会话维护，运动、碰撞和网络同步由共享实体负责。</p>
+/// 物品只持有不可变定义；输入状态由玩家会话维护，运动、碰撞和网络同步由共享实体负责。
 public class YoyoItem extends CustomRarityItem {
     private static final int USE_DURATION = 72_000;
     private final YoyoDefinition definition;
@@ -47,8 +47,8 @@ public class YoyoItem extends CustomRarityItem {
 
     /// 右键被配置为主要动作时，复用原版物品使用流程，以保留方块交互优先级。
     ///
-    /// <p>客户端进入持续使用姿态，服务端创建或恢复当前玩家的悠悠球。左键配置时，该入口会被客户端输入层跳过，
-    /// 改由固定控制包调用 {@link #press(ServerPlayer, ItemStack)} 与 {@link #release(ServerPlayer)}。</p>
+    /// 客户端进入持续使用姿态，服务端创建或恢复当前玩家的悠悠球。左键配置时，该入口会被客户端输入层跳过，
+    /// 改由固定控制包调用 {@link #press(ServerPlayer, ItemStack)} 与 {@link #release(ServerPlayer)}。
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);

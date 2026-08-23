@@ -14,8 +14,8 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// 玩家队伍与 PvP 状态的双向同步包。
 ///
-/// <p>S2C 使用 {@code playerId} 定位被同步玩家；C2S 则永远忽略该编号并以发包者为目标，
-/// 防止客户端修改其他玩家。服务端更新后重新构造权威包广播，不原样转发客户端数据。</p>
+/// S2C 使用 {@code playerId} 定位被同步玩家；C2S 则永远忽略该编号并以发包者为目标，
+/// 防止客户端修改其他玩家。服务端更新后重新构造权威包广播，不原样转发客户端数据。
 public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortPacket {
     public static final byte TEAM_MASK = 0b0000_1111;
     public static final byte PVP_MASK = 0b0100_0000;

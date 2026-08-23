@@ -43,8 +43,8 @@ import java.util.Locale;
 
 /// 同时支持陆地行走和水面活动的鸭子。
 ///
-/// <p>鸭子的外观、食物、后代工厂、落水表现和动画选择均由实体自身负责；
-/// 通用小动物基类只提供行为树生命周期和默认的不可繁殖契约。</p>
+/// 鸭子的外观、食物、后代工厂、落水表现和动画选择均由实体自身负责；
+/// 通用小动物基类只提供行为树生命周期和默认的不可繁殖契约。
 public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
     public static final String VARIANT_KEY = "Variant";
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");

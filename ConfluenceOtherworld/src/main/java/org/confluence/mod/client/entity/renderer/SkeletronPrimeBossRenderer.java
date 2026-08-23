@@ -11,8 +11,8 @@ import software.bernie.geckolib.cache.object.GeoBone;
 
 /// 只绘制机械骷髅王头部的本体渲染器。
 ///
-/// <p>{@code bone3} 归四个独立机械臂实体所有，{@code bone7} 是当前未启用的旋转头分支；
-/// 两者都不能随本体重复绘制。筛选逻辑单独保留为纯函数，便于契约测试验证模型骨骼映射。</p>
+/// {@code bone3} 归四个独立机械臂实体所有，{@code bone7} 是当前未启用的旋转头分支；
+/// 两者都不能随本体重复绘制。筛选逻辑单独保留为纯函数，便于契约测试验证模型骨骼映射。
 public class SkeletronPrimeBossRenderer extends BossGeoRenderer<SkeletronPrime> {
     public SkeletronPrimeBossRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("boss/skeletron_prime"));

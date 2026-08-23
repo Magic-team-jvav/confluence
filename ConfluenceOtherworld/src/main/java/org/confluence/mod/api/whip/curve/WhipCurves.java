@@ -6,8 +6,8 @@ import java.util.List;
 
 /// 本体提供的鞭子轨迹预设。
 ///
-/// <p>这里保留 1.21 侧的原始局部关键点，只把 1.21 使用的 16 像素单位换算成世界单位。
-/// 轨迹外层可以继续使用新的分段渲染 API，但挥动形状本身不能因为重构而改变。</p>
+/// 这里保留 1.21 侧的原始局部关键点，只把 1.21 使用的 16 像素单位换算成世界单位。
+/// 轨迹外层可以继续使用新的分段渲染 API，但挥动形状本身不能因为重构而改变。
 public final class WhipCurves {
     public static final WhipCurve DEFAULT = new KeyframedWhipCurve(List.of(
             new WhipFrame(0.0F, List.of(Vec3.ZERO, Vec3.ZERO, Vec3.ZERO)),

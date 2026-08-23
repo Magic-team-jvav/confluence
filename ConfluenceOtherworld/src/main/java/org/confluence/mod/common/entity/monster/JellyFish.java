@@ -35,9 +35,9 @@ import software.bernie.geckolib.core.animation.AnimationController;
 
 /// 三种水母共用的脉冲游动与两阶段战斗实现。
 ///
-/// <p>水母并不是持续贴身攻击的普通鱼类。发现水中的玩家后，它会先追逐 150 tick，
+/// 水母并不是持续贴身攻击的普通鱼类。发现水中的玩家后，它会先追逐 150 tick，
 /// 再停止寻路并进入 80 tick 的快速脉冲阶段，随后主动释放目标并重新游荡。阶段字段由
-/// 服务端同步，客户端只据此选择动画，不自行推算战斗时序。</p>
+/// 服务端同步，客户端只据此选择动画，不自行推算战斗时序。
 public class JellyFish extends BaseAquaticMonster {
     private static final int PURSUIT_TICKS = 150;
     private static final int PULSE_TICKS = 80;
@@ -184,8 +184,8 @@ public class JellyFish extends BaseAquaticMonster {
 
     /// 水母以离散脉冲修正方向，而不是像普通鱼一样连续推进。
     ///
-    /// <p>每次导航请求到达冷却边沿时才消费目标位置并重设速度；无目标时冷却范围更大，
-    /// 战斗时则更频繁。等待期间仍面向当前目标，使脉冲间隔不会表现为完全静止。</p>
+    /// 每次导航请求到达冷却边沿时才消费目标位置并重设速度；无目标时冷却范围更大，
+    /// 战斗时则更频繁。等待期间仍面向当前目标，使脉冲间隔不会表现为完全静止。
     private static final class JellyFishMoveControl extends MoveControl {
         private static final int BASE_PULSE_COOLDOWN = 20;
         private int pulseCooldown;

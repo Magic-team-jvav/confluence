@@ -21,12 +21,12 @@ import java.util.UUID;
 
 /// 非生物型、短暂 Boss 部件的共享生命周期。
 ///
-/// <p>Boss 本体是持久化权威，部件不独立进入区块存档。客户端通过同步的运行时实体 ID
+/// Boss 本体是持久化权威，部件不独立进入区块存档。客户端通过同步的运行时实体 ID
 /// 追踪本场 Boss，服务端额外保留 UUID 处理加载顺序不同的恢复窗口。Boss 加载后会按槽位重建部件，
-/// 因此不会出现“Boss 已恢复，旧部件又从区块 NBT 复活”的双份实体。</p>
+/// 因此不会出现“Boss 已恢复，旧部件又从区块 NBT 复活”的双份实体。
 ///
-/// <p>可破坏部件拥有自己的同步生命值，但攻击仍可按倍率转发给 Boss。所有者在 100 tick
-/// 宽限内仍无法解析时丢弃孤儿部件，防止损坏存档或非正常生成遗留永久实体。</p>
+/// 可破坏部件拥有自己的同步生命值，但攻击仍可按倍率转发给 Boss。所有者在 100 tick
+/// 宽限内仍无法解析时丢弃孤儿部件，防止损坏存档或非正常生成遗留永久实体。
 public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements Boss.BossPart {
     private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
     private static final String OWNER_TAG = "Owner";

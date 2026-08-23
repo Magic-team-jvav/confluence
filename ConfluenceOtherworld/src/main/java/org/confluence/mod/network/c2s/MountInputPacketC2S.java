@@ -10,9 +10,9 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// 所有本体坐骑共用的客户端输入边沿。
 ///
-/// <p>方向移动继续复用原版 {@code ServerboundPlayerInputPacket}；本包只补充原版
+/// 方向移动继续复用原版 {@code ServerboundPlayerInputPacket}；本包只补充原版
 /// 马匹蓄力协议无法表达的“跳跃键按下/释放”状态。包中没有实体 ID、速度、能量
-/// 或坐标，服务端始终从玩家当前载具重新解析并验证控制权。</p>
+/// 或坐标，服务端始终从玩家当前载具重新解析并验证控制权。
 public record MountInputPacketC2S(boolean jumping) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("mount_input");
     public static final PortStreamCodec<ByteBuf, MountInputPacketC2S>

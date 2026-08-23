@@ -169,9 +169,9 @@ public class Plantera extends BaseBoss {
 
     /// 按生命阶段分别推进种子、刺球和孢子的独立发射节拍。
     ///
-    /// <p>出生后的前 100 tick 只允许世纪之花接近并展开钩爪，避免玩家在实体刚加载时
+    /// 出生后的前 100 tick 只允许世纪之花接近并展开钩爪，避免玩家在实体刚加载时
     /// 遭遇无法预判的零帧弹幕。第一阶段的种子与刺球互不占用冷却，因此同一 tick
-    /// 可以同时发射；第二阶段才会完全切换为孢子。</p>
+    /// 可以同时发射；第二阶段才会完全切换为孢子。
     private void tickProjectileAttacks() {
         if (attackTicks <= ATTACK_WARMUP_TICKS) {
             return;
@@ -211,8 +211,8 @@ public class Plantera extends BaseBoss {
 
     /// 立即执行一次当前阶段的基础射击。
     ///
-    /// <p>自然战斗不通过此入口推进冷却；它保留为遭遇脚本和行为测试可调用的单次动作。
-    /// 第一阶段发射种子，第二阶段发射孢子，刺球仍只由独立自然节拍负责。</p>
+    /// 自然战斗不通过此入口推进冷却；它保留为遭遇脚本和行为测试可调用的单次动作。
+    /// 第一阶段发射种子，第二阶段发射孢子，刺球仍只由独立自然节拍负责。
     boolean shootAtTarget() {
         return getPhase() == 0
                 ? spawnProjectile(ModEntities.PLANTERA_SEED.get(), getSeedDamage(), SEED_SPEED, 0.02F)
@@ -356,8 +356,8 @@ public class Plantera extends BaseBoss {
 
     /// 补齐第二阶段缺失的触手槽位。
     ///
-    /// <p>首次转阶段会一次生成全部 17 根；之后若有触手被击毁，则按当前存活数量
-    /// 延长重建间隔。触手是临时实体，区块重新加载后同样从这些权威槽位恢复。</p>
+    /// 首次转阶段会一次生成全部 17 根；之后若有触手被击毁，则按当前存活数量
+    /// 延长重建间隔。触手是临时实体，区块重新加载后同样从这些权威槽位恢复。
     private void ensureTentacles() {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
@@ -384,8 +384,8 @@ public class Plantera extends BaseBoss {
 
     /// 每 50 tick 展开空闲钩爪，并在周期中点收回离目标最远的一根。
     ///
-    /// <p>钩爪不再定时瞬间改写锚点，而是完整经过空闲、伸展、抓牢和收回四态。
-    /// 主体牵引只读取真正抓牢的钩爪，客户端因此能获得连续的伸缩运动。</p>
+    /// 钩爪不再定时瞬间改写锚点，而是完整经过空闲、伸展、抓牢和收回四态。
+    /// 主体牵引只读取真正抓牢的钩爪，客户端因此能获得连续的伸缩运动。
     private void updateHookCycle() {
         LivingEntity target = getTarget();
         if (target == null) {

@@ -5,8 +5,8 @@ import net.minecraft.network.chat.MutableComponent;
 
 /// 把以铜币为最小单位的价格转换为可本地化文本。
 ///
-/// <p>该工具位于通用代码中，服务端可以把带翻译键的价格写入商品展示信息，客户端也可以直接复用。
-/// 使用 {@code long} 是为了避免高价商品在格式化阶段退回旧的整型上限。</p>
+/// 该工具位于通用代码中，服务端可以把带翻译键的价格写入商品展示信息，客户端也可以直接复用。
+/// 使用 {@code long} 是为了避免高价商品在格式化阶段退回旧的整型上限。
 public final class MoneyText {
     private static final long PLATINUM = 1_000_000L;
     private static final long GOLD = 10_000L;

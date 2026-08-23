@@ -30,8 +30,8 @@ public final class ModCustomRegistries {
 
     /// 把三个自定义注册表的内容注册到同一模组事件总线。
     ///
-    /// <p>注册表对象本身由 {@link PortCustomRegistration} 建立；对应的 DeferredRegister 仍必须全部
-    /// 挂到事件总线。遗漏任意一项会在 codec dispatch 时表现为 “Registry Object not present”。</p>
+    /// 注册表对象本身由 {@link PortCustomRegistration} 建立；对应的 DeferredRegister 仍必须全部
+    /// 挂到事件总线。遗漏任意一项会在 codec dispatch 时表现为 “Registry Object not present”。
     public static void register(IEventBus bus) {
         ModTrackTypeProviderTypes.TYPES.register(bus);
         ModGenerationProviderTypes.TYPES.register(bus);

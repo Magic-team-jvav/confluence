@@ -10,8 +10,8 @@ import org.joml.Vector3f;
 
 /// 毁灭者及其探测器共用的直线激光弹幕。
 ///
-/// <p>发射时一次性计算方向，后续只执行碰撞和匀速移动。目标转向、死亡或离开区块都
-/// 不会让已经存在的激光重新寻敌。</p>
+/// 发射时一次性计算方向，后续只执行碰撞和匀速移动。目标转向、死亡或离开区块都
+/// 不会让已经存在的激光重新寻敌。
 public final class DestroyerLaserProjectile extends StraightMonsterProjectile {
     private static final DustParticleOptions TRAIL = new DustParticleOptions(new Vector3f(0.15F, 0.85F, 1.0F), 1.2F);
 

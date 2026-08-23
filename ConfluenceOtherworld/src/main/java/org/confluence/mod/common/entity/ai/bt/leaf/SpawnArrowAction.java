@@ -16,8 +16,8 @@ import java.util.function.DoubleSupplier;
 
 /// 让持弓敌怪生成一支遵循原版飞行与碰撞规则的箭。
 ///
-/// <p>普通弓手使用 {@link #mobBowShot(Mob, float, float)}，其箭伤害、弹道高度和难度散布
-/// 与 1.21 侧的人形弓手一致。显式伤害构造器仅供确实需要固定伤害的特殊行为使用。</p>
+/// 普通弓手使用 {@link #mobBowShot(Mob, float, float)}，其箭伤害、弹道高度和难度散布
+/// 与 1.21 侧的人形弓手一致。显式伤害构造器仅供确实需要固定伤害的特殊行为使用。
 public final class SpawnArrowAction extends BTNode {
     private final Mob shooter;
     private final DoubleSupplier explicitDamage;

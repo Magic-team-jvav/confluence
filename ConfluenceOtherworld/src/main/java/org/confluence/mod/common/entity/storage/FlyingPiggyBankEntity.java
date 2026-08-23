@@ -10,8 +10,8 @@ import net.minecraft.world.phys.Vec3;
 
 /// 由钱币槽召唤的飞行存钱罐。
 ///
-/// <p>它与切斯特共享玩家私有存储入口，但采用飞行导航且不受重力影响。
-/// 该实体不属于宠物栏物品，也不会为玩家额外创建或复制一份库存。</p>
+/// 它与切斯特共享玩家私有存储入口，但采用飞行导航且不受重力影响。
+/// 该实体不属于宠物栏物品，也不会为玩家额外创建或复制一份库存。
 public final class FlyingPiggyBankEntity extends StorageCompanionEntity implements FlyingAnimal {
     private static final int LIFETIME_TICKS = 3 * 60 * 20;
 

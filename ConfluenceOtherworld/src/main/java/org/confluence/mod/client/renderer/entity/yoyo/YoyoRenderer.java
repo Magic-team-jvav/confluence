@@ -18,9 +18,9 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 /// 悠悠球模型与绳线渲染器。
 ///
-/// <p>1.21 侧的悠悠球不会直接使用实体默认朝向来摆放模型，而是让模型在玩家视角平面中
+/// 1.21 侧的悠悠球不会直接使用实体默认朝向来摆放模型，而是让模型在玩家视角平面中
 /// 自转，并把绳线锚到球体上方的同一个视觉中心。这样可以避免实体运动角度影响模型，
-/// 造成“球绕着绳线旋转”的错误观感。</p>
+/// 造成“球绕着绳线旋转”的错误观感。
 public final class YoyoRenderer extends GeoEntityRenderer<YoyoEntity> {
     private static final ResourceLocation MODEL = Confluence.asResource("geo/entity/yoyos.geo.json");
 

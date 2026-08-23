@@ -12,9 +12,9 @@ import java.util.Objects;
 
 /// 为可穿墙蠕虫提供不依赖原版地面导航网格的三维移动。
 ///
-/// <p>有目标时逐 tick 把当前航向平滑转向目标并维持恒定冲刺速度；无目标时
+/// 有目标时逐 tick 把当前航向平滑转向目标并维持恒定冲刺速度；无目标时
 /// 围绕前方随机选择地表上下的落点。这样头部不会因为导航器无法为墙内位置建路
-/// 而静止，体节也只需继续跟随头部，无需各自参与寻路。</p>
+/// 而静止，体节也只需继续跟随头部，无需各自参与寻路。
 public final class WormMovementAction extends BTNode {
     private static final int WANDER_RESELECT_TICKS = 30;
     private static final double TURN_WEIGHT = 0.14;

@@ -67,8 +67,8 @@ public class BossSummoningItem extends TooltipItem {
 
     /// 执行 Forge 生物生成初始化。
     ///
-    /// <p>1.20 合并侧没有 TerraEntity 的 internalSpawnEntity，因此在实体进入世界前补上
-    /// finalizeSpawn，保证生成事件、难度初始化和实体内部生成状态完整执行。</p>
+    /// 1.20 合并侧没有 TerraEntity 的 internalSpawnEntity，因此在实体进入世界前补上
+    /// finalizeSpawn，保证生成事件、难度初始化和实体内部生成状态完整执行。
     private static boolean prepareSummonedMob(ServerLevel serverLevel, Mob mob) {
         mob.yHeadRot = mob.getYRot();
         mob.yBodyRot = mob.getYRot();
@@ -82,8 +82,8 @@ public class BossSummoningItem extends TooltipItem {
 
     /// 将成功生成的 Boss 或普通怪物绑定到召唤者。
     ///
-    /// <p>绑定时机必须晚于实体加入世界，避免目标被生成初始化覆盖。否则飞行 Boss 的首轮行为会进入无目标分支，
-    /// 客户端看起来就像沉底、贴地滑行或完全不追击玩家。</p>
+    /// 绑定时机必须晚于实体加入世界，避免目标被生成初始化覆盖。否则飞行 Boss 的首轮行为会进入无目标分支，
+    /// 客户端看起来就像沉底、贴地滑行或完全不追击玩家。
     private static void bindSummoner(Player player, Mob mob) {
         if (mob instanceof BaseBoss boss) {
             boss.initializeSummonedCombat(player);
@@ -94,8 +94,8 @@ public class BossSummoningItem extends TooltipItem {
 
     /// 使用 1.21 侧的随机召唤落点。
     ///
-    /// <p>这里不再要求视线无遮挡。Boss 召唤道具本身就是强制开战入口，额外的视线检测会让测试场、
-    /// 洞穴或复杂建筑中的召唤直接失败。</p>
+    /// 这里不再要求视线无遮挡。Boss 召唤道具本身就是强制开战入口，额外的视线检测会让测试场、
+    /// 洞穴或复杂建筑中的召唤直接失败。
     private static void moveToRandomSummonPos(Level level, Player player, Mob mob) {
         mob.moveTo(
                 player.getX() + Mth.randomBetweenInclusive(level.random, -RANDOM_SUMMON_RANGE, RANDOM_SUMMON_RANGE),

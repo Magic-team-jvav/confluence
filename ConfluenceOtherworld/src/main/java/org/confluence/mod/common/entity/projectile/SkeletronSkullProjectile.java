@@ -8,8 +8,8 @@ import net.minecraft.world.phys.Vec3;
 
 /// 骷髅王在专家及以上难度发射的敌对骷髅弹。
 ///
-/// <p>该实体与玩家法术使用的追踪骷髅弹完全分离。它只追踪骷髅王在生成时指定的目标，
-/// 不会重新搜索其他生物，也不会继承玩家弹幕的穿透次数和法术伤害结算。</p>
+/// 该实体与玩家法术使用的追踪骷髅弹完全分离。它只追踪骷髅王在生成时指定的目标，
+/// 不会重新搜索其他生物，也不会继承玩家弹幕的穿透次数和法术伤害结算。
 public final class SkeletronSkullProjectile extends StraightMonsterProjectile {
     private static final double INITIAL_SPEED = 0.001;
     private static final double TRACKING_STRENGTH = 0.025;
@@ -23,7 +23,7 @@ public final class SkeletronSkullProjectile extends StraightMonsterProjectile {
 
     /// 从骷髅王中心朝目标当前位置发射，并保留目标供后续追踪。
     ///
-    /// <p>目标引用只参与服务端轨迹计算；客户端依靠实体速度同步显示，不另行执行索敌。</p>
+    /// 目标引用只参与服务端轨迹计算；客户端依靠实体速度同步显示，不另行执行索敌。
     public void configure(Mob owner, LivingEntity target, float damage) {
         this.target = target;
         Vec3 direction = target.position().subtract(owner.position()).normalize();

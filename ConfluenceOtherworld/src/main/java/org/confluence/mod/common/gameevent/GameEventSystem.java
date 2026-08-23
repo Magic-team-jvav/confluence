@@ -173,9 +173,9 @@ public enum GameEventSystem implements IGlobalData {
 
     /// 清除事件单例中属于上一张世界的运行状态。
     ///
-    /// <p>事件系统会跨世界复用同一批枚举单例。服务器关闭时会先调用
+    /// 事件系统会跨世界复用同一批枚举单例。服务器关闭时会先调用
     /// {@link #close(MinecraftServer)} 释放世界和实体引用，再在这里把“正在进行”
-    /// 这类进程状态复位；存档读写负责恢复真正需要保存的进度。</p>
+    /// 这类进程状态复位；存档读写负责恢复真正需要保存的进度。
     @Override
     public void clear() {
         for (GameEvent event : events.values()) {

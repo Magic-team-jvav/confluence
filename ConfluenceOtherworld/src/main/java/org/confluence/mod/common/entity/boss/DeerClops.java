@@ -32,13 +32,13 @@ import javax.annotation.Nullable;
 
 /// 独眼巨鹿 Boss。
 ///
-/// <p>战斗流程由服务端状态机统一驱动：首次锁定玩家时依次播放咆哮准备和持续咆哮，
+/// 战斗流程由服务端状态机统一驱动：首次锁定玩家时依次播放咆哮准备和持续咆哮，
 /// 随后在追击与冰击之间循环。冰击根据目标位置选择抛冰、暗影之手或地面冰柱；
-/// 玩家离得过远时 Boss 会停止攻击并进入无敌状态，避免远距离无风险消耗。</p>
+/// 玩家离得过远时 Boss 会停止攻击并进入无敌状态，避免远距离无风险消耗。
 ///
-/// <p>无目标期间会短暂寻找附近箱子并将其破坏，这一环境行为不会绕过
+/// 无目标期间会短暂寻找附近箱子并将其破坏，这一环境行为不会绕过
 /// {@link BaseBoss} 的统一脱战计时。所有计时和弹幕生成都只在服务端执行，
-/// 客户端仅根据同步状态选择动画和无敌纹理。</p>
+/// 客户端仅根据同步状态选择动画和无敌纹理。
 public class DeerClops extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(DeerClops.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_FAR_INVULNERABLE = SynchedEntityData.defineId(DeerClops.class, EntityDataSerializers.BOOLEAN);
@@ -257,9 +257,9 @@ public class DeerClops extends BaseBoss {
 
     /// 为暗影之手寻找不会一生成就卡进方块的位置。
     ///
-    /// <p>1.21 侧直接在球面上随机取点，靠近洞壁或地面时会有部分黑手立刻撞墙消失。
+    /// 1.21 侧直接在球面上随机取点，靠近洞壁或地面时会有部分黑手立刻撞墙消失。
     /// 这里先尝试随机球面，再退回四个均匀方向并逐格上移，保证一次攻击稳定形成
-    /// 四向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。</p>
+    /// 四向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。
     private Vec3 findShadowHandOrigin(Vec3 center, int handIndex, double formationRotation, DeerclopsShadowHandProjectile projectile) {
         double formationAngle = formationRotation + handIndex * Math.PI * 0.5;
         Vec3 formationOrigin = center.add(Math.cos(formationAngle) * 4.5, handIndex % 2 == 0 ? 2.0 : -2.0, Math.sin(formationAngle) * 4.5);
@@ -410,10 +410,10 @@ public class DeerClops extends BaseBoss {
 
     /// 在正常寻路无法跨越地形时执行一次受控跳跃。
     ///
-    /// <p>1.21 侧只不断重发地面路径，大体型碰撞箱遇到台阶、短墙或无法生成完整路径时
+    /// 1.21 侧只不断重发地面路径，大体型碰撞箱遇到台阶、短墙或无法生成完整路径时
     /// 会长时间贴住障碍。这里仍让原版导航决定路线，仅在水平碰撞、连续停滞，或目标
     /// 明显更高且本次寻路失败时介入。跳跃带有冷却并检查上方空间，因此不会退化成
-    /// 持续兔子跳，也不会在低矮洞穴里把 Boss 反复顶向天花板。</p>
+    /// 持续兔子跳，也不会在低矮洞穴里把 Boss 反复顶向天花板。
     ///
     /// @return 本 tick 是否真正提交了跳跃速度
     boolean tryTraversalJump(LivingEntity target, boolean pathStarted) {
@@ -533,8 +533,8 @@ public class DeerClops extends BaseBoss {
 
     /// 一次冰击的服务端提交结果。
     ///
-    /// <p>弹幕实体会先进入世界的待加入队列，因此测试或诊断代码不应依赖同一 tick
+    /// 弹幕实体会先进入世界的待加入队列，因此测试或诊断代码不应依赖同一 tick
     /// 的实体快照来判断生成是否成功。这里保留实际被 {@code addFreshEntity}
-    /// 接受的数量，使调用方可以观察确定的提交结果；正常战斗逻辑无需使用返回值。</p>
+    /// 接受的数量，使调用方可以观察确定的提交结果；正常战斗逻辑无需使用返回值。
     record AttackResult(AttackPattern pattern, int spawnedEntities) {}
 }

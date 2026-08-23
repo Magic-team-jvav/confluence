@@ -28,8 +28,8 @@ public class JewelBunny extends Bunny {
 
     /// 宝石兔的后代仍然属于宝石兔实体。
     ///
-    /// <p>具体宝石变体会继续由实体出生初始化流程决定，不能退化成普通兔，
-    /// 否则繁殖、命令或其他模组调用后代工厂时会丢失宝石兔专属行为。</p>
+    /// 具体宝石变体会继续由实体出生初始化流程决定，不能退化成普通兔，
+    /// 否则繁殖、命令或其他模组调用后代工厂时会丢失宝石兔专属行为。
     @Override
     public JewelBunny getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
         return CritterEntities.JEWEL_BUNNY.get().create(level);

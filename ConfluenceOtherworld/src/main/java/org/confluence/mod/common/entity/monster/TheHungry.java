@@ -32,9 +32,9 @@ import java.util.UUID;
 
 /// 饿鬼的公共实体实现，同时服务于血肉墙从属、肉丘嘴部从属和独立生成变体。
 ///
-/// <p>Boss 从属使用精确 UUID 恢复主体，并围绕生成锚点活动；没有绑定记录的实体
+/// Boss 从属使用精确 UUID 恢复主体，并围绕生成锚点活动；没有绑定记录的实体
 /// 才作为独立野怪寻找玩家。这样区块反向加载不会把暂时找不到主体的从属错误转换成
-/// 永久野怪，也不需要再注册一套重复的 {@code hungry} 实体。</p>
+/// 永久野怪，也不需要再注册一套重复的 {@code hungry} 实体。
 public class TheHungry extends BaseFlyingMonster {
     @Override
     protected int contactDetectionInterval() {
@@ -155,8 +155,8 @@ public class TheHungry extends BaseFlyingMonster {
 
     /// 饿鬼资源只有持续摆动的 {@code bait} 动画。
     ///
-    /// <p>从属状态、独立野怪状态和返回锚点阶段共用同一套身体摆动，因此控制器持续播放，
-    /// 不根据水平速度停顿。这样既与 1.21 行为一致，也避免悬停时模型变成静态贴图。</p>
+    /// 从属状态、独立野怪状态和返回锚点阶段共用同一套身体摆动，因此控制器持续播放，
+    /// 不根据水平速度停顿。这样既与 1.21 行为一致，也避免悬停时模型变成静态贴图。
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "bait", 0, state -> state.setAndContinue(BAIT)));

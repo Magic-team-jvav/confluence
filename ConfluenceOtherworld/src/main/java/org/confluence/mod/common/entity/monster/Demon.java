@@ -26,9 +26,9 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 地狱恶魔的五连镰刀攻击与客户端动作表现。
 ///
-/// <p>恶魔先沿用鸟妖的一百五十刻接近阶段，再于第 175、183、191、199 和 201 tick
+/// 恶魔先沿用鸟妖的一百五十刻接近阶段，再于第 175、183、191、199 和 201 tick
 /// 发射五枚镰刀。挥手状态持续 30 tick，与投掷动画长度一致；受伤动作优先于投掷，
-/// 二者结束后回到悬浮待机。</p>
+/// 二者结束后回到悬浮待机。
 public class Demon extends Harpy {
     private static final RawAnimation HURT = RawAnimation.begin().thenPlay("hurt");
     private static final RawAnimation ATTACK_THROW = RawAnimation.begin().thenPlay("attack.throw");

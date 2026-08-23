@@ -10,9 +10,9 @@ import software.bernie.geckolib.core.object.Color;
 
 /// 僵尸十种同步变体的共享渲染器。
 ///
-/// <p>专属逐变体素材迁移完成前，所有变体安全复用现有美术，并通过枚举中的颜色与缩放形成
+/// 专属逐变体素材迁移完成前，所有变体安全复用现有美术，并通过枚举中的颜色与缩放形成
 /// 可见差异。渲染参数来自服务端同步的变体身份，不使用客户端随机数，因此重进世界、远离后
-/// 重新跟踪以及多人客户端看到的外观都保持一致。</p>
+/// 重新跟踪以及多人客户端看到的外观都保持一致。
 public class ZombieRenderer extends GeoNormalRenderer<Zombie> {
     public ZombieRenderer(EntityRendererProvider.Context context) {
         super(context, new ZombieGeoModel(context));

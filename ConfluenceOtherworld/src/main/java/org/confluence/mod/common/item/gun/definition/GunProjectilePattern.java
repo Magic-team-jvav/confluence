@@ -4,9 +4,9 @@ import net.minecraft.util.RandomSource;
 
 /// Describes how a gun turns one resolved shot into projectile entities.
 ///
-/// <p>This is deliberately part of the gun definition instead of a gun item
+/// This is deliberately part of the gun definition instead of a gun item
 /// subclass. A gun item keeps its data; the combat pipeline interprets this
-/// value when the server fires.</p>
+/// value when the server fires.
 public record GunProjectilePattern(Type type, float gravity, int minProjectiles,
                                    int maxProjectiles) {
     public GunProjectilePattern {

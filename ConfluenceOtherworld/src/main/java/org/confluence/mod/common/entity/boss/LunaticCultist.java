@@ -204,8 +204,8 @@ public class LunaticCultist extends BaseBoss {
 
     /// 依次发射火球、冰雾与闪电球。
     ///
-    /// <p>每次调用只创建一个真实碰撞实体，伤害不会在创建阶段直接结算。
-    /// 三类弹幕都锁定发射瞬间的方向，玩家可以通过移动躲避。</p>
+    /// 每次调用只创建一个真实碰撞实体，伤害不会在创建阶段直接结算。
+    /// 三类弹幕都锁定发射瞬间的方向，玩家可以通过移动躲避。
     boolean shootSpell() {
         if (!(level() instanceof ServerLevel serverLevel) || getTarget() == null) {
             return false;

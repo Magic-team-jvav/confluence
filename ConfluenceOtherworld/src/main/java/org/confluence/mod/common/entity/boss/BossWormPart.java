@@ -26,8 +26,8 @@ import java.util.UUID;
 
 /// 由 {@link BaseWormBoss} 头部管理的临时身体或尾部实体。
 ///
-/// <p>体节把伤害转交给具有权威状态的头部；区块重新加载后也由头部重建整条体节链。
-/// 因此体节只保存恢复归属所需的最小信息，不能独立决定 Boss 生命周期。</p>
+/// 体节把伤害转交给具有权威状态的头部；区块重新加载后也由头部重建整条体节链。
+/// 因此体节只保存恢复归属所需的最小信息，不能独立决定 Boss 生命周期。
 public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     private static final float EATER_COLLISION_DAMAGE = 4.0F;
     private static final float DESTROYER_COLLISION_DAMAGE = 66.0F;

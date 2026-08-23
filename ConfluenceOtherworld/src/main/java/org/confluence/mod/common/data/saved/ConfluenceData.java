@@ -41,8 +41,8 @@ public final class ConfluenceData extends SavedData {
 
     /// 从世界 SavedData 恢复 Confluence 的世界级状态。
     ///
-    /// <p>先填入完整默认星相，再用存档中的合法条目覆盖。这样旧版本缺字段、列表不满十项，
-    /// 或个别条目损坏时，其余槽位仍始终可读，不会把空映射传播给同步和渲染逻辑。</p>
+    /// 先填入完整默认星相，再用存档中的合法条目覆盖。这样旧版本缺字段、列表不满十项，
+    /// 或个别条目损坏时，其余槽位仍始终可读，不会把空映射传播给同步和渲染逻辑。
     ConfluenceData(CompoundTag nbt) {
         fillDefaultStarPhases();
         this.initialized = nbt.getBoolean("initialized");

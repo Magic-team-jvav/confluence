@@ -30,9 +30,9 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 /// 毁灭者头部，负责体节链、激光和探测器的统一生命周期。
 ///
-/// <p>奇数编号体节是探测器舱。每个舱室最多释放一次探测器，释放记录由头部持久化，
+/// 奇数编号体节是探测器舱。每个舱室最多释放一次探测器，释放记录由头部持久化，
 /// 所以体节因区块卸载而重建时不会重置。未释放的探测器舱会按照 1.21 侧的顺序射击
-/// 与高空齐射节奏发射真实激光弹幕。</p>
+/// 与高空齐射节奏发射真实激光弹幕。
 public class TheDestroyer extends BaseWormBoss {
     private static final String RELEASED_PROBE_SEGMENTS_TAG = "ReleasedProbeSegments";
     private static final String PHASE_TAG = "Phase";
@@ -92,9 +92,9 @@ public class TheDestroyer extends BaseWormBoss {
 
     /// 在头部附近盘曲生成完整机械体节链。
     ///
-    /// <p>1.21 会以直线生成八十节身体，但在 Minecraft 中这会跨越十六个区块，
+    /// 1.21 会以直线生成八十节身体，但在 Minecraft 中这会跨越十六个区块，
     /// 超出 Boss 当前强加载区域后导致尾部创建失败。这里保留相同数量和间距，
-    /// 只把初始形状改成盘曲布局；进入战斗后仍由统一跟随物理自然展开。</p>
+    /// 只把初始形状改成盘曲布局；进入战斗后仍由统一跟随物理自然展开。
     @Override
     protected Vec3 getInitialSegmentPosition(int index, Vec3 previousPosition) {
         Vec3 direction = getLookAngle().multiply(1.0, 0.0, 1.0);
@@ -178,8 +178,8 @@ public class TheDestroyer extends BaseWormBoss {
 
     /// 按目标高度执行地下钻击、地表跃出和高空俯冲。
     ///
-    /// <p>1.20 仅调整为连续三维转向；阶段边界、主要目标点与速度倍率保持 1.21
-    /// 语义。速度交给原版实体同步消费，不通过逐刻传送移动。</p>
+    /// 1.20 仅调整为连续三维转向；阶段边界、主要目标点与速度倍率保持 1.21
+    /// 语义。速度交给原版实体同步消费，不通过逐刻传送移动。
     private void tickPhaseMovement(LivingEntity target) {
         phaseTimer++;
         switch (getPhase()) {

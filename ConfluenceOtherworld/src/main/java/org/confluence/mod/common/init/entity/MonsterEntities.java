@@ -323,8 +323,8 @@ public class MonsterEntities {
 
     /// 注册需要哥布林专用浮水行为的人形敌怪。
     ///
-    /// <p>装备和动画仍由实体注册项直接声明；这里只把哥布林独有的水中行为与
-    /// 普通人形怪分开，避免通过类型判断或注册表名称推测运行逻辑。</p>
+    /// 装备和动画仍由实体注册项直接声明；这里只把哥布林独有的水中行为与
+    /// 普通人形怪分开，避免通过类型判断或注册表名称推测运行逻辑。
     private static RegistryObject<EntityType<GoblinMonster>>
     registerGoblinLand(String name, float width, float height, net.minecraft.world.item.ItemStack defaultMainHand, BaseWarriorMonster.LandAnimationProfile animationProfile) {
         return registerEntity(name, EntityType.Builder.<GoblinMonster>of((type, level) -> new GoblinMonster(type, level, defaultMainHand, animationProfile), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));

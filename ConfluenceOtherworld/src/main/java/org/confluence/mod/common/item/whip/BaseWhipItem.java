@@ -22,9 +22,9 @@ import java.util.Objects;
 
 /// 鞭子物品的公共实现。
 ///
-/// <p>普通鞭子只需要提供 {@link WhipDefinition}。左右键配置、服务端去重、冷却、耐久、召唤伤害与暴击
+/// 普通鞭子只需要提供 {@link WhipDefinition}。左右键配置、服务端去重、冷却、耐久、召唤伤害与暴击
 /// 快照以及攻击实体生成均由此类统一处理；复杂鞭子可以通过定义中的两类效果接口扩展，不需要复制整套
-/// 发射和碰撞代码。</p>
+/// 发射和碰撞代码。
 public class BaseWhipItem extends Item {
     private final WhipDefinition definition;
     private final WhipAppearance appearance;
@@ -80,8 +80,8 @@ public class BaseWhipItem extends Item {
 
     /// 计算本次挥鞭生成时的手部锚点。
     ///
-    /// <p>这个点同时决定服务端命中曲线根部和客户端后续吸附根部的初始侧向，因此必须和渲染器使用同一套左右手约定。
-    /// 对右手来说，面向 +Z 时锚点应落在玩家视觉右侧，避免第三人称看到鞭子从左手侧甩出。</p>
+    /// 这个点同时决定服务端命中曲线根部和客户端后续吸附根部的初始侧向，因此必须和渲染器使用同一套左右手约定。
+    /// 对右手来说，面向 +Z 时锚点应落在玩家视觉右侧，避免第三人称看到鞭子从左手侧甩出。
     private static Vec3 playerHandOffset(Player player, HumanoidArm arm) {
         int side = arm == HumanoidArm.RIGHT ? 1 : -1;
         float yaw = player.yBodyRot * Mth.DEG_TO_RAD + 1.0F;

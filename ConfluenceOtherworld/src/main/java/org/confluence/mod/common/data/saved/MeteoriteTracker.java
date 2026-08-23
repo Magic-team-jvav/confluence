@@ -43,8 +43,8 @@ public enum MeteoriteTracker {
 
     /// 清除上一世界可能遗留在枚举单例中的运行状态。
     ///
-    /// <p>集成服务器会在同一 JVM 内连续打开多个世界，而枚举不会随世界卸载。新世界创建、
-    /// 或旧世界反序列化前都必须先回到安全默认值。</p>
+    /// 集成服务器会在同一 JVM 内连续打开多个世界，而枚举不会随世界卸载。新世界创建、
+    /// 或旧世界反序列化前都必须先回到安全默认值。
     void reset() {
         this.shouldGenerate = true;
         this.spawnAtNextNight = false;

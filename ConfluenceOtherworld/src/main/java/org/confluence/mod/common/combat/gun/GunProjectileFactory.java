@@ -17,8 +17,8 @@ import java.util.Objects;
 
 /// Creates projectile entities from already-resolved shot data.
 ///
-/// <p>Gun items do not know about entity constructors. That makes a new firing
-/// pattern a combat concern instead of another Item subclass.</p>
+/// Gun items do not know about entity constructors. That makes a new firing
+/// pattern a combat concern instead of another Item subclass.
 public final class GunProjectileFactory {
     public static int spawn(ShotContext context, GunProjectilePattern pattern) {
         BaseGun gun = (BaseGun) context.gun().getItem();

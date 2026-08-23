@@ -100,8 +100,8 @@ public class SpikedSlime extends BaseSlime {
 
     /// 复刻 1.21 的尖刺史莱姆战斗时序。
     ///
-    /// <p>近距离先瞄准二十刻，再蓄力五刻并以三刻间隔发射三轮八向弹幕；远距离
-    /// 瞄准后蓄力跳向目标。目标在动作中途失效时立即失败，由选择节点重新决策。</p>
+    /// 近距离先瞄准二十刻，再蓄力五刻并以三刻间隔发射三轮八向弹幕；远距离
+    /// 瞄准后蓄力跳向目标。目标在动作中途失效时立即失败，由选择节点重新决策。
     private final class CombatAction extends BTNode {
         private int tick;
         private boolean closeRange;

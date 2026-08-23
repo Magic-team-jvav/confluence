@@ -11,9 +11,9 @@ import software.bernie.geckolib.cache.object.GeoBone;
 
 /// 只绘制骷髅王本体头部的渲染器。
 ///
-/// <p>模型中的 {@code bone3} 是双手分支，而手具有独立实体、碰撞箱和渲染器。如果本体仍绘制
+/// 模型中的 {@code bone3} 是双手分支，而手具有独立实体、碰撞箱和渲染器。如果本体仍绘制
 /// 该分支，会出现重影并掩盖手部死亡状态，所以在递归入口直接跳过整棵子树。这里不修改
-/// GeckoLib 缓存骨骼的隐藏属性，避免共享烘焙模型把可见性泄漏到后续实体或帧。</p>
+/// GeckoLib 缓存骨骼的隐藏属性，避免共享烘焙模型把可见性泄漏到后续实体或帧。
 public class SkeletronBossRenderer extends BossGeoRenderer<Skeletron> {
     public SkeletronBossRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("boss/skeletron"));

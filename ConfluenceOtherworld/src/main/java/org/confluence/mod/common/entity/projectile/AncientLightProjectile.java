@@ -20,7 +20,7 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 /// 拜月教邪教徒“远古之光”齐射使用的敌对弹幕。
 ///
-/// <p>实体沿用跨版本弹幕桥接约定，使 1.20.1 与后续同步侧共享一致的伤害和命中语义。</p>
+/// 实体沿用跨版本弹幕桥接约定，使 1.20.1 与后续同步侧共享一致的伤害和命中语义。
 public final class AncientLightProjectile extends Projectile implements IPortProjectileExtension {
     public static final int MAX_LIFETIME = 100;
     public static final float DAMAGE = 16.0F;

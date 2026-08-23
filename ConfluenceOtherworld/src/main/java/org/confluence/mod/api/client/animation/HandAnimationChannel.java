@@ -37,11 +37,11 @@ public final class HandAnimationChannel {
 
     /// Build the raw animation used by GeckoLib's trigger system.
     ///
-    /// <p>GeckoLib does not evaluate the controller's new idle animation until
+    /// GeckoLib does not evaluate the controller's new idle animation until
     /// the next animation tick after a play-once stage stops. That leaves one
     /// tick in which its bone reset pass can restore the model's initial
     /// snapshot. Keep the hand-off in the same raw-animation queue so the
-    /// next stage is evaluated during the completion tick itself.</p>
+    /// next stage is evaluated during the completion tick itself.
     public RawAnimation triggeredAnimation(HandAnimationAction action) {
         HandAnimationClip clip = animations.get(Objects.requireNonNull(action, "Animation action must not be null"));
         if (clip == null) {

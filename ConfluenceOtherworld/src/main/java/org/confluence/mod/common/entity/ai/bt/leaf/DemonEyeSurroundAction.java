@@ -14,9 +14,9 @@ import java.util.List;
 
 /// 复现 1.21 恶魔眼围绕目标移动的行为。
 ///
-/// <p>恶魔眼不会按固定阶段绕圈后直线冲锋，而是每四十刻重新选择玩家周围的一个航点。
+/// 恶魔眼不会按固定阶段绕圈后直线冲锋，而是每四十刻重新选择玩家周围的一个航点。
 /// 航点高度按照余弦曲线变化，水平方向偶尔偏转二十度，因此整体轨迹会在玩家周围上下
-/// 浮动。移动时仍保留原速度，只在尚未达到速度上限或需要明显转向时继续加速。</p>
+/// 浮动。移动时仍保留原速度，只在尚未达到速度上限或需要明显转向时继续加速。
 public final class DemonEyeSurroundAction extends BTNode {
     private final PathfinderMob mob;
     private int locateCount;

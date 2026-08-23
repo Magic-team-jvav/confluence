@@ -10,8 +10,8 @@ import net.minecraft.world.phys.Vec3;
 
 /// 黄蜂发射的毒刺弹幕。
 ///
-/// <p>毒刺复用敌对生物直线弹幕的碰撞与阵营判断，并在合法命中时附加五秒中毒。
-/// 效果只由服务端命中结算产生，客户端不自行预测状态效果。</p>
+/// 毒刺复用敌对生物直线弹幕的碰撞与阵营判断，并在合法命中时附加五秒中毒。
+/// 效果只由服务端命中结算产生，客户端不自行预测状态效果。
 public final class HornetStingerProjectile extends StraightMonsterProjectile {
     private static final int POISON_DURATION = 100;
     private int poisonAmplifier;
@@ -26,8 +26,8 @@ public final class HornetStingerProjectile extends StraightMonsterProjectile {
 
     /// 配置毒刺的命中伤害与中毒等级。
     ///
-    /// <p>弹道、阵营和生命周期仍由直线怪物弹幕基类统一处理；中毒等级由发射者在生成时明确
-    /// 传入，便于蜂王愤怒状态和普通黄蜂复用同一种弹幕实体。</p>
+    /// 弹道、阵营和生命周期仍由直线怪物弹幕基类统一处理；中毒等级由发射者在生成时明确
+    /// 传入，便于蜂王愤怒状态和普通黄蜂复用同一种弹幕实体。
     public void configure(Mob owner, LivingEntity target, float damage, int poisonAmplifier) {
         configure(owner, owner.position(), target.getEyePosition().subtract(owner.position()), damage, 5.0F, poisonAmplifier);
     }

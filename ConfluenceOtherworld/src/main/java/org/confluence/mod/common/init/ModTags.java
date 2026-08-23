@@ -360,9 +360,9 @@ public final class ModTags {
         public static final TagKey<Item> HOOK = register("hook");
         /// 允许作为坐骑物品处理的物品。
         ///
-        /// <p>标签只负责给数据包和联动物品一个统一分类；真正要召唤的实体类型由
+        /// 标签只负责给数据包和联动物品一个统一分类；真正要召唤的实体类型由
         /// {@link org.confluence.mod.common.item.mount.MountItem} 显式绑定，坐骑参数
-        /// 仍由对应坐骑实体自己维护。</p>
+        /// 仍由对应坐骑实体自己维护。
         public static final TagKey<Item> MOUNT = register("mount");
         public static final TagKey<Item> DYE = register("dye");
         public static final TagKey<Item> SHORT_SWORD = register("short_sword");

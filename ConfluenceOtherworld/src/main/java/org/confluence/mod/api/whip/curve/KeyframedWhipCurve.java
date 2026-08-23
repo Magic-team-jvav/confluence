@@ -10,10 +10,10 @@ import java.util.Objects;
 
 /// 使用线性插值连接相邻时间帧的确定性轨迹。
 ///
-/// <p>时间插值只负责让相同序号的控制点平滑移动；鞭身空间曲线由
+/// 时间插值只负责让相同序号的控制点平滑移动；鞭身空间曲线由
 /// {@link WhipCurveSampler} 统一生成。两层插值分离后，服务端碰撞与客户端渲染可以
 /// 使用完全相同的输入和算法。时间推进沿用 1.21 侧的线性关键帧行为，避免代码重写
-/// 改变原有挥动节奏。</p>
+/// 改变原有挥动节奏。
 public final class KeyframedWhipCurve implements WhipCurve {
     private final List<WhipFrame> frames;
 

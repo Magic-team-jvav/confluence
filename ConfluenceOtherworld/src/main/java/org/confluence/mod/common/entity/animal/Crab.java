@@ -39,8 +39,8 @@ public class Crab extends BaseCritter {
 
     /// 将导航计算出的行进速度转换为螃蟹的横向步态。
     ///
-    /// <p>移动控制器通过 {@link #setSpeed(float)} 写入速度，因此恐慌和闲逛行为都会自然复用
-    /// 同一套横向移动规则，不需要让每个行为节点分别识别螃蟹。</p>
+    /// 移动控制器通过 {@link #setSpeed(float)} 写入速度，因此恐慌和闲逛行为都会自然复用
+    /// 同一套横向移动规则，不需要让每个行为节点分别识别螃蟹。
     @Override
     public void setSpeed(float speed) {
         super.setSpeed(speed);
@@ -56,8 +56,8 @@ public class Crab extends BaseCritter {
 
     /// 把普通“面朝目标向前走”转换为“身体侧面朝向目标横着走”。
     ///
-    /// <p>除了朝向和输入轴以外，控制器仍保留原版的速度属性、台阶检测和跳跃控制，
-    /// 因而可以继续使用通用导航，也能跨越一格高差和较低的碰撞体。</p>
+    /// 除了朝向和输入轴以外，控制器仍保留原版的速度属性、台阶检测和跳跃控制，
+    /// 因而可以继续使用通用导航，也能跨越一格高差和较低的碰撞体。
     static final class SidewaysMoveControl extends MoveControl {
         private static final double MINIMUM_DISTANCE_SQUARED = 2.500000277905201E-7;
 

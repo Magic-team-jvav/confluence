@@ -11,7 +11,7 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 
 /// 血腥孢子爆裂后生成的静止肿瘤。
 ///
-/// <p>肿瘤不会寻路或主动近战，而是在短暂孵化后随机转化为血爬虫、脸怪或猩红喀迈拉。</p>
+/// 肿瘤不会寻路或主动近战，而是在短暂孵化后随机转化为血爬虫、脸怪或猩红喀迈拉。
 public final class BloodTumor extends BaseMonster {
     public BloodTumor(EntityType<? extends BloodTumor> type, Level level) {
         super(type, level);

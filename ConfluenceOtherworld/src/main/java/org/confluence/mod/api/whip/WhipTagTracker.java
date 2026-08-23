@@ -14,11 +14,11 @@ import java.util.*;
 
 /// 按“玩家 + 目标”隔离的鞭子召唤标记存储。
 ///
-/// <p>鞭痕属于施加标记的玩家，而不是目标身上的全局增伤。两名玩家鞭打同一目标时，
-/// 各自召唤物只能读取自己的标记；同一玩家同时标记多个目标时，最后命中的有效目标优先。</p>
+/// 鞭痕属于施加标记的玩家，而不是目标身上的全局增伤。两名玩家鞭打同一目标时，
+/// 各自召唤物只能读取自己的标记；同一玩家同时标记多个目标时，最后命中的有效目标优先。
 ///
-/// <p>这里仅保存短生命周期的战斗状态，不写入世界存档。世界卸载后由弱引用释放，
-/// 每次读写同时清理过期项。</p>
+/// 这里仅保存短生命周期的战斗状态，不写入世界存档。世界卸载后由弱引用释放，
+/// 每次读写同时清理过期项。
 public final class WhipTagTracker {
     public static final int DEFAULT_DURATION_TICKS = 80;
 
@@ -95,7 +95,7 @@ public final class WhipTagTracker {
 
     /// 返回玩家最后鞭打且仍带有效标记的目标。
     ///
-    /// <p>一次挥鞭可能在同一游戏刻命中多个目标，因此使用运行期递增序号还原真实命中顺序。</p>
+    /// 一次挥鞭可能在同一游戏刻命中多个目标，因此使用运行期递增序号还原真实命中顺序。
     public static @Nullable LivingEntity lastTaggedTarget(Player owner) {
         if (!(owner.level() instanceof ServerLevel level)) {
             return null;

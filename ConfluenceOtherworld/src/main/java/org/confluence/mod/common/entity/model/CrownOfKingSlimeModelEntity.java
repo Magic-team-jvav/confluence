@@ -13,8 +13,8 @@ import org.joml.Vector3f;
 
 /// 史莱姆王传送时脱落的王冠。
 ///
-/// <p>实体只负责同步位置、重力和落地后的滚动衰减。旋转轨迹沿用 1.21 侧实现，
-/// 客户端渲染器根据连续状态绘制王冠，避免把纯视觉行为塞回战斗状态机。</p>
+/// 实体只负责同步位置、重力和落地后的滚动衰减。旋转轨迹沿用 1.21 侧实现，
+/// 客户端渲染器根据连续状态绘制王冠，避免把纯视觉行为塞回战斗状态机。
 public class CrownOfKingSlimeModelEntity extends Entity {
     public static final float RADIUS = 1.5F;
     private static final Vector3f UP = new Vector3f(0.0F, 1.0F, 0.0F);

@@ -56,8 +56,8 @@ public final class ProjectileHitRules {
 
     /// 应用已经在发射快照中解析完成的击退。
     ///
-    /// <p>这里故意不再读取攻击者当前 {@code ATTACK_KNOCKBACK}，只保留受击者的击退抗性，
-    /// 从而避免换武器后改变已发射弹幕或把攻击击退属性计算两次。</p>
+    /// 这里故意不再读取攻击者当前 {@code ATTACK_KNOCKBACK}，只保留受击者的击退抗性，
+    /// 从而避免换武器后改变已发射弹幕或把攻击击退属性计算两次。
     public static void applyResolvedKnockback(Entity projectile, Entity target, float strength, double motionY) {
         if (strength <= 0.0F && motionY <= 0.0) {
             return;

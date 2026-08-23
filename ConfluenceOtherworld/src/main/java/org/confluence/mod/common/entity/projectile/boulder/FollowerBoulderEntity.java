@@ -17,8 +17,8 @@ import java.util.UUID;
 
 /// 在限定寿命内持续追踪同一目标的巨石。
 ///
-/// <p>运行时实体引用不能跨区块卸载保存，因此服务端存储目标 UUID 并在目标重新加载后懒解析。
-/// 单独的追踪年龄延续原有 20 秒上限，不能因重载重新获得完整追踪时间。</p>
+/// 运行时实体引用不能跨区块卸载保存，因此服务端存储目标 UUID 并在目标重新加载后懒解析。
+/// 单独的追踪年龄延续原有 20 秒上限，不能因重载重新获得完整追踪时间。
 public class FollowerBoulderEntity extends BoulderEntity {
     private static final String RUNTIME_TAG = "ConfluenceFollowerBoulderRuntime";
     private static final int RUNTIME_VERSION = 1;

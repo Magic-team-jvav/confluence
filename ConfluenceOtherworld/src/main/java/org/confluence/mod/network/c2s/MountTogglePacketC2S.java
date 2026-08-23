@@ -10,8 +10,8 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// 客户端快捷坐骑请求。
 ///
-/// <p>数据包没有客户端可填写的参数。服务端收到后重新读取玩家的坐骑槽，
-/// 决定召唤哪种坐骑或解除当前坐骑。</p>
+/// 数据包没有客户端可填写的参数。服务端收到后重新读取玩家的坐骑槽，
+/// 决定召唤哪种坐骑或解除当前坐骑。
 public record MountTogglePacketC2S() implements IPortPacket.C2S {
     public static final MountTogglePacketC2S INSTANCE = new MountTogglePacketC2S();
     public static final ResourceLocation ID = Confluence.asResource("mount_toggle");

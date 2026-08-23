@@ -39,9 +39,9 @@ import java.util.*;
 
 /// 血肉墙的服务端战斗主体。
 ///
-/// <p>本体负责整面墙的推进、阶段和参战者管理；眼睛与嘴是可命中的临时部件，
+/// 本体负责整面墙的推进、阶段和参战者管理；眼睛与嘴是可命中的临时部件，
 /// 各自维护射击或吐出水蛭的节奏。墙面布局由一个持久化种子生成，因此仍保留
-/// 1.21 的随机墙面外观，同时保证区块重载后不会换成另一套眼、嘴和饿鬼位置。</p>
+/// 1.21 的随机墙面外观，同时保证区块重载后不会换成另一套眼、嘴和饿鬼位置。
 public class WallOfFlesh extends BaseBoss {
     private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO = SynchedEntityData.defineId(WallOfFlesh.class, EntityDataSerializers.BOOLEAN);
 

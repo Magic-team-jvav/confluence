@@ -9,8 +9,8 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 恶魔眼在夜间没有目标时的游荡行为。
 ///
-/// <p>首次游荡高度会成为固定基准，之后每三十刻在周围十五格重新选择航点。该规则与
-/// 1.21 的实现一致，避免通用随机飞行行为不断改变高度并逐渐贴地。</p>
+/// 首次游荡高度会成为固定基准，之后每三十刻在周围十五格重新选择航点。该规则与
+/// 1.21 的实现一致，避免通用随机飞行行为不断改变高度并逐渐贴地。
 public final class DemonEyeWanderAction extends BTNode {
     private final PathfinderMob mob;
     private double anchorY = Double.NaN;

@@ -8,10 +8,10 @@ import java.util.function.BooleanSupplier;
 
 /// 根据实时条件在两个行为分支之间切换。
 ///
-/// <p>优先级选择器通过节点返回状态决定抢占关系；昼夜、阶段、环境等明确的二元状态
+/// 优先级选择器通过节点返回状态决定抢占关系；昼夜、阶段、环境等明确的二元状态
 /// 切换则使用本节点，直接根据条件选中唯一分支。条件结果改变后，旧分支会先收到
 /// {@link BTNode#stop()}，新分支再收到 {@link BTNode#start()}，避免两个分支同时保留
-/// 运行状态。</p>
+/// 运行状态。
 public final class ConditionalSwitchNode extends BTNode {
     private final BooleanSupplier condition;
     private final BTNode trueBranch;

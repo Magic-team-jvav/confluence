@@ -14,8 +14,8 @@ import org.confluence.mod.common.entity.projectile.PaladinHammerProjectile;
 
 /// 绘制连续旋转的圣骑士重锤。
 ///
-/// <p>旋转角使用实体年龄和渲染帧插值计算，不依赖二十次每秒的服务端角度同步，
-/// 因而高速飞行时不会出现一格一格跳动的视觉。</p>
+/// 旋转角使用实体年龄和渲染帧插值计算，不依赖二十次每秒的服务端角度同步，
+/// 因而高速飞行时不会出现一格一格跳动的视觉。
 public final class PaladinHammerProjectileRenderer extends EntityRenderer<PaladinHammerProjectile> {
     public PaladinHammerProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);

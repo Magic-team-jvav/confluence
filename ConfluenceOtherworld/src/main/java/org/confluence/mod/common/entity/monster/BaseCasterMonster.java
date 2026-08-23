@@ -21,8 +21,8 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 法师怪物基类：三次远程施法后向目标方向重新选取安全落点。
 ///
-/// <p>施法生成具有飞行时间和方块碰撞的真实弹幕。子类只需覆盖
-/// {@link #projectileType()} 就能选择自己的法术类型，攻击节奏和瞬移流程不必复制。</p>
+/// 施法生成具有飞行时间和方块碰撞的真实弹幕。子类只需覆盖
+/// {@link #projectileType()} 就能选择自己的法术类型，攻击节奏和瞬移流程不必复制。
 public abstract class BaseCasterMonster extends BaseMonster {
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");

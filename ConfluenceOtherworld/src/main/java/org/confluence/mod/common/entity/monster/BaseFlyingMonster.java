@@ -30,7 +30,7 @@ public abstract class BaseFlyingMonster extends BaseMonster {
 
     /// 1.21 的飞行怪接触伤害属于实体本身，而不是某个追击动作。
     ///
-    /// <p>因此行为树切换到施法或等待时，已经取得目标的实体仍按同一冷却检测身体碰撞。</p>
+    /// 因此行为树切换到施法或等待时，已经取得目标的实体仍按同一冷却检测身体碰撞。
     @Override
     protected boolean hasEntityContactAttack() {
         return true;
@@ -49,8 +49,8 @@ public abstract class BaseFlyingMonster extends BaseMonster {
 
     /// 飞行怪默认始终使用无重力物理。
     ///
-    /// <p>仅在构造器设置标志并不可靠，读档或外部逻辑仍可能改动它。需要阶段性落地的
-    /// 特殊飞行怪应自行覆盖本方法。</p>
+    /// 仅在构造器设置标志并不可靠，读档或外部逻辑仍可能改动它。需要阶段性落地的
+    /// 特殊飞行怪应自行覆盖本方法。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -66,8 +66,8 @@ public abstract class BaseFlyingMonster extends BaseMonster {
 
     /// 指示具体实体是否保留普通生物的推动行为。
     ///
-    /// <p>1.21 的飞行预制体默认不可推动，但妖精、黄蜂及部分穿墙生物并未使用该预制体，
-    /// 因此不能在公共飞行基类中统一抹平差异。</p>
+    /// 1.21 的飞行预制体默认不可推动，但妖精、黄蜂及部分穿墙生物并未使用该预制体，
+    /// 因此不能在公共飞行基类中统一抹平差异。
     protected boolean hasPushableBody() {
         return false;
     }

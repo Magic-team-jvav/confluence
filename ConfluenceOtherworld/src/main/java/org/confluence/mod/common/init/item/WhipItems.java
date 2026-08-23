@@ -22,8 +22,8 @@ import java.util.List;
 
 /// 鞭子物品注册。
 ///
-/// <p>每种普通鞭子只在这里声明数值和效果差异。发射、轨迹、碰撞、耐久和按键配置由
-/// {@link BaseWhipItem} 统一处理；对应的独立鞭痕效果也在同一次声明中注册。</p>
+/// 每种普通鞭子只在这里声明数值和效果差异。发射、轨迹、碰撞、耐久和按键配置由
+/// {@link BaseWhipItem} 统一处理；对应的独立鞭痕效果也在同一次声明中注册。
 public final class WhipItems {
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
     /// 当前鞭节模型沿纵轴占四个像素，因此使用四像素间距首尾衔接。

@@ -43,9 +43,9 @@ import java.util.*;
 
 /// 一次鞭子挥动对应的短生命周期攻击实体。
 ///
-/// <p>实体本身不飞行，发射瞬间的位置、视线方向、武器栈和战斗快照都会被冻结；
+/// 实体本身不飞行，发射瞬间的位置、视线方向、武器栈和战斗快照都会被冻结；
 /// 之后即使玩家移动或切换物品，也不会改变本次挥动的伤害、暴击或轨迹。服务端碰撞和客户端渲染都调用
-/// {@link #sampleWorldPoints(float)}，从根源上避免“看到的鞭子”和“实际命中区域”分离。</p>
+/// {@link #sampleWorldPoints(float)}，从根源上避免“看到的鞭子”和“实际命中区域”分离。
 public final class WhipAttackEntity extends DamageSettableProjectile {
     private static final EntityDataAccessor<ItemStack> WEAPON = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Float> DIRECTION_X = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
@@ -64,8 +64,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     private boolean durabilityConsumed;
     /// 本次挥鞭的服务端判定原点。
     ///
-    /// <p>1.21 会让鞭子实体自身向前运动并在后半程收回，但伤害关键点始终以生成位置为基准。
-    /// 因此这里单独保存判定原点，不能直接拿不断变化的实体坐标计算命中区域。</p>
+    /// 1.21 会让鞭子实体自身向前运动并在后半程收回，但伤害关键点始终以生成位置为基准。
+    /// 因此这里单独保存判定原点，不能直接拿不断变化的实体坐标计算命中区域。
     private Vec3 attackOrigin;
 
     public WhipAttackEntity(EntityType<? extends WhipAttackEntity> type, Level level) {
@@ -208,9 +208,9 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
 
     /// 返回客户端显示使用的少量控制点。
     ///
-    /// <p>服务端命中点需要冻结在发射时的手部位置；客户端显示则需要把后续控制点叠加
+    /// 服务端命中点需要冻结在发射时的手部位置；客户端显示则需要把后续控制点叠加
     /// 鞭实体的甩出/收回位移，再由渲染器把根部吸附到玩家当前手上。这样既保留
-    /// 1.21 的“手部参与样条”的甩动观感，也不改变实际命中区域。</p>
+    /// 1.21 的“手部参与样条”的甩动观感，也不改变实际命中区域。
     public List<Vec3> sampleRenderControlPoints(float partialTick) {
         WhipDefinition definition = definition();
         LivingEntity owner = getLivingOwner();
@@ -334,8 +334,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
 
     /// 还原 1.21 鞭子对附近方块触发 {@code onProjectileHit} 的行为。
     ///
-    /// <p>方块扫描使用原始动画控制点而不是渲染插值点，否则提高鞭节精度会意外放大服务端工作量。
-    /// 同一次挥动内按方块坐标去重，避免同一方块在相邻帧和相邻控制点被重复触发。</p>
+    /// 方块扫描使用原始动画控制点而不是渲染插值点，否则提高鞭节精度会意外放大服务端工作量。
+    /// 同一次挥动内按方块坐标去重，避免同一方块在相邻帧和相邻控制点被重复触发。
     private void hitBlocksAlongControlPoints(LivingEntity owner, WhipDefinition definition) {
         double radius = 1.5 + (sweepLevel() > 0 ? 0.5 : 0.0);
         Direction direction = Direction.getNearest((float) launchDirection().x, (float) launchDirection().y, (float) launchDirection().z);
@@ -443,8 +443,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
 
     /// 一次挥鞭只在当前攻击时段存在，不能跨世界保存。
     ///
-    /// <p>这与 1.21 的挥鞭实体一致，也避免重新载入时只恢复通用弹幕快照、却缺少挥动进度和
-    /// 轨迹历史而生成残缺攻击。</p>
+    /// 这与 1.21 的挥鞭实体一致，也避免重新载入时只恢复通用弹幕快照、却缺少挥动进度和
+    /// 轨迹历史而生成残缺攻击。
     @Override
     public boolean shouldBeSaved() {
         return false;

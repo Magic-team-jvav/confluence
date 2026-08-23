@@ -14,7 +14,7 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 /// 机械炮管发射的小范围爆炸炮弹。
 ///
-/// <p>爆炸只影响实体，不破坏地形，避免 Boss 攻击永久损坏玩家建筑与战斗场地。</p>
+/// 爆炸只影响实体，不破坏地形，避免 Boss 攻击永久损坏玩家建筑与战斗场地。
 public final class PrimeCannonballProjectile extends Projectile implements IPortProjectileExtension {
     public static final int MAX_LIFETIME = 80;
     private static final float BLAST_DAMAGE = 22.0F;

@@ -29,12 +29,12 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 /// 骷髅王本体。
 ///
-/// <p>服务端以固定战斗周期控制悬浮与旋转追击：夜间前 267 tick 悬浮在目标上方，
+/// 服务端以固定战斗周期控制悬浮与旋转追击：夜间前 267 tick 悬浮在目标上方，
 /// 后 134 tick 旋转追击；白天立即进入狂暴旋转。双手各自保有生命值，但和头部共同
-/// 构成同一条首领总血量，双手全部摧毁后头部防御归零。</p>
+/// 构成同一条首领总血量，双手全部摧毁后头部防御归零。
 ///
-/// <p>手部实体是可重建的临时部件。这里只保存每个槽位是否已摧毁及剩余生命，
-/// 避免区块重载复活已摧毁的手，或复制仍然存活的手。</p>
+/// 手部实体是可重建的临时部件。这里只保存每个槽位是否已摧毁及剩余生命，
+/// 避免区块重载复活已摧毁的手，或复制仍然存活的手。
 public class Skeletron extends BaseBoss {
     private static final int ALL_HANDS_DESTROYED = 0b11;
     private static final int FLOAT_PHASE_END = 267;
@@ -148,8 +148,8 @@ public class Skeletron extends BaseBoss {
 
     /// 悬浮阶段采用带阻尼的加速度，而不是每 tick 瞬间改向。
     ///
-    /// <p>目标点位于玩家上方五格。速度上限按当前世界难度选择，避免近距离抖动，
-    /// 同时让专家及大师难度具有更强的追随压力。</p>
+    /// 目标点位于玩家上方五格。速度上限按当前世界难度选择，避免近距离抖动，
+    /// 同时让专家及大师难度具有更强的追随压力。
     private void updateFloatingMovement(LivingEntity target) {
         double acceleration = isExpert() ? 0.1 : 0.07;
         double maximumSpeed = isExpert() ? 1.0 : 0.7;
@@ -174,8 +174,8 @@ public class Skeletron extends BaseBoss {
 
     /// 旋转阶段直接朝目标追击。
     ///
-    /// <p>白天狂暴固定为最高速度；夜间普通难度保持较慢追击，专家及以上则根据
-    /// 距离和剩余手数提高速度，与 1.21 实现保持同一组核心公式。</p>
+    /// 白天狂暴固定为最高速度；夜间普通难度保持较慢追击，专家及以上则根据
+    /// 距离和剩余手数提高速度，与 1.21 实现保持同一组核心公式。
     private void updateSpinningMovement(LivingEntity target, boolean enraged) {
         Vec3 direction = target.position().subtract(position());
         if (direction.lengthSqr() <= 1.0E-7) {
@@ -343,8 +343,8 @@ public class Skeletron extends BaseBoss {
 
     /// 返回头部与两只手共同组成的遭遇血量比例。
     ///
-    /// <p>分母始终包含两只手的最大生命值；已摧毁手的当前生命为零，因此 Boss 条
-    /// 不会在部件死亡时突然扩张或缩短。</p>
+    /// 分母始终包含两只手的最大生命值；已摧毁手的当前生命为零，因此 Boss 条
+    /// 不会在部件死亡时突然扩张或缩短。
     float getEncounterProgress() {
         float current = getHealth();
         for (float health : handHealth) {

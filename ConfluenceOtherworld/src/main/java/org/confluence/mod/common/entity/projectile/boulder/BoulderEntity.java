@@ -45,9 +45,9 @@ import java.util.function.Predicate;
 
 /// 所有巨石变体共享的运动、碰撞和持久化基类。
 ///
-/// <p>机关、特殊种子及子类都可以在生成后调整巨石参数，因此这些参数属于实体实例的玩法状态，
+/// 机关、特殊种子及子类都可以在生成后调整巨石参数，因此这些参数属于实体实例的玩法状态，
 /// 不能只依赖构造器默认值。区块重载时还必须延续发射者、寿命和逐目标命中冷却；当前版本格式若
-/// 损坏则直接使实体失效，避免用部分默认值继续造成伤害或触发移除效果。</p>
+/// 损坏则直接使实体失效，避免用部分默认值继续造成伤害或触发移除效果。
 public class BoulderEntity extends Projectile implements IPortProjectileExtension {
     public static final float SEARCH_RANGE = 31.5F;
 

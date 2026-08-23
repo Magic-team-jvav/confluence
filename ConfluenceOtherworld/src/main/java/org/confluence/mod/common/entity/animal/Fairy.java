@@ -63,10 +63,10 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
     /// 实现妖精“发现玩家、建立跟随、寻找宝箱并带路”的完整状态机。
     ///
-    /// <p>动作以十格为首次发现范围；玩家靠近到三格内后，妖精进入持续引导状态，
+    /// 动作以十格为首次发现范围；玩家靠近到三格内后，妖精进入持续引导状态，
     /// 此后允许双方拉开到三十格。宝箱搜索范围与 1.21 实现一致，为妖精所在区块
     /// 周围一圈区块。若宝箱距离玩家超过十格，当前导航点会限制在玩家前方十格，
-    /// 从而让妖精逐段带路，而不是直接飞走。</p>
+    /// 从而让妖精逐段带路，而不是直接飞走。
     private static final class FairyGuideAction extends BTNode {
         private static final double ACQUIRE_RANGE = 10.0;
         private static final double ABANDON_RANGE = 30.0;
@@ -88,8 +88,8 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
         /// 供实时分支每 tick 判断是否需要占用移动控制。
         ///
-        /// <p>首次进入时只接纳十格内玩家；一旦完成近距离接触，则沿用同一玩家，
-        /// 直到玩家死亡或离开三十格，避免引导途中在多个玩家之间来回切换。</p>
+        /// 首次进入时只接纳十格内玩家；一旦完成近距离接触，则沿用同一玩家，
+        /// 直到玩家死亡或离开三十格，避免引导途中在多个玩家之间来回切换。
         private boolean canGuidePlayer() {
             if (target != null) {
                 if (target.isAlive() && !target.isSpectator() && fairy.distanceTo(target) <= ABANDON_RANGE) {
@@ -226,8 +226,8 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
     /// 仙灵是引导实体而不是可被普通攻击清除的小动物。
     ///
-    /// <p>仅放行带有“绕过无敌”标签的伤害；同时保留强制清除伤害的显式判断，
-    /// 确保管理命令和世界清理流程仍能移除实体。</p>
+    /// 仅放行带有“绕过无敌”标签的伤害；同时保留强制清除伤害的显式判断，
+    /// 确保管理命令和世界清理流程仍能移除实体。
     @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean bypassesInvulnerability = source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) || source == damageSources().genericKill();

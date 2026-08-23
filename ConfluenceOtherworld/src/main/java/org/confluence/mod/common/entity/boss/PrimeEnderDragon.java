@@ -36,13 +36,13 @@ import java.util.List;
 
 /// 本源末影龙的服务端权威战斗实现。
 ///
-/// <p>1.21 版本只有第一阶段行为：平滑追踪与惯性俯冲、短时头部激光、概率着陆，
+/// 1.21 版本只有第一阶段行为：平滑追踪与惯性俯冲、短时头部激光、概率着陆，
 /// 以及两轮游走后发射原版龙息弹。这里保留同样的可见行为，但把未完成的通用行为树
-/// 改为可保存的显式状态机，避免重载后攻击循环、着陆状态或飞行目标丢失。</p>
+/// 改为可保存的显式状态机，避免重载后攻击循环、着陆状态或飞行目标丢失。
 ///
-/// <p>主体负责渲染、生命、Boss 条、目标、移动和奖励；头、身体、三节尾巴和双翼
+/// 主体负责渲染、生命、Boss 条、目标、移动和奖励；头、身体、三节尾巴和双翼
 /// 使用七个无渲染临时部件提供真实受击区域。部件不保存且不独立结算奖励，主体重载后
-/// 按槽位补齐，主动撤离或死亡时统一清理。</p>
+/// 按槽位补齐，主动撤离或死亡时统一清理。
 public final class PrimeEnderDragon extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(PrimeEnderDragon.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_LASER_ACTIVE = SynchedEntityData.defineId(PrimeEnderDragon.class, EntityDataSerializers.BOOLEAN);
@@ -389,16 +389,16 @@ public final class PrimeEnderDragon extends BaseBoss {
 
     /// 返回客户端绘制激光所需的权威长度。
     ///
-    /// <p>长度由服务端逐 tick 增减并通过实体数据同步，客户端不得自行计时，
-    /// 否则网络抖动或暂停会让可见光束与真实伤害距离分离。</p>
+    /// 长度由服务端逐 tick 增减并通过实体数据同步，客户端不得自行计时，
+    /// 否则网络抖动或暂停会让可见光束与真实伤害距离分离。
     public float getLaserRange() {
         return easeLaserRange(entityData.get(DATA_LASER_RANGE));
     }
 
     /// 计算当前头部激光的世界坐标起点。
     ///
-    /// <p>临时碰撞部件可能比主体晚一包到达客户端，因此渲染起点只依赖主体
-    /// 姿态；服务端伤害仍优先使用真实头部碰撞箱中心。</p>
+    /// 临时碰撞部件可能比主体晚一包到达客户端，因此渲染起点只依赖主体
+    /// 姿态；服务端伤害仍优先使用真实头部碰撞箱中心。
     public Vec3 getLaserOrigin(float partialTick) {
         double x = Mth.lerp(partialTick, xo, getX());
         double y = Mth.lerp(partialTick, yo, getY());

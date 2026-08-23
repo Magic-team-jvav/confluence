@@ -11,8 +11,8 @@ import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 发现目标后会明显加速追击的孢子僵尸。
 ///
-/// <p>追击属性的安装与清理由通用陆行怪物统一负责；本类只保留孢子僵尸
-/// 自身的数值与声音；模型动作由客户端僵尸动画族统一驱动。</p>
+/// 追击属性的安装与清理由通用陆行怪物统一负责；本类只保留孢子僵尸
+/// 自身的数值与声音；模型动作由客户端僵尸动画族统一驱动。
 public class SporeZombie extends BaseWarriorMonster {
     public SporeZombie(EntityType<? extends SporeZombie> type, Level level) {
         super(type, level, 0.25, LandAnimationProfile.WALK_RUN_IDLE_ATTACK, LandSoundProfile.ZOMBIE, 0.8, true);

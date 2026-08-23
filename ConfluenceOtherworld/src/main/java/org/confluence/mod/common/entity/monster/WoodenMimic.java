@@ -7,8 +7,8 @@ import net.minecraft.world.level.Level;
 
 /// 普通宝箱怪实体。
 ///
-/// <p>木、金、冰和暗影注册项共享此类型；具体数值由注册表属性配置决定，开合与跳跃
-/// 行为统一由 {@link BaseMimic} 提供，避免每个外观变体复制一份状态机。</p>
+/// 木、金、冰和暗影注册项共享此类型；具体数值由注册表属性配置决定，开合与跳跃
+/// 行为统一由 {@link BaseMimic} 提供，避免每个外观变体复制一份状态机。
 public class WoodenMimic extends BaseMimic {
     public WoodenMimic(EntityType<? extends WoodenMimic> type, Level level) {
         super(type, level);

@@ -28,9 +28,9 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 随身储物入口实体的公共生命周期。
 ///
-/// <p>实体只保存所有者，并负责跟随、交互和动画；真实物品数据仍保存在玩家自己的
+/// 实体只保存所有者，并负责跟随、交互和动画；真实物品数据仍保存在玩家自己的
 /// {@link PlayerPiggyBankContainer} 中。这样方块存钱罐、切斯特和飞行存钱罐会打开同一份固定槽位数据，
-/// 实体消失、换维度或重新召唤时不会复制出第二份库存。</p>
+/// 实体消失、换维度或重新召唤时不会复制出第二份库存。
 public abstract class StorageCompanionEntity extends TamableAnimal implements GeoEntity {
     private static final EntityDataAccessor<Boolean> OPEN = SynchedEntityData.defineId(StorageCompanionEntity.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
@@ -207,7 +207,7 @@ public abstract class StorageCompanionEntity extends TamableAnimal implements Ge
 
     /// 随身储物入口不是普通生物，不应该被战斗、环境或意外碰撞销毁。
     ///
-    /// <p>仍保留原版 kill 伤害，方便命令和开发环境可靠清理实体。</p>
+    /// 仍保留原版 kill 伤害，方便命令和开发环境可靠清理实体。
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return source.is(DamageTypes.GENERIC_KILL) && super.hurt(source, amount);
@@ -225,7 +225,7 @@ public abstract class StorageCompanionEntity extends TamableAnimal implements Ge
 
     /// 储物入口只作为玩家可点击的交互目标，不参与骑乘关系。
     ///
-    /// <p>这也避免其他实体把切斯特或飞行存钱罐当作临时载具。</p>
+    /// 这也避免其他实体把切斯特或飞行存钱罐当作临时载具。
     @Override
     public boolean startRiding(Entity vehicle, boolean force) {
         return false;

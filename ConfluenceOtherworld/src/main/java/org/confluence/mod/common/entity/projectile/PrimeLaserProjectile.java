@@ -10,8 +10,8 @@ import org.joml.Vector3f;
 
 /// 机械骷髅王激光臂发射的直线弹幕。
 ///
-/// <p>弹幕仅在生成时计算一次方向，之后保持匀速飞行并正常与方块、实体碰撞。
-/// 目标后续移动不会改变弹道，因此玩家可以通过走位躲避，而不是承受无法规避的瞬时射线。</p>
+/// 弹幕仅在生成时计算一次方向，之后保持匀速飞行并正常与方块、实体碰撞。
+/// 目标后续移动不会改变弹道，因此玩家可以通过走位躲避，而不是承受无法规避的瞬时射线。
 public final class PrimeLaserProjectile extends StraightMonsterProjectile {
     private static final DustParticleOptions TRAIL = new DustParticleOptions(new Vector3f(1.0F, 0.12F, 0.08F), 1.25F);
 

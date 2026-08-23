@@ -159,9 +159,9 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
 
     /// 还原 1.21 两条近战机械臂的固定行为树时间轴。
     ///
-    /// <p>非旋转阶段是三十刻准备，然后重复两次“五刻瞄准、十刻锁向冲刺、
+    /// 非旋转阶段是三十刻准备，然后重复两次“五刻瞄准、十刻锁向冲刺、
     /// 三十刻回位”。旋转阶段则分别使用锯臂两轮、钳臂三轮的短回位序列。
-    /// 冲刺方向只在每个十刻冲刺开始时锁定，不能因距离接近或目标横移提前结束。</p>
+    /// 冲刺方向只在每个十刻冲刺开始时锁定，不能因距离接近或目标横移提前结束。
     private void tickMeleeArm(SkeletronPrime master, boolean vice) {
         LivingEntity target = master.getTarget();
         if (target == null || !target.isAlive()) {

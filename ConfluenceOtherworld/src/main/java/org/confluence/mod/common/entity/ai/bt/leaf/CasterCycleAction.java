@@ -17,9 +17,9 @@ import java.util.function.Function;
 
 /// 执行“预施法、延迟释放、循环传送”的完整法师战斗周期。
 ///
-/// <p>阶段计数沿用 1.21 法师的倒计时语义，避免把挥手时刻、弹幕释放时刻和
+/// 阶段计数沿用 1.21 法师的倒计时语义，避免把挥手时刻、弹幕释放时刻和
 /// 传送时刻拆成多个互相产生一 tick 偏差的顺序节点。节点只负责公共时序；
-/// 弹幕种类、伤害和命中特效仍由具体实体提供的工厂决定。</p>
+/// 弹幕种类、伤害和命中特效仍由具体实体提供的工厂决定。
 public final class CasterCycleAction extends BTNode {
     private static final UUID BATTLE_RANGE_UUID = UUID.fromString("538db362-46e6-46b2-aa64-d674065dfc41");
     private static final int CYCLE_TICKS = 200;

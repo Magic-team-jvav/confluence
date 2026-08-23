@@ -14,9 +14,9 @@ import net.minecraft.world.phys.Vec3;
 
 /// 按实体飞行方向渲染模型的通用弹幕渲染器。
 ///
-/// <p>这类弹幕的外观应该沿当前速度向量朝前，而不是依赖实体同步到客户端的
+/// 这类弹幕的外观应该沿当前速度向量朝前，而不是依赖实体同步到客户端的
 /// {@code yRot/xRot}。蜜蜂、蜜蜂箭这类会持续调整速度的小型弹幕，如果使用普通实体朝向，
-/// 客户端很容易看到模型集体朝向玩家或朝向上一帧方向。</p>
+/// 客户端很容易看到模型集体朝向玩家或朝向上一帧方向。
 public class ForwardProjectileRenderer<T extends Entity, M extends EntityModel<T>> extends EntityRenderer<T> {
     private final M model;
     private final ResourceLocation texture;

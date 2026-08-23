@@ -14,9 +14,9 @@ import org.joml.Vector3f;
 
 /// 使用粒子表现的敌对生物弹幕。
 ///
-/// <p>每个注册实体类型在构造时固定一种 {@link Variant}，客户端只需根据实体类型即可
+/// 每个注册实体类型在构造时固定一种 {@link Variant}，客户端只需根据实体类型即可
 /// 还原外观和命中特效，不必为运行期间不会改变的数据额外同步字段。行为树负责请求创建
-/// 弹幕，具体粒子和附加效果由弹幕变种自身保存。</p>
+/// 弹幕，具体粒子和附加效果由弹幕变种自身保存。
 public final class HostileParticleProjectile extends StraightMonsterProjectile {
     private static final int MAXIMUM_LIFETIME = 100;
     private static final float VELOCITY = 0.3F;

@@ -32,9 +32,9 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 丛林黄蜂。
 ///
-/// <p>黄蜂的射击与战斗走位是 1.21 中独立于普通飞行预制体的特例：射击前停止导航并
+/// 黄蜂的射击与战斗走位是 1.21 中独立于普通飞行预制体的特例：射击前停止导航并
 /// 转正，发射后按固定周期重新寻找悬空路径。相关计时保留在实体专用节点中，避免为单个
-/// 特例增加公共飞行参数。</p>
+/// 特例增加公共飞行参数。
 public class Hornet extends BaseFlyingMonster {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack.cast");

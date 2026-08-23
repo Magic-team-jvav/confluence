@@ -58,8 +58,8 @@ public class BaseHookItem extends Item {
 
     /// 构造新钩爪时提供成功后将被淘汰的旧实体 UUID。
     ///
-    /// <p>普通钩爪无需关心该提示；需要选择唯一外观的实现可据此计算“提交后的列表视图”，
-    /// 但旧实体和物品 NBT 仍只能在新实体成功加入世界后真正修改。</p>
+    /// 普通钩爪无需关心该提示；需要选择唯一外观的实现可据此计算“提交后的列表视图”，
+    /// 但旧实体和物品 NBT 仍只能在新实体成功加入世界后真正修改。
     public AbstractHookEntity getHook(ItemStack itemStack, BaseHookItem item, Player player, Level level, @Nullable UUID pendingEviction) {
         return getHook(itemStack, item, player, level);
     }
@@ -148,8 +148,8 @@ public class BaseHookItem extends Item {
 
     /// 判断指定实体是否仍由玩家当前装备的物品栈登记。
     ///
-    /// <p>实体编号只用于同一客户端运行期内快速定位，最终仍同时核对 UUID、玩家所有权和实体实例，
-    /// 防止物品被移动、替换或复制后留下无人管理的钩爪。</p>
+    /// 实体编号只用于同一客户端运行期内快速定位，最终仍同时核对 UUID、玩家所有权和实体实例，
+    /// 防止物品被移动、替换或复制后留下无人管理的钩爪。
     public static boolean containsHook(ItemStack stack, Level level, Player player, AbstractHookEntity expected) {
         CompoundTag nbt = LibUtils.getItemStackNbtIfPresent(stack);
         if (nbt == null) return false;
@@ -162,8 +162,8 @@ public class BaseHookItem extends Item {
 
     /// 重建可信活动列表并清除损坏、重复、越权和超量条目。
     ///
-    /// <p>不迁移只含旧整数编号的条目：1.20 使用全新当前格式。超量但仍有效的钩爪
-    /// 会进入收回阶段，避免从物品列表移除后遗留为无人管理的活动实体。</p>
+    /// 不迁移只含旧整数编号的条目：1.20 使用全新当前格式。超量但仍有效的钩爪
+    /// 会进入收回阶段，避免从物品列表移除后遗留为无人管理的活动实体。
     private ListTag sanitizeHooks(ServerLevel level, Player player, ItemStack itemStack) {
         ListTag source = LibUtils.getItemStackNbt(itemStack).getList("hooks", Tag.TAG_COMPOUND);
         ListTag sanitized = new ListTag();

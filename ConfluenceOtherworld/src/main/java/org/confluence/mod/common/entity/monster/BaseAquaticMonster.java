@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 
 /// 敌对水生生物共用的水下导航、移动与目标选择基类。
 ///
-/// <p>具体生物只补充属性和攻击方式，避免各自重复处理离水、游动与路径导航边界。</p>
+/// 具体生物只补充属性和攻击方式，避免各自重复处理离水、游动与路径导航边界。
 public abstract class BaseAquaticMonster extends BaseMonster {
     protected BaseAquaticMonster(EntityType<? extends Monster> type, Level level) {
         super(type, level);

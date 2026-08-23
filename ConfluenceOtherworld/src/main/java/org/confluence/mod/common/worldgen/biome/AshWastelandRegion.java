@@ -17,8 +17,8 @@ import static terrablender.api.ParameterUtils.*;
 
 /// 灰烬荒原的下界噪声区域。
 ///
-/// <p>温湿度与灰烬森林共享较宽的取值范围，但改用第 2 和第 6 档侵蚀度及山峰向怪异度。
-/// 这使荒原更容易形成与森林有边界的开阔地带，而不是依赖生物群系 JSON 的偶然选中。</p>
+/// 温湿度与灰烬森林共享较宽的取值范围，但改用第 2 和第 6 档侵蚀度及山峰向怪异度。
+/// 这使荒原更容易形成与森林有边界的开阔地带，而不是依赖生物群系 JSON 的偶然选中。
 public final class AshWastelandRegion extends Region {
     public AshWastelandRegion(ResourceLocation name, int weight) {
         super(name, RegionType.NETHER, weight);

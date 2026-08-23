@@ -253,9 +253,9 @@ public final class LivingEntityEvents {
 
     /// 在 MagicLib 处理召唤伤害倍率与暴击前加入玩家自己的鞭痕效果。
     ///
-    /// <p>伤害来源的直接实体既可能是旧式实体召唤物，也可能是新架构使用的短生命周期弹丸。这里只识别
+    /// 伤害来源的直接实体既可能是旧式实体召唤物，也可能是新架构使用的短生命周期弹丸。这里只识别
     /// 显式实现 {@link OwnedSummon} 的直接实体，普通驯服生物、坐骑和 Boss 部件不会误触发召唤标记。
-    /// 非实体召唤物的近战伤害由运行时实例直接处理，不会在这里重复结算。</p>
+    /// 非实体召唤物的近战伤害由运行时实例直接处理，不会在这里重复结算。
     private static void summonTagDamage(PortLivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F || !(event.getEntity().level() instanceof ServerLevel level) || !(event.getSource().getDirectEntity() instanceof OwnedSummon summon)) {

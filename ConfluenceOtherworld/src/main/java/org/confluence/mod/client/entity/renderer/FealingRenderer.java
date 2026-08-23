@@ -16,10 +16,10 @@ import java.util.List;
 
 /// 飞灵专用渲染器。
 ///
-/// <p>妖精模型把外层发光立方体和内部实体分别存放在两组骨骼中。主渲染阶段只绘制内部骨骼，
+/// 妖精模型把外层发光立方体和内部实体分别存放在两组骨骼中。主渲染阶段只绘制内部骨骼，
 /// 第二阶段只绘制外层骨骼，避免同一几何被重复提交。与通用的 {@code eyes} 发光层不同，
 /// 外层使用保留深度写入和背面剔除的裁切渲染，因此它表现为有明确表面的发光立方体，
-/// 不会形成粒子式的半透明叠加。</p>
+/// 不会形成粒子式的半透明叠加。
 public final class FealingRenderer extends FairyRenderer<Fealing> {
     private static final int FULL_BRIGHT = 0xF000F0;
 

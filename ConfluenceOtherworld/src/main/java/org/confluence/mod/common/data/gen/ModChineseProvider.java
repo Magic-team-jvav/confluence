@@ -4906,8 +4906,8 @@ public class ModChineseProvider extends LanguageProvider {
 
     /// 添加链锤名称。
     ///
-    /// <p>主翻译方法已经接近 JVM 单方法长度上限，因此按内容分组为同类私有方法；
-    /// 名称仍直接绑定注册对象，不引入额外映射表或外部名称类。</p>
+    /// 主翻译方法已经接近 JVM 单方法长度上限，因此按内容分组为同类私有方法；
+    /// 名称仍直接绑定注册对象，不引入额外映射表或外部名称类。
     private void addFlailTranslations() {
         add(FlailItems.MACE.get(), "链球");
         add(FlailItems.FLAMING_MACE.get(), "火焰链锤");
@@ -4952,8 +4952,8 @@ public class ModChineseProvider extends LanguageProvider {
 
     /// 注册声音事件使用的中文字幕。
     ///
-    /// <p>声音字幕没有可绑定的注册对象重载，因此直接登记固定语言键。
-    /// 本方法只负责字幕文本，不承担旧命名空间兼容或运行时别名。</p>
+    /// 声音字幕没有可绑定的注册对象重载，因此直接登记固定语言键。
+    /// 本方法只负责字幕文本，不承担旧命名空间兼容或运行时别名。
     private void addSoundTranslations() {
         add("confluence.subtitle.transmission", "传送魔法：开启");
         add("confluence.subtitle.lightsaber_open", "光剑：开启");
@@ -5070,8 +5070,8 @@ public class ModChineseProvider extends LanguageProvider {
 
     /// 添加坐骑物品、坐骑实体和敌对生物弹幕名称。
     ///
-    /// <p>这些翻译仍直接写在本 Provider 中。方法边界仅用于控制主翻译方法的字节码长度，
-    /// 不引入额外名称表，也不改变 DataGen 的来源。</p>
+    /// 这些翻译仍直接写在本 Provider 中。方法边界仅用于控制主翻译方法的字节码长度，
+    /// 不引入额外名称表，也不改变 DataGen 的来源。
     private void addMountAndHostileProjectileTranslations() {
         add(NpcEntities.FEMALE_ANGLER.get(), "渔女");
         add("message.confluence.boss_spawn", "%s已苏醒！");
@@ -5107,9 +5107,9 @@ public class ModChineseProvider extends LanguageProvider {
 
     /// 添加本体创造模式分页名称。
     ///
-    /// <p>翻译仍直接维护在本类中；单独方法只是控制
+    /// 翻译仍直接维护在本类中；单独方法只是控制
     /// {@link #addTranslations()} 的 JVM 字节码长度，避免继续增加本体翻译时
-    /// 触发单方法 64 KiB 上限。</p>
+    /// 触发单方法 64 KiB 上限。
     private void addCreativeTabTranslations() {
         add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
         add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");
@@ -5129,7 +5129,7 @@ public class ModChineseProvider extends LanguageProvider {
 
     /// 添加个人存钱罐的两种随身入口。
     ///
-    /// <p>名称仍直接写在中文提供器中；分组方法仅用于控制主翻译方法的字节码长度。</p>
+    /// 名称仍直接写在中文提供器中；分组方法仅用于控制主翻译方法的字节码长度。
     private void addStorageCompanionTranslations() {
         add(PetItems.CHESTER_STAFF.get(), "眼骨");
         add(PetItems.WALLET.get(), "钱币槽");

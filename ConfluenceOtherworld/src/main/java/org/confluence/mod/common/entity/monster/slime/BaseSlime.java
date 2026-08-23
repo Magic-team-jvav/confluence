@@ -64,9 +64,9 @@ public class BaseSlime extends BaseMonster {
 
     /// 保留 1.21 侧原版史莱姆的索敌规则。
     ///
-    /// <p>白天被动的颜色变体不会主动寻找玩家，但受击反击仍由
+    /// 白天被动的颜色变体不会主动寻找玩家，但受击反击仍由
     /// {@link HurtByTargetGoal} 独立处理；玩家与史莱姆的高度差也必须不超过四格。
-    /// 铁傀儡使用较低优先级，避免同时存在玩家时改变原有目标选择。</p>
+    /// 铁傀儡使用较低优先级，避免同时存在玩家时改变原有目标选择。
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -90,7 +90,7 @@ public class BaseSlime extends BaseMonster {
 
     /// 返回服务端权威并同步到客户端的史莱姆大小。
     ///
-    /// <p>该值同时驱动碰撞箱和模型尺寸；特殊变体只需修改这一处，不能再分别维护渲染缩放和逻辑体积。</p>
+    /// 该值同时驱动碰撞箱和模型尺寸；特殊变体只需修改这一处，不能再分别维护渲染缩放和逻辑体积。
     public int getSlimeSize() {
         return entityData.get(DATA_SIZE);
     }
@@ -135,9 +135,9 @@ public class BaseSlime extends BaseMonster {
 
     /// 按史莱姆类型执行 1.21 侧现有的自然生成分层规则。
     ///
-    /// <p>生物群系数据只决定某种史莱姆能否进入候选列表；亮度、高度、昼夜和露天条件仍在
+    /// 生物群系数据只决定某种史莱姆能否进入候选列表；亮度、高度、昼夜和露天条件仍在
     /// 此处统一判定。未列入任何分支的类型保持不可自然生成，包括虽然注册了放置规则、但
-    /// 1.21 当前没有为其提供有效环境分支的青团史莱姆。</p>
+    /// 1.21 当前没有为其提供有效环境分支的青团史莱姆。
     public static boolean checkSlimeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof Level world) || !SpawnPlacementChecks.checkMonsterSpawnRules(type, level, spawnType, pos, random)) {
             return false;
@@ -178,8 +178,8 @@ public class BaseSlime extends BaseMonster {
 
     /// 返回下一次落地起跳前的等待时间。
     ///
-    /// <p>普通史莱姆沿用原版的十至二十九刻随机间隔；进入攻击状态后，移动控制器会把
-    /// 该间隔缩短为三分之一。仅金史莱姆等在 1.21 侧明确覆盖此值的变体需要重写。</p>
+    /// 普通史莱姆沿用原版的十至二十九刻随机间隔；进入攻击状态后，移动控制器会把
+    /// 该间隔缩短为三分之一。仅金史莱姆等在 1.21 侧明确覆盖此值的变体需要重写。
     protected int getJumpDelay() {
         return random.nextInt(20) + 10;
     }
@@ -207,9 +207,9 @@ public class BaseSlime extends BaseMonster {
 
     /// 连续驱动史莱姆移动的行为节点。
     ///
-    /// <p>它对应 1.21 侧原版史莱姆同时运行的漂浮、攻击、随机转向和持续跳跃四个目标，
+    /// 它对应 1.21 侧原版史莱姆同时运行的漂浮、攻击、随机转向和持续跳跃四个目标，
     /// 但仍作为新架构中的单一行为树节点执行。节点不会把一次跳跃拆成“蓄力—起跳—落地—
-    /// 长时间等待”的离散任务，因此转向、追击速度和落地后的下一跳节奏与原实现一致。</p>
+    /// 长时间等待”的离散任务，因此转向、追击速度和落地后的下一跳节奏与原实现一致。
     private static final class SlimeLocomotionAction extends BTNode {
         private final BaseSlime slime;
         private float idleDirection;

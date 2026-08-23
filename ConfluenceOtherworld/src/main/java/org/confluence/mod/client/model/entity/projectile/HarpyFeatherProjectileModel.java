@@ -13,7 +13,7 @@ import org.confluence.mod.common.entity.projectile.HarpyFeatherProjectile;
 
 /// 鸟妖羽毛弹幕的双羽片模型。
 ///
-/// <p>模型尺寸和贴图布局保持 1.21 侧的 48×48 结构，旋转交给渲染器根据弹幕速度统一处理。</p>
+/// 模型尺寸和贴图布局保持 1.21 侧的 48×48 结构，旋转交给渲染器根据弹幕速度统一处理。
 public final class HarpyFeatherProjectileModel extends EntityModel<HarpyFeatherProjectile> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("harpy_feather_projectile"), "main");
     private final ModelPart bone;

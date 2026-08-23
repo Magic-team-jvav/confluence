@@ -31,8 +31,8 @@ public class GhastlyProjectile extends SpearProjectile {
 
     /// 在统一派生弹幕事务提交实体前设置锁定目标。
     ///
-    /// <p>目标配置早于实体加入世界，因此不会先触发基类自动索敌，也不依赖生成后的可变状态
-    /// 修补。锁定目标只控制运动方向，战斗数值仍完全来自服务端冻结快照。</p>
+    /// 目标配置早于实体加入世界，因此不会先触发基类自动索敌，也不依赖生成后的可变状态
+    /// 修补。锁定目标只控制运动方向，战斗数值仍完全来自服务端冻结快照。
     public void setLockedTarget(LivingEntity target) {
         this.target = target;
     }

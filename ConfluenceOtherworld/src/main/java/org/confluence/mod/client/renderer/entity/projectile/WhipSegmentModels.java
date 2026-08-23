@@ -14,9 +14,9 @@ import java.util.Map;
 
 /// 注册并缓存鞭子外观引用的物品 JSON 模型。
 ///
-/// <p>模型位置直接来自 {@link org.confluence.mod.api.whip.WhipAppearance}，因此附属模组
+/// 模型位置直接来自 {@link org.confluence.mod.api.whip.WhipAppearance}，因此附属模组
 /// 不需要使用固定目录或物品同名约定。Forge 1.20.1 必须使用 {@code inventory} 变体
-/// 注册这类独立物品模型，否则模型烘焙器会把位置误当成方块状态。</p>
+/// 注册这类独立物品模型，否则模型烘焙器会把位置误当成方块状态。
 public final class WhipSegmentModels {
     private static final Map<ResourceLocation, ModelResourceLocation> MODELS = new HashMap<>();
 
@@ -53,9 +53,9 @@ public final class WhipSegmentModels {
 
     /// 把 1.21 的独立模型路径换算为 Forge 1.20.1 的物品模型键。
     ///
-    /// <p>例如 {@code confluence:item/whip_segments/snapthorn} 在 1.20.1 中必须注册成
+    /// 例如 {@code confluence:item/whip_segments/snapthorn} 在 1.20.1 中必须注册成
     /// {@code confluence:whip_segments/snapthorn#inventory}。若保留 {@code item/} 前缀，
-    /// 模型烘焙器会再次补上物品目录并静默返回缺失模型。</p>
+    /// 模型烘焙器会再次补上物品目录并静默返回缺失模型。
     private static ModelResourceLocation inventoryLocation(ResourceLocation location) {
         String path = location.getPath();
         String prefix = "item/";

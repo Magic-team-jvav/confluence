@@ -15,9 +15,9 @@ import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 飞龙的十二段实体链、空中盘旋与往返突袭行为。
 ///
-/// <p>飞龙没有目标时围绕定期更换的高空中心做圆周运动，最低巡航中心位于 Y=105；
+/// 飞龙没有目标时围绕定期更换的高空中心做圆周运动，最低巡航中心位于 Y=105；
 /// 发现目标后停止盘旋，先以有限角速度调整朝向，再沿身体正前方高速穿过目标。近距离且
-/// 玩家脚下悬空时会进入更快的俯冲段，避免把飞龙退化成普通蠕虫的直接追踪。</p>
+/// 玩家脚下悬空时会进入更快的俯冲段，避免把飞龙退化成普通蠕虫的直接追踪。
 public class Wyvern extends BaseWormMonster {
 
     public Wyvern(EntityType<? extends BaseWormMonster> type, Level level) {

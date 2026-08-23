@@ -11,7 +11,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 /// 不会因碰撞立即移除的高弹性巨石。
 ///
-/// <p>弹性与摩擦系数由基类统一保存，确保所有巨石变体使用同一份版本化运行状态。</p>
+/// 弹性与摩擦系数由基类统一保存，确保所有巨石变体使用同一份版本化运行状态。
 public class BouncyBoulderEntity extends BoulderEntity {
 
     public BouncyBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {

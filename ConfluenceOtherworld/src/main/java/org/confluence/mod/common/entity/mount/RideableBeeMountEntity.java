@@ -20,8 +20,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 /// 蜜蜂坐骑。
 ///
-/// <p>飞行速度、升力、重力、能量和水体限制全部在实体内直接维护，
-/// 不再通过通用 locomotion 配置解释。</p>
+/// 飞行速度、升力、重力、能量和水体限制全部在实体内直接维护，
+/// 不再通过通用 locomotion 配置解释。
 public final class RideableBeeMountEntity extends AbstractMountEntity implements GeoEntity {
     public static final float RENDER_SCALE = 1.15F;
 

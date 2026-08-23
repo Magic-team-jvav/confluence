@@ -61,8 +61,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     private FlailComponent cachedComponent;
     /// 客户端渲染链条时使用的平滑方向。
     ///
-    /// <p>连枷阶段切换或服务端同步位置时，弹球位置可能在相邻帧内出现小幅跳变。如果链条
-    /// 直接使用瞬时方向，会表现为手部端点弹动；该字段只参与客户端渲染，不保存到实体数据。</p>
+    /// 连枷阶段切换或服务端同步位置时，弹球位置可能在相邻帧内出现小幅跳变。如果链条
+    /// 直接使用瞬时方向，会表现为手部端点弹动；该字段只参与客户端渲染，不保存到实体数据。
     @Nullable
     public Vec3 smoothedChainDir;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
@@ -365,8 +365,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     /// 返回当前连枷是否属于直接发射型。
     ///
-    /// <p>普通链锤先旋转再投出；链刃、锚等直接发射型由实体子类覆盖，
-    /// 其参数和行为无需再写入物品注册或额外定义表。</p>
+    /// 普通链锤先旋转再投出；链刃、锚等直接发射型由实体子类覆盖，
+    /// 其参数和行为无需再写入物品注册或额外定义表。
     protected boolean startsLaunched() {
         return false;
     }
@@ -383,8 +383,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     /// 按指定方向同步实体朝向。
     ///
-    /// <p>渲染器会根据实体朝向决定球体姿态。旋转、投出和收回阶段都维护朝向后，
-    /// 连枷不会再因为服务端位置变化而出现球体横躺、正反面乱跳或链条接到模型侧面的错觉。</p>
+    /// 渲染器会根据实体朝向决定球体姿态。旋转、投出和收回阶段都维护朝向后，
+    /// 连枷不会再因为服务端位置变化而出现球体横躺、正反面乱跳或链条接到模型侧面的错觉。
     private void faceDirection(Vec3 direction) {
         if (direction.lengthSqr() < 1.0E-7) {
             return;
@@ -396,7 +396,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     /// 在共享移动、碰撞和状态转换完成后执行具体武器行为。
     ///
-    /// <p>特殊链锤只需覆盖此扩展点发射附属弹幕；普通链锤保持空实现。</p>
+    /// 特殊链锤只需覆盖此扩展点发射附属弹幕；普通链锤保持空实现。
     protected void tickSpecialBehavior(Player player, FlailComponent component, int phase) {
     }
 

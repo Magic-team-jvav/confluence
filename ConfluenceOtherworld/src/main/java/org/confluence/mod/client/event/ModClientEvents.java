@@ -835,9 +835,9 @@ public final class ModClientEvents {
 
     /// 为暂时复用卷壳怪拓扑的生物提供完整且确定的资源组合。
     ///
-    /// <p>卷壳怪纹理按变体存放在子目录中，不存在约定路径下的
+    /// 卷壳怪纹理按变体存放在子目录中，不存在约定路径下的
     /// {@code textures/entity/giant_shelly.png}。这里显式选择紫色变体，避免复用模型的
-    /// 巨型陆龟和腹足怪请求不存在的默认纹理。</p>
+    /// 巨型陆龟和腹足怪请求不存在的默认纹理。
     private static <T extends GeoEntity> ExplicitGeoModel<T> sharedGiantShellyModel() {
         return new ExplicitGeoModel<>(
                 Confluence.asResource("geo/entity/giant_shelly.geo.json"),

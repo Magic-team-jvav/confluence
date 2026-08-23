@@ -20,9 +20,9 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 仅通过参数区分冲撞节奏的简单飞行敌怪。
 ///
-/// <p>滴滴怪、飞鱼和游荡眼球鱼的行为结构相同，区别仅是惯性、最高速度、转向锥和
+/// 滴滴怪、飞鱼和游荡眼球鱼的行为结构相同，区别仅是惯性、最高速度、转向锥和
 /// 掠过后的滑行时间，因此保留为同一个实体类并使用不可变冲撞参数。真正具有额外状态或
-/// 特殊攻击的生物仍应使用独立子类，不能继续向本类堆叠类型判断。</p>
+/// 特殊攻击的生物仍应使用独立子类，不能继续向本类堆叠类型判断。
 public class SimpleFlyMonster extends BaseFlyingMonster {
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
 

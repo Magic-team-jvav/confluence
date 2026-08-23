@@ -13,9 +13,9 @@ import org.confluence.mod.common.entity.boss.KingSlime;
 
 /// 史莱姆王专用渲染器。
 ///
-/// <p>1.21 侧使用原版史莱姆的内核、面部和半透明外壳，再在顶部单独绘制王冠。1.20
+/// 1.21 侧使用原版史莱姆的内核、面部和半透明外壳，再在顶部单独绘制王冠。1.20
 /// 重写后的实体不再继承原版史莱姆，因此这里复用本体已有的史莱姆模型，并直接读取同步的
-/// 连续尺寸。不能用尖刺史莱姆骨骼代替身体，否则客户端只会看到王冠和少量装饰骨骼。</p>
+/// 连续尺寸。不能用尖刺史莱姆骨骼代替身体，否则客户端只会看到王冠和少量装饰骨骼。
 public final class KingSlimeRenderer extends MobRenderer<KingSlime, BaseSlimeModel<KingSlime>> {
     private final CrownOfKingSlimeModel crownModel;
 

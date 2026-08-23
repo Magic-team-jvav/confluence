@@ -1852,8 +1852,8 @@ public class ModEnglishProvider extends LanguageProvider {
 
     /// 注册生物与战斗相关声音的英文字幕。
     ///
-    /// <p>字幕键与声音事件注册时声明的语言键保持一致；集中放在 Provider 内，
-    /// 便于数据生成阶段直接检查重复键，并避免额外维护中间映射类。</p>
+    /// 字幕键与声音事件注册时声明的语言键保持一致；集中放在 Provider 内，
+    /// 便于数据生成阶段直接检查重复键，并避免额外维护中间映射类。
     private void addCreatureSoundTranslations() {
         add("confluence.subtitle.routine_hurt", "Mob: Hurt");
         add("confluence.subtitle.routine_death", "Mob: Death");

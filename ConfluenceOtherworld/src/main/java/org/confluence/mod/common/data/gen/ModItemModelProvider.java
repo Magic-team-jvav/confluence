@@ -353,8 +353,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     /// 判断指定物品模型是否已经由主资源目录提供。
     ///
-    /// <p>复杂模型继续由手写 JSON 持有；只有没有手写定义的常规模型才由本 Provider 接管。
-    /// 这避免通用兜底在生成目录留下同路径但功能退化的副本。</p>
+    /// 复杂模型继续由手写 JSON 持有；只有没有手写定义的常规模型才由本 Provider 接管。
+    /// 这避免通用兜底在生成目录留下同路径但功能退化的副本。
     private boolean hasHandwrittenModel(ResourceLocation model) {
         try {
             existingFileHelper.getResource(model, PackType.CLIENT_RESOURCES, ".json", "models");

@@ -8,9 +8,9 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 带短暂蓄力的直线冲锋动作。
 ///
-/// <p>蓄力阶段允许实体继续面向目标，以便玩家能够读出即将冲锋的方向；进入冲锋阶段时
+/// 蓄力阶段允许实体继续面向目标，以便玩家能够读出即将冲锋的方向；进入冲锋阶段时
 /// 会保存一次目标方向，后续只沿该方向加速。这样玩家横向闪避后，冲锋者会从身旁掠过，
-/// 而不会在高速移动期间持续自动追踪。</p>
+/// 而不会在高速移动期间持续自动追踪。
 public class ChargeAttackAction extends BTNode {
     protected final PathfinderMob mob;
     protected final double speed;

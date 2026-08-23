@@ -31,12 +31,12 @@ import software.bernie.geckolib.core.animation.AnimationController;
 
 /// 泰拉近战骷髅族共用的基础行为。
 ///
-/// <p>不同骨骼变种可以通过注册项配置属性和外观，但都共享近身追击、挥击和随机游荡
+/// 不同骨骼变种可以通过注册项配置属性和外观，但都共享近身追击、挥击和随机游荡
 /// 逻辑。作为亡灵骨骼，它们不会溺水，也不会接受中毒效果；这些免疫在实体入口统一
-/// 处理，确保环境伤害、药水和其他模组调用都得到相同结果。</p>
+/// 处理，确保环境伤害、药水和其他模组调用都得到相同结果。
 ///
-/// <p>受伤时使用骷髅声音，死亡时使用泰拉亡灵死亡声，与原版骷髅声音语义区分。
-/// 模型动画由客户端骷髅动画族统一驱动，实体类仅保留游戏行为。</p>
+/// 受伤时使用骷髅声音，死亡时使用泰拉亡灵死亡声，与原版骷髅声音语义区分。
+/// 模型动画由客户端骷髅动画族统一驱动，实体类仅保留游戏行为。
 public class MeleeSkeleton extends BaseHumanoidMonster {
     public MeleeSkeleton(EntityType<? extends MeleeSkeleton> type, Level level) {
         super(type, level);

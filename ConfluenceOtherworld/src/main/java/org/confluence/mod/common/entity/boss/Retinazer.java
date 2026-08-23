@@ -14,9 +14,9 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 /// 双子魔眼中的激光眼。
 ///
-/// <p>第一阶段依次执行悬停、五连射和五次冲刺。半血变形完成后不再冲刺，而是依次从目标
+/// 第一阶段依次执行悬停、五连射和五次冲刺。半血变形完成后不再冲刺，而是依次从目标
 /// 上方、平行方向和快速射击位置完成三组激光攻击。状态、剩余时间、弹幕数和冲刺方向均写入
-/// 当前存档格式，重新加载不会重置正在执行的战斗片段。</p>
+/// 当前存档格式，重新加载不会重置正在执行的战斗片段。
 public class Retinazer extends AbstractTwinEye {
     private static final String STATE_TAG = "CombatState";
     private static final String STATE_TICKS_TAG = "StateTicks";

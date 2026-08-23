@@ -12,9 +12,9 @@ import org.confluence.mod.common.item.mount.MountItem;
 
 /// 本体坐骑的创建与清理入口。
 ///
-/// <p>坐骑物品直接保存实体类型，管理器只负责从手中或坐骑槽找到物品、创建实体、
+/// 坐骑物品直接保存实体类型，管理器只负责从手中或坐骑槽找到物品、创建实体、
 /// 切换骑乘状态，以及在槽位物品失效时清理实体。各坐骑的移动参数和特殊能力
-/// 均留在自己的实体类中。</p>
+/// 均留在自己的实体类中。
 public final class MountManager {
     private MountManager() {
     }
@@ -66,8 +66,8 @@ public final class MountManager {
 
     /// 每个服务端 tick 校验当前临时坐骑。
     ///
-    /// <p>手持物品召唤的坐骑无需一直持有原物品；坐骑槽召唤的坐骑则要求槽位
-    /// 仍是同一实体类型的坐骑物品。</p>
+    /// 手持物品召唤的坐骑无需一直持有原物品；坐骑槽召唤的坐骑则要求槽位
+    /// 仍是同一实体类型的坐骑物品。
     public static void validate(ServerPlayer player) {
         if (!(player.getVehicle() instanceof AbstractMountEntity mount)) {
             return;

@@ -21,7 +21,7 @@ public class DispenserRegistration {
     private static final DefaultDispenseItemBehavior REMAINDER_DISPENSER = new DefaultDispenseItemBehavior();
 
     /// 注册本模组液体工具在发射器中的交互行为。
-    /// <p>原版已经处理普通箭、船等常规物品，这里只补本模组新增的桶、无底桶、吸水海绵和空瓶。</p>
+    /// 原版已经处理普通箭、船等常规物品，这里只补本模组新增的桶、无底桶、吸水海绵和空瓶。
     public static void boostrap() {
         DispenseItemBehavior bucketEmptying = new DefaultDispenseItemBehavior() {
             @Override
@@ -93,7 +93,7 @@ public class DispenserRegistration {
     }
 
     /// 按原版发射器的容器物品规则处理剩余物。
-    /// <p>物品堆耗尽时直接返回剩余物；没有耗尽时优先塞回发射器，容器满了再把剩余物发射出去。</p>
+    /// 物品堆耗尽时直接返回剩余物；没有耗尽时优先塞回发射器，容器满了再把剩余物发射出去。
     private static ItemStack consumeWithRemainder(BlockSource source, ItemStack stack, ItemStack remainder) {
         stack.shrink(1);
         if (stack.isEmpty()) {

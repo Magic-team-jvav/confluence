@@ -6,7 +6,7 @@ import org.confluence.mod.network.c2s.GoingOldschoolPacketC2S;
 
 /// 保存标题界面触发的“致敬经典”成就请求。
 ///
-/// <p>玩家在创建或选择世界前也能拖动太阳、月亮，此时尚无服务端连接。请求会暂存在
+/// 玩家在创建或选择世界前也能拖动太阳、月亮，此时尚无服务端连接。请求会暂存在
 /// 当前客户端进程中，并在进入世界后交给服务端的原版成就进度处理；已经位于世界中时则
 /// 立即发送。客户端自身不创建或保存伪造的成就进度。
 public final class GoingOldschoolAchievementClient {

@@ -17,9 +17,9 @@ import java.util.UUID;
 
 /// 只需配置体节数量的通用蠕虫实体。
 ///
-/// <p>普通自然生成变种没有 Boss 所有者；由血肉类 Boss 召唤的血蛭可以显式绑定精确
+/// 普通自然生成变种没有 Boss 所有者；由血肉类 Boss 召唤的血蛭可以显式绑定精确
 /// UUID，并在区块反向加载后恢复双向关系。是否作为从属完全由实例数据决定，不需要为
-/// 同一种血蛭再注册一套重复实体类型。</p>
+/// 同一种血蛭再注册一套重复实体类型。
 public class SimpleWormMonster extends BaseWormMonster {
     private static final int OWNER_RESOLVE_GRACE_TICKS = 100;
 

@@ -6,8 +6,8 @@ import net.minecraft.world.item.ItemStack;
 
 /// Immutable result of resolving a gun and its ammunition into projectile data.
 ///
-/// <p>Keeping the resolved values together prevents gun subclasses from
-/// recomputing damage, velocity or penetration independently.</p>
+/// Keeping the resolved values together prevents gun subclasses from
+/// recomputing damage, velocity or penetration independently.
 public record ShotContext(ServerPlayer shooter, ItemStack gun, ItemStack ammo, float damage,
                           float knockback, float velocity, int penetrate, float inaccuracy) {
     public ServerLevel level() {

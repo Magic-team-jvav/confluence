@@ -30,9 +30,9 @@ import java.util.List;
 
 /// 沿攻击实体的曲线绘制可组合鞭子外观。
 ///
-/// <p>玩家手中的普通物品 JSON 模型负责显示手柄，本渲染器只处理手柄之后的曲线。
+/// 玩家手中的普通物品 JSON 模型负责显示手柄，本渲染器只处理手柄之后的曲线。
 /// 每个外观分段独立选择固定像素间距或固定数量，并按声明顺序叠加；鞭梢和颜色线均为
-/// 可选项。所有模型仍通过原版烘焙模型渲染，因此模型自身的面与背面剔除规则不会丢失。</p>
+/// 可选项。所有模型仍通过原版烘焙模型渲染，因此模型自身的面与背面剔除规则不会丢失。
 public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
     /// 与 1.21 鞭子渲染器保持一致，物品模型按半格比例绘制。
     private static final float MODEL_SCALE = 0.5F;
@@ -69,9 +69,9 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
 
     /// 把玩家当前持手作为客户端样条根部。
     ///
-    /// <p>服务端轨迹仍使用实体生成时冻结的世界坐标，本方法只修正客户端显示。1.21
+    /// 服务端轨迹仍使用实体生成时冻结的世界坐标，本方法只修正客户端显示。1.21
     /// 是把玩家当前手部作为样条控制点参与插值，而不是对已经采样完的折线硬改第一个点。
-    /// 这里保持同样的时机，避免第三人称看起来从错误手侧甩出。</p>
+    /// 这里保持同样的时机，避免第三人称看起来从错误手侧甩出。
     private List<Vec3> alignCurveToHand(WhipAttackEntity entity, List<Vec3> controlPoints, float partialTick) {
         if (controlPoints.isEmpty() || !(entity.getOwner() instanceof Player player)) {
             return controlPoints;

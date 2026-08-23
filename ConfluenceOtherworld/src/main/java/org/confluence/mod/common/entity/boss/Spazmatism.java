@@ -19,9 +19,9 @@ import java.util.Set;
 
 /// 双子魔眼中的魔焰眼。
 ///
-/// <p>一阶段以短魔焰齐射衔接冲刺，半血变形后改为贴近目标的连续火流和更快冲刺。
+/// 一阶段以短魔焰齐射衔接冲刺，半血变形后改为贴近目标的连续火流和更快冲刺。
 /// 另一只魔眼死亡后，本体继续执行当前阶段的独立循环；当前 1.21 实现没有额外的单眼
-/// 狂暴参数，因此这里也不虚构第三套战斗数值。</p>
+/// 狂暴参数，因此这里也不虚构第三套战斗数值。
 public class Spazmatism extends AbstractTwinEye {
     private static final String STATE_TAG = "CombatState";
     private static final String STATE_TICKS_TAG = "StateTicks";

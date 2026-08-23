@@ -18,10 +18,10 @@ import org.joml.Vector3f;
 
 /// 本源末影龙专用渲染器。
 ///
-/// <p>通用 GeckoLib 生物渲染器只处理水平身体朝向，而本源末影龙会沿三维速度
+/// 通用 GeckoLib 生物渲染器只处理水平身体朝向，而本源末影龙会沿三维速度
 /// 改变俯仰角，因此这里额外插值实体俯仰，避免模型水平飞行而碰撞部件已经上下转向。
 /// 激光使用服务端同步的长度绘制为四面封闭光束，既能从任意观察方向看到，也不会用
-/// 半透明粒子冒充实际攻击范围。</p>
+/// 半透明粒子冒充实际攻击范围。
 public final class PrimeEnderDragonRenderer extends BossGeoRenderer<PrimeEnderDragon> {
     private static final ResourceLocation BEAM_TEXTURE = ResourceLocation.withDefaultNamespace("textures/entity/beacon_beam.png");
     private static final float CORE_HALF_WIDTH = 0.35F;

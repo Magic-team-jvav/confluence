@@ -14,8 +14,8 @@ import org.confluence.mod.client.entity.model.BaseSlimeModel;
 
 /// 普通史莱姆的半透明外壳。
 ///
-/// <p>外壳与内核使用同一张纹理，但必须走半透明渲染类型；实体隐身时仅在发光轮廓可见的
-/// 情况下绘制轮廓，行为与原版史莱姆保持一致。</p>
+/// 外壳与内核使用同一张纹理，但必须走半透明渲染类型；实体隐身时仅在发光轮廓可见的
+/// 情况下绘制轮廓，行为与原版史莱姆保持一致。
 public final class BaseSlimeOuterLayer<T extends LivingEntity> extends RenderLayer<T, BaseSlimeModel<T>> {
     private final BaseSlimeModel<T> outerModel;
 

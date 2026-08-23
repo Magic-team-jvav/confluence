@@ -15,8 +15,8 @@ import org.confluence.lib.util.LibUtils;
 
 /// 岩浆史莱姆免疫火焰、接触目标时点燃对方，并会在水中持续受伤。
 ///
-/// <p>专家及更高难度下，它在死亡动画期间会把当前位置可替换的非熔岩源方块变为
-/// 流动熔岩。放置条件与 1.21 侧一致，不覆盖固体方块，也不改写已有熔岩源。</p>
+/// 专家及更高难度下，它在死亡动画期间会把当前位置可替换的非熔岩源方块变为
+/// 流动熔岩。放置条件与 1.21 侧一致，不覆盖固体方块，也不改写已有熔岩源。
 public class LavaSlime extends BaseSlime {
 
     public LavaSlime(EntityType<? extends BaseSlime> type, Level level) {

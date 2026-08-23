@@ -41,8 +41,8 @@ public class GhastlyglaiveItem extends AbstractSpearItem {
 
     /// 使用当前挥击已经传入的武器栈生成恶魂弹幕。
     ///
-    /// <p>这里不能在命中后重新读取玩家主手，否则玩家切换物品或未来扩展副手攻击时，派生弹幕
-    /// 可能冻结错误武器。基础实现仍负责伤害、击退回调和附魔后处理。</p>
+    /// 这里不能在命中后重新读取玩家主手，否则玩家切换物品或未来扩展副手攻击时，派生弹幕
+    /// 可能冻结错误武器。基础实现仍负责伤害、击退回调和附魔后处理。
     @Override
     protected void onHitEntity(ItemStack stack, ServerLevel level, LivingEntity owner, Entity victim) {
         super.onHitEntity(stack, level, owner, victim);

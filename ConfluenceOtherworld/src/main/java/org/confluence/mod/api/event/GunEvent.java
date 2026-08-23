@@ -222,9 +222,9 @@ public class GunEvent extends Event {
     /// Posted after the default projectiles are selected and before their
     /// common launch data is applied.
     ///
-    /// <p>Listeners may replace the list with arbitrary projectile entities.
+    /// Listeners may replace the list with arbitrary projectile entities.
     /// This supports guns whose projectiles are entities rather than registered
-    /// {@code BaseBullet} items while keeping spawning server-authoritative.</p>
+    /// {@code BaseBullet} items while keeping spawning server-authoritative.
     public static class ProjectileCreationEvent extends GunEvent {
         private final ShotContext context;
         private final List<Projectile> projectiles;

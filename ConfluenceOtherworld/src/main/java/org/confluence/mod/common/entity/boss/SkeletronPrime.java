@@ -28,11 +28,11 @@ import org.confluence.mod.common.init.entity.BossEntities;
 
 /// 机械骷髅王本体及四条可破坏机械臂的权威控制器。
 ///
-/// <p>夜间战斗由悬浮追踪和旋转冲锋两个阶段组成。摧毁机械臂只会移除对应武器威胁，
-/// 不会凭空改变头部护甲或产生额外阶段。白天会跳过普通周期，直接进入狂暴追击。</p>
+/// 夜间战斗由悬浮追踪和旋转冲锋两个阶段组成。摧毁机械臂只会移除对应武器威胁，
+/// 不会凭空改变头部护甲或产生额外阶段。白天会跳过普通周期，直接进入狂暴追击。
 ///
-/// <p>机械臂实体是可重建的临时部件。本体只保存各槽位的摧毁状态和剩余生命，
-/// 因而区块重载不会复制仍存活的部件，也不会复活已经摧毁的部件。</p>
+/// 机械臂实体是可重建的临时部件。本体只保存各槽位的摧毁状态和剩余生命，
+/// 因而区块重载不会复制仍存活的部件，也不会复活已经摧毁的部件。
 public class SkeletronPrime extends BaseBoss {
     private static final int ARM_COUNT = 4;
     private static final int ALL_ARMS_DESTROYED = (1 << ARM_COUNT) - 1;
@@ -138,18 +138,18 @@ public class SkeletronPrime extends BaseBoss {
 
     /// 还原 1.21 通用 Boss 基类在行为树执行后的空气阻力。
     ///
-    /// <p>悬浮阶段会把旧速度乘以 1.1 后再叠加追踪力；如果缺少这一步阻力，实体一旦越过玩家，
+    /// 悬浮阶段会把旧速度乘以 1.1 后再叠加追踪力；如果缺少这一步阻力，实体一旦越过玩家，
     /// 旧速度就会稳定卡在最大值，无法重新转向并最终飞出有效高度。旋转阶段同样需要经过该阻力，
-    /// 因而必须统一放在本轮运动计算之后，而不能只修正悬浮分支。</p>
+    /// 因而必须统一放在本轮运动计算之后，而不能只修正悬浮分支。
     private void applyAirResistance() {
         setDeltaMovement(getDeltaMovement().scale(0.95));
     }
 
     /// 复用 1.21 侧简单追踪器的速度合成参数。
     ///
-    /// <p>当前速度先乘 1.1，再叠加朝向目标的 0.12 吸引力，最终限制在
+    /// 当前速度先乘 1.1，再叠加朝向目标的 0.12 吸引力，最终限制在
     /// 0.3 至 2.5 的速度区间。这里不能改成追逐目标上方固定点，否则悬浮轨迹、
-    /// 转向半径和机械臂相对位置都会与原实现不同。</p>
+    /// 转向半径和机械臂相对位置都会与原实现不同。
     private void updateHoverMovement(LivingEntity target) {
         Vec3 current = getDeltaMovement();
         Vec3 targetDirection = target.position().subtract(position());

@@ -8,12 +8,12 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 让飞行远程单位在目标周围维持一个稳定的作战距离带。
 ///
-/// <p>距离小于下限时远离目标，大于上限时接近目标，位于距离带内时沿随机选定的顺时针
+/// 距离小于下限时远离目标，大于上限时接近目标，位于距离带内时沿随机选定的顺时针
 /// 或逆时针方向绕行。判断使用平方距离，避免行为树每 tick 为单纯比较计算平方根；最终
-/// 加速度仍会归一化，以保证水平移动和高度修正组合后速度不会异常放大。</p>
+/// 加速度仍会归一化，以保证水平移动和高度修正组合后速度不会异常放大。
 ///
-/// <p>每次启动只运行固定的 {@code duration}，到期主动成功退出，把调度权交还给上层选择器。
-/// 这样远程走位不会长期占用行为树，也能与射击、冲刺等节点轮换。目标丢失或死亡时立即失败。</p>
+/// 每次启动只运行固定的 {@code duration}，到期主动成功退出，把调度权交还给上层选择器。
+/// 这样远程走位不会长期占用行为树，也能与射击、冲刺等节点轮换。目标丢失或死亡时立即失败。
 public final class MaintainRangedDistanceAction extends BTNode {
     private final PathfinderMob mob;
     private final double minimumDistanceSqr;

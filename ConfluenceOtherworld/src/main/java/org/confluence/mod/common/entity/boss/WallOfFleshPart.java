@@ -12,9 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 /// 血肉墙眼睛和嘴部的公共战斗部件。
 ///
-/// <p>部件只承担命中判定、接触伤害和目标同步，生命值仍完全属于血肉墙本体。
+/// 部件只承担命中判定、接触伤害和目标同步，生命值仍完全属于血肉墙本体。
 /// 部件不单独存档；血肉墙重载后会根据已经保存的墙面种子重新建立相同布局，
-/// 从而避免临时部件与本体分别存档造成重复实体。</p>
+/// 从而避免临时部件与本体分别存档造成重复实体。
 public abstract class WallOfFleshPart extends BaseBossPart<WallOfFlesh> {
     private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(WallOfFleshPart.class, EntityDataSerializers.INT);
     private static final int CONTACT_INTERVAL = 10;

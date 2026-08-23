@@ -26,9 +26,9 @@ import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 
 /// 请求服务端切换 Confluence 自有菜单。
 ///
-/// <p>光标物品始终以服务端当前容器为准，不随 C2S 消息上传。切换菜单时先暂存服务端
+/// 光标物品始终以服务端当前容器为准，不随 C2S 消息上传。切换菜单时先暂存服务端
 /// 光标物品，打开目标菜单后再恢复，既避免切换菜单吞掉物品，也阻止客户端借菜单切换
-/// 注入任意物品或超大 NBT。</p>
+/// 注入任意物品或超大 NBT。
 public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPacket.C2S {
     public static final byte EXTRA_INVENTORY = 0;
     public static final byte MAID_TRADE_MENU = 1;
@@ -44,10 +44,10 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
 
     /// 根据玩家当前的服务端菜单解析一次合法的菜单切换。
     ///
-    /// <p>染缸与混色界面的按钮只是同一工作站内的页面切换，因此必须继承当前有效
+    /// 染缸与混色界面的按钮只是同一工作站内的页面切换，因此必须继承当前有效
     /// 菜单已经绑定的 {@link ContainerLevelAccess}。重新依据玩家视线寻找方块既会
     /// 在打开界面后丢失准确位置，也允许伪造消息从任意位置创建工作站菜单。
-    /// 重铸界面只能从哥布林工匠的有效交易会话进入，不能作为通用菜单直接打开。</p>
+    /// 重铸界面只能从哥布林工匠的有效交易会话进入，不能作为通用菜单直接打开。
     private static MenuRequest resolveMenu(ServerPlayer player, byte menuId) {
         if (menuId == EXTRA_INVENTORY) {
             return new MenuRequest((containerId, inventory, owner) -> new ExtraInventoryMenu(containerId, inventory), Component.empty());

@@ -64,7 +64,7 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
 
     /// 为没有显式变体数据的自然生成实体选择初始外观。
     ///
-    /// <p>具有变体的环境生物只需覆盖该方法；已有 NBT 明确指定变体时不会再次随机选择。</p>
+    /// 具有变体的环境生物只需覆盖该方法；已有 NBT 明确指定变体时不会再次随机选择。
     protected void initializeSpawnVariant() {}
 
     @Override
@@ -87,17 +87,17 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
 
     /// 为被动小动物包装可抢占的恐慌分支。
     ///
-    /// <p>原版 Panic 只在受伤或着火后触发，普通玩家靠近不会被视为威胁。条件切换节点会在
-    /// 每个 tick 重新判断，因而小动物在巡游途中受伤时可以立即中断当前动作并逃离。</p>
+    /// 原版 Panic 只在受伤或着火后触发，普通玩家靠近不会被视为威胁。条件切换节点会在
+    /// 每个 tick 重新判断，因而小动物在巡游途中受伤时可以立即中断当前动作并逃离。
     protected final BTNode withPassivePanic(BTNode routine, double panicSpeed) {
         return new ConditionalSwitchNode(() -> getLastHurtByMob() != null || isOnFire(), new PanicFleeAction(this, panicSpeed), routine);
     }
 
     /// 创建 1.21 地面小动物共用的日常行为。
     ///
-    /// <p>漂浮始终具有最高优先级；物种可把繁殖、食物吸引或跟随亲代等动作插入其后；
+    /// 漂浮始终具有最高优先级；物种可把繁殖、食物吸引或跟随亲代等动作插入其后；
     /// 最后再执行避水巡游、观察玩家和随机转头。共享顺序集中在基类中，新增同类生物
-    /// 不需要复制一整套原版动作，也不会遗漏落水逃生。</p>
+    /// 不需要复制一整套原版动作，也不会遗漏落水逃生。
     protected final BTNode createGroundCritterRoutine(double strollSpeed, BTNode... speciesActions) {
         List<BTNode> actions = new ArrayList<>();
         actions.add(new VanillaGoalAction(new FloatGoal(this)));
@@ -120,8 +120,8 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
 
     /// 地面小动物沿用 1.21 简单动物与兔类的较低声音音量。
     ///
-    /// <p>飞行动物和鸭子的原版继承值不同，由对应中间基类或具体实体覆盖；
-    /// 这样新增地面小动物无需重复声明相同常量。</p>
+    /// 飞行动物和鸭子的原版继承值不同，由对应中间基类或具体实体覆盖；
+    /// 这样新增地面小动物无需重复声明相同常量。
     @Override
     protected float getSoundVolume() {
         return 0.4F;
@@ -146,7 +146,7 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
 
     /// 创建昆虫与同尺寸小型生物的基础属性。
     ///
-    /// <p>该配置独立于普通小动物，避免新增昆虫时误用十点生命的通用配置。</p>
+    /// 该配置独立于普通小动物，避免新增昆虫时误用十点生命的通用配置。
     public static AttributeSupplier.Builder createInsectAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 3.0)

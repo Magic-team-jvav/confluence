@@ -5,9 +5,9 @@ import org.confluence.lib.common.effect.PublicMobEffect;
 
 /// 鞭子施加到目标身上的召唤标记效果。
 ///
-/// <p>每种鞭子应注册独立实例，使实体能够通过本体 DataMap 单独免疫某一种鞭子标记。
+/// 每种鞭子应注册独立实例，使实体能够通过本体 DataMap 单独免疫某一种鞭子标记。
 /// 默认实现只增加固定召唤伤害；附属模组可以继承本类并重写
-/// {@link #modifyDamage(WhipTagDamageContext, float)}，实现特殊标记规则。</p>
+/// {@link #modifyDamage(WhipTagDamageContext, float)}，实现特殊标记规则。
 public class WhipTagEffect extends PublicMobEffect {
     private final float fixedDamage;
 

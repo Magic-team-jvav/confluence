@@ -6,8 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 /// 魂师界面的临时开发门禁。
 ///
-/// <p>总览界面、快捷选择界面和常驻技能栏必须共用这里的判断，避免只隐藏绘制，
-/// 但按键和滚轮仍能在后台修改魂师状态。主手或副手持有测试物品都视为“手持”。</p>
+/// 总览界面、快捷选择界面和常驻技能栏必须共用这里的判断，避免只隐藏绘制，
+/// 但按键和滚轮仍能在后台修改魂师状态。主手或副手持有测试物品都视为“手持”。
 public final class SoulGuiAccess {
     private SoulGuiAccess() {}
 

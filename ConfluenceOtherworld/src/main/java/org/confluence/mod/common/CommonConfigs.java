@@ -47,8 +47,8 @@ public final class CommonConfigs {
     public static IntValue FALLING_STAR_INTERVAL;
     /// 是否让本体敌怪跳过原版亮度门槛。
     ///
-    /// <p>该开关只移除暗度判断，方块碰撞、世界边界、刷怪类型和各实体自己的高度、天气及维度
-    /// 条件仍由放置谓词继续校验。</p>
+    /// 该开关只移除暗度判断，方块碰撞、世界边界、刷怪类型和各实体自己的高度、天气及维度
+    /// 条件仍由放置谓词继续校验。
     public static BooleanValue SPAWN_WITHOUT_LIGHT;
 
     public static BooleanValue DO_NPC_SPAWNING;

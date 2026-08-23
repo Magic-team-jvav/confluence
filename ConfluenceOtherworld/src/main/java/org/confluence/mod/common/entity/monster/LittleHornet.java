@@ -26,9 +26,9 @@ import java.util.UUID;
 
 /// 蜂王召唤的近战幼蜂。
 ///
-/// <p>幼蜂沿用 1.21 的可观察行为：只响应受击或蜂王每 32 tick 下发的目标，使用飞行导航
+/// 幼蜂沿用 1.21 的可观察行为：只响应受击或蜂王每 32 tick 下发的目标，使用飞行导航
 /// 追近后近战；离蜂王超过 30 格且蜂王所在位置可容纳实体时，回到蜂王上方。所有者追踪器
-/// 只负责跨存档恢复归属，不额外增加持续追踪、强制返航或独立索敌。</p>
+/// 只负责跨存档恢复归属，不额外增加持续追踪、强制返航或独立索敌。
 public final class LittleHornet extends Hornet {
     private static final RawAnimation WING = RawAnimation.begin().thenLoop("wing");
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(LittleHornet.class, EntityDataSerializers.OPTIONAL_UUID);

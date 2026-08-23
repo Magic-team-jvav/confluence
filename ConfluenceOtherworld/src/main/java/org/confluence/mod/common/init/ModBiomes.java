@@ -12,9 +12,9 @@ import static org.confluence.mod.Confluence.MODID;
 
 /// Confluence 自定义群系的资源键与 TerraBlender 注册入口。
 ///
-/// <p>群系本身由数据包 JSON 定义；本类另外负责把部分群系嵌入原版的多噪声参数空间，
+/// 群系本身由数据包 JSON 定义；本类另外负责把部分群系嵌入原版的多噪声参数空间，
 /// 并把对应的地表规则交给 TerraBlender。如果只存在 JSON 而没有调用
-/// {@link #registerRegionAndSurface()}，这些群系虽然能进入注册表，却不会自然出现在新区块中。</p>
+/// {@link #registerRegionAndSurface()}，这些群系虽然能进入注册表，却不会自然出现在新区块中。
 public final class ModBiomes {
     public static final ResourceKey<Biome> THE_CORRUPTION = register("the_corruption");
     public static final ResourceKey<Biome> THE_CORRUPTION_DESERT = register("the_corruption_desert");
@@ -43,8 +43,8 @@ public final class ModBiomes {
 
     /// 注册五个会参与自然生成的区域，并安装三个维度的地表规则。
     ///
-    /// <p>权重只决定同类 TerraBlender Region 之间被选中的相对频率；具体落点仍由各 Region
-    /// 定义的温度、湿度、大陆性、侵蚀度、深度与怪异度范围约束。该方法只能在通用启动队列中调用一次。</p>
+    /// 权重只决定同类 TerraBlender Region 之间被选中的相对频率；具体落点仍由各 Region
+    /// 定义的温度、湿度、大陆性、侵蚀度、深度与怪异度范围约束。该方法只能在通用启动队列中调用一次。
     public static void registerRegionAndSurface() {
         Regions.register(new TheCrimsonRegion(Confluence.asResource("the_crimson"), 1));
         Regions.register(new TheCorruptionRegion(Confluence.asResource("the_corruption"), 1));

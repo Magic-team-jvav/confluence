@@ -23,8 +23,8 @@ import static terrablender.api.ParameterUtils.Weirdness;
 
 /// 腐化之地的主世界噪声区域。
 ///
-/// <p>相比血腥之地，腐化之地集中在干燥的暖热内陆和较低侵蚀度范围。
-/// 参数区间的区分使两种邪恶群系能共用原版多噪声生成器，又不会在每个区块上相互覆盖。</p>
+/// 相比血腥之地，腐化之地集中在干燥的暖热内陆和较低侵蚀度范围。
+/// 参数区间的区分使两种邪恶群系能共用原版多噪声生成器，又不会在每个区块上相互覆盖。
 public final class TheCorruptionRegion extends Region {
     public TheCorruptionRegion(ResourceLocation name, int weight) {
         super(name, RegionType.OVERWORLD, weight);

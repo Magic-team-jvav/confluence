@@ -32,9 +32,9 @@ import java.util.function.Consumer;
 
 /// 链锤物品的共享输入与状态转换入口。
 ///
-/// <p>按下主动作键时创建并旋转链锤，松开时投出；再次按下可让投出或回收中的链锤落入停留阶段，
+/// 按下主动作键时创建并旋转链锤，松开时投出；再次按下可让投出或回收中的链锤落入停留阶段，
 /// 再次松开则收回。左键配置通过控制包调用同一组方法，右键配置通过原版物品使用生命周期调用，
-/// 因此不会绕过箱子、门与工作台的方块交互优先级。</p>
+/// 因此不会绕过箱子、门与工作台的方块交互优先级。
 public class BaseFlailItem extends TooltipItem implements GeoItem {
     private static final int USE_DURATION = 72_000;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
@@ -133,8 +133,8 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
     /// 链锤实体成功造成伤害后的物品扩展点。
     ///
-    /// <p>普通链锤保持空实现；拥有点燃、减益或附属弹幕的链锤通过具体物品子类覆盖。
-    /// 该回调只在服务端真实伤害成功后执行一次，不参与组件序列化。</p>
+    /// 普通链锤保持空实现；拥有点燃、减益或附属弹幕的链锤通过具体物品子类覆盖。
+    /// 该回调只在服务端真实伤害成功后执行一次，不参与组件序列化。
     public void onFlailHit(Player owner, LivingEntity target, BaseFlailEntity flail) {
     }
 
@@ -155,8 +155,8 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
 
     /// 手持时仅由公共 Geo 渲染器绘制连枷手柄。
     ///
-    /// <p>弹头和锁链属于世界中的连枷实体，不能再次作为完整物品贴在玩家手上；物品栏、掉落物
-    /// 与展示框仍由物品模型中的二维图标负责。</p>
+    /// 弹头和锁链属于世界中的连枷实体，不能再次作为完整物品贴在玩家手上；物品栏、掉落物
+    /// 与展示框仍由物品模型中的二维图标负责。
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {

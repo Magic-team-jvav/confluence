@@ -16,9 +16,9 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
 /// 敌对生物直线弹幕的公共运行时。
 ///
-/// <p>本类统一处理飞行、实体与方块碰撞、伤害来源、阵营过滤和寿命。
+/// 本类统一处理飞行、实体与方块碰撞、伤害来源、阵营过滤和寿命。
 /// 具体弹幕只需要提供初始参数，并可通过 {@link #modifyVelocity(Vec3)}
-/// 实现加速、减速等运动差异，避免每种远程生物重复一整套碰撞代码。</p>
+/// 实现加速、减速等运动差异，避免每种远程生物重复一整套碰撞代码。
 public abstract class StraightMonsterProjectile extends Projectile implements IPortProjectileExtension {
     private float damage;
     private int maximumLifetime = 100;
@@ -30,8 +30,8 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
 
     /// 在弹幕入世前保存本次攻击参数。
     ///
-    /// <p>伤害取自发射瞬间的生物属性，之后即使发射者属性发生变化，
-    /// 已存在的弹幕也不会被追溯修改。</p>
+    /// 伤害取自发射瞬间的生物属性，之后即使发射者属性发生变化，
+    /// 已存在的弹幕也不会被追溯修改。
     public final void configure(Mob owner, LivingEntity target, float damage, float velocity, float inaccuracy, int maximumLifetime) {
         Vec3 origin = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
         configureAimed(owner, origin, target.getEyePosition().subtract(origin), damage, velocity, inaccuracy, maximumLifetime);
@@ -49,9 +49,9 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
 
     /// 按明确的出生点和速度配置一次射击。
     ///
-    /// <p>该入口供抛射物、延迟突进物等不直接瞄准目标的弹幕使用。
+    /// 该入口供抛射物、延迟突进物等不直接瞄准目标的弹幕使用。
     /// 调用方仍然必须显式提供伤害快照和寿命，弹幕不会在后续 tick
-    /// 重新读取发射者属性。</p>
+    /// 重新读取发射者属性。
     public final void configure(Mob owner, Vec3 origin, Vec3 velocity, float damage, int maximumLifetime) {
         setOwner(owner);
         this.damage = damage;
@@ -107,8 +107,8 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
 
     /// 在服务端确认伤害结算成功后附加弹幕专属效果。
     ///
-    /// <p>中毒、着火等效果应放在这里，而不是在通用行为树中判断弹幕种类。
-    /// 这样免疫、无敌帧或阵营过滤阻止伤害时，也不会错误施加状态。</p>
+    /// 中毒、着火等效果应放在这里，而不是在通用行为树中判断弹幕种类。
+    /// 这样免疫、无敌帧或阵营过滤阻止伤害时，也不会错误施加状态。
     protected void onSuccessfulHit(Mob owner, LivingEntity target) {}
 
     @Override

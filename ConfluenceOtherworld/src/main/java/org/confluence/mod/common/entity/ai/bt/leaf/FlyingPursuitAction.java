@@ -8,9 +8,9 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 让飞行生物持续平滑追逐目标。
 ///
-/// <p>每 tick 在当前速度上增加朝向目标的加速度，再统一限制最大速度。该方式保留转向惯性，
+/// 每 tick 在当前速度上增加朝向目标的加速度，再统一限制最大速度。该方式保留转向惯性，
 /// 不会像反复设置固定冲刺向量一样在目标换边时瞬间弹转。接触伤害由飞行实体本身统一处理，
-/// 不依赖当前正在执行的行为树节点。</p>
+/// 不依赖当前正在执行的行为树节点。
 public final class FlyingPursuitAction extends BTNode {
     private final PathfinderMob mob;
     private final double acceleration;

@@ -26,14 +26,6 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
         return ID;
     }
 
-    /// 快捷键请求会消耗物品或修改玩家效果，必须回到服务端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         if (key == KEY_HEALING) {

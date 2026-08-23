@@ -27,13 +27,6 @@ public record AchievementOffsetSyncPacketS2C(
         return ID;
     }
 
-    /// 成就布局会替换客户端重载数据，必须交给客户端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
     @Override
     public void work(Player player) {
         AchievementOffsetLoader.handle(value);

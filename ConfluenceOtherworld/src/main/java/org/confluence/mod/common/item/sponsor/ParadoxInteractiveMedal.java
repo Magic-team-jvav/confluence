@@ -1,12 +1,7 @@
 package org.confluence.mod.common.item.sponsor;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 /// 20档纪念彩蛋物品：帕拉多克斯·英特拉克缇福勋章
 /// - 用途：饰品
@@ -16,11 +11,6 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 /// - 文本：暂定
 public class ParadoxInteractiveMedal extends BaseCurioItem {
     public ParadoxInteractiveMedal() {
-        super(builder("paradox_interactive_medal").rarity(ModRarity.MASTER)
-                .attribute(LibAttributes.getAttackDamage(), 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                .attribute(PortAttributesExtension.entityInteractionRange(), 3, PortAttributeModifier.Operation.ADD_VALUE)
-                .attribute(ConfluenceMagicLib.MINION_CAPACITY, 2, PortAttributeModifier.Operation.ADD_VALUE)
-                .attribute(Attributes.MAX_HEALTH, 10, PortAttributeModifier.Operation.ADD_VALUE)
-                .attribute(Attributes.ARMOR, 6, PortAttributeModifier.Operation.ADD_VALUE));
+        super(builder("paradox_interactive_medal").rarity(ModRarity.MASTER));
     }
 }

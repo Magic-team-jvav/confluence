@@ -22,14 +22,6 @@ public record MountTogglePacketC2S() implements IPortPacket.C2S {
         return ID;
     }
 
-    /// 坐骑切换会创建或移除实体，必须回到服务端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         MountManager.toggleFromSlot(player);

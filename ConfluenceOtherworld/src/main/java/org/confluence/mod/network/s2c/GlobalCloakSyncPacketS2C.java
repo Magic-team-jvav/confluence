@@ -39,12 +39,6 @@ public record GlobalCloakSyncPacketS2C(Map<BlockState, BooleanObjectPair<BlockSt
     }
 
     @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
-    @Override
     public void work(Player player) {
         GlobalCloakData.INSTANCE.applyNetworkState(blocks, items);
         ClientPacketHandler.handleCloak();

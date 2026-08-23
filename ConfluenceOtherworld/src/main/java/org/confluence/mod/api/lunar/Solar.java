@@ -447,17 +447,6 @@ public class Solar {
    * 获取星座
    *
    * @return 星座
-   * @deprecated 使用getXingZuo
-   */
-  @Deprecated
-  public String getXingzuo() {
-    return getXingZuo();
-  }
-
-  /**
-   * 获取星座
-   *
-   * @return 星座
    */
   public String getXingZuo() {
     int index = 11;

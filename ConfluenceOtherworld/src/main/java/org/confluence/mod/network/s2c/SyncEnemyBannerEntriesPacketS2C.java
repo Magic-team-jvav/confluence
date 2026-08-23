@@ -16,13 +16,6 @@ public record SyncEnemyBannerEntriesPacketS2C(List<String> entries) implements I
     public static final PortStreamCodec<ByteBuf, SyncEnemyBannerEntriesPacketS2C> STREAM_CODEC = PortByteBufCodecs.STRING_UTF8.apply(PortByteBufCodecs.list())
             .map(SyncEnemyBannerEntriesPacketS2C::new, SyncEnemyBannerEntriesPacketS2C::entries);
 
-    /// 敌怪旗帜条目会替换客户端玩家附件，必须交给客户端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
     @Override
     public void work(Player player) {
         PlayerSpecialData.of(player).setEnemyBannerEntries(entries);

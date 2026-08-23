@@ -442,17 +442,6 @@ public class Lunar {
    * 获取年份的天干（以正月初一作为新年的开始）
    *
    * @return 天干，如辛
-   * @deprecated 使用getYearGan
-   */
-  @Deprecated
-  public String getGan() {
-    return getYearGan();
-  }
-
-  /**
-   * 获取年份的天干（以正月初一作为新年的开始）
-   *
-   * @return 天干，如辛
    */
   public String getYearGan() {
     return LunarUtil.GAN[yearGanIndex + 1];
@@ -474,17 +463,6 @@ public class Lunar {
    */
   public String getYearGanExact() {
     return LunarUtil.GAN[yearGanIndexExact + 1];
-  }
-
-  /**
-   * 获取年份的地支（以正月初一作为新年的开始）
-   *
-   * @return 地支，如亥
-   * @deprecated 使用getYearZhi
-   */
-  @Deprecated
-  public String getZhi() {
-    return getYearZhi();
   }
 
   /**
@@ -678,17 +656,6 @@ public class Lunar {
    */
   public String getDayZhiExact2() {
     return LunarUtil.ZHI[dayZhiIndexExact2 + 1];
-  }
-
-  /**
-   * 获取年生肖
-   *
-   * @return 年生肖，如虎
-   * @deprecated 使用getYearShengXiao
-   */
-  @Deprecated
-  public String getShengxiao() {
-    return getYearShengXiao();
   }
 
   /**
@@ -1020,116 +987,6 @@ public class Lunar {
    * 获取日喜神方位
    *
    * @return 方位，如艮
-   * @deprecated 使用getDayPositionXi
-   */
-  @Deprecated
-  public String getPositionXi() {
-    return getDayPositionXi();
-  }
-
-  /**
-   * 获取喜神方位描述
-   *
-   * @return 方位描述，如东北
-   * @deprecated 使用getDayPositionXiDesc
-   */
-  @Deprecated
-  public String getPositionXiDesc() {
-    return getDayPositionXiDesc();
-  }
-
-  /**
-   * 获取阳贵神方位
-   *
-   * @return 阳贵神方位，如艮
-   * @deprecated 使用getDayPositionYangGui
-   */
-  @Deprecated
-  public String getPositionYangGui() {
-    return getDayPositionYangGui();
-  }
-
-  /**
-   * 获取阳贵神方位描述
-   *
-   * @return 方位描述，如东北
-   * @deprecated 使用getDayPositionYangGuiDesc
-   */
-  @Deprecated
-  public String getPositionYangGuiDesc() {
-    return getDayPositionYangGuiDesc();
-  }
-
-  /**
-   * 获取阴贵神方位
-   *
-   * @return 方位，如艮
-   * @deprecated 使用getDayPositionYinGui
-   */
-  @Deprecated
-  public String getPositionYinGui() {
-    return getDayPositionYinGui();
-  }
-
-  /**
-   * 获取阴贵神方位描述
-   *
-   * @return 阴贵神方位描述，如东北
-   * @deprecated 使用getDayPositionYinGuiDesc
-   */
-  @Deprecated
-  public String getPositionYinGuiDesc() {
-    return getDayPositionYinGuiDesc();
-  }
-
-  /**
-   * 获取福神方位
-   *
-   * @return 方位，如艮
-   * @deprecated 使用getDayPositionFu
-   */
-  @Deprecated
-  public String getPositionFu() {
-    return getDayPositionFu();
-  }
-
-  /**
-   * 获取福神方位描述
-   *
-   * @return 方位描述，如东北
-   * @deprecated 使用getDayPositionFuDesc
-   */
-  @Deprecated
-  public String getPositionFuDesc() {
-    return getDayPositionFuDesc();
-  }
-
-  /**
-   * 获取财神方位
-   *
-   * @return 方位，如艮
-   * @deprecated 使用getDayPositionCai
-   */
-  @Deprecated
-  public String getPositionCai() {
-    return getDayPositionCai();
-  }
-
-  /**
-   * 获取财神方位描述
-   *
-   * @return 方位描述，如东北
-   * @deprecated 使用getDayPositionCaiDesc
-   */
-  @Deprecated
-  public String getPositionCaiDesc() {
-    return getDayPositionCaiDesc();
-  }
-
-  /**
-   * 获取日喜神方位
-   *
-   * @return 方位，如艮
    */
   public String getDayPositionXi() {
     return LunarUtil.POSITION_XI[dayGanIndex + 1];
@@ -1252,18 +1109,12 @@ public class Lunar {
    * @return 方位，如艮
    */
   public String getYearPositionTaiSui(int sect) {
-    int yearZhiIndex;
-    switch (sect) {
-      case 1:
-        yearZhiIndex = this.yearZhiIndex;
-        break;
-      case 3:
-        yearZhiIndex = this.yearZhiIndexExact;
-        break;
-      default:
-        yearZhiIndex = this.yearZhiIndexByLiChun;
-    }
-    return LunarUtil.POSITION_TAI_SUI_YEAR[yearZhiIndex];
+    int yearZhiIndex = switch (sect) {
+        case 1 -> this.yearZhiIndex;
+        case 3 -> this.yearZhiIndexExact;
+        default -> this.yearZhiIndexByLiChun;
+    };
+      return LunarUtil.POSITION_TAI_SUI_YEAR[yearZhiIndex];
   }
 
   /**
@@ -1537,72 +1388,6 @@ public class Lunar {
   }
 
   /**
-   * 获取冲
-   *
-   * @return 冲，如申
-   * @deprecated 使用getDayChong
-   */
-  @Deprecated
-  public String getChong() {
-    return getDayChong();
-  }
-
-  /**
-   * 获取无情之克的冲天干
-   *
-   * @return 无情之克的冲天干，如甲
-   * @deprecated 使用getDayChongGan
-   */
-  @Deprecated
-  public String getChongGan() {
-    return getDayChongGan();
-  }
-
-  /**
-   * 获取有情之克的冲天干
-   *
-   * @return 有情之克的冲天干，如甲
-   * @deprecated 使用getDayChongGanTie
-   */
-  @Deprecated
-  public String getChongGanTie() {
-    return getDayChongGanTie();
-  }
-
-  /**
-   * 获取冲生肖
-   *
-   * @return 冲生肖，如猴
-   * @deprecated 使用getDayChongShengXiao
-   */
-  @Deprecated
-  public String getChongShengXiao() {
-    return getDayChongShengXiao();
-  }
-
-  /**
-   * 获取冲描述
-   *
-   * @return 冲描述，如(壬申)猴
-   * @deprecated 使用getDayChongDesc
-   */
-  @Deprecated
-  public String getChongDesc() {
-    return getDayChongDesc();
-  }
-
-  /**
-   * 获取煞
-   *
-   * @return 煞，如北
-   * @deprecated 使用getDaySha
-   */
-  @Deprecated
-  public String getSha() {
-    return getDaySha();
-  }
-
-  /**
    * 获取年纳音
    *
    * @return 年纳音，如剑锋金
@@ -1636,135 +1421,6 @@ public class Lunar {
    */
   public String getTimeNaYin() {
     return LunarUtil.NAYIN.get(getTimeInGanZhi());
-  }
-
-  /**
-   * 获取八字，男性也称乾造，女性也称坤造（以立春交接时刻作为新年的开始）
-   *
-   * @return 八字（男性也称乾造，女性也称坤造）
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZi() {
-    List<String> l = new ArrayList<String>(4);
-    EightChar eightChar = getEightChar();
-    l.add(eightChar.getYear());
-    l.add(eightChar.getMonth());
-    l.add(eightChar.getDay());
-    l.add(eightChar.getTime());
-    return l;
-  }
-
-  /**
-   * 获取八字五行
-   *
-   * @return 八字五行
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZiWuXing() {
-    List<String> l = new ArrayList<String>(4);
-    EightChar eightChar = getEightChar();
-    l.add(eightChar.getYearWuXing());
-    l.add(eightChar.getMonthWuXing());
-    l.add(eightChar.getDayWuXing());
-    l.add(eightChar.getTimeWuXing());
-    return l;
-  }
-
-  /**
-   * 获取八字纳音
-   *
-   * @return 八字纳音
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZiNaYin() {
-    List<String> l = new ArrayList<String>(4);
-    EightChar eightChar = getEightChar();
-    l.add(eightChar.getYearNaYin());
-    l.add(eightChar.getMonthNaYin());
-    l.add(eightChar.getDayNaYin());
-    l.add(eightChar.getTimeNaYin());
-    return l;
-  }
-
-  /**
-   * 获取八字天干十神，日柱十神为日主，其余三柱根据天干十神表查询
-   *
-   * @return 八字天干十神
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZiShiShenGan() {
-    List<String> l = new ArrayList<String>(4);
-    EightChar eightChar = getEightChar();
-    l.add(eightChar.getYearShiShenGan());
-    l.add(eightChar.getMonthShiShenGan());
-    l.add(eightChar.getDayShiShenGan());
-    l.add(eightChar.getTimeShiShenGan());
-    return l;
-  }
-
-  /**
-   * 获取八字地支十神，根据地支十神表查询
-   *
-   * @return 八字地支十神
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZiShiShenZhi() {
-    List<String> l = new ArrayList<String>(4);
-    EightChar eightChar = getEightChar();
-    l.add(eightChar.getYearShiShenZhi().get(0));
-    l.add(eightChar.getMonthShiShenZhi().get(0));
-    l.add(eightChar.getDayShiShenZhi().get(0));
-    l.add(eightChar.getTimeShiShenZhi().get(0));
-    return l;
-  }
-
-  /**
-   * 获取八字年支十神
-   *
-   * @return 八字年支十神
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZiShiShenYearZhi() {
-    return getEightChar().getYearShiShenZhi();
-  }
-
-  /**
-   * 获取八字月支十神
-   *
-   * @return 八字月支十神
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZiShiShenMonthZhi() {
-    return getEightChar().getMonthShiShenZhi();
-  }
-
-  /**
-   * 获取八字日支十神
-   *
-   * @return 八字日支十神
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZiShiShenDayZhi() {
-    return getEightChar().getDayShiShenZhi();
-  }
-
-  /**
-   * 获取八字时支十神
-   *
-   * @return 八字时支十神
-   * @deprecated 使用getEightChar
-   */
-  @Deprecated
-  public List<String> getBaZiShiShenTimeZhi() {
-    return getEightChar().getTimeShiShenZhi();
   }
 
   /**

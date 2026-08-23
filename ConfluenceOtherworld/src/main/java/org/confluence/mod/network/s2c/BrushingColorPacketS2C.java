@@ -72,13 +72,6 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
         return ID;
     }
 
-    /// 方块刷色缓存会被客户端渲染线程读取，必须在客户端主线程替换。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
     @Override
     public void work(Player player) {
         LocalBrushData.handlePacket(this);

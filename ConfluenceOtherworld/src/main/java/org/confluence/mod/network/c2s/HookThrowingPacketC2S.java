@@ -56,14 +56,6 @@ public record HookThrowingPacketC2S(boolean throwing, int id,
         return ID;
     }
 
-    /// 钩爪操作会创建或修改世界实体，必须回到服务端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         ServerLevel level = player.serverLevel();

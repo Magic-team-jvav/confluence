@@ -18,13 +18,6 @@ public record ApplySelectionPacketC2S(byte selected) implements IPortPacket.C2S 
     public static final PortStreamCodec<ByteBuf, ApplySelectionPacketC2S> STREAM_CODEC = PortByteBufCodecs.BYTE.map(ApplySelectionPacketC2S::new, ApplySelectionPacketC2S::selected);
 
     @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
-    @Override
     public void work(ServerPlayer player) {
         ItemStack itemStack = player.getMainHandItem();
         if (itemStack.getItem() instanceof ISelectable<?> selectable) {

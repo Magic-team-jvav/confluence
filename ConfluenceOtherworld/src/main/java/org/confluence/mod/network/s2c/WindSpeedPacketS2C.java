@@ -1,13 +1,13 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record WindSpeedPacketS2C(float x, float z) implements IPortPacket.S2C {
@@ -21,12 +21,6 @@ public record WindSpeedPacketS2C(float x, float z) implements IPortPacket.S2C {
     @Override
     public ResourceLocation identifier() {
         return ID;
-    }
-
-    @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
     }
 
     @Override

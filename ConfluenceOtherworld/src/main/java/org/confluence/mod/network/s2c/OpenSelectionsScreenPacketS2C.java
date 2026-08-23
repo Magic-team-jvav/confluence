@@ -45,13 +45,6 @@ public record OpenSelectionsScreenPacketS2C(Component[] selections,
         return ID;
     }
 
-    /// 选择界面的创建必须交给客户端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
     @Override
     public void work(Player player) {
         SelectionsScreen.handlePacket(this);

@@ -754,7 +754,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.spectre_goggles.0", "提供幽灵视觉以与回声块交互");
         add("tooltip.item.terra_curio.spectre_goggles.1", "背包内右键点击可开关");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "可从藤蔓收集藤蔓绳");
-        add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时潜行可以相位化");
         add("tooltip.item.confluence.paintbrush.0", "与油漆一起用于给方块所有面涂色");
         add("tooltip.item.confluence.paintbrush.1", "也可以涂覆涂料");
@@ -871,34 +870,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.obsidian_lock_box.0", "“使用钥匙在背包中右键打开”");
         add("tooltip.item.confluence.obsidian_lock_box.1", "“需要暗影钥匙”");
 
-        add("tooltip.item.confluence.angel_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.demon_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.fairy_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.fin_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.frozen_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.harpy_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.jetpack.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.leaf_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.bat_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.bee_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.butterfly_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.flame_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.hoverboard.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.bone_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.mothron_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.spectre_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.beetle_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.festive_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.spooky_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.tattered_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.steampunk_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.betsys_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.empress_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.fishron_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.nebula_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.vortex_booster.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
-        add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.peddlers_satchel.0", "永久增加旅商售卖的物品");
         add("tooltip.item.confluence.bug_net.0", "用来捕捉小动物");
         add("tooltip.item.confluence.lavaproof_bug_net.0", "“当事情变得棘手的时候使用”");
@@ -1177,7 +1148,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tag.item.confluence.summoner_weapon", "召唤师武器");
         add("tag.item.confluence.torch", "火把");
         add("tag.item.confluence.treasure_bag", "战利品袋");
-        add("tag.item.confluence.wings", "翅膀");
 
         new BestiaryLanguageSubProvider(this::add, false);
 
@@ -4369,39 +4339,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.PAPYRUS_SCARAB.get(), "甲虫莎草纸");
         add(AccessoryItems.PYGMY_NECKLACE.get(), "矮人项链");
         add(AccessoryItems.SPECTRE_GOGGLES.get(), "幽灵护目镜");
-        add(AccessoryItems.FLEDGLING_WINGS.get(), "雏翼");
         add(AccessoryItems.CHROMATIC_CLOAK.get(), "炫彩斗篷");
         add(AccessoryItems.PAINT_SPRAYER.get(), "喷漆器");
         add(AccessoryItems.RADIO_THING.get(), "收音机");
 
-        add(AccessoryItems.ANGEL_WINGS.get(), "天使之翼");
-        add(AccessoryItems.DEMON_WINGS.get(), "恶魔之翼");
-        add(AccessoryItems.FAIRY_WINGS.get(), "仙灵之翼");
-        add(AccessoryItems.FIN_WINGS.get(), "鳍翼");
-        add(AccessoryItems.FROZEN_WINGS.get(), "冰冻之翼");
-        add(AccessoryItems.HARPY_WINGS.get(), "女妖之翼");
-        add(AccessoryItems.JETPACK.get(), "喷气背包");
-        add(AccessoryItems.LEAF_WINGS.get(), "叶之翼");
-        add(AccessoryItems.BAT_WINGS.get(), "蝙蝠之翼");
-        add(AccessoryItems.BEE_WINGS.get(), "蜜蜂之翼");
-        add(AccessoryItems.BUTTERFLY_WINGS.get(), "蝴蝶之翼");
-        add(AccessoryItems.FLAME_WINGS.get(), "烈焰之翼");
-        add(AccessoryItems.HOVERBOARD.get(), "悬浮板");
-        add(AccessoryItems.BONE_WINGS.get(), "骨之翼");
-        add(AccessoryItems.MOTHRON_WINGS.get(), "蛾怪之翼");
-        add(AccessoryItems.SPECTRE_WINGS.get(), "幽灵之翼");
-        add(AccessoryItems.BEETLE_WINGS.get(), "甲虫之翼");
-        add(AccessoryItems.FESTIVE_WINGS.get(), "喜庆之翼");
-        add(AccessoryItems.SPOOKY_WINGS.get(), "阴森之翼");
-        add(AccessoryItems.TATTERED_WINGS.get(), "褴褛仙灵之翼");
-        add(AccessoryItems.STEAMPUNK_WINGS.get(), "蒸汽朋克之翼");
-        add(AccessoryItems.BETSYS_WINGS.get(), "双足翼龙之翼");
-        add(AccessoryItems.EMPRESS_WINGS.get(), "女皇之翼");
-        add(AccessoryItems.FISHRON_WINGS.get(), "猪鱼龙之翼");
-        add(AccessoryItems.NEBULA_WINGS.get(), "星云斗篷");
-        add(AccessoryItems.VORTEX_BOOSTER.get(), "星旋强化翼");
-        add(AccessoryItems.SOLAR_WINGS.get(), "日耀之翼");
-        add(AccessoryItems.STARDUST_WINGS.get(), "星尘之翼");
         add(AccessoryItems.CLOTHIER_VOODOO_DOLL.get(), "服装商巫毒玩偶");
         add(AccessoryItems.GUIDE_VOODOO_DOLL.get(), "向导巫毒玩偶");
 

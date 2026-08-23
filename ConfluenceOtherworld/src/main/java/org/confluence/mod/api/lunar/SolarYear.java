@@ -1,7 +1,6 @@
 package org.confluence.mod.api.lunar;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,14 +35,6 @@ public class SolarYear {
   }
 
   /**
-   * 通过日历初始化
-   */
-  @Deprecated
-  public SolarYear(Calendar calendar) {
-    year = calendar.get(Calendar.YEAR);
-  }
-
-  /**
    * 通过年初始化
    *
    * @param year 年
@@ -60,17 +51,6 @@ public class SolarYear {
    */
   public static SolarYear fromDate(Date date) {
     return new SolarYear(date);
-  }
-
-  /**
-   * 通过指定日历获取阳历年
-   *
-   * @param calendar 日历
-   * @return 阳历年
-   */
-  @Deprecated
-  public static SolarYear fromCalendar(Calendar calendar) {
-    return new SolarYear(calendar);
   }
 
   /**

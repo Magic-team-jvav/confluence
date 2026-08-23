@@ -17,6 +17,7 @@ import org.confluence.mod.common.menu.DyeVatMenu;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
+import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -48,7 +49,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     /// 菜单已经绑定的 {@link ContainerLevelAccess}。重新依据玩家视线寻找方块既会
     /// 在打开界面后丢失准确位置，也允许伪造消息从任意位置创建工作站菜单。
     /// 重铸界面只能从哥布林工匠的有效交易会话进入，不能作为通用菜单直接打开。
-    private static MenuRequest resolveMenu(ServerPlayer player, byte menuId) {
+    private static @Nullable  MenuRequest resolveMenu(ServerPlayer player, byte menuId) {
         if (menuId == EXTRA_INVENTORY) {
             return new MenuRequest((containerId, inventory, owner) -> new ExtraInventoryMenu(containerId, inventory), Component.empty());
         }
@@ -72,7 +73,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
         return new MenuRequest((containerId, inventory, owner) -> new DyeMixMenu(containerId, inventory, access), Component.translatable("container.confluence.dye_mix"));
     }
 
-    private static ContainerLevelAccess currentDyeVatAccess(ServerPlayer player) {
+    private static @Nullable ContainerLevelAccess currentDyeVatAccess(ServerPlayer player) {
         if (player.containerMenu instanceof DyeVatMenu menu && menu.hasValidServerAccess(player)) {
             return menu.workstationAccess();
         }
@@ -90,14 +91,6 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     @Override
     public ResourceLocation identifier() {
         return ID;
-    }
-
-    /// 菜单和光标物品都属于服务端玩家状态，只能在主线程切换。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
     }
 
     @Override

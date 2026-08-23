@@ -23,14 +23,6 @@ public record LeftClickItemActionPacketC2S(boolean pressed) implements IPortPack
         return ID;
     }
 
-    /// 左键动作可能生成实体，必须回到服务端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         ItemStack stack = player.getMainHandItem();

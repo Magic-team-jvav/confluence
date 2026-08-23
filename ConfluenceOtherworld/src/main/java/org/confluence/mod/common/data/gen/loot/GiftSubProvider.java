@@ -189,7 +189,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.FLEDGLING_WINGS))
+                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
                         .add(EmptyLootItem.emptyItem().setWeight(39))
                 )
         );
@@ -480,7 +480,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.FLEDGLING_WINGS))
+                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
                         .add(EmptyLootItem.emptyItem().setWeight(39))
                 )
         );
@@ -926,7 +926,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(2800).apply(count2To5))
                         .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(2800).apply(count2To5))
                         // 鳍翼、无底水桶、超级吸收棉（各1/70概率 = 120/8400 ≈ 1.43%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FIN_WINGS).setWeight(120))
+                        .add(LootItem.lootTableItem(TCItems.FIN_WINGS).setWeight(120))
                         .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(120))
                         .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(120))
                         // 无底蜂蜜桶、蜂蜜吸收棉（各1/100概率 = 84/8400 = 1%）
@@ -1001,7 +1001,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                         .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(14000).apply(count2To5))
                         .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(14000).apply(count2To5))
                         // 鳍翼、无底水桶、超级吸收棉（各1/70概率 = 600/42000 ≈ 1.43%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FIN_WINGS).setWeight(600))
+                        .add(LootItem.lootTableItem(TCItems.FIN_WINGS).setWeight(600))
                         .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(600))
                         .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(600))
                         // 无底蜂蜜桶、蜂蜜吸收棉（各1/100概率 = 420/42000 = 1%）

@@ -18,6 +18,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortShapedRecipePattern;
 
 import java.util.List;
@@ -520,7 +521,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "abc"
         )));
         // 翅膀
-        hardmodeAnvil(writer, AccessoryItems.FAIRY_WINGS.toStack(), PortShapedRecipePattern.of(Map.of(
+        hardmodeAnvil(writer, TCItems.FAIRY_WINGS.toStack(), PortShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
                 'b', AmountIngredient.of(14, MaterialItems.PIXIE_DUST),
                 'c', AmountIngredient.of(8, MaterialItems.PIXIE_DUST)
@@ -530,13 +531,13 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "b  b",
                 "c  c"
         )));
-        hardmodeAnvil(writer, AccessoryItems.HARPY_WINGS.toStack(), PortShapedRecipePattern.of(Map.of(
+        hardmodeAnvil(writer, TCItems.HARPY_WINGS.toStack(), PortShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
                 'b', Ingredient.of(MaterialItems.GIANT_HARPY_FEATHER)
         ), List.of(
                 "aba"
         )));
-        hardmodeAnvil(writer, AccessoryItems.ANGEL_WINGS.toStack(), PortShapedRecipePattern.of(Map.of(
+        hardmodeAnvil(writer, TCItems.ANGEL_WINGS.toStack(), PortShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
                 'b', AmountIngredient.of(4, MaterialItems.SOUL_OF_LIGHT),
                 'c', AmountIngredient.of(5, MaterialItems.HARPY_FEATHER)
@@ -545,7 +546,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "caac",
                 "b  b"
         )));
-        hardmodeAnvil(writer, AccessoryItems.DEMON_WINGS.toStack(), PortShapedRecipePattern.of(Map.of(
+        hardmodeAnvil(writer, TCItems.DEMON_WINGS.toStack(), PortShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
                 'b', AmountIngredient.of(4, MaterialItems.SOUL_OF_NIGHT),
                 'c', AmountIngredient.of(5, MaterialItems.HARPY_FEATHER)

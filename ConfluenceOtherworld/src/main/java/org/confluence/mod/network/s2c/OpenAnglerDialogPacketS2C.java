@@ -27,13 +27,6 @@ public record OpenAnglerDialogPacketS2C(int entityId, byte state, ItemStack ques
                     OpenAnglerDialogPacketS2C::new
             );
 
-    /// 打开界面和读取客户端实体都必须在客户端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
     @Override
     public void work(Player player) {
         AnglerDialogScreen.State s = switch (state) {

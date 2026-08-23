@@ -52,14 +52,6 @@ public record YoyoControlPacketC2S(Action action, int amount)
         return ID;
     }
 
-    /// 悠悠球控制会创建、查找并修改世界实体，必须由本数据包显式切回服务端主线程。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         switch (action) {

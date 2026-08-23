@@ -22,14 +22,6 @@ public enum GoingOldschoolPacketC2S implements IPortPacket.C2S {
         return ID;
     }
 
-    /// 成就进度属于服务端玩家状态，必须回到服务端主线程修改。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         AchievementAwardService.award(player, "going_oldschool");

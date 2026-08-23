@@ -32,14 +32,6 @@ public record WeaponUseStatePacketC2S(boolean pressed) implements IPortPacket.C2
         return ID;
     }
 
-    /// 使用状态属于玩家实体状态，只能在服务端主线程修改。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         if (!pressed) {

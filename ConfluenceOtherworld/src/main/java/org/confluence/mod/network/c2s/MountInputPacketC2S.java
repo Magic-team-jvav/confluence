@@ -23,14 +23,6 @@ public record MountInputPacketC2S(boolean jumping) implements IPortPacket.C2S {
         return ID;
     }
 
-    /// 输入会修改坐骑同步状态，必须回到服务端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         if (player.getVehicle() instanceof AbstractMountEntity mount) {

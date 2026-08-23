@@ -33,12 +33,6 @@ public record KillBoardSyncPacketS2C(Object2BooleanMap<EntityType<?>> defeatedBo
     };
 
     @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
-    @Override
     public void work(Player player) {
         KillBoard.INSTANCE.applyNetworkState(defeatedBosses, defeatedEvents, gamePhase);
     }

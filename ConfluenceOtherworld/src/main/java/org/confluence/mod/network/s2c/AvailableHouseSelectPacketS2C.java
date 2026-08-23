@@ -28,13 +28,6 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPor
         return ID;
     }
 
-    /// 住房选择状态由客户端 HUD 持有，必须交给客户端主线程更新。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
     @Override
     public void work(Player player) {
         HouseSelectHud.handlePacket(available);

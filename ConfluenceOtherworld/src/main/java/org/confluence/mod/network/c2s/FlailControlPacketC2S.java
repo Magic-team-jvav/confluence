@@ -38,14 +38,6 @@ public record FlailControlPacketC2S(Action action) implements IPortPacket.C2S {
         return ID;
     }
 
-    /// 链锤控制会生成实体并切换其状态，必须由本数据包显式切回服务端主线程。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         ItemStack stack = player.getMainHandItem();

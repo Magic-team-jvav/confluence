@@ -35,14 +35,6 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
         return ID;
     }
 
-    /// 房屋选择会扫描世界并修改 NPC 与存档状态，必须回到服务端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         if (selected < 0 || selected >= AvailableHouseSelectPacketS2C.getTypes().length) return;

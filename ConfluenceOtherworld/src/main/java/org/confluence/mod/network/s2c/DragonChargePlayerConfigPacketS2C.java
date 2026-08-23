@@ -24,12 +24,6 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPor
     }
 
     @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
-    }
-
-    @Override
     public void work(Player player) {
         CommonConfigs.handleDragonChargePlayer(enabled);
     }

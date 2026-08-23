@@ -26,14 +26,6 @@ public record DyeMixPacketC2S(int rgb) implements IPortPacket.C2S {
     public static final ResourceLocation ID = Confluence.asResource("dye_mix");
     public static final PortStreamCodec<ByteBuf, DyeMixPacketC2S> STREAM_CODEC = PortByteBufCodecs.INT.map(DyeMixPacketC2S::new, DyeMixPacketC2S::rgb);
 
-    /// 混合操作会修改菜单槽位与玩家携带物品，必须回到服务端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         AbstractContainerMenu menu = player.containerMenu;

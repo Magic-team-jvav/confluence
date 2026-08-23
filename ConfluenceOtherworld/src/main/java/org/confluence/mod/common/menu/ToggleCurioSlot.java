@@ -32,7 +32,7 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
         if (stack.getItem() instanceof BaseCurioItem baseCurioItem) {
             return baseCurioItem.canEquip(new SlotContext(TerraCurio.CURIO_SLOT, player, getSlotIndex(), false, true), stack);
         }
-        return stack.is(TCTags.ACCESSORY);
+        return stack.is(TCTags.Items.ACCESSORY);
     }
 
     @Override

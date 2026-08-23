@@ -3,7 +3,6 @@ package org.confluence.mod.api.lunar;
 import org.confluence.mod.api.lunar.util.SolarUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -56,19 +55,6 @@ public class SolarWeek {
   }
 
   /**
-   * 通过日历初始化
-   *
-   * @param start 星期几作为一周的开始，1234560分别代表星期一至星期天
-   */
-  @Deprecated
-  public SolarWeek(Calendar calendar, int start) {
-    year = calendar.get(Calendar.YEAR);
-    month = calendar.get(Calendar.MONTH) + 1;
-    day = calendar.get(Calendar.DATE);
-    this.start = start;
-  }
-
-  /**
    * 通过年月初始化
    *
    * @param year  年
@@ -92,18 +78,6 @@ public class SolarWeek {
    */
   public static SolarWeek fromDate(Date date, int start) {
     return new SolarWeek(date, start);
-  }
-
-  /**
-   * 通过指定日历获取阳历周
-   *
-   * @param calendar 日历
-   * @param start    星期几作为一周的开始，1234560分别代表星期一至星期天
-   * @return 阳历周
-   */
-  @Deprecated
-  public static SolarWeek fromCalendar(Calendar calendar, int start) {
-    return new SolarWeek(calendar, start);
   }
 
   /**

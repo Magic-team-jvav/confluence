@@ -9,11 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summon.ClientSummonManager;
-import org.confluence.mod.common.summon.SummonAnimation;
-import org.confluence.mod.common.summon.SummonInstance;
-import org.confluence.mod.common.summon.SummonPose;
-import org.confluence.mod.common.summon.SummonRenderPart;
-import org.confluence.mod.common.summon.SummonVisualState;
+import org.confluence.mod.common.summon.*;
 import org.confluence.mod.common.summon.projectile.SummonProjectileInstance;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortVarInt;
@@ -73,12 +69,6 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
     @Override
     public ResourceLocation identifier() {
         return ID;
-    }
-
-    @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) context.enqueueWork(() -> work(player));
     }
 
     @Override

@@ -813,7 +813,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.spectre_goggles.0", "Provides ghost vision to interact with echo blocks");
         add("tooltip.item.terra_curio.spectre_goggles.1", "Right-click in the backpack to toggle on/off.");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "Allows the collection of Vine Rope from vines");
-        add("tooltip.item.confluence.fledgling_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing, Hold Sneak to Phase while submerged in Shimmer");
         add("tooltip.item.confluence.paintbrush.0", "Used with paint to color blocks");
         add("tooltip.item.confluence.paintbrush.1", "Can also apply coatings");
@@ -930,34 +929,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.obsidian_lock_box.0", "“Right click to open”");
         add("tooltip.item.confluence.obsidian_lock_box.1", "“Requires a Shadow Key”");
 
-        add("tooltip.item.confluence.angel_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.demon_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.fairy_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.fin_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.frozen_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.harpy_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.jetpack.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.leaf_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.bat_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.bee_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.butterfly_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.flame_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.hoverboard.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.bone_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.mothron_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.spectre_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.beetle_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.festive_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.spooky_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.tattered_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.steampunk_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.betsys_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.empress_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.fishron_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.nebula_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.vortex_booster.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.peddlers_satchel.0", "Permanently increases items sold by the Traveling Merchant");
         add("tooltip.item.confluence.bug_net.0", "Used to catch critters");
         add("tooltip.item.confluence.lavaproof_bug_net.0", "'For when things get too hot to handle'");
@@ -1265,7 +1236,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tag.item.confluence.summoner_weapon", "Summoner Weapon");
         add("tag.item.confluence.torch", "Torch");
         add("tag.item.confluence.treasure_bag", "Treasure Bag");
-        add("tag.item.confluence.wings", "Wings");
 
         new BestiaryLanguageSubProvider(this::add, true);
 

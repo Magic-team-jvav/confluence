@@ -32,14 +32,6 @@ public record BulletImpactPacketS2C(double x, double y, double z,
     }
 
     @Override
-    public void handle(IPortPacket.Context context) {
-        Player player = context.player();
-        if (player != null) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
-    @Override
     public void work(Player player) {
         PortEventHandler.postEvent(new BulletEvent.ImpactEffectEvent(new Vec3(x, y, z), BulletImpactEffect.byId(effectId)));
     }

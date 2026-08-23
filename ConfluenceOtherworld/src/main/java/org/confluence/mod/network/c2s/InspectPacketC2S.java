@@ -20,13 +20,6 @@ public enum InspectPacketC2S implements IPortPacket.C2S {
     }
 
     @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
-    @Override
     public void work(ServerPlayer player) {
         if (!player.isSpectator() && player.getMainHandItem().getItem() instanceof BaseGun gun) {
             gun.inspectAnimator(player.getMainHandItem(), player);

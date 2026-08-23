@@ -36,14 +36,6 @@ public record WormholeToPlayerPacketC2S(UUID targetPlayerId,
         return ID;
     }
 
-    /// 虫洞请求会消耗物品并跨维度传送玩家，必须回到服务端主线程执行。
-    @Override
-    public void handle(IPortPacket.Context context) {
-        if (context.player() instanceof ServerPlayer player) {
-            context.enqueueWork(() -> work(player));
-        }
-    }
-
     @Override
     public void work(ServerPlayer player) {
         if (!byMod.enabled()) return;

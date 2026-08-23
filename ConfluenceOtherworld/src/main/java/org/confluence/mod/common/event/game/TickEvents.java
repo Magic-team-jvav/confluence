@@ -16,6 +16,7 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
+import org.confluence.mod.common.item.yoyo.YoyoSession;
 import org.confluence.mod.common.mount.MountManager;
 import org.confluence.mod.common.summon.SummonContainer;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -77,6 +78,7 @@ public final class TickEvents {
             ExtraInventory.of(player).sync(player);
             MountManager.validate(player);
             SummonContainer.of(player).tick(player);
+            YoyoSession.of(player).tick(player);
             PlayerSpecialData.of(player).sync(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);
             AchievementUtils.quietNeighborhood(player, level, gameTime);

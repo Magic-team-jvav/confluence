@@ -5,8 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.item.yoyo.YoyoItem;
+import org.confluence.mod.common.item.yoyo.YoyoSession;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -69,13 +69,8 @@ public record YoyoControlPacketC2S(Action action, int amount)
                     item.press(player, stack);
                 }
             }
-            case RELEASE -> YoyoItem.release(player);
-            case ADJUST_RANGE -> {
-                YoyoEntity yoyo = YoyoEntity.findOwned(player);
-                if (yoyo != null && player.getMainHandItem().getItem() == yoyo.getYoyoItem()) {
-                    yoyo.adjustRange(amount);
-                }
-            }
+            case RELEASE -> YoyoSession.of(player).release();
+            case ADJUST_RANGE -> YoyoSession.of(player).adjustRange(player, amount);
         }
     }
 

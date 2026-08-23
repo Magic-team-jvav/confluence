@@ -31,8 +31,7 @@ public final class YoyoRenderer extends GeoEntityRenderer<YoyoEntity> {
 
     @Override
     public boolean shouldRender(YoyoEntity entity, Frustum frustum, double cameraX, double cameraY, double cameraZ) {
-        return entity.getOwner() != null
-                && super.shouldRender(entity, frustum, cameraX, cameraY, cameraZ);
+        return entity.getOwner() != null;
     }
 
     @Override

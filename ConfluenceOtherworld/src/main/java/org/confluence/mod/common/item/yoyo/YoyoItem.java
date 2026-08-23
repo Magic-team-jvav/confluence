@@ -24,64 +24,25 @@ import java.util.Objects;
 
 /// 悠悠球物品。
 ///
-/// <p>物品只保存该品种自己的数值与命中扩展；运动、碰撞和网络控制由共享实体负责。普通悠悠球注册时
-/// 传入 {@link HitEffect#NONE} 即可，附属模组也可以通过公开回调添加自己的命中效果，不需要修改公共实体。</p>
+/// <p>物品只持有不可变定义；输入状态由玩家会话维护，运动、碰撞和网络同步由共享实体负责。</p>
 public class YoyoItem extends CustomRarityItem {
     private static final int USE_DURATION = 72_000;
+    private final YoyoDefinition definition;
 
-    @FunctionalInterface
-    public interface HitEffect {
-        HitEffect NONE = (yoyo, owner, target) -> {
-        };
-
-        void apply(YoyoEntity yoyo, ServerPlayer owner, LivingEntity target);
-    }
-
-    private final float attackDamage;
-    private final float maximumRange;
-    private final int stringColor;
-    private final int lifetimeTicks;
-    private final HitEffect hitEffect;
-
-    public YoyoItem(Properties properties, ModRarity rarity, float attackDamage, float maximumRange, int stringColor, float lifetimeSeconds, HitEffect hitEffect) {
+    public YoyoItem(Properties properties, ModRarity rarity, YoyoDefinition definition) {
         super(properties.stacksTo(1), rarity);
-        if (!Float.isFinite(attackDamage) || attackDamage < 0.0F) {
-            throw new IllegalArgumentException("Yoyo attack damage must be finite and non-negative");
-        }
-        if (!Float.isFinite(maximumRange) || maximumRange < 1.0F) {
-            throw new IllegalArgumentException("Yoyo range must be finite and at least 1.0");
-        }
-        if (!Float.isFinite(lifetimeSeconds) || lifetimeSeconds <= 0.0F) {
-            throw new IllegalArgumentException("Yoyo lifetime must be finite and positive");
-        }
-        this.attackDamage = attackDamage;
-        this.maximumRange = maximumRange;
-        this.stringColor = 0xFF000000 | stringColor & 0x00FFFFFF;
-        this.lifetimeTicks = Math.max(1, Math.round(lifetimeSeconds * 20.0F));
-        this.hitEffect = Objects.requireNonNull(hitEffect, "Yoyo hit effect must not be null");
+        this.definition = Objects.requireNonNull(definition, "Yoyo definition must not be null");
     }
 
     /// 主动作按键按下时由服务端输入包调用；每名玩家同时只保留一个悠悠球。
     public final void press(ServerPlayer player, ItemStack stack) {
-        if (stack.getItem() != this || !player.isAlive() || player.isSpectator()) {
-            return;
-        }
-        YoyoEntity existing = YoyoEntity.findOwned(player);
-        if (existing == null) {
-            if (YoyoEntity.spawn(player, stack) != null) {
-                AchievementUtils.awardAchievement(player, "throwing_lines");
-            }
-        } else {
-            existing.resumeExtension();
-        }
+        if (stack.getItem() == this && YoyoSession.of(player).press(player, stack))
+            AchievementUtils.awardAchievement(player, "throwing_lines");
     }
 
     /// 主动作按键松开时按玩家所有权查找实体，并让现有悠悠球进入收回流程。
     public static void release(ServerPlayer player) {
-        YoyoEntity existing = YoyoEntity.findOwned(player);
-        if (existing != null) {
-            existing.beginReturn();
-        }
+        YoyoSession.of(player).release();
     }
 
     /// 右键被配置为主要动作时，复用原版物品使用流程，以保留方块交互优先级。
@@ -117,7 +78,7 @@ public class YoyoItem extends CustomRarityItem {
     }
 
     public final void applyHitEffect(YoyoEntity yoyo, ServerPlayer owner, LivingEntity target) {
-        hitEffect.apply(yoyo, owner, target);
+        definition.applyHitEffects(yoyo, owner, target);
     }
 
     /// 主动作由悠悠球控制，不允许左键配置时同时进入原版挖掘状态。
@@ -129,29 +90,29 @@ public class YoyoItem extends CustomRarityItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable("attribute.name.generic.attack_damage")
-                .append(Component.literal(" " + attackDamage))
+                .append(Component.literal(" " + definition.attackDamage()))
                 .withStyle(ChatFormatting.GREEN));
         tooltip.add(Component.translatable("tooltip.confluence.yoyo.max_range")
-                .append(Component.literal(" " + maximumRange))
+                .append(Component.literal(" " + definition.maximumRange()))
                 .withStyle(ChatFormatting.GREEN));
         tooltip.add(Component.translatable("tooltip.confluence.yoyo.exist_time")
-                .append(Component.literal(" " + lifetimeTicks / 20.0F))
+                .append(Component.literal(" " + definition.lifetimeTicks() / 20.0F))
                 .withStyle(ChatFormatting.GREEN));
     }
 
     public final float attackDamage() {
-        return attackDamage;
+        return definition.attackDamage();
     }
 
     public final float maximumRange() {
-        return maximumRange;
+        return definition.maximumRange();
     }
 
     public final int stringColor() {
-        return stringColor;
+        return definition.stringColor();
     }
 
     public final int lifetimeTicks() {
-        return lifetimeTicks;
+        return definition.lifetimeTicks();
     }
 }

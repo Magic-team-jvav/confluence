@@ -1,41 +1,50 @@
 package org.confluence.mod.common.entity.yoyo;
 
+import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.network.NetworkHooks;
-import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.yoyo.YoyoItem;
+import org.confluence.mod.common.item.yoyo.YoyoSession;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.List;
 
 /// 悠悠球共享实体。
 ///
 /// <p>该类只负责生命周期、准星方向运动、方块反弹、接触伤害与收回。具体命中特效回调给
 /// {@link YoyoItem}，因此公共运动实现不依赖任何具体悠悠球或衍生弹幕。</p>
-public final class YoyoEntity extends DamageSettableProjectile implements GeoEntity {
+public final class YoyoEntity extends Projectile implements GeoEntity {
     private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(YoyoEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<ItemStack> WEAPON = SynchedEntityData.defineId(YoyoEntity.class, EntityDataSerializers.ITEM_STACK);
     private static final EntityDataAccessor<Boolean> RETURNING = SynchedEntityData.defineId(YoyoEntity.class, EntityDataSerializers.BOOLEAN);
@@ -44,10 +53,11 @@ public final class YoyoEntity extends DamageSettableProjectile implements GeoEnt
     private static final double RETURN_DISTANCE_SQR = 0.25;
     private static final double OWNER_LIMIT_SQR = 64.0 * 64.0;
 
-    private final Map<UUID, Integer> hitCooldowns = new HashMap<>();
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private int returnTicks;
-    private float knockback;
+    private int hitCooldownTicks = HIT_INTERVAL_TICKS;
+    private float damage;
+    private boolean trackingTarget;
 
     public YoyoEntity(EntityType<? extends YoyoEntity> type, Level level) {
         super(type, level);
@@ -67,7 +77,6 @@ public final class YoyoEntity extends DamageSettableProjectile implements GeoEnt
         yoyo.entityData.set(WEAPON, weapon.copyWithCount(1));
         yoyo.entityData.set(RANGE, item.maximumRange());
         yoyo.setDamage(item.attackDamage());
-        yoyo.knockback = 0.1F * (1.0F + (float) owner.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
         yoyo.setPos(owner.getX(), owner.getY(0.5F), owner.getZ());
         if (!owner.level().addFreshEntity(yoyo)) {
             yoyo.discard();
@@ -76,16 +85,8 @@ public final class YoyoEntity extends DamageSettableProjectile implements GeoEnt
         return yoyo;
     }
 
-    public static @Nullable YoyoEntity findOwned(ServerPlayer owner) {
-        return owner.level().getEntitiesOfClass(YoyoEntity.class, owner.getBoundingBox().inflate(72.0), yoyo -> yoyo.getOwner() == owner && yoyo.isAlive())
-                .stream()
-                .findFirst()
-                .orElse(null);
-    }
-
     @Override
     protected void defineSynchedData() {
-        super.defineSynchedData();
         entityData.define(OWNER_ID, -1);
         entityData.define(WEAPON, ItemStack.EMPTY);
         entityData.define(RETURNING, false);
@@ -95,108 +96,125 @@ public final class YoyoEntity extends DamageSettableProjectile implements GeoEnt
     @Override
     public void tick() {
         super.tick();
-        if (isRemoved() || level().isClientSide) {
-            return;
-        }
-        if (!(getOwner() instanceof ServerPlayer owner) || !owner.isAlive() || owner.isSpectator()) {
-            discard();
-            return;
-        }
+        if (isRemoved()) return;
+        Entity rawOwner = getOwner();
         YoyoItem item = getYoyoItem();
-        if (item == null || getDamage() <= 0.0F) {
+        if (level().isClientSide) {
+            if (rawOwner instanceof LivingEntity owner && item != null)
+                tickMovement(owner, null, item);
+            return;
+        }
+        if (!(rawOwner instanceof ServerPlayer owner) || !owner.isAlive() || owner.isSpectator() || item == null || damage <= 0.0F) {
             discard();
             return;
         }
-
-        ItemStack liveWeapon = owner.getMainHandItem();
-        if (liveWeapon.getItem() != item || tickCount >= item.lifetimeTicks()) {
+        if (!YoyoSession.of(owner).owns(this, owner) || tickCount > item.lifetimeTicks())
             beginReturn();
-        }
         if (distanceToSqr(owner) > OWNER_LIMIT_SQR) {
             discard();
             return;
         }
+        if (hitCooldownTicks > 0) --hitCooldownTicks;
+        tickMovement(owner, owner, item);
+    }
 
-        reduceHitCooldowns();
+    private void tickMovement(LivingEntity owner, @Nullable ServerPlayer serverOwner, YoyoItem item) {
+        xOld = getX();
+        yOld = getY();
+        zOld = getZ();
+        setXRot(0.0F);
+        setYRot(0.0F);
+        float speedModifier = 1.0F;
+        if (isReturning()) {
+            noPhysics = true;
+        }
         Vec3 destination = isReturning()
                 ? owner.position().add(0.0, owner.getBbHeight() * 0.5F, 0.0)
                 : resolveAim(owner);
         Vec3 difference = destination.subtract(position());
         if (isReturning() && difference.lengthSqr() <= RETURN_DISTANCE_SQR) {
-            discard();
+            if (serverOwner == null) setPos(destination);
+            else discard();
             return;
         }
+        if (trackingTarget && !isReturning()) speedModifier = 4.0F;
+        setDeltaMovement(difference.scale(0.2F * speedModifier));
+        if (isReturning()) {
+            ++returnTicks;
+            addDeltaMovement(difference.normalize().scale(returnTicks / 40.0F));
+        }
+        if (serverOwner != null)
+            damageTouchingTargets(serverOwner, item, serverOwner.getMainHandItem());
 
-        double response = isReturning()
-                ? Math.min(1.0, 0.22 + returnTicks++ * 0.025)
-                : 0.20;
-        Vec3 motion = difference.scale(response);
-        if (!isReturning()) {
-            motion = bounceAgainstBlock(motion);
+        HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        if (hit.getType() != HitResult.Type.MISS && !PortProjectileImpactEvent.onProjectileImpact(this, hit)) {
+            hitTargetOrDeflectSelf(hit);
         }
-        setDeltaMovement(motion);
-        move(MoverType.SELF, motion);
-        if (!isReturning()) {
-            damageTouchingTargets(owner, item, liveWeapon);
+        if (isRemoved()) return;
+
+        checkInsideBlocks();
+        Vec3 motion = getDeltaMovement();
+        ProjectileUtil.rotateTowardsMovement(this, 0.2F);
+        float friction = 0.95F;
+        if (isInWater()) {
+            for (int i = 0; i < 4; ++i) {
+                level().addParticle(ParticleTypes.BUBBLE, getX() - motion.x * 0.25, getY() - motion.y * 0.25, getZ() - motion.z * 0.25, motion.x, motion.y, motion.z);
+            }
+            friction = 0.8F;
         }
+        setDeltaMovement(motion.add(motion.normalize().scale(0.1)).scale(friction));
+        setPos(position().add(getDeltaMovement()));
     }
 
     /// 只吸附准星射线实际穿过的实体，不搜索视野外或附近目标。
-    private Vec3 resolveAim(ServerPlayer owner) {
+    private Vec3 resolveAim(LivingEntity owner) {
         float range = entityData.get(RANGE);
         Vec3 from = owner.getEyePosition();
         Vec3 view = owner.getViewVector(1.0F).normalize();
-        Vec3 to = from.add(view.scale(range));
-        AABB search = owner.getBoundingBox().expandTowards(view.scale(range)).inflate(1.0);
-        EntityHitResult hit = ProjectileUtil.getEntityHitResult(owner, from, to, search, entity -> ProjectileHitRules.canHit(owner, entity), range * range);
-        if (hit == null) {
+        Vec3 limit = from.add(view.scale(range));
+        BlockHitResult blockHit = level().clip(new ClipContext(from, limit, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, owner));
+        Vec3 to = blockHit.getType() == HitResult.Type.MISS ? limit : blockHit.getLocation();
+        AABB search = owner.getBoundingBox().inflate(range);
+        EntityHitResult hit = ProjectileUtil.getEntityHitResult(level(), owner, from, to, search, entity -> true, 0.1F);
+        noPhysics = false;
+        if (hit == null || !ProjectileHitRules.canHit(owner, hit.getEntity())) {
+            trackingTarget = false;
             return to;
         }
-        return ProjectileHitRules.impactedEntity(hit.getEntity()).getBoundingBox().getCenter();
-    }
-
-    private Vec3 bounceAgainstBlock(Vec3 motion) {
-        HitResult hit = level().clip(new ClipContext(position(), position().add(motion), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-        if (!(hit instanceof BlockHitResult blockHit)) {
-            return motion;
-        }
-        Vec3 normal = Vec3.atLowerCornerOf(blockHit.getDirection().getNormal());
-        double dot = motion.dot(normal);
-        if (dot >= 0.0) {
-            return motion.scale(0.8);
-        }
-        setPos(blockHit.getLocation().add(normal.scale(0.05)));
-        return motion.subtract(normal.scale(2.0 * dot)).scale(0.8);
+        trackingTarget = true;
+        Entity target = hit.getEntity();
+        return target.position().add(0.0, target.getBbHeight() * 0.5F, 0.0);
     }
 
     private void damageTouchingTargets(ServerPlayer owner, YoyoItem item, ItemStack liveWeapon) {
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.75), entity -> entity != owner && entity.isAlive() && ProjectileHitRules.canHit(owner, entity))) {
-            if (hitCooldowns.containsKey(target.getUUID())) {
-                continue;
+        if (hitCooldownTicks > 0) return;
+        List<Entity> nearby = level().getEntities(this, getBoundingBox().inflate(0.75), entity -> entity != this);
+        if (nearby.isEmpty()) {
+            hitCooldownTicks = HIT_INTERVAL_TICKS;
+            return;
+        }
+        boolean attempted = false;
+        DamageSource source = damageSources().mobAttack(owner);
+        for (Entity candidate : nearby) {
+            if (!ProjectileHitRules.canHit(owner, candidate)) continue;
+            attempted = true;
+            if (!candidate.hurt(source, getDamage())) continue;
+            float knockback = (float) owner.getAttributeValue(Attributes.ATTACK_KNOCKBACK) + 0.1F;
+            if (knockback > 0.0F && candidate instanceof LivingEntity living) {
+                living.knockback(knockback * 0.5F, Mth.sin(getYRot() * Mth.DEG_TO_RAD), -Mth.cos(getYRot() * Mth.DEG_TO_RAD));
+                setDeltaMovement(getDeltaMovement().multiply(0.6, 1.0, 0.6));
             }
-            if (!target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, owner), getDamage())) {
-                continue;
+            if (level() instanceof ServerLevel serverLevel) {
+                PortEnchantmentHelperExtension.doPostAttackEffects(serverLevel, candidate, source);
             }
-            hitCooldowns.put(target.getUUID(), HIT_INTERVAL_TICKS);
-            ProjectileHitRules.applyResolvedKnockback(this, target, knockback, 0.0);
-            if (liveWeapon.getItem() == item) {
+            owner.setLastHurtMob(candidate);
+            Entity impacted = ProjectileHitRules.impactedEntity(candidate);
+            if (!(impacted instanceof LivingEntity target)) continue;
+            if (liveWeapon.getItem() == item)
                 liveWeapon.hurtAndBreak(1, owner, EquipmentSlot.MAINHAND);
-            }
             item.applyHitEffect(this, owner, target);
         }
-    }
-
-    private void reduceHitCooldowns() {
-        Iterator<Map.Entry<UUID, Integer>> iterator = hitCooldowns.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<UUID, Integer> entry = iterator.next();
-            int remaining = entry.getValue() - 1;
-            if (remaining <= 0) {
-                iterator.remove();
-            } else {
-                entry.setValue(remaining);
-            }
-        }
+        if (attempted) hitCooldownTicks = HIT_INTERVAL_TICKS;
     }
 
     public void beginReturn() {
@@ -213,6 +231,24 @@ public final class YoyoEntity extends DamageSettableProjectile implements GeoEnt
         noPhysics = false;
     }
 
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        if (!isReturning()) {
+            playSound(SoundEvents.WOOD_PLACE, 0.5F, 1.5F);
+            Vec3 normal = Vec3.atLowerCornerOf(result.getDirection().getNormal());
+            setDeltaMovement(getDeltaMovement().add(normal.multiply(getDeltaMovement().multiply(normal)).multiply(-1.0, -1.0, -1.0)));
+        }
+        super.onHitBlock(result);
+        if (!level().isClientSide) return;
+        BlockPos pos = result.getBlockPos();
+        BlockState state = level().getBlockState(pos);
+        Vec3 direction = getDeltaMovement().normalize().scale(2.0);
+        Vec3 particlePos = Vec3.atCenterOf(pos).add(Vec3.atLowerCornerOf(result.getDirection().getNormal()));
+        BlockParticleOption particle = new BlockParticleOption(ParticleTypes.BLOCK, state).setPos(pos);
+        level().addParticle(particle, particlePos.x, particlePos.y, particlePos.z, -direction.x, -direction.y, -direction.z);
+        level().addParticle(particle, particlePos.x, particlePos.y, particlePos.z, -direction.x, -direction.y, -direction.z);
+    }
+
     public void adjustRange(int amount) {
         YoyoItem item = getYoyoItem();
         if (item == null || amount == 0) {
@@ -223,6 +259,14 @@ public final class YoyoEntity extends DamageSettableProjectile implements GeoEnt
 
     public boolean isReturning() {
         return entityData.get(RETURNING);
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
+
+    public float getDamage() {
+        return damage;
     }
 
     public ItemStack getWeapon() {
@@ -259,6 +303,11 @@ public final class YoyoEntity extends DamageSettableProjectile implements GeoEnt
 
     @Override
     public boolean shouldBeSaved() {
+        return false;
+    }
+
+    @Override
+    public boolean canChangeDimensions() {
         return false;
     }
 

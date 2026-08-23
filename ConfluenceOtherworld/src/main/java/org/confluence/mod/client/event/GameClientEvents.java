@@ -24,6 +24,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -107,6 +108,7 @@ public final class GameClientEvents {
     private static boolean wasDefaultGunShootHeld = false;
 
     public static void init() {
+        ClientWeaponInputManager.init();
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
         PortEventHandler.addListener(GameClientEvents::clientTick$Post);
         PortEventHandler.addListener(GameClientEvents::clientPlayerNetwork$LoggingIn);
@@ -131,6 +133,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::renderNameTag);
         PortEventHandler.addListener(GameClientEvents::playerInteract$LeftClickEmpty);
         PortEventHandler.addListener(GameClientEvents::playerInteract$LeftClickBlock);
+        PortEventHandler.addListener(GameClientEvents::playerInteract$RightClickItem);
         PortEventHandler.addListener(GameClientEvents::playerEmptyAutoAttack);
         PortEventHandler.addListener(GameClientEvents::afterFlushArmorSetBonus);
         PortEventHandler.addListener(GameClientEvents::gunShot);
@@ -176,7 +179,7 @@ public final class GameClientEvents {
                     isSoulOverviewScreen = true;
                 }
             }
-            if (isSoulOverviewScreen) {
+            if (isSoulOverviewScreen && SoulGuiAccess.isAllowed(player)) {
                 minecraft.setScreen(new SoulOverviewScreen());
             }
             WeatherHandler.handle();
@@ -197,6 +200,7 @@ public final class GameClientEvents {
                 LeftClickItemActionPacketC2S.sendReleased();
             }
             wasRepeaterKeyHeld = keyHeld && isRepeater;
+            ClientWeaponInputManager.tick(player);
             boolean isFlail = mainHandItem.has(ModDataComponentTypes.FLAIL);
             if (isFlail) {
                 if (keyHeld && !wasFlailKeyHeld) {
@@ -227,6 +231,7 @@ public final class GameClientEvents {
     private static void clientPlayerNetwork$LoggingOut(PortClientPlayerNetworkEvent.LoggingOut event) {
         wasFlailKeyHeld = false;
         wasRepeaterKeyHeld = false;
+        ClientWeaponInputManager.reset();
         wasDefaultGunShootHeld = false;
         GunCameraAnimation.clear();
         ClientSummonManager.reset();
@@ -269,6 +274,9 @@ public final class GameClientEvents {
                         event.setCanceled(true);
                     }
                     event.setSwingHand(false);
+                } else if (event.isAttack() && ClientWeaponInputManager.blocksAttack(stack)) {
+                    event.setCanceled(true);
+                    event.setSwingHand(false);
                 } else if (event.isUseItem() && stack.is(ModItems.BACKGROUND_IMAGE_MAKER.get())) {
                     Minecraft.getInstance().setScreen(new BackgroundImageMakerScreen());
                 }
@@ -280,7 +288,9 @@ public final class GameClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         double scrollDeltaY = event.getScrollDeltaY();
-        if (SoulSkillClientHolder.INSTANCE.scrolling(scrollDeltaY)) {
+        if (ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
+            event.setCanceled(true);
+        } else if (SoulSkillClientHolder.INSTANCE.scrolling(scrollDeltaY)) {
             event.setCanceled(true);
         }
     }
@@ -514,6 +524,13 @@ public final class GameClientEvents {
         Player player = event.getEntity();
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
+        }
+    }
+
+    private static void playerInteract$RightClickItem(PortPlayerInteractEvent.RightClickItem event) {
+        if (event.getHand() == InteractionHand.MAIN_HAND && ClientWeaponInputManager.blocksUse(event.getItemStack())) {
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.FAIL);
         }
     }
 

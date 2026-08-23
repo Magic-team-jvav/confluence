@@ -45,6 +45,11 @@ public class Wraith extends BaseFlyingMonster {
     }
 
     @Override
+    protected boolean mustSeePlayerTarget() {
+        return true;
+    }
+
+    @Override
     protected BTRoot createBT() {
         return new BTRoot() {
             @Override

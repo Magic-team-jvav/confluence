@@ -13,6 +13,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.effect.harmful.DriveAwayController;
 import org.confluence.mod.common.entity.monster.Harpy;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
@@ -23,12 +24,12 @@ import org.jetbrains.annotations.Nullable;
 /// 范围更大的冲击；客户端只接收实体速度和效果同步，不能指定受影响目标。直接命中的
 /// 飞行生物仍然承受 1.5 倍箭矢伤害。</p>
 public class DriveAwayArrowEntity extends BaseArrowEntity {
-    private static final double TRAIL_RADIUS = 2.5;
-    private static final double TRAIL_SPEED = 0.18;
-    private static final int TRAIL_DURATION = 8;
+    private static final double TRAIL_RADIUS = 3.0;
+    private static final double TRAIL_SPEED = 1.3;
+    private static final int TRAIL_DURATION = 160;
     private static final double IMPACT_RADIUS = 6.0;
-    private static final double IMPACT_SPEED = 0.45;
-    private static final int IMPACT_DURATION = 16;
+    private static final double IMPACT_SPEED = 1.3;
+    private static final int IMPACT_DURATION = 260;
 
     private boolean hittingFlyingTarget;
 
@@ -44,7 +45,7 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide && !isRemoved() && tickCount % 2 == 0) {
+        if (!level().isClientSide && !isRemoved()) {
             driveAwayNearby(position(), TRAIL_RADIUS, TRAIL_SPEED, TRAIL_DURATION);
         }
     }
@@ -82,20 +83,10 @@ public class DriveAwayArrowEntity extends BaseArrowEntity {
             return;
         }
         AABB area = AABB.ofSize(center, radius * 2.0, radius * 2.0, radius * 2.0);
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area, entity -> entity != getOwner() && entity.isAlive() && isDriveAwayTarget(entity))) {
-            Vec3 away = target.position().subtract(center);
-            if (away.lengthSqr() < 1.0E-6) {
-                double angle = random.nextDouble() * Math.PI * 2.0;
-                away = new Vec3(Math.cos(angle), 0.2, Math.sin(angle));
-            }
-            Vec3 impulse = away.normalize().add(0.0, 0.15, 0.0).normalize().scale(speed);
-            target.setDeltaMovement(target.getDeltaMovement().scale(0.25).add(impulse));
-            target.hasImpulse = true;
-            if (target instanceof Mob mob) {
-                mob.setTarget(null);
-                mob.getNavigation().stop();
-            }
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area,
+                entity -> entity != getOwner() && entity.isAlive() && isDriveAwayTarget(entity) && !entity.hasEffect(ModEffects.SCARED.get()))) {
             target.addEffect(new MobEffectInstance(ModEffects.SCARED.get(), duration, 0), getOwner());
+            if (target instanceof Mob mob) DriveAwayController.start(mob, center, speed, duration);
         }
     }
 

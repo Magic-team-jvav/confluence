@@ -6,13 +6,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -42,6 +42,7 @@ public final class GiantShelly extends BaseMonster {
     private static final RawAnimation ENTER_SHELL = RawAnimation.begin().thenPlayAndHold("shrinking_shell");
     private static final RawAnimation ROLL = RawAnimation.begin().thenLoop("turn");
     private static final RawAnimation RECOVER = RawAnimation.begin().thenPlayAndHold("turn2");
+    private static final Phase[] PHASES = Phase.values();
     private int phaseTicks;
     private boolean variantInitialized;
     private int collisionAttackTicks = 20;
@@ -129,9 +130,6 @@ public final class GiantShelly extends BaseMonster {
             getNavigation().moveTo(target, 1.0);
             return;
         }
-        if (wanderTarget == null || position().distanceToSqr(wanderTarget) < 1.0 || phaseTicks % 40 == 0) {
-            wanderTarget = LandRandomPos.getPos(this, 15, 7);
-        }
         if (wanderTarget != null) {
             getNavigation().moveTo(wanderTarget.x, wanderTarget.y, wanderTarget.z, 1.0);
         }
@@ -165,20 +163,19 @@ public final class GiantShelly extends BaseMonster {
             return;
         }
 
-        var players = level().getEntitiesOfClass(Player.class, getBoundingBox().inflate(1.0), player -> player.isAlive() && canAttack(player));
-        if (players.isEmpty()) {
+        var targets = level().getEntities(this, getBoundingBox().inflate(1.0), this::canContactAttack);
+        if (targets.isEmpty()) {
             collisionAttackTicks = 1;
             return;
         }
-        for (Player player : players) {
-            doHurtTarget(player);
-        }
+        for (Entity target : targets) doHurtTarget(target);
         collisionAttackTicks = 20;
     }
 
     private void setPhase(Phase phase) {
         entityData.set(PHASE, phase.ordinal());
         phaseTicks = 0;
+        wanderTarget = phase == Phase.WALK ? LandRandomPos.getPos(this, 15, 7) : null;
         if (phase.ordinal() >= Phase.ENTERING_SHELL.ordinal()) {
             addShellArmor();
         } else {
@@ -202,8 +199,7 @@ public final class GiantShelly extends BaseMonster {
 
     public Phase getPhase() {
         int id = entityData.get(PHASE);
-        Phase[] values = Phase.values();
-        return values[Math.max(0, Math.min(id, values.length - 1))];
+        return PHASES[Math.max(0, Math.min(id, PHASES.length - 1))];
     }
 
     public int getVariant() {
@@ -235,9 +231,8 @@ public final class GiantShelly extends BaseMonster {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        Phase[] phases = Phase.values();
         int savedPhase = tag.getInt(PHASE_TAG);
-        setPhase(phases[Math.max(0, Math.min(savedPhase, phases.length - 1))]);
+        setPhase(PHASES[Math.max(0, Math.min(savedPhase, PHASES.length - 1))]);
         phaseTicks = Math.max(0, tag.getInt(PHASE_TICKS_TAG));
         setVariant(tag.getInt(VARIANT_TAG));
         variantInitialized = true;

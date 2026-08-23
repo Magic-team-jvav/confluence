@@ -23,9 +23,8 @@ import java.util.UUID;
 
 /// 蠕虫体节。每 tick 跟随前一个体节（或头部），保持固定间距。
 public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
-    private static final float SEGMENT_SPACING = 1.6F;
-    private static final float COLLISION_DAMAGE = 5.0F;
-    private static final int COLLISION_COOLDOWN = 10;
+    private static final int COLLISION_DETECTION_INTERVAL = 10;
+    private static final int COLLISION_ATTACK_INTERVAL = 20;
     private static final int DEAD_OWNER_REMOVAL_TICKS = 20;
     private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
     private static final String OWNER_TAG = "Owner";
@@ -86,13 +85,15 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
 
     @Override
     public void updateSegmentPosition() {
-        WormSegment previous = getPrev();
+        BaseWormMonster head = getOwner();
+        if (head == null) return;
+        WormSegment previous = head.getSegment(getSegmentIndex() - 1);
         if (!(previous instanceof Entity leader)) return;
 
         Vec3 previousPosition = position();
         Vec3 difference = previousPosition.subtract(leader.position());
         if (difference.lengthSqr() < 0.001) difference = new Vec3(0, 1, 0);
-        Vec3 destination = leader.position().add(difference.normalize().scale(SEGMENT_SPACING));
+        Vec3 destination = leader.position().add(difference.normalize().scale(head.segmentSpacing()));
 
         double dx = destination.x - previousPosition.x;
         double dy = destination.y - previousPosition.y;
@@ -136,13 +137,14 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
             hurtCooldown--;
             return;
         }
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.5))) {
+        boolean attacked = false;
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox())) {
             if (target != head && head.canAttack(target)) {
-                target.hurt(damageSources().mobAttack(head), COLLISION_DAMAGE);
-                hurtCooldown = COLLISION_COOLDOWN;
-                return;
+                head.doHurtTarget(target);
+                attacked = true;
             }
         }
+        hurtCooldown = attacked ? COLLISION_ATTACK_INTERVAL : COLLISION_DETECTION_INTERVAL;
     }
 
     @Override

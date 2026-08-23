@@ -336,7 +336,7 @@ public final class ModEvents {
         event.put(MonsterEntities.GOBLIN_SCOUT.get(), CreatureAttributeBuilder.creature(41, 6, 10, 32, 1, 0.37).build());
         event.put(MonsterEntities.ANGER_GOBLIN.get(), CreatureAttributeBuilder.creature(220, 0, 15, 32, 1, 0.88).build());
         // 陆行怪
-        event.put(MonsterEntities.BLOODY_SPORE.get(), CreatureAttributeBuilder.creature(100, 6, 0, 32, 0, 0.8).build());
+        event.put(MonsterEntities.BLOODY_SPORE.get(), CreatureAttributeBuilder.creature(100, 6, 0, 32, 0, 0.8).spawnReinforcementsChance(0.01).build());
         event.put(MonsterEntities.BLOOD_CRAWLER.get(), CreatureAttributeBuilder.creature(31, 8, 15, 32, 1, 0.8)
                 .movementSpeed(0.38).spawnReinforcementsChance(0.01).build());
         event.put(MonsterEntities.SPORE_ZOMBIE.get(), CreatureAttributeBuilder.creature(93, 10, 20, 60, 0.6, 0.1).movementSpeed(0.08).build());

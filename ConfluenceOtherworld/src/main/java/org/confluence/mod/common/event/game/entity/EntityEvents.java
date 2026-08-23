@@ -88,6 +88,10 @@ public final class EntityEvents {
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
             return;
         }
+        if (victim.hasEffect(ModEffects.THE_TONGUE.get())) {
+            event.setInvulnerable(true);
+            return;
+        }
         @Nullable Entity attacker = damageSource.getEntity();
 
         if (damageSource.is(LibDamageTypes.BOULDER) && victim.getType().is(Tags.EntityTypes.BOSSES)) {

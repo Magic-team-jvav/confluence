@@ -20,7 +20,11 @@ public final class JumpingWarriorMonster extends BaseWarriorMonster {
 
     /// 创建同时具有跳跃参数、动画档案和音效档案的陆行怪物变种。
     public JumpingWarriorMonster(EntityType<? extends JumpingWarriorMonster> type, Level level, JumpProfile jumpProfile, LandAnimationProfile animationProfile, LandSoundProfile soundProfile) {
-        super(type, level, 0.0, animationProfile, soundProfile);
+        this(type, level, jumpProfile, animationProfile, soundProfile, 1.0);
+    }
+
+    public JumpingWarriorMonster(EntityType<? extends JumpingWarriorMonster> type, Level level, JumpProfile jumpProfile, LandAnimationProfile animationProfile, LandSoundProfile soundProfile, double meleeSpeed) {
+        super(type, level, 0.0, animationProfile, soundProfile, meleeSpeed, true);
         this.jumpProfile = jumpProfile;
     }
 

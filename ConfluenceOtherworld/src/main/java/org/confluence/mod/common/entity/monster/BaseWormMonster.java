@@ -19,8 +19,7 @@ import java.util.List;
 /// 蠕虫怪物基类——分段实体（头+体+尾），穿透方块移动。
 /// 每 tick 头部移动，体节跟随前一个保持固定间距。
 public abstract class BaseWormMonster extends BaseMonster implements WormSegment {
-    private static final float COLLISION_DAMAGE = 10.0F;
-    private static final int COLLISION_COOLDOWN = 8;
+    private static final int COLLISION_INTERVAL = 3;
 
     protected final List<BaseWormPart> segments = new ArrayList<>();
     private int collisionCooldown;
@@ -32,6 +31,10 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     }
 
     protected abstract int getSegmentCount();
+
+    protected float segmentSpacing() {
+        return 1.6F;
+    }
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
@@ -103,16 +106,15 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
 
     private void tickCollision() {
         if (collisionCooldown > 0) { collisionCooldown--; return; }
-        AABB box = getBoundingBox().inflate(1.0);
+        AABB box = getBoundingBox();
         for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, box)) {
             if (target == this) continue;
             if (target.getType() == getType()) continue;
             if (!canAttack(target)) continue;
             if (getTarget() == null) setTarget(target);
-            target.hurt(damageSources().mobAttack(this), COLLISION_DAMAGE);
-            collisionCooldown = COLLISION_COOLDOWN;
-            break;
+            doHurtTarget(target);
         }
+        collisionCooldown = COLLISION_INTERVAL;
     }
 
     @Override

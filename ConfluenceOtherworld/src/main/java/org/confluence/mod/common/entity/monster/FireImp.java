@@ -53,7 +53,7 @@ public class FireImp extends BaseCasterMonster {
             return;
         }
         if (random.nextInt(24) == 0 && !isSilent()) {
-            level().playLocalSound(getX(), getY(), getZ(), SoundEvents.BLAZE_BURN, getSoundSource(), 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+            level().playLocalSound(getX() + 0.5, getY() + 0.5, getZ() + 0.5, SoundEvents.BLAZE_BURN, getSoundSource(), 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
         }
         level().addParticle(ParticleTypes.FLAME, getRandomX(0.5), getRandomY(), getRandomZ(0.5), 0.0, 0.02, 0.0);
     }

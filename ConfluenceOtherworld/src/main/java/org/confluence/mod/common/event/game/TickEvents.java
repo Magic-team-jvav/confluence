@@ -10,6 +10,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
+import org.confluence.mod.common.effect.harmful.DriveAwayController;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -101,6 +102,9 @@ public final class TickEvents {
 
     public static void entityTick$Post(PortEntityTickEvent.Post event) {
         Immunity.tick(event.getEntity());
+        if (!event.getEntity().level().isClientSide && event.getEntity() instanceof net.minecraft.world.entity.Mob mob) {
+            DriveAwayController.tick(mob);
+        }
     }
 
     public static void serverTick$Post(PortServerTickEvent.Post event) {

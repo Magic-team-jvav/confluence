@@ -7,15 +7,20 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.*;
+import org.confluence.mod.common.entity.ai.bt.leaf.BowCombatAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 腐骴远程骷髅。
@@ -38,31 +43,36 @@ public class Decayeder extends BaseMonster {
     }
 
     @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
+    }
+
+    @Override
+    protected boolean mustSeePlayerTarget() {
+        return true;
+    }
+
+    @Override
     protected BTRoot createBT() {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        new BowCombatAction(
-                                Decayeder.this,
-                                1.0,
-                                40,
-                                20,
-                                15.0,
-                                20,
-                                1.6F),
-                        SequenceNode.of(
-                                new HasTargetCondition(Decayeder.this),
-                                new MoveToTargetAction(
-                                        Decayeder.this, 1.2, 2.0),
-                                new MeleeAttackAction(
-                                        Decayeder.this, 2.0)),
-                        SequenceNode.of(
-                                new WaitAction(20 + random.nextInt(40)),
-                                new RandomStrollAction(
-                                        Decayeder.this, 1.0, 10)));
+                        new VanillaGoalAction(new AvoidEntityGoal<>(Decayeder.this, Wolf.class, 6.0F, 1.0, 1.2)),
+                        new BowCombatAction(Decayeder.this, 1.0, 40, 20, 15.0, 20, 1.6F),
+                        new VanillaGoalAction(new MeleeAttackGoal(Decayeder.this, 1.2, false)),
+                        new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(Decayeder.this, 1.0)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(Decayeder.this, Player.class, 8.0F)),
+                        new VanillaGoalAction(new RandomLookAroundGoal(Decayeder.this)));
             }
         };
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos) {
+        return 0.0F;
     }
 
     @Override

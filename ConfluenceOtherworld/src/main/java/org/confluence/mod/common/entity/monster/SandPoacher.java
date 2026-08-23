@@ -10,18 +10,15 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -59,7 +56,7 @@ public class SandPoacher extends BaseMonster {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // 沙贼原本继承蜘蛛，因此除玩家外也会主动攻击铁傀儡。
+        /// 沙贼原本继承蜘蛛，因此除玩家外也会主动攻击铁傀儡。
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
     }
 
@@ -78,7 +75,7 @@ public class SandPoacher extends BaseMonster {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
-        // 仅恢复蜘蛛的毒素免疫，其他效果继续遵循普通敌怪规则。
+        /// 仅恢复蜘蛛的毒素免疫，其他效果继续遵循普通敌怪规则。
         return effect.getEffect() != MobEffects.POISON
                 && super.canBeAffected(effect);
     }
@@ -99,12 +96,20 @@ public class SandPoacher extends BaseMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(SandPoacher.this),
-                                new MoveToTargetAction(SandPoacher.this, 0.7, 2.0),
-                                new MeleeAttackAction(SandPoacher.this, 2.0),
-                                new WaitAction(15)),
-                        SequenceNode.of(new WaitAction(20 + random.nextInt(40)),
-                                new RandomStrollAction(SandPoacher.this, 0.4, 8)));
+                        new VanillaGoalAction(new LeapAtTargetGoal(SandPoacher.this, 0.4F)),
+                        new VanillaGoalAction(new MeleeAttackGoal(SandPoacher.this, 1.0, true) {
+                            @Override
+                            public boolean canContinueToUse() {
+                                if (getLightLevelDependentMagicValue() >= 0.5F && random.nextInt(100) == 0) {
+                                    setTarget(null);
+                                    return false;
+                                }
+                                return super.canContinueToUse();
+                            }
+                        }),
+                        new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(SandPoacher.this, 0.8)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(SandPoacher.this, Player.class, 8.0F)),
+                        new VanillaGoalAction(new RandomLookAroundGoal(SandPoacher.this)));
             }
         };
     }

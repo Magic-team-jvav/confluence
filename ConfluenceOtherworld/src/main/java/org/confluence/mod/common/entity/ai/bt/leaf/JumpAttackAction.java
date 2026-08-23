@@ -9,12 +9,9 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 从中距离向目标发起一次有前摇的跃击。
 ///
-/// <p>节点只有在生物落地、冷却结束且目标位于有效距离内时才接管行为树；条件不满足会立即
-/// 失败，使后续普通追击分支继续运行。起跳后节点持续到落地或超时，并在飞行过程中至多结算
-/// 一次近战命中，避免每 tick 重复伤害。</p>
+/// 节点只负责参考侧的一次性起跳；离地后立即交还调度，由普通近战目标处理命中。
 public final class JumpAttackAction extends BTNode {
     private static final double MINIMUM_DISTANCE = 4.0;
-    private static final int MAXIMUM_AIR_TICKS = 40;
     private final PathfinderMob mob;
     private final double speedMultiplier;
     private final double maximumDistance;
@@ -22,8 +19,6 @@ public final class JumpAttackAction extends BTNode {
     private final int windupTicks;
     private int lastLaunchTick = Integer.MIN_VALUE / 2;
     private int elapsedTicks;
-    private boolean launched;
-    private boolean dealtDamage;
 
     public JumpAttackAction(PathfinderMob mob, double speedMultiplier, double maximumDistance, int cooldownTicks, int windupTicks) {
         if (!Double.isFinite(speedMultiplier) || speedMultiplier <= 0.0) {
@@ -45,8 +40,6 @@ public final class JumpAttackAction extends BTNode {
     @Override
     public void start() {
         elapsedTicks = 0;
-        launched = false;
-        dealtDamage = false;
     }
 
     @Override
@@ -55,23 +48,15 @@ public final class JumpAttackAction extends BTNode {
         if (target == null || !target.isAlive()) {
             return BTStatus.FAILURE;
         }
-        if (!launched && !canLaunch(target)) {
+        if (!canLaunch(target)) {
             return BTStatus.FAILURE;
         }
 
         elapsedTicks++;
         mob.getNavigation().stop();
         mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
-        if (!launched && elapsedTicks > windupTicks) {
+        if (elapsedTicks > windupTicks) {
             launchAt(target);
-        }
-        if (!launched) {
-            return BTStatus.RUNNING;
-        }
-
-        tryDealContactDamage(target);
-        if ((mob.onGround() && elapsedTicks > windupTicks + 1) || elapsedTicks > windupTicks + MAXIMUM_AIR_TICKS) {
-            mob.setAggressive(false);
             return BTStatus.SUCCESS;
         }
         return BTStatus.RUNNING;
@@ -94,21 +79,11 @@ public final class JumpAttackAction extends BTNode {
         double speed = mob.getAttributeValue(Attributes.MOVEMENT_SPEED)
                 * speedMultiplier;
         Vec3 impulse = horizontal.normalize().scale(speed);
-        mob.setDeltaMovement(impulse.x, 0.42, impulse.z);
+        mob.getJumpControl().jump();
+        mob.addDeltaMovement(new Vec3(impulse.x, 0.0, impulse.z));
         mob.hasImpulse = true;
         mob.setAggressive(true);
-        launched = true;
         lastLaunchTick = mob.tickCount;
     }
 
-    private void tryDealContactDamage(LivingEntity target) {
-        if (dealtDamage) {
-            return;
-        }
-        double reach = mob.getBbWidth() * 0.5
-                + target.getBbWidth() * 0.5 + 0.75;
-        if (mob.distanceToSqr(target) <= reach * reach) {
-            dealtDamage = mob.doHurtTarget(target);
-        }
-    }
 }

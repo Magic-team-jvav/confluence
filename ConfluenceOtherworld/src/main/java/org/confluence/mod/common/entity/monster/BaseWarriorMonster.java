@@ -1,11 +1,17 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.entity.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -34,6 +40,8 @@ public class BaseWarriorMonster extends BaseMonster {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenLoop("attack.strike");
     private final double pursuitSpeedBonus;
+    private final double meleeSpeed;
+    private final boolean ignoreLightPathCost;
     private final LandAnimationProfile animationProfile;
     private final LandSoundProfile soundProfile;
 
@@ -69,13 +77,18 @@ public class BaseWarriorMonster extends BaseMonster {
     /// @param animationProfile  实体资源支持的基础移动动画
     /// @param soundProfile      实体使用的环境、受伤与死亡音效组合
     public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double pursuitSpeedBonus, LandAnimationProfile animationProfile, LandSoundProfile soundProfile) {
+        this(type, level, pursuitSpeedBonus, animationProfile, soundProfile, 1.0, false);
+    }
+
+    public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double pursuitSpeedBonus, LandAnimationProfile animationProfile, LandSoundProfile soundProfile, double meleeSpeed, boolean ignoreLightPathCost) {
         super(type, level);
-        if (pursuitSpeedBonus < 0.0) {
-            throw new IllegalArgumentException("Pursuit speed bonus cannot be negative");
-        }
+        if (pursuitSpeedBonus < 0.0 || meleeSpeed <= 0.0)
+            throw new IllegalArgumentException("Movement parameters must be positive");
         this.pursuitSpeedBonus = pursuitSpeedBonus;
         this.animationProfile = animationProfile;
         this.soundProfile = soundProfile;
+        this.meleeSpeed = meleeSpeed;
+        this.ignoreLightPathCost = ignoreLightPathCost;
     }
 
     /// 供特殊子类保留构造兼容；实际运行数值现在统一从实体属性读取。
@@ -99,22 +112,21 @@ public class BaseWarriorMonster extends BaseMonster {
             @Override
             protected BTNode createTree() {
                 JumpProfile jump = jumpProfile();
+                BTNode melee = createMeleeNode(self, behavior);
+                BTNode idle = createIdleNode(self, behavior);
                 if (jump != null) {
                     return SelectorNode.of(
-                            SequenceNode.of(
-                                    new HasTargetCondition(self),
-                                    new JumpAttackAction(
-                                            self,
-                                            jump.speedMultiplier(),
-                                            jump.maximumDistance(),
-                                            jump.cooldownTicks(),
-                                            jump.windupTicks())),
-                            createMeleeSequence(self, behavior),
-                            createWanderSequence(self, behavior));
+                            SequenceNode.of(new HasTargetCondition(self), new JumpAttackAction(self, jump.speedMultiplier(), jump.maximumDistance(), jump.cooldownTicks(), jump.windupTicks())),
+                            new JumpOverBlockAction(self, 1.0), melee, idle);
                 }
-                return SelectorNode.of(createMeleeSequence(self, behavior), createWanderSequence(self, behavior));
+                return SelectorNode.of(new JumpOverBlockAction(self, 1.0), melee, idle);
             }
         };
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos) {
+        return ignoreLightPathCost ? 0.0F : super.getWalkTargetValue(pos);
     }
 
     protected JumpProfile jumpProfile() {
@@ -187,12 +199,21 @@ public class BaseWarriorMonster extends BaseMonster {
         };
     }
 
-    private static BTNode createMeleeSequence(BaseWarriorMonster self, CreatureDefinition.BehaviorOverrides behavior) {
-        return SequenceNode.of(new HasTargetCondition(self), new MoveToTargetAction(self, behavior.moveSpeedOr(1.0), behavior.meleeRangeOr(2.0)), new MeleeAttackAction(self, behavior.meleeRangeOr(1.0)));
+    private static BTNode createMeleeNode(BaseWarriorMonster self, CreatureDefinition.BehaviorOverrides behavior) {
+        if (behavior.meleeRange() > 0.0) {
+            return SequenceNode.of(new HasTargetCondition(self), new MoveToTargetAction(self, behavior.moveSpeedOr(self.meleeSpeed), behavior.meleeRange()), new MeleeAttackAction(self, behavior.meleeRange()));
+        }
+        return new VanillaGoalAction(new MeleeAttackGoal(self, behavior.moveSpeedOr(self.meleeSpeed), true));
     }
 
-    private static BTNode createWanderSequence(BaseWarriorMonster self, CreatureDefinition.BehaviorOverrides behavior) {
-        return SequenceNode.of(new WaitAction(behavior.idleTicksOr(20) + self.random.nextInt(40)), new RandomStrollAction(self, behavior.wanderSpeedOr(0.5), behavior.wanderRadiusOr(8)));
+    private static BTNode createIdleNode(BaseWarriorMonster self, CreatureDefinition.BehaviorOverrides behavior) {
+        if (behavior.wanderSpeed() > 0.0 || behavior.wanderRadius() > 0 || behavior.idleTicks() > 0) {
+            return SequenceNode.of(new WaitAction(behavior.idleTicksOr(20) + self.random.nextInt(40)), new RandomStrollAction(self, behavior.wanderSpeedOr(1.0), behavior.wanderRadiusOr(10)));
+        }
+        return SelectorNode.of(
+                new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(self, 1.0)),
+                new VanillaGoalAction(new LookAtPlayerGoal(self, Player.class, 6.0F)),
+                new VanillaGoalAction(new RandomLookAroundGoal(self)));
     }
 
     /// 简单陆行怪的跃击参数。

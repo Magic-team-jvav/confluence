@@ -3,8 +3,11 @@ package org.confluence.mod.common.effect.harmful;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
+import org.confluence.mod.common.entity.boss.WallOfFleshMouth;
 import org.confluence.mod.common.init.ModEffects;
 import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 
@@ -15,6 +18,7 @@ import org.mesdag.portlib.wrapper.world.effect.PortMobEffect;
 public class TheTongueEffect extends PortMobEffect {
     private static final double EXECUTION_DISTANCE = 1000.0;
     private static final double RELEASE_DISTANCE = 9.0;
+    private static final double NETHER_GENERATION_HEIGHT = 128.0;
 
     public TheTongueEffect() {
         super(MobEffectCategory.HARMFUL, 0xAB1122);
@@ -30,13 +34,23 @@ public class TheTongueEffect extends PortMobEffect {
             living.removeEffect(ModEffects.THE_TONGUE.get());
             return;
         }
+        WallOfFleshMouth mouth = wall.findTongueMouth(living);
+        if (mouth == null) {
+            living.removeEffect(ModEffects.THE_TONGUE.get());
+            return;
+        }
 
-        Vec3 targetPosition = wall.position()
-                .add(wall.getForwardVector().scale(45.0))
-                .add(0.0, wall.getBbHeight() * 0.5, 0.0);
-        double distanceToWall = living.position().distanceTo(wall.position());
-        if (distanceToWall > EXECUTION_DISTANCE) {
+        Vec3 targetPosition = mouth.position().add(wall.getForwardVector().scale(45.0));
+        if (living.level().dimension() == Level.NETHER && living.getY() < NETHER_GENERATION_HEIGHT && targetPosition.y >= NETHER_GENERATION_HEIGHT) {
+            targetPosition = targetPosition.add(0.0, -15.0, 0.0);
+        }
+        if (living.position().distanceTo(mouth.position()) > EXECUTION_DISTANCE) {
             living.kill();
+            return;
+        }
+        if (living.isInWall() && living.getY() < NETHER_GENERATION_HEIGHT * 2.0 / 3.0) {
+            living.setDeltaMovement(0.0, 1.25, 0.0);
+            living.hurtMarked = true;
             return;
         }
         Vec3 toTarget = targetPosition.subtract(living.position());
@@ -46,7 +60,7 @@ public class TheTongueEffect extends PortMobEffect {
             return;
         }
 
-        double wallSpeed = wall.getDeltaMovement().horizontalDistance();
+        double wallSpeed = wall.getAttributeValue(Attributes.MOVEMENT_SPEED);
         double strength = Mth.clamp(distance / 15.0 + wallSpeed + 0.35, wallSpeed + 0.15, wallSpeed + 0.5);
         living.setDeltaMovement(living.getDeltaMovement().add(toTarget.normalize().scale(strength)));
         living.hurtMarked = true;

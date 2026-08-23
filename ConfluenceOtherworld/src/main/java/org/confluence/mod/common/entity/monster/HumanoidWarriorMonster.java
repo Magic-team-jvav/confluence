@@ -1,14 +1,27 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
+import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+import org.jetbrains.annotations.Nullable;
+
+import java.time.LocalDate;
 
 /// 使用通用陆行行为的人形怪物。
 ///
@@ -37,6 +50,43 @@ public class HumanoidWarriorMonster extends BaseWarriorMonster {
         if (!equipment.isEmpty()) {
             setItemSlot(EquipmentSlot.MAINHAND, equipment);
         }
+    }
+
+    @Override
+    protected boolean mustSeePlayerTarget() {
+        return true;
+    }
+
+    @Override
+    protected BTRoot createBT() {
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() {
+                return SelectorNode.of(
+                        new VanillaGoalAction(new MeleeAttackGoal(HumanoidWarriorMonster.this, 1.2, false)),
+                        new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(HumanoidWarriorMonster.this, 1.0)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(HumanoidWarriorMonster.this, Player.class, 8.0F)),
+                        new VanillaGoalAction(new RandomLookAroundGoal(HumanoidWarriorMonster.this)));
+            }
+        };
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable net.minecraft.nbt.CompoundTag tag) {
+        data = super.finalizeSpawn(level, difficulty, reason, data, tag);
+        setCanPickUpLoot(level.getRandom().nextFloat() < 0.55F * difficulty.getSpecialMultiplier());
+        LocalDate date = LocalDate.now();
+        if (getItemBySlot(EquipmentSlot.HEAD).isEmpty() && date.getMonthValue() == 10 && date.getDayOfMonth() == 31 && level.getRandom().nextFloat() < 0.25F) {
+            setItemSlot(EquipmentSlot.HEAD, new ItemStack(level.getRandom().nextFloat() < 0.1F ? Blocks.JACK_O_LANTERN : Blocks.CARVED_PUMPKIN));
+            armorDropChances[EquipmentSlot.HEAD.getIndex()] = 0.0F;
+        }
+        return data;
     }
 
     @Override

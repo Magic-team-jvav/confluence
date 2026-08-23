@@ -58,6 +58,7 @@ import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.renderer.entity.TongueRenderer;
 import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
@@ -345,6 +346,7 @@ public final class GameClientEvents {
     }
 
     private static void renderLevelStage(PortRenderLevelStageEvent event) {
+        TongueRenderer.renderFirstPerson(event);
         BulletVfxManager.render(event);
         ClientSummonManager.render(event);
         Minecraft minecraft = Minecraft.getInstance();
@@ -388,7 +390,7 @@ public final class GameClientEvents {
                         widget.getMessage().getContents() instanceof TranslatableContents contents &&
                         "menu.online".equals(contents.getKey())
                 ) {
-                    event.addListener(new PortImageButton(widget.getX() - 24, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
+                    event.addListener(new PortImageButton(screen.width / 2 - 124, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
                         Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
                     }) {
                         @Override
@@ -411,6 +413,7 @@ public final class GameClientEvents {
     }
 
     private static void renderLiving$Post(PortRenderLivingEvent.Post<?, ?> event) {
+        TongueRenderer.render(event);
         LivingEntity living = event.getEntity();
         boolean dead = living.isDeadOrDying();
         IClientLivingEntity i = IClientLivingEntity.of(living);

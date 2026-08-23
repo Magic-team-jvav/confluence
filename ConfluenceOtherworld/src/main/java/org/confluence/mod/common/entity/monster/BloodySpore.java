@@ -16,6 +16,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -29,8 +32,7 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -139,10 +141,19 @@ public class BloodySpore extends BaseMonster {
                         SequenceNode.of(new HasTargetCondition(BloodySpore.this),
                                 new MoveToTargetAction(BloodySpore.this, 1.0, 3.0),
                                 new SwellAndBurstAction()),
-                        SequenceNode.of(new WaitAction(20 + random.nextInt(40)),
-                                new RandomStrollAction(BloodySpore.this, 0.4, 8)));
+                        new VanillaGoalAction(new AvoidEntityGoal<>(BloodySpore.this, Ocelot.class, 6.0F, 1.0, 1.2)),
+                        new VanillaGoalAction(new AvoidEntityGoal<>(BloodySpore.this, Cat.class, 6.0F, 1.0, 1.2)),
+                        new VanillaGoalAction(new MeleeAttackGoal(BloodySpore.this, 1.0, false)),
+                        new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(BloodySpore.this, 0.8)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(BloodySpore.this, Player.class, 8.0F)),
+                        new VanillaGoalAction(new RandomLookAroundGoal(BloodySpore.this)));
             }
         };
+    }
+
+    @Override
+    protected boolean mustSeePlayerTarget() {
+        return true;
     }
 
     private final class SwellAndBurstAction extends BTNode {

@@ -30,7 +30,7 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
     }
 
     private WormPartRenderer(EntityRendererProvider.Context context, WormPartGeoModel<BaseWormPart> model) {
-        super(context, model);
+        super(context, model, true, 1.0F, 0.0F);
         this.wormModel = model;
     }
 
@@ -69,6 +69,8 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
             if (ownerId != null && "arch_wyvern".equals(ownerId.getPath())) {
                 poseStack.scale(1.25F, 1.25F, 1.25F);
             }
+        } else {
+            poseStack.scale(2.0F, 2.0F, 2.0F);
         }
         super.preRender(poseStack, segment, model, buffers, buffer, reRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }

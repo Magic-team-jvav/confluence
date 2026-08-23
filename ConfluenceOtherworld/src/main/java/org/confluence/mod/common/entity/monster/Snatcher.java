@@ -8,6 +8,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -41,6 +43,9 @@ public class Snatcher extends BaseMonster {
     private static final EntityDataAccessor<Vector3f> ANCHOR = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.VECTOR3);
     private static final EntityDataAccessor<Vector3f> REST_DIRECTION = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.VECTOR3);
     private static final List<Vec3> SEARCH_DIRECTIONS = createSearchDirections();
+    private Vec3 anchor = Vec3.ZERO;
+    private Vec3 restDirection = new Vec3(0.0, 1.0, 0.0);
+
     public Snatcher(EntityType<? extends Snatcher> type, Level level) {
         super(type, level);
         noPhysics = true;
@@ -52,6 +57,11 @@ public class Snatcher extends BaseMonster {
                 .add(Attributes.ATTACK_DAMAGE, 10.0)
                 .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0);
+    }
+
+    @Override
+    protected void registerGoals() {
+        targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     @Override
@@ -110,9 +120,19 @@ public class Snatcher extends BaseMonster {
         if (restDirection.lengthSqr() < 1.0E-8) {
             throw new IllegalArgumentException("Snatcher rest direction must not be zero");
         }
+        this.anchor = anchor;
+        this.restDirection = restDirection.normalize();
         entityData.set(ANCHOR, anchor.toVector3f());
-        entityData.set(REST_DIRECTION, restDirection.normalize().toVector3f());
+        entityData.set(REST_DIRECTION, this.restDirection.toVector3f());
         entityData.set(ANCHORED, true);
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (key == ANCHOR) anchor = new Vec3(entityData.get(ANCHOR));
+        if (key == REST_DIRECTION)
+            restDirection = new Vec3(entityData.get(REST_DIRECTION)).normalize();
     }
 
     public boolean isAnchored() {
@@ -120,11 +140,11 @@ public class Snatcher extends BaseMonster {
     }
 
     public Vec3 getAnchor() {
-        return new Vec3(entityData.get(ANCHOR));
+        return anchor;
     }
 
     public Vec3 getRestDirection() {
-        return new Vec3(entityData.get(REST_DIRECTION)).normalize();
+        return restDirection;
     }
 
     @Override

@@ -12,23 +12,17 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -52,38 +46,47 @@ public class TheHungry extends BaseFlyingMonster {
         return 0.3;
     }
 
-    private static final double MAX_HORIZONTAL_LEASH = 64.0;
-    private static final double MAX_VERTICAL_LEASH = 128.0;
     private static final int OWNER_RESOLVE_GRACE_TICKS = 100;
     private static final RawAnimation BAIT = RawAnimation.begin().thenLoop("bait");
     private static final String LEASH_X_TAG = "LeashX";
     private static final String LEASH_Y_TAG = "LeashY";
     private static final String LEASH_Z_TAG = "LeashZ";
     private static final String SUPPRESS_LOOT_TAG = "SuppressLoot";
+    private static final String FREE_TAG = "Free";
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Vector3f> ANCHOR = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.VECTOR3);
 
     private final BossOwnerTracker<BaseBoss> ownerTracker = new BossOwnerTracker<>(BaseBoss.class);
     private Vec3 leashPos = Vec3.ZERO;
+    private Vec3 anchor = Vec3.ZERO;
+    private final double minimumDistance;
+    private final double maximumDistance;
     private int unresolvedOwnerTicks;
     private boolean suppressLoot;
+    private boolean free;
 
     public TheHungry(EntityType<? extends TheHungry> type, Level level) {
         super(type, level);
         /// 1.21 的饿鬼直接更新位置，不参与方块碰撞。这里使用原版 noPhysics
         /// 表达相同能力，避免系绳扑击被墙面或血肉墙周围地形卡住。
         noPhysics = true;
+        int distanceOffset = random.nextInt(7);
+        minimumDistance = 8.0 + distanceOffset;
+        maximumDistance = 64.0 + distanceOffset;
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(OWNER_UUID, Optional.empty());
+        entityData.define(ANCHOR, new Vector3f());
     }
 
     public void setMaster(BaseBoss master, Vec3 relativeAnchor) {
         ownerTracker.bind(this, master);
         entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
         leashPos = relativeAnchor;
+        setAnchor(master.position().add(relativeAnchor));
         unresolvedOwnerTicks = 0;
     }
 
@@ -103,6 +106,37 @@ public class TheHungry extends BaseFlyingMonster {
         return leashPos;
     }
 
+    public Vec3 getAnchor() {
+        return anchor;
+    }
+
+    private void setAnchor(Vec3 anchor) {
+        this.anchor = anchor;
+        entityData.set(ANCHOR, anchor.toVector3f());
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        super.onSyncedDataUpdated(key);
+        if (key == ANCHOR) anchor = new Vec3(entityData.get(ANCHOR));
+    }
+
+    public boolean isFree() {
+        return free;
+    }
+
+    public void setFree(boolean free) {
+        this.free = free;
+    }
+
+    double minimumDistance() {
+        return minimumDistance;
+    }
+
+    double maximumDistance() {
+        return maximumDistance;
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return BaseFlyingMonster.createFlyingAttributes()
                 .add(Attributes.MAX_HEALTH, 35.0)
@@ -114,7 +148,7 @@ public class TheHungry extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(TheHungry.this), new ChargeAttackAction(TheHungry.this, 0.6, 0.3)), SequenceNode.of(new WaitAction(10), new FlyWanderAction(TheHungry.this, 0.3, 6)));
+                return new HungryMovementAction(TheHungry.this);
             }
         };
     }
@@ -129,78 +163,39 @@ public class TheHungry extends BaseFlyingMonster {
     }
 
     @Override
-    protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+    public void tick() {
+        if (!level().isClientSide) prepareServerTick();
+        super.tick();
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (level().isClientSide) {
-            return;
-        }
+    public boolean hasLineOfSight(Entity entity) {
+        return distanceToSqr(entity) < 32.0 * 32.0;
+    }
 
+    private void prepareServerTick() {
         BaseBoss master = getMaster();
         if (master != null && master.isAlive()) {
             unresolvedOwnerTicks = 0;
-            keepNearAnchor(master);
+            setAnchor(free ? Vec3.ZERO : master.position().add(leashPos));
+            if (free) {
+                setTarget(level().getNearestPlayer(this, 40.0));
+            } else if (getTarget() == null && master.getTarget() != null && master.getTarget().isAlive()) {
+                setTarget(master.getTarget());
+            }
             return;
         }
-
         if (getMasterUUID() != null) {
-            // 主体与从属反向加载时等待精确 UUID 恢复，超时后清理真正的孤儿。
             setTarget(null);
-            if (++unresolvedOwnerTicks > OWNER_RESOLVE_GRACE_TICKS) {
-                discard();
-            }
+            if (++unresolvedOwnerTicks > OWNER_RESOLVE_GRACE_TICKS) discard();
             return;
         }
-
-        if (getTarget() == null && tickCount % 20 == 0) {
-            Player nearest = level().getNearestPlayer(this, 40.0);
-            if (nearest != null) {
-                setTarget(nearest);
-            }
-        }
-    }
-
-    private void keepNearAnchor(BaseBoss master) {
-        Vec3 anchor = master.position().add(leashPos);
-        Vec3 returnDirection = anchor.subtract(position());
-        double distanceSquared = returnDirection.lengthSqr();
-
-        if (isOutsideLeash(anchor)) {
-            setTarget(null);
-            getNavigation().stop();
-            Vec3 returnVelocity = returnDirection.normalize().scale(0.35);
-            setDeltaMovement(getDeltaMovement().lerp(returnVelocity, 0.35));
+        if (!free) {
+            if (tickCount > 0 && tickCount % 60 == 0) discard();
             return;
         }
-
-        if (getTarget() == null && master.getTarget() != null && master.getTarget().isAlive()) {
-            setTarget(master.getTarget());
-        }
-        if (getTarget() == null && distanceSquared > 4.0) {
-            setDeltaMovement(getDeltaMovement().add(returnDirection.normalize().scale(0.1)));
-        }
-    }
-
-    private boolean isOutsideLeash(Vec3 anchor) {
-        Vec3 relative = position().subtract(anchor);
-        double horizontal = Math.sqrt(relative.x * relative.x + relative.z * relative.z);
-        /// 沿用 1.21 的扁长活动区域：水平方向最多六十四格，
-        /// 垂直方向允许两倍距离。两项之和超过一才进入强制回收。
-        return horizontal / horizontalLeashDistance()
-                + Math.abs(relative.y) / verticalLeashDistance() > 1.0;
-    }
-
-    protected double horizontalLeashDistance() {
-        return MAX_HORIZONTAL_LEASH;
-    }
-
-    protected double verticalLeashDistance() {
-        return MAX_VERTICAL_LEASH;
+        if (tickCount > 0 && tickCount % 60 == 0) hurt(damageSources().starve(), 1.0F);
+        setTarget(level().getNearestPlayer(this, 40.0));
     }
 
     @Override
@@ -214,8 +209,7 @@ public class TheHungry extends BaseFlyingMonster {
     @Override
     public boolean hurt(DamageSource source, float amount) {
         Entity attacker = source.getEntity();
-        BaseBoss master = getMaster();
-        if (master != null && (attacker == master || attacker instanceof TheHungry)) {
+        if (attacker != null && attacker.getType().is(ModTags.EntityTypes.FLESH_ALLIANCE)) {
             return false;
         }
         return super.hurt(source, amount);
@@ -237,6 +231,8 @@ public class TheHungry extends BaseFlyingMonster {
         }
         freeHungry.setPos(deathPosition);
         freeHungry.setDeltaMovement(getDeltaMovement());
+        freeHungry.setMaster(master, master.position().scale(-1.0));
+        freeHungry.setFree(true);
         freeHungry.suppressLoot = true;
         serverLevel.addFreshEntity(freeHungry);
     }
@@ -254,6 +250,7 @@ public class TheHungry extends BaseFlyingMonster {
         tag.putDouble(LEASH_Y_TAG, leashPos.y);
         tag.putDouble(LEASH_Z_TAG, leashPos.z);
         tag.putBoolean(SUPPRESS_LOOT_TAG, suppressLoot);
+        tag.putBoolean(FREE_TAG, free);
     }
 
     @Override
@@ -263,6 +260,7 @@ public class TheHungry extends BaseFlyingMonster {
         entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
         leashPos = new Vec3(tag.getDouble(LEASH_X_TAG), tag.getDouble(LEASH_Y_TAG), tag.getDouble(LEASH_Z_TAG));
         suppressLoot = tag.getBoolean(SUPPRESS_LOOT_TAG);
+        free = tag.getBoolean(FREE_TAG);
     }
 
     @Override

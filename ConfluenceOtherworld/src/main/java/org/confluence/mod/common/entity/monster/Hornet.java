@@ -1,6 +1,8 @@
 package org.confluence.mod.common.entity.monster;
 
+import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionHand;
@@ -77,6 +79,11 @@ public class Hornet extends BaseFlyingMonster {
         return true;
     }
 
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
+
     /// 黄蜂可以穿过门洞，但不会把水面当作可漂浮路径。
     @Override
     protected PathNavigation createNavigation(Level level) {
@@ -95,8 +102,13 @@ public class Hornet extends BaseFlyingMonster {
     @Override
     public boolean doHurtTarget(Entity target) {
         swing(InteractionHand.MAIN_HAND);
-        boolean hit = target.hurt(damageSources().sting(this), (float) (int) getAttributeValue(Attributes.ATTACK_DAMAGE));
-        if (!hit || !(target instanceof LivingEntity living)) return hit;
+        var damageSource = damageSources().sting(this);
+        boolean hit = target.hurt(damageSource, (float) (int) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        if (!hit) return false;
+        if (level() instanceof ServerLevel serverLevel) {
+            PortEnchantmentHelperExtension.doPostAttackEffects(serverLevel, target, damageSource);
+        }
+        if (!(target instanceof LivingEntity living)) return true;
         living.setStingerCount(living.getStingerCount() + 1);
         int duration = level().getDifficulty() == Difficulty.NORMAL ? 200 : level().getDifficulty() == Difficulty.HARD ? 360 : 0;
         if (duration > 0)

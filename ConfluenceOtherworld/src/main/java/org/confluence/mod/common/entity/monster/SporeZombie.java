@@ -15,7 +15,7 @@ import org.confluence.mod.common.init.ModSoundEvents;
 /// 自身的数值与声音；模型动作由客户端僵尸动画族统一驱动。</p>
 public class SporeZombie extends BaseWarriorMonster {
     public SporeZombie(EntityType<? extends SporeZombie> type, Level level) {
-        super(type, level, 0.25);
+        super(type, level, 0.25, LandAnimationProfile.WALK_RUN_IDLE_ATTACK, LandSoundProfile.ZOMBIE, 0.8, true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

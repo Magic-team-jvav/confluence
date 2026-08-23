@@ -1,14 +1,18 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.*;
+import org.confluence.mod.common.entity.ai.bt.leaf.BowCombatAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 
 /// 哥布林弓箭手。
 ///
@@ -26,22 +30,11 @@ public class GoblinArcher extends GoblinMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        new BowCombatAction(
-                                GoblinArcher.this,
-                                1.0,
-                                40,
-                                20,
-                                15.0,
-                                20,
-                                1.6F),
-                        SequenceNode.of(
-                                new HasTargetCondition(GoblinArcher.this),
-                                new MoveToTargetAction(
-                                        GoblinArcher.this, 1.2, 2.0),
-                                new MeleeAttackAction(
-                                        GoblinArcher.this, 2.0)),
-                        SequenceNode.of(new WaitAction(20 + random.nextInt(40)),
-                                new RandomStrollAction(GoblinArcher.this, 0.8, 10)));
+                        new BowCombatAction(GoblinArcher.this, 1.0, 40, 20, 15.0, 20, 1.6F),
+                        new VanillaGoalAction(new MeleeAttackGoal(GoblinArcher.this, 1.2, false)),
+                        new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(GoblinArcher.this, 1.0)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(GoblinArcher.this, Player.class, 8.0F)),
+                        new VanillaGoalAction(new RandomLookAroundGoal(GoblinArcher.this)));
             }
         };
     }

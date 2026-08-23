@@ -10,18 +10,15 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -60,7 +57,7 @@ public class BloodCrawler extends BaseMonster {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        // 1.21 继承蜘蛛时会主动攻击铁傀儡；重写后必须显式保留该目标族。
+        /// 1.21 继承蜘蛛时会主动攻击铁傀儡；重写后必须显式保留该目标族。
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
     }
 
@@ -85,7 +82,7 @@ public class BloodCrawler extends BaseMonster {
 
     @Override
     public boolean canBeAffected(MobEffectInstance effect) {
-        // 血爬虫沿用蜘蛛的毒素免疫，其余效果仍交给原版通用规则判断。
+        /// 血爬虫沿用蜘蛛的毒素免疫，其余效果仍交给原版通用规则判断。
         return effect.getEffect() != MobEffects.POISON
                 && super.canBeAffected(effect);
     }
@@ -116,7 +113,7 @@ public class BloodCrawler extends BaseMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // 移动与攻击分层播放，使攻击时仍能保留蜘蛛腿部的行走节奏。
+        /// 移动与攻击分层播放，使攻击时仍能保留蜘蛛腿部的行走节奏。
         controllers.add(new AnimationController<>(this, "Movement", 5, state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
         controllers.add(new AnimationController<>(this, "Attack", 0, state -> swinging ? state.setAndContinue(ATTACK) : PlayState.STOP));
     }
@@ -127,12 +124,20 @@ public class BloodCrawler extends BaseMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(BloodCrawler.this),
-                                new MoveToTargetAction(BloodCrawler.this, 0.8, 2.0),
-                                new MeleeAttackAction(BloodCrawler.this, 2.0),
-                                new WaitAction(15)),
-                        SequenceNode.of(new WaitAction(20 + random.nextInt(40)),
-                                new RandomStrollAction(BloodCrawler.this, 0.5, 8)));
+                        new VanillaGoalAction(new LeapAtTargetGoal(BloodCrawler.this, 0.4F)),
+                        new VanillaGoalAction(new MeleeAttackGoal(BloodCrawler.this, 1.0, true) {
+                            @Override
+                            public boolean canContinueToUse() {
+                                if (getLightLevelDependentMagicValue() >= 0.5F && random.nextInt(100) == 0) {
+                                    setTarget(null);
+                                    return false;
+                                }
+                                return super.canContinueToUse();
+                            }
+                        }),
+                        new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(BloodCrawler.this, 0.8)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(BloodCrawler.this, Player.class, 8.0F)),
+                        new VanillaGoalAction(new RandomLookAroundGoal(BloodCrawler.this)));
             }
         };
     }

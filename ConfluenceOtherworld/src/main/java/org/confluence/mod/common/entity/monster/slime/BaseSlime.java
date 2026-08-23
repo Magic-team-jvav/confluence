@@ -186,7 +186,7 @@ public class BaseSlime extends BaseMonster {
 
     @Override
     public void tick() {
-        if (!level().isClientSide && tickCount % 20 == 0) {
+        if (!level().isClientSide) {
             updateHoneySoaking();
             if (isRemoved()) {
                 return;
@@ -333,7 +333,7 @@ public class BaseSlime extends BaseMonster {
         }
     }
 
-    /// 每秒检查一次蜂蜜浸泡状态。只有 1.21 侧明确支持的绿、蓝、紫三种史莱姆参与转化，
+    /// 每 tick 推进蜂蜜浸泡状态。只有 1.21 侧明确支持的绿、蓝、紫三种史莱姆参与转化，
     /// 离开蜂蜜后进度立即清零；完成时由服务端原位替换为二号蜂蜜史莱姆。
     private void updateHoneySoaking() {
         if (!canConvertFromHoney() || !level().getBlockState(blockPosition()).is(ModTags.Blocks.HONEY)) {

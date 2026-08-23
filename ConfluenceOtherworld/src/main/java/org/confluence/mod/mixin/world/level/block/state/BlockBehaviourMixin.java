@@ -62,9 +62,9 @@ public abstract class BlockBehaviourMixin {
         protected BlockBehaviour.BlockStateBase.Cache cache;
 
         @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("RETURN"), cancellable = true)
-        private void shimmer(BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
+        private void bypassCollision(BlockGetter level, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
             if (cache == null || asState().getDestroySpeed(level, pos) == -1) return;
-            if (context instanceof EntityCollisionContext ec && ec.getEntity() instanceof LivingEntity living && living.hasEffect(ModEffects.SHIMMER)) {
+            if (context instanceof EntityCollisionContext ec && ec.getEntity() instanceof LivingEntity living && (living.hasEffect(ModEffects.SHIMMER) || living.hasEffect(ModEffects.THE_TONGUE))) {
                 cir.setReturnValue(Shapes.empty());
             }
         }

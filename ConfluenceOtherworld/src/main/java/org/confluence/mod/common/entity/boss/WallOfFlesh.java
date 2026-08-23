@@ -62,6 +62,7 @@ public class WallOfFlesh extends BaseBoss {
     private static final double PURSUIT_WIDTH = GRID_SIZE_X * GRID_SPACING;
     private static final double PURSUIT_HEIGHT = GRID_SIZE_Y * GRID_SPACING;
     private static final double PURSUIT_DEPTH = 150.0;
+    private static final double NETHER_GENERATION_HEIGHT = 128.0;
     private static final int CHUNK_REFRESH_INTERVAL = 5;
     private static final int CHUNK_RETENTION_TICKS = 30 * 20;
 
@@ -285,6 +286,29 @@ public class WallOfFlesh extends BaseBoss {
         double xSize = movingAlongX ? PURSUIT_DEPTH : PURSUIT_WIDTH;
         double zSize = movingAlongX ? PURSUIT_WIDTH : PURSUIT_DEPTH;
         return AABB.ofSize(center, xSize, PURSUIT_HEIGHT, zSize);
+    }
+
+    public @Nullable WallOfFleshMouth findTongueMouth(LivingEntity living) {
+        WallOfFleshMouth nearest = null;
+        WallOfFleshMouth nearestClear = null;
+        double nearestDistance = Double.MAX_VALUE;
+        double nearestClearDistance = Double.MAX_VALUE;
+        for (Entity entity : subEntities) {
+            if (!(entity instanceof WallOfFleshMouth mouth) || !mouth.isAlive() || mouth.getY() <= level().getMinBuildHeight())
+                continue;
+            if (level().dimension() == Level.NETHER && mouth.getY() >= NETHER_GENERATION_HEIGHT * 2.0 / 3.0)
+                continue;
+            double distance = mouth.distanceToSqr(living);
+            if (distance < nearestDistance) {
+                nearest = mouth;
+                nearestDistance = distance;
+            }
+            if (!mouth.isInWall() && distance < nearestClearDistance) {
+                nearestClear = mouth;
+                nearestClearDistance = distance;
+            }
+        }
+        return nearestClear == null ? nearest : nearestClear;
     }
 
     /// Wall-only, non-persistent region-ticket ownership. Vanilla/admin forced chunks are never

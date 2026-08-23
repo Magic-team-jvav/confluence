@@ -37,11 +37,15 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     protected void registerGoals() {
         super.registerGoals();
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false, this::canTargetPlayer));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, mustSeePlayerTarget(), this::canTargetPlayer));
     }
 
     protected boolean canTargetPlayer(LivingEntity target) {
         return true;
+    }
+
+    protected boolean mustSeePlayerTarget() {
+        return false;
     }
 
     @Override
@@ -97,12 +101,11 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         return 0.0;
     }
 
-    /// 保留 1.21 的筛选规则：同类和敌对生物不会因身体重叠而互伤。
+    /// 保留 1.21 的筛选规则：只攻击当前实体可以合法攻击且类型不同的目标。
     protected boolean canContactAttack(Entity entity) {
         return entity instanceof LivingEntity living
-                && living.canBeSeenAsEnemy()
                 && entity.getType() != getType()
-                && !(living instanceof net.minecraft.world.entity.monster.Enemy);
+                && canAttack(living);
     }
 
     protected final CreatureDefinition creatureDefinition() {

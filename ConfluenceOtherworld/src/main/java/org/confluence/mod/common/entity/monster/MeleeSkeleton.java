@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
@@ -9,19 +10,24 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.Turtle;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.entity.monster.humanoid.BaseHumanoidMonster;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
 
 /// 泰拉近战骷髅族共用的基础行为。
 ///
@@ -38,6 +44,18 @@ public class MeleeSkeleton extends BaseHumanoidMonster {
 
     public static AttributeSupplier.Builder createAttributes() {
         return BaseHumanoidMonster.createHumanoidAttributes();
+    }
+
+    @Override
+    protected boolean mustSeePlayerTarget() {
+        return true;
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
+        targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Turtle.class, 10, true, false, Turtle.BABY_ON_LAND_SELECTOR));
     }
 
     @Override
@@ -62,13 +80,26 @@ public class MeleeSkeleton extends BaseHumanoidMonster {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
-                        SequenceNode.of(new HasTargetCondition(MeleeSkeleton.this),
-                                new MoveToTargetAction(MeleeSkeleton.this, 1.0, 2.0),
-                                new MeleeAttackAction(MeleeSkeleton.this, 2.0)),
-                        SequenceNode.of(new WaitAction(20 + random.nextInt(40)),
-                                new RandomStrollAction(MeleeSkeleton.this, 0.8, 10)));
+                        new VanillaGoalAction(new AvoidEntityGoal<>(MeleeSkeleton.this, Wolf.class, 6.0F, 1.0, 1.2)),
+                        new VanillaGoalAction(new MeleeAttackGoal(MeleeSkeleton.this, 1.2, false)),
+                        new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(MeleeSkeleton.this, 1.0)),
+                        new VanillaGoalAction(new LookAtPlayerGoal(MeleeSkeleton.this, Player.class, 8.0F)),
+                        new VanillaGoalAction(new RandomLookAroundGoal(MeleeSkeleton.this)));
             }
         };
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos) {
+        return getType() == MonsterEntities.SPORE_SKELETON.get() ? 0.0F : super.getWalkTargetValue(pos);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "Walk/Idle", 5, state -> {
+            state.setControllerSpeed(2.0F);
+            return state.setAndContinue(state.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
+        }));
     }
 
     @Override

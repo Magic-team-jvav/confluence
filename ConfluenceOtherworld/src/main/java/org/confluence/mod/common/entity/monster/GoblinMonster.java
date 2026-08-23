@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.item.ItemStack;
@@ -24,5 +25,10 @@ public class GoblinMonster extends HumanoidWarriorMonster {
     protected void registerGoals() {
         super.registerGoals();
         goalSelector.addGoal(-1, new FloatGoal(this));
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos) {
+        return 0.0F;
     }
 }

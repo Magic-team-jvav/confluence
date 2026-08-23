@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,6 +35,16 @@ public class Derpling extends BaseMonster {
                 return new JumpingMonsterCycleAction(Derpling.this, () -> triggerAnim("Controller", "jump"));
             }
         };
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos) {
+        return 0.0F;
     }
 
     @Override

@@ -62,7 +62,7 @@ public class HorrifiedEffect extends PortMobEffect {
             living.kill();
             return;
         }
-        if (!living.getBoundingBox().intersects(wall.getPursuitBox().inflate(12.0))) {
+        if (!living.getBoundingBox().intersects(wall.getPursuitBox().inflate(12.0)) && !living.hasEffect(ModEffects.THE_TONGUE.get())) {
             living.addEffect(new MobEffectInstance(ModEffects.THE_TONGUE.get(), 60), wall);
         }
     }

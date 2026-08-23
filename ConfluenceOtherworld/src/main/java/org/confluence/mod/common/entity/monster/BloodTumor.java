@@ -4,23 +4,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-
-import java.util.List;
 
 /// 血腥孢子爆裂后生成的静止肿瘤。
 ///
 /// <p>肿瘤不会寻路或主动近战，而是在短暂孵化后随机转化为血爬虫、脸怪或猩红喀迈拉。</p>
 public final class BloodTumor extends BaseMonster {
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
-
     public BloodTumor(EntityType<? extends BloodTumor> type, Level level) {
         super(type, level);
     }
@@ -28,7 +20,6 @@ public final class BloodTumor extends BaseMonster {
     @Override
     public void tick() {
         super.tick();
-        setDeltaMovement(Vec3.ZERO);
         if (!level().isClientSide && isAlive() && tickCount == 60 + Math.floorMod(getId(), 40)) {
             transform();
         }
@@ -38,8 +29,12 @@ public final class BloodTumor extends BaseMonster {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        List<EntityType<? extends Entity>> outcomes = List.of(MonsterEntities.BLOOD_CRAWLER.get(), MonsterEntities.FACE_MONSTER.get(), MonsterEntities.CRIMERA.get());
-        Entity replacement = outcomes.get(random.nextInt(outcomes.size())).create(serverLevel);
+        EntityType<? extends Entity> outcome = switch (random.nextInt(3)) {
+            case 0 -> MonsterEntities.BLOOD_CRAWLER.get();
+            case 1 -> MonsterEntities.FACE_MONSTER.get();
+            default -> MonsterEntities.CRIMERA.get();
+        };
+        Entity replacement = outcome.create(serverLevel);
         if (replacement == null) {
             return;
         }
@@ -57,10 +52,5 @@ public final class BloodTumor extends BaseMonster {
                 return new WaitAction(20);
             }
         };
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "idle", 0, state -> state.setAndContinue(IDLE)));
     }
 }

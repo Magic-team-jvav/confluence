@@ -48,6 +48,11 @@ public class SimpleWormMonster extends BaseWormMonster {
     }
 
     @Override
+    protected float segmentSpacing() {
+        return role == Role.BONE_SERPENT ? 2.5F : role == Role.FLYING ? 1.0F : 1.6F;
+    }
+
+    @Override
     protected WormMovementAction.Profile movementProfile() {
         return switch (role) {
             case UNDERGROUND -> WormMovementAction.Profile.underground();

@@ -34,6 +34,11 @@ public class Wyvern extends BaseWormMonster {
     }
 
     @Override
+    protected float segmentSpacing() {
+        return 1.0F;
+    }
+
+    @Override
     protected BTRoot createBT() {
         return new BTRoot() {
             @Override

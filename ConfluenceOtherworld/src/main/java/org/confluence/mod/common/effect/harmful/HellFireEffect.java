@@ -29,6 +29,7 @@ public class HellFireEffect extends PortMobEffect {
 
     @Override
     public void onEffectStarted(LivingEntity living, int amplifier) {
+        super.onEffectStarted(living, amplifier);
         living.setRemainingFireTicks(1);
         living.level().explode(
                 living,
@@ -45,6 +46,11 @@ public class HellFireEffect extends PortMobEffect {
                             return 3 + amplifier * 3;
                         }
                         return 0;
+                    }
+
+                    @Override
+                    public float getKnockbackMultiplier(Entity entity) {
+                        return entity.isPickable() ? 1.0F : 0.0F;
                     }
                 },
                 living.getX(), living.getY(0.0625), living.getZ(),

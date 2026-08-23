@@ -113,6 +113,11 @@ public abstract class BaseCasterMonster extends BaseMonster {
         return projectile;
     }
 
+    @Override
+    public int getCurrentSwingDuration() {
+        return 20;
+    }
+
     private HostileParticleProjectile createImmediateProjectile(LivingEntity target) {
         HostileParticleProjectile projectile = createProjectile(target);
         if (projectile != null) {

@@ -65,6 +65,8 @@ public final class ModEffects {
             .addAttributeModifier(LibAttributes.getSummonDamage(), id, 0.1, ADD_MULTIPLIED_TOTAL)
     );
     public static final RegistryObject<MobEffect> THORNS = EFFECTS.register("thorns", ThornsEffect::new);
+    public static final RegistryObject<MobEffect> DRYADS_BLESSING = register("dryads_blessing", DryadsBlessingEffect::new);
+    public static final RegistryObject<MobEffect> DRYADS_BANE = EFFECTS.register("dryads_bane", DryadsBaneEffect::new);
     public static final RegistryObject<MobEffect> MANA_REGENERATION = EFFECTS.register("mana_regeneration", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x6600CC));
     public static final RegistryObject<MobEffect> STAR_IN_A_BOTTLE = EFFECTS.register("star_in_a_bottle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF66));
     public static final RegistryObject<MobEffect> TITAN = register("titan", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xD2B48C)

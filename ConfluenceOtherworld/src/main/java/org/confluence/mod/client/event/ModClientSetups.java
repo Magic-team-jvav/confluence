@@ -197,7 +197,6 @@ public final class ModClientSetups {
         }
     };
     static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED);
-    static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW);
     static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE);
     static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {

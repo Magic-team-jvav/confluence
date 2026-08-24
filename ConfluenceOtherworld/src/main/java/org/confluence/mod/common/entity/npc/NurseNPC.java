@@ -10,6 +10,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.entity.npc.ai.NPCHealGoal;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.AchievementUtils;
@@ -21,14 +22,14 @@ import java.util.List;
 /// 护士 —— 向 5 格范围内的低生命 NPC 投掷治疗药水，并为玩家提供付费治疗。
 public class NurseNPC extends BaseNPC {
 
-    public NurseNPC(EntityType<? extends BaseNPC> type, Level level) {
-        super(type, level);
+    public NurseNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile combatProfile) {
+        super(type, level, combatProfile);
     }
 
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.goalSelector.addGoal(2, new NPCHealGoal(this, 5));
+        this.goalSelector.addGoal(3, new NPCHealGoal(this, 5));
     }
 
     @Override

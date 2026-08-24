@@ -32,6 +32,21 @@ import static org.confluence.mod.Confluence.MODID;
 public class ModItemModelProvider extends ItemModelProvider {
     private static final ResourceLocation MISSING_ITEM = Confluence.asResource("item/item_icon");
     private static final ResourceLocation MISSING_BLOCK = Confluence.asResource("item/blocks_icon");
+    private static final Set<String> SHARED_SLIME_EGGS = Set.of(
+            "black_slime_spawn_egg", "blue_slime_spawn_egg", "corrupt_slime_spawn_egg", "crimslime_spawn_egg",
+            "dungeon_slime_spawn_egg", "evil_slime_spawn_egg", "golden_slime_spawn_egg", "green_dumpling_slime_spawn_egg",
+            "green_slime_spawn_egg", "jungle_slime_spawn_egg", "luminous_slime_spawn_egg", "pink_slime_spawn_egg",
+            "purple_slime_spawn_egg", "red_slime_spawn_egg", "swamp_slime_spawn_egg", "tropic_slime_spawn_egg",
+            "yellow_slime_spawn_egg");
+    private static final Map<String, String> SPAWN_EGG_TEXTURE_ALIASES = Map.ofEntries(
+            Map.entry("crab_spawn_egg", "crap_spawn_egg"),
+            Map.entry("eater_of_worlds_spawn_egg", "eater_of_world_spawn_egg"),
+            Map.entry("eye_of_cthulhu_spawn_egg", "cthulhu_eye_spawn_egg"),
+            Map.entry("female_angler_spawn_egg", "angler_spawn_egg"),
+            Map.entry("giant_antlion_swarmer_spawn_egg", "giant_antlion_spawn_egg"),
+            Map.entry("granite_elemental_spawn_egg", "grantite_elemental_spawn_egg"),
+            Map.entry("little_hornet_spawn_egg", "hornet_spawn_egg"),
+            Map.entry("red_squirrel_spawn_egg", "squirrel_spawn_egg"));
     private final ModelFile itemGenerated = new ModelFile.UncheckedModelFile(ResourceLocation.withDefaultNamespace("item/generated"));
     private final Set<Item> skip = new HashSet<>();
 
@@ -265,11 +280,17 @@ public class ModItemModelProvider extends ItemModelProvider {
             withExistingParent(name, "item/generated").texture("layer0", Confluence.asResource("item/compass/" + name));
         }
 
-        /// 原版刷怪蛋由颜色层动态绘制，不读取模组贴图。统一指向原版模板，
-        /// 避免通用物品兜底把它们生成为缺失纹理模型。
-        for (PortRegistryEntry<Item, ?> entry :
-                SpawnEggItems.ITEMS.getEntries()) {
-            withExistingParent(entry.getId().getPath(), ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));
+        /// 1.21 已提供独立贴图的刷怪蛋使用普通物品模型，其余 1.20 独有刷怪蛋才回退原版颜色模板。
+        for (PortRegistryEntry<Item, ?> entry : SpawnEggItems.ITEMS.getEntries()) {
+            String path = entry.getId().getPath();
+            String texturePath = SHARED_SLIME_EGGS.contains(path)
+                    ? "slime_spawn_egg" : SPAWN_EGG_TEXTURE_ALIASES.getOrDefault(path, path);
+            ResourceLocation texture = Confluence.asResource("item/egg/" + texturePath);
+            if (existingFileHelper.exists(texture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                withExistingParent(path, ResourceLocation.withDefaultNamespace("item/generated")).texture("layer0", texture);
+            } else {
+                withExistingParent(path, ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));
+            }
             skip.add(entry.get());
         }
 

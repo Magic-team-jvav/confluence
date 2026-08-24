@@ -4,13 +4,16 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.boss.Skeletron;
+import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.ModUtils;
@@ -18,8 +21,14 @@ import org.confluence.mod.util.ModUtils;
 /// 老人 —— 地牢入口的诅咒 NPC。夜晚交互召出骷髅王后消失。
 public class OldManNPC extends BaseNPC {
 
-    public OldManNPC(EntityType<? extends BaseNPC> type, Level level) {
-        super(type, level);
+    public OldManNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile combatProfile) {
+        super(type, level, combatProfile);
+    }
+
+    /// 老人免疫敌怪及其弹体造成的伤害，但仍会受到环境、陷阱和无主爆炸伤害。
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return !(source.getEntity() instanceof Enemy) && super.hurt(source, amount);
     }
 
     private boolean isNight() {

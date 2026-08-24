@@ -28,7 +28,7 @@ public class SkullProjectile extends AbstractManaProjectile {
     private UUID targetUUID;
     private transient LivingEntity target;
 
-    public SkullProjectile(EntityType<SkullProjectile> entityType, Level level) {
+    public SkullProjectile(EntityType<? extends SkullProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
         withParticle(Confluence.asResource("skull_projectile_flame"));

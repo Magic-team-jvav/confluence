@@ -21,4 +21,7 @@ public interface LivingEntityRendererAccessor {
 
     @Invoker
     float callGetBob(LivingEntity livingBase, float partialTick);
+
+    @Invoker
+    void callSetupRotations(LivingEntity livingEntity, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTick);
 }

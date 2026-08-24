@@ -47,14 +47,20 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
     ///
     /// 字段按照行为能力而非具体生物命名：近战、冲锋、远程和飞行模板只读取自己需要的字段。
     /// 因此新增简单生物时可以复用同一格式，不必为每个实体增加独立 Codec。
-    public record BehaviorOverrides(double moveSpeed, double meleeRange, double wanderSpeed,
+    public record BehaviorOverrides(double moveSpeed, double meleeRange, double attackRange,
+                                    double wanderSpeed,
                                     int wanderRadius, int idleTicks, double chargeSpeed,
                                     int windupTicks, int shotCooldown, double shotMultiplier,
-                                    double preferredRange, double orbitSpeed, double orbitRadius) {
-        public static final BehaviorOverrides EMPTY = new BehaviorOverrides(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1);
+                                    double projectileSpeed, double preferredRange,
+                                    double retreatRange,
+                                    double orbitSpeed, double orbitRadius,
+                                    double healthRegeneration) {
+        public static final BehaviorOverrides EMPTY = new BehaviorOverrides(-1, -1, -1, -1, -1, -1, -1, -1,
+                -1, -1, -1, -1, -1, -1, -1, -1);
         public static final Codec<BehaviorOverrides> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.DOUBLE.optionalFieldOf("move_speed", -1.0).forGetter(BehaviorOverrides::moveSpeed),
                 Codec.DOUBLE.optionalFieldOf("melee_range", -1.0).forGetter(BehaviorOverrides::meleeRange),
+                Codec.DOUBLE.optionalFieldOf("attack_range", -1.0).forGetter(BehaviorOverrides::attackRange),
                 Codec.DOUBLE.optionalFieldOf("wander_speed", -1.0).forGetter(BehaviorOverrides::wanderSpeed),
                 Codec.INT.optionalFieldOf("wander_radius", -1).forGetter(BehaviorOverrides::wanderRadius),
                 Codec.INT.optionalFieldOf("idle_ticks", -1).forGetter(BehaviorOverrides::idleTicks),
@@ -63,10 +69,16 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
                 Codec.INT.optionalFieldOf("shot_cooldown", -1).forGetter(BehaviorOverrides::shotCooldown),
                 Codec.DOUBLE.optionalFieldOf("shot_multiplier", -1.0)
                         .forGetter(BehaviorOverrides::shotMultiplier),
+                Codec.DOUBLE.optionalFieldOf("projectile_speed", -1.0)
+                        .forGetter(BehaviorOverrides::projectileSpeed),
                 Codec.DOUBLE.optionalFieldOf("preferred_range", -1.0)
                         .forGetter(BehaviorOverrides::preferredRange),
+                Codec.DOUBLE.optionalFieldOf("retreat_range", -1.0)
+                        .forGetter(BehaviorOverrides::retreatRange),
                 Codec.DOUBLE.optionalFieldOf("orbit_speed", -1.0).forGetter(BehaviorOverrides::orbitSpeed),
-                Codec.DOUBLE.optionalFieldOf("orbit_radius", -1.0).forGetter(BehaviorOverrides::orbitRadius)
+                Codec.DOUBLE.optionalFieldOf("orbit_radius", -1.0).forGetter(BehaviorOverrides::orbitRadius),
+                Codec.DOUBLE.optionalFieldOf("health_regeneration", -1.0)
+                        .forGetter(BehaviorOverrides::healthRegeneration)
         ).apply(instance, BehaviorOverrides::new));
 
         public double moveSpeedOr(double fallback) {
@@ -75,6 +87,10 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
 
         public double meleeRangeOr(double fallback) {
             return positive(meleeRange, fallback);
+        }
+
+        public double attackRangeOr(double fallback) {
+            return positive(attackRange, fallback);
         }
 
         public double wanderSpeedOr(double fallback) {
@@ -105,6 +121,10 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
             return nonNegative(shotMultiplier, fallback);
         }
 
+        public double projectileSpeedOr(double fallback) {
+            return positive(projectileSpeed, fallback);
+        }
+
         public double orbitSpeedOr(double fallback) {
             return positive(orbitSpeed, fallback);
         }
@@ -113,8 +133,16 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
             return positive(preferredRange, fallback);
         }
 
+        public double retreatRangeOr(double fallback) {
+            return nonNegative(retreatRange, fallback);
+        }
+
         public double orbitRadiusOr(double fallback) {
             return positive(orbitRadius, fallback);
+        }
+
+        public double healthRegenerationOr(double fallback) {
+            return nonNegative(healthRegeneration, fallback);
         }
 
         private static double positive(double value, double fallback) {

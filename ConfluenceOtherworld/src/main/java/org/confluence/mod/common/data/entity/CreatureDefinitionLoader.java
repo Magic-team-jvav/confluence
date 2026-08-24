@@ -32,12 +32,14 @@ import java.util.Set;
 public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadListener {
     private static final Set<String> ATTRIBUTE_FIELDS = Set.of("max_health", "attack_damage", "armor", "movement_speed", "follow_range", "knockback_resistance");
     private static final Set<String> BEHAVIOR_FIELDS = Set.of(
-            "move_speed", "melee_range", "wander_speed", "wander_radius",
+            "move_speed", "melee_range", "attack_range", "wander_speed", "wander_radius",
             "idle_ticks", "charge_speed", "windup_ticks", "shot_cooldown",
-            "shot_multiplier", "preferred_range", "orbit_speed", "orbit_radius");
+            "shot_multiplier", "projectile_speed", "preferred_range", "retreat_range",
+            "orbit_speed", "orbit_radius", "health_regeneration");
 
     /// 当前重载轮次的只读快照；volatile 保证网络/服务器线程看到完整替换结果。
     private static volatile Map<EntityType<?>, CreatureDefinition> definitions = Map.of();
+    private static volatile int revision;
 
     public CreatureDefinitionLoader() {
         super(new GsonBuilder().create(), "entity_definition");
@@ -46,6 +48,11 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
     /// 返回实体类型对应的定义；没有定义时返回共享空对象而不是 {@code null}。
     public static CreatureDefinition get(EntityType<?> type) {
         return definitions.getOrDefault(type, CreatureDefinition.EMPTY);
+    }
+
+    /// 返回最近一次成功重载的版本号，供存活实体按需刷新属性。
+    public static int getRevision() {
+        return revision;
     }
 
     /// 将定义中的属性基础值应用到新建生物。
@@ -104,6 +111,7 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
             return;
         }
         definitions = Map.copyOf(loaded);
+        revision++;
         Confluence.LOGGER.info("Loaded {} creature definitions", definitions.size());
     }
 

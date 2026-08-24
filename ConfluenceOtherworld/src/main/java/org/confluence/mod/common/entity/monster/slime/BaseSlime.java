@@ -96,7 +96,7 @@ public class BaseSlime extends BaseMonster {
     }
 
     protected void setSlimeSize(int size) {
-        int clampedSize = Mth.clamp(size, 1, 4);
+        int clampedSize = Mth.clamp(size, 1, 127);
         entityData.set(DATA_SIZE, clampedSize);
         refreshDimensions();
         var movementSpeed = getAttribute(Attributes.MOVEMENT_SPEED);

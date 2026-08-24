@@ -34,6 +34,7 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.entity.CritterEntities;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -243,7 +244,7 @@ public class Bunny extends BaseCritter implements VariantHolder<Bunny.Variant> {
     }
 
     @Override
-    public Bunny getBreedOffspring(ServerLevel level, net.minecraft.world.entity.AgeableMob otherParent) {
+    public @Nullable Bunny getBreedOffspring(ServerLevel level, net.minecraft.world.entity.AgeableMob otherParent) {
         return CritterEntities.BUNNY.get().create(level);
     }
 

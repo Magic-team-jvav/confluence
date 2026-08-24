@@ -404,6 +404,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LIFECRYSTAL_BOULDER.get(), LifecrystalBoulderRenderer::new);
         event.registerEntityRenderer(BOULDER_3X.get(), BoulderRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVE.get(), ThrownKniveProjectileRenderer::new);
+        event.registerEntityRenderer(NPC_WEAPON_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BONE_THROWN_KNIVE.get(), BoneThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(FROST_DAGGERFISH.get(), FrostDaggerfishProjectileRenderer::new);
         event.registerEntityRenderer(DUNGEON_DEMON_BONE.get(), DungeonDemonBoneProjectileRenderer::new);
@@ -420,6 +421,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(HOSTILE_DEMON_SCYTHE.get(), HostileDemonScytheProjectileRenderer::new);
         event.registerEntityRenderer(HORNET_STINGER.get(), HornetStingerProjectileRenderer::new);
         event.registerEntityRenderer(SKELETRON_SKULL.get(), SkullProjectileRenderer::new);
+        event.registerEntityRenderer(NPC_SHADOWFLAME_SKULL.get(), SkullProjectileRenderer::new);
         event.registerEntityRenderer(HILL_LAVA_PILLAR.get(), NoopRenderer::new);
         event.registerEntityRenderer(WALL_OF_FLESH_LASER.get(), NoopRenderer::new);
         event.registerEntityRenderer(DESTROYER_LASER.get(), NoopRenderer::new);
@@ -760,7 +762,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GOBLIN_SCOUT.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_SCOUT.getId().withPrefix("goblin/"))));
         event.registerEntityRenderer(MonsterEntities.ANGER_GOBLIN.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, Confluence.asResource("goblin/anger_goblin"))));
         // 陆行怪
-        event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), ZombieRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new ZombieGeoModel(c)));
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new BloodySporeRenderer(c, MonsterEntities.BLOODY_SPORE.getId()));
         event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
         event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SPORE_ZOMBIE.getId()));
@@ -876,7 +878,6 @@ public final class ModClientEvents {
         }), AxeItems.LUCY_THE_AXE.get());
         event.registerItem(ModClientSetups.BREATHING_REED, SwordItems.BREATHING_REED);
         // 长矛的 Geo 渲染器与手臂姿态由 AbstractSpearItem 的同一个客户端扩展提供。
-        event.registerItem(ModClientSetups.UMBRELLA, SwordItems.UMBRELLA, SwordItems.TRAGIC_UMBRELLA);
         event.registerItem(ModClientSetups.DRILL_O_CHAINSAW, Streams.stream(Iterables.concat(
                 DrillItems.ITEMS.getEntries(),
                 ChainsawItems.ITEMS.getEntries()

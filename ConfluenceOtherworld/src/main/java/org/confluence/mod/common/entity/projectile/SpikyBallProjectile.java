@@ -13,6 +13,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.common.entitiy.IBouncy;
 import org.confluence.lib.util.LibEntityUtils;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 
@@ -22,6 +23,7 @@ import java.util.Set;
 public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZRotate, IBouncy {
     public final Rotate rotate = new Rotate();
     private final Set<Entity> passThrough = new HashSet<>();
+    private float damage = 3.2F;
 
     public SpikyBallProjectile(EntityType<SpikyBallProjectile> entityType, Level level) {
         super(entityType, level);
@@ -54,7 +56,7 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
             EntityHitResult result = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
             if (result != null) {
                 Entity entity = result.getEntity();
-                if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), 3.2F)) {
+                if (entity.hurt(damageSources().mobProjectile(this, getOwner() instanceof LivingEntity living ? living : null), damage)) {
                     LibEntityUtils.knockBackA2B(this, entity, 0.1, 0.02);
                 }
                 if (passThrough.add(entity) && passThrough.size() >= 7) {
@@ -73,7 +75,13 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
 
     @Override
     protected boolean canHitEntity(Entity target) {
+        if (getOwner() instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
+            return false;
         return LibEntityUtils.canHitEntity(target, getOwner());
+    }
+
+    public void setDamage(float damage) {
+        this.damage = Math.max(0, damage);
     }
 
     @Override
@@ -85,12 +93,14 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.tickCount = compound.getInt("Age");
+        this.damage = compound.contains("Damage") ? Math.max(0, compound.getFloat("Damage")) : 3.2F;
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Age", tickCount);
+        compound.putFloat("Damage", damage);
     }
 
     @Override

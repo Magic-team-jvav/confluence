@@ -25,6 +25,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.FishingPoleItems;
@@ -44,8 +45,8 @@ public class AnglerNPC extends BaseNPC {
 
     private Vec3 driftDir = Vec3.ZERO;
 
-    public AnglerNPC(EntityType<? extends BaseNPC> type, Level level) {
-        super(type, level);
+    public AnglerNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile combatProfile) {
+        super(type, level, combatProfile);
     }
 
     @Override
@@ -61,6 +62,11 @@ public class AnglerNPC extends BaseNPC {
     public void setWakeUp(boolean wakeUp) {
         entityData.set(DATA_WAKE_UP, wakeUp);
         if (wakeUp) refreshDimensions();
+    }
+
+    @Override
+    public boolean canDefendSelf() {
+        return isWakeUp();
     }
 
     @Override

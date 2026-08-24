@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ public class TravelingMerchantNPC extends BaseNPC {
     private boolean tradeStockInitialized;
     private final List<NPCTradeOffer> tradeStock = new ArrayList<>();
 
-    public TravelingMerchantNPC(EntityType<? extends BaseNPC> type, Level level) {
-        super(type, level);
+    public TravelingMerchantNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile combatProfile) {
+        super(type, level, combatProfile);
         if (!level.isClientSide) {
             this.spawnDayTime = level.getDayTime();
         }

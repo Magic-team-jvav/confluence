@@ -18,9 +18,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
@@ -33,9 +38,17 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.entity.CreatureDefinition;
+import org.confluence.mod.common.data.entity.CreatureDefinitionLoader;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
+import org.confluence.mod.common.entity.npc.ai.NPCCombatProgression;
+import org.confluence.mod.common.entity.npc.ai.NPCDefenseGoal;
+import org.confluence.mod.common.entity.npc.ai.NPCHurtRetreatGoal;
 import org.confluence.mod.common.entity.npc.chat.ChatLine;
 import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
@@ -45,8 +58,10 @@ import org.confluence.mod.common.entity.npc.mood.NPCMood;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -57,6 +72,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /// 城镇 NPC 的公共实体基础。
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
@@ -66,8 +82,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    protected static final ImmutableList<SensorType<? extends Sensor<? super BaseNPC>>> SENSOR_TYPES = ImmutableList.of(
-            SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY);
+    protected static final ImmutableList<SensorType<? extends Sensor<? super BaseNPC>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY);
 
     protected static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
             MemoryModuleType.HOME,
@@ -89,10 +104,19 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private final Map<ChatLine, Integer> chatCooldowns = new HashMap<>();
     private int chatForceCooldown = 50;
     private int chatDisplayTicks;
+    @Nullable
+    private Player tradingPlayer;
+    private final NPCCombatProfile combatProfile;
+    private int creatureDefinitionRevision = -1;
+    private double healthRegenerationProgress;
 
-    public BaseNPC(EntityType<? extends BaseNPC> type, Level level) {
+    public BaseNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile combatProfile) {
         super(type, level);
         this.mood = new NPCMood(type);
+        this.combatProfile = combatProfile;
+        applyProfileAttributes();
+        setHealth(getMaxHealth());
+        ensureFixedWeapon();
     }
 
     @Override
@@ -103,12 +127,12 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 50.0)
-                .add(Attributes.ARMOR, 5.0)
+                .add(Attributes.MAX_HEALTH, 250.0)
+                .add(Attributes.ARMOR, 15.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.3)
                 .add(Attributes.FOLLOW_RANGE, 24.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
-                .add(Attributes.ATTACK_DAMAGE, 4.0);
+                .add(Attributes.ATTACK_DAMAGE, 10.0);
     }
 
     // === Goals ===
@@ -116,8 +140,10 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 1.95));
-        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 0.5));
+        this.goalSelector.addGoal(1, new NPCTradeGoal(this));
+        this.goalSelector.addGoal(2, new NPCHurtRetreatGoal(this));
+        this.goalSelector.addGoal(4, new NPCDefenseGoal(this));
+        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
     }
@@ -151,7 +177,13 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         tickFindHouse(level);
         tickWalkToHome(level);
         tickMood();
+        tickHealthRegeneration();
         ChatManager.tickNPC(this);
+        if (tickCount % 20 == 0) {
+            if (creatureDefinitionRevision != CreatureDefinitionLoader.getRevision())
+                applyCreatureDefinition();
+            ensureFixedWeapon();
+        }
 
         // 由于NPCHouseBehaviors#walkToHouse疑似不能触发，于是在tick里判断
         // 过远时传送回自己的出生点
@@ -243,16 +275,14 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     /// 有 HOME 记忆时向家移动。
     protected void tickWalkToHome(ServerLevel level) {
-        if (!house.isValid()) return;
+        if (!house.isValid() || tradingPlayer != null) return;
         BlockPos homePos = house.center();
         double distSq = blockPosition().distSqr(homePos);
         if (distSq < 4) return;
-        if (level.isNight() && distSq > 400) {
-            teleportTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5);
-            return;
-        }
+        if (!LibDateUtils.isNight(level) && distSq <= 400) return;
+        if (getLastHurtByMob() != null && tickCount - getLastHurtByMobTimestamp() < 100) return;
         if (getTarget() == null && (tickCount % 20 == 0 || getNavigation().isDone())) {
-            getNavigation().moveTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, 0.8);
+            getNavigation().moveTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, 1.0);
         }
     }
 
@@ -300,6 +330,82 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         return target.canBeSeenAsEnemy();
     }
 
+    /// 在基础护甲和永久增益之外实时加入当前世界进度提供的 NPC 防御。
+    @Override
+    public int getArmorValue() {
+        int armor = super.getArmorValue() + NPCCombatProgression.defenseBonus();
+        if (hasEffect(ModEffects.DRYADS_BLESSING.get())) {
+            armor += LibUtils.switchByDifficulty(level(), blockPosition(), 2, 7, 12, 12);
+        }
+        return armor;
+    }
+
+    /// 子类可在睡眠、被束缚等状态下临时关闭自卫目标。
+    public boolean canDefendSelf() {
+        return true;
+    }
+
+    /// 返回注册项为该 NPC 固定的自卫方式和默认数值。
+    public NPCCombatProfile getCombatProfile() {
+        return combatProfile;
+    }
+
+    /// 按注册默认值或数据包覆盖累计自然恢复，支持低于每秒 1 点的精确速率。
+    private void tickHealthRegeneration() {
+        if (getHealth() >= getMaxHealth()) {
+            healthRegenerationProgress = 0;
+            return;
+        }
+        healthRegenerationProgress += combatProfile.healthRegeneration(this) / 20.0;
+        int amount = (int) healthRegenerationProgress;
+        if (amount <= 0) return;
+        setHealth(Math.min(getMaxHealth(), getHealth() + amount));
+        healthRegenerationProgress -= amount;
+    }
+
+    /// 返回当前数据包重载轮次中该实体类型的数值覆盖。
+    public CreatureDefinition creatureDefinition() {
+        return CreatureDefinitionLoader.get(getType());
+    }
+
+    /// 恢复注册项规定的固有武器，并处理困难模式武器切换。
+    private void ensureFixedWeapon() {
+        net.minecraft.world.item.Item weapon = combatProfile.weapon().apply(this);
+        if (getMainHandItem().is(weapon)) return;
+        setItemSlot(EquipmentSlot.MAINHAND, weapon == net.minecraft.world.item.Items.AIR ? ItemStack.EMPTY : new ItemStack(weapon));
+        setDropChance(EquipmentSlot.MAINHAND, 0);
+    }
+
+    /// 先恢复注册默认值再应用数据包覆盖，使删除覆盖文件也能回到默认状态。
+    private void applyCreatureDefinition() {
+        float oldHealth = getHealth();
+        float oldMaxHealth = getMaxHealth();
+        boolean wasFullHealth = Math.abs(oldHealth - oldMaxHealth) < 0.001F;
+        applyProfileAttributes();
+        CreatureDefinitionLoader.applyAttributes(this);
+        setHealth(wasFullHealth ? getMaxHealth() : Math.min(oldHealth, getMaxHealth()));
+        creatureDefinitionRevision = CreatureDefinitionLoader.getRevision();
+    }
+
+    /// 将注册 profile 中的全部实体属性默认值写入属性实例。
+    private void applyProfileAttributes() {
+        UUID obsoleteModifier = PortAttributeModifier.rl2uuid(Confluence.asResource("game_phase_modifier"));
+        removeAttributeModifier(Attributes.MAX_HEALTH, obsoleteModifier);
+        NPCCombatProfile.AttributesDefaults defaults = combatProfile.attributes();
+        getAttribute(Attributes.MAX_HEALTH).setBaseValue(defaults.maxHealth());
+        getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(defaults.attackDamage());
+        getAttribute(Attributes.ARMOR).setBaseValue(defaults.armor());
+        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(defaults.movementSpeed());
+        getAttribute(Attributes.FOLLOW_RANGE).setBaseValue(defaults.followRange());
+        getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(defaults.knockbackResistance());
+    }
+
+    /// 移除旧版 NPC 阶段属性修饰器；属性不存在时安全跳过。
+    private void removeAttributeModifier(Attribute attribute, UUID id) {
+        AttributeInstance instance = getAttribute(attribute);
+        if (instance != null) instance.removeModifier(id);
+    }
+
     // === 交互 ===
 
     public List<NPCTradeOffer> selectTradeOffers(List<NPCTradeOffer> offers) {
@@ -317,9 +423,18 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
             if (!shop.offers().isEmpty()) {
                 NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, shop.offers(), shop.revision()), getDisplayName()), buf -> buf.writeInt(getId()));
+                setTradingPlayer(serverPlayer);
             }
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
+    }
+
+    public @Nullable Player getTradingPlayer() {
+        return tradingPlayer;
+    }
+
+    public void setTradingPlayer(@Nullable Player tradingPlayer) {
+        this.tradingPlayer = tradingPlayer;
     }
 
     @Nullable
@@ -331,11 +446,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             swapEquipment(player, hand, armor.getEquipmentSlot());
             return InteractionResult.SUCCESS;
         }
-        if (player.isShiftKeyDown()) {
-            if (!held.isEmpty()) {
-                swapEquipment(player, hand, EquipmentSlot.MAINHAND);
-                return InteractionResult.SUCCESS;
-            }
+        if (player.isShiftKeyDown() && held.isEmpty()) {
             removeLookedAtEquipment(player, hand);
             return InteractionResult.PASS;
         }
@@ -376,7 +487,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             } else if (height > 0.7) {
                 double edgeX = Math.max(hit.x - getBoundingBox().minX, getBoundingBox().maxX - hit.x);
                 double edgeZ = Math.max(hit.z - getBoundingBox().minZ, getBoundingBox().maxZ - hit.z);
-                moveEquipmentToHand(player, hand, Math.min(edgeX, edgeZ) > 0.5 ? EquipmentSlot.MAINHAND : EquipmentSlot.CHEST);
+                if (Math.min(edgeX, edgeZ) <= 0.5)
+                    moveEquipmentToHand(player, hand, EquipmentSlot.CHEST);
             } else if (height > 0.3) {
                 moveEquipmentToHand(player, hand, EquipmentSlot.LEGS);
             } else {
@@ -471,6 +583,10 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
+        if (!level().isClientSide) {
+            applyCreatureDefinition();
+            ensureFixedWeapon();
+        }
         if (!spawnAtPosInitialized) {
             this.spawnAtPos = blockPosition();
             this.spawnAtPosInitialized = true;

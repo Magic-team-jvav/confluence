@@ -45,6 +45,7 @@ import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
+import org.confluence.mod.common.effect.beneficial.DryadsBlessingEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
@@ -229,6 +230,7 @@ public final class LivingEntityEvents {
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
         ModUtils.applyCursedSkullDebuff(attacker, victim);
         ThornsEffect.onMobHurt(victim, damageSource, amount);
+        DryadsBlessingEffect.reflectDamage(victim, damageSource, amount);
 
         if (attacker instanceof ServerPlayer player) {
             EnchantmentUtils.affect(player, victim, damageSource);

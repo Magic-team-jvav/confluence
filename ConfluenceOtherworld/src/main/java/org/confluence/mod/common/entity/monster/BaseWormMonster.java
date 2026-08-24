@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -38,7 +39,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == damageSources().inWall() || super.isInvulnerableTo(source);
+        return source.is(DamageTypes.IN_WALL) || super.isInvulnerableTo(source);
     }
 
     @Override

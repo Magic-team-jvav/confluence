@@ -1,12 +1,11 @@
 package org.confluence.mod.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexMultiConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -28,13 +27,11 @@ public class MutableRenderTypeItemExtension implements IClientItemExtensions {
             this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
                 @Override
                 public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-                    try {
-                        minecraft.getItemRenderer().renderModelLists(
-                                minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250913),
-                                stack, packedLight, packedOverlay, poseStack,
-                                VertexMultiConsumer.create(buffer.getBuffer(getter.apply(stack)), buffer.getBuffer(Sheets.translucentCullBlockSheet()))
-                        );
-                    } catch (Exception ignored) {}
+                    BakedModel model = minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250913);
+                    for (RenderType renderType : model.getRenderTypes(stack, false)) {
+                        minecraft.getItemRenderer().renderModelLists(model, stack, packedLight, packedOverlay, poseStack, buffer.getBuffer(renderType));
+                    }
+                    minecraft.getItemRenderer().renderModelLists(model, stack, packedLight, packedOverlay, poseStack, buffer.getBuffer(getter.apply(stack)));
                 }
             };
         }

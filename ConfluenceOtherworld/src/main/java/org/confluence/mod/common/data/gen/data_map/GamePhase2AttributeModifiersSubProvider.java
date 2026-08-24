@@ -15,7 +15,6 @@ import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -31,10 +30,6 @@ public final class GamePhase2AttributeModifiersSubProvider {
             .add(LibAttributes.getAttackDamage().value(), id, 2.8, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .add(Attributes.MAX_HEALTH, id, 2.8, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .add(Attributes.ARMOR, id, 2.8, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .build();
-
-    private static final AttributeModifiersValue INCREASE_FRIENDLY_CREATURE_HEALTH = AttributeModifiersValue.builder()
-            .add(Attributes.MAX_HEALTH, id, 5, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .build();
 
     private static final AttributeModifiersValue NORMAL_CHANGE_1 = AttributeModifiersValue.builder()
@@ -510,65 +505,6 @@ public final class GamePhase2AttributeModifiersSubProvider {
                                 .add(Attributes.MAX_HEALTH, id, 3.2, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ARMOR, id, 2, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
-                ))
-                // NPC
-                .add(NpcEntities.GUIDE, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.DEMOLITIONIST, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.GOBLIN_TINKERER, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.ARMS_DEALER, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.NURSE, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.MERCHANT, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.PAINTER, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.ANGLER, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.FEMALE_ANGLER, Map.of(GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH))
-                .add(NpcEntities.DRYAD, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.DYE_TRADER, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.OLD_MAN, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.MECHANIC, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.TRAVELING_MERCHANT, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.WITCH_DOCTOR, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.PARTY_GIRL, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.CLOTHIER, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.ZOOLOGIST, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.TRUFFLE, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
-                ))
-                .add(NpcEntities.WIZARD, Map.of(
-                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
                 ))
         // MC原版友好生物
 //                .add(EntityType.ALLAY.builtInRegistryHolder(), Map.of(

@@ -80,11 +80,11 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         }
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                addSlot(new Slot(inventory, col + row * 9 + 9, 8 + col * 18, 86 + row * 18));
+                addSlot(new Slot(inventory, col + row * 9 + 9, 8 + col * 18, 103 + row * 18));
             }
         }
         for (int col = 0; col < 9; col++) {
-            addSlot(new Slot(inventory, col, 8 + col * 18, 144));
+            addSlot(new Slot(inventory, col, 8 + col * 18, 161));
         }
 
         addDataSlots(pageData);
@@ -169,6 +169,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
+        if (npc.getTradingPlayer() == player) npc.setTradingPlayer(null);
         soldItems.clear();
         tradeContainer.clearContent();
     }

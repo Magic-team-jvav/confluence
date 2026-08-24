@@ -632,15 +632,26 @@ public enum NPCSpawner implements IGlobalData {
 
     /// 调用前需检查是否已使用过先进战斗技术
     public static void applyAdvancedCombatTechniques(BaseNPC living, ResourceLocation id) {
-        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
+        float oldHealth = living.getHealth();
+        float oldMaxHealth = living.getMaxHealth();
+        boolean wasFullHealth = Math.abs(oldHealth - oldMaxHealth) < 0.001F;
         UUID uuid = PortAttributeModifier.rl2uuid(id);
+        AttributeInstance maxHealth = living.getAttribute(Attributes.MAX_HEALTH);
+        if (maxHealth != null) {
+            maxHealth.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 250,
+                    AttributeModifier.Operation.ADDITION));
+        }
+        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         if (armor != null) {
-            armor.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 3, AttributeModifier.Operation.ADDITION));
+            armor.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 8,
+                    AttributeModifier.Operation.ADDITION));
         }
         AttributeInstance attackDamage = living.getAttribute(LibAttributes.getAttackDamage());
         if (attackDamage != null) {
-            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 0.2, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 0.25,
+                    AttributeModifier.Operation.MULTIPLY_TOTAL));
         }
+        living.setHealth(wasFullHealth ? living.getMaxHealth() : Math.min(oldHealth, living.getMaxHealth()));
     }
 
     public static void respawnNPC(ServerLevel level, int dayTime) {

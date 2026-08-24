@@ -10,8 +10,8 @@ import net.minecraft.world.inventory.MenuConstructor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.npc.GoblinTinkererNPC;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.menu.DyeMixMenu;
 import org.confluence.mod.common.menu.DyeVatMenu;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
@@ -54,7 +54,9 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
             return new MenuRequest((containerId, inventory, owner) -> new ExtraInventoryMenu(containerId, inventory), Component.empty());
         }
         if (menuId == NPC_REFORGE_MENU) {
-            if (!(player.containerMenu instanceof NPCTradeMenu tradeMenu) || !(tradeMenu.getNPC() instanceof GoblinTinkererNPC) || !tradeMenu.stillValid(player)) {
+            if (!(player.containerMenu instanceof NPCTradeMenu tradeMenu)
+                    || tradeMenu.getNPC().getType() != NpcEntities.GOBLIN_TINKERER.get()
+                    || !tradeMenu.stillValid(player)) {
                 return null;
             }
             return new MenuRequest((containerId, inventory, owner) -> new NPCReforgeMenu(containerId, inventory, tradeMenu.getNPC()), Component.translatable("container.confluence.reforge"));

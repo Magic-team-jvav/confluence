@@ -24,6 +24,7 @@ import net.minecraft.world.phys.*;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.api.event.BulletEvent;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.BaseBullet;
@@ -362,6 +363,8 @@ public class BaseBulletEntity extends Projectile {
     protected boolean canHitEntity(Entity target) {
         if (!target.canBeHitByProjectile()) return false;
         Entity owner = getOwner();
+        if (owner instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
+            return false;
         return target != owner && !hitEntityIds.contains(target.getUUID())
                 && (owner == null || !owner.isPassengerOfSameVehicle(target));
     }

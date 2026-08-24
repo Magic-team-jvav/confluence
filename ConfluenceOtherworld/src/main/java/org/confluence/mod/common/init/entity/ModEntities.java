@@ -104,6 +104,8 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<SkyFractureProjectile>> SKY_FRACTURE = register("sky_fracture", id -> EntityType.Builder.<SkyFractureProjectile>of(SkyFractureProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<CrystalChargeProjectile>> CRYSTAL_CHARGE_1 = register("crystal_charge_1", id -> EntityType.Builder.<CrystalChargeProjectile>of(CrystalChargeProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<CrystalChargeProjectile>> CRYSTAL_CHARGE_2 = register("crystal_charge_2", id -> EntityType.Builder.<CrystalChargeProjectile>of(CrystalChargeProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build(id.toString()));
+    public static final RegistryObject<EntityType<NPCShadowflameSkullProjectile>> NPC_SHADOWFLAME_SKULL = register("npc_shadowflame_skull",
+            id -> EntityType.Builder.of(NPCShadowflameSkullProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
 
     // 剑气
     public static final RegistryObject<EntityType<GeoSwordProjectile>> GEO_SWORD_PROJECTILE = register("geo_sword_projectile", id -> EntityType.Builder.of(GeoSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).updateInterval(1).build(id.toString()));
@@ -147,6 +149,7 @@ public final class ModEntities {
     public static final RegistryObject<EntityType<LifecrystalBoulderEntity>> LIFECRYSTAL_BOULDER = register("lifecrystal_boulder", id -> EntityType.Builder.<LifecrystalBoulderEntity>of(LifecrystalBoulderEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build(id.toString()));
     public static final RegistryObject<EntityType<Boulder3x3Entity>> BOULDER_3X = register("boulder_3x", id -> EntityType.Builder.<Boulder3x3Entity>of(Boulder3x3Entity::new, MobCategory.MISC).sized(3, 3).clientTrackingRange(6).build(id.toString()));
     public static final RegistryObject<EntityType<ThrowableDropSelfProjectile>> THROWN_KNIVE = register("thrown_knive", id -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
+    public static final RegistryObject<EntityType<NPCWeaponProjectile>> NPC_WEAPON_PROJECTILE = register("npc_weapon_projectile", id -> EntityType.Builder.<NPCWeaponProjectile>of(NPCWeaponProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<ThrowableDropSelfProjectile>> BONE_THROWN_KNIVE = register("bone_thrown_knive", id -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<ThrowableDropSelfProjectile>> FROST_DAGGERFISH = register("frost_daggerfish", id -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));
     public static final RegistryObject<EntityType<ThrowableDropSelfProjectile>> DUNGEON_DEMON_BONE = register("dungeon_demon_bone", id -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build(id.toString()));

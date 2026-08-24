@@ -8,8 +8,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.common.entity.npc.GoblinTinkererNPC;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 
 /// 使用原版箱子纹理显示 NPC 商店。
@@ -40,7 +40,7 @@ public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> 
                         button -> requestPage(menu.getCurrentPage() + 1))
                 .bounds(leftPos + imageWidth - 28, topPos + 4, 20, 14)
                 .build());
-        if (menu.getNPC() instanceof GoblinTinkererNPC) {
+        if (menu.getNPC().getType() == NpcEntities.GOBLIN_TINKERER.get()) {
             // 重铸属于商店的附加入口，放在容器上方，避免覆盖 NPC 名称和页码。
             addRenderableWidget(Button.builder(
                             Component.translatable("button.confluence.reforge"),

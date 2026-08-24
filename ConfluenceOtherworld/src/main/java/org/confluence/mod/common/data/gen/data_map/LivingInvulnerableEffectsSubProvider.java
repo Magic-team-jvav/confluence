@@ -133,13 +133,15 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(BossEntities.THE_TWINS, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.RETINAZER, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.SPAZMATISM, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
-                .add(BossEntities.THE_DESTROYER, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
-                // 探针
+                .add(BossEntities.THE_DESTROYER, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES, ModEffects.DRYADS_BANE)
+                .add(BossEntities.THE_DESTROYER_PROBE, ModEffects.DRYADS_BANE)
                 .add(BossEntities.SKELETRON_PRIME, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.SKELETRON_PRIME_ARM, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.PLANTERA, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
 //                .add(BossEntities.PLANTERA_HOOK, LibEffects.CONFUSED, MobEffects.POISON, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
                 .add(BossEntities.PLANTERA_TENTACLE, LibEffects.CONFUSED, poison, ModEffects.BLEEDING, ModEffects.BLOOD_BUTCHERED, ModEffects.TENTACLE_SPIKES)
+                .add(BossEntities.LUNATIC_CULTIST, ModEffects.DRYADS_BANE)
+                .add(BossEntities.LUNATIC_CULTIST_CLONE, ModEffects.DRYADS_BANE)
                 //boss servant
                 .add(MonsterEntities.LEECH, LibEffects.CONFUSED)
                 .add(BossEntities.SERVANT_OF_CTHULHU, ModEffects.SHIMMER, LibEffects.CONFUSED)

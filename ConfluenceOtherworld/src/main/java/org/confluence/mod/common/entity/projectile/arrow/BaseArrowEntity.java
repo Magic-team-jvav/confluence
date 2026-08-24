@@ -27,6 +27,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.monster.BaseMimic;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.mixed.IAbstractArrow;
@@ -280,6 +281,8 @@ public class BaseArrowEntity extends PortAbstractArrow {
 
     @Override
     protected boolean canHitEntity(Entity target) {
+        if (getOwner() instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
+            return false;
         return super.canHitEntity(target) && !havenBeen.contains(target.getUUID());
     }
 

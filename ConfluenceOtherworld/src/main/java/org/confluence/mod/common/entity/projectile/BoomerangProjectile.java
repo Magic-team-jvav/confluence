@@ -19,6 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.item.boomerang.BoomerangItem;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 
@@ -52,18 +53,22 @@ public class BoomerangProjectile extends Projectile {
     }
 
     public void configure(LivingEntity owner, ItemStack weapon, BoomerangItem.Settings settings) {
+        configure(owner, weapon, settings.damage(), settings.flySpeed(), settings.backSpeed(), settings.forwardTicks(), settings.penetration());
+        this.fire = settings.fire();
+        if (fire) setSecondsOnFire(4);
+    }
+
+    public void configure(LivingEntity owner, ItemStack weapon, float damage, float flySpeed, float backSpeed,
+                          int forwardTicks, int penetration) {
         setOwner(owner);
         setPos(owner.getX(), owner.getEyeY() - 0.15, owner.getZ());
         entityData.set(DATA_WEAPON, weapon.copyWithCount(1));
-        entityData.set(DATA_DAMAGE, settings.damage());
-        this.backSpeed = settings.backSpeed();
-        this.forwardTicks = settings.forwardTicks();
-        this.penetration = settings.penetration();
-        this.fire = settings.fire();
+        entityData.set(DATA_DAMAGE, Math.max(0, damage));
+        this.backSpeed = Math.max(0.01F, backSpeed);
+        this.forwardTicks = Math.max(1, forwardTicks);
+        this.penetration = Math.max(1, penetration);
+        this.fire = false;
         setNoGravity(true);
-        if (fire) {
-            setSecondsOnFire(4);
-        }
     }
 
     public ItemStack getWeapon() {
@@ -78,6 +83,8 @@ public class BoomerangProjectile extends Projectile {
     @Override
     protected boolean canHitEntity(Entity target) {
         Entity owner = getOwner();
+        if (owner instanceof BaseNPC npc && target instanceof LivingEntity living && !npc.canAttack(living))
+            return false;
         return target != owner
                 && target.isAlive()
                 && !hitEntities.contains(target.getUUID())

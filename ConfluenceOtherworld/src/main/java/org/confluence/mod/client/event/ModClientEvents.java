@@ -36,6 +36,8 @@ import org.confluence.lib.LibStartupConfig;
 import org.confluence.lib.client.render.item.SimpleClientItemExtensions;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.lib.common.item.GroupItem;
+import org.confluence.lib.integration.animation.AddPlayerGeoModelEvent;
+import org.confluence.lib.integration.animation.PlayerGeoAnimatable;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
@@ -83,7 +85,6 @@ import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
-import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
 import org.confluence.mod.client.renderer.item.EnemyBannerItemRenderer;
@@ -119,6 +120,10 @@ import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.confluence.terra_guns.util.TGUtil;
 import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -202,8 +207,6 @@ public final class ModClientEvents {
         event.registerAbove(healthHud, armorHud, new TerraStyleArmorHud());
         ResourceLocation manaHud = Confluence.asResource("mana_hud");
         event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, manaHud, new TerraStyleManaHud());
-//        ResourceLocation soulHud = Confluence.asResource("soul_hud");
-//        event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, soulHud, new TerraStyleSoulHud());
         ResourceLocation foodHud = Confluence.asResource("food_hud");
         event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
 
@@ -344,7 +347,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
         event.registerEntityRenderer(GRASS_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, null, null));
         event.registerEntityRenderer(BEE_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
-        event.registerEntityRenderer(NIGHTS_EDGE_PROJECTILE.get(), NightEdgeProjectileRenderer::new);
+        event.registerEntityRenderer(NIGHTS_EDGE_PROJECTILE.get(), NoopRenderer::new);
 
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
@@ -699,5 +702,38 @@ public final class ModClientEvents {
                 return false;
             });
         }
+    }
+
+    @SubscribeEvent
+    public static void addPlayerGeoModel(AddPlayerGeoModelEvent event) {
+        RawAnimation idle = RawAnimation.begin().thenLoop("greatsword-idle");
+        RawAnimation attack = RawAnimation.begin().then("greatsword-attack-1", Animation.LoopType.PLAY_ONCE);
+        RawAnimation attackEnd = RawAnimation.begin().then("greatsword-attack-end", Animation.LoopType.PLAY_ONCE);
+        AddPlayerGeoModelEvent.Group group = new AddPlayerGeoModelEvent.Group(
+                Confluence.asResource("geo/item/nights_edge.geo.json"),
+                Confluence.asResource("animations/item/nights_edge.animation.json"),
+                state -> {
+                    AnimationController<PlayerGeoAnimatable> controller = state.getController();
+                    RawAnimation currentRawAnimation = controller.getCurrentRawAnimation();
+                    if (state.isAttacking) {
+                        if (!attack.equals(currentRawAnimation)) {
+                            state.setAnimation(attack);
+                        }
+                        if (controller.hasAnimationFinished()) {
+                            state.setAnimation(attackEnd);
+                            state.isAttacking = false;
+                        }
+                    } else if (attackEnd.equals(currentRawAnimation)) {
+                        if (controller.hasAnimationFinished()) {
+                            state.setAnimation(idle);
+                        }
+                    }
+                    if (currentRawAnimation == null) {
+                        controller.setAnimation(idle);
+                    }
+                    return PlayState.CONTINUE;
+                }
+        );
+        event.add(SwordItems.NIGHTS_EDGE.getId(), player -> player.getMainHandItem().is(SwordItems.NIGHTS_EDGE) ? group : null);
     }
 }

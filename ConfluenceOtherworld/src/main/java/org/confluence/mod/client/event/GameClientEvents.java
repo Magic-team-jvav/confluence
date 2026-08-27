@@ -48,6 +48,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.integration.animation.PlayerAttackingStatePacket;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -544,8 +545,8 @@ public final class GameClientEvents {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.is(SwordItems.NIGHTS_EDGE)) {
             if (!player.getCooldowns().isOnCooldown(itemStack.getItem())) {
-                player.swing(InteractionHand.MAIN_HAND);
                 player.resetAttackStrengthTicker();
+                PlayerAttackingStatePacket.sendToServer(); // todo 修复
             }
             event.setCanceled(true);
         } else if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {

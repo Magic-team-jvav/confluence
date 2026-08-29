@@ -216,6 +216,7 @@ public class HouseSelectHud implements LayeredDraw.Layer {
         if (cullEnabled) {
             RenderSystem.disableCull();
         }
+        // TODO 极低视距下区域墙会被远裁剪成随视角变化的三角形或四边形，不要误认为是虚空海渲染。
         BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
         float x = (float) camera.getPosition().x;
         float z = (float) camera.getPosition().z;

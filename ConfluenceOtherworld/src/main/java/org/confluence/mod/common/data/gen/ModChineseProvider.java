@@ -6,7 +6,10 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.gen.language.*;
+import org.confluence.mod.common.data.gen.language.AchievementsLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.BestiaryLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.ConfigurationLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.DialogsLanguageSubProvider;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -1156,8 +1159,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.undead_miner", "不死矿工");
 
         new DialogsLanguageSubProvider(this::add, false);
-
-        new PatchouliLanguageSubProvider(this::add, false);
 
         //音效
         add("confluence.subtitle.transmission", "传送魔法：开启");

@@ -23,7 +23,6 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.entity.monster.humanoid.BaseHumanoidMonster;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -38,12 +37,25 @@ import software.bernie.geckolib.core.animation.AnimationController;
 /// 受伤时使用骷髅声音，死亡时使用泰拉亡灵死亡声，与原版骷髅声音语义区分。
 /// 模型动画由客户端骷髅动画族统一驱动，实体类仅保留游戏行为。
 public class MeleeSkeleton extends BaseHumanoidMonster {
+    private final boolean ignoresLightPathCost;
+
     public MeleeSkeleton(EntityType<? extends MeleeSkeleton> type, Level level) {
+        this(type, level, false);
+    }
+
+    public MeleeSkeleton(EntityType<? extends MeleeSkeleton> type, Level level, boolean ignoresLightPathCost) {
         super(type, level);
+        this.ignoresLightPathCost = ignoresLightPathCost;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return BaseHumanoidMonster.createHumanoidAttributes();
+    }
+
+    /// 1.21 的近战骷髅仍位于原版骷髅武器 Goal 链，不使用普通泰拉敌怪的附着碰撞扫描。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
     }
 
     @Override
@@ -91,7 +103,7 @@ public class MeleeSkeleton extends BaseHumanoidMonster {
 
     @Override
     public float getWalkTargetValue(BlockPos pos) {
-        return getType() == MonsterEntities.SPORE_SKELETON.get() ? 0.0F : super.getWalkTargetValue(pos);
+        return ignoresLightPathCost ? 0.0F : super.getWalkTargetValue(pos);
     }
 
     @Override

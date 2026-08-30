@@ -40,6 +40,7 @@ public final class SpawnProjectileAction extends BTNode {
         }
         Projectile projectile = projectileFactory.apply(target);
         if (projectile == null || !shooter.level().addFreshEntity(projectile)) {
+            if (projectile != null) projectile.discard();
             return BTStatus.FAILURE;
         }
         done = true;

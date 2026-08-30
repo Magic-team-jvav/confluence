@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
@@ -47,18 +48,30 @@ public final class JumpingMonsterCycleAction extends BTNode {
 
     @Override
     public BTStatus execute() {
+        LivingEntity currentTarget = mob.getTarget();
+        boolean hasLiveTarget = currentTarget != null && currentTarget.isAlive();
+        /// 周期开始时的目标状态只决定本轮动作类型，不能阻止更高优先级的战斗状态接管。
+        /// 无目标巡游途中发现玩家，或战斗途中目标失效时，立即结束旧周期并在下一刻重建。
+        if (hasLiveTarget != combatCycle) {
+            return BTStatus.SUCCESS;
+        }
+
         elapsedTicks++;
         int lookTicks = combatCycle ? COMBAT_LOOK_TICKS : IDLE_LOOK_TICKS;
 
-        if (elapsedTicks <= lookTicks) {
+        if (elapsedTicks < lookTicks) {
             updateLookDirection();
             return BTStatus.RUNNING;
+        }
+        if (elapsedTicks == lookTicks) {
+            updateLookDirection();
         }
         if (!animationTriggered) {
             animationTrigger.run();
             animationTriggered = true;
         }
-        if (elapsedTicks <= lookTicks + WINDUP_TICKS) {
+        int jumpTick = lookTicks + WINDUP_TICKS - 1;
+        if (elapsedTicks < jumpTick) {
             return BTStatus.RUNNING;
         }
         if (!jumped) {
@@ -69,8 +82,7 @@ public final class JumpingMonsterCycleAction extends BTNode {
             jumped = true;
             return combatCycle ? BTStatus.SUCCESS : BTStatus.RUNNING;
         }
-        return elapsedTicks >= lookTicks + WINDUP_TICKS
-                + IDLE_RECOVERY_TICKS
+        return elapsedTicks >= jumpTick + IDLE_RECOVERY_TICKS - 1
                 ? BTStatus.SUCCESS : BTStatus.RUNNING;
     }
 
@@ -81,6 +93,7 @@ public final class JumpingMonsterCycleAction extends BTNode {
             mob.getLookControl().setLookAt(target);
             return;
         }
+        mob.lookAt(EntityAnchorArgument.Anchor.EYES, randomLookPosition);
         mob.getLookControl().setLookAt(randomLookPosition);
     }
 

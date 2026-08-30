@@ -71,7 +71,9 @@ final class SnatcherMovementAction extends BTNode {
         Vec3 fromHeadToAnchor = snatcher.getAnchor().subtract(snatcher.position());
         Vec3 fromHeadToTarget = targetPosition.subtract(snatcher.position());
         Vec3 fromAnchorToTarget = targetPosition.subtract(snatcher.getAnchor());
-        double divisor = direction.subtract(targetPosition).length();
+        /// 分母必须是“根部到目标”的局部距离。把单位方向与世界坐标相减会让
+        /// 运动强度随世界原点距离变化，同一只抓人草换个坐标就会得到不同追踪表现。
+        double divisor = fromAnchorToTarget.length();
         Vec3 perpendicular = fromHeadToAnchor.cross(fromHeadToTarget).cross(fromAnchorToTarget);
         Vec3 velocity = Vec3.ZERO;
         if (divisor > 1.0E-6 && perpendicular.lengthSqr() > 1.0E-8) {

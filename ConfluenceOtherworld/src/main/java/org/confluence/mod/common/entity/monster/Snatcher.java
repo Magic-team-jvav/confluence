@@ -38,6 +38,8 @@ public class Snatcher extends BaseMonster {
     private static final String REST_X_TAG = "RestX";
     private static final String REST_Y_TAG = "RestY";
     private static final String REST_Z_TAG = "RestZ";
+    private static final String DIRECTION_VERSION_TAG = "AnchorDirectionVersion";
+    private static final int CURRENT_DIRECTION_VERSION = 1;
     private static final double SEARCH_DISTANCE = 50.0;
     private static final EntityDataAccessor<Boolean> ANCHORED = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Vector3f> ANCHOR = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.VECTOR3);
@@ -109,7 +111,9 @@ public class Snatcher extends BaseMonster {
             }
             Vec3 normal = Vec3.atLowerCornerOf(hit.getDirection().getNormal());
             Vec3 anchor = hit.getBlockPos().getCenter().add(normal.scale(0.5)).add(0.0, 0.5, 0.0);
-            initializeAnchor(anchor, direction.normalize());
+            /// 射线方向指向被命中的方块；继续沿该方向伸展会让头部钻入墙体。
+            /// 静止方向必须使用命中面的外法线，才能从根部朝开放空间摆动。
+            initializeAnchor(anchor, normal);
             return true;
         }
         return false;
@@ -193,6 +197,7 @@ public class Snatcher extends BaseMonster {
             tag.putDouble(REST_X_TAG, rest.x);
             tag.putDouble(REST_Y_TAG, rest.y);
             tag.putDouble(REST_Z_TAG, rest.z);
+            tag.putInt(DIRECTION_VERSION_TAG, CURRENT_DIRECTION_VERSION);
         }
     }
 
@@ -200,7 +205,11 @@ public class Snatcher extends BaseMonster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.getBoolean(ANCHORED_TAG)) {
-            initializeAnchor(new Vec3(tag.getDouble(ANCHOR_X_TAG), tag.getDouble(ANCHOR_Y_TAG), tag.getDouble(ANCHOR_Z_TAG)), new Vec3(tag.getDouble(REST_X_TAG), tag.getDouble(REST_Y_TAG), tag.getDouble(REST_Z_TAG)));
+            Vec3 restDirection = new Vec3(tag.getDouble(REST_X_TAG), tag.getDouble(REST_Y_TAG), tag.getDouble(REST_Z_TAG));
+            if (tag.getInt(DIRECTION_VERSION_TAG) < CURRENT_DIRECTION_VERSION) {
+                restDirection = restDirection.scale(-1.0);
+            }
+            initializeAnchor(new Vec3(tag.getDouble(ANCHOR_X_TAG), tag.getDouble(ANCHOR_Y_TAG), tag.getDouble(ANCHOR_Z_TAG)), restDirection);
         }
     }
 

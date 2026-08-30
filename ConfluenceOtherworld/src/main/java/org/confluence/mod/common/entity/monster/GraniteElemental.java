@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,8 +21,8 @@ import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyingPursuitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -35,6 +36,8 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /// 防御阶段会暂时恢复重力、停止横向移动并吸收普通伤害。花岗岩元素具有正常碰撞，不能像幽灵类生物一样
 /// 穿墙，否则防御坠落会直接穿过地面。
 public class GraniteElemental extends BaseFlyingMonster {
+    private static final String DEFENSE_PHASE_TAG = "DefensePhase";
+    private static final String DEFENSE_TICKS_TAG = "DefenseTicks";
     private static final EntityDataAccessor<Byte> DATA_DEFENSE_PHASE = SynchedEntityData.defineId(GraniteElemental.class, EntityDataSerializers.BYTE);
 
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
@@ -49,6 +52,7 @@ public class GraniteElemental extends BaseFlyingMonster {
 
     public GraniteElemental(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
+        setDiscardFriction(true);
         this.moveControl = new FlyingMoveControl(this, 180, true);
     }
 
@@ -67,7 +71,11 @@ public class GraniteElemental extends BaseFlyingMonster {
                 return BTStatus.RUNNING;
             }
         };
-        BTNode active = SelectorNode.of(SequenceNode.of(new HasTargetCondition(GraniteElemental.this), new FlyingPursuitAction(GraniteElemental.this, 0.04, 0.4)), new FlyWanderAction(GraniteElemental.this, 0.2, 12));
+        BTNode active = SelectorNode.of(
+                SequenceNode.of(
+                        new HasTargetCondition(GraniteElemental.this),
+                        new FlyingPursuitAction(GraniteElemental.this, 1.0)),
+                new LookForwardWanderFlyAction(GraniteElemental.this, 0.18, 0.0F));
         BTNode root = new ConditionalSwitchNode(GraniteElemental.this::isInDefenseSequence, defense, active);
 
         return new BTRoot() {
@@ -133,14 +141,28 @@ public class GraniteElemental extends BaseFlyingMonster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!level().isClientSide && getDefensePhase() == DefensePhase.DEFENDING) {
-            return !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY);
+        if (!level().isClientSide && getDefensePhase() == DefensePhase.DEFENDING && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return true;
         }
 
         if (!level().isClientSide && getDefensePhase() == DefensePhase.ACTIVE && LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextFloat() < 0.2F) {
             beginDefenseSequence();
         }
         return super.hurt(source, amount);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putByte(DEFENSE_PHASE_TAG, (byte) getDefensePhase().ordinal());
+        tag.putInt(DEFENSE_TICKS_TAG, defenseTicks);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        DefensePhase phase = DefensePhase.byId(tag.getByte(DEFENSE_PHASE_TAG));
+        setDefensePhase(phase, Math.max(0, tag.getInt(DEFENSE_TICKS_TAG)));
     }
 
     @Override

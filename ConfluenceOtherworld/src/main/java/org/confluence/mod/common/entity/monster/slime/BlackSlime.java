@@ -94,7 +94,7 @@ public class BlackSlime extends BaseSlime {
         }
     }
 
-    /// 母体只在死亡实体真正移除时分裂，数量和位置沿用原版史莱姆。
+    /// 母体只在死亡实体真正移除时分裂，数量、位置和子代尺寸沿用原版史莱姆。
     @Override
     public void remove(RemovalReason reason) {
         if (!level().isClientSide && !isRemoved() && isDeadOrDying() && isMotherSlime()) {
@@ -102,17 +102,17 @@ public class BlackSlime extends BaseSlime {
             float horizontalOffset = getBbWidth() / 4.0F;
             float verticalOffset = getBbHeight() / 8.0F;
             for (int i = 0; i < babies; i++) {
-                BlackSlime baby = (BlackSlime) getType().create(level());
-                if (baby == null) continue;
-                if (isPersistenceRequired()) baby.setPersistenceRequired();
-                if (hasCustomName()) baby.setCustomName(getCustomName());
-                baby.setNoAi(isNoAi());
-                baby.setInvulnerable(isInvulnerable());
-                baby.setSlimeSize(2);
+                BlackSlime child = (BlackSlime) getType().create(level());
+                if (child == null) continue;
+                if (isPersistenceRequired()) child.setPersistenceRequired();
+                if (hasCustomName()) child.setCustomName(getCustomName());
+                child.setNoAi(isNoAi());
+                child.setInvulnerable(isInvulnerable());
+                child.setSlimeSize(2);
                 float xOffset = (i % 2 - 0.5F) * horizontalOffset;
                 float zOffset = (i / 2 - 0.5F) * horizontalOffset;
-                baby.moveTo(getX() + xOffset, getY() + verticalOffset, getZ() + zOffset, random.nextFloat() * 360.0F, 0.0F);
-                level().addFreshEntity(baby);
+                child.moveTo(getX() + xOffset, getY() + verticalOffset, getZ() + zOffset, random.nextFloat() * 360.0F, 0.0F);
+                if (!level().addFreshEntity(child)) child.discard();
             }
         }
         super.remove(reason);

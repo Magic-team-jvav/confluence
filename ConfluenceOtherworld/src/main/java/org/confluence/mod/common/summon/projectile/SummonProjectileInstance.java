@@ -107,10 +107,10 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
     }
 
     private boolean canHit(Entity candidate) {
-        Entity impacted = ProjectileHitRules.impactedEntity(candidate);
-        return impacted instanceof LivingEntity target
-                && canHitTarget(target)
-                && SummonTargetCache.isValidTarget(owner, target, Double.MAX_VALUE, true)
+        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(candidate);
+        return logicalTarget != null
+                && canHitTarget(logicalTarget)
+                && SummonTargetCache.isValidTarget(owner, logicalTarget, Double.MAX_VALUE, true)
                 && ProjectileHitRules.canHit(owner, candidate);
     }
 
@@ -125,15 +125,20 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
 
     private void hit(Entity rawTarget) {
         Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
-        if (!(impacted instanceof LivingEntity target)) {
+        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
+        if (logicalTarget == null) {
             removed = true;
             return;
         }
         float damage = baseDamage * (float) owner.getAttributeValue(LibAttributes.getSummonDamage());
-        damage = WhipTagTracker.modifyDamage(owner, this, target, damage);
+        damage = WhipTagTracker.modifyDamage(owner, this, logicalTarget, damage);
         DamageSource damageSource = LibDamageTypes.of(owner.level(), LibDamageTypes.SUMMONER, owner);
-        onImpact(target);
-        if (Immunity.hurt(this, target, damageSource, damage)) applyKnockback(target);
+        onImpact(logicalTarget);
+        if (impacted instanceof LivingEntity target) {
+            if (Immunity.hurt(this, target, damageSource, damage)) applyKnockback(target);
+        } else {
+            impacted.hurt(damageSource, damage);
+        }
         removed = true;
     }
 

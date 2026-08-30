@@ -1,8 +1,8 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
@@ -51,12 +51,13 @@ public final class DemonEyeSurroundAction extends BTNode {
     @Override
     public BTStatus execute() {
         LivingEntity target = mob.getTarget();
-        if (target == null || !target.isAlive() || !mob.level().isNight() || targetPos == null || ticksLeft <= 0 || mob.position().distanceToSqr(targetPos) <= 0.09 || target.position().distanceToSqr(targetPos) >= 100.0) {
-            return BTStatus.SUCCESS;
-        }
-
         Vec3 position = mob.position();
-        if (Math.abs(position.x - targetPos.x) <= 0.1 || Math.abs(position.y - targetPos.y) <= 0.1 || Math.abs(position.z - targetPos.z) <= 0.1) {
+        if (target == null || !target.isAlive() || !mob.level().isNight() || targetPos == null || ticksLeft <= 0
+                || Math.abs(position.x - targetPos.x) <= 0.1
+                || Math.abs(position.y - targetPos.y) <= 0.1
+                || Math.abs(position.z - targetPos.z) <= 0.1
+                || position.distanceToSqr(targetPos) <= 0.09
+                || target.position().distanceToSqr(targetPos) >= 100.0) {
             return BTStatus.SUCCESS;
         }
 
@@ -67,10 +68,14 @@ public final class DemonEyeSurroundAction extends BTNode {
             mob.setDeltaMovement(nextMovement);
             mob.hasImpulse = true;
         }
+        mob.getLookControl().setLookAt(targetPos.x, targetPos.y, targetPos.z, 30.0F, 85.0F);
+        mob.lookAt(EntityAnchorArgument.Anchor.EYES, targetPos);
 
-        List<Player> players = mob.level().getEntities(EntityType.PLAYER, mob.getBoundingBox().expandTowards(nextMovement).inflate(0.15), player -> !player.isSpectator());
-        for (Player player : players) {
-            mob.doHurtTarget(player);
+        List<Player> targets = mob.level().getEntitiesOfClass(Player.class,
+                mob.getBoundingBox().expandTowards(nextMovement).inflate(0.15),
+                player -> !player.isSpectator() && mob.canAttack(player));
+        for (Player targetEntity : targets) {
+            mob.doHurtTarget(targetEntity);
         }
 
         ticksLeft--;

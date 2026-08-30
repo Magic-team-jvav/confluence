@@ -194,6 +194,8 @@ public enum NPCSpawner implements IGlobalData {
                 message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             } else if (living instanceof TravelingMerchantNPC) {
                 message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName()).withColor(GlobalColors.NPC_ARRIVED.get());
+            } else if (!living.hasCustomName()) {
+                message = Component.translatable("event.confluence.npc.slain.unnamed", living.getType().getDescription()).withColor(GlobalColors.NPC_SLAIN.get());
             } else {
                 message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             }

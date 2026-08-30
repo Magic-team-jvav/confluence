@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
@@ -16,24 +15,22 @@ public final class WanderDashCycleAction extends BTNode {
     private final PathfinderMob mob;
     private final int wanderTicks;
     private final int dashTicks;
-    private final double wanderSpeed;
-    private final int wanderRange;
     private final double dashSpeed;
+    private final LookForwardWanderFlyAction wanderAction;
     private int phaseTicks;
     private boolean dashing;
-    private Vec3 wanderTarget = Vec3.ZERO;
     private Vec3 dashDirection = Vec3.ZERO;
+    private Vec3 dashTarget = Vec3.ZERO;
 
-    public WanderDashCycleAction(PathfinderMob mob, int wanderTicks, int dashTicks, double wanderSpeed, int wanderRange, double dashSpeed) {
-        if (wanderTicks <= 0 || dashTicks <= 0 || wanderRange <= 0) {
-            throw new IllegalArgumentException("Wander dash durations and range must be positive");
+    public WanderDashCycleAction(PathfinderMob mob, int wanderTicks, int dashTicks, double wanderSpeed, double dashSpeed) {
+        if (wanderTicks <= 0 || dashTicks <= 0) {
+            throw new IllegalArgumentException("Wander dash durations must be positive");
         }
         this.mob = mob;
         this.wanderTicks = wanderTicks;
         this.dashTicks = dashTicks;
-        this.wanderSpeed = wanderSpeed;
-        this.wanderRange = wanderRange;
         this.dashSpeed = dashSpeed;
+        this.wanderAction = new LookForwardWanderFlyAction(mob, wanderSpeed, 0.0F, false);
     }
 
     @Override
@@ -44,30 +41,42 @@ public final class WanderDashCycleAction extends BTNode {
     @Override
     public BTStatus execute() {
         LivingEntity target = mob.getTarget();
-        if (target == null || !target.isAlive()) {
-            return BTStatus.FAILURE;
-        }
-
         phaseTicks++;
         if (!dashing) {
-            moveTowardWanderTarget();
+            if (wanderAction.execute() != BTStatus.RUNNING) {
+                wanderAction.start();
+            }
             if (phaseTicks >= wanderTicks) {
-                Vec3 direction = target.position().subtract(mob.position()).normalize();
-                if (direction.lengthSqr() > 1.0E-8) {
-                    dashDirection = direction;
-                    dashing = true;
-                    phaseTicks = 0;
+                phaseTicks = 0;
+                if (target != null && target.isAlive()) {
+                    Vec3 targetPosition = target.getEyePosition();
+                    Vec3 direction = targetPosition.subtract(mob.getEyePosition()).normalize();
+                    if (direction.lengthSqr() > 1.0E-8) {
+                        dashDirection = direction;
+                        dashTarget = targetPosition;
+                        dashing = true;
+                    }
                 }
             }
-            return BTStatus.RUNNING;
+            if (!dashing) {
+                return BTStatus.RUNNING;
+            }
         }
 
         if (mob.horizontalCollision || mob.verticalCollision || phaseTicks >= dashTicks) {
             beginWander();
             return BTStatus.RUNNING;
         }
+        if (target == null || !target.isAlive()) {
+            beginWander();
+            return BTStatus.RUNNING;
+        }
+        Vec3 lookPosition = mob.position().add(dashDirection.scale(20.0)).add(0.0, 1.0, 0.0);
+        mob.getLookControl().setLookAt(lookPosition);
+        mob.setYRot(mob.getYHeadRot());
         mob.setDeltaMovement(dashDirection.scale(dashSpeed));
-        mob.getLookControl().setLookAt(mob.position().add(dashDirection.scale(20.0)));
+        mob.hasImpulse = true;
+        mob.getLookControl().setLookAt(dashTarget);
         return BTStatus.RUNNING;
     }
 
@@ -75,22 +84,8 @@ public final class WanderDashCycleAction extends BTNode {
         dashing = false;
         phaseTicks = 0;
         dashDirection = Vec3.ZERO;
-        chooseWanderTarget();
-    }
-
-    private void moveTowardWanderTarget() {
-        if (mob.position().distanceToSqr(wanderTarget) < 1.0) {
-            chooseWanderTarget();
-        }
-        Vec3 direction = wanderTarget.subtract(mob.position());
-        if (direction.lengthSqr() > 1.0E-8) {
-            mob.setDeltaMovement(mob.getDeltaMovement().add(direction.normalize().scale(wanderSpeed * 0.05)).scale(0.95));
-        }
-    }
-
-    private void chooseWanderTarget() {
-        RandomSource random = mob.getRandom();
-        wanderTarget = mob.position().add((random.nextDouble() - 0.5) * wanderRange * 2.0, (random.nextDouble() - 0.5) * wanderRange, (random.nextDouble() - 0.5) * wanderRange * 2.0);
+        dashTarget = Vec3.ZERO;
+        wanderAction.start();
     }
 
     public boolean isDashing() {
@@ -99,5 +94,10 @@ public final class WanderDashCycleAction extends BTNode {
 
     public Vec3 getDashDirection() {
         return dashDirection;
+    }
+
+    public void abortDash() {
+        if (!dashing) return;
+        beginWander();
     }
 }

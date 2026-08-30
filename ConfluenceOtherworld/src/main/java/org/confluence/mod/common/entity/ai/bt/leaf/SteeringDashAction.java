@@ -7,8 +7,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/// 复现 1.21 飞行怪物的转向冲刺过程。
-///
 /// 实体先在待机阶段按指定速度朝向目标。进入触发角后持续加速；当目标离开可转向角时，
 /// 实体保留冲刺方向、逐渐减速并向上抬升一段时间。贴身命中后则先沿当前正面远离目标，
 /// 拉开足够距离后才重新对准。转向速度、触发角和冲刺中的最大转向角是三个独立参数，
@@ -27,13 +25,21 @@ public final class SteeringDashAction extends BTNode {
     private final double triggerAngle;
     private final double steeringAngle;
     private final int backDuration;
+    private final boolean lookDuringBack;
 
     private Phase phase = Phase.IDLE;
     private int backTicks;
     private int pointBlankCooldown;
     private Vec3 lastDirection = Vec3.ZERO;
 
-    public SteeringDashAction(PathfinderMob mob, double friction, double maxSpeed, double acceleration, double turnSpeedDegrees, double triggerAngleDegrees, double steeringAngleDegrees, int backDuration) {
+    public SteeringDashAction(PathfinderMob mob, double friction, double maxSpeed, double acceleration,
+                              double turnSpeedDegrees, double triggerAngleDegrees, double steeringAngleDegrees, int backDuration) {
+        this(mob, friction, maxSpeed, acceleration, turnSpeedDegrees, triggerAngleDegrees, steeringAngleDegrees, backDuration, false);
+    }
+
+    public SteeringDashAction(PathfinderMob mob, double friction, double maxSpeed, double acceleration,
+                              double turnSpeedDegrees, double triggerAngleDegrees, double steeringAngleDegrees, int backDuration,
+                              boolean lookDuringBack) {
         this.mob = mob;
         this.friction = friction;
         this.maxSpeed = maxSpeed;
@@ -42,6 +48,14 @@ public final class SteeringDashAction extends BTNode {
         this.triggerAngle = Math.toRadians(triggerAngleDegrees);
         this.steeringAngle = Math.toRadians(steeringAngleDegrees);
         this.backDuration = backDuration;
+        this.lookDuringBack = lookDuringBack;
+    }
+
+    @Override
+    public void start() {
+        phase = Phase.IDLE;
+        backTicks = 0;
+        lastDirection = mob.getDeltaMovement();
     }
 
     @Override
@@ -58,7 +72,7 @@ public final class SteeringDashAction extends BTNode {
             phase = Phase.IDLE;
         }
 
-        double distance = mob.position().distanceTo(target.getEyePosition());
+        double distance = mob.getEyePosition().distanceTo(target.getEyePosition());
         if (distance < 0.5 && mob.swingTime == 0 && pointBlankCooldown <= 0) {
             mob.doHurtTarget(target);
             mob.swing(InteractionHand.MAIN_HAND);
@@ -71,11 +85,13 @@ public final class SteeringDashAction extends BTNode {
             mob.addDeltaMovement(mob.getForward().normalize().scale(0.1));
             if (distance > 5.0) {
                 phase = Phase.IDLE;
+            } else {
+                return BTStatus.RUNNING;
             }
         }
 
         if (phase == Phase.DASHING_BACK) {
-            tickDashingBack();
+            tickDashingBack(target);
             return BTStatus.RUNNING;
         }
         if (phase == Phase.IDLE) {
@@ -85,6 +101,13 @@ public final class SteeringDashAction extends BTNode {
 
         tickDash(target);
         return BTStatus.RUNNING;
+    }
+
+    @Override
+    public void stop() {
+        phase = Phase.IDLE;
+        backTicks = 0;
+        lastDirection = mob.getDeltaMovement();
     }
 
     private void tickIdle(LivingEntity target) {
@@ -119,14 +142,15 @@ public final class SteeringDashAction extends BTNode {
         }
 
         Vec3 forward = mob.getForward().normalize();
-        Vec3 towardTarget = target.getEyePosition().subtract(mob.position()).normalize();
+        Vec3 towardTarget = target.getEyePosition().subtract(mob.getEyePosition()).normalize();
         mob.setDeltaMovement(forward.add(towardTarget).normalize().scale(speed));
     }
 
-    private void tickDashingBack() {
+    private void tickDashingBack(LivingEntity target) {
         backTicks--;
         slowLastDirection();
         mob.addDeltaMovement(new Vec3(0.0, 0.05, 0.0));
+        if (lookDuringBack) lookAtTarget(target);
         if (backTicks <= -backDuration) {
             phase = Phase.IDLE;
         }
@@ -143,7 +167,7 @@ public final class SteeringDashAction extends BTNode {
     }
 
     private double angleToTarget(LivingEntity target) {
-        Vec3 targetDirection = target.position().subtract(mob.position());
+        Vec3 targetDirection = target.getEyePosition().subtract(mob.getEyePosition());
         Vec3 forward = mob.getForward();
         if (targetDirection.lengthSqr() < 1.0E-6 || forward.lengthSqr() < 1.0E-6) {
             return 0.0;

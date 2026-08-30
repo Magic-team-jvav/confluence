@@ -61,8 +61,8 @@ public final class SummonSword extends SummonInstance {
         for (SummonCollision.Hit hit : SummonCollision.sweep(owner().level(), previousPreviousPose, previousPose,
                 currentPose, ATTACK_BOX, candidate -> candidate == target()
                         || SummonTargetCache.isValidTarget(owner(), candidate, SEARCH_RANGE * 2.0, false))) {
-            kind.applyHitEffect(owner(), hit.target());
-            hurtTarget(hit.target(), damageMultiplier);
+            kind.applyHitEffect(owner(), hit.logicalTarget());
+            hurtEntity(hit.target(), hit.logicalTarget(), damageMultiplier);
         }
     }
 

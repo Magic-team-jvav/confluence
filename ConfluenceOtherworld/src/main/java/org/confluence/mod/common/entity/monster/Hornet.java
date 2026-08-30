@@ -79,11 +79,6 @@ public class Hornet extends BaseFlyingMonster {
         return true;
     }
 
-    @Override
-    protected boolean hasEntityContactAttack() {
-        return false;
-    }
-
     /// 黄蜂可以穿过门洞，但不会把水面当作可漂浮路径。
     @Override
     protected PathNavigation createNavigation(Level level) {
@@ -120,7 +115,7 @@ public class Hornet extends BaseFlyingMonster {
     private final class HornetCombatNode extends BTNode {
         private static final int SHOOT_INTERVAL = 25;
         private static final int REPATH_RESET = 200;
-        private static final int REPATH_THRESHOLD = 175;
+        private static final int REPATH_THRESHOLD = 180;
         private static final double FIRE_ANGLE = 0.1;
 
         private int shootCooldown;
@@ -144,7 +139,7 @@ public class Hornet extends BaseFlyingMonster {
                 lookAtTarget(target, 10.0F, 89.0F);
                 if (angleBetween(getLookAngle(), target.getEyePosition().subtract(getEyePosition())) < FIRE_ANGLE) {
                     HornetStingerProjectile projectile = createStinger(target);
-                    level().addFreshEntity(projectile);
+                    if (!level().addFreshEntity(projectile)) projectile.discard();
                     shootCooldown = SHOOT_INTERVAL;
                     aiming = false;
                 }
@@ -172,6 +167,7 @@ public class Hornet extends BaseFlyingMonster {
         @Override
         public void stop() {
             aiming = false;
+            getNavigation().stop();
         }
     }
 

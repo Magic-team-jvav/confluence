@@ -5,9 +5,7 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.Items;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
@@ -38,6 +36,7 @@ public final class VanillaGoblinGeoModel<T extends Mob & GeoEntity> extends GeoN
         EntityModelData look = state.getData(DataTickets.ENTITY_MODEL_DATA);
         vanillaModel.prepareMobModel(entity, state.getLimbSwing(), state.getLimbSwingAmount(), partialTick);
         vanillaModel.setupAnim(entity, state.getLimbSwing(), state.getLimbSwingAmount(), entity.tickCount + partialTick, look.netHeadYaw(), look.headPitch());
+        VanillaHumanoidGeoModel.applyBowPose(vanillaModel, entity, partialTick);
         copyRegisteredBones();
     }
 
@@ -48,13 +47,6 @@ public final class VanillaGoblinGeoModel<T extends Mob & GeoEntity> extends GeoN
         vanillaModel.crouching = entity.isCrouching();
         vanillaModel.leftArmPose = HumanoidModel.ArmPose.EMPTY;
         vanillaModel.rightArmPose = HumanoidModel.ArmPose.EMPTY;
-        if (entity.isUsingItem() && entity.getMainHandItem().is(Items.BOW)) {
-            if (entity.getMainArm() == HumanoidArm.RIGHT) {
-                vanillaModel.rightArmPose = HumanoidModel.ArmPose.BOW_AND_ARROW;
-            } else {
-                vanillaModel.leftArmPose = HumanoidModel.ArmPose.BOW_AND_ARROW;
-            }
-        }
     }
 
     private void copyRegisteredBones() {

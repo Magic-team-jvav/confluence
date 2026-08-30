@@ -51,13 +51,14 @@ public final class SummonCollision {
         if (sweepBounds == null) {
             return List.of();
         }
-        Map<LivingEntity, Vec3> hitPoints = new HashMap<>();
+        Map<Entity, Hit> hitPoints = new HashMap<>();
         for (Entity rawTarget : level.getEntities((Entity) null, sweepBounds, candidate -> {
-            Entity impacted = ProjectileHitRules.impactedEntity(candidate);
-            return impacted instanceof LivingEntity living && targetFilter.test(living);
+            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(candidate);
+            return logicalTarget != null && targetFilter.test(logicalTarget);
         })) {
             Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
-            if (!(impacted instanceof LivingEntity candidate)) {
+            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
+            if (logicalTarget == null) {
                 continue;
             }
             Vec3 closestHit = null;
@@ -76,20 +77,20 @@ public final class SummonCollision {
                 }
             }
             if (closestHit != null) {
-                Vec3 previousHit = hitPoints.get(candidate);
-                if (previousHit == null || closestHit.distanceToSqr(start) < previousHit.distanceToSqr(start)) {
-                    hitPoints.put(candidate, closestHit);
+                Hit previousHit = hitPoints.get(impacted);
+                if (previousHit == null || closestHit.distanceToSqr(start) < previousHit.position.distanceToSqr(start)) {
+                    hitPoints.put(impacted, new Hit(impacted, logicalTarget, closestHit));
                 }
             }
         }
         List<Hit> hits = new ArrayList<>(hitPoints.size());
-        hitPoints.forEach((target, position) -> hits.add(new Hit(target, position)));
+        hits.addAll(hitPoints.values());
         hits.sort(Comparator.comparingDouble(hit -> hit.position.distanceToSqr(start)));
         return hits;
     }
 
     /// 一次连续碰撞命中的目标与近似命中位置。
-    public record Hit(LivingEntity target, Vec3 position) {}
+    public record Hit(Entity target, LivingEntity logicalTarget, Vec3 position) {}
 
     /// 仅在连续碰撞实现内部使用的定向碰撞箱。
     private static final class OrientedBox {

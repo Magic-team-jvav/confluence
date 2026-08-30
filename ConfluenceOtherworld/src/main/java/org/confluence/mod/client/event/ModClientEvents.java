@@ -19,6 +19,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
@@ -129,6 +130,11 @@ import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
 import static org.confluence.mod.common.init.entity.ModEntities.*;
 
 public final class ModClientEvents {
+    private static <T extends Mob & GeoEntity> GeoNormalRenderer<T> contactHumanoid(
+            EntityRendererProvider.Context context, ResourceLocation path, String rightArm, String leftArm) {
+        return new GeoNormalRenderer<>(context, new ContactHumanoidGeoModel<>(path, rightArm, leftArm));
+    }
+
     public static void init() {
         PortEventHandler.addListener(ModClientEvents::clientSetup);
         PortEventHandler.addListener(ModClientEvents::modConfig$Loading);
@@ -593,9 +599,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.EATER_OF_SOULS.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.EATER_OF_SOULS.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.CRIMERA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CRIMERA.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.CURSED_SKULL.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.CURSED_SKULL.getId()), true, 1.0F, 0.0F).addBoneToGlow("outline"));
-        event.registerEntityRenderer(MonsterEntities.CORRUPTOR.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.EATER_OF_SOULS.getId()).withScale(1.15F));
-        event.registerEntityRenderer(MonsterEntities.SLIMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.EATER_OF_SOULS.getId()).withScale(0.85F));
-        event.registerEntityRenderer(MonsterEntities.ENCHANTED_SWORD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.VISUAL_NEURON.getId()).withScale(0.55F));
+        event.registerEntityRenderer(MonsterEntities.CORRUPTOR.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.EATER_OF_SOULS.getId(), true, 1.15F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.SLIMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.EATER_OF_SOULS.getId(), true, 0.85F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.ENCHANTED_SWORD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.VISUAL_NEURON.getId(), true, 0.55F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.SNATCHER.get(), c -> new SnatcherRenderer(c, MonsterEntities.SNATCHER.getId()));
         event.registerEntityRenderer(MonsterEntities.MAN_EATER.get(), c -> new SnatcherRenderer(c, MonsterEntities.MAN_EATER.getId()));
         event.registerEntityRenderer(MonsterEntities.SPORE_SKELETON.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SPORE_SKELETON.getId()));
@@ -713,10 +719,13 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.SPORE_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SPORE_BAT.getId()));
         event.registerEntityRenderer(MonsterEntities.DRIPPLER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DRIPPLER.getId(), false, 2.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.FLYING_FISH.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.FLYING_FISH.getId(), true, 0.75F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.WANDERING_EYE_FISH.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WANDERING_EYE_FISH.getId()).withScale(1.5F));
-        event.registerEntityRenderer(MonsterEntities.VISUAL_NEURON.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("visual_neuron")));
-        event.registerEntityRenderer(MonsterEntities.BLAZING_WHEEL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId()).withScale(1.5F));
-        event.registerEntityRenderer(MonsterEntities.SPIKE_BALL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId()));
+        // 眼球鱼的 Head 与 body 是两个独立根骨骼，不是可单独转动的人形头部。
+        // 若使用 GeoNormalModel 默认的转头映射，Head 会绕自身枢轴脱离身体。
+        event.registerEntityRenderer(MonsterEntities.WANDERING_EYE_FISH.get(), c -> new GeoNormalRenderer<>(c,
+                new GeoNormalModel<>(MonsterEntities.WANDERING_EYE_FISH.getId(), false), false, 1.5F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.VISUAL_NEURON.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("visual_neuron"), true, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.BLAZING_WHEEL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId(), true, 1.5F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.SPIKE_BALL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.DEMON.getId(), 1.0F));
         event.registerEntityRenderer(MonsterEntities.VOODOO_DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.VOODOO_DEMON.getId(), 1.1F));
         event.registerEntityRenderer(MonsterEntities.HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.HORNET.getId(), false), true, 1.0F, 0.2F));
@@ -732,27 +741,31 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GIANT_ANTLION_SWARMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANTLION_SWARMER.getId(), true, 1.25F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.THE_HUNGRY.get(), HungryRenderer::new);
         event.registerEntityRenderer(MonsterEntities.HILL_HUNGRY.get(), HungryRenderer::new);
-        event.registerEntityRenderer(MonsterEntities.BLOOD_ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_ZOMBIE.getId()));
+        event.registerEntityRenderer(MonsterEntities.BLOOD_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c,
+                new VanillaZombieGeoModel<>(c, MonsterEntities.BLOOD_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.SNOW_FLINX.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SNOW_FLINX.getId()) {
             @Override
             protected void adjustPose(PoseStack poseStack, BaseWarriorMonster entity, BakedGeoModel model, float partialTick) {
                 poseStack.mulPose(Axis.YP.rotationDegrees(90.0F + Mth.lerp(partialTick, entity.yBodyRotO - entity.yHeadRotO, entity.yBodyRot - entity.yHeadRot)));
             }
         });
-        event.registerEntityRenderer(MonsterEntities.FACE_MONSTER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.FACE_MONSTER.getId()));
+        event.registerEntityRenderer(MonsterEntities.FACE_MONSTER.get(), c -> new GeoNormalRenderer<>(c,
+                new ContactHumanoidGeoModel<>(MonsterEntities.FACE_MONSTER.getId(), "RightArm", "LeftArm")));
         event.registerEntityRenderer(MonsterEntities.BLOOD_TUMORS.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_TUMORS.getId()));
-        event.registerEntityRenderer(MonsterEntities.POSSESS_ARMOR.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.getId())));
+        event.registerEntityRenderer(MonsterEntities.POSSESS_ARMOR.get(), c -> new GeoNormalRenderer<>(c,
+                VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/item/armor/possessed_armor.geo.json"),
+                        Confluence.asResource("textures/item/armor/possessed_armor.png"), true)));
         event.registerEntityRenderer(MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.getId())));
-        event.registerEntityRenderer(MonsterEntities.MUMMY.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.MUMMY.getId()));
-        event.registerEntityRenderer(MonsterEntities.DARK_MUMMY.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_MUMMY.getId()));
-        event.registerEntityRenderer(MonsterEntities.BLOOD_MUMMY.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_MUMMY.getId()));
-        event.registerEntityRenderer(MonsterEntities.LIGHT_MUMMY.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.LIGHT_MUMMY.getId()));
-        event.registerEntityRenderer(MonsterEntities.DARK_LAMIA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_LAMIA.getId()));
-        event.registerEntityRenderer(MonsterEntities.LIGHT_LAMIA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.LIGHT_LAMIA.getId()));
-        event.registerEntityRenderer(MonsterEntities.GHOUL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GHOUL.getId()));
-        event.registerEntityRenderer(MonsterEntities.TAINTED_GHOUL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.TAINTED_GHOUL.getId()));
-        event.registerEntityRenderer(MonsterEntities.VILE_GHOUL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.VILE_GHOUL.getId()));
-        event.registerEntityRenderer(MonsterEntities.DREAMER_GHOUL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DREAMER_GHOUL.getId()));
+        event.registerEntityRenderer(MonsterEntities.MUMMY.get(), c -> contactHumanoid(c, MonsterEntities.MUMMY.getId(), "RightArm", "LeftArm"));
+        event.registerEntityRenderer(MonsterEntities.DARK_MUMMY.get(), c -> contactHumanoid(c, MonsterEntities.DARK_MUMMY.getId(), "RightArm", "LeftArm"));
+        event.registerEntityRenderer(MonsterEntities.BLOOD_MUMMY.get(), c -> contactHumanoid(c, MonsterEntities.BLOOD_MUMMY.getId(), "RightArm", "LeftArm"));
+        event.registerEntityRenderer(MonsterEntities.LIGHT_MUMMY.get(), c -> contactHumanoid(c, MonsterEntities.LIGHT_MUMMY.getId(), "RightArm", "LeftArm"));
+        event.registerEntityRenderer(MonsterEntities.DARK_LAMIA.get(), c -> contactHumanoid(c, MonsterEntities.DARK_LAMIA.getId(), "right_arm", "left_arm"));
+        event.registerEntityRenderer(MonsterEntities.LIGHT_LAMIA.get(), c -> contactHumanoid(c, MonsterEntities.LIGHT_LAMIA.getId(), "right_arm", "left_arm"));
+        event.registerEntityRenderer(MonsterEntities.GHOUL.get(), c -> contactHumanoid(c, MonsterEntities.GHOUL.getId(), "hand_right", "hand_left"));
+        event.registerEntityRenderer(MonsterEntities.TAINTED_GHOUL.get(), c -> contactHumanoid(c, MonsterEntities.TAINTED_GHOUL.getId(), "hand_right", "hand_left"));
+        event.registerEntityRenderer(MonsterEntities.VILE_GHOUL.get(), c -> contactHumanoid(c, MonsterEntities.VILE_GHOUL.getId(), "hand_right", "hand_left"));
+        event.registerEntityRenderer(MonsterEntities.DREAMER_GHOUL.get(), c -> contactHumanoid(c, MonsterEntities.DREAMER_GHOUL.getId(), "hand_right", "hand_left"));
         event.registerEntityRenderer(MonsterEntities.PALADIN.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.getId())).withScale(1.25F));
         event.registerEntityRenderer(MonsterEntities.BONE_LEE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BASE_BONES.getId())));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_ARCHER.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_ARCHER.getId().withPrefix("goblin/"))));
@@ -765,9 +778,11 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new ZombieGeoModel(c)));
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new BloodySporeRenderer(c, MonsterEntities.BLOODY_SPORE.getId()));
         event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
-        event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SPORE_ZOMBIE.getId()));
-        event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId()));
-        event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.NYMPH.getId()));
+        event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c,
+                new VanillaZombieGeoModel<>(c, MonsterEntities.SPORE_ZOMBIE.getId())));
+        event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c,
+                new VanillaZombieGeoModel<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId())));
+        event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, new NymphModel(MonsterEntities.NYMPH.getId())));
         event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
         // 水怪
         event.registerEntityRenderer(MonsterEntities.PIRANHA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRANHA.getId(), true, 1.0F, 0.0F));
@@ -791,7 +806,9 @@ public final class ModClientEvents {
                         crawdad -> Confluence.asResource(crawdad.getVariant() == 0
                                 ? "textures/entity/crawdad/blue.png" : "textures/entity/crawdad/red.png"))));
         // Wraith + Mimics
-        event.registerEntityRenderer(MonsterEntities.WRAITH.get(), NoopRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.WRAITH.get(), c -> new GeoNormalRenderer<>(c,
+                VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/item/armor/wraith_armor.geo.json"),
+                        Confluence.asResource("textures/item/armor/wraith_armor.png"), false)));
         event.registerEntityRenderer(MonsterEntities.WOODEN_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WOODEN_MIMIC.getId()));
         event.registerEntityRenderer(MonsterEntities.GOLDEN_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GOLDEN_MIMIC.getId()));
         event.registerEntityRenderer(MonsterEntities.ICE_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_MIMIC.getId()));

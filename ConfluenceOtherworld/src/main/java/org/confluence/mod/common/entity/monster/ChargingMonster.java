@@ -30,6 +30,12 @@ public class ChargingMonster extends BaseWarriorMonster {
         return BaseWarriorMonster.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.28).add(Attributes.KNOCKBACK_RESISTANCE, 0.6);
     }
 
+    /// 冲锋阶段依赖身体命中；专用动作只负责运动，不再维护第二套碰撞计时器。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
     @Override
     protected BTRoot createBT() {
         CreatureDefinition.BehaviorOverrides behavior = creatureDefinition().behavior();
@@ -40,9 +46,9 @@ public class ChargingMonster extends BaseWarriorMonster {
                         SequenceNode.of(new HasTargetCondition(ChargingMonster.this),
                                 new MoveToTargetAction(ChargingMonster.this,
                                         behavior.moveSpeedOr(1.0), 7.0),
-                                new WaitAction(behavior.windupTicksOr(windupTicks)),
                                 new ChargeAttackAction(ChargingMonster.this,
-                                        behavior.chargeSpeedOr(chargeSpeed)),
+                                        behavior.chargeSpeedOr(chargeSpeed),
+                                        behavior.windupTicksOr(windupTicks)),
                                 new MeleeAttackAction(ChargingMonster.this,
                                         behavior.meleeRangeOr(1.5)),
                                 new WaitAction(behavior.idleTicksOr(20))),

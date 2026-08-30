@@ -64,10 +64,10 @@ public final class BugNetEntityToItemSubProvider {
                         variant(Worm.Variant.GOLD, BaitItems.GOLD_WORM),
                         variant(Worm.Variant.NORMAL, BaitItems.WORM)
                 ))
-//  todo              .add(CritterEntities.SCORPION, List.of(
-//                        variant(0, BaitItems.BLACK_SCORPION),
-//                        variant(1, BaitItems.SCORPION)
-//                ))
+                .add(CritterEntities.SCORPION, List.of(
+                        variant(Scorpion.Variant.BLACK, BaitItems.BLACK_SCORPION),
+                        variant(Scorpion.Variant.NORMAL, BaitItems.SCORPION)
+                ))
                 .add(CritterEntities.GRASSHOPPER, List.of(
                         variant(Grasshopper.Variant.GOLD, BaitItems.GOLD_GRASSHOPPER),
                         variant(Grasshopper.Variant.GREEN, BaitItems.GRASSHOPPER)

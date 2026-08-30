@@ -20,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.object.PlayState;
 
 /// 食人鱼及其共用水生近战变体。
 ///
@@ -39,6 +38,12 @@ public class Piranha extends BaseAquaticMonster {
 
     public static AttributeSupplier.Builder createArapaimaAttributes() {
         return AquaticAttributeProfiles.ARAPAIMA.createBuilder();
+    }
+
+    /// 1.21 的食人鱼族继承水生动物，攻击只由近战 Goal 结算。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
     }
 
     @Override
@@ -127,7 +132,7 @@ public class Piranha extends BaseAquaticMonster {
                     if (state.isMoving()) {
                         return state.setAndContinue(DefaultAnimations.SWIM);
                     }
-                    return PlayState.STOP;
+                    return state.setAndContinue(DefaultAnimations.IDLE);
                 }));
     }
 }

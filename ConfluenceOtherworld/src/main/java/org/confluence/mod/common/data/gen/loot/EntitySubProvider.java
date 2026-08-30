@@ -29,6 +29,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.DateLootItemCondition;
+import org.confluence.mod.common.loot.EntityVariantLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -400,6 +401,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
+        add(MonsterEntities.WANDERING_EYE_FISH.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ConsumableItems.BLOODY_SPINE).setWeight(20))
+                        .add(EmptyLootItem.emptyItem().setWeight(80))
+                )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ENDER_EYE)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.RED_DYE)))
+        );
         add(MonsterEntities.DEVOURER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).apply(count1To2).setWeight(33).setQuality(1)).apply(random0To1)
@@ -696,6 +705,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         )
                 )
         );
+        add(CritterEntities.JEWEL_SQUIRREL.get(), jewelCritterLoot());
         add(CritterEntities.CARDINAL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
@@ -708,6 +718,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         )
                 )
         );
+        add(CritterEntities.JEWEL_BUNNY.get(), jewelCritterLoot());
         add(CritterEntities.EXPLOSIVE_BUNNY.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.RABBIT).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
@@ -738,6 +749,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(MonsterEntities.BLUE_SLIME.get(), slimeCommon(-10644993));
+        add(MonsterEntities.EVIL_SLIME.get(), slimeCommon(0xFF00FF));
         add(MonsterEntities.DESERT_SLIME.get(), slimeCommon(-2727));
         add(MonsterEntities.GREEN_DUMPLING_SLIME.get(), slimeCommon(-8470674)
                 .withPool(LootPool.lootPool()
@@ -783,6 +795,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
         );
+        add(MonsterEntities.LAVA_SLIME.get(), slimeCommon(0xE64A19));
         add(MonsterEntities.BLACK_SLIME.get(), slimeCommon(-7697782)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
@@ -1265,6 +1278,29 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(SwordItems.BAT_BAT).setWeight(3).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(997))
                 );
+    }
+
+    private static LootTable.Builder jewelCritterLoot() {
+        LootItemConditionalFunction.Builder<?> oneToTwo = SetItemCountFunction.setCount(UniformGenerator.between(1, 2));
+        LootItemConditionalFunction.Builder<?> one = SetItemCountFunction.setCount(ConstantValue.exactly(1));
+        LootItemConditionalFunction.Builder<?> looting = LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1));
+        return LootTable.lootTable().withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(Items.COPPER_INGOT)
+                        .when(EntityVariantLootItemCondition.of("amber")).apply(oneToTwo).apply(looting))
+                .add(LootItem.lootTableItem(Items.AMETHYST_SHARD)
+                        .when(EntityVariantLootItemCondition.of("amethyst")).apply(oneToTwo).apply(looting))
+                .add(LootItem.lootTableItem(Items.DIAMOND)
+                        .when(EntityVariantLootItemCondition.of("diamond")).apply(one).apply(looting))
+                .add(LootItem.lootTableItem(Items.EMERALD)
+                        .when(EntityVariantLootItemCondition.of("emerald")).apply(one).apply(looting))
+                .add(LootItem.lootTableItem(Items.GOLD_INGOT)
+                        .when(EntityVariantLootItemCondition.of("gold")).apply(oneToTwo).apply(looting))
+                .add(LootItem.lootTableItem(Items.REDSTONE)
+                        .when(EntityVariantLootItemCondition.of("ruby")).apply(oneToTwo).apply(looting))
+                .add(LootItem.lootTableItem(Items.LAPIS_LAZULI)
+                        .when(EntityVariantLootItemCondition.of("sapphire")).apply(oneToTwo).apply(looting))
+                .add(LootItem.lootTableItem(Items.RAW_GOLD)
+                        .when(EntityVariantLootItemCondition.of("topaz")).apply(oneToTwo).apply(looting)));
     }
 
     private LootTable.Builder slimeCommon(int gelColor) {

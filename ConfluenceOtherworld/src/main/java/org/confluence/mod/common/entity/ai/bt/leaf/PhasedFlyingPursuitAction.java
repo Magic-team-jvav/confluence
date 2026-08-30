@@ -64,6 +64,7 @@ public final class PhasedFlyingPursuitAction extends BTNode {
         }
 
         remainingTicks--;
+        mob.lookAt(target, 10.0F, 90.0F);
         mob.getLookControl().setLookAt(target, 10.0F, 90.0F);
         Vec3 targetDirection = target.getEyePosition().subtract(mob.getEyePosition()).normalize();
         boolean aggressive = remainingTicks < aggressiveThreshold;
@@ -81,6 +82,7 @@ public final class PhasedFlyingPursuitAction extends BTNode {
             nextVelocity = nextVelocity.normalize().scale(maximumSpeed);
         }
         mob.setDeltaMovement(nextVelocity);
+        mob.hasImpulse = true;
 
         if (aggressive && nextVelocity.lengthSqr() > 1.0E-8) {
             double dot = Mth.clamp(nextVelocity.normalize().dot(targetDirection), -1.0, 1.0);

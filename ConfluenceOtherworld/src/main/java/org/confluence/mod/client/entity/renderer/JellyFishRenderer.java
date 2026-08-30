@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
 import org.confluence.mod.common.entity.monster.JellyFish;
@@ -22,6 +23,16 @@ public final class JellyFishRenderer extends GeoNormalRenderer<JellyFish> {
     public JellyFishRenderer(EntityRendererProvider.Context context, ExplicitGeoModel<JellyFish> model) {
         super(context, model);
         addRenderLayer(new AutoGlowingGeoLayer<>(this) {
+            @Override
+            protected ResourceLocation getTextureResource(JellyFish animatable) {
+                return JellyFishRenderer.this.getTextureLocation(animatable);
+            }
+
+            @Override
+            protected RenderType getRenderType(JellyFish animatable) {
+                return RenderType.entityTranslucentEmissive(getTextureResource(animatable));
+            }
+
             @Override
             public void render(
                     PoseStack poseStack,

@@ -1,9 +1,11 @@
 package org.confluence.mod.common.entity.npc.ai;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -56,6 +58,7 @@ public final class NPCDefenseGoal extends Goal {
     @Override
     public void stop() {
         npc.getNavigation().stop();
+        npc.stopUsingItem();
         if (npc.getTarget() == target) npc.setTarget(null);
         target = null;
         attackCooldown = 0;
@@ -85,17 +88,23 @@ public final class NPCDefenseGoal extends Goal {
         }
 
         if (attackCooldown > 0) {
+            npc.stopUsingItem();
             attackCooldown--;
             return;
         }
         if (distanceSqr > values.attackRange() * values.attackRange()
                 || !npc.getSensing().hasLineOfSight(target)) {
+            npc.stopUsingItem();
             attackPreparation = values.prepareTime();
             return;
         }
         if (attackPreparation > 0) {
+            if (npc.getMainHandItem().getItem() instanceof BowItem && !npc.isUsingItem()) {
+                npc.startUsingItem(InteractionHand.MAIN_HAND);
+            }
             attackPreparation--;
         } else {
+            npc.stopUsingItem();
             profile.attack().perform(npc, target, values);
             attackCooldown = values.attackInterval();
             attackPreparation = values.prepareTime();

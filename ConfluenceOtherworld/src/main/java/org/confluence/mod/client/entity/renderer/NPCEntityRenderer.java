@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.entity.model.NPCHumanoidGeoModel;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.joml.Matrix4f;
@@ -23,7 +24,8 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
     private static final ResourceLocation CHAT_BUBBLE = Confluence.asResource("textures/gui/chat_bubble.png");
 
     public NPCEntityRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
-        super(context, path);
+        super(context, new NPCHumanoidGeoModel<>(path));
+        addRenderLayer(new VanillaHumanoidRenderer.HeldItemLayer<>(this, "LeftArm", "RightArm"));
     }
 
     @Override

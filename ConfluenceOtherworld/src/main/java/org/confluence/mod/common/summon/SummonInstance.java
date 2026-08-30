@@ -106,7 +106,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         }
         for (Entity part : parts) {
             Vec3 partCenter = part.getBoundingBox().getCenter();
-            if (!part.isAlive() || !part.isPickable() || ProjectileHitRules.impactedEntity(part) != logicalTarget || !hasLineOfSight(partCenter)) {
+            if (!part.isAlive() || !part.isPickable() || ProjectileHitRules.logicalLivingTarget(part) != logicalTarget || !hasLineOfSight(partCenter)) {
                 continue;
             }
             return part;
@@ -231,25 +231,37 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
 
     /// 使用实例保存的基础伤害和主人当前召唤伤害结算命中，并由局部无敌帧限制同一实例的命中频率。
     protected final boolean hurtTarget(LivingEntity target, float damageMultiplier) {
-        Objects.requireNonNull(target, "Summon damage target must not be null");
+        return hurtEntity(target, target, damageMultiplier);
+    }
+
+    protected final boolean hurtEntity(Entity damageTarget, LivingEntity logicalTarget, float damageMultiplier) {
+        Objects.requireNonNull(damageTarget, "Summon damage target must not be null");
+        Objects.requireNonNull(logicalTarget, "Summon logical target must not be null");
         if (!Float.isFinite(damageMultiplier) || damageMultiplier < 0.0F) {
             throw new IllegalArgumentException("Summon damage multiplier must be finite and non-negative");
         }
-        if (!SummonTargetCache.isValidTarget(owner, target, Double.MAX_VALUE, true)) {
+        if (!SummonTargetCache.isValidTarget(owner, logicalTarget, Double.MAX_VALUE, true)) {
             return false;
         }
         float damage = stats.baseDamage() * (float) owner.getAttributeValue(LibAttributes.getSummonDamage());
-        damage = WhipTagTracker.modifyDamage(owner, this, target, damage * damageMultiplier);
+        damage = WhipTagTracker.modifyDamage(owner, this, logicalTarget, damage * damageMultiplier);
         DamageSource source = LibDamageTypes.of(owner.level(), LibDamageTypes.SUMMONER, owner);
-        return Immunity.hurt(this, target, source, damage);
+        return damageTarget instanceof LivingEntity living
+                ? Immunity.hurt(this, living, source, damage)
+                : damageTarget.hurt(source, damage);
     }
 
     /// 对指定范围内的全部合法目标结算接触伤害，命中频率仍由每个召唤实例的局部无敌帧控制。
     protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier) {
         boolean hit = false;
-        for (LivingEntity candidate : owner().level().getEntitiesOfClass(LivingEntity.class, bounds,
-                candidate -> candidate == target() || SummonTargetCache.isValidTarget(owner(), candidate, position(), targetRange, false))) {
-            hit |= hurtTarget(candidate, damageMultiplier);
+        Set<UUID> hitEntities = new HashSet<>();
+        for (Entity rawTarget : owner.level().getEntities((Entity) null, bounds, candidate -> ProjectileHitRules.canHit(owner, candidate))) {
+            Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
+            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
+            if (logicalTarget == null || !hitEntities.add(impacted.getUUID())) continue;
+            if (logicalTarget != target && !SummonTargetCache.isValidTarget(owner, logicalTarget, position(), targetRange, false))
+                continue;
+            hit |= hurtEntity(impacted, logicalTarget, damageMultiplier);
         }
         return hit;
     }

@@ -55,7 +55,9 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(v.damage);
         this.getAttribute(Attributes.ARMOR).setBaseValue(v.armor);
         this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(v.isLarge() ? 0.1 : 0.2);
-        this.setHealth(this.getMaxHealth());
+        if (getHealth() > getMaxHealth()) {
+            setHealth(getMaxHealth());
+        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -66,6 +68,13 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     /// NBT 读取覆盖实体标志后先坠落到地面，再由飞行行为勉强拉回目标高度。
     @Override
     public boolean isNoGravity() {
+        return true;
+    }
+
+    /// 1.21 的恶魔眼没有接入 {@code AbstractMonster}，结果只有绕飞而没有任何伤害入口。
+    /// 这里保留其运动与朝向，但补回泰拉敌怪应有的身体碰撞伤害。
+    @Override
+    protected boolean hasEntityContactAttack() {
         return true;
     }
 
@@ -150,6 +159,7 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
         if (tag == null || !tag.contains(VARIANT_KEY)) {
             setVariant(Variant.random(random));
+            setHealth(getMaxHealth());
         }
         return result;
     }
@@ -161,9 +171,6 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
 
     @Override
     public void tick() {
-        if (!level().isClientSide) {
-            setTarget(level().getNearestPlayer(this, 40.0));
-        }
         super.tick();
         Vec3 movement = getDeltaMovement();
         if (movement.lengthSqr() > 1.0E-8) {

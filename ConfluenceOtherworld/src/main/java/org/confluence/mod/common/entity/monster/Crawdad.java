@@ -40,6 +40,11 @@ public final class Crawdad extends BaseWarriorMonster {
     }
 
     @Override
+    protected JumpProfile jumpProfile() {
+        return new JumpProfile(2.0, 4.0, 60, 0);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(VARIANT, 0);

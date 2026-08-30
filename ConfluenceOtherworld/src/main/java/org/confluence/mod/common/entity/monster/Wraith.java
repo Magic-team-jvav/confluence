@@ -1,9 +1,7 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,13 +16,9 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.DirectFloatingPursuitAction;
 import org.confluence.mod.common.init.ModSoundEvents;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 会穿过地形持续追逐玩家的怨魂。
 public class Wraith extends BaseFlyingMonster {
-    private static final RawAnimation FLOAT = RawAnimation.begin().thenLoop("move.walk");
 
     public Wraith(EntityType<? extends Wraith> type, Level level) {
         super(type, level);
@@ -46,7 +40,9 @@ public class Wraith extends BaseFlyingMonster {
 
     @Override
     protected boolean mustSeePlayerTarget() {
-        return true;
+        /// 怨魂自身可以穿过方块，目标筛选也必须使用相同语义；否则隔着一面墙就会
+        /// 丢失玩家并切回游荡，形成“身体能穿墙、仇恨却不能穿墙”的行为断层。
+        return false;
     }
 
     @Override
@@ -54,26 +50,11 @@ public class Wraith extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
+                // 1.21 的 FloatAiGoal 始终占用移动通道：无目标时只保留上下漂浮，
+                // 有目标时直接追击。这里不能再回落到普通飞行怪的随机游荡。
                 return new DirectFloatingPursuitAction(Wraith.this);
             }
         };
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Float", 3, state -> state.setAndContinue(FLOAT)));
-    }
-
-    /// 怨魂的移动方式虽然是穿墙漂浮，近身攻击仍沿用人形敌怪的主手挥动。
-    @Override
-    public boolean doHurtTarget(Entity target) {
-        swing(InteractionHand.MAIN_HAND, true);
-        return super.doHurtTarget(target);
-    }
-
-    @Override
-    public int getCurrentSwingDuration() {
-        return 10;
     }
 
     @Override

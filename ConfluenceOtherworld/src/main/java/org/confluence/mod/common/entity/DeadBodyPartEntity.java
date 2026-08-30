@@ -35,14 +35,10 @@ public class DeadBodyPartEntity extends Entity {
     public float minSide;
     public int animTick;
     public boolean stop = false;
-    /**
-     * true则停在原地不动，一般用来调试
-     */
+    /// true 则停在原地不动，一般用于调试。
     public boolean still = false;
     public ModelPart modelPart;
-    /**
-     * 目前如果非空则说明是盔甲
-     */
+    /// 非空时表示该碎片使用盔甲纹理。
     public ResourceLocation texture;
     protected final EntityDimensions dimensions;
 

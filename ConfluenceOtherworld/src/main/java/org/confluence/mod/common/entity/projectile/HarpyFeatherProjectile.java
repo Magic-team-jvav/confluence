@@ -4,6 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 /// 鸟妖发射的直线羽毛弹幕。
 ///
@@ -17,6 +18,7 @@ public final class HarpyFeatherProjectile extends StraightMonsterProjectile {
     }
 
     public void configure(Mob owner, LivingEntity target, float damage, float velocity, float inaccuracy) {
-        super.configure(owner, target, damage, velocity, inaccuracy, MAX_LIFETIME);
+        Vec3 aim = new Vec3(target.getX() - owner.getX(), target.getY() - owner.getY(), target.getZ() - owner.getZ());
+        configureAimed(owner, owner.getEyePosition(), aim, damage, velocity, inaccuracy, MAX_LIFETIME);
     }
 }

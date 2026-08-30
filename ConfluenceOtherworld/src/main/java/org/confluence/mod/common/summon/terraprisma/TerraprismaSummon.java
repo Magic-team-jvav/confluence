@@ -72,7 +72,7 @@ public final class TerraprismaSummon extends SummonInstance {
         for (SummonCollision.Hit hit : SummonCollision.sweep(owner().level(), previousPreviousPose, previousPose,
                 currentPose, attackBox(), candidate -> candidate == target()
                         || SummonTargetCache.isValidTarget(owner(), candidate, SEARCH_RANGE * 2.0, false))) {
-            hurtTarget(hit.target(), skillDamageMultiplier);
+            hurtEntity(hit.target(), hit.logicalTarget(), skillDamageMultiplier);
         }
     }
 

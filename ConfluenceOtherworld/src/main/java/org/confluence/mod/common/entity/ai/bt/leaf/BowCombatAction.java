@@ -33,8 +33,10 @@ public final class BowCombatAction extends BTNode {
     private final float arrowVelocity;
 
     private int visibleTicks;
+    private int lostSightTicks;
     private int attackCooldown;
-    private int drawTicks;
+    private int repathTicks;
+    private int repositionTicks;
 
     public BowCombatAction(PathfinderMob mob, double movementSpeed, int normalAttackInterval, int hardAttackInterval, double attackRadius, int drawDuration, float arrowVelocity) {
         if (normalAttackInterval <= 0 || hardAttackInterval <= 0 || attackRadius <= 0.0 || drawDuration <= 0) {
@@ -52,8 +54,10 @@ public final class BowCombatAction extends BTNode {
     @Override
     public void start() {
         visibleTicks = 0;
+        lostSightTicks = 0;
         attackCooldown = -1;
-        drawTicks = 0;
+        repathTicks = 0;
+        repositionTicks = 0;
     }
 
     @Override
@@ -66,34 +70,50 @@ public final class BowCombatAction extends BTNode {
 
         mob.setAggressive(true);
         boolean canSee = mob.getSensing().hasLineOfSight(target);
-        visibleTicks = canSee ? visibleTicks + 1 : 0;
+        if (canSee) {
+            visibleTicks++;
+            lostSightTicks = 0;
+        } else {
+            visibleTicks = 0;
+            lostSightTicks++;
+        }
         double distanceSqr = mob.distanceToSqr(target);
-        double angle = angleBetween(mob.getLookAngle(), target.position().subtract(mob.position()));
+        double angle = angleBetween(mob.getLookAngle(), target.getEyePosition().subtract(mob.getEyePosition()));
 
         if (distanceSqr > attackRadiusSqr || visibleTicks < REQUIRED_VISIBLE_TICKS) {
-            mob.getNavigation().moveTo(target, movementSpeed);
+            repositionTicks = 0;
+            if (--repathTicks <= 0 || mob.getNavigation().isDone()) {
+                mob.getNavigation().moveTo(target, movementSpeed);
+                repathTicks = 10;
+            }
+        } else if (repositionTicks > 0) {
+            repositionTicks--;
+        } else if (!mob.getNavigation().isDone()) {
+            mob.getNavigation().stop();
         }
         if (mob.getNavigation().isDone() || angle < LOOK_WHILE_MOVING_ANGLE) {
             mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         }
 
         if (mob.isUsingItem()) {
-            // 拉弓期间锁定目标；短暂丢失视线时保留拉弓状态，恢复后继续。
             mob.lookAt(target, 30.0F, 30.0F);
             mob.getLookControl().setLookAt(target);
+            if (!canSee && lostSightTicks > 60) {
+                mob.stopUsingItem();
+                attackCooldown = 10;
+                return BTStatus.RUNNING;
+            }
             if (canSee) {
-                drawTicks++;
-                if (drawTicks >= drawDuration && angle < FIRE_ANGLE) {
+                if (mob.getTicksUsingItem() >= drawDuration && angle < FIRE_ANGLE) {
                     fire(target, distanceSqr);
                 }
             }
             return BTStatus.RUNNING;
         }
 
-        if (--attackCooldown <= 0) {
+        if (--attackCooldown <= 0 && canSee) {
             InteractionHand bowHand = ProjectileUtil.getWeaponHoldingHand(mob, item -> item instanceof BowItem);
             mob.startUsingItem(bowHand);
-            drawTicks = 0;
         }
         return BTStatus.RUNNING;
     }
@@ -109,8 +129,9 @@ public final class BowCombatAction extends BTNode {
     }
 
     private void fire(LivingEntity target, double distanceSqr) {
+        int chargeTicks = mob.getTicksUsingItem();
         mob.stopUsingItem();
-        SpawnArrowAction shot = SpawnArrowAction.mobBowShot(mob, BowItem.getPowerForTime(drawTicks), arrowVelocity);
+        SpawnArrowAction shot = SpawnArrowAction.mobBowShot(mob, BowItem.getPowerForTime(chargeTicks), arrowVelocity);
         shot.start();
         if (shot.execute() == BTStatus.SUCCESS) {
             attackCooldown = mob.level().getDifficulty() == Difficulty.HARD ? hardAttackInterval : normalAttackInterval;
@@ -118,7 +139,6 @@ public final class BowCombatAction extends BTNode {
         } else {
             attackCooldown = 1;
         }
-        drawTicks = 0;
     }
 
     private void choosePostShotMovement(LivingEntity target, double distanceSqr) {
@@ -136,6 +156,7 @@ public final class BowCombatAction extends BTNode {
         }
         if (destination != null) {
             mob.getNavigation().moveTo(destination.x, destination.y, destination.z, speed);
+            repositionTicks = 20;
         }
     }
 
@@ -145,8 +166,10 @@ public final class BowCombatAction extends BTNode {
         }
         mob.setAggressive(false);
         visibleTicks = 0;
+        lostSightTicks = 0;
         attackCooldown = -1;
-        drawTicks = 0;
+        repathTicks = 0;
+        repositionTicks = 0;
     }
 
     private static double angleBetween(Vec3 first, Vec3 second) {

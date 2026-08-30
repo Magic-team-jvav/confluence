@@ -65,7 +65,7 @@ public class RenderStateShardAccessor extends RenderStateShard {
         float[] glintColor = {red, green, blue};
         ColoredGlintContext context = new ColoredGlintContext(RenderType.create(
                 "colored_glint_" + name,
-                DefaultVertexFormat.POSITION_TEX_COLOR,
+                DefaultVertexFormat.POSITION_TEX,
                 VertexFormat.Mode.QUADS,
                 1536,
                 false,

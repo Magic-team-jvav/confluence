@@ -14,20 +14,26 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.SteeringDashAction;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/// 洞穴蝙蝠 —— 飞行 + 环绕冲刺攻击。与 DemonEye 共享同款 BT。
+/// 使用平滑冲撞和前向巡航的蝙蝠类敌怪。
 public class CaveBat extends BaseFlyingMonster {
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
+    private final Variant variant;
 
     public CaveBat(EntityType<? extends CaveBat> type, Level level) {
+        this(type, level, Variant.ROUTINE);
+    }
+
+    public CaveBat(EntityType<? extends CaveBat> type, Level level, Variant variant) {
         super(type, level);
+        this.variant = variant;
+        setDiscardFriction(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -39,7 +45,11 @@ public class CaveBat extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(CaveBat.this), new SteeringDashAction(CaveBat.this, 1.0, 0.5, 0.02, 20.0, 20.0, 45.0, 30)), new FlyWanderAction(CaveBat.this, 0.15, 10));
+                return SelectorNode.of(
+                        SequenceNode.of(new HasTargetCondition(CaveBat.this),
+                                new SteeringDashAction(CaveBat.this, 1.0, 0.5, 0.02,
+                                        20.0, 20.0, 45.0, 30)),
+                        new LookForwardWanderFlyAction(CaveBat.this, 0.2, 0.0F));
             }
         };
     }
@@ -52,19 +62,17 @@ public class CaveBat extends BaseFlyingMonster {
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!level().isClientSide) {
-            addDeltaMovement(new Vec3(0.0, Math.sin(tickCount * 0.2) * 0.03, 0.0));
-        } else if (getType() == MonsterEntities.HELL_BAT.get()) {
-            spawnHellBatParticles();
-        } else if (getType() == MonsterEntities.ICE_BAT.get()) {
-            spawnIceBatParticles();
+        addDeltaMovement(new Vec3(0.0, Math.sin(tickCount * 0.2) * 0.03, 0.0));
+        if (!level().isClientSide) return;
+        switch (variant) {
+            case HELL -> spawnHellBatParticles();
+            case ICE -> spawnIceBatParticles();
         }
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (getType() == MonsterEntities.HELL_BAT.get() && source.is(DamageTypeTags.IS_FIRE))
-            return false;
+        if (variant == Variant.HELL && source.is(DamageTypeTags.IS_FIRE)) return false;
         return super.hurt(source, amount);
     }
 
@@ -93,5 +101,12 @@ public class CaveBat extends BaseFlyingMonster {
     @Override
     protected SoundEvent getDeathSound() {
         return ModSoundEvents.BAT_DEATH.get();
+    }
+
+    /// 只保存同一套蝙蝠行为的环境表现差异。
+    public enum Variant {
+        ROUTINE,
+        ICE,
+        HELL
     }
 }

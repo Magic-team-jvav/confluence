@@ -46,6 +46,11 @@ public abstract class BaseCasterMonster extends BaseMonster {
     }
 
     @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
+    @Override
     protected BTRoot createBT() {
         if (cycleMode == CycleMode.SHARED_1_21) {
             if (sharedCycleAction == null) {

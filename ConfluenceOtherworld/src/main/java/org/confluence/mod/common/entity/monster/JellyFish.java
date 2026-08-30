@@ -36,11 +36,12 @@ import software.bernie.geckolib.core.animation.AnimationController;
 /// 三种水母共用的脉冲游动与两阶段战斗实现。
 ///
 /// 水母并不是持续贴身攻击的普通鱼类。发现水中的玩家后，它会先追逐 150 tick，
-/// 再停止寻路并进入 80 tick 的快速脉冲阶段，随后主动释放目标并重新游荡。阶段字段由
+/// 再停止寻路并进入 80 tick 的定向脉冲阶段，随后主动释放目标并重新游荡。阶段字段由
 /// 服务端同步，客户端只据此选择动画，不自行推算战斗时序。
 public class JellyFish extends BaseAquaticMonster {
     private static final int PURSUIT_TICKS = 150;
     private static final int PULSE_TICKS = 80;
+    private static final int ATTACK_PULSE_INTERVAL = 20;
     private static final EntityDataAccessor<Boolean> ATTACK_PHASE = SynchedEntityData.defineId(JellyFish.class, EntityDataSerializers.BOOLEAN);
 
     /// 渲染器使用相邻两次有效速度插值模型朝向，避免每次脉冲时突然翻转。
@@ -98,6 +99,13 @@ public class JellyFish extends BaseAquaticMonster {
         entityData.set(ATTACK_PHASE, attackPhase);
     }
 
+    /// 1.21 侧虽然有攻击阶段和攻击动画，却没有注册任何伤害入口。
+    /// 水母作为敌对水生生物使用与其他接触型敌怪相同的独立冷却，不把伤害绑在动画帧上。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
     @Override
     public void tick() {
         if (level().isClientSide && getDeltaMovement().length() > 0.08) {
@@ -130,10 +138,11 @@ public class JellyFish extends BaseAquaticMonster {
         return ModSoundEvents.JELLYFISH_DEATH.get();
     }
 
-    /// 复现 1.21 的追逐—脉冲循环，同时把状态切换保留在新的行为树架构内。
+    /// 保留 1.21 的追逐—脉冲周期，并补足原实现攻击阶段缺失的定向推进。
     private static final class JellyFishCombatAction extends BTNode {
         private final JellyFish jellyfish;
         private int phaseTicks;
+        private int repathTicks;
 
         private JellyFishCombatAction(JellyFish jellyfish) {
             this.jellyfish = jellyfish;
@@ -142,6 +151,7 @@ public class JellyFish extends BaseAquaticMonster {
         @Override
         public void start() {
             phaseTicks = 0;
+            repathTicks = 0;
             jellyfish.setAttackPhase(false);
         }
 
@@ -156,7 +166,10 @@ public class JellyFish extends BaseAquaticMonster {
 
             if (phaseTicks < PURSUIT_TICKS) {
                 jellyfish.setAttackPhase(false);
-                jellyfish.getNavigation().moveTo(target, 1.0);
+                if (--repathTicks <= 0 || jellyfish.getNavigation().isDone()) {
+                    jellyfish.getNavigation().moveTo(target, 1.0);
+                    repathTicks = 10;
+                }
                 phaseTicks++;
                 return BTStatus.RUNNING;
             }
@@ -165,6 +178,9 @@ public class JellyFish extends BaseAquaticMonster {
                 if (!jellyfish.isAttackPhase()) {
                     jellyfish.getNavigation().stop();
                     jellyfish.setAttackPhase(true);
+                }
+                if ((phaseTicks - PURSUIT_TICKS) % ATTACK_PULSE_INTERVAL == 0) {
+                    pulseToward(target);
                 }
                 phaseTicks++;
                 return BTStatus.RUNNING;
@@ -178,7 +194,20 @@ public class JellyFish extends BaseAquaticMonster {
         @Override
         public void stop() {
             phaseTicks = 0;
+            repathTicks = 0;
             jellyfish.setAttackPhase(false);
+        }
+
+        /// 每次收缩都朝目标中心推进，避免攻击阶段只发光却停在原地。
+        private void pulseToward(net.minecraft.world.entity.LivingEntity target) {
+            Vec3 direction = jellyfish.position().vectorTo(
+                    target.position().add(0.0, target.getBbHeight() * 0.5, 0.0));
+            if (direction.lengthSqr() <= 1.0E-6) {
+                return;
+            }
+            jellyfish.setDeltaMovement(direction.normalize().scale(0.5));
+            jellyfish.getLookControl().setLookAt(target, 30.0F, 30.0F);
+            jellyfish.hasImpulse = true;
         }
     }
 
@@ -216,7 +245,7 @@ public class JellyFish extends BaseAquaticMonster {
                 float targetYaw = (float) (Mth.atan2(zDistance, xDistance) * Mth.RAD_TO_DEG) - 90.0F;
                 mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
                 mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
-                mob.setDeltaMovement(mob.getDeltaMovement().normalize().scale(0.5));
+                mob.setDeltaMovement(new Vec3(xDistance, yDistance, zDistance).normalize().scale(0.5));
 
                 BlockPos blockPos = mob.blockPosition();
                 BlockState blockState = mob.level().getBlockState(blockPos);
@@ -236,6 +265,7 @@ public class JellyFish extends BaseAquaticMonster {
             }
 
             if (mob.getTarget() != null) {
+                mob.lookAt(mob.getTarget(), 10.0F, 10.0F);
                 mob.getLookControl().setLookAt(mob.getTarget(), 10.0F, 10.0F);
             }
         }

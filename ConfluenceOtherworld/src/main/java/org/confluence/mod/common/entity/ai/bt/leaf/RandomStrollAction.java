@@ -12,6 +12,7 @@ public class RandomStrollAction extends BTNode {
     protected final double speed;
     protected final int horizontalRange;
     protected int tick;
+    private boolean pathStarted;
     protected static final int TIMEOUT = 100;
 
     public RandomStrollAction(PathfinderMob mob, double speed, int horizontalRange) {
@@ -24,17 +25,27 @@ public class RandomStrollAction extends BTNode {
     public void start() {
         tick = 0;
         Vec3 target = DefaultRandomPos.getPos(mob, horizontalRange, 4);
-        if (target != null) {
-            mob.getNavigation().moveTo(target.x, target.y, target.z, speed);
-        }
+        pathStarted = target != null
+                && mob.getNavigation().moveTo(target.x, target.y, target.z, speed);
     }
 
     @Override
     public BTStatus execute() {
+        if (!pathStarted) {
+            return BTStatus.FAILURE;
+        }
         tick++;
         if (tick > TIMEOUT || mob.getNavigation().isDone()) {
             return BTStatus.SUCCESS;
         }
         return BTStatus.RUNNING;
+    }
+
+    @Override
+    public void stop() {
+        if (pathStarted) {
+            mob.getNavigation().stop();
+            pathStarted = false;
+        }
     }
 }

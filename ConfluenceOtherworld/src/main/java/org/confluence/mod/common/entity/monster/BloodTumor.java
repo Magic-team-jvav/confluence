@@ -17,10 +17,16 @@ public final class BloodTumor extends BaseMonster {
         super(type, level);
     }
 
+    /// 肿瘤只是定时孵化载体，不会因玩家接触而造成伤害。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
+
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide && isAlive() && tickCount == 60 + Math.floorMod(getId(), 40)) {
+        if (!level().isClientSide && isAlive() && tickCount >= 60 + Math.floorMod(getId(), 40)) {
             transform();
         }
     }
@@ -40,8 +46,11 @@ public final class BloodTumor extends BaseMonster {
         }
         replacement.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
         replacement.setDeltaMovement(0.0, 0.4, 0.0);
-        serverLevel.addFreshEntity(replacement);
-        kill();
+        if (serverLevel.addFreshEntity(replacement)) {
+            kill();
+        } else {
+            replacement.discard();
+        }
     }
 
     @Override

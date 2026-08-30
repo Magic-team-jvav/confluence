@@ -10,7 +10,7 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.PhasedFlyingPursuitAction;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -36,7 +36,9 @@ public class CursedSkull extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(SequenceNode.of(new HasTargetCondition(CursedSkull.this), pursuit), new FlyWanderAction(CursedSkull.this, 0.15, 10));
+                return SelectorNode.of(
+                        SequenceNode.of(new HasTargetCondition(CursedSkull.this), pursuit),
+                        new LookForwardWanderFlyAction(CursedSkull.this, 0.18, 0.0F));
             }
         };
     }

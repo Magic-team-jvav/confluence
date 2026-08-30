@@ -22,8 +22,7 @@ import java.util.function.Function;
 public final class FlyingVolleyCombatAction extends BTNode {
     private final PathfinderMob mob;
     private final SteeringDashAction approachAction;
-    private final Function<LivingEntity, @Nullable Projectile>
-            projectileFactory;
+    private final Function<LivingEntity, @Nullable Projectile> projectileFactory;
     private final int approachTicks;
     private final int[] shotTicks;
     private int cycleTick;
@@ -66,9 +65,11 @@ public final class FlyingVolleyCombatAction extends BTNode {
         if (cycleTick <= approachTicks) {
             return approachAction.execute();
         }
+        if (cycleTick == approachTicks + 1) approachAction.stop();
 
-        mob.getLookControl().setLookAt(target, 5.0F, 80.0F);
         mob.setDeltaMovement(mob.getDeltaMovement().scale(0.95));
+        mob.lookAt(target, 5.0F, 80.0F);
+        mob.getLookControl().setLookAt(target, 5.0F, 80.0F);
         if (Arrays.binarySearch(shotTicks, cycleTick) >= 0 && !spawnProjectile(target)) {
             return BTStatus.FAILURE;
         }
@@ -80,9 +81,20 @@ public final class FlyingVolleyCombatAction extends BTNode {
         return BTStatus.RUNNING;
     }
 
+    @Override
+    public void stop() {
+        approachAction.stop();
+    }
+
     private boolean spawnProjectile(LivingEntity target) {
         Projectile projectile = projectileFactory.apply(target);
-        return projectile != null
-                && mob.level().addFreshEntity(projectile);
+        if (projectile == null) {
+            return false;
+        }
+        if (mob.level().addFreshEntity(projectile)) {
+            return true;
+        }
+        projectile.discard();
+        return false;
     }
 }

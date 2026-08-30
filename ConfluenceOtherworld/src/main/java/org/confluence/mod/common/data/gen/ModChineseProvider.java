@@ -23,6 +23,13 @@ public class ModChineseProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        // 先为没有专用译名的实体提供兜底名称；后续显式中文翻译必须能够覆盖它。
+        ModEntities.getEntities().forEach(register -> register.getEntries()
+                .forEach(entity -> {
+                    if (entity.getId() != null) {
+                        add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath()));
+                    }
+                }));
         addMountAndHostileProjectileTranslations();
         add("tooltip.confluence.rideable_item.desc", "按下快捷键以骑乘。默认 R 键");
 
@@ -1089,6 +1096,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.welcome", "欢迎来到泰拉瑞亚");
         add("event.confluence.npc.arrived", "%1$s%2$s已到达！");
         add("event.confluence.npc.slain", "%1$s%2$s被杀死了……");
+        add("event.confluence.npc.slain.unnamed", "%s被杀死了……");
         add("event.confluence.npc.left", "%s已离开！");
         add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
         add("event.confluence.npc_invitation", "请柬已送达，区块坐标为[%1$s, %2$s]到[%3$s, %4$s]的区域将会添加一批新的NPC！");
@@ -4833,12 +4841,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.RAGGED_CASTER.get(), "褛褴邪教徒法师");
         add(MonsterEntities.ARCH_WYVERN.get(), "大飞龙");
         add(MonsterEntities.SLIMER.get(), "恶翼史莱姆");
-        ModEntities.getEntities().forEach(register -> register.getEntries()
-                .forEach(entity -> {
-                    if (entity.getId() != null) {
-                        add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath()));
-                    }
-                }));
     }
 
     /// 添加链锤名称。

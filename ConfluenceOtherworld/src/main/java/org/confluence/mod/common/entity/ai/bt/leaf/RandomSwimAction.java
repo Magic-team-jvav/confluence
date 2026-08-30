@@ -50,4 +50,12 @@ public class RandomSwimAction extends BTNode {
         }
         return BTStatus.RUNNING;
     }
+
+    @Override
+    public void stop() {
+        if (pathStarted) {
+            mob.getNavigation().stop();
+            pathStarted = false;
+        }
+    }
 }

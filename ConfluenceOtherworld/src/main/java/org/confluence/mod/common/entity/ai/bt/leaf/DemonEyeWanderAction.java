@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
@@ -9,8 +10,7 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 恶魔眼在夜间没有目标时的游荡行为。
 ///
-/// 首次游荡高度会成为固定基准，之后每三十刻在周围十五格重新选择航点。该规则与
-/// 1.21 的实现一致，避免通用随机飞行行为不断改变高度并逐渐贴地。
+/// 首轮记录生成高度，之后始终围绕该高度选择航点，避免随机游荡逐轮向地面漂移。
 public final class DemonEyeWanderAction extends BTNode {
     private final PathfinderMob mob;
     private double anchorY = Double.NaN;
@@ -26,9 +26,7 @@ public final class DemonEyeWanderAction extends BTNode {
     public void start() {
         locateCount++;
         mob.setDeltaMovement(mob.getDeltaMovement().with(Direction.Axis.Y, 0.0));
-        if (Double.isNaN(anchorY)) {
-            anchorY = mob.getY();
-        }
+        if (Double.isNaN(anchorY)) anchorY = mob.getY();
 
         double x = mob.getRandom().nextDouble() * 10.0 - 5.0;
         double z = mob.getRandom().nextDouble() * 10.0 - 5.0;
@@ -53,6 +51,8 @@ public final class DemonEyeWanderAction extends BTNode {
             mob.setDeltaMovement(nextMovement);
             mob.hasImpulse = true;
         }
+        mob.getLookControl().setLookAt(targetPos.x, targetPos.y, targetPos.z, 30.0F, 85.0F);
+        mob.lookAt(EntityAnchorArgument.Anchor.EYES, targetPos);
         ticksLeft--;
         return BTStatus.RUNNING;
     }

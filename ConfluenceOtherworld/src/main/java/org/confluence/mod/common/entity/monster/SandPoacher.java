@@ -56,8 +56,12 @@ public class SandPoacher extends BaseMonster {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        /// 沙贼原本继承蜘蛛，因此除玩家外也会主动攻击铁傀儡。
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
     }
 
     @Override

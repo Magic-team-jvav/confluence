@@ -1,15 +1,11 @@
 package org.confluence.mod.common.entity.monster.slime;
 
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
-/// 尖刺冰雪史莱姆 —— 尖刺 + 攻击附加缓慢效果。
+/// 尖刺冰雪史莱姆 —— 远距离发射带霜冻效果的冰刺。
 public class SpikedIceSlime extends SpikedSlime {
 
     public SpikedIceSlime(EntityType<? extends BaseSlime> type, Level level) {
@@ -30,10 +26,4 @@ public class SpikedIceSlime extends SpikedSlime {
         return true;
     }
 
-    @Override
-    protected void onAttackTarget(LivingEntity target) {
-        if (LibUtils.isMaster(level(), blockPosition()) || (LibUtils.isAtLeastExpert(level(), blockPosition()) && random.nextBoolean())) {
-            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 0), this);
-        }
-    }
 }

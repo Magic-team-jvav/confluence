@@ -10,10 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -21,9 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.leaf.PanicFleeAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -87,10 +82,11 @@ public abstract class BaseCritter extends Animal implements GeoEntity {
 
     /// 为被动小动物包装可抢占的恐慌分支。
     ///
-    /// 原版 Panic 只在受伤或着火后触发，普通玩家靠近不会被视为威胁。条件切换节点会在
-    /// 每个 tick 重新判断，因而小动物在巡游途中受伤时可以立即中断当前动作并逃离。
+    /// 原版 Panic 使用受伤时间戳区分一次新的攻击；不能只检查攻击者引用，否则小动物会在
+    /// 受击结束后仍永久重复逃跑。优先级选择器每 tick 探测该目标，既能立即抢占巡游，也会
+    /// 在一轮逃生完成后恢复日常行为，并保留着火时寻找水源等原版处理。
     protected final BTNode withPassivePanic(BTNode routine, double panicSpeed) {
-        return new ConditionalSwitchNode(() -> getLastHurtByMob() != null || isOnFire(), new PanicFleeAction(this, panicSpeed), routine);
+        return SelectorNode.of(new VanillaGoalAction(new PanicGoal(this, panicSpeed)), routine);
     }
 
     /// 创建 1.21 地面小动物共用的日常行为。

@@ -9,7 +9,7 @@ import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 
 /// 发射粉色能量弹幕的腹足怪。
-public final class Gastropod extends RangedMonster {
+public final class Gastropod extends RangedFlyingMonster {
     public Gastropod(EntityType<? extends Gastropod> type, Level level) {
         super(type, level, 55, 0.8);
     }

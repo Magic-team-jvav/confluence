@@ -50,6 +50,8 @@ public final class CasterCycleAction extends BTNode {
         if (target == null || !target.isAlive()) {
             removeBattleRange();
             phase = CYCLE_TICKS;
+            releaseDelay = -1;
+            lastCastPhase = CYCLE_TICKS;
             return BTStatus.FAILURE;
         }
 
@@ -65,6 +67,7 @@ public final class CasterCycleAction extends BTNode {
         if (--releaseDelay == 0) {
             Projectile projectile = projectileFactory.apply(target);
             if (projectile == null || !caster.level().addFreshEntity(projectile)) {
+                if (projectile != null) projectile.discard();
                 return BTStatus.FAILURE;
             }
         }
@@ -82,10 +85,9 @@ public final class CasterCycleAction extends BTNode {
         removeBattleRange();
     }
 
-    /// 受击成功后跳过当前预施法，和 1.21 的法师打断语义保持一致。
+    /// 受击成功后把大周期推进到上一个施法点之后；已经开始的八 tick 释放延迟仍会完成。
     public void interruptAfterHurt() {
         phase = lastCastPhase - 1;
-        releaseDelay = -1;
     }
 
     private static boolean isCastPhase(int value) {

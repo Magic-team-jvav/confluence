@@ -54,6 +54,7 @@ public class BloodySpore extends BaseMonster {
 
     public BloodySpore(EntityType<? extends BloodySpore> type, Level level) {
         super(type, level);
+        xpReward = 20;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -75,8 +76,12 @@ public class BloodySpore extends BaseMonster {
 
     @Override
     public void tick() {
+        oldSwell = getSwell();
+        if (level().isClientSide) {
+            super.tick();
+            return;
+        }
         if (isAlive()) {
-            oldSwell = getSwell();
             if (entityData.get(IGNITED)) swellDirection = 1;
             if (swellDirection > 0 && getSwell() == 0) {
                 playSound(ModSoundEvents.BLOODY_SPORE_FUSE.get(), 1.0F, 0.5F);
@@ -156,6 +161,12 @@ public class BloodySpore extends BaseMonster {
         return true;
     }
 
+    /// 血腥芽孢对应原版苦力怕链，只通过引信爆裂造成伤害。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
+
     private final class SwellAndBurstAction extends BTNode {
         @Override
         public void start() {
@@ -192,7 +203,7 @@ public class BloodySpore extends BaseMonster {
             tumor.setPos(position());
             double angle = offset * index * Math.PI;
             tumor.setDeltaMovement(new Vec3(Math.sin(angle) * 0.3, random.nextDouble() * 0.5 + 0.2, Math.cos(angle) * 0.3));
-            serverLevel.addFreshEntity(tumor);
+            if (!serverLevel.addFreshEntity(tumor)) tumor.discard();
         }
         discard();
     }

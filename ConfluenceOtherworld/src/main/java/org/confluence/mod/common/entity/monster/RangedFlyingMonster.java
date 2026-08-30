@@ -4,6 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.entity.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -12,7 +13,7 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.SpawnProjectileAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
@@ -32,6 +33,7 @@ public class RangedFlyingMonster extends BaseFlyingMonster {
 
     public RangedFlyingMonster(EntityType<? extends RangedFlyingMonster> type, Level level, int shotCooldown, double shotMultiplier) {
         super(type, level);
+        setDiscardFriction(true);
         this.shotCooldown = shotCooldown;
         this.shotMultiplier = shotMultiplier;
     }
@@ -52,20 +54,23 @@ public class RangedFlyingMonster extends BaseFlyingMonster {
                                         behavior.orbitSpeedOr(0.28), behavior.orbitRadiusOr(7)),
                                 new SpawnProjectileAction(
                                         RangedFlyingMonster.this,
-                                        RangedFlyingMonster.this::createVileSpit),
+                                        RangedFlyingMonster.this::createProjectile),
                                 new WaitAction(behavior.shotCooldownOr(shotCooldown))),
-                        new FlyWanderAction(RangedFlyingMonster.this,
-                                behavior.wanderSpeedOr(0.18), behavior.wanderRadiusOr(10)));
+                        new LookForwardWanderFlyAction(RangedFlyingMonster.this, behavior.wanderSpeedOr(0.18), 0.0F));
             }
         };
     }
 
-    HostileParticleProjectile createVileSpit(LivingEntity target) {
+    protected Projectile createProjectile(LivingEntity target) {
         HostileParticleProjectile projectile = ModEntities.VILE_SPIT_PROJECTILE.get().create(level());
         if (projectile == null) {
             return null;
         }
-        projectile.configure(this, target, (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * creatureDefinition().behavior().shotMultiplierOr(shotMultiplier)));
+        projectile.configure(this, target, (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * shotMultiplier()));
         return projectile;
+    }
+
+    protected final double shotMultiplier() {
+        return creatureDefinition().behavior().shotMultiplierOr(shotMultiplier);
     }
 }

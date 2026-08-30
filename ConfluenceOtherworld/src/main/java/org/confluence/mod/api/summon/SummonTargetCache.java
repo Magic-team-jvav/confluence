@@ -155,8 +155,8 @@ public final class SummonTargetCache {
     private static @Nullable LivingEntity selectPartTarget(ServerLevel level, ServerPlayer owner, Vec3 origin, double automaticRange) {
         AABB searchBox = AABB.ofSize(origin, automaticRange * 2.0, automaticRange * 2.0, automaticRange * 2.0);
         for (Entity part : level.getEntities(owner, searchBox, entity -> entity.isAlive() && entity.isPickable())) {
-            Entity impacted = ProjectileHitRules.impactedEntity(part);
-            if (impacted == part || !(impacted instanceof LivingEntity candidate)) continue;
+            LivingEntity candidate = ProjectileHitRules.logicalLivingTarget(part);
+            if (candidate == null || candidate == part) continue;
             if (isValidTarget(owner, candidate, Double.MAX_VALUE, false)
                     && hasLineOfSight(level, owner, origin, part.getEyePosition()))
                 return candidate;

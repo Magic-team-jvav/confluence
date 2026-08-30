@@ -7,7 +7,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
+import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
+import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.DirectFloatingPursuitAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -33,7 +37,9 @@ public class Ghost extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return new DirectFloatingPursuitAction(Ghost.this);
+                return SelectorNode.of(
+                        SequenceNode.of(new HasTargetCondition(Ghost.this), new DirectFloatingPursuitAction(Ghost.this)),
+                        new LookForwardWanderFlyAction(Ghost.this, 0.18, 0.0F));
             }
         };
     }

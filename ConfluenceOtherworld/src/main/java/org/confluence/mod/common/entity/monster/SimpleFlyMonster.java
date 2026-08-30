@@ -11,7 +11,7 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.SteeringDashAction;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -41,6 +41,7 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
         this.wanderSpeed = wanderSpeed;
         this.playFlyAnimation = playFlyAnimation;
         this.soundProfile = soundProfile;
+        setDiscardFriction(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -67,7 +68,7 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
                                         profile.triggerAngleDegrees(),
                                         profile.steeringAngleDegrees(),
                                         profile.coastTicks())),
-                        new FlyWanderAction(self, behavior.wanderSpeedOr(wanderSpeed), behavior.wanderRadiusOr(8)));
+                        new LookForwardWanderFlyAction(self, behavior.wanderSpeedOr(wanderSpeed), 0.0F));
             }
         };
     }
@@ -128,7 +129,7 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
         }
 
         public static DashProfile standard(double maxSpeed) {
-            return new DashProfile(0.95, maxSpeed, 0.02, 10.0, 10.0, 45.0, 15);
+            return new DashProfile(0.95, maxSpeed, 0.01, 10.0, 10.0, 10.0, 15);
         }
 
         DashProfile withMaxSpeed(double value) {

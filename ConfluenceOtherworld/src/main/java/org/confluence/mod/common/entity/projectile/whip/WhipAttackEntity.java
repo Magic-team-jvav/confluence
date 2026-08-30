@@ -296,29 +296,31 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         }
         List<Entity> candidates = level().getEntities(this, bounds.inflate(radius), rawTarget -> {
             Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
-            return impacted instanceof LivingEntity living
+            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
+            return logicalTarget != null
                     && impacted != owner
                     && canHitAgain(impacted.getUUID())
                     && (ProjectileHitRules.canHit(owner, rawTarget)
-                    || isFriendlySummon(owner, living, definition));
+                    || isFriendlySummon(owner, logicalTarget, definition));
         });
         for (Entity rawTarget : candidates) {
             Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
-            if (!(impacted instanceof LivingEntity target) || !canHitAgain(impacted.getUUID())) {
+            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
+            if (logicalTarget == null || !canHitAgain(impacted.getUUID())) {
                 continue;
             }
             if (!WhipCollisionGeometry.intersectsSweptCurve(previousCurve, currentCurve, rawTarget.getBoundingBox().inflate(radius))) {
                 continue;
             }
             if (!definition.penetratesBlocks() && !canReachTarget(owner, rawTarget)) {
-                delayNextHit(target.getUUID(), definition);
+                delayNextHit(impacted.getUUID(), definition);
                 continue;
             }
-            if (applyFriendlyHit(owner, target, definition)) {
-                delayNextHit(target.getUUID(), definition);
+            if (applyFriendlyHit(owner, logicalTarget, definition)) {
+                delayNextHit(impacted.getUUID(), definition);
                 continue;
             }
-            hitTarget(owner, rawTarget, target, definition);
+            hitTarget(owner, impacted, logicalTarget, definition);
         }
     }
 
@@ -353,24 +355,24 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         }
     }
 
-    private void hitTarget(LivingEntity owner, Entity rawTarget, LivingEntity target, WhipDefinition definition) {
-        if (!canHitAgain(target.getUUID())) {
+    private void hitTarget(LivingEntity owner, Entity impacted, LivingEntity logicalTarget, WhipDefinition definition) {
+        if (!canHitAgain(impacted.getUUID())) {
             return;
         }
         float baseDamage = getDamage() > 0.0F ? getDamage() : definition.baseDamage();
         float multiplier = Math.max(definition.minimumDamageMultiplier(), (float) Math.pow(definition.damageFalloff(), successfulHits));
         float damage = baseDamage * multiplier
                 * (1.0F + sweepLevel() * 0.2F);
-        delayNextHit(target.getUUID(), definition);
+        delayNextHit(impacted.getUUID(), definition);
         int hitIndex = successfulHits++;
         if (owner instanceof Player player) {
             consumeDurabilityAfterFirstEnemyHit(player);
-            player.setLastHurtMob(target);
-            WhipTagTracker.apply(player, target, weapon(), definition.tagEffect().get());
-            WhipDirectHitContext context = new WhipDirectHitContext(player, target, weapon(), damage, hitIndex);
+            player.setLastHurtMob(logicalTarget);
+            WhipTagTracker.apply(player, logicalTarget, weapon(), definition.tagEffect().get());
+            WhipDirectHitContext context = new WhipDirectHitContext(player, logicalTarget, weapon(), damage, hitIndex);
             definition.directHitEffects().forEach(effect -> effect.apply(context));
         }
-        LibDamageTypes.hurtWithoutKnockback(rawTarget, LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), damage);
+        LibDamageTypes.hurtWithoutKnockback(impacted, LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), damage);
     }
 
     private boolean canHitAgain(UUID targetId) {

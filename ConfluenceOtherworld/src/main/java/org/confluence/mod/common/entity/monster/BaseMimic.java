@@ -32,7 +32,7 @@ public class BaseMimic extends BaseMonster {
     private static final RawAnimation CLOSED = RawAnimation.begin().thenLoop("Closed state");
     private static final RawAnimation OPEN = RawAnimation.begin().thenPlayAndHold("Open");
     private static final RawAnimation JUMP = RawAnimation.begin().thenPlayAndHold("Jump");
-    private static final RawAnimation CLOSE = RawAnimation.begin().thenPlayAndHold("Closed");
+    private static final RawAnimation CLOSE = RawAnimation.begin().thenPlay("Closed");
     private static final MimicPose[] POSES = MimicPose.values();
 
     private int action;
@@ -76,8 +76,21 @@ public class BaseMimic extends BaseMonster {
     }
 
     @Override
+    protected boolean mustSeePlayerTarget() {
+        return true;
+    }
+
+    @Override
     protected boolean hasEntityContactAttack() {
         return true;
+    }
+
+    /// 宝箱怪的跳跃、追踪冲刺和悬浮攻击属于自身移动技能，落地不能反过来伤害施法者。
+    /// 在公共基类处理可覆盖全部普通与困难模式变体，也避免特殊攻击结束时残留的
+    /// {@code fallDistance} 因瞬间恢复重力而结算摔落伤害。
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        return false;
     }
 
     @Override
@@ -189,9 +202,20 @@ public class BaseMimic extends BaseMonster {
             return;
         }
         if (action == 9) {
-            Vec3 direction = target.position().add(0.0, 5.0, 0.0).subtract(position());
-            addDeltaMovement(direction.scale(0.03));
-            if (distanceToSqr(target) < 2.0) setDeltaMovement(getDeltaMovement().scale(0.95));
+            Vec3 destination = target.position().add(0.0, 5.0, 0.0);
+            Vec3 direction = destination.subtract(position());
+            Vec3 acceleration = direction.scale(0.03);
+            if (acceleration.lengthSqr() > 0.15 * 0.15) {
+                acceleration = acceleration.normalize().scale(0.15);
+            }
+            Vec3 velocity = getDeltaMovement().add(acceleration);
+            if (velocity.lengthSqr() > 1.0) {
+                velocity = velocity.normalize();
+            }
+            if (direction.lengthSqr() < 2.0) {
+                velocity = velocity.scale(0.8);
+            }
+            setDeltaMovement(velocity);
             if (--actionTicks <= 0) {
                 setGravity(0.08);
                 resetAttackCycle();

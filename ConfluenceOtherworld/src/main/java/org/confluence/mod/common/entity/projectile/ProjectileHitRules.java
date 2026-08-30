@@ -54,6 +54,12 @@ public final class ProjectileHitRules {
         return rawTarget;
     }
 
+    /// 将原始碰撞实体解析为可用于召唤物锁定的生命实体。
+    public static @Nullable LivingEntity logicalLivingTarget(Entity rawTarget) {
+        Entity impacted = impactedEntity(rawTarget);
+        return impacted instanceof LivingEntity living ? living : null;
+    }
+
     /// 应用已经在发射快照中解析完成的击退。
     ///
     /// 这里故意不再读取攻击者当前 {@code ATTACK_KNOCKBACK}，只保留受击者的击退抗性，

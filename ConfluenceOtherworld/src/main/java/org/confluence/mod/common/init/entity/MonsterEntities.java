@@ -58,7 +58,7 @@ public class MonsterEntities {
 
     // 陆行怪
     public static final RegistryObject<EntityType<Zombie>> ZOMBIE = registerEntity("zombie", EntityType.Builder.<Zombie>of(Zombie::new, MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<MeleeSkeleton>> SPORE_SKELETON = registerEntity("spore_skeleton", EntityType.Builder.of(MeleeSkeleton::new, MobCategory.MONSTER).sized(0.65F, 1.85F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<MeleeSkeleton>> SPORE_SKELETON = registerEntity("spore_skeleton", EntityType.Builder.<MeleeSkeleton>of((type, level) -> new MeleeSkeleton(type, level, true), MobCategory.MONSTER).sized(0.65F, 1.85F).clientTrackingRange(10));
     // 地牢骷髅
     public static final RegistryObject<EntityType<MeleeSkeleton>> BASE_BONES = registerSkeleton("base_bones", 0.65F, 1.85F);
     public static final RegistryObject<EntityType<MeleeSkeleton>> ANGER_BONES = registerSkeleton("anger_bones", 0.65F, 1.85F);
@@ -73,8 +73,8 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<Gastropod>> GASTROPOD = registerEntity("gastropod", EntityType.Builder.of(Gastropod::new, MobCategory.MONSTER).sized(1.2F, 1.0F).clientTrackingRange(10));
 
     // 孢子蝙蝠
-    public static final RegistryObject<EntityType<CaveBat>> SPORE_BAT = registerEntity("spore_bat", EntityType.Builder.of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<CaveBat>> GIANT_FLYING_FOX = registerEntity("giant_flying_fox", EntityType.Builder.of(CaveBat::new, MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<CaveBat>> SPORE_BAT = registerEntity("spore_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<CaveBat>> GIANT_FLYING_FOX = registerEntity("giant_flying_fox", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10));
 
     // 简单飞行怪
     public static final RegistryObject<EntityType<SimpleFlyMonster>> DRIPPLER = registerFlyer(
@@ -132,49 +132,45 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<BaseWarriorMonster>> BLOOD_ZOMBIE = registerAcceleratingLand("blood_zombie", 0.75F, 1.95F, 0.25, 0.8, true,
             BaseWarriorMonster.LandAnimationProfile.WALK_RUN_IDLE_ATTACK, BaseWarriorMonster.LandSoundProfile.ZOMBIE);
     public static final RegistryObject<EntityType<BaseWarriorMonster>> SNOW_FLINX = registerLand("snow_flinx", 1.25F, 1.25F,
-            BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.NONE, 0.8, false);
+            BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 0.8, false);
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> FACE_MONSTER = registerJumpingLand("face_monster", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(3.0, 8.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.FACE_MONSTER, 1.0);
+            new BaseWarriorMonster.JumpProfile(3.0, 8.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, BaseWarriorMonster.LandSoundProfile.FACE_MONSTER, 1.0);
     public static final RegistryObject<EntityType<BloodTumor>> BLOOD_TUMORS = registerEntity("blood_tumors", EntityType.Builder.of(BloodTumor::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<HumanoidWarriorMonster>> POSSESS_ARMOR = registerHumanoidLand("possess_armor", 1F, 2F, Items.AIR.getDefaultInstance(),
             BaseWarriorMonster.LandSoundProfile.POSSESSED_ARMOR, BaseWarriorMonster.LandAnimationProfile.NONE);
     public static final RegistryObject<EntityType<HumanoidWarriorMonster>> POSSESS_ARMOR_VOID_VESSEL = registerHumanoidLand("possess_armor_void_vessel", 1F, 2F, Items.AIR.getDefaultInstance(),
             BaseWarriorMonster.LandSoundProfile.POSSESSED_ARMOR, BaseWarriorMonster.LandAnimationProfile.NONE);
     // 木乃伊
-    public static final RegistryObject<EntityType<BaseWarriorMonster>> MUMMY = registerLand("mummy", 0.75F, 1.95F,
-            BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.NONE, 1.0, true);
+    public static final RegistryObject<EntityType<JumpingWarriorMonster>> MUMMY = registerJumpingLand("mummy", 0.75F, 1.95F,
+            new BaseWarriorMonster.JumpProfile(2.0, 4.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.0);
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> DARK_MUMMY = registerJumpingLand("dark_mummy", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(3.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.3);
+            new BaseWarriorMonster.JumpProfile(3.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.3);
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> BLOOD_MUMMY = registerJumpingLand("blood_mummy", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(3.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.3);
-    public static final RegistryObject<EntityType<BaseWarriorMonster>> LIGHT_MUMMY = registerLand("light_mummy", 0.75F, 1.95F,
-            BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.NONE, 1.0, true);
+            new BaseWarriorMonster.JumpProfile(3.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.3);
+    public static final RegistryObject<EntityType<JumpingWarriorMonster>> LIGHT_MUMMY = registerJumpingLand("light_mummy", 0.75F, 1.95F,
+            new BaseWarriorMonster.JumpProfile(2.0, 4.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.0);
     // 拉米亚
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> DARK_LAMIA = registerJumpingLand("dark_lamia", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.3);
+            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.3);
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> LIGHT_LAMIA = registerJumpingLand("light_lamia", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.3);
+            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.3);
     // 食尸鬼
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> GHOUL = registerJumpingLand("ghoul", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6);
+            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6);
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> TAINTED_GHOUL = registerJumpingLand("tainted_ghoul", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6);
+            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6);
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> VILE_GHOUL = registerJumpingLand("vile_ghoul", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6);
+            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6);
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> DREAMER_GHOUL = registerJumpingLand("dreamer_ghoul", 0.75F, 1.95F,
-            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.NONE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6);
+            new BaseWarriorMonster.JumpProfile(2.0, 5.0, 60, 0), BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6);
     public static final RegistryObject<EntityType<Paladin>> PALADIN = registerEntity("paladin", EntityType.Builder.of(Paladin::new, MobCategory.MONSTER).sized(1.2F, 2.4F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<ChargingMonster>> BONE_LEE = registerCharger("bone_lee", 0.7F, 1.9F, 0.82, 6);
     // 哥布林
     public static final RegistryObject<EntityType<GoblinArcher>> GOBLIN_ARCHER = registerEntity("goblin_archer", EntityType.Builder.of(GoblinArcher::new, MobCategory.MONSTER).sized(0.65F, 1.85F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<GoblinMonster>>
-            GOBLIN_PEON = registerGoblinLand("goblin_peon", 0.65F, 1.85F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE);
-    public static final RegistryObject<EntityType<GoblinMonster>>
-            GOBLIN_WARRIOR = registerGoblinLand("goblin_warrior", 0.65F, 1.85F, Items.STONE_SWORD.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE);
-    public static final RegistryObject<EntityType<GoblinMonster>>
-            GOBLIN_THIEF = registerGoblinLand("goblin_thief", 0.65F, 1.85F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE);
-    public static final RegistryObject<EntityType<GoblinMonster>>
-            GOBLIN_SCOUT = registerGoblinLand("goblin_scout", 0.65F, 1.85F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE);
+    public static final RegistryObject<EntityType<GoblinMonster>> GOBLIN_PEON = registerGoblinLand("goblin_peon", 0.65F, 1.85F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE);
+    public static final RegistryObject<EntityType<GoblinMonster>> GOBLIN_WARRIOR = registerGoblinLand("goblin_warrior", 0.65F, 1.85F, Items.STONE_SWORD.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE);
+    public static final RegistryObject<EntityType<GoblinMonster>> GOBLIN_THIEF = registerGoblinLand("goblin_thief", 0.65F, 1.85F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE);
+    public static final RegistryObject<EntityType<GoblinMonster>> GOBLIN_SCOUT = registerGoblinLand("goblin_scout", 0.65F, 1.85F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE);
     public static final RegistryObject<EntityType<AngerGoblin>> ANGER_GOBLIN = registerEntity("anger_goblin", EntityType.Builder.of(AngerGoblin::new, MobCategory.MONSTER).sized(0.65F, 1.85F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<BloodySpore>> BLOODY_SPORE = registerEntity("bloody_spore", EntityType.Builder.of(BloodySpore::new, MobCategory.MONSTER).sized(1, 1.5f).clientTrackingRange(10));
     public static final RegistryObject<EntityType<BloodCrawler>> BLOOD_CRAWLER = registerEntity("blood_crawler", EntityType.Builder.of(BloodCrawler::new, MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10));
@@ -189,11 +185,11 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<Shark>> SHARK = registerEntity("shark", EntityType.Builder.of(Shark::new, MobCategory.MONSTER).sized(2.5F, 1F).clientTrackingRange(10));
 
     // 蝙蝠 —— 共用 CaveBat BT，属性区分
-    public static final RegistryObject<EntityType<CaveBat>> CAVE_BAT = registerEntity("cave_bat", EntityType.Builder.of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<CaveBat>> JUNGLE_BAT = registerEntity("jungle_bat", EntityType.Builder.of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<CaveBat>> ICE_BAT = registerEntity("ice_bat", EntityType.Builder.of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<CaveBat>> GIANT_BAT = registerEntity("giant_bat", EntityType.Builder.of(CaveBat::new, MobCategory.MONSTER).sized(1.4F, 1.1F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<CaveBat>> HELL_BAT = registerEntity("hell_bat", EntityType.Builder.of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10).fireImmune());
+    public static final RegistryObject<EntityType<CaveBat>> CAVE_BAT = registerEntity("cave_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<CaveBat>> JUNGLE_BAT = registerEntity("jungle_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<CaveBat>> ICE_BAT = registerEntity("ice_bat", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.ICE), MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<CaveBat>> GIANT_BAT = registerEntity("giant_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.4F, 1.1F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<CaveBat>> HELL_BAT = registerEntity("hell_bat", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.HELL), MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10).fireImmune());
 
     // 蠕虫
     public static final RegistryObject<EntityType<BaseWormPart>> WORM_SEGMENT = registerEntity("worm_segment", EntityType.Builder.of(BaseWormPart::new, MobCategory.MISC).sized(1.5F, 1.5F).clientTrackingRange(10).updateInterval(1).noSave());
@@ -252,7 +248,7 @@ public class MonsterEntities {
     }
 
     private static RegistryObject<EntityType<MeleeSkeleton>> registerSkeleton(String name, float w, float h) {
-        return registerEntity(name, EntityType.Builder.of(MeleeSkeleton::new, MobCategory.MONSTER).sized(w, h).clientTrackingRange(10));
+        return registerEntity(name, EntityType.Builder.<MeleeSkeleton>of(MeleeSkeleton::new, MobCategory.MONSTER).sized(w, h).clientTrackingRange(10));
     }
 
     private static RegistryObject<EntityType<SimpleFlyMonster>> registerFlyer(String name, float width, float height, SimpleFlyMonster.DashProfile dashProfile, SimpleFlyMonster.SoundProfile soundProfile) {

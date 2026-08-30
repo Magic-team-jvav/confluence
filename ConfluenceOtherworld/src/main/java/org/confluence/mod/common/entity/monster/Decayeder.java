@@ -54,6 +54,12 @@ public class Decayeder extends BaseMonster {
         return true;
     }
 
+    /// 1.21 的腐骴继承远程骷髅，只由持弓/近战武器 Goal 结算攻击。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
+
     @Override
     protected BTRoot createBT() {
         return new BTRoot() {

@@ -41,6 +41,8 @@ public class Slimer extends SimpleFlyMonster {
         }
         if (level().addFreshEntity(slimeling)) {
             discard();
+        } else {
+            slimeling.discard();
         }
     }
 }

@@ -11,10 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.entity.BossEntities;
-import org.confluence.mod.common.init.entity.CritterEntities;
-import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.init.entity.*;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
@@ -136,6 +133,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         );
 
         tag(PortTags.EntityTypes.ARTHROPOD).add(
+                ModEntities.RIDEABLE_BEE.get(),
                 BossEntities.QUEEN_BEE.get(),
                 MonsterEntities.HORNET.get(),
                 MonsterEntities.LITTLE_HORNET.get(),
@@ -229,7 +227,15 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.get(),
                 MonsterEntities.DERPLING.get(),
                 MonsterEntities.SAND_POACHER.get(),
-                MonsterEntities.HERPLING.get()
+                MonsterEntities.HERPLING.get(),
+                MonsterEntities.WOODEN_MIMIC.get(),
+                MonsterEntities.GOLDEN_MIMIC.get(),
+                MonsterEntities.SHADOW_MIMIC.get(),
+                MonsterEntities.ICE_MIMIC.get(),
+                MonsterEntities.CRIMSON_MIMIC.get(),
+                MonsterEntities.CORRUPT_MIMIC.get(),
+                MonsterEntities.HALLOWED_MIMIC.get(),
+                MonsterEntities.JUNGLE_MIMIC.get()
         );
         tag(ModTags.EntityTypes.JELLY_FISH).add(MonsterEntities.PINK_JELLYFISH.get(), MonsterEntities.GREEN_JELLYFISH.get(), MonsterEntities.BLUE_JELLYFISH.get());
 

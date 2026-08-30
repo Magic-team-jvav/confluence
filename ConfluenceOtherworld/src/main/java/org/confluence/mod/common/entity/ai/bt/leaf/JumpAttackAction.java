@@ -63,7 +63,7 @@ public final class JumpAttackAction extends BTNode {
     }
 
     private boolean canLaunch(LivingEntity target) {
-        if (!mob.onGround() || mob.tickCount - lastLaunchTick < cooldownTicks) {
+        if (!mob.onGround() || mob.tickCount - lastLaunchTick <= cooldownTicks) {
             return false;
         }
         double distanceSqr = mob.distanceToSqr(target);

@@ -1,25 +1,22 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-/// 让飞行生物持续平滑追逐目标。
-///
-/// 每 tick 在当前速度上增加朝向目标的加速度，再统一限制最大速度。该方式保留转向惯性，
-/// 不会像反复设置固定冲刺向量一样在目标换边时瞬间弹转。接触伤害由飞行实体本身统一处理，
-/// 不依赖当前正在执行的行为树节点。
+/// 让使用飞行导航的敌怪持续追逐目标。
 public final class FlyingPursuitAction extends BTNode {
+    private static final int REPATH_INTERVAL = 10;
     private final PathfinderMob mob;
-    private final double acceleration;
-    private final double maxSpeed;
+    private final double navigationSpeed;
+    private int repathTicks;
 
-    public FlyingPursuitAction(PathfinderMob mob, double acceleration, double maxSpeed) {
+    public FlyingPursuitAction(PathfinderMob mob, double navigationSpeed) {
         this.mob = mob;
-        this.acceleration = acceleration;
-        this.maxSpeed = maxSpeed;
+        this.navigationSpeed = navigationSpeed;
     }
 
     @Override
@@ -29,17 +26,32 @@ public final class FlyingPursuitAction extends BTNode {
             return BTStatus.FAILURE;
         }
 
-        Vec3 offset = target.getEyePosition().subtract(mob.getEyePosition());
-        if (offset.lengthSqr() > 1.0E-6) {
-            Vec3 velocity = mob.getDeltaMovement().scale(0.96).add(offset.normalize().scale(acceleration));
-            if (velocity.lengthSqr() > maxSpeed * maxSpeed) {
-                velocity = velocity.normalize().scale(maxSpeed);
-            }
-            mob.setDeltaMovement(velocity);
-            mob.hasImpulse = true;
+        double distanceSqr = mob.distanceToSqr(target);
+        Vec3 targetPosition = target.getEyePosition();
+        Vec3 direction = targetPosition.subtract(mob.getEyePosition());
+        mob.getLookControl().setLookAt(target, 30.0F, 85.0F);
+        mob.lookAt(target, 30.0F, 85.0F);
+        Vec3 movement = mob.getDeltaMovement();
+        if (distanceSqr > 3.0 && angleBetween(movement, direction) > 0.6) {
+            mob.setDeltaMovement(movement.scale(0.95));
         }
-        mob.getLookControl().setLookAt(target, 10.0F, 80.0F);
+        if (mob.getNavigation().isDone() || --repathTicks <= 0) {
+            mob.getNavigation().moveTo(targetPosition.x, targetPosition.y, targetPosition.z, navigationSpeed);
+            repathTicks = REPATH_INTERVAL;
+        }
 
         return BTStatus.RUNNING;
+    }
+
+    @Override
+    public void stop() {
+        mob.getNavigation().stop();
+        repathTicks = 0;
+    }
+
+    private static double angleBetween(Vec3 first, Vec3 second) {
+        double product = first.length() * second.length();
+        if (product < 1.0E-6) return 0.0;
+        return Math.acos(Mth.clamp(first.dot(second) / product, -1.0, 1.0));
     }
 }

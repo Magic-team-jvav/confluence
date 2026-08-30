@@ -91,11 +91,6 @@ public class BaseWarriorMonster extends BaseMonster {
         this.ignoreLightPathCost = ignoreLightPathCost;
     }
 
-    /// 供特殊子类保留构造兼容；实际运行数值现在统一从实体属性读取。
-    protected BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double ignoredMoveSpeed, double ignoredFollowRange) {
-        this(type, level);
-    }
-
     public static AttributeSupplier.Builder createAttributes() {
         return BaseMonster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 40.0)
@@ -140,10 +135,13 @@ public class BaseWarriorMonster extends BaseMonster {
         }
         controllers.add(new AnimationController<>(this, "Walk/Idle", 5, state -> {
             state.setControllerSpeed((float) (getAttributeValue(Attributes.MOVEMENT_SPEED) / 0.25));
-            if (state.isMoving()) {
-                return state.setAndContinue(animationProfile == LandAnimationProfile.WALK_RUN_IDLE_ATTACK && isSprinting() ? RUN : WALK);
+            if (state.isMoving() || animationProfile == LandAnimationProfile.WALK_ONLY && swinging) {
+                boolean usesRun = animationProfile == LandAnimationProfile.WALK_RUN
+                        || animationProfile == LandAnimationProfile.WALK_RUN_IDLE_ATTACK;
+                return state.setAndContinue(usesRun && isSprinting() ? RUN : WALK);
             }
-            if (animationProfile != LandAnimationProfile.WALK_ONLY) {
+            if (animationProfile != LandAnimationProfile.WALK_ONLY
+                    && animationProfile != LandAnimationProfile.WALK_RUN) {
                 return state.setAndContinue(IDLE);
             }
             return PlayState.STOP;
@@ -228,6 +226,8 @@ public class BaseWarriorMonster extends BaseMonster {
     public enum LandAnimationProfile {
         NONE,
         WALK_ONLY,
+        /// 仅包含走路和奔跑资源；静止及攻击姿势由模型默认状态处理。
+        WALK_RUN,
         WALK_IDLE,
         WALK_RUN_IDLE_ATTACK
     }

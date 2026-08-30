@@ -6,7 +6,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -44,8 +43,8 @@ public final class GiantShelly extends BaseMonster {
     private static final RawAnimation RECOVER = RawAnimation.begin().thenPlayAndHold("turn2");
     private static final Phase[] PHASES = Phase.values();
     private int phaseTicks;
+    private int repathTicks;
     private boolean variantInitialized;
-    private int collisionAttackTicks = 20;
     private Vec3 wanderTarget;
 
     public GiantShelly(EntityType<? extends GiantShelly> type, Level level) {
@@ -121,17 +120,20 @@ public final class GiantShelly extends BaseMonster {
                 }
             }
         }
-        updateCollisionAttack();
     }
 
     private void updateWalking() {
         LivingEntity target = getTarget();
         if (target != null && target.isAlive()) {
-            getNavigation().moveTo(target, 1.0);
+            if (--repathTicks <= 0 || getNavigation().isDone()) {
+                getNavigation().moveTo(target, 1.0);
+                repathTicks = 10;
+            }
             return;
         }
-        if (wanderTarget != null) {
+        if (wanderTarget != null && (--repathTicks <= 0 || getNavigation().isDone())) {
             getNavigation().moveTo(wanderTarget.x, wanderTarget.y, wanderTarget.z, 1.0);
+            repathTicks = 20;
         }
     }
 
@@ -150,31 +152,25 @@ public final class GiantShelly extends BaseMonster {
         }
     }
 
-    /// 缩壳、翻滚和复原阶段都保留 1.21 的扩大碰撞攻击。
-    ///
-    /// 命中后等待 20 tick；当前范围内没有玩家时只等待 1 tick 后重试。冷却仅在
-    /// 封闭阶段推进，因此普通行走不会提前消耗下一次缩壳的首次检测时间。
-    private void updateCollisionAttack() {
-        if (getPhase().ordinal() <= Phase.WALK.ordinal()) {
-            return;
-        }
-        collisionAttackTicks--;
-        if (collisionAttackTicks > 0) {
-            return;
-        }
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return getPhase().ordinal() > Phase.WALK.ordinal();
+    }
 
-        var targets = level().getEntities(this, getBoundingBox().inflate(1.0), this::canContactAttack);
-        if (targets.isEmpty()) {
-            collisionAttackTicks = 1;
-            return;
-        }
-        for (Entity target : targets) doHurtTarget(target);
-        collisionAttackTicks = 20;
+    @Override
+    protected int contactDetectionInterval() {
+        return 1;
+    }
+
+    @Override
+    protected double contactAttackInflation() {
+        return 1.0;
     }
 
     private void setPhase(Phase phase) {
         entityData.set(PHASE, phase.ordinal());
         phaseTicks = 0;
+        repathTicks = 0;
         wanderTarget = phase == Phase.WALK ? LandRandomPos.getPos(this, 15, 7) : null;
         if (phase.ordinal() >= Phase.ENTERING_SHELL.ordinal()) {
             addShellArmor();

@@ -71,6 +71,7 @@ public final class SpawnArrowAction extends BTNode {
                 : 14.0F - shooter.level().getDifficulty().getId() * 4.0F;
         arrow.shoot(dx, dy + horizontalDistance * 0.20000000298023224, dz, velocity, inaccuracy);
         if (!shooter.level().addFreshEntity(arrow)) {
+            arrow.discard();
             return BTStatus.FAILURE;
         }
         shooter.playSound(SoundEvents.SKELETON_SHOOT, 1.0F, 1.0F / (shooter.getRandom().nextFloat() * 0.4F + 0.8F));

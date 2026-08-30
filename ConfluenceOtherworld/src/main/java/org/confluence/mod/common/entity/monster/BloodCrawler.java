@@ -57,8 +57,12 @@ public class BloodCrawler extends BaseMonster {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        /// 1.21 继承蜘蛛时会主动攻击铁傀儡；重写后必须显式保留该目标族。
         targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
     }
 
     @Override

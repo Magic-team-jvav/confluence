@@ -68,7 +68,9 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
         getAttribute(Attributes.MAX_HEALTH).setBaseValue(v.health);
         getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(v.damage);
         getAttribute(Attributes.ARMOR).setBaseValue(v.armor);
-        setHealth(getMaxHealth());
+        if (getHealth() > getMaxHealth()) {
+            setHealth(getMaxHealth());
+        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -149,6 +151,7 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
         SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
         if (tag == null || !tag.contains(VARIANT_KEY)) {
             setVariant(Variant.random(random));
+            setHealth(getMaxHealth());
         }
         return result;
     }

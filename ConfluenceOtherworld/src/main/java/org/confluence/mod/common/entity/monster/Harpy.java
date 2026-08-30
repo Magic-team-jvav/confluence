@@ -12,8 +12,8 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyingVolleyCombatAction;
+import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.SteeringDashAction;
 import org.confluence.mod.common.entity.projectile.HarpyFeatherProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -26,6 +26,7 @@ public class Harpy extends ReboundingFlyingMonster {
 
     public Harpy(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
+        setDiscardFriction(true);
     }
 
     @Override
@@ -47,13 +48,15 @@ public class Harpy extends ReboundingFlyingMonster {
 
     @Override
     protected BTRoot createBT() {
-        BTNode combat = new FlyingVolleyCombatAction(this, new SteeringDashAction(this, 0.95, 0.5, 0.02, 10.0, 90.0, 30.0, 30), this::createFeatherProjectile, 150, 171, 192, 213);
+        BTNode combat = new FlyingVolleyCombatAction(
+                this, new SteeringDashAction(this, 0.95, 0.5, 0.02, 10.0, 90.0, 30.0, 30, true),
+                this::createFeatherProjectile, 150, 171, 192, 213);
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
                 return SelectorNode.of(
                         SequenceNode.of(new HasTargetCondition(Harpy.this), combat),
-                        new FlyWanderAction(Harpy.this, 0.15, 10));
+                        new LookForwardWanderFlyAction(Harpy.this, 0.2, 0.0F));
             }
         };
     }

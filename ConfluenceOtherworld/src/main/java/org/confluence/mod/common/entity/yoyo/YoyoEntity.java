@@ -209,10 +209,10 @@ public final class YoyoEntity extends Projectile implements GeoEntity {
             }
             owner.setLastHurtMob(candidate);
             Entity impacted = ProjectileHitRules.impactedEntity(candidate);
-            if (!(impacted instanceof LivingEntity target)) continue;
             if (liveWeapon.getItem() == item)
                 liveWeapon.hurtAndBreak(1, owner, EquipmentSlot.MAINHAND);
-            item.applyHitEffect(this, owner, target);
+            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(candidate);
+            if (logicalTarget != null) item.applyHitEffect(this, owner, logicalTarget);
         }
         if (attempted) hitCooldownTicks = HIT_INTERVAL_TICKS;
     }

@@ -10,11 +10,10 @@ var projectName = [
         "TerraEntity",
         "TerraCurio",
         "TerraGuns",
-        "TerraFurniture",
-        "TheTrackers"
+        "TerraFurniture"
 ]
 
-version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
+version = mod_version + "-beta" + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
 
 base {
@@ -40,6 +39,10 @@ neoForge {
         client1 {
             client()
             programArguments.addAll "--username", "Confluence1"
+
+            jvmArguments.addAll([
+                    "-XX:+HeapDumpOnOutOfMemoryError"
+            ])
         }
         client2 {
             client()
@@ -63,9 +66,7 @@ neoForge {
                     // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
                     "-XX:+IgnoreUnrecognizedVMOptions",
                     // 启用 JetBrain Runtime 热重载功能
-                    "-XX:+AllowEnhancedClassRedefinition",
-                    // 并发修改检测
-                    //"-javaagent:mods/CMESuckMyDuck-1.0.5.jar=net/minecraft/util/ClassInstanceMultiMap;byClass;Map;nonstatic"
+                    "-XX:+AllowEnhancedClassRedefinition"
             ])
             if (isRunningInIdea) {
                 systemProperty "terminal.jline", "true"
@@ -163,9 +164,25 @@ repositories {
         name "org.confluenceSnapshots"
         url "https://maven.confluence.ink/snapshots"
     }
+    maven {
+        name = "Ageratum" // 藿香
+        url = "https://server.cjsah.net:1002/maven"
+    }
+    exclusiveContent { // Sable
+        forRepository {
+            maven {
+                url = "https://maven.ryanhcode.dev/releases"
+                name = "RyanHCode Maven"
+            }
+        }
+        filter {
+            includeGroup("dev.ryanhcode.sable")
+            includeGroup("dev.ryanhcode.sable-companion")
+        }
+    }
 }
 
-boolean sodium = true // 钠
+boolean sodium = false // 钠
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false // FTB系列
@@ -179,25 +196,49 @@ boolean legendarytooltips = false // 传说提示框
 boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
 boolean dynamicCrosshair = false // 动态准星
-boolean kubejs = true
+boolean kubejs = false
+boolean quark = false
+boolean cobblemon = false
+boolean bettercombat = false
+
+boolean offline = false
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-    implementation jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}")
-    implementation jarJar("org.mesdag:ParticleStorm:${particle_storm_version}")
-    implementation jarJar("org.mesdag.thr_dim_particle:ThreeDimensionParticle-core:${thr_dim_particle_version}")
+    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    implementation jarJar("org.mesdag:ParticleStorm-neoforge-${minecraft_version}:${particlestorm_version}")
+    implementation jarJar("org.mesdag:ThreeDimensionParticle-neoforge-${minecraft_version}:${thr_dim_particle_version}")
+    implementation jarJar("nowebsite.makertechno.the_trackers:TheTrackers:${the_trackers_version}")
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
-    implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
+    implementation 'com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version
 
-    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
-    implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
+    implementation jarJar(files('libs/LanguageFixer.jar'))
+    implementation jarJar(files('libs/datatip-1.2.6-fix-neoforge.jar'))
 
-    compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
-    if (true) {
-        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
+    if (offline) {
+        compileOnly(annotationProcessor(files("libs/mixinsquared-common-0.3.3.jar")))
+        implementation(jarJar(files("libs/mixinsquared-neoforge-0.3.3.jar")))
+    } else {
+        compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+        implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
     }
+
+    compileOnly "net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}"
+    compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    if (true) {
+        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+        runtimeOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
+        runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+        runtimeOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+
+        // 航空学 v1.1.3
+//        runtimeOnly "maven.modrinth:create-aeronautics:1sv6OtSz"
+//        runtimeOnly "maven.modrinth:sable:g8CObHcP"
+    }
+
+    api "dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}"
 
     compileOnly "curse.maven:jade-324717:6011258"
     runtimeOnly "curse.maven:jade-324717:6011258"
@@ -228,8 +269,8 @@ dependencies {
     compileOnly "curse.maven:journeymap-32274:6213329"
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
 
-    compileOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
-    //runtimeOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
+    compileOnly "curse.maven:touhou-little-maid-355044:7894267"
+//    runtimeOnly "curse.maven:touhou-little-maid-355044:7894267"
 
     compileOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
@@ -252,12 +293,12 @@ dependencies {
         runtimeOnly "curse.maven:kubejs-238086:7278501"
     }
 
-    compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
-    compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
-    if (false) {
-        runtimeOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
-        runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
-    }
+//    compileOnly "maven.modrinth:waystones:21.1.40+neoforge-1.21.1"
+//    compileOnly "maven.modrinth:balm:21.0.64+neoforge-1.21.1"
+//    if (true) {
+//        runtimeOnly "maven.modrinth:waystones:21.1.40+neoforge-1.21.1"
+//        runtimeOnly "maven.modrinth:balm:21.0.64+neoforge-1.21.1"
+//    }
 
     compileOnly "curse.maven:xaeros-minimap-263420:7412188"
     compileOnly "curse.maven:xaeros-world-map-317780:7412262"
@@ -286,14 +327,23 @@ dependencies {
     compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
 
     compileOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
-    if (false) {
+    if (bettercombat) {
         runtimeOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
-        runtimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
     }
 
     compileOnly "curse.maven:lithium-360438:6290413"
     if (false) {
         runtimeOnly "curse.maven:lithium-360438:6290413"
+    }
+
+    compileOnly "dev.anvilcraft.resource:ageratum-neoforge-1.21.1:${ageratum_version}"
+    if (false) {
+        runtimeOnly "dev.anvilcraft.resource:ageratum-neoforge-1.21.1:${ageratum_version}"
+    }
+
+    compileOnly "curse.maven:citadel-331936:7476597"
+    if (false) {
+        runtimeOnly "curse.maven:citadel-331936:7476597"
     }
 
     /**********************************************************/
@@ -311,13 +361,15 @@ dependencies {
     //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g" // 冲突真多
     //runtimeOnly "maven.modrinth:feature-recycler:2.0.0-neoforge" // 协助修复feature order cycle
     //runtimeOnly "curse.maven:fargo-soul-1315726:6819904"
-    //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
     //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
     //runtimeOnly "maven.modrinth:lootr:4dt0SxY0"
+    //runtimeOnly "curse.maven:official-divinerpg-363543:7371103"
+//    runtimeOnly "maven.modrinth:biolith:byVGeYWw"
     if (false) {
         runtimeOnly "maven.modrinth:l_enders-cataclysm:3.16"
         runtimeOnly "maven.modrinth:lionfish-api:2.6"
+        //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
     }
     if (dynamicCrosshair) {
         runtimeOnly "maven.modrinth:dynamiccrosshair:9.11+1.21.1-neoforge"
@@ -355,10 +407,13 @@ dependencies {
         runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.1.8"
         runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.5.0"
     }
-    if (observable || ftb || kubejs) {
+    if (observable || ftb || kubejs || bettercombat) {
         runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     }
-    if (observable || ipn || lootBeams) {
+    if (bettercombat) {
+        runtimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
+    }
+    if (observable || ipn || lootBeams || cobblemon) {
         runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"
     }
     if (false) {
@@ -400,13 +455,20 @@ dependencies {
         runtimeOnly "curse.maven:refurbished-furniture-897116:7473565"
         runtimeOnly "curse.maven:framework-549225:7530361"
     }
+    if (quark) {
+        runtimeOnly "curse.maven:quark-243121:7640331"
+        runtimeOnly "curse.maven:zeta-968868:7640154"
+    }
+    if (cobblemon) {
+        runtimeOnly "maven.modrinth:cobblemon:S1TrAn8c"
+        runtimeOnly "maven.modrinth:cobblemonraiddens:1fgFn6iS" // 0.7.6
+    }
 }
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [minecraft_version      : minecraft_version,
                              minecraft_version_range: minecraft_version_range,
                              neo_version            : neo_version,
-                             neo_version_range      : neo_version_range,
                              loader_version_range   : loader_version_range,
                              mod_id                 : mod_id,
                              mod_name               : mod_name,

@@ -7,11 +7,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -40,8 +39,6 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBi
     private List<Holder<Biome>> confluence$jungle;
     @Unique
     private Pair<Holder<Biome>, Holder<Biome>> confluence$biomePair;
-    @Unique
-    private Holder<Biome> confluence$protection;
 
     @TargetHandler(mixin = "terrablender.mixin.MixinMultiNoiseBiomeSource", name = "getNoiseBiome")
     @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
@@ -53,12 +50,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBi
                 confluence$jungle.addAll(set);
             }
             return confluence$jungle;
-        }, this::confluence$getBiomePair, registryAccess -> {
-            if (confluence$protection == null) {
-                this.confluence$protection = registryAccess.holderOrThrow(Biomes.PLAINS);
-            }
-            return confluence$protection;
-        });
+        }, this::confluence$getBiomePair);
     }
 
     @Override
@@ -76,7 +68,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBi
                 IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.DOUBLE_EVIL);
                 return this.confluence$biomePair = new Pair<>(null, null);
             } else if ((flag & IWorldOptions.DOUBLE_EVIL) == 0) {
-                if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
+                if (RandomSource.create(worldOptions.seed()).nextBoolean()) {
                     from = ModBiomes.THE_CORRUPTION;
                     to = ModBiomes.THE_CRIMSON;
                     IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);

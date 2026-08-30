@@ -1,5 +1,7 @@
 package org.confluence.mod.common.event.game;
 
+import net.minecraft.server.MinecraftServer;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
@@ -11,14 +13,18 @@ import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
 import org.confluence.mod.util.OverworldUtils;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class ServerEvents {
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void serverAboutToStart(ServerAboutToStartEvent event) {
         PathService.INSTANCE.onServerStart();
         NetworkService.INSTANCE.onServerStart();
+        MinecraftServer server = event.getServer();
+        TheEndBiomeHolder.open(server);
+        OverworldUtils.open(server);
     }
 
     @SubscribeEvent
@@ -30,6 +36,8 @@ public final class ServerEvents {
     @SubscribeEvent
     public static void serverStopping(ServerStoppingEvent event) {
         GameEventSystem.INSTANCE.close(event.getServer());
+        TheEndBiomeHolder.close();
+        OverworldUtils.close();
     }
 
     @SubscribeEvent

@@ -20,8 +20,9 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModLoader;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.NaturalSpawnerUtil;
+import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.CustomGameEventRegisterEvent;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -30,8 +31,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public final class GameEventSystem implements IGlobalData {
-    public static final GameEventSystem INSTANCE = new GameEventSystem();
+public enum GameEventSystem implements IGlobalData {
+    INSTANCE;
     public static final ResourceKey<GameEvent> ALL_EVENT_KEY = GameEvent.createKey(Confluence.asResource("all_event"));
 
     private final Map<ResourceKey<? extends GameEvent>, GameEvent> events = Util.make(new IdentityHashMap<>(), map -> {
@@ -48,8 +49,6 @@ public final class GameEventSystem implements IGlobalData {
     });
     private transient int startedEventAmount;
     private transient int startedNonEnvEventAmount;
-
-    private GameEventSystem() {}
 
     public void syncAll(ServerPlayer player) {
         List<ResourceKey<? extends GameEvent>> started = new ArrayList<>(events.size());
@@ -197,7 +196,7 @@ public final class GameEventSystem implements IGlobalData {
 
     public static void removeUnTracked(Set<Entity> spawned, ServerLevel level) {
         spawned.removeIf(entity -> {
-            if (LibUtils.getChunkIfLoaded(level.getChunkSource(), entity.chunkPosition()) == null) {
+            if (LibUtils.getChunkIfLoaded(level, entity.chunkPosition()) == null) {
                 entity.discard();
                 return true;
             }
@@ -205,7 +204,7 @@ public final class GameEventSystem implements IGlobalData {
         });
     }
 
-    public static void customSpawner(
+    public static int customSpawner(
             GameEvent event,
             ServerLevel level,
             Set<Entity> spawned,
@@ -216,16 +215,17 @@ public final class GameEventSystem implements IGlobalData {
             String entityTag,
             boolean setTarget
     ) {
-        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             event.forceEnd();
-            return;
+            return 0;
         }
         removeUnTracked(spawned, level);
         List<ServerPlayer> players = level.players();
-        if (spawned.size() >= base + players.size() * perPlayer) return;
+        if (spawned.size() >= base + players.size() * perPlayer) return 0;
+        int last = spawned.size();
         for (ServerPlayer player : players) {
-            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
             int interval = Mth.floor(20 * intervalFactor / speed);
@@ -236,11 +236,11 @@ public final class GameEventSystem implements IGlobalData {
             MobSpawnSettings.SpawnerData spawnerData = random.get();
             int count = data.getCount(level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount));
             for (int j = 0; j < count; j++) {
-                double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
-                double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
+                double x = LibMathUtils.randomFromTo(level.random, position.x, 24, 32);
+                double z = LibMathUtils.randomFromTo(level.random, position.z, 24, 32);
                 int cx = SectionPos.blockToSectionCoord(x);
                 int cz = SectionPos.blockToSectionCoord(z);
-                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                if (LibUtils.getChunkIfLoaded(level, cx, cz) == null) {
                     continue;
                 }
                 BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));
@@ -254,5 +254,6 @@ public final class GameEventSystem implements IGlobalData {
                 }
             }
         }
+        return spawned.size() - last;
     }
 }

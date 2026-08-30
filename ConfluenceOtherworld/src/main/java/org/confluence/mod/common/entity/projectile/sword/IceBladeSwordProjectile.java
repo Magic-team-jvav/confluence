@@ -3,7 +3,7 @@ package org.confluence.mod.common.entity.projectile.sword;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
-import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class IceBladeSwordProjectile extends ForwardSwordProjectile {
@@ -19,7 +19,8 @@ public class IceBladeSwordProjectile extends ForwardSwordProjectile {
         if (level().isClientSide && emitter == null) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost_trail"));
             emitter.attachEntity(this);
-            PSGameClient.LOADER.addEmitter(emitter, false);
+            emitter.hideOutline = true;
+            MolangParticleEngine.INSTANCE.addEmitter(emitter);
         }
     }
 }

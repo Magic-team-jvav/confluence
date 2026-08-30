@@ -18,6 +18,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.enchantment.SummonItemEffect;
+import org.confluence.mod.common.enchantment.WindBurstEnchantments;
 
 import java.util.List;
 
@@ -31,6 +32,11 @@ public final class ModEnchantments {
     public static final ResourceKey<Enchantment> SPELL_DESPERATION = Confluence.asResourceKey(Registries.ENCHANTMENT, "spell_desperation");
     public static final ResourceKey<Enchantment> MYSTIC_SURGE = Confluence.asResourceKey(Registries.ENCHANTMENT, "mystic_surge");
 
+    /** 暴风锤 — 连枷专属风爆附魔，仅实体命中触发 */
+    public static final ResourceKey<Enchantment> FLAIL_WIND_BURST = Confluence.asResourceKey(Registries.ENCHANTMENT, "flail_wind_burst");
+    /** 涡轮 — 连枷专属附魔，挥舞越久伤害和速度越高 */
+    public static final ResourceKey<Enchantment> FLAIL_TURBINE = Confluence.asResourceKey(Registries.ENCHANTMENT, "flail_turbine");
+
     public static final class EffectComponentTypes {
         public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, Confluence.MODID);
 
@@ -42,6 +48,8 @@ public final class ModEnchantments {
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_PROTECTION = registerCommon("mana_protection", LootContextParamSets.ENCHANTED_DAMAGE);
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> LESS_MANA_MORE_ATTACK = registerCommon("less_mana_more_attack", LootContextParamSets.ENCHANTED_DAMAGE);
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MORE_MANA_MORE_ATTACK = registerCommon("more_mana_more_attack", LootContextParamSets.ENCHANTED_DAMAGE);
+        /** 暴风锤效果组件（实体命中触发，非方块） */
+        public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>> WIND_BURST_AT_HIT = registerTargeted("wind_burst_at_hit", LootContextParamSets.ENCHANTED_DAMAGE);
 
         private static DeferredHolder<DataComponentType<?>, DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> registerCommon(String name, LootContextParamSet paramSet) {
             return TYPES.register(name, () -> DataComponentType.<List<ConditionalEffect<EnchantmentValueEffect>>>builder().persistent(ConditionalEffect.codec(EnchantmentValueEffect.CODEC, paramSet).listOf()).build());
@@ -61,6 +69,7 @@ public final class ModEnchantments {
 
         static {
             TYPES.register("summon_item", () -> SummonItemEffect.CODEC);
+            TYPES.register("wind_burst_at_hit", () -> WindBurstEnchantments.WindBurstAtHitEffect.CODEC);
         }
     }
 

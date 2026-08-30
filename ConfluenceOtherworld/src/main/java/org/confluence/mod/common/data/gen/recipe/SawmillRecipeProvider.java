@@ -62,11 +62,11 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
         shapeless(recipeOutput, new ItemStack(Items.SPRUCE_PLANKS, 9), Ingredient.of(ItemTags.SPRUCE_LOGS));
         shapeless(recipeOutput, new ItemStack(Items.WARPED_PLANKS, 9), Ingredient.of(ItemTags.WARPED_STEMS));
 
-        for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-            ItemLike[] logs = Streams.of(logBlockSet.LOG, logBlockSet.STRIPPED_LOG, logBlockSet.WOOD, logBlockSet.STRIPPED_WOOD).filter(DeferredHolder::isBound).toArray(ItemLike[]::new);
-            if (logs.length > 0) shapeless(recipeOutput, logBlockSet.PLANKS.toStack(9), Ingredient.of(logs));
-            if (logBlockSet.SLAB.isBound()) shapeless(recipeOutput, logBlockSet.SLAB.toStack(4), Ingredient.of(logBlockSet.PLANKS));
-            if (logBlockSet.STAIRS.isBound()) shapeless(recipeOutput, logBlockSet.STAIRS.toStack(2), Ingredient.of(logBlockSet.PLANKS));
+        for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            ItemLike[] logs = Streams.of(blockSet.LOG, blockSet.STRIPPED_LOG, blockSet.WOOD, blockSet.STRIPPED_WOOD).filter(DeferredHolder::isBound).toArray(ItemLike[]::new);
+            if (logs.length > 0) shapeless(recipeOutput, blockSet.PLANKS.toStack(9), Ingredient.of(logs));
+            if (blockSet.SLAB.isBound()) shapeless(recipeOutput, blockSet.SLAB.toStack(4), Ingredient.of(blockSet.PLANKS));
+            if (blockSet.STAIRS.isBound()) shapeless(recipeOutput, blockSet.STAIRS.toStack(2), Ingredient.of(blockSet.PLANKS));
         }
 
         shapeless(recipeOutput, new ItemStack(Items.OAK_SLAB, 4), Ingredient.of(Items.OAK_PLANKS));

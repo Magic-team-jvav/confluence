@@ -39,10 +39,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
-import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -50,6 +47,7 @@ import org.confluence.mod.common.init.item.ArrowItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -83,17 +81,17 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext placeContext) {
-        FluidState fluidstate = placeContext.getLevel().getFluidState(placeContext.getClickedPos());
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
         return defaultBlockState().setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
     @Override
-    public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pPos, BlockPos pNeighborPos) {
-        if (pState.getValue(WATERLOGGED)) {
-            pLevel.scheduleTick(pPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        if (state.getValue(WATERLOGGED)) {
+            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return pState;
+        return state;
     }
 
     public FluidState getFluidState(BlockState pState) {
@@ -106,7 +104,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return voxelShape;
     }
 
@@ -116,26 +114,26 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
-        pPlayer.awardStat(Stats.BLOCK_MINED.get(this));
-        pPlayer.causeFoodExhaustion(0.005F);
-        dropSequence(pLevel, pPos);
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        player.awardStat(Stats.BLOCK_MINED.get(this));
+        player.causeFoodExhaustion(0.005F);
+        dropSequence(level, pos);
     }
 
     @Override
-    public void wasExploded(Level pLevel, BlockPos pPos, Explosion pExplosion) {
-        dropSequence(pLevel, pPos);
+    public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
+        dropSequence(level, pos);
     }
 
     @Override
-    public void onProjectileHit(Level pLevel, BlockState pState, BlockHitResult pHit, Projectile pProjectile) {
-        BlockPos blockPos = pHit.getBlockPos();
-        Entity entity = pProjectile.getOwner();
-        if (pLevel.destroyBlock(blockPos, true, entity)) {
+    public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
+        BlockPos blockPos = hit.getBlockPos();
+        Entity entity = LibUtils.getOwner(projectile.getOwner());
+        if (level.destroyBlock(blockPos, true, entity)) {
             if (entity instanceof Player player) {
                 player.awardStat(Stats.BLOCK_MINED.get(this));
             }
-            dropSequence(pLevel, blockPos);
+            dropSequence(level, blockPos);
         }
     }
 
@@ -144,12 +142,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         Vec3 center = blockPos.getCenter();
         if (summonHole(serverLevel, center)) return;
         if (dropGoldKey(serverLevel, blockPos, center)) return;
-        if (ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel) && level.random.nextFloat() < 0.25F) {
-            BaseBombEntity bomb = new BaseBombEntity(ModEntities.BOMB_ENTITY.get(), level);
-            bomb.setPos(center);
-            level.addFreshEntity(bomb);
-            return;
-        }
+        if (ForTheWorthy.summonPoweredCreeper(serverLevel, blockPos)) return;
         if (dropPotion(serverLevel, blockPos, center)) return;
         if (dropWormhole(serverLevel, center)) return;
         boolean flag = switch (serverLevel.random.nextInt(7)) {

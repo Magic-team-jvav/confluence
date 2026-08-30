@@ -1,0 +1,19 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 26518570,
+    "separation": 28,
+    "spacing": 30,
+    "spread_type": "triangular",
+    "exclusion_zone": {
+      "chunk_count": 5,
+      "other_set": "confluence:nether_tower"
+    }
+  },
+  "structures": [
+    {
+      "structure": "confluence:obsidian_castle",
+      "weight": 1
+    }
+  ]
+}

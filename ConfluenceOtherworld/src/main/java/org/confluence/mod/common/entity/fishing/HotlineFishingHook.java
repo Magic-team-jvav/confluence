@@ -7,10 +7,10 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.IFishingHook;
 
 public class HotlineFishingHook extends AbstractFishingHook {
-    public HotlineFishingHook(Player pPlayer, Level pLevel, int pLuck, int pLureSpeed) {
-        super(ModEntities.HOTLINE_FISHING_HOOK.get(), pLevel, pLuck, pLureSpeed);
-        ((IFishingHook) this).confluence$setIsLavaHook();
-        setup(pPlayer);
+    public HotlineFishingHook(Player player, Level level, int luck, int lureSpeed) {
+        super(ModEntities.HOTLINE_FISHING_HOOK.get(), level, luck, lureSpeed);
+        IFishingHook.of(this).confluence$setIsLavaHook();
+        setup(player);
     }
 
     public HotlineFishingHook(EntityType<HotlineFishingHook> entityType, Level level) {

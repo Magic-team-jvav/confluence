@@ -10,17 +10,17 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.server.WorldStem;
-import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.level.storage.LevelStorageSource;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.mixed.ILevelLoadingScreen;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.terraentity.api.entity.IMinion;
+import org.confluence.terraentity.api.entity.ISummonMob;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -47,7 +47,7 @@ public abstract class MinecraftMixin {
     public Screen screen;
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))
-    private void setSecretFlag(LevelStorageSource.LevelStorageAccess levelStorage, PackRepository packRepository, WorldStem worldStem, boolean newWorld, CallbackInfo ci, @Local LevelLoadingScreen screen) {
+    private void setSecretFlag(CallbackInfo ci, @Local(argsOnly = true) WorldStem worldStem, @Local LevelLoadingScreen screen) {
         IWorldOptions options = IWorldOptions.of(worldStem.worldData().worldGenOptions());
         long flag = ModSecretSeeds.fixWorldOptions(options.confluence$getSecretFlag(), options.confluence$getVersion());
         ILevelLoadingScreen.of(screen).confluence$setSecretFlag(flag);
@@ -55,50 +55,50 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "shouldEntityAppearGlowing", at = @At(value = "HEAD"), cancellable = true)
     public void changeGlowOutline(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        if (player != null) {
-            GlowingHelper helper = GlowingHelper.INSTANCE;
-            // 狩猎药水
-            if (player.hasEffect(ModEffects.HUNTER)) {
-                // 自定义类别 中立生物不计入其中
-                for (Class<? extends Entity> n : helper.hunterCatalog) {
-                    if (n.isAssignableFrom(entity.getClass())) {
-                        if (SHOW_DETAIL_SPECULAR.get().isDown()) {
-                            cir.setReturnValue(true);
-                            return;
-                        }
-                        cir.setReturnValue(helper.colorMap.get(n).alwaysShow());
-                        return;
-                    }
-                }
-                // 敌人
-                if (entity instanceof Enemy) {
-                    cir.setReturnValue(true);
-                    return;
-                }
-                // 中立生物
-                if (entity instanceof NeutralMob) {
+        if (player == null) return;
+        if (entity instanceof IMinion || entity instanceof ISummonMob) return;
+        GlowingHelper helper = GlowingHelper.INSTANCE;
+        // 狩猎药水
+        if (player.hasEffect(ModEffects.HUNTER)) {
+            // 自定义类别 中立生物不计入其中
+            for (Class<? extends Entity> n : helper.hunterCatalog) {
+                if (n.isAssignableFrom(entity.getClass())) {
                     if (SHOW_DETAIL_SPECULAR.get().isDown()) {
                         cir.setReturnValue(true);
                         return;
                     }
-                    if (helper.alwaysShowNeutral) {
+                    cir.setReturnValue(helper.colorMap.get(n).alwaysShow());
+                    return;
+                }
+            }
+            // 敌人
+            if (entity instanceof Enemy) {
+                cir.setReturnValue(true);
+                return;
+            }
+            // 中立生物
+            if (entity instanceof NeutralMob) {
+                if (SHOW_DETAIL_SPECULAR.get().isDown()) {
+                    cir.setReturnValue(true);
+                    return;
+                }
+                if (helper.alwaysShowNeutral) {
+                    cir.setReturnValue(true);
+                    return;
+                }
+            }
+        }
+
+        // 危险感知药水
+        if (player.hasEffect(ModEffects.DANGER_SENSE)) {
+            for (Class<? extends Entity> n : helper.dangerCatalog) {
+                if (n.isAssignableFrom(entity.getClass())) {
+                    if (SHOW_DETAIL_SPECULAR.get().isDown()) {
                         cir.setReturnValue(true);
                         return;
                     }
-                }
-            }
-
-            // 危险感知药水
-            if (player.hasEffect(ModEffects.DANGER_SENSE)) {
-                for (Class<? extends Entity> n : helper.dangerCatalog) {
-                    if (n.isAssignableFrom(entity.getClass())) {
-                        if (SHOW_DETAIL_SPECULAR.get().isDown()) {
-                            cir.setReturnValue(true);
-                            return;
-                        }
-                        cir.setReturnValue(helper.colorMap.get(n).alwaysShow());
-                        return;
-                    }
+                    cir.setReturnValue(helper.colorMap.get(n).alwaysShow());
+                    return;
                 }
             }
         }

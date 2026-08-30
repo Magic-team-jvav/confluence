@@ -9,23 +9,22 @@ import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.network.IPacket;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.gui.MergedConfigurationScreen;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.ModPrefix;
-import org.confluence.mod.common.data.fixer.RegistriesFixer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.integration.ageratum.AgeratumHelper;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,12 +34,14 @@ public final class Confluence {
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
+    public static final boolean SOUL_SKILLS = false;
+
     public Confluence(IEventBus eventBus, ModContainer container) {
         StartupConfigs.register(container);
         CommonConfigs.register(container);
         if (LibUtils.isPhysicalClient()) {
             ClientConfigs.register(container);
-            container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+            container.registerExtensionPoint(IConfigScreenFactory.class, MergedConfigurationScreen::factory);
         }
 
         TEEvents.register(eventBus);
@@ -50,14 +51,13 @@ public final class Confluence {
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
-        WaystonesHelper.register(eventBus);
+        AgeratumHelper.register(eventBus);
         CreateHelper.register(eventBus);
         ModAdvancements.register(eventBus);
 
         TFReferences.init();
         ModFluids.initialize();
         ModPrefix.initialize();
-        RegistriesFixer.initialize();
 
         ModTabs.TABS.register(eventBus);
         ModEntities.ENTITIES.register(eventBus);
@@ -73,6 +73,9 @@ public final class Confluence {
         ModLootTables.ItemConditions.TYPES.register(eventBus);
         ModTradeLockProviderTypes.TYPES.register(eventBus);
         ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);
+        ModDensityFunctionTypes.TYPES.register(eventBus);
+
+        ModSoulSkills.register(eventBus);
     }
 
     public static void registerGameRules() {

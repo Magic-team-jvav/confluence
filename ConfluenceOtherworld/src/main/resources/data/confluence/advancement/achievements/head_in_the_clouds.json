@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:fledgling_wings"
+            "id": "terra_curio:fledgling_wings"
         },
         "title": {
             "translate": "achievements.confluence.head_in_the_clouds.title"
@@ -20,7 +20,7 @@
             "trigger": "terra_curio:curios_equipped",
             "conditions": {
                 "item": {
-                    "items": "#confluence:wings"
+                    "items": "#terra_curio:wings"
                 }
             }
         }

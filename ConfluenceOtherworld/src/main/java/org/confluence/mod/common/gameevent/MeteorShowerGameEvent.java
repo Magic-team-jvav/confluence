@@ -6,17 +6,19 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.NaturalSpawner;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.NaturalSpawnerUtil;
+import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -29,10 +31,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class MeteorShowerGameEvent implements GameEvent {
+public enum MeteorShowerGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<MeteorShowerGameEvent> KEY = GameEvent.createKey(Confluence.asResource("meteor_shower"));
-    public static final MeteorShowerGameEvent INSTANCE = new MeteorShowerGameEvent();
     public static final String ENTITY_TAG = "spawn_during_meteor_shower";
+
     private transient boolean isCelebrationMK10;
     private transient ServerLevel level;
     private transient boolean forceStart;
@@ -40,7 +43,48 @@ public final class MeteorShowerGameEvent implements GameEvent {
     private transient final Set<Entity> spawned = new HashSet<>();
     private boolean started;
 
-    private MeteorShowerGameEvent() {}
+    public final CustomSpawner spawner = (level, spawnEnemies, spawnFriendlies) -> {
+        if (!started || !spawnFriendlies) return 0;
+        Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
+        if (map == null) {
+            forceEnd();
+            return 0;
+        }
+        GameEventSystem.removeUnTracked(spawned, level);
+        List<ServerPlayer> players = level.players();
+        if (spawned.size() >= CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE.get() + players.size() * CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER.get()) {
+            return 0;
+        }
+        ServerChunkCache chunkCache = level.getChunkSource();
+        int last = spawned.size();
+        for (ServerPlayer player : players) {
+            NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
+            double speed = data.speedMultiplier();
+            if (speed <= 0) continue;
+            int interval = Mth.floor(20 * CommonConfigs.METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR.get() / speed);
+            if (level.random.nextInt(interval) != 0) continue;
+            Vec3 position = player.position();
+            int count = data.getCount(1);
+            for (int j = 0; j < count; j++) {
+                double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
+                double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
+                int cx = SectionPos.blockToSectionCoord(x);
+                int cz = SectionPos.blockToSectionCoord(z);
+                if (LibUtils.getChunkIfLoaded(chunkCache, cx, cz) == null) {
+                    continue;
+                }
+                EntityType<SimpleVariantAnimal> type = TEAnimals.WORM.get();
+                BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, type, Mth.floor(x), Mth.floor(z));
+                SimpleVariantAnimal worm = type.spawn(level, pos, MobSpawnType.EVENT);
+                if (worm != null) {
+                    worm.setVariant(VariantsTextureMaps.ENCHANTED_NIGHTCRAWLER_ID);
+                    worm.addTag(ENTITY_TAG);
+                    spawned.add(worm);
+                }
+            }
+        }
+        return spawned.size() - last;
+    };
 
     @Override
     public void open(MinecraftServer server) {
@@ -58,45 +102,7 @@ public final class MeteorShowerGameEvent implements GameEvent {
     }
 
     @Override
-    public void tick() {
-        if (!started) return;
-        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
-        if (map == null) {
-            forceEnd();
-            return;
-        }
-        GameEventSystem.removeUnTracked(spawned, level);
-        List<ServerPlayer> players = level.players();
-        if (spawned.size() >= CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_BASE.get() + players.size() * CommonConfigs.METEOR_SHOWER_EVENT_MAX_ENCHANTED_NIGHTCRAWLERS_PER_PLAYER.get()) {
-            return;
-        }
-        for (ServerPlayer player : players) {
-            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
-            double speed = data.speedMultiplier();
-            if (speed <= 0) continue;
-            int interval = Mth.floor(20 * CommonConfigs.METEOR_SHOWER_EVENT_SPAWN_ENCHANTED_NIGHTCRAWLERS_INTERVAL_FACTOR.get() / speed);
-            if (level.random.nextInt(interval) != 0) continue;
-            Vec3 position = player.position();
-            int count = data.getCount(1);
-            for (int j = 0; j < count; j++) {
-                double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
-                double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
-                int cx = SectionPos.blockToSectionCoord(x);
-                int cz = SectionPos.blockToSectionCoord(z);
-                if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
-                    continue;
-                }
-                EntityType<SimpleVariantAnimal> type = TEAnimals.WORM.get();
-                BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, type, Mth.floor(x), Mth.floor(z));
-                SimpleVariantAnimal worm = type.spawn(level, pos, MobSpawnType.EVENT);
-                if (worm != null) {
-                    worm.setVariant(VariantsTextureMaps.ENCHANTED_NIGHTCRAWLER_ID);
-                    worm.addTag(ENTITY_TAG);
-                    spawned.add(worm);
-                }
-            }
-        }
-    }
+    public void tick() {}
 
     @Override
     public boolean canStart() {

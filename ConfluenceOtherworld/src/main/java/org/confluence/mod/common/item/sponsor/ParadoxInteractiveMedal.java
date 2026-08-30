@@ -2,9 +2,10 @@ package org.confluence.mod.common.item.sponsor;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.confluence.terraentity.init.TEAttributes;
 
 /*
  * 20档纪念彩蛋物品：帕拉多克斯·英特拉克缇福勋章
@@ -17,9 +18,9 @@ import org.confluence.terraentity.init.TEAttributes;
 public class ParadoxInteractiveMedal extends BaseCurioItem {
     public ParadoxInteractiveMedal() {
         super(builder("paradox_interactive_medal").rarity(ModRarity.MASTER)
-                .attribute(Attributes.ATTACK_DAMAGE, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                .attribute(LibAttributes.getAttackDamage(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                 .attribute(Attributes.ENTITY_INTERACTION_RANGE, 3, AttributeModifier.Operation.ADD_VALUE)
-                .attribute(TEAttributes.MINION_CAPACITY, 2, AttributeModifier.Operation.ADD_VALUE)
+                .attribute(ConfluenceMagicLib.MINION_CAPACITY, 2, AttributeModifier.Operation.ADD_VALUE)
                 .attribute(Attributes.MAX_HEALTH, 10, AttributeModifier.Operation.ADD_VALUE)
                 .attribute(Attributes.ARMOR, 6, AttributeModifier.Operation.ADD_VALUE));
     }

@@ -1,7 +1,7 @@
 package org.confluence.mod.mixin.integration.apothic_attributes;
 
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import org.confluence.mod.mixed.IDamageSource;
+import org.confluence.lib.mixed.ILibDamageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,6 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class AttributeEventsMixin {
     @Inject(method = "apothCriticalStrike", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/network/PacketDistributor;sendToPlayersTrackingChunk(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/ChunkPos;Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;[Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;)V"))
     private void markCrit(LivingIncomingDamageEvent e, CallbackInfo ci) {
-        ((IDamageSource) e.getSource()).confluence$setCritical(true);
+        ILibDamageSource lds = ILibDamageSource.of(e.getSource());
+        if (lds != null) {
+            lds.confluence$setCritical(true);
+        }
     }
 }

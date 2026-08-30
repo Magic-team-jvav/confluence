@@ -3,7 +3,7 @@ package org.confluence.mod.client.effect.connected;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
+import org.confluence.mod.client.event.ModClientSetups;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,11 +20,11 @@ public class StitchedSprite {
 	public StitchedSprite(ResourceLocation atlas, ResourceLocation location) {
 		this.atlasLocation = atlas;
 		this.location = location;
-		ALL.computeIfAbsent(atlasLocation, $ -> new ArrayList<>()).add(this);
+		ALL.computeIfAbsent(atlas, $ -> new ArrayList<>()).add(this);
 	}
 
 	public StitchedSprite(ResourceLocation location) {
-		this(InventoryMenu.BLOCK_ATLAS, location);
+		this(ModClientSetups.VANILLA_BLOCK_ATLAS, location);
 	}
 
 	public static void onTextureStitchPost(TextureAtlas atlas) {

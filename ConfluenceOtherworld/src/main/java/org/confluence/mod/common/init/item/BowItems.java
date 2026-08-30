@@ -7,6 +7,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.ArrowInBowRenderer;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
+import org.confluence.mod.common.entity.projectile.range.arrow.DriveAwayArrow;
 import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.arrow.BaseTerraArrowItem;
@@ -90,6 +91,12 @@ public class BowItems {
             .setRarity(ModRarity.RED)
             .setInaccuracy(1f)
             .setEntityTransform(BaseTerraArrowItem.EntityTransform.create(ModEntities.HELL_BAT_ARROW.get(), HellBatArrowEntity::new))
+    );
+
+    // 稻草人弓 - 驱离鸟妖，对飞行单位造成1.5倍伤害
+    public static final DeferredItem<BaseTerraBowItem> SCAREBOW = register("scarebow", 3.5F, m -> m
+            .setRarity(ModRarity.BLUE)
+            .setEntityTransform(BaseTerraArrowItem.EntityTransform.create(ModEntities.DRIVE_AWAY_ARROW.get(), DriveAwayArrow::create))
     );
 
     // 代达罗斯风暴弓

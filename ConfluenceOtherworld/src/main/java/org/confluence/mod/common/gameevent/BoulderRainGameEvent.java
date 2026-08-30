@@ -23,17 +23,16 @@ import org.confluence.mod.util.AchievementUtils;
 import java.util.List;
 import java.util.Objects;
 
-public final class BoulderRainGameEvent implements GameEvent {
+public enum BoulderRainGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<BoulderRainGameEvent> KEY = GameEvent.createKey(Confluence.asResource("boulder_rain"));
-    public static final BoulderRainGameEvent INSTANCE = new BoulderRainGameEvent();
+
     private boolean started;
     private transient MinecraftServer server;
     private transient List<ServerLevel> availableLevels;
     private transient boolean isAvailableSeeds;
     private transient boolean forceStart;
     private transient boolean forceEnd;
-
-    private BoulderRainGameEvent() {}
 
     @Override
     public void open(MinecraftServer server) {
@@ -65,7 +64,7 @@ public final class BoulderRainGameEvent implements GameEvent {
                     double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
                     int cx = SectionPos.blockToSectionCoord(x);
                     int cz = SectionPos.blockToSectionCoord(z);
-                    if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                    if (LibUtils.getChunkIfLoaded(level, cx, cz) == null) {
                         continue;
                     }
                     level.addFreshEntity(new BoulderEntity(level, new Vec3(x, position.y + 64, z), blockState));

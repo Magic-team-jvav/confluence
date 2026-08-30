@@ -1,1 +1,7 @@
-{}
+{
+    "variants": {
+        "": {
+            "model": "confluence:block/fragile_sandstone"
+        }
+    }
+}

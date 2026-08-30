@@ -7,7 +7,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
-import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
+import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
 

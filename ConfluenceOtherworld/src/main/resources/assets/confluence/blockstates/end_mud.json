@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/end_mud_1",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/end_mud_2",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/end_mud",
+                "weight": 1
+            }
+        ]
+    }
+}

@@ -6,11 +6,9 @@ import net.minecraft.server.MinecraftServer;
 import org.confluence.mod.Confluence;
 
 // todo
-public final class PumpkinMoonGameEvent implements GameEvent {
+public enum PumpkinMoonGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<PumpkinMoonGameEvent> KEY = GameEvent.createKey(Confluence.asResource("pumpkin_moon"));
-    public static final PumpkinMoonGameEvent INSTANCE = new PumpkinMoonGameEvent();
-
-    private PumpkinMoonGameEvent() {}
 
     @Override
     public void open(MinecraftServer server) {

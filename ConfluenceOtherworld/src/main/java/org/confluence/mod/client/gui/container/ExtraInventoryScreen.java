@@ -27,7 +27,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.gui.BestiaryScreen;
 import org.confluence.mod.client.gui.GuiSprite;
-import org.confluence.mod.client.gui.hud.HouseSelectHUD;
+import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
@@ -93,7 +93,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         addRenderableWidget(new ImageButton(leftPos + 109, topPos + 166, 16, 16, HOUSE_BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
                 getMinecraft().setScreen(null);
-                HouseSelectHUD.inSelectHUD = true;
+                HouseSelectHud.inSelectHUD = true;
             }
         }));
         addRenderableWidget(this.bestiaryButton = new ImageButton(leftPos + 125, topPos + 166, 16, 16, BESTIARY_BUTTON, button -> {

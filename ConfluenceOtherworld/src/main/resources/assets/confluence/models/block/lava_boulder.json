@@ -1,0 +1,7 @@
+{
+    "parent": "confluence:block/normal_boulder",
+    "textures": {
+        "0": "confluence:block/lava_boulder",
+        "particle": "confluence:block/lava_boulder"
+    }
+}

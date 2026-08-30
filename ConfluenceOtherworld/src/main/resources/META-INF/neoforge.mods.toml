@@ -47,6 +47,8 @@ enumExtensions = "META-INF/enumextensions.json"
 config = "${mod_id}.mixins.json"
 [[mixins]]
 config = "${mod_id}.integration.lithium.mixins.json"
+[[mixins]]
+config = "${mod_id}.integration.citadel.mixins.json"
 
 # The [[accessTransformers]] block allows you to declare where your AT file is.
 # If this block is omitted, a fallback attempt will be made to load an AT from META-INF/accesstransformer.cfg
@@ -66,7 +68,7 @@ type = "required" #mandatory
 # Optional field describing why the dependency is required or why it is incompatible
 # reason="..."
 # The version range of the dependency
-versionRange = "${neo_version_range}" #mandatory
+versionRange = "[${neo_version},)" #mandatory
 # An ordering relationship for the dependency.
 # BEFORE - This mod is loaded BEFORE the dependency
 # AFTER - This mod is loaded AFTER the dependency

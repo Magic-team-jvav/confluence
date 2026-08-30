@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/twilight_ellflower",
+    "particle": "confluence:block/twilight_ellflower"
+  },
+  "render_type": "cutout"
+}

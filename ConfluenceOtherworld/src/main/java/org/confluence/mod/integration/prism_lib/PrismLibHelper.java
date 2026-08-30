@@ -7,9 +7,9 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.util.PrefixUtils;
@@ -20,12 +20,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-/**
- * <a href="https://www.curseforge.com/minecraft/mc-mods/prism-lib">Prism Lib</a>
- */
+/// [Prism Lib](https://www.curseforge.com/minecraft/mc-mods/prism-lib)
 public class PrismLibHelper {
-    public static final boolean IS_LOADED = ModList.get().isLoaded("prism");
-    public static final boolean LEGENDARY_TOOLTIPS = ModList.get().isLoaded("legendarytooltips");
+    public static final boolean IS_LOADED = LibUtils.isModLoaded("prism");
+    public static final boolean LEGENDARY_TOOLTIPS = LibUtils.isModLoaded("legendarytooltips");
     private static TriState renderItemModel = TriState.DEFAULT;
 
     public static @Nullable TextColor getRarityColor(ItemStack itemStack) {

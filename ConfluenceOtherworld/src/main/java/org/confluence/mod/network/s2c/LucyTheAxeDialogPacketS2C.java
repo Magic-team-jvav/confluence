@@ -46,7 +46,7 @@ public record LucyTheAxeDialogPacketS2C(
     }
 
     public static boolean checkAndBroadcast(ServerPlayer source, ResourceLocation category) {
-        return checkAndBroadcast(source, source.getInventory().getSelected(), category);
+        return checkAndBroadcast(source, source.getMainHandItem(), category);
     }
 
     public static void broadcast(ServerPlayer source, ResourceLocation category) {

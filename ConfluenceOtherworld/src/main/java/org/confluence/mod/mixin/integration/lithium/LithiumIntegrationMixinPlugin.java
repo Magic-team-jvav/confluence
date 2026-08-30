@@ -9,14 +9,12 @@ import java.util.List;
 import java.util.Set;
 
 public class LithiumIntegrationMixinPlugin implements IMixinConfigPlugin {
-    private final boolean shouldApply;
-
-    public LithiumIntegrationMixinPlugin() {
-        this.shouldApply = LoadingModList.get().getModFileById("lithium") != null;
-    }
+    private boolean shouldApply;
 
     @Override
-    public void onLoad(String mixinPackage) {}
+    public void onLoad(String mixinPackage) {
+        this.shouldApply = LoadingModList.get().getModFileById("lithium") != null;
+    }
 
     @Override
     public String getRefMapperConfig() {

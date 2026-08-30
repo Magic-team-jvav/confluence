@@ -99,7 +99,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(ModTags.EntityTypes.GORE_EFFECT_BLACKLIST)
                 .addOptionalTag(TETags.EntityTypes.SLIME);
         IntrinsicTagAppender<EntityType<?>> npcInvulnerableToPlayer = tag(ModTags.EntityTypes.NPC_INVULNERABLE_TO_PLAYER);
-        for (DeferredHolder<EntityType<?>, ? extends EntityType<?>> npc : TENpcEntities.NPCS) {
+        for (DeferredHolder<EntityType<?>, ? extends EntityType<?>> npc : TENpcEntities.ENTITIES.getEntries()) {
             npcInvulnerableToPlayer.add(npc.get());
         }
     }

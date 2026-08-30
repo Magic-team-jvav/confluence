@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.confluence.mod.common.data.gen.data_map.*;
 import org.confluence.mod.common.init.ModDataMaps;
-import org.confluence.mod.mixin.accessor.DataMapProviderAccessor;
+import org.confluence.mod.mixin.neoforge.common.data.DataMapProviderAccessor;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
@@ -30,7 +30,6 @@ public class ModDataMapProvider extends DataMapProvider {
         LivingInvulnerableEffectsSubProvider.gather(builder(ModDataMaps.LIVING_INVULNERABLE_EFFECTS, LivingInvulnerableEffectsSubProvider.Builder::new), provider);
         BlockBreakSpawnsSubProvider.gather(builder(ModDataMaps.BLOCK_BREAK_SPAWNS, BlockBreakSpawnsSubProvider.Builder::new), provider);
         GamePhase2AttributeModifiersSubProvider.gather(builder(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, GamePhase2AttributeModifiersSubProvider.Builder::new));
-        BestiaryEntrySubProvider.gather(() -> builder(ModDataMaps.BESTIARY_ENTRY));
     }
 
     @SuppressWarnings("unchecked")

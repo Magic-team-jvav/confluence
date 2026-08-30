@@ -23,6 +23,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.FlailItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.util.AchievementUtils;
@@ -62,7 +63,7 @@ public class ShadowOrbBlock extends Block {
                 LibUtils.createItemEntity(ManaWeaponItems.VILETHRON.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                // 链球
+                LibUtils.createItemEntity(FlailItems.BALL_O_HURT.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.toStack(), center.x, center.y, center.z, level, 0);

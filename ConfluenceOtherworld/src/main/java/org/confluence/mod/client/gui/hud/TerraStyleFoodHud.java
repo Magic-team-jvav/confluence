@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.hud;
 
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,23 +8,22 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
-import org.confluence.lib.util.LibClientUtils;
+import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.event.ModClientSetups;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
-import static org.confluence.mod.util.ClientUtils.*;
+import static org.confluence.mod.util.ClientUtils.OVERLAY_SIZE;
+import static org.confluence.mod.util.ClientUtils.draw;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class TerraStyleFoodHud implements LayeredDraw.Layer {
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!ClientConfigs.terraStyleFood) return;
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !LibClientUtils.shouldDrawSurvivalElements(minecraft)) return;
-        LibClientUtils.setupOverlayRenderState(true, false);
+        if (minecraft.options.hideGui || !LibRenderUtils.shouldDrawSurvivalElements(minecraft)) return;
+        LibRenderUtils.setupOverlayRenderState(true, false);
         minecraft.getProfiler().push("terra_style_hud");
 
         ClientConfigs.foodStyle.render(guiGraphics, minecraft);
@@ -65,14 +63,14 @@ public class TerraStyleFoodHud implements LayeredDraw.Layer {
                 int heightFood = guiGraphics.guiHeight() - minecraft.gui.rightHeight;
                 minecraft.gui.rightHeight += 10;
                 for (int i = 0; i < 10; i++) {
-                    guiGraphics.blitSprite(OVERLAY_TEXTURE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
+                    guiGraphics.blitSprite(ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
                 }
                 if (hunger) {
-                    draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 20, 30, false, 1, 20);
+                    draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 20, 30, false, 1, 20);
                 } else {
-                    draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 0, 30, false, 1, 20);
+                    draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 0, 30, false, 1, 20);
                 }
-                draw(widthFood, heightFood, guiGraphics, foodSaturationI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 40, 30, false, 1, 20);
+                draw(widthFood, heightFood, guiGraphics, foodSaturationI, white, white, white, ModClientSetups.OVERLAY_SPRITE, OVERLAY_SIZE, 40, 30, false, 1, 20);
             }
         };
 

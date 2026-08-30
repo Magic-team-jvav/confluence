@@ -38,9 +38,9 @@ public interface ISpreadable {
 
     Type getSpreadType();
 
-    default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+    default void spread(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
-        int chance = serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
+        int chance = level.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
         int phase = KillBoard.INSTANCE.getGamePhase().getOrder();
         if (phase >= GamePhase.PLANTERA.getOrder()) {
             chance /= 2;
@@ -50,23 +50,27 @@ public interface ISpreadable {
         boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
-            if (!serverLevel.isLoaded(targetPos)) continue;
+            if (!level.isLoaded(targetPos)) continue;
 
-            BlockState target = getSpreadType().getNullable(serverLevel.getBlockState(targetPos), hardmode);
+            BlockState target = getSpreadType().getNullable(level.getBlockState(targetPos), hardmode);
             if (target == null) continue;
 
             if (target.is(ModTags.Blocks.SPREADABLE_GRASS_BLOCK)) {
-                if (!isFullBlock(serverLevel, targetPos.above())) {
-                    spreadOrDie(phase, blockState, serverLevel, blockPos, randomSource, target, targetPos);
+                if (!isFullBlock(level, targetPos.above())) {
+                    spreadOrDie(phase, blockState, level, blockPos, randomSource, target, targetPos);
                 }
             } else {
-                spreadOrDie(phase, blockState, serverLevel, blockPos, randomSource, target, targetPos);
+                spreadOrDie(phase, blockState, level, blockPos, randomSource, target, targetPos);
             }
         }
     }
 
-    default boolean isFullBlock(ServerLevel serverLevel, BlockPos pos) {
-        return serverLevel.getBlockState(pos).isSolidRender(serverLevel, pos);
+    default boolean isFullBlock(ServerLevel level, BlockPos pos) {
+        return isFullBlock(level.getBlockState(pos), level, pos);
+    }
+
+    default boolean isFullBlock(BlockState state, ServerLevel level, BlockPos pos) {
+        return state.isSolidRender(level, pos);
     }
 
     default void spreadOrDie(int phase, BlockState selfState, ServerLevel serverLevel, BlockPos selfPos, RandomSource randomSource, BlockState targetState, BlockPos targetPos) {
@@ -77,17 +81,17 @@ public interface ISpreadable {
         }
     }
 
-    default void spreadTree(ServerLevel serverLevel, BlockPos targetPos) {
+    default void spreadTree(ServerLevel level, BlockPos targetPos) {
         boolean hardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
-        BlockState blockState = serverLevel.getBlockState(targetPos.above());
+        BlockState blockState = level.getBlockState(targetPos.above());
         if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
-            Map<BlockPos, BlockState> map = searchFace(serverLevel, targetPos, new Hashtable<>(), 0);
+            Map<BlockPos, BlockState> map = searchFace(level, targetPos, new Hashtable<>(), 0);
             for (Map.Entry<BlockPos, BlockState> entry : map.entrySet()) {
                 BlockState source = entry.getValue();
                 if (source == AIR) continue;
                 BlockState target = getSpreadType().getNullable(source, hardmode);
                 if (target != null) {
-                    serverLevel.setBlockAndUpdate(entry.getKey(), target);
+                    level.setBlockAndUpdate(entry.getKey(), target);
                 }
             }
         }
@@ -105,18 +109,18 @@ public interface ISpreadable {
     });
     BlockState AIR = Blocks.AIR.defaultBlockState();
 
-    private static Map<BlockPos, BlockState> searchFace(ServerLevel serverLevel, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
+    private static Map<BlockPos, BlockState> searchFace(ServerLevel level, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
         if (depth == 128) return map;
         for (Direction direction : LibUtils.DIRECTIONS) {
             BlockPos relative = targetPos.relative(direction);
             if (map.containsKey(relative)) continue;
-            BlockState blockState = serverLevel.getBlockState(relative);
+            BlockState blockState = level.getBlockState(relative);
             if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
                 map.put(relative, blockState);
                 if (PALMS.get().contains(blockState.getBlock())) {
-                    searchBox(serverLevel, relative, map, depth + 1);
+                    searchBox(level, relative, map, depth + 1);
                 } else {
-                    searchFace(serverLevel, relative, map, depth + 1);
+                    searchFace(level, relative, map, depth + 1);
                 }
             } else {
                 map.put(relative, AIR);
@@ -125,18 +129,18 @@ public interface ISpreadable {
         return map;
     }
 
-    private static void searchBox(ServerLevel serverLevel, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
+    private static void searchBox(ServerLevel level, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
         if (depth == 128) return;
         for (BlockPos relative : BlockPos.betweenClosed(targetPos.offset(-1, -1, -1), targetPos.offset(1, 1, 1))) {
             relative = relative.immutable();
             if (map.containsKey(relative)) continue;
-            BlockState blockState = serverLevel.getBlockState(relative);
+            BlockState blockState = level.getBlockState(relative);
             if (blockState.is(BlockTags.LOGS) || blockState.is(BlockTags.LEAVES)) {
                 map.put(relative, blockState);
                 if (PALMS.get().contains(blockState.getBlock())) {
-                    searchBox(serverLevel, relative, map, depth + 1);
+                    searchBox(level, relative, map, depth + 1);
                 } else {
-                    searchFace(serverLevel, relative, map, depth + 1);
+                    searchFace(level, relative, map, depth + 1);
                 }
             } else {
                 map.put(relative, AIR);

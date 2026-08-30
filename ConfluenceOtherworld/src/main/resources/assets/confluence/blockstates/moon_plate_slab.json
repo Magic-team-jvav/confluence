@@ -1,0 +1,13 @@
+{
+"variants":{
+"type=bottom":{
+"model":"confluence:block/moon_plate_slab"
+},
+"type=top":{
+"model":"confluence:block/moon_plate_slab_top"
+},
+"type=double":{
+"model":"confluence:block/moon_plate_slab_full"
+}
+}
+}

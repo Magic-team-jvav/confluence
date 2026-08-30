@@ -113,6 +113,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.CLOUD_IN_A_BOTTLE).setWeight(3))
                         .add(LootItem.lootTableItem(TCItems.SHOE_SPIKES).setWeight(3))
                         .add(LootItem.lootTableItem(TCItems.HERMES_BOOTS).setWeight(3))
+                        .add(LootItem.lootTableItem(FlailItems.MACE).setWeight(3))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(1))
                 )
         );
@@ -191,7 +192,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(SwordItems.STARFURY))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.FLEDGLING_WINGS))
+                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
                         .add(EmptyLootItem.emptyItem().setWeight(39))
                 )
         );
@@ -204,7 +205,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(SwordItems.STARFURY))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.FLEDGLING_WINGS).setQuality(2))
+                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS).setQuality(2))
                         .add(EmptyLootItem.emptyItem().setWeight(100))
                 )
                 .withPool(LootPool.lootPool()
@@ -254,6 +255,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.CLOUD_IN_A_BOTTLE).setWeight(9))
                         .add(LootItem.lootTableItem(TCItems.SHOE_SPIKES).setWeight(9))
                         .add(LootItem.lootTableItem(TCItems.HERMES_BOOTS).setWeight(9))
+                        .add(LootItem.lootTableItem(FlailItems.MACE).setWeight(9))
                         .add(LootItem.lootTableItem(FunctionalBlocks.EXTRACTINATOR).setWeight(3))
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM))
                 )
@@ -390,9 +392,11 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))
                         .add(LootItem.lootTableItem(TGItems.HAND_GUN))
                         .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
                         .add(LootItem.lootTableItem(TCItems.RAM_RUNE))
+                        .add(LootItem.lootTableItem(FlailItems.BLUE_MOON))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.SHADOW_KEY))
@@ -465,8 +469,10 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/shadow_chests"),LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.FLAMELASH))
                         .add(LootItem.lootTableItem(SpearItems.DARK_LANCE))
                         .add(LootItem.lootTableItem(BowItems.HELLWING_BOW))
+                        .add(LootItem.lootTableItem(FlailItems.SUNFURY))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
@@ -571,6 +577,17 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(manaEnchantedBookBuilder)
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
+                //星钢剑
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.STAR_STEEL_SWORD))
+                        .add(EmptyLootItem.emptyItem().setWeight(3))
+                )
+                //稻草人弓
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BowItems.SCAREBOW.get()).setWeight(15))
+                        .add(EmptyLootItem.emptyItem().setWeight(85))
+                )
+                //先暂时使用空岛村箱子
         );
     }
 

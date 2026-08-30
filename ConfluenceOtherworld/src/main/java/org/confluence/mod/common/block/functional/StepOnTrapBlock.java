@@ -4,6 +4,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -14,6 +15,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.terra_curio.common.init.TCEffects;
 
 public class StepOnTrapBlock extends Block {
@@ -36,7 +38,11 @@ public class StepOnTrapBlock extends Block {
         @Override
         protected void onStep(Level level, BlockPos pos, BlockState state, Entity entity) {
             if (!level.isClientSide && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(TCEffects.GRAVITATION, 100, 1));
+                int duration = 100;
+                if (living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
+                    duration /= 2;
+                }
+                living.addEffect(new MobEffectInstance(TCEffects.GRAVITATION, duration, 1));
             }
         }
     };

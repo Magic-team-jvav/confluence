@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.gameevent.MeteorShowerGameEvent;
@@ -26,7 +26,8 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.util.OverworldUtils;
-import org.mesdag.particlestorm.PSGameClient;
+import org.joml.Matrix4x3f;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.HashSet;
@@ -61,10 +62,11 @@ public class FallingStarItemEntity extends ItemEntity {
             if ((emitter == null || emitter.isRemoved())) {
                 this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
                 emitter.attachEntity(this);
-                PSGameClient.LOADER.addEmitter(emitter, false);
+                emitter.hideOutline = true;
+                MolangParticleEngine.INSTANCE.addEmitter(emitter);
             }
             float y = Mth.sin(getAge() / 10.0F + bobOffs) * 0.1F;
-            emitter.offsetPos = new Vec3(0, 0.35F + y, 0);
+            emitter.setLocalSpace(new Matrix4x3f().setTranslation(0, 0.35F + y, 0));
         }
         super.tick();
         if (LibDateUtils.isDay(level())) {
@@ -149,7 +151,7 @@ public class FallingStarItemEntity extends ItemEntity {
         int interval = CommonConfigs.FALLING_STAR_INTERVAL.get();
         if (MeteorShowerGameEvent.INSTANCE.started()) {
             float factor = CommonConfigs.METEOR_SHOWER_EVENT_FALLING_STAR_SPAWN_SPEED_MULTIPLIER.get().floatValue();
-            return LibUtils.divideInt(interval, factor, level.random);
+            return LibMathUtils.divideInt(interval, factor, level.random);
         }
         return interval;
     }

@@ -19,6 +19,5 @@ public class TEItemComponentModify {
         TEBoomerangItems.ITEMS.getEntries().forEach(setUnbreakable);
         TEWhipItems.ITEMS.getEntries().forEach(setUnbreakable);
         TEYoyosItems.ITEMS.getEntries().forEach(setUnbreakable);
-
     }
 }

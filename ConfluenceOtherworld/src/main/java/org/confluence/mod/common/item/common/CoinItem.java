@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 public class CoinItem extends BlockItem {
     public static final int UPGRADES_COUNT = 100;
 
-    public final Supplier<CoinItem> upgrade;
+    public final @Nullable Supplier<CoinItem> upgrade;
 
     public CoinItem(Block block, ModRarity rarity, @Nullable Supplier<CoinItem> upgrade, int maxStackSize) {
         super(block, new Properties().fireResistant().stacksTo(maxStackSize).component(ConfluenceMagicLib.MOD_RARITY, rarity));
@@ -64,7 +64,7 @@ public class CoinItem extends BlockItem {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
-        if (player != null && player.isCrouching()) {
+        if (player != null && player.isCrouching() && upgrade != null && context.getItemInHand().getCount() >= UPGRADES_COUNT) {
             if (context.getLevel().isClientSide) {
                 player.playSound(ModSoundEvents.TERRA_OPERATION.get());
             } else {

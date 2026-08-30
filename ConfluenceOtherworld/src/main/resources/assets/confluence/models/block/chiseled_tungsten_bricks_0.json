@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/chiseled_tungsten_bricks_bottom",
+    "side": "confluence:block/chiseled_tungsten_bricks_side",
+    "top": "confluence:block/chiseled_tungsten_bricks_top_2"
+  }
+}

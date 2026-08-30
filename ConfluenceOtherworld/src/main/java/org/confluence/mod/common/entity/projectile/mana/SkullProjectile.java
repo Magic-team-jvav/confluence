@@ -18,14 +18,11 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.PSGameClient;
-import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.Comparator;
 import java.util.UUID;
 
 public class SkullProjectile extends AbstractManaProjectile {
-    private ParticleEmitter trail;
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(SkullProjectile.class, EntityDataSerializers.INT);
     private UUID targetUUID;
     private transient LivingEntity target;
@@ -33,12 +30,11 @@ public class SkullProjectile extends AbstractManaProjectile {
     public SkullProjectile(EntityType<SkullProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
+        withParticle(Confluence.asResource("skull_projectile_flame"));
     }
 
     public SkullProjectile(LivingEntity living) {
         this(ModEntities.SKULL_PROJECTILE.get(), living.level());
-        setOwner(living);
-        setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
 
     @Override
@@ -75,26 +71,16 @@ public class SkullProjectile extends AbstractManaProjectile {
             setTarget(null);
         }
 
-        if (level().isClientSide) {
-            if (trail == null || trail.isRemoved()) {
-                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("skull_projectile_flame"));
-                trail.attachEntity(this);
-                PSGameClient.LOADER.addEmitter(trail, false);
-            }
-        }
-
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        setPos(offX, offY, offZ);
+        doSimpleMove();
         updateRotation();
     }
 
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        discard();
+        if (!level().isClientSide) {
+            discardInTicks(1);
+        }
     }
 
     @Override

@@ -4,12 +4,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.entity.projectile.StormSpearShotProjectile;
+import org.confluence.mod.common.entity.projectile.spear.StormSpearProjectile;
 import org.confluence.mod.common.init.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 
@@ -35,12 +34,19 @@ public class StormSpearItem extends AbstractSpearItem {
     @Override
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
         if (last) {
-            Vec3 viewVector = owner.getViewVector(1.0F);
-            StormSpearShotProjectile projectile = new StormSpearShotProjectile(ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), level);
-            projectile.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-            projectile.setDamage((float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.6F);
-            projectile.shoot(viewVector.x, viewVector.y, viewVector.z, 1.92F, 0);
+            StormSpearProjectile projectile = new StormSpearProjectile(
+                    ModEntities.STORM_SPEAR_SHOT_PROJECTILE.get(), level);
+
             projectile.setOwner(owner);
+            projectile.setWeapon(owner.getMainHandItem());
+
+            // 初始位置：矛尖与玩家之间约1/3处
+            Vec3 spawnPos = owner.getEyePosition().add(tipPos.subtract(owner.getEyePosition()).scale(0.33));
+            projectile.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+            // 发射：自动计算伤害和速度，自动同步客户端
+            projectile.fireFromOwner(owner, owner.getLookAngle(), (float) knockBackScale);
+
             level.addFreshEntity(projectile);
         }
     }

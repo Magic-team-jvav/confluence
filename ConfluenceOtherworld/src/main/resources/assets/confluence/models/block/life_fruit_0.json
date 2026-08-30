@@ -1,0 +1,7 @@
+{
+    "parent": "confluence:block/life_fruit",
+    "textures": {
+        "grass": "confluence:block/life_fruit_0"
+    },
+    "render_type": "cutout"
+}

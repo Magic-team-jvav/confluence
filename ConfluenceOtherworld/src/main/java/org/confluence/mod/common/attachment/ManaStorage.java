@@ -7,12 +7,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.confluence.lib.util.supplier.FloatSupplier;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.util.EnchantmentUtils;
-import org.confluence.mod.util.FloatSupplier;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.ApiStatus;
@@ -128,6 +128,15 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
             return true;
         }
         return false;
+    }
+
+    public boolean decreaseStar() {
+        if (stars <= 1) return false;
+        float oldMax = getMaxMana();
+        this.stars--;
+        this.currentMana = Mth.clamp(currentMana - 20.0F, 0.0F, oldMax);
+        freshMaxMana();
+        return true;
     }
 
     @ApiStatus.Internal

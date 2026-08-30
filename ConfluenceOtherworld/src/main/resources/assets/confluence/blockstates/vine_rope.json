@@ -8,10 +8,10 @@
       "when": {
         "up": "true",
         "down": "true",
-        "north": "false",
-        "south": "false",
-        "east": "false",
-        "west": "false"
+        "north": "none",
+        "south": "none",
+        "east": "none",
+        "west": "none"
       }
     },
     {
@@ -24,10 +24,10 @@
           {
             "up": "false",
             "down": "false",
-            "north": "false",
-            "south": "false",
-            "east": "false",
-            "west": "false"
+            "north": "none",
+            "south": "none",
+            "east": "none",
+            "west": "none"
           },
           {
             "up": "true",
@@ -37,18 +37,42 @@
             "up": "false",
             "down": "true"
           },
-          {
-            "north": "true"
-          },
-          {
-            "south": "true"
-          },
-          {
-            "east": "true"
-          },
-          {
-            "west": "true"
-          }
+            {
+                "north": "rope"
+            },
+            {
+                "south": "rope"
+            },
+            {
+                "east": "rope"
+            },
+            {
+                "west": "rope"
+            },
+            {
+                "north": "fence"
+            },
+            {
+                "south": "fence"
+            },
+            {
+                "east": "fence"
+            },
+            {
+                "west": "fence"
+            },
+            {
+                "north": "wall"
+            },
+            {
+                "south": "wall"
+            },
+            {
+                "east": "wall"
+            },
+            {
+                "west": "wall"
+            }
         ]
       }
     },
@@ -88,44 +112,189 @@
         "up": "false"
       }
     },
-    {
-      "apply": {
-        "model": "confluence:block/vine_rope_side",
-        "uvlock": true,
-        "y": 180
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_side",
+              "uvlock": true,
+              "y": 180
+          },
+          "when": {
+              "north": "rope"
+          }
       },
-      "when": {
-        "north": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "confluence:block/vine_rope_side",
-        "uvlock": true
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_side",
+              "uvlock": true
+          },
+          "when": {
+              "south": "rope"
+          }
       },
-      "when": {
-        "south": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "confluence:block/vine_rope_side",
-        "uvlock": true,
-        "y": 270
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_side",
+              "uvlock": true,
+              "y": 270
+          },
+          "when": {
+              "east": "rope"
+          }
       },
-      "when": {
-        "east": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "confluence:block/vine_rope_side",
-        "uvlock": true,
-        "y": 90
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_side",
+              "uvlock": true,
+              "y": 90
+          },
+          "when": {
+              "west": "rope"
+          }
       },
-      "when": {
-        "west": "true"
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_knot_fence",
+              "uvlock": false,
+              "y": 180
+          },
+          "when": {
+              "north": "fence"
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_knot_fence",
+              "uvlock": false
+          },
+          "when": {
+              "south": "fence"
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_knot_fence",
+              "uvlock": false,
+              "y": 270
+          },
+          "when": {
+              "east": "fence"
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_knot_fence",
+              "uvlock": false,
+              "y": 90
+          },
+          "when": {
+              "west": "fence"
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_knot_wall",
+              "uvlock": false,
+              "y": 180
+          },
+          "when": {
+              "north": "wall"
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_knot_wall",
+              "uvlock": false
+          },
+          "when": {
+              "south": "wall"
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_knot_wall",
+              "uvlock": false,
+              "y": 270
+          },
+          "when": {
+              "east": "wall"
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_knot_wall",
+              "uvlock": false,
+              "y": 90
+          },
+          "when": {
+              "west": "wall"
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_side_long",
+              "uvlock": true,
+              "y": 180
+          },
+          "when": {
+              "OR": [
+                  {
+                      "north": "fence"
+                  },
+                  {
+                      "north": "wall"
+                  }
+              ]
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_side_long",
+              "uvlock": true
+          },
+          "when": {
+              "OR": [
+                  {
+                      "south": "fence"
+                  },
+                  {
+                      "south": "wall"
+                  }
+              ]
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_side_long",
+              "uvlock": true,
+              "y": 270
+          },
+          "when": {
+              "OR": [
+                  {
+                      "east": "fence"
+                  },
+                  {
+                      "east": "wall"
+                  }
+              ]
+          }
+      },
+      {
+          "apply": {
+              "model": "confluence:block/vine_rope_side_long",
+              "uvlock": true,
+              "y": 90
+          },
+          "when": {
+              "OR": [
+                  {
+                      "west": "fence"
+                  },
+                  {
+                      "west": "wall"
+                  }
+              ]
+          }
       }
-    }
   ]
 }

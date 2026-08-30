@@ -29,7 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.entity.PartEntity;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
@@ -51,9 +51,7 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
@@ -64,15 +62,16 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     protected final int attackInterval;
     protected final List<Keyframe<MathValue>> keyframes;
     private TooltipComponent component;
+    /** 本次挥击已命中的实体 ID，挥击开始时清空 */
+    private final Set<Integer> struckEntities = new HashSet<>();
 
-    /**
-     * @param attackDuration 攻击持续时间，值越大攻击时间越长
-     * @param attackInterval 攻击间隔，每造成两次伤害之间的时间
-     * @param keyframes      应用于长矛攻击的关键帧，建议匹配攻击持续时间
-     */
+    /// @param attackDuration 攻击持续时间，值越大攻击时间越长
+    /// @param attackInterval 攻击间隔，每造成两次伤害之间的时间
+    /// @param keyframes      应用于长矛攻击的关键帧，建议匹配攻击持续时间
     public AbstractSpearItem(Properties properties, ModRarity rarity, int attackDuration, int attackInterval, List<Keyframe<MathValue>> keyframes) {
         super(properties.stacksTo(1), rarity, collectTooltips(attackDuration, attackInterval));
-        if (attackInterval < 1) throw new IllegalArgumentException("attackInterval must be greater than or equal to 1, currently is " + attackInterval);
+        if (attackInterval < 1)
+            throw new IllegalArgumentException("attackInterval must be greater than or equal to 1, currently is " + attackInterval);
         this.attackDuration = attackDuration;
         this.attackInterval = attackInterval;
         this.keyframes = keyframes;
@@ -110,6 +109,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
         if (entity.level() instanceof ServerLevel level && entity.level().getGameTime() - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY) > attackDuration) {
+            struckEntities.clear();
             LibUtils.updateItemStackNbt(stack, tag -> tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime()));
             triggerAnim(entity, GeoItem.getOrAssignId(stack, level), "spear", "use");
             onStartSting(stack, level, entity);
@@ -141,15 +141,21 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
 
-                for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> canHitEntity(target, owner))) {
-                    if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
+                List<Entity> victims = level.getEntities(owner, new AABB(startVec, endVec),
+                        target -> canHitEntity(target, owner)).stream()
+                        .filter(v -> !struckEntities.contains(v.getId()))
+                        .sorted(Comparator.comparingDouble(a -> a.distanceToSqr(owner)))
+                        .toList();
+                for (Entity victim : victims) {
+                    if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty())
+                        continue;
+                    struckEntities.add(victim.getId());
                     owner.setLastHurtMob(victim);
-                    if (victim instanceof PartEntity<?> partEntity) {
-                        victim = partEntity.getParent();
-                    }
-                    onHitEntity(stack, (ServerLevel) level, owner, victim);
+                    victim = LibUtils.tryFindBeImpacted(victim);
+                    onHitEntity(stack, owner.serverLevel(), owner, victim);
+                    break;
                 }
-                onStingTick(stack, (ServerLevel) level, owner, endVec, attackDuration - tickCount < attackInterval);
+                onStingTick(stack, owner.serverLevel(), owner, endVec, attackDuration - tickCount < attackInterval);
             }
         }
     }
@@ -169,7 +175,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
 
     protected boolean hurtVictim(DamageSource damageSource, LivingEntity owner, Entity victim) {
-        return victim.hurt(damageSource, (float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        return victim.hurt(damageSource, (float) owner.getAttributeValue(LibAttributes.getAttackDamage()));
     }
 
     protected boolean canHitEntity(Entity target, LivingEntity owner) {
@@ -222,7 +228,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     public static ItemAttributeModifiers attributes(float extraRange, float extraDamage) {
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, extraDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getAttackDamage(), new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, extraDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
     }
 

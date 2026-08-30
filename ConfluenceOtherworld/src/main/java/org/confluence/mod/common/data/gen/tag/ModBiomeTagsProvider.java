@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen.tag;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -45,6 +46,24 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.THE_HALLOW_DESERT,
                 ModBiomes.THE_HALLOW_TUNDRA
         );
+        tag(ModTags.Biomes.THE_CHORUS).add(
+                ModBiomes.CHORUS_FOREST,
+                ModBiomes.CHORUS_PLAINS
+        );
+        tag(ModTags.Biomes.THE_INVERSE).add(
+                ModBiomes.INVERSE_FOREST,
+                ModBiomes.INVERSE_PLAINS
+        );
+        tag(ModTags.Biomes.THE_MOONBLIGHT).add(
+                ModBiomes.MOONBLIGHT_FOREST,
+                ModBiomes.MOONBLIGHT_PLAINS,
+                ModBiomes.MOONLIT_DRY_SEA,
+                ModBiomes.DARK_MOON_FLATS
+        );
+        tag(ModTags.Biomes.THE_END_SEA).add(
+                ModBiomes.MOONLIT_DRY_SEA,
+                ModBiomes.DARK_MOON_FLATS
+        );
         tag(ModTags.Biomes.SPREADABLE).addTags(
                 ModTags.Biomes.THE_CORRUPTION,
                 ModTags.Biomes.THE_CRIMSON,
@@ -66,7 +85,18 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.ASH_FOREST,
                 ModBiomes.ASH_WASTELAND,
 
-                ModBiomes.GLOWING_MUSHROOM
+                ModBiomes.GLOWING_MUSHROOM,
+
+                ModBiomes.CHORUS_FOREST,
+                ModBiomes.CHORUS_PLAINS,
+
+                ModBiomes.INVERSE_FOREST,
+                ModBiomes.INVERSE_PLAINS,
+
+                ModBiomes.MOONBLIGHT_FOREST,
+                ModBiomes.MOONBLIGHT_PLAINS,
+                ModBiomes.MOONLIT_DRY_SEA,
+                ModBiomes.DARK_MOON_FLATS
         );
         tag(ModTags.Biomes.IS_FOREST).addTags(
                 // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
@@ -82,8 +112,8 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         tag(ModTags.Biomes.IS_FOREST)
                 // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
                 .add(Biomes.DRIPSTONE_CAVES,
-                Biomes.DEEP_DARK
-        );
+                        Biomes.DEEP_DARK
+                );
         tag(Tags.Biomes.IS_OVERWORLD).add(
                 ModBiomes.THE_CORRUPTION,
                 ModBiomes.THE_CORRUPTION_DESERT,
@@ -107,5 +137,15 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         tag(ModTags.Biomes.VANITY_TREES_REPLACEABLE)
                 .add(Biomes.PLAINS, Biomes.FOREST, Biomes.FLOWER_FOREST)
                 .addTag(Tags.Biomes.IS_BIRCH_FOREST);
+        tag(BiomeTags.IS_END).add(
+                ModBiomes.CHORUS_FOREST,
+                ModBiomes.CHORUS_PLAINS,
+                ModBiomes.INVERSE_FOREST,
+                ModBiomes.INVERSE_PLAINS,
+                ModBiomes.MOONBLIGHT_FOREST,
+                ModBiomes.MOONBLIGHT_PLAINS,
+                ModBiomes.MOONLIT_DRY_SEA,
+                ModBiomes.DARK_MOON_FLATS
+        );
     }
 }

@@ -50,10 +50,10 @@ public class IrisHelper {
     }
 
     public static void register(DeferredRegister.Items register) {
-        register.registerItem("test_iris", TestItem::new);
+        register.registerItem("iris_test", TestItem::new);
     }
 
     public static void modifyItemProperties(Object2IntMap<NamespacedId> original) {
-        original.put(new NamespacedId("confluence", "test_iris"), 44002);
+        original.put(new NamespacedId("confluence", "iris_test"), 44002);
     }
 }

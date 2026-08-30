@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:rainbow_rod"
         },
         "title": {
             "translate": "achievements.confluence.prismancer.title"
@@ -16,8 +16,15 @@
     },
     "parent": "confluence:achievements/new_world",
     "criteria": {
-        "never": {
-            "trigger": "minecraft:impossible"
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": "confluence:rainbow_rod"
+                    }
+                ]
+            }
         }
     }
 }

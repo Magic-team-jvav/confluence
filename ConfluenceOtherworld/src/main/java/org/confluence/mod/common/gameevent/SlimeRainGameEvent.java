@@ -22,8 +22,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.lib.util.NaturalSpawnerUtil;
+import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.GameEventSpawnerDataModificationEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -39,10 +40,11 @@ import java.util.Optional;
 import java.util.Set;
 
 /// [史莱姆雨](https://terraria.wiki.gg/zh/wiki/%E5%8F%B2%E8%8E%B1%E5%A7%86%E9%9B%A8)
-public final class SlimeRainGameEvent implements GameEvent {
+public enum SlimeRainGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<SlimeRainGameEvent> KEY = GameEvent.createKey(Confluence.asResource("slime_rain"));
-    public static final SlimeRainGameEvent INSTANCE = new SlimeRainGameEvent();
     public static final String ENTITY_TAG = "spawn_during_slime_rain";
+
     private static final int _12$00 = LibDateUtils.getDayTime(12, 0);
     private transient MinecraftServer server;
     private transient ServerLevel level;
@@ -56,8 +58,6 @@ public final class SlimeRainGameEvent implements GameEvent {
     private transient boolean haveKingSlime;
     private transient final Set<Entity> spawned = new HashSet<>();
     private transient WeightedRandomList<MobSpawnSettings.SpawnerData> spawnerData = WeightedRandomList.create();
-
-    private SlimeRainGameEvent() {}
 
     @Override
     public void open(MinecraftServer server) {
@@ -93,7 +93,7 @@ public final class SlimeRainGameEvent implements GameEvent {
         if (duration % 20 == 4) {
             this.haveKingSlime = Streams.of(level.getAllEntities()).anyMatch(entity -> entity.getType() == TEBossEntities.KING_SLIME.get());
         }
-        Long2ObjectMap<NaturalSpawnerUtil.ChunkSpawnData> map = NaturalSpawnerUtil.getDimensionChunkSpawnData(level.dimension());
+        Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) {
             forceEnd();
             return;
@@ -106,7 +106,7 @@ public final class SlimeRainGameEvent implements GameEvent {
         for (ServerPlayer player : players) {
             Vec3 position = player.position();
             double y = position.y + 64;
-            NaturalSpawnerUtil.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtil.ChunkSpawnData.DEFAULT);
+            NaturalSpawnerUtils.ChunkSpawnData data = map.getOrDefault(player.chunkPosition().toLong(), NaturalSpawnerUtils.ChunkSpawnData.DEFAULT);
             double speed = data.speedMultiplier();
             if (speed <= 0) continue;
             int interval = Mth.floor(20 * CommonConfigs.SLIME_RAIN_EVENT_SPAWN_INTERVAL_FACTOR.get() / speed);
@@ -121,11 +121,11 @@ public final class SlimeRainGameEvent implements GameEvent {
                 MobSpawnSettings.SpawnerData spawnerData = random.get();
                 int count = level.random.nextIntBetweenInclusive(spawnerData.minCount, spawnerData.maxCount);
                 for (int j = 0; j < count; j++) {
-                    double x = Mth.nextDouble(level.random, position.x - 32, position.x + 32);
-                    double z = Mth.nextDouble(level.random, position.z - 32, position.z + 32);
+                    double x = LibMathUtils.randomFromTo(level.random, position.x, 24, 32);
+                    double z = LibMathUtils.randomFromTo(level.random, position.z, 24, 32);
                     int cx = SectionPos.blockToSectionCoord(x);
                     int cz = SectionPos.blockToSectionCoord(z);
-                    if (LibUtils.getChunkIfLoaded(level.getChunkSource(), cx, cz) == null) {
+                    if (LibUtils.getChunkIfLoaded(level, cx, cz) == null) {
                         continue;
                     }
                     Entity entity = spawnerData.type.spawn(level, BlockPos.containing(x, y, z), MobSpawnType.EVENT);

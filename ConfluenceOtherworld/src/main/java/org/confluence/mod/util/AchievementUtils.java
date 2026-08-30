@@ -50,10 +50,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
@@ -87,13 +84,19 @@ public final class AchievementUtils {
             buffer.writeVarInt(value.map().size());
             value.forEach((id, progress) -> {
                 buffer.writeUtf(asPath(id));
-                buffer.writeVarInt(progress.criteria.size());
+                List<String[]> criteria = new ArrayList<>(progress.criteria.size());
                 for (Map.Entry<String, CriterionProgress> entry : progress.criteria.entrySet()) {
                     Instant instant = entry.getValue().getObtained();
-                    if (instant != null) {
-                        buffer.writeUtf(entry.getKey());
-                        buffer.writeUtf(instant.atZone(ZoneId.systemDefault()).format(AdvancementProgress.OBTAINED_TIME_FORMAT));
-                    }
+                    if (instant == null) continue;
+                    criteria.add(new String[]{
+                            entry.getKey(),
+                            instant.atZone(ZoneId.systemDefault()).format(AdvancementProgress.OBTAINED_TIME_FORMAT)
+                    });
+                }
+                buffer.writeVarInt(criteria.size());
+                for (String[] criterion : criteria) {
+                    buffer.writeUtf(criterion[0]);
+                    buffer.writeUtf(criterion[1]);
                 }
                 buffer.writeBoolean(progress.isDone());
             });
@@ -111,7 +114,8 @@ public final class AchievementUtils {
     public static void setData(ServerPlayer player) {
         Map<UUID, PlayerAdvancements.Data> map = player.connection.getConnection().channel().attr(ReplyAchievementsPacketC2S.ACHIEVEMENTS).get();
         if (map == null) return;
-        PlayerAdvancements.Data data = map.get(player.getGameProfile().getId());
+        UUID id = player.getGameProfile().getId();
+        PlayerAdvancements.Data data = map.get(id);
         if (data == null) return;
         IPlayerAdvancements.of(player.getAdvancements()).confluence$load(player.server.getAdvancements(), data);
     }
@@ -219,7 +223,7 @@ public final class AchievementUtils {
         return false;
     }
 
-    public static void luckyBreak_watchYourStep(ServerPlayer player, DamageSource damageSource, Entity sourceEntity) {
+    public static void luckyBreak_watchYourStep(ServerPlayer player, DamageSource damageSource, @Nullable Entity sourceEntity) {
         if (player.isAlive()) {
             if (player.getHealth() / player.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
                 awardAchievement(player, "lucky_break");

@@ -13,6 +13,8 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.util.TCUtils;
 
 public class TheConstant extends SecretSeed {
     public static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
@@ -34,13 +36,14 @@ public class TheConstant extends SecretSeed {
     }
 
     public static void applyDarkness(ServerPlayer player, ServerLevel level, long gameTime) {
-        if (player.gameMode.getGameModeForPlayer().isSurvival() && gameTime % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(level)) {
+        if (player.gameMode.getGameModeForPlayer().isSurvival() && gameTime % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(player.server)) {
             if (player.hasEffect(ModEffects.SHINE) || player.hasEffect(MobEffects.GLOWING)) return;
+            if (TCUtils.getValue(player, TCItems.LUMINANCE) > 0) return;
             if (LibUtils.anyHandHasItem(player, ModTags.Items.PROVIDE_LIGHT)) return;
             CompoundTag data = LibUtils.getOrCreatePersistedData(player);
             int tick = data.getInt("confluence:in_darkness_tick");
             BlockPos eyePos = BlockPos.containing(player.getEyePosition());
-            int brightness = level.getLevel().isThundering()
+            int brightness = level.isThundering()
                     ? level.getMaxLocalRawBrightness(eyePos, 10)
                     : level.getMaxLocalRawBrightness(eyePos);
             if (brightness <= 5) {
@@ -55,6 +58,12 @@ public class TheConstant extends SecretSeed {
             } else if (tick != 0) {
                 data.putInt("confluence:in_darkness_tick", 0);
             }
+        }
+    }
+
+    public static void instantlyDieWhenHasNoFoodLevel(ServerPlayer player) {
+        if (player.getFoodData().getFoodLevel() <= 0 && ModSecretSeeds.THE_CONSTANT.match(player.server)) {
+            player.hurt(player.damageSources().starve(), Float.MAX_VALUE);
         }
     }
 }

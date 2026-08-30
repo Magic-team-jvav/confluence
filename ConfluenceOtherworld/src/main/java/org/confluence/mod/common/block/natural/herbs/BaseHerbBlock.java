@@ -27,7 +27,6 @@ import net.neoforged.neoforge.common.CommonHooks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -105,12 +104,10 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     }
 
     @Override
-    @NotNull
     protected ItemLike getBaseSeedId() {
         return Items.AIR;
     }
 
-    @NotNull
     protected IntegerProperty getAgeProperty() {
         return AGE;
     }
@@ -124,7 +121,6 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
         return MAX_AGE;
     }
 
-    @NotNull
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE_BY_AGE[this.getAge(state)];
     }

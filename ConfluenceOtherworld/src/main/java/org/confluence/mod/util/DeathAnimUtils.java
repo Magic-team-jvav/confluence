@@ -30,7 +30,8 @@ import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.mixed.IModelPart;
-import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
+import org.confluence.mod.mixin.client.model.AgeableListModelAccessor;
+import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererMixin;
 import org.confluence.terraentity.client.boss.renderer.WallOfFleshRenderer;
 import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
 import org.confluence.terraentity.entity.util.DeathAnimOptions;
@@ -169,17 +170,14 @@ public final class DeathAnimUtils {
         toBeDiscarded.add(entity);
     }
 
-    /**
-     * 让原版Renderer帮我变换，在model.renderToBuffer之前就会返回，就能保留变换的结果
-     */
+    /// 让原版Renderer帮我变换，在model.renderToBuffer之前就会返回，就能保留变换的结果
+    ///
+    /// [LivingEntityRendererMixin#postRender]
     public static <T extends LivingEntity> void dummyRender(LivingEntityRenderer<T, ?> livingRenderer, LivingEntity entity, PoseStack poseStack) {
         livingRenderer.render((T) entity, entity.getYRot(), 1, poseStack, DummyMultiBufferSource.INSTANCE, 0);
     }
 
-
-    /**
-     * 先序遍历，把树里的节点全部摊平到一个集合里面
-     */
+    /// 先序遍历，把树里的节点全部摊平到一个集合里面
     public static void flattenBone(Collection<GeoBone> collection, GeoBone parent) {
         collection.add(parent);
         for (GeoBone child : parent.getChildBones()) {

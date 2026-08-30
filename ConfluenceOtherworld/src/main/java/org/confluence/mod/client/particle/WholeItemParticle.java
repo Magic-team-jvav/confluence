@@ -16,7 +16,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.particle.WholeItemParticleOptions;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class WholeItemParticle extends TextureSheetParticle {
@@ -45,12 +44,12 @@ public class WholeItemParticle extends TextureSheetParticle {
     }
 
     @Override
-    public @NotNull ParticleRenderType getRenderType() {
+    public ParticleRenderType getRenderType() {
         return ParticleRenderType.CUSTOM;
     }
 
     @Override
-    public void render(@NotNull VertexConsumer buffer, Camera camera, float partialTicks) {
+    public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
         Minecraft mc = Minecraft.getInstance();
         PoseStack poseStack = new PoseStack();
 
@@ -79,9 +78,8 @@ public class WholeItemParticle extends TextureSheetParticle {
     }
 
     public static class Provider implements ParticleProvider<WholeItemParticleOptions> {
-        @Nullable
         @Override
-        public Particle createParticle(WholeItemParticleOptions options, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public @Nullable Particle createParticle(WholeItemParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new WholeItemParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.item(), options.gravity(), options.life());
         }
     }

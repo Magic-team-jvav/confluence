@@ -1,7 +1,7 @@
 package org.confluence.mod.integration.appleskin;
 
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.NeoForge;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import squeek.appleskin.api.event.HUDOverlayEvent;
@@ -9,7 +9,7 @@ import squeek.appleskin.api.event.HUDOverlayEvent;
 import java.util.function.Consumer;
 
 public class AppleskinHelper {
-    public static final boolean IS_LOADED = ModList.get().isLoaded("appleskin");
+    public static final boolean IS_LOADED = LibUtils.isModLoaded("appleskin");
 
     public static void addListeners() {
         if (IS_LOADED) {

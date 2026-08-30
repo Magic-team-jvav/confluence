@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "half=lower": {
+            "model": "confluence:block/tall_inverse_grass_bottom"
+        },
+        "half=upper": {
+            "model": "confluence:block/tall_inverse_grass_top"
+        }
+    }
+}

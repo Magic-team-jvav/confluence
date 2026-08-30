@@ -29,14 +29,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.ToIntFunction;
 
-public final class BossDelaySpawner {
-    public static final BossDelaySpawner INSTANCE = new BossDelaySpawner();
+public enum BossDelaySpawner {
+    INSTANCE;
     public static final int SUCCESS = 0;
     public static final int CONTINUE = -1;
     public static final int CANCEL = -2;
     private final List<Delayed<AbstractTerraBossBase>> bossQueue = new ArrayList<>();
-
-    private BossDelaySpawner() {}
 
     public void tick(ServerLevel level) {
         if (bossQueue.isEmpty()) return;

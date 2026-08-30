@@ -227,7 +227,7 @@ public abstract class ConnectedTextureBehaviour {
 	public static abstract class Base extends ConnectedTextureBehaviour {
 		@Override
 		@Nullable
-		public abstract CTSpriteShiftEntry getShift(BlockState state, Direction direction, @NotNull TextureAtlasSprite sprite);
+		public abstract CTSpriteShiftEntry getShift(BlockState state, Direction direction, @Nullable TextureAtlasSprite sprite);
 
 		@Override
 		@Nullable
@@ -239,5 +239,4 @@ public abstract class ConnectedTextureBehaviour {
 			return shift.getType();
 		}
 	}
-
 }

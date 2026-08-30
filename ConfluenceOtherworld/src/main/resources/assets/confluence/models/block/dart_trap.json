@@ -2,7 +2,7 @@
     "parent": "minecraft:block/orientable",
     "textures": {
         "front": "confluence:block/dart_trap_front",
-        "side": "minecraft:block/furnace_side",
-        "top": "minecraft:block/furnace_top"
+        "side": "confluence:block/dart_trap_side",
+        "top": "confluence:block/dart_trap_top"
     }
 }

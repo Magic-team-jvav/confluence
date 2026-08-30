@@ -27,6 +27,7 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<LoomMenu>> LOOM = TYPES.register("loom", () -> new MenuType<>(LoomMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<DyeVatMenu>> DYE_VAT = TYPES.register("dye_vat", () -> new MenuType<>(DyeVatMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<DyeMixMenu>> DYE_MIX = TYPES.register("dye_mix", () -> new MenuType<>(DyeMixMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<PiggyBankMenu>> PIGGY_BANK = TYPES.register("piggy_bank", () -> new MenuType<>(PiggyBankMenu::new, FeatureFlags.VANILLA_SET));
 
     public static final Supplier<MenuType<NPCTradesForgeMenu>> NPC_TRADES_MENU = TYPES.register("npc_trades", () -> new MenuType<>(NPCTradesForgeMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<NPCReforgeMenu>> REFORGE_MENU = TYPES.register("reforge_menu", () -> new MenuType<>(NPCReforgeMenu::new, FeatureFlags.VANILLA_SET));

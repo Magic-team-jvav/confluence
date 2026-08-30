@@ -1,8 +1,8 @@
 package org.confluence.mod.mixin.integration.journeymap;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import journeymap.client.ui.UIManager;
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.effect.MobEffect;
 import org.confluence.mod.client.ClientConfigs;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(targets = "journeymap.client.ui.minimap.Effect", remap = false)
 public abstract class EffectMixin {
     @Inject(method = "effectProcessor", at = @At("HEAD"), cancellable = true)
-    private static void cancel(int k, int l, int j, int i, MobEffect mobEffect, CallbackInfoReturnable<int[]> cir) {
+    private static void cancel(CallbackInfoReturnable<int[]> cir, @Local(argsOnly = true, ordinal = 1) int l) {
         if (ClientConfigs.leftEffectIcon) {
             int minimapWidth = UIManager.INSTANCE.getMiniMap().getDisplayVars().minimapWidth;
             double guiScale = Minecraft.getInstance().getWindow().getGuiScale();

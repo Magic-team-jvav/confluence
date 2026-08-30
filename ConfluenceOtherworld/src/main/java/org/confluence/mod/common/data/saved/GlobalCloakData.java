@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectMutablePair;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -27,13 +28,12 @@ import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.network.s2c.GlobalCloakSyncPacketS2C;
 
-import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class GlobalCloakData implements IGlobalData {
-    public static final GlobalCloakData INSTANCE = new GlobalCloakData();
+public enum GlobalCloakData implements IGlobalData {
+    INSTANCE;
+
     public static final Codec<Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_CODEC = LibCodecUtils.notStringKeyMap(
             "source", BlockState.CODEC,
             "pair", LibCodecUtils.booleanObjectPair("cloaked", "target", BlockState.CODEC)
@@ -47,20 +47,18 @@ public final class GlobalCloakData implements IGlobalData {
     });
 
     public static final StreamCodec<RegistryFriendlyByteBuf, Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_STREAM_CODEC = ByteBufCodecs.map(
-            HashMap::new, LibStreamCodecUtils.BLOCK_STATE, LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
+            Reference2ObjectOpenHashMap::new, LibStreamCodecUtils.BLOCK_STATE, LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
     );
     public static final StreamCodec<RegistryFriendlyByteBuf, Map<Item, BooleanObjectPair<Item>>> ITEM_MAP_STREAM_CODEC = LibStreamCodecUtils.lazyInitialized(() -> {
         StreamCodec<RegistryFriendlyByteBuf, Item> streamCodec = ByteBufCodecs.registry(Registries.ITEM);
-        return ByteBufCodecs.map(HashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
+        return ByteBufCodecs.map(Reference2ObjectOpenHashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
     });
     public static final int VERSION = 1;
 
-    private Map<BlockState, BooleanObjectPair<BlockState>> blockMap = new IdentityHashMap<>();
-    private Map<BlockState, BlockBehaviour.Properties> backupProperties = new IdentityHashMap<>();
-    private Map<Item, BooleanObjectPair<Item>> itemMap = new IdentityHashMap<>();
+    private final Map<BlockState, BooleanObjectPair<BlockState>> blockMap = new Reference2ObjectOpenHashMap<>();
+    private final Map<BlockState, BlockBehaviour.Properties> backupProperties = new Reference2ObjectOpenHashMap<>();
+    private final Map<Item, BooleanObjectPair<Item>> itemMap = new Reference2ObjectOpenHashMap<>();
     private int version;
-
-    private GlobalCloakData() {}
 
     public void fix(ServerLevel level) {
         if (version >= VERSION) return;
@@ -149,10 +147,10 @@ public final class GlobalCloakData implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap"))
-                .ifSuccess(result -> this.blockMap = new IdentityHashMap<>(result));
-        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap"))
-                .ifSuccess(result -> this.itemMap = new IdentityHashMap<>(result));
+        blockMap.clear();
+        BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")).ifSuccess(blockMap::putAll);
+        itemMap.clear();
+        ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")).ifSuccess(itemMap::putAll);
         this.version = tag.getInt("Version");
 
         rollbackAllProperties();
@@ -170,9 +168,9 @@ public final class GlobalCloakData implements IGlobalData {
     @Override
     public void clear() {
         rollbackAllProperties();
-        this.blockMap = new IdentityHashMap<>();
-        this.backupProperties = new IdentityHashMap<>();
-        this.itemMap = new IdentityHashMap<>();
+        this.blockMap.clear();
+        this.backupProperties.clear();
+        this.itemMap.clear();
         this.version = VERSION;
         initialize();
     }
@@ -188,8 +186,10 @@ public final class GlobalCloakData implements IGlobalData {
     }
 
     public void networkDecode(RegistryFriendlyByteBuf buffer) {
-        this.blockMap = BLOCK_MAP_STREAM_CODEC.decode(buffer);
-        this.itemMap = ITEM_MAP_STREAM_CODEC.decode(buffer);
+        blockMap.clear();
+        blockMap.putAll(BLOCK_MAP_STREAM_CODEC.decode(buffer));
+        itemMap.clear();
+        itemMap.putAll(ITEM_MAP_STREAM_CODEC.decode(buffer));
     }
 
     public void rollbackAllProperties() {

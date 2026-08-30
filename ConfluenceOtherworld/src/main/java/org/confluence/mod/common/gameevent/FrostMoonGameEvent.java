@@ -6,11 +6,9 @@ import net.minecraft.server.MinecraftServer;
 import org.confluence.mod.Confluence;
 
 // todo
-public final class FrostMoonGameEvent implements GameEvent {
+public enum FrostMoonGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<FrostMoonGameEvent> KEY = GameEvent.createKey(Confluence.asResource("frost_moon"));
-    public static final FrostMoonGameEvent INSTANCE = new FrostMoonGameEvent();
-
-    private FrostMoonGameEvent() {}
 
     @Override
     public void open(MinecraftServer server) {

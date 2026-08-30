@@ -6,11 +6,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.mana.HurtnadoProjectile;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
-import org.confluence.terra_curio.common.init.TCAttributes;
 
 import java.util.Optional;
 
@@ -19,8 +19,8 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
 
     public WeatherPainItem() {
         super(ModRarity.GREEN, HurtnadoProjectile::new, 6.5F, 30, 1.0F, 45, builder -> builder
-                .add(TCAttributes.getCriticalChance(), new AttributeModifier(ID, 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                .add(TCAttributes.ARMOR_PENETRATION, new AttributeModifier(ID, 10, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
+                .add(LibAttributes.getCriticalChance(), new AttributeModifier(ID, 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(LibAttributes.getArmorPenetration(), new AttributeModifier(ID, 10, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 
     @Override
@@ -32,15 +32,15 @@ public class WeatherPainItem extends ManaStaffItem<HurtnadoProjectile> {
     }
 
     @Override
-    protected void beforeShoot(ServerPlayer player, ItemStack itemStack, HurtnadoProjectile projectile) {
-        super.beforeShoot(player, itemStack, projectile);
+    protected void beforeShoot(ServerPlayer player, ItemStack stack, HurtnadoProjectile projectile) {
+        super.beforeShoot(player, stack, projectile);
         projectile.addDeltaMovement(new Vec3(0.0, 0.4, 0.0));
     }
 
     @Override
-    protected void afterShoot(ServerPlayer player, ItemStack itemStack, HurtnadoProjectile projectile) {
-        super.afterShoot(player, itemStack, projectile);
-        LibUtils.updateItemStackNbt(itemStack, tag -> {
+    protected void afterShoot(ServerPlayer player, ItemStack stack, HurtnadoProjectile projectile) {
+        super.afterShoot(player, stack, projectile);
+        LibUtils.updateItemStackNbt(stack, tag -> {
             if (tag.hasUUID("UUID") && player.serverLevel().getEntity(tag.getUUID("UUID")) instanceof HurtnadoProjectile projectile1) {
                 projectile1.discard();
             }

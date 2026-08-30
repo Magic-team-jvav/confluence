@@ -18,7 +18,7 @@ import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRenderer
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.mixin.accessor.EntityAccessor;
+import org.confluence.mod.mixin.world.entity.EntityAccessor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;

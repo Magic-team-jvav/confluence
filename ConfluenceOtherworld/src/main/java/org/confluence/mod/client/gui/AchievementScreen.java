@@ -24,7 +24,7 @@ import org.confluence.mod.util.AchievementUtils;
 
 import java.util.*;
 
-public class AchievementScreen extends Screen implements BackgroundLayer.Backgrounded {
+public class AchievementScreen extends Screen {
     public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("achievement_icon"), Confluence.asResource("achievement_icon_highlighted"));
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/achievement.png");
     private static final int ENTRY_X = 4;
@@ -131,6 +131,7 @@ public class AchievementScreen extends Screen implements BackgroundLayer.Backgro
 
         int x = leftPos + CATEGORY_X;
         int y = topPos + CATEGORY_Y;
+        AchievementOffset.Category hoveredCategory = null;
         for (int i = 0; i < 4; i++) {
             AchievementOffset.Category category = INDEX_2_CATEGORY[i];
             int[] uvwh = CATEGORIES_UVWH.get(category);
@@ -139,8 +140,15 @@ public class AchievementScreen extends Screen implements BackgroundLayer.Backgro
                 u += CATEGORY_DISABLED_OFFSET_U;
             }
             int w = uvwh[2];
-            guiGraphics.blit(BACKGROUND, x, y, u, uvwh[1], w, uvwh[3], TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            int h = uvwh[3];
+            guiGraphics.blit(BACKGROUND, x, y, u, uvwh[1], w, h, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+            if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
+                hoveredCategory = category;
+            }
             x += w;
+        }
+        if (hoveredCategory != null) {
+            guiGraphics.renderTooltip(font, hoveredCategory.getTranslatedName(), mouseX, mouseY);
         }
         x = leftPos + ENTRY_X;
         y = topPos + ENTRY_Y;

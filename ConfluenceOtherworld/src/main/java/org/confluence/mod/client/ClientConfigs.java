@@ -8,17 +8,18 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.common.TranslatableEnum;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
+import org.confluence.mod.client.handler.SoulSkillClientHolder;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
@@ -29,6 +30,14 @@ import java.util.Locale;
 public final class ClientConfigs {
     public static int showWindParticles = 90;
     public static float minEctoMistEffectRadius = 10;
+
+    public static int rainbowCount = 3;
+    public static boolean rainbowGradient = false;
+
+    public static int soulcererBackgroundHue = 270;
+    public static int soulcererBackgroundContrast = 255;
+    public static boolean soulcererBackgroundTree = true;
+    public static boolean soulcererBackgroundMagic = true;
 
     public static boolean achievementToast = true;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
@@ -43,9 +52,7 @@ public final class ClientConfigs {
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
     public static int manaOffsetX = 0;
     public static int manaOffsetY = 0;
-    //    public static TerraStyleSoulHud.Soul soulStyle = TerraStyleSoulHud.Soul.OVERLAY;
-//    public static int soulOffsetX = 0;
-//    public static int soulOffsetY = 0;
+    public static SoulSkillClientHolder.Type soulQuickSkillStyle;
     public static boolean terraStyleArmor = true;
     public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
@@ -60,6 +67,14 @@ public final class ClientConfigs {
     private static IntValue SHOW_WIND_PARTICLES;
     private static IntValue MIN_ECTO_MIST_EFFECT_RADIUS;
 
+    private static IntValue RAINBOW_COUNT;
+    private static BooleanValue RAINBOW_GRADIENT;
+
+    public static IntValue SOULCERER_BACKGROUND_HUE;
+    public static IntValue SOULCERER_BACKGROUND_CONTRAST;
+    public static BooleanValue SOULCERER_BACKGROUND_TREE;
+    public static BooleanValue SOULCERER_BACKGROUND_MAGIC;
+
     private static BooleanValue ACHIEVEMENT_TOAST;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
     private static IntValue CUSTOM_TITLE;
@@ -73,9 +88,7 @@ public final class ClientConfigs {
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
     private static IntValue MANA_OFFSET_X;
     private static IntValue MANA_OFFSET_Y;
-    //    private static EnumValue<TerraStyleSoulHud.Soul> SOUL_STYLE;
-//    private static IntValue SOUL_OFFSET_X;
-//    private static IntValue SOUL_OFFSET_Y;
+    private static EnumValue<SoulSkillClientHolder.Type> SOUL_QUICK_SKILL_STYLE;
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
@@ -91,6 +104,14 @@ public final class ClientConfigs {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         minEctoMistEffectRadius = MIN_ECTO_MIST_EFFECT_RADIUS.get();
 
+        rainbowCount = RAINBOW_COUNT.get();
+        rainbowGradient = RAINBOW_GRADIENT.get();
+
+        soulcererBackgroundHue = SOULCERER_BACKGROUND_HUE.get();
+        soulcererBackgroundContrast = SOULCERER_BACKGROUND_CONTRAST.get();
+        soulcererBackgroundTree = SOULCERER_BACKGROUND_TREE.get();
+        soulcererBackgroundMagic = SOULCERER_BACKGROUND_MAGIC.get();
+
         achievementToast = ACHIEVEMENT_TOAST.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
         customTitle = CUSTOM_TITLE.get();
@@ -103,9 +124,9 @@ public final class ClientConfigs {
         manaStyle = MANA_STYLE.get();
         manaOffsetX = MANA_OFFSET_X.get();
         manaOffsetY = MANA_OFFSET_Y.get();
-//        soulStyle = SOUL_STYLE.get();
-//        soulOffsetX = SOUL_OFFSET_X.get();
-//        soulOffsetY = SOUL_OFFSET_Y.get();
+        if (Confluence.SOUL_SKILLS) {
+            soulQuickSkillStyle = SOUL_QUICK_SKILL_STYLE.get();
+        }
         terraStyleArmor = TERRA_STYLE_ARMOR.get();
         armorStyle = ARMOR_STYLE.get();
         terraStyleFood = TERRA_STYLE_FOOD.get();
@@ -129,6 +150,14 @@ public final class ClientConfigs {
             ACHIEVEMENT_TOAST = builder.define("achievementToast", true);
             SELL_PRICE_DISPLAY = builder.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
             CUSTOM_TITLE = builder.defineInRange("customTitle", 71, 0, 1000);
+            {
+                builder.push("Soulcerer");
+                SOULCERER_BACKGROUND_HUE = builder.defineInRange("soulcererBackgroundHue", 270, 0, 360);
+                SOULCERER_BACKGROUND_CONTRAST = builder.defineInRange("soulcererBackgroundContrast", 255, 0, 255);
+                SOULCERER_BACKGROUND_TREE = builder.define("soulcererBackgroundTree", true);
+                SOULCERER_BACKGROUND_MAGIC = builder.define("soulcererBackgroundMagic", true);
+                builder.pop();
+            }
             builder.pop();
         }
         {
@@ -154,13 +183,11 @@ public final class ClientConfigs {
                 MANA_OFFSET_Y = builder.defineInRange("manaOffsetY", 0, -256, 256);
                 builder.pop();
             }
-//            {
-//                builder.push("Soul");
-//                SOUL_STYLE = builder.defineEnum("soulStyle", TerraStyleSoulHud.Soul.OVERLAY);
-//                SOUL_OFFSET_X = builder.defineInRange("soulOffsetX", 0, -256, 256);
-//                SOUL_OFFSET_Y = builder.defineInRange("soulOffsetY", 0, -256, 256);
-//                builder.pop();
-//            }
+            if (Confluence.SOUL_SKILLS) {
+                builder.push("Soul");
+                SOUL_QUICK_SKILL_STYLE = builder.defineEnum("soulQuickSkillStyle", SoulSkillClientHolder.Type.ROULETTE_WHEEL_SMALL);
+                builder.pop();
+            }
             {
                 builder.push("Armor");
                 TERRA_STYLE_ARMOR = builder.define("terraStyleArmor", true);
@@ -175,11 +202,19 @@ public final class ClientConfigs {
         {
             builder.push("Entity");
             BLOODY_EFFECT = builder.define("bloodyEffect", true);
-            if (!ModList.get().isLoaded("yes_steve_model")) {
-                GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
-            }
+            GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
             DAMAGE_INDICATOR = builder.define("damageIndicator", true);
             HEAL_INDICATOR = builder.define("healIndicator", true);
+            builder.pop();
+        }
+        {
+            builder.push("Biome");
+            {
+                builder.push("The Hallow");
+                RAINBOW_COUNT = builder.defineInRange("rainbowCount", 3, 0, 20);
+                RAINBOW_GRADIENT = builder.define("rainbowGradient", false);
+                builder.pop();
+            }
             builder.pop();
         }
 

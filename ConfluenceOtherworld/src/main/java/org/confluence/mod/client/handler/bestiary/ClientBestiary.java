@@ -10,7 +10,6 @@ import com.mojang.serialization.JsonOps;
 import it.unimi.dsi.fastutil.objects.Object2BooleanLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import net.minecraft.ChatFormatting;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.Util;
 import net.minecraft.client.searchtree.SearchTree;
 import net.minecraft.network.chat.Component;
@@ -30,7 +29,6 @@ import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.*;
@@ -38,8 +36,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class ClientBestiary extends ContextAwareReloadListener {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static ClientBestiary INSTANCE;
@@ -198,11 +194,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         return INSTANCE;
     }
 
-    public static void reset() {
-        getInstance().resetEntries();
-    }
-
-    private void resetEntries() {
+    public void reset() {
         if (currentLevel == null) return;
         this.currentLevel = null;
         Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
@@ -219,7 +211,9 @@ public class ClientBestiary extends ContextAwareReloadListener {
     public void handle(Level level, Either<Map<String, BestiaryEntry>, String> either) {
         if (level != currentLevel) {
             if (currentLevel != null) {
-                resetEntries();
+                for (Map.Entry<String, ClientBestiaryEntry> entry : entries.entrySet()) {
+                    entry.getValue().resetRenderedEntity(); // 移除之前的level
+                }
             }
             this.currentLevel = level;
         }

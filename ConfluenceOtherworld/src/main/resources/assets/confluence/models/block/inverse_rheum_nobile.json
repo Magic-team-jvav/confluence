@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/inverse_rheum_nobile",
+    "particle": "confluence:block/inverse_rheum_nobile"
+  },
+  "render_type": "cutout"
+}

@@ -13,14 +13,14 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.ModList;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.mixed.IGui;
 
 public class RepeaterHud implements LayeredDraw.Layer {
-    public static final boolean DYNAMICCROSSHAIR = ModList.get().isLoaded("dynamiccrosshair");
+    public static final boolean DYNAMICCROSSHAIR = LibUtils.isModLoaded("dynamiccrosshair");
 
     public static void handle() {
         IGui.of(Minecraft.getInstance().gui).confluence$setShooting();

@@ -3,7 +3,6 @@ package org.confluence.mod.client.particle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class LightBaneParticle extends TextureSheetParticle {
@@ -20,7 +19,7 @@ public class LightBaneParticle extends TextureSheetParticle {
     }
 
     @Override
-    public @NotNull ParticleRenderType getRenderType() {
+    public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
@@ -40,7 +39,7 @@ public class LightBaneParticle extends TextureSheetParticle {
         }
 
         @Override
-        public @Nullable Particle createParticle(@NotNull SimpleParticleType type, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+        public @Nullable Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
             return new LightBaneParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, sprites);
         }
     }

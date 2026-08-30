@@ -1,13 +1,17 @@
 package org.confluence.mod.common.item.spear;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.entity.projectile.spear.SporeCloudProjectile;
+import org.confluence.mod.common.init.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 
-// todo攻击时能向前发射孢子云射弹
 public class ChlorophytePartisanItem extends AbstractSpearItem {
     public ChlorophytePartisanItem() {
         super(new Properties().attributes(attributes(6, 24.5F)), ModRarity.LIME, 10, 3, createKeyframes(
@@ -22,5 +26,23 @@ public class ChlorophytePartisanItem extends AbstractSpearItem {
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
         VectorUtils.knockBackA2B(owner, victim, 0.31, 0.2);
+    }
+
+    @Override
+    protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {
+        if (last) {
+            SporeCloudProjectile projectile = new SporeCloudProjectile(
+                    ModEntities.SPORE_CLOUD_PROJECTILE.get(), level);
+            projectile.setOwner(owner);
+            projectile.setWeapon(owner.getMainHandItem());
+
+            // 初始位置：矛尖与玩家之间约1/3处
+            Vec3 spawnPos = owner.getEyePosition().add(tipPos.subtract(owner.getEyePosition()).scale(0.33));
+            projectile.setPos(spawnPos.x, spawnPos.y, spawnPos.z);
+
+            projectile.fireFromOwner(owner, owner.getLookAngle(), 0.1f);
+
+            level.addFreshEntity(projectile);
+        }
     }
 }

@@ -12,7 +12,9 @@ public class ThunderZapperProjectile extends BaseManaStaffProjectileEntity {
     }
 
     @Override
-    public void tick() {
+    public void baseTick() {
+        super.baseTick();
+
         if (dir == null) {
             this.dir = getDeltaMovement().normalize();
         }
@@ -23,6 +25,5 @@ public class ThunderZapperProjectile extends BaseManaStaffProjectileEntity {
         } else if (i >= 5) {
             setDeltaMovement(dir.add(0, flip, 0));
         }
-        super.tick();
     }
 }

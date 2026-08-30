@@ -13,11 +13,11 @@ public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
     }
 
     @Override
-    protected void beforeShoot(ServerPlayer player, ItemStack itemStack, MagicDaggerProjectile projectile) {
+    protected void beforeShoot(ServerPlayer player, ItemStack stack, MagicDaggerProjectile projectile) {
         projectile.setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
-        projectile.setItem(itemStack);
+        projectile.setItem(stack);
         projectile.setFlyTicks(10);
-        super.beforeShoot(player, itemStack, projectile);
+        super.beforeShoot(player, stack, projectile);
     }
 
     @Override

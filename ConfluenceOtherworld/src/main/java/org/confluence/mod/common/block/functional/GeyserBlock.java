@@ -20,6 +20,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
+import org.confluence.mod.common.util.TrapDamageHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
@@ -93,8 +94,9 @@ public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
         int bz = pos.getZ();
         double offsetY = state.getValue(IS_FLOOR) ? 12.0 : -12.0;
         // todo 粒子
+        float damage = 4.0F;
         level.getEntities((net.minecraft.world.entity.Entity) null, new AABB(bx, by, bz, bx + 1.0, by + offsetY, bz + 1.0), entity -> entity instanceof LivingEntity)
-                .forEach(entity -> entity.hurt(level.damageSources().lava(), 4.0F));
+                .forEach(entity -> entity.hurt(level.damageSources().lava(), TrapDamageHelper.applyDeadMansSweaterReduction((LivingEntity) entity, damage)));
         level.setBlockAndUpdate(pos, state.setValue(StateProperties.DRIVE, true));
         level.scheduleTick(pos, this, 66);
     }

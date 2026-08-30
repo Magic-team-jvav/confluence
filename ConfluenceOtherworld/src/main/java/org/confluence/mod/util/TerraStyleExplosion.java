@@ -23,13 +23,14 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.network.s2c.TerraStyleExplosionPacketS2C;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.ArrayList;
@@ -104,7 +105,7 @@ public class TerraStyleExplosion extends Explosion {
 
     public static void handleClientExplode(Level level, double x, double y, double z, float radius) {
         level.playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 4.0F, (1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F, false);
-        PSGameClient.LOADER.addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("variable.radius", radius)), false);
+        MolangParticleEngine.INSTANCE.addEmitter(new ParticleEmitter(level, new Vec3(x, y, z), PARTICLE_ID, new MolangExp("variable.radius", radius)));
     }
 
     public static Explosion terraExplode(
@@ -122,14 +123,14 @@ public class TerraStyleExplosion extends Explosion {
             Explosion.BlockInteraction blockInteraction = switch (explosionInteraction) {
                 case NONE -> Explosion.BlockInteraction.KEEP;
                 case BLOCK -> getDestroyType(level, GameRules.RULE_BLOCK_EXPLOSION_DROP_DECAY);
-                case MOB -> net.neoforged.neoforge.event.EventHooks.canEntityGrief(level, source)
+                case MOB -> EventHooks.canEntityGrief(level, source)
                         ? getDestroyType(level, GameRules.RULE_MOB_EXPLOSION_DROP_DECAY)
                         : Explosion.BlockInteraction.KEEP;
                 case TNT -> getDestroyType(level, GameRules.RULE_TNT_EXPLOSION_DROP_DECAY);
                 case TRIGGER -> Explosion.BlockInteraction.TRIGGER_BLOCK;
             };
             Explosion explosion = new TerraStyleExplosion(level, source, damageSource, damageCalculator, x, y, z, radius, blockInteraction);
-            if (net.neoforged.neoforge.event.EventHooks.onExplosionStart(level, explosion)) return explosion;
+            if (EventHooks.onExplosionStart(level, explosion)) return explosion;
             explosion.explode();
             explosion.finalizeExplosion(false);
             if (!explosion.interactsWithBlocks()) {

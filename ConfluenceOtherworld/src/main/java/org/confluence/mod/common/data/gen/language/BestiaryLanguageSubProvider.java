@@ -35,8 +35,8 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.confluence.filter.underground_desert.desc", "The Underground Desert is a biome located directly beneath the world's main Desert.");
         add("bestiary.confluence.filter.snow.title", "Snow");
         add("bestiary.confluence.filter.snow.desc", "The Snow biome is a polar-themed surface biome.");
-        add("bestiary.confluence.filter.underground_snow.title", "Underground Snow");
-        add("bestiary.confluence.filter.underground_snow.desc", "The Underground Snow is a biome and is the underground variant of the Snow biome.");
+        add("bestiary.confluence.filter.ice.title", "Ice");
+        add("bestiary.confluence.filter.ice.desc", "The Ice is a biome and is the underground variant of the Snow biome.");
         add("bestiary.confluence.filter.the_corruption.title", "The Corruption");
         add("bestiary.confluence.filter.the_corruption.desc", "The Corruption is an evil biome with a theme of deep purple wasteland, death, and decay.");
         add("bestiary.confluence.filter.underground_corruption.title", "Underground Corruption");
@@ -819,8 +819,8 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.confluence.filter.underground_desert.desc", "地下沙漠是位于世界的主沙漠正下方的生物群系。");
         add("bestiary.confluence.filter.snow.title", "雪原");
         add("bestiary.confluence.filter.snow.desc", "雪原生物群系，是一个以极地为主题的地表生物群系。");
-        add("bestiary.confluence.filter.underground_snow.title", "地下雪原");
-        add("bestiary.confluence.filter.underground_snow.desc", "地下雪原是一种生物群系，是雪原生物群系的地下版本");
+        add("bestiary.confluence.filter.ice.title", "地下雪原");
+        add("bestiary.confluence.filter.ice.desc", "地下雪原是一种生物群系，是雪原生物群系的地下版本");
         add("bestiary.confluence.filter.the_corruption.title", "腐化之地");
         add("bestiary.confluence.filter.the_corruption.desc", "腐化之地是一种邪恶生物群系，有着深紫色的废土、死亡、与腐烂的主题");
         add("bestiary.confluence.filter.underground_corruption.title", "地下腐化之地");

@@ -14,7 +14,6 @@ import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -22,6 +21,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
@@ -257,7 +257,7 @@ public class BaseTerraArrowItem extends ArrowItem {
          * 设置不可破坏
          */
         public ModifyArrowBuilder setUnBreakable() {
-            this.modifyProperties.add(p -> p.component(DataComponents.UNBREAKABLE, new Unbreakable(true)));
+            this.modifyProperties.add(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
             return this;
         }
 

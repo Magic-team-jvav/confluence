@@ -8,10 +8,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -24,14 +22,12 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.create.CreateHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.init.TEEffects;
 import org.confluence.terraentity.utils.RecipeDrawerUtils;
 
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class ModEnglishProvider extends LanguageProvider {
     CompletableFuture<HolderLookup.Provider> lookup;
@@ -86,9 +82,278 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.prefix_separator", " ");
         add("confluence.game_event", "Game Event");
 
-        add("itemGroup.confluence.log", "Log");
-        add("itemGroup.confluence.leaves", "Leaves");
-        add("itemGroup.confluence.sapling", "Sapling");
+        add("confluence.difficulty_notice.ask", "You are in mediumcore! Do you want to change to softcore?");
+        add("confluence.difficulty_notice.sure", "Sure");
+        add("confluence.difficulty_notice.sure.tip", "Set keepInventory to true");
+        add("confluence.difficulty_notice.never", "Never");
+        add("confluence.difficulty_notice.never.tip", "Don't show this message again");
+        add("confluence.difficulty_notice.tip", "Hold Alt to select");
+        add("confluence.difficulty_notice.sure.done", "Has been set to softcore");
+        add("confluence.difficulty_notice.never.done", "Will never ask for softcore");
+
+        // 自然方块分类
+        add("itemGroup.confluence.ebony", "Ebony Wood");
+        add("itemGroup.confluence.pearl", "Pearl Wood");
+        add("itemGroup.confluence.shadow", "Shadow Wood");
+        add("itemGroup.confluence.palm", "Palm Wood");
+        add("itemGroup.confluence.baobab", "Baobab Wood");
+        add("itemGroup.confluence.yellow_willow", "Yellow Willow Wood");
+        add("itemGroup.confluence.spooky", "Spooky Wood");
+        add("itemGroup.confluence.living", "Living Wood");
+        add("itemGroup.confluence.living_mahogany", "Living Mahogany Wood");
+        add("itemGroup.confluence.ash", "Ash Wood");
+        add("itemGroup.confluence.void", "Void Wood");
+        add("itemGroup.confluence.gaze", "Gaze Wood");
+        add("itemGroup.confluence.moonglow_willow", "Moonglow Willow Wood");
+        add("itemGroup.confluence.dynasty", "Dynasty Wood");
+        add("itemGroup.confluence.pine", "Pine Wood");
+        add("itemGroup.confluence.fey", "Fey Wood");
+        add("itemGroup.confluence.stone_tree", "Stone Tree");
+        add("itemGroup.confluence.pot", "Pots");
+
+        add("itemGroup.confluence.natural_environment", "Natural Environment");
+        add("itemGroup.confluence.corruption", "Corruption");
+        add("itemGroup.confluence.hallow", "Hallow");
+        add("itemGroup.confluence.crimson", "Crimson");
+        add("itemGroup.confluence.mushroom", "Mushroom");
+        add("itemGroup.confluence.desert", "Desert");
+        add("itemGroup.confluence.jungle", "Jungle");
+        add("itemGroup.confluence.end", "The End");
+        add("itemGroup.confluence.nether", "Nether");
+        add("itemGroup.confluence.skyland", "Sky Island");
+        add("itemGroup.confluence.snow", "Snow");
+        add("itemGroup.confluence.ocean", "Ocean");
+        add("itemGroup.confluence.crops", "Crops");
+        add("itemGroup.confluence.branches", "Branches");
+        add("itemGroup.confluence.vines", "Vines");
+        add("itemGroup.confluence.shimmer", "Shimmer");
+        add("itemGroup.confluence.moss", "Moss");
+        add("itemGroup.confluence.special_plants", "Special Plants");
+        add("itemGroup.confluence.miscellaneous", "Miscellaneous");
+        add("itemGroup.confluence.sanctification_ores", "Hallowed Ores");
+        add("itemGroup.confluence.corruption_ores", "Corruption Ores");
+        add("itemGroup.confluence.fleshification_ores", "Crimson Ores");
+        add("itemGroup.confluence.normal_ores", "Normal Ores");
+        add("itemGroup.confluence.raw_ore_blocks", "Raw Ore Blocks");
+        add("itemGroup.confluence.ore_storage_blocks", "Ore Storage Blocks");
+// 建筑方块分类
+
+        add("itemGroup.confluence.gloom_obsidian_bricks", "Gloom Obsidian Bricks");
+        add("itemGroup.confluence.blue_ice_bricks", "Blue Ice Bricks");
+        add("itemGroup.confluence.packed_ice_bricks", "Packed Ice Bricks");
+        add("itemGroup.confluence.sandstone_bricks", "Sandstone Bricks");
+        add("itemGroup.confluence.red_sandstone_bricks", "Red Sandstone Bricks");
+        add("itemGroup.confluence.ebonsandstone_bricks", "Ebonsandstone Bricks");
+        add("itemGroup.confluence.pearlsandstone_bricks", "Pearlsandstone Bricks");
+        add("itemGroup.confluence.crimsandstone_bricks", "Crimsandstone Bricks");
+        add("itemGroup.confluence.snow_bricks", "Snow Bricks");
+        add("itemGroup.confluence.aetherium_bricks", "Aetherium Bricks");
+        add("itemGroup.confluence.rainbow_bricks", "Rainbow Bricks");
+        add("itemGroup.confluence.copper_bricks", "Copper Bricks");
+        add("itemGroup.confluence.tin_bricks", "Tin Bricks");
+        add("itemGroup.confluence.iron_bricks", "Iron Bricks");
+        add("itemGroup.confluence.lead_bricks", "Lead Bricks");
+        add("itemGroup.confluence.silver_bricks", "Silver Bricks");
+        add("itemGroup.confluence.tungsten_bricks", "Tungsten Bricks");
+        add("itemGroup.confluence.golden_bricks", "Gold Bricks");
+        add("itemGroup.confluence.platinum_bricks", "Platinum Bricks");
+        add("itemGroup.confluence.demonite_ore_bricks", "Demonite Bricks");
+        add("itemGroup.confluence.ebonstone_bricks", "Ebonstone Bricks");
+        add("itemGroup.confluence.meteorite_bricks", "Meteorite Bricks");
+        add("itemGroup.confluence.crimtane_ore_bricks", "Crimtane Bricks");
+        add("itemGroup.confluence.crimstone_bricks", "Crimstone Bricks");
+        add("itemGroup.confluence.pearlstone_bricks", "Pearlstone Bricks");
+        add("itemGroup.confluence.sun_plate", "Sun Plate");
+        add("itemGroup.confluence.disc_block", "Disc Block");
+        add("itemGroup.confluence.moon_plate", "Moon Plate");
+        add("itemGroup.confluence.obsidian_bricks", "Obsidian Bricks");
+        add("itemGroup.confluence.crying_obsidian_bricks", "Crying Obsidian Bricks");
+        add("itemGroup.confluence.granite_bricks", "Granite Bricks");
+        add("itemGroup.confluence.marble_bricks", "Marble Bricks");
+        add("itemGroup.confluence.blue_bricks", "Blue Dungeon Bricks");
+        add("itemGroup.confluence.green_bricks", "Green Dungeon Bricks");
+        add("itemGroup.confluence.pink_bricks", "Pink Dungeon Bricks");
+        add("itemGroup.confluence.hellstone_bricks", "Hellstone Bricks");
+        add("itemGroup.confluence.lihzahrd_bricks", "Lihzahrd Bricks");
+        add("itemGroup.confluence.exposed_lihzahrd_bricks", "Exposed Lihzahrd Bricks");
+        add("itemGroup.confluence.glowing_mushroom", "Glowing Mushroom");
+
+        add("itemGroup.confluence.glass", "Glass");
+        add("itemGroup.confluence.special_building", "Special Building");
+        add("itemGroup.confluence.chains", "Chains");
+        add("itemGroup.confluence.doors", "Doors");
+        add("itemGroup.confluence.statue", "Statues");
+        add("itemGroup.confluence.boss_relics", "Boss Relics");
+        add("itemGroup.confluence.balloons", "Balloons");
+        add("itemGroup.confluence.gem_blocks", "Gem Blocks");
+        add("itemGroup.confluence.fur_wool", "Fur & Wool");
+// 机械功能方块
+        add("itemGroup.confluence.boulders", "Boulders");
+        add("itemGroup.confluence.redstone_circuit_traps", "Redstone Traps");
+        add("itemGroup.confluence.trigger", "Triggers");
+        add("itemGroup.confluence.crafting_stations", "Crafting Stations");
+        add("itemGroup.confluence.storage", "Storage");
+        add("itemGroup.confluence.souls", "Soul Bottles");
+        add("itemGroup.confluence.misc_functional", "Misc Functional");
+        add("itemGroup.confluence.pylon", "Pylon");
+// 材料
+        add("itemGroup.confluence.metal_materials", "Metal Materials");
+        add("itemGroup.confluence.natural_materials", "Natural Materials");
+        add("itemGroup.confluence.souls_special", "Souls & Special Materials");
+        add("itemGroup.confluence.monster_drops", "Monster Drops");
+        add("itemGroup.confluence.plants_herbs", "Plants & Herbs");
+        add("itemGroup.confluence.crafting_materials", "Crafting Materials");
+// 杂项
+        add("itemGroup.confluence.treasure_bag", "Treasure Bags");
+        add("itemGroup.confluence.tombstone", "Tombstones");
+        add("itemGroup.confluence.bait", "Bait");
+        add("itemGroup.confluence.quested_fish", "Quest Fish");
+        add("itemGroup.confluence.crate", "Crates");
+        add("itemGroup.confluence.paint", "Paint");
+        add("itemGroup.confluence.throwing_weapons", "Throwing Weapons");
+        add("itemGroup.confluence.bombs_explosives", "Bombs & Explosives");
+        add("itemGroup.confluence.boss_event_summons", "Boss & Event Summons");
+        add("itemGroup.confluence.environment_items", "Environment Items");
+        add("itemGroup.confluence.gain", "Boosts");
+        add("itemGroup.confluence.loot_gifts", "Loot & Gifts");
+        add("itemGroup.confluence.coins", "Coins");
+// 工具
+        add("itemGroup.confluence.ropes", "Ropes");
+        add("itemGroup.confluence.wand", "Wands");
+        add("itemGroup.confluence.wiring_tools", "Wiring Tools");
+        add("itemGroup.confluence.keys", "Keys");
+        add("itemGroup.confluence.buckets_liquids", "Buckets & Liquids");
+        add("itemGroup.confluence.nets", "Nets");
+        add("itemGroup.confluence.utility_tools", "Utility Tools");
+        add("itemGroup.confluence.axe", "Axe");
+        add("itemGroup.confluence.pickaxe", "Pickaxe");
+        add("itemGroup.confluence.pickaxe_axe", "Pickaxe Axe");
+        add("itemGroup.confluence.drill", "Drill");
+        add("itemGroup.confluence.chainsaw", "Chainsaw");
+        add("itemGroup.confluence.hamaxe", "Hamaxe");
+        add("itemGroup.confluence.how_shovel", "Hoe Shovel");
+        add("itemGroup.confluence.garden_shears", "Garden Shears");
+        add("itemGroup.confluence.hammer", "Hammer");
+        add("itemGroup.confluence.hook", "Hook");
+        add("itemGroup.confluence.minecart", "Minecart");
+        add("itemGroup.confluence.fishing_pole", "Fishing Pole");
+        add("itemGroup.confluence.hoe", "Hoe");
+        add("itemGroup.confluence.shovel", "Shovel");
+        add("itemGroup.confluence.boat", "Boat");
+        add("itemGroup.confluence.chest_boat", "Chest Boat");
+// 盔甲
+        add("itemGroup.confluence.cactus_armor", "Cactus Armor");
+        add("itemGroup.confluence.plank_armor", "Plank Armor");
+        add("itemGroup.confluence.ebony_armor", "Ebony Armor");
+        add("itemGroup.confluence.shadow_plank_armor", "Shadow Wood Armor");
+        add("itemGroup.confluence.pearl_armor", "Pearl Armor");
+        add("itemGroup.confluence.ash_armor", "Ash Armor");
+        add("itemGroup.confluence.pumpkin_armor", "Pumpkin Armor");
+        add("itemGroup.confluence.white_pumpkin_armor", "White Pumpkin Armor");
+        add("itemGroup.confluence.thief_armor", "Thief Armor");
+        add("itemGroup.confluence.reinforced_mail_armor", "Reinforced Mail Armor");
+        add("itemGroup.confluence.climbing_armor", "Climbing Armor");
+        add("itemGroup.confluence.battle_robe_armor", "Battle Robe Armor");
+        add("itemGroup.confluence.hunters_armor", "Hunters Armor");
+        add("itemGroup.confluence.guards_armor", "Guards Armor");
+        add("itemGroup.confluence.spelunker_armor", "Spelunker Armor");
+        add("itemGroup.confluence.evocation_robe_armor", "Evocation Robe Armor");
+        add("itemGroup.confluence.verdant_robe_armor", "Verdant Robe Armor");
+        add("itemGroup.confluence.ember_robe_armor", "Ember Robe Armor");
+        add("itemGroup.confluence.battle_robe_armor", "Battle Robe Armor");
+        add("itemGroup.confluence.splendid_robe_armor", "Splendid Robe Armor");
+        add("itemGroup.confluence.archers_armor", "Archers Armor");
+        add("itemGroup.confluence.phantom_armor", "Phantom Armor");
+        add("itemGroup.confluence.hermit_armor", "Hermit Armor");
+        add("itemGroup.confluence.blue_hermit_armor", "Blue Hermit Armor");
+        add("itemGroup.confluence.scale_mail_armor", "Scale Mail Armor");
+        add("itemGroup.confluence.highland_armor", "Highland Armor");
+        add("itemGroup.confluence.rain_wear", "Rain Coat");
+        add("itemGroup.confluence.snow_insulated_wear", "Snow Insulated Wear");
+        add("itemGroup.confluence.pink_snow_insulated_wear", "Pink Snow Insulated Wear");
+        add("itemGroup.confluence.obsidian_armor", "Obsidian Armor");
+        add("itemGroup.confluence.gladiator_armor", "Gladiator Armor");
+        add("itemGroup.confluence.meteor_armor", "Meteor Armor");
+        add("itemGroup.confluence.copper_armor", "Copper Armor");
+        add("itemGroup.confluence.tin_armor", "Tin Armor");
+        add("itemGroup.confluence.lead_armor", "Lead Armor");
+        add("itemGroup.confluence.silver_armor", "Silver Armor");
+        add("itemGroup.confluence.tungsten_armor", "Tungsten Armor");
+        add("itemGroup.confluence.golden_armor", "Gold Armor");
+        add("itemGroup.confluence.platinum_armor", "Platinum Armor");
+        add("itemGroup.confluence.fossil_armor", "Fossil Armor");
+        add("itemGroup.confluence.bee_armor", "Bee Armor");
+        add("itemGroup.confluence.ninja_armor", "Ninja Armor");
+        add("itemGroup.confluence.spore_root_armor", "Spore Root Armor");
+        add("itemGroup.confluence.cold_crystal_armor", "Cold Crystal Armor");
+        add("itemGroup.confluence.heim_armor", "Heim Armor");
+        add("itemGroup.confluence.shadow_armor", "Shadow Armor");
+        add("itemGroup.confluence.crimson_armor", "Crimson Armor");
+        add("itemGroup.confluence.mining_armor", "Mining Armor");
+        add("itemGroup.confluence.angler_wear", "Angler Outfit");
+        add("itemGroup.confluence.molten_armor", "Molten Armor");
+        add("itemGroup.confluence.necro_armor", "Necro Armor");
+        add("itemGroup.confluence.seeker_armor", "Seeker Armor");
+        add("itemGroup.confluence.jungle_armor", "Jungle Armor");
+        add("itemGroup.confluence.spider_armor", "Spider Armor");
+        add("itemGroup.confluence.tiki_armor", "Tiki Armor");
+        add("itemGroup.confluence.cobalt_armor", "Cobalt Armor");
+        add("itemGroup.confluence.palladium_armor", "Palladium Armor");
+        add("itemGroup.confluence.mythril_armor", "Mythril Armor");
+        add("itemGroup.confluence.orichalcum_armor", "Orichalcum Armor");
+        add("itemGroup.confluence.adamantite_armor", "Adamantite Armor");
+        add("itemGroup.confluence.titanium_armor", "Titanium Armor");
+        add("itemGroup.confluence.crystal_assassin_armor", "Crystal Assassin Armor");
+        add("itemGroup.confluence.hallowed_armor", "Hallowed Armor");
+        add("itemGroup.confluence.magic_robes", "Magic Robes");
+        add("itemGroup.confluence.dyes", "Dyes");
+        add("itemGroup.confluence.tuxedo_set", "Tuxedo Set");
+        add("itemGroup.confluence.plumbers_set", "Plumber Set");
+        add("itemGroup.confluence.heros_set", "Hero Set");
+        add("itemGroup.confluence.archaeologists_set", "Archaeologist Set");
+        add("itemGroup.confluence.clothiers_set", "Clothier Set");
+        add("itemGroup.confluence.familiar_set", "Familiar Set");
+        add("itemGroup.confluence.doctors_set", "Doctor Set");
+        add("itemGroup.confluence.guy_fawkes_set", "Guy Fawkes Set");
+        add("itemGroup.confluence.mummy_set", "Mummy Set");
+        add("itemGroup.confluence.clown_set", " Clown Set");
+        add("itemGroup.confluence.sailor_set", " Sailor Set");
+
+        add("itemGroup.confluence.boomerang", "Boomerang");
+        add("itemGroup.confluence.spear", "Spear");
+        add("itemGroup.confluence.lance", "Lance");
+        add("itemGroup.confluence.short_swords", "Short Swords");
+        add("itemGroup.confluence.pre_hardmode_broadswords", "Pre-Hardmode Broadswords");
+        add("itemGroup.confluence.hardmode_broadswords", "Hardmode Broadswords");
+        add("itemGroup.confluence.yoyo", "Yoyo");
+
+        add("itemGroup.confluence.short_bow", "Short Bow");
+        add("itemGroup.confluence.bow", "Bow");
+        add("itemGroup.confluence.crossbow", "Crossbow");
+        add("itemGroup.confluence.arrow", "Arrows");
+        add("itemGroup.confluence.bullet", "Bullets");
+
+        add("itemGroup.confluence.gun", "Guns");
+
+        add("itemGroup.confluence.crimson_entity", "Crimson");
+        add("itemGroup.confluence.corruption_entity", "Corruption");
+        add("itemGroup.confluence.hallow_entity", "Hallow");
+        add("itemGroup.confluence.desert_entity", "Desert");
+        add("itemGroup.confluence.jungle_entity", "Jungle");
+        add("itemGroup.confluence.ice_entity", "Ice");
+        add("itemGroup.confluence.forest_entity", "Forest");
+        add("itemGroup.confluence.underground_entity", "Underground");
+        add("itemGroup.confluence.mushroom_entity", "Mushroom");
+        add("itemGroup.confluence.dungeon_entity", "Dungeon");
+        add("itemGroup.confluence.nether_entity", "Nether");
+        add("itemGroup.confluence.sky_entity", "Sky");
+        add("itemGroup.confluence.mimic_entity", "Mimic");
+        add("itemGroup.confluence.goblin_entity", "Goblin Army");
+        add("itemGroup.confluence.water_entity", "Water Creature");
+        add("itemGroup.confluence.insect_entity", "Insect");
+        add("itemGroup.confluence.npc_entity", "NPC");
+        add("itemGroup.confluence.boss_entity", "Boss");
+        add("itemGroup.confluence.misc_entity", "Misc");
 
         add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
         add("config.jade.plugin_confluence.jade_ponder_component", "Ponder Info");
@@ -111,6 +376,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("chat.type.advancement.achievement", "%s has achieved the achievement %s");
         add("chat.confluence.magic_conch", "The location where you listen to the sound of the ocean [%s] has been recorded");
         add("chat.confluence.demon_conch", "The location where you listen to the sound of the demon [%s] has been recorded");
+        add("chat.confluence.crystal_marked", "Void energy resonated. Position and face recorded.");
+        add("chat.confluence.link_too_far", "The resonance is too weak. Connection failed (Maximum distance: 100 blocks).");
+        add("chat.confluence.link_not_opposite", "Dimensional misalignment. Faces must be opposite to each other.");
+        add("chat.confluence.crystal_cleared", "Void link data has been cleared.");
+        add("chat.confluence.link_success", "A void link has been established successfully!");
+        add("chat.confluence.link_same_block", "Cannot link a root to itself!");
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
@@ -152,6 +423,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.enable_pvp", "%s has enabled PvP!");
         add("message.confluence.disable_pvp.button", "Disable PvP");
         add("message.confluence.disable_pvp", "%s has disabled PvP!");
+        add("message.confluence.too_easy.ready", "Too Easy!");
 
         for (Team team : Team.TEAMS) {
             String name = team.getSerializedName();
@@ -195,6 +467,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.silver", "Silver ");
         add("tooltip.price.copper", "Copper ");
         add("tooltip.price.sell", "Sell: ");
+
+        add("tooltip.confluence.flail.spin_speed", "Spin Speed");
+        add("tooltip.confluence.flail.max_distance", "Max Distance");
 
         add("tooltip.jei.state_properties", "Required State Properties:");
         add("tooltip.jei.count_range", "Count: %s-%s");
@@ -263,6 +538,8 @@ public class ModEnglishProvider extends LanguageProvider {
 //        add("tooltip.item.confluence.fallen_soul_core.0", "Channel spirits through the celestial stars; right-click to switch magic types");
         add("tooltip.item.confluence.repeater.0", "Hold left click to fire");
         add("tooltip.item.confluence.repeater.1", "Right click in inventory to retrieve arrows");
+        add("tooltip.item.confluence.wireable.0", "Wireable");
+        add("tooltip.item.confluence.can_be_extractinated.0", "Can Be Extractinated");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -400,6 +677,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("worldgen.confluence.generating_wavy_caves", "Generating wavy caves");
         add("worldgen.confluence.not_placing_traps", "Not placing traps");
         add("worldgen.confluence.placing_boulders", "Placing Boulders");
+        add("worldgen.confluence.too_easy", "Creating easy world...");
         add("secret_seed.the_constant.in_darkness_for_3_second", "It is very dark...you feel in danger...");
 
         add("info.confluence.weather_radio.clear", "Weather: Clear, Wind Speed: %s");
@@ -427,8 +705,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("death.attack.dungeon_altar", "Steve was one step away from uncovering the secret by right-clicking tuff with the meteor compass.");
 
         add("death.attack.falling_star", "%1$s got a response from a meteor");
+        add("death.attack.falling_star.player", "%1$s's wish was finally granted in the presence of %2$s");
         add("death.attack.boulder", "%1$s is crushed by boulder");
         add("death.attack.darkness", "%1$s was killed by something in the dark!");
+        add("death.attack.darkness.player", "%1$s tried to flee from %2$s, yet never anticipated the scheming of the puppet master");
         add("death.attack.summon_damage_type", "%1$s was flogged mercilessly");
         add("death.attack.summoner_damage_type", "%1$s failed to communicate in time");
         add("death.attack.frost_burn_damage_type", "%1$s felt warm before the end");
@@ -457,14 +737,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.arcane_flower.0", "Reduces mana usage by 8%");
         add("tooltip.item.terra_curio.arcane_flower.1", "Automatically uses mana potions when needed");
         add("tooltip.item.terra_curio.arcane_flower.2", "Enemies are less likely to target you");
-        add("tooltip.item.confluence.band_of_starpower.0", "Increases maximum mana by 20");
-        add("tooltip.item.confluence.mana_regeneration_band.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.band_of_starpower.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.mana_regeneration_band.0", "Increases maximum mana by 40");
         add("tooltip.item.terra_curio.mana_regeneration_band.1", "Increases mana regeneration speed");
-        add("tooltip.item.confluence.magic_cuffs.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.magic_cuffs.0", "Increases maximum mana by 40");
         add("tooltip.item.terra_curio.magic_cuffs.1", "Restores mana when damaged");
         add("tooltip.item.confluence.celestial_cuffs.0", "Increases pickup range for mana stars");
         add("tooltip.item.terra_curio.celestial_cuffs.1", "Restores mana when damaged");
-        add("tooltip.item.terra_curio.celestial_cuffs.2", "Increases maximum mana by 20");
+        add("tooltip.item.terra_curio.celestial_cuffs.2", "Increases maximum mana by 40");
         add("tooltip.item.confluence.mana_cloak.0", "Collecting stars restores mana");
         add("tooltip.item.terra_curio.mana_cloak.1", "Reduces mana usage by 8%");
         add("tooltip.item.terra_curio.mana_cloak.2", "Automatically uses mana potions when needed");
@@ -508,8 +788,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin.0", "Sneak and right-click to merge into a primary coin");
         add("tooltip.item.confluence.hardmode_convertor.0", "Right-clicking on the ground immediately turns the current world into Hardmode");
         add("tooltip.item.confluence.life_crystal.0", "Permanently increases maximum life by 4");
+        add("tooltip.item.confluence.recall_life_crystal.0", "Permanently reduces maximum life by 4");
+        add("tooltip.item.confluence.recall_mana_crystal.0", "Permanently reduces maximum mana by 20");
         add("tooltip.item.confluence.life_fruit.0", "Permanently increases maximum life by 1");
-        add("tooltip.item.confluence.mana_crystal.0", "Permanently increases maximum mana by 20");
+        add("tooltip.item.confluence.mana_crystal.0", "Permanently Increases maximum mana by 40");
         add("tooltip.item.confluence.arcane_crystal.0", "Permanently increases mana regeneration");
         add("tooltip.item.confluence.vital_crystal.0", "Permanently boosts life regeneration");
         add("tooltip.item.confluence.aegis_apple.0", "Permanently increases defense");
@@ -554,6 +836,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.pickaxe_power", "Pickaxe Power: %s%%");
         add("tooltip.confluence.hammer_power", "Hammer Power: %s%%");
         add("tooltip.confluence.armor_penetration", "Armor Penetration: %s");
+        add("tooltip.confluence.effect_duration", "%s minutes duration");
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
@@ -572,6 +855,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.enchanted_sword.1", "\"A flash of light in the dim sword tomb.\"");
         add("tooltip.item.confluence.bee_keeper.0", "A small part of the divine weapon's power is possessed by the swarm of bees in the jungle, becoming a buzzing hive.");
         add("tooltip.item.confluence.bee_keeper.1", "\"Sweet on the outside, sharp on the inside.\"");
+        add("tooltip.item.confluence.star_steel_sword.0", "Upon hitting an enemy, has a chance to make them drop a Mana Star");
+        add("tooltip.item.confluence.star_steel_sword.1", "Within 1 second after picking up a Mana Star, triggers a 2.5x critical damage multiplier");
+        add("tooltip.item.confluence.magic_missile.0", "Casts a controllable missile");
+        add("tooltip.item.confluence.flamelash.0", "Summons a controllable ball of fire");
+        add("tooltip.item.confluence.rainbow_rod.0", "Casts a controllable rainbow");
+        add("tooltip.item.confluence.crystal_serpent.0", "Shoots an explosive crystal charge");
 
         add("tooltip.item.confluence.soul_of_light.0", "'The essence of light creatures'");
         add("tooltip.item.confluence.soul_of_night.0", "'The essence of dark creatures'");
@@ -595,7 +884,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.universe_key.0", "“Opens the space room door and space chest in the dungeon”");
         add("tooltip.item.confluence.rust_iron_key.0", "“Opens the laboratory room door in the dungeon”");
         add("tooltip.item.confluence.mechanic_safe_key.0", "“Opens mechanic safe chest in the dungeon”");
-        add("tooltip.item.confluence.dungeon_compass.0", "“Wear it, and the eerie skull will guide your way”");
+        add("tooltip.item.confluence.dungeon_compass.0", "--“The eerie skull will guide your way”");
         add("tooltip.item.confluence.golden_lock_box.0", "“Right click to open”");
         add("tooltip.item.confluence.golden_lock_box.1", "“Requires a Dungeon Golden Key”");
         add("tooltip.item.confluence.obsidian_lock_box.0", "“Right click to open”");
@@ -639,6 +928,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.key_of_light.0", "Charged with the essence of many souls");
         add("tooltip.item.confluence.key_of_night.0", "Charged with the essence of many souls");
 
+        add("tooltip.confluence.void_crystal.clear_hint", "Sneak + Right-click to clear recorded data");
+        add("tooltip.confluence.void_crystal.pos", "§7Recorded Position: §fX:%d Y:%d Z:%d");
+        add("tooltip.confluence.void_crystal.face", "§7Facing: §d%s");
+        add("tooltip.confluence.void_crystal.empty", "§8Right-click a Void Root to begin linking.");
+
         add("attribute.name.repeater.arrow_capacity", "Arrow Capacity");
         add("attribute.name.repeater.attack_speed", "Arrow Speed");
         add("attribute.name.repeater.concurrency_count", "Concurrency Count");
@@ -661,8 +955,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.the_crimson", "The Crimson");
         add("biome.confluence.the_crimson_desert", "The Crimson Desert");
         add("biome.confluence.the_crimson_tundra", "The Crimson Tundra");
-
         add("biome.minecraft.confluence_sky", "Space");
+        add("biome.confluence.chorus_forest", "Chorus Forest");
+        add("biome.confluence.chorus_plains", "Chorus Plains");
+        add("biome.confluence.dark_moon_flats", "Dark Moon Flats");
+        add("biome.confluence.inverse_forest", "Inverse Forest");
+        add("biome.confluence.inverse_plains", "Inverse Plains");
+        add("biome.confluence.moonblight_forest", "Moonblight Forest");
+        add("biome.confluence.moonblight_plains", "Moonblight Plains");
+        add("biome.confluence.moonlit_dry_sea", "Moonlit Dry Sea");
 
         new AchievementsLanguageSubProvider(this::add, true);
 
@@ -931,19 +1232,19 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.mining_helmet.0", "Provides light when worn");
         add("armor_set_bonus.confluence.mining_set.0", "10% increased mining speed");
         // Plank Set
-        add("armor_set_bonus.confluence.plank_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.plank_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Armor");
 
         add("armor_set_bonus.confluence.ash_set.0", "Reduces lava contact damage by 50%");
         add("armor_set_bonus.confluence.ash_set.1", "Reduces fire duration taken by 35%");
         // Base Ore
-        add("armor_set_bonus.confluence.copper_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.tin_set.0", "+2 Aromor");
-        add("armor_set_bonus.confluence.lead_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.silver_set.0", "+2 Aromor");
-        add("armor_set_bonus.confluence.tungsten_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.golden_set.0", "+1 Aromor");
-        add("armor_set_bonus.confluence.platinum_set.0", "+2 Aromor");
+        add("armor_set_bonus.confluence.copper_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.tin_set.0", "+2 Armor");
+        add("armor_set_bonus.confluence.lead_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.silver_set.0", "+2 Armor");
+        add("armor_set_bonus.confluence.tungsten_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.golden_set.0", "+1 Armor");
+        add("armor_set_bonus.confluence.platinum_set.0", "+2 Armor");
         // Snow Set
         add("armor_set_bonus.confluence.snow_set.0", "Cannot be frozen or chilled");
         add("armor_set_bonus.confluence.pink_snow_set.0", "Cannot be frozen or chilled");
@@ -956,13 +1257,54 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.cactus_set.0", "Attackers take damage from the cactus spines");
         // Pumpkin Set
         add("armor_set_bonus.confluence.pumpkin_set.0", "10% increased damage");
+        // White Pumpkin Set
+        add("armor_set_bonus.confluence.white_pumpkin_set.0", "Melee critical hits restore 1 Soul Point");
+        // Thief Set
+        add("armor_set_bonus.confluence.thief_set.0", "Melee attack speed increased by 4%");
+        add("armor_set_bonus.confluence.thief_set.1", "Ranged damage increased by 4%");
+        // Reinforced Mail Set
+        add("armor_set_bonus.confluence.reinforced_mail_set.0", "5% chance to dodge attacks");
+        add("armor_set_bonus.confluence.reinforced_mail_set.1", "7% damage reduction");
+        add("armor_set_bonus.confluence.reinforced_mail_set.2", "Movement speed reduced by 15% for 3 seconds after jumping");
+        // Climbing Set
+        add("armor_set_bonus.confluence.climbing_set.0", "75% Knockback Resistance");
+        add("armor_set_bonus.confluence.climbing_set.1", "20% chance to resist debuffs inflicted by enemies");
+        add("armor_set_bonus.confluence.climbing_set.2", "Step height increased by 0.5 blocks");
         // Ninja Set
         add("armor_set_bonus.confluence.ninja_set.0", "20% increased movement speed");
+        // Hunters Set
+        add("armor_set_bonus.confluence.hunters_set.0", "Applies Hunt effect to struck enemies");
+        // Guards Set
+        add("armor_set_bonus.confluence.guards_set.0", "10% chance to save ammo");
+        // Highlands Set
+        add("armor_set_bonus.confluence.highlands_set.0", "Grants Jump Boost effect");
+        add("armor_set_bonus.confluence.highlands_set.1", "Gain 10% movement speed for 5 seconds after jumping");
+        // Spelunker Set
+        add("armor_set_bonus.confluence.spelunker_set.0", "Increases your max number of minions by 1");
+        add("armor_set_bonus.confluence.spelunker_set.1", "Increase the duration of spelunker potions by 2 minutes");
+        // Verdant Robe Armor
+        add("armor_set_bonus.confluence.verdant_robe_set.0", "20% chance to gain Soul when hitting an enemy");
+        add("armor_set_bonus.confluence.verdant_robe_set.1", "Gain 5% Critical Chance and 7% Magic Damage for 10 seconds after collecting a Soul");
+        // Ember Robe Armor
+        add("armor_set_bonus.confluence.ember_robe_set.0", "Gain the Hellfire effect");
+        // Splendid Robe Armor
+        add("armor_set_bonus.confluence.splendid_robe_set.0", "7% increased movement speed");
+        // Archer Set
+        add("armor_set_bonus.confluence.archers_set.0", "Arrow speed increased by 5%");
+        // Soul Dancer Robe
+        add("armor_set_bonus.confluence.souldancer_robe_set.0", "For 10 seconds after collecting souls, gain 8% critical strike chance and 7% movement speed");
+        add("armor_set_bonus.confluence.souldancer_robe_set.1", "For 10 seconds after collecting souls, gain 7% damage reduction");
+        // Hermit Set
+        add("armor_set_bonus.confluence.hermit_set.0", "Increase maximum soul capacity by 20");
+        // Blue Hermit Set
+        add("armor_set_bonus.confluence.blue_hermit_set.0", "Spend 10 souls to reduce the duration of drug resistance by 3 seconds");
+        // Phantom Set
+        add("armor_set_bonus.confluence.phantom_set.0", "Gain +1 souls per pick-up, +2 souls per pick-up during nighttime");
         // Fossil Set
         add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
         // Cold Crystal Set
-        add("tooltip.item.confluence.cold_crystal_helmet.0", "Increases maximum mana by 20");
-        add("tooltip.item.confluence.cold_crystal_chestplate.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "Increases maximum mana by 40");
         add("armor_set_bonus.confluence.cold_crystal_set.0", "Magic Attack will have an additional Frostbite effect");
         // Spore Root Set
         add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1");
@@ -991,7 +1333,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.sapphire_robe.1", "9% reduced mana cost");
         add("tooltip.item.confluence.topaz_robe.0", "Increases maximum mana by 40");
         add("tooltip.item.confluence.topaz_robe.1", "7% reduced mana cost");
-        add("tooltip.item.confluence.amethyst_robe.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.amethyst_robe.0", "Increases maximum mana by 40");
         add("tooltip.item.confluence.amethyst_robe.1", "5% reduced mana cost");
         add("tooltip.item.confluence.wizard_hat.0", "5% increased magic damage");
         add("tooltip.item.confluence.magic_hat.0", "6% increased magic damage and critical strike chance");
@@ -999,11 +1341,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.meteor_set.0", "Space Gun magic consumption reduced to 0");
         // Jungle Set
         add("tooltip.item.confluence.jungle_helmet.0", "Increases maximum mana by 40");
-        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 20");
-        add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 40");
         add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs");
         // Necro Set
         add("armor_set_bonus.confluence.necro_set.0", "10% increased critical strike chance");
+        // Seeker set
+        add("armor_set_bonus.confluence.seeker_set.0", "Increases Soul Capacity by 40");
+        add("armor_set_bonus.confluence.seeker_set.1", "Deal 10% increased damage when Soul is above 20");
         // Shadow Set
         add("armor_set_bonus.confluence.shadow_set.0", "Increased movement speed and acceleration");
         // Crimson Set
@@ -1133,7 +1478,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.minecraft.zombie.raincoat", "Raincoat Zombie");
         add("entity.minecraft.zombie.frozen", "Frost Zombie");
         add("entity.terra_entity.duck.0", "Wild Duck");
-        add("entity.terra_entity.duck.1", "Duck");;
+        add("entity.terra_entity.duck.1", "Duck");
         add("entity.terra_entity.demon_eye.dilated", "Dilated Demon Eye");
         add("entity.terra_entity.demon_eye.dilated_small", "Small Dilated Demon Eye");
         add("entity.terra_entity.demon_eye.sleepy", "Sleepy Demon Eye");
@@ -1221,57 +1566,92 @@ public class ModEnglishProvider extends LanguageProvider {
         add("description.confluence.secret_seeds_selection.boulder_world", "A world of more secrets, parallel timelines, and a disorienting journey awaits your exploration.");
         add("title.confluence.secret_seeds_selection.boulder_world", "Boulder World");
         add("description.confluence.secret_seeds_selection.boulder_world", "You know what? The world is actually one giant boulder. So everything in the world is a boulder.");
-        Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
-        ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
-        CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
-        DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
-        FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);
-        ModBlocks.BLOCKS.getEntries().forEach(blockAction);
-        NatureBlocks.BLOCKS.getEntries().forEach(blockAction);
-        OreBlocks.BLOCKS.getEntries().forEach(blockAction);
-        PotBlocks.BLOCKS.getEntries().forEach(blockAction);
-        StatueBlocks.BLOCKS.getEntries().forEach(blockAction);
+        add("title.confluence.secret_seeds_selection.really_small", "Tiny Me");
+        add("description.confluence.secret_seeds_selection.really_small", "I get all the reasons, but why is this bird so big?");
+        add("title.confluence.secret_seeds_selection.too_easy", "Too Easy");
+        add("description.confluence.secret_seeds_selection.too_easy", "So, you have elected the way of pain... (World starts in Hardmode)");
+        add("title.confluence.secret_seeds_selection.never_sleep", "Never Sleep");
+        add("description.confluence.secret_seeds_selection.never_sleep", "Sleeping is a waste of time! We shall never sleep! (Beds cannot be used)");
 
-        Consumer<DeferredHolder<Item, ? extends Item>> itemAction = item -> add(item.get(), LibUtils.toTitleCase(item.getId().getPath()));
-        AccessoryItems.ITEMS.getEntries().forEach(itemAction);
-        ArmorItems.ITEMS.getEntries().forEach(itemAction);
-        ArrowItems.ITEMS.getEntries().forEach(itemAction);
-        AxeItems.ITEMS.getEntries().forEach(itemAction);
-        BaitItems.ITEMS.getEntries().forEach(itemAction);
-        BoatItems.forEach(itemAction);
-        BowItems.ITEMS.getEntries().forEach(itemAction);
-        ChainsawItems.ITEMS.getEntries().forEach(itemAction);
-        ConsumableItems.ITEMS.getEntries().forEach(itemAction);
-        CrossbowItems.ITEMS.getEntries().forEach(itemAction);
-        VanityArmorItems.ITEMS.getEntries().forEach(itemAction);
-        DrillItems.ITEMS.getEntries().forEach(itemAction);
-        FishingPoleItems.ITEMS.getEntries().forEach(itemAction);
-        FoodItems.ITEMS.getEntries().forEach(itemAction);
-        HamaxeItems.ITEMS.getEntries().forEach(itemAction);
-        HoeShovelItems.ITEMS.getEntries().forEach(itemAction);
-        HammerItems.ITEMS.getEntries().forEach(itemAction);
-        HoeItems.ITEMS.getEntries().forEach(itemAction);
-        HookItems.ITEMS.getEntries().forEach(itemAction);
-        IconItems.ITEMS.getEntries().forEach(itemAction);
-        LanceItems.ITEMS.getEntries().forEach(itemAction);
-        LightPetItems.ITEMS.getEntries().forEach(itemAction);
-        ManaWeaponItems.ITEMS.getEntries().forEach(itemAction);
-        MaterialItems.ITEMS.getEntries().forEach(itemAction);
-        MinecartItems.ITEMS.getEntries().forEach(itemAction);
-        ModItems.ITEMS.getEntries().forEach(itemAction);
-        ModItems.HIDDEN.getEntries().forEach(itemAction);
-        ModItems.BLOCK_ITEMS.getEntries().forEach(itemAction);
-        PaintItems.ITEMS.getEntries().forEach(itemAction);
-        PickaxeAxeItems.ITEMS.getEntries().forEach(itemAction);
-        PickaxeItems.ITEMS.getEntries().forEach(itemAction);
-        PotionItems.ITEMS.getEntries().forEach(itemAction);
-        QuestedFishes.ITEMS.getEntries().forEach(itemAction);
-        ShovelItems.ITEMS.getEntries().forEach(itemAction);
-        SwordItems.ITEMS.getEntries().forEach(itemAction);
-        SpearItems.ITEMS.getEntries().forEach(itemAction);
-        ToolItems.ITEMS.getEntries().forEach(itemAction);
-        TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
-        GunItems.ITEMS.getEntries().forEach(itemAction);
+        add("mural.dungeon.ebony_mural", "Corrosive Worm");
+        add("mural.dungeon.crimson_mural", "Mind Rend");
+
+        // Soul Skill
+        add("confluence.soul_skill.soul_surge.name", "Soul Surge");
+        add("confluence.soul_skill.soul_mark.name", "Soul Mark");
+        add("confluence.soul_skill.star_call.name", "Star Call");
+        add("confluence.soul_skill.spirit_surge.name", "Spirit Surge");
+        add("confluence.soul_skill.surge_blast.name", "Surge Blast");
+        add("confluence.soul_skill.soul_drain.name", "Soul Drain");
+        add("confluence.soul_skill.spirit_trigger.name", "Spirit Trigger");
+        add("confluence.soul_skill.soul_plunder.name", "Soul Plunder");
+        add("confluence.soul_skill.confuse_spores.name", "Confuse Spores");
+        add("confluence.soul_skill.karma_flame.name", "Karma Flame");
+        add("confluence.soul_skill.enhanced_soul.name", "Enhanced Soul");
+        add("confluence.soul_skill.empowered_surge.name", "Empowered Surge");
+        add("confluence.soul_skill.enhanced_lure.name", "Enhanced Lure");
+        add("confluence.soul_skill.profane_soul.name", "Profane Soul");
+        add("confluence.soul_skill.star_link.name", "Star Link");
+        add("confluence.soul_skill.star_reversal.name", "Star Reversal");
+        add("confluence.soul_skill.blood_rage.name", "Blood Rage");
+        add("confluence.soul_skill.boiling_blood.name", "Boiling Blood");
+        add("confluence.soul_skill.soul_lure.name", "Soul Lure");
+        add("confluence.soul_skill.lure_surge.name", "Lure Surge");
+        add("confluence.soul_skill.law_of_nature.name", "Law of Nature");
+        add("confluence.soul_skill.natures_wrath.name", "Nature's Wrath");
+
+        addAll(ChestBlocks.BLOCKS);
+        addAll(CrateBlocks.BLOCKS);
+        addAll(DecorativeBlocks.BLOCKS);
+        addAll(FunctionalBlocks.BLOCKS);
+        addAll(ModBlocks.BLOCKS);
+        addAll(NatureBlocks.BLOCKS);
+        addAll(OreBlocks.BLOCKS);
+        addAll(PotBlocks.BLOCKS);
+        addAll(StatueBlocks.BLOCKS);
+
+        addAll(AccessoryItems.ITEMS);
+        addAll(ArmorItems.ITEMS);
+        addAll(ArrowItems.ITEMS);
+        addAll(AxeItems.ITEMS);
+        addAll(BaitItems.ITEMS);
+        addAll(BoatItems.BOAT_ITEMS);
+        addAll(BoatItems.CHEST_BOAT_ITEMS);
+        addAll(BowItems.ITEMS);
+        addAll(ChainsawItems.ITEMS);
+        addAll(ConsumableItems.ITEMS);
+        addAll(CrossbowItems.ITEMS);
+        addAll(DrillItems.ITEMS);
+        addAll(FishingPoleItems.ITEMS);
+        addAll(FlailItems.ITEMS);
+        addAll(FoodItems.ITEMS);
+        addAll(GardenShearsItems.ITEMS);
+        addAll(GunItems.ITEMS);
+        addAll(HamaxeItems.ITEMS);
+        addAll(HoeShovelItems.ITEMS);
+        addAll(HammerItems.ITEMS);
+        addAll(HoeItems.ITEMS);
+        addAll(HookItems.ITEMS);
+        addAll(IconItems.ITEMS);
+        addAll(LanceItems.ITEMS);
+        addAll(LightPetItems.ITEMS);
+        addAll(ManaWeaponItems.ITEMS);
+        addAll(MaterialItems.ITEMS);
+        addAll(MinecartItems.ITEMS);
+        addAll(ModItems.ITEMS);
+        addAll(ModItems.HIDDEN);
+        addAll(ModItems.BLOCK_ITEMS);
+        addAll(PaintItems.ITEMS);
+        addAll(PickaxeAxeItems.ITEMS);
+        addAll(PickaxeItems.ITEMS);
+        addAll(PotionItems.ITEMS);
+        addAll(QuestedFishes.ITEMS);
+        addAll(ShovelItems.ITEMS);
+        addAll(SwordItems.ITEMS);
+        addAll(SpearItems.ITEMS);
+        addAll(ToolItems.ITEMS);
+        addAll(TreasureBagItems.ITEMS);
+        addAll(VanityArmorItems.ITEMS);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));
@@ -1404,6 +1784,8 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
         addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");
         addEffect(ModEffects.ENEMY_BANNER.get(), "Increased damage and defense from the following: %s");
+        addEffect(ModEffects.SUMMONING.get(), "Increased your max number of minions by 1");
+        addEffect(ModEffects.AROMATIC_SATIATION.get(), "Continuous response to hunger and satiety");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");
@@ -1418,6 +1800,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(TEEffects.CRIMSON_STORM.get(), "You are trapped in the storm, there is no escape.");
         addEffect(TEEffects.HORRIFIED.get(), "You have seen something nasty, there is no escape.");
         addEffect(TEEffects.THE_TONGUE.get(), "You are being sucked into the mouth");
+        addEffect(TEEffects.SCARED.get(), "Like a bird startled by the sound of a bow, fleeing in all directions");
 
         add("item.confluence.spawn_eggs", "%s Spawn Egg");
 
@@ -1427,7 +1810,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
 
         PonderHelper.addTranslateKeys(this::add, true);
-        WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), true);
         CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), true);
     }
 
@@ -1442,9 +1824,9 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     public void add(String key, String value) {
-        if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
+        try {
             super.add(key, value);
-        }
+        } catch (Exception ignored) {}
     }
 
     private void addPotion(Item potion, String tooltip) {
@@ -1461,5 +1843,13 @@ public class ModEnglishProvider extends LanguageProvider {
 
     private String formatString(String name) {
         return RecipeDrawerUtils.formatString(name);
+    }
+
+    private void addAll(DeferredRegister.Items register) {
+        register.getEntries().forEach(item -> add(item.get(), LibUtils.toTitleCase(item.getId().getPath())));
+    }
+
+    private void addAll(DeferredRegister.Blocks register) {
+        register.getEntries().forEach(block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath())));
     }
 }

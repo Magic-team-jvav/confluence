@@ -37,8 +37,14 @@ public class PureConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SHORT_GRASS)) return Blocks.SHORT_GRASS;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_PACKED_ICE)) return Blocks.PACKED_ICE;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_ICE)) return Blocks.ICE;
+        if (holder.is(ModTags.Blocks.PURE_CONVERSION_ICE_TAPERED_BLOCK))  {
+            return NatureBlocks.ICE_TAPERED_BLOCK.get();
+        }
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SAND)) return Blocks.SAND;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SANDSTONE)) return Blocks.SANDSTONE;
+        if (holder.is(ModTags.Blocks.PURE_CONVERSION_SANDSTONE_PILES)) {
+            return NatureBlocks.SMALL_SANDSTONE_PILES.get();
+        }
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_HARDENED_SAND_BLOCK)) {
             return NatureBlocks.HARDENED_SAND_BLOCK.get();
         }

@@ -3,12 +3,15 @@ package org.confluence.mod.common.data.map;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
@@ -25,6 +28,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.init.ModDataMaps;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,25 +58,34 @@ public record ExtractinatorData(List<Pool> pools) {
         return new Builder();
     }
 
-    public static class Entry implements WeightedEntry {
+    public static void addTooltip(Holder<Item> holder, List<Component> toolTip) {
+        if (holder.getData(ModDataMaps.EXTRACTINATOR) != null ||
+                holder.getData(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR) != null
+        ) {
+            toolTip.add(Component.translatable("tooltip.item.confluence.can_be_extractinated.0").withStyle(ChatFormatting.GRAY));
+        }
+    }
+
+    public record Entry(
+            Item item,
+            int minCount,
+            int maxCount,
+            Weight weight
+    ) implements WeightedEntry {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BuiltInRegistries.ITEM.byNameCodec().lenientOptionalFieldOf("item", Items.AIR).forGetter(entry -> entry.item),
                 Codec.INT.lenientOptionalFieldOf("min_count", 1).forGetter(entry -> entry.minCount),
                 Codec.INT.lenientOptionalFieldOf("max_count", 1).forGetter(entry -> entry.maxCount),
                 Weight.CODEC.lenientOptionalFieldOf("weight", Weight.of(1)).forGetter(Entry::getWeight)
         ).apply(instance, Entry::new));
-        public final Item item;
-        public final int minCount;
-        public final int maxCount;
-        public final Weight weight;
 
-        public Entry(Item item, int minCount, int maxCount, Weight weight) {
-            if (maxCount < minCount) throw new IllegalArgumentException("minCount=" + minCount + " must greater or equals than maxCount=" + maxCount);
-            if (maxCount < 0) throw new IllegalArgumentException("maxCount=" + maxCount + " must greater or equals than zero");
-            this.item = item;
-            this.minCount = minCount;
-            this.maxCount = maxCount;
-            this.weight = weight;
+        public Entry {
+            if (maxCount < minCount) {
+                throw new IllegalArgumentException("minCount=" + minCount + " must greater or equals than maxCount=" + maxCount);
+            }
+            if (maxCount < 0) {
+                throw new IllegalArgumentException("maxCount=" + maxCount + " must greater or equals than zero");
+            }
         }
 
         public Entry(Item item, int minCount, int maxCount, int weight) {
@@ -122,12 +135,18 @@ public record ExtractinatorData(List<Pool> pools) {
         public final ImmutableList<Entry> entries;
 
         public Pool(int minRoll, int maxRoll, List<Entry> entries) {
-            if (maxRoll < minRoll) throw new IllegalArgumentException("minRoll=" + minRoll + " must greater or equals than maxRoll=" + maxRoll);
-            if (maxRoll < 0) throw new IllegalArgumentException("maxRoll=" + maxRoll + " must greater or equals than zero");
+            if (maxRoll < minRoll) {
+                throw new IllegalArgumentException("minRoll=" + minRoll + " must greater or equals than maxRoll=" + maxRoll);
+            }
+            if (maxRoll < 0) {
+                throw new IllegalArgumentException("maxRoll=" + maxRoll + " must greater or equals than zero");
+            }
             this.minRoll = minRoll;
             this.maxRoll = maxRoll;
             this.totalWeight = WeightedRandom.getTotalWeight(entries);
-            if (totalWeight == 0) throw new IllegalArgumentException("Invalid entries, which total weight is 0");
+            if (totalWeight == 0) {
+                throw new IllegalArgumentException("Invalid entries, which total weight is 0");
+            }
             this.entries = ImmutableList.copyOf(entries);
         }
 
@@ -165,7 +184,8 @@ public record ExtractinatorData(List<Pool> pools) {
             }
 
             public Builder setRolls(int rolls) {
-                this.minRoll = this.maxRoll = rolls;
+                this.minRoll = rolls;
+                this.maxRoll = rolls;
                 return this;
             }
 

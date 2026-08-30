@@ -1,0 +1,24 @@
+{
+    "variants": {
+        "facing=north": [
+            { "model": "confluence:block/small_stone_piles", "weight": 1 },
+            { "model": "confluence:block/small_stone_piles_1", "weight": 1 },
+            { "model": "confluence:block/small_stone_piles_2", "weight": 1 }
+        ],
+        "facing=south": [
+            { "model": "confluence:block/small_stone_piles", "y": 180, "weight": 1 },
+            { "model": "confluence:block/small_stone_piles_1", "y": 180, "weight": 1 },
+            { "model": "confluence:block/small_stone_piles_2", "y": 180, "weight": 1 }
+        ],
+        "facing=west": [
+            { "model": "confluence:block/small_stone_piles", "y": 270, "weight": 1 },
+            { "model": "confluence:block/small_stone_piles_1", "y": 270, "weight": 1 },
+            { "model": "confluence:block/small_stone_piles_2", "y": 270, "weight": 1 }
+        ],
+        "facing=east": [
+            { "model": "confluence:block/small_stone_piles", "y": 90, "weight": 1 },
+            { "model": "confluence:block/small_stone_piles_1", "y": 90, "weight": 1 },
+            { "model": "confluence:block/small_stone_piles_2", "y": 90, "weight": 1 }
+        ]
+    }
+}

@@ -6,10 +6,6 @@
 			"type": "thr_dim_particle:tdp"
 		},
 		"components": {
-			"minecraft:emitter_local_space": {
-				"position": true,
-				"rotation": false
-			},
 			"minecraft:emitter_rate_steady": {
 				"spawn_rate": 5,
 				"max_particles": 200

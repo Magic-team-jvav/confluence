@@ -1,0 +1,128 @@
+{
+    "multipart": [
+        {
+            "when": {
+                "north": "connect"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "east": "connect"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "y": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "south": "connect"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "y": 180,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "west": "connect"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "y": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "up": "connect"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "x": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "down": "connect"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "x": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "north": "connect_by_portal"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "east": "connect_by_portal"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "y": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "south": "connect_by_portal"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "y": 180,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "west": "connect_by_portal"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "y": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "up": "connect_by_portal"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "x": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "down": "connect_by_portal"
+            },
+            "apply": {
+                "model": "confluence:block/void_tree_root_side",
+                "x": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "apply": {
+                "model": "confluence:block/void_tree_root_block",
+                "uvlock": true
+            }
+        }
+    ]
+}

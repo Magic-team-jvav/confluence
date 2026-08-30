@@ -20,11 +20,14 @@ public class LightsBaneProjectileRenderer extends ForwardProjRenderer<LightBaneP
 
     @Override
     public void preRender(LightBaneProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, int packedLight) {
+        float totalTicks = entity.tickCount + partialTick;
+        float lifetime = (float) entity.lifetime;
         float scale;
-        if (entity.tickCount > entity.lifetime - 10) {
-            scale = 1 - (entity.tickCount + partialTick - (entity.lifetime - 10)) * 0.1f;
-        } else
-            scale = Math.min((entity.tickCount + partialTick) * 0.2f, 1.0f);
+        if (totalTicks < 10) {
+            scale = totalTicks / 10.0f;
+        } else {
+            scale = Math.max(1.0f - (totalTicks - 10) / (lifetime - 10), 0.0f);
+        }
         poseStack.scale(scale, scale, scale);
 
         poseStack.translate(0.00F, 0.125F, -0.125F);

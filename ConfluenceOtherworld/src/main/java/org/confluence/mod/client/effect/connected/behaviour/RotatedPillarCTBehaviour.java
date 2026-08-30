@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.client.effect.connected.CTSpriteShiftEntry;
 import org.confluence.mod.common.block.palettes.ConnectedPillarBlock;
 import org.confluence.mod.common.block.palettes.LayeredBlock;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class RotatedPillarCTBehaviour extends HorizontalCTBehaviour {
 	public RotatedPillarCTBehaviour(CTSpriteShiftEntry layerShift, CTSpriteShiftEntry topShift) {
@@ -100,9 +100,8 @@ public class RotatedPillarCTBehaviour extends HorizontalCTBehaviour {
 	}
 
 	@Override
-	public CTSpriteShiftEntry getShift(BlockState state, Direction direction, @NotNull TextureAtlasSprite sprite) {
+	public CTSpriteShiftEntry getShift(BlockState state, Direction direction, @Nullable TextureAtlasSprite sprite) {
 		return super.getShift(state,
 			direction.getAxis() == state.getValue(LayeredBlock.AXIS) ? Direction.UP : Direction.SOUTH, sprite);
 	}
-
 }

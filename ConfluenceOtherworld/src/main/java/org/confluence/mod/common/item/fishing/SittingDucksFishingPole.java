@@ -18,7 +18,7 @@ public class SittingDucksFishingPole extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("sitting_duck_fishing_pole");
 
     public SittingDucksFishingPole() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(384), ModRarity.GREEN);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE), ModRarity.GREEN);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/void_violet",
+    "particle": "confluence:block/void_violet"
+  },
+  "render_type": "cutout"
+}

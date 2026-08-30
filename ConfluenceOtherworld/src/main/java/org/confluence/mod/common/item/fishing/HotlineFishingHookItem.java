@@ -18,7 +18,7 @@ public class HotlineFishingHookItem extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("hotline_fishing_hook");
 
     public HotlineFishingHookItem() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).fireResistant().durability(512), ModRarity.ORANGE);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).fireResistant(), ModRarity.ORANGE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.45, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

@@ -61,12 +61,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
             } else if (i < COINS_START) { // 4, 5, 6 ,7
                 addSlot(new DyeToggleSlot(extraInventory, i, 8, (i - VANITY_ARMOR_DYE_START) * 18 + 8));
             } else if (i < AMMO_START) { // 8, 9, 10, 11
-                addSlot(new Slot(extraInventory, i, 81, (i - COINS_START) * 18 + 8) { // coins
-                    @Override
-                    public boolean mayPlace(ItemStack stack) {
-                        return stack.is(ModTags.Items.COINS);
-                    }
-                });
+                addSlot(new CoinsSlot(extraInventory, i, 81, (i - COINS_START) * 18 + 8));
             } else if (i < EQUIPMENT_START) { // 12, 13, 14, 15
                 addSlot(new Slot(extraInventory, i, 99, (i - AMMO_START) * 18 + 8) { // ammo
                     @Override
@@ -209,5 +204,16 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     @Override
     public boolean stillValid(Player player) {
         return true;
+    }
+
+    public static class CoinsSlot extends Slot {
+        public CoinsSlot(ExtraInventory extraInventory, int i, int x, int y) {
+            super(extraInventory, i, x,y);
+        }
+
+        @Override
+        public boolean mayPlace(ItemStack stack) {
+            return stack.is(ModTags.Items.COINS);
+        }
     }
 }

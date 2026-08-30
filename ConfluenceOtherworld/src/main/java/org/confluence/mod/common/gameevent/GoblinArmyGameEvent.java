@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.color.GlobalColors;
@@ -26,10 +27,11 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class GoblinArmyGameEvent implements GameEvent {
+public enum GoblinArmyGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<GoblinArmyGameEvent> KEY = GameEvent.createKey(Confluence.asResource("goblin_army"));
-    public static final GoblinArmyGameEvent INSTANCE = new GoblinArmyGameEvent();
     public static final String ENTITY_TAG = "spawn_during_goblin_army";
+
     private transient MinecraftServer server;
     private transient ServerLevel level;
     private transient boolean forceStart;
@@ -42,7 +44,14 @@ public final class GoblinArmyGameEvent implements GameEvent {
     private int required;
     private transient float progressO;
 
-    private GoblinArmyGameEvent() {}
+    public final CustomSpawner spawner = (level, spawnEnemies, spawnFriendlies) -> {
+        if (!started || ready != -1 || !spawnEnemies) return 0;
+        return GameEventSystem.customSpawner(this, level, spawned,
+                CommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_BASE.get(),
+                CommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
+                CommonConfigs.GOBLIN_ARMY_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
+                spawnerData, ENTITY_TAG, true);
+    };
 
     @Override
     public void open(MinecraftServer server) {
@@ -79,12 +88,6 @@ public final class GoblinArmyGameEvent implements GameEvent {
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                 player.sendSystemMessage(component);
             }
-        } else {
-            GameEventSystem.customSpawner(this, level, spawned,
-                    CommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_BASE.get(),
-                    CommonConfigs.GOBLIN_ARMY_EVENT_MAX_ENEMIES_PER_PLAYER.get(),
-                    CommonConfigs.GOBLIN_ARMY_EVENT_SPAWN_ENEMIES_INTERVAL_FACTOR.get().floatValue(),
-                    spawnerData, ENTITY_TAG, true);
         }
     }
 

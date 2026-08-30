@@ -3,21 +3,37 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.*;
 import org.confluence.mod.common.data.gen.tag.*;
+import org.confluence.mod.common.init.ModTags;
 
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class ModDataGenerator {
+    public static final Ingredient INGOTS_IRON_AND_LEAD = fromTags(Tags.Items.INGOTS_IRON, LibTags.Items.INGOTS_LEAD);
+    public static final Ingredient INGOTS_GOLD_AND_PLATINUM = fromTags(Tags.Items.INGOTS_GOLD, LibTags.Items.INGOTS_PLATINUM);
+    public static final Ingredient INGOTS_EVIL = fromTags(ModTags.Items.INGOTS_CRIMTANE, ModTags.Items.INGOTS_DEMONITE);
+
+    @SafeVarargs
+    private static Ingredient fromTags(TagKey<Item>... tags) {
+        return Ingredient.fromValues(Arrays.stream(tags).map(Ingredient.TagValue::new));
+    }
+
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
         DataGenerator generator = event.getGenerator();

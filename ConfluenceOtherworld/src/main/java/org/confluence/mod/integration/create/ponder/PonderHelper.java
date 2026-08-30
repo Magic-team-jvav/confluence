@@ -1,12 +1,12 @@
 package org.confluence.mod.integration.create.ponder;
 
 import net.createmod.ponder.foundation.PonderIndex;
-import net.neoforged.fml.ModList;
+import org.confluence.lib.util.LibUtils;
 
 import java.util.function.BiConsumer;
 
 public class PonderHelper {
-    public static final boolean IS_LOADED = ModList.get().isLoaded("ponder");
+    public static final boolean IS_LOADED = LibUtils.isModLoaded("ponder");
 
     public static void registerPlugin() {
         if (IS_LOADED) {

@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.lib.common.block.ISimulatorBlock;
+import org.confluence.lib.common.block.ILibSimulatorBlock;
 
 import java.util.function.Supplier;
 
-public class FragilePressureBlock extends BehaviourPressurePlateBlock implements ISimulatorBlock {
+public class FragilePressureBlock extends BehaviourPressurePlateBlock implements ILibSimulatorBlock {
     private static final net.minecraft.world.phys.AABB TOUCH_AABB = new AABB(0, 1, 0, 1, 2, 1);
     private final Supplier<BlockState> simulatorBlock;
 

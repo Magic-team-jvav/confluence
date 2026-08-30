@@ -17,7 +17,7 @@ import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class SillyBalloonMachineBlock extends Block implements EntityBlock, INetworkBlock {
@@ -62,7 +62,7 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
         public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, BEntity blockEntity) {
             if (blockEntity.emitter == null || blockEntity.emitter.isRemoved()) {
                 blockEntity.emitter = new ParticleEmitter(level, blockPos.getCenter(), Confluence.asResource("balloon"));
-                PSGameClient.LOADER.addEmitter(blockEntity.emitter, false);
+                MolangParticleEngine.INSTANCE.addEmitter(blockEntity.emitter);
             }
             blockEntity.emitter.active = blockState.getValue(StateProperties.DRIVE);
         }

@@ -1,6 +1,6 @@
 package org.confluence.mod.common.block.natural.spreadable.conversion_table;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public abstract class ConversionTable {
-    protected final Map<BlockState, BlockState> cache = new Object2ObjectOpenHashMap<>();
+    protected final Map<BlockState, BlockState> cache = new Reference2ObjectOpenHashMap<>();
     protected boolean allowsAir = false;
     protected BlockState lastCheck;
     protected BlockState lastTarget;

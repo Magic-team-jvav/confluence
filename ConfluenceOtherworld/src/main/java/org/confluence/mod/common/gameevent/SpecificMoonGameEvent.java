@@ -8,15 +8,14 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
 
-public final class SpecificMoonGameEvent implements GameEvent {
+public enum SpecificMoonGameEvent implements GameEvent {
+    INSTANCE;
     public static final ResourceKey<SpecificMoonGameEvent> KEY = GameEvent.createKey(Confluence.asResource("specific_moon"));
-    public static final SpecificMoonGameEvent INSTANCE = new SpecificMoonGameEvent();
+
     private boolean started;
     private transient ServerLevel level;
     private transient boolean forceStart;
     private transient boolean forceEnd;
-
-    private SpecificMoonGameEvent() {}
 
     @Override
     public void open(MinecraftServer server) {

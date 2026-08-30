@@ -1,0 +1,19 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"render_type": "cutout_mipped",
+	"textures": {
+		"1": "confluence:block/vine_rope_2"
+	},
+	"elements": [
+		{
+			"from": [8, 0, 9],
+			"to": [8, 16, 22],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 7, 7]},
+			"faces": {
+				"east": {"uv": [0, 0, 13, 16], "texture": "#1"},
+				"west": {"uv": [13, 0, 0, 16], "texture": "#1"}
+			}
+		}
+	]
+}

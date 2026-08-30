@@ -23,13 +23,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.block.EmptyPickupLiquidBlock;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
+import org.confluence.mod.common.block.food.BoulderBreadBlock;
+import org.confluence.mod.common.block.food.GreenDumplingBlock;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.block.functional.enemybanner.EnemyBannerBlock;
 import org.confluence.mod.common.block.functional.enemybanner.WallEnemyBannerBlock;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.CursedFlameBlock;
-import org.confluence.mod.common.block.natural.food.BoulderBreadBlock;
-import org.confluence.mod.common.block.natural.food.GreenDumplingBlock;
 import org.confluence.mod.common.block.natural.herbs.*;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.item.ModItems;
@@ -54,10 +54,14 @@ public final class ModBlocks {
 
     // 流体
     public static final DeferredBlock<LiquidBlock> HONEY = registerWithoutItem("honey", () -> new LiquidBlock(ModFluids.HONEY.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_YELLOW)));
+    public static final DeferredBlock<VoidBlock> VOID = registerWithoutItem("void", () -> new VoidBlock(ModFluids.VOID.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BLACK)));
     public static final DeferredBlock<LiquidBlock> SHIMMER = registerWithoutItem("shimmer", () -> new EmptyPickupLiquidBlock(ModFluids.SHIMMER.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK).lightLevel(blockState -> 10)));
     public static final DeferredBlock<AetheriumCauldronBlock> AETHERIUM_CAULDRON = registerWithItem("aetherium_cauldron", () -> new AetheriumCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WATER_CAULDRON)));
     public static final DeferredBlock<HoneyCauldronBlock> HONEY_CAULDRON = registerWithItem("honey_cauldron", () -> new HoneyCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WATER_CAULDRON)));
-
+    public static final Supplier<BlockEntityType<VoidBlock.VoidBlockEntity>> VOID_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("void_block_entity", () ->
+                    BlockEntityType.Builder.of(VoidBlock.VoidBlockEntity::new, VOID.get()).build(DSL.remainderType())
+            );
     // 草药
     public static final DeferredBlock<BaseHerbBlock> WATERLEAF = registerWithoutItem("waterleaf", Waterleaf::new); // 幌菊
     public static final DeferredBlock<Fireblossom> FIREBLOSSOM = registerWithoutItem("fireblossom", Fireblossom::new); // 火焰花
@@ -132,6 +136,7 @@ public final class ModBlocks {
     }
 
     /// 基于黑曜石的爆炸抗性，汇流来世的方块设置爆炸抗性时，应当使用这个方法
+    ///
     /// 对于泰拉爆炸，小于黑曜石爆炸抗性的方块都会被炸掉
     ///
     /// @param delta 偏差值

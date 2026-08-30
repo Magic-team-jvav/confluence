@@ -9,7 +9,6 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -41,16 +40,20 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EffectSwitchableCheckEvent;
@@ -79,6 +82,7 @@ import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.utils.TEUtils;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -121,8 +125,8 @@ public final class ModUtils {
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss, boolean onSurface) {
-        double x = pos.getX() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
-        double z = pos.getZ() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
+        double x = pos.getX() + 0.5 + LibMathUtils.randomFromTo(level.random, pos.getX(), 30, 50);
+        double z = pos.getZ() + 0.5 + LibMathUtils.randomFromTo(level.random, pos.getZ(), 30, 50);
         double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
         if (Math.abs(pos.getY() - y) > 50) {
             y = pos.getY();
@@ -181,7 +185,7 @@ public final class ModUtils {
         double amount = getLivingBaseMoneyDrops(living, level);
 
         if (living.hasEffect(ModEffects.MIDAS)) {
-            amount *= Mth.nextDouble(living.getRandom(), 1.1, 1.49);
+            amount *= Mth.nextDouble(living.getRandom(), 1.3, 1.49);
         }
         if (IMinecraftServer.isHardmode(level.getServer())) {
             amount *= 1.6;
@@ -194,7 +198,7 @@ public final class ModUtils {
     }
 
     public static double getLivingBaseMoneyDrops(LivingEntity living, Level level) {
-        AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance attack = living.getAttribute(LibAttributes.getAttackDamage());
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
         double healthFactor = living.getMaxHealth() * 0.15;
@@ -252,34 +256,10 @@ public final class ModUtils {
         }
     }
 
+    @Deprecated(since = "1.3.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.4.0")
     public static Component formatPrice(int price) {
-        int platinum = 0;
-        int gold = 0;
-        int silver = 0;
-        int copper;
-        if (price >= 1000000) {
-            platinum = price / 1000000;
-            price -= platinum * 1000000;
-        }
-        if (price >= 10000) {
-            gold = price / 10000;
-            price -= gold * 10000;
-        }
-        if (price >= 100) {
-            silver = price / 100;
-            price -= silver * 100;
-        }
-        copper = price;
-        MutableComponent cmp = Component.empty();
-        if (platinum > 0)
-            cmp.append(Component.literal(platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
-        if (gold > 0)
-            cmp.append(Component.literal(gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
-        if (silver > 0)
-            cmp.append(Component.literal(silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
-        if (copper > 0)
-            cmp.append(Component.literal(copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
-        return cmp;
+        return ClientUtils.formatPrice(price);
     }
 
     /// 不可破坏物品无法附魔耐久与经验修补
@@ -294,13 +274,16 @@ public final class ModUtils {
     /// 由于暮色森林使原版的该方法会访问区块，于是复制一份来用
     ///
     /// @see Level#isRainingAt(BlockPos)
-    public static boolean isRainingAt(Level level, BlockPos pos) {
+    public static boolean isRainingAt(ServerLevel level, BlockPos pos) {
         if (!level.isRaining()) return false;
         if (!level.canSeeSky(pos)) return false;
-        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) {
+        ChunkAccess chunk = LibUtils.getChunkIfLoaded(level, pos);
+        if (chunk == null || chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) > pos.getY()) {
             return false;
         }
-        return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
+        Holder<Biome> biome = LibUtils.getBiomeManagerThatChunkMustBeLoaded(level).getBiome(pos);
+        if (biome.is(Biomes.THE_VOID)) return false;
+        return biome.value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
     }
 
     public static void makeItemAntigravity(ItemEntity entity) {

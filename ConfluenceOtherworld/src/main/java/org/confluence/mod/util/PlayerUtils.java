@@ -23,8 +23,12 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.supplier.FloatSupplier;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -47,6 +51,7 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -76,6 +81,9 @@ public final class PlayerUtils {
         case 2 -> ModItems.GOLD_COIN.get();
         default -> ModItems.PLATINUM_COIN.get();
     };
+    public static final CustomPickupRangeEvent.RangeType MANA_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("mana"));
+    public static final CustomPickupRangeEvent.RangeType COIN_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("coin"));
+    public static final CustomPickupRangeEvent.RangeType HEART_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("heart"));
 
     public static void syncMana2Client(ServerPlayer player, ManaStorage manaStorage) {
         PacketDistributor.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
@@ -84,15 +92,6 @@ public final class PlayerUtils {
     public static void syncMana2Client(ServerPlayer player) {
         syncMana2Client(player, ManaStorage.of(player));
     }
-
-//    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
-//        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
-//        PacketDistributor.sendToPlayer(player, new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
-//    }
-//
-//    public static void syncSoul2Client(ServerPlayer player) {
-//        syncSoul2Client(player, SoulStorage.of(player));
-//    }
 
     public static void regenerateMana(ServerPlayer player) {
         ManaStorage manaStorage = ManaStorage.of(player);
@@ -161,13 +160,14 @@ public final class PlayerUtils {
         BestiarySyncPacketS2C.syncEntries(player);
         ExtraInventorySyncPacketS2C.sendToClient(player, player);
         PlayerPiggyBankContainer.of(player).setChanged(); // 自动同步
-        FishingPowerInfoPacketS2C.sendAndGet(player);
+        FishingPowerInfoPacketS2C.sendToClient(player);
         VisibilityPacketS2C.sendEcho(player);
         syncMana2Client(player);
         VisibilityPacketS2C.sendTheConstantPostEffect(player);
         SecretFlagSyncPacketS2C.sendToClient(player, IMinecraftServer.of(player.server).confluence$getSecretFlag());
         CompatibilitySyncPacketS2c.sendToClient(player);
         TeamPacket.sendToClient(player, player);
+        DragonChargePlayerConfigPacketS2C.sendToPlayer(player);
     }
 
     /// 将target的数据同步到sendTo
@@ -183,7 +183,10 @@ public final class PlayerUtils {
     }
 
     public static float getFishingPower(ServerPlayer player) {
-        float base = TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
+        float base = player.getLuck() + TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
+        if (player.fishing != null) {
+            base += player.fishing.luck;
+        }
         if (EverBeneficial.of(player).isGummyWormUsed()) {
             base += 3.0F;
         }
@@ -436,7 +439,7 @@ public final class PlayerUtils {
         if (player.hasEffect(ModEffects.AMMO_BOX) && player.getRandom().nextFloat() < 0.2F) {
             return true;
         }
-        return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
+        return LibMathUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
     }
 
     public static boolean skipHealIfOnFire(Player player) {
@@ -453,7 +456,7 @@ public final class PlayerUtils {
     public static void applySunflowerEffect(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 200 == 0) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
-            if (iSection != null && iSection.confluence$getBlockCounts().sunflower.get() > 0) {
+            if (iSection != null && iSection.confluence$getBlockCounts().sunflower > 0) {
                 player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 220));
             }
         }
@@ -461,7 +464,16 @@ public final class PlayerUtils {
 
     public static void flushPrimitiveValueData(ServerPlayer player) {
         ManaStorage.of(player).flushAbility(player);
-        FishingPowerInfoPacketS2C.sendAndGet(player);
+        FishingPowerInfoPacketS2C.sendToClient(player);
         VisibilityPacketS2C.sendEcho(player);
+    }
+
+    public static void askForSoftcore(ServerPlayer player) {
+        if (CommonConfigs.STOP_ASK_FOR_SOFTCORE.get()) return;
+        ServerLevel overworld = player.server.getLevel(OverworldUtils.dimension());
+        if (overworld == null) return;
+        if (overworld.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) return;
+        if (ConfluenceData.get(overworld).isStopAskForSoftcore()) return;
+        PacketDistributor.sendToPlayer(player, new AskForSoftcorePacket(true));
     }
 }

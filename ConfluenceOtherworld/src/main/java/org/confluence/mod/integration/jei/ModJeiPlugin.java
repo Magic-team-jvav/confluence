@@ -49,7 +49,7 @@ public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
-    public static IJeiRuntime jeiRuntime;
+    public static @Nullable IJeiRuntime jeiRuntime;
 
     public static List<ToastComponent.ToastInstance<?>> filterAchievements(List<ToastComponent.ToastInstance<?>> original) {
         List<ToastComponent.ToastInstance<?>> list = new ArrayList<>(original);
@@ -108,8 +108,8 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(SawmillCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SAWMILL_TYPE.get()));
         registration.addRecipes(SolidifierCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SOLIDIFIER_TYPE.get()));
         registration.addRecipes(HardmodeAnvilCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_ANVIL_TYPE.get()));
-        registration.addRecipes(ExtractinatorCategory.EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.EXTRACTINATOR, level.registryAccess()));
-        registration.addRecipes(ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR, level.registryAccess()));
+        registration.addRecipes(ExtractinatorCategory.EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.EXTRACTINATOR));
+        registration.addRecipes(ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR));
         registration.addRecipes(HardmodeForgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_FORGE_TYPE.get()));
         registration.addRecipes(LoomCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.LOOM_TYPE.get()));
         registration.addRecipes(DyeVatCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.DYE_VAT_TYPE.get()));
@@ -169,7 +169,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(DyeVatScreen.class, 87, 36, 22, 15, DyeVatCategory.TYPE);
         registration.addRecipeClickArea(CrystalBallScreen.class, 69, 36, 22, 15, CrystalBallCategory.TYPE);
 
-        registration.addGlobalGuiHandler(new ExtraInventoryHandler());
+        registration.addGlobalGuiHandler(ConfluenceScreenHandler.INSTANCE);
     }
 
     @Override
@@ -184,6 +184,11 @@ public final class ModJeiPlugin implements IModPlugin {
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         ModJeiPlugin.jeiRuntime = jeiRuntime;
+    }
+
+    @Override
+    public void onRuntimeUnavailable() {
+        ModJeiPlugin.jeiRuntime = null;
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

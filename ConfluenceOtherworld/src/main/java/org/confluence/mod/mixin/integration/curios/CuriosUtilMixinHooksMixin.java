@@ -12,7 +12,7 @@ import top.theillusivec4.curios.mixin.CuriosUtilMixinHooks;
 @Mixin(value = CuriosUtilMixinHooks.class, remap = false)
 public abstract class CuriosUtilMixinHooksMixin {
     @ModifyReturnValue(method = "getFortuneLevel", at = @At(value = "RETURN", ordinal = 0))
-    private static int modify(int original, @Local LivingEntity living) {
+    private static int modify(int original, @Local(name = "livingEntity") LivingEntity living) {
         if (living instanceof Player player) {
             return original + ModArmorBonus.getValue(player, ModArmorBonus.FORTUNE);
         }

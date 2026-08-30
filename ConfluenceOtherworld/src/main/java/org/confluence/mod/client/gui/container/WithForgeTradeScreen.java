@@ -17,10 +17,7 @@ import org.confluence.terraentity.client.gui.container.TETradeScreen;
 
 
 public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
-    private static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("reforge_icon"), Confluence.asResource("reforge_icon_highlighted"));
-
-    ImageButton forgeBt;
-    public ItemStack sellItem;
+    public static final WidgetSprites SPRITES = new WidgetSprites(Confluence.asResource("reforge_icon"), Confluence.asResource("reforge_icon_highlighted"));
 
     public WithForgeTradeScreen(NPCTradesForgeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -33,19 +30,21 @@ public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
     protected void init() {
         super.init();
 
-        if (menu.forge) {
-            forgeBt = new ImageButton(leftPos + 1, topPos + 1, 16, 16, SPRITES, button -> {
-                LocalPlayer player = Minecraft.getInstance().player;
-                if (player != null) {
-                    ItemStack stack = player.containerMenu.getCarried();
-                    player.containerMenu.setCarried(ItemStack.EMPTY);
-
-                    OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_REFORGE_MENU, stack);
-                }
-            });
-            addRenderableWidget(forgeBt);
+        if (menu.hasForge()) {
+            addRenderableWidget(createReforgeButton(leftPos + 1, topPos + 1));
         }
-        this.sellItem = ItemStack.EMPTY;
+    }
+
+    public static ImageButton createReforgeButton(int x, int y) {
+        return new ImageButton(x, y, 16, 16, SPRITES, button -> {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null) {
+                ItemStack stack = player.containerMenu.getCarried();
+                player.containerMenu.setCarried(ItemStack.EMPTY);
+
+                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.NPC_REFORGE_MENU, stack);
+            }
+        });
     }
 
     protected boolean canSelect(int index, double mouseX, double mouseY, int button) {

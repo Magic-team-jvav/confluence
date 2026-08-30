@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConf
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
+import org.confluence.mod.common.block.natural.LifeFruitBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -31,12 +32,16 @@ public class JungleGrassBlock extends SpreadingGrassBlock implements Bonemealabl
     }
 
     @Override
-    public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource random) {
-        if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
-        if (isFullBlock(serverLevel, blockPos.above())) {
-            serverLevel.setBlockAndUpdate(blockPos, Blocks.MUD.defaultBlockState());
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!level.isAreaLoaded(pos, 3)) return;
+        BlockPos abovePos = pos.above();
+        BlockState aboveState = level.getBlockState(abovePos);
+        if (isFullBlock(aboveState, level, abovePos)) {
+            level.setBlockAndUpdate(pos, Blocks.MUD.defaultBlockState());
+        } else if (LifeFruitBlock.canGrow(level, aboveState, abovePos, random)) {
+            level.setBlockAndUpdate(abovePos, NatureBlocks.LIFE_FRUIT.get().defaultBlockState());
         } else {
-            super.randomTick(blockState, serverLevel, blockPos, random);
+            super.randomTick(state, level, pos, random);
         }
     }
 

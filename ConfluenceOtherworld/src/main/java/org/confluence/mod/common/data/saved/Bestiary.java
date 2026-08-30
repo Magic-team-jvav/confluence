@@ -20,6 +20,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
@@ -32,9 +33,9 @@ import org.confluence.mod.util.ModUtils;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public final class Bestiary implements IGlobalData {
+public enum Bestiary implements IGlobalData {
+    INSTANCE;
     public static final Codec<Map<String, BestiaryEntry>> CODEC = Codec.unboundedMap(Codec.STRING, BestiaryEntry.CODEC);
-    public static final Bestiary INSTANCE = new Bestiary();
     private static final Object2BooleanMap<EntityType<?>> AVAILABLE = new Object2BooleanOpenCustomHashMap<>(new Hash.Strategy<>() {
         @Override
         public int hashCode(EntityType<?> o) {
@@ -48,8 +49,6 @@ public final class Bestiary implements IGlobalData {
     });
 
     private Map<String, BestiaryEntry> entries = new Object2ObjectOpenHashMap<>();
-
-    private Bestiary() {}
 
     @Override
     public void decode(CompoundTag tag) {
@@ -92,7 +91,7 @@ public final class Bestiary implements IGlobalData {
             AttributeMap map = living.getAttributes();
             entry.maxHealth = getAttributeBaseValue(map, Attributes.MAX_HEALTH);
             entry.knockbackResistance = getAttributeBaseValue(map, Attributes.KNOCKBACK_RESISTANCE);
-            entry.attackDamage = getAttributeBaseValue(map, Attributes.ATTACK_DAMAGE);
+            entry.attackDamage = getAttributeBaseValue(map, LibAttributes.getAttackDamage());
             entry.armor = getAttributeBaseValue(map, Attributes.ARMOR);
             entry.drops = living instanceof Enemy ? (int) ModUtils.getLivingBaseMoneyDrops(living, living.level()) : 0;
             return entry;

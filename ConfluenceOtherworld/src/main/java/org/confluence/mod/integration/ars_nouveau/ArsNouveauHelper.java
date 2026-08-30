@@ -8,8 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.util.TriState;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.CommonConfigs;
@@ -18,7 +18,7 @@ import org.confluence.mod.util.PlayerUtils;
 
 public class ArsNouveauHelper {
     public static final String MODID = "ars_nouveau";
-    public static final boolean IS_LOADED = ModList.get().isLoaded(MODID);
+    public static final boolean IS_LOADED = LibUtils.isModLoaded(MODID);
     private static final ResourceLocation MANA_BAR_NAME = ResourceLocation.fromNamespaceAndPath(MODID, "mana_hud");
 
     public static int getInitMaxMana() {

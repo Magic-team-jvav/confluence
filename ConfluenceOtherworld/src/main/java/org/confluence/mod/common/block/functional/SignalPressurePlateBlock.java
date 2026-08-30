@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.confluence.mod.mixin.accessor.LevelAccessor;
+import org.confluence.mod.mixin.world.level.LevelAccessor;
 
 import java.util.function.Predicate;
 

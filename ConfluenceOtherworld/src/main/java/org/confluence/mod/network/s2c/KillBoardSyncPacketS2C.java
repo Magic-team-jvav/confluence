@@ -10,9 +10,9 @@ import org.confluence.lib.network.IPacketS2C;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 
-public final class KillBoardSyncPacketS2C implements IPacketS2C {
+public enum KillBoardSyncPacketS2C implements IPacketS2C {
+    INSTANCE;
     public static final Type<KillBoardSyncPacketS2C> TYPE = Confluence.createType("kill_board_sync");
-    private static final KillBoardSyncPacketS2C INSTANCE = new KillBoardSyncPacketS2C();
     public static final StreamCodec<RegistryFriendlyByteBuf, KillBoardSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public KillBoardSyncPacketS2C decode(RegistryFriendlyByteBuf buffer) {

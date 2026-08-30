@@ -25,6 +25,29 @@ import org.confluence.terraentity.init.entity.TENpcEntities;
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
 
 public final class ModFluids {
+    public static final FluidTriple VOID = FluidTriple.builder(Confluence.asResource("void"))
+            .typeProperties(properties -> properties
+                    .density(1000)
+                    .canSwim(true)
+                    .viscosity(1000)
+                    .motionScale(0.02)
+                    .canExtinguish(true)
+                    .supportsBoating(true)
+                    .rarity(Rarity.UNCOMMON)
+                    .fallDistanceModifier(0.2F)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL_LAVA)
+                    .sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY_LAVA)
+                    .sound(SoundActions.FLUID_VAPORIZE, SoundEvents.FIRE_EXTINGUISH)
+                    .addDripstoneDripping(
+                            PointedDripstoneBlock.LAVA_TRANSFER_PROBABILITY_PER_RANDOM_TICK,
+                            ParticleTypes.DRIPPING_DRIPSTONE_WATER,
+                            ModBlocks.HONEY_CAULDRON.get(),
+                            SoundEvents.POINTED_DRIPSTONE_DRIP_LAVA_INTO_CAULDRON
+                    )
+            ).baseProperties(properties -> properties
+                    .block(ModBlocks.VOID)
+                    .bucket(ToolItems.VOID_BUCKET)
+            ).build();
     public static final FluidTriple HONEY = FluidTriple.builder(Confluence.asResource("honey"))
             .typeProperties(properties -> properties
                     .density(2000)

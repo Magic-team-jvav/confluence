@@ -19,8 +19,9 @@ import java.util.Map;
 import java.util.UUID;
 
 /// 生物模块移到主模块之后使用这个
-public class HouseHandler implements IGlobalData {
-    //    public static final HouseHandler INSTANCE = new HouseHandler(); 现在还不能用
+public enum HouseHandler implements IGlobalData {
+    @Deprecated
+    INSTANCE;
     private static final Codec<Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>>> DATA_CODEC = LibCodecUtils.notStringKeyMap(
             "dimension", ResourceKey.codec(Registries.DIMENSION),
             "regions", LibCodecUtils.notStringKeyMap(
@@ -33,8 +34,6 @@ public class HouseHandler implements IGlobalData {
     );
 
     private Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> data = new Object2ObjectOpenHashMap<>();
-
-    private HouseHandler() {}
 
     public Map<NPCSpawner.Region, Map<UUID, House>> getOrCreateRegions(ResourceKey<Level> dimension) {
         return data.computeIfAbsent(dimension, d -> new Object2ObjectOpenHashMap<>());

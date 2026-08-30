@@ -32,18 +32,9 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
 
     @Override
     public void baseTick() {
-        if (tickCount > 200) {
-            discard();
-            return;
-        }
         super.baseTick();
-
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        setPos(offX, offY, offZ);
-        setDeltaMovement(vec3.add(0, -0.08, 0));
+        setDeltaMovement(doSimpleMove().add(0, -0.08, 0));
+        doAgeCheck(200);
     }
 
     @Override
@@ -61,7 +52,9 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        discard();
+        if (!level().isClientSide) {
+            discardInTicks(1);
+        }
     }
 
     @Override

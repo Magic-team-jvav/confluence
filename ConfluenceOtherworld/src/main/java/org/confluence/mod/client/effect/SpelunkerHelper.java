@@ -46,6 +46,7 @@ import java.util.*;
 import static org.confluence.mod.client.ModKeyBindings.SHOW_DETAIL_SPECULAR;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_CRYSTAL_BLOCK;
+import static org.confluence.mod.common.init.block.NatureBlocks.LIFE_FRUIT;
 import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
 import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock;
@@ -54,9 +55,7 @@ import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock
 public class SpelunkerHelper extends AbstractBufferManager {
     /// 调参表
     public int range = 30; // 球形侦测范围
-    public int textRange = 30; // 球形显示文本范围
     public float maxAlpha = 0.8f; // 边框最大alpha(0 - 1)
-    public int textRenderType = 0; // 0表示文字面向玩家,默认是摄像机方向
     public int centerInternal = 50; // 中心块间距的平方
 
     private final Map<Block, Entry> targets = new HashMap<>();
@@ -271,6 +270,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
         // 生命水晶
         putWithSpecialIconTarget(LIFE_CRYSTAL_BLOCK.get(), 0xec173e, true, ShowType.SPELUNKER, "life_crystal");
+
+        // 生命果
+        putWithSpecialIconTarget(LIFE_FRUIT.get(), 0xe8c314, true, ShowType.SPELUNKER, "life_fruit");
+
         // 箱子
         for (DeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
             putTargetWithItemRender(normalChest.get(), 0xe8c314, true, ShowType.SPELUNKER, Items.CHEST);
@@ -304,7 +307,11 @@ public class SpelunkerHelper extends AbstractBufferManager {
         // 石英
         putTargetWithTexture(Blocks.NETHER_QUARTZ_ORE, 0xe2ccbc, true, ShowType.SPELUNKER, Items.QUARTZ);
 
-        // 新三矿 todo仅敲除祭坛后可探测
+        // 末地矿石
+        putMaterialTarget(LUNARTEAR_ORE.get(), 0x4bbcff, true, ShowType.SPELUNKER, LUNARTEAR);
+        putMaterialTarget(DRAGONSAL_ORE.get(), 0xe300e9, true, ShowType.SPELUNKER, DRAGONSAL);
+
+        // 新三矿
         putMaterialTarget(DEEPSLATE_COBALT_ORE.get(), 0x0060e9, true, ShowType.SPELUNKER, RAW_COBALT);
         putMaterialTarget(DEEPSLATE_PALLADIUM_ORE.get(), 0xe97500, true, ShowType.SPELUNKER, RAW_PALLADIUM);
         putMaterialTarget(DEEPSLATE_MYTHRIL_ORE.get(), 0x00e9ae, true, ShowType.SPELUNKER, RAW_MYTHRIL);

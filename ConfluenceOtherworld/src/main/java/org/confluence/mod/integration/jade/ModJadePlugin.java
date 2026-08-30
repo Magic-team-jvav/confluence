@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.lib.common.block.ISimulatorBlock;
+import org.confluence.lib.common.block.ILibSimulatorBlock;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
@@ -50,7 +50,7 @@ public final class ModJadePlugin implements IWailaPlugin {
                 Player player = accessor.getPlayer();
                 if (player.isCreative()) return accessor;
                 Block block = blockAccessor.getBlock();
-                if (block instanceof ISimulatorBlock simulatorBlock) {
+                if (block instanceof ILibSimulatorBlock simulatorBlock) {
                     return registration.blockAccessor().from(blockAccessor).blockState(simulatorBlock.getSimulatedBlock(true)).build();
                 }
                 BlockState blockState = hideMap.get(block);

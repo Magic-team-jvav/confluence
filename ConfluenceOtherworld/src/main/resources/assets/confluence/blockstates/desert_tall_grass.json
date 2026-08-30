@@ -1,7 +1,10 @@
 {
-  "variants": {
-    "": {
-      "model": "confluence:block/desert_tall_grass"
+    "variants": {
+        "half=lower": {
+            "model": "confluence:block/desert_tall_grass_bottom"
+        },
+        "half=upper": {
+            "model": "confluence:block/desert_tall_grass_top"
+        }
     }
-  }
 }

@@ -21,7 +21,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.api.entity.IAttackableProjectile;
 import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
 import org.confluence.terraentity.utils.TEUtils;
@@ -30,17 +29,13 @@ import org.joml.Vector3f;
 
 import java.util.Comparator;
 
-/**
- * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
- */
+/// 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
 public abstract class SwordProjectile extends AbstractHurtingProjectile implements ICollisionAttackEntity {
-
     // 可调参数
     public int lifetime = 40;
     public int hitCount = 1;
     protected float attackDamageFactor = 1F;
     protected float baseAttackDamage = 0;
-    protected float criticalChance = 0.0F;
     protected float knockBack = 0.0F;
     protected float baseKnockBack = 0.0F;
     protected boolean canPenalize = false;
@@ -65,6 +60,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     public static final EntityDataAccessor<Vector3f> DATA_DIRECTION = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     protected static final EntityDataAccessor<Vector3f> DATA_INIT_SPEED = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.VECTOR3);
     protected static final EntityDataAccessor<Float> DATA_INIT_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Integer> DATA_LIFETIME = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.INT);
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
@@ -80,6 +76,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 float yaw = (float) Mth.atan2(direction.x, direction.z) * Mth.RAD_TO_DEG;
                 this.setYRot(yaw);
                 yRotO = yaw;
+            } else if (DATA_LIFETIME.equals(data)) {
+                this.lifetime = this.entityData.get(DATA_LIFETIME);
             }
         }
     }
@@ -95,6 +93,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
         builder.define(DATA_INIT_GRAVITY, 0.0F);
         builder.define(DATA_DIRECTION, new Vector3f());
+        builder.define(DATA_LIFETIME, lifetime);
     }
 
     @Override
@@ -130,6 +129,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         this.gravity = projComponent.gravity();
         this.lifetime = projComponent.existTicks();
         this.entityData.set(DATA_INIT_GRAVITY, gravity);
+        this.entityData.set(DATA_LIFETIME, lifetime);
     }
 
     LivingEntity target;
@@ -139,16 +139,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         super.onAddedToLevel();
         var owner1 = getOwner();
         if (owner1 instanceof LivingEntity owner) {
-            AttributeInstance attributeInstance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
-
-            if (attributeInstance != null) {
-
-                this.knockBack += (float) attributeInstance.getValue();
-            }
-            if (TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE)) return;
-            attributeInstance = owner.getAttribute(TCAttributes.CRIT_CHANCE);
-            if (attributeInstance != null) {
-                this.criticalChance = (float) attributeInstance.getValue();
+            AttributeInstance instance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
+            if (instance != null) {
+                this.knockBack += (float) instance.getValue();
             }
 
             var entities = level().getEntities(this, getBoundingBox().inflate(50), e -> e instanceof LivingEntity living && living.isAlive() && e != owner1);
@@ -238,9 +231,8 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 return true;
             }
 
-            Entity victim = LibUtils.getOwner(target);
             LivingEntity hurter;
-            if (victim instanceof LivingEntity living) {
+            if (LibUtils.tryFindBeImpacted(target) instanceof LivingEntity living) {
                 hurter = living;
             } else {
                 return false;

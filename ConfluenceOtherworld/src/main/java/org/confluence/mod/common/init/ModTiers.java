@@ -46,11 +46,20 @@ public final class ModTiers {
     public static final Tier CHLOROPHYTE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 47, 26, 20, () -> Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
     public static final Tier HALLOWED = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 46, 25, 19, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT));
     public static final Tier SHROOMITE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 60, 28, 22, () -> Ingredient.of(MaterialItems.SHROOMITE_INGOT));
-    public static final Tier LIHZAHRD = new PoweredTier(210, ModTags.Blocks.UNBREAKABLE, 10000, 80, 32, 24, () -> Ingredient.of(DecorativeBlocks.LIHZAHRD_BRICKS));
+    public static final Tier LIHZAHRD = new PoweredTier(210, ModTags.Blocks.UNBREAKABLE, 10000, 80, 32, 24, () -> Ingredient.of(DecorativeBlocks.LIHZAHRD_BRICKS.FULL));
     public static final Tier LUMINITE = new PoweredTier(225, ModTags.Blocks.UNBREAKABLE, 10000, 95, 38, 25, () -> Ingredient.of(MaterialItems.LUMINITE_INGOT));
 
     // 给一些无限耐久的物品使用的
     public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 4, 1, 18, Ingredient::of);
+    public static final Tier GRAVE_DIGGERS_TIER = new PoweredTier(
+            40, // 镐力 12
+            ModTags.Blocks.NEEDS_2_LEVEL, // 挖掘等级：铁
+            -1, // 耐久
+            5.0F, // 挖掘速度
+            2.0F, // 攻击伤害加成
+            14, // 附魔能力
+            Ingredient::of // 无修复材料
+    );
 
     /// @return 原版Tiers的对应镐力
     public static int getPowerForVanillaTiers(Tiers tiers) {
@@ -61,6 +70,7 @@ public final class ModTiers {
             case IRON -> 40;
             case DIAMOND -> 59;
             case NETHERITE -> 90;
+            default -> -1; // 有模组添加了新枚举
         };
     }
 

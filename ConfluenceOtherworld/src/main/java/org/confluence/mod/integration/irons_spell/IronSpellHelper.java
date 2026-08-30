@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.ModList;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.CommonConfigs;
@@ -17,7 +17,7 @@ import org.confluence.mod.util.PlayerUtils;
 
 public class IronSpellHelper {
     public static final String MODID = "irons_spellbooks";
-    public static final boolean IS_LOADED = ModList.get().isLoaded(MODID);
+    public static final boolean IS_LOADED = LibUtils.isModLoaded(MODID);
     private static final ResourceLocation MANA_OVERLAY_NAME = ResourceLocation.fromNamespaceAndPath(MODID, "mana_overlay");
 
     public static float getInitMaxMana() {

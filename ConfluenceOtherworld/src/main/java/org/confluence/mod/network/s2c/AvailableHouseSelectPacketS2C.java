@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.hud.HouseSelectHUD;
+import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
@@ -29,7 +29,7 @@ public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPac
 
     @Override
     public void work(Player player) {
-        HouseSelectHUD.handlePacket(available);
+        HouseSelectHud.handlePacket(available);
     }
 
     public static EntityType<?>[] getTypes() {

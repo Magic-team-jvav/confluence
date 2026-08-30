@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -90,7 +89,7 @@ public class HugeMushroomTreeFeature extends Feature<HugeMushroomTreeFeature.Con
             ball(1.5, baseBlockPos.offset(0, 1, 0), Blocks.AIR.defaultBlockState(), true, level);
 
             long seed = random.nextLong();
-            WorldgenRandom worldgenRandom = new WorldgenRandom(new LegacyRandomSource(seed));
+            RandomSource worldgenRandom = new WorldgenRandom(RandomSource.create(seed));
 
             List<Vector3d> pileusList = VectorUtils.ellipsoidPos(
                     random.nextDouble() * 5 + 7,

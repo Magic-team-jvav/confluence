@@ -18,7 +18,7 @@ public class Fleshcatcher extends AbstractFishingPole {
     public static final ResourceLocation ID = Confluence.asResource("fleshcatcher");
 
     public Fleshcatcher() {
-        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).durability(256), ModRarity.BLUE);
+        super(new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE), ModRarity.BLUE);
         addAttributeModifiers(builder -> builder.add(Attributes.LUCK, new AttributeModifier(ID, 0.22, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL), EquipmentSlotGroup.MAINHAND));
     }
 

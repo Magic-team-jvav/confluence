@@ -27,6 +27,7 @@ public final class ModStructures {
     public static final DeferredHolder<StructureType<?>, StructureType<OasisStructure>> OASIS = TYPES.register("oasis", () -> () -> OasisStructure.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<MarbleCaveStructure>> MARBLE_CAVE = TYPES.register("marble_cave", () -> () -> MarbleCaveStructure.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<GraniteCaveStructure>> GRANITE_CAVE = TYPES.register("granite_cave", () -> () -> GraniteCaveStructure.CODEC);
+    public static final DeferredHolder<StructureType<?>, StructureType<ObsidianPillarStructure>> OBSIDIAN_PILLAR = TYPES.register("obsidian_pillar", () -> () -> ObsidianPillarStructure.CODEC);
 
     public static class Keys {
         public static final ResourceKey<Structure> AIR = key("air");

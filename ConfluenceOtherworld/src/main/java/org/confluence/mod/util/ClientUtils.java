@@ -2,37 +2,29 @@ package org.confluence.mod.util;
 
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.Team;
-import org.confluence.mod.common.init.ModSecretSeeds;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -49,9 +41,6 @@ public final class ClientUtils {
     public static final String GRAY_SUFFIX = ".gray";
     public static final String NEGATIVE_SUFFIX = ".negative";
     public static final Set<ResourceLocation> ORIGINAL = new HashSet<>();
-    public static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("hud/icon");
-    public static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("hud/overlay");
-    public static final ResourceLocation ICON_0 = Confluence.asResource("hud/icon_0");
     private static final Set<ResourceLocation> failed = new HashSet<>();
     public static final int LEGACY_SIZE = 128;
     public static final int OVERLAY_SIZE = 128;
@@ -235,21 +224,6 @@ public final class ClientUtils {
         );
     }
 
-    private static final PoseStack boulderSun = new PoseStack();
-
-    public static void renderBoulderSun(Minecraft minecraft) {
-        if (ModSecretSeeds.BOULDER_WORLD.match() && minecraft.level.rainLevel <= 0.9F) {
-            MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-            BlockState blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
-            boulderSun.pushPose();
-            boulderSun.mulPose(Axis.ZP.rotation(minecraft.level.getTimeOfDay(0) * Mth.TWO_PI));
-            boulderSun.translate(-5, 100, -5);
-            boulderSun.scale(10, 10, 10);
-            minecraft.getBlockRenderer().renderSingleBlock(blockState, boulderSun, bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY);
-            boulderSun.popPose();
-        }
-    }
-
     public static void postTheConstantEffect(boolean post) {
         GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
         PostChain postChain = gameRenderer.currentEffect();
@@ -267,5 +241,35 @@ public final class ClientUtils {
 
     public static boolean shouldDisplayTeam() {
         return !Minecraft.getInstance().isSingleplayer();
+    }
+
+    public static Component formatPrice(int price) {
+        int platinum = 0;
+        int gold = 0;
+        int silver = 0;
+        int copper;
+        if (price >= 1000000) {
+            platinum = price / 1000000;
+            price -= platinum * 1000000;
+        }
+        if (price >= 10000) {
+            gold = price / 10000;
+            price -= gold * 10000;
+        }
+        if (price >= 100) {
+            silver = price / 100;
+            price -= silver * 100;
+        }
+        copper = price;
+        MutableComponent cmp = Component.empty();
+        if (platinum > 0)
+            cmp.append(Component.literal(platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
+        if (gold > 0)
+            cmp.append(Component.literal(gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
+        if (silver > 0)
+            cmp.append(Component.literal(silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
+        if (copper > 0)
+            cmp.append(Component.literal(copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
+        return cmp;
     }
 }

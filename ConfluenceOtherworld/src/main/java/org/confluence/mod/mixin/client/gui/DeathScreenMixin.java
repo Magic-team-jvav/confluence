@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.client.gui;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -67,9 +68,9 @@ public abstract class DeathScreenMixin extends Screen implements IDeathScreen {
     }
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick, CallbackInfo ci) {
+    public void render(CallbackInfo ci, @Local(argsOnly = true) GuiGraphics guiGraphics) {
         if (confluence$respawnWaitTime >= delayTicker) {
-            pGuiGraphics.drawCenteredString(font, confluence$respawnTimeComponent, width / 2, 120, 16777215);
+            guiGraphics.drawCenteredString(font, confluence$respawnTimeComponent, width / 2, 120, 16777215);
         }
     }
 

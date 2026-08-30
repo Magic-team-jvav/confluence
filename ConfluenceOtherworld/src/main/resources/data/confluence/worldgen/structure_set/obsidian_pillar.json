@@ -1,0 +1,13 @@
+{
+    "placement": {
+        "type": "minecraft:random_spread",
+        "salt": 15740802,
+        "separation": 5,
+        "spacing": 30,
+        "spread_type": "triangular"
+    },
+    "structures": [{
+        "structure": "confluence:obsidian_pillar",
+        "weight": 1
+    }]
+}

@@ -22,13 +22,16 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.mana.ArcaneCrystalItem;
 import org.confluence.mod.common.item.mana.ManaCrystalItem;
+import org.confluence.mod.common.item.mana.RecallManaCrystalItem;
 import org.confluence.terraentity.entity.boss.*;
 
 public class ConsumableItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final DeferredItem<ManaCrystalItem> MANA_CRYSTAL = ITEMS.register("mana_crystal", ManaCrystalItem::new);
+    public static final DeferredItem<RecallManaCrystalItem> RECALL_MANA_CRYSTAL = ITEMS.register("recall_mana_crystal", RecallManaCrystalItem::new);
     public static final DeferredItem<EverBeneficialItem> LIFE_CRYSTAL = ITEMS.register("life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_crystal", 1, ChatFormatting.GREEN)));
+    public static final DeferredItem<EverBeneficialItem> RECALL_LIFE_CRYSTAL = ITEMS.register("recall_life_crystal", () -> new EverBeneficialItem(ModRarity.GREEN, EverBeneficialItem.RECALL_LIFE_CRYSTAL, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("recall_life_crystal", 1, ChatFormatting.RED)));
     public static final DeferredItem<EverBeneficialItem> LIFE_FRUIT = ITEMS.register("life_fruit", () -> new EverBeneficialItem(ModRarity.LIME, EverBeneficialItem.LIFE_FRUITS, ModSoundEvents.LIFE_CRYSTAL_USE, TooltipItem.getTooltipsFromString("life_fruit", 1, ChatFormatting.GREEN)));
     public static final DeferredItem<EverBeneficialItem> VITAL_CRYSTAL = ITEMS.register("vital_crystal", () -> new EverBeneficialItem(ModRarity.LIGHT_PURPLE, EverBeneficialItem.VITAL_CRYSTAL, ModSoundEvents.TRANSMUTATION_USE, TooltipItem.getTooltipsFromString("vital_crystal", 1, ChatFormatting.GREEN)));
     public static final DeferredItem<ArcaneCrystalItem> ARCANE_CRYSTAL = ITEMS.register("arcane_crystal", ArcaneCrystalItem::new);

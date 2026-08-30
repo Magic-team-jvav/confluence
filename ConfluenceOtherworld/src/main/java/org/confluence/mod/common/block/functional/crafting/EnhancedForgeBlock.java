@@ -37,6 +37,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.recipe.ArrayRecipeInput;
+import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.recipe.EnhancedForgeRecipe;
 import org.jetbrains.annotations.Nullable;
@@ -534,13 +535,13 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         }
 
         private static void createExperience(ServerLevel level, Vec3 popVec, int recipeIndex, float experience) {
-            int i = Mth.floor((float) recipeIndex * experience);
-            float f = Mth.frac((float) recipeIndex * experience);
-            if (f != 0F && Math.random() < (double) f) {
-                i++;
+            int amount = Mth.floor(recipeIndex * experience);
+            float chance = Mth.frac(recipeIndex * experience);
+            if (LibMathUtils.checkChance(chance, level.random)) {
+                amount++;
             }
 
-            ExperienceOrb.award(level, popVec, i);
+            ExperienceOrb.award(level, popVec, amount);
         }
 
         @Override

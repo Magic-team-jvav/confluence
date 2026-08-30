@@ -83,7 +83,9 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SpearItems.DARK_LANCE))
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.FLAMELASH))
                         .add(LootItem.lootTableItem(BowItems.HELLWING_BOW))
+                        .add(LootItem.lootTableItem(FlailItems.SUNFURY))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.TREASURE_MAGNET))
@@ -92,7 +94,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/dungeon_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
@@ -103,8 +105,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
                         .add(LootItem.lootTableItem(TGItems.HAND_GUN))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.MAGIC_MISSILE))
                         .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
                         .add(LootItem.lootTableItem(TCItems.RAM_RUNE))
+                        .add(LootItem.lootTableItem(FlailItems.BLUE_MOON))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.SHADOW_KEY))
@@ -140,6 +144,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(AccessoryItems.BAND_OF_STARPOWER))
                         .add(LootItem.lootTableItem(TGItems.MUSKET))
                         .add(LootItem.lootTableItem(ManaWeaponItems.VILETHRON))
+                        .add(LootItem.lootTableItem(FlailItems.BALL_O_HURT))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/frozen_crate"), environmentCrateCommon()
@@ -191,7 +196,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.FLEDGLING_WINGS))
+                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
                         .add(EmptyLootItem.emptyItem().setWeight(39))
                 )
         );
@@ -385,7 +390,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/stockade_crate"),environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
+                        .add(LootItem.lootTableItem(DecorativeBlocks.BLUE_BRICKS.FULL).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 100))))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
@@ -427,6 +432,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(AccessoryItems.BAND_OF_STARPOWER))
                         .add(LootItem.lootTableItem(TGItems.MUSKET))
                         .add(LootItem.lootTableItem(ManaWeaponItems.VILETHRON))
+                        .add(LootItem.lootTableItem(FlailItems.BALL_O_HURT))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
@@ -482,7 +488,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(AccessoryItems.FLEDGLING_WINGS))
+                        .add(LootItem.lootTableItem(TCItems.FLEDGLING_WINGS))
                         .add(EmptyLootItem.emptyItem().setWeight(39))
                 )
         );
@@ -928,7 +934,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(2800).apply(count2To5))
                         .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(2800).apply(count2To5))
                         // 鳍翼、无底水桶、超级吸收棉（各1/70概率 = 120/8400 ≈ 1.43%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FIN_WINGS).setWeight(120))
+                        .add(LootItem.lootTableItem(TCItems.FIN_WINGS).setWeight(120))
                         .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(120))
                         .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(120))
                         // 无底蜂蜜桶、蜂蜜吸收棉（各1/100概率 = 84/8400 = 1%）
@@ -1003,7 +1009,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(14000).apply(count2To5))
                         .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(14000).apply(count2To5))
                         // 鳍翼、无底水桶、超级吸收棉（各1/70概率 = 600/42000 ≈ 1.43%）
-                        .add(LootItem.lootTableItem(AccessoryItems.FIN_WINGS).setWeight(600))
+                        .add(LootItem.lootTableItem(TCItems.FIN_WINGS).setWeight(600))
                         .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(600))
                         .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(600))
                         // 无底蜂蜜桶、蜂蜜吸收棉（各1/100概率 = 420/42000 = 1%）
@@ -1471,6 +1477,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(binoculars_1$30)
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.AVIATORS.get())))
         );
 
 
@@ -1500,6 +1507,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(binoculars_1$30)
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.AVIATORS.get())))
         );
 
 
@@ -1529,6 +1537,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(binoculars_1$30)
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.AVIATORS.get())))
         );
 
 

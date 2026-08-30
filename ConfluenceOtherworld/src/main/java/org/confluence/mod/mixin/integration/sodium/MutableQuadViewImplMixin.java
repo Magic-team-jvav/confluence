@@ -5,9 +5,11 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.integration.sodium.IMutableQuadViewImpl;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -40,9 +42,8 @@ public abstract class MutableQuadViewImplMixin implements IMutableQuadViewImpl {
         }
     }
 
-    @Dynamic
     @Inject(method = "sprite", at = @At("RETURN"))
-    private void cacheGraySprite(@Coerce Object finder, CallbackInfoReturnable<TextureAtlasSprite> cir) {
+    private void cacheGraySprite(CallbackInfoReturnable<TextureAtlasSprite> cir) {
         confluence$cacheGraySprite(cir.getReturnValue());
     }
 

@@ -43,7 +43,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
-import org.confluence.lib.util.EnchantmentUtil;
+import org.confluence.lib.util.EnchantmentUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.ITerraArrowProjectileWeaponItem;
 import org.confluence.mod.common.component.RepeaterContents;
@@ -216,7 +216,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem implements ITerraArrowPr
         if (shooter.level() instanceof ServerLevel serverLevel) {
             ItemStack itemStack = shooter.getItemInHand(hand);
             int count = EnchantmentHelper.processProjectileCount(serverLevel, itemStack, shooter, 1);
-            int level = EnchantmentUtil.getEnchantmentLevel(Enchantments.MULTISHOT, itemStack);
+            int level = EnchantmentUtils.getEnchantmentLevel(Enchantments.MULTISHOT, itemStack);
             processProjectileCount = count - level;
         } else {
             processProjectileCount = 0;

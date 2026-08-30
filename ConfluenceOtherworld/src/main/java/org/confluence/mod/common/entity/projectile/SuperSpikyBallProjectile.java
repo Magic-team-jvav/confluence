@@ -6,6 +6,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -17,6 +18,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.util.TrapDamageHelper;
 import org.confluence.mod.mixed.Immunity;
 
 public class SuperSpikyBallProjectile extends Projectile implements Immunity, IAxisZRotate, IBouncy {
@@ -50,7 +52,11 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
             AABB boundingBox = getBoundingBox().inflate(1.0);
             if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
-                if (entity.hurt(ModDamageTypes.of(level(), DamageTypes.STING), LibUtils.switchByDifficulty(level(), blockPosition(), 16, 32, 48))) {
+                float damage = LibUtils.switchByDifficulty(level(), blockPosition(), 16, 32, 48);
+                if (entity instanceof LivingEntity living) {
+                    damage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+                }
+                if (entity.hurt(ModDamageTypes.of(level(), DamageTypes.STING), damage)) {
                     VectorUtils.knockBackA2B(this, entity, 0.2, 0.04);
                 }
             }

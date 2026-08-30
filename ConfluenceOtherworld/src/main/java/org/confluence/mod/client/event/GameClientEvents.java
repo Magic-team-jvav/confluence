@@ -29,7 +29,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.stats.StatsCounter;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
@@ -37,6 +36,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -48,6 +48,7 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.integration.animation.PlayerAttackingStatePacket;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -56,14 +57,19 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
+import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.AchievementScreen;
+import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
-import org.confluence.mod.client.gui.hud.HouseSelectHUD;
+import org.confluence.mod.client.gui.container.SoulOverviewScreen;
+import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
+import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.renderer.block.MuralPlacementPreviewRenderer;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
@@ -72,12 +78,15 @@ import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
+import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.common.ScryingOrb;
+import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
@@ -87,6 +96,7 @@ import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
+import org.confluence.mod.network.c2s.FlailControlPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.network.c2s.SwordProjectilePacketC2S;
 import org.confluence.mod.util.*;
@@ -94,7 +104,12 @@ import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.confluence.terra_curio.client.TCKeyBindings;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terraentity.api.event.NPCEvent;
+import org.confluence.terraentity.api.npc.trade.ITradeHolder;
+import org.confluence.terraentity.client.gui.container.DialogScreen;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.mixed.IPlayer;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Iterator;
@@ -103,6 +118,8 @@ import java.util.Optional;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
+    private static boolean wasFlailKeyHeld = false;
+
     @SubscribeEvent
     public static void clientTick$Pre(ClientTickEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -138,6 +155,18 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         if (player != null) {
+            if (Confluence.SOUL_SKILLS) {
+                SoulSkillClientHolder.INSTANCE.handler();
+                boolean isSoulOverviewScreen = false;
+                while (ModKeyBindings.SOUL_OVERVIEW.get().consumeClick()) {
+                    if (!isSoulOverviewScreen) {
+                        isSoulOverviewScreen = true;
+                    }
+                }
+                if (isSoulOverviewScreen) {
+                    minecraft.setScreen(new SoulOverviewScreen());
+                }
+            }
             WeatherHandler.handle();
             MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
@@ -145,13 +174,29 @@ public final class GameClientEvents {
             DropletsHandler.handle(minecraft, player);
             DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
+            ParticleHandler.handle(player);
             if (minecraft.options.keyAttack.isDown() &&
                     player.getMainHandItem().getItem() instanceof BaseSwordItem sword &&
-                    !player.getCooldowns().isOnCooldown(sword)) {
+                    !player.getCooldowns().isOnCooldown(sword)
+            ) {
                 SwordProjectilePacketC2S.sendToServer();
             }
-            HouseSelectHUD.updatePlayerRegionAt(player);
+            { // 连枷按键检测
+                boolean isFlail = player.getMainHandItem().getItem() instanceof BaseFlailItem;
+                boolean keyHeld = minecraft.options.keyAttack.isDown();
+                if (isFlail) {
+                    if (keyHeld && !wasFlailKeyHeld) {
+                        FlailControlPacketC2S.sendHold();
+                    } else if (!keyHeld && wasFlailKeyHeld) {
+                        FlailControlPacketC2S.sendRelease();
+                    }
+                }
+                wasFlailKeyHeld = keyHeld && isFlail;
+            }
+            HouseSelectHud.updatePlayerRegionAt(player);
             ClientGameEventSystem.handle(player);
+            ClientBiomeEffectSystem.tick(player);
+            ClientBeamCache.tick();
             if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
                 ScryingOrb.changeTarget(minecraft.level, player);
             }
@@ -177,7 +222,7 @@ public final class GameClientEvents {
         CompatibilityHandler.reset();
         DropletsHandler.reset();
         EctoMistHelper.reset();
-        ClientBestiary.reset();
+        ClientBestiary.getInstance().reset();
         LucyTheAxeHandler.reset();
         ClientGameEventSystem.reset();
         AchievementUtils.saveData();
@@ -195,19 +240,36 @@ public final class GameClientEvents {
         }
 
         if (event.getHand() == InteractionHand.MAIN_HAND) {
-            if (HouseSelectHUD.inSelectHUD) {
+            if (HouseSelectHud.inSelectHUD) {
                 if (event.isUseItem()) {
-                    HouseSelectHUD.selectHouse(player);
+                    HouseSelectHud.selectHouse(player);
                     player.swing(InteractionHand.MAIN_HAND);
                 } else if (event.isAttack()) {
                     event.setCanceled(true);
                     event.setSwingHand(false);
                 }
-            } else if (player.getMainHandItem().is(ModTags.Items.SPEAR)) {
-                if (event.isAttack()) {
-                    event.setCanceled(true);
+            } else {
+                ItemStack stack = player.getMainHandItem();
+                if (stack.is(ModTags.Items.SPEAR)) {
+                    if (event.isAttack()) {
+                        event.setCanceled(true);
+                    }
+                    event.setSwingHand(false);
+                } else if (event.isUseItem() && stack.is(ModItems.BACKGROUND_IMAGE_MAKER)) {
+                    Minecraft.getInstance().setScreen(new BackgroundImageMakerScreen());
                 }
-                event.setSwingHand(false);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void input$MouseScrolling(InputEvent.MouseScrollingEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+        double scrollDeltaY = event.getScrollDeltaY();
+        if (Confluence.SOUL_SKILLS) {
+            if (SoulSkillClientHolder.INSTANCE.scrolling(scrollDeltaY)) {
+                event.setCanceled(true);
             }
         }
     }
@@ -220,7 +282,7 @@ public final class GameClientEvents {
                 (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
                 ArsNouveauHelper.cancelRenderManaBar(name) ||
                 IronSpellHelper.cancelRenderManaOverlay(name) ||
-                (HouseSelectHUD.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
+                (HouseSelectHud.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
         ) {
             event.setCanceled(true);
         }
@@ -248,22 +310,15 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void itemToolTip(ItemTooltipEvent event) {
         List<Component> toolTip = event.getToolTip();
-        ItemStack itemStack = event.getItemStack();
+        ItemStack stack = event.getItemStack();
+        Holder<Item> holder = stack.getItemHolder();
+
         if (ClientConfigs.sellPriceDisplay.test()) {
-            int price = ValueComponent.getValue(itemStack, 0);
-            if (price > 0) {
-                toolTip.add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
-            }
+            ValueComponent.addTooltip(stack, toolTip);
         }
-        ModArmorBonus.addBonusTooltip(event.getEntity(), itemStack, toolTip);
-        int power = DiggingPower.getPower(itemStack);
-        if (power > 0) {
-            if (itemStack.is(ItemTags.PICKAXES) || itemStack.is(ModTags.Items.TOOLS_DRILL)) {
-                toolTip.add(Component.translatable("tooltip.confluence.pickaxe_power", power).withStyle(ChatFormatting.GRAY));
-            } else if (itemStack.is(ModTags.Items.TOOLS_HAMMER)) {
-                toolTip.add(Component.translatable("tooltip.confluence.hammer_power", power).withStyle(ChatFormatting.GRAY));
-            }
-        }
+        ModArmorBonus.addTooltip(event.getEntity(), stack, toolTip);
+        DiggingPower.addTooltip(stack, holder, toolTip);
+        ExtractinatorData.addTooltip(holder, toolTip);
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
@@ -296,11 +351,13 @@ public final class GameClientEvents {
             StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
             ClientGameEventSystem.afterRenderSky(event, player);
+            ClientBiomeEffectSystem.renderSky(player, event);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
-            HouseSelectHUD.renderRegionInWorld(minecraft);
+            HouseSelectHud.renderRegionInWorld(minecraft);
+            MuralPlacementPreviewRenderer.render(minecraft, player, event);
         }
     }
 
@@ -329,7 +386,7 @@ public final class GameClientEvents {
             for (GuiEventListener listener : event.getListenersList()) {
                 if (listener instanceof AbstractWidget widget &&
                         widget.getMessage().getContents() instanceof TranslatableContents contents &&
-                        "fml.menu.mods".equals(contents.getKey())
+                        "menu.online".equals(contents.getKey())
                 ) {
                     event.addListener(new ImageButton(widget.getX() - 24, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
                         Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
@@ -341,18 +398,30 @@ public final class GameClientEvents {
                 }
             }
         }
+
+        if (screen instanceof DialogScreen) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null) {
+                @Nullable ITradeHolder holder = IPlayer.of(player).terra_entity$getTradeHolder();
+                if (holder instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()) {
+                    event.addListener(WithForgeTradeScreen.createReforgeButton(screen.width * 2 / 3, screen.height / 2 + 25));
+                }
+            }
+        }
     }
 
     @SubscribeEvent
     public static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity living = event.getEntity();
         boolean dead = living.isDeadOrDying();
-        if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
+        IClientLivingEntity i = IClientLivingEntity.of(living);
+        if (dead != i.confluence$deadO()) {
             living.level().getProfiler().push("entity_dismemberment");
+            i.confluence$deadO(dead); // 阻断下一次post
             DeathAnimUtils.livingDeath(living);
             living.level().getProfiler().pop();
         }
-        IClientLivingEntity.of(living).confluence$deadO(dead);
+        i.confluence$deadO(dead);
     }
 
     @SubscribeEvent
@@ -377,9 +446,14 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderArm(RenderArmEvent event) {
         AbstractClientPlayer player = event.getPlayer();
-        PlayerRenderer playerRenderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-        boolean b = ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
-        if (b) event.setCanceled(true);
+        if (ZombieArmRenderer.getInstance().renderHand(
+                (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player),
+                event.getPoseStack(),
+                event.getMultiBufferSource(),
+                event.getPackedLight(),
+                player,
+                event.getArm()
+        )) event.setCanceled(true);
     }
 
     @SubscribeEvent
@@ -471,8 +545,8 @@ public final class GameClientEvents {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.is(SwordItems.NIGHTS_EDGE)) {
             if (!player.getCooldowns().isOnCooldown(itemStack.getItem())) {
-                player.swing(InteractionHand.MAIN_HAND);
                 player.resetAttackStrengthTicker();
+                PlayerAttackingStatePacket.sendToServer(); // todo 修复
             }
             event.setCanceled(true);
         } else if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
@@ -484,4 +558,6 @@ public final class GameClientEvents {
     public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
         ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
     }
+
+
 }

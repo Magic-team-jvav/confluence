@@ -17,9 +17,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModParticleTypes;
-import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
 
 import java.util.Objects;
@@ -70,7 +70,8 @@ public record DamageIndicatorOptions(
             pos = victim.position();
             y = victim.getBoundingBoxForCulling().maxY;
         }
-        boolean crit = ((IDamageSource) damageSource).confluence$isCritical();
+        ILibDamageSource lds = ILibDamageSource.of(damageSource);
+        boolean crit = lds != null && lds.confluence$isCritical();
         Component component = Component.literal(text).withStyle(crit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
         level.sendParticles(new DamageIndicatorOptions(component, crit, Type.DAMAGE), pos.x, y, pos.z, 1, 0.1, 0.1, 0.1, 0);
     }

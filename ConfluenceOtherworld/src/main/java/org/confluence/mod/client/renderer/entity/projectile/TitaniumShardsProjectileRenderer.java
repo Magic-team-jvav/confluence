@@ -9,11 +9,11 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.model.entity.projectile.TitaniumShardsProjectileModel;
 import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
 import org.joml.Vector3d;
@@ -33,7 +33,7 @@ public class TitaniumShardsProjectileRenderer extends EntityRenderer<TitaniumSha
 
     @Override
     public ResourceLocation getTextureLocation(TitaniumShardsProjectile entity) {
-        return TextureAtlas.LOCATION_BLOCKS;
+        return ModClientSetups.VANILLA_BLOCK_ATLAS;
     }
 
     @Override

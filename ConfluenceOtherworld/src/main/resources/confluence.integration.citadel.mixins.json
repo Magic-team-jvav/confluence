@@ -1,0 +1,16 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "org.confluence.mod.mixin.integration.citadel",
+    "compatibilityLevel": "JAVA_21",
+    "refmap": "confluence.refmap.json",
+    "plugin": "org.confluence.mod.mixin.integration.citadel.CitadelIntegrationMixinPlugin",
+    "mixins": [
+        "NoiseGeneratorSettingsMixin"
+    ],
+    "client": [
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

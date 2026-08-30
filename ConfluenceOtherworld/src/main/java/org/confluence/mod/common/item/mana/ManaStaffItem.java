@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
@@ -29,8 +30,9 @@ import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.common.init.TCAttributes;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -41,6 +43,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     protected final int manaCost;
     protected final float velocity;
     protected final int cooldown;
+    private @Nullable List<Component> tooltips;
 
     public ManaStaffItem(Properties properties, ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown) {
         super(properties, rarity);
@@ -60,7 +63,12 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, double critChance) {
         this(new Properties().stacksTo(1), rarity, factory, damage, manaCost, rawVelocity, cooldown);
         if (critChance == 0.0) return;
-        addAttributeModifiers(builder -> builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(ID, critChance, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
+        addAttributeModifiers(builder -> builder.add(LibAttributes.getCriticalChance(), new AttributeModifier(ID, critChance, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
+    }
+
+    public ManaStaffItem<E> withTooltip(Component... tooltips) {
+        this.tooltips = Arrays.asList(tooltips);
+        return this;
     }
 
     @Override
@@ -69,36 +77,37 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     }
 
     @Override
-    public UseAnim getUseAnimation(ItemStack itemStack) {
+    public UseAnim getUseAnimation(ItemStack stack) {
         return UseAnim.BLOCK;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        ItemStack itemStack = player.getItemInHand(usedHand);
-        if (player instanceof ServerPlayer serverPlayer && couldShoot(serverPlayer, itemStack)) {
+        ItemStack stack = player.getItemInHand(usedHand);
+        if (player instanceof ServerPlayer serverPlayer && couldShoot(serverPlayer, stack)) {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
             E projectile = factory.create(serverPlayer);
-            beforeShoot(serverPlayer, itemStack, projectile);
+            beforeShoot(serverPlayer, stack, projectile);
             level.addFreshEntity(projectile);
-            afterShoot(serverPlayer, itemStack, projectile);
-            rayTrace(serverPlayer, itemStack, projectile);
+            afterShoot(serverPlayer, stack, projectile);
+            rayTrace(serverPlayer, stack, projectile);
         }
-        return InteractionResultHolder.success(itemStack);
+        return InteractionResultHolder.success(stack);
     }
 
-    protected boolean couldShoot(ServerPlayer player, ItemStack itemStack) {
-        return PlayerUtils.extractMana(player, itemStack, () -> PrefixUtils.calculateManaCost(itemStack, manaCost));
+    protected boolean couldShoot(ServerPlayer player, ItemStack stack) {
+        return PlayerUtils.extractMana(player, stack, () -> PrefixUtils.calculateManaCost(stack, manaCost));
     }
 
-    protected void beforeShoot(ServerPlayer player, ItemStack itemStack, E projectile) {
+    protected void beforeShoot(ServerPlayer player, ItemStack stack, E projectile) {
+        projectile.setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
         projectile.setDamage(damage);
         projectile.setDefaultVelocity(velocity);
         projectile.setOwner(player);
         projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, 0.0F);
     }
 
-    protected void afterShoot(ServerPlayer player, ItemStack itemStack, E projectile) {
+    protected void afterShoot(ServerPlayer player, ItemStack stack, E projectile) {
         if (cooldown > 0) {
             player.getCooldowns().addCooldown(this, cooldown);
         }
@@ -110,7 +119,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     }
 
     /// 1tick内弹速过快的射弹会穿过近距离实体，所以需要一段射线检测
-    protected void rayTrace(ServerPlayer player, ItemStack itemStack, E projectile) {
+    protected void rayTrace(ServerPlayer player, ItemStack stack, E projectile) {
         Vec3 viewVector = player.getViewVector(1.0F);
         Vec3 startVec = new Vec3(player.getX(), player.getEyeY() - 0.1, player.getZ());
         Vec3 endVec = startVec.add(viewVector.scale(velocity));
@@ -136,10 +145,13 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         tooltipComponents.add(Component.translatable("tooltip.confluence.mana_cost", manaCost).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.velocity", velocity).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.cooldown", cooldown).withStyle(ChatFormatting.GRAY));
+        if (tooltips != null) {
+            tooltipComponents.addAll(tooltips);
+        }
     }
 
     @FunctionalInterface
     public interface ProjectileFactory<E extends Projectile> {
-        E create(ServerPlayer serverPlayer);
+        E create(ServerPlayer player);
     }
 }

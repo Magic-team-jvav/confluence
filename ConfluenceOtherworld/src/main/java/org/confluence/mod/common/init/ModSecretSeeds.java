@@ -32,6 +32,9 @@ public final class ModSecretSeeds {
 
     // 新增的
     public static final SecretSeed BOULDER_WORLD = register(Confluence.asResource("boulder_world"), BoulderWorld::new); //  1000000000_00000000
+    public static final SecretSeed REALLY_SMALL = register(ReallySmall.ID, ReallySmall::new); //                                10000000000_00000000
+    public static final SecretSeed TOO_EASY = register(Confluence.asResource("too_easy"), TooEasy::new); //               100000000000_00000000
+    public static final SecretSeed NEVER_SLEEP = register(Confluence.asResource("never_sleep"), NeverSleep::new); //     1000000000000_00000000
 
     /// 0b00000001: 1.腐化
     /// 0b00000010: 2.猩红
@@ -53,7 +56,7 @@ public final class ModSecretSeeds {
         return new ObjectBooleanImmutablePair<>(worldOptions.withSeed(OptionalLong.of(pair.key().orElseGet(WorldOptions::randomSeed))), pair.rightLong() != 0);
     }
 
-    /// 可以匹配
+    /// 可以匹配诸如：
     ///
     /// secret seed
     ///
@@ -70,8 +73,8 @@ public final class ModSecretSeeds {
             for (int i = 0; i < split.length; i++) {
                 String s = split[i].trim().toLowerCase(Locale.ROOT);
                 for (SecretSeed secretSeed : seeds) {
-                    if (secretSeed.match(s)) {
-                        flag |= secretSeed.getFlag();
+                    if (!secretSeed.match(flag) && secretSeed.match(s)) {
+                        flag = secretSeed.applyFlag(flag);
                         if (i == endIndex) { // 如果是最后一个，先尝试进行匹配，匹配失败则作为标识符
                             missmatchLast = false;
                             break;
@@ -87,8 +90,8 @@ public final class ModSecretSeeds {
         } else {
             String s = seed.trim().toLowerCase(Locale.ROOT);
             for (SecretSeed secretSeed : seeds) {
-                if (secretSeed.match(s)) {
-                    flag = secretSeed.getFlag();
+                if (!secretSeed.match(flag) && secretSeed.match(s)) {
+                    flag = secretSeed.applyFlag(flag);
                     break;
                 }
             }

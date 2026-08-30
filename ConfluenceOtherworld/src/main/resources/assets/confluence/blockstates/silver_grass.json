@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "": [
+        {
+            "model": "confluence:block/silver_grass"
+        },
+        {
+            "model": "confluence:block/silver_grass_0"
+        }
+    ]
+  }
+}

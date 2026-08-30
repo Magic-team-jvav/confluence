@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen.loot;
 
 import com.google.common.collect.Streams;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -14,16 +15,20 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.LimitCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -32,6 +37,8 @@ import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
+import org.confluence.mod.common.block.palettes.DecoBlockSet;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 
@@ -50,6 +57,7 @@ import static org.confluence.mod.common.init.item.MaterialItems.*;
 
 @SuppressWarnings("all")
 public final class BlockSubProvider extends BlockLootSubProvider {
+    public static final LootItemCondition.Builder HAS_SHEARS;
     public BlockSubProvider(HolderLookup.Provider provider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
     }
@@ -94,7 +102,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(LUMINITE_BLOCK.get());
         dropSelf(RAW_LUMINITE_BLOCK.get());
         dropSelf(RAW_HELLSTONE_BLOCK.get());
-        dropSelf(HELLSTONE_BRICKS.get());
+        dropSelf(HELLSTONE_BRICKS.FULL.get());
         dropSelf(DESERT_FOSSIL.get());
         dropSelf(SLUSH.get());
         dropSelf(SILT_BLOCK.get());
@@ -108,8 +116,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(OPAL_BLOCK.get());
         dropSelf(GELSTONE_BLOCK.get());
         dropSelf(COLD_CRYSTAL_BLOCK.get());
-        dropSelf(NatureBlocks.CRYSTAL_SHARDS.get());
-
+        this.add(NatureBlocks.CRYSTAL_SHARDS.get(), p_344211_ -> this.createSilkTouchDispatchTable(p_344211_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344211_, LootItem.lootTableItem(NatureBlocks.CRYSTAL_SHARDS.get().asItem()).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F))).apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))))));
         dropSelf(EXTRACTINATOR.get());
         dropSelf(SKY_MILL.get());
         dropSelf(COOKING_POT.get());
@@ -262,8 +269,13 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(SANCTIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
         add(CORRUPTION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
         add(FLESHIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
+
+        add(CORRUPTION_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
+        add(SANCTIFICATION_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
+        add(FLESHIFICATION_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
         add(CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
         add(DEEPSLATE_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
+
         add(DEEPSLATE_COBALT_ORE.get(), block -> createOreDrop(block, RAW_COBALT.get()));
         add(DEEPSLATE_PALLADIUM_ORE.get(), block -> createOreDrop(block, RAW_PALLADIUM.get()));
         add(DEEPSLATE_MYTHRIL_ORE.get(), block -> createOreDrop(block, RAW_MYTHRIL.get()));
@@ -276,6 +288,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         add(COLD_CRYSTAL_ORE.get(), block -> createOreDrop(block, COLD_CRYSTAL.get()));
         add(GELSTONE_ORE.get(), block -> createOreDrop(block, GELSTONE.get()));
+
+        add(LUNARTEAR_ORE.get(), block -> createOreDrop(block, LUNARTEAR.get()));
+        add(DRAGONSAL_ORE.get(), block -> createOreDrop(block, DRAGONSAL.get()));
         // endregion ore
 
         // region natural
@@ -298,6 +313,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(CRIMSON_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         add(MUSHROOM_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         add(HALLOW_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
+        add(VOID_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, END_DIRT));
+        add(INVERSE_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, END_DIRT));
+        add(MOONLIT_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, END_DIRT));
 
         add(CORRUPT_CACTUS.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.CACTUS));
         add(CRIMSON_CACTUS.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.CACTUS));
@@ -367,79 +385,131 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CHISELED_OAK_PLANKS.get());
         dropSelf(CHISELED_SPRUCE_PLANKS.get());
         dropSelf(WOOD_STONE_SLATTED_BLOCKS.get());
-        dropSelf(BLUE_ICE_BRICKS.get());
-        dropSelf(BLUE_ICE_BRICKS_STAIRS.get());
-        dropSelf(BLUE_ICE_BRICKS_SLAB.get());
-        dropSelf(PACKED_ICE_BRICKS.get());
-        dropSelf(PACKED_ICE_BRICKS_STAIRS.get());
-        dropSelf(PACKED_ICE_BRICKS_SLAB.get());
-        dropSelf(SNOW_BRICKS.get());
-        dropSelf(SNOW_BRICKS_STAIRS.get());
-        dropSelf(SNOW_BRICKS_SLAB.get());
-        dropSelf(COPPER_BRICKS.get());
-        dropSelf(COPPER_BRICKS_STAIRS.get());
-        dropSelf(COPPER_BRICKS_SLAB.get());
-        dropSelf(TIN_BRICKS.get());
-        dropSelf(TIN_BRICKS_STAIRS.get());
-        dropSelf(TIN_BRICKS_SLAB.get());
-        dropSelf(IRON_BRICKS.get());
-        dropSelf(IRON_BRICKS_STAIRS.get());
-        dropSelf(IRON_BRICKS_SLAB.get());
-        dropSelf(LEAD_BRICKS.get());
-        dropSelf(LEAD_BRICKS_STAIRS.get());
-        dropSelf(LEAD_BRICKS_SLAB.get());
-        dropSelf(SILVER_BRICKS.get());
-        dropSelf(SILVER_BRICKS_STAIRS.get());
-        dropSelf(SILVER_BRICKS_SLAB.get());
-        dropSelf(TUNGSTEN_BRICKS.get());
-        dropSelf(TUNGSTEN_BRICKS_STAIRS.get());
-        dropSelf(TUNGSTEN_BRICKS_SLAB.get());
-        dropSelf(GOLDEN_BRICKS.get());
-        dropSelf(GOLDEN_BRICKS_STAIRS.get());
-        dropSelf(GOLDEN_BRICKS_SLAB.get());
-        dropSelf(PLATINUM_BRICKS.get());
-        dropSelf(PLATINUM_BRICKS_STAIRS.get());
-        dropSelf(PLATINUM_BRICKS_SLAB.get());
-        dropSelf(DEMONITE_ORE_BRICKS.get());
-        dropSelf(DEMONITE_ORE_BRICKS_STAIRS.get());
-        dropSelf(DEMONITE_ORE_BRICKS_SLAB.get());
-        dropSelf(EBONSTONE_BRICKS.get());
-        dropSelf(EBONSTONE_BRICKS_STAIRS.get());
-        dropSelf(EBONSTONE_BRICKS_SLAB.get());
-        dropSelf(METEORITE_BRICKS.get());
-        dropSelf(METEORITE_BRICKS_STAIRS.get());
-        dropSelf(METEORITE_BRICKS_SLAB.get());
-        dropSelf(CRIMTANE_ORE_BRICKS.get());
-        dropSelf(CRIMTANE_ORE_BRICKS_STAIRS.get());
-        dropSelf(CRIMTANE_ORE_BRICKS_SLAB.get());
-        dropSelf(CRIMSTONE_BRICKS.get());
-        dropSelf(CRIMSTONE_BRICKS_STAIRS.get());
-        dropSelf(CRIMSTONE_BRICKS_SLAB.get());
-        dropSelf(PEARLSTONE_BRICKS.get());
-        dropSelf(PEARLSTONE_BRICKS_STAIRS.get());
-        dropSelf(PEARLSTONE_BRICKS_SLAB.get());
+        dropSelf(BLUE_ICE_BRICKS.FULL.get());
+        dropSelf(BLUE_ICE_BRICKS.STAIRS.get());
+        dropSelf(BLUE_ICE_BRICKS.SLAB.get());
+        dropSelf(BLUE_ICE_BRICKS.WALL.get());
+        dropSelf(PACKED_ICE_BRICKS.FULL.get());
+        dropSelf(PACKED_ICE_BRICKS.STAIRS.get());
+        dropSelf(PACKED_ICE_BRICKS.SLAB.get());
+        dropSelf(PACKED_ICE_BRICKS.WALL.get());
+        dropSelf(SNOW_BRICKS.FULL.get());
+        dropSelf(SNOW_BRICKS.STAIRS.get());
+        dropSelf(SNOW_BRICKS.SLAB.get());
+        dropSelf(SNOW_BRICKS.WALL.get());
+        dropSelf(COPPER_BRICKS.FULL.get());
+        dropSelf(COPPER_BRICKS.STAIRS.get());
+        dropSelf(COPPER_BRICKS.SLAB.get());
+        dropSelf(COPPER_BRICKS.WALL.get());
+        dropSelf(CHISELED_COPPER_BRICKS.get());
+        dropSelf(COPPER_TILES.get());
+        dropSelf(TIN_BRICKS.FULL.get());
+        dropSelf(TIN_BRICKS.STAIRS.get());
+        dropSelf(TIN_BRICKS.SLAB.get());
+        dropSelf(TIN_BRICKS.WALL.get());
+        dropSelf(CHISELED_TIN_BRICKS.get());
+        dropSelf(TIN_TILES.get());
+        dropSelf(IRON_BRICKS.FULL.get());
+        dropSelf(IRON_BRICKS.STAIRS.get());
+        dropSelf(IRON_BRICKS.SLAB.get());
+        dropSelf(IRON_BRICKS.WALL.get());
+        dropSelf(CHISELED_IRON_BRICKS.get());
+        dropSelf(LEAD_BRICKS.FULL.get());
+        dropSelf(LEAD_BRICKS.STAIRS.get());
+        dropSelf(LEAD_BRICKS.SLAB.get());
+        dropSelf(LEAD_BRICKS.WALL.get());
+        dropSelf(CHISELED_LEAD_BRICKS.get());
+        dropSelf(SILVER_BRICKS.FULL.get());
+        dropSelf(SILVER_BRICKS.STAIRS.get());
+        dropSelf(SILVER_BRICKS.SLAB.get());
+        dropSelf(SILVER_BRICKS.WALL.get());
+        dropSelf(CHISELED_SILVER_BRICKS.get());
+        dropSelf(TUNGSTEN_BRICKS.FULL.get());
+        dropSelf(TUNGSTEN_BRICKS.STAIRS.get());
+        dropSelf(TUNGSTEN_BRICKS.SLAB.get());
+        dropSelf(TUNGSTEN_BRICKS.WALL.get());
+        dropSelf(CHISELED_TUNGSTEN_BRICKS.get());
+        dropSelf(GOLDEN_BRICKS.FULL.get());
+        dropSelf(GOLDEN_BRICKS.STAIRS.get());
+        dropSelf(GOLDEN_BRICKS.SLAB.get());
+        dropSelf(GOLDEN_BRICKS.WALL.get());
+        dropSelf(CHISELED_GOLDEN_BRICKS.get());
+        dropSelf(PLATINUM_BRICKS.FULL.get());
+        dropSelf(PLATINUM_BRICKS.STAIRS.get());
+        dropSelf(PLATINUM_BRICKS.SLAB.get());
+        dropSelf(PLATINUM_BRICKS.WALL.get());
+        dropSelf(CHISELED_PLATINUM_BRICKS.get());
+        dropSelf(DEMONITE_ORE_BRICKS.FULL.get());
+        dropSelf(DEMONITE_ORE_BRICKS.STAIRS.get());
+        dropSelf(DEMONITE_ORE_BRICKS.SLAB.get());
+        dropSelf(DEMONITE_ORE_BRICKS.WALL.get());
+        dropSelf(EBONSTONE_BRICKS.FULL.get());
+        dropSelf(EBONSTONE_BRICKS.STAIRS.get());
+        dropSelf(EBONSTONE_BRICKS.SLAB.get());
+        dropSelf(EBONSTONE_BRICKS.WALL.get());
+        dropSelf(METEORITE_BRICKS.FULL.get());
+        dropSelf(METEORITE_BRICKS.STAIRS.get());
+        dropSelf(METEORITE_BRICKS.SLAB.get());
+        dropSelf(METEORITE_BRICKS.WALL.get());
+        dropSelf(CRIMTANE_ORE_BRICKS.FULL.get());
+        dropSelf(CRIMTANE_ORE_BRICKS.STAIRS.get());
+        dropSelf(CRIMTANE_ORE_BRICKS.SLAB.get());
+        dropSelf(CRIMTANE_ORE_BRICKS.WALL.get());
+        dropSelf(CRIMSTONE_BRICKS.FULL.get());
+        dropSelf(CRIMSTONE_BRICKS.STAIRS.get());
+        dropSelf(CRIMSTONE_BRICKS.SLAB.get());
+        dropSelf(CRIMSTONE_BRICKS.WALL.get());
+        dropSelf(PEARLSTONE_BRICKS.FULL.get());
+        dropSelf(PEARLSTONE_BRICKS.STAIRS.get());
+        dropSelf(PEARLSTONE_BRICKS.SLAB.get());
+        dropSelf(PEARLSTONE_BRICKS.WALL.get());
         dropSelf(GREEN_CANDY_BLOCK.get());
         dropSelf(RED_CANDY_BLOCK.get());
         dropSelf(FROZEN_GEL_BLOCK.get());
         dropSelf(BLUE_GEL_BLOCK.get());
         dropSelf(PINK_GEL_BLOCK.get());
-        dropSelf(SUN_PLATE.get());
-        dropSelf(SUN_PLATE_SLAB.get());
-        dropSelf(SUN_PLATE_STAIRS.get());
-        dropSelf(DISC_BLOCK.get());
-        dropSelf(OBSIDIAN_BRICKS.get());
-        dropSelf(OBSIDIAN_BRICKS_SLAB.get());
-        dropSelf(OBSIDIAN_BRICKS_STAIRS.get());
+        dropSelf(FLESH_BLOCK.get());
+        dropSelf(LESION_BLOCK.get());
+        dropSelf(SUN_PLATE.FULL.get());
+        dropSelf(SUN_PLATE.SLAB.get());
+        dropSelf(SUN_PLATE.STAIRS.get());
+        dropSelf(SUN_PLATE.WALL.get());
+        dropSelf(DISC_BLOCK.FULL.get());
+        dropSelf(DISC_BLOCK.SLAB.get());
+        dropSelf(DISC_BLOCK.STAIRS.get());
+        dropSelf(DISC_BLOCK.WALL.get());
+        dropSelf(MOON_PLATE.FULL.get());
+        dropSelf(MOON_PLATE.SLAB.get());
+        dropSelf(MOON_PLATE.STAIRS.get());
+        dropSelf(MOON_PLATE.WALL.get());
+        dropSelf(OBSIDIAN_BRICKS.FULL.get());
+        dropSelf(OBSIDIAN_BRICKS.SLAB.get());
+        dropSelf(OBSIDIAN_BRICKS.STAIRS.get());
+        dropSelf(OBSIDIAN_BRICKS.WALL.get());
+        dropSelf(GLOOM_OBSIDIAN.get());
+        dropSelf(GLOOM_OBSIDIAN_BRICKS.FULL.get());
+        dropSelf(GLOOM_OBSIDIAN_BRICKS.STAIRS.get());
+        dropSelf(GLOOM_OBSIDIAN_BRICKS.SLAB.get());
+        dropSelf(GLOOM_OBSIDIAN_BRICKS.WALL.get());
 
         dropSelf(OBSIDIAN_SMALL_BRICKS.get());
         dropSelf(SMOOTH_OBSIDIAN.get());
+
+        dropSelf(GRANITE_BRICKS.FULL.get());
+        dropSelf(GRANITE_BRICKS.STAIRS.get());
+        dropSelf(GRANITE_BRICKS.SLAB.get());
+        dropSelf(GRANITE_BRICKS.WALL.get());
         dropSelf(POLISHED_GRANITE.get());
         dropSelf(GRANITE_COLUMN.get());
         dropSelf(CHISELED_GRANITE_BRICKS.get());
+        dropSelf(CRACKED_GRANITE_BRICKS.get());
 
         dropSelf(MARBLE_COLUMN.get());
-        dropSelf(MARBLE_BRICKS.get());
-        dropSelf(CRACKED_GRANITE_BRICKS.get());
+        dropSelf(MARBLE_BRICKS.FULL.get());
+        dropSelf(MARBLE_BRICKS.STAIRS.get());
+        dropSelf(MARBLE_BRICKS.SLAB.get());
+        dropSelf(MARBLE_BRICKS.WALL.get());
+
         dropSelf(MARBLE_SMALL_BRICKS.get());
         dropSelf(CRACKED_MARBLE_BRICKS.get());
         dropSelf(GILDED_MARBLE.get());
@@ -447,6 +517,30 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CHISELED_MARBLE_BRICKS.get());
         dropSelf(MARBLE_CHESSBOARD_BRICKS.get());
         dropSelf(MARBLE_ETERNAL_CHESSBOARD_BRICKS.get());
+
+        dropSelf(WHITE_BALLOON.get());
+        dropSelf(LIGHT_GRAY_BALLOON.get());
+        dropSelf(GRAY_BALLOON.get());
+        dropSelf(BLACK_BALLOON.get());
+        dropSelf(BROWN_BALLOON.get());
+        dropSelf(RED_BALLOON.get());
+        dropSelf(ORANGE_BALLOON.get());
+        dropSelf(YELLOW_BALLOON.get());
+        dropSelf(LIME_BALLOON.get());
+        dropSelf(GREEN_BALLOON.get());
+        dropSelf(CYAN_BALLOON.get());
+        dropSelf(LIGHT_BLUE_BALLOON.get());
+        dropSelf(BLUE_BALLOON.get());
+        dropSelf(PURPLE_BALLOON.get());
+        dropSelf(MAGENTA_BALLOON.get());
+        dropSelf(PINK_BALLOON.get());
+
+
+        add(ATTACHED_BALLOON_STEM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(EmptyLootItem.emptyItem()))
+        );
 
         dropSelf(WHITE_PAPER_PANE.get());
         dropSelf(WHITE_PAPER_PANE_LAMP.get());
@@ -457,32 +551,36 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(FLINX_FUR_BLOCK.get());
         dropSelf(FLINX_FUR_CARPET.get());
-        dropSelf(COLORED_WOOL.get());
-        dropSelf(COLORED_CARPET.get());
+        dropSelf(RAINBOW_WOOL.get());
+        dropSelf(RAINBOW_CARPET.get());
 
         dropSelf(CHISELED_OBSIDIAN_BRICKS.get());
-        dropSelf(BLUE_BRICKS.get());
-        dropSelf(GREEN_BRICKS.get());
-        dropSelf(PINK_BRICKS.get());
+        dropSelf(BLUE_BRICKS.FULL.get());
+        dropSelf(GREEN_BRICKS.FULL.get());
+        dropSelf(PINK_BRICKS.FULL.get());
         dropSelf(SPIKE.get());
+        dropSelf(GEYSER_BLOCK.get());
         dropSelf(ENCHANTED_BLUE_BRICKS.get());
         dropSelf(ENCHANTED_GREEN_BRICKS.get());
         dropSelf(ENCHANTED_PINK_BRICKS.get());
-        dropSelf(BLUE_BRICK_STAIRS.get());
-        dropSelf(GREEN_BRICK_STAIRS.get());
-        dropSelf(PINK_BRICK_STAIRS.get());
-        dropSelf(BLUE_BRICK_SLAB.get());
-        dropSelf(GREEN_BRICK_SLAB.get());
-        dropSelf(PINK_BRICK_SLAB.get());
+        dropSelf(BLUE_BRICKS.STAIRS.get());
+        dropSelf(GREEN_BRICKS.STAIRS.get());
+        dropSelf(PINK_BRICKS.STAIRS.get());
+        dropSelf(BLUE_BRICKS.SLAB.get());
+        dropSelf(GREEN_BRICKS.SLAB.get());
+        dropSelf(PINK_BRICKS.SLAB.get());
+        dropSelf(BLUE_BRICKS.WALL.get());
+        dropSelf(GREEN_BRICKS.WALL.get());
+        dropSelf(PINK_BRICKS.WALL.get());
         dropSelf(CHISELED_BLUE_BRICKS.get());
         dropSelf(CHISELED_GREEN_BRICKS.get());
         dropSelf(CHISELED_PINK_BRICKS.get());
         dropSelf(BLUE_BRICK_COLUMN.get());
         dropSelf(GREEN_BRICK_COLUMN.get());
         dropSelf(PINK_BRICK_COLUMN.get());
-        dropSelf(AETHERIUM_BRICKS.get());
+        dropSelf(AETHERIUM_BRICKS.FULL.get());
         dropSelf(CRYSTAL_BLOCK.get());
-        dropSelf(RAINBOW_BRICKS.get());
+        dropSelf(RAINBOW_BRICKS.FULL.get());
         dropSelf(FLOATING_WHEAT_BALE.get());
         dropSelf(BOUNCY_CLOUD_BLOCK.get());
         dropSelf(STAR_CLOUD_BLOCK.get());
@@ -504,10 +602,28 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(AETHERIUM_BLOCK.get());
         dropSelf(DARK_AETHERIUM_BLOCK.get());
+        dropSelf(FALLEN_STAR_BLOCK.get());
 
         dropSelf(JUNGLE_ROSE.get());
+        dropSelf(VOID_VIOLET.get());
+
+        dropSelf(LIHZAHRD_COLUMN.get());
+        dropSelf(LIHZAHRD_TILES.get());
+        dropSelf(POLISHED_LIHZAHRD.get());
+
+        dropSelf(WHITE_PUMPKIN.get());
+        dropSelf(CARVED_WHITE_PUMPKIN.get());
+        dropSelf(JOHNNY_O_LANTERN.get());
+        this.add(WHITE_PUMPKIN_STEM.get(), p_252178_ -> this.createStemDrops(p_252178_, FoodItems.WHITE_PUMPKIN_SEED.get()));
+        this.add(ATTACHED_WHITE_PUMPKIN_STEM.get(), p_250849_ -> this.createAttachedStemDrops(p_250849_, FoodItems.WHITE_PUMPKIN_SEED.get()));
+
+        this.add(ICE_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(FoodItems.ICE_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
+        this.add(GOLDEN_MELON.get(), p_344241_ -> this.createSilkTouchDispatchTable(p_344241_, (LootPoolEntryContainer.Builder<?>)this.applyExplosionDecay(p_344241_, LootItem.lootTableItem(Items.GLISTERING_MELON_SLICE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3.0F, 7.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE))).apply(LimitCount.limitCount(IntRange.upperBound(9))))));
+
+
 
         dropOther(LIFE_CRYSTAL_BLOCK.get(), LIFE_CRYSTAL.get());
+        dropOther(LIFE_FRUIT.get(),ConsumableItems.LIFE_FRUIT.get());
 
         dropWhenSilkTouch(PURE_GLASS.get());
         dropWhenSilkTouch(WHITE_PURE_GLASS.get());
@@ -526,6 +642,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropWhenSilkTouch(PURPLE_PURE_GLASS.get());
         dropWhenSilkTouch(MAGENTA_PURE_GLASS.get());
         dropWhenSilkTouch(PINK_PURE_GLASS.get());
+
+        dropWhenSilkTouch(VOID_WEAVE.get());
 
 
         //chain
@@ -567,6 +685,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(DUNGEON_DOOR.get(), this::createDoorTable);
         add(TRADITIONAL_DYNASTY_DOOR.get(), this::createDoorTable);
         add(CHRISTMAS_PINE_DOOR.get(), this::createDoorTable);
+        add(LIHZAHRD_DOOR.get(), this::createDoorTable);
         dropSelf(CHRISTMAS_PINE_TRAPDOOR.get());
 
         // 发光蘑菇
@@ -587,7 +706,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(MYCELIAL_DIRT.get());
 
         dropWhenSilkTouch(ICE_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(RED_ICE_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(PURPLE_ICE_TAPERED_BLOCK.get());
+        dropWhenSilkTouch(PINK_ICE_TAPERED_BLOCK.get());
         dropSelf(DESERT_TAPERED_BLOCK.get());
+        dropSelf(RED_DESERT_TAPERED_BLOCK.get());
         dropSelf(MARBLE_TAPERED_BLOCK.get());
         dropSelf(GRANITE_TAPERED_BLOCK.get());
 
@@ -595,27 +718,39 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CRIMSON_TAPERED_BLOCK.get());
         dropSelf(HALLOW_TAPERED_BLOCK.get());
 
+        dropSelf(END_DIRT.get());
+        dropSelf(END_MUD.get());
+
+        dropSelf(VOID_TREE_ROOT_BLOCK.get());
 
 
 
-        for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
-            dropSelf(logBlocks.PLANKS.get());
-            if (logBlocks.LOG.isBound()) dropSelf(logBlocks.LOG.get());
-            if (logBlocks.STRIPPED_LOG.isBound()) dropSelf(logBlocks.STRIPPED_LOG.get());
-            if (logBlocks.WOOD.isBound()) dropSelf(logBlocks.WOOD.get());
-            if (logBlocks.STRIPPED_WOOD.isBound()) dropSelf(logBlocks.STRIPPED_WOOD.get());
-            if (logBlocks.BUTTON.isBound()) dropSelf(logBlocks.BUTTON.get());
-            if (logBlocks.FENCE.isBound()) dropSelf(logBlocks.FENCE.get());
-            if (logBlocks.FENCE_GATE.isBound()) dropSelf(logBlocks.FENCE_GATE.get());
-            if (logBlocks.PRESSURE_PLATE.isBound()) dropSelf(logBlocks.PRESSURE_PLATE.get());
-            if (logBlocks.SLAB.isBound()) add(logBlocks.SLAB.get(), this::createSlabItemTable);
-            if (logBlocks.STAIRS.isBound()) dropSelf(logBlocks.STAIRS.get());
-            if (logBlocks.SIGN.isBound()) dropSelf(logBlocks.SIGN.get());
-            if (logBlocks.TRAPDOOR.isBound()) dropSelf(logBlocks.TRAPDOOR.get());
-            if (logBlocks.DOOR.isBound()) add(logBlocks.DOOR.get(), this::createDoorTable);
-            if (logBlocks.HANGING_SIGN.isBound()) dropSelf(logBlocks.HANGING_SIGN.get());
-            if (logBlocks.CHISELED_PLANKS.isBound()) dropSelf(logBlocks.CHISELED_PLANKS.get());
-            if (logBlocks.SAPLING.isBound()) dropSelf(logBlocks.SAPLING.get());
+
+        for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            dropSelf(blockSet.PLANKS.get());
+            if (blockSet.LOG.isBound()) dropSelf(blockSet.LOG.get());
+            if (blockSet.STRIPPED_LOG.isBound()) dropSelf(blockSet.STRIPPED_LOG.get());
+            if (blockSet.WOOD.isBound()) dropSelf(blockSet.WOOD.get());
+            if (blockSet.STRIPPED_WOOD.isBound()) dropSelf(blockSet.STRIPPED_WOOD.get());
+            if (blockSet.BUTTON.isBound()) dropSelf(blockSet.BUTTON.get());
+            if (blockSet.FENCE.isBound()) dropSelf(blockSet.FENCE.get());
+            if (blockSet.FENCE_GATE.isBound()) dropSelf(blockSet.FENCE_GATE.get());
+            if (blockSet.PRESSURE_PLATE.isBound()) dropSelf(blockSet.PRESSURE_PLATE.get());
+            if (blockSet.SLAB.isBound()) add(blockSet.SLAB.get(), this::createSlabItemTable);
+            if (blockSet.STAIRS.isBound()) dropSelf(blockSet.STAIRS.get());
+            if (blockSet.SIGN.isBound()) dropSelf(blockSet.SIGN.get());
+            if (blockSet.TRAPDOOR.isBound()) dropSelf(blockSet.TRAPDOOR.get());
+            if (blockSet.DOOR.isBound()) add(blockSet.DOOR.get(), this::createDoorTable);
+            if (blockSet.HANGING_SIGN.isBound()) dropSelf(blockSet.HANGING_SIGN.get());
+            if (blockSet.CHISELED_PLANKS.isBound()) dropSelf(blockSet.CHISELED_PLANKS.get());
+            if (blockSet.SAPLING.isBound()) dropSelf(blockSet.SAPLING.get());
+        }
+
+        for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
+            dropSelf(blockSet.FULL.get());
+            dropSelf(blockSet.STAIRS.get());
+            dropSelf(blockSet.SLAB.get());
+            dropSelf(blockSet.WALL.get());
         }
 
         CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
@@ -698,24 +833,58 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.SPICY_PEPPER.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                        .add(EmptyLootItem.emptyItem().setWeight(159)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                        .add(EmptyLootItem.emptyItem().setWeight(159)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(19)))
+                        .add(EmptyLootItem.emptyItem().setWeight(15)))
         );
-        add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
+        add(SMALL_STONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.SPICY_PEPPER.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                        .add(LootItem.lootTableItem(Blocks.COBBLESTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_SANDSTONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(199)))
+                        .add(LootItem.lootTableItem(Blocks.SANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_RED_SANDSTONE_PILES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
-                        .add(EmptyLootItem.emptyItem().setWeight(19)))
+                        .add(LootItem.lootTableItem(Blocks.RED_SANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_EBONSANDSTONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(EBONSANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_CRIMSANDSTONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(CRIMSANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_PEARLSANDSTONE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(PEARLSANDSTONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_GRANITE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(NatureBlocks.GRANITE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_REMAINS_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.BONE))
+                        .add(EmptyLootItem.emptyItem()))
+        );
+        add(SMALL_MARBLE_PILES.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(NatureBlocks.MARBLE))
+                        .add(EmptyLootItem.emptyItem()))
         );
         addGrassLoot(ASH_GRASS.get(), ASH_GRASS.asItem());
         addGrassLoot(DESERT_GRASS.get(), DESERT_GRASS.asItem());
@@ -723,6 +892,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         addGrassLoot(CORRUPT_GRASS.get(), CORRUPT_GRASS.asItem());
         addGrassLoot(HALLOW_GRASS.get(), HALLOW_GRASS.asItem());
         addGrassLoot(CRIMSON_GRASS.get(), CRIMSON_GRASS.asItem());
+        addGrassLoot(VOID_GRASS.get(), VOID_GRASS.asItem());
 
         addGrassLoot(CATTAIL_BLOCK.get(), ModItems.CATTAIL.get());
         addGrassLoot(JUNGLE_CATTAIL_BLOCK.get(), ModItems.JUNGLE_CATTAIL.get());
@@ -780,44 +950,89 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CropBlock.AGE, 7));
         add(NatureBlocks.CLOUDWEAVER.get(), createCropDrops(NatureBlocks.CLOUDWEAVER.get(), MaterialItems.WEAVING_CLOUD_COTTON.asItem(), FoodItems.CLOUDWEAVER_SEED.get(), lootitemcondition$builder1));
 
-        LootTable.Builder lootTableBuilder = LootTable.lootTable();
+        LootTable.Builder stellarLoot = LootTable.lootTable();
+
         for (int age = 1; age <= 5; age++) {
-            lootTableBuilder.withPool(LootPool.lootPool()
+            stellarLoot.withPool(LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                             .setProperties(StatePropertiesPredicate.Builder.properties()
                                     .hasProperty(CropBlock.AGE, age)))
                     .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get())));
         }
-        lootTableBuilder.withPool(LootPool.lootPool()
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get()))
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 0))));
-        lootTableBuilder.withPool(LootPool.lootPool()
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 6)))
                 .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get())
-                        .apply(setCount(ConstantValue.exactly(2))))
-        );
-        lootTableBuilder.withPool(LootPool.lootPool()
+                        .apply(setCount(ConstantValue.exactly(2)))));
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 6)))
                 .add(LootItem.lootTableItem(STAR_PETALS.get())));
-        lootTableBuilder.withPool(LootPool.lootPool()
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 7)))
-                .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get()).apply(setCount(UniformGenerator.between(2, 3))))
-        );
-        lootTableBuilder.withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get())
+                        .apply(setCount(UniformGenerator.between(2, 3)))));
+
+        stellarLoot.withPool(LootPool.lootPool()
                 .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
                         .setProperties(StatePropertiesPredicate.Builder.properties()
                                 .hasProperty(CropBlock.AGE, 7)))
-                .add(LootItem.lootTableItem(STAR_PETALS.get())).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
-                .apply(setCount(UniformGenerator.between(2, 5))));
-        add(STELLAR_BLOSSOM.get(), lootTableBuilder);
+                .add(LootItem.lootTableItem(STAR_PETALS.get())
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 5.0F)))
+                        .apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
+                ));
+
+        add(STELLAR_BLOSSOM.get(), stellarLoot);
+
+        LootTable.Builder balloonLoot = LootTable.lootTable();
+
+        for (int age = 1; age <= 5; age++) {
+            balloonLoot.withPool(LootPool.lootPool()
+                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                    .hasProperty(CropBlock.AGE, age)))
+                    .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get())));
+        }
+
+        balloonLoot.withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get()))
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 0))));
+
+        balloonLoot.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 6)))
+                .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get())
+                        .apply(setCount(ConstantValue.exactly(2)))));
+
+        balloonLoot.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 6)))
+                .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get())));
+
+        balloonLoot.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(BALLOON_STEM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 7)))
+                .add(LootItem.lootTableItem(FoodItems.BALLOON_SEED.get())
+                        .apply(setCount(UniformGenerator.between(2, 3)))));
+        add(BALLOON_STEM.get(), balloonLoot);
         addCoinPileDrop(COPPER_COIN.get());
         addCoinPileDrop(SILVER_COIN.get());
         addCoinPileDrop(GOLD_COIN.get());
@@ -846,10 +1061,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(block, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(dropItem))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(dropItem))
-                        .when(HAS_SHEARS))
+                        .when(hasShearsOrSilkTouch()))
         );
     }
 
@@ -910,5 +1122,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                                                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CaveVines.BERRIES, true))
                                 )
                 );
+    }
+
+    static {
+        HAS_SHEARS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_SHEAR));
     }
 }

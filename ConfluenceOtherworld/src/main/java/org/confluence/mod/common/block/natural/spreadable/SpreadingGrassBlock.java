@@ -14,27 +14,27 @@ public class SpreadingGrassBlock extends SpreadingBlock {
     }
 
     @Override
-    public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
-        if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
-        BlockPos above = blockPos.above();
-        if (isFullBlock(serverLevel, above)) {
-            serverLevel.setBlockAndUpdate(blockPos, Blocks.DIRT.defaultBlockState());
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!level.isAreaLoaded(pos, 3)) return;
+        BlockPos above = pos.above();
+        if (isFullBlock(level, above)) {
+            level.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
         } else {
             ThornBlock thorn = switch (getSpreadType()) {
                 case CRIMSON -> NatureBlocks.CRIMSON_THORN.get();
                 case CORRUPT -> NatureBlocks.CORRUPTION_THORN.get();
                 default -> null;
             };
-            if (thorn != null && randomSource.nextInt(50) == 0
-                    && serverLevel.getBlockState(above).isAir()
-                    && serverLevel.getBlockState(above.east()).isAir()
-                    && serverLevel.getBlockState(above.west()).isAir()
-                    && serverLevel.getBlockState(above.south()).isAir()
-                    && serverLevel.getBlockState(above.north()).isAir()
+            if (thorn != null && random.nextInt(50) == 0
+                    && level.getBlockState(above).isAir()
+                    && level.getBlockState(above.east()).isAir()
+                    && level.getBlockState(above.west()).isAir()
+                    && level.getBlockState(above.south()).isAir()
+                    && level.getBlockState(above.north()).isAir()
             ) {
-                serverLevel.setBlockAndUpdate(above, thorn.getStateForPlacement(serverLevel, above));
+                level.setBlockAndUpdate(above, thorn.getStateForPlacement(level, above));
             }
-            super.randomTick(blockState, serverLevel, blockPos, randomSource);
+            super.randomTick(state, level, pos, random);
         }
     }
 }

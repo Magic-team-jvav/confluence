@@ -20,10 +20,11 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.item.FlailItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.SwordItems;
-import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
+import org.confluence.mod.mixin.data.loot.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.NotNull;
@@ -204,6 +205,20 @@ public class AddEntityLootConfluenceSubProvider extends EntityLootSubProvider im
                         LootPool.lootPool()
                                 .add(LootItem.lootTableItem(TCItems.ENERGY_BAR).setWeight(2))
                                 .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+        ));
+        entries.add(new AddedEntityLoot(EntityType.GUARDIAN,
+                LootTable.lootTable().withPool(
+                        LootPool.lootPool()
+                                .add(LootItem.lootTableItem(FlailItems.GUARDIAN_FLAIL).setWeight(1))
+                                .add(EmptyLootItem.emptyItem().setWeight(14))
+                )
+        ));
+        entries.add(new AddedEntityLoot(EntityType.ELDER_GUARDIAN,
+                LootTable.lootTable().withPool(
+                        LootPool.lootPool()
+                                .add(LootItem.lootTableItem(FlailItems.ANCIENT_GUARDIAN_FLAIL))
+                                .add(EmptyLootItem.emptyItem())
                 )
         ));
         return entries;

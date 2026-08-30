@@ -46,12 +46,18 @@ public final class ModFeatures {
     public static final Supplier<SimpleBlockNBTFeature> SIMPLE_BLOCK_NBT = FEATURES.register("simple_block_nbt", () -> new SimpleBlockNBTFeature(SimpleBlockNBTFeature.Config.CODEC));
     public static final Supplier<PalmTreeFeature> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(PalmTreeFeature.Config.CODEC));
     public static final Supplier<DroopingVineTreeFeature> DROOPING_VINE_TREE = FEATURES.register("drooping_vine_tree", () -> new DroopingVineTreeFeature(DroopingVineTreeFeature.Config.CODEC));
-    public static final Supplier<DroopingBlockFeature> DROOPING_BLOCK = FEATURES.register("drooping_block", () -> new DroopingBlockFeature(DroopingBlockFeature.Config.CODEC));
+    public static final Supplier<BlockPostFeature> BLOCK_POST = FEATURES.register("block_post", () -> new BlockPostFeature(BlockPostFeature.Config.CODEC));
     public static final Supplier<CattailsFeature> CATTAILS = FEATURES.register("cattails", () -> new CattailsFeature(CattailsFeature.Config.CODEC));
     public static final Supplier<MushroomTreeFeature> MUSHROOM_TREE = FEATURES.register("mushroom_tree", () -> new MushroomTreeFeature(MushroomTreeFeature.Config.CODEC));
     public static final Supplier<HugeMushroomTreeFeature> HUGE_MUSHROOM_TREE = FEATURES.register("huge_mushroom_tree", () -> new HugeMushroomTreeFeature(HugeMushroomTreeFeature.Config.CODEC));
     public static final Supplier<BaobabTreeFeature> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(BaobabTreeFeature.Config.CODEC));
     public static final Supplier<PineTreeFeature> PINE_TREE = FEATURES.register("pine_tree", () -> new PineTreeFeature(PineTreeFeature.Config.CODEC));
+    public static final Supplier<MoonglowWillowTreeFeature> MOONGLOW_WILLOW_TREE = FEATURES.register("moonglow_willow_tree", () -> new MoonglowWillowTreeFeature(MoonglowWillowTreeFeature.Config.CODEC));
+    public static final Supplier<LunarCoralFeature> LUNAR_CORAL = FEATURES.register("lunar_coral", () -> new LunarCoralFeature(LunarCoralFeature.Config.CODEC));
+    public static final Supplier<VoidTreeFeature> VOID_TREE = FEATURES.register("void_tree", () -> new VoidTreeFeature(VoidTreeFeature.Config.CODEC));
+    public static final Supplier<BrokenStoneFeature> BROKEN_STONE = FEATURES.register("broken_stone", () -> new BrokenStoneFeature(BrokenStoneFeature.Config.CODEC));
+    public static final Supplier<HugeStoneFeature> HUGE_STONE = FEATURES.register("huge_stone", () -> new HugeStoneFeature(HugeStoneFeature.Config.CODEC));
+    public static final Supplier<BilayerOreFeature> BILAYER_ORE = FEATURES.register("bilayer_ore", () -> new BilayerOreFeature(BilayerOreFeature.Config.CODEC));
     public static final Supplier<ChineseStylePineTreeFeature> CHINESE_STYLE_PINE_TREE = FEATURES.register("chinese_style_pine_tree", () -> new ChineseStylePineTreeFeature(ChineseStylePineTreeFeature.Config.CODEC));
     public static final Supplier<BranchTreeFeature> BRANCH_TREE = FEATURES.register("branch_tree", () -> new BranchTreeFeature(BranchTreeFeature.Config.CODEC));
     public static final Supplier<MeteoriteFeature> METEORITE = FEATURES.register("meteorite", () -> new MeteoriteFeature(MeteoriteFeature.Config.CODEC));
@@ -61,7 +67,9 @@ public final class ModFeatures {
     public static final Supplier<GroundBlockNBTFeature> GROUND_BLOCK_NBT = FEATURES.register("ground_block_nbt", () -> new GroundBlockNBTFeature(GroundBlockNBTFeature.Config.CODEC));
     public static final Supplier<GemstoneCaveFeature> GEMSTONE_CAVE = FEATURES.register("gemstone_cave", () -> new GemstoneCaveFeature(GemstoneCaveFeature.Config.CODEC));
     public static final Supplier<DetonatorFeature> DETONATOR_FEATURE = FEATURES.register("detonator", () -> new DetonatorFeature(DetonatorFeature.Config.CODEC));
-    public static final Supplier<PlantPatchFeature>  PLANT_PATCH = FEATURES.register("plant_patch", () -> new PlantPatchFeature(PlantPatchFeature.Config.CODEC)); // todo 使用
+    public static final Supplier<PlantPatchFeature> PLANT_PATCH = FEATURES.register("plant_patch", () -> new PlantPatchFeature(PlantPatchFeature.Config.CODEC)); // todo 使用
+    public static final Supplier<LayerFeature> LAYER = FEATURES.register("layer", () -> new LayerFeature(LayerFeature.Config.CODEC));
+    public static final Supplier<RandomInverseTallPlantFeature> RANDOM_INVERSE_TALL_PLANT = FEATURES.register("random_inverse_tall_plant", () -> new RandomInverseTallPlantFeature(RandomInverseTallPlantFeature.Config.CODEC));
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacement>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacement.CODEC);
 
@@ -124,10 +132,12 @@ public final class ModFeatures {
         public static final ResourceKey<ConfiguredFeature<?, ?>> YELLOW_WILLOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> PINE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("pine_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> MOONGLOW_WILLOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("moonglow_willow_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> CHINESE_PINE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("chinese_pine_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> LIFE_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("life_mushroom_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> HUGE_LIFE_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("huge_life_mushroom_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> VOID_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("void_tree"));
     }
 
     public static final class TreeGrowers {
@@ -147,6 +157,8 @@ public final class ModFeatures {
         public static final TreeGrower CHINESE_PINE_GROWER = registerSmallTree("chinese_pine", Configured.CHINESE_PINE_TREE);
         public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow", Configured.YELLOW_WILLOW_TREE);
         public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab", Configured.BAOBAB_TREE);
+        public static final TreeGrower VOID_GROWER = registerSmallTree("void", Configured.VOID_TREE);
+        public static final TreeGrower MOONGLOW_WILLOW_GROWER = registerSmallTree("void", Configured.MOONGLOW_WILLOW_TREE);
 
         private static TreeGrower registerSmallTree(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
             return new TreeGrower(Confluence.asPlainId(name), Optional.empty(), Optional.of(tree), Optional.empty());

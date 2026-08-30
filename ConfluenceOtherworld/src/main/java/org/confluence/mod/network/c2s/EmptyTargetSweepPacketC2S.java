@@ -13,19 +13,18 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.network.IPacketC2S;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.PlayerAboutToEmptyTargetSweepEvent;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.mixin.ServerPlayerAccessor;
+import org.confluence.mod.mixin.server.level.ServerPlayerAccessor;
 import org.confluence.mod.util.PlayerUtils;
 
-public final class EmptyTargetSweepPacketC2S implements IPacketC2S {
-    private static final EmptyTargetSweepPacketC2S INSTANCE = new EmptyTargetSweepPacketC2S();
+public enum EmptyTargetSweepPacketC2S implements IPacketC2S {
+    INSTANCE;
     public static final Type<EmptyTargetSweepPacketC2S> TYPE = Confluence.createType("empty_target_sweep");
     public static final StreamCodec<ByteBuf, EmptyTargetSweepPacketC2S> STREAM_CODEC = StreamCodec.unit(INSTANCE);
-
-    private EmptyTargetSweepPacketC2S() {}
 
     @Override
     public Type<EmptyTargetSweepPacketC2S> type() {
@@ -35,7 +34,7 @@ public final class EmptyTargetSweepPacketC2S implements IPacketC2S {
     @Override
     public void work(ServerPlayer player) {
         if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
-            float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
+            float damage = (float) player.getAttributeValue(LibAttributes.getAttackDamage());
             if (player.getAttackStrengthScale(0.5F) < 1.0F - Mth.EPSILON) return;
             float baseDamage = 1.0F + (float) player.getAttributeValue(Attributes.SWEEPING_DAMAGE_RATIO) * damage;
             PlayerAboutToEmptyTargetSweepEvent event = NeoForge.EVENT_BUS.post(new PlayerAboutToEmptyTargetSweepEvent(player, baseDamage));

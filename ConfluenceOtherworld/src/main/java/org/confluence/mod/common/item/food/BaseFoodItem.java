@@ -13,10 +13,10 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import org.apache.commons.lang3.function.TriConsumer;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.consumer.Consumer3;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.FoodItems;
 
@@ -84,7 +84,7 @@ public class BaseFoodItem extends Item {
         private Function<Void, SoundEvent> eatingSoundType = sound -> SoundEvents.EMPTY;
         private Function<ItemStack, UseAnim> useAnim = useAnim -> UseAnim.NONE;
         private final List<Component> tooltips = new ArrayList<>();
-        private TriConsumer<ItemStack, Level, LivingEntity> finishUsingCallback;
+        private Consumer3<ItemStack, Level, LivingEntity> finishUsingCallback;
 
         public Builder() {
             this.properties = new Properties();
@@ -133,7 +133,7 @@ public class BaseFoodItem extends Item {
             return this;
         }
 
-        public void setFinishUsingCallback(TriConsumer<ItemStack, Level, LivingEntity> finishUsingCallback) {
+        public void setFinishUsingCallback(Consumer3<ItemStack, Level, LivingEntity> finishUsingCallback) {
             this.finishUsingCallback = finishUsingCallback;
         }
 

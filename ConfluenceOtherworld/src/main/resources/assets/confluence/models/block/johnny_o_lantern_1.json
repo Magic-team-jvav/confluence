@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "confluence:block/johnny_o_lantern_1",
+    "side": "confluence:block/white_pumpkin_side",
+    "top": "confluence:block/white_pumpkin_top"
+  }
+}

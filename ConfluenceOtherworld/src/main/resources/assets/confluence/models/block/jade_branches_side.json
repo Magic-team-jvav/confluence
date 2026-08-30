@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "confluence:block/jade_branches",
-		"1": "confluence:block/stony_log_end",
+		"1": "confluence:block/stony_log_top",
 		"particle": "confluence:block/jade_branches"
 	},
 	"elements": [

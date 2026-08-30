@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "half=lower": {
+            "model": "confluence:block/tall_void_grass_bottom"
+        },
+        "half=upper": {
+            "model": "confluence:block/tall_void_grass_top"
+        }
+    }
+}

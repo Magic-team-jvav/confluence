@@ -1,0 +1,30 @@
+{
+    "variants": {
+        "facing=down": {
+            "model": "confluence:block/large_void_crystal_bud",
+            "x": 180
+        },
+        "facing=east": {
+            "model": "confluence:block/large_void_crystal_bud",
+            "x": 90,
+            "y": 90
+        },
+        "facing=north": {
+            "model": "confluence:block/large_void_crystal_bud",
+            "x": 90
+        },
+        "facing=south": {
+            "model": "confluence:block/large_void_crystal_bud",
+            "x": 90,
+            "y": 180
+        },
+        "facing=up": {
+            "model": "confluence:block/large_void_crystal_bud"
+        },
+        "facing=west": {
+            "model": "confluence:block/large_void_crystal_bud",
+            "x": 90,
+            "y": 270
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "confluence:block/polished_lihzahrd",
+    "side": "confluence:block/lihzahrd_column_side"
+  }
+}

@@ -29,7 +29,7 @@ public class ArrowItems {
     ));
     public static final DeferredItem<BaseTerraArrowItem> FROSTBURN_ARROW = ITEMS.register("frostburn_arrow", () -> new BaseTerraArrowItem(ModRarity.WHITE,
             BaseArrowEntity.Factory.create("textures/entity/arrow/frostburn_arrow.png", () -> new BaseArrowEntity.Builder().setParticleId(Confluence.asResource("frost_projectile"))
-                    .setDamage(4.4f).addOnHitEffect(TEEffectStrategies.Components.FROST_BURN_EFFECT.get()).setLuminance(5))
+                    .setDamage(4.8f).addOnHitEffect(TEEffectStrategies.Components.FROST_BURN_EFFECT.get()).setLuminance(5))
     ));
     public static final DeferredItem<BaseTerraArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", () -> new BaseTerraArrowItem(ModRarity.WHITE,
             BaseArrowEntity.Factory.create("textures/entity/arrow/bone_arrow.png", () -> new BaseArrowEntity.Builder()

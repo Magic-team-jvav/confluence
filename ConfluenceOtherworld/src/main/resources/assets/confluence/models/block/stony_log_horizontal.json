@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "end": "confluence:block/stony_log_end",
-    "side": "confluence:block/stony_log_side"
+    "end": "confluence:block/stony_log_top",
+    "side": "confluence:block/stony_log"
   }
 }

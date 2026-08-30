@@ -1,44 +1,42 @@
 package org.confluence.mod.util;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public final class BlockCounts {
-    public final AtomicInteger crimson = new AtomicInteger();
-    public final AtomicInteger crimsonSand = new AtomicInteger();
-    public final AtomicInteger crimsonIce = new AtomicInteger();
-    public final AtomicInteger corrupt = new AtomicInteger();
-    public final AtomicInteger corruptSand = new AtomicInteger();
-    public final AtomicInteger corruptIce = new AtomicInteger();
-    public final AtomicInteger hallow = new AtomicInteger();
-    public final AtomicInteger hallowSand = new AtomicInteger();
-    public final AtomicInteger hallowIce = new AtomicInteger();
-    public final AtomicInteger sunflower = new AtomicInteger();
-    public final AtomicInteger glowing_mushroom = new AtomicInteger();
-    public final AtomicInteger tomb = new AtomicInteger();
-    public final AtomicInteger water = new AtomicInteger();
-    public final AtomicInteger chlorophyte = new AtomicInteger();
+    public short crimson;
+    public short crimsonSand;
+    public short crimsonIce;
+    public short corrupt;
+    public short corruptSand;
+    public short corruptIce;
+    public short hallow;
+    public short hallowSand;
+    public short hallowIce;
+    public short sunflower;
+    public short glowing_mushroom;
+    public short tomb;
+    public short water;
+    public short chlorophyte;
 
     public boolean isGraveyard() {
-        return tomb.get() - sunflower.get() >= 7;
+        return tomb - sunflower >= 7;
     }
 
     @Override
     public String toString() {
         return "BlockCounts{" +
-               "crimson=" + crimson +
-               ", crimsonSand=" + crimsonSand +
-               ", crimsonIce=" + crimsonIce +
-               ", corrupt=" + corrupt +
-               ", corruptSand=" + corruptSand +
-               ", corruptIce=" + corruptIce +
-               ", hallow=" + hallow +
-               ", hallowSand=" + hallowSand +
-               ", hallowIce=" + hallowIce +
-               ", sunflower=" + sunflower +
-               ", glowing_mushroom=" + glowing_mushroom +
-               ", tomb=" + tomb +
-               ", water=" + water +
-               ", chlorophyte=" + chlorophyte +
-               '}';
+                "crimson=" + crimson +
+                ", crimsonSand=" + crimsonSand +
+                ", crimsonIce=" + crimsonIce +
+                ", corrupt=" + corrupt +
+                ", corruptSand=" + corruptSand +
+                ", corruptIce=" + corruptIce +
+                ", hallow=" + hallow +
+                ", hallowSand=" + hallowSand +
+                ", hallowIce=" + hallowIce +
+                ", sunflower=" + sunflower +
+                ", glowing_mushroom=" + glowing_mushroom +
+                ", tomb=" + tomb +
+                ", water=" + water +
+                ", chlorophyte=" + chlorophyte +
+                '}';
     }
 }

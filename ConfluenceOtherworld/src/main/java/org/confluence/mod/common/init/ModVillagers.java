@@ -68,7 +68,7 @@ public final class ModVillagers {
             tier2.add(new RandomItemListing(Items.DIRT, IntegerRange.of(61, 64), Items.EMERALD, 2, 10, 0.05f));
             tier3.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get()), new ItemStack(FoodItems.CLOUDWEAVER_SEED.get(), 3), 25, 10, 0.05f));
             tier3.add(new BasicItemListing(new ItemStack(Items.WATER_BUCKET), new ItemStack(NatureBlocks.RAIN_CLOUD_BLOCK.get()), 12, 20, 0.05f));
-            tier3.add(new RandomItemListing(MaterialItems.FALLING_STAR.get(), IntegerRange.of(2, 3), DecorativeBlocks.SUN_PLATE.get(), 10, 12, 20, 0.05f));
+            tier3.add(new RandomItemListing(MaterialItems.FALLING_STAR.get(), IntegerRange.of(2, 3), DecorativeBlocks.SUN_PLATE.FULL.get(), 10, 12, 20, 0.05f));
             tier4.add(new BasicItemListing(new ItemStack(Items.POWDER_SNOW_BUCKET), new ItemStack(Items.EMERALD), 12, 30, 0.05f));
             tier5.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get(), 2), new ItemStack(FunctionalBlocks.SKY_MILL.get()), 12, 30, 0.05f));
         } else if (type == VillagerProfession.FARMER) {
@@ -79,6 +79,7 @@ public final class ModVillagers {
             tier2.add(new SkyVillagerItemListing(Items.EMERALD, 2, FoodItems.PLUM.get(), 7, 25, 0.05F));
             tier2.add(new SkyVillagerItemListing(Items.EMERALD, 6, FoodItems.HONEY_MOONCAKES.get(), 7, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(MaterialItems.FALLING_STAR.get(), IntegerRange.of(20, 22), Items.EMERALD, 2, 7, 25, 0.05F));
+            tier4.add(new SkyVillagerItemListing(Items.EMERALD, FoodItems.BALLOON_SEED.get(), 2, 7, 25, 0.05F));
             tier5.add(new SkyVillagerItemListing(Items.EMERALD, FoodItems.CLOUDWEAVER_SEED.get(), 2, 7, 25, 0.05F));
             tier5.add(new SkyVillagerItemListing(Items.EMERALD, FoodItems.STELLAR_BLOSSOM_SEED.get(), 2, 7, 25, 0.05F));
             tier5.add(new SkyVillagerItemListing(Items.EMERALD, FoodItems.FLOATING_WHEAT_SEED.get(), 2, 7, 25, 0.05F));

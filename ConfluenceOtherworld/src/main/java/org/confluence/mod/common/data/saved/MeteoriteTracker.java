@@ -28,16 +28,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public final class MeteoriteTracker {
-    public static final MeteoriteTracker INSTANCE = new MeteoriteTracker();
+public enum MeteoriteTracker {
+    INSTANCE;
     public static final ResourceKey<ConfiguredFeature<?, ?>> METEORITE = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "meteorite");
 
     private transient boolean shouldGenerate = true;
     public boolean spawnAtNextNight = false;
     @NotNull BlockPos location = BlockPos.ZERO;
     int tickUntilLanding = 0;
-
-    private MeteoriteTracker() {}
 
     public void tick(ServerLevel level) {
         if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;

@@ -88,17 +88,17 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "replace_spruce_planks_from_stripped_wood", addItem(Items.SPRUCE_PLANKS, Items.STRIPPED_SPRUCE_WOOD, 9));
         item(recipeOutput, "replace_cherry_planks_from_stripped_wood", addItem(Items.CHERRY_PLANKS, Items.STRIPPED_CHERRY_WOOD, 9));
 
-        for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-            String id = logBlockSet.id;
-            if (logBlockSet.LOG.isBound()) {
-                item(recipeOutput, "replace_" + id + "_planks", addItem(logBlockSet.PLANKS, logBlockSet.LOG, 9));
-                item(recipeOutput, id + "_log_from_oak_log", addItem(Blocks.OAK_LOG, logBlockSet.LOG));
+        for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            String id = blockSet.id;
+            if (blockSet.LOG.isBound()) {
+                item(recipeOutput, "replace_" + id + "_planks", addItem(blockSet.PLANKS, blockSet.LOG, 9));
+                item(recipeOutput, id + "_log_from_oak_log", addItem(Blocks.OAK_LOG, blockSet.LOG));
             }
-            if (logBlockSet.WOOD.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_wood", addItem(logBlockSet.PLANKS, logBlockSet.WOOD, 9));
-            if (logBlockSet.STRIPPED_LOG.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_stripped_log", addItem(logBlockSet.PLANKS, logBlockSet.STRIPPED_LOG, 9));
-            if (logBlockSet.STRIPPED_WOOD.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_stripped_wood", addItem(logBlockSet.PLANKS, logBlockSet.STRIPPED_WOOD, 9));
-            if (logBlockSet.SLAB.isBound()) item(recipeOutput, id + "_slab_to_planks", addItem(logBlockSet.SLAB, logBlockSet.PLANKS, 4));
-            if (logBlockSet.STAIRS.isBound()) item(recipeOutput, id + "_stairs_to_planks", addItem(logBlockSet.STAIRS, logBlockSet.PLANKS, 2));
+            if (blockSet.WOOD.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_wood", addItem(blockSet.PLANKS, blockSet.WOOD, 9));
+            if (blockSet.STRIPPED_LOG.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_stripped_log", addItem(blockSet.PLANKS, blockSet.STRIPPED_LOG, 9));
+            if (blockSet.STRIPPED_WOOD.isBound()) item(recipeOutput, "replace_" + id + "_planks_from_stripped_wood", addItem(blockSet.PLANKS, blockSet.STRIPPED_WOOD, 9));
+            if (blockSet.SLAB.isBound()) item(recipeOutput, id + "_slab_to_planks", addItem(blockSet.SLAB, blockSet.PLANKS, 4));
+            if (blockSet.STAIRS.isBound()) item(recipeOutput, id + "_stairs_to_planks", addItem(blockSet.STAIRS, blockSet.PLANKS, 2));
         }
 
         item(recipeOutput, "oak_slab_to_planks", addItem(Items.OAK_SLAB, Items.OAK_PLANKS, 4));
@@ -217,7 +217,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, MaterialItems.JADE, MaterialItems.SAPPHIRE);
         item(recipeOutput, MaterialItems.RUBY, MaterialItems.JADE);
         item(recipeOutput, Items.DIAMOND, MaterialItems.RUBY);
-        item(recipeOutput, "cobblestone_from_amethyst", addItem(MaterialItems.AMETHYST, Items.COBBLESTONE));
+        item(recipeOutput, "clay_from_amethyst", addItem(MaterialItems.AMETHYST, Items.CLAY));
         // 锭到矿的转化
         item(recipeOutput, "raw_chlorophyte_from_ingot", addItem(Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_CHLOROPHYTE.get().asItem(), 5)),1));
         item(recipeOutput, "raw_titanium_from_ingot", addItem(Ingredient.of(MaterialItems.TITANIUM_INGOT), Collections.singletonList(new ItemStack(MaterialItems.RAW_TITANIUM.get().asItem(), 4)),1));
@@ -238,7 +238,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, "raw_lead_from_ingot", addItem(ModTags.Items.INGOTS_LEAD, MaterialItems.RAW_LEAD.get(), 1));
         item(recipeOutput, "raw_tin_from_ingot", addItem(ModTags.Items.INGOTS_TIN, MaterialItems.RAW_TIN.get(), 1));
         item(recipeOutput, "raw_copper_from_ingot", addItem(Items.COPPER_INGOT, Items.RAW_COPPER));
-        item(recipeOutput, "cobblestone_from_raw_copper", addItem(Items.RAW_COPPER, Items.COBBLESTONE));
+        item(recipeOutput, "clay_from_raw_copper", addItem(Items.RAW_COPPER, Items.CLAY));
+        item(recipeOutput, Items.CLAY, Items.COBBLESTONE);
         item(recipeOutput, Items.COBBLESTONE, Items.DIRT);
         // 矿的下级转化（陨石，魔矿，猩红矿不参与这一过程）
         item(recipeOutput, MaterialItems.RAW_LUMINITE, MaterialItems.RAW_CHLOROPHYTE);
@@ -262,6 +263,7 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, SwordItems.ZOMBIE_ARM, ModItems.WHOOPIE_CUSHION);
         item(recipeOutput, TCItems.PUTRID_SCENT, TCItems.FLESH_KNUCKLES);
         item(recipeOutput, TCItems.FLESH_KNUCKLES, TCItems.PUTRID_SCENT);
+        item(recipeOutput, VanityArmorItems.PEDDLERS_HAT, ConsumableItems.PEDDLERS_SATCHEL);
 
         item(recipeOutput, ConsumableItems.LIFE_CRYSTAL, ConsumableItems.VITAL_CRYSTAL);
         item(recipeOutput, ConsumableItems.MANA_CRYSTAL, ConsumableItems.ARCANE_CRYSTAL);
@@ -281,19 +283,22 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(recipeOutput, NatureBlocks.GRANITE, NatureBlocks.MARBLE);
         item(recipeOutput, "sand_from_sandstone", addItem(Blocks.SANDSTONE, Blocks.SAND));
         item(recipeOutput, "sand_from_hardened_sand", addItem(NatureBlocks.HARDENED_SAND_BLOCK, Blocks.SAND));
+        item(recipeOutput, "red_sand_from_red_sandstone", addItem(Blocks.RED_SANDSTONE, Blocks.RED_SAND));
+        item(recipeOutput, "red_sand_from_hardened_red_sand_block", addItem(NatureBlocks.HARDENED_RED_SAND_BLOCK, Blocks.RED_SAND));
         item(recipeOutput, "ebonsand_from_ebonsandstone", addItem(NatureBlocks.EBONSANDSTONE, NatureBlocks.EBONSAND));
         item(recipeOutput, "ebonsand_from_hardened_ebonsand", addItem(NatureBlocks.HARDENED_EBONSAND_BLOCK, NatureBlocks.EBONSAND));
         item(recipeOutput, "crimsand_from_crimsandstone", addItem(NatureBlocks.CRIMSANDSTONE, NatureBlocks.CRIMSAND));
         item(recipeOutput, "crimsand_from_hardened_crimsand", addItem(NatureBlocks.HARDENED_CRIMSAND_BLOCK, NatureBlocks.CRIMSAND));
         item(recipeOutput, "pearlsand_from_pearlsandstone", addItem(NatureBlocks.PEARLSANDSTONE, NatureBlocks.PEARLSAND));
         item(recipeOutput, "pearlsand_from_hardened_pearlsand", addItem(NatureBlocks.HARDENED_PEARLSAND_BLOCK, NatureBlocks.PEARLSAND));
-        item(recipeOutput, "ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.ICE));
-        item(recipeOutput, "blue_ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.BLUE_ICE));
-        item(recipeOutput, "packed_ice_from_snow_block", addItem(Blocks.SNOW_BLOCK, Blocks.PACKED_ICE));
+        item(recipeOutput, "aetherium_block_from_snow_block", addItem(Blocks.SNOW_BLOCK, NatureBlocks.AETHERIUM_BLOCK));
         item(recipeOutput, "jungle_hive_from_honey_block", addItem(Blocks.HONEY_BLOCK, NatureBlocks.JUNGLE_HIVE_BLOCK));
         item(recipeOutput, "jungle_hive_from_crispy_honey_block", addItem(DecorativeBlocks.CRISPY_HONEY_BLOCK,NatureBlocks.JUNGLE_HIVE_BLOCK));
         item(recipeOutput, Blocks.PUMPKIN, Blocks.CACTUS);
         item(recipeOutput, Blocks.CACTUS, Blocks.PUMPKIN);
+        item(recipeOutput, Blocks.SNOW_BLOCK, NatureBlocks.AETHERIUM_BLOCK);
+        item(recipeOutput, DecorativeBlocks.SUN_PLATE.FULL, DecorativeBlocks.MOON_PLATE.FULL);
+        item(recipeOutput, DecorativeBlocks.MOON_PLATE.FULL, DecorativeBlocks.SUN_PLATE.FULL);
         item(recipeOutput, "acacia_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.ACACIA_LOG));
         item(recipeOutput, "birch_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.BIRCH_LOG));
         item(recipeOutput, "cherry_log_from_oak_log", addItem(Blocks.OAK_LOG, Blocks.CHERRY_LOG));
@@ -306,6 +311,16 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
 
         item(recipeOutput, "bottomless_shimmer_bucket", addItem(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), GamePhase.MOON_LORD));
         item(recipeOutput, "bottomless_water_bucket", addItem(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), ToolItems.BOTTOMLESS_WATER_BUCKET.get(), GamePhase.MOON_LORD));
+
+        item(recipeOutput, ModItems.JUNGLE_GRASS_SEED, ModItems.MUSHROOM_GRASS_SEED);
+        item(recipeOutput, ModItems.MUSHROOM_GRASS_SEED, ModItems.JUNGLE_GRASS_SEED);
+        item(recipeOutput, Blocks.CHERRY_SAPLING, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING);
+        item(recipeOutput, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING,Blocks.CHERRY_SAPLING);
+        item(recipeOutput, "helium_moss_from_lava_moss", addItem(NatureBlocks.LAVA_MOSS, NatureBlocks.HELIUM_MOSS));
+        item(recipeOutput, "helium_moss_from_krypton_moss", addItem(NatureBlocks.KRYPTON_MOSS, NatureBlocks.HELIUM_MOSS));
+        item(recipeOutput, "helium_moss_from_xenon_moss", addItem( NatureBlocks.XENON_MOSS, NatureBlocks.HELIUM_MOSS));
+        item(recipeOutput, "helium_moss_from_argon_moss", addItem(NatureBlocks.ARGON_MOSS, NatureBlocks.HELIUM_MOSS));
+        item(recipeOutput, "helium_moss_from_neon_moss", addItem( NatureBlocks.NEON_MOSS, NatureBlocks.HELIUM_MOSS));
     }
 
 

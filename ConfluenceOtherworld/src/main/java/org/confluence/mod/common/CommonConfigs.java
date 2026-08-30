@@ -10,6 +10,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec.*;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.network.s2c.DragonChargePlayerConfigPacketS2C;
 
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,10 @@ public final class CommonConfigs {
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
     public static BooleanValue ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES;
+    private static BooleanValue DRAGON_CHARGE_PLAYER;
+    public static BooleanValue STOP_ASK_FOR_SOFTCORE;
+    public static BooleanValue TERRA_STYLE_LIGHTNING_BOLT;
+    public static IntValue TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
@@ -99,6 +104,9 @@ public final class CommonConfigs {
     public static Set<ResourceKey<Item>> ammoSlotsItemBlackList = Set.of(Confluence.asResourceKey(Registries.ITEM, "falling_star"));
     public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(Tags.Items.SEEDS);
 
+    private static boolean isSingleplayerOwner = true;
+    private static boolean dragonChargePlayer = true;
+
     public static void onLoad() {
         Set<ResourceKey<Item>> a = new HashSet<>();
         Set<TagKey<Item>> b = new HashSet<>();
@@ -111,6 +119,25 @@ public final class CommonConfigs {
         }
         ammoSlotsItemBlackList = a;
         ammoSlotsTagBlackList = b;
+
+        if (isSingleplayerOwner) {
+            dragonChargePlayer = DRAGON_CHARGE_PLAYER.get();
+            DragonChargePlayerConfigPacketS2C.sendToAll();
+        }
+    }
+
+    public static void handleDragonChargePlayer(boolean enabled) {
+        isSingleplayerOwner = false;
+        dragonChargePlayer = enabled;
+    }
+
+    public static void reset() {
+        isSingleplayerOwner = true;
+        dragonChargePlayer = DRAGON_CHARGE_PLAYER.get();
+    }
+
+    public static boolean isDragonChargePlayer() {
+        return dragonChargePlayer;
     }
 
     public static void register(ModContainer container) {
@@ -137,6 +164,14 @@ public final class CommonConfigs {
             TERRA_STYLE_FIRE_DAMAGE = builder.define("terraStyleFireDamage", true);
             NPC_INVULNERABLE_TO_PLAYER = builder.define("npcInvulnerableToPlayer", true);
             ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
+            DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
+            STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
+            {
+                builder.push("LightningBolt");
+                TERRA_STYLE_LIGHTNING_BOLT = builder.define("terraStyleLightningBolt", true);
+                TERRA_STYLE_LIGHTNING_BOLT_FREQUENCY_MULTIPLIER = builder.defineInRange("terraStyleLightningBoltFrequencyMultiplier", 10, 1, 1000);
+                builder.pop();
+            }
             builder.pop();
         }
         {
@@ -243,9 +278,9 @@ public final class CommonConfigs {
                 GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_MAX_HEALTH = builder.defineInRange("goblinArmyEventRequiredPlayerMaxHealth", 24, 0, 1024);
                 GOBLIN_ARMY_EVENT_REQUIRED_PLAYER_ARMOR = builder.defineInRange("goblinArmyEventRequiredPlayerArmor", 16, 0, 1024);
                 GOBLIN_ARMY_EVENT_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 3, 1, 1024);
-                GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 3, 1, 1024);
-                GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 30, 1, 1024);
-                GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyEventInvertChance", 60, 1, 1024);
+                GOBLIN_ARMY_EVENT_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyDefeatedEventInvertChance", 30, 1, 1024);
+                GOBLIN_ARMY_EVENT_HARDMODE_INVERT_CHANCE = builder.defineInRange("goblinArmyHardmodeEventInvertChance", 3, 1, 1024);
+                GOBLIN_ARMY_EVENT_HARDMODE_DEFEATED_INVERT_CHANCE = builder.defineInRange("goblinArmyEventHardmodeDefeatedInvertChance", 60, 1, 1024);
                 GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_BASE = builder.defineInRange("goblinArmyEventRequiredKillCountBase", 80, 1, 1024);
                 GOBLIN_ARMY_EVENT_REQUIRED_KILL_COUNT_PER_PLAYER = builder.defineInRange("goblinArmyEventRequiredKillCountPerPlayer", 40, 1, 1024);
                 builder.pop();

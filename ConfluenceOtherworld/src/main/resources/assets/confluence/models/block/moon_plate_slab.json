@@ -1,0 +1,9 @@
+{
+"parent":"block/slab",
+"textures":{
+"bottom":"confluence:block/moon_plate",
+"top":"confluence:block/moon_plate",
+"side":"confluence:block/moon_plate"
+},
+"render_type":"solid"
+}

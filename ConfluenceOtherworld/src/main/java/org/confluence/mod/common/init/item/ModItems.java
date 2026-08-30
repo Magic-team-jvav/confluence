@@ -20,24 +20,25 @@ import net.minecraft.world.item.component.Unbreakable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.loading.LoadingModList;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.block.natural.JungleHiveBlock;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sponsor.*;
 import org.confluence.mod.integration.sodium.iris.IrisHelper;
 import org.confluence.mod.util.DateUtils;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -84,7 +85,7 @@ public final class ModItems {
     public static final DeferredItem<Item> MYSTERIOUS_SLATE = HIDDEN.register("mysterious_slate", () -> new Item(new Item.Properties()));
 
     public static final DeferredItem<BestiaryItem> BESTIARY = HIDDEN.register("bestiary", BestiaryItem::new);
-    public static final DeferredItem<GroupItem> GROUP = HIDDEN.register("group", GroupItem::new);
+    public static final DeferredItem<Item> BACKGROUND_IMAGE_MAKER = HIDDEN.register("background_image_maker", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
 
     public static final DeferredItem<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final DeferredItem<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN.get(), ModRarity.ORANGE, ModItems.GOLD_COIN, 100));
@@ -153,6 +154,8 @@ public final class ModItems {
 
     public static final DeferredItem<AbstractEnemyBannerBlock.BItem> ENEMY_BANNER = ITEMS.register("enemy_banner", AbstractEnemyBannerBlock.BItem::new);
 
+    public static final DeferredItem<DeferredSpawnEggItem> RAINBOW_SHEEP_SPAWN_EGG = ITEMS.register("rainbow_sheep_spawn_egg", () -> new DeferredSpawnEggItem(ModEntities.RAINBOW_SHEEP, 0xFFFFFF, 0xFFFFFF, new Item.Properties()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
         HIDDEN.register(eventBus);
@@ -171,6 +174,7 @@ public final class ModItems {
         FishingPoleItems.ITEMS.register(eventBus);
         FlailItems.ITEMS.register(eventBus);
         FoodItems.ITEMS.register(eventBus);
+        GardenShearsItems.ITEMS.register(eventBus);
         GunItems.ITEMS.register(eventBus);
         HamaxeItems.ITEMS.register(eventBus);
         HammerItems.ITEMS.register(eventBus);
@@ -195,7 +199,7 @@ public final class ModItems {
         TreasureBagItems.ITEMS.register(eventBus);
         VanityArmorItems.ITEMS.register(eventBus);
 
-        if (LoadingModList.get().getModFileById("iris") != null) {
+        if (LibUtils.isModLoaded("iris")) {
             IrisHelper.register(HIDDEN);
         }
     }
@@ -210,7 +214,7 @@ public final class ModItems {
                 builder.add(Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(BASE_BLOCK_INTERACTION_RANGE_ID, blockInteractionRange, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
             if (attackKnockback != 0)
                 builder.add(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(BASE_ATTACK_KNOCKBACK_ID, attackKnockback, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-            builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+            builder.add(LibAttributes.getCriticalChance(), new AttributeModifier(BASE_CRITICAL_CHANCE_ID, 0.04, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
         };
     }
 
@@ -218,7 +222,7 @@ public final class ModItems {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
         consumer.accept(builder);
         return builder.add(
-                Attributes.ATTACK_DAMAGE,
+                LibAttributes.getAttackDamage(),
                 new AttributeModifier(BASE_ATTACK_DAMAGE_ID, attackDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE),
                 EquipmentSlotGroup.MAINHAND
         ).add(

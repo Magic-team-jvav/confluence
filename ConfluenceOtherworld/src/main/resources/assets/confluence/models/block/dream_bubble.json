@@ -1,0 +1,26 @@
+{
+    "render_type": "translucent",
+    "textures": {
+        "all": "confluence:block/dream_bubble",
+        "particle": "confluence:block/dream_bubble"
+    },
+    "elements": [
+        {
+            "from": [0, 0, 0],
+            "to": [16, 16, 16],
+            "faces": {
+                "down": { "texture": "#all", "tintindex": 0, "cullface": "down" },
+                "up": { "texture": "#all", "tintindex": 0, "cullface": "up" },
+                "north": { "texture": "#all", "tintindex": 0, "cullface": "north" },
+                "south": { "texture": "#all", "tintindex": 0, "cullface": "south" },
+                "west": { "texture": "#all", "tintindex": 0, "cullface": "west" },
+                "east": { "texture": "#all", "tintindex": 0, "cullface": "east" }
+            },
+            "shade": false,
+            "neoforge_data": {
+                "block_light": 15,
+                "ambient_occlusion": false
+            }
+        }
+    ]
+}

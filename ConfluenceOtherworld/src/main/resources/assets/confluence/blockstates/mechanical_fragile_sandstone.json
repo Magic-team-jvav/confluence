@@ -1,1 +1,7 @@
-{}
+{
+    "variants": {
+        "": {
+            "model": "confluence:block/mechanical_fragile_sandstone"
+        }
+    }
+}

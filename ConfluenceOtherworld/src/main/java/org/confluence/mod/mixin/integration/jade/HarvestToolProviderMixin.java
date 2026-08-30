@@ -26,9 +26,7 @@ import java.util.List;
 @Pseudo
 @Mixin(targets = "snownee.jade.addon.harvest.HarvestToolProvider", remap = false)
 public abstract class HarvestToolProviderMixin {
-    /**
-     * @see org.confluence.mod.common.init.ModTiers#isCorrectToolForDrops
-     */
+    /// @see org.confluence.mod.common.init.ModTiers#isCorrectToolForDrops
     @WrapOperation(method = "<clinit>", at = @At(value = "INVOKE", target = "Lsnownee/jade/addon/harvest/SimpleToolHandler;create(Lnet/minecraft/resources/ResourceLocation;Ljava/util/List;)Lsnownee/jade/addon/harvest/SimpleToolHandler;", ordinal = 0))
     private static SimpleToolHandler morePickaxe(ResourceLocation uid, List<Item> tools, Operation<SimpleToolHandler> original) {
         return original.call(uid, ImmutableList.builder().addAll(tools).add(
@@ -44,7 +42,7 @@ public abstract class HarvestToolProviderMixin {
     }
 
     @ModifyExpressionValue(method = "appendTooltip(Lsnownee/jade/api/ITooltip;Lsnownee/jade/api/BlockAccessor;Lsnownee/jade/api/config/IPluginConfig;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getDestroyProgress(Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;)F"))
-    private float dummyProgress(float original, @Local BlockState state) {
+    private float dummyProgress(float original, @Local(name = "state") BlockState state) {
         if (original <= 0.0F && (state.getBlock() instanceof AltarBlock || state.is(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST))) {
             return 0.1F;
         }

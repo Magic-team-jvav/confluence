@@ -19,34 +19,36 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.ExtractinatorData;
-import org.confluence.mod.common.init.ModTags;
 
-import java.util.IdentityHashMap;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-
-import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
 public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCategory.IngredientPair> {
     public static final RecipeType<IngredientPair> EXTRACTINATOR = new RecipeType<>(Confluence.asResource("extractinator"), IngredientPair.class);
     public static final RecipeType<IngredientPair> CHLOROPHYTE_EXTRACTINATOR = new RecipeType<>(Confluence.asResource("chlorophyte_extractinator"), IngredientPair.class);
     private static final IIngredientRenderer<ItemStack> INGREDIENT_RENDERER = new IIngredientRenderer<>() {
+        private static final DecimalFormat FORMAT;
+
+        static {
+            FORMAT = new DecimalFormat("#.####");
+            FORMAT.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
+        }
+
         @Override
         public void render(GuiGraphics guiGraphics, ItemStack ingredient) {
             RenderSystem.enableDepthTest();
@@ -64,7 +66,7 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
                 lines.add(1, data.min == data.max
                         ? Component.translatable("tooltip.jei.count_exact", data.min)
                         : Component.translatable("tooltip.jei.count_range", data.min, data.max));
-                lines.add(2, Component.translatable("tooltip.jei.drop_chance", ATTRIBUTE_MODIFIER_FORMAT.format(data.chance * 100)));
+                lines.add(2, Component.translatable("tooltip.jei.drop_chance", FORMAT.format(data.chance * 100)));
                 return lines;
 
             }
@@ -116,9 +118,9 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
                 if (entry.isEmpty()) continue;
                 builder.addOutputSlot()
                         .addIngredientsUnsafe(List.of(new DataItemStack(
-                                entry.item,
-                                entry.minCount * pool.minRoll,
-                                entry.maxCount * pool.maxRoll,
+                                entry.item(),
+                                entry.minCount() * pool.minRoll,
+                                entry.maxCount() * pool.maxRoll,
                                 (float) entry.getWeight().asInt() / pool.totalWeight
                         )))
                         .setCustomRenderer(VanillaTypes.ITEM_STACK, INGREDIENT_RENDERER)
@@ -139,26 +141,16 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
         inputSlot.setPosition(scrollGridWidget.getScreenRectangle().position().x() + 1, 1);
     }
 
-    public static List<IngredientPair> collectAll(DataMapType<Item, ExtractinatorData> type, RegistryAccess registryAccess) {
-        HolderLookup.RegistryLookup<Item> lookup = registryAccess.lookupOrThrow(Registries.ITEM);
-        Map<Item, ExtractinatorData> map = new IdentityHashMap<>();
-        collectAny(map, type, lookup, Tags.Items.GRAVELS);
-        collectAny(map, type, lookup, ModTags.Items.DESERT_FOSSIL);
-        collectAny(map, type, lookup, ModTags.Items.JUNK);
-        collectAny(map, type, lookup, ModTags.Items.MARINE_GRAVEL);
-        collectAny(map, type, lookup, ModTags.Items.SILT_BLOCK);
-        collectAny(map, type, lookup, ModTags.Items.SLUSH);
+    public static List<IngredientPair> collectAll(DataMapType<Item, ExtractinatorData> type) {
+        Map<ResourceKey<Item>, ExtractinatorData> map = BuiltInRegistries.ITEM.getDataMap(type);
         List<IngredientPair> list = Lists.newArrayListWithExpectedSize(map.size());
-        map.forEach((item, data) -> list.add(new IngredientPair(item.getDefaultInstance(), data)));
+        map.forEach((key, data) -> {
+            Item item = BuiltInRegistries.ITEM.get(key);
+            if (item != null) {
+                list.add(new IngredientPair(item.getDefaultInstance(), data));
+            }
+        });
         return list;
-    }
-
-    // 没有合并多个Data
-    private static void collectAny(Map<Item, ExtractinatorData> map, DataMapType<Item, ExtractinatorData> type, HolderLookup.RegistryLookup<Item> lookup, TagKey<Item> tagKey) {
-        lookup.get(tagKey).ifPresent(holders -> holders.stream().forEach(itemHolder -> {
-            ExtractinatorData data = itemHolder.getData(type);
-            if (data != null) map.put(itemHolder.value(), data);
-        }));
     }
 
     public record IngredientPair(ItemStack ingredient, ExtractinatorData data) {}

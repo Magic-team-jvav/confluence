@@ -13,6 +13,7 @@ public interface ILevelLoadingScreen {
     Component GENERATING_WAVY_CAVES = Component.translatable("worldgen.confluence.generating_wavy_caves");
     Component NOT_PLACING_TRAPS = Component.translatable("worldgen.confluence.not_placing_traps");
     Component PLACING_BOULDERS = Component.translatable("worldgen.confluence.placing_boulders");
+    Component TOO_EASY = Component.translatable("worldgen.confluence.too_easy");
     int PINK = 0xFF96FF;
 
     static ILevelLoadingScreen of(LevelLoadingScreen screen) {

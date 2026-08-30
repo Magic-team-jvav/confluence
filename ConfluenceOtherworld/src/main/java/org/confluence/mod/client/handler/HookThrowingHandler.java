@@ -15,7 +15,9 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.HookItems;
+import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
@@ -26,13 +28,15 @@ import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.RESET_F
 
 public final class HookThrowingHandler {
     public static void handle(LocalPlayer player) {
+        if (player.hasEffect(ModEffects.SHIMMER)) return;
+        if (!ILocalPlayer.of(player).confluence$isCanMove()) return;
         if (Minecraft.getInstance().isPaused()) return;
         boolean isDown = false;
         while (ModKeyBindings.HOOK.get().consumeClick()) isDown = true;
         if (isDown) HookThrowingPacketC2S.push();
         if (player.isCrouching()) return;
-        ItemStack itemStack = ExtraInventory.of(player).getHook(false);
-        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
+        ItemStack stack = ExtraInventory.of(player).getHook(false);
+        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
         if (tag == null) return;
 
         ListTag list = tag.getList("hooks", Tag.TAG_COMPOUND);
@@ -53,19 +57,20 @@ public final class HookThrowingHandler {
                     return;
                 }
 
-                if (itemStack.getItem() == HookItems.ANTI_GRAVITY_HOOK.get()) {
+                if (stack.getItem() == HookItems.ANTI_GRAVITY_HOOK.get()) {
                     float ry = player.getYRot() * Mth.DEG_TO_RAD;
                     float cos = Mth.cos(ry);
                     float sin = Mth.sin(ry);
-                    double mx = input.leftImpulse;
-                    double mz = input.forwardImpulse;
-                    double vx = mx * cos + mz * -sin;
-                    double vy = -Mth.sin(player.getXRot() * Mth.DEG_TO_RAD) * mz;
-                    double vz = mx * sin + mz * cos;
-                    double dist = Math.sqrt(vx * vx + vy * vy + vz * vz);
+                    float mx = input.leftImpulse;
+                    float mz = input.forwardImpulse;
+                    float vx = mx * cos + mz * -sin;
+                    float vy = -Mth.sin(player.getXRot() * Mth.DEG_TO_RAD) * mz;
+                    float vz = mx * sin + mz * cos;
+                    float dist = Mth.lengthSquared(vx, vy, vz);
                     if (dist == 0.0) {
                         player.setDeltaMovement(Vec3.ZERO);
                     } else {
+                        dist = Mth.sqrt(dist);
                         player.setDeltaMovement(vx / dist * 0.5, vy / dist * 0.5, vz / dist * 0.5);
                     }
                 } else {

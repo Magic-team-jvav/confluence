@@ -33,8 +33,8 @@ public class AquaScepterItem extends ManaStaffItem<WaterStreamProjectile> {
     }
 
     @Override
-    protected boolean couldShoot(ServerPlayer player, ItemStack itemStack) {
-        return PlayerUtils.extractMana(player, itemStack, () -> PrefixUtils.calculateManaCost(itemStack, manaCost / 3F));
+    protected boolean couldShoot(ServerPlayer player, ItemStack stack) {
+        return PlayerUtils.extractMana(player, stack, () -> PrefixUtils.calculateManaCost(stack, manaCost / 3F));
     }
 
     @Override

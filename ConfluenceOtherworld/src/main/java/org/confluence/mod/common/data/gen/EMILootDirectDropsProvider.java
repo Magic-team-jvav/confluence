@@ -24,7 +24,8 @@ import org.confluence.mod.common.data.gen.loot.modifiers.AddChestLootDirectDrops
 import org.confluence.mod.common.data.gen.loot.modifiers.AddEntityLootDirectDropsSubProvider;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 

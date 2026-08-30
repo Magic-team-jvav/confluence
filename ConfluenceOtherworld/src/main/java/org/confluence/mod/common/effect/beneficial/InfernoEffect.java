@@ -1,16 +1,16 @@
 package org.confluence.mod.common.effect.beneficial;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.phys.AABB;
-import org.confluence.mod.Confluence;
 import org.mesdag.particlestorm.api.MolangParticleMobEffect;
 
 public class InfernoEffect extends MolangParticleMobEffect {  //狱火 点燃周围的怪物 （以玩家为中心的5×5×5范围内）
-    public InfernoEffect() {
-        super(MobEffectCategory.BENEFICIAL, 0xFF4500, Confluence.asResource("inferno_flame"));
+    public InfernoEffect(ResourceLocation id) {
+        super(MobEffectCategory.BENEFICIAL, 0xFF4500, id);
     }
 
     @Override

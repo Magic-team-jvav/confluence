@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -14,6 +15,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.item.VanityArmorItems;
+import org.confluence.mod.common.util.TrapDamageHelper;
 
 public class SpikeBlock extends Block {
     public static final VoxelShape SHAPE = box(1, 1, 1, 15.0, 15.0, 15.0);
@@ -27,9 +30,17 @@ public class SpikeBlock extends Block {
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (!level.isClientSide) {
-            entity.hurt(ModDamageTypes.of(level, DamageTypes.STING), damage);
+            float finalDamage = damage;
+            if (entity instanceof LivingEntity living) {
+                finalDamage = TrapDamageHelper.applyDeadMansSweaterReduction(living, damage);
+            }
+            entity.hurt(ModDamageTypes.of(level, DamageTypes.STING), finalDamage);
             if (entity.isAlive() && entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(ModEffects.BLEEDING, LibUtils.switchByDifficulty(level, pos, 200, 400, 500)));
+                int duration = LibUtils.switchByDifficulty(level, pos, 200, 400, 500);
+                if (living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {
+                    duration /= 2;
+                }
+                living.addEffect(new MobEffectInstance(ModEffects.BLEEDING, duration));
             }
         }
     }

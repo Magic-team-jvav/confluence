@@ -16,8 +16,7 @@ var projectName = [
         "TerraEntity",
         "TerraCurio",
         "TerraGuns",
-        "TerraFurniture",
-        "TheTrackers"
+        "TerraFurniture"
 ]
 
 include(":ConfluenceOtherworld")

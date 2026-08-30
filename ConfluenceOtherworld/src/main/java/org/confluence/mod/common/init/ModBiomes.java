@@ -23,6 +23,14 @@ public final class ModBiomes {
     public static final ResourceKey<Biome> ASH_FOREST = register("ash_forest");
     public static final ResourceKey<Biome> ASH_WASTELAND = register("ash_wasteland");
     public static final ResourceKey<Biome> GLOWING_MUSHROOM = register("glowing_mushroom");
+    public static final ResourceKey<Biome> CHORUS_FOREST = register("chorus_forest");
+    public static final ResourceKey<Biome> CHORUS_PLAINS = register("chorus_plains");
+    public static final ResourceKey<Biome> INVERSE_FOREST = register("inverse_forest");
+    public static final ResourceKey<Biome> INVERSE_PLAINS = register("inverse_plains");
+    public static final ResourceKey<Biome> MOONBLIGHT_FOREST = register("moonblight_forest");
+    public static final ResourceKey<Biome> MOONBLIGHT_PLAINS = register("moonblight_plains");
+    public static final ResourceKey<Biome> MOONLIT_DRY_SEA = register("moonlit_dry_sea");
+    public static final ResourceKey<Biome> DARK_MOON_FLATS = register("dark_moon_flats");
 
     private static ResourceKey<Biome> register(String name) {
         return ResourceKey.create(Registries.BIOME, Confluence.asResource(name));
@@ -36,6 +44,7 @@ public final class ModBiomes {
         Regions.register(new AshWastelandRegion(Confluence.asResource("ash_wasteland"), 1));
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, MODID, SurfaceRuleData.makeConfluenceOverWorldRules());
         SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.NETHER, MODID, SurfaceRuleData.makeConfluenceNetherRules());
+        SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.END, MODID, SurfaceRuleData.makeConfluenceEndRules());
         SurfaceRuleManager.addToDefaultSurfaceRulesAtStage(SurfaceRuleManager.RuleCategory.OVERWORLD, SurfaceRuleManager.RuleStage.BEFORE_BEDROCK, 0, SurfaceRuleData.makeMinecraftOverWorldRules());
     }
 }

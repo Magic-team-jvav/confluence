@@ -14,15 +14,9 @@ import org.confluence.mod.common.entity.hook.LunarHookEntity;
 public class LunarHookStardustModel extends EntityModel<LunarHookEntity> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("lunar_hook_stardust"), "main");
     private final ModelPart bone;
-    private final ModelPart bone2;
-    private final ModelPart bone4;
-    private final ModelPart hook2;
 
     public LunarHookStardustModel(ModelPart root) {
         this.bone = root.getChild("bone");
-        this.bone2 = this.bone.getChild("bone2");
-        this.bone4 = this.bone.getChild("bone4");
-        this.hook2 = this.bone.getChild("hook2");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -65,8 +59,5 @@ public class LunarHookStardustModel extends EntityModel<LunarHookEntity> {
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
         bone.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        bone2.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        bone4.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
-        hook2.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
     }
 }

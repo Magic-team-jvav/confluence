@@ -1,6 +1,8 @@
 #version 150
 
-#moj_import < fog.glsl >
+// @formatter:off
+#moj_import <fog.glsl>
+// @formatter:on
 
 uniform float FogStart;
 uniform float FogEnd;

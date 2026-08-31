@@ -23,6 +23,7 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.flask.FlaskOfFireEffect;
 import org.confluence.mod.common.effect.flask.FlaskOfGoldEffect;
 import org.confluence.mod.common.effect.harmful.*;
+import org.confluence.mod.common.effect.neutral.DimensionalOverlapEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
@@ -133,25 +134,29 @@ public final class ModEffects {
             .addAttributeModifier(ConfluenceMagicLib.MINION_CAPACITY, id, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> WATER_CANDLE = EFFECTS.register("water_candle", WaterCandleEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = EFFECTS.register("peace_candle", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xda9ae0)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.26)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.30));
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, i -> (i + 1) * -0.26)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, i -> (i + 1) * -0.30));
     public static final DeferredHolder<MobEffect, MobEffect> HAPPY = EFFECTS.register("happy", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xe6ad25)
-            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id.withSuffix("_doubling"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 1.1)
-            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, (i) -> (i + 1) * 0.1)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.13)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.20));
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id.withSuffix("_doubling"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, i -> (i + 1) * 1.1)
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, i -> (i + 1) * 0.1)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, i -> (i + 1) * -0.13)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, i -> (i + 1) * -0.20));
     public static final DeferredHolder<MobEffect, MobEffect> CALM = EFFECTS.register("calm", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x6469ca)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.49)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.5)); //对比初始值多-0.1来拟合效果，数值暂定
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, i -> (i + 1) * -0.49)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_VALUE, i -> (i + 1) * -0.5)); //对比初始值多-0.1来拟合效果，数值暂定
     public static final DeferredHolder<MobEffect, MobEffect> BATTLE = EFFECTS.register("battle", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8b64ca)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5)  //0.5 就大概是翻倍了，数值暂定
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5));
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, id, AttributeModifier.Operation.ADD_MULTIPLIED_BASE, i -> (i + 1) * 0.5)  //0.5 就大概是翻倍了，数值暂定
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, id, AttributeModifier.Operation.ADD_MULTIPLIED_BASE, i -> (i + 1) * 0.5));
     public static final DeferredHolder<MobEffect, MobEffect> ENEMY_BANNER = EFFECTS.register("enemy_banner", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0000));
     public static final DeferredHolder<MobEffect, MobEffect> AROMATIC_SATIATION = EFFECTS.register("aromatic_satiation", AromaticSatiationEffect::new);
 
     // 药剂
     public static final DeferredHolder<MobEffect, FlaskEffect> WEAPON_IMBUE_FIRE = EFFECTS.register("weapon_imbue_fire", FlaskOfFireEffect::new);
     public static final DeferredHolder<MobEffect, FlaskEffect> WEAPON_IMBUE_GOLD = EFFECTS.register("weapon_imbue_gold", FlaskOfGoldEffect::new);
+
+    // TODO 需要细调
+    public static final DeferredHolder<MobEffect, MobEffect> DIMENSIONAL_OVERLAP = EFFECTS.register("dimensional_overlap", id -> new DimensionalOverlapEffect()
+            .addAttributeModifier(ConfluenceMagicLib.VOID_EROSION_DELTA, id, AttributeModifier.Operation.ADD_VALUE, i -> i <= 0 ? -128.0f : -220.0f));
 
     private static double exquisitelyStuffed(int v, double v0, double v1, double v2) {
         if (v == 1) return v1;

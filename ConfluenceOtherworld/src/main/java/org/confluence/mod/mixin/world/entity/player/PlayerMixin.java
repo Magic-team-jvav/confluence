@@ -7,11 +7,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.mixed.ILibDamageSource;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.mixed.IPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -26,6 +28,8 @@ public abstract class PlayerMixin implements IPlayer {
     private BaseFlailEntity confluence$flailEntity;
     @Unique
     private ItemStack confluence$currentBait = ItemStack.EMPTY;
+    @Unique
+    private boolean confluence$voidSeaSwimming;
 
     @Override
     @Deprecated
@@ -47,6 +51,41 @@ public abstract class PlayerMixin implements IPlayer {
     @Override
     public ItemStack confluence$getCurrentBait() {
         return confluence$currentBait;
+    }
+
+    @Override
+    public boolean confluence$isVoidSeaSwimming() {
+        return confluence$voidSeaSwimming;
+    }
+
+    @Inject(method = "updateSwimming", at = @At("HEAD"), cancellable = true)
+    private void confluence$voidSeaSwimming(CallbackInfo ci) {
+        Player self = confluence$self();
+        if (self.getAbilities().flying || !VoidSeaHelper.isDimensionalOverlapEffect(self)) {
+            confluence$voidSeaSwimming = false;
+            return;
+        }
+        if (self.getY() < VoidSeaHelper.getHeight()) {
+            confluence$voidSeaSwimming = self.isSprinting() && !self.isPassenger();
+            self.setSwimming(self.isSprinting() && !self.isPassenger());
+            ci.cancel();
+        } else if (confluence$voidSeaSwimming && !self.onGround() && !self.isPassenger()) {
+            self.setSwimming(true);
+            ci.cancel();
+        } else {
+            confluence$voidSeaSwimming = false;
+        }
+    }
+
+    @Inject(method = "travel", at = @At("HEAD"))
+    private void confluence$voidSeaSwimmingTravel(Vec3 travelVector, CallbackInfo ci) {
+        Player self = confluence$self();
+        if (confluence$voidSeaSwimming && !self.isInWater() && self.isSwimming() && !self.isPassenger()) {
+            double lookY = self.getLookAngle().y;
+            double acceleration = lookY < -0.2 ? 0.085 : 0.06;
+            Vec3 movement = self.getDeltaMovement();
+            self.setDeltaMovement(movement.add(0.0, (lookY - movement.y) * acceleration, 0.0));
+        }
     }
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))

@@ -69,6 +69,8 @@ import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.renderer.ModRenderer;
+import org.confluence.mod.client.renderer.VoidSeaRenderer;
 import org.confluence.mod.client.renderer.block.MuralPlacementPreviewRenderer;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
@@ -112,6 +114,7 @@ import org.confluence.terraentity.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -119,6 +122,15 @@ import java.util.Optional;
 @EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
     private static boolean wasFlailKeyHeld = false;
+
+    @SubscribeEvent
+    public static void registerShaders(RegisterShadersEvent event) throws IOException {
+        try {
+            ModRenderer.register(event.getResourceProvider(), event::registerShader);
+        } catch (IOException e) {
+            Confluence.LOGGER.error("Failed to register shaders", e);
+        }
+    }
 
     @SubscribeEvent
     public static void clientTick$Pre(ClientTickEvent.Pre event) {
@@ -347,17 +359,19 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
         if (player == null) return;
         SpelunkerHelper.renderLevel(event, player);
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+        RenderLevelStageEvent.Stage stage = event.getStage();
+        if (stage == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event);
             MeteorLandingHandler.render(event);
             ClientGameEventSystem.afterRenderSky(event, player);
             ClientBiomeEffectSystem.renderSky(player, event);
-        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+        } else if (stage == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
             HouseSelectHud.renderRegionInWorld(minecraft);
             MuralPlacementPreviewRenderer.render(minecraft, player, event);
+            VoidSeaRenderer.render(event, minecraft, player);
         }
     }
 

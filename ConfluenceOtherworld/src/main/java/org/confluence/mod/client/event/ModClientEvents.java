@@ -71,6 +71,7 @@ import org.confluence.mod.client.model.entity.fishing.HotlineFishingHookModel;
 import org.confluence.mod.client.model.entity.hook.*;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.particle.*;
+import org.confluence.mod.client.renderer.VoidSeaRenderSettings;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
@@ -649,6 +650,11 @@ public final class ModClientEvents {
         for (ColoredGlintContext context : ColoredGlintContext.COLORED_GLINT_CONTEXTS) {
             event.registerRenderBuffer(context.renderType());
         }
+    }
+
+    @SubscribeEvent
+    public static void registerClientCommands(RegisterClientCommandsEvent event) {
+        VoidSeaRenderSettings.registerCommand(event.getDispatcher());
     }
 
     @SubscribeEvent

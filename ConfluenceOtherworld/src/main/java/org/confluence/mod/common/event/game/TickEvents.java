@@ -1,8 +1,10 @@
 package org.confluence.mod.common.event.game;
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -22,6 +24,7 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
+import org.confluence.mod.common.util.VoidSeaHelper;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -35,30 +38,37 @@ import org.confluence.mod.util.PlayerUtils;
 public final class TickEvents {
     @SubscribeEvent
     public static void levelTick$Post(LevelTickEvent.Post event) {
-        if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
+        Level level = event.getLevel();
+        ResourceKey<Level> dimensionKey = level.dimension();
+        if (dimensionKey == Level.END) {
+            // 让客户端也自己计算
+            VoidSeaHelper.tick(level);
+        }
+        if (!(level instanceof ServerLevel serverLevel)
+                || dimensionKey != OverworldUtils.dimension()) {
             return;
         }
         GameEventSystem.INSTANCE.tick(); // 最高优先级，其会影响BossDelaySpawner、NPCSpawner等内容
-        FallingStarItemEntity.summon(level);
-        MeteoriteTracker.INSTANCE.tick(level);
-        BossDelaySpawner.INSTANCE.tick(level);
+        FallingStarItemEntity.summon(serverLevel);
+        MeteoriteTracker.INSTANCE.tick(serverLevel);
+        BossDelaySpawner.INSTANCE.tick(serverLevel);
 
-        int dayTime = LibDateUtils.getDayTime(level);
+        int dayTime = LibDateUtils.getDayTime(serverLevel);
         if (dayTime == LibDateUtils._06$00) {
-            ConfluenceData.updateWind(level);
+            ConfluenceData.updateWind(serverLevel);
         } else if (dayTime == LibDateUtils._19$30) {
-            BossDelaySpawner.spawnEyeOfCthulhu(level);
-            MeteoriteTracker.spawnMeteor(level);
+            BossDelaySpawner.spawnEyeOfCthulhu(serverLevel);
+            MeteoriteTracker.spawnMeteor(serverLevel);
         } else if (dayTime == LibDateUtils._00$00) {
-            BossDelaySpawner.spawnDeerClops(level);
+            BossDelaySpawner.spawnDeerClops(serverLevel);
         }
-        NPCSpawner.respawnNPC(level, dayTime);
+        NPCSpawner.respawnNPC(serverLevel, dayTime);
 
         TaskScheduler scheduler = TooEasy.getScheduler(false);
         if (scheduler != null) {
             scheduler.tick(1);
         }
-        HardmodeConvertor.INSTANCE.scheduleRefill(level);
+        HardmodeConvertor.INSTANCE.scheduleRefill(serverLevel);
     }
 
     @SubscribeEvent

@@ -63,6 +63,7 @@ public final class ClientConfigs {
     public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
     public static boolean damageIndicator = true;
     public static boolean healIndicator = true;
+    public static boolean voidSeaDepthIntersectionOutline = false;
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static IntValue MIN_ECTO_MIST_EFFECT_RADIUS;
@@ -99,6 +100,7 @@ public final class ClientConfigs {
     private static EnumValue<GoreEffect> GORE_EFFECT;
     private static BooleanValue DAMAGE_INDICATOR;
     private static BooleanValue HEAL_INDICATOR;
+    private static BooleanValue VOID_SEA_DEPTH_INTERSECTION_OUTLINE;
 
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
@@ -138,6 +140,7 @@ public final class ClientConfigs {
         goreEffect = GORE_EFFECT == null ? GoreEffect.OFF : GORE_EFFECT.get();
         damageIndicator = DAMAGE_INDICATOR.get();
         healIndicator = HEAL_INDICATOR.get();
+        voidSeaDepthIntersectionOutline = VOID_SEA_DEPTH_INTERSECTION_OUTLINE.get();
     }
 
     public static void register(ModContainer container) {
@@ -217,6 +220,8 @@ public final class ClientConfigs {
             }
             builder.pop();
         }
+        VOID_SEA_DEPTH_INTERSECTION_OUTLINE = builder.comment("Enables the experimental depth intersection outline for the void sea. Shader pack compatibility depends on the active shader pack.")
+                .define("voidSeaDepthIntersectionOutline", false);
 
         container.registerConfig(ModConfig.Type.CLIENT, builder.build());
     }

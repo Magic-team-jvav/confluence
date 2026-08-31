@@ -1423,6 +1423,24 @@ public final class ModTabs {
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_LEGGINGS.get());
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_BOOTS.get());
 
+                        CreativeModeTab.Output stalwart_armor = GroupItem.belongsTo("stalwart_armor", output);
+                        stalwart_armor.accept(ArmorItems.STALWART_HELMET.get());
+                        stalwart_armor.accept(ArmorItems.STALWART_CHESTPLATE.get());
+                        stalwart_armor.accept(ArmorItems.STALWART_LEGGINGS.get());
+                        stalwart_armor.accept(ArmorItems.STALWART_BOOTS.get());
+
+                        CreativeModeTab.Output mercenary_armor = GroupItem.belongsTo("mercenary_armor", output);
+                        mercenary_armor.accept(ArmorItems.MERCENARY_HELMET.get());
+                        mercenary_armor.accept(ArmorItems.MERCENARY_CHESTPLATE.get());
+                        mercenary_armor.accept(ArmorItems.MERCENARY_LEGGINGS.get());
+                        mercenary_armor.accept(ArmorItems.MERCENARY_BOOTS.get());
+
+                        CreativeModeTab.Output renegade_armor = GroupItem.belongsTo("renegade_armor", output);
+                        renegade_armor.accept(ArmorItems.RENEGADE_HELMET.get());
+                        renegade_armor.accept(ArmorItems.RENEGADE_CHESTPLATE.get());
+                        renegade_armor.accept(ArmorItems.RENEGADE_LEGGINGS.get());
+                        renegade_armor.accept(ArmorItems.RENEGADE_BOOTS.get());
+
                         CreativeModeTab.Output climbing_armor = GroupItem.belongsTo("climbing_armor", output);
                         climbing_armor.accept(ArmorItems.CLIMBING_HELMET.get());
                         climbing_armor.accept(ArmorItems.CLIMBING_CHESTPLATE.get());

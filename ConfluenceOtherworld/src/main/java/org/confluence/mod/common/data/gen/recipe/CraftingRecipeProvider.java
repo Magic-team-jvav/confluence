@@ -1016,6 +1016,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
         shapeless(output, DecorativeBlocks.POO_BLOCK.toStack(4), Ingredient.of(ModBlocks.POO));
 
+        shapeless(output, Items.BLAZE_ROD.getDefaultInstance(),  AmountIngredient.of(2,Items.BLAZE_POWDER));
+
         // 暗影蜡烛 shapeless(output, ToolItems.SHADOW_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES), AmountIngredient.of(3,ModTags.Items.EVIL_INGOT));
         // 钱币
         shapeless(output, ModItems.COPPER_COIN.toStack(100), Ingredient.of(ModItems.SILVER_COIN));

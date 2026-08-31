@@ -300,6 +300,57 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
     );
 
+    public static final DeferredItem<BaseArmorItem> STALWART_HELMET = register("stalwart_helmet", ModArmorMaterials.STALWART_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/stalwart_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+    public static final DeferredItem<BaseArmorItem> STALWART_CHESTPLATE = register("stalwart_chestplate", ModArmorMaterials.STALWART_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/stalwart_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+    public static final DeferredItem<BaseArmorItem> STALWART_LEGGINGS = register("stalwart_leggings", ModArmorMaterials.STALWART_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/stalwart_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+    public static final DeferredItem<BaseArmorItem> STALWART_BOOTS = register("stalwart_boots", ModArmorMaterials.STALWART_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/stalwart_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+
+    public static final DeferredItem<BaseArmorItem> MERCENARY_HELMET = register("mercenary_helmet", ModArmorMaterials.MERCENARY_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/mercenary_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> MERCENARY_CHESTPLATE = register("mercenary_chestplate", ModArmorMaterials.MERCENARY_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/mercenary_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> MERCENARY_LEGGINGS = register("mercenary_leggings", ModArmorMaterials.MERCENARY_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/mercenary_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> MERCENARY_BOOTS = register("mercenary_boots", ModArmorMaterials.MERCENARY_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/mercenary_armor")
+            .rarity(ModRarity.BLUE)
+    );
+
+    public static final DeferredItem<BaseArmorItem> RENEGADE_HELMET = register("renegade_helmet", ModArmorMaterials.RENEGADE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/renegade_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+    public static final DeferredItem<BaseArmorItem> RENEGADE_CHESTPLATE = register("renegade_chestplate", ModArmorMaterials.RENEGADE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/renegade_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+    public static final DeferredItem<BaseArmorItem> RENEGADE_LEGGINGS = register("renegade_leggings", ModArmorMaterials.RENEGADE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/renegade_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+    public static final DeferredItem<BaseArmorItem> RENEGADE_BOOTS = register("renegade_boots", ModArmorMaterials.RENEGADE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/renegade_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+
     public static final DeferredItem<BaseArmorItem> CLIMBING_HELMET = register("climbing_helmet", ModArmorMaterials.CLIMBING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/climbing_armor")
             .rarity(ModRarity.BLUE)

@@ -255,6 +255,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.white_pumpkin_armor", "White Pumpkin Armor");
         add("itemGroup.confluence.thief_armor", "Thief Armor");
         add("itemGroup.confluence.reinforced_mail_armor", "Reinforced Mail Armor");
+        add("itemGroup.confluence.stalwart_armor", "Stalwart Armor");
+        add("itemGroup.confluence.mercenary_armor", "Mercenary Armor");
+        add("itemGroup.confluence.renegade_armor", "Renegade Armor");
         add("itemGroup.confluence.climbing_armor", "Climbing Armor");
         add("itemGroup.confluence.battle_robe_armor", "Battle Robe Armor");
         add("itemGroup.confluence.hunters_armor", "Hunters Armor");
@@ -1267,6 +1270,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.reinforced_mail_set.0", "5% chance to dodge attacks");
         add("armor_set_bonus.confluence.reinforced_mail_set.1", "7% damage reduction");
         add("armor_set_bonus.confluence.reinforced_mail_set.2", "Movement speed reduced by 15% for 3 seconds after jumping");
+        // Stalwart Set
+        add("armor_set_bonus.confluence.stalwart_set.0", "7% chance to dodge attacks");
+        add("armor_set_bonus.confluence.stalwart_set.1", "9% damage reduction");
+        add("armor_set_bonus.confluence.stalwart_set.2", "Movement speed reduced by 15% for 3 seconds after jumping");
+        add("armor_set_bonus.confluence.stalwart_set.3", "Potion Sickness provides 4 armor points");
+        // Mercenary Set
+        add("armor_set_bonus.confluence.mercenary_set.0", "15% reduced movement speed, 20% increased melee damage");
+        // Renegade Set
+        add("armor_set_bonus.confluence.renegade_set.0", "15% reduced movement speed, 20% increased melee damage, 30% increased melee attack speed");
         // Climbing Set
         add("armor_set_bonus.confluence.climbing_set.0", "75% Knockback Resistance");
         add("armor_set_bonus.confluence.climbing_set.1", "20% chance to resist debuffs inflicted by enemies");

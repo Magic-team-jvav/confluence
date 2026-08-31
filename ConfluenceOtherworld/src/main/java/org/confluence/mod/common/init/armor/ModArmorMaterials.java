@@ -166,6 +166,21 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
             "reinforced_mail", 2.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> STALWART_ARMOR_MATERIALS = registerArmorMaterial("stalwart_armor_materials",
+            5, 6, 6, 5,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            "stalwart", 2.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> MERCENARY_ARMOR_MATERIALS = registerArmorMaterial("mercenary_armor_materials",
+            4, 5, 5, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            "mercenary", 2.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> RENEGADE_ARMOR_MATERIALS = registerArmorMaterial("renegade_armor_materials",
+            5, 6, 6, 5,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
+            "renegade", 2.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> CLIMBING_ARMOR_MATERIALS = registerArmorMaterial("climbing_armor_materials",
             3, 5, 5, 3,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,

@@ -215,6 +215,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.white_pumpkin_armor", "白南瓜盔甲");
         add("itemGroup.confluence.thief_armor", "窃贼盔甲");
         add("itemGroup.confluence.reinforced_mail_armor", "强化链甲盔甲");
+        add("itemGroup.confluence.stalwart_armor", "忠诚盔甲");
+        add("itemGroup.confluence.mercenary_armor", "雇佣兵盔甲");
+        add("itemGroup.confluence.renegade_armor", "叛节盔甲");
         add("itemGroup.confluence.climbing_armor", "登山盔甲");
         add("itemGroup.confluence.hunters_armor", "猎人盔甲");
         add("itemGroup.confluence.guards_armor", "守卫盔甲");
@@ -1305,6 +1308,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.reinforced_mail_set.0", "5%的概率闪避攻击");
         add("armor_set_bonus.confluence.reinforced_mail_set.1", "7%伤害减免");
         add("armor_set_bonus.confluence.reinforced_mail_set.2", "跳跃后3秒降低移速15%");
+        // 忠诚
+        add("armor_set_bonus.confluence.stalwart_set.0", "7%的概率闪避攻击");
+        add("armor_set_bonus.confluence.stalwart_set.1", "9%伤害减免");
+        add("armor_set_bonus.confluence.stalwart_set.2", "跳跃后3秒降低移速15%");
+        add("armor_set_bonus.confluence.stalwart_set.3", "耐药性效果提供4点护甲值");
+        // 雇佣兵
+        add("armor_set_bonus.confluence.mercenary_set.0", "移动速度降低20%，近战伤害提高20%");
+        // 叛节
+        add("armor_set_bonus.confluence.renegade_set.0", "移动速度降低15%，近战伤害提高20%，近战速度提高30%");
         // 登山
         add("armor_set_bonus.confluence.climbing_set.0", "75%击退抗性");
         add("armor_set_bonus.confluence.climbing_set.1", "被敌怪赋予负面效果时有20%概率免疫");
@@ -3996,6 +4008,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.REINFORCED_MAIL_CHESTPLATE.get(), "强化链甲胸甲");
         add(ArmorItems.REINFORCED_MAIL_LEGGINGS.get(), "强化链甲护腿");
         add(ArmorItems.REINFORCED_MAIL_BOOTS.get(), "强化链甲靴子");
+        add(ArmorItems.STALWART_HELMET.get(), "忠诚头盔");
+        add(ArmorItems.STALWART_CHESTPLATE.get(), "忠诚胸甲");
+        add(ArmorItems.STALWART_LEGGINGS.get(), "忠诚护腿");
+        add(ArmorItems.STALWART_BOOTS.get(), "忠诚靴子");
+        add(ArmorItems.MERCENARY_HELMET.get(), "雇佣兵头盔");
+        add(ArmorItems.MERCENARY_CHESTPLATE.get(), "雇佣兵胸甲");
+        add(ArmorItems.MERCENARY_LEGGINGS.get(), "雇佣兵护腿");
+        add(ArmorItems.MERCENARY_BOOTS.get(), "雇佣兵靴子");
+        add(ArmorItems.RENEGADE_HELMET.get(), "叛节头盔");
+        add(ArmorItems.RENEGADE_CHESTPLATE.get(), "叛节胸甲");
+        add(ArmorItems.RENEGADE_LEGGINGS.get(), "叛节护腿");
+        add(ArmorItems.RENEGADE_BOOTS.get(), "叛节靴子");
         add(ArmorItems.CLIMBING_HELMET.get(), "登山头盔");
         add(ArmorItems.CLIMBING_CHESTPLATE.get(), "登山胸甲");
         add(ArmorItems.CLIMBING_LEGGINGS.get(), "登山护腿");

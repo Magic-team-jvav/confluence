@@ -17,33 +17,19 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.util.VoidSeaHelper;
 
 public class VoidSeaRenderer {
-    /**
-     * 虚空海着色器资源。
-     */
+    /// 虚空海着色器资源。
     public static final ResourceLocation SEA_SHADER_ID = Confluence.asResource("void_sea");
-    /**
-     * 海面基础颜色。
-     */
+    /// 海面基础颜色。
     public static final int COLOR = 0x22000000;
-    /**
-     * 中心细分网格半径（单位：格）。
-     */
+    /// 中心细分网格半径（单位：格）。
     public static final float SIMPLE_MESH_RADIUS = 8.0F * 16.0F;
-    /**
-     * 首层环带单元尺寸（单位：格）。
-     */
+    /// 首层环带单元尺寸（单位：格）。
     public static final float INITIAL_RING_CELL_SIZE = 16.0F;
-    /**
-     * 最小海面渲染半径（单位：格）。
-     */
+    /// 最小海面渲染半径（单位：格）。
     public static final float MIN_RENDER_RADIUS = 256.0F;
-    /**
-     * 视距外扩范围（单位：格）。
-     */
+    /// 视距外扩范围（单位：格）。
     public static final float RENDER_DISTANCE_MARGIN = 32.0F;
-    /**
-     * 纹理动画循环时长（单位：刻）。
-     */
+    /// 纹理动画循环时长（单位：刻）。
     public static final long GAME_TIME_CYCLE = 24000L;
 
     public static void render(RenderLevelStageEvent event, Minecraft minecraft, LocalPlayer player) {
@@ -54,7 +40,6 @@ public class VoidSeaRenderer {
             return;
         }
 
-        // 暂时禁用
 //        if (LibUtils.isModLoaded("iris") && VoidSeaIrisCompat.isRenderingShadowPass()) {
 //            return;
 //        }

@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 public class ModRenderer {
-    /**
-     * 虚空海
-     */
+    /// 虚空海海面
     private static ShaderInstance voidSeaShader;
 
     public static void register(ResourceProvider resourceProvider, RegisterConsumer consumer) throws IOException {

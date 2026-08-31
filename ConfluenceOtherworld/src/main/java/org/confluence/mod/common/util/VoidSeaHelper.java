@@ -8,67 +8,39 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * 虚空海
- */
+/// 虚空海
 public class VoidSeaHelper {
     public static final String ID = "void_sea";
-    /**
-     * 潮位上限（单位：格）。
-     */
+    /// 潮位上限（单位：格）。
     public static final float MAX_HEIGHT = 53.0f;
-    /**
-     * 潮位下限（单位：格）。
-     */
+    /// 潮位下限（单位：格）。
     public static final float MIN_HEIGHT = -64.0f;
-    /**
-     * 潮汐周期（单位：刻）。
-     */
+    /// 潮汐周期（单位：刻）。
     public static final int TIDE_PERIOD = 10000;
-    /**
-     * 非游泳移动加速度。
-     */
+    /// 非游泳移动加速度。
     public static final float MOVEMENT_SPEED = 0.9f;
-    /**
-     * 游泳移动倍率。
-     */
+    /// 游泳移动倍率。
     public static final float SWIMMING_SPEED = 2.0F;
-    /**
-     * 垂直游泳速度（单位：格/刻）。
-     */
+    /// 垂直游泳速度（单位：格/刻）。
     public static final float VERTICAL_MOVEMENT_SPEED = 0.04F;
-    /**
-     * 水平速度保留比例。
-     */
+    /// 水平速度保留比例。
     public static final float HORIZONTAL_MOVEMENT_RESISTANCE = 0.86F;
-    /**
-     * 潮汐影响海面范围（单位：格）。
-     */
+    /// 潮汐影响海面范围（单位：格）。
     public static final float TIDE_SURFACE_RANGE = 3.0F;
-    /**
-     * 跃出加速触发范围（单位：格）。
-     */
+    /// 跃出加速触发范围（单位：格）。
     public static final float SURFACE_EXIT_RANGE = 5.0F;
-    /**
-     * 跃出海面的总速度增量（单位：格/刻）。
-     */
+    /// 跃出海面的总速度增量（单位：格/刻）。
     public static final float SURFACE_EXIT_BOOST = 3.18F;
-    /**
-     * 跃出海面的最小上仰角（单位：度）。
-     */
+    /// 跃出海面的最小上仰角（单位：度）。
     public static final float SURFACE_EXIT_MIN_ANGLE = 15.0F;
-    /**
-     * 跃出海面的最大上仰角（单位：度）。
-     */
+    /// 跃出海面的最大上仰角（单位：度）。
     public static final float SURFACE_EXIT_MAX_ANGLE = 85.0F;
-    /**
-     * 跃出海面的加速分段数（用于换算单刻加速度）。
-     */
+    /// 跃出海面的加速分段数（用于换算单刻加速度）。
     public static final int SURFACE_EXIT_ACCELERATION_TICKS = 10;
-    /**
-     * 跃出海面的单刻加速度（单位：格/刻²）。
-     */
+    /// 跃出海面的单刻加速度（单位：格/刻²）。
     public static final float SURFACE_EXIT_ACCELERATION = SURFACE_EXIT_BOOST / SURFACE_EXIT_ACCELERATION_TICKS;
+
+    // TODO 当前这样在本地出现海面运动不连贯，原因是客户端服务端同时抢一个变量
     // 当前潮位缓存
     private static float height = 0;
     private static float heightO = 0;

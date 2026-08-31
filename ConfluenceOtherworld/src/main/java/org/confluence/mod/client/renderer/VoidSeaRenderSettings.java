@@ -7,108 +7,56 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 
-/**
- * 虚空海多层纹理的默认值与本地测试值。
- * 默认值在重启后恢复；游戏内可使用 {@code /confluence voidSea get} 查看当前值，
- * 使用 {@code /confluence voidSea set <参数> <值>} 临时调整单项参数。
- */
+/// 虚空海多层纹理的值与本地测试值。
+/// 值在重启后恢复；游戏内可使用 {@code /confluence voidSea get} 查看当前值，
+/// 使用 {@code /confluence voidSea set <参数> <值>} 临时调整单项参数。
 public class VoidSeaRenderSettings {
-    /**
-     * 默认叠加层数（单位：层）。
-     */
-    public static final int DEFAULT_LAYER_COUNT = 32;
-    /**
-     * 默认纹理单元的世界尺寸（单位：格）。
-     */
-    public static final float DEFAULT_TILE_SIZE = 128;
-    /**
-     * 默认黑色海面透明度。
-     */
-    public static final float DEFAULT_BASE_ALPHA = 0.45F;
-    /**
-     * 默认纹理细节叠加强度。
-     */
-    public static final float DEFAULT_DETAIL_ALPHA = 0.35F;
-    /**
-     * 默认纹理细节亮度。
-     */
-    public static final float DEFAULT_DETAIL_BRIGHTNESS = 0.7F;
-    /**
-     * 默认纹理流动速度（单位：纹理坐标/刻）。
-     */
-    public static final float DEFAULT_FLOW_SPEED = 2;
-    /**
-     * 默认各层纹理缩放倍率。
-     */
-    public static final float DEFAULT_LAYER_SCALE_STEP = 1.15F;
-    /**
-     * 默认首层色相。
-     */
-    public static final float DEFAULT_HUE = 0.58F;
-    /**
-     * 默认相邻层色相间隔。
-     */
-    public static final float DEFAULT_HUE_STEP = 0.075F;
-    /**
-     * 默认纹理色调饱和度。
-     */
-    public static final float DEFAULT_SATURATION = 0.65F;
-    /**
-     * 默认闪烁亮度变化幅度。
-     */
-    public static final float DEFAULT_FLICKER_INTENSITY = 0.15F;
-    /**
-     * 默认闪烁速度（单位：弧度/刻）。
-     */
-    public static final float DEFAULT_FLICKER_SPEED = 0.07F;
-
-    /**
-     * 当前叠加层数（单位：层）。
-     */
+    /// 叠加层数（单位：层）。
+    private static final int DEFAULT_LAYER_COUNT = 32;
     private static int layerCount = DEFAULT_LAYER_COUNT;
-    /**
-     * 当前纹理单元的世界尺寸（单位：格）。
-     */
+
+    /// 纹理单元的世界尺寸（单位：格）。
+    private static final float DEFAULT_TILE_SIZE = 128;
     private static float tileSize = DEFAULT_TILE_SIZE;
-    /**
-     * 当前黑色海面透明度。
-     */
+
+    /// 黑色海面透明度。
+    public static final float DEFAULT_BASE_ALPHA = 0.45F;
     private static float baseAlpha = DEFAULT_BASE_ALPHA;
-    /**
-     * 当前纹理细节叠加强度。
-     */
+
+    /// 纹理细节叠加强度。
+    private static final float DEFAULT_DETAIL_ALPHA = 0.35F;
     private static float detailAlpha = DEFAULT_DETAIL_ALPHA;
-    /**
-     * 当前纹理细节亮度。
-     */
+
+    /// 纹理细节亮度。
+    private static final float DEFAULT_DETAIL_BRIGHTNESS = 0.7F;
     private static float detailBrightness = DEFAULT_DETAIL_BRIGHTNESS;
-    /**
-     * 当前纹理流动速度（单位：纹理坐标/刻）。
-     */
+
+    /// 纹理流动速度（单位：纹理坐标/刻）。
+    private static final float DEFAULT_FLOW_SPEED = 2;
     private static float flowSpeed = DEFAULT_FLOW_SPEED;
-    /**
-     * 当前各层纹理缩放倍率。
-     */
+
+    /// 各层纹理缩放倍率。
+    private static final float DEFAULT_LAYER_SCALE_STEP = 1.15F;
     private static float layerScaleStep = DEFAULT_LAYER_SCALE_STEP;
-    /**
-     * 当前首层色相。
-     */
+
+    /// 首层色相。
+    private static final float DEFAULT_HUE = 0.58F;
     private static float hue = DEFAULT_HUE;
-    /**
-     * 当前相邻层色相间隔。
-     */
+
+    /// 相邻层色相间隔。
+    private static final float DEFAULT_HUE_STEP = 0.075F;
     private static float hueStep = DEFAULT_HUE_STEP;
-    /**
-     * 当前纹理色调饱和度。
-     */
+
+    /// 纹理色调饱和度。
+    private static final float DEFAULT_SATURATION = 0.65F;
     private static float saturation = DEFAULT_SATURATION;
-    /**
-     * 当前闪烁亮度变化幅度。
-     */
+
+    /// 闪烁亮度变化幅度。
+    private static final float DEFAULT_FLICKER_INTENSITY = 0.15F;
     private static float flickerIntensity = DEFAULT_FLICKER_INTENSITY;
-    /**
-     * 当前闪烁速度（单位：弧度/刻）。
-     */
+
+    /// 闪烁速度（单位：弧度/刻）。
+    private static final float DEFAULT_FLICKER_SPEED = 0.07F;
     private static float flickerSpeed = DEFAULT_FLICKER_SPEED;
 
     public static int getLayerCount() {

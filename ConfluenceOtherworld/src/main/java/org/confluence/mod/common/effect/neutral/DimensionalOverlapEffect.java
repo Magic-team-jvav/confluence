@@ -5,9 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import org.confluence.lib.common.effect.PublicMobEffect;
 import org.confluence.mod.common.util.VoidSeaHelper;
 
-/**
- * 位面交叠
- */
+/// 位面交叠
 public class DimensionalOverlapEffect extends PublicMobEffect {
     public DimensionalOverlapEffect() {
         super(MobEffectCategory.NEUTRAL, 0xAA0000);

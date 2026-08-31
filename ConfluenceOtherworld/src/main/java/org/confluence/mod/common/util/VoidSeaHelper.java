@@ -17,7 +17,7 @@ public class VoidSeaHelper {
     public static final float MIN_HEIGHT = -64.0f;
     /// 潮汐周期（单位：刻）。
     public static final int TIDE_PERIOD = 10000;
-    /// 非游泳移动加速度。
+    /// 非游泳移动倍率。
     public static final float MOVEMENT_SPEED = 0.9f;
     /// 游泳移动倍率。
     public static final float SWIMMING_SPEED = 2.0F;

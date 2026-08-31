@@ -7,8 +7,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 
-/// 虚空海多层纹理的值与本地测试值。
-/// 值在重启后恢复；游戏内可使用 {@code /confluence voidSea get} 查看当前值，
+/// 虚空海多层纹理的值与本地测试值。<br/>
+/// 值在重启后恢复；游戏内可使用 {@code /confluence voidSea get} 查看当前值，<br/>
 /// 使用 {@code /confluence voidSea set <参数> <值>} 临时调整单项参数。
 public class VoidSeaRenderSettings {
     /// 叠加层数（单位：层）。
@@ -112,7 +112,7 @@ public class VoidSeaRenderSettings {
                 .then(Commands.literal("voidSea")
                         .then(Commands.literal("get").executes(context -> show(context.getSource())))
                         .then(Commands.literal("set")
-                                .then(Commands.literal("layers").then(Commands.argument("value", IntegerArgumentType.integer(1, 32)).executes(context -> {
+                                .then(Commands.literal("layers").then(Commands.argument("value", IntegerArgumentType.integer(1, 128)).executes(context -> {
                                     layerCount = IntegerArgumentType.getInteger(context, "value");
                                     return show(context.getSource());
                                 })))

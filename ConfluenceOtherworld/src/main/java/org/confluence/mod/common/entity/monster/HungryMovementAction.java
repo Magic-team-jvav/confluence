@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.monster;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -10,6 +11,7 @@ import org.confluence.mod.common.entity.boss.WallOfFlesh;
 
 /// 驱动饿鬼围绕 Boss 锚点摆动、追击并在椭圆边界外回收。
 final class HungryMovementAction extends BTNode {
+    // 饿鬼系绳追击合成后的最大移动速度，单位为方块/tick。
     private static final double MAX_SPEED = 0.35;
     private final TheHungry hungry;
     private Vec3 direction = Vec3.ZERO;
@@ -70,7 +72,7 @@ final class HungryMovementAction extends BTNode {
     }
 
     private Vec3 pursuitVelocity(LivingEntity target, Vec3 anchor, boolean free, boolean targetInRange) {
-        Vec3 targetPosition = target.position().add(0.0, target.getEyeHeight() * 0.5, 0.0);
+        Vec3 targetPosition = BossMinionCoordinator.predict(target, 4.0D, 3.0D);
         hungry.getLookControl().setLookAt(target, 200.0F, 85.0F);
         hungry.lookAt(target, 200.0F, 85.0F);
         Vec3 towardTarget = targetPosition.subtract(hungry.position()).normalize();

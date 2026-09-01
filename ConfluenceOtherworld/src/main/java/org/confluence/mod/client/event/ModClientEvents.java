@@ -639,13 +639,13 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.EYE_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eye_of_cthulhu"), true, 1.0F, 1.5F));
         event.registerEntityRenderer(BossEntities.SERVANT_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("servant_of_cthulhu")));
         event.registerEntityRenderer(BossEntities.WORM_SEGMENT.get(), BossWormPartRenderer::new);
-        event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds")).withScale(2.2F));
-        event.registerEntityRenderer(BossEntities.QUEEN_BEE.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/queen_bee")));
+        event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds"), true, 2.2F, 0.0F));
+        event.registerEntityRenderer(BossEntities.QUEEN_BEE.get(), QueenBeeRenderer::new);
         event.registerEntityRenderer(BossEntities.BRAIN_OF_CTHULHU.get(), BrainOfCthulhuRenderer::new);
-        event.registerEntityRenderer(BossEntities.BRAIN_FAKE.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/brain_of_cthulhu")));
+        event.registerEntityRenderer(BossEntities.BRAIN_FAKE.get(), BrainFakeRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON.get(), SkeletronBossRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_HAND.get(), SkeletronBossHandRenderer::new);
-        event.registerEntityRenderer(BossEntities.DUNGEON_GUARDIAN.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/skeletron")));
+        event.registerEntityRenderer(BossEntities.DUNGEON_GUARDIAN.get(), DungeonGuardianRenderer::new);
         event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
         event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("visual_neuron")));
         event.registerEntityRenderer(BossEntities.RETINAZER.get(), TwinEyeDissolveRenderer::retinazer);
@@ -679,7 +679,7 @@ public final class ModClientEvents {
                         Confluence.asResource("geo/entity/proj/shadow_hand.geo.json"),
                         Confluence.asResource("textures/entity/proj/shadow_hand.png"),
                         null)));
-        event.registerEntityRenderer(BossEntities.HILL_OF_FLESH.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/hill_of_flesh")));
+        event.registerEntityRenderer(BossEntities.HILL_OF_FLESH.get(), HillOfFleshRenderer::new);
         // 父实体模型已经包含全部眼睛和嘴部网格，这些子实体只承担命中判定，不单独渲染。
         event.registerEntityRenderer(BossEntities.HILL_OF_FLESH_EYE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BossEntities.HILL_OF_FLESH_MOUTH.get(), NoopRenderer::new);
@@ -699,7 +699,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(NpcEntities.CLOTHIER.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/clothier")));
         event.registerEntityRenderer(NpcEntities.MECHANIC.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/mechanic")));
         event.registerEntityRenderer(NpcEntities.PARTY_GIRL.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/party_girl")));
-        // 这两个 1.20 新增 NPC 尚无独立美术资源；使用已存在的城镇 NPC 外观，避免加载缺失模型。
+        // 这两个 NPC 尚无独立美术资源；暂时使用已有的城镇 NPC 外观，避免加载缺失模型。
         event.registerEntityRenderer(NpcEntities.STYLIST.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/party_girl")));
         event.registerEntityRenderer(NpcEntities.TAX_COLLECTOR.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/clothier")));
         event.registerEntityRenderer(NpcEntities.TRUFFLE.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/truffle")));

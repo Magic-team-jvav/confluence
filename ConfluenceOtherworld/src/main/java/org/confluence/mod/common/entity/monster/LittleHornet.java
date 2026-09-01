@@ -10,10 +10,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.entity.boss.QueenBee;
 import org.jetbrains.annotations.Nullable;
@@ -26,10 +28,10 @@ import java.util.UUID;
 
 /// 蜂王召唤的近战幼蜂。
 ///
-/// 幼蜂沿用 1.21 的可观察行为：只响应受击或蜂王每 32 tick 下发的目标，使用飞行导航
+/// 幼蜂只响应受击或蜂王每 32 tick 下发的目标，使用飞行导航
 /// 追近后近战；离蜂王超过 30 格且蜂王所在位置可容纳实体时，回到蜂王上方。所有者追踪器
 /// 只负责跨存档恢复归属，不额外增加持续追踪、强制返航或独立索敌。
-public final class LittleHornet extends Hornet {
+public final class LittleHornet extends Hornet implements BossOwnedEntity {
     private static final RawAnimation WING = RawAnimation.begin().thenLoop("wing");
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(LittleHornet.class, EntityDataSerializers.OPTIONAL_UUID);
 
@@ -48,17 +50,23 @@ public final class LittleHornet extends Hornet {
     public void setMaster(QueenBee master) {
         ownerTracker.bind(this, master);
         entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
     }
 
     public @Nullable QueenBee getMaster() {
         return ownerTracker.resolve(this);
     }
 
+    @Override
+    public @Nullable QueenBee getBossOwner() {
+        return getMaster();
+    }
+
     public @Nullable UUID getMasterUUID() {
         return entityData.get(OWNER_UUID).orElse(null);
     }
 
-    /// 与 1.21 的幼蜂一致，只保留受击反击目标。蜂王每 32 tick 下发的目标不能被
+    /// 只保留受击反击目标。蜂王每 32 tick 下发的目标不能被
     /// 普通黄蜂的最近玩家目标任务覆盖或清除。
     @Override
     protected void registerGoals() {
@@ -88,18 +96,27 @@ public final class LittleHornet extends Hornet {
 
     @Override
     public void tick() {
+        LivingEntity inheritedTarget = null;
+        QueenBee master = null;
+        if (!level().isClientSide && getMasterUUID() != null) {
+            master = ownerTracker.tickDependent(this, true, 100);
+            inheritedTarget = getTarget();
+            if (isRemoved()) return;
+        }
         super.tick();
-        if (level().isClientSide || !isAlive() || (tickCount & 31) != 0) {
+        if (level().isClientSide || !isAlive()) {
             return;
         }
-
-        QueenBee master = getMaster();
+        if (master != null && getTarget() != inheritedTarget) {
+            setTarget(inheritedTarget);
+        }
         if (master == null) {
             return;
         }
-        setTarget(master.getTarget());
-        if (distanceTo(master) > 30.0 && level().getBlockState(master.blockPosition()).isAir()) {
-            setPos(master.getX(), master.getY() + 0.5, master.getZ());
+        if ((tickCount & 31) == 0) {
+            if (distanceTo(master) > 60.0 && level().getBlockState(master.blockPosition()).isAir()) {
+                setPos(master.getX(), master.getY() + 0.5, master.getZ());
+            }
         }
     }
 
@@ -137,9 +154,10 @@ public final class LittleHornet extends Hornet {
         super.remove(reason);
     }
 
-    /// 对应 1.21 的 {@code MeleeAttackGoal(speed=2, followingTargetEvenIfNotSeen=true)}。
+    /// 近战追击允许在短暂失去视线后继续跟随目标。
     /// 节点只保留追路和攻击冷却，不加入冲锋蓄力或锁定方向。
     private final class LittleHornetMeleeNode extends BTNode {
+        // 导航速度倍率与近战命中冷却（tick）；编队等待时使用 75% 速度。
         private static final double MOVE_SPEED = 2.0;
         private static final int ATTACK_INTERVAL = 20;
         private int repathDelay;
@@ -158,9 +176,18 @@ public final class LittleHornet extends Hornet {
                 return BTStatus.FAILURE;
             }
 
+            boolean attackWindow = BossMinionCoordinator.isAttackWindow(LittleHornet.this, 64, 28);
             getLookControl().setLookAt(target, 30.0F, 30.0F);
             if (--repathDelay <= 0) {
-                getNavigation().moveTo(target, MOVE_SPEED);
+                QueenBee master = getMaster();
+                if (master != null && !attackWindow) {
+                    var staging = BossMinionCoordinator.orbitPoint(
+                            LittleHornet.this, target, 5.0D, 1.5D, 0.03D, 8);
+                    getNavigation().moveTo(staging.x, staging.y, staging.z, MOVE_SPEED * 0.75D);
+                } else {
+                    var intercept = BossMinionCoordinator.predict(target, 4.0D, 3.0D);
+                    getNavigation().moveTo(intercept.x, intercept.y, intercept.z, MOVE_SPEED);
+                }
                 repathDelay = 4 + getRandom().nextInt(7);
             }
             if (attackCooldown > 0) {
@@ -169,7 +196,7 @@ public final class LittleHornet extends Hornet {
 
             double reach = getBbWidth() * 2.0F;
             double attackReachSqr = reach * reach + target.getBbWidth();
-            if (distanceToSqr(target) <= attackReachSqr && attackCooldown <= 0) {
+            if (attackWindow && distanceToSqr(target) <= attackReachSqr && attackCooldown <= 0) {
                 attackCooldown = ATTACK_INTERVAL;
                 swing(InteractionHand.MAIN_HAND);
                 doHurtTarget(target);

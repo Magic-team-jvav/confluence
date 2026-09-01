@@ -53,7 +53,8 @@ public class EyeOfCthulhu extends BaseBoss {
 
     private static final int PHASE_ONE_STARE_TICKS = 100;
     private static final int PHASE_TWO_STARE_TICKS = 60;
-    private static final int TRANSFORM_TICKS = 23;
+    // switching 动画资源长度为 1.5 秒，即 30 tick；状态时长必须覆盖完整单次播放。
+    private static final int TRANSFORM_TICKS = 30;
     private static final int PHASE_ONE_WINDUP_TICKS = 20;
     private static final int PHASE_ONE_DASH_TICKS = 10;
     private static final int PHASE_TWO_WINDUP_TICKS = 10;
@@ -63,6 +64,8 @@ public class EyeOfCthulhu extends BaseBoss {
     private static final int PHASE_ONE_SERVANT_COOLDOWN = 20;
     private static final int TRANSFORM_SERVANT_COOLDOWN = 7;
 
+    // 非冲刺阶段以目标眼睛上方 5 方块为悬停中心；其余速度单位均为方块/tick。
+    private static final double HOVER_HEIGHT_ABOVE_TARGET = 5.0;
     private static final double PHASE_ONE_HOVER_SPEED = 0.50;
     private static final double PHASE_TWO_HOVER_SPEED = 0.75;
     private static final double PHASE_ONE_DASH_SPEED = 1.00;
@@ -128,6 +131,14 @@ public class EyeOfCthulhu extends BaseBoss {
         targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
+    /// 白天升空和主动离场期间不再维持攻击目标。
+    ///
+    /// 该阶段由自身状态机控制运动和销毁时机，公共遭遇层只负责把本体及仆从的目标清空。
+    @Override
+    protected boolean shouldMaintainCombatTarget() {
+        return getCombatState() != CombatState.LEAVING && !level().isDay();
+    }
+
     @Override
     public void tick() {
         super.tick();
@@ -173,7 +184,7 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     private void tickStaring(LivingEntity target) {
-        /// 1.21 侧在经典难度且目标距离较远时，有一半概率暂停二阶段凝视计时。
+        /// 经典难度且目标距离较远时，有一半概率暂停二阶段凝视计时。
         /// 这会给远处玩家留下追赶窗口，但专家难度不会因此降低进攻频率。
         if (getCombatStage() != 2 || isExpert() || distanceTo(target) <= 8.0F || random.nextFloat() >= 0.5F) {
             stateTicks++;
@@ -182,7 +193,7 @@ public class EyeOfCthulhu extends BaseBoss {
             if (getHealth() / getMaxHealth() < 0.15F) {
                 stateTicks++;
             }
-            /// 1.21 在这里连续调用两次带冷却的生成入口；效果是冷却每 tick 推进两次，
+            /// 连续调用两次带冷却的生成入口，使冷却每 tick 推进两次，
             /// 不是无冷却地直接生成两只实体。
             tickServantSummoning(PHASE_ONE_SERVANT_COOLDOWN);
             tickServantSummoning(PHASE_ONE_SERVANT_COOLDOWN);
@@ -211,7 +222,6 @@ public class EyeOfCthulhu extends BaseBoss {
         if (getCombatStage() == 2 && isEnhancedDash() && random.nextFloat() < 0.3F) {
             stateTicks++;
         }
-        getLookControl().setLookAt(target, 360.0F, 360.0F);
         faceTowards(target.getEyePosition(), 360.0F, 360.0F);
         setDeltaMovement(getDeltaMovement().scale(0.72).add(0.0, 0.02, 0.0));
         if (getCombatStage() == 2 && distanceToSqr(target) < 20.0) {
@@ -241,15 +251,12 @@ public class EyeOfCthulhu extends BaseBoss {
                 : isEnhancedDash()
                 ? ENHANCED_DASH_SPEED
                 : PHASE_TWO_DASH_SPEED;
+        // 蓄力结束时已经锁定穿过玩家的方向。冲刺期间保持该方向直到时长结束，
+        // 命中玩家只结算接触伤害，不能立即掉头或把这一轮冲刺提前截断。
         setDeltaMovement(lockedDashDirection.scale(speed));
-        Vec3 lookPosition = position().add(lockedDashDirection);
-        getLookControl().setLookAt(lookPosition.x, lookPosition.y, lookPosition.z);
-        faceTowards(lookPosition, 360.0F, 360.0F);
-        if (getBoundingBox().inflate(0.35)
-                .intersects(target.getBoundingBox())) {
-            doHurtTarget(target);
-        }
-
+        // 直接使用冲刺方向。若构造 position+direction 再交给 faceCombatPosition，
+        // 该方法会从眼睛位置相减，额外减去眼高并让模型无故向下俯冲。
+        faceCombatDirection(lockedDashDirection, 360.0F, 360.0F);
         int duration = getCombatStage() == 1
                 ? PHASE_ONE_DASH_TICKS : PHASE_TWO_DASH_TICKS;
         boolean erraticEarlyEnd = getCombatStage() == 2
@@ -276,8 +283,7 @@ public class EyeOfCthulhu extends BaseBoss {
         remainingDashCount = calculatePhaseTwoDashCount();
         lockedDashDirection = Vec3.ZERO;
         setBaseAttribute(Attributes.ARMOR, 0.0);
-        /// 变身动画期间仍保留一阶段接触伤害；1.21 侧是在动画结束回调中
-        /// 才切换疯狂阶段的基础伤害。
+        /// 变身动画期间仍保留一阶段接触伤害，动画结束后再切换疯狂阶段伤害。
         setBaseAttribute(Attributes.ATTACK_DAMAGE, PHASE_ONE_DAMAGE);
         setCombatState(CombatState.TRANSFORMING);
         playSound(ModSoundEvents.HURRIED_ROARING.get(), 1.0F, 1.0F);
@@ -285,7 +291,6 @@ public class EyeOfCthulhu extends BaseBoss {
 
     private void tickTransformation(LivingEntity target) {
         stateTicks++;
-        getLookControl().setLookAt(target, 360.0F, 360.0F);
         faceTowards(target.getEyePosition(), 360.0F, 360.0F);
         setDeltaMovement(getDeltaMovement().scale(0.65));
         tickServantSummoning(TRANSFORM_SERVANT_COOLDOWN);
@@ -305,8 +310,8 @@ public class EyeOfCthulhu extends BaseBoss {
         setTarget(null);
         navigation.stop();
         leavingTicks++;
-        double angle = tickCount * 0.1;
-        setDeltaMovement(Math.cos(angle) * 0.55, 0.45, Math.sin(angle) * 0.55);
+        /// 白天撤离沿竖直方向快速升空。
+        setDeltaMovement(0.0, 0.8, 0.0);
         faceAlongMovement(60.0F, 60.0F);
         if (leavingTicks >= LEAVE_DISCARD_TICKS) {
             discard();
@@ -316,8 +321,8 @@ public class EyeOfCthulhu extends BaseBoss {
     /// 克苏鲁之眼在所有阶段都属于真正的飞行实体。
     ///
     /// 不能只在构造器调用一次 {@link #setNoGravity(boolean)}：实体加入世界后的通用
-    /// 状态恢复、微光处理以及网络标志同步都可能重新写入该标志。1.21 侧同样通过覆盖
-    /// 此查询保持永久无重力，否则在水体中或没有合格目标时会逐渐沉底。
+    /// 状态恢复、微光处理以及网络标志同步都可能重新写入该标志，因此覆盖
+    /// 此查询保持永久无重力，避免在水体中或没有合格目标时逐渐沉底。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -325,7 +330,7 @@ public class EyeOfCthulhu extends BaseBoss {
 
     /// 把悬停目标设置在玩家上方，并使用惯性收敛避免每 tick 瞬间改向。
     private void hoverAboveTarget(LivingEntity target) {
-        Vec3 destination = target.position().add(0.0, 3.0, 0.0);
+        Vec3 destination = target.position().add(0.0, HOVER_HEIGHT_ABOVE_TARGET, 0.0);
         Vec3 offset = destination.subtract(position());
         double speed = getCombatStage() == 1
                 ? PHASE_ONE_HOVER_SPEED : PHASE_TWO_HOVER_SPEED;
@@ -335,7 +340,6 @@ public class EyeOfCthulhu extends BaseBoss {
         } else {
             setDeltaMovement(getDeltaMovement().scale(0.80));
         }
-        getLookControl().setLookAt(target, 30.0F, 30.0F);
         faceTowards(target.getEyePosition(), 30.0F, 30.0F);
     }
 
@@ -348,26 +352,12 @@ public class EyeOfCthulhu extends BaseBoss {
     /// 客户端就可能看到 Boss 贴地滑行、侧脸滑动或不正面朝向玩家。这里不改变速度、阶段时长、
     /// 召唤物和伤害，只补齐渲染所依赖的朝向数据。
     private void faceTowards(Vec3 targetPosition, float maxYawChange, float maxPitchChange) {
-        Vec3 direction = targetPosition.subtract(position());
-        if (direction.lengthSqr() < 1.0E-6) {
-            return;
-        }
-        double horizontal = Math.sqrt(direction.x * direction.x + direction.z * direction.z);
-        float targetYaw = (float) (Math.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
-        float targetPitch = (float) (-(Math.atan2(direction.y, horizontal) * Mth.RAD_TO_DEG));
-        setYRot(Mth.rotateIfNecessary(getYRot(), targetYaw, maxYawChange));
-        setXRot(Mth.rotateIfNecessary(getXRot(), targetPitch, maxPitchChange));
-        yBodyRot = getYRot();
-        yHeadRot = getYRot();
+        faceCombatPosition(targetPosition, maxYawChange, maxPitchChange);
     }
 
     /// 没有明确目标时沿当前速度方向修正朝向，用于脱战离场和短暂失去目标的惯性阶段。
     private void faceAlongMovement(float maxYawChange, float maxPitchChange) {
-        Vec3 velocity = getDeltaMovement();
-        if (velocity.lengthSqr() < 1.0E-6) {
-            return;
-        }
-        faceTowards(position().add(velocity), maxYawChange, maxPitchChange);
+        faceCombatMovement(maxYawChange, maxPitchChange);
     }
 
     private Vec3 createDashDirection(LivingEntity target) {
@@ -423,7 +413,9 @@ public class EyeOfCthulhu extends BaseBoss {
         servant.setPos(position().subtract(backward.normalize()));
         servant.setMaster(this);
         servant.setTarget(getTarget());
-        serverLevel.addFreshEntity(servant);
+        if (!serverLevel.addFreshEntity(servant)) {
+            servant.discard();
+        }
     }
 
     private void setDashAttackDamage() {
@@ -494,8 +486,8 @@ public class EyeOfCthulhu extends BaseBoss {
 
     @Override
     public boolean canAttack(LivingEntity target) {
-        /// 1.21 的仆从直接使用 DemonEye 子类，因此原实现排除 DemonEye 就不会误伤仆从。
-        /// 1.20 为了持久化所有权使用独立实体类型，必须同时排除该等价类型。
+        /// 仆从属于恶魔眼行为族，必须显式排除同阵营实体以免互相伤害。
+        /// 所有权持久化使用独立实体类型，必须同时排除该等价类型。
         return super.canAttack(target)
                 && !(target instanceof DemonEye)
                 && !(target instanceof ServantOfCthulhu);
@@ -518,7 +510,8 @@ public class EyeOfCthulhu extends BaseBoss {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Controller", 5, state -> state.setAndContinue(animationForCurrentState())));
+        // 变身是一段严格的一次性拓扑切换动画，不能用 5 tick 淡入吞掉开头关键帧。
+        controllers.add(new AnimationController<>(this, "Controller", 0, state -> state.setAndContinue(animationForCurrentState())));
     }
 
     private RawAnimation animationForCurrentState() {

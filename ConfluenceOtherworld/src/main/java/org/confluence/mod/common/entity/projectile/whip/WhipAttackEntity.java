@@ -54,7 +54,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     private static final EntityDataAccessor<Boolean> RIGHT_ARM = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DURATION_TICKS = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SWEEP_LEVEL = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.INT);
-    /// 1.21 的轨迹以 16 个局部单位表示，因此每点鞭距属性对应 1.6 格世界距离。
+    /// 轨迹以 16 个局部单位表示，因此每点鞭距属性对应 1.6 格世界距离。
     private static final double RANGE_ATTRIBUTE_SCALE = 1.6;
     public static final double RENDER_SEGMENT_SPACING = 0.22;
 
@@ -64,7 +64,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     private boolean durabilityConsumed;
     /// 本次挥鞭的服务端判定原点。
     ///
-    /// 1.21 会让鞭子实体自身向前运动并在后半程收回，但伤害关键点始终以生成位置为基准。
+    /// 鞭子实体自身向前运动并在后半程收回，但伤害关键点始终以生成位置为基准。
     /// 因此这里单独保存判定原点，不能直接拿不断变化的实体坐标计算命中区域。
     private Vec3 attackOrigin;
 
@@ -148,7 +148,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         }
     }
 
-    /// 还原 1.21 挥鞭实体的可见根部运动：前半程加速甩出，后半程逐渐收回玩家身边。
+    /// 驱动挥鞭实体的可见根部运动：前半程加速甩出，后半程逐渐收回玩家身边。
     /// 该位移只影响曲线外观，服务端命中仍由 {@link #attackOrigin} 固定在发射位置。
     private void tickVisibleRootMotion(LivingEntity owner) {
         Vec3 movement = getDeltaMovement();
@@ -210,7 +210,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
     ///
     /// 服务端命中点需要冻结在发射时的手部位置；客户端显示则需要把后续控制点叠加
     /// 鞭实体的甩出/收回位移，再由渲染器把根部吸附到玩家当前手上。这样既保留
-    /// 1.21 的“手部参与样条”的甩动观感，也不改变实际命中区域。
+    /// 保留“手部参与样条”的甩动观感，也不改变实际命中区域。
     public List<Vec3> sampleRenderControlPoints(float partialTick) {
         WhipDefinition definition = definition();
         LivingEntity owner = getLivingOwner();
@@ -232,7 +232,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return List.copyOf(result);
     }
 
-    /// 将当前动画的少量控制点转换到世界坐标，供 1.21 方块命中语义使用。
+    /// 将当前动画的少量控制点转换到世界坐标，供方块命中检测使用。
     private List<Vec3> sampleWorldControlPoints(LivingEntity owner, WhipDefinition definition) {
         return sampleWorldControlPoints(owner, definition, 0.0F);
     }
@@ -295,32 +295,33 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             bounds = bounds.minmax(curveBounds(previousCurve));
         }
         List<Entity> candidates = level().getEntities(this, bounds.inflate(radius), rawTarget -> {
-            Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
+            Entity identity = ProjectileHitRules.dedupeIdentity(rawTarget);
             LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
             return logicalTarget != null
-                    && impacted != owner
-                    && canHitAgain(impacted.getUUID())
+                    && logicalTarget != owner
+                    && canHitAgain(identity.getUUID())
                     && (ProjectileHitRules.canHit(owner, rawTarget)
                     || isFriendlySummon(owner, logicalTarget, definition));
         });
         for (Entity rawTarget : candidates) {
-            Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
+            Entity damageRecipient = ProjectileHitRules.damageRecipient(rawTarget);
+            Entity identity = ProjectileHitRules.dedupeIdentity(rawTarget);
             LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
-            if (logicalTarget == null || !canHitAgain(impacted.getUUID())) {
+            if (logicalTarget == null || !canHitAgain(identity.getUUID())) {
                 continue;
             }
             if (!WhipCollisionGeometry.intersectsSweptCurve(previousCurve, currentCurve, rawTarget.getBoundingBox().inflate(radius))) {
                 continue;
             }
             if (!definition.penetratesBlocks() && !canReachTarget(owner, rawTarget)) {
-                delayNextHit(impacted.getUUID(), definition);
+                delayNextHit(identity.getUUID(), definition);
                 continue;
             }
             if (applyFriendlyHit(owner, logicalTarget, definition)) {
-                delayNextHit(impacted.getUUID(), definition);
+                delayNextHit(identity.getUUID(), definition);
                 continue;
             }
-            hitTarget(owner, impacted, logicalTarget, definition);
+            hitTarget(owner, damageRecipient, logicalTarget, identity, definition);
         }
     }
 
@@ -334,7 +335,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         return result;
     }
 
-    /// 还原 1.21 鞭子对附近方块触发 {@code onProjectileHit} 的行为。
+    /// 让鞭子对附近方块触发 {@code onProjectileHit} 行为。
     ///
     /// 方块扫描使用原始动画控制点而不是渲染插值点，否则提高鞭节精度会意外放大服务端工作量。
     /// 同一次挥动内按方块坐标去重，避免同一方块在相邻帧和相邻控制点被重复触发。
@@ -355,15 +356,16 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         }
     }
 
-    private void hitTarget(LivingEntity owner, Entity impacted, LivingEntity logicalTarget, WhipDefinition definition) {
-        if (!canHitAgain(impacted.getUUID())) {
+    private void hitTarget(LivingEntity owner, Entity damageRecipient, LivingEntity logicalTarget,
+                           Entity identity, WhipDefinition definition) {
+        if (!canHitAgain(identity.getUUID())) {
             return;
         }
         float baseDamage = getDamage() > 0.0F ? getDamage() : definition.baseDamage();
         float multiplier = Math.max(definition.minimumDamageMultiplier(), (float) Math.pow(definition.damageFalloff(), successfulHits));
         float damage = baseDamage * multiplier
                 * (1.0F + sweepLevel() * 0.2F);
-        delayNextHit(impacted.getUUID(), definition);
+        delayNextHit(identity.getUUID(), definition);
         int hitIndex = successfulHits++;
         if (owner instanceof Player player) {
             consumeDurabilityAfterFirstEnemyHit(player);
@@ -372,7 +374,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
             WhipDirectHitContext context = new WhipDirectHitContext(player, logicalTarget, weapon(), damage, hitIndex);
             definition.directHitEffects().forEach(effect -> effect.apply(context));
         }
-        LibDamageTypes.hurtWithoutKnockback(impacted, LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), damage);
+        LibDamageTypes.hurtWithoutKnockback(damageRecipient,
+                LibDamageTypes.of(level(), LibDamageTypes.SUMMON, this, owner), damage);
     }
 
     private boolean canHitAgain(UUID targetId) {
@@ -383,7 +386,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
         nextHitTicks.put(targetId, tickCount + definition.hitCooldownTicks());
     }
 
-    /// 1.21 只在本次挥动首次命中合法敌人后消耗一点耐久。
+    /// 只在本次挥动首次命中合法敌人后消耗一点耐久。
     private void consumeDurabilityAfterFirstEnemyHit(Player player) {
         if (durabilityConsumed) {
             return;
@@ -445,7 +448,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile {
 
     /// 一次挥鞭只在当前攻击时段存在，不能跨世界保存。
     ///
-    /// 这与 1.21 的挥鞭实体一致，也避免重新载入时只恢复通用弹幕快照、却缺少挥动进度和
+    /// 这样也避免重新载入时只恢复通用弹幕快照、却缺少挥动进度和
     /// 轨迹历史而生成残缺攻击。
     @Override
     public boolean shouldBeSaved() {

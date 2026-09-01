@@ -21,15 +21,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
+import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
-public class BaseSlime extends BaseMonster {
+public class BaseSlime extends BaseMonster implements BossOwnedEntity {
     protected static final String SIZE_KEY = "SlimeSize";
     private static final int HONEY_SOAK_CHECKS_REQUIRED = 120;
     private static final EntityDataAccessor<Integer> DATA_SIZE = SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
@@ -40,6 +45,7 @@ public class BaseSlime extends BaseMonster {
     private float targetSquish;
     private boolean wasOnGround;
     private int honeySoakTime;
+    private final BossOwnerTracker<BaseBoss> bossOwnerTracker = new BossOwnerTracker<>(BaseBoss.class);
 
     public BaseSlime(EntityType<? extends BaseSlime> type, Level level) {
         this(type, level, 0x48E920, false, 2);
@@ -95,6 +101,21 @@ public class BaseSlime extends BaseMonster {
         return entityData.get(DATA_SIZE);
     }
 
+    public void setBossOwner(BaseBoss owner) {
+        bossOwnerTracker.bind(this, owner);
+        setPersistenceRequired();
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
+    }
+
+    @Override
+    public BaseBoss getBossOwner() {
+        return bossOwnerTracker.resolve(this);
+    }
+
+    public java.util.UUID getBossOwnerUUID() {
+        return bossOwnerTracker.getOwnerUUID();
+    }
+
     protected void setSlimeSize(int size) {
         int clampedSize = Mth.clamp(size, 1, 127);
         entityData.set(DATA_SIZE, clampedSize);
@@ -116,13 +137,14 @@ public class BaseSlime extends BaseMonster {
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         float logicalSize = 0.52F * getSlimeSize();
-        return EntityDimensions.scalable(logicalSize, logicalSize).scale(getVisualScale());
+        return EntityDimensions.scalable(logicalSize, logicalSize).scale(getVisualScale() * getScale());
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt(SIZE_KEY, getSlimeSize());
+        bossOwnerTracker.save(tag);
     }
 
     @Override
@@ -131,6 +153,7 @@ public class BaseSlime extends BaseMonster {
         if (tag.contains(SIZE_KEY, net.minecraft.nbt.Tag.TAG_INT)) {
             setSlimeSize(tag.getInt(SIZE_KEY));
         }
+        bossOwnerTracker.load(tag);
     }
 
     /// 按史莱姆类型执行 1.21 侧现有的自然生成分层规则。
@@ -186,6 +209,13 @@ public class BaseSlime extends BaseMonster {
 
     @Override
     public void tick() {
+        LivingEntity inheritedTarget = null;
+        boolean bossOwned = !level().isClientSide && getBossOwnerUUID() != null;
+        if (bossOwned) {
+            bossOwnerTracker.tickDependent(this, true, 100);
+            inheritedTarget = getTarget();
+            if (isRemoved()) return;
+        }
         if (!level().isClientSide) {
             updateHoneySoaking();
             if (isRemoved()) {
@@ -195,6 +225,9 @@ public class BaseSlime extends BaseMonster {
         oldSquish = squish;
         boolean groundedBeforeTick = onGround();
         super.tick();
+        if (bossOwned && getTarget() != inheritedTarget) {
+            setTarget(inheritedTarget);
+        }
         if (onGround() && !groundedBeforeTick) {
             targetSquish = -0.5F;
         } else if (!onGround() && wasOnGround) {
@@ -203,6 +236,18 @@ public class BaseSlime extends BaseMonster {
         squish += (targetSquish - squish) * 0.5F;
         targetSquish *= 0.6F;
         wasOnGround = onGround();
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        BaseBoss owner = getBossOwner();
+        return target != owner && (owner == null || owner.canAttack(target)) && super.canAttack(target);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        bossOwnerTracker.unbind(this);
+        super.remove(reason);
     }
 
     /// 连续驱动史莱姆移动的行为节点。
@@ -236,8 +281,15 @@ public class BaseSlime extends BaseMonster {
 
             LivingEntity target = slime.getTarget();
             if (target != null && target.isAlive() && slime.canAttack(target)) {
-                slime.lookAt(target, 10.0F, 10.0F);
-                control.setDirection(slime.getYRot(), slime.isEffectiveAi());
+                Vec3 pursuit = slime.getPursuitPosition(target);
+                Vec3 horizontal = new Vec3(
+                        pursuit.x - slime.getX(), 0.0D, pursuit.z - slime.getZ());
+                if (horizontal.lengthSqr() > 1.0E-7D) {
+                    float wantedYaw = (float) (Mth.atan2(-horizontal.x, horizontal.z) * Mth.RAD_TO_DEG);
+                    control.setDirection(wantedYaw, slime.isEffectiveAi());
+                } else {
+                    control.setDirection(slime.getYRot(), slime.isEffectiveAi());
+                }
                 control.setWantedMovement(1.0);
                 return BTStatus.RUNNING;
             }
@@ -252,6 +304,12 @@ public class BaseSlime extends BaseMonster {
             }
             return BTStatus.RUNNING;
         }
+    }
+
+    protected Vec3 getPursuitPosition(LivingEntity target) {
+        return getBossOwnerUUID() == null
+                ? target.position()
+                : BossMinionCoordinator.predict(target, 3.0D, 2.5D);
     }
 
     /// 复刻原版史莱姆的移动控制器。行为树只提供朝向、速度和是否处于攻击状态；真正的

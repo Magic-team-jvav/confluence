@@ -4,7 +4,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.language.*;
 import org.confluence.mod.common.init.ModEffects;
@@ -23,13 +22,6 @@ public class ModChineseProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        // 先为没有专用译名的实体提供兜底名称；后续显式中文翻译必须能够覆盖它。
-        ModEntities.getEntities().forEach(register -> register.getEntries()
-                .forEach(entity -> {
-                    if (entity.getId() != null) {
-                        add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath()));
-                    }
-                }));
         addMountAndHostileProjectileTranslations();
         add("tooltip.confluence.rideable_item.desc", "按下快捷键以骑乘。默认 R 键");
 
@@ -4798,8 +4790,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(BossEntities.KING_SLIME.get(), "史莱姆王");
         add(BossEntities.EYE_OF_CTHULHU.get(), "克苏鲁之眼");
         add(BossEntities.SERVANT_OF_CTHULHU.get(), "克苏鲁之仆");
-        add(BossEntities.EATER_OF_WORLDS.get(), "世界吞噬怪");
-        add(BossEntities.WORM_SEGMENT.get(), "世界吞噬怪体节");
+        add(BossEntities.EATER_OF_WORLDS.get(), "世界吞噬者");
+        add(BossEntities.WORM_SEGMENT.get(), "世界吞噬者体节");
         add(BossEntities.BRAIN_OF_CTHULHU.get(), "克苏鲁之脑");
         add(BossEntities.BRAIN_FAKE.get(), "克苏鲁之脑幻象");
         add(BossEntities.QUEEN_BEE.get(), "蜂王");

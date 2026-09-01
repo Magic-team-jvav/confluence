@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.entity;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.DataResult;
@@ -30,12 +31,13 @@ import java.util.Set;
 /// {@code kubejs/data/confluence/entity_definition/face_monster.json}
 /// 对应 {@code confluence:face_monster}。若要覆盖其他模组实体，则将目录中的命名空间换成目标模组 ID。
 public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadListener {
-    private static final Set<String> ATTRIBUTE_FIELDS = Set.of("max_health", "attack_damage", "armor", "movement_speed", "follow_range", "knockback_resistance");
+    private static final Set<String> ATTRIBUTE_FIELDS = Set.of("max_health", "attack_damage", "armor", "movement_speed", "follow_range", "knockback_resistance", "scale");
     private static final Set<String> BEHAVIOR_FIELDS = Set.of(
             "move_speed", "melee_range", "attack_range", "wander_speed", "wander_radius",
             "idle_ticks", "charge_speed", "windup_ticks", "shot_cooldown",
             "shot_multiplier", "projectile_speed", "preferred_range", "retreat_range",
             "orbit_speed", "orbit_radius", "health_regeneration");
+    private static final Set<String> BOSS_FIELDS = Set.of("damage_multiplier");
 
     /// 当前重载轮次的只读快照；volatile 保证网络/服务器线程看到完整替换结果。
     private static volatile Map<EntityType<?>, CreatureDefinition> definitions = Map.of();
@@ -71,6 +73,7 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
         setBaseValue(mob, Attributes.MOVEMENT_SPEED, overrides.movementSpeed());
         setBaseValue(mob, Attributes.FOLLOW_RANGE, overrides.followRange());
         setBaseValue(mob, Attributes.KNOCKBACK_RESISTANCE, overrides.knockbackResistance());
+        setBaseValue(mob, PortAttributesExtension.scale().value(), overrides.scale());
 
         if (wasFullHealth) {
             mob.setHealth(mob.getMaxHealth());
@@ -124,7 +127,8 @@ public final class CreatureDefinitionLoader extends SimpleJsonResourceReloadList
         }
         boolean attributesValid = hasNumericFields(id, element, "attributes", ATTRIBUTE_FIELDS);
         boolean behaviorValid = hasNumericFields(id, element, "behavior", BEHAVIOR_FIELDS);
-        return attributesValid && behaviorValid;
+        boolean bossValid = hasNumericFields(id, element, "boss", BOSS_FIELDS);
+        return attributesValid && behaviorValid && bossValid;
     }
 
     private static boolean hasNumericFields(ResourceLocation id, JsonElement root, String sectionName, Set<String> fields) {

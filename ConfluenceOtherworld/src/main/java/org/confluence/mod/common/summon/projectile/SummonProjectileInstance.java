@@ -25,6 +25,7 @@ import java.util.UUID;
 
 /// 由玩家召唤附件容器维护的非实体弹幕。
 public abstract class SummonProjectileInstance implements OwnedSummon, Immunity {
+    // 非实体召唤弹幕最多存在五秒；碰撞箱向外扩张 0.75 方块补偿快速移动。
     private static final int MAX_LIFETIME = 100;
     private static final double COLLISION_INFLATION = 0.75;
     private final UUID uuid = UUID.randomUUID();
@@ -124,7 +125,7 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
     }
 
     private void hit(Entity rawTarget) {
-        Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
+        Entity damageRecipient = ProjectileHitRules.damageRecipient(rawTarget);
         LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
         if (logicalTarget == null) {
             removed = true;
@@ -134,11 +135,14 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
         damage = WhipTagTracker.modifyDamage(owner, this, logicalTarget, damage);
         DamageSource damageSource = LibDamageTypes.of(owner.level(), LibDamageTypes.SUMMONER, owner);
         onImpact(logicalTarget);
-        if (impacted instanceof LivingEntity target) {
-            if (Immunity.hurt(this, target, damageSource, damage)) applyKnockback(target);
+        boolean hurt;
+        if (damageRecipient instanceof LivingEntity target) {
+            hurt = Immunity.hurt(this, target, damageSource, damage);
         } else {
-            impacted.hurt(damageSource, damage);
+            float resolvedDamage = damage;
+            hurt = Immunity.withCause(this, () -> damageRecipient.hurt(damageSource, resolvedDamage));
         }
+        if (hurt) applyKnockback(logicalTarget);
         removed = true;
     }
 

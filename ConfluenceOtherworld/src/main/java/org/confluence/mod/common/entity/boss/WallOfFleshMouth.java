@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 /// 血肉墙的嘴；每张嘴独立分批吐出水蛭。
 public final class WallOfFleshMouth extends WallOfFleshPart {
+    // 嘴部本地护甲在伤害转发前生效；每 400 tick 开始一轮，并以 10 tick 间隔分批生成水蛭。
     private static final float LOCAL_ARMOR = 12.0F;
     private static final int BASE_SUMMON_INTERVAL = 400;
     private static final int SPAWN_INTERVAL = 10;
@@ -79,7 +80,7 @@ public final class WallOfFleshMouth extends WallOfFleshPart {
         leech.setTarget(target);
         leech.setBossOwner(master);
         if (!serverLevel.addFreshEntity(leech)) {
-            master.removeSubEntity(leech);
+            leech.discard();
         }
     }
 }

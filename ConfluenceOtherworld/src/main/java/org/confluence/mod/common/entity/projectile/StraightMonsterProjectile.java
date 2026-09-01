@@ -19,11 +19,13 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 /// 本类统一处理飞行、实体与方块碰撞、伤害来源、阵营过滤和寿命。
 /// 具体弹幕只需要提供初始参数，并可通过 {@link #modifyVelocity(Vec3)}
 /// 实现加速、减速等运动差异，避免每种远程生物重复一整套碰撞代码。
-public abstract class StraightMonsterProjectile extends Projectile implements IPortProjectileExtension {
+public abstract class StraightMonsterProjectile extends Projectile
+        implements IPortProjectileExtension {
     private float damage;
     private int maximumLifetime = 100;
 
-    protected StraightMonsterProjectile(EntityType<? extends StraightMonsterProjectile> type, Level level) {
+    protected StraightMonsterProjectile(
+            EntityType<? extends StraightMonsterProjectile> type, Level level) {
         super(type, level);
         setNoGravity(true);
     }
@@ -32,14 +34,34 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
     ///
     /// 伤害取自发射瞬间的生物属性，之后即使发射者属性发生变化，
     /// 已存在的弹幕也不会被追溯修改。
-    public final void configure(Mob owner, LivingEntity target, float damage, float velocity, float inaccuracy, int maximumLifetime) {
+    public final void configure(
+            Mob owner,
+            LivingEntity target,
+            float damage,
+            float velocity,
+            float inaccuracy,
+            int maximumLifetime) {
         Vec3 origin = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-        configureAimed(owner, origin, target.getEyePosition().subtract(origin), damage, velocity, inaccuracy, maximumLifetime);
+        configureAimed(
+                owner,
+                origin,
+                target.getEyePosition().subtract(origin),
+                damage,
+                velocity,
+                inaccuracy,
+                maximumLifetime);
     }
 
     /// 使用调用方给出的出生点和瞄准向量配置带散布的直线弹幕。
-    /// 该入口用于保留少数 1.21 实体并非朝目标眼睛射击的原始行为。
-    protected final void configureAimed(Mob owner, Vec3 origin, Vec3 aim, float damage, float velocity, float inaccuracy, int maximumLifetime) {
+    /// 该入口供少数不以目标眼睛为瞄准点的弹幕使用。
+    protected final void configureAimed(
+            Mob owner,
+            Vec3 origin,
+            Vec3 aim,
+            float damage,
+            float velocity,
+            float inaccuracy,
+            int maximumLifetime) {
         setOwner(owner);
         this.damage = damage;
         this.maximumLifetime = maximumLifetime;
@@ -52,7 +74,8 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
     /// 该入口供抛射物、延迟突进物等不直接瞄准目标的弹幕使用。
     /// 调用方仍然必须显式提供伤害快照和寿命，弹幕不会在后续 tick
     /// 重新读取发射者属性。
-    public final void configure(Mob owner, Vec3 origin, Vec3 velocity, float damage, int maximumLifetime) {
+    public final void configure(
+            Mob owner, Vec3 origin, Vec3 velocity, float damage, int maximumLifetime) {
         setOwner(owner);
         this.damage = damage;
         this.maximumLifetime = maximumLifetime;
@@ -76,7 +99,8 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
         }
 
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        if (hitResult.getType() != HitResult.Type.MISS && !PortProjectileImpactEvent.onProjectileImpact(this, hitResult)) {
+        if (hitResult.getType() != HitResult.Type.MISS
+                && !PortProjectileImpactEvent.onProjectileImpact(this, hitResult)) {
             hitTargetOrDeflectSelf(hitResult);
         }
         if (isRemoved()) {
@@ -97,7 +121,9 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (result.getEntity() instanceof LivingEntity target && getOwner() instanceof Mob owner && owner.canAttack(target)) {
+        if (result.getEntity() instanceof LivingEntity target
+                && getOwner() instanceof Mob owner
+                && owner.canAttack(target)) {
             if (target.hurt(damageSources().mobProjectile(this, owner), damage)) {
                 onSuccessfulHit(owner, target);
             }
@@ -122,5 +148,5 @@ public abstract class StraightMonsterProjectile extends Projectile implements IP
                 && getOwner() instanceof Mob owner
                 && owner.canAttack(living)
                 && super.canHitEntity(target);
-    }
+  }
 }

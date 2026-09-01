@@ -73,7 +73,8 @@ public final class DeerclopsIcePillarProjectile extends Projectile {
         Vec3 direction = new Vec3(axis.x(), axis.y(), axis.z()).normalize();
         for (int blockIndex = 0; blockIndex < visibleBlocks; blockIndex++) {
             Vec3 center = position().add(direction.scale(blockIndex + 0.5));
-            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().move(center.subtract(position())).inflate(0.35), owner::canAttack)) {
+            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().move(center.subtract(position())).inflate(0.35),
+                    target -> target != owner && owner.canAttack(target))) {
                 if (hitEntities.add(target.getUUID()) && target.hurt(damageSources().mobProjectile(this, owner), damage)) {
                     target.addEffect(new MobEffectInstance(ModEffects.FROST_BURN.get(), 100));
                 }
@@ -85,6 +86,7 @@ public final class DeerclopsIcePillarProjectile extends Projectile {
     public boolean canHitEntity(Entity target) {
         return target instanceof LivingEntity living
                 && getOwner() instanceof Mob owner
+                && living != owner
                 && owner.canAttack(living)
                 && !hitEntities.contains(target.getUUID());
     }

@@ -7,8 +7,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
 import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.Nullable;
@@ -20,13 +22,10 @@ import java.util.UUID;
 /// 普通自然生成变种没有 Boss 所有者；由血肉类 Boss 召唤的血蛭可以显式绑定精确
 /// UUID，并在区块反向加载后恢复双向关系。是否作为从属完全由实例数据决定，不需要为
 /// 同一种血蛭再注册一套重复实体类型。
-public class SimpleWormMonster extends BaseWormMonster {
-    private static final int OWNER_RESOLVE_GRACE_TICKS = 100;
-
+public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntity {
     private final int segments;
     private final Role role;
     private final BossOwnerTracker<BaseBoss> ownerTracker = new BossOwnerTracker<>(BaseBoss.class);
-    private int unresolvedOwnerTicks;
 
     public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, int segments) {
         this(type, level, segments, Role.UNDERGROUND);
@@ -72,9 +71,10 @@ public class SimpleWormMonster extends BaseWormMonster {
 
     public void setBossOwner(BaseBoss owner) {
         ownerTracker.bind(this, owner);
-        unresolvedOwnerTicks = 0;
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
     }
 
+    @Override
     public @Nullable BaseBoss getBossOwner() {
         return ownerTracker.resolve(this);
     }
@@ -89,21 +89,16 @@ public class SimpleWormMonster extends BaseWormMonster {
 
     @Override
     public void tick() {
+        LivingEntity inheritedTarget = null;
+        boolean owned = !level().isClientSide && getBossOwnerUUID() != null;
+        if (owned) {
+            ownerTracker.tickDependent(this, true, 100);
+            inheritedTarget = getTarget();
+            if (isRemoved()) return;
+        }
         super.tick();
-        if (level().isClientSide || getBossOwnerUUID() == null) {
-            return;
-        }
-        BaseBoss owner = getBossOwner();
-        if (owner != null && owner.isAlive()) {
-            unresolvedOwnerTicks = 0;
-            if (getTarget() == null && owner.getTarget() != null && owner.getTarget().isAlive()) {
-                setTarget(owner.getTarget());
-            }
-            return;
-        }
-        setTarget(null);
-        if (++unresolvedOwnerTicks > OWNER_RESOLVE_GRACE_TICKS) {
-            discard();
+        if (owned && getTarget() != inheritedTarget) {
+            setTarget(inheritedTarget);
         }
     }
 
@@ -128,7 +123,6 @@ public class SimpleWormMonster extends BaseWormMonster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
-        unresolvedOwnerTicks = 0;
     }
 
     @Override

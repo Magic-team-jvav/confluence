@@ -13,6 +13,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.PartHitTarget;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.monster.WormSegment;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -22,17 +24,21 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.UUID;
 
 /// 由 {@link BaseWormBoss} 头部管理的临时身体或尾部实体。
 ///
 /// 体节把伤害转交给具有权威状态的头部；区块重新加载后也由头部重建整条体节链。
 /// 因此体节只保存恢复归属所需的最小信息，不能独立决定 Boss 生命周期。
-public class BossWormPart extends Entity implements WormSegment, GeoEntity {
+public class BossWormPart extends Entity implements WormSegment, GeoEntity, PartHitTarget {
+    // 不同 Boss 体节的接触伤害，以及一次命中后的冷却（tick）。
     private static final float EATER_COLLISION_DAMAGE = 4.0F;
     private static final float DESTROYER_COLLISION_DAMAGE = 66.0F;
     private static final int COLLISION_COOLDOWN = 10;
+    // 允许本体后到达的网络/区块加载宽限，单位为 tick。
     private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
+    // 世界吞噬者体节吐腐化物的基础周期、随机附加延迟（tick）和基础伤害。
     private static final int EATER_SPIT_INTERVAL = 200;
     private static final int EATER_SPIT_RANDOM_DELAY = 50;
     private static final float EATER_SPIT_DAMAGE = 5.0F;
@@ -45,6 +51,7 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> TAIL = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> SEGMENT_HEALTH = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> HURT_FLASH_TICKS = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DESTROYER_FLAPS_OPEN = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Float> DESTROYER_SEGMENT_ROLL = SynchedEntityData.defineId(BossWormPart.class, EntityDataSerializers.FLOAT);
 
@@ -56,6 +63,13 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     private int eaterSpitCooldown = EATER_SPIT_INTERVAL;
     private boolean destroyerDimensions;
     private float previousSegmentRoll;
+    private @Nullable Vec3 contactSweepStart;
+    private int clientLerpSteps;
+    private double clientLerpX;
+    private double clientLerpY;
+    private double clientLerpZ;
+    private float clientLerpYaw;
+    private float clientLerpPitch;
 
     public BossWormPart(EntityType<? extends BossWormPart> type, Level level) {
         super(type, level);
@@ -93,6 +107,37 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         entityData.set(SEGMENT_HEALTH, Math.max(0.0F, health));
     }
 
+    public void indicateHurt() {
+        markHurt();
+        entityData.set(HURT_FLASH_TICKS, 10);
+    }
+
+    public boolean isHurtFlashing() {
+        return entityData.get(HURT_FLASH_TICKS) > 0;
+    }
+
+    @Override
+    public Entity damageRecipient() {
+        return this;
+    }
+
+    @Override
+    public Entity encounterOwner() {
+        BaseWormBoss head = getOwner();
+        return head == null ? this : head;
+    }
+
+    @Override
+    public Entity dedupeIdentity() {
+        BaseWormBoss head = getOwner();
+        return getPartHealth() > 0.0F || head == null ? this : head;
+    }
+
+    @Override
+    public boolean acceptsDirectHit() {
+        return isPickable();
+    }
+
     @Override
     public int getSegmentIndex() {
         return entityData.get(INDEX);
@@ -120,28 +165,63 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         Vec3 previousPosition = position();
         Vec3 difference = previousPosition.subtract(leader.position());
         if (difference.lengthSqr() < 0.001) difference = new Vec3(0, 1, 0);
-        Vec3 destination = leader.position().add(difference.normalize().scale(head.getSegmentSpacing()));
+        Vec3 destination = leader.position().add(difference.normalize().scale(head.getEffectiveSegmentSpacing()));
 
-        double dx = destination.x - previousPosition.x;
-        double dy = destination.y - previousPosition.y;
-        double dz = destination.z - previousPosition.z;
-        float yaw = (float) (Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
-        float horizontalDistance = Mth.sqrt((float) (dx * dx + dz * dz));
-        float pitch = (float) (-Mth.atan2(dy, horizontalDistance) * (180F / Math.PI));
-
+        if (!level().isClientSide) contactSweepStart = previousPosition;
         setPos(destination.x, destination.y, destination.z);
+    }
+
+    public void moveToChainPosition(Vec3 destination) {
+        Vec3 previousPosition = position();
+        if (!level().isClientSide) contactSweepStart = previousPosition;
+        setPos(destination.x, destination.y, destination.z);
+    }
+
+    public void orientAlongChain(Vec3 tangent) {
+        if (tangent.lengthSqr() < 1.0E-7D) return;
+        double horizontalDistance = Math.sqrt(tangent.x * tangent.x + tangent.z * tangent.z);
+        float yaw = (float) (Mth.atan2(tangent.z, tangent.x) * Mth.RAD_TO_DEG) - 90.0F;
+        float pitch = (float) (-Mth.atan2(tangent.y, horizontalDistance) * Mth.RAD_TO_DEG);
         setRot(yaw, pitch);
-        yRotO = yaw;
-        xRotO = pitch;
+    }
+
+    @Override
+    public void updateSegmentRotation() {
+        WormSegment previous = getPrev();
+        if (!(previous instanceof Entity leader)) return;
+
+        // 身体模型以当前节为中心向两侧延伸，必须使用“后一节 -> 前一节”的中心切线。
+        // 若只朝前一节，弯点会形成两根硬折梁，接近 90° 时模型彼此穿插成分叉。
+        WormSegment next = getNext();
+        Vec3 tangent = getSegmentIndex() > 1 && next instanceof Entity follower
+                ? leader.position().subtract(follower.position())
+                : leader.position().subtract(position());
+        if (tangent.lengthSqr() < 1.0E-7) return;
+
+        double horizontalDistance = Math.sqrt(tangent.x * tangent.x + tangent.z * tangent.z);
+        float yaw = (float) (Mth.atan2(tangent.z, tangent.x) * Mth.RAD_TO_DEG) - 90.0F;
+        float pitch = (float) (-Mth.atan2(tangent.y, horizontalDistance) * Mth.RAD_TO_DEG);
+        setRot(yaw, pitch);
     }
 
     @Override
     public void tick() {
         previousSegmentRoll = getSegmentRoll();
         super.tick();
+        if (level().isClientSide) {
+            tickClientInterpolation();
+        }
+        if (!level().isClientSide && entityData.get(HURT_FLASH_TICKS) > 0) {
+            entityData.set(HURT_FLASH_TICKS, entityData.get(HURT_FLASH_TICKS) - 1);
+        }
         BaseWormBoss head = getOwner();
-        if (head == null || !head.isAlive()) {
-            if (++unresolvedOwnerTicks > OWNER_RESOLUTION_GRACE_TICKS) discard();
+        if (head == null) {
+            if (!level().isClientSide && ++unresolvedOwnerTicks > OWNER_RESOLUTION_GRACE_TICKS)
+                discard();
+            return;
+        }
+        if (!head.isAlive()) {
+            discard();
             return;
         }
         unresolvedOwnerTicks = 0;
@@ -152,7 +232,6 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         }
 
         if (!level().isClientSide) {
-            updateSegmentPosition();
             tickCollisionAttack(head);
             tickEaterRangedAttack(head);
             if (head instanceof TheDestroyer destroyer) {
@@ -193,12 +272,19 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     }
 
     private void tickCollisionAttack(BaseWormBoss head) {
+        Vec3 sweepStart = contactSweepStart;
+        contactSweepStart = null;
         if (hurtCooldown > 0) {
             hurtCooldown--;
             return;
         }
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.5))) {
-            if (target != head && head.canAttack(target)) {
+        List<Entity> contacts = sweepStart == null
+                ? SweptContactAttack.findTargets(this, 0.5D, SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                candidate -> candidate instanceof LivingEntity living && candidate != head && head.canAttack(living))
+                : SweptContactAttack.findTargets(this, sweepStart, 0.5D, SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                candidate -> candidate instanceof LivingEntity living && candidate != head && head.canAttack(living));
+        for (Entity entity : contacts) {
+            if (entity instanceof LivingEntity target) {
                 float damage = head instanceof TheDestroyer
                         ? DESTROYER_COLLISION_DAMAGE
                         : EATER_COLLISION_DAMAGE;
@@ -209,8 +295,8 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         }
     }
 
-    /// 世界吞噬怪的每个体节都拥有独立射击冷却。冷却只在体节露天且主体持有
-    /// 有效目标时推进，保持与 1.21 侧相同的条件；弹幕归属主体，以便统一使用
+    /// 世界吞噬怪的每个体节都拥有独立射击冷却。冷却仅在体节露天且主体持有
+    /// 有效目标时推进；弹幕归属主体，以便统一使用
     /// Boss 的阵营过滤和伤害来源，但出生点仍取当前体节位置。
     private void tickEaterRangedAttack(BaseWormBoss head) {
         if (!(head instanceof EaterOfWorlds eater) || !(level() instanceof ServerLevel serverLevel)) {
@@ -253,9 +339,44 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     public boolean isPickable() {return !isRemoved();}
 
     @Override
+    public boolean isAttackable() {
+        BaseWormBoss head = getOwner();
+        return head != null && head.isAlive() && !isRemoved();
+    }
+
+    @Override
+    public float getPickRadius() {
+        return 1.0F;
+    }
+
+    @Override
     public boolean canBeCollidedWith() {
         BaseWormBoss head = getOwner();
         return head != null && head.isAlive();
+    }
+
+    @Override
+    public boolean isPushable() {return false;}
+
+    @Override
+    public void push(Entity entity) {}
+
+    /// 使用当前节与相邻连接点的平均位置采样光照，减弱长链跨越明暗边界时的逐节跳变。
+    @Override
+    public Vec3 getLightProbePosition(float partialTick) {
+        Vec3 sum = getPosition(partialTick);
+        int samples = 1;
+        WormSegment previous = getPrev();
+        if (previous instanceof Entity entity) {
+            sum = sum.add(entity.getPosition(partialTick));
+            samples++;
+        }
+        WormSegment next = getNext();
+        if (next instanceof Entity entity) {
+            sum = sum.add(entity.getPosition(partialTick));
+            samples++;
+        }
+        return sum.scale(1.0D / samples).add(0.0D, getBbHeight() * 0.5D, 0.0D);
     }
 
     @Override
@@ -264,6 +385,7 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
         entityData.define(INDEX, 0);
         entityData.define(TAIL, false);
         entityData.define(SEGMENT_HEALTH, 0.0F);
+        entityData.define(HURT_FLASH_TICKS, 0);
         entityData.define(DESTROYER_FLAPS_OPEN, false);
         entityData.define(DESTROYER_SEGMENT_ROLL, 0.0F);
     }
@@ -313,10 +435,42 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity {
     }
 
     @Override
+    public void lerpTo(double x, double y, double z, float yaw, float pitch,
+                       int steps, boolean teleport) {
+        if (!level().isClientSide || teleport || distanceToSqr(x, y, z) > 4096.0D) {
+            setPos(x, y, z);
+            setRot(yaw, pitch);
+            clientLerpSteps = 0;
+            return;
+        }
+        clientLerpX = x;
+        clientLerpY = y;
+        clientLerpZ = z;
+        clientLerpYaw = yaw;
+        clientLerpPitch = pitch;
+        clientLerpSteps = Math.max(1, steps);
+    }
+
+    private void tickClientInterpolation() {
+        if (clientLerpSteps <= 0) return;
+        double progress = 1.0D / clientLerpSteps;
+        setPos(
+                Mth.lerp(progress, getX(), clientLerpX),
+                Mth.lerp(progress, getY(), clientLerpY),
+                Mth.lerp(progress, getZ(), clientLerpZ));
+        setRot(
+                Mth.rotLerp((float) progress, getYRot(), clientLerpYaw),
+                Mth.lerp((float) progress, getXRot(), clientLerpPitch));
+        clientLerpSteps--;
+    }
+
+    @Override
     public EntityDimensions getDimensions(Pose pose) {
-        return destroyerDimensions
+        EntityDimensions base = destroyerDimensions
                 ? EntityDimensions.fixed(3.0F, 3.0F)
                 : getType().getDimensions();
+        BaseWormBoss head = getOwner();
+        return base.scale(head == null ? 1.0F : head.getScale());
     }
 
     @Override

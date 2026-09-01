@@ -9,6 +9,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -34,11 +36,14 @@ import org.confluence.mod.common.init.entity.BossEntities;
 /// 机械臂实体是可重建的临时部件。本体只保存各槽位的摧毁状态和剩余生命，
 /// 因而区块重载不会复制仍存活的部件，也不会复活已经摧毁的部件。
 public class SkeletronPrime extends BaseBoss {
+    // 四个低位分别对应四条机械臂；掩码全置一表示所有机械臂均已摧毁。
     private static final int ARM_COUNT = 4;
     private static final int ALL_ARMS_DESTROYED = (1 << ARM_COUNT) - 1;
+    // 一个 260 tick 循环中前 200 tick 悬停，随后旋转，到 250 tick 结束主动旋转。
     private static final int NORMAL_HOVER_TICKS = 200;
     private static final int NORMAL_SPIN_END_TICKS = 250;
     private static final int COMBAT_CYCLE_TICKS = 260;
+    // 每条机械臂在难度和多人倍率生效前的基础最大生命。
     private static final float ARM_MAX_HEALTH = 2080.0F;
 
     private static final String DESTROYED_ARMS_TAG = "DestroyedArms";
@@ -115,6 +120,7 @@ public class SkeletronPrime extends BaseBoss {
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive()) {
             setSpinning(false);
+            setDeltaMovement(getDeltaMovement().scale(0.85D));
             return;
         }
 
@@ -129,14 +135,14 @@ public class SkeletronPrime extends BaseBoss {
         } else if (combatCycle < NORMAL_HOVER_TICKS) {
             updateHoverMovement(target);
         }
-        // 夜间周期的最后十刻只负责等待。1.21 侧不会在这里重新运行悬浮追踪，
+        // 夜间周期的最后十刻只负责等待，不重新运行悬浮追踪，
         // 因此保留旋转结束时已有的速度，直到下一个周期重新进入悬浮阶段。
         damageContactTargets(enraged);
         faceTarget(target);
         applyAirResistance();
     }
 
-    /// 还原 1.21 通用 Boss 基类在行为树执行后的空气阻力。
+    /// 在行为更新后应用空气阻力。
     ///
     /// 悬浮阶段会把旧速度乘以 1.1 后再叠加追踪力；如果缺少这一步阻力，实体一旦越过玩家，
     /// 旧速度就会稳定卡在最大值，无法重新转向并最终飞出有效高度。旋转阶段同样需要经过该阻力，
@@ -145,7 +151,7 @@ public class SkeletronPrime extends BaseBoss {
         setDeltaMovement(getDeltaMovement().scale(0.95));
     }
 
-    /// 复用 1.21 侧简单追踪器的速度合成参数。
+    /// 使用平滑追踪的速度合成参数。
     ///
     /// 当前速度先乘 1.1，再叠加朝向目标的 0.12 吸引力，最终限制在
     /// 0.3 至 2.5 的速度区间。这里不能改成追逐目标上方固定点，否则悬浮轨迹、
@@ -184,11 +190,7 @@ public class SkeletronPrime extends BaseBoss {
     }
 
     private void faceTarget(LivingEntity target) {
-        lookAt(target, 90.0F, 85.0F);
-        getLookControl().setLookAt(target);
-        // 当前行为在 super.tick() 之后执行；立即同步头部可还原 1.21 行为树在
-        // 原版头部更新阶段之前执行 LookAtTargetAction 的可见结果。
-        setYHeadRot(getYRot());
+        faceCombatPosition(target.getEyePosition(), 90.0F, 85.0F);
     }
 
     private void damageContactTargets(boolean enraged) {
@@ -197,12 +199,19 @@ public class SkeletronPrime extends BaseBoss {
         }
         float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE)
                 + (enraged ? 999.0F : 0.0F);
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox(), living -> living.canBeSeenAsEnemy() && canAttack(living))) {
+        for (Entity target : SweptContactAttack.findTargets(this, 0.0D, maximumContactSweepDistance(),
+                entity -> entity instanceof LivingEntity living && living.canBeSeenAsEnemy() && canAttack(living))) {
             target.hurt(damageSources().mobAttack(this), damage);
             contactCooldown = 20;
             return;
         }
         contactCooldown = 5;
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        // 旋转阶段会额外叠加狂暴伤害，不能再由 BaseBoss 重复结算普通接触伤害。
+        return false;
     }
 
     private void setSpinning(boolean spinning) {
@@ -284,7 +293,7 @@ public class SkeletronPrime extends BaseBoss {
     }
 
     /// 返回头部和四条机械臂共同组成的遭遇生命比例。
-    float getEncounterProgress() {
+    protected float getEncounterProgress() {
         float current = getHealth();
         for (float health : armHealth) {
             current += Math.max(0.0F, health);
@@ -294,9 +303,8 @@ public class SkeletronPrime extends BaseBoss {
     }
 
     @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        bossEvent.setProgress(getEncounterProgress());
+    protected float getBossBarProgress() {
+        return getEncounterProgress();
     }
 
     @Override

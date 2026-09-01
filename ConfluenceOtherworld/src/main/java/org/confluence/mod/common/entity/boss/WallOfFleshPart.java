@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.jetbrains.annotations.Nullable;
 
 /// 血肉墙眼睛和嘴部的公共战斗部件。
@@ -62,7 +63,10 @@ public abstract class WallOfFleshPart extends BaseBossPart<WallOfFlesh> {
             contactCooldown--;
             return;
         }
-        for (LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox(), entity -> entity != master && master.canAttack(entity))) {
+        for (Entity entity : SweptContactAttack.findTargets(this, 0.0D,
+                SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                candidate -> candidate instanceof LivingEntity living && living != master && master.canAttack(living))) {
+            LivingEntity living = (LivingEntity) entity;
             if (master.doHurtTarget(living)) {
                 contactCooldown = CONTACT_INTERVAL;
                 return;

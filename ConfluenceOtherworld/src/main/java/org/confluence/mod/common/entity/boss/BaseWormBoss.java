@@ -3,13 +3,12 @@ package org.confluence.mod.common.entity.boss;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.WormChainTrail;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -26,21 +25,20 @@ import java.util.List;
 
 /// 蠕虫型 Boss 基类。穿透方块移动，体节跟随。
 public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
-    private static final int COLLISION_COOLDOWN = 8;
-
     protected final List<BossWormPart> segments = new ArrayList<>();
-    private int collisionCooldown;
+    private final WormChainTrail segmentTrail = new WormChainTrail();
 
     public BaseWormBoss(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.noPhysics = true;
+        this.noCulling = true;
     }
 
     /// 蠕虫型 Boss 的升降完全由三维转向状态机控制。
     ///
     /// {@code noPhysics} 只允许实体穿过方块，不会关闭生物移动中的重力计算。如果这里仍
     /// 使用原版重力，世界吞噬怪和毁灭者会在每次状态机写入速度后额外下坠，空中阶段、入地
-    /// 角度和整条体节链都会逐渐偏离 1.21 行为。
+    /// 角度和整条体节链都会逐渐偏离状态机给出的轨迹。
     @Override
     public boolean isNoGravity() {
         return true;
@@ -60,6 +58,11 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
         return 1.6F;
     }
 
+    /// 数据包体型倍率同时作用于模型、碰撞箱和体节弧长，避免放大后体节互相吞叠。
+    public final float getEffectiveSegmentSpacing() {
+        return getSegmentSpacing() * getScale();
+    }
+
     /// 计算指定体节的初始位置。
     ///
     /// 默认沿头部朝向的反方向逐节排列，避免所有体节在生成首刻重叠。需要盘曲出生
@@ -70,7 +73,7 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
         if (forward.lengthSqr() <= 1.0E-7) {
             forward = new Vec3(0.0, 0.0, 1.0);
         }
-        return previousPosition.subtract(forward.normalize().scale(getSegmentSpacing()));
+        return previousPosition.subtract(forward.normalize().scale(getEffectiveSegmentSpacing()));
     }
 
     /// 以有限角速度朝三维目标修正，并写入原版同步速度。
@@ -90,21 +93,12 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
             current = current.normalize();
         }
 
-        double angle = angleBetween(current, desired);
-        Vec3 direction;
-        if (angle <= Math.toRadians(maximumTurnDegrees)) {
-            direction = desired;
-        } else {
-            double blend = Math.toRadians(maximumTurnDegrees) / angle;
-            direction = current.scale(1.0 - blend).add(desired.scale(blend)).normalize();
-        }
+        Vec3 direction = turnDirectionToward(current, desired, maximumTurnDegrees);
 
-        float yaw = (float) (Mth.atan2(direction.z, direction.x) * Mth.RAD_TO_DEG) - 90.0F;
-        float pitch = (float) (-Mth.atan2(direction.y, Math.sqrt(direction.x * direction.x + direction.z * direction.z)) * Mth.RAD_TO_DEG);
-        setYRot(yaw);
-        setXRot(Mth.clamp(pitch, -85.0F, 85.0F));
-        yBodyRot = yaw;
-        yHeadRot = yaw;
+        // 角速度已经由上面的方向插值限制；这里必须把最终方向一次性写入
+        // 身体、头部、视线和俯仰，不能再让原版 LookControl 与蠕虫移动各写一套朝向。
+        // 不钳制到 ±85°，否则垂直钻出/下潜时模型必然仍接近水平。
+        faceCombatDirection(direction, 180.0F, 180.0F);
         setDeltaMovement(direction.scale(speed));
     }
 
@@ -126,22 +120,58 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
     }
 
     public void initSegments() {
-        if (hasCompleteSegmentChain()) return;
-        discardSegments();
+        int expectedCount = Math.max(0, getSegmentCount());
+        if (expectedCount == 0) {
+            discardSegments();
+            return;
+        }
+
+        if (segments.isEmpty()) {
+            spawnCompleteSegmentChain(expectedCount);
+            segmentTrail.invalidate();
+            return;
+        }
+
+        // 数量变化代表链条发生了结构性变化，必须由当前头部按新的索引完整重建。
+        // 单个临时体节失效则只替换该槽位，避免一处加载或同步故障让整条虫瞬间重生。
+        if (segments.size() != expectedCount) {
+            discardSegments();
+            spawnCompleteSegmentChain(expectedCount);
+            segmentTrail.invalidate();
+            return;
+        }
+
         Vec3 previousPosition = position();
-        for (int index = 1; index <= getSegmentCount(); index++) {
-            BossWormPart part = BossEntities.WORM_SEGMENT.get().create(level());
-            if (part == null) {
-                discardSegments();
-                return;
+        for (int index = 1; index <= expectedCount; index++) {
+            BossWormPart current = segments.get(index - 1);
+            if (isValidSegment(current, index)) {
+                previousPosition = current.position();
+                continue;
             }
-            part.bindTo(this, index, index == getSegmentCount());
+
+            Vec3 replacementPosition = finitePosition(current.position())
+                    ? current.position()
+                    : getInitialSegmentPosition(index, previousPosition);
+            float yaw = current.getYRot();
+            float pitch = current.getXRot();
+            if (!current.isRemoved()) current.discard();
+
+            BossWormPart replacement = createSegment(index, expectedCount, replacementPosition, yaw, pitch);
+            if (replacement == null) {
+                // 保留其余健康体节，下一 tick 只重试这个槽位。
+                continue;
+            }
+            segments.set(index - 1, replacement);
+            previousPosition = replacement.position();
+        }
+    }
+
+    private void spawnCompleteSegmentChain(int expectedCount) {
+        Vec3 previousPosition = position();
+        for (int index = 1; index <= expectedCount; index++) {
             previousPosition = getInitialSegmentPosition(index, previousPosition);
-            part.setPos(previousPosition);
-            part.setYRot(getYRot());
-            part.setXRot(getXRot());
-            if (!level().addFreshEntity(part)) {
-                part.discard();
+            BossWormPart part = createSegment(index, expectedCount, previousPosition, getYRot(), getXRot());
+            if (part == null) {
                 discardSegments();
                 return;
             }
@@ -149,14 +179,31 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
         }
     }
 
-    private boolean hasCompleteSegmentChain() {
-        if (segments.size() != getSegmentCount()) return false;
-        for (int index = 1; index <= segments.size(); index++) {
-            BossWormPart part = segments.get(index - 1);
-            if (part.isRemoved() || part.getOwner() != this || part.getSegmentIndex() != index)
-                return false;
+    private @Nullable BossWormPart createSegment(int index, int expectedCount, Vec3 segmentPosition, float yaw, float pitch) {
+        BossWormPart part = BossEntities.WORM_SEGMENT.get().create(level());
+        if (part == null) return null;
+
+        part.bindTo(this, index, index == expectedCount);
+        part.setPos(segmentPosition);
+        part.setYRot(yaw);
+        part.setXRot(pitch);
+        part.yRotO = yaw;
+        part.xRotO = pitch;
+        if (!level().addFreshEntity(part)) {
+            part.discard();
+            return null;
         }
-        return true;
+        return part;
+    }
+
+    private boolean isValidSegment(BossWormPart part, int expectedIndex) {
+        return !part.isRemoved()
+                && part.getOwner() == this
+                && part.getSegmentIndex() == expectedIndex;
+    }
+
+    private static boolean finitePosition(Vec3 position) {
+        return Double.isFinite(position.x) && Double.isFinite(position.y) && Double.isFinite(position.z);
     }
 
     protected final void discardSegments() {
@@ -164,6 +211,7 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
             if (!part.isRemoved()) part.discard();
         }
         segments.clear();
+        segmentTrail.invalidate();
     }
 
     @Nullable
@@ -179,35 +227,49 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
     }
 
     @Override
+    protected double combatAnchorDistanceSqr(net.minecraft.world.entity.player.Player player) {
+        double nearest = distanceToSqr(player);
+        for (BossWormPart segment : segments) {
+            if (segment.isAlive()) nearest = Math.min(nearest, segment.distanceToSqr(player));
+        }
+        return nearest;
+    }
+
+    @Override
     public void tick() {
         super.tick();
         if (isRemoved()) return;
         if (!level().isClientSide) {
             initSegments();
-            /// 头部完成本 tick 移动后立即按链表顺序刷新全部体节。不能只依赖各体节
+            /// 头部完成本 tick 移动后立即按链表顺序刷新全部体节。不能依赖各体节
             /// 自己的实体 tick 顺序，否则当世界先 tick 身体、后 tick 头部时，
             /// 帧末相邻间距会额外叠加一次头部位移并产生明显拉伸。
-            for (BossWormPart segment : segments) {
-                segment.updateSegmentPosition();
-            }
-            tickCollision();
+            updateSegmentsAlongTrail();
         }
     }
 
-    private void tickCollision() {
-        if (collisionCooldown > 0) { collisionCooldown--; return; }
-        AABB box = getBoundingBox().inflate(1.0);
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, box)) {
-            if (target == this) continue;
-            /// 碰撞伤害同样必须遵守实体自己的攻击规则。部分蠕虫 Boss 会明确排除
-            /// 同类或同一场战斗中的其他头部；若这里只检查队伍关系，分裂后的头部
-            /// 会互相造成伤害，并在连续晋升后把一条完整链错误拆成许多短链。
-            if (!canAttack(target)) continue;
-            target.hurt(damageSources().mobAttack(this), (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
-            collisionCooldown = COLLISION_COOLDOWN;
-            if (getTarget() == null) setTarget(target);
-            break;
+    /// 子类若在 {@code super.tick()} 后直接提交头部位移，可再次调用以消费该段新轨迹。
+    protected final void updateSegmentsAlongTrail() {
+        List<WormChainTrail.Sample> chainPositions = segmentTrail.sample(position(), segments, getEffectiveSegmentSpacing());
+        for (int index = 0; index < segments.size(); index++) {
+            WormChainTrail.Sample sample = chainPositions.get(index);
+            segments.get(index).moveToChainPosition(sample.position());
+            segments.get(index).orientAlongChain(sample.tangent());
         }
+    }
+
+    @Override
+    protected void onCreatureDefinitionReload() {
+        super.onCreatureDefinitionReload();
+        for (BossWormPart segment : segments) {
+            if (!segment.isRemoved()) segment.refreshDimensions();
+        }
+        segmentTrail.invalidate();
+    }
+
+    @Override
+    protected double contactAttackInflation() {
+        return 1.0D;
     }
 
     @Override
@@ -237,6 +299,9 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
 
     @Override
     public void updateSegmentPosition() {}
+
+    @Override
+    public void updateSegmentRotation() {}
 
     @Override
     protected BTRoot createBT() {

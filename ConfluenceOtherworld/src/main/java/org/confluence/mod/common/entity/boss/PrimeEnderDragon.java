@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,6 +24,8 @@ import net.minecraft.world.entity.projectile.DragonFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -36,9 +39,9 @@ import java.util.List;
 
 /// 本源末影龙的服务端权威战斗实现。
 ///
-/// 1.21 版本只有第一阶段行为：平滑追踪与惯性俯冲、短时头部激光、概率着陆，
-/// 以及两轮游走后发射原版龙息弹。这里保留同样的可见行为，但把未完成的通用行为树
-/// 改为可保存的显式状态机，避免重载后攻击循环、着陆状态或飞行目标丢失。
+/// 当前战斗包含平滑追踪与惯性俯冲、短时头部激光、概率着陆，
+/// 以及两轮游走后发射龙息弹。攻击循环由可保存的显式状态机维护，
+/// 避免重载后攻击循环、着陆状态或飞行目标丢失。
 ///
 /// 主体负责渲染、生命、Boss 条、目标、移动和奖励；头、身体、三节尾巴和双翼
 /// 使用七个无渲染临时部件提供真实受击区域。部件不保存且不独立结算奖励，主体重载后
@@ -141,8 +144,8 @@ public final class PrimeEnderDragon extends BaseBoss {
     public void setNoAi(boolean noAi) {
         super.setNoAi(noAi);
         /// 本源末影龙的头部、身体、尾巴和双翼碰撞框是本体战斗能力的一部分，
-        /// 不能因为调试、暂停或加载流程临时关闭 AI 就延后创建。1.21 侧这些部件
-        /// 在构造期即存在；1.20 侧改为可重建实体后，也要保持“需要时始终可用”的语义。
+        /// 不能因为调试、暂停或加载流程临时关闭 AI 就延后创建。
+        /// 部件改为可重建实体后，仍要保持“需要时始终可用”的语义。
         ensureParts();
     }
 
@@ -177,10 +180,16 @@ public final class PrimeEnderDragon extends BaseBoss {
         advanceCombatState(target);
         updateFlight();
         updateLaserAttack();
+        for (PrimeEnderDragonPart part : List.copyOf(parts.values())) {
+            if (!part.isRemoved()) updatePartPosition(part);
+        }
         updatePartContactDamage();
     }
 
     private void advanceCombatState(LivingEntity target) {
+        if (flightTarget == null) {
+            flightTarget = target.position().add(0.0D, 6.0D, 0.0D);
+        }
         combatStateTicks++;
         switch (combatState) {
             case OPENING_WAIT -> {
@@ -379,7 +388,7 @@ public final class PrimeEnderDragon extends BaseBoss {
             if (distanceToSegmentSqr(entity.getBoundingBox().getCenter(), start, end) > LASER_RADIUS * LASER_RADIUS) {
                 continue;
             }
-            if (entity.hurt(damageSources().magic(), 5.0F)) {
+            if (entity.hurt(LibDamageTypes.of(level(), DamageTypes.MAGIC, this), 5.0F)) {
                 entity.setRemainingFireTicks(100);
                 hits++;
             }
@@ -440,10 +449,18 @@ public final class PrimeEnderDragon extends BaseBoss {
             return;
         }
         for (PrimeEnderDragonPart part : List.copyOf(parts.values())) {
-            for (Player player : level().getEntitiesOfClass(Player.class, part.getBoundingBox().inflate(0.2), this::canAttack)) {
-                doHurtTarget(player);
+            for (net.minecraft.world.entity.Entity entity : SweptContactAttack.findTargets(part, 0.2D,
+                    SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                    candidate -> candidate instanceof Player player && canAttack(player))) {
+                doHurtTarget(entity);
             }
         }
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        // 接触区域由七个精确部件承担，主体碰撞箱不再重复结算伤害。
+        return false;
     }
 
     private void ensureParts() {
@@ -486,7 +503,7 @@ public final class PrimeEnderDragon extends BaseBoss {
         } else {
             right = right.normalize();
         }
-        Vec3 offset = switch (part.getSlot()) {
+        Vec3 offset = (switch (part.getSlot()) {
             case HEAD -> forward.scale(4.5).add(0.0, 2.0, 0.0);
             case BODY -> forward.scale(0.5).add(0.0, 2.0, 0.0);
             case TAIL_ONE -> forward.scale(-3.0).add(0.0, 2.0, 0.0);
@@ -494,7 +511,7 @@ public final class PrimeEnderDragon extends BaseBoss {
             case TAIL_THREE -> forward.scale(-7.0).add(0.0, 2.0, 0.0);
             case LEFT_WING -> right.scale(4.5).add(0.0, 4.0, 0.0);
             case RIGHT_WING -> right.scale(-4.5).add(0.0, 4.0, 0.0);
-        };
+        }).scale(getScale());
         part.setPos(position().add(offset));
         part.setYRot(getYRot());
         part.setXRot(getXRot());
@@ -520,7 +537,7 @@ public final class PrimeEnderDragon extends BaseBoss {
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        return EntityDimensions.scalable(10.0F, 10.0F);
+        return EntityDimensions.scalable(10.0F, 10.0F).scale(getScale());
     }
 
     @Override
@@ -582,7 +599,7 @@ public final class PrimeEnderDragon extends BaseBoss {
         }
     }
 
-    /// 七个固定碰撞槽位及其 1.21 尺寸。
+    /// 七个固定碰撞槽位及其尺寸。
     public enum PartSlot {
         HEAD(2.0F, 2.0F),
         BODY(6.0F, 3.0F),

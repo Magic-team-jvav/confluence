@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.boss;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -31,7 +30,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 /// 毁灭者头部，负责体节链、激光和探测器的统一生命周期。
 ///
 /// 奇数编号体节是探测器舱。每个舱室最多释放一次探测器，释放记录由头部持久化，
-/// 所以体节因区块卸载而重建时不会重置。未释放的探测器舱会按照 1.21 侧的顺序射击
+/// 所以体节因区块卸载而重建时不会重置。未释放的探测器舱会按体节顺序射击
 /// 与高空齐射节奏发射真实激光弹幕。
 public class TheDestroyer extends BaseWormBoss {
     private static final String RELEASED_PROBE_SEGMENTS_TAG = "ReleasedProbeSegments";
@@ -92,7 +91,7 @@ public class TheDestroyer extends BaseWormBoss {
 
     /// 在头部附近盘曲生成完整机械体节链。
     ///
-    /// 1.21 会以直线生成八十节身体，但在 Minecraft 中这会跨越十六个区块，
+    /// 以直线生成八十节身体会跨越大量区块，
     /// 超出 Boss 当前强加载区域后导致尾部创建失败。这里保留相同数量和间距，
     /// 只把初始形状改成盘曲布局；进入战斗后仍由统一跟随物理自然展开。
     @Override
@@ -178,8 +177,8 @@ public class TheDestroyer extends BaseWormBoss {
 
     /// 按目标高度执行地下钻击、地表跃出和高空俯冲。
     ///
-    /// 1.20 仅调整为连续三维转向；阶段边界、主要目标点与速度倍率保持 1.21
-    /// 语义。速度交给原版实体同步消费，不通过逐刻传送移动。
+    /// 移动采用连续三维转向；阶段边界、主要目标点与速度倍率由状态机统一维护。
+    /// 速度交给实体同步消费，不通过逐刻传送移动。
     private void tickPhaseMovement(LivingEntity target) {
         phaseTimer++;
         switch (getPhase()) {
@@ -268,7 +267,7 @@ public class TheDestroyer extends BaseWormBoss {
                 }
             }
             case 2 -> {
-                // 1.21 此状态会额外推进一次计时，保持同样的下坠起点与恢复节奏。
+                // 此状态额外推进一次计时，以保持下坠起点与恢复节奏。
                 phaseTimer++;
                 if (phaseTimer > 45) {
                     setDeltaMovement(getDeltaMovement().subtract(0.0, 0.05, 0.0));
@@ -329,7 +328,7 @@ public class TheDestroyer extends BaseWormBoss {
         }
     }
 
-    /// 地表与高空阶段在 1.21 中会立即朝向目标点，并沿新的正前方移动。
+    /// 地表与高空阶段立即朝向目标点，并沿新的正前方移动。
     private void moveDirectlyToward(Vec3 destination, double speed) {
         Vec3 direction = destination.subtract(getEyePosition());
         if (direction.lengthSqr() <= 1.0E-7) return;
@@ -340,7 +339,7 @@ public class TheDestroyer extends BaseWormBoss {
 
     private void faceVelocity(Vec3 velocity) {
         if (velocity.lengthSqr() <= 1.0E-7) return;
-        lookAt(EntityAnchorArgument.Anchor.EYES, getEyePosition().add(velocity));
+        faceCombatDirection(velocity, 180.0F, 180.0F);
     }
 
     private void smoothResetRoll() {
@@ -348,7 +347,7 @@ public class TheDestroyer extends BaseWormBoss {
         setBodyRoll(Math.abs(roll) > 2.0F ? roll * 0.8F : 0.0F);
     }
 
-    /// 按照头部到尾部的顺序平滑传递滚转角，形成 1.21 的螺旋效果。
+    /// 按照头部到尾部的顺序平滑传递滚转角，形成连续螺旋效果。
     private void updateSegmentRolls() {
         float previousRoll = getBodyRoll();
         for (BossWormPart segment : getSegments()) {
@@ -389,6 +388,9 @@ public class TheDestroyer extends BaseWormBoss {
         if (!hurt || level().isClientSide) {
             return hurt;
         }
+        segment.indicateHurt();
+        segment.playSound(net.minecraft.sounds.SoundEvents.GENERIC_HURT,
+                0.8F, 0.9F + random.nextFloat() * 0.2F);
         if (getPhase() != Phase.UNDERGROUND && segment.isDestroyerProbeSegment() && !hasReleasedProbe(segment.getSegmentIndex()) && random.nextFloat() < 0.2F) {
             releaseProbe(segment);
         }
@@ -478,7 +480,6 @@ public class TheDestroyer extends BaseWormBoss {
         if (!(level() instanceof ServerLevel serverLevel) || !segment.isDestroyerProbeSegment() || hasReleasedProbe(index)) {
             return false;
         }
-        markProbeReleased(index);
         TheDestroyerProbe probe = BossEntities.THE_DESTROYER_PROBE.get().create(serverLevel);
         if (probe == null) {
             return false;
@@ -489,9 +490,10 @@ public class TheDestroyer extends BaseWormBoss {
             probe.setTarget(getTarget());
         }
         if (!serverLevel.addFreshEntity(probe)) {
-            removeSubEntity(probe);
+            probe.discard();
             return false;
         }
+        markProbeReleased(index);
         return true;
     }
 

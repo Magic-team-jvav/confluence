@@ -13,9 +13,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.entity.boss.BrainOfCthulhu;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -32,7 +35,12 @@ import java.util.UUID;
 ///
 /// 所有权使用 Boss UUID 持久化。区块卸载只会清除当前实例缓存，不会猜测附近的同类 Boss；
 /// Boss 重新加载后，神经元会通过精确 UUID 恢复双向关系，从而避免多人同时挑战时串场。
-public class VisualNeuron extends BaseFlyingMonster {
+public class VisualNeuron extends BaseFlyingMonster implements BossOwnedEntity {
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
     @Override
     protected int contactDetectionInterval() {
         return 1;
@@ -53,8 +61,12 @@ public class VisualNeuron extends BaseFlyingMonster {
     private static final String HOME_OFFSET_X_TAG = "HomeOffsetX";
     private static final String HOME_OFFSET_Y_TAG = "HomeOffsetY";
     private static final String HOME_OFFSET_Z_TAG = "HomeOffsetZ";
-    private static final double ATTACK_ACCELERATION = 0.5 / 5.0;
+    // 攻击与归位加速度、速度上限的单位均为方块/tick；归位用十 tick 渐进恢复。
+    private static final double ATTACK_ACCELERATION = 0.16;
     private static final double RETURN_ACCELERATION = 0.5 / 10.0;
+    private static final double MAX_ATTACK_SPEED = 1.05;
+    private static final double MAX_RETURN_SPEED = 0.5;
+    // 回到距编队点 2 方块内视为就位；偏航超过 45° 时先转向再发起下一轮攻击。
     private static final double READY_DISTANCE_SQR = 4.0;
     private static final double TURN_BACK_ANGLE = Math.PI / 4.0;
 
@@ -88,12 +100,18 @@ public class VisualNeuron extends BaseFlyingMonster {
     public void setOwner(BrainOfCthulhu owner) {
         ownerTracker.bind(this, owner);
         entityData.set(OWNER_UUID, Optional.of(owner.getUUID()));
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
         // Boss 随从不能套用普通怪物按玩家距离随机消失的规则，否则第一阶段会无故丢失编队成员。
         setPersistenceRequired();
     }
 
     public @Nullable BrainOfCthulhu getOwner() {
         return ownerTracker.resolve(this);
+    }
+
+    @Override
+    public @Nullable BaseBoss getBossOwner() {
+        return getOwner();
     }
 
     public @Nullable UUID getOwnerUUID() {
@@ -113,7 +131,7 @@ public class VisualNeuron extends BaseFlyingMonster {
         return homePosition;
     }
 
-    /// 保存相对本体的初始编队偏移，供本体还原 1.21 的随机摆动。
+    /// 保存相对本体的初始编队偏移，供本体计算随机编队摆动。
     public void setHomeOffset(Vec3 homeOffset) {
         this.homeOffset = homeOffset;
     }
@@ -131,6 +149,10 @@ public class VisualNeuron extends BaseFlyingMonster {
         ready = false;
         attackTicks = 0;
         setCombatState(CombatState.ATTACKING);
+        Vec3 launchDirection = target.getEyePosition().subtract(getEyePosition());
+        if (launchDirection.lengthSqr() > 1.0E-6) {
+            setDeltaMovement(launchDirection.normalize().scale(0.65D));
+        }
         return true;
     }
 
@@ -147,27 +169,34 @@ public class VisualNeuron extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return new BTNode() {
-                    @Override
-                    public BTStatus execute() {
-                        tickCombatState();
-                        return BTStatus.RUNNING;
-                    }
-                };
+                // 专用状态机由实体 tick 推进，通用 Goal 调度不得重复修改速度。
+                return new WaitAction(Integer.MAX_VALUE);
             }
         };
     }
 
-    /// 神经元的状态更新只在服务端行为树内执行，客户端仅接收位置、朝向和状态同步。
-    private void tickCombatState() {
-        BrainOfCthulhu owner = getOwner();
-        if (owner == null) {
-            // 已保存 owner UUID 时可能只是 Boss 区块尚未加载，不能把卸载误判为死亡。
-            if (getOwnerUUID() == null) discard();
-            return;
+    @Override
+    public void tick() {
+        if (!level().isClientSide && isAlive() && !isRemoved()) {
+            BrainOfCthulhu owner = ownerTracker.tickDependent(this, false, 100);
+            if (owner == null) {
+                if (isRemoved()) reportDeath();
+                if (getOwnerUUID() == null) discard();
+                return;
+            }
         }
-        if (!owner.isAlive()) {
-            discard();
+        super.tick();
+        if (!level().isClientSide && isAlive() && !isRemoved()) {
+            tickCombatState();
+        }
+    }
+
+    /// 神经元的状态更新只在服务端执行，客户端仅接收位置、朝向和状态同步。
+    private void tickCombatState() {
+        BrainOfCthulhu owner = ownerTracker.resolve(this);
+        if (owner == null) {
+            if (isRemoved()) reportDeath();
+            if (getOwnerUUID() == null) discard();
             return;
         }
 
@@ -193,11 +222,17 @@ public class VisualNeuron extends BaseFlyingMonster {
         }
 
         Vec3 desiredDirection = toTarget.normalize();
-        Vec3 velocity = getDeltaMovement().add(desiredDirection.scale(ATTACK_ACCELERATION));
+        Vec3 velocity = getDeltaMovement().scale(0.97D).add(desiredDirection.scale(ATTACK_ACCELERATION));
+        if (velocity.lengthSqr() > MAX_ATTACK_SPEED * MAX_ATTACK_SPEED) {
+            velocity = velocity.normalize().scale(MAX_ATTACK_SPEED);
+        }
         setDeltaMovement(velocity);
-        getLookControl().setLookAt(target, 30.0F, 30.0F);
+        faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
 
-        if (angleBetween(velocity, toTarget) > TURN_BACK_ANGLE) {
+        // 出击后至少完成一段清晰的冲锋；越过目标或持续过久才返航，不能刚离开编队
+        // 就因网络位置/目标轻微侧移立即撤回，看起来像只会黏着本体。
+        if ((attackTicks >= 8 && angleBetween(velocity, toTarget) > TURN_BACK_ANGLE)
+                || attackTicks >= 80) {
             beginReturn();
         }
     }
@@ -212,13 +247,17 @@ public class VisualNeuron extends BaseFlyingMonster {
             ready = true;
         }
         if (toHome.lengthSqr() > 1.0E-6) {
-            setDeltaMovement(getDeltaMovement().add(toHome.normalize().scale(RETURN_ACCELERATION)));
+            Vec3 velocity = getDeltaMovement().scale(0.9D).add(toHome.normalize().scale(RETURN_ACCELERATION));
+            if (velocity.lengthSqr() > MAX_RETURN_SPEED * MAX_RETURN_SPEED) {
+                velocity = velocity.normalize().scale(MAX_RETURN_SPEED);
+            }
+            setDeltaMovement(velocity);
         }
         LivingEntity target = getTarget();
         if (target != null && target.isAlive()) {
-            getLookControl().setLookAt(target, 30.0F, 30.0F);
+            faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
         } else {
-            getLookControl().setLookAt(position().x * 2.0 - owner.getX(), position().y * 2.0 - owner.getY(), position().z * 2.0 - owner.getZ(), 30.0F, 30.0F);
+            faceCombatPosition(position().scale(2.0).subtract(owner.position()), 30.0F, 30.0F);
         }
     }
 
@@ -242,8 +281,11 @@ public class VisualNeuron extends BaseFlyingMonster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        BrainOfCthulhu owner = getOwner();
+        if (owner != null && source.getEntity() instanceof net.minecraft.world.entity.player.Player player) {
+            owner.registerCombatParticipant(player);
+        }
         if (isAttacking()) {
-            BrainOfCthulhu owner = getOwner();
             beginReturn();
             if (owner != null) {
                 Vec3 toOwner = owner.position().subtract(position());

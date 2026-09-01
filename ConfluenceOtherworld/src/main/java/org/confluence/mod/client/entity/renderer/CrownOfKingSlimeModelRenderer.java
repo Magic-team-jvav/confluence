@@ -15,6 +15,7 @@ import org.joml.Quaternionf;
 
 /// 渲染史莱姆王传送时抛出的独立王冠。
 public class CrownOfKingSlimeModelRenderer extends EntityRenderer<CrownOfKingSlimeModelEntity> {
+    // 模型导出坐标系与实体渲染坐标系上下相反，统一绕 Z 轴翻转 180°。
     public static final Quaternionf FLIP_Y = Axis.ZP.rotation(Mth.PI);
     private final CrownOfKingSlimeModel model;
 
@@ -37,6 +38,7 @@ public class CrownOfKingSlimeModelRenderer extends EntityRenderer<CrownOfKingSli
         poseStack.mulPose(Axis.YN.rotation(Mth.lerp(partialTick, entity.rotateO1, entity.rotate1)));
         poseStack.translate(0.0F, 1.9375F + entity.height, 0.0F);
         poseStack.mulPose(FLIP_Y);
+        poseStack.scale(CrownOfKingSlimeModel.RENDER_SCALE, CrownOfKingSlimeModel.RENDER_SCALE, CrownOfKingSlimeModel.RENDER_SCALE);
         model.renderToBuffer(poseStack, buffer.getBuffer(CrownOfKingSlimeModel.RENDER_TYPE), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);

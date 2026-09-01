@@ -1,6 +1,8 @@
 package org.confluence.mod.common.event;
 
+import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -412,6 +414,16 @@ public final class ModEvents {
     }
 
     private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
+        // 数据包的 attributes.scale 对所有本模组生物使用同一属性入口。部分实体属性表
+        // 由各自的注册构建器创建，因此在修改事件中幂等补齐，避免覆盖值被静默忽略。
+        Holder<Attribute> scale = PortAttributesExtension.scale();
+        for (var type : event.getTypes()) {
+            var id = BuiltInRegistries.ENTITY_TYPE.getKey(type);
+            if (Confluence.MODID.equals(id.getNamespace()) && !event.has(type, scale)) {
+                event.add(type, scale, 1.0D);
+            }
+        }
+
         Holder<Attribute> armorPenetration = LibAttributes.getArmorPenetration();
         event.add(BossEntities.QUEEN_BEE.get(), armorPenetration, 2);
         event.add(BossEntities.SKELETRON.get(), armorPenetration, 4);

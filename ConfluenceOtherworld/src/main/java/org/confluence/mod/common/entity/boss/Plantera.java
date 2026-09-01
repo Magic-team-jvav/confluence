@@ -30,10 +30,12 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 
 public class Plantera extends BaseBoss {
+    // 本体八根触手，三个钩爪各带三根触手，合计十七根。
     static final int HOOK_COUNT = 3;
     static final int BODY_TENTACLE_COUNT = 8;
     static final int TENTACLES_PER_HOOK = 3;
     static final int TENTACLE_COUNT = BODY_TENTACLE_COUNT + HOOK_COUNT * TENTACLES_PER_HOOK;
+    // 钩爪搜索与系绳最大长度均为 48 方块；移动速度和加速度单位为方块/tick。
     private static final double HOOK_SEARCH_RANGE = 48.0;
     private static final double HOOK_TETHER_LENGTH = 48.0;
     private static final double PHASE_ONE_MOVE_SPEED = 0.1;
@@ -131,7 +133,7 @@ public class Plantera extends BaseBoss {
                 if (replacement != null) setTarget(replacement);
             }
 
-            // 1.21 侧从出生起推进全局 AI 刻，取得目标后直接读取同一条时间轴。
+            // 全局 AI 时钟从出生起推进，取得目标后继续读取同一条时间轴。
             attackTicks++;
             if (getTarget() != null) {
                 if (distanceToSqr(getTarget()) > HOOK_SEARCH_RANGE * HOOK_SEARCH_RANGE) {
@@ -288,7 +290,8 @@ public class Plantera extends BaseBoss {
 
     Vec3 hookRestOffset(int index) {
         double angle = index * Mth.TWO_PI / HOOK_COUNT;
-        return new Vec3(Math.cos(angle) * 2.5, (index - 1) * 0.8, Math.sin(angle) * 2.5);
+        return new Vec3(Math.cos(angle) * 2.5, (index - 1) * 0.8, Math.sin(angle) * 2.5)
+                .scale(getScale());
     }
 
     boolean isValidHookAnchor(BlockPos anchor) {
@@ -309,11 +312,12 @@ public class Plantera extends BaseBoss {
         return null;
     }
 
-    /// 以 1.21 侧相同的加速度和阶段速度上限追踪玩家，同时叠加已抓牢钩爪的牵引。
+    /// 按阶段加速度和速度上限追踪玩家，同时叠加已抓牢钩爪的牵引。
     /// 所有加速度先合并、再统一限速，保证任意难度和生命阶段都不会产生额外冲刺。
     private void updateMovement() {
         LivingEntity target = getTarget();
         if (target == null) {
+            setDeltaMovement(getDeltaMovement().scale(0.85D));
             return;
         }
 
@@ -459,7 +463,7 @@ public class Plantera extends BaseBoss {
     }
 
     /// 用黄金角为刚生成且尚无朝向的触手提供稳定初始方向；进入运动后仍由
-    /// 1.21 的吸引和排斥公式连续调整，不会锁死在固定槽位上。
+    /// 吸引和排斥公式连续调整，不会锁死在固定槽位上。
     Vec3 getTentacleBaseDirection(int slot) {
         int localSlot;
         int count;

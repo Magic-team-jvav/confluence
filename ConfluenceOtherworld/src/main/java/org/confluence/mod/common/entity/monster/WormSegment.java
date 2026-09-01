@@ -8,5 +8,7 @@ public interface WormSegment {
     @Nullable WormSegment getNext();
     void updateSegmentPosition();
 
+    void updateSegmentRotation();
+
     default boolean isTail() {return false;}
 }

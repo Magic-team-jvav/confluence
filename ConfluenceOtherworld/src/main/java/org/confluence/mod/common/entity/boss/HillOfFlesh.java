@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -43,11 +45,13 @@ import java.util.*;
 /// Phase2 (HP<50%) 时外圈扩大、攻击加速。
 public class HillOfFlesh extends BaseBoss {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    // 两圈判定半径单位为方块；三档数值分别是附着区、内圈和外圈的基础伤害。
     static final float INNER_RADIUS = 14.0F;
     static final float OUTER_RADIUS = 75.0F;
     private static final float ATTACHED_DAMAGE = 10.0F;
     private static final float INNER_DAMAGE = 40.0F;
     private static final float OUTER_DAMAGE = 40.0F;
+    // 场地高度单位为方块；出场与开始破坏场地的时间单位为 tick。
     private static final int ARENA_HEIGHT = 100;
     private static final int INITIALIZATION_TICKS = 150;
     private static final int DESTRUCTION_START_TICK = 75;
@@ -226,7 +230,8 @@ public class HillOfFlesh extends BaseBoss {
             return null;
         }
         double[] offset = PART_OFFSETS[index];
-        part.setPos(position().add(offset[0], offset[1], offset[2]));
+        double scale = getScale();
+        part.setPos(position().add(offset[0] * scale, offset[1] * scale, offset[2] * scale));
         if (part instanceof HillOfFleshEye eye) {
             eye.setMaster(this);
         } else if (part instanceof HillOfFleshMouth mouth) {
@@ -313,7 +318,8 @@ public class HillOfFlesh extends BaseBoss {
                 continue;
             }
             double[] offset = PART_OFFSETS[index];
-            Vec3 rotated = new Vec3(offset[0], offset[1], offset[2]).yRot(-getYRot() * Mth.DEG_TO_RAD);
+            Vec3 rotated = new Vec3(offset[0], offset[1], offset[2])
+                    .scale(getScale()).yRot(-getYRot() * Mth.DEG_TO_RAD);
             part.setPos(getX() + rotated.x, getY() + rotated.y, getZ() + rotated.z);
         }
     }
@@ -385,14 +391,14 @@ public class HillOfFlesh extends BaseBoss {
         for (LivingEntity entity : List.copyOf(encounterEntities)) {
             double distanceSquared = entity.position().subtract(position()).horizontalDistanceSqr();
             if (distanceSquared > outerRadius * outerRadius) {
-                entity.hurt(damageSources().magic(), OUTER_DAMAGE);
+                entity.hurt(LibDamageTypes.of(level(), DamageTypes.MAGIC, this), OUTER_DAMAGE);
             } else if (distanceSquared
                     < (innerRadius - 5.0F)
                     * (innerRadius - 5.0F)) {
-                entity.hurt(damageSources().magic(), ATTACHED_DAMAGE);
+                entity.hurt(LibDamageTypes.of(level(), DamageTypes.MAGIC, this), ATTACHED_DAMAGE);
             } else if (distanceSquared
                     < innerRadius * innerRadius) {
-                entity.hurt(damageSources().magic(), INNER_DAMAGE);
+                entity.hurt(LibDamageTypes.of(level(), DamageTypes.MAGIC, this), INNER_DAMAGE);
             }
         }
     }
@@ -468,9 +474,9 @@ public class HillOfFlesh extends BaseBoss {
             Entity mouth = parts[5 + random.nextInt(5)];
             slime.setPos(mouth != null ? mouth.position() : position());
             slime.configureSummonedSize(phase2 && isExpert() ? 4 : 2);
+            slime.setBossOwner(this);
             slime.setTarget(target);
             if (serverLevel.addFreshEntity(slime)) {
-                addSubEntity(slime);
                 spawned++;
             } else {
                 slime.discard();
@@ -493,9 +499,9 @@ public class HillOfFlesh extends BaseBoss {
             }
             Vec3 offset = target.position().subtract(position()).normalize();
             leech.setPos(position().add(offset));
+            leech.setBossOwner(this);
             leech.setTarget(target);
             if (serverLevel.addFreshEntity(leech)) {
-                addSubEntity(leech);
                 spawned++;
             } else {
                 leech.discard();

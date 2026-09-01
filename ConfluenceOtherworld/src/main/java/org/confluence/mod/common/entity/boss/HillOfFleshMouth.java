@@ -67,8 +67,12 @@ public class HillOfFleshMouth extends BaseBossPart<HillOfFlesh> implements GeoEn
             hungry.setMaster(master, getRelativeAnchor(master));
             LivingEntity target = master.getTarget();
             if (target != null) hungry.setTarget(target);
-            serverLevel.addFreshEntity(hungry);
-            hungryUUID = hungry.getUUID();
+            if (serverLevel.addFreshEntity(hungry)) {
+                hungryUUID = hungry.getUUID();
+            } else {
+                hungry.discard();
+                return null;
+            }
         }
         return hungry;
     }

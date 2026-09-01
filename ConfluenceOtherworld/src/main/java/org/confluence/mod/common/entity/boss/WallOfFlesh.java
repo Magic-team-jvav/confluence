@@ -41,7 +41,7 @@ import java.util.*;
 ///
 /// 本体负责整面墙的推进、阶段和参战者管理；眼睛与嘴是可命中的临时部件，
 /// 各自维护射击或吐出水蛭的节奏。墙面布局由一个持久化种子生成，因此仍保留
-/// 1.21 的随机墙面外观，同时保证区块重载后不会换成另一套眼、嘴和饿鬼位置。
+/// 墙面外观使用持久随机布局，保证区块重载后不会换成另一套眼、嘴和饿鬼位置。
 public class WallOfFlesh extends BaseBoss {
     private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO = SynchedEntityData.defineId(WallOfFlesh.class, EntityDataSerializers.BOOLEAN);
 
@@ -156,7 +156,7 @@ public class WallOfFlesh extends BaseBoss {
         super.onAddedToWorld();
         if (!level().isClientSide) {
             if (initialPosition == Vec3.ZERO) {
-                /// Forge 1.20 在本回调执行时已把实体加入当前区段。此时跨区块移动会使
+                /// 本回调执行时实体已加入当前区段。此时跨区块移动会使
                 /// 实体脱离 ticking 列表，因此初始后移必须等到首个正式 tick 再执行。
                 needsInitialPlacement = true;
             } else {
@@ -165,7 +165,7 @@ public class WallOfFlesh extends BaseBoss {
         }
     }
 
-    /// 在实体已经进入服务端 ticking 列表后完成与 1.21 相同的高度修正和后移。
+    /// 在实体进入服务端 ticking 列表后完成高度修正和后移。
     /// 移动完成后立即把区域票据迁移到落点；不能在服务器 tick 内同步等待区块生成，
     /// 否则巨型墙面的加载会阻塞整条服务器线程。
     private boolean applyInitialPlacement() {
@@ -268,6 +268,25 @@ public class WallOfFlesh extends BaseBoss {
             return;
         }
         setTarget(level().getEntitiesOfClass(Player.class, getPursuitBox(), this::isValidFrontTarget).stream().min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null));
+    }
+
+    @Override
+    protected boolean maintainsEncounterChunkTicket() {
+        // 血肉墙按长条战斗区域维护多组专用票据，不能与本体中心票据互相覆盖。
+        return false;
+    }
+
+    @Override
+    protected boolean isValidCurrentCombatPlayer(Player player) {
+        return super.isValidCurrentCombatPlayer(player) && isValidFrontTarget(player);
+    }
+
+    @Override
+    protected @Nullable Player findCombatPlayer() {
+        return level().getEntitiesOfClass(Player.class, getPursuitBox(), this::isValidFrontTarget)
+                .stream()
+                .min(Comparator.comparingDouble(this::distanceToSqr))
+                .orElse(null);
     }
 
     boolean isValidFrontTarget(@Nullable LivingEntity target) {
@@ -410,9 +429,9 @@ public class WallOfFlesh extends BaseBoss {
     }
 
     private void updateMovement() {
-        /// 1.21 通过移动速度属性逐刻增加墙体推进量，半血时只把该属性提高 45%。
-        /// 不能改成按失血比例直接写入 0.42 的固定速度，否则整场追逐节奏都会改变。
-        addDeltaMovement(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.125));
+        /// 墙体推进量由移动速度属性决定，半血时把该属性提高 45%。
+        /// 直接写入稳定速度，保留原推进过程中达到的巡航速度，同时避免无重力实体无限累加。
+        setDeltaMovement(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 2.5D));
     }
 
     /// 根据持久化种子建立墙面布局，并补回不参与存档的眼睛与嘴部实体。
@@ -457,7 +476,7 @@ public class WallOfFlesh extends BaseBoss {
         if (eye == null) {
             return null;
         }
-        eye.setPos(position().add(rotateWallOffset(anchor)));
+        eye.setPos(position().add(rotateWallOffset(anchor).scale(getScale())));
         eye.setMaster(this);
         if (!level.addFreshEntity(eye)) {
             eye.discard();
@@ -471,7 +490,7 @@ public class WallOfFlesh extends BaseBoss {
         if (mouth == null) {
             return null;
         }
-        mouth.setPos(position().add(rotateWallOffset(anchor)));
+        mouth.setPos(position().add(rotateWallOffset(anchor).scale(getScale())));
         mouth.setMaster(this);
         if (!level.addFreshEntity(mouth)) {
             mouth.discard();
@@ -490,7 +509,7 @@ public class WallOfFlesh extends BaseBoss {
         for (int index = 0; index < count; index++) {
             T part = parts.get(index);
             if (part != null && part.isAlive()) {
-                part.setPos(position().add(rotateWallOffset(anchors.get(index))));
+                part.setPos(position().add(rotateWallOffset(anchors.get(index)).scale(getScale())));
             }
         }
     }
@@ -614,7 +633,7 @@ public class WallOfFlesh extends BaseBoss {
                 || hungryAnchors.stream().anyMatch(anchor -> anchor.distanceToSqr(position) < distanceSquared);
     }
 
-    /// 在同列眼睛的较大空档中补嘴，保持 1.21 的墙面攻击分布。
+    /// 在同列眼睛的较大空档中补嘴，保持均匀的墙面攻击分布。
     private void generateMouthsBetweenEyes(RandomSource layoutRandom) {
         Map<Integer, List<Vec3>> eyesByColumn = new HashMap<>();
         for (Vec3 eye : List.copyOf(eyeAnchors)) {
@@ -692,7 +711,7 @@ public class WallOfFlesh extends BaseBoss {
         if (hungry == null) {
             return false;
         }
-        Vec3 rotatedAnchor = rotateWallOffset(localAnchor);
+        Vec3 rotatedAnchor = rotateWallOffset(localAnchor).scale(getScale());
         hungry.setPos(position().add(rotatedAnchor));
         hungry.setMaster(this, rotatedAnchor);
         if (getTarget() != null) {
@@ -706,7 +725,7 @@ public class WallOfFlesh extends BaseBoss {
         return lateral.scale(offset.x).add(0.0, offset.y, 0.0).add(getForwardVector().scale(offset.z));
     }
 
-    /// 把部件的世界坐标还原为墙面局部坐标，供客户端按同一布局绘制模型。
+    /// 把部件的世界坐标转换为墙面局部坐标，供客户端按同一布局绘制模型。
     public Vec3 getLocalOffset(Entity part) {
         Vec3 delta = part.position().subtract(position());
         Vec3 forward = getForwardVector();

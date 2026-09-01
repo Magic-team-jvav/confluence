@@ -3,7 +3,7 @@ package org.confluence.mod.common.data.entity;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-/// 简单生物的数据包定义。
+/// 生物与 Boss 共用的数据包数值定义。
 ///
 /// 该记录只保存可安全热重载的“数值配置”，不保存实体实例、行为树节点或 Forge 对象。
 /// 生物实体的 Java 实现是默认值的唯一来源；数据包只保存需要改动的覆盖值。
@@ -13,16 +13,16 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 ///
 /// 这里是稳定的数据格式边界。外部模组与脚本应写入 JSON，而不是直接持有加载器的内部映射；
 /// 这样既能参与标准资源包优先级，也能在 {@code /reload} 时与其他数据包一起原子生效。
-public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverrides behavior) {
+public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverrides behavior,
+                                 BossOverrides boss) {
     /// 未找到定义或定义未提供任何覆盖值时使用的不可变空对象。
-    public static final CreatureDefinition EMPTY = new CreatureDefinition(AttributeOverrides.EMPTY, BehaviorOverrides.EMPTY);
+    public static final CreatureDefinition EMPTY = new CreatureDefinition(AttributeOverrides.EMPTY, BehaviorOverrides.EMPTY, BossOverrides.EMPTY);
 
-    /// 数据包编解码入口。属性与行为两个区块都可省略，便于数据包只调整一个维度。
+    /// 数据包编解码入口。属性、行为和 Boss 三个区块都可省略，便于数据包只调整一个维度。
     public static final Codec<CreatureDefinition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            AttributeOverrides.CODEC.optionalFieldOf("attributes", AttributeOverrides.EMPTY)
-                    .forGetter(CreatureDefinition::attributes),
-            BehaviorOverrides.CODEC.optionalFieldOf("behavior", BehaviorOverrides.EMPTY)
-                    .forGetter(CreatureDefinition::behavior)
+            AttributeOverrides.CODEC.optionalFieldOf("attributes", AttributeOverrides.EMPTY).forGetter(CreatureDefinition::attributes),
+            BehaviorOverrides.CODEC.optionalFieldOf("behavior", BehaviorOverrides.EMPTY).forGetter(CreatureDefinition::behavior),
+            BossOverrides.CODEC.optionalFieldOf("boss", BossOverrides.EMPTY).forGetter(CreatureDefinition::boss)
     ).apply(instance, CreatureDefinition::new));
 
     /// 可选的原版属性基础值覆盖。
@@ -30,17 +30,32 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
     /// 这些数值在实体完成属性实例初始化后写入基础值，不创建永久修饰符，避免多次加载叠加。
     public record AttributeOverrides(double maxHealth, double attackDamage, double armor,
                                      double movementSpeed, double followRange,
-                                     double knockbackResistance) {
-        public static final AttributeOverrides EMPTY = new AttributeOverrides(-1, -1, -1, -1, -1, -1);
+                                     double knockbackResistance, double scale) {
+        public static final AttributeOverrides EMPTY = new AttributeOverrides(-1, -1, -1, -1, -1, -1, -1);
         public static final Codec<AttributeOverrides> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.DOUBLE.optionalFieldOf("max_health", -1.0).forGetter(AttributeOverrides::maxHealth),
                 Codec.DOUBLE.optionalFieldOf("attack_damage", -1.0).forGetter(AttributeOverrides::attackDamage),
                 Codec.DOUBLE.optionalFieldOf("armor", -1.0).forGetter(AttributeOverrides::armor),
                 Codec.DOUBLE.optionalFieldOf("movement_speed", -1.0).forGetter(AttributeOverrides::movementSpeed),
                 Codec.DOUBLE.optionalFieldOf("follow_range", -1.0).forGetter(AttributeOverrides::followRange),
-                Codec.DOUBLE.optionalFieldOf("knockback_resistance", -1.0)
-                        .forGetter(AttributeOverrides::knockbackResistance)
+                Codec.DOUBLE.optionalFieldOf("knockback_resistance", -1.0).forGetter(AttributeOverrides::knockbackResistance),
+                Codec.DOUBLE.optionalFieldOf("scale", -1.0).forGetter(AttributeOverrides::scale)
         ).apply(instance, AttributeOverrides::new));
+    }
+
+    /// Boss 专属的跨攻击类型覆盖。
+    ///
+    /// {@code damage_multiplier} 在伤害进入受害者前统一应用，因此既覆盖普通近战属性，
+    /// 也覆盖手臂、体节、冲刺和带有 Boss 所有者的弹幕。负数或未填写表示 1 倍。
+    public record BossOverrides(double damageMultiplier) {
+        public static final BossOverrides EMPTY = new BossOverrides(-1.0D);
+        public static final Codec<BossOverrides> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.DOUBLE.optionalFieldOf("damage_multiplier", -1.0D).forGetter(BossOverrides::damageMultiplier)
+        ).apply(instance, BossOverrides::new));
+
+        public double damageMultiplierOr(double fallback) {
+            return Double.isFinite(damageMultiplier) && damageMultiplier >= 0.0D ? damageMultiplier : fallback;
+        }
     }
 
     /// 通用行为树参数覆盖。
@@ -67,18 +82,13 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
                 Codec.DOUBLE.optionalFieldOf("charge_speed", -1.0).forGetter(BehaviorOverrides::chargeSpeed),
                 Codec.INT.optionalFieldOf("windup_ticks", -1).forGetter(BehaviorOverrides::windupTicks),
                 Codec.INT.optionalFieldOf("shot_cooldown", -1).forGetter(BehaviorOverrides::shotCooldown),
-                Codec.DOUBLE.optionalFieldOf("shot_multiplier", -1.0)
-                        .forGetter(BehaviorOverrides::shotMultiplier),
-                Codec.DOUBLE.optionalFieldOf("projectile_speed", -1.0)
-                        .forGetter(BehaviorOverrides::projectileSpeed),
-                Codec.DOUBLE.optionalFieldOf("preferred_range", -1.0)
-                        .forGetter(BehaviorOverrides::preferredRange),
-                Codec.DOUBLE.optionalFieldOf("retreat_range", -1.0)
-                        .forGetter(BehaviorOverrides::retreatRange),
+                Codec.DOUBLE.optionalFieldOf("shot_multiplier", -1.0).forGetter(BehaviorOverrides::shotMultiplier),
+                Codec.DOUBLE.optionalFieldOf("projectile_speed", -1.0).forGetter(BehaviorOverrides::projectileSpeed),
+                Codec.DOUBLE.optionalFieldOf("preferred_range", -1.0).forGetter(BehaviorOverrides::preferredRange),
+                Codec.DOUBLE.optionalFieldOf("retreat_range", -1.0).forGetter(BehaviorOverrides::retreatRange),
                 Codec.DOUBLE.optionalFieldOf("orbit_speed", -1.0).forGetter(BehaviorOverrides::orbitSpeed),
                 Codec.DOUBLE.optionalFieldOf("orbit_radius", -1.0).forGetter(BehaviorOverrides::orbitRadius),
-                Codec.DOUBLE.optionalFieldOf("health_regeneration", -1.0)
-                        .forGetter(BehaviorOverrides::healthRegeneration)
+                Codec.DOUBLE.optionalFieldOf("health_regeneration", -1.0).forGetter(BehaviorOverrides::healthRegeneration)
         ).apply(instance, BehaviorOverrides::new));
 
         public double moveSpeedOr(double fallback) {

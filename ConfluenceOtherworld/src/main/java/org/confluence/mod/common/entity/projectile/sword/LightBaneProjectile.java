@@ -33,15 +33,15 @@ public class LightBaneProjectile extends SwordProjectile {
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        Entity impacted = ProjectileHitRules.impactedEntity(target);
-        return !hitTargets.contains(impacted.getUUID()) && super.canHitEntity(target);
+        Entity identity = ProjectileHitRules.dedupeIdentity(target);
+        return !hitTargets.contains(identity.getUUID()) && super.canHitEntity(target);
     }
 
     @Override
     protected boolean hurtTarget(Entity target) {
-        Entity impacted = ProjectileHitRules.impactedEntity(target);
+        Entity identity = ProjectileHitRules.dedupeIdentity(target);
         if (!super.hurtTarget(target)) return false;
-        hitTargets.add(impacted.getUUID());
+        hitTargets.add(identity.getUUID());
         ((ServerLevel) level()).sendParticles(ModParticleTypes.LIGHT_BANE.get(), getX(), getY(), getZ(), 1, 0.0, 0.0, 0.0, 0.0);
         return true;
     }

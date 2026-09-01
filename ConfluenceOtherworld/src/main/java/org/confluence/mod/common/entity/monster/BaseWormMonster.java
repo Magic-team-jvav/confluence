@@ -8,6 +8,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.WormChainTrail;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
@@ -20,9 +22,11 @@ import java.util.List;
 /// 蠕虫怪物基类——分段实体（头+体+尾），穿透方块移动。
 /// 每 tick 头部移动，体节跟随前一个保持固定间距。
 public abstract class BaseWormMonster extends BaseMonster implements WormSegment {
+    // 头部每三 tick 扫描一次接触目标，连续位移仍由扫掠碰撞补足中间路径。
     private static final int COLLISION_INTERVAL = 3;
 
     protected final List<BaseWormPart> segments = new ArrayList<>();
+    private final WormChainTrail segmentTrail = new WormChainTrail();
     private int collisionCooldown;
 
     public BaseWormMonster(EntityType<? extends BaseWormMonster> type, Level level) {
@@ -51,6 +55,9 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     public void initSegments() {
         if (hasCompleteSegmentChain()) return;
         discardSegments();
+        Vec3 previousPosition = position();
+        Vec3 backward = getLookAngle().scale(-segmentSpacing());
+        if (backward.lengthSqr() < 1.0E-7) backward = new Vec3(0.0, 0.0, -segmentSpacing());
         for (int index = 1; index <= getSegmentCount(); index++) {
             BaseWormPart part = MonsterEntities.WORM_SEGMENT.get().create(level());
             if (part == null) {
@@ -58,6 +65,10 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
                 return;
             }
             part.bindTo(this, index, index == getSegmentCount());
+            previousPosition = previousPosition.add(backward);
+            part.setPos(previousPosition);
+            part.setYRot(getYRot());
+            part.setXRot(getXRot());
             if (!level().addFreshEntity(part)) {
                 part.discard();
                 discardSegments();
@@ -65,6 +76,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
             }
             segments.add(part);
         }
+        segmentTrail.invalidate();
     }
 
     private boolean hasCompleteSegmentChain() {
@@ -82,6 +94,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
             if (!part.isRemoved()) part.discard();
         }
         segments.clear();
+        segmentTrail.invalidate();
     }
 
     @Nullable
@@ -101,6 +114,12 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
         super.tick();
         if (!level().isClientSide) {
             initSegments();
+            List<WormChainTrail.Sample> chainPositions = segmentTrail.sample(position(), segments, segmentSpacing());
+            for (int index = 0; index < segments.size(); index++) {
+                WormChainTrail.Sample sample = chainPositions.get(index);
+                segments.get(index).moveToChainPosition(sample.position());
+                segments.get(index).orientAlongChain(sample.tangent());
+            }
             tickCollision();
         }
     }
@@ -135,6 +154,9 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
 
     @Override
     public void updateSegmentPosition() {}
+
+    @Override
+    public void updateSegmentRotation() {}
 
     public static AttributeSupplier.Builder createWormAttributes() {
         return BaseMonster.createMonsterAttributes()

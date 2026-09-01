@@ -215,14 +215,18 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     protected boolean hurtTarget(Entity target) {
         if (!canHitEntity(target)) return false;
-        Entity impacted = ProjectileHitRules.impactedEntity(target);
-        if (impacted instanceof LivingEntity living) {
-            if (!Immunity.hurt(this, living, damageSource(), baseAttackDamage)) return false;
-            LibEntityUtils.knockBackA2B(this, living, (baseKnockback + bonusKnockback) * 0.5, 0.2);
-        } else if (!impacted.hurt(damageSource(), baseAttackDamage)) {
+        Entity damageRecipient = ProjectileHitRules.damageRecipient(target);
+        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
+        if (logicalTarget == null) return false;
+        DamageSource source = damageSource();
+        boolean hurt = damageRecipient instanceof LivingEntity living
+                ? Immunity.hurt(this, living, source, baseAttackDamage)
+                : Immunity.withCause(this, () -> damageRecipient.hurt(source, baseAttackDamage));
+        if (!hurt) {
             return false;
         }
-        applyHitEffect(impacted);
+        LibEntityUtils.knockBackA2B(this, logicalTarget, (baseKnockback + bonusKnockback) * 0.5, 0.2);
+        applyHitEffect(logicalTarget);
         level().broadcastEntityEvent(this, EVENT_ENTITY_HIT);
         if (--remainingHits <= 0) discard();
         return true;

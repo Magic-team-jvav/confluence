@@ -22,7 +22,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class BossSummoningItem extends TooltipItem {
-    private static final int RANDOM_SUMMON_RANGE = 50;
+    // 需要随机落点的 Boss 在玩家周围 48 方块半径内选取召唤位置。
+    private static final double RANDOM_SUMMON_RADIUS = 48.0D;
 
     private final Predicate<Player> condition;
     private final Function<Level, Mob> factory;
@@ -50,8 +51,8 @@ public class BossSummoningItem extends TooltipItem {
             if (!prepareSummonedMob(serverLevel, mob)) {
                 return InteractionResultHolder.fail(itemStack);
             }
+            bindSummoner(player, mob);
             if (serverLevel.addFreshEntity(mob)) {
-                bindSummoner(player, mob);
                 if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);
                 }
@@ -67,8 +68,7 @@ public class BossSummoningItem extends TooltipItem {
 
     /// 执行 Forge 生物生成初始化。
     ///
-    /// 1.20 合并侧没有 TerraEntity 的 internalSpawnEntity，因此在实体进入世界前补上
-    /// finalizeSpawn，保证生成事件、难度初始化和实体内部生成状态完整执行。
+    /// 在实体进入世界前执行生成收尾，保证生成事件、难度初始化和实体内部状态完整建立。
     private static boolean prepareSummonedMob(ServerLevel serverLevel, Mob mob) {
         mob.yHeadRot = mob.getYRot();
         mob.yBodyRot = mob.getYRot();
@@ -82,25 +82,30 @@ public class BossSummoningItem extends TooltipItem {
 
     /// 将成功生成的 Boss 或普通怪物绑定到召唤者。
     ///
-    /// 绑定时机必须晚于实体加入世界，避免目标被生成初始化覆盖。否则飞行 Boss 的首轮行为会进入无目标分支，
-    /// 客户端看起来就像沉底、贴地滑行或完全不追击玩家。
+    /// 绑定发生在生成初始化之后、加入世界之前，因此任何实体事件和首个服务端 tick 都能看到
+    /// 已建立的权威目标。创造和旁观玩家只观察遭遇，不能成为攻击目标。
     private static void bindSummoner(Player player, Mob mob) {
         if (mob instanceof BaseBoss boss) {
             boss.initializeSummonedCombat(player);
-        } else {
+        } else if (player.canBeSeenAsEnemy() && mob.canAttack(player)) {
             mob.setTarget(player);
+        } else {
+            mob.setTarget(null);
         }
     }
 
-    /// 使用 1.21 侧的随机召唤落点。
+    /// 在玩家周围选择随机召唤落点。
     ///
     /// 这里不再要求视线无遮挡。Boss 召唤道具本身就是强制开战入口，额外的视线检测会让测试场、
     /// 洞穴或复杂建筑中的召唤直接失败。
     private static void moveToRandomSummonPos(Level level, Player player, Mob mob) {
+        double angle = level.random.nextDouble() * Mth.TWO_PI;
+        // sqrt 使候选点在圆盘内均匀分布；nextDouble 永远小于一，因此最大距离严格小于 48 格。
+        double radius = Math.sqrt(level.random.nextDouble()) * RANDOM_SUMMON_RADIUS;
         mob.moveTo(
-                player.getX() + Mth.randomBetweenInclusive(level.random, -RANDOM_SUMMON_RANGE, RANDOM_SUMMON_RANGE),
+                player.getX() + Math.cos(angle) * radius,
                 player.getY(),
-                player.getZ() + Mth.randomBetweenInclusive(level.random, -RANDOM_SUMMON_RANGE, RANDOM_SUMMON_RANGE),
+                player.getZ() + Math.sin(angle) * radius,
                 player.getYRot(),
                 0.0F);
     }

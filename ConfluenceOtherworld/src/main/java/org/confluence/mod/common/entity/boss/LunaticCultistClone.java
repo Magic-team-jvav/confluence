@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
@@ -27,7 +28,7 @@ import java.util.UUID;
 /// 拜月教邪教徒在仪式攻击中生成的可受击幻影。
 ///
 /// 幻影参与目标判断与受击反馈，但其生命周期和战斗归属始终由主体 Boss 管理。
-public final class LunaticCultistClone extends BaseFlyingMonster {
+public final class LunaticCultistClone extends BaseFlyingMonster implements BossOwnedEntity {
     private static final String AGE_TAG = "IllusionAge";
     private static final int LIFETIME = 240;
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(LunaticCultistClone.class, EntityDataSerializers.OPTIONAL_UUID);
@@ -61,10 +62,16 @@ public final class LunaticCultistClone extends BaseFlyingMonster {
         ownerTracker.bind(this, master);
         entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
         entityData.set(CLONE_INDEX, Mth.clamp(cloneIndex, 0, LunaticCultist.CLONE_COUNT - 1));
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
     }
 
     public @Nullable LunaticCultist getMaster() {
         return ownerTracker.resolve(this);
+    }
+
+    @Override
+    public @Nullable BaseBoss getBossOwner() {
+        return getMaster();
     }
 
     public @Nullable UUID getMasterUUID() {
@@ -87,15 +94,17 @@ public final class LunaticCultistClone extends BaseFlyingMonster {
 
     @Override
     public void tick() {
+        LivingEntity inheritedTarget = null;
+        boolean owned = !level().isClientSide && ownerTracker.getOwnerUUID() != null;
+        if (owned) {
+            ownerTracker.tickDependent(this, true, 100);
+            inheritedTarget = getTarget();
+            if (isRemoved()) return;
+        }
         super.tick();
         if (level().isClientSide) return;
-
-        LunaticCultist master = getMaster();
-        if (master != null && master.isAlive()) {
-            LivingEntity masterTarget = master.getTarget();
-            if (masterTarget != null && masterTarget.isAlive() && getTarget() != masterTarget) {
-                setTarget(masterTarget);
-            }
+        if (owned && getTarget() != inheritedTarget) {
+            setTarget(inheritedTarget);
         }
         if (++illusionAge >= LIFETIME) discard();
     }

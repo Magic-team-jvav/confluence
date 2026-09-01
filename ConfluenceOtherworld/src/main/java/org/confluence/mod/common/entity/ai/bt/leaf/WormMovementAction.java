@@ -5,6 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
@@ -16,6 +17,7 @@ import java.util.Objects;
 /// 围绕前方随机选择地表上下的落点。这样头部不会因为导航器无法为墙内位置建路
 /// 而静止，体节也只需继续跟随头部，无需各自参与寻路。
 public final class WormMovementAction extends BTNode {
+    // 无有效目标时每 30 tick 重新选择游走方向，避免逐 tick 随机导致折线抖动。
     private static final int WANDER_RESELECT_TICKS = 30;
     private static final double TURN_WEIGHT = 0.14;
 
@@ -39,7 +41,7 @@ public final class WormMovementAction extends BTNode {
     public BTStatus execute() {
         LivingEntity target = worm.getTarget();
         if (target != null && target.isAlive() && worm.getY() <= profile.maximumAttackHeight()) {
-            steerTowards(target.getEyePosition(), profile.attackSpeed());
+            steerTowards(BossMinionCoordinator.predict(target, 5.0D, 4.0D), profile.attackSpeed());
             wanderTarget = null;
             wanderTicks = 0;
             return BTStatus.RUNNING;

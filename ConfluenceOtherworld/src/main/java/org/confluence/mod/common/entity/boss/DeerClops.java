@@ -94,7 +94,7 @@ public class DeerClops extends BaseBoss {
                 .add(Attributes.ATTACK_DAMAGE, 10.4)
                 .add(Attributes.ARMOR, 10.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.4)
-                .add(Attributes.FOLLOW_RANGE, 64.0);
+                .add(Attributes.FOLLOW_RANGE, 300.0);
     }
 
     @Override
@@ -175,7 +175,7 @@ public class DeerClops extends BaseBoss {
         double distanceSqr = distanceToSqr(target);
         boolean outsideAttackRange = distanceSqr > MAXIMUM_ATTACK_RANGE * MAXIMUM_ATTACK_RANGE;
         setFarInvulnerable(outsideAttackRange);
-        getLookControl().setLookAt(target, 30.0F, 30.0F);
+        faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
 
         if (getCombatState() == CombatState.ATTACK) {
             navigation.stop();
@@ -257,8 +257,8 @@ public class DeerClops extends BaseBoss {
 
     /// 为暗影之手寻找不会一生成就卡进方块的位置。
     ///
-    /// 1.21 侧直接在球面上随机取点，靠近洞壁或地面时会有部分黑手立刻撞墙消失。
-    /// 这里先尝试随机球面，再退回四个均匀方向并逐格上移，保证一次攻击稳定形成
+    /// 随机球面点靠近洞壁或地面时可能使黑手生成后立刻撞墙消失。
+    /// 因此先尝试球面取点，再退回四个均匀方向并逐格上移，保证一次攻击稳定形成
     /// 四向包夹，同时仍保持方向在生成时锁定、之后不自动追踪。
     private Vec3 findShadowHandOrigin(Vec3 center, int handIndex, double formationRotation, DeerclopsShadowHandProjectile projectile) {
         double formationAngle = formationRotation + handIndex * Math.PI * 0.5;
@@ -381,8 +381,13 @@ public class DeerClops extends BaseBoss {
             setCombatState(CombatState.ROAR);
             return;
         }
+        if (chestTarget != null) {
+            faceCombatPosition(Vec3.atCenterOf(chestTarget), 30.0F, 30.0F);
+        }
         if (++chestAttackTicks == 7 && chestTarget != null && level().getBlockEntity(chestTarget) instanceof ChestBlockEntity) {
+            Vec3 attackDirection = Vec3.atCenterOf(chestTarget).subtract(position()).multiply(1.0D, 0.0D, 1.0D);
             level().destroyBlock(chestTarget, true, this);
+            beginIcePillarWave(attackDirection);
         }
         if (chestAttackTicks > ATTACK_TOTAL_TICKS) {
             chestTarget = null;
@@ -410,8 +415,8 @@ public class DeerClops extends BaseBoss {
 
     /// 在正常寻路无法跨越地形时执行一次受控跳跃。
     ///
-    /// 1.21 侧只不断重发地面路径，大体型碰撞箱遇到台阶、短墙或无法生成完整路径时
-    /// 会长时间贴住障碍。这里仍让原版导航决定路线，仅在水平碰撞、连续停滞，或目标
+    /// 大体型碰撞箱遇到台阶、短墙或无法生成完整路径时会长时间贴住障碍。
+    /// 这里仍让导航决定路线，仅在水平碰撞、连续停滞，或目标
     /// 明显更高且本次寻路失败时介入。跳跃带有冷却并检查上方空间，因此不会退化成
     /// 持续兔子跳，也不会在低矮洞穴里把 Boss 反复顶向天花板。
     ///

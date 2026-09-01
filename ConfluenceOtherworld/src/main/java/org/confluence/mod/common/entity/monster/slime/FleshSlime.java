@@ -25,7 +25,7 @@ public class FleshSlime extends BaseSlime {
         return true;
     }
 
-    /// 1.21 侧除关闭摔落结算外，还直接屏蔽所有带摔落标签的伤害来源。
+    /// 同时屏蔽火焰、熔岩和所有带摔落标签的伤害来源。
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
         return source.is(DamageTypeTags.IS_FIRE)
@@ -45,4 +45,5 @@ public class FleshSlime extends BaseSlime {
         return !target.getType().is(ModTags.EntityTypes.FLESH_ALLIANCE)
                 && super.canAttack(target);
     }
+
 }

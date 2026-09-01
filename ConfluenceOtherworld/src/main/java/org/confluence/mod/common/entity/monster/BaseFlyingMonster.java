@@ -28,7 +28,7 @@ public abstract class BaseFlyingMonster extends BaseMonster {
         return navigation;
     }
 
-    /// 1.21 的飞行怪接触伤害属于实体本身，而不是某个追击动作。
+    /// 飞行怪的接触伤害属于实体本身，而不是某个追击动作。
     ///
     /// 因此行为树切换到施法或等待时，已经取得目标的实体仍按同一冷却检测身体碰撞。
     @Override
@@ -66,7 +66,7 @@ public abstract class BaseFlyingMonster extends BaseMonster {
 
     /// 指示具体实体是否保留普通生物的推动行为。
     ///
-    /// 1.21 的飞行预制体默认不可推动，但妖精、黄蜂及部分穿墙生物并未使用该预制体，
+    /// 通用飞行预制体默认不可推动，但妖精、黄蜂及部分穿墙生物并未使用该预制体，
     /// 因此不能在公共飞行基类中统一抹平差异。
     protected boolean hasPushableBody() {
         return false;

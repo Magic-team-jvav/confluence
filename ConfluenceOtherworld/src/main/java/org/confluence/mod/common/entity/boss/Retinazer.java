@@ -102,7 +102,7 @@ public class Retinazer extends AbstractTwinEye {
         if (--stateTicks > 0) {
             return;
         }
-        // 1.21 只允许第一阶段在二十格内发射，过远时仍会消耗本次射击节拍。
+        // 第一阶段只允许在二十格内发射，过远时仍会消耗本次射击节拍。
         if (distanceToSqr(target) < 400.0) {
             fireLaser(target);
         }
@@ -198,7 +198,10 @@ public class Retinazer extends AbstractTwinEye {
             Vec3 away = position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
             desiredPosition = target.position().add(away.normalize().scale(horizontalDistance)).add(0.0, height, 0.0);
         }
-        addDeltaMovement(desiredPosition.subtract(position()).scale(speed * 0.01));
+        Vec3 correction = desiredPosition.subtract(position());
+        Vec3 velocity = getDeltaMovement().scale(0.86D).add(correction.scale(speed * 0.014D));
+        if (velocity.lengthSqr() > speed * speed) velocity = velocity.normalize().scale(speed);
+        setDeltaMovement(velocity);
         if (distanceToSqr(target) < 2.0) {
             setDeltaMovement(getDeltaMovement().scale(0.95));
         }

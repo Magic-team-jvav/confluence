@@ -5,9 +5,14 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
+import org.confluence.mod.common.entity.boss.SkeletronPrime;
 import org.confluence.mod.common.entity.boss.SkeletronPrimeArm;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.GeoBone;
 
 /// 从机械骷髅王共享模型中绘制单个机械臂武器分支。
@@ -50,7 +55,51 @@ public class SkeletronPrimeArmRenderer extends BossGeoRenderer<SkeletronPrimeArm
                 return;
             }
         }
+        SkeletronPrime owner = arm.getOwner();
+        if (owner != null && (boneName.equals("ag1") || boneName.equals("ag2"))) {
+            Vec3 handPosition = interpolatedPosition(arm, partialTick);
+            Vec3 ownerPosition = interpolatedPosition(owner, partialTick);
+            Vec3 handForward = Vec3.directionFromRotation(
+                    Mth.lerp(partialTick, arm.xRotO, arm.getXRot()),
+                    Mth.rotLerp(partialTick, arm.yRotO, arm.getYRot())).scale(-1.0D);
+            Vec3 ownerDirection = ownerPosition.subtract(handPosition);
+            if (handForward.lengthSqr() > 1.0E-8D && ownerDirection.lengthSqr() > 1.0E-8D) {
+                Vec3 elbowDirection = handForward.normalize().add(ownerDirection.normalize());
+                if (elbowDirection.lengthSqr() <= 1.0E-8D) {
+                    elbowDirection = ownerDirection.normalize();
+                } else {
+                    elbowDirection = elbowDirection.normalize();
+                }
+
+                poseStack.pushPose();
+                poseStack.mulPose(new Quaternionf().setFromNormalized(poseStack.last().pose()).conjugate());
+                if (boneName.equals("ag2")) {
+                    poseStack.mulPose(new Quaternionf().rotateTo(new Vector3f(1.0F, 0.0F, 0.0F), elbowDirection.toVector3f()));
+                } else {
+                    float connectorLength = 4.8F;
+                    Vec3 elbowOffset = elbowDirection.scale(connectorLength);
+                    Vec3 elbowPosition = handPosition.add(elbowOffset);
+                    Vec3 upperDirection = ownerPosition.subtract(elbowPosition);
+                    if (upperDirection.lengthSqr() > 1.0E-8D) {
+                        poseStack.translate(elbowOffset.x, elbowOffset.y, elbowOffset.z);
+                        poseStack.mulPose(new Quaternionf().rotateTo(new Vector3f(1.0F, 0.0F, 0.0F), upperDirection.normalize().toVector3f()));
+                        poseStack.translate(-connectorLength, 0.0D, 0.0D);
+                    }
+                }
+                super.renderRecursively(poseStack, arm, bone, renderType, bufferSource, buffer,
+                        isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+                poseStack.popPose();
+                return;
+            }
+        }
         super.renderRecursively(poseStack, arm, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    private static Vec3 interpolatedPosition(net.minecraft.world.entity.Entity entity, float partialTick) {
+        return new Vec3(
+                Mth.lerp(partialTick, entity.xo, entity.getX()),
+                Mth.lerp(partialTick, entity.yo, entity.getY()),
+                Mth.lerp(partialTick, entity.zo, entity.getZ()));
     }
 
     static double weaponModelOffset(int armType) {

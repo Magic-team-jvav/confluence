@@ -14,18 +14,23 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.PartHitTarget;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.UUID;
 
 /// 蠕虫体节。每 tick 跟随前一个体节（或头部），保持固定间距。
-public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
+public class BaseWormPart extends Entity implements WormSegment, GeoEntity, PartHitTarget {
+    // 未命中时每 10 tick 重试；命中后给同一体节 20 tick 接触伤害冷却。
     private static final int COLLISION_DETECTION_INTERVAL = 10;
     private static final int COLLISION_ATTACK_INTERVAL = 20;
+    // 已确认本体死亡时快速清理；仅暂时无法解析本体时保留更长的加载宽限。
     private static final int DEAD_OWNER_REMOVAL_TICKS = 20;
     private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
     private static final String OWNER_TAG = "Owner";
@@ -41,6 +46,13 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
     private @Nullable UUID ownerUUID;
     private int unresolvedOwnerTicks;
     private int hurtCooldown;
+    private @Nullable Vec3 contactSweepStart;
+    private int clientLerpSteps;
+    private double clientLerpX;
+    private double clientLerpY;
+    private double clientLerpZ;
+    private float clientLerpYaw;
+    private float clientLerpPitch;
 
     public BaseWormPart(EntityType<? extends BaseWormPart> type, Level level) {
         super(type, level);
@@ -65,6 +77,27 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
 
     public boolean isTail() {
         return entityData.get(TAIL);
+    }
+
+    @Override
+    public Entity damageRecipient() {
+        return this;
+    }
+
+    @Override
+    public Entity encounterOwner() {
+        BaseWormMonster head = getOwner();
+        return head == null ? this : head;
+    }
+
+    @Override
+    public Entity dedupeIdentity() {
+        return encounterOwner();
+    }
+
+    @Override
+    public boolean acceptsDirectHit() {
+        return isPickable();
     }
 
     @Override
@@ -96,22 +129,45 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
         if (difference.lengthSqr() < 0.001) difference = new Vec3(0, 1, 0);
         Vec3 destination = leader.position().add(difference.normalize().scale(head.segmentSpacing()));
 
-        double dx = destination.x - previousPosition.x;
-        double dy = destination.y - previousPosition.y;
-        double dz = destination.z - previousPosition.z;
-        float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90F;
-        float horizontalDistance = Mth.sqrt((float) (dx * dx + dz * dz));
-        float pitch = (float) (-Mth.atan2(dy, horizontalDistance) * Mth.RAD_TO_DEG);
-
+        if (!level().isClientSide) contactSweepStart = previousPosition;
         setPos(destination.x, destination.y, destination.z);
+    }
+
+    public void moveToChainPosition(Vec3 destination) {
+        Vec3 previousPosition = position();
+        if (!level().isClientSide) contactSweepStart = previousPosition;
+        setPos(destination.x, destination.y, destination.z);
+    }
+
+    public void orientAlongChain(Vec3 tangent) {
+        if (tangent.lengthSqr() < 1.0E-7D) return;
+        double horizontalDistance = Math.sqrt(tangent.x * tangent.x + tangent.z * tangent.z);
+        float yaw = (float) (Mth.atan2(tangent.z, tangent.x) * Mth.RAD_TO_DEG) - 90.0F;
+        float pitch = (float) (-Mth.atan2(tangent.y, horizontalDistance) * Mth.RAD_TO_DEG);
         setRot(yaw, pitch);
-        yRotO = yaw;
-        xRotO = pitch;
+    }
+
+    @Override
+    public void updateSegmentRotation() {
+        WormSegment previous = getPrev();
+        if (!(previous instanceof Entity leader)) return;
+
+        WormSegment next = getNext();
+        Vec3 tangent = getSegmentIndex() > 1 && next instanceof Entity follower
+                ? leader.position().subtract(follower.position())
+                : leader.position().subtract(position());
+        if (tangent.lengthSqr() < 1.0E-7) return;
+
+        double horizontalDistance = Math.sqrt(tangent.x * tangent.x + tangent.z * tangent.z);
+        float yaw = (float) (Mth.atan2(tangent.z, tangent.x) * Mth.RAD_TO_DEG) - 90.0F;
+        float pitch = (float) (-Mth.atan2(tangent.y, horizontalDistance) * Mth.RAD_TO_DEG);
+        setRot(yaw, pitch);
     }
 
     @Override
     public void tick() {
         super.tick();
+        if (level().isClientSide) tickClientInterpolation();
         BaseWormMonster head = getOwner();
         if (head != null && !head.isAlive()) {
             /// 死亡头部已经完成过所有权解析，不需要等待网络实体的加入顺序。
@@ -122,25 +178,30 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
         if (head == null) {
             /// 客户端可能先收到体节、后收到头部，因此真正未解析到所有者时仍保留较长宽限期。
             /// 该分支不能与“已确认头部死亡”共用时长，否则无 AI 蠕虫会留下可选中的体节尸体。
-            if (++unresolvedOwnerTicks > OWNER_RESOLUTION_GRACE_TICKS) discard();
+            if (!level().isClientSide && ++unresolvedOwnerTicks > OWNER_RESOLUTION_GRACE_TICKS)
+                discard();
             return;
         }
         unresolvedOwnerTicks = 0;
 
-        if (!level().isClientSide) {
-            updateSegmentPosition();
-            tickCollisionAttack(head);
-        }
+        if (!level().isClientSide) tickCollisionAttack(head);
     }
 
     private void tickCollisionAttack(BaseWormMonster head) {
+        Vec3 sweepStart = contactSweepStart;
+        contactSweepStart = null;
         if (hurtCooldown > 0) {
             hurtCooldown--;
             return;
         }
         boolean attacked = false;
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox())) {
-            if (target != head && head.canAttack(target)) {
+        List<Entity> contacts = sweepStart == null
+                ? SweptContactAttack.findTargets(this, 0.0D, SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                candidate -> candidate instanceof LivingEntity target && target != head && head.canAttack(target))
+                : SweptContactAttack.findTargets(this, sweepStart, 0.0D, SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                candidate -> candidate instanceof LivingEntity target && target != head && head.canAttack(target));
+        for (Entity contact : contacts) {
+            if (contact instanceof LivingEntity target) {
                 head.doHurtTarget(target);
                 attacked = true;
             }
@@ -220,6 +281,36 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity {
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
+    }
+
+    @Override
+    public void lerpTo(double x, double y, double z, float yaw, float pitch,
+                       int steps, boolean teleport) {
+        if (!level().isClientSide || teleport || distanceToSqr(x, y, z) > 4096.0D) {
+            setPos(x, y, z);
+            setRot(yaw, pitch);
+            clientLerpSteps = 0;
+            return;
+        }
+        clientLerpX = x;
+        clientLerpY = y;
+        clientLerpZ = z;
+        clientLerpYaw = yaw;
+        clientLerpPitch = pitch;
+        clientLerpSteps = Math.max(1, steps);
+    }
+
+    private void tickClientInterpolation() {
+        if (clientLerpSteps <= 0) return;
+        double progress = 1.0D / clientLerpSteps;
+        setPos(
+                Mth.lerp(progress, getX(), clientLerpX),
+                Mth.lerp(progress, getY(), clientLerpY),
+                Mth.lerp(progress, getZ(), clientLerpZ));
+        setRot(
+                Mth.rotLerp((float) progress, getYRot(), clientLerpYaw),
+                Mth.lerp((float) progress, getXRot(), clientLerpPitch));
+        clientLerpSteps--;
     }
 
     @Override

@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 /// 本源末影龙的服务端碰撞部件。
 ///
 /// 模型仍由主体一次性绘制，七个部件只负责头、躯干、尾部和双翼的精确受击区域。
-/// 部件不独立保存生命或战利品，伤害始终转发给主体；非头部沿用 1.21 的减伤公式，
+/// 部件不独立保存生命或战利品，伤害始终转发给主体；非头部使用独立减伤公式，
 /// 区块卸载后由主体按固定槽位重建。
 public final class PrimeEnderDragonPart extends BaseBossPart<PrimeEnderDragon> {
     private static final EntityDataAccessor<Integer> SLOT = SynchedEntityData.defineId(PrimeEnderDragonPart.class, EntityDataSerializers.INT);
@@ -67,7 +67,9 @@ public final class PrimeEnderDragonPart extends BaseBossPart<PrimeEnderDragon> {
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         PrimeEnderDragon.PartSlot slot = getSlot();
-        return EntityDimensions.scalable(slot.width(), slot.height());
+        PrimeEnderDragon owner = getOwner();
+        return EntityDimensions.scalable(slot.width(), slot.height())
+                .scale(owner == null ? 1.0F : owner.getScale());
     }
 
     @Override

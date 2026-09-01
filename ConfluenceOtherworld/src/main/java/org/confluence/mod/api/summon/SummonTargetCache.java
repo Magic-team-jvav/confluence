@@ -25,6 +25,8 @@ import java.util.*;
 
 /// 按玩家共享的召唤物目标缓存。
 public final class SummonTargetCache {
+    // 两张表都按服务端世界隔离并使用弱键，世界卸载后不会被全局缓存继续持有。
+    // COMMANDS 以玩家为键共享手动指令；AUTOMATIC_TARGETS 以召唤实例为键缓存自动索敌。
     private static final Map<ServerLevel, Map<UUID, CommandState>> COMMANDS = new WeakHashMap<>();
     private static final Map<ServerLevel, Map<SummonKey, AutomaticEntry>> AUTOMATIC_TARGETS = new WeakHashMap<>();
 
@@ -154,7 +156,8 @@ public final class SummonTargetCache {
 
     private static @Nullable LivingEntity selectPartTarget(ServerLevel level, ServerPlayer owner, Vec3 origin, double automaticRange) {
         AABB searchBox = AABB.ofSize(origin, automaticRange * 2.0, automaticRange * 2.0, automaticRange * 2.0);
-        for (Entity part : level.getEntities(owner, searchBox, entity -> entity.isAlive() && entity.isPickable())) {
+        for (Entity part : level.getEntities(owner, searchBox,
+                entity -> entity.isAlive() && ProjectileHitRules.canHit(owner, entity))) {
             LivingEntity candidate = ProjectileHitRules.logicalLivingTarget(part);
             if (candidate == null || candidate == part) continue;
             if (isValidTarget(owner, candidate, Double.MAX_VALUE, false)
@@ -181,7 +184,10 @@ public final class SummonTargetCache {
         else return false;
         double rangeSqr = range * range;
         for (Entity part : parts) {
-            if (part.isAlive() && part.isPickable() && part.position().distanceToSqr(origin) <= rangeSqr
+            boolean canHit = level == null || owner == null
+                    ? ProjectileHitRules.acceptsDirectHit(part)
+                    : ProjectileHitRules.canHit(owner, part);
+            if (part.isAlive() && canHit && part.position().distanceToSqr(origin) <= rangeSqr
                     && (!mustSee || hasLineOfSight(level, owner, origin, part.getEyePosition())))
                 return true;
         }

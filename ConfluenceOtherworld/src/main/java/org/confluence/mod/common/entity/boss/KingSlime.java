@@ -31,19 +31,23 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 /// 四次跳跃后传送；专家及以上且生命不足一半时，会连续完成两轮跳跃再传送。阶段、计时器和
 /// 当前轮次会一起存档，避免区块卸载后出现尺寸、无敌状态和碰撞箱彼此不一致。
 ///
-/// 逻辑尺寸与 1.21 侧一致，满血为 16、濒死最低为 6。尺寸同时决定碰撞箱和客户端模型
+/// 逻辑尺寸满血为 16、濒死最低为 6。尺寸同时决定碰撞箱和客户端模型
 /// 缩放，不能只改变其中一侧。缩放阶段拒绝伤害和接触攻击；常态受伤时按生命阈值生成蓝史莱姆，
 /// 并按难度额外生成尖刺史莱姆。
 public class KingSlime extends BaseBoss {
     private static final String RUNTIME_TAG = "ConfluenceKingSlimeRuntime";
+    // 自定义运行时 NBT 的结构版本；只在字段布局发生不兼容变化时递增。
     private static final int RUNTIME_VERSION = 2;
+    // 缩小和恢复各持续 20 tick；85 tick 是常态跳跃阶段的循环边界。
     private static final int TRANSFORM_TICKS = 20;
     private static final int NORMAL_CYCLE_END = 85;
+    // 生命比例映射到逻辑尺寸 [6, 16]，最大身体碰撞高度限制为 6 方块。
     private static final int MIN_SIZE = 6;
     private static final int MAX_HEALTH_SIZE_BONUS = 10;
-    /// 1.21 侧实体类型的基础尺寸为 0.6，每一级体型都在该尺寸上等比放大。
-    /// 碰撞箱必须与客户端使用的史莱姆模型同步缩放，否则会出现模型远大于实际判定箱的问题。
-    private static final float BASE_DIMENSION_PER_SIZE = 0.6F;
+    private static final float MAX_BODY_HEIGHT = 6.0F;
+    // 碰撞箱使用半径/半高，渲染模型使用完整直径，因此渲染倍率是尺寸换算值的两倍。
+    private static final float BASE_DIMENSION_PER_SIZE = MAX_BODY_HEIGHT / (MIN_SIZE + MAX_HEALTH_SIZE_BONUS);
+    private static final float RENDER_SCALE_PER_SIZE = BASE_DIMENSION_PER_SIZE * 2.0F;
 
     private static final EntityDataAccessor<Byte> DATA_PHASE = SynchedEntityData.defineId(KingSlime.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Integer> DATA_PHASE_TICKS = SynchedEntityData.defineId(KingSlime.class, EntityDataSerializers.INT);
@@ -55,6 +59,10 @@ public class KingSlime extends BaseBoss {
     private float squish;
     private float targetSquish;
     private boolean wasOnGround;
+    private float clientPhaseTicks;
+    private float clientPhaseTicksO;
+    private int clientSyncedPhaseTicks;
+    private boolean clientPhaseInitialized;
 
     private enum CombatPhase {
         NORMAL(0),
@@ -197,11 +205,10 @@ public class KingSlime extends BaseBoss {
             direction = new Vec3(offset.x, 0.0, offset.z);
             if (direction.lengthSqr() > 1.0E-6) {
                 direction = direction.normalize();
-                float wantedYaw = (float) (Mth.atan2(-direction.x, direction.z) * Mth.RAD_TO_DEG);
-                setYRot(Mth.rotLerp(0.35F, getYRot(), wantedYaw));
-                yBodyRot = getYRot();
             }
         }
+
+        faceHorizontalMovement(direction);
 
         double horizontalSpeed = LibUtils.switchByDifficulty(level(), blockPosition(), 1.1F, 1.35F, 1.55F, 1.8F);
         double baseVerticalSpeed = finishingJump
@@ -219,6 +226,7 @@ public class KingSlime extends BaseBoss {
                 : new Vec3(target.getX() - getX(), 0.0, target.getZ() - getZ());
         if (direction.lengthSqr() > 1.0E-6) {
             direction = direction.normalize().scale(LibUtils.switchByDifficulty(level(), blockPosition(), 0.1F, 0.15F, 0.2F, 0.25F));
+            faceHorizontalMovement(direction);
         }
         setHorizontalMovement(direction);
         setDeltaMovement(getDeltaMovement().add(0.0, 0.05, 0.0));
@@ -249,26 +257,24 @@ public class KingSlime extends BaseBoss {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return;
         }
-        Player randomPlayer = serverLevel.getRandomPlayer();
-        if (randomPlayer == null && getTarget() instanceof Player playerTarget) {
-            randomPlayer = playerTarget;
-        }
-        if (randomPlayer == null) {
+        Player anchorPlayer = getTarget() instanceof Player playerTarget
+                ? playerTarget : serverLevel.getRandomPlayer();
+        if (anchorPlayer == null) {
             return;
         }
 
         LivingEntity target = getTarget();
         Vec3 targetPosition = target == null
-                ? randomPlayer.getOnPos().getCenter()
+                ? anchorPlayer.getOnPos().getCenter()
                 : target.getOnPos().getCenter();
         serverLevel.addFreshEntity(new CrownOfKingSlimeModelEntity(serverLevel, position().add(0.0, getDimensions(getPose()).height, 0.0)));
 
         Vec3 destination;
         if (!isExpert()) {
-            Vec3 direction = randomPlayer.getLookAngle().multiply(-1.0, 0.0, -1.0).normalize();
+            Vec3 direction = anchorPlayer.getLookAngle().multiply(-1.0, 0.0, -1.0).normalize();
             destination = targetPosition.add(direction.scale(5.0));
         } else {
-            float angle = random.nextFloat() * 3.14F;
+            float angle = random.nextFloat() * Mth.TWO_PI;
             destination = targetPosition.add(Mth.cos(angle) * 10.0, 0.0, Mth.sin(angle) * 10.0);
         }
         teleportTo(destination.x, destination.y + 2.0, destination.z);
@@ -310,12 +316,18 @@ public class KingSlime extends BaseBoss {
     /// 客户端渲染器使用连续值插值，避免同步的整数碰撞尺寸造成逐格缩放。
     public float getVisualSize(float partialTick) {
         float maximum = getHealth() / getMaxHealth() * MAX_HEALTH_SIZE_BONUS + MIN_SIZE;
-        float ticks = getPhaseTicks() + partialTick;
+        float ticks = level().isClientSide
+                ? Mth.lerp(partialTick, clientPhaseTicksO, clientPhaseTicks)
+                : getPhaseTicks() + partialTick;
         return switch (phase) {
             case NORMAL -> maximum;
             case SHRINKING -> Math.max(0.0F, maximum * (1.0F - ticks / TRANSFORM_TICKS));
             case ENLARGING -> Math.min(maximum, maximum * ticks / TRANSFORM_TICKS);
         };
+    }
+
+    public float getVisualScale(float partialTick) {
+        return getVisualSize(partialTick) * RENDER_SCALE_PER_SIZE;
     }
 
     /// 上一游戏刻的挤压值，供客户端在两刻之间平滑插值。
@@ -333,11 +345,22 @@ public class KingSlime extends BaseBoss {
         setDeltaMovement(movement.x, current.y, movement.z);
     }
 
+    private void faceHorizontalMovement(Vec3 movement) {
+        if (movement.x * movement.x + movement.z * movement.z <= 1.0E-7D) return;
+        float wantedYaw = (float) (Mth.atan2(-movement.x, movement.z) * Mth.RAD_TO_DEG);
+        setYRot(wantedYaw);
+        setYBodyRot(wantedYaw);
+        setYHeadRot(wantedYaw);
+    }
+
     @Override
     public void tick() {
         oldSquish = squish;
         boolean groundedBeforeTick = onGround();
         super.tick();
+        if (level().isClientSide) {
+            tickClientVisualPhase();
+        }
         if (onGround() && !groundedBeforeTick) {
             targetSquish = -0.5F;
         } else if (!onGround() && wasOnGround) {
@@ -349,6 +372,27 @@ public class KingSlime extends BaseBoss {
         resetFallDistance();
     }
 
+    /// 客户端独立以每刻一个单位连续推进变形视觉，并只对服务端计时做小幅校正。
+    /// 这样网络包即使合并或延迟，也不会把模型尺寸渲染成整数台阶。
+    private void tickClientVisualPhase() {
+        clientPhaseTicksO = clientPhaseTicks;
+        if (phase == CombatPhase.NORMAL) {
+            clientPhaseTicks = 0.0F;
+            clientPhaseTicksO = 0.0F;
+            clientPhaseInitialized = true;
+            return;
+        }
+        if (!clientPhaseInitialized) {
+            clientPhaseTicks = Mth.clamp(clientSyncedPhaseTicks, 0, TRANSFORM_TICKS);
+            clientPhaseTicksO = clientPhaseTicks;
+            clientPhaseInitialized = true;
+        }
+
+        float predicted = Math.min(TRANSFORM_TICKS, clientPhaseTicks + 1.0F);
+        float correction = Mth.clamp(clientSyncedPhaseTicks - predicted, -0.25F, 0.25F);
+        clientPhaseTicks = Mth.clamp(predicted + correction, 0.0F, TRANSFORM_TICKS);
+    }
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (phase != CombatPhase.NORMAL || source.is(net.minecraft.world.damagesource.DamageTypes.IN_WALL)) {
@@ -357,10 +401,12 @@ public class KingSlime extends BaseBoss {
 
         int slimesBefore = getSlimesLeft();
         boolean hurt = super.hurt(source, amount);
-        if (hurt && !level().isClientSide) {
-            for (int i = getSlimesLeft(); i < slimesBefore; i++) {
-                spawnSplitSlimes();
-            }
+        // 致死一击不补发这一击跨过的全部剩余阈值；否则高伤害武器会在 Boss
+        // 死亡瞬间一次生成数十只史莱姆。存活期间仍按实际失血逐级召唤。
+        if (hurt && isAlive() && !level().isClientSide && getSlimesLeft() < slimesBefore) {
+            // 一次命中最多释放一组随从。高伤害跨过多个阈值时不补发全部差额，
+            // 避免战斗末段或多人集火瞬间堆出数十个实体。
+            spawnSplitSlimes();
         }
         return hurt;
     }
@@ -371,6 +417,12 @@ public class KingSlime extends BaseBoss {
 
     private int getTotalSplits() {
         return LibUtils.switchByDifficulty(level(), blockPosition(), 30, 50, 75, 100);
+    }
+
+    /// 缩小、传送和重新膨胀期间没有接触伤害。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return phase == CombatPhase.NORMAL;
     }
 
     private void spawnSplitSlimes() {
@@ -391,13 +443,16 @@ public class KingSlime extends BaseBoss {
         }
         slime.setPos(getX() + (random.nextFloat() - 0.5F) * 2.0F, getY() + 0.5, getZ() + (random.nextFloat() - 0.5F) * 2.0F);
         slime.setTarget(getTarget());
+        if (slime instanceof org.confluence.mod.common.entity.monster.slime.BaseSlime summonedSlime) {
+            summonedSlime.setBossOwner(this);
+        }
         serverLevel.addFreshEntity(slime);
     }
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
         float dimension = BASE_DIMENSION_PER_SIZE * getLogicalSize();
-        return EntityDimensions.scalable(dimension, dimension);
+        return EntityDimensions.scalable(dimension, dimension).scale(getScale());
     }
 
     @Override
@@ -405,8 +460,17 @@ public class KingSlime extends BaseBoss {
         super.onSyncedDataUpdated(key);
         if (DATA_PHASE.equals(key)) {
             phase = CombatPhase.byId(entityData.get(DATA_PHASE));
+            if (level().isClientSide) {
+                clientPhaseTicks = 0.0F;
+                clientPhaseTicksO = 0.0F;
+                clientSyncedPhaseTicks = 0;
+                clientPhaseInitialized = true;
+            }
             refreshDimensions();
         } else if (DATA_PHASE_TICKS.equals(key)) {
+            if (level().isClientSide) {
+                clientSyncedPhaseTicks = Mth.clamp(getPhaseTicks(), 0, TRANSFORM_TICKS);
+            }
             refreshDimensions();
         }
     }
@@ -499,16 +563,6 @@ public class KingSlime extends BaseBoss {
     @Override
     protected boolean shouldDiscardWhenNoTarget() {
         return true;
-    }
-
-    @Override
-    public void die(DamageSource source) {
-        super.die(source);
-        if (!level().isClientSide) {
-            for (int i = 0; i < 4; i++) {
-                spawnSplitSlimes();
-            }
-        }
     }
 
     String getCombatPhaseName() {

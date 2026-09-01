@@ -26,6 +26,7 @@ import java.util.UUID;
 
 /// 双子魔眼——两个机械眼球共享 Boss 条，并分别执行各自的战斗阶段。
 public class TheTwins extends BaseBoss {
+    // 两个低位分别记录激光眼和魔焰眼是否战败，供共享 Boss 生命周期判定。
     private static final int RETINAZER_DEFEATED = 1;
     private static final int SPAZMATISM_DEFEATED = 2;
     private static final int BOTH_DEFEATED = RETINAZER_DEFEATED | SPAZMATISM_DEFEATED;
@@ -33,11 +34,15 @@ public class TheTwins extends BaseBoss {
     private static final String DEFEATED_EYES_TAG = "DefeatedEyes";
     private static final String RETINAZER_UUID_TAG = "RetinazerUUID";
     private static final String SPAZMATISM_UUID_TAG = "SpazmatismUUID";
+    private static final String RETINAZER_MAX_HEALTH_TAG = "RetinazerMaxHealth";
+    private static final String SPAZMATISM_MAX_HEALTH_TAG = "SpazmatismMaxHealth";
 
     private Retinazer retinazer;
     private Spazmatism spazmatism;
     private UUID retinazerUUID;
     private UUID spazmatismUUID;
+    private float retinazerMaxHealth;
+    private float spazmatismMaxHealth;
     private boolean spawned = false;
     private int defeatedEyes;
 
@@ -72,13 +77,11 @@ public class TheTwins extends BaseBoss {
     }
 
     @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        float totalMax = (retinazer != null ? retinazer.getMaxHealth() : 0)
-                + (spazmatism != null ? spazmatism.getMaxHealth() : 0);
+    protected float getBossBarProgress() {
+        float totalMax = retinazerMaxHealth + spazmatismMaxHealth;
         float total = (retinazer != null && retinazer.isAlive() ? retinazer.getHealth() : 0)
                 + (spazmatism != null && spazmatism.isAlive() ? spazmatism.getHealth() : 0);
-        bossEvent.setProgress(totalMax > 0 ? total / totalMax : 0);
+        return totalMax > 0.0F ? total / totalMax : 0.0F;
     }
 
     // === BT (idle — eyes do all the work) ===
@@ -118,7 +121,7 @@ public class TheTwins extends BaseBoss {
         }
     }
 
-    /// 保留 1.21 侧管理实体的空间职责：双眼都存在时位于二者中点，只剩一只时
+    /// 管理实体在双眼都存在时位于二者中点，只剩一只时
     /// 位于存活眼球上方。双眼均未索敌且相距过远时，还会互相拉近以防止永久失散。
     void updateManagerPosition() {
         boolean retinazerAlive = retinazer != null && retinazer.isAlive();
@@ -185,6 +188,7 @@ public class TheTwins extends BaseBoss {
                 if (prepareEyeSpawn(serverLevel, created) && serverLevel.addFreshEntity(created)) {
                     retinazer = created;
                     retinazerUUID = created.getUUID();
+                    retinazerMaxHealth = created.getMaxHealth();
                 } else {
                     created.discard();
                 }
@@ -199,6 +203,7 @@ public class TheTwins extends BaseBoss {
                 if (prepareEyeSpawn(serverLevel, created) && serverLevel.addFreshEntity(created)) {
                     spazmatism = created;
                     spazmatismUUID = created.getUUID();
+                    spazmatismMaxHealth = created.getMaxHealth();
                 } else {
                     created.discard();
                 }
@@ -206,7 +211,7 @@ public class TheTwins extends BaseBoss {
         }
     }
 
-    /// 与 1.21 保持一致：双眼在半径五格、顶角不超过 0.7 弧度的球冠上生成。
+    /// 双眼在半径五格、顶角不超过 0.7 弧度的球冠上生成。
     private Vec3 createEyeSpawnOffset() {
         double theta = random.nextFloat() * 6.28F;
         double beta = random.nextFloat() * 0.7F;
@@ -245,7 +250,7 @@ public class TheTwins extends BaseBoss {
         return true;
     }
 
-    private static boolean prepareEyeSpawn(ServerLevel serverLevel, Mob mob) {
+    private boolean prepareEyeSpawn(ServerLevel serverLevel, Mob mob) {
         mob.yHeadRot = mob.getYRot();
         mob.yBodyRot = mob.getYRot();
         ForgeEventFactory.onFinalizeSpawn(mob, serverLevel, serverLevel.getCurrentDifficultyAt(mob.blockPosition()), MobSpawnType.SPAWNER, null, null);
@@ -253,6 +258,8 @@ public class TheTwins extends BaseBoss {
             mob.discard();
             return false;
         }
+        BossMultiplayerEnhancement.copyEncounterScaling(this, mob);
+        mob.setHealth(mob.getMaxHealth());
         return true;
     }
 
@@ -299,6 +306,8 @@ public class TheTwins extends BaseBoss {
         tag.putInt(DEFEATED_EYES_TAG, defeatedEyes);
         if (retinazerUUID != null) tag.putUUID(RETINAZER_UUID_TAG, retinazerUUID);
         if (spazmatismUUID != null) tag.putUUID(SPAZMATISM_UUID_TAG, spazmatismUUID);
+        tag.putFloat(RETINAZER_MAX_HEALTH_TAG, retinazerMaxHealth);
+        tag.putFloat(SPAZMATISM_MAX_HEALTH_TAG, spazmatismMaxHealth);
     }
 
     @Override
@@ -308,6 +317,8 @@ public class TheTwins extends BaseBoss {
         defeatedEyes = tag.getInt(DEFEATED_EYES_TAG) & BOTH_DEFEATED;
         retinazerUUID = tag.hasUUID(RETINAZER_UUID_TAG) ? tag.getUUID(RETINAZER_UUID_TAG) : null;
         spazmatismUUID = tag.hasUUID(SPAZMATISM_UUID_TAG) ? tag.getUUID(SPAZMATISM_UUID_TAG) : null;
+        retinazerMaxHealth = tag.getFloat(RETINAZER_MAX_HEALTH_TAG);
+        spazmatismMaxHealth = tag.getFloat(SPAZMATISM_MAX_HEALTH_TAG);
         retinazer = null;
         spazmatism = null;
     }
@@ -315,6 +326,12 @@ public class TheTwins extends BaseBoss {
     // === Invisible manager ===
 
     @Override public boolean isPickable() { return false; }
+
+    /// 该实体只管理双眼、Boss 条和遭遇生命周期，本身没有模型或碰撞攻击。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
     @Override public boolean canBeCollidedWith() { return false; }
     @Override public boolean isPushable() { return false; }
     @Override public boolean displayFireAnimation() { return false; }

@@ -13,10 +13,6 @@ import java.util.UUID;
 /// Boss 的脱战计时依赖服务端实体持续 tick。若最后一名玩家死亡或离开后，Boss 所在区块
 /// 立刻卸载，{@link BaseBoss#DISENGAGE_TICKS} 就会被冻结，Boss 可能永久残留。因此战斗实体
 /// 存在期间，以本体当前区块为中心维持一个强制 tick 的区域票据。
-///
-/// 该能力属于具体玩法生命周期，不属于 PortLib。Forge 1.20.1 与 NeoForge 1.21.1 在此处
-/// 都直接提供相同的原版 {@code ServerChunkCache} 区域票据 API；只有未来平台签名真正分叉时，
-/// 才应把两行平台调用下沉为 PortLib 薄桥。
 final class BossChunkTicket {
     /// 距离 4 使中心区块及其对角相邻区块都达到实体 ticking 层级。
     /// 这样即使 Boss 位于区块边角，环绕本体活动的持久从属也不会在战斗中途被卸载。

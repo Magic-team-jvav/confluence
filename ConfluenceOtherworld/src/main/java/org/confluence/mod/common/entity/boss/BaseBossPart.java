@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.mod.common.entity.PartHitTarget;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -27,13 +28,15 @@ import java.util.UUID;
 ///
 /// 可破坏部件拥有自己的同步生命值，但攻击仍可按倍率转发给 Boss。所有者在 100 tick
 /// 宽限内仍无法解析时丢弃孤儿部件，防止损坏存档或非正常生成遗留永久实体。
-public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements Boss.BossPart {
+public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements Boss.BossPart, PartHitTarget {
+    // 客户端可能先收到部件再收到本体，允许 100 tick 的实体解析窗口后才清理孤儿部件。
     private static final int OWNER_RESOLUTION_GRACE_TICKS = 100;
     private static final String OWNER_TAG = "Owner";
     private static final String HEALTH_TAG = "PartHealth";
 
     private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(BaseBossPart.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> PART_HEALTH = SynchedEntityData.defineId(BaseBossPart.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> HURT_FLASH_TICKS = SynchedEntityData.defineId(BaseBossPart.class, EntityDataSerializers.INT);
 
     private @Nullable T owner;
     private @Nullable UUID ownerUUID;
@@ -70,12 +73,43 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
         entityData.set(PART_HEALTH, Math.max(0.0F, Math.min(health, getMaxPartHealth())));
     }
 
+    public final void indicateHurt() {
+        markHurt();
+        entityData.set(HURT_FLASH_TICKS, 10);
+    }
+
+    public final boolean isHurtFlashing() {
+        return entityData.get(HURT_FLASH_TICKS) > 0;
+    }
+
     protected float getMaxPartHealth() {
         return 0.0F;
     }
 
     protected final boolean isDestructible() {
         return getMaxPartHealth() > 0.0F;
+    }
+
+    @Override
+    public final Entity damageRecipient() {
+        return this;
+    }
+
+    @Override
+    public final Entity encounterOwner() {
+        T resolvedOwner = getOwner();
+        return resolvedOwner == null ? this : resolvedOwner;
+    }
+
+    @Override
+    public final Entity dedupeIdentity() {
+        T resolvedOwner = getOwner();
+        return isDestructible() || resolvedOwner == null ? this : resolvedOwner;
+    }
+
+    @Override
+    public final boolean acceptsDirectHit() {
+        return isDestructible() || isPickable();
     }
 
     protected abstract Class<T> getOwnerType();
@@ -89,6 +123,9 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
     @Override
     public final void tick() {
         super.tick();
+        if (!level().isClientSide && entityData.get(HURT_FLASH_TICKS) > 0) {
+            entityData.set(HURT_FLASH_TICKS, entityData.get(HURT_FLASH_TICKS) - 1);
+        }
         T resolvedOwner = getOwner();
         if (resolvedOwner == null) {
             // 宽限用于容纳 Boss/部件的加载顺序差，而不是让孤儿部件无限期存活。
@@ -118,6 +155,7 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
 
         float remaining = Math.max(0.0F, getPartHealth() - amount);
         entityData.set(PART_HEALTH, remaining);
+        indicateHurt();
         onPartHealthChanged(resolvedOwner, remaining);
         if (remaining <= 0.0F) {
             onPartDestroyed(resolvedOwner);
@@ -130,6 +168,7 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
     protected final void defineSynchedData() {
         entityData.define(OWNER_ID, -1);
         entityData.define(PART_HEALTH, 0.0F);
+        entityData.define(HURT_FLASH_TICKS, 0);
         definePartSynchedData();
     }
 
@@ -206,13 +245,23 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public void push(Entity entity) {}
+
+    @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        return getType().getDimensions();
+        T resolvedOwner = getOwner();
+        float scale = resolvedOwner == null ? 1.0F : resolvedOwner.getScale();
+        return getType().getDimensions().scale(scale);
     }
 
     @Override

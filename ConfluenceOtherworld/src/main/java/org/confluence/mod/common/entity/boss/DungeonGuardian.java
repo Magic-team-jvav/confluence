@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -28,6 +29,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 /// 接触伤害使用独立伤害类型并绕过护甲，不能用普通生物攻击再依赖夸张攻击数值间接模拟；
 /// 溺水伤害被明确忽略。行为树只保留永久等待节点，防止通用冲锋动作改写追击速度。
 public class DungeonGuardian extends BaseBoss {
+    // 出生后允许 50 tick 找到玩家；追击速度单位为方块/tick。
     private static final int INITIAL_PLAYER_CHECK_TICKS = 50;
     private static final double PURSUIT_SPEED = 0.80;
 
@@ -85,18 +87,17 @@ public class DungeonGuardian extends BaseBoss {
             if (direction.lengthSqr() > 1.0E-6) {
                 Vec3 velocity = direction.normalize().scale(PURSUIT_SPEED);
                 setDeltaMovement(velocity);
-                Vec3 lookPosition = position().add(velocity);
-                getLookControl().setLookAt(lookPosition.x, lookPosition.y, lookPosition.z, 360.0F, 360.0F);
+                faceCombatDirection(velocity, 180.0F, 180.0F);
             }
-            if (getBoundingBox().inflate(0.25)
-                    .intersects(target.getBoundingBox())) {
-                doHurtTarget(target);
+            for (Entity contact : SweptContactAttack.findTargets(this, 0.25D,
+                    maximumContactSweepDistance(), entity -> entity instanceof LivingEntity living && canAttack(living))) {
+                doHurtTarget(contact);
+                break;
             }
         } else {
             setDeltaMovement(getDeltaMovement().scale(0.75));
         }
 
-        /// 与 1.21 保持一致：这是生成后的单次玩家存在性检查，并不是失去目标后的脱战倒计时。
         /// 成功命中会重新开始一次检查；计数越过零后不会反复扫描或因稍后失去目标而直接撤销。
         if (--playerCheckTicks == 0) {
             Player nearbyPlayer = level().getNearestPlayer(this, 100.0);
@@ -104,6 +105,12 @@ public class DungeonGuardian extends BaseBoss {
                 discard();
             }
         }
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        // 命中会重置本类的玩家检查计时，只能保留这一条定制伤害路径。
+        return false;
     }
 
     @Override

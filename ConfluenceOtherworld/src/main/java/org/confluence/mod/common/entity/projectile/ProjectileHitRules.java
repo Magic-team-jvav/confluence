@@ -8,21 +8,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.entity.boss.BaseBossPart;
-import org.confluence.mod.common.entity.boss.BossWormPart;
-import org.confluence.mod.common.entity.monster.BaseWormPart;
+import org.confluence.mod.common.entity.PartHitTarget;
 import org.jetbrains.annotations.Nullable;
 
 /// 玩家武器弹幕共用的所有者、队伍、PvP 与快照击退规则。
 public final class ProjectileHitRules {
     private ProjectileHitRules() {}
 
-    /// 校验原始碰撞实体及其真正受击本体。原版可攻击性、同载具、队伍友伤和服务器 PvP 均在此处理。
+    /// 校验原始碰撞部位及其遭遇主体。可攻击性、同载具、队伍友伤和服务器 PvP 均在此处处理。
     public static boolean canHit(@Nullable Entity owner, Entity rawTarget) {
-        if (!LibEntityUtils.canHitEntity(rawTarget, owner)) {
+        if (!acceptsDirectHit(rawTarget)) {
             return false;
         }
-        Entity target = impactedEntity(rawTarget);
+        Entity target = encounterOwner(rawTarget);
+        if (!LibEntityUtils.canHitEntity(target, owner)) {
+            return false;
+        }
         if (target == owner || owner != null && owner.isAlliedTo(target)) {
             return false;
         }
@@ -34,30 +35,40 @@ public final class ProjectileHitRules {
         return true;
     }
 
-    /// 多部件实体统一返回真正承受伤害和 UUID 去重的本体。
-    public static Entity impactedEntity(Entity rawTarget) {
+    /// 返回原始实体是否允许成为直接命中部位。
+    public static boolean acceptsDirectHit(Entity rawTarget) {
+        if (rawTarget.isRemoved()) return false;
+        if (rawTarget instanceof PartHitTarget part) return part.acceptsDirectHit();
+        return LibEntityUtils.canHitEntity(rawTarget, null);
+    }
+
+    /// 返回必须实际执行 {@link Entity#hurt} 的实体。
+    /// 原始部位保留自己的护甲、伤害倍率、生命和受击反馈。
+    public static Entity damageRecipient(Entity rawTarget) {
+        return rawTarget instanceof PartHitTarget part ? part.damageRecipient() : rawTarget;
+    }
+
+    /// 返回部位所属的遭遇主体，用于阵营、索敌、命中特效和奖励归属。
+    public static Entity encounterOwner(Entity rawTarget) {
+        if (rawTarget instanceof PartHitTarget part) {
+            return part.encounterOwner();
+        }
         Entity impacted = LibEntityUtils.tryFindBeImpacted(rawTarget);
-        if (impacted != null && impacted != rawTarget) {
-            return impacted;
+        return impacted == null ? rawTarget : impacted;
+    }
+
+    /// 返回一次穿透或连续碰撞中的去重身份。
+    public static Entity dedupeIdentity(Entity rawTarget) {
+        if (rawTarget instanceof PartHitTarget part) {
+            return part.dedupeIdentity();
         }
-        // 这些 1.20 重写部件是独立 Entity，不是 Forge PartEntity，
-        // 因此需要显式解析到唯一的生命与去重权威。
-        if (rawTarget instanceof BaseBossPart<?> part && part.getOwner() != null) {
-            return part.getOwner();
-        }
-        if (rawTarget instanceof BossWormPart part && part.getOwner() != null) {
-            return part.getOwner();
-        }
-        if (rawTarget instanceof BaseWormPart part && part.getOwner() != null) {
-            return part.getOwner();
-        }
-        return rawTarget;
+        return encounterOwner(rawTarget);
     }
 
     /// 将原始碰撞实体解析为可用于召唤物锁定的生命实体。
     public static @Nullable LivingEntity logicalLivingTarget(Entity rawTarget) {
-        Entity impacted = impactedEntity(rawTarget);
-        return impacted instanceof LivingEntity living ? living : null;
+        Entity owner = encounterOwner(rawTarget);
+        return owner instanceof LivingEntity living ? living : null;
     }
 
     /// 应用已经在发射快照中解析完成的击退。

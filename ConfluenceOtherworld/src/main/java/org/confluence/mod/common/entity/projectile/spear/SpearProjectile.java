@@ -223,15 +223,18 @@ public abstract class SpearProjectile extends AbstractHurtingProjectile implemen
     /// 造成伤害。子类可按需覆写 `getDamage`、`applyHitEffect` 或 `applyPenetration`。
     protected boolean doHurt(Entity target) {
         if (!canHitEntity(target)) return false;
-        Entity impacted = ProjectileHitRules.impactedEntity(target);
+        Entity damageRecipient = ProjectileHitRules.damageRecipient(target);
+        LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(target);
+        if (logicalTarget == null) return false;
         DamageSource source = damageSource();
-        if (impacted instanceof LivingEntity living) {
-            if (!Immunity.hurt(this, living, source, getDamage())) return false;
-            if (getOwner() instanceof LivingEntity owner) applyHitEffect(owner, living);
-            LibEntityUtils.knockBackA2B(this, living, (getBaseKnockBack() + knockBack) * 0.5, 0.2);
-        } else if (!impacted.hurt(source, getDamage())) {
+        boolean hurt = damageRecipient instanceof LivingEntity living
+                ? Immunity.hurt(this, living, source, getDamage())
+                : Immunity.withCause(this, () -> damageRecipient.hurt(source, getDamage()));
+        if (!hurt) {
             return false;
         }
+        if (getOwner() instanceof LivingEntity owner) applyHitEffect(owner, logicalTarget);
+        LibEntityUtils.knockBackA2B(this, logicalTarget, (getBaseKnockBack() + knockBack) * 0.5, 0.2);
         applyPenetration();
         return true;
     }

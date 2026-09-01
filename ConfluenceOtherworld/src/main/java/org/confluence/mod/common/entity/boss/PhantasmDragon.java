@@ -12,6 +12,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -27,7 +28,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /// 幻影龙——拜月教邪教徒召唤的飞龙仆从。
-public class PhantasmDragon extends BaseFlyingMonster {
+public class PhantasmDragon extends BaseFlyingMonster implements BossOwnedEntity {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(PhantasmDragon.class, EntityDataSerializers.OPTIONAL_UUID);
     private final BossOwnerTracker<LunaticCultist> ownerTracker = new BossOwnerTracker<>(LunaticCultist.class);
 
@@ -44,10 +45,16 @@ public class PhantasmDragon extends BaseFlyingMonster {
     public void setMaster(LunaticCultist master) {
         ownerTracker.bind(this, master);
         entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
     }
 
     public @Nullable LunaticCultist getMaster() {
         return ownerTracker.resolve(this);
+    }
+
+    @Override
+    public @Nullable BaseBoss getBossOwner() {
+        return getMaster();
     }
 
     public @Nullable UUID getMasterUUID() {
@@ -61,6 +68,21 @@ public class PhantasmDragon extends BaseFlyingMonster {
                 .add(Attributes.ARMOR, 4.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
                 .add(Attributes.FOLLOW_RANGE, 48.0);
+    }
+
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return true;
+    }
+
+    @Override
+    protected int contactDetectionInterval() {
+        return 1;
+    }
+
+    @Override
+    protected double contactAttackInflation() {
+        return 0.3D;
     }
 
     @Override
@@ -80,26 +102,42 @@ public class PhantasmDragon extends BaseFlyingMonster {
 
     @Override
     protected void registerGoals() {
-        super.registerGoals();
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, false));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(
+                this, Player.class, 1, false, false, this::canTargetPlayer
+        ));
+    }
+
+    @Override
+    protected boolean canTargetPlayer(LivingEntity target) {
+        return getMasterUUID() == null && isLegalIndependentTarget(target);
     }
 
     @Override
     public void tick() {
+        LivingEntity inheritedTarget = null;
+        boolean hasOwnerIdentity = !level().isClientSide && getMasterUUID() != null;
+        if (hasOwnerIdentity) {
+            ownerTracker.tickDependent(this, true, 100);
+            inheritedTarget = getTarget();
+            if (isRemoved()) return;
+        } else if (!level().isClientSide && !isLegalIndependentTarget(getTarget())) {
+            setTarget(null);
+        }
+
         super.tick();
-        if (!level().isClientSide) {
-            LunaticCultist master = getMaster();
-            if (master != null && master.isAlive()) {
-                LivingEntity masterTarget = master.getTarget();
-                if (masterTarget != null && masterTarget.isAlive() && getTarget() != masterTarget) {
-                    setTarget(masterTarget);
-                }
-            }
+        if (!level().isClientSide && hasOwnerIdentity && getTarget() != inheritedTarget) {
+            setTarget(inheritedTarget);
         }
-        if (!level().isClientSide && getTarget() == null && tickCount % 20 == 0) {
-            Player nearest = level().getNearestPlayer(this, 48);
-            if (nearest != null) setTarget(nearest);
-        }
+    }
+
+    private boolean isLegalIndependentTarget(@Nullable LivingEntity target) {
+        return target instanceof Player player
+                && player.level() == level()
+                && player.isAlive()
+                && !player.isCreative()
+                && !player.isSpectator()
+                && player.canBeSeenAsEnemy()
+                && canAttack(player);
     }
 
     @Override

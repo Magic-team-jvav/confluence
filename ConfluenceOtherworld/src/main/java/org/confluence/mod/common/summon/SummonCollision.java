@@ -54,9 +54,11 @@ public final class SummonCollision {
         Map<Entity, Hit> hitPoints = new HashMap<>();
         for (Entity rawTarget : level.getEntities((Entity) null, sweepBounds, candidate -> {
             LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(candidate);
-            return logicalTarget != null && targetFilter.test(logicalTarget);
+            return ProjectileHitRules.acceptsDirectHit(candidate)
+                    && logicalTarget != null && targetFilter.test(logicalTarget);
         })) {
-            Entity impacted = ProjectileHitRules.impactedEntity(rawTarget);
+            Entity damageRecipient = ProjectileHitRules.damageRecipient(rawTarget);
+            Entity identity = ProjectileHitRules.dedupeIdentity(rawTarget);
             LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
             if (logicalTarget == null) {
                 continue;
@@ -77,9 +79,9 @@ public final class SummonCollision {
                 }
             }
             if (closestHit != null) {
-                Hit previousHit = hitPoints.get(impacted);
+                Hit previousHit = hitPoints.get(identity);
                 if (previousHit == null || closestHit.distanceToSqr(start) < previousHit.position.distanceToSqr(start)) {
-                    hitPoints.put(impacted, new Hit(impacted, logicalTarget, closestHit));
+                    hitPoints.put(identity, new Hit(damageRecipient, logicalTarget, identity, closestHit));
                 }
             }
         }
@@ -90,7 +92,8 @@ public final class SummonCollision {
     }
 
     /// 一次连续碰撞命中的目标与近似命中位置。
-    public record Hit(Entity target, LivingEntity logicalTarget, Vec3 position) {}
+    public record Hit(Entity damageRecipient, LivingEntity encounterOwner, Entity dedupeIdentity,
+                      Vec3 position) {}
 
     /// 仅在连续碰撞实现内部使用的定向碰撞箱。
     private static final class OrientedBox {

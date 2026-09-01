@@ -3,6 +3,9 @@ package org.confluence.mod.common.entity.boss;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -21,6 +24,7 @@ public final class BossOwnerTracker<T extends BaseBoss> {
     private final Class<T> ownerType;
     private @Nullable T owner;
     private @Nullable UUID ownerUUID;
+    private int unresolvedTicks;
 
     public BossOwnerTracker(Class<T> ownerType) {
         this.ownerType = ownerType;
@@ -30,6 +34,10 @@ public final class BossOwnerTracker<T extends BaseBoss> {
         this.owner = owner;
         this.ownerUUID = owner.getUUID();
         owner.addSubEntity(dependent);
+        if (dependent instanceof Mob mob) {
+            synchronizeTarget(mob, owner);
+        }
+        unresolvedTicks = 0;
     }
 
     public @Nullable T resolve(Entity dependent) {
@@ -47,6 +55,64 @@ public final class BossOwnerTracker<T extends BaseBoss> {
         return owner;
     }
 
+    /// 统一推进 Boss 从属的所有权恢复、目标继承和孤儿清理。
+    ///
+    /// 已加载且存活的主人是唯一目标权威；主人明确死亡时从属立即清理。只有 UUID 存在但
+    /// 当前实体尚未加载时才进入宽限期，避免把区块加载顺序误判为 Boss 死亡。
+    public @Nullable T tickDependent(Mob dependent, boolean inheritTarget, int resolutionGraceTicks) {
+        T resolved = resolve(dependent);
+        if (resolved != null) {
+            unresolvedTicks = 0;
+            if (!resolved.isAlive()) {
+                dependent.setTarget(null);
+                dependent.discard();
+                return null;
+            }
+            if (inheritTarget) {
+                synchronizeTarget(dependent, resolved);
+            }
+            return resolved;
+        }
+
+        if (ownerUUID != null) {
+            // getEntity(UUID) 返回 null 也可能只是主人所在区块尚未恢复。宽限期内保留仍然
+            // 合法的旧玩家目标，不能让仆从每次跨区块边界都停顿一百 tick。
+            if (!isBasicCombatPlayer(dependent.getTarget(), dependent)) {
+                dependent.setTarget(null);
+            }
+            if (++unresolvedTicks > Math.max(0, resolutionGraceTicks)) {
+                dependent.discard();
+            }
+        } else {
+            unresolvedTicks = 0;
+        }
+        return null;
+    }
+
+    private static void synchronizeTarget(Mob dependent, BaseBoss owner) {
+        Player authoritativeTarget = owner.getAuthoritativeCombatTarget();
+        if (authoritativeTarget != null) {
+            if (dependent.getTarget() != authoritativeTarget) {
+                dependent.setTarget(authoritativeTarget);
+            }
+            return;
+        }
+
+        if (!owner.shouldMaintainCombatTarget()
+                || !(dependent.getTarget() instanceof Player player)
+                || !owner.isValidCurrentCombatPlayer(player)) {
+            dependent.setTarget(null);
+        }
+    }
+
+    private static boolean isBasicCombatPlayer(@Nullable LivingEntity target, Mob dependent) {
+        return target instanceof Player player
+                && player.level() == dependent.level()
+                && player.isAlive()
+                && !player.isCreative()
+                && !player.isSpectator();
+    }
+
     public void unbind(Entity dependent) {
         // 卸载式解绑只释放强引用，不销毁持久化身份。
         if (owner != null) owner.removeSubEntity(dependent);
@@ -57,6 +123,7 @@ public final class BossOwnerTracker<T extends BaseBoss> {
         // 死亡/撤离式清理同时删除 UUID，从此不再尝试恢复所有权。
         unbind(dependent);
         ownerUUID = null;
+        unresolvedTicks = 0;
     }
 
     public boolean isOwnedBy(UUID uuid) {
@@ -75,5 +142,6 @@ public final class BossOwnerTracker<T extends BaseBoss> {
     public void load(CompoundTag tag) {
         owner = null;
         ownerUUID = tag.hasUUID(OWNER_TAG) ? tag.getUUID(OWNER_TAG) : null;
+        unresolvedTicks = 0;
     }
 }

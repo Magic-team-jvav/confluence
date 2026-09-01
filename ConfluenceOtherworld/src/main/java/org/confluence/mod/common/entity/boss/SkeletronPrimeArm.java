@@ -9,11 +9,13 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.projectile.PrimeCannonballProjectile;
 import org.confluence.mod.common.entity.projectile.PrimeLaserProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -54,6 +56,8 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         }
         bindTo(master);
         entityData.set(ARM_TYPE, type);
+        Vec3 initialPosition = getPinnedSlotPosition(master, 6.0F);
+        setPos(initialPosition.x, initialPosition.y, initialPosition.z);
     }
 
     public int getArmType() {
@@ -76,20 +80,10 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         damageContactTargets(master);
     }
 
-    /// 按主体头部朝向旋转 1.21 的四个固定机械臂槽位，并以该职责原有速度跟随。
+    /// 按主体头部朝向旋转四个固定机械臂槽位，并以各自职责的速度跟随。
     /// 到达距离小于单刻速度时直接贴合，避免持续越过目标点造成抖动。
     private void followPinnedSlot(SkeletronPrime master, float distance, float speed) {
-        Vec3 unitOffset = switch (getArmType()) {
-            case LASER -> new Vec3(-1.0, 1.0, 0.0);
-            case SAW -> new Vec3(-1.0, -1.0, 0.0);
-            case VICE -> new Vec3(1.0, -1.0, 0.0);
-            case CANNON -> new Vec3(1.0, 1.0, 0.0);
-            default ->
-                    throw new IllegalStateException("Unsupported Prime arm type " + getArmType());
-        };
-        Vector3f rotatedOffset = unitOffset.scale(distance).toVector3f();
-        new Quaternionf().rotateY(-master.getYHeadRot() * Mth.DEG_TO_RAD).transform(rotatedOffset);
-        Vec3 targetPosition = master.position().add(new Vec3(rotatedOffset));
+        Vec3 targetPosition = getPinnedSlotPosition(master, distance);
         Vec3 offset = targetPosition.subtract(position());
         if (offset.length() < speed) {
             setPos(targetPosition);
@@ -100,7 +94,21 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         moveToNextPosition();
     }
 
-    /// 还原两条远程机械臂的行为树阶段：悬停时准备三十刻，主体旋转时
+    private Vec3 getPinnedSlotPosition(SkeletronPrime master, float distance) {
+        Vec3 unitOffset = switch (getArmType()) {
+            case LASER -> new Vec3(-1.0, 1.0, 0.0);
+            case SAW -> new Vec3(-1.0, -1.0, 0.0);
+            case VICE -> new Vec3(1.0, -1.0, 0.0);
+            case CANNON -> new Vec3(1.0, 1.0, 0.0);
+            default ->
+                    throw new IllegalStateException("Unsupported Prime arm type " + getArmType());
+        };
+        Vector3f rotatedOffset = unitOffset.scale(distance * master.getScale()).toVector3f();
+        new Quaternionf().rotateY(-master.getYHeadRot() * Mth.DEG_TO_RAD).transform(rotatedOffset);
+        return master.position().add(new Vec3(rotatedOffset));
+    }
+
+    /// 两条远程机械臂悬停准备三十刻，主体旋转时
     /// 重新从十刻准备开始。阶段切换必须清空旧进度，不能继承上一分支的冷却。
     private void tickRangedArm(SkeletronPrime master, boolean laser) {
         LivingEntity target = master.getTarget();
@@ -157,7 +165,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         if (!serverLevel.addFreshEntity(cannonball)) cannonball.discard();
     }
 
-    /// 还原 1.21 两条近战机械臂的固定行为树时间轴。
+    /// 两条近战机械臂使用固定攻击时间轴。
     ///
     /// 非旋转阶段是三十刻准备，然后重复两次“五刻瞄准、十刻锁向冲刺、
     /// 三十刻回位”。旋转阶段则分别使用锯臂两轮、钳臂三轮的短回位序列。
@@ -268,13 +276,16 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         setXRot((float) -(Mth.atan2(direction.y, horizontal) * Mth.RAD_TO_DEG));
     }
 
-    /// 四条机械臂沿用 1.21 普通敌怪的接触攻击节奏。未碰到目标时十刻后复查，
+    /// 四条机械臂使用统一接触攻击节奏。未碰到目标时十刻后复查，
     /// 命中或完成一次有效攻击尝试后等待二十刻；检测范围不额外膨胀。
     private void damageContactTargets(SkeletronPrime master) {
         if (contactCooldown > 0 || master.getTarget() == null) {
             return;
         }
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox(), living -> living.canBeSeenAsEnemy() && !(living instanceof Enemy) && master.canAttack(living))) {
+        for (Entity target : SweptContactAttack.findTargets(this, 0.0D,
+                SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                entity -> entity instanceof LivingEntity living && living.canBeSeenAsEnemy()
+                        && !(living instanceof Enemy) && master.canAttack(living))) {
             target.hurt(damageSources().mobAttack(master), 8.0F);
             contactCooldown = 20;
             return;
@@ -293,6 +304,9 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         if (owner == null || !owner.isAlive() || isRemoved() || isInvulnerableTo(source)) {
             return false;
         }
+        if (source.getEntity() instanceof net.minecraft.world.entity.player.Player player) {
+            owner.registerCombatParticipant(player);
+        }
         float appliedDamage = source.is(DamageTypeTags.BYPASSES_ARMOR)
                 ? amount
                 : CombatRules.getDamageAfterAbsorb(amount, PART_ARMOR, 0.0F);
@@ -301,6 +315,7 @@ public class SkeletronPrimeArm extends BaseBossPart<SkeletronPrime> implements G
         }
         float remaining = Math.max(0.0F, getPartHealth() - appliedDamage);
         setPartHealth(remaining);
+        indicateHurt();
         onPartHealthChanged(owner, remaining);
         if (remaining <= 0.0F) {
             onPartDestroyed(owner);

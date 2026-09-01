@@ -12,8 +12,12 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 
-/// 史莱姆王王冠的原版模型定义，与 1.21 侧使用同一组几何数据。
+/// 史莱姆王王冠的模型定义。
 public class CrownOfKingSlimeModel extends EntityModel<CrownOfKingSlimeModelEntity> {
+    /// 模型像素尺寸已经是史莱姆王的实际王冠比例，附着和抛出时使用同一尺寸。
+    public static final float RENDER_SCALE = 1.0F;
+    /// 模型底面位于原点下方 24 像素；翻转渲染后需要把原点抬高该距离才能贴住身体顶部。
+    public static final float ATTACHMENT_BASE_OFFSET = 24.0F / 16.0F * RENDER_SCALE;
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("crown_of_king_slime"), "main");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/model/crown_of_king_slime.png");
     public static final RenderType RENDER_TYPE = RenderType.entityCutout(TEXTURE);

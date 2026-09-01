@@ -51,7 +51,8 @@ public class QueenBee extends BaseBoss {
     private static final RawAnimation DASH = RawAnimation.begin().thenLoop("dash");
     private static final RawAnimation WING = RawAnimation.begin().thenLoop("wing");
 
-    private static final int INITIALIZATION_TICKS = 50;
+    // 各战斗状态时长及召唤间隔，单位均为 tick。
+    private static final int INITIALIZATION_TICKS = 1;
     private static final int IDLE_TICKS = 50;
     private static final int SUMMON_TICKS = 60;
     private static final int SUMMON_INTERVAL = 10;
@@ -59,14 +60,19 @@ public class QueenBee extends BaseBoss {
     private static final int PRE_DASH_TICKS = 15;
     private static final int DASH_MAX_TICKS = 50;
     private static final int DASH_MIN_TICKS = 20;
-    private static final int DASH_CYCLES = 4;
+    // 普通模式固定三轮冲刺；专家模式可随生命降低增加，但最多六轮。
+    private static final int CLASSIC_DASH_CYCLES = 3;
+    private static final int EXPERT_MAX_DASH_CYCLES = 6;
+    // 只统计并限制当前蜂王拥有的随从，不影响自然生成的黄蜂。
     private static final int MAX_OWNED_HORNETS = 10;
 
+    // 状态移动速度单位为方块/tick；愤怒专家模式只对最终冲刺速度应用倍率。
     private static final double IDLE_SPEED = 1.0;
     private static final double HANG_SPEED = 1.0;
     private static final double PRE_DASH_HANG_SPEED = 1.2;
     private static final double DASH_SPEED = 2.0;
     private static final double EXPERT_ANGRY_DASH_MULTIPLIER = 1.50;
+    // 冲刺越过目标且距离重新超过 15 方块后允许结束；保存平方值避免反复开方。
     private static final double DASH_END_RANGE_SQR = 15.0 * 15.0;
 
     private int stateTicks;
@@ -157,7 +163,8 @@ public class QueenBee extends BaseBoss {
     private void tickInitialization() {
         setDeltaMovement(getDeltaMovement().scale(0.75));
         if (++stateTicks >= INITIALIZATION_TICKS) {
-            enterState(CombatState.IDLE);
+            completedDashCycles = 0;
+            enterState(CombatState.PRE_DASH_IDLE);
         }
     }
 
@@ -170,7 +177,7 @@ public class QueenBee extends BaseBoss {
         }
         stateTicks++;
         setDeltaMovement(idleDirection.scale(IDLE_SPEED));
-        getLookControl().setLookAt(target, 30.0F, 30.0F);
+        faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
         if (stateTicks >= IDLE_TICKS || stateTicks > 10 && distanceToSqr(target) > DASH_END_RANGE_SQR) {
             enterState(CombatState.SUMMONING_BEES);
         }
@@ -188,7 +195,7 @@ public class QueenBee extends BaseBoss {
     }
 
     private void tickSummoningStingers(LivingEntity target) {
-        getLookControl().setLookAt(target, 30.0F, 30.0F);
+        faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
         if (getY() < target.getY() + 2.0) {
             setDeltaMovement(getDeltaMovement().add(0.0, 0.02, 0.0));
         }
@@ -218,7 +225,7 @@ public class QueenBee extends BaseBoss {
 
     private void tickPreDash(LivingEntity target) {
         setDeltaMovement(Vec3.ZERO);
-        getLookControl().setLookAt(target, 360.0F, 360.0F);
+        faceCombatPosition(target.getEyePosition(), 180.0F, 180.0F);
         if (++stateTicks < PRE_DASH_TICKS) {
             return;
         }
@@ -233,13 +240,12 @@ public class QueenBee extends BaseBoss {
         if (isAngry() && isExpert()) {
             speed *= EXPERT_ANGRY_DASH_MULTIPLIER;
         }
+        Vec3 desiredDirection = target.position().subtract(position()).multiply(1.0D, 0.0D, 1.0D);
+        lockedDashDirection = turnDirectionToward(lockedDashDirection, desiredDirection, 3.0F)
+                .multiply(1.0D, 0.0D, 1.0D).normalize();
         setDeltaMovement(lockedDashDirection.scale(speed));
         Vec3 lookPosition = position().add(lockedDashDirection);
-        getLookControl().setLookAt(lookPosition.x, lookPosition.y, lookPosition.z, 360.0F, 360.0F);
-        if (getBoundingBox().inflate(0.35).intersects(target.getBoundingBox())) {
-            doHurtTarget(target);
-        }
-
+        faceCombatDirection(lockedDashDirection, 180.0F, 180.0F);
         boolean reachedTimeLimit = stateTicks >= DASH_MAX_TICKS;
         boolean passedTargetRange = stateTicks >= DASH_MIN_TICKS
                 && distanceToSqr(target) > DASH_END_RANGE_SQR;
@@ -248,7 +254,7 @@ public class QueenBee extends BaseBoss {
         }
 
         completedDashCycles++;
-        if (completedDashCycles >= DASH_CYCLES) {
+        if (completedDashCycles >= requiredDashCycles()) {
             completedDashCycles = 0;
             enterState(CombatState.IDLE);
         } else {
@@ -256,7 +262,7 @@ public class QueenBee extends BaseBoss {
         }
     }
 
-    /// 复现 1.21 蜂王的悬挂移动：加速度与实际偏移成正比，而不是先归一化成固定推力。
+    /// 悬挂移动的加速度与实际偏移成正比，而不是先归一化成固定推力。
     /// 这样远处会快速回位，贴近目标后会自然减速，召蜂与冲刺准备阶段的速度也能分别保留。
     private void hangOnTarget(LivingEntity target, double horizontalDistance, double height, double speed) {
         Vec3 horizontal = position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
@@ -269,7 +275,7 @@ public class QueenBee extends BaseBoss {
         if (distanceToSqr(target) < 2.0) {
             setDeltaMovement(getDeltaMovement().scale(0.95));
         }
-        getLookControl().setLookAt(target, 30.0F, 30.0F);
+        faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
     }
 
     /// 根据目标当前速度预判十刻后的位置，并丢弃垂直分量，保证整段冲刺保持水平。
@@ -283,6 +289,13 @@ public class QueenBee extends BaseBoss {
             direction = new Vec3(1.0, 0.0, 0.0);
         }
         return direction.normalize();
+    }
+
+    private int requiredDashCycles() {
+        if (!isExpert()) return CLASSIC_DASH_CYCLES;
+        float lostHealth = 1.0F - Mth.clamp(getHealth() / getMaxHealth(), 0.0F, 1.0F);
+        return Mth.clamp(CLASSIC_DASH_CYCLES + Mth.floor(lostHealth * 4.0F),
+                CLASSIC_DASH_CYCLES, EXPERT_MAX_DASH_CYCLES);
     }
 
     /// 兼容既有调用：一次补充当前难度对应数量的小黄蜂，但永远不突破十只上限。
@@ -308,12 +321,9 @@ public class QueenBee extends BaseBoss {
         hornet.setYRot(getYRot());
         hornet.setMaster(this);
         if (serverLevel.addFreshEntity(hornet)) {
-            /// 幼蜂生成当刻只登记蜂王归属。目标要等幼蜂自己的 32 tick 同步周期继承，
-            /// 否则蜂王刚生成幼蜂时会跳过 1.21 侧可观察到的短暂游荡窗口。
-            hornet.setTarget(null);
             return true;
         }
-        removeSubEntity(hornet);
+        hornet.discard();
         return false;
     }
 
@@ -446,7 +456,7 @@ public class QueenBee extends BaseBoss {
         setCombatState(ordinal >= 0 && ordinal < values.length
                 ? values[ordinal] : CombatState.IDLE);
         stateTicks = Math.max(0, tag.getInt("QueenStateTicks"));
-        completedDashCycles = Mth.clamp(tag.getInt("QueenCompletedDashes"), 0, DASH_CYCLES - 1);
+        completedDashCycles = Mth.clamp(tag.getInt("QueenCompletedDashes"), 0, EXPERT_MAX_DASH_CYCLES - 1);
         setAngry(tag.getBoolean("QueenAngry"));
         idleDirection = new Vec3(tag.getDouble("QueenIdleX"), tag.getDouble("QueenIdleY"), tag.getDouble("QueenIdleZ"));
         lockedDashDirection = new Vec3(tag.getDouble("QueenDashX"), tag.getDouble("QueenDashY"), tag.getDouble("QueenDashZ"));

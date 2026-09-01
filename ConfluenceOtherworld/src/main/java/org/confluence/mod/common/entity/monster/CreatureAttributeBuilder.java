@@ -24,6 +24,7 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
                 .add(Attributes.ATTACK_KNOCKBACK, attackKnockback)
                 .add(Attributes.ATTACK_SPEED)
                 .add(Attributes.FLYING_SPEED)
+                .add(PortAttributesExtension.scale().get(), 1.0D)
                 .add(PortAttributesExtension.safeFallDistance().get(), 8.0)
                 .build());
     }
@@ -43,6 +44,7 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
                 .add(Attributes.ATTACK_KNOCKBACK)
                 .add(Attributes.ATTACK_SPEED)
                 .add(Attributes.FLYING_SPEED)
+                .add(PortAttributesExtension.scale().get(), 1.0D)
                 .add(PortAttributesExtension.safeFallDistance().get(), 8.0)
                 .build());
     }

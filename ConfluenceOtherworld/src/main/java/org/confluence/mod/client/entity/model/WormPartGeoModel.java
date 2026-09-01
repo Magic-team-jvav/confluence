@@ -3,6 +3,8 @@ package org.confluence.mod.client.entity.model;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import org.confluence.mod.common.entity.boss.BossWormPart;
+import org.confluence.mod.common.entity.monster.BaseWormPart;
 import org.confluence.mod.common.entity.monster.WormSegment;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -73,6 +75,16 @@ public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNorm
     }
 
     private @Nullable String family(T segment) {
+        Entity ownerEntity = null;
+        if (segment instanceof BaseWormPart part) {
+            ownerEntity = part.getOwner();
+        } else if (segment instanceof BossWormPart part) {
+            ownerEntity = part.getOwner();
+        }
+        if (ownerEntity != null) {
+            return familyFromEntity(ownerEntity);
+        }
+
         WormSegment head = segment;
         // 客户端可能先收到中间节段，因此沿 prev 引用回溯到索引为 0 的权威链首。
         for (int depth = 0; depth < 64; depth++) {
@@ -85,13 +97,17 @@ public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNorm
         if (head.getSegmentIndex() != 0 || !(head instanceof Entity entity)) {
             return null;
         }
+        return familyFromEntity(entity);
+    }
+
+    private @Nullable String familyFromEntity(Entity entity) {
         ResourceLocation typeId = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
         // 共用体节只是网络同步载体；链首尚未同步时不能把它的注册名当作资源家族名。
         if (isSharedPlaceholder(typeId.getPath())) {
             return null;
         }
         String family = typeId.getPath();
-        // 当前 1.20.1 资源包尚无毁灭者专用节段文件，避免构造不存在的资源路径。
+        // 资源包尚无毁灭者专用节段文件，避免构造不存在的资源路径。
         if (fallbackFamily.equals("eater_of_worlds") && family.equals("the_destroyer")) {
             return fallbackFamily;
         }

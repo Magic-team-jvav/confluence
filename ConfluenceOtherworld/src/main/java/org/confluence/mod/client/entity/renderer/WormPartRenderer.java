@@ -62,17 +62,16 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
             setHidden(model, "Bone3", tail || !wing);
             setHidden(model, "Bone4", !tail);
 
-            BaseWormMonster owner = segment.getOwner();
-            ResourceLocation ownerId = owner == null
-                    ? null
-                    : BuiltInRegistries.ENTITY_TYPE.getKey(owner.getType());
-            if (ownerId != null && "arch_wyvern".equals(ownerId.getPath())) {
-                poseStack.scale(1.25F, 1.25F, 1.25F);
-            }
-        } else {
-            poseStack.scale(2.0F, 2.0F, 2.0F);
         }
         super.preRender(poseStack, segment, model, buffers, buffer, reRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    @Override
+    protected float getEffectiveModelScale(BaseWormPart segment) {
+        if (!wormModel.usesWyvernGeometry(segment)) return 2.0F;
+        BaseWormMonster owner = segment.getOwner();
+        ResourceLocation ownerId = owner == null ? null : BuiltInRegistries.ENTITY_TYPE.getKey(owner.getType());
+        return ownerId != null && "arch_wyvern".equals(ownerId.getPath()) ? 1.25F : 1.0F;
     }
 
     private static void setHidden(BakedGeoModel model, String name, boolean hidden) {

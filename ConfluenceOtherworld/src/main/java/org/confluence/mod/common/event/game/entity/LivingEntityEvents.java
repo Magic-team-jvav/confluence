@@ -39,6 +39,7 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
+import org.confluence.mod.common.data.entity.CreatureDefinitionLoader;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.Bestiary;
@@ -49,8 +50,10 @@ import org.confluence.mod.common.effect.beneficial.DryadsBlessingEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
+import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.monster.EaterOfSouls;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
@@ -210,11 +213,33 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
 
+        applyBossDefinitionDamage(event, living, damageSource);
+
         if (living instanceof ServerPlayer player) {
             AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
         }
         if (Immunity.getCause(event.getSource()) != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
+        }
+    }
+
+    /// 对所有能追溯到 Boss 本体的伤害统一应用数据包倍率。
+    ///
+    /// 该入口位于护甲、抗性和暴击等后续减伤之前，因此普通近战、固定接触伤害以及
+    /// Boss 所有的弹幕共享完全相同的基础伤害倍率，不需要每个攻击类重复读取 JSON。
+    private static void applyBossDefinitionDamage(PortLivingIncomingDamageEvent event, LivingEntity victim, DamageSource source) {
+        Entity attacker = LibEntityUtils.getOwner(source);
+        if (attacker instanceof PartHitTarget part) {
+            attacker = part.encounterOwner();
+        }
+        if (attacker instanceof BossOwnedEntity owned) {
+            attacker = owned.getBossOwner();
+        }
+        if (!(attacker instanceof BaseBoss boss) || boss == victim) return;
+
+        double multiplier = CreatureDefinitionLoader.get(boss.getType()).boss().damageMultiplierOr(1.0D) * CommonConfigs.BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE.get();
+        if (multiplier != 1.0D) {
+            event.setAmount((float) Math.max(0.0D, event.getAmount() * multiplier));
         }
     }
 

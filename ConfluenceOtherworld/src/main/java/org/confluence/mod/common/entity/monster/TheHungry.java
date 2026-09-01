@@ -12,11 +12,15 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
@@ -35,7 +39,7 @@ import java.util.UUID;
 /// Boss 从属使用精确 UUID 恢复主体，并围绕生成锚点活动；没有绑定记录的实体
 /// 才作为独立野怪寻找玩家。这样区块反向加载不会把暂时找不到主体的从属错误转换成
 /// 永久野怪，也不需要再注册一套重复的 {@code hungry} 实体。
-public class TheHungry extends BaseFlyingMonster {
+public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
     @Override
     protected int contactDetectionInterval() {
         return 5;
@@ -46,7 +50,6 @@ public class TheHungry extends BaseFlyingMonster {
         return 0.3;
     }
 
-    private static final int OWNER_RESOLVE_GRACE_TICKS = 100;
     private static final RawAnimation BAIT = RawAnimation.begin().thenLoop("bait");
     private static final String LEASH_X_TAG = "LeashX";
     private static final String LEASH_Y_TAG = "LeashY";
@@ -61,13 +64,12 @@ public class TheHungry extends BaseFlyingMonster {
     private Vec3 anchor = Vec3.ZERO;
     private final double minimumDistance;
     private final double maximumDistance;
-    private int unresolvedOwnerTicks;
     private boolean suppressLoot;
     private boolean free;
 
     public TheHungry(EntityType<? extends TheHungry> type, Level level) {
         super(type, level);
-        /// 1.21 的饿鬼直接更新位置，不参与方块碰撞。这里使用原版 noPhysics
+        /// 饿鬼直接更新位置，不参与方块碰撞。这里使用 noPhysics
         /// 表达相同能力，避免系绳扑击被墙面或血肉墙周围地形卡住。
         noPhysics = true;
         int distanceOffset = random.nextInt(7);
@@ -85,13 +87,18 @@ public class TheHungry extends BaseFlyingMonster {
     public void setMaster(BaseBoss master, Vec3 relativeAnchor) {
         ownerTracker.bind(this, master);
         entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
         leashPos = relativeAnchor;
         setAnchor(master.position().add(relativeAnchor));
-        unresolvedOwnerTicks = 0;
     }
 
     public @Nullable BaseBoss getMaster() {
         return ownerTracker.resolve(this);
+    }
+
+    @Override
+    public @Nullable BaseBoss getBossOwner() {
+        return getMaster();
     }
 
     public @Nullable UUID getMasterUUID() {
@@ -153,10 +160,22 @@ public class TheHungry extends BaseFlyingMonster {
         };
     }
 
+    @Override
+    protected void registerGoals() {
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(
+                this, Player.class, 1, false, false, this::canTargetPlayer
+        ));
+    }
+
+    @Override
+    protected boolean canTargetPlayer(LivingEntity target) {
+        return free && isLegalFreeTarget(target);
+    }
+
     /// 饿鬼资源只有持续摆动的 {@code bait} 动画。
     ///
     /// 从属状态、独立野怪状态和返回锚点阶段共用同一套身体摆动，因此控制器持续播放，
-    /// 不根据水平速度停顿。这样既与 1.21 行为一致，也避免悬停时模型变成静态贴图。
+    /// 不根据水平速度停顿，避免悬停时模型变成静态贴图。
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "bait", 0, state -> state.setAndContinue(BAIT)));
@@ -164,8 +183,17 @@ public class TheHungry extends BaseFlyingMonster {
 
     @Override
     public void tick() {
-        if (!level().isClientSide) prepareServerTick();
+        LivingEntity inheritedTarget = null;
+        boolean lockOwnerTarget = !level().isClientSide && !free && getMasterUUID() != null;
+        if (!level().isClientSide) {
+            prepareServerTick();
+            if (lockOwnerTarget) inheritedTarget = getTarget();
+            if (isRemoved()) return;
+        }
         super.tick();
+        if (lockOwnerTarget && getTarget() != inheritedTarget) {
+            setTarget(inheritedTarget);
+        }
     }
 
     @Override
@@ -174,28 +202,40 @@ public class TheHungry extends BaseFlyingMonster {
     }
 
     private void prepareServerTick() {
-        BaseBoss master = getMaster();
-        if (master != null && master.isAlive()) {
-            unresolvedOwnerTicks = 0;
+        BaseBoss master = getMasterUUID() == null ? null : ownerTracker.tickDependent(this, !free, 100);
+        if (master != null) {
             setAnchor(free ? Vec3.ZERO : master.position().add(leashPos));
             if (free) {
-                setTarget(level().getNearestPlayer(this, 40.0));
-            } else if (getTarget() == null && master.getTarget() != null && master.getTarget().isAlive()) {
-                setTarget(master.getTarget());
+                clearIllegalFreeTarget();
             }
             return;
         }
         if (getMasterUUID() != null) {
-            setTarget(null);
-            if (++unresolvedOwnerTicks > OWNER_RESOLVE_GRACE_TICKS) discard();
+            // 绑定态在所有者恢复期间只保留此前继承的合法玩家目标；自由态继续独立作战。
+            if (free) clearIllegalFreeTarget();
             return;
         }
         if (!free) {
+            setTarget(null);
             if (tickCount > 0 && tickCount % 60 == 0) discard();
             return;
         }
         if (tickCount > 0 && tickCount % 60 == 0) hurt(damageSources().starve(), 1.0F);
-        setTarget(level().getNearestPlayer(this, 40.0));
+        clearIllegalFreeTarget();
+    }
+
+    private void clearIllegalFreeTarget() {
+        if (!isLegalFreeTarget(getTarget())) setTarget(null);
+    }
+
+    private boolean isLegalFreeTarget(@Nullable LivingEntity target) {
+        return target instanceof Player player
+                && player.level() == level()
+                && player.isAlive()
+                && !player.isCreative()
+                && !player.isSpectator()
+                && player.canBeSeenAsEnemy()
+                && canAttack(player);
     }
 
     @Override

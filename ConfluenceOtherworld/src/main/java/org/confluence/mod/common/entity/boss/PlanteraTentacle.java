@@ -8,11 +8,13 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -66,11 +68,13 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
         Vec3 anchor = master.getTentacleAnchor(getSlot());
         Vec3 offset = getEyePosition().subtract(anchor);
         double distance = offset.length();
+        double desiredDistance = DISTANCE_FROM_ANCHOR * master.getScale();
         if (distance < 1.0E-6) {
-            offset = master.getTentacleBaseDirection(getSlot()).scale(DISTANCE_FROM_ANCHOR);
+            offset = master.getTentacleBaseDirection(getSlot()).scale(desiredDistance);
         } else {
-            double radialChange = Mth.clamp(DISTANCE_FROM_ANCHOR - distance, -RADIAL_STEP, RADIAL_STEP);
-            offset = offset.scale(Math.min(distance + radialChange, DISTANCE_FROM_ANCHOR) / distance);
+            double radialStep = RADIAL_STEP * master.getScale();
+            double radialChange = Mth.clamp(desiredDistance - distance, -radialStep, radialStep);
+            offset = offset.scale(Math.min(distance + radialChange, desiredDistance) / distance);
         }
 
         LivingEntity target = master.getTarget();
@@ -80,7 +84,7 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
             offset = rotateToward(offset, targetOffset, attraction);
         }
 
-        // 与 1.21 相同，所有存活触手都通过小角度旋转彼此推开。
+        // 所有存活触手都通过小角度旋转彼此推开。
         for (PlanteraTentacle other : master.getTentacles()) {
             if (other == null || other == this || other.isRemoved()) {
                 continue;
@@ -105,8 +109,10 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
             contactCooldown--;
             return;
         }
-        for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.25))) {
-            if (entity != master && master.canAttack(entity) && entity.hurt(damageSources().mobAttack(master), DAMAGE)) {
+        for (Entity entity : SweptContactAttack.findTargets(this, 0.25D,
+                SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
+                candidate -> candidate instanceof LivingEntity living && living != master && master.canAttack(living))) {
+            if (entity.hurt(damageSources().mobAttack(master), DAMAGE)) {
                 contactCooldown = CONTACT_COOLDOWN;
                 break;
             }
@@ -114,7 +120,7 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
     }
 
     /// 绕当前偏移与目标偏移的叉积旋转指定角度；使用 Rodrigues 公式避免把
-    /// 1.21 的 JOML 四元数实现原样搬进公共实体逻辑。
+    /// 四元数依赖扩散到公共实体逻辑。
     private static Vec3 rotateToward(Vec3 offset, Vec3 targetOffset, double degrees) {
         if (Math.abs(degrees) < 1.0E-9 || offset.lengthSqr() < 1.0E-9 || targetOffset.lengthSqr() < 1.0E-9) {
             return offset;
@@ -169,6 +175,7 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
         if (appliedDamage <= 0.0F) return false;
         float remaining = Math.max(0.0F, getPartHealth() - appliedDamage);
         setPartHealth(remaining);
+        indicateHurt();
         if (remaining <= 0.0F) {
             onPartDestroyed(owner);
             discard();

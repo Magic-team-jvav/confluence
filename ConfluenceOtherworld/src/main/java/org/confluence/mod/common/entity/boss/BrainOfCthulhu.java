@@ -48,6 +48,7 @@ public class BrainOfCthulhu extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_PHASE_ONE_STATE_TICKS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DATA_PHASE_TWO_STATE_TICKS = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(BrainOfCthulhu.class, EntityDataSerializers.INT);
     private static final int NEURON_COUNT = 20;
     private static final int SUMMON_START_TICK = 21;
     private static final int SUMMON_INTERVAL_TICKS = 2;
@@ -155,6 +156,15 @@ public class BrainOfCthulhu extends BaseBoss {
             ensureIllusions();
             tickPhaseTwoCycle();
         }
+        Entity target = getTarget();
+        entityData.set(DATA_TARGET_ID, target != null && target.isAlive() ? target.getId() : -1);
+        tickEntityContactAttack();
+    }
+
+    @Override
+    protected boolean usesPostMovementContactAttack() {
+        // 曲线技能在常规实体 tick 之后直接提交位置，接触检测必须读取最终路径。
+        return true;
     }
 
     @Override
@@ -165,9 +175,15 @@ public class BrainOfCthulhu extends BaseBoss {
         entityData.define(DATA_PHASE_ONE_STATE_TICKS, 0);
         entityData.define(DATA_PHASE_TWO_STATE, PhaseTwoState.TRANSFORMING.id);
         entityData.define(DATA_PHASE_TWO_STATE_TICKS, 0);
+        entityData.define(DATA_TARGET_ID, -1);
     }
 
-    /// 第一阶段使用与 1.21 相同的技能段循环：靠近、淡出惯性、重新定位、淡入靠近。
+    public @org.jetbrains.annotations.Nullable Entity getSyncedVisualTarget() {
+        Entity target = level().getEntity(entityData.get(DATA_TARGET_ID));
+        return target != null && target.isAlive() ? target : null;
+    }
+
+    /// 第一阶段依次执行靠近、惯性淡出、重新定位和淡入靠近。
     /// 飞眼怪不会随本体瞬移，而是继续追逐更新后的编队位置，形成跨越玩家的大范围扫掠轨迹。
     private void tickPhaseOneCycle(List<VisualNeuron> loadedNeurons) {
         switch (phaseOneState) {
@@ -210,7 +226,7 @@ public class BrainOfCthulhu extends BaseBoss {
         entityData.set(DATA_PHASE_ONE_STATE_TICKS, 0);
     }
 
-    /// 复刻 1.21 的首次登场节奏：第 21 刻开始，每两刻召唤一只神经元。
+    /// 首次登场后第 21 刻开始，每两刻召唤一只神经元。
     private void tickNeuronSummoning() {
         if (summoningComplete()) return;
         summonTicks++;
@@ -239,7 +255,7 @@ public class BrainOfCthulhu extends BaseBoss {
         }
     }
 
-    /// 按照 1.21 的球坐标范围生成神经元初始编队偏移。
+    /// 在限定球面范围内生成神经元的初始编队偏移。
     private Vec3 createNeuronHomeOffset() {
         double radius = random.nextFloat() + 5.0;
         double theta = random.nextFloat() * Math.PI;
@@ -277,10 +293,9 @@ public class BrainOfCthulhu extends BaseBoss {
         Vec3 destination = target.position().add(away.normalize().scale(10.0)).add(0.0, verticalOffset, 0.0);
         Vec3 offset = destination.subtract(position());
         if (offset.lengthSqr() > 2.0) {
-            // 1.21 侧每刻直接写入固定速度，不保留上一刻惯性。
             setDeltaMovement(offset.normalize().scale(0.15));
         }
-        getLookControl().setLookAt(target, 10.0F, 30.0F);
+        faceCombatPosition(target.getEyePosition(), 10.0F, 30.0F);
     }
 
     private void dispatchReadyNeuron(List<VisualNeuron> loadedNeurons) {
@@ -293,7 +308,7 @@ public class BrainOfCthulhu extends BaseBoss {
         }
     }
 
-    /// 第二阶段沿用 1.21 的技能顺序：短暂变形、曲线绕行、冲刺、淡出、重新定位并淡入。
+    /// 第二阶段依次执行短暂变形、曲线绕行、冲刺、淡出、重新定位和淡入。
     /// 额外冲刺前会重新经过绕行段，不能直接在上一段冲刺结束的位置再次启动冲刺。
     private void tickPhaseTwoCycle() {
         Player target = getTarget() instanceof Player player && player.isAlive()
@@ -330,12 +345,11 @@ public class BrainOfCthulhu extends BaseBoss {
                 }
                 lookAtTarget(target);
                 if (++phaseTwoStateTicks >= PHASE2_DASH_TICKS) {
-                    int configuredDashCount = getHealth() / getMaxHealth() < 0.3F ? 3 : 2;
                     if (phaseTwoDashRemaining > 0) {
                         phaseTwoDashRemaining--;
                         enterPhaseTwoState(PhaseTwoState.STALKING);
                     } else {
-                        phaseTwoDashRemaining = configuredDashCount;
+                        phaseTwoDashRemaining = phaseTwoDashCount() - 1;
                         enterPhaseTwoState(PhaseTwoState.FADING_OUT);
                     }
                 }
@@ -377,7 +391,7 @@ public class BrainOfCthulhu extends BaseBoss {
         entityData.set(DATA_PHASE_TWO_STATE_TICKS, 0);
     }
 
-    /// 构造第二阶段绕行曲线。控制点位于玩家周围，终点略高于控制点，形成 1.21 的掠过轨迹。
+    /// 构造第二阶段绕行曲线。控制点位于玩家周围，终点略高于控制点，形成掠过轨迹。
     private void initializeStalkingCurve(Player target) {
         double radius = 16.0 + random.nextDouble();
         double angle = random.nextDouble() * Mth.TWO_PI;
@@ -412,7 +426,7 @@ public class BrainOfCthulhu extends BaseBoss {
     }
 
     private void lookAtTarget(Player target) {
-        getLookControl().setLookAt(target, 10.0F, 30.0F);
+        faceCombatPosition(target.getEyePosition(), 10.0F, 30.0F);
     }
 
     private void enterPhaseTwo() {
@@ -420,13 +434,17 @@ public class BrainOfCthulhu extends BaseBoss {
         entityData.set(DATA_PHASE_TWO, true);
         aliveNeurons = 0;
         broadcastPhaseTransition();
-        phaseTwoDashRemaining = 0;
+        phaseTwoDashRemaining = phaseTwoDashCount() - 1;
         enterPhaseTwoState(PhaseTwoState.TRANSFORMING);
         setHealth(getMaxHealth());
         ensureIllusions();
     }
 
-    /// 保证第二阶段始终存在三个不同槽位的镜像幻象。
+    private int phaseTwoDashCount() {
+        return getHealth() / getMaxHealth() < 0.3F ? 3 : 2;
+    }
+
+    /// 第二阶段维持三个不同槽位的镜像幻象。
     ///
     /// 幻象不写入区块存档，因此本体从存档恢复、幻象被外部命令移除或实体生成暂时失败时，
     /// 都由这里按槽位补齐。已有幻象会先从本体的部件列表中恢复引用，避免重复生成。
@@ -452,9 +470,11 @@ public class BrainOfCthulhu extends BaseBoss {
                 continue;
             }
             illusion.setPos(position());
-            illusion.setIllusionIndex(slot + 1);
+            // 所有者和槽位必须在生成包创建前完成绑定，客户端收到幻象的第一帧就能
+            // 解析本体并计算镜像位置，不会先在出生点停留一帧再跳走。
+            illusion.setMaster(this, slot + 1);
             if (serverLevel.addFreshEntity(illusion)) {
-                illusion.setMaster(this, slot + 1);
+                illusions[slot] = illusion;
             } else {
                 illusion.discard();
             }
@@ -490,7 +510,7 @@ public class BrainOfCthulhu extends BaseBoss {
         teleportAroundTarget(10.0, 11.0, Math.PI * 0.35, Math.PI * 0.65, 2.0, 24);
     }
 
-    /// 保留 1.21 的球坐标取样范围，同时跳过会把实体放进方块或液体的位置。
+    /// 在球坐标范围内取样，同时跳过会把实体放进方块或液体的位置。
     private void teleportAroundTarget(double minimumRadius, double maximumRadius, double minimumBeta, double maximumBeta, double verticalOffset, int attempts) {
         Player target = getTarget() instanceof Player player ? player : null;
         if (target == null || !(level() instanceof ServerLevel serverLevel)) return;
@@ -537,9 +557,8 @@ public class BrainOfCthulhu extends BaseBoss {
     }
 
     @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        bossEvent.setProgress(getEncounterProgress());
+    protected float getBossBarProgress() {
+        return getEncounterProgress();
     }
 
     /// 第一阶段 Boss 条使用固定的遭遇总生命上限。
@@ -549,7 +568,7 @@ public class BrainOfCthulhu extends BaseBoss {
     /// 避免区块短暂卸载被误判为已经击败；开场尚未生成的神经元也预占完整生命，防止召唤阶段
     /// Boss 条从半血反向增长。
     public float getEncounterProgress() {
-        if (phase2) return getHealth() / getMaxHealth();
+        if (isPhase2()) return getHealth() / getMaxHealth();
         List<VisualNeuron> loaded = findOwnedLoadedNeurons();
         double loadedHealth = loaded.stream().mapToDouble(VisualNeuron::getHealth).sum();
         int unloadedCount = Math.max(0, activeNeuronUUIDs.size() - loaded.size());
@@ -564,17 +583,17 @@ public class BrainOfCthulhu extends BaseBoss {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return !phase2 || super.isInvulnerableTo(source);
+        return !isPhase2() || super.isInvulnerableTo(source);
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        return phase2 && super.hurt(source, amount);
+        return isPhase2() && super.hurt(source, amount);
     }
 
     @Override
     public boolean isPickable() {
-        return phase2;
+        return isPhase2();
     }
 
     /// 脑的两阶段位移都由自身曲线控制，不叠加原版重力。
@@ -611,7 +630,7 @@ public class BrainOfCthulhu extends BaseBoss {
                     : phaseTwoStateTicks) + partialTick;
             return switch (state) {
                 case FADING_OUT -> 1.0F - Mth.clamp(ticks / PHASE2_FADE_OUT_TICKS, 0.0F, 1.0F);
-                case FADING_IN -> Mth.clamp(ticks / PHASE2_FADE_OUT_TICKS, 0.0F, 1.0F);
+                case FADING_IN -> Mth.clamp(ticks / PHASE2_FADE_IN_TICKS, 0.0F, 1.0F);
                 default -> 1.0F;
             };
         }

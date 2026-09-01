@@ -38,7 +38,10 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 /// 悠悠球共享实体。
 ///
@@ -195,24 +198,28 @@ public final class YoyoEntity extends Projectile implements GeoEntity {
         }
         boolean attempted = false;
         DamageSource source = damageSources().mobAttack(owner);
+        Set<UUID> hitIdentities = new HashSet<>();
         for (Entity candidate : nearby) {
             if (!ProjectileHitRules.canHit(owner, candidate)) continue;
+            Entity identity = ProjectileHitRules.dedupeIdentity(candidate);
+            if (!hitIdentities.add(identity.getUUID())) continue;
+            Entity damageRecipient = ProjectileHitRules.damageRecipient(candidate);
+            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(candidate);
+            if (logicalTarget == null) continue;
             attempted = true;
-            if (!candidate.hurt(source, getDamage())) continue;
+            if (!damageRecipient.hurt(source, getDamage())) continue;
             float knockback = (float) owner.getAttributeValue(Attributes.ATTACK_KNOCKBACK) + 0.1F;
-            if (knockback > 0.0F && candidate instanceof LivingEntity living) {
-                living.knockback(knockback * 0.5F, Mth.sin(getYRot() * Mth.DEG_TO_RAD), -Mth.cos(getYRot() * Mth.DEG_TO_RAD));
+            if (knockback > 0.0F) {
+                logicalTarget.knockback(knockback * 0.5F, Mth.sin(getYRot() * Mth.DEG_TO_RAD), -Mth.cos(getYRot() * Mth.DEG_TO_RAD));
                 setDeltaMovement(getDeltaMovement().multiply(0.6, 1.0, 0.6));
             }
             if (level() instanceof ServerLevel serverLevel) {
-                PortEnchantmentHelperExtension.doPostAttackEffects(serverLevel, candidate, source);
+                PortEnchantmentHelperExtension.doPostAttackEffects(serverLevel, logicalTarget, source);
             }
-            owner.setLastHurtMob(candidate);
-            Entity impacted = ProjectileHitRules.impactedEntity(candidate);
+            owner.setLastHurtMob(logicalTarget);
             if (liveWeapon.getItem() == item)
                 liveWeapon.hurtAndBreak(1, owner, EquipmentSlot.MAINHAND);
-            LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(candidate);
-            if (logicalTarget != null) item.applyHitEffect(this, owner, logicalTarget);
+            item.applyHitEffect(this, owner, logicalTarget);
         }
         if (attempted) hitCooldownTicks = HIT_INTERVAL_TICKS;
     }

@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.boss;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
 import org.confluence.mod.common.entity.projectile.TwinEyeProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -20,7 +22,7 @@ import java.util.Set;
 /// 双子魔眼中的魔焰眼。
 ///
 /// 一阶段以短魔焰齐射衔接冲刺，半血变形后改为贴近目标的连续火流和更快冲刺。
-/// 另一只魔眼死亡后，本体继续执行当前阶段的独立循环；当前 1.21 实现没有额外的单眼
+/// 另一只魔眼死亡后，本体继续执行当前阶段的独立循环；没有额外的单眼
 /// 狂暴参数，因此这里也不虚构第三套战斗数值。
 public class Spazmatism extends AbstractTwinEye {
     private static final String STATE_TAG = "CombatState";
@@ -146,7 +148,10 @@ public class Spazmatism extends AbstractTwinEye {
         Vec3 desiredPosition = target.position()
                 .add(away.normalize().scale(distance))
                 .add(0.0, isTransformed() ? 0.0 : 1.0, 0.0);
-        addDeltaMovement(desiredPosition.subtract(position()).scale(speed * 0.01));
+        Vec3 correction = desiredPosition.subtract(position());
+        Vec3 velocity = getDeltaMovement().scale(0.86D).add(correction.scale(speed * 0.014D));
+        if (velocity.lengthSqr() > speed * speed) velocity = velocity.normalize().scale(speed);
+        setDeltaMovement(velocity);
         if (distanceToSqr(target) < 2.0) {
             setDeltaMovement(getDeltaMovement().scale(0.95));
         }
@@ -168,7 +173,7 @@ public class Spazmatism extends AbstractTwinEye {
     }
 
     /// 半血后的魔焰眼使用十格连续火流，而不是把火流替换成自动追踪弹丸。
-    /// 每个刻度只对同一生物结算一次伤害，采样间距和碰撞半径与 1.21 保持一致。
+    /// 每个刻度只对同一生物结算一次伤害，并使用固定采样间距和碰撞半径。
     private boolean fireContinuousFlame(ServerLevel serverLevel) {
         Vec3 direction = getLookAngle();
         if (direction.lengthSqr() <= 1.0E-7) {
@@ -186,7 +191,7 @@ public class Spazmatism extends AbstractTwinEye {
         float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
         for (LivingEntity entity : hitEntities) {
             if (canAttack(entity)) {
-                entity.hurt(damageSources().inFire(), damage);
+                entity.hurt(LibDamageTypes.of(level(), DamageTypes.IN_FIRE, this), damage);
                 entity.setRemainingFireTicks(100);
             }
         }

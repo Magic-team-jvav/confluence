@@ -10,13 +10,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
-import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
-import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
-import org.confluence.mod.common.entity.ai.bt.leaf.MaintainRangedDistanceAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -29,7 +25,7 @@ import java.util.UUID;
 ///
 /// 探测器独立保持射击距离，但目标和生命周期归属于精确的毁灭者 UUID。主人暂时
 /// 卸载时探测器停止攻击并等待恢复，不会转化成永久游荡的独立怪物。
-public final class TheDestroyerProbe extends BaseFlyingMonster {
+public final class TheDestroyerProbe extends BaseFlyingMonster implements BossOwnedEntity {
     private static final String SHOT_TIMER_TAG = "ShotTimer";
     private static final int SHOT_INTERVAL = 60;
 
@@ -52,10 +48,17 @@ public final class TheDestroyerProbe extends BaseFlyingMonster {
     public void setMaster(TheDestroyer master) {
         ownerTracker.bind(this, master);
         entityData.set(OWNER_UUID, Optional.of(master.getUUID()));
+        shotTimer = 1 + BossMinionCoordinator.phaseOffset(this, SHOT_INTERVAL);
+        BossMinionCoordinator.faceTargetImmediately(this, getTarget());
     }
 
     public @Nullable TheDestroyer getMaster() {
         return ownerTracker.resolve(this);
+    }
+
+    @Override
+    public @Nullable BaseBoss getBossOwner() {
+        return getMaster();
     }
 
     public @Nullable UUID getMasterUUID() {
@@ -67,39 +70,45 @@ public final class TheDestroyerProbe extends BaseFlyingMonster {
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SelectorNode.of(
-                        SequenceNode.of(
-                                new HasTargetCondition(TheDestroyerProbe.this),
-                                new MaintainRangedDistanceAction(TheDestroyerProbe.this, 10.0, 16.0, 0.7, 40),
-                                new WaitAction(20)),
-                        new FlyWanderAction(TheDestroyerProbe.this, 0.3, 8));
+                return new WaitAction(Integer.MAX_VALUE);
             }
         };
     }
 
     @Override
     public void tick() {
+        LivingEntity inheritedTarget = null;
+        TheDestroyer master = null;
+        if (!level().isClientSide && ownerTracker.getOwnerUUID() != null) {
+            master = ownerTracker.tickDependent(this, true, 100);
+            inheritedTarget = getTarget();
+            if (isRemoved()) return;
+        }
         super.tick();
         if (level().isClientSide) {
             return;
         }
-
-        TheDestroyer master = getMaster();
-        if (master == null || !master.isAlive()) {
-            setTarget(null);
-            return;
+        if (master != null && getTarget() != inheritedTarget) {
+            setTarget(inheritedTarget);
         }
-        LivingEntity masterTarget = master.getTarget();
-        if (masterTarget != null && masterTarget.isAlive() && getTarget() != masterTarget) {
-            setTarget(masterTarget);
+        if (master == null) {
+            return;
         }
         if (distanceToSqr(master) > 4096.0) {
             Vec3 towardMaster = master.position().add(0.0, 2.0, 0.0).subtract(position());
             setDeltaMovement(getDeltaMovement().scale(0.4).add(towardMaster.normalize().scale(0.45)));
         }
-        if (getTarget() != null && --shotTimer <= 0) {
+        LivingEntity target = getTarget();
+        if (target != null && target.isAlive()) {
+            Vec3 orbit = BossMinionCoordinator.orbitPoint(this, target, 13.0D, 3.0D, 0.022D, 12);
+            setDeltaMovement(BossMinionCoordinator.steer(
+                    getDeltaMovement(), position(), orbit, 0.11D, 0.7D));
+            faceCombatPosition(BossMinionCoordinator.predict(target, 3.0D, 2.5D), 30.0F, 30.0F);
+            hasImpulse = true;
+        }
+        if (target != null && --shotTimer <= 0) {
             shotTimer = SHOT_INTERVAL;
-            TheDestroyer.fireLaser(this, getEyePosition(), getTarget(), (float) getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE));
+            TheDestroyer.fireLaser(this, getEyePosition(), target, (float) getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE));
         }
     }
 
@@ -141,7 +150,7 @@ public final class TheDestroyerProbe extends BaseFlyingMonster {
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
         entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
-        shotTimer = tag.getInt(SHOT_TIMER_TAG);
+        shotTimer = Math.max(1, tag.getInt(SHOT_TIMER_TAG));
     }
 
     @Override

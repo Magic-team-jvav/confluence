@@ -71,7 +71,7 @@ public class MineTunnelsStructure extends Structure {
             boolean setGate = 0.1666666F >= random.nextFloat();
             //setGate = true;
             int gateType = random.nextInt(2);
-            int worldMinY = context.chunkGenerator().getGenDepth();
+            int worldMinY = context.heightAccessor().getMinBuildHeight();
             int maxY = worldMinY < 0 ? 20 : 50;
             int minY = worldMinY < 0 ? -40 : 10;
             //maxY = -30;

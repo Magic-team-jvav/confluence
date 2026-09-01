@@ -71,12 +71,13 @@ public class MineTunnelsStructure extends Structure {
             boolean setGate = 0.1666666F >= random.nextFloat();
             //setGate = true;
             int gateType = random.nextInt(2);
-            int maxY = 20;
-            int minY = -40;
+            int worldMinY = context.chunkGenerator().getGenDepth();
+            int maxY = worldMinY < 0 ? 20 : 50;
+            int minY = worldMinY < 0 ? -40 : 10;
             //maxY = -30;
             //minY = -63;
             int length = 100;
-            BlockPos underPos = startChunk.getMiddleBlockPosition(random.nextInt(-30, 10));
+            BlockPos underPos = startChunk.getMiddleBlockPosition(random.nextInt(worldMinY < 0 ? -30 : 20, worldMinY < 0 ? 10 : 40));
             //underPos = startChunk.getMiddleBlockPosition(random.nextInt(-45, -43));
             BlockPos tunnelPos;
             BlockPos translationPos;

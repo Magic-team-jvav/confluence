@@ -512,7 +512,7 @@ public final class ModEvents {
 
     private static void registerBestiaryKeys(RegisterBestiaryKeyEvent event) {
         // todo 全部换成枚举名
-        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + switch (bunny.getVariant()) {
+        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + switch (bunny.getBunnyVariant()) {
             case AMBER -> 0;
             case AMETHYST -> 1;
             case DIAMOND -> 2;

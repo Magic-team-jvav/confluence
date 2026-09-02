@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static org.confluence.mod.common.util.VoidSeaConstants.*;
+
 @Mixin(LocalPlayer.class)
 public abstract class LocalPlayerMixin implements ILocalPlayer {
     @Shadow
@@ -63,43 +65,48 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
     @Inject(method = "aiStep", at = @At("TAIL"))
     private void confluence$voidSeaVerticalMovement(CallbackInfo ci) {
         LocalPlayer self = (LocalPlayer) (Object) this;
-        if (VoidSeaHelper.isDimensionalOverlapEffect(self)
-                && self.getY() < VoidSeaHelper.getHeight()
-                && !self.getAbilities().flying
-                && !self.isPassenger()
-                && self.isAffectedByFluids()) {
-            int vertical = 0;
-            if (input.jumping) {
-                vertical++;
-            }
-            if (input.shiftKeyDown) {
-                vertical--;
-            }
-            if (vertical != 0) {
-                self.setDeltaMovement(self.getDeltaMovement().add(0.0, vertical * VoidSeaHelper.VERTICAL_MOVEMENT_SPEED * self.getAttributeValue(NeoForgeMod.SWIM_SPEED), 0.0));
-            }
-            float exitAngle = -self.getXRot();
-            if (minecraft.options.keySprint.isDown()
-                    && self.getY() >= VoidSeaHelper.getHeight() - VoidSeaHelper.SURFACE_EXIT_RANGE
-                    && exitAngle >= VoidSeaHelper.SURFACE_EXIT_MIN_ANGLE
-                    && exitAngle <= VoidSeaHelper.SURFACE_EXIT_MAX_ANGLE) {
-                self.setDeltaMovement(self.getDeltaMovement().add(self.getLookAngle().scale(VoidSeaHelper.SURFACE_EXIT_ACCELERATION)));
-            }
+
+        if (!VoidSeaHelper.isTrigger(self)) {
+            return;
+        }
+
+        if (self.getAbilities().flying
+                || self.isPassenger()
+                || !self.isAffectedByFluids()) {
+            return;
+        }
+
+        int vertical = 0;
+        if (input.jumping) {
+            vertical++;
+        }
+
+        if (input.shiftKeyDown) {
+            vertical--;
+        }
+
+        if (vertical != 0) {
+            self.setDeltaMovement(self.getDeltaMovement().add(0.0, vertical * VERTICAL_MOVEMENT_SPEED * self.getAttributeValue(NeoForgeMod.SWIM_SPEED), 0.0));
+        }
+
+        float exitAngle = -self.getXRot();
+        if (minecraft.options.keySprint.isDown()
+                && self.getY() >= VoidSeaHelper.getHeight() - SURFACE_EXIT_RANGE
+                && exitAngle >= SURFACE_EXIT_MIN_ANGLE
+                && exitAngle <= SURFACE_EXIT_MAX_ANGLE) {
+            self.setDeltaMovement(self.getDeltaMovement().add(self.getLookAngle().scale(SURFACE_EXIT_ACCELERATION)));
         }
     }
 
     @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z", ordinal = 2))
     private boolean confluence$keepVoidSeaSwimming(boolean original) {
         LocalPlayer self = (LocalPlayer) (Object) this;
-        return original || VoidSeaHelper.isDimensionalOverlapEffect(self)
-                && self.getY() < VoidSeaHelper.getHeight();
+        return original || VoidSeaHelper.isTrigger(self);
     }
 
     @ModifyExpressionValue(method = "isMovingSlowly", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isVisuallyCrawling()Z"))
     private boolean confluence$voidSeaSwimmingIsNotCrawling(boolean original) {
         LocalPlayer self = (LocalPlayer) (Object) this;
-        return original && !(self.isSwimming()
-                && VoidSeaHelper.isDimensionalOverlapEffect(self)
-                && self.getY() < VoidSeaHelper.getHeight());
+        return original && !(self.isSwimming() && VoidSeaHelper.isTrigger(self));
     }
 }

@@ -12,26 +12,26 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(PlayerRenderer.class)
 public abstract class PlayerRendererMixin {
-    @ModifyExpressionValue(method = "setupRotations", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;isInWater()Z"))
+    @ModifyExpressionValue(method = "setupRotations*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;isInWater()Z"))
     private boolean confluence$voidSeaWater(boolean original, @Local(argsOnly = true) AbstractClientPlayer entity) {
-        return original || VoidSeaHelper.isDimensionalOverlapEffect(entity)
-                && (entity.getY() < VoidSeaHelper.getHeight()
-                || IPlayer.of(entity).confluence$isVoidSeaSwimming()
-                && entity.isSwimming()
-                && !entity.onGround());
+        if (original) return true;
+        if (!VoidSeaHelper.isDimensionalOverlapEffect(entity)) return false;
+        if (entity.getY() < VoidSeaHelper.getHeight()) return true;
+        if (!IPlayer.of(entity).confluence$isVoidSeaSwimming()) return false;
+        if (!entity.isSwimming()) return false;
+        return !entity.onGround();
     }
 
-    @ModifyExpressionValue(method = "setupRotations", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;getXRot()F"))
+    @ModifyExpressionValue(method = "setupRotations*", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/AbstractClientPlayer;getXRot()F"))
     private float confluence$voidSeaSwimmingVelocityPitch(float original, @Local(argsOnly = true) AbstractClientPlayer entity, @Local(argsOnly = true, ordinal = 2) float partialTick) {
-        if (VoidSeaHelper.isDimensionalOverlapEffect(entity)
-                && entity.getY() >= VoidSeaHelper.getHeight()
-                && IPlayer.of(entity).confluence$isVoidSeaSwimming()
-                && entity.isSwimming()
-                && !entity.onGround()) {
-            Vec3 movement = entity.getDeltaMovementLerped(partialTick);
-            if (movement.lengthSqr() > 1.0E-7) {
-                return (float) -Math.toDegrees(Math.atan2(movement.y, movement.horizontalDistance()));
-            }
+        if (!VoidSeaHelper.isDimensionalOverlapEffect(entity)) return original;
+        if (entity.getY() < VoidSeaHelper.getHeight()) return original;
+        if (!IPlayer.of(entity).confluence$isVoidSeaSwimming()) return original;
+        if (!entity.isSwimming()) return original;
+        if (entity.onGround()) return original;
+        Vec3 movement = entity.getDeltaMovementLerped(partialTick);
+        if (movement.lengthSqr() > 1.0E-7) {
+            return (float) -Math.toDegrees(Math.atan2(movement.y, movement.horizontalDistance()));
         }
         return original;
     }

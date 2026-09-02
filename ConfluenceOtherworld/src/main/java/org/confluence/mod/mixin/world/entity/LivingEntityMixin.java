@@ -50,6 +50,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
+import static org.confluence.mod.common.util.VoidSeaConstants.*;
+
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
     @Shadow
@@ -124,7 +126,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
             return original.call(instance, 0.96, 0.96, 0.96);
         }
         if (confluence$isInVoidSea()) {
-            return original.call(instance, (double) VoidSeaHelper.HORIZONTAL_MOVEMENT_RESISTANCE, factorY, (double) VoidSeaHelper.HORIZONTAL_MOVEMENT_RESISTANCE);
+            return original.call(instance, (double) HORIZONTAL_MOVEMENT_RESISTANCE, factorY, (double) HORIZONTAL_MOVEMENT_RESISTANCE);
         }
         return original.call(instance, factorX, factorY, factorZ);
     }
@@ -137,7 +139,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @ModifyArg(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;moveRelative(FLnet/minecraft/world/phys/Vec3;)V"), index = 0)
     private float confluence$voidSeaMovementSpeed(float original) {
         if (confluence$isInVoidSea()) {
-            return original * (confluence$self().isSwimming() ? VoidSeaHelper.SWIMMING_SPEED : VoidSeaHelper.MOVEMENT_SPEED);
+            return original * (confluence$self().isSwimming() ? SWIMMING_SPEED : MOVEMENT_SPEED);
         }
         return original;
     }
@@ -145,17 +147,19 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @Unique
     private boolean confluence$isInVoidSea() {
         LivingEntity self = confluence$self();
-        return VoidSeaHelper.isDimensionalOverlapEffect(self)
-                && self.getY() < VoidSeaHelper.getHeight();
+        return VoidSeaHelper.isTrigger(self);
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void confluence$moveWithVoidSea(CallbackInfo ci) {
         LivingEntity self = confluence$self();
+        if (!VoidSeaHelper.isTrigger(self)) {
+            return;
+        }
+
         float height = VoidSeaHelper.getHeight();
         float heightO = VoidSeaHelper.getHeightO();
-        if (VoidSeaHelper.isDimensionalOverlapEffect(self)
-                && self.getY() >= Math.min(height, heightO) - VoidSeaHelper.TIDE_SURFACE_RANGE
+        if (self.getY() >= Math.min(height, heightO) - TIDE_SURFACE_RANGE
                 && self.getY() <= Math.max(height, heightO)
                 && height != heightO) {
             self.move(MoverType.SELF, new Vec3(0.0, height - heightO, 0.0));
@@ -227,8 +231,8 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @Inject(method = "onBelowWorld", at = @At("HEAD"), cancellable = true)
     private void confluence$onBelowWorld(CallbackInfo ci) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
-        if (VoidSeaHelper.isDimensionalOverlapEffect(livingEntity)
-                && VoidSeaHelper.isVoidErosionDeltaDamage(livingEntity)) {
+        if (VoidSeaHelper.isTrigger(livingEntity)
+                && VoidSeaHelper.isDimensionalOverlapEffect(livingEntity)) {
             ci.cancel();
         }
     }

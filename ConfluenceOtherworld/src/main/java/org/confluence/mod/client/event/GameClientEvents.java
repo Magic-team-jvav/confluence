@@ -57,12 +57,14 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
+import org.confluence.mod.client.effect.VoidSeaSwimEffects;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
+import org.confluence.mod.client.gui.VoidSeaFilterRenderer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.container.WithForgeTradeScreen;
@@ -133,10 +135,25 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
+    public static void computeFogColor(ViewportEvent.ComputeFogColor event) {
+        VoidSeaFilterRenderer.computeFogColor(event);
+    }
+
+    @SubscribeEvent
+    public static void renderFog(ViewportEvent.RenderFog event) {
+        VoidSeaFilterRenderer.renderFog(event);
+    }
+
+    @SubscribeEvent
     public static void clientTick$Pre(ClientTickEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
-        if (player == null) return;
+        if (player == null) {
+            VoidSeaSwimEffects.reset();
+            return;
+        }
+
+        VoidSeaSwimEffects.tick(player);
 
         if (minecraft.gameMode != null && !minecraft.gameMode.isDestroying() && minecraft.options.keyAttack.isDown()) {
             ItemStack itemStack = player.getMainHandItem();

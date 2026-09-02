@@ -8,42 +8,13 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
 
+import static org.confluence.mod.common.util.VoidSeaConstants.*;
+
 /// 虚空海
 public class VoidSeaHelper {
-    public static final String ID = "void_sea";
-    /// 潮位上限（单位：格）。
-    public static final float MAX_HEIGHT = 53.0f;
-    /// 潮位下限（单位：格）。
-    public static final float MIN_HEIGHT = -64.0f;
-    /// 潮汐周期（单位：刻）。
-    public static final int TIDE_PERIOD = 10000;
-    /// 非游泳移动倍率。
-    public static final float MOVEMENT_SPEED = 0.9f;
-    /// 游泳移动倍率。
-    public static final float SWIMMING_SPEED = 2.0F;
-    /// 垂直游泳速度（单位：格/刻）。
-    public static final float VERTICAL_MOVEMENT_SPEED = 0.04F;
-    /// 水平速度保留比例。
-    public static final float HORIZONTAL_MOVEMENT_RESISTANCE = 0.86F;
-    /// 潮汐影响海面范围（单位：格）。
-    public static final float TIDE_SURFACE_RANGE = 3.0F;
-    /// 跃出加速触发范围（单位：格）。
-    public static final float SURFACE_EXIT_RANGE = 5.0F;
-    /// 跃出海面的总速度增量（单位：格/刻）。
-    public static final float SURFACE_EXIT_BOOST = 3.18F;
-    /// 跃出海面的最小上仰角（单位：度）。
-    public static final float SURFACE_EXIT_MIN_ANGLE = 15.0F;
-    /// 跃出海面的最大上仰角（单位：度）。
-    public static final float SURFACE_EXIT_MAX_ANGLE = 85.0F;
-    /// 跃出海面的加速分段数（用于换算单刻加速度）。
-    public static final int SURFACE_EXIT_ACCELERATION_TICKS = 10;
-    /// 跃出海面的单刻加速度（单位：格/刻²）。
-    public static final float SURFACE_EXIT_ACCELERATION = SURFACE_EXIT_BOOST / SURFACE_EXIT_ACCELERATION_TICKS;
-
-    // TODO 当前这样在本地出现海面运动不连贯，原因是客户端服务端同时抢一个变量
-    // 当前潮位缓存
-    private static float height = 0;
-    private static float heightO = 0;
+    // 潮位缓存
+    private static float height = INITIAL_HEIGHT;
+    private static float heightO = INITIAL_HEIGHT;
 
     public static void tick(Level level) {
         heightO = height;
@@ -51,9 +22,9 @@ public class VoidSeaHelper {
     }
 
     public static float calculateHeight(Level level) {
-        return (MIN_HEIGHT + MAX_HEIGHT) / 2.0f
-                + (MAX_HEIGHT - MIN_HEIGHT) / 2.0f
-                * (float) Math.sin(2f * Math.PI * level.getGameTime() / TIDE_PERIOD);
+        return (MIN_HEIGHT + MAX_HEIGHT) / TIDE_ANGULAR_MULTIPLIER
+                + (MAX_HEIGHT - MIN_HEIGHT) / TIDE_ANGULAR_MULTIPLIER
+                * (float) Math.sin(TIDE_ANGULAR_MULTIPLIER * Math.PI * level.getGameTime() / TIDE_PERIOD);
     }
 
     public static float getHeight() {
@@ -68,12 +39,28 @@ public class VoidSeaHelper {
         return Mth.lerp(delta, getHeightO(), getHeight());
     }
 
+    public static boolean isTrigger(LivingEntity entity) {
+        return isEnd(entity.level()) && isSeaBelow(entity) && isDimensionalOverlapEffect(entity);
+    }
+
+    public static boolean isTrigger(LivingEntity entity, float delta) {
+        return isEnd(entity.level()) && isSeaBelow(entity, delta);
+    }
+
+    public static boolean isSeaBelow(LivingEntity entity) {
+        return entity.getY() < getHeight();
+    }
+
+    public static boolean isSeaBelow(LivingEntity entity, float delta) {
+        return entity.getY() < getHeight(delta);
+    }
+
     public static boolean isVoidErosionDeltaDamage(LivingEntity entity) {
         return entity.getY() < getVoidErosionDeltaDamageHeight(entity);
     }
 
     public static float getVoidErosionDeltaDamageHeight(LivingEntity entity) {
-        return entity.level().getMinBuildHeight() - 64 + getAttribute(entity);
+        return entity.level().getMinBuildHeight() + VOID_EROSION_DAMAGE_HEIGHT_OFFSET + getAttribute(entity);
     }
 
     public static float getAttribute(LivingEntity entity) {
@@ -98,5 +85,9 @@ public class VoidSeaHelper {
 
     public static boolean isDimensionalOverlapEffect(LivingEntity entity) {
         return entity.hasEffect(ModEffects.DIMENSIONAL_OVERLAP);
+    }
+
+    public static boolean isEnd(Level level) {
+        return level.dimension() == Level.END;
     }
 }

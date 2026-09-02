@@ -1,0 +1,162 @@
+{
+    "vertex": "confluence:void_sea_refraction",
+    "fragment": "confluence:void_sea_refraction",
+    "attributes": [
+        "Position"
+    ],
+    "samplers": [
+        {
+            "name": "Sampler0"
+        }
+    ],
+    "uniforms": [
+        {
+            "name": "Zoom",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "Distortion",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.012
+            ]
+        },
+        {
+            "name": "CenterDistortion",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.5
+            ]
+        },
+        {
+            "name": "Time",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "FilterProgress",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.0
+            ]
+        },
+        {
+            "name": "FilterFade",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.0
+            ]
+        },
+        {
+            "name": "BlackFilterRadius",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.8
+            ]
+        },
+        {
+            "name": "BlackFilterMaxRadius",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.4
+            ]
+        },
+        {
+            "name": "PurpleFilterRadius",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.4
+            ]
+        },
+        {
+            "name": "PurpleFilterMaxRadius",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.8
+            ]
+        },
+        {
+            "name": "FilterTransitionRatio",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.25
+            ]
+        },
+        {
+            "name": "FilterTransitionStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.35
+            ]
+        },
+        {
+            "name": "BlackFilterColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        {
+            "name": "FullScreenBlackFilterAlpha",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.2
+            ]
+        },
+        {
+            "name": "BlackFilterAlpha",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.7
+            ]
+        },
+        {
+            "name": "BlackFilterMinAlpha",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.5
+            ]
+        },
+        {
+            "name": "PurpleFilterColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.32,
+                0.04,
+                0.55
+            ]
+        },
+        {
+            "name": "PurpleFilterAlpha",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.6
+            ]
+        }
+    ]
+}

@@ -7,56 +7,47 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 
+import static org.confluence.mod.client.util.ClientVoidSeaConstants.*;
+
 /// 虚空海多层纹理的值与本地测试值。<br/>
 /// 值在重启后恢复；游戏内可使用 {@code /confluence voidSea get} 查看当前值，<br/>
 /// 使用 {@code /confluence voidSea set <参数> <值>} 临时调整单项参数。
 public class VoidSeaRenderSettings {
+    // 海面纹理
     /// 叠加层数（单位：层）。
-    private static final int DEFAULT_LAYER_COUNT = 32;
     private static int layerCount = DEFAULT_LAYER_COUNT;
 
     /// 纹理单元的世界尺寸（单位：格）。
-    private static final float DEFAULT_TILE_SIZE = 128;
     private static float tileSize = DEFAULT_TILE_SIZE;
 
     /// 黑色海面透明度。
-    public static final float DEFAULT_BASE_ALPHA = 0.45F;
     private static float baseAlpha = DEFAULT_BASE_ALPHA;
 
     /// 纹理细节叠加强度。
-    private static final float DEFAULT_DETAIL_ALPHA = 0.35F;
     private static float detailAlpha = DEFAULT_DETAIL_ALPHA;
 
     /// 纹理细节亮度。
-    private static final float DEFAULT_DETAIL_BRIGHTNESS = 0.7F;
     private static float detailBrightness = DEFAULT_DETAIL_BRIGHTNESS;
 
     /// 纹理流动速度（单位：纹理坐标/刻）。
-    private static final float DEFAULT_FLOW_SPEED = 2;
     private static float flowSpeed = DEFAULT_FLOW_SPEED;
 
     /// 各层纹理缩放倍率。
-    private static final float DEFAULT_LAYER_SCALE_STEP = 1.15F;
     private static float layerScaleStep = DEFAULT_LAYER_SCALE_STEP;
 
     /// 首层色相。
-    private static final float DEFAULT_HUE = 0.58F;
     private static float hue = DEFAULT_HUE;
 
     /// 相邻层色相间隔。
-    private static final float DEFAULT_HUE_STEP = 0.075F;
     private static float hueStep = DEFAULT_HUE_STEP;
 
     /// 纹理色调饱和度。
-    private static final float DEFAULT_SATURATION = 0.65F;
     private static float saturation = DEFAULT_SATURATION;
 
     /// 闪烁亮度变化幅度。
-    private static final float DEFAULT_FLICKER_INTENSITY = 0.15F;
     private static float flickerIntensity = DEFAULT_FLICKER_INTENSITY;
 
     /// 闪烁速度（单位：弧度/刻）。
-    private static final float DEFAULT_FLICKER_SPEED = 0.07F;
     private static float flickerSpeed = DEFAULT_FLICKER_SPEED;
 
     public static int getLayerCount() {
@@ -107,28 +98,29 @@ public class VoidSeaRenderSettings {
         return flickerSpeed;
     }
 
+    // 本地测试命令
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence")
                 .then(Commands.literal("voidSea")
                         .then(Commands.literal("get").executes(context -> show(context.getSource())))
                         .then(Commands.literal("set")
-                                .then(Commands.literal("layers").then(Commands.argument("value", IntegerArgumentType.integer(1, 128)).executes(context -> {
+                                .then(Commands.literal("layers").then(Commands.argument("value", IntegerArgumentType.integer(MIN_LAYER_COUNT, MAX_LAYER_COUNT)).executes(context -> {
                                     layerCount = IntegerArgumentType.getInteger(context, "value");
                                     return show(context.getSource());
                                 })))
-                                .then(Commands.literal("tileSize").then(Commands.argument("value", FloatArgumentType.floatArg(1.0F)).executes(context -> {
+                                .then(Commands.literal("tileSize").then(Commands.argument("value", FloatArgumentType.floatArg(MIN_TILE_SIZE)).executes(context -> {
                                     tileSize = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
-                                .then(Commands.literal("baseAlpha").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, 1.0F)).executes(context -> {
+                                .then(Commands.literal("baseAlpha").then(Commands.argument("value", FloatArgumentType.floatArg(MIN_NORMALIZED_VALUE, MAX_NORMALIZED_VALUE)).executes(context -> {
                                     baseAlpha = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
-                                .then(Commands.literal("detailAlpha").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, 1.0F)).executes(context -> {
+                                .then(Commands.literal("detailAlpha").then(Commands.argument("value", FloatArgumentType.floatArg(MIN_NORMALIZED_VALUE, MAX_NORMALIZED_VALUE)).executes(context -> {
                                     detailAlpha = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
-                                .then(Commands.literal("detailBrightness").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F)).executes(context -> {
+                                .then(Commands.literal("detailBrightness").then(Commands.argument("value", FloatArgumentType.floatArg(MIN_NORMALIZED_VALUE)).executes(context -> {
                                     detailBrightness = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
@@ -136,7 +128,7 @@ public class VoidSeaRenderSettings {
                                     flowSpeed = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
-                                .then(Commands.literal("layerScaleStep").then(Commands.argument("value", FloatArgumentType.floatArg(0.01F)).executes(context -> {
+                                .then(Commands.literal("layerScaleStep").then(Commands.argument("value", FloatArgumentType.floatArg(MIN_LAYER_SCALE_STEP)).executes(context -> {
                                     layerScaleStep = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
@@ -148,15 +140,15 @@ public class VoidSeaRenderSettings {
                                     hueStep = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
-                                .then(Commands.literal("saturation").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, 1.0F)).executes(context -> {
+                                .then(Commands.literal("saturation").then(Commands.argument("value", FloatArgumentType.floatArg(MIN_NORMALIZED_VALUE, MAX_NORMALIZED_VALUE)).executes(context -> {
                                     saturation = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
-                                .then(Commands.literal("flickerIntensity").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, 1.0F)).executes(context -> {
+                                .then(Commands.literal("flickerIntensity").then(Commands.argument("value", FloatArgumentType.floatArg(MIN_NORMALIZED_VALUE, MAX_NORMALIZED_VALUE)).executes(context -> {
                                     flickerIntensity = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))
-                                .then(Commands.literal("flickerSpeed").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F)).executes(context -> {
+                                .then(Commands.literal("flickerSpeed").then(Commands.argument("value", FloatArgumentType.floatArg(MIN_NORMALIZED_VALUE)).executes(context -> {
                                     flickerSpeed = FloatArgumentType.getFloat(context, "value");
                                     return show(context.getSource());
                                 })))

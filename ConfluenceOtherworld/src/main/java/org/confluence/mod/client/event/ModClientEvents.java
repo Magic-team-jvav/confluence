@@ -51,6 +51,7 @@ import org.confluence.mod.client.effect.connected.StitchedSprite;
 import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
+import org.confluence.mod.client.gui.VoidSeaFilterRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SoulSkillClientHolder;
@@ -200,6 +201,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
+        event.registerBelow(VanillaGuiLayers.CAMERA_OVERLAYS, Confluence.asResource("void_sea_filter"), VoidSeaFilterRenderer::renderFilter);
         ResourceLocation repeaterHud = Confluence.asResource("repeater_hud");
         event.registerAbove(VanillaGuiLayers.CROSSHAIR, repeaterHud, new RepeaterHud());
         ResourceLocation healthHud = Confluence.asResource("health_hud");
@@ -567,6 +569,7 @@ public final class ModClientEvents {
         event.registerSpriteSet(ModParticleTypes.LIGHT_BANE_DUST.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.LIGHT_BANE_FADE.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.ECTO_MIST.get(), EctoMistParticle.Provider::new);
+        event.registerSpriteSet(ModParticleTypes.VOID_SEA_SUSPENDED.get(), VoidSeaSuspendedParticle.Provider::new);
     }
 
     @SubscribeEvent

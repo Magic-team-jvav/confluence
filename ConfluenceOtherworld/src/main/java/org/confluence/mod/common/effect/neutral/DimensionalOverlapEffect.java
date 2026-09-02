@@ -13,13 +13,15 @@ public class DimensionalOverlapEffect extends PublicMobEffect {
 
     @Override
     public boolean applyEffectTick(LivingEntity living, int amplifier) {
-        if (!VoidSeaHelper.isVoidErosionDeltaDamage(living)) {
+        if (!VoidSeaHelper.isTrigger(living)) {
             return true;
         }
+
         int v = (int) (living.getY() - VoidSeaHelper.getVoidErosionDeltaDamageHeight(living));
-        if (v <= 0) {
-            return false;
+        if (v >= 0) {
+            return true;
         }
+
         living.hurt(living.damageSources().fellOutOfWorld(), -v);
         return true;
     }

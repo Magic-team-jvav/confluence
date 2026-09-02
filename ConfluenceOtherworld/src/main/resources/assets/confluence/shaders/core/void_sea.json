@@ -10,12 +10,19 @@
     "fragment": "confluence:void_sea",
     "attributes": [
         "Position",
+        "Color",
         "UV0",
-        "Color"
+        "UV2"
     ],
     "samplers": [
         {
             "name": "Sampler0"
+        },
+        {
+            "name": "Sampler2"
+        },
+        {
+            "name": "DepthSampler"
         }
     ],
     "uniforms": [
@@ -186,6 +193,57 @@
             "count": 1,
             "values": [
                 0.07
+            ]
+        },
+        {
+            "name": "ScreenSize",
+            "type": "float",
+            "count": 2,
+            "values": [
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "name": "EdgeColor",
+            "type": "float",
+            "count": 3,
+            "values": [
+                0.65,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "name": "EdgeCoreWidth",
+            "type": "float",
+            "count": 1,
+            "values": [
+                2.5
+            ]
+        },
+        {
+            "name": "EdgeGlowWidth",
+            "type": "float",
+            "count": 1,
+            "values": [
+                10.0
+            ]
+        },
+        {
+            "name": "EdgeCoreStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                1.0
+            ]
+        },
+        {
+            "name": "EdgeGlowStrength",
+            "type": "float",
+            "count": 1,
+            "values": [
+                0.45
             ]
         }
     ]

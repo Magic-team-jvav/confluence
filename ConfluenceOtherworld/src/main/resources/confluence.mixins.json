@@ -145,7 +145,6 @@
         "client.renderer.ItemInHandRendererMixin",
         "client.renderer.LevelRendererMixin",
         "client.renderer.LightTextureMixin",
-        "client.renderer.ScreenEffectRendererMixin",
         "client.renderer.block.BlockModelShaperMixin",
         "client.renderer.block.ModelBlockRendererMixin",
         "client.renderer.chunk.SectionCompilerMixin",

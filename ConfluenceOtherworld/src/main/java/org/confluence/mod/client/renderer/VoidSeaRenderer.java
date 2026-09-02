@@ -1,41 +1,29 @@
 package org.confluence.mod.client.renderer;
 
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.pipeline.TextureTarget;
+import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.util.VoidSeaHelper;
+import org.joml.Matrix4f;
+
+import static org.confluence.mod.client.util.ClientVoidSeaConstants.*;
 
 public class VoidSeaRenderer {
-    /// 虚空海着色器资源。
-    public static final ResourceLocation SEA_SHADER_ID = Confluence.asResource("void_sea");
-    /// 海面基础颜色。
-    public static final int COLOR = 0x22000000;
-    /// 中心细分网格半径（单位：格）。
-    public static final float SIMPLE_MESH_RADIUS = 8.0F * 16.0F;
-    /// 首层环带单元尺寸（单位：格）。
-    public static final float INITIAL_RING_CELL_SIZE = 16.0F;
-    /// 最小海面渲染半径（单位：格）。
-    public static final float MIN_RENDER_RADIUS = 256.0F;
-    /// 视距外扩范围（单位：格）。
-    public static final float RENDER_DISTANCE_MARGIN = 32.0F;
-    /// 纹理动画循环时长（单位：刻）。
-    public static final long GAME_TIME_CYCLE = 24000L;
+    private static TextureTarget sceneDepth;
 
     public static void render(RenderLevelStageEvent event, Minecraft minecraft, LocalPlayer player) {
         ClientLevel level = minecraft.level;
         if (level == null
-                || level.dimension() != Level.END
+                || !VoidSeaHelper.isEnd(player.level())
                 || !VoidSeaHelper.isDimensionalOverlapEffect(player)) {
             return;
         }
@@ -51,9 +39,11 @@ public class VoidSeaRenderer {
         if (Math.abs(renderY - (float) cameraPosition.y) > renderDistance) {
             return;
         }
-        float radius = Math.max(MIN_RENDER_RADIUS, minecraft.options.renderDistance().get() * 16.0F + RENDER_DISTANCE_MARGIN);
+        float radius = Math.max(MIN_RENDER_RADIUS, minecraft.options.renderDistance().get() * CHUNK_SIZE + RENDER_DISTANCE_MARGIN);
         try {
+            prepareSceneDepth(minecraft);
             drawSea(cameraPosition, renderY, radius, level.getGameTime() % GAME_TIME_CYCLE + partialTick);
+            renderSubmergedSurface(event, minecraft, cameraPosition, renderY);
         } catch (RuntimeException exception) {
 //            Confluence.LOGGER.warn("Failed to render the void sea.", exception);
         }
@@ -88,13 +78,65 @@ public class VoidSeaRenderer {
         shader.safeGetUniform("Saturation").set(VoidSeaRenderSettings.getSaturation());
         shader.safeGetUniform("FlickerIntensity").set(VoidSeaRenderSettings.getFlickerIntensity());
         shader.safeGetUniform("FlickerSpeed").set(VoidSeaRenderSettings.getFlickerSpeed());
+        shader.safeGetUniform("ScreenSize").set((float) sceneDepth.width, (float) sceneDepth.height);
+        shader.safeGetUniform("EdgeColor").set(EDGE_COLOR);
+        shader.safeGetUniform("EdgeCoreWidth").set(EDGE_CORE_WIDTH);
+        shader.safeGetUniform("EdgeGlowWidth").set(EDGE_GLOW_WIDTH);
+        float edgeStrengthMultiplier = cameraPosition.y < renderY ? UNDERWATER_EDGE_STRENGTH_MULTIPLIER : 1.0F;
+        shader.safeGetUniform("EdgeCoreStrength").set(EDGE_CORE_STRENGTH * edgeStrengthMultiplier);
+        shader.safeGetUniform("EdgeGlowStrength").set(EDGE_GLOW_STRENGTH * edgeStrengthMultiplier);
+        shader.setSampler("Sampler2", RenderSystem.getShaderTexture(2));
+        shader.setSampler("DepthSampler", sceneDepth.getDepthTextureId());
 
         BufferBuilder builder = Tesselator.getInstance().begin(
                 VertexFormat.Mode.QUADS,
-                DefaultVertexFormat.POSITION_TEX_COLOR);
-        float y = renderY - (float) cameraPosition.y;
-        addSeaMesh(builder, y, radius, (float) cameraPosition.x, (float) cameraPosition.z);
+                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP);
+        addSeaMesh(builder, renderY - (float) cameraPosition.y, radius, (float) cameraPosition.x, (float) cameraPosition.z);
         ModRenderTypes.SEA_RENDER_TYPE.draw(builder.buildOrThrow());
+    }
+
+    private static void prepareSceneDepth(Minecraft minecraft) {
+        RenderTarget mainTarget = minecraft.getMainRenderTarget();
+        if (sceneDepth == null) {
+            sceneDepth = new TextureTarget(mainTarget.width, mainTarget.height, true, Minecraft.ON_OSX);
+        } else if (sceneDepth.width != mainTarget.width
+                || sceneDepth.height != mainTarget.height) {
+            sceneDepth.resize(mainTarget.width, mainTarget.height, Minecraft.ON_OSX);
+        }
+        sceneDepth.copyDepthFrom(mainTarget);
+        mainTarget.bindWrite(false);
+    }
+
+    private static void renderSubmergedSurface(RenderLevelStageEvent event, Minecraft minecraft, Vec3 cameraPosition, float renderY) {
+        ShaderInstance shader = ModRenderer.getVoidSeaSubmergedSurfaceShader();
+        if (shader == null) {
+            return;
+        }
+
+        minecraft.getMainRenderTarget().bindWrite(true);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlConst.GL_SRC_ALPHA, GlConst.GL_ONE);
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
+        shader.setSampler("DepthSampler", sceneDepth.getDepthTextureId());
+        shader.safeGetUniform("InverseProjMat").set(new Matrix4f(event.getProjectionMatrix()).invert());
+        shader.safeGetUniform("InverseViewMat").set(new Matrix4f(event.getModelViewMatrix()).invert());
+        shader.safeGetUniform("SeaRelativeY").set(renderY - (float) cameraPosition.y);
+        shader.safeGetUniform("SubmergedColor").set(SUBMERGED_SURFACE_COLOR);
+        float submergedSurfaceStrengthMultiplier = cameraPosition.y < renderY ? UNDERWATER_SUBMERGED_SURFACE_STRENGTH_MULTIPLIER : 1.0F;
+        shader.safeGetUniform("SubmergedStrength").set(SUBMERGED_SURFACE_STRENGTH * submergedSurfaceStrengthMultiplier);
+        shader.apply();
+        BufferBuilder buffer = RenderSystem.renderThreadTesselator().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.BLIT_SCREEN);
+        buffer.addVertex(0.0F, 0.0F, 0.0F);
+        buffer.addVertex(1.0F, 0.0F, 0.0F);
+        buffer.addVertex(1.0F, 1.0F, 0.0F);
+        buffer.addVertex(0.0F, 1.0F, 0.0F);
+        BufferUploader.draw(buffer.buildOrThrow());
+        shader.clear();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableBlend();
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
     }
 
     private static void addSeaMesh(BufferBuilder builder, float y, float radius, float cameraX, float cameraZ) {
@@ -110,7 +152,7 @@ public class VoidSeaRenderer {
             float outerRadius = Math.min(innerRadius + cellSize, radius);
             addSeaRing(builder, y, innerRadius, outerRadius, cellSize, cameraX, cameraZ);
             innerRadius = outerRadius;
-            cellSize *= 2.0F;
+            cellSize *= RING_CELL_SIZE_MULTIPLIER;
         }
     }
 
@@ -136,6 +178,6 @@ public class VoidSeaRenderer {
 
     private static void addLayerVertex(BufferBuilder builder, float x, float y, float z, float cameraX, float cameraZ) {
         float tileSize = VoidSeaRenderSettings.getTileSize();
-        builder.addVertex(x, y, z).setUv((cameraX + x) / tileSize, (cameraZ + z) / tileSize).setColor(COLOR >> 16 & 255, COLOR >> 8 & 255, COLOR & 255, (int) (VoidSeaRenderSettings.getBaseAlpha() * 255.0F));
+        builder.addVertex(x, y, z).setColor(SEA_COLOR.x, SEA_COLOR.y, SEA_COLOR.z, VoidSeaRenderSettings.getBaseAlpha()).setUv((cameraX + x) / tileSize, (cameraZ + z) / tileSize).setLight(LightTexture.FULL_BRIGHT);
     }
 }

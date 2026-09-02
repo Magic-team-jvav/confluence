@@ -15,6 +15,9 @@ public class FlyWanderAction extends BTNode {
     protected static final int TIMEOUT = 100;
 
     public FlyWanderAction(PathfinderMob mob, double speed, int range) {
+        if (!Double.isFinite(speed) || speed <= 0.0 || range <= 0) {
+            throw new IllegalArgumentException("Flying wander speed and range must be positive");
+        }
         this.mob = mob;
         this.speed = speed;
         this.range = range;
@@ -33,6 +36,7 @@ public class FlyWanderAction extends BTNode {
         if (tick > TIMEOUT) return BTStatus.SUCCESS;
         Vec3 dir = target.subtract(mob.position()).normalize().scale(speed * 0.05);
         mob.setDeltaMovement(mob.getDeltaMovement().add(dir).scale(0.95));
+        mob.hasImpulse = true;
         if (mob.position().distanceToSqr(target) < 1.0) return BTStatus.SUCCESS;
         return BTStatus.RUNNING;
     }
@@ -40,5 +44,6 @@ public class FlyWanderAction extends BTNode {
     @Override
     public void stop() {
         mob.setDeltaMovement(Vec3.ZERO);
+        mob.hasImpulse = true;
     }
 }

@@ -174,8 +174,13 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         super.tick();
         Vec3 movement = getDeltaMovement();
         if (movement.lengthSqr() > 1.0E-8) {
-            setYRot((float) Math.toDegrees(Mth.atan2(-movement.x, movement.z)));
-            setXRot((float) Math.toDegrees(Mth.atan2(movement.y, movement.horizontalDistance())));
+            float yaw = (float) Math.toDegrees(Mth.atan2(-movement.x, movement.z));
+            float pitch = (float) -Math.toDegrees(Mth.atan2(movement.y, movement.horizontalDistance()));
+            setYRot(yaw);
+            setXRot(pitch);
+            setYBodyRot(yaw);
+            setYHeadRot(yaw);
+            getLookControl().setLookAt(getEyePosition().add(movement));
         }
     }
 

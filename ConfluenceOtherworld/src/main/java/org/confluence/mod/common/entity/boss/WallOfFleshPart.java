@@ -59,6 +59,7 @@ public abstract class WallOfFleshPart extends BaseBossPart<WallOfFlesh> {
     protected abstract void tickAttack(WallOfFlesh master, @Nullable LivingEntity target);
 
     private void tickContactDamage(WallOfFlesh master) {
+        if (master.getTarget() == null) return;
         if (contactCooldown > 0) {
             contactCooldown--;
             return;

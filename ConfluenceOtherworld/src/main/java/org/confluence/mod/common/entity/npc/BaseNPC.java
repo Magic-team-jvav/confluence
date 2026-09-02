@@ -59,6 +59,7 @@ import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -421,12 +422,22 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             recordInteraction(serverPlayer);
 
             var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
-            if (!shop.offers().isEmpty()) {
-                NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, shop.offers(), shop.revision()), getDisplayName()), buf -> buf.writeInt(getId()));
-                setTradingPlayer(serverPlayer);
-            }
+            Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId(), !shop.offers().isEmpty()));
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
+    }
+
+    public boolean canTradeWith(ServerPlayer player) {
+        return isAlive() && player.isAlive() && player.level() == level() && player.distanceToSqr(this) <= 64.0D
+                && player.containerMenu == player.inventoryMenu && (tradingPlayer == null || tradingPlayer == player);
+    }
+
+    public void openTradeMenu(ServerPlayer player) {
+        if (!canTradeWith(player)) return;
+        var shop = NPCTradeList.getAvailableOffers(player, this);
+        if (shop.offers().isEmpty()) return;
+        NetworkHooks.openScreen(player, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, shop.offers(), shop.revision()), getDisplayName()), buf -> buf.writeInt(getId()));
+        setTradingPlayer(player);
     }
 
     public @Nullable Player getTradingPlayer() {

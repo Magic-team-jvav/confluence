@@ -40,6 +40,12 @@ public final class SteeringDashAction extends BTNode {
     public SteeringDashAction(PathfinderMob mob, double friction, double maxSpeed, double acceleration,
                               double turnSpeedDegrees, double triggerAngleDegrees, double steeringAngleDegrees, int backDuration,
                               boolean lookDuringBack) {
+        if (!Double.isFinite(friction) || friction < 0.0 || friction > 1.0 || !Double.isFinite(maxSpeed) || maxSpeed <= 0.0
+                || !Double.isFinite(acceleration) || acceleration < 0.0 || !Double.isFinite(turnSpeedDegrees) || turnSpeedDegrees <= 0.0
+                || !Double.isFinite(triggerAngleDegrees) || triggerAngleDegrees <= 0.0 || triggerAngleDegrees > 180.0
+                || !Double.isFinite(steeringAngleDegrees) || steeringAngleDegrees <= 0.0 || steeringAngleDegrees > 180.0 || backDuration < 0) {
+            throw new IllegalArgumentException("Steering dash parameters are outside their valid ranges");
+        }
         this.mob = mob;
         this.friction = friction;
         this.maxSpeed = maxSpeed;
@@ -70,6 +76,7 @@ public final class SteeringDashAction extends BTNode {
 
         if (mob.hurtTime > 0) {
             phase = Phase.IDLE;
+            lastDirection = mob.getDeltaMovement();
         }
 
         double distance = mob.getEyePosition().distanceTo(target.getEyePosition());
@@ -82,7 +89,13 @@ public final class SteeringDashAction extends BTNode {
         }
 
         if (phase == Phase.AWAY) {
-            mob.addDeltaMovement(mob.getForward().normalize().scale(0.1));
+            Vec3 away = mob.position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
+            if (away.lengthSqr() > 1.0E-8) {
+                Vec3 velocity = mob.getDeltaMovement().scale(friction).add(away.normalize().scale(0.1));
+                if (velocity.lengthSqr() > maxSpeed * maxSpeed)
+                    velocity = velocity.normalize().scale(maxSpeed);
+                mob.setDeltaMovement(velocity);
+            }
             if (distance > 5.0) {
                 phase = Phase.IDLE;
             } else {
@@ -147,17 +160,17 @@ public final class SteeringDashAction extends BTNode {
     }
 
     private void tickDashingBack(LivingEntity target) {
-        backTicks--;
+        backTicks++;
         slowLastDirection();
         mob.addDeltaMovement(new Vec3(0.0, 0.05, 0.0));
         if (lookDuringBack) lookAtTarget(target);
-        if (backTicks <= -backDuration) {
+        if (backTicks >= backDuration) {
             phase = Phase.IDLE;
         }
     }
 
     private void lookAtTarget(LivingEntity target) {
-        mob.getLookControl().setLookAt(target, 5.0F, 85.0F);
+        mob.getLookControl().setLookAt(target, turnSpeedDegrees, 85.0F);
         mob.lookAt(target, turnSpeedDegrees, 85.0F);
     }
 

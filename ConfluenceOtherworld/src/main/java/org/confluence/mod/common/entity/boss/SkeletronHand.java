@@ -14,6 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -39,6 +40,8 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
     // 部件属性的基础值；实际最大生命由本体统一应用难度和多人倍率。
     private static final float BASE_MAX_PART_HEALTH = 405.0F;
     private static final float PART_ARMOR = 4.0F;
+    // 整条手臂的选取/受击半径；动态包围盒从肩部根点延伸到手掌，而不是只覆盖手掌模型。
+    private static final double ARM_HITBOX_RADIUS = 0.85D;
     private static final String HAND_INDEX_TAG = "HandIndex";
     private static final EntityDataAccessor<Integer> HAND_INDEX = SynchedEntityData.defineId(SkeletronHand.class, EntityDataSerializers.INT);
 
@@ -92,6 +95,7 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
     protected void tickPart(Skeletron master) {
         if (level().isClientSide) {
             tickClientInterpolation();
+            updateArmBoundingBox(master);
             return;
         }
 
@@ -111,7 +115,21 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
             tickStandby(master);
         }
         faceRoot(master);
-        damagePalmContacts(master);
+        updateArmBoundingBox(master);
+        damageArmContacts(master);
+    }
+
+    private void updateArmBoundingBox(Skeletron master) {
+        Vec3 root = getRootPosition(master);
+        Vec3 palm = position();
+        double radius = ARM_HITBOX_RADIUS * master.getScale();
+        setBoundingBox(new AABB(
+                Math.min(root.x, palm.x) - radius,
+                Math.min(root.y, palm.y) - radius,
+                Math.min(root.z, palm.z) - radius,
+                Math.max(root.x, palm.x) + radius,
+                Math.max(root.y, palm.y) + radius,
+                Math.max(root.z, palm.z) + radius));
     }
 
     /// 手掌始终指向头部侧面的连接根点；
@@ -205,7 +223,7 @@ public class SkeletronHand extends BaseBossPart<Skeletron> implements GeoEntity 
         moveToward(phaseTarget, slapSpeed);
     }
 
-    private void damagePalmContacts(Skeletron master) {
+    private void damageArmContacts(Skeletron master) {
         if (master.getTarget() == null || !master.getTarget().isAlive()) return;
         for (net.minecraft.world.entity.Entity entity : SweptContactAttack.findTargets(this, 0.0D,
                 SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,

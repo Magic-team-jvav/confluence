@@ -82,7 +82,7 @@ public class BaseWarriorMonster extends BaseMonster {
 
     public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level, double pursuitSpeedBonus, LandAnimationProfile animationProfile, LandSoundProfile soundProfile, double meleeSpeed, boolean ignoreLightPathCost) {
         super(type, level);
-        if (pursuitSpeedBonus < 0.0 || meleeSpeed <= 0.0)
+        if (!Double.isFinite(pursuitSpeedBonus) || pursuitSpeedBonus < 0.0 || !Double.isFinite(meleeSpeed) || meleeSpeed <= 0.0)
             throw new IllegalArgumentException("Movement parameters must be positive");
         this.pursuitSpeedBonus = pursuitSpeedBonus;
         this.animationProfile = animationProfile;
@@ -111,7 +111,7 @@ public class BaseWarriorMonster extends BaseMonster {
                 BTNode idle = createIdleNode(self, behavior);
                 if (jump != null) {
                     return SelectorNode.of(
-                            SequenceNode.of(new HasTargetCondition(self), new JumpAttackAction(self, jump.speedMultiplier(), jump.maximumDistance(), jump.cooldownTicks(), jump.windupTicks())),
+                            SequenceNode.of(new HasTargetCondition(self), new JumpAttackAction(self, jump.maximumDistance(), jump.speedMultiplier(), jump.cooldownTicks(), jump.windupTicks())),
                             new JumpOverBlockAction(self, 1.0), melee, idle);
                 }
                 return SelectorNode.of(new JumpOverBlockAction(self, 1.0), melee, idle);
@@ -215,8 +215,17 @@ public class BaseWarriorMonster extends BaseMonster {
     }
 
     /// 简单陆行怪的跃击参数。
-    public record JumpProfile(double speedMultiplier, double maximumDistance, int cooldownTicks,
-                              int windupTicks) {}
+    public record JumpProfile(double maximumDistance, double speedMultiplier, int cooldownTicks,
+                              int windupTicks) {
+        public JumpProfile {
+            if (!Double.isFinite(maximumDistance) || maximumDistance <= 0.0) {
+                throw new IllegalArgumentException("Jump profile maximum distance must be finite and positive");
+            }
+            if (!Double.isFinite(speedMultiplier) || speedMultiplier <= 0.0 || cooldownTicks < 0 || windupTicks < 0) {
+                throw new IllegalArgumentException("Jump profile speed must be positive and timing must be non-negative");
+            }
+        }
+    }
 
     /// 通用陆行资源可用的基础动画组合。
     ///

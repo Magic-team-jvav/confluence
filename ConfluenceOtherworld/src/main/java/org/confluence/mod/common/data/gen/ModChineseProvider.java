@@ -1030,6 +1030,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.fletching_table", "制箭台");
         add("container.confluence.piggy_bank", "猪猪存钱罐");
         add("container.confluence.npc_shop", "NPC商店");
+        add("gui.confluence.dialog", "对话");
+        add("gui.confluence.quest", "任务");
+        add("gui.confluence.sell", "卖出物品");
+        add("gui.confluence.shop", "商店");
         add("container.confluence.sawmill", "锯木机");
         add("container.confluence.tree_holes", "树洞");
         add("container.confluence.solidifier", "固化机");

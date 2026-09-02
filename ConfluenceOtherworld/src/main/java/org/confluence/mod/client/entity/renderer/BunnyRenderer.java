@@ -14,6 +14,6 @@ public class BunnyRenderer extends GeoNormalRenderer<Bunny> {
 
     @Override
     public ResourceLocation getTextureLocation(Bunny bunny) {
-        return bunny.getVariant().texturePath();
+        return bunny.getBunnyVariant().texturePath();
     }
 }

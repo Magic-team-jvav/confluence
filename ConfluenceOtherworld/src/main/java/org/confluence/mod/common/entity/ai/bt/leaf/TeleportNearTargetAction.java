@@ -22,6 +22,9 @@ public class TeleportNearTargetAction extends BTNode {
     private boolean done;
 
     public TeleportNearTargetAction(PathfinderMob mob, int horizontalRange, int verticalRange, int attempts) {
+        if (horizontalRange <= 0 || verticalRange < 0 || attempts <= 0) {
+            throw new IllegalArgumentException("Teleport range and attempts must be positive");
+        }
         this.mob = mob;
         this.horizontalRange = horizontalRange;
         this.verticalRange = verticalRange;

@@ -16,6 +16,9 @@ public class MoveToTargetAction extends BTNode {
     }
 
     MoveToTargetAction(TargetNavigation navigation, double speed, double closeEnough) {
+        if (!Double.isFinite(speed) || speed <= 0.0 || !Double.isFinite(closeEnough) || closeEnough < 0.0) {
+            throw new IllegalArgumentException("Target movement speed must be positive and stopping distance must be non-negative");
+        }
         this.navigation = navigation;
         this.speed = speed;
         this.closeEnough = closeEnough;
@@ -25,7 +28,7 @@ public class MoveToTargetAction extends BTNode {
     public void start() {
         moveAttempted = false;
         moveStarted = false;
-        if (navigation.hasTarget()) {
+        if (navigation.hasTarget() && navigation.distanceToTargetSqr() > closeEnough * closeEnough) {
             moveAttempted = true;
             moveStarted = navigation.moveToTarget(speed);
         }
@@ -42,6 +45,13 @@ public class MoveToTargetAction extends BTNode {
         return moveStarted ? BTStatus.RUNNING : BTStatus.FAILURE;
     }
 
+    @Override
+    public void stop() {
+        if (moveStarted) navigation.stop();
+        moveAttempted = false;
+        moveStarted = false;
+    }
+
     interface TargetNavigation {
         boolean hasTarget();
 
@@ -50,6 +60,8 @@ public class MoveToTargetAction extends BTNode {
         boolean isDone();
 
         boolean moveToTarget(double speed);
+
+        void stop();
     }
 
     private record PathfinderMobNavigation(PathfinderMob mob) implements TargetNavigation {
@@ -71,6 +83,11 @@ public class MoveToTargetAction extends BTNode {
         @Override
         public boolean moveToTarget(double speed) {
             return mob.getNavigation().moveTo(mob.getTarget(), speed);
+        }
+
+        @Override
+        public void stop() {
+            mob.getNavigation().stop();
         }
     }
 }

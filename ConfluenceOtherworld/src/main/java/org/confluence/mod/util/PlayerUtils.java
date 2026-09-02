@@ -257,7 +257,8 @@ public final class PlayerUtils {
     }
 
     public static Coins getCoins(Player player, boolean withPiggyBank) {
-        Coins coins = withPiggyBank ? decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney()) : Coins.createEmpty();
+        PlayerPiggyBankContainer piggyBank = PlayerPiggyBankContainer.of(player);
+        Coins coins = withPiggyBank ? decodeCoin(player.level().isClientSide ? piggyBank.getTotalMoney() : piggyBank.calculateMoney()) : Coins.createEmpty();
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.getItem() instanceof CoinItem coin) {
                 coins.increase(coin, stack.getCount());
@@ -267,7 +268,8 @@ public final class PlayerUtils {
     }
 
     public static long getMoney(Player player, boolean withPiggyBank) {
-        long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
+        PlayerPiggyBankContainer piggyBank = PlayerPiggyBankContainer.of(player);
+        long res = withPiggyBank ? (player.level().isClientSide ? piggyBank.getTotalMoney() : piggyBank.calculateMoney()) : 0;
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 res += CoinItem.valueOf(stack.getItem()) * stack.getCount();

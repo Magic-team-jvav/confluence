@@ -19,6 +19,9 @@ public class PanicFleeAction extends BTNode {
     protected static final int TIMEOUT = 60;
 
     public PanicFleeAction(PathfinderMob mob, double speed) {
+        if (!Double.isFinite(speed) || speed <= 0.0) {
+            throw new IllegalArgumentException("Flee speed must be finite and positive");
+        }
         this.mob = mob;
         this.speed = speed;
     }

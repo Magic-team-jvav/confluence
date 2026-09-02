@@ -3,7 +3,9 @@ package org.confluence.mod.common.entity.monster;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -46,6 +48,10 @@ public final class BloodTumor extends BaseMonster {
         }
         replacement.moveTo(getX(), getY(), getZ(), getYRot(), getXRot());
         replacement.setDeltaMovement(0.0, 0.4, 0.0);
+        if (replacement instanceof Mob mob && getTarget() != null && getTarget().isAlive()) {
+            mob.setTarget(getTarget());
+            BossMinionCoordinator.faceTargetImmediately(mob, getTarget());
+        }
         if (serverLevel.addFreshEntity(replacement)) {
             kill();
         } else {

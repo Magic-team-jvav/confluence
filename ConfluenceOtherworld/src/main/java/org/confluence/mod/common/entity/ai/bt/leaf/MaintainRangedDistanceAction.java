@@ -24,10 +24,10 @@ public final class MaintainRangedDistanceAction extends BTNode {
     private double orbitDirection;
 
     public MaintainRangedDistanceAction(PathfinderMob mob, double minimumDistance, double maximumDistance, double speed, int duration) {
-        if (minimumDistance <= 0 || maximumDistance <= minimumDistance) {
+        if (!Double.isFinite(minimumDistance) || minimumDistance <= 0.0 || !Double.isFinite(maximumDistance) || maximumDistance <= minimumDistance) {
             throw new IllegalArgumentException("Ranged distance band must be positive and ordered");
         }
-        if (duration <= 0) {
+        if (!Double.isFinite(speed) || speed <= 0.0 || duration <= 0) {
             throw new IllegalArgumentException("Ranged movement duration must be positive");
         }
         this.mob = mob;
@@ -73,6 +73,7 @@ public final class MaintainRangedDistanceAction extends BTNode {
         double verticalCorrection = (target.getEyeY() + 1.5 - mob.getY()) * 0.08;
         Vec3 acceleration = direction.add(0.0, verticalCorrection, 0.0).normalize().scale(speed * 0.08);
         mob.setDeltaMovement(mob.getDeltaMovement().scale(0.82).add(acceleration));
+        mob.hasImpulse = true;
         mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         return BTStatus.RUNNING;
     }

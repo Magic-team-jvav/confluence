@@ -24,6 +24,8 @@ public abstract class RangedMonster extends BaseWarriorMonster {
 
     public RangedMonster(EntityType<? extends RangedMonster> type, Level level, int shotCooldown, double shotMultiplier) {
         super(type, level);
+        if (shotCooldown <= 0 || !Double.isFinite(shotMultiplier) || shotMultiplier < 0.0)
+            throw new IllegalArgumentException("Ranged attack timing and multiplier are invalid");
         this.shotCooldown = shotCooldown;
         this.shotMultiplier = shotMultiplier;
     }

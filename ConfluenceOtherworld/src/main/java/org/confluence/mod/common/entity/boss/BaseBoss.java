@@ -57,7 +57,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     protected float explosionResistance = 0.5f;
     protected int noTargetTicks = 0;
     /// 连续失去合格玩家超过该时长后结束遭遇。
-    protected static final int DISENGAGE_TICKS = 100;
+    protected static final int DISENGAGE_TICKS = 200;
+    private static final int RETREAT_TICKS = 40;
     private static final byte PHASE_PARTICLE_EVENT = 60;
     private static final byte DEATH_PARTICLE_EVENT = 61;
     private @Nullable UUID synchronizedCombatTarget;
@@ -68,6 +69,11 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// 保证同一场遭遇的掉落、击败记录与成就只进入一次结算流程。
     private boolean deathRewardsSettled;
     private boolean deathAnnouncementSent;
+    // 死亡玩家丢失本场遭遇的自动仇恨；主动攻击 Boss 会重新加入目标候选。
+    private final Set<UUID> deathRetargetBlocked = new HashSet<>();
+    private boolean disengageRetreating;
+    private boolean noPhysicsBeforeRetreat;
+    private boolean applyingDisengageMovement;
     private boolean removingSubEntities;
     private final BossChunkTicket encounterChunkTicket = new BossChunkTicket(getUUID());
 
@@ -297,6 +303,24 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     public void tick() {
         Player targetBeforeAi = null;
         if (!level().isClientSide) {
+            LivingEntity currentTarget = getTarget();
+            UUID diedTargetId = currentTarget instanceof Player player && !player.isAlive() ? player.getUUID() : null;
+            if (diedTargetId == null && currentTarget == null && synchronizedCombatTarget != null) {
+                for (Player player : level().players()) {
+                    if (player.getUUID().equals(synchronizedCombatTarget) && !player.isAlive()) {
+                        diedTargetId = player.getUUID();
+                        break;
+                    }
+                }
+            }
+            if (diedTargetId != null) {
+                deathRetargetBlocked.add(diedTargetId);
+            }
+            for (Player player : level().players()) {
+                if (!player.isAlive() && combatParticipantIds.contains(player.getUUID())) {
+                    deathRetargetBlocked.add(player.getUUID());
+                }
+            }
             if (shouldMaintainCombatTarget()) {
                 targetBeforeAi = validCombatPlayer(getTarget());
                 if (targetBeforeAi == null) {
@@ -341,6 +365,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             if (getTarget() != null) setTarget(null);
             synchronizeCombatTarget(null);
             noTargetTicks = 0;
+            stopDisengageRetreat();
             return;
         }
 
@@ -355,6 +380,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         synchronizeCombatTarget(combatPlayer);
         if (combatPlayer != null) {
             noTargetTicks = 0;
+            stopDisengageRetreat();
             return;
         }
 
@@ -364,12 +390,64 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             if (isEncounterObserver(player)
                     && combatAnchorDistanceSqr(player) < rangeSqr) {
                 noTargetTicks = 0;
+                stopDisengageRetreat();
                 return;
             }
         }
 
-        if (++noTargetTicks > DISENGAGE_TICKS && CommonConfigs.BOSS_CLEAR_WHEN_NO_TARGET.get() && shouldDiscardWhenNoTarget()) {
+        tickDisengageTimer();
+    }
+
+    private void tickDisengageTimer() {
+        noTargetTicks++;
+        boolean clearsWhenEmpty = CommonConfigs.BOSS_CLEAR_WHEN_NO_TARGET.get() && shouldDiscardWhenNoTarget();
+        if (clearsWhenEmpty && noTargetTicks >= DISENGAGE_TICKS - RETREAT_TICKS) {
+            beginDisengageRetreat();
+            applyDisengageRetreat();
+        }
+        if (noTargetTicks <= DISENGAGE_TICKS) return;
+        if (clearsWhenEmpty) {
             onDisengageComplete();
+        }
+    }
+
+    private void beginDisengageRetreat() {
+        if (disengageRetreating) return;
+        disengageRetreating = true;
+        noPhysicsBeforeRetreat = noPhysics;
+        noPhysics = true;
+        navigation.stop();
+    }
+
+    protected void applyDisengageRetreat() {
+        applyingDisengageMovement = true;
+        try {
+            super.setDeltaMovement(getDisengageMovement());
+        } finally {
+            applyingDisengageMovement = false;
+        }
+    }
+
+    protected Vec3 getDisengageMovement() {
+        Vec3 movement = getDeltaMovement();
+        double verticalSpeed = isNoGravity() ? 0.45D : -0.22D;
+        return new Vec3(movement.x * 0.35D, verticalSpeed, movement.z * 0.35D);
+    }
+
+    private void stopDisengageRetreat() {
+        if (!disengageRetreating) return;
+        disengageRetreating = false;
+        noPhysics = noPhysicsBeforeRetreat;
+    }
+
+    final boolean isDisengageRetreating() {
+        return disengageRetreating;
+    }
+
+    @Override
+    public void setDeltaMovement(Vec3 movement) {
+        if (!disengageRetreating || applyingDisengageMovement) {
+            super.setDeltaMovement(movement);
         }
     }
 
@@ -410,6 +488,11 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         if (player.level() == level() && player.isAlive()
                 && !player.isCreative() && !player.isSpectator()) {
             combatParticipantIds.add(player.getUUID());
+            if (deathRetargetBlocked.remove(player.getUUID()) && isValidCurrentCombatPlayer(player)) {
+                setTarget(player);
+                noTargetTicks = 0;
+                stopDisengageRetreat();
+            }
         }
     }
 
@@ -422,6 +505,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         if (combatPlayer != null) registerCombatParticipant(combatPlayer);
         setTarget(combatPlayer);
         noTargetTicks = 0;
+        stopDisengageRetreat();
     }
 
     final Set<UUID> combatParticipantIdsSnapshot() {
@@ -438,6 +522,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             setTarget(sourceTarget);
         }
         noTargetTicks = source.noTargetTicks;
+        deathRetargetBlocked.addAll(source.deathRetargetBlocked);
     }
 
     final void confirmMechanicalMayhemParticipants(Set<UUID> participantIds) {
@@ -489,7 +574,12 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return player.level() == level() && player.isAlive()
                 && !player.isCreative() && !player.isSpectator()
                 && player.canBeSeenAsEnemy()
+                && !hasLostAggroAfterDeath(player)
                 && combatAnchorDistanceSqr(player) < range * range;
+    }
+
+    private boolean hasLostAggroAfterDeath(Player player) {
+        return deathRetargetBlocked.contains(player.getUUID());
     }
 
     private @Nullable Player validCombatPlayer(@Nullable LivingEntity target) {
@@ -645,6 +735,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         super.addAdditionalSaveData(tag);
         tag.put("CombatParticipants", saveUuidSet(combatParticipantIds));
         tag.put("MechanicalMayhemParticipants", saveUuidSet(mechanicalMayhemParticipantIds));
+        tag.put("DeathRetargetBlocked", saveUuidSet(deathRetargetBlocked));
         tag.putBoolean("DeathRewardsSettled", deathRewardsSettled);
         tag.putBoolean("DeathAnnouncementSent", deathAnnouncementSent);
     }
@@ -654,6 +745,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         super.readAdditionalSaveData(tag);
         loadUuidSet(tag, "CombatParticipants", combatParticipantIds);
         loadUuidSet(tag, "MechanicalMayhemParticipants", mechanicalMayhemParticipantIds);
+        loadUuidSet(tag, "DeathRetargetBlocked", deathRetargetBlocked);
         deathRewardsSettled = tag.getBoolean("DeathRewardsSettled");
         deathAnnouncementSent = tag.getBoolean("DeathAnnouncementSent");
         if (hasCustomName()) bossEvent.setName(getDisplayName());

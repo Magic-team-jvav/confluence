@@ -42,6 +42,8 @@ public final class GiantShelly extends BaseMonster {
     private static final RawAnimation ROLL = RawAnimation.begin().thenLoop("turn");
     private static final RawAnimation RECOVER = RawAnimation.begin().thenPlayAndHold("turn2");
     private static final Phase[] PHASES = Phase.values();
+    // 距离仍决定翻滚初速度，但上限避免远距离目标把一次冲锋放大成瞬移。
+    private static final double MAX_ROLL_SPEED = 1.2;
     private int phaseTicks;
     private int repathTicks;
     private boolean variantInitialized;
@@ -147,14 +149,14 @@ public final class GiantShelly extends BaseMonster {
         }
         Vec3 direction = target.position().add(0.0, 1.0, 0.0).subtract(position());
         if (direction.lengthSqr() > 1.0E-8) {
-            setDeltaMovement(direction.scale(0.5));
+            setDeltaMovement(direction.normalize().scale(Math.min(MAX_ROLL_SPEED, direction.length() * 0.5)));
             hasImpulse = true;
         }
     }
 
     @Override
     protected boolean hasEntityContactAttack() {
-        return getPhase().ordinal() > Phase.WALK.ordinal();
+        return getPhase() == Phase.ROLLING;
     }
 
     @Override

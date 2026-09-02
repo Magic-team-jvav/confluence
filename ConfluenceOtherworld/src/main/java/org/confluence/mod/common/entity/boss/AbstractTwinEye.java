@@ -122,6 +122,11 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
             if (isRemoved()) reportDeath();
             return;
         }
+        if (master.isDisengageRetreating()) {
+            setDeltaMovement(0.0D, 0.45D, 0.0D);
+            entityData.set(DATA_DASHING, false);
+            return;
+        }
 
         if (!isTransformed() && getHealth() < getMaxHealth() * 0.5F) {
             entityData.set(DATA_TRANSFORMED, true);

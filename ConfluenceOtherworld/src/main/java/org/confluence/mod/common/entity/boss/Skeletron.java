@@ -577,6 +577,4 @@ public class Skeletron extends BaseBoss {
     @Override
     public boolean isPushable() {return false;}
 
-    @Override
-    protected boolean shouldDiscardWhenNoTarget() {return true;}
 }

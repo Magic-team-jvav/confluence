@@ -15,6 +15,9 @@ public class MeleeAttackAction extends BTNode {
     protected static final int ATTACK_COOLDOWN = 20;
 
     public MeleeAttackAction(Mob mob, double attackRange) {
+        if (!Double.isFinite(attackRange) || attackRange < 0.0) {
+            throw new IllegalArgumentException("Melee attack range must be finite and non-negative");
+        }
         this.mob = mob;
         this.attackRange = attackRange;
     }
@@ -26,7 +29,8 @@ public class MeleeAttackAction extends BTNode {
             return BTStatus.SUCCESS;
         }
         LivingEntity target = mob.getTarget();
-        if (target != null && mob.distanceToSqr(target) <= attackRange * attackRange) {
+        if (target != null && target.isAlive() && mob.canAttack(target) && mob.getSensing().hasLineOfSight(target)
+                && mob.distanceToSqr(target) <= attackRange * attackRange) {
             mob.swing(InteractionHand.MAIN_HAND);
             mob.doHurtTarget(target);
             cooldown.restart(gameTime, ATTACK_COOLDOWN);

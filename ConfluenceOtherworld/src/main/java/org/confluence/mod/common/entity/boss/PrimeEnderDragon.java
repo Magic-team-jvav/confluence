@@ -445,7 +445,7 @@ public final class PrimeEnderDragon extends BaseBoss {
     }
 
     private void updatePartContactDamage() {
-        if (tickCount % CONTACT_INTERVAL != 0) {
+        if (getTarget() == null || tickCount % CONTACT_INTERVAL != 0) {
             return;
         }
         for (PrimeEnderDragonPart part : List.copyOf(parts.values())) {

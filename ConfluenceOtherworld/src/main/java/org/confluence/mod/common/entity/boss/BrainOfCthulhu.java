@@ -610,11 +610,6 @@ public class BrainOfCthulhu extends BaseBoss {
     @Override
     public boolean isPushable() {return false;}
 
-    @Override
-    protected boolean shouldDiscardWhenNoTarget() {
-        return true;
-    }
-
     public boolean isPhase2() {
         return level().isClientSide ? entityData.get(DATA_PHASE_TWO) : phase2;
     }

@@ -15,6 +15,8 @@ public final class FlyingPursuitAction extends BTNode {
     private int repathTicks;
 
     public FlyingPursuitAction(PathfinderMob mob, double navigationSpeed) {
+        if (!Double.isFinite(navigationSpeed) || navigationSpeed <= 0.0)
+            throw new IllegalArgumentException("Flying pursuit speed must be finite and positive");
         this.mob = mob;
         this.navigationSpeed = navigationSpeed;
     }
@@ -32,7 +34,7 @@ public final class FlyingPursuitAction extends BTNode {
         mob.getLookControl().setLookAt(target, 30.0F, 85.0F);
         mob.lookAt(target, 30.0F, 85.0F);
         Vec3 movement = mob.getDeltaMovement();
-        if (distanceSqr > 3.0 && angleBetween(movement, direction) > 0.6) {
+        if (distanceSqr > 9.0 && angleBetween(movement, direction) > 0.6) {
             mob.setDeltaMovement(movement.scale(0.95));
         }
         if (mob.getNavigation().isDone() || --repathTicks <= 0) {

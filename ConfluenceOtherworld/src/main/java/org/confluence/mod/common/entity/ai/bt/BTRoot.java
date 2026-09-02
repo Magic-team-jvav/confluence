@@ -2,11 +2,14 @@ package org.confluence.mod.common.entity.ai.bt;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 
+import java.util.EnumSet;
+
 /// 行为树根节点，包装为 Forge Goal 注册到 goalSelector。
 public abstract class BTRoot extends Goal {
     protected BTNode rootNode;
 
     public BTRoot() {
+        setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
         this.rootNode = createTree();
     }
 

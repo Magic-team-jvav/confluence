@@ -14,6 +14,9 @@ public final class JumpOverBlockAction extends BTNode {
     private final double speedMultiplier;
 
     public JumpOverBlockAction(PathfinderMob mob, double speedMultiplier) {
+        if (!Double.isFinite(speedMultiplier) || speedMultiplier <= 0.0) {
+            throw new IllegalArgumentException("Jump speed multiplier must be finite and positive");
+        }
         this.mob = mob;
         this.speedMultiplier = speedMultiplier;
     }

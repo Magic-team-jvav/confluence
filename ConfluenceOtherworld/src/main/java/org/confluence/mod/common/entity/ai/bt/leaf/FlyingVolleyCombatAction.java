@@ -68,6 +68,7 @@ public final class FlyingVolleyCombatAction extends BTNode {
         if (cycleTick == approachTicks + 1) approachAction.stop();
 
         mob.setDeltaMovement(mob.getDeltaMovement().scale(0.95));
+        mob.hasImpulse = true;
         mob.lookAt(target, 5.0F, 80.0F);
         mob.getLookControl().setLookAt(target, 5.0F, 80.0F);
         if (Arrays.binarySearch(shotTicks, cycleTick) >= 0 && !spawnProjectile(target)) {

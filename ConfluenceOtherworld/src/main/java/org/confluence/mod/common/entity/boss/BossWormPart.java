@@ -272,6 +272,7 @@ public class BossWormPart extends Entity implements WormSegment, GeoEntity, Part
     }
 
     private void tickCollisionAttack(BaseWormBoss head) {
+        if (head.getTarget() == null) return;
         Vec3 sweepStart = contactSweepStart;
         contactSweepStart = null;
         if (hurtCooldown > 0) {

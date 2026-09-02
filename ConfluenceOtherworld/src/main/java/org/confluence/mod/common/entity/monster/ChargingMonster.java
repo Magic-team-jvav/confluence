@@ -22,6 +22,9 @@ public class ChargingMonster extends BaseWarriorMonster {
 
     public ChargingMonster(EntityType<? extends ChargingMonster> type, Level level, double chargeSpeed, int windupTicks) {
         super(type, level);
+        if (!Double.isFinite(chargeSpeed) || chargeSpeed <= 0.0 || windupTicks < 0) {
+            throw new IllegalArgumentException("Charge speed must be finite and positive; windup must be non-negative");
+        }
         this.chargeSpeed = chargeSpeed;
         this.windupTicks = windupTicks;
     }

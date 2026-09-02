@@ -1023,6 +1023,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.sawmill", "Sawmill");
         add("container.confluence.tree_holes", "Tree Holes");
         add("container.confluence.npc_shop", "Npc Shop");
+        add("gui.confluence.dialog", "Talk");
+        add("gui.confluence.quest", "Quest");
+        add("gui.confluence.sell", "Sell items");
+        add("gui.confluence.shop", "Shop");
         add("container.confluence.solidifier", "Solidifier");
         add("container.confluence.mythril_anvil", "Mythril Anvil");
         add("container.confluence.orichalcum_anvil", "Orichalcum Anvil");

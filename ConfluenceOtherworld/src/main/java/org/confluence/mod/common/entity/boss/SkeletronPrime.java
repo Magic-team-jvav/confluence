@@ -357,8 +357,4 @@ public class SkeletronPrime extends BaseBoss {
         return false;
     }
 
-    @Override
-    protected boolean shouldDiscardWhenNoTarget() {
-        return true;
-    }
 }

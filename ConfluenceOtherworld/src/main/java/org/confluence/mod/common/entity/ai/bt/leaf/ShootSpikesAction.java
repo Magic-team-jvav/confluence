@@ -17,6 +17,9 @@ public class ShootSpikesAction extends BTNode {
     protected static final int COOLDOWN_TICKS = 50;
 
     public ShootSpikesAction(Mob mob, int spikeCount, float damage, EntityType<? extends SlimeSpikeEntity> spikeType) {
+        if (spikeCount <= 0 || !Float.isFinite(damage) || damage < 0.0F) {
+            throw new IllegalArgumentException("Spike count must be positive and damage must be finite and non-negative");
+        }
         this.mob = mob;
         this.spikeCount = spikeCount;
         this.damage = damage;

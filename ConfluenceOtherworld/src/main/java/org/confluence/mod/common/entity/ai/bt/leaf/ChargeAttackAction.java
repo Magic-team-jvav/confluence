@@ -14,23 +14,25 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 public class ChargeAttackAction extends BTNode {
     protected final PathfinderMob mob;
     protected final double speed;
+    private final int windupTicks;
     protected int tick;
-    protected static final int DURATION = 30;
-    protected static final int WINDUP = 10;
-    private final ContactAttackTimer contactAttack;
+    protected static final int DASH_DURATION = 20;
     private Vec3 lockedDirection = Vec3.ZERO;
 
     public ChargeAttackAction(PathfinderMob mob, double speed) {
-        this(mob, speed, 0.0);
+        this(mob, speed, 10);
     }
 
-    public ChargeAttackAction(PathfinderMob mob, double speed, double contactInflation) {
+    public ChargeAttackAction(PathfinderMob mob, double speed, int windupTicks) {
         if (!Double.isFinite(speed) || speed <= 0.0) {
             throw new IllegalArgumentException("Charge speed must be finite and positive");
         }
+        if (windupTicks < 0) {
+            throw new IllegalArgumentException("Charge windup must be non-negative");
+        }
         this.mob = mob;
         this.speed = speed;
-        this.contactAttack = new ContactAttackTimer(contactInflation, 10, 20);
+        this.windupTicks = windupTicks;
     }
 
     @Override
@@ -44,15 +46,15 @@ public class ChargeAttackAction extends BTNode {
         tick++;
         LivingEntity target = mob.getTarget();
         if (target == null) return BTStatus.SUCCESS;
-        contactAttack.tick(mob, target);
 
-        if (tick < WINDUP) {
+        if (tick <= windupTicks) {
             Vec3 dir = target.position().subtract(mob.position()).normalize();
             mob.setDeltaMovement(dir.scale(speed * 0.02));
+            mob.hasImpulse = true;
             return BTStatus.RUNNING;
         }
 
-        if (tick >= DURATION) return BTStatus.SUCCESS;
+        if (tick > windupTicks + DASH_DURATION) return BTStatus.SUCCESS;
 
         if (lockedDirection.lengthSqr() < 1.0E-8) {
             lockedDirection = target.position().subtract(mob.position()).normalize();
@@ -70,5 +72,6 @@ public class ChargeAttackAction extends BTNode {
     @Override
     public void stop() {
         mob.setDeltaMovement(Vec3.ZERO);
+        mob.hasImpulse = true;
     }
 }

@@ -16,6 +16,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,13 +24,10 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.entity.IVariant;
-import org.confluence.mod.common.entity.ai.bt.BTNode;
-import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.BTStatus;
-import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
+import java.util.EnumSet;
 import java.util.Locale;
 
 public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
@@ -40,7 +38,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
     public Fairy(EntityType<? extends Fairy> type, Level level) {
         super(type, level);
         /// 仙灵需要跨越普通方块把玩家引向宝箱。该标记只改变实体碰撞，
-        /// 导航目标、脱离距离和移动节奏仍由行为树负责。
+        /// 导航目标、脱离距离和移动节奏仍由引导目标负责。
         this.noPhysics = true;
     }
 
@@ -49,16 +47,9 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
     }
 
     @Override
-    protected BTRoot createBT() {
-        return new BTRoot() {
-            @Override
-            protected BTNode createTree() {
-                FairyGuideAction guide = new FairyGuideAction(Fairy.this);
-                /// 引导玩家是妖精的最高优先级行为。实时分支可以在玩家进入十格范围的
-                /// 当个行为 tick 中打断巡游，也会在玩家死亡或离开三十格后立即恢复巡游。
-                return withPassivePanic(new ConditionalSwitchNode(guide::canGuidePlayer, guide, createBirdDailyRoutine()), 1.25);
-            }
-        };
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(0, new FairyGuideAction(this));
     }
 
     /// 实现妖精“发现玩家、建立跟随、寻找宝箱并带路”的完整状态机。
@@ -67,7 +58,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
     /// 此后允许双方拉开到三十格。宝箱搜索范围与 1.21 实现一致，为妖精所在区块
     /// 周围一圈区块。若宝箱距离玩家超过十格，当前导航点会限制在玩家前方十格，
     /// 从而让妖精逐段带路，而不是直接飞走。
-    private static final class FairyGuideAction extends BTNode {
+    private static final class FairyGuideAction extends Goal {
         private static final double ACQUIRE_RANGE = 10.0;
         private static final double ABANDON_RANGE = 30.0;
         private static final double FOLLOW_DISTANCE = 3.0;
@@ -84,13 +75,14 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
 
         private FairyGuideAction(Fairy fairy) {
             this.fairy = fairy;
+            setFlags(EnumSet.of(Flag.MOVE));
         }
 
         /// 供实时分支每 tick 判断是否需要占用移动控制。
         ///
         /// 首次进入时只接纳十格内玩家；一旦完成近距离接触，则沿用同一玩家，
         /// 直到玩家死亡或离开三十格，避免引导途中在多个玩家之间来回切换。
-        private boolean canGuidePlayer() {
+        public boolean canUse() {
             if (target != null) {
                 if (target.isAlive() && !target.isSpectator() && fairy.distanceTo(target) <= ABANDON_RANGE) {
                     return true;
@@ -110,21 +102,26 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
         }
 
         @Override
-        public BTStatus execute() {
+        public boolean canContinueToUse() {
+            return canUse();
+        }
+
+        @Override
+        public void tick() {
             if (target == null || !target.isAlive()) {
-                return BTStatus.FAILURE;
+                return;
             }
 
             angle += fairy.getRandom().nextFloat() * 0.05F + 0.05F;
             Vec3 playerPos = target.position();
             if (!following) {
                 moveAround(playerPos);
-                return BTStatus.RUNNING;
+                return;
             }
 
             if (fairy.distanceTo(target) > ABANDON_RANGE) {
                 clearState();
-                return BTStatus.FAILURE;
+                return;
             }
 
             if (!isChestStillPresent()) {
@@ -132,7 +129,7 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
                 /// 发现宝箱的这一 tick 只更新目标，下一 tick 再开始移动。
                 /// 这样可以保持两侧实现相同的状态切换节奏。
                 if (guidePos != null) {
-                    return BTStatus.RUNNING;
+                    return;
                 }
             }
 
@@ -140,7 +137,6 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
                     ? playerPos
                     : createGuideDestination(playerPos);
             moveAround(destination);
-            return BTStatus.RUNNING;
         }
 
         @Override

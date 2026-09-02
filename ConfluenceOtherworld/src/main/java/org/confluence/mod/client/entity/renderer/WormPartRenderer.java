@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
@@ -72,6 +73,11 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
         BaseWormMonster owner = segment.getOwner();
         ResourceLocation ownerId = owner == null ? null : BuiltInRegistries.ENTITY_TYPE.getKey(owner.getType());
         return ownerId != null && "arch_wyvern".equals(ownerId.getPath()) ? 1.25F : 1.0F;
+    }
+
+    @Override
+    public int getPackedOverlay(BaseWormPart segment, float u, float partialTick) {
+        return OverlayTexture.pack(OverlayTexture.u(u), OverlayTexture.v(segment.isHurtFlashing()));
     }
 
     private static void setHidden(BakedGeoModel model, String name, boolean hidden) {

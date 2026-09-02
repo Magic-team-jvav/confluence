@@ -9,13 +9,21 @@ import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-public record OpenNPCDialogPacketS2C(int entityId) implements IPortPacket.S2C {
+public record OpenNPCDialogPacketS2C(int entityId, boolean canTrade) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("open_npc_dialog");
-    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenNPCDialogPacketS2C> STREAM_CODEC = PortStreamCodec.composite(PortByteBufCodecs.VAR_INT, OpenNPCDialogPacketS2C::entityId, OpenNPCDialogPacketS2C::new);
+    public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenNPCDialogPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
+            PortByteBufCodecs.VAR_INT, OpenNPCDialogPacketS2C::entityId,
+            PortByteBufCodecs.BOOL, OpenNPCDialogPacketS2C::canTrade,
+            OpenNPCDialogPacketS2C::new
+    );
+
+    public OpenNPCDialogPacketS2C(int entityId) {
+        this(entityId, false);
+    }
 
     @Override
     public void work(Player player) {
-        NPCDialogScreen.open(entityId);
+        NPCDialogScreen.open(entityId, canTrade);
     }
 
     @Override

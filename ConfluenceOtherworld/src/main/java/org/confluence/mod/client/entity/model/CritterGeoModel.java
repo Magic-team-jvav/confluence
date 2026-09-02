@@ -1,13 +1,14 @@
 package org.confluence.mod.client.entity.model;
 
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.common.entity.animal.BaseCritter;
+import net.minecraft.world.entity.Entity;
+import org.confluence.mod.common.entity.animal.CritterVisual;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-public class CritterGeoModel<T extends BaseCritter> extends DefaultedEntityGeoModel<T> {
+public class CritterGeoModel<T extends Entity & CritterVisual> extends DefaultedEntityGeoModel<T> {
     private final ResourceLocation defaultModel;
 
     public CritterGeoModel(ResourceLocation defaultModel) {

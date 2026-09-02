@@ -277,6 +277,11 @@ public class WallOfFlesh extends BaseBoss {
     }
 
     @Override
+    protected Vec3 getDisengageMovement() {
+        return getForwardVector().scale(Math.max(BASE_SPEED, getAttributeValue(Attributes.MOVEMENT_SPEED)) * 2.5D);
+    }
+
+    @Override
     protected boolean isValidCurrentCombatPlayer(Player player) {
         return super.isValidCurrentCombatPlayer(player) && isValidFrontTarget(player);
     }

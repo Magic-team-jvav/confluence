@@ -526,7 +526,7 @@ public final class ModEvents {
     private static void registerBestiaryKeys(RegisterBestiaryKeyEvent event) {
         // 1.21 的图鉴使用数字后缀；1.20 的实体仍保存枚举名称，因此这里只转换图鉴键，
         // 不改变实体 NBT、变种初始化或渲染行为。
-        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + switch (bunny.getVariant()) {
+        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + switch (bunny.getBunnyVariant()) {
             case AMBER -> 0;
             case AMETHYST -> 1;
             case DIAMOND -> 2;

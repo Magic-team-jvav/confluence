@@ -18,11 +18,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
         super(6);
         addListener(container -> {
             if (owner == null || owner.isLocalPlayer()) return;
-            long res = 0;
-            for (int i = 0; i < container.getContainerSize(); i++) {
-                ItemStack stack = container.getItem(i);
-                res += CoinItem.valueOf(stack.getItem()) * stack.getCount();
-            }
+            long res = calculateMoney();
             if (totalMoney != res) {
                 this.totalMoney = res;
                 if (owner instanceof ServerPlayer player) {
@@ -39,6 +35,15 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
 
     public long getTotalMoney() {
         return totalMoney;
+    }
+
+    public long calculateMoney() {
+        long result = 0;
+        for (int slot = 0; slot < getContainerSize(); slot++) {
+            ItemStack stack = getItem(slot);
+            result += CoinItem.valueOf(stack.getItem()) * stack.getCount();
+        }
+        return result;
     }
 
     @ApiStatus.Internal

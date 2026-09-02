@@ -21,7 +21,6 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.init.ModSoundEvents;
-import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -33,7 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 /// 小动物基类 —— 不可繁殖、无食物、行为树驱动。
-public abstract class BaseCritter extends Animal implements GeoEntity {
+public abstract class BaseCritter extends Animal implements CritterVisual {
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private boolean behaviorTreeRegistered;
 

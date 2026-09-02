@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.entity;
 
 import PortLib.extensions.net.minecraftforge.registries.DeferredRegister.PortDeferredRegisterExtension;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.DeferredRegister;
@@ -43,20 +44,20 @@ public class CritterEntities {
     public static final RegistryObject<EntityType<Grasshopper>> GRASSHOPPER = registerInsect("grasshopper", Grasshopper::new);
     public static final RegistryObject<EntityType<Ladybug>> LADYBUG = registerInsect("ladybug", Ladybug::new);
 
-    private static <T extends BaseCritter> RegistryObject<EntityType<T>> register(String name, EntityType.EntityFactory<T> factory) {
+    private static <T extends Mob> RegistryObject<EntityType<T>> register(String name, EntityType.EntityFactory<T> factory) {
         return register(name, factory, 0.4F, 0.5F, 8);
     }
 
-    private static <T extends BaseCritter> RegistryObject<EntityType<T>> registerInsect(String name, EntityType.EntityFactory<T> factory) {
+    private static <T extends Mob> RegistryObject<EntityType<T>> registerInsect(String name, EntityType.EntityFactory<T> factory) {
         return registerCompact(name, factory);
     }
 
-    private static <T extends BaseCritter> RegistryObject<EntityType<T>> registerCompact(String name, EntityType.EntityFactory<T> factory) {
+    private static <T extends Mob> RegistryObject<EntityType<T>> registerCompact(String name, EntityType.EntityFactory<T> factory) {
         return register(name, factory, 0.5F, 0.3F, 8);
     }
 
     /// 集中创建普通小动物实体类型，保证尺寸和追踪距离只在注册入口声明一次。
-    private static <T extends BaseCritter> RegistryObject<EntityType<T>> register(String name, EntityType.EntityFactory<T> factory, float width, float height, int trackingRange) {
+    private static <T extends Mob> RegistryObject<EntityType<T>> register(String name, EntityType.EntityFactory<T> factory, float width, float height, int trackingRange) {
         return PortDeferredRegisterExtension.register(ENTITIES, name,
                 id -> EntityType.Builder.of(factory, MobCategory.CREATURE)
                         .sized(width, height)
@@ -64,7 +65,7 @@ public class CritterEntities {
                         .build(id.toString()));
     }
 
-    private static <T extends BaseCritter> RegistryObject<EntityType<T>> registerHostile(String name, EntityType.EntityFactory<T> factory) {
+    private static <T extends Mob> RegistryObject<EntityType<T>> registerHostile(String name, EntityType.EntityFactory<T> factory) {
         return PortDeferredRegisterExtension.register(ENTITIES, name,
                 id -> EntityType.Builder.of(factory, MobCategory.MONSTER).sized(0.4F, 0.5F).clientTrackingRange(10).build(id.toString()));
     }

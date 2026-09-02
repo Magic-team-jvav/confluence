@@ -285,5 +285,4 @@ public class LunaticCultist extends BaseBoss {
 
     @Override public boolean causeFallDamage(float f, float m, DamageSource s) { return false; }
     @Override public boolean isPushable() { return false; }
-    @Override protected boolean shouldDiscardWhenNoTarget() { return true; }
 }

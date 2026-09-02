@@ -40,6 +40,7 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
     private static final EntityDataAccessor<Integer> OWNER_ID = SynchedEntityData.defineId(BaseWormPart.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> INDEX = SynchedEntityData.defineId(BaseWormPart.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> TAIL = SynchedEntityData.defineId(BaseWormPart.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> HURT_FLASH_TICKS = SynchedEntityData.defineId(BaseWormPart.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private @Nullable BaseWormMonster owner;
@@ -77,6 +78,10 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
 
     public boolean isTail() {
         return entityData.get(TAIL);
+    }
+
+    public boolean isHurtFlashing() {
+        return entityData.get(HURT_FLASH_TICKS) > 0;
     }
 
     @Override
@@ -168,6 +173,8 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
     public void tick() {
         super.tick();
         if (level().isClientSide) tickClientInterpolation();
+        else if (entityData.get(HURT_FLASH_TICKS) > 0)
+            entityData.set(HURT_FLASH_TICKS, entityData.get(HURT_FLASH_TICKS) - 1);
         BaseWormMonster head = getOwner();
         if (head != null && !head.isAlive()) {
             /// 死亡头部已经完成过所有权解析，不需要等待网络实体的加入顺序。
@@ -212,7 +219,10 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
     @Override
     public boolean hurt(DamageSource source, float amount) {
         BaseWormMonster head = getOwner();
-        return head != null && head.isAlive() && head.hurt(source, amount);
+        if (head == null || !head.isAlive() || !head.hurt(source, amount)) return false;
+        markHurt();
+        entityData.set(HURT_FLASH_TICKS, 10);
+        return true;
     }
 
     @Override
@@ -234,6 +244,7 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
         entityData.define(OWNER_ID, -1);
         entityData.define(INDEX, 0);
         entityData.define(TAIL, false);
+        entityData.define(HURT_FLASH_TICKS, 0);
     }
 
     @Override

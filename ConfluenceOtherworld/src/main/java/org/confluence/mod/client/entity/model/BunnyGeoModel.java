@@ -16,18 +16,18 @@ public class BunnyGeoModel extends DefaultedEntityGeoModel<Bunny> {
     }
 
     private GeoNormalModel<Bunny> modelFor(Bunny bunny) {
-        ResourceLocation path = bunny.getVariant().modelPath();
+        ResourceLocation path = bunny.getBunnyVariant().modelPath();
         return cache.computeIfAbsent(path, p -> new GeoNormalModel<Bunny>(p, true).setHeadName("head"));
     }
 
     @Override
     public ResourceLocation getModelResource(Bunny bunny) {
-        return CritterGeoModel.resolveModelResource(bunny.getVariant().modelPath());
+        return CritterGeoModel.resolveModelResource(bunny.getBunnyVariant().modelPath());
     }
 
     @Override
     public ResourceLocation getTextureResource(Bunny bunny) {
-        return bunny.getVariant().texturePath();
+        return bunny.getBunnyVariant().texturePath();
     }
 
     @Override

@@ -3,27 +3,31 @@ package org.confluence.mod.common.entity.animal;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.FollowMobGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,24 +35,19 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.ai.bt.BTNode;
-import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
-import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.constant.DefaultAnimations;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
 
-/// 能够起飞、降落并在三维空间巡游的普通鸟类。
-///
-/// 鸟类保留重力，因此停止飞行后会自然落地；飞行移动控制器只负责空中的转向与加速。
-/// 原版成熟的漂浮、观察、树冠巡游与跟随动作通过叶节点接入行为树，实体本身仍只有一个
-/// 行为调度器，不会重新安装第二套 Goal 组合。
-public class Bird extends BaseFlyingCritter implements FlyingAnimal {
+/// 直接沿用原版动物的 Goal 调度，并使用鹦鹉式飞行导航与树冠巡游。
+public class Bird extends Animal implements FlyingAnimal, CritterVisual {
     private static final RawAnimation FLY_ONLY = RawAnimation.begin().thenLoop("move.fly");
     public float flap;
     public float flapSpeed;
@@ -57,6 +56,7 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
     private float flapping = 1.0F;
     private float nextFlap = 1.0F;
     private boolean partyBird;
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     @Nullable
     private BlockPos jukebox;
 
@@ -91,27 +91,36 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
     }
 
     @Override
-    protected BTRoot createBT() {
-        return new BTRoot() {
-            @Override
-            protected BTNode createTree() {
-                return withPassivePanic(createBirdDailyRoutine(), 1.25);
-            }
-        };
+    protected void registerGoals() {
+        goalSelector.addGoal(0, new PanicGoal(this, 1.25));
+        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        goalSelector.addGoal(2, new BirdWanderGoal(this, 1.0));
+        goalSelector.addGoal(3, new FollowMobGoal(this, 1.0, 3.0F, 7.0F));
     }
 
-    /// 创建鸟类日常行为分支，供继承鸟类运动语义的昆虫与仙灵复用。
-    ///
-    /// 恐慌分支由具体实体包在最外层，以便仙灵在受伤时优先逃生，同时仍可在平常状态下
-    /// 用引导玩家的动作抢占日常巡游。
-    protected final BTNode createBirdDailyRoutine() {
-        return SelectorNode.of(
-                new VanillaGoalAction(new FloatGoal(this)),
-                new VanillaGoalAction(
-                        new LookAtPlayerGoal(this, Player.class, 8.0F)),
-                new VanillaGoalAction(new BirdWanderGoal(this, 1.0)),
-                new VanillaGoalAction(
-                        new FollowMobGoal(this, 1.0, 3.0F, 7.0F)));
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
+        String key = variantSaveKey();
+        if (key != null && (tag == null || !tag.contains(key))) initializeSpawnVariant();
+        return result;
+    }
+
+    protected @Nullable String variantSaveKey() {
+        return null;
+    }
+
+    protected void initializeSpawnVariant() {}
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level);
+        navigation.setCanOpenDoors(false);
+        navigation.setCanFloat(true);
+        navigation.setCanPassDoors(true);
+        return navigation;
     }
 
     @Override
@@ -124,6 +133,37 @@ public class Bird extends BaseFlyingCritter implements FlyingAnimal {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(DefaultAnimations.genericFlyIdleController(this));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+        return null;
+    }
+
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        return false;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
     }
 
     /// 为只提供 {@code move.fly} 的昆虫资源安装持续飞行动画。

@@ -38,6 +38,11 @@ public final class PhasedFlyingPursuitAction extends BTNode {
         if (cycleTicks <= approachThreshold || approachThreshold <= aggressiveThreshold || aggressiveThreshold <= 0) {
             throw new IllegalArgumentException("Flying pursuit phase thresholds must be positive and ordered");
         }
+        if (!Double.isFinite(approachSpeed) || approachSpeed < 0.0 || !Double.isFinite(aggressiveSpeed) || aggressiveSpeed <= 0.0
+                || !Double.isFinite(maximumSpeed) || maximumSpeed <= 0.0 || !Double.isFinite(minimumApproachDistance) || minimumApproachDistance < 0.0
+                || !Double.isFinite(maximumAggressiveTurn) || maximumAggressiveTurn <= 0.0 || maximumAggressiveTurn > Math.PI) {
+            throw new IllegalArgumentException("Flying pursuit movement parameters are outside their valid ranges");
+        }
         this.mob = mob;
         this.cycleTicks = cycleTicks;
         this.approachThreshold = approachThreshold;

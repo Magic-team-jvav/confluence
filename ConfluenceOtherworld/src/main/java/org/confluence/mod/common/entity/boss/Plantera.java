@@ -532,5 +532,10 @@ public class Plantera extends BaseBoss {
 
     @Override public boolean causeFallDamage(float f, float m, DamageSource s) { return false; }
     @Override public boolean isPushable() { return false; }
-    @Override protected boolean shouldDiscardWhenNoTarget() { return true; }
+
+    @Override
+    protected Vec3 getDisengageMovement() {
+        Vec3 movement = getDeltaMovement();
+        return new Vec3(movement.x * 0.25D, -0.4D, movement.z * 0.25D);
+    }
 }

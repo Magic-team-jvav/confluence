@@ -26,6 +26,7 @@ public final class DemonEyeWanderAction extends BTNode {
     public void start() {
         locateCount++;
         mob.setDeltaMovement(mob.getDeltaMovement().with(Direction.Axis.Y, 0.0));
+        mob.hasImpulse = true;
         if (Double.isNaN(anchorY)) anchorY = mob.getY();
 
         double x = mob.getRandom().nextDouble() * 10.0 - 5.0;

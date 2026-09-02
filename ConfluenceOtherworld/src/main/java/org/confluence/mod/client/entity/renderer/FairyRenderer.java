@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.model.CritterGeoModel;
-import org.confluence.mod.common.entity.animal.BaseCritter;
+import org.confluence.mod.common.entity.animal.CritterVisual;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.GeoModel;
@@ -32,7 +32,7 @@ public class FairyRenderer<T extends Entity & GeoEntity> extends GeoNegativeVolu
     /// 占位资源只用于初始化 GeckoLib 模型对象，实际渲染时会由
     /// {@link CritterGeoModel} 查询实体当前的模型与纹理。集中在这里可以避免
     /// 客户端注册表把占位键误认为必须存在的最终资源文件。
-    public static <T extends BaseCritter> FairyRenderer<T> forCritter(EntityRendererProvider.Context context) {
+    public static <T extends Entity & CritterVisual> FairyRenderer<T> forCritter(EntityRendererProvider.Context context) {
         return new FairyRenderer<>(context, new CritterGeoModel<>(Confluence.asResource("geo/animal/dummy")));
     }
 

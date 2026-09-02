@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.jetbrains.annotations.Nullable;
 
 /// 黑史莱姆 —— 大小 1=Baby, 2=普通, 3=大型, 4=母体。
@@ -28,13 +29,9 @@ public class BlackSlime extends BaseSlime {
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType,
-                                        @Nullable SpawnGroupData data,
-                                        @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
         float specialMultiplier = difficulty.getSpecialMultiplier();
-        float motherChance = specialMultiplier <= 0.5F ? 0.15F
-                : specialMultiplier <= 1.0F ? 0.60F : 0.85F;
+        float motherChance = specialMultiplier <= 0.5F ? 0.15F : specialMultiplier <= 1.0F ? 0.60F : 0.85F;
         int size = level.getRandom().nextFloat() < motherChance ? MOTHER_SIZE : 2;
         applySizeStats(size);
         return super.finalizeSpawn(level, difficulty, spawnType, data, tag);
@@ -112,6 +109,11 @@ public class BlackSlime extends BaseSlime {
                 float xOffset = (i % 2 - 0.5F) * horizontalOffset;
                 float zOffset = (i / 2 - 0.5F) * horizontalOffset;
                 child.moveTo(getX() + xOffset, getY() + verticalOffset, getZ() + zOffset, random.nextFloat() * 360.0F, 0.0F);
+                LivingEntity target = getTarget();
+                if (target != null && target.isAlive()) {
+                    child.setTarget(target);
+                    BossMinionCoordinator.faceTargetImmediately(child, target);
+                }
                 if (!level().addFreshEntity(child)) child.discard();
             }
         }

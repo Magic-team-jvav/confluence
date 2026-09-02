@@ -16,6 +16,9 @@ public class RandomStrollAction extends BTNode {
     protected static final int TIMEOUT = 100;
 
     public RandomStrollAction(PathfinderMob mob, double speed, int horizontalRange) {
+        if (!Double.isFinite(speed) || speed <= 0.0 || horizontalRange <= 0) {
+            throw new IllegalArgumentException("Random stroll speed and range must be positive");
+        }
         this.mob = mob;
         this.speed = speed;
         this.horizontalRange = horizontalRange;

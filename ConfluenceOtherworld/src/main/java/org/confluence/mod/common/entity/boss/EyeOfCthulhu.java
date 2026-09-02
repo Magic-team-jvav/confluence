@@ -504,11 +504,6 @@ public class EyeOfCthulhu extends BaseBoss {
     }
 
     @Override
-    protected boolean shouldDiscardWhenNoTarget() {
-        return true;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         // 变身是一段严格的一次性拓扑切换动画，不能用 5 tick 淡入吞掉开头关键帧。
         controllers.add(new AnimationController<>(this, "Controller", 0, state -> state.setAndContinue(animationForCurrentState())));

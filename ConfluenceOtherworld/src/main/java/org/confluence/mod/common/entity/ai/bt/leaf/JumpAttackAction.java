@@ -11,28 +11,27 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 ///
 /// 节点只负责参考侧的一次性起跳；离地后立即交还调度，由普通近战目标处理命中。
 public final class JumpAttackAction extends BTNode {
-    private static final double MINIMUM_DISTANCE = 4.0;
     private final PathfinderMob mob;
-    private final double speedMultiplier;
     private final double maximumDistance;
+    private final double speedMultiplier;
     private final int cooldownTicks;
     private final int windupTicks;
     private int lastLaunchTick = Integer.MIN_VALUE / 2;
     private int elapsedTicks;
 
-    public JumpAttackAction(PathfinderMob mob, double speedMultiplier, double maximumDistance, int cooldownTicks, int windupTicks) {
+    public JumpAttackAction(PathfinderMob mob, double maximumDistance, double speedMultiplier, int cooldownTicks, int windupTicks) {
+        if (!Double.isFinite(maximumDistance) || maximumDistance <= 0.0) {
+            throw new IllegalArgumentException("Jump maximum distance must be finite and positive");
+        }
         if (!Double.isFinite(speedMultiplier) || speedMultiplier <= 0.0) {
             throw new IllegalArgumentException("Jump speed multiplier must be finite and positive");
-        }
-        if (!Double.isFinite(maximumDistance) || maximumDistance <= MINIMUM_DISTANCE) {
-            throw new IllegalArgumentException("Jump maximum distance must be finite and greater than four");
         }
         if (cooldownTicks < 0 || windupTicks < 0) {
             throw new IllegalArgumentException("Jump cooldown and windup must be non-negative");
         }
         this.mob = mob;
-        this.speedMultiplier = speedMultiplier;
         this.maximumDistance = maximumDistance;
+        this.speedMultiplier = speedMultiplier;
         this.cooldownTicks = cooldownTicks;
         this.windupTicks = windupTicks;
     }
@@ -63,12 +62,14 @@ public final class JumpAttackAction extends BTNode {
     }
 
     private boolean canLaunch(LivingEntity target) {
-        if (!mob.onGround() || mob.tickCount - lastLaunchTick <= cooldownTicks) {
+        if (!mob.onGround() || mob.tickCount - lastLaunchTick < cooldownTicks) {
             return false;
         }
         double distanceSqr = mob.distanceToSqr(target);
-        return distanceSqr > MINIMUM_DISTANCE * MINIMUM_DISTANCE
-                && distanceSqr < maximumDistance * maximumDistance;
+        Vec3 horizontal = target.position().subtract(mob.position()).multiply(1.0, 0.0, 1.0);
+        if (horizontal.lengthSqr() < 1.0E-8) return false;
+        double contactDistance = Math.max(1.5, (mob.getBbWidth() + target.getBbWidth()) * 0.5 + 0.75);
+        return distanceSqr > contactDistance * contactDistance && distanceSqr <= maximumDistance * maximumDistance;
     }
 
     private void launchAt(LivingEntity target) {

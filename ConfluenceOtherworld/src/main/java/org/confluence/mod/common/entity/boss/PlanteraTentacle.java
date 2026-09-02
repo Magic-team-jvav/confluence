@@ -109,6 +109,7 @@ public class PlanteraTentacle extends BaseBossPart<Plantera> implements GeoEntit
             contactCooldown--;
             return;
         }
+        if (master.getTarget() == null) return;
         for (Entity entity : SweptContactAttack.findTargets(this, 0.25D,
                 SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
                 candidate -> candidate instanceof LivingEntity living && living != master && master.canAttack(living))) {

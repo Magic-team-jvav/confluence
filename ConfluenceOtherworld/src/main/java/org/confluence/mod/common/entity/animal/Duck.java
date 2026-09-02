@@ -11,47 +11,41 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.FollowParentGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.IVariant;
-import org.confluence.mod.common.entity.ai.bt.BTNode;
-import org.confluence.mod.common.entity.ai.bt.BTRoot;
-import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.CritterEntities;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-/// 同时支持陆地行走和水面活动的鸭子。
-///
-/// 鸭子的外观、食物、后代工厂、落水表现和动画选择均由实体自身负责；
-/// 通用小动物基类只提供行为树生命周期和默认的不可繁殖契约。
-public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
+/// 直接沿用原版鸡的行走、恐慌、繁殖、缓降与产蛋行为，仅扩展鸭子外观和水面表现。
+public class Duck extends Chicken implements VariantHolder<Duck.Variant>, CritterVisual {
     public static final String VARIANT_KEY = "Variant";
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation SWIM = RawAnimation.begin().thenLoop("move.swim");
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Duck.class, EntityDataSerializers.INT);
-    private int eggLayTime = random.nextInt(6000) + 6000;
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     public Duck(EntityType<? extends Duck> type, Level level) {
         super(type, level);
@@ -61,25 +55,6 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Chicken.createAttributes().add(PortAttributesExtension.waterMovementEfficiency().get(), 1.0);
-    }
-
-    @Override
-    protected BTRoot createBT() {
-        return new BTRoot() {
-            @Override
-            protected BTNode createTree() {
-                return withPassivePanic(
-                        createGroundCritterRoutine(
-                                1.0,
-                                new VanillaGoalAction(
-                                        new BreedGoal(Duck.this, 1.0)),
-                                new VanillaGoalAction(new TemptGoal(Duck.this, 1.0, Ingredient.of(
-                                        Items.WHEAT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS,
-                                        Items.BEETROOT_SEEDS, Items.TORCHFLOWER_SEEDS, Items.PITCHER_POD), false)),
-                                new VanillaGoalAction(new FollowParentGoal(Duck.this, 1.1))),
-                        1.4);
-            }
-        };
     }
 
     @Override
@@ -98,12 +73,6 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
         entityData.set(DATA_VARIANT, variant.ordinal());
     }
 
-    @Override
-    protected String variantSaveKey() {
-        return VARIANT_KEY;
-    }
-
-    @Override
     protected void initializeSpawnVariant() {
         Variant[] variants = Variant.values();
         setVariant(variants[random.nextInt(variants.length)]);
@@ -113,7 +82,6 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         getVariant().serialize(tag);
-        tag.putInt("EggLayTime", eggLayTime);
     }
 
     @Override
@@ -123,9 +91,6 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
             setVariant(Variant.MALLARD);
         } else {
             PortDataResultExtension.ifSuccess(Variant.CODEC.parse(NbtOps.INSTANCE, tag.get(VARIANT_KEY)), this::setVariant);
-        }
-        if (tag.contains("EggLayTime")) {
-            eggLayTime = tag.getInt("EggLayTime");
         }
     }
 
@@ -145,33 +110,11 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
         return false;
     }
 
-    /// 鸭子保留 1.21 中从鸡继承的声音音量。
-    @Override
-    protected float getSoundVolume() {
-        return 0.2F;
-    }
-
     @Override
     public void tick() {
         super.tick();
         if (level().isClientSide && isInWater() && tickCount % 16 == 0) {
             level().addParticle(ParticleTypes.BUBBLE_POP, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
-        }
-    }
-
-    /// 还原 1.21 中通过鸡基类继承的空中缓降与成年产蛋行为。
-    @Override
-    public void aiStep() {
-        super.aiStep();
-        Vec3 movement = getDeltaMovement();
-        if (!onGround() && movement.y < 0.0) {
-            setDeltaMovement(movement.multiply(1.0, 0.6, 1.0));
-        }
-        if (!level().isClientSide && isAlive() && !isBaby() && --eggLayTime <= 0) {
-            playSound(SoundEvents.CHICKEN_EGG, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-            spawnAtLocation(Items.EGG);
-            gameEvent(GameEvent.ENTITY_PLACE);
-            eggLayTime = random.nextInt(6000) + 6000;
         }
     }
 
@@ -193,6 +136,29 @@ public class Duck extends BaseCritter implements VariantHolder<Duck.Variant> {
             }
             return state.setAndContinue(state.isMoving() ? WALK : IDLE);
         }));
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+        SpawnGroupData result = super.finalizeSpawn(level, difficulty, spawnType, data, tag);
+        if (tag == null || !tag.contains(VARIANT_KEY)) initializeSpawnVariant();
+        return result;
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
     }
 
     /// 鸭子的两种基础外观。枚举同时承担同步值、持久化值和纹理路径的解析。

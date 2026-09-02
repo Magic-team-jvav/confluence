@@ -44,6 +44,12 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
         return true;
     }
 
+    @Override
+    protected Vec3 getDisengageMovement() {
+        Vec3 movement = getDeltaMovement();
+        return new Vec3(movement.x * 0.35D, -0.55D, movement.z * 0.35D);
+    }
+
     protected abstract int getSegmentCount();
 
     protected float getInitialSegmentHealth(int index) {

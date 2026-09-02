@@ -17,10 +17,13 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.entity.CreatureDefinition;
 import org.confluence.mod.common.data.entity.CreatureDefinitionLoader;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
+import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -66,10 +69,30 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         super.onAddedToWorld();
         if (!level().isClientSide && !behaviorTreeRegistered) {
             applyCreatureDefinition();
-            BTRoot behaviorTree = Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
+            BTRoot behaviorTree;
+            try {
+                behaviorTree = Objects.requireNonNull(createBT(), () -> "Missing behavior tree for " + getType());
+            } catch (RuntimeException exception) {
+                Confluence.LOGGER.error("Failed to create behavior tree for {}; the entity will remain passive instead of crashing the level", getType(), exception);
+                behaviorTree = disabledBehaviorTree();
+            }
             this.goalSelector.addGoal(0, behaviorTree);
             behaviorTreeRegistered = true;
         }
+    }
+
+    private static BTRoot disabledBehaviorTree() {
+        return new BTRoot() {
+            @Override
+            protected BTNode createTree() {
+                return new BTNode() {
+                    @Override
+                    public BTStatus execute() {
+                        return BTStatus.RUNNING;
+                    }
+                };
+            }
+        };
     }
 
     protected abstract BTRoot createBT();

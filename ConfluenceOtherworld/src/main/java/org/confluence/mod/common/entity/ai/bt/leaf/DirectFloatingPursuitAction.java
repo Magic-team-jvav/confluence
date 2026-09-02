@@ -29,6 +29,7 @@ public final class DirectFloatingPursuitAction extends BTNode {
     @Override
     public BTStatus execute() {
         mob.addDeltaMovement(new Vec3(0.0, Math.sin(mob.tickCount * BOB_FREQUENCY) * BOB_STRENGTH, 0.0));
+        mob.hasImpulse = true;
 
         LivingEntity target = mob.getTarget();
         if (target == null || !target.isAlive()) {

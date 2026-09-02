@@ -414,11 +414,6 @@ public class QueenBee extends BaseBoss {
     }
 
     @Override
-    protected boolean shouldDiscardWhenNoTarget() {
-        return true;
-    }
-
-    @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "action", 5, state -> state.setAndContinue(animationForCurrentState())), new AnimationController<>(this, "wing", 0, state -> state.setAndContinue(WING)));
     }

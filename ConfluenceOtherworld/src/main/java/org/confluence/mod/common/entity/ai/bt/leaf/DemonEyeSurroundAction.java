@@ -38,6 +38,7 @@ public final class DemonEyeSurroundAction extends BTNode {
         locateCount++;
         ticksLeft = 40;
         mob.setDeltaMovement(mob.getDeltaMovement().with(Direction.Axis.Y, 0.0));
+        mob.hasImpulse = true;
 
         Vec3 horizontalDirection = mob.position().with(Direction.Axis.Y, target.getY()).vectorTo(target.position());
         float yaw = (float) Math.toDegrees(Mth.atan2(-horizontalDirection.x, horizontalDirection.z));
@@ -53,9 +54,6 @@ public final class DemonEyeSurroundAction extends BTNode {
         LivingEntity target = mob.getTarget();
         Vec3 position = mob.position();
         if (target == null || !target.isAlive() || !mob.level().isNight() || targetPos == null || ticksLeft <= 0
-                || Math.abs(position.x - targetPos.x) <= 0.1
-                || Math.abs(position.y - targetPos.y) <= 0.1
-                || Math.abs(position.z - targetPos.z) <= 0.1
                 || position.distanceToSqr(targetPos) <= 0.09
                 || target.position().distanceToSqr(targetPos) >= 100.0) {
             return BTStatus.SUCCESS;

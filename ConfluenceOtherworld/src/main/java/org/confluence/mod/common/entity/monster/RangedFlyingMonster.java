@@ -33,6 +33,8 @@ public class RangedFlyingMonster extends BaseFlyingMonster {
 
     public RangedFlyingMonster(EntityType<? extends RangedFlyingMonster> type, Level level, int shotCooldown, double shotMultiplier) {
         super(type, level);
+        if (shotCooldown <= 0 || !Double.isFinite(shotMultiplier) || shotMultiplier < 0.0)
+            throw new IllegalArgumentException("Flying ranged attack timing and multiplier are invalid");
         setDiscardFriction(true);
         this.shotCooldown = shotCooldown;
         this.shotMultiplier = shotMultiplier;

@@ -560,11 +560,6 @@ public class KingSlime extends BaseBoss {
         return false;
     }
 
-    @Override
-    protected boolean shouldDiscardWhenNoTarget() {
-        return true;
-    }
-
     String getCombatPhaseName() {
         return phase.name();
     }

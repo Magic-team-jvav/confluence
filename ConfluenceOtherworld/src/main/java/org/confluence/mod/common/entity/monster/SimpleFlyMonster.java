@@ -37,6 +37,9 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
 
     public SimpleFlyMonster(EntityType<? extends SimpleFlyMonster> type, Level level, DashProfile dashProfile, double wanderSpeed, boolean playFlyAnimation, SoundProfile soundProfile) {
         super(type, level);
+        if (!Double.isFinite(wanderSpeed) || wanderSpeed <= 0.0) {
+            throw new IllegalArgumentException("Wander speed must be finite and positive");
+        }
         this.dashProfile = dashProfile;
         this.wanderSpeed = wanderSpeed;
         this.playFlyAnimation = playFlyAnimation;
@@ -117,14 +120,17 @@ public class SimpleFlyMonster extends BaseFlyingMonster {
                               double steeringAngleDegrees, int coastTicks) {
 
         public DashProfile {
-            if (friction < 0.0 || friction > 1.0) {
+            if (!Double.isFinite(friction) || friction < 0.0 || friction > 1.0) {
                 throw new IllegalArgumentException("Dash friction must be within [0, 1]");
             }
-            if (maxSpeed <= 0.0 || acceleration <= 0.0) {
-                throw new IllegalArgumentException("Dash speed and acceleration must be positive");
+            if (!Double.isFinite(maxSpeed) || maxSpeed <= 0.0 || !Double.isFinite(acceleration) || acceleration <= 0.0) {
+                throw new IllegalArgumentException("Dash speed and acceleration must be finite and positive");
             }
-            if (turnSpeedDegrees <= 0.0 || triggerAngleDegrees <= 0.0 || steeringAngleDegrees <= 0.0 || coastTicks < 0) {
-                throw new IllegalArgumentException("Dash angles must be positive and coast time cannot be negative");
+            if (!Double.isFinite(turnSpeedDegrees) || turnSpeedDegrees <= 0.0
+                    || !Double.isFinite(triggerAngleDegrees) || triggerAngleDegrees <= 0.0 || triggerAngleDegrees > 180.0
+                    || !Double.isFinite(steeringAngleDegrees) || steeringAngleDegrees <= 0.0 || steeringAngleDegrees > 180.0
+                    || coastTicks < 0) {
+                throw new IllegalArgumentException("Dash angles must be finite and valid; coast time cannot be negative");
             }
         }
 

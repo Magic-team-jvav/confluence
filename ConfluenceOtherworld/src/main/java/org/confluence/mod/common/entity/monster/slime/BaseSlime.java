@@ -323,7 +323,7 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
         private SlimeMoveControl(BaseSlime slime) {
             super(slime);
             this.slime = slime;
-            this.wantedYRot = 180.0F * slime.getYRot() / Mth.PI;
+            this.wantedYRot = slime.getYRot();
         }
 
         private void setDirection(float yRot, boolean aggressive) {

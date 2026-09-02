@@ -23,8 +23,8 @@ public final class WanderDashCycleAction extends BTNode {
     private Vec3 dashTarget = Vec3.ZERO;
 
     public WanderDashCycleAction(PathfinderMob mob, int wanderTicks, int dashTicks, double wanderSpeed, double dashSpeed) {
-        if (wanderTicks <= 0 || dashTicks <= 0) {
-            throw new IllegalArgumentException("Wander dash durations must be positive");
+        if (wanderTicks <= 0 || dashTicks <= 0 || !Double.isFinite(wanderSpeed) || wanderSpeed <= 0.0 || !Double.isFinite(dashSpeed) || dashSpeed <= 0.0) {
+            throw new IllegalArgumentException("Wander dash durations and speeds must be positive");
         }
         this.mob = mob;
         this.wanderTicks = wanderTicks;
@@ -52,6 +52,7 @@ public final class WanderDashCycleAction extends BTNode {
                     Vec3 targetPosition = target.getEyePosition();
                     Vec3 direction = targetPosition.subtract(mob.getEyePosition()).normalize();
                     if (direction.lengthSqr() > 1.0E-8) {
+                        wanderAction.stop();
                         dashDirection = direction;
                         dashTarget = targetPosition;
                         dashing = true;
@@ -78,6 +79,15 @@ public final class WanderDashCycleAction extends BTNode {
         mob.hasImpulse = true;
         mob.getLookControl().setLookAt(dashTarget);
         return BTStatus.RUNNING;
+    }
+
+    @Override
+    public void stop() {
+        wanderAction.stop();
+        dashing = false;
+        phaseTicks = 0;
+        dashDirection = Vec3.ZERO;
+        dashTarget = Vec3.ZERO;
     }
 
     private void beginWander() {

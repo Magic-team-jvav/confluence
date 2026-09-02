@@ -8,6 +8,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.util.OverworldUtils;
 
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public final class WormMovementAction extends BTNode {
     @Override
     public BTStatus execute() {
         LivingEntity target = worm.getTarget();
-        if (target != null && target.isAlive() && worm.getY() <= profile.maximumAttackHeight()) {
+        if (target != null && target.isAlive() && worm.getY() < profile.maximumAttackHeight()) {
             steerTowards(BossMinionCoordinator.predict(target, 5.0D, 4.0D), profile.attackSpeed());
             wanderTarget = null;
             wanderTicks = 0;
@@ -97,13 +98,14 @@ public final class WormMovementAction extends BTNode {
                           double maximumWanderHeight, double wanderHeightOffset,
                           boolean surfaceWander) {
         public Profile {
-            if (attackSpeed <= 0.0 || wanderSpeed <= 0.0) {
+            if (!Double.isFinite(attackSpeed) || attackSpeed <= 0.0 || !Double.isFinite(wanderSpeed) || wanderSpeed <= 0.0
+                    || Double.isNaN(maximumAttackHeight) || Double.isNaN(maximumWanderHeight) || !Double.isFinite(wanderHeightOffset)) {
                 throw new IllegalArgumentException("Worm movement speeds must be positive");
             }
         }
 
         public static Profile underground() {
-            return new Profile(0.4, 0.34, 50.0, 20.0, 0.0, false);
+            return new Profile(0.4, 0.34, OverworldUtils.getSurfaceY(), 20.0, 0.0, false);
         }
 
         public static Profile surface() {

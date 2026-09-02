@@ -634,4 +634,10 @@ public class HillOfFlesh extends BaseBoss {
     protected double getCombatPlayerRange() {
         return OUTER_RADIUS;
     }
+
+    @Override
+    protected Vec3 getDisengageMovement() {
+        Vec3 movement = getDeltaMovement();
+        return new Vec3(movement.x * 0.25D, -0.4D, movement.z * 0.25D);
+    }
 }

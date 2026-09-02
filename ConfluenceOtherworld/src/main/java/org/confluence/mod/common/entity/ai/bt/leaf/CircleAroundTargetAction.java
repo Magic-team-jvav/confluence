@@ -14,6 +14,9 @@ public class CircleAroundTargetAction extends BTNode {
     protected static final int DURATION = 80;
 
     public CircleAroundTargetAction(PathfinderMob mob, double speed, double radius) {
+        if (!Double.isFinite(speed) || speed <= 0.0 || !Double.isFinite(radius) || radius <= 0.0) {
+            throw new IllegalArgumentException("Orbit speed and radius must be finite and positive");
+        }
         this.mob = mob;
         this.speed = speed;
         this.radius = radius;
@@ -29,13 +32,15 @@ public class CircleAroundTargetAction extends BTNode {
     public BTStatus execute() {
         tick++;
         var currentTarget = mob.getTarget();
-        if (tick > DURATION || currentTarget == null) return BTStatus.SUCCESS;
+        if (tick > DURATION) return BTStatus.SUCCESS;
+        if (currentTarget == null || !currentTarget.isAlive()) return BTStatus.FAILURE;
 
         angle += 0.05;
         Vec3 target = currentTarget.position();
         Vec3 orbit = target.add(Math.cos(angle) * radius, 1.5, Math.sin(angle) * radius);
         Vec3 dir = orbit.subtract(mob.position()).normalize().scale(speed * 0.04);
         mob.setDeltaMovement(mob.getDeltaMovement().add(dir).scale(0.92));
+        mob.hasImpulse = true;
         mob.getLookControl().setLookAt(target);
         return BTStatus.RUNNING;
     }

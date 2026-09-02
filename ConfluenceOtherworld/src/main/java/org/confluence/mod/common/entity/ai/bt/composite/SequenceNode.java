@@ -13,19 +13,18 @@ public class SequenceNode extends BTNode {
 
     public SequenceNode(List<BTNode> children) {
         this.children = children;
-        this.currentIndex = 0;
+        this.currentIndex = -1;
     }
 
     @Override
     public void start() {
-        currentIndex = 0;
-        if (!children.isEmpty()) {
-            children.get(0).start();
-        }
+        currentIndex = children.isEmpty() ? -1 : 0;
+        if (currentIndex >= 0) children.get(currentIndex).start();
     }
 
     @Override
     public BTStatus execute() {
+        if (currentIndex < 0) return BTStatus.SUCCESS;
         while (currentIndex < children.size()) {
             BTNode child = children.get(currentIndex);
             BTStatus status = child.execute();
@@ -34,6 +33,7 @@ public class SequenceNode extends BTNode {
             }
             child.stop();
             if (status == BTStatus.FAILURE) {
+                currentIndex = -1;
                 return BTStatus.FAILURE;
             }
             currentIndex++;
@@ -41,13 +41,15 @@ public class SequenceNode extends BTNode {
                 children.get(currentIndex).start();
             }
         }
+        currentIndex = -1;
         return BTStatus.SUCCESS;
     }
 
     @Override
     public void stop() {
-        if (currentIndex < children.size()) {
+        if (currentIndex >= 0 && currentIndex < children.size()) {
             children.get(currentIndex).stop();
+            currentIndex = -1;
         }
     }
 

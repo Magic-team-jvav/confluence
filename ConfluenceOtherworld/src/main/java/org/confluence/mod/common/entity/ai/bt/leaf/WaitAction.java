@@ -9,6 +9,7 @@ public class WaitAction extends BTNode {
     private int tick;
 
     public WaitAction(int waitTicks) {
+        if (waitTicks <= 0) throw new IllegalArgumentException("Wait duration must be positive");
         this.waitTicks = waitTicks;
     }
 

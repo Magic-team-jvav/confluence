@@ -17,13 +17,13 @@ public class JewelBunny extends Bunny {
     public JewelBunny(EntityType<? extends Bunny> type, Level level) {
         super(type, level);
         if (!level.isClientSide) {
-            setVariant(JEWEL_VARIANTS[random.nextInt(JEWEL_VARIANTS.length)]);
+            setBunnyVariant(JEWEL_VARIANTS[random.nextInt(JEWEL_VARIANTS.length)]);
         }
     }
 
     @Override
     protected void initializeSpawnVariant() {
-        setVariant(CritterVariantUtil.uniform(random, JEWEL_VARIANTS));
+        setBunnyVariant(CritterVariantUtil.uniform(random, JEWEL_VARIANTS));
     }
 
     /// 宝石兔的后代仍然属于宝石兔实体。

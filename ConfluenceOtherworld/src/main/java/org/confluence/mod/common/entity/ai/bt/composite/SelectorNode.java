@@ -13,19 +13,18 @@ public class SelectorNode extends BTNode {
 
     public SelectorNode(List<BTNode> children) {
         this.children = children;
-        this.currentIndex = 0;
+        this.currentIndex = -1;
     }
 
     @Override
     public void start() {
-        currentIndex = 0;
-        if (!children.isEmpty()) {
-            children.get(0).start();
-        }
+        currentIndex = children.isEmpty() ? -1 : 0;
+        if (currentIndex >= 0) children.get(currentIndex).start();
     }
 
     @Override
     public BTStatus execute() {
+        if (currentIndex < 0) return BTStatus.FAILURE;
         BTStatus preemptingStatus = tryHigherPriorityChildren();
         if (preemptingStatus != null) {
             return preemptingStatus;
@@ -39,6 +38,7 @@ public class SelectorNode extends BTNode {
             }
             child.stop();
             if (status == BTStatus.SUCCESS) {
+                currentIndex = -1;
                 return BTStatus.SUCCESS;
             }
             currentIndex++;
@@ -46,6 +46,7 @@ public class SelectorNode extends BTNode {
                 children.get(currentIndex).start();
             }
         }
+        currentIndex = -1;
         return BTStatus.FAILURE;
     }
 
@@ -63,9 +64,11 @@ public class SelectorNode extends BTNode {
             if (currentIndex < children.size()) {
                 children.get(currentIndex).stop();
             }
-            currentIndex = index;
             if (status == BTStatus.SUCCESS) {
                 candidate.stop();
+                currentIndex = -1;
+            } else {
+                currentIndex = index;
             }
             return status;
         }
@@ -74,8 +77,9 @@ public class SelectorNode extends BTNode {
 
     @Override
     public void stop() {
-        if (currentIndex < children.size()) {
+        if (currentIndex >= 0 && currentIndex < children.size()) {
             children.get(currentIndex).stop();
+            currentIndex = -1;
         }
     }
 

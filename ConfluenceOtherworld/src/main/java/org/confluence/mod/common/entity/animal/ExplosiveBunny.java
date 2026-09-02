@@ -18,18 +18,18 @@ public class ExplosiveBunny extends Bunny {
 
     public ExplosiveBunny(EntityType<? extends ExplosiveBunny> type, Level level) {
         super(type, level);
-        setVariant(Variant.EXPLOSIVE);
+        setBunnyVariant(Variant.EXPLOSIVE);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        setVariant(Variant.EXPLOSIVE);
+        setBunnyVariant(Variant.EXPLOSIVE);
     }
 
     @Override
     protected void initializeSpawnVariant() {
-        setVariant(Variant.EXPLOSIVE);
+        setBunnyVariant(Variant.EXPLOSIVE);
     }
 
     /// 爆炸兔死亡后产生一次只伤害实体、不破坏方块的爆炸。

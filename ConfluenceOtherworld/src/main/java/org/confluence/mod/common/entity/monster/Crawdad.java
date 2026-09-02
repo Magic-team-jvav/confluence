@@ -41,7 +41,7 @@ public final class Crawdad extends BaseWarriorMonster {
 
     @Override
     protected JumpProfile jumpProfile() {
-        return new JumpProfile(2.0, 4.0, 60, 0);
+        return new JumpProfile(4.0, 2.0, 60, 0);
     }
 
     @Override

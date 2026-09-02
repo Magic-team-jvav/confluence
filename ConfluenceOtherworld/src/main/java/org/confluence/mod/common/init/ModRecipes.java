@@ -156,269 +156,269 @@ public final class ModRecipes {
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
                     MaterialItems.LENS.get()
-            }, PotionItems.ARCHERY_POTION.get().getDefaultInstance());
+            }, PotionItems.ARCHERY_POTION.toStack());
             // 建造者
             registerMix(new Item[]{
                     MaterialItems.BLINKROOT.get(),
                     MaterialItems.SHIVERTHORN.get(),
                     MaterialItems.MOONGLOW.get()
-            }, PotionItems.BUILDER_POTION.get().getDefaultInstance());
+            }, PotionItems.BUILDER_POTION.toStack());
             // 危险感
             registerMix(new Item[]{
                     MaterialItems.SHIVERTHORN.get(),
                     Items.COBWEB
-            }, PotionItems.DANGERSENSE_POTION.get().getDefaultInstance());
+            }, PotionItems.DANGERSENSE_POTION.toStack());
             // 耐力
             registerMix(new Item[]{
                     FoodItems.ARMORED_CAVE_FISH.get(),
                     MaterialItems.BLINKROOT.get()
-            }, PotionItems.ENDURANCE_POTION.get().getDefaultInstance());
+            }, PotionItems.ENDURANCE_POTION.toStack());
             // 羽落
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
                     MaterialItems.BLINKROOT.get(),
                     Items.FEATHER
-            }, PotionItems.FEATHERFALL_POTION.get().getDefaultInstance());
+            }, PotionItems.FEATHERFALL_POTION.toStack());
             // 钓鱼
             registerMix(new Item[]{
                     DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem(),
                     MaterialItems.WATERLEAF.get(),
-            }, PotionItems.FISHING_POTION.get().getDefaultInstance());
+            }, PotionItems.FISHING_POTION.toStack());
             // 脚蹼
             registerMix(new Item[]{
                     MaterialItems.SHIVERTHORN.get(),
                     MaterialItems.WATERLEAF.get(),
-            }, PotionItems.FLIPPER_POTION.get().getDefaultInstance());
+            }, PotionItems.FLIPPER_POTION.toStack());
             // 鱼腮
             registerMix(new Item[]{
                     MaterialItems.WATERLEAF.get(),
                     Items.FIRE_CORAL
-            }, PotionItems.GILLS_POTION.get().getDefaultInstance());
+            }, PotionItems.GILLS_POTION.toStack());
             // 重力
             registerMix(new Item[]{
                     MaterialItems.FIREBLOSSOM.get(),
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.BLINKROOT.get(),
                     Items.FEATHER
-            }, PotionItems.GRAVITATION_POTION.get().getDefaultInstance());
+            }, PotionItems.GRAVITATION_POTION.toStack());
             // 强效幸运
             registerMix(new Item[]{
                     MaterialItems.WATERLEAF.get(),
                     BaitItems.LADYBUG.get(),
                     MaterialItems.PINK_PEARL.get()
-            }, PotionItems.GREATER_LUCK_POTION.get().getDefaultInstance());
+            }, PotionItems.GREATER_LUCK_POTION.toStack());
             // 幸运
             registerMix(new Item[]{
                     MaterialItems.WATERLEAF.get(),
                     BaitItems.LADYBUG.get(),
                     MaterialItems.BLACK_PEARL.get()
-            }, PotionItems.LUCK_POTION.get().getDefaultInstance());
+            }, PotionItems.LUCK_POTION.toStack());
             // 弱幸运
             registerMix(new Item[]{
                     MaterialItems.WATERLEAF.get(),
                     BaitItems.LADYBUG.get(),
                     MaterialItems.PEARL.get()
-            }, PotionItems.LESSER_LUCK_POTION.get().getDefaultInstance());
+            }, PotionItems.LESSER_LUCK_POTION.toStack());
             // 拾心
             registerMix(new Item[]{
                     FoodItems.SCARLET_TIGER_FISH.get(),
                     MaterialItems.DAYBLOOM.get()
-            }, PotionItems.HEART_REACH_POTION.get().getDefaultInstance());
+            }, PotionItems.HEART_REACH_POTION.toStack());
             // 狩猎
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
                     MaterialItems.BLINKROOT.get(),
                     MaterialItems.SHARK_FIN.get()
-            }, PotionItems.HUNTER_POTION.get().getDefaultInstance());
+            }, PotionItems.HUNTER_POTION.toStack());
             // 狱火
             registerMix(new Item[]{
                     FoodItems.FLASHFIN_KOI.get(),
                     FoodItems.OBSIDIFISH.get(),
                     FoodItems.OBSIDIFISH.get(),
                     MaterialItems.FIREBLOSSOM.get(),
-            }, PotionItems.INFERNO_POTION.get().getDefaultInstance());
+            }, PotionItems.INFERNO_POTION.toStack());
             // 铁皮
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
                     MaterialItems.RAW_LEAD.get()
-            }, PotionItems.IRON_SKIN_POTION.get().getDefaultInstance());
+            }, PotionItems.IRON_SKIN_POTION.toStack());
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
                     Items.RAW_IRON
-            }, PotionItems.IRON_SKIN_POTION.get().getDefaultInstance());
+            }, PotionItems.IRON_SKIN_POTION.toStack());
             // 生命力
             registerMix(new Item[]{
                     FoodItems.COLORFUL_MINERAL_FISH.get(),
                     MaterialItems.MOONGLOW.get(),
                     MaterialItems.SHIVERTHORN.get(),
                     MaterialItems.WATERLEAF.get()
-            }, PotionItems.LIFEFORCE_POTION.get().getDefaultInstance());
+            }, PotionItems.LIFEFORCE_POTION.toStack());
             // 爱情
             registerMix(new Item[]{
                     FoodItems.PRINCESS_FISH.get(),
                     MaterialItems.SHIVERTHORN.get(),
-            }, PotionItems.LOVE_POTION.get().getDefaultInstance());
+            }, PotionItems.LOVE_POTION.toStack());
             // 魔能
             registerMix(new Item[]{
                     MaterialItems.MOONGLOW.get(),
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.FALLING_STAR.get()
-            }, PotionItems.MAGIC_POWER_POTION.get().getDefaultInstance());
+            }, PotionItems.MAGIC_POWER_POTION.toStack());
             // 魔力回复
             registerMix(new Item[]{
                     MaterialItems.MOONGLOW.get(),
                     MaterialItems.DAYBLOOM.get(),
                     MaterialItems.FALLING_STAR.get()
-            }, PotionItems.MANA_REGENERATION_POTION.get().getDefaultInstance());
+            }, PotionItems.MANA_REGENERATION_POTION.toStack());
             // 挖矿
             registerMix(new Item[]{
                     MaterialItems.ANTLION_MANDIBLE.get(),
                     MaterialItems.BLINKROOT.get()
-            }, PotionItems.MINING_POTION.get().getDefaultInstance());
+            }, PotionItems.MINING_POTION.toStack());
             // 夜猫子
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
                     MaterialItems.BLINKROOT.get()
-            }, PotionItems.NIGHT_OWL_POTION.get().getDefaultInstance());
+            }, PotionItems.NIGHT_OWL_POTION.toStack());
             // 黑曜石皮
             registerMix(new Item[]{
                     MaterialItems.FIREBLOSSOM.get(),
                     MaterialItems.WATERLEAF.get(),
                     Items.OBSIDIAN
-            }, PotionItems.OBSIDIAN_SKIN_POTION.get().getDefaultInstance());
+            }, PotionItems.OBSIDIAN_SKIN_POTION.toStack());
             // 暴怒
             registerMix(new Item[]{
                     FoodItems.BLOODY_PIRANHAS.get(),
                     MaterialItems.DEATHWEED.get()
-            }, PotionItems.RAGE_POTION.get().getDefaultInstance());
+            }, PotionItems.RAGE_POTION.toStack());
             // 再生
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
                     MaterialItems.LIFE_MUSHROOM.get()
-            }, PotionItems.REGENERATION_POTION.get().getDefaultInstance());
+            }, PotionItems.REGENERATION_POTION.toStack());
             // 光环
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
                     NatureBlocks.GLOWING_MUSHROOM.get().asItem()
-            }, PotionItems.SHINE_POTION.get().getDefaultInstance());
+            }, PotionItems.SHINE_POTION.toStack());
             // 洞探
             registerMix(new Item[]{
                     MaterialItems.BLINKROOT.get(),
                     MaterialItems.MOONGLOW.get(),
                     MaterialItems.RAW_PLATINUM.get()
-            }, PotionItems.SPELUNKER_POTION.get().getDefaultInstance());
+            }, PotionItems.SPELUNKER_POTION.toStack());
             registerMix(new Item[]{
                     MaterialItems.BLINKROOT.get(),
                     MaterialItems.MOONGLOW.get(),
                     Items.RAW_GOLD
-            }, PotionItems.SPELUNKER_POTION.get().getDefaultInstance());
+            }, PotionItems.SPELUNKER_POTION.toStack());
             // 敏捷
             registerMix(new Item[]{
                     MaterialItems.BLINKROOT.get(),
                     Items.CACTUS
-            }, PotionItems.SWIFTNESS_POTION.get().getDefaultInstance());
+            }, PotionItems.SWIFTNESS_POTION.toStack());
             // 荆棘
             registerMix(new Item[]{
                     MaterialItems.DEATHWEED.get(),
                     Items.CACTUS
-            }, PotionItems.THORNS_POTION.get().getDefaultInstance());
+            }, PotionItems.THORNS_POTION.toStack());
             // 泰坦
             registerMix(new Item[]{
                     ConsumableItems.DUNGEON_DEMON_BONE.get(),
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.SHIVERTHORN.get()
-            }, PotionItems.TITAN_POTION.get().getDefaultInstance());
+            }, PotionItems.TITAN_POTION.toStack());
             // 水上漂
             registerMix(new Item[]{
                     MaterialItems.WATERLEAF.get(),
                     MaterialItems.SHARK_FIN.get()
-            }, PotionItems.WATER_WALKING_POTION.get().getDefaultInstance());
+            }, PotionItems.WATER_WALKING_POTION.toStack());
             // 怒气
             registerMix(new Item[]{
                     FoodItems.EBONY_KOI.get(),
                     MaterialItems.DEATHWEED.get()
-            }, PotionItems.WRATH_POTION.get().getDefaultInstance());
+            }, PotionItems.WRATH_POTION.toStack());
             // 回忆
             registerMix(new Item[]{
                     FoodItems.MIRROR_FISH.get(),
                     MaterialItems.DAYBLOOM.get()
-            }, PotionItems.RECALL_POTION.get().getDefaultInstance());
+            }, PotionItems.RECALL_POTION.toStack());
             // 虫洞
             registerMix(new Item[]{
                     FoodItems.MIRROR_FISH.get(),
                     MaterialItems.BLINKROOT.get()
-            }, PotionItems.WORMHOLE_POTION.get().getDefaultInstance());
+            }, PotionItems.WORMHOLE_POTION.toStack());
             // 隐身
             registerMix(new Item[]{
                     MaterialItems.BLINKROOT.get(),
                     MaterialItems.MOONGLOW.get()
-            }, PotionItems.INVISIBILITY_POTION.get().getDefaultInstance());
+            }, PotionItems.INVISIBILITY_POTION.toStack());
             // 传送
             registerMix(new Item[]{
                     FoodItems.CHAOS_FISH.get(),
                     MaterialItems.FIREBLOSSOM.get()
-            }, PotionItems.RANDOM_TELEPORT_POTION.get().getDefaultInstance());
+            }, PotionItems.RANDOM_TELEPORT_POTION.toStack());
             // 臭味
             registerMix(new Item[]{
                     FoodItems.STINKY_FISH.get(),
                     MaterialItems.DEATHWEED.get()
-            }, PotionItems.STINK_POTION.get().getDefaultInstance());
+            }, PotionItems.STINK_POTION.toStack());
             // 宝匣
             registerMix(new Item[]{
                     MaterialItems.AMBER.get(),
                     MaterialItems.MOONGLOW.get(),
                     MaterialItems.SHIVERTHORN.get(),
                     MaterialItems.WATERLEAF.get()
-            }, PotionItems.CRATE_POTION.get().getDefaultInstance());
+            }, PotionItems.CRATE_POTION.toStack());
             // 弹药储备
             registerMix(new Item[]{
                     FoodItems.PISCES_FIN_COD.get(),
                     MaterialItems.MOONGLOW.get()
-            }, PotionItems.AMMO_RESERVATION_POTION.get().getDefaultInstance());
+            }, PotionItems.AMMO_RESERVATION_POTION.toStack());
             // 召唤
             registerMix(new Item[]{
                     FoodItems.MOTTLED_OILFISH.get(),
                     MaterialItems.MOONGLOW.get()
-            }, PotionItems.SUMMONING_POTION.get().getDefaultInstance());
+            }, PotionItems.SUMMONING_POTION.toStack());
             // 微光 嬗金可获取时启用
 //            registerMix(new Item[]{
 //                    MaterialItems.AETHERIUM_GOLD.get(),
 //                    NatureBlocks.AETHERIUM_BLOCK.asItem()
-//            }, PotionItems.SHIMMER_POTION.get().getDefaultInstance());
+//            }, PotionItems.SHIMMER_POTION.toStack());
             // 战斗
             registerMix(new Item[]{
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.ROTTEN_BONE.get()
-            }, PotionItems.BATTLE_POTION.get().getDefaultInstance());
+            }, PotionItems.BATTLE_POTION.toStack());
             registerMix(new Item[]{
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.VERTEBRA.get()
-            }, PotionItems.BATTLE_POTION.get().getDefaultInstance());
+            }, PotionItems.BATTLE_POTION.toStack());
             registerMix(new Item[]{
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.BLOOD_CLOT_POWDER.get()
-            }, PotionItems.BATTLE_POTION.get().getDefaultInstance());
+            }, PotionItems.BATTLE_POTION.toStack());
             registerMix(new Item[]{
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.WORM_TOOTH.get()
-            }, PotionItems.BATTLE_POTION.get().getDefaultInstance());
+            }, PotionItems.BATTLE_POTION.toStack());
             // 镇静
             registerMix(new Item[]{
                     FoodItems.DAMSEL_FISH.get(),
                     MaterialItems.DAYBLOOM.get()
-            }, PotionItems.CALMING_POTION.get().getDefaultInstance());
+            }, PotionItems.CALMING_POTION.toStack());
             // 耐饿
             registerMix(new Item[]{
                     FoodItems.RED_PLEATFISH.get(),
                     FoodItems.BROWN_STALKSPINE.get()
-            }, PotionItems.SATIETY_POTION.get().getDefaultInstance());
+            }, PotionItems.SATIETY_POTION.toStack());
             // 强效治疗
             registerMix(new Item[]{
                     MaterialItems.PIXIE_DUST.get(),
                     MaterialItems.PIXIE_DUST.get(),
                     MaterialItems.PIXIE_DUST.get(),
                     MaterialItems.CRYSTAL_SHARDS.get()
-            }, PotionItems.GREATER_HEALING_POTION.get().getDefaultInstance());
+            }, PotionItems.GREATER_HEALING_POTION.toStack());
             // 超级魔力
             registerMix(new Item[]{
                     MaterialItems.CRYSTAL_SHARDS.get(),
@@ -427,7 +427,7 @@ public final class ModRecipes {
                     PotionItems.GREATER_MANA_POTION.get(),
                     MaterialItems.CRYSTAL_SHARDS.get(),
                     MaterialItems.UNICORN_HORN.get()
-            }, PotionItems.SUPER_MANA_POTION.get().getDefaultInstance());
+            }, PotionItems.SUPER_MANA_POTION.toStack());
         }
 
         private static void registerMaterial(Item material) {
@@ -445,7 +445,7 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(ItemStack input) {
-                    return input.is(PotionItems.CHAOS_POTION.get()) || input.is(PotionItems.BOTTLED_WATER.get());
+                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.BOTTLED_WATER);
                 }
 
                 @Override
@@ -475,7 +475,7 @@ public final class ModRecipes {
                         }
                         return entry.getValue().copy();
                     }
-                    ItemStack stack = PotionItems.CHAOS_POTION.get().getDefaultInstance();
+                    ItemStack stack = PotionItems.CHAOS_POTION.toStack();
                     setMaterials(stack, materials);
                     return stack;
                 }
@@ -488,12 +488,12 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(ItemStack input) {
-                    return input.is(PotionItems.CHAOS_POTION.get()) || input.is(PotionItems.BOTTLE.get());
+                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.BOTTLE);
                 }
 
                 @Override
                 public boolean isIngredient(ItemStack ingredient) {
-                    return ingredient.is(MaterialItems.GEL.get()) || ingredient.is(MaterialItems.LIFE_MUSHROOM.get());
+                    return ingredient.is(MaterialItems.GEL) || ingredient.is(MaterialItems.LIFE_MUSHROOM);
                 }
 
                 @Override
@@ -502,23 +502,23 @@ public final class ModRecipes {
                     int[] materials = getMaterials(input);
                     if (materials.length >= 2) return ItemStack.EMPTY;
                     int material;
-                    if (ingredient.is(MaterialItems.GEL.get())) {
+                    if (ingredient.is(MaterialItems.GEL)) {
                         material = gel;
-                    } else if (ingredient.is(MaterialItems.LIFE_MUSHROOM.get())) {
+                    } else if (ingredient.is(MaterialItems.LIFE_MUSHROOM)) {
                         material = life_mushroom;
                     } else {
                         return ItemStack.EMPTY;
                     }
                     if (materials.length == 0) {
-                        ItemStack stack = PotionItems.CHAOS_POTION.get().getDefaultInstance();
+                        ItemStack stack = PotionItems.CHAOS_POTION.toStack();
                         setMaterials(stack, new int[]{material});
                         return stack;
                     } else {
                         int first = materials[0];
                         if ((first == gel && material == life_mushroom) || (first == life_mushroom && material == gel)) {
-                            return PotionItems.LESSER_HEALING_POTION.get().getDefaultInstance();
+                            return PotionItems.LESSER_HEALING_POTION.toStack();
                         }
-                        ItemStack stack = PotionItems.CHAOS_POTION.get().getDefaultInstance();
+                        ItemStack stack = PotionItems.CHAOS_POTION.toStack();
                         setMaterials(stack, append(materials, material));
                         return stack;
                     }
@@ -527,12 +527,12 @@ public final class ModRecipes {
             consumer.accept(new IBrewingRecipe() {
                 @Override
                 public boolean isInput(ItemStack input) {
-                    return input.is(PotionItems.CHAOS_POTION.get()) || input.is(PotionItems.LESSER_HEALING_POTION.get());
+                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.LESSER_HEALING_POTION);
                 }
 
                 @Override
                 public boolean isIngredient(ItemStack ingredient) {
-                    return ingredient.is(PotionItems.LESSER_HEALING_POTION.get()) || ingredient.is(MaterialItems.GLOWING_MUSHROOM.get());
+                    return ingredient.is(PotionItems.LESSER_HEALING_POTION) || ingredient.is(MaterialItems.GLOWING_MUSHROOM);
                 }
 
                 @Override
@@ -541,15 +541,15 @@ public final class ModRecipes {
                     int[] materials = getMaterials(input);
                     if (materials.length >= 3) return ItemStack.EMPTY;
                     int material;
-                    if (ingredient.is(PotionItems.LESSER_HEALING_POTION.get())) {
+                    if (ingredient.is(PotionItems.LESSER_HEALING_POTION)) {
                         material = lesser_healing_potion;
-                    } else if (ingredient.is(MaterialItems.GLOWING_MUSHROOM.get())) {
+                    } else if (ingredient.is(MaterialItems.GLOWING_MUSHROOM)) {
                         material = glowing_mushroom;
                     } else {
                         return ItemStack.EMPTY;
                     }
                     if (materials.length == 0) {
-                        ItemStack stack = PotionItems.CHAOS_POTION.get().getDefaultInstance();
+                        ItemStack stack = PotionItems.CHAOS_POTION.toStack();
                         setMaterials(stack, new int[]{material});
                         return stack;
                     } else {
@@ -560,8 +560,8 @@ public final class ModRecipes {
                             if (m == lesser_healing_potion) l = true;
                             else if (m == glowing_mushroom) g = true;
                         }
-                        if (l && g) return PotionItems.HEALING_POTION.get().getDefaultInstance();
-                        ItemStack stack = PotionItems.CHAOS_POTION.get().getDefaultInstance();
+                        if (l && g) return PotionItems.HEALING_POTION.toStack();
+                        ItemStack stack = PotionItems.CHAOS_POTION.toStack();
                         setMaterials(stack, materials);
                         return stack;
                     }
@@ -592,7 +592,7 @@ public final class ModRecipes {
                         return ItemStack.EMPTY;
                     }
                     if (materials.length == 0) {
-                        ItemStack stack = PotionItems.CHAOS_POTION.get().getDefaultInstance();
+                        ItemStack stack = PotionItems.CHAOS_POTION.toStack();
                         setMaterials(stack, new int[]{material});
                         return stack;
                     } else {
@@ -603,8 +603,8 @@ public final class ModRecipes {
                             if (m == lesser_mana_potion) l = true;
                             else if (m == glowing_mushroom) g = true;
                         }
-                        if (l && g) return PotionItems.MANA_POTION.get().getDefaultInstance();
-                        ItemStack stack = PotionItems.CHAOS_POTION.get().getDefaultInstance();
+                        if (l && g) return PotionItems.MANA_POTION.toStack();
+                        ItemStack stack = PotionItems.CHAOS_POTION.toStack();
                         setMaterials(stack, materials);
                         return stack;
                     }

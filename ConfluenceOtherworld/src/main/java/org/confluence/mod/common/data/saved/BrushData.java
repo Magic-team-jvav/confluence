@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import PortLib.extensions.net.minecraft.world.level.block.state.BlockState.PortBlockStateExtension;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -108,7 +107,7 @@ public record BrushData(Map<BlockPos, int[]> colors) {
     }
 
     public void ensureValid(ServerLevel level) {
-        colors.entrySet().removeIf(entry -> level.isLoaded(entry.getKey()) && PortBlockStateExtension.isEmpty(level.getBlockState(entry.getKey())));
+        colors.entrySet().removeIf(entry -> level.isLoaded(entry.getKey()) && level.getBlockState(entry.getKey()).isEmpty());
     }
 
     public static int[] createColor(int color) {

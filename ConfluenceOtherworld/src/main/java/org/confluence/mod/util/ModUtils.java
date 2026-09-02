@@ -1,6 +1,5 @@
 package org.confluence.mod.util;
 
-import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.core.BlockPos;
@@ -110,7 +109,7 @@ public final class ModUtils {
     }
 
     public static boolean isWaterBottle(ItemStack stack) {
-        return stack.is(PotionItems.BOTTLED_WATER.get()) || PotionUtils.getPotion(stack).equals(Potions.WATER);
+        return stack.is(PotionItems.BOTTLED_WATER) || PotionUtils.getPotion(stack).equals(Potions.WATER);
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, boolean onSurface) {
@@ -344,7 +343,7 @@ public final class ModUtils {
     /// 决定护士是否能治疗
     public static boolean isDebuff(MobEffectInstance instance) {
         return instance.getEffect().getCategory() == MobEffectCategory.HARMFUL &&
-                !PortMobEffectInstanceExtension.getCures(instance).contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
+                !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }
 
     public static boolean useKey(ItemStack carried, ItemStack onSlot, Player player) {

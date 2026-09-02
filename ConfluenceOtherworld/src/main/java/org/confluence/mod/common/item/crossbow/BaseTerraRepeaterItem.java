@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.crossbow;
 
-import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
@@ -25,11 +24,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.CrossbowItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -53,6 +48,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 import org.mesdag.portlib.wrapper.common.extensions.IPortItemPropertiesExtension;
+import org.mesdag.portlib.wrapper.common.extensions.IPortLivingEntityExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -345,7 +341,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem {
                 level.addFreshEntity(projectile);
             }
 
-            weapon.hurtAndBreak(this.getDurabilityUse(itemstack), shooter, PortLivingEntityExtension.getSlotForHand(hand));
+            weapon.hurtAndBreak(this.getDurabilityUse(itemstack), shooter, IPortLivingEntityExtension.getSlotForHand(hand));
             if (weapon.isEmpty()) {
                 break;
             }

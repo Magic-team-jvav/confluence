@@ -1,7 +1,6 @@
 package org.confluence.mod.client.effect;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -41,6 +40,7 @@ import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 import java.util.*;
 
@@ -89,7 +89,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 Codec.INT.fieldOf("color").forGetter(Entry::color),
                 Codec.BOOL.fieldOf("showText").forGetter(Entry::showText),
                 ShowType.CODEC.fieldOf("showType").forGetter(Entry::showType),
-                PortItemStackExtension.codec().fieldOf("showItem").forGetter(Entry::showItem),
+                IPortItemStackExtension.CODEC.fieldOf("showItem").forGetter(Entry::showItem),
                 ResourceLocation.CODEC.fieldOf("showIcon").forGetter(Entry::showIcon),
                 Codec.BOOL.fieldOf("isLocation").forGetter(Entry::isLocation)
         ).apply(builder, Entry::new));
@@ -427,7 +427,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                                     centerCache.containsKey(pos) && player.level().getBlockState(pos).is(Blocks.AIR))*/
                             (targets.get(block).showType == ShowType.SPELUNKER && player.hasEffect(ModEffects.SPELUNKER.get()) ||
                                     targets.get(block).showType == ShowType.DANGER && player.hasEffect(ModEffects.DANGER_SENSE.get())) ||
-                            blockState.is(PortTags.Blocks.ORES) && player.hasEffect(ModEffects.SPELUNKER.get()) // 显示所有带矿物标签的方块
+                            blockState.is(PortTags.Blocks.ORES) && player.hasEffect(ModEffects.SPELUNKER) // 显示所有带矿物标签的方块
                     ) { // 已缓存但为空
                         blockMap.computeIfAbsent(block, k1 -> new ArrayList<>()).add(pos.immutable());
                     }

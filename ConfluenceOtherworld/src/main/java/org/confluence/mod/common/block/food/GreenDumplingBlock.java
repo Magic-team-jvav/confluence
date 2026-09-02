@@ -63,7 +63,7 @@ public class GreenDumplingBlock extends Block {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (stack.is(FoodItems.GREEN_DUMPLING.get())) {
+        if (stack.is(FoodItems.GREEN_DUMPLING)) {
             int currentPiece = state.getValue(PIECE);
             if (currentPiece < 4) {
                 if (!player.isCreative()) stack.shrink(1);
@@ -101,7 +101,7 @@ public class GreenDumplingBlock extends Block {
         player.playSound(SoundEvents.GENERIC_EAT);
         int pieceCount = state.getValue(PIECE);
         level.gameEvent(player, GameEvent.EAT, pos);
-        if (!itemStack.is(FoodItems.GREEN_DUMPLING.get())) {
+        if (!itemStack.is(FoodItems.GREEN_DUMPLING)) {
             if (pieceCount > 1) {
                 level.setBlock(pos, state.setValue(PIECE, pieceCount - 1), 3);
             } else {

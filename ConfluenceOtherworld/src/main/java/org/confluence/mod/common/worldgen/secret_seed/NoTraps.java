@@ -61,7 +61,7 @@ public class NoTraps extends SecretSeed {
             Player nearestPlayer = serverLevel.getNearestPlayer(living, 16);
             if (nearestPlayer != null) {
                 BaseGrenadeEntity grenade = new BaseGrenadeEntity(living);
-                grenade.setItem(ConsumableItems.GRENADE.get().getDefaultInstance());
+                grenade.setItem(ConsumableItems.GRENADE.toStack());
                 Vec3 vectorA2B = LibMathUtils.getVectorA2B(living, nearestPlayer);
                 double size = living.getBoundingBox().getSize() + 1.5;
                 grenade.moveTo(living.position().add(vectorA2B.x * size, vectorA2B.y * size + 0.5, vectorA2B.z * size));

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.recipe;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -21,6 +20,7 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipe;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortSingleRecipeInput;
 
@@ -135,7 +135,7 @@ public class ItemTransmutationRecipe implements PortRecipe<PortSingleRecipeInput
         protected MapCodec<ItemTransmutationRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
                     PortIngredientExtension.codec().fieldOf("source").forGetter(ItemTransmutationRecipe::source),
-                    PortCodecExtension.lenientOptionalFieldOf(PortItemStackExtension.codec().listOf(), "target", List.of()).forGetter(ItemTransmutationRecipe::target),
+                    PortCodecExtension.lenientOptionalFieldOf(IPortItemStackExtension.CODEC.listOf(), "target", List.of()).forGetter(ItemTransmutationRecipe::target),
                     PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "shrink", 1).forGetter(ItemTransmutationRecipe::shrink),
                     PortCodecExtension.lenientOptionalFieldOf(GamePhase.CODEC, "game_phase", GamePhase.BEFORE_SKELETRON).forGetter(ItemTransmutationRecipe::gamePhase)
             ).apply(instance, ItemTransmutationRecipe::new));
@@ -145,7 +145,7 @@ public class ItemTransmutationRecipe implements PortRecipe<PortSingleRecipeInput
         protected PortStreamCodec<org.mesdag.portlib.network.PortRegistryFriendlyByteBuf, ItemTransmutationRecipe> getStreamCodec() {
             return PortStreamCodec.composite(
                     PortIngredientExtension.contentsStreamCodec(), ItemTransmutationRecipe::source,
-                    PortItemStackExtension.listStreamCodec(), ItemTransmutationRecipe::target,
+                    IPortItemStackExtension.LIST_STREAM_CODEC, ItemTransmutationRecipe::target,
                     PortByteBufCodecs.VAR_INT, ItemTransmutationRecipe::shrink,
                     GamePhase.STREAM_CODEC, ItemTransmutationRecipe::gamePhase,
                     ItemTransmutationRecipe::new

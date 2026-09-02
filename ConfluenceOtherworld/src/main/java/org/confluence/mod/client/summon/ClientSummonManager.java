@@ -34,8 +34,8 @@ import org.confluence.mod.network.s2c.SummonSyncPacketS2C;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 import org.mesdag.portlib.event.client.PortModelEvent;
+import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.*;
 

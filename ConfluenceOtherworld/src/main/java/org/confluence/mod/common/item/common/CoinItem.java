@@ -67,8 +67,8 @@ public class CoinItem extends BlockItem {
             if (level.isClientSide) {
                 player.playSound(ModSoundEvents.TERRA_OPERATION.get());
             } else {
-                if (!player.getInventory().add(upgrade.get().getDefaultInstance())) {
-                    player.drop(upgrade.get().getDefaultInstance(), true);
+                if (!player.getInventory().add(upgrade.toStack())) {
+                    player.drop(upgrade.toStack(), true);
                 }
                 stack.shrink(UPGRADES_COUNT);
             }
@@ -84,8 +84,8 @@ public class CoinItem extends BlockItem {
             if (context.getLevel().isClientSide) {
                 player.playSound(ModSoundEvents.TERRA_OPERATION.get());
             } else {
-                if (!player.getInventory().add(upgrade.get().getDefaultInstance())) {
-                    player.drop(upgrade.get().getDefaultInstance(), true);
+                if (!player.getInventory().add(upgrade.toStack())) {
+                    player.drop(upgrade.toStack(), true);
                 }
                 context.getItemInHand().shrink(UPGRADES_COUNT);
                 if (context.getItemInHand().isEmpty()) {

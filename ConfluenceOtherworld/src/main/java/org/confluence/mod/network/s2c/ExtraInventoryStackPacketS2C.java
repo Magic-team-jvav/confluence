@@ -1,6 +1,5 @@
 package org.confluence.mod.network.s2c;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,13 +11,16 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
-public record ExtraInventoryStackPacketS2C(long packedData,
-                                           ItemStack itemStack) implements IPortPacket.S2C {
+public record ExtraInventoryStackPacketS2C(
+        long packedData,
+        ItemStack itemStack
+) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("extra_inventory_stack");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, ExtraInventoryStackPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
             PortByteBufCodecs.VAR_LONG, ExtraInventoryStackPacketS2C::packedData,
-            PortItemStackExtension.optionalStreamCodec(), ExtraInventoryStackPacketS2C::itemStack,
+            IPortItemStackExtension.OPTIONAL_STREAM_CODEC, ExtraInventoryStackPacketS2C::itemStack,
             ExtraInventoryStackPacketS2C::new
     );
 

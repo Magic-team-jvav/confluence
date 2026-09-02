@@ -11,7 +11,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.effect.harmful.PotionSicknessEffect;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
@@ -23,11 +22,6 @@ public class MushroomItem extends BlockItem {
     public MushroomItem(Block block, float amount) {
         super(block, new Properties());
         this.amount = amount;
-    }
-
-    @Override
-    protected boolean canPlace(BlockPlaceContext context, BlockState state) {
-        return super.canPlace(context, state);
     }
 
     @Override
@@ -43,15 +37,15 @@ public class MushroomItem extends BlockItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (player.hasEffect(ModEffects.POTION_SICKNESS.get())) {
+        if (player.hasEffect(ModEffects.POTION_SICKNESS)) {
             return InteractionResultHolder.fail(itemStack);
         }
-        if (itemStack.is(MaterialItems.LIFE_MUSHROOM.get())) {
+        if (itemStack.is(MaterialItems.LIFE_MUSHROOM)) {
             player.heal(amount);
             FoodProperties properties = ModFoodProperties.LIFE_MUSHROOM;
             player.getFoodData().eat(properties.getNutrition(), properties.getSaturationModifier());
             PotionSicknessEffect.addTo(player, 600); // 你代码里写的是600
-            if (!player.getAbilities().instabuild) {
+            if (!player.hasInfiniteMaterials()) {
                 itemStack.shrink(1);
             }
             return InteractionResultHolder.consume(itemStack);

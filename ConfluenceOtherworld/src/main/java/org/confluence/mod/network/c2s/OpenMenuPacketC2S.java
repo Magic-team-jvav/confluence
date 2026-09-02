@@ -1,6 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +21,7 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import top.theillusivec4.curios.common.network.NetworkHandler;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 
@@ -39,7 +39,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     public static final ResourceLocation ID = Confluence.asResource("open_menu");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC = PortStreamCodec.composite(
             PortByteBufCodecs.BYTE, OpenMenuPacketC2S::menuId,
-            PortItemStackExtension.optionalStreamCodec(), OpenMenuPacketC2S::stack,
+            IPortItemStackExtension.OPTIONAL_STREAM_CODEC, OpenMenuPacketC2S::stack,
             OpenMenuPacketC2S::new
     );
 

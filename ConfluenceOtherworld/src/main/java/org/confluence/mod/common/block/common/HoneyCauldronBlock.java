@@ -21,7 +21,7 @@ public class HoneyCauldronBlock extends AbstractCauldronBlock {
     public static final Map<Item, CauldronInteraction> INTERACTION_MAP = Util.make(CauldronInteraction.newInteractionMap(), map -> {
         map.put(Items.BUCKET, (blockState, level, blockPos, player, hand, itemStack) -> CauldronInteraction.fillBucket(
                 blockState, level, blockPos, player, hand, itemStack,
-                ToolItems.HONEY_BUCKET.get().getDefaultInstance(),
+                ToolItems.HONEY_BUCKET.toStack(),
                 state -> true,
                 SoundEvents.BUCKET_FILL
         ));

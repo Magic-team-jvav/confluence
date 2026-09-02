@@ -89,7 +89,7 @@ public class EverBeneficialItem extends TooltipItem {
         ));
     });
     public static final Beneficial MINECART_UPGRADE_KIT = new Beneficial(Confluence.asResource("minecart_upgrade_kit"), EverBeneficial::setMinecartUpgradeKitUsed, (id, name, player, everBeneficial, isRespawn) -> {
-        player.drop(MinecartItems.MECHANICAL_CART.get().getDefaultInstance(), true);
+        player.drop(MinecartItems.MECHANICAL_CART.toStack(), true);
     });
     public static final Beneficial ARTISAN_LOAF = new Beneficial(Confluence.asResource("artisan_loaf"), EverBeneficial::setArtisanLoafUsed, (id, name, player, everBeneficial, isRespawn) -> {
         AttributeInstance instance = player.getAttributes().getInstance(PortAttributesExtension.blockInteractionRange());

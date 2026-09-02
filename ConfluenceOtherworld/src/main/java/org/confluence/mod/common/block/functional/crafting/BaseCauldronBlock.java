@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -39,6 +38,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.CookingPotMenu;
 import org.confluence.mod.common.recipe.CookingPotRecipe;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 import java.util.Optional;
 
@@ -190,7 +190,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
                             ItemStack oldResult = blockEntity.items.get(RESULT_SLOT);
                             if (oldResult.isEmpty()) {
                                 blockEntity.items.set(RESULT_SLOT, neoResult.copy());
-                            } else if (PortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
+                            } else if (IPortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
                                 oldResult.grow(neoResult.getCount());
                             }
                         } else {
@@ -217,7 +217,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
                 ItemStack oldResult = inventory.get(CookingPotMenu.RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     return true;
-                } else if (!PortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
+                } else if (!IPortItemStackExtension.isSameItemSameComponents(oldResult, neoResult)) {
                     return false;
                 } else {
                     return oldResult.getCount() + neoResult.getCount() <= maxStackSize && oldResult.getCount() + neoResult.getCount() <= oldResult.getMaxStackSize() || oldResult.getCount() + neoResult.getCount() <= neoResult.getMaxStackSize();

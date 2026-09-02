@@ -1,7 +1,5 @@
 package org.confluence.mod.common.attachment;
 
-import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.DynamicOps;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -27,6 +25,7 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import org.mesdag.portlib.wrapper.IPortNBTSerializable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
@@ -75,7 +74,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
             extraInventory.accessoryDye = NonNullList.withSize(accessoryDye, ItemStack.EMPTY);
             extraInventory.previousStacks = NonNullList.withSize(size, ItemStack.EMPTY);
             extraInventory.dirty = false;
-            List<ItemStack> list = PortItemStackExtension.optionalListStreamCodec().decode(buffer);
+            List<ItemStack> list = IPortItemStackExtension.OPTIONAL_LIST_STREAM_CODEC.decode(buffer);
             for (int i = 0; i < size; i++) {
                 extraInventory.setItem(i, list.get(i));
             }
@@ -89,7 +88,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
             for (int i = 0; i < extraInventory.getContainerSize(); i++) {
                 list.add(i, extraInventory.getItem(i));
             }
-            PortItemStackExtension.optionalListStreamCodec().encode(buffer, list);
+            IPortItemStackExtension.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, list);
         }
     };
 
@@ -290,7 +289,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
 
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
         CompoundTag tag = new CompoundTag();
         ListTag t = new ListTag();
         for (IStackWithDye stack : vanityArmor) t.add(stack.encode(ops));
@@ -313,7 +312,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
     }
 
     private static Tag encode(ItemStack stack, DynamicOps<Tag> ops) {
-        return PortItemStackExtension.optionalCodec().encodeStart(ops, stack).result().orElseGet(CompoundTag::new);
+        return IPortItemStackExtension.OPTIONAL_CODEC.encodeStart(ops, stack).result().orElseGet(CompoundTag::new);
     }
 
     @Override
@@ -323,7 +322,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
             return;
         }
 
-        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
         ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
         for (int i = 0; i < vanityArmor.size(); i++) {
             vanityArmor.set(i, i < t.size() ? StackWithDye.DEFAULT.decode(t.getCompound(i), ops) : StackWithDye.DEFAULT);
@@ -347,7 +346,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
     }
 
     private static ItemStack decode(CompoundTag tag, DynamicOps<Tag> ops) {
-        return PortItemStackExtension.optionalCodec().parse(ops, tag).result().orElse(ItemStack.EMPTY);
+        return IPortItemStackExtension.OPTIONAL_CODEC.parse(ops, tag).result().orElse(ItemStack.EMPTY);
     }
 
     public void copyFrom(ExtraInventory other) {

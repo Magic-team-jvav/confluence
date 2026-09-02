@@ -133,7 +133,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
             if (lootTable != null) {
                 for (int i = 0; i < getContainerSize(); i++) {
                     if (getItems().get(i).isEmpty()) {
-                        getItems().set(i, VanityArmorItems.DEAD_MANS_SWEATER.get().getDefaultInstance());
+                        getItems().set(i, VanityArmorItems.DEAD_MANS_SWEATER.toStack());
                         break;
                     }
                 }

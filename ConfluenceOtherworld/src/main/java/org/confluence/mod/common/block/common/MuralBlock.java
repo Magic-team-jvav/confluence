@@ -1,7 +1,6 @@
 package org.confluence.mod.common.block.common;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -340,14 +339,14 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             if (lore != null && !lore.isEmpty()) {
                 ListTag loreTag = new ListTag();
                 for (Component comp : lore) {
-                    PortComponentSerialization.CODEC.encodeStart(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), comp)
+                    PortComponentSerialization.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), comp)
                             .resultOrPartial(err -> Confluence.LOGGER.warn("Failed to encode mural lore: {}", err))
                             .ifPresent(loreTag::add);
                 }
                 tag.put("lore", loreTag);
             }
             if (belongsToGroup != null) {
-                GroupItem.BelongsTo.CODEC.encodeStart(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), belongsToGroup)
+                GroupItem.BelongsTo.CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), belongsToGroup)
                         .resultOrPartial(err -> Confluence.LOGGER.warn("Failed to encode mural group: {}", err))
                         .ifPresent(groupTag -> tag.put("belongs_to_group", groupTag));
             }
@@ -381,7 +380,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                 ListTag loreTag = tag.getList("lore", Tag.TAG_COMPOUND);
                 List<Component> loreList = new ArrayList<>();
                 for (Tag value : loreTag) {
-                    PortComponentSerialization.CODEC.parse(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), value)
+                    PortComponentSerialization.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), value)
                             .resultOrPartial(err -> Confluence.LOGGER.warn("Failed to decode mural lore: {}", err))
                             .ifPresent(loreList::add);
                 }
@@ -389,7 +388,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             }
 
             if (tag.contains("belongs_to_group")) {
-                GroupItem.BelongsTo.CODEC.parse(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), tag.get("belongs_to_group"))
+                GroupItem.BelongsTo.CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag.get("belongs_to_group"))
                         .resultOrPartial(err -> Confluence.LOGGER.warn("Failed to decode mural group: {}", err))
                         .ifPresent(group -> this.belongsToGroup = group);
             }
@@ -467,22 +466,22 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
     public record MuralData(float x, float y, float z, float roll, float scale, Optional<Icon> icon,
                             Optional<Text> text) {
         public static final Codec<MuralData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"x", 0.0F).forGetter(MuralData::x),
-                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"y", 0.0F).forGetter(MuralData::y),
-                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"z", 0.0F).forGetter(MuralData::z),
-                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"roll", 0.0F).forGetter(MuralData::roll),
-                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT,"scale", 1.0F).forGetter(MuralData::scale),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "x", 0.0F).forGetter(MuralData::x),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "y", 0.0F).forGetter(MuralData::y),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "z", 0.0F).forGetter(MuralData::z),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "roll", 0.0F).forGetter(MuralData::roll),
+                PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "scale", 1.0F).forGetter(MuralData::scale),
                 PortCodecExtension.lenientOptionalFieldOf(Icon.CODEC, "icon").forGetter(MuralData::icon),
                 PortCodecExtension.lenientOptionalFieldOf(Text.CODEC, "text").forGetter(MuralData::text)
         ).apply(instance, MuralData::new));
         public static final Codec<List<MuralData>> LIST_CODEC = CODEC.listOf();
 
         public static Tag encode(Optional<List<MuralData>> datas, HolderLookup.Provider registries) {
-            return datas.flatMap(data -> LIST_CODEC.encodeStart(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), data).result()).orElseGet(ListTag::new);
+            return datas.flatMap(data -> LIST_CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), data).result()).orElseGet(ListTag::new);
         }
 
         public static Optional<List<MuralData>> decode(ListTag tag, HolderLookup.Provider registries) {
-            return LIST_CODEC.parse(PortHolderLookupExtension.Provider.createSerializationContext(registries, NbtOps.INSTANCE), tag).result();
+            return LIST_CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag).result();
         }
     }
 

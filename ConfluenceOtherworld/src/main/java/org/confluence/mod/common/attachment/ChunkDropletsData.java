@@ -1,7 +1,6 @@
 package org.confluence.mod.common.attachment;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
-import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
@@ -63,7 +62,7 @@ public class ChunkDropletsData implements IPortNBTSerializable<CompoundTag> {
         CompoundTag nbt = new CompoundTag();
 
         ListTag listTag = new ListTag();
-        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
         for (Map.Entry<ChunkPos, Map<BlockPos, ParticleOptions>> entry : dataMap.entrySet()) {
             ChunkPos chunkPos = entry.getKey();
             CompoundTag map = new CompoundTag();
@@ -90,7 +89,7 @@ public class ChunkDropletsData implements IPortNBTSerializable<CompoundTag> {
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
         dataMap.clear();
         ListTag listTag = nbt.getList("dataMap", Tag.TAG_COMPOUND);
-        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
         for (Tag tag : listTag) {
             CompoundTag map = (CompoundTag) tag;
             ChunkPos chunkPos = new ChunkPos(map.getInt("x"), map.getInt("z"));

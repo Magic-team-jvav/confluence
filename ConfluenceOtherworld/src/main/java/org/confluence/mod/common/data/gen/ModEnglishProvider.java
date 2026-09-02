@@ -9,7 +9,10 @@ import net.minecraftforge.common.data.LanguageProvider;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.ModPrefix;
-import org.confluence.mod.common.data.gen.language.*;
+import org.confluence.mod.common.data.gen.language.AchievementsLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.BestiaryLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.ConfigurationLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.DialogsLanguageSubProvider;
 import org.confluence.mod.common.data.saved.Team;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
@@ -1131,8 +1134,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.mother_slime", "Mother Slime");
 
         new DialogsLanguageSubProvider(this::add, true);
-
-        new PatchouliLanguageSubProvider(this::add, true);
 
         // sound
         add("confluence.subtitle.transmission", "Transmission Magic: Activated");

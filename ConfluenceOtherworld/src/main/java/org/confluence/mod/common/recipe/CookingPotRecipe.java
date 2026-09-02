@@ -2,7 +2,6 @@ package org.confluence.mod.common.recipe;
 
 import PortLib.extensions.net.minecraft.advancements.critereon.NbtPredicate.PortNbtPredicateExtension;
 import PortLib.extensions.net.minecraft.advancements.critereon.StatePropertiesPredicate.PortStatePropertiesPredicateExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
@@ -35,6 +34,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
 import java.util.Optional;
@@ -97,7 +97,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
         @Override
         protected MapCodec<CookingPotRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    PortItemStackExtension.strictCodec().fieldOf("result").forGetter(recipe -> recipe.result),
+                    IPortItemStackExtension.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                     INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients),
                     PortIngredientExtension.codec().fieldOf("container").forGetter(recipe -> recipe.container),
                     HeatSourcePredicate.CODEC.fieldOf("heat_source").forGetter(recipe -> recipe.heatSource),
@@ -113,7 +113,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
                     int size = buffer.readVarInt();
                     NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
                     nonnulllist.replaceAll(ignore -> PortIngredientExtension.contentsStreamCodec().decode(buffer));
-                    ItemStack itemstack = PortItemStackExtension.streamCodec().decode(buffer);
+                    ItemStack itemstack = IPortItemStackExtension.STREAM_CODEC.decode(buffer);
                     Ingredient container = PortIngredientExtension.contentsStreamCodec().decode(buffer);
                     HeatSourcePredicate heatSource = HeatSourcePredicate.STREAM_CODEC.decode(buffer);
                     return new CookingPotRecipe(itemstack, nonnulllist, container, heatSource, buffer.readVarInt());
@@ -125,7 +125,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
                     for (Ingredient ingredient : recipe.ingredients) {
                         PortIngredientExtension.contentsStreamCodec().encode(buffer, ingredient);
                     }
-                    PortItemStackExtension.streamCodec().encode(buffer, recipe.result);
+                    IPortItemStackExtension.STREAM_CODEC.encode(buffer, recipe.result);
                     PortIngredientExtension.contentsStreamCodec().encode(buffer, recipe.container);
                     HeatSourcePredicate.STREAM_CODEC.encode(buffer, recipe.heatSource);
                     buffer.writeVarInt(recipe.cookingTime);

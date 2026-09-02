@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity;
 
-import PortLib.extensions.net.minecraft.world.phys.AABB.PortAABBExtension;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -14,6 +13,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.util.TrapDamageHelper;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAABBExtension;
 
 public class FlameCloudEntity extends Entity {
     private static final String RUNTIME_TAG = "ConfluenceFlameCloudRuntime";
@@ -48,7 +48,7 @@ public class FlameCloudEntity extends Entity {
                 level().addParticle(ParticleTypes.FLAME, offset.x, offset.y + 2.5, offset.z, 0, 0.1, 0);
             }
         } else {
-            for (Entity entity : level().getEntities(this, PortAABBExtension.encapsulatingFullBlocks(blockPosition().offset(-2, -2, -2), blockPosition().offset(2, 2, 2)))) {
+            for (Entity entity : level().getEntities(this, IPortAABBExtension.encapsulatingFullBlocks(blockPosition().offset(-2, -2, -2), blockPosition().offset(2, 2, 2)))) {
                 if (!entity.fireImmune() || !entity.isInWaterRainOrBubble()) {
                     int fireTicks = 200;
                     if (entity instanceof LivingEntity living && living.getItemBySlot(EquipmentSlot.CHEST).is(VanityArmorItems.DEAD_MANS_SWEATER.get())) {

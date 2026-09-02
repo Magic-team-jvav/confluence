@@ -66,7 +66,7 @@ public class BugNetItem extends TooltipItem {
             } else if (predicate.test(interactionTarget) && interactionTarget.getBoundingBox().getSize() <= maxSize) {
                 ItemStack itemStack = BugNetEntityToItem.getItem((ServerPlayer) player, interactionTarget);
                 if (itemStack == null) {
-                    itemStack = ModItems.ENTITY_DISPLAY.get().getDefaultInstance();
+                    itemStack = ModItems.ENTITY_DISPLAY.toStack();
                     interactionTarget.setYRot(0.0F);
                     interactionTarget.setYHeadRot(0.0F);
                     interactionTarget.setYBodyRot(0.0F);

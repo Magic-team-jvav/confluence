@@ -36,22 +36,22 @@ public class DyeMixMenu extends AbstractContainerMenu {
         addSlot(new Slot(container, 0, 17, 14) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(VanityArmorItems.RED_DYE.get())
-                        || stack.is(PaintItems.RED_PAINT.get());
+                return stack.is(VanityArmorItems.RED_DYE)
+                        || stack.is(PaintItems.RED_PAINT);
             }
         });
         addSlot(new Slot(container, 1, 17, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(VanityArmorItems.GREEN_DYE.get())
-                        || stack.is(PaintItems.GREEN_PAINT.get());
+                return stack.is(VanityArmorItems.GREEN_DYE)
+                        || stack.is(PaintItems.GREEN_PAINT);
             }
         });
         addSlot(new Slot(container, 2, 17, 56) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(VanityArmorItems.BLUE_DYE.get())
-                        || stack.is(PaintItems.BLUE_PAINT.get());
+                return stack.is(VanityArmorItems.BLUE_DYE)
+                        || stack.is(PaintItems.BLUE_PAINT);
             }
         });
 

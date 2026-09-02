@@ -34,7 +34,7 @@ public class LifecrystalBoulderEntity extends BoulderEntity implements GeoAnimat
     }
 
     private void dropLifeCrystal(ServerLevel serverLevel) {
-        ItemStack lifeCrystal = ConsumableItems.LIFE_CRYSTAL.get().getDefaultInstance();
+        ItemStack lifeCrystal = ConsumableItems.LIFE_CRYSTAL.toStack();
         BlockPos blockPos = blockPosition();
         BlockState blockState = serverLevel.getBlockState(blockPos);
 

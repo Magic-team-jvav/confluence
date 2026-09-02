@@ -8,6 +8,7 @@ import org.confluence.lib.mixed.SelfGetter;
 
 import java.util.Map;
 
+// todo 成就
 public interface IPlayerAdvancements extends SelfGetter<PlayerAdvancements> {
     void confluence$load(ServerAdvancementManager manager, Map<ResourceLocation, AdvancementProgress> data);
 

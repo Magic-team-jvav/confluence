@@ -13,13 +13,7 @@ import terrablender.api.VanillaParameterOverlayBuilder;
 
 import java.util.function.Consumer;
 
-import static terrablender.api.ParameterUtils.Continentalness;
-import static terrablender.api.ParameterUtils.Depth;
-import static terrablender.api.ParameterUtils.Erosion;
-import static terrablender.api.ParameterUtils.Humidity;
-import static terrablender.api.ParameterUtils.ParameterPointListBuilder;
-import static terrablender.api.ParameterUtils.Temperature;
-import static terrablender.api.ParameterUtils.Weirdness;
+import static terrablender.api.ParameterUtils.*;
 
 /// 腐化之地的主世界噪声区域。
 ///

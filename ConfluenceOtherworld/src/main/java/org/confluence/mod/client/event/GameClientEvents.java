@@ -5,10 +5,7 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -51,7 +48,6 @@ import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
-import org.confluence.mod.client.gui.AchievementScreen;
 import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
@@ -88,7 +84,6 @@ import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
-import org.mesdag.portlib.client.gui.components.PortImageButton;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.*;
@@ -277,7 +272,7 @@ public final class GameClientEvents {
                 } else if (event.isAttack() && ClientWeaponInputManager.blocksAttack(stack)) {
                     event.setCanceled(true);
                     event.setSwingHand(false);
-                } else if (event.isUseItem() && stack.is(ModItems.BACKGROUND_IMAGE_MAKER.get())) {
+                } else if (event.isUseItem() && stack.is(ModItems.BACKGROUND_IMAGE_MAKER)) {
                     Minecraft.getInstance().setScreen(new BackgroundImageMakerScreen());
                 }
             }
@@ -394,22 +389,22 @@ public final class GameClientEvents {
             event.addListener(ExtraInventoryScreen.getExtraInventoryButton((EffectRenderingInventoryScreen<?>) screen, isInventoryScreen));
         }
 
-        if (screen instanceof TitleScreen) {
-            for (GuiEventListener listener : event.getListenersList()) {
-                if (listener instanceof AbstractWidget widget &&
-                        widget.getMessage().getContents() instanceof TranslatableContents contents &&
-                        "menu.online".equals(contents.getKey())
-                ) {
-                    event.addListener(new PortImageButton(screen.width / 2 - 124, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
-                        Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
-                    }) {
-                        @Override
-                        public void setFocused(boolean focused) {}
-                    });
-                    break;
-                }
-            }
-        }
+// todo       if (screen instanceof TitleScreen) {
+//            for (GuiEventListener listener : event.getListenersList()) {
+//                if (listener instanceof AbstractWidget widget &&
+//                        widget.getMessage().getContents() instanceof TranslatableContents contents &&
+//                        "menu.online".equals(contents.getKey())
+//                ) {
+//                    event.addListener(new PortImageButton(screen.width / 2 - 124, widget.getY(), 20, 20, AchievementScreen.SPRITES, button -> {
+//                        Minecraft.getInstance().pushGuiLayer(new AchievementScreen());
+//                    }) {
+//                        @Override
+//                        public void setFocused(boolean focused) {}
+//                    });
+//                    break;
+//                }
+//            }
+//        }
 
 //  todo      if (screen instanceof DialogScreen) {
 //            LocalPlayer player = Minecraft.getInstance().player;
@@ -537,7 +532,7 @@ public final class GameClientEvents {
     private static void playerEmptyAutoAttack(PlayerEmptyAutoAttackEvent event) {
         Player player = event.getEntity();
         ItemStack itemStack = event.getItemStack();
-        if (itemStack.is(SwordItems.NIGHTS_EDGE.get())) {
+        if (itemStack.is(SwordItems.NIGHTS_EDGE)) {
             if (!player.getCooldowns().isOnCooldown(itemStack.getItem())) {
                 player.swing(InteractionHand.MAIN_HAND);
                 player.resetAttackStrengthTicker();

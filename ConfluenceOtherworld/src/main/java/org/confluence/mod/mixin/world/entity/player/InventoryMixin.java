@@ -48,7 +48,7 @@ public abstract class InventoryMixin {
                     ItemStack coins = extraInventory.getCoins(i);
                     int count = coins.getCount();
                     if (count >= UPGRADES_COUNT && coins.getItem() instanceof CoinItem coinItem && coinItem.upgrade != null) {
-                        ItemStack itemStack = coinItem.upgrade.get().getDefaultInstance();
+                        ItemStack itemStack = coinItem.upgrade.toStack();
                         coins.setCount(count % UPGRADES_COUNT);
                         extraInventory1.setCoins(i, coins);
                         itemStack.setCount(count / UPGRADES_COUNT);

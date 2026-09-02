@@ -1,6 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,6 +15,7 @@ import org.confluence.mod.common.menu.DyeMixMenu;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 /// 请求服务端混合当前染料槽中的三原色。
 ///
@@ -42,19 +42,19 @@ public record DyeMixPacketC2S(int rgb) implements IPortPacket.C2S {
 
         ItemStack output;
         if (red.getItem().is(VanityArmorItems.RED_DYE.get()) && green.getItem().is(VanityArmorItems.GREEN_DYE.get()) && blue.getItem().is(VanityArmorItems.BLUE_DYE.get())) {
-            output = VanityArmorItems.DYE.get().getDefaultInstance();
+            output = VanityArmorItems.DYE.toStack();
             BaseDyeItem.setRGB(output, rgb);
         } else if (red.getItem().is(PaintItems.RED_PAINT.get())
                 && green.getItem().is(PaintItems.GREEN_PAINT.get())
                 && blue.getItem().is(PaintItems.BLUE_PAINT.get())) {
-            output = PaintItems.PAINT.get().getDefaultInstance();
+            output = PaintItems.PAINT.toStack();
             PaintItem.setRGB(output, rgb);
         } else {
             return;
         }
 
         ItemStack carried = dyeMixMenu.getCarried();
-        if (!carried.isEmpty() && (!PortItemStackExtension.isSameItemSameComponents(carried, output) || carried.getCount() >= carried.getMaxStackSize())) {
+        if (!carried.isEmpty() && (!IPortItemStackExtension.isSameItemSameComponents(carried, output) || carried.getCount() >= carried.getMaxStackSize())) {
             return;
         }
 

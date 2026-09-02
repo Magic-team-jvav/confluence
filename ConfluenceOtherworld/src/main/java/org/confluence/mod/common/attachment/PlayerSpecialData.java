@@ -1,7 +1,6 @@
 package org.confluence.mod.common.attachment;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
-import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import com.google.common.collect.Iterables;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -247,7 +246,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
     @Override
     public CompoundTag serializeNBT(HolderLookup.Provider provider) {
-        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
         CompoundTag tag = super.serializeNBT(provider);
 
         PortDataResultExtension.ifSuccess(ArmorSetBonusKey.CODEC.encodeStart(ops, armorSetBonusKey), nbt -> tag.put("ArmorBonusKey", nbt));
@@ -262,7 +261,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        RegistryOps<Tag> ops = PortHolderLookupExtension.Provider.createSerializationContext(provider, NbtOps.INSTANCE);
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
         setToDefaultValue();
         super.deserializeNBT(provider, nbt);
 

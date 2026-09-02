@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.bow;
 
-import PortLib.extensions.net.minecraft.world.entity.LivingEntity.PortLivingEntityExtension;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,6 +23,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
+import org.mesdag.portlib.wrapper.common.extensions.IPortLivingEntityExtension;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileWeaponItemExtension;
 
 import java.util.List;
@@ -105,12 +105,12 @@ public class BaseTerraBowItem extends BowItem {
         ItemStack ammunition = player.getProjectile(stack);
         boolean hasAmmunition = !ammunition.isEmpty();
         int chargeTicks = getUseDuration(stack) - timeLeft;
-        chargeTicks = ForgeEventFactory.onArrowLoose(stack, level, player, chargeTicks, hasAmmunition || player.getAbilities().instabuild);
+        chargeTicks = ForgeEventFactory.onArrowLoose(stack, level, player, chargeTicks, hasAmmunition || player.hasInfiniteMaterials());
         if (chargeTicks < 0) return;
         float power = getPowerForCharge(stack, chargeTicks);
         if (power < 0.1F) return;
         if (!hasAmmunition) {
-            if (!player.getAbilities().instabuild) return;
+            if (!player.hasInfiniteMaterials()) return;
             ammunition = Items.ARROW.getDefaultInstance();
         }
         List<ItemStack> projectiles = IPortProjectileWeaponItemExtension.draw(stack, ammunition, player);
@@ -180,7 +180,7 @@ public class BaseTerraBowItem extends BowItem {
                 level.addFreshEntity(projectile);
             }
 
-            weapon.hurtAndBreak(getDurabilityUse(itemstack), shooter, PortLivingEntityExtension.getSlotForHand(hand));
+            weapon.hurtAndBreak(getDurabilityUse(itemstack), shooter, IPortLivingEntityExtension.getSlotForHand(hand));
             if (weapon.isEmpty()) {
                 break;
             }

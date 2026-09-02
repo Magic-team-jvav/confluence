@@ -2,7 +2,6 @@ package org.confluence.mod.common.data.saved;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
-import PortLib.extensions.net.minecraft.core.BlockPos.PortBlockPosExtension;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.*;
@@ -608,7 +607,7 @@ public enum NPCSpawner implements IGlobalData {
             blockPos = blockPos.above();
         }
 
-        while (level.noCollision(npc, aabb.move(PortBlockPosExtension.getBottomCenter(blockPos.below()))) && blockPos.getY() > level.getMinBuildHeight() + 1) {
+        while (level.noCollision(npc, aabb.move(blockPos.below().getBottomCenter())) && blockPos.getY() > level.getMinBuildHeight() + 1) {
             blockPos = blockPos.below();
         }
 

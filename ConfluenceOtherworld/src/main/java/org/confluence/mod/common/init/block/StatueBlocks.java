@@ -186,7 +186,7 @@ public class StatueBlocks {
     // King Statue
     // Queen Statue
     public static final PortDeferredBlock<BehaviourStatueBlock> BOMB_STATUE = registerBehaviour("bomb_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, false, 200, (state, level, pos) -> {
-        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ConsumableItems.BOMB.get().getDefaultInstance());
+        ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ConsumableItems.BOMB.toStack());
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));

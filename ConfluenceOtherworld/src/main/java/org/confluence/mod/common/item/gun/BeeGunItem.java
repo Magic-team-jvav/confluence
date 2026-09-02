@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.gun;
 
+import net.minecraft.advancements.Advancement;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -12,7 +13,6 @@ import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
-import org.mesdag.portlib.wrapper.advancements.PortAdvancementHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +36,14 @@ public class BeeGunItem extends ManaGunItem {
     private static void notTheBees(Player player) {
         CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
         if (!data.getBoolean("confluence:not_the_bees")) {
-            if (player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.BEE_HELMET.get()) ||
-                    player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.BEE_CHESTPLATE.get()) ||
-                    player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BEE_LEGGINGS.get()) ||
-                    player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BEE_BOOTS.get())) {
+            if (player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.BEE_HELMET) ||
+                    player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.BEE_CHESTPLATE) ||
+                    player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BEE_LEGGINGS) ||
+                    player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BEE_BOOTS)) {
                 ServerPlayer serverPlayer = (ServerPlayer) player;
-                PortAdvancementHolder advancement = PortAdvancementHolder.wrap(serverPlayer.server.getAdvancements().getAdvancement(AchievementUtils.asAchievement("not_the_bees")));
+                Advancement advancement = serverPlayer.server.getAdvancements().getAdvancement(AchievementUtils.asAchievement("not_the_bees"));
                 if (advancement != null) {
-                    serverPlayer.getAdvancements().award(advancement.value(), "never");
+                    serverPlayer.getAdvancements().award(advancement, "never");
                 }
                 data.putBoolean("confluence:not_the_bees", true);
             }

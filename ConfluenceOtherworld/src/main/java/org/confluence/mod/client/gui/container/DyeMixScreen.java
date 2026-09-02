@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.container;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -18,6 +17,7 @@ import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.menu.DyeMixMenu;
 import org.confluence.mod.network.c2s.DyeMixPacketC2S;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
 
 public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
@@ -68,9 +68,9 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
         });
         editBox.setResponder(value -> {
             if (isDye.isTrue()) {
-                BaseDyeItem.setRGB(this.stack = VanityArmorItems.DYE.get().getDefaultInstance(), rgb);
+                BaseDyeItem.setRGB(this.stack = VanityArmorItems.DYE.toStack(), rgb);
             } else if (isDye.isFalse()) {
-                PaintItem.setRGB(this.stack = PaintItems.PAINT.get().getDefaultInstance(), rgb);
+                PaintItem.setRGB(this.stack = PaintItems.PAINT.toStack(), rgb);
             } else {
                 this.stack = ItemStack.EMPTY;
             }
@@ -117,7 +117,7 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
         }
         if (mouseX > leftPos + 125 && mouseX < leftPos + 141 && mouseY > topPos + 35 && mouseY < topPos + 51) {
             ItemStack carried = menu.getCarried();
-            if (!stack.isEmpty() && (carried.isEmpty() || (PortItemStackExtension.isSameItemSameComponents(carried, stack) && carried.getCount() < carried.getMaxStackSize()))) {
+            if (!stack.isEmpty() && (carried.isEmpty() || (IPortItemStackExtension.isSameItemSameComponents(carried, stack) && carried.getCount() < carried.getMaxStackSize()))) {
                 DyeMixPacketC2S.sendToServer(rgb);
             }
         }

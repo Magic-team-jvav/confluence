@@ -49,7 +49,7 @@ public class LihzahrdDoorBlock extends DoorBlock {
         ItemStack stack = player.getItemInHand(hand);
 
         // 手持钥匙解锁
-        if (!level.isClientSide && stack.is(ToolItems.TEMPLE_KEY.get()) && !state.getValue(UNLOCKED)) {
+        if (!level.isClientSide && stack.is(ToolItems.TEMPLE_KEY) && !state.getValue(UNLOCKED)) {
             level.setBlock(pos, state.setValue(UNLOCKED, true), Block.UPDATE_IMMEDIATE | Block.UPDATE_CLIENTS);
             level.gameEvent(player, isOpen(state) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
             if (!player.hasInfiniteMaterials()) {

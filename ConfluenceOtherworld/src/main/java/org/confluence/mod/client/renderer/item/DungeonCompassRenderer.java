@@ -51,7 +51,7 @@ public class DungeonCompassRenderer {
 
     public static void renderInWorld(PoseStack poseStack, LocalPlayer player, Minecraft minecraft) {
         ItemStack headItem = player.getInventory().armor.get(3);
-        if (headItem.isEmpty() || !headItem.is(ToolItems.DUNGEON_COMPASS.get())) {
+        if (headItem.isEmpty() || !headItem.is(ToolItems.DUNGEON_COMPASS)) {
             return;
         }
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(headItem);

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -82,7 +81,7 @@ public class DungeonCompass extends TooltipItem {
                 }
             } else {
                 ServerLevel serverlevel = (ServerLevel) level;
-                HolderSet<Structure> dungeon = HolderSet.direct(PortHolderLookupExtension.Provider.holderOrThrow(serverlevel.registryAccess(), ModStructures.Keys.DUNGEON));
+                HolderSet<Structure> dungeon = HolderSet.direct(serverlevel.registryAccess().holderOrThrow(ModStructures.Keys.DUNGEON));
                 Pair<BlockPos, Holder<Structure>> pair = serverlevel.getChunkSource().getGenerator().findNearestMapStructure(serverlevel, dungeon, blockPos, 100, false);
                 if (pair == null) {
                     player.displayClientMessage(Component.translatable("message.confluence.dungeon_not_found").withStyle(ChatFormatting.RED), true);

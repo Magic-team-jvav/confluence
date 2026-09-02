@@ -5,7 +5,10 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.gen.language.*;
+import org.confluence.mod.common.data.gen.language.AchievementsLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.BestiaryLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.ConfigurationLanguageSubProvider;
+import org.confluence.mod.common.data.gen.language.DialogsLanguageSubProvider;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.*;
@@ -1117,8 +1120,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.mother_slime", "史莱姆之母");
 
         new DialogsLanguageSubProvider(this::add, false);
-
-        new PatchouliLanguageSubProvider(this::add, false);
 
         addSoundTranslations();
         add("tag.fluid.confluence.fishing_able", "可钓鱼");

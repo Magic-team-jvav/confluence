@@ -1,6 +1,5 @@
 package org.confluence.mod.network.s2c;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -10,6 +9,7 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 public record OpenAnglerDialogPacketS2C(int entityId, byte state, ItemStack questFish) implements IPortPacket.S2C {
     public static final byte COMPLETED = 0;
@@ -23,7 +23,7 @@ public record OpenAnglerDialogPacketS2C(int entityId, byte state, ItemStack ques
             PortStreamCodec.composite(
                     PortByteBufCodecs.VAR_INT, OpenAnglerDialogPacketS2C::entityId,
                     PortByteBufCodecs.BYTE, OpenAnglerDialogPacketS2C::state,
-                    PortItemStackExtension.optionalStreamCodec(), OpenAnglerDialogPacketS2C::questFish,
+                    IPortItemStackExtension.OPTIONAL_STREAM_CODEC, OpenAnglerDialogPacketS2C::questFish,
                     OpenAnglerDialogPacketS2C::new
             );
 

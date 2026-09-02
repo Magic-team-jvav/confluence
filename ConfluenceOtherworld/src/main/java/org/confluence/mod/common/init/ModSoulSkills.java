@@ -58,7 +58,7 @@ public final class ModSoulSkills {
 
     private static Supplier<SoulSkill> register(String id, float basicDamage, SkillCategory category) {
         ResourceLocation rl = Confluence.asResource(id);
-        SoulSkill cached = new SoulSkill(new PortSprite(Confluence.asResource("hud/soul_skill/" + id), 16, 16), rl, basicDamage);
+        SoulSkill cached = new SoulSkill(new PortSprite(rl.withPrefix("hud/soul_skill/"), 16, 16), rl, basicDamage);
         SKILLS.add(() -> cached);
         CATEGORIES.put(cached.id(), category);
         return () -> cached;

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.recipe;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -19,6 +18,7 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipe;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
@@ -99,7 +99,7 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
         @Override
         protected MapCodec<FletchingTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    PortItemStackExtension.strictCodec().fieldOf("result").forGetter(recipe -> recipe.result),
+                    IPortItemStackExtension.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                     PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
                     PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
                     PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
@@ -109,7 +109,7 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
         @Override
         protected PortStreamCodec<PortRegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
             return PortStreamCodec.composite(
-                    PortItemStackExtension.streamCodec(), recipe -> recipe.result,
+                    IPortItemStackExtension.STREAM_CODEC, recipe -> recipe.result,
                     PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.tail,
                     PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.body,
                     PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.head,

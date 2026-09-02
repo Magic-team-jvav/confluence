@@ -15,7 +15,6 @@
         "integration.terrafurniture.TFPinWheelMixin",
         "neoforge.items.ItemStackHandlerMixin",
         "server.MinecraftServerMixin",
-        "server.PlayerAdvancementsMixin",
         "server.ServerAdvancementManagerMixin",
         "server.commands.AdvancementCommands$Action$2Mixin",
         "server.level.ServerLevelMixin",

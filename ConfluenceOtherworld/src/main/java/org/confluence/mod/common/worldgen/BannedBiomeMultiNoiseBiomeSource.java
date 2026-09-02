@@ -1,6 +1,5 @@
 package org.confluence.mod.common.worldgen;
 
-import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
@@ -38,8 +37,8 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
             } else if (targetBiome.equals(ModBiomes.THE_CRIMSON)) {
                 IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);
             }
-            this.target = PortHolderLookupExtension.Provider.holderOrThrow(server.registryAccess(), targetBiome);
-            this.protection = PortHolderLookupExtension.Provider.holderOrThrow(server.registryAccess(), Biomes.PLAINS);
+            this.target = server.registryAccess().holderOrThrow(targetBiome);
+            this.protection = server.registryAccess().holderOrThrow(Biomes.PLAINS);
         }
         if (biome.is(bannedBiome)) {
             ServerLevelData data = ServerLifecycleHooks.getCurrentServer().getWorldData().overworldData();

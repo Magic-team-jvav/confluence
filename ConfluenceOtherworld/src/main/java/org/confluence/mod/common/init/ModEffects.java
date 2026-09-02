@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init;
 
-import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
 import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import PortLib.extensions.net.minecraftforge.registries.DeferredRegister.PortDeferredRegisterExtension;
 import net.minecraft.core.registries.Registries;
@@ -195,7 +194,7 @@ public final class ModEffects {
     }
 
     public static void onLoveEffectAdd(MobEffectInstance instance, LivingEntity living, Entity entity) {
-        if (PortMobEffectInstanceExtension.is(instance, LOVE) && living instanceof Animal animal && !animal.isBaby()) {
+        if (instance.is(LOVE) && living instanceof Animal animal && !animal.isBaby()) {
             animal.setInLove(entity instanceof Player player ? player : null);
         }
     }

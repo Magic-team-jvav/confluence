@@ -1,7 +1,6 @@
 package org.confluence.mod.client.handler;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.network.c2s.KeyRequestPacketC2S;
 import org.confluence.mod.network.c2s.MountTogglePacketC2S;

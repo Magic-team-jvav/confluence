@@ -88,7 +88,7 @@ public abstract class AbstractPotionItem extends Item {
         ItemStack stack = context.getItemInHand();
         if (player instanceof ServerPlayer serverPlayer &&
                 context.getClickedFace() != Direction.DOWN &&
-                stack.is(PotionItems.BOTTLED_WATER.get())
+                stack.is(PotionItems.BOTTLED_WATER)
         ) {
             BlockPos pos = context.getClickedPos();
             BlockState source = level.getBlockState(pos);

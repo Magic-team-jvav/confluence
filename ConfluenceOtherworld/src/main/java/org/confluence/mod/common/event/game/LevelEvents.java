@@ -75,7 +75,7 @@ public final class LevelEvents {
         if (breaker instanceof LivingEntity living && !tool.is(Items.SHEARS)) {
             if (state.is(ModTags.Blocks.VINES) && TCUtils.hasType(living, AccessoryItems.VINE$ROPE)) {
                 event.setCanceled(true);
-                Block.popResource(event.getLevel(), event.getPos(), ModBlocks.VINE_ROPE.get().asItem().getDefaultInstance());
+                Block.popResource(event.getLevel(), event.getPos(), ModBlocks.VINE_ROPE.toStack());
             }
         }
         // 再生法杖/再生之斧 时运

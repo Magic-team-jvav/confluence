@@ -1,7 +1,6 @@
 package org.confluence.mod.common.block.functional.crafting;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -62,6 +61,7 @@ import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -244,7 +244,7 @@ public class AltarBlock extends BaseEntityBlock {
                 if (firstEmptySlot == -1 && stack.isEmpty()) {
                     firstEmptySlot = i;
                 }
-                if (PortItemStackExtension.isSameItemSameComponents(stack, toAdd)) {
+                if (IPortItemStackExtension.isSameItemSameComponents(stack, toAdd)) {
                     ItemStack result = itemHandler.insertItem(i, toAdd, false);
                     setChanged();
                     markUpdated();

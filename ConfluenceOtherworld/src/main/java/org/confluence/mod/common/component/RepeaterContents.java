@@ -1,6 +1,5 @@
 package org.confluence.mod.common.component;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import com.google.common.collect.Iterables;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -10,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,11 @@ import java.util.stream.Stream;
 public final class RepeaterContents implements TooltipComponent {
     public static final RepeaterContents EMPTY = new RepeaterContents(NonNullList.create(), 64);
     public static final Codec<RepeaterContents> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            PortItemStackExtension.codec().listOf().fieldOf("items").forGetter(RepeaterContents::asItems),
+            IPortItemStackExtension.CODEC.listOf().fieldOf("items").forGetter(RepeaterContents::asItems),
             Codec.INT.fieldOf("maxItemCapacity").forGetter(RepeaterContents::getMaxItemCapacity)
     ).apply(instance, RepeaterContents::new));
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, RepeaterContents> STREAM_CODEC = PortStreamCodec.composite(
-            PortItemStackExtension.listStreamCodec(), RepeaterContents::asItems,
+            IPortItemStackExtension.LIST_STREAM_CODEC, RepeaterContents::asItems,
             PortByteBufCodecs.INT, RepeaterContents::getMaxItemCapacity,
             RepeaterContents::new);
     private final int maxItemCapacity;
@@ -58,7 +58,7 @@ public final class RepeaterContents implements TooltipComponent {
         this.isEmpty = itemsTotalCount == 0;
         this.isFull = itemsTotalCount >= maxItemCapacity;
         this.slotSize = items.size();
-        this.hashCode = 31 * PortItemStackExtension.hashStackList(items) + maxItemCapacity;
+        this.hashCode = 31 * IPortItemStackExtension.hashStackList(items) + maxItemCapacity;
     }
 
     public static RepeaterContents fromItems(int capacity) {
@@ -138,7 +138,7 @@ public final class RepeaterContents implements TooltipComponent {
             return false;
         }
         return maxItemCapacity == contents.maxItemCapacity
-                && PortItemStackExtension.listMatches(items, contents.items);
+                && IPortItemStackExtension.listMatches(items, contents.items);
     }
 
     public ItemStack getStackInSlot(int slot) {

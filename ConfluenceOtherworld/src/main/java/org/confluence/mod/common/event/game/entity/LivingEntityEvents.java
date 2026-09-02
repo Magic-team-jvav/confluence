@@ -425,9 +425,9 @@ public final class LivingEntityEvents {
             Holder<Biome> biome = level.getBiome(living.blockPosition());
             ItemStack soul = ItemStack.EMPTY;
             if (biome.is(ModTags.Biomes.THE_HALLOW)) {
-                soul = MaterialItems.SOUL_OF_LIGHT.get().getDefaultInstance();
+                soul = MaterialItems.SOUL_OF_LIGHT.toStack();
             } else if (biome.is(ModTags.Biomes.THE_CORRUPTION) || biome.is(ModTags.Biomes.THE_CRIMSON)) {
-                soul = MaterialItems.SOUL_OF_NIGHT.get().getDefaultInstance();
+                soul = MaterialItems.SOUL_OF_NIGHT.toStack();
             }
             if (soul != ItemStack.EMPTY) {
                 drops.add(new ItemEntity(level, x, y, z, soul, 0, 0.02, 0));

@@ -35,7 +35,7 @@ public class ReallySmall extends SecretSeed {
     public static void giveStepStool(ServerPlayer player) {
         CompoundTag tag = LibEntityUtils.getOrCreatePersistedData(player);
         if (!tag.getBoolean("confluence:initial_step_stool")) {
-            player.addItem(TCItems.STEP_STOOL.get().getDefaultInstance());
+            player.addItem(TCItems.STEP_STOOL.toStack());
             tag.putBoolean("confluence:initial_step_stool", true);
         }
     }

@@ -1,7 +1,7 @@
 package org.confluence.mod.common.event.game.entity;
 
-import PortLib.extensions.net.minecraft.advancements.Advancement.PortAdvancementExtension;
 import PortLib.extensions.net.minecraft.util.ParticleUtils.PortParticleUtilsExtension;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,7 +32,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.*;
+import net.minecraftforge.eventbus.api.Event;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
 import org.confluence.lib.api.event.PlayerNaturalHealEvent;
 import org.confluence.lib.api.event.SwitchItemFunctionEvent;
@@ -87,7 +88,6 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.player.*;
-import org.mesdag.portlib.wrapper.advancements.PortAdvancementHolder;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import org.mesdag.portlib.wrapper.world.PortItemInteractionResult;
 
@@ -241,23 +241,24 @@ public final class PlayerEvents {
         if (event.getEntity() instanceof ServerPlayer player &&
                 event.getTarget() instanceof LivingEntity living
         ) healChocking:{
-            if (!living.hasEffect(ModEffects.CHOKING.get())) break healChocking;
+            if (!living.hasEffect(ModEffects.CHOKING)) break healChocking;
             ItemStack stack = player.getMainHandItem();
             if (!ModUtils.isWaterBottle(stack)) break healChocking;
-            living.removeEffect(ModEffects.CHOKING.get());
-            ItemStack emptyBottle = stack.is(PotionItems.BOTTLED_WATER.get())
-                    ? PotionItems.BOTTLE.get().getDefaultInstance()
+            living.removeEffect(ModEffects.CHOKING);
+            ItemStack emptyBottle = stack.is(PotionItems.BOTTLED_WATER)
+                    ? PotionItems.BOTTLE.toStack()
                     : Items.GLASS_BOTTLE.getDefaultInstance();
             player.setItemInHand(InteractionHand.MAIN_HAND, ItemUtils.createFilledResult(stack, player, emptyBottle));
         }
     }
 
-    private static void itemEntityPickup$Pre(PortItemEntityPickupEvent.Pre event) {
-        // Forge 事件可能收到自定义 Player 实现；服务端附件逻辑只处理真实服务端玩家。
-        if (!(event.getPlayer() instanceof ServerPlayer player)) {
-            return;
-        }
-        ItemEntity itemEntity = event.getItemEntity();
+    private static void itemEntityPickup$Pre(EntityItemPickupEvent event) {
+// 不用管这个       // Forge 事件可能收到自定义 Player 实现；服务端附件逻辑只处理真实服务端玩家。
+//        if (!(event.getPlayer() instanceof ServerPlayer player)) {
+//            return;
+//        }
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        ItemEntity itemEntity = event.getItem();
         ItemStack itemStack = itemEntity.getItem();
         if (IServerPlayer.of(player).confluence$isCouldPickupItem()) {
             if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
@@ -272,35 +273,36 @@ public final class PlayerEvents {
                 }
             }
             if (itemEntity instanceof TreasureBagItemEntity entity) {
-                if (!entity.isOwner(player)) event.setCanPickup(PortTriState.FALSE);
+                if (!entity.isOwner(player)) event.setResult(Event.Result.DENY);
             }
         } else {
-            event.setCanPickup(PortTriState.FALSE);
+            event.setResult(Event.Result.DENY);
         }
 
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
             ManaStorage.of(player).receiveMana(() -> itemStack.getCount() * 100.0F);
             StarSteelSword.onManaStarPickup(player);
             itemEntity.discard();
-            event.setCanPickup(PortTriState.FALSE);
+            event.setResult(Event.Result.DENY);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {
             player.heal(itemStack.getCount() * 4.0F);
             itemEntity.discard();
-            event.setCanPickup(PortTriState.FALSE);
+            event.setResult(Event.Result.DENY);
         }
     }
 
-    private static void itemEntityPickup$Post(PortItemEntityPickupEvent.Post event) {
-        if (!(event.getPlayer() instanceof ServerPlayer player)) {
-            return;
-        }
-        ItemEntity itemEntity = event.getItemEntity();
-        ItemStack itemStack = event.getOriginalStack();
+    private static void itemEntityPickup$Post(PlayerEvent.ItemPickupEvent event) {
+// 不用管这个       if (!(event.getEntity() instanceof ServerPlayer player)) {
+//            return;
+//        }
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        ItemEntity itemEntity = event.getOriginalEntity();
+        ItemStack itemStack = event.getStack();
         CoinItem.onPickup(itemStack, itemEntity);
         LucyTheAxe.onPickup(player, itemStack);
     }
 
-    private static void itemFished(PortItemFishedEvent event) {
+    private static void itemFished(ItemFishedEvent event) {
         Player player = event.getEntity();
 
         if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
@@ -309,15 +311,15 @@ public final class PlayerEvents {
         }
     }
 
-    private static void interact$RightClickItem(PortPlayerInteractEvent.RightClickItem event) {
+    private static void interact$RightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
         if (player.isSpectator()) return;
         ItemStack stack = event.getItemStack();
 
-        if (stack.is(ModTags.Items.MANA_WEAPON) && player.hasEffect(ModEffects.SILENCED.get())) {
+        if (stack.is(ModTags.Items.MANA_WEAPON) && player.hasEffect(ModEffects.SILENCED)) {
             event.setCanceled(true);
         } else if (!stack.isEmpty()) {
-            if (player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || player.hasEffect(ModEffects.CURSED.get())) {
+            if (player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)) {
                 event.setCanceled(true);
             }
         }
@@ -343,7 +345,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void attackEntity(PortAttackEntityEvent event) {
+    private static void attackEntity(AttackEntityEvent event) {
         Player player = event.getEntity();
         if (player instanceof ServerPlayer serverPlayer) {
             AccessoryItems.applyLuckyCoin(serverPlayer, event.getTarget());
@@ -353,14 +355,14 @@ public final class PlayerEvents {
         }
     }
 
-    private static void cloneE(PortPlayerEvent.Clone event) {
+    private static void cloneE(PlayerEvent.Clone event) {
         Player old = event.getOriginal();
         Player neo = event.getEntity();
 
         FlaskEffect.cloneFlaskEffects(old, neo);
     }
 
-    private static void respawn(PortPlayerEvent.PlayerRespawnEvent event) {
+    private static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         MountManager.dismiss(player);
         SummonContainer.of(player).clear(player);
@@ -380,19 +382,19 @@ public final class PlayerEvents {
         }
     }
 
-    private static void harvestCheck(PortPlayerEvent.HarvestCheck event) {
+    private static void harvestCheck(PlayerEvent.HarvestCheck event) {
         ItemStack itemStack = event.getEntity().getMainHandItem();
         if (!itemStack.isEmpty() && itemStack.is(ItemTags.PICKAXES)) {
             event.setCanHarvest(ModTiers.isCorrectToolForDrops(DiggingPower.getPower(itemStack), itemStack, event.getTargetBlock()));
         }
     }
 
-    private static void advancementEarn(PortAdvancementEvent.AdvancementEarnEvent event) {
-        PortAdvancementHolder advancement = event.getAdvancement();
+    private static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
+        Advancement advancement = event.getAdvancement();
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        DisplayInfo display = advancement.value().getDisplay();
-        if (display != null && !display.shouldAnnounceChat() && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
-            player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), PortAdvancementExtension.name(advancement)), false);
+        DisplayInfo display = advancement.getDisplay();
+        if (display != null && !display.shouldAnnounceChat() && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.getId())) {
+            player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), advancement.getChatComponent()), false);
         }
     }
 
@@ -438,7 +440,7 @@ public final class PlayerEvents {
                 }
             }
             if (key == null) break mimic;
-            if (key.is(ToolItems.KEY_OF_LIGHT.get())) {
+            if (key.is(ToolItems.KEY_OF_LIGHT)) {
                 BaseMimic mimic = MonsterEntities.HALLOWED_MIMIC.get().create(level);
                 if (mimic != null) {
                     CustomMimicSummonKeyEvent.summon(mimic, blockEntity);
@@ -494,10 +496,10 @@ public final class PlayerEvents {
         }
     }
 
-    private static void onBonemeal(PortBonemealEvent event) {
+    private static void onBonemeal(BonemealEvent event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
-        BlockState state = event.getState();
+        BlockState state = event.getBlock();
 
         if (!state.is(Blocks.END_STONE)) return;
 
@@ -533,7 +535,7 @@ public final class PlayerEvents {
                 level.levelEvent(1505, pos, 15);
                 PortParticleUtilsExtension.spawnParticles(level, pos, 45, 3.0, 1.0, false, ParticleTypes.HAPPY_VILLAGER);
             }
-            event.setSuccessful(true);
+            event.setCanceled(true);
         }
     }
 

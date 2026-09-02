@@ -167,7 +167,7 @@ public final class ModCommands {
                         .then(Commands.literal("item").then(Commands.argument("color", IntegerArgumentType.integer()).executes(context -> {
                             if (context.getSource().getEntityOrException() instanceof Player player) {
                                 int color = IntegerArgumentType.getInteger(context, "color");
-                                ItemStack stack = PaintItems.PAINT.get().getDefaultInstance();
+                                ItemStack stack = PaintItems.PAINT.toStack();
                                 stack.setDyedColor(color);
                                 player.getInventory().add(stack);
                                 return 1;

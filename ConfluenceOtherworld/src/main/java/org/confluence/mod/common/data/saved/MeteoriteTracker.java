@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -175,7 +174,7 @@ public enum MeteoriteTracker {
         boolean placed = false;
         try {
             if (withForceChunk) level.setChunkForced(chunkX, chunkZ, true);
-            PortHolderLookupExtension.Provider.holderOrThrow(level.registryAccess(), METEORITE)
+            level.registryAccess().holderOrThrow(METEORITE)
                     .value().place(level, level.getChunkSource().getGenerator(), level.random, origin);
             placed = true;
         } catch (Exception ignored) {} finally {

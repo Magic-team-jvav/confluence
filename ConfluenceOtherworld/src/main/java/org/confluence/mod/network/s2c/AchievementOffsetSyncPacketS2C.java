@@ -17,7 +17,8 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 import java.util.Map;
 
 public record AchievementOffsetSyncPacketS2C(
-        Object2BooleanMap<ResourceLocation> value) implements IPortPacket.S2C {
+        Object2BooleanMap<ResourceLocation> value
+) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("achievement_offset_sync");
     public static final PortStreamCodec<ByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(PortResourceLocationExtension.streamCodec())
             .map(AchievementOffsetSyncPacketS2C::new, AchievementOffsetSyncPacketS2C::value);
@@ -28,8 +29,11 @@ public record AchievementOffsetSyncPacketS2C(
     }
 
     @Override
-    public void work(Player player) {
-        AchievementOffsetLoader.handle(value);
+    public void work(Player player) {}
+
+    @Override
+    public void handle(Context context) {
+        context.enqueueWork(() -> AchievementOffsetLoader.handle(value));
     }
 
     public static void sendToClient(ServerPlayer player) {

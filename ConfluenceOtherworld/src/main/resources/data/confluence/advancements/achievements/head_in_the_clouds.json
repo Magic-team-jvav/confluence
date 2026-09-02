@@ -4,7 +4,7 @@
         "requirement": {
             "conditions": {
                 "item": {
-                    "tag": "confluence:wings"
+                    "tag": "terra_curio:wings"
                 }
             },
             "trigger": "terra_curio:curios_equipped"
@@ -18,7 +18,7 @@
         "frame": "challenge",
         "hidden": false,
         "icon": {
-            "item": "confluence:fledgling_wings"
+            "item": "terra_curio:fledgling_wings"
         },
         "show_toast": true,
         "title": {

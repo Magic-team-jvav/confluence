@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import PortLib.extensions.net.minecraft.core.HolderLookup.PortHolderLookupExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -61,11 +60,11 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
         if (state.is(NatureBlocks.LIFE_MUSHROOM.get())) {
-            PortHolderLookupExtension.Provider.holder(level.registryAccess(), ModFeatures.Configured.LIFE_MUSHROOM_TREE).ifPresent(holder ->
+            level.registryAccess().holder(ModFeatures.Configured.LIFE_MUSHROOM_TREE).ifPresent(holder ->
                     holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)
             );
         } else if (state.is(NatureBlocks.GLOWING_MUSHROOM.get())) {
-            PortHolderLookupExtension.Provider.holder(level.registryAccess(), ModFeatures.Configured.GLOWING_MUSHROOM_TREE).ifPresent(holder ->
+            level.registryAccess().holder(ModFeatures.Configured.GLOWING_MUSHROOM_TREE).ifPresent(holder ->
                     holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)
             );
         }

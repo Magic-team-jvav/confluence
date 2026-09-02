@@ -50,7 +50,7 @@ public class BoulderWorld extends SecretSeed {
             if (stack == null || !stack.is(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get())) {
                 Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player).resolve();
                 optional.ifPresent(iCuriosItemHandler -> {
-                    ItemStack itemStack = ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get().getDefaultInstance();
+                    ItemStack itemStack = ModItems.BOREDOMS_PACT_FALLING_RESOLVE.toStack();
                     LibUtils.updateItemStackNbt(itemStack, tag -> tag.putBoolean("summoned", true)); // 第一次出生的保护
                     itemStack.enchant(Enchantments.BINDING_CURSE, 1);
                     iCuriosItemHandler.setEquippedCurio(TerraCurio.CURIO_SLOT, 0, itemStack);

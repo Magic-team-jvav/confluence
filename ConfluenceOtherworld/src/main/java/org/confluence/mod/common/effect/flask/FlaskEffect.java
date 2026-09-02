@@ -1,6 +1,5 @@
 package org.confluence.mod.common.effect.flask;
 
-import PortLib.extensions.net.minecraft.world.effect.MobEffectInstance.PortMobEffectInstanceExtension;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -50,7 +49,7 @@ public abstract class FlaskEffect extends PortMobEffect {
     }
 
     public static void removeAnotherFlaskEffects(MobEffectInstance instance, LivingEntity living) {
-        if (PortMobEffectInstanceExtension.getCures(instance).contains(ModEffects.FLASK)) {
+        if (instance.getCures().contains(ModEffects.FLASK)) {
             living.removeEffectsCuredBy(ModEffects.FLASK);
         }
     }

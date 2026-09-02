@@ -1,7 +1,6 @@
 package org.confluence.mod.common.recipe;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.datafixers.util.Function5;
 import com.mojang.serialization.Codec;
@@ -14,6 +13,7 @@ import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
 public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecipeInput> {
@@ -47,7 +47,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecip
 
     public static <R extends EnhancedForgeRecipe> MapCodec<R> codec(Factory<R> factory) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                PortItemStackExtension.strictCodec().fieldOf("result").forGetter(recipe -> recipe.result),
+                IPortItemStackExtension.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                 INGREDIENTS_CODEC.forGetter(R::getIngredients),
                 PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "experience", 0.0F).forGetter(R::getExperience),
                 PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "cookingtime", 100).forGetter(R::getCookingTime),
@@ -62,7 +62,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecip
                 int size = buffer.readVarInt();
                 NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
                 nonnulllist.replaceAll(ignore -> PortIngredientExtension.contentsStreamCodec().decode(buffer));
-                ItemStack itemstack = PortItemStackExtension.streamCodec().decode(buffer);
+                ItemStack itemstack = IPortItemStackExtension.STREAM_CODEC.decode(buffer);
                 return factory.create(itemstack, nonnulllist, buffer.readFloat(), buffer.readVarInt(), buffer.readBoolean());
             }
 
@@ -72,7 +72,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecip
                 for (Ingredient ingredient : recipe.ingredients) {
                     PortIngredientExtension.contentsStreamCodec().encode(buffer, ingredient);
                 }
-                PortItemStackExtension.streamCodec().encode(buffer, recipe.result);
+                IPortItemStackExtension.STREAM_CODEC.encode(buffer, recipe.result);
                 buffer.writeFloat(recipe.experience);
                 buffer.writeVarInt(recipe.cookingTime);
                 buffer.writeBoolean(recipe.requiresFuel);

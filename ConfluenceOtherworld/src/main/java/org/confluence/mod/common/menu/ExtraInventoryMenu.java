@@ -1,6 +1,5 @@
 package org.confluence.mod.common.menu;
 
-import PortLib.extensions.net.minecraft.world.item.ItemStack.PortItemStackExtension;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +15,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.TerraCurio;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -193,7 +193,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                     setCarried(itemStack);
                     slot.onTake(player, itemStack);
                 }
-            } else if (PortItemStackExtension.isSameItemSameComponents(carried, slotItem)) {
+            } else if (IPortItemStackExtension.isSameItemSameComponents(carried, slotItem)) {
                 int moved = Math.min(slot.getMaxStackSize(slotItem) - slotItem.getCount(), carried.getCount());
                 if (moved > 0) {
                     slotItem.grow(moved);

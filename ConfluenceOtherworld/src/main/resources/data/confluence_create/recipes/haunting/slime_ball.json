@@ -1,0 +1,19 @@
+{
+    "type": "create:haunting",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "confluence:gel"
+        }
+    ],
+    "results": [
+        {
+            "item": "minecraft:slime_ball"
+        }
+    ]
+}

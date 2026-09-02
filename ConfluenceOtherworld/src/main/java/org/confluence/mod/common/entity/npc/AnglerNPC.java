@@ -182,12 +182,8 @@ public class AnglerNPC extends BaseNPC {
         ItemStack milestone = getMilestoneReward(count);
         if (milestone != null) rewards.add(milestone);
 
-        if (count >= 75) {
-            rewards.addAll(rollLoot(serverLevel, ModLootTables.QUESTS_AFTER_75));
-        } else if (count >= 10) {
-            rewards.addAll(rollLoot(serverLevel, ModLootTables.QUESTS_AFTER_10));
-        }
-        rewards.addAll(rollLoot(serverLevel, ModLootTables.QUESTS_0));
+        var rewardTable = count >= 75 ? ModLootTables.QUESTS_AFTER_75 : count >= 10 ? ModLootTables.QUESTS_AFTER_10 : ModLootTables.QUESTS_0;
+        rewards.addAll(rollLoot(serverLevel, rewardTable));
 
         for (ItemStack reward : rewards) {
             if (!player.getInventory().add(reward)) {

@@ -1488,8 +1488,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.minecraft.zombie.slime", "Slime Zombie");
         add("entity.minecraft.zombie.raincoat", "Raincoat Zombie");
         add("entity.minecraft.zombie.frozen", "Frost Zombie");
-        add("entity.confluence.duck.0", "Wild Duck");
-        add("entity.confluence.duck.1", "Duck");
+        add("entity.confluence.duck.mallard", "Wild Duck");
+        add("entity.confluence.duck.common", "Duck");
         add("entity.confluence.demon_eye.dilated", "Dilated Demon Eye");
         add("entity.confluence.demon_eye.dilated_small", "Small Dilated Demon Eye");
         add("entity.confluence.demon_eye.sleepy", "Sleepy Demon Eye");
@@ -1502,53 +1502,54 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.demon_eye.green_small", "Small Green Demon Eye");
         add("entity.confluence.demon_eye.cataract", "Cataract Demon Eye");
         add("entity.confluence.demon_eye.cataract_big", "Big Cataract Demon Eye");
-        add("entity.confluence.worm.0", "Enchanted Nightcrawler");
-        add("entity.confluence.worm.1", "Gold Worm");
-        add("entity.confluence.worm.2", "Worm");
-        add("entity.confluence.grasshopper.0", "Gold Grasshopper");
-        add("entity.confluence.grasshopper.1", "Grasshopper");
-        add("entity.confluence.ladybug.0", "Gold Ladybug");
-        add("entity.confluence.ladybug.1", "Ladybug");
-        add("entity.confluence.fealing.0", "Flying Spirit");
-        add("entity.confluence.fairy.0", "Pink Fairy");
-        add("entity.confluence.fairy.1", "Green Fairy");
-        add("entity.confluence.fairy.2", "Blue Fairy");
-        add("entity.confluence.scorpion.0", "Black Scorpion");
-        add("entity.confluence.scorpion.1", "Scorpion");
-        add("entity.confluence.squirrel.0", "Gray Squirrel");
-        add("entity.confluence.squirrel.1", "Red Squirrel");
-        add("entity.confluence.jewel_squirrel.0", "Amber Squirrel");
-        add("entity.confluence.jewel_squirrel.1", "Gold Squirrel");
-        add("entity.confluence.jewel_squirrel.2", "Amethyst Squirrel");
-        add("entity.confluence.jewel_squirrel.3", "Diamond Squirrel");
-        add("entity.confluence.jewel_squirrel.4", "Emerald Squirrel");
-        add("entity.confluence.jewel_squirrel.5", "Ruby Squirrel");
-        add("entity.confluence.jewel_squirrel.6", "Sapphire Squirrel");
-        add("entity.confluence.jewel_squirrel.7", "Topaz Squirrel");
-        add("entity.confluence.jewel_bunny.0", "Amber Bunny");
-        add("entity.confluence.jewel_bunny.1", "Amethyst Bunny");
-        add("entity.confluence.jewel_bunny.2", "Diamond Bunny");
-        add("entity.confluence.jewel_bunny.3", "Emerald Bunny");
-        add("entity.confluence.jewel_bunny.4", "Gold Bunny");
-        add("entity.confluence.jewel_bunny.5", "Ruby Bunny");
-        add("entity.confluence.jewel_bunny.6", "Sapphire Bunny");
-        add("entity.confluence.jewel_bunny.7", "Topaz Bunny");
-        add("entity.confluence.butterfly.0", "Gold Butterfly");
-        add("entity.confluence.butterfly.1", "Julia Butterfly");
-        add("entity.confluence.butterfly.2", "Monarch Butterfly");
-        add("entity.confluence.butterfly.3", "Purple Emperor Butterfly");
-        add("entity.confluence.butterfly.4", "Red Admiral Butterfly");
-        add("entity.confluence.butterfly.5", "Sulphur Butterfly");
-        add("entity.confluence.butterfly.6", "Tree Nymph Butterfly");
-        add("entity.confluence.butterfly.7", "Ulysses Butterfly");
-        add("entity.confluence.butterfly.8", "Zebra Swallowtail Butterfly");
-        add("entity.confluence.dragonfly.0", "Black Dragonfly");
-        add("entity.confluence.dragonfly.1", "Blue Dragonfly");
-        add("entity.confluence.dragonfly.2", "Gold Dragonfly");
-        add("entity.confluence.dragonfly.3", "Green Dragonfly");
-        add("entity.confluence.dragonfly.4", "Orange Dragonfly");
-        add("entity.confluence.dragonfly.5", "Red Dragonfly");
-        add("entity.confluence.dragonfly.6", "Yellow Dragonfly");
+        add("entity.confluence.worm.nightcrawler", "Enchanted Nightcrawler");
+        add("entity.confluence.worm.gold", "Gold Worm");
+        add("entity.confluence.worm.normal", "Worm");
+        add("entity.confluence.grasshopper.gold", "Gold Grasshopper");
+        add("entity.confluence.grasshopper.green", "Grasshopper");
+        add("entity.confluence.ladybug.gold", "Gold Ladybug");
+        add("entity.confluence.ladybug.red", "Ladybug");
+        add("entity.confluence.fealing", "Flying Spirit");
+        add("entity.confluence.fairy.pink", "Pink Fairy");
+        add("entity.confluence.fairy.green", "Green Fairy");
+        add("entity.confluence.fairy.blue", "Blue Fairy");
+        add("entity.confluence.scorpion.black", "Black Scorpion");
+        add("entity.confluence.scorpion.normal", "Scorpion");
+        add("entity.confluence.squirrel.normal", "Gray Squirrel");
+        add("entity.confluence.squirrel.red", "Red Squirrel");
+        add("entity.confluence.squirrel.gold", "Gold Squirrel");
+        add("entity.confluence.jewel_squirrel.amber", "Amber Squirrel");
+        add("entity.confluence.jewel_squirrel.gold", "Gold Squirrel");
+        add("entity.confluence.jewel_squirrel.amethyst", "Amethyst Squirrel");
+        add("entity.confluence.jewel_squirrel.diamond", "Diamond Squirrel");
+        add("entity.confluence.jewel_squirrel.emerald", "Emerald Squirrel");
+        add("entity.confluence.jewel_squirrel.ruby", "Ruby Squirrel");
+        add("entity.confluence.jewel_squirrel.sapphire", "Sapphire Squirrel");
+        add("entity.confluence.jewel_squirrel.topaz", "Topaz Squirrel");
+        add("entity.confluence.jewel_bunny.amber", "Amber Bunny");
+        add("entity.confluence.jewel_bunny.amethyst", "Amethyst Bunny");
+        add("entity.confluence.jewel_bunny.diamond", "Diamond Bunny");
+        add("entity.confluence.jewel_bunny.emerald", "Emerald Bunny");
+        add("entity.confluence.jewel_bunny.gold", "Gold Bunny");
+        add("entity.confluence.jewel_bunny.ruby", "Ruby Bunny");
+        add("entity.confluence.jewel_bunny.sapphire", "Sapphire Bunny");
+        add("entity.confluence.jewel_bunny.topaz", "Topaz Bunny");
+        add("entity.confluence.butterfly.gold", "Gold Butterfly");
+        add("entity.confluence.butterfly.julia", "Julia Butterfly");
+        add("entity.confluence.butterfly.monarch", "Monarch Butterfly");
+        add("entity.confluence.butterfly.purple_emperor", "Purple Emperor Butterfly");
+        add("entity.confluence.butterfly.red_admiral", "Red Admiral Butterfly");
+        add("entity.confluence.butterfly.sulphur", "Sulphur Butterfly");
+        add("entity.confluence.butterfly.tree_nymph", "Tree Nymph Butterfly");
+        add("entity.confluence.butterfly.ulysses", "Ulysses Butterfly");
+        add("entity.confluence.butterfly.zebra_swallowtail", "Zebra Swallowtail Butterfly");
+        add("entity.confluence.dragonfly.black", "Black Dragonfly");
+        add("entity.confluence.dragonfly.blue", "Blue Dragonfly");
+        add("entity.confluence.dragonfly.gold", "Gold Dragonfly");
+        add("entity.confluence.dragonfly.green", "Green Dragonfly");
+        add("entity.confluence.dragonfly.orange", "Orange Dragonfly");
+        add("entity.confluence.dragonfly.red", "Red Dragonfly");
+        add("entity.confluence.dragonfly.yellow", "Yellow Dragonfly");
         // Special world seeds
         add("title.confluence.secret_seeds_selection.empty", "Info");
         add("description.confluence.secret_seeds_selection.empty", "Please choose how your world will be built with the options above.");
@@ -1815,6 +1816,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("item.confluence.spawn_eggs", "%s Spawn Egg");
         addSpawnEggTranslations();
+        addPreviouslyMissingTranslations();
 
         // TouhouLittleMaid
         add("task.confluence.use_life_crystal", "Use Life Crystal");
@@ -2199,6 +2201,18 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.PHANTASM_DRAGON_SPAWN_EGG.get(), "Phantasm Dragon Spawn Egg");
     }
 
+
+    private void addPreviouslyMissingTranslations() {
+        add("item.confluence.mysterious_note.name_5", "A Fading Note");
+        add("lore.confluence.mysterious_note_5", "Late-night snacks should be breakfast. Opponents may live healthier, but much duller, lives.");
+        add("itemGroup.confluence.flail", "Flails");
+        add("itemGroup.confluence.glowing_mushroom", "Glowing Mushroom");
+        add("itemGroup.confluence.hellstone_bricks", "Hellstone Bricks");
+        add("itemGroup.confluence.lihzahrd_bricks", "Lihzahrd Bricks");
+        add("itemGroup.confluence.mural", "Murals");
+        add("itemGroup.confluence.note", "Notes");
+        add("itemGroup.confluence.text_books", "Text Books");
+    }
 
     private void addAll(PortItemRegistration register) {
         register.getEntries().forEach(item -> add(item.get(), LibUtils.toTitleCase(item.getId().getPath())));

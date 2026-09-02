@@ -1,0 +1,28 @@
+{
+    "type": "confluence:cooking_pot",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "container": [],
+    "cookingtime": 200,
+    "heat_source": {},
+    "ingredients": [
+        {
+            "item": "create:honey_bucket"
+        },
+        {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "count": 4,
+            "ingredient": {
+                "item": "minecraft:apple"
+            }
+        }
+    ],
+    "result": {
+        "Count": 4,
+        "id": "create:honeyed_apple"
+    }
+}

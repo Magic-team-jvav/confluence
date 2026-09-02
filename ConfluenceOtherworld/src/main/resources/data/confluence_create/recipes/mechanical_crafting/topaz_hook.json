@@ -1,0 +1,26 @@
+{
+    "type": "create:mechanical_crafting",
+    "acceptMirrored": false,
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:topaz_chain"
+        },
+        "$": {
+            "item": "confluence:topaz_block"
+        }
+    },
+    "pattern": [
+        "##$"
+    ],
+    "result": {
+        "count": 1,
+        "item": "confluence:topaz_hook"
+    },
+    "show_notification": false
+}

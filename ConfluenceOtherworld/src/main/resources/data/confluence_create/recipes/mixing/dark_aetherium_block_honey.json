@@ -1,0 +1,26 @@
+{
+    "type": "create:mixing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "amount": 500,
+            "fluid": "confluence:shimmer",
+            "nbt": {}
+        },
+        {
+            "amount": 500,
+            "fluid": "confluence:honey",
+            "nbt": {}
+        }
+    ],
+    "results": [
+        {
+            "item": "confluence:dark_aetherium_block"
+        }
+    ]
+}

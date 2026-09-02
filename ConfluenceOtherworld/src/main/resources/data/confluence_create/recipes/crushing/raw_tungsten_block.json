@@ -1,0 +1,33 @@
+{
+    "type": "create:crushing",
+    "conditions": [
+    {
+        "type": "forge:mod_loaded",
+      "modid": "create"
+    },
+    {
+        "type": "forge:not",
+      "value": {
+          "type": "forge:tag_empty",
+        "tag": "c:storage_blocks/raw_tungsten"
+      }
+    }
+  ],
+  "ingredients": [
+    {
+      "tag": "c:storage_blocks/raw_tungsten"
+    }
+  ],
+    "processingTime": 400,
+  "results": [
+    {
+      "count": 9,
+        "item": "confluence:crushed_raw_tungsten"
+    },
+    {
+      "chance": 0.75,
+      "count": 9,
+        "item": "create:experience_nugget"
+    }
+  ]
+}

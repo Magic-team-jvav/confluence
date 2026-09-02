@@ -1,0 +1,22 @@
+{
+    "type": "create:deploying",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "confluence:normal_boulder"
+        },
+        {
+            "item": "minecraft:tnt"
+        }
+    ],
+    "results": [
+        {
+            "item": "confluence:explode_boulder"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "type": "create:deploying",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "minecraft:powered_rail"
+        },
+        {
+            "item": "minecraft:redstone_torch"
+        }
+    ],
+    "results": [
+        {
+            "item": "confluence:ever_powered_rail"
+        }
+    ]
+}

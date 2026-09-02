@@ -1,0 +1,29 @@
+{
+    "type": "create:mechanical_crafting",
+    "acceptMirrored": false,
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:platinum_ingot"
+        },
+        "$": {
+            "item": "minecraft:red_dye"
+        }
+    },
+    "pattern": [
+        "  # ",
+        " # #",
+        "#$# ",
+        " #  "
+    ],
+    "result": {
+        "count": 1,
+        "item": "confluence:wire_cutter"
+    },
+    "show_notification": false
+}

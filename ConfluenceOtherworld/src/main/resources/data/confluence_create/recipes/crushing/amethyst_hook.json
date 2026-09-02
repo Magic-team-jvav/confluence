@@ -1,0 +1,25 @@
+{
+    "type": "create:crushing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "confluence:amethyst_hook"
+        }
+    ],
+    "processingTime": 100,
+    "results": [
+        {
+            "count": 14,
+            "item": "confluence:amethyst"
+        },
+        {
+            "chance": 0.5,
+            "item": "confluence:amethyst"
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "type": "create:crushing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "confluence:amber_chain"
+        }
+    ],
+    "processingTime": 100,
+    "results": [
+        {
+            "count": 2,
+            "item": "confluence:amber"
+        },
+        {
+            "chance": 0.5,
+            "item": "confluence:amber"
+        }
+    ]
+}

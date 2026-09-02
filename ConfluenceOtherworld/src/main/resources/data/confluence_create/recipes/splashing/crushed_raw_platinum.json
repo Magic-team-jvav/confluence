@@ -1,0 +1,24 @@
+{
+    "type": "create:splashing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "create:crushed_raw_platinum"
+        }
+    ],
+    "results": [
+        {
+            "count": 9,
+            "item": "confluence:platinum_nugget"
+        },
+        {
+            "chance": 0.5,
+            "item": "minecraft:glowstone_dust"
+        }
+    ]
+}

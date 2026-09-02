@@ -1,0 +1,125 @@
+{
+    "type": "create:mixing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "heatRequirement": "superheated",
+    "ingredients": [
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "item": "confluence:silk"
+        },
+        {
+            "tag": "confluence:shadow_scale_and_tissue_sample"
+        },
+        {
+            "tag": "confluence:shadow_scale_and_tissue_sample"
+        },
+        {
+            "tag": "confluence:shadow_scale_and_tissue_sample"
+        },
+        {
+            "tag": "confluence:shadow_scale_and_tissue_sample"
+        },
+        {
+            "tag": "confluence:shadow_scale_and_tissue_sample"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:obsidian"
+        },
+        {
+            "item": "minecraft:iron_chestplate"
+        }
+    ],
+    "results": [
+        {
+            "item": "confluence:obsidian_chestplate"
+        }
+    ]
+}

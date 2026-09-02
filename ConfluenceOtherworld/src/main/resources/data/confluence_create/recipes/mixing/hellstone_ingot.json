@@ -1,0 +1,29 @@
+{
+    "type": "create:mixing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "heatRequirement": "superheated",
+    "ingredients": [
+        {
+            "item": "confluence:raw_hellstone"
+        },
+        {
+            "item": "confluence:raw_hellstone"
+        },
+        {
+            "item": "confluence:raw_hellstone"
+        },
+        {
+            "item": "minecraft:obsidian"
+        }
+    ],
+    "results": [
+        {
+            "item": "confluence:hellstone_ingot"
+        }
+    ]
+}

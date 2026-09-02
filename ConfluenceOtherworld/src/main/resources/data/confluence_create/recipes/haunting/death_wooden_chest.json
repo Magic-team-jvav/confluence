@@ -1,0 +1,19 @@
+{
+    "type": "create:haunting",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "minecraft:chest"
+        }
+    ],
+    "results": [
+        {
+            "item": "confluence:death_wooden_chest"
+        }
+    ]
+}

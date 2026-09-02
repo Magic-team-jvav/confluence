@@ -1,0 +1,26 @@
+{
+    "type": "create:mechanical_crafting",
+    "acceptMirrored": false,
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:cactus"
+        }
+    },
+    "pattern": [
+        " ## ",
+        "####",
+        "####",
+        " ## "
+    ],
+    "result": {
+        "count": 1,
+        "item": "confluence:rolling_cactus_boulder"
+    },
+    "show_notification": false
+}

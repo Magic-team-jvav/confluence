@@ -18,7 +18,7 @@ public enum AnglerData implements IGlobalData {
 
     public void refreshIfNeeded(ServerLevel level) {
         long today = currentDay(level);
-        if (questGameDay != today) {
+        if (questGameDay != today || AnglerQuestPool.INSTANCE.find(questFish).isEmpty()) {
             questGameDay = today;
             refreshQuestFish(level);
         }

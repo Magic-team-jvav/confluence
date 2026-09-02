@@ -578,6 +578,16 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "c / ",
                 "c/  "
         )), BowItems.TENDON_BOW.toStack());
+        // 血肉之球
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'c', AmountIngredient.of(2, ModTags.Items.INGOTS_CRIMTANE),
+                '/', AmountIngredient.of(5, MaterialItems.TISSUE_SAMPLE)
+        ), List.of(
+                "cc  ",
+                "cc  ",
+                "  / ",
+                "   c"
+        )), FlailItems.THE_MEATBALL.toStack());
         // 恶魔弓
         shaped(writer, PortShapedRecipePattern.of(Map.of(
                 'c', Ingredient.of(ModTags.Items.INGOTS_DEMONITE),

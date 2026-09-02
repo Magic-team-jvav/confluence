@@ -552,6 +552,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(writer, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
         shapeless(writer, FoodItems.CLOUD_DOUGH.toStack(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
         shapeless(writer, DecorativeBlocks.FLINX_FUR_BLOCK.toStack(20), Ingredient.of(MaterialItems.FLINX_FUR));
+        shapeless(writer, FlailItems.FLAMING_MACE.toStack(), Ingredient.of(Items.LAVA_BUCKET), Ingredient.of(FlailItems.MACE));
         shapeless(writer, new ItemStack(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.PLANKS, 4), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK));
 
         //生鱼片

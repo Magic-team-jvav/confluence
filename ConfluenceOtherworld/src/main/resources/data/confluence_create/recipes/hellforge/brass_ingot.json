@@ -1,0 +1,22 @@
+{
+    "type": "confluence:hellforge",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "minecraft:copper_ingot"
+        },
+        {
+            "tag": "c:ingots/zinc"
+        }
+    ],
+    "requires_fuel": false,
+    "result": {
+        "Count": 2,
+        "id": "create:brass_ingot"
+    }
+}

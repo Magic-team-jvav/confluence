@@ -92,7 +92,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.PLATINUM_SHORT_SWORD.get()
         );
         tag(ModTags.Items.MOUNT).add(MountItems.SLIMY_SADDLE.get(), MountItems.HONEYED_GOGGLES.get());
-//        tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
+        PetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.PET).add(item.get()));
 //        tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
         LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));
 
@@ -1392,6 +1392,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ChestBlocks.OCEAN_CHEST.asItem(),
                 ChestBlocks.UNIVERSE_CHEST.asItem(),
                 ChestBlocks.MECHANIC_SAFE_CHEST.asItem(),
+                ModBlocks.TEST.asItem(),
+                FoodItems.END_DRAGON_PEPPER_SEED.get(),
                 FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.asItem(),
                 FunctionalBlocks.BLEND_O_MATIC.asItem(),
                 FunctionalBlocks.MEAT_GRINDER.asItem(),

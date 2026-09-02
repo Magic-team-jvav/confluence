@@ -1,0 +1,25 @@
+{
+    "type": "create:crushing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "confluence:silk"
+        }
+    ],
+    "processingTime": 100,
+    "results": [
+        {
+            "count": 3,
+            "item": "minecraft:string"
+        },
+        {
+            "chance": 0.5,
+            "item": "minecraft:string"
+        }
+    ]
+}

@@ -511,70 +511,19 @@ public final class ModEvents {
     }
 
     private static void registerBestiaryKeys(RegisterBestiaryKeyEvent event) {
-        // todo 全部换成枚举名
-        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + switch (bunny.getBunnyVariant()) {
-            case AMBER -> 0;
-            case AMETHYST -> 1;
-            case DIAMOND -> 2;
-            case EMERALD -> 3;
-            case GOLD -> 4;
-            case RUBY -> 5;
-            case SAPPHIRE -> 6;
-            case TOPAZ -> 7;
-            default -> 0;
-        });
-        event.register(CritterEntities.SQUIRREL.get(), (type, squirrel) -> type.getDescriptionId() + ".0");
-        event.register(CritterEntities.RED_SQUIRREL.get(), (type, squirrel) -> "entity.confluence.squirrel.1");
-        event.register(CritterEntities.JEWEL_SQUIRREL.get(), (type, squirrel) -> type.getDescriptionId() + '.' + switch (squirrel.getVariant()) {
-            case AMBER -> 0;
-            case GOLD -> 1;
-            case AMETHYST -> 2;
-            case DIAMOND -> 3;
-            case EMERALD -> 4;
-            case RUBY -> 5;
-            case SAPPHIRE -> 6;
-            case TOPAZ -> 7;
-            default -> 0;
-        });
-        event.register(CritterEntities.GRASSHOPPER.get(), (type, grasshopper) -> type.getDescriptionId() + '.'
-                + (grasshopper.getVariant() == Grasshopper.Variant.GOLD ? 0 : 1));
-        event.register(CritterEntities.BUTTERFLY.get(), (type, butterfly) -> type.getDescriptionId() + '.' + switch (butterfly.getVariant()) {
-            case GOLD -> 0;
-            case JULIA -> 1;
-            case MONARCH -> 2;
-            case PURPLE_EMPEROR -> 3;
-            case RED_ADMIRAL -> 4;
-            case SULPHUR -> 5;
-            case TREE_NYMPH -> 6;
-            case ULYSSES -> 7;
-            case ZEBRA_SWALLOWTAIL -> 8;
-        });
-        event.register(CritterEntities.WORM.get(), (type, worm) -> type.getDescriptionId() + '.' + switch (worm.getVariant()) {
-            case NIGHTCRAWLER -> 0;
-            case GOLD -> 1;
-            case NORMAL -> 2;
-        });
-        event.register(CritterEntities.DRAGONFLY.get(), (type, dragonfly) -> type.getDescriptionId() + '.' + switch (dragonfly.getVariant()) {
-            case BLACK -> 0;
-            case BLUE -> 1;
-            case GOLD -> 2;
-            case GREEN -> 3;
-            case ORANGE -> 4;
-            case RED -> 5;
-            case YELLOW -> 6;
-        });
-        event.register(CritterEntities.LADYBUG.get(), (type, ladybug) -> type.getDescriptionId() + '.'
-                + (ladybug.getVariant() == Ladybug.Variant.GOLD ? 0 : 1));
-        event.register(CritterEntities.FEALING.get(), (type, fealing) -> type.getDescriptionId() + ".0");
-        event.register(CritterEntities.DUCK.get(), (type, duck) -> type.getDescriptionId() + '.'
-                + (duck.getVariant() == Duck.Variant.MALLARD ? 0 : 1));
-        event.register(CritterEntities.FAIRY.get(), (type, fairy) -> type.getDescriptionId() + '.' + switch (fairy.getVariant()) {
-            case PINK -> 0;
-            case GREEN -> 1;
-            case BLUE -> 2;
-        });
-        event.register(CritterEntities.SCORPION.get(), (type, scorpion) -> type.getDescriptionId() + '.'
-                + (scorpion.getVariant() == Scorpion.Variant.BLACK ? 0 : 1));
+        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + bunny.getBunnyVariant().getSerializedName());
+        event.register(CritterEntities.SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(Squirrel.Variant::getSerializedName));
+        event.register(CritterEntities.RED_SQUIRREL.get(), (type, squirrel) -> "entity.confluence.squirrel.red");
+        event.register(CritterEntities.JEWEL_SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(Squirrel.Variant::getSerializedName));
+        event.register(CritterEntities.GRASSHOPPER.get(), RegisterBestiaryKeyEvent.vanillaVariant(Grasshopper.Variant::getSerializedName));
+        event.register(CritterEntities.BUTTERFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(Butterfly.Variant::getSerializedName));
+        event.register(CritterEntities.WORM.get(), RegisterBestiaryKeyEvent.vanillaVariant(Worm.Variant::getSerializedName));
+        event.register(CritterEntities.DRAGONFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(Dragonfly.Variant::getSerializedName));
+        event.register(CritterEntities.LADYBUG.get(), RegisterBestiaryKeyEvent.vanillaVariant(Ladybug.Variant::getSerializedName));
+        event.register(CritterEntities.FEALING.get(), (type, fealing) -> type.getDescriptionId());
+        event.register(CritterEntities.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(Duck.Variant::getSerializedName));
+        event.register(CritterEntities.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(Fairy.Variant::getSerializedName));
+        event.register(CritterEntities.SCORPION.get(), RegisterBestiaryKeyEvent.vanillaVariant(Scorpion.Variant::getSerializedName));
         event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) -> type.getDescriptionId() + '.' + eye.getVariant().getSerializedName());
         event.register(BossEntities.SERVANT_OF_CTHULHU.get(), (type, servant) -> "entity.confluence.demon_eye.minion");
         event.register(MonsterEntities.BLACK_SLIME.get(), (type, slime) -> {

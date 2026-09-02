@@ -1,0 +1,25 @@
+{
+    "type": "create:crushing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "item": "confluence:topaz_chain"
+        }
+    ],
+    "processingTime": 100,
+    "results": [
+        {
+            "count": 2,
+            "item": "confluence:topaz"
+        },
+        {
+            "chance": 0.5,
+            "item": "confluence:topaz"
+        }
+    ]
+}

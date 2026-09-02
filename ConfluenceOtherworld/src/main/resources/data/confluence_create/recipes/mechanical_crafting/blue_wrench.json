@@ -1,0 +1,29 @@
+{
+    "type": "create:mechanical_crafting",
+    "acceptMirrored": false,
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:platinum_ingot"
+        },
+        "$": {
+            "item": "minecraft:blue_dye"
+        }
+    },
+    "pattern": [
+        "  ##",
+        "  #$",
+        " #  ",
+        "#   "
+    ],
+    "result": {
+        "count": 1,
+        "item": "confluence:blue_wrench"
+    },
+    "show_notification": false
+}

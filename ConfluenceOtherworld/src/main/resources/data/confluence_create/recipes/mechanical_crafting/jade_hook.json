@@ -1,0 +1,26 @@
+{
+    "type": "create:mechanical_crafting",
+    "acceptMirrored": false,
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:jade_chain"
+        },
+        "$": {
+            "item": "confluence:jade_block"
+        }
+    },
+    "pattern": [
+        "##$"
+    ],
+    "result": {
+        "count": 1,
+        "item": "confluence:jade_hook"
+    },
+    "show_notification": false
+}

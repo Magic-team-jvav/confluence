@@ -16,6 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.gen.angler.AnglerQuestProvider;
 import org.confluence.mod.common.data.gen.recipe.*;
 import org.confluence.mod.common.data.gen.tag.*;
 
@@ -58,6 +59,7 @@ public final class ModDataGenerator {
         generator.addProvider(server, new NPCMoodProvider(output));
         generator.addProvider(server, new NPCNameProvider(output));
         generator.addProvider(server, new NPCChatProvider(output));
+        generator.addProvider(server, new AnglerQuestProvider(output));
         ModBlockTagsProvider blockTagsProvider = generator.addProvider(server, new ModBlockTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModItemTagsProvider(output, lookup, blockTagsProvider.contentsGetter(), helper));
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));

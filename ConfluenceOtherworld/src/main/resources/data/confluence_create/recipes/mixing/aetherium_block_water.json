@@ -1,0 +1,26 @@
+{
+    "type": "create:mixing",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "ingredients": [
+        {
+            "amount": 1000,
+            "fluid": "confluence:shimmer",
+            "nbt": {}
+        },
+        {
+            "amount": 250,
+            "fluid": "minecraft:water",
+            "nbt": {}
+        }
+    ],
+    "results": [
+        {
+            "item": "confluence:aetherium_block"
+        }
+    ]
+}

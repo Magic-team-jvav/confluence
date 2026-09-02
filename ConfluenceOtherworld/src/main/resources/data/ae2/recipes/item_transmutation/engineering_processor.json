@@ -1,0 +1,26 @@
+{
+    "type": "confluence:item_transmutation",
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "ae2"
+        }
+    ],
+    "source": {
+        "item": "ae2:engineering_processor"
+    },
+    "target": [
+        {
+            "Count": 1,
+            "id": "ae2:printed_engineering_processor"
+        },
+        {
+            "Count": 1,
+            "id": "minecraft:redstone"
+        },
+        {
+            "Count": 1,
+            "id": "ae2:printed_silicon"
+        }
+    ]
+}

@@ -17,7 +17,6 @@ public final class NetworkEvents {
         handler.registerInGameC2S(EmptyTargetSweepPacketC2S.class, EmptyTargetSweepPacketC2S.ID, EmptyTargetSweepPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(FlailControlPacketC2S.class, FlailControlPacketC2S.ID, FlailControlPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(GiveBannerPacketC2S.class, GiveBannerPacketC2S.ID, GiveBannerPacketC2S.STREAM_CODEC);
-        handler.registerInGameC2S(GoingOldschoolPacketC2S.class, GoingOldschoolPacketC2S.ID, GoingOldschoolPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(HookThrowingPacketC2S.class, HookThrowingPacketC2S.ID, HookThrowingPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(InspectPacketC2S.class, InspectPacketC2S.ID, InspectPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(HouseSelectPacketC2S.class, HouseSelectPacketC2S.ID, HouseSelectPacketC2S.STREAM_CODEC);

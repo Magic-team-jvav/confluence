@@ -13,7 +13,6 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraftforge.client.DimensionSpecialEffectsManager;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.GoingOldschoolAchievementClient;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -186,14 +185,14 @@ public enum BackgroundLayer {
                 this.draggedSun = true;
                 sunPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
-                GoingOldschoolAchievementClient.requestAward();
+//                awardGoingOldschool();
                 return true;
             }
             if (moonPos.distance((float) mouseX, (float) mouseY) < moonSize) {
                 this.draggedMoon = true;
                 moonPos.set((float) mouseX, (float) mouseY);
                 dragged = true;
-                GoingOldschoolAchievementClient.requestAward();
+//                awardGoingOldschool();
                 return true;
             }
             return false;
@@ -487,6 +486,29 @@ public enum BackgroundLayer {
     public static void closeLayers() {
         enabled = false;
     }
+
+//    private static void awardGoingOldschool() {
+//        if (completedGoingOldSchool) return;
+//        PlayerAdvancements.Data data = AchievementUtils.loadData(LibClientUtils.getGameProfile().getId());
+//        if (data.map().containsKey(AchievementUtils.GOING_OLDSCHOOL)) {
+//            completedGoingOldSchool = true;
+//        } else {
+//            completedGoingOldSchool = true;
+//            Map<ResourceLocation, AdvancementProgress> map = new LinkedHashMap<>(data.map());
+//            map.put(AchievementUtils.GOING_OLDSCHOOL, new AchievementProgress(Map.of("never", new CriterionProgress(Instant.now())), true));
+//            data = new PlayerAdvancements.Data(map);
+//            AchievementToast toast = new AchievementToast(
+//                    Confluence.asResource("textures/achievement/going_oldschool.png"),
+//                    new AchievementToast.Display(AdvancementType.CHALLENGE,
+//                            Component.translatable("achievements.confluence.going_oldschool.title"),
+//                            Component.translatable("achievements.confluence.going_oldschool.description")
+//                    ));
+//            toast.blitOffset = () -> ClientHooks.getGuiFarPlane() - 21000 + 1;
+//            Minecraft.getInstance().getToasts().addToast(toast);
+//            AchievementUtils.handleData(data, false);
+//            AchievementUtils.saveData();
+//        }
+//    }
 
     public static boolean isCompletedGoingOldSchool() {
         return completedGoingOldSchool;

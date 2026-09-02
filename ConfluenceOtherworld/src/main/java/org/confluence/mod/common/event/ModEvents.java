@@ -1,8 +1,5 @@
 package org.confluence.mod.common.event;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -12,9 +9,15 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraftforge.event.AddPackFindersEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.resource.PathPackResources;
 import org.confluence.lib.common.LibAttributes;
@@ -58,14 +61,8 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
-import org.mesdag.portlib.event.entity.PortEntityAttributeCreationEvent;
-import org.mesdag.portlib.event.entity.PortEntityAttributeModificationEvent;
 import org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent;
-import org.mesdag.portlib.event.lifecycle.PortFMLCommonSetupEvent;
-import org.mesdag.portlib.event.lifecycle.PortFMLLoadCompleteEvent;
-import org.mesdag.portlib.event.other.PortAddPackFindersEvent;
 import org.mesdag.portlib.event.other.PortBlockEntityTypeAddBlocksEvent;
-import org.mesdag.portlib.event.other.PortBuildCreativeModeTabContentsEvent;
 
 public final class ModEvents {
     public static void init() {
@@ -84,7 +81,7 @@ public final class ModEvents {
         PortEventHandler.addListener(ModEvents::registerEvilMaterialReplaces);
     }
 
-    private static void commonSetup(PortFMLCommonSetupEvent event) {
+    private static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModGunProperties.init();
             Confluence.registerGameRules();
@@ -130,7 +127,7 @@ public final class ModEvents {
         }
     }
 
-    private static void loadComplete(PortFMLLoadCompleteEvent event) {
+    private static void loadComplete(FMLLoadCompleteEvent event) {
         event.enqueueWork(() -> {
             LogBlockSet.wrapStrip();
             LogBlockSet.setFlammable();
@@ -154,7 +151,7 @@ public final class ModEvents {
         });
     }
 
-    private static void addPackFinders(PortAddPackFindersEvent event) {
+    private static void addPackFinders(AddPackFindersEvent event) {
         if (event.getPackType() == PackType.CLIENT_RESOURCES) {
             IModFile modFile = ModList.get().getModFileById(Confluence.MODID).getFile();
             event.addRepositorySource(consumer -> {
@@ -184,7 +181,7 @@ public final class ModEvents {
         }
     }
 
-    private static void entityAttributeCreation(PortEntityAttributeCreationEvent event) {
+    private static void entityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
         event.put(ModEntities.RAINBOW_SHEEP.get(), RainbowSheep.createAttributes().build());
         var storageCompanionAttributes = StorageCompanionEntity.createAttributes().build();
@@ -413,18 +410,8 @@ public final class ModEvents {
         event.put(BossEntities.PRIME_ENDER_DRAGON.get(), PrimeEnderDragon.createAttributes().build());
     }
 
-    private static void entityAttributeModification(PortEntityAttributeModificationEvent event) {
-        // 数据包的 attributes.scale 对所有本模组生物使用同一属性入口。部分实体属性表
-        // 由各自的注册构建器创建，因此在修改事件中幂等补齐，避免覆盖值被静默忽略。
-        Holder<Attribute> scale = PortAttributesExtension.scale();
-        for (var type : event.getTypes()) {
-            var id = BuiltInRegistries.ENTITY_TYPE.getKey(type);
-            if (Confluence.MODID.equals(id.getNamespace()) && !event.has(type, scale)) {
-                event.add(type, scale, 1.0D);
-            }
-        }
-
-        Holder<Attribute> armorPenetration = LibAttributes.getArmorPenetration();
+    private static void entityAttributeModification(EntityAttributeModificationEvent event) {
+        Attribute armorPenetration = LibAttributes.getArmorPenetration().get();
         event.add(BossEntities.QUEEN_BEE.get(), armorPenetration, 2);
         event.add(BossEntities.SKELETRON.get(), armorPenetration, 4);
         event.add(BossEntities.HILL_OF_FLESH.get(), armorPenetration, 4);
@@ -462,7 +449,7 @@ public final class ModEvents {
         event.add(BossEntities.SPAZMATISM.get(), armorPenetration, 8);
         event.add(BossEntities.PLANTERA.get(), armorPenetration, 8);
 
-        Holder<Attribute> armorToughness = Holder.direct(Attributes.ARMOR_TOUGHNESS);
+        Attribute armorToughness = Attributes.ARMOR_TOUGHNESS;
         event.add(MonsterEntities.PIXIE.get(), armorToughness, 2);
         event.add(MonsterEntities.WYVERN.get(), armorToughness, 2);
         event.add(MonsterEntities.CORRUPT_SLIME.get(), armorToughness, 2);
@@ -498,7 +485,7 @@ public final class ModEvents {
         AccessoryItems.AFK_INDEX = event.register(AccessoryItems.$AFK);
     }
 
-    private static void buildCreativeModeTabContents(PortBuildCreativeModeTabContentsEvent event) {
+    private static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
             WipNotDisplayOutput output = new WipNotDisplayOutput(event);
             output.accept(TCItems.EVERLASTING);
@@ -524,9 +511,8 @@ public final class ModEvents {
     }
 
     private static void registerBestiaryKeys(RegisterBestiaryKeyEvent event) {
-        // 1.21 的图鉴使用数字后缀；1.20 的实体仍保存枚举名称，因此这里只转换图鉴键，
-        // 不改变实体 NBT、变种初始化或渲染行为。
-        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + switch (bunny.getBunnyVariant()) {
+        // todo 全部换成枚举名
+        event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + switch (bunny.getVariant()) {
             case AMBER -> 0;
             case AMETHYST -> 1;
             case DIAMOND -> 2;

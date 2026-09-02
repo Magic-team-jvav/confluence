@@ -3,6 +3,9 @@ package org.confluence.mod.common.event.game;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
@@ -20,9 +23,6 @@ import org.confluence.mod.util.PrefixUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.brewing.PortRegisterBrewingRecipesEvent;
-import org.mesdag.portlib.event.other.PortAddReloadListenerEvent;
-import org.mesdag.portlib.event.other.PortOnDatapackSyncEvent;
-import org.mesdag.portlib.event.other.PortRegisterCommandsEvent;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 
 import java.util.Collection;
@@ -37,7 +37,7 @@ public final class GameEvents {
         PortEventHandler.addListener(GameEvents::addReloadListener);
     }
 
-    private static void command(PortRegisterCommandsEvent event) {
+    private static void command(RegisterCommandsEvent event) {
         ModCommands.register(event.getDispatcher());
     }
 
@@ -58,7 +58,7 @@ public final class GameEvents {
         }
     }
 
-    private static void onDatapackSync(PortOnDatapackSyncEvent event) {
+    private static void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer sendTo = event.getPlayer();
         if (sendTo == null) {
             for (ServerPlayer target : event.getPlayerList().getPlayers()) {
@@ -71,7 +71,7 @@ public final class GameEvents {
         }
     }
 
-    private static void addReloadListener(PortAddReloadListenerEvent event) {
+    private static void addReloadListener(AddReloadListenerEvent event) {
         event.addListener(AchievementOffsetLoader.getInstance());
         event.addListener(NPCDialogLoader.getInstance());
         event.addListener(NPCNames.Loader.getInstance());

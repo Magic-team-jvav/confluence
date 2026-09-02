@@ -1,20 +1,25 @@
 package org.confluence.mod.mixin.server.level;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import net.minecraft.advancements.Advancement;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketSendListener;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.level.ChunkPos;
-import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -22,6 +27,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin implements IServerPlayer {
+    @Shadow
+    @Final
+    public MinecraftServer server;
+
+    @Shadow
+    public abstract PlayerAdvancements getAdvancements();
+
     @Unique
     private boolean confluence$couldPickupItem = true;
     @Unique
@@ -47,9 +59,11 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     public void confluence$bulldozer() {
         if (confluence$bulldozer < 0) return;
         if (this.confluence$bulldozer++ >= 9999) {
-            if (AchievementAwardService.award(confluence$self(), "bulldozer").completed()) {
-                this.confluence$bulldozer = -1;
+            Advancement advancement = server.getAdvancements().getAdvancement(AchievementUtils.asAchievement("bulldozer"));
+            if (advancement != null) {
+                getAdvancements().award(advancement, "never");
             }
+            this.confluence$bulldozer = -1;
         }
     }
 

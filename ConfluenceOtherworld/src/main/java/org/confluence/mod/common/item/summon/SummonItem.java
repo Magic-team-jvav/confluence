@@ -21,9 +21,9 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.api.event.SummonEvent;
-import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.summon.*;
+import org.confluence.mod.util.AchievementUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.List;
@@ -122,12 +122,12 @@ public class SummonItem extends Item {
         player.playSound(summonSound.get(), 1.0F, 1.0F);
         player.awardStat(Stats.ITEM_USED.get(this));
         if (container.occupiedSlots() >= 9) {
-            AchievementAwardService.award(player, "you_and_what_army");
+            AchievementUtils.awardAchievement(player, "you_and_what_army");
         }
     }
 
     public SummonItem setSound(Supplier<SoundEvent> sound) {
-        summonSound = Objects.requireNonNull(sound, "Summon sound must not be null");
+        this.summonSound = Objects.requireNonNull(sound, "Summon sound must not be null");
         return this;
     }
 

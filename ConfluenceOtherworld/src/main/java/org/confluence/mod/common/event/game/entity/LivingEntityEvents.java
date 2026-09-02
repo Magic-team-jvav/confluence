@@ -23,6 +23,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.eventbus.api.Event;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
@@ -131,7 +133,7 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(LivingEntityEvents::armorPenetration);
     }
 
-    private static void death(PortLivingDeathEvent event) {
+    private static void death(LivingDeathEvent event) {
         LivingEntity victim = event.getEntity();
         DamageSource damageSource = event.getSource();
 
@@ -140,10 +142,12 @@ public final class LivingEntityEvents {
             TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibEntityUtils.getOwner(damageSource);
 
-            if (attacker instanceof ServerPlayer player) {
-                AchievementUtils.gelatinWorldTour(player, victim.getType());
-                if (victim instanceof Enemy && CommonConfigs.ENEMY_DROPS_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))
-                    ModUtils.enemyDropMoney(victim, level);
+            if (attacker instanceof ServerPlayer) {
+                if (victim instanceof Enemy &&
+                        CommonConfigs.ENEMY_DROPS_MONEY.get() &&
+                        level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
+                        !(victim instanceof OwnedSummon)
+                ) ModUtils.enemyDropMoney(victim, level);
                 Bestiary.INSTANCE.updateEntry(victim, true);
             }
             if (attacker != null && attacker.getType().is(ModTags.EntityTypes.CORRUPT)) {
@@ -187,7 +191,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void heal(PortLivingHealEvent event) {
+    private static void heal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
         float amount = event.getAmount();
@@ -352,7 +356,7 @@ public final class LivingEntityEvents {
         SweetSword.applyEffects(event);
     }
 
-    private static void mobEffect$Added(PortMobEffectEvent.Added event) {
+    private static void mobEffect$Added(MobEffectEvent.Added event) {
         MobEffectInstance instance = event.getEffectInstance();
         if (event.getEffectSource() != null) {
             ModEffects.onLoveEffectAdd(instance, event.getEntity(), event.getEffectSource());
@@ -366,13 +370,13 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void mobEffect$Remove(PortMobEffectEvent.Remove event) {
+    private static void mobEffect$Remove(MobEffectEvent.Remove event) {
         MobEffectInstance effectInstance = event.getEffectInstance();
         if (effectInstance == null) return;
         ModEffects.onLuckEffectRemove(event.getEntity(), effectInstance.getEffect(), effectInstance.amplifier);
     }
 
-    private static void equipmentChange(PortLivingEquipmentChangeEvent event) {
+    private static void equipmentChange(LivingEquipmentChangeEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         if (event.getSlot() == EquipmentSlot.MAINHAND && event.getFrom().getItem() instanceof BaseGun gun) {
             gun.putAwayAnimator(event.getFrom(), player);
@@ -389,7 +393,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void drops(PortLivingDropsEvent event) {
+    private static void drops(LivingDropsEvent event) {
         LivingEntity living = event.getEntity();
         ServerLevel level = (ServerLevel) living.level();
         if (!level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) return;
@@ -442,7 +446,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void getProjectile(PortLivingGetProjectileEvent event) {
+    private static void getProjectile(LivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
         event.setProjectileItemStack(ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living));
 
@@ -452,7 +456,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void breathe(PortLivingBreatheEvent event) {
+    private static void breathe(LivingBreatheEvent event) {
         LivingEntity living = event.getEntity();
         boolean b = !living.getActiveEffectsMap().isEmpty();
         if (b && living.hasEffect(ModEffects.CHOKING.get())) {
@@ -472,7 +476,7 @@ public final class LivingEntityEvents {
         ModArmorBonus.onBreath(event);
     }
 
-    private static void finalizeSpawn(PortFinalizeSpawnEvent event) {
+    private static void finalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
         ServerLevel level = event.getLevel().getLevel();
         Mob mob = event.getEntity();
         EntityType<?> type = mob.getType();
@@ -534,7 +538,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void useItem$Start(PortLivingEntityUseItemEvent.Start event) {
+    private static void useItem$Start(LivingEntityUseItemEvent.Start event) {
         LivingEntity living = event.getEntity();
         if (!living.level().isClientSide && living.hasEffect(ModEffects.CHOKING.get())) {
             ItemStack itemStack = event.getItem();
@@ -545,7 +549,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void useItem$Finish(PortLivingEntityUseItemEvent.Finish event) {
+    private static void useItem$Finish(LivingEntityUseItemEvent.Finish event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         ItemStack itemStack = event.getItem();
         RandomSource random = player.getRandom();
@@ -572,7 +576,7 @@ public final class LivingEntityEvents {
 
     }
 
-    private static void mobSpawn$PositionCheck(PortMobSpawnEvent.PositionCheck event) {
+    private static void mobSpawn$PositionCheck(MobSpawnEvent.PositionCheck event) {
         if (event.getSpawnType() != MobSpawnType.NATURAL) return;
         Mob mob = event.getEntity();
         if (event.getResult() != PortMobSpawnEvent.PositionCheck.PortResult.FAIL.unwrap() && (
@@ -589,8 +593,8 @@ public final class LivingEntityEvents {
         }
     }
 
-    private static void mobSpawn$SpawnPlacementCheck(PortMobSpawnEvent.SpawnPlacementCheck event) {
-        if (event.getSpawnType() == MobSpawnType.NATURAL && !event.getPlacementCheckResult()) {
+    private static void mobSpawn$SpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event) {
+        if (event.getSpawnType() == MobSpawnType.NATURAL && !getPlacementCheckResult(event)) {
             EntityType<?> entityType = event.getEntityType();
 //            if (entityType == TEMonsterEntities.GHOST.get()) {
 //                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
@@ -605,6 +609,13 @@ public final class LivingEntityEvents {
                 }
             }
         }
+    }
+
+    private static boolean getPlacementCheckResult(MobSpawnEvent.SpawnPlacementCheck event) {
+        if (event.getResult() == Event.Result.ALLOW) {
+            return true;
+        }
+        return event.getResult() == Event.Result.DEFAULT && event.getDefaultResult();
     }
 
     private static void spawnClusterSize(PortSpawnClusterSizeEvent event) {

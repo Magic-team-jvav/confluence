@@ -13,6 +13,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolActions;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.ChunkWatchEvent;
+import net.minecraftforge.event.level.ExplosionEvent;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
@@ -36,8 +40,8 @@ import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.level.*;
-import org.mesdag.portlib.wrapper.common.PortItemAbilities;
+import org.mesdag.portlib.event.level.PortBlockDropsEvent;
+import org.mesdag.portlib.event.level.PortModifyCustomSpawnersEvent;
 
 public final class LevelEvents {
     public static void init() {
@@ -50,7 +54,7 @@ public final class LevelEvents {
         PortEventHandler.addListener(LevelEvents::modifyCustomSpawners);
     }
 
-    private static void explosion$Detonate(PortExplosionEvent.Detonate event) {
+    private static void explosion$Detonate(ExplosionEvent.Detonate event) {
         BaseBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
         if (event.getExplosion().getDirectSourceEntity() instanceof BaseBulletEntity bullet && bullet.getOwner() != null) {
             event.getAffectedEntities().removeIf(entity -> entity == bullet.getOwner() || entity.isPassengerOfSameVehicle(bullet.getOwner()));
@@ -58,8 +62,8 @@ public final class LevelEvents {
         NoTraps.entityInvulnerableToExplosion(event.getLevel(), event.getAffectedEntities());
     }
 
-    private static void block$ToolModification(PortBlockEvent.BlockToolModificationEvent event) {
-        if (PortItemAbilities.AXE_STRIP == event.getItemAbility()) {
+    private static void block$ToolModification(BlockEvent.BlockToolModificationEvent event) {
+        if (ToolActions.AXE_STRIP == event.getToolAction()) {
             BlockState originalState = event.getState();
             Block block = LogBlockSet.WRAPPED_STRIP_TABLE.get(originalState.getBlock());
             if (block != null) {
@@ -84,7 +88,7 @@ public final class LevelEvents {
         }
     }
 
-    private static void chunkWatch$Watch(PortChunkWatchEvent.Watch event) {
+    private static void chunkWatch$Watch(ChunkWatchEvent.Watch event) {
         BrushData data = ChunkBrushData.of(event.getLevel()).getDataMap().get(event.getPos());
         if (data != null && !data.colors().isEmpty()) {
             data.ensureValid(event.getLevel());
@@ -92,7 +96,7 @@ public final class LevelEvents {
         }
     }
 
-    private static void block$Break(PortBlockEvent.BreakEvent event) {
+    private static void block$Break(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         BlockState state = event.getState();
         if (!PlayerSpecialData.of(player).isCouldDamageEnvironment() && state.is(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION)) {
@@ -113,7 +117,7 @@ public final class LevelEvents {
         }
     }
 
-    private static void farmlandTrample(PortBlockEvent.FarmlandTrampleEvent event) {
+    private static void farmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
         if (event.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldDamageEnvironment()) {
             event.setCanceled(true);
         }

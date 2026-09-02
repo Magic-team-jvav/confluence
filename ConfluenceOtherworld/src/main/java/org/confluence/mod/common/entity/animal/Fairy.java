@@ -22,9 +22,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.util.AchievementUtils;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.EnumSet;
@@ -95,8 +95,8 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
                 target = null;
                 return false;
             }
-            if (fairy.getType() == CritterEntities.FAIRY.get() && target instanceof ServerPlayer serverPlayer) {
-                awardEncounterAchievement(serverPlayer);
+            if (fairy.getType() == CritterEntities.FAIRY.get() && target instanceof ServerPlayer player) {
+                AchievementUtils.awardAchievement(player, "hey_listen");
             }
             return true;
         }
@@ -213,11 +213,6 @@ public class Fairy extends Bird implements VariantHolder<Fairy.Variant> {
             guidePos = null;
             following = false;
         }
-    }
-
-    /// 妖精在服务端确认首次发现玩家后结算相遇成就。
-    static AchievementAwardService.Result awardEncounterAchievement(ServerPlayer player) {
-        return AchievementAwardService.award(player, "hey_listen");
     }
 
     /// 仙灵是引导实体而不是可被普通攻击清除的小动物。

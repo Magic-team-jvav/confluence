@@ -2,7 +2,6 @@ package org.confluence.mod.util;
 
 import com.google.common.collect.Streams;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -12,17 +11,12 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.confluence.lib.common.LibTags;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.PlayerAchievementProgress;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -30,14 +24,14 @@ import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
+import org.mesdag.portlib.diff.Diff;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
 public final class AchievementUtils {
     public static final String PREFIX = "achievements/";
+    @Diff
+    public static final ResourceLocation ROOT = asAchievement("new_world");
 
     public static ResourceLocation asAchievement(String path) {
         return Confluence.asResource(PREFIX + path);
@@ -53,29 +47,15 @@ public final class AchievementUtils {
     }
 
     public static void awardAchievement(ServerPlayer player, String path) {
-        AchievementAwardService.award(player, path);
-    }
-
-    /// 记录玩家击败的史莱姆种类，并在覆盖当前标签中的全部类型后授予成就。
-    /// 标签是需要击败哪些实体的唯一配置入口，外部模组无需修改本体代码。
-    public static boolean gelatinWorldTour(ServerPlayer player, EntityType<?> defeatedType) {
-        if (player.isSpectator() || !defeatedType.is(LibTags.EntityTypes.SLIME)) {
-            return false;
+        CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
+        String key = Confluence.asPlainId(path);
+        if (!data.getBoolean(key)) {
+            Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement(path));
+            if (advancement != null) {
+                player.getAdvancements().award(advancement, "never");
+            }
+            data.putBoolean(key, true);
         }
-        Set<ResourceLocation> requiredTypes = new LinkedHashSet<>();
-        player.serverLevel().registryAccess()
-                .registryOrThrow(Registries.ENTITY_TYPE)
-                .getTagOrEmpty(LibTags.EntityTypes.SLIME)
-                .forEach(holder -> {
-                    ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(holder.value());
-                    if (id != null) requiredTypes.add(id);
-                });
-        if (requiredTypes.isEmpty()
-                || !PlayerAchievementProgress.of(player)
-                .recordSlimeVariant(defeatedType, requiredTypes)) {
-            return false;
-        }
-        return AchievementAwardService.award(player, "gelatin_world_tour").completed();
     }
 
     public static void youCanDoIt(ServerPlayer player, ServerLevel level, long gameTime) {
@@ -86,23 +66,27 @@ public final class AchievementUtils {
             if (LibDateUtils.isNight(dayTime)) {
                 LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
             } else if (firstNight == 1 && LibDateUtils.isDay(dayTime)) {
-                if (AchievementAwardService.award(player, "you_can_do_it").completed()) {
-                    LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) -1);
+                Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement("you_can_do_it"));
+                if (advancement != null) {
+                    player.getAdvancements().award(advancement, "never");
                 }
+                LibEntityUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) -1);
             }
         }
     }
 
-    // todo
-    public static boolean marathonMedalist(ServerPlayer player, ServerStatsCounter stats) {
-        if (achievedAchievement(player, "marathon_medalist")) return true;
+    public static void marathonMedalist(ServerPlayer player) {
+        if (achievedAchievement(player, "marathon_medalist")) return;
+        ServerStatsCounter stats = player.getStats();
         int sprint = stats.getValue(Stats.CUSTOM.get(Stats.SPRINT_ONE_CM));
         int crouch = stats.getValue(Stats.CUSTOM.get(Stats.CROUCH_ONE_CM));
         int walk = stats.getValue(Stats.CUSTOM.get(Stats.WALK_ONE_CM));
         if (sprint + crouch + walk > 46112_00) {
-            return AchievementAwardService.award(player, "marathon_medalist").completed();
+            Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement("marathon_medalist"));
+            if (advancement != null) {
+                player.getAdvancements().award(advancement, "never");
+            }
         }
-        return false;
     }
 
     public static void luckyBreak_watchYourStep(ServerPlayer player, DamageSource damageSource, @Nullable Entity sourceEntity) {
@@ -137,7 +121,10 @@ public final class AchievementUtils {
         if (before > 10000) return;
         long total = before + cost;
         if (total >= 10000) {
-            AchievementAwardService.award(player, "the_frequent_flyer");
+            Advancement advancement = player.server.getAdvancements().getAdvancement(asAchievement("the_frequent_flyer"));
+            if (advancement != null) {
+                player.getAdvancements().award(advancement, "never");
+            }
         }
         tag.putShort("confluence:the_frequent_flyer", (short) total);
     }

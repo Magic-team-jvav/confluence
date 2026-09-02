@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibEntityUtils;
@@ -46,7 +47,6 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.entity.living.PortLivingBreatheEvent;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
@@ -461,7 +461,7 @@ public final class ModArmorBonus {
         }
     }
 
-    public static void onBreath(PortLivingBreatheEvent event) {
+    public static void onBreath(LivingBreatheEvent event) {
         if (event.canBreathe() || !(event.getEntity() instanceof Player player)) {
             return;
         }

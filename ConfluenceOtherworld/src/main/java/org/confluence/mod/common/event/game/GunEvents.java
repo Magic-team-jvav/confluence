@@ -43,6 +43,4 @@ public final class GunEvents {
             BulletImpactPacketS2C.send(event.getBulletEntity(), event.getHitResult().getLocation());
         }
     }
-
-    private GunEvents() {}
 }

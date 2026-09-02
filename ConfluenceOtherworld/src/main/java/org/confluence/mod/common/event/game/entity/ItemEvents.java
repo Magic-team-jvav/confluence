@@ -12,9 +12,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraftforge.event.ItemStackedOnOtherEvent;
+import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
@@ -40,9 +43,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
-import org.mesdag.portlib.event.entity.item.PortItemTossEvent;
 import org.mesdag.portlib.event.other.PortItemAttributeModifierEvent;
-import org.mesdag.portlib.event.other.PortItemStackedOnOtherEvent;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
@@ -50,7 +51,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public final class ItemEvents {
-    private static final ResourceLocation SUMMONER_PACT_MODIFIER_ID = org.confluence.mod.Confluence.asResource("enchantment.summoner_pact");
+    private static final ResourceLocation SUMMONER_PACT_MODIFIER_ID = Confluence.asResource("enchantment.summoner_pact");
 
     public static void init() {
         PortEventHandler.addListener(PortEventPriority.NORMAL, true, ItemEvents::itemStackedOnOther);
@@ -66,7 +67,7 @@ public final class ItemEvents {
         PortEventHandler.addListener(ItemEvents::shimmerItemTransmutation$Post);
     }
 
-    private static void itemStackedOnOther(PortItemStackedOnOtherEvent event) {
+    private static void itemStackedOnOther(ItemStackedOnOtherEvent event) {
         ItemStack carried = event.getCarriedItem();
         ItemStack stackedOn = event.getStackedOnItem();
         Player player = event.getPlayer();
@@ -77,7 +78,7 @@ public final class ItemEvents {
 
     private static void attributeModifier(PortItemAttributeModifierEvent event) {
         ItemStack itemStack = event.getItemStack();
-        int summonerPactLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SUMMONER_PACT.get(), itemStack);
+        int summonerPactLevel = EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.SUMMONER_PACT.get(), itemStack);
         if (summonerPactLevel > 0) {
             event.addModifier(ConfluenceMagicLib.MINION_CAPACITY,
                     new PortAttributeModifier(SUMMONER_PACT_MODIFIER_ID, 1.0 + 0.5 * (summonerPactLevel - 1), PortAttributeModifier.Operation.ADD_VALUE),
@@ -95,7 +96,7 @@ public final class ItemEvents {
         }
     }
 
-    private static void toss(PortItemTossEvent event) {
+    private static void toss(ItemTossEvent event) {
         ItemEntity itemEntity = event.getEntity();
         ItemStack itemStack = itemEntity.getItem();
         if (itemStack.is(ModTags.Items.TREASURE_BAG)) {

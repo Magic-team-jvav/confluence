@@ -88,7 +88,6 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.player.*;
-import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import org.mesdag.portlib.wrapper.world.PortItemInteractionResult;
 
 import java.util.Objects;
@@ -120,7 +119,7 @@ public final class PlayerEvents {
         PortEventHandler.addListener(PlayerEvents::canContinueSleeping);
         PortEventHandler.addListener(PlayerEvents::canSpawnPhantom);
         PortEventHandler.addListener(PlayerEvents::naturalHeal);
-        PortEventHandler.addListener(PlayerEvents::onBonemeal);
+        PortEventHandler.addListener(PlayerEvents::bonemeal);
         PortEventHandler.addListener(PlayerEvents::afterFlushArmorSetBonus);
         PortEventHandler.addListener(PlayerEvents::switchItemFunction$Post);
         PortEventHandler.addListener(PlayerEvents::rightClickRailBlock);
@@ -179,15 +178,15 @@ public final class PlayerEvents {
         }
     }
 
-    private static void interact$RightClickBlock(PortPlayerInteractEvent.RightClickBlock event) {
+    private static void interact$RightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getEntity();
         Level level = event.getLevel();
         BlockPos blockPos = event.getPos();
         BlockState blockState = level.getBlockState(blockPos);
         Block block = blockState.getBlock();
 
-        if (!event.getUseBlock().isTrue() && block instanceof AltarBlock) {
-            event.setUseBlock(PortTriState.TRUE);
+        if (event.getUseBlock() != Event.Result.ALLOW && block instanceof AltarBlock) {
+            event.setUseBlock(Event.Result.ALLOW);
         }
 
         if (player.isCrouching()) return;
@@ -237,7 +236,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void interact$EntityInteract(PortPlayerInteractEvent.EntityInteract event) {
+    private static void interact$EntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (event.getEntity() instanceof ServerPlayer player &&
                 event.getTarget() instanceof LivingEntity living
         ) healChocking:{
@@ -419,7 +418,7 @@ public final class PlayerEvents {
         PlayerUtils.syncPlayerData(player);
     }
 
-    private static void container$Close(PortPlayerContainerEvent.Close event) {
+    private static void container$Close(PlayerContainerEvent.Close event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) return;
         IMinecraftServer server = IMinecraftServer.of(player.server);
         if (!server.confluence$matchesSecretFlag(IWorldOptions.HARDMODE)) return;
@@ -481,7 +480,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void canSpawnPhantom(PortPlayerSpawnPhantomsEvent event) {
+    private static void canSpawnPhantom(PlayerSpawnPhantomsEvent event) {
         if (ModSecretSeeds.NEVER_SLEEP.match(((ServerPlayer) event.getEntity()).server)) {
             event.setResult(PortPlayerSpawnPhantomsEvent.Result.ALLOW);
         }
@@ -496,7 +495,7 @@ public final class PlayerEvents {
         }
     }
 
-    private static void onBonemeal(BonemealEvent event) {
+    private static void bonemeal(BonemealEvent event) {
         Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = event.getBlock();

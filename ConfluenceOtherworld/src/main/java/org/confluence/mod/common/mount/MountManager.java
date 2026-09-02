@@ -4,11 +4,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.common.advancement.AchievementAwardService;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.mount.MountItem;
+import org.confluence.mod.util.AchievementUtils;
 
 /// 本体坐骑的创建与清理入口。
 ///
@@ -61,7 +61,7 @@ public final class MountManager {
             return;
         }
         player.level().playSound(null, player.blockPosition(), ModSoundEvents.USE_MOUNTS.get(), SoundSource.PLAYERS, 0.4F, 1.0F);
-        AchievementAwardService.award(player, "the_cavalry");
+        AchievementUtils.awardAchievement(player, "the_cavalry");
     }
 
     /// 每个服务端 tick 校验当前临时坐骑。

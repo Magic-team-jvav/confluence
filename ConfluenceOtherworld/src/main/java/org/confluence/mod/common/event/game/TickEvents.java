@@ -2,7 +2,7 @@ package org.confluence.mod.common.event.game;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.event.TickEvent;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.TaskScheduler;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
@@ -29,9 +29,6 @@ import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.tick.PortEntityTickEvent;
-import org.mesdag.portlib.event.tick.PortLevelTickEvent;
-import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
-import org.mesdag.portlib.event.tick.PortServerTickEvent;
 
 public final class TickEvents {
     public static void init() {
@@ -41,8 +38,9 @@ public final class TickEvents {
         PortEventHandler.addListener(TickEvents::serverTick$Post);
     }
 
-    public static void levelTick$Post(PortLevelTickEvent.Post event) {
-        if (!(event.getLevel() instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
+    private static void levelTick$Post(TickEvent.LevelTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        if (!(event.level instanceof ServerLevel level) || level.dimension() != OverworldUtils.dimension()) {
             return;
         }
         GameEventSystem.INSTANCE.tick(); // 最高优先级，其会影响BossDelaySpawner、NPCSpawner等内容
@@ -68,10 +66,10 @@ public final class TickEvents {
         HardmodeConvertor.INSTANCE.scheduleRefill(level);
     }
 
-    public static void playerTick$Post(PortPlayerTickEvent.Post event) {
-        Player entity = event.getEntity();
-        long gameTime = entity.level().getGameTime();
-        if (entity instanceof ServerPlayer player) {
+    private static void playerTick$Post(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        long gameTime = event.player.level().getGameTime();
+        if (event.player instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
             PlayerUtils.regenerateMana(player);
@@ -83,9 +81,8 @@ public final class TickEvents {
             AchievementUtils.youCanDoIt(player, level, gameTime);
             AchievementUtils.quietNeighborhood(player, level, gameTime);
             AchievementUtils.aRareRealm(player, gameTime);
-            // 距离来自原版服务端统计；分散到每秒一次检查，避免每次移动都查询成就进度。
-            if (Math.floorMod(gameTime, 20L) == Math.floorMod(player.getId(), 20)) {
-                AchievementUtils.marathonMedalist(player, player.getStats());
+            if (gameTime % 20 == player.getId() % 10) {
+                AchievementUtils.marathonMedalist(player);
             }
             TheConstant.applyDarkness(player, level, gameTime);
             TheConstant.instantlyDieWhenHasNoFoodLevel(player);
@@ -97,19 +94,20 @@ public final class TickEvents {
         }
 
         if (gameTime % 60 == 3) {
-            AbstractFishingPole.resetCurrentBait(entity);
-            PlayerSpecialData.resetSomeData(entity);
+            AbstractFishingPole.resetCurrentBait(event.player);
+            PlayerSpecialData.resetSomeData(event.player);
         }
     }
 
-    public static void entityTick$Post(PortEntityTickEvent.Post event) {
+    private static void entityTick$Post(PortEntityTickEvent.Post event) {
         Immunity.tick(event.getEntity());
         if (!event.getEntity().level().isClientSide && event.getEntity() instanceof net.minecraft.world.entity.Mob mob) {
             DriveAwayController.tick(mob);
         }
     }
 
-    public static void serverTick$Post(PortServerTickEvent.Post event) {
+    private static void serverTick$Post(TickEvent.ServerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
         PathService.INSTANCE.pathFindingTick();
     }
 }

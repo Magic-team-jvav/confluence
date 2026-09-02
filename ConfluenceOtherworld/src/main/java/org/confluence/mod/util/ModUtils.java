@@ -54,7 +54,6 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.advancement.BossAchievementSettlement;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.component.LootComponent;
@@ -151,30 +150,34 @@ public final class ModUtils {
         return state;
     }
 
-    public static void bossDeath(ServerLevel level, BaseBoss living) {
+    public static void bossDeath(ServerLevel level, BaseBoss boss) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return;
-        if (!living.tryBeginDeathRewardSettlement()) return;
+        if (!boss.tryBeginDeathRewardSettlement()) return;
 
-        List<ServerPlayer> participants = living.getOnlineCombatParticipants();
-        EntityType<?> type = living.getType();
+        List<ServerPlayer> participants = boss.getOnlineCombatParticipants();
+        EntityType<?> type = boss.getType();
         KillBoard.INSTANCE.defeat(level.getServer(), type);
-        boolean isEaterOfWorlds = type == BossEntities.EATER_OF_WORLDS.get();
-        if (isEaterOfWorlds || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
+        if (type == BossEntities.EATER_OF_WORLDS.get() || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
             if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
                 MeteoriteTracker.INSTANCE.setSpawnAtNextNight(level, true);
             } else if (!MeteoriteTracker.INSTANCE.isSpawnAtNextNight() && level.random.nextBoolean()) {
                 MeteoriteTracker.INSTANCE.setSpawnAtNextNight(level, true);
             }
         }
-        boolean stickySituation = type == BossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started();
-        participants.forEach(player -> {
-            TreasureBagItem.createItemEntity(living, player);
-            BossAchievementSettlement.settle(
-                    player,
-                    type,
-                    stickySituation,
-                    living.isMechanicalMayhemParticipant(player.getUUID()));
-        });
+        for (ServerPlayer player : participants) {
+            TreasureBagItem.createItemEntity(boss, player);
+            if (type == BossEntities.EATER_OF_WORLDS.get()) {
+                AchievementUtils.awardAchievement(player, "worm_fodder");
+            } else if (type == BossEntities.KING_SLIME.get() && SlimeRainGameEvent.INSTANCE.started()) {
+                AchievementUtils.awardAchievement(player, "sticky_situation");
+            } else if (type == BossEntities.WALL_OF_FLESH.get() || type == BossEntities.HILL_OF_FLESH.get()) {
+                AchievementUtils.awardAchievement(player, "still_hungry");
+            } else if (type == BossEntities.PLANTERA.get()) {
+                AchievementUtils.awardAchievement(player, "the_great_southern_plantkill");
+            } else if (type == BossEntities.LUNATIC_CULTIST.get()) {
+                AchievementUtils.awardAchievement(player, "obsessive_devotion");
+            }
+        }
     }
 
     public static void enemyDropMoney(LivingEntity living, ServerLevel level) {

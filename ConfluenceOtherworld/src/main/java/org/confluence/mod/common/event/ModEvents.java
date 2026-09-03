@@ -512,30 +512,11 @@ public final class ModEvents {
 
     private static void registerBestiaryKeys(RegisterBestiaryKeyEvent event) {
         event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + bunny.getBunnyVariant().getSerializedName());
-        event.register(CritterEntities.SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(Squirrel.Variant::getSerializedName));
-        event.register(CritterEntities.RED_SQUIRREL.get(), (type, squirrel) -> "entity.confluence.squirrel.red");
-        event.register(CritterEntities.JEWEL_SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(Squirrel.Variant::getSerializedName));
-        event.register(CritterEntities.GRASSHOPPER.get(), RegisterBestiaryKeyEvent.vanillaVariant(Grasshopper.Variant::getSerializedName));
-        event.register(CritterEntities.BUTTERFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(Butterfly.Variant::getSerializedName));
-        event.register(CritterEntities.WORM.get(), RegisterBestiaryKeyEvent.vanillaVariant(Worm.Variant::getSerializedName));
-        event.register(CritterEntities.DRAGONFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(Dragonfly.Variant::getSerializedName));
-        event.register(CritterEntities.LADYBUG.get(), RegisterBestiaryKeyEvent.vanillaVariant(Ladybug.Variant::getSerializedName));
-        event.register(CritterEntities.FEALING.get(), (type, fealing) -> type.getDescriptionId());
-        event.register(CritterEntities.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(Duck.Variant::getSerializedName));
-        event.register(CritterEntities.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(Fairy.Variant::getSerializedName));
-        event.register(CritterEntities.SCORPION.get(), RegisterBestiaryKeyEvent.vanillaVariant(Scorpion.Variant::getSerializedName));
-        event.register(MonsterEntities.DEMON_EYE.get(), (type, eye) -> type.getDescriptionId() + '.' + eye.getVariant().getSerializedName());
-        event.register(BossEntities.SERVANT_OF_CTHULHU.get(), (type, servant) -> "entity.confluence.demon_eye.minion");
+        // todo 改成注册单独的史莱姆之母和宝宝
         event.register(MonsterEntities.BLACK_SLIME.get(), (type, slime) -> {
             if (slime.getSlimeSize() == 1) return "entity.confluence.baby_slime";
             if (slime.getSlimeSize() == 4) return "entity.confluence.mother_slime";
             return type.getDescriptionId();
-        });
-        event.register(MonsterEntities.ZOMBIE.get(), (type, zombie) -> switch (zombie.getVariant()) {
-            case SLIMED -> "entity.minecraft.zombie.slime";
-            case RAINCOAT -> "entity.minecraft.zombie.raincoat";
-            case ESKIMO -> "entity.minecraft.zombie.frozen";
-            default -> type.getDescriptionId();
         });
     }
 

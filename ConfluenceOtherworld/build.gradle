@@ -40,7 +40,7 @@ legacyForge {
         }
         server {
             server()
-            programArgument '--nogui'
+//            programArgument '--nogui'
             systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
         }
         data {

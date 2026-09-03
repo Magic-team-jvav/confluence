@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.gun;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.api.client.animation.HandAnimationAction;
 import org.confluence.mod.api.client.animation.HandAnimationApi;
 import org.confluence.mod.api.client.animation.HandAnimationChannel;
@@ -105,7 +105,7 @@ public class BaseGun extends Item implements GeoItem {
                 if (key == null) return;
                 SoundEvent value = ForgeRegistries.SOUND_EVENTS.getValue(key);
                 if (value == null) return;
-                Player player = Minecraft.getInstance().player;
+                Player player = LibClientUtils.getPlayer();
                 if (player == null) return;
                 player.level().playLocalSound(player.getX(), player.getEyeY(), player.getZ(), value, SoundSource.PLAYERS, 1, 1, false);
             });

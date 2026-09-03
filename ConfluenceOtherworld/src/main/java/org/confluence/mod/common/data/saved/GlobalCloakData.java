@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibStreamCodecUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.RegisterCloakDataEvent;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -154,7 +155,7 @@ public enum GlobalCloakData implements IGlobalData {
         }
         int decodedVersion = tag.getInt("Version");
         if (decodedVersion != VERSION) {
-            throw new IllegalArgumentException("Unsupported global cloak data version: " + decodedVersion);
+            Confluence.LOGGER.warn("Unsupported global cloak data version: {}", decodedVersion);
         }
         Map<BlockState, BooleanObjectPair<BlockState>> decodedBlocks =
                 PortDataResultExtension.getOrThrow(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")), message -> new IllegalArgumentException("Failed to decode cloaked block data: " + message));

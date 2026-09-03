@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AnglerQuestLoader;
 
 import java.util.Map;
@@ -53,7 +54,7 @@ public enum AnglerData implements IGlobalData {
             return;
         }
         if (!tag.contains("QuestGameDay", Tag.TAG_LONG) || !tag.contains("SelectedIndex", Tag.TAG_INT) || !tag.contains("QuestFish", Tag.TAG_COMPOUND)) {
-            throw new IllegalArgumentException("Angler data is missing a required field or contains an invalid field type");
+            Confluence.LOGGER.warn("Angler data is missing a required field or contains an invalid field type");
         }
         this.questGameDay = tag.getLong("QuestGameDay");
         this.questFish = Objects.requireNonNullElse(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(tag.getString("QuestFish"))), Items.AIR);

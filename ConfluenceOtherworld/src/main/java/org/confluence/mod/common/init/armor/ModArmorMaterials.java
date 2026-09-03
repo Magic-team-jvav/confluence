@@ -176,6 +176,16 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,
             "mercenary", 2.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> WOLF_ARMOR_MATERIALS = registerArmorMaterial("wolf_armor_materials",
+            3, 4, 4, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.LEATHER,
+            "wolf", 1.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> ROOT_ROT_ARMOR_MATERIALS = registerArmorMaterial("root_rot_armor_materials",
+            3, 5, 5, 3,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,
+            "root_rot", 1.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> RENEGADE_ARMOR_MATERIALS = registerArmorMaterial("renegade_armor_materials",
             5, 6, 6, 5,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.IRON_INGOT,

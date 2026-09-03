@@ -254,6 +254,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.pumpkin_armor", "Pumpkin Armor");
         add("itemGroup.confluence.white_pumpkin_armor", "White Pumpkin Armor");
         add("itemGroup.confluence.thief_armor", "Thief Armor");
+        add("itemGroup.confluence.wolf_armor", "Wolf Armor");
+        add("itemGroup.confluence.root_rot_armor", "Root Rot Armor");
         add("itemGroup.confluence.reinforced_mail_armor", "Reinforced Mail Armor");
         add("itemGroup.confluence.stalwart_armor", "Stalwart Armor");
         add("itemGroup.confluence.mercenary_armor", "Mercenary Armor");
@@ -1263,6 +1265,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.pumpkin_set.0", "10% increased damage");
         // White Pumpkin Set
         add("armor_set_bonus.confluence.white_pumpkin_set.0", "Melee critical hits restore 1 Soul Point");
+        // Wolf Set
+        add("armor_set_bonus.confluence.wolf_set.0", "Damage increased by 11%");
+        add("armor_set_bonus.confluence.wolf_set.1", "Gain Wild Power buff when using healing potions");
+        // Root Rot Set
+        add("armor_set_bonus.confluence.root_rot_set.0", "Using healing potions resets artifact cooldowns");
+        add("armor_set_bonus.confluence.root_rot_set.1", "When using a healing potion, nearby players additionally restore 20% of this heal amount");
         // Thief Set
         add("armor_set_bonus.confluence.thief_set.0", "Melee attack speed increased by 4%");
         add("armor_set_bonus.confluence.thief_set.1", "Ranged damage increased by 4%");

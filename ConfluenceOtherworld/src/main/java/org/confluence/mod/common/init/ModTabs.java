@@ -1417,6 +1417,18 @@ public final class ModTabs {
                         thief_armor.accept(ArmorItems.THIEF_LEGGINGS.get());
                         thief_armor.accept(ArmorItems.THIEF_BOOTS.get());
 
+                        CreativeModeTab.Output wolf_armor = GroupItem.belongsTo("wolf_armor", output);
+                        wolf_armor.accept(ArmorItems.WOLF_HELMET.get());
+                        wolf_armor.accept(ArmorItems.WOLF_CHESTPLATE.get());
+                        wolf_armor.accept(ArmorItems.WOLF_LEGGINGS.get());
+                        wolf_armor.accept(ArmorItems.WOLF_BOOTS.get());
+
+                        CreativeModeTab.Output root_rot_armor = GroupItem.belongsTo("root_rot_armor", output);
+                        root_rot_armor.accept(ArmorItems.ROOT_ROT_HELMET.get());
+                        root_rot_armor.accept(ArmorItems.ROOT_ROT_CHESTPLATE.get());
+                        root_rot_armor.accept(ArmorItems.ROOT_ROT_LEGGINGS.get());
+                        root_rot_armor.accept(ArmorItems.ROOT_ROT_BOOTS.get());
+
                         CreativeModeTab.Output reinforced_mail_armor = GroupItem.belongsTo("reinforced_mail_armor", output);
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_HELMET.get());
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_CHESTPLATE.get());

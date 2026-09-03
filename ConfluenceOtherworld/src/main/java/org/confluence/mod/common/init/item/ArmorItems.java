@@ -211,6 +211,41 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
             .criticalChance(0.015));
 
+
+    public static final DeferredItem<BaseArmorItem> WOLF_HELMET = register("wolf_helmet", ModArmorMaterials.WOLF_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/wolf_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> WOLF_CHESTPLATE = register("wolf_chestplate", ModArmorMaterials.WOLF_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/wolf_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> WOLF_LEGGINGS = register("wolf_leggings", ModArmorMaterials.WOLF_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/wolf_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> WOLF_BOOTS = register("wolf_boots", ModArmorMaterials.WOLF_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/wolf_armor")
+            .rarity(ModRarity.BLUE)
+    );
+
+    public static final DeferredItem<BaseArmorItem> ROOT_ROT_HELMET = register("root_rot_helmet", ModArmorMaterials.ROOT_ROT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/root_rot_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> ROOT_ROT_CHESTPLATE = register("root_rot_chestplate", ModArmorMaterials.ROOT_ROT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/root_rot_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> ROOT_ROT_LEGGINGS = register("root_rot_leggings", ModArmorMaterials.ROOT_ROT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/root_rot_armor")
+            .rarity(ModRarity.BLUE)
+    );
+    public static final DeferredItem<BaseArmorItem> ROOT_ROT_BOOTS = register("root_rot_boots", ModArmorMaterials.ROOT_ROT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/root_rot_armor")
+            .rarity(ModRarity.BLUE)
+    );
+
     public static final DeferredItem<BaseArmorItem> THIEF_HELMET = register("thief_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)

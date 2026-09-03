@@ -214,6 +214,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.pumpkin_armor", "南瓜盔甲");
         add("itemGroup.confluence.white_pumpkin_armor", "白南瓜盔甲");
         add("itemGroup.confluence.thief_armor", "窃贼盔甲");
+        add("itemGroup.confluence.wolf_armor", "狼盔甲");
+        add("itemGroup.confluence.root_rot_armor", "腐根盔甲");
         add("itemGroup.confluence.reinforced_mail_armor", "强化链甲盔甲");
         add("itemGroup.confluence.stalwart_armor", "忠诚盔甲");
         add("itemGroup.confluence.mercenary_armor", "雇佣兵盔甲");
@@ -1301,6 +1303,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.pumpkin_set.0", "伤害提高10%");
         // 白南瓜
         add("armor_set_bonus.confluence.white_pumpkin_set.0", "近战暴击会回复1点灵魂值");
+        // 狼甲
+        add("armor_set_bonus.confluence.wolf_set.0", "伤害提高11%");
+        add("armor_set_bonus.confluence.wolf_set.1", "使用治疗药水时，附加野性之力增益");
+        // 腐根盔甲
+        add("armor_set_bonus.confluence.root_rot_set.0", "使用治疗药水将会重置法器冷却时间");
+        add("armor_set_bonus.confluence.root_rot_set.1", "使用治疗药水时，周围的玩家额外回复本次治疗量的20%");
         // 窃贼
         add("armor_set_bonus.confluence.thief_set.0", "近战攻速提高4%");
         add("armor_set_bonus.confluence.thief_set.1", "远程伤害提高4%");
@@ -3980,10 +3988,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.WHITE_PUMPKIN_CHESTPLATE.get(), "白南瓜胸甲");
         add(ArmorItems.WHITE_PUMPKIN_LEGGINGS.get(), "白南瓜护腿");
         add(ArmorItems.WHITE_PUMPKIN_BOOTS.get(), "白南瓜靴子");
+
         add(ArmorItems.THIEF_HELMET.get(), "窃贼头盔");
         add(ArmorItems.THIEF_CHESTPLATE.get(), "窃贼胸甲");
         add(ArmorItems.THIEF_LEGGINGS.get(), "窃贼护腿");
         add(ArmorItems.THIEF_BOOTS.get(), "窃贼靴子");
+        add(ArmorItems.WOLF_HELMET.get(), "狼头盔");
+        add(ArmorItems.WOLF_CHESTPLATE.get(), "狼胸甲");
+        add(ArmorItems.WOLF_LEGGINGS.get(), "狼护腿");
+        add(ArmorItems.WOLF_BOOTS.get(), "狼靴子");
+        add(ArmorItems.ROOT_ROT_HELMET.get(), "腐根头盔");
+        add(ArmorItems.ROOT_ROT_CHESTPLATE.get(), "腐根胸甲");
+        add(ArmorItems.ROOT_ROT_LEGGINGS.get(), "腐根护腿");
+        add(ArmorItems.ROOT_ROT_BOOTS.get(), "腐根靴子");
         add(ArmorItems.HUNERS_HELMET.get(), "猎人头盔");
         add(ArmorItems.HUNERS_CHESTPLATE.get(), "猎人胸甲");
         add(ArmorItems.HUNERS_LEGGINGS.get(), "猎人护腿");
@@ -4060,6 +4077,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.BLUE_HERMIT_CHESTPLATE.get(), "蓝隐匿者胸甲");
         add(ArmorItems.BLUE_HERMIT_LEGGINGS.get(), "蓝隐匿者护腿");
         add(ArmorItems.BLUE_HERMIT_BOOTS.get(), "蓝隐匿者靴子");
+
         add(ArmorItems.RAIN_CAP.get(), "雨帽");
         add(ArmorItems.RAINCOAT.get(), "雨衣");
         add(ArmorItems.SNOW_CAPS.get(), "防雪帽");

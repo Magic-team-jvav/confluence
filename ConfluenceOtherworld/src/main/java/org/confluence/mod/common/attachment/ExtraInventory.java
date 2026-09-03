@@ -25,7 +25,6 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import org.mesdag.portlib.wrapper.IPortNBTSerializable;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
@@ -74,7 +73,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
             extraInventory.accessoryDye = NonNullList.withSize(accessoryDye, ItemStack.EMPTY);
             extraInventory.previousStacks = NonNullList.withSize(size, ItemStack.EMPTY);
             extraInventory.dirty = false;
-            List<ItemStack> list = IPortItemStackExtension.OPTIONAL_LIST_STREAM_CODEC.decode(buffer);
+            List<ItemStack> list = ItemStack.OPTIONAL_LIST_STREAM_CODEC.decode(buffer);
             for (int i = 0; i < size; i++) {
                 extraInventory.setItem(i, list.get(i));
             }
@@ -88,7 +87,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
             for (int i = 0; i < extraInventory.getContainerSize(); i++) {
                 list.add(i, extraInventory.getItem(i));
             }
-            IPortItemStackExtension.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, list);
+            ItemStack.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, list);
         }
     };
 
@@ -312,7 +311,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
     }
 
     private static Tag encode(ItemStack stack, DynamicOps<Tag> ops) {
-        return IPortItemStackExtension.OPTIONAL_CODEC.encodeStart(ops, stack).result().orElseGet(CompoundTag::new);
+        return ItemStack.OPTIONAL_CODEC.encodeStart(ops, stack).result().orElseGet(CompoundTag::new);
     }
 
     @Override
@@ -346,7 +345,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
     }
 
     private static ItemStack decode(CompoundTag tag, DynamicOps<Tag> ops) {
-        return IPortItemStackExtension.OPTIONAL_CODEC.parse(ops, tag).result().orElse(ItemStack.EMPTY);
+        return ItemStack.OPTIONAL_CODEC.parse(ops, tag).result().orElse(ItemStack.EMPTY);
     }
 
     public void copyFrom(ExtraInventory other) {

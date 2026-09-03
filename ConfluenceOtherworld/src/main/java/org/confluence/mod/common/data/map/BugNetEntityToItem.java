@@ -13,7 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 import java.util.List;
 import java.util.function.Function;
@@ -23,7 +22,7 @@ public record BugNetEntityToItem(List<Tuple<EntityPredicate, ItemStack>> list) {
     public static final Codec<BugNetEntityToItem> CODEC = PortCodecExtension.lazyInitialized(() -> {
         Codec<Tuple<EntityPredicate, ItemStack>> codec = RecordCodecBuilder.create(instance -> instance.group(
                 PortCodecExtension.lenientOptionalFieldOf(PortEntityPredicateExtension.codec(), "predicate", EMPTY_PREDICATE).forGetter(Tuple::getA),
-                IPortItemStackExtension.CODEC.fieldOf("result").forGetter(Tuple::getB)
+                ItemStack.CODEC.fieldOf("result").forGetter(Tuple::getB)
         ).apply(instance, Tuple::new));
         return Codec.either(codec.listOf(), codec).xmap(
                 either -> either.map(Function.identity(), List::of),

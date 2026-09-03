@@ -21,7 +21,6 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import top.theillusivec4.curios.common.network.NetworkHandler;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 
@@ -39,7 +38,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     public static final ResourceLocation ID = Confluence.asResource("open_menu");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, OpenMenuPacketC2S> STREAM_CODEC = PortStreamCodec.composite(
             PortByteBufCodecs.BYTE, OpenMenuPacketC2S::menuId,
-            IPortItemStackExtension.OPTIONAL_STREAM_CODEC, OpenMenuPacketC2S::stack,
+            ItemStack.OPTIONAL_STREAM_CODEC, OpenMenuPacketC2S::stack,
             OpenMenuPacketC2S::new
     );
 
@@ -49,7 +48,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     /// 菜单已经绑定的 {@link ContainerLevelAccess}。重新依据玩家视线寻找方块既会
     /// 在打开界面后丢失准确位置，也允许伪造消息从任意位置创建工作站菜单。
     /// 重铸界面只能从哥布林工匠的有效交易会话进入，不能作为通用菜单直接打开。
-    private static @Nullable  MenuRequest resolveMenu(ServerPlayer player, byte menuId) {
+    private static @Nullable MenuRequest resolveMenu(ServerPlayer player, byte menuId) {
         if (menuId == EXTRA_INVENTORY) {
             return new MenuRequest((containerId, inventory, owner) -> new ExtraInventoryMenu(containerId, inventory), Component.empty());
         }

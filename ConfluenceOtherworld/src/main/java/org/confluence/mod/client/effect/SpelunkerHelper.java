@@ -40,7 +40,6 @@ import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.wrapper.common.PortTags;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 import java.util.*;
 
@@ -89,7 +88,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 Codec.INT.fieldOf("color").forGetter(Entry::color),
                 Codec.BOOL.fieldOf("showText").forGetter(Entry::showText),
                 ShowType.CODEC.fieldOf("showType").forGetter(Entry::showType),
-                IPortItemStackExtension.CODEC.fieldOf("showItem").forGetter(Entry::showItem),
+                ItemStack.CODEC.fieldOf("showItem").forGetter(Entry::showItem),
                 ResourceLocation.CODEC.fieldOf("showIcon").forGetter(Entry::showIcon),
                 Codec.BOOL.fieldOf("isLocation").forGetter(Entry::isLocation)
         ).apply(builder, Entry::new));

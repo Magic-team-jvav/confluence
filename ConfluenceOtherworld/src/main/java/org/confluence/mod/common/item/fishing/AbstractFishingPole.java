@@ -38,7 +38,6 @@ import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.common.extensions.IPortLivingEntityExtension;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
 
@@ -160,12 +159,12 @@ public abstract class AbstractFishingPole extends FishingRodItem {
     public static ItemStack getBait(ItemStack fishingPole) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(fishingPole);
         if (tag == null || !tag.getBoolean(HAS_BAIT_KEY)) return ItemStack.EMPTY;
-        return IPortItemStackExtension.OPTIONAL_CODEC.parse(NbtOps.INSTANCE, tag.get(BAIT_KEY)).result().orElse(ItemStack.EMPTY);
+        return ItemStack.OPTIONAL_CODEC.parse(NbtOps.INSTANCE, tag.get(BAIT_KEY)).result().orElse(ItemStack.EMPTY);
     }
 
     public static void setBait(ItemStack fishingPole, ItemStack bait) {
         LibUtils.updateItemStackNbt(fishingPole, tag -> {
-            tag.put(BAIT_KEY, IPortItemStackExtension.OPTIONAL_CODEC.encodeStart(NbtOps.INSTANCE, bait)
+            tag.put(BAIT_KEY, ItemStack.OPTIONAL_CODEC.encodeStart(NbtOps.INSTANCE, bait)
                     .result().orElseGet(CompoundTag::new));
             tag.putBoolean(HAS_BAIT_KEY, !bait.isEmpty());
         });

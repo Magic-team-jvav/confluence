@@ -1,26 +1,35 @@
 package org.confluence.mod.common.data.saved;
 
+import com.google.common.collect.Iterables;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.mod.common.data.AnglerQuestLoader;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public enum AnglerData implements IGlobalData {
     INSTANCE;
 
-    private ItemStack questFish = ItemStack.EMPTY;
+    private Item questFish = Items.AIR;
     private long questGameDay = -1;
-    private int selectedIndex;
 
     public void refreshIfNeeded(ServerLevel level) {
         long today = currentDay(level);
-        if (questGameDay != today || AnglerQuestPool.INSTANCE.find(questFish).isEmpty()) {
-            questGameDay = today;
-            refreshQuestFish(level);
+        if (questGameDay != today || AnglerQuestLoader.getInstance().find(questFish).isEmpty()) {
+            this.questGameDay = today;
+            Map<Item, AnglerQuestLoader.Entry> entries = AnglerQuestLoader.getInstance().getEntries();
+            if (entries.isEmpty()) {
+                this.questFish = Items.AIR;
+                return;
+            }
+            this.questFish = Iterables.get(entries.keySet(), level.random.nextInt(entries.size()));
         }
     }
 
@@ -30,31 +39,12 @@ public enum AnglerData implements IGlobalData {
         return Math.floorDiv(level.getDayTime(), 24000L);
     }
 
-    private void refreshQuestFish(ServerLevel level) {
-        List<AnglerQuestEntry> candidates = getAvailableFish(level);
-        if (candidates.isEmpty()) {
-            this.questFish = ItemStack.EMPTY;
-            this.selectedIndex = -1;
-            return;
-        }
-        this.selectedIndex = level.random.nextInt(candidates.size());
-        this.questFish = candidates.get(selectedIndex).fish().copy();
-    }
-
-    private List<AnglerQuestEntry> getAvailableFish(ServerLevel level) {
-        List<AnglerQuestEntry> allEntries = AnglerQuestPool.INSTANCE.getEntries();
-        if (allEntries.isEmpty()) return allEntries;
-        // All fish are always available as quest targets.
-        // Catchability is enforced by fishing loot tables per biome/height/fluid.
-        return new ArrayList<>(allEntries);
-    }
-
-    public ItemStack getQuestFish() {
-        return questFish.copy();
+    public Item getQuestFish() {
+        return questFish;
     }
 
     public boolean hasValidQuest() {
-        return !questFish.isEmpty();
+        return questFish != Items.AIR;
     }
 
     @Override
@@ -66,26 +56,26 @@ public enum AnglerData implements IGlobalData {
             throw new IllegalArgumentException("Angler data is missing a required field or contains an invalid field type");
         }
         this.questGameDay = tag.getLong("QuestGameDay");
-        this.selectedIndex = tag.getInt("SelectedIndex");
-        this.questFish = ItemStack.of(tag.getCompound("QuestFish"));
+        this.questFish = Objects.requireNonNullElse(ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(tag.getString("QuestFish"))), Items.AIR);
     }
 
     @Override
     public void encode(CompoundTag tag) {
         tag.putLong("QuestGameDay", questGameDay);
-        tag.putInt("SelectedIndex", selectedIndex);
-        tag.put("QuestFish", questFish.save(new CompoundTag()));
+        ResourceLocation key = ForgeRegistries.ITEMS.getKey(questFish);
+        if (key != null) {
+            tag.putString("QuestFish", key.toString());
+        }
     }
 
     @Override
     public String serializeKey() {
-        return "ConfluenceAngler";
+        return "confluence:quest_fish";
     }
 
     @Override
     public void clear() {
-        this.questFish = ItemStack.EMPTY;
+        this.questFish = Items.AIR;
         this.questGameDay = -1;
-        this.selectedIndex = -1;
     }
 }

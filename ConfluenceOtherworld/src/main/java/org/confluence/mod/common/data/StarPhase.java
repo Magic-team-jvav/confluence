@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;

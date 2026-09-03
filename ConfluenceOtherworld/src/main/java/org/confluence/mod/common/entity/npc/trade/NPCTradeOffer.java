@@ -6,7 +6,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.entity.npc.BaseNPC;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,8 +15,8 @@ import java.util.Objects;
 /// 未声明材料花费时，价格在成交时由物品的 ValueComponent 和 NPC 心情计算。
 public record NPCTradeOffer(ItemStack stack, List<ItemStack> costs, TradeCondition condition) {
     public static final Codec<NPCTradeOffer> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            IPortItemStackExtension.CODEC.fieldOf("item").forGetter(NPCTradeOffer::stack),
-            PortCodecExtension.lenientOptionalFieldOf(IPortItemStackExtension.CODEC.listOf(), "costs", List.of()).forGetter(NPCTradeOffer::costs),
+            ItemStack.CODEC.fieldOf("item").forGetter(NPCTradeOffer::stack),
+            PortCodecExtension.lenientOptionalFieldOf(ItemStack.CODEC.listOf(), "costs", List.of()).forGetter(NPCTradeOffer::costs),
             PortCodecExtension.lenientOptionalFieldOf(TradeCondition.CODEC, "condition", TradeCondition.alwaysTrue()).forGetter(NPCTradeOffer::condition)
     ).apply(instance, NPCTradeOffer::new));
 

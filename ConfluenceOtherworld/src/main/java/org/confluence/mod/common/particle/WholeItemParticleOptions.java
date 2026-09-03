@@ -9,7 +9,6 @@ import org.confluence.mod.common.init.ModParticleTypes;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.core.particles.PortParticleOptions;
 
 import java.util.Objects;
@@ -17,12 +16,12 @@ import java.util.Objects;
 @ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
 public final class WholeItemParticleOptions extends PortParticleOptions {
     public static final MapCodec<WholeItemParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            IPortItemStackExtension.SINGLE_ITEM_CODEC.fieldOf("item").forGetter(WholeItemParticleOptions::item),
+            ItemStack.SINGLE_ITEM_CODEC.fieldOf("item").forGetter(WholeItemParticleOptions::item),
             Codec.FLOAT.fieldOf("gravity").forGetter(WholeItemParticleOptions::gravity),
             Codec.INT.fieldOf("life").forGetter(WholeItemParticleOptions::life)
     ).apply(instance, WholeItemParticleOptions::new));
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, WholeItemParticleOptions> STREAM_CODEC = PortStreamCodec.composite(
-            IPortItemStackExtension.STREAM_CODEC, WholeItemParticleOptions::item,
+            ItemStack.STREAM_CODEC, WholeItemParticleOptions::item,
             PortByteBufCodecs.FLOAT, WholeItemParticleOptions::gravity,
             PortByteBufCodecs.INT, WholeItemParticleOptions::life,
             WholeItemParticleOptions::new

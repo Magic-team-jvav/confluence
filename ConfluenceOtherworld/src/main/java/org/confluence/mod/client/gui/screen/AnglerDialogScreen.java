@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
@@ -21,10 +22,10 @@ public class AnglerDialogScreen extends NPCDialogScreen {
     private final ItemStack questFish;
     private int dialogIndex;
 
-    public AnglerDialogScreen(int entityId, State state, ItemStack questFish) {
+    public AnglerDialogScreen(int entityId, State state, Item questFish) {
         super(entityId);
         this.state = state;
-        this.questFish = questFish;
+        this.questFish = questFish.getDefaultInstance();
     }
 
     @Override
@@ -72,7 +73,7 @@ public class AnglerDialogScreen extends NPCDialogScreen {
         switch (state) {
             case COMPLETED -> dialogText = Component.translatable("dialogs.confluence.angler.completed");
             case NO_QUEST -> dialogText = Component.translatable("dialogs.confluence.angler.no_quest");
-            case SHOW_HINT -> dialogText = Component.translatable("dialogs.confluence.angler.quest_fish", questFish.getHoverName());
+            case SHOW_HINT -> dialogText = Component.translatable("dialogs.confluence.angler.quest_fish", Component.translatable(questFish.getDescriptionId()));
             case WAKE_UP -> {
                 Entity entity = minecraft.level.getEntity(entityId);
                 if (entity instanceof BaseNPC npc) {
@@ -92,12 +93,12 @@ public class AnglerDialogScreen extends NPCDialogScreen {
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        if (state == State.SHOW_HINT && !questFish.isEmpty()) {
+        if (state == State.SHOW_HINT) {
             guiGraphics.renderFakeItem(questFish, width / 2 - 8, height / 2 - 50);
         }
     }
 
-    public static void open(int entityId, State state, ItemStack questFish) {
+    public static void open(int entityId, State state, Item questFish) {
         Minecraft.getInstance().setScreen(new AnglerDialogScreen(entityId, state, questFish));
     }
 }

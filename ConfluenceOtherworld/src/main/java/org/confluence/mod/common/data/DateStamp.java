@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

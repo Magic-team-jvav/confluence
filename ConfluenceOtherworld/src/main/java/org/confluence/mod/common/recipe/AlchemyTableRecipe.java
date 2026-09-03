@@ -19,7 +19,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipe;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
@@ -91,7 +90,7 @@ public class AlchemyTableRecipe implements PortRecipe<AlchemyTableRecipe.Input> 
         @Override
         protected MapCodec<AlchemyTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    IPortItemStackExtension.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                     PortIngredientExtension.codecNonempty().fieldOf("base").forGetter(recipe -> recipe.base),
                     AbstractAmountRecipe.INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
             ).apply(instance, AlchemyTableRecipe::new));
@@ -105,7 +104,7 @@ public class AlchemyTableRecipe implements PortRecipe<AlchemyTableRecipe.Input> 
                     int size = buffer.readVarInt();
                     NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
                     nonnulllist.replaceAll(ignore -> PortIngredientExtension.contentsStreamCodec().decode(buffer));
-                    ItemStack itemstack = IPortItemStackExtension.STREAM_CODEC.decode(buffer);
+                    ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
                     Ingredient input = PortIngredientExtension.contentsStreamCodec().decode(buffer);
                     return new AlchemyTableRecipe(itemstack, input, nonnulllist);
                 }
@@ -116,7 +115,7 @@ public class AlchemyTableRecipe implements PortRecipe<AlchemyTableRecipe.Input> 
                     for (Ingredient ingredient : recipe.ingredients) {
                         PortIngredientExtension.contentsStreamCodec().encode(buffer, ingredient);
                     }
-                    IPortItemStackExtension.STREAM_CODEC.encode(buffer, recipe.result);
+                    ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
                     PortIngredientExtension.contentsStreamCodec().encode(buffer, recipe.base);
                 }
             };

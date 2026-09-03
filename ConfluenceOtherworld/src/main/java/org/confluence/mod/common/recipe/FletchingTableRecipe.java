@@ -18,7 +18,6 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipe;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
@@ -99,7 +98,7 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
         @Override
         protected MapCodec<FletchingTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    IPortItemStackExtension.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                     PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
                     PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
                     PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
@@ -109,7 +108,7 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
         @Override
         protected PortStreamCodec<PortRegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
             return PortStreamCodec.composite(
-                    IPortItemStackExtension.STREAM_CODEC, recipe -> recipe.result,
+                    ItemStack.STREAM_CODEC, recipe -> recipe.result,
                     PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.tail,
                     PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.body,
                     PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.head,

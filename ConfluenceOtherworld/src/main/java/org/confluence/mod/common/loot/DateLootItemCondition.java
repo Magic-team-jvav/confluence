@@ -10,7 +10,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import org.confluence.mod.api.lunar.Lunar;
-import org.confluence.mod.common.data.saved.DateStamp;
+import org.confluence.mod.common.data.DateStamp;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.util.DateUtils;
 

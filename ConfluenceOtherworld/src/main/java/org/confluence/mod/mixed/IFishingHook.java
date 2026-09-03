@@ -11,6 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -22,8 +23,8 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.lib.util.LibMathUtils;
+import org.confluence.mod.common.data.AnglerQuestLoader;
 import org.confluence.mod.common.data.saved.AnglerData;
-import org.confluence.mod.common.data.saved.AnglerQuestPool;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -93,12 +94,12 @@ public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
         if (self.getPlayerOwner() instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             AnglerData.INSTANCE.refreshIfNeeded(level);
-            ItemStack questedFish = AnglerData.INSTANCE.getQuestFish();
-            boolean catchableQuest = AnglerQuestPool.INSTANCE.find(questedFish)
+            Item questedFish = AnglerData.INSTANCE.getQuestFish();
+            boolean catchableQuest = AnglerQuestLoader.getInstance().find(questedFish)
                     .map(entry -> entry.canBeCaught(self))
                     .orElse(false);
             if (catchableQuest && LibMathUtils.checkChance(0.25F, self.getRandom())) {
-                return ObjectArrayList.of(questedFish);
+                return ObjectArrayList.of(questedFish.getDefaultInstance());
             }
 
             int sample = player.hasEffect(ModEffects.CRATE) ? 4 : 10;

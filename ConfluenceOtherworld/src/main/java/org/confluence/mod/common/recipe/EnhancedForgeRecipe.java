@@ -13,7 +13,6 @@ import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortRecipeInput;
 
 public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecipeInput> {
@@ -47,7 +46,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecip
 
     public static <R extends EnhancedForgeRecipe> MapCodec<R> codec(Factory<R> factory) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                IPortItemStackExtension.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                 INGREDIENTS_CODEC.forGetter(R::getIngredients),
                 PortCodecExtension.lenientOptionalFieldOf(Codec.FLOAT, "experience", 0.0F).forGetter(R::getExperience),
                 PortCodecExtension.lenientOptionalFieldOf(Codec.INT, "cookingtime", 100).forGetter(R::getCookingTime),
@@ -62,7 +61,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecip
                 int size = buffer.readVarInt();
                 NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
                 nonnulllist.replaceAll(ignore -> PortIngredientExtension.contentsStreamCodec().decode(buffer));
-                ItemStack itemstack = IPortItemStackExtension.STREAM_CODEC.decode(buffer);
+                ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
                 return factory.create(itemstack, nonnulllist, buffer.readFloat(), buffer.readVarInt(), buffer.readBoolean());
             }
 
@@ -72,7 +71,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecip
                 for (Ingredient ingredient : recipe.ingredients) {
                     PortIngredientExtension.contentsStreamCodec().encode(buffer, ingredient);
                 }
-                IPortItemStackExtension.STREAM_CODEC.encode(buffer, recipe.result);
+                ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
                 buffer.writeFloat(recipe.experience);
                 buffer.writeVarInt(recipe.cookingTime);
                 buffer.writeBoolean(recipe.requiresFuel);

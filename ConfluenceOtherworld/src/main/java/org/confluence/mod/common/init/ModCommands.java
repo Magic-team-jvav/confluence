@@ -44,6 +44,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.GameEventArgument;
 import org.confluence.mod.common.data.PrefixArgument;
+import org.confluence.mod.common.data.StarPhase;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;

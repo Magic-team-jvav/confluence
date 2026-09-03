@@ -11,7 +11,6 @@ import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
 
 public record ExtraInventoryStackPacketS2C(
         long packedData,
@@ -20,7 +19,7 @@ public record ExtraInventoryStackPacketS2C(
     public static final ResourceLocation ID = Confluence.asResource("extra_inventory_stack");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, ExtraInventoryStackPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
             PortByteBufCodecs.VAR_LONG, ExtraInventoryStackPacketS2C::packedData,
-            IPortItemStackExtension.OPTIONAL_STREAM_CODEC, ExtraInventoryStackPacketS2C::itemStack,
+            ItemStack.OPTIONAL_STREAM_CODEC, ExtraInventoryStackPacketS2C::itemStack,
             ExtraInventoryStackPacketS2C::new
     );
 

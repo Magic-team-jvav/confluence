@@ -14,6 +14,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
+import org.confluence.mod.common.data.StarPhase;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;

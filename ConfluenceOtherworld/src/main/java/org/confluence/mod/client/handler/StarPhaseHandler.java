@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.saved.StarPhase;
+import org.confluence.mod.common.data.StarPhase;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;

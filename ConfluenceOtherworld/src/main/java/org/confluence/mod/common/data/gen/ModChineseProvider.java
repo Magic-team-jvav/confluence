@@ -216,6 +216,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.thief_armor", "窃贼盔甲");
         add("itemGroup.confluence.wolf_armor", "狼盔甲");
         add("itemGroup.confluence.root_rot_armor", "腐根盔甲");
+        add("itemGroup.confluence.black_spot_armor", "黑斑盔甲");
         add("itemGroup.confluence.reinforced_mail_armor", "强化链甲盔甲");
         add("itemGroup.confluence.stalwart_armor", "忠诚盔甲");
         add("itemGroup.confluence.mercenary_armor", "雇佣兵盔甲");
@@ -1309,6 +1310,11 @@ public class ModChineseProvider extends LanguageProvider {
         // 腐根盔甲
         add("armor_set_bonus.confluence.root_rot_set.0", "使用治疗药水将会重置法器冷却时间");
         add("armor_set_bonus.confluence.root_rot_set.1", "使用治疗药水时，周围的玩家额外回复本次治疗量的20%");
+        // 黑斑盔甲
+        add("armor_set_bonus.confluence.black_spot_set.0", "使用治疗药水将会重置法器冷却时间");
+        add("armor_set_bonus.confluence.black_spot_set.1", "使用治疗药水时，周围的玩家额外回复本次治疗量的20%");
+        add("armor_set_bonus.confluence.black_spot_set.2", "使用治疗药水时，周围的玩家额外减少法器冷却时间10%");
+        add("armor_set_bonus.confluence.black_spot_set.3", "使用治疗药水时，周围的玩家额外回复4点饱和度");
         // 窃贼
         add("armor_set_bonus.confluence.thief_set.0", "近战攻速提高4%");
         add("armor_set_bonus.confluence.thief_set.1", "远程伤害提高4%");
@@ -4001,6 +4007,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.ROOT_ROT_CHESTPLATE.get(), "腐根胸甲");
         add(ArmorItems.ROOT_ROT_LEGGINGS.get(), "腐根护腿");
         add(ArmorItems.ROOT_ROT_BOOTS.get(), "腐根靴子");
+        add(ArmorItems.BLACK_SPOT_HELMET.get(), "黑斑头盔");
+        add(ArmorItems.BLACK_SPOT_CHESTPLATE.get(), "黑斑胸甲");
+        add(ArmorItems.BLACK_SPOT_LEGGINGS.get(), "黑斑护腿");
+        add(ArmorItems.BLACK_SPOT_BOOTS.get(), "黑斑靴子");
         add(ArmorItems.HUNERS_HELMET.get(), "猎人头盔");
         add(ArmorItems.HUNERS_CHESTPLATE.get(), "猎人胸甲");
         add(ArmorItems.HUNERS_LEGGINGS.get(), "猎人护腿");

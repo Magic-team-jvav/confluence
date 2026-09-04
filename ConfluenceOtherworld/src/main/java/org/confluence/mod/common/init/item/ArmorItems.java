@@ -246,6 +246,26 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
     );
 
+    public static final DeferredItem<BaseArmorItem> BLACK_SPOT_HELMET = register("black_spot_helmet", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/black_spot_armor")
+            .rarity(ModRarity.ORANGE)
+            .fourClassesDamage(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> BLACK_SPOT_CHESTPLATE = register("black_spot_chestplate", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/black_spot_armor")
+            .rarity(ModRarity.ORANGE)
+            .criticalChance(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> BLACK_SPOT_LEGGINGS = register("black_spot_leggings", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/black_spot_armor")
+            .rarity(ModRarity.ORANGE)
+    );
+    public static final DeferredItem<BaseArmorItem> BLACK_SPOT_BOOTS = register("black_spot_boots", ModArmorMaterials.BLACK_SPOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/black_spot_armor")
+            .rarity(ModRarity.ORANGE)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
     public static final DeferredItem<BaseArmorItem> THIEF_HELMET = register("thief_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)

@@ -1271,6 +1271,11 @@ public class ModEnglishProvider extends LanguageProvider {
         // Root Rot Set
         add("armor_set_bonus.confluence.root_rot_set.0", "Using healing potions resets artifact cooldowns");
         add("armor_set_bonus.confluence.root_rot_set.1", "When using a healing potion, nearby players additionally restore 20% of this heal amount");
+        // Black Spot Set
+        add("armor_set_bonus.confluence.black_spot_set.0", "Using healing potions resets artifact cooldowns");
+        add("armor_set_bonus.confluence.black_spot_set.1", "When using a healing potion, nearby players receive an additional 20% of this healing amount");
+        add("armor_set_bonus.confluence.black_spot_set.2", "When using a healing potion, nearby players gain an additional 10% reduction to their artifact cooldowns");
+        add("armor_set_bonus.confluence.black_spot_set.3", "When using a healing potion, nearby players restore 4 additional saturation points");
         // Thief Set
         add("armor_set_bonus.confluence.thief_set.0", "Melee attack speed increased by 4%");
         add("armor_set_bonus.confluence.thief_set.1", "Ranged damage increased by 4%");

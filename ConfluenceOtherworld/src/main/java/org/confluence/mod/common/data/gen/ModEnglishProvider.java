@@ -258,6 +258,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.thief_armor", "Thief Armor");
         add("itemGroup.confluence.wolf_armor", "Wolf Armor");
         add("itemGroup.confluence.root_rot_armor", "Root Rot Armor");
+        add("itemGroup.confluence.black_spot_armor", "Black Spot Armor");
+        add("itemGroup.confluence.entertainers_garb_armor", "Entertainers Garb Armor");
+        add("itemGroup.confluence.troubadour_armor", "Trouadour Armor");
         add("itemGroup.confluence.reinforced_mail_armor", "Reinforced Mail Armor");
         add("itemGroup.confluence.stalwart_armor", "Stalwart Armor");
         add("itemGroup.confluence.mercenary_armor", "Mercenary Armor");
@@ -1278,6 +1281,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.black_spot_set.1", "When using a healing potion, nearby players receive an additional 20% of this healing amount");
         add("armor_set_bonus.confluence.black_spot_set.2", "When using a healing potion, nearby players gain an additional 10% reduction to their artifact cooldowns");
         add("armor_set_bonus.confluence.black_spot_set.3", "When using a healing potion, nearby players restore 4 additional saturation points");
+        // Entertainers Garb Set
+        add("armor_set_bonus.confluence.entertainers_garb_set.0", "Increases artifact duration by 30%");
+        // Trouadour Set
+        add("armor_set_bonus.confluence.troubadour_set.0", "Increases artifact duration by 30%");
+        add("armor_set_bonus.confluence.troubadour_set.1", "Decreases artifact duration reduced by 30%");
         // Thief Set
         add("armor_set_bonus.confluence.thief_set.0", "Melee attack speed increased by 4%");
         add("armor_set_bonus.confluence.thief_set.1", "Ranged damage increased by 4%");

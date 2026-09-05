@@ -186,6 +186,16 @@ public final class ModArmorMaterials {
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,
             "root_rot", 1.0F, 0.0F
     );
+    public static final Holder<ArmorMaterial> ENTERTAINERS_GARB_ARMOR_MATERIALS = registerArmorMaterial("entertainers_garb_armor_materials",
+            4, 5, 5, 4,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,
+            "entertainers_garb", 2.0F, 0.0F
+    );
+    public static final Holder<ArmorMaterial> TROADOUR_ARMOR_MATERIALS = registerArmorMaterial("troubadour_armor_materials",
+            4, 6, 6, 5,
+            11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,
+            "troubadour", 2.0F, 0.0F
+    );
     public static final Holder<ArmorMaterial> BLACK_SPOT_ARMOR_MATERIALS = registerArmorMaterial("black_spot_armor_materials",
             3, 5, 5, 3,
             11, SoundEvents.ARMOR_EQUIP_LEATHER, Items.MANGROVE_LEAVES,

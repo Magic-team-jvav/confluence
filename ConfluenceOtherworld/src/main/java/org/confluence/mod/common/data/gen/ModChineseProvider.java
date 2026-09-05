@@ -219,6 +219,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.wolf_armor", "狼盔甲");
         add("itemGroup.confluence.root_rot_armor", "腐根盔甲");
         add("itemGroup.confluence.black_spot_armor", "黑斑盔甲");
+        add("itemGroup.confluence.entertainers_garb_armor", "演出服");
+        add("itemGroup.confluence.troubadour_armor", "游吟诗人服");
         add("itemGroup.confluence.reinforced_mail_armor", "强化链甲盔甲");
         add("itemGroup.confluence.stalwart_armor", "忠诚盔甲");
         add("itemGroup.confluence.mercenary_armor", "雇佣兵盔甲");
@@ -1317,6 +1319,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.black_spot_set.1", "使用治疗药水时，周围的玩家额外回复本次治疗量的20%");
         add("armor_set_bonus.confluence.black_spot_set.2", "使用治疗药水时，周围的玩家额外减少法器冷却时间10%");
         add("armor_set_bonus.confluence.black_spot_set.3", "使用治疗药水时，周围的玩家额外回复4点饱和度");
+        // 演出服
+        add("armor_set_bonus.confluence.entertainers_garb_set.0", "正面效果获取时长增加30%");
+        // 游吟诗人服
+        add("armor_set_bonus.confluence.troubadour_set.0", "正面效果获取时长增加30%");
+        add("armor_set_bonus.confluence.troubadour_set.1", "负面效果获取时长减少30%");
         // 窃贼
         add("armor_set_bonus.confluence.thief_set.0", "近战攻速提高4%");
         add("armor_set_bonus.confluence.thief_set.1", "远程伤害提高4%");
@@ -4013,6 +4020,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.BLACK_SPOT_CHESTPLATE.get(), "黑斑胸甲");
         add(ArmorItems.BLACK_SPOT_LEGGINGS.get(), "黑斑护腿");
         add(ArmorItems.BLACK_SPOT_BOOTS.get(), "黑斑靴子");
+        add(ArmorItems.ENTERTAINERS_GARB_HAT.get(), "演出帽");
+        add(ArmorItems.ENTERTAINERS_GARB_SHIRT.get(), "演出服");
+        add(ArmorItems.ENTERTAINERS_GARB_PANTS.get(), "演出裤");
+        add(ArmorItems.ENTERTAINERS_GARB_SHOES.get(), "演出鞋");
+        add(ArmorItems.TROADOUR_HAT.get(), "游吟诗人帽");
+        add(ArmorItems.TROADOUR_SHIRT.get(), "游吟诗人服");
+        add(ArmorItems.TROADOUR_PANTS.get(), "游吟诗人裤");
+        add(ArmorItems.TROADOUR_SHOES.get(), "游吟诗人鞋");
         add(ArmorItems.HUNERS_HELMET.get(), "猎人头盔");
         add(ArmorItems.HUNERS_CHESTPLATE.get(), "猎人胸甲");
         add(ArmorItems.HUNERS_LEGGINGS.get(), "猎人护腿");

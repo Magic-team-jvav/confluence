@@ -266,6 +266,48 @@ public class ArmorItems {
             .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
     );
 
+    public static final DeferredItem<BaseArmorItem> ENTERTAINERS_GARB_HAT = register("entertainers_garb_hat", ModArmorMaterials.ENTERTAINERS_GARB_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/entertainers_garb_armor")
+            .fourClassesDamage(0.08)
+            .rarity(ModRarity.GREEN)
+    );
+    public static final DeferredItem<BaseArmorItem> ENTERTAINERS_GARB_SHIRT = register("entertainers_garb_shirt", ModArmorMaterials.ENTERTAINERS_GARB_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/entertainers_garb_armor")
+            .criticalChance(0.05)
+            .rarity(ModRarity.GREEN)
+    );
+    public static final DeferredItem<BaseArmorItem> ENTERTAINERS_GARB_PANTS = register("entertainers_garb_pants", ModArmorMaterials.ENTERTAINERS_GARB_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/entertainers_garb_armor")
+            .criticalChance(0.05)
+            .rarity(ModRarity.GREEN)
+    );
+    public static final DeferredItem<BaseArmorItem> ENTERTAINERS_GARB_SHOES = register("entertainers_garb_shoes", ModArmorMaterials.ENTERTAINERS_GARB_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/entertainers_garb_armor")
+            .attribute(Attributes.MOVEMENT_SPEED, 0.10, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .rarity(ModRarity.GREEN)
+    );
+
+    public static final DeferredItem<BaseArmorItem> TROADOUR_HAT = register("troubadour_hat", ModArmorMaterials.TROADOUR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/troubadour_armor")
+            .fourClassesDamage(0.14)
+            .rarity(ModRarity.LIGHT_RED)
+    );
+    public static final DeferredItem<BaseArmorItem> TROADOUR_SHIRT = register("troubadour_shirt", ModArmorMaterials.TROADOUR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/troubadour_armor")
+            .criticalChance(0.08)
+            .rarity(ModRarity.LIGHT_RED)
+    );
+    public static final DeferredItem<BaseArmorItem> TROADOUR_PANTS = register("troubadour_pants", ModArmorMaterials.TROADOUR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/troubadour_armor")
+            .criticalChance(0.08)
+            .rarity(ModRarity.LIGHT_RED)
+    );
+    public static final DeferredItem<BaseArmorItem> TROADOUR_SHOES = register("troubadour_shoes", ModArmorMaterials.TROADOUR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/troubadour_armor")
+            .attribute(Attributes.MOVEMENT_SPEED, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .rarity(ModRarity.LIGHT_RED)
+    );
+
     public static final DeferredItem<BaseArmorItem> THIEF_HELMET = register("thief_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/thief_armor")
             .rarity(ModRarity.GREEN)

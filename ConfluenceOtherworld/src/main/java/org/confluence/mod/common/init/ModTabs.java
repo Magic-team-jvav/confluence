@@ -1435,6 +1435,18 @@ public final class ModTabs {
                         black_spot_armor.accept(ArmorItems.BLACK_SPOT_LEGGINGS.get());
                         black_spot_armor.accept(ArmorItems.BLACK_SPOT_BOOTS.get());
 
+                        CreativeModeTab.Output entertainers_garb_armor = GroupItem.belongsTo("entertainers_garb_armor", output);
+                        entertainers_garb_armor.accept(ArmorItems.ENTERTAINERS_GARB_HAT.get());
+                        entertainers_garb_armor.accept(ArmorItems.ENTERTAINERS_GARB_SHIRT.get());
+                        entertainers_garb_armor.accept(ArmorItems.ENTERTAINERS_GARB_PANTS.get());
+                        entertainers_garb_armor.accept(ArmorItems.ENTERTAINERS_GARB_SHOES.get());
+
+                        CreativeModeTab.Output troubadour_armor = GroupItem.belongsTo("troubadour_armor", output);
+                        troubadour_armor.accept(ArmorItems.TROADOUR_HAT.get());
+                        troubadour_armor.accept(ArmorItems.TROADOUR_SHIRT.get());
+                        troubadour_armor.accept(ArmorItems.TROADOUR_PANTS.get());
+                        troubadour_armor.accept(ArmorItems.TROADOUR_SHOES.get());
+
                         CreativeModeTab.Output reinforced_mail_armor = GroupItem.belongsTo("reinforced_mail_armor", output);
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_HELMET.get());
                         reinforced_mail_armor.accept(ArmorItems.REINFORCED_MAIL_CHESTPLATE.get());

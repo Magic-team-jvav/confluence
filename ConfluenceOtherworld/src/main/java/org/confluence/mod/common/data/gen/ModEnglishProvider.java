@@ -85,11 +85,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.prefix_separator", " ");
         add("confluence.game_event", "Game Event");
 
+        add("confluence.difficulty_notice.title", "Difficulty Selection");
         add("confluence.difficulty_notice.ask", "You are in mediumcore! Do you want to change to softcore?");
         add("confluence.difficulty_notice.sure", "Sure");
-        add("confluence.difficulty_notice.sure.tip", "Set keepInventory to true");
+        add("confluence.difficulty_notice.sure.tip", "Set keepInventory to true.");
         add("confluence.difficulty_notice.never", "Never");
-        add("confluence.difficulty_notice.never.tip", "Don't show this message again");
+        add("confluence.difficulty_notice.never.tip", "No changes will be made.");
+        add("confluence.difficulty_notice.cancel", "Cancel and ask again later");
+        add("confluence.difficulty_notice.confirm", "Confirm and do not ask again");
         add("confluence.difficulty_notice.tip", "Hold Alt to select");
         add("confluence.difficulty_notice.sure.done", "Has been set to softcore");
         add("confluence.difficulty_notice.never.done", "Will never ask for softcore");

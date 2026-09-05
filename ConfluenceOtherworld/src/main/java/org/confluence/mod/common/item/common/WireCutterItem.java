@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
@@ -18,6 +17,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.mesdag.portlib.diff.Diff;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 public class WireCutterItem extends TooltipItem {
@@ -28,7 +28,7 @@ public class WireCutterItem extends TooltipItem {
     public WireCutterItem() {
         super(new Properties().stacksTo(1), ModRarity.BLUE, "tooltip.item.confluence.wire_cutter.0");
         this.defaultModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder()
-                .put(PortAttributesExtension.blockInteractionRange().value(), new AttributeModifier(
+                .put(IPortAttributesExtension.blockInteractionRange().value(), new AttributeModifier(
                         PortAttributeModifier.rl2uuid(BASE_ID),
                         BASE_ID.getPath(),
                         20,

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -28,6 +27,7 @@ import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -60,8 +60,8 @@ public class Bunny extends Rabbit implements GeoEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Rabbit.createAttributes()
-                .add(PortAttributesExtension.jumpStrength().get(), 0.6)
-                .add(PortAttributesExtension.safeFallDistance().get(), 6.0);
+                .add(IPortAttributesExtension.jumpStrength().get(), 0.6)
+                .add(IPortAttributesExtension.safeFallDistance().get(), 6.0);
     }
 
     public Variant getBunnyVariant() {

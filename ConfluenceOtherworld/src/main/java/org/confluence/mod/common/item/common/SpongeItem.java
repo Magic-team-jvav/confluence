@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -15,6 +14,7 @@ import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
@@ -26,7 +26,7 @@ public class SpongeItem extends TooltipItem {
 
     public SpongeItem(ModRarity rarity, String name, int blockInteractionRange, Predicate<BlockState> fluidPredicate) {
         super(new Properties().stacksTo(1).attributes(PortItemAttributeModifiers.builder()
-                .add(PortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
+                .add(IPortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
                         Confluence.asResource(name), blockInteractionRange, PortAttributeModifier.Operation.ADD_VALUE
                 ), PortEquipmentSlotGroup.MAINHAND)
                 .build()), rarity, "tooltip.item.confluence." + name + ".0");

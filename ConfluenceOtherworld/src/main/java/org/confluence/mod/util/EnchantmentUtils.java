@@ -1,6 +1,5 @@
 package org.confluence.mod.util;
 
-import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -17,6 +16,7 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.enchantment.ManaAffectiveEnchantment;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 
 import java.util.Map;
 
@@ -24,7 +24,7 @@ public final class EnchantmentUtils {
     public static float processManaRegeneration(ServerPlayer player) {
         MutableFloat value = new MutableFloat(1);
         for (EquipmentSlot slot : LibEnchantmentUtils.SlotGroups.ARMOR_N_MAINHAND) {
-            PortEnchantmentHelperExtension.runIterationOnItem(player.getItemBySlot(slot), (enchantment, level) -> {
+            IPortEnchantmentHelperExtension.runIterationOnItem(player.getItemBySlot(slot), (enchantment, level) -> {
                 if (enchantment == ModEnchantments.MANA_REGENERATION.get()) {
                     value.add(level * 0.1F);
                 }
@@ -46,7 +46,7 @@ public final class EnchantmentUtils {
         if (optional == null) return;
         ItemStack stack = optional.getValue();
         MutableFloat threshold = new MutableFloat(10);
-        PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+        IPortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
             if (enchantment == ModEnchantments.MANA_MENDING.get()) {
                 threshold.subtract(2);
             }
@@ -60,7 +60,7 @@ public final class EnchantmentUtils {
     public static void affect(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
         if (damageSource.is(PortTags.DamageTypes.IS_MAGIC)) {
             LibEnchantmentUtils.runIterationOnHand(player, stack ->
-                    PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+                    IPortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
                         if (enchantment instanceof ManaAffectiveEnchantment ench) {
                             ench.affect(player, victim, level);
                         }
@@ -81,7 +81,7 @@ public final class EnchantmentUtils {
         MutableFloat ratio = new MutableFloat();
         for (EquipmentSlot slot : LibEnchantmentUtils.SlotGroups.ARMOR) {
             ItemStack stack = player.getItemBySlot(slot);
-            PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+            IPortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
                 if (enchantment == ModEnchantments.ARCANE_PROTECTION.get()) {
                     ratio.add(level * 0.05F);
                 }
@@ -102,13 +102,13 @@ public final class EnchantmentUtils {
             return amount;
         }
         MutableFloat lm = new MutableFloat();
-        LibEnchantmentUtils.runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+        LibEnchantmentUtils.runIterationOnHand(player, stack -> IPortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
             if (enchantment == ModEnchantments.SPELL_DESPERATION.get()) {
                 lm.add(0.5F * level);
             }
         }));
         MutableFloat mm = new MutableFloat();
-        LibEnchantmentUtils.runIterationOnHand(player, stack -> PortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
+        LibEnchantmentUtils.runIterationOnHand(player, stack -> IPortEnchantmentHelperExtension.runIterationOnItem(stack, (enchantment, level) -> {
             if (enchantment == ModEnchantments.MYSTIC_SURGE.get()) {
                 mm.add(0.5F * level);
             }

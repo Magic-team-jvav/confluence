@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -26,6 +25,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.CritterEntities;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -41,14 +41,14 @@ public class Squirrel extends Animal implements VariantHolder<Squirrel.Variant>,
 
     public Squirrel(EntityType<? extends Squirrel> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension.safeFallDistance()).setBaseValue(6.0);
+        getAttribute(IPortAttributesExtension.safeFallDistance()).setBaseValue(6.0);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 10.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
-                .add(PortAttributesExtension.safeFallDistance().get(), 6.0);
+                .add(IPortAttributesExtension.safeFallDistance().get(), 6.0);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -31,6 +30,7 @@ import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -124,7 +124,7 @@ public class BaseLanceItem extends CustomRarityItem implements /* todo leftclick
                     double kb = impactSpeed * baseKnockback * 4 / 105;
                     LibEntityUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
                 }
-                PortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level, victim, damageSource);
+                IPortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level, victim, damageSource);
             }
         }
     }

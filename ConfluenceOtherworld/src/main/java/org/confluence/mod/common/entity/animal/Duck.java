@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +28,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.confluence.mod.common.entity.IVariant;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.CritterEntities;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -49,12 +49,12 @@ public class Duck extends Chicken implements VariantHolder<Duck.Variant>, Critte
 
     public Duck(EntityType<? extends Duck> type, Level level) {
         super(type, level);
-        getAttribute(PortAttributesExtension.waterMovementEfficiency()).setBaseValue(1.0);
+        getAttribute(IPortAttributesExtension.waterMovementEfficiency()).setBaseValue(1.0);
         setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Chicken.createAttributes().add(PortAttributesExtension.waterMovementEfficiency().get(), 1.0);
+        return Chicken.createAttributes().add(IPortAttributesExtension.waterMovementEfficiency().get(), 1.0);
     }
 
     @Override

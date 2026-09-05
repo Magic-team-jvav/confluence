@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.sword;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -35,6 +34,7 @@ import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -151,7 +151,7 @@ public class BaseSwordItem extends SwordItem {
     public static AABB getSpecialSweepArea(Player player) {
         Vec3 start = player.getEyePosition();
         Vec3 up = player.getUpVector(1.0F);
-        Vec3 forward = player.getViewVector(1.0F).scale(player.getAttributeValue(PortAttributesExtension.entityInteractionRange()));
+        Vec3 forward = player.getViewVector(1.0F).scale(player.getAttributeValue(IPortAttributesExtension.entityInteractionRange()));
         Vec3 end = start.add(forward);
         Vec3 left = forward.cross(up);
         return new AABB(start.add(left), end.add(left.reverse()));

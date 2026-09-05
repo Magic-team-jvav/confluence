@@ -1,10 +1,10 @@
 package org.confluence.mod.common.entity.monster;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.LibAttributes;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 
 /// 本体生物注册共用的属性模板构建器。
 public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
@@ -24,8 +24,8 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
                 .add(Attributes.ATTACK_KNOCKBACK, attackKnockback)
                 .add(Attributes.ATTACK_SPEED)
                 .add(Attributes.FLYING_SPEED)
-                .add(PortAttributesExtension.scale().get(), 1.0D)
-                .add(PortAttributesExtension.safeFallDistance().get(), 8.0)
+                .add(IPortAttributesExtension.scale().get(), 1.0D)
+                .add(IPortAttributesExtension.safeFallDistance().get(), 8.0)
                 .build());
     }
 
@@ -44,13 +44,13 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
                 .add(Attributes.ATTACK_KNOCKBACK)
                 .add(Attributes.ATTACK_SPEED)
                 .add(Attributes.FLYING_SPEED)
-                .add(PortAttributesExtension.scale().get(), 1.0D)
-                .add(PortAttributesExtension.safeFallDistance().get(), 8.0)
+                .add(IPortAttributesExtension.scale().get(), 1.0D)
+                .add(IPortAttributesExtension.safeFallDistance().get(), 8.0)
                 .build());
     }
 
     public CreatureAttributeBuilder flying() {
-        add(PortAttributesExtension.safeFallDistance().get(), 1000.0);
+        add(IPortAttributesExtension.safeFallDistance().get(), 1000.0);
         return this;
     }
 
@@ -60,22 +60,22 @@ public final class CreatureAttributeBuilder extends AttributeSupplier.Builder {
     }
 
     public CreatureAttributeBuilder safeFallDistance(double value) {
-        add(PortAttributesExtension.safeFallDistance().get(), value);
+        add(IPortAttributesExtension.safeFallDistance().get(), value);
         return this;
     }
 
     public CreatureAttributeBuilder gravity(double value) {
-        add(PortAttributesExtension.gravity().get(), value);
+        add(IPortAttributesExtension.gravity().get(), value);
         return this;
     }
 
     public CreatureAttributeBuilder jumpStrength(double value) {
-        add(PortAttributesExtension.jumpStrength().get(), value);
+        add(IPortAttributesExtension.jumpStrength().get(), value);
         return this;
     }
 
     public CreatureAttributeBuilder stepHeight(double value) {
-        add(PortAttributesExtension.stepHeight().get(), value);
+        add(IPortAttributesExtension.stepHeight().get(), value);
         return this;
     }
 

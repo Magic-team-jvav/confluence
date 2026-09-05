@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
-import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -25,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4x3f;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+import org.mesdag.portlib.wrapper.common.extensions.IPortExplosionExtension;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
 
     /// 子类可以覆盖的方法，定义炸弹如何爆炸
     protected void explodeFunction(ServerLevel level) {
-        TerraStyleExplosion.terraExplode(level, this, PortExplosionExtension.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), blastPower, Level.ExplosionInteraction.TNT);
+        TerraStyleExplosion.terraExplode(level, this, IPortExplosionExtension.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), blastPower, Level.ExplosionInteraction.TNT);
     }
 
     protected ExplosionDamageCalculator getExplosionDamageCalculator() {

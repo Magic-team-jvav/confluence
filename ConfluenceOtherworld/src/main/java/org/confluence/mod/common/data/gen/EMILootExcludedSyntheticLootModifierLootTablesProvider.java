@@ -1,12 +1,12 @@
 package org.confluence.mod.common.data.gen;
 
-import PortLib.extensions.net.minecraft.data.DataProvider.PortDataProviderExtension;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.common.data.gen.loot.modifiers.*;
+import org.mesdag.portlib.wrapper.common.extensions.IPortDataProviderExtension;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -37,7 +37,7 @@ public class EMILootExcludedSyntheticLootModifierLootTablesProvider implements D
                 tableExclusions.excludedPaths.addAll(i.get().getSyntheticLootTablePaths());
             });
             Path path = this.pathProvider.json(ResourceLocation.fromNamespaceAndPath("emi_loot", "table_exclusions"));
-            return PortDataProviderExtension.saveStable(cachedOutput, provider, EMILootDataTableExclusions.CODEC, tableExclusions, path);
+            return IPortDataProviderExtension.saveStable(cachedOutput, provider, EMILootDataTableExclusions.CODEC, tableExclusions, path);
         });
     }
 

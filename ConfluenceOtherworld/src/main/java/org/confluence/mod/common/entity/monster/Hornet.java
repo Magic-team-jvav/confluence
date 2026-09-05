@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -26,6 +25,7 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -101,7 +101,7 @@ public class Hornet extends BaseFlyingMonster {
         boolean hit = target.hurt(damageSource, (float) (int) getAttributeValue(Attributes.ATTACK_DAMAGE));
         if (!hit) return false;
         if (level() instanceof ServerLevel serverLevel) {
-            PortEnchantmentHelperExtension.doPostAttackEffects(serverLevel, target, damageSource);
+            IPortEnchantmentHelperExtension.doPostAttackEffects(serverLevel, target, damageSource);
         }
         if (!(target instanceof LivingEntity living)) return true;
         living.setStingerCount(living.getStingerCount() + 1);

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event.game.entity;
 
-import PortLib.extensions.net.minecraft.util.ParticleUtils.PortParticleUtilsExtension;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
@@ -88,6 +87,7 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.entity.player.*;
+import org.mesdag.portlib.wrapper.common.extensions.IPortParticleUtilsExtension;
 import org.mesdag.portlib.wrapper.world.PortItemInteractionResult;
 
 import java.util.Objects;
@@ -532,7 +532,7 @@ public final class PlayerEvents {
             if (!level.isClientSide) {
                 level.setBlockAndUpdate(pos, result);
                 level.levelEvent(1505, pos, 15);
-                PortParticleUtilsExtension.spawnParticles(level, pos, 45, 3.0, 1.0, false, ParticleTypes.HAPPY_VILLAGER);
+                IPortParticleUtilsExtension.spawnParticles(level, pos, 45, 3.0, 1.0, false, ParticleTypes.HAPPY_VILLAGER);
             }
             event.setCanceled(true);
         }

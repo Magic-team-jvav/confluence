@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.data_map;
 
-import PortLib.extensions.net.minecraft.core.HolderSet.PortHolderSetExtension;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -20,6 +19,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
 import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.common.extensions.IPortHolderSetExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +101,7 @@ public final class BlockBreakSpawnsSubProvider {
             }
 
             public Expander expand(EntityType<?> type, float chance) {
-                return expand(type, chance, PortHolderSetExtension.empty());
+                return expand(type, chance, IPortHolderSetExtension.empty());
             }
 
             public Builder pop() {

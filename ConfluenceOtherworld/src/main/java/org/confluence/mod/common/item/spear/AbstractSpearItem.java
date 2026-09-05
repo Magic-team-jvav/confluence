@@ -1,8 +1,6 @@
 package org.confluence.mod.common.item.spear;
 
 import PortLib.extensions.java.util.List.PortListExtension;
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
-import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import com.eliotlash.mclib.math.Constant;
 import com.eliotlash.mclib.math.IValue;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
@@ -42,6 +40,8 @@ import org.confluence.mod.common.entity.projectile.spear.SpearProjectile;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.tooltipcomponent.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
+import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
@@ -182,7 +182,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     protected void onHitEntity(ItemStack stack, ServerLevel level, LivingEntity owner, Entity victim) {
         DamageSource damageSource = getDamageSource(level, owner);
         onHitEntity(damageSource, owner, victim);
-        PortEnchantmentHelperExtension.doPostAttackEffects(level, victim, damageSource);
+        IPortEnchantmentHelperExtension.doPostAttackEffects(level, victim, damageSource);
     }
 
     protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
@@ -223,7 +223,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
         }
         if (currentFrame == null) currentFrame = PortListExtension.getLast(keyframes);
         AnimationPoint point = new AnimationPoint(currentFrame, startTick, currentFrame.length(), currentFrame.startValue().get(), currentFrame.endValue().get());
-        return point.keyFrame().easingType().apply(point) * owner.getAttributeValue(PortAttributesExtension.entityInteractionRange()) / -16;
+        return point.keyFrame().easingType().apply(point) * owner.getAttributeValue(IPortAttributesExtension.entityInteractionRange()) / -16;
     }
 
     @Override
@@ -254,7 +254,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
 
     public static PortItemAttributeModifiers attributes(float extraRange, float extraDamage) {
         return PortItemAttributeModifiers.builder()
-                .add(PortAttributesExtension.entityInteractionRange(), new PortAttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
+                .add(IPortAttributesExtension.entityInteractionRange(), new PortAttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
                 .add(LibAttributes.getAttackDamage(), new PortAttributeModifier(ModItems.BASE_ATTACK_DAMAGE_ID, extraDamage, PortAttributeModifier.Operation.ADD_VALUE), PortEquipmentSlotGroup.MAINHAND)
                 .build();
     }

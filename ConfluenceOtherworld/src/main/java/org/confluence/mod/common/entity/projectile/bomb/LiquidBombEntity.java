@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
-import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -19,6 +18,7 @@ import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
+import org.mesdag.portlib.wrapper.common.extensions.IPortExplosionExtension;
 
 public class LiquidBombEntity extends BaseBombEntity {
     private static final int DEFAULT_FILL_RADIUS = 3;
@@ -65,7 +65,7 @@ public class LiquidBombEntity extends BaseBombEntity {
                 }
             }
         }
-        TerraStyleExplosion.terraExplode(level, this, PortExplosionExtension.getDefaultDamageSource(level, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), radius, Level.ExplosionInteraction.NONE);
+        TerraStyleExplosion.terraExplode(level, this, IPortExplosionExtension.getDefaultDamageSource(level, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), radius, Level.ExplosionInteraction.NONE);
     }
 
     @Override

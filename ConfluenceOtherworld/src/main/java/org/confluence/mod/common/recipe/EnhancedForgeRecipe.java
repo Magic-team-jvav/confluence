@@ -1,7 +1,6 @@
 package org.confluence.mod.common.recipe;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.datafixers.util.Function5;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -60,7 +59,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecip
             public R decode(PortRegistryFriendlyByteBuf buffer) {
                 int size = buffer.readVarInt();
                 NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
-                nonnulllist.replaceAll(ignore -> PortIngredientExtension.contentsStreamCodec().decode(buffer));
+                nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
                 ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
                 return factory.create(itemstack, nonnulllist, buffer.readFloat(), buffer.readVarInt(), buffer.readBoolean());
             }
@@ -69,7 +68,7 @@ public abstract class EnhancedForgeRecipe extends AbstractAmountRecipe<PortRecip
             public void encode(PortRegistryFriendlyByteBuf buffer, R recipe) {
                 buffer.writeVarInt(recipe.ingredients.size());
                 for (Ingredient ingredient : recipe.ingredients) {
-                    PortIngredientExtension.contentsStreamCodec().encode(buffer, ingredient);
+                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
                 }
                 ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
                 buffer.writeFloat(recipe.experience);

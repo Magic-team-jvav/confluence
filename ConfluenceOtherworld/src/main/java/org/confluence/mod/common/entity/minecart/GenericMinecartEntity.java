@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.minecart;
 
-import PortLib.extensions.net.minecraft.util.StringRepresentable.PortStringRepresentableExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -10,6 +9,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.level.Level;
+import org.mesdag.portlib.wrapper.common.extensions.IPortStringRepresentableExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +79,7 @@ public class GenericMinecartEntity extends BaseMinecartEntity implements Variant
                 FART = register("fart"),
                 TERRA_FART = register("terra_fart");
 
-        public static final Codec<Variant> CODEC = PortStringRepresentableExtension.fromValues(() -> VALUES.toArray(Variant[]::new));
+        public static final Codec<Variant> CODEC = IPortStringRepresentableExtension.fromValues(() -> VALUES.toArray(Variant[]::new));
 
         public static Variant byId(int id) {
             return id >= 0 && id < VALUES.size() ? VALUES.get(id) : DESERT;

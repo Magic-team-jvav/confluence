@@ -1,7 +1,6 @@
 package org.confluence.mod.client.handler.bestiary;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
-import PortLib.extensions.net.minecraft.client.searchtree.SearchTree.PortSearchTreeExtension;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,6 +28,7 @@ import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
+import org.mesdag.portlib.wrapper.common.extensions.IPortSearchTreeExtension;
 import org.mesdag.portlib.wrapper.resource.PortContextAwareReloadListener;
 
 import java.io.IOException;
@@ -50,7 +50,7 @@ public class ClientBestiary extends PortContextAwareReloadListener {
     private Map<String, ClientBestiaryEntry> entries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> backupEntries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> sortedEntries = Maps.newLinkedHashMap();
-    private CompletableFuture<SearchTree<Map.Entry<String, ClientBestiaryEntry>>> searchTree = CompletableFuture.completedFuture(PortSearchTreeExtension.empty());
+    private CompletableFuture<SearchTree<Map.Entry<String, ClientBestiaryEntry>>> searchTree = CompletableFuture.completedFuture(IPortSearchTreeExtension.empty());
 
     private Level currentLevel;
 
@@ -155,7 +155,7 @@ public class ClientBestiary extends PortContextAwareReloadListener {
                 .sorted(comparator).filter(entry -> filter(entry.getValue()))
                 .forEachOrdered(entry -> sorted.put(entry.getKey(), entry.getValue()));
         this.sortedEntries = sorted;
-        this.searchTree = CompletableFuture.supplyAsync(() -> PortSearchTreeExtension.plainText(
+        this.searchTree = CompletableFuture.supplyAsync(() -> IPortSearchTreeExtension.plainText(
                 sortedEntries.entrySet().stream().filter(entry -> !entry.getValue().isLocked()).toList(),
                 entry -> Stream.of(
                         entry.getKey(),

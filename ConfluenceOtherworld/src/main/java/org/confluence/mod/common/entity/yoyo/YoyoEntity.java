@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.yoyo;
 
-import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,6 +32,7 @@ import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.common.item.yoyo.YoyoSession;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
+import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -214,7 +214,7 @@ public final class YoyoEntity extends Projectile implements GeoEntity {
                 setDeltaMovement(getDeltaMovement().multiply(0.6, 1.0, 0.6));
             }
             if (level() instanceof ServerLevel serverLevel) {
-                PortEnchantmentHelperExtension.doPostAttackEffects(serverLevel, logicalTarget, source);
+                IPortEnchantmentHelperExtension.doPostAttackEffects(serverLevel, logicalTarget, source);
             }
             owner.setLastHurtMob(logicalTarget);
             if (liveWeapon.getItem() == item)

@@ -1,6 +1,5 @@
 package org.confluence.mod.client.event;
 
-import PortLib.extensions.net.minecraft.client.resources.model.ModelResourceLocation.PortModelResourceLocationExtension;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -75,6 +74,7 @@ import org.joml.Vector3f;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
 import org.mesdag.portlib.registries.PortRegistryEntry;
+import org.mesdag.portlib.wrapper.common.extensions.IPortModelResourceLocationExtension;
 
 import java.awt.*;
 import java.io.IOException;
@@ -247,7 +247,7 @@ public final class ModClientSetups {
     /// 对于使用原版json模型，且使用了Extensions来自定义渲染的物品，需使用该方法标记为自定义模型
     static void asCustomModel(Map<ResourceLocation, BakedModel> modelRegistry, PortRegistryEntry<?, ?>... deferredItems) {
         for (PortRegistryEntry<?, ?> holder : deferredItems) {
-            modelRegistry.compute(PortModelResourceLocationExtension.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model));
+            modelRegistry.compute(IPortModelResourceLocationExtension.inventory(holder.getId()), (k, model) -> new WrappedBakedModel(model));
         }
     }
 

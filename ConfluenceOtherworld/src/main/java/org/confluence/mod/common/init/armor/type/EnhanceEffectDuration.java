@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.armor.type;
 
-import PortLib.extensions.net.minecraft.world.effect.MobEffect.PortMobEffectExtension;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -14,7 +13,7 @@ import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 public record EnhanceEffectDuration(
         Object2IntMap<MobEffect> map
 ) implements PrimitiveValue<Object2IntMap<MobEffect>> {
-    public static final Codec<EnhanceEffectDuration> CODEC = Codec.unboundedMap(PortMobEffectExtension.directCodec(), ExtraCodecs.POSITIVE_INT)
+    public static final Codec<EnhanceEffectDuration> CODEC = Codec.unboundedMap(MobEffect.DIRECT_CODEC, ExtraCodecs.POSITIVE_INT)
             .<Object2IntMap<MobEffect>>xmap(Object2IntOpenHashMap::new, Object2ObjectOpenHashMap::new)
             .xmap(EnhanceEffectDuration::new, EnhanceEffectDuration::map);
     public static final CombineRule<Object2IntMap<MobEffect>, EnhanceEffectDuration> MERGE = CombineRule.register((a, b) -> {

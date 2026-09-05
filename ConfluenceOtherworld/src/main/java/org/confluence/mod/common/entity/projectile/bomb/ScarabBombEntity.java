@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
-import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -29,6 +28,7 @@ import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortExplosionExtension;
 
 public class ScarabBombEntity extends StickyBombEntity {
     private static final EntityDataAccessor<Integer> DATA_OWNER_ID = SynchedEntityData.defineId(ScarabBombEntity.class, EntityDataSerializers.INT);
@@ -58,7 +58,7 @@ public class ScarabBombEntity extends StickyBombEntity {
         Vec3 step = facingDir.normalize().scale(-3);
         float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(0);
         ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
-        DamageSource damageSource = PortExplosionExtension.getDefaultDamageSource(level, this);
+        DamageSource damageSource = IPortExplosionExtension.getDefaultDamageSource(level, this);
         MultiplyExplosionDamageCalculator damageCalculator = new MultiplyExplosionDamageCalculator(0.2F);
         for (int i = 0; i < 24; i++) {
             if (i % 3 == 0) {

@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui;
 
-import PortLib.extensions.net.minecraft.client.gui.screens.inventory.InventoryScreen.PortInventoryScreenExtension;
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -21,6 +20,7 @@ import org.confluence.mod.network.c2s.GiveBannerPacketC2S;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.wrapper.common.extensions.IPortInventoryScreenExtension;
 
 import java.util.*;
 
@@ -351,7 +351,7 @@ public class BestiaryScreen extends Screen {
                     float factor = 2 / size;
                     int scale = Mth.ceil(10 * factor);
                     float yOffset = 0.3F / factor;
-                    PortInventoryScreenExtension.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 36, y1 + 36, scale, yOffset, mouseX, mouseY, living);
+                    IPortInventoryScreenExtension.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 36, y1 + 36, scale, yOffset, mouseX, mouseY, living);
                 }
             }
 
@@ -441,7 +441,7 @@ public class BestiaryScreen extends Screen {
             // 实体
             LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
             if (living != null) {
-                PortInventoryScreenExtension.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 48, y1 + 48, 20, 0.3F, mouseX, mouseY, living);
+                IPortInventoryScreenExtension.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 48, y1 + 48, 20, 0.3F, mouseX, mouseY, living);
             }
             // 稀有度
             pose.pushPose();

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.sword;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -14,6 +13,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.ModItems;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.AttributeHolder;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -64,7 +64,7 @@ public record SwordDefinition(
         public Builder specialSweep(float ratio) {
             specialSweep = true;
             if (ratio > 0.0F)
-                attribute(PortAttributesExtension.sweepingDamageRatio(), ratio, PortAttributeModifier.Operation.ADD_VALUE);
+                attribute(IPortAttributesExtension.sweepingDamageRatio(), ratio, PortAttributeModifier.Operation.ADD_VALUE);
             return this;
         }
 

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import PortLib.extensions.net.minecraft.world.entity.projectile.ProjectileUtil.PortProjectileUtilExtension;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -12,6 +11,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.mixed.Immunity;
+import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileUtilExtension;
 
 public class RainProjectile extends AbstractManaProjectile implements Immunity {
     private int maxPenetrate = 2;
@@ -39,7 +39,7 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
 
     @Override
     protected void doHitCheck() {
-        HitResult hitResult = PortProjectileUtilExtension.getHitResult(position(), this, this::canHitEntity, getDeltaMovement(), level(), 0.6F, ClipContext.Block.COLLIDER);
+        HitResult hitResult = IPortProjectileUtilExtension.getHitResult(position(), this, this::canHitEntity, getDeltaMovement(), level(), 0.6F, ClipContext.Block.COLLIDER);
         checkInsideBlocks();
         HitResult.Type hitresult$type = hitResult.getType();
         if (hitresult$type == HitResult.Type.BLOCK) {

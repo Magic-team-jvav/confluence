@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.animal;
 
-import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.damagesource.DamageSource;
@@ -10,6 +9,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
+import org.mesdag.portlib.wrapper.common.extensions.IPortExplosionExtension;
 
 public class ExplosiveBunny extends Bunny {
     private static final float EXPLOSION_RADIUS = 3.0F;
@@ -47,7 +47,7 @@ public class ExplosiveBunny extends Bunny {
             return;
         }
         exploded = true;
-        level().explode(this, PortExplosionExtension.getDefaultDamageSource(level(), this),
+        level().explode(this, IPortExplosionExtension.getDefaultDamageSource(level(), this),
                 new MultiplyExplosionDamageCalculator(1.0F) {
                     @Override
                     public boolean shouldBlockExplode(Explosion explosion, BlockGetter level, BlockPos pos, BlockState state, float power) {

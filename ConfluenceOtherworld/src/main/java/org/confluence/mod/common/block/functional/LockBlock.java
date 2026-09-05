@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional;
 
-import PortLib.extensions.net.minecraft.advancements.critereon.ItemPredicate.PortItemPredicateExtension;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -117,7 +116,7 @@ public class LockBlock extends Block implements EntityBlock {
             /// 没有匹配工具是锁块的合法默认状态，保存时也会省略 MatchTool。
             /// 因此读取当前格式时必须先检查字段，不能把 null 交给编解码器。
             this.matchTool = tag.contains("MatchTool")
-                    ? PortItemPredicateExtension.codec()
+                    ? ItemPredicate.CODEC
                     .parse(NbtOps.INSTANCE, tag.get("MatchTool")).result()
                     : Optional.empty();
             this.consumeTool = tag.getBoolean("ConsumeTool");
@@ -126,7 +125,7 @@ public class LockBlock extends Block implements EntityBlock {
         @Override
         protected void saveAdditional(CompoundTag tag) {
             super.saveAdditional(tag);
-            matchTool.flatMap(predicate -> PortItemPredicateExtension.codec().encodeStart(NbtOps.INSTANCE, predicate).result()).ifPresent(nbt -> tag.put("MatchTool", nbt));
+            matchTool.flatMap(predicate -> ItemPredicate.CODEC.encodeStart(NbtOps.INSTANCE, predicate).result()).ifPresent(nbt -> tag.put("MatchTool", nbt));
             tag.putBoolean("ConsumeTool", consumeTool);
         }
     }

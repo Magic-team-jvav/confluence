@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import PortLib.extensions.net.minecraft.util.StringRepresentable.PortStringRepresentableExtension;
 import com.mojang.serialization.Codec;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,6 +21,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+import org.mesdag.portlib.wrapper.common.extensions.IPortStringRepresentableExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +169,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         public static final Variant SPARK = register("spark", 0.04, 0.0F, 0, 0, 0);
         public static final Variant THUNDER_ZAPPER = register("thunder_zapper", -1.0, 0.0F, 0, 0, 0);
 
-        public static final Codec<Variant> CODEC = PortStringRepresentableExtension.fromValues(() -> VALUES.toArray(Variant[]::new));
+        public static final Codec<Variant> CODEC = IPortStringRepresentableExtension.fromValues(() -> VALUES.toArray(Variant[]::new));
 
         /// @param rawKnockBack 换算前的击退
         private static Variant register(String name, double gravity, float rawKnockBack, float red, float green, float blue) {

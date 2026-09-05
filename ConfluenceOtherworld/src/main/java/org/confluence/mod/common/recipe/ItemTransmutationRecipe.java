@@ -1,7 +1,6 @@
 package org.confluence.mod.common.recipe;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -133,7 +132,7 @@ public class ItemTransmutationRecipe implements PortRecipe<PortSingleRecipeInput
         @Override
         protected MapCodec<ItemTransmutationRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    PortIngredientExtension.codec().fieldOf("source").forGetter(ItemTransmutationRecipe::source),
+                    Ingredient.CODEC.fieldOf("source").forGetter(ItemTransmutationRecipe::source),
                     PortCodecExtension.lenientOptionalFieldOf(ItemStack.CODEC.listOf(), "target", List.of()).forGetter(ItemTransmutationRecipe::target),
                     PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "shrink", 1).forGetter(ItemTransmutationRecipe::shrink),
                     PortCodecExtension.lenientOptionalFieldOf(GamePhase.CODEC, "game_phase", GamePhase.BEFORE_SKELETRON).forGetter(ItemTransmutationRecipe::gamePhase)
@@ -143,7 +142,7 @@ public class ItemTransmutationRecipe implements PortRecipe<PortSingleRecipeInput
         @Override
         protected PortStreamCodec<org.mesdag.portlib.network.PortRegistryFriendlyByteBuf, ItemTransmutationRecipe> getStreamCodec() {
             return PortStreamCodec.composite(
-                    PortIngredientExtension.contentsStreamCodec(), ItemTransmutationRecipe::source,
+                    Ingredient.CONTENTS_STREAM_CODEC, ItemTransmutationRecipe::source,
                     ItemStack.LIST_STREAM_CODEC, ItemTransmutationRecipe::target,
                     PortByteBufCodecs.VAR_INT, ItemTransmutationRecipe::shrink,
                     GamePhase.STREAM_CODEC, ItemTransmutationRecipe::gamePhase,

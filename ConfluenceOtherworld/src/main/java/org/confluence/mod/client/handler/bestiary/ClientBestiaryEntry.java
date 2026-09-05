@@ -1,11 +1,11 @@
 package org.confluence.mod.client.handler.bestiary;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.nbt.TagParser.PortTagParserExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
@@ -98,7 +98,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
             PortCodecExtension.lenientOptionalFieldOf(ResourceLocation.CODEC, "background", SURFACE).forGetter(entry -> entry.background.path()),
             PortCodecExtension.lenientOptionalFieldOf(PortComponentSerialization.CODEC, "description", UNKNOWN).forGetter(entry -> entry.description),
             PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.homogenousList(FilterEntry.CODEC, false), "filters", List.of()).forGetter(entry -> entry.filters),
-            PortCodecExtension.lenientOptionalFieldOf(PortTagParserExtension.lenientCodec(), "entity_nbt").forGetter(entry -> entry.entityNbt)
+            PortCodecExtension.lenientOptionalFieldOf(TagParser.LENIENT_CODEC, "entity_nbt").forGetter(entry -> entry.entityNbt)
     ).apply(instance, ClientBestiaryEntry::new));
 
     public final int order;

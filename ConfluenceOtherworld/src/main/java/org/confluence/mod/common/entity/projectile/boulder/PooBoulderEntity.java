@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
-import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -18,6 +17,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
+import org.mesdag.portlib.wrapper.common.extensions.IPortExplosionExtension;
 
 public class PooBoulderEntity extends BoulderEntity {
     public PooBoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
@@ -51,7 +51,7 @@ public class PooBoulderEntity extends BoulderEntity {
                 }
             }
         }
-        TerraStyleExplosion.terraExplode(serverLevel, this, PortExplosionExtension.getDefaultDamageSource(level(), this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), blockRadius, Level.ExplosionInteraction.NONE);
+        TerraStyleExplosion.terraExplode(serverLevel, this, IPortExplosionExtension.getDefaultDamageSource(level(), this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), blockRadius, Level.ExplosionInteraction.NONE);
     }
 
     @Override

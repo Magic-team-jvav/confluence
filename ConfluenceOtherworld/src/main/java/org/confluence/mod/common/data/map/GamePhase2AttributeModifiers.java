@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.map;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attribute.PortAttributeExtension;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
@@ -67,7 +66,7 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
     public record Remover(
             Map<GamePhase, ImmutableListMultimap<Attribute, UUID>> map
     ) implements PortDataMapValueRemover<EntityType<?>, GamePhase2AttributeModifiers> {
-        public static final Codec<Remover> CODEC = Codec.unboundedMap(GamePhase.CODEC, LibCodecUtils.multimap(PortAttributeExtension.directCodec(), UUIDUtil.STRING_CODEC)).xmap(Remover::new, Remover::map);
+        public static final Codec<Remover> CODEC = Codec.unboundedMap(GamePhase.CODEC, LibCodecUtils.multimap(Attribute.DIRECT_CODEC, UUIDUtil.STRING_CODEC)).xmap(Remover::new, Remover::map);
 
         @Override
         public Optional<GamePhase2AttributeModifiers> remove(

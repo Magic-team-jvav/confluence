@@ -1,7 +1,6 @@
 package org.confluence.mod.common.data.map;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.core.HolderSet.PortHolderSetExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.init.ModDataMaps;
+import org.mesdag.portlib.wrapper.common.extensions.IPortHolderSetExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -57,7 +57,7 @@ public record BlockBreakSpawns(List<Spawn> spawns) {
     public static class Spawn {
         public static final Codec<Spawn> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 SimpleWeightedRandomList.wrappedCodec(BuiltInRegistries.ENTITY_TYPE.byNameCodec()).fieldOf("types").forGetter(Spawn::types),
-                PortCodecExtension.lenientOptionalFieldOf(HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false), "biomes", PortHolderSetExtension.empty()).forGetter(Spawn::biomes),
+                PortCodecExtension.lenientOptionalFieldOf(HolderSetCodec.create(Registries.BIOME, Biome.CODEC, false), "biomes", IPortHolderSetExtension.empty()).forGetter(Spawn::biomes),
                 PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_FLOAT, "chance", 1.0F).forGetter(Spawn::chance),
                 PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.POSITIVE_INT, "maxAmount", 0x3F3F3F3F).forGetter(Spawn::maxAmount)
         ).apply(instance, Spawn::new));

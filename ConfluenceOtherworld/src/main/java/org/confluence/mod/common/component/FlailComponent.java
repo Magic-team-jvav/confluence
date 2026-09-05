@@ -1,6 +1,5 @@
 package org.confluence.mod.common.component;
 
-import PortLib.extensions.net.minecraft.resources.ResourceLocation.PortResourceLocationExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -79,10 +78,10 @@ public record FlailComponent(
             PortByteBufCodecs.VAR_INT, FlailComponent::cooldown,
             PortByteBufCodecs.FLOAT, FlailComponent::bounceFactor,
             PortByteBufCodecs.VAR_INT, FlailComponent::maxBounces,
-            PortResourceLocationExtension.streamCodec(), FlailComponent::soundEvent,
-            PortResourceLocationExtension.streamCodec(), FlailComponent::projType,
-            PortResourceLocationExtension.streamCodec(), FlailComponent::ballTexture,
-            PortResourceLocationExtension.streamCodec(), FlailComponent::chainTexture,
+            ResourceLocation.STREAM_CODEC, FlailComponent::soundEvent,
+            ResourceLocation.STREAM_CODEC, FlailComponent::projType,
+            ResourceLocation.STREAM_CODEC, FlailComponent::ballTexture,
+            ResourceLocation.STREAM_CODEC, FlailComponent::chainTexture,
             FlailComponent::new
     );
 

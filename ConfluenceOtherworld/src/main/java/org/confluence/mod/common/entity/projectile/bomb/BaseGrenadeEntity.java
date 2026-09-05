@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
-import PortLib.extensions.net.minecraft.world.level.Explosion.PortExplosionExtension;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,6 +9,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.util.damage.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.util.TerraStyleExplosion;
+import org.mesdag.portlib.wrapper.common.extensions.IPortExplosionExtension;
 
 public class BaseGrenadeEntity extends BaseBombEntity {
     public static final float DIAMETER = 0.125F;
@@ -43,7 +43,7 @@ public class BaseGrenadeEntity extends BaseBombEntity {
 
     @Override
     protected void explodeFunction(ServerLevel level) {
-        TerraStyleExplosion.terraExplode(level, this, PortExplosionExtension.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), 1.5F, Level.ExplosionInteraction.NONE);
+        TerraStyleExplosion.terraExplode(level, this, IPortExplosionExtension.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), 1.5F, Level.ExplosionInteraction.NONE);
     }
 
     protected ExplosionDamageCalculator getExplosionDamageCalculator() {

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -13,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.lib.mixed.ILibEntity;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 
 public class InverseEnderMan extends EnderMan {
     public InverseEnderMan(EntityType<? extends InverseEnderMan> type, Level level) {
@@ -21,7 +21,7 @@ public class InverseEnderMan extends EnderMan {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        Attribute value = PortAttributesExtension.gravity().get();
+        Attribute value = IPortAttributesExtension.gravity().get();
         return EnderMan.createAttributes().add(value, -value.getDefaultValue());
     }
 

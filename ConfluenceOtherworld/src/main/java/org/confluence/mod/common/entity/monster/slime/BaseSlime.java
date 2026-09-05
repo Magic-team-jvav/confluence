@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.monster.slime;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -33,6 +32,7 @@ import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 
 public class BaseSlime extends BaseMonster implements BossOwnedEntity {
     protected static final String SIZE_KEY = "SlimeSize";
@@ -502,7 +502,7 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
                 .add(Attributes.MAX_HEALTH, maxHealth)
                 .add(Attributes.ATTACK_DAMAGE, attackDamage)
                 .add(Attributes.ARMOR, (double) armor)
-                .add(PortAttributesExtension.waterMovementEfficiency().get(), 0.2)
+                .add(IPortAttributesExtension.waterMovementEfficiency().get(), 0.2)
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.FOLLOW_RANGE, 16.0);
     }

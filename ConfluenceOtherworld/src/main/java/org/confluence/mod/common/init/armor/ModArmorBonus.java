@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.armor;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMaps;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -48,6 +47,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.common.PortTags;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.HashMap;
@@ -98,12 +98,12 @@ public final class ModArmorBonus {
     @SuppressWarnings("all")
     public static void registerArmorSetBonus() {
         register("mining_set", 1, MINING_HELMET, MINING_CHESTPLATE, MINING_LEGGINGS, MINING_BOOTS, key -> {
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(PortAttributesExtension.blockBreakSpeed(), key.id, 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(IPortAttributesExtension.blockBreakSpeed(), key.id, 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });
         register("plank_set", 1, PLANK_HELMET, PLANK_CHESTPLATE, PLANK_LEGGINGS, PLANK_BOOTS, armor(1));
         register("ash_set", 1, ASH_HELMET, ASH_CHESTPLATE, ASH_LEGGINGS, ASH_BOOTS, key -> {
             key.of(TCItems.LAVA$HURT$REDUCE, 0.5F);
-            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(PortAttributesExtension.burningTime(), key.id, -0.35, PortAttributeModifier.Operation.ADD_VALUE));
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(IPortAttributesExtension.burningTime(), key.id, -0.35, PortAttributeModifier.Operation.ADD_VALUE));
         });
         register("snow_set", 1, SNOW_CAPS, SNOW_SUITS, INSULATED_PANTS, INSULATED_SHOES, key -> {
             key.unit(TCItems.FROZEN$IMMUNE);
@@ -171,7 +171,7 @@ public final class ModArmorBonus {
         register("gladiator_set", 1, GLADIATOR_HELMET, GLADIATOR_CHESTPLATE, GLADIATOR_LEGGINGS, GLADIATOR_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(Attributes.KNOCKBACK_RESISTANCE, key.id, 1, PortAttributeModifier.Operation.ADD_VALUE)
-                    .add(PortAttributesExtension.explosionKnockbackResistance(), key.id, 1, PortAttributeModifier.Operation.ADD_VALUE)
+                    .add(IPortAttributesExtension.explosionKnockbackResistance(), key.id, 1, PortAttributeModifier.Operation.ADD_VALUE)
                     .build());
         });
         register("meteor_set", 1, METEOR_HELMET, METEOR_CHESTPLATE, METEOR_LEGGINGS, METEOR_BOOTS, key -> {

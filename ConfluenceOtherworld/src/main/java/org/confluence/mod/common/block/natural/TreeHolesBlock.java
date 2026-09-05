@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import PortLib.extensions.net.minecraft.world.containers.PortContainersExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -28,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortContainersExtension;
 
 public class TreeHolesBlock extends BaseEntityBlock {
     protected static final DirectionProperty FACING = BlockStateProperties.FACING;
@@ -52,7 +52,7 @@ public class TreeHolesBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        PortContainersExtension.dropContentsOnDestroy(state, newState, level, pos);
+        IPortContainersExtension.dropContentsOnDestroy(state, newState, level, pos);
         super.onRemove(state, level, pos, newState, isMoving);
     }
 

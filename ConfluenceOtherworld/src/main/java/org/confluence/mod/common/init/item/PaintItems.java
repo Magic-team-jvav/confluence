@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -13,6 +12,7 @@ import org.confluence.mod.common.item.paint.*;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
@@ -80,7 +80,7 @@ public class PaintItems {
         return ITEMS.register(spectre ? "spectre_" + suffix : suffix, () -> {
             Item.Properties properties = new Item.Properties();
             if (spectre) properties.attributes(PortItemAttributeModifiers.builder().add(
-                    PortAttributesExtension.blockInteractionRange(), ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 3, PortAttributeModifier.Operation.ADD_VALUE, PortEquipmentSlotGroup.MAINHAND
+                    IPortAttributesExtension.blockInteractionRange(), ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 3, PortAttributeModifier.Operation.ADD_VALUE, PortEquipmentSlotGroup.MAINHAND
             ).build());
             return factory.apply(properties, ModRarity.WHITE, TooltipItem.getTooltipsFromString(suffix, 2, ChatFormatting.GRAY));
         });

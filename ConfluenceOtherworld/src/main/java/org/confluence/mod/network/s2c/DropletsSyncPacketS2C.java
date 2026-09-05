@@ -1,8 +1,8 @@
 package org.confluence.mod.network.s2c;
 
-import PortLib.extensions.net.minecraft.core.particles.ParticleTypes.PortParticleTypesExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,7 +32,7 @@ public record DropletsSyncPacketS2C(
                 Map<BlockPos, ParticleOptions> map = new HashMap<>();
                 for (int j = 0; j < size; j++) {
                     BlockPos blockPos = LibUtils.decompressRelativePos(pos, buffer.readVarInt());
-                    ParticleOptions particle = PortParticleTypesExtension.streamCodec().decode(buffer);
+                    ParticleOptions particle = ParticleTypes.STREAM_CODEC.decode(buffer);
                     map.put(blockPos, particle);
                 }
                 mapMap.put(pos, map);
@@ -48,7 +48,7 @@ public record DropletsSyncPacketS2C(
                 buffer.writeVarInt(entry.getValue().size());
                 for (Map.Entry<BlockPos, ParticleOptions> entry1 : entry.getValue().entrySet()) {
                     buffer.writeVarInt(LibUtils.compressRelativePos(entry1.getKey()));
-                    PortParticleTypesExtension.streamCodec().encode(buffer, entry1.getValue());
+                    ParticleTypes.STREAM_CODEC.encode(buffer, entry1.getValue());
                 }
             }
         }

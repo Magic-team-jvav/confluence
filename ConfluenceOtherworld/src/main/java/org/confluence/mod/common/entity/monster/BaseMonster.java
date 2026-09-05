@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,6 +24,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -243,7 +243,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             defaultMovementSpeed = baseValue(Attributes.MOVEMENT_SPEED);
             defaultFollowRange = baseValue(Attributes.FOLLOW_RANGE);
             defaultKnockbackResistance = baseValue(Attributes.KNOCKBACK_RESISTANCE);
-            defaultScale = baseValue(PortAttributesExtension.scale().value());
+            defaultScale = baseValue(IPortAttributesExtension.scale().value());
         } else {
             setBaseValue(Attributes.MAX_HEALTH, defaultMaxHealth);
             setBaseValue(Attributes.ATTACK_DAMAGE, defaultAttackDamage);
@@ -251,7 +251,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             setBaseValue(Attributes.MOVEMENT_SPEED, defaultMovementSpeed);
             setBaseValue(Attributes.FOLLOW_RANGE, defaultFollowRange);
             setBaseValue(Attributes.KNOCKBACK_RESISTANCE, defaultKnockbackResistance);
-            setBaseValue(PortAttributesExtension.scale().value(), defaultScale);
+            setBaseValue(IPortAttributesExtension.scale().value(), defaultScale);
         }
 
         float oldHealth = getHealth();
@@ -298,7 +298,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.23)
                 .add(Attributes.FOLLOW_RANGE, 16.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.0)
-                .add(PortAttributesExtension.scale().get(), 1.0D);
+                .add(IPortAttributesExtension.scale().get(), 1.0D);
     }
 
     @Override

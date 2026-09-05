@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.core.Holder;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,6 +16,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.function.Consumer;
@@ -37,15 +37,15 @@ public class ArmorItems {
     public static final PortDeferredItem<BaseArmorItem> MINING_CHESTPLATE = register("mining_chestplate", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(PortAttributesExtension.blockBreakSpeed(), 0.1, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
+            .attribute(IPortAttributesExtension.blockBreakSpeed(), 0.1, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
     public static final PortDeferredItem<BaseArmorItem> MINING_LEGGINGS = register("mining_leggings", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(PortAttributesExtension.blockBreakSpeed(), 0.05, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
+            .attribute(IPortAttributesExtension.blockBreakSpeed(), 0.05, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
     public static final PortDeferredItem<BaseArmorItem> MINING_BOOTS = register("mining_boots", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(PortAttributesExtension.blockBreakSpeed(), 0.05, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
+            .attribute(IPortAttributesExtension.blockBreakSpeed(), 0.05, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_BASE)));
 
     public static final PortDeferredItem<BaseArmorItem> PLANK_HELMET = register("plank_helmet", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/plank_armor")
@@ -600,7 +600,7 @@ public class ArmorItems {
     public static final PortDeferredItem<BaseArmorItem> HEIM_BOOTS = register("heim_boots", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/heim_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(PortAttributesExtension.swimSpeed(), 0.05, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
+            .attribute(IPortAttributesExtension.swimSpeed(), 0.05, PortAttributeModifier.Operation.wrap(AttributeModifier.Operation.MULTIPLY_TOTAL)));
     public static final PortDeferredItem<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)

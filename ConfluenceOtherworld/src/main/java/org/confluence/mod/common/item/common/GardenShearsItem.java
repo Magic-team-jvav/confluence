@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.google.common.collect.Sets;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -22,6 +21,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.item.ModItems;
 import org.mesdag.portlib.wrapper.common.PortItemAbilities;
 import org.mesdag.portlib.wrapper.common.PortItemAbility;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
@@ -49,7 +49,7 @@ public class GardenShearsItem extends ShearsItem {
 //                .component(DataComponents.TOOL, ShearsItem.createToolProperties())
                 .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .attributes(PortItemAttributeModifiers.builder().add(
-                        PortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
+                        IPortAttributesExtension.blockInteractionRange(), new PortAttributeModifier(
                                 ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 2.5, PortAttributeModifier.Operation.ADD_VALUE),
                         PortEquipmentSlotGroup.MAINHAND).build()));
     }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.monster;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,6 +19,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -260,7 +260,7 @@ public class BaseMimic extends BaseMonster {
     }
 
     private void setGravity(double gravity) {
-        AttributeInstance attribute = getAttribute(PortAttributesExtension.gravity().value());
+        AttributeInstance attribute = getAttribute(IPortAttributesExtension.gravity().value());
         if (attribute != null && attribute.getBaseValue() != gravity)
             attribute.setBaseValue(gravity);
     }

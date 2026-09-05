@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +21,7 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistryEntry;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.function.Supplier;
@@ -91,38 +91,38 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 15, 3,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 1.5F, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 1.5F, PortAttributeModifier.Operation.ADD_VALUE)
                     .attribute(Attributes.ATTACK_KNOCKBACK, 0.2F, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
     public static final PortDeferredItem<BaseSwordItem> COBALT_SWORD = register("cobalt_sword", ModTiers.UNBREAKABLE, 25, 2.4F, ModRarity.LIGHT_RED,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
     public static final PortDeferredItem<BaseSwordItem> PALLADIUM_SWORD = register("palladium_sword", ModTiers.UNBREAKABLE, 29, 2.6F, ModRarity.LIGHT_RED,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
     public static final PortDeferredItem<BaseSwordItem> MYTHRIL_SWORD = register("mythril_sword", ModTiers.UNBREAKABLE, 30, 2.6F, ModRarity.LIGHT_RED,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
     public static final PortDeferredItem<BaseSwordItem> ORICHALCUM_SWORD = register("orichalcum_sword", ModTiers.UNBREAKABLE, 34, 2.4F, ModRarity.LIGHT_RED,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
     public static final PortDeferredItem<BaseSwordItem> ADAMANTITE_SWORD = register("adamantite_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
     public static final PortDeferredItem<BaseSwordItem> TITANIUM_SWORD = register("titanium_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage());
 
     public static final PortDeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, SwordDefinition::builder);
@@ -155,13 +155,13 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 7, 7, ModRarity.ORANGE,
             () -> SwordDefinition.builder()
                     .specialSweep(0.0F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), -1.4F, PortAttributeModifier.Operation.ADD_VALUE));
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), -1.4F, PortAttributeModifier.Operation.ADD_VALUE));
 
     public static final PortDeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED,
             () -> SwordDefinition.builder()
                     .specialSweep(0.8F)
                     .tooltipImage()
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 9, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 9, PortAttributeModifier.Operation.ADD_VALUE)
                     .attribute(Attributes.ATTACK_KNOCKBACK, 0.8F, PortAttributeModifier.Operation.ADD_VALUE));
 
     // 效果剑
@@ -169,7 +169,7 @@ public class SwordItems {
             () -> SwordDefinition.builder()
                     .behavior(SwordBehaviors.PURPLE_CLUBBERFISH)
                     .tooltipImage()
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 2, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 2, PortAttributeModifier.Operation.ADD_VALUE)
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE,
             () -> SwordDefinition.builder()
@@ -185,14 +185,14 @@ public class SwordItems {
             () -> SwordDefinition.builder()
                     .behavior(SwordBehaviors.VOLCANO)
                     .tooltipImage()
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 4.0F, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 4.0F, PortAttributeModifier.Operation.ADD_VALUE)
                     .attribute(Attributes.ATTACK_KNOCKBACK, 0.5F, PortAttributeModifier.Operation.ADD_VALUE)
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 21, 0.6F, ModRarity.ORANGE,
             () -> SwordDefinition.builder()
                     .behavior(SwordBehaviors.BAT_BAT)
                     .tooltipImage()
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 2, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 2, PortAttributeModifier.Operation.ADD_VALUE)
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", ModTiers.UNBREAKABLE, 13, 2.0F, ModRarity.GREEN,
             () -> SwordDefinition.builder()
@@ -227,13 +227,13 @@ public class SwordItems {
             () -> SwordDefinition.builder()
                     .projectile(SwordProjectileDefinitions.BLADE_OF_GRASS)
                     .tooltipImage()
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 2, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 2, PortAttributeModifier.Operation.ADD_VALUE)
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN,
             () -> SwordDefinition.builder()
                     .projectile(SwordProjectileDefinitions.NIGHTS_EDGE)
                     .tooltipImage()
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> WAFFLES_IRON = register("waffles_iron", ModTiers.UNBREAKABLE, 27, 2.5F, ModRarity.PINK,
             () -> SwordDefinition.builder()
@@ -252,11 +252,11 @@ public class SwordItems {
     public static final PortDeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER,
             () -> SwordDefinition.builder()
                     .specialSweep(1.0F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), -1, PortAttributeModifier.Operation.ADD_VALUE));
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), -1, PortAttributeModifier.Operation.ADD_VALUE));
     public static final PortDeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER,
             () -> SwordDefinition.builder()
                     .specialSweep(1.0F)
-                    .attribute(PortAttributesExtension.entityInteractionRange(), 7, PortAttributeModifier.Operation.ADD_VALUE)
+                    .attribute(IPortAttributesExtension.entityInteractionRange(), 7, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage()
                     .projectile(SwordProjectileDefinitions.DEVELOPER));
 

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.component.prefix;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableListMultimap;
 import net.minecraft.Util;
@@ -15,6 +14,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.HashMap;
@@ -311,7 +311,7 @@ public interface ModPrefix {
                 builder.put(LibAttributes.getCriticalChance().value(), createModifier(criticalChance, ADD_VALUE));
             }
             if (size != 0.0F) {
-                builder.put(PortAttributesExtension.entityInteractionRange().value(), createModifier(size, ADD_MULTIPLIED_TOTAL));
+                builder.put(IPortAttributesExtension.entityInteractionRange().value(), createModifier(size, ADD_MULTIPLIED_TOTAL));
             }
             if (knockBack != 0.0F) {
                 builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));

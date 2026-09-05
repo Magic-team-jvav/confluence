@@ -1,7 +1,6 @@
 package org.confluence.mod.common.recipe;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
-import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -99,9 +98,9 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
         protected MapCodec<FletchingTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
                     ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
-                    PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
-                    PortCodecExtension.lenientOptionalFieldOf(PortIngredientExtension.codecNonempty(), "head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
+                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
+                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
+                    PortCodecExtension.lenientOptionalFieldOf(Ingredient.CODEC_NONEMPTY, "head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
             ).apply(instance, FletchingTableRecipe::new));
         }
 
@@ -109,9 +108,9 @@ public class FletchingTableRecipe implements PortRecipe<FletchingTableRecipe.Inp
         protected PortStreamCodec<PortRegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
             return PortStreamCodec.composite(
                     ItemStack.STREAM_CODEC, recipe -> recipe.result,
-                    PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.tail,
-                    PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.body,
-                    PortIngredientExtension.contentsStreamCodec(), recipe -> recipe.head,
+                    Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.tail,
+                    Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.body,
+                    Ingredient.CONTENTS_STREAM_CODEC, recipe -> recipe.head,
                     FletchingTableRecipe::new
             );
         }

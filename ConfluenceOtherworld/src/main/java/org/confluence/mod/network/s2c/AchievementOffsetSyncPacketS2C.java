@@ -1,6 +1,5 @@
 package org.confluence.mod.network.s2c;
 
-import PortLib.extensions.net.minecraft.resources.ResourceLocation.PortResourceLocationExtension;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
@@ -20,7 +19,7 @@ public record AchievementOffsetSyncPacketS2C(
         Object2BooleanMap<ResourceLocation> value
 ) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("achievement_offset_sync");
-    public static final PortStreamCodec<ByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(PortResourceLocationExtension.streamCodec())
+    public static final PortStreamCodec<ByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ResourceLocation.STREAM_CODEC)
             .map(AchievementOffsetSyncPacketS2C::new, AchievementOffsetSyncPacketS2C::value);
 
     @Override

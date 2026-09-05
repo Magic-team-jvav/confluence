@@ -1,6 +1,5 @@
 package org.confluence.mod.client.gui.container;
 
-import PortLib.extensions.net.minecraft.client.gui.screens.inventory.InventoryScreen.PortInventoryScreenExtension;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -45,6 +44,7 @@ import org.confluence.terra_curio.network.InfoDisablePacket;
 import org.mesdag.portlib.client.gui.components.PortImageButton;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
+import org.mesdag.portlib.wrapper.common.extensions.IPortInventoryScreenExtension;
 import top.theillusivec4.curios.common.network.NetworkHandler;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
@@ -250,7 +250,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         if (dyeButtonPressed) {
             guiGraphics.blit(BACKGROUND, leftPos + 147, topPos + 33, 194, 0, 18, 20);
         }
-        PortInventoryScreenExtension.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, mouseX, mouseY, minecraft.player);
+        IPortInventoryScreenExtension.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, mouseX, mouseY, minecraft.player);
 
         RenderSystem.enableBlend();
         int x = leftPos + 178;

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.data_map;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import com.google.common.collect.ImmutableListMultimap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Tuple;
@@ -21,6 +20,7 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCDataMaps;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.mesdag.portlib.datamap.PortDataMapProvider;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.Collections;
@@ -53,7 +53,7 @@ public class AccessoriesSubProvider {
                     .add(Attributes.ATTACK_SPEED, id, 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .add(LibAttributes.getCriticalChance(), id, 0.02, PortAttributeModifier.Operation.ADD_VALUE)
                     .add(Attributes.ARMOR, id, 4, PortAttributeModifier.Operation.ADD_VALUE)
-                    .add(PortAttributesExtension.blockBreakSpeed(), id, 0.15, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(IPortAttributesExtension.blockBreakSpeed(), id, 0.15, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .add(ConfluenceMagicLib.SUMMON_KNOCKBACK, id, 0.5, PortAttributeModifier.Operation.ADD_VALUE)
                     .build());
         };
@@ -231,7 +231,7 @@ public class AccessoriesSubProvider {
                     ResourceLocation id = helper.asId();
                     helper.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                             .add(LibAttributes.getAttackDamage(), id, 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                            .add(PortAttributesExtension.entityInteractionRange(), id, 3, PortAttributeModifier.Operation.ADD_VALUE)
+                            .add(IPortAttributesExtension.entityInteractionRange(), id, 3, PortAttributeModifier.Operation.ADD_VALUE)
                             .add(ConfluenceMagicLib.MINION_CAPACITY, id, 2, PortAttributeModifier.Operation.ADD_VALUE)
                             .add(Attributes.MAX_HEALTH, id, 10, PortAttributeModifier.Operation.ADD_VALUE)
                             .add(Attributes.ARMOR, id, 6, PortAttributeModifier.Operation.ADD_VALUE)

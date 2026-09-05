@@ -1,12 +1,12 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 
 /// 路径下一节点较高时沿路径方向起跳。
 public final class JumpOverBlockAction extends BTNode {
@@ -27,7 +27,7 @@ public final class JumpOverBlockAction extends BTNode {
         Path path = mob.getNavigation().getPath();
         if (path == null || path.getNodeCount() <= path.getNextNodeIndex() + 1)
             return BTStatus.FAILURE;
-        double jumpHeight = mob.getAttributeBaseValue(PortAttributesExtension.jumpStrength().value()) * 4.0;
+        double jumpHeight = mob.getAttributeBaseValue(IPortAttributesExtension.jumpStrength().value()) * 4.0;
         int nextY = path.getNextNode().y;
         if (nextY <= mob.getY() || nextY >= mob.getY() + jumpHeight) return BTStatus.FAILURE;
         Vec3 direction = Vec3.atBottomCenterOf(path.getNextNode().asBlockPos())

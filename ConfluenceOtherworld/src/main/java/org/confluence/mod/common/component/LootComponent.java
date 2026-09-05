@@ -1,6 +1,5 @@
 package org.confluence.mod.common.component;
 
-import PortLib.extensions.net.minecraft.resources.ResourceLocation.PortResourceLocationExtension;
 import com.mojang.serialization.Codec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +15,7 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public record LootComponent(ResourceLocation value) {
     public static final Codec<LootComponent> CODEC = ResourceLocation.CODEC.xmap(LootComponent::new, LootComponent::value);
-    public static final PortStreamCodec<ByteBuf, LootComponent> STREAM_CODEC = PortResourceLocationExtension.streamCodec().map(LootComponent::new, LootComponent::value);
+    public static final PortStreamCodec<ByteBuf, LootComponent> STREAM_CODEC = ResourceLocation.STREAM_CODEC.map(LootComponent::new, LootComponent::value);
 
     public static boolean open(ServerPlayer player, ItemStack stack) {
         LootComponent lootComponent = stack.get(ModDataComponentTypes.LOOT);

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.arrow;
 
-import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -36,6 +35,7 @@ import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 import org.mesdag.portlib.diff.IPortEntity;
 import org.mesdag.portlib.diff.IPortProjectile;
+import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 import org.mesdag.portlib.wrapper.world.entity.projectile.PortAbstractArrow;
 import org.mesdag.portlib.wrapper.world.entity.projectile.PortProjectileDeflection;
 
@@ -197,7 +197,7 @@ public class BaseArrowEntity extends PortAbstractArrow {
                 if (knockback.lengthSqr() > 0.0) living.push(knockback.x, 0.1, knockback.z);
             }
             if (!reflectedByMimic && !level().isClientSide && owner instanceof LivingEntity) {
-                PortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damageSource);
+                IPortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damageSource);
             }
             if (living != owner && living instanceof Player && owner instanceof ServerPlayer player && !isSilent()) {
                 player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));

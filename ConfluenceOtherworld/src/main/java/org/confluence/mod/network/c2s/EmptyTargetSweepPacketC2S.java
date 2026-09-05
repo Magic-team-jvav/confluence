@@ -1,6 +1,5 @@
 package org.confluence.mod.network.c2s;
 
-import PortLib.extensions.net.minecraft.world.item.enchantment.EnchantmentHelper.PortEnchantmentHelperExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -19,6 +18,7 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
+import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
 
 public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
     INSTANCE;
@@ -50,7 +50,7 @@ public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
                     target.knockback(0.4F, Mth.sin(player.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(player.getYRot() * Mth.DEG_TO_RAD));
                     float amount = attackDamage/* todo enchantment ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, attackDamage, source)*/;
                     target.hurt(source, amount);
-                    PortEnchantmentHelperExtension.doPostAttackEffects(player.serverLevel(), target, source);
+                    IPortEnchantmentHelperExtension.doPostAttackEffects(player.serverLevel(), target, source);
                 }
             }
 

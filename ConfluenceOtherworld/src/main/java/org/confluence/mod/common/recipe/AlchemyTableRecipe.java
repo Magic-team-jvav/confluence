@@ -1,6 +1,5 @@
 package org.confluence.mod.common.recipe;
 
-import PortLib.extensions.net.minecraft.world.item.crafting.Ingredient.PortIngredientExtension;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -91,7 +90,7 @@ public class AlchemyTableRecipe implements PortRecipe<AlchemyTableRecipe.Input> 
         protected MapCodec<AlchemyTableRecipe> getCodec() {
             return RecordCodecBuilder.mapCodec(instance -> instance.group(
                     ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    PortIngredientExtension.codecNonempty().fieldOf("base").forGetter(recipe -> recipe.base),
+                    Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(recipe -> recipe.base),
                     AbstractAmountRecipe.INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
             ).apply(instance, AlchemyTableRecipe::new));
         }
@@ -103,9 +102,9 @@ public class AlchemyTableRecipe implements PortRecipe<AlchemyTableRecipe.Input> 
                 public AlchemyTableRecipe decode(PortRegistryFriendlyByteBuf buffer) {
                     int size = buffer.readVarInt();
                     NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
-                    nonnulllist.replaceAll(ignore -> PortIngredientExtension.contentsStreamCodec().decode(buffer));
+                    nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
                     ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-                    Ingredient input = PortIngredientExtension.contentsStreamCodec().decode(buffer);
+                    Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
                     return new AlchemyTableRecipe(itemstack, input, nonnulllist);
                 }
 
@@ -113,10 +112,10 @@ public class AlchemyTableRecipe implements PortRecipe<AlchemyTableRecipe.Input> 
                 public void encode(PortRegistryFriendlyByteBuf buffer, AlchemyTableRecipe recipe) {
                     buffer.writeVarInt(recipe.ingredients.size());
                     for (Ingredient ingredient : recipe.ingredients) {
-                        PortIngredientExtension.contentsStreamCodec().encode(buffer, ingredient);
+                        Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
                     }
                     ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-                    PortIngredientExtension.contentsStreamCodec().encode(buffer, recipe.base);
+                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.base);
                 }
             };
         }

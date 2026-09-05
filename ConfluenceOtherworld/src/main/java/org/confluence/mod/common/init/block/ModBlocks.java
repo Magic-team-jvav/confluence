@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.block;
 
-import PortLib.extensions.net.minecraft.world.level.block.SoundType.PortSoundTypeExtension;
 import com.google.common.base.Supplier;
 import com.mojang.datafixers.DSL;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
@@ -171,7 +170,7 @@ public final class ModBlocks {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.TERRACOTTA_GRAY)
                 .instrument(NoteBlockInstrument.BASEDRUM)
-                .sound(PortSoundTypeExtension.tuffBricks())
+                .sound(SoundType.TUFF_BRICKS)
                 .requiresCorrectToolForDrops()
                 .strength(1.5F, 6.0F);
     }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.common;
 
-import PortLib.extensions.net.minecraft.world.entity.ai.attributes.Attributes.PortAttributesExtension;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,6 +24,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.s2c.RightClickSubtractorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.extensions.IPortAttributesExtension;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 import java.util.List;
@@ -70,7 +70,7 @@ public class EverBeneficialItem extends TooltipItem {
     public static final Beneficial AMBROSIA = new Beneficial(Confluence.asResource("ambrosia"), EverBeneficial::setAmbrosiaUsed, (id, name, player, everBeneficial, isRespawn) -> {
         int value = TCUtils.getValue(player, TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR);
         Confluence.NETWORK_HANDLER.sendToPlayer(player, new RightClickSubtractorPacketS2C((byte) Math.min(value + 1, 4)));
-        AttributeInstance instance = player.getAttributes().getInstance(PortAttributesExtension.blockBreakSpeed());
+        AttributeInstance instance = player.getAttributes().getInstance(IPortAttributesExtension.blockBreakSpeed());
         if (instance == null) return;
         instance.addOrReplacePermanentModifier(new AttributeModifier(
                 id, name,
@@ -92,7 +92,7 @@ public class EverBeneficialItem extends TooltipItem {
         player.drop(MinecartItems.MECHANICAL_CART.toStack(), true);
     });
     public static final Beneficial ARTISAN_LOAF = new Beneficial(Confluence.asResource("artisan_loaf"), EverBeneficial::setArtisanLoafUsed, (id, name, player, everBeneficial, isRespawn) -> {
-        AttributeInstance instance = player.getAttributes().getInstance(PortAttributesExtension.blockInteractionRange());
+        AttributeInstance instance = player.getAttributes().getInstance(IPortAttributesExtension.blockInteractionRange());
         if (instance == null) return;
         instance.addOrReplacePermanentModifier(new AttributeModifier(
                 id, name,

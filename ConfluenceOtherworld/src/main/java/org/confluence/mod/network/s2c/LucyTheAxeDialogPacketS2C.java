@@ -1,6 +1,5 @@
 package org.confluence.mod.network.s2c;
 
-import PortLib.extensions.net.minecraft.resources.ResourceLocation.PortResourceLocationExtension;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +20,7 @@ public record LucyTheAxeDialogPacketS2C(
 ) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("lucy_the_axe_dialog");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, LucyTheAxeDialogPacketS2C> STREAM_CODEC = PortStreamCodec.composite(
-            PortResourceLocationExtension.streamCodec(), LucyTheAxeDialogPacketS2C::categoryKey,
+            ResourceLocation.STREAM_CODEC, LucyTheAxeDialogPacketS2C::categoryKey,
             LucyTheAxeDialogCategory.STREAM_CODEC, LucyTheAxeDialogPacketS2C::category,
             PortByteBufCodecs.VAR_INT, LucyTheAxeDialogPacketS2C::senderId,
             LucyTheAxeDialogPacketS2C::new

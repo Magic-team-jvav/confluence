@@ -93,7 +93,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.difficulty_notice.never.tip", "No changes will be made.");
         add("confluence.difficulty_notice.cancel", "Cancel and ask again later");
         add("confluence.difficulty_notice.confirm", "Confirm and do not ask again");
-        add("confluence.difficulty_notice.tip", "Hold Alt to select");
         add("confluence.difficulty_notice.sure.done", "Has been set to softcore");
         add("confluence.difficulty_notice.never.done", "Will never ask for softcore");
 

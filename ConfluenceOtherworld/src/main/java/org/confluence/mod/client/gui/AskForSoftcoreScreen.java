@@ -31,7 +31,7 @@ public class AskForSoftcoreScreen extends Screen {
     protected void init() {
         super.init();
         this.imageWidth = 190;
-        this.imageHeight = 101;
+        this.imageHeight = 110;
         this.leftPos = (width - imageWidth) / 2;
         this.topPos = (height - imageHeight) / 2 - 33;
     }
@@ -45,80 +45,70 @@ public class AskForSoftcoreScreen extends Screen {
 
         // 确认按钮
         int x = leftPos + 6;
-        int y = topPos + 104;
+        int y = topPos + 113;
         int centerX = width / 2;
-        if (mouseX > x && mouseX < x + 178 && mouseY > y && mouseY < y + 26) {
-            guiGraphics.blit(BASE, x, y, 6, 131, 178, 26, 256, 256);
-        } else {
-            guiGraphics.blit(BASE, x, y, 6, 104, 178, 26, 256, 256);
+        for (int i = 0; i <= 1; i++) {
+            y += (28 * i);
+            guiGraphics.blit(BASE, x, y, 6,
+                    (mouseX > x && mouseX < x + 178 && mouseY > y && mouseY < y + 26) ? 140 : 113,
+                    178, 26, 256, 256);
+            guiGraphics.drawCenteredString(font,
+                    Component.translatable(i == 0 ? "confluence.difficulty_notice.cancel" : "confluence.difficulty_notice.confirm"),
+                    centerX, y + (26 - font.lineHeight) / 2, -1);
         }
-        guiGraphics.drawCenteredString(font, Component.translatable("confluence.difficulty_notice.cancel"), centerX, y + (26 - font.lineHeight) / 2, -1);
-
-        y = topPos + 132;
-        if (mouseX > x && mouseX < x + 178 && mouseY > y && mouseY < y + 26) {
-            guiGraphics.blit(BASE, x, y, 6, 131, 178, 26, 256, 256);
-        } else {
-            guiGraphics.blit(BASE, x, y, 6, 104, 178, 26, 256, 256);
-        }
-        guiGraphics.drawCenteredString(font, Component.translatable("confluence.difficulty_notice.confirm"), centerX, y + (26 - font.lineHeight) / 2, -1);
 
         // 选项
         y = topPos + 38;
-        int v = isChooseSoftcore ? 74 : 0;
         int x1 = x + 30;
         int y1 = y + 5;
-        if (mouseX > x1 && mouseX < x1 + 34 && mouseY > y1 && mouseY < y1 + 36) {
-            v += 37;
+        for (int i = 0; i <= 1; i++) {
+            if (i == 1)
+                x1 = ((width + imageWidth) / 2) - 79;
+            int v = isChooseSoftcore && i == 0 || !isChooseSoftcore && i == 1 ? 92 : 0;
+            if (mouseX > x1 && mouseX < x1 + 43 && mouseY > y1 && mouseY < y1 + 45) {
+                v += 46;
+            }
+            guiGraphics.blit(BASE, x1, y1, 213, v, 43, 45, 256, 256);
+            guiGraphics.drawCenteredString(font,
+                    Component.translatable(i == 0 ? "confluence.difficulty_notice.sure" : "confluence.difficulty_notice.never"),
+                    x1 + 21, y1 + 4, 0xFFFFFF);
+            guiGraphics.blit(BASE, x1 + 7, y1 + 10, 28 * i, 228, 28, 28, 256, 256);
         }
-        guiGraphics.blit(BASE, x1, y1, 222, v, 34, 36, 256, 256);
-        guiGraphics.drawCenteredString(font, Component.translatable("confluence.difficulty_notice.sure"), x1 + 17, y1 + 4, 0xFFFFFF);
-        guiGraphics.blit(BASE, x1 + 5, y1 + 4, 0, 232, 24, 24, 256, 256);
-        x1 = ((width + imageWidth) / 2) - 70;
-        v = isChooseSoftcore ? 0 : 74;
-        if (mouseX > x1 && mouseX < x1 + 34 && mouseY > y1 && mouseY < y1 + 36) {
-            v += 37;
-        }
-        guiGraphics.blit(BASE, x1, y1, 222, v, 34, 36, 256, 256);
-        guiGraphics.drawCenteredString(font, Component.translatable("confluence.difficulty_notice.never"), x1 + 17, y1 + 4, 0xFFFFFF);
-        guiGraphics.blit(BASE, x1 + 5, y1 + 4, 24, 232, 24, 24, 256, 256);
 
         guiGraphics.drawWordWrap(font, Component.translatable(isChooseSoftcore ? "confluence.difficulty_notice.sure.tip" : "confluence.difficulty_notice.never.tip"),
-                leftPos + 7, topPos + 88, imageWidth - 14, 0xFFFFFF);
+                leftPos + 7, topPos + 97, imageWidth - 14, 0xFFFFFF);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         int x = leftPos + 6;
-        int y = topPos + 104;
-        if (mouseX > x && mouseX < x + 178 && mouseY > y && mouseY < y + 26) {
-            getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 0));
-            setAskForSoftcoreLayer(false);
-            onClose();
-            return true;
-        }
-        y = topPos + 132;
-        if (mouseX > x && mouseX < x + 178 && mouseY > y && mouseY < y + 26) {
-            getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1));
-            PacketDistributor.sendToServer(new AskForSoftcorePacket(isChooseSoftcore));
-            setAskForSoftcoreLayer(false);
-            onClose();
-            return true;
+        int y = topPos + 113;
+        for (int i = 0; i <= 1; i++) {
+            y += 28 * i;
+            if (mouseX > x && mouseX < x + 178 && mouseY > y && mouseY < y + 26) {
+                getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, i));
+                if (i == 1)
+                    PacketDistributor.sendToServer(new AskForSoftcorePacket(isChooseSoftcore));
+                setAskForSoftcoreLayer(false);
+                onClose();
+                return true;
+            }
         }
 
         y = topPos + 38;
         int x1 = x + 30;
         int y1 = y + 5;
-        if (mouseX > x1 && mouseX < x1 + 34 && mouseY > y1 && mouseY < y1 + 36) {
-            isChooseSoftcore = true;
-            getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 2));
-            return true;
+
+        for (int i = 0; i <= 1; i++) {
+            if (i == 1)
+                x1 = ((width + imageWidth) / 2) - 70;
+            if (mouseX > x1 && mouseX < x1 + 43 && mouseY > y1 && mouseY < y1 + 45) {
+                isChooseSoftcore = i == 0;
+                getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 2));
+                return true;
+            }
         }
-        x1 = ((width + imageWidth) / 2) - 70;
-        if (mouseX > x1 && mouseX < x1 + 34 && mouseY > y1 && mouseY < y1 + 36) {
-            isChooseSoftcore = false;
-            getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 2));
-            return true;
-        }
+
         return super.mouseClicked(mouseX, mouseY, button);
     }
 }

@@ -88,7 +88,7 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
         int viewDistance = player.requestedViewDistance();
         player.serverLevel().getEntitiesOfClass(BaseNPC.class, new AABB(pos).inflate(viewDistance * 16)).stream()
                 .filter(npc -> AvailableHouseSelectPacketS2C.matchesSelection(selected, npc.getType()))
-                .filter(npc -> npc.getSpawnAtPos() != null && region.isOnRegion(npc.getSpawnAtPos()))
+                .filter(npc -> /*npc.getSpawnAtPos() != null && */region.isOnRegion(npc.getSpawnAtPos()))
                 .min(Comparator.comparingDouble(npc -> npc.distanceToSqr(player)))
                 .ifPresentOrElse(ifSuccess, () -> player.sendSystemMessage(Component.translatable("message.confluence.house_detect.npc_not_fount")));
     }

@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -102,24 +103,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         BaseFlailEntity existing = findExistingFlail(player);
 
         if (existing == null) {
-            EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(comp.projType);
-            if (entityType == null) return;
-            Entity entity = entityType.create(level);
-            if (!(entity instanceof BaseFlailEntity flail)) return;
-
-            if (comp.launchMode || isProjectileMode(stack)) {
-                flail.initLaunch(player, stack, comp);
-            } else {
-                flail.init(player, stack, comp);
-            }
-
-            FlailStrategy strategy = getAttackStrategy();
-            if (strategy != null) {
-                flail.setAttackStrategy(strategy);
-            }
-            level.addFreshEntity(flail);
-            level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                    comp.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
+            spawnFlail(level, player, stack, comp, comp.launchMode || isProjectileMode(stack));
         } else {
             // 同步 ItemStack 模式到现有实体
             existing.setLaunchMode(comp.launchMode || isProjectileMode(stack));
@@ -130,6 +114,63 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
                 default -> {}
             }
         }
+    }
+
+    /**
+     * 创建并生成一枚连枷实体，不检查同主人是否已有连枷。
+     *
+     * @param launch true 使用 {@link BaseFlailEntity#initLaunch}（跳过 SPIN/STAY，直接沿视线射出）
+     * @return 生成的连枷实体；找不到注册实体类型或类型不匹配时返回 {@code null}
+     */
+    @Nullable
+    protected BaseFlailEntity spawnFlail(Level level, Player player, ItemStack stack, FlailComponent comp, boolean launch) {
+        EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(comp.projType);
+        if (entityType == null) return null;
+        Entity entity = entityType.create(level);
+        if (!(entity instanceof BaseFlailEntity flail)) return null;
+
+        if (launch) {
+            flail.initLaunch(player, stack, comp);
+        } else {
+            flail.init(player, stack, comp);
+        }
+
+        FlailStrategy strategy = getAttackStrategy();
+        if (strategy != null) {
+            flail.setAttackStrategy(strategy);
+        }
+        level.addFreshEntity(flail);
+        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                comp.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        return flail;
+    }
+
+    /**
+     * 是否为自动挥舞类连枷：按住攻击键时由客户端持续发送攻击请求，服务端按
+     * {@link FlailComponent#getAutoSwingInterval} 限流。
+     * <p>默认 {@code false}，投射型连枷（如铁链血滴子）可覆盖为 {@code true}。
+     */
+    public boolean isAutoSwing() {
+        return false;
+    }
+
+    /**
+     * 自动挥舞的一次攻击：不处于冷却时射出一枚新的连枷实体，并重新进入冷却。
+     * <p>与 {@link #useFlail} 不同，此方法不复用已有的连枷实体，因此多枚射弹可以同时存在。
+     *
+     * @return 是否成功发射
+     */
+    public boolean tryAutoSwing(ServerPlayer player, ItemStack stack) {
+        FlailComponent comp = getComponent();
+        if (player.getCooldowns().isOnCooldown(this)) return false;
+
+        if (spawnFlail(player.level(), player, stack, comp, comp.launchMode || isProjectileMode(stack)) == null) {
+            return false;
+        }
+
+        player.getCooldowns().addCooldown(this, comp.getAutoSwingInterval(player));
+        player.swing(InteractionHand.MAIN_HAND, true);
+        return true;
     }
 
     /** 子类覆盖以支持模式切换（如 FlaironItem），默认返回 false */

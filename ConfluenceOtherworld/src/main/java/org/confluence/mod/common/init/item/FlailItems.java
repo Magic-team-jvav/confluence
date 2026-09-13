@@ -6,6 +6,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
+import org.confluence.mod.common.item.flail.ChainGuillotinesItem;
 import org.confluence.mod.common.item.flail.FlailStrategy;
 import org.confluence.mod.common.item.flail.FlaironItem;
 
@@ -75,6 +76,10 @@ public class FlailItems {
         /** 链刃 */
         public static final DeferredItem<BaseFlailItem> CHAIN_KNIFE = ITEMS.register("chain_knife", () ->
                 new BaseFlailItem(FlailComponent.CHAIN_KNIFE, ModRarity.COMMON));
+
+        /** 铁链血滴子 — 自动挥舞，连续射出连在链条上的刀刃，最大射程 32 图格 */
+        public static final DeferredItem<BaseFlailItem> CHAIN_GUILLOTINES = ITEMS.register("chain_guillotines", () ->
+                new ChainGuillotinesItem(FlailComponent.CHAIN_GUILLOTINES, ModRarity.PINK));
 
         /** 锚 */
         public static final DeferredItem<BaseFlailItem> ANCHOR = ITEMS.register("anchor", () ->

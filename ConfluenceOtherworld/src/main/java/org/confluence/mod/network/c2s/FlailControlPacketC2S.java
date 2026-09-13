@@ -59,6 +59,14 @@ public final class FlailControlPacketC2S implements IPacketC2S {
         FlailComponent component = flailItem.getComponent();
         if (component == null) return;
 
+        // 自动挥舞类连枷：按住即持续发射，每次攻击生成独立射弹，松开不影响已射出的射弹
+        if (flailItem.isAutoSwing()) {
+            if (action == Action.HOLD) {
+                flailItem.tryAutoSwing(player, stack);
+            }
+            return;
+        }
+
         // 查找现有连枷实体
         BaseFlailEntity existing = findExistingFlail(player);
 

@@ -4666,7 +4666,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.GREEN_DUMPLING_SLIME.get(), "青团史莱姆");
         add(MonsterEntities.SWAMP_SLIME.get(), "沼泽史莱姆");
         add(MonsterEntities.DESERT_SLIME.get(), "沙漠史莱姆");
-        add(MonsterEntities.EVIL_SLIME.get(), "邪恶史莱姆");
         add(MonsterEntities.RED_SLIME.get(), "红色史莱姆");
         add(MonsterEntities.YELLOW_SLIME.get(), "黄色史莱姆");
         add(MonsterEntities.DUNGEON_SLIME.get(), "地牢史莱姆");
@@ -4846,21 +4845,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.GIANT_TORTOISE.get(), "巨型陆龟");
         add(MonsterEntities.GIANT_FLYING_FOX.get(), "巨型飞狐");
         add(MonsterEntities.CORRUPTOR.get(), "腐化者");
-        add(MonsterEntities.BLOOD_FEEDER.get(), "嗜血怪鱼");
+        add(MonsterEntities.BLOOD_FEEDER.get(), "嗜血怪");
         add(MonsterEntities.UNICORN.get(), "独角兽");
         add(MonsterEntities.GASTROPOD.get(), "腹足怪");
         add(MonsterEntities.CHAOS_ELEMENTAL.get(), "混沌精");
         add(MonsterEntities.ENCHANTED_SWORD.get(), "魔法剑");
-        add(MonsterEntities.BLAZING_WHEEL.get(), "烈焰轮");
-        add(MonsterEntities.SPIKE_BALL.get(), "尖刺球");
         add(MonsterEntities.PALADIN.get(), "圣骑士");
-        add(MonsterEntities.BONE_LEE.get(), "李小骨");
+        add(MonsterEntities.BONE_LEE.get(), "骷髅李");
         add(MonsterEntities.NECROMANCER.get(), "死灵法师");
         add(MonsterEntities.DIABOLIST.get(), "魔教徒");
         add(MonsterEntities.RAGGED_CASTER.get(), "褛褴邪教徒法师");
         add(MonsterEntities.ARCH_WYVERN.get(), "大飞龙");
-        add(MonsterEntities.SLIMER.get(), "恶翼史莱姆");
-        add(MonsterEntities.WINGLESS_SLIMER.get(), "恶翼史莱姆");
+        add(MonsterEntities.SLIMER.get(), "恶翅史莱姆");
+        add(MonsterEntities.WINGLESS_SLIMER.get(), "恶翅史莱姆");
     }
 
     /// 添加链锤名称。
@@ -5308,14 +5305,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.FACE_MONSTER_SPAWN_EGG.get(), "脸怪刷怪蛋");
         add(SpawnEggItems.BLOOD_ZOMBIE_SPAWN_EGG.get(), "血腥僵尸刷怪蛋");
         add(SpawnEggItems.BLOOD_TUMORS_SPAWN_EGG.get(), "血瘤刷怪蛋");
-        add(SpawnEggItems.BLOOD_FEEDER_SPAWN_EGG.get(), "嗜血怪鱼刷怪蛋");
+        add(SpawnEggItems.BLOOD_FEEDER_SPAWN_EGG.get(), "嗜血怪刷怪蛋");
         add(SpawnEggItems.FLESH_SLIME_SPAWN_EGG.get(), "血肉史莱姆刷怪蛋");
         add(SpawnEggItems.CORRUPT_SLIME_SPAWN_EGG.get(), "腐化史莱姆刷怪蛋");
         add(SpawnEggItems.EATER_OF_SOULS_SPAWN_EGG.get(), "噬魂怪刷怪蛋");
         add(SpawnEggItems.DEVOURER_SPAWN_EGG.get(), "吞噬怪刷怪蛋");
         add(SpawnEggItems.DECAYEDER_SPAWN_EGG.get(), "腐骴刷怪蛋");
         add(SpawnEggItems.CORRUPTOR_SPAWN_EGG.get(), "腐化者刷怪蛋");
-        add(SpawnEggItems.SLIMER_SPAWN_EGG.get(), "恶翼史莱姆刷怪蛋");
+        add(SpawnEggItems.SLIMER_SPAWN_EGG.get(), "恶翅史莱姆刷怪蛋");
         add(SpawnEggItems.LUMINOUS_SLIME_SPAWN_EGG.get(), "夜明史莱姆刷怪蛋");
         add(SpawnEggItems.PIXIE_SPAWN_EGG.get(), "妖精刷怪蛋");
         add(SpawnEggItems.UNICORN_SPAWN_EGG.get(), "独角兽刷怪蛋");
@@ -5363,7 +5360,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.SWAMP_SLIME_SPAWN_EGG.get(), "沼泽史莱姆刷怪蛋");
         add(SpawnEggItems.SPIKED_SLIME_SPAWN_EGG.get(), "尖刺史莱姆刷怪蛋");
         add(SpawnEggItems.GREEN_DUMPLING_SLIME_SPAWN_EGG.get(), "青团史莱姆刷怪蛋");
-        add(SpawnEggItems.ZOMBIE_SPAWN_EGG.get(), "僵尸刷怪蛋");
         add(SpawnEggItems.SQUIRREL_SPAWN_EGG.get(), "松鼠刷怪蛋");
         add(SpawnEggItems.RED_SQUIRREL_SPAWN_EGG.get(), "红松鼠刷怪蛋");
         add(SpawnEggItems.JEWEL_SQUIRREL_SPAWN_EGG.get(), "宝石松鼠刷怪蛋");
@@ -5378,7 +5374,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.BLACK_SLIME_SPAWN_EGG.get(), "黑色史莱姆刷怪蛋");
         add(SpawnEggItems.RED_SLIME_SPAWN_EGG.get(), "红色史莱姆刷怪蛋");
         add(SpawnEggItems.YELLOW_SLIME_SPAWN_EGG.get(), "黄色史莱姆刷怪蛋");
-        add(SpawnEggItems.EVIL_SLIME_SPAWN_EGG.get(), "邪恶史莱姆刷怪蛋");
         add(SpawnEggItems.CAVE_BAT_SPAWN_EGG.get(), "洞穴蝙蝠刷怪蛋");
         add(SpawnEggItems.GIANT_BAT_SPAWN_EGG.get(), "巨型蝙蝠刷怪蛋");
         add(SpawnEggItems.GIANT_SHELLY_SPAWN_EGG.get(), "巨型卷壳怪刷怪蛋");
@@ -5400,12 +5395,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.CURSED_SKULL_SPAWN_EGG.get(), "诅咒骷髅头刷怪蛋");
         add(SpawnEggItems.DARK_CASTER_SPAWN_EGG.get(), "暗黑法师刷怪蛋");
         add(SpawnEggItems.PALADIN_SPAWN_EGG.get(), "圣骑士刷怪蛋");
-        add(SpawnEggItems.BONE_LEE_SPAWN_EGG.get(), "李小骨刷怪蛋");
+        add(SpawnEggItems.BONE_LEE_SPAWN_EGG.get(), "骷髅李刷怪蛋");
         add(SpawnEggItems.NECROMANCER_SPAWN_EGG.get(), "死灵法师刷怪蛋");
         add(SpawnEggItems.DIABOLIST_SPAWN_EGG.get(), "魔教徒刷怪蛋");
         add(SpawnEggItems.RAGGED_CASTER_SPAWN_EGG.get(), "褛褴邪教徒法师刷怪蛋");
-        add(SpawnEggItems.BLAZING_WHEEL_SPAWN_EGG.get(), "烈焰轮刷怪蛋");
-        add(SpawnEggItems.SPIKE_BALL_SPAWN_EGG.get(), "尖刺球刷怪蛋");
         add(SpawnEggItems.DUNGEON_SLIME_SPAWN_EGG.get(), "地牢史莱姆刷怪蛋");
         add(SpawnEggItems.DUNGEON_GUARDIAN_SPAWN_EGG.get(), "地牢守卫刷怪蛋");
         add(SpawnEggItems.FIRE_IMP_SPAWN_EGG.get(), "火焰小鬼刷怪蛋");

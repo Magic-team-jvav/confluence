@@ -246,7 +246,6 @@ public final class ModEvents {
         event.put(MonsterEntities.CORRUPT_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(88).armor(20).attackDamage(28).build());
         event.put(MonsterEntities.DESERT_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(21).armor(5).attackDamage(6).build());
         event.put(MonsterEntities.JUNGLE_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(46).armor(6).attackDamage(12).build());
-        event.put(MonsterEntities.EVIL_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(58).armor(2).attackDamage(29).build());
         event.put(MonsterEntities.ICE_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(13).armor(4).attackDamage(5).build());
         event.put(MonsterEntities.LAVA_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(30).armor(10).attackDamage(10).build());
         event.put(MonsterEntities.LUMINOUS_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(93).armor(30).attackDamage(36.4).build());
@@ -319,8 +318,6 @@ public final class ModEvents {
         event.put(MonsterEntities.FLYING_FISH.get(), CreatureAttributeBuilder.creature().maxHealth(10).armor(1).attackDamage(2).followRange(30).attackKnockback(0.5).knockbackResistance(0.3).build());
         event.put(MonsterEntities.WANDERING_EYE_FISH.get(), CreatureAttributeBuilder.creature().maxHealth(156).armor(18).attackDamage(15).followRange(60).attackKnockback(1).knockbackResistance(1).movementSpeed(2.2).build());
         event.put(MonsterEntities.VISUAL_NEURON.get(), CreatureAttributeBuilder.creature().maxHealth(VisualNeuron.BASE_MAX_HEALTH).armor(10).attackDamage(9).followRange(0).attackKnockback(0).knockbackResistance(0.1).build());
-        event.put(MonsterEntities.BLAZING_WHEEL.get(), CreatureAttributeBuilder.creature().maxHealth(260).armor(30).attackDamage(42).followRange(48).attackKnockback(1).knockbackResistance(1).build());
-        event.put(MonsterEntities.SPIKE_BALL.get(), CreatureAttributeBuilder.creature().maxHealth(208).armor(25).attackDamage(36).followRange(48).attackKnockback(1).knockbackResistance(1).build());
         event.put(MonsterEntities.DEMON.get(), CreatureAttributeBuilder.creature().maxHealth(62).armor(8).attackDamage(20).followRange(16).attackKnockback(1).knockbackResistance(0.28).build());
         event.put(MonsterEntities.VOODOO_DEMON.get(), CreatureAttributeBuilder.creature().maxHealth(62).armor(8).attackDamage(20).followRange(16).attackKnockback(1).knockbackResistance(0.28).build());
         event.put(MonsterEntities.HORNET.get(), CreatureAttributeBuilder.creature().maxHealth(32).armor(6).attackDamage(13).followRange(32).attackKnockback(0).knockbackResistance(0.55).movementSpeed(0.5).build());

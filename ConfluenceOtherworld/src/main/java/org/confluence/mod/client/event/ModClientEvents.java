@@ -577,7 +577,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.GREEN_DUMPLING_SLIME.get(), c -> new BaseSlimeRenderer<>(c, "green_dumpling"));
         event.registerEntityRenderer(MonsterEntities.SWAMP_SLIME.get(), c -> new BaseSlimeRenderer<>(c, "swamp"));
         event.registerEntityRenderer(MonsterEntities.DESERT_SLIME.get(), c -> new BaseSlimeRenderer<>(c, "desert"));
-        event.registerEntityRenderer(MonsterEntities.EVIL_SLIME.get(), c -> new BaseSlimeRenderer<>(c, "evil"));
         event.registerEntityRenderer(MonsterEntities.RED_SLIME.get(), c -> new BaseSlimeRenderer<>(c, "red"));
         event.registerEntityRenderer(MonsterEntities.YELLOW_SLIME.get(), c -> new BaseSlimeRenderer<>(c, "yellow"));
         event.registerEntityRenderer(MonsterEntities.DUNGEON_SLIME.get(), c -> new BaseSlimeRenderer<>(c, "dungeon"));
@@ -606,7 +605,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.EATER_OF_SOULS.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.EATER_OF_SOULS.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.CRIMERA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CRIMERA.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.CURSED_SKULL.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.CURSED_SKULL.getId()), true, 1.0F, 0.0F).addBoneToGlow("outline"));
-        event.registerEntityRenderer(MonsterEntities.CORRUPTOR.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.EATER_OF_SOULS.getId(), true, 1.15F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.CORRUPTOR.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CORRUPTOR.getId(), true, 1.15F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.SLIMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.EATER_OF_SOULS.getId(), true, 0.85F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ENCHANTED_SWORD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.VISUAL_NEURON.getId(), true, 0.55F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.SNATCHER.get(), c -> new SnatcherRenderer(c, MonsterEntities.SNATCHER.getId()));
@@ -621,9 +620,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_HELMET_ANGER_BONES.getId())).withScale(1.25F));
         event.registerEntityRenderer(MonsterEntities.UNDEAD_VIKING.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.UNDEAD_VIKING.getId()));
         // 这两个规划中的生态生物在专用泰拉瑞亚资源补齐前，暂用完整的卷壳怪资源，避免实体不可见。
-        event.registerEntityRenderer(MonsterEntities.GIANT_TORTOISE.get(), c -> new GeoNormalRenderer<>(c, sharedGiantShellyModel()).withScale(1.4F));
+        event.registerEntityRenderer(MonsterEntities.GIANT_TORTOISE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GIANT_TORTOISE.getId()).withScale(1.4F));
         event.registerEntityRenderer(MonsterEntities.UNICORN.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.UNICORN.getId()).withScale(1.3F));
-        event.registerEntityRenderer(MonsterEntities.GASTROPOD.get(), c -> new GeoNormalRenderer<>(c, sharedGiantShellyModel()));
+        event.registerEntityRenderer(MonsterEntities.GASTROPOD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GASTROPOD.getId()).withScale(1.2F));
         event.registerEntityRenderer(MonsterEntities.WORM_SEGMENT.get(), WormPartRenderer::new);
         event.registerEntityRenderer(MonsterEntities.WYVERN.get(), c -> new WyvernRenderer(c, 1.0F));
         event.registerEntityRenderer(MonsterEntities.ARCH_WYVERN.get(), c -> new WyvernRenderer(c, 1.25F));
@@ -635,7 +634,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.WITHER_BONE_SERPENT.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.WITHER_BONE_SERPENT.getId(), 2.0F));
         event.registerEntityRenderer(MonsterEntities.DARK_CASTER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_SORCERER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GOBLIN_SORCERER.getId().withPrefix("goblin/")));
-        event.registerEntityRenderer(MonsterEntities.CHAOS_ELEMENTAL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
+        event.registerEntityRenderer(MonsterEntities.CHAOS_ELEMENTAL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CHAOS_ELEMENTAL.getId()));
         event.registerEntityRenderer(MonsterEntities.NECROMANCER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
         event.registerEntityRenderer(MonsterEntities.DIABOLIST.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
         event.registerEntityRenderer(MonsterEntities.RAGGED_CASTER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
@@ -709,7 +708,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(NpcEntities.MECHANIC.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/mechanic")));
         event.registerEntityRenderer(NpcEntities.PARTY_GIRL.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/party_girl")));
         // 这两个 NPC 尚无独立美术资源；暂时使用已有的城镇 NPC 外观，避免加载缺失模型。
-        event.registerEntityRenderer(NpcEntities.STYLIST.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/party_girl")));
+        event.registerEntityRenderer(NpcEntities.STYLIST.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/stylist")));
         event.registerEntityRenderer(NpcEntities.TAX_COLLECTOR.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/clothier")));
         event.registerEntityRenderer(NpcEntities.TRUFFLE.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/truffle")));
         event.registerEntityRenderer(NpcEntities.WIZARD.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/wizard")));
@@ -733,8 +732,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.WANDERING_EYE_FISH.get(), c -> new GeoNormalRenderer<>(c,
                 new GeoNormalModel<>(MonsterEntities.WANDERING_EYE_FISH.getId(), false), true, 1.5F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.VISUAL_NEURON.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("visual_neuron"), true, 1.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.BLAZING_WHEEL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId(), true, 1.5F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.SPIKE_BALL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.DEMON.getId(), 1.0F));
         event.registerEntityRenderer(MonsterEntities.VOODOO_DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.VOODOO_DEMON.getId(), 1.1F));
         event.registerEntityRenderer(MonsterEntities.HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.HORNET.getId(), false), true, 1.0F, 0.2F));
@@ -795,7 +792,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
         // 水怪
         event.registerEntityRenderer(MonsterEntities.PIRANHA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRANHA.getId(), true, 1.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.BLOOD_FEEDER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRANHA.getId(), true, 1.2F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.BLOOD_FEEDER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_FEEDER.getId(), true, 1.2F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ARAPAIMA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ARAPAIMA.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.BLUE_JELLYFISH.get(), c -> new JellyFishRenderer(c, jellyfishModel("blue")));
         event.registerEntityRenderer(MonsterEntities.PINK_JELLYFISH.get(), c -> new JellyFishRenderer(c, jellyfishModel("pink")));

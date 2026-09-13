@@ -87,7 +87,6 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> SWAMP_SLIME_SPAWN_EGG = egg(MonsterEntities.SWAMP_SLIME);
     public static final PortDeferredItem<ForgeSpawnEggItem> SPIKED_SLIME_SPAWN_EGG = egg(MonsterEntities.SPIKED_SLIME);
     public static final PortDeferredItem<ForgeSpawnEggItem> GREEN_DUMPLING_SLIME_SPAWN_EGG = egg(MonsterEntities.GREEN_DUMPLING_SLIME);
-    public static final PortDeferredItem<ForgeSpawnEggItem> ZOMBIE_SPAWN_EGG = egg(MonsterEntities.ZOMBIE);
     public static final PortDeferredItem<ForgeSpawnEggItem> SQUIRREL_SPAWN_EGG = egg(CritterEntities.SQUIRREL);
     public static final PortDeferredItem<ForgeSpawnEggItem> RED_SQUIRREL_SPAWN_EGG = egg(CritterEntities.RED_SQUIRREL);
     public static final PortDeferredItem<ForgeSpawnEggItem> JEWEL_SQUIRREL_SPAWN_EGG = egg(CritterEntities.JEWEL_SQUIRREL);
@@ -102,7 +101,6 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> BLACK_SLIME_SPAWN_EGG = egg(MonsterEntities.BLACK_SLIME);
     public static final PortDeferredItem<ForgeSpawnEggItem> RED_SLIME_SPAWN_EGG = egg(MonsterEntities.RED_SLIME);
     public static final PortDeferredItem<ForgeSpawnEggItem> YELLOW_SLIME_SPAWN_EGG = egg(MonsterEntities.YELLOW_SLIME);
-    public static final PortDeferredItem<ForgeSpawnEggItem> EVIL_SLIME_SPAWN_EGG = egg(MonsterEntities.EVIL_SLIME);
     public static final PortDeferredItem<ForgeSpawnEggItem> CAVE_BAT_SPAWN_EGG = egg(MonsterEntities.CAVE_BAT);
     public static final PortDeferredItem<ForgeSpawnEggItem> GIANT_BAT_SPAWN_EGG = egg(MonsterEntities.GIANT_BAT);
     public static final PortDeferredItem<ForgeSpawnEggItem> GIANT_SHELLY_SPAWN_EGG = egg(MonsterEntities.GIANT_SHELLY);
@@ -128,8 +126,6 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> NECROMANCER_SPAWN_EGG = egg(MonsterEntities.NECROMANCER);
     public static final PortDeferredItem<ForgeSpawnEggItem> DIABOLIST_SPAWN_EGG = egg(MonsterEntities.DIABOLIST);
     public static final PortDeferredItem<ForgeSpawnEggItem> RAGGED_CASTER_SPAWN_EGG = egg(MonsterEntities.RAGGED_CASTER);
-    public static final PortDeferredItem<ForgeSpawnEggItem> BLAZING_WHEEL_SPAWN_EGG = egg(MonsterEntities.BLAZING_WHEEL);
-    public static final PortDeferredItem<ForgeSpawnEggItem> SPIKE_BALL_SPAWN_EGG = egg(MonsterEntities.SPIKE_BALL);
     public static final PortDeferredItem<ForgeSpawnEggItem> DUNGEON_SLIME_SPAWN_EGG = egg(MonsterEntities.DUNGEON_SLIME);
     public static final PortDeferredItem<ForgeSpawnEggItem> DUNGEON_GUARDIAN_SPAWN_EGG = egg(BossEntities.DUNGEON_GUARDIAN);
     public static final PortDeferredItem<ForgeSpawnEggItem> FIRE_IMP_SPAWN_EGG = egg(MonsterEntities.FIRE_IMP);

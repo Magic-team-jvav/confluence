@@ -1961,7 +1961,6 @@ public final class ModTabs {
                         forest.accept(SpawnEggItems.BIRD_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.BLUE_JAY_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.CARDINAL_SPAWN_EGG.get());
-                        forest.accept(SpawnEggItems.ZOMBIE_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.RED_SQUIRREL_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.HOSTILE_BUNNY_SPAWN_EGG.get());
                         CreativeModeTab.Output underground = GroupItem.belongsTo("underground_entity", output);
@@ -1973,7 +1972,6 @@ public final class ModTabs {
                         underground.accept(SpawnEggItems.CRAWDAD_SPAWN_EGG.get());
                         underground.accept(SpawnEggItems.GIANT_WORM_SPAWN_EGG.get());
                         underground.accept(SpawnEggItems.NYMPH_SPAWN_EGG.get());
-                        underground.accept(SpawnEggItems.EVIL_SLIME_SPAWN_EGG.get());
                         underground.accept(SpawnEggItems.GIANT_BAT_SPAWN_EGG.get());
                         CreativeModeTab.Output mushroom = GroupItem.belongsTo("mushroom_entity", output);
                         mushroom.accept(SpawnEggItems.SPORE_BAT_SPAWN_EGG.get());
@@ -1996,8 +1994,6 @@ public final class ModTabs {
                         dungeon.accept(SpawnEggItems.NECROMANCER_SPAWN_EGG.get());
                         dungeon.accept(SpawnEggItems.DIABOLIST_SPAWN_EGG.get());
                         dungeon.accept(SpawnEggItems.RAGGED_CASTER_SPAWN_EGG.get());
-                        dungeon.accept(SpawnEggItems.BLAZING_WHEEL_SPAWN_EGG.get());
-                        dungeon.accept(SpawnEggItems.SPIKE_BALL_SPAWN_EGG.get());
                         CreativeModeTab.Output nether = GroupItem.belongsTo("nether_entity", output);
                         nether.accept(SpawnEggItems.FIRE_IMP_SPAWN_EGG.get());
                         nether.accept(SpawnEggItems.DEMON_SPAWN_EGG.get());

@@ -750,7 +750,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(MonsterEntities.BLUE_SLIME.get(), slimeCommon(-10644993));
-        add(MonsterEntities.EVIL_SLIME.get(), slimeCommon(0xFF00FF));
         add(MonsterEntities.DESERT_SLIME.get(), slimeCommon(-2727));
         add(MonsterEntities.GREEN_DUMPLING_SLIME.get(), slimeCommon(-8470674)
                 .withPool(LootPool.lootPool()
@@ -1140,8 +1139,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(random0To1)));
         add(MonsterEntities.CHAOS_ELEMENTAL.get(), LootTable.lootTable());
         add(MonsterEntities.ENCHANTED_SWORD.get(), LootTable.lootTable());
-        add(MonsterEntities.BLAZING_WHEEL.get(), LootTable.lootTable());
-        add(MonsterEntities.SPIKE_BALL.get(), LootTable.lootTable());
         add(MonsterEntities.PALADIN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PALADINS_SHIELD))

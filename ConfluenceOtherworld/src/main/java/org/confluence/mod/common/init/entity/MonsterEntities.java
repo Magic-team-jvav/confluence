@@ -24,7 +24,6 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<BaseSlime>> GREEN_DUMPLING_SLIME = registerSlime("green_dumpling_slime", false, 2);
     public static final RegistryObject<EntityType<BaseSlime>> SWAMP_SLIME = registerSlime("swamp_slime", false, 2);
     public static final RegistryObject<EntityType<BaseSlime>> DESERT_SLIME = registerSlime("desert_slime", false, 2);
-    public static final RegistryObject<EntityType<BaseSlime>> EVIL_SLIME = registerSlime("evil_slime", false, 2);
     public static final RegistryObject<EntityType<BaseSlime>> RED_SLIME = registerSlime("red_slime", false, 2);
     public static final RegistryObject<EntityType<BaseSlime>> YELLOW_SLIME = registerSlime("yellow_slime", false, 2);
     public static final RegistryObject<EntityType<BaseSlime>> DUNGEON_SLIME = registerSlime("dungeon_slime", false, 3);
@@ -55,7 +54,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<EaterOfSouls>> EATER_OF_SOULS = registerEntity("eater_of_souls", EntityType.Builder.of(EaterOfSouls::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<EaterOfSouls>> CRIMERA = registerEntity("crimera", EntityType.Builder.of(EaterOfSouls::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<CursedSkull>> CURSED_SKULL = registerEntity("cursed_skull", EntityType.Builder.of(CursedSkull::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<Corruptor>> CORRUPTOR = registerEntity("corruptor", EntityType.Builder.of(Corruptor::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Corruptor>> CORRUPTOR = registerEntity("corruptor", EntityType.Builder.of(Corruptor::new, MobCategory.MONSTER).sized(2.2F, 1.2F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Slimer>> SLIMER = registerEntity("slimer", EntityType.Builder.of(Slimer::new, MobCategory.MONSTER).sized(1.0F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<EnchantedSword>> ENCHANTED_SWORD = registerEntity("enchanted_sword_monster", EntityType.Builder.of(EnchantedSword::new, MobCategory.MONSTER).sized(0.35F, 1.4F).clientTrackingRange(10));
 
@@ -71,13 +70,12 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<MeleeSkeleton>> BIG_MUSCLE_ANGER_BONES = registerSkeleton("big_muscle_anger_bones", 0.95F, 2.45F, MeleeSkeleton.BehaviorProfile.ANGRY_BONES);
     public static final RegistryObject<EntityType<MeleeSkeleton>> BIG_HELMET_ANGER_BONES = registerSkeleton("big_helmet_anger_bones", 1F, 2.6F, MeleeSkeleton.BehaviorProfile.ANGRY_BONES);
     public static final RegistryObject<EntityType<MeleeSkeleton>> UNDEAD_VIKING = registerSkeleton("undead_viking", 1F, 2.6F);
-    public static final RegistryObject<EntityType<GiantTortoise>> GIANT_TORTOISE = registerEntity("giant_tortoise", EntityType.Builder.of(GiantTortoise::new, MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<GiantTortoise>> GIANT_TORTOISE = registerEntity("giant_tortoise", EntityType.Builder.of(GiantTortoise::new, MobCategory.MONSTER).sized(3F, 2.6F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Unicorn>> UNICORN = registerEntity("unicorn", EntityType.Builder.of(Unicorn::new, MobCategory.MONSTER).sized(1.5F, 1.8F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Gastropod>> GASTROPOD = registerEntity("gastropod", EntityType.Builder.of(Gastropod::new, MobCategory.MONSTER).sized(1.2F, 1.0F).clientTrackingRange(10));
 
     // 发光蘑菇生物群系的蝙蝠类敌怪。
     public static final RegistryObject<EntityType<CaveBat>> SPORE_BAT = registerEntity("spore_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<CaveBat>> GIANT_FLYING_FOX = registerEntity("giant_flying_fox", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.GIANT), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10));
 
     // 简单飞行怪
     public static final RegistryObject<EntityType<Drippler>> DRIPPLER = registerEntity("drippler", EntityType.Builder.of(Drippler::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10));
@@ -88,8 +86,7 @@ public class MonsterEntities {
             "wandering_eye_fish", 1.4F, 1.4F,
             new FlyingFishMonster.PursuitProfile(0.98, 2.2, 0.01, 10));
     public static final RegistryObject<EntityType<VisualNeuron>> VISUAL_NEURON = registerEntity("visual_neuron", EntityType.Builder.of(VisualNeuron::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<PhasingChargeMonster>> BLAZING_WHEEL = registerPhasingCharger("blazing_wheel", 1.1F, 1.1F, 0.65, 0.08);
-    public static final RegistryObject<EntityType<PhasingChargeMonster>> SPIKE_BALL = registerPhasingCharger("spike_ball", 0.9F, 0.9F, 0.55, 0.08);
+    public static final RegistryObject<EntityType<CaveBat>> GIANT_FLYING_FOX = registerEntity("giant_flying_fox", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.GIANT), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10));
 
     // 恶魔
     public static final RegistryObject<EntityType<Demon>> DEMON = registerEntity("demon", EntityType.Builder.of(Demon::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(10));

@@ -2120,7 +2120,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.SWAMP_SLIME_SPAWN_EGG.get(), "Swamp Slime Spawn Egg");
         add(SpawnEggItems.SPIKED_SLIME_SPAWN_EGG.get(), "Spiked Slime Spawn Egg");
         add(SpawnEggItems.GREEN_DUMPLING_SLIME_SPAWN_EGG.get(), "Green Dumpling Slime Spawn Egg");
-        add(SpawnEggItems.ZOMBIE_SPAWN_EGG.get(), "Zombie Spawn Egg");
         add(SpawnEggItems.SQUIRREL_SPAWN_EGG.get(), "Squirrel Spawn Egg");
         add(SpawnEggItems.RED_SQUIRREL_SPAWN_EGG.get(), "Red Squirrel Spawn Egg");
         add(SpawnEggItems.JEWEL_SQUIRREL_SPAWN_EGG.get(), "Jewel Squirrel Spawn Egg");
@@ -2135,7 +2134,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.BLACK_SLIME_SPAWN_EGG.get(), "Black Slime Spawn Egg");
         add(SpawnEggItems.RED_SLIME_SPAWN_EGG.get(), "Red Slime Spawn Egg");
         add(SpawnEggItems.YELLOW_SLIME_SPAWN_EGG.get(), "Yellow Slime Spawn Egg");
-        add(SpawnEggItems.EVIL_SLIME_SPAWN_EGG.get(), "Evil Slime Spawn Egg");
         add(SpawnEggItems.CAVE_BAT_SPAWN_EGG.get(), "Cave Bat Spawn Egg");
         add(SpawnEggItems.GIANT_BAT_SPAWN_EGG.get(), "Giant Bat Spawn Egg");
         add(SpawnEggItems.GIANT_SHELLY_SPAWN_EGG.get(), "Giant Shelly Spawn Egg");
@@ -2161,8 +2159,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.NECROMANCER_SPAWN_EGG.get(), "Necromancer Spawn Egg");
         add(SpawnEggItems.DIABOLIST_SPAWN_EGG.get(), "Diabolist Spawn Egg");
         add(SpawnEggItems.RAGGED_CASTER_SPAWN_EGG.get(), "Ragged Caster Spawn Egg");
-        add(SpawnEggItems.BLAZING_WHEEL_SPAWN_EGG.get(), "Blazing Wheel Spawn Egg");
-        add(SpawnEggItems.SPIKE_BALL_SPAWN_EGG.get(), "Spike Ball Spawn Egg");
         add(SpawnEggItems.DUNGEON_SLIME_SPAWN_EGG.get(), "Dungeon Slime Spawn Egg");
         add(SpawnEggItems.DUNGEON_GUARDIAN_SPAWN_EGG.get(), "Dungeon Guardian Spawn Egg");
         add(SpawnEggItems.FIRE_IMP_SPAWN_EGG.get(), "Fire Imp Spawn Egg");

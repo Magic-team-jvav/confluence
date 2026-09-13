@@ -124,7 +124,6 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 MonsterEntities.CORRUPT_SLIME.get(),
                 MonsterEntities.DESERT_SLIME.get(),
                 MonsterEntities.JUNGLE_SLIME.get(),
-                MonsterEntities.EVIL_SLIME.get(),
                 MonsterEntities.ICE_SLIME.get(),
                 MonsterEntities.LAVA_SLIME.get(),
                 MonsterEntities.LUMINOUS_SLIME.get(),

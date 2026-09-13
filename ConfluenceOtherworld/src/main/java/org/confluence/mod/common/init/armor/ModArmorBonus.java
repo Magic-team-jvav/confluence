@@ -134,7 +134,7 @@ public final class ModArmorBonus {
         });
         register("ninja_set", 1, NINJA_HELMET, NINJA_CHESTPLATE, NINJA_LEGGINGS, NINJA_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-            // todo 移动时身后有拖影效果
+            // 移动拖影：AfterimageHelper
         });
         register("guards_set", 1, GUARDS_HELMET, GUARDS_CHESTPLATE, GUARDS_LEGGINGS, GUARDS_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.1F);

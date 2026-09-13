@@ -379,6 +379,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         Vec3 normal = Vec3.atLowerCornerOf(blockHit.getDirection().getNormal());
         setPos(blockHit.getLocation().add(normal.scale(0.1)));
 
+        // 通知策略：撞到方块（仅服务端，石巨人之拳据此产生冲击波）
+        if (!level().isClientSide()) {
+            attackStrategy.onHitBlock(this, player, component);
+        }
+
         // 投射型连枷（链刃、铁链血滴子等）：撞墙即刻变成 RETRACT，不做反弹、不进入 STAY。
         if (launchMode) {
             if (!level().isClientSide()) {
@@ -502,6 +507,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         // 通知策略：命中实体
         if (firstHit != null) {
             attackStrategy.onHitEntity(this, player, component, firstHit);
+        }
+
+        // 命中实体后立即收回（石巨人之拳、致胜炮；链刃、铁链血滴子等可穿透多个敌怪）
+        if (component.retractOnHitEntity && phase == PHASE_THROWN) {
+            forceRetract();
         }
 
         float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);

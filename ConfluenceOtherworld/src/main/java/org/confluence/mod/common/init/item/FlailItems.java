@@ -6,7 +6,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
-import org.confluence.mod.common.item.flail.ChainGuillotinesItem;
 import org.confluence.mod.common.item.flail.FlailStrategy;
 import org.confluence.mod.common.item.flail.FlaironItem;
 
@@ -79,7 +78,16 @@ public class FlailItems {
 
         /** 铁链血滴子 — 自动挥舞，连续射出连在链条上的刀刃，最大射程 32 图格 */
         public static final DeferredItem<BaseFlailItem> CHAIN_GUILLOTINES = ITEMS.register("chain_guillotines", () ->
-                new ChainGuillotinesItem(FlailComponent.CHAIN_GUILLOTINES, ModRarity.PINK));
+                new BaseFlailItem(FlailComponent.CHAIN_GUILLOTINES, ModRarity.PINK));
+
+        /** 石巨人之拳 — 自动挥舞，延伸超过 9.375 图格命中时产生冲击波，最大射程 31.25 图格 */
+        public static final DeferredItem<BaseFlailItem> GOLEM_FIST = ITEMS.register("golem_fist", () ->
+                new BaseFlailItem(FlailComponent.GOLEM_FIST, ModRarity.LIME,
+                        FlailStrategy.GolemFistAttackStrategy::new));
+
+        /** 致胜炮 — 自动开火且无冷却，手套回收后立即再次发射（最大射程 17 图格） */
+        public static final DeferredItem<BaseFlailItem> KO_CANNON = ITEMS.register("ko_cannon", () ->
+                new BaseFlailItem(FlailComponent.KO_CANNON, ModRarity.LIGHT_RED));
 
         /** 锚 */
         public static final DeferredItem<BaseFlailItem> ANCHOR = ITEMS.register("anchor", () ->

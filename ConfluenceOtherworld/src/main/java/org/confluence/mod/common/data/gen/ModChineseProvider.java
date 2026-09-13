@@ -3265,6 +3265,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FlailItems.Flairon.get(), "猪鲨链球");
         add(FlailItems.CHAIN_KNIFE.get(), "链刃");
         add(FlailItems.CHAIN_GUILLOTINES.get(), "铁链血滴子");
+        add(FlailItems.GOLEM_FIST.get(), "石巨人之拳");
+        add(FlailItems.KO_CANNON.get(), "致胜炮");
         add(FlailItems.ANCHOR.get(), "锚");
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");

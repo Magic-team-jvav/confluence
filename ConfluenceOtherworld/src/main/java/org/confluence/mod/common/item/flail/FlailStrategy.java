@@ -17,6 +17,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 import org.confluence.mod.common.entity.projectile.Flail.DripplerCripplerProjectile;
@@ -26,6 +27,7 @@ import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.network.s2c.GuardianFlailBeamPacketS2C;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -64,6 +66,10 @@ public interface FlailStrategy {
     // 连枷碰撞命中实体时调用（在伤害计算之后）。
     default void onHitEntity(@NotNull BaseFlailEntity flail, @NotNull Player player,
                              @NotNull FlailComponent component, @NotNull LivingEntity target) {}
+
+    // 连枷撞到方块时调用（仅服务端；发射模式下紧接着就会进入 RETRACT）。
+    default void onHitBlock(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                            @NotNull FlailComponent component) {}
 
     // 连枷被丢弃/移除时调用。
     default void onDiscard(@NotNull BaseFlailEntity flail, @NotNull Player player, @NotNull FlailComponent component) {}
@@ -458,6 +464,62 @@ public interface FlailStrategy {
                         new BlockParticleOption(ParticleTypes.BLOCK, net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState()),
                         flail.getX(), flail.getY() + 0.5, flail.getZ(),
                         60, 4, 0.5, 4, 0.2);
+            }
+        }
+    }
+
+    /**
+     * <h1>石巨人之拳攻击策略</h1>
+     * 拳头延伸超过 9.375 图格后命中敌怪或方块时，以射弹为中心产生 12.5×12.5 图格的冲击波，
+     * 对范围内敌怪造成 100% 武器伤害与击退（可穿透方块）。
+     */
+    final class GolemFistAttackStrategy implements FlailStrategy {
+        /** 触发冲击波所需的最小延伸距离（图格） */
+        private static final double MIN_EXTENSION = 9.375;
+        /** 冲击波范围边长（图格） */
+        private static final double WAVE_SIZE = 12.5;
+
+        @Override
+        public void onHitEntity(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                                @NotNull FlailComponent component, @NotNull LivingEntity target) {
+            trigger(flail, player, component, target);
+        }
+
+        @Override
+        public void onHitBlock(@NotNull BaseFlailEntity flail, @NotNull Player player,
+                               @NotNull FlailComponent component) {
+            trigger(flail, player, component, null);
+        }
+
+        /**
+         * @param exclude 直接被拳头击中的敌怪，不重复受冲击波伤害；撞方块时传 {@code null}
+         */
+        private void trigger(BaseFlailEntity flail, Player player, FlailComponent component,
+                             @Nullable LivingEntity exclude) {
+            Level level = flail.level();
+            if (level.isClientSide()) return;
+            // 延伸不足 9.375 图格（例如贴墙挥拳）不产生冲击波
+            if (flail.position().distanceTo(player.position()) <= MIN_EXTENSION) return;
+
+            float damage = Math.max(1.0F, (float) player.getAttributeValue(LibAttributes.getAttackDamage()));
+            DamageSource source = ModDamageTypes.of(level, ModDamageTypes.SWORD_PROJECTILE, flail, player);
+
+            double inflate = Math.max(0.5, (WAVE_SIZE - flail.getBbWidth()) * 0.5);
+            AABB area = flail.getBoundingBox().inflate(inflate);
+            List<LivingEntity> targets = level.getEntitiesOfClass(LivingEntity.class, area,
+                    e -> e != player && e != exclude && e.isAlive() && LibUtils.canHitEntity(flail, e));
+            for (LivingEntity target : targets) {
+                if (target.hurt(source, damage)) {
+                    VectorUtils.knockBackA2B(flail, target, component.knockback, 0.15f);
+                }
+            }
+
+            level.playSound(null, flail.getX(), flail.getY(), flail.getZ(),
+                    SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0F, 1.25F);
+            if (level instanceof ServerLevel serverLevel) {
+                serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER,//TODO 使用专门的冲击波粒子
+                        flail.getX(), flail.getY() + 0.25, flail.getZ(),
+                        1, 0.0, 0.0, 0.0, 0.0);
             }
         }
     }

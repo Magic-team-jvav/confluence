@@ -43,8 +43,14 @@
         public final boolean thrownGravity;
         /** 发射/投掷模式下的伤害倍率（基于 damageFactor），默认 1.0 即不变 */
         public final float launchDamageRatio;
-        /** 自动挥舞的基础攻击间隔（tick），仅自动挥舞类连枷使用，受近战速度属性影响 */
+        /** 自动挥舞的基础攻击间隔（tick），仅自动挥舞类连枷使用，受近战速度属性影响；≤≤0 表示无冷却 */
         public final int autoSwingInterval;
+        /** 是否自动挥舞（按住攻击键持续攻击） */
+        public final boolean autoSwing;
+        /** 自动挥舞时同时存在的射弹上限，≤0 表示不限制（仅用挥舞冷却限流） */
+        public final int autoSwingMaxActive;
+        /** 命中实体后是否立即收回，false 表示可穿透多个敌怪 */
+        public final boolean retractOnHitEntity;
 
         private FlailComponent(Builder b) {
                 this.damageFactor = b.damageFactor;
@@ -66,6 +72,9 @@
                 this.thrownGravity = b.thrownGravity;
                 this.launchDamageRatio = b.launchDamageRatio > 0 ? b.launchDamageRatio : 1.0f;
                 this.autoSwingInterval = b.autoSwingInterval;
+                this.autoSwing = b.autoSwing;
+                this.autoSwingMaxActive = b.autoSwingMaxActive;
+                this.retractOnHitEntity = b.retractOnHitEntity;
         }
 
         // ── 预定义连枷 ──
@@ -309,10 +318,60 @@
                 .maxDistance(32)
                 .retractSpeed(2.6f)
                 .autoSwingInterval(13)
+                .autoSwing()
                 .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
                 .projType(ModEntities.FLAIL_ENTITY.getId())
                 .texture(Confluence.asResource("textures/entity/flail/chain_guillotines.png"))
                 .model(Confluence.asResource("geo/entity/flail/chain_guillotines.geo.json"))
+                .launchMode()
+                .build();
+
+        /**
+         * 石巨人之拳 — 自动挥舞的投射型连枷。
+         * <p>
+         * 扔出巨大的拳头，撞击敌怪/方块后或离开玩家超过 31.25 图格后收回；
+         * 延伸超过 9.375 图格并命中时产生冲击波（见 {@code FlailStrategy.GolemFistAttackStrategy}）。
+         */
+        public static final FlailComponent GOLEM_FIST = new Builder()
+                .damageFactor(45)
+                .knockback(1.0f)
+                .spinSpeed(2.5f)
+                .throwSpeed(1.75f)
+                .maxDistance(31.25f)
+                .retractSpeed(2.5f)
+                .autoSwingInterval(8)
+                .autoSwing()
+                .autoSwingMaxActive(1)
+                .retractOnHitEntity()
+                .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+                .projType(ModEntities.FLAIL_ENTITY.getId())
+                .texture(Confluence.asResource("textures/entity/flail/golem_fist.png"))
+                .model(Confluence.asResource("geo/entity/flail/golem_fist.geo.json"))
+                .launchMode()
+                .build();
+
+        /**
+         * 致胜炮 — 自动开火的投射型连枷，射出连在短而粗的链条上的拳击手套。
+         * <p>
+         * {@link #autoSwingInterval} 为 0：没有冷却，击中目标或行进 17 图格后收回，
+         * 手套回入武器后立刻可再次发射，因此射速只取决于撞击距离（近距离显著变快）。
+         */
+        public static final FlailComponent KO_CANNON = new Builder()
+                .damageFactor(20)
+                .knockback(0.45f)
+                .spinSpeed(2.0f)
+                .throwSpeed(0.95f)
+                .maxDistance(17)
+                .retractSpeed(2.5f)
+                .autoSwingInterval(0)
+                .autoSwing()
+                .autoSwingMaxActive(1)
+                .retractOnHitEntity()
+                .chainWidth(2.0f)
+                .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+                .projType(ModEntities.FLAIL_ENTITY.getId())
+                .texture(Confluence.asResource("textures/entity/flail/ko_cannon.png"))
+                .model(Confluence.asResource("geo/entity/flail/ko_cannon.geo.json"))
                 .launchMode()
                 .build();
 
@@ -358,8 +417,11 @@
          * 物品自身的攻速修饰器会把 {@link Attributes#ATTACK_SPEED} 置为 {@link #spinSpeed}，
          * 因此以 spinSpeed 为基准把当前攻速换算为倍率：无额外修饰时倍率为 1，
          * 返回 {@link #autoSwingInterval}；有攻速加成时间隔按比例缩短。
+         *
+         * @return 攻击间隔（tick）；{@code 0} 表示无冷却，射速由射弹回收时机决定（如致胜炮）
          */
         public int getAutoSwingInterval(LivingEntity living) {
+                if (autoSwingInterval <= 0) return 0;
                 float base = Math.max(0.05f, spinSpeed);
                 AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
                 float multiplier = instance == null ? 1.0f : (float) instance.getValue() / base;
@@ -383,6 +445,10 @@
                 boolean thrownGravity = false;
                 float launchDamageRatio = 1.0f;
                 int autoSwingInterval = 13;
+                boolean autoSwing = false;
+                int autoSwingMaxActive = 0;
+                boolean retractOnHitEntity = false;
+                float chainWidth = 1.0f;
                 ResourceLocation soundEvent;
                 ResourceLocation projType;
                 ResourceLocation ballTexture;
@@ -408,6 +474,10 @@
                 public Builder thrownGravity() { this.thrownGravity = true; return this; }
                 public Builder launchDamageRatio(float v) { this.launchDamageRatio = v; return this; }
                 public Builder autoSwingInterval(int v) { this.autoSwingInterval = v; return this; }
+                public Builder autoSwing() { this.autoSwing = true; return this; }
+                public Builder autoSwingMaxActive(int v) { this.autoSwingMaxActive = v; return this; }
+                public Builder retractOnHitEntity() { this.retractOnHitEntity = true; return this; }
+                public Builder chainWidth(float v) { this.chainWidth = v; return this; }
 
                 public FlailComponent build() {
                 return new FlailComponent(this);

@@ -219,8 +219,8 @@ public final class GameClientEvents {
                 if (isFlail) {
                     BaseFlailItem flailItem = (BaseFlailItem) mainHandItem.getItem();
                     if (flailItem.isAutoSwing()) {
-                        // 自动挥舞：按住攻击键时每 tick 请求一次，服务端按挥舞冷却限流
-                        if (keyHeld && !player.getCooldowns().isOnCooldown(flailItem)) {
+                        // 自动挥舞：按住攻击键时每 tick 请求一次，服务端按冷却/射弹上限限流
+                        if (keyHeld && flailItem.canAutoSwing(player)) {
                             FlailControlPacketC2S.sendHold();
                         }
                     } else if (keyHeld && !wasFlailKeyHeld) {

@@ -146,29 +146,52 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
     }
 
     /**
-     * 是否为自动挥舞类连枷：按住攻击键时由客户端持续发送攻击请求，服务端按
-     * {@link FlailComponent#getAutoSwingInterval} 限流。
-     * <p>默认 {@code false}，投射型连枷（如铁链血滴子）可覆盖为 {@code true}。
+     * 是否为自动挥舞类连枷：按住攻击键时由客户端持续发送攻击请求。
+     * <p>由 {@link FlailComponent#autoSwing} 驱动（铁链血滴子、石巨人之拳、致胜炮）。
      */
     public boolean isAutoSwing() {
-        return false;
+        return getComponent().autoSwing;
     }
 
     /**
-     * 自动挥舞的一次攻击：不处于冷却时射出一枚新的连枷实体，并重新进入冷却。
+     * 当前是否可以发起一次自动挥舞：不在冷却中，且未达到同时存在的射弹上限。
+     * <p>客户端与服务端使用同一判定，客户端据此减少无效请求。
+     */
+    public boolean canAutoSwing(Player player) {
+        if (player.getCooldowns().isOnCooldown(this)) return false;
+        FlailComponent comp = getComponent();
+        return comp.autoSwingMaxActive <= 0 || countActiveFlails(player, comp) < comp.autoSwingMaxActive;
+    }
+
+    /**
+     * 统计该玩家当前由本武器生成的活跃连枷数量。
+     */
+    protected int countActiveFlails(Player player, FlailComponent comp) {
+        return player.level().getEntitiesOfClass(BaseFlailEntity.class,
+                player.getBoundingBox().inflate(comp.maxDistance + 2),
+                e -> e.getOwner() == player && e.getComponent() == comp
+        ).size();
+    }
+
+    /**
+     * 自动挥舞的一次攻击：冷却结束且未达到同时存在上限时射出一枚新的连枷实体。
      * <p>与 {@link #useFlail} 不同，此方法不复用已有的连枷实体，因此多枚射弹可以同时存在。
+     * 组件 {@link FlailComponent#autoSwingInterval} 为 0 时不施加冷却，射速完全由射弹回收时机决定。
      *
      * @return 是否成功发射
      */
     public boolean tryAutoSwing(ServerPlayer player, ItemStack stack) {
         FlailComponent comp = getComponent();
-        if (player.getCooldowns().isOnCooldown(this)) return false;
+        if (!canAutoSwing(player)) return false;
 
         if (spawnFlail(player.level(), player, stack, comp, comp.launchMode || isProjectileMode(stack)) == null) {
             return false;
         }
 
-        player.getCooldowns().addCooldown(this, comp.getAutoSwingInterval(player));
+        int interval = comp.getAutoSwingInterval(player);
+        if (interval > 0) {
+            player.getCooldowns().addCooldown(this, interval);
+        }
         player.swing(InteractionHand.MAIN_HAND, true);
         return true;
     }

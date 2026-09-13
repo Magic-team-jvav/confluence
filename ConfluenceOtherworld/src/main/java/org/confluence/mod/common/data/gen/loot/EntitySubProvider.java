@@ -1000,7 +1000,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         // 爬藤怪法杖
                         // 飞镖步枪
-                        // 铁链血滴子
+                        .add(LootItem.lootTableItem(FlailItems.CHAIN_GUILLOTINES))
                         .add(LootItem.lootTableItem(HookItems.WORM_HOOK))
                         .add(LootItem.lootTableItem(TCItems.PUTRID_SCENT))
                 )

@@ -79,7 +79,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      */
     private int previousPhase = -1;
     /**
-     * 发射模式：为 {@code true} 时跳过 SPIN/STAY，仅走 THROWN→RETRACT 简化流程。
+     * 发射模式：为 {@code true} 时跳过 SPIN/STAY，仅走 THROWN→RETRACT 简化流程，
+     * 撞到方块或超出最大射程时立即进入 RETRACT（链刃、铁链血滴子、锚）。
      */
     private boolean launchMode = false;
     /**
@@ -378,6 +379,15 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         Vec3 normal = Vec3.atLowerCornerOf(blockHit.getDirection().getNormal());
         setPos(blockHit.getLocation().add(normal.scale(0.1)));
 
+        // 投射型连枷（链刃、铁链血滴子等）：撞墙即刻变成 RETRACT，不做反弹、不进入 STAY。
+        if (launchMode) {
+            if (!level().isClientSide()) {
+                attackStrategy.onThrownToRetract(this, player, component);
+            }
+            setPhase(PHASE_RETRACT);
+            return;
+        }
+
         // 反射速度：仅当朝向墙面时反弹，防浅角度卡墙
         double dot = motion.dot(normal);
         if (dot < 0) {
@@ -395,14 +405,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
 
         if (!level().isClientSide()) {
             bounceCount++;
-            if (launchMode) {
-                // 发射模式：撞墙直接飞回，跳过 STAY
-                attackStrategy.onThrownToRetract(this, player, component);
-                setPhase(PHASE_RETRACT);
-            } else {
-                setPhase(PHASE_STAY);
-                stayDuration = 0;
-            }
+            setPhase(PHASE_STAY);
+            stayDuration = 0;
         }
     }
 

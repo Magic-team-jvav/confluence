@@ -213,10 +213,17 @@ public final class GameClientEvents {
                 SwordProjectilePacketC2S.sendToServer();
             }
             { // 连枷按键检测
-                boolean isFlail = player.getMainHandItem().getItem() instanceof BaseFlailItem;
+                ItemStack mainHandItem = player.getMainHandItem();
+                boolean isFlail = mainHandItem.getItem() instanceof BaseFlailItem;
                 boolean keyHeld = minecraft.options.keyAttack.isDown();
                 if (isFlail) {
-                    if (keyHeld && !wasFlailKeyHeld) {
+                    BaseFlailItem flailItem = (BaseFlailItem) mainHandItem.getItem();
+                    if (flailItem.isAutoSwing()) {
+                        // 自动挥舞：按住攻击键时每 tick 请求一次，服务端按挥舞冷却限流
+                        if (keyHeld && !player.getCooldowns().isOnCooldown(flailItem)) {
+                            FlailControlPacketC2S.sendHold();
+                        }
+                    } else if (keyHeld && !wasFlailKeyHeld) {
                         FlailControlPacketC2S.sendHold();
                     } else if (!keyHeld && wasFlailKeyHeld) {
                         FlailControlPacketC2S.sendRelease();

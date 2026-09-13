@@ -43,6 +43,8 @@
         public final boolean thrownGravity;
         /** 发射/投掷模式下的伤害倍率（基于 damageFactor），默认 1.0 即不变 */
         public final float launchDamageRatio;
+        /** 自动挥舞的基础攻击间隔（tick），仅自动挥舞类连枷使用，受近战速度属性影响 */
+        public final int autoSwingInterval;
 
         private FlailComponent(Builder b) {
                 this.damageFactor = b.damageFactor;
@@ -63,6 +65,7 @@
                 this.launchMode = b.launchMode;
                 this.thrownGravity = b.thrownGravity;
                 this.launchDamageRatio = b.launchDamageRatio > 0 ? b.launchDamageRatio : 1.0f;
+                this.autoSwingInterval = b.autoSwingInterval;
         }
 
         // ── 预定义连枷 ──
@@ -290,6 +293,29 @@
                 .launchMode()
                 .build();
 
+        /**
+         * 铁链血滴子 — 自动挥舞的投射型连枷，最大射程 32 图格。
+         * <p>
+         * 以基础挥舞间隔 S = {@link #autoSwingInterval}（13 tick）为例：
+         * 飞出耗时 F = maxDistance / throwSpeed ≈ 25 tick ≈ 2S，
+         * 收回耗时 R = maxDistance / retractSpeed ≈ 12 tick ≈ S，且 F + R ≈ 37 &lt; 3S，
+         * 因此向前的 THROWN 至多 2 枚、向后的 RETRACT 至多 1 枚，
+         * 极限时同时存在 2 枚 THROWN + 1 枚 RETRACT。
+         */
+        public static final FlailComponent CHAIN_GUILLOTINES = new Builder()
+                .damageFactor(30)
+                .spinSpeed(1.5f)
+                .throwSpeed(1.3f)
+                .maxDistance(32)
+                .retractSpeed(2.6f)
+                .autoSwingInterval(13)
+                .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
+                .projType(ModEntities.FLAIL_ENTITY.getId())
+                .texture(Confluence.asResource("textures/entity/flail/chain_guillotines.png"))
+                .model(Confluence.asResource("geo/entity/flail/chain_guillotines.geo.json"))
+                .launchMode()
+                .build();
+
         /** 锚 — 投射型，受重力（飞行+收回） */
         public static final FlailComponent ANCHOR = new Builder()
                 .damageFactor(35)
@@ -326,6 +352,20 @@
                 return spinSpeed;
         }
 
+        /**
+         * 获取自动挥舞的攻击间隔（tick），数值越小射得越快。
+         * <p>
+         * 物品自身的攻速修饰器会把 {@link Attributes#ATTACK_SPEED} 置为 {@link #spinSpeed}，
+         * 因此以 spinSpeed 为基准把当前攻速换算为倍率：无额外修饰时倍率为 1，
+         * 返回 {@link #autoSwingInterval}；有攻速加成时间隔按比例缩短。
+         */
+        public int getAutoSwingInterval(LivingEntity living) {
+                float base = Math.max(0.05f, spinSpeed);
+                AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
+                float multiplier = instance == null ? 1.0f : (float) instance.getValue() / base;
+                return Math.max(2, Math.round(autoSwingInterval / Math.max(0.05f, multiplier)));
+        }
+
         // ── Builder ──
 
         public static class Builder {
@@ -342,6 +382,7 @@
                 boolean launchMode = false;
                 boolean thrownGravity = false;
                 float launchDamageRatio = 1.0f;
+                int autoSwingInterval = 13;
                 ResourceLocation soundEvent;
                 ResourceLocation projType;
                 ResourceLocation ballTexture;
@@ -366,6 +407,7 @@
                 public Builder launchMode() { this.launchMode = true; return this; }
                 public Builder thrownGravity() { this.thrownGravity = true; return this; }
                 public Builder launchDamageRatio(float v) { this.launchDamageRatio = v; return this; }
+                public Builder autoSwingInterval(int v) { this.autoSwingInterval = v; return this; }
 
                 public FlailComponent build() {
                 return new FlailComponent(this);

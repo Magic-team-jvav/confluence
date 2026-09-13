@@ -180,6 +180,10 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         return getEquipment(HOOK_INDEX, dye);
     }
 
+    public ItemStack getMount(boolean dye) {
+        return getEquipment(MOUNT_INDEX, dye);
+    }
+
     public void setEquipment(int index, ItemStack stack, boolean dye) {
         validateIndex(index, SIZE_EQUIPMENT);
         if (dye) equipment.set(index, equipment.get(index).setDye(stack));

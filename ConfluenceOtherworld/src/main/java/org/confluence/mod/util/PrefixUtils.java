@@ -455,7 +455,7 @@ public final class PrefixUtils {
         if (TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }
-// todo trade       ITradeHolder holder = ((IPlayer) player).terra_entity$getTradeHolder();
+// todo trade       ITradeHolder holder = ((IPlayer) player).confluence$getTradeHolder();
 //        float priceAdjustment = 1.0F;
 //        if (holder != null && holder.getMood() != null) {
 //            priceAdjustment = 100.0F / holder.getMood().getValue();

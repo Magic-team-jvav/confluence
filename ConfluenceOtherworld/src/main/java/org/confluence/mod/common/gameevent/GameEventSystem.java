@@ -172,24 +172,9 @@ public enum GameEventSystem implements IGlobalData {
         return "confluence:game_event_system";
     }
 
-    /// 清除事件单例中属于上一张世界的运行状态。
-    ///
-    /// 事件系统会跨世界复用同一批枚举单例。服务器关闭时会先调用
-    /// {@link #close(MinecraftServer)} 释放世界和实体引用，再在这里把“正在进行”
-    /// 这类进程状态复位；存档读写负责恢复真正需要保存的进度。
-    @Override
-    public void clear() {
-        for (GameEvent event : events.values()) {
-            event.decode(new CompoundTag());
-        }
-        this.startedEventAmount = 0;
-        this.startedNonEnvEventAmount = 0;
-    }
-
     public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new IdentityHashMap<>(), map -> {
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
-        map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
         // todo 海盗，火星
     });
 
@@ -207,8 +192,7 @@ public enum GameEventSystem implements IGlobalData {
     }
 
     public static boolean shouldDenyNatureSpawn() {
-        // 日食和四柱还没有对应事件实例，补齐后也需要一并阻止自然刷怪。
-        return anyInvasionStarted();
+        return anyInvasionStarted(); // todo 日食，四柱
     }
 
     public static void removeUnTracked(Set<Entity> spawned, ServerLevel level) {

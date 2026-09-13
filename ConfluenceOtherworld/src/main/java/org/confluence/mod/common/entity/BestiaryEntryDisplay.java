@@ -14,9 +14,7 @@ public class BestiaryEntryDisplay extends LivingEntity {
 
     public BestiaryEntryDisplay(EntityType<BestiaryEntryDisplay> entityType, Level level) {
         super(entityType, level);
-        if (!level.isClientSide) {
-            throw new IllegalStateException("Bestiary display entities are client-only");
-        }
+        if (!level.isClientSide) throw new IllegalArgumentException();
     }
 
     @Override
@@ -41,17 +39,12 @@ public class BestiaryEntryDisplay extends LivingEntity {
 
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
-        // 该实体只是图鉴界面的客户端渲染外壳，不从世界存档恢复。
+        getDelegate().readAdditionalSaveData(compound);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
-        // 委托实体可能包含真实生物的玩法状态，绝不能写入展示外壳。
-    }
-
-    @Override
-    public boolean shouldBeSaved() {
-        return false;
+        getDelegate().addAdditionalSaveData(compound);
     }
 
     public void setDelegate(String key, LivingEntity delegate) {
@@ -60,9 +53,6 @@ public class BestiaryEntryDisplay extends LivingEntity {
     }
 
     public LivingEntity getDelegate() {
-        if (delegate == null) {
-            throw new IllegalStateException("Bestiary display delegate has not been initialized");
-        }
         return delegate;
     }
 

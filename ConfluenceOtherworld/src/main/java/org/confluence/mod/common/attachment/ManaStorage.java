@@ -18,14 +18,13 @@ import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.wrapper.IPortNBTSerializable;
 
 public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
-    private static final int MIN_STARS = 1;
-    private static final int MAX_STARS = 10;
     private int stars;
     private int additionalMana;
     private float currentMana;
     private transient int regenerateDelay;
     private transient int maxMana;
     private boolean fastManaRegeneration;
+
     private boolean arcaneCrystalUsed;
 
     public ManaStorage() {
@@ -35,6 +34,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
         this.regenerateDelay = 0;
         this.maxMana = -1;
         this.fastManaRegeneration = false;
+
         this.arcaneCrystalUsed = false;
     }
 
@@ -51,21 +51,11 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        if (nbt.contains("stars")) {
-            this.stars = Mth.clamp(nbt.getInt("stars"), MIN_STARS, MAX_STARS);
-        }
-        if (nbt.contains("additionalMana")) {
-            int maximumAdditionalMana = Integer.MAX_VALUE - this.stars * 20;
-            this.additionalMana = Mth.clamp(nbt.getInt("additionalMana"), 0, maximumAdditionalMana);
-        }
-        if (nbt.contains("currentMana")) {
-            float savedMana = nbt.getFloat("currentMana");
-            this.currentMana = Float.isFinite(savedMana) ? Math.max(0.0F, savedMana) : 0.0F;
-        }
+        this.stars = nbt.getInt("stars");
+        this.additionalMana = nbt.getInt("additionalMana");
+        this.currentMana = nbt.getInt("currentMana");
         this.fastManaRegeneration = nbt.getBoolean("fastManaRegeneration");
         this.arcaneCrystalUsed = nbt.getBoolean("arcaneCrystalUsed");
-        this.maxMana = -1;
-        freshMaxMana();
     }
 
     public boolean receiveMana(FloatSupplier sup) {
@@ -147,7 +137,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
     }
 
     public boolean isStarMaximum() {
-        return stars >= MAX_STARS;
+        return stars >= 10;
     }
 
     public void flushAbility(ServerPlayer player) {
@@ -168,7 +158,7 @@ public class ManaStorage implements IPortNBTSerializable<CompoundTag> {
 
     public boolean setArcaneCrystalUsed() {
         if (arcaneCrystalUsed) return false;
-        arcaneCrystalUsed = true;
+        this.arcaneCrystalUsed = true;
         return true;
     }
 

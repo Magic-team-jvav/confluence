@@ -15,7 +15,7 @@ import org.confluence.mod.common.entity.npc.ai.NPCHealGoal;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PlayerMoneyTransaction;
+import org.confluence.mod.util.PlayerUtils;
 
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class NurseNPC extends BaseNPC {
         } else if (killBoard.isDefeated(BossEntities.EYE_OF_CTHULHU.get())) {
             cost *= 3L;
         }
-        if (!PlayerMoneyTransaction.debit(player, cost, true)) return;
+        if (!PlayerUtils.debit(player, cost, true)) return;
 
         player.setHealth(player.getMaxHealth());
         for (MobEffectInstance effect : List.copyOf(player.getActiveEffects())) {

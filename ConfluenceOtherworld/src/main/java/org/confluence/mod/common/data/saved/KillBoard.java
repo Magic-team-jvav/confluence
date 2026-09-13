@@ -10,10 +10,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.common.gameevent.GameEvent;
@@ -88,7 +88,7 @@ public enum KillBoard implements IGlobalData {
     }
 
     public void defeat(EntityType<?> entityType) {
-        defeat(net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer(), entityType);
+        defeat(ServerLifecycleHooks.getCurrentServer(), entityType);
     }
 
     public void defeat(MinecraftServer server, EntityType<?> entityType) {
@@ -97,28 +97,12 @@ public enum KillBoard implements IGlobalData {
             LanternNightGameEvent.INSTANCE.schedule();
         }
         if (entityType == BossEntities.SKELETRON.get()) {
-            advanceGamePhase(server, GamePhase.AFTER_SKELETRON);
+            setGamePhase(server, GamePhase.AFTER_SKELETRON);
         } else if (entityType == BossEntities.WALL_OF_FLESH.get() || entityType == BossEntities.HILL_OF_FLESH.get()) {
-            advanceGamePhase(server, GamePhase.WALL_OF_FLESH);
-        } else if (isMechanicalBoss(entityType) && areAllMechanicalBossesDefeated()) {
-            advanceGamePhase(server, GamePhase.MECHANICAL_BOSSES);
-        } else if (entityType == BossEntities.PLANTERA.get()) {
-            advanceGamePhase(server, GamePhase.PLANTERA);
+            setGamePhase(server, GamePhase.WALL_OF_FLESH);
         } else {
             KillBoardSyncPacketS2C.sendToAll();
         }
-    }
-
-    private static boolean isMechanicalBoss(EntityType<?> entityType) {
-        return entityType == BossEntities.THE_DESTROYER.get()
-                || entityType == BossEntities.THE_TWINS.get()
-                || entityType == BossEntities.SKELETRON_PRIME.get();
-    }
-
-    private boolean areAllMechanicalBossesDefeated() {
-        return isDefeated(BossEntities.THE_DESTROYER.get())
-                && isDefeated(BossEntities.THE_TWINS.get())
-                && isDefeated(BossEntities.SKELETRON_PRIME.get());
     }
 
     public void defeat(ResourceKey<? extends GameEvent> key) {
@@ -147,14 +131,6 @@ public enum KillBoard implements IGlobalData {
         }
     }
 
-    public void advanceGamePhase(MinecraftServer server, GamePhase gamePhase) {
-        if (gamePhase.isAboveThan(this.gamePhase)) {
-            setGamePhase(server, gamePhase);
-        } else {
-            KillBoardSyncPacketS2C.sendToAll();
-        }
-    }
-
     public void onUnlockHardmode(MinecraftServer server) {
         IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
         GlobalCloakData.INSTANCE.reveal(OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState());
@@ -163,49 +139,33 @@ public enum KillBoard implements IGlobalData {
         }
     }
 
-    /// 为网络编码创建稳定快照，避免编码过程读取到正在变化的服务端集合。
-    public Object2BooleanMap<EntityType<?>> defeatedBossesSnapshot() {
-        return new Object2BooleanOpenHashMap<>(defeatedBosses);
+    public void networkEncode(PortRegistryFriendlyByteBuf buffer) {
+        DEFEATED_BOSSES_STREAM_CODEC.encode(buffer, defeatedBosses);
+        DEFEATED_EVENTS_STREAM_CODEC.encode(buffer, defeatedEvents);
+        GamePhase.STREAM_CODEC.encode(buffer, gamePhase);
     }
 
-    /// 为网络编码创建稳定的事件进度快照。
-    public Object2BooleanMap<ResourceKey<? extends GameEvent>> defeatedEventsSnapshot() {
-        return new Object2BooleanOpenHashMap<>(defeatedEvents);
-    }
-
-    /// 在客户端主线程一次性应用完整击杀榜状态。
-    public void applyNetworkState(Object2BooleanMap<EntityType<?>> bosses, Object2BooleanMap<ResourceKey<? extends GameEvent>> events, GamePhase phase) {
-        this.defeatedBosses = new Object2BooleanOpenHashMap<>(bosses);
-        this.defeatedEvents = new Object2BooleanOpenHashMap<>(events);
-        this.gamePhase = phase;
+    public void networkDecode(PortRegistryFriendlyByteBuf buffer) {
+        this.defeatedBosses = DEFEATED_BOSSES_STREAM_CODEC.decode(buffer);
+        this.defeatedEvents = DEFEATED_EVENTS_STREAM_CODEC.decode(buffer);
+        this.gamePhase = GamePhase.STREAM_CODEC.decode(buffer);
     }
 
     @Override
     public void decode(CompoundTag tag) {
-        if (tag.isEmpty()) {
-            return;
-        }
-        if (!tag.contains("defeated_bosses") || !tag.contains("defeated_events") || !tag.contains("game_phase", Tag.TAG_INT)) {
-            throw new IllegalArgumentException("Kill-board data is missing a required field or contains an invalid field type");
-        }
-        Object2BooleanMap<EntityType<?>> decodedBosses =
-                PortDataResultExtension.getOrThrow(DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_bosses")), message -> new IllegalArgumentException("Failed to decode defeated bosses: " + message));
-        Object2BooleanMap<ResourceKey<? extends GameEvent>> decodedEvents =
-                PortDataResultExtension.getOrThrow(DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events")), message -> new IllegalArgumentException("Failed to decode defeated events: " + message));
-        int phaseOrder = tag.getInt("game_phase");
-        GamePhase decodedPhase = GamePhase.getByOrder(phaseOrder);
-        if (decodedPhase.getOrder() != phaseOrder) {
-            throw new IllegalArgumentException("Unsupported game phase order: " + phaseOrder);
-        }
-        this.defeatedBosses = new Object2BooleanOpenHashMap<>(decodedBosses);
-        this.defeatedEvents = new Object2BooleanOpenHashMap<>(decodedEvents);
-        this.gamePhase = decodedPhase;
+        PortDataResultExtension.ifSuccess(DEFEATED_BOSSES_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_bosses")),
+                result -> this.defeatedBosses = new Object2BooleanOpenHashMap<>(result));
+        PortDataResultExtension.ifSuccess(DEFEATED_EVENTS_CODEC.parse(NbtOps.INSTANCE, tag.get("defeated_events")),
+                result -> this.defeatedEvents = new Object2BooleanOpenHashMap<>(result));
+        this.gamePhase = GamePhase.getByOrder(tag.getInt("game_phase"));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("defeated_bosses", PortDataResultExtension.getOrThrow(DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses), message -> new IllegalStateException("Failed to encode defeated bosses: " + message)));
-        tag.put("defeated_events", PortDataResultExtension.getOrThrow(DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents), message -> new IllegalStateException("Failed to encode defeated events: " + message)));
+        PortDataResultExtension.ifSuccess(DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses),
+                nbt -> tag.put("defeated_bosses", nbt));
+        PortDataResultExtension.ifSuccess(DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents),
+                nbt -> tag.put("defeated_events", nbt));
         tag.putInt("game_phase", gamePhase.getOrder());
     }
 

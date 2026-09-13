@@ -34,8 +34,6 @@ import java.util.List;
 import static org.confluence.lib.common.item.TooltipItem.getTooltipsFromString;
 
 public class MagicConch extends CustomRarityItem implements ApplySelectionPacketC2S.ISelectable<BlockPos> {
-    private static final String RUNTIME_TAG = "ConfluenceMagicConchRuntime";
-    private static final int RUNTIME_VERSION = 1;
     public List<Component> tooltips = new ArrayList<>();
 
     public MagicConch(Properties properties, ModRarity rarity) {
@@ -123,37 +121,17 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
     }
 
     /// 读取当前版本唯一的海螺位置格式。
-    ///
-    /// 两个坐标必须从零开始连续出现；任一字段类型、版本或坐标损坏都会让整组状态失效，
-    /// 避免损坏的第一个槽位永久占住容量，或被默认解释成世界原点。
+    /// 读取海螺记录的两个坐标（扁平键 pos1/pos2，与 1.21.1 一致）。
     static List<BlockPos> readStoredPositions(ItemStack stack) {
         CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
-        if (itemTag == null || !itemTag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) {
-            return new ArrayList<>();
-        }
-        CompoundTag runtime = itemTag.getCompound(RUNTIME_TAG);
-        if (!runtime.contains("Version", Tag.TAG_INT) || runtime.getInt("Version") != RUNTIME_VERSION || !runtime.contains("Count", Tag.TAG_INT)) {
-            return new ArrayList<>();
-        }
-        int count = runtime.getInt("Count");
-        if (count < 0 || count > 2) return new ArrayList<>();
-        List<BlockPos> positions = new ArrayList<>(count);
-        for (int index = 0; index < count; index++) {
-            String key = "Position" + index;
-            if (!runtime.contains(key, Tag.TAG_COMPOUND)) return new ArrayList<>();
-            CompoundTag positionTag = runtime.getCompound(key);
-            // NbtUtils.readBlockPos 会把缺失或类型错误的坐标分量读成零，必须先逐项验型。
-            if (!positionTag.contains("X", Tag.TAG_INT) || !positionTag.contains("Y", Tag.TAG_INT) || !positionTag.contains("Z", Tag.TAG_INT)) {
-                return new ArrayList<>();
-            }
-            BlockPos position = NbtUtils.readBlockPos(positionTag);
-            if (positions.contains(position)) return new ArrayList<>();
-            positions.add(position);
-        }
+        if (itemTag == null) return new ArrayList<>();
+        List<BlockPos> positions = new ArrayList<>(2);
+        if (itemTag.contains("pos1", Tag.TAG_COMPOUND)) positions.add(NbtUtils.readBlockPos(itemTag.getCompound("pos1")));
+        if (itemTag.contains("pos2", Tag.TAG_COMPOUND)) positions.add(NbtUtils.readBlockPos(itemTag.getCompound("pos2")));
         return positions;
     }
 
-    /// 写入完整快照并清除不再使用的早期扁平键；1.20 不承担旧格式迁移。
+    /// 写入两个坐标；超出两个坐标由调用方保证不会发生。
     static void writeStoredPositions(ItemStack stack, List<BlockPos> positions) {
         if (positions.size() > 2) {
             throw new IllegalArgumentException("Magic conch supports at most two positions");
@@ -161,13 +139,9 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
         LibUtils.updateItemStackNbt(stack, itemTag -> {
             itemTag.remove("pos1");
             itemTag.remove("pos2");
-            CompoundTag runtime = new CompoundTag();
-            runtime.putInt("Version", RUNTIME_VERSION);
-            runtime.putInt("Count", positions.size());
             for (int index = 0; index < positions.size(); index++) {
-                runtime.put("Position" + index, NbtUtils.writeBlockPos(positions.get(index)));
+                itemTag.put("pos" + (index + 1), NbtUtils.writeBlockPos(positions.get(index)));
             }
-            itemTag.put(RUNTIME_TAG, runtime);
         });
     }
 }

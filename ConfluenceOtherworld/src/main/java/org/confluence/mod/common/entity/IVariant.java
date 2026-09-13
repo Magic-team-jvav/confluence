@@ -4,10 +4,11 @@ import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
+import org.confluence.mod.Confluence;
 
 public interface IVariant extends StringRepresentable {
     static ResourceLocation resource(String path) {
-        return ResourceLocation.fromNamespaceAndPath("confluence", path);
+        return Confluence.asResource(path);
     }
 
     Codec<? extends IVariant> codec();

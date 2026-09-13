@@ -28,8 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class VoidCrystalItem extends Item {
-    private static final String RUNTIME_TAG = "ConfluenceVoidCrystalRuntime";
-    private static final int RUNTIME_VERSION = 1;
 
     public VoidCrystalItem() {
         super(new Properties().stacksTo(64));
@@ -120,7 +118,7 @@ public class VoidCrystalItem extends Item {
 
     private boolean handleClear(ItemStack stack, Level level, Player player) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-        if (tag != null && tag.contains(RUNTIME_TAG)) {
+        if (tag != null && tag.contains("FirstPos")) {
             if (!level.isClientSide) {
                 clearMark(stack);
                 player.displayClientMessage(Component.translatable("chat.confluence.crystal_cleared").withStyle(ChatFormatting.YELLOW), true);
@@ -170,32 +168,23 @@ public class VoidCrystalItem extends Item {
         return false;
     }
 
-    /// 只接受位置与面同时存在的当前版本快照，损坏或早期扁平字段不会默认成原点和 DOWN。
+    /// 读取标记（扁平键 FirstPos/FirstFace，与 1.21.1 一致）。
     static @Nullable Mark readMark(ItemStack stack) {
         CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
-        if (itemTag == null || !itemTag.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) return null;
-        CompoundTag runtime = itemTag.getCompound(RUNTIME_TAG);
-        if (!runtime.contains("Version", Tag.TAG_INT) || runtime.getInt("Version") != RUNTIME_VERSION || !runtime.contains("Position", Tag.TAG_LONG) || !runtime.contains("Face", Tag.TAG_INT)) {
-            return null;
-        }
-        int faceId = runtime.getInt("Face");
+        if (itemTag == null || !itemTag.contains("FirstPos", Tag.TAG_LONG) || !itemTag.contains("FirstFace", Tag.TAG_INT)) return null;
+        int faceId = itemTag.getInt("FirstFace");
         if (faceId < 0 || faceId >= Direction.values().length) return null;
-        return new Mark(BlockPos.of(runtime.getLong("Position")), Direction.from3DDataValue(faceId));
+        return new Mark(BlockPos.of(itemTag.getLong("FirstPos")), Direction.from3DDataValue(faceId));
     }
 
-    /// 写入当前格式完整快照并删除旧扁平键；异常文本由调用边界保持英文。
+    /// 写入标记；异常文本由调用边界保持英文。
     static void writeMark(ItemStack stack, Mark mark) {
         if (mark == null) {
             throw new IllegalArgumentException("Void crystal mark cannot be null");
         }
         LibUtils.updateItemStackNbt(stack, itemTag -> {
-            itemTag.remove("FirstPos");
-            itemTag.remove("FirstFace");
-            CompoundTag runtime = new CompoundTag();
-            runtime.putInt("Version", RUNTIME_VERSION);
-            runtime.putLong("Position", mark.position().asLong());
-            runtime.putInt("Face", mark.face().get3DDataValue());
-            itemTag.put(RUNTIME_TAG, runtime);
+            itemTag.putLong("FirstPos", mark.position().asLong());
+            itemTag.putInt("FirstFace", mark.face().get3DDataValue());
         });
     }
 
@@ -204,7 +193,6 @@ public class VoidCrystalItem extends Item {
         CompoundTag itemTag = LibUtils.getItemStackNbtIfPresent(stack);
         if (itemTag == null) return;
         CompoundTag updated = itemTag.copy();
-        updated.remove(RUNTIME_TAG);
         updated.remove("FirstPos");
         updated.remove("FirstFace");
         if (updated.isEmpty()) {

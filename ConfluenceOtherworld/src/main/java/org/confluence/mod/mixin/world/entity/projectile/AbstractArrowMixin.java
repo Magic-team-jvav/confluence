@@ -10,7 +10,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.network.s2c.SetEntityDataPacketS2C;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.init.ModEffects;
@@ -34,10 +33,7 @@ public abstract class AbstractArrowMixin implements IAbstractArrow {
 
     @Override
     public void confluence$setData(byte dataId, Object o) {
-        AbstractArrow self = confluence$self();
-        if (!self.level().isClientSide) {
-            ConfluenceMagicLib.NETWORK_HANDLER.sendToPlayersTrackingEntity(self, new SetEntityDataPacketS2C(self.getId(), new SetEntityDataPacketS2C.Entry(dataId, o)));
-        }
+        IAbstractArrow.super.confluence$setData(dataId, o);
         this.confluence$damageNotAffectedBySpeedBonus = (boolean) o;
     }
 

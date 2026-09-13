@@ -6,7 +6,6 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ChunkHolder;
@@ -28,33 +27,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public enum MeteoriteTracker {
     INSTANCE;
     public static final ResourceKey<ConfiguredFeature<?, ?>> METEORITE = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "meteorite");
-    private static final String RUNTIME_TAG = "ConfluenceMeteoriteRuntime";
-    private static final int RUNTIME_VERSION = 1;
 
     private transient boolean shouldGenerate = true;
-    private boolean spawnAtNextNight = false;
+    public boolean spawnAtNextNight = false;
     @NotNull BlockPos location = BlockPos.ZERO;
     int tickUntilLanding = 0;
-
-    /// 清除上一世界可能遗留在枚举单例中的运行状态。
-    ///
-    /// 集成服务器会在同一 JVM 内连续打开多个世界，而枚举不会随世界卸载。新世界创建、
-    /// 或旧世界反序列化前都必须先回到安全默认值。
-    void reset() {
-        this.shouldGenerate = true;
-        this.spawnAtNextNight = false;
-        this.location = BlockPos.ZERO;
-        this.tickUntilLanding = 0;
-    }
 
     public void tick(ServerLevel level) {
         if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         if (spawnAtNextNight && LibDateUtils.getDayTime(level) == LibDateUtils._00$00) {
-            setSpawnAtNextNight(level, false);
+            this.spawnAtNextNight = false;
             generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400));
             Component message = Component.translatable("event.confluence.meteorite.ready").withColor(GlobalColors.EVENT.get());
             level.getServer().getPlayerList().broadcastSystemMessage(message, false);
@@ -64,15 +51,7 @@ public enum MeteoriteTracker {
             this.shouldGenerate = true;
         } else if (tickUntilLanding > 0) {
             tickUntilLanding--;
-            // 倒计时本身就是世界存档状态；任意一次正常保存都应记录当时剩余时间。
-            ConfluenceData.get(level).setDirty();
             if (tickUntilLanding == 0) {
-                if (!isValidLandingPosition(level, location)) {
-                    this.location = BlockPos.ZERO;
-                    this.shouldGenerate = true;
-                    ConfluenceData.get(level).setDirty();
-                    return;
-                }
                 ChunkPos chunkPos = new ChunkPos(location);
                 place(level, chunkPos.x, chunkPos.z, !level.getForcedChunks().contains(chunkPos.toLong()), new BlockPos(location));
                 ConfluenceData.get(level).setDirty();
@@ -82,9 +61,6 @@ public enum MeteoriteTracker {
 
     public void generateLandingDetail(ServerLevel level, int landingTime) {
         if (!shouldGenerate || !CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
-        if (landingTime < 1) {
-            throw new IllegalArgumentException("Meteorite landing delay must be positive");
-        }
         this.shouldGenerate = false;
 
         // 获取玩家数量最小的象限
@@ -104,8 +80,8 @@ public enum MeteoriteTracker {
         // 获取未被加载的区块
         int x = 0, z = 0;
         List<ServerPlayer> players = new ArrayList<>(level.players());
-        ChunkMap chunkMap = level.getChunkSource().chunkMap;
         ChunkHolder chunkHolder;
+        ChunkMap chunkMap = level.getChunkSource().chunkMap;
         do {
             if (!players.isEmpty()) {
                 Iterator<ServerPlayer> iterator = players.iterator();
@@ -130,40 +106,26 @@ public enum MeteoriteTracker {
             }
             x += xStep;
             z += zStep;
-        } while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null
-                && chunkHolder.getTicketLevel() >= 34);
-
+        } while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34);
+        // 获取能放陨石的区块
         BlockPos.MutableBlockPos landingPos = new BlockPos.MutableBlockPos();
         LongSet forcedChunks = level.getForcedChunks();
-        while (true) {
+        do {
             while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34) {
                 if (level.random.nextBoolean()) x += xStep;
                 else z += zStep;
             }
-
+            boolean requires = !forcedChunks.contains(ChunkPos.asLong(x, z));
+            if (requires) level.setChunkForced(x, z, true);
             int bx = SectionPos.sectionToBlockCoord(x, 7);
             int bz = SectionPos.sectionToBlockCoord(z, 7);
-            BlockPos borderProbe = new BlockPos(bx, level.getMinBuildHeight(), bz);
-            if (!isValidLandingPosition(level, borderProbe)) {
-                resetLandingSearch(level, "Meteorite landing search reached an invalid world position");
-                return;
-            }
-
-            boolean requires = !forcedChunks.contains(ChunkPos.asLong(x, z));
-            try {
-                if (requires) level.setChunkForced(x, z, true);
-                int by = level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz);
-                landingPos.set(bx, by, bz);
-            } finally {
-                if (requires) level.setChunkForced(x, z, false);
-            }
-            if (level.getBlockState(landingPos).getFluidState().isEmpty()) {
-                break;
-            }
+            landingPos.set(bx, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz), bz);
+            if (requires) level.setChunkForced(x, z, false);
             x += xStep;
             z += zStep;
-        }
+        } while (!level.getBlockState(landingPos).getFluidState().isEmpty());
 
+        this.shouldGenerate = true;
         this.location = landingPos;
         this.tickUntilLanding = landingTime;
         MeteoriteLocationPacketS2C.sendToAll(location, landingTime);
@@ -172,14 +134,13 @@ public enum MeteoriteTracker {
 
     private void place(ServerLevel level, int chunkX, int chunkZ, boolean withForceChunk, BlockPos origin) {
         boolean placed = false;
+        if (withForceChunk) level.setChunkForced(chunkX, chunkZ, true);
         try {
-            if (withForceChunk) level.setChunkForced(chunkX, chunkZ, true);
             level.registryAccess().holderOrThrow(METEORITE)
                     .value().place(level, level.getChunkSource().getGenerator(), level.random, origin);
             placed = true;
-        } catch (Exception ignored) {} finally {
-            if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);
-        }
+        } catch (Exception ignored) {}
+        if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);
 
         if (placed) {
             Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.get());
@@ -189,70 +150,20 @@ public enum MeteoriteTracker {
     }
 
     public void deserialize(CompoundTag nbt) {
-        reset();
-        if (!nbt.contains(RUNTIME_TAG, Tag.TAG_COMPOUND)) return;
-        CompoundTag runtime = nbt.getCompound(RUNTIME_TAG);
-        if (!runtime.contains("Version", Tag.TAG_INT) || runtime.getInt("Version") != RUNTIME_VERSION || !runtime.contains("Scheduled", Tag.TAG_BYTE) || !runtime.contains("LandingDelay", Tag.TAG_INT)) {
-            return;
-        }
-
-        boolean scheduled = runtime.getBoolean("Scheduled");
-        int delay = runtime.getInt("LandingDelay");
-        if (delay < 0) return;
-        if (delay == 0) {
-            this.spawnAtNextNight = scheduled;
-            return;
-        }
-        if (!runtime.contains("Location", Tag.TAG_COMPOUND)) return;
-        BlockPos savedLocation = NbtUtils.readBlockPos(runtime.getCompound("Location"));
-        if (savedLocation == null) return;
-
-        this.spawnAtNextNight = scheduled;
-        this.location = savedLocation;
-        this.tickUntilLanding = delay;
-        this.shouldGenerate = false;
+        this.spawnAtNextNight = nbt.getBoolean("spawnAtNextNight");
+        this.location = Objects.requireNonNullElse(NbtUtils.readBlockPos(nbt.getCompound("meteoriteLocation")), BlockPos.ZERO);
+        this.tickUntilLanding = nbt.getInt("tickUtilMeteoriteLanding");
     }
 
     public void serialize(CompoundTag nbt) {
-        CompoundTag runtime = new CompoundTag();
-        runtime.putInt("Version", RUNTIME_VERSION);
-        runtime.putBoolean("Scheduled", spawnAtNextNight);
-        runtime.putInt("LandingDelay", tickUntilLanding);
-        if (tickUntilLanding > 0) {
-            runtime.put("Location", NbtUtils.writeBlockPos(location));
-        }
-        nbt.put(RUNTIME_TAG, runtime);
-    }
-
-    public boolean isSpawnAtNextNight() {
-        return spawnAtNextNight;
-    }
-
-    /// 更新下一夜陨石调度，并同步标记主世界 SavedData。
-    public void setSpawnAtNextNight(ServerLevel level, boolean scheduled) {
-        ConfluenceData data = ConfluenceData.get(level);
-        if (this.spawnAtNextNight == scheduled) return;
-        this.spawnAtNextNight = scheduled;
-        data.setDirty();
-    }
-
-    /// 所有坐标检查都发生在请求区块前，损坏存档不能借此加载世界边缘或边界外区块。
-    private static boolean isValidLandingPosition(ServerLevel level, BlockPos position) {
-        return level.isInWorldBounds(position) && level.getWorldBorder().isWithinBounds(position);
-    }
-
-    /// 搜索失败时恢复调度状态，避免本次失败永久阻止后续陨石事件。
-    private void resetLandingSearch(ServerLevel level, String warning) {
-        this.shouldGenerate = true;
-        this.location = BlockPos.ZERO;
-        this.tickUntilLanding = 0;
-        ConfluenceData.get(level).setDirty();
-        Confluence.LOGGER.warn(warning);
+        nbt.putBoolean("spawnAtNextNight", spawnAtNextNight);
+        nbt.put("meteoriteLocation", NbtUtils.writeBlockPos(location));
+        nbt.putInt("tickUtilMeteoriteLanding", tickUntilLanding);
     }
 
     public static void spawnMeteor(ServerLevel level) {
         if (KillBoard.INSTANCE.isAnyDefeated(BossEntities.EATER_OF_WORLDS.get(), BossEntities.BRAIN_OF_CTHULHU.get()) && level.random.nextFloat() < 0.02F) {
-            INSTANCE.setSpawnAtNextNight(level, true);
+            INSTANCE.spawnAtNextNight = true;
         }
     }
 }

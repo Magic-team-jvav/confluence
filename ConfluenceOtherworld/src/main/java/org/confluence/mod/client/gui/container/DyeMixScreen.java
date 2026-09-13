@@ -119,7 +119,7 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
         if (mouseX > leftPos + 125 && mouseX < leftPos + 141 && mouseY > topPos + 35 && mouseY < topPos + 51) {
             ItemStack carried = menu.getCarried();
             if (!stack.isEmpty() && (carried.isEmpty() || (IPortItemStackExtension.isSameItemSameComponents(carried, stack) && carried.getCount() < carried.getMaxStackSize()))) {
-                DyeMixPacketC2S.sendToServer(rgb);
+                DyeMixPacketC2S.sendToServer(stack);
             }
         }
         return super.mouseClicked(mouseX, mouseY, button);

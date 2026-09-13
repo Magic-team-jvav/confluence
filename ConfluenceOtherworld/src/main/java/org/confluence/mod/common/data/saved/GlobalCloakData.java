@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibStreamCodecUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.RegisterCloakDataEvent;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -150,27 +149,21 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        if (tag.isEmpty()) {
-            return;
-        }
-        int decodedVersion = tag.getInt("Version");
-        if (decodedVersion != VERSION) {
-            Confluence.LOGGER.warn("Unsupported global cloak data version: {}", decodedVersion);
-        }
-        Map<BlockState, BooleanObjectPair<BlockState>> decodedBlocks =
-                PortDataResultExtension.getOrThrow(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")), message -> new IllegalArgumentException("Failed to decode cloaked block data: " + message));
-        Map<Item, BooleanObjectPair<Item>> decodedItems =
-                PortDataResultExtension.getOrThrow(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")), message -> new IllegalArgumentException("Failed to decode cloaked item data: " + message));
-        this.blockMap = new IdentityHashMap<>(decodedBlocks);
-        this.itemMap = new IdentityHashMap<>(decodedItems);
-        this.version = decodedVersion;
+        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")),
+                result -> this.blockMap = new IdentityHashMap<>(result));
+        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")),
+                result -> this.itemMap = new IdentityHashMap<>(result));
+        this.version = tag.getInt("Version");
+
         rollbackAllProperties();
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("BlockMap", PortDataResultExtension.getOrThrow(BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap), message -> new IllegalStateException("Failed to encode cloaked block data: " + message)));
-        tag.put("ItemMap", PortDataResultExtension.getOrThrow(ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap), message -> new IllegalStateException("Failed to encode cloaked item data: " + message)));
+        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap),
+                nbt -> tag.put("BlockMap", nbt));
+        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap),
+                nbt -> tag.put("ItemMap", nbt));
         tag.putInt("Version", version);
     }
 
@@ -189,20 +182,14 @@ public enum GlobalCloakData implements IGlobalData {
         return "confluence:global_cloak_data";
     }
 
-    /// 为网络编码创建稳定的方块伪装快照。
-    public Map<BlockState, BooleanObjectPair<BlockState>> blockMapSnapshot() {
-        return new IdentityHashMap<>(blockMap);
+    public void networkEncode(PortRegistryFriendlyByteBuf buffer) {
+        BLOCK_MAP_STREAM_CODEC.encode(buffer, blockMap);
+        ITEM_MAP_STREAM_CODEC.encode(buffer, itemMap);
     }
 
-    /// 为网络编码创建稳定的物品伪装快照。
-    public Map<Item, BooleanObjectPair<Item>> itemMapSnapshot() {
-        return new IdentityHashMap<>(itemMap);
-    }
-
-    /// 在客户端主线程一次性替换网络同步的伪装映射。
-    public void applyNetworkState(Map<BlockState, BooleanObjectPair<BlockState>> blocks, Map<Item, BooleanObjectPair<Item>> items) {
-        this.blockMap = new IdentityHashMap<>(blocks);
-        this.itemMap = new IdentityHashMap<>(items);
+    public void networkDecode(PortRegistryFriendlyByteBuf buffer) {
+        this.blockMap = BLOCK_MAP_STREAM_CODEC.decode(buffer);
+        this.itemMap = ITEM_MAP_STREAM_CODEC.decode(buffer);
     }
 
     public void rollbackAllProperties() {

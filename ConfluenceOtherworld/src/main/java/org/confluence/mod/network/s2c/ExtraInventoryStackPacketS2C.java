@@ -35,7 +35,6 @@ public record ExtraInventoryStackPacketS2C(
             if (extraInventory.getSizeAccessoryDye() != getSizeAccessoryDye()) {
                 extraInventory.setAccessoryDyes(player, getSizeAccessoryDye());
             }
-            if (getSlot() < 0 || getSlot() >= extraInventory.getContainerSize()) return;
             extraInventory.setItem(getSlot(), itemStack);
         }
     }

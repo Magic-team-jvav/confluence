@@ -124,10 +124,6 @@ public final class ModUtils {
         }
         boss.setPos(x, y, z);
         level.addFreshEntityWithPassengers(boss);
-        Player target = summoner == null ? level.getNearestPlayer(boss, 64.0) : summoner;
-        if (target != null) {
-            boss.initializeSummonedCombat(target);
-        }
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss) {
@@ -159,9 +155,9 @@ public final class ModUtils {
         KillBoard.INSTANCE.defeat(level.getServer(), type);
         if (type == BossEntities.EATER_OF_WORLDS.get() || type == BossEntities.BRAIN_OF_CTHULHU.get()) {
             if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
-                MeteoriteTracker.INSTANCE.setSpawnAtNextNight(level, true);
-            } else if (!MeteoriteTracker.INSTANCE.isSpawnAtNextNight() && level.random.nextBoolean()) {
-                MeteoriteTracker.INSTANCE.setSpawnAtNextNight(level, true);
+                MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
+            } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight && level.random.nextBoolean()) {
+                MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             }
         }
         for (ServerPlayer player : participants) {

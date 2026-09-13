@@ -23,7 +23,6 @@ import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.Coins;
-import org.confluence.mod.util.PlayerMoneyTransaction;
 import org.confluence.mod.util.PlayerUtils;
 
 import java.util.ArrayList;
@@ -148,7 +147,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         ItemStack soldStack = source.getItem().copy();
         if (soldStack.is(ModTags.Items.COINS)) return ItemStack.EMPTY;
         long price = getSellPrice(soldStack);
-        if (price > 0 && PlayerMoneyTransaction.creditFromInventory(serverPlayer, source.getContainerSlot(), soldStack, price, true)) {
+        if (price > 0 && PlayerUtils.creditFromInventory(serverPlayer, source.getContainerSlot(), soldStack, price, true)) {
             rememberSale(soldStack, price);
             return soldStack;
         }
@@ -281,7 +280,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         ItemStack cursor = getCarried();
         if (cursor.isEmpty() || cursor.is(ModTags.Items.COINS)) return;
         long price = getSellPrice(cursor);
-        if (price > 0 && PlayerMoneyTransaction.credit(player, price, true)) {
+        if (price > 0 && PlayerUtils.credit(player, price)) {
             ItemStack sold = cursor.copy();
             setCarried(ItemStack.EMPTY);
             rememberSale(sold, price);
@@ -304,12 +303,12 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         Buyback sale = buybacks.get(index);
         ItemStack result = sale.stack().copy();
         if (toInventory) {
-            if (!PlayerMoneyTransaction.purchase(player, sale.price(), true, result)) return;
+            if (!PlayerUtils.purchase(player, sale.price(), true, result)) return;
         } else {
             ItemStack cursor = getCarried();
             if (!cursor.isEmpty() && (!ItemStack.isSameItemSameTags(cursor, result)
                     || cursor.getCount() + result.getCount() > cursor.getMaxStackSize())) return;
-            if (!PlayerMoneyTransaction.debit(player, sale.price(), true)) return;
+            if (!PlayerUtils.debit(player, sale.price(), true)) return;
             if (cursor.isEmpty()) setCarried(result);
             else cursor.grow(result.getCount());
         }
@@ -326,7 +325,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
             return;
         List<ItemStack> costs = offer.costs();
         long price = costs.isEmpty() ? getBuyPrice(result) : 0;
-        boolean completed = costs.isEmpty() ? price > 0 && PlayerMoneyTransaction.debit(player, price, true) : consumeCosts(player, costs, 1, ItemStack.EMPTY);
+        boolean completed = costs.isEmpty() ? price > 0 && PlayerUtils.debit(player, price, true) : consumeCosts(player, costs, 1, ItemStack.EMPTY);
         if (!completed) return;
         if (cursor.isEmpty()) setCarried(result);
         else cursor.grow(result.getCount());
@@ -345,7 +344,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
             if (trades <= 0) return;
             ItemStack totalResult = result.copy();
             totalResult.setCount(Math.multiplyExact(result.getCount(), trades));
-            PlayerMoneyTransaction.purchase(player, Math.multiplyExact(price, trades), true, totalResult);
+            PlayerUtils.purchase(player, Math.multiplyExact(price, trades), true, totalResult);
             return;
         }
         trades = Math.min(trades, availableCostTrades(player, costs));

@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,14 +19,11 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 
 public class SlimeSpikeEntity extends AbstractHurtingProjectile {
-    private static final String RUNTIME_KEY = "ConfluenceSlimeSpikeRuntime";
-    private static final int RUNTIME_VERSION = 2;
     private static final int MAX_AGE = 30;
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(SlimeSpikeEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> DATA_HAS_GRAVITY = SynchedEntityData.defineId(SlimeSpikeEntity.class, EntityDataSerializers.BOOLEAN);
 
     private float damage = 5.0f;
-    private boolean invalidRuntimeState;
 
     public SlimeSpikeEntity(EntityType<? extends SlimeSpikeEntity> type, Level level) {
         super(type, level);
@@ -102,10 +97,6 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
 
     @Override
     public void tick() {
-        if (!level().isClientSide && invalidRuntimeState) {
-            discard();
-            return;
-        }
         super.tick();
         if (entityData.get(DATA_HAS_GRAVITY)) {
             setDeltaMovement(getDeltaMovement().add(0.0, -0.108, 0.0));
@@ -116,40 +107,6 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
         if (tickCount > MAX_AGE) {
             discard();
         }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        CompoundTag runtime = new CompoundTag();
-        runtime.putInt("Version", RUNTIME_VERSION);
-        runtime.putFloat("Damage", damage);
-        runtime.putInt("Age", tickCount);
-        runtime.putInt("Variant", getVariant().ordinal());
-        runtime.putBoolean("HasGravity", entityData.get(DATA_HAS_GRAVITY));
-        compound.put(RUNTIME_KEY, runtime);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        this.invalidRuntimeState = true;
-        if (!compound.contains(RUNTIME_KEY, Tag.TAG_COMPOUND)) return;
-        CompoundTag runtime = compound.getCompound(RUNTIME_KEY);
-        if (!runtime.contains("Version", Tag.TAG_INT) || runtime.getInt("Version") != RUNTIME_VERSION || !runtime.contains("Damage", Tag.TAG_FLOAT) || !runtime.contains("Age", Tag.TAG_INT) || !runtime.contains("Variant", Tag.TAG_INT) || !runtime.contains("HasGravity", Tag.TAG_BYTE)) {
-            return;
-        }
-        float savedDamage = runtime.getFloat("Damage");
-        int savedAge = runtime.getInt("Age");
-        int savedVariant = runtime.getInt("Variant");
-        if (!Float.isFinite(savedDamage) || savedDamage < 0.0F || savedAge < 0 || savedAge > MAX_AGE || savedVariant < 0 || savedVariant >= Variant.values().length) {
-            return;
-        }
-        this.damage = savedDamage;
-        this.tickCount = savedAge;
-        entityData.set(DATA_VARIANT, savedVariant);
-        entityData.set(DATA_HAS_GRAVITY, runtime.getBoolean("HasGravity"));
-        this.invalidRuntimeState = false;
     }
 
     @Override

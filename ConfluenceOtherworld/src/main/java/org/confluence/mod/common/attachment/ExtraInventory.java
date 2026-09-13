@@ -180,11 +180,6 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         return getEquipment(HOOK_INDEX, dye);
     }
 
-    /// 返回坐骑槽或对应染料槽的当前物品。
-    public ItemStack getMount(boolean dye) {
-        return getEquipment(MOUNT_INDEX, dye);
-    }
-
     public void setEquipment(int index, ItemStack stack, boolean dye) {
         validateIndex(index, SIZE_EQUIPMENT);
         if (dye) equipment.set(index, equipment.get(index).setDye(stack));
@@ -300,7 +295,6 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         tag.put("Equipment", t);
         tag.put("Trash", encode(trash, ops));
         tag.put("AccessoryDye", encodeList(accessoryDye, ops));
-        tag.putBoolean("confluence:fixed", true);
         return tag;
     }
 
@@ -316,31 +310,25 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
 
     @Override
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
-        if (!nbt.getBoolean("confluence:fixed")) {
-            resetStoredContents();
-            return;
-        }
-
         RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
         ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
         for (int i = 0; i < vanityArmor.size(); i++) {
-            vanityArmor.set(i, i < t.size() ? StackWithDye.DEFAULT.decode(t.getCompound(i), ops) : StackWithDye.DEFAULT);
+            vanityArmor.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
         }
         decodeList(coin, nbt.getList("Coin", Tag.TAG_COMPOUND), ops);
         decodeList(ammo, nbt.getList("Ammo", Tag.TAG_COMPOUND), ops);
         t = nbt.getList("Equipment", Tag.TAG_COMPOUND);
         for (int i = 0; i < equipment.size(); i++) {
-            equipment.set(i, i < t.size() ? StackWithDye.DEFAULT.decode(t.getCompound(i), ops) : StackWithDye.DEFAULT);
+            equipment.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
         }
         this.trash = decode(nbt.getCompound("Trash"), ops);
         t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
-        decodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), t, ops);
-        this.dirty = true;
+        encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
     }
 
     private static void decodeList(NonNullList<ItemStack> list, ListTag tag, DynamicOps<Tag> ops) {
         for (int i = 0; i < list.size(); i++) {
-            list.set(i, i < tag.size() ? decode(tag.getCompound(i), ops) : ItemStack.EMPTY);
+            list.set(i, decode(tag.getCompound(i), ops));
         }
     }
 
@@ -394,21 +382,9 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
 
     @Override
     public ItemStack removeItem(int slot, int amount) {
-        if (amount <= 0) {
-            return ItemStack.EMPTY;
-        }
-        ItemStack stored = getItem(slot);
-        if (stored.isEmpty()) {
-            return ItemStack.EMPTY;
-        }
-
-        ItemStack removed = stored.split(amount);
-        if (stored.isEmpty()) {
-            setItem(slot, ItemStack.EMPTY);
-        } else {
-            setChanged();
-        }
-        return removed;
+        ItemStack stack = removeItemNoUpdate(slot);
+        setDirty();
+        return stack;
     }
 
     @Override
@@ -456,7 +432,7 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
         for (ItemStack stack : accessoryDye) {
             if (!stack.isEmpty()) return false;
         }
-        return trash.isEmpty();
+        return true;
     }
 
     @Override
@@ -471,14 +447,12 @@ public class ExtraInventory implements Container, IPortNBTSerializable<CompoundT
 
     @Override
     public void clearContent() {
-        resetStoredContents();
-    }
-
-    private void resetStoredContents() {
-        for (int i = 0; i < getContainerSize(); i++) {
-            setItem(i, ItemStack.EMPTY);
-        }
-        setChanged();
+        vanityArmor.clear();
+        coin.clear();
+        ammo.clear();
+        equipment.clear();
+        this.trash = ItemStack.EMPTY;
+        accessoryDye.clear();
     }
 
     public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {

@@ -36,29 +36,20 @@ public final class ConfluenceData extends SavedData {
     private boolean stopAskForSoftcore = false;
 
     ConfluenceData() {
-        meteoriteTracker.reset();
         fillDefaultStarPhases();
     }
 
-    /// 从世界 SavedData 恢复 Confluence 的世界级状态。
-    ///
-    /// 先填入完整默认星相，再用存档中的合法条目覆盖。这样旧版本缺字段、列表不满十项，
-    /// 或个别条目损坏时，其余槽位仍始终可读，不会把空映射传播给同步和渲染逻辑。
     ConfluenceData(CompoundTag nbt) {
-        fillDefaultStarPhases();
         this.initialized = nbt.getBoolean("initialized");
-        this.windSpeed.x = finiteOrZero(nbt.getFloat("windSpeedX"));
-        this.windSpeed.z = finiteOrZero(nbt.getFloat("windSpeedZ"));
+        this.windSpeed.x = nbt.getFloat("windSpeedX");
+        this.windSpeed.z = nbt.getFloat("windSpeedZ");
         for (Tag tag : nbt.getList("starPhases", Tag.TAG_COMPOUND)) {
-            CompoundTag phaseTag = (CompoundTag) tag;
-            int index = phaseTag.getInt("index");
-            if (index < 0 || index >= STAR_PHASES_SIZE) continue;
-            StarPhase phase = new StarPhase(phaseTag);
-            if (isValidStarPhase(phase)) starPhases.put(index, phase);
+            CompoundTag phase = (CompoundTag) tag;
+            starPhases.put(phase.getInt("index"), new StarPhase(phase));
         }
-        this.revealStep = Math.max(-1, nbt.getInt("revealStep"));
+        this.revealStep = nbt.getInt("revealStep");
         this.meteoriteTracker.deserialize(nbt);
-        this.evilBrokenCount = Math.max(0, nbt.getInt("evilBrokenCount"));
+        this.evilBrokenCount = nbt.getInt("evilBrokenCount");
         this.stopAskForSoftcore = nbt.getBoolean("stopAskForSoftcore");
     }
 
@@ -67,14 +58,6 @@ public final class ConfluenceData extends SavedData {
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             starPhases.put(i, StarPhase.DEFAULT);
         }
-    }
-
-    private static float finiteOrZero(float value) {
-        return Float.isFinite(value) ? value : 0.0F;
-    }
-
-    private static boolean isValidStarPhase(StarPhase phase) {
-        return Float.isFinite(phase.radius()) && phase.radius() >= 0.0F && Float.isFinite(phase.angle());
     }
 
     public static ConfluenceData get(ServerLevel serverLevel) {
@@ -131,8 +114,8 @@ public final class ConfluenceData extends SavedData {
     }
 
     public void setWindSpeed(float x, float z) {
-        this.windSpeed.x = finiteOrZero(x);
-        this.windSpeed.z = finiteOrZero(z);
+        this.windSpeed.x = x;
+        this.windSpeed.z = z;
         WindSpeedPacketS2C.sendToAll(this.windSpeed.x, this.windSpeed.z);
         setDirty();
     }
@@ -146,8 +129,7 @@ public final class ConfluenceData extends SavedData {
     }
 
     public boolean setStarPhase(int index, int timeOffset, float radius, float angle) {
-        if (index < 0 || index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return false;
-        if (!Float.isFinite(radius) || radius < 0.0F || !Float.isFinite(angle)) return false;
+        if (index >= STAR_PHASES_SIZE || !CommonConfigs.STAR_PHASE.get()) return false;
         starPhases.put(index, new StarPhase(timeOffset, radius, angle));
         StarPhasesPacketS2C.sendToAll(index, timeOffset, radius, angle);
         setDirty();

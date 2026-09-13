@@ -1,6 +1,7 @@
 package org.confluence.mod.util;
 
 import com.google.common.collect.Iterables;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -12,6 +13,7 @@ import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -257,8 +259,7 @@ public final class PlayerUtils {
     }
 
     public static Coins getCoins(Player player, boolean withPiggyBank) {
-        PlayerPiggyBankContainer piggyBank = PlayerPiggyBankContainer.of(player);
-        Coins coins = withPiggyBank ? decodeCoin(player.level().isClientSide ? piggyBank.getTotalMoney() : piggyBank.calculateMoney()) : Coins.createEmpty();
+        Coins coins = withPiggyBank ? decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney()) : Coins.createEmpty();
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.getItem() instanceof CoinItem coin) {
                 coins.increase(coin, stack.getCount());
@@ -268,18 +269,101 @@ public final class PlayerUtils {
     }
 
     public static long getMoney(Player player, boolean withPiggyBank) {
-        PlayerPiggyBankContainer piggyBank = PlayerPiggyBankContainer.of(player);
-        long res = withPiggyBank ? (player.level().isClientSide ? piggyBank.getTotalMoney() : piggyBank.calculateMoney()) : 0;
+        long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
         for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
-                res += CoinItem.valueOf(stack.getItem()) * stack.getCount();
+                int index = COIN_2_INDEX.applyAsInt(stack.getItem());
+                if (index != -1) {
+                    res += (long) (stack.getCount() * Math.pow(UPGRADES_COUNT, 3 - index));
+                }
             }
         }
         return res;
     }
 
     public static boolean tryCostMoney(Player player, long cost, boolean withPiggyBank) {
-        return PlayerMoneyTransaction.debit(player, cost, withPiggyBank);
+        return tryCostMoney(getMoney(player, withPiggyBank), player, cost, withPiggyBank);
+    }
+
+    public static boolean tryCostMoney(long have, Player player, long cost, boolean withPiggyBank) {
+        if (have < cost) return false;
+
+        if (withPiggyBank) {
+            long res = PlayerPiggyBankContainer.of(player).tryCostMoney(cost);
+            if (res == 0) return true;
+            have -= cost - res;
+            cost = res;
+        }
+
+        Inventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
+                inventory.setItem(i, ItemStack.EMPTY);
+            }
+        }
+
+        ExtraInventory extraInventory = ExtraInventory.of(player);
+        for (int i = 0; i < SIZE_COINS; i++) {
+            extraInventory.setCoins(i, ItemStack.EMPTY);
+        }
+        Coins coins = decodeCoin(have - cost);
+
+        for (Object2IntMap.Entry<CoinItem> entry : coins.copper2PlatinumEntries()) {
+            int coin = entry.getIntValue();
+            if (coin <= 0) continue;
+            CoinItem coinItem = entry.getKey();
+            while (coin > UPGRADES_COUNT) {
+                inventory.add(new ItemStack(coinItem, UPGRADES_COUNT));
+                coin -= UPGRADES_COUNT;
+            }
+            inventory.add(new ItemStack(coinItem, coin));
+        }
+        return true;
+    }
+
+    /// 扣款：先用手上的钱（背包 + 钱币栏），不够再动存钱罐。
+    public static boolean debit(Player player, long cost, boolean withPiggyBank) {
+        return tryCostMoney(player, cost, withPiggyBank);
+    }
+
+    /// 买下商品：扣款成功后把商品塞进背包，塞不下就掉在脚边。
+    public static boolean purchase(Player player, long cost, boolean withPiggyBank, ItemStack result) {
+        if (result.isEmpty() || !tryCostMoney(player, cost, withPiggyBank)) return false;
+        ItemStack stack = result.copy();
+        if (!player.getInventory().add(stack)) player.drop(stack, false);
+        return true;
+    }
+
+    /// 售出所得按面额发到背包。
+    ///
+    public static boolean credit(Player player, long amount) {
+        if (amount < 0) return false;
+        giveCoins(player, amount);
+        return true;
+    }
+
+    /// 从玩家背包的指定槽位卖出物品：槽位内容与卖出时不一致就整笔取消。
+    public static boolean creditFromInventory(Player player, int slotIndex, ItemStack expected, long amount, boolean withPiggyBank) {
+        if (expected.isEmpty() || slotIndex < 0 || slotIndex >= player.getInventory().getContainerSize()) return false;
+        ItemStack source = player.getInventory().getItem(slotIndex);
+        if (!ItemStack.isSameItemSameTags(source, expected) || source.getCount() < expected.getCount()) return false;
+        source.shrink(expected.getCount());
+        if (source.isEmpty()) player.getInventory().setItem(slotIndex, ItemStack.EMPTY);
+        player.getInventory().setChanged();
+        giveCoins(player, amount);
+        return true;
+    }
+
+    /// 按面额把钱币发到背包；背包放不下就掉在脚边。
+    public static void giveCoins(Player player, long amount) {
+        if (amount <= 0) return;
+        for (Object2IntMap.Entry<CoinItem> entry : decodeCoin(amount).copper2PlatinumEntries()) {
+            int count = entry.getIntValue();
+            if (count <= 0) continue;
+            ItemStack stack = new ItemStack(entry.getKey(), count);
+            if (!player.getInventory().add(stack)) player.drop(stack, false);
+        }
     }
 
     public static Coins decodeCoin(long money) {

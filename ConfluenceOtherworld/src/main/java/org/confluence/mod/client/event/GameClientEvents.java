@@ -437,7 +437,7 @@ public final class GameClientEvents {
 //  todo      if (screen instanceof DialogScreen) {
 //            LocalPlayer player = Minecraft.getInstance().player;
 //            if (player != null) {
-//                @Nullable ITradeHolder holder = IPlayer.of(player).terra_entity$getTradeHolder();
+//                @Nullable ITradeHolder holder = IPlayer.of(player).confluence$getTradeHolder();
 //                if (holder instanceof AbstractTerraNPC npc && npc.getType() == TENpcEntities.GOBLIN_TINKERER.get()) {
 //                    event.addListener(WithForgeTradeScreen.createReforgeButton(screen.width * 2 / 3, screen.height / 2 + 25));
 //                }
@@ -488,14 +488,14 @@ public final class GameClientEvents {
 //        if (player == null) return;
 //        EntityType<?> type = event.getNPC().getType();
 //        if (!ModClientSetups.guideCheckedJEI && type == TENpcEntities.GUIDE.get()) {
-//            event.setNeoDialog(Component.translatable("dialogs.terra_entity.guide.jei_check"));
+//            event.setNeoDialog(Component.translatable("dialogs.confluence.guide.jei_check"));
 //            ModClientSetups.guideCheckedJEI = true;
 //        } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom1211().nextInt(25) == 0) {
 //            StatsCounter stats = player.getStats();
 //            for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
 //                int value = stats.getValue(stat);
 //                if (value >= 50) {
-//                    event.setNeoDialog(Component.translatable("dialogs.terra_entity.nurse.player_killed_by", stat.getValue().getDescription(), value));
+//                    event.setNeoDialog(Component.translatable("dialogs.confluence.nurse.player_killed_by", stat.getValue().getDescription(), value));
 //                    break;
 //                }
 //            }

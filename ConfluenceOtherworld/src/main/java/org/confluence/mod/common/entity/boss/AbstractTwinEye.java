@@ -124,6 +124,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
             return;
         }
         if (master.isDisengageRetreating()) {
+            resetCombatCycle();
             setDeltaMovement(0.0D, 0.45D, 0.0D);
             entityData.set(DATA_DASHING, false);
             return;
@@ -133,7 +134,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
             entityData.set(DATA_TRANSFORMED, true);
             transitionTicks = TRANSITION_DURATION_TICKS;
             entityData.set(DATA_TRANSITION_TICKS, transitionTicks);
-            onCombatProfileChanged();
+            resetCombatCycle();
         }
         if (transitionTicks > 0) {
             transitionTicks--;
@@ -143,6 +144,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
             return;
         }
         if (getTarget() == null || !getTarget().isAlive()) {
+            resetCombatCycle();
             setDeltaMovement(getDeltaMovement().scale(0.85D));
             entityData.set(DATA_DASHING, false);
             return;
@@ -169,7 +171,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
     /// 攻击计时器暴露给客户端。
     protected abstract boolean isDashCombatState();
 
-    protected void onCombatProfileChanged() {}
+    protected abstract void resetCombatCycle();
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
@@ -255,7 +257,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
         transitionTicks = Math.max(0, tag.getInt(TRANSITION_TICKS_TAG));
         entityData.set(DATA_TRANSITION_TICKS, transitionTicks);
         reportedDeath = false;
-        onCombatProfileChanged();
+        resetCombatCycle();
         loadTwinCombat(tag);
     }
 

@@ -35,6 +35,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -46,10 +47,7 @@ import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
-import org.confluence.mod.common.entity.npc.ai.NPCCombatProgression;
-import org.confluence.mod.common.entity.npc.ai.NPCDefenseGoal;
-import org.confluence.mod.common.entity.npc.ai.NPCHurtRetreatGoal;
+import org.confluence.mod.common.entity.npc.ai.*;
 import org.confluence.mod.common.entity.npc.chat.ChatLine;
 import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
@@ -104,6 +102,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected boolean shouldInteract;
     protected BlockPos spawnAtPos = BlockPos.ZERO;
     private boolean spawnAtPosInitialized;
+    private boolean relocatedFromAnotherDimension;
     private final Map<ChatLine, Integer> chatCooldowns = new HashMap<>();
     private int chatForceCooldown = 50;
     private int chatDisplayTicks;
@@ -121,6 +120,11 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         applyProfileAttributes();
         setHealth(getMaxHealth());
         ensureFixedWeapon();
+        setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+        setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -1.0F);
+        setPathfindingMalus(BlockPathTypes.DANGER_OTHER, -1.0F);
+        setPathfindingMalus(BlockPathTypes.DAMAGE_OTHER, -1.0F);
+        setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);
     }
 
     @Override
@@ -137,6 +141,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         this.goalSelector.addGoal(1, new NPCTradeGoal(this));
         this.goalSelector.addGoal(2, new NPCHurtRetreatGoal(this));
         this.goalSelector.addGoal(4, new NPCDefenseGoal(this));
+        this.goalSelector.addGoal(6, new NPCReturnHomeGoal(this));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
@@ -170,7 +175,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         if (getInteractingPlayer() == null) tickBrain(level);
         else stopForInteraction();
         tickFindHouse(level);
-        tickWalkToHome(level);
         tickMood();
         tickHealthRegeneration();
         ChatManager.tickNPC(this);
@@ -266,19 +270,6 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         HouseHandler.INSTANCE.setHouse(this, found);
     }
 
-    /// 有 HOME 记忆时向家移动。
-    protected void tickWalkToHome(ServerLevel level) {
-        if (!house.isValid() || getInteractingPlayer() != null) return;
-        BlockPos homePos = house.center();
-        double distSq = blockPosition().distSqr(homePos);
-        if (distSq < 4) return;
-        if (!LibDateUtils.isNight(level) && distSq <= 400) return;
-        if (getLastHurtByMob() != null && tickCount - getLastHurtByMobTimestamp() < 100) return;
-        if (getTarget() == null && (tickCount % 20 == 0 || getNavigation().isDone())) {
-            getNavigation().moveTo(homePos.getX() + 0.5, homePos.getY(), homePos.getZ() + 0.5, 1.0);
-        }
-    }
-
     // === 房屋 ===
 
     public void setHouse(House house) {
@@ -286,12 +277,14 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         if (house.isValid()) {
             this.spawnAtPos = house.center();
             this.spawnAtPosInitialized = true;
+            restrictTo(house.center(), 20);
             getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level().dimension(), house.center()));
             NPCSpawner.Region newRegion = new NPCSpawner.Region(house.center());
             NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, region, newRegion);
             AchievementUtils.noHobo(this, newRegion);
         } else {
             getBrain().eraseMemory(MemoryModuleType.HOME);
+            clearRestriction();
         }
     }
 
@@ -588,13 +581,15 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         }
         PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, region), t -> tag.put("Region", t));
         tag.putBoolean("ShouldInteract", shouldInteract);
+        tag.putString("HomeDimension", level().dimension().location().toString());
         PortDataResultExtension.ifSuccess(BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, spawnAtPos), t -> tag.put("SpawnAtPos", t));
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains("House")) {
+        relocatedFromAnotherDimension = tag.contains("HomeDimension") && !tag.getString("HomeDimension").equals(level().dimension().location().toString());
+        if (!relocatedFromAnotherDimension && tag.contains("House")) {
             House.CODEC.parse(NbtOps.INSTANCE, tag.get("House"))
                     .result().ifPresent(this::setHouse);
         }
@@ -602,11 +597,17 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("Region")), r -> this.region = r);
         }
         this.shouldInteract = tag.getBoolean("ShouldInteract");
-        if (tag.contains("SpawnAtPos")) {
+        if (!relocatedFromAnotherDimension && tag.contains("SpawnAtPos")) {
             PortDataResultExtension.ifSuccess(BlockPos.CODEC.parse(NbtOps.INSTANCE, tag.get("SpawnAtPos")), r -> {
                 this.spawnAtPos = r;
                 this.spawnAtPosInitialized = true;
             });
+        }
+        if (relocatedFromAnotherDimension) {
+            house = House.EMPTY;
+            getBrain().eraseMemory(MemoryModuleType.HOME);
+            spawnAtPosInitialized = false;
+            clearRestriction();
         }
     }
 
@@ -625,6 +626,10 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         if (!spawnAtPosInitialized) {
             this.spawnAtPos = blockPosition();
             this.spawnAtPosInitialized = true;
+        }
+        if (!level().isClientSide && relocatedFromAnotherDimension) {
+            NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, region, new NPCSpawner.Region(blockPosition()));
+            relocatedFromAnotherDimension = false;
         }
     }
 }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +11,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.CasterCycleAction;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
-import software.bernie.geckolib.constant.DefaultAnimations;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -24,11 +25,12 @@ import javax.annotation.Nullable;
 public abstract class BaseCasterMonster extends BaseMonster {
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation CAST = RawAnimation.begin().thenPlay("attack.cast");
     private final CasterCycleAction.HurtResponse hurtResponse;
     private CasterCycleAction cycleAction;
 
     public BaseCasterMonster(EntityType<? extends BaseCasterMonster> type, Level level) {
-        this(type, level, CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT);
+        this(type, level, CasterCycleAction.HurtResponse.CONTINUE_CYCLE);
     }
 
     public BaseCasterMonster(EntityType<? extends BaseCasterMonster> type, Level level, CasterCycleAction.HurtResponse hurtResponse) {
@@ -101,20 +103,31 @@ public abstract class BaseCasterMonster extends BaseMonster {
         return projectile;
     }
 
-    @Override
-    public int getCurrentSwingDuration() {
-        return 20;
+    public void beginCastAnimation() {
+        stopTriggeredAnimation("caster_state", "cast");
+        triggerAnim("caster_state", "cast");
     }
 
-    /// 施法挥手期间播放法术动作，其余时间按实际移动状态选择行走或待机。
+    public void cancelCastAnimation() {
+        stopTriggeredAnimation("caster_state", "cast");
+    }
+
+    public void playCastReleaseSound() {
+        playSound(getCastSound(), 1.0F, 1.0F);
+    }
+
+    protected SoundEvent getCastSound() {
+        return ModSoundEvents.REGULAR_STAFF_SHOOT.get();
+    }
+
+    protected RawAnimation getRestAnimation(boolean moving) {
+        return moving ? WALK : IDLE;
+    }
+
+    /// 施法由战斗周期触发一次，播放结束后再恢复移动或待机，不受普通挥手时长截断。
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "caster_state", 5, state -> {
-            if (swingTime > 0) {
-                return state.setAndContinue(DefaultAnimations.ATTACK_CAST);
-            }
-            return state.setAndContinue(state.isMoving() ? WALK : IDLE);
-        }));
+        controllers.add(new AnimationController<>(this, "caster_state", 0, state -> state.setAndContinue(getRestAnimation(state.isMoving()))).triggerableAnim("cast", CAST));
     }
 
 }

@@ -29,6 +29,7 @@ import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.api.whip.WhipFriendlyHitContext;
 import org.confluence.mod.api.whip.WhipTagTracker;
+import org.confluence.mod.api.whip.curve.RetractingWhipCurve;
 import org.confluence.mod.api.whip.curve.WhipCurveSampler;
 import org.confluence.mod.api.whip.curve.WhipCurves;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
@@ -57,6 +58,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
     /// 轨迹以 16 个局部单位表示，因此每点鞭距属性对应 1.6 格世界距离。
     private static final double RANGE_ATTRIBUTE_SCALE = 1.6;
     public static final double RENDER_SEGMENT_SPACING = 0.22;
+    private static final int MINIMUM_CLIENT_RETURN_TICKS = 8;
 
     private static final EntityDataAccessor<Float> SWING_PROGRESS = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> PREVIOUS_PROGRESS = SynchedEntityData.defineId(WhipAttackEntity.class, EntityDataSerializers.FLOAT);
@@ -67,6 +69,10 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
     private float clientProgress;
     private float previousClientProgress;
     private boolean clientProgressInitialized;
+    private int completionTicks;
+    private float clientProgressStep;
+    private boolean playbackComplete;
+    private boolean completionReported;
 
     public WhipAttackEntity(EntityType<? extends WhipAttackEntity> type, Level level) {
         super(type, level);
@@ -157,6 +163,12 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         }
         if (!level().isClientSide) {
             float previous = entityData.get(SWING_PROGRESS);
+            if (previous >= 1.0F) {
+                // 正常等待持有者播放完成；非玩家来源及异常客户端保留有界清理。
+                int timeout = owner instanceof net.minecraft.server.level.ServerPlayer ? 100 : 2;
+                if (playbackComplete || ++completionTicks >= timeout) discard();
+                return;
+            }
             float step = owner instanceof Player player ? BaseWhipItem.swingStep(player) : 1.0F / durationTicks();
             float progress = Math.min(1.0F, previous + step);
             if (progress >= 1.0F - 1.0E-6F) progress = 1.0F;
@@ -175,12 +187,22 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             }
             entityData.set(PREVIOUS_PROGRESS, previous);
             entityData.set(SWING_PROGRESS, progress);
-            if (progress >= 1.0F) discard();
         }
     }
 
     public float swingProgress(float partialTick) {
         return level().isClientSide ? Mth.lerp(partialTick, previousClientProgress, clientProgress) : entityData.get(SWING_PROGRESS);
+    }
+
+    public void confirmPlaybackComplete(net.minecraft.server.level.ServerPlayer player) {
+        if (getOwner() == player && entityData.get(SWING_PROGRESS) >= 1.0F) playbackComplete = true;
+    }
+
+    public boolean reportPlaybackComplete() {
+        if (!level().isClientSide || completionReported || entityData.get(SWING_PROGRESS) < 1.0F || previousClientProgress < 1.0F)
+            return false;
+        completionReported = true;
+        return true;
     }
 
     private void advanceClientProgress() {
@@ -190,15 +212,34 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         if (!clientProgressInitialized) {
             // 出生数据尚未到齐时不能按默认的一 tick 时长播放完整次挥动。
             if (step <= 0.0F) return;
-            clientProgress = serverPrevious;
+            clientProgress = 0.0F;
             clientProgressInitialized = true;
         }
         previousClientProgress = clientProgress;
+        if (step > 0.0F && (serverProgress < 1.0F || clientProgressStep == 0.0F))
+            clientProgressStep = step;
+        if (serverProgress >= 1.0F) {
+            // 逻辑攻击已结束，但显示仍需走完剩余回收，不能直接跳到终帧。
+            clientProgress = limitClientReturnProgress(Math.min(1.0F, clientProgress + clientProgressStep));
+            return;
+        }
         float predicted = clientProgress + step;
-        // 网络进度用于校准，本地 tick 推进动画；迟到的数据不能让鞭身倒放。
-        float correction = Mth.clamp(serverProgress - predicted, -step * 0.5F, step * 0.5F);
-        float predictionLimit = Math.max(clientProgress, Math.min(1.0F, serverProgress + step));
-        clientProgress = Mth.clamp(predicted + correction, clientProgress, predictionLimit);
+        // 插值区间从当前服务端进度向前预测一 tick，避免实体移除时仍滞后在回收段。
+        float targetProgress = Math.min(1.0F, serverProgress + step);
+        float correction = Mth.clamp(targetProgress - predicted, -step * 0.5F, step * 0.5F);
+        float predictionLimit = Math.max(clientProgress, targetProgress);
+        clientProgress = limitClientReturnProgress(Mth.clamp(predicted + correction, clientProgress, predictionLimit));
+    }
+
+    private float limitClientReturnProgress(float next) {
+        BaseWhipItem whip = whipItem();
+        if (sweepLevel() > 0 || whip == null || !(whip.curve() instanceof RetractingWhipCurve curve))
+            return next;
+        float start = (float) curve.returnStart();
+        // 去程到回收的边界至少显示一帧，回收期间不允许网络追赶压缩播放时间。
+        if (clientProgress < start) return Math.min(next, start);
+        float maximumStep = (1.0F - start) / MINIMUM_CLIENT_RETURN_TICKS;
+        return Math.min(next, Math.min(1.0F, clientProgress + maximumStep));
     }
 
     @Override

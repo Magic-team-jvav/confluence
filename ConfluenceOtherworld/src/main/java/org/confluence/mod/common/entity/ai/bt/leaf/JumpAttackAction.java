@@ -37,6 +37,12 @@ public final class JumpAttackAction extends BTNode {
     }
 
     @Override
+    public boolean canStart() {
+        LivingEntity target = mob.getTarget();
+        return target != null && target.isAlive() && canLaunch(target);
+    }
+
+    @Override
     public void start() {
         elapsedTicks = 0;
     }

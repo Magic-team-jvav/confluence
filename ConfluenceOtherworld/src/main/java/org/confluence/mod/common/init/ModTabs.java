@@ -1745,14 +1745,6 @@ public final class ModTabs {
                         pre_hardmode_broadswords.accept(SwordItems.PURPLE_PHASEBLADE.get());
                         pre_hardmode_broadswords.accept(SwordItems.WHITE_PHASEBLADE.get());
                         pre_hardmode_broadswords.accept(SwordItems.PINK_PHASEBLADE.get());
-                        pre_hardmode_broadswords.accept(SwordItems.RED_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.ORANGE_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.YELLOW_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.GREEN_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.BLUE_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.PURPLE_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.WHITE_PHASESABER.get());
-                        pre_hardmode_broadswords.accept(SwordItems.PINK_PHASESABER.get());
                         pre_hardmode_broadswords.accept(SwordItems.BROKEN_SWEET_SWORD.get());
                         pre_hardmode_broadswords.accept(SwordItems.SWEET_SWORD.get());
                         pre_hardmode_broadswords.accept(SwordItems.MURAMASA.get());
@@ -1760,6 +1752,14 @@ public final class ModTabs {
                         pre_hardmode_broadswords.accept(SwordItems.CROWBAR.get());
 
                         CreativeModeTab.Output hardmode_broadswords = GroupItem.belongsTo("hardmode_broadswords", output);
+                        hardmode_broadswords.accept(SwordItems.RED_PHASESABER.get());
+                        hardmode_broadswords.accept(SwordItems.ORANGE_PHASESABER.get());
+                        hardmode_broadswords.accept(SwordItems.YELLOW_PHASESABER.get());
+                        hardmode_broadswords.accept(SwordItems.GREEN_PHASESABER.get());
+                        hardmode_broadswords.accept(SwordItems.BLUE_PHASESABER.get());
+                        hardmode_broadswords.accept(SwordItems.PURPLE_PHASESABER.get());
+                        hardmode_broadswords.accept(SwordItems.WHITE_PHASESABER.get());
+                        pre_hardmode_broadswords.accept(SwordItems.PINK_PHASESABER.get());
                         hardmode_broadswords.accept(SwordItems.COBALT_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.PALLADIUM_SWORD.get());
                         hardmode_broadswords.accept(SwordItems.MYTHRIL_SWORD.get());

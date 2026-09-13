@@ -23,10 +23,10 @@ public final class WhipPolylineSamples {
         if (arc.totalLength() <= EPSILON) {
             return List.of();
         }
-        int count = (int) Math.floor((arc.totalLength() + EPSILON) / spacing);
+        int count = (int) Math.ceil(arc.totalLength() / spacing);
         ArrayList<Sample> result = new ArrayList<>(count);
-        for (int index = 1; index <= count; index++) {
-            result.add(arc.sample(Math.min(index * spacing, arc.totalLength())));
+        for (int index = 0; index < count; index++) {
+            result.add(arc.sample(Math.min((index + 1) * spacing, arc.totalLength())));
         }
         return List.copyOf(result);
     }

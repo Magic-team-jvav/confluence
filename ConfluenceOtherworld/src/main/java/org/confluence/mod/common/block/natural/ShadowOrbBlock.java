@@ -7,12 +7,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
@@ -45,8 +47,21 @@ public class ShadowOrbBlock extends Block {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        boolean removed = super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+        if (removed) onPlayerBroken(level, pos);
+        return removed;
+    }
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        boolean present = level.getBlockState(pos).is(this);
+        super.onBlockExploded(state, level, pos, explosion);
+        if (present && !level.getBlockState(pos).is(this) && explosion.getIndirectSourceEntity() instanceof Player)
+            onPlayerBroken(level, pos);
+    }
+
+    private void onPlayerBroken(Level level, BlockPos pos) {
         if (level instanceof ServerLevel serverLevel) {
             Vec3 center = pos.getCenter();
             ConfluenceData data = ConfluenceData.get(serverLevel);

@@ -165,6 +165,12 @@ public final class LittleHornet extends Hornet implements BossOwnedEntity {
         private int attackCooldown;
 
         @Override
+        public boolean canStart() {
+            LivingEntity target = getTarget();
+            return target != null && target.isAlive() && canAttack(target);
+        }
+
+        @Override
         public void start() {
             repathDelay = 0;
             attackCooldown = 0;
@@ -197,7 +203,7 @@ public final class LittleHornet extends Hornet implements BossOwnedEntity {
 
             double reach = getBbWidth() * 2.0F;
             double attackReachSqr = reach * reach + target.getBbWidth();
-            if (attackWindow && distanceToSqr(target) <= attackReachSqr && attackCooldown <= 0) {
+            if (attackWindow && distanceToSqr(target) <= attackReachSqr && attackCooldown <= 0 && getSensing().hasLineOfSight(target)) {
                 attackCooldown = ATTACK_INTERVAL;
                 swing(InteractionHand.MAIN_HAND);
                 doHurtTarget(target);

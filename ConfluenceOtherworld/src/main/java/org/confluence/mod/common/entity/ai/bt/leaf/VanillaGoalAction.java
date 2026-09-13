@@ -14,27 +14,27 @@ import java.util.Objects;
 public final class VanillaGoalAction extends BTNode {
     private final Goal goal;
     private boolean running;
+    private boolean prepared;
+    private boolean firstTick;
 
     public VanillaGoalAction(Goal goal) {
         this.goal = Objects.requireNonNull(goal, "goal");
     }
 
     @Override
-    public void start() {
-        running = goal.canUse();
-        if (running) {
-            goal.start();
-        }
+    public boolean canStart() {
+        prepared = goal.canUse();
+        return prepared;
     }
 
     @Override
-    public BTStatus tryPreempt(Runnable stopCurrent) {
-        if (!goal.canUse()) return BTStatus.FAILURE;
-        // 旧动作先释放导航，再让新动作建立路径；canUse 只调用一次。
-        stopCurrent.run();
-        running = true;
-        goal.start();
-        return execute();
+    public void start() {
+        running = prepared || goal.canUse();
+        prepared = false;
+        firstTick = true;
+        if (running) {
+            goal.start();
+        }
     }
 
     @Override
@@ -42,15 +42,18 @@ public final class VanillaGoalAction extends BTNode {
         if (!running) {
             return BTStatus.FAILURE;
         }
-        if (!goal.canContinueToUse()) {
+        // 刚启动时先执行一次，避免贴脸无路径或尚未离地的动作在首刻被提前结束。
+        if (!firstTick && !goal.canContinueToUse()) {
             return BTStatus.SUCCESS;
         }
+        firstTick = false;
         goal.tick();
         return BTStatus.RUNNING;
     }
 
     @Override
     public void stop() {
+        prepared = false;
         if (running) {
             goal.stop();
             running = false;

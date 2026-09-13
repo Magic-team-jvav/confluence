@@ -36,7 +36,7 @@ public final class FlyingPursuitAction extends BTNode {
         if (distanceSqr > 9.0 && angleBetween(movement, direction) > 0.6) {
             mob.setDeltaMovement(movement.scale(0.95));
         }
-        if (mob.getNavigation().isDone() || --repathTicks <= 0) {
+        if (--repathTicks <= 0) {
             mob.getNavigation().moveTo(targetPosition.x, targetPosition.y, targetPosition.z, navigationSpeed);
             repathTicks = REPATH_INTERVAL;
         }

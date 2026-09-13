@@ -365,7 +365,7 @@ public class TheTwins extends BaseBoss {
     /// 管理实体本身不移动，战斗范围必须覆盖两个眼球的实际位置。
     @Override
     protected double getCombatPlayerRange() {
-        return 64.0;
+        return 300.0;
     }
 
     /// 玩家死亡或多人目标切换时，把管理实体选出的权威目标同步给仍存活的两个眼球；目标为空

@@ -192,12 +192,9 @@ public class JellyFish extends BaseAquaticMonster {
         }
 
         @Override
-        public BTStatus tryPreempt(Runnable stopCurrent) {
+        public boolean canStart() {
             var target = jellyfish.getTarget();
-            if (target == null || !jellyfish.canAttack(target)) return BTStatus.FAILURE;
-            stopCurrent.run();
-            start();
-            return execute();
+            return target != null && target.isAlive() && jellyfish.canAttack(target);
         }
 
         @Override
@@ -211,7 +208,7 @@ public class JellyFish extends BaseAquaticMonster {
 
             if (phaseTicks < PURSUIT_TICKS) {
                 jellyfish.setAttackPhase(false);
-                if (--repathTicks <= 0 || jellyfish.getNavigation().isDone()) {
+                if (--repathTicks <= 0) {
                     jellyfish.getNavigation().moveTo(target, 1.0);
                     repathTicks = 10;
                 }

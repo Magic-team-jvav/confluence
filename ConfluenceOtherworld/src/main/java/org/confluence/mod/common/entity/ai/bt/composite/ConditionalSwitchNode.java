@@ -25,6 +25,11 @@ public final class ConditionalSwitchNode extends BTNode {
     }
 
     @Override
+    public boolean canStart() {
+        return selectBranch().canStart();
+    }
+
+    @Override
     public void start() {
         switchBranch(selectBranch());
     }

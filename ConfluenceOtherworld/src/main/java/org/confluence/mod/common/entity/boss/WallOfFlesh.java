@@ -254,10 +254,10 @@ public class WallOfFlesh extends BaseBoss {
 
     private void acquireFrontTarget() {
         LivingEntity current = getTarget();
-        if (isValidFrontTarget(current)) {
+        if (isValidFrontTarget(current) && (!(current instanceof Player player) || isValidCurrentCombatPlayer(player))) {
             return;
         }
-        setTarget(level().getEntitiesOfClass(Player.class, getPursuitBox(), this::isValidFrontTarget).stream().min(Comparator.comparingDouble(this::distanceToSqr)).orElse(null));
+        setTarget(findCombatPlayer());
     }
 
     @Override
@@ -274,14 +274,6 @@ public class WallOfFlesh extends BaseBoss {
     @Override
     protected boolean isValidCurrentCombatPlayer(Player player) {
         return super.isValidCurrentCombatPlayer(player) && isValidFrontTarget(player);
-    }
-
-    @Override
-    protected @Nullable Player findCombatPlayer() {
-        return level().getEntitiesOfClass(Player.class, getPursuitBox(), this::isValidFrontTarget)
-                .stream()
-                .min(Comparator.comparingDouble(this::distanceToSqr))
-                .orElse(null);
     }
 
     boolean isValidFrontTarget(@Nullable LivingEntity target) {

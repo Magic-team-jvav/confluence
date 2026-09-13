@@ -7,6 +7,6 @@ public class HasTargetCondition extends Condition<Mob> {
     @Override
     protected boolean test() {
         var target = mob.getTarget();
-        return target != null && target.isAlive();
+        return target != null && target.isAlive() && mob.canAttack(target);
     }
 }

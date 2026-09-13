@@ -4,7 +4,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
@@ -32,14 +31,10 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.data.saved.*;
-import org.confluence.mod.common.entity.RainbowSheep;
-import org.confluence.mod.common.entity.animal.*;
-import org.confluence.mod.common.entity.boss.*;
-import org.confluence.mod.common.entity.monster.*;
+import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
+import org.confluence.mod.common.entity.monster.DemonEye;
+import org.confluence.mod.common.entity.monster.VisualNeuron;
 import org.confluence.mod.common.entity.monster.humanoid.Zombie;
-import org.confluence.mod.common.entity.monster.slime.*;
-import org.confluence.mod.common.entity.npc.BaseNPC;
-import org.confluence.mod.common.entity.storage.StorageCompanionEntity;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModFluids;
@@ -420,12 +415,12 @@ public final class ModEvents {
 
         // 困难模式前 Boss 与独立战斗部件
         event.put(BossEntities.KING_SLIME.get(), CreatureAttributeBuilder.boss().maxHealth(728).armor(10).attackDamage(16.5).followRange(100).attackKnockback(2.2).knockbackResistance(1).build());
-        event.put(BossEntities.EYE_OF_CTHULHU.get(), CreatureAttributeBuilder.boss().maxHealth(728).armor(12).attackDamage(4).followRange(64).attackKnockback(2).knockbackResistance(1).build());
+        event.put(BossEntities.EYE_OF_CTHULHU.get(), CreatureAttributeBuilder.boss().maxHealth(728).armor(12).attackDamage(4).followRange(300).attackKnockback(2).knockbackResistance(1).build());
         event.put(BossEntities.SERVANT_OF_CTHULHU.get(), CreatureAttributeBuilder.boss().maxHealth(10).armor(1).attackDamage(3).followRange(30).attackKnockback(0.5).knockbackResistance(0.3).movementSpeed(0.25).build());
         event.put(BossEntities.EATER_OF_WORLDS.get(), CreatureAttributeBuilder.boss().maxHealth(54).armor(4).attackDamage(11.5).followRange(300).knockbackResistance(1).build());
         event.put(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), CreatureAttributeBuilder.boss().maxHealth(50).armor(6).attackDamage(4).followRange(300).knockbackResistance(1).build());
-        event.put(BossEntities.QUEEN_BEE.get(), CreatureAttributeBuilder.boss().maxHealth(1237).armor(8).attackDamage(14).followRange(64).attackKnockback(2).knockbackResistance(1).build());
-        event.put(BossEntities.BRAIN_OF_CTHULHU.get(), CreatureAttributeBuilder.boss().maxHealth(552).armor(14).attackDamage(14).followRange(64).attackKnockback(2.5).knockbackResistance(0.5).build());
+        event.put(BossEntities.QUEEN_BEE.get(), CreatureAttributeBuilder.boss().maxHealth(1237).armor(8).attackDamage(14).followRange(300).attackKnockback(2).knockbackResistance(1).build());
+        event.put(BossEntities.BRAIN_OF_CTHULHU.get(), CreatureAttributeBuilder.boss().maxHealth(552).armor(14).attackDamage(14).followRange(300).attackKnockback(2.5).knockbackResistance(0.5).build());
         event.put(BossEntities.SKELETRON.get(), CreatureAttributeBuilder.boss().maxHealth(2288).armor(10).attackDamage(18.2).followRange(300).knockbackResistance(1).build());
         event.put(BossEntities.SKELETRON_HAND.get(), CreatureAttributeBuilder.boss().maxHealth(405).armor(4).attackDamage(10).followRange(300).knockbackResistance(1).build());
         event.put(BossEntities.DUNGEON_GUARDIAN.get(), CreatureAttributeBuilder.boss().maxHealth(9999).armor(9999).attackDamage(9999).followRange(100).knockbackResistance(1).build());
@@ -434,16 +429,16 @@ public final class ModEvents {
 
         // 机械 Boss 与独立战斗部件
         event.put(BossEntities.THE_TWINS.get(), CreatureAttributeBuilder.boss().maxHealth(1).armor(10).attackDamage(15).followRange(0).knockbackResistance(1).build());
-        event.put(BossEntities.RETINAZER.get(), CreatureAttributeBuilder.boss().maxHealth(7800).armor(10).attackDamage(19).followRange(96).knockbackResistance(0.8).movementSpeed(0.3).flyingSpeed(0.6).build());
-        event.put(BossEntities.SPAZMATISM.get(), CreatureAttributeBuilder.boss().maxHealth(8970).armor(10).attackDamage(22).followRange(96).knockbackResistance(0.8).movementSpeed(0.3).flyingSpeed(0.6).build());
-        event.put(BossEntities.THE_DESTROYER.get(), CreatureAttributeBuilder.boss().maxHealth(23333).armor(2).attackDamage(35).followRange(96).knockbackResistance(1).build());
+        event.put(BossEntities.RETINAZER.get(), CreatureAttributeBuilder.boss().maxHealth(7800).armor(10).attackDamage(19).followRange(300).knockbackResistance(0.8).movementSpeed(0.3).flyingSpeed(0.6).build());
+        event.put(BossEntities.SPAZMATISM.get(), CreatureAttributeBuilder.boss().maxHealth(8970).armor(10).attackDamage(22).followRange(300).knockbackResistance(0.8).movementSpeed(0.3).flyingSpeed(0.6).build());
+        event.put(BossEntities.THE_DESTROYER.get(), CreatureAttributeBuilder.boss().maxHealth(23333).armor(2).attackDamage(35).followRange(300).knockbackResistance(1).build());
         event.put(BossEntities.THE_DESTROYER_PART.get(), CreatureAttributeBuilder.boss().maxHealth(23333).armor(2).attackDamage(66).followRange(96).knockbackResistance(1).build());
         event.put(BossEntities.THE_DESTROYER_PROBE.get(), CreatureAttributeBuilder.boss().maxHealth(100).armor(10).attackDamage(12).followRange(64).knockbackResistance(1).build());
-        event.put(BossEntities.SKELETRON_PRIME.get(), CreatureAttributeBuilder.boss().maxHealth(10920).armor(6).attackDamage(21).followRange(64).knockbackResistance(1).build());
+        event.put(BossEntities.SKELETRON_PRIME.get(), CreatureAttributeBuilder.boss().maxHealth(10920).armor(6).attackDamage(21).followRange(300).knockbackResistance(1).build());
         event.put(BossEntities.SKELETRON_PRIME_PART.get(), CreatureAttributeBuilder.boss().maxHealth(2080).armor(26).attackDamage(8).followRange(64).knockbackResistance(1).build());
 
         // 困难模式后期与扩展 Boss
-        event.put(BossEntities.PLANTERA.get(), CreatureAttributeBuilder.boss().maxHealth(10920).armor(36).attackDamage(26).followRange(64).knockbackResistance(1).build());
+        event.put(BossEntities.PLANTERA.get(), CreatureAttributeBuilder.boss().maxHealth(10920).armor(36).attackDamage(26).followRange(300).knockbackResistance(1).build());
         event.put(BossEntities.PLANTERA_HOOK.get(), CreatureAttributeBuilder.boss().maxHealth(1040).armor(24).attackDamage(15.6).followRange(64).knockbackResistance(1).build());
         event.put(BossEntities.PLANTERA_TENTACLE.get(), CreatureAttributeBuilder.boss().maxHealth(260).armor(20).attackDamage(15.6).followRange(64).knockbackResistance(1).build());
         event.put(BossEntities.LUNATIC_CULTIST.get(), CreatureAttributeBuilder.boss().maxHealth(700).armor(8).attackDamage(20).followRange(64).knockbackResistance(0.8).build());

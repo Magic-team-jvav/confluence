@@ -1,7 +1,9 @@
 package org.confluence.mod.common.block.common;
 
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -15,6 +17,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.confluence.mod.client.model.block.RelicBlockModel;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -24,6 +29,8 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.function.Consumer;
 
 public class RelicBlock extends HorizontalDirectionalBlock implements EntityBlock {
     private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
@@ -81,6 +88,22 @@ public class RelicBlock extends HorizontalDirectionalBlock implements EntityBloc
 
         public BItem(RelicBlock block) {
             super(block, new Properties());
+        }
+
+        @Override
+        public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+            consumer.accept(new IClientItemExtensions() {
+                private BlockEntityWithoutLevelRenderer renderer;
+
+                @Override
+                public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                    if (renderer == null) {
+                        ResourceLocation[] locations = RelicBlockModel.CACHE.get(getBlock());
+                        renderer = new SimpleGeoItemRenderer<BItem>(locations[0], locations[1], locations[2]).getCustomRenderer();
+                    }
+                    return renderer;
+                }
+            });
         }
 
         @Override

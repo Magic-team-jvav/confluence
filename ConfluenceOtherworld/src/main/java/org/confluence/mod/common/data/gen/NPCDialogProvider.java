@@ -274,8 +274,9 @@ public final class NPCDialogProvider implements DataProvider {
         consumer.accept(NpcEntities.OLD_MAN, npc()
                 .dialog("I cannot let you enter until you free me of my curse.", "如果你不解除我的诅咒，我是不会让你进的。")
                 .dialog("Stranger, do you possess the strength to defeat my master?", "陌生人，你是否拥有能打败我主人的力量？")
-                .dialog("Defeat my master, and I will grant you passage into the Dungeon.。", "打败我的主人，我就让你进入地牢。")
+                .dialog("Defeat my master, and I will grant you passage into the Dungeon.", "打败我的主人，我就让你进入地牢。")
                 .dialog("Come back at night if you wish to enter.", "你要想进去的话就晚上再来。")
+                .text("curse", "Curse", "诅咒")
                 .build());
     }
 

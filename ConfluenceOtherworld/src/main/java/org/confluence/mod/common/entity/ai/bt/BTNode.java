@@ -4,12 +4,10 @@ public abstract class BTNode {
     public void start() {}
     public void stop() {}
 
-    /// 具有启动条件的节点可先确认条件，再停止旧动作，最后接管导航。
-    public BTStatus tryPreempt(Runnable stopCurrent) {
-        start();
-        BTStatus status = execute();
-        if (status != BTStatus.FAILURE) stopCurrent.run();
-        return status;
+    /// 只判断启动条件或准备路径，不修改实体的导航、运动和攻击状态。
+    public boolean canStart() {
+        return true;
     }
+
     public abstract BTStatus execute();
 }

@@ -209,7 +209,7 @@ public final class GiantTortoise extends BaseMonster {
         private void updateDeceleration() {
             Vec3 velocity = getDeltaMovement();
             setDeltaMovement(velocity.x * 0.72, velocity.y, velocity.z * 0.72);
-            if (onGround() && velocity.horizontalDistanceSqr() < 0.01) {
+            if ((onGround() || isInWater()) && velocity.horizontalDistanceSqr() < 0.01) {
                 if (isInWater() && getTarget() != null && getTarget().isAlive()) {
                     spinCooldown = 0;
                     setPhase(Phase.WALK);

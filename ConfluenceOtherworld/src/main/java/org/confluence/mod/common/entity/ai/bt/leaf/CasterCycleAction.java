@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.ai.bt.leaf;
 
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -23,7 +22,7 @@ import java.util.function.Function;
 /// 弹幕种类、伤害和命中特效仍由具体实体提供的工厂决定。
 public final class CasterCycleAction extends BTNode {
     private static final AttributeModifier BATTLE_RANGE = new PortAttributeModifier(Confluence.asResource("caster_battle_range"), 1.0, PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE).unwrap();
-    public static final Timing DEFAULT_TIMING = new Timing(50, 217, 40, 33, 8, 83);
+    public static final Timing DEFAULT_TIMING = new Timing(1, 200, 20, 50, 8, 83);
     private final BaseCasterMonster caster;
     private final Function<LivingEntity, @Nullable Projectile> projectileFactory;
     private final TeleportNearTargetAction teleportAction;
@@ -33,14 +32,16 @@ public final class CasterCycleAction extends BTNode {
     private final int projectilesPerVolley;
     private final int projectileIntervalTicks;
     private int phase;
+    private int lastCastPhase;
     private int releaseDelay = -1;
     private int projectilesRemaining;
+    private boolean castStarted;
     private int hurtPauseTicks;
     private int initialTeleportTicks;
     private boolean needsInitialTeleport = true;
 
     public CasterCycleAction(BaseCasterMonster caster, Function<LivingEntity, @Nullable Projectile> projectileFactory) {
-        this(caster, projectileFactory, HurtResponse.PAUSE_THEN_TELEPORT, DEFAULT_TIMING, 3, 1, 1);
+        this(caster, projectileFactory, HurtResponse.CONTINUE_CYCLE, DEFAULT_TIMING, 3, 1, 1);
     }
 
     public CasterCycleAction(BaseCasterMonster caster, Function<LivingEntity, @Nullable Projectile> projectileFactory, HurtResponse hurtResponse) {
@@ -68,11 +69,11 @@ public final class CasterCycleAction extends BTNode {
     @Override
     public BTStatus execute() {
         LivingEntity target = caster.getTarget();
-        if (target == null || !target.isAlive()) {
+        if (target == null || !target.isAlive() || !caster.canAttack(target)) {
             removeBattleRange();
             phase = timing.cycleTicks();
-            releaseDelay = -1;
-            projectilesRemaining = 0;
+            lastCastPhase = phase;
+            cancelCast();
             hurtPauseTicks = 0;
             initialTeleportTicks = timing.initialTeleportTicks();
             needsInitialTeleport = true;
@@ -97,18 +98,22 @@ public final class CasterCycleAction extends BTNode {
             needsInitialTeleport = false;
         }
 
-        if (isCastPhase(phase)) {
-            releaseDelay = timing.releaseDelayTicks();
-            projectilesRemaining = projectilesPerVolley;
-            caster.swing(InteractionHand.MAIN_HAND, true);
-        }
-        if (--releaseDelay == 0) {
+        if (releaseDelay > 0 && --releaseDelay == 0) {
             Projectile projectile = projectileFactory.apply(target);
             if (projectile == null || !caster.level().addFreshEntity(projectile)) {
                 if (projectile != null) projectile.discard();
+                cancelCast();
                 return BTStatus.FAILURE;
             }
+            caster.playCastReleaseSound();
             if (--projectilesRemaining > 0) releaseDelay = projectileIntervalTicks;
+        }
+        if (isCastPhase(phase)) {
+            lastCastPhase = phase;
+            releaseDelay = timing.releaseDelayTicks();
+            projectilesRemaining = projectilesPerVolley;
+            castStarted = true;
+            caster.beginCastAnimation();
         }
 
         if (--phase <= 0) {
@@ -126,13 +131,17 @@ public final class CasterCycleAction extends BTNode {
     @Override
     public void stop() {
         removeBattleRange();
+        cancelCast();
     }
 
     /// 按具体法师的受击响应中断当前施法；共用的施法节奏数值保持不变。
     public void interruptAfterHurt() {
         if (hurtResponse == HurtResponse.IGNORE) return;
-        releaseDelay = -1;
-        projectilesRemaining = 0;
+        if (hurtResponse == HurtResponse.CONTINUE_CYCLE) {
+            phase = lastCastPhase - 1;
+            return;
+        }
+        cancelCast();
         needsInitialTeleport = false;
         if (hurtResponse == HurtResponse.TELEPORT_IMMEDIATELY) {
             teleportAction.start();
@@ -150,8 +159,18 @@ public final class CasterCycleAction extends BTNode {
                 && elapsed / timing.castIntervalTicks() < castsPerCycle;
     }
 
+    private void cancelCast() {
+        releaseDelay = -1;
+        projectilesRemaining = 0;
+        if (castStarted) {
+            caster.cancelCastAnimation();
+            castStarted = false;
+        }
+    }
+
     private void resetCycleState() {
         phase = timing.cycleTicks();
+        lastCastPhase = phase;
         initialTeleportTicks = timing.initialTeleportTicks();
     }
 
@@ -170,6 +189,7 @@ public final class CasterCycleAction extends BTNode {
     }
 
     public enum HurtResponse {
+        CONTINUE_CYCLE,
         PAUSE_THEN_TELEPORT,
         TELEPORT_IMMEDIATELY,
         IGNORE

@@ -13,6 +13,11 @@ public abstract class Condition<T extends Mob> extends BTNode {
     }
 
     @Override
+    public boolean canStart() {
+        return test();
+    }
+
+    @Override
     public BTStatus execute() {
         return test() ? BTStatus.SUCCESS : BTStatus.FAILURE;
     }

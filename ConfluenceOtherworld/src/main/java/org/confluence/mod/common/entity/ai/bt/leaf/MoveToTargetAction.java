@@ -8,8 +8,8 @@ public class MoveToTargetAction extends BTNode {
     protected final TargetNavigation navigation;
     protected final double speed;
     protected final double closeEnough;
-    private boolean moveAttempted;
     private boolean moveStarted;
+    private int repathTicks;
 
     public MoveToTargetAction(PathfinderMob mob, double speed, double closeEnough) {
         this(new PathfinderMobNavigation(mob), speed, closeEnough);
@@ -25,31 +25,33 @@ public class MoveToTargetAction extends BTNode {
     }
 
     @Override
+    public boolean canStart() {
+        return navigation.hasTarget();
+    }
+
+    @Override
     public void start() {
-        moveAttempted = false;
         moveStarted = false;
-        if (navigation.hasTarget() && navigation.distanceToTargetSqr() > closeEnough * closeEnough) {
-            moveAttempted = true;
-            moveStarted = navigation.moveToTarget(speed);
-        }
+        repathTicks = 0;
     }
 
     @Override
     public BTStatus execute() {
         if (!navigation.hasTarget()) return BTStatus.FAILURE;
-        if (navigation.distanceToTargetSqr() <= closeEnough * closeEnough) return BTStatus.SUCCESS;
-        if (moveStarted && !navigation.isDone()) return BTStatus.RUNNING;
-        if (moveAttempted && !moveStarted) return BTStatus.FAILURE;
-        moveAttempted = true;
-        moveStarted = navigation.moveToTarget(speed);
-        return moveStarted ? BTStatus.RUNNING : BTStatus.FAILURE;
+        if (navigation.distanceToTargetSqr() <= closeEnough * closeEnough && navigation.canSeeTarget())
+            return BTStatus.SUCCESS;
+        if (repathTicks-- <= 0) {
+            moveStarted |= navigation.moveToTarget(speed);
+            repathTicks = 9;
+        }
+        return BTStatus.RUNNING;
     }
 
     @Override
     public void stop() {
         if (moveStarted) navigation.stop();
-        moveAttempted = false;
         moveStarted = false;
+        repathTicks = 0;
     }
 
     interface TargetNavigation {
@@ -57,7 +59,7 @@ public class MoveToTargetAction extends BTNode {
 
         double distanceToTargetSqr();
 
-        boolean isDone();
+        boolean canSeeTarget();
 
         boolean moveToTarget(double speed);
 
@@ -67,7 +69,7 @@ public class MoveToTargetAction extends BTNode {
     private record PathfinderMobNavigation(PathfinderMob mob) implements TargetNavigation {
         @Override
         public boolean hasTarget() {
-            return mob.getTarget() != null;
+            return mob.getTarget() != null && mob.getTarget().isAlive() && mob.canAttack(mob.getTarget());
         }
 
         @Override
@@ -76,8 +78,8 @@ public class MoveToTargetAction extends BTNode {
         }
 
         @Override
-        public boolean isDone() {
-            return mob.getNavigation().isDone();
+        public boolean canSeeTarget() {
+            return mob.getSensing().hasLineOfSight(mob.getTarget());
         }
 
         @Override

@@ -45,7 +45,7 @@ public class ChargeAttackAction extends BTNode {
     public BTStatus execute() {
         tick++;
         LivingEntity target = mob.getTarget();
-        if (target == null) return BTStatus.SUCCESS;
+        if (target == null || !target.isAlive() || !mob.canAttack(target)) return BTStatus.FAILURE;
 
         if (tick <= windupTicks) {
             Vec3 dir = target.position().subtract(mob.position()).normalize();
@@ -73,6 +73,8 @@ public class ChargeAttackAction extends BTNode {
 
     @Override
     public void stop() {
+        tick = 0;
+        lockedDirection = Vec3.ZERO;
         mob.setDeltaMovement(Vec3.ZERO);
         mob.hasImpulse = true;
     }

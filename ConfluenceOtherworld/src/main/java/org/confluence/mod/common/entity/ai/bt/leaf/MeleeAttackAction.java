@@ -23,16 +23,21 @@ public class MeleeAttackAction extends BTNode {
     }
 
     @Override
+    public boolean canStart() {
+        LivingEntity target = mob.getTarget();
+        return target != null && target.isAlive() && mob.canAttack(target) && mob.getSensing().hasLineOfSight(target)
+                && mob.distanceToSqr(target) <= attackRange * attackRange;
+    }
+
+    @Override
     public BTStatus execute() {
         long gameTime = mob.level().getGameTime();
         if (!cooldown.isReady(gameTime)) {
             return BTStatus.SUCCESS;
         }
-        LivingEntity target = mob.getTarget();
-        if (target != null && target.isAlive() && mob.canAttack(target) && mob.getSensing().hasLineOfSight(target)
-                && mob.distanceToSqr(target) <= attackRange * attackRange) {
+        if (canStart()) {
             mob.swing(InteractionHand.MAIN_HAND);
-            mob.doHurtTarget(target);
+            mob.doHurtTarget(mob.getTarget());
             cooldown.restart(gameTime, ATTACK_COOLDOWN);
         }
         return BTStatus.SUCCESS;

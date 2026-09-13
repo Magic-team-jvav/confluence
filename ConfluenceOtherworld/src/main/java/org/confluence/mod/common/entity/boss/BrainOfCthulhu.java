@@ -295,7 +295,14 @@ public class BrainOfCthulhu extends BaseBoss {
     /// 额外冲刺前会重新经过绕行段，不能直接在上一段冲刺结束的位置再次启动冲刺。
     private void tickPhaseTwoCycle() {
         LivingEntity target = getTarget();
-        if (target == null || !target.isAlive() || !canAttack(target)) return;
+        if (target == null || !target.isAlive() || !canAttack(target)) {
+            if (phaseTwoCurveStart != null || phaseTwoState == PhaseTwoState.DASHING) {
+                phaseTwoDashRemaining = phaseTwoDashCount() - 1;
+                enterPhaseTwoState(PhaseTwoState.STALKING);
+            }
+            setDeltaMovement(Vec3.ZERO);
+            return;
+        }
 
         switch (phaseTwoState) {
             case TRANSFORMING -> {

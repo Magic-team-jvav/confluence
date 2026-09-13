@@ -74,9 +74,12 @@ public class ModFoodPropertiesBuilder {
     }
 
     public FoodProperties build() {
+        if (nutrition == 0 && saturation > 0.0F)
+            throw new IllegalArgumentException("Saturation without nutrition cannot be represented by a vanilla saturation modifier");
+        float saturationModifier = nutrition == 0 ? 0.0F : saturation / (nutrition * 2.0F);
         FoodProperties.Builder builder = new FoodProperties.Builder()
                 .nutrition(nutrition)
-                .saturationMod(saturation);
+                .saturationMod(saturationModifier);
         if (canAlwaysEat) {
             builder.alwaysEat();
         }

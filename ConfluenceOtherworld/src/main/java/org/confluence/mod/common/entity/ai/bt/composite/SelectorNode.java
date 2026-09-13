@@ -10,6 +10,7 @@ import java.util.List;
 public class SelectorNode extends BTNode {
     protected final List<BTNode> children;
     protected int currentIndex;
+    private int preparedIndex = -1;
 
     public SelectorNode(List<BTNode> children) {
         this.children = children;
@@ -17,18 +18,28 @@ public class SelectorNode extends BTNode {
     }
 
     @Override
+    public boolean canStart() {
+        preparedIndex = -1;
+        for (int index = 0; index < children.size(); index++) {
+            if (children.get(index).canStart()) {
+                preparedIndex = index;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public void start() {
-        currentIndex = children.isEmpty() ? -1 : 0;
+        currentIndex = preparedIndex >= 0 ? preparedIndex : children.isEmpty() ? -1 : 0;
+        preparedIndex = -1;
         if (currentIndex >= 0) children.get(currentIndex).start();
     }
 
     @Override
     public BTStatus execute() {
         if (currentIndex < 0) return BTStatus.FAILURE;
-        BTStatus preemptingStatus = tryHigherPriorityChildren();
-        if (preemptingStatus != null) {
-            return preemptingStatus;
-        }
+        tryHigherPriorityChildren();
 
         while (currentIndex < children.size()) {
             BTNode child = children.get(currentIndex);
@@ -51,28 +62,20 @@ public class SelectorNode extends BTNode {
     }
 
     /// 只探测当前运行分支之前的节点，保持当前分支自身的运行状态不被重置。
-    private BTStatus tryHigherPriorityChildren() {
+    private void tryHigherPriorityChildren() {
         for (int index = 0; index < currentIndex; index++) {
             BTNode candidate = children.get(index);
-            BTStatus status = candidate.tryPreempt(children.get(currentIndex)::stop);
-            if (status == BTStatus.FAILURE) {
-                candidate.stop();
-                continue;
-            }
-
-            if (status == BTStatus.SUCCESS) {
-                candidate.stop();
-                currentIndex = -1;
-            } else {
-                currentIndex = index;
-            }
-            return status;
+            if (!candidate.canStart()) continue;
+            children.get(currentIndex).stop();
+            currentIndex = index;
+            candidate.start();
+            return;
         }
-        return null;
     }
 
     @Override
     public void stop() {
+        preparedIndex = -1;
         if (currentIndex >= 0 && currentIndex < children.size()) {
             children.get(currentIndex).stop();
             currentIndex = -1;

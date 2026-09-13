@@ -265,8 +265,8 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
     /// 外观和命中特性由注册类型固定，禁止在运行期间临时切换。
     public enum Variant {
         HILL_FIRE_BOUND(ParticleTypes.FLAME, false, false, 100),
-        WATER_SPHERE(ParticleTypes.SPLASH, true, true, 100),
-        CHAOS_BALL(ParticleTypes.PORTAL, true, true, 100),
+        WATER_SPHERE(ParticleTypes.SOUL, true, true, 100),
+        CHAOS_BALL(ParticleTypes.SOUL, true, true, 100),
         SHADOW_BEAM(ParticleTypes.SOUL_FIRE_FLAME, false, false, 100),
         INFERNO_BOLT(ParticleTypes.FLAME, true, false, 400),
         LOST_SOUL(ParticleTypes.SOUL, true, false, 50),

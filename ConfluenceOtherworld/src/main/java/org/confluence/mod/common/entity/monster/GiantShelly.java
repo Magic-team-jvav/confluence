@@ -168,7 +168,7 @@ public final class GiantShelly extends BaseMonster {
     private void updateDeceleration() {
         Vec3 velocity = getDeltaMovement();
         setDeltaMovement(velocity.x * 0.72, velocity.y, velocity.z * 0.72);
-        if (!onGround() || velocity.horizontalDistanceSqr() >= 0.01) return;
+        if ((!onGround() && !isInWater()) || velocity.horizontalDistanceSqr() >= 0.01) return;
         if (isInWater() && getTarget() != null && getTarget().isAlive()) {
             spinCooldown = 0;
             setPhase(Phase.WALK);

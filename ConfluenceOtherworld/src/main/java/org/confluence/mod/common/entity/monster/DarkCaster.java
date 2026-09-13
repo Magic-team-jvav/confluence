@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.leaf.CasterCycleAction;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
@@ -69,8 +67,8 @@ public class DarkCaster extends BaseCasterMonster {
 
     /// 同一法师状态机中确实存在的攻击档案，不承载属性或外观数据。
     public enum Profile {
-        DARK_CASTER(CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT, null, 3, 1, 1),
-        GOBLIN_SORCERER(CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT, null, 3, 1, 1),
+        DARK_CASTER(CasterCycleAction.HurtResponse.CONTINUE_CYCLE, null, 3, 1, 1),
+        GOBLIN_SORCERER(CasterCycleAction.HurtResponse.CONTINUE_CYCLE, null, 3, 1, 1),
         NECROMANCER(CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT, NECROMANCER_TIMING, 5, 1, 1),
         DIABOLIST(CasterCycleAction.HurtResponse.TELEPORT_IMMEDIATELY, DIABOLIST_TIMING, 3, 1, 1),
         RAGGED_CASTER(CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT, RAGGED_CASTER_TIMING, 3, 3, 7);

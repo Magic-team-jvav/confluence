@@ -12,6 +12,7 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 public final class JumpOverBlockAction extends BTNode {
     private final PathfinderMob mob;
     private final double speedMultiplier;
+    private Vec3 jumpImpulse;
 
     public JumpOverBlockAction(PathfinderMob mob, double speedMultiplier) {
         if (speedMultiplier <= 0.0) {
@@ -22,19 +23,27 @@ public final class JumpOverBlockAction extends BTNode {
     }
 
     @Override
-    public BTStatus execute() {
-        if (!mob.onGround()) return BTStatus.FAILURE;
+    public boolean canStart() {
+        jumpImpulse = null;
+        if (!mob.onGround()) return false;
         Path path = mob.getNavigation().getPath();
-        if (path == null || path.getNodeCount() <= path.getNextNodeIndex() + 1)
-            return BTStatus.FAILURE;
+        if (path == null || path.isDone()) return false;
         AttributeInstance jumpStrength = mob.getAttribute(Attributes.JUMP_STRENGTH_1211);
         double jumpHeight = (jumpStrength == null ? 0.42D : jumpStrength.getBaseValue()) * 4.0D;
         int nextY = path.getNextNode().y;
-        if (nextY <= mob.getY() || nextY >= mob.getY() + jumpHeight) return BTStatus.FAILURE;
+        if (nextY <= mob.getY() || nextY >= mob.getY() + jumpHeight) return false;
         Vec3 direction = Vec3.atBottomCenterOf(path.getNextNode().asBlockPos()).subtract(mob.position()).multiply(1.0, 0.0, 1.0);
-        if (direction.lengthSqr() < 1.0E-8) return BTStatus.FAILURE;
+        if (direction.lengthSqr() < 1.0E-8) return false;
         double speed = mob.getAttributeValue(Attributes.MOVEMENT_SPEED) * speedMultiplier;
-        Vec3 impulse = direction.normalize().scale(speed);
+        jumpImpulse = direction.normalize().scale(speed);
+        return true;
+    }
+
+    @Override
+    public BTStatus execute() {
+        if (jumpImpulse == null && !canStart()) return BTStatus.FAILURE;
+        Vec3 impulse = jumpImpulse;
+        jumpImpulse = null;
         mob.setDeltaMovement(impulse.x, mob.getDeltaMovement().y, impulse.z);
         mob.getJumpControl().jump();
         mob.hasImpulse = true;

@@ -8,9 +8,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.OldManNPC;
 import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
 import org.confluence.mod.network.c2s.NPCDialogSessionPacketC2S;
 import org.confluence.mod.network.c2s.OpenNPCTradePacketC2S;
+import org.confluence.mod.network.c2s.SummonSkeletronPacketC2S;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -59,7 +61,13 @@ public class NPCDialogScreen extends Screen {
         if (!(minecraft.level.getEntity(entityId) instanceof BaseNPC npc)) return;
         selectDialog(npc);
         int buttonY = height / 2 + 20;
-        if (canTrade) {
+        if (npc instanceof OldManNPC oldMan && oldMan.canSummonSkeletron()) {
+            addRenderableWidget(Button.builder(Component.translatable("dialogs.confluence.old_man.curse"), button -> {
+                SummonSkeletronPacketC2S.sendToServer(entityId);
+                onClose();
+            }).width(80).pos(width / 2 - 85, buttonY).build());
+            addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), button -> selectDialog(npc)).width(80).pos(width / 2 + 5, buttonY).build());
+        } else if (canTrade) {
             addRenderableWidget(Button.builder(Component.translatable("gui.confluence.shop"), button -> OpenNPCTradePacketC2S.sendToServer(entityId)).width(80).pos(width / 2 - 85, buttonY).build());
             addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), button -> selectDialog(npc)).width(80).pos(width / 2 + 5, buttonY).build());
         } else {

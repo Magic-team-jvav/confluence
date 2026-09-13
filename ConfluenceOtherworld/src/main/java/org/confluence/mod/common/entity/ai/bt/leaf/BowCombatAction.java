@@ -36,6 +36,7 @@ public final class BowCombatAction extends BTNode {
     private int attackCooldown;
     private int repathTicks;
     private int repositionTicks;
+    private boolean active;
 
     public BowCombatAction(BaseMonster mob, double movementSpeed, int normalAttackInterval, int hardAttackInterval, double attackRadius, int drawDuration, float arrowVelocity) {
         if (movementSpeed <= 0.0 || normalAttackInterval <= 0 || hardAttackInterval <= 0
@@ -52,7 +53,13 @@ public final class BowCombatAction extends BTNode {
     }
 
     @Override
+    public boolean canStart() {
+        return hasCombatTarget();
+    }
+
+    @Override
     public void start() {
+        active = hasCombatTarget();
         visibleTicks = 0;
         lostSightTicks = 0;
         attackCooldown = -1;
@@ -63,8 +70,7 @@ public final class BowCombatAction extends BTNode {
     @Override
     public BTStatus execute() {
         LivingEntity target = mob.getTarget();
-        if (target == null || !target.isAlive() || !isHoldingBow()) {
-            stopCombat();
+        if (!hasCombatTarget()) {
             return BTStatus.FAILURE;
         }
 
@@ -82,7 +88,7 @@ public final class BowCombatAction extends BTNode {
 
         if (distanceSqr > attackRadiusSqr || visibleTicks < REQUIRED_VISIBLE_TICKS) {
             repositionTicks = 0;
-            if (--repathTicks <= 0 || mob.getNavigation().isDone()) {
+            if (--repathTicks <= 0) {
                 mob.getNavigation().moveTo(target, movementSpeed);
                 repathTicks = 10;
             }
@@ -119,8 +125,15 @@ public final class BowCombatAction extends BTNode {
 
     @Override
     public void stop() {
+        if (!active) return;
         stopCombat();
         mob.getNavigation().stop();
+        active = false;
+    }
+
+    private boolean hasCombatTarget() {
+        LivingEntity target = mob.getTarget();
+        return target != null && target.isAlive() && mob.canAttack(target) && isHoldingBow();
     }
 
     private boolean isHoldingBow() {

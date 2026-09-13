@@ -112,6 +112,12 @@ public class Hornet extends BaseFlyingMonster {
         private boolean aiming;
 
         @Override
+        public boolean canStart() {
+            LivingEntity target = getTarget();
+            return target != null && target.isAlive() && canAttack(target);
+        }
+
+        @Override
         public void start() {
             aiming = false;
         }

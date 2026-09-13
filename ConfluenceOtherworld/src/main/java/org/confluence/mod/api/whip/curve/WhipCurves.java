@@ -6,11 +6,12 @@ import java.util.List;
 
 /// 本体提供的鞭子轨迹预设。
 ///
-/// 以 1.21 的轨迹为基础，普通挥鞭仅提前鞭梢下抽，不改变伸出距离和总时长。
+/// 普通挥鞭保留去程，下抽后沿下方弧线完整收回。
 public final class WhipCurves {
     public static final float SNAP_PROGRESS = 0.60F;
     public static final float SWEEP_SOUND_PROGRESS = 0.3F;
-    public static final WhipCurve DEFAULT = new KeyframedWhipCurve(List.of(
+    private static final double RETURN_START = 0.68;
+    private static final WhipCurve OUTBOUND = new KeyframedWhipCurve(List.of(
             new WhipFrame(0.0F, List.of(Vec3.ZERO, Vec3.ZERO, Vec3.ZERO)),
             new WhipFrame(0.25F, List.of(Vec3.ZERO, new Vec3(-1.0 / 16.0, 0.0, 0.0), new Vec3(-4.0 / 16.0, 3.0 / 16.0, 0.0))),
             new WhipFrame(0.50F, List.of(Vec3.ZERO, new Vec3(-4.0 / 16.0, 0.0, 0.0), new Vec3(-14.0 / 16.0, 3.0 / 16.0, 0.0))),
@@ -21,6 +22,7 @@ public final class WhipCurves {
             new WhipFrame(0.75F, List.of(Vec3.ZERO, new Vec3(-5.0 / 16.0, 0.0, 0.0), new Vec3(-16.0 / 16.0, -4.0 / 16.0, 0.0))),
             new WhipFrame(1.0F, List.of(Vec3.ZERO, Vec3.ZERO, Vec3.ZERO))
     ));
+    public static final WhipCurve DEFAULT = new RetractingWhipCurve(OUTBOUND, RETURN_START);
 
     /// 1.21“横扫之鞭”附魔触发时使用的宽幅挥动轨迹。
     public static final WhipCurve SWEEP = new KeyframedWhipCurve(List.of(
@@ -34,4 +36,5 @@ public final class WhipCurves {
     ));
 
     private WhipCurves() {}
+
 }

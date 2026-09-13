@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.ai.bt.composite;
 
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.ai.bt.condition.Condition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,15 @@ public class SequenceNode extends BTNode {
     public SequenceNode(List<BTNode> children) {
         this.children = children;
         this.currentIndex = -1;
+    }
+
+    @Override
+    public boolean canStart() {
+        for (BTNode child : children) {
+            if (!child.canStart()) return false;
+            if (!(child instanceof Condition<?>)) break;
+        }
+        return true;
     }
 
     @Override

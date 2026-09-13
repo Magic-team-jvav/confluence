@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.ai.bt.leaf;
 
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
+import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -23,6 +24,7 @@ public class RandomSwimAction extends BTNode {
     private final int verticalRange;
     private int ticks;
     private boolean pathStarted;
+    private Path preparedPath;
 
     public RandomSwimAction(PathfinderMob mob, double speed, int horizontalRange, int verticalRange) {
         if (speed <= 0.0 || horizontalRange <= 0 || verticalRange <= 0) {
@@ -35,12 +37,17 @@ public class RandomSwimAction extends BTNode {
     }
 
     @Override
+    public boolean canStart() {
+        Vec3 target = BehaviorUtils.getRandomSwimmablePos(mob, horizontalRange, verticalRange);
+        preparedPath = target == null ? null : mob.getNavigation().createPath(target.x, target.y, target.z, 0);
+        return preparedPath != null;
+    }
+
+    @Override
     public void start() {
         ticks = 0;
-        // 候选点生成和启动路径必须同时成功，execute 才进入持续状态。
-        Vec3 target = BehaviorUtils.getRandomSwimmablePos(mob, horizontalRange, verticalRange);
-        pathStarted = target != null
-                && mob.getNavigation().moveTo(target.x, target.y, target.z, speed);
+        pathStarted = (preparedPath != null || canStart()) && mob.getNavigation().moveTo(preparedPath, speed);
+        preparedPath = null;
     }
 
     @Override
@@ -56,6 +63,7 @@ public class RandomSwimAction extends BTNode {
 
     @Override
     public void stop() {
+        preparedPath = null;
         if (pathStarted) {
             mob.getNavigation().stop();
             pathStarted = false;

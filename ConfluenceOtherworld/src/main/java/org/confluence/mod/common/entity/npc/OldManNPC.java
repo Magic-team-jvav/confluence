@@ -18,7 +18,7 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.ModUtils;
 
-/// 老人 —— 地牢入口的诅咒 NPC。夜晚交互召出骷髅王后消失。
+/// 老人 —— 地牢入口的诅咒 NPC。
 public class OldManNPC extends BaseNPC {
 
     public OldManNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile combatProfile) {
@@ -31,7 +31,7 @@ public class OldManNPC extends BaseNPC {
         return !(source.getEntity() instanceof Enemy) && super.hurt(source, amount);
     }
 
-    private boolean isNight() {
+    public boolean canSummonSkeletron() {
         long dayTime = level().dayTime() % 24000;
         return dayTime >= 12000 || dayTime < 200;
     }
@@ -39,19 +39,25 @@ public class OldManNPC extends BaseNPC {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
-            if (isNight()) {
-                // 召唤骷髅王
-                Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level());
-                skeletron.finalizeSpawn((ServerLevel) level(), level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.EVENT, null, null);
-                ModUtils.summonBoss((ServerLevel) level(), blockPosition(), skeletron, serverPlayer);
-                NPCSpawner.INSTANCE.onNPCRemoved(this);
-                discard();
-            } else {
-                // 白天只显示对话
-                Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId()));
-            }
+            InteractionResult commonResult = handleCommonInteraction(serverPlayer, hand);
+            if (commonResult != null) return commonResult;
+            recordInteraction(serverPlayer);
+            Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId()));
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
+    }
+
+    public void summonSkeletron(ServerPlayer player) {
+        if (!canSummonSkeletron() || getInteractingPlayer() != player || player.level() != level() || !isAlive())
+            return;
+        ServerLevel serverLevel = (ServerLevel) level();
+        if (!serverLevel.getEntitiesOfClass(Skeletron.class, getBoundingBox().inflate(256.0), Skeletron::isAlive).isEmpty())
+            return;
+        Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level());
+        skeletron.finalizeSpawn(serverLevel, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.EVENT, null, null);
+        ModUtils.summonBoss(serverLevel, blockPosition(), skeletron, player);
+        NPCSpawner.INSTANCE.onNPCRemoved(this);
+        discard();
     }
 
     @Override

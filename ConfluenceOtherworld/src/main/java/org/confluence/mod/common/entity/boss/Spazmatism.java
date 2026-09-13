@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -206,7 +205,9 @@ public class Spazmatism extends AbstractTwinEye {
     }
 
     @Override
-    protected void onCombatProfileChanged() {
+    protected void resetCombatCycle() {
+        shotsRemaining = 0;
+        dashesRemaining = 0;
         beginApproach();
     }
 

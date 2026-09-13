@@ -255,9 +255,7 @@ public class Skeletron extends BaseBoss {
     /// 白天狂暴固定为最高速度；夜间普通难度保持较慢追击，专家及以上则根据
     /// 距离和剩余手数提高速度。
     private void updateSpinningMovement(LivingEntity target, boolean enraged) {
-        // 旋转阶段只做水平追击，保持从悬浮阶段带入的当前高度。
-        // 既不能追玩家脚底导致持续下降，也不能人为追加新的高度目标。
-        Vec3 direction = new Vec3(target.getX() - getX(), 0.0D, target.getZ() - getZ());
+        Vec3 direction = target.getBoundingBox().getCenter().subtract(getBoundingBox().getCenter());
         if (direction.lengthSqr() <= 1.0E-7) {
             setDeltaMovement(Vec3.ZERO);
             return;
@@ -284,7 +282,7 @@ public class Skeletron extends BaseBoss {
             speed = 0.2;
             maximumSpeed = 0.2;
         }
-        speed = Math.min(speed, maximumSpeed);
+        speed = Math.min(Math.min(speed, maximumSpeed), direction.length());
         setDeltaMovement(direction.normalize().scale(speed));
     }
 

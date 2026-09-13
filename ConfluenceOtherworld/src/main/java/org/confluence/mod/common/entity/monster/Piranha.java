@@ -15,6 +15,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+import org.confluence.mod.common.entity.ai.goal.AquaticRandomSwimmingGoal;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -53,7 +54,7 @@ public class Piranha extends BaseAquaticMonster {
     }
 
     protected Goal createStrollGoal() {
-        return new RandomSwimmingGoal(this, 1.0, 10);
+        return new AquaticRandomSwimmingGoal(this, 1.0, 10);
     }
 
     @Nullable

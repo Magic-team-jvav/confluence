@@ -456,7 +456,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         setNoGravity(true);
         Vec3 target = HandPositionUtils.getPalmPosition(player, 1.0F);
         Vec3 toOwner = target.subtract(position());
-        if (toOwner.lengthSqr() < 1) {
+        double distance = toOwner.length();
+        if (distance < 1) {
             if (!level().isClientSide()) {
                 discard();
             }
@@ -464,14 +465,16 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         }
         // 面朝玩家
         faceDirection(toOwner);
-        Vec3 dir = toOwner.normalize();
-        Vec3 motion = dir.scale(component.retractSpeed);
+        Vec3 dir = toOwner.scale(1.0 / distance);
+        // 单步位移不超过剩余距离：回收速度大于 2 格时，否则会一步跨过回收半径、
+        // 在手掌两侧来回跳跃而永远无法回收（浅角度贴墙立刻回收时尤为明显）
+        Vec3 motion = dir.scale(Math.min(component.retractSpeed, distance));
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
 
-        // 卡墙时瞬移绕过方块
+        // 卡墙时瞬移绕过方块（同样不越过手掌）
         if (horizontalCollision || verticalCollision) {
-            setPos(position().add(dir.scale(component.retractSpeed * 2)));
+            setPos(position().add(dir.scale(Math.min(component.retractSpeed * 2, distance))));
         }
     }
 

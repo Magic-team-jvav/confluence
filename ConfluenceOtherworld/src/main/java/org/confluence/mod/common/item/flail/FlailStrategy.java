@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -26,6 +27,7 @@ import org.confluence.mod.common.entity.projectile.Flail.FlowerProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.network.s2c.GuardianFlailBeamPacketS2C;
+import org.confluence.terra_curio.common.init.TCEffects;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -472,12 +474,29 @@ public interface FlailStrategy {
      * <h1>石巨人之拳攻击策略</h1>
      * 拳头延伸超过 9.375 图格后命中敌怪或方块时，以射弹为中心产生 12.5×12.5 图格的冲击波，
      * 对范围内敌怪造成 100% 武器伤害与击退（可穿透方块）。
+     * <p>
+     * 被拳头或其冲击波命中的敌怪均有 1/3 几率困惑 2 秒。
      */
     final class GolemFistAttackStrategy implements FlailStrategy {
         /** 触发冲击波所需的最小延伸距离（图格） */
         private static final double MIN_EXTENSION = 9.375;
         /** 冲击波范围边长（图格） */
         private static final double WAVE_SIZE = 12.5;
+        /** 困惑几率 */
+        private static final float CONFUSION_CHANCE = 1.0F / 3.0F;
+        /** 困惑持续时间（tick），2 秒 */
+        private static final int CONFUSION_DURATION = 40;
+
+        /**
+         * 1/3 几率使目标困惑 2 秒。
+         * <p>直接命中（由 {@link FlailComponent#onHit} 调用，覆盖拳头掠到的每一个敌怪）
+         * 与冲击波共用此逻辑。
+         */
+        public static void applyConfusion(Player player, LivingEntity target) {
+            if (target.getRandom().nextFloat() < CONFUSION_CHANCE) {
+                target.addEffect(new MobEffectInstance(TCEffects.CONFUSED.getDelegate(), CONFUSION_DURATION, 0));
+            }
+        }
 
         @Override
         public void onHitEntity(@NotNull BaseFlailEntity flail, @NotNull Player player,
@@ -511,16 +530,18 @@ public interface FlailStrategy {
             for (LivingEntity target : targets) {
                 if (target.hurt(source, damage)) {
                     VectorUtils.knockBackA2B(flail, target, component.knockback, 0.15f);
+                    applyConfusion(player, target);
                 }
             }
 
             level.playSound(null, flail.getX(), flail.getY(), flail.getZ(),
                     SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0F, 1.25F);
             if (level instanceof ServerLevel serverLevel) {
-                serverLevel.sendParticles(ParticleTypes.EXPLOSION_EMITTER,//TODO 使用专门的冲击波粒子
-                        flail.getX(), flail.getY() + 0.25, flail.getZ(),
-                        1, 0.0, 0.0, 0.0, 0.0);
-            }
+                serverLevel.sendParticles(                        
+                    new BlockParticleOption(ParticleTypes.BLOCK, net.minecraft.world.level.block.Blocks.COBBLESTONE.defaultBlockState()),
+                        flail.getX(), flail.getY() + 0.5, flail.getZ(),
+                        60, 4, 0.5, 4, 0.2);
+            }//TODO 使用专门的冲击波粒子
         }
     }
 }

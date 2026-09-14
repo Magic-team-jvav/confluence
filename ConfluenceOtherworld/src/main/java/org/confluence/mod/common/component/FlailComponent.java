@@ -11,6 +11,7 @@
         import org.confluence.mod.Confluence;
         import org.confluence.mod.common.init.ModEntities;
         import org.confluence.mod.common.init.ModSoundEvents;
+        import org.confluence.mod.common.item.flail.FlailStrategy;
 
         import java.util.function.BiConsumer;
 
@@ -343,6 +344,7 @@
                 .autoSwing()
                 .autoSwingMaxActive(1)
                 .retractOnHitEntity()
+                .onHit(FlailStrategy.GolemFistAttackStrategy::applyConfusion)
                 .sound(ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId())
                 .projType(ModEntities.FLAIL_ENTITY.getId())
                 .texture(Confluence.asResource("textures/entity/flail/golem_fist.png"))

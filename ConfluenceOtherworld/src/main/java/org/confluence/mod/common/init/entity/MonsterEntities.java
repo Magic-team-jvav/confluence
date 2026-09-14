@@ -83,7 +83,7 @@ public class MonsterEntities {
             "flying_fish", 0.9F, 0.9F,
             new FlyingFishMonster.PursuitProfile(0.95, 0.5, 0.02, 5));
     public static final RegistryObject<EntityType<FlyingFishMonster>> WANDERING_EYE_FISH = registerFlyingFish(
-            "wandering_eye_fish", 1.4F, 1.4F,
+            "wandering_eye_fish", 1.2F, 1.2F,
             new FlyingFishMonster.PursuitProfile(0.98, 2.2, 0.01, 10));
     public static final RegistryObject<EntityType<VisualNeuron>> VISUAL_NEURON = registerEntity("visual_neuron", EntityType.Builder.of(VisualNeuron::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<CaveBat>> GIANT_FLYING_FOX = registerEntity("giant_flying_fox", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.GIANT), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10));

@@ -722,7 +722,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.JUNGLE_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.JUNGLE_BAT.getId()));
         event.registerEntityRenderer(MonsterEntities.ICE_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_BAT.getId()));
         event.registerEntityRenderer(MonsterEntities.GIANT_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CAVE_BAT.getId()).withScale(1.5F));
-        event.registerEntityRenderer(MonsterEntities.GIANT_FLYING_FOX.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CAVE_BAT.getId()).withScale(1.8F));
+        event.registerEntityRenderer(MonsterEntities.GIANT_FLYING_FOX.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GIANT_FLYING_FOX.getId()).withScale(1.0F));
         event.registerEntityRenderer(MonsterEntities.HELL_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.HELL_BAT.getId()));
         event.registerEntityRenderer(MonsterEntities.SPORE_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SPORE_BAT.getId()));
         event.registerEntityRenderer(MonsterEntities.DRIPPLER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DRIPPLER.getId(), false, 2.0F, 0.0F));
@@ -730,7 +730,7 @@ public final class ModClientEvents {
         // 眼球鱼的 Head 与 body 是两个独立根骨骼，不是可单独转动的人形头部。
         // 若使用 GeoNormalModel 默认的转头映射，Head 会绕自身枢轴脱离身体。
         event.registerEntityRenderer(MonsterEntities.WANDERING_EYE_FISH.get(), c -> new GeoNormalRenderer<>(c,
-                new GeoNormalModel<>(MonsterEntities.WANDERING_EYE_FISH.getId(), false), true, 1.5F, 0.0F));
+                new GeoNormalModel<>(MonsterEntities.WANDERING_EYE_FISH.getId(), false), true, 1.2F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.VISUAL_NEURON.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("visual_neuron"), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.DEMON.getId(), 1.0F));
         event.registerEntityRenderer(MonsterEntities.VOODOO_DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.VOODOO_DEMON.getId(), 1.1F));

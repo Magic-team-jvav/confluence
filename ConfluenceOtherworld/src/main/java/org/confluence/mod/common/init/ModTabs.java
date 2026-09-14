@@ -1934,6 +1934,7 @@ public final class ModTabs {
                         jungle.accept(SpawnEggItems.SNATCHER_SPAWN_EGG.get());
                         jungle.accept(SpawnEggItems.LITTLE_HORNET_SPAWN_EGG.get());
                         jungle.accept(SpawnEggItems.GIANT_TORTOISE_SPAWN_EGG.get());
+                        jungle.accept(SpawnEggItems.GIANT_FLYING_FOX_SPAWN_EGG.get());
                         CreativeModeTab.Output ice = GroupItem.belongsTo("ice_entity", output);
                         ice.accept(SpawnEggItems.ICE_SLIME_SPAWN_EGG.get());
                         ice.accept(SpawnEggItems.SPIKED_ICE_SLIME_SPAWN_EGG.get());
@@ -2101,7 +2102,6 @@ public final class ModTabs {
                         misc.accept(SpawnEggItems.SLIMELING_SPAWN_EGG.get());
                         misc.accept(SpawnEggItems.ENCHANTED_SWORD_SPAWN_EGG.get());
                         misc.accept(SpawnEggItems.BASE_BONES_SPAWN_EGG.get());
-                        misc.accept(SpawnEggItems.GIANT_FLYING_FOX_SPAWN_EGG.get());
                         misc.accept(SpawnEggItems.POSSESS_ARMOR_VOID_VESSEL_SPAWN_EGG.get());
                     })
                     .withTabsBefore(SUMMONERS.getId())

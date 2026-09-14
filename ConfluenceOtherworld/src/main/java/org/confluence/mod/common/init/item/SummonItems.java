@@ -38,12 +38,12 @@ public class SummonItems {
             () -> new SummonItem(new Item.Properties(), SummonTypes.IMP, ImpSummon.SLOT_COST, ImpSummon.BASE_DAMAGE).setSound(ModSoundEvents.SUMMON_IMP));
     public static final PortDeferredItem<SummonItem> SNOW_FLINX_STAFF = ITEMS.register("snow_flinx_staff",
             () -> new SummonItem(new Item.Properties(), SummonTypes.SNOW_FLINX, SnowFlinxSummon.SLOT_COST, SnowFlinxSummon.BASE_DAMAGE));
-    public static final PortDeferredItem<SummonItem> SUMMON_WOODEN_SWORD_STAFF = registerSword("summon_wooden_sword_staff", 2, SummonTypes.SUMMON_WOODEN_SWORD);
-    public static final PortDeferredItem<SummonItem> SUMMON_STONE_SWORD_STAFF = registerSword("summon_stone_sword_staff", 3, SummonTypes.SUMMON_STONE_SWORD);
-    public static final PortDeferredItem<SummonItem> SUMMON_IRON_SWORD_STAFF = registerSword("summon_iron_sword_staff", 4, SummonTypes.SUMMON_IRON_SWORD);
-    public static final PortDeferredItem<SummonItem> SUMMON_GOLDEN_SWORD_STAFF = registerSword("summon_golden_sword_staff", 5, SummonTypes.SUMMON_GOLDEN_SWORD);
-    public static final PortDeferredItem<SummonItem> SUMMON_DIAMOND_SWORD_STAFF = registerSword("summon_diamond_sword_staff", 6, SummonTypes.SUMMON_DIAMOND_SWORD);
-    public static final PortDeferredItem<SummonItem> SUMMON_NETHERITE_SWORD_STAFF = registerSword("summon_netherite_sword_staff", 7, SummonTypes.SUMMON_NETHERITE_SWORD);
+    public static final PortDeferredItem<SummonItem> TERRAPRISMA_WOODEN = registerSword("summon_wooden_sword_staff", 2, SummonTypes.SUMMON_WOODEN_SWORD);
+    public static final PortDeferredItem<SummonItem> TERRAPRISMA_STONE = registerSword("summon_stone_sword_staff", 3, SummonTypes.SUMMON_STONE_SWORD);
+    public static final PortDeferredItem<SummonItem> TERRAPRISMA_IRON = registerSword("summon_iron_sword_staff", 4, SummonTypes.SUMMON_IRON_SWORD);
+    public static final PortDeferredItem<SummonItem> TERRAPRISMA_GOLDEN = registerSword("summon_golden_sword_staff", 5, SummonTypes.SUMMON_GOLDEN_SWORD);
+    public static final PortDeferredItem<SummonItem> TERRAPRISMA_DIAMOND = registerSword("summon_diamond_sword_staff", 6, SummonTypes.SUMMON_DIAMOND_SWORD);
+    public static final PortDeferredItem<SummonItem> TERRAPRISMA_NETHERITE = registerSword("summon_netherite_sword_staff", 7, SummonTypes.SUMMON_NETHERITE_SWORD);
     public static final PortDeferredItem<SummonItem> TERRAPRISMA = ITEMS.register("terraprisma",
             () -> new SummonItem(new Item.Properties(), SummonTypes.TERRAPRISMA, TerraprismaSummon.SLOT_COST, TerraprismaSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> STARDUST_DRAGON_STAFF = ITEMS.register("stardust_dragon_staff",

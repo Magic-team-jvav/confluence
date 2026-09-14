@@ -70,12 +70,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.SCULK_WISP_STAFF.get(), "Sculk Wisp Staff");
         add(SummonItems.IMP_STAFF.get(), "Imp Staff");
         add(SummonItems.SNOW_FLINX_STAFF.get(), "Flinx Staff");
-        add(SummonItems.SUMMON_WOODEN_SWORD_STAFF.get(), "Wooden Sword Staff");
-        add(SummonItems.SUMMON_STONE_SWORD_STAFF.get(), "Stone Sword Staff");
-        add(SummonItems.SUMMON_IRON_SWORD_STAFF.get(), "Iron Sword Staff");
-        add(SummonItems.SUMMON_GOLDEN_SWORD_STAFF.get(), "Golden Sword Staff");
-        add(SummonItems.SUMMON_DIAMOND_SWORD_STAFF.get(), "Diamond Sword Staff");
-        add(SummonItems.SUMMON_NETHERITE_SWORD_STAFF.get(), "Netherite Sword Staff");
+        add(SummonItems.TERRAPRISMA_WOODEN.get(), "Wooden Sword Staff");
+        add(SummonItems.TERRAPRISMA_STONE.get(), "Stone Sword Staff");
+        add(SummonItems.TERRAPRISMA_IRON.get(), "Iron Sword Staff");
+        add(SummonItems.TERRAPRISMA_GOLDEN.get(), "Golden Sword Staff");
+        add(SummonItems.TERRAPRISMA_DIAMOND.get(), "Diamond Sword Staff");
+        add(SummonItems.TERRAPRISMA_NETHERITE.get(), "Netherite Sword Staff");
         add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
         add("entity.confluence.finch_baby", "Baby Finch");

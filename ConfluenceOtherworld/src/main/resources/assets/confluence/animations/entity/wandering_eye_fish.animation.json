@@ -3,68 +3,84 @@
 	"animations": {
 		"fly": {
 			"loop": true,
-			"animation_length": 0.32,
+			"animation_length": 0.375,
 			"bones": {
-				"wing": {
+				"bone": {
 					"rotation": {
 						"0.0": {
-							"vector": [-85, 0, 0],
-							"easing": "easeOutQuint"
+							"vector": [0, 0, 27.5]
 						},
-						"0.16": {
-							"vector": [0, 0, 0],
-							"easing": "easeOutQuad"
+						"0.125": {
+							"vector": [0, 0, -15],
+							"easing": "easeOutQuart"
 						},
-						"0.28": {
-							"vector": [-85, 0, 0],
-							"easing": "easeOutQuad"
-						}
-					},
-					"position": {
-						"0.0": {
-							"vector": [0, 2.25, -0.5],
-							"easing": "easeOutQuint"
-						},
-						"0.16": {
-							"vector": [0, 0, 0.75],
-							"easing": "easeOutQuad"
-						},
-						"0.28": {
-							"vector": [0, 2.25, -0.5],
-							"easing": "easeOutQuint"
+						"0.375": {
+							"vector": [0, 0, 27.5],
+							"easing": "easeOutQuart"
 						}
 					}
 				},
-				"body2": {
+				"bone2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, -35]
+						},
+						"0.125": {
+							"vector": [0, 0, 17.5],
+							"easing": "easeOutQuart"
+						},
+						"0.375": {
+							"vector": [0, 0, -35],
+							"easing": "easeOutQuart"
+						}
+					}
+				},
+				"bone5": {
+					"rotation": {
+						"0.0": {
+							"vector": [20, 0, 0]
+						},
+						"0.1667": {
+							"vector": [-20, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.375": {
+							"vector": [20, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					}
+				},
+				"bone4": {
+					"rotation": {
+						"0.0": {
+							"vector": [10, 0, 0]
+						},
+						"0.1667": {
+							"vector": [-10, 0, 0],
+							"easing": "easeOutQuart"
+						},
+						"0.375": {
+							"vector": [10, 0, 0],
+							"easing": "easeOutQuart"
+						}
+					}
+				},
+				"bone6": {
 					"rotation": {
 						"0.0": {
 							"vector": [0, 0, 0]
 						},
-						"0.16": {
-							"vector": [-21.69054, -0.20793, 0.61529],
-							"easing": "easeOutQuad"
+						"0.1667": {
+							"vector": [-7.5, 0, 0],
+							"easing": "easeOutQuart"
 						},
-						"0.28": {
-							"vector": [17.5, 0, 0],
-							"easing": "easeOutQuad"
-						}
-					},
-					"position": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.16": {
-							"vector": [0, 1, 2.25],
-							"easing": "easeOutQuad"
-						},
-						"0.28": {
-							"vector": [0, -1.5, 0],
-							"easing": "easeOutQuad"
+						"0.375": {
+							"vector": [7.5, 0, 0],
+							"easing": "easeOutQuart"
 						}
 					}
 				}
 			}
 		}
-	},
-	"geckolib_format_version": 2
+	}
 }

@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootParams;
-import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.mixed.ILibExtraSyncedData;
 import org.confluence.lib.network.s2c.SetEntityDataPacketS2C;
 import org.confluence.mod.mixed.IFishingHook;
 import org.spongepowered.asm.mixin.Final;
@@ -52,10 +52,7 @@ public abstract class FishingHookMixin implements IFishingHook {
 
     @Override
     public void confluence$setData(byte dataId, Object o) {
-        FishingHook self = confluence$self();
-        if (!self.level().isClientSide) {
-            ConfluenceMagicLib.NETWORK_HANDLER.sendToPlayersTrackingEntity(self, new SetEntityDataPacketS2C(self.getId(), new SetEntityDataPacketS2C.Entry(dataId, o)));
-        }
+        ILibExtraSyncedData.defaultSetData(confluence$self(), dataId, o);
         this.confluence$lavaHook = (boolean) o;
     }
 

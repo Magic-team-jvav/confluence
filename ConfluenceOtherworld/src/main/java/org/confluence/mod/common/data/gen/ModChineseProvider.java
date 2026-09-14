@@ -2886,6 +2886,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.ECTOPLASM.get(), "灵气");
         add(MaterialItems.FORBIDDEN_FRAGMENT.get(), "禁忌碎片");
         add(MaterialItems.FROST_CORE.get(), "寒霜核");
+        add(MaterialItems.TURTLE_SHELL.get(), "陆龟壳");
         add(MaterialItems.MECHANICAL_WHEEL_PIECE.get(), "机械车轮片");
         add(MaterialItems.MECHANICAL_WAGON_PIECE.get(), "机械车体片");
         add(MaterialItems.MECHANICAL_BATTERY_PIECE.get(), "机械电池片");

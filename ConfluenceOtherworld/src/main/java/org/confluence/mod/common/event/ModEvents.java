@@ -235,9 +235,9 @@ public final class ModEvents {
         event.put(MonsterEntities.EATER_OF_SOULS.get(), CreatureAttributeBuilder.creature().maxHealth(20).armor(6).attackDamage(11).followRange(30).attackKnockback(0.5).knockbackResistance(0.1).build());
         event.put(MonsterEntities.CRIMERA.get(), CreatureAttributeBuilder.creature().maxHealth(20).armor(6).attackDamage(11).followRange(30).attackKnockback(0.5).knockbackResistance(0.1).build());
         event.put(MonsterEntities.CURSED_SKULL.get(), CreatureAttributeBuilder.creature().maxHealth(21).armor(6).attackDamage(18).followRange(32).attackKnockback(1).knockbackResistance(0.82).build());
-        event.put(MonsterEntities.CORRUPTOR.get(), CreatureAttributeBuilder.creature().maxHealth(156).armor(18).attackDamage(32).followRange(48).attackKnockback(1).knockbackResistance(0.73).build());
-        event.put(MonsterEntities.SLIMER.get(), CreatureAttributeBuilder.creature().maxHealth(156).armor(20).attackDamage(45).followRange(48).attackKnockback(1).knockbackResistance(0.73).build());
-        event.put(MonsterEntities.WINGLESS_SLIMER.get(), CreatureAttributeBuilder.slime().maxHealth(234).armor(20).attackDamage(45).build());
+        event.put(MonsterEntities.CORRUPTOR.get(), CreatureAttributeBuilder.creature().maxHealth(120).armor(32).attackDamage(32).followRange(48).attackKnockback(1).knockbackResistance(0.51).build());
+        event.put(MonsterEntities.SLIMER.get(), CreatureAttributeBuilder.creature().maxHealth(31).armor(20).attackDamage(23).followRange(48).attackKnockback(1).knockbackResistance(0.28).build());
+        event.put(MonsterEntities.WINGLESS_SLIMER.get(), CreatureAttributeBuilder.slime().maxHealth(46).armor(20).attackDamage(23).followRange(48).attackKnockback(1).knockbackResistance(0.3).build());
         event.put(MonsterEntities.ENCHANTED_SWORD.get(), CreatureAttributeBuilder.creature().maxHealth(208).armor(20).attackDamage(41).followRange(48).attackKnockback(1).knockbackResistance(0.82).build());
         event.put(MonsterEntities.GREEN_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(9).armor(0).attackDamage(3).build());
         event.put(MonsterEntities.BLUE_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(16).armor(2).attackDamage(4).build());
@@ -250,7 +250,7 @@ public final class ModEvents {
         event.put(MonsterEntities.LAVA_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(30).armor(10).attackDamage(10).build());
         event.put(MonsterEntities.LUMINOUS_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(93).armor(30).attackDamage(36.4).build());
         event.put(MonsterEntities.CRIMSLIME.get(), CreatureAttributeBuilder.slime().maxHealth(104).armor(26).attackDamage(31.2).build());
-        event.put(MonsterEntities.SLIMELING.get(), CreatureAttributeBuilder.slime().maxHealth(45).armor(2).attackDamage(7).build());
+        event.put(MonsterEntities.SLIMELING.get(), CreatureAttributeBuilder.slime().maxHealth(51).armor(10).attackDamage(20).build());
         event.put(MonsterEntities.PURPLE_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(25).armor(6).attackDamage(5).build());
         event.put(MonsterEntities.RED_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(25).armor(4).attackDamage(5).build());
         event.put(MonsterEntities.TROPIC_SLIME.get(), CreatureAttributeBuilder.slime().maxHealth(13).armor(1).attackDamage(5).build());
@@ -277,8 +277,8 @@ public final class ModEvents {
         event.put(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), CreatureAttributeBuilder.creature().maxHealth(36).armor(12).attackDamage(14).build());
         event.put(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), CreatureAttributeBuilder.creature().maxHealth(62).armor(14).attackDamage(12).build());
         event.put(MonsterEntities.UNDEAD_VIKING.get(), CreatureAttributeBuilder.creature().maxHealth(36).armor(10).attackDamage(12).build());
-        event.put(MonsterEntities.GIANT_TORTOISE.get(), CreatureAttributeBuilder.creature().maxHealth(366).armor(30).attackDamage(55).followRange(48).attackKnockback(1).knockbackResistance(0.82).movementSpeed(0.2).build());
-        event.put(MonsterEntities.UNICORN.get(), CreatureAttributeBuilder.creature().maxHealth(416).armor(30).attackDamage(65).followRange(64).attackKnockback(1).knockbackResistance(0.82).movementSpeed(0.35).build());
+        event.put(MonsterEntities.GIANT_TORTOISE.get(), CreatureAttributeBuilder.creature().maxHealth(244).armor(30).attackDamage(41).followRange(48).attackKnockback(1).knockbackResistance(0.73).movementSpeed(0.2).build());
+        event.put(MonsterEntities.UNICORN.get(), CreatureAttributeBuilder.creature().maxHealth(208).armor(30).attackDamage(33).followRange(64).attackKnockback(1).knockbackResistance(0.73).movementSpeed(0.35).build());
         event.put(MonsterEntities.GASTROPOD.get(), CreatureAttributeBuilder.creature().maxHealth(143).armor(20).attackDamage(40).followRange(48).attackKnockback(1).knockbackResistance(0.64).build());
         event.put(MonsterEntities.WYVERN.get(), CreatureAttributeBuilder.creature().maxHealth(2080).armor(10).attackDamage(41).followRange(50).attackKnockback(1).knockbackResistance(0.28).build());
         event.put(MonsterEntities.ARCH_WYVERN.get(), CreatureAttributeBuilder.creature().maxHealth(3120).armor(18).attackDamage(52).followRange(64).attackKnockback(1).knockbackResistance(0.37).build());
@@ -290,7 +290,7 @@ public final class ModEvents {
         event.put(MonsterEntities.WITHER_BONE_SERPENT.get(), CreatureAttributeBuilder.creature().maxHealth(186).armor(15).attackDamage(22).build());
         event.put(MonsterEntities.DARK_CASTER.get(), CreatureAttributeBuilder.creature().maxHealth(26).armor(2).attackDamage(10).followRange(20).attackKnockback(1).knockbackResistance(0.82).build());
         event.put(MonsterEntities.GOBLIN_SORCERER.get(), CreatureAttributeBuilder.creature().maxHealth(20).armor(2).attackDamage(10).followRange(32).attackKnockback(1).knockbackResistance(0.46).build());
-        event.put(MonsterEntities.CHAOS_ELEMENTAL.get(), CreatureAttributeBuilder.creature().maxHealth(312).armor(24).attackDamage(41).followRange(48).attackKnockback(1).knockbackResistance(0.82).build());
+        event.put(MonsterEntities.CHAOS_ELEMENTAL.get(), CreatureAttributeBuilder.creature().maxHealth(192).armor(30).attackDamage(21).followRange(48).attackKnockback(1).knockbackResistance(0.64).build());
         event.put(MonsterEntities.NECROMANCER.get(), CreatureAttributeBuilder.creature().maxHealth(260).armor(24).attackDamage(46).followRange(48).attackKnockback(1).knockbackResistance(0.73).build());
         event.put(MonsterEntities.DIABOLIST.get(), CreatureAttributeBuilder.creature().maxHealth(260).armor(28).attackDamage(52).followRange(48).attackKnockback(1).knockbackResistance(0.73).build());
         event.put(MonsterEntities.RAGGED_CASTER.get(), CreatureAttributeBuilder.creature().maxHealth(260).armor(22).attackDamage(44).followRange(48).attackKnockback(1).knockbackResistance(0.73).build());
@@ -367,7 +367,7 @@ public final class ModEvents {
         event.put(MonsterEntities.SAND_POACHER.get(), CreatureAttributeBuilder.creature().maxHealth(166).armor(24).attackDamage(34).followRange(64).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).build());
         // 水怪
         event.put(MonsterEntities.PIRANHA.get(), CreatureAttributeBuilder.aquatic().maxHealth(15).armor(2).attackDamage(13).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).build());
-        event.put(MonsterEntities.BLOOD_FEEDER.get(), CreatureAttributeBuilder.creature().maxHealth(130).armor(12).attackDamage(30).followRange(32).attackKnockback(0.5).knockbackResistance(0.55).build());
+        event.put(MonsterEntities.BLOOD_FEEDER.get(), CreatureAttributeBuilder.creature().maxHealth(78).armor(20).attackDamage(26).followRange(32).attackKnockback(0.5).knockbackResistance(0.10).build());
         event.put(MonsterEntities.ARAPAIMA.get(), CreatureAttributeBuilder.aquatic().maxHealth(104).armor(30).attackDamage(39).followRange(32).movementSpeed(1.2).attackKnockback(0.1).knockbackResistance(0.1).build());
         event.put(MonsterEntities.BLUE_JELLYFISH.get(), CreatureAttributeBuilder.aquatic().maxHealth(17).armor(4).attackDamage(13).followRange(16).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).build());
         event.put(MonsterEntities.PINK_JELLYFISH.get(), CreatureAttributeBuilder.aquatic().maxHealth(36).armor(6).attackDamage(15).followRange(16).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).build());

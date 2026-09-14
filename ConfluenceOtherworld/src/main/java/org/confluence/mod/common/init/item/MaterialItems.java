@@ -179,6 +179,7 @@ public class MaterialItems {
     public static final PortDeferredItem<Item> ECTOPLASM = register("ectoplasm", ModRarity.YELLOW);
     public static final PortDeferredItem<Item> FORBIDDEN_FRAGMENT = register("forbidden_fragment", ModRarity.PINK);
     public static final PortDeferredItem<Item> FROST_CORE = register("frost_core", ModRarity.PINK);
+    public static final PortDeferredItem<Item> TURTLE_SHELL = register("turtle_shell", ModRarity.LIME);
     public static final PortDeferredItem<Item> MECHANICAL_WHEEL_PIECE = register("mechanical_wheel_piece", ModRarity.MASTER);
     public static final PortDeferredItem<Item> MECHANICAL_WAGON_PIECE = register("mechanical_wagon_piece", ModRarity.MASTER);
     public static final PortDeferredItem<Item> MECHANICAL_BATTERY_PIECE = register("mechanical_battery_piece", ModRarity.MASTER);

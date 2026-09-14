@@ -272,6 +272,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.PIXIE_DUST, silver1)
                 .add(MaterialItems.FORBIDDEN_FRAGMENT, gold1)
                 .add(MaterialItems.FROST_CORE, gold1)
+                .add(MaterialItems.TURTLE_SHELL, silver10)
                 .add(MaterialItems.MECHANICAL_WHEEL_PIECE, silver50)
                 .add(MaterialItems.MECHANICAL_WAGON_PIECE, silver50)
                 .add(MaterialItems.MECHANICAL_BATTERY_PIECE, silver50)

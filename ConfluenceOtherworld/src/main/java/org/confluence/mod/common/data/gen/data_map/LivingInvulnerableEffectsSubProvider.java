@@ -110,21 +110,26 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(MonsterEntities.ICE_MIMIC, poison, LibEffects.CONFUSED, ModEffects.HELLFIRE, ModEffects.FROST_BURN, ModEffects.FROSTBITE)
                 .add(MonsterEntities.CORRUPT_SLIME, MobEffects.POISON)
                 .add(MonsterEntities.ARAPAIMA, LibEffects.CONFUSED)
-                // TODO 腐化者
+                .add(MonsterEntities.CORRUPTOR, LibEffects.CONFUSED)
                 .add(MonsterEntities.CRIMSLIME, MobEffects.POISON)
+                .add(MonsterEntities.CHAOS_ELEMENTAL, MobEffects.POISON)
                 /*
-                TODO 猩红斧 诅咒锤 跳跳兽 沙漠幽魂 魔教徒 挖掘怪 沙虫 附魔剑 恶心浮游怪 腹足怪 巨型诅咒骷髅头 巨型真菌球怪 地狱装甲骷髅
-                 弹跳杰克南瓜灯 冰雪精 冰雪陆龟 灵液黏黏怪 冰雪人鱼 夜明蝙蝠 夜明史莱姆 丛林蜘蛛 熔岩蝙蝠 丛林蜥蜴 火星探测器 蛇发女妖 苔藓黄蜂 蛾
-                  装甲幻影魔 褴褛邪教徒法师 红魔鬼 岩石巨人 符文巫师 生锈装甲骷髅 骷髅弓箭手 骷髅突击手 骷髅狙击手 小史莱姆 恶翅史莱姆
-                   恶翅史莱姆(无翅膀) 骷髅特警 毒泥 吞世怪
+                TODO 猩红斧 诅咒锤 沙漠幽魂 魔教徒 挖掘怪 沙虫 附魔剑 恶心浮游怪 巨型诅咒骷髅头 巨型真菌球怪 地狱装甲骷髅
+                 弹跳杰克南瓜灯 冰雪精 冰雪陆龟 灵液黏黏怪 冰雪人鱼 夜明蝙蝠 丛林蜘蛛 熔岩蝙蝠 丛林蜥蜴 火星探测器 蛇发女妖 苔藓黄蜂 蛾
+                   褴褛邪教徒法师 红魔鬼 岩石巨人 符文巫师 生锈装甲骷髅 骷髅弓箭手 骷髅突击手 骷髅狙击手 骷髅特警 毒泥 吞世怪
                  */
                 .add(MonsterEntities.WYVERN, LibEffects.CONFUSED)
                 .add(MonsterEntities.GREEN_DUMPLING_SLIME, MobEffects.POISON)
                 .add(MonsterEntities.GOLDEN_SLIME, ModEffects.SHIMMER)
-                .add(MonsterEntities.GASTROPOD, MobEffects.POISON)
+                .add(MonsterEntities.GASTROPOD, LibEffects.CONFUSED, poison, ModEffects.BLEEDING)
                 .add(MonsterEntities.HERPLING, LibEffects.CONFUSED)
                 .add(MonsterEntities.DERPLING, LibEffects.CONFUSED)
                 .add(MonsterEntities.SAND_POACHER, MobEffects.POISON)
+                .add(MonsterEntities.LUMINOUS_SLIME, MobEffects.POISON)
+                .add(MonsterEntities.POSSESS_ARMOR, poison_confused_hellfire)
+                .add(MonsterEntities.SLIMELING, MobEffects.POISON)
+                .add(MonsterEntities.SLIMER, MobEffects.POISON)
+                .add(MonsterEntities.WINGLESS_SLIMER, MobEffects.POISON)
                 //boss
                 .add(BossEntities.BRAIN_OF_CTHULHU, LibEffects.CONFUSED)
                 .add(BossEntities.EATER_OF_WORLDS, LibEffects.CONFUSED)

@@ -663,6 +663,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(7))
                 )
         );
+        add(NpcEntities.STYLIST.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.STYLISH_SCISSORS))
+                        .add(EmptyLootItem.emptyItem().setWeight(7))
+                )
+        );
         add(NpcEntities.DYE_TRADER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.EXOTIC_SCIMITAR))
@@ -1124,9 +1130,26 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9667))
                 )
         );
-        add(MonsterEntities.GIANT_TORTOISE.get(), LootTable.lootTable());
-        add(MonsterEntities.GIANT_FLYING_FOX.get(), batCommon());
-        add(MonsterEntities.CORRUPTOR.get(), LootTable.lootTable());
+        add(MonsterEntities.GIANT_TORTOISE.get(), LootTable.lootTable().withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.TURTLE_SHELL).setWeight(833))
+                        .add(EmptyLootItem.emptyItem().setWeight(9167))
+                )
+        );
+        add(MonsterEntities.GIANT_FLYING_FOX.get(), batCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.GRAPE))
+                        .add(EmptyLootItem.emptyItem().setWeight(39))
+                ));
+        add(MonsterEntities.CORRUPTOR.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.ROTTEN_CHUNK).setWeight(33).setQuality(1)).apply(random0To1)
+                        .add(EmptyLootItem.emptyItem().setWeight(67))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.VITAMINS).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+        );
         add(MonsterEntities.SLIMER.get(), LootTable.lootTable());
         add(MonsterEntities.WINGLESS_SLIMER.get(), corruptionSlimeLoot(-6522185));
         add(MonsterEntities.BLOOD_FEEDER.get(), LootTable.lootTable());
@@ -1137,7 +1160,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))
                         .apply(random0To1)));
-        add(MonsterEntities.CHAOS_ELEMENTAL.get(), LootTable.lootTable());
+        add(MonsterEntities.CHAOS_ELEMENTAL.get(), LootTable.lootTable()
+                // 混沌传送杖
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.APPLE_PIE).setWeight(67))
+                        .add(EmptyLootItem.emptyItem().setWeight(9933)).apply(random0To1)
+                )
+        );
         add(MonsterEntities.ENCHANTED_SWORD.get(), LootTable.lootTable());
         add(MonsterEntities.PALADIN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()

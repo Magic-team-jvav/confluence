@@ -59,6 +59,11 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_SPIN_ANGLE =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.FLOAT);
+    /**
+     * 发射模式同步客户端。
+     */
+    private static final EntityDataAccessor<Boolean> DATA_LAUNCH_MODE =
+            SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.BOOLEAN);
 
     // ── 运行时状态 ──
     public float spinAngle = 0.0F;
@@ -79,11 +84,6 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      */
     private int previousPhase = -1;
     /**
-     * 发射模式：为 {@code true} 时跳过 SPIN/STAY，仅走 THROWN→RETRACT 简化流程，
-     * 撞到方块或超出最大射程时立即进入 RETRACT（链刃、铁链血滴子、锚）。
-     */
-    private boolean launchMode = false;
-    /**
      * 渲染用：帧间平滑后的链条方向，由 {@code BaseFlailRenderer} 逐帧 lerp 更新
      */
     public Vec3 smoothedChainDir = null;
@@ -103,14 +103,18 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         return spinTickCounter;
     }
 
-    /** 是否为发射模式（跳过 SPIN/STAY，仅 THROWN→RETRACT） */
+    /**
+     * 是否为发射模式（跳过 SPIN/STAY，仅 THROWN→RETRACT）。
+     * <p>该标志同步到客户端：客户端据此走「撞墙即刻 RETRACT」分支，
+     * 而不会执行非发射型的反弹逻辑。
+     */
     public boolean isLaunchMode() {
-        return launchMode;
+        return entityData.get(DATA_LAUNCH_MODE);
     }
 
-    /** 设置发射模式（用于 Flairon 等动态切换形态的连枷） */
+    /** 设置发射模式（用于 Flairon 等动态切换形态的连枷）；会同步到客户端 */
     public void setLaunchMode(boolean launchMode) {
-        this.launchMode = launchMode;
+        entityData.set(DATA_LAUNCH_MODE, launchMode);
     }
 
     /** 获取当前攻击策略 */
@@ -151,7 +155,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     public void initLaunch(@NotNull Player owner, ItemStack weapon, @NotNull FlailComponent component) {
         setOwner(owner);
         this.cachedComponent = component;
-        this.launchMode = true;
+        setLaunchMode(true);
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
         launch(owner);
@@ -162,6 +166,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_PHASE, PHASE_SPIN);
         builder.define(DATA_SPIN_ANGLE, 0.0F);
+        builder.define(DATA_LAUNCH_MODE, false);
     }
 
     public int getPhase() {
@@ -215,7 +220,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (level().isClientSide() || getPhase() != PHASE_RETRACT) {
             return;
         }
-        if (launchMode) {
+        if (isLaunchMode()) {
             discard();
         } else {
             setPos(result.getLocation());
@@ -373,6 +378,16 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (blockHit == null) {
             setDeltaMovement(motion);
             move(MoverType.SELF, motion);
+
+            // 发射型连枷：射线没打中但移动被方块挡住（浅角度贴墙滑行）同样算撞墙，立刻收回。
+            // 非发射型不在此列，保留原有的浅角度反弹/贴墙特性。
+            if (isLaunchMode() && (horizontalCollision || verticalCollision)) {
+                if (!level().isClientSide()) {
+                    attackStrategy.onHitBlock(this, player, component);
+                    attackStrategy.onThrownToRetract(this, player, component);
+                }
+                setPhase(PHASE_RETRACT);
+            }
             return;
         }
 
@@ -385,7 +400,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         }
 
         // 投射型连枷（链刃、铁链血滴子等）：撞墙即刻变成 RETRACT，不做反弹、不进入 STAY。
-        if (launchMode) {
+        if (isLaunchMode()) {
             if (!level().isClientSide()) {
                 attackStrategy.onThrownToRetract(this, player, component);
             }
@@ -482,7 +497,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
             float baseDamage = Math.max(1.0F, totalAttack);
             float turbineBonus = TurbineEnchantments.getBonus(player, spinTickCounter);
             float finalDamage = baseDamage * damageMultiplier * (1.0F + turbineBonus);
-            if (launchMode) {
+            if (isLaunchMode()) {
                 finalDamage *= component.launchDamageRatio;
             }
             DamageSource source = ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, player);
@@ -558,7 +573,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
      * <p>用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。
      */
     public void playerDrop() {
-        if (launchMode) {
+        if (isLaunchMode()) {
             forceRetract();
             return;
         }
@@ -599,7 +614,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         if (tag.contains("StayDuration")) stayDuration = tag.getInt("StayDuration");
         if (tag.contains("BounceCount")) bounceCount = tag.getInt("BounceCount");
         if (tag.contains("PlayerDropped")) playerDropped = tag.getBoolean("PlayerDropped");
-        if (tag.contains("LaunchMode")) launchMode = tag.getBoolean("LaunchMode");
+        if (tag.contains("LaunchMode")) setLaunchMode(tag.getBoolean("LaunchMode"));
     }
 
     @Override
@@ -609,7 +624,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoAnimatab
         tag.putInt("StayDuration", stayDuration);
         tag.putInt("BounceCount", bounceCount);
         tag.putBoolean("PlayerDropped", playerDropped);
-        tag.putBoolean("LaunchMode", launchMode);
+        tag.putBoolean("LaunchMode", isLaunchMode());
     }
 
     @Override

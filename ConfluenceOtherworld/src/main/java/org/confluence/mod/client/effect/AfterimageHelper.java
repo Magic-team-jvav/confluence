@@ -16,15 +16,8 @@ import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
-import org.confluence.terraentity.entity.blur.AfterimageStyle;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /// 套装效果：穿戴指定套装的玩家移动时，身后留下短暂的黑白残影
 public final class AfterimageHelper {
@@ -82,25 +75,25 @@ public final class AfterimageHelper {
         TrailRenderer renderer = new TrailRenderer(event, player);
         Ghost[] ghosts = trail.toArray(Ghost[]::new);
         if (ghosts.length == 1) {
-            renderer.render(ghosts[0], AfterimageStyle.alphaAt(1.0F));
+            renderer.render(ghosts[0], /*AfterimageStyle.alphaAt(*/1.0F/*)*/);
             return;
         }
 
         // 相邻快照之间插值补帧，把离散的残影连成动态模糊
-        int lastSegment = (ghosts.length - 1) * AfterimageStyle.BLUR_STEPS;
+        int lastSegment = (ghosts.length - 1) * 16/*AfterimageStyle.BLUR_STEPS*/;
         int sample = 0;
         for (int i = 0; i < ghosts.length - 1; i++) {
             Ghost from = ghosts[i];
             Ghost to = ghosts[i + 1];
-            for (int step = 0; step < AfterimageStyle.BLUR_STEPS; step++, sample++) {
+            for (int step = 0; step < 16/*AfterimageStyle.BLUR_STEPS*/; step++, sample++) {
                 // step == 0 即记录下来的快照，保持原透明度；其余补帧残影压暗作为模糊过渡
                 float alpha = step > 0
-                        ? AfterimageStyle.interpolatedAlphaAt(sample / (float) lastSegment)
-                        : AfterimageStyle.alphaAt(sample / (float) lastSegment);
-                renderer.render(from.lerp(step / (float) AfterimageStyle.BLUR_STEPS, to), alpha);
+                        ? /*AfterimageStyle.interpolatedAlphaAt(*/sample / (float) lastSegment/*)*/
+                        : /*AfterimageStyle.alphaAt(*/sample / (float) lastSegment/*)*/;
+                renderer.render(from.lerp(step / (float) 16/*AfterimageStyle.BLUR_STEPS*/, to), alpha);
             }
         }
-        renderer.render(ghosts[ghosts.length - 1], AfterimageStyle.alphaAt(1.0F));
+        renderer.render(ghosts[ghosts.length - 1], /*AfterimageStyle.alphaAt(*/1.0F/*)*/);
     }
 
     /// 单帧的残影渲染上下文，复用玩家模型把每个插值残影画成纯黑剪影
@@ -132,7 +125,7 @@ public final class AfterimageHelper {
         }
 
         private void render(Ghost ghost, float alpha) {
-            int color = AfterimageStyle.colorAt(alpha);
+            int color = /*AfterimageStyle.colorAt(alpha)*/(int) alpha;
 
             model.setupAnim(player, ghost.limbSwing(), ghost.limbSwingAmount(), ghost.ageInTicks(),
                     Mth.wrapDegrees(ghost.headYaw() - ghost.bodyYaw()), ghost.headPitch());

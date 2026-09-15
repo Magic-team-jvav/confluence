@@ -18,6 +18,7 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.RegistryBuilder;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
 import org.confluence.terraentity.TerraEntity;
 import org.spongepowered.asm.mixin.Final;
@@ -48,7 +49,7 @@ public abstract class RegistryDataLoaderMixin {
 
         @Inject(method = "create", at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V"))
         private void modifyRegistry(CallbackInfoReturnable<Object> cir, @Local RegistryBuilder<T> builder) {
-            if (Registries.DIMENSION_TYPE.equals(key)) {
+            if (LibUtils.isDev() && Registries.DIMENSION_TYPE.equals(key)) {
                 builder.onAdd((registry, id, key, value) -> {
                     if (BuiltinDimensionTypes.END.equals(key)) {
                         TheEndBiomeHolder.modifyDimensionType((DimensionType) value);

@@ -1,56 +1,48 @@
-package org.confluence.mod.mixin.integration.terrablender;
+package org.confluence.mod.mixin.world.level.biome;
 
-import com.bawnorton.mixinsquared.TargetHandler;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.levelgen.WorldOptions;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
+import org.confluence.mod.common.worldgen.biome.injector.BiomeSourceHandler;
+import org.confluence.mod.common.worldgen.biome.injector.BiomeSourceInjector;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.util.OverworldUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Mixin(value = MultiNoiseBiomeSource.class, priority = 1100)
-public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBiomeSource {
-    @Unique
-    private List<Holder<Biome>> confluence$jungle;
+public abstract class MultiNoiseBiomeSourceMixin implements IMultiNoiseBiomeSource {
     @Unique
     private Pair<Holder<Biome>, Holder<Biome>> confluence$biomePair;
 
-    @TargetHandler(mixin = "terrablender.mixin.MixinMultiNoiseBiomeSource", name = "getNoiseBiome")
-    @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
-    private void replaceBiome(int x, int y, int z, Climate.Sampler sampler, CallbackInfoReturnable<Holder<Biome>> cir, CallbackInfo ci) {
-        OverworldUtils.replaceBiome(confluence$self(), x, y, z, cir, () -> {
-            if (confluence$jungle == null) {
-                this.confluence$jungle = new ArrayList<>();
-                Set<Holder<Biome>> set = confluence$self().possibleBiomes().stream().filter(holder -> holder.is(Tags.Biomes.IS_JUNGLE)).collect(Collectors.toSet());
-                confluence$jungle.addAll(set);
-            }
-            return confluence$jungle;
-        }, this::confluence$getBiomePair);
+    @WrapMethod(method = "getNoiseBiome(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;")
+    private Holder<Biome> confluence$injectBiome(int x, int y, int z, Climate.Sampler sampler, Operation<Holder<Biome>> original) {
+        BiomeSourceHandler handler = BiomeSourceInjector.handlerOf(confluence$self());
+        if (handler == null) return original.call(x, y, z, sampler);
+        return handler.resolve(x, y, z, sampler, () -> original.call(x, y, z, sampler));
+    }
+
+    @WrapMethod(method = "collectPossibleBiomes")
+    private Stream<Holder<Biome>> confluence$addPossibleBiomes(Operation<Stream<Holder<Biome>>> original) {
+        BiomeSourceHandler handler = BiomeSourceInjector.handlerOf(confluence$self());
+        Stream<Holder<Biome>> oReturn = original.call();
+        return handler == null ? oReturn : Stream.concat(oReturn, handler.extraBiomes());
     }
 
     @Override
@@ -68,7 +60,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBi
                 IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.DOUBLE_EVIL);
                 return this.confluence$biomePair = new Pair<>(null, null);
             } else if ((flag & IWorldOptions.DOUBLE_EVIL) == 0) {
-                if (RandomSource.create(worldOptions.seed()).nextBoolean()) {
+                if (net.minecraft.util.RandomSource.create(worldOptions.seed()).nextBoolean()) {
                     from = ModBiomes.THE_CORRUPTION;
                     to = ModBiomes.THE_CRIMSON;
                     IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);

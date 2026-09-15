@@ -214,16 +214,15 @@ public class EitherRecipe4xHelper {
             for (Map.Entry<IRecipeSlotView, IntObjectPair<Set<Object>>> entry : slotUidCache.entrySet()) {
                 IntObjectPair<Set<Object>> pair = entry.getValue();
                 int require = pair.leftInt();
-                boolean mismatch = false;
+                boolean match = false;
                 for (Object uid : pair.right()) {
                     int i = total.getInt(uid);
                     if (i != 0 && i >= require) {
+                        match = true;
                         total.addTo(uid, -require);
-                    } else {
-                        mismatch = true;
                     }
                 }
-                if (mismatch) missing.add(entry.getKey());
+                if (!match) missing.add(entry.getKey());
             }
 
             if (!missing.isEmpty()) {

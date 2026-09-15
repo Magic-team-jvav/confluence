@@ -1,11 +1,7 @@
 package org.confluence.mod.util;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
@@ -18,7 +14,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -81,36 +76,26 @@ public final class OverworldUtils {
     }
 
     @ApiStatus.Internal
-    public static void replaceBiome(
-            MultiNoiseBiomeSource biomeSource,
-            int x,
-            int y,
-            int z,
-            CallbackInfoReturnable<Holder<Biome>> cir,
-            Supplier<List<Holder<Biome>>> jungleGetter,
-            Supplier<Pair<Holder<Biome>, Holder<Biome>>> biomePairGetter
+    public static Holder<Biome> postProcess(
+            int x, int y, int z,
+            Holder<Biome> biome,
+            Supplier<List<Holder<Biome>>> jungleGetter
     ) {
-        if (uninitialized) return;
-        Holder<Biome> replaced = cir.getReturnValue();
-        if (replaced == null) return;
+        if (uninitialized) return biome;
+        Holder<Biome> result = biome;
         if (notTheBees) {
             List<Holder<Biome>> jungle = jungleGetter.get();
             if (!jungle.isEmpty()) {
-                replaced = NotTheBees.replaceBiome(x, y, z, replaced, jungle);
-            }
-        } else {
-            Pair<Holder<Biome>, Holder<Biome>> pair = biomePairGetter.get();
-            if (pair != null && replaced == pair.getFirst()) {
-                replaced = pair.getSecond();
+                result = NotTheBees.replaceBiome(x, y, z, result, jungle);
             }
         }
-        if (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON)) {
+        if (result.is(ModBiomes.THE_CORRUPTION) || result.is(ModBiomes.THE_CRIMSON)) {
             BlockPos spawnPos = server.getWorldData().overworldData().getSpawnPos();
-            if (Mth.lengthSquared(spawnPos.getX() - x, spawnPos.getZ() - z) <= 128 * 128) {
-                replaced = plains;
+            if (Mth.lengthSquared(spawnPos.getX() - QuartPos.toBlock(x), spawnPos.getZ() - QuartPos.toBlock(z)) <= 128 * 128) {
+                result = plains;
             }
         }
-        cir.setReturnValue(replaced);
+        return result;
     }
 
     @ApiStatus.Internal

@@ -16,8 +16,8 @@ import net.minecraft.world.level.biome.Biome;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.util.LibRenderUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.BiomeSkyEffectRegisterEvent;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
@@ -34,22 +34,12 @@ public final class ClientBiomeEffectSystem {
     private static float blend;
 
     public static void registerEffects() {
-        EFFECTS.put(Confluence.asResource("the_corruption"), new BiomeSkyEffect(
-                holder -> holder.is(ModTags.Biomes.THE_CORRUPTION),
-                Confluence.asResource("textures/environment/corruption_sky.png"),
-                null
-        ));
-        EFFECTS.put(Confluence.asResource("the_crimson"), new BiomeSkyEffect(
-                holder -> holder.is(ModTags.Biomes.THE_CRIMSON),
-                Confluence.asResource("textures/environment/crimson_sky.png"),
-                null
-        ));
-        EFFECTS.put(Confluence.asResource("the_hallow"), new BiomeSkyEffect(
+        EFFECTS.put(ModBiomes.THE_HALLOW.location(), new BiomeSkyEffect(
                 holder -> holder.is(ModTags.Biomes.THE_HALLOW),
                 null,
                 TheHallowSkyRender::render
         ));
-        EFFECTS.put(Confluence.asResource("moonlit_dry_sea"), new BiomeSkyEffect(
+        EFFECTS.put(ModBiomes.MOONLIT_DRY_SEA.location(), new BiomeSkyEffect(
                 holder -> holder.is(ModTags.Biomes.THE_END_SEA),
                 null,
                 MoonlitDrySeaSkyRender::render
@@ -59,8 +49,7 @@ public final class ClientBiomeEffectSystem {
 
     public static void tick(LocalPlayer player) {
         ResourceKey<Level> dimension = player.level().dimension();
-        if (dimension != OverworldUtils.dimension()
-        && dimension != Level.END) {
+        if (dimension != OverworldUtils.dimension() && dimension != Level.END) {
             current = null;
             target = null;
             blend = 0;

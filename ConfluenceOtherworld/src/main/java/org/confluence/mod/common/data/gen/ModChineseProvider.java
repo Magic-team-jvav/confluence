@@ -4876,6 +4876,16 @@ public class ModChineseProvider extends LanguageProvider {
         add(BaseTerraRepeaterItem.RELOAD_SPEED_TEXT, "装填速度");
         add(BaseTerraRepeaterItem.FIRING_INTERVAL_TEXT, "射击间隔");
         add(BaseTerraRepeaterItem.ARROW_CAPACITY_TEXT, "箭矢容量");
+
+        add(PylonBlocks.FOREST_PYLON.get(), "森林晶塔");
+        add(PylonBlocks.SNOW_PYLON.get(), "雪原晶塔");
+        add(PylonBlocks.DESERT_PYLON.get(), "沙漠晶塔");
+        add(PylonBlocks.CAVERN_PYLON.get(), "洞穴晶塔");
+        add(PylonBlocks.OCEAN_PYLON.get(), "海洋晶塔");
+        add(PylonBlocks.JUNGLE_PYLON.get(), "丛林晶塔");
+        add(PylonBlocks.HALLOW_PYLON.get(), "神圣晶塔");
+        add(PylonBlocks.MUSHROOM_PYLON.get(), "蘑菇晶塔");
+        add(PylonBlocks.UNIVERSAL_PYLON.get(), "万能晶塔");
     }
 
     private void addPotion(Item potion, String name, String tooltip) {

@@ -1848,6 +1848,8 @@ public class ModEnglishProvider extends LanguageProvider {
 
         PonderHelper.addTranslateKeys(this::add, true);
         CreateHelper.addTranslateKeys((item, s) -> add(Util.makeDescriptionId("item", item.getId()), s), true);
+
+        PylonBlocks.BLOCKS.getEntries().forEach(block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath())));
     }
 
     private void addDefaultRegistryTranslations(HolderLookup.RegistryLookup<?> dimensions, String dimensionsPath) {

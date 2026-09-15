@@ -88,16 +88,16 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
-modId = "touhou_little_maid"
-type = "optional"
-versionRange = "[1.3.5,)"
+modId = "geckolib"
+type = "required"
+versionRange = "[${geckolib_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
-modId = "waystones"
+modId = "touhou_little_maid"
 type = "optional"
-versionRange = "[21.1.19,)"
+versionRange = "[1.3.5,)"
 ordering = "NONE"
 side = "BOTH"
 

@@ -3,9 +3,12 @@ package org.confluence.mod.client.event;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -58,10 +61,7 @@ import org.confluence.mod.client.handler.SoulSkillClientHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.WormholeHandlerClient;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
-import org.confluence.mod.client.model.block.MuralBlockModel;
-import org.confluence.mod.client.model.block.RelicBlockModel;
-import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
+import org.confluence.mod.client.model.block.*;
 import org.confluence.mod.client.model.entity.RainbowSheepFurModel;
 import org.confluence.mod.client.model.entity.RainbowSheepModel;
 import org.confluence.mod.client.model.entity.bomb.*;
@@ -96,6 +96,7 @@ import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
 import org.confluence.mod.client.renderer.tooltip.NoopTooltip;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.block.functional.BasePylonBlock;
 import org.confluence.mod.common.block.functional.boulder.GeoBoulderBlock;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
@@ -122,6 +123,7 @@ import org.confluence.terra_curio.client.renderer.entity.BeeProjectileRenderer;
 import org.confluence.terra_guns.util.TGUtil;
 import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
@@ -484,6 +486,14 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(ModBlocks.VOID_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(VoidBlockRenderer::new));
         event.registerBlockEntityRenderer(NatureBlocks.VOID_TREE_ROOT_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(VoidTreeRootBlockRenderer::new));
         event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
+        event.registerBlockEntityRenderer(PylonBlocks.PYLON_ENTITY.get(), context -> new GeoBlockRenderer<>(new BasePylonModel()) {
+            @Override
+            public void defaultRender(PoseStack poseStack, BasePylonBlock.BEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+                if (animatable.isBase) {
+                    super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
+                }
+            }
+        });
     }
 
     @SubscribeEvent

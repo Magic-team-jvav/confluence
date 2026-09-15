@@ -734,7 +734,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL).addTag(ModTags.Blocks.NEEDS_4_LEVEL);
         tag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL).addTag(ModTags.Blocks.NEEDS_6_LEVEL);
 
-        tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(
+        IntrinsicTagAppender<Block> needs1Level = tag(ModTags.Blocks.NEEDS_1_LEVEL);
+        needs1Level.addTags(
                 Tags.Blocks.STORAGE_BLOCKS_COAL,
                 Tags.Blocks.ORES_COAL,
 
@@ -1167,7 +1168,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         ).add(
                 DRAGONSAL_ORE.get()
         );
-        tag(ModTags.Blocks.NEEDS_1_LEVEL).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
+        needs1Level.addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_3_LEVEL).addTags(ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
         tag(ModTags.Blocks.NEEDS_4_LEVEL).addTags(ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL);
@@ -2088,5 +2089,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 LIFE_CAMPFIRE.get()
         );
         MrCrayfishFurnitureHelper.blockTags(this::tag);
+
+        PylonBlocks.BLOCKS.getEntries().forEach(holder -> {
+            mineableWithPickaxe.add(holder.get());
+            needs1Level.add(holder.get());
+        });
     }
 }

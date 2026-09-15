@@ -2148,14 +2148,24 @@ public final class ValueSubProvider {
                 .add(Blocks.FLOWER_POT, 20)
                 .add(TFBlocks.HANGING_POT, 250)
                 .add(TFBlocks.PIN_WHEEL, 400)
-
-
         ;
 
         builder
                 .add(LanceItems.JOUSTING_LANCE.get(), gold1 + silver20)
                 .add(LanceItems.HALLOWED_JOUSTING_LANCE.get(), gold5 - silver20 - silver20)
                 .add(LanceItems.SHADOW_JOUSTING_LANCE.get(), gold10);
+
+        builder
+                .add(PylonBlocks.FOREST_PYLON.get(), 20000)
+                .add(PylonBlocks.SNOW_PYLON.get(), 20000)
+                .add(PylonBlocks.DESERT_PYLON.get(), 20000)
+                .add(PylonBlocks.CAVERN_PYLON.get(), 20000)
+                .add(PylonBlocks.OCEAN_PYLON.get(), 20000)
+                .add(PylonBlocks.JUNGLE_PYLON.get(), 20000)
+                .add(PylonBlocks.HALLOW_PYLON.get(), 20000)
+                .add(PylonBlocks.MUSHROOM_PYLON.get(), 20000)
+                .add(PylonBlocks.UNIVERSAL_PYLON.get(), 200000)
+        ;
     }
 
     public static class Builder extends DataMapProvider.Builder<ValueComponent, Item> {

@@ -13,7 +13,7 @@ var projectName = [
         "TerraFurniture"
 ]
 
-version = mod_version + "-beta" + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
+version = mod_version + "+" + minecraft_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
 
 base {
@@ -457,7 +457,9 @@ tasks.withType(ProcessResources).configureEach {
                              mod_version            : mod_version,
                              mod_authors            : mod_authors,
                              mod_description        : mod_description,
-                             curios_version         : curios_version]
+                             curios_version         : curios_version,
+                             geckolib_version       : geckolib_version
+    ]
     inputs.properties replaceProperties
 
     filesMatching(['META-INF/neoforge.mods.toml']) {

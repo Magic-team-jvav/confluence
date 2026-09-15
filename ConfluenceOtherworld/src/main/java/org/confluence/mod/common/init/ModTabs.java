@@ -815,6 +815,8 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
                         misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
+
+                        acceptAll(PylonBlocks.BLOCKS, output, "pylon");
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
                     .build());

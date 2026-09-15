@@ -1566,5 +1566,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 short_sword.add(holder.get());
             }
         }
+
+        PylonBlocks.BLOCKS.getEntries().forEach(holder -> wip.add(holder.get().asItem()));
     }
 }

@@ -18,9 +18,6 @@ import org.jetbrains.annotations.Nullable;
 /// 状态是**每实例**的：同一个 `NoiseGeneratorSettings` 被多个维度复用时不会互相污染，
 /// 也不存在 TerraBlender 那种「可变 regionType + surfaceRule() 懒记忆化」的时序陷阱。
 public interface INoiseBasedChunkGenerator {
-    @Nullable
-    SurfaceRules.RuleSource confluence$getSurfaceRules();
-
     void confluence$setSurfaceRules(@Nullable SurfaceRules.RuleSource rules);
 
     static INoiseBasedChunkGenerator of(NoiseBasedChunkGenerator generator) {

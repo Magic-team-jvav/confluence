@@ -14,7 +14,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import org.confluence.lib.util.LibRenderUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.BiomeSkyEffectRegisterEvent;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
@@ -36,16 +35,6 @@ public final class ClientBiomeEffectSystem {
     private static float blend;
 
     public static void registerEffects() {
-        EFFECTS.put(ModBiomes.THE_CORRUPTION.location(), new BiomeSkyEffect(
-                holder -> holder.is(ModTags.Biomes.THE_CORRUPTION),
-                Confluence.asResource("textures/environment/corruption_sky.png"),
-                null
-        ));
-        EFFECTS.put(ModBiomes.THE_CRIMSON.location(), new BiomeSkyEffect(
-                holder -> holder.is(ModTags.Biomes.THE_CRIMSON),
-                Confluence.asResource("textures/environment/crimson_sky.png"),
-                null
-        ));
         EFFECTS.put(ModBiomes.THE_HALLOW.location(), new BiomeSkyEffect(
                 holder -> holder.is(ModTags.Biomes.THE_HALLOW),
                 null,
@@ -257,9 +246,9 @@ public final class ClientBiomeEffectSystem {
                                 float x2, float y2, float z2, float x3, float y3, float z3,
                                 int u0c, int v0c, int u1c, int v1c,
                                 int u2c, int v2c, int u3c, int v3c, int alpha) {
-        builder.vertex(matrix4f, x0, y0, z0).uv(u0c / 3.0F, v0c / 2.0F).color(255, 255, 255, alpha);
-        builder.vertex(matrix4f, x1, y1, z1).uv(u1c / 3.0F, v1c / 2.0F).color(255, 255, 255, alpha);
-        builder.vertex(matrix4f, x2, y2, z2).uv(u2c / 3.0F, v2c / 2.0F).color(255, 255, 255, alpha);
-        builder.vertex(matrix4f, x3, y3, z3).uv(u3c / 3.0F, v3c / 2.0F).color(255, 255, 255, alpha);
+        builder.vertex(matrix4f, x0, y0, z0).uv(u0c / 3.0F, v0c / 2.0F).color(255, 255, 255, alpha).endVertex();
+        builder.vertex(matrix4f, x1, y1, z1).uv(u1c / 3.0F, v1c / 2.0F).color(255, 255, 255, alpha).endVertex();
+        builder.vertex(matrix4f, x2, y2, z2).uv(u2c / 3.0F, v2c / 2.0F).color(255, 255, 255, alpha).endVertex();
+        builder.vertex(matrix4f, x3, y3, z3).uv(u3c / 3.0F, v3c / 2.0F).color(255, 255, 255, alpha).endVertex();
     }
 }

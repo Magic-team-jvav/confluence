@@ -52,16 +52,12 @@ public final class ModBiomes {
         ConfluenceBiomeInjector.bootstrap();
 
         // 本模组群系自己的地表规则。全部由 SurfaceRules#isBiome 门控，只会作用在对应群系上。
-        ConfluenceBiomeInjector.addSurfaceRules(SurfaceRuleRegistry.Category.OVERWORLD, SURFACE_OWNER_BIOMES,
-                SurfaceRuleRegistry.Stage.PREPEND, 10, SurfaceRuleData.makeConfluenceOverWorldRules());
-        ConfluenceBiomeInjector.addSurfaceRules(SurfaceRuleRegistry.Category.NETHER, SURFACE_OWNER_BIOMES,
-                SurfaceRuleRegistry.Stage.PREPEND, 10, SurfaceRuleData.makeConfluenceNetherRules());
-        ConfluenceBiomeInjector.addSurfaceRules(SurfaceRuleRegistry.Category.END, SURFACE_OWNER_BIOMES,
-                SurfaceRuleRegistry.Stage.PREPEND, 10, SurfaceRuleData.makeConfluenceEndRules());
+        ConfluenceBiomeInjector.addSurfaceRules(SurfaceRuleRegistry.Category.OVERWORLD, SURFACE_OWNER_BIOMES, SurfaceRuleRegistry.Stage.PREPEND, 10, SurfaceRuleData.makeConfluenceOverWorldRules());
+        ConfluenceBiomeInjector.addSurfaceRules(SurfaceRuleRegistry.Category.NETHER, SURFACE_OWNER_BIOMES, SurfaceRuleRegistry.Stage.PREPEND, 10, SurfaceRuleData.makeConfluenceNetherRules());
+        ConfluenceBiomeInjector.addSurfaceRules(SurfaceRuleRegistry.Category.END, SURFACE_OWNER_BIOMES, SurfaceRuleRegistry.Stage.PREPEND, 10, SurfaceRuleData.makeConfluenceEndRules());
 
         // 改写原版群系的地表（海底、丛林、沙漠、恶地、雪原）。
         // 同样前置：原实现在 TerraBlender 里是 BEFORE_BEDROCK + priority 0，语义一致。
-        ConfluenceBiomeInjector.addSurfaceRules(SurfaceRuleRegistry.Category.OVERWORLD, SURFACE_OWNER_VANILLA,
-                SurfaceRuleRegistry.Stage.PREPEND, 0, SurfaceRuleData.makeMinecraftOverWorldRules());
+        ConfluenceBiomeInjector.addSurfaceRules(SurfaceRuleRegistry.Category.OVERWORLD, SURFACE_OWNER_VANILLA, SurfaceRuleRegistry.Stage.PREPEND, 0, SurfaceRuleData.makeMinecraftOverWorldRules());
     }
 }

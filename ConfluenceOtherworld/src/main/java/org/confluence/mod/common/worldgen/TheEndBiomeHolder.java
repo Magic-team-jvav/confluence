@@ -25,10 +25,6 @@ import java.util.stream.Stream;
 /// 末地不使用气候参数（{@code TheEndBiomeSource} 直接按噪声阈值挑群系），所以不走
 /// {@link org.confluence.mod.common.worldgen.biome.injector.BiomeRegion} 的参数盒子模型，
 /// 而是直接把一个 {@link BiomeSourceHandler} 挂到 {@code TheEndBiomeSource} 实例上。
-///
-/// 注意：{@link #open(MinecraftServer)} / {@link #close()} 目前**没有**被调用
-/// （{@code ServerEvents} 里的调用一直是注释状态），因此注册进去的处理器是纯透传，
-/// 末地生成行为与替换 TerraBlender 之前完全一致。要启用只需恢复那两处调用。
 public class TheEndBiomeHolder {
     private static Holder<Biome> chorusForest;
     private static Holder<Biome> inverseForest;
@@ -114,7 +110,7 @@ public class TheEndBiomeHolder {
         double erosion = sampler.erosion().compute(new DensityFunction.SinglePointContext(blockX, blockY, blockZ));
         if (erosion < -0.0625) return original;
 
-        //TODO 等牢鏡調整
+        //TODO 等牢镜调整
 
         // 以下參數都是數字越大密度越大越稀碎，數字越小密度越小，單一群係也約廣闊
 

@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.world.level.biome;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.mojang.datafixers.util.Pair;
@@ -24,15 +23,9 @@ import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.stream.Stream;
 
-/// 群系注入的核心注入点。
-///
-/// 与 TerraBlender 的 `MixinMultiNoiseBiomeSource` 的关键区别：这里是**环绕式**的。
-/// 只有确实被本模组区域接管的坐标才不调用原实现，其余一律 `original.call(...)` 透传，
-/// 所以可以和其它同样修改 `getNoiseBiome` 的模组叠加，而不会互相覆盖。
 @Mixin(value = MultiNoiseBiomeSource.class, priority = 1100)
 public abstract class MultiNoiseBiomeSourceMixin implements IMultiNoiseBiomeSource {
     @Unique
@@ -44,18 +37,12 @@ public abstract class MultiNoiseBiomeSourceMixin implements IMultiNoiseBiomeSour
         if (handler == null) return original.call(x, y, z, sampler);
         return handler.resolve(x, y, z, sampler, () -> original.call(x, y, z, sampler));
     }
-    /// 把区域群系并入 `possibleBiomes()`。
-    ///
-    /// 原版 `ChunkGenerator` 会在构造时挂一个 `FeatureSorter.buildFeaturesPerStep(possibleBiomes())`
-    /// 的记忆化供应商，`ChunkGeneratorStructureState` 也用它筛结构集 —— 漏掉这里区域里的地物与结构都不会生成。
-    ///
-    /// 时序上安全：`ServerAboutToStartEvent` 在 `loadLevel()` 之前触发，而 `possibleBiomes()`
-    /// 的首次求值发生在 `loadLevel() -> createLevels()` 里，所以不需要 TerraBlender 那种
-    /// 「换掉记忆化 Supplier」的手段，也不需要 `hasAppended` 闩锁。
-    @ModifyReturnValue(method = "collectPossibleBiomes", at = @At("RETURN"))
-    private Stream<Holder<Biome>> confluence$addPossibleBiomes(Stream<Holder<Biome>> original) {
+
+    @WrapMethod(method = "collectPossibleBiomes")
+    private Stream<Holder<Biome>> confluence$addPossibleBiomes(Operation<Stream<Holder<Biome>>> original) {
         BiomeSourceHandler handler = BiomeSourceInjector.handlerOf(confluence$self());
-        return handler == null ? original : Stream.concat(original, handler.extraBiomes());
+        Stream<Holder<Biome>> oReturn = original.call();
+        return handler == null ? oReturn : Stream.concat(oReturn, handler.extraBiomes());
     }
 
     @Override

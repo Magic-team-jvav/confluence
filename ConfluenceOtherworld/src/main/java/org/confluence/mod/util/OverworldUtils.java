@@ -76,12 +76,6 @@ public final class OverworldUtils {
         pineTree = null;
     }
 
-    /// 主世界群系的收尾替换。由 {@code ConfluenceBiomeInjector} 的处理器在区域注入之后调用。
-    ///
-    /// - 「不是蜜蜂」密种：把非豁免群系随机换成丛林群系；
-    /// - 出生点保护：出生点 128 格内的邪恶群系换成平原。
-    ///
-    /// @param jungleGetter 惰性求值的丛林群系表（来自 `possibleBiomes`，首次使用时才计算）
     @ApiStatus.Internal
     public static Holder<Biome> postProcess(
             int x, int y, int z,

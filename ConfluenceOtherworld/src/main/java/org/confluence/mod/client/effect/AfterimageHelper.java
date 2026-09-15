@@ -7,25 +7,19 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
-import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
 
 import java.util.*;
 
 /// 套装效果：穿戴指定套装的玩家移动时，身后留下短暂的黑白残影
 public final class AfterimageHelper {
-    /// 会触发残影的套装，后续可继续追加
-    private static final ResourceLocation[] SET_IDS = {
-            Confluence.asResource("ninja_set")
-    };
-
     /// 每 2 tick 记录一次快照（拖尾更短）
     private static final int RECORD_INTERVAL = 2;
     /// 最多同时保留的残影数量
@@ -75,25 +69,26 @@ public final class AfterimageHelper {
         TrailRenderer renderer = new TrailRenderer(event, player);
         Ghost[] ghosts = trail.toArray(Ghost[]::new);
         if (ghosts.length == 1) {
-            renderer.render(ghosts[0], /*AfterimageStyle.alphaAt(*/1.0F/*)*/);
+            renderer.render(ghosts[0], AfterimageStyle.alphaAt(1.0F));
             return;
         }
 
         // 相邻快照之间插值补帧，把离散的残影连成动态模糊
-        int lastSegment = (ghosts.length - 1) * 16/*AfterimageStyle.BLUR_STEPS*/;
+        int lastSegment = (ghosts.length - 1) * AfterimageStyle.BLUR_STEPS;
         int sample = 0;
         for (int i = 0; i < ghosts.length - 1; i++) {
             Ghost from = ghosts[i];
             Ghost to = ghosts[i + 1];
-            for (int step = 0; step < 16/*AfterimageStyle.BLUR_STEPS*/; step++, sample++) {
+            for (int step = 0; step < AfterimageStyle.BLUR_STEPS; step++, sample++) {
                 // step == 0 即记录下来的快照，保持原透明度；其余补帧残影压暗作为模糊过渡
+                float factor = sample / (float) lastSegment;
                 float alpha = step > 0
-                        ? /*AfterimageStyle.interpolatedAlphaAt(*/sample / (float) lastSegment/*)*/
-                        : /*AfterimageStyle.alphaAt(*/sample / (float) lastSegment/*)*/;
-                renderer.render(from.lerp(step / (float) 16/*AfterimageStyle.BLUR_STEPS*/, to), alpha);
+                        ? AfterimageStyle.interpolatedAlphaAt(factor)
+                        : AfterimageStyle.alphaAt(factor);
+                renderer.render(from.lerp(step / (float) AfterimageStyle.BLUR_STEPS, to), alpha);
             }
         }
-        renderer.render(ghosts[ghosts.length - 1], /*AfterimageStyle.alphaAt(*/1.0F/*)*/);
+        renderer.render(ghosts[ghosts.length - 1], AfterimageStyle.alphaAt(1.0F));
     }
 
     /// 单帧的残影渲染上下文，复用玩家模型把每个插值残影画成纯黑剪影
@@ -125,7 +120,7 @@ public final class AfterimageHelper {
         }
 
         private void render(Ghost ghost, float alpha) {
-            int color = /*AfterimageStyle.colorAt(alpha)*/(int) alpha;
+            int color = AfterimageStyle.colorAt(alpha);
 
             model.setupAnim(player, ghost.limbSwing(), ghost.limbSwingAmount(), ghost.ageInTicks(),
                     Mth.wrapDegrees(ghost.headYaw() - ghost.bodyYaw()), ghost.headPitch());
@@ -147,30 +142,22 @@ public final class AfterimageHelper {
         TRAILS.clear();
     }
 
-    private static boolean isWearingAfterimageSet(Player player) {
+    /// 会触发残影的套装，取自 [ModArmorBonus] 注册时的返回值，后续可继续追加
+    private static ArmorSetBonusKey[] afterimageSets() {
         ArmorSetBonusKey[] keys = cachedKeys;
-        if (keys == null) keys = cachedKeys = resolveKeys();
-        if (keys.length == 0) return false;
-
-        ArmorSetBonusKey current = ArmorSetBonusKey.of(
-                player.getItemBySlot(EquipmentSlot.HEAD),
-                player.getItemBySlot(EquipmentSlot.CHEST),
-                player.getItemBySlot(EquipmentSlot.LEGS),
-                player.getItemBySlot(EquipmentSlot.FEET)
-        );
-        for (ArmorSetBonusKey key : keys) {
-            if (key.equals(current)) return true;
-        }
-        return false;
+        if (keys == null) keys = cachedKeys = new ArmorSetBonusKey[]{ModArmorBonus.NINJA_SET};
+        return keys;
     }
 
-    private static ArmorSetBonusKey[] resolveKeys() {
-        List<ArmorSetBonusKey> keys = new ArrayList<>(SET_IDS.length);
-        for (ResourceLocation id : SET_IDS) {
-            ArmorSetBonusKey key = ArmorSetBonusKey.byId(id);
-            if (key != ArmorSetBonusKey.NONE) keys.add(key);
+    /// 玩家当前的套装加成键由 [PlayerSpecialData] 跟随装备变更维护，这里只需比对是否命中
+    private static boolean isWearingAfterimageSet(Player player) {
+        ArmorSetBonusKey current = PlayerSpecialData.of(player).getArmorSetBonusKey();
+        if (current == ArmorSetBonusKey.NONE) return false;
+
+        for (ArmorSetBonusKey key : afterimageSets()) {
+            if (current.equals(key)) return true;
         }
-        return keys.toArray(ArmorSetBonusKey[]::new);
+        return false;
     }
 
     private record Ghost(

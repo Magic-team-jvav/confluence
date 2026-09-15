@@ -47,6 +47,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
 import org.confluence.lib.integration.animation.PlayerAttackingStatePacket;
 import org.confluence.lib.util.LibClientUtils;
@@ -55,6 +56,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
+import org.confluence.mod.client.effect.AfterimageHelper;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.VoidSeaSwimEffects;
@@ -262,7 +264,7 @@ public final class GameClientEvents {
         LucyTheAxeHandler.reset();
         ClientGameEventSystem.reset();
         AchievementUtils.saveData();
-//        AfterimageHelper.reset();
+        AfterimageHelper.reset();
     }
 
     @SubscribeEvent
@@ -378,10 +380,10 @@ public final class GameClientEvents {
         }
     }
 
-//    @SubscribeEvent
-//    public static void playerTick$Post(PlayerTickEvent.Post event) {
-//        AfterimageHelper.tick(event.getEntity());
-//    }
+    @SubscribeEvent
+    public static void playerTick$Post(PlayerTickEvent.Post event) {
+        AfterimageHelper.tick(event.getEntity());
+    }
 
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
@@ -485,7 +487,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderPlayer$Pre(RenderPlayerEvent.Pre event) {
         ZombieArmRenderer.getInstance().render(event.getRenderer(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getEntity(), event.getPartialTick());
-//        AfterimageHelper.render(event);
+        AfterimageHelper.render(event);
     }
 
     @SubscribeEvent

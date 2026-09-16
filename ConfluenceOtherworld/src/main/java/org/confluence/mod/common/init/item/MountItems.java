@@ -27,4 +27,6 @@ public final class MountItems {
     public static final PortDeferredItem<Item> FUZZY_CARROT = ITEMS.register("fuzzy_carrot", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.ORANGE));
     public static final PortDeferredItem<Item> SLIMY_SADDLE = ITEMS.register("slimy_saddle", () -> new MountItem<>(ModEntities.RIDEABLE_SLIME));
     public static final PortDeferredItem<Item> HONEYED_GOGGLES = ITEMS.register("honeyed_goggles", () -> new MountItem<>(ModEntities.RIDEABLE_BEE));
+    public static final PortDeferredItem<Item> BLESSED_APPLE = ITEMS.register("blessed_apple", () -> new MountItem<>(ModEntities.RIDEABLE_UNICORN));
+    public static final PortDeferredItem<Item> SUPERHEATED_BLOOD = ITEMS.register("superheated_blood", () -> new MountItem<>(ModEntities.RIDEABLE_LAVA_SHARK));
 }

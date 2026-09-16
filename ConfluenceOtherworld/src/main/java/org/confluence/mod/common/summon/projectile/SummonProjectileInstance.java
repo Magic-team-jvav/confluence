@@ -8,10 +8,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.*;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.api.whip.WhipTagTracker;
+import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.summon.*;
 import org.confluence.mod.mixed.Immunity;
@@ -107,7 +107,8 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
         LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(candidate);
         return logicalTarget != null
                 && canHitTarget(logicalTarget)
-                && SummonTargetCache.isValidTarget(owner, logicalTarget, Double.MAX_VALUE, true)
+                && SummonTargetCache.isValidTarget(owner, logicalTarget, Double.MAX_VALUE,
+                logicalTarget.getUUID().equals(intendedTargetId))
                 && ProjectileHitRules.canHit(owner, candidate);
     }
 
@@ -127,30 +128,30 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
             removed = true;
             return;
         }
-        float damage = stats.damage(owner);
-        damage = WhipTagTracker.modifyDamage(owner, this, logicalTarget, damage);
-        DamageSource damageSource = LibDamageTypes.of(owner.level(), LibDamageTypes.SUMMONER, owner);
-        onImpact(logicalTarget);
-        boolean hurt;
-        if (damageRecipient instanceof LivingEntity target) {
-            hurt = Immunity.hurt(this, target, damageSource, damage);
-        } else {
-            float resolvedDamage = damage;
-            hurt = Immunity.withCause(this, () -> damageRecipient.hurt(damageSource, resolvedDamage));
+        float baseDamage = stats.damage(owner);
+        float damage = WhipTagTracker.modifyDamage(owner, this, logicalTarget, baseDamage);
+        DamageSource damageSource = new SummonDamageSource(owner, stats.armorPenetration());
+        boolean hurt = Immunity.hurt(this, damageRecipient, logicalTarget, damageSource, damage);
+        if (hurt) {
+            WhipTagTracker.afterHit(owner, this, logicalTarget, damageRecipient, baseDamage);
+            onImpact(logicalTarget);
+            applyKnockback(logicalTarget);
         }
-        if (hurt) applyKnockback(logicalTarget);
         removed = true;
     }
 
     protected abstract void onImpact(LivingEntity target);
 
     private void applyKnockback(LivingEntity target) {
+        if (target instanceof BaseBoss) return;
         double resistance = Math.max(0.0, 1.0 - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
-        target.setDeltaMovement(velocity.normalize().scale((velocity.length() + 0.1) * 0.3));
+        if (resistance == 0.0) return;
+        resistance *= stats.knockbackMultiplier();
+        target.addDeltaMovement(velocity.normalize().scale((velocity.length() + 0.1) * 0.3 * resistance));
         Vec3 horizontal = target.position().subtract(source.position()).multiply(1.0, 0.0, 1.0);
         if (horizontal.lengthSqr() > 0.0) {
             Vec3 push = horizontal.normalize().scale(0.04 * resistance);
-            target.push(push.x, 0.3, push.z);
+            target.push(push.x, 0.3 * resistance, push.z);
         }
     }
 
@@ -173,6 +174,12 @@ public abstract class SummonProjectileInstance implements OwnedSummon, Immunity 
     public final UUID getSummonOwnerId() {
         return owner.getUUID();
     }
+
+    @Override
+    public final float summonTagDamage() {return stats.tagDamage();}
+
+    @Override
+    public final float summonArmorPenetration() {return stats.armorPenetration();}
 
     @Override
     public final Type confluence$getImmunityType() {

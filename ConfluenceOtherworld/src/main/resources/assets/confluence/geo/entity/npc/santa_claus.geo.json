@@ -1,0 +1,382 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:geometry": [
+        {
+            "description": {
+                "identifier": "geometry.npc.santa_claus",
+                "texture_width": 80,
+                "texture_height": 80,
+                "visible_bounds_width": 3,
+                "visible_bounds_height": 4,
+                "visible_bounds_offset": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "bones": [
+                {
+                    "name": "all",
+                    "pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "Head",
+                    "parent": "all",
+                    "pivot": [
+                        0,
+                        24,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -4,
+                                24,
+                                -4
+                            ],
+                            "size": [
+                                8,
+                                8,
+                                8
+                            ],
+                            "uv": [
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -4,
+                                24,
+                                -4
+                            ],
+                            "size": [
+                                8,
+                                8,
+                                8
+                            ],
+                            "inflate": 0.5,
+                            "uv": [
+                                0,
+                                17
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Hat",
+                    "parent": "Head",
+                    "pivot": [
+                        0,
+                        31.75,
+                        6
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                0,
+                                30.75,
+                                -1
+                            ],
+                            "size": [
+                                0,
+                                4,
+                                9
+                            ],
+                            "pivot": [
+                                0,
+                                31.75,
+                                6
+                            ],
+                            "rotation": [
+                                -25,
+                                0,
+                                0
+                            ],
+                            "uv": [
+                                59,
+                                34
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -1,
+                                28.25,
+                                5.25
+                            ],
+                            "size": [
+                                2,
+                                2,
+                                2
+                            ],
+                            "pivot": [
+                                0,
+                                27.25,
+                                8.25
+                            ],
+                            "rotation": [
+                                -25,
+                                0,
+                                0
+                            ],
+                            "uv": [
+                                0,
+                                62
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -3,
+                                30.75,
+                                -3
+                            ],
+                            "size": [
+                                6,
+                                4,
+                                6
+                            ],
+                            "pivot": [
+                                0,
+                                31.75,
+                                0
+                            ],
+                            "rotation": [
+                                -25,
+                                0,
+                                0
+                            ],
+                            "uv": [
+                                0,
+                                34
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Body",
+                    "parent": "all",
+                    "pivot": [
+                        0,
+                        24,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -4,
+                                12,
+                                -2
+                            ],
+                            "size": [
+                                8,
+                                12,
+                                4
+                            ],
+                            "uv": [
+                                33,
+                                0
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -4,
+                                12,
+                                -2
+                            ],
+                            "size": [
+                                8,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.25,
+                            "uv": [
+                                33,
+                                17
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "RightArm",
+                    "parent": "all",
+                    "pivot": [
+                        -5,
+                        22,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -8,
+                                12,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "uv": [
+                                25,
+                                34
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -8,
+                                12,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.24,
+                            "uv": [
+                                42,
+                                34
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "LeftArm",
+                    "parent": "all",
+                    "pivot": [
+                        5,
+                        22,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                4,
+                                12,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "uv": [
+                                0,
+                                45
+                            ]
+                        },
+                        {
+                            "origin": [
+                                4,
+                                12,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.24,
+                            "uv": [
+                                17,
+                                51
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "RightLeg",
+                    "parent": "all",
+                    "pivot": [
+                        -1.9,
+                        12,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -3.9,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "uv": [
+                                34,
+                                51
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -3.9,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.25,
+                            "uv": [
+                                51,
+                                51
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "LeftLeg",
+                    "parent": "all",
+                    "pivot": [
+                        1.9,
+                        12,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -0.1,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "uv": [
+                                58,
+                                0
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -0.1,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.25,
+                            "uv": [
+                                58,
+                                17
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

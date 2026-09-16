@@ -10,6 +10,10 @@ import java.util.UUID;
 public interface OwnedSummon {
     UUID getSummonOwnerId();
 
+    default float summonTagDamage() {return 0;}
+
+    default float summonArmorPenetration() {return 0;}
+
     /// 在当前服务端维度解析在线所有者；所有者离线或不在该维度时返回 {@code null}。
     default @Nullable Player resolveSummonOwner(ServerLevel level) {
         return level.getPlayerByUUID(getSummonOwnerId());

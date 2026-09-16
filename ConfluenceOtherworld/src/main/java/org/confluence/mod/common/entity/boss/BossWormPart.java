@@ -93,6 +93,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     public @Nullable BaseWormBoss getOwner() {
         resolveOwner();
+        if (owner != null && level().isClientSide) owner.trackClientSegment(this);
         return owner;
     }
 
@@ -294,6 +295,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (org.confluence.mod.common.entity.EnemyDamageRules.blocks(this, source)) return false;
         BaseWormBoss head = getOwner();
         return head != null && head.isAlive() && head.hurtSegment(this, source, amount);
     }

@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
+import org.confluence.mod.common.item.whip.FirecrackerItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -29,6 +30,10 @@ public final class WhipTagTracker {
 
     /// 用当前鞭子的独立 Effect 替换该玩家对目标施加的旧标记。
     public static void apply(Player owner, LivingEntity target, ItemStack whipStack, WhipTagEffect effect) {
+        apply(owner, target, whipStack, effect, true);
+    }
+
+    public static void apply(Player owner, LivingEntity target, ItemStack whipStack, WhipTagEffect effect, boolean armExplosion) {
         Objects.requireNonNull(owner, "Whip tag owner must not be null");
         Objects.requireNonNull(target, "Whip tag target must not be null");
         Objects.requireNonNull(whipStack, "Whip tag weapon must not be null");
@@ -60,7 +65,10 @@ public final class WhipTagTracker {
         long gameTime = level.getGameTime();
         purgeExpired(levelTags, gameTime);
         Key key = new Key(owner.getUUID(), target.getUUID());
-        Entry previous = levelTags.put(key, new Entry(whipStack, effect, gameTime + DEFAULT_DURATION_TICKS, nextApplicationSequence++));
+        Entry old = levelTags.get(key);
+        boolean armed = whipStack.getItem() instanceof FirecrackerItem
+                && (armExplosion || old != null && old.armed());
+        Entry previous = levelTags.put(key, new Entry(whipStack, effect, gameTime + DEFAULT_DURATION_TICKS, nextApplicationSequence++, armed));
         if (previous != null && previous.effect() != effect && !isEffectUsedByAnotherTag(levelTags, key.targetId(), previous.effect())) {
             target.removeEffect(previous.effect());
         }
@@ -81,16 +89,28 @@ public final class WhipTagTracker {
             return baseDamage;
         }
 
-        float damage = entry.effect().modifyDamage(new WhipTagDamageContext(owner, summon, target, entry.whipStack()), baseDamage);
+        float damage = entry.effect().modifyDamage(new WhipTagDamageContext(owner, summon, target, entry.whipStack()), baseDamage)
+                + summon.summonTagDamage();
         if (damage < 0.0F) {
             throw new IllegalStateException("Whip tag effect returned invalid damage");
         }
-        return damage;
+        return entry.armed() ? damage * 2.75F : damage;
     }
 
     /// 查询该玩家对目标是否仍有有效标记。
     public static boolean hasActiveTag(Player owner, LivingEntity target) {
         return find(owner, target) != null;
+    }
+
+    // 只消耗烈焰能量，保留四秒标记增伤；爆炸不会再次触发召唤标记。
+    public static void afterHit(Player owner, OwnedSummon summon, LivingEntity target, Entity damageRecipient, float damage) {
+        if (!owner.getUUID().equals(summon.getSummonOwnerId())) return;
+        Entry entry = find(owner, target);
+        if (damage > 0.0F && entry != null && entry.armed()) {
+            levelTags((ServerLevel) target.level()).put(new Key(owner.getUUID(), target.getUUID()),
+                    new Entry(entry.whipStack(), entry.effect(), entry.expiresAt(), entry.applicationSequence(), false));
+            FirecrackerItem.explode(owner, target, damageRecipient, damage, summon.summonArmorPenetration());
+        }
     }
 
     /// 返回玩家最后鞭打且仍带有效标记的目标。
@@ -179,7 +199,7 @@ public final class WhipTagTracker {
     private record Key(UUID ownerId, UUID targetId) {}
 
     private record Entry(ItemStack whipStack, WhipTagEffect effect, long expiresAt,
-                         long applicationSequence) {
+                         long applicationSequence, boolean armed) {
         private Entry {
             whipStack = whipStack.copyWithCount(1);
             Objects.requireNonNull(effect, "Whip tag effect must not be null");

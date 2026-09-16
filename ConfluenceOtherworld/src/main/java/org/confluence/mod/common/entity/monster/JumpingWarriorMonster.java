@@ -7,12 +7,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -49,7 +49,7 @@ public final class JumpingWarriorMonster extends BaseWarriorMonster {
         this.contactProfile = contactProfile;
         if (contactProfile.isMummy() && navigation instanceof GroundPathNavigation groundNavigation) {
             groundNavigation.setCanOpenDoors(true);
-            goalSelector.addGoal(-1, new OpenDoorGoal(this, true));
+            goalSelector.addGoal(-1, new EnemyOpenDoorGoal(this));
         }
     }
 

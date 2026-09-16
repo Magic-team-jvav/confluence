@@ -4,15 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -25,7 +22,6 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-import javax.annotation.Nullable;
 
 /// 独眼巨鹿 Boss。
 ///
@@ -33,8 +29,8 @@ import javax.annotation.Nullable;
 /// 随后在追击与冰击之间循环。冰击根据目标位置选择抛冰、暗影之手或地面冰柱；
 /// 玩家离得过远时 Boss 会停止攻击并进入无敌状态，避免远距离无风险消耗。
 ///
-/// 无目标期间会短暂寻找附近箱子并将其破坏，这一环境行为不会绕过
-/// {@link BaseBoss} 的统一脱战计时。所有计时和弹幕生成都只在服务端执行，
+/// 远距离追击时可穿越障碍，不破坏环境；脱战仍由 {@link BaseBoss} 统一计时。
+/// 所有计时和弹幕生成都只在服务端执行，
 /// 客户端仅根据同步状态选择动画和无敌纹理。
 public class DeerClops extends BaseBoss {
     private static final EntityDataAccessor<Integer> DATA_COMBAT_STATE = SynchedEntityData.defineId(DeerClops.class, EntityDataSerializers.INT);
@@ -52,10 +48,11 @@ public class DeerClops extends BaseBoss {
     private static final int ATTACK_COOLDOWN_TICKS = 30;
     private static final int THROWN_ICE_COUNT = 20;
     private static final int ICE_WAVE_STEPS = 10;
-    private static final int CHEST_SEARCH_RADIUS = 12;
     private static final int STUCK_TICKS_BEFORE_JUMP = 8;
     private static final int TRAVERSAL_JUMP_COOLDOWN = 12;
     private static final double PREFERRED_RANGE = 7.0;
+    private static final double PHASE_START_RANGE = 8.0;
+    private static final double PHASE_END_RANGE = 6.5;
     private static final double MAXIMUM_ATTACK_RANGE = 20.0;
     private static final double THROWN_ICE_RANGE = 10.0;
     private static final double SHADOW_HAND_HEIGHT = 5.0;
@@ -73,8 +70,7 @@ public class DeerClops extends BaseBoss {
     private Vec3 iceWaveDirection = Vec3.ZERO;
     private Vec3 attackFacingDirection = new Vec3(0.0, 0.0, 1.0);
     private float attackFacingYaw;
-    private @Nullable BlockPos chestTarget;
-    private int chestAttackTicks;
+    private Vec3 lastSolidPosition;
     private int traversalJumpCooldown;
     private int stuckTicks;
     private double lastChaseX;
@@ -124,8 +120,6 @@ public class DeerClops extends BaseBoss {
             return;
         }
 
-        chestTarget = null;
-        chestAttackTicks = 0;
         if (!introComplete) {
             tickIntro();
             return;
@@ -158,6 +152,22 @@ public class DeerClops extends BaseBoss {
         double distanceSqr = distanceToSqr(target);
         boolean outsideAttackRange = distanceSqr > MAXIMUM_ATTACK_RANGE * MAXIMUM_ATTACK_RANGE;
         setFarInvulnerable(outsideAttackRange);
+        if (noPhysics || distanceSqr > PHASE_START_RANGE * PHASE_START_RANGE) {
+            if (!noPhysics && level().noCollision(this)) lastSolidPosition = position();
+            if (distanceSqr <= PHASE_END_RANGE * PHASE_END_RANGE && level().noCollision(this)) {
+                finishPhasing();
+            } else {
+                navigation.stop();
+                resetTraversalTracking();
+                noPhysics = true;
+                setNoGravity(true);
+                setCombatState(CombatState.CHASE);
+                Vec3 direction = target.position().subtract(position()).normalize();
+                setDeltaMovement(direction.scale(0.3));
+                faceCombatDirection(direction.multiply(1.0, 0.0, 1.0), 30.0F, 0.0F);
+                return;
+            }
+        }
 
         if (getCombatState() == CombatState.ATTACK) {
             navigation.stop();
@@ -177,9 +187,7 @@ public class DeerClops extends BaseBoss {
         setXRot(0.0F);
         if (distanceSqr > PREFERRED_RANGE * PREFERRED_RANGE) {
             boolean pathStarted = navigation.moveTo(target, 1.0);
-            breakBlockingWood();
             tryTraversalJump(target, pathStarted);
-            faceCombatDirection(getDeltaMovement().multiply(1.0, 0.0, 1.0), 30.0F, 0.0F);
         } else {
             navigation.stop();
             resetTraversalTracking();
@@ -217,35 +225,8 @@ public class DeerClops extends BaseBoss {
         yBodyRotO = attackFacingYaw;
         yHeadRot = attackFacingYaw;
         yHeadRotO = attackFacingYaw;
-        Vec3 lookAt = getEyePosition().add(attackFacingDirection.scale(8.0));
-        getLookControl().setLookAt(lookAt.x, lookAt.y, lookAt.z, 0.0F, 0.0F);
     }
 
-    private void breakBlockingWood() {
-        if (!horizontalCollision || !level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
-            return;
-        }
-        Vec3 forward = getDeltaMovement().multiply(1.0, 0.0, 1.0);
-        if (forward.lengthSqr() < 1.0E-4) {
-            forward = getLookAngle().multiply(1.0, 0.0, 1.0);
-        }
-        if (forward.lengthSqr() < 1.0E-4) {
-            return;
-        }
-        forward = forward.normalize();
-        var bounds = getBoundingBox().expandTowards(forward.scale(1.25)).inflate(0.2, 0.1, 0.2);
-        int broken = 0;
-        for (BlockPos pos : BlockPos.betweenClosed(
-                BlockPos.containing(bounds.minX, bounds.minY, bounds.minZ),
-                BlockPos.containing(bounds.maxX, bounds.maxY, bounds.maxZ))) {
-            var state = level().getBlockState(pos);
-            if ((state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES))
-                    && level().destroyBlock(pos, true, this)
-                    && ++broken >= 8) {
-                break;
-            }
-        }
-    }
 
     private AttackResult performIceAttack(LivingEntity target) {
         Vec3 horizontalOffset = target.position().subtract(position()).multiply(1.0, 0.0, 1.0);
@@ -390,73 +371,25 @@ public class DeerClops extends BaseBoss {
         level().addFreshEntity(projectile);
     }
 
+    private void finishPhasing() {
+        if (!noPhysics) return;
+        if (!level().noCollision(this) && lastSolidPosition != null && level().noCollision(this, getBoundingBox().move(lastSolidPosition.subtract(position()))))
+            setPos(lastSolidPosition);
+        noPhysics = false;
+        setNoGravity(false);
+        setDeltaMovement(Vec3.ZERO);
+        lastSolidPosition = null;
+    }
+
     private void tickWithoutCombatTarget() {
+        finishPhasing();
+        navigation.stop();
         setFarInvulnerable(false);
         resetTraversalTracking();
         introComplete = false;
         attackCooldown = 0;
         iceWaveStep = -1;
-
-        if (getCombatState() == CombatState.ATTACK_CHEST) {
-            tickChestAttack();
-            return;
-        }
         setCombatState(CombatState.IDLE);
-        if (chestTarget == null || !(level().getBlockEntity(chestTarget) instanceof ChestBlockEntity)) {
-            chestTarget = findNearbyChest();
-        }
-        if (chestTarget == null) {
-            return;
-        }
-
-        double distanceSqr = distanceToSqr(Vec3.atCenterOf(chestTarget));
-        if (distanceSqr <= 20.0) {
-            navigation.stop();
-            chestAttackTicks = 0;
-            setCombatState(CombatState.ATTACK_CHEST);
-        } else {
-            navigation.moveTo(chestTarget.getX() + 0.5, chestTarget.getY(), chestTarget.getZ() + 0.5, 1.0);
-        }
-    }
-
-    private void tickChestAttack() {
-        navigation.stop();
-        if (getTarget() != null) {
-            chestTarget = null;
-            chestAttackTicks = 0;
-            setCombatState(CombatState.ROAR);
-            return;
-        }
-        if (chestTarget != null) {
-            faceCombatDirection(Vec3.atCenterOf(chestTarget).subtract(position()).multiply(1.0, 0.0, 1.0), 30.0F, 0.0F);
-        }
-        if (++chestAttackTicks == 7 && chestTarget != null && level().getBlockEntity(chestTarget) instanceof ChestBlockEntity) {
-            Vec3 attackDirection = Vec3.atCenterOf(chestTarget).subtract(position()).multiply(1.0D, 0.0D, 1.0D);
-            level().destroyBlock(chestTarget, true, this);
-            beginIcePillarWave(attackDirection);
-        }
-        if (chestAttackTicks > ATTACK_TOTAL_TICKS) {
-            chestTarget = null;
-            chestAttackTicks = 0;
-            setCombatState(CombatState.IDLE);
-        }
-    }
-
-    private @Nullable BlockPos findNearbyChest() {
-        BlockPos origin = blockPosition();
-        BlockPos nearest = null;
-        double nearestDistanceSqr = Double.MAX_VALUE;
-        for (BlockPos candidate : BlockPos.betweenClosed(origin.offset(-CHEST_SEARCH_RADIUS, -4, -CHEST_SEARCH_RADIUS), origin.offset(CHEST_SEARCH_RADIUS, 4, CHEST_SEARCH_RADIUS))) {
-            if (!(level().getBlockEntity(candidate) instanceof ChestBlockEntity)) {
-                continue;
-            }
-            double distanceSqr = candidate.distSqr(origin);
-            if (distanceSqr < nearestDistanceSqr) {
-                nearestDistanceSqr = distanceSqr;
-                nearest = candidate.immutable();
-            }
-        }
-        return nearest;
     }
 
     /// 在正常寻路无法跨越地形时执行一次受控跳跃。
@@ -560,7 +493,7 @@ public class DeerClops extends BaseBoss {
         controllers.add(new AnimationController<>(this, "Controller", 5, state -> state.setAndContinue(switch (getCombatState()) {
                     case ROAR -> ROAR;
                     case ROARING -> ROARING;
-                    case ATTACK, ATTACK_CHEST -> ICE;
+            case ATTACK -> ICE;
                     case IDLE, CHASE -> state.isMoving() ? WALK : STAND;
                 })));
     }
@@ -571,8 +504,7 @@ public class DeerClops extends BaseBoss {
         ROAR,
         ROARING,
         CHASE,
-        ATTACK,
-        ATTACK_CHEST
+        ATTACK
     }
 
     /// 冰击的位置分支。该类型只描述本次已经选中的攻击方式，不承担状态机推进。

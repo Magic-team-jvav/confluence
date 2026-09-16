@@ -425,7 +425,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         if (owner instanceof Player player) {
             consumeDurabilityAfterFirstEnemyHit(player);
             player.setLastHurtMob(logicalTarget);
-            WhipTagTracker.apply(player, logicalTarget, weapon(), whip.tagEffect());
+            WhipTagTracker.apply(player, logicalTarget, weapon(), whip.tagEffect(), whip.shouldApplyTag(hitIndex));
             WhipDirectHitContext context = new WhipDirectHitContext(player, logicalTarget, weapon(), damage, hitIndex);
             whip.onDirectHit(context);
         }

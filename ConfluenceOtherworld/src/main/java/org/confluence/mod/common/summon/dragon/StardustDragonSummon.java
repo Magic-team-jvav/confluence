@@ -24,7 +24,6 @@ public final class StardustDragonSummon extends FlyingSummon {
     private Vec3 dragonVelocity = Vec3.ZERO;
     private List<Vec3> cachedSegmentPositions;
     private int movementTargetTicks;
-    private int bodyAttackCooldown;
     private float yawAcceleration;
 
     public StardustDragonSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
@@ -35,27 +34,30 @@ public final class StardustDragonSummon extends FlyingSummon {
 
     @Override
     protected LivingEntity findTarget() {
-        return SummonTargetCache.acquire(owner().serverLevel(), owner(), uuid(), position(), 40.0);
+        return SummonTargetCache.acquire(owner().serverLevel(), owner(), uuid(), owner().position(), 62.5, false);
     }
 
     @Override
     protected void beforeGoalTick() {
-        recordPath();
-        if (bodyAttackCooldown > 0) {
-            bodyAttackCooldown--;
+        if (!pathHistory.isEmpty() && position().distanceToSqr(pathHistory.getFirst()) > 64.0) {
+            pathHistory.clear();
+            cachedSegmentPositions = null;
+            dragonVelocity = Vec3.ZERO;
+            movementTarget = null;
         }
     }
 
     @Override
     protected void afterPathAdvance(SummonPose previousPreviousPose, SummonPose previousPose, SummonPose currentPose) {
-        if (target() == null || bodyAttackCooldown > 0) {
+        recordPath();
+        if (target() == null) {
             return;
         }
-        boolean hit = hurtTouchingTargets(AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 40.0, 1.0F);
+        float damageMultiplier = 1.0F + 0.23F * followingSegmentCount();
+        hurtTouchingTargets(AABB.ofSize(position().add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 62.5, damageMultiplier);
         for (Vec3 segment : segmentPositions()) {
-            hit |= hurtTouchingTargets(AABB.ofSize(segment.add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 40.0, 1.0F);
+            hurtTouchingTargets(AABB.ofSize(segment.add(0.0, 0.25, 0.0), 0.5, 0.5, 0.5).inflate(0.75), 62.5, damageMultiplier);
         }
-        if (hit) bodyAttackCooldown = 5;
     }
 
     @Override
@@ -70,6 +72,7 @@ public final class StardustDragonSummon extends FlyingSummon {
         }
         increaseSlotCost(additionalSlots);
         replaceStats(stats);
+        cachedSegmentPositions = null;
         return true;
     }
 
@@ -101,7 +104,7 @@ public final class StardustDragonSummon extends FlyingSummon {
         double horizontal = Math.max(1.0E-5, offset.horizontalDistance());
         double vertical = Mth.clamp(offset.y / horizontal, -movementSpeed, movementSpeed);
         accelerated = accelerated.add(0.0, vertical * 0.05, 0.0);
-        Vec3 forwardDirection = new Vec3(Mth.sin((float) yawRadians), accelerated.y, Mth.cos((float) yawRadians)).normalize();
+        Vec3 forwardDirection = new Vec3(-Mth.sin((float) yawRadians), accelerated.y, Mth.cos((float) yawRadians)).normalize();
         float alignmentFactor = Math.max(((float) forwardDirection.dot(directionToTarget) + 0.5F) / 1.5F, 0.0F);
         float targetYaw = -(float) Mth.atan2(offset.x, offset.z) * Mth.RAD_TO_DEG;
         float yawError = Mth.clamp(Mth.wrapDegrees(targetYaw - currentPose().yaw()), -50.0F, 50.0F);
@@ -122,10 +125,30 @@ public final class StardustDragonSummon extends FlyingSummon {
         moveBy(movement, yaw, currentPose().pitch());
     }
 
+    // 每个槽位增加两个身体节，另有一个尾节；头部由本体负责。
+    private int followingSegmentCount() {
+        return Math.min(50, slotCost() * 2 + 1);
+    }
+
+    @Override
+    protected Vec3 resolveBlockCollision(Vec3 movement) {
+        return movement;
+    }
+
+    @Override
+    protected double ownerRecoveryDistanceSqr() {
+        return 125.0 * 125.0;
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(net.minecraft.world.damagesource.DamageSource source) {
+        return 2;
+    }
+
     private void recordPath() {
         pathHistory.addFirst(position());
         cachedSegmentPositions = null;
-        int maximumSamples = slotCost() * SAMPLES_PER_SEGMENT;
+        int maximumSamples = followingSegmentCount() * SAMPLES_PER_SEGMENT;
         while (pathHistory.size() > maximumSamples) {
             pathHistory.removeLast();
         }
@@ -135,29 +158,31 @@ public final class StardustDragonSummon extends FlyingSummon {
         if (cachedSegmentPositions != null) return cachedSegmentPositions;
         if (pathHistory.size() < 2) {
             Vec3 backward = Vec3.directionFromRotation(0.0F, currentPose().yaw()).scale(-SEGMENT_SPACING);
-            List<Vec3> initialPositions = new ArrayList<>(slotCost());
-            for (int segment = 1; segment <= slotCost(); segment++) {
+            List<Vec3> initialPositions = new ArrayList<>(followingSegmentCount());
+            for (int segment = 1; segment <= followingSegmentCount(); segment++) {
                 initialPositions.add(position().add(backward.scale(segment)));
             }
             return cachedSegmentPositions = initialPositions;
         }
-        List<Vec3> result = new ArrayList<>(slotCost());
+        List<Vec3> result = new ArrayList<>(followingSegmentCount());
         Iterator<Vec3> samples = pathHistory.iterator();
         Vec3 previous = samples.next();
+        Vec3 backward = Vec3.directionFromRotation(0.0F, currentPose().yaw()).scale(-1.0);
         double traversed = 0.0;
         int segment = 1;
-        while (samples.hasNext() && segment <= slotCost()) {
+        while (samples.hasNext() && segment <= followingSegmentCount()) {
             Vec3 current = samples.next();
             double step = previous.distanceTo(current);
-            while (segment <= slotCost() && step > 1.0E-5 && traversed + step >= segment * SEGMENT_SPACING) {
+            if (step > 1.0E-5) backward = current.subtract(previous).scale(1.0 / step);
+            while (segment <= followingSegmentCount() && step > 1.0E-5 && traversed + step >= segment * SEGMENT_SPACING) {
                 result.add(previous.lerp(current, (segment * SEGMENT_SPACING - traversed) / step));
                 segment++;
             }
             traversed += step;
             previous = current;
         }
-        while (segment <= slotCost()) {
-            result.add(previous);
+        while (segment <= followingSegmentCount()) {
+            result.add(previous.add(backward.scale(segment * SEGMENT_SPACING - traversed)));
             segment++;
         }
         return cachedSegmentPositions = result;

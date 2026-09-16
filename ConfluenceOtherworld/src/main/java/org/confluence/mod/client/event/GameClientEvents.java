@@ -47,6 +47,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.animation.GunCameraAnimation;
 import org.confluence.mod.client.effect.EctoMistHelper;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
@@ -166,7 +167,7 @@ public final class GameClientEvents {
 
         EctoMistHelper.tick(minecraft, player);
 
-        ModClientSetups.GLINT_RAINBOW.setGlintColor(ExpertColorAnimation.INSTANCE.getRed(), ExpertColorAnimation.INSTANCE.getGreen(), ExpertColorAnimation.INSTANCE.getBlue());
+        RenderStateShardAccessor.GLINT_RAINBOW.setGlintColor(ExpertColorAnimation.INSTANCE.getRed(), ExpertColorAnimation.INSTANCE.getGreen(), ExpertColorAnimation.INSTANCE.getBlue());
 
         if (ExtraInventoryScreen.teamCooldown > 0) {
             --ExtraInventoryScreen.teamCooldown;
@@ -367,7 +368,7 @@ public final class GameClientEvents {
     private static void movementInputUpdate(MovementInputUpdateEvent event) {
         Input input = event.getInput();
         LocalPlayer player = (LocalPlayer) event.getEntity();
-        boolean cannotMove = player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || ScryingOrb.spectatingPlayer != null;
+        boolean cannotMove = player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || player.hasEffect(ModEffects.WEBBED.get()) || ScryingOrb.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
         if (!player.hasInfiniteMaterials()) {
             if (cannotMove || player.hasEffect(ModEffects.SHIMMER.get()) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {

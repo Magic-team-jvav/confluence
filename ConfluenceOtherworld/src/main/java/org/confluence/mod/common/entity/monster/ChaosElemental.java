@@ -31,7 +31,7 @@ public final class ChaosElemental extends BaseWarriorMonster {
     private LivingEntity previousTarget;
 
     public ChaosElemental(EntityType<? extends ChaosElemental> type, Level level) {
-        super(type, level, 0.0, LandAnimationProfile.WALK_IDLE, LandSoundProfile.ROUTINE, 1.2, false);
+        super(type, level, 0.0, LandAnimationProfile.WALK_ONLY, LandSoundProfile.ROUTINE, 1.2, false);
     }
 
     @Override

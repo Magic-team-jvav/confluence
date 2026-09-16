@@ -3,6 +3,7 @@ package org.confluence.mod.client.entity.model;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
@@ -35,8 +36,11 @@ public class GeoNormalModel<T extends GeoEntity> extends DefaultedEntityGeoModel
             this.head = getHead();
             if (this.head != null) {
                 EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-                this.head.setRotX(entityData.headPitch() * 0.017453292F);
-                this.head.setRotY(entityData.netHeadYaw() * 0.017453292F);
+                if (this.head instanceof GeoBone bone) {
+                    var initial = bone.getInitialSnapshot();
+                    this.head.setRotX(initial.getRotX() + entityData.headPitch() * 0.017453292F);
+                    this.head.setRotY(initial.getRotY() + entityData.netHeadYaw() * 0.017453292F);
+                }
             }
         }
     }

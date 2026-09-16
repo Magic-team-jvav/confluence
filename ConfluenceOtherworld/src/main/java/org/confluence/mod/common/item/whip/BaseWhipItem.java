@@ -19,6 +19,7 @@ import org.confluence.mod.api.whip.*;
 import org.confluence.mod.api.whip.curve.WhipCurve;
 import org.confluence.mod.api.whip.curve.WhipCurves;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -27,7 +28,7 @@ import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifier
 import java.util.Objects;
 import java.util.function.Supplier;
 
-/// 鞭子的共享挥动流程；具体数值和命中行为由各物品类提供。
+// 鞭子的共享挥动流程；具体数值、命中行为和外观由各物品类提供。
 public class BaseWhipItem extends Item {
     private final float baseDamage;
     private final int durationTicks;
@@ -36,10 +37,12 @@ public class BaseWhipItem extends Item {
     private final WhipAppearance appearance;
 
     public BaseWhipItem(String name, float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends WhipTagEffect> tagEffect) {
-        this(baseDamage, attackSpeedModifier, range, hitCooldownTicks, tagEffect, WhipAppearance.segments(WhipSegment.fixedSpacing(Confluence.asResource("item/whip_segments/" + name), 4)));
+        // 默认外观沿用 1.21 的十六像素分段模型。
+        this(baseDamage, attackSpeedModifier, range, hitCooldownTicks, tagEffect,
+                WhipAppearance.segments(WhipSegment.fixedSpacing(Confluence.asResource("item/whip/" + name), 16)));
     }
 
-    protected BaseWhipItem(float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends WhipTagEffect> tagEffect, WhipAppearance appearance) {
+    public BaseWhipItem(float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends WhipTagEffect> tagEffect, WhipAppearance appearance) {
         super(createProperties(attackSpeedModifier, range));
         this.baseDamage = baseDamage;
         this.durationTicks = Math.max(1, (int) (80.0 / (4.0 * (1.0 + attackSpeedModifier))));
@@ -67,6 +70,8 @@ public class BaseWhipItem extends Item {
     public float damageFalloff() {return 0.8F;}
 
     public float minimumDamageMultiplier() {return 0.2F;}
+
+    public boolean shouldApplyTag(int hitIndex) {return true;}
 
     public boolean penetratesBlocks() {return false;}
 
@@ -108,6 +113,8 @@ public class BaseWhipItem extends Item {
 
     public static float swingStep(Player player) {
         double speed = player.getAttributeValue(Attributes.ATTACK_SPEED);
+        // 仅影响挥鞭速度，不给近战武器添加攻速属性。
+        if (player.hasEffect(ModEffects.JUNGLES_FURY.get())) speed *= 1.12;
         return Double.isFinite(speed) ? (float) Mth.clamp(speed / 80.0, 0.0, 1.0) : 0.0F;
     }
 

@@ -13,6 +13,8 @@ public class DarkCaster extends BaseCasterMonster {
     private static final CasterCycleAction.Timing NECROMANCER_TIMING = new CasterCycleAction.Timing(1, 150, 26, 17, 8, 20);
     private static final CasterCycleAction.Timing DIABOLIST_TIMING = new CasterCycleAction.Timing(1, 133, 26, 33, 8, 1);
     private static final CasterCycleAction.Timing RAGGED_CASTER_TIMING = new CasterCycleAction.Timing(13, 180, 26, 34, 8, 47);
+    private static final CasterCycleAction.Timing TIM_TIMING = new CasterCycleAction.Timing(50, 217, 18, 33, 15, 83);
+    private static final CasterCycleAction.Timing RUNE_WIZARD_TIMING = new CasterCycleAction.Timing(50, 217, 5, 30, 25, 67);
     private final Profile profile;
 
     public DarkCaster(EntityType<? extends BaseCasterMonster> type, Level level) {
@@ -29,7 +31,8 @@ public class DarkCaster extends BaseCasterMonster {
     protected EntityType<HostileParticleProjectile> projectileType() {
         return switch (profile) {
             case DARK_CASTER -> ModEntities.DARK_CASTER_PROJECTILE.get();
-            case GOBLIN_SORCERER -> ModEntities.CHAOS_BALL_PROJECTILE.get();
+            case GOBLIN_SORCERER, TIM -> ModEntities.CHAOS_BALL_PROJECTILE.get();
+            case RUNE_WIZARD -> ModEntities.RUNE_BLAST.get();
             case NECROMANCER -> ModEntities.SHADOW_BEAM_PROJECTILE.get();
             case DIABOLIST -> ModEntities.INFERNO_BOLT_PROJECTILE.get();
             case RAGGED_CASTER -> ModEntities.LOST_SOUL_PROJECTILE.get();
@@ -40,6 +43,11 @@ public class DarkCaster extends BaseCasterMonster {
     @Override
     protected int projectilesPerVolley() {
         return profile.projectilesPerVolley;
+    }
+
+    @Override
+    protected float projectileDamage() {
+        return super.projectileDamage() * (profile == Profile.RUNE_WIZARD ? 0.4F : 1.0F);
     }
 
     /// 死灵法师每次传送后连续施放五次暗影束，其他法师保持各自原有的三次周期。
@@ -69,6 +77,8 @@ public class DarkCaster extends BaseCasterMonster {
     public enum Profile {
         DARK_CASTER(CasterCycleAction.HurtResponse.CONTINUE_CYCLE, null, 3, 1, 1),
         GOBLIN_SORCERER(CasterCycleAction.HurtResponse.CONTINUE_CYCLE, null, 3, 1, 1),
+        TIM(CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT, TIM_TIMING, 3, 1, 1),
+        RUNE_WIZARD(CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT, RUNE_WIZARD_TIMING, 6, 1, 1),
         NECROMANCER(CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT, NECROMANCER_TIMING, 5, 1, 1),
         DIABOLIST(CasterCycleAction.HurtResponse.TELEPORT_IMMEDIATELY, DIABOLIST_TIMING, 3, 1, 1),
         RAGGED_CASTER(CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT, RAGGED_CASTER_TIMING, 3, 3, 7);

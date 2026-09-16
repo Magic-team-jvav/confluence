@@ -15,9 +15,16 @@ public final class SnowFlinxSummon extends GroundMeleeSummon {
     private int leapCooldown = 20;
     private int leapForwardDelay;
     private int dashCooldown = 20;
+    private Vec3 pendingDash = Vec3.ZERO;
 
     public SnowFlinxSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("summon_snow_flinx"), owner, slotCost, stats, initialPose, 1.0, 1.0, 16.0, 0.40, 0.50);
+    }
+
+    @Override
+    protected void onTargetChanged(LivingEntity previousTarget, LivingEntity currentTarget) {
+        super.onTargetChanged(previousTarget, currentTarget);
+        if (previousTarget != currentTarget) pendingDash = Vec3.ZERO;
     }
 
     @Override
@@ -29,11 +36,18 @@ public final class SnowFlinxSummon extends GroundMeleeSummon {
 
     @Override
     protected void afterPathAdvance(SummonPose previousPreviousPose, SummonPose previousPose, SummonPose currentPose) {
-        if (target() != null) hurtTouchingTargets(collisionBox().inflate(0.75), 32.0, 1.0F);
+        if (target() != null)
+            hurtTouchingTargets(collisionBox().inflate(0.75), 32.0, 1.0F, this::onSuccessfulHit);
     }
 
     @Override
     protected void moveInCombat(LivingEntity target) {
+        if (pendingDash.lengthSqr() > 0.0) {
+            Vec3 movement = velocity().add(pendingDash);
+            pendingDash = Vec3.ZERO;
+            moveWithCollision(movement);
+            return;
+        }
         Vec3 targetPosition = targetBasePosition();
         if (onGround() && leapCooldown <= 0 && position().distanceToSqr(targetPosition) < 25.0 && position().y < targetPosition.y + 2.0) {
             moveWithCollision(new Vec3(0.0, 0.8, 0.0));
@@ -52,12 +66,8 @@ public final class SnowFlinxSummon extends GroundMeleeSummon {
     @Override
     protected void onSuccessfulHit(LivingEntity target) {
         if (dashCooldown <= 0) {
-            Vec3 direction = targetPosition().subtract(position()).normalize();
-            Vec3 movement = velocity().scale(0.5).add(direction.scale(0.35));
-            if (movement.lengthSqr() > 0.25) {
-                movement = movement.normalize().scale(0.5);
-            }
-            moveWithCollision(movement);
+            Vec3 direction = target.getEyePosition().subtract(position()).normalize();
+            pendingDash = direction;
             dashCooldown = 20;
         }
     }

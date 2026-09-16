@@ -18,6 +18,7 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
     private final float scale;
     private final float offsetY;
     private final float yawOffset;
+    private boolean shellPass;
 
     ClientSummonGeoRenderer(ResourceLocation type) {
         super(new Model(type));
@@ -56,26 +57,61 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
     }
 
     @Override
-    public void renderRecursively(PoseStack poseStack, ClientSummonVisual visual, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource,
-                                  VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay,
-                                  float red, float green, float blue, float alpha) {
-        if (type.getPath().equals("slime_baby") && !bone.getName().equals("outer") && !bone.getName().equals("slime")) {
-            renderType = RenderType.entityCutout(getTextureLocation(visual));
-            buffer = bufferSource.getBuffer(renderType);
+    public void actuallyRender(PoseStack poses, ClientSummonVisual visual, BakedGeoModel model, RenderType renderType,
+                               MultiBufferSource buffers, VertexConsumer buffer, boolean reRender, float partialTick,
+                               int light, int overlay, float red, float green, float blue, float alpha) {
+        shellPass = false;
+        super.actuallyRender(poses, visual, model, renderType, buffers, buffer, reRender,
+                partialTick, light, overlay, red, green, blue, alpha);
+        if (!type.getPath().equals("slime_baby")) return;
+        if (buffers instanceof MultiBufferSource.BufferSource source) source.endBatch(renderType);
+        RenderType shell = RenderType.entityTranslucentCull(getTextureLocation(visual));
+        shellPass = true;
+        try {
+            super.actuallyRender(poses, visual, model, shell, buffers, buffers.getBuffer(shell), true,
+                    partialTick, light, overlay, red, green, blue, alpha);
+        } finally {
+            shellPass = false;
         }
-        super.renderRecursively(poseStack, visual, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    @Override
+    public void renderCubesOfBone(PoseStack poses, GeoBone bone, VertexConsumer buffer, int light,
+                                  int overlay, float red, float green, float blue, float alpha) {
+        if (!type.getPath().equals("slime_baby")) {
+            super.renderCubesOfBone(poses, bone, buffer, light, overlay, red, green, blue, alpha);
+            return;
+        }
+        if (bone.isHidden()) return;
+        for (int index = 0; index < bone.getCubes().size(); index++) {
+            boolean shell = bone.getName().equals("outer") && index == 0;
+            if (shell != shellPass) continue;
+            poses.pushPose();
+            renderCube(poses, bone.getCubes().get(index), buffer, light, overlay, red, green, blue, alpha);
+            poses.popPose();
+        }
     }
 
     private static final class Model extends GeoModel<ClientSummonVisual> {
         private final ResourceLocation model;
         private final ResourceLocation texture;
         private final ResourceLocation animation;
+        private final boolean noCull;
 
         private Model(ResourceLocation type) {
+            noCull = switch (type.getPath()) {
+                case "finch_baby", "hornet_baby", "slime_baby", "summon_imp", "summon_snow_flinx",
+                     "vampire_bat", "vampire_frog", "deadly_sphere_blade" -> true;
+                default -> false;
+            };
             if (type.getPath().equals("hornet_baby")) {
-                model = Confluence.asResource("geo/entity/hornet.geo.json");
-                texture = Confluence.asResource("textures/entity/hornet.png");
+                model = Confluence.asResource("geo/entity/summon/hornet_baby.geo.json");
+                texture = Confluence.asResource("textures/entity/summon/hornet_baby.png");
                 animation = Confluence.asResource("animations/entity/hornet.animation.json");
+            } else if (type.getPath().startsWith("spider_")) {
+                model = Confluence.asResource("geo/entity/summon/spider.geo.json");
+                animation = Confluence.asResource("animations/entity/summon/spider.animation.json");
+                texture = Confluence.asResource(type.getPath().equals("spider_venom") ? "textures/entity/summon/spider.png" : "textures/entity/summon/spider/" + type.getPath().substring(7) + ".png");
             } else {
                 String path = "summon/" + type.getPath();
                 model = Confluence.asResource("geo/entity/" + path + ".geo.json");
@@ -101,7 +137,7 @@ final class ClientSummonGeoRenderer extends GeoObjectRenderer<ClientSummonVisual
 
         @Override
         public RenderType getRenderType(ClientSummonVisual visual, ResourceLocation texture) {
-            return RenderType.entityTranslucent(texture);
+            return noCull ? RenderType.entityCutoutNoCull(texture) : RenderType.entityCutout(texture);
         }
     }
 }

@@ -20,13 +20,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.confluence.mod.common.entity.IVariant;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.CritterEntities;
 import org.jetbrains.annotations.Nullable;
@@ -99,6 +99,10 @@ public class Bunny extends Rabbit implements GeoEntity {
         }
         --watchTicksRemaining;
         if (level().isClientSide) return;
+        if (isAlive() && getBunnyVariant() == Variant.NORMAL && tickCount % 20 == 0 && BloodMoonGameEvent.INSTANCE.started()) {
+            corrupt(CritterCorruption.selectsCrimson(this));
+            return;
+        }
         if (!navigation.isDone()) {
             idleTicks = 0;
             if (watchTicksRemaining >= 0) {
@@ -109,6 +113,14 @@ public class Bunny extends Rabbit implements GeoEntity {
             ++idleTicks;
             if (idleTicks % 100 == 99) nextWatchTick = tickCount + random.nextInt(20);
             if (tickCount == nextWatchTick) beginWatchCycle(50 + 1000 * random.nextInt(2));
+        }
+    }
+
+    public void corrupt(boolean crimson) {
+        if (!level().isClientSide && isAlive() && getBunnyVariant() == Variant.NORMAL) {
+            HostileBunny converted = convertTo(CritterEntities.HOSTILE_BUNNY.get(), false);
+            if (converted != null)
+                converted.setBunnyVariant(crimson ? Variant.VICIOUS : Variant.CORRUPT);
         }
     }
 

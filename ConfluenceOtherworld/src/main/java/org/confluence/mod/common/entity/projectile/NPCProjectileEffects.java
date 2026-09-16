@@ -91,7 +91,7 @@ public final class NPCProjectileEffects {
                 level.sendParticles(ParticleTypes.EXPLOSION, projectile.getX(), projectile.getY(), projectile.getZ(), 1, 0, 0, 0, 0);
                 level.playSound(null, projectile.blockPosition(), SoundEvents.GENERIC_EXPLODE, projectile.getSoundSource(), 0.7F, 1.2F);
             }
-            for (LivingEntity target : projectile.level().getEntitiesOfClass(LivingEntity.class, new AABB(projectile.blockPosition()).inflate(radius))) {
+            for (LivingEntity target : projectile.level().getEntitiesOfClass(LivingEntity.class, AABB.ofSize(projectile.position(), radius * 2, radius * 2, radius * 2))) {
                 if (owner instanceof BaseNPC npc && !npc.canAttack(target)) continue;
                 hurt(target);
             }

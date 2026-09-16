@@ -1,17 +1,22 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -20,31 +25,30 @@ import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifi
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
 
 /// 巨型陆龟使用独立的缩壳扑击循环，不与独角兽和李小骨的地面冲锋共用状态机。
 public final class GiantTortoise extends BaseMonster {
     private static final String PHASE_TAG = "Phase";
     private static final String PHASE_TICKS_TAG = "PhaseTicks";
     private static final String COOLDOWN_TAG = "SpinCooldown";
-    private static final String LAUNCH_X_TAG = "LaunchX";
-    private static final String LAUNCH_Y_TAG = "LaunchY";
-    private static final String LAUNCH_Z_TAG = "LaunchZ";
     private static final int NORMAL_COOLDOWN = 133;
     private static final int RETRACT_TICKS = 10;
-    private static final int SPIN_TICKS = 30;
+    private static final int WINDUP_TICKS = 12;
+    private static final double POUNCE_GRAVITY = 0.08;
     private static final int EMERGE_TICKS = 10;
-    private static final AttributeModifier SHELL_ARMOR = new PortAttributeModifier(Confluence.asResource("giant_tortoise_shell_armor"), 30.0, PortAttributeModifier.Operation.ADD_VALUE).unwrap();
+    private static final AttributeModifier SHELL_ARMOR = new PortAttributeModifier(Confluence.asResource("giant_tortoise_shell_armor"), 1.0, PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE).unwrap();
     private static final AttributeModifier SPIN_DAMAGE = new PortAttributeModifier(Confluence.asResource("giant_tortoise_spin_damage"), 1.0, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL).unwrap();
     private static final EntityDataAccessor<Byte> PHASE = SynchedEntityData.defineId(GiantTortoise.class, EntityDataSerializers.BYTE);
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation RETRACT = RawAnimation.begin().thenPlayAndHold("shrinking_shell");
-    private static final RawAnimation SPIN = RawAnimation.begin().thenLoop("turn");
-    private static final RawAnimation EMERGE = RawAnimation.begin().thenPlayAndHold("turn2");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation RETRACT = RawAnimation.begin().thenPlayAndHold("withdraw");
+    private static final RawAnimation SPIN = RawAnimation.begin().thenLoop("scroll");
+    private static final RawAnimation AIR_SPIN = RawAnimation.begin().thenLoop("scroll_sky");
+    private static final RawAnimation EMERGE = RawAnimation.begin().thenPlayAndHold("drill_out");
     private int phaseTicks;
     private int spinCooldown = NORMAL_COOLDOWN;
     private int repathTicks;
-    private Vec3 lockedLaunchDirection = Vec3.ZERO;
+    private int meleeCooldown;
 
     public GiantTortoise(EntityType<? extends GiantTortoise> type, Level level) {
         super(type, level);
@@ -77,6 +81,24 @@ public final class GiantTortoise extends BaseMonster {
     }
 
     @Override
+    public void travel(Vec3 input) {
+        if (getPhase() != Phase.SPINNING) {
+            super.travel(input);
+            return;
+        }
+        if (isEffectiveAi()) {
+            move(MoverType.SELF, getDeltaMovement());
+            setDeltaMovement(getDeltaMovement().add(0.0, isNoGravity() ? 0.0 : -POUNCE_GRAVITY, 0.0));
+        }
+        calculateEntityAnimation(false);
+    }
+
+    @Override
+    public boolean causeFallDamage(float distance, float multiplier, DamageSource source) {
+        return false;
+    }
+
+    @Override
     public boolean hurt(DamageSource source, float amount) {
         boolean damaged = super.hurt(source, amount);
         if (damaged && !level().isClientSide) {
@@ -93,6 +115,14 @@ public final class GiantTortoise extends BaseMonster {
         entityData.set(PHASE, (byte) phase.ordinal());
         phaseTicks = 0;
         repathTicks = 0;
+        if (phase != Phase.WALK) {
+            getNavigation().stop();
+            getMoveControl().setWantedPosition(getX(), getY(), getZ(), 0.0);
+            setSpeed(0.0F);
+            setXxa(0.0F);
+            setYya(0.0F);
+            setZza(0.0F);
+        }
         boolean spinning = phase == Phase.SPINNING || phase == Phase.DECELERATING;
         setAttributeModifier(Attributes.ARMOR, SHELL_ARMOR, spinning);
         setAttributeModifier(Attributes.ATTACK_DAMAGE, SPIN_DAMAGE, spinning);
@@ -117,9 +147,6 @@ public final class GiantTortoise extends BaseMonster {
         tag.putByte(PHASE_TAG, (byte) getPhase().ordinal());
         tag.putInt(PHASE_TICKS_TAG, phaseTicks);
         tag.putInt(COOLDOWN_TAG, spinCooldown);
-        tag.putDouble(LAUNCH_X_TAG, lockedLaunchDirection.x);
-        tag.putDouble(LAUNCH_Y_TAG, lockedLaunchDirection.y);
-        tag.putDouble(LAUNCH_Z_TAG, lockedLaunchDirection.z);
     }
 
     @Override
@@ -129,16 +156,21 @@ public final class GiantTortoise extends BaseMonster {
         setPhase(phases[Math.max(0, Math.min(tag.getByte(PHASE_TAG), phases.length - 1))]);
         phaseTicks = Math.max(0, tag.getInt(PHASE_TICKS_TAG));
         spinCooldown = Math.max(0, tag.getInt(COOLDOWN_TAG));
-        lockedLaunchDirection = new Vec3(tag.getDouble(LAUNCH_X_TAG), tag.getDouble(LAUNCH_Y_TAG), tag.getDouble(LAUNCH_Z_TAG));
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Phase", 2, state -> switch (getPhase()) {
-            case WALK -> state.isMoving() ? state.setAndContinue(WALK) : PlayState.STOP;
-            case RETRACTING -> state.setAndContinue(RETRACT);
-            case SPINNING, DECELERATING -> state.setAndContinue(SPIN);
-            case EMERGING -> state.setAndContinue(EMERGE);
+        controllers.add(new AnimationController<>(this, "Phase", 0, state -> {
+            Phase phase = getPhase();
+            state.getController().setAnimationSpeed(phase == Phase.RETRACTING || phase == Phase.EMERGING ? 1.5 : 1.0);
+            return switch (phase) {
+                case WALK ->
+                        state.setAndContinue(Math.hypot(getX() - xo, getZ() - zo) > 0.002 ? WALK : IDLE);
+                case RETRACTING -> state.setAndContinue(RETRACT);
+                case WINDING_UP -> state.setAndContinue(SPIN);
+                case SPINNING, DECELERATING -> state.setAndContinue(onGround() ? SPIN : AIR_SPIN);
+                case EMERGING -> state.setAndContinue(EMERGE);
+            };
         }));
     }
 
@@ -146,12 +178,23 @@ public final class GiantTortoise extends BaseMonster {
         @Override
         public BTStatus execute() {
             phaseTicks++;
+            if (meleeCooldown > 0) meleeCooldown--;
+            if (getPhase() == Phase.SPINNING || getPhase() == Phase.DECELERATING)
+                breakSpinVegetation();
             LivingEntity target = getTarget();
             switch (getPhase()) {
                 case WALK -> updateWalking(target);
                 case RETRACTING -> {
-                    getNavigation().stop();
-                    if (phaseTicks >= RETRACT_TICKS) beginSpin();
+                    if (target == null || !target.isAlive() || !canAttack(target)) {
+                        spinCooldown = NORMAL_COOLDOWN;
+                        setPhase(Phase.EMERGING);
+                    } else if (phaseTicks >= RETRACT_TICKS) setPhase(Phase.WINDING_UP);
+                }
+                case WINDING_UP -> {
+                    if (target == null || !target.isAlive() || !canAttack(target)) {
+                        spinCooldown = NORMAL_COOLDOWN;
+                        setPhase(Phase.EMERGING);
+                    } else if (phaseTicks >= WINDUP_TICKS) beginSpin(target);
                 }
                 case SPINNING -> updateSpin(target);
                 case DECELERATING -> updateDeceleration();
@@ -164,8 +207,8 @@ public final class GiantTortoise extends BaseMonster {
         }
 
         private void updateWalking(LivingEntity target) {
-            if (target == null || !target.isAlive()) {
-                if (--repathTicks <= 0 || getNavigation().isDone()) {
+            if (target == null || !target.isAlive() || !canAttack(target)) {
+                if (--repathTicks <= 0) {
                     Vec3 destination = LandRandomPos.getPos(GiantTortoise.this, 8, 4);
                     if (destination != null)
                         getNavigation().moveTo(destination.x, destination.y, destination.z, 0.45);
@@ -173,57 +216,84 @@ public final class GiantTortoise extends BaseMonster {
                 }
                 return;
             }
-            if (--repathTicks <= 0 || getNavigation().isDone()) {
+            if (--repathTicks <= 0) {
                 getNavigation().moveTo(target, 0.45);
                 repathTicks = 10;
             }
             double distance = distanceTo(target);
-            int maximumCooldown = distance > 32.0 && hasLineOfSight(target) ? 12
-                    : distance > 12.0 && hasLineOfSight(target) ? 27 : NORMAL_COOLDOWN;
-            spinCooldown = Math.min(spinCooldown, maximumCooldown);
-            if (--spinCooldown <= 0 && onGround()) {
-                Vec3 aim = target.getEyePosition().subtract(position());
-                lockedLaunchDirection = new Vec3(aim.x, Math.max(2.5, aim.y + 3.0), aim.z).normalize();
-                faceCombatDirection(lockedLaunchDirection, 180.0F, 180.0F);
-                setPhase(Phase.RETRACTING);
+            if (meleeCooldown == 0 && getBoundingBox().inflate(0.3).intersects(target.getBoundingBox()) && canAttack(target) && hasLineOfSight(target)) {
+                doHurtTarget(target);
+                meleeCooldown = 20;
             }
+            boolean visible = hasLineOfSight(target);
+            int maximumCooldown = distance > 37.5 && (visible || getY() - target.getY() <= 12.5) ? 12
+                    : distance > 12.5 && visible ? 27 : NORMAL_COOLDOWN;
+            spinCooldown = Math.min(spinCooldown, maximumCooldown);
+            if (spinCooldown > 0) spinCooldown--;
+            if (spinCooldown == 0 && (onGround() || isInWaterOrBubble())) beginRetraction(target);
         }
 
-        private void beginSpin() {
+        private void beginRetraction(LivingEntity target) {
+            faceCombatDirection(new Vec3(target.getX() - getX(), 0.0, target.getZ() - getZ()), 180.0F, 180.0F);
+            setDeltaMovement(new Vec3(0.0, getDeltaMovement().y, 0.0));
+            setPhase(Phase.RETRACTING);
+        }
+
+        private void beginSpin(LivingEntity target) {
             setPhase(Phase.SPINNING);
-            Vec3 direction = lockedLaunchDirection.lengthSqr() > 1.0E-6 ? lockedLaunchDirection : getForward();
-            faceCombatDirection(direction, 180.0F, 180.0F);
-            setDeltaMovement(direction.scale(1.35));
+            Vec3 offset = target.position().subtract(position());
+            double apex = Math.max(6.0, offset.y + 4.0);
+            double upwardSpeed = Math.sqrt(2.0 * POUNCE_GRAVITY * apex);
+            double flightTicks = (upwardSpeed + Math.sqrt(upwardSpeed * upwardSpeed - 2.0 * POUNCE_GRAVITY * offset.y)) / POUNCE_GRAVITY;
+            Vec3 velocity = new Vec3(offset.x / flightTicks, upwardSpeed, offset.z / flightTicks);
+            faceCombatDirection(new Vec3(offset.x, 0.0, offset.z), 180.0F, 180.0F);
+            setOnGround(false);
+            setDeltaMovement(velocity);
             hasImpulse = true;
         }
 
         private void updateSpin(LivingEntity target) {
-            if (target != null && getY() > target.getY() && horizontalDistanceTo(target) < 2.0) {
-                Vec3 velocity = getDeltaMovement();
-                setDeltaMovement(velocity.x * 0.35, Math.min(velocity.y, -0.35), velocity.z * 0.35);
-            }
-            if (phaseTicks >= SPIN_TICKS || phaseTicks > 1 && (horizontalCollision || verticalCollision))
+            if (onGround() || (isInWaterOrBubble() && getDeltaMovement().y <= 0.0)) {
                 setPhase(Phase.DECELERATING);
+                return;
+            }
+            if (target != null && target.isAlive() && canAttack(target)) {
+                Vec3 velocity = getDeltaMovement();
+                double height = getY() - target.getY();
+                double discriminant = velocity.y * velocity.y + 2.0 * POUNCE_GRAVITY * height;
+                if (discriminant <= 0.0) return;
+                double remainingTicks = (velocity.y + Math.sqrt(discriminant)) / POUNCE_GRAVITY;
+                if (remainingTicks <= 6.0) return;
+                Vec3 correction = new Vec3((target.getX() - getX()) / remainingTicks - velocity.x, 0.0, (target.getZ() - getZ()) / remainingTicks - velocity.z);
+                double length = correction.length();
+                if (length > 0.02) correction = correction.scale(0.02 / length);
+                setDeltaMovement(velocity.add(correction));
+            }
         }
 
         private void updateDeceleration() {
+            LivingEntity target = getTarget();
+            if (isInWaterOrBubble() && target != null && target.isAlive() && canAttack(target)) {
+                beginRetraction(target);
+                return;
+            }
             Vec3 velocity = getDeltaMovement();
             setDeltaMovement(velocity.x * 0.72, velocity.y, velocity.z * 0.72);
             if ((onGround() || isInWater()) && velocity.horizontalDistanceSqr() < 0.01) {
-                if (isInWater() && getTarget() != null && getTarget().isAlive()) {
-                    spinCooldown = 0;
-                    setPhase(Phase.WALK);
-                    return;
-                }
                 setPhase(Phase.EMERGING);
                 spinCooldown = NORMAL_COOLDOWN;
             }
         }
 
-        private double horizontalDistanceTo(LivingEntity target) {
-            double x = target.getX() - getX();
-            double z = target.getZ() - getZ();
-            return Math.sqrt(x * x + z * z);
+    }
+
+    private void breakSpinVegetation() {
+        if (!ForgeEventFactory.getMobGriefingEvent(level(), this)) return;
+        AABB sweptBox = getBoundingBox().expandTowards(getDeltaMovement());
+        for (BlockPos pos : BlockPos.betweenClosed(BlockPos.containing(sweptBox.minX, sweptBox.minY, sweptBox.minZ), BlockPos.containing(sweptBox.maxX, sweptBox.maxY, sweptBox.maxZ))) {
+            var state = level().getBlockState(pos);
+            if ((state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES)) && state.getDestroySpeed(level(), pos) >= 0.0F)
+                level().destroyBlock(pos, true, this);
         }
     }
 
@@ -232,6 +302,7 @@ public final class GiantTortoise extends BaseMonster {
         RETRACTING,
         SPINNING,
         DECELERATING,
-        EMERGING
+        EMERGING,
+        WINDING_UP
     }
 }

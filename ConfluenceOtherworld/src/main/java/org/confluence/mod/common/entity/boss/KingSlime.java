@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -396,7 +397,8 @@ public class KingSlime extends BaseBoss {
     }
 
     private int getTotalSplits() {
-        return LibUtils.switchByDifficulty(level(), blockPosition(), 30, 50, 75, 100);
+        int splits = LibUtils.switchByDifficulty(level(), blockPosition(), 30, 50, 75, 100);
+        return CommonConfigs.KING_SLIME_LARGE_MINIONS.get() ? Math.max(1, splits / 3) : splits;
     }
 
     /// 缩小、传送和重新膨胀期间没有接触伤害。
@@ -425,6 +427,7 @@ public class KingSlime extends BaseBoss {
         slime.setTarget(getTarget());
         if (slime instanceof org.confluence.mod.common.entity.monster.slime.BaseSlime summonedSlime) {
             summonedSlime.setBossOwner(this);
+            if (CommonConfigs.KING_SLIME_LARGE_MINIONS.get()) summonedSlime.setSlimeSize(4);
         }
         serverLevel.addFreshEntity(slime);
     }

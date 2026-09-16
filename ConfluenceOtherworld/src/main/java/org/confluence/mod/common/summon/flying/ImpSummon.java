@@ -37,7 +37,7 @@ public final class ImpSummon extends FlyingSummon {
             LivingEntity target = delayedTarget;
             delayedTarget = null;
             delayedAttackTicks = -1;
-            if (target != null) {
+            if (target != null && target == target()) {
                 fire(target);
             }
         }

@@ -2,13 +2,13 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.goal.BreakDoorGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import org.confluence.mod.common.entity.ai.goal.EnemyBreakDoorGoal;
+import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
 
 /// 哥布林族共用的陆地行为。
 ///
@@ -31,9 +31,9 @@ public class GoblinMonster extends HumanoidWarriorMonster {
             configurePlayerTargetLineOfSight(false);
             groundNavigation.setCanOpenDoors(true);
             if (doorBehavior == DoorBehavior.BREAK) {
-                goalSelector.addGoal(-1, new BreakDoorGoal(this, difficulty -> true));
+                goalSelector.addGoal(-1, new EnemyBreakDoorGoal(this));
             } else {
-                goalSelector.addGoal(-1, new OpenDoorGoal(this, true));
+                goalSelector.addGoal(-1, new EnemyOpenDoorGoal(this));
             }
         }
     }

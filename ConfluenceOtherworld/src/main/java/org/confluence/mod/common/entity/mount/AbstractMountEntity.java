@@ -129,6 +129,14 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
     /// 每 tick 的具体移动与能力逻辑。客户端可做同公式预测。
     protected abstract void tickRidden(Player player);
 
+    public float modifyRiderDamage(DamageSource source, float amount) {
+        return amount;
+    }
+
+    public boolean tiltsWithMovement() {
+        return false;
+    }
+
     /// 服务端只接受当前控制乘客的跳跃键状态。
     public final void setControllerJumpInput(Player player, boolean jumping) {
         if (!level().isClientSide && player == getControllingPassenger() && entityData.get(JUMP_INPUT) != jumping) {

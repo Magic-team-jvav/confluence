@@ -53,6 +53,8 @@ public record GiftSubProvider() implements LootTableSubProvider {
 
 
         output.accept(Confluence.asResource("gameplay/crate/obsidian_crate"), environmentLavaCrateCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MountItems.SUPERHEATED_BLOOD).setWeight(19))
+                        .add(EmptyLootItem.emptyItem().setWeight(81)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
@@ -359,6 +361,8 @@ public record GiftSubProvider() implements LootTableSubProvider {
         );
 
         output.accept(Confluence.asResource("gameplay/crate/hellstone_crate"), environmentLavaCrateHardModeCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MountItems.SUPERHEATED_BLOOD).setWeight(19))
+                        .add(EmptyLootItem.emptyItem().setWeight(81)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
@@ -1693,33 +1697,7 @@ public record GiftSubProvider() implements LootTableSubProvider {
                 ));
     }
 
-    // 提炼机
-    private static LootTable.Builder extractCommon() {
-        return LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.PLATINUM_COIN).setWeight(73))
-                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(1017))
-                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(13534))
-                        .add(LootItem.lootTableItem(ModItems.COPPER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 15))).setWeight(642145))
-                        .add(LootItem.lootTableItem(MaterialItems.AMETHYST).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
-                        .add(LootItem.lootTableItem(MaterialItems.SAPPHIRE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
-                        .add(LootItem.lootTableItem(MaterialItems.TOPAZ).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
-                        .add(LootItem.lootTableItem(MaterialItems.AMBER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(9598))
-                        .add(LootItem.lootTableItem(MaterialItems.RUBY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
-                        .add(LootItem.lootTableItem(MaterialItems.JADE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
-                        .add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
-                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
-                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
-                        .add(LootItem.lootTableItem(Items.RAW_GOLD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
-                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
-                );
-    }
-
-    // 困难模式前匣子通用
+    // 毁灭者宝藏袋
     private static LootTable.Builder theDestroyerTreasureBag(int hallowedMin, int hallowedMax, int goldCoins, ItemLike difficultyBonus) {
         LootTable.Builder table = LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SOUL_OF_MIGHT)

@@ -50,7 +50,7 @@ import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.effect.ColoredGlintContext;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
@@ -240,8 +240,8 @@ public final class ModClientSetups {
     }
 
     static final IClientItemExtensions NOOP_ITEM = new SimpleClientItemExtensions().handTransform(true).armPose(HumanoidModel.ArmPose.EMPTY).noRenderer();
-    static final IClientItemExtensions GUIDE_VOODOO_DOLL = new MutableRenderTypeItemExtension(stack -> GuideVooDooDollItem.isWall(LibUtils.getItemStackNbtIfPresent(stack)) ? ModClientSetups.GLINT_FF0000.renderType() : RenderType.glint());
-    static final IClientItemExtensions GLINT_RAINBOW_EXTENSIONS = new MutableRenderTypeItemExtension(stack -> ModClientSetups.GLINT_RAINBOW.renderType());
+    static final IClientItemExtensions GUIDE_VOODOO_DOLL = new MutableRenderTypeItemExtension(stack -> GuideVooDooDollItem.isWall(LibUtils.getItemStackNbtIfPresent(stack)) ? RenderStateShardAccessor.GLINT_FF0000.renderType() : RenderType.glint());
+    static final IClientItemExtensions GLINT_RAINBOW_EXTENSIONS = new MutableRenderTypeItemExtension(stack -> RenderStateShardAccessor.GLINT_RAINBOW.renderType());
     static final IClientItemExtensions FULL_LIGHT = new CustomLightItemExtension(15);
 
     /// 对于使用原版json模型，且使用了Extensions来自定义渲染的物品，需使用该方法标记为自定义模型
@@ -358,9 +358,6 @@ public final class ModClientSetups {
     }
 
     public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = LibUtils.isModLoaded("ctm") || LibUtils.isModLoaded("fusion") || LibUtils.isModLoaded("continuity");
-
-    public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
-    public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
 
     public static void registerBowProperties() {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");

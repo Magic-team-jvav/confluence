@@ -40,7 +40,7 @@ public final class HornetSummon extends FlyingSummon {
             preparingShot = false;
             LivingEntity target = preparedTarget;
             preparedTarget = null;
-            if (target != null) shoot(target);
+            if (target != null && target == target()) shoot(target);
         }
     }
 

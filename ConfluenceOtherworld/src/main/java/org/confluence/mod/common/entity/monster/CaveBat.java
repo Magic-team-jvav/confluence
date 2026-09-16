@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -70,14 +71,15 @@ public class CaveBat extends BaseFlyingMonster {
             return;
         }
         switch (variant) {
-            case HELL -> spawnHellBatParticles();
+            case HELL, LAVA -> spawnHellBatParticles();
             case ICE -> spawnIceBatParticles();
         }
     }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (variant == Variant.HELL && source.is(DamageTypeTags.IS_FIRE)) return false;
+        if ((variant == Variant.HELL || variant == Variant.LAVA) && source.is(DamageTypeTags.IS_FIRE))
+            return false;
         return super.hurt(source, amount);
     }
 
@@ -142,6 +144,18 @@ public class CaveBat extends BaseFlyingMonster {
             }
         },
         GIANT {
+            @Override
+            void applyContactEffect(CaveBat bat, LivingEntity target) {
+                if (!bat.level().isClientSide && bat.random.nextInt(14) == 0) {
+                    target.addEffect(new MobEffectInstance(LibEffects.CONFUSED.get(), bat.scaledDuration(100)), bat);
+                }
+            }
+        },
+        ILLUMINANT {
+            @Override
+            void applyContactEffect(CaveBat bat, LivingEntity target) {}
+        },
+        LAVA {
             @Override
             void applyContactEffect(CaveBat bat, LivingEntity target) {}
         },

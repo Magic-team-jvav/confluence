@@ -19,7 +19,6 @@ final class TerraprismaSlashGoal extends TerraprismaSkillGoal {
     @Override
     public void start() {
         super.start();
-        summon.beginAttackCycle();
         startPosition = summon.position();
         trackedTarget = summon.targetPosition();
         Vec3 away = startPosition.subtract(trackedTarget).multiply(1.0, 0.0, 1.0);

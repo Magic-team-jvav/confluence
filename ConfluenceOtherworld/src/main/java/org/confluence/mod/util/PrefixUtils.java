@@ -31,7 +31,7 @@ public final class PrefixUtils {
 
     public static boolean couldReforge(ItemStack stack) {
         return !stack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX) &&
-                (stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY) ||
+                (stack.is(ModTags.Items.SUMMONER_WEAPON) || stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_MELEE_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_RANGED_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_MAGIC_ONLY) ||
@@ -64,6 +64,8 @@ public final class PrefixUtils {
     }
 
     public static PrefixType getPrefixType(ItemStack itemStack) {
+        if (itemStack.is(ModTags.Items.SUMMONER_WEAPON) && !itemStack.is(ModTags.Items.WHIP))
+            return PrefixType.SUMMON;
         if (itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
             return PrefixType.UNIVERSAL;
         } else if (itemStack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
@@ -79,7 +81,7 @@ public final class PrefixUtils {
     }
 
     public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        ModPrefix modPrefix = prefixType.randomPrefix(random);
+        ModPrefix modPrefix = prefixType.randomPrefix(random, itemStack);
         if (modPrefix.canBeMercy() && random.nextFloat() < MERCY) {
             unknown(itemStack);
         } else {
@@ -133,7 +135,7 @@ public final class PrefixUtils {
     }
 
     public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        return setAndUpdate(itemStack, prefixType, prefixType.randomPrefix(random));
+        return setAndUpdate(itemStack, prefixType, prefixType.randomPrefix(random, itemStack));
     }
 
     public static @Nullable PrefixComponent setAndUpdate(ItemStack itemStack, @Nullable PrefixType prefixType, ModPrefix modPrefix) {
@@ -416,6 +418,7 @@ public final class PrefixUtils {
         }
 
         float num14 = (float) ((double) num2 * (2.0 - (double) num4) * (2.0 - (double) num7) * (double) num5 * (double) num3 * (double) num6 * (1.0 + (double) num8 * 0.0199999995529652));
+        if (modPrefix instanceof ModPrefix.Summon) num14 = (float) Math.sqrt(1.0F + prefix.value());
         if (num1 == 62 || num1 == 69 || num1 == 73 || num1 == 77) num14 *= 1.05f;
         if (num1 == 63 || num1 == 70 || num1 == 74 || num1 == 78 || num1 == 67) num14 *= 1.1f;
         if (num1 == 64 || num1 == 71 || num1 == 75 || num1 == 79 || num1 == 66) num14 *= 1.15f;

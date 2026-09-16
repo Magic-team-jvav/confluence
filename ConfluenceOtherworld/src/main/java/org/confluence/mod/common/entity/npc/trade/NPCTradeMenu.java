@@ -60,6 +60,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     private final List<SlotState> slotStates = new ArrayList<>(TRADE_SIZE);
     private final SimpleContainerData pageData = new SimpleContainerData(4);
     private final List<Buyback> buybacks = new ArrayList<>();
+    private final List<Buyback> refundablePurchases = new ArrayList<>();
 
     public static NPCTradeMenu fromNetwork(int containerId, Inventory inventory, FriendlyByteBuf data) {
         int entityId = data.readInt();
@@ -128,11 +129,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
             return;
         }
         NPCTradeOffer offer = offers.get(offerIndex);
-        if (!offer.isAvailable(serverPlayer, npc)) {
-            serverPlayer.closeContainer();
-            return;
-        }
-        if (clickType == ClickType.QUICK_MOVE) buyMaximum(serverPlayer, offer);
+        if (clickType == ClickType.QUICK_MOVE) buyBatch(serverPlayer, offer);
         else if (clickType == ClickType.PICKUP) buyToCursor(serverPlayer, offer);
     }
 
@@ -168,6 +165,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         super.removed(player);
         if (npc.getTradingPlayer() == player) npc.setTradingPlayer(null);
         tradeContainer.clearContent();
+        refundablePurchases.clear();
     }
 
     @Override
@@ -268,9 +266,18 @@ public class NPCTradeMenu extends AbstractContainerMenu {
 
     private long getSellPrice(ItemStack stack) {
         try {
-            long value = ValueComponent.getValueLong(stack, 0);
-            if (value <= 0) return 0;
-            return (long) (value * (double) npc.getMood().getSellPriceMultiplier());
+            int remaining = stack.getCount();
+            long refund = 0;
+            for (Buyback purchase : refundablePurchases) {
+                if (!ItemStack.isSameItemSameTags(stack, purchase.stack())) continue;
+                int count = Math.min(remaining, purchase.stack().getCount());
+                refund = Math.addExact(refund, Math.multiplyExact(purchase.price(), count) / purchase.stack().getCount());
+                remaining -= count;
+                if (remaining == 0) return refund;
+            }
+            ItemStack ordinary = stack.copyWithCount(remaining);
+            long value = ValueComponent.getValueLong(ordinary, 0);
+            return Math.addExact(refund, value <= 0 ? 0 : (long) (value * (double) npc.getMood().getSellPriceMultiplier()));
         } catch (ArithmeticException ignored) {
             return 0;
         }
@@ -288,6 +295,21 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     }
 
     private void rememberSale(ItemStack stack, long price) {
+        int remaining = stack.getCount();
+        for (int index = 0; index < refundablePurchases.size() && remaining > 0; ) {
+            Buyback purchase = refundablePurchases.get(index);
+            if (!ItemStack.isSameItemSameTags(stack, purchase.stack())) {
+                index++;
+                continue;
+            }
+            int count = Math.min(remaining, purchase.stack().getCount());
+            long refunded = purchase.price() * count / purchase.stack().getCount();
+            remaining -= count;
+            if (count == purchase.stack().getCount()) refundablePurchases.remove(index);
+            else {
+                refundablePurchases.set(index++, new Buyback(purchase.stack().copyWithCount(purchase.stack().getCount() - count), purchase.price() - refunded));
+            }
+        }
         buybacks.add(new Buyback(stack.copy(), price));
         refreshStock();
     }
@@ -302,6 +324,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     private void buyBack(ServerPlayer player, int index, boolean toInventory) {
         Buyback sale = buybacks.get(index);
         ItemStack result = sale.stack().copy();
+        ItemStack receipt = result.copy();
         if (toInventory) {
             if (!PlayerUtils.purchase(player, sale.price(), true, result)) return;
         } else {
@@ -313,6 +336,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
             else cursor.grow(result.getCount());
         }
         buybacks.remove(index);
+        refundablePurchases.add(new Buyback(receipt, sale.price()));
         refreshStock();
     }
 
@@ -327,15 +351,16 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         long price = costs.isEmpty() ? getBuyPrice(result) : 0;
         boolean completed = costs.isEmpty() ? price > 0 && PlayerUtils.debit(player, price, true) : consumeCosts(player, costs, 1, ItemStack.EMPTY);
         if (!completed) return;
+        if (costs.isEmpty()) refundablePurchases.add(new Buyback(result.copy(), price));
         if (cursor.isEmpty()) setCarried(result);
         else cursor.grow(result.getCount());
     }
 
-    private void buyMaximum(ServerPlayer player, NPCTradeOffer offer) {
+    private void buyBatch(ServerPlayer player, NPCTradeOffer offer) {
         ItemStack result = offer.stack();
         int capacity = inventoryCapacity(player, result);
         if (capacity < result.getCount()) return;
-        int trades = capacity / result.getCount();
+        int trades = Math.min(10, capacity / result.getCount());
         List<ItemStack> costs = offer.costs();
         if (costs.isEmpty()) {
             long price = getBuyPrice(result);
@@ -344,7 +369,10 @@ public class NPCTradeMenu extends AbstractContainerMenu {
             if (trades <= 0) return;
             ItemStack totalResult = result.copy();
             totalResult.setCount(Math.multiplyExact(result.getCount(), trades));
-            PlayerUtils.purchase(player, Math.multiplyExact(price, trades), true, totalResult);
+            long totalPrice = Math.multiplyExact(price, trades);
+            ItemStack receipt = totalResult.copy();
+            if (PlayerUtils.purchase(player, totalPrice, true, totalResult))
+                refundablePurchases.add(new Buyback(receipt, totalPrice));
             return;
         }
         trades = Math.min(trades, availableCostTrades(player, costs));

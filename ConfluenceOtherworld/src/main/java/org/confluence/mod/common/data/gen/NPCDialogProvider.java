@@ -260,6 +260,30 @@ public final class NPCDialogProvider implements DataProvider {
                 .dialog("There's been such a huge rumor that's being spread about me, 'If you can't beat him, eat him!'", "有个关于我的谣言正在盛传：“如果打不过他，那就吃掉他！")
                 .dialog("I feel there are more of my kind here...", "我感觉这里有更多同类...")
                 .build());
+        consumer.accept(NpcEntities.STEAMPUNKER, npc()
+                .dialog("Show me some gears!", "给我看看齿轮！")
+                .dialog("Be it what it would, a jetpack would suit you nicely!", "不管怎么说，喷气背包一定很适合你！")
+                .build());
+        consumer.accept(NpcEntities.CYBORG, npc()
+                .dialog("This sentence is false, or is it?", "这句话是假的，还是说它不是？")
+                .dialog("Weapons systems online. Keep clear of the blast radius.", "武器系统已上线。请远离爆炸范围。")
+                .build());
+        consumer.accept(NpcEntities.NERDY_SLIME, npc().dialog("Blub.", "咕噜。").build());
+        consumer.accept(NpcEntities.COOL_SLIME, npc().dialog("Blub.", "咕噜。").build());
+        consumer.accept(NpcEntities.ELDER_SLIME, npc().dialog("Blub.", "咕噜。").build());
+        consumer.accept(NpcEntities.CLUMSY_SLIME, npc().dialog("Blub.", "咕噜。").build());
+        consumer.accept(NpcEntities.DIVA_SLIME, npc().dialog("Blub.", "咕噜。").build());
+        consumer.accept(NpcEntities.SURLY_SLIME, npc().dialog("Blub.", "咕噜。").build());
+        consumer.accept(NpcEntities.MYSTIC_SLIME, npc().dialog("Blub.", "咕噜。").build());
+        consumer.accept(NpcEntities.SQUIRE_SLIME, npc().dialog("Blub.", "咕噜。").build());
+        consumer.accept(NpcEntities.GOLFER, npc()
+                .dialog("In this game, only losers go for that high score.", "在这项运动里，只有输家才追求高分。")
+                .dialog("Thanks for finding me. That was quite a sand trap.", "谢谢你找到我，这个沙坑可真够深的。")
+                .build());
+        consumer.accept(NpcEntities.SKELETON_MERCHANT, npc()
+                .dialog("No flesh, no fuss. Take a look at my wares.", "没皮没肉，倒也省心。看看我的货吧。")
+                .dialog("The moon changes, and so does my stock.", "月相变了，我的货物也会变。")
+                .build());
         consumer.accept(NpcEntities.TRAVELING_MERCHANT, npc()
                 .dialog("Hmm, you look like you could use an Angel Statue! They slice, and dice, and make everything nice!", "嗯，看上去你会使用天使雕像！他们切片，又切丁，让一切都如此美好！")
                 .dialog("I don't refund for \"buyer's remorse...\" Or for any other reason, really.", "我不会因“买家后悔……”或者任何其它原因退款，绝不退。")

@@ -14,7 +14,7 @@ import org.confluence.mod.common.init.entity.MonsterEntities;
 /// 翅膀状态决定移动能力与分裂时机，不能仅作为客户端外观状态处理。
 public class Slimer extends SimpleFlyMonster {
     public Slimer(EntityType<? extends Slimer> type, Level level) {
-        super(type, level, 0.65, 0.2);
+        super(type, level, DashProfile.standard(0.65), 0.2, true);
         setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
     }
 

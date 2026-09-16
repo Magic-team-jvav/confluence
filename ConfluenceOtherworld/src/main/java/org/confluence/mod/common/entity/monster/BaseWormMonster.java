@@ -2,8 +2,12 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
@@ -24,9 +28,12 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     private static final int COLLISION_INTERVAL = 3;
 
     protected final List<BaseWormPart> segments = new ArrayList<>();
+    private final java.util.Map<Integer, BaseWormPart> clientSegments = new java.util.HashMap<>();
     private final WormChainTrail segmentTrail = new WormChainTrail();
     private int collisionCooldown;
     private @Nullable Vec3 contactSweepStart;
+    private @Nullable BaseWormPart attackingPart;
+    private @Nullable BaseWormPart hurtPart;
 
     public BaseWormMonster(EntityType<? extends BaseWormMonster> type, Level level) {
         super(type, level);
@@ -44,6 +51,49 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
 
     protected float segmentSpacing() {
         return 1.6F;
+    }
+
+    public EntityDimensions segmentDimensions(boolean tail) {
+        return MonsterEntities.WORM_SEGMENT.get().getDimensions();
+    }
+
+    protected double segmentDamageMultiplier(boolean tail) {
+        return 1.0;
+    }
+
+    protected double segmentArmorMultiplier(boolean tail) {
+        return 1.0;
+    }
+
+    public boolean attackFromSegment(BaseWormPart part, Entity target) {
+        BaseWormPart previous = attackingPart;
+        attackingPart = part;
+        try {
+            return doHurtTarget(target);
+        } finally {
+            attackingPart = previous;
+        }
+    }
+
+    public boolean hurtSegment(BaseWormPart part, DamageSource source, float amount) {
+        BaseWormPart previous = hurtPart;
+        hurtPart = part;
+        try {
+            return hurt(source, amount);
+        } finally {
+            hurtPart = previous;
+        }
+    }
+
+    @Override
+    public double getAttributeValue(Attribute attribute) {
+        double value = super.getAttributeValue(attribute);
+        // 仅本次体节结算使用对应属性，保留本体的伤害事件、无敌帧和难度倍率。
+        if (attribute == Attributes.ATTACK_DAMAGE && attackingPart != null)
+            return value * segmentDamageMultiplier(attackingPart.isTail());
+        if (attribute == Attributes.ARMOR && hurtPart != null)
+            return value * segmentArmorMultiplier(hurtPart.isTail());
+        return value;
     }
 
     @Override
@@ -107,12 +157,26 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     public WormSegment getSegment(int index) {
         if (index < 0) return null;
         if (index == 0) return this;
+        if (level().isClientSide) {
+            BaseWormPart part = clientSegments.get(index);
+            if (part != null && part.isRemoved()) {
+                clientSegments.remove(index);
+                return null;
+            }
+            return part;
+        }
         int segIdx = index - 1;
         return segIdx < segments.size() ? segments.get(segIdx) : null;
     }
 
     public List<BaseWormPart> getSegments() {
         return List.copyOf(segments);
+    }
+
+    /// 客户端由已同步的体节建立索引，不使用仅由服务端生成逻辑维护的 segments。
+    public void trackClientSegment(BaseWormPart part) {
+        if (level().isClientSide && part.getSegmentIndex() > 0 && !part.isRemoved())
+            clientSegments.put(part.getSegmentIndex(), part);
     }
 
     @Override
@@ -136,12 +200,11 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
                 WormChainTrail.Sample sample = samples.get(index);
                 BaseWormPart segment = segments.get(index);
                 segment.moveToChainPosition(sample.position());
-                segment.orientAlongChain(leaderPosition.subtract(sample.position()));
-                leaderPosition = sample.position();
+                segment.orientAlongChain(sample.tangent());
             }
-            Vec3 movement = new Vec3(getX() - xo, getY() - yo, getZ() - zo);
-            if (movement.lengthSqr() > 1.0E-7D) {
-                WormSegment.orientAlong(this, movement);
+            Vec3 tangent = segmentTrail.headTangent();
+            if (tangent.lengthSqr() > 1.0E-7D) {
+                WormSegment.orientAlong(this, tangent);
                 setYBodyRot(getYRot());
                 setYHeadRot(getYRot());
             }

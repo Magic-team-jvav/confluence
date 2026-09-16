@@ -1,12 +1,10 @@
 package org.confluence.mod.common.data.gen.data_map;
 
-import com.mojang.serialization.Codec;
 import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.EntitySubPredicate;
-import net.minecraft.advancements.critereon.EntityVariantPredicate;
+import net.minecraft.advancements.critereon.NbtPredicate;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
@@ -21,7 +19,6 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public final class BugNetEntityToItemSubProvider {
@@ -34,7 +31,12 @@ public final class BugNetEntityToItemSubProvider {
                 .add(CritterEntities.HELL_BUTTERFLY, BaitItems.HELL_BUTTERFLY)
                 .add(CritterEntities.PRISMATIC_LACEWING, BaitItems.PRISMATIC_LACEWING)
                 .add(CritterEntities.SLUGGY, BaitItems.SLUGGY)
+                .add(CritterEntities.BUGGY, BaitItems.BUGGY)
+                .add(CritterEntities.STINKBUG, BaitItems.STINKBUG)
                 .add(CritterEntities.SNAIL, BaitItems.SNAIL)
+                .add(CritterEntities.TRUFFLE_WORM, BaitItems.TRUFFLE_WORM)
+                .add(CritterEntities.FIREFLY, BaitItems.FIREFLY)
+                .add(CritterEntities.LIGHTNING_BUG, BaitItems.LIGHTNING_BUG)
                 .add(CritterEntities.BUTTERFLY, List.of(
                         variant(Butterfly.Variant.GOLD, BaitItems.GOLD_BUTTERFLY),
                         variant(Butterfly.Variant.JULIA, BaitItems.JULIA_BUTTERFLY),
@@ -75,15 +77,10 @@ public final class BugNetEntityToItemSubProvider {
         ;
     }
 
-    @SuppressWarnings("unchecked")
     private static Tuple<EntityPredicate, ItemStack> variant(IVariant variant, PortDeferredItem<?> item) {
-        EntitySubPredicate predicate = EntityVariantPredicate.create((Codec<? super IVariant>) variant.codec(), entity -> {
-            if (entity instanceof VariantHolder<?> holder && holder.getVariant() instanceof IVariant v) {
-                return Optional.of(v);
-            }
-            return Optional.empty();
-        }).createPredicate(variant);
-        return new Tuple<>(EntityPredicate.Builder.entity().subPredicate(predicate).build(), item.toStack());
+        CompoundTag tag = new CompoundTag();
+        variant.serialize(tag);
+        return new Tuple<>(EntityPredicate.Builder.entity().nbt(new NbtPredicate(tag)).build(), item.toStack());
     }
 
     public static class Builder extends PortDataMapProvider.Builder<BugNetEntityToItem, EntityType<?>> {

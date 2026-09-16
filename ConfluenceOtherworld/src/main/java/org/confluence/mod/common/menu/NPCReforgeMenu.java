@@ -75,7 +75,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
                 RandomSource randomSource = RandomSource.create(itemStack.hashCode() | player.getRandom1211().nextInt());
                 PrefixType prefixType = PrefixUtils.getPrefixType(itemStack);
                 data[0] = prefixType.ordinal();
-                data[1] = ModPrefix.ID_MAP.inverse().getOrDefault(prefixType.randomPrefix(randomSource), -1);
+                data[1] = ModPrefix.ID_MAP.inverse().getOrDefault(prefixType.randomPrefix(randomSource, itemStack), -1);
                 data[2] = PrefixUtils.getReforgeCost(player, itemStack);
             } else {
                 data[0] = PrefixType.UNKNOWN.ordinal();

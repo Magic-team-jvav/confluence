@@ -263,7 +263,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
         HouseHandler.INSTANCE.removeHouse(level.dimension(), getUUID());
         House found = HouseValidater.scan(level, scanPos).make(getUUID());
-        if (found.isValid() && HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), found, getUUID())) {
+        if (found.isValid() && HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), found, getUUID(), isTownPet())) {
             found = House.EMPTY;
         }
         setHouse(found);
@@ -290,6 +290,10 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     public House getHouse() {
         return house;
+    }
+
+    public boolean isTownPet() {
+        return false;
     }
 
     // === Region ===

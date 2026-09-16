@@ -33,6 +33,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> writer) {
 
+        hardmodeAnvil(writer, SummonItems.SPIDER_STAFF.toStack(), AmountIngredient.of(16, MaterialItems.SPIDER_FANG));
         hardmodeAnvil(writer, DrillItems.DRAX.toStack(), PortShapedRecipePattern.of(Map.of(
                 'H', AmountIngredient.of(3, MaterialItems.HALLOWED_INGOT),
                 'F', Ingredient.of(MaterialItems.SOUL_OF_FRIGHT),

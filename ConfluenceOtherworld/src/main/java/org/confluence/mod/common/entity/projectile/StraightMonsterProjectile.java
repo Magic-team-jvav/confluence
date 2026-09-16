@@ -24,6 +24,7 @@ public abstract class StraightMonsterProjectile extends Projectile
         implements IPortProjectileExtension {
     private static final String DAMAGE_KEY = "Damage";
     private static final String MAXIMUM_LIFETIME_KEY = "MaximumLifetime";
+    private static final String AGE_KEY = "ProjectileAge";
     private float damage;
     private int maximumLifetime = 100;
 
@@ -90,13 +91,17 @@ public abstract class StraightMonsterProjectile extends Projectile
         return damage;
     }
 
+    public void configure(Mob owner, LivingEntity target, float damage) {
+        configure(owner, target, damage, 0.3F, 0.8F, 100);
+    }
+
     @Override
     protected void defineSynchedData() {}
 
     @Override
     public void tick() {
         super.tick();
-        if (tickCount > maximumLifetime) {
+        if (!level().isClientSide && tickCount > maximumLifetime) {
             discard();
             return;
         }
@@ -104,18 +109,19 @@ public abstract class StraightMonsterProjectile extends Projectile
         Vec3 velocity = modifyVelocity(getDeltaMovement());
         setDeltaMovement(velocity);
         HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        if (hitResult.getType() != HitResult.Type.MISS && !PortProjectileImpactEvent.onProjectileImpact(this, hitResult)) {
+        boolean impacted = hitResult.getType() != HitResult.Type.MISS && !PortProjectileImpactEvent.onProjectileImpact(this, hitResult);
+        if (impacted) {
             hitTargetOrDeflectSelf(hitResult);
         }
         if (isRemoved()) {
             return;
         }
-        if (hitResult instanceof BlockHitResult blockHitResult && ownsBlockImpactMovement(blockHitResult)) {
+        if (impacted && hitResult instanceof BlockHitResult blockHitResult && ownsBlockImpactMovement(blockHitResult)) {
             checkInsideBlocks();
             updateRotation();
             return;
         }
-        if (hitResult instanceof EntityHitResult entityHitResult && ownsEntityImpactMovement(entityHitResult)) {
+        if (impacted && hitResult instanceof EntityHitResult entityHitResult && ownsEntityImpactMovement(entityHitResult)) {
             checkInsideBlocks();
             updateRotation();
             return;
@@ -133,7 +139,7 @@ public abstract class StraightMonsterProjectile extends Projectile
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (result.getEntity() instanceof LivingEntity target
+        if (!level().isClientSide && result.getEntity() instanceof LivingEntity target
                 && getOwner() instanceof Mob owner
                 && owner.canAttack(target)) {
             if (target.hurt(damageSources().mobProjectile(this, owner), damage)) {
@@ -177,6 +183,7 @@ public abstract class StraightMonsterProjectile extends Projectile
         super.addAdditionalSaveData(tag);
         tag.putFloat(DAMAGE_KEY, damage);
         tag.putInt(MAXIMUM_LIFETIME_KEY, maximumLifetime);
+        tag.putInt(AGE_KEY, tickCount);
     }
 
     @Override
@@ -184,6 +191,7 @@ public abstract class StraightMonsterProjectile extends Projectile
         super.readAdditionalSaveData(tag);
         if (tag.contains(DAMAGE_KEY)) damage = tag.getFloat(DAMAGE_KEY);
         if (tag.contains(MAXIMUM_LIFETIME_KEY)) maximumLifetime = tag.getInt(MAXIMUM_LIFETIME_KEY);
+        tickCount = Math.max(0, tag.getInt(AGE_KEY));
     }
 
     @Override

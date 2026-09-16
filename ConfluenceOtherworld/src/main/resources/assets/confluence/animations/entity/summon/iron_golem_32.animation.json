@@ -354,7 +354,7 @@
 			}
 		},
 		"attacking": {
-			"loop": true,
+            "loop": false,
 			"animation_length": 1,
 			"bones": {
 				"left_arm": {
@@ -531,7 +531,40 @@
 			"loop": true,
 			"animation_length": 2,
 			"bones": {
+                "left_arm": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "right_arm": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "left_leg": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                "right_leg": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
 				"bone": {
+                    "rotation": [
+                        0,
+                        0,
+                        0
+                    ],
 					"position": {
 						"0.0": {
 							"post": {

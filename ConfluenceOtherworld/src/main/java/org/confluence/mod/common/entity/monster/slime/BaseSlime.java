@@ -33,10 +33,12 @@ import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.entity.monster.BaseMonster;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.UUID;
 
@@ -132,7 +134,7 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
         return bossOwnerTracker.getOwnerUUID();
     }
 
-    protected void setSlimeSize(int size) {
+    public void setSlimeSize(int size) {
         int clampedSize = Mth.clamp(size, 1, 127);
         entityData.set(DATA_SIZE, clampedSize);
         refreshDimensions();
@@ -182,17 +184,36 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
         }
 
         int y = pos.getY();
+        var biome = level.getBiome(pos);
+        if (type == MonsterEntities.ICE_SLIME.get() || type == MonsterEntities.SPIKED_ICE_SLIME.get()) {
+            if (!biome.is(PortTags.Biomes.IS_SNOWY) && !biome.is(PortTags.Biomes.IS_ICY))
+                return false;
+        }
+        if (type == MonsterEntities.JUNGLE_SLIME.get() || type == MonsterEntities.SPIKED_JUNGLE_SLIME.get()) {
+            if (!biome.is(PortTags.Biomes.IS_JUNGLE) && !biome.is(PortTags.Biomes.IS_LUSH))
+                return false;
+        }
+        if (type == MonsterEntities.DESERT_SLIME.get() && !biome.is(PortTags.Biomes.IS_DESERT))
+            return false;
+        if (type == MonsterEntities.SPIKED_ICE_SLIME.get() || type == MonsterEntities.SPIKED_JUNGLE_SLIME.get()) {
+            return SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random) || SpawnPlacementChecks.checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
+        }
+        if (type == MonsterEntities.ICE_SLIME.get() || type == MonsterEntities.JUNGLE_SLIME.get()) {
+            return SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random);
+        }
+        if (type == MonsterEntities.DESERT_SLIME.get()) {
+            return SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random) || SpawnPlacementChecks.checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
+        }
         if (type == MonsterEntities.BLUE_SLIME.get()
                 || type == MonsterEntities.GREEN_SLIME.get() || type == MonsterEntities.PURPLE_SLIME.get()
-                || type == MonsterEntities.PINK_SLIME.get() || type == MonsterEntities.ICE_SLIME.get()
-                || type == MonsterEntities.JUNGLE_SLIME.get() || type == MonsterEntities.SWAMP_SLIME.get()
+                || type == MonsterEntities.PINK_SLIME.get() || type == MonsterEntities.SWAMP_SLIME.get()
                 || type == MonsterEntities.TROPIC_SLIME.get()) {
             return level.canSeeSky(pos) && SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random);
         }
         if (!SpawnPlacementChecks.checkMonsterSpawnRules(type, level, spawnType, pos, random)) {
             return false;
         }
-        if (type == MonsterEntities.YELLOW_SLIME.get() || type == MonsterEntities.RED_SLIME.get() || type == MonsterEntities.DESERT_SLIME.get()) {
+        if (type == MonsterEntities.YELLOW_SLIME.get() || type == MonsterEntities.RED_SLIME.get()) {
             return level.getBrightness(LightLayer.SKY, pos) == 0 && y >= OverworldUtils.getUndergroundY() && y < OverworldUtils.getSurfaceY();
         }
         if (type == MonsterEntities.BLACK_SLIME.get() || type == MonsterEntities.MOTHER_SLIME.get() || type == MonsterEntities.DUNGEON_SLIME.get()) {
@@ -228,6 +249,8 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
 
     @Override
     public void tick() {
+        if (!level().isClientSide && tickCount % 5 == 0 && TownSlimeNPC.tryEquipSquire(this))
+            return;
         LivingEntity inheritedTarget = null;
         boolean bossOwned = !level().isClientSide && getBossOwnerUUID() != null;
         if (bossOwned) {
@@ -358,14 +381,14 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
 
         @Override
         public void tick() {
-            mob.setYRot(rotlerp(mob.getYRot(), wantedYRot, 90.0F));
-            mob.setYHeadRot(mob.getYRot());
-            mob.setYBodyRot(mob.getYRot());
             if (operation != Operation.MOVE_TO) {
                 mob.setZza(0.0F);
                 return;
             }
 
+            mob.setYRot(rotlerp(mob.getYRot(), wantedYRot, 90.0F));
+            mob.setYHeadRot(mob.getYRot());
+            mob.setYBodyRot(mob.getYRot());
             operation = Operation.WAIT;
             float speed = (float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED));
             if (!mob.onGround()) {

@@ -68,6 +68,7 @@ public final class CommonConfigs {
     public static IntValue BOSS_RESPAWN_TIME_MIN;
     public static IntValue BOSS_RESPAWN_TIME_MAX;
     public static BooleanValue BOSS_CLEAR_WHEN_NO_TARGET;
+    public static BooleanValue KING_SLIME_LARGE_MINIONS;
     public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_HEALTH;
     public static DoubleValue BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE;
 
@@ -225,6 +226,7 @@ public final class CommonConfigs {
                 EYE_OF_CTHULHU_NATURE_SPAWNING = builder.define("eyeOfCthulhuNatureSpawning", true);
                 DEERCLOPS_NATURE_SPAWNING = builder.define("deerclopsNatureSpawning", true);
                 BOSS_CLEAR_WHEN_NO_TARGET = builder.define("bossClearWhenNoTarget", true);
+                KING_SLIME_LARGE_MINIONS = builder.comment("史莱姆王分裂出大型史莱姆，分裂次数降为原来的三分之一").define("kingSlimeLargeMinions", false);
                 BOSS_ATTRIBUTES_MULTIPLIER_HEALTH = builder.defineInRange("bossAttributesMultiplierHealth", 1.0D, 0.0625D, 10.0D);
                 BOSS_ATTRIBUTES_MULTIPLIER_DAMAGE = builder.defineInRange("bossAttributesMultiplierDamage", 1.0D, 0.0625D, 10.0D);
                 builder.pop();

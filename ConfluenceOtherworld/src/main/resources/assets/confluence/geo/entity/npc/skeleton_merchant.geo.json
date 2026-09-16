@@ -1,0 +1,467 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:geometry": [
+        {
+            "description": {
+                "identifier": "geometry.npc.skeleton_merchant",
+                "texture_width": 80,
+                "texture_height": 80,
+                "visible_bounds_width": 3,
+                "visible_bounds_height": 4,
+                "visible_bounds_offset": [
+                    0,
+                    1,
+                    0
+                ]
+            },
+            "bones": [
+                {
+                    "name": "bone",
+                    "pivot": [
+                        0,
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "name": "LeftLeg",
+                    "parent": "bone",
+                    "pivot": [
+                        2,
+                        12,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                1,
+                                0,
+                                -1
+                            ],
+                            "size": [
+                                2,
+                                12,
+                                2
+                            ],
+                            "uv": [
+                                49,
+                                0
+                            ],
+                            "mirror": false
+                        },
+                        {
+                            "origin": [
+                                1,
+                                0,
+                                -1
+                            ],
+                            "size": [
+                                2,
+                                12,
+                                2
+                            ],
+                            "inflate": 0.5,
+                            "uv": [
+                                59,
+                                51
+                            ],
+                            "mirror": false
+                        },
+                        {
+                            "origin": [
+                                -0.1,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.1,
+                            "uv": [
+                                0,
+                                53
+                            ],
+                            "mirror": false
+                        },
+                        {
+                            "origin": [
+                                -0.1,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.3,
+                            "uv": [
+                                25,
+                                45
+                            ],
+                            "mirror": false
+                        }
+                    ]
+                },
+                {
+                    "name": "RightLeg",
+                    "parent": "bone",
+                    "pivot": [
+                        -2,
+                        12,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -3,
+                                0,
+                                -1
+                            ],
+                            "size": [
+                                2,
+                                12,
+                                2
+                            ],
+                            "uv": [
+                                17,
+                                62
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -3,
+                                0,
+                                -1
+                            ],
+                            "size": [
+                                2,
+                                12,
+                                2
+                            ],
+                            "inflate": 0.5,
+                            "uv": [
+                                26,
+                                62
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -3.9,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.1,
+                            "uv": [
+                                58,
+                                0
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "LeftArm",
+                    "parent": "bone",
+                    "pivot": [
+                        5,
+                        22,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                3,
+                                12.75,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": -0.6,
+                            "uv": [
+                                58,
+                                17
+                            ],
+                            "mirror": false
+                        },
+                        {
+                            "origin": [
+                                4,
+                                12,
+                                -1
+                            ],
+                            "size": [
+                                2,
+                                12,
+                                2
+                            ],
+                            "uv": [
+                                35,
+                                62
+                            ],
+                            "mirror": false
+                        }
+                    ]
+                },
+                {
+                    "name": "bone2",
+                    "parent": "LeftArm",
+                    "pivot": [
+                        8,
+                        22,
+                        0
+                    ]
+                },
+                {
+                    "name": "bipedLeftArm",
+                    "parent": "LeftArm",
+                    "pivot": [
+                        -4,
+                        22,
+                        0
+                    ]
+                },
+                {
+                    "name": "armorLeftArm",
+                    "parent": "bipedLeftArm",
+                    "pivot": [
+                        4,
+                        22,
+                        0
+                    ]
+                },
+                {
+                    "name": "RightArm",
+                    "parent": "bone",
+                    "pivot": [
+                        -5,
+                        22,
+                        0
+                    ]
+                },
+                {
+                    "name": "bipedRightArm",
+                    "parent": "RightArm",
+                    "pivot": [
+                        4,
+                        22,
+                        0
+                    ]
+                },
+                {
+                    "name": "armorRightArm",
+                    "parent": "bipedRightArm",
+                    "pivot": [
+                        -4,
+                        22,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -6,
+                                12,
+                                -1
+                            ],
+                            "size": [
+                                2,
+                                12,
+                                2
+                            ],
+                            "uv": [
+                                44,
+                                62
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -7.5,
+                                12.75,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": -0.6,
+                            "uv": [
+                                59,
+                                34
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Head",
+                    "parent": "bone",
+                    "pivot": [
+                        0,
+                        24,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -4,
+                                24,
+                                -4
+                            ],
+                            "size": [
+                                8,
+                                8,
+                                8
+                            ],
+                            "uv": [
+                                0,
+                                15
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -3.9,
+                                0,
+                                -2
+                            ],
+                            "size": [
+                                4,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.3,
+                            "uv": [
+                                42,
+                                45
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "hat",
+                    "parent": "Head",
+                    "pivot": [
+                        0,
+                        29.75,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -6,
+                                29,
+                                -6
+                            ],
+                            "size": [
+                                12,
+                                2,
+                                12
+                            ],
+                            "uv": [
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -4,
+                                31,
+                                -4
+                            ],
+                            "size": [
+                                8,
+                                4,
+                                8
+                            ],
+                            "inflate": 0.1,
+                            "uv": [
+                                25,
+                                32
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "waist",
+                    "parent": "bone",
+                    "pivot": [
+                        0,
+                        12,
+                        0
+                    ]
+                },
+                {
+                    "name": "Body",
+                    "parent": "waist",
+                    "pivot": [
+                        0,
+                        24,
+                        0
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -4,
+                                12,
+                                -2
+                            ],
+                            "size": [
+                                8,
+                                16,
+                                4
+                            ],
+                            "inflate": -0.01,
+                            "uv": [
+                                0,
+                                32
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -4,
+                                12,
+                                -2
+                            ],
+                            "size": [
+                                8,
+                                12,
+                                4
+                            ],
+                            "inflate": 0.1,
+                            "uv": [
+                                33,
+                                15
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "bipedBody",
+                    "parent": "Body",
+                    "pivot": [
+                        0,
+                        24,
+                        0
+                    ]
+                },
+                {
+                    "name": "armorBody",
+                    "parent": "bipedBody",
+                    "pivot": [
+                        0,
+                        24,
+                        0
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -10,7 +10,7 @@ import org.confluence.mod.api.summon.SummonTargetCache;
 
 /// 地面近战召唤物的通用运行基类。
 public abstract class GroundMeleeSummon extends PhysicalSummon {
-    private static final double FOLLOW_START_DISTANCE_SQR = 32.0 * 32.0;
+    private static final double FOLLOW_START_DISTANCE_SQR = 8.0 * 8.0;
     private static final double FOLLOW_STOP_DISTANCE_SQR = 2.0 * 2.0;
     private final double searchRange;
     private final double combatMoveSpeed;
@@ -33,7 +33,9 @@ public abstract class GroundMeleeSummon extends PhysicalSummon {
 
     @Override
     protected LivingEntity findTarget() {
-        return SummonTargetCache.acquire(owner().serverLevel(), owner(), uuid(), position(), searchRange);
+        LivingEntity target = SummonTargetCache.acquire(owner().serverLevel(), owner(), uuid(), position(), searchRange);
+        // 可以追击主人附近的敌人，但不能因召唤物身边残留的敌人永久滞留在旧战场。
+        return target != null && target.distanceToSqr(owner()) <= searchRange * searchRange ? target : null;
     }
 
     @Override
@@ -44,6 +46,14 @@ public abstract class GroundMeleeSummon extends PhysicalSummon {
     }
 
     protected void beforeGroundGoalTick() {}
+
+    @Override
+    protected void onTargetChanged(LivingEntity previousTarget, LivingEntity currentTarget) {
+        lastCombatTargetPosition = null;
+        combatRepathCooldown = 0;
+        resetGroundPath(10);
+        if (currentTarget == null) attackAnimationTicks = 0;
+    }
 
     protected void moveInCombat(LivingEntity target) {
         Vec3 targetPosition = targetBasePosition();

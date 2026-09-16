@@ -25,11 +25,11 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import java.util.ArrayList;
 import java.util.List;
 
-/// 固定在地形表面、通过藤蔓伸缩接近目标的抓人草。
+/// 固定根部、通过连接段伸缩接近目标的植物类敌怪基类。
 ///
-/// 实体头部可以穿过方块，但根部一经生成便不会移动。无目标时头部在根部前方缓慢摆动；
-/// 发现目标后会朝目标伸长，并受最大藤蔓长度限制。根部与静止方向均同步并保存，因而客户端
-/// 渲染、区块重载和服务端命中判定始终使用同一组数据。
+/// 涵盖抓人草、食人怪、爬藤怪、真菌球怪和巨型真菌球怪；各物种通过 {@link Profile} 配置伸展范围。
+/// 头部可以穿过方块，根部保持固定；无目标时在根部附近摆动，追击时受最大伸展距离约束。
+/// 根部位置与静止伸展方向负责同步和存档，射弹攻击由 {@link SpittingPlant} 扩展。
 public class Snatcher extends BaseMonster {
     private static final String ANCHORED_TAG = "Anchored";
     private static final String ANCHOR_X_TAG = "AnchorX";
@@ -40,6 +40,7 @@ public class Snatcher extends BaseMonster {
     private static final String REST_Z_TAG = "RestZ";
     private static final String DIRECTION_VERSION_TAG = "AnchorDirectionVersion";
     private static final int CURRENT_DIRECTION_VERSION = 1;
+    private static final String SURFACE_ANCHOR_TAG = "SurfaceAnchor";
     private static final double SEARCH_DISTANCE = 50.0;
     private static final EntityDataAccessor<Boolean> ANCHORED = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Vector3f> ANCHOR = SynchedEntityData.defineId(Snatcher.class, EntityDataSerializers.VECTOR3);
@@ -48,6 +49,7 @@ public class Snatcher extends BaseMonster {
     private final Profile profile;
     private Vec3 anchor = Vec3.ZERO;
     private Vec3 restDirection = new Vec3(0.0, 1.0, 0.0);
+    private boolean legacyAnchor;
 
     public Snatcher(EntityType<? extends Snatcher> type, Level level) {
         this(type, level, Profile.SNATCHER);
@@ -80,6 +82,17 @@ public class Snatcher extends BaseMonster {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
+        if (!level().isClientSide && legacyAnchor) {
+            legacyAnchor = false;
+            Vec3 surface = anchor.add(0.0, -0.5, 0.0);
+            BlockHitResult hit = level().clip(new ClipContext(surface.add(restDirection), surface.subtract(restDirection),
+                    ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
+            if (hit.getType() == HitResult.Type.BLOCK) {
+                initializeAnchor(hit.getLocation(), Vec3.atLowerCornerOf(hit.getDirection().getNormal()));
+            } else {
+                entityData.set(ANCHORED, false);
+            }
+        }
         if (!level().isClientSide && !isAnchored() && !findAndSetAnchor()) {
             discard();
         }
@@ -113,7 +126,7 @@ public class Snatcher extends BaseMonster {
                 continue;
             }
             Vec3 normal = Vec3.atLowerCornerOf(hit.getDirection().getNormal());
-            Vec3 anchor = hit.getBlockPos().getCenter().add(normal.scale(0.5)).add(0.0, 0.5, 0.0);
+            Vec3 anchor = hit.getLocation();
             /// 射线方向指向被命中的方块；继续沿该方向伸展会让头部钻入墙体。
             /// 静止方向必须使用命中面的外法线，才能从根部朝开放空间摆动。
             initializeAnchor(anchor, normal);
@@ -154,7 +167,7 @@ public class Snatcher extends BaseMonster {
         return restDirection;
     }
 
-    /// 地表抓人草的普通阶段最大伸展距离；地下食人怪拥有更长藤蔓。
+    /// 当前物种在普通阶段的最大伸展距离。
     double normalReach() {
         return profile.normalReach;
     }
@@ -171,7 +184,7 @@ public class Snatcher extends BaseMonster {
                 : super.getBoundingBoxForCulling().inflate(10.0);
     }
 
-    /// 捕人草使用连续接触检测与 0.3 格扩展范围。
+    /// 头部使用接触攻击，检测范围由 contactAttackInflation 配置。
     @Override
     protected boolean hasEntityContactAttack() {
         return true;
@@ -206,6 +219,7 @@ public class Snatcher extends BaseMonster {
             tag.putDouble(REST_Y_TAG, rest.y);
             tag.putDouble(REST_Z_TAG, rest.z);
             tag.putInt(DIRECTION_VERSION_TAG, CURRENT_DIRECTION_VERSION);
+            tag.putBoolean(SURFACE_ANCHOR_TAG, true);
         }
     }
 
@@ -218,6 +232,7 @@ public class Snatcher extends BaseMonster {
                 restDirection = restDirection.scale(-1.0);
             }
             initializeAnchor(new Vec3(tag.getDouble(ANCHOR_X_TAG), tag.getDouble(ANCHOR_Y_TAG), tag.getDouble(ANCHOR_Z_TAG)), restDirection);
+            legacyAnchor = !tag.getBoolean(SURFACE_ANCHOR_TAG);
         }
     }
 
@@ -240,10 +255,13 @@ public class Snatcher extends BaseMonster {
         return List.copyOf(directions);
     }
 
-    /// 共享藤蔓状态机的物种伸展范围。
+    /// 各物种共用伸缩状态机，分别配置普通阶段与延展阶段的最大距离。
     public enum Profile {
         SNATCHER(9.4, 12.2),
-        MAN_EATER(15.6, 20.3);
+        MAN_EATER(15.6, 20.3),
+        CLINGER(10.9, 14.2),
+        FUNGI_BULB(6.2, 8.1),
+        GIANT_FUNGI_BULB(21.9, 28.4);
 
         private final double normalReach;
         private final double extendedReach;

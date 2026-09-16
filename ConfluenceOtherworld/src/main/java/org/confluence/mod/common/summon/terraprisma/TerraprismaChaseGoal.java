@@ -1,5 +1,6 @@
 package org.confluence.mod.common.summon.terraprisma;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summon.SummonGoal;
 import org.confluence.mod.common.summon.SummonPose;
@@ -15,6 +16,7 @@ final class TerraprismaChaseGoal extends SummonGoal<TerraprismaSummon> {
     private int curveSign = 1;
     private int nextCurveSign = 1;
     private Vec3 smoothedTarget;
+    private LivingEntity trackedTarget;
 
     TerraprismaChaseGoal(TerraprismaSummon summon) {
         super(summon);
@@ -27,12 +29,14 @@ final class TerraprismaChaseGoal extends SummonGoal<TerraprismaSummon> {
 
     @Override
     public void start() {
-        summon.beginAttackCycle();
+        trackedTarget = summon.target();
+        curveTick = -1;
         smoothedTarget = summon.targetPosition();
     }
 
     @Override
     public void tick() {
+        if (trackedTarget != summon.target()) start();
         if (curveTick >= 0) {
             followReturnCurve();
             return;
@@ -43,7 +47,9 @@ final class TerraprismaChaseGoal extends SummonGoal<TerraprismaSummon> {
         Vec3 current = summon.velocity().lengthSqr() < 1.0E-6
                 ? Vec3.directionFromRotation(summon.currentPose().pitch(), summon.currentPose().yaw()).normalize()
                 : summon.velocity().normalize();
-        Vec3 direction = rotateToward(current, offset.normalize(), MAX_TURN);
+        // 近距离时缩小转弯半径，避免固定速度和固定转角形成永远追不上的圆轨道。
+        double turn = Math.min(Math.PI / 2.0, Math.max(MAX_TURN, Math.atan2(STAB_SPEED, offset.length())));
+        Vec3 direction = rotateToward(current, offset.normalize(), turn);
         Vec3 movement = direction.scale(STAB_SPEED);
         Vec3 nextPosition = summon.position().add(movement);
         Vec3 remaining = target.subtract(summon.eyePosition().add(movement));
@@ -65,7 +71,6 @@ final class TerraprismaChaseGoal extends SummonGoal<TerraprismaSummon> {
         float roll = (float) (Math.sin(progress * Math.PI * 2.0) * 35.0 * curveSign);
         summon.moveTo(new SummonPose(position, aimed.yaw(), aimed.pitch(), roll));
         if (++curveTick >= RETURN_TICKS) {
-            summon.beginAttackCycle();
             beginReturnCurve(position, tangent.normalize());
         }
     }
@@ -87,6 +92,7 @@ final class TerraprismaChaseGoal extends SummonGoal<TerraprismaSummon> {
         curveSign = 1;
         nextCurveSign = 1;
         smoothedTarget = null;
+        trackedTarget = null;
     }
 
     private Vec3 updateTarget() {

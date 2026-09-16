@@ -1,0 +1,90 @@
+{
+    "format_version": "1.12.0",
+    "minecraft:geometry": [
+        {
+            "description": {
+                "identifier": "geometry.dungeon_spirit",
+                "texture_width": 64,
+                "texture_height": 64,
+                "visible_bounds_width": 3,
+                "visible_bounds_height": 3,
+                "visible_bounds_offset": [
+                    0,
+                    0.5,
+                    0
+                ]
+            },
+            "bones": [
+                {
+                    "name": "head",
+                    "pivot": [
+                        0,
+                        4,
+                        -2
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                -4,
+                                0,
+                                -6
+                            ],
+                            "size": [
+                                8,
+                                8,
+                                8
+                            ],
+                            "uv": [
+                                31,
+                                21
+                            ]
+                        },
+                        {
+                            "origin": [
+                                -4.25,
+                                -0.25,
+                                -6.5
+                            ],
+                            "size": [
+                                8.5,
+                                8.5,
+                                12.75
+                            ],
+                            "uv": [
+                                0,
+                                0
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "bone",
+                    "parent": "head",
+                    "pivot": [
+                        0.25,
+                        4.5,
+                        1.5
+                    ],
+                    "cubes": [
+                        {
+                            "origin": [
+                                0,
+                                0.75,
+                                1.5
+                            ],
+                            "size": [
+                                0,
+                                8.5,
+                                15.75
+                            ],
+                            "uv": [
+                                0,
+                                21
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -66,7 +66,7 @@ final class SnatcherMovementAction extends BTNode {
 
     private Vec3 updateTargetDirection(LivingEntity target, boolean extended) {
         Vec3 targetPosition = target.position().add(0.0, target.getEyeHeight() * 0.5, 0.0);
-        snatcher.faceCombatPosition(targetPosition, 200.0F, 85.0F);
+        snatcher.faceCombatPosition(targetPosition, 12.0F, 85.0F);
 
         Vec3 fromHeadToAnchor = snatcher.getAnchor().subtract(snatcher.position());
         Vec3 fromHeadToTarget = targetPosition.subtract(snatcher.position());

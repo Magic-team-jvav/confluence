@@ -328,13 +328,6 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(writer, "helium_moss_from_argon_moss", addItem(NatureBlocks.ARGON_MOSS, NatureBlocks.HELIUM_MOSS));
         item(writer, "helium_moss_from_neon_moss", addItem(NatureBlocks.NEON_MOSS, NatureBlocks.HELIUM_MOSS));
 
-        item(writer, SummonItems.TERRAPRISMA, SummonItems.TERRAPRISMA_WOODEN);
-        item(writer, SummonItems.TERRAPRISMA_WOODEN, SummonItems.TERRAPRISMA_STONE);
-        item(writer, SummonItems.TERRAPRISMA_STONE, SummonItems.TERRAPRISMA_IRON);
-        item(writer, SummonItems.TERRAPRISMA_IRON, SummonItems.TERRAPRISMA_GOLDEN);
-        item(writer, SummonItems.TERRAPRISMA_GOLDEN, SummonItems.TERRAPRISMA_DIAMOND);
-        item(writer, SummonItems.TERRAPRISMA_DIAMOND, SummonItems.TERRAPRISMA_NETHERITE);
-        item(writer, SummonItems.TERRAPRISMA_NETHERITE, SummonItems.TERRAPRISMA);
     }
 
 

@@ -60,6 +60,7 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
+import org.confluence.mod.common.entity.MoneyDropSource;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
@@ -193,6 +194,7 @@ public final class ModUtils {
     }
 
     public static double getLivingBaseMoneyDrops(LivingEntity living, Level level) {
+        if (living instanceof MoneyDropSource source && !source.allowsMoneyDrops()) return 0.0;
         AttributeInstance attack = living.getAttribute(LibAttributes.getAttackDamage().value());
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);

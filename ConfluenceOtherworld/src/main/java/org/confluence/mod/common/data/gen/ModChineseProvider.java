@@ -25,14 +25,55 @@ public class ModChineseProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        addGeneralInterfaceTranslations();
+        addItemGroupTranslations();
+        addInterfaceAndTooltipTranslations();
+        addBiomeAndScreenTranslations();
+        addItemStateAndAttributeTranslations();
+        addArmorSetBonusTranslations();
+        addWindowAndWorldTranslations();
+        addBossMessageTranslations();
+        addSoulSkillAndProjectileTranslations();
+        addOreBlockTranslations();
+        addNaturalBlockTranslations();
+        addDecorativeBlockTranslations();
+        addStatueTranslations();
+        addFunctionalBlockTranslations();
+        addArrowItemTranslations();
+        addMaterialItemTranslations();
+        addSwordItemTranslations();
+        addYoyoTranslations();
+        addToolItemTranslations();
+        addUtilityItemTranslations();
+        addMountTranslations();
+        addGeneralItemTranslations();
+        addFishingAndBaitTranslations();
+        addHookItemTranslations();
+        addMagicAndRangedItemTranslations();
+        addArmorItemTranslations();
+        addQuestFishTranslations();
+        addFoodAndSeedTranslations();
+        addAccessoryItemTranslations();
+        addDyeAndVanityItemTranslations();
+        addPotionItemTranslations();
+        addEffectTranslations();
+        addMaidIntegrationTranslations();
+        addMonsterTranslations();
+        addCritterTranslations();
+        addNpcTranslations();
+        addBossTranslations();
+        addNpcProjectileTranslations();
+        addHostileProjectileTranslations();
+    }
+
+    private void addGeneralInterfaceTranslations() {
+        add("entity.confluence.model_pending", "%s（模型待补）");
         add("house_validator.result_type.found", "这间房屋符合入住条件。");
         add("house_validator.result_type.too_small", "房屋太小。");
         add("house_validator.result_type.too_large", "房屋过大或未封闭。");
         add("house_validator.result_type.no_light", "房屋缺少足够明亮的光源。");
         add("house_validator.result_type.no_chair", "房屋缺少椅子或床。");
         add("house_validator.result_type.no_table", "房屋缺少桌子或工作台。");
-        addMountAndHostileProjectileTranslations();
-        add("tooltip.confluence.rideable_item.desc", "按下快捷键以骑乘。默认 R 键");
 
         add("confluence.trade_lock.drawer.position.title", "坐标");
         add("confluence.trade_lock.drawer.position.and", "且");
@@ -59,6 +100,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.difficulty_notice.tip", "按住Alt键呼出鼠标以进行选择");
         add("confluence.difficulty_notice.sure.done", "已更改为软核模式");
         add("confluence.difficulty_notice.never.done", "将不再弹出该询问");
+    }
+
+    private void addItemGroupTranslations() {
         // 自然方块分类
         add("itemGroup.confluence.ebony", "乌木");
         add("itemGroup.confluence.pearl", "珍珠木");
@@ -308,6 +352,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.sky_entity", "天空生物");
         add("itemGroup.confluence.mimic_entity", "宝箱怪");
         add("itemGroup.confluence.goblin_entity", "哥布林军队");
+        add("itemGroup.confluence.pirate_entity", "海盗入侵");
+        add("event.confluence.pirate_invasion", "海盗入侵");
+        add("message.confluence.pirate_invasion.ready", "海盗正向这里逼近！");
+        add("message.confluence.party.started", "派对开始了！");
+        add("message.confluence.party.ended", "派对结束了！");
+        add("message.confluence.pirate_invasion.start", "海盗已经抵达！");
+        add("message.confluence.pirate_invasion.victory", "海盗已被击败！");
         add("itemGroup.confluence.water_entity", "水生生物");
         add("itemGroup.confluence.insect_entity", "昆虫生物");
         add("itemGroup.confluence.npc_entity", "NPC");
@@ -318,6 +369,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.note", "纸条");
 
 
+    }
+
+    private void addInterfaceAndTooltipTranslations() {
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");
         add("config.jade.plugin_confluence.jade_ponder_component", "思索信息");
         add("config.jade.plugin_confluence.jade_tombstone_info", "墓石信息");
@@ -794,6 +848,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.blood_tear.0", "召唤血月");
         add("tooltip.item.confluence.blood_tear.1", "“诅咒之夜太可怕了。”");
         add("tooltip.item.confluence.goblin_battle_standard.0", "召唤哥布林军队");
+        add("tooltip.item.confluence.pirate_map.0", "召唤海盗入侵");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
         add("tooltip.item.confluence.max_count", "多重射击");
@@ -897,6 +952,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         new ConfigurationLanguageSubProvider(this::add, false);
 
+    }
+
+    private void addBiomeAndScreenTranslations() {
         //生物群系
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
@@ -1008,6 +1066,21 @@ public class ModChineseProvider extends LanguageProvider {
         add("prefix.confluence.furious", "狂怒");
         add("prefix.confluence.manic", "狂躁");
         add("prefix.confluence.mythical", "神话");
+        add("prefix.confluence.fabled", "传说");
+        add("prefix.confluence.loyal", "忠诚");
+        add("prefix.confluence.worthy", "英勇");
+        add("prefix.confluence.focused", "专注");
+        add("prefix.confluence.eager", "热切");
+        add("prefix.confluence.ballistic", "弹道");
+        add("prefix.confluence.scraggling", "虬结");
+        add("prefix.confluence.patient", "耐心");
+        add("prefix.confluence.rabid", "狂暴");
+        add("prefix.confluence.ill_tempered", "暴躁");
+        add("prefix.confluence.petty", "吝啬");
+        add("prefix.confluence.feeble", "虚弱");
+        add("prefix.confluence.skittish", "胆小");
+        add("prefix.confluence.tooltip.armor_penetration", "盔甲穿透");
+        add("prefix.confluence.tooltip.summon_tag_damage", "召唤标记伤害");
         add("prefix.confluence.unreal", "虚幻");
 
         add("fluid_type.confluence.shimmer", "微光");
@@ -1076,6 +1149,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("button.confluence.dye_vat", "染缸");
         add("button.confluence.dye_mix", "混色");
 
+    }
+
+    private void addItemStateAndAttributeTranslations() {
         // 覆盖
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.guide_to_critter_companionship.disable", "小动物友谊指南：关闭");
@@ -1163,6 +1239,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         new BestiaryLanguageSubProvider(this::add, false);
 
+    }
+
+    private void addArmorSetBonusTranslations() {
         // 套装效果
         add("armor_set_bonus.when_applied", "套装奖励：");
         // 挖矿
@@ -1327,6 +1406,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.tiki_set.0", "仆从数量上限增加1");
         add("armor_set_bonus.confluence.tiki_set.1", "鞭子攻击范围扩大20%");
 
+    }
+
+    private void addWindowAndWorldTranslations() {
         // 标题
         add("title.confluence.window.0", "汇流来世：劳工挖啊挖！");
         add("title.confluence.window.1", "汇流来世：神土");
@@ -1505,6 +1587,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("mural.dungeon.ebony_mural", "腐堕巨蠕");
         add("mural.dungeon.crimson_mural", "精神撕裂");
 
+    }
+
+    private void addSoulSkillAndProjectileTranslations() {
         // 灵魂技能
         add("confluence.soul_skill.soul_surge.name", "附魂激荡");
         add("confluence.soul_skill.soul_mark.name", "附魂印记");
@@ -1613,6 +1698,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BOULDER_3X.get(), "3x3巨石");
         add(ModEntities.SPIKY_BALL.get(), "尖球");
         add(ModEntities.THROWN_WATER.get(), "掷出的液体瓶");
+        add(ModEntities.THROWN_ROCK.get(), "掷出的岩石");
+        add(ModEntities.DANDELION_SEED.get(), "蒲公英种子");
+        add(ModEntities.HOPLITE_JAVELIN.get(), "标枪");
+        add(ModEntities.ANTLION_SAND_BALL.get(), "沙球");
+        add(ModEntities.SPIDER_WEB_SPIT.get(), "蛛网喷吐");
+        add(ModEntities.NIMBUS_RAIN.get(), "雨滴");
         add(ModEntities.FLOWER_PETAL.get(), "花瓣射弹");
         add(ModEntities.TITANIUM_SHARDS.get(), "钛金防护碎片");
         add(ModEntities.FALLING_STAR.get(), "坠落之星");
@@ -1626,6 +1717,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BASE_BULLET_ENTITY.get(), "子弹");
         add(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), "基础展示实体");
         add(ModEntities.SMOKE_BOMB_ENTITY.get(), "烟雾弹");
+        add(ModEntities.SPARKLE_SLIME_BALLOON.get(), "闪耀史莱姆气球");
         add(ModEntities.BEENADE.get(), "蜜蜂手雷");
         add(ModEntities.WATER_BOLT.get(), "水弹射弹");
         add(ModEntities.BALL_OF_FROST.get(), "寒霜球射弹");
@@ -1661,6 +1753,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.CRYSTAL_CHARGE_2.get(), "爆炸水晶2");
 
 
+    }
+
+    private void addOreBlockTranslations() {
         //region blocks
         add(OreBlocks.SANCTIFICATION_COAL_ORE.get(), "圣化煤矿石");
         add(OreBlocks.CORRUPTION_COAL_ORE.get(), "腐化煤矿石");
@@ -1814,6 +1909,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.CORRUPTION_REDSTONE_ORE.get(), "腐化红石矿石");
         add(OreBlocks.FLESHIFICATION_REDSTONE_ORE.get(), "血化红石矿石");
 
+    }
+
+    private void addNaturalBlockTranslations() {
         add(NatureBlocks.EBONY_LOG_BLOCKS.BUTTON.get(), "乌木按钮");
         add(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS.get(), "乌木板");
         add(NatureBlocks.EBONY_LOG_BLOCKS.LOG.get(), "乌木原木");
@@ -2315,6 +2413,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SMALL_CACTUS.get(), "小型仙人掌");
         add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
         add(NatureBlocks.LARVA.get(), "幼虫");
+    }
+
+    private void addDecorativeBlockTranslations() {
         add(DecorativeBlocks.LOST_PAPER_BLOCK.get(), "遗落纸张");
         add(DecorativeBlocks.MURAL_BLOCK.get(), "壁画");
         add(NatureBlocks.CORRUPT_CACTUS.get(), "腐化仙人掌");
@@ -2644,6 +2745,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHRISTMAS_PINE_DOOR.get(), "圣诞松木门");
         add(DecorativeBlocks.CHRISTMAS_PINE_TRAPDOOR.get(), "圣诞松木活板门");
 
+    }
+
+    private void addStatueTranslations() {
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");
         add(StatueBlocks.B_STATUE.get(), "B字雕像");
@@ -2737,6 +2841,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SKELETRON_PRIME_RELIC.get(), "机械骷髅王圣物");
 
         add(DecorativeBlocks.POO_BLOCK.get(), "臭臭块");
+        add(DecorativeBlocks.ANTLION_EGGS.get(), "蚁狮卵");
+        add(DecorativeBlocks.GARDEN_GNOME.get(), "花园侏儒");
         add(ModBlocks.POO.get(), "臭臭");
         add(ModBlocks.WATERLEAF.get(), "水叶草");
         add(ModBlocks.FIREBLOSSOM.get(), "火焰花");
@@ -2751,6 +2857,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
         add(ModBlocks.PINE_NEEDLE_HANDMADE_ROPE_SET.get(), "松针手工绳套");
 
+    }
+
+    private void addFunctionalBlockTranslations() {
         // 带效果的蜡烛
         add(FunctionalBlocks.WATER_CANDLE.get(), "水蜡烛");
         add(FunctionalBlocks.PEACE_CANDLE.get(), "和平蜡烛");
@@ -2824,6 +2933,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.SEASIDE_CRATE.get(), "海滩匣");
 
 
+    }
+
+    private void addArrowItemTranslations() {
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");
         add(ArrowItems.UNHOLY_ARROW.get(), "邪箭");
         add(ArrowItems.STAR_ARROW.get(), "耀星之箭");
@@ -2837,6 +2949,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         //endregion blocks
 
+    }
+
+    private void addMaterialItemTranslations() {
         //region items
         add(MaterialItems.RAW_TIN.get(), "粗锡");
         add(MaterialItems.TIN_INGOT.get(), "锡锭");
@@ -2983,6 +3098,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.VOID_CRYSTAL.get(), "虚空水晶");
 
 
+    }
+
+    private void addSwordItemTranslations() {
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");
         add(SwordItems.TIN_SHORT_SWORD.get(), "锡短剑");
         add(SwordItems.COPPER_BROADSWORD.get(), "铜阔剑");
@@ -3086,6 +3204,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
 
         addFlailTranslations();
+    }
+
+    private void addToolItemTranslations() {
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");
         add(AxeItems.LEAD_AXE.get(), "铅斧");
@@ -3228,6 +3349,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.CHLOROPHYTE_JACKHAMMER.get(), "叶绿手提钻");
 
         // 杂项
+    }
+
+    private void addUtilityItemTranslations() {
         add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
         add(ToolItems.RED_WRENCH.get(), "红扳手");
         add(ToolItems.BLUE_WRENCH.get(), "蓝扳手");
@@ -3363,6 +3487,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.STICKY_GRENADE.get(), "黏性手榴弹");
         add(ConsumableItems.BEENADE.get(), "蜜蜂手榴弹");
         add(ConsumableItems.SMOKE_BOMB.get(), "烟雾弹");
+        add(ConsumableItems.SPARKLE_SLIME_BALLOON.get(), "闪耀史莱姆气球");
         add(ConsumableItems.DIRT_BOMB.get(), "土炸弹");
         add(ConsumableItems.STICKY_DIRT_BOMB.get(), "黏性土炸弹");
         add(ConsumableItems.DRY_BOMB.get(), "干炸弹");
@@ -3384,6 +3509,7 @@ public class ModChineseProvider extends LanguageProvider {
 //        add(ConsumableItems.FALLEN_SOUL_CORE.get(), "堕魂星核");
         add(ConsumableItems.BLOOD_TEAR.get(), "血泪");
         add(ConsumableItems.GOBLIN_BATTLE_STANDARD.get(), "哥布林战旗");
+        add(ConsumableItems.PIRATE_MAP.get(), "海盗地图");
 
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
@@ -3401,6 +3527,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.LUNATIC_CULTIST_TREASURE_BAG.get(), "拜月教邪教徒宝藏袋");
 
         // 杂项
+    }
+
+    private void addGeneralItemTranslations() {
         add(ModItems.COPPER_COIN.get(), "铜币");
         add(ModItems.SILVER_COIN.get(), "银币");
         add(ModItems.GOLD_COIN.get(), "金币");
@@ -3618,6 +3747,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MinecartItems.TERRA_FART_KART.get(), "泰拉放屁车");
 
 
+    }
+
+    private void addFishingAndBaitTranslations() {
         add(FishingPoleItems.HOTLINE_FISHING_HOOK.get(), "熔线钓竿");
         add(FishingPoleItems.WOOD_FISHING_POLE.get(), "木钓竿");
         add(FishingPoleItems.FISHER_OF_SOULS.get(), "灵魂钓手");
@@ -3680,6 +3812,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(BaitItems.YELLOW_DRAGONFLY.get(), "黄蜻蜓");
         add(BaitItems.ZEBRA_SWALLOWTAIL_BUTTERFLY.get(), "带凤蝶");
 
+    }
+
+    private void addHookItemTranslations() {
         // 钩爪
         add(HookItems.GRAPPLING_HOOK.get(), "抓钩");
         add(HookItems.RUBY_HOOK.get(), "红玉钩");
@@ -3708,6 +3843,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(HookItems.TENDON_HOOK.get(), "肌腱钩");
         add(HookItems.STATIC_HOOK.get(), "静止钩");
 
+    }
+
+    private void addMagicAndRangedItemTranslations() {
         // 法杖
         add(ManaWeaponItems.RUBY_STAFF.get(), "红玉法杖");
         add(ManaWeaponItems.AMBER_STAFF.get(), "琥珀法杖");
@@ -3825,6 +3963,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrossbowItems.STAKE_LAUNCHER.get(), "尖桩发射器");
 
 
+    }
+
+    private void addArmorItemTranslations() {
         // 盔甲
         add(ArmorItems.CACTUS_CHESTPLATE.get(), "仙人掌胸甲");
         add(ArmorItems.CACTUS_HELMET.get(), "仙人掌头盔");
@@ -4099,6 +4240,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.SOULDANCER_ROBE.get(), "魂舞长袍");
 
 
+    }
+
+    private void addQuestFishTranslations() {
         // 任务鱼
         add(QuestedFishes.AMANITA_FUNGIFIN.get(), "毒菌鱼");
         add(QuestedFishes.ANGELFISH.get(), "天使鱼");
@@ -4142,6 +4286,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(QuestedFishes.WYVERNTAIL.get(), "飞龙尾");
         add(QuestedFishes.ZOMBIE_FISH.get(), "僵尸鱼");
 
+    }
+
+    private void addFoodAndSeedTranslations() {
         // 食物
         add(FoodItems.APPLE_JUICE.get(), "苹果汁");
         add(FoodItems.BLACKCURRANT.get(), "黑醋栗");
@@ -4309,6 +4456,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.WHITE_PUMPKIN_SEED.get(), "白南瓜种子");
         add(FoodItems.BALLOON_SEED.get(), "气球瓜种子");
 
+    }
+
+    private void addAccessoryItemTranslations() {
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");
         add(AccessoryItems.MEDICATED_BANDAGE.get(), "药用绷带");
@@ -4370,6 +4520,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.GUIDE_VOODOO_DOLL.get(), "向导巫毒玩偶");
 
 
+    }
+
+    private void addDyeAndVanityItemTranslations() {
         // 染料
         add(PaintItems.PAINTBRUSH.get(), "漆刷");
         add(PaintItems.PAINT_ROLLER.get(), "涂漆滚刷");
@@ -4495,6 +4648,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(LanceItems.HALLOWED_JOUSTING_LANCE.get(), "神圣骑枪");
         add(LanceItems.SHADOW_JOUSTING_LANCE.get(), "暗影骑枪");
 
+    }
+
+    private void addPotionItemTranslations() {
         // 药水
         add(PotionItems.BOTTLE.get(), "玻璃瓶");
         add(PotionItems.BOTTLED_WATER.get(), "瓶装水");
@@ -4560,6 +4716,9 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.CALMING_POTION.get(), "镇静药水", "降低敌人生成速度");
         addPotion(PotionItems.SATIETY_POTION.get(), "耐饿药水", "延缓饥饿值下降速度");
 
+    }
+
+    private void addEffectTranslations() {
         // 药水效果
         addEffect(ModEffects.MANA_SICKNESS.get(), "耐魔性", "魔法伤害降低");
         addEffect(ModEffects.SHINE.get(), "发光", "发光");
@@ -4591,6 +4750,8 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.RAGE.get(), "暴怒", "暴击率提高10%");
         addEffect(ModEffects.FISHING.get(), "钓鱼", "提高渔力");
         addEffect(ModEffects.LUCK_EFFECT.get(), "幸运", "你觉得自己很幸运");
+        addEffect(ModEffects.GARDEN_GNOME_LUCK.get(), "花园侏儒", "附近的花园侏儒带来了好运");
+        addEffect(ModEffects.SPARKLE_SLIME.get(), "闪耀史莱姆", "沾上了闪耀的史莱姆黏液");
         addEffect(ModEffects.MANA_REGENERATION.get(), "魔力再生", "提高魔力再生速度");
         addEffect(ModEffects.STAR_IN_A_BOTTLE.get(), "星星瓶", "提高魔力再生速度");
         addEffect(ModEffects.WATER_WALKING.get(), "水上漂", "能在液体上行走。");
@@ -4600,6 +4761,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.HUNTER.get(), "狩猎", "显示敌人位置");
         addEffect(ModEffects.DANGER_SENSE.get(), "危险感知", "你可以看到附近的危险；按下[%s]显示具体信息");
         addEffect(ModEffects.FROZEN.get(), "冻结", "你不能移动！");
+        addEffect(ModEffects.WEBBED.get(), "被缚", "你被蛛网缠住了！");
         addEffect(ModEffects.STINKY.get(), "臭味", "你的味道真难闻");
         addEffect(ModEffects.THE_BAST_DEFENSE.get(), "巴斯特防御", "防御增加5");
         addEffect(ModEffects.SHARPENED.get(), "锋利", "近战武器具有盔甲穿透力");
@@ -4636,6 +4798,7 @@ public class ModChineseProvider extends LanguageProvider {
         addBoomerangTranslations();
         addWhipTranslations();
         addEffect(ModEffects.HELLFIRE.get(), "狱炎", "持续损失生命值");
+        addEffect(ModEffects.JUNGLES_FURY.get(), "丛林之怒", "鞭子攻击速度提高12%");
         addEffect(ModEffects.FROST_BURN.get(), "霜冻", "缓慢损失生命值，无法再生生命");
         addEffect(ModEffects.CRIMSON_STORM.get(), "猩红风暴", "你已陷入风暴，无可逃脱。");
         addEffect(ModEffects.HORRIFIED.get(), "惊恐", "你已看到污秽之物，无可逃脱。");
@@ -4645,6 +4808,9 @@ public class ModChineseProvider extends LanguageProvider {
         addSpawnEggTranslations();
         addPreviouslyMissingTranslations();
 
+    }
+
+    private void addMaidIntegrationTranslations() {
         // 车万女仆
         add("task.confluence.use_life_crystal", "生命水晶");
         add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");
@@ -4660,6 +4826,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(BossEntities.LUNATIC_CULTIST_CLONE.get(), "拜月教邪教徒幻影");
         add(BossEntities.PLANTERA_HOOK.get(), "世纪之花钩");
+    }
+
+    private void addMonsterTranslations() {
         add(MonsterEntities.GREEN_SLIME.get(), "绿色史莱姆");
         add(MonsterEntities.BLUE_SLIME.get(), "蓝色史莱姆");
         add(MonsterEntities.JUNGLE_SLIME.get(), "丛林史莱姆");
@@ -4703,6 +4872,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), "大块头愤怒骷髅");
         add(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), "大头盔愤怒骷髅");
         add(MonsterEntities.UNDEAD_VIKING.get(), "亡灵维京海盗");
+        add(MonsterEntities.ICE_GOLEM.get(), "冰雪巨人");
+        add(MonsterEntities.ROCK_GOLEM.get(), "岩石巨人");
+        add(MonsterEntities.ARMORED_VIKING.get(), "装甲维京海盗");
+        add(MonsterEntities.ARMORED_SKELETON.get(), "装甲骷髅");
+        add(MonsterEntities.ICY_MERMAN.get(), "冰雪鱼人");
+        add(MonsterEntities.ICE_ELEMENTAL.get(), "冰雪精");
+        add(MonsterEntities.ICE_TORTOISE.get(), "冰雪陆龟");
         add(MonsterEntities.SPORE_BAT.get(), "孢子蝙蝠");
         add(MonsterEntities.DRIPPLER.get(), "滴滴怪");
         add(MonsterEntities.FLYING_FISH.get(), "飞鱼");
@@ -4711,15 +4887,37 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.DEMON.get(), "恶魔");
         add(MonsterEntities.VOODOO_DEMON.get(), "巫毒恶魔");
         add(MonsterEntities.HORNET.get(), "黄蜂");
+        add(MonsterEntities.MOSS_HORNET.get(), "青苔黄蜂");
+        add(MonsterEntities.JUNGLE_CREEPER.get(), "丛林蜘蛛");
+        add(MonsterEntities.WALL_CREEPER.get(), "爬墙蜘蛛");
+        add(MonsterEntities.BLACK_RECLUSE.get(), "黑隐士");
         add(MonsterEntities.LITTLE_HORNET.get(), "小黄蜂");
         add(MonsterEntities.FIRE_IMP.get(), "火焰小鬼");
         add(MonsterEntities.DECAYEDER.get(), "腐骴");
         add(MonsterEntities.GHOST.get(), "鬼魂");
+        add(MonsterEntities.DUNGEON_SPIRIT.get(), "地牢幽魂");
         add(MonsterEntities.DERPLING.get(), "跳跳兽");
         add(MonsterEntities.HERPLING.get(), "蹦蹦兽");
         add(MonsterEntities.METEOR_HEAD.get(), "流星头");
         add(MonsterEntities.GRANITE_ELEMENTAL.get(), "花岗精");
+        add(MonsterEntities.GRANITE_GOLEM.get(), "花岗岩巨人");
+        add(MonsterEntities.HOPLITE.get(), "装甲步兵");
+        add(MonsterEntities.ANGRY_DANDELION.get(), "愤怒蒲公英");
+        add(MonsterEntities.WINDY_BALLOON.get(), "大风气球怪");
+        add(MonsterEntities.OLD_SHAKING_CHEST.get(), "旧摇摇箱");
+        add(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), "笨拙气球史莱姆");
+        add(MonsterEntities.ANGRY_TUMBLER.get(), "愤怒翻滚怪");
+        add(MonsterEntities.SAND_SHARK.get(), "沙鲨");
+        add(MonsterEntities.BONE_BITER.get(), "腐化沙鲨");
+        add(MonsterEntities.FLESH_REAVER.get(), "猩红沙鲨");
+        add(MonsterEntities.CRYSTAL_THRESHER.get(), "神圣沙鲨");
+        add(MonsterEntities.ANGRY_NIMBUS.get(), "愤怒雨云怪");
         add(MonsterEntities.ANTLION_SWARMER.get(), "蚁狮蜂");
+        add(MonsterEntities.ANTLION_CHARGER.get(), "蚁狮马");
+        add(MonsterEntities.ANTLION_LARVA.get(), "蚁狮幼虫");
+        add(MonsterEntities.GNOME.get(), "侏儒");
+        add(MonsterEntities.ANTLION.get(), "蚁狮");
+        add(MonsterEntities.DESERT_SPIRIT.get(), "沙漠幽魂");
         add(MonsterEntities.GIANT_ANTLION_SWARMER.get(), "巨型蚁狮蜂");
         add(MonsterEntities.THE_HUNGRY.get(), "饿鬼");
         add(MonsterEntities.HILL_HUNGRY.get(), "饿鬼");
@@ -4728,7 +4926,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.FACE_MONSTER.get(), "脸怪");
         add(MonsterEntities.BLOOD_TUMORS.get(), "血瘤");
         add(MonsterEntities.POSSESS_ARMOR.get(), "装甲幻影魔");
-        add(MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.get(), "装甲幻影魔·虚空载体");
+        add(MonsterEntities.WEREWOLF.get(), "狼人");
+        add(MonsterEntities.CORRUPT_PENGUIN.get(), "腐化企鹅");
+        add(MonsterEntities.VICIOUS_PENGUIN.get(), "猩红企鹅");
         add(MonsterEntities.MUMMY.get(), "木乃伊");
         add(MonsterEntities.DARK_MUMMY.get(), "暗黑木乃伊");
         add(MonsterEntities.BLOOD_MUMMY.get(), "血木乃伊");
@@ -4736,6 +4936,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.DARK_LAMIA.get(), "黑暗拉弥亚");
         add(MonsterEntities.LIGHT_LAMIA.get(), "光明拉弥亚");
         add(MonsterEntities.GHOUL.get(), "食尸鬼");
+        add(MonsterEntities.BASILISK.get(), "蛇蜥怪");
         add(MonsterEntities.TAINTED_GHOUL.get(), "红染食尸鬼");
         add(MonsterEntities.VILE_GHOUL.get(), "腐恶食尸鬼");
         add(MonsterEntities.DREAMER_GHOUL.get(), "神梦食尸鬼");
@@ -4750,6 +4951,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.SPORE_ZOMBIE.get(), "孢子僵尸");
         add(MonsterEntities.HAT_SPORE_ZOMBIE.get(), "帽子蘑菇僵尸");
         add(MonsterEntities.PIRANHA.get(), "食人鱼");
+        add(MonsterEntities.CORRUPT_GOLDFISH.get(), "腐化金鱼");
+        add(MonsterEntities.VICIOUS_GOLDFISH.get(), "毒金鱼");
+        add(MonsterEntities.ANGLER_FISH.get(), "琵琶鱼");
         add(MonsterEntities.BLUE_JELLYFISH.get(), "蓝水母");
         add(MonsterEntities.PINK_JELLYFISH.get(), "粉水母");
         add(MonsterEntities.SHARK.get(), "鲨鱼");
@@ -4758,23 +4962,52 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.ICE_BAT.get(), "冰雪蝙蝠");
         add(MonsterEntities.GIANT_BAT.get(), "巨型蝙蝠");
         add(MonsterEntities.HELL_BAT.get(), "地狱蝙蝠");
+        add(MonsterEntities.LAVA_BAT.get(), "熔岩蝙蝠");
+        add(MonsterEntities.RED_DEVIL.get(), "红魔鬼");
+        add("entity.confluence.unholy_trident", "邪恶三叉戟");
+        add(MonsterEntities.ILLUMINANT_BAT.get(), "夜明蝙蝠");
         add(MonsterEntities.WORM_SEGMENT.get(), "蠕虫体节");
         add(MonsterEntities.WYVERN.get(), "飞龙");
         add(MonsterEntities.DEVOURER.get(), "吞噬怪");
+        add(MonsterEntities.WORLD_FEEDER.get(), "吞世怪");
         add(MonsterEntities.TOMB_CRAWLER.get(), "墓穴爬虫");
         add(MonsterEntities.GIANT_WORM.get(), "巨型蠕虫");
+        add(MonsterEntities.DIGGER.get(), "挖掘怪");
         add(MonsterEntities.LEECH.get(), "血蛭");
         add(MonsterEntities.BONE_SERPENT.get(), "骨蛇");
         add(MonsterEntities.WITHER_BONE_SERPENT.get(), "凋零骨蛇");
         add(MonsterEntities.DARK_CASTER.get(), "暗黑法师");
+        add(MonsterEntities.WATER_BOLT_MIMIC.get(), "水矢怪");
+        add(MonsterEntities.TIM.get(), "提姆");
+        add(MonsterEntities.RUNE_WIZARD.get(), "符文巫师");
+        add(MonsterEntities.DOCTOR_BONES.get(), "骷髅博士");
+        add(MonsterEntities.THE_GROOM.get(), "僵尸新郎");
+        add(MonsterEntities.THE_BRIDE.get(), "僵尸新娘");
+        add(MonsterEntities.ZOMBIE_MERMAN.get(), "僵尸鱼人");
         add(MonsterEntities.GOBLIN_SORCERER.get(), "哥布林巫士");
+        add(MonsterEntities.GOBLIN_WARLOCK.get(), "哥布林术士");
+        add(MonsterEntities.PIRATE_DECKHAND.get(), "海盗水手");
+        add(MonsterEntities.PIRATE_DEADEYE.get(), "海盗神射手");
+        add(MonsterEntities.PIRATE_CROSSBOWER.get(), "海盗弩手");
+        add(MonsterEntities.PIRATE_CORSAIR.get(), "私船海盗");
+        add(MonsterEntities.PIRATE_CAPTAIN.get(), "海盗船长");
+        add(MonsterEntities.PIRATE_PARROT.get(), "海盗鹦鹉");
+        add(MonsterEntities.PIRATES_CURSE.get(), "海盗诅咒");
+        add(MonsterEntities.SHADOWFLAME_APPARITION.get(), "暗影焰幻鬼");
         add(MonsterEntities.GIANT_SHELLY.get(), "巨型卷壳怪");
         add(MonsterEntities.CRAWDAD.get(), "龙虾");
         add(MonsterEntities.NYMPH.get(), "宁芙");
         add(MonsterEntities.SNATCHER.get(), "抓人草");
         add(MonsterEntities.MAN_EATER.get(), "食人怪");
+        add(MonsterEntities.FUNGI_BULB.get(), "真菌球怪");
+        add(MonsterEntities.GIANT_FUNGI_BULB.get(), "巨型真菌球怪");
+        add(MonsterEntities.CLINGER.get(), "爬藤怪");
+        add("entity.confluence.clinger_flame", "诅咒魔焰");
+        add("entity.confluence.fungi_spore", "真菌孢子");
         add(MonsterEntities.ARAPAIMA.get(), "巨骨舌鱼");
         add(MonsterEntities.GREEN_JELLYFISH.get(), "绿水母");
+        add(MonsterEntities.BLOOD_JELLY.get(), "血水母");
+        add(MonsterEntities.FUNGO_FISH.get(), "蘑菇水母");
         add(MonsterEntities.WOODEN_MIMIC.get(), "木宝箱怪");
         add(MonsterEntities.GOLDEN_MIMIC.get(), "金宝箱怪");
         add(MonsterEntities.SHADOW_MIMIC.get(), "暗影宝箱怪");
@@ -4785,10 +5018,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.JUNGLE_MIMIC.get(), "丛林宝箱怪");
         add(MonsterEntities.SAND_POACHER.get(), "沙贼");
         add(MonsterEntities.WRAITH.get(), "幻灵");
+    }
+
+    private void addCritterTranslations() {
+        add(CritterEntities.GLOWING_MOOSHROOM.get(), "发光哞菇");
+        add(CritterEntities.CLOUD_SHEEP.get(), "飘飘羊");
+        add(CritterEntities.CLUCKSHROOM.get(), "红色咯菇");
+        add("entity.confluence.brown_cluckshroom", "棕色咯菇");
+        add(CritterEntities.GLOWING_CLUCKSHROOM.get(), "发光咯菇");
         add(CritterEntities.SQUIRREL.get(), "松鼠");
         add(CritterEntities.RED_SQUIRREL.get(), "红松鼠");
         add(CritterEntities.JEWEL_SQUIRREL.get(), "宝石松鼠");
         add(CritterEntities.BUNNY.get(), "兔兔");
+        add(CritterEntities.PENGUIN.get(), "企鹅");
+        add(CritterEntities.MYSTIC_FROG.get(), "神秘青蛙");
+        add(CritterEntities.GOLDFISH.get(), "金鱼");
         add(CritterEntities.JEWEL_BUNNY.get(), "宝石兔");
         add(CritterEntities.EXPLOSIVE_BUNNY.get(), "爆炸兔");
         add(CritterEntities.DUCK.get(), "鸭子");
@@ -4801,18 +5045,28 @@ public class ModChineseProvider extends LanguageProvider {
         add(CritterEntities.MAGGOT.get(), "蝇蛆");
         add(CritterEntities.MAGMA_SNAIL.get(), "岩浆蜗牛");
         add(CritterEntities.SLUGGY.get(), "鼻涕虫");
+        add(CritterEntities.BUGGY.get(), "蚜虫");
         add(CritterEntities.SNAIL.get(), "蜗牛");
         add(CritterEntities.BUTTERFLY.get(), "蝴蝶");
         add(CritterEntities.HELL_BUTTERFLY.get(), "地狱蝴蝶");
+        add(CritterEntities.FIREFLY.get(), "萤火虫");
+        add(CritterEntities.LIGHTNING_BUG.get(), "荧光虫");
         add(CritterEntities.DRAGONFLY.get(), "蜻蜓");
         add(CritterEntities.FAIRY.get(), "仙灵");
         add(CritterEntities.FEALING.get(), "飞灵");
         add(CritterEntities.GRASSHOPPER.get(), "蚱蜢");
         add(CritterEntities.LADYBUG.get(), "瓢虫");
+        add(CritterEntities.STINKBUG.get(), "臭虫");
         add(CritterEntities.SCORPION.get(), "蝎子");
         add(CritterEntities.WORM.get(), "蠕虫");
+        add(CritterEntities.TRUFFLE_WORM.get(), "松露虫");
         add(CritterEntities.PRISMATIC_LACEWING.get(), "七彩草蛉");
         add(CritterEntities.HOSTILE_BUNNY.get(), "敌对兔兔");
+        add("entity.confluence.corrupt_bunny", "腐化兔兔");
+        add("entity.confluence.vicious_bunny", "猩红兔兔");
+    }
+
+    private void addBossTranslations() {
         add(BossEntities.KING_SLIME.get(), "史莱姆王");
         add(BossEntities.EYE_OF_CTHULHU.get(), "克苏鲁之眼");
         add(BossEntities.SERVANT_OF_CTHULHU.get(), "克苏鲁之仆");
@@ -4889,15 +5143,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.HORNET_STAFF.get(), "黄蜂法杖");
         add(SummonItems.SCULK_WISP_STAFF.get(), "幽匿游灵法杖");
         add(SummonItems.IMP_STAFF.get(), "小鬼法杖");
-        add(SummonItems.SNOW_FLINX_STAFF.get(), "雪怪法杖");
-        add(SummonItems.TERRAPRISMA_WOODEN.get(), "泰拉棱镜木外观");
-        add(SummonItems.TERRAPRISMA_STONE.get(), "泰拉棱镜石外观");
-        add(SummonItems.TERRAPRISMA_IRON.get(), "泰拉棱镜铁外观");
-        add(SummonItems.TERRAPRISMA_GOLDEN.get(), "泰拉棱镜金外观");
-        add(SummonItems.TERRAPRISMA_DIAMOND.get(), "泰拉棱镜钻石外观");
-        add(SummonItems.TERRAPRISMA_NETHERITE.get(), "泰拉棱镜下界合金外观");
+        add(SummonItems.SNOW_FLINX_STAFF.get(), "小雪怪法杖");
+        add(SummonItems.VAMPIRE_FROG_STAFF.get(), "吸血鬼青蛙法杖");
+        add(SummonItems.DEADLY_SPHERE_STAFF.get(), "致命球法杖");
+        add(SummonItems.SANGUINE_STAFF.get(), "血红法杖");
+        add(SummonItems.SPIDER_STAFF.get(), "蜘蛛法杖");
+        add(SummonItems.DESERT_TIGER_STAFF.get(), "沙漠虎杖");
         add(SummonItems.TERRAPRISMA.get(), "泰拉棱镜");
-        add(SummonItems.STARDUST_DRAGON_STAFF.get(), "星尘龙法杖");
+        add(SummonItems.STARDUST_DRAGON_STAFF.get(), "星尘之龙法杖");
         add("entity.confluence.finch_baby", "雀宝宝");
         add("entity.confluence.i_32_iron_golem", "i-32型铁傀儡");
         add("entity.confluence.slime_baby", "史莱姆宝宝");
@@ -4905,14 +5158,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.sculk_wisp", "幽匿游灵");
         add("entity.confluence.summon_imp", "召唤的小鬼");
         add("entity.confluence.summon_snow_flinx", "小雪怪");
-        add("entity.confluence.summon_wooden_sword", "青冥");
-        add("entity.confluence.summon_stone_sword", "破山");
-        add("entity.confluence.summon_iron_sword", "白虹");
-        add("entity.confluence.summon_golden_sword", "流星");
-        add("entity.confluence.summon_diamond_sword", "龙渊");
-        add("entity.confluence.summon_netherite_sword", "赤霄");
+        add("entity.confluence.vampire_frog", "吸血鬼青蛙");
         add("entity.confluence.terraprisma", "泰拉棱镜");
         add("entity.confluence.stardust_dragon", "星尘龙");
+        add("entity.confluence.deadly_sphere", "致命球");
+        add("entity.confluence.vampire_bat", "血蝙蝠");
+        add("entity.confluence.spider", "蜘蛛召唤物");
+        add("entity.confluence.desert_tiger", "沙漠虎");
         add("tooltip.confluence.summon.damage", "基础召唤伤害：%s");
         add("tooltip.confluence.summon.slots", "占用仆从栏：%s");
         add("tooltip.confluence.summon.retrieve", "右键长按以解除所有召唤物");
@@ -5041,11 +5293,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.wall_of_flesh_summon", "血肉墙：苏醒");
     }
 
-    /// 添加坐骑物品、坐骑实体和敌对生物弹幕名称。
-    ///
-    /// 这些翻译仍直接写在本 Provider 中。方法边界仅用于控制主翻译方法的字节码长度，
-    /// 不引入额外名称表，也不改变 DataGen 的来源。
-    private void addMountAndHostileProjectileTranslations() {
+    private void addNpcTranslations() {
         add(NpcEntities.ANGLER.get(), "渔夫");
         add(NpcEntities.ARMS_DEALER.get(), "军火商");
         add(NpcEntities.CLOTHIER.get(), "服装商");
@@ -5067,9 +5315,27 @@ public class ModChineseProvider extends LanguageProvider {
         add(NpcEntities.TRUFFLE.get(), "松露人");
         add(NpcEntities.WITCH_DOCTOR.get(), "巫医");
         add(NpcEntities.WIZARD.get(), "巫师");
+        add(NpcEntities.STEAMPUNKER.get(), "蒸汽朋克人");
+        add(NpcEntities.CYBORG.get(), "机器侠");
+        add(NpcEntities.GOLFER.get(), "高尔夫球手");
+        add(NpcEntities.NERDY_SLIME.get(), "书呆子史莱姆");
+        add(NpcEntities.COOL_SLIME.get(), "酷酷史莱姆");
+        add(NpcEntities.ELDER_SLIME.get(), "长者史莱姆");
+        add(NpcEntities.CLUMSY_SLIME.get(), "笨拙史莱姆");
+        add(NpcEntities.DIVA_SLIME.get(), "天后史莱姆");
+        add(NpcEntities.SURLY_SLIME.get(), "暴躁史莱姆");
+        add(NpcEntities.MYSTIC_SLIME.get(), "神秘史莱姆");
+        add(NpcEntities.SQUIRE_SLIME.get(), "侍卫史莱姆");
+        add(NpcEntities.SKELETON_MERCHANT.get(), "骷髅商人");
         add(NpcEntities.ZOOLOGIST.get(), "动物学家");
+    }
+
+    private void addBossMessageTranslations() {
         add("message.confluence.boss_spawn", "%s已苏醒！");
         add("message.confluence.boss_leave", "%s已被击败！");
+    }
+
+    private void addYoyoTranslations() {
         add(YoyoItems.AMAZON.get(), "亚马逊球");
         add(YoyoItems.ARTERY.get(), "血脉球");
         add(YoyoItems.CASCADE.get(), "喷流球");
@@ -5082,14 +5348,34 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.confluence.yoyo.max_range", "最大射程");
         add("tooltip.confluence.yoyo.exist_time", "使用时间");
         add("tooltip.confluence.yoyo.hit_effect", "命中效果");
+        add(ModEntities.YOYO.get(), "悠悠球");
+    }
+
+    private void addMountTranslations() {
+        add("tooltip.confluence.rideable_item.desc", "按下 %s 以骑乘。");
         add(MountItems.FUZZY_CARROT.get(), "绒毛胡萝卜");
         add(MountItems.SLIMY_SADDLE.get(), "粘鞍");
         add(MountItems.HONEYED_GOGGLES.get(), "涂蜜护目镜");
+        add(MountItems.BLESSED_APPLE.get(), "恩赐苹果");
+        add(MountItems.SUPERHEATED_BLOOD.get(), "过热的血");
         add(ModEntities.RIDEABLE_SLIME.get(), "史莱姆坐骑");
         add(ModEntities.RIDEABLE_BEE.get(), "蜜蜂坐骑");
-        add(ModEntities.YOYO.get(), "悠悠球");
+        add(ModEntities.RIDEABLE_UNICORN.get(), "独角兽坐骑");
+        add(ModEntities.RIDEABLE_LAVA_SHARK.get(), "岩浆鲨坐骑");
+    }
+
+    private void addNpcProjectileTranslations() {
+        add(ModEntities.CYBORG_EXPLOSIVE.get(), "机器侠爆炸弹");
+    }
+
+    private void addHostileProjectileTranslations() {
+        add(ModEntities.PIRATE_BULLET.get(), "海盗子弹");
+        add(ModEntities.PIRATE_FLAMING_ARROW.get(), "海盗烈焰箭");
+        add(ModEntities.PIRATE_CANNONBALL.get(), "海盗炮弹");
         add(ModEntities.HARPY_FEATHER.get(), "鸟妖羽毛弹幕");
         add(ModEntities.DARK_CASTER_PROJECTILE.get(), "水球");
+        add(ModEntities.RUNE_BLAST.get(), "符文冲击");
+        add(ModEntities.DESERT_SPIRIT_CURSE.get(), "沙漠幽魂的诅咒");
         add(ModEntities.CHAOS_BALL_PROJECTILE.get(), "混沌球");
         add(ModEntities.SHADOW_BEAM_PROJECTILE.get(), "暗影束");
         add(ModEntities.INFERNO_BOLT_PROJECTILE.get(), "狱火弹");
@@ -5103,11 +5389,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.SHADOW_HAND.get(), "暗影之手");
     }
 
-    /// 添加本体创造模式分页名称。
-    ///
-    /// 翻译仍直接维护在本类中；单独方法只是控制
-    /// {@link #addTranslations()} 的 JVM 字节码长度，避免继续增加本体翻译时
-    /// 触发单方法 64 KiB 上限。
     private void addCreativeTabTranslations() {
         add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
         add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");
@@ -5125,18 +5406,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
     }
 
-    /// 添加个人存钱罐的两种随身入口。
-    ///
-    /// 名称仍直接写在中文提供器中；分组方法仅用于控制主翻译方法的字节码长度。
     private void addStorageCompanionTranslations() {
         add(PetItems.CHESTER_STAFF.get(), "眼骨");
         add(PetItems.WALLET.get(), "钱币槽");
         add(ModEntities.CHESTER.get(), "切斯特");
         add(ModEntities.FLYING_PIGGY_BANK.get(), "飞行存钱罐");
+        add(ModEntities.SUMMONED_IRON_GOLEM.get(), "铁傀儡");
         add("container.confluence.chester", "切斯特");
     }
 
-    /// 重铸命令与哥布林工匠界面的文本。
     private void addReforgeTranslations() {
         add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
         add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
@@ -5297,7 +5575,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.GIANT_FLYING_FOX_SPAWN_EGG.get(), "巨型飞狐刷怪蛋");
         add(SpawnEggItems.DRIPPLER_SPAWN_EGG.get(), "滴滴怪刷怪蛋");
         add(SpawnEggItems.GHOST_SPAWN_EGG.get(), "鬼魂刷怪蛋");
-        add(SpawnEggItems.POSSESS_ARMOR_VOID_VESSEL_SPAWN_EGG.get(), "装甲幻影魔·虚空载体刷怪蛋");
+        add(SpawnEggItems.DUNGEON_SPIRIT_SPAWN_EGG.get(), "地牢幽魂刷怪蛋");
         add(SpawnEggItems.CRIMSLIME_SPAWN_EGG.get(), "猩红史莱姆刷怪蛋");
         add(SpawnEggItems.BLOOD_CRAWLER_SPAWN_EGG.get(), "血爬虫刷怪蛋");
         add(SpawnEggItems.BLOODY_SPORE_SPAWN_EGG.get(), "血腥芽孢刷怪蛋");
@@ -5311,6 +5589,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.CORRUPT_SLIME_SPAWN_EGG.get(), "腐化史莱姆刷怪蛋");
         add(SpawnEggItems.EATER_OF_SOULS_SPAWN_EGG.get(), "噬魂怪刷怪蛋");
         add(SpawnEggItems.DEVOURER_SPAWN_EGG.get(), "吞噬怪刷怪蛋");
+        add(SpawnEggItems.WORLD_FEEDER_SPAWN_EGG.get(), "吞世怪刷怪蛋");
         add(SpawnEggItems.DECAYEDER_SPAWN_EGG.get(), "腐骴刷怪蛋");
         add(SpawnEggItems.CORRUPTOR_SPAWN_EGG.get(), "腐化者刷怪蛋");
         add(SpawnEggItems.SLIMER_SPAWN_EGG.get(), "恶翅史莱姆刷怪蛋");
@@ -5321,6 +5600,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.CHAOS_ELEMENTAL_SPAWN_EGG.get(), "混沌精刷怪蛋");
         add(SpawnEggItems.DESERT_SLIME_SPAWN_EGG.get(), "沙漠史莱姆刷怪蛋");
         add(SpawnEggItems.ANTLION_SWARMER_SPAWN_EGG.get(), "蚁狮蜂刷怪蛋");
+        add(SpawnEggItems.ANTLION_CHARGER_SPAWN_EGG.get(), "蚁狮马刷怪蛋");
+        add(SpawnEggItems.ANTLION_LARVA_SPAWN_EGG.get(), "蚁狮幼虫刷怪蛋");
+        add(SpawnEggItems.GNOME_SPAWN_EGG.get(), "侏儒刷怪蛋");
+        add(SpawnEggItems.ANTLION_SPAWN_EGG.get(), "蚁狮刷怪蛋");
+        add(SpawnEggItems.DESERT_SPIRIT_SPAWN_EGG.get(), "沙漠幽魂刷怪蛋");
         add(SpawnEggItems.GIANT_ANTLION_SWARMER_SPAWN_EGG.get(), "巨型蚁狮蜂刷怪蛋");
         add(SpawnEggItems.MUMMY_SPAWN_EGG.get(), "木乃伊刷怪蛋");
         add(SpawnEggItems.DARK_MUMMY_SPAWN_EGG.get(), "暗黑木乃伊刷怪蛋");
@@ -5330,6 +5614,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.DARK_LAMIA_SPAWN_EGG.get(), "黑暗拉弥亚刷怪蛋");
         add(SpawnEggItems.LIGHT_LAMIA_SPAWN_EGG.get(), "光明拉弥亚刷怪蛋");
         add(SpawnEggItems.GHOUL_SPAWN_EGG.get(), "食尸鬼刷怪蛋");
+        add(SpawnEggItems.BASILISK_SPAWN_EGG.get(), "蛇蜥怪刷怪蛋");
         add(SpawnEggItems.TAINTED_GHOUL_SPAWN_EGG.get(), "红染食尸鬼刷怪蛋");
         add(SpawnEggItems.VILE_GHOUL_SPAWN_EGG.get(), "腐恶食尸鬼刷怪蛋");
         add(SpawnEggItems.DREAMER_GHOUL_SPAWN_EGG.get(), "神梦食尸鬼刷怪蛋");
@@ -5338,8 +5623,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.SPIKED_JUNGLE_SLIME_SPAWN_EGG.get(), "尖刺丛林史莱姆刷怪蛋");
         add(SpawnEggItems.JUNGLE_BAT_SPAWN_EGG.get(), "丛林蝙蝠刷怪蛋");
         add(SpawnEggItems.HORNET_SPAWN_EGG.get(), "黄蜂刷怪蛋");
+        add(SpawnEggItems.MOSS_HORNET_SPAWN_EGG.get(), "青苔黄蜂刷怪蛋");
+        add(SpawnEggItems.JUNGLE_CREEPER_SPAWN_EGG.get(), "丛林蜘蛛刷怪蛋");
+        add(SpawnEggItems.WALL_CREEPER_SPAWN_EGG.get(), "爬墙蜘蛛刷怪蛋");
+        add(SpawnEggItems.BLACK_RECLUSE_SPAWN_EGG.get(), "黑隐士刷怪蛋");
         add(SpawnEggItems.LITTLE_HORNET_SPAWN_EGG.get(), "小黄蜂刷怪蛋");
         add(SpawnEggItems.MAN_EATER_SPAWN_EGG.get(), "食人怪刷怪蛋");
+        add(SpawnEggItems.FUNGI_BULB_SPAWN_EGG.get(), "真菌球怪刷怪蛋");
+        add(SpawnEggItems.GIANT_FUNGI_BULB_SPAWN_EGG.get(), "巨型真菌球怪刷怪蛋");
+        add(SpawnEggItems.CLINGER_SPAWN_EGG.get(), "爬藤怪刷怪蛋");
         add(SpawnEggItems.TROPIC_SLIME_SPAWN_EGG.get(), "热带史莱姆刷怪蛋");
         add(SpawnEggItems.DERPLING_SPAWN_EGG.get(), "跳跳兽刷怪蛋");
         add(SpawnEggItems.SWEET_SLIME_SPAWN_EGG.get(), "甜蜜史莱姆刷怪蛋");
@@ -5350,6 +5642,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.ICE_BAT_SPAWN_EGG.get(), "冰雪蝙蝠刷怪蛋");
         add(SpawnEggItems.SNOW_FLINX_SPAWN_EGG.get(), "小雪怪刷怪蛋");
         add(SpawnEggItems.UNDEAD_VIKING_SPAWN_EGG.get(), "亡灵维京海盗刷怪蛋");
+        add(SpawnEggItems.ICE_GOLEM_SPAWN_EGG.get(), "冰雪巨人刷怪蛋");
+        add(SpawnEggItems.ROCK_GOLEM_SPAWN_EGG.get(), "岩石巨人刷怪蛋");
+        add(SpawnEggItems.ARMORED_VIKING_SPAWN_EGG.get(), "装甲维京海盗刷怪蛋");
+        add(SpawnEggItems.ARMORED_SKELETON_SPAWN_EGG.get(), "装甲骷髅刷怪蛋");
+        add(SpawnEggItems.ICY_MERMAN_SPAWN_EGG.get(), "冰雪鱼人刷怪蛋");
+        add(SpawnEggItems.ICE_ELEMENTAL_SPAWN_EGG.get(), "冰雪精刷怪蛋");
+        add(SpawnEggItems.ICE_TORTOISE_SPAWN_EGG.get(), "冰雪陆龟刷怪蛋");
         add(SpawnEggItems.PURPLE_SLIME_SPAWN_EGG.get(), "紫色史莱姆刷怪蛋");
         add(SpawnEggItems.BLUE_SLIME_SPAWN_EGG.get(), "蓝色史莱姆刷怪蛋");
         add(SpawnEggItems.GREEN_SLIME_SPAWN_EGG.get(), "绿色史莱姆刷怪蛋");
@@ -5357,14 +5656,24 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.GOLDEN_SLIME_SPAWN_EGG.get(), "金史莱姆刷怪蛋");
         add(SpawnEggItems.DEMON_EYE_SPAWN_EGG.get(), "恶魔眼刷怪蛋");
         add(SpawnEggItems.POSSESS_ARMOR_SPAWN_EGG.get(), "装甲幻影魔刷怪蛋");
+        add(SpawnEggItems.WEREWOLF_SPAWN_EGG.get(), "狼人刷怪蛋");
+        add(SpawnEggItems.CORRUPT_PENGUIN_SPAWN_EGG.get(), "腐化企鹅刷怪蛋");
+        add(SpawnEggItems.VICIOUS_PENGUIN_SPAWN_EGG.get(), "猩红企鹅刷怪蛋");
         add(SpawnEggItems.WRAITH_SPAWN_EGG.get(), "幻灵刷怪蛋");
         add(SpawnEggItems.SWAMP_SLIME_SPAWN_EGG.get(), "沼泽史莱姆刷怪蛋");
         add(SpawnEggItems.SPIKED_SLIME_SPAWN_EGG.get(), "尖刺史莱姆刷怪蛋");
         add(SpawnEggItems.GREEN_DUMPLING_SLIME_SPAWN_EGG.get(), "青团史莱姆刷怪蛋");
+        add(SpawnEggItems.GLOWING_MOOSHROOM_SPAWN_EGG.get(), "发光哞菇刷怪蛋");
+        add(SpawnEggItems.CLOUD_SHEEP_SPAWN_EGG.get(), "飘飘羊刷怪蛋");
+        add(SpawnEggItems.CLUCKSHROOM_SPAWN_EGG.get(), "红色咯菇刷怪蛋");
+        add(SpawnEggItems.GLOWING_CLUCKSHROOM_SPAWN_EGG.get(), "发光咯菇刷怪蛋");
         add(SpawnEggItems.SQUIRREL_SPAWN_EGG.get(), "松鼠刷怪蛋");
         add(SpawnEggItems.RED_SQUIRREL_SPAWN_EGG.get(), "红松鼠刷怪蛋");
         add(SpawnEggItems.JEWEL_SQUIRREL_SPAWN_EGG.get(), "宝石松鼠刷怪蛋");
         add(SpawnEggItems.BUNNY_SPAWN_EGG.get(), "兔兔刷怪蛋");
+        add(SpawnEggItems.PENGUIN_SPAWN_EGG.get(), "企鹅刷怪蛋");
+        add(SpawnEggItems.MYSTIC_FROG_SPAWN_EGG.get(), "神秘青蛙刷怪蛋");
+        add(SpawnEggItems.GOLDFISH_SPAWN_EGG.get(), "金鱼刷怪蛋");
         add(SpawnEggItems.JEWEL_BUNNY_SPAWN_EGG.get(), "宝石兔刷怪蛋");
         add(SpawnEggItems.EXPLOSIVE_BUNNY_SPAWN_EGG.get(), "爆炸兔刷怪蛋");
         add(SpawnEggItems.HOSTILE_BUNNY_SPAWN_EGG.get(), "敌对兔兔刷怪蛋");
@@ -5380,8 +5689,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.GIANT_SHELLY_SPAWN_EGG.get(), "巨型卷壳怪刷怪蛋");
         add(SpawnEggItems.CRAWDAD_SPAWN_EGG.get(), "龙虾刷怪蛋");
         add(SpawnEggItems.GIANT_WORM_SPAWN_EGG.get(), "巨型蠕虫刷怪蛋");
+        add(SpawnEggItems.DIGGER_SPAWN_EGG.get(), "挖掘怪刷怪蛋");
         add(SpawnEggItems.NYMPH_SPAWN_EGG.get(), "宁芙刷怪蛋");
         add(SpawnEggItems.GRANITE_ELEMENTAL_SPAWN_EGG.get(), "花岗精刷怪蛋");
+        add(SpawnEggItems.GRANITE_GOLEM_SPAWN_EGG.get(), "花岗岩巨人刷怪蛋");
+        add(SpawnEggItems.HOPLITE_SPAWN_EGG.get(), "装甲步兵刷怪蛋");
+        add(SpawnEggItems.ANGRY_DANDELION_SPAWN_EGG.get(), "愤怒蒲公英刷怪蛋");
+        add(SpawnEggItems.ANGRY_TUMBLER_SPAWN_EGG.get(), "愤怒翻滚怪刷怪蛋");
+        add(SpawnEggItems.SAND_SHARK_SPAWN_EGG.get(), "沙鲨刷怪蛋");
+        add(SpawnEggItems.BONE_BITER_SPAWN_EGG.get(), "腐化沙鲨刷怪蛋");
+        add(SpawnEggItems.FLESH_REAVER_SPAWN_EGG.get(), "猩红沙鲨刷怪蛋");
+        add(SpawnEggItems.CRYSTAL_THRESHER_SPAWN_EGG.get(), "神圣沙鲨刷怪蛋");
+        add(SpawnEggItems.ANGRY_NIMBUS_SPAWN_EGG.get(), "愤怒雨云怪刷怪蛋");
         add(SpawnEggItems.METEOR_HEAD_SPAWN_EGG.get(), "流星头刷怪蛋");
         add(SpawnEggItems.SPORE_BAT_SPAWN_EGG.get(), "孢子蝙蝠刷怪蛋");
         add(SpawnEggItems.SPORE_SKELETON_SPAWN_EGG.get(), "孢子骷髅刷怪蛋");
@@ -5395,6 +5714,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.BIG_HELMET_ANGER_BONES_SPAWN_EGG.get(), "大头盔愤怒骷髅刷怪蛋");
         add(SpawnEggItems.CURSED_SKULL_SPAWN_EGG.get(), "诅咒骷髅头刷怪蛋");
         add(SpawnEggItems.DARK_CASTER_SPAWN_EGG.get(), "暗黑法师刷怪蛋");
+        add(SpawnEggItems.WATER_BOLT_MIMIC_SPAWN_EGG.get(), "水矢怪刷怪蛋");
+        add(SpawnEggItems.TIM_SPAWN_EGG.get(), "提姆刷怪蛋");
+        add(SpawnEggItems.RUNE_WIZARD_SPAWN_EGG.get(), "符文巫师刷怪蛋");
+        add(SpawnEggItems.DOCTOR_BONES_SPAWN_EGG.get(), "骷髅博士刷怪蛋");
+        add(SpawnEggItems.THE_GROOM_SPAWN_EGG.get(), "僵尸新郎刷怪蛋");
+        add(SpawnEggItems.THE_BRIDE_SPAWN_EGG.get(), "僵尸新娘刷怪蛋");
+        add(SpawnEggItems.ZOMBIE_MERMAN_SPAWN_EGG.get(), "僵尸鱼人刷怪蛋");
         add(SpawnEggItems.PALADIN_SPAWN_EGG.get(), "圣骑士刷怪蛋");
         add(SpawnEggItems.BONE_LEE_SPAWN_EGG.get(), "骷髅李刷怪蛋");
         add(SpawnEggItems.NECROMANCER_SPAWN_EGG.get(), "死灵法师刷怪蛋");
@@ -5407,6 +5733,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.VOODOO_DEMON_SPAWN_EGG.get(), "巫毒恶魔刷怪蛋");
         add(SpawnEggItems.LAVA_SLIME_SPAWN_EGG.get(), "熔岩史莱姆刷怪蛋");
         add(SpawnEggItems.HELL_BAT_SPAWN_EGG.get(), "地狱蝙蝠刷怪蛋");
+        add(SpawnEggItems.LAVA_BAT_SPAWN_EGG.get(), "熔岩蝙蝠刷怪蛋");
+        add(SpawnEggItems.RED_DEVIL_SPAWN_EGG.get(), "红魔鬼刷怪蛋");
+        add(SpawnEggItems.ILLUMINANT_BAT_SPAWN_EGG.get(), "夜明蝙蝠刷怪蛋");
         add(SpawnEggItems.BONE_SERPENT_SPAWN_EGG.get(), "骨蛇刷怪蛋");
         add(SpawnEggItems.WITHER_BONE_SERPENT_SPAWN_EGG.get(), "凋零骨蛇刷怪蛋");
         add(SpawnEggItems.HARPY_SPAWN_EGG.get(), "鸟妖刷怪蛋");
@@ -5422,6 +5751,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.HALLOWED_MIMIC_SPAWN_EGG.get(), "神圣宝箱怪刷怪蛋");
         add(SpawnEggItems.JUNGLE_MIMIC_SPAWN_EGG.get(), "丛林宝箱怪刷怪蛋");
         add(SpawnEggItems.GOBLIN_SORCERER_SPAWN_EGG.get(), "哥布林巫士刷怪蛋");
+        add(SpawnEggItems.GOBLIN_WARLOCK_SPAWN_EGG.get(), "哥布林术士刷怪蛋");
+        add(SpawnEggItems.PIRATE_DECKHAND_SPAWN_EGG.get(), "海盗水手刷怪蛋");
+        add(SpawnEggItems.PIRATE_DEADEYE_SPAWN_EGG.get(), "海盗神射手刷怪蛋");
+        add(SpawnEggItems.PIRATE_CROSSBOWER_SPAWN_EGG.get(), "海盗弩手刷怪蛋");
+        add(SpawnEggItems.PIRATE_CORSAIR_SPAWN_EGG.get(), "私船海盗刷怪蛋");
+        add(SpawnEggItems.PIRATE_CAPTAIN_SPAWN_EGG.get(), "海盗船长刷怪蛋");
+        add(SpawnEggItems.PIRATE_PARROT_SPAWN_EGG.get(), "海盗鹦鹉刷怪蛋");
+        add(SpawnEggItems.PIRATES_CURSE_SPAWN_EGG.get(), "海盗诅咒刷怪蛋");
+        add(SpawnEggItems.SHADOWFLAME_APPARITION_SPAWN_EGG.get(), "暗影焰幻鬼刷怪蛋");
         add(SpawnEggItems.GOBLIN_ARCHER_SPAWN_EGG.get(), "哥布林弓箭手刷怪蛋");
         add(SpawnEggItems.GOBLIN_PEON_SPAWN_EGG.get(), "哥布林苦力刷怪蛋");
         add(SpawnEggItems.GOBLIN_WARRIOR_SPAWN_EGG.get(), "哥布林战士刷怪蛋");
@@ -5429,18 +5767,27 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.GOBLIN_SCOUT_SPAWN_EGG.get(), "哥布林侦察兵刷怪蛋");
         add(SpawnEggItems.ANGER_GOBLIN_SPAWN_EGG.get(), "愤怒哥布林刷怪蛋");
         add(SpawnEggItems.PIRANHA_SPAWN_EGG.get(), "食人鱼刷怪蛋");
+        add(SpawnEggItems.CORRUPT_GOLDFISH_SPAWN_EGG.get(), "腐化金鱼刷怪蛋");
+        add(SpawnEggItems.VICIOUS_GOLDFISH_SPAWN_EGG.get(), "毒金鱼刷怪蛋");
+        add(SpawnEggItems.ANGLER_FISH_SPAWN_EGG.get(), "琵琶鱼刷怪蛋");
         add(SpawnEggItems.SHARK_SPAWN_EGG.get(), "鲨鱼刷怪蛋");
         add(SpawnEggItems.ARAPAIMA_SPAWN_EGG.get(), "巨骨舌鱼刷怪蛋");
         add(SpawnEggItems.BLUE_JELLYFISH_SPAWN_EGG.get(), "蓝水母刷怪蛋");
         add(SpawnEggItems.PINK_JELLYFISH_SPAWN_EGG.get(), "粉水母刷怪蛋");
         add(SpawnEggItems.GREEN_JELLYFISH_SPAWN_EGG.get(), "绿水母刷怪蛋");
+        add(SpawnEggItems.BLOOD_JELLY_SPAWN_EGG.get(), "血水母刷怪蛋");
+        add(SpawnEggItems.FUNGO_FISH_SPAWN_EGG.get(), "蘑菇水母刷怪蛋");
         add(SpawnEggItems.WANDERING_EYE_FISH_SPAWN_EGG.get(), "游荡眼球怪鱼刷怪蛋");
         add(SpawnEggItems.CRAB_SPAWN_EGG.get(), "螃蟹刷怪蛋");
         add(SpawnEggItems.GLOWING_SNAIL_SPAWN_EGG.get(), "发光蜗牛刷怪蛋");
         add(SpawnEggItems.GRUBBY_SPAWN_EGG.get(), "蛆虫刷怪蛋");
+        add(SpawnEggItems.FIREFLY_SPAWN_EGG.get(), "萤火虫刷怪蛋");
+        add(SpawnEggItems.LIGHTNING_BUG_SPAWN_EGG.get(), "荧光虫刷怪蛋");
+        add(SpawnEggItems.TRUFFLE_WORM_SPAWN_EGG.get(), "松露虫刷怪蛋");
         add(SpawnEggItems.MAGGOT_SPAWN_EGG.get(), "蝇蛆刷怪蛋");
         add(SpawnEggItems.MAGMA_SNAIL_SPAWN_EGG.get(), "岩浆蜗牛刷怪蛋");
         add(SpawnEggItems.SLUGGY_SPAWN_EGG.get(), "鼻涕虫刷怪蛋");
+        add(SpawnEggItems.BUGGY_SPAWN_EGG.get(), "蚜虫刷怪蛋");
         add(SpawnEggItems.SNAIL_SPAWN_EGG.get(), "蜗牛刷怪蛋");
         add(SpawnEggItems.BUTTERFLY_SPAWN_EGG.get(), "蝴蝶刷怪蛋");
         add(SpawnEggItems.HELL_BUTTERFLY_SPAWN_EGG.get(), "地狱蝴蝶刷怪蛋");
@@ -5449,6 +5796,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.FAIRY_SPAWN_EGG.get(), "仙灵刷怪蛋");
         add(SpawnEggItems.FEALING_SPAWN_EGG.get(), "飞灵刷怪蛋");
         add(SpawnEggItems.GRASSHOPPER_SPAWN_EGG.get(), "蚱蜢刷怪蛋");
+        add(SpawnEggItems.STINKBUG_SPAWN_EGG.get(), "臭虫刷怪蛋");
         add(SpawnEggItems.LADYBUG_SPAWN_EGG.get(), "瓢虫刷怪蛋");
         add(SpawnEggItems.SCORPION_SPAWN_EGG.get(), "蝎子刷怪蛋");
         add(SpawnEggItems.WORM_SPAWN_EGG.get(), "蠕虫刷怪蛋");
@@ -5474,6 +5822,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.ZOOLOGIST_SPAWN_EGG.get(), "动物学家刷怪蛋");
         add(SpawnEggItems.TRUFFLE_SPAWN_EGG.get(), "松露人刷怪蛋");
         add(SpawnEggItems.WIZARD_SPAWN_EGG.get(), "巫师刷怪蛋");
+        add(SpawnEggItems.STEAMPUNKER_SPAWN_EGG.get(), "蒸汽朋克人刷怪蛋");
+        add(SpawnEggItems.CYBORG_SPAWN_EGG.get(), "机器侠刷怪蛋");
+        add(SpawnEggItems.GOLFER_SPAWN_EGG.get(), "高尔夫球手刷怪蛋");
+        add(SpawnEggItems.NERDY_SLIME_SPAWN_EGG.get(), "书呆子史莱姆刷怪蛋");
+        add(SpawnEggItems.COOL_SLIME_SPAWN_EGG.get(), "酷酷史莱姆刷怪蛋");
+        add(SpawnEggItems.ELDER_SLIME_SPAWN_EGG.get(), "长者史莱姆刷怪蛋");
+        add(SpawnEggItems.CLUMSY_SLIME_SPAWN_EGG.get(), "笨拙史莱姆刷怪蛋");
+        add(SpawnEggItems.DIVA_SLIME_SPAWN_EGG.get(), "天后史莱姆刷怪蛋");
+        add(SpawnEggItems.SURLY_SLIME_SPAWN_EGG.get(), "暴躁史莱姆刷怪蛋");
+        add(SpawnEggItems.MYSTIC_SLIME_SPAWN_EGG.get(), "神秘史莱姆刷怪蛋");
+        add(SpawnEggItems.SQUIRE_SLIME_SPAWN_EGG.get(), "侍卫史莱姆刷怪蛋");
+        add(SpawnEggItems.SKELETON_MERCHANT_SPAWN_EGG.get(), "骷髅商人刷怪蛋");
         add(SpawnEggItems.KING_SLIME_SPAWN_EGG.get(), "史莱姆王刷怪蛋");
         add(SpawnEggItems.EYE_OF_CTHULHU_SPAWN_EGG.get(), "克苏鲁之眼刷怪蛋");
         add(SpawnEggItems.EATER_OF_WORLDS_SPAWN_EGG.get(), "世界吞噬怪刷怪蛋");

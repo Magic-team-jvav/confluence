@@ -244,7 +244,6 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
                 MonsterEntities.GIANT_SHELLY.get(),
                 MonsterEntities.POSSESS_ARMOR.get(),
-                MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.get(),
                 MonsterEntities.DERPLING.get(),
                 MonsterEntities.SAND_POACHER.get(),
                 MonsterEntities.HERPLING.get(),
@@ -257,7 +256,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 MonsterEntities.HALLOWED_MIMIC.get(),
                 MonsterEntities.JUNGLE_MIMIC.get()
         );
-        tag(ModTags.EntityTypes.JELLY_FISH).add(MonsterEntities.PINK_JELLYFISH.get(), MonsterEntities.GREEN_JELLYFISH.get(), MonsterEntities.BLUE_JELLYFISH.get());
+        tag(ModTags.EntityTypes.JELLY_FISH).add(MonsterEntities.PINK_JELLYFISH.get(), MonsterEntities.GREEN_JELLYFISH.get(), MonsterEntities.BLUE_JELLYFISH.get(), MonsterEntities.BLOOD_JELLY.get(), MonsterEntities.FUNGO_FISH.get());
 
         tag(ModTags.EntityTypes.CORRUPT).add(
                 MonsterEntities.EATER_OF_SOULS.get(),

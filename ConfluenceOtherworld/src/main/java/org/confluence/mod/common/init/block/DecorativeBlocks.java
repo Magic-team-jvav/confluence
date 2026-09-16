@@ -56,6 +56,9 @@ public class DecorativeBlocks {
     public static final PortDeferredBlock<Block> WOOD_STONE_SLATTED_BLOCKS = registerWithCopy("wood_stone_slatted_blocks", OAK_PLANKS);
 
     public static final PortDeferredBlock<PooBlock> POO_BLOCK = registerWithItem("poo_block", () -> new PooBlock(BlockBehaviour.Properties.copy(Blocks.MUD).mapColor(MapColor.COLOR_BROWN)));
+    public static final PortDeferredBlock<AntlionEggBlock> ANTLION_EGGS = registerWithItem("antlion_eggs", () -> new AntlionEggBlock(BlockBehaviour.Properties.of().strength(0).sound(SoundType.BONE_BLOCK).noLootTable()));
+    public static final PortDeferredBlock<GardenGnomeBlock> GARDEN_GNOME = registerWithItem("garden_gnome", () -> new GardenGnomeBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(0.5F).noOcclusion()));
+    public static final RegistryObject<BlockEntityType<GardenGnomeBlock.BEntity>> GARDEN_GNOME_ENTITY = ModBlocks.BLOCK_ENTITIES.register("garden_gnome", () -> BlockEntityType.Builder.of(GardenGnomeBlock.BEntity::new, GARDEN_GNOME.get()).build(DSL.remainderType()));
 
     // 砖
     public static final DecoBlockSet BLUE_ICE_BRICKS = DecoBlockSet.builder("blue_ice_bricks", () -> BlockBehaviour.Properties.copy(Blocks.BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)).stonecutting().build();

@@ -4,19 +4,9 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Optional;
 
-/// 鞭子曲线上的一组模型分段。
-///
-/// 固定间距模式中的数值使用像素，十六像素等于一个方块；曲线伸长时，已有分段的
-/// 间距不变，只会逐渐增加分段数量。固定数量模式中的数值就是分段总数，曲线伸长时
-/// 数量不变，各段之间的距离会被重新平均。两种模式都可以为最后一个位置指定独立的
-/// 鞭梢模型。
-///
-/// @param model    普通分段使用的物品 JSON 模型位置
-/// @param mode     分段沿曲线的排列方式
-/// @param value    像素间距或固定分段数，具体含义由 {@code mode} 决定
-/// @param tipModel 可选的鞭梢物品 JSON 模型位置
+// FIXED_SPACING 的 value 是像素间距，FIXED_COUNT 的 value 是分段数。
+// tipModel 可为 null；每个 WhipSegment 都是一层，可在 WhipAppearance 中任意组合。
 public record WhipSegment(ResourceLocation model, Mode mode, int value,
                           @Nullable ResourceLocation tipModel) {
     public WhipSegment {
@@ -41,10 +31,6 @@ public record WhipSegment(ResourceLocation model, Mode mode, int value,
 
     public static WhipSegment fixedCount(ResourceLocation model, int segmentCount, ResourceLocation tipModel) {
         return new WhipSegment(model, Mode.FIXED_COUNT, segmentCount, Objects.requireNonNull(tipModel, "Whip tip model must not be null"));
-    }
-
-    public Optional<ResourceLocation> optionalTipModel() {
-        return Optional.ofNullable(tipModel);
     }
 
     public enum Mode {

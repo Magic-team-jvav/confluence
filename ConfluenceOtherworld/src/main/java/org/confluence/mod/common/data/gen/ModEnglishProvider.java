@@ -50,6 +50,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("entity.confluence.model_pending", "%s (model pending)");
         add("house_validator.result_type.found", "This housing is suitable.");
         add("house_validator.result_type.too_small", "This housing is too small.");
         add("house_validator.result_type.too_large", "This housing is too large or not enclosed.");
@@ -62,7 +63,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add(MountItems.FUZZY_CARROT.get(), "Fuzzy Carrot");
         add(MountItems.SLIMY_SADDLE.get(), "Slimy Saddle");
         add(MountItems.HONEYED_GOGGLES.get(), "Honeyed Goggles");
-        add("tooltip.confluence.rideable_item.desc", "Press hotkey to ride. Default R key");
+        add(MountItems.BLESSED_APPLE.get(), "Blessed Apple");
+        add(MountItems.SUPERHEATED_BLOOD.get(), "Superheated Blood");
+        add("tooltip.confluence.rideable_item.desc", "Press %s to ride.");
         add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");
         add(SummonItems.SLIME_STAFF.get(), "Slime Staff");
@@ -70,12 +73,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.SCULK_WISP_STAFF.get(), "Sculk Wisp Staff");
         add(SummonItems.IMP_STAFF.get(), "Imp Staff");
         add(SummonItems.SNOW_FLINX_STAFF.get(), "Flinx Staff");
-        add(SummonItems.TERRAPRISMA_WOODEN.get(), "Wooden Sword Staff");
-        add(SummonItems.TERRAPRISMA_STONE.get(), "Stone Sword Staff");
-        add(SummonItems.TERRAPRISMA_IRON.get(), "Iron Sword Staff");
-        add(SummonItems.TERRAPRISMA_GOLDEN.get(), "Golden Sword Staff");
-        add(SummonItems.TERRAPRISMA_DIAMOND.get(), "Diamond Sword Staff");
-        add(SummonItems.TERRAPRISMA_NETHERITE.get(), "Netherite Sword Staff");
+        add(SummonItems.VAMPIRE_FROG_STAFF.get(), "Vampire Frog Staff");
+        add(SummonItems.DEADLY_SPHERE_STAFF.get(), "Deadly Sphere Staff");
+        add(SummonItems.SANGUINE_STAFF.get(), "Sanguine Staff");
+        add(SummonItems.SPIDER_STAFF.get(), "Spider Staff");
+        add(SummonItems.DESERT_TIGER_STAFF.get(), "Desert Tiger Staff");
         add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
         add("entity.confluence.finch_baby", "Baby Finch");
@@ -85,12 +87,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.sculk_wisp", "Sculk Wisp");
         add("entity.confluence.summon_imp", "Imp Minion");
         add("entity.confluence.summon_snow_flinx", "Snow Flinx Minion");
-        add("entity.confluence.summon_wooden_sword", "Wooden Sword Minion");
-        add("entity.confluence.summon_stone_sword", "Stone Sword Minion");
-        add("entity.confluence.summon_iron_sword", "Iron Sword Minion");
-        add("entity.confluence.summon_golden_sword", "Golden Sword Minion");
-        add("entity.confluence.summon_diamond_sword", "Diamond Sword Minion");
-        add("entity.confluence.summon_netherite_sword", "Netherite Sword Minion");
+        add("entity.confluence.vampire_frog", "Vampire Frog");
         add("entity.confluence.terraprisma", "Terraprisma");
         add("entity.confluence.stardust_dragon", "Stardust Dragon");
         add("tooltip.confluence.summon.damage", "Base summon damage: %s");
@@ -116,6 +113,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(ModEntities.HOSTILE_DEMON_SCYTHE.get(), "Hostile Demon Scythe Projectile");
         add(ModEntities.HORNET_STINGER.get(), "Hornet Stinger Projectile");
         add(ModEntities.DARK_CASTER_PROJECTILE.get(), "Water Sphere");
+        add(ModEntities.RUNE_BLAST.get(), "Rune Blast");
         add(ModEntities.CHAOS_BALL_PROJECTILE.get(), "Chaos Ball");
         add(ModEntities.SHADOW_BEAM_PROJECTILE.get(), "Shadow Beam");
         add(ModEntities.INFERNO_BOLT_PROJECTILE.get(), "Inferno Bolt");
@@ -125,6 +123,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add(ModEntities.GASTROPOD_PROJECTILE.get(), "Gastropod Projectile");
         add(ModEntities.PALADIN_HAMMER_PROJECTILE.get(), "Paladin Hammer Projectile");
         add(ModEntities.THROWN_ICE_PROJECTILE.get(), "Thrown Ice Projectile");
+        add("entity.confluence.deadly_sphere", "Deadly Sphere");
+        add("entity.confluence.vampire_bat", "Sanguine Bat");
+        add("entity.confluence.spider", "Spider Minion");
+        add("entity.confluence.desert_tiger", "Desert Tiger");
+        add("entity.confluence.corrupt_bunny", "Corrupt Bunny");
+        add("entity.confluence.vicious_bunny", "Vicious Bunny");
         add(ModEntities.ICE_PILLAR.get(), "Ice Pillar");
         add(ModEntities.SHADOW_HAND.get(), "Shadow Hand");
 
@@ -414,6 +418,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.sky_entity", "Sky");
         add("itemGroup.confluence.mimic_entity", "Mimic");
         add("itemGroup.confluence.goblin_entity", "Goblin Army");
+        add("itemGroup.confluence.pirate_entity", "Pirate Invasion");
+        add("event.confluence.pirate_invasion", "Pirate Invasion");
+        add("message.confluence.pirate_invasion.ready", "Pirates are approaching!");
+        add("message.confluence.party.started", "It's party time!");
+        add("message.confluence.party.ended", "Party time's over!");
+        add("message.confluence.pirate_invasion.start", "The pirates have arrived!");
+        add("message.confluence.pirate_invasion.victory", "The pirates have been defeated!");
         add("itemGroup.confluence.water_entity", "Water Creature");
         add("itemGroup.confluence.insect_entity", "Insect");
         add("itemGroup.confluence.npc_entity", "NPC");
@@ -875,6 +886,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.blood_tear.0", "Summons the Blood Moon");
         add("tooltip.item.confluence.blood_tear.1", "'What a horrible night to have a curse.'");
         add("tooltip.item.confluence.goblin_battle_standard.0", "Summons a Goblin Army ");
+        add("tooltip.item.confluence.pirate_map.0", "Summons a Pirate Invasion");
 
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "Full Pull Effects");
         add("tooltip.item.confluence.max_count", "Arrow Count");
@@ -1015,6 +1027,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("prefix.confluence.tooltip.add", "+%s %s");
         add("prefix.confluence.tooltip.mana_cost", "Mana Cost");
         add("prefix.confluence.tooltip.additional_mana", "Additional Mana");
+        add("prefix.confluence.tooltip.armor_penetration", "Armor Penetration");
+        add("prefix.confluence.tooltip.summon_tag_damage", "Summon Tag Damage");
         add("prefix.confluence.tooltip.four_classes_damage", "Four Classes Damage");
         add("prefix.confluence.quick", "Quick");
         add("prefix.confluence.hasty", "Hasty");
@@ -1503,6 +1517,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.demon_eye.cataract", "Cataract Demon Eye");
         add("entity.confluence.demon_eye.cataract_big", "Big Cataract Demon Eye");
         add("entity.confluence.worm.nightcrawler", "Enchanted Nightcrawler");
+        add(ModEntities.SUMMONED_IRON_GOLEM.get(), "Iron Golem");
         add("entity.confluence.worm.gold", "Gold Worm");
         add("entity.confluence.worm.normal", "Worm");
         add("entity.confluence.grasshopper.gold", "Gold Grasshopper");
@@ -1670,6 +1685,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.getEntities().forEach(register -> register.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath()))));
+        add("entity.confluence.brown_cluckshroom", "Brown Cluckshroom");
         addOverrides();
         add(MonsterEntities.WINGLESS_SLIMER.get(), "Slimer");
 
@@ -1765,6 +1781,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.RAGE.get(), "10% increased critical chance");
         addEffect(ModEffects.FISHING.get(), "Increased fishing power");
         addEffect(ModEffects.LUCK_EFFECT.get(), "You are feeling pretty lucky");
+        addEffect(ModEffects.GARDEN_GNOME_LUCK.get(), "A nearby garden gnome brings good luck");
         addEffect(ModEffects.MANA_REGENERATION.get(), "Increased mana regeneration");
         addEffect(ModEffects.STAR_IN_A_BOTTLE.get(), "Increased mana regeneration");
         addEffect(ModEffects.WATER_WALKING.get(), "Can walk on liquids.");
@@ -1774,6 +1791,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.HUNTER.get(), "Shows the location of enemies; press [%s] for detailed information");
         addEffect(ModEffects.DANGER_SENSE.get(), "You can see nearby hazards");
         addEffect(ModEffects.FROZEN.get(), "You can't move!");
+        addEffect(ModEffects.WEBBED.get(), "You are stuck!");
         addEffect(ModEffects.STINKY.get(), "You smell terrible");
         addEffect(ModEffects.THE_BAST_DEFENSE.get(), "Defense is increased by 5");
         addEffect(ModEffects.SHARPENED.get(), "Melee weapons have armor penetration");
@@ -1810,6 +1828,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addBoomerangTranslations();
         addWhipTranslations();
         addEffect(ModEffects.HELLFIRE.get(), "Losing life");
+        addEffect(ModEffects.JUNGLES_FURY.get(), "Whip attack speed increased by 12%");
         addEffect(ModEffects.FROST_BURN.get(), "Losing life; Cannot regenerate life");
         addEffect(ModEffects.CRIMSON_STORM.get(), "You are trapped in the storm, there is no escape.");
         addEffect(ModEffects.HORRIFIED.get(), "You have seen something nasty, there is no escape.");
@@ -2056,7 +2075,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.GIANT_FLYING_FOX_SPAWN_EGG.get(), "Giant Flying Fox Spawn Egg");
         add(SpawnEggItems.DRIPPLER_SPAWN_EGG.get(), "Drippler Spawn Egg");
         add(SpawnEggItems.GHOST_SPAWN_EGG.get(), "Ghost Spawn Egg");
-        add(SpawnEggItems.POSSESS_ARMOR_VOID_VESSEL_SPAWN_EGG.get(), "Possess Armor Void Vessel Spawn Egg");
+        add(SpawnEggItems.DUNGEON_SPIRIT_SPAWN_EGG.get(), "Dungeon Spirit Spawn Egg");
         add(SpawnEggItems.CRIMSLIME_SPAWN_EGG.get(), "Crimslime Spawn Egg");
         add(SpawnEggItems.BLOOD_CRAWLER_SPAWN_EGG.get(), "Blood Crawler Spawn Egg");
         add(SpawnEggItems.BLOODY_SPORE_SPAWN_EGG.get(), "Bloody Spore Spawn Egg");
@@ -2070,6 +2089,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.CORRUPT_SLIME_SPAWN_EGG.get(), "Corrupt Slime Spawn Egg");
         add(SpawnEggItems.EATER_OF_SOULS_SPAWN_EGG.get(), "Eater Of Souls Spawn Egg");
         add(SpawnEggItems.DEVOURER_SPAWN_EGG.get(), "Devourer Spawn Egg");
+        add(SpawnEggItems.WORLD_FEEDER_SPAWN_EGG.get(), "World Feeder Spawn Egg");
         add(SpawnEggItems.DECAYEDER_SPAWN_EGG.get(), "Decayeder Spawn Egg");
         add(SpawnEggItems.CORRUPTOR_SPAWN_EGG.get(), "Corruptor Spawn Egg");
         add(SpawnEggItems.SLIMER_SPAWN_EGG.get(), "Slimer Spawn Egg");
@@ -2080,6 +2100,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.CHAOS_ELEMENTAL_SPAWN_EGG.get(), "Chaos Elemental Spawn Egg");
         add(SpawnEggItems.DESERT_SLIME_SPAWN_EGG.get(), "Desert Slime Spawn Egg");
         add(SpawnEggItems.ANTLION_SWARMER_SPAWN_EGG.get(), "Antlion Swarmer Spawn Egg");
+        add(SpawnEggItems.ANTLION_CHARGER_SPAWN_EGG.get(), "Antlion Charger Spawn Egg");
+        add(SpawnEggItems.ANTLION_LARVA_SPAWN_EGG.get(), "Antlion Larva Spawn Egg");
+        add(SpawnEggItems.GNOME_SPAWN_EGG.get(), "Gnome Spawn Egg");
+        add(SpawnEggItems.ANTLION_SPAWN_EGG.get(), "Antlion Spawn Egg");
+        add(SpawnEggItems.DESERT_SPIRIT_SPAWN_EGG.get(), "Desert Spirit Spawn Egg");
         add(SpawnEggItems.GIANT_ANTLION_SWARMER_SPAWN_EGG.get(), "Giant Antlion Swarmer Spawn Egg");
         add(SpawnEggItems.MUMMY_SPAWN_EGG.get(), "Mummy Spawn Egg");
         add(SpawnEggItems.DARK_MUMMY_SPAWN_EGG.get(), "Dark Mummy Spawn Egg");
@@ -2089,6 +2114,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.DARK_LAMIA_SPAWN_EGG.get(), "Dark Lamia Spawn Egg");
         add(SpawnEggItems.LIGHT_LAMIA_SPAWN_EGG.get(), "Light Lamia Spawn Egg");
         add(SpawnEggItems.GHOUL_SPAWN_EGG.get(), "Ghoul Spawn Egg");
+        add(SpawnEggItems.BASILISK_SPAWN_EGG.get(), "Basilisk Spawn Egg");
         add(SpawnEggItems.TAINTED_GHOUL_SPAWN_EGG.get(), "Tainted Ghoul Spawn Egg");
         add(SpawnEggItems.VILE_GHOUL_SPAWN_EGG.get(), "Vile Ghoul Spawn Egg");
         add(SpawnEggItems.DREAMER_GHOUL_SPAWN_EGG.get(), "Dreamer Ghoul Spawn Egg");
@@ -2097,8 +2123,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.SPIKED_JUNGLE_SLIME_SPAWN_EGG.get(), "Spiked Jungle Slime Spawn Egg");
         add(SpawnEggItems.JUNGLE_BAT_SPAWN_EGG.get(), "Jungle Bat Spawn Egg");
         add(SpawnEggItems.HORNET_SPAWN_EGG.get(), "Hornet Spawn Egg");
+        add(SpawnEggItems.MOSS_HORNET_SPAWN_EGG.get(), "Moss Hornet Spawn Egg");
+        add(SpawnEggItems.JUNGLE_CREEPER_SPAWN_EGG.get(), "Jungle Creeper Spawn Egg");
+        add(SpawnEggItems.WALL_CREEPER_SPAWN_EGG.get(), "Wall Creeper Spawn Egg");
+        add(SpawnEggItems.BLACK_RECLUSE_SPAWN_EGG.get(), "Black Recluse Spawn Egg");
         add(SpawnEggItems.LITTLE_HORNET_SPAWN_EGG.get(), "Little Hornet Spawn Egg");
         add(SpawnEggItems.MAN_EATER_SPAWN_EGG.get(), "Man Eater Spawn Egg");
+        add(SpawnEggItems.FUNGI_BULB_SPAWN_EGG.get(), "Fungi Bulb Spawn Egg");
+        add(SpawnEggItems.GIANT_FUNGI_BULB_SPAWN_EGG.get(), "Giant Fungi Bulb Spawn Egg");
+        add(SpawnEggItems.CLINGER_SPAWN_EGG.get(), "Clinger Spawn Egg");
         add(SpawnEggItems.TROPIC_SLIME_SPAWN_EGG.get(), "Tropic Slime Spawn Egg");
         add(SpawnEggItems.DERPLING_SPAWN_EGG.get(), "Derpling Spawn Egg");
         add(SpawnEggItems.SWEET_SLIME_SPAWN_EGG.get(), "Sweet Slime Spawn Egg");
@@ -2109,6 +2142,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.ICE_BAT_SPAWN_EGG.get(), "Ice Bat Spawn Egg");
         add(SpawnEggItems.SNOW_FLINX_SPAWN_EGG.get(), "Snow Flinx Spawn Egg");
         add(SpawnEggItems.UNDEAD_VIKING_SPAWN_EGG.get(), "Undead Viking Spawn Egg");
+        add(SpawnEggItems.ICE_GOLEM_SPAWN_EGG.get(), "Ice Golem Spawn Egg");
+        add(SpawnEggItems.ROCK_GOLEM_SPAWN_EGG.get(), "Rock Golem Spawn Egg");
+        add(SpawnEggItems.ARMORED_VIKING_SPAWN_EGG.get(), "Armored Viking Spawn Egg");
+        add(SpawnEggItems.ARMORED_SKELETON_SPAWN_EGG.get(), "Armored Skeleton Spawn Egg");
+        add(SpawnEggItems.ICY_MERMAN_SPAWN_EGG.get(), "Icy Merman Spawn Egg");
+        add(SpawnEggItems.ICE_ELEMENTAL_SPAWN_EGG.get(), "Ice Elemental Spawn Egg");
+        add(SpawnEggItems.ICE_TORTOISE_SPAWN_EGG.get(), "Ice Tortoise Spawn Egg");
         add(SpawnEggItems.PURPLE_SLIME_SPAWN_EGG.get(), "Purple Slime Spawn Egg");
         add(SpawnEggItems.BLUE_SLIME_SPAWN_EGG.get(), "Blue Slime Spawn Egg");
         add(SpawnEggItems.GREEN_SLIME_SPAWN_EGG.get(), "Green Slime Spawn Egg");
@@ -2116,14 +2156,24 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.GOLDEN_SLIME_SPAWN_EGG.get(), "Golden Slime Spawn Egg");
         add(SpawnEggItems.DEMON_EYE_SPAWN_EGG.get(), "Demon Eye Spawn Egg");
         add(SpawnEggItems.POSSESS_ARMOR_SPAWN_EGG.get(), "Possess Armor Spawn Egg");
+        add(SpawnEggItems.WEREWOLF_SPAWN_EGG.get(), "Werewolf Spawn Egg");
+        add(SpawnEggItems.CORRUPT_PENGUIN_SPAWN_EGG.get(), "Corrupt Penguin Spawn Egg");
+        add(SpawnEggItems.VICIOUS_PENGUIN_SPAWN_EGG.get(), "Vicious Penguin Spawn Egg");
         add(SpawnEggItems.WRAITH_SPAWN_EGG.get(), "Wraith Spawn Egg");
         add(SpawnEggItems.SWAMP_SLIME_SPAWN_EGG.get(), "Swamp Slime Spawn Egg");
         add(SpawnEggItems.SPIKED_SLIME_SPAWN_EGG.get(), "Spiked Slime Spawn Egg");
         add(SpawnEggItems.GREEN_DUMPLING_SLIME_SPAWN_EGG.get(), "Green Dumpling Slime Spawn Egg");
+        add(SpawnEggItems.GLOWING_MOOSHROOM_SPAWN_EGG.get(), "Glowing Mooshroom Spawn Egg");
+        add(SpawnEggItems.CLOUD_SHEEP_SPAWN_EGG.get(), "Cloud Sheep Spawn Egg");
+        add(SpawnEggItems.CLUCKSHROOM_SPAWN_EGG.get(), "Cluckshroom Spawn Egg");
+        add(SpawnEggItems.GLOWING_CLUCKSHROOM_SPAWN_EGG.get(), "Glowing Cluckshroom Spawn Egg");
         add(SpawnEggItems.SQUIRREL_SPAWN_EGG.get(), "Squirrel Spawn Egg");
         add(SpawnEggItems.RED_SQUIRREL_SPAWN_EGG.get(), "Red Squirrel Spawn Egg");
         add(SpawnEggItems.JEWEL_SQUIRREL_SPAWN_EGG.get(), "Jewel Squirrel Spawn Egg");
         add(SpawnEggItems.BUNNY_SPAWN_EGG.get(), "Bunny Spawn Egg");
+        add(SpawnEggItems.PENGUIN_SPAWN_EGG.get(), "Penguin Spawn Egg");
+        add(SpawnEggItems.MYSTIC_FROG_SPAWN_EGG.get(), "Mystic Frog Spawn Egg");
+        add(SpawnEggItems.GOLDFISH_SPAWN_EGG.get(), "Goldfish Spawn Egg");
         add(SpawnEggItems.JEWEL_BUNNY_SPAWN_EGG.get(), "Jewel Bunny Spawn Egg");
         add(SpawnEggItems.EXPLOSIVE_BUNNY_SPAWN_EGG.get(), "Explosive Bunny Spawn Egg");
         add(SpawnEggItems.HOSTILE_BUNNY_SPAWN_EGG.get(), "Hostile Bunny Spawn Egg");
@@ -2139,8 +2189,18 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.GIANT_SHELLY_SPAWN_EGG.get(), "Giant Shelly Spawn Egg");
         add(SpawnEggItems.CRAWDAD_SPAWN_EGG.get(), "Crawdad Spawn Egg");
         add(SpawnEggItems.GIANT_WORM_SPAWN_EGG.get(), "Giant Worm Spawn Egg");
+        add(SpawnEggItems.DIGGER_SPAWN_EGG.get(), "Digger Spawn Egg");
         add(SpawnEggItems.NYMPH_SPAWN_EGG.get(), "Nymph Spawn Egg");
         add(SpawnEggItems.GRANITE_ELEMENTAL_SPAWN_EGG.get(), "Granite Elemental Spawn Egg");
+        add(SpawnEggItems.GRANITE_GOLEM_SPAWN_EGG.get(), "Granite Golem Spawn Egg");
+        add(SpawnEggItems.HOPLITE_SPAWN_EGG.get(), "Hoplite Spawn Egg");
+        add(SpawnEggItems.ANGRY_DANDELION_SPAWN_EGG.get(), "Angry Dandelion Spawn Egg");
+        add(SpawnEggItems.ANGRY_TUMBLER_SPAWN_EGG.get(), "Angry Tumbler Spawn Egg");
+        add(SpawnEggItems.SAND_SHARK_SPAWN_EGG.get(), "Sand Shark Spawn Egg");
+        add(SpawnEggItems.BONE_BITER_SPAWN_EGG.get(), "Bone Biter Spawn Egg");
+        add(SpawnEggItems.FLESH_REAVER_SPAWN_EGG.get(), "Flesh Reaver Spawn Egg");
+        add(SpawnEggItems.CRYSTAL_THRESHER_SPAWN_EGG.get(), "Crystal Thresher Spawn Egg");
+        add(SpawnEggItems.ANGRY_NIMBUS_SPAWN_EGG.get(), "Angry Nimbus Spawn Egg");
         add(SpawnEggItems.METEOR_HEAD_SPAWN_EGG.get(), "Meteor Head Spawn Egg");
         add(SpawnEggItems.SPORE_BAT_SPAWN_EGG.get(), "Spore Bat Spawn Egg");
         add(SpawnEggItems.SPORE_SKELETON_SPAWN_EGG.get(), "Spore Skeleton Spawn Egg");
@@ -2154,6 +2214,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.BIG_HELMET_ANGER_BONES_SPAWN_EGG.get(), "Big Helmet Anger Bones Spawn Egg");
         add(SpawnEggItems.CURSED_SKULL_SPAWN_EGG.get(), "Cursed Skull Spawn Egg");
         add(SpawnEggItems.DARK_CASTER_SPAWN_EGG.get(), "Dark Caster Spawn Egg");
+        add(SpawnEggItems.WATER_BOLT_MIMIC_SPAWN_EGG.get(), "Water Bolt Mimic Spawn Egg");
+        add(SpawnEggItems.TIM_SPAWN_EGG.get(), "Tim Spawn Egg");
+        add(SpawnEggItems.RUNE_WIZARD_SPAWN_EGG.get(), "Rune Wizard Spawn Egg");
+        add(SpawnEggItems.DOCTOR_BONES_SPAWN_EGG.get(), "Doctor Bones Spawn Egg");
+        add(SpawnEggItems.THE_GROOM_SPAWN_EGG.get(), "The Groom Spawn Egg");
+        add(SpawnEggItems.THE_BRIDE_SPAWN_EGG.get(), "The Bride Spawn Egg");
+        add(SpawnEggItems.ZOMBIE_MERMAN_SPAWN_EGG.get(), "Zombie Merman Spawn Egg");
         add(SpawnEggItems.PALADIN_SPAWN_EGG.get(), "Paladin Spawn Egg");
         add(SpawnEggItems.BONE_LEE_SPAWN_EGG.get(), "Bone Lee Spawn Egg");
         add(SpawnEggItems.NECROMANCER_SPAWN_EGG.get(), "Necromancer Spawn Egg");
@@ -2166,6 +2233,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.VOODOO_DEMON_SPAWN_EGG.get(), "Voodoo Demon Spawn Egg");
         add(SpawnEggItems.LAVA_SLIME_SPAWN_EGG.get(), "Lava Slime Spawn Egg");
         add(SpawnEggItems.HELL_BAT_SPAWN_EGG.get(), "Hell Bat Spawn Egg");
+        add(SpawnEggItems.LAVA_BAT_SPAWN_EGG.get(), "Lava Bat Spawn Egg");
+        add(SpawnEggItems.RED_DEVIL_SPAWN_EGG.get(), "Red Devil Spawn Egg");
+        add(SpawnEggItems.ILLUMINANT_BAT_SPAWN_EGG.get(), "Illuminant Bat Spawn Egg");
         add(SpawnEggItems.BONE_SERPENT_SPAWN_EGG.get(), "Bone Serpent Spawn Egg");
         add(SpawnEggItems.WITHER_BONE_SERPENT_SPAWN_EGG.get(), "Wither Bone Serpent Spawn Egg");
         add(SpawnEggItems.HARPY_SPAWN_EGG.get(), "Harpy Spawn Egg");
@@ -2181,6 +2251,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.HALLOWED_MIMIC_SPAWN_EGG.get(), "Hallowed Mimic Spawn Egg");
         add(SpawnEggItems.JUNGLE_MIMIC_SPAWN_EGG.get(), "Jungle Mimic Spawn Egg");
         add(SpawnEggItems.GOBLIN_SORCERER_SPAWN_EGG.get(), "Goblin Sorcerer Spawn Egg");
+        add(SpawnEggItems.GOBLIN_WARLOCK_SPAWN_EGG.get(), "Goblin Warlock Spawn Egg");
+        add(SpawnEggItems.PIRATE_DECKHAND_SPAWN_EGG.get(), "Pirate Deckhand Spawn Egg");
+        add(SpawnEggItems.PIRATE_DEADEYE_SPAWN_EGG.get(), "Pirate Deadeye Spawn Egg");
+        add(SpawnEggItems.PIRATE_CROSSBOWER_SPAWN_EGG.get(), "Pirate Crossbower Spawn Egg");
+        add(SpawnEggItems.PIRATE_CORSAIR_SPAWN_EGG.get(), "Pirate Corsair Spawn Egg");
+        add(SpawnEggItems.PIRATE_CAPTAIN_SPAWN_EGG.get(), "Pirate Captain Spawn Egg");
+        add(SpawnEggItems.PIRATE_PARROT_SPAWN_EGG.get(), "Pirate Parrot Spawn Egg");
+        add(SpawnEggItems.PIRATES_CURSE_SPAWN_EGG.get(), "Pirate's Curse Spawn Egg");
+        add(SpawnEggItems.SHADOWFLAME_APPARITION_SPAWN_EGG.get(), "Shadowflame Apparition Spawn Egg");
         add(SpawnEggItems.GOBLIN_ARCHER_SPAWN_EGG.get(), "Goblin Archer Spawn Egg");
         add(SpawnEggItems.GOBLIN_PEON_SPAWN_EGG.get(), "Goblin Peon Spawn Egg");
         add(SpawnEggItems.GOBLIN_WARRIOR_SPAWN_EGG.get(), "Goblin Warrior Spawn Egg");
@@ -2188,18 +2267,27 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.GOBLIN_SCOUT_SPAWN_EGG.get(), "Goblin Scout Spawn Egg");
         add(SpawnEggItems.ANGER_GOBLIN_SPAWN_EGG.get(), "Anger Goblin Spawn Egg");
         add(SpawnEggItems.PIRANHA_SPAWN_EGG.get(), "Piranha Spawn Egg");
+        add(SpawnEggItems.CORRUPT_GOLDFISH_SPAWN_EGG.get(), "Corrupt Goldfish Spawn Egg");
+        add(SpawnEggItems.VICIOUS_GOLDFISH_SPAWN_EGG.get(), "Vicious Goldfish Spawn Egg");
+        add(SpawnEggItems.ANGLER_FISH_SPAWN_EGG.get(), "Angler Fish Spawn Egg");
         add(SpawnEggItems.SHARK_SPAWN_EGG.get(), "Shark Spawn Egg");
         add(SpawnEggItems.ARAPAIMA_SPAWN_EGG.get(), "Arapaima Spawn Egg");
         add(SpawnEggItems.BLUE_JELLYFISH_SPAWN_EGG.get(), "Blue Jellyfish Spawn Egg");
         add(SpawnEggItems.PINK_JELLYFISH_SPAWN_EGG.get(), "Pink Jellyfish Spawn Egg");
         add(SpawnEggItems.GREEN_JELLYFISH_SPAWN_EGG.get(), "Green Jellyfish Spawn Egg");
+        add(SpawnEggItems.BLOOD_JELLY_SPAWN_EGG.get(), "Blood Jelly Spawn Egg");
+        add(SpawnEggItems.FUNGO_FISH_SPAWN_EGG.get(), "Fungo Fish Spawn Egg");
         add(SpawnEggItems.WANDERING_EYE_FISH_SPAWN_EGG.get(), "Wandering Eye Fish Spawn Egg");
         add(SpawnEggItems.CRAB_SPAWN_EGG.get(), "Crab Spawn Egg");
         add(SpawnEggItems.GLOWING_SNAIL_SPAWN_EGG.get(), "Glowing Snail Spawn Egg");
         add(SpawnEggItems.GRUBBY_SPAWN_EGG.get(), "Grubby Spawn Egg");
+        add(SpawnEggItems.FIREFLY_SPAWN_EGG.get(), "Firefly Spawn Egg");
+        add(SpawnEggItems.LIGHTNING_BUG_SPAWN_EGG.get(), "Lightning Bug Spawn Egg");
+        add(SpawnEggItems.TRUFFLE_WORM_SPAWN_EGG.get(), "Truffle Worm Spawn Egg");
         add(SpawnEggItems.MAGGOT_SPAWN_EGG.get(), "Maggot Spawn Egg");
         add(SpawnEggItems.MAGMA_SNAIL_SPAWN_EGG.get(), "Magma Snail Spawn Egg");
         add(SpawnEggItems.SLUGGY_SPAWN_EGG.get(), "Sluggy Spawn Egg");
+        add(SpawnEggItems.BUGGY_SPAWN_EGG.get(), "Buggy Spawn Egg");
         add(SpawnEggItems.SNAIL_SPAWN_EGG.get(), "Snail Spawn Egg");
         add(SpawnEggItems.BUTTERFLY_SPAWN_EGG.get(), "Butterfly Spawn Egg");
         add(SpawnEggItems.HELL_BUTTERFLY_SPAWN_EGG.get(), "Hell Butterfly Spawn Egg");
@@ -2208,6 +2296,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.FAIRY_SPAWN_EGG.get(), "Fairy Spawn Egg");
         add(SpawnEggItems.FEALING_SPAWN_EGG.get(), "Fealing Spawn Egg");
         add(SpawnEggItems.GRASSHOPPER_SPAWN_EGG.get(), "Grasshopper Spawn Egg");
+        add(SpawnEggItems.STINKBUG_SPAWN_EGG.get(), "Stinkbug Spawn Egg");
         add(SpawnEggItems.LADYBUG_SPAWN_EGG.get(), "Ladybug Spawn Egg");
         add(SpawnEggItems.SCORPION_SPAWN_EGG.get(), "Scorpion Spawn Egg");
         add(SpawnEggItems.WORM_SPAWN_EGG.get(), "Worm Spawn Egg");
@@ -2233,6 +2322,18 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.ZOOLOGIST_SPAWN_EGG.get(), "Zoologist Spawn Egg");
         add(SpawnEggItems.TRUFFLE_SPAWN_EGG.get(), "Truffle Spawn Egg");
         add(SpawnEggItems.WIZARD_SPAWN_EGG.get(), "Wizard Spawn Egg");
+        add(SpawnEggItems.STEAMPUNKER_SPAWN_EGG.get(), "Steampunker Spawn Egg");
+        add(SpawnEggItems.CYBORG_SPAWN_EGG.get(), "Cyborg Spawn Egg");
+        add(SpawnEggItems.GOLFER_SPAWN_EGG.get(), "Golfer Spawn Egg");
+        add(SpawnEggItems.NERDY_SLIME_SPAWN_EGG.get(), "Nerdy Slime Spawn Egg");
+        add(SpawnEggItems.COOL_SLIME_SPAWN_EGG.get(), "Cool Slime Spawn Egg");
+        add(SpawnEggItems.ELDER_SLIME_SPAWN_EGG.get(), "Elder Slime Spawn Egg");
+        add(SpawnEggItems.CLUMSY_SLIME_SPAWN_EGG.get(), "Clumsy Slime Spawn Egg");
+        add(SpawnEggItems.DIVA_SLIME_SPAWN_EGG.get(), "Diva Slime Spawn Egg");
+        add(SpawnEggItems.SURLY_SLIME_SPAWN_EGG.get(), "Surly Slime Spawn Egg");
+        add(SpawnEggItems.MYSTIC_SLIME_SPAWN_EGG.get(), "Mystic Slime Spawn Egg");
+        add(SpawnEggItems.SQUIRE_SLIME_SPAWN_EGG.get(), "Squire Slime Spawn Egg");
+        add(SpawnEggItems.SKELETON_MERCHANT_SPAWN_EGG.get(), "Skeleton Merchant Spawn Egg");
         add(SpawnEggItems.KING_SLIME_SPAWN_EGG.get(), "King Slime Spawn Egg");
         add(SpawnEggItems.EYE_OF_CTHULHU_SPAWN_EGG.get(), "Eye Of Cthulhu Spawn Egg");
         add(SpawnEggItems.EATER_OF_WORLDS_SPAWN_EGG.get(), "Eater Of Worlds Spawn Egg");

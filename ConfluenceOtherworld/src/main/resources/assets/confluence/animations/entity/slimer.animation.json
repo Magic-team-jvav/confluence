@@ -5,16 +5,6 @@
 			"loop": true,
 			"animation_length": 0.5,
 			"bones": {
-				"Head": {
-					"rotation": {
-						"vector": [12.5, 0, 0]
-					}
-				},
-				"Body": {
-					"rotation": {
-						"vector": [-10, 0, 0]
-					}
-				},
 				"right_wing": {
 					"rotation": {
 						"0.0": {

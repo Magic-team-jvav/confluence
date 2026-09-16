@@ -1,14 +1,11 @@
 package org.confluence.mod.common.entity.projectile;
 
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
 
 /// 双子魔眼使用的真实直线弹幕。
 ///
@@ -29,12 +26,12 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide || isRemoved()) {
+        if (!level().isClientSide || isRemoved() || variant == Variant.LASER) {
             return;
         }
         Vec3 movement = getDeltaMovement();
         for (int i = 0; i < 3; i++) {
-            level().addParticle(variant.particle, getRandomX(0.35), getRandomY(), getRandomZ(0.35), movement.x, movement.y, movement.z);
+            level().addParticle(ParticleTypes.FLAME, getRandomX(0.35), getRandomY(), getRandomZ(0.35), movement.x, movement.y, movement.z);
         }
     }
 
@@ -46,13 +43,7 @@ public final class TwinEyeProjectile extends StraightMonsterProjectile {
     }
 
     public enum Variant {
-        LASER(new DustParticleOptions(new Vector3f(1.0F, 0.12F, 0.12F), 1.25F)),
-        CURSED_FLAME(ParticleTypes.FLAME);
-
-        private final ParticleOptions particle;
-
-        Variant(ParticleOptions particle) {
-            this.particle = particle;
-        }
+        LASER,
+        CURSED_FLAME
     }
 }

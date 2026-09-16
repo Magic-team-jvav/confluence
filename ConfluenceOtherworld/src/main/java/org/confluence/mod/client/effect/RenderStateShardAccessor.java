@@ -4,39 +4,22 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterShadersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.confluence.mod.Confluence;
 
-import java.io.IOException;
+import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
-@Mod.EventBusSubscriber(modid = Confluence.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class RenderStateShardAccessor extends RenderStateShard {
-    private static ShaderInstance unlitShader;
-    private static ShaderInstance smoothEntityShader;
-    private static ShaderInstance hillBoundaryShader;
-    private static final Function<ResourceLocation, RenderType> SMOOTH_ENTITY_CUTOUT = Util.memoize(texture -> RenderType.create("confluence_smooth_entity", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false,
-            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(() -> smoothEntityShader))
-                    .setTextureState(new TextureStateShard(texture, false, false)).setCullState(NO_CULL)
-                    .setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).createCompositeState(true)));
-    public static final RenderType HILL_OF_FLESH_BOUNDARY = RenderType.create("confluence_hill_boundary", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 8192, false, true,
-            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(RenderStateShardAccessor::getHillBoundaryShader))
-                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/gui/noise.png"), false, false))
-                    .setTransparencyState(LIGHTNING_TRANSPARENCY).setCullState(NO_CULL).setWriteMaskState(COLOR_WRITE).createCompositeState(false));
-    public static final Function<ResourceLocation, RenderType> UNLIT_TRANSLUCENT = Util.memoize(texture -> RenderType.create("confluence_unlit_translucent", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
-            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(() -> unlitShader == null ? GameRenderer.getRendertypeEyesShader() : unlitShader))
-                    .setTextureState(new TextureStateShard(texture, false, false)).setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                    .setCullState(NO_CULL).setLightmapState(NO_LIGHTMAP).setOverlayState(NO_OVERLAY).setWriteMaskState(COLOR_WRITE).createCompositeState(false)));
+    public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
+    public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
+    public static final RenderType LASER = RenderType.create("confluence_laser", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256, false, false,
+            RenderType.CompositeState.builder().setShaderState(new ShaderStateShard(GameRenderer::getPositionColorShader))
+                    .setCullState(CULL).setLightmapState(NO_LIGHTMAP).setWriteMaskState(COLOR_DEPTH_WRITE).createCompositeState(false));
+    public static final RenderType HILL_OF_FLESH_BOUNDARY = RenderType.entityTranslucentEmissive(Confluence.asResource("textures/gui/noise.png"));
     public static final RenderType TRAIL_RENDER_TYPE = RenderType.create(
             "trail_render_type",
             DefaultVertexFormat.POSITION_COLOR,
@@ -72,24 +55,9 @@ public class RenderStateShardAccessor extends RenderStateShard {
                                 .createCompositeState(false));
             });
 
-    @SubscribeEvent
-    public static void registerShaders(RegisterShadersEvent event) throws IOException {
-        event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("unlit_translucent"), DefaultVertexFormat.NEW_ENTITY), instance -> unlitShader = instance);
-        event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("smooth_entity"), DefaultVertexFormat.NEW_ENTITY), instance -> smoothEntityShader = instance);
-        event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("hill_boundary"), DefaultVertexFormat.POSITION_TEX_COLOR), instance -> hillBoundaryShader = instance);
-    }
-
-    public static RenderType smoothEntityCutout(ResourceLocation texture) {
-        return smoothEntityShader == null ? RenderType.entityCutoutNoCull(texture) : SMOOTH_ENTITY_CUTOUT.apply(texture);
-    }
-
-    private static ShaderInstance getHillBoundaryShader() {
-        if (hillBoundaryShader == null) return GameRenderer.getPositionTexColorShader();
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level != null && hillBoundaryShader.getUniform("Time") != null) {
-            hillBoundaryShader.getUniform("Time").set(-((minecraft.level.getGameTime() % 100000L) + minecraft.getFrameTime()) * 0.01F);
-        }
-        return hillBoundaryShader;
+    /// 通过此类读取列表，确保内置辉光已初始化后再注册缓冲区。
+    public static List<ColoredGlintContext> getColoredGlintContexts() {
+        return List.copyOf(ColoredGlintContext.COLORED_GLINT_CONTEXTS);
     }
 
     public static RenderType createTextOutline(ResourceLocation texture) {

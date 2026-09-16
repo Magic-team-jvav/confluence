@@ -1,8 +1,9 @@
 package org.confluence.mod.common.entity.monster.slime;
 
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -34,6 +35,11 @@ public class SpikedSlime extends BaseSlime {
 
     protected SpikedSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay) {
         super(type, level, passiveByDay);
+    }
+
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        return getType().getDimensions().scale(getScale());
     }
 
     protected int spikeCount() {

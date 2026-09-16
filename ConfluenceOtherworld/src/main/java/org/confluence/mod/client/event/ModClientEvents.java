@@ -19,7 +19,6 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.FoliageColor;
@@ -39,6 +38,7 @@ import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.ColoredGlintContext;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.connected.CustomBlockModels;
 import org.confluence.mod.client.effect.connected.ModConnectives;
@@ -55,6 +55,8 @@ import org.confluence.mod.client.handler.SoulSkillClientHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.client.handler.SwordProjectileVisualHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
+import org.confluence.mod.client.init.model.WhipModelRegister;
+import org.confluence.mod.client.model.block.GardenGnomeBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
 import org.confluence.mod.client.model.block.RelicBlockModel;
 import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
@@ -95,7 +97,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.animal.Fairy;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
-import org.confluence.mod.common.entity.monster.BaseWarriorMonster;
+import org.confluence.mod.common.entity.monster.*;
 import org.confluence.mod.common.entity.mount.RideableBeeMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
 import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
@@ -118,7 +120,6 @@ import org.mesdag.portlib.event.client.*;
 import org.mesdag.portlib.event.client.extensions.common.PortRegisterClientExtensionsEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
 import org.mesdag.portlib.registries.PortRegistryEntry;
-import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
@@ -130,11 +131,6 @@ import static org.confluence.mod.client.event.ModClientSetups.VOID_B;
 import static org.confluence.mod.common.init.entity.ModEntities.*;
 
 public final class ModClientEvents {
-    private static <T extends Mob & GeoEntity> GeoNormalRenderer<T> contactHumanoid(
-            EntityRendererProvider.Context context, ResourceLocation path, String rightArm, String leftArm) {
-        return new GeoNormalRenderer<>(context, new ContactHumanoidGeoModel<>(path, rightArm, leftArm));
-    }
-
     public static void init() {
         PortEventHandler.addListener(ModClientEvents::clientSetup);
         PortEventHandler.addListener(ModClientEvents::modConfig$Loading);
@@ -150,9 +146,7 @@ public final class ModClientEvents {
         PortEventHandler.addListener(ModClientEvents::textureAtlasStitched);
         PortEventHandler.addListener(ModClientEvents::registerMaterialAtlasesEvent);
         PortEventHandler.addListener(ModClientEvents::model$ModifyBakingResult);
-        PortEventHandler.addListener(WhipSegmentModels::registerAdditionalModels);
-        PortEventHandler.addListener(ClientSummonManager::registerAdditionalModels);
-        PortEventHandler.addListener(TongueRenderer::registerAdditionalModels);
+        PortEventHandler.addListener(ModClientEvents::registerAdditionalModels);
         PortEventHandler.addListener(ModClientEvents::registerRecipeBookCategories);
         PortEventHandler.addListener(ModClientEvents::registerRenderBuffers);
         PortEventHandler.addListener(ModClientEvents::registerClientTooltipComponentFactories);
@@ -192,6 +186,12 @@ public final class ModClientEvents {
                     ? CommonConfigs.STAR_PHASE.get()
                     : false;
         }
+    }
+
+    public static void registerAdditionalModels(PortModelEvent.RegisterAdditional event) {
+        event.register(ClientSummonManager.FINCH_STAFF_EMPTY_MODEL);
+        event.register(TongueRenderer.SEGMENT_MODEL);
+        WhipModelRegister.register(event);
     }
 
     public static void registerMenuScreens(PortRegisterMenuScreensEvent event) {
@@ -319,6 +319,7 @@ public final class ModClientEvents {
 
     public static void registerEntityRenderers(PortEntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
+        event.registerEntityRenderer(SUMMONED_IRON_GOLEM.get(), context -> new GeoNormalRenderer<>(context, new GeoNormalModel<>(Confluence.asResource("summon/iron_golem_32"), false)));
         event.registerEntityRenderer(CHESTER.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(
                 Confluence.asResource("geo/entity/summon/chester.geo.json"),
                 Confluence.asResource("textures/entity/summon/chester.png"),
@@ -339,6 +340,14 @@ public final class ModClientEvents {
                 Confluence.asResource("animations/entity/rideable/rideable_bee.animation.json")))
                 .withScale(RideableBeeMountEntity.RENDER_SCALE)
                 .setShadowRadius(0.35F));
+        event.registerEntityRenderer(RIDEABLE_UNICORN.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/rideable/unicorn.geo.json"),
+                Confluence.asResource("textures/entity/rideable/unicorn.png"),
+                Confluence.asResource("animations/entity/rideable/unicorn.animation.json"))));
+        event.registerEntityRenderer(RIDEABLE_LAVA_SHARK.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/rideable/lava_shark.geo.json"),
+                Confluence.asResource("textures/entity/rideable/lava_shark.png"),
+                Confluence.asResource("animations/entity/rideable/lava_shark.animation.json"))));
         event.registerEntityRenderer(BOMB_ENTITY.get(), BaseBombEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
         event.registerEntityRenderer(SCARAB_BOMB_ENTITY.get(), ScarabBombEntityRenderer::new);
@@ -410,14 +419,20 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BOULDER_3X.get(), BoulderRenderer::new);
         event.registerEntityRenderer(THROWN_KNIVE.get(), ThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(NPC_WEAPON_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(PIRATE_BULLET.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(PIRATE_FLAMING_ARROW.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(PIRATE_CANNONBALL.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(CYBORG_EXPLOSIVE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(BONE_THROWN_KNIVE.get(), BoneThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(FROST_DAGGERFISH.get(), FrostDaggerfishProjectileRenderer::new);
         event.registerEntityRenderer(DUNGEON_DEMON_BONE.get(), DungeonDemonBoneProjectileRenderer::new);
-        event.registerEntityRenderer(JAVELIN.get(), SpearRenderer::new);
+        event.registerEntityRenderer(JAVELIN.get(), c -> new SpearRenderer<>(c));
+        event.registerEntityRenderer(HOPLITE_JAVELIN.get(), c -> new SpearRenderer<>(c));
         event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjectileRenderer::new);
         event.registerEntityRenderer(SHURIKEN.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(SPIKY_BALL.get(), SpikyBallProjectileRenderer::new);
         event.registerEntityRenderer(THROWN_WATER.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(SPARKLE_SLIME_BALLOON.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(MAGIC_DAGGER.get(), MagicDaggerRenderer::new);
         event.registerEntityRenderer(CRYSTAL_STORM.get(), NoopRenderer::new);
         event.registerEntityRenderer(CURSED_FLAMES.get(), NoopRenderer::new);
@@ -428,23 +443,35 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SKELETRON_SKULL.get(), SkullProjectileRenderer::new);
         event.registerEntityRenderer(NPC_SHADOWFLAME_SKULL.get(), SkullProjectileRenderer::new);
         event.registerEntityRenderer(HILL_LAVA_PILLAR.get(), NoopRenderer::new);
-        event.registerEntityRenderer(WALL_OF_FLESH_LASER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(WALL_OF_FLESH_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xDD52FF, 0xA238DD, 0x6E09A6));
         event.registerEntityRenderer(HILL_FIRE_BOUND.get(), NoopRenderer::new);
-        event.registerEntityRenderer(DESTROYER_LASER.get(), NoopRenderer::new);
-        event.registerEntityRenderer(PRIME_LASER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(DESTROYER_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xB5FFF0, 0x33E2DF));
+        event.registerEntityRenderer(PRIME_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFF0000, 0x8E0000, 0x4D0000));
         event.registerEntityRenderer(PLANTERA_SEED.get(), NoopRenderer::new);
         event.registerEntityRenderer(PLANTERA_THORN_BALL.get(), NoopRenderer::new);
         event.registerEntityRenderer(PLANTERA_SPORE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(RETINAZER_LASER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(RETINAZER_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFF0000, 0x8E0000, 0x4D0000));
         event.registerEntityRenderer(SPAZMATISM_FLAME.get(), NoopRenderer::new);
         event.registerEntityRenderer(DARK_CASTER_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(RUNE_BLAST.get(), NoopRenderer::new);
+        event.registerEntityRenderer(DESERT_SPIRIT_CURSE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(UNHOLY_TRIDENT.get(), UnholyTridentRenderer::new);
+        event.registerEntityRenderer(CLINGER_FLAME.get(), NoopRenderer::new);
+        event.registerEntityRenderer(FUNGI_SPORE.get(), NoopRenderer::new);
         event.registerEntityRenderer(CHAOS_BALL_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(SHADOW_BEAM_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(INFERNO_BOLT_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(LOST_SOUL_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(VILE_SPIT_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(FIRE_IMP_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(GASTROPOD_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(GASTROPOD_PROJECTILE.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xF091CF, 0xF44BB9));
+        event.registerEntityRenderer(FROST_BEAM.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xA7E9FF, 0x408EFF));
+        event.registerEntityRenderer(FROST_BLAST.get(), NoopRenderer::new);
+        event.registerEntityRenderer(THROWN_ROCK.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ANTLION_SAND_BALL.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(SPIDER_WEB_SPIT.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(DANDELION_SEED.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/proj/angry_dandelion.geo.json"), Confluence.asResource("textures/entity/proj/angry_dandelion.png"), Confluence.asResource("animations/entity/proj/angry_dandelion.animation.json")), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(ICEWATER_SPIT.get(), NoopRenderer::new);
         event.registerEntityRenderer(PALADIN_HAMMER_PROJECTILE.get(), PaladinHammerProjectileRenderer::new);
         event.registerEntityRenderer(ANCIENT_LIGHT.get(), NoopRenderer::new);
         event.registerEntityRenderer(CULTIST_FIREBALL.get(), NoopRenderer::new);
@@ -467,9 +494,10 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DEMON_SCYTHE.get(), DemonScytheProjectileRenderer::new);
         event.registerEntityRenderer(SKULL.get(), SkullProjectileRenderer::new);
         event.registerEntityRenderer(BLOOD_CLOUD.get(), context -> new GeoNegativeVolumeRenderer<>(context, new BloodCloudProjectileModel(), false, 2.0F, -0.2F));
-        event.registerEntityRenderer(BLOOD_RAIN.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.BLOOD_RAIN));
+        event.registerEntityRenderer(BLOOD_RAIN.get(), context -> new RainProjectileRenderer<>(context, RainProjectileRenderer.BLOOD_RAIN));
         event.registerEntityRenderer(RAIN_CLOUD.get(), context -> new GeoNegativeVolumeRenderer<>(context, new RainCloudProjectileModel(), false, 2.0F, -0.2F));
-        event.registerEntityRenderer(RAIN.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
+        event.registerEntityRenderer(RAIN.get(), context -> new RainProjectileRenderer<>(context, RainProjectileRenderer.RAIN));
+        event.registerEntityRenderer(NIMBUS_RAIN.get(), context -> new RainProjectileRenderer<>(context, RainProjectileRenderer.RAIN, -0.5F));
         event.registerEntityRenderer(STORM_SPEAR_SHOT.get(), context -> new SpearProjectileRenderer(context, SpearProjectileModels.STORM));
         event.registerEntityRenderer(SPORE_CLOUD.get(), NoopRenderer::new);//todo 贴图模型粒子
         event.registerEntityRenderer(NORTH_POLE.get(), context -> new SpearProjectileRenderer(context, SpearProjectileModels.NORTH_POLE));
@@ -540,6 +568,16 @@ public final class ModClientEvents {
 
         // Critter renderers — Bunny 保留自定义模型，其余用 CritterRenderer
         event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
+        event.registerEntityRenderer(CritterEntities.PENGUIN.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.MYSTIC_FROG.get(), net.minecraft.client.renderer.entity.FrogRenderer::new);
+        event.registerEntityRenderer(CritterEntities.GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/animal/goldfish.png"), Confluence.asResource("animations/entity/animal/goldfish.animation.json")), false, 1.0F, 0.1875F));
+        // penguin.bbmodel 的三个变种共用模型和动画，差异仅在贴图。
+        event.registerEntityRenderer(MonsterEntities.CORRUPT_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/corrupt_penguin.png"),
+                Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
+        event.registerEntityRenderer(MonsterEntities.VICIOUS_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/vicious_penguin.png"),
+                Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
         event.registerEntityRenderer(CritterEntities.JEWEL_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.EXPLOSIVE_BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.HOSTILE_BUNNY.get(), BunnyRenderer::new);
@@ -559,12 +597,21 @@ public final class ModClientEvents {
         event.registerEntityRenderer(CritterEntities.FEALING.get(), FealingRenderer::new);
         event.registerEntityRenderer(CritterEntities.GLOWING_SNAIL.get(), SnailRenderer::new);
         event.registerEntityRenderer(CritterEntities.GRUBBY.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.BUGGY.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.GLOWING_MOOSHROOM.get(), c -> new MushroomAnimalRenderer<>(c, Confluence.asResource("animal/glowing_mooshroom")));
+        event.registerEntityRenderer(CritterEntities.CLOUD_SHEEP.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.CLUCKSHROOM.get(), c -> new MushroomAnimalRenderer<>(c, Confluence.asResource("animal/cluckshroom")));
+        event.registerEntityRenderer(CritterEntities.GLOWING_CLUCKSHROOM.get(), c -> new MushroomAnimalRenderer<>(c, Confluence.asResource("animal/cluckshroom")));
+        event.registerEntityRenderer(CritterEntities.FIREFLY.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.LIGHTNING_BUG.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.TRUFFLE_WORM.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.MAGGOT.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.SCORPION.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.HELL_BUTTERFLY.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.PRISMATIC_LACEWING.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.DRAGONFLY.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.GRASSHOPPER.get(), CritterRenderer::new);
+        event.registerEntityRenderer(CritterEntities.STINKBUG.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.LADYBUG.get(), CritterRenderer::new);
         event.registerEntityRenderer(CritterEntities.MAGMA_SNAIL.get(), SnailRenderer::new);
         event.registerEntityRenderer(CritterEntities.SLUGGY.get(), c -> new GeoNormalRenderer<>(c, Confluence.asResource("animal/sluggy")));
@@ -606,8 +653,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.CRIMERA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CRIMERA.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.CURSED_SKULL.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.CURSED_SKULL.getId()), true, 1.0F, 0.0F).addBoneToGlow("outline"));
         event.registerEntityRenderer(MonsterEntities.CORRUPTOR.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CORRUPTOR.getId(), true, 1.15F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.SLIMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SLIMER.getId(), true, 1F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.ENCHANTED_SWORD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.VISUAL_NEURON.getId(), true, 0.55F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.SLIMER.get(), c -> new GeoSpecialSlimeRenderer<>(c, MonsterEntities.SLIMER.getId(), true));
+        event.registerEntityRenderer(MonsterEntities.ENCHANTED_SWORD.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(MonsterEntities.SNATCHER.get(), c -> new SnatcherRenderer(c, MonsterEntities.SNATCHER.getId()));
         event.registerEntityRenderer(MonsterEntities.MAN_EATER.get(), c -> new SnatcherRenderer(c, MonsterEntities.MAN_EATER.getId()));
         event.registerEntityRenderer(MonsterEntities.SPORE_SKELETON.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SPORE_SKELETON.getId()));
@@ -619,32 +666,59 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_MUSCLE_ANGER_BONES.getId())).withScale(1.2F));
         event.registerEntityRenderer(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_HELMET_ANGER_BONES.getId())).withScale(1.25F));
         event.registerEntityRenderer(MonsterEntities.UNDEAD_VIKING.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.UNDEAD_VIKING.getId()));
-        // 这两个规划中的生态生物在专用泰拉瑞亚资源补齐前，暂用完整的卷壳怪资源，避免实体不可见。
-        event.registerEntityRenderer(MonsterEntities.GIANT_TORTOISE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GIANT_TORTOISE.getId()).withScale(1.4F));
-        event.registerEntityRenderer(MonsterEntities.UNICORN.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.UNICORN.getId()).withScale(1.3F));
-        event.registerEntityRenderer(MonsterEntities.GASTROPOD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GASTROPOD.getId()).withScale(1.2F));
+        event.registerEntityRenderer(MonsterEntities.ARMORED_VIKING.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/armored_viking.geo.json"), Confluence.asResource("textures/entity/armored_viking.png"), true)));
+        event.registerEntityRenderer(MonsterEntities.ARMORED_SKELETON.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/armored_skeleton.geo.json"), Confluence.asResource("textures/entity/armored_skeleton.png"), true)));
+        event.registerEntityRenderer(MonsterEntities.ICE_ELEMENTAL.get(), c -> new GeoNormalRenderer<IceElemental>(c, MonsterEntities.ICE_ELEMENTAL.getId(), false, 1.0F, -0.00717F).withCutout());
+        event.registerEntityRenderer(MonsterEntities.ICY_MERMAN.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/icy_merman.geo.json"), Confluence.asResource("textures/entity/icy_merman.png"), true), false, 1.0F, 0.015625F));
+        event.registerEntityRenderer(MonsterEntities.ICE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_GOLEM.getId(), false, 1.0F, -0.021875F));
+        // giant_tortoise.bbmodel 内的两种陆龟共用骨架与动画，使用各自贴图。
+        event.registerEntityRenderer(MonsterEntities.GIANT_TORTOISE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GIANT_TORTOISE.getId()));
+        event.registerEntityRenderer(MonsterEntities.ICE_TORTOISE.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/giant_tortoise.geo.json"), Confluence.asResource("textures/entity/ice_tortoise.png"),
+                Confluence.asResource("animations/entity/giant_tortoise.animation.json"))));
+        event.registerEntityRenderer(MonsterEntities.UNICORN.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.UNICORN.getId()));
+        event.registerEntityRenderer(MonsterEntities.GASTROPOD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GASTROPOD.getId(), false, 1.0F, -0.1875F));
         event.registerEntityRenderer(MonsterEntities.WORM_SEGMENT.get(), WormPartRenderer::new);
         event.registerEntityRenderer(MonsterEntities.WYVERN.get(), c -> new WyvernRenderer(c, 1.0F));
         event.registerEntityRenderer(MonsterEntities.ARCH_WYVERN.get(), c -> new WyvernRenderer(c, 1.25F));
         event.registerEntityRenderer(MonsterEntities.DEVOURER.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.DEVOURER.getId(), 2.0F));
+        event.registerEntityRenderer(MonsterEntities.WORLD_FEEDER.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.WORLD_FEEDER.getId(), 1.0F));
         event.registerEntityRenderer(MonsterEntities.TOMB_CRAWLER.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.TOMB_CRAWLER.getId(), 2.0F));
         event.registerEntityRenderer(MonsterEntities.GIANT_WORM.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.GIANT_WORM.getId(), 2.0F));
+        event.registerEntityRenderer(MonsterEntities.DIGGER.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.DIGGER.getId(), 1.0F));
         event.registerEntityRenderer(MonsterEntities.LEECH.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.LEECH.getId(), 2.0F));
         event.registerEntityRenderer(MonsterEntities.BONE_SERPENT.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.BONE_SERPENT.getId(), 2.0F));
         event.registerEntityRenderer(MonsterEntities.WITHER_BONE_SERPENT.get(), c -> new WormHeadRenderer<>(c, MonsterEntities.WITHER_BONE_SERPENT.getId(), 2.0F));
         event.registerEntityRenderer(MonsterEntities.DARK_CASTER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
+        event.registerEntityRenderer(MonsterEntities.TIM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.TIM.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.DOCTOR_BONES.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DOCTOR_BONES.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.THE_GROOM.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/the_groom.geo.json"), Confluence.asResource("textures/entity/the_groom.png"), true), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.THE_BRIDE.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/the_bride.geo.json"), Confluence.asResource("textures/entity/the_bride.png"), true), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.ZOMBIE_MERMAN.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/zombie_merman.geo.json"), Confluence.asResource("textures/entity/zombie_merman.png"), true), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_SORCERER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GOBLIN_SORCERER.getId().withPrefix("goblin/")));
+        event.registerEntityRenderer(MonsterEntities.GOBLIN_WARLOCK.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GOBLIN_WARLOCK.getId()));
+        event.registerEntityRenderer(MonsterEntities.PIRATE_CROSSBOWER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRATE_CROSSBOWER.getId()));
+        event.registerEntityRenderer(MonsterEntities.PIRATE_CORSAIR.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRATE_CORSAIR.getId()));
+        event.registerEntityRenderer(MonsterEntities.PIRATE_CAPTAIN.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRATE_CAPTAIN.getId()));
+        event.registerEntityRenderer(MonsterEntities.PIRATE_PARROT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRATE_PARROT.getId()));
+        event.registerEntityRenderer(MonsterEntities.PIRATES_CURSE.get(), c -> new GeoNormalRenderer<PirateFlyingMonster>(c, MonsterEntities.PIRATES_CURSE.getId()).withCutout());
+        event.registerEntityRenderer(MonsterEntities.PIRATE_DEADEYE.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c,
+                Confluence.asResource("geo/entity/pirate_deadeye.geo.json"), Confluence.asResource("textures/entity/pirate_deadeye.png"), true)));
+        event.registerEntityRenderer(MonsterEntities.PIRATE_DECKHAND.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/pirate_corsair.geo.json"), Confluence.asResource("textures/entity/pirate_deckhand.png"),
+                Confluence.asResource("animations/entity/pirate_corsair.animation.json"))));
+        event.registerEntityRenderer(MonsterEntities.SHADOWFLAME_APPARITION.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SHADOWFLAME_APPARITION.getId()));
         event.registerEntityRenderer(MonsterEntities.CHAOS_ELEMENTAL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CHAOS_ELEMENTAL.getId()));
-        event.registerEntityRenderer(MonsterEntities.NECROMANCER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
-        event.registerEntityRenderer(MonsterEntities.DIABOLIST.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
-        event.registerEntityRenderer(MonsterEntities.RAGGED_CASTER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
+        event.registerEntityRenderer(MonsterEntities.NECROMANCER.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(MonsterEntities.DIABOLIST.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(MonsterEntities.RAGGED_CASTER.get(), MissingModelRenderer::new); // todo 专用模型
         // Boss
         event.registerEntityRenderer(BossEntities.KING_SLIME.get(), KingSlimeRenderer::new);
         event.registerEntityRenderer(BossEntities.CROWN_OF_KING_SLIME_MODEL.get(), CrownOfKingSlimeModelRenderer::new);
         event.registerEntityRenderer(BossEntities.EYE_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eye_of_cthulhu"), true, 1.0F, 1.5F));
         event.registerEntityRenderer(BossEntities.SERVANT_OF_CTHULHU.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("servant_of_cthulhu")));
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS_SEGMENT.get(), BossWormPartRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PART.get(), BossWormPartRenderer::new);
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PART.get(), MissingModelRenderer::new); // todo 专用身体、尾部和受损资源已导出，待适配体节连接与侧翼展开状态
         event.registerEntityRenderer(BossEntities.EATER_OF_WORLDS.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("boss/eater_of_worlds"), true, 2.2F, 0.0F));
         event.registerEntityRenderer(BossEntities.QUEEN_BEE.get(), QueenBeeRenderer::new);
         event.registerEntityRenderer(BossEntities.BRAIN_OF_CTHULHU.get(), BrainOfCthulhuRenderer::new);
@@ -652,8 +726,10 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.SKELETRON.get(), SkeletronBossRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_HAND.get(), SkeletronBossHandRenderer::new);
         event.registerEntityRenderer(BossEntities.DUNGEON_GUARDIAN.get(), DungeonGuardianRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), DestroyerRenderer::new);
-        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new BossGeoRenderer<>(c, Confluence.asResource("visual_neuron")));
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER.get(), MissingModelRenderer::new); // todo 专用头部资源已导出，待与体节一起适配
+        event.registerEntityRenderer(BossEntities.THE_DESTROYER_PROBE.get(), c -> new BossGeoRenderer<>(c, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/boss/the_destroyer_probe.geo.json"),
+                Confluence.asResource("textures/entity/boss/the_destroyer_probe.png"), null)));
         event.registerEntityRenderer(BossEntities.RETINAZER.get(), TwinEyeDissolveRenderer::retinazer);
         event.registerEntityRenderer(BossEntities.SPAZMATISM.get(), TwinEyeDissolveRenderer::spazmatism);
         // 双子魔眼控制实体只负责生命周期，两只眼睛实体仍各自独立渲染。
@@ -663,20 +739,12 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.WALL_OF_FLESH.get(), WallOfFleshRenderer::new);
         event.registerEntityRenderer(BossEntities.WALL_OF_FLESH_EYE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BossEntities.WALL_OF_FLESH_MOUTH.get(), NoopRenderer::new);
-        event.registerEntityRenderer(BossEntities.PLANTERA.get(), c -> new BossGeoRenderer<>(c,
-                new ExplicitGeoModel<>(Confluence.asResource("geo/entity/visual_neuron.geo.json"),
-                        Confluence.asResource("textures/entity/visual_neuron.png"), null)).withScale(2.2F));
-        event.registerEntityRenderer(BossEntities.PLANTERA_HOOK.get(), c -> new BossGeoRenderer<>(c,
-                new ExplicitGeoModel<>(Confluence.asResource("geo/entity/visual_neuron.geo.json"),
-                        Confluence.asResource("textures/entity/visual_neuron.png"), null)).withScale(2.2F));
-        event.registerEntityRenderer(BossEntities.PLANTERA_TENTACLE.get(), c -> new BossGeoRenderer<>(c,
-                new ExplicitGeoModel<>(Confluence.asResource("geo/entity/visual_neuron.geo.json"),
-                        Confluence.asResource("textures/entity/visual_neuron.png"), null)));
-        // 专用资源尚未移植完成，暂时使用拓扑兼容的合并生物模型保证这些 Boss 可见，
-        // 避免因为缺少资源而静默隐藏实体。
-        event.registerEntityRenderer(BossEntities.LUNATIC_CULTIST.get(), c -> new BossGeoRenderer<>(c, MonsterEntities.DARK_CASTER.getId()));
-        event.registerEntityRenderer(BossEntities.LUNATIC_CULTIST_CLONE.get(), c -> new BossGeoRenderer<>(c, MonsterEntities.DARK_CASTER.getId()).withScale(0.95F));
-        event.registerEntityRenderer(BossEntities.PHANTASM_DRAGON.get(), c -> new BossGeoRenderer<>(c, MonsterEntities.WYVERN.getId()).withScale(0.8F));
+        event.registerEntityRenderer(BossEntities.PLANTERA.get(), MissingModelRenderer::new); // todo plantera_1 资源已导出，普通与狂暴花瓣的阶段位置仍待适配
+        event.registerEntityRenderer(BossEntities.PLANTERA_HOOK.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(BossEntities.PLANTERA_TENTACLE.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(BossEntities.LUNATIC_CULTIST.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(BossEntities.LUNATIC_CULTIST_CLONE.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(BossEntities.PHANTASM_DRAGON.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(BossEntities.DEERCLOPS.get(), DeerclopsRenderer::new);
         event.registerEntityRenderer(THROWN_ICE_PROJECTILE.get(), DeerclopsThrownIceRenderer::new);
         event.registerEntityRenderer(ICE_PILLAR.get(), DeerclopsIcePillarRenderer::new);
@@ -707,9 +775,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(NpcEntities.CLOTHIER.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/clothier")));
         event.registerEntityRenderer(NpcEntities.MECHANIC.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/mechanic")));
         event.registerEntityRenderer(NpcEntities.PARTY_GIRL.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/party_girl")));
-        // 这两个 NPC 尚无独立美术资源；暂时使用已有的城镇 NPC 外观，避免加载缺失模型。
         event.registerEntityRenderer(NpcEntities.STYLIST.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/stylist")));
-        event.registerEntityRenderer(NpcEntities.TAX_COLLECTOR.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/clothier")));
+        event.registerEntityRenderer(NpcEntities.TAX_COLLECTOR.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(NpcEntities.TRUFFLE.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/truffle")));
         event.registerEntityRenderer(NpcEntities.WIZARD.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/wizard")));
         event.registerEntityRenderer(NpcEntities.ZOOLOGIST.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/zoologist")));
@@ -717,16 +784,30 @@ public final class ModClientEvents {
         event.registerEntityRenderer(NpcEntities.FEMALE_ANGLER.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/female_angler")).withScale(0.78F));
         event.registerEntityRenderer(NpcEntities.TRAVELING_MERCHANT.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/traveling_merchant")));
         event.registerEntityRenderer(NpcEntities.OLD_MAN.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/old_man")));
+        event.registerEntityRenderer(NpcEntities.STEAMPUNKER.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/steampunker")));
+        event.registerEntityRenderer(NpcEntities.CYBORG.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/cyborg")));
+        event.registerEntityRenderer(NpcEntities.GOLFER.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/golfer")));
+        event.registerEntityRenderer(NpcEntities.NERDY_SLIME.get(), c -> new TownSlimeRenderer(c, Confluence.asResource("npc/nerdy_slime")));
+        event.registerEntityRenderer(NpcEntities.COOL_SLIME.get(), c -> new TownSlimeRenderer(c, Confluence.asResource("npc/cool_slime")));
+        event.registerEntityRenderer(NpcEntities.ELDER_SLIME.get(), c -> new TownSlimeRenderer(c, Confluence.asResource("npc/elder_slime")));
+        event.registerEntityRenderer(NpcEntities.CLUMSY_SLIME.get(), c -> new TownSlimeRenderer(c, Confluence.asResource("npc/clumsy_slime")));
+        event.registerEntityRenderer(NpcEntities.DIVA_SLIME.get(), c -> new TownSlimeRenderer(c, Confluence.asResource("npc/diva_slime")));
+        event.registerEntityRenderer(NpcEntities.SURLY_SLIME.get(), c -> new TownSlimeRenderer(c, Confluence.asResource("npc/surly_slime")));
+        event.registerEntityRenderer(NpcEntities.MYSTIC_SLIME.get(), c -> new TownSlimeRenderer(c, Confluence.asResource("npc/mystic_slime")));
+        event.registerEntityRenderer(NpcEntities.SQUIRE_SLIME.get(), c -> new TownSlimeRenderer(c, Confluence.asResource("npc/squire_slime")));
+        event.registerEntityRenderer(NpcEntities.SKELETON_MERCHANT.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/skeleton_merchant")));
         // 蝙蝠
         event.registerEntityRenderer(MonsterEntities.CAVE_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CAVE_BAT.getId()));
         event.registerEntityRenderer(MonsterEntities.JUNGLE_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.JUNGLE_BAT.getId()));
         event.registerEntityRenderer(MonsterEntities.ICE_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_BAT.getId()));
-        event.registerEntityRenderer(MonsterEntities.GIANT_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CAVE_BAT.getId()).withScale(1.5F));
-        event.registerEntityRenderer(MonsterEntities.GIANT_FLYING_FOX.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GIANT_FLYING_FOX.getId()).withScale(1.0F));
+        event.registerEntityRenderer(MonsterEntities.GIANT_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GIANT_BAT.getId()));
+        event.registerEntityRenderer(MonsterEntities.GIANT_FLYING_FOX.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.GIANT_FLYING_FOX.getId(), false)));
         event.registerEntityRenderer(MonsterEntities.HELL_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.HELL_BAT.getId()));
+        event.registerEntityRenderer(MonsterEntities.LAVA_BAT.get(), c -> new BatRenderer(c, MonsterEntities.LAVA_BAT.getId(), false));
+        event.registerEntityRenderer(MonsterEntities.ILLUMINANT_BAT.get(), c -> new BatRenderer(c, MonsterEntities.ILLUMINANT_BAT.getId(), true));
         event.registerEntityRenderer(MonsterEntities.SPORE_BAT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SPORE_BAT.getId()));
         event.registerEntityRenderer(MonsterEntities.DRIPPLER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DRIPPLER.getId(), false, 2.0F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.FLYING_FISH.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.FLYING_FISH.getId(), true, 0.75F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.FLYING_FISH.get(), c -> new GeoNormalRenderer<FlyingFishMonster>(c, MonsterEntities.FLYING_FISH.getId(), true, 0.75F, 0.0F).withNoCull());
         // 眼球鱼的 Head 与 body 是两个独立根骨骼，不是可单独转动的人形头部。
         // 若使用 GeoNormalModel 默认的转头映射，Head 会绕自身枢轴脱离身体。
         event.registerEntityRenderer(MonsterEntities.WANDERING_EYE_FISH.get(), c -> new GeoNormalRenderer<>(c,
@@ -735,15 +816,48 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.DEMON.getId(), 1.0F));
         event.registerEntityRenderer(MonsterEntities.VOODOO_DEMON.get(), c -> new DemonRenderer(c, MonsterEntities.VOODOO_DEMON.getId(), 1.1F));
         event.registerEntityRenderer(MonsterEntities.HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.HORNET.getId(), false), true, 1.0F, 0.2F));
+        event.registerEntityRenderer(MonsterEntities.MOSS_HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.MOSS_HORNET.getId(), false), true, 1.0F, -0.085108F));
         event.registerEntityRenderer(MonsterEntities.LITTLE_HORNET.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.LITTLE_HORNET.getId(), false), true, 1.0F, 0.1F));
         event.registerEntityRenderer(MonsterEntities.FIRE_IMP.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.FIRE_IMP.getId()));
         event.registerEntityRenderer(MonsterEntities.DECAYEDER.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.DECAYEDER.getId())));
         event.registerEntityRenderer(MonsterEntities.GHOST.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GHOST.getId()));
+        event.registerEntityRenderer(MonsterEntities.DUNGEON_SPIRIT.get(), c -> new GeoNormalRenderer<DungeonSpirit>(c, MonsterEntities.DUNGEON_SPIRIT.getId(), false, 1.0F, 0.015625F) {
+            @Override
+            protected int getBlockLightLevel(DungeonSpirit entity, net.minecraft.core.BlockPos pos) {
+                return 15;
+            }
+        });
         event.registerEntityRenderer(MonsterEntities.DERPLING.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DERPLING.getId()));
         event.registerEntityRenderer(MonsterEntities.HERPLING.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.HERPLING.getId()));
         event.registerEntityRenderer(MonsterEntities.METEOR_HEAD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.METEOR_HEAD.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.GRANITE_ELEMENTAL.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.GRANITE_ELEMENTAL.getId()), true, 1.0F, 0.0F).addBoneToGlow("Core"));
+        event.registerEntityRenderer(MonsterEntities.GRANITE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GRANITE_GOLEM.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.HOPLITE.get(), c -> new GeoNormalRenderer<>(c, new HopliteModel(c)));
+        event.registerEntityRenderer(MonsterEntities.DESERT_SPIRIT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.DESERT_SPIRIT.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.WALL_CREEPER.get(), c -> new GeoNormalRenderer<>(c, new SpiderSetModel("wall_creeper")));
+        event.registerEntityRenderer(MonsterEntities.BLACK_RECLUSE.get(), c -> new GeoNormalRenderer<>(c, new SpiderSetModel("spider/black_recluse")));
+        event.registerEntityRenderer(MonsterEntities.JUNGLE_CREEPER.get(), c -> new GeoNormalRenderer<>(c, new SpiderSetModel("spider/jungle")));
+        event.registerEntityRenderer(MonsterEntities.WATER_BOLT_MIMIC.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WATER_BOLT_MIMIC.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.RUNE_WIZARD.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.RUNE_WIZARD.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.ANGRY_DANDELION.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANGRY_DANDELION.getId(), false, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ANTLION_SWARMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANTLION_SWARMER.getId(), true, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.ANTLION_CHARGER.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/antlion.geo.json"), Confluence.asResource("textures/entity/antlion.png"), Confluence.asResource("animations/entity/antlion_charger.animation.json")), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.ANTLION.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANTLION.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.ANTLION_LARVA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANTLION_LARVA.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.GNOME.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GNOME.getId()));
+        event.registerEntityRenderer(MonsterEntities.ANGRY_NIMBUS.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANGRY_NIMBUS.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.RED_DEVIL.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.RED_DEVIL.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.WINDY_BALLOON.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.WINDY_BALLOON.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.OLD_SHAKING_CHEST.get(), OldShakingChestRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(MonsterEntities.ANGRY_TUMBLER.get(), c -> new GeoNormalRenderer<>(c, new AngryTumblerModel(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.SAND_SHARK.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SAND_SHARK.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.BONE_BITER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BONE_BITER.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.FLESH_REAVER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.FLESH_REAVER.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.CRYSTAL_THRESHER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CRYSTAL_THRESHER.getId(), false, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.FUNGI_BULB.get(), c -> new TetheredPlantRenderer(c, MonsterEntities.FUNGI_BULB.getId()));
+        event.registerEntityRenderer(MonsterEntities.GIANT_FUNGI_BULB.get(), c -> new TetheredPlantRenderer(c, MonsterEntities.GIANT_FUNGI_BULB.getId()));
+        event.registerEntityRenderer(MonsterEntities.CLINGER.get(), c -> new TetheredPlantRenderer(c, MonsterEntities.CLINGER.getId()));
         event.registerEntityRenderer(MonsterEntities.GIANT_ANTLION_SWARMER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ANTLION_SWARMER.getId(), true, 1.25F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.THE_HUNGRY.get(), HungryRenderer::new);
         event.registerEntityRenderer(MonsterEntities.HILL_HUNGRY.get(), HungryRenderer::new);
@@ -758,22 +872,24 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.FACE_MONSTER.get(), c -> new GeoNormalRenderer<>(c,
                 new ContactHumanoidGeoModel<>(MonsterEntities.FACE_MONSTER.getId(), "RightArm", "LeftArm")));
         event.registerEntityRenderer(MonsterEntities.BLOOD_TUMORS.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_TUMORS.getId()));
+        event.registerEntityRenderer(MonsterEntities.WEREWOLF.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/werewolf.geo.json"), Confluence.asResource("textures/entity/werewolf.png"), true), false, 1.0F, -0.015625F));
         event.registerEntityRenderer(MonsterEntities.POSSESS_ARMOR.get(), c -> new GeoNormalRenderer<>(c,
                 VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/item/armor/possessed_armor.geo.json"),
                         Confluence.asResource("textures/item/armor/possessed_armor.png"), true)));
-        event.registerEntityRenderer(MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.getId())));
-        event.registerEntityRenderer(MonsterEntities.MUMMY.get(), c -> contactHumanoid(c, MonsterEntities.MUMMY.getId(), "RightArm", "LeftArm"));
-        event.registerEntityRenderer(MonsterEntities.DARK_MUMMY.get(), c -> contactHumanoid(c, MonsterEntities.DARK_MUMMY.getId(), "RightArm", "LeftArm"));
-        event.registerEntityRenderer(MonsterEntities.BLOOD_MUMMY.get(), c -> contactHumanoid(c, MonsterEntities.BLOOD_MUMMY.getId(), "RightArm", "LeftArm"));
-        event.registerEntityRenderer(MonsterEntities.LIGHT_MUMMY.get(), c -> contactHumanoid(c, MonsterEntities.LIGHT_MUMMY.getId(), "RightArm", "LeftArm"));
-        event.registerEntityRenderer(MonsterEntities.DARK_LAMIA.get(), c -> contactHumanoid(c, MonsterEntities.DARK_LAMIA.getId(), "right_arm", "left_arm"));
-        event.registerEntityRenderer(MonsterEntities.LIGHT_LAMIA.get(), c -> contactHumanoid(c, MonsterEntities.LIGHT_LAMIA.getId(), "right_arm", "left_arm"));
-        event.registerEntityRenderer(MonsterEntities.GHOUL.get(), c -> contactHumanoid(c, MonsterEntities.GHOUL.getId(), "hand_right", "hand_left"));
-        event.registerEntityRenderer(MonsterEntities.TAINTED_GHOUL.get(), c -> contactHumanoid(c, MonsterEntities.TAINTED_GHOUL.getId(), "hand_right", "hand_left"));
-        event.registerEntityRenderer(MonsterEntities.VILE_GHOUL.get(), c -> contactHumanoid(c, MonsterEntities.VILE_GHOUL.getId(), "hand_right", "hand_left"));
-        event.registerEntityRenderer(MonsterEntities.DREAMER_GHOUL.get(), c -> contactHumanoid(c, MonsterEntities.DREAMER_GHOUL.getId(), "hand_right", "hand_left"));
-        event.registerEntityRenderer(MonsterEntities.PALADIN.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaHumanoidGeoModel<>(c, MonsterEntities.POSSESS_ARMOR_VOID_VESSEL.getId())).withScale(1.25F));
-        event.registerEntityRenderer(MonsterEntities.BONE_LEE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BASE_BONES.getId())));
+        event.registerEntityRenderer(MonsterEntities.MUMMY.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<>(MonsterEntities.MUMMY.getId(), "RightArm", "LeftArm")).withCutout());
+        event.registerEntityRenderer(MonsterEntities.DARK_MUMMY.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<>(MonsterEntities.DARK_MUMMY.getId(), "RightArm", "LeftArm")).withCutout());
+        event.registerEntityRenderer(MonsterEntities.BLOOD_MUMMY.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<>(MonsterEntities.BLOOD_MUMMY.getId(), "RightArm", "LeftArm")).withCutout());
+        event.registerEntityRenderer(MonsterEntities.LIGHT_MUMMY.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<>(MonsterEntities.LIGHT_MUMMY.getId(), "RightArm", "LeftArm")).withCutout());
+        event.registerEntityRenderer(MonsterEntities.DARK_LAMIA.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<>(MonsterEntities.DARK_LAMIA.getId(), "right_arm", "left_arm")));
+        event.registerEntityRenderer(MonsterEntities.LIGHT_LAMIA.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<>(MonsterEntities.LIGHT_LAMIA.getId(), "right_arm", "left_arm")));
+        event.registerEntityRenderer(MonsterEntities.GHOUL.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<>(MonsterEntities.GHOUL.getId(), "hand_right", "hand_left")));
+        event.registerEntityRenderer(MonsterEntities.BASILISK.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.BASILISK.getId(), false)));
+        event.registerEntityRenderer(MonsterEntities.ROCK_GOLEM.get(), c -> new GeoNormalRenderer<>(c, new GeoNormalModel<>(MonsterEntities.ROCK_GOLEM.getId(), false), false, 1.0F, -0.05F));
+        event.registerEntityRenderer(MonsterEntities.TAINTED_GHOUL.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<JumpingWarriorMonster>(MonsterEntities.TAINTED_GHOUL.getId(), "hand_right", "hand_left").withAltAnimations(Confluence.asResource("ghoul"))));
+        event.registerEntityRenderer(MonsterEntities.VILE_GHOUL.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<JumpingWarriorMonster>(MonsterEntities.VILE_GHOUL.getId(), "hand_right", "hand_left").withAltAnimations(Confluence.asResource("ghoul"))));
+        event.registerEntityRenderer(MonsterEntities.DREAMER_GHOUL.get(), c -> new GeoNormalRenderer<>(c, new ContactHumanoidGeoModel<JumpingWarriorMonster>(MonsterEntities.DREAMER_GHOUL.getId(), "hand_right", "hand_left").withAltAnimations(Confluence.asResource("ghoul"))));
+        event.registerEntityRenderer(MonsterEntities.PALADIN.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(MonsterEntities.BONE_LEE.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(MonsterEntities.GOBLIN_ARCHER.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_ARCHER.getId().withPrefix("goblin/"))));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_PEON.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_PEON.getId().withPrefix("goblin/"))));
         event.registerEntityRenderer(MonsterEntities.GOBLIN_WARRIOR.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaGoblinGeoModel<>(c, MonsterEntities.GOBLIN_WARRIOR.getId().withPrefix("goblin/"))));
@@ -784,20 +900,28 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new ZombieGeoModel(c)));
         event.registerEntityRenderer(MonsterEntities.BLOODY_SPORE.get(), c -> new BloodySporeRenderer(c, MonsterEntities.BLOODY_SPORE.getId()));
         event.registerEntityRenderer(MonsterEntities.BLOOD_CRAWLER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_CRAWLER.getId()));
-        event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c,
-                new VanillaZombieGeoModel<>(c, MonsterEntities.SPORE_ZOMBIE.getId())));
-        event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c,
-                new VanillaZombieGeoModel<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId())));
+        event.registerEntityRenderer(MonsterEntities.SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.SPORE_ZOMBIE.getId())));
+        event.registerEntityRenderer(MonsterEntities.HAT_SPORE_ZOMBIE.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaZombieGeoModel<>(c, MonsterEntities.HAT_SPORE_ZOMBIE.getId())));
         event.registerEntityRenderer(MonsterEntities.NYMPH.get(), c -> new GeoNormalRenderer<>(c, new NymphModel(MonsterEntities.NYMPH.getId())));
         event.registerEntityRenderer(MonsterEntities.SAND_POACHER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SAND_POACHER.getId()));
         // 水怪
         event.registerEntityRenderer(MonsterEntities.PIRANHA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRANHA.getId(), true, 1.0F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.ANGLER_FISH.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.ANGLER_FISH.getId(), false), true, 1.0F, -0.1875F).addBoneToGlow("light"));
+        // goldfish.bbmodel 自带的腐化、猩红贴图变种。
+        event.registerEntityRenderer(MonsterEntities.CORRUPT_GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/corrupt_goldfish.png"),
+                Confluence.asResource("animations/entity/animal/goldfish.animation.json"))));
+        event.registerEntityRenderer(MonsterEntities.VICIOUS_GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(
+                Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/vicious_goldfish.png"),
+                Confluence.asResource("animations/entity/animal/goldfish.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.BLOOD_FEEDER.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.BLOOD_FEEDER.getId(), true, 1.2F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.ARAPAIMA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ARAPAIMA.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.BLUE_JELLYFISH.get(), c -> new JellyFishRenderer(c, jellyfishModel("blue")));
         event.registerEntityRenderer(MonsterEntities.PINK_JELLYFISH.get(), c -> new JellyFishRenderer(c, jellyfishModel("pink")));
         event.registerEntityRenderer(MonsterEntities.GREEN_JELLYFISH.get(), c -> new JellyFishRenderer(c, jellyfishModel("green")));
-        event.registerEntityRenderer(MonsterEntities.SHARK.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SHARK.getId(), true, 1.8F, 0.0F));
+        event.registerEntityRenderer(MonsterEntities.BLOOD_JELLY.get(), c -> new JellyFishRenderer(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/blood_jelly.geo.json"), Confluence.asResource("textures/entity/blood_jelly.png"), Confluence.asResource("animations/entity/blood_jelly.animation.json")), 0.0625F, true));
+        event.registerEntityRenderer(MonsterEntities.FUNGO_FISH.get(), c -> new JellyFishRenderer(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/fungo_fish.geo.json"), Confluence.asResource("textures/entity/fungo_fish.png"), Confluence.asResource("animations/entity/fungo_fish.animation.json")), 0.0625F, true));
+        event.registerEntityRenderer(MonsterEntities.SHARK.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SHARK.getId(), true, 1.0F, -0.10625F));
         // 卷壳怪
         event.registerEntityRenderer(MonsterEntities.GIANT_SHELLY.get(), c -> new GeoNormalRenderer<>(c,
                 new VariantTextureGeoModel<>(
@@ -832,6 +956,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(ChestBlocks.BASE_CHEST_ENTITY.get(), BaseChestBlockRenderer::new);
         event.registerBlockEntityRenderer(ChestBlocks.DEATH_CHEST_ENTITY.get(), DeathChestBlockRenderer::new);
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel<>()));
+        event.registerBlockEntityRenderer(DecorativeBlocks.GARDEN_GNOME_ENTITY.get(), context -> new GeoBlockRenderer<>(new GardenGnomeBlockModel()));
         event.registerBlockEntityRenderer(FunctionalBlocks.LIFECRYSTAL_BOULDER_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel<>()));
         event.registerBlockEntityRenderer(DecorativeBlocks.RELIC_ENTITY.get(), context -> new IgnoreEnvironmentLightGeoBlockRenderer<>(new RelicBlockModel()));
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), ClientUtils.rendererProvider(MechanicalBlockRenderer::new));
@@ -848,23 +973,11 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(ModBlocks.ENEMY_BANNER_ENTITY.get(), EnemyBannerBlockRenderer::new);
     }
 
-    private static ExplicitGeoModel<org.confluence.mod.common.entity.monster.JellyFish> jellyfishModel(String color) {
+    private static ExplicitGeoModel<JellyFish> jellyfishModel(String color) {
         return new ExplicitGeoModel<>(
                 Confluence.asResource("geo/entity/jellyfish.geo.json"),
                 Confluence.asResource("textures/entity/" + color + "_jellyfish.png"),
                 Confluence.asResource("animations/entity/jellyfish.animation.json"));
-    }
-
-    /// 为暂时复用卷壳怪拓扑的生物提供完整且确定的资源组合。
-    ///
-    /// 卷壳怪纹理按变体存放在子目录中，不存在约定路径下的
-    /// {@code textures/entity/giant_shelly.png}。这里显式选择紫色变体，避免复用模型的
-    /// 巨型陆龟和腹足怪请求不存在的默认纹理。
-    private static <T extends GeoEntity> ExplicitGeoModel<T> sharedGiantShellyModel() {
-        return new ExplicitGeoModel<>(
-                Confluence.asResource("geo/entity/giant_shelly.geo.json"),
-                Confluence.asResource("textures/entity/giant_shelly/purple.png"),
-                Confluence.asResource("animations/entity/giant_shelly.animation.json"));
     }
 
     public static void registerBlockColors(PortRegisterColorHandlersEvent.Block event) {
@@ -932,6 +1045,7 @@ public final class ModClientEvents {
     }
 
     public static void registerParticles(PortRegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ModParticleTypes.SPIT_GLOW.get(), SpitParticle.EmissiveProvider::new);
         event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(ModParticleTypes.WHOLE_ITEM.get(), new WholeItemParticle.Provider());
         // 原版伤害弹丸不接受 null 尾迹；返回 null 粒子实例可明确表达“不渲染尾迹”。
@@ -1013,7 +1127,7 @@ public final class ModClientEvents {
     }
 
     public static void registerRenderBuffers(PortRegisterRenderBuffersEvent event) {
-        for (ColoredGlintContext context : ColoredGlintContext.COLORED_GLINT_CONTEXTS) {
+        for (ColoredGlintContext context : RenderStateShardAccessor.getColoredGlintContexts()) {
             event.registerRenderBuffer(context.renderType());
         }
     }
@@ -1024,6 +1138,8 @@ public final class ModClientEvents {
     }
 
     public static void registerClientReloadListeners(PortRegisterClientReloadListenersEvent event) {
+        event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager ->
+                org.confluence.mod.client.effect.DivaSlimeVertexConsumer.clearTextures());
         event.registerReloadListener(ClientBestiary.getInstance());
         event.registerReloadListener(LucyTheAxeDialogCategory.Loader.getInstance());
         event.registerReloadListener(NPCDialogLoader.getInstance());
@@ -1032,8 +1148,10 @@ public final class ModClientEvents {
     public static void registerCustomBestiaryEntryModel(RegisterCustomBestiaryEntryRendererEvent event) {
         EntityRendererProvider.Context context = event.getContext();
         event.registeSurefaceWorm(MonsterEntities.DEVOURER);
+        event.registeSurefaceWorm(MonsterEntities.WORLD_FEEDER);
         event.registerBaseWorm(MonsterEntities.TOMB_CRAWLER);
         event.registerBaseWorm(MonsterEntities.GIANT_WORM);
+        event.registerBaseWorm(MonsterEntities.DIGGER);
         event.registerBaseWorm(MonsterEntities.LEECH);
         event.registerBoneSerpent(MonsterEntities.BONE_SERPENT);
         event.registerBoneSerpent(MonsterEntities.WITHER_BONE_SERPENT);

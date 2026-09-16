@@ -1,13 +1,15 @@
 package org.confluence.mod.client.entity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
+import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
 import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.cache.object.GeoBone;
 
 /// 为 1.20 轻量坐骑实体补齐 GeckoLib 的水平朝向渲染。
 ///
@@ -17,18 +19,33 @@ import software.bernie.geckolib.animatable.GeoEntity;
 /// 本渲染器只为坐骑补回身体朝向，不改变通用实体渲染器，避免影响已经自行处理旋转的
 /// 弹幕和其他非生物实体。存在玩家乘客时优先读取玩家已经过帧间插值的视角朝向，防止
 /// 本地连续鼠标输入与每 tick 更新的坐骑实体朝向互相追赶；没有乘客时才退回实体朝向。
-public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity> extends GeoNormalRenderer<T> {
+public final class MountGeoRenderer<T extends AbstractMountEntity & GeoEntity> extends GeoSpecialSlimeRenderer<T> {
     public MountGeoRenderer(EntityRendererProvider.Context context, ExplicitGeoModel<T> model) {
         super(context, model);
     }
 
     @Override
-    protected void applyRotations(T mount, PoseStack poseStack, float ageInTicks, float ignoredBodyYaw, float partialTick) {
-        Entity passenger = mount.getFirstPassenger();
-        float bodyYaw = passenger instanceof Player player
-                ? player.getViewYRot(partialTick)
+    protected boolean usesSlimeLayers(T entity) {
+        return entity instanceof RideableSlimeMountEntity;
+    }
+
+    @Override
+    protected boolean isShellCube(GeoBone bone, int index) {
+        return super.isShellCube(bone, index) || bone.getName().equals("bone") && index == 0;
+    }
+
+    @Override
+    protected float getRenderYaw(T mount, float partialTick) {
+        return mount.getFirstPassenger() instanceof Player player ? player.getViewYRot(partialTick)
                 : Mth.rotLerp(partialTick, mount.yRotO, mount.getYRot());
-        super.applyRotations(mount, poseStack, ageInTicks, bodyYaw, partialTick);
+    }
+
+    @Override
+    protected void applyRotations(T mount, PoseStack poseStack, float ageInTicks, float ignoredBodyYaw, float partialTick) {
+        super.applyRotations(mount, poseStack, ageInTicks, getRenderYaw(mount, partialTick), partialTick);
+        if (mount.tiltsWithMovement()) {
+            poseStack.mulPose(Axis.XP.rotationDegrees(Mth.rotLerp(partialTick, mount.xRotO, mount.getXRot())));
+        }
     }
 
     @Override

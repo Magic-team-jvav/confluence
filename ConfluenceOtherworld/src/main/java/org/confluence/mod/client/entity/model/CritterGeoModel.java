@@ -56,11 +56,12 @@ public class CritterGeoModel<T extends Entity & CritterVisual> extends Defaulted
 
     @Override
     public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> state) {
-        super.setCustomAnimations(animatable, instanceId, state);
         EntityModelData data = state.getData(DataTickets.ENTITY_MODEL_DATA);
-        if (data != null && getBone("head").isPresent()) {
-            getBone("head").get().setRotX(data.headPitch() * ((float) Math.PI / 180F));
-            getBone("head").get().setRotY(data.netHeadYaw() * ((float) Math.PI / 180F));
-        }
+        if (data == null) return;
+        getBone("head").or(() -> getBone("Head")).ifPresent(head -> {
+            var initial = head.getInitialSnapshot();
+            head.setRotX(initial.getRotX() + data.headPitch() * ((float) Math.PI / 180F));
+            head.setRotY(initial.getRotY() + data.netHeadYaw() * ((float) Math.PI / 180F));
+        });
     }
 }

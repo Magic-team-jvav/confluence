@@ -92,7 +92,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.GOLDEN_SHORT_SWORD.get(),
                 SwordItems.PLATINUM_SHORT_SWORD.get()
         );
-        tag(ModTags.Items.MOUNT).add(MountItems.SLIMY_SADDLE.get(), MountItems.HONEYED_GOGGLES.get());
+        tag(ModTags.Items.MOUNT).add(MountItems.SLIMY_SADDLE.get(), MountItems.HONEYED_GOGGLES.get(), MountItems.BLESSED_APPLE.get(), MountItems.SUPERHEATED_BLOOD.get());
         PetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.PET).add(item.get()));
 //        tag(ModTags.Items.LIGHT_PET).addOptionalTag(TETags.Items.CURIOS_LIGHT_PET);
         LightPetItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.LIGHT_PET).add(item.get()));

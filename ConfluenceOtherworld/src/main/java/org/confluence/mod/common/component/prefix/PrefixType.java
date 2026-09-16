@@ -7,6 +7,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.summon.SummonItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -39,7 +40,8 @@ public enum PrefixType implements StringRepresentable {
 
         @Override
         public void updatePrefix(ModPrefix[] prefixes) {}
-    };
+    },
+    SUMMON("universal", "summon");
 
     public static final Codec<PrefixType> CODEC = StringRepresentable.fromEnum(PrefixType::values);
     public static final PortStreamCodec<ByteBuf, PrefixType> STREAM_CODEC = PortStreamCodec.composite(PortByteBufCodecs.VAR_INT, PrefixType::ordinal, PrefixType::byId);
@@ -57,6 +59,8 @@ public enum PrefixType implements StringRepresentable {
                 continue;
             }
             for (Map.Entry<String, ? extends ModPrefix> entry : map.entrySet()) {
+                if (name().equals("SUMMON") && entry.getValue() instanceof Universal prefix && prefix.criticalChance() != 0)
+                    continue;
                 list.add(entry.getValue());
             }
         }
@@ -80,6 +84,18 @@ public enum PrefixType implements StringRepresentable {
         return available[random.nextInt(available.length)];
     }
 
+    public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
+        if (this != SUMMON || !(stack.getItem() instanceof SummonItem item) || item.hasSummonKnockback())
+            return randomPrefix(random);
+        List<ModPrefix> allowed = new LinkedList<>();
+        for (ModPrefix prefix : available) {
+            if (prefix instanceof Summon summon && summon.knockBack() != 0) continue;
+            if (prefix instanceof Universal universal && universal.knockBack() != 0) continue;
+            allowed.add(prefix);
+        }
+        return allowed.get(random.nextInt(allowed.size()));
+    }
+
     public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack itemStack) {
         return switch (this) { // todo 没有击退的远程和魔法武器
             case UNIVERSAL -> random.nextBoolean() ? Universal.GODLY : Universal.DEMONIC;
@@ -98,6 +114,8 @@ public enum PrefixType implements StringRepresentable {
                 default -> null;
             };
             case UNKNOWN -> null;
+            case SUMMON ->
+                    itemStack.getItem() instanceof SummonItem item && !item.hasSummonKnockback() ? Summon.EAGER : Summon.FABLED;
         };
     }
 

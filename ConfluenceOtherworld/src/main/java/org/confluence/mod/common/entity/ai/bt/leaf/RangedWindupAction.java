@@ -23,6 +23,7 @@ public final class RangedWindupAction extends BTNode {
     public void start() {
         ticks = 0;
         mob.getNavigation().stop();
+        mob.getMoveControl().setWantedPosition(mob.getX(), mob.getY(), mob.getZ(), 0.0);
     }
 
     @Override

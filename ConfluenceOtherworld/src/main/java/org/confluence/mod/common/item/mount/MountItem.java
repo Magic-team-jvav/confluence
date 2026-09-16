@@ -10,6 +10,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.mount.MountManager;
 import org.jetbrains.annotations.Nullable;
@@ -50,7 +53,8 @@ public class MountItem<T extends AbstractMountEntity> extends Item {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("tooltip.confluence.rideable_item.desc"));
+        tooltip.add(Component.translatable("tooltip.confluence.rideable_item.desc", ModKeyBindings.MOUNT.get().getTranslatedKeyMessage()));
     }
 }

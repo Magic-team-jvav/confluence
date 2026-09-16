@@ -12,6 +12,7 @@ public final class ModTradeConditions {
 
     public static final RegistryObject<MapCodec<AlwaysTrueCondition>> ALWAYS_TRUE = TYPES.register("always", () -> AlwaysTrueCondition.CODEC);
     public static final RegistryObject<MapCodec<HardmodeCondition>> HARDMODE = TYPES.register("hardmode", () -> HardmodeCondition.CODEC);
+    public static final RegistryObject<MapCodec<ArtisanLoafUnusedCondition>> ARTISAN_LOAF_UNUSED = TYPES.register("artisan_loaf_unused", () -> ArtisanLoafUnusedCondition.CODEC);
     public static final RegistryObject<MapCodec<AnyBossDefeatedCondition>> ANY_BOSS_DEFEATED = TYPES.register("any_boss_defeated", () -> AnyBossDefeatedCondition.CODEC);
     public static final RegistryObject<MapCodec<BossDefeatedCondition>> BOSS_DEFEATED = TYPES.register("boss_defeated", () -> BossDefeatedCondition.CODEC);
     public static final RegistryObject<MapCodec<BiomeCondition>> BIOME = TYPES.register("biome", () -> BiomeCondition.CODEC);

@@ -49,21 +49,36 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
         }
         int capacity = Math.max(0, (int) Math.floor(owner.getAttributeValue(ConfluenceMagicLib.MINION_CAPACITY)));
         removeMarked();
-        if (occupiedSlots() + summon.slotCost() > capacity && !summons.isEmpty()) {
-            SummonInstance last = summons.remove(summons.size() - 1);
-            last.remove();
-        }
-        if (occupiedSlots() + summon.slotCost() > capacity) {
-            summon.remove();
-            refreshGroupState();
-            return false;
-        }
         SummonInstance mergeTarget = null;
         for (SummonInstance existing : summons) {
             if (existing.type().equals(summon.type()) && existing.canMergeAdditionalSummon()) {
                 mergeTarget = existing;
                 break;
             }
+        }
+        int requiredSlots = occupiedSlots() + summon.slotCost() - capacity;
+        int removableSlots = occupiedSlots() - (mergeTarget == null ? 0 : mergeTarget.slotCost());
+        if (requiredSlots > removableSlots) {
+            summon.remove();
+            return false;
+        }
+        while (occupiedSlots() + summon.slotCost() > capacity) {
+            SummonInstance removable = null;
+            for (int index = summons.size() - 1; index >= 0; index--) {
+                SummonInstance candidate = summons.get(index);
+                if (candidate != mergeTarget) {
+                    removable = candidate;
+                    summons.remove(index);
+                    break;
+                }
+            }
+            if (removable == null) break;
+            removable.remove();
+        }
+        if (occupiedSlots() + summon.slotCost() > capacity) {
+            summon.remove();
+            refreshGroupState();
+            return false;
         }
         if (mergeTarget != null) {
             if (!mergeTarget.tryMergeAdditionalSummon(summon.slotCost(), summon.stats())) {
@@ -195,6 +210,7 @@ public final class SummonContainer implements IPortNBTSerializable<CompoundTag> 
     public void deserializeNBT(HolderLookup.Provider provider, CompoundTag root) {
         summons.forEach(SummonInstance::remove);
         summons.clear();
+        projectiles.clear();
         pendingSummons.clear();
         if (!root.contains("Version", Tag.TAG_INT) || root.getInt("Version") != FORMAT_VERSION
                 || !root.contains("Entries", Tag.TAG_LIST)) {

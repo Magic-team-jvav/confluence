@@ -16,8 +16,7 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public enum HouseHandler implements IGlobalData {
     INSTANCE;
@@ -29,6 +28,7 @@ public enum HouseHandler implements IGlobalData {
                             "uuid", UUIDUtil.CODEC, "house", House.CODEC)));
 
     private Map<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> data = new Object2ObjectOpenHashMap<>();
+    private final Set<UUID> townPets = new HashSet<>();
 
     public Map<NPCSpawner.Region, Map<UUID, House>> getOrCreateRegions(ResourceKey<Level> dimension) {
         return data.computeIfAbsent(dimension, d -> new Object2ObjectOpenHashMap<>());
@@ -51,6 +51,8 @@ public enum HouseHandler implements IGlobalData {
     }
 
     public void setHouse(BaseNPC npc, House house) {
+        if (npc.isTownPet()) townPets.add(npc.getUUID());
+        else townPets.remove(npc.getUUID());
         ResourceKey<Level> dimension = npc.level().dimension();
         NPCSpawner.Region region = new NPCSpawner.Region(house.center());
         UUID uuid = npc.getUUID();
@@ -99,11 +101,15 @@ public enum HouseHandler implements IGlobalData {
     }
 
     public boolean isOccupiedByOther(ResourceKey<Level> dimension, House candidate, UUID uuid) {
+        return isOccupiedByOther(dimension, candidate, uuid, false);
+    }
+
+    public boolean isOccupiedByOther(ResourceKey<Level> dimension, House candidate, UUID uuid, boolean townPet) {
         Map<NPCSpawner.Region, Map<UUID, House>> regions = data.get(dimension);
         if (regions == null) return false;
         for (Map<UUID, House> houses : regions.values()) {
             for (Map.Entry<UUID, House> entry : houses.entrySet()) {
-                if (!entry.getKey().equals(uuid) && intersects(candidate, entry.getValue()))
+                if (!entry.getKey().equals(uuid) && townPets.contains(entry.getKey()) == townPet && intersects(candidate, entry.getValue()))
                     return true;
             }
         }
@@ -118,6 +124,9 @@ public enum HouseHandler implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
+        townPets.clear();
+        if (tag.contains("townPets"))
+            UUIDUtil.CODEC.listOf().parse(NbtOps.INSTANCE, tag.get("townPets")).result().ifPresent(townPets::addAll);
         PortDataResultExtension.ifSuccess(DATA_CODEC.parse(NbtOps.INSTANCE, tag.get("data")), decoded -> {
             Object2ObjectOpenHashMap<ResourceKey<Level>, Map<NPCSpawner.Region, Map<UUID, House>>> mutableData = new Object2ObjectOpenHashMap<>();
             decoded.forEach((dimension, regions) -> {
@@ -132,6 +141,8 @@ public enum HouseHandler implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
+        townPets.removeIf(uuid -> data.values().stream().flatMap(regions -> regions.values().stream()).noneMatch(houses -> houses.containsKey(uuid)));
+        UUIDUtil.CODEC.listOf().encodeStart(NbtOps.INSTANCE, List.copyOf(townPets)).result().ifPresent(nbt -> tag.put("townPets", nbt));
         PortDataResultExtension.ifSuccess(DATA_CODEC.encodeStart(NbtOps.INSTANCE, data),
                 nbt -> tag.put("data", nbt));
     }
@@ -144,5 +155,6 @@ public enum HouseHandler implements IGlobalData {
     @Override
     public void clear() {
         data.clear();
+        townPets.clear();
     }
 }

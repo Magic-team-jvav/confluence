@@ -11,13 +11,17 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.CreatureDefinition;
+import org.confluence.mod.common.entity.ai.EnemyWalkNodeEvaluator;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -47,6 +51,17 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
 
     public BaseMonster(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        return new GroundPathNavigation(this, level) {
+            @Override
+            protected PathFinder createPathFinder(int maxVisitedNodes) {
+                nodeEvaluator = new EnemyWalkNodeEvaluator();
+                return new PathFinder(nodeEvaluator, maxVisitedNodes);
+            }
+        };
     }
 
     @Override

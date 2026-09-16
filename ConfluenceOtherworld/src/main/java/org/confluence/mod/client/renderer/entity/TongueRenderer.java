@@ -22,21 +22,16 @@ import org.confluence.mod.common.entity.boss.WallOfFleshMouth;
 import org.confluence.mod.common.init.ModEffects;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.mesdag.portlib.event.client.PortModelEvent;
 import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 import org.mesdag.portlib.event.client.PortRenderLivingEvent;
 
 /// 绘制狂卷之舌效果中嘴部到受影响实体之间的连续饿鬼叶片。
 public final class TongueRenderer {
-    private static final ModelResourceLocation SEGMENT_MODEL = new ModelResourceLocation(Confluence.asResource("entity/the_hungry_leaf"), "inventory");
+    public static final ModelResourceLocation SEGMENT_MODEL = new ModelResourceLocation(Confluence.asResource("entity/the_hungry_leaf"), "inventory");
     private static final int BASE_SEGMENTS = 5;
     private static final float SEGMENTS_PER_BLOCK = 0.8F;
 
     private TongueRenderer() {}
-
-    public static void registerAdditionalModels(PortModelEvent.RegisterAdditional event) {
-        event.register(SEGMENT_MODEL);
-    }
 
     public static void renderFirstPerson(PortRenderLevelStageEvent event) {
         if (event.getStage() != PortRenderLevelStageEvent.Stage.AFTER_ENTITIES) return;

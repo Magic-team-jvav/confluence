@@ -34,9 +34,15 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 public class Hornet extends BaseFlyingMonster {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack.cast");
+    private final float stingerDamageMultiplier;
 
     public Hornet(EntityType<? extends BaseFlyingMonster> type, Level level) {
+        this(type, level, 1.0F);
+    }
+
+    public Hornet(EntityType<? extends BaseFlyingMonster> type, Level level, float stingerDamageMultiplier) {
         super(type, level);
+        this.stingerDamageMultiplier = stingerDamageMultiplier;
         this.moveControl = new FlyingMoveControl(this, 20, true);
     }
 
@@ -54,8 +60,7 @@ public class Hornet extends BaseFlyingMonster {
         HornetStingerProjectile projectile = new HornetStingerProjectile(ModEntities.HORNET_STINGER.get(), level());
         Vec3 origin = position();
         Vec3 aim = new Vec3(target.getX() - getX(), target.getY() + target.getEyeHeight() * 0.5F - getY(), target.getZ() - getZ());
-        projectile.configure(this, origin, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 5.0F, 0);
-        swing(InteractionHand.MAIN_HAND);
+        projectile.configure(this, origin, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * stingerDamageMultiplier, 5.0F, 0);
         return projectile;
     }
 
@@ -134,7 +139,11 @@ public class Hornet extends BaseFlyingMonster {
                 lookAtTarget(target, 10.0F, 89.0F);
                 if (angleBetween(getLookAngle(), target.getEyePosition().subtract(getEyePosition())) < FIRE_ANGLE) {
                     HornetStingerProjectile projectile = createStinger(target);
-                    if (!level().addFreshEntity(projectile)) projectile.discard();
+                    if (level().addFreshEntity(projectile)) {
+                        swing(InteractionHand.MAIN_HAND);
+                    } else {
+                        projectile.discard();
+                    }
                     shootCooldown = SHOOT_INTERVAL;
                     aiming = false;
                 }
@@ -143,6 +152,7 @@ public class Hornet extends BaseFlyingMonster {
 
             if (--shootCooldown <= 0) {
                 getNavigation().stop();
+                getMoveControl().setWantedPosition(getX(), getY(), getZ(), 0.0);
                 aiming = true;
                 return BTStatus.RUNNING;
             }
@@ -155,10 +165,8 @@ public class Hornet extends BaseFlyingMonster {
                     Vec3 pursuit = target.getEyePosition();
                     getNavigation().moveTo(pursuit.x, pursuit.y, pursuit.z, 1.5);
                 }
-                swing(InteractionHand.MAIN_HAND);
                 repathTicks = REPATH_RESET;
             }
-            lookAtTarget(target, 360.0F, 360.0F);
             return BTStatus.RUNNING;
         }
 

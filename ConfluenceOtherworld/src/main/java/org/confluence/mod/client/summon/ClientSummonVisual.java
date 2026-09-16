@@ -17,6 +17,7 @@ final class ClientSummonVisual implements GeoAnimatable {
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
     private static final RawAnimation CAST = RawAnimation.begin().thenLoop("attack.cast");
+    private static final RawAnimation STRIKE = RawAnimation.begin().thenLoop("attack.strike");
     private final UUID id;
     private final ResourceLocation type;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
@@ -55,6 +56,11 @@ final class ClientSummonVisual implements GeoAnimatable {
     private RawAnimation selectedAnimation() {
         String path = type.getPath();
         if (path.equals("finch_baby")) return FLY;
+        if (path.startsWith("deadly_sphere_"))
+            return animation == SummonAnimation.MELEE_ATTACK ? STRIKE : IDLE;
+        if (path.equals("vampire_bat")) return IDLE;
+        if (path.equals("vampire_frog"))
+            return animation == SummonAnimation.FLY ? FLY : animation == SummonAnimation.MELEE_ATTACK ? STRIKE : moving ? WALK : IDLE;
         if (path.equals("slime_baby"))
             return animation == SummonAnimation.FLY ? FLY : moving ? WALK : IDLE;
         if (animation == SummonAnimation.MELEE_ATTACK && (path.equals("hornet_baby") || path.equals("sculk_wisp") || path.equals("summon_imp")))

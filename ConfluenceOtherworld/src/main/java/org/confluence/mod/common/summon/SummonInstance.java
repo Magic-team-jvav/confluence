@@ -10,7 +10,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.api.whip.WhipTagTracker;
@@ -23,6 +22,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 /// 由玩家持有的召唤物运行实例。
 public abstract class SummonInstance implements OwnedSummon, Immunity {
@@ -48,7 +48,6 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     private int sameTypeCount = 1;
     private int formationOrder;
     private int formationCount = 1;
-    private final Map<UUID, Integer> nextPartHitTicks = new HashMap<>();
 
     protected SummonInstance(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         this.type = Objects.requireNonNull(type, "Summon type must not be null");
@@ -71,7 +70,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         LivingEntity previousTarget = target;
         target = findTarget();
         actualTarget = resolveActualTarget(target);
-        onTargetChanged(previousTarget, target);
+        if (previousTarget != target) onTargetChanged(previousTarget, target);
         beforeGoalTick();
         goalSelector.tick();
         afterGoalTick();
@@ -90,9 +89,9 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
 
     protected void afterGoalTick() {}
 
-    /// 在不改变逻辑受伤本体的前提下，按部件注册顺序选择首个可视部件作为移动和瞄准目标。
+    /// 优先保持当前可见部件；失效后再选择最近的可见部件，避免瞄准点在身体两端跳动。
     /// 伤害仍然结算到 {@link #target()}，避免多部件 Boss 被重复计算伤害。
-    private Entity resolveActualTarget(LivingEntity logicalTarget) {
+    protected final Entity resolveActualTarget(LivingEntity logicalTarget) {
         if (logicalTarget == null) {
             return null;
         }
@@ -106,15 +105,25 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         } else {
             return logicalTarget;
         }
+        if (actualTarget != null && parts.contains(actualTarget) && actualTarget.isAlive()
+                && ProjectileHitRules.canHit(owner, actualTarget) && hasLineOfSight(actualTarget.getBoundingBox().getCenter())) {
+            return actualTarget;
+        }
+        Entity nearest = null;
+        double nearestDistance = Double.MAX_VALUE;
         for (Entity part : parts) {
             Vec3 partCenter = part.getBoundingBox().getCenter();
             if (!part.isAlive() || !ProjectileHitRules.canHit(owner, part)
                     || ProjectileHitRules.logicalLivingTarget(part) != logicalTarget || !hasLineOfSight(partCenter)) {
                 continue;
             }
-            return part;
+            double distance = position().distanceToSqr(partCenter);
+            if (distance < nearestDistance) {
+                nearest = part;
+                nearestDistance = distance;
+            }
         }
-        return logicalTarget;
+        return nearest == null ? logicalTarget : nearest;
     }
 
     private boolean hasLineOfSight(Vec3 targetPosition) {
@@ -123,7 +132,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
 
     /// 返回超过该距离平方后需要拉回所有者附近的阈值。
     protected double ownerRecoveryDistanceSqr() {
-        return 96.0 * 96.0;
+        return 40.0 * 40.0;
     }
 
     protected int ownerRecoveryInterval() {
@@ -232,54 +241,68 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return new SummonPose(position, yaw, pitch, roll);
     }
 
-    /// 使用实例保存的基础伤害和主人当前召唤伤害结算命中，并由局部无敌帧限制同一实例的命中频率。
+    /// 使用基础伤害与主人当前加成结算命中，由召唤物选择局部或同类共享的无敌帧来源。
     protected final boolean hurtTarget(LivingEntity target, float damageMultiplier) {
-        return hurtEntity(target, target, target, damageMultiplier);
+        Entity part = target == this.target && actualTarget != null ? actualTarget : target;
+        return hurtEntity(ProjectileHitRules.damageRecipient(part), target, damageMultiplier);
     }
 
-    protected final boolean hurtEntity(Entity damageRecipient, LivingEntity encounterOwner,
-                                       Entity dedupeIdentity, float damageMultiplier) {
+    protected final boolean hurtEntity(Entity damageRecipient, LivingEntity encounterOwner, float damageMultiplier) {
         Objects.requireNonNull(damageRecipient, "Summon damage recipient must not be null");
         Objects.requireNonNull(encounterOwner, "Summon encounter owner must not be null");
-        Objects.requireNonNull(dedupeIdentity, "Summon dedupe identity must not be null");
         if (damageMultiplier < 0.0F) {
             throw new IllegalArgumentException("Summon damage multiplier must be non-negative");
         }
         if (!SummonTargetCache.isValidTarget(owner, encounterOwner, Double.MAX_VALUE, true)) {
             return false;
         }
-        float damage = stats.damage(owner);
-        damage = WhipTagTracker.modifyDamage(owner, this, encounterOwner, damage * damageMultiplier);
-        DamageSource source = LibDamageTypes.of(owner.level(), LibDamageTypes.SUMMONER, owner);
-        if (damageRecipient instanceof LivingEntity living) {
-            return Immunity.hurt(this, living, source, damage);
-        }
-        UUID identity = dedupeIdentity.getUUID();
-        if (tickCount < nextPartHitTicks.getOrDefault(identity, Integer.MIN_VALUE)) {
-            return false;
-        }
-        float resolvedDamage = damage;
-        boolean hurt = Immunity.withCause(this, () -> damageRecipient.hurt(source, resolvedDamage));
+        float baseDamage = stats.damage(owner) * damageMultiplier;
+        float damage = WhipTagTracker.modifyDamage(owner, this, encounterOwner, baseDamage);
+        DamageSource source = new SummonDamageSource(owner, stats.armorPenetration());
+        Immunity immunity = damageImmunity();
+        boolean hurt = Immunity.hurt(immunity, damageRecipient, encounterOwner, source, damage);
         if (hurt) {
-            nextPartHitTicks.put(identity, tickCount + confluence$getImmunityDuration(source));
+            WhipTagTracker.afterHit(owner, this, encounterOwner, damageRecipient, baseDamage);
         }
         return hurt;
     }
 
     /// 对指定范围内的全部合法目标结算接触伤害，命中频率仍由每个召唤实例的局部无敌帧控制。
     protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier) {
+        return hurtTouchingTargets(bounds, targetRange, damageMultiplier, new HashSet<>());
+    }
+
+    protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier,
+                                                Consumer<LivingEntity> onSuccessfulHit) {
+        return hurtTouchingTargets(bounds, targetRange, damageMultiplier, new HashSet<>(), onSuccessfulHit);
+    }
+
+    protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier, Set<UUID> hitEntities) {
+        return hurtTouchingTargets(bounds, targetRange, damageMultiplier, hitEntities, ignored -> {});
+    }
+
+    private boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier,
+                                        Set<UUID> hitEntities, Consumer<LivingEntity> onSuccessfulHit) {
+        Objects.requireNonNull(onSuccessfulHit, "Successful-hit callback must not be null");
         boolean hit = false;
-        Set<UUID> hitEntities = new HashSet<>();
         for (Entity rawTarget : owner.level().getEntities((Entity) null, bounds, candidate -> ProjectileHitRules.canHit(owner, candidate))) {
             Entity damageRecipient = ProjectileHitRules.damageRecipient(rawTarget);
             Entity identity = ProjectileHitRules.dedupeIdentity(rawTarget);
             LivingEntity logicalTarget = ProjectileHitRules.logicalLivingTarget(rawTarget);
-            if (logicalTarget == null || !hitEntities.add(identity.getUUID())) continue;
+            if (logicalTarget == null || hitEntities.contains(identity.getUUID())) continue;
             if (logicalTarget != target && !SummonTargetCache.isValidTarget(owner, logicalTarget, position(), targetRange, false))
                 continue;
-            hit |= hurtEntity(damageRecipient, logicalTarget, identity, damageMultiplier);
+            if (hurtEntity(damageRecipient, logicalTarget, damageMultiplier)) {
+                hitEntities.add(identity.getUUID());
+                onSuccessfulHit.accept(logicalTarget);
+                hit = true;
+            }
         }
         return hit;
+    }
+
+    protected Immunity damageImmunity() {
+        return this;
     }
 
     @Override
@@ -366,6 +389,12 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     public final UUID getSummonOwnerId() {
         return owner.getUUID();
     }
+
+    @Override
+    public final float summonTagDamage() {return stats.tagDamage();}
+
+    @Override
+    public final float summonArmorPenetration() {return stats.armorPenetration();}
 
     public final ResourceLocation type() {
         return type;

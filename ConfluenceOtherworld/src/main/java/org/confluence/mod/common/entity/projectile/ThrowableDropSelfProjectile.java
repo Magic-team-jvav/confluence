@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.projectile.ItemSupplier;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -23,7 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class ThrowableDropSelfProjectile extends DamageSettableProjectile implements IPortProjectileExtension {
+public class ThrowableDropSelfProjectile extends DamageSettableProjectile implements IPortProjectileExtension, ItemSupplier {
     protected static final EntityDataAccessor<Integer> DATA_FLY_TICKS = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.ITEM_STACK);
     protected int penetrate;

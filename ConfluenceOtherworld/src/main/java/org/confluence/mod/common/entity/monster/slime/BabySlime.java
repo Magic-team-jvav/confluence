@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.monster.slime;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
 /**
@@ -15,7 +14,7 @@ public final class BabySlime extends BaseSlime {
     }
 
     @Override
-    protected void setSlimeSize(int size) {
+    public void setSlimeSize(int size) {
         super.setSlimeSize(SIZE);
     }
 }

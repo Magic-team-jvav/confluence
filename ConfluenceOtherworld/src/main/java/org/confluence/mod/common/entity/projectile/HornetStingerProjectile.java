@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -48,5 +49,17 @@ public final class HornetStingerProjectile extends StraightMonsterProjectile {
             return;
         }
         target.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION, poisonAmplifier), owner);
+    }
+
+    @Override
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("PoisonAmplifier", poisonAmplifier);
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        poisonAmplifier = Math.max(0, tag.getInt("PoisonAmplifier"));
     }
 }

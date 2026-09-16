@@ -4,10 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.monster.BaseMonster;
 
 /// 恶魔眼在夜间锁定玩家后的追击行为。
 ///
@@ -32,12 +32,12 @@ public final class DemonEyeSurroundAction extends BTNode {
     /// 水面规避探测距离，单位为方块。
     private static final double WATER_LOOKAHEAD = 1.5D;
 
-    private final PathfinderMob mob;
+    private final BaseMonster mob;
     private int stateTicks;
     private boolean charging;
     private Vec3 chargeDirection = Vec3.ZERO;
 
-    public DemonEyeSurroundAction(PathfinderMob mob) {
+    public DemonEyeSurroundAction(BaseMonster mob) {
         this.mob = mob;
     }
 
@@ -96,6 +96,7 @@ public final class DemonEyeSurroundAction extends BTNode {
         // 迎面有水就抬高，把冲撞抬过水面；否则恶魔眼会一头扎进水里。
         next = next.add(waterAvoidance(next));
         mob.setDeltaMovement(next);
+        mob.faceCombatDirection(next, 30.0F, 85.0F);
         mob.hasImpulse = true;
 
         stateTicks++;
@@ -121,14 +122,13 @@ public final class DemonEyeSurroundAction extends BTNode {
         return new Vec3(0.0D, 0.06D, 0.0D);
     }
 
-    /// 让身体朝向当前目标；朝向的最终权威仍是实体自身的 `tick`，这里只驱动 LookControl。
+    /// 蓄势时面向目标，冲撞时改由实际飞行方向控制朝向。
     private void faceTarget() {
         LivingEntity target = mob.getTarget();
         if (target == null) {
             return;
         }
-        Vec3 eye = target.getEyePosition();
-        mob.getLookControl().setLookAt(eye.x, eye.y, eye.z, 30.0F, 85.0F);
+        mob.faceCombatPosition(target.getEyePosition(), 30.0F, 85.0F);
     }
 
     /// 碰撞改变垂直速度时同步清理冲撞状态，避免继续朝同一块天花板或地面推进。

@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.CasterCycleAction;
-import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
+import org.confluence.mod.common.entity.projectile.StraightMonsterProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -71,7 +71,7 @@ public abstract class BaseCasterMonster extends BaseMonster {
     }
 
     /// 返回当前法师固定使用的弹幕类型。
-    protected abstract EntityType<HostileParticleProjectile> projectileType();
+    protected abstract EntityType<? extends StraightMonsterProjectile> projectileType();
 
     /// 返回一次施法动作连续生成的弹幕数量；普通法师每轮只生成一枚。
     protected int projectilesPerVolley() {
@@ -94,13 +94,17 @@ public abstract class BaseCasterMonster extends BaseMonster {
     }
 
     @Nullable
-    HostileParticleProjectile createProjectile(LivingEntity target) {
-        HostileParticleProjectile projectile = projectileType().create(level());
+    StraightMonsterProjectile createProjectile(LivingEntity target) {
+        StraightMonsterProjectile projectile = projectileType().create(level());
         if (projectile == null) {
             return null;
         }
-        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
+        projectile.configure(this, target, projectileDamage());
         return projectile;
+    }
+
+    protected float projectileDamage() {
+        return (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
     }
 
     public void beginCastAnimation() {

@@ -38,6 +38,10 @@ public final class SummonTargetCache {
 
     /// 按指定召唤物的位置选择目标。玩家战斗指令由同一玩家的召唤物共享，自动索敌则由每个运行实例独立维护。
     public static @Nullable LivingEntity acquire(ServerLevel level, ServerPlayer owner, UUID summonId, Vec3 origin, double automaticRange) {
+        return acquire(level, owner, summonId, origin, automaticRange, true);
+    }
+
+    public static @Nullable LivingEntity acquire(ServerLevel level, ServerPlayer owner, UUID summonId, Vec3 origin, double automaticRange, boolean requiresSight) {
         SummonKey key = new SummonKey(owner.getUUID(), summonId);
         boolean changedLevel = invalidateOtherLevels(level, owner.getUUID());
         Map<UUID, CommandState> levelCommands = COMMANDS.computeIfAbsent(level, ignored -> new HashMap<>());
@@ -50,58 +54,53 @@ public final class SummonTargetCache {
         }
         LivingEntity whipTarget = WhipTagTracker.lastTaggedTarget(owner);
         if (isValidTarget(owner, whipTarget, origin, automaticRange, true)) {
-            command.target = null;
             return whipTarget;
-        }
-
-        if (command.priority == 2 && isValidTarget(owner, command.target, origin, automaticRange, true)) {
-            return command.target;
         }
         int hurtByTimestamp = owner.getLastHurtByMobTimestamp();
         boolean hurtByChanged = hurtByTimestamp != command.lastHurtByTimestamp;
         command.lastHurtByTimestamp = hurtByTimestamp;
         LivingEntity attacker = owner.getLastHurtByMob();
-        if (hurtByChanged && isValidTarget(owner, attacker, origin, automaticRange, true)) {
+        if (hurtByChanged && isValidTarget(owner, attacker, Double.MAX_VALUE, true)) {
             command.target = attacker;
-            command.priority = 2;
-            return command.target;
-        }
-        if (command.priority == 3 && isValidTarget(owner, command.target, origin, automaticRange, true)) {
-            return command.target;
         }
         int attackTimestamp = owner.getLastHurtMobTimestamp();
         boolean attackChanged = attackTimestamp != command.lastAttackTimestamp;
         command.lastAttackTimestamp = attackTimestamp;
         LivingEntity attacked = owner.getLastHurtMob();
-        if (attackChanged && isValidTarget(owner, attacked, origin, automaticRange, true)) {
+        if (attackChanged && !hurtByChanged && isValidTarget(owner, attacked, Double.MAX_VALUE, true)) {
             command.target = attacked;
-            command.priority = 3;
-            return command.target;
         }
-        command.target = null;
-        command.priority = Integer.MAX_VALUE;
+        // 共享指令不能被某一个短射程召唤物清空。
+        if (!isValidTarget(owner, command.target, Double.MAX_VALUE, true)) {
+            command.target = null;
+        }
+        if (isValidTarget(owner, command.target, origin, automaticRange, true))
+            return command.target;
 
         Map<SummonKey, AutomaticEntry> levelTargets = AUTOMATIC_TARGETS.computeIfAbsent(level, ignored -> new HashMap<>());
         AutomaticEntry cached = levelTargets.get(key);
         if (cached != null && cached.retainsWithoutSight
-                && isValidTarget(owner, cached.target, origin, automaticRange, false)
+                && isValidTarget(owner, cached.target, Double.MAX_VALUE, false)
                 && hasPartInRange(origin, automaticRange, cached.target)) return cached.target;
         if (cached != null && cached.unseenTicks <= 60
                 && isValidTarget(owner, cached.target, origin, automaticRange, false)) {
-            if (hasLineOfSight(level, owner, origin, cached.target)) {
+            if (!requiresSight || hasLineOfSight(level, owner, origin, cached.target)) {
                 cached.unseenTicks = 0;
                 return cached.target;
             }
             if (++cached.unseenTicks <= 60) return cached.target;
         }
-        LivingEntity partTarget = selectPartTarget(level, owner, origin, automaticRange);
+        LivingEntity partTarget = selectPartTarget(level, owner, origin, automaticRange, requiresSight);
         if (partTarget != null) {
             levelTargets.put(key, new AutomaticEntry(partTarget, true));
             return partTarget;
         }
-        if (level.random.nextInt(10) != 0) return null;
-        LivingEntity selected = selectAutomaticTarget(level, owner, origin, automaticRange);
-        levelTargets.put(key, new AutomaticEntry(selected, false));
+        if (cached != null && cached.target == null && level.getGameTime() < cached.nextSearchAt)
+            return null;
+        LivingEntity selected = selectAutomaticTarget(level, owner, origin, automaticRange, requiresSight);
+        AutomaticEntry next = new AutomaticEntry(selected, false);
+        next.nextSearchAt = level.getGameTime() + 10;
+        levelTargets.put(key, next);
         return selected;
     }
 
@@ -132,13 +131,13 @@ public final class SummonTargetCache {
         if (targets != null) targets.remove(key);
     }
 
-    private static @Nullable LivingEntity selectAutomaticTarget(ServerLevel level, ServerPlayer owner, Vec3 origin, double automaticRange) {
+    private static @Nullable LivingEntity selectAutomaticTarget(ServerLevel level, ServerPlayer owner, Vec3 origin, double automaticRange, boolean requiresSight) {
         AABB searchBox = AABB.ofSize(origin, automaticRange * 2.0, automaticRange * 2.0, automaticRange * 2.0);
         LivingEntity nearest = null;
         double nearestDistance = Double.MAX_VALUE;
         int nearestPriority = Integer.MAX_VALUE;
         for (LivingEntity candidate : level.getEntitiesOfClass(LivingEntity.class, searchBox)) {
-            if (!isValidTarget(owner, candidate, origin, automaticRange, false) || !(candidate instanceof Enemy) || candidate instanceof NeutralMob || !hasLineOfSight(level, owner, origin, candidate)) {
+            if (!isValidTarget(owner, candidate, origin, automaticRange, false) || !(candidate instanceof Enemy) || candidate instanceof NeutralMob || (requiresSight && !hasLineOfSight(level, owner, origin, candidate))) {
                 continue;
             }
             int priority = hasVisiblePart(level, owner, origin, automaticRange, candidate) ? 3
@@ -154,14 +153,14 @@ public final class SummonTargetCache {
         return nearest;
     }
 
-    private static @Nullable LivingEntity selectPartTarget(ServerLevel level, ServerPlayer owner, Vec3 origin, double automaticRange) {
+    private static @Nullable LivingEntity selectPartTarget(ServerLevel level, ServerPlayer owner, Vec3 origin, double automaticRange, boolean requiresSight) {
         AABB searchBox = AABB.ofSize(origin, automaticRange * 2.0, automaticRange * 2.0, automaticRange * 2.0);
         for (Entity part : level.getEntities(owner, searchBox,
                 entity -> entity.isAlive() && ProjectileHitRules.canHit(owner, entity))) {
             LivingEntity candidate = ProjectileHitRules.logicalLivingTarget(part);
             if (candidate == null || candidate == part) continue;
             if (isValidTarget(owner, candidate, Double.MAX_VALUE, false)
-                    && hasLineOfSight(level, owner, origin, part.getEyePosition()))
+                    && (!requiresSight || hasLineOfSight(level, owner, origin, part.getEyePosition())))
                 return candidate;
         }
         return null;
@@ -233,7 +232,6 @@ public final class SummonTargetCache {
     private static final class CommandState {
         private int lastHurtByTimestamp;
         private int lastAttackTimestamp;
-        private int priority = Integer.MAX_VALUE;
         private LivingEntity target;
 
         private CommandState(int lastHurtByTimestamp, int lastAttackTimestamp) {
@@ -248,6 +246,7 @@ public final class SummonTargetCache {
         private final @Nullable LivingEntity target;
         private final boolean retainsWithoutSight;
         private int unseenTicks;
+        private long nextSearchAt;
 
         private AutomaticEntry(@Nullable LivingEntity target, boolean retainsWithoutSight) {
             this.target = target;

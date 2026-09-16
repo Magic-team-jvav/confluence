@@ -33,7 +33,11 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
 
     /// 创建带物品外观、固定伤害和命中策略 ID 的 NPC 虚拟弹药。
     public NPCWeaponProjectile(LivingEntity owner, ItemStack item, float damage, ResourceLocation effect) {
-        super(ModEntities.NPC_WEAPON_PROJECTILE.get(), owner, owner.level());
+        this(ModEntities.NPC_WEAPON_PROJECTILE.get(), owner, item, damage, effect);
+    }
+
+    protected NPCWeaponProjectile(EntityType<? extends NPCWeaponProjectile> type, LivingEntity owner, ItemStack item, float damage, ResourceLocation effect) {
+        super(type, owner, owner.level());
         setItem(item.copyWithCount(1));
         this.damage = Math.max(0, damage);
         this.effect = effect;
@@ -62,6 +66,7 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
         super.onHitEntity(result);
         if (level().isClientSide) return;
         Entity target = result.getEntity();
+        setPos(result.getLocation());
         NPCProjectileEffects.get(effect).apply(createContext(), target);
         discard();
     }
@@ -71,6 +76,7 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if (!level().isClientSide) {
+            setPos(result.getLocation());
             NPCProjectileEffects.get(effect).apply(createContext(), null);
             discard();
         }
@@ -91,6 +97,7 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putFloat("Damage", damage);
+        tag.putInt("ProjectileAge", tickCount);
         tag.putString("Effect", effect.toString());
         if (homingTargetId != null) tag.putUUID("HomingTarget", homingTargetId);
     }
@@ -100,13 +107,14 @@ public class NPCWeaponProjectile extends ThrowableItemProjectile {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         damage = Math.max(0, tag.getFloat("Damage"));
+        tickCount = Math.max(0, tag.getInt("ProjectileAge"));
         effect = ResourceLocation.tryParse(tag.getString("Effect"));
         if (effect == null) effect = NPCProjectileEffects.NONE;
         homingTargetId = tag.hasUUID("HomingTarget") ? tag.getUUID("HomingTarget") : null;
     }
 
     /// 创建包含当前所有者和伤害值的命中上下文。
-    private NPCProjectileEffects.Context createContext() {
+    protected NPCProjectileEffects.Context createContext() {
         LivingEntity owner = getOwner() instanceof LivingEntity living ? living : null;
         return new NPCProjectileEffects.Context(this, owner, damage);
     }

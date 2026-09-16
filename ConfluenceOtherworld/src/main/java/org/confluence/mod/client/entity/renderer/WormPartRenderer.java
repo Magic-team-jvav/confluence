@@ -9,13 +9,12 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.model.WormPartGeoModel;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
 import org.confluence.mod.common.entity.monster.BaseWormPart;
-import org.confluence.mod.common.entity.monster.WormSegment;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 
@@ -42,6 +41,11 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
     @Override
     protected boolean usesInterpolatedLight(BaseWormPart segment) {
         return true;
+    }
+
+    @Override
+    protected Vector3f getWormModelCenter(BaseWormPart segment) {
+        return WormHeadRenderer.sharedModelCenter(segment.getOwner());
     }
 
     @Override
@@ -110,8 +114,10 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
 
     @Override
     protected float getEffectiveModelScale(BaseWormPart segment) {
-        if (!wormModel.usesWyvernGeometry(segment)) return 2.0F;
         BaseWormMonster owner = segment.getOwner();
+        if (!wormModel.usesWyvernGeometry(segment)) {
+            return owner != null && (owner.getType() == MonsterEntities.DIGGER.get() || owner.getType() == MonsterEntities.WORLD_FEEDER.get()) ? 1.0F : 2.0F;
+        }
         ResourceLocation ownerId = owner == null ? null : BuiltInRegistries.ENTITY_TYPE.getKey(owner.getType());
         return ownerId != null && "arch_wyvern".equals(ownerId.getPath()) ? 1.25F : 1.0F;
     }
@@ -125,9 +131,4 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
         model.getBone(name).ifPresent(bone -> bone.setHidden(hidden));
     }
 
-    static Vec3 chainTangent(WormSegment segment, float partialTick) {
-        if (!(segment instanceof Entity current) || !(segment.getPrev() instanceof Entity leader))
-            return Vec3.ZERO;
-        return leader.getPosition(partialTick).subtract(current.getPosition(partialTick));
-    }
 }

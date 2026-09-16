@@ -2,7 +2,6 @@ package org.confluence.mod.common.data.saved;
 
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
-import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectMutablePair;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
@@ -10,7 +9,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -31,7 +29,6 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Map;
 
 public enum GlobalCloakData implements IGlobalData {
@@ -61,20 +58,6 @@ public enum GlobalCloakData implements IGlobalData {
     private Map<BlockState, BlockBehaviour.Properties> backupProperties = new IdentityHashMap<>();
     private Map<Item, BooleanObjectPair<Item>> itemMap = new IdentityHashMap<>();
     private int version;
-
-    public void fix(ServerLevel level) {
-        if (version >= VERSION) return;
-        this.version = VERSION;
-        int revealStep = ConfluenceData.get(level).getRevealStep() + 1; // [0, 9]
-        if (revealStep == 0) return;
-        List<BlockState> pairs = Lists.newArrayListWithExpectedSize(revealStep + revealStep);
-        for (int i = 0; i < revealStep; i++) {
-            BlockState[] pair = StepRevealingBlock.PAIRS.get()[i];
-            pairs.add(pair[0]);
-            pairs.add(pair[1]);
-        }
-        GlobalCloakData.INSTANCE.reveal(pairs.toArray(new BlockState[0]));
-    }
 
     public void initialize() {
         BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();

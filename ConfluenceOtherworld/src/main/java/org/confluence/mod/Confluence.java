@@ -46,7 +46,9 @@ public final class Confluence {
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
     public static final PortNetworkHandler NETWORK_HANDLER = new PortNetworkHandler(MODID, "1");
 
-    public static final boolean SOUL_SKILLS = false; // todo 1.3.0
+    // todo 1.3.0
+    public static final boolean SOUL_SKILLS = false;
+    public static final boolean THE_END_BIOMES = false;
 
     public Confluence(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();

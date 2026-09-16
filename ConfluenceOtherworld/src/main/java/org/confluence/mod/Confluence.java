@@ -34,7 +34,9 @@ public final class Confluence {
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
 
+    // todo 1.3.0
     public static final boolean SOUL_SKILLS = false;
+    public static final boolean THE_END_BIOMES = false;
 
     public Confluence(IEventBus eventBus, ModContainer container) {
         StartupConfigs.register(container);

@@ -20,11 +20,6 @@ import org.confluence.mod.mixin.world.level.dimension.DimensionTypeAccessor;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-/// 末地群系注入。
-///
-/// 末地不使用气候参数（{@code TheEndBiomeSource} 直接按噪声阈值挑群系），所以不走
-/// {@link org.confluence.mod.common.worldgen.biome.injector.BiomeRegion} 的参数盒子模型，
-/// 而是直接把一个 {@link BiomeSourceHandler} 挂到 {@code TheEndBiomeSource} 实例上。
 public class TheEndBiomeHolder {
     private static Holder<Biome> chorusForest;
     private static Holder<Biome> inverseForest;

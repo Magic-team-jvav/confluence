@@ -17,7 +17,7 @@ version = mod_version + "+" + minecraft_version + "-${new SimpleDateFormat("yyMM
 group = mod_group_id
 
 base {
-    archivesName = "ConfluenceOtherworld"
+    archivesName = "ConfluenceOtherworld-neoforge"
 }
 
 boolean isRunningInIdea = System.getProperty("idea.active") == "true"

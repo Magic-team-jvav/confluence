@@ -8,7 +8,6 @@ import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
@@ -25,12 +24,10 @@ public final class ServerEvents {
         PathService.INSTANCE.onServerStart();
         NetworkService.INSTANCE.onServerStart();
         MinecraftServer server = event.getServer();
-        if (LibUtils.isDev()) {
+        if (Confluence.THE_END_BIOMES) {
             TheEndBiomeHolder.open(server);
         }
         OverworldUtils.open(server);
-        // 必须在 loadLevel() 之前完成：原版第一次读取 possibleBiomes() 发生在
-        // createLevels() 里，晚于本事件。详见 ConfluenceBiomeInjector#install。
         ConfluenceBiomeInjector.install(server);
     }
 
@@ -43,7 +40,7 @@ public final class ServerEvents {
     @SubscribeEvent
     public static void serverStopping(ServerStoppingEvent event) {
         GameEventSystem.INSTANCE.close(event.getServer());
-        if (LibUtils.isDev()) {
+        if (Confluence.THE_END_BIOMES) {
             TheEndBiomeHolder.close();
         }
         ConfluenceBiomeInjector.uninstall();

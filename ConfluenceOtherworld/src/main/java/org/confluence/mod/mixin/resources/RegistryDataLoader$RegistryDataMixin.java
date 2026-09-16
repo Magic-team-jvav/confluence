@@ -10,7 +10,6 @@ import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.worldgen.TheEndBiomeHolder;
-import org.mesdag.portlib.diff.IPortMappedRegistry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,7 +24,7 @@ public abstract class RegistryDataLoader$RegistryDataMixin<T> {
     @ModifyExpressionValue(method = "create", at = @At(value = "NEW", target = "(Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Lifecycle;)Lnet/minecraft/core/MappedRegistry;"))
     private MappedRegistry<T> modifyRegistry(MappedRegistry<T> original) {
         if (Confluence.THE_END_BIOMES && Registries.DIMENSION_TYPE.equals(key)) {
-            IPortMappedRegistry.of(original).onAdd((registry, id, key, value) -> {
+            original.onAdd((registry, id, key, value) -> {
                 if (BuiltinDimensionTypes.END.equals(key)) {
                     TheEndBiomeHolder.modifyDimensionType((DimensionType) value);
                 }

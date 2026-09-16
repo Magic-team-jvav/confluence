@@ -192,8 +192,6 @@ boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
 boolean spark = true // 火花
 boolean apotheosis = false // 神化
-boolean legendarytooltips = false // 传说提示框
-boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
 boolean dynamicCrosshair = false // 动态准星
 boolean kubejs = false
@@ -366,13 +364,7 @@ dependencies {
     if (advancementPlaques) {
         runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
     }
-    if (legendarytooltips) {
-        runtimeOnly "curse.maven:legendary-tooltips-532127:6400660"
-    }
-    if (itemborders) {
-        runtimeOnly "curse.maven:item-borders-513769:5591010"
-    }
-    if (advancementPlaques || legendarytooltips || itemborders) {
+    if (advancementPlaques) {
         runtimeOnly "curse.maven:iceberg-520110:6423863"
         runtimeOnly "curse.maven:prism-lib-638111:6372979"
     }

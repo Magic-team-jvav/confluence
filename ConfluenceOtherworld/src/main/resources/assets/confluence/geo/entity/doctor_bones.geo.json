@@ -1,472 +1,144 @@
 {
-    "format_version": "1.12.0",
-    "minecraft:geometry": [
-        {
-            "description": {
-                "identifier": "geometry.doctor_bones",
-                "texture_width": 80,
-                "texture_height": 80,
-                "visible_bounds_width": 3,
-                "visible_bounds_height": 4,
-                "visible_bounds_offset": [
-                    0,
-                    1,
-                    0
-                ]
-            },
-            "bones": [
-                {
-                    "name": "bone",
-                    "pivot": [
-                        0,
-                        0,
-                        0
-                    ]
-                },
-                {
-                    "name": "LeftLeg",
-                    "parent": "bone",
-                    "pivot": [
-                        2,
-                        12,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                1,
-                                0,
-                                -1
-                            ],
-                            "size": [
-                                2,
-                                12,
-                                2
-                            ],
-                            "uv": [
-                                58,
-                                17
-                            ],
-                            "mirror": false
-                        }
-                    ]
-                },
-                {
-                    "name": "armorLeftBoot",
-                    "parent": "LeftLeg",
-                    "pivot": [
-                        2,
-                        12,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -0.1,
-                                0,
-                                -2
-                            ],
-                            "size": [
-                                4,
-                                12,
-                                4
-                            ],
-                            "inflate": 0.3,
-                            "uv": [
-                                51,
-                                55
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "armorLeftLeg",
-                    "parent": "LeftLeg",
-                    "pivot": [
-                        2,
-                        12,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -0.1,
-                                0,
-                                -2
-                            ],
-                            "size": [
-                                4,
-                                12,
-                                4
-                            ],
-                            "inflate": 0.1,
-                            "uv": [
-                                34,
-                                55
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "RightLeg",
-                    "parent": "bone",
-                    "pivot": [
-                        -2,
-                        12,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -3,
-                                0,
-                                -1
-                            ],
-                            "size": [
-                                2,
-                                12,
-                                2
-                            ],
-                            "uv": [
-                                59,
-                                32
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "armorRightLeg",
-                    "parent": "RightLeg",
-                    "pivot": [
-                        -2,
-                        12,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -3.9,
-                                0,
-                                -2
-                            ],
-                            "size": [
-                                4,
-                                12,
-                                4
-                            ],
-                            "inflate": 0.1,
-                            "uv": [
-                                17,
-                                55
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "armorRightBoot",
-                    "parent": "RightLeg",
-                    "pivot": [
-                        -2,
-                        12,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -3.9,
-                                0,
-                                -2
-                            ],
-                            "size": [
-                                4,
-                                12,
-                                4
-                            ],
-                            "inflate": 0.3,
-                            "uv": [
-                                0,
-                                51
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "LeftArm",
-                    "parent": "bone",
-                    "pivot": [
-                        5,
-                        22,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                4,
-                                12,
-                                -1
-                            ],
-                            "size": [
-                                2,
-                                12,
-                                2
-                            ],
-                            "uv": [
-                                66,
-                                0
-                            ],
-                            "mirror": false
-                        }
-                    ]
-                },
-                {
-                    "name": "armorLeftArm",
-                    "parent": "LeftArm",
-                    "pivot": [
-                        4,
-                        22,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                4,
-                                12.25,
-                                -2
-                            ],
-                            "size": [
-                                4,
-                                12,
-                                4
-                            ],
-                            "inflate": -0.2,
-                            "uv": [
-                                25,
-                                38
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "RightArm",
-                    "parent": "bone",
-                    "pivot": [
-                        -5,
-                        22,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -6,
-                                12,
-                                -1
-                            ],
-                            "size": [
-                                2,
-                                12,
-                                2
-                            ],
-                            "uv": [
-                                67,
-                                15
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "armorRightArm",
-                    "parent": "RightArm",
-                    "pivot": [
-                        -4,
-                        22,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -8,
-                                12.25,
-                                -2
-                            ],
-                            "size": [
-                                4,
-                                12,
-                                4
-                            ],
-                            "inflate": -0.2,
-                            "uv": [
-                                42,
-                                38
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Head",
-                    "parent": "bone",
-                    "pivot": [
-                        0,
-                        24,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -4,
-                                24,
-                                -4
-                            ],
-                            "size": [
-                                8,
-                                8,
-                                8
-                            ],
-                            "uv": [
-                                0,
-                                0
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "armorHead",
-                    "parent": "Head",
-                    "pivot": [
-                        0,
-                        24,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -4,
-                                24,
-                                -4
-                            ],
-                            "size": [
-                                8,
-                                8,
-                                8
-                            ],
-                            "inflate": 0.5,
-                            "uv": [
-                                0,
-                                17
-                            ]
-                        },
-                        {
-                            "origin": [
-                                -4,
-                                24,
-                                -4
-                            ],
-                            "size": [
-                                8,
-                                8,
-                                8
-                            ],
-                            "inflate": 0.9,
-                            "uv": [
-                                33,
-                                0
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "waist",
-                    "parent": "bone",
-                    "pivot": [
-                        0,
-                        12,
-                        0
-                    ]
-                },
-                {
-                    "name": "Body",
-                    "parent": "waist",
-                    "pivot": [
-                        0,
-                        24,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -4,
-                                12,
-                                -2
-                            ],
-                            "size": [
-                                8,
-                                16,
-                                4
-                            ],
-                            "inflate": -0.01,
-                            "uv": [
-                                33,
-                                17
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "armorBody",
-                    "parent": "Body",
-                    "pivot": [
-                        0,
-                        24,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -4,
-                                12,
-                                -2
-                            ],
-                            "size": [
-                                8,
-                                12,
-                                4
-                            ],
-                            "inflate": 0.6,
-                            "uv": [
-                                91,
-                                0
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "name": "Belt",
-                    "parent": "armorBody",
-                    "pivot": [
-                        0,
-                        0,
-                        0
-                    ],
-                    "cubes": [
-                        {
-                            "origin": [
-                                -4,
-                                12,
-                                -2
-                            ],
-                            "size": [
-                                8,
-                                12,
-                                4
-                            ],
-                            "inflate": 0.1,
-                            "uv": [
-                                0,
-                                34
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.doctor_bones",
+				"texture_width": 80,
+				"texture_height": 80,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 3.5,
+				"visible_bounds_offset": [0, 1.25, 0]
+			},
+			"bones": [
+				{
+					"name": "bone",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "LeftLeg",
+					"parent": "bone",
+					"pivot": [2, 12, 0],
+					"cubes": [
+						{"origin": [1, 0, -1], "size": [2, 12, 2], "uv": [58, 17]}
+					]
+				},
+				{
+					"name": "armorLeftBoot",
+					"parent": "LeftLeg",
+					"pivot": [2, 12, 0],
+					"cubes": [
+						{"origin": [-0.1, 0, -2], "size": [4, 12, 4], "inflate": 0.3, "uv": [51, 55]}
+					]
+				},
+				{
+					"name": "armorLeftLeg",
+					"parent": "LeftLeg",
+					"pivot": [2, 12, 0],
+					"cubes": [
+						{"origin": [-0.1, 0, -2], "size": [4, 12, 4], "inflate": 0.1, "uv": [34, 55]}
+					]
+				},
+				{
+					"name": "RightLeg",
+					"parent": "bone",
+					"pivot": [-2, 12, 0],
+					"cubes": [
+						{"origin": [-3, 0, -1], "size": [2, 12, 2], "uv": [59, 32]}
+					]
+				},
+				{
+					"name": "armorRightLeg",
+					"parent": "RightLeg",
+					"pivot": [-2, 12, 0],
+					"cubes": [
+						{"origin": [-3.9, 0, -2], "size": [4, 12, 4], "inflate": 0.1, "uv": [17, 55]}
+					]
+				},
+				{
+					"name": "armorRightBoot",
+					"parent": "RightLeg",
+					"pivot": [-2, 12, 0],
+					"cubes": [
+						{"origin": [-3.9, 0, -2], "size": [4, 12, 4], "inflate": 0.3, "uv": [0, 51]}
+					]
+				},
+				{
+					"name": "LeftArm",
+					"parent": "bone",
+					"pivot": [5, 22, 0],
+					"cubes": [
+						{"origin": [4, 12, -1], "size": [2, 12, 2], "uv": [66, 0]}
+					]
+				},
+				{
+					"name": "armorLeftArm",
+					"parent": "LeftArm",
+					"pivot": [4, 22, 0],
+					"cubes": [
+						{"origin": [4, 12.25, -2], "size": [4, 12, 4], "inflate": -0.2, "uv": [25, 38]}
+					]
+				},
+				{
+					"name": "RightArm",
+					"parent": "bone",
+					"pivot": [-5, 22, 0],
+					"cubes": [
+						{"origin": [-6, 12, -1], "size": [2, 12, 2], "uv": [67, 15]}
+					]
+				},
+				{
+					"name": "armorRightArm",
+					"parent": "RightArm",
+					"pivot": [-4, 22, 0],
+					"cubes": [
+						{"origin": [-8, 12.25, -2], "size": [4, 12, 4], "inflate": -0.2, "uv": [42, 38]}
+					]
+				},
+				{
+					"name": "Head",
+					"parent": "bone",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "armorHead",
+					"parent": "Head",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 0.5, "uv": [0, 17]},
+						{"origin": [-4, 24, -4], "size": [8, 8, 8], "inflate": 0.9, "uv": [33, 0]}
+					]
+				},
+				{
+					"name": "waist",
+					"parent": "bone",
+					"pivot": [0, 12, 0]
+				},
+				{
+					"name": "Body",
+					"parent": "waist",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{"origin": [-4, 12, -2], "size": [8, 16, 4], "inflate": -0.01, "uv": [33, 17]}
+					]
+				},
+				{
+					"name": "armorBody",
+					"parent": "Body",
+					"pivot": [0, 24, 0]
+				},
+				{
+					"name": "Belt",
+					"parent": "armorBody",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 0.1, "uv": [0, 34]}
+					]
+				}
+			]
+		}
+	]
 }

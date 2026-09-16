@@ -776,7 +776,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(NpcEntities.MECHANIC.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/mechanic")));
         event.registerEntityRenderer(NpcEntities.PARTY_GIRL.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/party_girl")));
         event.registerEntityRenderer(NpcEntities.STYLIST.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/stylist")));
-        event.registerEntityRenderer(NpcEntities.TAX_COLLECTOR.get(), MissingModelRenderer::new); // todo 专用模型
+        event.registerEntityRenderer(NpcEntities.TAX_COLLECTOR.get(),  c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/tax_collector")));
         event.registerEntityRenderer(NpcEntities.TRUFFLE.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/truffle")));
         event.registerEntityRenderer(NpcEntities.WIZARD.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/wizard")));
         event.registerEntityRenderer(NpcEntities.ZOOLOGIST.get(), c -> new NPCEntityRenderer<>(c, Confluence.asResource("npc/zoologist")));

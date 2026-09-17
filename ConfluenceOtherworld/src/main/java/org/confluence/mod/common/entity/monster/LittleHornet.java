@@ -184,7 +184,6 @@ public final class LittleHornet extends Hornet implements BossOwnedEntity {
             }
 
             boolean attackWindow = BossMinionCoordinator.isAttackWindow(LittleHornet.this, 64, 28);
-            faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
             if (--repathDelay <= 0) {
                 QueenBee master = getMaster();
                 if (master != null && !attackWindow) {

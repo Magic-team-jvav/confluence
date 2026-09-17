@@ -21,6 +21,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.monster.Corruptor;
+import org.confluence.mod.common.init.ModParticleTypes;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 /// 使用粒子表现的敌对生物弹幕。
@@ -82,18 +84,20 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
     }
 
     private void spawnParticles() {
+        ParticleOptions particle = variant.particle();
+        if (particle == null) return;
         if (isInfernoBlast()) {
             for (int i = 0; i < 18; i++) {
                 Vec3 offset = new Vec3(random.nextGaussian(), random.nextGaussian(), random.nextGaussian());
                 if (offset.lengthSqr() < 1.0E-7) continue;
                 offset = offset.normalize().scale(random.nextDouble() * INFERNO_BLAST_RADIUS);
-                level().addParticle(variant.particle(), getX() + offset.x, getY() + offset.y, getZ() + offset.z, 0.0, 0.0, 0.0);
+                level().addParticle(particle, getX() + offset.x, getY() + offset.y, getZ() + offset.z, 0.0, 0.0, 0.0);
             }
             return;
         }
         Vec3 movement = getDeltaMovement();
         for (int i = 0; i < 3; i++) {
-            level().addParticle(variant.particle(), getRandomX(0.5), getRandomY(), getRandomZ(0.5), movement.x, movement.y, movement.z);
+            level().addParticle(particle, getRandomX(0.5), getRandomY(), getRandomZ(0.5), movement.x, movement.y, movement.z);
         }
     }
 
@@ -158,7 +162,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
                 else if (LibUtils.isAtLeastExpert(level(), blockPosition())) duration *= 2;
                 target.igniteForTicks(duration);
             }
-            case WATER_SPHERE, CHAOS_BALL, GASTROPOD, WALL_OF_FLESH_LASER -> {
+            case WATER_SPHERE, CHAOS_BALL, RUNE_BLAST, GASTROPOD, WALL_OF_FLESH_LASER -> {
                 // 这些能量弹幕只结算直接伤害，不附加状态。
             }
         }
@@ -235,14 +239,15 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
 
     @Override
     public boolean isPickable() {
-        return variant.isDestructible();
+        return variant.isDestructible() && !isRemoved();
     }
 
     /// 水球、混沌球与燃烧球受到一次有效攻击即被摧毁。
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!variant.isDestructible() || source.getEntity() == null || amount <= 0.0F) return false;
-        discard();
+        if (!variant.isDestructible() || source.getEntity() == null || amount <= 0.0F || isInvulnerableTo(source) || isRemoved())
+            return false;
+        if (!level().isClientSide) discard();
         return true;
     }
 
@@ -267,26 +272,29 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
         HILL_FIRE_BOUND(ParticleTypes.FLAME, false, false, 100),
         WATER_SPHERE(ParticleTypes.SOUL, true, true, 100),
         CHAOS_BALL(ParticleTypes.SOUL, true, true, 100),
+        RUNE_BLAST(new DustParticleOptions(new Vector3f(0.2F, 1.0F, 0.1F), 1.2F), true, false, 160),
         SHADOW_BEAM(ParticleTypes.SOUL_FIRE_FLAME, false, false, 100),
         INFERNO_BOLT(ParticleTypes.FLAME, true, false, 400),
         LOST_SOUL(ParticleTypes.SOUL, true, false, 50),
-        VILE_SPIT(ParticleTypes.WITCH, false, true, 100),
+        VILE_SPIT(ModParticleTypes.SPIT_GLOW.get(), false, true, 100),
         FIRE_IMP(ParticleTypes.FLAME, true, true, 100),
-        GASTROPOD(new DustParticleOptions(new Vector3f(1.0F, 0.2F, 0.8F), 1.15F), false, false, 100),
-        WALL_OF_FLESH_LASER(new DustParticleOptions(new Vector3f(0.72F, 0.08F, 0.62F), 1.35F), false, false, 100);
+        GASTROPOD(null, false, false, 100),
+        WALL_OF_FLESH_LASER(null, false, false, 100);
 
+        @Nullable
         private final ParticleOptions particle;
         private final boolean passesThroughBlocks;
         private final boolean destructible;
         private final int maximumLifetime;
 
-        Variant(ParticleOptions particle, boolean passesThroughBlocks, boolean destructible, int maximumLifetime) {
+        Variant(@Nullable ParticleOptions particle, boolean passesThroughBlocks, boolean destructible, int maximumLifetime) {
             this.particle = particle;
             this.passesThroughBlocks = passesThroughBlocks;
             this.destructible = destructible;
             this.maximumLifetime = maximumLifetime;
         }
 
+        @Nullable
         ParticleOptions particle() {
             return particle;
         }

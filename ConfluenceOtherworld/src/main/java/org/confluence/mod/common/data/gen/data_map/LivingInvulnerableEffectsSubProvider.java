@@ -54,6 +54,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(CritterEntities.CRAB, LibEffects.CONFUSED)
                 .add(MonsterEntities.CURSED_SKULL, MobEffects.POISON, LibEffects.CONFUSED.get())
                 .add(BossEntities.DUNGEON_GUARDIAN, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL_EXCEPT_WHIP_TAG)
+                .add(MonsterEntities.DUNGEON_SPIRIT, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL_EXCEPT_WHIP_TAG)
                 .add(MonsterEntities.DUNGEON_SLIME, MobEffects.POISON)
                 .add(MonsterEntities.EATER_OF_SOULS, LibEffects.CONFUSED)
                 .add(MonsterEntities.FACE_MONSTER, MobEffects.POISON)
@@ -63,9 +64,11 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(MonsterEntities.WRAITH, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL_EXCEPT_WHIP_TAG)
                 .add(MonsterEntities.GIANT_SHELLY, LibEffects.CONFUSED)
                 .add(MonsterEntities.GIANT_WORM, LibEffects.CONFUSED)
+                .add(MonsterEntities.DIGGER, LibEffects.CONFUSED)
+                .add(MonsterEntities.WORLD_FEEDER, LibEffects.CONFUSED)
                 // TODO 侏儒
                 .add(MonsterEntities.GRANITE_ELEMENTAL, MobEffects.POISON, LibEffects.CONFUSED.get(), ModEffects.HELLFIRE.get())
-                // TODO 花岗岩巨人
+                .add(MonsterEntities.GRANITE_GOLEM, MobEffects.POISON, LibEffects.CONFUSED.get())
                 .add(MonsterEntities.GREEN_SLIME, MobEffects.POISON)
                 .add(MonsterEntities.HARPY, MobEffects.POISON)
                 .add(MonsterEntities.HELL_BAT, ModEffects.HELLFIRE)
@@ -96,6 +99,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(MonsterEntities.TOMB_CRAWLER, LibEffects.CONFUSED)
                 // TODO 不死矿工
                 .add(MonsterEntities.UNDEAD_VIKING, ModEffects.FROST_BURN.get(), ModEffects.FROSTBITE.get(), MobEffects.POISON)
+                .add(MonsterEntities.ARMORED_VIKING, ModEffects.FROST_BURN.get(), ModEffects.FROSTBITE.get(), MobEffects.POISON)
                 .add(MonsterEntities.VOODOO_DEMON, LibEffects.CONFUSED, ModEffects.SHADOWFLAME, ModEffects.HELLFIRE)
                 // TODO 秃鹰 爬墙蜘蛛
                 .add(MonsterEntities.YELLOW_SLIME, MobEffects.POISON)

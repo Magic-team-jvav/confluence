@@ -1,18 +1,13 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.world.item.Item;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.summon.SummonItem;
-import org.confluence.mod.common.summon.SummonType;
 import org.confluence.mod.common.summon.SummonTypes;
 import org.confluence.mod.common.summon.dragon.StardustDragonSummon;
-import org.confluence.mod.common.summon.flying.FinchSummon;
-import org.confluence.mod.common.summon.flying.HornetSummon;
-import org.confluence.mod.common.summon.flying.ImpSummon;
-import org.confluence.mod.common.summon.flying.SculkWispSummon;
-import org.confluence.mod.common.summon.ground.IronGolemSummon;
-import org.confluence.mod.common.summon.ground.SnowFlinxSummon;
+import org.confluence.mod.common.summon.flying.*;
+import org.confluence.mod.common.summon.ground.*;
 import org.confluence.mod.common.summon.slime.SlimeSummon;
 import org.confluence.mod.common.summon.terraprisma.TerraprismaSummon;
 import org.mesdag.portlib.registries.PortDeferredItem;
@@ -25,31 +20,32 @@ public class SummonItems {
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
     public static final PortDeferredItem<SummonItem> FINCH_STAFF = ITEMS.register("finch_staff",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.FINCH, FinchSummon.SLOT_COST, FinchSummon.BASE_DAMAGE));
+            () -> new SummonItem(ModRarity.BLUE, SummonTypes.FINCH, FinchSummon.SLOT_COST, FinchSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> IRON_GOLEM_STAFF = ITEMS.register("iron_golem_staff",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.IRON_GOLEM, IronGolemSummon.SLOT_COST, IronGolemSummon.BASE_DAMAGE));
+            () -> new SummonItem(ModRarity.BLUE, SummonTypes.IRON_GOLEM, IronGolemSummon.SLOT_COST, IronGolemSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> SLIME_STAFF = ITEMS.register("slime_staff",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.SLIME, SlimeSummon.SLOT_COST, SlimeSummon.BASE_DAMAGE));
+            () -> new SummonItem(ModRarity.LIGHT_RED, SummonTypes.SLIME, SlimeSummon.SLOT_COST, SlimeSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> HORNET_STAFF = ITEMS.register("hornet_staff",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.HORNET, HornetSummon.SLOT_COST, HornetSummon.BASE_DAMAGE).setSound(ModSoundEvents.SUMMON_HORNET));
+            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.HORNET, HornetSummon.SLOT_COST, HornetSummon.BASE_DAMAGE).setSound(ModSoundEvents.SUMMON_HORNET));
     public static final PortDeferredItem<SummonItem> SCULK_WISP_STAFF = ITEMS.register("sculk_wisp_staff",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.SCULK_WISP, SculkWispSummon.SLOT_COST, SculkWispSummon.BASE_DAMAGE));
+            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.SCULK_WISP, SculkWispSummon.SLOT_COST, SculkWispSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> IMP_STAFF = ITEMS.register("imp_staff",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.IMP, ImpSummon.SLOT_COST, ImpSummon.BASE_DAMAGE).setSound(ModSoundEvents.SUMMON_IMP));
+            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.IMP, ImpSummon.SLOT_COST, ImpSummon.BASE_DAMAGE).setSound(ModSoundEvents.SUMMON_IMP));
     public static final PortDeferredItem<SummonItem> SNOW_FLINX_STAFF = ITEMS.register("snow_flinx_staff",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.SNOW_FLINX, SnowFlinxSummon.SLOT_COST, SnowFlinxSummon.BASE_DAMAGE));
-    public static final PortDeferredItem<SummonItem> TERRAPRISMA_WOODEN = registerSword("summon_wooden_sword_staff", 2, SummonTypes.SUMMON_WOODEN_SWORD);
-    public static final PortDeferredItem<SummonItem> TERRAPRISMA_STONE = registerSword("summon_stone_sword_staff", 3, SummonTypes.SUMMON_STONE_SWORD);
-    public static final PortDeferredItem<SummonItem> TERRAPRISMA_IRON = registerSword("summon_iron_sword_staff", 4, SummonTypes.SUMMON_IRON_SWORD);
-    public static final PortDeferredItem<SummonItem> TERRAPRISMA_GOLDEN = registerSword("summon_golden_sword_staff", 5, SummonTypes.SUMMON_GOLDEN_SWORD);
-    public static final PortDeferredItem<SummonItem> TERRAPRISMA_DIAMOND = registerSword("summon_diamond_sword_staff", 6, SummonTypes.SUMMON_DIAMOND_SWORD);
-    public static final PortDeferredItem<SummonItem> TERRAPRISMA_NETHERITE = registerSword("summon_netherite_sword_staff", 7, SummonTypes.SUMMON_NETHERITE_SWORD);
+            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.SNOW_FLINX, SnowFlinxSummon.SLOT_COST, SnowFlinxSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonItem> VAMPIRE_FROG_STAFF = ITEMS.register("vampire_frog_staff",
+            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.VAMPIRE_FROG, VampireFrogSummon.SLOT_COST, VampireFrogSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonItem> DEADLY_SPHERE_STAFF = ITEMS.register("deadly_sphere_staff",
+            () -> new SummonItem(ModRarity.YELLOW, SummonTypes.DEADLY_SPHERE, DeadlySphereSummon.SLOT_COST, DeadlySphereSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonItem> SANGUINE_STAFF = ITEMS.register("sanguine_staff",
+            () -> new SummonItem(ModRarity.LIGHT_RED, SummonTypes.VAMPIRE_BAT, VampireBatSummon.SLOT_COST, VampireBatSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonItem> SPIDER_STAFF = ITEMS.register("spider_staff",
+            () -> new SummonItem(ModRarity.LIGHT_RED, SummonTypes.SPIDER, SpiderSummon.SLOT_COST, SpiderSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonItem> DESERT_TIGER_STAFF = ITEMS.register("desert_tiger_staff",
+            () -> new SummonItem(ModRarity.YELLOW, SummonTypes.DESERT_TIGER, DesertTigerSummon.SLOT_COST, DesertTigerSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> TERRAPRISMA = ITEMS.register("terraprisma",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.TERRAPRISMA, TerraprismaSummon.SLOT_COST, TerraprismaSummon.BASE_DAMAGE));
+            () -> new SummonItem(ModRarity.PINK, SummonTypes.TERRAPRISMA, TerraprismaSummon.SLOT_COST, TerraprismaSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> STARDUST_DRAGON_STAFF = ITEMS.register("stardust_dragon_staff",
-            () -> new SummonItem(new Item.Properties(), SummonTypes.STARDUST_DRAGON, StardustDragonSummon.SLOT_COST, StardustDragonSummon.BASE_DAMAGE));
+            () -> new SummonItem(ModRarity.RED, SummonTypes.STARDUST_DRAGON, StardustDragonSummon.SLOT_COST, StardustDragonSummon.BASE_DAMAGE));
 
-    private static PortDeferredItem<SummonItem> registerSword(String name, float baseDamage, SummonType type) {
-        return ITEMS.register(name, () -> new SummonItem(new Item.Properties(), type, 1, baseDamage));
-    }
 }

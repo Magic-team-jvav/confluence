@@ -34,7 +34,6 @@ public final class BossMinionCoordinator {
         minion.xRotO = pitch;
         minion.yBodyRotO = yaw;
         minion.yHeadRotO = yaw;
-        minion.getLookControl().setLookAt(target, 360.0F, 360.0F);
     }
 
     public static boolean isAttackWindow(Entity minion, int period, int activeTicks) {

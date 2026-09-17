@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.monster;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
@@ -13,6 +14,12 @@ public abstract class BaseFlyingMonster extends BaseMonster {
     public BaseFlyingMonster(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.moveControl = new FlyingMoveControl(this, 10, false);
+        this.lookControl = new LookControl(this) {
+            @Override
+            protected boolean resetXRotOnTick() {
+                return false;
+            }
+        };
         this.setNoGravity(true);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, -1.0F);

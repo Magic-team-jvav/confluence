@@ -25,6 +25,7 @@ import java.util.List;
 /// 蠕虫型 Boss 基类。穿透方块移动，体节跟随。
 public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
     protected final List<BossWormPart> segments = new ArrayList<>();
+    private final java.util.Map<Integer, BossWormPart> clientSegments = new java.util.HashMap<>();
     private final WormChainTrail segmentTrail = new WormChainTrail();
 
     public BaseWormBoss(EntityType<? extends Monster> type, Level level) {
@@ -245,12 +246,26 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
     public WormSegment getSegment(int index) {
         if (index < 0) return null;
         if (index == 0) return this;
+        if (level().isClientSide) {
+            BossWormPart part = clientSegments.get(index);
+            if (part != null && part.isRemoved()) {
+                clientSegments.remove(index);
+                return null;
+            }
+            return part;
+        }
         int segIdx = index - 1;
         return segIdx < segments.size() ? segments.get(segIdx) : null;
     }
 
     public List<BossWormPart> getSegments() {
         return List.copyOf(segments);
+    }
+
+    /// 独立同步的部件到达客户端后，按服务端索引重建相邻关系。
+    public void trackClientSegment(BossWormPart part) {
+        if (level().isClientSide && part.getSegmentIndex() > 0 && !part.isRemoved())
+            clientSegments.put(part.getSegmentIndex(), part);
     }
 
     @Override
@@ -286,12 +301,11 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
             WormChainTrail.Sample sample = samples.get(index);
             BossWormPart segment = segments.get(index);
             segment.moveToChainPosition(sample.position());
-            segment.orientAlongChain(leaderPosition.subtract(sample.position()));
-            leaderPosition = sample.position();
+            segment.orientAlongChain(sample.tangent());
         }
-        Vec3 movement = new Vec3(getX() - xo, getY() - yo, getZ() - zo);
-        if (movement.lengthSqr() > 1.0E-7D) {
-            WormSegment.orientAlong(this, movement);
+        Vec3 tangent = segmentTrail.headTangent();
+        if (tangent.lengthSqr() > 1.0E-7D) {
+            WormSegment.orientAlong(this, tangent);
             setYBodyRot(getYRot());
             setYHeadRot(getYRot());
         }

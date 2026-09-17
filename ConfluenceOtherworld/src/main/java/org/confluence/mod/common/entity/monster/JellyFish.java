@@ -44,6 +44,7 @@ public class JellyFish extends BaseAquaticMonster {
     private static final int PURSUIT_TICKS = 150;
     private static final int PULSE_TICKS = 80;
     private static final int ATTACK_PULSE_INTERVAL = 20;
+    private static final double PULSE_SPEED_FACTOR = 0.1;
     private static final double SHORE_TARGET_RANGE = 6.0;
     private static final double SHORE_TARGET_HEIGHT = 3.0;
     private static final EntityDataAccessor<Boolean> ATTACK_PHASE = SynchedEntityData.defineId(JellyFish.class, EntityDataSerializers.BOOLEAN);
@@ -115,7 +116,7 @@ public class JellyFish extends BaseAquaticMonster {
 
     private void setAttackPhase(boolean attackPhase) {
         entityData.set(ATTACK_PHASE, attackPhase);
-        entityData.set(ELECTRIFIED, attackPhase && isInWater() && LibUtils.isAtLeastExpert(level(), blockPosition()));
+        entityData.set(ELECTRIFIED, profile != Profile.FUNGO && attackPhase && isInWater() && LibUtils.isAtLeastExpert(level(), blockPosition()));
     }
 
     /// 水母使用独立接触伤害冷却，不把伤害绑在攻击动画帧上。
@@ -249,7 +250,7 @@ public class JellyFish extends BaseAquaticMonster {
                 return;
             }
             jellyfish.faceCombatDirection(direction, 30.0F, 30.0F);
-            jellyfish.setDeltaMovement(direction.normalize().scale(0.5));
+            jellyfish.setDeltaMovement(direction.normalize().scale(jellyfish.getAttributeValue(Attributes.MOVEMENT_SPEED) * PULSE_SPEED_FACTOR));
             jellyfish.hasImpulse = true;
         }
     }
@@ -280,7 +281,7 @@ public class JellyFish extends BaseAquaticMonster {
     /// 水母以离散脉冲修正方向，而不是像普通鱼一样连续推进。
     ///
     /// 每次导航请求到达冷却边沿时才消费目标位置并重设速度；无目标时冷却范围更大，
-    /// 战斗时则更频繁。等待期间仍面向当前目标，使脉冲间隔不会表现为完全静止。
+    /// 战斗时则更频繁。攻击阶段的推进完全由战斗动作负责，不再消费导航航点。
     private static final class JellyFishMoveControl extends MoveControl {
         private static final int BASE_PULSE_COOLDOWN = 20;
         private int pulseCooldown;
@@ -291,7 +292,14 @@ public class JellyFish extends BaseAquaticMonster {
 
         @Override
         public void tick() {
-
+            if (((JellyFish) mob).isAttackPhase() || mob.getNavigation().isDone()) {
+                operation = Operation.WAIT;
+                mob.setSpeed(0.0F);
+                mob.setXxa(0.0F);
+                mob.setYya(0.0F);
+                mob.setZza(0.0F);
+                return;
+            }
             if (--pulseCooldown <= 0 && operation == Operation.MOVE_TO) {
                 operation = Operation.WAIT;
                 double xDistance = wantedX - mob.getX();
@@ -309,8 +317,13 @@ public class JellyFish extends BaseAquaticMonster {
                 mob.setYRot(rotlerp(mob.getYRot(), targetYaw, 90.0F));
                 mob.setYBodyRot(mob.getYRot());
                 mob.setYHeadRot(mob.getYRot());
-                mob.setSpeed((float) (speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED)));
-                mob.setDeltaMovement(new Vec3(xDistance, yDistance, zDistance).normalize().scale(0.5));
+                // 速度由脉冲直接设置，不再叠加 travel 的输入加速度。
+                mob.setSpeed(0.0F);
+                mob.setXxa(0.0F);
+                mob.setYya(0.0F);
+                mob.setZza(0.0F);
+                mob.setDeltaMovement(new Vec3(xDistance, yDistance, zDistance).normalize()
+                        .scale(speedModifier * mob.getAttributeValue(Attributes.MOVEMENT_SPEED) * PULSE_SPEED_FACTOR));
 
                 BlockPos blockPos = mob.blockPosition();
                 BlockState blockState = mob.level().getBlockState(blockPos);
@@ -329,16 +342,14 @@ public class JellyFish extends BaseAquaticMonster {
                 return;
             }
 
-            if (mob.getTarget() != null) {
-                ((JellyFish) mob).faceCombatPosition(mob.getTarget().getEyePosition(), 10.0F, 10.0F);
-            }
         }
     }
 
     /// 共享水母状态机中的接触效果档案；颜色、属性和生成条件仍由注册与数据层负责。
     public enum Profile {
         ROUTINE(false),
-        GREEN(true);
+        GREEN(true),
+        FUNGO(false);
 
         private final boolean silences;
 

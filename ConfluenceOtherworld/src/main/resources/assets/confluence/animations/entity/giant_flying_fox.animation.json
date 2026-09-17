@@ -5,6 +5,15 @@
 			"loop": true,
 			"animation_length": 0.5,
 			"bones": {
+                "bone": {
+                    "rotation": {
+                        "vector": [
+                            22.5,
+                            0,
+                            0
+                        ]
+                    }
+                },
 				"Head": {
 					"rotation": {
 						"vector": [12.5, 0, 0]
@@ -126,13 +135,8 @@
 							"vector": [1, 1, 1]
 						}
 					}
-				},
-				"bone": {
-					"rotation": {
-						"vector": [22.5, 0, 0]
-					}
-				}
-			}
-		}
-	}
+                }
+            }
+        }
+    }
 }

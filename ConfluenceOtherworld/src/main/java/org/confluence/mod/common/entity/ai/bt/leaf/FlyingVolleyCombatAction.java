@@ -26,6 +26,7 @@ public final class FlyingVolleyCombatAction extends BTNode {
     private final int approachTicks;
     private final int[] shotTicks;
     private int cycleTick;
+    private boolean approaching;
 
     public FlyingVolleyCombatAction(BaseMonster mob, SteeringDashAction approachAction, Function<LivingEntity, @Nullable Projectile> projectileFactory, int approachTicks, int... shotTicks) {
         this.mob = Objects.requireNonNull(mob, "mob");
@@ -51,11 +52,13 @@ public final class FlyingVolleyCombatAction extends BTNode {
     @Override
     public void start() {
         cycleTick = 0;
+        approaching = false;
         approachAction.start();
     }
 
     @Override
     public BTStatus execute() {
+        approaching = false;
         LivingEntity target = mob.getTarget();
         if (target == null || !target.isAlive()) {
             return BTStatus.FAILURE;
@@ -63,6 +66,7 @@ public final class FlyingVolleyCombatAction extends BTNode {
 
         cycleTick++;
         if (cycleTick <= approachTicks) {
+            approaching = true;
             return approachAction.execute();
         }
         if (cycleTick == approachTicks + 1) approachAction.stop();
@@ -88,7 +92,13 @@ public final class FlyingVolleyCombatAction extends BTNode {
 
     @Override
     public void stop() {
+        approaching = false;
         approachAction.stop();
+    }
+
+    /// 仅在本节点实际执行冲撞接近时为 true；齐射、停止和目标失效时均为 false。
+    public boolean isApproaching() {
+        return approaching;
     }
 
     private boolean spawnProjectile(LivingEntity target) {

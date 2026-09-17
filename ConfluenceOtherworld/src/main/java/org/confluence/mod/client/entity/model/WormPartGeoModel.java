@@ -19,8 +19,6 @@ import software.bernie.geckolib.animatable.GeoEntity;
 /// 又能在错误的循环引用或损坏链条下保证客户端渲染不会无限循环。
 ///
 /// 链条尚未完整同步、链首索引不为零或链首不是实体时，回退到构造器提供的默认资源。
-/// 毁灭者目前显式复用世界吞噬者节段美术；该兼容分支在专属资源补齐后可以独立移除，不影响
-/// 服务端的节段身份和战斗逻辑。
 public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNormalModel<T> {
     private final ResourceLocation bodyModel;
     private final ResourceLocation bodyTexture;
@@ -42,7 +40,7 @@ public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNorm
     @Override
     public ResourceLocation getModelResource(T segment) {
         EntityType<?> familyType = familyType(segment);
-        if (familyType == null || usesFallbackResources(familyType)) {
+        if (familyType == null) {
             return segment.isTail() ? tailModel : bodyModel;
         }
         if (isWyvernFamily(familyType)) {
@@ -56,7 +54,7 @@ public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNorm
     @Override
     public ResourceLocation getTextureResource(T segment) {
         EntityType<?> familyType = familyType(segment);
-        if (familyType == null || usesFallbackResources(familyType)) {
+        if (familyType == null) {
             return segment.isTail() ? tailTexture : bodyTexture;
         }
         if (isWyvernFamily(familyType)) {
@@ -107,10 +105,6 @@ public class WormPartGeoModel<T extends GeoEntity & WormSegment> extends GeoNorm
         return type == BossEntities.EATER_OF_WORLDS_SEGMENT.get()
                 || type == BossEntities.THE_DESTROYER_PART.get()
                 || type == MonsterEntities.WORM_SEGMENT.get();
-    }
-
-    private static boolean usesFallbackResources(EntityType<?> type) {
-        return type == BossEntities.THE_DESTROYER.get();
     }
 
     private static boolean isWyvernFamily(@Nullable EntityType<?> type) {

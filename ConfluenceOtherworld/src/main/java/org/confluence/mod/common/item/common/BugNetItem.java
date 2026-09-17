@@ -64,6 +64,10 @@ public class BugNetItem extends TooltipItem {
             if (player.isLocalPlayer()) {
                 ((LocalPlayer) player).connection.send(ServerboundInteractPacket.createInteractionPacket(interactionTarget, false, InteractionHand.MAIN_HAND));
             } else if (predicate.test(interactionTarget) && interactionTarget.getBoundingBox().getSize() <= maxSize) {
+                if (interactionTarget instanceof org.confluence.mod.common.entity.animal.MysticFrog frog) {
+                    frog.escapeNet();
+                    break l;
+                }
                 ItemStack itemStack = BugNetEntityToItem.getItem((ServerPlayer) player, interactionTarget);
                 if (itemStack == null) {
                     itemStack = ModItems.ENTITY_DISPLAY.toStack();

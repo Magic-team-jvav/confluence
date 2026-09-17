@@ -16,6 +16,7 @@
         "integration.terracurio.StarClockEntityMixin",
         "integration.terrafurniture.TFPinWheelMixin",
         "neoforge.items.ItemStackHandlerMixin",
+        "resources.RegistryDataLoader$RegistryDataMixin",
         "server.MinecraftServerMixin",
         "server.ServerAdvancementManagerMixin",
         "server.commands.AdvancementCommands$Action$2Mixin",

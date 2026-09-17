@@ -404,7 +404,9 @@ public final class ValueSubProvider {
                 .add(LightPetItems.MAGIC_LANTERN, gold2);
         builder
                 .add(MountItems.SLIMY_SADDLE, gold5)
-                .add(MountItems.HONEYED_GOGGLES, gold5);
+                .add(MountItems.HONEYED_GOGGLES, gold5)
+                .add(MountItems.BLESSED_APPLE, gold5)
+                .add(MountItems.SUPERHEATED_BLOOD, gold5);
         builder // 影响地形
                 .add(ToolItems.STAFF_OF_REGROWTH, silver50)
                 .add(ModItems.HIVE_WAND, silver50)
@@ -680,6 +682,11 @@ public final class ValueSubProvider {
                 .add(SummonItems.IMP_STAFF, silver50 + silver2 + silver2)
                 .add(SummonItems.FINCH_STAFF, gold1)
                 .add(SummonItems.SNOW_FLINX_STAFF, gold1 + silver50)
+                .add(SummonItems.VAMPIRE_FROG_STAFF, gold1)
+                .add(SummonItems.DEADLY_SPHERE_STAFF, gold10)
+                .add(SummonItems.SANGUINE_STAFF, gold5)
+                .add(SummonItems.SPIDER_STAFF, gold1)
+                .add(SummonItems.DESERT_TIGER_STAFF, gold20)
                 .add(SummonItems.SCULK_WISP_STAFF, gold1)
                 .add(SummonItems.IRON_GOLEM_STAFF, gold2)
                 .add(SummonItems.TERRAPRISMA, gold20)

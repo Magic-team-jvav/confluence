@@ -12,10 +12,12 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.entity.boss.*;
+import org.confluence.mod.common.entity.projectile.SparkleSlimeBalloonProjectile;
 import org.confluence.mod.common.entity.projectile.ThrownWaterProjectile;
 import org.confluence.mod.common.entity.projectile.bomb.*;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
+import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -52,6 +54,7 @@ public class ConsumableItems {
     public static final PortDeferredItem<ThrowableItem<BouncyBombEntity>> BOUNCY_BOMB = ITEMS.register("bouncy_bomb", () -> new ThrowableItem<>(0.8F, BouncyBombEntity::new));
     public static final PortDeferredItem<ThrowableItem<StickyBombEntity>> STICKY_BOMB = ITEMS.register("sticky_bomb", () -> new ThrowableItem<>(0.8F, StickyBombEntity::new));
     public static final PortDeferredItem<ThrowableItem<SmokeBombEntity>> SMOKE_BOMB = ITEMS.register("smoke_bomb", () -> new ThrowableItem<>(0.8F, SmokeBombEntity::new));
+    public static final PortDeferredItem<ThrowableItem<SparkleSlimeBalloonProjectile>> SPARKLE_SLIME_BALLOON = ITEMS.register("sparkle_slime_balloon", () -> new ThrowableItem<>(0.8F, SparkleSlimeBalloonProjectile::new));
     public static final PortDeferredItem<ThrowableItem<BombFishEntity>> BOMB_FISH = ITEMS.register("bomb_fish", () -> new ThrowableItem<>(0.8F, BombFishEntity::new));
     public static final PortDeferredItem<ThrowableItem<ScarabBombEntity>> SCARAB_BOMB = ITEMS.register("scarab_bomb", () -> new ThrowableItem<>(0.8F, ScarabBombEntity::new));
     public static final PortDeferredItem<ThrowableItem<BaseDynamiteEntity>> DYNAMITE = ITEMS.register("dynamite", () -> new ThrowableItem<>(0.75F, BaseDynamiteEntity::new));
@@ -113,4 +116,5 @@ public class ConsumableItems {
 
     public static final PortDeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
     public static final PortDeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));
+    public static final PortDeferredItem<GameEventItem> PIRATE_MAP = ITEMS.register("pirate_map", () -> new GameEventItem(new Item.Properties(), ModRarity.LIGHT_RED, TooltipItem.getTooltipsFromString("pirate_map", 1, ChatFormatting.GRAY), PirateInvasionGameEvent.KEY));
 }

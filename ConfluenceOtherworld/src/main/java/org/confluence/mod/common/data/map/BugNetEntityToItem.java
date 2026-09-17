@@ -20,7 +20,7 @@ public record BugNetEntityToItem(List<Tuple<EntityPredicate, ItemStack>> list) {
     public static final EntityPredicate EMPTY_PREDICATE = EntityPredicate.Builder.entity().build();
     public static final Codec<BugNetEntityToItem> CODEC = PortCodecExtension.lazyInitialized(() -> {
         Codec<Tuple<EntityPredicate, ItemStack>> codec = RecordCodecBuilder.create(instance -> instance.group(
-                PortCodecExtension.lenientOptionalFieldOf(EntityPredicate.CODEC, "predicate", EMPTY_PREDICATE).forGetter(Tuple::getA),
+                EntityPredicate.CODEC.optionalFieldOf("predicate", EMPTY_PREDICATE).forGetter(Tuple::getA),
                 ItemStack.CODEC.fieldOf("result").forGetter(Tuple::getB)
         ).apply(instance, Tuple::new));
         return Codec.either(codec.listOf(), codec).xmap(

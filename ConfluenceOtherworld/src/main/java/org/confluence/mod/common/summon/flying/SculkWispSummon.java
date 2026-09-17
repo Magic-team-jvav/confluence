@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.summon.*;
 
 /// 幽匿飞灵召唤物的运行实例。
@@ -34,7 +35,7 @@ public final class SculkWispSummon extends FlyingSummon {
         if (castTicks > 0 && --castTicks == 0) {
             LivingEntity target = delayedTarget;
             delayedTarget = null;
-            if (target != null) {
+            if (target != null && target == target()) {
                 sonicBoom(target);
             }
         }
@@ -62,9 +63,10 @@ public final class SculkWispSummon extends FlyingSummon {
             level.sendParticles(ParticleTypes.SONIC_BOOM, particle.x, particle.y, particle.z, 1, 0.0, 0.0, 0.0, 0.0);
         }
         level.playSound(null, origin.x, origin.y, origin.z, SoundEvents.WARDEN_SONIC_BOOM, net.minecraft.sounds.SoundSource.NEUTRAL, 3.0F, 1.0F);
-        if (hurtTarget(target, 1.0F)) {
+        if (hurtTarget(target, 1.0F) && !(target instanceof BaseBoss)) {
             double resistance = target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
-            target.push(direction.x * 2.5 * (1.0 - resistance), direction.y * 0.5 * (1.0 - resistance), direction.z * 2.5 * (1.0 - resistance));
+            double strength = Math.max(0, 1.0 - resistance) * stats().knockbackMultiplier();
+            target.push(direction.x * 2.5 * strength, direction.y * 0.5 * strength, direction.z * 2.5 * strength);
         }
     }
 

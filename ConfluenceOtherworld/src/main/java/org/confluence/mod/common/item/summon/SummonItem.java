@@ -1,7 +1,6 @@
 package org.confluence.mod.common.item.summon;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -16,10 +15,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.api.event.SummonEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.summon.*;
@@ -38,8 +36,8 @@ public class SummonItem extends Item {
     private Supplier<SoundEvent> summonSound = ModSoundEvents.ROUTINE_SUMMON;
 
     /// 类型标识同时用于同步、客户端渲染选择和提示文本。
-    public SummonItem(Properties properties, SummonType summonType, int slotCost, float baseDamage) {
-        super(properties.stacksTo(1));
+    public SummonItem(ModRarity rarity, SummonType summonType, int slotCost, float baseDamage) {
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(1));
         this.summonType = Objects.requireNonNull(summonType, "Summon type must not be null");
         if (slotCost <= 0) {
             throw new IllegalArgumentException("Summon slot cost must be positive");
@@ -59,16 +57,24 @@ public class SummonItem extends Item {
         return baseDamage;
     }
 
+    public boolean hasSummonKnockback() {
+        return summonType == SummonTypes.IRON_GOLEM || summonType == SummonTypes.SCULK_WISP
+                || summonType == SummonTypes.HORNET || summonType == SummonTypes.IMP;
+    }
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (level.isClientSide) {
-            return InteractionResultHolder.fail(stack);
+            player.startUsingItem(hand);
+            return InteractionResultHolder.consume(stack);
         }
         ServerPlayer serverPlayer = (ServerPlayer) player;
         EntityHitResult entityHit = findAimedEntity(serverPlayer);
-        double maximumDistance = entityHit == null ? Double.MAX_VALUE
-                : entityHit.getLocation().distanceToSqr(serverPlayer.getEyePosition(1.0F));
+        double maximumDistance = serverPlayer.pick(serverPlayer.entityInteractionRange(), 1.0F, false)
+                .getLocation().distanceToSqr(serverPlayer.getEyePosition(1.0F));
+        if (entityHit != null) maximumDistance = Math.min(maximumDistance,
+                entityHit.getLocation().distanceToSqr(serverPlayer.getEyePosition(1.0F)));
         SummonInstance aimedSummon = findAimedSummon(serverPlayer, maximumDistance);
         if (aimedSummon != null) {
             SummonContainer.of(serverPlayer).remove(serverPlayer, aimedSummon.uuid());
@@ -109,8 +115,9 @@ public class SummonItem extends Item {
         PortEventHandler.postEvent(preEvent);
         if (preEvent.isCanceled()) return;
         HitResult blockHit = player.pick(player.blockInteractionRange(), 1.0F, false);
-        BlockPos spawn = BlockPos.containing(blockHit.getLocation()).above();
-        SummonPose pose = new SummonPose(new Vec3(spawn.getX(), spawn.getY(), spawn.getZ()), player.getYRot(), 0.0F, 0.0F);
+        Vec3 spawn = blockHit instanceof BlockHitResult hit && hit.getType() == HitResult.Type.BLOCK
+                ? Vec3.atBottomCenterOf(hit.getBlockPos().relative(hit.getDirection())) : blockHit.getLocation();
+        SummonPose pose = new SummonPose(spawn, player.getYRot(), 0.0F, 0.0F);
         SummonInstance summon = summonType.create(player, slotCost, stats, pose);
         PortEventHandler.postEvent(new SummonEvent(player, stack, summon));
         SummonContainer container = SummonContainer.of(player);
@@ -134,7 +141,7 @@ public class SummonItem extends Item {
     private static EntityHitResult findAimedEntity(ServerPlayer player) {
         double range = player.entityInteractionRange();
         Vec3 from = player.getEyePosition(1.0F);
-        Vec3 to = from.add(player.getViewVector(1.0F).scale(range));
+        Vec3 to = player.pick(range, 1.0F, false).getLocation();
         return ProjectileUtil.getEntityHitResult(player.level(), player, from, to, player.getBoundingBox().inflate(range), Entity::isPickable, 0.1F);
     }
 

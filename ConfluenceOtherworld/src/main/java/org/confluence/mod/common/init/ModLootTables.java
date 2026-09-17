@@ -16,10 +16,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.loot.DateLootItemCondition;
-import org.confluence.mod.common.loot.EntityVariantLootItemCondition;
-import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
-import org.confluence.mod.common.loot.SecretFlagLootItemCondition;
+import org.confluence.mod.common.loot.*;
 
 import java.util.Map;
 
@@ -105,6 +102,7 @@ public final class ModLootTables {
 
         public static final RegistryObject<LootItemConditionType> DATE = register("date", DateLootItemCondition.CODEC);
         public static final RegistryObject<LootItemConditionType> GAME_PHASE = register("game_phase", GamePhaseLootItemCondition.CODEC);
+        public static final RegistryObject<LootItemConditionType> DIFFICULTY_CHANCE = register("difficulty_chance", DifficultyChanceLootItemCondition.CODEC);
         public static final RegistryObject<LootItemConditionType> SECRET_FLAG = register("secret_flag", SecretFlagLootItemCondition.CODEC);
         public static final RegistryObject<LootItemConditionType> ENTITY_VARIANT = register("entity_variant", EntityVariantLootItemCondition.CODEC);
 

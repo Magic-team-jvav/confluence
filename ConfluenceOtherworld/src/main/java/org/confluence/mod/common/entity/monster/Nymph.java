@@ -8,7 +8,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -69,6 +68,14 @@ public final class Nymph extends BaseMonster {
             setTarget(null);
         }
         LivingEntity target = getTarget();
+        if (!(target instanceof Player player) || !player.isAlive() || player.isCreative() || player.isSpectator()) {
+            setTarget(null);
+            setTriggered(false);
+            updatePursuitSpeed(false);
+            getNavigation().stop();
+            setDeltaMovement(new Vec3(0.0, getDeltaMovement().y, 0.0));
+            return;
+        }
         if (!isTriggered()) {
             boolean injured = getHealth() < getMaxHealth();
             boolean moved = distanceToSqr(xo, yo, zo) > MOVEMENT_REVEAL_DISTANCE_SQUARED;
@@ -153,6 +160,11 @@ public final class Nymph extends BaseMonster {
                             @Override
                             public boolean canUse() {
                                 return isTriggered() && super.canUse();
+                            }
+
+                            @Override
+                            public boolean canContinueToUse() {
+                                return isTriggered() && super.canContinueToUse();
                             }
                         }),
                         new VanillaGoalAction(new WaterAvoidingRandomStrollGoal(Nymph.this, 0.6) {

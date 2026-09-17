@@ -5,6 +5,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -41,17 +42,21 @@ import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.npc.AnglerNPC;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.TravelingMerchantNPC;
+import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
+import org.confluence.mod.common.gameevent.PartyGameEvent;
 import org.confluence.mod.common.gameevent.SolarEclipseGameEvent;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -63,10 +68,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.wrapper.common.PortTags;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 
 /// 注：NPC默认生成在对应玩家出生点
@@ -124,7 +126,8 @@ public enum NPCSpawner implements IGlobalData {
         if (map == null) return 0;
         int count = 0;
         for (Reference2BooleanMap.Entry<EntityType<?>> entry : map.reference2BooleanEntrySet()) {
-            if (entry.getBooleanValue() && filter.test(entry.getKey())) {
+            if (entry.getBooleanValue() && entry.getKey() != NpcEntities.SKELETON_MERCHANT.get()
+                    && NpcEntities.TOWN_SLIMES.stream().noneMatch(type -> type.get() == entry.getKey()) && filter.test(entry.getKey())) {
                 count++;
             }
         }
@@ -154,7 +157,8 @@ public enum NPCSpawner implements IGlobalData {
 
     /// 旅商与老人不会加进去
     public void addSpawned(EntityType<?> entityType) {
-        if (entityType != NpcEntities.TRAVELING_MERCHANT.get() && entityType != NpcEntities.OLD_MAN.get()) {
+        if (entityType != NpcEntities.TRAVELING_MERCHANT.get() && entityType != NpcEntities.OLD_MAN.get()
+                && entityType != NpcEntities.SKELETON_MERCHANT.get()) {
             npcSpawned.add(entityType);
         }
     }
@@ -192,10 +196,13 @@ public enum NPCSpawner implements IGlobalData {
     public void onNPCRemoved(BaseNPC living) {
         HouseHandler.INSTANCE.removeHouse(living.level().dimension(), living.getUUID());
         setNPCAlive(living.getRegion(), living.getType(), false);
-        if (living.shouldInteract()) return;
+        if (living.shouldInteract() || living.getType() == NpcEntities.SKELETON_MERCHANT.get())
+            return;
         if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != NpcEntities.OLD_MAN.get()) {
             MutableComponent message;
-            if (living instanceof AnglerNPC angler) {
+            if (living.isTownPet()) {
+                message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
+            } else if (living instanceof AnglerNPC angler) {
                 if (!angler.isWakeUp()) return; // 渔夫未唤醒时死亡不广播
                 message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             } else if (living instanceof TravelingMerchantNPC && living.isAlive()) {
@@ -278,6 +285,7 @@ public enum NPCSpawner implements IGlobalData {
         Set<Region> processedRegions = new ObjectOpenHashSet<>();
         outer:
         for (ServerPlayer player : serverLevel.players()) {
+            if (trySpawnUndergroundVisitor(player)) continue;
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
             // 多名玩家可能共享同一出生区域。每轮刷新只处理一次该区域，避免同一轮连续生成多名 NPC。
@@ -286,6 +294,7 @@ public enum NPCSpawner implements IGlobalData {
             if (trySpawnClothier(player, pos, region)) continue;
             if (trySpawnMechanic(player, pos, region)) continue;
             for (EntityType<?> entityType : npcSpawned) {
+                if (!DevelopmentSpawnPolicy.allowsAutomaticSpawn(entityType)) continue;
                 if (!hasNPCAlive(region, entityType) && spawnAtPos(serverLevel, pos, entityType)) {
                     continue outer;
                 }
@@ -308,10 +317,71 @@ public enum NPCSpawner implements IGlobalData {
             if (trySpawnWizard(player, pos, region)) continue;
             // 税收官
             if (trySpawnTruffle(player, pos, region)) continue;
+            if (!LibUtils.isDev()) continue;
+            if (!hasNPCAlive(region, NpcEntities.NERDY_SLIME.get()) && KillBoard.INSTANCE.isDefeated(BossEntities.KING_SLIME.get())
+                    && spawnAtPos(serverLevel, pos, NpcEntities.NERDY_SLIME.get())) continue;
+            if (trySpawnCoolSlime(serverLevel, pos, region)) continue;
             // 海盗
-            // 蒸汽朋克人
-            // 机器侠
+            if (!hasNPCAlive(region, NpcEntities.STEAMPUNKER.get()) && KillBoard.INSTANCE.isAnyMechBossDefeated()
+                    && spawnAtPos(serverLevel, pos, NpcEntities.STEAMPUNKER.get())) continue;
+            if (!hasNPCAlive(region, NpcEntities.CYBORG.get()) && KillBoard.INSTANCE.isDefeated(BossEntities.PLANTERA.get())
+                    && spawnAtPos(serverLevel, pos, NpcEntities.CYBORG.get())) continue;
         }
+    }
+
+    private boolean trySpawnCoolSlime(ServerLevel level, BlockPos pos, Region region) {
+        if (!PartyGameEvent.INSTANCE.isNatural() || hasNPCAlive(region, NpcEntities.COOL_SLIME.get()))
+            return false;
+        var slime = NpcEntities.COOL_SLIME.get().create(level);
+        if (slime == null) return false;
+        Set<BlockPos> candidates = new HashSet<>();
+        candidates.add(pos);
+        for (var house : HouseHandler.INSTANCE.getOrCreateHouses(level.dimension(), region).values())
+            candidates.add(house.center());
+        for (BlockPos candidate : candidates) {
+            if (!level.isLoaded(candidate)) continue;
+            var house = HouseValidater.scan(level, candidate).make(slime.getUUID());
+            if (!house.isValid() || HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), house, slime.getUUID(), true))
+                continue;
+            BlockPos spawn = adjustSpawnLocation(level, house.center(), slime);
+            if (!house.contains(spawn) || !level.noCollision(slime, slime.getBoundingBox().move(spawn.getBottomCenter())))
+                continue;
+            slime.setPos(spawn.getBottomCenter());
+            slime.setHouse(house);
+            if (!level.addFreshEntity(slime)) return false;
+            HouseHandler.INSTANCE.setHouse(slime, house);
+            onNPCAdded(slime);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean trySpawnUndergroundVisitor(ServerPlayer player) {
+        if (!LibUtils.isDev()) return false;
+        ServerLevel level = player.serverLevel();
+        if (level.canSeeSky(player.blockPosition()) || player.getY() >= level.getSeaLevel() - 8)
+            return false;
+        boolean golfer = !npcSpawned.contains(NpcEntities.GOLFER.get()) && level.getBiome(player.blockPosition()).is(PortTags.Biomes.IS_DESERT);
+        EntityType<? extends BaseNPC> type = golfer ? NpcEntities.GOLFER.get() : NpcEntities.SKELETON_MERCHANT.get();
+        Region region = new Region(player.blockPosition());
+        if (hasNPCAlive(region, type) || player.getRandom().nextInt(8) != 0) return false;
+        BaseNPC npc = type.create(level);
+        if (npc == null) return false;
+        for (int attempt = 0; attempt < 32; attempt++) {
+            BlockPos candidate = player.blockPosition().offset(player.getRandom().nextInt(41) - 20, player.getRandom().nextInt(13) - 6, player.getRandom().nextInt(41) - 20);
+            if (!level.isLoaded(candidate) || candidate.distSqr(player.blockPosition()) < 64 || level.canSeeSky(candidate)
+                    || !level.getFluidState(candidate).isEmpty()
+                    || !level.getBlockState(candidate.below()).isFaceSturdy(level, candidate.below(), Direction.UP)
+                    || golfer && !level.getBiome(candidate).is(PortTags.Biomes.IS_DESERT)) continue;
+            npc.setPos(candidate.getBottomCenter());
+            if (!level.noCollision(npc)) continue;
+            npc.setShouldInteract(golfer);
+            npc.setRegion(region);
+            if (!level.addFreshEntity(npc)) return false;
+            getRegionAliveDetails(region).put(type, true);
+            return true;
+        }
+        return false;
     }
 
     private boolean trySpawnTruffle(ServerPlayer player, BlockPos pos, Region region) {
@@ -348,7 +418,7 @@ public enum NPCSpawner implements IGlobalData {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.GUIDE.get());
             }
         } else if (!hasNPCAlive(region, NpcEntities.PARTY_GIRL.get())) {
-            if (player.getRandom1211().nextInt(40) == 0 && getAliveNpcCount(region, entityType -> true/* todo 骷髅商人不计入 */) >= 14) {
+            if (player.getRandom1211().nextInt(40) == 0 && getAliveNpcCount(region, entityType -> true) >= 14) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.PARTY_GIRL.get());
             }
         }

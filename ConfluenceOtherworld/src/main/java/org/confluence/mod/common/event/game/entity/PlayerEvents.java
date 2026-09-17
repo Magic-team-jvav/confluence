@@ -58,6 +58,7 @@ import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
@@ -66,6 +67,7 @@ import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
@@ -317,9 +319,20 @@ public final class PlayerEvents {
             return;
         var hook = event.getHookEntity();
         if (!hook.getInBlockState().getFluidState().is(FluidTags.WATER)) return;
+        if (player.getRandom().nextInt(10) == 0) {
+            TownSlimeNPC slime = TownSlimeNPC.unlock(serverPlayer.serverLevel(), NpcEntities.SURLY_SLIME.get(), hook.position());
+            if (slime != null) {
+                slime.setDeltaMovement(player.position().subtract(slime.position()).normalize().scale(0.4));
+                event.getDrops().clear();
+                return;
+            }
+        }
         int chance = hook.getType() == ModEntities.BLOODY_FISHING_HOOK.get() ? 6 : 12;
         if (player.getRandom1211().nextInt(chance) != 0) return;
-        var enemy = MonsterEntities.WANDERING_EYE_FISH.get().spawn(serverPlayer.serverLevel(), hook.blockPosition(), MobSpawnType.EVENT);
+        var type = player.getRandom1211().nextBoolean() ? MonsterEntities.WANDERING_EYE_FISH.get() : MonsterEntities.ZOMBIE_MERMAN.get();
+        if (!org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy.allowsAutomaticSpawn(type))
+            return;
+        var enemy = type.spawn(serverPlayer.serverLevel(), hook.blockPosition(), MobSpawnType.EVENT);
         if (enemy == null) return;
         enemy.setTarget(serverPlayer);
         enemy.setDeltaMovement(serverPlayer.position().subtract(enemy.position()).normalize().scale(0.35));

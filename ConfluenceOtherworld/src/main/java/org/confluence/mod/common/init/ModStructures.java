@@ -26,6 +26,7 @@ public final class ModStructures {
     public static final RegistryObject<StructureType<OasisStructure>> OASIS = TYPES.register("oasis", () -> () -> OasisStructure.CODEC);
     public static final RegistryObject<StructureType<MarbleCaveStructure>> MARBLE_CAVE = TYPES.register("marble_cave", () -> () -> MarbleCaveStructure.CODEC);
     public static final RegistryObject<StructureType<GraniteCaveStructure>> GRANITE_CAVE = TYPES.register("granite_cave", () -> () -> GraniteCaveStructure.CODEC);
+    public static final RegistryObject<StructureType<SpiderNestStructure>> SPIDER_NEST = TYPES.register("spider_nest", () -> () -> SpiderNestStructure.CODEC);
     public static final RegistryObject<StructureType<ObsidianPillarStructure>> OBSIDIAN_PILLAR = TYPES.register("obsidian_pillar", () -> () -> ObsidianPillarStructure.CODEC);
 
     public static class Keys {
@@ -33,6 +34,7 @@ public final class ModStructures {
         public static final ResourceKey<Structure> CRIMSON_CAVE = key("crimson_cave");
         public static final ResourceKey<Structure> CRIMSON_FOSSIL = key("crimson_fossil");
         public static final ResourceKey<Structure> GRANITE_CAVE = key("granite_cave");
+        public static final ResourceKey<Structure> SPIDER_NEST = key("spider_nest");
         public static final ResourceKey<Structure> MARBLE_CAVE = key("marble_cave");
         public static final ResourceKey<Structure> DESERT_UNDERGROUND_CABINS = key("desert_underground_cabins");
         public static final ResourceKey<Structure> DUNGEON = key("dungeon");

@@ -1,0 +1,55 @@
+{
+    "format_version": "1.8.0",
+    "animations": {
+        "pose.reference": {
+            "loop": true,
+            "bones": {
+                "Head": {
+                    "position": {
+                        "vector": [
+                            0,
+                            12,
+                            0
+                        ]
+                    }
+                },
+                "RightArm": {
+                    "position": {
+                        "vector": [
+                            -32,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "LeftArm": {
+                    "position": {
+                        "vector": [
+                            32,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "RightLeg": {
+                    "position": {
+                        "vector": [
+                            -8,
+                            -20,
+                            0
+                        ]
+                    }
+                },
+                "LeftLeg": {
+                    "position": {
+                        "vector": [
+                            8,
+                            -20,
+                            0
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

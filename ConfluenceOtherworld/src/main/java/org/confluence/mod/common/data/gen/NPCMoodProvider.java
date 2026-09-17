@@ -57,6 +57,7 @@ public final class NPCMoodProvider implements DataProvider {
         put(moods, NpcEntities.ZOOLOGIST, entry(Mood.LOVER, NpcEntities.WITCH_DOCTOR), entry(Mood.DISLIKE, NpcEntities.ANGLER), entry(Mood.LIKE, NpcEntities.FEMALE_ANGLER), entry(Mood.HATE, NpcEntities.ARMS_DEALER));
         put(moods, NpcEntities.TRUFFLE, entry(Mood.LOVER, NpcEntities.GUIDE), entry(Mood.LIKE, NpcEntities.DYE_TRADER), entry(Mood.DISLIKE, NpcEntities.CLOTHIER), entry(Mood.HATE, NpcEntities.WITCH_DOCTOR));
         put(moods, NpcEntities.WIZARD, entry(Mood.LIKE, NpcEntities.MERCHANT), entry(Mood.DISLIKE, NpcEntities.DYE_TRADER));
+        put(moods, NpcEntities.STEAMPUNKER, entry(Mood.LOVER, NpcEntities.CYBORG), entry(Mood.LIKE, NpcEntities.PAINTER), entry(Mood.DISLIKE, NpcEntities.PARTY_GIRL), entry(Mood.DISLIKE, NpcEntities.WIZARD), entry(Mood.DISLIKE, NpcEntities.DRYAD));
 
         return CompletableFuture.allOf(moods.entrySet().stream()
                 .map(entry -> save(output, entry.getKey(), entry.getValue()))

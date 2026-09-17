@@ -62,7 +62,7 @@ public final class BlockBreakSpawnsSubProvider {
         SimpleWeightedRandomList<EntityType<?>> jungleBugs = SimpleWeightedRandomList.<EntityType<?>>builder()
                 .add(CritterEntities.GRUBBY.get(), 8)
                 .add(CritterEntities.SLUGGY.get(), 3)
-                .add(CritterEntities.GRUBBY.get(), 1) // todo 改成蚜虫
+                .add(CritterEntities.BUGGY.get(), 1)
                 .build();
         appender.create()
                 .push(NatureBlocks.JUNGLE_ROSE.get())

@@ -12,7 +12,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
@@ -76,7 +75,7 @@ public class BaseMimic extends BaseMonster {
 
     @Override
     protected boolean mustSeePlayerTarget() {
-        return true;
+        return !isHardmodeVariant();
     }
 
     @Override
@@ -165,6 +164,7 @@ public class BaseMimic extends BaseMonster {
 
     private void tickHardmodeAttack(LivingEntity target) {
         if (action == 3) {
+            if (!onGround()) return;
             switch (random.nextInt(3)) {
                 case 0 -> {
                     action = 4;
@@ -194,6 +194,10 @@ public class BaseMimic extends BaseMonster {
             return;
         }
         if (action == 7) {
+            if (!onGround()) {
+                resetAttackCycle();
+                return;
+            }
             setDeltaMovement(Vec3.ZERO);
             if (--actionTicks <= 0) resetAttackCycle();
             return;
@@ -207,12 +211,14 @@ public class BaseMimic extends BaseMonster {
             if (--actionTicks > 0 && direction.lengthSqr() > 1.0) return;
             action = 9;
             actionTicks = 40;
-            noPhysics = false;
+            noPhysics = true;
             setGravity(0.16);
             setDeltaMovement(0.0, -1.2, 0.0);
             return;
         }
         if (action == 9) {
+            if (getY() <= target.getY() + target.getBbHeight() && level().noCollision(this))
+                noPhysics = false;
             setDeltaMovement(getDeltaMovement().x * 0.5, Math.min(getDeltaMovement().y, -1.2), getDeltaMovement().z * 0.5);
             if (onGround() || --actionTicks <= 0) resetAttackCycle();
             return;
@@ -239,7 +245,8 @@ public class BaseMimic extends BaseMonster {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (action == 7 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return false;
+        if (action == 7 && onGround() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY))
+            return false;
         boolean damaged = super.hurt(source, amount);
         if (damaged && !level().isClientSide && getTarget() == null) {
             if (source.getEntity() instanceof LivingEntity attacker && canAttack(attacker)) {
@@ -255,7 +262,7 @@ public class BaseMimic extends BaseMonster {
     /// 困难模式拟态怪闭合时免疫伤害；专家及大师模式还会反射可反射的投射物。
     @Override
     public PortProjectileDeflection deflection(Projectile projectile) {
-        return action == 7 && isHardmodeVariant() && LibUtils.isAtLeastExpert(level(), blockPosition())
+        return action == 7 && onGround() && isHardmodeVariant() && LibUtils.isAtLeastExpert(level(), blockPosition())
                 ? PortProjectileDeflection.REVERSE
                 : PortProjectileDeflection.NONE;
     }
@@ -276,7 +283,6 @@ public class BaseMimic extends BaseMonster {
     }
 
     private void lookAtTarget(LivingEntity target) {
-        getLookControl().setLookAt(target, 90.0F, 85.0F);
         double dx = target.getX() - getX();
         double dz = target.getZ() - getZ();
         float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;

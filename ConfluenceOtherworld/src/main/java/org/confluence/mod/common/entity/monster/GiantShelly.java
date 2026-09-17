@@ -204,6 +204,14 @@ public final class GiantShelly extends BaseMonster {
         entityData.set(PHASE, phase.ordinal());
         phaseTicks = 0;
         repathTicks = 0;
+        if (phase != Phase.WALK) {
+            getNavigation().stop();
+            getMoveControl().setWantedPosition(getX(), getY(), getZ(), 0.0);
+            setSpeed(0.0F);
+            setXxa(0.0F);
+            setYya(0.0F);
+            setZza(0.0F);
+        }
         wanderTarget = phase == Phase.WALK ? LandRandomPos.getPos(this, 15, 7) : null;
         setSpinModifiers(phase == Phase.ENTERING_SHELL || phase == Phase.ROLLING || phase == Phase.DECELERATING,
                 phase == Phase.ROLLING || phase == Phase.DECELERATING);

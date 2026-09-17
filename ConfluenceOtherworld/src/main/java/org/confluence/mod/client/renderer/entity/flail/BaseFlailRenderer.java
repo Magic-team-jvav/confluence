@@ -34,7 +34,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 /// 不改变连枷实体状态机、伤害频率和飞行行为。
 public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
     private static final ResourceLocation DEFAULT_BALL_MODEL = Confluence.asResource("geo/entity/flail/flail.geo.json");
-    private static final ResourceLocation DEFAULT_BALL_TEXTURE = Confluence.asResource("textures/entity/flail/flail.png");
+    private static final ResourceLocation DEFAULT_BALL_TEXTURE = Confluence.asResource("textures/entity/flail.png");
     private static final ResourceLocation DEFAULT_CHAIN_TEXTURE = Confluence.asResource("textures/entity/flail/flail_chain.png");
 
     public BaseFlailRenderer(EntityRendererProvider.Context context) {

@@ -228,6 +228,37 @@ public final class NPCShopProvider implements DataProvider {
                 offer(ToolItems.EMPTY_DROPPER.toStack()),
                 offer(VanityArmorItems.WIZARDS_HAT.toStack(), halloween())
         ));
+        shops.put(Confluence.asResource("steampunker"), List.of(
+                offer(MaterialItems.COG.toStack()),
+                offer(FunctionalBlocks.BLEND_O_MATIC.toStack()),
+                offer(TCItems.JETPACK.toStack())
+        ));
+        shops.put(Confluence.asResource("cyborg"), List.of(
+                offer(MaterialItems.NANITES.toStack())
+        ));
+        shops.put(Confluence.asResource("golfer"), List.of());
+        shops.put(Confluence.asResource("skeleton_merchant"), List.of(
+                offer(new ItemStack(Items.TORCH)),
+                offer(BoomerangItems.WOOD_BOOMERANG.toStack(), new MoonPhaseCondition(MoonPhase.FULL_MOON)),
+                offer(SwordItems.UMBRELLA.toStack(), new MoonPhaseCondition(MoonPhase.WANING_GIBBOUS)),
+                offer(ManaWeaponItems.WAND_OF_SPARKING.toStack(), new MoonPhaseCondition(MoonPhase.THIRD_QUARTER)),
+                offer(TCItems.AGLET.toStack(), new MoonPhaseCondition(MoonPhase.NEW_MOON)),
+                offer(TCItems.CLIMBING_CLAWS.toStack(), new MoonPhaseCondition(MoonPhase.WAXING_CRESCENT)),
+                offer(TCItems.RADAR.toStack(), new MoonPhaseCondition(MoonPhase.WAXING_GIBBOUS)),
+                offer(PotionItems.STRANGE_BREW.toStack(), new MoonPhaseCondition(MoonPhase.FULL_MOON)
+                        .or(new MoonPhaseCondition(MoonPhase.THIRD_QUARTER)).or(new MoonPhaseCondition(MoonPhase.NEW_MOON)).or(new MoonPhaseCondition(MoonPhase.FIRST_QUARTER))),
+                offer(PotionItems.LESSER_HEALING_POTION.toStack(), new MoonPhaseCondition(MoonPhase.WANING_GIBBOUS)
+                        .or(new MoonPhaseCondition(MoonPhase.WANING_CRESCENT)).or(new MoonPhaseCondition(MoonPhase.WAXING_CRESCENT)).or(new MoonPhaseCondition(MoonPhase.WAXING_GIBBOUS))),
+                offer(PotionItems.HEALING_POTION.toStack(), HardmodeCondition.INSTANCE.and(new MoonPhaseCondition(MoonPhase.WANING_GIBBOUS)
+                        .or(new MoonPhaseCondition(MoonPhase.WANING_CRESCENT)).or(new MoonPhaseCondition(MoonPhase.WAXING_CRESCENT)).or(new MoonPhaseCondition(MoonPhase.WAXING_GIBBOUS)))),
+                offer(new ItemStack(Items.ARROW), new MoonPhaseCondition(MoonPhase.THIRD_QUARTER)
+                        .or(new MoonPhaseCondition(MoonPhase.WANING_CRESCENT)).or(new MoonPhaseCondition(MoonPhase.FIRST_QUARTER)).or(new MoonPhaseCondition(MoonPhase.WAXING_GIBBOUS))),
+                offer(ConsumableItems.BOMB.toStack()),
+                offer(ModBlocks.ROPE.toStack()),
+                offer(LightPetItems.MAGIC_LANTERN.toStack(), new MoonPhaseCondition(MoonPhase.FULL_MOON).and(new TimeCondition(13000, 22999, false))),
+                offer(ConsumableItems.ARTISAN_LOAF.toStack(), ArtisanLoafUnusedCondition.INSTANCE.and(new MoonPhaseCondition(MoonPhase.WANING_CRESCENT)
+                        .or(new MoonPhaseCondition(MoonPhase.NEW_MOON)).or(new MoonPhaseCondition(MoonPhase.WAXING_CRESCENT))))
+        ));
         shops.put(Confluence.asResource("zoologist"), List.of(
                 offer(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.toStack()),
                 offer(WhipItems.LEATHER_WHIP.toStack(), new BestiaryCondition(16)),

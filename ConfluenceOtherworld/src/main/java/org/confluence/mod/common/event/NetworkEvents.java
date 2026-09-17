@@ -28,7 +28,6 @@ public final class NetworkEvents {
         handler.registerInGameC2S(MountTogglePacketC2S.class, MountTogglePacketC2S.ID, MountTogglePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(OpenMenuPacketC2S.class, OpenMenuPacketC2S.ID, OpenMenuPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(OpenNPCTradePacketC2S.class, OpenNPCTradePacketC2S.ID, OpenNPCTradePacketC2S.STREAM_CODEC);
-        handler.registerInGameC2S(PhasebladeControlPacketC2S.class, PhasebladeControlPacketC2S.ID, PhasebladeControlPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(RecipeTransferPacketC2S.class, RecipeTransferPacketC2S.ID, RecipeTransferPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SpearAttackPacketC2S.class, SpearAttackPacketC2S.ID, SpearAttackPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SwordProjectilePacketC2S.class, SwordProjectilePacketC2S.ID, SwordProjectilePacketC2S.STREAM_CODEC);

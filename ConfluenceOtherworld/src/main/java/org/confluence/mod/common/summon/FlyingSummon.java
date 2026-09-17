@@ -52,6 +52,12 @@ public abstract class FlyingSummon extends SummonInstance {
         return velocity().scale(MOMENTUM_DAMPING);
     }
 
+    @Override
+    protected void onTargetChanged(LivingEntity previousTarget, LivingEntity currentTarget) {
+        hoverDestination = null;
+        hoverRepositionCooldown = 0;
+    }
+
     private void applyForceToward(Vec3 destination, Vec3 lookAtPosition, double acceleration, double maximumSpeed, float maximumYawChange, float maximumPitchChange) {
         Vec3 offset = destination.subtract(position());
         double distance = offset.length();
@@ -86,7 +92,7 @@ public abstract class FlyingSummon extends SummonInstance {
                 ? target : null;
     }
 
-    private Vec3 resolveBlockCollision(Vec3 movement) {
+    protected Vec3 resolveBlockCollision(Vec3 movement) {
         if (movement.lengthSqr() < 1.0E-10D) return Vec3.ZERO;
         AABB bounds = AABB.ofSize(position().add(0.0, height * 0.5, 0.0), width, height, width);
         return Entity.collideBoundingBox(null, movement, bounds, owner().level(),

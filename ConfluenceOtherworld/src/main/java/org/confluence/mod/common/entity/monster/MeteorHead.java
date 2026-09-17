@@ -44,16 +44,6 @@ public class MeteorHead extends BaseFlyingMonster {
         };
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (level().isClientSide) return;
-        LivingEntity target = getTarget();
-        if (target != null && target.isAlive()) {
-            faceCombatPosition(target.getEyePosition(), 360.0F, 360.0F);
-        }
-    }
-
     /// 陨石怪接触玩家时有三分之一概率点燃目标，持续时间随难度延长。
     @Override
     public boolean doHurtTarget(Entity target) {

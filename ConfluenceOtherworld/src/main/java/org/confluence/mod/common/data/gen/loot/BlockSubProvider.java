@@ -359,6 +359,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(ModBlocks.CURSED_FLAME.get());
         dropSelf(POO.get());
         dropSelf(POO_BLOCK.get());
+        dropSelf(GARDEN_GNOME.get());
 
         dropSelf(ROPE.get());
         dropSelf(SILK_ROPE.get());

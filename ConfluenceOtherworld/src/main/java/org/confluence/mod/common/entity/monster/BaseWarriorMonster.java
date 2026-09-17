@@ -6,7 +6,10 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -19,6 +22,8 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.*;
+import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -42,6 +47,8 @@ public class BaseWarriorMonster extends BaseMonster {
     private final boolean ignoreLightPathCost;
     private final LandAnimationProfile animationProfile;
     private final LandSoundProfile soundProfile;
+    private final DoorBehavior doorBehavior;
+    private boolean doorNavigationEnabled;
 
     public BaseWarriorMonster(EntityType<? extends BaseWarriorMonster> type, Level level) {
         this(type, level, 0.0, LandAnimationProfile.NONE, LandSoundProfile.ROUTINE);
@@ -92,31 +99,56 @@ public class BaseWarriorMonster extends BaseMonster {
         this.soundProfile = soundProfile;
         this.meleeSpeed = meleeSpeed;
         this.ignoreLightPathCost = ignoreLightPathCost;
-        if (doorBehavior == DoorBehavior.OPEN && navigation instanceof GroundPathNavigation groundNavigation) {
-            configurePlayerTargetLineOfSight(false);
-            groundNavigation.setCanOpenDoors(true);
-            goalSelector.addGoal(-1, new OpenDoorGoal(this, true));
+        this.doorBehavior = doorBehavior;
+        if (doorBehavior != DoorBehavior.NONE && navigation instanceof GroundPathNavigation) {
+            updateDoorBehavior();
+            goalSelector.addGoal(-1, new EnemyOpenDoorGoal(this) {
+                @Override
+                public boolean canUse() {
+                    return doorNavigationEnabled && super.canUse();
+                }
+
+                @Override
+                public boolean canContinueToUse() {
+                    return doorNavigationEnabled && super.canContinueToUse();
+                }
+            });
+        }
+    }
+
+    private void updateDoorBehavior() {
+        boolean enabled = doorBehavior == DoorBehavior.OPEN
+                || doorBehavior == DoorBehavior.BLOOD_MOON && BloodMoonGameEvent.INSTANCE.started();
+        if (doorNavigationEnabled == enabled) return;
+        doorNavigationEnabled = enabled;
+        configurePlayerTargetLineOfSight(!enabled);
+        if (navigation instanceof GroundPathNavigation groundNavigation) {
+            groundNavigation.stop();
+            groundNavigation.setCanOpenDoors(enabled);
         }
     }
 
     @Override
     protected BTRoot createBT() {
-        BaseWarriorMonster self = this;
-        CreatureDefinition.BehaviorOverrides behavior = creatureDefinition().behavior();
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                JumpProfile jump = jumpProfile();
-                BTNode melee = createMeleeNode(self, behavior);
-                BTNode idle = createIdleNode(self, behavior);
-                if (jump != null) {
-                    return SelectorNode.of(
-                            SequenceNode.of(new HasTargetCondition(self), new JumpAttackAction(self, jump.maximumDistance(), jump.speedMultiplier(), jump.cooldownTicks(), jump.windupTicks())),
-                            new JumpOverBlockAction(self, 1.0), melee, idle);
-                }
-                return SelectorNode.of(new JumpOverBlockAction(self, 1.0), melee, idle);
+                return createLandBehavior();
             }
         };
+    }
+
+    protected BTNode createLandBehavior() {
+        CreatureDefinition.BehaviorOverrides behavior = creatureDefinition().behavior();
+        JumpProfile jump = jumpProfile();
+        BTNode melee = createMeleeNode(this, behavior);
+        BTNode idle = createIdleNode(this, behavior);
+        if (jump != null) {
+            return SelectorNode.of(
+                    SequenceNode.of(new HasTargetCondition(this), new JumpAttackAction(this, jump.maximumDistance(), jump.speedMultiplier(), jump.cooldownTicks(), jump.windupTicks())),
+                    new JumpOverBlockAction(this, 1.0), melee, idle);
+        }
+        return SelectorNode.of(new JumpOverBlockAction(this, 1.0), melee, idle);
     }
 
     @Override
@@ -134,7 +166,7 @@ public class BaseWarriorMonster extends BaseMonster {
             return;
         }
         controllers.add(new AnimationController<>(this, "Walk/Idle", 5, state -> {
-            state.setControllerSpeed((float) (getAttributeValue(Attributes.MOVEMENT_SPEED) / 0.25));
+            state.setControllerSpeed(movementAnimationSpeed(state.getLimbSwingAmount()));
             if (state.isMoving() || animationProfile == LandAnimationProfile.WALK_ONLY && swinging) {
                 boolean usesRun = animationProfile == LandAnimationProfile.WALK_RUN
                         || animationProfile == LandAnimationProfile.WALK_RUN_IDLE_ATTACK;
@@ -151,8 +183,13 @@ public class BaseWarriorMonster extends BaseMonster {
         }
     }
 
+    protected float movementAnimationSpeed(float limbSwingAmount) {
+        return (float) (getAttributeValue(Attributes.MOVEMENT_SPEED) / 0.25);
+    }
+
     @Override
     public void tick() {
+        if (!level().isClientSide && doorBehavior == DoorBehavior.BLOOD_MOON) updateDoorBehavior();
         super.tick();
         if (level().isClientSide || pursuitSpeedBonus == 0.0) {
             return;
@@ -201,7 +238,11 @@ public class BaseWarriorMonster extends BaseMonster {
         if (behavior.meleeRange() > 0.0) {
             return SequenceNode.of(new HasTargetCondition(self), new MoveToTargetAction(self, behavior.moveSpeedOr(self.meleeSpeed), behavior.meleeRange()), new MeleeAttackAction(self, behavior.meleeRange()));
         }
-        return new VanillaGoalAction(new MeleeAttackGoal(self, behavior.moveSpeedOr(self.meleeSpeed), true));
+        return new VanillaGoalAction(self.createMeleeGoal(behavior.moveSpeedOr(self.meleeSpeed)));
+    }
+
+    protected MeleeAttackGoal createMeleeGoal(double speed) {
+        return new MeleeAttackGoal(this, speed, true);
     }
 
     private static BTNode createIdleNode(BaseWarriorMonster self, CreatureDefinition.BehaviorOverrides behavior) {
@@ -255,6 +296,7 @@ public class BaseWarriorMonster extends BaseMonster {
     /// 普通战士实体对门的明确处理方式。
     public enum DoorBehavior {
         NONE,
-        OPEN
+        OPEN,
+        BLOOD_MOON
     }
 }

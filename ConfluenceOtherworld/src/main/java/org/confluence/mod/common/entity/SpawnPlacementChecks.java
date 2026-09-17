@@ -1,18 +1,43 @@
 package org.confluence.mod.common.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.entity.monster.WaterBoltMimic;
+import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.gameevent.SandstormGameEvent;
+import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.ModStructures;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.init.entity.CritterEntities;
+import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.mod.util.OverworldUtils;
+import org.mesdag.portlib.wrapper.common.PortTags;
+
+import java.util.ArrayDeque;
+import java.util.HashSet;
+import java.util.Set;
 
 /// 自然生成使用的公共环境校验集合。
 ///
@@ -25,6 +50,48 @@ import org.confluence.mod.util.OverworldUtils;
 public final class SpawnPlacementChecks {
     private SpawnPlacementChecks() {}
 
+    public static boolean checkMysticFrogSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        if (!level.getLevel().dimension().equals(Level.OVERWORLD) || !level.getBiome(pos).is(PortTags.Biomes.IS_JUNGLE)
+                || pos.getY() < OverworldUtils.getSurfaceY() || random.nextInt(30) != 0
+                || !Mob.checkMobSpawnRules(type, level, reason, pos, random)) return false;
+        NPCSpawner.Region region = new NPCSpawner.Region(pos);
+        if (NPCSpawner.INSTANCE.hasNPCAlive(region, NpcEntities.MYSTIC_SLIME.get())) return false;
+        for (Entity entity : level.getLevel().getAllEntities()) {
+            if (entity.getType() == CritterEntities.MYSTIC_FROG.get() && entity.isAlive()
+                    && region.isOnRegion(entity.chunkPosition())) return false;
+        }
+        return true;
+    }
+
+    public static boolean checkTownSlimeRescueSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        ServerLevel world = level.getLevel();
+        if (!world.dimension().equals(Level.OVERWORLD) || !level.getFluidState(pos).isEmpty())
+            return false;
+        boolean balloon = type == MonsterEntities.CLUMSY_BALLOON_SLIME.get();
+        EntityType<?> rescued = balloon ? NpcEntities.CLUMSY_SLIME.get() : NpcEntities.ELDER_SLIME.get();
+        NPCSpawner.Region region = new NPCSpawner.Region(pos);
+        if (NPCSpawner.INSTANCE.hasNPCAlive(region, rescued)) return false;
+        if (balloon) {
+            if (pos.getY() < OverworldUtils.getSpaceY() || !level.canSeeSky(pos)) return false;
+        } else if (!KillBoard.INSTANCE.isDefeated(BossEntities.SKELETRON.get())
+                || pos.getY() >= OverworldUtils.getUndergroundY() || level.canSeeSky(pos)
+                || !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP))
+            return false;
+        for (Entity entity : world.getAllEntities()) {
+            if (entity.getType() == type && entity.isAlive() && region.isOnRegion(entity.chunkPosition()))
+                return false;
+        }
+        return true;
+    }
+
+    public static boolean checkGnomeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
+        if (level.canSeeSky(pos) || !checkMonsterSpawnRules(type, level, reason, pos, random))
+            return false;
+        ServerLevel world = level.getLevel();
+        var tree = world.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.Keys.LIVING_TREE);
+        return tree != null && world.structureManager().getStructureWithPieceAt(pos, tree).isValid();
+    }
+
     public static boolean checkRoutineMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() < OverworldUtils.getSpaceY() && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
@@ -34,6 +101,111 @@ public final class SpawnPlacementChecks {
         return y >= OverworldUtils.getSurfaceY() && y < OverworldUtils.getSpaceY() && checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
+    public static boolean checkDesertSpiritSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        var biome = level.getBiome(pos);
+        return biome.is(PortTags.Biomes.IS_DESERT) && (OverworldUtils.isCorruption(biome) || OverworldUtils.isCrimson(biome))
+                && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkWallCreeperSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return (!IMinecraftServer.isHardmode(level.getLevel().getServer()) || random.nextInt(20) == 0)
+                && checkCaveMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkRuneWizardSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return pos.getY() < (OverworldUtils.getUndergroundY() + level.getMinBuildHeight()) / 2
+                && checkCaveMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkWaterBoltMimicSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkDungeonMonsterSpawn(type, level, spawnType, pos, random) && WaterBoltMimic.findBookSpace(level, pos) != null;
+    }
+
+    public static boolean checkAngryNimbusSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!(level instanceof ServerLevel world) || !world.isRaining() || !level.canSeeSky(pos)
+                || level.getBiome(pos).is(PortTags.Biomes.IS_SNOWY) || level.getBiome(pos).is(PortTags.Biomes.IS_ICY)
+                || !checkGroundSpawn(type, level, spawnType, pos, random)) return false;
+        int count = 0;
+        for (Entity entity : world.getAllEntities()) {
+            if (entity.getType() == MonsterEntities.ANGRY_NIMBUS.get() && entity.isAlive() && ++count >= 2)
+                return false;
+        }
+        return true;
+    }
+
+    public static boolean checkAntlionSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (pos.getY() < OverworldUtils.getSurfaceY())
+            return !level.canSeeSky(pos) && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
+        return level instanceof Level world && world.isDay() && level.getBlockState(pos.below()).is(net.minecraft.tags.BlockTags.SAND)
+                && checkGroundSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkDoctorBonesSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level instanceof ServerLevel world && world.isNight()
+                && level.getBlockState(pos.below()).is(NatureBlocks.JUNGLE_GRASS_BLOCK.get())
+                && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkAntlionChargerSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!level.getBiome(pos).is(PortTags.Biomes.IS_DESERT)) return false;
+        if (pos.getY() < OverworldUtils.getSurfaceY())
+            return checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
+        return !KillBoard.INSTANCE.getGamePhase().isHardmode() && KillBoard.INSTANCE.isDefeated(BossEntities.EYE_OF_CTHULHU.get())
+                && checkSandstormSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkSandstormSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return SandstormGameEvent.INSTANCE.started()
+                && level.getBiome(pos).is(PortTags.Biomes.IS_DESERT)
+                && level.canSeeSky(pos) && level.getBlockState(pos.below()).is(BlockTags.SAND)
+                && checkGroundSpawn(type, level, spawnType, pos, random) && hasConnectedSand(level, pos);
+    }
+
+    public static boolean checkFungiBulbSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!level.getBiome(pos).is(ModBiomes.GLOWING_MUSHROOM) && !level.getBlockState(pos.below()).is(NatureBlocks.MUSHROOM_GRASS_BLOCK.get()))
+            return false;
+        if (pos.getY() < OverworldUtils.getSurfaceY() && (!KillBoard.INSTANCE.getGamePhase().isHardmode() || level.canSeeSky(pos)))
+            return false;
+        return checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkSandSharkSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!checkSandstormSpawn(type, level, spawnType, pos, random)) return false;
+        var sand = level.getBlockState(pos.below());
+        EntityType<?> expected = sand.is(NatureBlocks.EBONSAND.get()) ? MonsterEntities.BONE_BITER.get()
+                : sand.is(NatureBlocks.CRIMSAND.get()) ? MonsterEntities.FLESH_REAVER.get()
+                : sand.is(NatureBlocks.PEARLSAND.get()) ? MonsterEntities.CRYSTAL_THRESHER.get() : MonsterEntities.SAND_SHARK.get();
+        return type == expected;
+    }
+
+    private static boolean hasConnectedSand(ServerLevelAccessor level, BlockPos pos) {
+        ArrayDeque<BlockPos> pending = new ArrayDeque<>();
+        Set<BlockPos> visited = new HashSet<>();
+        pending.add(pos.below());
+        int count = 0;
+        while (!pending.isEmpty()) {
+            BlockPos next = pending.removeFirst();
+            if (Math.abs(next.getX() - pos.getX()) > 4 || Math.abs(next.getZ() - pos.getZ()) > 4 || next.getY() >= pos.getY() || next.getY() < pos.getY() - 5
+                    || !visited.add(next) || !level.getBlockState(next).is(BlockTags.SAND))
+                continue;
+            if (++count >= 40) return true;
+            for (Direction direction : Direction.values()) pending.add(next.relative(direction));
+        }
+        return false;
+    }
+
+    public static boolean checkAngryDandelionSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!(level instanceof ServerLevel world) || !world.isDay() || world.isRaining() || !world.canSeeSky(pos)
+                || !level.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK)
+                || !checkGroundSpawn(type, level, spawnType, pos, random)) return false;
+        ConfluenceData data = ConfluenceData.get(world);
+        float windX = data.getWindSpeedX();
+        float windZ = data.getWindSpeedZ();
+        if (windX * windX + windZ * windZ < 0.25F) return false;
+        var player = level.getNearestPlayer(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 128.0, false);
+        return player != null && (player.getX() - pos.getX() - 0.5) * windX + (player.getZ() - pos.getZ() - 0.5) * windZ > 0.0;
+    }
+
     public static boolean checkUndergroundMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         int y = pos.getY();
         return y >= OverworldUtils.getUndergroundY() && y < OverworldUtils.getSurfaceY() && !level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
@@ -41,6 +213,32 @@ public final class SpawnPlacementChecks {
 
     public static boolean checkCaveMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() < OverworldUtils.getUndergroundY() && !level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkRockGolemSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        var biome = level.getBiome(pos);
+        return level.getBlockState(pos.below()).is(Blocks.STONE) && !biome.is(PortTags.Biomes.IS_SNOWY)
+                && !biome.is(PortTags.Biomes.IS_ICY) && checkCaveMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkTimSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (pos.getY() >= (OverworldUtils.getUndergroundY() + level.getMinBuildHeight()) / 2
+                || !checkCaveMonsterSpawn(type, level, spawnType, pos, random)) return false;
+        var player = level.getNearestPlayer(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 128.0, false);
+        if (player != null) {
+            var robe = player.getItemBySlot(EquipmentSlot.CHEST);
+            if (robe.is(ModTags.Items.ROBE) && !robe.is(ArmorItems.MYSTIC_ROBE.get())
+                    && !player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.WIZARD_HAT.get()))
+                return true;
+        }
+        return random.nextInt(5) == 0;
+    }
+
+    public static boolean checkDiggerSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        var biome = level.getBiome(pos);
+        boolean underground = pos.getY() >= OverworldUtils.getUndergroundY();
+        return !(underground ? biome.is(PortTags.Biomes.IS_SNOWY) || biome.is(PortTags.Biomes.IS_ICY) : OverworldUtils.isHallow(biome))
+                && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     /// 地下层与洞穴层共用的放置规则，适用于泰拉中标注为“地下及更深处”的敌怪。
@@ -54,6 +252,24 @@ public final class SpawnPlacementChecks {
 
     public static boolean checkHighLevelMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() >= OverworldUtils.getSpaceY() && pos.getY() < level.getMaxBuildHeight() && checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkArchWyvernSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return DateUtils.isXinNian(DateUtils.getLunar()) && checkHighLevelMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkIceElementalSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random)
+                || level instanceof Level world && world.isNight() && checkGroundSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkIceGolemSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!(level instanceof ServerLevel world) || !world.isRaining() || !level.canSeeSky(pos)
+                || !checkSurfaceMobSpawn(type, level, spawnType, pos, random)) return false;
+        for (Entity entity : world.getAllEntities()) {
+            if (entity.getType() == type && entity.isAlive()) return false;
+        }
+        return true;
     }
 
     public static boolean checkNetherMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -82,6 +298,12 @@ public final class SpawnPlacementChecks {
         return section != null && section.confluence$isGraveyard() && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
     }
 
+    public static boolean checkWeddingZombieSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (BloodMoonGameEvent.INSTANCE.started() && checkGroundSpawn(type, level, spawnType, pos, random))
+            return true;
+        return random.nextInt(5) == 0 && checkGhostSpawn(type, level, spawnType, pos, random);
+    }
+
     public static boolean checkPossessedArmorSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!checkMonsterSpawnRules(type, level, spawnType, pos, random)) {
             return false;
@@ -93,6 +315,16 @@ public final class SpawnPlacementChecks {
 
     public static boolean checkWaterMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() < OverworldUtils.getSpaceY() && hasDeepWater(level, pos);
+    }
+
+    public static boolean checkFungoFishSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getBlockState(pos.below()).is(NatureBlocks.MUSHROOM_GRASS_BLOCK.get()) && checkWaterMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkAnglerFishSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        var biome = level.getBiome(pos);
+        return (pos.getY() < OverworldUtils.getUndergroundY() && !level.canSeeSky(pos) || biome.is(PortTags.Biomes.IS_JUNGLE) || biome.is(PortTags.Biomes.IS_LUSH))
+                && checkWaterMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     public static boolean checkSurfaceWaterMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
@@ -126,7 +358,7 @@ public final class SpawnPlacementChecks {
         return level instanceof Level world && world.isNight() && checkGroundSpawn(type, level, spawnType, pos, random);
     }
 
-    public static <T extends Entity> SpawnPlacements.SpawnPredicate<T> hardmode(SpawnPlacements.SpawnPredicate<T> predicate) {
+    public static <T extends Mob> SpawnPlacements.SpawnPredicate<T> hardmode(SpawnPlacements.SpawnPredicate<T> predicate) {
         // 包装既有规则而不是复制一份，确保开启困难模式只增加进度门槛，不改变环境语义。
         return (type, level, spawnType, pos, random) -> level instanceof ServerLevel serverLevel
                 && IMinecraftServer.isHardmode(serverLevel.getServer())

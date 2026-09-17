@@ -84,7 +84,7 @@ public final class BowCombatAction extends BTNode {
             lostSightTicks++;
         }
         double distanceSqr = mob.distanceToSqr(target);
-        double angle = angleBetween(mob.getLookAngle(), target.getEyePosition().subtract(mob.getEyePosition()));
+        double angle = angleBetween(Vec3.directionFromRotation(mob.getXRot(), mob.yHeadRot), target.getEyePosition().subtract(mob.getEyePosition()));
 
         if (distanceSqr > attackRadiusSqr || visibleTicks < REQUIRED_VISIBLE_TICKS) {
             repositionTicks = 0;
@@ -97,12 +97,11 @@ public final class BowCombatAction extends BTNode {
         } else if (!mob.getNavigation().isDone()) {
             mob.getNavigation().stop();
         }
-        if (mob.getNavigation().isDone() || angle < LOOK_WHILE_MOVING_ANGLE) {
+        if (mob.isUsingItem() || mob.getNavigation().isDone() || angle < LOOK_WHILE_MOVING_ANGLE) {
             mob.getLookControl().setLookAt(target, 30.0F, 30.0F);
         }
 
         if (mob.isUsingItem()) {
-            mob.faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
             if (!canSee && lostSightTicks > 60) {
                 mob.stopUsingItem();
                 attackCooldown = 10;

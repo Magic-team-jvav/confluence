@@ -9,6 +9,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -17,12 +18,15 @@ import net.minecraft.world.entity.animal.Turtle;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
+import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
 import org.confluence.mod.common.entity.monster.humanoid.BaseHumanoidMonster;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.constant.DefaultAnimations;
@@ -56,7 +60,7 @@ public class MeleeSkeleton extends BaseHumanoidMonster {
         this.behaviorProfile = behaviorProfile;
         if (behaviorProfile.doorRule != DoorRule.NONE) {
             updateDoorBehavior();
-            goalSelector.addGoal(-1, new OpenDoorGoal(this, true) {
+            goalSelector.addGoal(-1, new EnemyOpenDoorGoal(this) {
                 @Override
                 public boolean canUse() {
                     return canOpenDoorsNow() && super.canUse();
@@ -122,7 +126,13 @@ public class MeleeSkeleton extends BaseHumanoidMonster {
     @Override
     public boolean doHurtTarget(Entity target) {
         swing(InteractionHand.MAIN_HAND, true);
-        return super.doHurtTarget(target);
+        boolean damaged = super.doHurtTarget(target);
+        if (damaged && !level().isClientSide && behaviorProfile == BehaviorProfile.ARMORED_SKELETON
+                && target instanceof LivingEntity living && random.nextInt(6) == 0) {
+            int duration = LibUtils.isMaster(level(), blockPosition()) ? 6000 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 4800 : 2400;
+            living.addEffect(new MobEffectInstance(ModEffects.BROKEN_ARMOR.get(), duration), this);
+        }
+        return damaged;
     }
 
     @Override
@@ -154,6 +164,8 @@ public class MeleeSkeleton extends BaseHumanoidMonster {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        if (behaviorProfile == BehaviorProfile.ARMORED_VIKING || behaviorProfile == BehaviorProfile.ARMORED_SKELETON)
+            return;
         controllers.add(new AnimationController<>(this, "Walk/Idle", 5, state -> {
             state.setControllerSpeed(2.0F);
             return state.setAndContinue(state.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
@@ -186,6 +198,8 @@ public class MeleeSkeleton extends BaseHumanoidMonster {
     /// 愤怒骷髅还会进行近距离跃扑。
     public enum BehaviorProfile {
         NORMAL(DoorRule.NONE, false),
+        ARMORED_VIKING(DoorRule.BLOOD_MOON, false),
+        ARMORED_SKELETON(DoorRule.NONE, false),
         BLOOD_MOON_DOORS(DoorRule.BLOOD_MOON, false),
         OPEN_DOORS(DoorRule.ALWAYS, false),
         ANGRY_BONES(DoorRule.ALWAYS, true);

@@ -32,11 +32,15 @@ public final class HillOfFleshRenderer extends BossGeoRenderer<HillOfFlesh> {
         if (!hill.isAlive() || hill.isInitializing()) return;
         // 场地使用同步的判定半径，不继承肉山模型的缩放、转向和出场位移。
         VertexConsumer vertices = buffers.getBuffer(RenderStateShardAccessor.HILL_OF_FLESH_BOUNDARY);
-        renderBoundary(poseStack.last().pose(), vertices, hill.getOuterRadius(), -10.0F, HillOfFlesh.ARENA_HEIGHT - 10.0F);
-        renderBoundary(poseStack.last().pose(), vertices, hill.getInnerRadius(), 0.0F, 2.0F);
+        float time = -((hill.level().getGameTime() % 100000L) + partialTick) * 0.01F;
+        renderBoundary(poseStack.last().pose(), vertices, hill.getOuterRadius(), -10.0F, HillOfFlesh.ARENA_HEIGHT - 10.0F, time);
+        renderBoundary(poseStack.last().pose(), vertices, hill.getInnerRadius(), 0.0F, 2.0F, time);
     }
 
-    private static void renderBoundary(Matrix4f pose, VertexConsumer vertices, float radius, float bottom, float top) {
+    private static void renderBoundary(Matrix4f pose, VertexConsumer vertices, float radius, float bottom, float top, float time) {
+        for (int layer = 0; layer < 2; layer++) {
+            float offsetU = layer == 0 ? 0 : time * 0.24F;
+            float offsetV = time * (layer == 0 ? 0.4F : 0.96F);
         for (int i = 0; i < BOUNDARY_SEGMENTS; i++) {
             float u0 = i / (float) BOUNDARY_SEGMENTS;
             float u1 = (i + 1) / (float) BOUNDARY_SEGMENTS;
@@ -44,11 +48,19 @@ public final class HillOfFleshRenderer extends BossGeoRenderer<HillOfFlesh> {
             float z0 = Mth.sin(u0 * Mth.TWO_PI) * radius;
             float x1 = Mth.cos(u1 * Mth.TWO_PI) * radius;
             float z1 = Mth.sin(u1 * Mth.TWO_PI) * radius;
-            vertices.vertex(pose, x0, bottom, z0).uv(u0, 0.0F).color(230, 50, 50, 150).endVertex();
-            vertices.vertex(pose, x1, bottom, z1).uv(u1, 0.0F).color(230, 50, 50, 150).endVertex();
-            vertices.vertex(pose, x1, top, z1).uv(u1, 1.0F).color(230, 50, 50, 0).endVertex();
-            vertices.vertex(pose, x0, top, z0).uv(u0, 1.0F).color(230, 50, 50, 0).endVertex();
+            boundaryVertex(pose, vertices, x0, bottom, z0, u0 + offsetU, offsetV, 90);
+            boundaryVertex(pose, vertices, x1, bottom, z1, u1 + offsetU, offsetV, 90);
+            boundaryVertex(pose, vertices, x1, top, z1, u1 + offsetU, 1 + offsetV, 0);
+            boundaryVertex(pose, vertices, x0, top, z0, u0 + offsetU, 1 + offsetV, 0);
         }
+        }
+    }
+
+    private static void boundaryVertex(Matrix4f pose, VertexConsumer vertices, float x, float y, float z,
+                                       float u, float v, int alpha) {
+        vertices.vertex(pose, x, y, z).color(230, 50, 50, alpha).uv(u, v)
+                .overlayCoords(net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY)
+                .uv2(15728880).normal(0, 1, 0).endVertex();
     }
 
     @Override

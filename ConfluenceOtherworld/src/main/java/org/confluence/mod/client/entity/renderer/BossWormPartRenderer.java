@@ -1,21 +1,15 @@
 package org.confluence.mod.client.entity.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.model.WormPartGeoModel;
 import org.confluence.mod.common.entity.boss.BossWormPart;
-import org.confluence.mod.common.entity.boss.TheDestroyer;
-import org.joml.Vector3f;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
 
-/// Boss 蠕虫共用体节渲染器；毁灭者体节额外应用滚转角。
+/// 世界吞噬者体节渲染器。
 public final class BossWormPartRenderer extends BossGeoRenderer<BossWormPart> {
     public BossWormPartRenderer(EntityRendererProvider.Context context) {
         super(context, new WormPartGeoModel<>(
@@ -28,22 +22,6 @@ public final class BossWormPartRenderer extends BossGeoRenderer<BossWormPart> {
     @Override
     protected boolean usesInterpolatedLight(BossWormPart segment) {
         return true;
-    }
-
-    @Override
-    protected float getEffectiveModelScale(BossWormPart segment) {
-        // 毁灭者暂时复用吞噬者体节模型，以它自己的 3.2 格中心距同步放大模型。
-        return segment.getOwner() instanceof TheDestroyer ? TheDestroyer.SEGMENT_SPACING : 2.2F;
-    }
-
-    @Override
-    protected void adjustPose(PoseStack poseStack, BossWormPart segment, BakedGeoModel model, float partialTick) {
-        if (!(segment.getOwner() instanceof TheDestroyer)) return;
-        Vec3 axis = WormPartRenderer.chainTangent(segment, partialTick);
-        if (axis.lengthSqr() <= 1.0E-7) return;
-        axis = axis.normalize();
-        float roll = Mth.lerp(partialTick, segment.getPreviousSegmentRoll(), segment.getSegmentRoll());
-        poseStack.mulPose(Axis.of(new Vector3f((float) axis.x, (float) axis.y, (float) axis.z)).rotationDegrees(roll));
     }
 
     @Override

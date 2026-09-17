@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -25,8 +26,9 @@ import java.util.UUID;
 /// UUID，并在区块反向加载后恢复双向关系。是否作为从属完全由实例数据决定，不需要为
 /// 同一种血蛭再注册一套重复实体类型。
 public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntity {
-    private final int segments;
+    private int segments;
     private final Role role;
+    private final @Nullable Anatomy anatomy;
     private final BossOwnerTracker<BaseBoss> ownerTracker = new BossOwnerTracker<>(BaseBoss.class);
 
     public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, int segments) {
@@ -37,6 +39,14 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
         super(type, level);
         this.segments = segments;
         this.role = role;
+        this.anatomy = null;
+    }
+
+    public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, Role role, Anatomy anatomy) {
+        super(type, level);
+        this.role = role;
+        this.anatomy = anatomy;
+        this.segments = anatomy.minSegments() + random.nextInt(anatomy.maxSegments() - anatomy.minSegments() + 1);
     }
 
     @Override
@@ -51,7 +61,26 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
 
     @Override
     protected float segmentSpacing() {
+        if (anatomy != null) return anatomy.spacing();
+        // 沙虫根骨骼绕 X 旋转 90°，轴向长度是原模型的 12 像素，渲染倍率为 2。
+        if (getType() == org.confluence.mod.common.init.entity.MonsterEntities.TOMB_CRAWLER.get())
+            return 12.0F / 16.0F * 2.0F;
         return role == Role.BONE_SERPENT ? 2.5F : role == Role.FLYING ? 1.25F : 1.6F;
+    }
+
+    @Override
+    public EntityDimensions segmentDimensions(boolean tail) {
+        return anatomy == null ? super.segmentDimensions(tail) : tail ? anatomy.tailDimensions() : anatomy.bodyDimensions();
+    }
+
+    @Override
+    protected double segmentDamageMultiplier(boolean tail) {
+        return anatomy == null ? super.segmentDamageMultiplier(tail) : tail ? anatomy.tailDamage() : anatomy.bodyDamage();
+    }
+
+    @Override
+    protected double segmentArmorMultiplier(boolean tail) {
+        return anatomy == null ? super.segmentArmorMultiplier(tail) : tail ? anatomy.tailArmor() : anatomy.bodyArmor();
     }
 
     @Override
@@ -80,6 +109,11 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     @Override
     public boolean displayFireAnimation() {
         return role != Role.BONE_SERPENT && super.displayFireAnimation();
+    }
+
+    @Override
+    public boolean fireImmune() {
+        return role == Role.BONE_SERPENT || super.fireImmune();
     }
 
     public void setBossOwner(BaseBoss owner) {
@@ -140,18 +174,33 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         ownerTracker.save(tag);
+        if (anatomy != null) tag.putInt("SegmentCount", segments);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         ownerTracker.load(tag);
+        if (anatomy != null && tag.contains("SegmentCount"))
+            segments = Mth.clamp(tag.getInt("SegmentCount"), anatomy.minSegments(), anatomy.maxSegments());
     }
 
     @Override
     public void remove(RemovalReason reason) {
         ownerTracker.unbind(this);
         super.remove(reason);
+    }
+
+    public record Anatomy(int minSegments, int maxSegments, float spacing,
+                          EntityDimensions bodyDimensions, EntityDimensions tailDimensions,
+                          double bodyDamage, double tailDamage, double bodyArmor,
+                          double tailArmor) {
+        public static final Anatomy DIGGER = new Anatomy(7, 12, 0.8F,
+                EntityDimensions.scalable(1.05F, 0.7F), EntityDimensions.scalable(1.05F, 0.7F),
+                28.0 / 45.0, 26.0 / 45.0, 2.0, 3.0);
+        public static final Anatomy WORLD_FEEDER = new Anatomy(21, 26, 0.9F,
+                EntityDimensions.scalable(1.25F, 0.95F), EntityDimensions.scalable(1.65F, 0.6F),
+                55.0 / 70.0, 40.0 / 70.0, 40.0 / 36.0, 44.0 / 36.0);
     }
 
     /// 注册项选择实体自身已有的蠕虫行为族，不把运动参数散落到注册表。

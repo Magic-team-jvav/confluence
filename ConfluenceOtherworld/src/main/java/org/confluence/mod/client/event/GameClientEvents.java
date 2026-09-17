@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
@@ -32,6 +33,7 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -48,6 +50,7 @@ import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.animation.GunCameraAnimation;
 import org.confluence.mod.client.effect.AfterimageHelper;
 import org.confluence.mod.client.effect.EctoMistHelper;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
@@ -73,6 +76,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
@@ -146,6 +150,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::inspectGun);
         PortEventHandler.addListener(GameClientEvents::applyGunCamera);
         PortEventHandler.addListener(GameClientEvents::bulletImpact);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::lavaSharkFog);
         PortEventHandler.addListener(GameClientEvents::cancelSwap);
     }
 
@@ -170,7 +175,7 @@ public final class GameClientEvents {
 
         EctoMistHelper.tick(minecraft, player);
 
-        ModClientSetups.GLINT_RAINBOW.setGlintColor(ExpertColorAnimation.INSTANCE.getRed(), ExpertColorAnimation.INSTANCE.getGreen(), ExpertColorAnimation.INSTANCE.getBlue());
+        RenderStateShardAccessor.GLINT_RAINBOW.setGlintColor(ExpertColorAnimation.INSTANCE.getRed(), ExpertColorAnimation.INSTANCE.getGreen(), ExpertColorAnimation.INSTANCE.getBlue());
 
         if (ExtraInventoryScreen.teamCooldown > 0) {
             --ExtraInventoryScreen.teamCooldown;
@@ -382,7 +387,7 @@ public final class GameClientEvents {
     private static void movementInputUpdate(MovementInputUpdateEvent event) {
         Input input = event.getInput();
         LocalPlayer player = (LocalPlayer) event.getEntity();
-        boolean cannotMove = player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || ScryingOrb.spectatingPlayer != null;
+        boolean cannotMove = player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || player.hasEffect(ModEffects.WEBBED.get()) || ScryingOrb.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
         if (!player.hasInfiniteMaterials()) {
             if (cannotMove || player.hasEffect(ModEffects.SHIMMER.get()) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
@@ -640,6 +645,15 @@ public final class GameClientEvents {
         if (player.getMainHandItem().getItem() instanceof BaseGun) {
             InspectPacketC2S.sendToServer();
         }
+    }
+
+    private static void lavaSharkFog(PortViewportEvent.RenderFog event) {
+        if (event.getCamera().getFluidInCamera() != FogType.LAVA || !(event.getCamera().getEntity().getVehicle() instanceof RideableLavaSharkMountEntity))
+            return;
+        event.setNearPlaneDistance(0.0F);
+        event.setFarPlaneDistance(32.0F);
+        event.setFogShape(FogShape.SPHERE);
+        event.setCanceled(true);
     }
 
     private static void applyGunCamera(PortViewportEvent.ComputeCameraAngles event) {

@@ -31,7 +31,6 @@ public final class FlyingPursuitAction extends BTNode {
         double distanceSqr = mob.distanceToSqr(target);
         Vec3 targetPosition = target.getEyePosition();
         Vec3 direction = targetPosition.subtract(mob.getEyePosition());
-        mob.faceCombatPosition(targetPosition, 30.0F, 85.0F);
         Vec3 movement = mob.getDeltaMovement();
         if (distanceSqr > 9.0 && angleBetween(movement, direction) > 0.6) {
             mob.setDeltaMovement(movement.scale(0.95));

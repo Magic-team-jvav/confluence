@@ -6,7 +6,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -16,13 +19,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.PhasebladeRenderer;
+import org.confluence.mod.common.entity.projectile.sword.PhasebladeProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
@@ -39,17 +45,25 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.function.Consumer;
 
 public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoItem {
+    public enum PhaseColor {
+        RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, WHITE, PINK;
+
+        public String resourceName() {
+            return name().toLowerCase(java.util.Locale.ROOT);
+        }
+    }
+
     private static final String TURN_ON_KEY = "isTurnOn";
     private static final String GECKOLIB_ID_KEY = "GeckoLibID";
     private static final RawAnimation IDLE_OFF = RawAnimation.begin().thenLoop("idle_off");
     private static final RawAnimation IDLE_ON = RawAnimation.begin().thenLoop("idle_on");
-    private final String color;
+    private final PhaseColor color;
     private final PortItemAttributeModifiers turnOnModifiers;
     private final PortItemAttributeModifiers turnOffModifiers;
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-    protected BasePhasebladeItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, String color) {
-        super(tier, rarity, rawDamage, rawSpeed, SwordDefinition.builder().specialSweep(0.8F).withoutBaseAttributes());
+    protected BasePhasebladeItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, PhaseColor color) {
+        super(tier, rarity, rawDamage, rawSpeed, SwordDefinition.builder().unbreakable().specialSweep(0.8F).withoutBaseAttributes());
         this.color = color;
         turnOnModifiers = createAttributes(rawDamage - 1, rawSpeed - 4);
         turnOffModifiers = createAttributes(1, -2);
@@ -65,14 +79,14 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
     protected abstract String texturePrefix();
 
     public final ResourceLocation textureResource() {
-        return Confluence.asResource("textures/item/" + texturePrefix() + "/" + color + "_" + texturePrefix() + ".png");
+        return Confluence.asResource("textures/item/" + texturePrefix() + "/" + color.resourceName() + "_" + texturePrefix() + ".png");
     }
 
     public final ResourceLocation emissiveResource() {
-        return Confluence.asResource("textures/item/" + texturePrefix() + "/" + color + "_" + texturePrefix() + "_mark.png");
+        return Confluence.asResource("textures/item/" + texturePrefix() + "/" + color.resourceName() + "_" + texturePrefix() + "_mark.png");
     }
 
-    public final String color() {
+    public final PhaseColor color() {
         return color;
     }
 
@@ -86,6 +100,31 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
     public static boolean isTurnOn(ItemStack stack) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
         return tag != null && tag.contains(TURN_ON_KEY, Tag.TAG_BYTE) && tag.getBoolean(TURN_ON_KEY);
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (hand != InteractionHand.MAIN_HAND || !isTurnOn(stack))
+            return InteractionResultHolder.pass(stack);
+        if (player instanceof ServerPlayer serverPlayer) {
+            var active = serverPlayer.serverLevel().getEntitiesOfClass(PhasebladeProjectile.class,
+                    AABB.ofSize(player.position(), 256.0, 256.0, 256.0), projectile -> projectile.belongsTo(player));
+            if (active.stream().anyMatch(projectile -> projectile.represents(stack))) {
+                active.stream().filter(projectile -> projectile.represents(stack)).forEach(PhasebladeProjectile::recall);
+            } else {
+                PhasebladeProjectile projectile = this instanceof Phasesaber
+                        ? ModEntities.PHASESABER_PROJECTILE.get().create(serverPlayer.serverLevel())
+                        : ModEntities.PHASEBLADE_PROJECTILE.get().create(serverPlayer.serverLevel());
+                if (projectile != null) {
+                    projectile.configure(player, stack, (float) player.getAttributeValue(LibAttributes.getAttackDamage()),
+                            (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK));
+                    if (level.addFreshEntity(projectile))
+                        active.forEach(PhasebladeProjectile::recall);
+                }
+            }
+        }
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
     }
 
     /**

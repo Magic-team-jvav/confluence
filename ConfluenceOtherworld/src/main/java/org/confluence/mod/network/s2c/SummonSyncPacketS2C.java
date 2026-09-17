@@ -21,7 +21,8 @@ import java.util.List;
 import java.util.UUID;
 
 /// 同步一个玩家当前持有的召唤物姿态。
-public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements IPortPacket.S2C {
+public record SummonSyncPacketS2C(UUID ownerId, long gameTime,
+                                  List<Entry> entries) implements IPortPacket.S2C {
     private static final int MAX_ENTRIES = 512;
     private static final double TRACKING_RANGE = 160.0;
     public static final ResourceLocation ID = Confluence.asResource("summon_sync");
@@ -29,6 +30,7 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
         @Override
         public SummonSyncPacketS2C decode(ByteBuf buffer) {
             UUID ownerId = new UUID(buffer.readLong(), buffer.readLong());
+            long gameTime = buffer.readLong();
             int size = PortVarInt.read(buffer);
             if (size < 0 || size > MAX_ENTRIES) {
                 throw new DecoderException("Summon entry count exceeds the protocol limit: " + size);
@@ -37,7 +39,7 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
             for (int index = 0; index < size; index++) {
                 entries.add(Entry.decode(buffer));
             }
-            return new SummonSyncPacketS2C(ownerId, entries);
+            return new SummonSyncPacketS2C(ownerId, gameTime, entries);
         }
 
         @Override
@@ -47,13 +49,14 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
             }
             buffer.writeLong(packet.ownerId.getMostSignificantBits());
             buffer.writeLong(packet.ownerId.getLeastSignificantBits());
+            buffer.writeLong(packet.gameTime);
             PortVarInt.write(buffer, packet.entries.size());
             packet.entries.forEach(entry -> entry.encode(buffer));
         }
     };
 
     public SummonSyncPacketS2C(ServerPlayer owner, List<SummonInstance> summons, List<SummonProjectileInstance> projectiles) {
-        this(owner.getUUID(), createEntries(summons, projectiles));
+        this(owner.getUUID(), owner.serverLevel().getGameTime(), createEntries(summons, projectiles));
     }
 
     private static List<Entry> createEntries(List<SummonInstance> summons, List<SummonProjectileInstance> projectiles) {
@@ -73,7 +76,7 @@ public record SummonSyncPacketS2C(UUID ownerId, List<Entry> entries) implements 
 
     @Override
     public void work(Player player) {
-        ClientSummonManager.accept(ownerId, entries);
+        ClientSummonManager.accept(ownerId, gameTime, entries);
     }
 
     public static void send(ServerPlayer owner, List<SummonInstance> summons, List<SummonProjectileInstance> projectiles) {

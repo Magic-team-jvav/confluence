@@ -1,0 +1,48 @@
+package org.confluence.mod.common.entity.monster;
+
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.entity.ai.bt.leaf.CasterCycleAction;
+import org.confluence.mod.common.entity.projectile.DesertSpiritCurse;
+import org.confluence.mod.common.init.entity.ModEntities;
+import software.bernie.geckolib.core.animation.RawAnimation;
+
+public final class DesertSpirit extends BaseCasterMonster {
+    private static final CasterCycleAction.Timing TIMING = new CasterCycleAction.Timing(1, 121, 70, 10, 10, 60);
+    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+
+    public DesertSpirit(EntityType<? extends DesertSpirit> type, Level level) {
+        super(type, level, CasterCycleAction.HurtResponse.PAUSE_THEN_TELEPORT);
+    }
+
+    @Override
+    protected EntityType<DesertSpiritCurse> projectileType() {
+        return ModEntities.DESERT_SPIRIT_CURSE.get();
+    }
+
+    @Override
+    protected int castsPerCycle() {
+        return 5;
+    }
+
+    @Override
+    protected CasterCycleAction.Timing casterTiming() {
+        return TIMING;
+    }
+
+    @Override
+    protected boolean shouldInterruptCastingAfterHurt() {
+        return random.nextInt(3) != 0;
+    }
+
+    @Override
+    protected float projectileDamage() {
+        return LibUtils.isMaster(level(), blockPosition()) ? 132.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 88.0F : 60.0F;
+    }
+
+    @Override
+    protected RawAnimation getRestAnimation(boolean moving) {
+        return IDLE;
+    }
+}

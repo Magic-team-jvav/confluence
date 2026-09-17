@@ -19,16 +19,17 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import java.util.ArrayList;
 import java.util.List;
 
-/// Geo负体积/局部发光渲染器。主 pass 渲染轮廓，二次 pass 用 eyes shader 渲染发光骨骼。
+// 负体积模型的轮廓渲染；仅配置发光骨骼时添加第二层。
 public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends GeoNormalRenderer<T> {
 
-    private boolean init;
+    private BakedGeoModel initializedModel;
     protected final List<GeoBone> toHide = new ArrayList<>();
     protected final List<GeoBone> notToHide = new ArrayList<>();
     private List<String> toHideNames = new ArrayList<>();
     private List<String> toHideGroupNames;
     private List<String> notToHideGroupNames;
     private InitStrategy initRunnable;
+    private boolean glowLayerAdded;
 
     enum InitStrategy {
         SIMPLE {
@@ -38,7 +39,6 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
                     if (r.toHideNames.contains(b.getName())) r.toHide.add(b);
                     else r.notToHide.add(b);
                 });
-                r.toHideNames = null;
             }
         },
         COMPLEX {
@@ -46,8 +46,6 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
             void apply(BakedGeoModel model, GeoNegativeVolumeRenderer<?> r) {
                 for (String name : r.toHideGroupNames) model.getBone(name).ifPresent(r.toHide::add);
                 for (String name : r.notToHideGroupNames) model.getBone(name).ifPresent(r.notToHide::add);
-                r.toHideGroupNames = null;
-                r.notToHideGroupNames = null;
             }
         };
 
@@ -65,6 +63,12 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
     public GeoNegativeVolumeRenderer(EntityRendererProvider.Context context, GeoModel<T> model, boolean rotateAlongPitch, float modelScale, float modelOffsetY) {
         super(context, model, rotateAlongPitch, modelScale, modelOffsetY);
         this.shadowRadius = 0;
+    }
+
+    private void ensureGlowLayer() {
+        initializedModel = null;
+        if (glowLayerAdded) return;
+        glowLayerAdded = true;
         this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {
             @Override
             protected RenderType getRenderType(T animatable) {
@@ -82,12 +86,14 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
     public GeoNegativeVolumeRenderer<T> addBoneToGlow(List<String> boneNames) {
         this.toHideNames.addAll(boneNames);
         this.initRunnable = InitStrategy.SIMPLE;
+        ensureGlowLayer();
         return this;
     }
 
     public GeoNegativeVolumeRenderer<T> addBoneToGlow(String boneName) {
         this.toHideNames.add(boneName);
         this.initRunnable = InitStrategy.SIMPLE;
+        ensureGlowLayer();
         return this;
     }
 
@@ -95,13 +101,15 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
         this.initRunnable = InitStrategy.COMPLEX;
         this.toHideGroupNames = toHide;
         this.notToHideGroupNames = notToHide;
+        ensureGlowLayer();
         return this;
     }
 
     protected void processInit(BakedGeoModel model) {
+        toHide.clear();
+        notToHide.clear();
         if (this.initRunnable != null) {
             this.initRunnable.apply(model, this);
-            this.initRunnable = null;
         }
     }
 
@@ -112,8 +120,8 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
 
     @Override
     public void preRender(PoseStack poseStack, T animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        if (!init && !isReRender) {
-            init = true;
+        if (initializedModel != model && !isReRender) {
+            initializedModel = model;
             this.processInit(model);
         }
         this.processHide(isReRender);
@@ -127,6 +135,7 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
 
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        if (noCull) return RenderType.entityTranslucent(texture);
         return RenderStateShardAccessor.createTextOutline(texture);
     }
 }

@@ -18,7 +18,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -34,6 +33,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.MeleeAttackAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.MoveToTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.RandomStrollAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
+import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.OverworldUtils;
@@ -87,7 +87,7 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(-1, new OpenDoorGoal(this, true) {
+        goalSelector.addGoal(-1, new EnemyOpenDoorGoal(this) {
             @Override
             public boolean canUse() {
                 return canOpenDoorsDuringBloodMoon() && super.canUse();

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.summon.terraprisma;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
@@ -8,11 +7,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.summon.*;
-import org.confluence.mod.common.summon.sword.SummonSword;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 /// 泰拉棱镜召唤物的运行实例。
 public final class TerraprismaSummon extends SummonInstance {
@@ -31,7 +25,6 @@ public final class TerraprismaSummon extends SummonInstance {
     private float scale = 1.0F;
     private float scaleY = 1.0F;
     private int scaleYTicks;
-    private final Set<UUID> attackHits = new HashSet<>();
 
     public TerraprismaSummon(ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
         super(Confluence.asResource("terraprisma"), owner, slotCost, stats, initialPose);
@@ -77,10 +70,7 @@ public final class TerraprismaSummon extends SummonInstance {
         for (SummonCollision.Hit hit : SummonCollision.sweep(owner().level(), previousPreviousPose, previousPose,
                 currentPose, attackBox(), candidate -> candidate == target()
                         || SummonTargetCache.isValidTarget(owner(), candidate, SEARCH_RANGE * 2.0, false))) {
-            UUID identity = hit.dedupeIdentity().getUUID();
-            if (!attackHits.contains(identity) && hurtEntity(hit.damageRecipient(), hit.encounterOwner(), hit.dedupeIdentity(), skillDamageMultiplier)) {
-                attackHits.add(identity);
-            }
+            hurtEntity(hit.damageRecipient(), hit.encounterOwner(), skillDamageMultiplier);
         }
     }
 
@@ -150,10 +140,6 @@ public final class TerraprismaSummon extends SummonInstance {
         skillDamageMultiplier = multiplier;
     }
 
-    void beginAttackCycle() {
-        attackHits.clear();
-    }
-
     void setFollowingOwner(boolean followingOwner) {
         this.followingOwner = followingOwner;
     }
@@ -194,8 +180,4 @@ public final class TerraprismaSummon extends SummonInstance {
         return new SummonVisualState(followingOwner, animationState, animationTicks, animationDuration, animationDegrees, scale, scaleY);
     }
 
-    @Override
-    public ResourceLocation groupKey() {
-        return SummonSword.GROUP_KEY;
-    }
 }

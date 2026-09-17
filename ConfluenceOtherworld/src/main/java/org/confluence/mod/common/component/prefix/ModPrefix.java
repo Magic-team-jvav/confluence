@@ -52,6 +52,7 @@ public interface ModPrefix {
             case UNIVERSAL, MELEE -> LibAttributes.getAttackDamage().value();
             case RANGED -> LibAttributes.getRangedDamage().value();
             case MAGIC -> LibAttributes.getMagicDamage().value();
+            case SUMMON -> LibAttributes.getSummonDamage().value();
             case ACCESSORY, UNKNOWN -> LibAttributes.getAttackDamage().value();
         };
     }
@@ -467,6 +468,47 @@ public interface ModPrefix {
         private static void init() {}
     }
 
+    record Summon(String name, float attackDamage, float armorPenetration, float tagDamage,
+                  float knockBack, int tier, float value) implements ModPrefix {
+        public static final Map<String, Summon> VALUES = ModPrefix.registerGroup("summon");
+        public static final ResourceLocation ID = Confluence.asResource("summon_prefix");
+        public static final Summon FABLED = register("fabled", 0.15F, 10, 3, 0.15F, 2, 1.7481F),
+                LOYAL = register("loyal", 0.10F, 5, 3, 0.05F, 2, 0.8316F),
+                WORTHY = register("worthy", 0.15F, 8, 0, 0, 2, 0.6589F),
+                FOCUSED = register("focused", 0.10F, 0, 3, 0, 1, 0.4376F),
+                EAGER = register("eager", 0, 25, 0, 0, 2, 0.8906F),
+                BALLISTIC = register("ballistic", 0, 0, 5, 0, 1, 0.3225F),
+                SCRAGGLING = register("scraggling", 0, 0, 0, 0.25F, 2, 0.5625F),
+                PATIENT = register("patient", -0.05F, 0, 3, 0, 0, 0.0723F),
+                RABID = register("rabid", 0.10F, 0, 0, -0.10F, 0, -0.0199F),
+                ILL_TEMPERED = register("ill_tempered", -0.05F, 10, 0, 0, 1, 0.1936F),
+                PETTY = register("petty", -0.30F, 0, 0, 0, -2, -0.51F),
+                FEEBLE = register("feeble", 0, 0, 0, -0.25F, -2, -0.4375F),
+                SKITTISH = register("skittish", -0.15F, 0, 0, -0.10F, -2, -0.4148F);
+
+        @Override
+        public PrefixComponent createComponent(PrefixType type) {
+            var builder = ImmutableListMultimap.<Attribute, AttributeModifier>builder();
+            if (attackDamage != 0)
+                builder.put(LibAttributes.getSummonDamage().value(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+            return new PrefixComponent(type, name, new AttributeModifiersValue(builder.build()), 0, 0, tier, value);
+        }
+
+        @Override
+        public boolean canBeMercy() {return tier < 0;}
+
+        @Override
+        public ResourceLocation getModifierId() {return ID;}
+
+        private static Summon register(String name, float damage, float penetration, float tag, float knockback, int tier, float value) {
+            Summon prefix = new Summon(name, damage, penetration, tag, knockback, tier, value);
+            VALUES.put(name, prefix);
+            return prefix;
+        }
+
+        private static void init() {}
+    }
+
     Map<String, Map<String, ? extends ModPrefix>> GROUPS = new HashMap<>();
 
     static <T extends ModPrefix> Map<String, T> registerGroup(String name) {
@@ -560,6 +602,19 @@ public interface ModPrefix {
         map.put(82, Ranged.UNREAL);
         map.put(83, Magic.MYTHICAL);
         map.put(84, Melee.LEGENDARY2);
+        map.put(85, Summon.FABLED);
+        map.put(86, Summon.LOYAL);
+        map.put(87, Summon.WORTHY);
+        map.put(88, Summon.FOCUSED);
+        map.put(89, Summon.PATIENT);
+        map.put(90, Summon.RABID);
+        map.put(91, Summon.ILL_TEMPERED);
+        map.put(92, Summon.PETTY);
+        map.put(93, Summon.FEEBLE);
+        map.put(94, Summon.SKITTISH);
+        map.put(95, Summon.EAGER);
+        map.put(96, Summon.BALLISTIC);
+        map.put(97, Summon.SCRAGGLING);
     });
 
     static void initialize() {
@@ -569,5 +624,6 @@ public interface ModPrefix {
         Melee.init();
         Ranged.init();
         Magic.init();
+        Summon.init();
     }
 }

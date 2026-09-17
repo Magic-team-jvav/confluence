@@ -2,6 +2,7 @@ package org.confluence.mod.common.event.game.entity;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -25,10 +26,12 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.GunItems;
@@ -161,6 +164,14 @@ public final class ItemEvents {
 
     private static void shimmerItemTransmutation$Pre(ShimmerItemTransmutationEvent.Pre event) {
         ItemEntity source = event.getSource();
+        if (source.getItem().is(ConsumableItems.SPARKLE_SLIME_BALLOON.get()) && source.level() instanceof ServerLevel level) {
+            if (TownSlimeNPC.unlock(level, NpcEntities.DIVA_SLIME.get(), source.position()) != null) {
+                event.setShrink(1);
+                level.playSound(null, source.blockPosition(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
+            }
+            event.setCanceled(true);
+            return;
+        }
         if (source.getItem().is(ConsumableItems.SLIME_CROWN.get()) && SlimeRainGameEvent.INSTANCE.forceStart()) {
             source.level().playSound(null, source.getX(), source.getY(), source.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
             source.discard();

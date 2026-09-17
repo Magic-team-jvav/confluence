@@ -24,6 +24,7 @@ import org.confluence.mod.common.effect.flask.FlaskOfFireEffect;
 import org.confluence.mod.common.effect.flask.FlaskOfGoldEffect;
 import org.confluence.mod.common.effect.harmful.*;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
+import org.confluence.mod.common.effect.neutral.SparkleSlimeEffect;
 import org.mesdag.portlib.wrapper.common.PortEffectCure;
 
 import java.util.function.Function;
@@ -33,6 +34,8 @@ import static org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttribut
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, Confluence.MODID);
     public static final PortEffectCure FLASK = PortEffectCure.get("confluence:flask");
+    public static final RegistryObject<MobEffect> JUNGLES_FURY = EFFECTS.register("jungles_fury",
+            () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x669933));
     public static final PortEffectCure CANNOT_REMOVE_BY_NURSE = PortEffectCure.get("confluence:cannot_remove_by_nurse");
 
     public static final RegistryObject<MobEffect> EXQUISITELY_STUFFED = register("exquisitely_stuffed", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)
@@ -77,6 +80,8 @@ public final class ModEffects {
     public static final RegistryObject<MobEffect> OBSIDIAN_SKIN = EFFECTS.register("obsidian_skin", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x660066));
     public static final RegistryObject<MobEffect> LUCK_EFFECT = register("luck", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x39C5BB)
             .addAttributeModifier(Attributes.LUCK, id, ADD_VALUE, amplifier -> (amplifier + 1) * 0.5));
+    public static final RegistryObject<MobEffect> GARDEN_GNOME_LUCK = register("garden_gnome_luck", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8B8B8B)
+            .addAttributeModifier(Attributes.LUCK, id, 0.2, ADD_VALUE));
     public static final RegistryObject<MobEffect> WATER_WALKING = EFFECTS.register("water_walking", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x0000BB));
     public static final RegistryObject<MobEffect> HEART_REACH = EFFECTS.register("heart_reach", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0099));
     public static final RegistryObject<MobEffect> ARCHERY = EFFECTS.register("archery", ArcheryEffect::new);
@@ -105,7 +110,11 @@ public final class ModEffects {
     public static final RegistryObject<MobEffect> TENTACLE_SPIKES = EFFECTS.register("tentacle_spikes", TentacleSpikesEffect::new);
     public static final RegistryObject<MobEffect> LOVE = EFFECTS.register("love", () -> new PublicMobEffect(MobEffectCategory.NEUTRAL, 0xEE0000));
     public static final RegistryObject<MobEffect> SHIMMER = EFFECTS.register("shimmer", ShimmerEffect::new);
+    public static final RegistryObject<MobEffect> SPARKLE_SLIME = EFFECTS.register("sparkle_slime", SparkleSlimeEffect::new);
     public static final RegistryObject<MobEffect> FROZEN = EFFECTS.register("frozen", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x66CCFF));
+    public static final RegistryObject<MobEffect> WEBBED = register("webbed", id -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xDDDDCC)
+            .addAttributeModifier(Attributes.MOVEMENT_SPEED, id, -1.0, ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(Attributes.JUMP_STRENGTH, id, -1.0, ADD_MULTIPLIED_TOTAL));
     public static final RegistryObject<MobEffect> STINKY = register("stinky", StinkyEffect::new);
     public static final RegistryObject<MobEffect> CRATE = EFFECTS.register("crate", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xD88B3F));
     public static final RegistryObject<MobEffect> THE_BAST_DEFENSE = register("the_bast_defense", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x000000)

@@ -29,6 +29,8 @@ public final class NPCCombatActions {
     public static final NPCCombatProfile.Attack ARROW = (npc, target, values) -> shootArrow(npc, target, values, isHardmode());
     /// 军火商在困难模式切换迷你鲨后使用较低的单发伤害。
     public static final NPCCombatProfile.Attack ARMS_DEALER = NPCCombatActions::armsDealerAttack;
+    public static final NPCCombatProfile.Attack BULLET = NPCCombatActions::shootBullet;
+    public static final NPCCombatProfile.Attack CYBORG = NPCCombatActions::cyborgAttack;
     /// 旅商根据世界阶段切换枪弹和弓矢的攻击。
     public static final NPCCombatProfile.Attack TRAVELING_MERCHANT = NPCCombatActions::travelingMerchantAttack;
     /// 哥布林工匠使用的尖球攻击。
@@ -96,6 +98,19 @@ public final class NPCCombatActions {
     private static void travelingMerchantAttack(BaseNPC npc, LivingEntity target, NPCCombatProfile.Values values) {
         if (isHardmode()) shootArrow(npc, target, values, false);
         else shootBullet(npc, target, values.damage(), values.projectileSpeed());
+    }
+
+    private static void cyborgAttack(BaseNPC npc, LivingEntity target, NPCCombatProfile.Values values) {
+        int mode = npc.getRandom().nextInt(3);
+        CyborgExplosiveProjectile projectile = new CyborgExplosiveProjectile(npc, values.damage(), mode);
+        if (mode == 0) {
+            Vec3 direction = target.getEyePosition().subtract(projectile.position());
+            projectile.shoot(direction.x, direction.y, direction.z, (float) values.projectileSpeed(), 0);
+            npc.level().addFreshEntity(projectile);
+        } else {
+            shootAt(projectile, npc, target, values.projectileSpeed() * 0.65, 0);
+        }
+        npc.playSound(SoundEvents.FIREWORK_ROCKET_LAUNCH, 0.8F, 1);
     }
 
     /// 发射可反弹并使用静态无敌帧的尖球实体。

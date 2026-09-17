@@ -69,7 +69,7 @@ public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
         float z = geometry.maxZ() + 0.02F;
         float v0 = frame / 7.0F;
         float v1 = (frame + 1) / 7.0F;
-        VertexConsumer vertices = buffers.getBuffer(RenderStateShardAccessor.UNLIT_TRANSLUCENT.apply(LIGHTNING));
+        VertexConsumer vertices = buffers.getBuffer(RenderType.entityTranslucentEmissive(LIGHTNING));
         var pose = poses.last();
         vertices.vertex(pose.pose(), u - radius, centerY - radius, z).color(255, 255, 255, 255).uv(0, v1).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
         vertices.vertex(pose.pose(), u + radius, centerY - radius, z).color(255, 255, 255, 255).uv(1, v1).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
@@ -103,7 +103,7 @@ public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
         double extension = BladeItemVisualState.get(getCurrentItemStack(), time).extension(time);
         String suffix = extension <= 0 ? "inactive" : extension >= 1 ? "item" : "activation";
         String family = animatable instanceof Phasesaber ? "phasesaber" : "phaseblade";
-        ResourceLocation texture = Confluence.asResource("textures/item/" + family + "/" + animatable.color() + "_" + family + "_" + suffix + ".png");
+        ResourceLocation texture = Confluence.asResource("textures/item/" + family + "/" + animatable.color().resourceName() + "_" + family + "_" + suffix + ".png");
         int frame = Math.min(6, (int) (extension * 7));
         float v0 = suffix.equals("activation") ? frame / 7.0F : 0;
         float v1 = suffix.equals("activation") ? (frame + 1) / 7.0F : 1;

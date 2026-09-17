@@ -26,7 +26,13 @@ public final class WhipItems {
     public static final PortDeferredItem<BaseWhipItem> AMETHYST_WHIP = register("amethyst_whip", 1.0F, tag -> new BaseWhipItem("amethyst_whip", 9.5F, 0.5F, 0.8F, 15, tag));
     public static final PortDeferredItem<SwampWhipItem> SWAMP_WHIP = register("swamp_whip", SwampWhipItem.TAG_DAMAGE, SwampWhipItem::new);
     public static final PortDeferredItem<SnapthornItem> SNAPTHORN = register("snapthorn", SnapthornItem.TAG_DAMAGE, SnapthornItem::new);
-    public static final PortDeferredItem<BaseWhipItem> SPINAL_TAP = register("spinal_tap", 4.0F, tag -> new BaseWhipItem("spinal_tap", 26F, 0.8F, 1.6F, 13, tag));
+    public static final PortDeferredItem<BaseWhipItem> SPINAL_TAP = register("spinal_tap", 4.0F, tag -> new BaseWhipItem("spinal_tap", 26F, 0.8F, 1.6F, 13, tag) {
+        @Override
+        public float damageFalloff() {return 0.9F;}
+
+        @Override
+        public float minimumDamageMultiplier() {return 0.0F;}
+    });
     public static final PortDeferredItem<FirecrackerItem> FIRECRACKER = register("firecracker", FirecrackerItem.TAG_DAMAGE, FirecrackerItem::new);
 
     private WhipItems() {}

@@ -2,22 +2,22 @@ package org.confluence.mod.common.entity.ai.bt.leaf;
 
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.monster.BaseMonster;
 
 /// 恶魔眼在夜间没有目标时的游荡行为。
 ///
 /// 首轮记录生成高度，之后始终围绕该高度选择航点，避免随机游荡逐轮向地面漂移。
 public final class DemonEyeWanderAction extends BTNode {
-    private final PathfinderMob mob;
+    private final BaseMonster mob;
     private double anchorY = Double.NaN;
     private int locateCount;
     private int ticksLeft;
     private Vec3 targetPos;
 
-    public DemonEyeWanderAction(PathfinderMob mob) {
+    public DemonEyeWanderAction(BaseMonster mob) {
         this.mob = mob;
     }
 
@@ -51,7 +51,7 @@ public final class DemonEyeWanderAction extends BTNode {
             mob.setDeltaMovement(nextMovement);
             mob.hasImpulse = true;
         }
-        mob.getLookControl().setLookAt(targetPos.x, targetPos.y, targetPos.z, 30.0F, 85.0F);
+        mob.faceCombatMovement(30.0F, 85.0F);
         ticksLeft--;
         return BTStatus.RUNNING;
     }

@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -37,6 +38,7 @@ import org.confluence.mod.network.s2c.OpenAnglerDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 /// 渔夫 NPC —— 每日钓鱼任务。
@@ -49,6 +51,30 @@ public class AnglerNPC extends BaseNPC {
 
     public AnglerNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile combatProfile) {
         super(type, level, combatProfile);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(-1, new Goal() {
+            {setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));}
+
+            @Override
+            public boolean canUse() {
+                return !isWakeUp();
+            }
+
+            @Override
+            public void start() {
+                getNavigation().stop();
+                setTarget(null);
+                setSpeed(0.0F);
+                setXxa(0.0F);
+                setYya(0.0F);
+                setZza(0.0F);
+                setJumping(false);
+            }
+        });
     }
 
     @Override

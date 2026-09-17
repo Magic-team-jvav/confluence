@@ -1,8 +1,9 @@
 package org.confluence.mod.common.entity.monster.slime;
 
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -23,6 +24,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 尖刺史莱姆的跳跃与射击公共状态机。
 public class SpikedSlime extends BaseSlime {
+    public static final float MODEL_SCALE = 1.5F;
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation JUMP = RawAnimation.begin().thenPlay("jump");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack");
@@ -34,6 +36,11 @@ public class SpikedSlime extends BaseSlime {
 
     protected SpikedSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay) {
         super(type, level, passiveByDay);
+    }
+
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        return getType().getDimensions().scale(MODEL_SCALE * getScale());
     }
 
     protected int spikeCount() {

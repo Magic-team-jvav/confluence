@@ -53,13 +53,16 @@ import org.confluence.mod.common.effect.beneficial.DryadsBlessingEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
+import org.confluence.mod.common.entity.monster.DungeonSpirit;
 import org.confluence.mod.common.entity.monster.EaterOfSouls;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
+import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
@@ -70,10 +73,7 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.entity.BossEntities;
-import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.entity.NpcEntities;
+import org.confluence.mod.common.init.entity.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
@@ -109,7 +109,9 @@ import static org.confluence.mod.util.PlayerUtils.receiveMana;
 
 public final class LivingEntityEvents {
     public static void init() {
+        PortEventHandler.addListener(PortEventPriority.HIGHEST, LivingEntityEvents::blockEnemyFriendlyFire);
         PortEventHandler.addListener(LivingEntityEvents::death);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, DungeonSpirit::onDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
         PortEventHandler.addListener(LivingEntityEvents::incomingDamage);
         PortEventHandler.addListener(PortEventPriority.HIGH, LivingEntityEvents::summonTagDamage);
@@ -142,6 +144,13 @@ public final class LivingEntityEvents {
 
         if (victim.level() instanceof ServerLevel level) {
             GameEventSystem.INSTANCE.countKilled(victim);
+            if (victim instanceof Enemy && !(victim instanceof OwnedSummon)
+                    && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
+                    && KillBoard.INSTANCE.getGamePhase().isHardmode()
+                    && level.getBiome(victim.blockPosition()).is(PortTags.Biomes.IS_OCEAN)
+                    && victim.getRandom().nextInt(100) == 0) {
+                victim.spawnAtLocation(ConsumableItems.PIRATE_MAP.get());
+            }
             TombstoneBoulderEntity.createTombstoneEntity(victim);
             Entity attacker = LibEntityUtils.getOwner(damageSource);
 
@@ -216,7 +225,17 @@ public final class LivingEntityEvents {
         DamageIndicatorOptions.sendHealParticle(amount, level, living);
     }
 
+    private static void blockEnemyFriendlyFire(LivingAttackEvent event) {
+        if (EnemyDamageRules.blocks(event.getEntity(), event.getSource())) {
+            event.setCanceled(true);
+        }
+    }
+
     private static void incomingDamage(PortLivingIncomingDamageEvent event) {
+        if (EnemyDamageRules.blocks(event.getEntity(), event.getSource())) {
+            event.setCanceled(true);
+            return;
+        }
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
 
@@ -282,6 +301,9 @@ public final class LivingEntityEvents {
             amount *= 0.5F;
         }
         amount = SwordItems.processEffect(damageSource, attacker, victim, amount);
+        if (victim.getVehicle() instanceof AbstractMountEntity mount) {
+            amount = mount.modifyRiderDamage(damageSource, amount);
+        }
         event.setNewDamage(amount);
     }
 
@@ -307,6 +329,11 @@ public final class LivingEntityEvents {
         LivingEntity victim = event.getEntity();
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
+        if (damageSource.getDirectEntity() instanceof OwnedSummon summon) {
+            Player owner = damageSource.getEntity() instanceof Player player ? player : summon.resolveSummonOwner(serverLevel);
+            if (owner != null)
+                WhipTagTracker.afterHit(owner, summon, victim, victim, event.getOriginalDamage());
+        }
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
             return;
         }
@@ -595,6 +622,11 @@ public final class LivingEntityEvents {
     }
 
     private static void mobSpawn$SpawnPlacementCheck(MobSpawnEvent.SpawnPlacementCheck event) {
+        if ((event.getSpawnType() == MobSpawnType.NATURAL || event.getSpawnType() == MobSpawnType.CHUNK_GENERATION)
+                && !DevelopmentSpawnPolicy.allowsAutomaticSpawn(event.getEntityType())) {
+            event.setResult(Event.Result.DENY);
+            return;
+        }
         if (event.getResult() == Event.Result.DENY) return;
         if (event.getSpawnType() == MobSpawnType.NATURAL && !getPlacementCheckResult(event)) {
             EntityType<?> entityType = event.getEntityType();
@@ -653,6 +685,9 @@ public final class LivingEntityEvents {
 
     private static void armorPenetration(ArmorPenetrationEvent event) {
         DamageSource damageSource = event.getDamageSource();
+        if (damageSource instanceof org.confluence.mod.common.summon.SummonDamageSource summonSource) {
+            event.setPenetration(event.getPenetration() + summonSource.armorPenetration());
+        }
 
         @Nullable Entity direct = damageSource.getDirectEntity();
         if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD.get()) {

@@ -18,7 +18,7 @@ import software.bernie.geckolib.model.data.EntityModelData;
 /// 给普通双足怪物复用原版人形模型的基础肢体动画。
 /// 这个模型只负责通用的头部、手臂和腿部旋转，不处理僵尸攻击、骷髅拉弓或哥布林专属动作。
 /// 只有名称以约定前缀开头的骨骼会接收原版旋转，附加装饰骨骼保持资源里写好的姿态。
-public final class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
+public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
     private static final String HEAD = "Vhead";
     private static final String LEFT_ARM = "Vleft_arm";
     private static final String RIGHT_ARM = "Vright_arm";
@@ -40,7 +40,7 @@ public final class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends Ge
         walks = true;
     }
 
-    private VanillaHumanoidGeoModel(EntityRendererProvider.Context context, ResourceLocation model,
+    protected VanillaHumanoidGeoModel(EntityRendererProvider.Context context, ResourceLocation model,
                                     ResourceLocation texture, boolean walks) {
         super(model, false);
         vanillaModel = new HumanoidModel<>(context.bakeLayer(ModelLayers.PLAYER));
@@ -129,8 +129,8 @@ public final class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends Ge
             return;
         float progress = Mth.clamp((entity.getTicksUsingItem() + partialTick) / 5.0F, 0.0F, 1.0F);
         float headPitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot()) * Mth.DEG_TO_RAD;
-        float headYaw = Mth.lerp(partialTick, entity.yBodyRotO - entity.yHeadRotO,
-                entity.yBodyRot - entity.yHeadRot) * Mth.DEG_TO_RAD;
+        float headYaw = Mth.wrapDegrees(Mth.rotLerp(partialTick, entity.yBodyRotO, entity.yBodyRot)
+                - Mth.rotLerp(partialTick, entity.yHeadRotO, entity.yHeadRot)) * Mth.DEG_TO_RAD;
         model.rightArm.xRot = Mth.lerp(progress, model.rightArm.xRot, 1.5F - headPitch);
         model.rightArm.yRot = Mth.lerp(progress, model.rightArm.yRot, headYaw);
         model.rightArm.zRot = 0.0F;

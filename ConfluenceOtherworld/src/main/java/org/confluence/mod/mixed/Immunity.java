@@ -107,6 +107,21 @@ public interface Immunity {
         }
     }
 
+    // 非生命体部件仍由部件接收伤害，无敌帧统一存放在其生命体所属者上。
+    static boolean hurt(Immunity cause, Entity recipient, LivingEntity owner, DamageSource source, float amount) {
+        if (recipient instanceof LivingEntity living) return hurt(cause, living, source, amount);
+        if (isActive(cause, owner)) return false;
+        int invulnerableTime = owner.invulnerableTime;
+        owner.invulnerableTime = 0;
+        try {
+            boolean hurt = withCause(cause, () -> LibDamageTypes.hurtWithoutKnockback(recipient, source, amount));
+            if (hurt) apply(cause, source, owner);
+            return hurt;
+        } finally {
+            owner.invulnerableTime = invulnerableTime;
+        }
+    }
+
     static void tick(Entity entity) {
         // 实体身上的无敌帧每刻-1
         if (entity instanceof ILivingEntity living) {
@@ -121,7 +136,7 @@ public interface Immunity {
             while (iterator.hasNext()) {
                 Object2IntMap.Entry<Immunity> entry = iterator.next();
                 int remain = entry.getIntValue() - 1;
-                if (remain < 0) {
+                if (remain <= 0) {
                     iterator.remove();
                 } else {
                     entry.setValue(remain);

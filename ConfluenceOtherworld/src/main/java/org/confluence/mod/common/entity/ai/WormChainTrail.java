@@ -7,6 +7,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+import java.util.function.Function;
 
 /// 以头部走过的三维轨迹为基准，按弧长为蠕虫体节取样。
 ///
@@ -21,16 +22,22 @@ public final class WormChainTrail {
 
     private final Deque<Vec3> points = new ArrayDeque<>();
     private int seededSegmentCount = -1;
+    private Vec3 headTangent = Vec3.ZERO;
 
     public void invalidate() {
         points.clear();
         seededSegmentCount = -1;
+        headTangent = Vec3.ZERO;
     }
 
     public List<Sample> sample(Vec3 headPosition, List<? extends Entity> segments, double spacing) {
+        return sample(headPosition, segments, spacing, Entity::position);
+    }
+
+    public List<Sample> sample(Vec3 headPosition, List<? extends Entity> segments, double spacing, Function<Entity, Vec3> positionOf) {
         int count = segments.size();
         if (points.isEmpty() || seededSegmentCount != count) {
-            seed(headPosition, segments);
+            seed(headPosition, segments, positionOf);
         } else {
             Vec3 newest = points.peekFirst();
             double movementSqr = newest == null ? 0.0D : newest.distanceToSqr(headPosition);
@@ -44,21 +51,25 @@ public final class WormChainTrail {
         double safeSpacing = Math.max(0.05D, spacing);
         trim(safeSpacing * (count + 3));
         List<Vec3> curve = buildSmoothCurve();
+        double tangentRadius = safeSpacing * 0.5;
+        headTangent = headPosition.subtract(sampleDistance(curve, tangentRadius));
         List<Sample> result = new ArrayList<>(count);
         for (int index = 1; index <= count; index++) {
             double distance = index * safeSpacing;
             Vec3 position = sampleDistance(curve, distance);
-            result.add(new Sample(position));
+            Vec3 tangent = sampleDistance(curve, distance - tangentRadius)
+                    .subtract(sampleDistance(curve, distance + tangentRadius));
+            result.add(new Sample(position, tangent));
         }
         return result;
     }
 
-    private void seed(Vec3 headPosition, List<? extends Entity> segments) {
+    private void seed(Vec3 headPosition, List<? extends Entity> segments, Function<Entity, Vec3> positionOf) {
         points.clear();
         points.addLast(headPosition);
         Vec3 previous = headPosition;
         for (Entity segment : segments) {
-            Vec3 position = segment.position();
+            Vec3 position = positionOf.apply(segment);
             if (position.distanceToSqr(previous) > MIN_POINT_DISTANCE_SQR) {
                 points.addLast(position);
                 previous = position;
@@ -139,5 +150,9 @@ public final class WormChainTrail {
         }
     }
 
-    public record Sample(Vec3 position) {}
+    public Vec3 headTangent() {
+        return headTangent;
+    }
+
+    public record Sample(Vec3 position, Vec3 tangent) {}
 }

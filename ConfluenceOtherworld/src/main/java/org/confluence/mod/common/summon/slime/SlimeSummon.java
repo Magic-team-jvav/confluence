@@ -25,7 +25,7 @@ public final class SlimeSummon extends PhysicalSummon {
         addGoal(1, new FluidGoal(this));
         addGoal(2, new AttackGoal(this));
         addGoal(3, new KeepJumpingGoal(this));
-        addGoal(5, new ReturnToOwnerGoal(this));
+        addGoal(0, new ReturnToOwnerGoal(this));
         addGoal(6, new IdlePhysicsGoal(this));
     }
 

@@ -67,16 +67,29 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
         this.entityData.set(OWNER_ID, owner.getId());
         this.entityData.set(INDEX, index);
         this.entityData.set(TAIL, tail);
+        refreshDimensions();
         this.setPos(owner.position());
     }
 
     public @Nullable BaseWormMonster getOwner() {
         resolveOwner();
+        if (owner != null && level().isClientSide) owner.trackClientSegment(this);
         return owner;
     }
 
     public boolean isTail() {
         return entityData.get(TAIL);
+    }
+
+    @Override
+    public boolean fireImmune() {
+        BaseWormMonster head = getOwner();
+        return head != null && head.fireImmune() || super.fireImmune();
+    }
+
+    @Override
+    public boolean displayFireAnimation() {
+        return !fireImmune() && super.displayFireAnimation();
     }
 
     public boolean isHurtFlashing() {
@@ -175,8 +188,7 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
                 candidate -> candidate instanceof LivingEntity target && target != head && head.canAttack(target));
         for (Entity contact : contacts) {
             if (contact instanceof LivingEntity target) {
-                head.doHurtTarget(target);
-                attacked = true;
+                attacked |= head.attackFromSegment(this, target);
             }
         }
         hurtCooldown = attacked ? COLLISION_ATTACK_INTERVAL : COLLISION_DETECTION_INTERVAL;
@@ -184,8 +196,10 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (org.confluence.mod.common.entity.EnemyDamageRules.blocks(this, source)) return false;
         BaseWormMonster head = getOwner();
-        if (head == null || !head.isAlive() || !head.hurt(source, amount)) return false;
+        if (head == null || !head.isAlive() || !head.hurtSegment(this, source, amount))
+            return false;
         markHurt();
         return true;
     }
@@ -243,6 +257,7 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
         if (byNetworkId instanceof BaseWormMonster head) {
             owner = head;
             ownerUUID = head.getUUID();
+            refreshDimensions();
             return;
         }
         if (!level().isClientSide && ownerUUID != null && level() instanceof ServerLevel serverLevel) {
@@ -250,6 +265,7 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
             if (byUuid instanceof BaseWormMonster head) {
                 owner = head;
                 entityData.set(OWNER_ID, head.getId());
+                refreshDimensions();
             }
         }
     }
@@ -300,7 +316,13 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        return getType().getDimensions();
+        return owner == null ? getType().getDimensions() : owner.segmentDimensions(isTail());
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
+        super.onSyncedDataUpdated(accessor);
+        if (TAIL.equals(accessor) && owner != null) refreshDimensions();
     }
 
     @Override

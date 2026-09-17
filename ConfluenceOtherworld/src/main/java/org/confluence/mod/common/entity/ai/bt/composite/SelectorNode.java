@@ -31,7 +31,8 @@ public class SelectorNode extends BTNode {
 
     @Override
     public void start() {
-        currentIndex = preparedIndex >= 0 ? preparedIndex : children.isEmpty() ? -1 : 0;
+        if (preparedIndex < 0) canStart();
+        currentIndex = preparedIndex;
         preparedIndex = -1;
         if (currentIndex >= 0) children.get(currentIndex).start();
     }
@@ -53,6 +54,9 @@ public class SelectorNode extends BTNode {
                 return BTStatus.SUCCESS;
             }
             currentIndex++;
+            while (currentIndex < children.size() && !children.get(currentIndex).canStart()) {
+                currentIndex++;
+            }
             if (currentIndex < children.size()) {
                 children.get(currentIndex).start();
             }

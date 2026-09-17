@@ -6,7 +6,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.item.ModItems;
@@ -21,7 +20,7 @@ public class GoldenSlime extends BaseSlime {
     }
 
     @Override
-    protected void setSlimeSize(int size) {
+    public void setSlimeSize(int size) {
         super.setSlimeSize(2);
     }
 

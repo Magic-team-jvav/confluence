@@ -12,6 +12,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.entity.animal.Bunny;
+import org.confluence.mod.common.entity.animal.Goldfish;
+import org.confluence.mod.common.entity.animal.Penguin;
 import org.confluence.mod.common.init.entity.ModEntities;
 
 import java.util.HashSet;
@@ -93,7 +96,22 @@ public class ThrownPowderEntity extends Entity {
             setPos(x, y, z);
             setDeltaMovement(motion.scale(0.96));
             if (!level().isClientSide) {
-                if (lastPos == blockPosition()) return;
+                if (type == ISpreadable.Type.PURE) {
+                    for (org.confluence.mod.common.entity.animal.MysticFrog frog : level().getEntitiesOfClass(org.confluence.mod.common.entity.animal.MysticFrog.class, getBoundingBox().inflate(1.0)))
+                        frog.purify();
+                }
+                if (type == ISpreadable.Type.CORRUPT || type == ISpreadable.Type.CRIMSON) {
+                    for (Penguin penguin : level().getEntitiesOfClass(Penguin.class, getBoundingBox().inflate(1.0))) {
+                        penguin.corrupt(type == ISpreadable.Type.CRIMSON);
+                    }
+                    for (Goldfish goldfish : level().getEntitiesOfClass(Goldfish.class, getBoundingBox().inflate(1.0))) {
+                        goldfish.corrupt(type == ISpreadable.Type.CRIMSON);
+                    }
+                    for (Bunny bunny : level().getEntitiesOfClass(Bunny.class, getBoundingBox().inflate(1.0))) {
+                        bunny.corrupt(type == ISpreadable.Type.CRIMSON);
+                    }
+                }
+                if (blockPosition().equals(lastPos)) return;
                 this.lastPos = blockPosition();
                 for (BlockPos blockPos : BlockPos.betweenClosed(blockPosition().offset(-5, -5, -5), blockPosition().offset(6, 6, 6))) {
                     BlockPos pos = blockPos.immutable();

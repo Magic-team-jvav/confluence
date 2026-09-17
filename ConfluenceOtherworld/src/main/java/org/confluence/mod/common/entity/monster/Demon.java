@@ -8,6 +8,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.Vec3;
@@ -35,6 +36,7 @@ public class Demon extends ReboundingFlyingMonster {
     private static final RawAnimation HURT = RawAnimation.begin().thenPlay("hurt");
     private static final RawAnimation ATTACK_THROW = RawAnimation.begin().thenPlay("attack.throw");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    private FlyingVolleyCombatAction volleyCombat;
 
     public Demon(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
@@ -59,7 +61,7 @@ public class Demon extends ReboundingFlyingMonster {
 
     @Override
     protected BTRoot createBT() {
-        BTNode combat = new FlyingVolleyCombatAction(
+        FlyingVolleyCombatAction combat = new FlyingVolleyCombatAction(
                 this,
                 new SteeringDashAction(
                         this,
@@ -70,12 +72,10 @@ public class Demon extends ReboundingFlyingMonster {
                         90.0,
                         30.0,
                         30),
-                this::createDemonScythe,
+                this::createVolleyProjectile,
                 150,
-                175,
-                183,
-                191,
-                199);
+                volleyTicks());
+        volleyCombat = combat;
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
@@ -84,7 +84,16 @@ public class Demon extends ReboundingFlyingMonster {
         };
     }
 
-    HostileDemonScytheProjectile createDemonScythe(LivingEntity target) {
+    protected boolean isApproachingVolleyTarget() {
+        LivingEntity target = getTarget();
+        return target != null && target.isAlive() && volleyCombat != null && volleyCombat.isApproaching();
+    }
+
+    protected int[] volleyTicks() {
+        return new int[]{175, 183, 191, 199};
+    }
+
+    protected Projectile createVolleyProjectile(LivingEntity target) {
         HostileDemonScytheProjectile projectile = new HostileDemonScytheProjectile(ModEntities.HOSTILE_DEMON_SCYTHE.get(), level());
         projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         swing(InteractionHand.MAIN_HAND);

@@ -45,6 +45,8 @@ public final class JumpAttackAction extends BTNode {
     @Override
     public void start() {
         elapsedTicks = 0;
+        mob.getNavigation().stop();
+        mob.getMoveControl().setWantedPosition(mob.getX(), mob.getY(), mob.getZ(), 0.0);
     }
 
     @Override

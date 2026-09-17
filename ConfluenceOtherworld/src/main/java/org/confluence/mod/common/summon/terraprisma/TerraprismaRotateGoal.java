@@ -17,7 +17,6 @@ final class TerraprismaRotateGoal extends TerraprismaSkillGoal {
     @Override
     public void start() {
         super.start();
-        summon.beginAttackCycle();
         orbitDirection = summon.owner().getRandom1211().nextBoolean() ? 1 : -1;
         orbitPhase = 0.0;
         smoothedCenter = summon.targetPosition();

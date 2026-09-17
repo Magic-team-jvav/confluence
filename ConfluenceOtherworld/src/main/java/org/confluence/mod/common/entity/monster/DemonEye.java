@@ -12,7 +12,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -168,22 +171,6 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         super.tick();
         if (level().isClientSide) return;
         if (level().isDay()) setTarget(null);
-        LivingEntity target = getTarget();
-        Vec3 lookAt = target != null && target.isAlive() ? target.getEyePosition() : getEyePosition().add(getDeltaMovement());
-        applyLookRotation(lookAt);
-    }
-
-    private void applyLookRotation(Vec3 lookAt) {
-        Vec3 direction = lookAt.subtract(getEyePosition());
-        if (direction.lengthSqr() < 1.0E-8) {
-            return;
-        }
-        float yaw = direction.horizontalDistanceSqr() < 1.0E-8 ? getYRot() : (float) Math.toDegrees(Mth.atan2(-direction.x, direction.z));
-        float pitch = (float) -Math.toDegrees(Mth.atan2(direction.y, direction.horizontalDistance()));
-        setYRot(yaw);
-        setXRot(pitch);
-        setYBodyRot(yaw);
-        setYHeadRot(yaw);
     }
 
     public enum Variant implements IVariant {

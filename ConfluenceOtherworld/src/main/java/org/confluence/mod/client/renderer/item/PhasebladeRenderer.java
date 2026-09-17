@@ -103,7 +103,7 @@ public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
         double extension = BladeItemVisualState.get(getCurrentItemStack(), time).extension(time);
         String suffix = extension <= 0 ? "inactive" : extension >= 1 ? "item" : "activation";
         String family = animatable instanceof Phasesaber ? "phasesaber" : "phaseblade";
-        ResourceLocation texture = Confluence.asResource("textures/item/" + family + "/" + animatable.color() + "_" + family + "_" + suffix + ".png");
+        ResourceLocation texture = Confluence.asResource("textures/item/" + family + "/" + animatable.color().resourceName() + "_" + family + "_" + suffix + ".png");
         int frame = Math.min(6, (int) (extension * 7));
         float v0 = suffix.equals("activation") ? frame / 7.0F : 0;
         float v1 = suffix.equals("activation") ? (frame + 1) / 7.0F : 1;

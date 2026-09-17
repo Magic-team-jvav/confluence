@@ -12,7 +12,7 @@ public final class Phaseblade extends BasePhasebladeItem {
             -2.0F / 16.0F, 1.0F / 16.0F, 0.0F, 35.0F / 16.0F,
             -2.0F / 16.0F, 1.0F / 16.0F, 24.0F / 16.0F);
 
-    public Phaseblade(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, String color) {
+    public Phaseblade(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, PhaseColor color) {
         super(tier, rarity, rawDamage, rawSpeed, color);
     }
 

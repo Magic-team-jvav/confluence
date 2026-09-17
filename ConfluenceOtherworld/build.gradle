@@ -194,7 +194,7 @@ dependencies {
             jarJar(project(":" + name))
         }
     }
-    interfaceInjectionData("org.mesdag:PortLib:${portlib_version}")
+    interfaceInjectionData(rootProject.files("PortLib/portlib-interfaceinjection.json"))
 
     modImplementation("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
     modCompileOnly("com.eliotlash.mclib:mclib:20")

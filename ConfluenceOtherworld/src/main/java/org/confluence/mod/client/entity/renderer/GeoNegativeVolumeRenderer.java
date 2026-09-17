@@ -19,7 +19,7 @@ import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import java.util.ArrayList;
 import java.util.List;
 
-/// Geo负体积/局部发光渲染器。主 pass 渲染轮廓，二次 pass 用 eyes shader 渲染发光骨骼。
+// 负体积模型的轮廓渲染；仅配置发光骨骼时添加第二层。
 public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends GeoNormalRenderer<T> {
 
     private BakedGeoModel initializedModel;
@@ -29,6 +29,7 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
     private List<String> toHideGroupNames;
     private List<String> notToHideGroupNames;
     private InitStrategy initRunnable;
+    private boolean glowLayerAdded;
 
     enum InitStrategy {
         SIMPLE {
@@ -62,6 +63,12 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
     public GeoNegativeVolumeRenderer(EntityRendererProvider.Context context, GeoModel<T> model, boolean rotateAlongPitch, float modelScale, float modelOffsetY) {
         super(context, model, rotateAlongPitch, modelScale, modelOffsetY);
         this.shadowRadius = 0;
+    }
+
+    private void ensureGlowLayer() {
+        initializedModel = null;
+        if (glowLayerAdded) return;
+        glowLayerAdded = true;
         this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {
             @Override
             protected RenderType getRenderType(T animatable) {
@@ -79,12 +86,14 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
     public GeoNegativeVolumeRenderer<T> addBoneToGlow(List<String> boneNames) {
         this.toHideNames.addAll(boneNames);
         this.initRunnable = InitStrategy.SIMPLE;
+        ensureGlowLayer();
         return this;
     }
 
     public GeoNegativeVolumeRenderer<T> addBoneToGlow(String boneName) {
         this.toHideNames.add(boneName);
         this.initRunnable = InitStrategy.SIMPLE;
+        ensureGlowLayer();
         return this;
     }
 
@@ -92,6 +101,7 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
         this.initRunnable = InitStrategy.COMPLEX;
         this.toHideGroupNames = toHide;
         this.notToHideGroupNames = notToHide;
+        ensureGlowLayer();
         return this;
     }
 
@@ -125,6 +135,7 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
 
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
+        if (noCull) return RenderType.entityTranslucent(texture);
         return RenderStateShardAccessor.createTextOutline(texture);
     }
 }

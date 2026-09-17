@@ -81,6 +81,17 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
         return entityData.get(TAIL);
     }
 
+    @Override
+    public boolean fireImmune() {
+        BaseWormMonster head = getOwner();
+        return head != null && head.fireImmune() || super.fireImmune();
+    }
+
+    @Override
+    public boolean displayFireAnimation() {
+        return !fireImmune() && super.displayFireAnimation();
+    }
+
     public boolean isHurtFlashing() {
         return entityData.get(HURT_FLASH_TICKS) > 0;
     }

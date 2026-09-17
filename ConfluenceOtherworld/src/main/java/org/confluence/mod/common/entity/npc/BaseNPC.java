@@ -58,6 +58,7 @@ import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
@@ -80,6 +81,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation TAX_COLLECTOR_ATTACK = RawAnimation.begin().thenPlay("attack");
 
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -572,7 +574,11 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "movement", 5, state -> state.setAndContinue(state.isMoving() ? WALK : IDLE)));
+        controllers.add(new AnimationController<>(this, "movement", 5, state -> {
+            if (getType() == NpcEntities.TAX_COLLECTOR.get() && swinging)
+                return state.setAndContinue(TAX_COLLECTOR_ATTACK);
+            return state.setAndContinue(state.isMoving() ? WALK : IDLE);
+        }));
     }
 
     // === 持久化（Brain + House） ===

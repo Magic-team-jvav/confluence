@@ -14,11 +14,11 @@ public class BatRenderer extends GeoNormalRenderer<CaveBat> {
         super(context, new GeoNormalModel<CaveBat>(model, false) {
             @Override
             public ResourceLocation getAnimationResource(CaveBat bat) {
-                // Bat.bbmodel 的共用骨架已有完整飞行动画，不使用空的 idle 占位动画。
                 return Confluence.asResource("animations/entity/cave_bat.animation.json");
             }
         }, true, 1.0F, 0.0625F);
         this.luminous = luminous;
+        withNoCull();
     }
 
     @Override

@@ -149,7 +149,7 @@ public class Piranha extends BaseAquaticMonster implements MoneyDropSource {
                     if (animationProfile == AnimationProfile.PIRANHA && swinging) {
                         return state.setAndContinue(DefaultAnimations.ATTACK_STRIKE);
                     }
-                    if (isInWater() && (state.isMoving() || animationProfile == AnimationProfile.GOLDFISH)) {
+                    if (animationProfile == AnimationProfile.GOLDFISH || isInWater() && state.isMoving()) {
                         return state.setAndContinue(DefaultAnimations.SWIM);
                     }
                     return state.setAndContinue(DefaultAnimations.IDLE);

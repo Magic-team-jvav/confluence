@@ -120,7 +120,7 @@ public class NpcEntities {
 
     // 地狱转化：税收官
     public static final RegistryObject<EntityType<SimpleNPC>> TAX_COLLECTOR = register("tax_collector",
-            () -> Items.STICK, NPCCombatActions.MELEE,
+            () -> Items.AIR, NPCCombatActions.MELEE,
             builder -> builder.maxHealth(65).damage(4).attackRange(3).retreatRange(3));
 
     // 发光蘑菇城镇：松露人

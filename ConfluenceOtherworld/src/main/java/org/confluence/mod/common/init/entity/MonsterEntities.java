@@ -377,7 +377,7 @@ public class MonsterEntities {
 
     // 海盗入侵：鹦鹉与海盗诅咒
     public static final RegistryObject<EntityType<PirateFlyingMonster>> PIRATE_PARROT = DevelopmentSpawnPolicy.developmentOnly(registerEntity("pirate_parrot", EntityType.Builder.<PirateFlyingMonster>of((type, level) -> new PirateFlyingMonster(type, level, false), MobCategory.MONSTER).sized(0.5F, 0.7F)));
-    public static final RegistryObject<EntityType<PirateFlyingMonster>> PIRATES_CURSE = DevelopmentSpawnPolicy.developmentOnly(registerEntity("pirates_curse", EntityType.Builder.<PirateFlyingMonster>of((type, level) -> new PirateFlyingMonster(type, level, true), MobCategory.MONSTER).sized(0.7F, 1.2F)));
+    public static final RegistryObject<EntityType<PirateFlyingMonster>> PIRATES_CURSE = DevelopmentSpawnPolicy.developmentOnly(registerEntity("pirates_curse", EntityType.Builder.<PirateFlyingMonster>of((type, level) -> new PirateFlyingMonster(type, level, true), MobCategory.MONSTER).sized(0.8F, 1.3F)));
 
     // 新年：大飞龙
     public static final RegistryObject<EntityType<SimpleWormMonster>> ARCH_WYVERN = registerWorm("arch_wyvern", 12, 1.8F, 1.8F, SimpleWormMonster.Role.FLYING);

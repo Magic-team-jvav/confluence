@@ -32,7 +32,39 @@ public class GeoNormalRenderer<T extends Entity & GeoEntity> extends GeoEntityRe
     private BakedGeoModel cullingModel;
     private boolean needsFaceCulling;
     private boolean cutout;
-    private boolean noCull;
+    protected boolean noCull;
+    private final java.util.Map<GeoCube, GeoCube> separatedPlanes = new java.util.WeakHashMap<>();
+
+    @Override
+    public void renderCube(PoseStack poses, GeoCube cube, VertexConsumer buffer, int light,
+                           int overlay, float red, float green, float blue, float alpha) {
+        var size = cube.size();
+        if (noCull && cube.inflate() == 0 && (size.x == 0 || size.y == 0 || size.z == 0))
+            cube = separatedPlanes.computeIfAbsent(cube, GeoNormalRenderer::separatePlaneFaces);
+        super.renderCube(poses, cube, buffer, light, overlay, red, green, blue, alpha);
+    }
+
+    // 保留原模型两面的 UV；让零厚度薄片的正反面稍微分离，避免双面绘制时争抢同一深度。
+    private static GeoCube separatePlaneFaces(GeoCube cube) {
+        var quads = cube.quads().clone();
+        var size = cube.size();
+        for (int i = 0; i < quads.length; i++) {
+            var quad = quads[i];
+            if (quad == null) continue;
+            var normal = quad.normal();
+            Vector3f offset = new Vector3f(size.x == 0 ? normal.x() : 0,
+                    size.y == 0 ? normal.y() : 0, size.z == 0 ? normal.z() : 0).mul(0.0005F);
+            if (offset.lengthSquared() == 0) continue;
+            var vertices = quad.vertices().clone();
+            for (int j = 0; j < vertices.length; j++) {
+                var vertex = vertices[j];
+                vertices[j] = new software.bernie.geckolib.cache.object.GeoVertex(
+                        new Vector3f(vertex.position()).add(offset), vertex.texU(), vertex.texV());
+            }
+            quads[i] = new software.bernie.geckolib.cache.object.GeoQuad(vertices, normal, quad.direction());
+        }
+        return new GeoCube(quads, cube.pivot(), cube.rotation(), size, cube.inflate(), cube.mirror());
+    }
 
     public GeoNormalRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
         this(context, path, false, 1.0F, 0.0F);

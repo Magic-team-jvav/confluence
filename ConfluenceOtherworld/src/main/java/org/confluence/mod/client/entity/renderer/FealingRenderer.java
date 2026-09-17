@@ -20,7 +20,7 @@ import java.util.List;
 /// 第二阶段只绘制外层骨骼，避免同一几何被重复提交。与通用的 {@code eyes} 发光层不同，
 /// 外层使用保留深度写入和背面剔除的裁切渲染，因此它表现为有明确表面的发光立方体，
 /// 不会形成粒子式的半透明叠加。
-public final class FealingRenderer extends FairyRenderer<Fealing> {
+public final class FealingRenderer extends FullbrightGeoRenderer<Fealing> {
     private static final int FULL_BRIGHT = 0xF000F0;
 
     public FealingRenderer(EntityRendererProvider.Context context) {

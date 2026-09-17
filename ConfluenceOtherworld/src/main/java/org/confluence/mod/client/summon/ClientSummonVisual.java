@@ -6,18 +6,13 @@ import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
 /// 普通召唤物的客户端动画状态。
 final class ClientSummonVisual implements GeoAnimatable {
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
-    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
-    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
-    private static final RawAnimation CAST = RawAnimation.begin().thenLoop("attack.cast");
-    private static final RawAnimation STRIKE = RawAnimation.begin().thenLoop("attack.strike");
+    private final ClientSummonModels.Animations animations;
     private final UUID id;
     private final ResourceLocation type;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
@@ -25,9 +20,10 @@ final class ClientSummonVisual implements GeoAnimatable {
     private boolean moving;
     private double age;
 
-    ClientSummonVisual(UUID id, ResourceLocation type) {
+    ClientSummonVisual(UUID id, ResourceLocation type, ClientSummonModels.Animations animations) {
         this.id = id;
         this.type = type;
+        this.animations = animations;
     }
 
     UUID id() {
@@ -46,27 +42,8 @@ final class ClientSummonVisual implements GeoAnimatable {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "summon_visual", transitionTicks(), state -> state.setAndContinue(selectedAnimation())));
-    }
-
-    private int transitionTicks() {
-        return type.getPath().equals("slime_baby") ? 0 : 4;
-    }
-
-    private RawAnimation selectedAnimation() {
-        String path = type.getPath();
-        if (path.equals("finch_baby")) return FLY;
-        if (path.startsWith("deadly_sphere_"))
-            return animation == SummonAnimation.MELEE_ATTACK ? STRIKE : IDLE;
-        if (path.equals("vampire_bat")) return IDLE;
-        if (path.equals("vampire_frog"))
-            return animation == SummonAnimation.FLY ? FLY : animation == SummonAnimation.MELEE_ATTACK ? STRIKE : moving ? WALK : IDLE;
-        if (path.equals("slime_baby"))
-            return animation == SummonAnimation.FLY ? FLY : moving ? WALK : IDLE;
-        if (animation == SummonAnimation.MELEE_ATTACK && (path.equals("hornet_baby") || path.equals("sculk_wisp") || path.equals("summon_imp")))
-            return CAST;
-        if (path.equals("hornet_baby")) return IDLE;
-        return moving ? WALK : IDLE;
+        controllers.add(new AnimationController<>(this, "summon_visual", animations.transitionTicks(),
+                state -> state.setAndContinue(animations.select(animation, moving))));
     }
 
     @Override

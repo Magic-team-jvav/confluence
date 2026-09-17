@@ -15,9 +15,10 @@ import java.util.List;
 public final class DeadlySphereSummon extends FlyingSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 40.0F;
-    private static final ResourceLocation[] FORMS = {
-            Confluence.asResource("deadly_sphere_spikes"), Confluence.asResource("deadly_sphere_flames"), Confluence.asResource("deadly_sphere_blade")
-    };
+    public static final ResourceLocation SPIKES = Confluence.asResource("deadly_sphere_spikes");
+    public static final ResourceLocation FLAMES = Confluence.asResource("deadly_sphere_flames");
+    public static final ResourceLocation BLADE = Confluence.asResource("deadly_sphere_blade");
+    private static final ResourceLocation[] FORMS = {SPIKES, FLAMES, BLADE};
     private int form;
     private int attacks;
     private int dashTicks;

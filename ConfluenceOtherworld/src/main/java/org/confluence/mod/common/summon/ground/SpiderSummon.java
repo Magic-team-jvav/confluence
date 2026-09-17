@@ -1,5 +1,7 @@
 package org.confluence.mod.common.summon.ground;
 
+import net.minecraft.resources.ResourceLocation;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,7 +22,10 @@ public final class SpiderSummon extends PhysicalSummon {
     public static final int SLOT_COST = 1;
     public static final float BASE_DAMAGE = 26.0F;
     private static final Immunity[] IMMUNITIES = {new SpiderImmunity(), new SpiderImmunity(), new SpiderImmunity()};
-    private static final String[] FORMS = {"spider_venom", "spider_jumper", "spider_dangerous"};
+    public static final ResourceLocation VENOM = Confluence.asResource("spider_venom");
+    public static final ResourceLocation JUMPER = Confluence.asResource("spider_jumper");
+    public static final ResourceLocation DANGEROUS = Confluence.asResource("spider_dangerous");
+    private static final ResourceLocation[] FORMS = {VENOM, JUMPER, DANGEROUS};
     private int variant = -1;
     private int biteCooldown;
     private LivingEntity latched;
@@ -104,7 +109,7 @@ public final class SpiderSummon extends PhysicalSummon {
 
     @Override
     public void appendRenderParts(List<SummonRenderPart> output) {
-        output.add(new SummonRenderPart(uuid(), Confluence.asResource(FORMS[Math.max(0, variant)]), currentPose(), visualState(), order()));
+        output.add(new SummonRenderPart(uuid(), FORMS[Math.max(0, variant)], currentPose(), visualState(), order()));
     }
 
     private static final class SpiderImmunity implements Immunity {

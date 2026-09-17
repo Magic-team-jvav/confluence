@@ -281,7 +281,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
         return hurtTouchingTargets(bounds, targetRange, damageMultiplier, hitEntities, ignored -> {});
     }
 
-    private boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier,
+    protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier,
                                         Set<UUID> hitEntities, Consumer<LivingEntity> onSuccessfulHit) {
         Objects.requireNonNull(onSuccessfulHit, "Successful-hit callback must not be null");
         boolean hit = false;

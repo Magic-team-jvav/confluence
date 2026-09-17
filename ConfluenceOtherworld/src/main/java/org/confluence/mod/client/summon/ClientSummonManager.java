@@ -137,6 +137,7 @@ public final class ClientSummonManager {
         }
         MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
         for (State state : STATES.values()) {
+            ClientSummonModels.Binding binding = ClientSummonModels.MODELS.get(state.current.type());
             if (state.current.type().equals(HORNET_STINGER)) {
                 renderHornetStinger(state, event, buffers);
             } else if (state.current.type().equals(IMP_FIREBALL)) {
@@ -150,8 +151,8 @@ public final class ClientSummonManager {
             } else if (state.current.type().equals(IRON_GOLEM)) {
                 // 铁傀儡由正常实体渲染器绘制；这里仅保留状态同步，不能再叠加一份客户端外观。
                 continue;
-            } else if (usesGeoVisual(state.current.type())) {
-                renderGeoVisual(state, event, buffers);
+            } else if (binding != null) {
+                renderGeoVisual(state, binding, event, buffers);
             } else {
                 renderMissingSummon(state, event, buffers);
             }
@@ -163,7 +164,7 @@ public final class ClientSummonManager {
         GEO_VISUALS.remove(id);
     }
 
-    private static void renderGeoVisual(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
+    private static void renderGeoVisual(State state, ClientSummonModels.Binding binding, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null) {
@@ -171,10 +172,10 @@ public final class ClientSummonManager {
         }
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         Vec3 position = state.renderPosition(partialTick);
-        ClientSummonVisual visual = GEO_VISUALS.compute(state.current.id(), (id, existing) -> existing != null && existing.type().equals(state.current.type()) ? existing : new ClientSummonVisual(id, state.current.type()));
+        ClientSummonVisual visual = GEO_VISUALS.compute(state.current.id(), (id, existing) -> existing != null && existing.type().equals(state.current.type())
+                ? existing : new ClientSummonVisual(id, state.current.type(), binding.animations()));
         State.PoseFrame frame = state.poseFrame(state.renderTime(partialTick));
-        visual.update(frame.from().animation(), frame.from().position().distanceToSqr(frame.to().position()) > 1.0E-5,
-                state.renderTime(partialTick));
+        visual.update(frame.from().animation(), frame.from().position().distanceToSqr(frame.to().position()) > 1.0E-5, state.renderTime(partialTick));
         Vec3 camera = event.getCamera().getPosition();
         int packedLight = LevelRenderer.getLightColor(level, BlockPos.containing(position));
         PoseStack poseStack = event.getPoseStack();
@@ -182,25 +183,13 @@ public final class ClientSummonManager {
         poseStack.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
         float yaw = state.interpolatedYaw(partialTick);
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
-        if (rotatesWithPitch(state.current.type())) {
+        if (binding.rotatesWithPitch()) {
             double radians = yaw * Mth.DEG_TO_RAD;
-            poseStack.mulPose(Axis.of(new Vector3f((float) Math.cos(radians), 0.0F, (float) Math.sin(radians)))
-                    .rotationDegrees(state.interpolatedPitch(partialTick)));
+            poseStack.mulPose(Axis.of(new Vector3f((float) Math.cos(radians), 0.0F, (float) Math.sin(radians))).rotationDegrees(state.interpolatedPitch(partialTick)));
         }
         poseStack.scale(state.current.scale(), state.current.scaleY(), state.current.scale());
-        GEO_RENDERERS.computeIfAbsent(state.current.type(), ClientSummonGeoRenderer::new)
-                .render(poseStack, visual, bufferSource, null, null, packedLight);
+        GEO_RENDERERS.computeIfAbsent(state.current.type(), type -> new ClientSummonGeoRenderer(binding)).render(poseStack, visual, bufferSource, null, null, packedLight);
         poseStack.popPose();
-    }
-
-    private static boolean usesGeoVisual(ResourceLocation type) {
-        return type.getNamespace().equals(Confluence.MODID) && switch (type.getPath()) {
-            case "finch_baby", "slime_baby", "hornet_baby", "sculk_wisp", "summon_imp",
-                 "summon_snow_flinx", "vampire_frog", "vampire_bat", "spider_venom",
-                 "spider_jumper", "spider_dangerous", "deadly_sphere_spikes",
-                 "deadly_sphere_flames", "deadly_sphere_blade" -> true;
-            default -> false;
-        };
     }
 
     private static void renderHornetStinger(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
@@ -216,16 +205,8 @@ public final class ClientSummonManager {
         poseStack.mulPose(Axis.ZP.rotationDegrees(state.interpolatedPitch(partialTick)));
         int packedLight = LevelRenderer.getLightColor(minecraft.level, BlockPos.containing(position));
         HornetStingerProjectileModel model = hornetStingerModel(minecraft.getEntityModels());
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(STINGER_TEXTURE)),
-                packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(STINGER_TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
-    }
-
-    private static boolean rotatesWithPitch(ResourceLocation type) {
-        return switch (type.getPath()) {
-            case "finch_baby", "hornet_baby", "sculk_wisp", "summon_imp" -> true;
-            default -> false;
-        };
     }
 
 
@@ -241,9 +222,7 @@ public final class ClientSummonManager {
         PoseStack poseStack = event.getPoseStack();
         poseStack.pushPose();
         poseStack.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
-        // 专用模型缺失时展示逻辑体节，不能借用巨型蠕虫充当星尘龙。
-        LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()),
-                -0.25, 0.0, -0.25, 0.25, 0.5, 0.25, 1.0F, 0.65F, 0.1F, 1.0F);
+        LevelRenderer.renderLineBox(poseStack, bufferSource.getBuffer(RenderType.lines()), -0.25, 0.0, -0.25, 0.25, 0.5, 0.25, 1.0F, 0.65F, 0.1F, 1.0F);
         if (state.current.order() == 0) {
             var label = net.minecraft.network.chat.Component.translatable("entity.confluence.model_pending",
                     net.minecraft.network.chat.Component.translatable("entity.confluence.stardust_dragon"));
@@ -477,7 +456,7 @@ public final class ClientSummonManager {
                 backTicks = Math.max(0, backTicks - 1);
             }
             this.lastUpdate = lastUpdate;
-            if (teleport || !previous.type().equals(entry.type())) {
+            if (teleport) {
                 poseSamples.clear();
                 trailSamples.clear();
             } else if (poseSamples.getLast().time() == sampleTime) {

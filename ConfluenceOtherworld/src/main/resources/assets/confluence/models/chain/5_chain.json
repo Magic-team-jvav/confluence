@@ -1,0 +1,29 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "confluence:entity/hook/worm_hook_chain",
+        "all": "confluence:entity/hook/lunar_hook_chain_vortex"
+    },
+    "elements": [
+        {
+            "from": [5.5, 0, 8],
+            "to": [10.5, 16, 8],
+            "shade": false,
+            "rotation": { "angle": 45, "axis": "y", "origin": [8, 8, 8] },
+            "faces": {
+                "north": { "uv": [0, 0, 3.33333, 10.66667], "texture": "#all" },
+                "south": { "uv": [0, 0, 3.33333, 10.66667], "texture": "#all" }
+            }
+        },
+        {
+            "from": [8, 0, 5.5],
+            "to": [8, 16, 10.5],
+            "shade": false,
+            "rotation": { "angle": 45, "axis": "y", "origin": [8, 8, 8] },
+            "faces": {
+                "east": { "uv": [4, 0, 7.33333, 10.66667], "texture": "#all" },
+                "west": { "uv": [4, 0, 7.33333, 10.66667], "texture": "#all" }
+            }
+        }
+    ]
+}

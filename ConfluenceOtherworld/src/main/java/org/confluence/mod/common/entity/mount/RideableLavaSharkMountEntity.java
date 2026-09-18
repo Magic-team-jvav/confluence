@@ -25,6 +25,7 @@ public class RideableLavaSharkMountEntity extends AbstractMountEntity implements
 
     @Override
     protected void tickRidden(Player player) {
+        player.clearFire();
         Vec3 velocity;
         if (isInWater() || isInLava()) {
             double yaw = Math.toRadians(player.getYRot());

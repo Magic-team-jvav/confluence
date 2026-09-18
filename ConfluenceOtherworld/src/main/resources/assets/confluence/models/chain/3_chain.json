@@ -1,0 +1,37 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "confluence:entity/hook/tendon_hook_chain",
+        "all": "confluence:entity/hook/tendon_hook_chain"
+    },
+    "elements": [
+        {
+            "from": [6.5, 0, 8],
+            "to": [9.5, 16, 8],
+            "shade": false,
+            "rotation": { "angle": 45, "axis": "y", "origin": [8, 8, 8] },
+            "faces": {
+                "north": { "uv": [4, 0, 6, 10.66667], "texture": "#all" },
+                "east": { "uv": [4, 0, 4, 10.66667], "texture": "#all" },
+                "south": { "uv": [6, 0, 8, 10.66667], "texture": "#all" },
+                "west": { "uv": [6, 0, 6, 10.66667], "texture": "#all" },
+                "up": { "uv": [6, 0, 4, 0], "texture": "#all" },
+                "down": { "uv": [8, 0, 6, 0], "texture": "#all" }
+            }
+        },
+        {
+            "from": [8, 0, 6.5],
+            "to": [8, 16, 9.5],
+            "shade": false,
+            "rotation": { "angle": 45, "axis": "y", "origin": [8, 8, 8] },
+            "faces": {
+                "north": { "uv": [2, 2, 2, 12.66667], "texture": "#all" },
+                "east": { "uv": [0, 2, 2, 12.66667], "texture": "#all" },
+                "south": { "uv": [4, 2, 4, 12.66667], "texture": "#all" },
+                "west": { "uv": [2, 2, 4, 12.66667], "texture": "#all" },
+                "up": { "uv": [2, 2, 2, 0], "texture": "#all" },
+                "down": { "uv": [2, 0, 2, 2], "texture": "#all" }
+            }
+        }
+    ]
+}

@@ -12,17 +12,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.registries.RegistryObject;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.ClientBossBarTracker;
 import org.confluence.mod.client.handler.ClientBossBarTracker.BossBarData;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.jetbrains.annotations.ApiStatus;
 import org.joml.Matrix4f;
-import org.mesdag.portlib.event.client.PortRegisterShadersEvent;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Locale;
 import java.util.Map;
 
@@ -47,14 +44,6 @@ public final class CustomBossBarRenderer {
     );
 
     private CustomBossBarRenderer() {}
-
-    public static void registerShaders(PortRegisterShadersEvent event) {
-        try {
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("boss_bar_flow"), DefaultVertexFormat.POSITION_TEX), shader -> flowingFillShader = shader);
-        } catch (IOException exception) {
-            throw new UncheckedIOException("Unable to load the dynamic boss bar shader", exception);
-        }
-    }
 
     public static void render(CustomizeGuiOverlayEvent.BossEventProgress event) {
         if (ClientConfigs.bossBarStyle == Style.VANILLA) return;
@@ -120,6 +109,11 @@ public final class CustomBossBarRenderer {
                 ResourceLocation.fromNamespaceAndPath(id.getNamespace(), basePath + "1.png"),
                 ResourceLocation.fromNamespaceAndPath(id.getNamespace(), basePath + "2.png")
         ));
+    }
+
+    @ApiStatus.Internal
+    public static void setShader(ShaderInstance instance) {
+        flowingFillShader = instance;
     }
 
     public enum Style implements PortTranslatableEnum {

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import org.confluence.mod.common.entity.monster.slime.SpikedSlime;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -16,6 +17,11 @@ import software.bernie.geckolib.model.GeoModel;
 ///
 /// 内核和饰物先绘制，透明外壳后绘制；不能按父骨骼把五官或饰品划入外壳。
 public class GeoSpecialSlimeRenderer<T extends Entity & GeoEntity> extends GeoNormalRenderer<T> {
+    @Override
+    protected float getEffectiveModelScale(T entity) {
+        return super.getEffectiveModelScale(entity) * (entity instanceof SpikedSlime ? SpikedSlime.MODEL_SCALE : 1.0F);
+    }
+
     private boolean shellPass;
     public GeoSpecialSlimeRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
         this(context, path, false);

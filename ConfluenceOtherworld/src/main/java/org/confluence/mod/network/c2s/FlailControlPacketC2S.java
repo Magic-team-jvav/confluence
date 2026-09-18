@@ -41,7 +41,13 @@ public record FlailControlPacketC2S(Action action) implements IPortPacket.C2S {
     @Override
     public void work(ServerPlayer player) {
         ItemStack stack = player.getMainHandItem();
-        if (!(stack.getItem() instanceof BaseFlailItem)) {
+        if (!(stack.getItem() instanceof BaseFlailItem flailItem)) {
+            return;
+        }
+        if (flailItem.isAutoSwing()) {
+            if (action == Action.HOLD) {
+                flailItem.tryAutoSwing(player, stack);
+            }
             return;
         }
         if (action == Action.HOLD) {

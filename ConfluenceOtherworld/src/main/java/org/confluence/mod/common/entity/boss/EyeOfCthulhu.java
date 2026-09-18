@@ -26,6 +26,10 @@ import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
+
 /// 克苏鲁之眼 Boss。
 ///
 /// 服务端显式状态机复现两阶段战斗：第一阶段在目标上方悬停并召唤仆从，
@@ -77,6 +81,7 @@ public class EyeOfCthulhu extends BaseBoss {
     private int servantTimer = PHASE_ONE_SERVANT_COOLDOWN;
     private int leavingTicks;
     private Vec3 lockedDashDirection = Vec3.ZERO;
+    private final Deque<AfterimageSnapshot> afterimages = new ArrayDeque<>();
 
     public EyeOfCthulhu(EntityType<? extends Monster> type, Level level) {
         super(type, level);
@@ -126,6 +131,7 @@ public class EyeOfCthulhu extends BaseBoss {
             return;
         }
         if (level().isClientSide) {
+            tickAfterimages();
             if (getCombatState() == CombatState.LEAVING) faceSkyward();
             return;
         }
@@ -477,6 +483,22 @@ public class EyeOfCthulhu extends BaseBoss {
         return remainingDashCount;
     }
 
+    public List<AfterimageSnapshot> getAfterimageSnapshots() {
+        return List.copyOf(afterimages);
+    }
+
+    private void tickAfterimages() {
+        boolean enabled = getCombatStage() == 2
+                && getCombatState() == CombatState.DASHING
+                && getHealth() / getMaxHealth() < 0.30F;
+        if (enabled) {
+            afterimages.addLast(new AfterimageSnapshot(position(), getXRot(), getYRot()));
+            while (afterimages.size() > 20) afterimages.pollFirst();
+        } else {
+            afterimages.pollFirst();
+        }
+    }
+
     @Override
     public boolean canAttack(LivingEntity target) {
         /// 仆从属于恶魔眼行为族，必须显式排除同阵营实体以免互相伤害。
@@ -553,4 +575,6 @@ public class EyeOfCthulhu extends BaseBoss {
         TRANSFORMING,
         LEAVING
     }
+
+    public record AfterimageSnapshot(Vec3 position, float xRot, float yRot) {}
 }

@@ -58,6 +58,15 @@ public class FlailItems {
     /// 链刃。
     public static final PortDeferredItem<BaseFlailItem> CHAIN_KNIFE = ITEMS.register("chain_knife", () -> new BaseFlailItem(FlailComponent.CHAIN_KNIFE.get(), ModRarity.WHITE));
 
+    /// 铁链血滴子：自动挥舞，可同时维持多枚往返射弹。
+    public static final PortDeferredItem<BaseFlailItem> CHAIN_GUILLOTINES = ITEMS.register("chain_guillotines", () -> new BaseFlailItem(FlailComponent.CHAIN_GUILLOTINES.get(), ModRarity.PINK));
+
+    /// 石巨人之拳：延伸足够远后命中会产生冲击波。
+    public static final PortDeferredItem<BaseFlailItem> GOLEM_FIST = ITEMS.register("golem_fist", () -> new BaseFlailItem(FlailComponent.GOLEM_FIST.get(), ModRarity.LIME));
+
+    /// 致胜炮：拳套回收后可立即再次发射。
+    public static final PortDeferredItem<BaseFlailItem> KO_CANNON = ITEMS.register("ko_cannon", () -> new BaseFlailItem(FlailComponent.KO_CANNON.get(), ModRarity.LIGHT_RED));
+
     /// 锚。
     public static final PortDeferredItem<BaseFlailItem> ANCHOR = ITEMS.register("anchor", () -> new BaseFlailItem(FlailComponent.ANCHOR.get(), ModRarity.WHITE));
 }

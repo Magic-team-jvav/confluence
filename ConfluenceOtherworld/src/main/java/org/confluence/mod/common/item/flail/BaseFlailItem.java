@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.flail;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -38,6 +39,7 @@ import java.util.function.Consumer;
 public class BaseFlailItem extends TooltipItem implements GeoItem {
     private static final int USE_DURATION = 72_000;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+    private final FlailComponent flailComponent;
 
     public BaseFlailItem(FlailComponent flailComponent, ModRarity rarity) {
         super(new Properties()
@@ -45,6 +47,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
                         .component(ModDataComponentTypes.FLAIL, flailComponent),
                 rarity,
                 "");
+        this.flailComponent = flailComponent;
     }
 
     /// 右键未被方块或实体消耗时，进入链锤持续使用状态。
@@ -72,19 +75,7 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
             return;
         }
 
-        EntityType<?> entityType =
-                ForgeRegistries.ENTITY_TYPES.getValue(component.projType());
-        if (entityType == null) {
-            return;
-        }
-        Entity entity = entityType.create(player.level());
-        if (!(entity instanceof BaseFlailEntity flail)) {
-            return;
-        }
-        flail.init(player, stack, component);
-        player.level().addFreshEntity(flail);
-        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), component.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
-        player.swing(InteractionHand.MAIN_HAND, true);
+        spawnFlail(player, stack, component);
     }
 
     /// 松开主动作键时投出旋转中的链锤，或收回停留中的链锤。
@@ -129,6 +120,48 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
                 .stream()
                 .findFirst()
                 .orElse(null);
+    }
+
+    private static @Nullable BaseFlailEntity spawnFlail(Player player, ItemStack stack, FlailComponent component) {
+        EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getValue(component.projType());
+        if (entityType == null) return null;
+        Entity entity = entityType.create(player.level());
+        if (!(entity instanceof BaseFlailEntity flail)) return null;
+
+        flail.init(player, stack, component);
+        player.level().addFreshEntity(flail);
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), component.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        player.swing(InteractionHand.MAIN_HAND, true);
+        return flail;
+    }
+
+    public boolean isAutoSwing() {
+        return flailComponent.behavior().autoSwing();
+    }
+
+    public boolean canAutoSwing(Player player) {
+        if (player.getCooldowns().isOnCooldown(this)) return false;
+        FlailComponent component = player.getMainHandItem().get(ModDataComponentTypes.FLAIL);
+        if (component == null) return false;
+        int maxActive = component.behavior().autoSwingMaxActive();
+        if (maxActive <= 0) return true;
+        return player.level().getEntitiesOfClass(
+                BaseFlailEntity.class,
+                player.getBoundingBox().inflate(component.maxDistance() + 2.0),
+                entity -> entity.getOwner() == player && component.equals(entity.getComponent())
+        ).size() < maxActive;
+    }
+
+    public boolean tryAutoSwing(ServerPlayer player, ItemStack stack) {
+        FlailComponent component = stack.get(ModDataComponentTypes.FLAIL);
+        if (component == null || !canAutoSwing(player) || spawnFlail(player, stack, component) == null) {
+            return false;
+        }
+        int interval = component.getAutoSwingInterval(player);
+        if (interval > 0) {
+            player.getCooldowns().addCooldown(this, interval);
+        }
+        return true;
     }
 
     /// 链锤实体成功造成伤害后的物品扩展点。

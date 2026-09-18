@@ -75,9 +75,7 @@ public final class Goldfish extends SwimmingCritter {
     @Override
     public void tick() {
         if (!level().isClientSide) {
-            if (isInWater()) entityData.set(WALKING, false);
-            else if (!canWalk() && level().isRainingAt(blockPosition()))
-                entityData.set(WALKING, true);
+            entityData.set(WALKING, !isInWater() && level().isRainingAt(blockPosition()));
         }
         super.tick();
         if (!level().isClientSide && isAlive() && tickCount % 20 == 0 && BloodMoonGameEvent.INSTANCE.started()) {
@@ -106,6 +104,6 @@ public final class Goldfish extends SwimmingCritter {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "Movement", 3, state -> state.setAndContinue(isInWater() ? SWIM : canWalk() && state.isMoving() ? WALK : IDLE)));
+        controllers.add(new AnimationController<>(this, "Movement", 3, state -> state.setAndContinue(!canWalk() ? SWIM : state.isMoving() ? WALK : IDLE)));
     }
 }

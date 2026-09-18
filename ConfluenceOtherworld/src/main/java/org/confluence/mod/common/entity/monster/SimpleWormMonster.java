@@ -111,6 +111,11 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
         return role != Role.BONE_SERPENT && super.displayFireAnimation();
     }
 
+    @Override
+    public boolean fireImmune() {
+        return role == Role.BONE_SERPENT || super.fireImmune();
+    }
+
     public void setBossOwner(BaseBoss owner) {
         ownerTracker.bind(this, owner);
         setTarget(owner.getTarget());

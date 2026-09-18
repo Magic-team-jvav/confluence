@@ -218,24 +218,24 @@ public class SwordItems {
                     .tooltipImage());
 
     // 陨石光剑
-    public static final PortDeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
-    public static final PortDeferredItem<BaseSwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));
-    public static final PortDeferredItem<BaseSwordItem> YELLOW_PHASEBLADE = register("yellow_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "yellow"));
-    public static final PortDeferredItem<BaseSwordItem> GREEN_PHASEBLADE = register("green_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "green"));
-    public static final PortDeferredItem<BaseSwordItem> BLUE_PHASEBLADE = register("blue_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "blue"));
-    public static final PortDeferredItem<BaseSwordItem> PURPLE_PHASEBLADE = register("purple_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "purple"));
-    public static final PortDeferredItem<BaseSwordItem> WHITE_PHASEBLADE = register("white_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "white"));
-    public static final PortDeferredItem<BaseSwordItem> PINK_PHASEBLADE = register("pink_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "pink"));
+    public static final PortDeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.RED));
+    public static final PortDeferredItem<BaseSwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.ORANGE));
+    public static final PortDeferredItem<BaseSwordItem> YELLOW_PHASEBLADE = register("yellow_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.YELLOW));
+    public static final PortDeferredItem<BaseSwordItem> GREEN_PHASEBLADE = register("green_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.GREEN));
+    public static final PortDeferredItem<BaseSwordItem> BLUE_PHASEBLADE = register("blue_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.BLUE));
+    public static final PortDeferredItem<BaseSwordItem> PURPLE_PHASEBLADE = register("purple_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.PURPLE));
+    public static final PortDeferredItem<BaseSwordItem> WHITE_PHASEBLADE = register("white_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.WHITE));
+    public static final PortDeferredItem<BaseSwordItem> PINK_PHASEBLADE = register("pink_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.PINK));
 
     // 晶光刃
-    public static final PortDeferredItem<BaseSwordItem> RED_PHASESABER = register("red_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, "red"));
-    public static final PortDeferredItem<BaseSwordItem> ORANGE_PHASESABER = register("orange_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, "orange"));
-    public static final PortDeferredItem<BaseSwordItem> YELLOW_PHASESABER = register("yellow_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, "yellow"));
-    public static final PortDeferredItem<BaseSwordItem> GREEN_PHASESABER = register("green_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, "green"));
-    public static final PortDeferredItem<BaseSwordItem> BLUE_PHASESABER = register("blue_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, "blue"));
-    public static final PortDeferredItem<BaseSwordItem> PURPLE_PHASESABER = register("purple_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, "purple"));
-    public static final PortDeferredItem<BaseSwordItem> WHITE_PHASESABER = register("white_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, "white"));
-    public static final PortDeferredItem<BaseSwordItem> PINK_PHASESABER = register("pink_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, "pink"));
+    public static final PortDeferredItem<BaseSwordItem> RED_PHASESABER = register("red_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.RED));
+    public static final PortDeferredItem<BaseSwordItem> ORANGE_PHASESABER = register("orange_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.ORANGE));
+    public static final PortDeferredItem<BaseSwordItem> YELLOW_PHASESABER = register("yellow_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.YELLOW));
+    public static final PortDeferredItem<BaseSwordItem> GREEN_PHASESABER = register("green_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.GREEN));
+    public static final PortDeferredItem<BaseSwordItem> BLUE_PHASESABER = register("blue_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.BLUE));
+    public static final PortDeferredItem<BaseSwordItem> PURPLE_PHASESABER = register("purple_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.PURPLE));
+    public static final PortDeferredItem<BaseSwordItem> WHITE_PHASESABER = register("white_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.WHITE));
+    public static final PortDeferredItem<BaseSwordItem> PINK_PHASESABER = register("pink_phasesaber", () -> new Phasesaber(ModTiers.METEOR, ModRarity.LIGHT_RED, 27, 3, BasePhasebladeItem.PhaseColor.PINK));
 
     // 特殊剑
     public static final PortDeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER,

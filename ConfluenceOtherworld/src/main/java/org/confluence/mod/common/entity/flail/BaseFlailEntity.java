@@ -1,23 +1,31 @@
 package org.confluence.mod.common.entity.flail;
 
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -313,21 +321,22 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         setNoGravity(true);
         Vec3 target = HandPositionUtils.getPalmPosition(player, 1.0F);
         Vec3 toOwner = target.subtract(position());
-        if (toOwner.lengthSqr() < 1) {
+        double distance = toOwner.length();
+        if (distance < 1.0) {
             if (!level().isClientSide()) {
                 discard();
             }
             return;
         }
-        Vec3 dir = toOwner.normalize();
-        Vec3 motion = dir.scale(component.retractSpeed());
+        Vec3 dir = toOwner.scale(1.0 / distance);
+        Vec3 motion = dir.scale(Math.min(component.retractSpeed(), distance));
         faceDirection(motion);
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
 
-        // 卡墙时瞬移绕过方块
+        // 卡墙时瞬移绕过方块，同时避免高速回收跨过玩家后往返振荡。
         if (horizontalCollision || verticalCollision) {
-            setPos(position().add(dir.scale(component.retractSpeed() * 2)));
+            setPos(position().add(dir.scale(Math.min(component.retractSpeed() * 2.0, distance))));
         }
     }
 
@@ -349,15 +358,18 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {
-                LibEntityUtils.knockBackA2B(this, target, 0.3f, 0.15f);
+                LibEntityUtils.knockBackA2B(this, target, component.behavior().knockback(), 0.15f);
                 ItemStack held = player.getMainHandItem();
                 if (held.getItem() instanceof BaseFlailItem flailItem) {
                     flailItem.onFlailHit(player, target, this);
                 }
                 hitCooldown = phase == PHASE_THROWN ? 3 : 8;
                 if (phase == PHASE_THROWN && startsLaunched()) {
-                    setPhase(PHASE_RETRACT);
-                    return;
+                    onLaunchedEntityImpact(player, component, target);
+                    if (component.behavior().retractOnHitEntity()) {
+                        setPhase(PHASE_RETRACT);
+                        return;
+                    }
                 }
             }
         }
@@ -368,7 +380,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     /// 普通链锤先旋转再投出；链刃、锚等直接发射型由实体子类覆盖，
     /// 其参数和行为无需再写入物品注册或额外定义表。
     protected boolean startsLaunched() {
-        return false;
+        FlailComponent component = getComponent();
+        return component != null && component.behavior().launchMode();
     }
 
     /// 返回链锤头部是否按泰拉瑞亚原始平面精灵绘制。
@@ -402,10 +415,49 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     /// 直接发射型链锤撞击方块时的扩展点。
     protected void onLaunchedBlockImpact(Player player, FlailComponent component, BlockHitResult hit) {
+        if (component.equals(FlailComponent.GOLEM_FIST.get())) {
+            triggerGolemFistShockwave(player, component, null);
+        }
+    }
+
+    /// 直接发射型链锤命中实体时的扩展点。
+    protected void onLaunchedEntityImpact(Player player, FlailComponent component, LivingEntity target) {
+        if (!component.equals(FlailComponent.GOLEM_FIST.get())) return;
+        applyGolemFistConfusion(target);
+        triggerGolemFistShockwave(player, component, target);
     }
 
     /// 投出阶段首次进入收回阶段时的扩展点。
     protected void onThrownToRetract(Player player, FlailComponent component) {
+    }
+
+    private void triggerGolemFistShockwave(Player player, FlailComponent component, @Nullable LivingEntity excluded) {
+        if (position().distanceTo(player.position()) <= 9.375) return;
+
+        float damage = (float) (component.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
+        DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
+        double inflate = Math.max(0.5, (12.5 - getBbWidth()) * 0.5);
+        AABB area = getBoundingBox().inflate(inflate);
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area,
+                entity -> entity != player && entity != excluded && entity.isAlive() && LibEntityUtils.canHitEntity(entity, this))) {
+            if (target.hurt(source, damage)) {
+                LibEntityUtils.knockBackA2B(this, target, component.behavior().knockback(), 0.15F);
+                applyGolemFistConfusion(target);
+            }
+        }
+
+        level().playSound(null, blockPosition(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 1.0F, 1.25F);
+        if (level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(
+                    new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()),
+                    getX(), getY() + 0.5, getZ(), 60, 4.0, 0.5, 4.0, 0.2);
+        }
+    }
+
+    private void applyGolemFistConfusion(LivingEntity target) {
+        if (target.getRandom1211().nextFloat() < 1.0F / 3.0F) {
+            target.addEffect(new MobEffectInstance(LibEffects.CONFUSED.get(), 40));
+        }
     }
 
     /// SPIN 切换THROWN

@@ -35,6 +35,7 @@ import java.util.function.Supplier;
 /// @param projType     链锤实体类型
 /// @param ballTexture  球体模型纹理
 /// @param chainTexture 链条分段纹理
+/// @param behavior     发射与自动挥舞行为
 public record FlailComponent(
         float damageFactor,
         float spinRadius,
@@ -49,7 +50,8 @@ public record FlailComponent(
         ResourceLocation soundEvent,
         ResourceLocation projType,
         ResourceLocation ballTexture,
-        ResourceLocation chainTexture) {
+        ResourceLocation chainTexture,
+        Behavior behavior) {
 
     public static final Codec<FlailComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("damageFactor").forGetter(FlailComponent::damageFactor),
@@ -65,7 +67,8 @@ public record FlailComponent(
             ResourceLocation.CODEC.fieldOf("soundEvent").forGetter(FlailComponent::soundEvent),
             ResourceLocation.CODEC.fieldOf("projType").forGetter(FlailComponent::projType),
             ResourceLocation.CODEC.fieldOf("ballTexture").forGetter(FlailComponent::ballTexture),
-            ResourceLocation.CODEC.fieldOf("chainTexture").forGetter(FlailComponent::chainTexture)
+            ResourceLocation.CODEC.fieldOf("chainTexture").forGetter(FlailComponent::chainTexture),
+            Behavior.CODEC.optionalFieldOf("behavior", Behavior.NORMAL).forGetter(FlailComponent::behavior)
     ).apply(instance, FlailComponent::new));
     public static final PortStreamCodec<ByteBuf, FlailComponent> STREAM_CODEC = LibStreamCodecUtils.composite(
             PortByteBufCodecs.FLOAT, FlailComponent::damageFactor,
@@ -82,8 +85,36 @@ public record FlailComponent(
             ResourceLocation.STREAM_CODEC, FlailComponent::projType,
             ResourceLocation.STREAM_CODEC, FlailComponent::ballTexture,
             ResourceLocation.STREAM_CODEC, FlailComponent::chainTexture,
+            Behavior.STREAM_CODEC, FlailComponent::behavior,
             FlailComponent::new
     );
+
+    public record Behavior(
+            float knockback,
+            boolean launchMode,
+            int autoSwingInterval,
+            boolean autoSwing,
+            int autoSwingMaxActive,
+            boolean retractOnHitEntity) {
+        public static final Behavior NORMAL = new Behavior(0.3F, false, 13, false, 0, false);
+        public static final Codec<Behavior> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.FLOAT.optionalFieldOf("knockback", 0.3F).forGetter(Behavior::knockback),
+                Codec.BOOL.optionalFieldOf("launchMode", false).forGetter(Behavior::launchMode),
+                Codec.INT.optionalFieldOf("autoSwingInterval", 13).forGetter(Behavior::autoSwingInterval),
+                Codec.BOOL.optionalFieldOf("autoSwing", false).forGetter(Behavior::autoSwing),
+                Codec.INT.optionalFieldOf("autoSwingMaxActive", 0).forGetter(Behavior::autoSwingMaxActive),
+                Codec.BOOL.optionalFieldOf("retractOnHitEntity", false).forGetter(Behavior::retractOnHitEntity)
+        ).apply(instance, Behavior::new));
+        public static final PortStreamCodec<ByteBuf, Behavior> STREAM_CODEC = PortStreamCodec.composite(
+                PortByteBufCodecs.FLOAT, Behavior::knockback,
+                PortByteBufCodecs.BOOL, Behavior::launchMode,
+                PortByteBufCodecs.VAR_INT, Behavior::autoSwingInterval,
+                PortByteBufCodecs.BOOL, Behavior::autoSwing,
+                PortByteBufCodecs.VAR_INT, Behavior::autoSwingMaxActive,
+                PortByteBufCodecs.BOOL, Behavior::retractOnHitEntity,
+                Behavior::new
+        );
+    }
 
     public static final Supplier<FlailComponent> MACE = preset("mace", 11.0F, 1.2F, 1.2F, 1.2F, 8.0F, 1.0F, 0.05F, false);
     public static final Supplier<FlailComponent> FLAMING_MACE = preset("flaming_mace", 11.0F, 1.2F, 1.2F, 1.2F, 8.0F, 1.0F, 0.05F, false);
@@ -99,6 +130,15 @@ public record FlailComponent(
     public static final Supplier<FlailComponent> DRIPPLER_CRIPPLER = preset("drippler_crippler", 55.0F, 1.2F, 1.5F, 1.3F, 20.0F, 1.0F, 0.2F, true, ModEntities.DRIPPLER_CRIPPLER_FLAIL.getId());
     public static final Supplier<FlailComponent> FLAIRON = preset("flairon", 67.0F, 1.2F, 1.8F, 1.8F, 25.0F, 1.5F, 0.2F, true, ModEntities.FLAIRON_FLAIL.getId());
     public static final Supplier<FlailComponent> CHAIN_KNIFE = preset("chain_knife", 6.0F, 1.2F, 1.2F, 1.3F, 10.0F, 1.0F, 0.0F, true, ModEntities.CHAIN_KNIFE_FLAIL.getId());
+    public static final Supplier<FlailComponent> CHAIN_GUILLOTINES = launchedPreset(
+            "chain_guillotines", 30.0F, 0.3F, 1.5F, 1.3F, 32.0F, 2.6F,
+            new Behavior(0.3F, true, 13, true, 0, false));
+    public static final Supplier<FlailComponent> GOLEM_FIST = launchedPreset(
+            "golem_fist", 45.0F, 1.0F, 2.5F, 1.75F, 31.25F, 2.5F,
+            new Behavior(1.0F, true, 8, true, 1, true));
+    public static final Supplier<FlailComponent> KO_CANNON = launchedPreset(
+            "ko_cannon", 20.0F, 0.45F, 2.0F, 0.95F, 17.0F, 2.5F,
+            new Behavior(0.45F, true, 0, true, 1, true));
     public static final Supplier<FlailComponent> ANCHOR = preset("anchor", 35.0F, 1.2F, 1.2F, 1.3F, 100.0F, 1.0F, 0.05F, true, ModEntities.ANCHOR_FLAIL.getId());
 
     private static Supplier<FlailComponent> preset(String id, float damageFactor, float spinRadius, float spinSpeed, float throwSpeed, float maxDistance, float retractSpeed, float gravity, boolean customChain) {
@@ -120,7 +160,25 @@ public record FlailComponent(
         ResourceLocation chainTexture = customChain
                 ? Confluence.asResource("textures/block/chain/" + id + ".png")
                 : ResourceLocation.withDefaultNamespace("textures/block/chain.png");
-        return () -> new FlailComponent(damageFactor, spinRadius, spinSpeed, throwSpeed, maxDistance, retractSpeed, gravity, 20, 0.3F, 3, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), entityType, ballTexture, chainTexture);
+        return () -> new FlailComponent(damageFactor, spinRadius, spinSpeed, throwSpeed, maxDistance, retractSpeed, gravity, 20, 0.3F, 3, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), entityType, ballTexture, chainTexture, Behavior.NORMAL);
+    }
+
+    private static Supplier<FlailComponent> launchedPreset(
+            String id,
+            float damageFactor,
+            float knockback,
+            float spinSpeed,
+            float throwSpeed,
+            float maxDistance,
+            float retractSpeed,
+            Behavior behavior) {
+        ResourceLocation ballTexture = Confluence.asResource("textures/entity/flail/" + id + ".png");
+        ResourceLocation chainTexture = Confluence.asResource("textures/block/chain/" + id + ".png");
+        return () -> new FlailComponent(
+                damageFactor, 1.2F, spinSpeed, throwSpeed, maxDistance, retractSpeed, 0.0F,
+                20, 0.3F, 3, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+                ModEntities.FLAIL_ENTITY.getId(), ballTexture, chainTexture,
+                new Behavior(knockback, behavior.launchMode(), behavior.autoSwingInterval(), behavior.autoSwing(), behavior.autoSwingMaxActive(), behavior.retractOnHitEntity()));
     }
 
     public SoundEvent getSoundEvent() {
@@ -144,7 +202,8 @@ public record FlailComponent(
                     soundEvent.equals(other.soundEvent) &&
                     projType.equals(other.projType) &&
                     ballTexture.equals(other.ballTexture) &&
-                    chainTexture.equals(other.chainTexture);
+                    chainTexture.equals(other.chainTexture) &&
+                    behavior.equals(other.behavior);
         }
         return false;
     }
@@ -165,6 +224,7 @@ public record FlailComponent(
         result = 31 * result + projType.hashCode();
         result = 31 * result + ballTexture.hashCode();
         result = 31 * result + chainTexture.hashCode();
+        result = 31 * result + behavior.hashCode();
         return result;
     }
 
@@ -188,5 +248,14 @@ public record FlailComponent(
         AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
         if (instance != null) return spinSpeed * (float) instance.getValue() / 4.0f;
         return spinSpeed;
+    }
+
+    /// 获取自动挥舞间隔；0 表示由射弹回收时机限制射速。
+    public int getAutoSwingInterval(LivingEntity living) {
+        if (behavior.autoSwingInterval() <= 0) return 0;
+        AttributeInstance instance = living.getAttribute(Attributes.ATTACK_SPEED);
+        // 1.20.1 的连枷没有覆盖物品基础攻速；沿用 getSpinSpeed 的 4.0 基准换算倍率。
+        float multiplier = instance == null ? 1.0F : (float) instance.getValue() / 4.0F;
+        return Math.max(2, Math.round(behavior.autoSwingInterval() / Math.max(0.05F, multiplier)));
     }
 }

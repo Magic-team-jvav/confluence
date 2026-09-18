@@ -20,6 +20,7 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.s2c.RightClickSubtractorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
@@ -68,7 +69,7 @@ public class EverBeneficialItem extends TooltipItem {
     });
     public static final Beneficial AMBROSIA = new Beneficial(Confluence.asResource("ambrosia"), EverBeneficial::setAmbrosiaUsed, (id, name, player, everBeneficial, isRespawn) -> {
         int value = TCUtils.getValue(player, TCItems.RIGHT$CLICK$DELAY$SUBSTRACTOR);
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new RightClickSubtractorPacketS2C((byte) Math.min(value + 1, 4)));
+        TerraCurio.NETWORK_HANDLER.sendToPlayer(player, new RightClickSubtractorPacketS2C((byte) Math.min(value + 1, 4)));
         AttributeInstance instance = player.getAttributes().getInstance(Attributes.BLOCK_BREAK_SPEED);
         if (instance == null) return;
         instance.addOrReplacePermanentModifier(new AttributeModifier(

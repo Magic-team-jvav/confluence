@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.BowItem;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 
@@ -16,6 +17,7 @@ public final class NPCHumanoidGeoModel<T extends BaseNPC> extends GeoNormalModel
     @Override
     public void setCustomAnimations(T npc, long instanceId, AnimationState<T> state) {
         super.setCustomAnimations(npc, instanceId, state);
+        if (npc.getType() == NpcEntities.TAX_COLLECTOR.get()) return;
         CoreGeoBone right = getAnimationProcessor().getBone("RightArm");
         CoreGeoBone left = getAnimationProcessor().getBone("LeftArm");
         if (right == null || left == null) return;

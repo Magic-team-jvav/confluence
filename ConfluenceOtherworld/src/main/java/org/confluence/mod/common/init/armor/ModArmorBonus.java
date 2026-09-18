@@ -90,6 +90,7 @@ public final class ModArmorBonus {
     // endregion
 
     // region key
+    public static ArmorSetBonusKey NINJA_SET;
     public static ArmorSetBonusKey COLD_CRYSTAL_SET;
     public static ArmorSetBonusKey HEIM_SET;
     // endregion
@@ -129,9 +130,9 @@ public final class ModArmorBonus {
                     .add(LibAttributes.getSummonDamage(), key.id, 0.1, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
-        register("ninja_set", 1, NINJA_HELMET, NINJA_CHESTPLATE, NINJA_LEGGINGS, NINJA_BOOTS, key -> {
+        NINJA_SET = register("ninja_set", 1, NINJA_HELMET, NINJA_CHESTPLATE, NINJA_LEGGINGS, NINJA_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-            // todo 移动时身后有拖影效果
+            // 移动拖影由 AfterimageHelper 在客户端渲染。
         });
         register("guards_set", 1, GUARDS_HELMET, GUARDS_CHESTPLATE, GUARDS_LEGGINGS, GUARDS_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.1F);

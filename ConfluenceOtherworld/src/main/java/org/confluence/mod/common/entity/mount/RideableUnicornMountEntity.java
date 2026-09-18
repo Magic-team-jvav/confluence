@@ -19,7 +19,8 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class RideableUnicornMountEntity extends AbstractMountEntity implements GeoEntity {
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
+    private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation RUN = RawAnimation.begin().thenLoop("running");
     private static final SummonStats CHARGE_DAMAGE = new SummonStats(60.0F, 1.0F);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private boolean jumpQueued;
@@ -62,7 +63,11 @@ public class RideableUnicornMountEntity extends AbstractMountEntity implements G
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "movement", 0, state -> state.setAndContinue(IDLE)));
+        controllers.add(new AnimationController<>(this, "movement", 5, state -> {
+            double speed = getDeltaMovement().horizontalDistanceSqr();
+            if (speed < 0.0001) return software.bernie.geckolib.core.object.PlayState.STOP;
+            return state.setAndContinue(speed > 0.16 ? RUN : WALK);
+        }));
     }
 
     @Override

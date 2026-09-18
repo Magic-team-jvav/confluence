@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -36,7 +35,6 @@ import java.util.UUID;
 
 public abstract class PhasebladeProjectile extends Projectile implements ItemSupplier {
     private static final EntityDataAccessor<ItemStack> DATA_WEAPON = SynchedEntityData.defineId(PhasebladeProjectile.class, EntityDataSerializers.ITEM_STACK);
-    private static final EntityDataAccessor<String> DATA_SOURCE_ITEM = SynchedEntityData.defineId(PhasebladeProjectile.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Byte> DATA_STATE = SynchedEntityData.defineId(PhasebladeProjectile.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Float> DATA_DAMAGE = SynchedEntityData.defineId(PhasebladeProjectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_KNOCKBACK = SynchedEntityData.defineId(PhasebladeProjectile.class, EntityDataSerializers.FLOAT);
@@ -63,7 +61,6 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
     @Override
     protected void defineSynchedData() {
         entityData.define(DATA_WEAPON, ItemStack.EMPTY);
-        entityData.define(DATA_SOURCE_ITEM, "");
         entityData.define(DATA_STATE, (byte) State.FORWARD.ordinal());
         entityData.define(DATA_DAMAGE, 1.0F);
         entityData.define(DATA_KNOCKBACK, 0.0F);
@@ -75,7 +72,6 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         setOwner(owner);
         setPos(owner.getX(), owner.getEyeY() - 0.2D, owner.getZ());
         entityData.set(DATA_WEAPON, BasePhasebladeItem.createProjectileStack(weapon));
-        entityData.set(DATA_SOURCE_ITEM, BuiltInRegistries.ITEM.getKey(weapon.getItem()).toString());
         entityData.set(DATA_DAMAGE, damage);
         entityData.set(DATA_KNOCKBACK, knockback);
         setState(State.FORWARD);
@@ -100,8 +96,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
     }
 
     public boolean represents(ItemStack stack) {
-        return !stack.isEmpty() && entityData.get(DATA_SOURCE_ITEM)
-                .equals(BuiltInRegistries.ITEM.getKey(stack.getItem()).toString());
+        return stack.getItem() instanceof BasePhasebladeItem held && getItem().getItem() instanceof BasePhasebladeItem thrown && held.color() == thrown.color();
     }
 
     public void recall() {
@@ -218,7 +213,7 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
     private ResourceLocation bladeParticle() {
         if (!(getItem().getItem() instanceof BasePhasebladeItem blade)) return null;
         String family = blade instanceof Phasesaber ? "phasesaber" : "phaseblade";
-        return Confluence.asResource(blade.color() + "_" + family);
+        return Confluence.asResource(blade.color().resourceName() + "_" + family);
     }
 
     private void tickClientEmitters(State state) {
@@ -365,10 +360,6 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         }
         super.tick();
 
-        if (!level().isClientSide && state() != State.RETURNING && owner instanceof Player player
-                && !represents(player.getMainHandItem())) {
-            recall();
-        }
 
         State state = state();
         if (state != observedState) {
@@ -439,7 +430,6 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.put("Weapon", getItem().save(new CompoundTag()));
-        tag.putString("SourceItem", entityData.get(DATA_SOURCE_ITEM));
         tag.putByte("State", entityData.get(DATA_STATE));
         tag.putFloat("Damage", entityData.get(DATA_DAMAGE));
         tag.putFloat("Knockback", entityData.get(DATA_KNOCKBACK));
@@ -453,9 +443,6 @@ public abstract class PhasebladeProjectile extends Projectile implements ItemSup
         super.readAdditionalSaveData(tag);
         ItemStack savedWeapon = ItemStack.of(tag.getCompound("Weapon"));
         entityData.set(DATA_WEAPON, savedWeapon.isEmpty() ? ItemStack.EMPTY : BasePhasebladeItem.createProjectileStack(savedWeapon));
-        entityData.set(DATA_SOURCE_ITEM, tag.contains("SourceItem")
-                ? tag.getString("SourceItem")
-                : savedWeapon.isEmpty() ? "" : BuiltInRegistries.ITEM.getKey(savedWeapon.getItem()).toString());
         entityData.set(DATA_DAMAGE, tag.getFloat("Damage"));
         entityData.set(DATA_KNOCKBACK, tag.getFloat("Knockback"));
         entityData.set(DATA_FALL_YAW, tag.getFloat("FallYaw"));

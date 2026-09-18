@@ -24,6 +24,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 
 /// 尖刺史莱姆的跳跃与射击公共状态机。
 public class SpikedSlime extends BaseSlime {
+    public static final float MODEL_SCALE = 1.5F;
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation JUMP = RawAnimation.begin().thenPlay("jump");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack");
@@ -39,7 +40,7 @@ public class SpikedSlime extends BaseSlime {
 
     @Override
     public EntityDimensions getDimensions(Pose pose) {
-        return getType().getDimensions().scale(getScale());
+        return getType().getDimensions().scale(MODEL_SCALE * getScale());
     }
 
     protected int spikeCount() {

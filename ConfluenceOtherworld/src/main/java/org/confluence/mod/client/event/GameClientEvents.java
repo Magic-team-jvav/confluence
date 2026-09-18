@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
@@ -32,6 +33,7 @@ import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -46,6 +48,7 @@ import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.animation.GunCameraAnimation;
+import org.confluence.mod.client.effect.AfterimageHelper;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.SpelunkerHelper;
@@ -73,6 +76,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
@@ -84,6 +88,7 @@ import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
@@ -96,6 +101,7 @@ import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.*;
 import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
 import org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent;
+import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.event.GeoRenderEvent;
@@ -113,6 +119,7 @@ public final class GameClientEvents {
         ClientWeaponInputManager.init();
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
         PortEventHandler.addListener(GameClientEvents::clientTick$Post);
+        PortEventHandler.addListener(GameClientEvents::playerTick$Post);
         PortEventHandler.addListener(GameClientEvents::clientPlayerNetwork$LoggingIn);
         PortEventHandler.addListener(GameClientEvents::clientPlayerNetwork$LoggingOut);
         PortEventHandler.addListener(GameClientEvents::input$InteractionKeyMappingTriggered);
@@ -143,6 +150,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::inspectGun);
         PortEventHandler.addListener(GameClientEvents::applyGunCamera);
         PortEventHandler.addListener(GameClientEvents::bulletImpact);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::lavaSharkFog);
         PortEventHandler.addListener(GameClientEvents::cancelSwap);
     }
 
@@ -213,7 +221,13 @@ public final class GameClientEvents {
             ClientWeaponInputManager.tick(player);
             boolean isFlail = mainHandItem.has(ModDataComponentTypes.FLAIL);
             if (isFlail) {
-                if (keyHeld && !wasFlailKeyHeld) {
+                BaseFlailItem flailItem = mainHandItem.getItem() instanceof BaseFlailItem item ? item : null;
+                if (flailItem != null && flailItem.isAutoSwing()) {
+                    // 自动挥舞：客户端每 tick 请求，服务端用冷却和活跃射弹上限校验。
+                    if (keyHeld && flailItem.canAutoSwing(player)) {
+                        FlailControlPacketC2S.sendHold();
+                    }
+                } else if (keyHeld && !wasFlailKeyHeld) {
                     FlailControlPacketC2S.sendHold();
                 } else if (!keyHeld && wasFlailKeyHeld) {
                     FlailControlPacketC2S.sendRelease();
@@ -238,6 +252,10 @@ public final class GameClientEvents {
         WeatherHandler.initialize(event.getPlayer());
     }
 
+    private static void playerTick$Post(PortPlayerTickEvent.Post event) {
+        AfterimageHelper.tick(event.getEntity());
+    }
+
     private static void clientPlayerNetwork$LoggingOut(PortClientPlayerNetworkEvent.LoggingOut event) {
         wasFlailKeyHeld = false;
         wasRepeaterKeyHeld = false;
@@ -252,6 +270,7 @@ public final class GameClientEvents {
 //        CompatibilityHandler.reset();
         DropletsHandler.reset();
         EctoMistHelper.reset();
+        AfterimageHelper.reset();
         ClientBestiary.getInstance().reset();
         LucyTheAxeHandler.reset();
         ClientGameEventSystem.reset();
@@ -475,6 +494,7 @@ public final class GameClientEvents {
 
     private static void renderPlayer$Pre(PortRenderPlayerEvent.Pre event) {
         ZombieArmRenderer.getInstance().render(event.getRenderer(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getEntity(), event.getPartialTick());
+        AfterimageHelper.render(event);
     }
 
     private static void renderArm(PortRenderArmEvent event) {
@@ -625,6 +645,15 @@ public final class GameClientEvents {
         if (player.getMainHandItem().getItem() instanceof BaseGun) {
             InspectPacketC2S.sendToServer();
         }
+    }
+
+    private static void lavaSharkFog(PortViewportEvent.RenderFog event) {
+        if (event.getCamera().getFluidInCamera() != FogType.LAVA || !(event.getCamera().getEntity().getVehicle() instanceof RideableLavaSharkMountEntity))
+            return;
+        event.setNearPlaneDistance(0.0F);
+        event.setFarPlaneDistance(32.0F);
+        event.setFogShape(FogShape.SPHERE);
+        event.setCanceled(true);
     }
 
     private static void applyGunCamera(PortViewportEvent.ComputeCameraAngles event) {

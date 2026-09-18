@@ -12,7 +12,7 @@ public final class Phasesaber extends BasePhasebladeItem {
             -3.0F / 16.0F, 4.0F / 16.0F, -1.0F / 16.0F, 32.0F / 16.0F,
             -2.0F / 16.0F, 2.0F / 16.0F, 22.0F / 16.0F);
 
-    public Phasesaber(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, String color) {
+    public Phasesaber(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, PhaseColor color) {
         super(tier, rarity, rawDamage, rawSpeed, color);
     }
 

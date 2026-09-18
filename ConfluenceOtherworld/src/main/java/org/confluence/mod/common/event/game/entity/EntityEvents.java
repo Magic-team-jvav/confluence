@@ -104,6 +104,11 @@ public final class EntityEvents {
             return;
         }
         if (damageSource.is(DamageTypeTags.IS_FIRE)) {
+            if (victim.getVehicle() instanceof org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity) {
+                victim.clearFire();
+                event.setInvulnerable(true);
+                return;
+            }
             if (victim.hasEffect(ModEffects.OBSIDIAN_SKIN.get()) || (victim instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
                 victim.clearFire();
                 event.setInvulnerable(true);

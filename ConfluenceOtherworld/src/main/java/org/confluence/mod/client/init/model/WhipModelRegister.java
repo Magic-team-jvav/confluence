@@ -2,7 +2,7 @@ package org.confluence.mod.client.init.model;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
-import org.mesdag.portlib.event.client.PortModelEvent;
+import net.minecraftforge.client.event.ModelEvent;
 
 // 只负责发现并烘焙鞭子分段模型；组合规则由 WhipAppearance 保存。
 // 同路径覆盖交给原版资源管理器处理，不扫描物品注册表。
@@ -13,13 +13,10 @@ public final class WhipModelRegister {
 
     private WhipModelRegister() {}
 
-    public static void register(PortModelEvent.RegisterAdditional event) {
+    public static void register(ModelEvent.RegisterAdditional event) {
         Minecraft.getInstance().getResourceManager()
-                .listResources(RESOURCE_FOLDER, location -> location.getPath().endsWith(JSON_SUFFIX)
-                        && !location.getPath().endsWith("/config.json"))
-                .keySet().stream()
-                .map(WhipModelRegister::stripModelResourcePath)
-                .forEach(event::register);
+                .listResources(RESOURCE_FOLDER, location -> location.getPath().endsWith(JSON_SUFFIX) && !location.getPath().endsWith("/config.json"))
+                .keySet().stream().map(WhipModelRegister::stripModelResourcePath).forEach(event::register);
     }
 
     private static ResourceLocation stripModelResourcePath(ResourceLocation resource) {

@@ -44,13 +44,7 @@ public abstract class Minion extends AttachmentEntity {
 
     @Override
     public @NotNull DamageSource getDamageSource() {
-        return new AttachmentEntityDamageSource(
-                LibDamageTypes.of(getLevel(), LibDamageTypes.SUMMONER, owner).typeHolder(),
-                null,
-                owner,
-                getPos(),
-                this
-        );
+        return new AttachmentEntityDamageSource(LibDamageTypes.of(getLevel(), LibDamageTypes.SUMMONER, null, owner).typeHolder(), null, owner, getPos(), this);
     }
 
     @Override

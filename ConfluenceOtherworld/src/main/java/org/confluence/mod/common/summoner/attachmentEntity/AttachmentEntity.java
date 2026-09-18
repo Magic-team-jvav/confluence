@@ -9,8 +9,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
-import org.confluence.mod.common.summoner.attachment.InvincibleData;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
+import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class AttachmentEntity {
+public abstract class AttachmentEntity implements Immunity {
 
     protected final Holder<AttachmentEntityType<?>> type;
     protected final ArrayList<PathNode> historyNodes = new ArrayList<>();
@@ -29,6 +29,7 @@ public abstract class AttachmentEntity {
     protected Player owner = null;
     protected PlannedPath currentPlannedPath = null;
     protected boolean remove = false;
+    protected int immunityDuration = 0;
 
     protected int tickCount = 0;
     protected float damage = 0;
@@ -57,17 +58,33 @@ public abstract class AttachmentEntity {
         return new AttachmentEntityDamageSource(getLevel().damageSources().generic().typeHolder(), null, owner, getPos(), this);
     }
 
+    @Override
+    public Type confluence$getImmunityType() {
+        return Type.LOCAL;
+    }
+
+    @Override
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
+        return immunityDuration;
+    }
+
     public TargetCache getTargetCache() {
         return owner.getData(SummonerAttachmentTypes.TARGET_CACHE);
     }
 
-    public void attack(LivingEntity target, float damageAmount, int invincibleTime) {
-        InvincibleData.attack(target)
-                .attacker(owner == null ? null : owner.getUUID())
-                .damageSource(getDamageSource())
-                .damageAmount(damageAmount)
-                .invincibleTime(invincibleTime)
-                .apply();
+    public void attack(@NotNull LivingEntity target, float damageAmount, int invincibleTime) {
+        if (!Immunity.isActive(this, target)) {
+            DamageSource damageSource = getDamageSource();
+            immunityDuration = invincibleTime;
+            int invulnerableTime = target.invulnerableTime;
+            target.invulnerableTime = 0;
+            boolean hurt = Immunity.withCause(this, () -> target.hurt(damageSource, damageAmount));
+            target.invulnerableTime = invulnerableTime;
+            if (hurt) {
+                Immunity.apply(this, damageSource, target);
+            }
+            immunityDuration = 0;
+        }
     }
 
     public void copyAttributes(AttachmentEntity other) {
@@ -136,7 +153,6 @@ public abstract class AttachmentEntity {
         return currentPathNode;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean isExecutingPath() {
         return this.currentPlannedPath != null && !this.currentPlannedPath.isFinished();
     }
@@ -186,7 +202,7 @@ public abstract class AttachmentEntity {
     }
 
     /**
-     * tick前进行的存在性检查，返回false会跳过tick并在tick末移除
+     * tick后进行的存在性检查，返回false移除
      */
     public boolean isAlive() {
         return true;

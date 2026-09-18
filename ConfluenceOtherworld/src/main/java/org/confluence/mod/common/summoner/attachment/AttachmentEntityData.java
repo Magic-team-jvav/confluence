@@ -203,7 +203,7 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
         // 写入 AttachmentEntityType → 实体列表的结构
         buf.writeVarInt(data.groups.size());
         for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entityEntry : data.groups.entrySet()) {
-            buf.writeResourceLocation(entityEntry.getKey().identifier());
+            buf.writeResourceLocation(entityEntry.getKey().location());
             List<AttachmentEntity> list = entityEntry.getValue();
             buf.writeVarInt(list.size());
             for (AttachmentEntity entity : list) {

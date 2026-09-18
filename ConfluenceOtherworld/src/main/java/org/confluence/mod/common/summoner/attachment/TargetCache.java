@@ -2,6 +2,7 @@ package org.confluence.mod.common.summoner.attachment;
 
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 import it.unimi.dsi.fastutil.ints.Int2FloatOpenHashMap;
+import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -10,9 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Targeting;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -33,6 +32,7 @@ import java.util.function.Predicate;
 public class TargetCache {
 
     private final Int2BooleanOpenHashMap visibilityCache = new Int2BooleanOpenHashMap();
+    private final Int2IntOpenHashMap hurterHistory = new Int2IntOpenHashMap();
     private final Int2BooleanOpenHashMap targetCache = new Int2BooleanOpenHashMap();
     private final Int2FloatOpenHashMap distanceCache = new Int2FloatOpenHashMap();
     private final Long2ObjectOpenHashMap<List<LivingEntity>> spatialGroups = new Long2ObjectOpenHashMap<>();
@@ -44,6 +44,8 @@ public class TargetCache {
     public void tick(ServerPlayer player) {
         this.owner = player;
         this.serverLevel = owner.serverLevel();
+        hurterHistory.replaceAll((key, value) -> value - 1);
+        hurterHistory.values().removeIf(value -> value <= 0);
         visibilityCache.clear();
         targetCache.clear();
         distanceCache.clear();
@@ -51,22 +53,20 @@ public class TargetCache {
         chunkCache.clear();
     }
 
+    public void record(LivingEntity target, int time) {
+        hurterHistory.put(target.getUUID().hashCode(), time);
+    }
+
     public boolean isTarget(@Nullable LivingEntity target) {
         if (owner != null && target != null && owner != target && target.isAlive()) {
-            return targetCache.computeIfAbsent(owner.getUUID().hashCode() + target.getUUID().hashCode(), k -> {
-                if (owner != null && target instanceof Enemy) {
+            return targetCache.computeIfAbsent(target.getUUID().hashCode(), key -> {
+                if (target instanceof Enemy) {
                     return true;
                 }
                 if (target instanceof Targeting targeting && targeting.getTarget() == owner) {
                     return true;
                 }
-                if (InvincibleData.get(target).hasAttack(owner.getUUID())) {
-                    return true;
-                }
-                if (InvincibleData.get(owner).hasAttack(target.getUUID())) {
-                    return true;
-                }
-                return false;
+                return hurterHistory.containsKey(target.getUUID().hashCode());
             });
         }
         return false;
@@ -170,10 +170,6 @@ public class TargetCache {
     public float getDistance(LivingEntity living1, LivingEntity living2) {
         int key = living1.getUUID().hashCode() + living2.getUUID().hashCode();
         return distanceCache.computeIfAbsent(key, (IntToDoubleFunction)(k -> (float) living1.getEyePosition().distanceTo(living2.getBoundingBox().getCenter())));
-    }
-
-    public float getSummonSearchRange(@Nullable Player player, float distance) {
-        return distance;
     }
 
     //此缓存不能被共享，极易卡顿，不建议使用

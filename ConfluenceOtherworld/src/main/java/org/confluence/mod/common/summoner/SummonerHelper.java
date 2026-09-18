@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 public final class SummonerHelper {
+
     private final Player player;
     private final AttachmentEntityData data;
 

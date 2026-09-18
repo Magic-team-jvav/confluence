@@ -15,10 +15,10 @@ import java.util.function.Supplier;
  *
  * @param <T> 实体类型
  */
-public record AttachmentEntityType<T extends AttachmentEntity>(@NotNull ResourceLocation identifier, @NotNull Supplier<T> factory) {
+public record AttachmentEntityType<T extends AttachmentEntity>(@NotNull ResourceLocation location, @NotNull Supplier<T> factory) {
 
     public Component getDisplayName() {
-        String key = "summon." + identifier.getNamespace() + "." + identifier.getPath();
+        String key = "summon." + location.getNamespace() + "." + location.getPath();
         return Component.translatable(key).withStyle(ChatFormatting.BLUE);
     }
 }

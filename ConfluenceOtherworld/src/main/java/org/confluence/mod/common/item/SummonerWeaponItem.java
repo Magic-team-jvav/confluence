@@ -157,7 +157,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
     @NotNull
     public List<Component> getTooltips(ItemStack itemStack, Player player) {
         List<Component> tooltips = new ArrayList<>();
-        ResourceLocation location = getEntityType().identifier();
+        ResourceLocation location = getEntityType().location();
         if (damage > 0) {
             tooltips.add(Component.literal(String.format("%.1f ", getSummonDamage(player, itemStack)))
                     .withStyle(ChatFormatting.BLUE)

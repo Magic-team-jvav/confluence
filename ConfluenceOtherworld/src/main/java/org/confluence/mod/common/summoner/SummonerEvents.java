@@ -3,37 +3,29 @@ package org.confluence.mod.common.summoner;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.TickEvent;
-import org.confluence.mod.common.summoner.attachment.InvincibleData;
-import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.tick.PortEntityTickEvent;
+import org.mesdag.portlib.event.entity.living.PortLivingDamageEvent;
+import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
 
 public final class SummonerEvents {
-    private SummonerEvents() {
-    }
 
     public static void init() {
-        PortEventHandler.addListener(SummonerEvents::playerTick);
-        PortEventHandler.addListener(SummonerEvents::entityTick);
-        PortEventHandler.addListener(InvincibleData::handler);
-    }
-
-    private static void playerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) {
-            return;
-        }
-        Player player = event.player;
-        if (player instanceof ServerPlayer serverPlayer) {
-            TargetCache targetCache = serverPlayer.getData(SummonerAttachmentTypes.TARGET_CACHE);
-            targetCache.tick(serverPlayer);
-        }
-        SummonerHelper.get(player).getEntityData().tick(player);
-    }
-
-    private static void entityTick(PortEntityTickEvent.Post event) {
-        if (event.getEntity() instanceof LivingEntity living) {
-            InvincibleData.get(living).tick();
-        }
+        PortEventHandler.addListener((PortPlayerTickEvent.Post event) -> {
+            Player player = event.getEntity();
+            if (player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.getData(SummonerAttachmentTypes.TARGET_CACHE).tick(serverPlayer);
+            }
+            SummonerHelper.get(player).getEntityData().tick(player);
+        });
+        PortEventHandler.addListener((PortLivingDamageEvent.Post event) -> {
+            LivingEntity target = event.getEntity();
+            if (event.getSource().getEntity() instanceof LivingEntity attacker && target != attacker) {
+                if (target instanceof Player player) {
+                    player.getData(SummonerAttachmentTypes.TARGET_CACHE).record(attacker, 200);
+                } else if (attacker instanceof Player player) {
+                    player.getData(SummonerAttachmentTypes.TARGET_CACHE).record(target, 200);
+                }
+            }
+        });
     }
 }

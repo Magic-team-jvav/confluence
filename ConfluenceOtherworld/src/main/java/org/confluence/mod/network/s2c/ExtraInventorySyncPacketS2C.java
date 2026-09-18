@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -36,12 +37,12 @@ public record ExtraInventorySyncPacketS2C(
     public static void sendToClient(ServerPlayer sendTo, ServerPlayer target) {
         ExtraInventory extraInventory = ExtraInventory.of(target);
         extraInventory.initialize(target);
-        Confluence.NETWORK_HANDLER.sendToPlayer(sendTo, new ExtraInventorySyncPacketS2C(target.getId(), extraInventory));
+        PortPacketDistributor.sendToPlayer(sendTo, new ExtraInventorySyncPacketS2C(target.getId(), extraInventory));
     }
 
     public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer sendTo, ServerPlayer target) {
         ExtraInventory extraInventory = ExtraInventory.of(target);
         extraInventory.initialize(target);
-        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(sendTo, new ExtraInventorySyncPacketS2C(target.getId(), extraInventory));
+        PortPacketDistributor.sendToPlayersTrackingEntityAndSelf(sendTo, new ExtraInventorySyncPacketS2C(target.getId(), extraInventory));
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -26,6 +27,6 @@ public record OpenNPCTradePacketC2S(int entityId) implements IPortPacket.C2S {
     }
 
     public static void sendToServer(int entityId) {
-        Confluence.NETWORK_HANDLER.sendToServer(new OpenNPCTradePacketC2S(entityId));
+        PortPacketDistributor.sendToServer(new OpenNPCTradePacketC2S(entityId));
     }
 }

@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// 所有本体坐骑共用的客户端输入边沿。
@@ -32,6 +33,6 @@ public record MountInputPacketC2S(boolean jumping) implements IPortPacket.C2S {
 
     /// 发送一次跳跃键状态变化，不接受客户端提供坐骑实体或运动数值。
     public static void sendToServer(boolean jumping) {
-        Confluence.NETWORK_HANDLER.sendToServer(new MountInputPacketC2S(jumping));
+        PortPacketDistributor.sendToServer(new MountInputPacketC2S(jumping));
     }
 }

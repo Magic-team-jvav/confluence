@@ -16,6 +16,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.PortLib;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import org.mesdag.portlib.wrapper.common.extensions.IPortEnchantmentHelperExtension;
@@ -62,6 +63,6 @@ public enum EmptyTargetSweepPacketC2S implements IPortPacket.C2S {
     }
 
     public static void send2Server() {
-        Confluence.NETWORK_HANDLER.sendToServer(INSTANCE);
+        PortPacketDistributor.sendToServer(INSTANCE);
     }
 }

@@ -15,6 +15,7 @@ import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -79,12 +80,12 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
 
     public static void sendToClient(ServerPlayer serverPlayer, ChunkPos chunkPos, BrushData data, boolean save) {
         if (save) saveData(serverPlayer.serverLevel(), chunkPos, data);
-        Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new BrushingColorPacketS2C(chunkPos, data));
+        PortPacketDistributor.sendToPlayer(serverPlayer, new BrushingColorPacketS2C(chunkPos, data));
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, BrushData data, boolean save) {
         if (save) saveData(level, chunkPos, data);
-        Confluence.NETWORK_HANDLER.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, data));
+        PortPacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, data));
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, BlockPos pos, @Nullable Direction facing, int color, boolean save) {
@@ -105,7 +106,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
                 brushData.remove(pos);
                 facing = null;
             }
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(pos, facing, BrushData.CLEAR_COLOR)));
+            PortPacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(pos, facing, BrushData.CLEAR_COLOR)));
         }
     }
 
@@ -115,7 +116,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
             BrushData brushData = ChunkBrushData.of(level).getDataMap().get(chunkPos);
             if (brushData == null) return;
             brushData.remove(pos);
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(Map.of(pos, CLEAR_COLORS))));
+            PortPacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(Map.of(pos, CLEAR_COLORS))));
         }
     }
 

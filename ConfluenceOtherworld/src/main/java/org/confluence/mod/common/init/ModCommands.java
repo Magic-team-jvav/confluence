@@ -56,6 +56,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -345,7 +346,7 @@ public final class ModCommands {
             BrushData brushData = new BrushData(entry.getValue());
             ChunkPos chunkPos = entry.getKey();
             dataMap.computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>())).merge(brushData);
-            Confluence.NETWORK_HANDLER.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, brushData));
+            PortPacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new BrushingColorPacketS2C(chunkPos, brushData));
         }
         return 1;
     }

@@ -35,7 +35,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
-import org.mesdag.portlib.network.PortNetworkHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +43,6 @@ public final class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
-    public static final PortNetworkHandler NETWORK_HANDLER = new PortNetworkHandler(MODID, "1");
 
     // todo 1.3.0
     public static final boolean SOUL_SKILLS = false;

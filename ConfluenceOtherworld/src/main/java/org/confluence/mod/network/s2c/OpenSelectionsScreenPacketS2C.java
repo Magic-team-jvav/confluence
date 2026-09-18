@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.SelectionsScreen;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -51,6 +52,6 @@ public record OpenSelectionsScreenPacketS2C(Component[] selections,
     }
 
     public static void sendToClient(ServerPlayer serverPlayer, Component[] selections, boolean[] enables) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenSelectionsScreenPacketS2C(selections, enables));
+        PortPacketDistributor.sendToPlayer(serverPlayer, new OpenSelectionsScreenPacketS2C(selections, enables));
     }
 }

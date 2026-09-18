@@ -5,10 +5,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -42,8 +44,8 @@ public record GameEventSyncPacketS2C(
     }
 
     public static void sendToAll(boolean start, List<ResourceKey<? extends GameEvent>> keys) {
-        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new GameEventSyncPacketS2C(keys, start));
+        if (ServerLifecycleHooks.getCurrentServer() != null) {
+            PortPacketDistributor.sendToAllPlayers(new GameEventSyncPacketS2C(keys, start));
         }
     }
 
@@ -53,12 +55,12 @@ public record GameEventSyncPacketS2C(
     }
 
     public static void sentToClient(ServerPlayer player, boolean start, List<ResourceKey<? extends GameEvent>> keys) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new GameEventSyncPacketS2C(keys, start));
+        PortPacketDistributor.sendToPlayer(player, new GameEventSyncPacketS2C(keys, start));
     }
 
     public static void sentToClient(ServerPlayer player, List<ResourceKey<? extends GameEvent>> started, List<ResourceKey<? extends GameEvent>> ended) {
         // PortBundledPacket 以数据包 ID 为键；同 ID 的开始与结束包必须分别发送，避免后者覆盖前者。
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new GameEventSyncPacketS2C(started, true));
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new GameEventSyncPacketS2C(ended, false));
+        PortPacketDistributor.sendToPlayer(player, new GameEventSyncPacketS2C(started, true));
+        PortPacketDistributor.sendToPlayer(player, new GameEventSyncPacketS2C(ended, false));
     }
 }

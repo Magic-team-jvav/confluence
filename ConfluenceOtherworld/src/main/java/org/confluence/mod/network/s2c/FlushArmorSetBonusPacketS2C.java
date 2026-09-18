@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -25,10 +26,10 @@ public record FlushArmorSetBonusPacketS2C(int playerId) implements IPortPacket.S
     }
 
     public static void sendToPlayersTrackingTarget(ServerPlayer target) {
-        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(target, new FlushArmorSetBonusPacketS2C(target.getId()));
+        PortPacketDistributor.sendToPlayersTrackingEntityAndSelf(target, new FlushArmorSetBonusPacketS2C(target.getId()));
     }
 
     public static void sendToClient(ServerPlayer sendTo, ServerPlayer target) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(sendTo, new FlushArmorSetBonusPacketS2C(target.getId()));
+        PortPacketDistributor.sendToPlayer(sendTo, new FlushArmorSetBonusPacketS2C(target.getId()));
     }
 }

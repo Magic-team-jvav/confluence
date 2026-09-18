@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.RepeaterHud;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public enum RepeaterShootingPayloadS2C implements IPortPacket.S2C {
@@ -25,6 +26,6 @@ public enum RepeaterShootingPayloadS2C implements IPortPacket.S2C {
     }
 
     public static void sendToClient(ServerPlayer serverPlayer) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, INSTANCE);
+        PortPacketDistributor.sendToPlayer(serverPlayer, INSTANCE);
     }
 }

@@ -8,6 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.SelectionsScreen;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -26,7 +27,7 @@ public record ApplySelectionPacketC2S(byte selected) implements IPortPacket.C2S 
     }
 
     public static void sendToServer(byte selected) {
-        Confluence.NETWORK_HANDLER.sendToServer(new ApplySelectionPacketC2S(selected));
+        PortPacketDistributor.sendToServer(new ApplySelectionPacketC2S(selected));
     }
 
     @Override

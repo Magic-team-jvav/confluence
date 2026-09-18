@@ -8,6 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.common.item.yoyo.YoyoSession;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// 悠悠球左键控制包。
@@ -67,14 +68,14 @@ public record YoyoControlPacketC2S(Action action, int amount)
     }
 
     public static void sendPress() {
-        Confluence.NETWORK_HANDLER.sendToServer(new YoyoControlPacketC2S(Action.PRESS, 0));
+        PortPacketDistributor.sendToServer(new YoyoControlPacketC2S(Action.PRESS, 0));
     }
 
     public static void sendRelease() {
-        Confluence.NETWORK_HANDLER.sendToServer(new YoyoControlPacketC2S(Action.RELEASE, 0));
+        PortPacketDistributor.sendToServer(new YoyoControlPacketC2S(Action.RELEASE, 0));
     }
 
     public static void sendRangeAdjustment(int amount) {
-        Confluence.NETWORK_HANDLER.sendToServer(new YoyoControlPacketC2S(Action.ADJUST_RANGE, amount));
+        PortPacketDistributor.sendToServer(new YoyoControlPacketC2S(Action.ADJUST_RANGE, amount));
     }
 }

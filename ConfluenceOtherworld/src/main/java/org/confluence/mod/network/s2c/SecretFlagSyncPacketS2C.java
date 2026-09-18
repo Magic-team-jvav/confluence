@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -26,11 +27,11 @@ public record SecretFlagSyncPacketS2C(long flag) implements IPortPacket.S2C {
 
     public static void sendToAll(long flag) {
         if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new SecretFlagSyncPacketS2C(flag));
+            PortPacketDistributor.sendToAllPlayers(new SecretFlagSyncPacketS2C(flag));
         }
     }
 
     public static void sendToClient(ServerPlayer player, long flag) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new SecretFlagSyncPacketS2C(flag));
+        PortPacketDistributor.sendToPlayer(player, new SecretFlagSyncPacketS2C(flag));
     }
 }

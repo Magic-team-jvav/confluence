@@ -11,6 +11,7 @@ import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.menu.CrystalBallMenu;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -48,14 +49,14 @@ public record KeyRequestPacketC2S(byte key) implements IPortPacket.C2S {
     }
 
     public static void requestHealing() {
-        Confluence.NETWORK_HANDLER.sendToServer(new KeyRequestPacketC2S(KEY_HEALING));
+        PortPacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_HEALING));
     }
 
     public static void requestMana() {
-        Confluence.NETWORK_HANDLER.sendToServer(new KeyRequestPacketC2S(KEY_MANA));
+        PortPacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_MANA));
     }
 
     public static void requestClairvoyance() {
-        Confluence.NETWORK_HANDLER.sendToServer(new KeyRequestPacketC2S(KEY_CLAIRVOYANCE));
+        PortPacketDistributor.sendToServer(new KeyRequestPacketC2S(KEY_CLAIRVOYANCE));
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -54,7 +55,7 @@ public record ExtraInventoryStackPacketS2C(
     public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer serverPlayer, ServerPlayer player, int sizeAccessoryDye, int slot, ItemStack itemStack) {
         if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
             long packedData = BlockPos.asLong(player.getId(), sizeAccessoryDye, slot);
-            Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(serverPlayer, new ExtraInventoryStackPacketS2C(packedData, itemStack));
+            PortPacketDistributor.sendToPlayersTrackingEntityAndSelf(serverPlayer, new ExtraInventoryStackPacketS2C(packedData, itemStack));
         }
     }
 }

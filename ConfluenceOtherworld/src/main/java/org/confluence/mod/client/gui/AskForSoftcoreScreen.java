@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.AskForSoftcorePacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 public class AskForSoftcoreScreen extends Screen {
     private static final ResourceLocation BASE = Confluence.asResource("textures/gui/ask_for_softcore.png");
@@ -100,7 +101,7 @@ public class AskForSoftcoreScreen extends Screen {
             if (mouseX > x && mouseX < x + 178 && mouseY > y && mouseY < y + 26) {
                 getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, i));
                 if (i == 1)
-                    Confluence.NETWORK_HANDLER.sendToServer(new AskForSoftcorePacket(isChooseSoftcore));
+                    PortPacketDistributor.sendToServer(new AskForSoftcorePacket(isChooseSoftcore));
                 setAskForSoftcoreScreen(false);
                 onClose();
                 return true;

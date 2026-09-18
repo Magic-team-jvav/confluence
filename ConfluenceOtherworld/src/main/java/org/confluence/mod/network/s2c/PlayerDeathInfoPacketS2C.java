@@ -12,6 +12,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.chat.PortComponentSerialization;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -48,7 +49,7 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
             long drops = tag.getLong("confluence:drops_money");
             tag.remove("confluence:drops_money");
             Coins coins = PlayerUtils.decodeCoin(drops);
-            Confluence.NETWORK_HANDLER.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins.platinum(), (byte) coins.gold(), (byte) coins.silver(), (byte) coins.copper()));
+            PortPacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins.platinum(), (byte) coins.gold(), (byte) coins.silver(), (byte) coins.copper()));
             return false;
         }
         return true;

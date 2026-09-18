@@ -9,6 +9,7 @@ import org.confluence.mod.client.handler.LucyTheAxeHandler;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.init.item.AxeItems;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -51,6 +52,6 @@ public record LucyTheAxeDialogPacketS2C(
     public static void broadcast(ServerPlayer source, ResourceLocation category) {
         LucyTheAxeDialogCategory dialogCategory = LucyTheAxeDialogCategory.Loader.getInstance().getCategories().get(category);
         if (dialogCategory == null) return;
-        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(source, new LucyTheAxeDialogPacketS2C(category, dialogCategory, source.getId()));
+        PortPacketDistributor.sendToPlayersTrackingEntityAndSelf(source, new LucyTheAxeDialogPacketS2C(category, dialogCategory, source.getId()));
     }
 }

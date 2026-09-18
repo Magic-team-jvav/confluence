@@ -8,10 +8,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.common.data.StarPhase;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
@@ -61,12 +63,12 @@ public record StarPhasesPacketS2C(
     }
 
     public static void sendToAll(int index, int timeOffset, float radius, float angle) {
-        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new StarPhasesPacketS2C(Either.right(new AbstractInt2ObjectMap.BasicEntry<>(index, new StarPhase(timeOffset, radius, angle)))));
+        if (ServerLifecycleHooks.getCurrentServer() != null) {
+            PortPacketDistributor.sendToAllPlayers(new StarPhasesPacketS2C(Either.right(new AbstractInt2ObjectMap.BasicEntry<>(index, new StarPhase(timeOffset, radius, angle)))));
         }
     }
 
     public static void sendToClient(ServerPlayer serverPlayer, Int2ObjectMap<StarPhase> starPhases) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.left(starPhases)));
+        PortPacketDistributor.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.left(starPhases)));
     }
 }

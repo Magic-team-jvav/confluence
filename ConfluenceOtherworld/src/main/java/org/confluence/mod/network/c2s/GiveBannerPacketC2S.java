@@ -13,6 +13,7 @@ import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.common.init.item.ModItems;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -36,6 +37,6 @@ public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
     }
 
     public static void sendToServer(ClientBestiaryEntry entry) {
-        Confluence.NETWORK_HANDLER.sendToServer(new GiveBannerPacketC2S(entry.key));
+        PortPacketDistributor.sendToServer(new GiveBannerPacketC2S(entry.key));
     }
 }

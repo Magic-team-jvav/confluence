@@ -16,6 +16,7 @@ import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -94,6 +95,6 @@ public record HouseSelectPacketC2S(int selected, BlockPos pos) implements IPortP
     }
 
     public static void sendToServer(int selected, BlockPos pos) {
-        Confluence.NETWORK_HANDLER.sendToServer(new HouseSelectPacketC2S(selected, pos));
+        PortPacketDistributor.sendToServer(new HouseSelectPacketC2S(selected, pos));
     }
 }

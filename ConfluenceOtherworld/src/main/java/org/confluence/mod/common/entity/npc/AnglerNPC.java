@@ -24,7 +24,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.GlobalColors;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.saved.NPCSpawner;
@@ -36,6 +35,7 @@ import org.confluence.mod.common.init.item.MountItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.network.s2c.OpenAnglerDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -158,7 +158,7 @@ public class AnglerNPC extends BaseNPC {
                 NPCSpawner.Region newRegion = NPCSpawner.getNpcSpawnRegion(serverPlayer);
                 NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, getRegion(), newRegion);
                 NPCSpawner.broadcastMessageToRegion(level(), this, Component.translatable("event.confluence.npc.arrived", getType().getDescription(), getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
-                Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, Items.AIR, levelName(serverPlayer)));
+                PortPacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.WAKE_UP, Items.AIR, levelName(serverPlayer)));
                 return InteractionResult.sidedSuccess(level().isClientSide);
             }
             initName();
@@ -170,16 +170,16 @@ public class AnglerNPC extends BaseNPC {
             AnglerData.INSTANCE.refreshIfNeeded(serverLevel);
             PlayerSpecialData data = PlayerSpecialData.of(serverPlayer);
             if (data.hasCompletedAnglerQuestToday(serverLevel)) {
-                Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.COMPLETED, Items.AIR, levelName(serverPlayer)));
+                PortPacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.COMPLETED, Items.AIR, levelName(serverPlayer)));
             } else if (!AnglerData.INSTANCE.hasValidQuest()) {
-                Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, Items.AIR, levelName(serverPlayer)));
+                PortPacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.NO_QUEST, Items.AIR, levelName(serverPlayer)));
             } else {
                 Item questFish = AnglerData.INSTANCE.getQuestFish();
                 if (player.getInventory().countItem(questFish) > 0) {
                     submitQuest(serverPlayer, questFish, data);
                     return InteractionResult.sidedSuccess(level().isClientSide);
                 } else {
-                    Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish, levelName(serverPlayer)));
+                    PortPacketDistributor.sendToPlayer(serverPlayer, new OpenAnglerDialogPacketS2C(getId(), OpenAnglerDialogPacketS2C.SHOW_HINT, questFish, levelName(serverPlayer)));
                 }
             }
         }

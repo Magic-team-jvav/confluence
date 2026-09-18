@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public enum InspectPacketC2S implements IPortPacket.C2S {
@@ -27,6 +28,6 @@ public enum InspectPacketC2S implements IPortPacket.C2S {
     }
 
     public static void sendToServer() {
-        Confluence.NETWORK_HANDLER.sendToServer(INSTANCE);
+        PortPacketDistributor.sendToServer(INSTANCE);
     }
 }

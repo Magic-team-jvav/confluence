@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// 玩家按住或松开攻击键时发送，控制连枷状态。
@@ -58,10 +59,10 @@ public record FlailControlPacketC2S(Action action) implements IPortPacket.C2S {
     }
 
     public static void sendHold() {
-        Confluence.NETWORK_HANDLER.sendToServer(new FlailControlPacketC2S(Action.HOLD));
+        PortPacketDistributor.sendToServer(new FlailControlPacketC2S(Action.HOLD));
     }
 
     public static void sendRelease() {
-        Confluence.NETWORK_HANDLER.sendToServer(new FlailControlPacketC2S(Action.RELEASE));
+        PortPacketDistributor.sendToServer(new FlailControlPacketC2S(Action.RELEASE));
     }
 }

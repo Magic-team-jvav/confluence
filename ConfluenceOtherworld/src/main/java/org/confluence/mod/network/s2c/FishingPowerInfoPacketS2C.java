@@ -8,6 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.util.PlayerUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -26,6 +27,6 @@ public record FishingPowerInfoPacketS2C(float value) implements IPortPacket.S2C 
     }
 
     public static void sendToClient(ServerPlayer player) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new FishingPowerInfoPacketS2C(PlayerUtils.getFishingPower(player)));
+        PortPacketDistributor.sendToPlayer(player, new FishingPowerInfoPacketS2C(PlayerUtils.getFishingPower(player)));
     }
 }

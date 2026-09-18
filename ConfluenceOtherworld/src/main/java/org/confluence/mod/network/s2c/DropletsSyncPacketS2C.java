@@ -12,6 +12,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.DropletsHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -65,10 +66,10 @@ public record DropletsSyncPacketS2C(
     }
 
     public static void sendToClient(ServerPlayer player, Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));
+        PortPacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));
     }
 
     public static void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap) {
-        Confluence.NETWORK_HANDLER.sendToPlayersTrackingChunk(level, chunkPos, new DropletsSyncPacketS2C(dataMap));
+        PortPacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new DropletsSyncPacketS2C(dataMap));
     }
 }

@@ -24,6 +24,7 @@ import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -75,7 +76,7 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
             ItemStack itemStack = player.isCreative() ? stack : player.containerMenu.getCarried();
             player.containerMenu.setCarried(ItemStack.EMPTY);
             player.openMenu(new SimpleMenuProvider(tuple.getA(), tuple.getB()));
-            Confluence.NETWORK_HANDLER.sendToPlayer(player, AvailableHouseSelectPacketS2C.collectPacket(player));
+            PortPacketDistributor.sendToPlayer(player, AvailableHouseSelectPacketS2C.collectPacket(player));
             if (!itemStack.isEmpty()) {
                 player.containerMenu.setCarried(itemStack);
                 NetworkHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SPacketGrabbedItem(itemStack));
@@ -88,6 +89,6 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPa
     }
 
     public static void sendToServer(byte menuId, ItemStack stack) {
-        Confluence.NETWORK_HANDLER.sendToServer(new OpenMenuPacketC2S(menuId, stack.copy()));
+        PortPacketDistributor.sendToServer(new OpenMenuPacketC2S(menuId, stack.copy()));
     }
 }

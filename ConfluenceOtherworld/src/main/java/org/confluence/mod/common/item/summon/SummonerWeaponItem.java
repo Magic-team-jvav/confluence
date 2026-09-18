@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item;
+package org.confluence.mod.common.item.summon;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -165,31 +166,18 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
     @NotNull
     public List<Component> getTooltips(ItemStack itemStack, Player player) {
         List<Component> tooltips = new ArrayList<>();
-        ResourceLocation location = getEntityType().location();
         if (damage > 0) {
-            tooltips.add(Component.literal(String.format("%.1f ", getSummonDamage(player, itemStack)))
-                    .withStyle(ChatFormatting.BLUE)
-                    .append(Component.translatable("item.confluence.tooltip.damage").withStyle(ChatFormatting.GRAY)));
+            tooltips.add(Component.literal(String.format("%.1f ", getSummonDamage(player, itemStack))).withStyle(ChatFormatting.BLUE).append(Component.translatable("item.confluence.tooltip.damage").withStyle(ChatFormatting.GRAY)));
         }
         if (knockback > 0) {
-            tooltips.add(Component.literal(String.format("%.1f ", getSummonKnockback(player, itemStack)))
-                    .withStyle(ChatFormatting.BLUE)
-                    .append(Component.translatable("item.confluence.tooltip.knockback").withStyle(ChatFormatting.GRAY)));
+            tooltips.add(Component.literal(String.format("%.1f ", getSummonKnockback(player, itemStack))).withStyle(ChatFormatting.BLUE).append(Component.translatable("item.confluence.tooltip.knockback").withStyle(ChatFormatting.GRAY)));
         }
         if (armorPierce > 0) {
-            tooltips.add(Component.literal(String.format("%.1f ", getSummonArmorPierce(player, itemStack)))
-                    .withStyle(ChatFormatting.BLUE)
-                    .append(Component.translatable("item.confluence.tooltip.armor_pierce").withStyle(ChatFormatting.GRAY)));
+            tooltips.add(Component.literal(String.format("%.1f ", getSummonArmorPierce(player, itemStack))).withStyle(ChatFormatting.BLUE).append(Component.translatable("item.confluence.tooltip.armor_pierce").withStyle(ChatFormatting.GRAY)));
         }
-        tooltips.add(Component.translatable("item.confluence.tooltip.summon",
-                Component.translatable("summon." + location.getNamespace() + "." + location.getPath())).withStyle(ChatFormatting.GRAY));
-
+        tooltips.add(Component.translatable("item.confluence.tooltip.summon", typeSupplier.get().getDisplayName()).withStyle(ChatFormatting.GRAY));
         SummonerHelper helper = SummonerHelper.get(player);
-        int used = helper.getUsedSlots(slotType);
-        int max = helper.getMaxCount(slotType);
-        tooltips.add(Component.translatable("item.confluence.tooltip.summon_slots",
-                Component.literal(String.valueOf(used)).withStyle(ChatFormatting.BLUE),
-                Component.literal(String.valueOf(max)).withStyle(ChatFormatting.BLUE)).withStyle(ChatFormatting.GRAY));
+        tooltips.add(Component.translatable("item.confluence.tooltip.summon_slots", Component.literal(String.valueOf(helper.getUsedSlots(slotType))).withStyle(ChatFormatting.BLUE), Component.literal(String.valueOf(helper.getMaxCount(slotType))).withStyle(ChatFormatting.BLUE)).withStyle(ChatFormatting.GRAY));
         tooltips.add(Component.translatable("item.confluence.tooltip.remove_summon").withStyle(ChatFormatting.GRAY));
         return tooltips;
     }

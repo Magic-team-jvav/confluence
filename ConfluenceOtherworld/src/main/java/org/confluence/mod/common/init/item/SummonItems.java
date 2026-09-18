@@ -4,7 +4,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.item.SummonerWeaponItem;
+import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.item.summon.SummonItem;
 import org.confluence.mod.common.summon.SummonTypes;
 import org.confluence.mod.common.summon.dragon.StardustDragonSummon;

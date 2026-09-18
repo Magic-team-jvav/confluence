@@ -10,9 +10,7 @@ import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes
 
 public class HornetMinion extends MomentumMinion {
 
-    public int maxCooldown = 0;
-    public int cooldown = 0;
-    public int lastCooldown = 0;
+    public int attackTime = -1;
 
     public HornetMinion() {
         super(SummonerAttachmentEntityTypes.HORNET);
@@ -22,24 +20,21 @@ public class HornetMinion extends MomentumMinion {
     @Override
     protected void registerSyncFields(SyncFieldDispatcher fields) {
         super.registerSyncFields(fields);
-        fields.field(LyraStreamCodecs.INT, () -> maxCooldown, value -> maxCooldown = value);
-        fields.field(LyraStreamCodecs.INT, () -> cooldown, value -> cooldown = value);
-        fields.field(LyraStreamCodecs.INT, () -> lastCooldown, value -> lastCooldown = value);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        lastCooldown = cooldown;
-        if (cooldown > 0) {
-            cooldown--;
-        }
+        fields.field(LyraStreamCodecs.INT, () -> attackTime, value -> attackTime = value);
     }
 
     @Override
     public void registerGoals(AttachmentEntityGoalSelector goalSelector) {
         goalSelector.addGoal(0, new HornetAttackGoal(this));
         goalSelector.addGoal(1, new HornetIdleGoal(this));
+    }
+
+    public float attackAnimation(float partialTick) {
+        float value = tickCount - attackTime + partialTick;
+        if (attackTime != -1 && value < 0.375 * 20) {
+            return value;
+        }
+        return -1;
     }
 
     @Override

@@ -25,22 +25,24 @@ public class HornetStinger extends Projectile implements IEntityCollision<Hornet
 
     @Override
     public void onCollisionAttack(List<HitContext> hitContexts) {
-        LivingEntity target = hitContexts.get(0).entity();
+        HitContext context = hitContexts.get(0);
+        LivingEntity target = context.entity();
         attack(target, getDamage(), 0);
         Player owner = getOwner();
         int amplifier = owner != null && TCUtils.hasType(owner, TCItems.HIVE$PACK) ? 1 : 0;
         target.addEffect(new MobEffectInstance(MobEffects.POISON, 80 + getRandom().nextInt(60), amplifier), owner);
+        setCurrentPathNode(getCurrentPathNode().modifyPos(context.hitPoint()));
         setRemove();
     }
 
     @Override
     public @NotNull AABB getHitbox() {
-        return new AABB(-0.1, -0.1, -0.5, 0.1, 0.1, 0.0);
+        return new AABB(-0.075, -0.075, -0.3, 0.075, 0.075, 0.1);
     }
 
     @Override
     public @NotNull AABB getBlockCollisionBox() {
-        return new AABB(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1);
+        return new AABB(-0.075, -0.075, -0.075, 0.075, 0.075, 0.075);
     }
 
     @Override

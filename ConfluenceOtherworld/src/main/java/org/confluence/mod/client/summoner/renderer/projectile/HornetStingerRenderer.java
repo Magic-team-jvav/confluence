@@ -19,7 +19,8 @@ public class HornetStingerRenderer extends AbstractAttachmentEntityRenderer<Horn
         return RenderContext.<HornetStinger>builder()
                 .model(new ModelConfig<HornetStinger>()
                         .scale(0.6F)
-                        .translateOffset(-0.5F, -0.5F, -0.5F)
+                        .translateOffset(0, -0.45F, 0.3F)
+                        .rotationOffset(180, 0, 0)
                         .alphaDistanceFactor(1.5F))
                 .build();
     }

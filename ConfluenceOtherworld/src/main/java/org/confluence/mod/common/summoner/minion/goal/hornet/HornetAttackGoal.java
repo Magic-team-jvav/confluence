@@ -14,6 +14,7 @@ import org.confluence.terra_curio.util.TCUtils;
 
 public class HornetAttackGoal extends AttachmentEntityGoal<HornetMinion> {
 
+    private int cooldown;
     private Vec3 offset = Vec3.ZERO;
 
     public HornetAttackGoal(HornetMinion minion) {
@@ -42,8 +43,8 @@ public class HornetAttackGoal extends AttachmentEntityGoal<HornetMinion> {
         Vec3 minionPos = minion.getPos();
         Vec3 targetPos = target.getBoundingBox().getCenter();
         Vec3 wanderPos = targetPos.add(offset);
-        if (minionPos.distanceTo(wanderPos) > 0.5) {
-            minion.addVelocity(wanderPos.subtract(minionPos).normalize().scale(0.02));
+        if (minionPos.distanceTo(wanderPos) > 1) {
+            minion.addVelocity(wanderPos.subtract(minionPos).normalize().scale(0.02 * (1 + Math.min(wanderPos.distanceTo(minionPos) * 0.2, 4))));
         } else {
             minion.setVelocity(minion.getVelocity().scale(0.4));
             if (minion.getVelocity().length() < 0.1) {
@@ -52,12 +53,11 @@ public class HornetAttackGoal extends AttachmentEntityGoal<HornetMinion> {
         }
         minion.lookAtPos(targetPos);
 
-        if (minion.cooldown == 0) {
-            RandomSource random = minion.getRandom();
-            minion.cooldown = 13 + random.nextIntBetweenInclusive(0, 4);
-            minion.maxCooldown = minion.cooldown;
-
+        if (--cooldown <= 0) {
+            minion.attackTime = minion.getTickCount();
             Player owner = minion.getOwner();
+            RandomSource random = minion.getRandom();
+            cooldown = 13 + random.nextIntBetweenInclusive(0, 4);
             Vec3 direction = targetPos.subtract(minionPos).normalize();
             HornetStinger stinger = new HornetStinger();
             stinger.setOwner(owner);
@@ -67,8 +67,7 @@ public class HornetAttackGoal extends AttachmentEntityGoal<HornetMinion> {
             SummonerHelper.get(owner).add(stinger);
             if (TCUtils.hasType(owner, TCItems.HIVE$PACK)) {
                 stinger.setDamage(stinger.getDamage() * 1.15F);
-                minion.cooldown = (int) (minion.cooldown * 0.67F);
-                minion.maxCooldown = minion.cooldown;
+                cooldown = (int) (cooldown * 0.67F);
             }
         }
     }

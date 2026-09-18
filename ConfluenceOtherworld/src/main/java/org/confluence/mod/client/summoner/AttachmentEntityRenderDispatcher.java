@@ -55,7 +55,6 @@ public class AttachmentEntityRenderDispatcher {
             List<AttachmentEntity> entities = player.getData(SummonerAttachmentTypes.ENTITY_DATA).getRenderCache();
             Vec3 cameraPos = camera.getPosition();
             boolean showHitboxes = Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes();
-            VertexConsumer debugConsumer = showHitboxes ? bufferSource.getBuffer(RenderType.lines()) : null;
             for (AttachmentEntity entity : entities) {
                 poseStack.pushPose();
                 PathNode renderNode = entity.getRenderNode(partialTick);
@@ -68,7 +67,7 @@ public class AttachmentEntityRenderDispatcher {
                     renderer.render(entity, poseStack, bufferSource, partialTick, lightCoords, renderNode);
                 }
                 if (SummonerRenderConfig.DebugMode) {
-                    debugRender(poseStack, entity, showHitboxes, renderNode, debugConsumer);
+                    debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource);
                 }
                 poseStack.popPose();
             }
@@ -86,9 +85,10 @@ public class AttachmentEntityRenderDispatcher {
         return DynamicLightDispatcher.getDynamicLight(Vec3.atCenterOf(pos), packed);
     }
 
-    private static void debugRender(PoseStack poseStack, AttachmentEntity entity, boolean showHitboxes, PathNode renderNode, VertexConsumer debugConsumer) {
+    private static void debugRender(PoseStack poseStack, AttachmentEntity entity, boolean showHitboxes, PathNode renderNode, MultiBufferSource bufferSource) {
         // 调试渲染（使用原始缓冲源，不受透明度影响）
         if (showHitboxes) {
+            VertexConsumer debugConsumer = bufferSource.getBuffer(RenderType.lines());
             LevelRenderer.renderLineBox(poseStack, debugConsumer, -0.001, -0.001, -0.001, 0.001, 0.001, 0.001, 1.0F, 1.0F, 0.0F, 1.0F);
             poseStack.pushPose();
             poseStack.mulPose(Axis.YN.rotationDegrees(renderNode.yaw()));

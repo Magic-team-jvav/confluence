@@ -49,9 +49,21 @@ import org.jetbrains.annotations.Nullable;
 /// 资源方法返回的是 GeckoLib 可直接读取的完整文件路径，后续补入独立素材时只需修改枚举映射。
 public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.Variant> {
     public static final String VARIANT_KEY = "Variant";
-    private static final EntityDataAccessor<Integer> DATA_VARIANT =
-            SynchedEntityData.defineId(Zombie.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(Zombie.class, EntityDataSerializers.INT);
     private static final java.util.EnumMap<Variant, VariantStats> VARIANT_STATS = new java.util.EnumMap<>(Variant.class);
+
+    static {
+        registerVariantStats(Variant.NORMAL, 20, 4, 2);
+        registerVariantStats(Variant.ARMED, 24, 6, 3);
+        registerVariantStats(Variant.SLIMED, 18, 3.5, 2);
+        registerVariantStats(Variant.PINCUSHION, 22, 5, 3);
+        registerVariantStats(Variant.TWIGGY, 20, 5, 1);
+        registerVariantStats(Variant.SWAMP, 20, 3.5, 3);
+        registerVariantStats(Variant.RAINCOAT, 22, 4.5, 2);
+        registerVariantStats(Variant.BLOOD, 28, 6, 3);
+        registerVariantStats(Variant.ESKIMO, 24, 5, 4);
+        registerVariantStats(Variant.BALD, 18, 4.5, 1);
+    }
 
     public Zombie(EntityType<? extends Zombie> type, Level level) {
         this(type, level, Variant.NORMAL);
@@ -81,8 +93,6 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
     public static void registerVariantStats(Variant variant, double health, double damage, int armor) {
         VARIANT_STATS.put(variant, new VariantStats(health, damage, armor));
     }
-
-    private record VariantStats(double health, double damage, int armor) {}
 
     @Override
     protected void registerGoals() {
@@ -194,6 +204,8 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
     private boolean canOpenDoorsDuringBloodMoon() {
         return BloodMoonGameEvent.INSTANCE.started() && getVariant() != Variant.ARMED;
     }
+
+    private record VariantStats(double health, double damage, int armor) {}
 
     public enum Variant implements StringRepresentable {
         NORMAL("normal", 0xB7C7A5, 1.0F),

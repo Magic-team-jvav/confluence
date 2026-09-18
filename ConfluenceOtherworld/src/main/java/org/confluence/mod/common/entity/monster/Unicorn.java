@@ -23,18 +23,7 @@ import software.bernie.geckolib.core.object.PlayState;
 public final class Unicorn extends BaseWarriorMonster {
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation RUN = RawAnimation.begin().thenLoop("running");
-    /**
-     * 追逐期间每 tick 增加的移动速度，约两秒达到最高加成。
-     */
-    private static final double ACCELERATION_PER_TICK = 0.009;
-    /**
-     * 失去持续奔跑条件后每 tick 移除的速度加成。
-     */
-    private static final double DECELERATION_PER_TICK = 0.03;
-    /**
-     * 在基础移动速度之上允许叠加的最高冲锋速度。
-     */
-    private static final double MAX_SPEED_BONUS = 0.36;
+
     private double speedBonus;
 
     public Unicorn(EntityType<? extends Unicorn> type, Level level) {
@@ -67,8 +56,13 @@ public final class Unicorn extends BaseWarriorMonster {
         setSprinting(false);
         boolean accelerating = !isNoAi() && getTarget() != null && getTarget().isAlive() && !getNavigation().isDone()
                 && !horizontalCollision && getDeltaMovement().horizontalDistanceSqr() > 0.0025;
-        double nextBonus = accelerating ? Math.min(MAX_SPEED_BONUS, speedBonus + ACCELERATION_PER_TICK)
-                : Math.max(0.0, speedBonus - DECELERATION_PER_TICK);
+        var pursuit = stateParameters(MovementState.PURSUING);
+        double maximumBonus = pursuit.behavior().chargeSpeed();
+        double accelerationStep = maximumBonus / pursuit.duration();
+        double decelerationStep = maximumBonus / stateParameters(MovementState.RECOVERING)
+                .duration();
+        double nextBonus = accelerating ? Math.min(maximumBonus, speedBonus + accelerationStep)
+                : Math.min(maximumBonus, Math.max(0.0, speedBonus - decelerationStep));
         if (Math.abs(nextBonus - speedBonus) < 1.0E-6) return;
         speedBonus = nextBonus;
         var movementSpeed = getAttribute(Attributes.MOVEMENT_SPEED);
@@ -85,7 +79,7 @@ public final class Unicorn extends BaseWarriorMonster {
         controllers.add(new AnimationController<>(this, "Movement", 5, state -> {
             if (!state.isMoving()) return PlayState.STOP;
             var movementSpeed = getAttribute(Attributes.MOVEMENT_SPEED);
-            return state.setAndContinue(movementSpeed != null && movementSpeed.getValue() >= movementSpeed.getBaseValue() + MAX_SPEED_BONUS * 0.5 ? RUN : WALK);
+            return state.setAndContinue(movementSpeed != null && movementSpeed.getValue() >= movementSpeed.getBaseValue() + stateParameters(MovementState.PURSUING).behavior().chargeSpeed() * 0.5 ? RUN : WALK);
         }));
     }
 
@@ -98,4 +92,6 @@ public final class Unicorn extends BaseWarriorMonster {
     protected SoundEvent getDeathSound() {
         return ModSoundEvents.UNICORN_DEATH.get();
     }
+
+    public enum MovementState {PURSUING, RECOVERING}
 }

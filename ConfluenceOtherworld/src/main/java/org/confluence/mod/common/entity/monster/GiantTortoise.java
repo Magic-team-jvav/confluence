@@ -10,18 +10,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -32,12 +28,7 @@ public final class GiantTortoise extends BaseMonster {
     private static final String PHASE_TICKS_TAG = "PhaseTicks";
     private static final String COOLDOWN_TAG = "SpinCooldown";
     private static final int NORMAL_COOLDOWN = 133;
-    private static final int RETRACT_TICKS = 10;
-    private static final int WINDUP_TICKS = 12;
     private static final double POUNCE_GRAVITY = 0.08;
-    private static final int EMERGE_TICKS = 10;
-    private static final AttributeModifier SHELL_ARMOR = new PortAttributeModifier(Confluence.asResource("giant_tortoise_shell_armor"), 1.0, PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE).unwrap();
-    private static final AttributeModifier SPIN_DAMAGE = new PortAttributeModifier(Confluence.asResource("giant_tortoise_spin_damage"), 1.0, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL).unwrap();
     private static final EntityDataAccessor<Byte> PHASE = SynchedEntityData.defineId(GiantTortoise.class, EntityDataSerializers.BYTE);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
@@ -45,6 +36,7 @@ public final class GiantTortoise extends BaseMonster {
     private static final RawAnimation SPIN = RawAnimation.begin().thenLoop("scroll");
     private static final RawAnimation AIR_SPIN = RawAnimation.begin().thenLoop("scroll_sky");
     private static final RawAnimation EMERGE = RawAnimation.begin().thenPlayAndHold("drill_out");
+
     private int phaseTicks;
     private int spinCooldown = NORMAL_COOLDOWN;
     private int repathTicks;
@@ -124,16 +116,7 @@ public final class GiantTortoise extends BaseMonster {
             setZza(0.0F);
         }
         boolean spinning = phase == Phase.SPINNING || phase == Phase.DECELERATING;
-        setAttributeModifier(Attributes.ARMOR, SHELL_ARMOR, spinning);
-        setAttributeModifier(Attributes.ATTACK_DAMAGE, SPIN_DAMAGE, spinning);
-    }
-
-    private void setAttributeModifier(net.minecraft.world.entity.ai.attributes.Attribute attribute, AttributeModifier modifier, boolean enabled) {
-        var instance = getAttribute(attribute);
-        if (instance == null) return;
-        if (enabled && instance.getModifier(modifier.getId()) == null)
-            instance.addTransientModifier(modifier);
-        if (!enabled) instance.removeModifier(modifier.getId());
+        setSpecialState(Phase.SPINNING, spinning);
     }
 
     private Phase getPhase() {
@@ -174,6 +157,16 @@ public final class GiantTortoise extends BaseMonster {
         }));
     }
 
+    private void breakSpinVegetation() {
+        if (!ForgeEventFactory.getMobGriefingEvent(level(), this)) return;
+        AABB sweptBox = getBoundingBox().expandTowards(getDeltaMovement());
+        for (BlockPos pos : BlockPos.betweenClosed(BlockPos.containing(sweptBox.minX, sweptBox.minY, sweptBox.minZ), BlockPos.containing(sweptBox.maxX, sweptBox.maxY, sweptBox.maxZ))) {
+            var state = level().getBlockState(pos);
+            if ((state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES)) && state.getDestroySpeed(level(), pos) >= 0.0F)
+                level().destroyBlock(pos, true, this);
+        }
+    }
+
     private final class TortoiseAction extends BTNode {
         @Override
         public BTStatus execute() {
@@ -188,19 +181,22 @@ public final class GiantTortoise extends BaseMonster {
                     if (target == null || !target.isAlive() || !canAttack(target)) {
                         spinCooldown = NORMAL_COOLDOWN;
                         setPhase(Phase.EMERGING);
-                    } else if (phaseTicks >= RETRACT_TICKS) setPhase(Phase.WINDING_UP);
+                    } else if (phaseTicks >= stateParameters(Phase.RETRACTING).duration())
+                        setPhase(Phase.WINDING_UP);
                 }
                 case WINDING_UP -> {
                     if (target == null || !target.isAlive() || !canAttack(target)) {
                         spinCooldown = NORMAL_COOLDOWN;
                         setPhase(Phase.EMERGING);
-                    } else if (phaseTicks >= WINDUP_TICKS) beginSpin(target);
+                    } else if (phaseTicks >= stateParameters(Phase.WINDING_UP).duration())
+                        beginSpin(target);
                 }
                 case SPINNING -> updateSpin(target);
                 case DECELERATING -> updateDeceleration();
                 case EMERGING -> {
                     getNavigation().stop();
-                    if (phaseTicks >= EMERGE_TICKS) setPhase(Phase.WALK);
+                    if (phaseTicks >= stateParameters(Phase.EMERGING).duration())
+                        setPhase(Phase.WALK);
                 }
             }
             return BTStatus.RUNNING;
@@ -223,7 +219,7 @@ public final class GiantTortoise extends BaseMonster {
             double distance = distanceTo(target);
             if (meleeCooldown == 0 && getBoundingBox().inflate(0.3).intersects(target.getBoundingBox()) && canAttack(target) && hasLineOfSight(target)) {
                 doHurtTarget(target);
-                meleeCooldown = 20;
+                meleeCooldown = stateParameters(Phase.WALK).attackInterval();
             }
             boolean visible = hasLineOfSight(target);
             int maximumCooldown = distance > 37.5 && (visible || getY() - target.getY() <= 12.5) ? 12
@@ -287,17 +283,7 @@ public final class GiantTortoise extends BaseMonster {
 
     }
 
-    private void breakSpinVegetation() {
-        if (!ForgeEventFactory.getMobGriefingEvent(level(), this)) return;
-        AABB sweptBox = getBoundingBox().expandTowards(getDeltaMovement());
-        for (BlockPos pos : BlockPos.betweenClosed(BlockPos.containing(sweptBox.minX, sweptBox.minY, sweptBox.minZ), BlockPos.containing(sweptBox.maxX, sweptBox.maxY, sweptBox.maxZ))) {
-            var state = level().getBlockState(pos);
-            if ((state.is(BlockTags.LOGS) || state.is(BlockTags.LEAVES)) && state.getDestroySpeed(level(), pos) >= 0.0F)
-                level().destroyBlock(pos, true, this);
-        }
-    }
-
-    private enum Phase {
+    public enum Phase {
         WALK,
         RETRACTING,
         SPINNING,

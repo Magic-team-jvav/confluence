@@ -173,11 +173,13 @@ public class DeerClops extends BaseBoss {
             navigation.stop();
             resetTraversalTracking();
             applyLockedAttackFacing();
-            if (++stateTicks == ATTACK_WINDUP_TICKS) {
+            var parameters = stateParameters(CombatState.ATTACK);
+            int windup = parameters.behavior().windupTicksOr(ATTACK_WINDUP_TICKS);
+            if (++stateTicks == windup) {
                 performIceAttack(target);
             }
-            if (stateTicks >= ATTACK_TOTAL_TICKS) {
-                attackCooldown = ATTACK_COOLDOWN_TICKS;
+            if (stateTicks >= Math.max(windup, parameters.durationOr(ATTACK_TOTAL_TICKS))) {
+                attackCooldown = parameters.attackIntervalOr(ATTACK_COOLDOWN_TICKS);
                 setCombatState(CombatState.CHASE);
             }
             return;
@@ -477,7 +479,9 @@ public class DeerClops extends BaseBoss {
         if (getCombatState() == state) {
             return;
         }
+        setSpecialState(getCombatState(), false);
         entityData.set(DATA_COMBAT_STATE, state.ordinal());
+        setSpecialState(state, true);
         stateTicks = 0;
     }
 

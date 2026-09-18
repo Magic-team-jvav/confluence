@@ -45,6 +45,16 @@ public final class WormMovementAction extends BTNode {
 
     @Override
     public BTStatus execute() {
+        // 必须先于离土下落判断；穿墙蠕虫穿过底层后，否则会永远落在此分支外的重力逻辑中。
+        double floor = worm.level().getMinBuildHeight() + 2.0;
+        double bottomMargin = 12.0;
+        if (worm.getY() < floor + bottomMargin) {
+            Vec3 velocity = worm.getDeltaMovement();
+            double upward = Math.max(0.15, (floor + bottomMargin - worm.getY()) * 0.08);
+            worm.setDeltaMovement(velocity.x * 0.95, Math.min(profile.attackSpeed(), upward), velocity.z * 0.95);
+            wanderTarget = null;
+            return BTStatus.RUNNING;
+        }
         if (!profile.canFly() && !canBurrow()) {
             Vec3 velocity = worm.getDeltaMovement();
             velocity = new Vec3(velocity.x * 0.98, Math.max(-MAX_FALL_SPEED, velocity.y - AIR_GRAVITY), velocity.z * 0.98);
@@ -71,6 +81,8 @@ public final class WormMovementAction extends BTNode {
     }
 
     private void steerTowards(Vec3 destination, double speed) {
+        destination = new Vec3(destination.x,
+                Mth.clamp(destination.y, worm.level().getMinBuildHeight() + 16.0, worm.level().getMaxBuildHeight() - 4.0), destination.z);
         Vec3 desired = destination.subtract(worm.position());
         if (desired.lengthSqr() < 1.0E-6) {
             return;
@@ -118,7 +130,8 @@ public final class WormMovementAction extends BTNode {
                     ? worm.level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mth.floor(x), Mth.floor(z))
                     : worm.getY();
         } + profile.wanderHeightOffset();
-        double y = Math.max(worm.level().getMinBuildHeight() + 2.0, baseY + worm.getRandom1211().nextInt(9) - 3.0);
+        double y = Mth.clamp(baseY + worm.getRandom1211().nextInt(9) - 3.0,
+                worm.level().getMinBuildHeight() + 16.0, worm.level().getMaxBuildHeight() - 4.0);
         return new Vec3(x, y, z);
     }
 

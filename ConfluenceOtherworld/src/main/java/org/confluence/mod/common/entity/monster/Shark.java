@@ -49,7 +49,7 @@ public class Shark extends BaseAquaticMonster {
 
     @Override
     protected boolean flopsOnLand() {
-        return false;
+        return true;
     }
 
     @Override

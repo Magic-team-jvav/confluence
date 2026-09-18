@@ -13,8 +13,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -53,8 +51,6 @@ public class GraniteElemental extends BaseFlyingMonster {
     private static final RawAnimation DEFENSE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation FROM_DEFENSE = RawAnimation.begin().thenPlayAndHold("from_defense");
 
-    private static final int TRANSITION_TICKS = 7;
-    private static final int DEFENDING_TICKS = 40;
     /**
      * 同一洞穴群的水平密度检查半径，远处独立洞穴不共享数量上限。
      */
@@ -142,8 +138,10 @@ public class GraniteElemental extends BaseFlyingMonster {
             return;
         }
         switch (phase) {
-            case ENTERING -> setDefensePhase(DefensePhase.DEFENDING, DEFENDING_TICKS);
-            case DEFENDING -> setDefensePhase(DefensePhase.EXITING, TRANSITION_TICKS);
+            case ENTERING ->
+                    setDefensePhase(DefensePhase.DEFENDING, stateParameters(DefensePhase.DEFENDING).duration());
+            case DEFENDING ->
+                    setDefensePhase(DefensePhase.EXITING, stateParameters(DefensePhase.EXITING).duration());
             case EXITING -> setDefensePhase(DefensePhase.ACTIVE, 0);
             case ACTIVE -> {
                 // ACTIVE 已在方法开头返回，此分支仅用于保证枚举处理完整。
@@ -153,7 +151,7 @@ public class GraniteElemental extends BaseFlyingMonster {
 
     private void beginDefenseSequence() {
         if (getDefensePhase() == DefensePhase.ACTIVE) {
-            setDefensePhase(DefensePhase.ENTERING, TRANSITION_TICKS);
+            setDefensePhase(DefensePhase.ENTERING, stateParameters(DefensePhase.ENTERING).duration());
         }
     }
 
@@ -224,12 +222,15 @@ public class GraniteElemental extends BaseFlyingMonster {
     }
 
     private void setDefensePhase(DefensePhase phase, int ticks) {
+        DefensePhase previous = getDefensePhase();
+        if (previous != phase) setSpecialState(previous, false);
         entityData.set(DATA_DEFENSE_PHASE, (byte) phase.ordinal());
+        setSpecialState(phase, true);
         defenseTicks = ticks;
         setNoGravity(phase != DefensePhase.DEFENDING);
     }
 
-    enum DefensePhase {
+    public enum DefensePhase {
         ACTIVE,
         ENTERING,
         DEFENDING,

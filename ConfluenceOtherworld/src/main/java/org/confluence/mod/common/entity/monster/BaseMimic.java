@@ -172,13 +172,13 @@ public class BaseMimic extends BaseMonster {
                 }
                 case 1 -> {
                     action = 7;
-                    actionTicks = 40;
+                    actionTicks = stateParameters(CombatState.DEFENDING).duration();
                     setDeltaMovement(Vec3.ZERO);
                     setMimicPose(MimicPose.CLOSED);
                 }
                 default -> {
                     action = 8;
-                    actionTicks = 30;
+                    actionTicks = stateParameters(CombatState.RISING).duration();
                     noPhysics = true;
                     setGravity(0.0);
                     setMimicPose(MimicPose.JUMPING);
@@ -210,16 +210,17 @@ public class BaseMimic extends BaseMonster {
             setDeltaMovement(velocity);
             if (--actionTicks > 0 && direction.lengthSqr() > 1.0) return;
             action = 9;
-            actionTicks = 40;
+            actionTicks = stateParameters(CombatState.SLAMMING).duration();
             noPhysics = true;
             setGravity(0.16);
-            setDeltaMovement(0.0, -1.2, 0.0);
+            setDeltaMovement(0.0, -stateParameters(CombatState.SLAMMING).behavior().chargeSpeed(), 0.0);
             return;
         }
         if (action == 9) {
             if (getY() <= target.getY() + target.getBbHeight() && level().noCollision(this))
                 noPhysics = false;
-            setDeltaMovement(getDeltaMovement().x * 0.5, Math.min(getDeltaMovement().y, -1.2), getDeltaMovement().z * 0.5);
+            setDeltaMovement(getDeltaMovement().x * 0.5, Math.min(getDeltaMovement().y,
+                    -stateParameters(CombatState.SLAMMING).behavior().chargeSpeed()), getDeltaMovement().z * 0.5);
             if (onGround() || --actionTicks <= 0) resetAttackCycle();
             return;
         }
@@ -227,6 +228,7 @@ public class BaseMimic extends BaseMonster {
     }
 
     private void launchAt(LivingEntity target, double horizontalPower, double verticalBonus) {
+        horizontalPower = stateParameters(CombatState.JUMPING).behavior().chargeSpeedOr(horizontalPower);
         Vec3 horizontal = target.position().subtract(position()).multiply(1.0, 0.0, 1.0).normalize();
         jumpFromGround();
         addDeltaMovement(horizontal.scale(horizontalPower).add(0.0, verticalBonus, 0.0));
@@ -355,6 +357,8 @@ public class BaseMimic extends BaseMonster {
     protected SoundEvent getHurtSound(DamageSource source) {
         return ModSoundEvents.METAL_HURT.get();
     }
+
+    public enum CombatState {JUMPING, DEFENDING, RISING, SLAMMING}
 
     public enum MimicPose {
         CLOSED,

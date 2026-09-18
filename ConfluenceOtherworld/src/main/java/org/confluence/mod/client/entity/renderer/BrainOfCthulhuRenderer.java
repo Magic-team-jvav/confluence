@@ -1,15 +1,14 @@
 package org.confluence.mod.client.entity.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.BrainDissolveTexture;
 import org.confluence.mod.common.entity.boss.BrainOfCthulhu;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.core.object.Color;
 
 /// 克苏鲁之脑专用的淡入淡出渲染器。
 ///
@@ -22,24 +21,11 @@ public final class BrainOfCthulhuRenderer extends BossGeoRenderer<BrainOfCthulhu
 
     @Override
     public RenderType getRenderType(BrainOfCthulhu brain, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucent(texture);
+        return RenderType.entityTranslucentCull(BrainDissolveTexture.texture(texture, brain.getFadeProgress(partialTick)));
     }
 
     @Override
-    public void preRender(
-            PoseStack poseStack,
-            BrainOfCthulhu brain,
-            BakedGeoModel model,
-            MultiBufferSource buffers,
-            VertexConsumer buffer,
-            boolean reRender,
-            float partialTick,
-            int packedLight,
-            int packedOverlay,
-            float red,
-            float green,
-            float blue,
-            float alpha) {
-        super.preRender(poseStack, brain, model, buffers, buffer, reRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha * brain.getFadeProgress(partialTick));
+    public Color getRenderColor(BrainOfCthulhu brain, float partialTick, int packedLight) {
+        return Color.ofRGBA(255, 255, 255, Math.round(255 * brain.getFadeProgress(partialTick)));
     }
 }

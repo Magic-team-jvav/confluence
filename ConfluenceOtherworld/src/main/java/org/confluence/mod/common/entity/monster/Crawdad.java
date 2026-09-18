@@ -8,13 +8,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -22,7 +19,6 @@ import software.bernie.geckolib.core.object.PlayState;
 
 /// 具有红、蓝两种外观并会中距离跃击的龙虾。
 public final class Crawdad extends BaseWarriorMonster {
-    private static final AttributeModifier CLAW_DAMAGE = new PortAttributeModifier(Confluence.asResource("crawdad_claw_damage"), 0.875, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL).unwrap();
     private static final String VARIANT_TAG = "Variant";
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(Crawdad.class, EntityDataSerializers.INT);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
@@ -30,6 +26,7 @@ public final class Crawdad extends BaseWarriorMonster {
     private static final int CLAW_ATTACK_TICKS = 20;
     private static final int CLAW_WINDUP_TICKS = 5;
     private static final double CLAW_REACH = 0.75;
+
     private boolean variantInitialized;
     private int clawAttackTicks;
 
@@ -97,11 +94,11 @@ public final class Crawdad extends BaseWarriorMonster {
             return;
         AttributeInstance attackDamage = getAttribute(Attributes.ATTACK_DAMAGE);
         if (attackDamage == null) return;
-        attackDamage.addTransientModifier(CLAW_DAMAGE);
+        setSpecialState(AttackState.CLAW_ATTACK, true);
         try {
             super.doHurtTarget(target);
         } finally {
-            attackDamage.removeModifier(CLAW_DAMAGE.getId());
+            setSpecialState(AttackState.CLAW_ATTACK, false);
         }
     }
 
@@ -140,4 +137,6 @@ public final class Crawdad extends BaseWarriorMonster {
     public int getCurrentSwingDuration() {
         return 20;
     }
+
+    public enum AttackState {CLAW_ATTACK}
 }

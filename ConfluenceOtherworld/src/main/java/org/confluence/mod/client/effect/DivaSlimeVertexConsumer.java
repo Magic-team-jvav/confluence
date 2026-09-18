@@ -60,7 +60,7 @@ public final class DivaSlimeVertexConsumer implements VertexConsumer {
     public VertexConsumer vertex(double x, double y, double z) {
         localTransform.transformPosition(position.set((float) x, (float) y, (float) z));
         float hue = time + position.y * 0.65F + position.x * 0.25F;
-        tint = Mth.hsvToRgb(hue - Mth.floor(hue), 1.0F, 1.0F);
+        tint = Mth.hsvToRgb(hue - Mth.floor(hue), 0.60F, 1.0F);
         delegate.vertex(x, y, z);
         return this;
     }

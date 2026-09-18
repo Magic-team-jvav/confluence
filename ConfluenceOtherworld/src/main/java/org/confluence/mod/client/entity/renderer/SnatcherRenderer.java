@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.Snatcher;
@@ -66,8 +67,8 @@ public final class SnatcherRenderer extends GeoNormalRenderer<Snatcher> {
             poseStack.mulPose(Axis.YP.rotation(index * 0.47F));
             Vec3 probe = center.add(entityX, entityY, entityZ);
             int segmentLight = EntityLightSampler.sample(probe,
-                    pos -> entity.level().getBrightness(net.minecraft.world.level.LightLayer.BLOCK, pos),
-                    pos -> entity.level().getBrightness(net.minecraft.world.level.LightLayer.SKY, pos));
+                    pos -> entity.level().getBrightness(LightLayer.BLOCK, pos),
+                    pos -> entity.level().getBrightness(LightLayer.SKY, pos));
             renderCrossedSegment(poseStack, vertices, (float) segmentLength, segmentLight);
             poseStack.popPose();
         }

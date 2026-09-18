@@ -23,6 +23,7 @@ public final class GraniteGolem extends BaseWarriorMonster {
     private static final RawAnimation ENTER = RawAnimation.begin().thenPlayAndHold("defense.enter");
     private static final RawAnimation HOLD = RawAnimation.begin().thenLoop("defense.hold");
     private static final RawAnimation EXIT = RawAnimation.begin().thenPlayAndHold("defense.exit");
+
     private int defenseCooldown = 100;
     private int phaseTicks;
 
@@ -63,12 +64,13 @@ public final class GraniteGolem extends BaseWarriorMonster {
             if (defenseCooldown > 0) defenseCooldown--;
             int phase = entityData.get(DEFENSE_PHASE);
             if (phase == 0 && defenseCooldown == 0 && onGround()) {
-                defenseCooldown = 100;
-                setDefensePhase(1, 5);
+                defenseCooldown = stateParameters(DefensePhase.ACTIVE).attackInterval();
+                setDefensePhase(1, stateParameters(DefensePhase.ENTERING).duration());
             } else if (phase != 0 && --phaseTicks <= 0) {
                 switch (phase) {
-                    case 1 -> setDefensePhase(2, 40);
-                    case 2 -> setDefensePhase(3, 5);
+                    case 1 ->
+                            setDefensePhase(2, stateParameters(DefensePhase.DEFENDING).duration());
+                    case 2 -> setDefensePhase(3, stateParameters(DefensePhase.EXITING).duration());
                     case 3 -> setDefensePhase(0, 0);
                 }
             }
@@ -77,7 +79,10 @@ public final class GraniteGolem extends BaseWarriorMonster {
     }
 
     private void setDefensePhase(int phase, int ticks) {
+        int previous = entityData.get(DEFENSE_PHASE);
+        if (previous != phase) setSpecialState(DefensePhase.values()[previous], false);
         entityData.set(DEFENSE_PHASE, phase);
+        setSpecialState(DefensePhase.values()[phase], true);
         phaseTicks = ticks;
     }
 
@@ -112,7 +117,10 @@ public final class GraniteGolem extends BaseWarriorMonster {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         int phase = Mth.clamp(tag.getInt("DefensePhase"), 0, 3);
-        setDefensePhase(phase, Mth.clamp(tag.getInt("DefenseTicks"), 0, phase == 2 ? 40 : 5));
-        defenseCooldown = tag.contains("DefenseCooldown") ? Mth.clamp(tag.getInt("DefenseCooldown"), 0, 100) : 100;
+        setDefensePhase(phase, Math.max(0, tag.getInt("DefenseTicks")));
+        defenseCooldown = tag.contains("DefenseCooldown") ? Math.max(0, tag.getInt("DefenseCooldown"))
+                : stateParameters(DefensePhase.ACTIVE).attackInterval();
     }
+
+    public enum DefensePhase {ACTIVE, ENTERING, DEFENDING, EXITING}
 }

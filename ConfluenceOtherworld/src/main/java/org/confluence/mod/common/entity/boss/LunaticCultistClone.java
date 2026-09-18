@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
@@ -76,7 +77,9 @@ public final class LunaticCultistClone extends BaseFlyingMonster implements Boss
         return new BTRoot() {
             @Override
             protected BTNode createTree() {
-                return SequenceNode.of(new HasTargetCondition(LunaticCultistClone.this), new CircleAroundTargetAction(LunaticCultistClone.this, 0.45, 8.0), new WaitAction(24));
+                return new ConditionalSwitchNode(() -> getMaster() != null && getMaster().isPerformingRitual(),
+                        new WaitAction(20),
+                        SequenceNode.of(new HasTargetCondition(LunaticCultistClone.this), new CircleAroundTargetAction(LunaticCultistClone.this, 0.45, 8.0), new WaitAction(24)));
             }
         };
     }
@@ -95,6 +98,8 @@ public final class LunaticCultistClone extends BaseFlyingMonster implements Boss
         if (owned && getTarget() != inheritedTarget) {
             setTarget(inheritedTarget);
         }
+        if (getMaster() != null && getMaster().isPerformingRitual())
+            setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
         if (++illusionAge >= LIFETIME) discard();
     }
 
@@ -110,6 +115,8 @@ public final class LunaticCultistClone extends BaseFlyingMonster implements Boss
     public boolean hurt(DamageSource source, float amount) {
         if (level().isClientSide) return true;
         LunaticCultist master = getMaster();
+        if (master != null && !master.isPerformingRitual() && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY))
+            return false;
         if (master != null && source.getEntity() instanceof LivingEntity attacker && master.canAttack(attacker)) {
             master.onEncounterHurt(source);
             master.onCloneHit(this);

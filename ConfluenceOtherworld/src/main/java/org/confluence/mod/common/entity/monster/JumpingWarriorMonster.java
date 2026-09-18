@@ -5,24 +5,19 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
 import org.confluence.mod.common.init.ModEffects;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
 /// 保存战士 AI 敌怪的可选跃击参数和接触效果。
 ///
 /// 只有确实具有跃击技能的实体才传入跃击参数；普通战士 AI 变体传入
 /// {@code null}，只复用近战追击以及该实体自己的接触减益。
 public final class JumpingWarriorMonster extends BaseWarriorMonster {
-    private static final AttributeModifier LOW_HEALTH_SPEED = new PortAttributeModifier(Confluence.asResource("mummy_low_health_speed"), 1.0, PortAttributeModifier.Operation.ADD_MULTIPLIED_TOTAL).unwrap();
     private final @Nullable JumpProfile jumpProfile;
     private final ContactProfile contactProfile;
 
@@ -62,14 +57,8 @@ public final class JumpingWarriorMonster extends BaseWarriorMonster {
     public void aiStep() {
         super.aiStep();
         if (level().isClientSide || !contactProfile.isMummy()) return;
-        var speed = getAttribute(Attributes.MOVEMENT_SPEED);
-        if (speed == null) return;
         boolean enraged = getHealth() <= getMaxHealth() * 0.5F;
-        if (enraged && speed.getModifier(LOW_HEALTH_SPEED.getId()) == null) {
-            speed.addTransientModifier(LOW_HEALTH_SPEED);
-        } else if (!enraged) {
-            speed.removeModifier(LOW_HEALTH_SPEED.getId());
-        }
+        setSpecialState(CombatState.WOUNDED, enraged);
     }
 
     @Override
@@ -83,6 +72,8 @@ public final class JumpingWarriorMonster extends BaseWarriorMonster {
         if (LibUtils.isMaster(level(), blockPosition())) return classicTicks * 5 / 2;
         return LibUtils.isAtLeastExpert(level(), blockPosition()) ? classicTicks * 2 : classicTicks;
     }
+
+    public enum CombatState {WOUNDED}
 
     /// 只描述同一套木乃伊近战行为之间的接触效果差异，不依赖实体注册名反查逻辑。
     public enum ContactProfile {

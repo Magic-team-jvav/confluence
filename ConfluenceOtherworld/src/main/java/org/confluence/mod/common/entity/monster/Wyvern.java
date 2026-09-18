@@ -20,8 +20,8 @@ import org.confluence.mod.common.init.ModSoundEvents;
 /// 发现目标后停止盘旋，先以有限角速度调整朝向，再沿身体正前方高速穿过目标。近距离且
 /// 玩家脚下悬空时会进入更快的俯冲段，避免把飞龙退化成普通蠕虫的直接追踪。
 public class Wyvern extends BaseWormMonster {
-    public Wyvern(EntityType<? extends BaseWormMonster> type, Level level) {
-        super(type, level);
+    public Wyvern(EntityType<? extends BaseWormMonster> type, Level level, EntityType<BaseWormPart> segmentType) {
+        super(type, level, segmentType);
     }
 
     @Override
@@ -100,6 +100,15 @@ public class Wyvern extends BaseWormMonster {
 
         @Override
         public BTStatus execute() {
+            double floor = wyvern.level().getMinBuildHeight() + 14.0;
+            if (wyvern.getY() < floor) {
+                Vec3 velocity = wyvern.getDeltaMovement();
+                wyvern.setDeltaMovement(velocity.x * 0.95, Math.min(0.8, Math.max(0.15, (floor - wyvern.getY()) * 0.08)), velocity.z * 0.95);
+                lookAlong(wyvern.getDeltaMovement());
+                center = null;
+                closeDashTicks = 0;
+                return BTStatus.RUNNING;
+            }
             LivingEntity target = wyvern.getTarget();
             if (target != null && target.isAlive() && wyvern.canAttack(target)) {
                 attack(target);

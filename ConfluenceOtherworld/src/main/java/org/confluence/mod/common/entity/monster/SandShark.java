@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -42,12 +43,23 @@ public final class SandShark extends BaseMonster {
                     @Override
                     public BTStatus execute() {
                         if (jumpCooldown > 0) jumpCooldown--;
-                        boolean sand = level().getBlockStates(getBoundingBox().inflate(0.05)).anyMatch(SandShark::canBurrow);
+                        boolean sand = isInSand();
                         if (tickCount % 40 == 0)
                             wander = new Vec3(random.nextDouble() - 0.5, 0.0, random.nextDouble() - 0.5).normalize().scale(0.15);
                         Vec3 movement = getDeltaMovement();
                         if (sand || isInWater()) {
                             Vec3 desired = getTarget() == null ? wander : getTarget().position().add(0.0, isInWater() ? 0.5 : -1.0, 0.0).subtract(position()).normalize().scale(0.45);
+                            if (getTarget() == null && sand) {
+                                // 在沙中巡游时维持埋入深度，遇到非沙边界则转向，不能一直擦着沙面滑行。
+                                if (!canBurrow(level().getBlockState(blockPosition().above())))
+                                    desired = desired.add(0, -0.12, 0);
+                                if (!canBurrow(level().getBlockState(blockPosition().below())))
+                                    desired = desired.add(0, 0.12, 0);
+                                if (!canBurrow(level().getBlockState(BlockPos.containing(position().add(wander.scale(8)))))) {
+                                    wander = wander.scale(-1);
+                                    desired = new Vec3(wander.x, desired.y, wander.z);
+                                }
+                            }
                             movement = movement.lerp(desired, 0.12);
                             if (sand && getTarget() != null && jumpCooldown == 0 && distanceToSqr(getTarget()) < 36.0) {
                                 jumpCooldown = 35;
@@ -56,6 +68,12 @@ public final class SandShark extends BaseMonster {
                             }
                         } else {
                             movement = movement.add(0.0, -0.08, 0.0).multiply(0.98, 0.98, 0.98);
+                            if (onGround()) {
+                                movement = new Vec3((random.nextFloat() * 2 - 1) * 0.2, 0.5, (random.nextFloat() * 2 - 1) * 0.2);
+                                setYRot(random.nextFloat() * 360);
+                                setOnGround(false);
+                                hasImpulse = true;
+                            }
                         }
                         setDeltaMovement(movement);
                         if (movement.lengthSqr() > 0.001)
@@ -70,6 +88,10 @@ public final class SandShark extends BaseMonster {
     @Override
     public void travel(Vec3 input) {
         if (isEffectiveAi()) move(MoverType.SELF, getDeltaMovement());
+    }
+
+    public boolean isInSand() {
+        return level().getBlockStates(getBoundingBox().deflate(0.05)).anyMatch(SandShark::canBurrow);
     }
 
     @Override

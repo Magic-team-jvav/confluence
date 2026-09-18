@@ -41,6 +41,24 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     private static final EntityDataAccessor<Integer> DATA_VARIANT = SynchedEntityData.defineId(DemonEye.class, EntityDataSerializers.INT);
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("fly");
     private static final EnumMap<Variant, VariantStats> VARIANT_STATS = new EnumMap<>(Variant.class);
+
+    static {
+        registerVariantStats(Variant.NORMAL, 15, 3.5, 1, 0.2);
+        registerVariantStats(Variant.NORMAL_BIG, 12, 4, 2, 0.1);
+        registerVariantStats(Variant.CATARACT, 11.5, 3.5, 2, 0.2);
+        registerVariantStats(Variant.CATARACT_BIG, 14, 4, 2, 0.1);
+        registerVariantStats(Variant.SLEEPY, 15, 3, 1, 0.2);
+        registerVariantStats(Variant.SLEEPY_BIG, 16, 3.5, 1, 0.1);
+        registerVariantStats(Variant.DILATED, 12, 3.5, 1, 0.1);
+        registerVariantStats(Variant.DILATED_SMALL, 11.5, 3, 0, 0.2);
+        registerVariantStats(Variant.GREEN, 15, 4, 0, 0.1);
+        registerVariantStats(Variant.GREEN_SMALL, 12.5, 3, 0, 0.2);
+        registerVariantStats(Variant.PURPLE, 15, 3, 2, 0.2);
+        registerVariantStats(Variant.PURPLE_BIG, 16, 3, 2, 0.1);
+        registerVariantStats(Variant.OWL, 18.5, 3, 3, 0.2);
+        registerVariantStats(Variant.SPACESHIP, 15, 3, 2, 0.2);
+    }
+
     private DemonEyeSurroundAction surroundAction;
 
     public DemonEye(EntityType<? extends DemonEye> type, Level level) {
@@ -67,10 +85,6 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
     public static void registerVariantStats(Variant variant, double health, double damage, int armor, double movementSpeed) {
         VARIANT_STATS.put(variant, new VariantStats(health, damage, armor, movementSpeed));
     }
-
-    private record VariantStats(double health, double damage, int armor, double movementSpeed) {}
-
-
 
     /// 恶魔眼体型决定受击后的位移幅度。
     ///
@@ -172,6 +186,8 @@ public class DemonEye extends ReboundingFlyingMonster implements VariantHolder<D
         if (level().isClientSide) return;
         if (level().isDay()) setTarget(null);
     }
+
+    private record VariantStats(double health, double damage, int armor, double movementSpeed) {}
 
     public enum Variant implements IVariant {
         NORMAL("normal", false, 1.0F),

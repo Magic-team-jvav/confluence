@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -31,11 +32,11 @@ public final class DeerclopsShadowHandProjectile extends StraightMonsterProjecti
     }
 
     public void configure(Mob owner, Vec3 origin, Vec3 direction, float damage) {
-        Vec3 attackDirection = direction.normalize();
+        Vec3 attackDirection = direction.normalize().scale(ProjectileOverrides.get(owner, getType()).speedOr(1.0F));
         entityData.set(DATA_ATTACK_DIRECTION, attackDirection.toVector3f());
         super.configure(owner, origin, Vec3.ZERO, damage, LIFETIME);
         setYRot((float) (Math.toDegrees(Math.atan2(attackDirection.z, attackDirection.x)) - 90.0));
-        setXRot((float) -Math.toDegrees(Math.asin(attackDirection.y)));
+        setXRot((float) -Math.toDegrees(Math.asin(direction.normalize().y)));
     }
 
     @Override

@@ -20,17 +20,20 @@ public final class ZombieMerman extends BaseWarriorMonster {
     @Override
     public double getAttributeValue(Attribute attribute) {
         double value = super.getAttributeValue(attribute);
-        return attribute == Attributes.MOVEMENT_SPEED && !isInWater() ? value * (1.0 + 2.5 * (1.0 - getHealth() / getMaxHealth())) : value;
+        if (attribute != Attributes.MOVEMENT_SPEED || isInWater()) return value;
+        double maximum = stateAttributeValue(MovementState.WOUNDED, attribute, value);
+        return value + (maximum - value) * (1.0 - getHealth() / getMaxHealth());
     }
 
     @Override
     public void travel(Vec3 input) {
         if (isEffectiveAi() && isInWater() && getTarget() != null && getTarget().isAlive()) {
             Vec3 offset = getTarget().position().subtract(position());
-            Vec3 desired = offset.normalize().scale(0.6);
+            double speed = stateParameters(MovementState.SWIMMING).behavior().moveSpeed();
+            Vec3 desired = offset.normalize().scale(speed);
             if (!getSensing().hasLineOfSight(getTarget())) {
                 Vec3 next = getNavigation().getPath() == null || getNavigation().getPath().isDone() ? null : getNavigation().getPath().getNextEntityPos(this);
-                if (next != null) desired = next.subtract(position()).normalize().scale(0.6);
+                if (next != null) desired = next.subtract(position()).normalize().scale(speed);
             }
             setDeltaMovement(getDeltaMovement().lerp(desired, 0.15));
             if (horizontalCollision && offset.y > 0.0)
@@ -41,4 +44,6 @@ public final class ZombieMerman extends BaseWarriorMonster {
             super.travel(input);
         }
     }
+
+    public enum MovementState {SWIMMING, WOUNDED}
 }

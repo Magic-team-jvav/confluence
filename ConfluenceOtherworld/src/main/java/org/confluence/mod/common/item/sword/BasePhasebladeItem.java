@@ -45,18 +45,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.function.Consumer;
 
 public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoItem {
-    public enum PhaseColor {
-        RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, WHITE, PINK;
-
-        public String resourceName() {
-            return name().toLowerCase(java.util.Locale.ROOT);
-        }
-    }
-
     private static final String TURN_ON_KEY = "isTurnOn";
     private static final String GECKOLIB_ID_KEY = "GeckoLibID";
     private static final RawAnimation IDLE_OFF = RawAnimation.begin().thenLoop("idle_off");
     private static final RawAnimation IDLE_ON = RawAnimation.begin().thenLoop("idle_on");
+
     private final PhaseColor color;
     private final PortItemAttributeModifiers turnOnModifiers;
     private final PortItemAttributeModifiers turnOffModifiers;
@@ -100,6 +93,17 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
     public static boolean isTurnOn(ItemStack stack) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
         return tag != null && tag.contains(TURN_ON_KEY, Tag.TAG_BYTE) && tag.getBoolean(TURN_ON_KEY);
+    }
+
+    public static boolean isThrown(Player player, ItemStack stack) {
+        return !player.level().getEntitiesOfClass(PhasebladeProjectile.class,
+                AABB.ofSize(player.position(), 256.0, 256.0, 256.0),
+                projectile -> projectile.belongsTo(player) && projectile.represents(stack)).isEmpty();
+    }
+
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+        return isThrown(player, stack) || super.onLeftClickEntity(stack, player, entity);
     }
 
     @Override
@@ -195,6 +199,14 @@ public abstract class BasePhasebladeItem extends BaseSwordItem implements GeoIte
                 return renderer;
             }
         });
+    }
+
+    public enum PhaseColor {
+        RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, WHITE, PINK;
+
+        public String resourceName() {
+            return name().toLowerCase(java.util.Locale.ROOT);
+        }
     }
 
     public record ProjectileGeometry(float minX, float maxX, float minY, float maxY, float minZ,

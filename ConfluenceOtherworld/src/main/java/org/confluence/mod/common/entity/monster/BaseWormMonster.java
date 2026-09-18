@@ -15,18 +15,17 @@ import org.confluence.mod.common.entity.ai.WormChainTrail;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/// 蠕虫怪物基类——分段实体（头+体+尾），穿透方块移动。
-/// 每 tick 头部移动，体节跟随前一个保持固定间距。
+// 分段生物共用轨迹跟随与伤害逻辑，各本体明确提供自己的部件实体类型。
 public abstract class BaseWormMonster extends BaseMonster implements WormSegment {
     // 命中后保留三刻冷却；未命中时逐刻检测，扫掠只覆盖本刻实际经过的路径。
     private static final int COLLISION_INTERVAL = 3;
 
+    private final EntityType<BaseWormPart> segmentType;
     protected final List<BaseWormPart> segments = new ArrayList<>();
     private final java.util.Map<Integer, BaseWormPart> clientSegments = new java.util.HashMap<>();
     private final WormChainTrail segmentTrail = new WormChainTrail();
@@ -35,8 +34,9 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     private @Nullable BaseWormPart attackingPart;
     private @Nullable BaseWormPart hurtPart;
 
-    public BaseWormMonster(EntityType<? extends BaseWormMonster> type, Level level) {
+    public BaseWormMonster(EntityType<? extends BaseWormMonster> type, Level level, EntityType<BaseWormPart> segmentType) {
         super(type, level);
+        this.segmentType = segmentType;
         this.noPhysics = true;
         setNoGravity(true);
     }
@@ -54,7 +54,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     }
 
     public EntityDimensions segmentDimensions(boolean tail) {
-        return MonsterEntities.WORM_SEGMENT.get().getDimensions();
+        return segmentType.getDimensions();
     }
 
     protected double segmentDamageMultiplier(boolean tail) {
@@ -115,7 +115,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
         Vec3 backward = getLookAngle().scale(-segmentSpacing());
         if (backward.lengthSqr() < 1.0E-7) backward = new Vec3(0.0, 0.0, -segmentSpacing());
         for (int index = 1; index <= getSegmentCount(); index++) {
-            BaseWormPart part = MonsterEntities.WORM_SEGMENT.get().create(level());
+            BaseWormPart part = segmentType.create(level());
             if (part == null) {
                 discardSegments();
                 return;

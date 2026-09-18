@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,6 +25,7 @@ import org.confluence.mod.common.entity.projectile.PlanteraProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.util.OverworldUtils;
 
 public class Plantera extends BaseBoss {
     // 本体八根触手，三个钩爪各带三根触手，合计十七根。
@@ -54,6 +56,8 @@ public class Plantera extends BaseBoss {
     private static final String TENTACLE_TIMER_TAG = "TentacleTimer";
     private static final String ENRAGED_TICKS_TAG = "EnragedTicks";
     private static final EntityDataAccessor<Integer> DATA_PHASE = SynchedEntityData.defineId(Plantera.class, EntityDataSerializers.INT);
+
+    private Temperament appliedTemperament;
     private final PlanteraHook[] hooks = new PlanteraHook[HOOK_COUNT];
     private final PlanteraTentacle[] tentacles = new PlanteraTentacle[TENTACLE_COUNT];
     private int attackTicks;
@@ -96,7 +100,6 @@ public class Plantera extends BaseBoss {
         };
     }
 
-
     @Override
     public void tick() {
         super.tick();
@@ -117,7 +120,9 @@ public class Plantera extends BaseBoss {
             // 全局 AI 时钟从出生起推进，取得目标后继续读取同一条时间轴。
             attackTicks++;
             if (getTarget() != null) {
-                if (distanceToSqr(getTarget()) > HOOK_SEARCH_RANGE * HOOK_SEARCH_RANGE) {
+                if (distanceToSqr(getTarget()) > HOOK_SEARCH_RANGE * HOOK_SEARCH_RANGE
+                        || !level().getBiome(getTarget().blockPosition()).is(BiomeTags.IS_JUNGLE)
+                        || getTarget().getY() >= OverworldUtils.getSurfaceY()) {
                     enrage();
                 }
                 tickProjectileAttacks();
@@ -135,6 +140,7 @@ public class Plantera extends BaseBoss {
 
             updateHookCycle();
             updateMovement();
+            updateStateAttributes();
         }
     }
 
@@ -203,15 +209,15 @@ public class Plantera extends BaseBoss {
     }
 
     private float getSeedDamage() {
-        return LibUtils.switchByDifficulty(level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
+        return (isEnraged() ? 2.0F : 1.0F) * LibUtils.switchByDifficulty(level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
     }
 
     private float getThornDamage() {
-        return LibUtils.switchByDifficulty(level(), blockPosition(), 18.0F, 28.0F, 42.0F, 42.0F);
+        return (isEnraged() ? 2.0F : 1.0F) * LibUtils.switchByDifficulty(level(), blockPosition(), 18.0F, 28.0F, 42.0F, 42.0F);
     }
 
     private float getSporeDamage() {
-        return LibUtils.switchByDifficulty(level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
+        return (isEnraged() ? 2.0F : 1.0F) * LibUtils.switchByDifficulty(level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
     }
 
     private boolean spawnProjectile(EntityType<? extends PlanteraProjectile> type, float damage, float velocity, float inaccuracy) {
@@ -319,6 +325,8 @@ public class Plantera extends BaseBoss {
                 : getPhase() == 0
                 ? PHASE_ONE_MOVE_SPEED
                 : PHASE_TWO_MOVE_SPEED;
+        maximumSpeed = stateParameters(isEnraged() ? Temperament.ENRAGED : Temperament.CALM)
+                .behavior().moveSpeedOr(maximumSpeed);
         Vec3 velocity = getDeltaMovement().add(acceleration);
         if (velocity.lengthSqr() > maximumSpeed * maximumSpeed) {
             velocity = velocity.normalize().scale(maximumSpeed);
@@ -338,6 +346,14 @@ public class Plantera extends BaseBoss {
 
     public boolean isEnraged() {
         return enragedTicks > 0;
+    }
+
+    private void updateStateAttributes() {
+        Temperament state = isEnraged() ? Temperament.ENRAGED : Temperament.CALM;
+        if (appliedTemperament != null && appliedTemperament != state)
+            setSpecialState(appliedTemperament, false);
+        appliedTemperament = state;
+        setSpecialState(state, true);
     }
 
     /// 补齐第二阶段缺失的触手槽位。
@@ -511,4 +527,6 @@ public class Plantera extends BaseBoss {
         Vec3 movement = getDeltaMovement();
         return new Vec3(movement.x * 0.25D, -0.4D, movement.z * 0.25D);
     }
+
+    public enum Temperament {CALM, ENRAGED}
 }

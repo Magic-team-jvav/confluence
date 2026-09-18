@@ -116,6 +116,8 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
         if (level().isClientSide || !isAlive()) {
             return;
         }
+        // 变形属性由同步形态恢复，存档重载不重复叠加，也不覆盖注册基础值。
+        setSpecialState(Form.TRANSFORMED, isTransformed());
         if (master != null && getTarget() != inheritedTarget) {
             setTarget(inheritedTarget);
         }
@@ -130,7 +132,7 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
             return;
         }
 
-        if (!isTransformed() && getHealth() < getMaxHealth() * 0.5F) {
+        if (!isTransformed() && getHealth() < getMaxHealth() * 0.4F) {
             entityData.set(DATA_TRANSFORMED, true);
             transitionTicks = TRANSITION_DURATION_TICKS;
             entityData.set(DATA_TRANSITION_TICKS, transitionTicks);
@@ -276,4 +278,6 @@ public abstract class AbstractTwinEye extends BaseFlyingMonster implements BossO
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
+
+    public enum Form {TRANSFORMED}
 }

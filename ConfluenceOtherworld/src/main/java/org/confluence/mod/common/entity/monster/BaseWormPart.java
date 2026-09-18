@@ -25,7 +25,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.UUID;
 
-/// 蠕虫体节。每 tick 跟随前一个体节（或头部），保持固定间距。
+// 分段生物的共用部件实现；实体类型由所属家族决定，位置由本体的连续轨迹驱动。
 public class BaseWormPart extends Entity implements WormSegment, GeoEntity, PartHitTarget {
     // 未命中时每 10 tick 重试；命中后给同一体节 20 tick 接触伤害冷却。
     private static final int COLLISION_DETECTION_INTERVAL = 10;

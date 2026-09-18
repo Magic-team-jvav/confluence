@@ -76,6 +76,8 @@ public final class FrostFighter extends BaseMonster {
         shotCooldown = tag.contains("ShotCooldown") ? Math.max(0, tag.getInt("ShotCooldown")) : 40;
     }
 
+    public enum CombatState {SHOOTING, WOUNDED}
+
     private final class CombatAction extends BTNode {
         private int pathCooldown;
 
@@ -99,7 +101,10 @@ public final class FrostFighter extends BaseMonster {
                 setZza(0.0F);
                 getLookControl().setLookAt(target, 30.0F, 30.0F);
             } else if (--pathCooldown <= 0) {
-                getNavigation().moveTo(target, kind == Kind.GOLEM ? 0.6 + Math.pow(1.0 - healthRatio, 2.0) * 1.4 : 1.0);
+                double normalSpeed = stateParameters(CombatState.SHOOTING).behavior().moveSpeed();
+                double woundedSpeed = stateParameters(CombatState.WOUNDED).behavior().moveSpeed();
+                getNavigation().moveTo(target, kind == Kind.GOLEM
+                        ? normalSpeed + Math.pow(1.0 - healthRatio, 2.0) * (woundedSpeed - normalSpeed) : normalSpeed);
                 pathCooldown = 10;
             }
             if (--shotCooldown <= 0) {
@@ -113,7 +118,9 @@ public final class FrostFighter extends BaseMonster {
                             playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.8F);
                     }
                 }
-                shotCooldown = kind == Kind.GOLEM ? (int) (10 + 10 * healthRatio + random.nextDouble() * 290 * healthRatio) : 35;
+                int normalInterval = stateParameters(CombatState.SHOOTING).randomAttackInterval(random);
+                int woundedInterval = stateParameters(CombatState.WOUNDED).attackInterval();
+                shotCooldown = kind == Kind.GOLEM ? Math.max(1, (int) (woundedInterval + healthRatio * (normalInterval - woundedInterval))) : normalInterval;
             }
             return BTStatus.RUNNING;
         }

@@ -9,33 +9,33 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.mod.Confluence;
+import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.client.entity.model.WormPartGeoModel;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
 import org.confluence.mod.common.entity.monster.BaseWormPart;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 
-/// 在同一个体节实体类型上选择各蠕虫家族的模型，并处理飞龙模型内部的体节分组。
-///
-/// 普通蠕虫分别使用身体和尾部文件；飞龙则与 1.21 实现一致，复用 {@code wyvern.geo.json}，
-/// 根据体节位置仅显示普通身体、带翼身体或尾部中的一个分组。
+// 每个部件实体类型独立注册渲染资源，飞龙仍按节段角色显示对应模型分组。
 public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
-    private final WormPartGeoModel<BaseWormPart> wormModel;
+    private final EntityType<? extends BaseWormMonster> family;
+    private final boolean wyvernGeometry;
 
-    public WormPartRenderer(EntityRendererProvider.Context context) {
-        this(context, new WormPartGeoModel<>(
-                Confluence.asResource("geo/entity/giant_worm_segment.geo.json"),
-                Confluence.asResource("textures/entity/giant_worm_segment.png"),
-                Confluence.asResource("geo/entity/giant_worm_tail.geo.json"),
-                Confluence.asResource("textures/entity/giant_worm_tail.png")));
+    public WormPartRenderer(EntityRendererProvider.Context context, EntityType<? extends BaseWormMonster> family, float scale, boolean wyvernGeometry) {
+        super(context, createModel(BuiltInRegistries.ENTITY_TYPE.getKey(family), wyvernGeometry), true, scale, 0.0F);
+        this.family = family;
+        this.wyvernGeometry = wyvernGeometry;
     }
 
-    private WormPartRenderer(EntityRendererProvider.Context context, WormPartGeoModel<BaseWormPart> model) {
-        super(context, model, true, 1.0F, 0.0F);
-        this.wormModel = model;
+    private static WormPartGeoModel<BaseWormPart> createModel(ResourceLocation family, boolean wyvernGeometry) {
+        String body = wyvernGeometry ? "wyvern" : family.getPath() + "_segment";
+        String tail = wyvernGeometry ? "wyvern" : family.getPath() + "_tail";
+        return new WormPartGeoModel<>(
+                ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "geo/entity/" + body + ".geo.json"),
+                ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "textures/entity/" + body + ".png"),
+                ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "geo/entity/" + tail + ".geo.json"),
+                ResourceLocation.fromNamespaceAndPath(family.getNamespace(), "textures/entity/" + tail + ".png"));
     }
 
     @Override
@@ -45,7 +45,7 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
 
     @Override
     protected Vector3f getWormModelCenter(BaseWormPart segment) {
-        return WormHeadRenderer.sharedModelCenter(segment.getOwner());
+        return WormHeadRenderer.sharedModelCenter(family);
     }
 
     @Override
@@ -63,7 +63,7 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
             float green,
             float blue,
             float alpha) {
-        if (wormModel.usesWyvernGeometry(segment)) {
+        if (wyvernGeometry) {
             boolean tail = segment.isTail();
             boolean wing = !tail && (segment.getSegmentIndex() == 3 || segment.getSegmentIndex() == 9);
             setHidden(model, "Bone", true);
@@ -76,12 +76,12 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
 
     @Override
     protected boolean shouldRotateAlongPitch(BaseWormPart segment) {
-        return !wormModel.usesWyvernGeometry(segment);
+        return !wyvernGeometry;
     }
 
     @Override
     protected void applyRotations(BaseWormPart segment, PoseStack poseStack, float age, float yaw, float partialTick) {
-        if (!wormModel.usesWyvernGeometry(segment)) {
+        if (!wyvernGeometry) {
             super.applyRotations(segment, poseStack, age, yaw, partialTick);
             return;
         }
@@ -95,7 +95,7 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
                                   boolean reRender, float partialTick, int packedLight, int packedOverlay,
                                   float red, float green, float blue, float alpha) {
         poseStack.pushPose();
-        if (wormModel.usesWyvernGeometry(segment)) {
+        if (wyvernGeometry) {
             // 模型主干的 Z 范围分别为 13..29、30..46、47..63 像素。
             // 在实体旋转和缩放之后，以局部坐标把主干中心移到体节原点。
             double centerZ = switch (bone.getName()) {
@@ -110,16 +110,6 @@ public final class WormPartRenderer extends GeoNormalRenderer<BaseWormPart> {
         super.renderRecursively(poseStack, segment, bone, renderType, buffers, buffer, reRender,
                 partialTick, packedLight, packedOverlay, red, green, blue, alpha);
         poseStack.popPose();
-    }
-
-    @Override
-    protected float getEffectiveModelScale(BaseWormPart segment) {
-        BaseWormMonster owner = segment.getOwner();
-        if (!wormModel.usesWyvernGeometry(segment)) {
-            return owner != null && (owner.getType() == MonsterEntities.DIGGER.get() || owner.getType() == MonsterEntities.WORLD_FEEDER.get()) ? 1.0F : 2.0F;
-        }
-        ResourceLocation ownerId = owner == null ? null : BuiltInRegistries.ENTITY_TYPE.getKey(owner.getType());
-        return ownerId != null && "arch_wyvern".equals(ownerId.getPath()) ? 1.25F : 1.0F;
     }
 
     @Override

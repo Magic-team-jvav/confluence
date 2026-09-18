@@ -7,8 +7,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -16,12 +14,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.LibEffects;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -31,7 +27,6 @@ public final class Nymph extends BaseMonster {
     private static final double REVEAL_DISTANCE_SQUARED = 12.5 * 12.5;
     private static final double MOVEMENT_REVEAL_DISTANCE_SQUARED = 1.0E-4;
     private static final String TRIGGERED_TAG = "Triggered";
-    private static final AttributeModifier PURSUIT_SPEED = new PortAttributeModifier(Confluence.asResource("nymph_revealed_pursuit_speed"), 0.25, PortAttributeModifier.Operation.ADD_VALUE).unwrap();
     private static final EntityDataAccessor<Boolean> TRIGGERED = SynchedEntityData.defineId(Nymph.class, EntityDataSerializers.BOOLEAN);
     private static final RawAnimation SIT = RawAnimation.begin().thenLoop("sit");
     private static final RawAnimation DASH = RawAnimation.begin().thenLoop("dash");
@@ -95,15 +90,7 @@ public final class Nymph extends BaseMonster {
     }
 
     private void updatePursuitSpeed(boolean pursuing) {
-        var speed = getAttribute(Attributes.MOVEMENT_SPEED);
-        if (speed == null) {
-            return;
-        }
-        if (pursuing && speed.getModifier(PURSUIT_SPEED.getId()) == null) {
-            speed.addTransientModifier(PURSUIT_SPEED);
-        } else if (!pursuing) {
-            speed.removeModifier(PURSUIT_SPEED.getId());
-        }
+        setSpecialState(CombatState.PURSUING, pursuing);
         setSprinting(pursuing);
     }
 
@@ -201,4 +188,6 @@ public final class Nymph extends BaseMonster {
             return state.setAndContinue(isTriggered() ? DASH : SIT);
         }));
     }
+
+    public enum CombatState {PURSUING}
 }

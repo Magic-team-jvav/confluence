@@ -22,7 +22,6 @@ import org.confluence.mod.common.init.ModEffects;
 /// 受伤会中止当前冲锋并重新进入旋转准备阶段。接触诅咒属于附魔剑自身能力，不能放进
 /// 地牢机关共用的穿墙冲锋模板，否则刺球和烈焰火轮也会错误施加诅咒。
 public final class EnchantedSword extends PhasingChargeMonster {
-    private static final int SPIN_UP_TICKS = 40;
     private BTNode attackCycle;
 
     public EnchantedSword(EntityType<? extends EnchantedSword> type, Level level) {
@@ -34,7 +33,7 @@ public final class EnchantedSword extends PhasingChargeMonster {
         attackCycle = SequenceNode.of(
                 new HasTargetCondition(this),
                 new SpinUpAction(),
-                new ChargeAttackAction(this, 0.8, 0)
+                new ChargeAttackAction(this, stateParameters(CombatState.CHARGING).behavior().chargeSpeed(), 0)
         );
         return new BTRoot() {
             @Override
@@ -66,6 +65,8 @@ public final class EnchantedSword extends PhasingChargeMonster {
         return damaged;
     }
 
+    public enum CombatState {WINDUP, CHARGING}
+
     /// 原地旋转并逐步消除上一轮冲刺的惯性，完成后才允许锁定新的冲刺方向。
     private final class SpinUpAction extends BTNode {
         private int ticks;
@@ -79,7 +80,7 @@ public final class EnchantedSword extends PhasingChargeMonster {
         public BTStatus execute() {
             LivingEntity target = getTarget();
             if (target == null || !target.isAlive()) return BTStatus.FAILURE;
-            if (++ticks > SPIN_UP_TICKS) return BTStatus.SUCCESS;
+            if (++ticks > stateParameters(CombatState.WINDUP).duration()) return BTStatus.SUCCESS;
             setDeltaMovement(getDeltaMovement().scale(0.65));
             float yaw = getYRot() + 36.0F;
             setYRot(yaw);

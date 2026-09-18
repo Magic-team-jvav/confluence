@@ -1,7 +1,10 @@
 package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -15,10 +18,9 @@ import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.SwordItems;
 
 public class TownSlimeNPC extends BaseNPC {
-    private int jumpDelay;
-
     public TownSlimeNPC(EntityType<? extends BaseNPC> type, Level level, NPCCombatProfile profile) {
         super(type, level, profile);
+        moveControl = new HopMoveControl(this);
     }
 
     @Override
@@ -29,15 +31,6 @@ public class TownSlimeNPC extends BaseNPC {
     @Override
     public boolean isTownPet() {
         return true;
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        if (onGround() && getInteractingPlayer() == null && !getNavigation().isDone() && --jumpDelay <= 0) {
-            jumpDelay = 10 + getRandom().nextInt(10);
-            jumpFromGround();
-        }
     }
 
     public static TownSlimeNPC unlock(ServerLevel level, EntityType<TownSlimeNPC> type, Vec3 position) {
@@ -72,5 +65,41 @@ public class TownSlimeNPC extends BaseNPC {
             }
         }
         return false;
+    }
+
+    private static final class HopMoveControl extends MoveControl {
+        private final TownSlimeNPC slime;
+        private int jumpDelay;
+
+        private HopMoveControl(TownSlimeNPC slime) {
+            super(slime);
+            this.slime = slime;
+        }
+
+        @Override
+        public void tick() {
+            slime.setXxa(0.0F);
+            slime.setZza(0.0F);
+            slime.setSpeed(0.0F);
+            if (operation != Operation.MOVE_TO || slime.getInteractingPlayer() != null) return;
+            operation = Operation.WAIT;
+
+            double dx = wantedX - slime.getX();
+            double dz = wantedZ - slime.getZ();
+            if (dx * dx + dz * dz < 0.0001D) return;
+            float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
+            slime.setYRot(rotlerp(slime.getYRot(), yaw, 90.0F));
+            slime.setYBodyRot(slime.getYRot());
+
+            // 导航只指定方向；落地等待时不施加行走输入，起跳后才向前移动。
+            if (slime.onGround()) {
+                if (jumpDelay-- > 0) return;
+                jumpDelay = 10 + slime.getRandom().nextInt(10);
+                slime.getJumpControl().jump();
+            } else if (slime.isInWaterOrBubble() || slime.isInLava()) {
+                slime.getJumpControl().jump();
+            }
+            slime.setSpeed((float) (speedModifier * slime.getAttributeValue(Attributes.MOVEMENT_SPEED)));
+        }
     }
 }

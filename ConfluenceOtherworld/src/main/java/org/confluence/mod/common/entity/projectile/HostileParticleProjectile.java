@@ -20,10 +20,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.Corruptor;
+import org.confluence.mod.common.entity.monster.WaterBoltMimic;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4x3f;
 import org.joml.Vector3f;
+import org.mesdag.particlestorm.particle.MolangParticleEngine;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 /// 使用粒子表现的敌对生物弹幕。
 ///
@@ -39,10 +44,12 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
     private static final String INFERNO_BLAST_TICKS_KEY = "InfernoBlastTicks";
     private static final String INFERNO_BLAST_KEY = "InfernoBlast";
     private static final EntityDataAccessor<Boolean> INFERNO_BLAST = SynchedEntityData.defineId(HostileParticleProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> WATER_BOLT_VISUAL = SynchedEntityData.defineId(HostileParticleProjectile.class, EntityDataSerializers.BOOLEAN);
 
     private final Variant variant;
     private int infernoFlightTicks = Integer.MAX_VALUE;
     private int infernoBlastTicks;
+    private ParticleEmitter waterEmitter;
 
     public HostileParticleProjectile(EntityType<? extends HostileParticleProjectile> type, Level level, Variant variant) {
         super(type, level);
@@ -51,11 +58,13 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
 
     /// 使用普通施法怪物的低速、有轻微散布参数瞄准目标。
     public void configure(Mob owner, LivingEntity target, float damage) {
+        entityData.set(WATER_BOLT_VISUAL, variant == Variant.WATER_SPHERE && owner instanceof WaterBoltMimic);
         Vec3 origin = owner.getEyePosition();
         Vec3 aim = target.position().add(0.0, target.getBbHeight() * 0.5, 0.0).subtract(origin);
         configureAimed(owner, origin, aim, damage, VELOCITY, INACCURACY, variant.maximumLifetime());
         if (variant == Variant.INFERNO_BOLT) {
-            infernoFlightTicks = Math.max(1, Mth.ceil(aim.length() / VELOCITY));
+            double speed = getDeltaMovement().length();
+            infernoFlightTicks = speed > 1.0E-8 ? Math.max(1, Mth.ceil(aim.length() / speed)) : Integer.MAX_VALUE;
         }
     }
 
@@ -66,6 +75,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
     @Override
     protected void defineSynchedData() {
         entityData.define(INFERNO_BLAST, false);
+        entityData.define(WATER_BOLT_VISUAL, false);
     }
 
     @Override
@@ -84,6 +94,16 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
     }
 
     private void spawnParticles() {
+        if (entityData.get(WATER_BOLT_VISUAL)) {
+            if (waterEmitter == null || waterEmitter.isRemoved()) {
+                waterEmitter = new ParticleEmitter(level(), position(), Confluence.asResource("water_stream"));
+                waterEmitter.attachEntity(this);
+                waterEmitter.hideOutline = true;
+                waterEmitter.setLocalSpace(new Matrix4x3f().setTranslation(0, getBbHeight() * 0.5F, 0));
+                MolangParticleEngine.INSTANCE.addEmitter(waterEmitter);
+            }
+            return;
+        }
         ParticleOptions particle = variant.particle();
         if (particle == null) return;
         if (isInfernoBlast()) {
@@ -257,6 +277,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
         tag.putInt(INFERNO_FLIGHT_TICKS_KEY, infernoFlightTicks);
         tag.putInt(INFERNO_BLAST_TICKS_KEY, infernoBlastTicks);
         tag.putBoolean(INFERNO_BLAST_KEY, isInfernoBlast());
+        tag.putBoolean("WaterBoltVisual", entityData.get(WATER_BOLT_VISUAL));
     }
 
     @Override
@@ -265,6 +286,7 @@ public final class HostileParticleProjectile extends StraightMonsterProjectile {
         infernoFlightTicks = tag.getInt(INFERNO_FLIGHT_TICKS_KEY);
         infernoBlastTicks = tag.getInt(INFERNO_BLAST_TICKS_KEY);
         entityData.set(INFERNO_BLAST, tag.getBoolean(INFERNO_BLAST_KEY));
+        entityData.set(WATER_BOLT_VISUAL, tag.getBoolean("WaterBoltVisual"));
     }
 
     /// 外观和命中特性由注册类型固定，禁止在运行期间临时切换。

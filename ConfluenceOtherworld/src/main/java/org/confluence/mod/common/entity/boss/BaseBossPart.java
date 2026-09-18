@@ -273,8 +273,7 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
 
     @Override
     public boolean canBeCollidedWith() {
-        T resolvedOwner = getOwner();
-        return resolvedOwner != null && resolvedOwner.isAlive();
+        return false;
     }
 
     @Override

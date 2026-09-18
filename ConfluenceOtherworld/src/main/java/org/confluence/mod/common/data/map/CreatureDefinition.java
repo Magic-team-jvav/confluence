@@ -2,6 +2,8 @@ package org.confluence.mod.common.data.map;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -9,10 +11,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.mod.common.init.ModDataMaps;
 
+import java.util.Map;
+
 /// 生物与 Boss 共用的数据包数值定义。
 ///
 /// 该记录只保存可安全热重载的“数值配置”，不保存实体实例、行为树节点或 Forge 对象。
-/// 生物实体的 Java 实现是默认值的唯一来源；数据包只保存需要改动的覆盖值。
+// 默认值在实体注册的 CreatureAttributeBuilder 中声明；数据包仅保存覆盖值。
 /// 数据文件位于 {@code data/<命名空间>/data_maps/entity_type/creature_definition.json}；
 /// KubeJS 也可以用标准实体类型 Data Map 写入相同结构，无需依赖本体内部 Java 类。
 /// 未填写的字段统一以负数表示“沿用 Java 侧默认值”，
@@ -21,7 +25,8 @@ import org.confluence.mod.common.init.ModDataMaps;
 /// 这里是稳定的数据格式边界。外部模组与脚本应写入 JSON，而不是直接持有加载器的内部映射；
 /// 这样既能参与标准资源包优先级，也能在 `/reload` 时与其他数据包一起原子生效。
 public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverrides behavior,
-                                 BossOverrides boss) {
+                                 BossOverrides boss, Map<String, StateOverrides> specialStates,
+                                 Map<ResourceLocation, ProjectileOverrides> projectiles) {
     /// 未找到定义或定义未提供任何覆盖值时使用的不可变空对象。
     public static final CreatureDefinition EMPTY = new CreatureDefinition(AttributeOverrides.EMPTY, BehaviorOverrides.EMPTY, BossOverrides.EMPTY);
 
@@ -29,13 +34,28 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
     public static final Codec<CreatureDefinition> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             AttributeOverrides.CODEC.optionalFieldOf("attributes", AttributeOverrides.EMPTY).forGetter(CreatureDefinition::attributes),
             BehaviorOverrides.CODEC.optionalFieldOf("behavior", BehaviorOverrides.EMPTY).forGetter(CreatureDefinition::behavior),
-            BossOverrides.CODEC.optionalFieldOf("boss", BossOverrides.EMPTY).forGetter(CreatureDefinition::boss)
+            BossOverrides.CODEC.optionalFieldOf("boss", BossOverrides.EMPTY).forGetter(CreatureDefinition::boss),
+            Codec.unboundedMap(Codec.STRING, StateOverrides.CODEC).optionalFieldOf("special_states", Map.of()).forGetter(CreatureDefinition::specialStates),
+            Codec.unboundedMap(ResourceLocation.CODEC, ProjectileOverrides.CODEC).optionalFieldOf("projectiles", Map.of()).forGetter(CreatureDefinition::projectiles)
     ).apply(instance, CreatureDefinition::new));
+
+    public CreatureDefinition {
+        specialStates = Map.copyOf(specialStates);
+        projectiles = Map.copyOf(projectiles);
+    }
+
+    public CreatureDefinition(AttributeOverrides attributes, BehaviorOverrides behavior, BossOverrides boss) {
+        this(attributes, behavior, boss, Map.of(), Map.of());
+    }
 
     /// 返回实体类型对应的覆盖数据；没有定义时返回共享空对象。
     public static CreatureDefinition get(EntityType<?> type) {
         CreatureDefinition definition = ModDataMaps.getEntityData(ModDataMaps.CREATURE_DEFINITION, type);
         return definition == null ? EMPTY : definition;
+    }
+
+    public StateOverrides state(Enum<?> state) {
+        return specialStates.getOrDefault(state.name().toLowerCase(java.util.Locale.ROOT), StateOverrides.EMPTY);
     }
 
     /// 将当前实体类型 Data Map 中的属性基础值覆盖应用到生物实例。
@@ -62,6 +82,72 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
         if (!Double.isFinite(value) || value < 0.0D) return;
         AttributeInstance instance = mob.getAttribute(attribute);
         if (instance != null) instance.setBaseValue(value);
+    }
+
+    // 状态由各实体定义；公共数据层只描述属性、行为和时序，不枚举生物技能。
+    public record StateOverrides(AttributeOverrides attributes, BehaviorOverrides behavior,
+                                 int duration, int attackInterval, int attackCount,
+                                 int attackIntervalVariance) {
+        public static final StateOverrides EMPTY = new StateOverrides(AttributeOverrides.EMPTY, BehaviorOverrides.EMPTY, -1, -1, -1, -1);
+        public static final Codec<StateOverrides> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                AttributeOverrides.CODEC.optionalFieldOf("attributes", AttributeOverrides.EMPTY).forGetter(StateOverrides::attributes),
+                BehaviorOverrides.CODEC.optionalFieldOf("behavior", BehaviorOverrides.EMPTY).forGetter(StateOverrides::behavior),
+                Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("duration", -1).forGetter(StateOverrides::duration),
+                Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("attack_interval", -1).forGetter(StateOverrides::attackInterval),
+                Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("attack_count", -1).forGetter(StateOverrides::attackCount),
+                Codec.intRange(-1, Integer.MAX_VALUE - 1).optionalFieldOf("attack_interval_variance", -1).forGetter(StateOverrides::attackIntervalVariance)
+        ).apply(instance, StateOverrides::new));
+
+        public int durationOr(int fallback) {return duration > 0 ? duration : fallback;}
+
+        public int attackIntervalOr(int fallback) {return attackInterval > 0 ? attackInterval : fallback;}
+
+        public int attackCountOr(int fallback) {return attackCount > 0 ? attackCount : fallback;}
+
+        public StateOverrides withDefaults(StateOverrides defaults) {
+            return new StateOverrides(attributes, behavior.withDefaults(defaults.behavior),
+                    durationOr(defaults.duration), attackIntervalOr(defaults.attackInterval), attackCountOr(defaults.attackCount),
+                    attackIntervalVariance >= 0 ? attackIntervalVariance : defaults.attackIntervalVariance);
+        }
+
+        public int randomAttackInterval(net.minecraft.util.RandomSource random) {
+            return (int) Math.min(Integer.MAX_VALUE, (long) attackInterval +
+                    (attackIntervalVariance > 0 ? random.nextInt(attackIntervalVariance + 1) : 0));
+        }
+    }
+
+    // 以发射者的 Data Map 和射弹实体类型定位；数值只在发射时读取。
+    public record ProjectileOverrides(double damage, double speed, double knockback,
+                                      double inaccuracy, int lifetime) {
+        public static final ProjectileOverrides EMPTY = new ProjectileOverrides(-1, -1, -1, -1, -1);
+        public static final Codec<ProjectileOverrides> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.doubleRange(-1, Float.MAX_VALUE).optionalFieldOf("damage", -1.0).forGetter(ProjectileOverrides::damage),
+                Codec.doubleRange(-1, Float.MAX_VALUE).optionalFieldOf("speed", -1.0).forGetter(ProjectileOverrides::speed),
+                Codec.doubleRange(-1, Float.MAX_VALUE).optionalFieldOf("knockback", -1.0).forGetter(ProjectileOverrides::knockback),
+                Codec.doubleRange(-1, Float.MAX_VALUE).optionalFieldOf("inaccuracy", -1.0).forGetter(ProjectileOverrides::inaccuracy),
+                Codec.intRange(-1, Integer.MAX_VALUE).optionalFieldOf("lifetime", -1).forGetter(ProjectileOverrides::lifetime)
+        ).apply(instance, ProjectileOverrides::new));
+
+        public static ProjectileOverrides get(Mob owner, EntityType<?> projectile) {
+            var registered = org.confluence.mod.common.init.entity.ModEntities.creatureAttributes(owner.getType());
+            var declared = registered == null ? null : registered.projectiles().get(projectile);
+            ProjectileOverrides defaults = declared == null ? EMPTY : declared.parameters(owner);
+            ProjectileOverrides override = CreatureDefinition.get(owner.getType()).projectiles().getOrDefault(BuiltInRegistries.ENTITY_TYPE.getKey(projectile), EMPTY);
+            return new ProjectileOverrides(override.damageOr((float) defaults.damage), override.speedOr((float) defaults.speed),
+                    override.knockbackOr((float) defaults.knockback), override.inaccuracyOr((float) defaults.inaccuracy), override.lifetimeOr(defaults.lifetime));
+        }
+
+        public float damageOr(float fallback) {return valid(damage) ? (float) damage : fallback;}
+
+        public float speedOr(float fallback) {return valid(speed) ? (float) speed : fallback;}
+
+        public float knockbackOr(float fallback) {return valid(knockback) ? (float) knockback : fallback;}
+
+        public float inaccuracyOr(float fallback) {return valid(inaccuracy) ? (float) inaccuracy : fallback;}
+
+        public int lifetimeOr(int fallback) {return lifetime >= 0 ? lifetime : fallback;}
+
+        private static boolean valid(double value) {return Double.isFinite(value) && value >= 0;}
     }
 
     /// 可选的原版属性基础值覆盖。
@@ -129,6 +215,25 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
                 Codec.DOUBLE.optionalFieldOf("orbit_radius", -1.0).forGetter(BehaviorOverrides::orbitRadius),
                 Codec.DOUBLE.optionalFieldOf("health_regeneration", -1.0).forGetter(BehaviorOverrides::healthRegeneration)
         ).apply(instance, BehaviorOverrides::new));
+
+        public BehaviorOverrides withDefaults(BehaviorOverrides defaults) {
+            return new BehaviorOverrides(moveSpeed >= 0 ? moveSpeed : defaults.moveSpeed,
+                    meleeRange >= 0 ? meleeRange : defaults.meleeRange,
+                    attackRange >= 0 ? attackRange : defaults.attackRange,
+                    wanderSpeed >= 0 ? wanderSpeed : defaults.wanderSpeed,
+                    wanderRadius >= 0 ? wanderRadius : defaults.wanderRadius,
+                    idleTicks >= 0 ? idleTicks : defaults.idleTicks,
+                    chargeSpeed >= 0 ? chargeSpeed : defaults.chargeSpeed,
+                    windupTicks >= 0 ? windupTicks : defaults.windupTicks,
+                    shotCooldown >= 0 ? shotCooldown : defaults.shotCooldown,
+                    shotMultiplier >= 0 ? shotMultiplier : defaults.shotMultiplier,
+                    projectileSpeed >= 0 ? projectileSpeed : defaults.projectileSpeed,
+                    preferredRange >= 0 ? preferredRange : defaults.preferredRange,
+                    retreatRange >= 0 ? retreatRange : defaults.retreatRange,
+                    orbitSpeed >= 0 ? orbitSpeed : defaults.orbitSpeed,
+                    orbitRadius >= 0 ? orbitRadius : defaults.orbitRadius,
+                    healthRegeneration >= 0 ? healthRegeneration : defaults.healthRegeneration);
+        }
 
         public double moveSpeedOr(double fallback) {
             return positive(moveSpeed, fallback);

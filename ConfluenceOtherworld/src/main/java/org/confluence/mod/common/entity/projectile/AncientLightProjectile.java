@@ -14,6 +14,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.LunaticCultist;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
@@ -28,6 +29,11 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
     private static final double MAX_SPEED = 0.95;
     private static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(AncientLightProjectile.class, EntityDataSerializers.INT);
 
+    private float damage = DAMAGE;
+    private float knockback;
+    private int lifetime = MAX_LIFETIME;
+    private double maximumSpeed = MAX_SPEED;
+
     public AncientLightProjectile(EntityType<? extends AncientLightProjectile> type, Level level) {
         super(type, level);
         setNoGravity(true);
@@ -35,6 +41,11 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
 
     public void configure(LunaticCultist owner, LivingEntity target, double spreadAngle) {
         setOwner(owner);
+        var parameters = ProjectileOverrides.get(owner, getType());
+        damage = parameters.damageOr(DAMAGE);
+        knockback = parameters.knockbackOr(0);
+        lifetime = parameters.lifetimeOr(MAX_LIFETIME);
+        maximumSpeed = parameters.speed() >= 0 ? parameters.speed() : MAX_SPEED;
         entityData.set(TARGET_ID, target.getId());
         setPos(owner.getX(), owner.getEyeY() - 0.2, owner.getZ());
 
@@ -42,7 +53,7 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
         double cosine = Math.cos(spreadAngle);
         double sine = Math.sin(spreadAngle);
         Vec3 spread = new Vec3(aim.x * cosine - aim.z * sine, aim.y, aim.x * sine + aim.z * cosine).normalize();
-        setDeltaMovement(spread.scale(0.62));
+        shoot(spread.x, spread.y, spread.z, parameters.speedOr(0.62F), parameters.inaccuracyOr(0));
     }
 
     public int getTargetId() {
@@ -57,7 +68,7 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
     @Override
     public void tick() {
         super.tick();
-        if (tickCount > MAX_LIFETIME) {
+        if (!level().isClientSide && tickCount > lifetime) {
             discard();
             return;
         }
@@ -89,15 +100,17 @@ public final class AncientLightProjectile extends Projectile implements IPortPro
 
         Vec3 velocity = getDeltaMovement();
         Vec3 desired = living.getEyePosition().subtract(position()).normalize();
-        double speed = Math.min(MAX_SPEED, velocity.length() + 0.012);
+        double speed = Math.min(maximumSpeed, velocity.length() + 0.012);
         Vec3 steered = velocity.normalize().scale(0.88).add(desired.scale(0.12)).normalize();
         setDeltaMovement(steered.scale(speed));
     }
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (result.getEntity() instanceof LivingEntity target && getOwner() instanceof LunaticCultist cultist && cultist.canAttack(target)) {
-            target.hurt(damageSources().mobProjectile(this, cultist), DAMAGE);
+        if (!level().isClientSide && result.getEntity() instanceof LivingEntity target && getOwner() instanceof LunaticCultist cultist && cultist.canAttack(target)) {
+            if (target.hurt(damageSources().mobProjectile(this, cultist), damage) && knockback > 0) {
+                target.knockback(knockback, -getDeltaMovement().x, -getDeltaMovement().z);
+            }
         }
         discard();
     }

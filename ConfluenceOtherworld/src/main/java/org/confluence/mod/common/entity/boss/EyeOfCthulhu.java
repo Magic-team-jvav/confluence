@@ -10,8 +10,6 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -33,7 +31,7 @@ import java.util.List;
 /// 克苏鲁之眼 Boss。
 ///
 /// 服务端显式状态机复现两阶段战斗：第一阶段在目标上方悬停并召唤仆从，
-/// 每轮完成三次定向冲刺；所有难度低于 50% 生命时
+/// 每轮完成三次定向冲刺；普通低于 50%、专家及大师低于 65% 生命时
 /// 播放不可跳过的变身阶段并移除护甲，
 /// 再进入按当前生命和难度计算冲刺次数的第二阶段。白天离场优先级最高，会立即
 /// 清除目标并终止正在执行的悬停、变身或冲刺。
@@ -71,12 +69,9 @@ public class EyeOfCthulhu extends BaseBoss {
     private static final double PHASE_ONE_DASH_SPEED = 1.00;
     private static final double PHASE_TWO_DASH_SPEED = 1.50;
     private static final double ENHANCED_DASH_SPEED = 2.25;
-    private static final float PHASE_ONE_DAMAGE = 4.0F;
-    private static final float PHASE_TWO_DAMAGE = 6.0F;
-    private static final float DASH_DAMAGE_FACTOR = 1.5F;
-    private static final double EXPERT_BASE_HEALTH = 728.0D;
 
     private int stateTicks;
+    private CombatState appliedAttributeState;
     private int remainingDashCount = PHASE_ONE_DASH_COUNT;
     private int servantTimer = PHASE_ONE_SERVANT_COOLDOWN;
     private int leavingTicks;
@@ -140,13 +135,13 @@ public class EyeOfCthulhu extends BaseBoss {
             tickLeaving();
             return;
         }
+        updateCombatAttributes();
 
         LivingEntity target = getTarget();
         if (target == null) {
             setCombatState(CombatState.IDLE);
             setDeltaMovement(getDeltaMovement().scale(0.85));
             faceAlongMovement(20.0F, 20.0F);
-            resetAttackDamage();
             return;
         }
 
@@ -169,7 +164,6 @@ public class EyeOfCthulhu extends BaseBoss {
         remainingDashCount = getCombatStage() == 1
                 ? PHASE_ONE_DASH_COUNT
                 : calculatePhaseTwoDashCount();
-        resetAttackDamage();
         setCombatState(CombatState.STARING);
     }
 
@@ -203,7 +197,6 @@ public class EyeOfCthulhu extends BaseBoss {
     private void beginDashWindup() {
         stateTicks = 0;
         lockedDashDirection = Vec3.ZERO;
-        resetAttackDamage();
         setCombatState(CombatState.DASH_WINDUP);
     }
 
@@ -229,7 +222,6 @@ public class EyeOfCthulhu extends BaseBoss {
 
         lockedDashDirection = createDashDirection(target);
         stateTicks = 0;
-        setDashAttackDamage();
         setCombatState(CombatState.DASHING);
         playSound(isEnhancedDash() ? ModSoundEvents.HURRIED_ROARING.get() : ModSoundEvents.ROAR.get(), 1.0F, 1.0F);
     }
@@ -256,8 +248,6 @@ public class EyeOfCthulhu extends BaseBoss {
         if (stateTicks < duration && !erraticEarlyEnd) {
             return;
         }
-
-        resetAttackDamage();
         remainingDashCount--;
         if (remainingDashCount > 0) {
             beginDashWindup();
@@ -272,9 +262,6 @@ public class EyeOfCthulhu extends BaseBoss {
         servantTimer = 0;
         remainingDashCount = calculatePhaseTwoDashCount();
         lockedDashDirection = Vec3.ZERO;
-        setBaseAttribute(Attributes.ARMOR, 0.0);
-        /// 变身动画期间仍保留一阶段接触伤害，动画结束后再切换疯狂阶段伤害。
-        setBaseAttribute(Attributes.ATTACK_DAMAGE, PHASE_ONE_DAMAGE);
         setCombatState(CombatState.TRANSFORMING);
         playSound(ModSoundEvents.HURRIED_ROARING.get(), 1.0F, 1.0F);
     }
@@ -285,7 +272,6 @@ public class EyeOfCthulhu extends BaseBoss {
         setDeltaMovement(getDeltaMovement().scale(0.65));
         tickServantSummoning(TRANSFORM_SERVANT_COOLDOWN);
         if (stateTicks >= TRANSFORM_TICKS) {
-            setBaseAttribute(Attributes.ATTACK_DAMAGE, PHASE_TWO_DAMAGE);
             beginStaring();
         }
     }
@@ -294,7 +280,6 @@ public class EyeOfCthulhu extends BaseBoss {
         if (getCombatState() != CombatState.LEAVING) {
             stateTicks = 0;
             leavingTicks = 0;
-            resetAttackDamage();
             setCombatState(CombatState.LEAVING);
         }
         setTarget(null);
@@ -417,28 +402,20 @@ public class EyeOfCthulhu extends BaseBoss {
         }
     }
 
-    private void setDashAttackDamage() {
-        float baseDamage = getCombatStage() == 1
-                ? PHASE_ONE_DAMAGE : PHASE_TWO_DAMAGE;
-        setBaseAttribute(Attributes.ATTACK_DAMAGE, baseDamage * DASH_DAMAGE_FACTOR);
-    }
 
-    private void resetAttackDamage() {
-        setBaseAttribute(Attributes.ATTACK_DAMAGE, getCombatStage() == 1 ? PHASE_ONE_DAMAGE : PHASE_TWO_DAMAGE);
-    }
 
     /// 专家难度下，克苏鲁之眼会在极低生命值时进入负防御区间。原版护甲属性
     /// 不能表达负数，因此把泰拉瑞亚的负防御换算成每次命中的等效额外伤害。
-    /// 低于 40% 时增加 15 点，低于 12% 时再增加 7 点。
+    // 低于 12% 和 4% 分别补偿 7 和 15 点伤害，不叠加两档。
     @Override
     public boolean hurt(DamageSource source, float amount) {
         amount += getLowHealthDamageBonus(isExpert(), getHealth() / getMaxHealth());
         return super.hurt(source, amount);
     }
 
-    /// 返回进入第二阶段的生命值比例。当前与泰拉瑞亚一致，所有难度均为 50%。
+    // 专家和大师提前进入第二阶段。
     static float getTransformationHealthThreshold(boolean expert) {
-        return 0.5F;
+        return expert ? 0.65F : 0.5F;
     }
 
     /// 计算负防御对应的额外受伤数值。该换算只在专家及大师难度生效。
@@ -446,22 +423,15 @@ public class EyeOfCthulhu extends BaseBoss {
         if (!expert) {
             return 0.0F;
         }
-        float bonus = 0.0F;
-        if (healthRatio < 0.4F) {
-            bonus += 15.0F;
-        }
-        if (healthRatio < 0.12F) {
-            bonus += 7.0F;
-        }
-        return bonus;
+        return healthRatio < 0.04F ? 15.0F : healthRatio < 0.12F ? 7.0F : 0.0F;
     }
 
-    private void setBaseAttribute(net.minecraft.world.entity.ai.attributes.Attribute attribute, double value) {
-        AttributeInstance instance = getAttribute(attribute);
-        if (instance == null) {
-            throw new IllegalStateException("Eye of Cthulhu is missing required attribute " + attribute.getDescriptionId());
-        }
-        instance.setBaseValue(value);
+    private void updateCombatAttributes() {
+        CombatState state = getCombatState();
+        if (appliedAttributeState != null && appliedAttributeState != state)
+            setSpecialState(appliedAttributeState, false);
+        appliedAttributeState = state;
+        setSpecialState(state, true);
     }
 
     public CombatState getCombatState() {
@@ -473,6 +443,7 @@ public class EyeOfCthulhu extends BaseBoss {
 
     private void setCombatState(CombatState state) {
         entityData.set(DATA_COMBAT_STATE, state.ordinal());
+        if (!level().isClientSide) updateCombatAttributes();
     }
 
     public int getCombatStage() {
@@ -560,10 +531,7 @@ public class EyeOfCthulhu extends BaseBoss {
         leavingTicks = Math.max(0, tag.getInt("EyeLeavingTicks"));
         lockedDashDirection = new Vec3(tag.getDouble("EyeDashX"), tag.getDouble("EyeDashY"), tag.getDouble("EyeDashZ"));
 
-        if (stage == 2) {
-            setBaseAttribute(Attributes.ARMOR, 0.0);
-        }
-        resetAttackDamage();
+        updateCombatAttributes();
     }
 
     /// 客户端动画、存档和测试共同使用的稳定战斗状态。

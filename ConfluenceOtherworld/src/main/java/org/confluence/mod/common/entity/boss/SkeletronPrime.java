@@ -44,6 +44,9 @@ public class SkeletronPrime extends BaseBoss {
 
     private static final EntityDataAccessor<Boolean> DATA_SPINNING = SynchedEntityData.defineId(SkeletronPrime.class, EntityDataSerializers.BOOLEAN);
 
+    private CombatState appliedState;
+    private boolean dayEnraged;
+
     private final SkeletronPrimeArm[] arms = new SkeletronPrimeArm[ARM_COUNT];
     private final float[] armHealth =
             {-1.0F, -1.0F, -1.0F, -1.0F};
@@ -95,24 +98,28 @@ public class SkeletronPrime extends BaseBoss {
         LivingEntity target = getTarget();
         if (target == null || !target.isAlive()) {
             setSpinning(false);
+            updateStateAttributes(CombatState.HOVERING);
             setDeltaMovement(getDeltaMovement().scale(0.85D));
             return;
         }
 
-        combatCycle = (combatCycle + 1) % COMBAT_CYCLE_TICKS;
+        dayEnraged |= level().isDay();
+        int hoverTicks = stateParameters(CombatState.HOVERING).duration();
+        int spinEnd = hoverTicks + stateParameters(CombatState.SPINNING).durationOr(NORMAL_SPIN_END_TICKS - NORMAL_HOVER_TICKS);
+        combatCycle = (combatCycle + 1) % (spinEnd + COMBAT_CYCLE_TICKS - NORMAL_SPIN_END_TICKS);
         boolean enraged = isDayEnraged();
         boolean spinning = enraged
-                || combatCycle >= NORMAL_HOVER_TICKS
-                && combatCycle < NORMAL_SPIN_END_TICKS;
+                || combatCycle >= hoverTicks && combatCycle < spinEnd;
         setSpinning(spinning);
+        updateStateAttributes(enraged ? CombatState.ENRAGED : spinning ? CombatState.SPINNING : CombatState.HOVERING);
         if (spinning) {
             updateSpinningMovement(target, enraged);
-        } else if (combatCycle < NORMAL_HOVER_TICKS) {
+        } else if (combatCycle < hoverTicks) {
             updateHoverMovement(target);
         }
         // 夜间周期的最后十刻只负责等待，不重新运行悬浮追踪，
         // 因此保留旋转结束时已有的速度，直到下一个周期重新进入悬浮阶段。
-        damageContactTargets(enraged);
+        damageContactTargets();
         faceTarget(target);
         applyAirResistance();
     }
@@ -160,7 +167,8 @@ public class SkeletronPrime extends BaseBoss {
             setDeltaMovement(Vec3.ZERO);
             return;
         }
-        double speed = enraged ? 2.0 : 0.8;
+        double speed = stateParameters(enraged ? CombatState.ENRAGED : CombatState.SPINNING)
+                .behavior().chargeSpeedOr(enraged ? 2.0 : 0.8);
         setDeltaMovement(direction.normalize().scale(speed));
     }
 
@@ -168,16 +176,21 @@ public class SkeletronPrime extends BaseBoss {
         faceCombatPosition(target.getEyePosition(), 90.0F, 85.0F);
     }
 
-    private void damageContactTargets(boolean enraged) {
+    private void updateStateAttributes(CombatState state) {
+        if (appliedState != null && appliedState != state) setSpecialState(appliedState, false);
+        appliedState = state;
+        setSpecialState(state, true);
+    }
+
+    private void damageContactTargets() {
         if (--contactCooldown > 0) {
             return;
         }
-        float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE)
-                + (enraged ? 999.0F : 0.0F);
+        float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
         for (Entity target : SweptContactAttack.findTargets(this, 0.0D, maximumContactSweepDistance(),
                 entity -> entity instanceof LivingEntity living && living.canBeSeenAsEnemy() && canAttack(living))) {
             if (target.hurt(damageSources().mobAttack(this), damage)) {
-                contactCooldown = 20;
+                contactCooldown = stateParameters(appliedState).attackIntervalOr(20);
                 return;
             }
         }
@@ -185,7 +198,7 @@ public class SkeletronPrime extends BaseBoss {
 
     @Override
     protected boolean hasEntityContactAttack() {
-        // 旋转阶段会额外叠加狂暴伤害，不能再由 BaseBoss 重复结算普通接触伤害。
+        // 接触攻击由本体统一结算，不能再由 BaseBoss 重复命中。
         return false;
     }
 
@@ -211,7 +224,7 @@ public class SkeletronPrime extends BaseBoss {
     }
 
     public boolean isDayEnraged() {
-        return level().isDay();
+        return dayEnraged;
     }
 
     private void ensureArms() {
@@ -303,6 +316,7 @@ public class SkeletronPrime extends BaseBoss {
         super.addAdditionalSaveData(tag);
         tag.putInt(DESTROYED_ARMS_TAG, destroyedArms);
         tag.putInt(COMBAT_CYCLE_TAG, combatCycle);
+        tag.putBoolean("DayEnraged", dayEnraged);
         for (int index = 0; index < ARM_COUNT; index++) {
             tag.putFloat(ARM_HEALTH_TAG + index, armHealth[index]);
         }
@@ -312,6 +326,7 @@ public class SkeletronPrime extends BaseBoss {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         destroyedArms = tag.getInt(DESTROYED_ARMS_TAG) & ALL_ARMS_DESTROYED;
+        dayEnraged = tag.getBoolean("DayEnraged");
         combatCycle = Mth.clamp(tag.getInt(COMBAT_CYCLE_TAG), 0, COMBAT_CYCLE_TICKS - 1);
         for (int index = 0; index < ARM_COUNT; index++) {
             String key = ARM_HEALTH_TAG + index;
@@ -328,6 +343,8 @@ public class SkeletronPrime extends BaseBoss {
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
+
+    public enum CombatState {HOVERING, SPINNING, ENRAGED}
 
 
 }

@@ -9,8 +9,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.level.Level;
@@ -27,6 +25,7 @@ import org.confluence.mod.common.init.entity.ModEntities;
 
 public class ClimbingSpider extends BaseWarriorMonster {
     private static final EntityDataAccessor<Boolean> CLIMBING = SynchedEntityData.defineId(ClimbingSpider.class, EntityDataSerializers.BOOLEAN);
+
     private final Kind kind;
     private int spitTicks;
 
@@ -58,21 +57,16 @@ public class ClimbingSpider extends BaseWarriorMonster {
     }
 
     @Override
-    public double getAttributeValue(Attribute attribute) {
-        double value = super.getAttributeValue(attribute);
-        return attribute == Attributes.ATTACK_DAMAGE && kind == Kind.BLACK_RECLUSE && onClimbable() ? value * 10.0 / 9.0 : value;
-    }
-
-    @Override
     public void tick() {
         super.tick();
         if (level().isClientSide) return;
         entityData.set(CLIMBING, horizontalCollision);
+        setSpecialState(CombatState.CLIMBING, kind == Kind.BLACK_RECLUSE && onClimbable());
         LivingEntity target = getTarget();
         if (kind == Kind.WALL || isNoAi() || !isAlive() || target == null || !target.isAlive() || !canAttack(target) || hasEffect(LibEffects.CONFUSED.get())
                 || !LibUtils.isAtLeastExpert(level(), blockPosition()) || !getSensing().hasLineOfSight(target))
             return;
-        if (++spitTicks < 60) return;
+        if (++spitTicks < stateParameters(CombatState.SPITTING).attackInterval()) return;
         spitTicks = 0;
         SpiderWebSpit spit = ModEntities.SPIDER_WEB_SPIT.get().create(level());
         if (spit == null) return;
@@ -104,6 +98,8 @@ public class ClimbingSpider extends BaseWarriorMonster {
         }
         return damaged;
     }
+
+    public enum CombatState {CLIMBING, SPITTING}
 
     public enum Kind {
         WALL, BLACK_RECLUSE, JUNGLE

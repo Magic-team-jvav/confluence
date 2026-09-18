@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -87,16 +88,20 @@ public final class Antlion extends BaseMonster {
         Vec3 offset = target.getEyePosition().subtract(getEyePosition());
         if (offset.y < 0.0) return;
         double horizontal = offset.horizontalDistance();
-        double speedSquared = 1.21;
-        double discriminant = speedSquared * speedSquared - AntlionSandBall.GRAVITY * (AntlionSandBall.GRAVITY * horizontal * horizontal + 2.0 * offset.y * speedSquared);
+        double speed = CreatureDefinition.ProjectileOverrides.get(this, ModEntities.ANTLION_SAND_BALL.get()).speedOr(1.1F);
+        if (speed <= 0) return;
+        double speedSquared = speed * speed;
+        double gravity = AntlionSandBall.GRAVITY * horizontal * horizontal + 2.0 * offset.y * speedSquared;
+        double discriminant = speedSquared * speedSquared - AntlionSandBall.GRAVITY * gravity;
         if (discriminant < 0.0 || horizontal < 0.01) return;
-        double tangent = (speedSquared + Math.sqrt(discriminant)) / (AntlionSandBall.GRAVITY * horizontal);
+        // 取低抛解；近距离的仰角趋近瞄准方向，不再近身也向头顶高抛。
+        double tangent = gravity / (horizontal * (speedSquared + Math.sqrt(discriminant)));
         Vec3 direction = new Vec3(offset.x, horizontal * tangent, offset.z).normalize();
         AntlionSandBall sand = ModEntities.ANTLION_SAND_BALL.get().create(level());
         if (sand == null) return;
         float damage = LibUtils.isMaster(level(), blockPosition()) ? 30.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 20.0F : 10.0F;
         damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 10.0F;
-        sand.configure(this, getEyePosition(), direction.scale(1.1), damage, 120);
+        sand.configure(this, getEyePosition(), direction.scale(speed), damage, 120);
         if (level().addFreshEntity(sand)) playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.8F);
         else sand.discard();
     }

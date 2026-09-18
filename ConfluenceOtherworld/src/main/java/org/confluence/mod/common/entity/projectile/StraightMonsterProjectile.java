@@ -12,6 +12,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 
@@ -26,6 +27,7 @@ public abstract class StraightMonsterProjectile extends Projectile
     private static final String MAXIMUM_LIFETIME_KEY = "MaximumLifetime";
     private static final String AGE_KEY = "ProjectileAge";
     private float damage;
+    private float knockback;
     private int maximumLifetime = 100;
 
     protected StraightMonsterProjectile(
@@ -67,10 +69,12 @@ public abstract class StraightMonsterProjectile extends Projectile
             float inaccuracy,
             int maximumLifetime) {
         setOwner(owner);
-        this.damage = damage;
-        this.maximumLifetime = maximumLifetime;
+        ProjectileOverrides parameters = ProjectileOverrides.get(owner, getType());
+        this.damage = parameters.damageOr(damage);
+        this.knockback = parameters.knockbackOr(0);
+        this.maximumLifetime = parameters.lifetimeOr(maximumLifetime);
         setPos(origin);
-        shoot(aim.x, aim.y, aim.z, velocity, inaccuracy);
+        shoot(aim.x, aim.y, aim.z, parameters.speedOr(velocity), parameters.inaccuracyOr(inaccuracy));
     }
 
     /// 按明确的出生点和速度配置一次射击。
@@ -81,10 +85,13 @@ public abstract class StraightMonsterProjectile extends Projectile
     public final void configure(
             Mob owner, Vec3 origin, Vec3 velocity, float damage, int maximumLifetime) {
         setOwner(owner);
-        this.damage = damage;
-        this.maximumLifetime = maximumLifetime;
+        ProjectileOverrides parameters = ProjectileOverrides.get(owner, getType());
+        this.damage = parameters.damageOr(damage);
+        this.knockback = parameters.knockbackOr(0);
+        this.maximumLifetime = parameters.lifetimeOr(maximumLifetime);
         setPos(origin);
-        setDeltaMovement(velocity);
+        double length = velocity.length();
+        setDeltaMovement(parameters.speed() >= 0 && length > 1.0E-8 ? velocity.scale(parameters.speedOr((float) length) / length) : velocity);
     }
 
     public final float getDamage() {
@@ -143,6 +150,10 @@ public abstract class StraightMonsterProjectile extends Projectile
                 && getOwner() instanceof Mob owner
                 && owner.canAttack(target)) {
             if (target.hurt(damageSources().mobProjectile(this, owner), damage)) {
+                if (knockback > 0) {
+                    Vec3 direction = getDeltaMovement();
+                    target.knockback(knockback, -direction.x, -direction.z);
+                }
                 onSuccessfulHit(owner, target);
             }
         }
@@ -182,6 +193,7 @@ public abstract class StraightMonsterProjectile extends Projectile
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putFloat(DAMAGE_KEY, damage);
+        tag.putFloat("Knockback", knockback);
         tag.putInt(MAXIMUM_LIFETIME_KEY, maximumLifetime);
         tag.putInt(AGE_KEY, tickCount);
     }
@@ -190,6 +202,7 @@ public abstract class StraightMonsterProjectile extends Projectile
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains(DAMAGE_KEY)) damage = tag.getFloat(DAMAGE_KEY);
+        knockback = Math.max(0, tag.getFloat("Knockback"));
         if (tag.contains(MAXIMUM_LIFETIME_KEY)) maximumLifetime = tag.getInt(MAXIMUM_LIFETIME_KEY);
         tickCount = Math.max(0, tag.getInt(AGE_KEY));
     }

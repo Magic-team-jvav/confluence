@@ -8,17 +8,13 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -37,8 +33,6 @@ public final class GiantShelly extends BaseMonster {
     private static final String LAUNCH_Z_TAG = "LaunchZ";
     private static final String LAUNCH_SPEED_TAG = "LaunchSpeed";
     private static final String VARIANT_TAG = "Variant";
-    private static final AttributeModifier SHELL_ARMOR = new PortAttributeModifier(Confluence.asResource("giant_shelly_shell_armor"), 12.0, PortAttributeModifier.Operation.ADD_VALUE).unwrap();
-    private static final AttributeModifier SPIN_DAMAGE = new PortAttributeModifier(Confluence.asResource("giant_shelly_spin_damage"), 4.0, PortAttributeModifier.Operation.ADD_VALUE).unwrap();
     private static final EntityDataAccessor<Integer> PHASE = SynchedEntityData.defineId(GiantShelly.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(GiantShelly.class, EntityDataSerializers.INT);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
@@ -89,7 +83,7 @@ public final class GiantShelly extends BaseMonster {
         switch (getPhase()) {
             case FREE -> {
                 getNavigation().stop();
-                if (phaseTicks > 40) {
+                if (phaseTicks > stateParameters(Phase.FREE).duration()) {
                     setPhase(Phase.WALK);
                 }
             }
@@ -105,7 +99,7 @@ public final class GiantShelly extends BaseMonster {
             }
             case ENTERING_SHELL -> {
                 getNavigation().stop();
-                if (phaseTicks >= 20) {
+                if (phaseTicks >= stateParameters(Phase.ENTERING_SHELL).duration()) {
                     setPhase(Phase.ROLLING);
                 }
             }
@@ -115,7 +109,7 @@ public final class GiantShelly extends BaseMonster {
             case DECELERATING -> updateDeceleration();
             case RECOVERING -> {
                 getNavigation().stop();
-                if (phaseTicks >= 20) {
+                if (phaseTicks >= stateParameters(Phase.RECOVERING).duration()) {
                     spinCooldown = spinCooldownForTarget();
                     setPhase(Phase.FREE);
                 }
@@ -162,7 +156,7 @@ public final class GiantShelly extends BaseMonster {
             Vec3 velocity = getDeltaMovement();
             setDeltaMovement(velocity.x * 0.35, Math.min(velocity.y, -0.35), velocity.z * 0.35);
         }
-        if (phaseTicks >= 30) setPhase(Phase.DECELERATING);
+        if (phaseTicks >= stateParameters(Phase.ROLLING).duration()) setPhase(Phase.DECELERATING);
     }
 
     private void updateDeceleration() {
@@ -181,7 +175,8 @@ public final class GiantShelly extends BaseMonster {
         Vec3 direction = target.position().add(0.0, 1.0, 0.0).subtract(position());
         lockedLaunchDirection = direction.lengthSqr() > 1.0E-8 ? direction.normalize() : getForward();
         faceCombatDirection(lockedLaunchDirection, 180.0F, 180.0F);
-        lockedLaunchSpeed = Math.min(MAX_ROLL_SPEED, direction.length() * 0.5);
+        lockedLaunchSpeed = stateParameters(Phase.ROLLING).behavior()
+                .chargeSpeedOr(Math.min(MAX_ROLL_SPEED, direction.length() * 0.5));
     }
 
     private double horizontalDistanceTo(LivingEntity target) {
@@ -218,18 +213,10 @@ public final class GiantShelly extends BaseMonster {
     }
 
     private void setSpinModifiers(boolean armored, boolean damaging) {
-        var armor = getAttribute(Attributes.ARMOR);
-        if (armor != null) {
-            if (armored && armor.getModifier(SHELL_ARMOR.getId()) == null)
-                armor.addTransientModifier(SHELL_ARMOR);
-            if (!armored) armor.removeModifier(SHELL_ARMOR.getId());
-        }
-        var damage = getAttribute(Attributes.ATTACK_DAMAGE);
-        if (damage != null) {
-            if (damaging && damage.getModifier(SPIN_DAMAGE.getId()) == null)
-                damage.addTransientModifier(SPIN_DAMAGE);
-            if (!damaging) damage.removeModifier(SPIN_DAMAGE.getId());
-        }
+        setSpecialState(Phase.ENTERING_SHELL, false);
+        setSpecialState(Phase.ROLLING, false);
+        if (damaging) setSpecialState(Phase.ROLLING, true);
+        else if (armored) setSpecialState(Phase.ENTERING_SHELL, true);
     }
 
     private int spinCooldownForTarget() {

@@ -18,7 +18,8 @@ public final class AngryTumbler extends BaseWarriorMonster {
 
     @Override
     protected MeleeAttackGoal createMeleeGoal(double speed) {
-        return new AcceleratingMeleeAttackGoal(this, speed, speed * 2.0, 25);
+        var parameters = stateParameters(MovementState.PURSUING);
+        return new AcceleratingMeleeAttackGoal(this, speed, parameters.behavior().chargeSpeedOr(speed * 2.0), parameters.durationOr(25));
     }
 
     @Override
@@ -32,4 +33,6 @@ public final class AngryTumbler extends BaseWarriorMonster {
         }
         return value;
     }
+
+    public enum MovementState {PURSUING}
 }

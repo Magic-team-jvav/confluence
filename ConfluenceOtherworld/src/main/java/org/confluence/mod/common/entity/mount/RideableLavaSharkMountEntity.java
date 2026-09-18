@@ -53,6 +53,11 @@ public class RideableLavaSharkMountEntity extends AbstractMountEntity implements
     }
 
     @Override
+    public double getPassengersRidingOffset() {
+        return super.getPassengersRidingOffset() - 0.2;
+    }
+
+    @Override
     public boolean tiltsWithMovement() {
         return true;
     }

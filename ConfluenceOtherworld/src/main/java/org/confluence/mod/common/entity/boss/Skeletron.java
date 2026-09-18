@@ -39,9 +39,6 @@ public class Skeletron extends BaseBoss {
     private static final double FLOAT_HORIZONTAL_DISTANCE = 6.0D;
     // 两个低位分别代表左、右手；两位均置一表示双手都已被摧毁。
     private static final int ALL_HANDS_DESTROYED = 0b11;
-    // 一个 400 tick 战斗循环中，[0, 267) 为悬浮阶段，其余时间为旋转追击阶段。
-    private static final int FLOAT_PHASE_END = 267;
-    private static final int COMBAT_CYCLE_END = 400;
     // 骷髅弹的基础发射间隔（tick）和单发基础伤害；难度修正另行计算。
     private static final int BASE_SKULL_COOLDOWN = 20;
     private static final float SKULL_DAMAGE = 6.0F;
@@ -52,6 +49,8 @@ public class Skeletron extends BaseBoss {
     private static final String COMBAT_CYCLE_TAG = "CombatCycle";
     private static final String INITIAL_ROAR_PLAYED_TAG = "InitialRoarPlayed";
     private static final EntityDataAccessor<Boolean> DATA_SPINNING = SynchedEntityData.defineId(Skeletron.class, EntityDataSerializers.BOOLEAN);
+
+    private CombatState appliedCombatState;
 
     private SkeletronHand leftHand;
     private SkeletronHand rightHand;
@@ -74,6 +73,13 @@ public class Skeletron extends BaseBoss {
         xpReward = 2000;
         handMaxHealth = registeredHandMaxHealth();
         java.util.Arrays.fill(handHealth, handMaxHealth);
+    }
+
+    private void updateStateAttributes(CombatState state) {
+        if (appliedCombatState != null && appliedCombatState != state)
+            setSpecialState(appliedCombatState, false);
+        appliedCombatState = state;
+        setSpecialState(state, true);
     }
 
     @Override
@@ -121,6 +127,7 @@ public class Skeletron extends BaseBoss {
         if (target == null || !target.isAlive()) {
             floatingActive = false;
             setSpinning(false);
+            updateStateAttributes(CombatState.FLOATING);
             setDeltaMovement(getDeltaMovement().scale(0.85D));
             LivingEntity observer = findVisualObserver();
             if (observer != null) faceTarget(observer);
@@ -130,8 +137,9 @@ public class Skeletron extends BaseBoss {
         }
 
         boolean enraged = level().isDay();
-        boolean spinning = enraged || combatCycle >= FLOAT_PHASE_END;
+        boolean spinning = enraged || combatCycle >= stateParameters(CombatState.FLOATING).duration();
         setSpinning(spinning);
+        updateStateAttributes(enraged ? CombatState.ENRAGED : spinning ? CombatState.SPINNING : CombatState.FLOATING);
         if (spinning) {
             floatingActive = false;
             updateSpinningMovement(target, enraged);
@@ -209,7 +217,9 @@ public class Skeletron extends BaseBoss {
     }
 
     private void advanceCombatCycle() {
-        combatCycle = combatCycle >= COMBAT_CYCLE_END ? 0 : combatCycle + 1;
+        int duration = stateParameters(CombatState.FLOATING).duration()
+                + stateParameters(CombatState.SPINNING).duration();
+        combatCycle = combatCycle >= duration ? 0 : combatCycle + 1;
     }
 
     /// 悬浮阶段采用带阻尼的加速度，而不是每 tick 瞬间改向。
@@ -282,7 +292,9 @@ public class Skeletron extends BaseBoss {
             speed = 0.2;
             maximumSpeed = 0.2;
         }
-        speed = Math.min(Math.min(speed, maximumSpeed), direction.length());
+        var parameters = stateParameters(enraged ? CombatState.ENRAGED : CombatState.SPINNING);
+        speed = parameters.behavior().chargeSpeedOr(Math.min(speed, maximumSpeed));
+        speed = Math.min(speed, direction.length());
         setDeltaMovement(direction.normalize().scale(speed));
     }
 
@@ -325,6 +337,7 @@ public class Skeletron extends BaseBoss {
         if (isFtw()) {
             interval = Math.max(1, (int) (interval * 0.8F));
         }
+        interval = stateParameters(CombatState.FLOATING).attackIntervalOr(interval);
         if (tickCount % interval == 0) {
             shootSkull(target);
         }
@@ -442,14 +455,11 @@ public class Skeletron extends BaseBoss {
     private void updatePhaseTwo() {
         if (!phase2 && destroyedHands == ALL_HANDS_DESTROYED) {
             phase2 = true;
-            if (getAttribute(Attributes.ARMOR) != null) {
-                getAttribute(Attributes.ARMOR).setBaseValue(0.0);
-            }
             broadcastPhaseTransition();
         }
     }
 
-    private int getRemainingHandCount() {
+    public int getRemainingHandCount() {
         return 2 - Integer.bitCount(destroyedHands & ALL_HANDS_DESTROYED);
     }
 
@@ -522,7 +532,8 @@ public class Skeletron extends BaseBoss {
         destroyedHands = tag.getInt(DESTROYED_HANDS_TAG) & ALL_HANDS_DESTROYED;
         phase2 = tag.getBoolean(PHASE_TWO_TAG)
                 || destroyedHands == ALL_HANDS_DESTROYED;
-        combatCycle = Mth.clamp(tag.getInt(COMBAT_CYCLE_TAG), 0, COMBAT_CYCLE_END);
+        combatCycle = Mth.clamp(tag.getInt(COMBAT_CYCLE_TAG), 0,
+                stateParameters(CombatState.FLOATING).duration() + stateParameters(CombatState.SPINNING).duration());
         handMaxHealth = tag.contains(HAND_MAX_HEALTH_TAG)
                 ? tag.getFloat(HAND_MAX_HEALTH_TAG) : registeredHandMaxHealth();
         if (!Float.isFinite(handMaxHealth) || handMaxHealth <= 0.0F) {
@@ -532,9 +543,6 @@ public class Skeletron extends BaseBoss {
         restoringSavedState = true;
         if (phase2) {
             destroyedHands = ALL_HANDS_DESTROYED;
-            if (getAttribute(Attributes.ARMOR) != null) {
-                getAttribute(Attributes.ARMOR).setBaseValue(0.0);
-            }
         }
         for (int index = 0; index < handHealth.length; index++) {
             String key = HAND_HEALTH_TAG + index;
@@ -553,6 +561,8 @@ public class Skeletron extends BaseBoss {
     public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
         return false;
     }
+
+    public enum CombatState {FLOATING, SPINNING, ENRAGED}
 
 
 }

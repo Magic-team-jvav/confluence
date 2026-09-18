@@ -30,6 +30,7 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
     private final @Nullable ResourceLocation explicitTexture;
     private final boolean armorBones;
     private final boolean walks;
+    private boolean standaloneBones;
 
     public VanillaHumanoidGeoModel(EntityRendererProvider.Context context, ResourceLocation path) {
         super(path, false);
@@ -53,6 +54,12 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
     public static <T extends Mob & GeoEntity> VanillaHumanoidGeoModel<T> armor(
             EntityRendererProvider.Context context, ResourceLocation model, ResourceLocation texture, boolean walks) {
         return new VanillaHumanoidGeoModel<>(context, model, texture, walks);
+    }
+
+    public static <T extends Mob & GeoEntity> VanillaHumanoidGeoModel<T> standalone(EntityRendererProvider.Context context, ResourceLocation model, ResourceLocation texture) {
+        VanillaHumanoidGeoModel<T> result = new VanillaHumanoidGeoModel<>(context, model, texture, true);
+        result.standaloneBones = true;
+        return result;
     }
 
     @Override
@@ -106,6 +113,17 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
     }
 
     private ModelPart sourcePart(String name) {
+        if (standaloneBones) {
+            return switch (name) {
+                case "Head", "Vhead" -> vanillaModel.head;
+                case "Body", "Body3" -> vanillaModel.body;
+                case "LeftArm", "Vleft_arm" -> vanillaModel.leftArm;
+                case "RightArm", "Vright_arm" -> vanillaModel.rightArm;
+                case "LeftLeg", "Vleft_leg" -> vanillaModel.leftLeg;
+                case "RightLeg", "RightBoot", "Vright_leg" -> vanillaModel.rightLeg;
+                default -> null;
+            };
+        }
         if (armorBones) {
             if (name.startsWith("Head")) return vanillaModel.head;
             if (name.startsWith("Body") || name.equals("Belt")) return vanillaModel.body;

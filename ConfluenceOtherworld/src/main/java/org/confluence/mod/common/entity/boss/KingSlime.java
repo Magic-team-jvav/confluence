@@ -61,26 +61,6 @@ public class KingSlime extends BaseBoss {
     private int clientSyncedPhaseTicks;
     private boolean clientPhaseInitialized;
 
-    private enum CombatPhase {
-        NORMAL(0),
-        SHRINKING(1),
-        ENLARGING(2);
-
-        private final byte id;
-
-        CombatPhase(int id) {
-            this.id = (byte) id;
-        }
-
-        private static CombatPhase byId(byte id) {
-            return switch (id) {
-                case 1 -> SHRINKING;
-                case 2 -> ENLARGING;
-                default -> NORMAL;
-            };
-        }
-    }
-
     public KingSlime(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.xpReward = 800;
@@ -115,7 +95,6 @@ public class KingSlime extends BaseBoss {
             }
         };
     }
-
 
     void tickCombatState() {
         if (level().isClientSide || isNoAi() || isRemoved()) {
@@ -191,7 +170,7 @@ public class KingSlime extends BaseBoss {
 
         faceHorizontalMovement(direction);
 
-        double horizontalSpeed = LibUtils.switchByDifficulty(level(), blockPosition(), 1.1F, 1.35F, 1.55F, 1.8F);
+        double horizontalSpeed = stateParameters(CombatPhase.NORMAL).behavior().chargeSpeed();
         double baseVerticalSpeed = finishingJump
                 ? LibUtils.switchByDifficulty(level(), blockPosition(), 2.0F, 2.25F, 2.5F, 2.75F)
                 : LibUtils.switchByDifficulty(level(), blockPosition(), 1.5F, 1.75F, 2.0F, 2.25F);
@@ -263,13 +242,14 @@ public class KingSlime extends BaseBoss {
     }
 
     private void enterPhase(CombatPhase newPhase) {
+        if (phase != newPhase) setSpecialState(phase, false);
         phase = newPhase;
+        setSpecialState(newPhase, true);
         entityData.set(DATA_PHASE, newPhase.id);
         setPhaseTicks(0);
         if (newPhase == CombatPhase.NORMAL) {
             normalTicks = 0;
-            roundsRemaining = isExpert() && getHealth() / getMaxHealth() < 0.5F
-                    ? 2 : 1;
+            roundsRemaining = stateParameters(CombatPhase.NORMAL).attackCount();
         }
         refreshDimensions();
     }
@@ -538,7 +518,6 @@ public class KingSlime extends BaseBoss {
         refreshDimensions();
     }
 
-
     String getCombatPhaseName() {
         return phase.name();
     }
@@ -553,5 +532,25 @@ public class KingSlime extends BaseBoss {
 
     int getCurrentLogicalSize() {
         return getLogicalSize();
+    }
+
+    public enum CombatPhase {
+        NORMAL(0),
+        SHRINKING(1),
+        ENLARGING(2);
+
+        private final byte id;
+
+        CombatPhase(int id) {
+            this.id = (byte) id;
+        }
+
+        private static CombatPhase byId(byte id) {
+            return switch (id) {
+                case 1 -> SHRINKING;
+                case 2 -> ENLARGING;
+                default -> NORMAL;
+            };
+        }
     }
 }

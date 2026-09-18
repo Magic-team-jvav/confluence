@@ -5,7 +5,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
@@ -19,6 +22,7 @@ import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.common.entity.flail.*;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
+import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
 import org.confluence.mod.common.entity.mount.RideableBeeMountEntity;
 import org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
@@ -41,10 +45,15 @@ import org.confluence.mod.common.entity.storage.FlyingPiggyBankEntity;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.summon.ground.IronGolemSummon.SummonedIronGolem;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public final class ModEntities {
+    private static final Map<Supplier<? extends EntityType<? extends LivingEntity>>, Supplier<CreatureAttributeBuilder.Definition>> ATTRIBUTES = new LinkedHashMap<>();
+    private static final Map<EntityType<?>, CreatureAttributeBuilder.Definition> CREATURE_DEFINITIONS = new LinkedHashMap<>();
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Confluence.MODID);
 
     // 牢枕专用
@@ -65,7 +74,7 @@ public final class ModEntities {
 
     public static final RegistryObject<EntityType<SpiderWebSpit>> SPIDER_WEB_SPIT = register("spider_web_spit", id -> EntityType.Builder.<SpiderWebSpit>of(SpiderWebSpit::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
 
-    public static final RegistryObject<EntityType<DesertSpiritCurse>> DESERT_SPIRIT_CURSE = register("desert_spirit_curse", id -> EntityType.Builder.<DesertSpiritCurse>of(DesertSpiritCurse::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+    public static final RegistryObject<EntityType<DesertSpiritCurse>> DESERT_SPIRIT_CURSE = register("desert_spirit_curse", id -> EntityType.Builder.of(DesertSpiritCurse::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
 
     // 冰雪敌怪射弹
     public static final RegistryObject<EntityType<FrostMonsterProjectile>> FROST_BLAST = register("frost_blast", id -> EntityType.Builder.<FrostMonsterProjectile>of((type, level) -> new FrostMonsterProjectile(type, level, FrostMonsterProjectile.Kind.BLAST), MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
@@ -102,9 +111,12 @@ public final class ModEntities {
                     .updateInterval(1)
                     .noSave()
                     .build(id.toString()));
-    public static final RegistryObject<EntityType<ChesterEntity>> CHESTER = registerStorageCompanion("chester", ChesterEntity::new);
-    public static final RegistryObject<EntityType<FlyingPiggyBankEntity>> FLYING_PIGGY_BANK = registerStorageCompanion("piggy_bank", FlyingPiggyBankEntity::new);
-    public static final RegistryObject<EntityType<SummonedIronGolem>> SUMMONED_IRON_GOLEM = register("summoned_iron_golem", id -> EntityType.Builder.<SummonedIronGolem>of(SummonedIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString()));
+    public static final RegistryObject<EntityType<ChesterEntity>> CHESTER = withAttributes(registerStorageCompanion("chester", ChesterEntity::new),
+            () -> CreatureAttributeBuilder.critter().maxHealth(20).movementSpeed(0.35).flyingSpeed(0.45).followRange(32).build());
+    public static final RegistryObject<EntityType<FlyingPiggyBankEntity>> FLYING_PIGGY_BANK = withAttributes(registerStorageCompanion("piggy_bank", FlyingPiggyBankEntity::new),
+            () -> CreatureAttributeBuilder.critter().maxHealth(20).movementSpeed(0.35).flyingSpeed(0.45).followRange(32).build());
+    public static final RegistryObject<EntityType<SummonedIronGolem>> SUMMONED_IRON_GOLEM = withAttributes(register("summoned_iron_golem", id -> EntityType.Builder.of(SummonedIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString())),
+            () -> CreatureAttributeBuilder.from(IronGolem.createAttributes()).build());
     public static final RegistryObject<EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF = register("base_mana_staff", id -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<VilethronProjectile>> VILETHRON = register("vilethron", id -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = register("crystal_vile_shard", id -> EntityType.Builder.<CrystalVileShardProjectile>of(CrystalVileShardProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
@@ -624,24 +636,26 @@ public final class ModEntities {
                     .noSave()
                     .build(id.toString()));
 
-    public static final RegistryObject<EntityType<BestiaryEntryDisplay>> BESTIARY_ENTRY_DISPLAY = register(
+    public static final RegistryObject<EntityType<BestiaryEntryDisplay>> BESTIARY_ENTRY_DISPLAY = withAttributes(register(
             "bestiary_entry_display",
             id -> EntityType.Builder.of(BestiaryEntryDisplay::new, MobCategory.MISC)
                     .sized(1, 1)
                     .noSummon()
                     .noSave()
-                    .build(id.toString()));
+                    .build(id.toString())),
+            () -> CreatureAttributeBuilder.living().build());
 
     public static final RegistryObject<EntityType<StarCannonBulletEntity>> STAR_CANNON_BULLET = register("star_cannon_bullet", id -> EntityType.Builder.<StarCannonBulletEntity>of(StarCannonBulletEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(id.toString()));
     public static final RegistryObject<EntityType<BeeGunBullet>> BEE_GUN_BULLET = register("bee_gun_bullet", id -> EntityType.Builder.<BeeGunBullet>of(BeeGunBullet::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build(id.toString()));
     public static final RegistryObject<EntityType<BaseBulletEntity>> BASE_BULLET_ENTITY = register("base_bullet", id -> EntityType.Builder.<BaseBulletEntity>of(BaseBulletEntity::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(16).updateInterval(1).setShouldReceiveVelocityUpdates(false).build(id.toString()));
     public static final RegistryObject<EntityType<CustomBulletEntity>> GRAVITY_BULLET_ENTITY = register("gravity_bullet", id -> EntityType.Builder.<CustomBulletEntity>of(CustomBulletEntity::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(16).updateInterval(1).setShouldReceiveVelocityUpdates(false).build(id.toString()));
 
-    public static final RegistryObject<EntityType<RainbowSheep>> RAINBOW_SHEEP = register("rainbow_sheep",
+    public static final RegistryObject<EntityType<RainbowSheep>> RAINBOW_SHEEP = withAttributes(register("rainbow_sheep",
             id -> EntityType.Builder.of(RainbowSheep::new, MobCategory.CREATURE)
                     .sized(0.9F, 1.3F)
                     .clientTrackingRange(10)
-                    .build(id.toString()));
+                    .build(id.toString())),
+            () -> CreatureAttributeBuilder.critter().maxHealth(8).movementSpeed(0.23).build());
 
     // 史莱姆尖刺
     public static final RegistryObject<EntityType<SlimeSpikeEntity>> SLIME_SPIKE = register("slime_spike",
@@ -686,7 +700,23 @@ public final class ModEntities {
         return PortDeferredRegisterExtension.register(ENTITIES, name, function);
     }
 
+    // 属性与实体一起声明，延迟到 Forge 创建属性时构建，避免提前访问注册表。
+    public static <T extends LivingEntity> RegistryObject<EntityType<T>> withAttributes(RegistryObject<EntityType<T>> type, Supplier<CreatureAttributeBuilder.Definition> attributes) {
+        ATTRIBUTES.put(type, attributes);
+        return type;
+    }
+
+    public static CreatureAttributeBuilder.Definition creatureAttributes(EntityType<?> type) {
+        return CREATURE_DEFINITIONS.get(type);
+    }
+
     public static void register(IEventBus eventBus) {
+        eventBus.addListener((EntityAttributeCreationEvent event) ->
+                ATTRIBUTES.forEach((type, attributes) -> {
+                    var definition = attributes.get();
+                    CREATURE_DEFINITIONS.put(type.get(), definition);
+                    event.put(type.get(), definition.attributes());
+                }));
         for (DeferredRegister<EntityType<?>> register : getEntities()) {
             register.register(eventBus);
         }

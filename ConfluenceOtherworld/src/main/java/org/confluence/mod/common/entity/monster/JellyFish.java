@@ -41,7 +41,6 @@ import software.bernie.geckolib.core.animation.AnimationController;
 /// 再停止寻路并进入 80 tick 的定向脉冲阶段，随后主动释放目标并重新游荡。阶段字段由
 /// 服务端同步，客户端只据此选择动画，不自行推算战斗时序。
 public class JellyFish extends BaseAquaticMonster {
-    private static final int PURSUIT_TICKS = 150;
     private static final int PULSE_TICKS = 80;
     private static final int ATTACK_PULSE_INTERVAL = 20;
     private static final double PULSE_SPEED_FACTOR = 0.1;
@@ -49,6 +48,7 @@ public class JellyFish extends BaseAquaticMonster {
     private static final double SHORE_TARGET_HEIGHT = 3.0;
     private static final EntityDataAccessor<Boolean> ATTACK_PHASE = SynchedEntityData.defineId(JellyFish.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> ELECTRIFIED = SynchedEntityData.defineId(JellyFish.class, EntityDataSerializers.BOOLEAN);
+
     private final Profile profile;
 
     /// 渲染器使用相邻两次有效速度插值模型朝向，避免每次脉冲时突然翻转。
@@ -117,6 +117,7 @@ public class JellyFish extends BaseAquaticMonster {
     private void setAttackPhase(boolean attackPhase) {
         entityData.set(ATTACK_PHASE, attackPhase);
         entityData.set(ELECTRIFIED, profile != Profile.FUNGO && attackPhase && isInWater() && LibUtils.isAtLeastExpert(level(), blockPosition()));
+        setSpecialState(CombatState.ELECTRIFIED, isElectrified());
     }
 
     /// 水母使用独立接触伤害冷却，不把伤害绑在攻击动画帧上。
@@ -134,6 +135,7 @@ public class JellyFish extends BaseAquaticMonster {
     public void tick() {
         if (!level().isClientSide && isElectrified() && (!isInWater() || horizontalCollision || verticalCollision)) {
             entityData.set(ELECTRIFIED, false);
+            setSpecialState(CombatState.ELECTRIFIED, false);
         }
         if (level().isClientSide && getDeltaMovement().length() > 0.08) {
             lastMovement = getDeltaMovement();
@@ -175,6 +177,31 @@ public class JellyFish extends BaseAquaticMonster {
         return ModSoundEvents.JELLYFISH_DEATH.get();
     }
 
+    @Override
+    public boolean doHurtTarget(Entity target) {
+        boolean damaged = super.doHurtTarget(target);
+        if (damaged && target instanceof LivingEntity living && profile.silences && random.nextInt(5) == 0) {
+            int duration = LibUtils.isMaster(level(), blockPosition()) ? 350
+                    : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 280 : 140;
+            living.addEffect(new MobEffectInstance(ModEffects.SILENCED.get(), duration), this);
+        }
+        return damaged;
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (isElectrified() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            if (!level().isClientSide && source.getDirectEntity() == source.getEntity()
+                    && source.getEntity() instanceof LivingEntity attacker) {
+                attacker.hurt(damageSources().thorns(this), (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.3));
+            }
+            return false;
+        }
+        return super.hurt(source, amount);
+    }
+
+    public enum CombatState {PURSUING, PULSING, ELECTRIFIED}
+
     /// 执行水母的追逐—脉冲周期，并在攻击阶段进行定向推进。
     private static final class JellyFishCombatAction extends BTNode {
         private final JellyFish jellyfish;
@@ -207,7 +234,9 @@ public class JellyFish extends BaseAquaticMonster {
                 return BTStatus.FAILURE;
             }
 
-            if (phaseTicks < PURSUIT_TICKS) {
+            int pursuitTicks = jellyfish.stateParameters(CombatState.PURSUING).duration();
+            var pulse = jellyfish.stateParameters(CombatState.PULSING);
+            if (phaseTicks < pursuitTicks) {
                 jellyfish.setAttackPhase(false);
                 if (--repathTicks <= 0) {
                     jellyfish.getNavigation().moveTo(target, 1.0);
@@ -217,12 +246,12 @@ public class JellyFish extends BaseAquaticMonster {
                 return BTStatus.RUNNING;
             }
 
-            if (phaseTicks < PURSUIT_TICKS + PULSE_TICKS) {
+            if (phaseTicks < pursuitTicks + pulse.durationOr(PULSE_TICKS)) {
                 if (!jellyfish.isAttackPhase()) {
                     jellyfish.getNavigation().stop();
                     jellyfish.setAttackPhase(true);
                 }
-                if ((phaseTicks - PURSUIT_TICKS) % ATTACK_PULSE_INTERVAL == 0) {
+                if ((phaseTicks - pursuitTicks) % pulse.attackIntervalOr(ATTACK_PULSE_INTERVAL) == 0) {
                     pulseToward(target);
                 }
                 phaseTicks++;
@@ -253,29 +282,6 @@ public class JellyFish extends BaseAquaticMonster {
             jellyfish.setDeltaMovement(direction.normalize().scale(jellyfish.getAttributeValue(Attributes.MOVEMENT_SPEED) * PULSE_SPEED_FACTOR));
             jellyfish.hasImpulse = true;
         }
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean damaged = super.doHurtTarget(target);
-        if (damaged && target instanceof LivingEntity living && profile.silences && random.nextInt(5) == 0) {
-            int duration = LibUtils.isMaster(level(), blockPosition()) ? 350
-                    : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 280 : 140;
-            living.addEffect(new MobEffectInstance(ModEffects.SILENCED.get(), duration), this);
-        }
-        return damaged;
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        if (isElectrified() && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            if (!level().isClientSide && source.getDirectEntity() == source.getEntity()
-                    && source.getEntity() instanceof LivingEntity attacker) {
-                attacker.hurt(damageSources().thorns(this), (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.3));
-            }
-            return false;
-        }
-        return super.hurt(source, amount);
     }
 
     /// 水母以离散脉冲修正方向，而不是像普通鱼一样连续推进。

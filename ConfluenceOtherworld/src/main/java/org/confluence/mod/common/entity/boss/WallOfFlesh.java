@@ -55,7 +55,6 @@ public class WallOfFlesh extends BaseBoss {
 
     private static final double BASE_SPEED = 0.125;
     private static final double FINISH_LINE_DISTANCE = 2000.0;
-    private static final double TARGET_RANGE = 120.0;
     private static final int GRID_SIZE_X = 40;
     private static final int GRID_SIZE_Y = 30;
     private static final double GRID_SPACING = 15.0;
@@ -248,8 +247,8 @@ public class WallOfFlesh extends BaseBoss {
     private void updatePhase() {
         if (!isPhaseTwo() && getHealth() < getMaxHealth() * 0.5F) {
             entityData.set(DATA_PHASE_TWO, true);
-            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(BASE_SPEED * 1.45);
         }
+        setSpecialState(CombatState.WOUNDED, isPhaseTwo());
     }
 
     private void acquireFrontTarget() {
@@ -315,71 +314,6 @@ public class WallOfFlesh extends BaseBoss {
             }
         }
         return nearestClear == null ? nearest : nearestClear;
-    }
-
-    /// Wall-only, non-persistent region-ticket ownership. Vanilla/admin forced chunks are never
-    /// read or written, and overlapping walls retain independent UUID-keyed leases.
-    private static final class WallChunkRetention {
-        private static final int TICKET_DISTANCE = 2;
-        private static final TicketType<UUID> TYPE = TicketType.create("confluence:wall_of_flesh", UUID::compareTo, CHUNK_RETENTION_TICKS);
-        private static final Map<ServerLevel, Map<UUID, OwnerLease>> LEVELS = new WeakHashMap<>();
-
-        private WallChunkRetention() {}
-
-        private static void refresh(ServerLevel level, UUID owner, AABB bounds, long now) {
-            expire(level, now);
-            Map<UUID, OwnerLease> owners = LEVELS.computeIfAbsent(level, ignored -> new HashMap<>());
-            OwnerLease lease = owners.computeIfAbsent(owner, ignored -> new OwnerLease());
-            int minX = Math.floorDiv((int) Math.floor(bounds.minX), 16);
-            int maxX = Math.floorDiv((int) Math.floor(bounds.maxX - 1.0E-7D), 16);
-            int minZ = Math.floorDiv((int) Math.floor(bounds.minZ), 16);
-            int maxZ = Math.floorDiv((int) Math.floor(bounds.maxZ - 1.0E-7D), 16);
-            for (int x = minX; x <= maxX; x++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    ChunkPos chunk = new ChunkPos(x, z);
-                    level.getChunkSource().addRegionTicket(TYPE, chunk, TICKET_DISTANCE, owner, true);
-                    lease.expirations.put(chunk, now + CHUNK_RETENTION_TICKS);
-                }
-            }
-        }
-
-        private static void expire(ServerLevel level, long now) {
-            Map<UUID, OwnerLease> owners = LEVELS.get(level);
-            if (owners == null) return;
-            var ownerIterator = owners.entrySet().iterator();
-            while (ownerIterator.hasNext()) {
-                var ownerEntry = ownerIterator.next();
-                UUID owner = ownerEntry.getKey();
-                var chunkIterator = ownerEntry.getValue().expirations.entrySet().iterator();
-                while (chunkIterator.hasNext()) {
-                    var chunkEntry = chunkIterator.next();
-                    if (chunkEntry.getValue() < now) {
-                        level.getChunkSource().removeRegionTicket(TYPE, chunkEntry.getKey(), TICKET_DISTANCE, owner, true);
-                        chunkIterator.remove();
-                    }
-                }
-                if (ownerEntry.getValue().expirations.isEmpty()) {
-                    ownerIterator.remove();
-                }
-            }
-            if (owners.isEmpty()) LEVELS.remove(level);
-        }
-
-        private static void release(ServerLevel level, UUID owner) {
-            Map<UUID, OwnerLease> owners = LEVELS.get(level);
-            if (owners == null) return;
-            OwnerLease lease = owners.remove(owner);
-            if (lease != null) {
-                for (ChunkPos chunk : lease.expirations.keySet()) {
-                    level.getChunkSource().removeRegionTicket(TYPE, chunk, TICKET_DISTANCE, owner, true);
-                }
-            }
-            if (owners.isEmpty()) LEVELS.remove(level);
-        }
-
-        private static final class OwnerLease {
-            final Map<ChunkPos, Long> expirations = new HashMap<>();
-        }
     }
 
     /// 返回包含完整墙面及其前方战斗带的客户端剔除范围。
@@ -758,7 +692,6 @@ public class WallOfFlesh extends BaseBoss {
         return false;
     }
 
-
     /// 墙体背景不直接承受点击和弹幕命中，伤害由眼睛与嘴部转发。
     @Override
     public boolean isPickable() {
@@ -781,7 +714,7 @@ public class WallOfFlesh extends BaseBoss {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         entityData.set(DATA_PHASE_TWO, tag.getBoolean(PHASE_TWO_TAG));
-        getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(isPhaseTwo() ? BASE_SPEED * 1.45 : BASE_SPEED);
+        updatePhase();
         initialPosition = new Vec3(tag.getDouble(INITIAL_X_TAG), tag.getDouble(INITIAL_Y_TAG), tag.getDouble(INITIAL_Z_TAG));
         layoutSeed = tag.getLong(LAYOUT_SEED_TAG);
         hungryTimer = tag.getInt(HUNGRY_TIMER_TAG);
@@ -794,5 +727,72 @@ public class WallOfFlesh extends BaseBoss {
         mouths.clear();
         eyeAssignments.clear();
         mouthAssignments.clear();
+    }
+
+    public enum CombatState {WOUNDED}
+
+    /// Wall-only, non-persistent region-ticket ownership. Vanilla/admin forced chunks are never
+    /// read or written, and overlapping walls retain independent UUID-keyed leases.
+    private static final class WallChunkRetention {
+        private static final int TICKET_DISTANCE = 2;
+        private static final TicketType<UUID> TYPE = TicketType.create("confluence:wall_of_flesh", UUID::compareTo, CHUNK_RETENTION_TICKS);
+        private static final Map<ServerLevel, Map<UUID, OwnerLease>> LEVELS = new WeakHashMap<>();
+
+        private WallChunkRetention() {}
+
+        private static void refresh(ServerLevel level, UUID owner, AABB bounds, long now) {
+            expire(level, now);
+            Map<UUID, OwnerLease> owners = LEVELS.computeIfAbsent(level, ignored -> new HashMap<>());
+            OwnerLease lease = owners.computeIfAbsent(owner, ignored -> new OwnerLease());
+            int minX = Math.floorDiv((int) Math.floor(bounds.minX), 16);
+            int maxX = Math.floorDiv((int) Math.floor(bounds.maxX - 1.0E-7D), 16);
+            int minZ = Math.floorDiv((int) Math.floor(bounds.minZ), 16);
+            int maxZ = Math.floorDiv((int) Math.floor(bounds.maxZ - 1.0E-7D), 16);
+            for (int x = minX; x <= maxX; x++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    ChunkPos chunk = new ChunkPos(x, z);
+                    level.getChunkSource().addRegionTicket(TYPE, chunk, TICKET_DISTANCE, owner, true);
+                    lease.expirations.put(chunk, now + CHUNK_RETENTION_TICKS);
+                }
+            }
+        }
+
+        private static void expire(ServerLevel level, long now) {
+            Map<UUID, OwnerLease> owners = LEVELS.get(level);
+            if (owners == null) return;
+            var ownerIterator = owners.entrySet().iterator();
+            while (ownerIterator.hasNext()) {
+                var ownerEntry = ownerIterator.next();
+                UUID owner = ownerEntry.getKey();
+                var chunkIterator = ownerEntry.getValue().expirations.entrySet().iterator();
+                while (chunkIterator.hasNext()) {
+                    var chunkEntry = chunkIterator.next();
+                    if (chunkEntry.getValue() < now) {
+                        level.getChunkSource().removeRegionTicket(TYPE, chunkEntry.getKey(), TICKET_DISTANCE, owner, true);
+                        chunkIterator.remove();
+                    }
+                }
+                if (ownerEntry.getValue().expirations.isEmpty()) {
+                    ownerIterator.remove();
+                }
+            }
+            if (owners.isEmpty()) LEVELS.remove(level);
+        }
+
+        private static void release(ServerLevel level, UUID owner) {
+            Map<UUID, OwnerLease> owners = LEVELS.get(level);
+            if (owners == null) return;
+            OwnerLease lease = owners.remove(owner);
+            if (lease != null) {
+                for (ChunkPos chunk : lease.expirations.keySet()) {
+                    level.getChunkSource().removeRegionTicket(TYPE, chunk, TICKET_DISTANCE, owner, true);
+                }
+            }
+            if (owners.isEmpty()) LEVELS.remove(level);
+        }
+
+        private static final class OwnerLease {
+            final Map<ChunkPos, Long> expirations = new HashMap<>();
+        }
     }
 }

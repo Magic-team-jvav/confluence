@@ -20,6 +20,7 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
+import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
@@ -47,6 +48,8 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Vector3f> ANCHOR = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.VECTOR3);
 
+    private FeedingState appliedFeedingState;
+
     private final BossOwnerTracker<BaseBoss> ownerTracker = new BossOwnerTracker<>(BaseBoss.class);
     private Vec3 leashPos = Vec3.ZERO;
     private Vec3 anchor = Vec3.ZERO;
@@ -69,7 +72,6 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
     protected double contactAttackInflation() {
         return 0.3;
     }
-
 
     @Override
     protected void defineSynchedData() {
@@ -192,6 +194,7 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
 
     private void prepareServerTick() {
         BaseBoss master = getMasterUUID() == null ? null : ownerTracker.tickDependent(this, !free, 100);
+        updateFeedingState(master);
         if (master != null) {
             setAnchor(free ? Vec3.ZERO : master.position().add(leashPos));
             if (free) {
@@ -211,6 +214,20 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
         }
         if (tickCount > 0 && tickCount % 60 == 0) hurt(damageSources().starve(), 1.0F);
         clearIllegalFreeTarget();
+    }
+
+    private void updateFeedingState(@Nullable BaseBoss master) {
+        FeedingState state = null;
+        if (!free && master instanceof WallOfFlesh) {
+            float healthRatio = master.getHealth() / master.getMaxHealth();
+            state = healthRatio < 0.5F ? FeedingState.CRITICAL_OWNER
+                    : healthRatio < 0.75F ? FeedingState.WOUNDED_OWNER : FeedingState.ATTACHED;
+        }
+        if (appliedFeedingState != null && appliedFeedingState != state) {
+            setSpecialState(appliedFeedingState, false);
+        }
+        appliedFeedingState = state;
+        if (state != null) setSpecialState(state, true);
     }
 
     private void clearIllegalFreeTarget() {
@@ -322,4 +339,6 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
     protected boolean hasPushableBody() {
         return true;
     }
+
+    public enum FeedingState {ATTACHED, WOUNDED_OWNER, CRITICAL_OWNER}
 }

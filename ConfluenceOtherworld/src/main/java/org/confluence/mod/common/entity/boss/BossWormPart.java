@@ -321,8 +321,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     @Override
     public boolean canBeCollidedWith() {
-        BaseWormBoss head = getOwner();
-        return head != null && head.isAlive();
+        return false;
     }
 
     @Override

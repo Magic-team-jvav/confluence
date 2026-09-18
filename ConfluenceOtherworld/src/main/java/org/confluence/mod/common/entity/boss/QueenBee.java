@@ -14,7 +14,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.tags.BiomeTags;
+import org.confluence.mod.common.data.map.CreatureDefinition;
+import org.confluence.mod.util.OverworldUtils;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -49,25 +51,14 @@ public class QueenBee extends BaseBoss {
 
     // 各战斗状态时长及召唤间隔，单位均为 tick。
     private static final int INITIALIZATION_TICKS = 1;
-    private static final int IDLE_TICKS = 50;
-    private static final int SUMMON_TICKS = 60;
-    private static final int SUMMON_INTERVAL = 10;
-    private static final int PRE_DASH_IDLE_TICKS = 20;
-    private static final int PRE_DASH_TICKS = 15;
-    private static final int DASH_MAX_TICKS = 50;
     private static final int DASH_MIN_TICKS = 20;
     // 普通模式固定三轮冲刺；专家模式可随生命降低增加，但最多六轮。
-    private static final int CLASSIC_DASH_CYCLES = 3;
     private static final int EXPERT_MAX_DASH_CYCLES = 6;
     // 只统计并限制当前蜂王拥有的随从，不影响自然生成的黄蜂。
     private static final int MAX_OWNED_HORNETS = 10;
 
     // 状态移动速度单位为方块/tick；愤怒专家模式只对最终冲刺速度应用倍率。
     private static final double IDLE_SPEED = 1.0;
-    private static final double HANG_SPEED = 1.0;
-    private static final double PRE_DASH_HANG_SPEED = 1.2;
-    private static final double DASH_SPEED = 2.0;
-    private static final double EXPERT_ANGRY_DASH_MULTIPLIER = 1.50;
     // 冲刺越过目标且距离重新超过 15 方块后允许结束；保存平方值避免反复开方。
     private static final double DASH_END_RANGE_SQR = 15.0 * 15.0;
 
@@ -122,7 +113,7 @@ public class QueenBee extends BaseBoss {
             return;
         }
 
-        setAngry(!level().getBiome(blockPosition()).is(Biomes.JUNGLE));
+        setAngry(enrageStrength() > 0);
         LivingEntity target = getTarget();
         if (target == null) {
             resetCombatCycle();
@@ -158,18 +149,18 @@ public class QueenBee extends BaseBoss {
         stateTicks++;
         setDeltaMovement(idleDirection.scale(IDLE_SPEED));
         faceCombatPosition(target.getEyePosition(), 30.0F, 30.0F);
-        if (stateTicks >= IDLE_TICKS || stateTicks > 10 && distanceToSqr(target) > DASH_END_RANGE_SQR) {
+        if (stateTicks >= stateParameters(CombatState.IDLE).duration() || stateTicks > 10 && distanceToSqr(target) > DASH_END_RANGE_SQR) {
             enterState(CombatState.SUMMONING_BEES);
         }
     }
 
     private void tickSummoningBees(LivingEntity target) {
-        hangOnTarget(target, 5.0, 4.0, HANG_SPEED);
+        hangOnTarget(target, 5.0, 4.0);
         stateTicks++;
-        if (stateTicks % SUMMON_INTERVAL == 0) {
+        if (stateTicks % attackInterval() == 0) {
             spawnOneBee();
         }
-        if (stateTicks >= SUMMON_TICKS || countOwnedHornets() >= MAX_OWNED_HORNETS) {
+        if (stateTicks >= stateParameters(CombatState.SUMMONING_BEES).duration() || countOwnedHornets() >= MAX_OWNED_HORNETS) {
             enterState(CombatState.SUMMONING_STINGERS);
         }
     }
@@ -180,25 +171,24 @@ public class QueenBee extends BaseBoss {
             setDeltaMovement(getDeltaMovement().add(0.0, 0.02, 0.0));
         }
         stateTicks++;
-        if (stateTicks % SUMMON_INTERVAL == 0) {
+        if (stateTicks % attackInterval() == 0) {
             spawnStinger(target);
         }
-        int duration = getHealth() / getMaxHealth() < 0.30F ? 50 : SUMMON_TICKS;
-        if (stateTicks >= duration) {
+        if (stateTicks >= stateParameters(CombatState.SUMMONING_STINGERS).duration()) {
             completedDashCycles = 0;
             enterState(CombatState.PRE_DASH_IDLE);
         }
     }
 
     private void tickPreDashIdle(LivingEntity target) {
-        hangOnTarget(target, 5.0, 0.0, PRE_DASH_HANG_SPEED);
+        hangOnTarget(target, 5.0, 0.0);
         boolean needsAlignment = distanceToSqr(target) > 100.0
                 || Math.abs(target.getY() - getY()) > 2.0
                 || Math.abs(getXRot()) > 10.0F;
         if (!needsAlignment || !isExpert() || !random.nextBoolean()) {
             stateTicks++;
         }
-        if (stateTicks >= PRE_DASH_IDLE_TICKS) {
+        if (stateTicks >= stateParameters(CombatState.PRE_DASH_IDLE).duration()) {
             enterState(CombatState.PRE_DASH);
         }
     }
@@ -206,7 +196,7 @@ public class QueenBee extends BaseBoss {
     private void tickPreDash(LivingEntity target) {
         setDeltaMovement(Vec3.ZERO);
         faceCombatPosition(target.getEyePosition(), 180.0F, 180.0F);
-        if (++stateTicks < PRE_DASH_TICKS) {
+        if (++stateTicks < stateParameters(CombatState.PRE_DASH).duration()) {
             return;
         }
 
@@ -216,17 +206,14 @@ public class QueenBee extends BaseBoss {
 
     private void tickDashing(LivingEntity target) {
         stateTicks++;
-        double speed = DASH_SPEED;
-        if (isAngry() && isExpert()) {
-            speed *= EXPERT_ANGRY_DASH_MULTIPLIER;
-        }
+        double speed = temperamentParameters().behavior().chargeSpeedOr(stateParameters(CombatState.DASHING).behavior().chargeSpeed());
         Vec3 desiredDirection = target.position().subtract(position()).multiply(1.0D, 0.0D, 1.0D);
         lockedDashDirection = turnDirectionToward(lockedDashDirection, desiredDirection, 3.0F)
                 .multiply(1.0D, 0.0D, 1.0D).normalize();
         setDeltaMovement(lockedDashDirection.scale(speed));
         Vec3 lookPosition = position().add(lockedDashDirection);
         faceCombatDirection(lockedDashDirection, 180.0F, 180.0F);
-        boolean reachedTimeLimit = stateTicks >= DASH_MAX_TICKS;
+        boolean reachedTimeLimit = stateTicks >= stateParameters(CombatState.DASHING).duration();
         boolean passedTargetRange = stateTicks >= DASH_MIN_TICKS
                 && distanceToSqr(target) > DASH_END_RANGE_SQR;
         if (!reachedTimeLimit && !passedTargetRange) {
@@ -244,7 +231,8 @@ public class QueenBee extends BaseBoss {
 
     /// 悬挂移动的加速度与实际偏移成正比，而不是先归一化成固定推力。
     /// 这样远处会快速回位，贴近目标后会自然减速，召蜂与冲刺准备阶段的速度也能分别保留。
-    private void hangOnTarget(LivingEntity target, double horizontalDistance, double height, double speed) {
+    private void hangOnTarget(LivingEntity target, double horizontalDistance, double height) {
+        double speed = temperamentParameters().behavior().moveSpeedOr(stateParameters(getCombatState()).behavior().moveSpeed());
         Vec3 horizontal = position().subtract(target.position()).multiply(1.0, 0.0, 1.0);
         if (horizontal.lengthSqr() < 1.0E-6) {
             horizontal = new Vec3(1.0, 0.0, 0.0);
@@ -272,10 +260,7 @@ public class QueenBee extends BaseBoss {
     }
 
     private int requiredDashCycles() {
-        if (!isExpert()) return CLASSIC_DASH_CYCLES;
-        float lostHealth = 1.0F - Mth.clamp(getHealth() / getMaxHealth(), 0.0F, 1.0F);
-        return Mth.clamp(CLASSIC_DASH_CYCLES + Mth.floor(lostHealth * 4.0F),
-                CLASSIC_DASH_CYCLES, EXPERT_MAX_DASH_CYCLES);
+        return temperamentParameters().attackCountOr(stateParameters(CombatState.DASHING).attackCount());
     }
 
     /// 兼容既有调用：一次补充当前难度对应数量的小黄蜂，但永远不突破十只上限。
@@ -366,8 +351,24 @@ public class QueenBee extends BaseBoss {
         return entityData.get(DATA_ANGRY);
     }
 
+    public double enrageStrength() {
+        return (level().getBiome(blockPosition()).is(BiomeTags.IS_JUNGLE) ? 0 : 1)
+                + (getY() >= OverworldUtils.getSurfaceY() ? 1 : 0) + (isFtw() ? 0.5 : 0);
+    }
+
+    private CreatureDefinition.StateOverrides temperamentParameters() {
+        return stateParameters(isAngry() ? Temperament.ENRAGED : Temperament.CALM);
+    }
+
+    private int attackInterval() {
+        return stateParameters(getCombatState()).attackIntervalOr(temperamentParameters().attackInterval());
+    }
+
     private void setAngry(boolean angry) {
+        if (isAngry() != angry)
+            setSpecialState(isAngry() ? Temperament.ENRAGED : Temperament.CALM, false);
         entityData.set(DATA_ANGRY, angry);
+        setSpecialState(angry ? Temperament.ENRAGED : Temperament.CALM, true);
     }
 
     int getCompletedDashCycles() {
@@ -432,6 +433,8 @@ public class QueenBee extends BaseBoss {
         idleDirection = new Vec3(tag.getDouble("QueenIdleX"), tag.getDouble("QueenIdleY"), tag.getDouble("QueenIdleZ"));
         lockedDashDirection = new Vec3(tag.getDouble("QueenDashX"), tag.getDouble("QueenDashY"), tag.getDouble("QueenDashZ"));
     }
+
+    public enum Temperament {CALM, ENRAGED}
 
     public enum CombatState {
         INITIALIZING,

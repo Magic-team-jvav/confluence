@@ -31,19 +31,15 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     private final @Nullable Anatomy anatomy;
     private final BossOwnerTracker<BaseBoss> ownerTracker = new BossOwnerTracker<>(BaseBoss.class);
 
-    public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, int segments) {
-        this(type, level, segments, Role.UNDERGROUND);
-    }
-
-    public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, int segments, Role role) {
-        super(type, level);
+    public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, int segments, Role role, EntityType<BaseWormPart> segmentType) {
+        super(type, level, segmentType);
         this.segments = segments;
         this.role = role;
         this.anatomy = null;
     }
 
-    public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, Role role, Anatomy anatomy) {
-        super(type, level);
+    public SimpleWormMonster(EntityType<? extends SimpleWormMonster> type, Level level, Role role, Anatomy anatomy, EntityType<BaseWormPart> segmentType) {
+        super(type, level, segmentType);
         this.role = role;
         this.anatomy = anatomy;
         this.segments = anatomy.minSegments() + random.nextInt(anatomy.maxSegments() - anatomy.minSegments() + 1);

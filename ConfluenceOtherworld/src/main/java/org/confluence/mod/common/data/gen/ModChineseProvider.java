@@ -352,7 +352,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.dungeon_entity", "地牢生物");
         add("itemGroup.confluence.nether_entity", "地狱生物");
         add("itemGroup.confluence.sky_entity", "天空生物");
-        add("itemGroup.confluence.mimic_entity", "宝箱怪");
+        add("itemGroup.confluence.environment_entity", "环境生物");
+        add("itemGroup.confluence.ocean_entity", "海洋生物");
+        add("itemGroup.confluence.blood_moon_entity", "血月生物");
         add("itemGroup.confluence.goblin_entity", "哥布林军队");
         add("itemGroup.confluence.pirate_entity", "海盗入侵");
         add("event.confluence.pirate_invasion", "海盗入侵");
@@ -361,16 +363,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.party.ended", "派对结束了！");
         add("message.confluence.pirate_invasion.start", "海盗已经抵达！");
         add("message.confluence.pirate_invasion.victory", "海盗已被击败！");
-        add("itemGroup.confluence.water_entity", "水生生物");
         add("itemGroup.confluence.insect_entity", "昆虫生物");
         add("itemGroup.confluence.npc_entity", "NPC");
         add("itemGroup.confluence.boss_entity", "Boss");
-        add("itemGroup.confluence.misc_entity", "其他生物");
         add("itemGroup.confluence.mural", "壁画");
         add("itemGroup.confluence.text_books", "文本书");
         add("itemGroup.confluence.note", "纸条");
-
-
     }
 
     private void addInterfaceAndTooltipTranslations() {

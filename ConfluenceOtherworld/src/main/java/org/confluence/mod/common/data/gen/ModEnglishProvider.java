@@ -418,7 +418,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.dungeon_entity", "Dungeon");
         add("itemGroup.confluence.nether_entity", "Nether");
         add("itemGroup.confluence.sky_entity", "Sky");
-        add("itemGroup.confluence.mimic_entity", "Mimic");
+        add("itemGroup.confluence.environment_entity", "Environment");
+        add("itemGroup.confluence.ocean_entity", "Ocean");
+        add("itemGroup.confluence.blood_moon_entity", "Blood Moon");
         add("itemGroup.confluence.goblin_entity", "Goblin Army");
         add("itemGroup.confluence.pirate_entity", "Pirate Invasion");
         add("event.confluence.pirate_invasion", "Pirate Invasion");
@@ -427,11 +429,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.party.ended", "Party time's over!");
         add("message.confluence.pirate_invasion.start", "The pirates have arrived!");
         add("message.confluence.pirate_invasion.victory", "The pirates have been defeated!");
-        add("itemGroup.confluence.water_entity", "Water Creature");
         add("itemGroup.confluence.insect_entity", "Insect");
         add("itemGroup.confluence.npc_entity", "NPC");
         add("itemGroup.confluence.boss_entity", "Boss");
-        add("itemGroup.confluence.misc_entity", "Misc");
 
         add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
         add("config.jade.plugin_confluence.jade_ponder_component", "Ponder Info");

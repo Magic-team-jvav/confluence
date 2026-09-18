@@ -130,7 +130,7 @@ public class FoodItems {
     public static final PortDeferredItem<BaseFoodItem> COOKED_MARSHMALLOW = registerNormalFood("cooked_marshmallow", ModRarity.WHITE,
             () -> ModFoodProperties.wellFedProperties(2400, 4, 1.5f)); //烤棉花糖
     public static final PortDeferredItem<BaseFoodItem> PAD_THAI = registerNormalFood("pad_thai", ModRarity.GREEN,
-            () -> ModFoodProperties.plentySatisfiedProperties(9600, 6, 3.5f)); //泰式河粉
+            () -> ModFoodProperties.plentySatisfiedProperties(9600, 6, 5.5f)); //泰式河粉
     public static final PortDeferredItem<BaseFoodItem> BOWL_OF_SOUP = registerDrinkingFood("bowl_of_soup", ModRarity.GREEN,
             () -> ModFoodProperties.plentySatisfiedProperties(9600, 6, 3.5f), 20,
             UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //鱼菇汤

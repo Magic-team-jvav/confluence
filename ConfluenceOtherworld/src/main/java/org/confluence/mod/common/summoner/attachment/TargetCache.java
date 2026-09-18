@@ -12,6 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Targeting;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -20,6 +21,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.api.whip.WhipTagTracker;
+import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.jetbrains.annotations.Nullable;
@@ -141,13 +144,16 @@ public class TargetCache {
     // ==================== Chunk 缓存（每tick预加载） ====================
 
     public LivingEntity getNewTarget(Minion minion, List<LivingEntity> targets, float ownerWarningDistance, boolean selfCenter) {
-        LivingEntity owner = minion.getOwner();
+        Player owner = minion.getOwner();
         LivingEntity currentTarget = minion.getTarget();
         LivingEntity newTarget = null;
         double bestScore = Double.MAX_VALUE;
         for (LivingEntity entity : targets) {
-            double score = selfCenter || owner == null ? getDistance(minion, entity) : getDistance(owner, entity);
-            if (owner != null && ownerWarningDistance > 0 && getDistance(owner, entity) < ownerWarningDistance) {
+            if (owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).isSummonMarkTarget(entity)) {
+                return entity;
+            }
+            double score = selfCenter ? getDistance(minion, entity) : getDistance(owner, entity);
+            if (ownerWarningDistance > 0 && getDistance(owner, entity) < ownerWarningDistance) {
                 score -= 10000.0;
             }
             if (entity == currentTarget) {

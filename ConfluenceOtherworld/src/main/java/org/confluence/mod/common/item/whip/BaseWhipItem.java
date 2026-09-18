@@ -21,6 +21,7 @@ import org.confluence.mod.api.whip.curve.WhipCurves;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 import org.mesdag.portlib.wrapper.world.entity.PortEquipmentSlotGroup;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import org.mesdag.portlib.wrapper.world.item.component.PortItemAttributeModifiers;
@@ -35,6 +36,7 @@ public class BaseWhipItem extends Item {
     private final int hitCooldownTicks;
     private final Supplier<? extends WhipTagEffect> tagEffect;
     private final WhipAppearance appearance;
+    private Supplier<SummonMarkType> summonMarkType = null;
 
     public BaseWhipItem(String name, float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends WhipTagEffect> tagEffect) {
         // 默认外观沿用 1.21 的十六像素分段模型。
@@ -57,6 +59,10 @@ public class BaseWhipItem extends Item {
                 .add(ConfluenceMagicLib.WHIP_RANGE, new PortAttributeModifier(Confluence.asResource("whip_range_modifier"), range, PortAttributeModifier.Operation.ADD_MULTIPLIED_BASE), PortEquipmentSlotGroup.MAINHAND)
                 .build();
         return new Properties().stacksTo(1).unbreakable().attributes(attributes);
+    }
+
+    public SummonMarkType getSummonMarkType() {
+        return summonMarkType.get();
     }
 
     public float baseDamage() {return baseDamage;}

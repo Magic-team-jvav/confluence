@@ -10,6 +10,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
+import org.confluence.mod.common.summoner.attachment.WhipTracker;
+import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
@@ -34,12 +36,14 @@ public abstract class AttachmentEntity implements Immunity {
     protected int tickCount = 0;
     protected float damage = 0;
     protected float knockback = 0;
+    protected float armorPierce = 0;
     protected boolean clientInit = false;
     protected PathNode currentPathNode = null;
 
     protected void registerSyncFields(SyncFieldDispatcher fields) {
         fields.field(LyraStreamCodecs.FLOAT, this::getDamage, this::setDamage);
         fields.field(LyraStreamCodecs.FLOAT, this::getKnockback, this::setKnockback);
+        fields.field(LyraStreamCodecs.FLOAT, this::getArmorPierce, this::setArmorPierce);
         fields.field(LyraStreamCodecs.INT, this::getTickCount, this::setTickCount);
         fields.field(LyraStreamCodecs.PATH_NODE, this::getCurrentPathNode, this::setCurrentPathNode);
     }
@@ -54,7 +58,7 @@ public abstract class AttachmentEntity implements Immunity {
     }
 
     @NotNull
-    public DamageSource getDamageSource() {
+    public AttachmentEntityDamageSource getDamageSource() {
         return new AttachmentEntityDamageSource(getLevel().damageSources().generic().typeHolder(), null, owner, getPos(), this);
     }
 
@@ -74,22 +78,27 @@ public abstract class AttachmentEntity implements Immunity {
 
     public void attack(@NotNull LivingEntity target, float damageAmount, int invincibleTime) {
         if (!Immunity.isActive(this, target)) {
-            DamageSource damageSource = getDamageSource();
+            AttachmentEntityDamageSource damageSource = getDamageSource();
+            WhipTracker tracker = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
+            if (tracker.isSummonMarkTarget(target)) {
+                damageAmount = tracker.getDamageModifier(damageSource, damageAmount);
+            }
             immunityDuration = invincibleTime;
             int invulnerableTime = target.invulnerableTime;
             target.invulnerableTime = 0;
-            boolean hurt = Immunity.withCause(this, () -> target.hurt(damageSource, damageAmount));
+            boolean hurt = target.hurt(damageSource, damageAmount);
             target.invulnerableTime = invulnerableTime;
+            immunityDuration = 0;
             if (hurt) {
                 Immunity.apply(this, damageSource, target);
             }
-            immunityDuration = 0;
         }
     }
 
     public void copyAttributes(AttachmentEntity other) {
         setDamage(other.getDamage());
         setKnockback(other.getKnockback());
+        setArmorPierce(other.getArmorPierce());
     }
 
     public float getDamage() {
@@ -106,6 +115,14 @@ public abstract class AttachmentEntity implements Immunity {
 
     public void setKnockback(float knockback) {
         this.knockback = knockback;
+    }
+
+    public float getArmorPierce() {
+        return armorPierce;
+    }
+
+    public void setArmorPierce(float armorPierce) {
+        this.armorPierce = armorPierce;
     }
 
     public SyncFieldDispatcher getSyncFieldDispatcher() {

@@ -3,6 +3,7 @@ package org.confluence.mod.common.summoner;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachment.AttachmentEntityData;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
+import org.confluence.mod.common.summoner.attachment.WhipTracker;
 import org.mesdag.portlib.attachment.PortAttachmentType;
 import org.mesdag.portlib.registries.PortAttachmentRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -18,6 +19,9 @@ public final class SummonerAttachmentTypes {
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<TargetCache>> TARGET_CACHE =
             TYPES.registerSimple("summoner_target_cache", () -> PortAttachmentType.builder(TargetCache::new));
+
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<WhipTracker>> SUMMON_MARK_DATA =
+            TYPES.registerSimple("summon_mark_data", () -> PortAttachmentType.builder(WhipTracker::new).sync(new WhipTracker()));
 
     public static void init() {
     }

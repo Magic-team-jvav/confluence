@@ -34,22 +34,23 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
     private final MinionSlotType slotType;
     private final float damage;
     private final float knockback;
+    private final float armorPierce;
     private final @Nullable SoundEvent soundEvent;
     private final TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonConsumer;
     private final TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeConsumer;
 
     public SummonerWeaponItem(Properties properties, Supplier<AttachmentEntityType<T>> typeSupplier) {
-        this(properties, typeSupplier, MinionSlotType.Minion, 0, 0, null, null, null);
+        this(properties, typeSupplier, MinionSlotType.Minion, 0, 0, 0, null, null, null);
     }
 
     public SummonerWeaponItem(Properties properties, Supplier<AttachmentEntityType<T>> typeSupplier,
                               @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonAction,
                               @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeAction) {
-        this(properties, typeSupplier, MinionSlotType.Minion, 0, 0, null, summonAction, removeAction);
+        this(properties, typeSupplier, MinionSlotType.Minion, 0, 0, 0, null, summonAction, removeAction);
     }
 
     public SummonerWeaponItem(Properties properties, Supplier<AttachmentEntityType<T>> typeSupplier,
-                              MinionSlotType slotType, float damage, float knockback,
+                              MinionSlotType slotType, float damage, float knockback, float armorPierce,
                               @Nullable SoundEvent soundEvent,
                               @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonAction,
                               @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeAction) {
@@ -58,6 +59,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
         this.slotType = slotType;
         this.damage = damage;
         this.knockback = knockback;
+        this.armorPierce = armorPierce;
         this.soundEvent = soundEvent;
         this.summonConsumer = summonAction != null ? summonAction : (weapon, player, itemStack) -> {
             T minion = weapon.createMinion(player, itemStack);
@@ -131,6 +133,10 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
         return result;
     }
 
+    public float getSummonArmorPierce(@Nullable Player player, @NotNull ItemStack itemStack) {
+        return armorPierce;
+    }
+
     @Nullable
     public SoundEvent getSoundEvent(ItemStack itemStack) {
         return soundEvent;
@@ -143,6 +149,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
         minion.setSlotType(getSlotType(itemStack));
         minion.setDamage(getSummonDamage(player, itemStack));
         minion.setKnockback(getSummonKnockback(player, itemStack));
+        minion.setArmorPierce(getSummonArmorPierce(player, itemStack));
         return minion;
     }
 
@@ -167,6 +174,11 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
             tooltips.add(Component.literal(String.format("%.1f ", getSummonKnockback(player, itemStack)))
                     .withStyle(ChatFormatting.BLUE)
                     .append(Component.translatable("item.confluence.tooltip.knockback").withStyle(ChatFormatting.GRAY)));
+        }
+        if (armorPierce > 0) {
+            tooltips.add(Component.literal(String.format("%.1f ", getSummonArmorPierce(player, itemStack)))
+                    .withStyle(ChatFormatting.BLUE)
+                    .append(Component.translatable("item.confluence.tooltip.armor_pierce").withStyle(ChatFormatting.GRAY)));
         }
         tooltips.add(Component.translatable("item.confluence.tooltip.summon",
                 Component.translatable("summon." + location.getNamespace() + "." + location.getPath())).withStyle(ChatFormatting.GRAY));

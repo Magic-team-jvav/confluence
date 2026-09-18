@@ -19,13 +19,14 @@ public abstract class Projectile extends MomentumAttachmentEntity {
     }
 
     @Override
-    public @NotNull DamageSource getDamageSource() {
+    public @NotNull DamageSource getDamageSource(float armorPenetration) {
         return new AttachmentEntityDamageSource(
                 LibDamageTypes.of(getLevel(), LibDamageTypes.SUMMONER, owner).typeHolder(),
                 null,
                 owner,
                 getPos(),
-                this
+                this,
+                armorPenetration
         );
     }
 

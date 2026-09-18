@@ -37,6 +37,8 @@ import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
+import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.SummonerRegistries;
 import org.confluence.mod.mixed.Immunity;
 
 import java.util.*;
@@ -428,6 +430,9 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             WhipTagTracker.apply(player, logicalTarget, weapon(), whip.tagEffect(), whip.shouldApplyTag(hitIndex));
             WhipDirectHitContext context = new WhipDirectHitContext(player, logicalTarget, weapon(), damage, hitIndex);
             whip.onDirectHit(context);
+            if (weapon().getItem() instanceof BaseWhipItem baseWhipItem) {
+                player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tracker(logicalTarget, baseWhipItem.getSummonMarkType(), 200);
+            }
         }
     }
 

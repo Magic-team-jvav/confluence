@@ -19,6 +19,7 @@ import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.client.event.ModClientEvents;
 import org.confluence.mod.client.gui.MergedConfigurationScreen;
+import org.confluence.mod.client.summoner.SummonerClientEvents;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.advancement.ShimmerTransmutationTrigger;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -34,6 +35,9 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.SummonerEvents;
+import org.confluence.mod.common.summoner.SummonerRegistries;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.mesdag.portlib.network.PortNetworkHandler;
 import org.slf4j.Logger;
@@ -56,6 +60,9 @@ public final class Confluence {
         CommonConfigs.register(context);
         NetworkEvents.init();
         ModEvents.init();
+        SummonerRegistries.init();
+        SummonerAttachmentTypes.init();
+        SummonerEvents.init();
         ModDataMaps.init();
         EntityEvents.init();
         ItemEvents.init();
@@ -71,6 +78,7 @@ public final class Confluence {
             ClientConfigs.register(context);
             ModKeyBindings.init();
             ModClientEvents.init();
+            SummonerClientEvents.init();
             EctoMistHelper.init();
             GameClientEvents.init();
             context.registerExtensionPoint(

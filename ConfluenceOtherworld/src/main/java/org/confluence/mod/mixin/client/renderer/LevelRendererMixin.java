@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.mod.client.summoner.DynamicLightDispatcher;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
@@ -82,15 +83,15 @@ public abstract class LevelRendererMixin implements ILevelRenderer {
     }
 
     @Inject(method = "getLightColor(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/BlockPos;)I", at = @At("RETURN"), cancellable = true)
-    private static void makeHerbEmissive(BlockAndTintGetter level, BlockState state, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
+    private static void enhanceLightColor(BlockAndTintGetter level, BlockState state, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
+        int packed = cir.getReturnValue();
         if (state.is(ModBlocks.SHIVERTHORN.get()) && state.getValue(BaseHerbBlock.AGE) == 2) {
-            int packed = cir.getReturnValue();
             int block = (packed >> 4) & 0xf;
             if (block < 6) {
                 packed &= ~0xF0;
                 packed |= (6 << 4);
-                cir.setReturnValue(packed);
             }
         }
+        cir.setReturnValue(DynamicLightDispatcher.getDynamicLight(level, state, pos, packed));
     }
 }

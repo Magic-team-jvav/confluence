@@ -24,11 +24,15 @@ public class GeoSpecialSlimeRenderer<T extends Entity & GeoEntity> extends GeoNo
 
     private boolean shellPass;
     public GeoSpecialSlimeRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
-        this(context, path, false);
+        this(context, path, false, 1.0F);
     }
 
     public GeoSpecialSlimeRenderer(EntityRendererProvider.Context context, ResourceLocation path, boolean rotateAlongPitch) {
-        super(context, path, rotateAlongPitch, 1.0F, 0.0F);
+        this(context, path, rotateAlongPitch, 1.0F);
+    }
+
+    public GeoSpecialSlimeRenderer(EntityRendererProvider.Context context, ResourceLocation path, boolean rotateAlongPitch, float modelScale) {
+        super(context, path, rotateAlongPitch, modelScale, 0.0F);
     }
 
     protected GeoSpecialSlimeRenderer(EntityRendererProvider.Context context, GeoModel<T> model) {

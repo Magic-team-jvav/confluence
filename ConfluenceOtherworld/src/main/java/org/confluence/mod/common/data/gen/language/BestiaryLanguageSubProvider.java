@@ -1185,16 +1185,16 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.confluence.ice_slime.desc", "在极寒环境中停留过久的史莱姆会部分冻结，体表形成一层不断移动的冰层。");
         add("bestiary.entity.minecraft.zombie.frozen.desc", "在雪原生物群系中发现的僵尸，往往裹着冬衣。但这对它们毫无用处——它们依旧是冰冷的尸体！");
         add("bestiary.entity.minecraft.zombie.pink_frozen.desc", "在雪原生物群系中发现的僵尸，往往裹着冬衣。但这对它们毫无用处——它们依旧是冰冷的尸体！");
-//        add("bestiary.entity.confluence.ice_golem.desc", "暴风雪的危险不止零下低温与刺眼飞雪，还包括被这种冰雪构造体炸得粉身碎骨。");
+        add("bestiary.entity.confluence.ice_golem.desc", "暴风雪的危险不止零下低温与刺眼飞雪，还包括被这种冰雪构造体炸得粉身碎骨。");
 //        add("bestiary.entity.confluence.wolf.desc", "这类凶猛的狼形生物生活在最严酷的气候中，会在漆黑的夜里拼命搜寻食物果腹。");
         add("bestiary.entity.confluence.spiked_ice_slime.desc", "这种冰雪史莱姆因长期暴露在严寒中，体内凝结出大量冰碎片，且能以某种方式将这些碎片射向猎物。");
 //        add("bestiary.entity.confluence.cyan_beetle.desc", "青壳虫耐受极寒的能力极强，其体内含有的蓝色液体可用于纺织品染色，是珍贵的染料来源。");
         add("bestiary.entity.confluence.undead_viking.desc", "早在海盗出现之前，便有强大维京人纵横海洋的传说。如今他们的遗骸仍在下方冰冷的洞穴中游荡。");
         add("bestiary.entity.confluence.snow_flinx.desc", "小雪怪是外形圆滚的毛茸茸哺乳动物，长着格外突出的大鼻子，体重轻得惊人。");
-//        add("bestiary.entity.confluence.armored_viking.desc", "最精锐的维京人本该配得上最坚固的盔甲，但从他们如今的亡灵模样来看，这盔甲显然没起到多大作用。");
-//        add("bestiary.entity.confluence.icy_merman.desc", "人鱼极少远离海洋，一旦迷途闯入寒冷洞穴，便会化为冰冷的不死鱼人。");
+        add("bestiary.entity.confluence.armored_viking.desc", "最精锐的维京人本该配得上最坚固的盔甲，但从他们如今的亡灵模样来看，这盔甲显然没起到多大作用。");
+        add("bestiary.entity.confluence.icy_merman.desc", "人鱼极少远离海洋，一旦迷途闯入寒冷洞穴，便会化为冰冷的不死鱼人。");
         add("bestiary.entity.confluence.ice_bat.desc", "蝙蝠本就足够麻烦，而冰雪蝙蝠只需一碰就能将生物的肉体冻成硬块，让猎物彻底失去防御能力。");
-//        add("bestiary.entity.confluence.ice_elemental.desc", "在极寒之地聚集的浓厚强力魔法，会使水元素转化为冰雪精。它们周身的冰霜碎片能冻结万物。");
+        add("bestiary.entity.confluence.ice_elemental.desc", "在极寒之地聚集的浓厚强力魔法，会使水元素转化为冰雪精。它们周身的冰霜碎片能冻结万物。");
         add("bestiary.entity.confluence.ice_mimic.desc", "对着宝箱说话不会让人发疯，但要是宝箱回了话，那很可能会让人丧命！不过无论如何，它里面确实藏着稀有宝藏！");
         add("bestiary.entity.confluence.ice_tortoise.desc", "冰雪陆龟和它们的丛林近亲一样，是远超预期的可怕威胁，拥有惊人的速度与机动性。");
 //        add("bestiary.entity.confluence.vulture.desc", "秃鹰是为适应沙漠酷热而生的鸟类食腐者，任何靠近它们腐食的生物，都会被其啄咬撕扯。");
@@ -1331,7 +1331,8 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.confluence.gastropod.desc", "腹足怪原本是夜行史莱姆，受神圣福佑影响进化为漂浮的蜗牛状生物，能向敌人喷射强大的光束。");
 //        add("bestiary.entity.confluence.unicorn.desc", "独角兽是长有独角的威严生物，会在神圣之地上愤怒地奔袭，搜寻并清除所有入侵这片纯净土地的异类。");
         add("bestiary.entity.confluence.luminous_slime.desc", "夜明史莱姆因暴露在神圣之地的水晶光芒中，自身也开始散发同样的光芒，在黑暗环境中显得格外耀眼。");
-//        add("bestiary.entity.confluence.chaos_elemental.desc", "混沌精原本是普通生物，受神圣福佑注入后发生异变，会携带着难以控制的发光能量，疯狂追逐周围的活物。");
+        // 混沌精 缺少图鉴条目：ModClientBestiaryEntryProvider 中未注册 entries.add(MonsterEntities.CHAOS_ELEMENTAL)（第 465 行仅有注释）
+        add("bestiary.entity.confluence.chaos_elemental.desc", "混沌精原本是普通生物，受神圣福佑注入后发生异变，会携带着难以控制的发光能量，疯狂追逐周围的活物。");
         add("bestiary.entity.confluence.illuminant_bat.desc", "夜明蝙蝠受神圣之地的棱镜光芒祝福，身体呈现亮粉色，飞行时会在黑暗的地下空间划出一道模糊的光影弧线。");
 //        add("bestiary.entity.confluence.enchanted_sword.desc", "附魔剑被神圣水晶的福佑之光赋予生命，会主动劈砍一切邪恶之物，以净化世界为己任。");
         add("bestiary.entity.confluence.hallowed_mimic.desc", "受神圣福佑加持的宝箱怪会进化为神圣宝箱怪，能量大幅涌动、实力显著提升。通过外力作用，也能从普通宝箱中强制催生它们。");
@@ -1345,6 +1346,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.confluence.anomura_fungus.desc", "歪尾真菌是形似螃蟹的生物，在发光蘑菇田里四处爬行，全身被真菌孢子严重侵染。");
 //        add("bestiary.entity.confluence.mushi_ladybug.desc", "蘑菇瓢虫是极具攻击性的瓢虫变种，在发光蘑菇附近能自在生存，与真菌形成共生关系。");
         add("bestiary.entity.confluence.fungi_bulb.desc", "当发光真菌准备扩散时，真菌球怪便会生长成熟，将孢子传播到其他区域和宿主身上，助力真菌繁衍。");
+        add("bestiary.entity.confluence.giant_fungi_bulb.desc", "当发光真菌准备扩散时，巨型真菌球怪便会生长成熟，将孢子传播到其他区域和宿主身上，助力真菌繁衍。");
         add("bestiary.entity.confluence.fungo_fish.desc", "发光蘑菇的孢子让这种水生生物变成了水母般的混合体，在幽深的水中散发柔光。");
         add("bestiary.entity.confluence.goblin_warlock.desc", "这位哥布林施法者能召来暗影焰幻鬼，并从空中发动魔法攻击。");
         add("bestiary.entity.confluence.pirates_curse.desc", "即使死亡也无法终止这位船长的追击。");

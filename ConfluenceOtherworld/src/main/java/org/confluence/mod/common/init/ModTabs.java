@@ -1988,10 +1988,8 @@ public final class ModTabs {
                         forest.accept(SpawnEggItems.SWAMP_SLIME_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.SPIKED_SLIME_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.GREEN_DUMPLING_SLIME_SPAWN_EGG.get());
-                        forest.accept(SpawnEggItems.GLOWING_MOOSHROOM_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.CLOUD_SHEEP_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.CLUCKSHROOM_SPAWN_EGG.get());
-                        forest.accept(SpawnEggItems.GLOWING_CLUCKSHROOM_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.SQUIRREL_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.JEWEL_SQUIRREL_SPAWN_EGG.get());
                         forest.accept(SpawnEggItems.BUNNY_SPAWN_EGG.get());
@@ -2037,6 +2035,8 @@ public final class ModTabs {
                         mushroom.accept(SpawnEggItems.SPORE_ZOMBIE_SPAWN_EGG.get());
                         mushroom.accept(SpawnEggItems.HAT_SPORE_ZOMBIE_SPAWN_EGG.get());
                         mushroom.accept(SpawnEggItems.FUNGO_FISH_SPAWN_EGG.get());
+                        mushroom.accept(SpawnEggItems.GLOWING_MOOSHROOM_SPAWN_EGG.get());
+                        mushroom.accept(SpawnEggItems.GLOWING_CLUCKSHROOM_SPAWN_EGG.get());
                         CreativeModeTab.Output dungeon = GroupItem.belongsTo("dungeon_entity", output);
                         dungeon.accept(SpawnEggItems.ANGER_BONES_SPAWN_EGG.get());
                         dungeon.accept(SpawnEggItems.SHORT_BONES_SPAWN_EGG.get());

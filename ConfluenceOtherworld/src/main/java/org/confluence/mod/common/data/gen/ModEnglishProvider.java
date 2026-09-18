@@ -1665,7 +1665,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addAll(LanceItems.ITEMS);
         addAll(LightPetItems.ITEMS);
         add(PetItems.CHESTER_STAFF.get(), "Eye Bone");
-        add(PetItems.WALLET.get(), "Money Trough");
+        add(PetItems.MONEY_TROUGH.get(), "Money Trough");
         add("container.confluence.chester", "Chester");
         addAll(ManaWeaponItems.ITEMS);
         addAll(MaterialItems.ITEMS);

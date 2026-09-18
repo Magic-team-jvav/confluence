@@ -5023,7 +5023,7 @@ public class ModChineseProvider extends LanguageProvider {
     private void addCritterTranslations() {
         add(CritterEntities.GLOWING_MOOSHROOM.get(), "发光哞菇");
         add(CritterEntities.CLOUD_SHEEP.get(), "飘飘羊");
-        add(CritterEntities.CLUCKSHROOM.get(), "红色咯菇");
+        add(CritterEntities.CLUCKSHROOM.get(), "咯菇");
         add("entity.confluence.brown_cluckshroom", "棕色咯菇");
         add(CritterEntities.GLOWING_CLUCKSHROOM.get(), "发光咯菇");
         add(CritterEntities.SQUIRREL.get(), "松鼠");
@@ -5411,7 +5411,7 @@ public class ModChineseProvider extends LanguageProvider {
 
     private void addStorageCompanionTranslations() {
         add(PetItems.CHESTER_STAFF.get(), "眼骨");
-        add(PetItems.WALLET.get(), "钱币槽");
+        add(PetItems.MONEY_TROUGH.get(), "钱币槽");
         add(ModEntities.CHESTER.get(), "切斯特");
         add(ModEntities.FLYING_PIGGY_BANK.get(), "飞行存钱罐");
         add(ModEntities.SUMMONED_IRON_GOLEM.get(), "铁傀儡");

@@ -76,8 +76,8 @@ public class CritterEntities {
     public static final RegistryObject<EntityType<TruffleWorm>> TRUFFLE_WORM = DevelopmentSpawnPolicy.developmentOnly(register("truffle_worm", TruffleWorm::new, 0.7F, 0.25F, 8));
 
     // 发光蘑菇：发光哞菇与发光咯菇
-    public static final RegistryObject<EntityType<GlowingMooshroom>> GLOWING_MOOSHROOM = DevelopmentSpawnPolicy.developmentOnly(register("glowing_mooshroom", GlowingMooshroom::new, 1.0F, 2.15F, 10));
-    public static final RegistryObject<EntityType<Cluckshroom>> GLOWING_CLUCKSHROOM = DevelopmentSpawnPolicy.developmentOnly(register("glowing_cluckshroom", (type, level) -> new Cluckshroom(type, level, true), 0.6F, 1.2F, 10));
+    public static final RegistryObject<EntityType<GlowingMooshroom>> GLOWING_MOOSHROOM = DevelopmentSpawnPolicy.developmentOnly(register("glowing_mooshroom", GlowingMooshroom::new, 1.2F, 1.7F, 10));
+    public static final RegistryObject<EntityType<Cluckshroom>> GLOWING_CLUCKSHROOM = DevelopmentSpawnPolicy.developmentOnly(register("glowing_cluckshroom", (type, level) -> new Cluckshroom(type, level, true), 0.6F, 1.0F, 10));
 
     // 神圣：荧光虫与七彩草蛉
     public static final RegistryObject<EntityType<GlowBug>> LIGHTNING_BUG = DevelopmentSpawnPolicy.developmentOnly(register("lightning_bug", (type, level) -> new GlowBug(type, level, "idle"), 0.4F, 0.3F, 8));

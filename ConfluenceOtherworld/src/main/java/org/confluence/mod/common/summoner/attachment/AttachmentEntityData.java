@@ -7,9 +7,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
-import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.SummonerRegistries;
+import org.confluence.mod.common.summoner.register.SummonerRegistries;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
@@ -36,7 +36,6 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
 
     private final Map<AttachmentEntityType<?>, List<AttachmentEntity>> pendingAdd = new HashMap<>();
     private final Map<AttachmentEntityType<?>, List<AttachmentEntity>> groups = new HashMap<>();
-    private final Map<UUID, AttachmentEntity> uuidData = new HashMap<>();
     private final List<AttachmentEntity> renderCache = new ArrayList<>();
     private final AtomicReference<List<byte[]>> pendingPayloads = new AtomicReference<>(List.of());
     private Player player;
@@ -58,10 +57,7 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
             }
         } else {
             if (isRunning()) {
-                boolean levelChange = false;
-                if (level != null && level != player.level()) {
-                    levelChange = true;
-                }
+                boolean levelChange = level != null && level != player.level();
                 level = player.level();
                 Map<Long, List<Minion>> sameCache = new HashMap<>();
                 // tick实体
@@ -255,9 +251,7 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
             int typeCount = buf.readVarInt();
             for (int i = 0; i < typeCount; i++) {
                 AttachmentEntityType<?> entityType = SummonerRegistries.ATTACHMENT_ENTITY_TYPES.get(buf.readResourceLocation());
-                if (entityType == null) {
-                    throw new IllegalStateException("Unknown attachment entity type");
-                }
+                assert entityType != null;
                 List<AttachmentEntity> list = groups.computeIfAbsent(entityType, k -> new ArrayList<>());
                 int listSize = buf.readVarInt();
                 for (int k = 0; k < listSize; k++) {

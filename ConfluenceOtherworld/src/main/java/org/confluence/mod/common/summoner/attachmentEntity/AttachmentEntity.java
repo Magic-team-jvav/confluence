@@ -8,10 +8,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
-import org.confluence.mod.common.summoner.attachment.WhipTracker;
-import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
+import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
@@ -79,7 +78,7 @@ public abstract class AttachmentEntity implements Immunity {
     public void attack(@NotNull LivingEntity target, float damageAmount, int invincibleTime) {
         if (!Immunity.isActive(this, target)) {
             AttachmentEntityDamageSource damageSource = getDamageSource();
-            WhipTracker tracker = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
+            WhipMarkTracker tracker = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
             if (tracker.isSummonMarkTarget(target)) {
                 damageAmount = tracker.getDamageModifier(damageSource, damageAmount);
             }

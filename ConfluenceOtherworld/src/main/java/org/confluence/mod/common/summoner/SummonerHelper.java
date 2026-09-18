@@ -8,6 +8,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 
 import java.util.Collection;
 import java.util.List;

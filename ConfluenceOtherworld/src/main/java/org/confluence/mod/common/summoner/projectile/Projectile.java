@@ -19,18 +19,6 @@ public abstract class Projectile extends MomentumAttachmentEntity {
     }
 
     @Override
-    public @NotNull DamageSource getDamageSource(float armorPenetration) {
-        return new AttachmentEntityDamageSource(
-                LibDamageTypes.of(getLevel(), LibDamageTypes.SUMMONER, owner).typeHolder(),
-                null,
-                owner,
-                getPos(),
-                this,
-                armorPenetration
-        );
-    }
-
-    @Override
     public void tick() {
         super.tick();
         if (getMaxTickCount() > 0 && getTickCount() >= getMaxTickCount()) {

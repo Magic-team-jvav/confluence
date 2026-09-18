@@ -1,5 +1,6 @@
 package org.confluence.mod.client.summoner.model;
 
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.client.summoner.model.bbmodel.BBModelRenderOptions;
 import org.confluence.mod.client.summoner.model.geo.GeoRenderOptions;
 import org.confluence.mod.client.summoner.model.json.JsonModelRenderOptions;
@@ -20,35 +21,32 @@ import java.util.Objects;
  */
 public final class LyraModelRenderer {
 
-    private LyraModelRenderer() {
-    }
-
     public static JsonModelRenderOptions json(ModelResourceLocation model) {
-        return new JsonModelRenderOptions(Objects.requireNonNull(model, "model"));
+        return new JsonModelRenderOptions(model);
     }
 
     public static JsonModelRenderOptions json(ResourceLocation modelId) {
-        return new JsonModelRenderOptions(JsonModelRenderer.standaloneLocation(Objects.requireNonNull(modelId, "modelId")));
+        return new JsonModelRenderOptions(JsonModelRenderer.standaloneLocation(modelId));
     }
 
     public static ModelResourceLocation jsonLocation(ResourceLocation modelId) {
-        return JsonModelRenderer.standaloneLocation(Objects.requireNonNull(modelId, "modelId"));
+        return JsonModelRenderer.standaloneLocation(modelId);
     }
 
     public static GeoRenderOptions geo(ResourceLocation modelId) {
-        return new GeoRenderOptions(Objects.requireNonNull(modelId, "modelId"));
+        return new GeoRenderOptions(modelId);
     }
 
     public static VirtualEntityRenderOptions virtualEntity(EntityType<?> entityType, float partialTick) {
-        return new VirtualEntityRenderOptions(Objects.requireNonNull(entityType, "entityType"), partialTick);
+        return new VirtualEntityRenderOptions(entityType, partialTick);
     }
 
     public static VirtualEntityRenderOptions virtualEntity(ResourceLocation entityTypeId, float partialTick) {
-        EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(Objects.requireNonNull(entityTypeId, "entityTypeId"));
-        return virtualEntity(Objects.requireNonNull(entityType, "Unknown entity type " + entityTypeId), partialTick);
+        EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getValue(entityTypeId);
+        return virtualEntity(entityType, partialTick);
     }
 
     public static BBModelRenderOptions bbmodel(ResourceLocation modelId) {
-        return new BBModelRenderOptions(Objects.requireNonNull(modelId, "modelId"));
+        return new BBModelRenderOptions(modelId);
     }
 }

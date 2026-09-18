@@ -5,7 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.common.summoner.attachment.WhipTracker;
+import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,14 +49,14 @@ public record SummonMarkType(
         }
     }
 
-    public float damagePre(WhipTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage) {
+    public float damagePre(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage) {
         if (damagePre != null) {
             return damagePre.accept(tracker, target, source, damage);
         }
         return damage;
     }
 
-    public void damagePost(WhipTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage) {
+    public void damagePost(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage) {
         if (damagePost != null) {
             damagePost.accept(tracker, target, source, damage);
         }
@@ -70,6 +70,6 @@ public record SummonMarkType(
 
     @FunctionalInterface
     public interface SummonMarkDamageConsumer {
-        float accept(WhipTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage);
+        float accept(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage);
     }
 }

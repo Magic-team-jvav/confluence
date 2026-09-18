@@ -3,8 +3,7 @@ package org.confluence.mod.common.summoner.attachment;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
-import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +14,7 @@ import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 
 import java.util.Random;
 
-public class WhipTracker implements PortAttachmentSyncHandler<WhipTracker> {
+public class WhipMarkTracker implements PortAttachmentSyncHandler<WhipMarkTracker> {
 
     private final Random random = new Random();
     private Player owner = null;
@@ -107,13 +106,13 @@ public class WhipTracker implements PortAttachmentSyncHandler<WhipTracker> {
     }
 
     @Override
-    public void write(PortRegistryFriendlyByteBuf buf, WhipTracker data, boolean initialSync) {
+    public void write(PortRegistryFriendlyByteBuf buf, WhipMarkTracker data, boolean initialSync) {
         buf.writeInt(data.target == null ? -1 : data.target.getId());
     }
 
     @Override
-    public WhipTracker read(@NotNull IPortAttachmentHolder holder, @NotNull PortRegistryFriendlyByteBuf buf, @Nullable WhipTracker oldData) {
-        WhipTracker data = oldData == null ? new WhipTracker() : oldData;
+    public WhipMarkTracker read(@NotNull IPortAttachmentHolder holder, @NotNull PortRegistryFriendlyByteBuf buf, @Nullable WhipMarkTracker oldData) {
+        WhipMarkTracker data = oldData == null ? new WhipMarkTracker() : oldData;
         int id = buf.readInt();
         if (holder instanceof Entity entity && entity.level().getEntity(id) instanceof LivingEntity living) {
             data.target = living;

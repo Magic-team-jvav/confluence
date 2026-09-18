@@ -37,8 +37,7 @@ import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
-import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
-import org.confluence.mod.common.summoner.SummonerRegistries;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.mixed.Immunity;
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.summoner;
+package org.confluence.mod.common.summoner.register;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

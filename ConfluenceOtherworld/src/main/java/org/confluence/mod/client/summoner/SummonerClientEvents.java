@@ -12,8 +12,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.model.bbmodel.BBModelManager;
 import org.confluence.mod.client.summoner.model.geo.GeoAnimationManager;
 import org.confluence.mod.client.summoner.model.geo.GeoModelManager;
-import org.confluence.mod.common.summoner.SummonerAttachmentTypes;
-import org.confluence.mod.common.summoner.attachment.WhipTracker;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortRegisterClientReloadListenersEvent;
 
@@ -25,7 +25,7 @@ public final class SummonerClientEvents {
             LocalPlayer player = minecraft.player;
             ClientLevel level = minecraft.level;
             if (player != null && event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
-                WhipTracker tracker = player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
+                WhipMarkTracker tracker = player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
                 LivingEntity target = tracker.getMarkTarget();
                 if (target != null) {
                     float partialTick = event.getPartialTick();

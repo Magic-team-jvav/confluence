@@ -67,6 +67,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(MountItems.SUPERHEATED_BLOOD.get(), "Superheated Blood");
         add("tooltip.confluence.rideable_item.desc", "Press %s to ride.");
         add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
+        add("summon.confluence.finch", "Finch");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");
         add(SummonItems.SLIME_STAFF.get(), "Slime Staff");
         add(SummonItems.NEW_HORNET_STAFF.get(), "Hornet Staff");
@@ -80,7 +81,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.DESERT_TIGER_STAFF.get(), "Desert Tiger Staff");
         add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
-        add("entity.confluence.finch_baby", "Baby Finch");
         add("entity.confluence.i_32_iron_golem", "I-32 Iron Golem");
         add("entity.confluence.slime_baby", "Baby Slime");
         add("entity.confluence.hornet_baby", "Hornet Minion");

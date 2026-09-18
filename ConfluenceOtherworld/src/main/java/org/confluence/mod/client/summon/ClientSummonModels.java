@@ -28,7 +28,6 @@ final class ClientSummonModels {
     private static final Animations TIGER = new Animations(IDLE, WALK, Map.of(SummonAnimation.SPIN_X, ROLL, SummonAnimation.MELEE_ATTACK, STRIKE), 4);
 
     static final Map<ResourceLocation, Binding> MODELS = Map.ofEntries(
-            Map.entry(SummonTypes.FINCH.id(), model("summon/finch_baby", Material.DOUBLE_SIDED, FLYING).transform(1, 0, 0, true)),
             Map.entry(SummonTypes.SLIME.id(), model("summon/slime_baby", Material.SLIME, SLIME)),
             Map.entry(SummonTypes.SCULK_WISP.id(), model("summon/sculk_wisp", Material.CUTOUT, CASTING).transform(1, 0.5F, -90, true)),
             Map.entry(SummonTypes.IMP.id(), model("summon/summon_imp", Material.DOUBLE_SIDED, CASTING).transform(0.8F, -0.5F, 0, true)),

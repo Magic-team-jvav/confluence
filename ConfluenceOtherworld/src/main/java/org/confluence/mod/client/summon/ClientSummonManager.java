@@ -20,12 +20,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.WalkAnimationState;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
-import org.confluence.mod.common.summon.flying.FinchSummon;
 import org.confluence.mod.common.summon.projectile.SummonProjectileTypes;
 import org.confluence.mod.network.s2c.SummonSyncPacketS2C;
 import org.joml.Matrix4f;
@@ -41,7 +39,6 @@ public final class ClientSummonManager {
     private static final ResourceLocation TERRAPRISMA = Confluence.asResource("terraprisma");
     private static final ResourceLocation STARDUST_DRAGON = Confluence.asResource("stardust_dragon");
     private static final ResourceLocation IRON_GOLEM = Confluence.asResource("i_32_iron_golem");
-    private static final ResourceLocation FINCH = Confluence.asResource("finch_baby");
     private static final ResourceLocation TERRAPRISMA_TEXTURE = Confluence.asResource("textures/entity/model/terraprisma_gray.png");
     private static final ResourceLocation IMP_FIREBALL = SummonProjectileTypes.IMP_FIREBALL.id();
     public static final ModelResourceLocation FINCH_STAFF_EMPTY_MODEL = new ModelResourceLocation(Confluence.asResource("finch_staff_empty"), "inventory");
@@ -504,17 +501,7 @@ public final class ClientSummonManager {
         }
 
         private Vec3 renderPosition(float partialTick) {
-            Vec3 synchronizedPosition = interpolatedPosition(partialTick);
-            if (!current.followingOwner() || !current.type().equals(FINCH))
-                return synchronizedPosition;
-            ClientLevel level = Minecraft.getInstance().level;
-            if (level == null) return synchronizedPosition;
-            Player owner = level.getPlayerByUUID(ownerId);
-            if (owner == null) return synchronizedPosition;
-            Vec3 ownerPosition = owner.getPosition(partialTick);
-            float bodyYaw = Mth.rotLerp(partialTick, owner.yBodyRotO, owner.yBodyRot);
-            Vec3 formationPosition = FinchSummon.perchPosition(ownerPosition, bodyYaw, current.order());
-            return synchronizedPosition.lerp(formationPosition, backProgress(partialTick));
+            return interpolatedPosition(partialTick);
         }
 
         private Vec3 interpolatedPosition(double time) {

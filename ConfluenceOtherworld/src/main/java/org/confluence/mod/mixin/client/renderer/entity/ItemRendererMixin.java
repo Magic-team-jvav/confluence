@@ -28,7 +28,8 @@ import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.mod.common.item.yoyo.YoyoItem;
-import org.confluence.mod.common.summon.SummonTypes;
+import org.confluence.mod.common.summoner.SummonerHelper;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -75,9 +76,10 @@ public abstract class ItemRendererMixin implements SelfGetter<ItemRenderer> {
 
     @Inject(method = "getModel", at = @At("HEAD"), cancellable = true)
     private void useEmptyFinchStaffModel(ItemStack stack, @Nullable Level level, @Nullable LivingEntity entity, int seed, CallbackInfoReturnable<BakedModel> callback) {
-        if (!(entity instanceof Player player) || !stack.is(SummonItems.FINCH_STAFF)) return;
-        if (ClientSummonManager.hasSummon(player.getUUID(), SummonTypes.FINCH.id())) {
-            callback.setReturnValue(ClientSummonManager.finchStaffEmptyModel());
+        if (entity instanceof Player player && stack.is(SummonItems.FINCH_STAFF)) {
+            if (!SummonerHelper.get(player).getEntityData().get(SummonerAttachmentEntityTypes.FINCH.get()).isEmpty()) {
+                callback.setReturnValue(ClientSummonManager.finchStaffEmptyModel());
+            }
         }
     }
 

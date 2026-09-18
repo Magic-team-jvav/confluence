@@ -12,6 +12,7 @@ import org.confluence.mod.common.summon.flying.*;
 import org.confluence.mod.common.summon.ground.*;
 import org.confluence.mod.common.summon.slime.SlimeSummon;
 import org.confluence.mod.common.summon.terraprisma.TerraprismaSummon;
+import org.confluence.mod.common.summoner.minion.FinchMinion;
 import org.confluence.mod.common.summoner.minion.HornetMinion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
@@ -26,8 +27,30 @@ public class SummonItems {
 
     public static final PortItemRegistration ITEMS = PortRegisterHandler.item(Confluence.MODID);
 
-    public static final PortDeferredItem<SummonItem> FINCH_STAFF = ITEMS.register("finch_staff",
-            () -> new SummonItem(ModRarity.BLUE, SummonTypes.FINCH, FinchSummon.SLOT_COST, FinchSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonerWeaponItem<FinchMinion>> FINCH_STAFF = ITEMS.register("finch_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE),
+                    SummonerAttachmentEntityTypes.FINCH,
+                    MinionSlotType.Minion,
+                    2.0F,
+                    0.0F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
+    public static final PortDeferredItem<SummonerWeaponItem<HornetMinion>> NEW_HORNET_STAFF = ITEMS.register("new_hornet_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
+                    SummonerAttachmentEntityTypes.HORNET,
+                    MinionSlotType.Minion,
+                    8.0F,
+                    0.2F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
     public static final PortDeferredItem<SummonItem> IRON_GOLEM_STAFF = ITEMS.register("iron_golem_staff",
             () -> new SummonItem(ModRarity.BLUE, SummonTypes.IRON_GOLEM, IronGolemSummon.SLOT_COST, IronGolemSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> SLIME_STAFF = ITEMS.register("slime_staff",
@@ -52,17 +75,5 @@ public class SummonItems {
             () -> new SummonItem(ModRarity.PINK, SummonTypes.TERRAPRISMA, TerraprismaSummon.SLOT_COST, TerraprismaSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> STARDUST_DRAGON_STAFF = ITEMS.register("stardust_dragon_staff",
             () -> new SummonItem(ModRarity.RED, SummonTypes.STARDUST_DRAGON, StardustDragonSummon.SLOT_COST, StardustDragonSummon.BASE_DAMAGE));
-    public static final PortDeferredItem<SummonerWeaponItem<HornetMinion>> NEW_HORNET_STAFF = ITEMS.register("new_hornet_staff",
-            () -> new SummonerWeaponItem<>(
-                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
-                    SummonerAttachmentEntityTypes.HORNET,
-                    MinionSlotType.Minion,
-                    8.0F,
-                    0.2F,
-                    0.0F,
-                    SummonerSoundEvents.USE_MINION_WEAPON,
-                    null,
-                    null
-            ));
 
 }

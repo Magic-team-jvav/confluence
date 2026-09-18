@@ -5141,6 +5141,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 战斗召唤物
         add(SummonItems.FINCH_STAFF.get(), "雀杖");
+        add("summon.confluence.finch", "小鸟");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "铁傀儡杖");
         add(SummonItems.SLIME_STAFF.get(), "史莱姆法杖");
         add(SummonItems.NEW_HORNET_STAFF.get(), "黄蜂法杖");
@@ -5154,7 +5155,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.DESERT_TIGER_STAFF.get(), "沙漠虎杖");
         add(SummonItems.TERRAPRISMA.get(), "泰拉棱镜");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "星尘之龙法杖");
-        add("entity.confluence.finch_baby", "雀宝宝");
         add("entity.confluence.i_32_iron_golem", "i-32型铁傀儡");
         add("entity.confluence.slime_baby", "史莱姆宝宝");
         add("entity.confluence.hornet_baby", "仆役黄蜂");

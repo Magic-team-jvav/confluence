@@ -14,6 +14,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.model.bbmodel.BBModelManager;
 import org.confluence.mod.client.summoner.model.geo.GeoAnimationManager;
 import org.confluence.mod.client.summoner.model.geo.GeoModelManager;
+import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
 import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
@@ -31,7 +32,7 @@ public final class SummonerClientEvents {
         PortEventHandler.addListener((PortItemTooltipEvent event) -> {
             Player player = event.getEntity();
             ItemStack itemStack = event.getItemStack();
-            if (itemStack.getItem() instanceof SummonerWeaponItem<?> summonerWeaponItem) {
+            if (player != null && itemStack.getItem() instanceof SummonerWeaponItem<?> summonerWeaponItem) {
                 event.getToolTip().addAll(summonerWeaponItem.getTooltips(itemStack, player));
             }
         });
@@ -63,6 +64,7 @@ public final class SummonerClientEvents {
             event.registerReloadListener(BBModelManager.INSTANCE);
         });
         PortEventHandler.addListener((PortFMLClientSetupEventPort event) -> event.enqueueWork(() -> {
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.FINCH.get(), new FinchRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET.get(), new HornetRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET_STINGER.get(), new HornetStingerRenderer());
         }));

@@ -1874,10 +1874,7 @@ public final class ModTabs {
                         output = new WipNotDisplayOutput(output);
 
                         CreativeModeTab.Output summonItems = output;
-                        summonItems.accept(SummonItems.NEW_HORNET_STAFF);
-                        SummonItems.ITEMS.getEntries().stream()
-                                .filter(holder -> !holder.getId().equals(SummonItems.NEW_HORNET_STAFF.getId()))
-                                .forEach(holder -> summonItems.accept(holder.get()));
+                        acceptAll(SummonItems.ITEMS, output);
                         acceptAll(WhipItems.ITEMS, output);
                         acceptAll(LightPetItems.ITEMS, output);
                         acceptAll(PetItems.ITEMS, output);

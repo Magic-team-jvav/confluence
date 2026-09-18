@@ -235,7 +235,6 @@ public final class ModClientEvents {
 
         event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), Confluence.asResource("house_select"), new HouseSelectHud());
         event.registerBelow(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id(), Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
-        event.registerAboveAll(Confluence.asResource("ask_for_softcore"), new AskForSoftcoreLayer());
 
         if (Confluence.SOUL_SKILLS) {
             event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_l_hud"), SoulSkillClientHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);

@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -26,6 +27,6 @@ public record PiggyBankTotalMoneyPacket(long totalMoney) implements IPortPacket.
 
     public static void sendToClient(ServerPlayer player, PlayerPiggyBankContainer container, boolean update) {
         if (update) container.setChanged();
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new PiggyBankTotalMoneyPacket(container.getTotalMoney()));
+        PortPacketDistributor.sendToPlayer(player, new PiggyBankTotalMoneyPacket(container.getTotalMoney()));
     }
 }

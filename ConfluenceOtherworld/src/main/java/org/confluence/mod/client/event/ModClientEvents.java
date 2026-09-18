@@ -235,7 +235,6 @@ public final class ModClientEvents {
 
         event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), Confluence.asResource("house_select"), new HouseSelectHud());
         event.registerBelow(VanillaGuiOverlay.BOSS_EVENT_PROGRESS.id(), Confluence.asResource("goblin_army"), new GoblinArmyProgressRenderer());
-        event.registerAboveAll(Confluence.asResource("ask_for_softcore"), new AskForSoftcoreLayer());
 
         if (Confluence.SOUL_SKILLS) {
             event.registerAbove(VanillaGuiOverlay.SUBTITLES.id(), Confluence.asResource("card_horizontal_l_hud"), SoulSkillClientHandler.CARD_HORIZONTAL_L_HUD_INSTANCE);
@@ -626,7 +625,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.CRIMERA.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CRIMERA.getId(), true, 1.0F, 0.0F));
         event.registerEntityRenderer(MonsterEntities.CURSED_SKULL.get(), c -> new GeoNegativeVolumeRenderer<>(c, new GeoNormalModel<>(MonsterEntities.CURSED_SKULL.getId()), true, 1.0F, 0.0F).addBoneToGlow("outline"));
         event.registerEntityRenderer(MonsterEntities.CORRUPTOR.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.CORRUPTOR.getId(), true, 1.15F, 0.0F));
-        event.registerEntityRenderer(MonsterEntities.SLIMER.get(), c -> new GeoSpecialSlimeRenderer<>(c, MonsterEntities.SLIMER.getId(), true));
+        event.registerEntityRenderer(MonsterEntities.SLIMER.get(), c -> new GeoSpecialSlimeRenderer<>(c, MonsterEntities.SLIMER.getId(), true, 1.2F));
         event.registerEntityRenderer(MonsterEntities.ENCHANTED_SWORD.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(MonsterEntities.SNATCHER.get(), c -> new SnatcherRenderer(c, MonsterEntities.SNATCHER.getId()));
         event.registerEntityRenderer(MonsterEntities.MAN_EATER.get(), c -> new SnatcherRenderer(c, MonsterEntities.MAN_EATER.getId()));
@@ -643,7 +642,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ARMORED_SKELETON.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/armored_skeleton.geo.json"), Confluence.asResource("textures/entity/armored_skeleton.png"), true)));
         event.registerEntityRenderer(MonsterEntities.ICE_ELEMENTAL.get(), c -> new FullbrightGeoRenderer<IceElemental>(c, MonsterEntities.ICE_ELEMENTAL.getId()));
         event.registerEntityRenderer(MonsterEntities.ICY_MERMAN.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/icy_merman.geo.json"), Confluence.asResource("textures/entity/icy_merman.png"), true), false, 1.0F, 0.015625F));
-        event.registerEntityRenderer(MonsterEntities.ICE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_GOLEM.getId(), false, 1.0F, -0.021875F));
+        event.registerEntityRenderer(MonsterEntities.ICE_GOLEM.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.ICE_GOLEM.getId(), false, 2.0F, -0.021875F));
         // giant_tortoise.bbmodel 内的两种陆龟共用骨架与动画，使用各自贴图。
         event.registerEntityRenderer(MonsterEntities.GIANT_TORTOISE.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.GIANT_TORTOISE.getId()));
         event.registerEntityRenderer(MonsterEntities.ICE_TORTOISE.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/giant_tortoise.geo.json"), Confluence.asResource("textures/entity/ice_tortoise.png"), Confluence.asResource("animations/entity/giant_tortoise.animation.json"))));

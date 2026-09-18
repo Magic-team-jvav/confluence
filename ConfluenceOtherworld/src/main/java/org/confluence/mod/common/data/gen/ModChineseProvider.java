@@ -92,12 +92,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.prefix_separator", " ");
         add("confluence.game_event", "Game Event");
 
+        add("confluence.difficulty_notice.title", "难度选择");
         add("confluence.difficulty_notice.ask", "你现在处于中核模式！是否更改为到软核模式？");
         add("confluence.difficulty_notice.sure", "确定");
         add("confluence.difficulty_notice.sure.tip", "将会设置为死亡不掉落");
         add("confluence.difficulty_notice.never", "永不");
-        add("confluence.difficulty_notice.never.tip", "拒绝该次询问，并且再也不弹出该询问");
-        add("confluence.difficulty_notice.tip", "按住Alt键呼出鼠标以进行选择");
+        add("confluence.difficulty_notice.never.tip", "不作改变。");
+        add("confluence.difficulty_notice.cancel", "取消并在下次询问");
+        add("confluence.difficulty_notice.confirm", "确认并不再询问");
         add("confluence.difficulty_notice.sure.done", "已更改为软核模式");
         add("confluence.difficulty_notice.never.done", "将不再弹出该询问");
     }
@@ -350,7 +352,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.dungeon_entity", "地牢生物");
         add("itemGroup.confluence.nether_entity", "地狱生物");
         add("itemGroup.confluence.sky_entity", "天空生物");
-        add("itemGroup.confluence.mimic_entity", "宝箱怪");
+        add("itemGroup.confluence.environment_entity", "环境生物");
+        add("itemGroup.confluence.ocean_entity", "海洋生物");
+        add("itemGroup.confluence.blood_moon_entity", "血月生物");
         add("itemGroup.confluence.goblin_entity", "哥布林军队");
         add("itemGroup.confluence.pirate_entity", "海盗入侵");
         add("event.confluence.pirate_invasion", "海盗入侵");
@@ -359,16 +363,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.party.ended", "派对结束了！");
         add("message.confluence.pirate_invasion.start", "海盗已经抵达！");
         add("message.confluence.pirate_invasion.victory", "海盗已被击败！");
-        add("itemGroup.confluence.water_entity", "水生生物");
         add("itemGroup.confluence.insect_entity", "昆虫生物");
         add("itemGroup.confluence.npc_entity", "NPC");
         add("itemGroup.confluence.boss_entity", "Boss");
-        add("itemGroup.confluence.misc_entity", "其他生物");
         add("itemGroup.confluence.mural", "壁画");
         add("itemGroup.confluence.text_books", "文本书");
         add("itemGroup.confluence.note", "纸条");
-
-
     }
 
     private void addInterfaceAndTooltipTranslations() {
@@ -5023,7 +5023,7 @@ public class ModChineseProvider extends LanguageProvider {
     private void addCritterTranslations() {
         add(CritterEntities.GLOWING_MOOSHROOM.get(), "发光哞菇");
         add(CritterEntities.CLOUD_SHEEP.get(), "飘飘羊");
-        add(CritterEntities.CLUCKSHROOM.get(), "红色咯菇");
+        add(CritterEntities.CLUCKSHROOM.get(), "咯菇");
         add("entity.confluence.brown_cluckshroom", "棕色咯菇");
         add(CritterEntities.GLOWING_CLUCKSHROOM.get(), "发光咯菇");
         add(CritterEntities.SQUIRREL.get(), "松鼠");
@@ -5418,7 +5418,7 @@ public class ModChineseProvider extends LanguageProvider {
 
     private void addStorageCompanionTranslations() {
         add(PetItems.CHESTER_STAFF.get(), "眼骨");
-        add(PetItems.WALLET.get(), "钱币槽");
+        add(PetItems.MONEY_TROUGH.get(), "钱币槽");
         add(ModEntities.CHESTER.get(), "切斯特");
         add(ModEntities.FLYING_PIGGY_BANK.get(), "飞行存钱罐");
         add(ModEntities.SUMMONED_IRON_GOLEM.get(), "铁傀儡");

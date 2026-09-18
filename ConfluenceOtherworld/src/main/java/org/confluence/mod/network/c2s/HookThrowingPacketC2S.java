@@ -20,6 +20,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.UUID;
@@ -121,10 +122,10 @@ public record HookThrowingPacketC2S(boolean throwing, int id,
     }
 
     public static void push() {
-        Confluence.NETWORK_HANDLER.sendToServer(new HookThrowingPacketC2S(true, 0, null));
+        PortPacketDistributor.sendToServer(new HookThrowingPacketC2S(true, 0, null));
     }
 
     public static void pop(AbstractHookEntity hook) {
-        Confluence.NETWORK_HANDLER.sendToServer(new HookThrowingPacketC2S(false, hook.getId(), hook.getUUID()));
+        PortPacketDistributor.sendToServer(new HookThrowingPacketC2S(false, hook.getId(), hook.getUUID()));
     }
 }

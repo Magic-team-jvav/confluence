@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
@@ -12,6 +13,7 @@ import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -38,18 +40,18 @@ public record BestiarySyncPacketS2C(
     }
 
     public static void syncEntries(ServerPlayer player) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new BestiarySyncPacketS2C(Either.left(Bestiary.INSTANCE.getEntries())));
+        PortPacketDistributor.sendToPlayer(player, new BestiarySyncPacketS2C(Either.left(Bestiary.INSTANCE.getEntries())));
     }
 
     public static void syncEntry(LivingEntity living) {
-        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new BestiarySyncPacketS2C(Either.right(RegisterBestiaryKeyEvent.getKey(living))));
+        if (ServerLifecycleHooks.getCurrentServer() != null) {
+            PortPacketDistributor.sendToAllPlayers(new BestiarySyncPacketS2C(Either.right(RegisterBestiaryKeyEvent.getKey(living))));
         }
     }
 
     public static void syncEntry(LivingEntity living, BestiaryEntry entry) {
-        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new BestiarySyncPacketS2C(Either.left(Map.of(RegisterBestiaryKeyEvent.getKey(living), entry))));
+        if (ServerLifecycleHooks.getCurrentServer() != null) {
+            PortPacketDistributor.sendToAllPlayers(new BestiarySyncPacketS2C(Either.left(Map.of(RegisterBestiaryKeyEvent.getKey(living), entry))));
         }
     }
 }

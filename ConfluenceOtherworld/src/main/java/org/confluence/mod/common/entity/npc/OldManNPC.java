@@ -10,13 +10,13 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 /// 老人 —— 地牢入口的诅咒 NPC。
 public class OldManNPC extends BaseNPC {
@@ -42,7 +42,7 @@ public class OldManNPC extends BaseNPC {
             InteractionResult commonResult = handleCommonInteraction(serverPlayer, hand);
             if (commonResult != null) return commonResult;
             recordInteraction(serverPlayer);
-            Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId()));
+            PortPacketDistributor.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId()));
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
     }

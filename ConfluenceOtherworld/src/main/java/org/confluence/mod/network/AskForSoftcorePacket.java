@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameRules;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.hud.AskForSoftcoreLayer;
+import org.confluence.mod.client.gui.AskForSoftcoreScreen;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -35,7 +35,7 @@ public record AskForSoftcorePacket(boolean accept) implements IPortPacket {
     }
 
     public void s2c() {
-        AskForSoftcoreLayer.setAskForSoftcoreLayer(true);
+        AskForSoftcoreScreen.createAskingScreen();
     }
 
     public void c2s(ServerPlayer player) {

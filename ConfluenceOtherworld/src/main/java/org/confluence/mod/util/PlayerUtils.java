@@ -57,6 +57,7 @@ import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.joml.Vector3f;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.registries.PortDeferredItem;
 
 import java.util.function.IntFunction;
@@ -85,7 +86,7 @@ public final class PlayerUtils {
     public static final CustomPickupRangeEvent.RangeType HEART_RANGE = CustomPickupRangeEvent.RangeType.get(Confluence.asResource("heart"));
 
     public static void syncMana2Client(ServerPlayer player, ManaStorage manaStorage) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
+        PortPacketDistributor.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
     }
 
     public static void syncMana2Client(ServerPlayer player) {
@@ -94,7 +95,7 @@ public final class PlayerUtils {
 
 //    public static void syncSoul2Client(ServerPlayer player, SoulStorage soulStorage) {
 //        boolean isActive = PlayerSpecialData.of(player).isFallenSoulCoreActive();
-//        Confluence.NETWORK_HANDLER.sendToPlayer(new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
+//        PortPacketDistributor.sendToPlayer(new SoulPacketS2C(soulStorage.getMaxSoul(), soulStorage.getCurrentSoul(), isActive));
 //    }
 //
 //    public static void syncSoul2Client(ServerPlayer player) {
@@ -519,6 +520,6 @@ public final class PlayerUtils {
         if (overworld == null) return;
         if (overworld.getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) return;
         if (ConfluenceData.get(overworld).isStopAskForSoftcore()) return;
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new AskForSoftcorePacket(true));
+        PortPacketDistributor.sendToPlayer(player, new AskForSoftcorePacket(true));
     }
 }

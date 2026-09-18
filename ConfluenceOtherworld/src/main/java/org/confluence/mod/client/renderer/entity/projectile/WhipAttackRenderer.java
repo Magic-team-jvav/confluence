@@ -16,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.whip.WhipAppearance;
 import org.confluence.mod.api.whip.WhipSegment;
 import org.confluence.mod.client.renderer.entity.TetherRenderHelper;
@@ -25,6 +24,7 @@ import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.mod.network.c2s.WhipPlaybackCompletePacketC2S;
 import org.joml.Matrix3f;
 import org.joml.Quaternionf;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public final class WhipAttackRenderer extends EntityRenderer<WhipAttackEntity> {
         if (entity.isRemoved()) return;
         if (entity.swingProgress(partialTick) >= 1.0F) {
             if (entity.getOwner() == Minecraft.getInstance().player && entity.reportPlaybackComplete()) {
-                Confluence.NETWORK_HANDLER.sendToServer(new WhipPlaybackCompletePacketC2S(entity.getId()));
+                PortPacketDistributor.sendToServer(new WhipPlaybackCompletePacketC2S(entity.getId()));
             }
             return;
         }

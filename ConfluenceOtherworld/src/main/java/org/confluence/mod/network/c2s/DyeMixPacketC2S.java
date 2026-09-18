@@ -7,6 +7,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import org.mesdag.portlib.wrapper.common.extensions.IPortItemStackExtension;
@@ -40,6 +41,6 @@ public record DyeMixPacketC2S(ItemStack stack) implements IPortPacket.C2S {
     }
 
     public static void sendToServer(ItemStack stack) {
-        Confluence.NETWORK_HANDLER.sendToServer(new DyeMixPacketC2S(stack));
+        PortPacketDistributor.sendToServer(new DyeMixPacketC2S(stack));
     }
 }

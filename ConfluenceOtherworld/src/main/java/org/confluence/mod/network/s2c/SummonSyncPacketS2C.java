@@ -12,6 +12,7 @@ import org.confluence.mod.client.summon.ClientSummonManager;
 import org.confluence.mod.common.summon.*;
 import org.confluence.mod.common.summon.projectile.SummonProjectileInstance;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortVarInt;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -84,7 +85,7 @@ public record SummonSyncPacketS2C(UUID ownerId, long gameTime,
         Vec3 ownerPosition = owner.position();
         for (ServerPlayer viewer : owner.serverLevel().players()) {
             if (shouldSendTo(ownerPosition, packet.entries, viewer.position(), TRACKING_RANGE)) {
-                Confluence.NETWORK_HANDLER.sendToPlayer(viewer, packet);
+                PortPacketDistributor.sendToPlayer(viewer, packet);
             }
         }
     }

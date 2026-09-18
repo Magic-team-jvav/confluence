@@ -9,6 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -47,11 +48,11 @@ public record DeathMotionPacketS2C(int entityId, float x, float y,
                 Vec3 pos = living.position();
                 motion = new Vec3(pos.x - living.xo, pos.y - living.yo, pos.z - living.zo);
             }
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new DeathMotionPacketS2C(living.getId(), motion));
+            PortPacketDistributor.sendToAllPlayers(new DeathMotionPacketS2C(living.getId(), motion));
         }
     }
 
     public static void sendToClient(ServerPlayer serverPlayer, int entityId, Vec3 motion) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new DeathMotionPacketS2C(entityId, motion));
+        PortPacketDistributor.sendToPlayer(serverPlayer, new DeathMotionPacketS2C(entityId, motion));
     }
 }

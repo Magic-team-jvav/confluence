@@ -7,6 +7,7 @@ import net.minecraft.world.InteractionHand;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public final class SwordProjectilePacketC2S implements IPortPacket.C2S {
@@ -29,6 +30,6 @@ public final class SwordProjectilePacketC2S implements IPortPacket.C2S {
     }
 
     public static void sendToServer() {
-        Confluence.NETWORK_HANDLER.sendToServer(INSTANCE);
+        PortPacketDistributor.sendToServer(INSTANCE);
     }
 }

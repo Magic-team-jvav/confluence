@@ -22,6 +22,7 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 import org.mesdag.portlib.wrapper.common.util.PortTriState;
@@ -60,18 +61,18 @@ public record VisibilityPacketS2C(byte mask) implements IPortPacket.S2C {
         CompoundTag data = LibEntityUtils.getOrCreatePersistedData(player);
         if (data.getBoolean("confluence:has_echo_visibility") != visible) {
             data.putBoolean("confluence:has_echo_visibility", visible);
-            Confluence.NETWORK_HANDLER.sendToPlayer(player, new VisibilityPacketS2C(ECHO, visible));
+            PortPacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(ECHO, visible));
         }
     }
 
     public static void sendTheConstantPostEffect(ServerPlayer player) {
         boolean secretSeed = ModSecretSeeds.THE_CONSTANT.match(player.server);
         boolean accessory = CuriosUtils.hasCurio(player, AccessoryItems.RADIO_THING.get());
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new VisibilityPacketS2C(THE_CONSTANT_POST_EFFECT, secretSeed ^ accessory));
+        PortPacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(THE_CONSTANT_POST_EFFECT, secretSeed ^ accessory));
     }
 
     public static void sendSignal(ServerPlayer player, boolean visible) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new VisibilityPacketS2C(SIGNAL, visible));
+        PortPacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(SIGNAL, visible));
     }
 
     public static void sendSunglasses(ServerPlayer player, PortTriState normal, PortTriState extra) {
@@ -91,7 +92,7 @@ public record VisibilityPacketS2C(byte mask) implements IPortPacket.S2C {
         ) {
             AchievementUtils.awardAchievement(player, "on_fleek");
         }
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new VisibilityPacketS2C(SUNGLASSES, visible));
+        PortPacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(SUNGLASSES, visible));
     }
 
     @Override

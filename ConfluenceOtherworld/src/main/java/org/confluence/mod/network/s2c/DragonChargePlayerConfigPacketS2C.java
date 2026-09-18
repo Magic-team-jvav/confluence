@@ -11,6 +11,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -35,12 +36,12 @@ public record DragonChargePlayerConfigPacketS2C(boolean enabled) implements IPor
 
     public static void sendToPlayer(ServerPlayer player) {
         if (LibEntityUtils.isSingleplayerOwner(player)) return;
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new DragonChargePlayerConfigPacketS2C());
+        PortPacketDistributor.sendToPlayer(player, new DragonChargePlayerConfigPacketS2C());
     }
 
     public static void sendToAll() {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            Packet<ClientGamePacketListener> packet = Confluence.NETWORK_HANDLER.toVanillaClientbound(new DragonChargePlayerConfigPacketS2C());
+            Packet<ClientGamePacketListener> packet = new DragonChargePlayerConfigPacketS2C().toVanillaClientbound();
             for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
                 if (LibEntityUtils.isSingleplayerOwner(player)) continue;
                 player.connection.send(packet);

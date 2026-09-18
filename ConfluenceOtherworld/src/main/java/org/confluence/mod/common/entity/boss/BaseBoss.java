@@ -21,7 +21,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
@@ -32,13 +31,13 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.ai.bt.Blackboard;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.network.s2c.BossBarSyncPacketS2C;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -176,7 +175,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     }
 
     private void sendBossBar(ServerPlayer player, float health, float maximumHealth, boolean visible) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new BossBarSyncPacketS2C(bossEvent.getId(), BuiltInRegistries.ENTITY_TYPE.getKey(getType()), health, maximumHealth, visible));
+        PortPacketDistributor.sendToPlayer(player, new BossBarSyncPacketS2C(bossEvent.getId(), BuiltInRegistries.ENTITY_TYPE.getKey(getType()), health, maximumHealth, visible));
     }
 
     // === Boss interface ===

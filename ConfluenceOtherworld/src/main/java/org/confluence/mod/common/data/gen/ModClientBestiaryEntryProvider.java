@@ -462,6 +462,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 独角兽
                 .add(MonsterEntities.UNICORN, builder -> builder.order(36500).rarity(2).background(THE_HALLOW).filters(FilterEntry.THE_HALLOW))
                 .add(MonsterEntities.LUMINOUS_SLIME, builder -> builder.order(36600).rarity(2).background(UNDERGROUND_HALLOW).filters(FilterEntry.UNDERGROUND_HALLOW))
+                // 混沌精 缺少图鉴条目：需注册 .add(MonsterEntities.CHAOS_ELEMENTAL, ...)，其英文/中文图鉴描述已在 BestiaryLanguageSubProvider 就绪
                 // 混沌精
                 .add(MonsterEntities.CHAOS_ELEMENTAL, builder -> builder.order(36700).rarity(2).background(UNDERGROUND_HALLOW).filters(FilterEntry.UNDERGROUND_HALLOW))
                 .add(MonsterEntities.ILLUMINANT_BAT, builder -> builder.order(36800).rarity(2).background(UNDERGROUND_HALLOW).filters(FilterEntry.UNDERGROUND_HALLOW))

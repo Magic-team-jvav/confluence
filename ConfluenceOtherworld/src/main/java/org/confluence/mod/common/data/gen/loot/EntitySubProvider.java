@@ -95,16 +95,20 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.TATTERED_CLOTH).apply(count1To2)).apply(random0To1)
                 )
         );
+        // 丛林蜘蛛 无掉落物（仅钱币），掉落表已齐全
         add(MonsterEntities.JUNGLE_CREEPER.get(), LootTable.lootTable());
+        // 沙漠幽魂 缺少未加入物品：沙漠幽魂灯(Desert Spirit Lamp, 2.5%)、神灯诅咒(Djinn's Curse, 3.25%)、生命吞噬者(Eater Of Life, 0.67%)
         add(MonsterEntities.DESERT_SPIRIT.get(), LootTable.lootTable());
         add(MonsterEntities.WALL_CREEPER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.FRIED_EGG)).add(EmptyLootItem.emptyItem().setWeight(29)))
         );
+        // 黑隐士 缺少未加入物品：毒刺法杖(Poison Staff, 2.5%)
         add(MonsterEntities.BLACK_RECLUSE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SPIDER_FANG).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
                         .when(() -> new DifficultyChanceLootItemCondition(0.5F, 0.9F)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.FRIED_EGG)).add(EmptyLootItem.emptyItem().setWeight(29)))
         );
+        // 蚁狮 掉落物已齐全（蚁狮上颚、芭菲）
         add(MonsterEntities.ANTLION.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.ANTLION_MANDIBLE).apply(count1To2)).add(EmptyLootItem.emptyItem().setWeight(2)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.BANANA_SPLIT).setWeight(2)).add(emptyWeight98))
@@ -232,6 +236,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
+        // 水矢怪 掉落物已齐全（水矢）
         add(MonsterEntities.WATER_BOLT_MIMIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ManaWeaponItems.WATER_BOLT)).add(EmptyLootItem.emptyItem().setWeight(39)))
         );
@@ -287,13 +292,15 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PetItems.WALLET.get()).setWeight(5))
+                        .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get()).setWeight(5))
                         .add(EmptyLootItem.emptyItem().setWeight(995))
                 )
         );
+        // 僵尸新娘 缺少未加入物品：婚纱(Wedding Dress, 100%)
         add(MonsterEntities.THE_BRIDE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR)).add(EmptyLootItem.emptyItem().setWeight(4)))
         );
+        // 僵尸新郎 缺少未加入物品：大脑(Brain, 75%)（高顶礼帽、血泪已实现）
         add(MonsterEntities.THE_GROOM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.TOP_HAT)))
                 .withPool(LootPool.lootPool()
@@ -311,7 +318,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PetItems.WALLET.get()).setWeight(5))
+                        .add(LootItem.lootTableItem(PetItems.MONEY_TROUGH.get()).setWeight(5))
                         .add(EmptyLootItem.emptyItem().setWeight(995))
                 )
         );
@@ -333,15 +340,20 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.GIANT_BAT.get(), batCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.TRIFOLD_MAP))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
+        // 巨型蝙蝠 缺少未加入物品：深度计(Depth Meter, 1%)（三折地图已实现）
+        // 装甲骷髅 缺少未加入物品：光束剑(Beam Sword, 0.67%)
         add(MonsterEntities.ARMORED_SKELETON.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ARMOR_POLISH))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
+        // 岩石巨人 缺少未加入物品：岩石巨人头(Rock Golem Head, 33.33%)
         add(MonsterEntities.ROCK_GOLEM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.STONE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 20)))));
+        // 狼人 缺少未加入物品：狼牙(Wolf Fang, 1.5%)
         add(MonsterEntities.WEREWOLF.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.MOON_CHARM)).add(EmptyLootItem.emptyItem().setWeight(59)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ADHESIVE_BANDAGE))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F))));
+        // 夜明蝙蝠 缺少未加入物品：结晶(Crystallize, 0.67%)（苹果派、蝙蝠棍已实现）
         add(MonsterEntities.ILLUMINANT_BAT.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.APPLE_PIE)).add(EmptyLootItem.emptyItem().setWeight(149)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.BAT_BAT)).add(EmptyLootItem.emptyItem().setWeight(299))));
@@ -401,7 +413,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
@@ -409,26 +421,31 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(96))
                 )
         );
+        // 冰雪巨人 缺少未加入物品：冰雪羽(Ice Feather, 33.3%)
         add(MonsterEntities.ICE_GOLEM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.FROST_CORE)))
         );
+        // 装甲维京海盗 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（罗盘已实现）
         add(MonsterEntities.ARMORED_VIKING.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS))
                         .add(EmptyLootItem.emptyItem().setWeight(99)))
         );
+        // 冰雪鱼人 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
         add(MonsterEntities.ICY_MERMAN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.MILKSHAKE).setWeight(1))
+                        .add(LootItem.lootTableItem(FoodItems.MILKSHAKE).apply(random0To1))
                         .add(EmptyLootItem.emptyItem().setWeight(74)))
         );
+        // 冰雪精 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)、寒冰法杖(Frost Staff, 2%)
         add(MonsterEntities.ICE_ELEMENTAL.get(), LootTable.lootTable());
+        // 冰雪陆龟 缺少未加入物品：冰雪镰刀(Ice Sickle, 1%)（龟壳、奶昔已实现）
         add(MonsterEntities.ICE_TORTOISE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FROZEN_TURTLE_SHELL).setWeight(2))
                         .add(EmptyLootItem.emptyItem().setWeight(98)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.MILKSHAKE).setWeight(1))
+                        .add(LootItem.lootTableItem(FoodItems.MILKSHAKE).apply(random0To1))
                         .add(EmptyLootItem.emptyItem().setWeight(74)))
         );
         add(MonsterEntities.CRIMERA.get(), LootTable.lootTable()
@@ -478,6 +495,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
+        // 僵尸鱼人 缺少未加入物品：血雨弓(Blood Rain Bow, 12.5%)、钱币槽(Money Trough, 6.67%)、鱼饵桶(Chum Bucket, 50%)
         add(MonsterEntities.ZOMBIE_MERMAN.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF)).add(EmptyLootItem.emptyItem().setWeight(7)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FishingPoleItems.CHUM_CASTER)).add(EmptyLootItem.emptyItem().setWeight(7)))
@@ -533,8 +551,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9667))
                 )
         );
+        // 真菌球怪 / 巨型真菌球怪 无掉落物（仅钱币），掉落表已齐全
         add(MonsterEntities.FUNGI_BULB.get(), LootTable.lootTable());
         add(MonsterEntities.GIANT_FUNGI_BULB.get(), LootTable.lootTable());
+        // 爬藤怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)（诅咒焰已实现，但缺专家掉率提升）
         add(MonsterEntities.CLINGER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModBlocks.CURSED_FLAME)).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FunctionalBlocks.MEAT_GRINDER)).add(EmptyLootItem.emptyItem().setWeight(199))));
@@ -614,19 +634,23 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
+        // 挖掘怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、可疑苹果(Suspicious Looking Apple, 40%)
         add(MonsterEntities.DIGGER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).setWeight(2))
                         .add(emptyWeight98)
                 )
         );
+        // 吞世怪 缺少未加入物品：怪物肉(Monster Meat, 0.07%)、生命吞噬者(Eater Of Life, 0.67%)、吞世怪风筝(World Feeder Kite, 4%)、可疑苹果(Suspicious Looking Apple, 45%)
         add(MonsterEntities.WORLD_FEEDER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModBlocks.CURSED_FLAME))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
                 )
         );
+        // 符文法师 缺少未加入物品：符文帽(Rune Hat, 100%)、符文长袍(Rune Robe, 100%)
         add(MonsterEntities.RUNE_WIZARD.get(), LootTable.lootTable());
+        // 提姆 掉落物已齐全（巫师帽）
         add(MonsterEntities.TIM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArmorItems.WIZARD_HAT)))
         );
@@ -667,11 +691,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(399))
                 )
         );
+        // 愤怒翻滚怪 掉落物已齐全（玉米片）
         add(MonsterEntities.ANGRY_TUMBLER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS)).add(EmptyLootItem.emptyItem().setWeight(29))));
         add(MonsterEntities.WINDY_BALLOON.get(), LootTable.lootTable());
         add(MonsterEntities.OLD_SHAKING_CHEST.get(), LootTable.lootTable());
         add(MonsterEntities.CLUMSY_BALLOON_SLIME.get(), LootTable.lootTable());
+        // 红魔鬼 缺少未加入物品：火焰羽(Fire Feather, 2%)、烈火之花(Flower of Fire, 3.33%)（热狗、邪恶三叉戟已实现）
         add(MonsterEntities.RED_DEVIL.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.HOTDOG)).add(EmptyLootItem.emptyItem().setWeight(29))));
         add(MonsterEntities.DEMON.get(), LootTable.lootTable()
@@ -697,6 +723,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9714))
                 )
         );
+        // 青苔黄蜂 缺少未加入物品：破碎蜂翼(Tattered Bee Wing, 1%)（蜂刺、牛黄已实现）
         add(MonsterEntities.MOSS_HORNET.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.STINGER)).add(EmptyLootItem.emptyItem().setWeight(5)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BEZOAR))
@@ -718,7 +745,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(MonsterEntities.SNOW_FLINX.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
@@ -737,13 +764,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(967))
                 )
         );
+        // 腐化金鱼 / 毒金鱼 无掉落物（仅钱币），掉落表已齐全
         add(MonsterEntities.CORRUPT_GOLDFISH.get(), LootTable.lootTable());
         add(MonsterEntities.VICIOUS_GOLDFISH.get(), LootTable.lootTable());
+        // 琵琶鱼 缺少未加入物品：机器人帽(Robot Hat, 0.4%)（粘性绷带已实现）
         add(MonsterEntities.ANGLER_FISH.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.ROBOT_HAT).setWeight(1)).add(EmptyLootItem.emptyItem().setWeight(249)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(VanityArmorItems.ROBOT_HAT)).add(EmptyLootItem.emptyItem().setWeight(249)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(AccessoryItems.ADHESIVE_BANDAGE))
                         .when(() -> new DifficultyChanceLootItemCondition(0.01F, 0.0199F)))
         );
+        // 沙鲨 / 腐化沙鲨 / 猩红沙鲨 / 神圣沙鲨 缺少未加入物品：沙鲨风筝(Sand Shark Kite, 4%)
         add(MonsterEntities.SAND_SHARK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.SHARK_FIN)).add(EmptyLootItem.emptyItem().setWeight(7)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.NACHOS)).add(EmptyLootItem.emptyItem().setWeight(29))));
@@ -765,7 +795,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.DIVING_HELMET).setWeight(1))
+                        .add(LootItem.lootTableItem(TCItems.DIVING_HELMET))
                         .add(LootItem.lootTableItem(MaterialItems.SHARK_FIN).setWeight(19))
                 )
         );
@@ -799,11 +829,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.GOBLIN_ARCHER.get(), goblinCommon());
         add(MonsterEntities.GOBLIN_PEON.get(), goblinCommon());
         add(MonsterEntities.GOBLIN_SORCERER.get(), goblinCommon());
+        // 哥布林术士 缺少未加入物品：暗影焰弓(Shadowflame Bow, 33.3%)、暗影焰巫术娃娃(Shadowflame Hex Doll, 33.3%)、暗影焰刀(Shadowflame Knife, 33.3%)
         add(MonsterEntities.GOBLIN_WARLOCK.get(), goblinCommon());
         add(MonsterEntities.SHADOWFLAME_APPARITION.get(), LootTable.lootTable());
+        // 侏儒 无掉落物（仅钱币），掉落表已齐全
         add(MonsterEntities.GNOME.get(), LootTable.lootTable());
         add(MonsterEntities.GOBLIN_THIEF.get(), goblinCommon());
         add(MonsterEntities.GOBLIN_WARRIOR.get(), goblinCommon());
+        // 海盗七怪（水手/私船海盗/神射手/弩手/船长/诅咒/鹦鹉）缺少未加入物品：钱币枪、桶式发射器、海盗法杖、弯刀、水手帽/眼罩/水手上衣/水手裤、金平台、船长帽、诅咒之眼等
         add(MonsterEntities.PIRATE_DECKHAND.get(), pirateCommon(1));
         add(MonsterEntities.PIRATE_DEADEYE.get(), pirateCommon(1));
         add(MonsterEntities.PIRATE_CROSSBOWER.get(), pirateCommon(1));
@@ -912,6 +945,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(CritterEntities.PENGUIN.get(), LootTable.lootTable());
         add(CritterEntities.MYSTIC_FROG.get(), LootTable.lootTable());
         add(CritterEntities.GOLDFISH.get(), LootTable.lootTable());
+        // 腐化企鹅 / 猩红企鹅 缺少未加入物品：Pedguin 套装（兜帽/夹克/裤子，各 0.67%）
         add(MonsterEntities.CORRUPT_PENGUIN.get(), LootTable.lootTable());
         add(MonsterEntities.VICIOUS_PENGUIN.get(), LootTable.lootTable());
         add(CritterEntities.STINKBUG.get(), LootTable.lootTable());
@@ -922,12 +956,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.ANGRY_NIMBUS.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ManaWeaponItems.NIMBUS_ROD)).add(EmptyLootItem.emptyItem().setWeight(14)))
         );
+        // 愤怒蒲公英 掉落物已齐全（太阳花）
         add(MonsterEntities.ANGRY_DANDELION.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.DAYBLOOM).apply(count1To2))
                         .add(EmptyLootItem.emptyItem())
                 )
         );
+        // 花岗岩巨人 缺少未加入物品：晶洞(Geode, 5%)、夜视头盔(Night Vision Helmet, 3.3%)、响石(Snapping Stone, 1.25%)（花岗岩、意大利面已实现）
         add(MonsterEntities.GRANITE_GOLEM.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(NatureBlocks.GRANITE))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))))
@@ -945,6 +981,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
+        // 装甲步兵 缺少未加入物品：压力球(Stress Ball, 1%)、角斗士胸甲(Gladiator Breastplate, 4.76%)（标枪、角斗士头盔/护腿、短剑、钩爪、披萨已实现）
         add(MonsterEntities.HOPLITE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.PIZZA).setWeight(2)).add(emptyWeight98))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.JAVELIN)
@@ -992,7 +1029,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                                                         DamageTypeTags.IS_FALL
                                                 ))
                                 ))
-                                .setWeight(1)
+
                         )
                         .add(EmptyLootItem.emptyItem().setWeight(49))
                 )
@@ -1112,7 +1149,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(emptyWeight98)
                 )
         );
+        // 血水母 缺少未加入物品：怪物肉(Monster Meat, 0.07%)
         add(MonsterEntities.BLOOD_JELLY.get(), LootTable.lootTable());
+        // 蘑菇水母 无掉落物（仅钱币），掉落表已齐全
         add(MonsterEntities.FUNGO_FISH.get(), LootTable.lootTable());
         add(MonsterEntities.GREEN_JELLYFISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -1293,6 +1332,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(975))
                 )
         );
+        // 蛇蜥怪 缺少未加入物品：远古号角(Ancient Horn, 2%)（坚固化石已实现）
         add(MonsterEntities.BASILISK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))));
         add(MonsterEntities.GHOUL.get(), ghoulCommon()
@@ -1377,6 +1417,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.GEL))
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10)))
                         .apply(random0To1)));
+        // 混沌精 缺少未加入物品：混乱之杖(Rod of Discord, 0.25%)（苹果派已实现，需要补 0.67% 概率）
         add(MonsterEntities.CHAOS_ELEMENTAL.get(), LootTable.lootTable()
                 // 混沌传送杖
                 .withPool(LootPool.lootPool()
@@ -1393,6 +1434,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLACK_BELT))
                         .add(EmptyLootItem.emptyItem().setWeight(11))));
+        // 死灵法师 缺少未加入物品：暗影束法杖(Shadowbeam Staff, 9.75%)
         add(MonsterEntities.NECROMANCER.get(), LootTable.lootTable());
         add(MonsterEntities.DIABOLIST.get(), LootTable.lootTable());
         add(MonsterEntities.RAGGED_CASTER.get(), LootTable.lootTable());
@@ -1535,14 +1577,14 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                         .apply(setGelColor(-7697782)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS))
                         .add(EmptyLootItem.emptyItem().setWeight(99)));
     }
 
     private LootTable.Builder blackSlimeLoot() {
         return slimeCommon(-7697782)
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(1))
+                        .add(LootItem.lootTableItem(TCItems.COMPASS))
                         .add(EmptyLootItem.emptyItem().setWeight(99)));
     }
 

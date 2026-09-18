@@ -11,6 +11,7 @@ import org.confluence.mod.common.item.boomerang.BoomerangItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -40,10 +41,10 @@ public record LeftClickItemActionPacketC2S(boolean pressed) implements IPortPack
     }
 
     public static void sendPressed() {
-        Confluence.NETWORK_HANDLER.sendToServer(new LeftClickItemActionPacketC2S(true));
+        PortPacketDistributor.sendToServer(new LeftClickItemActionPacketC2S(true));
     }
 
     public static void sendReleased() {
-        Confluence.NETWORK_HANDLER.sendToServer(new LeftClickItemActionPacketC2S(false));
+        PortPacketDistributor.sendToServer(new LeftClickItemActionPacketC2S(false));
     }
 }

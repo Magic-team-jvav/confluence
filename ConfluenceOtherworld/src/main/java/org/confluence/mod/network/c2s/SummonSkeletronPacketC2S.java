@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.OldManNPC;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -25,6 +26,6 @@ public record SummonSkeletronPacketC2S(int entityId) implements IPortPacket.C2S 
     }
 
     public static void sendToServer(int entityId) {
-        Confluence.NETWORK_HANDLER.sendToServer(new SummonSkeletronPacketC2S(entityId));
+        PortPacketDistributor.sendToServer(new SummonSkeletronPacketC2S(entityId));
     }
 }

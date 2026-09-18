@@ -8,6 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GunEvent;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 /// Server acknowledgement used to drive client-only fire feedback.
@@ -28,6 +29,6 @@ public enum ShotFeedbackPacketS2C implements IPortPacket.S2C {
     }
 
     public static void sendTo(ServerPlayer player) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, INSTANCE);
+        PortPacketDistributor.sendToPlayer(player, INSTANCE);
     }
 }

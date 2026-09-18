@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -36,12 +37,12 @@ public record MeteoriteLocationPacketS2C(
     /// @param tickUntilLanding 落地时间，小于等于0将只刷新指南针
     public static void sendToAll(BlockPos location, int tickUntilLanding) {
         if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null && !BlockPos.ZERO.equals(location)) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new MeteoriteLocationPacketS2C(location, tickUntilLanding));
+            PortPacketDistributor.sendToAllPlayers(new MeteoriteLocationPacketS2C(location, tickUntilLanding));
         }
     }
 
     public static void sendToClient(ServerPlayer player, BlockPos location, int tickUntilLanding) {
         if (BlockPos.ZERO.equals(location)) return;
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new MeteoriteLocationPacketS2C(location, tickUntilLanding));
+        PortPacketDistributor.sendToPlayer(player, new MeteoriteLocationPacketS2C(location, tickUntilLanding));
     }
 }

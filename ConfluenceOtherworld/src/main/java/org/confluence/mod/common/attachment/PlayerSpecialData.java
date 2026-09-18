@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.common.data.saved.AnglerData;
 import org.confluence.mod.common.data.saved.Team;
@@ -40,6 +39,7 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.*;
 
@@ -157,7 +157,7 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
             player.removeEffect(ModEffects.ENEMY_BANNER.get());
         }
         if (entries != null) {
-            Confluence.NETWORK_HANDLER.sendToPlayer(player, new SyncEnemyBannerEntriesPacketS2C(entries));
+            PortPacketDistributor.sendToPlayer(player, new SyncEnemyBannerEntriesPacketS2C(entries));
         }
     }
 

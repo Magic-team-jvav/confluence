@@ -11,6 +11,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 import java.util.Map;
@@ -40,6 +41,6 @@ public record AchievementOffsetSyncPacketS2C(
         for (Map.Entry<ResourceLocation, AchievementOffset> entry : AchievementOffsetLoader.getDisplayOffset().entrySet()) {
             map.put(entry.getKey(), entry.getValue().hideLink());
         }
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, new AchievementOffsetSyncPacketS2C(map));
+        PortPacketDistributor.sendToPlayer(player, new AchievementOffsetSyncPacketS2C(map));
     }
 }

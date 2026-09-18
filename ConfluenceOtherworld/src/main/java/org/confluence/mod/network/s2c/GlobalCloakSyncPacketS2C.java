@@ -8,6 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -40,11 +41,11 @@ public enum GlobalCloakSyncPacketS2C implements IPortPacket.S2C {
 
     public static void sendToAll() {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(INSTANCE);
+            PortPacketDistributor.sendToAllPlayers(INSTANCE);
         }
     }
 
     public static void sendToClient(ServerPlayer player) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, INSTANCE);
+        PortPacketDistributor.sendToPlayer(player, INSTANCE);
     }
 }

@@ -252,7 +252,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<JellyFish>> FUNGO_FISH = DevelopmentSpawnPolicy.developmentOnly(registerEntity("fungo_fish", EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, JellyFish.Profile.FUNGO), MobCategory.MONSTER).sized(0.65F, 1.0F).clientTrackingRange(10)));
 
     // 海洋：鲨鱼、水母与史莱姆
-    public static final RegistryObject<EntityType<Shark>> SHARK = registerEntity("shark", EntityType.Builder.of(Shark::new, MobCategory.MONSTER).sized(1.1F, 1.1F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Shark>> SHARK = registerEntity("shark", EntityType.Builder.of(Shark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<JellyFish>> PINK_JELLYFISH = registerJellyFish("pink_jellyfish", JellyFish.Profile.ROUTINE);
     public static final RegistryObject<EntityType<TropicSlime>> TROPIC_SLIME = registerEntity("tropic_slime", EntityType.Builder.of(TropicSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10));
 
@@ -273,7 +273,7 @@ public class MonsterEntities {
 
     // 地牢：诅咒骷髅与幽魂
     public static final RegistryObject<EntityType<CursedSkull>> CURSED_SKULL = registerEntity("cursed_skull", EntityType.Builder.of(CursedSkull::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<DungeonSpirit>> DUNGEON_SPIRIT = DevelopmentSpawnPolicy.developmentOnly(registerEntity("dungeon_spirit", EntityType.Builder.of(DungeonSpirit::new, MobCategory.MONSTER).sized(0.8F, 0.6F).clientTrackingRange(10)));
+    public static final RegistryObject<EntityType<DungeonSpirit>> DUNGEON_SPIRIT = DevelopmentSpawnPolicy.developmentOnly(registerEntity("dungeon_spirit", EntityType.Builder.of(DungeonSpirit::new, MobCategory.MONSTER).sized(0.8F, 0.7F).clientTrackingRange(10)));
 
     // 地牢：圣骑士与骷髅李
     public static final RegistryObject<EntityType<Paladin>> PALADIN = registerEntity("paladin", EntityType.Builder.of(Paladin::new, MobCategory.MONSTER).sized(1.2F, 2.4F).clientTrackingRange(10));
@@ -336,7 +336,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<AngryNimbus>> ANGRY_NIMBUS = DevelopmentSpawnPolicy.developmentOnly(registerEntity("angry_nimbus", EntityType.Builder.of(AngryNimbus::new, MobCategory.MONSTER).sized(2.0F, 1.4F).clientTrackingRange(10)));
 
     // 暴风雪：冰雪巨人
-    public static final RegistryObject<EntityType<FrostFighter>> ICE_GOLEM = DevelopmentSpawnPolicy.developmentOnly(registerEntity("ice_golem", EntityType.Builder.<FrostFighter>of((type, level) -> new FrostFighter(type, level, FrostFighter.Kind.GOLEM), MobCategory.MONSTER).sized(1.5F, 4.0F).clientTrackingRange(12)));
+    public static final RegistryObject<EntityType<FrostFighter>> ICE_GOLEM = DevelopmentSpawnPolicy.developmentOnly(registerEntity("ice_golem", EntityType.Builder.<FrostFighter>of((type, level) -> new FrostFighter(type, level, FrostFighter.Kind.GOLEM), MobCategory.MONSTER).sized(3F, 8.0F).clientTrackingRange(12)));
 
     // 大风天：大风气球怪与愤怒蒲公英
     public static final RegistryObject<EntityType<WindyBalloon>> WINDY_BALLOON = DevelopmentSpawnPolicy.developmentOnly(registerEntity("windy_balloon", EntityType.Builder.<WindyBalloon>of(WindyBalloon::new, MobCategory.MONSTER).sized(0.8F, 1.0F).clientTrackingRange(10)));
@@ -346,10 +346,10 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<AngryTumbler>> ANGRY_TUMBLER = DevelopmentSpawnPolicy.developmentOnly(registerEntity("angry_tumbler", EntityType.Builder.<AngryTumbler>of(AngryTumbler::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10)));
 
     // 沙尘暴：普通、腐化、猩红与神圣沙鲨
-    public static final RegistryObject<EntityType<SandShark>> SAND_SHARK = DevelopmentSpawnPolicy.developmentOnly(registerEntity("sand_shark", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(2.0F, 1.25F).clientTrackingRange(10)));
-    public static final RegistryObject<EntityType<SandShark>> BONE_BITER = DevelopmentSpawnPolicy.developmentOnly(registerEntity("bone_biter", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(2.0F, 1.25F).clientTrackingRange(10)));
-    public static final RegistryObject<EntityType<SandShark>> FLESH_REAVER = DevelopmentSpawnPolicy.developmentOnly(registerEntity("flesh_reaver", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(2.0F, 1.25F).clientTrackingRange(10)));
-    public static final RegistryObject<EntityType<SandShark>> CRYSTAL_THRESHER = DevelopmentSpawnPolicy.developmentOnly(registerEntity("crystal_thresher", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(2.0F, 1.25F).clientTrackingRange(10)));
+    public static final RegistryObject<EntityType<SandShark>> SAND_SHARK = DevelopmentSpawnPolicy.developmentOnly(registerEntity("sand_shark", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10)));
+    public static final RegistryObject<EntityType<SandShark>> BONE_BITER = DevelopmentSpawnPolicy.developmentOnly(registerEntity("bone_biter", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10)));
+    public static final RegistryObject<EntityType<SandShark>> FLESH_REAVER = DevelopmentSpawnPolicy.developmentOnly(registerEntity("flesh_reaver", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10)));
+    public static final RegistryObject<EntityType<SandShark>> CRYSTAL_THRESHER = DevelopmentSpawnPolicy.developmentOnly(registerEntity("crystal_thresher", EntityType.Builder.<SandShark>of(SandShark::new, MobCategory.MONSTER).sized(1.8F, 1.1F).clientTrackingRange(10)));
 
     // 哥布林入侵前哨：侦察兵
     public static final RegistryObject<EntityType<GoblinMonster>> GOBLIN_SCOUT = registerGoblinLand("goblin_scout", 0.65F, 1.85F, Items.AIR.getDefaultInstance(), BaseWarriorMonster.LandAnimationProfile.NONE, GoblinMonster.DoorBehavior.OPEN);

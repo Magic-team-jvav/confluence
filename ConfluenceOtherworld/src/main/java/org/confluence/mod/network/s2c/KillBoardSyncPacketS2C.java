@@ -3,9 +3,11 @@ package org.confluence.mod.network.s2c;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -36,12 +38,12 @@ public enum KillBoardSyncPacketS2C implements IPortPacket.S2C {
     }
 
     public static void sendToAll() {
-        if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(INSTANCE);
+        if (ServerLifecycleHooks.getCurrentServer() != null) {
+            PortPacketDistributor.sendToAllPlayers(INSTANCE);
         }
     }
 
     public static void sendToClient(ServerPlayer player) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(player, INSTANCE);
+        PortPacketDistributor.sendToPlayer(player, INSTANCE);
     }
 }

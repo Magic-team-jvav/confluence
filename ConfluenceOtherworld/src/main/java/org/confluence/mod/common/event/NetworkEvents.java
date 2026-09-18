@@ -1,16 +1,21 @@
 package org.confluence.mod.common.event;
 
-import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
-import org.mesdag.portlib.network.PortNetworkHandler;
+import org.mesdag.portlib.event.PortEventHandler;
+import org.mesdag.portlib.event.network.PortRegisterPayloadHandlersEvent;
+import org.mesdag.portlib.network.PortPayloadHandler;
 
 public final class NetworkEvents {
     public static void init() {
-        PortNetworkHandler handler = Confluence.NETWORK_HANDLER;
+        PortEventHandler.addListener(NetworkEvents::registerPayloadHandlers);
+    }
+
+    private static void registerPayloadHandlers(PortRegisterPayloadHandlersEvent event) {
+        PortPayloadHandler handler = event.registrar("1");
 
         // C2S
         handler.registerInGameC2S(NPCDialogSessionPacketC2S.class, NPCDialogSessionPacketC2S.ID, NPCDialogSessionPacketC2S.STREAM_CODEC);

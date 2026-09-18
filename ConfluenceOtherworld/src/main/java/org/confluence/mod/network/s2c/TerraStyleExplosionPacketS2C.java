@@ -12,6 +12,7 @@ import net.minecraft.world.level.ChunkPos;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.TerraStyleExplosion;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -42,7 +43,7 @@ public record TerraStyleExplosionPacketS2C(double x, double y, double z,
         Long2ObjectMap<ObjectSet<ServerPlayer>> playersPerChunk = level.getChunkSource().chunkMap.getDistanceManager().playersPerChunk;
         for (ServerPlayer player : level.players()) {
             if (playersPerChunk.containsKey(chunkPos.toLong())) {
-                Confluence.NETWORK_HANDLER.sendToPlayer(player, packet);
+                PortPacketDistributor.sendToPlayer(player, packet);
             }
         }
     }

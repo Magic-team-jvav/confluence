@@ -7,6 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
 public enum SpearAttackPacketC2S implements IPortPacket.C2S {
@@ -28,6 +29,6 @@ public enum SpearAttackPacketC2S implements IPortPacket.C2S {
     }
 
     public static void sendToServer() {
-        Confluence.NETWORK_HANDLER.sendToServer(INSTANCE);
+        PortPacketDistributor.sendToServer(INSTANCE);
     }
 }

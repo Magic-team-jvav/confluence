@@ -63,6 +63,7 @@ import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -412,7 +413,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             recordInteraction(serverPlayer);
 
             var shop = NPCTradeList.getAvailableOffers(serverPlayer, this);
-            Confluence.NETWORK_HANDLER.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId(), !shop.offers().isEmpty()));
+            PortPacketDistributor.sendToPlayer(serverPlayer, new OpenNPCDialogPacketS2C(getId(), !shop.offers().isEmpty()));
         }
         return InteractionResult.sidedSuccess(level().isClientSide);
     }

@@ -37,8 +37,8 @@ import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.menu.ToggleAmountResultSlot;
 import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
-import org.confluence.mod.Confluence;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.wrapper.world.item.crafting.PortShapedRecipePattern;
 
 import java.util.*;
@@ -227,7 +227,7 @@ public class EitherRecipe4xHelper {
             }
 
             if (doTransfer) {
-                Confluence.NETWORK_HANDLER.sendToServer(new RecipeTransferPacketC2S(recipe.getId(), maxTransfer, false));
+                PortPacketDistributor.sendToServer(new RecipeTransferPacketC2S(recipe.getId(), maxTransfer, false));
             }
             return null;
         }

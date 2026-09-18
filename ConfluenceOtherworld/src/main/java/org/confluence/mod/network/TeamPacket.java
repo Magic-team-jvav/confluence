@@ -9,6 +9,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.Team;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -68,7 +69,7 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortP
                 data.setPvP(pvp);
             }
         }
-        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntity(player, this);
+        PortPacketDistributor.sendToPlayersTrackingEntity(player, this);
     }
 
     public void s2c(Player player) {
@@ -81,17 +82,17 @@ public record TeamPacket(int playerId, Team team, boolean pvp) implements IPortP
 
     /// local设置时调用，然后由server广播到remote
     public static void sendToServer(Player player) {
-        Confluence.NETWORK_HANDLER.sendToServer(makePacket(player));
+        PortPacketDistributor.sendToServer(makePacket(player));
     }
 
     /// 自动同步
     public static void sendToClient(ServerPlayer sendTo, ServerPlayer target) {
-        Confluence.NETWORK_HANDLER.sendToPlayer(sendTo, makePacket(target));
+        PortPacketDistributor.sendToPlayer(sendTo, makePacket(target));
     }
 
     /// server设置时调用
     public static void broadcast(ServerPlayer player) {
-        Confluence.NETWORK_HANDLER.sendToPlayersTrackingEntityAndSelf(player, makePacket(player));
+        PortPacketDistributor.sendToPlayersTrackingEntityAndSelf(player, makePacket(player));
     }
 
     private static TeamPacket makePacket(Player player) {

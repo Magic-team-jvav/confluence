@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -26,7 +27,7 @@ public record GoblinArmyProgressPacketS2C(float progress) implements IPortPacket
 
     public static void sendToAll(float progress) {
         if (net.minecraftforge.server.ServerLifecycleHooks.getCurrentServer() != null) {
-            Confluence.NETWORK_HANDLER.sendToAllPlayers(new GoblinArmyProgressPacketS2C(progress));
+            PortPacketDistributor.sendToAllPlayers(new GoblinArmyProgressPacketS2C(progress));
         }
     }
 }

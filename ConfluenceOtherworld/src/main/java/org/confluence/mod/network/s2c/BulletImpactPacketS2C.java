@@ -11,6 +11,7 @@ import org.confluence.mod.common.entity.projectile.BaseBulletEntity;
 import org.confluence.mod.common.item.gun.definition.BulletImpactEffect;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -45,6 +46,6 @@ public record BulletImpactPacketS2C(double x, double y, double z,
         if (effect == BulletImpactEffect.NONE) {
             return;
         }
-        Confluence.NETWORK_HANDLER.sendToPlayersNear(level.dimension(), null, position.x, position.y, position.z, 64.0D, new BulletImpactPacketS2C(position.x, position.y, position.z, effect.id()));
+        PortPacketDistributor.sendToPlayersNear(level.dimension(), null, position.x, position.y, position.z, 64.0D, new BulletImpactPacketS2C(position.x, position.y, position.z, effect.id()));
     }
 }

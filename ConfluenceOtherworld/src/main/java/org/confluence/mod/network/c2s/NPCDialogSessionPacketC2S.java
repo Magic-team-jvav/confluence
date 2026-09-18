@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.mesdag.portlib.network.IPortPacket;
+import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
@@ -28,6 +29,6 @@ public record NPCDialogSessionPacketC2S(int entityId, boolean open) implements I
     public ResourceLocation identifier() {return ID;}
 
     public static void send(int entityId, boolean open) {
-        Confluence.NETWORK_HANDLER.sendToServer(new NPCDialogSessionPacketC2S(entityId, open));
+        PortPacketDistributor.sendToServer(new NPCDialogSessionPacketC2S(entityId, open));
     }
 }

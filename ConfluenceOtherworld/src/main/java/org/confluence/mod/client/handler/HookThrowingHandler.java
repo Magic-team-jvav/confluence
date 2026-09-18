@@ -19,9 +19,9 @@ import org.confluence.mod.common.init.item.HookItems;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
-import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;
 import org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.Iterator;
 
@@ -89,7 +89,7 @@ public final class HookThrowingHandler {
         }
         if (shouldSync) {
             PlayerJumpHandler.reset(true);
-            TerraCurio.NETWORK_HANDLER.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) player.getDeltaMovement().y, PlayerJumpPacketC2S.JUMP_NONE));
+            PortPacketDistributor.sendToServer(new PlayerJumpPacketC2S(RESET_FALL_DISTANCE, (float) player.getDeltaMovement().y, PlayerJumpPacketC2S.JUMP_NONE));
         }
     }
 }

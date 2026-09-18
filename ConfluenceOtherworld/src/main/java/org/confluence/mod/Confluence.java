@@ -37,7 +37,9 @@ import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.SummonerEvents;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.register.SummonerRegistries;
+import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
 import org.confluence.mod.common.summoner.register.SummonerSummonMarks;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
 import org.mesdag.portlib.network.PortNetworkHandler;
@@ -63,6 +65,8 @@ public final class Confluence {
         ModEvents.init();
         SummonerRegistries.init();
         SummonerAttachmentTypes.init();
+        SummonerAttachmentEntityTypes.register(eventBus);
+        SummonerSoundEvents.register(eventBus);
         SummonerSummonMarks.register(eventBus);
         SummonerEvents.init();
         ModDataMaps.init();

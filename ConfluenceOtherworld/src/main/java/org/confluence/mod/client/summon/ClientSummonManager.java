@@ -24,7 +24,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
-import org.confluence.mod.client.model.entity.projectile.HornetStingerProjectileModel;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.common.summon.flying.FinchSummon;
 import org.confluence.mod.common.summon.projectile.SummonProjectileTypes;
@@ -44,10 +43,8 @@ public final class ClientSummonManager {
     private static final ResourceLocation IRON_GOLEM = Confluence.asResource("i_32_iron_golem");
     private static final ResourceLocation FINCH = Confluence.asResource("finch_baby");
     private static final ResourceLocation TERRAPRISMA_TEXTURE = Confluence.asResource("textures/entity/model/terraprisma_gray.png");
-    private static final ResourceLocation HORNET_STINGER = SummonProjectileTypes.HORNET_STINGER.id();
     private static final ResourceLocation IMP_FIREBALL = SummonProjectileTypes.IMP_FIREBALL.id();
     public static final ModelResourceLocation FINCH_STAFF_EMPTY_MODEL = new ModelResourceLocation(Confluence.asResource("finch_staff_empty"), "inventory");
-    private static final ResourceLocation STINGER_TEXTURE = Confluence.asResource("textures/entity/model/stinger.png");
     private static final int BACK_TRANSITION_TICKS = 20;
     private static final double INTERPOLATION_TICKS = 2.0;
     private static final double TELEPORT_DISTANCE_SQR = 16.0 * 16.0;
@@ -58,7 +55,6 @@ public final class ClientSummonManager {
     private static boolean externalShaderPipeline;
     private static long synchronizationSequence;
     private static TerraprismaModel terraprismaModel;
-    private static HornetStingerProjectileModel hornetStingerModel;
 
     private ClientSummonManager() {}
 
@@ -138,9 +134,7 @@ public final class ClientSummonManager {
         MultiBufferSource.BufferSource buffers = minecraft.renderBuffers().bufferSource();
         for (State state : STATES.values()) {
             ClientSummonModels.Binding binding = ClientSummonModels.MODELS.get(state.current.type());
-            if (state.current.type().equals(HORNET_STINGER)) {
-                renderHornetStinger(state, event, buffers);
-            } else if (state.current.type().equals(IMP_FIREBALL)) {
+            if (state.current.type().equals(IMP_FIREBALL)) {
                 continue;
             } else if (state.current.type().equals(TERRAPRISMA)) {
                 renderTerraprisma(state, event, buffers);
@@ -191,24 +185,6 @@ public final class ClientSummonManager {
         GEO_RENDERERS.computeIfAbsent(state.current.type(), type -> new ClientSummonGeoRenderer(binding)).render(poseStack, visual, bufferSource, null, null, packedLight);
         poseStack.popPose();
     }
-
-    private static void renderHornetStinger(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null) return;
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
-        Vec3 position = state.interpolatedPosition(partialTick);
-        Vec3 camera = event.getCamera().getPosition();
-        PoseStack poseStack = event.getPoseStack();
-        poseStack.pushPose();
-        poseStack.translate(position.x - camera.x, position.y - camera.y, position.z - camera.z);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-state.interpolatedYaw(partialTick)));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(state.interpolatedPitch(partialTick)));
-        int packedLight = LevelRenderer.getLightColor(minecraft.level, BlockPos.containing(position));
-        HornetStingerProjectileModel model = hornetStingerModel(minecraft.getEntityModels());
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(STINGER_TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        poseStack.popPose();
-    }
-
 
     private static void renderStardustDragonPart(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -401,13 +377,6 @@ public final class ClientSummonManager {
             terraprismaModel = new TerraprismaModel(models.bakeLayer(TerraprismaModel.LAYER_LOCATION));
         }
         return terraprismaModel;
-    }
-
-    private static HornetStingerProjectileModel hornetStingerModel(EntityModelSet models) {
-        if (hornetStingerModel == null) {
-            hornetStingerModel = new HornetStingerProjectileModel(models.bakeLayer(HornetStingerProjectileModel.LAYER_LOCATION));
-        }
-        return hornetStingerModel;
     }
 
     private static final class State {

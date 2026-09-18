@@ -69,7 +69,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");
         add(SummonItems.SLIME_STAFF.get(), "Slime Staff");
-        add(SummonItems.HORNET_STAFF.get(), "Hornet Staff");
+        add(SummonItems.NEW_HORNET_STAFF.get(), "Hornet Staff");
         add(SummonItems.SCULK_WISP_STAFF.get(), "Sculk Wisp Staff");
         add(SummonItems.IMP_STAFF.get(), "Imp Staff");
         add(SummonItems.SNOW_FLINX_STAFF.get(), "Flinx Staff");
@@ -84,6 +84,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.i_32_iron_golem", "I-32 Iron Golem");
         add("entity.confluence.slime_baby", "Baby Slime");
         add("entity.confluence.hornet_baby", "Hornet Minion");
+        add("summon.confluence.hornet", "Hornet");
         add("entity.confluence.sculk_wisp", "Sculk Wisp");
         add("entity.confluence.summon_imp", "Imp Minion");
         add("entity.confluence.summon_snow_flinx", "Snow Flinx Minion");
@@ -93,6 +94,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.summon.damage", "Base summon damage: %s");
         add("tooltip.confluence.summon.slots", "Minion slots: %s");
         add("tooltip.confluence.summon.retrieve", "Hold right-click to release all summons");
+        add("item.confluence.tooltip.damage", "Damage");
+        add("item.confluence.tooltip.knockback", "Knockback");
+        add("item.confluence.tooltip.armor_pierce", "Armor Penetration");
+        add("item.confluence.tooltip.summon", "Summons %s");
+        add("item.confluence.tooltip.summon_slots", "Minion slots: %s/%s");
+        add("item.confluence.tooltip.remove_summon", "Sneak and right-click to dismiss");
         add("tooltip.confluence.storage_companion.retrieve", "Sneak and right-click to recall");
         add(YoyoItems.AMAZON.get(), "Amazon");
         add(YoyoItems.ARTERY.get(), "Artery");
@@ -1223,7 +1230,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.decayeder_step", "Decayeder: Footsteps");
         add("confluence.subtitle.whip_attack", "Whip: Lash");
         add("confluence.subtitle.routine_summon", "Summon: Summon");
-        add("confluence.subtitle.summon_hornet", "Hornet: Summon");
+        add("confluence.subtitle.use_minion_weapon", "Minion Staff: Use");
         add("confluence.subtitle.summon_eye", "Flying Summon: Summon");
         add("confluence.subtitle.summon_imp", "Imp: Summon");
         addCreatureSoundTranslations();
@@ -1882,7 +1889,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.decayeder_step", "Decayeder: Footsteps");
         add("confluence.subtitle.whip_attack", "Whip: Lash");
         add("confluence.subtitle.routine_summon", "Summon: Appears");
-        add("confluence.subtitle.summon_hornet", "Hornet: Appears");
         add("confluence.subtitle.summon_eye", "Flying Summon: Appears");
         add("confluence.subtitle.summon_imp", "Imp: Appears");
         add("confluence.subtitle.summon_money_trough", "Money Trough: Appears");

@@ -13,8 +13,6 @@ import java.util.function.BiFunction;
 public final class SummonProjectileTypes {
     private static final Map<ResourceLocation, SummonProjectileType<?>> TYPES = new LinkedHashMap<>();
 
-    public static final SummonProjectileType<HornetStingerAttachment> HORNET_STINGER =
-            register("summon_bee_stick_proj", HornetStingerAttachment::new);
     public static final SummonProjectileType<ImpFireballAttachment> IMP_FIREBALL =
             register("fire_imp_proj", ImpFireballAttachment::new);
 

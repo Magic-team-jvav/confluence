@@ -156,7 +156,6 @@ public final class ModSoundEvents {
     public static final RegistryObject<SoundEvent> WAVING = register("waving");
     // 召唤
     public static final RegistryObject<SoundEvent> ROUTINE_SUMMON = register("routine_summon"); // 大多数召唤杖
-    public static final RegistryObject<SoundEvent> SUMMON_HORNET = register("summon_hornet"); //黄蜂
     public static final RegistryObject<SoundEvent> SUMMON_EYE = register("summon_eye"); // 魔眼
     public static final RegistryObject<SoundEvent> SUMMON_IMP = register("summon_imp"); // 小鬼
     public static final RegistryObject<SoundEvent> SUMMON_MONEY_TROUGH = register("summon_money_trough"); // 存钱罐

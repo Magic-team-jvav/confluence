@@ -1,9 +1,8 @@
 package org.confluence.mod.common.summoner.minion;
 
-import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
@@ -26,7 +25,7 @@ public abstract class Minion extends AttachmentEntity {
     protected int order = 0;
     protected int sameSize = 1;
 
-    public Minion(Holder<AttachmentEntityType<?>> type) {
+    public Minion(RegistryObject<? extends AttachmentEntityType<?>> type) {
         super(type);
     }
 

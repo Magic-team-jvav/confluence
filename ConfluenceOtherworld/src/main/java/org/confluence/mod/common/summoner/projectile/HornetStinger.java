@@ -1,0 +1,50 @@
+package org.confluence.mod.common.summoner.projectile;
+
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
+import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.util.TCUtils;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+public class HornetStinger extends Projectile implements IEntityCollision<HornetStinger>, IBlockCollision<HornetStinger> {
+
+    public HornetStinger() {
+        super(SummonerAttachmentEntityTypes.HORNET_STINGER);
+        setMaxTickCount(200);
+        setDrag(1.0F);
+        setGravity(0);
+    }
+
+    @Override
+    public void onCollisionAttack(List<HitContext> hitContexts) {
+        LivingEntity target = hitContexts.get(0).entity();
+        attack(target, getDamage(), 0);
+        Player owner = getOwner();
+        int amplifier = owner != null && TCUtils.hasType(owner, TCItems.HIVE$PACK) ? 1 : 0;
+        target.addEffect(new MobEffectInstance(MobEffects.POISON, 80 + getRandom().nextInt(60), amplifier), owner);
+        setRemove();
+    }
+
+    @Override
+    public @NotNull AABB getHitbox() {
+        return new AABB(-0.1, -0.1, -0.5, 0.1, 0.1, 0.0);
+    }
+
+    @Override
+    public @NotNull AABB getBlockCollisionBox() {
+        return new AABB(-0.1, -0.1, -0.1, 0.1, 0.1, 0.1);
+    }
+
+    @Override
+    public void onBlockCollision(CollisionContext context) {
+        setRemove();
+    }
+}

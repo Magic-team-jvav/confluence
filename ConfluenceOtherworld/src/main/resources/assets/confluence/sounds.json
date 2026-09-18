@@ -1,4 +1,10 @@
 {
+    "use_minion_weapon": {
+        "sounds": [
+            "confluence:use_minion_weapon"
+        ],
+        "subtitle": "confluence.subtitle.use_minion_weapon"
+    },
     "transmission":  {
                          "sounds":  [
                                         "confluence:transmission"
@@ -478,12 +484,6 @@
             "confluence:summon/routine_summon"
         ],
         "subtitle": "confluence.subtitle.routine_summon"
-    },
-    "summon_hornet": {
-        "sounds": [
-            "confluence:summon/summon_hornet"
-        ],
-        "subtitle": "confluence.subtitle.summon_hornet"
     },
     "summon_eye": {
         "sounds": [

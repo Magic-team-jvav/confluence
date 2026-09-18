@@ -1026,7 +1026,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "# #",
                 " # ",
                 " # "
-        )), SummonItems.HORNET_STAFF.toStack());
+        )), SummonItems.NEW_HORNET_STAFF.toStack());
         // 蜜蜂套
         shaped(writer, PortShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(MaterialItems.ROYAL_WAX)

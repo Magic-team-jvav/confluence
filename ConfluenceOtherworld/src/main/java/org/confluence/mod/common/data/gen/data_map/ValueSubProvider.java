@@ -678,7 +678,7 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.CURSED_FLAMES, gold5 - gold1);
         builder
                 .add(SummonItems.SLIME_STAFF, gold2)
-                .add(SummonItems.HORNET_STAFF, silver50 + silver20)
+                .add(SummonItems.NEW_HORNET_STAFF, silver50 + silver20)
                 .add(SummonItems.IMP_STAFF, silver50 + silver2 + silver2)
                 .add(SummonItems.FINCH_STAFF, gold1)
                 .add(SummonItems.SNOW_FLINX_STAFF, gold1 + silver50)

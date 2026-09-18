@@ -1,13 +1,14 @@
 package org.confluence.mod.common.summoner.attachmentEntity;
 
-import net.minecraft.core.Holder;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
+import org.confluence.mod.common.summoner.minion.HornetMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
@@ -16,13 +17,12 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Supplier;
 
 public abstract class AttachmentEntity implements Immunity {
 
-    protected final Holder<AttachmentEntityType<?>> type;
+    protected final RegistryObject<? extends AttachmentEntityType<?>> type;
     protected final ArrayList<PathNode> historyNodes = new ArrayList<>();
     protected final AttachmentEntityGoalSelector goalSelector = new AttachmentEntityGoalSelector();
     protected final SyncFieldDispatcher syncFields = SyncFieldDispatcher.create(this::registerSyncFields);
@@ -47,7 +47,7 @@ public abstract class AttachmentEntity implements Immunity {
         fields.field(LyraStreamCodecs.PATH_NODE, this::getCurrentPathNode, this::setCurrentPathNode);
     }
 
-    public AttachmentEntity(Holder<AttachmentEntityType<?>> type) {
+    public AttachmentEntity(RegistryObject<? extends AttachmentEntityType<?>> type) {
         this.type = type;
         init(new PathNode(Vec3.ZERO, 0, 0, 0));
         registerGoals(goalSelector);
@@ -384,6 +384,6 @@ public abstract class AttachmentEntity implements Immunity {
     }
 
     public AttachmentEntityType<?> getType() {
-        return type.value();
+        return type.get();
     }
 }

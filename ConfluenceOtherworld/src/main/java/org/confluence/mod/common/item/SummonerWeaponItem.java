@@ -35,7 +35,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
     private final float damage;
     private final float knockback;
     private final float armorPierce;
-    private final @Nullable SoundEvent soundEvent;
+    private final @Nullable Supplier<SoundEvent> soundEvent;
     private final TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonConsumer;
     private final TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeConsumer;
 
@@ -51,7 +51,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
 
     public SummonerWeaponItem(Properties properties, Supplier<AttachmentEntityType<T>> typeSupplier,
                               MinionSlotType slotType, float damage, float knockback, float armorPierce,
-                              @Nullable SoundEvent soundEvent,
+                              @Nullable Supplier<SoundEvent> soundEvent,
                               @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonAction,
                               @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeAction) {
         super(properties);
@@ -94,8 +94,9 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
             } else {
                 summon(player, itemStack);
             }
-            if (soundEvent != null) {
-                level.playSound(null, player.getX(), player.getY(), player.getZ(), soundEvent, player.getSoundSource(), 1.0F, 1.0F);
+            SoundEvent sound = soundEvent == null ? null : soundEvent.get();
+            if (sound != null) {
+                level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, player.getSoundSource(), 1.0F, 1.0F);
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
@@ -139,7 +140,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
 
     @Nullable
     public SoundEvent getSoundEvent(ItemStack itemStack) {
-        return soundEvent;
+        return soundEvent == null ? null : soundEvent.get();
     }
 
     @NotNull

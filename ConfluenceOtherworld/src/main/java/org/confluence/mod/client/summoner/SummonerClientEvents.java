@@ -12,10 +12,14 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.model.bbmodel.BBModelManager;
 import org.confluence.mod.client.summoner.model.geo.GeoAnimationManager;
 import org.confluence.mod.client.summoner.model.geo.GeoModelManager;
+import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
+import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortRegisterClientReloadListenersEvent;
+import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
 
 public final class SummonerClientEvents {
 
@@ -47,5 +51,9 @@ public final class SummonerClientEvents {
             event.registerReloadListener(GeoAnimationManager.INSTANCE);
             event.registerReloadListener(BBModelManager.INSTANCE);
         });
+        PortEventHandler.addListener((PortFMLClientSetupEventPort event) -> event.enqueueWork(() -> {
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET.get(), new HornetRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET_STINGER.get(), new HornetStingerRenderer());
+        }));
     }
 }

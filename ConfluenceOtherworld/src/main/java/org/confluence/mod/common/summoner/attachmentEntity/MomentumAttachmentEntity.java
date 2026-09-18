@@ -3,10 +3,12 @@ package org.confluence.mod.common.summoner.attachmentEntity;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.function.Supplier;
 
 public abstract class MomentumAttachmentEntity extends AttachmentEntity implements IMomentumAttachmentEntity {
 
@@ -15,7 +17,7 @@ public abstract class MomentumAttachmentEntity extends AttachmentEntity implemen
     private float drag = 0.92F;
     private float gravity = -0.08F;
 
-    public MomentumAttachmentEntity(Holder<AttachmentEntityType<?>> type) {
+    public MomentumAttachmentEntity(RegistryObject<? extends AttachmentEntityType<?>> type) {
         super(type);
     }
 

@@ -11,7 +11,7 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 
 public final class SummonerRegistries {
 
-    private static final ResourceKey<Registry<AttachmentEntityType<? extends AttachmentEntity>>> ATTACHMENT_ENTITY_TYPE_KEY = ResourceKey.createRegistryKey(Confluence.asResource("summoner_attachment_entity_types"));
+    public static final ResourceKey<Registry<AttachmentEntityType<? extends AttachmentEntity>>> ATTACHMENT_ENTITY_TYPE_KEY = ResourceKey.createRegistryKey(Confluence.asResource("summoner_attachment_entity_types"));
 
     public static final PortCustomRegistration<AttachmentEntityType<? extends AttachmentEntity>> ATTACHMENT_ENTITY_TYPES = PortRegisterHandler.custom(Confluence.MODID, ATTACHMENT_ENTITY_TYPE_KEY, maker -> maker.sync(true));
 

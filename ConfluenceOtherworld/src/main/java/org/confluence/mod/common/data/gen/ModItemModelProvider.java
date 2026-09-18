@@ -227,6 +227,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         handheld.add(createDir(HamaxeItems.ITEMS, "hamaxe/"));
         handheld.add(createDir(HoeShovelItems.ITEMS, "hoe_shovel/"));
         handheld.add(createDir(GardenShearsItems.ITEMS, "garden_shears/"));
+        handheldTextureAlias(SummonItems.NEW_HORNET_STAFF, Confluence.asResource("item/summon/hornet_staff"));
 
         genModels(handheld, "item/handheld");
 
@@ -349,6 +350,11 @@ public class ModItemModelProvider extends ItemModelProvider {
     private void treasureBagModelAlias(PortDeferredItem<? extends Item> item, String textureName) {
         withExistingParent(item.getId().getPath(), "item/generated")
                 .texture("layer0", Confluence.asResource("item/treasure_bag/" + textureName));
+        skip.add(item.get());
+    }
+
+    private void handheldTextureAlias(PortDeferredItem<? extends Item> item, ResourceLocation texture) {
+        withExistingParent(item.getId().getPath(), "item/handheld").texture("layer0", texture);
         skip.add(item.get());
     }
 

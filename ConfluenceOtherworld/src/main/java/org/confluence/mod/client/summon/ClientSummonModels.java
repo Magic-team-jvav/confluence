@@ -22,7 +22,6 @@ final class ClientSummonModels {
     private static final Animations FLYING = new Animations(FLY, FLY, Map.of(), 4);
     private static final Animations IDLING = new Animations(IDLE, IDLE, Map.of(), 4);
     private static final Animations CASTING = new Animations(IDLE, WALK, Map.of(SummonAnimation.MELEE_ATTACK, CAST), 4);
-    private static final Animations HORNET = new Animations(IDLE, IDLE, Map.of(SummonAnimation.MELEE_ATTACK, CAST), 4);
     private static final Animations SLIME = new Animations(IDLE, WALK, Map.of(SummonAnimation.FLY, FLY), 0);
     private static final Animations FROG = new Animations(IDLE, WALK, Map.of(SummonAnimation.FLY, FLY, SummonAnimation.MELEE_ATTACK, STRIKE), 4);
     private static final Animations SPHERE = new Animations(IDLE, IDLE, Map.of(SummonAnimation.MELEE_ATTACK, STRIKE), 4);
@@ -31,7 +30,6 @@ final class ClientSummonModels {
     static final Map<ResourceLocation, Binding> MODELS = Map.ofEntries(
             Map.entry(SummonTypes.FINCH.id(), model("summon/finch_baby", Material.DOUBLE_SIDED, FLYING).transform(1, 0, 0, true)),
             Map.entry(SummonTypes.SLIME.id(), model("summon/slime_baby", Material.SLIME, SLIME)),
-            Map.entry(SummonTypes.HORNET.id(), new Binding("summon/hornet_baby", "summon/hornet_baby", "hornet", Material.DOUBLE_SIDED, HORNET).transform(0.6F, 0.5F, 0, true)),
             Map.entry(SummonTypes.SCULK_WISP.id(), model("summon/sculk_wisp", Material.CUTOUT, CASTING).transform(1, 0.5F, -90, true)),
             Map.entry(SummonTypes.IMP.id(), model("summon/summon_imp", Material.DOUBLE_SIDED, CASTING).transform(0.8F, -0.5F, 0, true)),
             Map.entry(SummonTypes.SNOW_FLINX.id(), model("summon/summon_snow_flinx", Material.DOUBLE_SIDED, WALKING).transform(1, 0, 90, false)),

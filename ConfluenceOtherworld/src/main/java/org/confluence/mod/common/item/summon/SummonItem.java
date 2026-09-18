@@ -59,7 +59,7 @@ public class SummonItem extends Item {
 
     public boolean hasSummonKnockback() {
         return summonType == SummonTypes.IRON_GOLEM || summonType == SummonTypes.SCULK_WISP
-                || summonType == SummonTypes.HORNET || summonType == SummonTypes.IMP;
+                || summonType == SummonTypes.IMP;
     }
 
     @Override

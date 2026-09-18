@@ -1,8 +1,10 @@
 package org.confluence.mod.common.init.item;
 
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.item.SummonerWeaponItem;
 import org.confluence.mod.common.item.summon.SummonItem;
 import org.confluence.mod.common.summon.SummonTypes;
 import org.confluence.mod.common.summon.dragon.StardustDragonSummon;
@@ -10,9 +12,14 @@ import org.confluence.mod.common.summon.flying.*;
 import org.confluence.mod.common.summon.ground.*;
 import org.confluence.mod.common.summon.slime.SlimeSummon;
 import org.confluence.mod.common.summon.terraprisma.TerraprismaSummon;
+import org.confluence.mod.common.summoner.minion.HornetMinion;
+import org.confluence.mod.common.summoner.minion.MinionSlotType;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
+import net.minecraft.world.item.Item;
 
 public class SummonItems {
     public static void init() {}
@@ -25,8 +32,6 @@ public class SummonItems {
             () -> new SummonItem(ModRarity.BLUE, SummonTypes.IRON_GOLEM, IronGolemSummon.SLOT_COST, IronGolemSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> SLIME_STAFF = ITEMS.register("slime_staff",
             () -> new SummonItem(ModRarity.LIGHT_RED, SummonTypes.SLIME, SlimeSummon.SLOT_COST, SlimeSummon.BASE_DAMAGE));
-    public static final PortDeferredItem<SummonItem> HORNET_STAFF = ITEMS.register("hornet_staff",
-            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.HORNET, HornetSummon.SLOT_COST, HornetSummon.BASE_DAMAGE).setSound(ModSoundEvents.SUMMON_HORNET));
     public static final PortDeferredItem<SummonItem> SCULK_WISP_STAFF = ITEMS.register("sculk_wisp_staff",
             () -> new SummonItem(ModRarity.ORANGE, SummonTypes.SCULK_WISP, SculkWispSummon.SLOT_COST, SculkWispSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> IMP_STAFF = ITEMS.register("imp_staff",
@@ -47,5 +52,17 @@ public class SummonItems {
             () -> new SummonItem(ModRarity.PINK, SummonTypes.TERRAPRISMA, TerraprismaSummon.SLOT_COST, TerraprismaSummon.BASE_DAMAGE));
     public static final PortDeferredItem<SummonItem> STARDUST_DRAGON_STAFF = ITEMS.register("stardust_dragon_staff",
             () -> new SummonItem(ModRarity.RED, SummonTypes.STARDUST_DRAGON, StardustDragonSummon.SLOT_COST, StardustDragonSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonerWeaponItem<HornetMinion>> NEW_HORNET_STAFF = ITEMS.register("new_hornet_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
+                    SummonerAttachmentEntityTypes.HORNET,
+                    MinionSlotType.Minion,
+                    8.0F,
+                    0.2F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
 
 }

@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ConfluenceOtherworld - Client" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="17" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <envs>
+      <env name="MOD_CLASSES" value="confluence%%D:\IDEA\confluence-1.20.1\ConfluenceOtherworld\build\classes\java\main;confluence%%D:\IDEA\confluence-1.20.1\ConfluenceOtherworld\build\resources\main" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+    <module name="confluence-1_20_1.ConfluenceOtherworld.main" />
+    <option name="PROGRAM_PARAMETERS" value="@D:\\IDEA\\confluence-1.20.1\\ConfluenceOtherworld\\build\\moddev\\clientRunProgramArgs.txt" />
+    <option name="VM_PARAMETERS" value="@D:\\IDEA\\confluence-1.20.1\\ConfluenceOtherworld\\build\\moddev\\clientRunVmArgs.txt -Dfml.modFolders=confluence%%D:\\IDEA\\confluence-1.20.1\\ConfluenceOtherworld\\build\\classes\\java\\main;confluence%%D:\\IDEA\\confluence-1.20.1\\ConfluenceOtherworld\\build\\resources\\main" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ConfluenceOtherworld/run" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

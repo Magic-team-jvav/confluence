@@ -19,7 +19,6 @@ public final class SummonTypes {
     public static final SummonType FINCH = register("finch_baby", FinchSummon::new);
     public static final SummonType IRON_GOLEM = register("i_32_iron_golem", IronGolemSummon::new);
     public static final SummonType SLIME = register("slime_baby", SlimeSummon::new);
-    public static final SummonType HORNET = register("hornet_baby", HornetSummon::new);
     public static final SummonType SCULK_WISP = register("sculk_wisp", SculkWispSummon::new);
     public static final SummonType IMP = register("summon_imp", ImpSummon::new);
     public static final SummonType SNOW_FLINX = register("summon_snow_flinx", SnowFlinxSummon::new);

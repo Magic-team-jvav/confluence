@@ -5143,7 +5143,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.FINCH_STAFF.get(), "雀杖");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "铁傀儡杖");
         add(SummonItems.SLIME_STAFF.get(), "史莱姆法杖");
-        add(SummonItems.HORNET_STAFF.get(), "黄蜂法杖");
+        add(SummonItems.NEW_HORNET_STAFF.get(), "黄蜂法杖");
         add(SummonItems.SCULK_WISP_STAFF.get(), "幽匿游灵法杖");
         add(SummonItems.IMP_STAFF.get(), "小鬼法杖");
         add(SummonItems.SNOW_FLINX_STAFF.get(), "小雪怪法杖");
@@ -5158,6 +5158,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.i_32_iron_golem", "i-32型铁傀儡");
         add("entity.confluence.slime_baby", "史莱姆宝宝");
         add("entity.confluence.hornet_baby", "仆役黄蜂");
+        add("summon.confluence.hornet", "黄蜂");
         add("entity.confluence.sculk_wisp", "幽匿游灵");
         add("entity.confluence.summon_imp", "召唤的小鬼");
         add("entity.confluence.summon_snow_flinx", "小雪怪");
@@ -5171,6 +5172,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.confluence.summon.damage", "基础召唤伤害：%s");
         add("tooltip.confluence.summon.slots", "占用仆从栏：%s");
         add("tooltip.confluence.summon.retrieve", "右键长按以解除所有召唤物");
+        add("item.confluence.tooltip.damage", "伤害");
+        add("item.confluence.tooltip.knockback", "击退");
+        add("item.confluence.tooltip.armor_pierce", "护甲穿透");
+        add("item.confluence.tooltip.summon", "召唤%s");
+        add("item.confluence.tooltip.summon_slots", "仆从栏：%s/%s");
+        add("item.confluence.tooltip.remove_summon", "潜行右键遣散");
         add("tooltip.confluence.storage_companion.retrieve", "潜行右键以收回");
         add(ModEntities.FLOWER_POWER_PETAL.get(), "花之力花瓣");
         add(ModEntities.DRIPPLER_CRIPPLER_PROJECTILE.get(), "血肉射弹");
@@ -5253,7 +5260,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.decayeder_step", "腐骴：脚步声");
         add("confluence.subtitle.whip_attack", "鞭子：抽打");
         add("confluence.subtitle.routine_summon", "召唤物：召唤");
-        add("confluence.subtitle.summon_hornet", "黄蜂：召唤");
+        add("confluence.subtitle.use_minion_weapon", "召唤杖：使用");
         add("confluence.subtitle.summon_eye", "飞行召唤物：召唤");
         add("confluence.subtitle.summon_imp", "小鬼：召唤");
         add("confluence.subtitle.summon_money_trough", "钱币槽：出现");

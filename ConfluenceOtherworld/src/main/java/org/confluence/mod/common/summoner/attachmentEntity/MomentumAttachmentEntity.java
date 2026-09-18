@@ -1,14 +1,12 @@
 package org.confluence.mod.common.summoner.attachmentEntity;
 
-import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
-import org.confluence.mod.common.summoner.LyraStreamCodecs;
+import org.confluence.lib.util.LibStreamCodecUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
-import java.util.function.Supplier;
 
 public abstract class MomentumAttachmentEntity extends AttachmentEntity implements IMomentumAttachmentEntity {
 
@@ -24,7 +22,7 @@ public abstract class MomentumAttachmentEntity extends AttachmentEntity implemen
     @Override
     protected void registerSyncFields(SyncFieldDispatcher fields) {
         super.registerSyncFields(fields);
-        fields.field(LyraStreamCodecs.VEC_3, this::getVelocity, this::setVelocity);
+        fields.field(LibStreamCodecUtils.VEC_3, this::getVelocity, this::setVelocity);
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.mesdag.portlib.event.entity.living.PortLivingDamageEvent;
 import org.mesdag.portlib.event.entity.living.PortLivingDeathEvent;
 import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
 
+// todo 合并到统一订阅类中
 public final class SummonerEvents {
 
     public static void init() {

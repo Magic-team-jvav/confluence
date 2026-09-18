@@ -1873,7 +1873,6 @@ public final class ModTabs {
                     .displayItems((parameters, output) -> {
                         output = new WipNotDisplayOutput(output);
 
-                        CreativeModeTab.Output summonItems = output;
                         acceptAll(SummonItems.ITEMS, output);
                         acceptAll(WhipItems.ITEMS, output);
                         acceptAll(LightPetItems.ITEMS, output);

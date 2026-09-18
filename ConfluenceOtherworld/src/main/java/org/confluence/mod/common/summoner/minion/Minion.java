@@ -3,14 +3,10 @@ package org.confluence.mod.common.summoner.minion;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.registries.RegistryObject;
+import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
-import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
-import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -35,7 +31,7 @@ public abstract class Minion extends AttachmentEntity {
     protected void registerSyncFields(SyncFieldDispatcher fields) {
         super.registerSyncFields(fields);
         fields.field(LyraStreamCodecs.INT, () -> target != null ? target.getId() : -1, (level, id) -> target = level.getEntity(id) instanceof LivingEntity living ? living : null);
-        fields.field(LyraStreamCodecs.MINION_SLOT_TYPE, this::getSlotType, this::setSlotType);
+        fields.field(MinionSlotType.STREAM_CODEC, this::getSlotType, this::setSlotType);
         fields.field(LyraStreamCodecs.INT, this::getSlotCost, this::setSlotCost);
         fields.field(LyraStreamCodecs.INT, this::getOrder, this::setOrder);
         fields.field(LyraStreamCodecs.INT, this::getSameSize, this::setSameSize);

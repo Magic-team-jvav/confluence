@@ -54,6 +54,5 @@ public class ManaWeaponItems {
     public static final PortDeferredItem<ManaStaffItem<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = ITEMS.register("crystal_vile_shard", CrystalVileShardItem::new);
     public static final PortDeferredItem<RainbowRodItem> RAINBOW_ROD = ITEMS.register("rainbow_rod", RainbowRodItem::new);
     public static final PortDeferredItem<SkyFractureItem> SKY_FRACTURE = ITEMS.register("sky_fracture", SkyFractureItem::new);
-    public static final PortDeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = ITEMS.register("crystal_serpent", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04)
-            .withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));
+    public static final PortDeferredItem<ManaStaffItem<CrystalChargeProjectile>> CRYSTAL_SERPENT = ITEMS.register("crystal_serpent", () -> new ManaStaffItem<>(ModRarity.PINK, CrystalChargeProjectile::new, 25, 9, 8, 10, 0.04).withTooltip(Component.translatable("tooltip.item.confluence.crystal_serpent.0").withStyle(ChatFormatting.GRAY)));
 }

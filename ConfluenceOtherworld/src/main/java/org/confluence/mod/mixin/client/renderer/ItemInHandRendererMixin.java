@@ -23,6 +23,7 @@ import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.terra_curio.common.item.MagicMirror;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -52,7 +53,7 @@ public abstract class ItemInHandRendererMixin {
                 && !player.level().getEntitiesOfClass(WhipAttackEntity.class, player.getBoundingBox().inflate(8.0), attack -> attack.representsHeldWeapon(player, stack, humanoidarm)).isEmpty()) {
             // 挥鞭时只保留伸出的手臂，物品模型由 ItemRendererMixin 隐藏。
             renderPlayerArm(poseStack, buffer, combinedLight, equippedProgress, 0.0F, humanoidarm);
-        } else if (stack.getItem() instanceof YoyoItem && !player.isInvisible() && hasMatchingDeployedYoyo(player, stack)) {
+        } else if (stack.getItem() instanceof YoyoItem && !player.isInvisible() && confluence$hasMatchingDeployedYoyo(player, stack)) {
             // The deployed yoyo model is suppressed separately, so retain the first-person arm.
             // This mirrors 1.21's explicit arm rendering without coupling every yoyo item to a
             // shared client-side weapon flag.
@@ -60,7 +61,8 @@ public abstract class ItemInHandRendererMixin {
         }
     }
 
-    private static boolean hasMatchingDeployedYoyo(AbstractClientPlayer player, ItemStack stack) {
+    @Unique
+    private static boolean confluence$hasMatchingDeployedYoyo(AbstractClientPlayer player, ItemStack stack) {
         return !player.level().getEntitiesOfClass(YoyoEntity.class,
                 AABB.ofSize(player.position(), 128.0D, 128.0D, 128.0D),
                 yoyo -> yoyo.belongsTo(player) && yoyo.represents(stack)).isEmpty();

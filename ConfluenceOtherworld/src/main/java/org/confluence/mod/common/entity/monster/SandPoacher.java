@@ -7,20 +7,16 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -59,17 +55,6 @@ public class SandPoacher extends BaseMonster {
             boolean pursuingOnWall = isClimbing() && getTarget() != null && getTarget().isAlive() && hasLineOfSight(getTarget());
             setSpecialState(CombatState.CLIMBING, pursuingOnWall);
         }
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean damaged = super.doHurtTarget(target);
-        if (damaged && target instanceof LivingEntity living) {
-            int duration = LibUtils.isMaster(level(), blockPosition()) ? 200
-                    : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 160 : 80;
-            living.addEffect(new MobEffectInstance(ModEffects.ACID_VENOM.get(), duration), this);
-        }
-        return damaged;
     }
 
     @Override

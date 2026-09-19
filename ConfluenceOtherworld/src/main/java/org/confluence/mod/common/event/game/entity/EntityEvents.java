@@ -20,6 +20,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
+import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
@@ -45,6 +46,9 @@ public final class EntityEvents {
     /// {@code addFreshEntity} 路径。
     private static void joinLevel(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
+        if (!event.isCanceled() && entity instanceof LivingEntity living) {
+            MonsterAttributeScaling.apply(living, !event.loadedFromDisk());
+        }
         if (!(entity instanceof Boss boss) || entity.level().isClientSide) {
             return;
         }

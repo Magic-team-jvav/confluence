@@ -28,7 +28,7 @@ public final class MotherSlime extends BaseSlime {
             float horizontalOffset = getBbWidth() / 4.0F;
             float verticalOffset = getBbHeight() / 8.0F;
             for (int i = 0; i < babies; i++) {
-                BabySlime child = MonsterEntities.BABY_SLIME.get().create(level());
+                BaseSlime child = MonsterEntities.BABY_SLIME.get().create(level());
                 if (child == null) continue;
                 if (isPersistenceRequired()) child.setPersistenceRequired();
                 if (hasCustomName()) child.setCustomName(getCustomName());

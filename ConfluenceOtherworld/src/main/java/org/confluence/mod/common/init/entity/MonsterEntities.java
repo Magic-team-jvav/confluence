@@ -10,13 +10,13 @@ import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.mod.Confluence;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.*;
-import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
 import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 import org.confluence.mod.common.entity.monster.slime.*;
 import org.confluence.mod.common.entity.npc.TownSlimeRescue;
+import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 
 import static org.confluence.mod.common.init.entity.ModEntities.withAttributes;
 
@@ -30,7 +30,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.slime().maxHealth(16).armor(2).attackDamage(4).build());
     public static final RegistryObject<EntityType<BaseSlime>> PURPLE_SLIME = withAttributes(registerSlime("purple_slime", true, 2, true),
             () -> CreatureAttributeBuilder.slime().maxHealth(25).armor(6).attackDamage(5).build());
-    public static final RegistryObject<EntityType<Pinky>> PINK_SLIME = withAttributes(registerEntity("pink_slime", EntityType.Builder.of(Pinky::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<BaseSlime>> PINK_SLIME = withAttributes(registerSlime("pink_slime", true, 1),
             () -> CreatureAttributeBuilder.slime().maxHealth(97).armor(2).attackDamage(2).build());
 
     // 地表与森林：金史莱姆
@@ -68,21 +68,21 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.slime().maxHealth(25).armor(4).attackDamage(5).build());
     public static final RegistryObject<EntityType<BaseSlime>> YELLOW_SLIME = withAttributes(registerSlime("yellow_slime", false, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(25).armor(7).attackDamage(6).build());
-    public static final RegistryObject<EntityType<BlackSlime>> BLACK_SLIME = withAttributes(registerEntity("black_slime", EntityType.Builder.of(BlackSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<BaseSlime>> BLACK_SLIME = withAttributes(registerEntity("black_slime", EntityType.Builder.<BaseSlime>of((type, level) -> new BaseSlime(type, level, false, 2, false, true), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(25).armor(4).attackDamage(6).build());
     public static final RegistryObject<EntityType<MotherSlime>> MOTHER_SLIME = withAttributes(registerEntity("mother_slime", EntityType.Builder.of(MotherSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(58).armor(7).attackDamage(10).build());
-    public static final RegistryObject<EntityType<BabySlime>> BABY_SLIME = withAttributes(registerEntity("baby_slime", EntityType.Builder.of(BabySlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<BaseSlime>> BABY_SLIME = withAttributes(registerEntity("baby_slime", EntityType.Builder.<BaseSlime>of((type, level) -> new BaseSlime(type, level, false, 1, false, true), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(25).armor(4).attackDamage(6).build());
 
     // 地下与洞穴：骷髅与蝙蝠
-    public static final RegistryObject<EntityType<MeleeSkeleton>> ARMORED_SKELETON = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerSkeleton("armored_skeleton", 0.8F, 2.45F, MeleeSkeleton.BehaviorProfile.ARMORED_SKELETON)),
+    public static final RegistryObject<EntityType<MeleeSkeleton>> ARMORED_SKELETON = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerSkeleton("armored_skeleton", 0.8F, 2.45F, MeleeSkeleton.BehaviorProfile.NORMAL)),
             () -> CreatureAttributeBuilder.creature().maxHealth(136).armor(28).attackDamage(21).knockbackResistance(0.64).movementSpeed(0.23).followRange(32).build());
     public static final RegistryObject<EntityType<Decayeder>> DECAYEDER = withAttributes(registerEntity("decayeder", EntityType.Builder.of(Decayeder::new, MobCategory.MONSTER).sized(1F, 1.8F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(10).armor(6).attackDamage(6).build());
     public static final RegistryObject<EntityType<CaveBat>> CAVE_BAT = withAttributes(registerEntity("cave_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(8).armor(1).attackDamage(4).followRange(16).attackKnockback(0.2).knockbackResistance(0.5).build());
-    public static final RegistryObject<EntityType<CaveBat>> GIANT_BAT = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("giant_bat", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.GIANT), MobCategory.MONSTER).sized(0.6F, 1.4F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<CaveBat>> GIANT_BAT = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("giant_bat", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.ROUTINE), MobCategory.MONSTER).sized(0.6F, 1.4F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(52).armor(16).attackDamage(24).followRange(32).attackKnockback(0.2).knockbackResistance(0.33).build());
 
     // 地下与洞穴：蠕虫
@@ -128,7 +128,7 @@ public class MonsterEntities {
                     .state(JellyFish.CombatState.PURSUING, state -> state.duration(150))
                     .state(JellyFish.CombatState.PULSING, state -> state.duration(80).attackInterval(20))
                     .build());
-    public static final RegistryObject<EntityType<JellyFish>> GREEN_JELLYFISH = withAttributes(registerJellyFish("green_jellyfish", JellyFish.Profile.GREEN),
+    public static final RegistryObject<EntityType<JellyFish>> GREEN_JELLYFISH = withAttributes(registerJellyFish("green_jellyfish", JellyFish.Profile.ROUTINE),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(62).armor(18).attackDamage(41).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1)
                     .state(JellyFish.CombatState.PURSUING, state -> state.duration(150))
                     .state(JellyFish.CombatState.PULSING, state -> state.duration(80).attackInterval(20))
@@ -174,7 +174,7 @@ public class MonsterEntities {
     // 丛林：史莱姆
     public static final RegistryObject<EntityType<BaseSlime>> JUNGLE_SLIME = withAttributes(registerSlime("jungle_slime", true, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(46).armor(6).attackDamage(12).build());
-    public static final RegistryObject<EntityType<SpikedJungleSlime>> SPIKED_JUNGLE_SLIME = withAttributes(registerEntity("spiked_jungle_slime", EntityType.Builder.of(SpikedJungleSlime::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<SpikedSlime>> SPIKED_JUNGLE_SLIME = withAttributes(registerEntity("spiked_jungle_slime", EntityType.Builder.<SpikedSlime>of((type, level) -> new SpikedSlime(type, level, SlimeSpikeEntity.Variant.JUNGLE), MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(33).armor(8).attackDamage(15).build());
 
     // 丛林：黄蜂及幼蜂
@@ -188,7 +188,7 @@ public class MonsterEntities {
     // 丛林：蝙蝠与飞狐
     public static final RegistryObject<EntityType<CaveBat>> JUNGLE_BAT = withAttributes(registerEntity("jungle_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(17).armor(1).attackDamage(8).followRange(16).attackKnockback(0.2).knockbackResistance(0.5).build());
-    public static final RegistryObject<EntityType<CaveBat>> GIANT_FLYING_FOX = withAttributes(registerEntity("giant_flying_fox", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.GIANT), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<CaveBat>> GIANT_FLYING_FOX = withAttributes(registerEntity("giant_flying_fox", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.ROUTINE), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(221).armor(18).attackDamage(38).followRange(48).attackKnockback(0.5).knockbackResistance(0.64).build());
 
     // 丛林：食人植物
@@ -233,9 +233,9 @@ public class MonsterEntities {
                     .build());
 
     // 冰雪：史莱姆
-    public static final RegistryObject<EntityType<IceSlime>> ICE_SLIME = withAttributes(registerEntity("ice_slime", EntityType.Builder.of(IceSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<BaseSlime>> ICE_SLIME = withAttributes(registerSlime("ice_slime", true, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(13).armor(4).attackDamage(5).build());
-    public static final RegistryObject<EntityType<SpikedIceSlime>> SPIKED_ICE_SLIME = withAttributes(registerEntity("spiked_ice_slime", EntityType.Builder.of(SpikedIceSlime::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<SpikedSlime>> SPIKED_ICE_SLIME = withAttributes(registerEntity("spiked_ice_slime", EntityType.Builder.<SpikedSlime>of((type, level) -> new SpikedSlime(type, level, SlimeSpikeEntity.Variant.ICE), MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(31).armor(8).attackDamage(6).build());
 
     // 冰雪：维京海盗
@@ -276,7 +276,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<BaseSlime>> DESERT_SLIME = withAttributes(registerSlime("desert_slime", false, 2),
             () -> CreatureAttributeBuilder.slime().maxHealth(21).armor(5).attackDamage(6).build());
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> MUMMY = withAttributes(registerJumpingLand("mummy", 0.75F, 1.95F,
-                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.0, JumpingWarriorMonster.ContactProfile.MUMMY),
+                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.0, true),
             () -> CreatureAttributeBuilder.creature().maxHealth(68).armor(16).attackDamage(26).followRange(48).attackKnockback(1).knockbackResistance(0.46).stepHeight(3.2).jumpStrength(0.5).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(JumpingWarriorMonster.CombatState.WOUNDED, state -> state.multiply(Attributes.MOVEMENT_SPEED, 2))
                     .build());
@@ -317,23 +317,23 @@ public class MonsterEntities {
                     BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 1.6, true),
             () -> CreatureAttributeBuilder.creature().maxHealth(94).armor(26).attackDamage(26).followRange(64).attackKnockback(1).knockbackResistance(0.46).stepHeight(3.2).jumpStrength(0.7).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2).build());
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> TAINTED_GHOUL = withAttributes(registerJumpingLand("tainted_ghoul", 0.75F, 1.95F,
-                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6, JumpingWarriorMonster.ContactProfile.TAINTED_GHOUL),
+                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6, false),
             () -> CreatureAttributeBuilder.creature().maxHealth(115).armor(32).attackDamage(34).followRange(64).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.7).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2).build());
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> VILE_GHOUL = withAttributes(registerJumpingLand("vile_ghoul", 0.75F, 1.95F,
-                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6, JumpingWarriorMonster.ContactProfile.VILE_GHOUL),
+                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6, false),
             () -> CreatureAttributeBuilder.creature().maxHealth(130).armor(30).attackDamage(32).followRange(64).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.7).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2).build());
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> DREAMER_GHOUL = withAttributes(registerJumpingLand("dreamer_ghoul", 0.75F, 1.95F,
-                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6, JumpingWarriorMonster.ContactProfile.DREAMER_GHOUL),
+                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.6, false),
             () -> CreatureAttributeBuilder.creature().maxHealth(156).armor(32).attackDamage(29).followRange(64).attackKnockback(1).knockbackResistance(0.64).stepHeight(3.2).jumpStrength(0.7).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2).build());
 
     // 邪恶沙漠：木乃伊与沙漠幽魂
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> DARK_MUMMY = withAttributes(registerJumpingLand("dark_mummy", 0.75F, 1.95F,
-                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.5, JumpingWarriorMonster.ContactProfile.DARK_MUMMY),
+                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.5, true),
             () -> CreatureAttributeBuilder.creature().maxHealth(94).armor(18).attackDamage(32).followRange(48).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(JumpingWarriorMonster.CombatState.WOUNDED, state -> state.multiply(Attributes.MOVEMENT_SPEED, 2))
                     .build());
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> BLOOD_MUMMY = withAttributes(registerJumpingLand("blood_mummy", 0.75F, 1.95F,
-                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.5, JumpingWarriorMonster.ContactProfile.BLOOD_MUMMY),
+                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.5, true),
             () -> CreatureAttributeBuilder.creature().maxHealth(94).armor(18).attackDamage(32).followRange(48).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(JumpingWarriorMonster.CombatState.WOUNDED, state -> state.multiply(Attributes.MOVEMENT_SPEED, 2))
                     .build());
@@ -342,7 +342,7 @@ public class MonsterEntities {
 
     // 神圣沙漠：光明木乃伊
     public static final RegistryObject<EntityType<JumpingWarriorMonster>> LIGHT_MUMMY = withAttributes(registerJumpingLand("light_mummy", 0.75F, 1.95F,
-                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.0, JumpingWarriorMonster.ContactProfile.LIGHT_MUMMY),
+                    null, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, BaseWarriorMonster.LandSoundProfile.ROUTINE, 1.0, true),
             () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(18).attackDamage(29).followRange(48).attackKnockback(1).knockbackResistance(0.51).stepHeight(3.2).jumpStrength(0.5).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(JumpingWarriorMonster.CombatState.WOUNDED, state -> state.multiply(Attributes.MOVEMENT_SPEED, 2))
                     .build());
@@ -350,11 +350,11 @@ public class MonsterEntities {
     // 腐化：史莱姆及分裂体
     public static final RegistryObject<EntityType<CorruptSlime>> CORRUPT_SLIME = withAttributes(registerEntity("corrupt_slime", EntityType.Builder.of(CorruptSlime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(88).armor(20).attackDamage(28).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2).build());
-    public static final RegistryObject<EntityType<Slimeling>> SLIMELING = withAttributes(registerEntity("slimeling", EntityType.Builder.of(Slimeling::new, MobCategory.MONSTER).sized(0.4F, 0.4F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<BaseSlime>> SLIMELING = withAttributes(registerEntity("slimeling", EntityType.Builder.<BaseSlime>of((type, level) -> new BaseSlime(type, level, false, 1), MobCategory.MONSTER).sized(0.4F, 0.4F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(51).armor(10).attackDamage(20).build());
     public static final RegistryObject<EntityType<Slimer>> SLIMER = withAttributes(registerEntity("slimer", EntityType.Builder.of(Slimer::new, MobCategory.MONSTER).sized(1.0F, 0.9F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(31).armor(20).attackDamage(23).followRange(48).attackKnockback(1).knockbackResistance(0.28).build());
-    public static final RegistryObject<EntityType<WinglessSlimer>> WINGLESS_SLIMER = withAttributes(registerEntity("wingless_slimer", EntityType.Builder.of(WinglessSlimer::new, MobCategory.MONSTER).sized(0.8F, 0.8F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<BaseSlime>> WINGLESS_SLIMER = withAttributes(registerEntity("wingless_slimer", EntityType.Builder.<BaseSlime>of(BaseSlime::new, MobCategory.MONSTER).sized(0.8F, 0.8F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(46).armor(20).attackDamage(23).followRange(48).attackKnockback(1).knockbackResistance(0.3).build());
 
     // 腐化：噬魂怪与腐化者
@@ -382,7 +382,7 @@ public class MonsterEntities {
                     .build());
 
     // 猩红：史莱姆、脸怪与蹦跳兽
-    public static final RegistryObject<EntityType<Crimslime>> CRIMSLIME = withAttributes(registerEntity("crimslime", EntityType.Builder.of(Crimslime::new, MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<BaseSlime>> CRIMSLIME = withAttributes(registerEntity("crimslime", EntityType.Builder.<BaseSlime>of((type, level) -> new BaseSlime(type, level, false, 2, false, true), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(104).armor(26).attackDamage(31.2).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2).build());
     public static final RegistryObject<EntityType<BaseWarriorMonster>> FACE_MONSTER = withAttributes(registerLand("face_monster", 0.75F, 1.95F,
                     BaseWarriorMonster.LandSoundProfile.FACE_MONSTER, BaseWarriorMonster.LandAnimationProfile.WALK_ONLY, 1.0, true, BaseWarriorMonster.DoorBehavior.OPEN),
@@ -452,7 +452,7 @@ public class MonsterEntities {
     // 发光蘑菇：孢子僵尸、骷髅与蝙蝠
     public static final RegistryObject<EntityType<SporeZombie>> SPORE_ZOMBIE = withAttributes(registerEntity("spore_zombie", EntityType.Builder.of(SporeZombie::new, MobCategory.MONSTER).sized(0.75F, 1.95F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(93).armor(10).attackDamage(20).followRange(60).attackKnockback(0.6).knockbackResistance(0.1).movementSpeed(0.08).build());
-    public static final RegistryObject<EntityType<HatSporeZombie>> HAT_SPORE_ZOMBIE = withAttributes(registerEntity("hat_spore_zombie", EntityType.Builder.of(HatSporeZombie::new, MobCategory.MONSTER).sized(0.75F, 1.95F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<SporeZombie>> HAT_SPORE_ZOMBIE = withAttributes(registerEntity("hat_spore_zombie", EntityType.Builder.of(SporeZombie::new, MobCategory.MONSTER).sized(0.75F, 1.95F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(114).armor(16).attackDamage(19).followRange(60).attackKnockback(0.6).knockbackResistance(0.72).movementSpeed(0.08).build());
     public static final RegistryObject<EntityType<MeleeSkeleton>> SPORE_SKELETON = withAttributes(registerEntity("spore_skeleton", EntityType.Builder.<MeleeSkeleton>of((type, level) -> new MeleeSkeleton(type, level, true, MeleeSkeleton.BehaviorProfile.OPEN_DOORS), MobCategory.MONSTER).sized(0.65F, 1.85F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(31).armor(8).attackDamage(11).followRange(60).attackKnockback(0.5).knockbackResistance(0.28).build());
@@ -707,7 +707,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.slime().maxHealth(50).armor(6).attackDamage(14).build());
 
     // Boss 附属生物：尖刺史莱姆
-    public static final RegistryObject<EntityType<SpikedSlime>> SPIKED_SLIME = withAttributes(registerEntity("spiked_slime", EntityType.Builder.of(SpikedSlime::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
+    public static final RegistryObject<EntityType<SpikedSlime>> SPIKED_SLIME = withAttributes(registerEntity("spiked_slime", EntityType.Builder.<SpikedSlime>of(SpikedSlime::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.slime().maxHealth(26).armor(5).attackDamage(7).build());
 
     // 城镇史莱姆救援：摇晃宝箱与气球史莱姆
@@ -843,8 +843,8 @@ public class MonsterEntities {
         return registerEntity(name, EntityType.Builder.<JumpingWarriorMonster>of((type, level) -> new JumpingWarriorMonster(type, level, profile, animationProfile, soundProfile, meleeSpeed), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
     }
 
-    private static RegistryObject<EntityType<JumpingWarriorMonster>> registerJumpingLand(String name, float width, float height, BaseWarriorMonster.JumpProfile profile, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile, double meleeSpeed, JumpingWarriorMonster.ContactProfile contactProfile) {
-        return registerEntity(name, EntityType.Builder.<JumpingWarriorMonster>of((type, level) -> new JumpingWarriorMonster(type, level, profile, animationProfile, soundProfile, meleeSpeed, contactProfile), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
+    private static RegistryObject<EntityType<JumpingWarriorMonster>> registerJumpingLand(String name, float width, float height, BaseWarriorMonster.JumpProfile profile, BaseWarriorMonster.LandAnimationProfile animationProfile, BaseWarriorMonster.LandSoundProfile soundProfile, double meleeSpeed, boolean mummy) {
+        return registerEntity(name, EntityType.Builder.<JumpingWarriorMonster>of((type, level) -> new JumpingWarriorMonster(type, level, profile, animationProfile, soundProfile, meleeSpeed, mummy), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10));
     }
 
     private static RegistryObject<EntityType<BaseSlime>> registerSlime(String name, boolean passiveByDay, int size) {

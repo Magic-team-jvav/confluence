@@ -4966,8 +4966,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.RED_DEVIL.get(), "红魔鬼");
         add("entity.confluence.unholy_trident", "邪恶三叉戟");
         add(MonsterEntities.ILLUMINANT_BAT.get(), "夜明蝙蝠");
-        //todo 找不到符号，暂时注释
-        //add(MonsterEntities.WORM_SEGMENT.get(), "蠕虫体节");
         add(MonsterEntities.WYVERN.get(), "飞龙");
         add(MonsterEntities.WYVERN_SEGMENT.get(), "飞龙体节");
         add(MonsterEntities.DEVOURER.get(), "吞噬怪");

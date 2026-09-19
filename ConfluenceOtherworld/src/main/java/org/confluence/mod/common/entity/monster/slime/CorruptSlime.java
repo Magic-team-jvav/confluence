@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.monster.slime;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.init.entity.MonsterEntities;
@@ -15,17 +14,12 @@ public class CorruptSlime extends BaseSlime {
     }
 
     @Override
-    protected void onAttackTarget(LivingEntity target) {
-        tryApplyDarkness(target);
-    }
-
-    @Override
     public void remove(RemovalReason reason) {
         if (!level().isClientSide && !isRemoved() && isDeadOrDying()) {
             int count = 2 + random.nextInt(2);
             float spread = getBbWidth() * 0.3F;
             for (int i = 0; i < count; i++) {
-                Slimeling child = MonsterEntities.SLIMELING.get().create(level());
+                BaseSlime child = MonsterEntities.SLIMELING.get().create(level());
                 if (child == null) continue;
                 if (isPersistenceRequired()) child.setPersistenceRequired();
                 if (hasCustomName()) child.setCustomName(getCustomName());

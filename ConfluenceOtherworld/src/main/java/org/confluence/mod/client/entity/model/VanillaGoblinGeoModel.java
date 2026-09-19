@@ -11,6 +11,7 @@ import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.data.EntityModelData;
+import software.bernie.geckolib.util.RenderUtils;
 
 /// 哥布林动画族专用的人形动作桥接模型。
 /// 普通哥布林复用行走、转头和基础挥臂；弓箭手拉弓时使用原版人形模型的持弓姿势。
@@ -53,9 +54,7 @@ public final class VanillaGoblinGeoModel<T extends Mob & GeoEntity> extends GeoN
         for (CoreGeoBone bone : getAnimationProcessor().getRegisteredBones()) {
             ModelPart source = sourcePart(bone.getName());
             if (source != null) {
-                bone.setRotX(source.xRot);
-                bone.setRotY(source.yRot);
-                bone.setRotZ(source.zRot);
+                RenderUtils.matchModelPartRot(source, bone);
             }
         }
     }

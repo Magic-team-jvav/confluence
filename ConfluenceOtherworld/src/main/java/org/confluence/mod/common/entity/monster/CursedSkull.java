@@ -1,13 +1,8 @@
 package org.confluence.mod.common.entity.monster;
 
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -15,7 +10,6 @@ import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.PhasedFlyingPursuitAction;
-import org.confluence.mod.common.init.ModEffects;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -50,13 +44,7 @@ public class CursedSkull extends BaseFlyingMonster {
     @Override
     public boolean doHurtTarget(Entity target) {
         pursuit.resetCycle();
-        boolean damaged = super.doHurtTarget(target);
-        if (damaged && target instanceof LivingEntity living && random.nextInt(3) == 0) {
-            int duration = LibUtils.isMaster(level(), blockPosition()) ? 200
-                    : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 160 : 80;
-            living.addEffect(new MobEffectInstance(ModEffects.CURSED.get(), duration), this);
-        }
-        return damaged;
+        return super.doHurtTarget(target);
     }
 
     @Override

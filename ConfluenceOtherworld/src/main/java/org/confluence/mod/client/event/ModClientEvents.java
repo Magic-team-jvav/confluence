@@ -548,7 +548,7 @@ public final class ModClientEvents {
         // Critter renderers — Bunny 保留自定义模型，其余用 CritterRenderer
         event.registerEntityRenderer(CritterEntities.BUNNY.get(), BunnyRenderer::new);
         event.registerEntityRenderer(CritterEntities.PENGUIN.get(), CritterRenderer::new);
-        event.registerEntityRenderer(CritterEntities.MYSTIC_FROG.get(), net.minecraft.client.renderer.entity.FrogRenderer::new);
+        event.registerEntityRenderer(CritterEntities.MYSTIC_FROG.get(), c -> new GeoNormalRenderer<>(c, new MysticFrogModel(c)));
         event.registerEntityRenderer(CritterEntities.GOLDFISH.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/goldfish.geo.json"), Confluence.asResource("textures/entity/animal/goldfish.png"), Confluence.asResource("animations/entity/animal/goldfish.animation.json")), false, 1.0F, 0.1875F));
         // penguin.bbmodel 的三个变种共用模型和动画，差异仅在贴图。
         event.registerEntityRenderer(MonsterEntities.CORRUPT_PENGUIN.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/animal/penguin.geo.json"), Confluence.asResource("textures/entity/corrupt_penguin.png"), Confluence.asResource("animations/entity/animal/penguin.animation.json"))));
@@ -629,7 +629,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.ENCHANTED_SWORD.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(MonsterEntities.SNATCHER.get(), c -> new SnatcherRenderer(c, MonsterEntities.SNATCHER.getId()));
         event.registerEntityRenderer(MonsterEntities.MAN_EATER.get(), c -> new SnatcherRenderer(c, MonsterEntities.MAN_EATER.getId()));
-        event.registerEntityRenderer(MonsterEntities.SPORE_SKELETON.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SPORE_SKELETON.getId()));
+        event.registerEntityRenderer(MonsterEntities.SPORE_SKELETON.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.SPORE_SKELETON.getId())));
         event.registerEntityRenderer(MonsterEntities.BASE_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BASE_BONES.getId())).withScale(0.9F));
         event.registerEntityRenderer(MonsterEntities.ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.ANGER_BONES.getId())).withScale(0.9F));
         event.registerEntityRenderer(MonsterEntities.SHORT_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.SHORT_BONES.getId())).withScale(0.8F));
@@ -637,7 +637,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.BIG_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_ANGER_BONES.getId())).withScale(1.15F));
         event.registerEntityRenderer(MonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_MUSCLE_ANGER_BONES.getId())).withScale(1.2F));
         event.registerEntityRenderer(MonsterEntities.BIG_HELMET_ANGER_BONES.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.BIG_HELMET_ANGER_BONES.getId())).withScale(1.25F));
-        event.registerEntityRenderer(MonsterEntities.UNDEAD_VIKING.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.UNDEAD_VIKING.getId()));
+        event.registerEntityRenderer(MonsterEntities.UNDEAD_VIKING.get(), c -> new VanillaHumanoidRenderer<>(c, new VanillaSkeletonGeoModel<>(c, MonsterEntities.UNDEAD_VIKING.getId())));
         event.registerEntityRenderer(MonsterEntities.ARMORED_VIKING.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/armored_viking.geo.json"), Confluence.asResource("textures/entity/armored_viking.png"), true)));
         event.registerEntityRenderer(MonsterEntities.ARMORED_SKELETON.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/armored_skeleton.geo.json"), Confluence.asResource("textures/entity/armored_skeleton.png"), true)));
         event.registerEntityRenderer(MonsterEntities.ICE_ELEMENTAL.get(), c -> new FullbrightGeoRenderer<IceElemental>(c, MonsterEntities.ICE_ELEMENTAL.getId()));

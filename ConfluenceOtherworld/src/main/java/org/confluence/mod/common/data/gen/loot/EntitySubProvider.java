@@ -990,6 +990,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_HELMET))
                         .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_CHESTPLATE))
                         .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_LEGGINGS))
+                        .add(LootItem.lootTableItem(ArmorItems.GLADIATOR_BOOTS))
                         .add(EmptyLootItem.emptyItem().setWeight(18)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SwordItems.GLADIUS).setWeight(5)).add(EmptyLootItem.emptyItem().setWeight(95)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.HOOK).setWeight(4)).add(EmptyLootItem.emptyItem().setWeight(96)))

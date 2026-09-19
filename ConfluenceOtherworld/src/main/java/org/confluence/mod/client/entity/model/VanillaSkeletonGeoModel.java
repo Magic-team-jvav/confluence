@@ -1,20 +1,23 @@
 package org.confluence.mod.client.entity.model;
 
+import net.minecraft.client.model.AnimationUtils;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.BowItem;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.data.EntityModelData;
+import software.bernie.geckolib.util.RenderUtils;
 
-/// 给骷髅类 Geo 模型复用原版行走和头部动画，并按 1.21 侧的骨骼公式处理拉弓姿势。
-/// Java 模型与 Geo 模型的 X、Y 旋转方向相反，因此拉弓姿势需要在复制基础动画后使用
-/// Geo 坐标系重新计算，不能直接写入 {@link HumanoidModel.ArmPose#BOW_AND_ARROW} 的结果。
+/// 给骷髅类 Geo 模型复用原版行走、头部与近战动画，并保留 1.21 侧的拉弓姿势。
+/// 所有姿势先在 ModelPart 坐标系内计算，最后统一转换 X、Y 旋转方向，避免攻击状态切换时反向。
 public final class VanillaSkeletonGeoModel<T extends Mob & GeoEntity> extends GeoNormalModel<T> {
     private static final String HEAD = "Vhead";
     private static final String LEFT_ARM = "Vleft_arm";
@@ -37,6 +40,18 @@ public final class VanillaSkeletonGeoModel<T extends Mob & GeoEntity> extends Ge
         vanillaModel.prepareMobModel(entity, state.getLimbSwing(), state.getLimbSwingAmount(), partialTick);
         vanillaModel.setupAnim(entity, state.getLimbSwing(), state.getLimbSwingAmount(), entity.tickCount + partialTick, look.netHeadYaw(), look.headPitch());
         VanillaHumanoidGeoModel.applyBowPose(vanillaModel, entity, partialTick);
+        if ((entity.isAggressive() || vanillaModel.attackTime > 0) && !(entity.getMainHandItem().getItem() instanceof BowItem)) {
+            // 原版 SkeletonModel 的近战姿势；不要求近战实体实现远程攻击接口。
+            float swing = Mth.sin(vanillaModel.attackTime * Mth.PI);
+            float recovery = Mth.sin((1 - (1 - vanillaModel.attackTime) * (1 - vanillaModel.attackTime)) * Mth.PI);
+            vanillaModel.rightArm.zRot = 0;
+            vanillaModel.leftArm.zRot = 0;
+            vanillaModel.rightArm.yRot = -(0.1F - swing * 0.6F);
+            vanillaModel.leftArm.yRot = 0.1F - swing * 0.6F;
+            vanillaModel.rightArm.xRot = -Mth.HALF_PI - swing * 1.2F + recovery * 0.4F;
+            vanillaModel.leftArm.xRot = vanillaModel.rightArm.xRot;
+            AnimationUtils.bobArms(vanillaModel.rightArm, vanillaModel.leftArm, entity.tickCount + partialTick);
+        }
         copyRegisteredBones();
     }
 
@@ -53,9 +68,7 @@ public final class VanillaSkeletonGeoModel<T extends Mob & GeoEntity> extends Ge
         for (CoreGeoBone bone : getAnimationProcessor().getRegisteredBones()) {
             ModelPart source = sourcePart(bone.getName());
             if (source != null) {
-                bone.setRotX(source.xRot);
-                bone.setRotY(source.yRot);
-                bone.setRotZ(source.zRot);
+                RenderUtils.matchModelPartRot(source, bone);
             }
         }
     }

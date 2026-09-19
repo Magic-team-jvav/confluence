@@ -14,6 +14,7 @@ import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.data.EntityModelData;
+import software.bernie.geckolib.util.RenderUtils;
 
 /// 给普通双足怪物复用原版人形模型的基础肢体动画。
 /// 这个模型只负责通用的头部、手臂和腿部旋转，不处理僵尸攻击、骷髅拉弓或哥布林专属动作。
@@ -105,9 +106,7 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
         for (CoreGeoBone bone : getAnimationProcessor().getRegisteredBones()) {
             ModelPart source = sourcePart(bone.getName());
             if (source != null) {
-                bone.setRotX(source.xRot);
-                bone.setRotY(source.yRot);
-                bone.setRotZ(source.zRot);
+                RenderUtils.matchModelPartRot(source, bone);
             }
         }
     }
@@ -149,11 +148,12 @@ public class VanillaHumanoidGeoModel<T extends Mob & GeoEntity> extends GeoNorma
         float headPitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot()) * Mth.DEG_TO_RAD;
         float headYaw = Mth.wrapDegrees(Mth.rotLerp(partialTick, entity.yBodyRotO, entity.yBodyRot)
                 - Mth.rotLerp(partialTick, entity.yHeadRotO, entity.yHeadRot)) * Mth.DEG_TO_RAD;
-        model.rightArm.xRot = Mth.lerp(progress, model.rightArm.xRot, 1.5F - headPitch);
-        model.rightArm.yRot = Mth.lerp(progress, model.rightArm.yRot, headYaw);
+        // 保持 ModelPart 坐标系，统一由复制入口转换到 Geo，避免拉弓被反转两次。
+        model.rightArm.xRot = Mth.lerp(progress, model.rightArm.xRot, headPitch - 1.5F);
+        model.rightArm.yRot = Mth.lerp(progress, model.rightArm.yRot, -headYaw);
         model.rightArm.zRot = 0.0F;
-        model.leftArm.xRot = Mth.lerp(progress, model.leftArm.xRot, 1.3F - headPitch);
-        model.leftArm.yRot = Mth.lerp(progress, model.leftArm.yRot, Math.max(headYaw - 0.5F, -1.4F));
+        model.leftArm.xRot = Mth.lerp(progress, model.leftArm.xRot, headPitch - 1.3F);
+        model.leftArm.yRot = Mth.lerp(progress, model.leftArm.yRot, -Math.max(headYaw - 0.5F, -1.4F));
         model.leftArm.zRot = 0.0F;
     }
 

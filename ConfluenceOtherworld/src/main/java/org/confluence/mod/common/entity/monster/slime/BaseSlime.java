@@ -9,8 +9,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -23,7 +21,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -49,6 +46,7 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
     private static final EntityDataAccessor<Integer> DATA_SIZE = SynchedEntityData.defineId(BaseSlime.class, EntityDataSerializers.INT);
     protected final boolean passiveByDay;
     private final boolean honeyConvertible;
+    private final int fixedSize;
     private float oldSquish;
     private float squish;
     private float targetSquish;
@@ -74,9 +72,14 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
     }
 
     public BaseSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay, int size, boolean honeyConvertible) {
+        this(type, level, passiveByDay, size, honeyConvertible, false);
+    }
+
+    public BaseSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay, int size, boolean honeyConvertible, boolean fixedSize) {
         super(type, level);
         this.passiveByDay = passiveByDay;
         this.honeyConvertible = honeyConvertible;
+        this.fixedSize = fixedSize ? size : 0;
         this.moveControl = new SlimeMoveControl(this);
         setSlimeSize(size);
     }
@@ -135,7 +138,7 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
     }
 
     public void setSlimeSize(int size) {
-        int clampedSize = Mth.clamp(size, 1, 127);
+        int clampedSize = Mth.clamp(fixedSize > 0 ? fixedSize : size, 1, 127);
         entityData.set(DATA_SIZE, clampedSize);
         refreshDimensions();
         var movementSpeed = getAttribute(Attributes.MOVEMENT_SPEED);
@@ -418,28 +421,9 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
     /// 从空中落地时触发，用于特殊史莱姆补充落地效果。
     protected void onLanded() {}
 
-    /// 攻击目标后触发，用于附加效果（如冰霜减速）
-    protected void onAttackTarget(LivingEntity target) {}
-
-    /// 处理会致盲的史莱姆共有的四分之一触发概率，并按世界难度换算持续时间。
-    protected final void tryApplyDarkness(LivingEntity target) {
-        if (random.nextInt(4) != 0) return;
-        int duration = LibUtils.isMaster(level(), blockPosition()) ? 750 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 600 : 300;
-        target.addEffect(new MobEffectInstance(MobEffects.DARKNESS, duration), this);
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean result = super.doHurtTarget(target);
-        if (result && target instanceof LivingEntity living) {
-            onAttackTarget(living);
-        }
-        return result;
-    }
-
     /// 对目标造成接触伤害。
     protected void dealContactDamage(LivingEntity target) {
-        if (!level().isClientSide && isAlive() && isEffectiveAi() && isWithinMeleeAttackRange(target) && hasLineOfSight(target) && doHurtTarget(target)) {
+        if (!level().isClientSide && isAlive() && isEffectiveAi() && isWithinMeleeAttackRange(target) && hasLineOfSight(target) && doContactHurtTarget(target)) {
             playSound(SoundEvents.SLIME_ATTACK, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
         }
     }

@@ -29,6 +29,7 @@ public class ModDataMapProvider extends PortDataMapProvider {
         FurnaceFuelSubProvider.gather(() -> builder(PortLib.FURNACE_FUELS));
         CompostableSubProvider.gather(() -> builder(PortLib.COMPOSTABLES));
         LivingInvulnerableEffectsSubProvider.gather(builder(ModDataMaps.LIVING_INVULNERABLE_EFFECTS, LivingInvulnerableEffectsSubProvider.Builder::new), provider);
+        AttackEffectsSubProvider.gather(builder(ModDataMaps.ATTACK_EFFECTS, AttackEffectsSubProvider.Builder::new));
         BlockBreakSpawnsSubProvider.gather(builder(ModDataMaps.BLOCK_BREAK_SPAWNS, BlockBreakSpawnsSubProvider.Builder::new), provider);
         GamePhase2AttributeModifiersSubProvider.gather(builder(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, GamePhase2AttributeModifiersSubProvider.Builder::new));
         AccessoriesSubProvider.gather(builder(TCDataMaps.ACCESSORIES, AccessoriesSubProvider.Builder::new));

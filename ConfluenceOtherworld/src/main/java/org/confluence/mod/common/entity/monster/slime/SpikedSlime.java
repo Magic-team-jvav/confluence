@@ -29,13 +29,15 @@ public class SpikedSlime extends BaseSlime {
     private static final RawAnimation JUMP = RawAnimation.begin().thenPlay("jump");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack");
     private static final double CLOSE_ATTACK_DISTANCE = 7.0;
+    private final SlimeSpikeEntity.Variant variant;
 
     public SpikedSlime(EntityType<? extends BaseSlime> type, Level level) {
-        this(type, level, false);
+        this(type, level, SlimeSpikeEntity.Variant.NORMAL);
     }
 
-    protected SpikedSlime(EntityType<? extends BaseSlime> type, Level level, boolean passiveByDay) {
-        super(type, level, passiveByDay);
+    public SpikedSlime(EntityType<? extends BaseSlime> type, Level level, SlimeSpikeEntity.Variant variant) {
+        super(type, level, false);
+        this.variant = variant;
     }
 
     @Override
@@ -52,12 +54,12 @@ public class SpikedSlime extends BaseSlime {
     }
 
     protected SlimeSpikeEntity.Variant spikeVariant() {
-        return SlimeSpikeEntity.Variant.NORMAL;
+        return variant;
     }
 
     /// 是否使用生态尖刺史莱姆的难度分层射击方式。
     protected boolean usesBiomeSpikePattern() {
-        return false;
+        return variant != SlimeSpikeEntity.Variant.NORMAL;
     }
 
     @Override

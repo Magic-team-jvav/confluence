@@ -45,6 +45,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     private BTRoot behaviorTree;
     private NearestAttackableTargetGoal<Player> playerTargetGoal;
     private int contactAttackTicks = 20;
+    private boolean performingContactAttack;
     private int contactTeleportTick = Integer.MIN_VALUE;
     private double defaultMaxHealth = Double.NaN;
     private double defaultAttackDamage;
@@ -275,9 +276,24 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
             return;
         }
         boolean attacked = false;
-        for (Entity entity : entities) attacked |= doHurtTarget(entity);
+        for (Entity entity : entities) attacked |= doContactHurtTarget(entity);
         // 目标正处于受伤无敌帧等情况下不算命中，保持检测频率以免一次冲刺完全漏伤。
         contactAttackTicks = attacked ? contactAttackInterval() : 0;
+    }
+
+    /// 标记当前伤害调用的来源，不改变伤害类型、武器附魔或子类的攻击钩子。
+    protected final boolean doContactHurtTarget(Entity target) {
+        boolean previous = performingContactAttack;
+        performingContactAttack = true;
+        try {
+            return doHurtTarget(target);
+        } finally {
+            performingContactAttack = previous;
+        }
+    }
+
+    public final boolean isPerformingContactAttack() {
+        return performingContactAttack;
     }
 
     protected boolean usesPostMovementContactAttack() {

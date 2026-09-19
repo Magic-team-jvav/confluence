@@ -11,9 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.summoner.model.bbmodel.BBModelManager;
-import org.confluence.mod.client.summoner.model.geo.GeoAnimationManager;
-import org.confluence.mod.client.summoner.model.geo.GeoModelManager;
 import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
 import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
@@ -22,7 +19,6 @@ import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.client.PortRegisterClientReloadListenersEvent;
 import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
 
@@ -57,11 +53,6 @@ public final class SummonerClientEvents {
             if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
                 DynamicLightDispatcher.update(event.getLevelRenderer());
             }
-        });
-        PortEventHandler.addListener((PortRegisterClientReloadListenersEvent event) -> {
-            event.registerReloadListener(GeoModelManager.INSTANCE);
-            event.registerReloadListener(GeoAnimationManager.INSTANCE);
-            event.registerReloadListener(BBModelManager.INSTANCE);
         });
         PortEventHandler.addListener((PortFMLClientSetupEventPort event) -> event.enqueueWork(() -> {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.FINCH.get(), new FinchRenderer());

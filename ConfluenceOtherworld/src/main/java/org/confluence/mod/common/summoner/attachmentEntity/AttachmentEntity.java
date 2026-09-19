@@ -16,16 +16,24 @@ import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
 import java.util.function.Supplier;
 
-public abstract class AttachmentEntity implements Immunity {
+@SuppressWarnings("unused")
+public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
 
     protected final RegistryObject<? extends AttachmentEntityType<?>> type;
     protected final ArrayList<PathNode> historyNodes = new ArrayList<>();
     protected final AttachmentEntityGoalSelector goalSelector = new AttachmentEntityGoalSelector();
     protected final SyncFieldDispatcher syncFields = SyncFieldDispatcher.create(this::registerSyncFields);
+    protected final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     protected UUID uuid = UUID.randomUUID();
     protected Player owner = null;
     protected PlannedPath currentPlannedPath = null;
@@ -54,6 +62,20 @@ public abstract class AttachmentEntity implements Immunity {
     }
 
     public void registerGoals(AttachmentEntityGoalSelector goalSelector) {
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animationCache;
+    }
+
+    @Override
+    public double getTick(Object object) {
+        return tickCount;
     }
 
     @NotNull

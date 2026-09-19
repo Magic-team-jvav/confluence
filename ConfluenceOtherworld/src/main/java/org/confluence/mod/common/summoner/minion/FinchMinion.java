@@ -1,11 +1,9 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
@@ -14,10 +12,15 @@ import org.confluence.mod.common.summoner.minion.goal.finch.FinchAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.finch.FinchIdleGoal;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.DataTicket;
 
 import java.util.List;
 
-public class FinchMinion extends MomentumMinion implements IEntityCollision<FinchMinion> {
+public class FinchMinion extends MomentumMinion implements IEntityCollision<FinchMinion>, GeoAnimatable {
 
     public float idleBlend;
     public float idleBlendO;
@@ -38,6 +41,14 @@ public class FinchMinion extends MomentumMinion implements IEntityCollision<Finc
     public void registerGoals(AttachmentEntityGoalSelector goalSelector) {
         goalSelector.addGoal(0, new FinchAttackGoal(this));
         goalSelector.addGoal(1, new FinchIdleGoal(this));
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "finch", 2, state -> {
+            state.setControllerSpeed(idleBlend == 1 ? 0.2f : 1);
+            return state.setAndContinue(RawAnimation.begin().thenLoop("move.fly"));
+        }));
     }
 
     @Override

@@ -22,7 +22,7 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEntity & GeoAnimatable> extends AbstractAttachmentEntityRenderer<T> implements GeoRenderer<T> {
+public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEntity> extends AbstractAttachmentEntityRenderer<T> implements GeoRenderer<T> {
 
     protected final GeoObjectRenderer<T> delegate;
     protected float currentAlpha = 1.0F;
@@ -125,7 +125,7 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
      * {@code textures/entity/summon/hornet_baby.png}.
      * </p>
      */
-    public static final class AttachmentEntityGeoModel<T extends AttachmentEntity & GeoAnimatable> extends GeoModel<T> {
+    public static final class AttachmentEntityGeoModel<T extends AttachmentEntity> extends GeoModel<T> {
         private final ResourceLocation model;
         private final ResourceLocation texture;
         private final ResourceLocation animation;

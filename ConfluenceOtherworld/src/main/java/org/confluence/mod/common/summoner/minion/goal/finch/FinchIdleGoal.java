@@ -17,10 +17,15 @@ public class FinchIdleGoal extends AttachmentEntityGoal<FinchMinion> {
 
     @Override
     public void tick() {
-        Vec3 targetPos = minion.getInterpolatedIdleState(1).pos();
-        Vec3 minionPos = minion.getPos();
-        Vec3 normalize = targetPos.subtract(minionPos).normalize();
-        minion.lookAtDirection(normalize);
-        minion.addVelocity(normalize.scale(0.01 * Math.min(1 + targetPos.distanceTo(minionPos) * 0.2, 16)));
+        if (minion.idleBlend == 0) {
+            Vec3 targetPos = minion.getInterpolatedIdleState(1).pos();
+            Vec3 minionPos = minion.getPos();
+            Vec3 normalize = targetPos.subtract(minionPos).normalize();
+            minion.lookAtDirection(normalize);
+            minion.addVelocity(normalize.scale(0.01 * Math.min(1 + targetPos.distanceTo(minionPos) * 0.2, 16)));
+        } else {
+            minion.setVelocity(Vec3.ZERO);
+            minion.setCurrentPathNode(minion.getCurrentPathNode().lerp(minion.getInterpolatedIdleState(1), minion.idleBlend));
+        }
     }
 }

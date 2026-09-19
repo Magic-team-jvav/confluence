@@ -76,10 +76,10 @@ public class FinchMinion extends MomentumMinion implements IEntityCollision<Finc
         super.tick();
         idleBlendO = idleBlend;
         if (getTarget() != null) {
-            idleBlend = Math.max(0, idleBlend - 0.1F);
+            idleBlend = Math.max(0, idleBlend - 0.05F);
         } else {
             double distance = getPos().distanceTo(getInterpolatedIdleState(1).pos());
-            if (distance < 0.1) {
+            if (distance < 0.3) {
                 idleBlend = Math.min(1, idleBlend + 0.05F);
             } else {
                 if (idleBlend != 1) {
@@ -96,21 +96,15 @@ public class FinchMinion extends MomentumMinion implements IEntityCollision<Finc
         return base.lerp(idle, Mth.lerp(partialTick, idleBlendO, idleBlend));
     }
 
-    /**
-     * 计算当前次序对应肩头的渲染目标。
-     */
     public PathNode getInterpolatedIdleState(float partialTick) {
         float bodyYaw = Mth.rotLerp(partialTick, owner.yBodyRotO, owner.yBodyRot);
-        Vec3 forward = Vec3.directionFromRotation(0, bodyYaw);
-        Vec3 right = forward.cross(new Vec3(0, 1, 0));
-        right = right.lengthSqr() < 1.0E-8 ? new Vec3(1, 0, 0) : right.normalize();
-        Vec3 shoulder = (getOrder() & 1) == 0 ? right : right.scale(-1);
-        double sideOffset = owner.getBbWidth() * 0.55;
-        double backOffset = owner.getBbWidth() * 0.13;
+        int order = getOrder();
+        int layer = order / 4;
+        int index = order % 4;
+        double angle = index * (360.0 / 4) + (layer & 1) * (180.0 / 4);
+        Vec3 offset = Vec3.directionFromRotation(0, bodyYaw + (float) angle).scale(0.2);
         Vec3 position = owner.getPosition(partialTick)
-                .add(0, owner.getBbHeight() * 0.83 + ((getOrder() - (getOrder() % 2 == 0 ? 0 : 1)) * 0.08), 0)
-                .add(shoulder.scale(sideOffset))
-                .subtract(forward.scale(backOffset));
+                .add(offset.x, owner.getBbHeight() * 0.83 + 0.78 + layer * 0.18, offset.z);
         return new PathNode(position, bodyYaw, 0, 0);
     }
 }

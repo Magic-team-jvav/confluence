@@ -58,7 +58,7 @@ public class SummonItem extends Item {
     }
 
     public boolean hasSummonKnockback() {
-        return summonType == SummonTypes.SCULK_WISP || summonType == SummonTypes.IMP;
+        return summonType == SummonTypes.IMP;
     }
 
     @Override

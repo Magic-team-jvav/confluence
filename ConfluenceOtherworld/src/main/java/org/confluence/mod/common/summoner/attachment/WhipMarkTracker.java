@@ -48,7 +48,7 @@ public class WhipMarkTracker implements PortAttachmentSyncHandler<WhipMarkTracke
     }
 
     public void tracker(LivingEntity target, SummonMarkType type, int duration) {
-        if (owner != target) {
+        if (owner != target && type != null) {
             setMarkTarget(target);
             setMarkType(type);
             setDuration(duration);

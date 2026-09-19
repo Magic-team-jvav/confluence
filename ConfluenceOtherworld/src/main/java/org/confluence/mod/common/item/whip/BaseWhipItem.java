@@ -62,7 +62,7 @@ public class BaseWhipItem extends Item {
     }
 
     public SummonMarkType getSummonMarkType() {
-        return summonMarkType.get();
+        return summonMarkType != null ? summonMarkType.get() : null;
     }
 
     public float baseDamage() {return baseDamage;}

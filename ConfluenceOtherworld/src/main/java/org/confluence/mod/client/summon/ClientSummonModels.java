@@ -29,7 +29,6 @@ final class ClientSummonModels {
 
     static final Map<ResourceLocation, Binding> MODELS = Map.ofEntries(
             Map.entry(SummonTypes.SLIME.id(), model("summon/slime_baby", Material.SLIME, SLIME)),
-            Map.entry(SummonTypes.SCULK_WISP.id(), model("summon/sculk_wisp", Material.CUTOUT, CASTING).transform(1, 0.5F, -90, true)),
             Map.entry(SummonTypes.IMP.id(), model("summon/summon_imp", Material.DOUBLE_SIDED, CASTING).transform(0.8F, -0.5F, 0, true)),
             Map.entry(SummonTypes.SNOW_FLINX.id(), model("summon/summon_snow_flinx", Material.DOUBLE_SIDED, WALKING).transform(1, 0, 90, false)),
             Map.entry(SummonTypes.VAMPIRE_FROG.id(), model("summon/vampire_frog", Material.DOUBLE_SIDED, FROG)),

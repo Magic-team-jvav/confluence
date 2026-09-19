@@ -17,7 +17,6 @@ public final class SummonTypes {
     private static final Map<ResourceLocation, SummonType> TYPES = new LinkedHashMap<>();
 
     public static final SummonType SLIME = register("slime_baby", SlimeSummon::new);
-    public static final SummonType SCULK_WISP = register("sculk_wisp", SculkWispSummon::new);
     public static final SummonType IMP = register("summon_imp", ImpSummon::new);
     public static final SummonType SNOW_FLINX = register("summon_snow_flinx", SnowFlinxSummon::new);
     public static final SummonType VAMPIRE_FROG = register("vampire_frog", VampireFrogSummon::new);

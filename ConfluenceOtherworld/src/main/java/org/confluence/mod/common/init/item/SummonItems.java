@@ -16,6 +16,7 @@ import org.confluence.mod.common.summoner.minion.FinchMinion;
 import org.confluence.mod.common.summoner.minion.HornetMinion;
 import org.confluence.mod.common.summoner.minion.IronGolemMinion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
+import org.confluence.mod.common.summoner.minion.SculkWispMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
 import org.mesdag.portlib.registries.PortDeferredItem;
@@ -66,8 +67,18 @@ public class SummonItems {
             ));
     public static final PortDeferredItem<SummonItem> SLIME_STAFF = ITEMS.register("slime_staff",
             () -> new SummonItem(ModRarity.LIGHT_RED, SummonTypes.SLIME, SlimeSummon.SLOT_COST, SlimeSummon.BASE_DAMAGE));
-    public static final PortDeferredItem<SummonItem> SCULK_WISP_STAFF = ITEMS.register("sculk_wisp_staff",
-            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.SCULK_WISP, SculkWispSummon.SLOT_COST, SculkWispSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonerWeaponItem<SculkWispMinion>> SCULK_WISP_STAFF = ITEMS.register("sculk_wisp_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
+                    SummonerAttachmentEntityTypes.SCULK_WISP,
+                    MinionSlotType.Minion,
+                    7.0F,
+                    1.0F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
     public static final PortDeferredItem<SummonItem> IMP_STAFF = ITEMS.register("imp_staff",
             () -> new SummonItem(ModRarity.ORANGE, SummonTypes.IMP, ImpSummon.SLOT_COST, ImpSummon.BASE_DAMAGE).setSound(ModSoundEvents.SUMMON_IMP));
     public static final PortDeferredItem<SummonItem> SNOW_FLINX_STAFF = ITEMS.register("snow_flinx_staff",

@@ -73,6 +73,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.SLIME_STAFF.get(), "Slime Staff");
         add(SummonItems.NEW_HORNET_STAFF.get(), "Hornet Staff");
         add(SummonItems.SCULK_WISP_STAFF.get(), "Sculk Wisp Staff");
+        add("summon.confluence.sculk_wisp", "Sculk Wisp");
         add(SummonItems.IMP_STAFF.get(), "Imp Staff");
         add(SummonItems.SNOW_FLINX_STAFF.get(), "Flinx Staff");
         add(SummonItems.VAMPIRE_FROG_STAFF.get(), "Vampire Frog Staff");
@@ -85,7 +86,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.slime_baby", "Baby Slime");
         add("entity.confluence.hornet_baby", "Hornet Minion");
         add("summon.confluence.hornet", "Hornet");
-        add("entity.confluence.sculk_wisp", "Sculk Wisp");
         add("entity.confluence.summon_imp", "Imp Minion");
         add("entity.confluence.summon_snow_flinx", "Snow Flinx Minion");
         add("entity.confluence.vampire_frog", "Vampire Frog");

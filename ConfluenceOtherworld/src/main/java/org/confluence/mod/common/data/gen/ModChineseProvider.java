@@ -5154,7 +5154,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("summon.confluence.iron_golem", "铁傀儡");
         add(SummonItems.SLIME_STAFF.get(), "史莱姆法杖");
         add(SummonItems.NEW_HORNET_STAFF.get(), "黄蜂法杖");
+        add("summon.confluence.hornet", "黄蜂");
         add(SummonItems.SCULK_WISP_STAFF.get(), "幽匿游灵法杖");
+        add("summon.confluence.sculk_wisp", "幽匿游灵");
         add(SummonItems.IMP_STAFF.get(), "小鬼法杖");
         add(SummonItems.SNOW_FLINX_STAFF.get(), "小雪怪法杖");
         add(SummonItems.VAMPIRE_FROG_STAFF.get(), "吸血鬼青蛙法杖");
@@ -5166,8 +5168,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "星尘之龙法杖");
         add("entity.confluence.slime_baby", "史莱姆宝宝");
         add("entity.confluence.hornet_baby", "仆役黄蜂");
-        add("summon.confluence.hornet", "黄蜂");
-        add("entity.confluence.sculk_wisp", "幽匿游灵");
         add("entity.confluence.summon_imp", "召唤的小鬼");
         add("entity.confluence.summon_snow_flinx", "小雪怪");
         add("entity.confluence.vampire_frog", "吸血鬼青蛙");

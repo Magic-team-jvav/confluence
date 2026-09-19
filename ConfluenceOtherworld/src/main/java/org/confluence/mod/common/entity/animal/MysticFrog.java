@@ -11,10 +11,24 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.item.common.BugNetItem;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class MysticFrog extends Frog {
+public class MysticFrog extends Frog implements GeoEntity {
+    private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     public MysticFrog(EntityType<? extends Frog> type, Level level) {
         super(type, level);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animationCache;
     }
 
     public void purify() {

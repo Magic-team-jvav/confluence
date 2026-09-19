@@ -42,6 +42,7 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
+import org.confluence.mod.common.data.map.AttackEffects;
 import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
@@ -329,6 +330,7 @@ public final class LivingEntityEvents {
         LivingEntity victim = event.getEntity();
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
+        AttackEffects.afterDamage(victim, damageSource);
         if (damageSource.getDirectEntity() instanceof OwnedSummon summon) {
             Player owner = damageSource.getEntity() instanceof Player player ? player : summon.resolveSummonOwner(serverLevel);
             if (owner != null)

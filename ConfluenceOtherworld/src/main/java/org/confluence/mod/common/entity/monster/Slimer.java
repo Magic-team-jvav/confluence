@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
-import org.confluence.mod.common.entity.monster.slime.WinglessSlimer;
+import org.confluence.mod.common.entity.monster.slime.BaseSlime;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
 /// 困难模式飞行史莱姆，飞行形态死亡后失去翅膀并转为地面形态。
@@ -30,7 +30,7 @@ public class Slimer extends SimpleFlyMonster {
     }
 
     private boolean releaseWinglessForm() {
-        WinglessSlimer wingless = MonsterEntities.WINGLESS_SLIMER.get().create(level());
+        BaseSlime wingless = MonsterEntities.WINGLESS_SLIMER.get().create(level());
         if (wingless == null) {
             return false;
         }

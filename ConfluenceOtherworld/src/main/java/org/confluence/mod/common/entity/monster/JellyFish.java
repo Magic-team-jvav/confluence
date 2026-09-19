@@ -10,8 +10,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -29,7 +31,6 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.RandomSwimAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -175,17 +176,6 @@ public class JellyFish extends BaseAquaticMonster {
     @Override
     protected SoundEvent getDeathSound() {
         return ModSoundEvents.JELLYFISH_DEATH.get();
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean damaged = super.doHurtTarget(target);
-        if (damaged && target instanceof LivingEntity living && profile.silences && random.nextInt(5) == 0) {
-            int duration = LibUtils.isMaster(level(), blockPosition()) ? 350
-                    : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 280 : 140;
-            living.addEffect(new MobEffectInstance(ModEffects.SILENCED.get(), duration), this);
-        }
-        return damaged;
     }
 
     @Override
@@ -351,16 +341,8 @@ public class JellyFish extends BaseAquaticMonster {
         }
     }
 
-    /// 共享水母状态机中的接触效果档案；颜色、属性和生成条件仍由注册与数据层负责。
+    /// 真菌鱼不进入带电状态；命中效果由 AttackEffects 数据配置。
     public enum Profile {
-        ROUTINE(false),
-        GREEN(true),
-        FUNGO(false);
-
-        private final boolean silences;
-
-        Profile(boolean silences) {
-            this.silences = silences;
-        }
+        ROUTINE, FUNGO
     }
 }

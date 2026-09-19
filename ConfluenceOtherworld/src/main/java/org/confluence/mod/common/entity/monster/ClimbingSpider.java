@@ -5,8 +5,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -20,7 +18,6 @@ import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.EnemyWalkNodeEvaluator;
 import org.confluence.mod.common.entity.projectile.SpiderWebSpit;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
 
 public class ClimbingSpider extends BaseWarriorMonster {
@@ -87,16 +84,6 @@ public class ClimbingSpider extends BaseWarriorMonster {
     @Override
     public void makeStuckInBlock(BlockState state, Vec3 multiplier) {
         if (!state.is(Blocks.COBWEB)) super.makeStuckInBlock(state, multiplier);
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean damaged = super.doHurtTarget(target);
-        if (damaged && kind != Kind.WALL && target instanceof LivingEntity living && random.nextInt(10) == 0) {
-            int duration = LibUtils.isMaster(level(), blockPosition()) ? 200 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 160 : 80;
-            living.addEffect(new MobEffectInstance(ModEffects.ACID_VENOM.get(), duration), this);
-        }
-        return damaged;
     }
 
     public enum CombatState {CLIMBING, SPITTING}

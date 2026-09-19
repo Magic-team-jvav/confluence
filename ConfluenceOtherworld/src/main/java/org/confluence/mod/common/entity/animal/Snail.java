@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.animal;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -107,11 +108,6 @@ public class Snail extends SimpleCritter {
             super.travel(input);
             return;
         }
-        if (isInWaterOrBubble() || isInLava()) {
-            detach();
-            super.travel(input);
-            return;
-        }
         double speed = Math.max(0.005, getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.18);
         if (corner != null && followCorner(speed)) return;
 
@@ -129,6 +125,23 @@ public class Snail extends SimpleCritter {
             support = findSupport(face, getBoundingBox());
         }
 
+        // 已经触水时允许沿岸壁向上脱离，不能先解除贴壁再被重力拉回液面。
+        if (liquidOverlap(getBoundingBox()) > 0 && face.getAxis().isVertical()) {
+            Direction wall = findDryEscapeWall(speed);
+            if (wall == null) {
+                detach();
+                super.travel(input);
+                return;
+            }
+            face = wall;
+            setAttachmentFace(face);
+            setCrawlDirection(Direction.UP);
+            support = findSupport(face, getBoundingBox());
+        }
+        // 避水/拐角受阻分支同样必须保持贴壁，不能只在实际移动时关闭重力。
+        setNoGravity(true);
+        fallDistance = 0;
+
         Direction crawl = getCrawlDirection();
         if (crawl.getAxis() == face.getAxis()) {
             crawl = face.getAxis().isVertical() ? Direction.NORTH : Direction.UP;
@@ -141,9 +154,8 @@ public class Snail extends SimpleCritter {
         }
         Vec3 step = vector(crawl).scale(speed);
         AABB next = getBoundingBox().move(step);
-        if (level().containsAnyLiquid(next)) {
-            setCrawlDirection(crawl.getOpposite());
-            setDeltaMovement(Vec3.ZERO);
+        if (!canCrawlWithoutEnteringLiquid(getBoundingBox(), step)) {
+            turnAwayFromLiquid(face, crawl, speed);
             return;
         }
 
@@ -157,7 +169,15 @@ public class Snail extends SimpleCritter {
                 setCrawlDirection(crawl.getOpposite());
             }
         } else if (findSupport(face, next) == null) {
-            corner = makeCorner(support, face, crawl);
+            Corner candidate = makeCorner(support, face, crawl);
+            Vec3 toEdge = candidate.edge.subtract(getBoundingBox().getCenter());
+            AABB edgeBox = getBoundingBox().move(toEdge);
+            if (!canCrawlWithoutEnteringLiquid(getBoundingBox(), toEdge)
+                    || !canCrawlWithoutEnteringLiquid(edgeBox, candidate.exit.subtract(candidate.edge))) {
+                turnAwayFromLiquid(face, crawl, speed);
+                return;
+            }
+            corner = candidate;
             if (!followCorner(speed)) {
                 setCrawlDirection(crawl.getOpposite());
                 setDeltaMovement(Vec3.ZERO);
@@ -165,6 +185,62 @@ public class Snail extends SimpleCritter {
         } else {
             crawlMove(step);
         }
+        updateRotation();
+    }
+
+    /// 按真实液面高度计算相交体积；containsAnyLiquid 会把液体所在整格都视为液体。
+    private double liquidOverlap(AABB box) {
+        double volume = 0;
+        for (BlockPos pos : BlockPos.betweenClosed(BlockPos.containing(box.minX, box.minY, box.minZ),
+                BlockPos.containing(box.maxX, box.maxY, box.maxZ))) {
+            var fluid = level().getFluidState(pos);
+            if (fluid.isEmpty()) continue;
+            double height = Math.min(box.maxY, pos.getY() + fluid.getHeight(level(), pos)) - Math.max(box.minY, pos.getY());
+            if (height <= 0) continue;
+            double width = Math.min(box.maxX, pos.getX() + 1) - Math.max(box.minX, pos.getX());
+            double depth = Math.min(box.maxZ, pos.getZ() + 1) - Math.max(box.minZ, pos.getZ());
+            if (width > 0 && depth > 0) volume += width * height * depth;
+        }
+        return volume;
+    }
+
+    private boolean canCrawlWithoutEnteringLiquid(AABB box, Vec3 step) {
+        double current = liquidOverlap(box);
+        if (current > 0) {
+            // 被推入液面后可以向外爬，但不能继续深入或在液面内横着游。
+            return liquidOverlap(box.move(step)) < current - 1.0E-10;
+        }
+        return liquidOverlap(box.expandTowards(step)) <= 1.0E-10;
+    }
+
+    private Direction findDryEscapeWall(double speed) {
+        Vec3 up = vector(Direction.UP).scale(speed);
+        AABB box = getBoundingBox();
+        if (!level().noCollision(this, box.move(up)) || !canCrawlWithoutEnteringLiquid(box, up))
+            return null;
+        for (Direction wall : Direction.Plane.HORIZONTAL) {
+            if (findSupport(wall, box) != null && findSupport(wall, box.move(up)) != null)
+                return wall;
+        }
+        return null;
+    }
+
+    private void turnAwayFromLiquid(Direction face, Direction crawl, double speed) {
+        Direction[] alternatives = {crawl.getOpposite(), Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.DOWN};
+        AABB box = getBoundingBox();
+        for (Direction direction : alternatives) {
+            if (direction == crawl || direction.getAxis() == face.getAxis()) continue;
+            Vec3 step = vector(direction).scale(speed);
+            AABB next = box.move(step);
+            if (level().noCollision(this, next) && findSupport(face, next) != null && canCrawlWithoutEnteringLiquid(box, step)) {
+                setCrawlDirection(direction);
+                break;
+            }
+        }
+        // 两侧都不可走时保持朝向，不要每 tick 翻转 180 度。
+        turnCooldown = 100;
+        setNoGravity(true);
+        setDeltaMovement(Vec3.ZERO);
         updateRotation();
     }
 
@@ -238,9 +314,10 @@ public class Snail extends SimpleCritter {
         Vec3 target = path.rounded ? path.exit : path.edge;
         Vec3 delta = target.subtract(getBoundingBox().getCenter());
         Vec3 step = delta.length() <= speed ? delta : delta.normalize().scale(speed);
-        if (!level().noCollision(this, getBoundingBox().move(step)) || level().containsAnyLiquid(getBoundingBox().move(step))) {
-            detach();
-            return false;
+        if (!level().noCollision(this, getBoundingBox().move(step)) || !canCrawlWithoutEnteringLiquid(getBoundingBox(), step)) {
+            corner = null;
+            turnAwayFromLiquid(getAttachmentFace(), getCrawlDirection(), speed);
+            return true;
         }
         crawlMove(step);
         if (getBoundingBox().getCenter().distanceToSqr(target) < 1.0E-8) {

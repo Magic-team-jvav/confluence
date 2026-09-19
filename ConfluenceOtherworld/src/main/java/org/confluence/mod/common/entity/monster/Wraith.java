@@ -2,20 +2,13 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.level.Level;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.DirectFloatingPursuitAction;
@@ -68,16 +61,6 @@ public class Wraith extends BaseFlyingMonster {
     @Override
     protected boolean hasPushableBody() {
         return true;
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity target) {
-        boolean damaged = super.doHurtTarget(target);
-        if (damaged && target instanceof LivingEntity living && random.nextInt(8) == 0) {
-            int duration = LibUtils.isMaster(level(), blockPosition()) ? 750 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 600 : 300;
-            living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration), this);
-        }
-        return damaged;
     }
 
     /// 幻灵可以漂浮并穿过门洞。

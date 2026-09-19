@@ -10,6 +10,7 @@ import net.minecraftforge.common.ForgeConfigSpec.*;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
 import org.confluence.mod.network.s2c.DragonChargePlayerConfigPacketS2C;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
@@ -30,6 +31,15 @@ public final class CommonConfigs {
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
     public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
     public static BooleanValue ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES;
+    public static BooleanValue ENHANCE_ALL_MONSTER;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE;
+    public static DoubleValue MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE;
     private static BooleanValue DRAGON_CHARGE_PLAYER;
     public static BooleanValue STOP_ASK_FOR_SOFTCORE;
     public static BooleanValue TERRA_STYLE_LIGHTNING_BOLT;
@@ -135,6 +145,7 @@ public final class CommonConfigs {
         }
         ammoSlotsItemBlackList = a;
         ammoSlotsTagBlackList = b;
+        MonsterAttributeScaling.reload();
 
         if (isSingleplayerOwner) {
             dragonChargePlayer = DRAGON_CHARGE_PLAYER.get();
@@ -182,6 +193,37 @@ public final class CommonConfigs {
             ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES = builder.define("allowsVanillaEntitiesToPerformStageAttributes", false);
             DRAGON_CHARGE_PLAYER = builder.define("dragonChargePlayer", true);
             STOP_ASK_FOR_SOFTCORE = builder.define("stopAskForSoftcore", false);
+            {
+                builder.push("MonsterAttributes");
+                ENHANCE_ALL_MONSTER = builder
+                        .comment("Apply these multipliers to vanilla and other mods' hostile mobs as well. Otherwise only Confluence enemies are affected. Bosses, summons and friendly creatures are excluded.")
+                        .define("enhanceAllMonster", false);
+                MONSTER_ATTRIBUTES_MULTIPLIER_HEALTH = builder
+                        .comment("Maximum health multiplier. Does not refill wounded enemies when reloaded.")
+                        .defineInRange("monsterAttributesMultiplierHealth", 1.0D, 0.0625D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_DAMAGE = builder
+                        .comment("Attack damage attribute multiplier. Projectiles derived from that attribute inherit it once; independently configured projectile damage is unchanged.")
+                        .defineInRange("monsterAttributesMultiplierDamage", 1.0D, 0.0625D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR = builder
+                        .comment("Armor multiplier. Multiplication cannot give armor to an enemy whose armor is zero.")
+                        .defineInRange("monsterAttributesMultiplierArmor", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_ARMOR_TOUGHNESS = builder
+                        .comment("Armor toughness multiplier. Zero toughness remains zero.")
+                        .defineInRange("monsterAttributesMultiplierArmorToughness", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_MOVEMENT_SPEED = builder
+                        .comment("Movement speed attribute multiplier; does not alter AI movement implemented with fixed velocities.")
+                        .defineInRange("monsterAttributesMultiplierMovementSpeed", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_FLYING_SPEED = builder
+                        .comment("Flying speed attribute multiplier; only affects enemies that use this attribute.")
+                        .defineInRange("monsterAttributesMultiplierFlyingSpeed", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_KNOCKBACK_RESISTANCE = builder
+                        .comment("Knockback resistance multiplier, clamped by the attribute's own allowed range.")
+                        .defineInRange("monsterAttributesMultiplierKnockbackResistance", 1.0D, 0.0D, 100.0D);
+                MONSTER_ATTRIBUTES_MULTIPLIER_FOLLOW_RANGE = builder
+                        .comment("Follow range attribute multiplier; existing line-of-sight and AI-specific range checks still apply.")
+                        .defineInRange("monsterAttributesMultiplierFollowRange", 1.0D, 0.0D, 100.0D);
+                builder.pop();
+            }
             {
                 builder.push("AutomaticWeaponUse");
                 AUTO_SWING_ALL_SWORDS = builder.define("autoSwingAllSwords", false);

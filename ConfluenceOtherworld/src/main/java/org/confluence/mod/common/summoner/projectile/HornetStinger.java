@@ -18,7 +18,6 @@ public class HornetStinger extends Projectile implements IEntityCollision<Hornet
 
     public HornetStinger() {
         super(SummonerAttachmentEntityTypes.HORNET_STINGER);
-        setMaxTickCount(200);
         setDrag(1.0F);
         setGravity(0);
     }

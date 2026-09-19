@@ -7,7 +7,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -43,7 +42,6 @@ import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.entity.storage.ChesterEntity;
 import org.confluence.mod.common.entity.storage.FlyingPiggyBankEntity;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
-import org.confluence.mod.common.summon.ground.IronGolemSummon.SummonedIronGolem;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -115,8 +113,6 @@ public final class ModEntities {
             () -> CreatureAttributeBuilder.critter().maxHealth(20).movementSpeed(0.35).flyingSpeed(0.45).followRange(32).build());
     public static final RegistryObject<EntityType<FlyingPiggyBankEntity>> FLYING_PIGGY_BANK = withAttributes(registerStorageCompanion("piggy_bank", FlyingPiggyBankEntity::new),
             () -> CreatureAttributeBuilder.critter().maxHealth(20).movementSpeed(0.35).flyingSpeed(0.45).followRange(32).build());
-    public static final RegistryObject<EntityType<SummonedIronGolem>> SUMMONED_IRON_GOLEM = withAttributes(register("summoned_iron_golem", id -> EntityType.Builder.of(SummonedIronGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).updateInterval(1).noSave().build(id.toString())),
-            () -> CreatureAttributeBuilder.from(IronGolem.createAttributes()).build());
     public static final RegistryObject<EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF = register("base_mana_staff", id -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<VilethronProjectile>> VILETHRON = register("vilethron", id -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));
     public static final RegistryObject<EntityType<CrystalVileShardProjectile>> CRYSTAL_VILE_SHARD = register("crystal_vile_shard", id -> EntityType.Builder.<CrystalVileShardProjectile>of(CrystalVileShardProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build(id.toString()));

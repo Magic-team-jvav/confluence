@@ -69,6 +69,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.FINCH_STAFF.get(), "Finch Staff");
         add("summon.confluence.finch", "Finch");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "Iron Golem Staff");
+        add("summon.confluence.iron_golem", "Iron Golem");
         add(SummonItems.SLIME_STAFF.get(), "Slime Staff");
         add(SummonItems.NEW_HORNET_STAFF.get(), "Hornet Staff");
         add(SummonItems.SCULK_WISP_STAFF.get(), "Sculk Wisp Staff");
@@ -81,7 +82,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.DESERT_TIGER_STAFF.get(), "Desert Tiger Staff");
         add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
-        add("entity.confluence.i_32_iron_golem", "I-32 Iron Golem");
         add("entity.confluence.slime_baby", "Baby Slime");
         add("entity.confluence.hornet_baby", "Hornet Minion");
         add("summon.confluence.hornet", "Hornet");
@@ -1526,7 +1526,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.demon_eye.cataract", "Cataract Demon Eye");
         add("entity.confluence.demon_eye.cataract_big", "Big Cataract Demon Eye");
         add("entity.confluence.worm.nightcrawler", "Enchanted Nightcrawler");
-        add(ModEntities.SUMMONED_IRON_GOLEM.get(), "Iron Golem");
         add("entity.confluence.worm.gold", "Gold Worm");
         add("entity.confluence.worm.normal", "Worm");
         add("entity.confluence.grasshopper.gold", "Gold Grasshopper");

@@ -10,6 +10,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.PlannedPath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.Random;
 
 /**
  * 基于动量物理的仆从抽象基类。
@@ -21,7 +22,7 @@ public abstract class MomentumMinion extends Minion implements IMomentumAttachme
     private float desiredRoll = 0;
     private Vec3 velocity = Vec3.ZERO;
     private boolean physics = true;
-    private float drag = 0.92F;
+    private float drag = 0.92F * new Random().nextFloat(0.99f, 1.01f);
     private float gravity = -0.08F;
 
     public MomentumMinion(RegistryObject<? extends AttachmentEntityType<?>> type) {

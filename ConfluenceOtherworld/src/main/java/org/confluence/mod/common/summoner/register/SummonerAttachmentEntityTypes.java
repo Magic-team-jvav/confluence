@@ -9,6 +9,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.minion.FinchMinion;
 import org.confluence.mod.common.summoner.minion.HornetMinion;
+import org.confluence.mod.common.summoner.minion.IronGolemMinion;
 import org.confluence.mod.common.summoner.projectile.HornetStinger;
 
 import java.util.function.Supplier;
@@ -22,6 +23,8 @@ public final class SummonerAttachmentEntityTypes {
     public static final RegistryObject<AttachmentEntityType<HornetStinger>> HORNET_STINGER = register("hornet_stinger", HornetStinger::new);
 
     public static final RegistryObject<AttachmentEntityType<FinchMinion>> FINCH = register("finch", FinchMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<IronGolemMinion>> IRON_GOLEM = register("iron_golem", IronGolemMinion::new);
 
     private static <T extends AttachmentEntity> RegistryObject<AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return PortDeferredRegisterExtension.register(TYPES, name, id -> new AttachmentEntityType<>(id, supplier));

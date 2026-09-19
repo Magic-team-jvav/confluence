@@ -4,25 +4,26 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
+import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.summoner.model.bbmodel.BBModelManager;
-import org.confluence.mod.client.summoner.model.geo.GeoAnimationManager;
-import org.confluence.mod.client.summoner.model.geo.GeoModelManager;
 import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer;
+import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
 import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.client.PortRegisterClientReloadListenersEvent;
+import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
 import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
 
@@ -54,19 +55,20 @@ public final class SummonerClientEvents {
                 MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
                 AttachmentEntityRenderDispatcher.render(level, event.getCamera(), event.getPoseStack(), bufferSource, event.getPartialTick());
             }
-            if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_LEVEL) {
-                DynamicLightDispatcher.update(event.getLevelRenderer());
-            }
-        });
-        PortEventHandler.addListener((PortRegisterClientReloadListenersEvent event) -> {
-            event.registerReloadListener(GeoModelManager.INSTANCE);
-            event.registerReloadListener(GeoAnimationManager.INSTANCE);
-            event.registerReloadListener(BBModelManager.INSTANCE);
         });
         PortEventHandler.addListener((PortFMLClientSetupEventPort event) -> event.enqueueWork(() -> {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.FINCH.get(), new FinchRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET.get(), new HornetRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET_STINGER.get(), new HornetStingerRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IRON_GOLEM.get(), new IronGolemRenderer());
         }));
+        PortEventHandler.addListener((PortEntityRenderersEvent.AddLayers event) -> {
+            for (PortEntityRenderersEvent.AddLayers.PortModel skin : PortEntityRenderersEvent.AddLayers.PortModel.values()) {
+                PlayerRenderer playerRenderer = event.getSkin(skin);
+                if (playerRenderer != null) {
+                    playerRenderer.addLayer(new BirdNestLayer(playerRenderer));
+                }
+            }
+        });
     }
 }

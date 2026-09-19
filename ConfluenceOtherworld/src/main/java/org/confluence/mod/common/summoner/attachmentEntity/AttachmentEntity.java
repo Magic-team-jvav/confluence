@@ -8,7 +8,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.minion.HornetMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
@@ -16,16 +15,22 @@ import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class AttachmentEntity implements Immunity {
+@SuppressWarnings("unused")
+public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
 
     protected final RegistryObject<? extends AttachmentEntityType<?>> type;
     protected final ArrayList<PathNode> historyNodes = new ArrayList<>();
     protected final AttachmentEntityGoalSelector goalSelector = new AttachmentEntityGoalSelector();
     protected final SyncFieldDispatcher syncFields = SyncFieldDispatcher.create(this::registerSyncFields);
+    protected final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     protected UUID uuid = UUID.randomUUID();
     protected Player owner = null;
     protected PlannedPath currentPlannedPath = null;
@@ -54,6 +59,20 @@ public abstract class AttachmentEntity implements Immunity {
     }
 
     public void registerGoals(AttachmentEntityGoalSelector goalSelector) {
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return animationCache;
+    }
+
+    @Override
+    public double getTick(Object object) {
+        return tickCount;
     }
 
     @NotNull
@@ -136,10 +155,10 @@ public abstract class AttachmentEntity implements Immunity {
         if (!level.isClientSide()) {
             tickCount++;
             if (this instanceof IBlockCollision<?> blockCollision) {
-                blockCollision.blockCollision(this);
+                blockCollision.blockCollision();
             }
             if (this instanceof IEntityCollision<?> iEntityCollision) {
-                iEntityCollision.entityCollision(this);
+                iEntityCollision.entityCollision();
             }
         }
         historyNodes.add(0, currentPathNode);

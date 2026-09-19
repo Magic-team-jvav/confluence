@@ -16,7 +16,6 @@ import java.util.Map;
 public final class SummonTypes {
     private static final Map<ResourceLocation, SummonType> TYPES = new LinkedHashMap<>();
 
-    public static final SummonType IRON_GOLEM = register("i_32_iron_golem", IronGolemSummon::new);
     public static final SummonType SLIME = register("slime_baby", SlimeSummon::new);
     public static final SummonType SCULK_WISP = register("sculk_wisp", SculkWispSummon::new);
     public static final SummonType IMP = register("summon_imp", ImpSummon::new);

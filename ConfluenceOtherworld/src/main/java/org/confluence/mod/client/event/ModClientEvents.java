@@ -324,7 +324,6 @@ public final class ModClientEvents {
     @SuppressWarnings("all")
     private static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new); // 牢枕专用
-        event.registerEntityRenderer(SUMMONED_IRON_GOLEM.get(), context -> new GeoNormalRenderer<>(context, new GeoNormalModel<>(Confluence.asResource("summon/iron_golem_32"), false)));
         event.registerEntityRenderer(CHESTER.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/summon/chester.geo.json"), Confluence.asResource("textures/entity/summon/chester.png"), Confluence.asResource("animations/entity/summon/chester.animation.json"))));
         event.registerEntityRenderer(FLYING_PIGGY_BANK.get(), context -> new GeoNormalRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/summon/piggy_bank.geo.json"), Confluence.asResource("textures/entity/summon/piggy_bank.png"), Confluence.asResource("animations/entity/summon/piggy_bank.animation.json"))));
         event.registerEntityRenderer(RIDEABLE_SLIME.get(), context -> new MountGeoRenderer<>(context, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/rideable/rideable_slime.geo.json"), Confluence.asResource("textures/entity/rideable/rideable_slime.png"), Confluence.asResource("animations/entity/rideable/rideable_slime.animation.json"))).withScale(RideableSlimeMountEntity.RENDER_SCALE).setShadowRadius(0.35F));

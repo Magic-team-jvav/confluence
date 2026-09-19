@@ -7,6 +7,9 @@ import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.hornet.HornetAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.hornet.HornetIdleGoal;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
 
 public class HornetMinion extends MomentumMinion {
 
@@ -29,12 +32,14 @@ public class HornetMinion extends MomentumMinion {
         goalSelector.addGoal(1, new HornetIdleGoal(this));
     }
 
-    public float attackAnimation(float partialTick) {
-        float value = tickCount - attackTime + partialTick;
-        if (attackTime != -1 && value < 0.375 * 20) {
-            return value;
-        }
-        return -1;
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "hornet", 2, state -> {
+            if (isAttackAnimationActive()) {
+                return state.setAndContinue(RawAnimation.begin().thenPlay("attack.cast"));
+            }
+            return state.setAndContinue(RawAnimation.begin().thenLoop("misc.idle"));
+        }));
     }
 
     @Override
@@ -46,5 +51,9 @@ public class HornetMinion extends MomentumMinion {
     public void lookAtDirection(Vec3 direction) {
         float targetYaw = (float) Math.toDegrees(Math.atan2(-direction.x, direction.z));
         setDesiredRotation(targetYaw, 0, getRoll());
+    }
+
+    public boolean isAttackAnimationActive() {
+        return attackTime != -1 && tickCount - attackTime < 8;
     }
 }

@@ -3,7 +3,9 @@ package org.confluence.mod.client.summoner;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
+import org.confluence.mod.common.summoner.minion.GroundMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -67,7 +69,7 @@ public class AttachmentEntityRenderDispatcher {
                     renderer.render(entity, poseStack, bufferSource, partialTick, lightCoords, renderNode);
                 }
                 if (SummonerRenderConfig.DebugMode) {
-                    debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource);
+                    debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource, partialTick);
                 }
                 poseStack.popPose();
             }
@@ -85,10 +87,10 @@ public class AttachmentEntityRenderDispatcher {
         return DynamicLightDispatcher.getDynamicLight(Vec3.atCenterOf(pos), packed);
     }
 
-    private static void debugRender(PoseStack poseStack, AttachmentEntity entity, boolean showHitboxes, PathNode renderNode, MultiBufferSource bufferSource) {
+    private static void debugRender(PoseStack poseStack, AttachmentEntity entity, boolean showHitboxes, PathNode renderNode, MultiBufferSource bufferSource, float partialTick) {
         // 调试渲染（使用原始缓冲源，不受透明度影响）
+        VertexConsumer debugConsumer = bufferSource.getBuffer(RenderType.lines());
         if (showHitboxes) {
-            VertexConsumer debugConsumer = bufferSource.getBuffer(RenderType.lines());
             LevelRenderer.renderLineBox(poseStack, debugConsumer, -0.001, -0.001, -0.001, 0.001, 0.001, 0.001, 1.0F, 1.0F, 0.0F, 1.0F);
             poseStack.pushPose();
             poseStack.mulPose(Axis.YN.rotationDegrees(renderNode.yaw()));
@@ -104,6 +106,13 @@ public class AttachmentEntityRenderDispatcher {
             poseStack.popPose();
             if (entity instanceof IBlockCollision<?> iBlockCollision) {
                 LevelRenderer.renderLineBox(poseStack, debugConsumer, iBlockCollision.getBlockCollisionBox(), 0.0F, 1.0F, 0.0F, 1.0F);
+            }
+            if (entity instanceof GroundMinion ground) {
+                poseStack.pushPose();
+                poseStack.translate(0.0, ground.getEyeHeight(), 0.0);
+                Vec3 direction = ground.getEyeDirection(partialTick).scale(1.5);
+                LevelRenderer.renderLineBox(poseStack, debugConsumer, Math.min(0.0, direction.x), Math.min(0.0, direction.y), Math.min(0.0, direction.z), Math.max(0.0, direction.x), Math.max(0.0, direction.y), Math.max(0.0, direction.z), 0.0F, 1.0F, 1.0F, 1.0F);
+                poseStack.popPose();
             }
         }
     }

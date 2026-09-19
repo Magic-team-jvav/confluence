@@ -5151,6 +5151,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.FINCH_STAFF.get(), "雀杖");
         add("summon.confluence.finch", "小鸟");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "铁傀儡杖");
+        add("summon.confluence.iron_golem", "铁傀儡");
         add(SummonItems.SLIME_STAFF.get(), "史莱姆法杖");
         add(SummonItems.NEW_HORNET_STAFF.get(), "黄蜂法杖");
         add(SummonItems.SCULK_WISP_STAFF.get(), "幽匿游灵法杖");
@@ -5163,7 +5164,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.DESERT_TIGER_STAFF.get(), "沙漠虎杖");
         add(SummonItems.TERRAPRISMA.get(), "泰拉棱镜");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "星尘之龙法杖");
-        add("entity.confluence.i_32_iron_golem", "i-32型铁傀儡");
         add("entity.confluence.slime_baby", "史莱姆宝宝");
         add("entity.confluence.hornet_baby", "仆役黄蜂");
         add("summon.confluence.hornet", "黄蜂");
@@ -5429,7 +5429,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(PetItems.MONEY_TROUGH.get(), "钱币槽");
         add(ModEntities.CHESTER.get(), "切斯特");
         add(ModEntities.FLYING_PIGGY_BANK.get(), "飞行存钱罐");
-        add(ModEntities.SUMMONED_IRON_GOLEM.get(), "铁傀儡");
         add("container.confluence.chester", "切斯特");
     }
 

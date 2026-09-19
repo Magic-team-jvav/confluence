@@ -3,6 +3,7 @@ package org.confluence.mod.client.summoner;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import net.minecraft.client.Camera;

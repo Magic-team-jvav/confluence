@@ -118,7 +118,6 @@
         "client.renderer.LightTextureMixin",
         "client.renderer.block.BlockModelShaperMixin",
         "client.renderer.block.ModelBlockRendererMixin",
-        "client.renderer.entity.EntityRendererMixin",
         "client.renderer.entity.EntityRendererProvider$ContextMixin",
         "client.renderer.entity.ItemRendererMixin",
         "client.renderer.entity.LivingEntityRendererAccessor",

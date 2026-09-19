@@ -12,15 +12,13 @@ import org.confluence.mod.common.summoner.minion.goal.finch.FinchAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.finch.FinchIdleGoal;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.DataTicket;
 
 import java.util.List;
 
-public class FinchMinion extends MomentumMinion implements IEntityCollision<FinchMinion>, GeoAnimatable {
+public class FinchMinion extends MomentumMinion implements IEntityCollision<FinchMinion> {
 
     public float idleBlend;
     public float idleBlendO;

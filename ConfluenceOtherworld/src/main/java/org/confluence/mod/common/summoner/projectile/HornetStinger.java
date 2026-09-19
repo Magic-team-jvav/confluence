@@ -18,29 +18,12 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class HornetStinger extends Projectile implements IEntityCollision<HornetStinger>, IBlockCollision<HornetStinger>, GeoAnimatable {
-
-    private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+public class HornetStinger extends Projectile implements IEntityCollision<HornetStinger>, IBlockCollision<HornetStinger> {
 
     public HornetStinger() {
         super(SummonerAttachmentEntityTypes.HORNET_STINGER);
-        setMaxTickCount(200);
         setDrag(1.0F);
         setGravity(0);
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return animationCache;
-    }
-
-    @Override
-    public double getTick(Object object) {
-        return tickCount;
     }
 
     @Override

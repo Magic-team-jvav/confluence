@@ -14,6 +14,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.projectile.HornetStinger;
 
 public class HornetStingerRenderer extends AbstractAttachmentEntityRenderer<HornetStinger> {
+
     @Override
     protected RenderContext<HornetStinger> createContext(HornetStinger stinger, float partialTick) {
         return RenderContext.<HornetStinger>builder()

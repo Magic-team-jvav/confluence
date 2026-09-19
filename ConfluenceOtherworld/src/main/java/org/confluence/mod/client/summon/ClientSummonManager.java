@@ -38,7 +38,6 @@ import java.util.*;
 public final class ClientSummonManager {
     private static final ResourceLocation TERRAPRISMA = Confluence.asResource("terraprisma");
     private static final ResourceLocation STARDUST_DRAGON = Confluence.asResource("stardust_dragon");
-    private static final ResourceLocation IRON_GOLEM = Confluence.asResource("i_32_iron_golem");
     private static final ResourceLocation TERRAPRISMA_TEXTURE = Confluence.asResource("textures/entity/model/terraprisma_gray.png");
     private static final ResourceLocation IMP_FIREBALL = SummonProjectileTypes.IMP_FIREBALL.id();
     public static final ModelResourceLocation FINCH_STAFF_EMPTY_MODEL = new ModelResourceLocation(Confluence.asResource("finch_staff_empty"), "inventory");
@@ -139,9 +138,6 @@ public final class ClientSummonManager {
                     renderTrail(state, event, buffers, 0.25F, state.rgb());
             } else if (state.current.type().equals(STARDUST_DRAGON)) {
                 renderStardustDragonPart(state, event, buffers);
-            } else if (state.current.type().equals(IRON_GOLEM)) {
-                // 铁傀儡由正常实体渲染器绘制；这里仅保留状态同步，不能再叠加一份客户端外观。
-                continue;
             } else if (binding != null) {
                 renderGeoVisual(state, binding, event, buffers);
             } else {

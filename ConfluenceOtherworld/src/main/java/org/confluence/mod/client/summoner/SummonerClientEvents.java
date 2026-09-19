@@ -15,6 +15,7 @@ import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer;
 import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
 import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
@@ -59,6 +60,7 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.FINCH.get(), new FinchRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET.get(), new HornetRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET_STINGER.get(), new HornetStingerRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IRON_GOLEM.get(), new IronGolemRenderer());
         }));
         PortEventHandler.addListener((PortEntityRenderersEvent.AddLayers event) -> {
             for (PortEntityRenderersEvent.AddLayers.PortModel skin : PortEntityRenderersEvent.AddLayers.PortModel.values()) {

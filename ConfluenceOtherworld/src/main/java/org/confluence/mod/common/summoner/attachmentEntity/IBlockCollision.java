@@ -29,26 +29,46 @@ public interface IBlockCollision<T extends AttachmentEntity & IMomentumAttachmen
         return 0;
     }
 
-    default void blockCollision(AttachmentEntity entity) {
+    /**
+     * 碰撞轴上的速度处理：只处理与碰撞方向一致的速度，反向的速度原样保留。
+     */
+    default double resolveVelocity(double velocity, double motion, float elasticity) {
+        double result = velocity;
+        if (velocity * motion > 0.0) {
+            result = Math.abs(velocity) * elasticity < 0.01 ? 0.0 : -velocity * elasticity;
+        }
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    default void blockCollision() {
+        T entity = (T) this;
         ArrayList<PathNode> history = entity.getHistoryNodes();
-        if (entity instanceof IMomentumAttachmentEntity iMomentumAttachmentEntity && canCollideWithBlocks() && !history.isEmpty()) {
+        if (canCollideWithBlocks() && !history.isEmpty()) {
             Vec3 from = history.get(0).pos();
-            Vec3 motion = entity.currentPathNode.pos().subtract(from);
+            Vec3 motion = entity.getCurrentPathNode().pos().subtract(from);
             Level level = entity.getLevel();
             // 使用原版碰撞检测算法
             Vec3 correctedMotion = Entity.collideBoundingBox(null, motion, getBlockCollisionBox().move(from), level, List.of());
-            if (!correctedMotion.equals(motion)) {
-                Vec3 correctedPos = from.add(correctedMotion);
-                entity.currentPathNode = new PathNode(correctedPos, entity.currentPathNode.yaw(), entity.currentPathNode.pitch(), entity.currentPathNode.roll());
-                boolean collisionX = correctedMotion.x != motion.x;
-                boolean collisionY = correctedMotion.y != motion.y;
-                boolean collisionZ = correctedMotion.z != motion.z;
-                // 被底部方块支撑：原运动向下且 Y 轴被碰撞截断（即落地）
-                boolean bottomSupported = motion.y < 0 && collisionY;
-                Vec3 velocity = iMomentumAttachmentEntity.getVelocity();
-                float elasticity = getElasticity();
-                iMomentumAttachmentEntity.setVelocity(new Vec3(collisionX ? (Math.abs(velocity.x) * elasticity < 0.01 ? 0 : -velocity.x * elasticity) : velocity.x, collisionY ? (Math.abs(velocity.y) * elasticity < 0.01 ? 0 : -velocity.y * elasticity) : velocity.y, collisionZ ? (Math.abs(velocity.z) * elasticity < 0.01 ? 0 : -velocity.z * elasticity) : velocity.z));
-                onBlockCollision(new CollisionContext(correctedPos, collisionX, collisionY, collisionZ, bottomSupported));
+            Vec3 correctedPos = from.add(correctedMotion);
+            entity.currentPathNode = new PathNode(correctedPos, entity.currentPathNode.yaw(), entity.currentPathNode.pitch(), entity.currentPathNode.roll());
+            boolean collisionX = correctedMotion.x != motion.x;
+            boolean collisionY = correctedMotion.y != motion.y;
+            boolean collisionZ = correctedMotion.z != motion.z;
+            // 被底部方块支撑：原运动向下且 Y 轴被碰撞截断（即落地）
+            boolean onGround = motion.y < 0 && collisionY;
+            if (onGround) {
+                Vec3 velocity = entity.getVelocity();
+                entity.setVelocity(new Vec3(velocity.x() * 0.8, velocity.y(), velocity.z() * 0.8));
+            }
+            float elasticity = getElasticity();
+            Vec3 velocity = entity.getVelocity();
+            entity.setVelocity(new Vec3(
+                    collisionX ? resolveVelocity(velocity.x, motion.x, elasticity) : velocity.x,
+                    collisionY ? resolveVelocity(velocity.y, motion.y, elasticity) : velocity.y,
+                    collisionZ ? resolveVelocity(velocity.z, motion.z, elasticity) : velocity.z));
+            if (collisionX || collisionY || collisionZ) {
+                onBlockCollision(new CollisionContext(correctedPos, collisionX, collisionY, collisionZ, onGround));
             }
         }
     }

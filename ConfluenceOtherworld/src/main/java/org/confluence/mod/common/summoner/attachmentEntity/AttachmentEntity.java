@@ -8,7 +8,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.minion.HornetMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
@@ -19,12 +18,10 @@ import org.joml.Vector3f;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.*;
-import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("unused")
 public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
@@ -158,10 +155,10 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
         if (!level.isClientSide()) {
             tickCount++;
             if (this instanceof IBlockCollision<?> blockCollision) {
-                blockCollision.blockCollision(this);
+                blockCollision.blockCollision();
             }
             if (this instanceof IEntityCollision<?> iEntityCollision) {
-                iEntityCollision.entityCollision(this);
+                iEntityCollision.entityCollision();
             }
         }
         historyNodes.add(0, currentPathNode);

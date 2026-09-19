@@ -52,7 +52,9 @@ public interface IEntityCollision<T extends AttachmentEntity> {
     /**
      * 执行基于历史轨迹的精确碰撞检测，并触发攻击
      */
-    default void entityCollision(AttachmentEntity entity) {
+    @SuppressWarnings("unchecked")
+    default void entityCollision() {
+        T entity = (T) this;
         ArrayList<PathNode> historyNodes = entity.getHistoryNodes();
         if (canCollideAttack() && !historyNodes.isEmpty()) {
 

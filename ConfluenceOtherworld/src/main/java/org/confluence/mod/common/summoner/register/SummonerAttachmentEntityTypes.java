@@ -11,7 +11,12 @@ import org.confluence.mod.common.summoner.minion.FinchMinion;
 import org.confluence.mod.common.summoner.minion.HornetMinion;
 import org.confluence.mod.common.summoner.minion.IronGolemMinion;
 import org.confluence.mod.common.summoner.minion.SculkWispMinion;
+import org.confluence.mod.common.summoner.minion.BloodBatMinion;
+import org.confluence.mod.common.summoner.minion.DeadlySphereMinion;
+import org.confluence.mod.common.summoner.minion.ImpMinion;
+import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
 import org.confluence.mod.common.summoner.projectile.HornetStinger;
+import org.confluence.mod.common.summoner.projectile.ImpFireball;
 
 import java.util.function.Supplier;
 
@@ -28,6 +33,16 @@ public final class SummonerAttachmentEntityTypes {
     public static final RegistryObject<AttachmentEntityType<IronGolemMinion>> IRON_GOLEM = register("iron_golem", IronGolemMinion::new);
 
     public static final RegistryObject<AttachmentEntityType<SculkWispMinion>> SCULK_WISP = register("sculk_wisp", SculkWispMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<ImpMinion>> IMP = register("imp", ImpMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<ImpFireball>> IMP_FIREBALL = register("imp_fireball", ImpFireball::new);
+
+    public static final RegistryObject<AttachmentEntityType<DeadlySphereMinion>> DEADLY_SPHERE = register("deadly_sphere", DeadlySphereMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<BloodBatMinion>> VAMPIRE_BAT = register("vampire_bat", BloodBatMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<TerraprismaMinion>> TERRAPRISMA = register("terraprisma", TerraprismaMinion::new);
 
     private static <T extends AttachmentEntity> RegistryObject<AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return PortDeferredRegisterExtension.register(TYPES, name, id -> new AttachmentEntityType<>(id, supplier));

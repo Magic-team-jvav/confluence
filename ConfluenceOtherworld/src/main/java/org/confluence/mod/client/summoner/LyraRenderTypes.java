@@ -55,7 +55,8 @@ public class LyraRenderTypes extends RenderType {
             true,
             CompositeState.builder()
                     .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/particle/ball_of_fire_trail.png"), false, false))
+                    // 每个丝带四边形都完整采样一次贴图，必须用 Lyra 的纵向渐变条，用粒子点状贴图会变成断续斑点
+                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/trail.png"), false, false))
                     .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setCullState(NO_CULL)
                     .setOverlayState(OVERLAY)

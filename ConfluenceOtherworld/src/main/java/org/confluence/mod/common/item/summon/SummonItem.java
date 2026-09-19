@@ -57,10 +57,6 @@ public class SummonItem extends Item {
         return baseDamage;
     }
 
-    public boolean hasSummonKnockback() {
-        return summonType == SummonTypes.IMP;
-    }
-
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);

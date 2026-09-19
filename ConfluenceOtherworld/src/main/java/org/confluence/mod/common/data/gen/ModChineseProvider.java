@@ -5168,13 +5168,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "星尘之龙法杖");
         add("entity.confluence.slime_baby", "史莱姆宝宝");
         add("entity.confluence.hornet_baby", "仆役黄蜂");
-        add("entity.confluence.summon_imp", "召唤的小鬼");
+        add("summon.confluence.imp", "小鬼");
         add("entity.confluence.summon_snow_flinx", "小雪怪");
         add("entity.confluence.vampire_frog", "吸血鬼青蛙");
-        add("entity.confluence.terraprisma", "泰拉棱镜");
+        add("summon.confluence.terraprisma", "泰拉棱镜");
         add("entity.confluence.stardust_dragon", "星尘龙");
-        add("entity.confluence.deadly_sphere", "致命球");
-        add("entity.confluence.vampire_bat", "血蝙蝠");
+        add("summon.confluence.deadly_sphere", "致命球");
+        add("summon.confluence.vampire_bat", "血蝙蝠");
         add("entity.confluence.spider", "蜘蛛召唤物");
         add("entity.confluence.desert_tiger", "沙漠虎");
         add("tooltip.confluence.summon.damage", "基础召唤伤害：%s");
@@ -5269,6 +5269,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.whip_attack", "鞭子：抽打");
         add("confluence.subtitle.routine_summon", "召唤物：召唤");
         add("confluence.subtitle.use_minion_weapon", "召唤杖：使用");
+        add("confluence.subtitle.use_terraprism", "泰拉棱镜：使用");
         add("confluence.subtitle.summon_eye", "飞行召唤物：召唤");
         add("confluence.subtitle.summon_imp", "小鬼：召唤");
         add("confluence.subtitle.summon_money_trough", "钱币槽：出现");

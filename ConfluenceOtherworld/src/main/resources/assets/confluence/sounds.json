@@ -5,6 +5,12 @@
         ],
         "subtitle": "confluence.subtitle.use_minion_weapon"
     },
+    "use_terraprism": {
+        "sounds": [
+            "confluence:use_terraprism"
+        ],
+        "subtitle": "confluence.subtitle.use_terraprism"
+    },
     "transmission":  {
                          "sounds":  [
                                         "confluence:transmission"

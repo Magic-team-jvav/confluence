@@ -85,7 +85,7 @@ public enum PrefixType implements StringRepresentable {
     }
 
     public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
-        if (this != SUMMON || !(stack.getItem() instanceof SummonItem item) || item.hasSummonKnockback())
+        if (this != SUMMON || !(stack.getItem() instanceof SummonItem))
             return randomPrefix(random);
         List<ModPrefix> allowed = new LinkedList<>();
         for (ModPrefix prefix : available) {
@@ -115,7 +115,7 @@ public enum PrefixType implements StringRepresentable {
             };
             case UNKNOWN -> null;
             case SUMMON ->
-                    itemStack.getItem() instanceof SummonItem item && !item.hasSummonKnockback() ? Summon.EAGER : Summon.FABLED;
+                    itemStack.getItem() instanceof SummonItem ? Summon.EAGER : Summon.FABLED;
         };
     }
 

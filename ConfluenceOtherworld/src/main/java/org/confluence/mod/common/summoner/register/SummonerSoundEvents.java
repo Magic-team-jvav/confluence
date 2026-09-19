@@ -15,6 +15,11 @@ public final class SummonerSoundEvents {
             () -> SoundEvent.createVariableRangeEvent(Confluence.asResource("use_minion_weapon"))
     );
 
+    public static final RegistryObject<SoundEvent> USE_TERRAPRISM = SOUNDS.register(
+            "use_terraprism",
+            () -> SoundEvent.createVariableRangeEvent(Confluence.asResource("use_terraprism"))
+    );
+
     private SummonerSoundEvents() {
     }
 

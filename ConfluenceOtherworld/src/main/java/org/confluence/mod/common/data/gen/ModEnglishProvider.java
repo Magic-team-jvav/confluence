@@ -86,10 +86,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.slime_baby", "Baby Slime");
         add("entity.confluence.hornet_baby", "Hornet Minion");
         add("summon.confluence.hornet", "Hornet");
-        add("entity.confluence.summon_imp", "Imp Minion");
+        add("summon.confluence.imp", "Imp Minion");
         add("entity.confluence.summon_snow_flinx", "Snow Flinx Minion");
         add("entity.confluence.vampire_frog", "Vampire Frog");
-        add("entity.confluence.terraprisma", "Terraprisma");
+        add("summon.confluence.terraprisma", "Terraprisma");
         add("entity.confluence.stardust_dragon", "Stardust Dragon");
         add("tooltip.confluence.summon.damage", "Base summon damage: %s");
         add("tooltip.confluence.summon.slots", "Minion slots: %s");
@@ -130,8 +130,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add(ModEntities.GASTROPOD_PROJECTILE.get(), "Gastropod Projectile");
         add(ModEntities.PALADIN_HAMMER_PROJECTILE.get(), "Paladin Hammer Projectile");
         add(ModEntities.THROWN_ICE_PROJECTILE.get(), "Thrown Ice Projectile");
-        add("entity.confluence.deadly_sphere", "Deadly Sphere");
-        add("entity.confluence.vampire_bat", "Sanguine Bat");
+        add("summon.confluence.deadly_sphere", "Deadly Sphere");
+        add("summon.confluence.vampire_bat", "Sanguine Bat");
         add("entity.confluence.spider", "Spider Minion");
         add("entity.confluence.desert_tiger", "Desert Tiger");
         add("entity.confluence.corrupt_bunny", "Corrupt Bunny");
@@ -1233,6 +1233,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.whip_attack", "Whip: Lash");
         add("confluence.subtitle.routine_summon", "Summon: Summon");
         add("confluence.subtitle.use_minion_weapon", "Minion Staff: Use");
+        add("confluence.subtitle.use_terraprism", "Terraprisma: Use");
         add("confluence.subtitle.summon_eye", "Flying Summon: Summon");
         add("confluence.subtitle.summon_imp", "Imp: Summon");
         addCreatureSoundTranslations();

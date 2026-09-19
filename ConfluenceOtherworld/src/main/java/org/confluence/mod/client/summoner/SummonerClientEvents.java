@@ -17,6 +17,11 @@ import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.SculkWispRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.BloodBatRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.DeadlySphereRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.ImpRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.TerraprismaRenderer;
+import org.confluence.mod.client.summoner.renderer.projectile.ImpFireballRenderer;
 import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
 import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
@@ -63,6 +68,11 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.HORNET_STINGER.get(), new HornetStingerRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IRON_GOLEM.get(), new IronGolemRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SCULK_WISP.get(), new SculkWispRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IMP.get(), new ImpRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.IMP_FIREBALL.get(), new ImpFireballRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.DEADLY_SPHERE.get(), new DeadlySphereRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.VAMPIRE_BAT.get(), new BloodBatRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.TERRAPRISMA.get(), new TerraprismaRenderer());
         }));
         PortEventHandler.addListener((PortEntityRenderersEvent.AddLayers event) -> {
             for (PortEntityRenderersEvent.AddLayers.PortModel skin : PortEntityRenderersEvent.AddLayers.PortModel.values()) {

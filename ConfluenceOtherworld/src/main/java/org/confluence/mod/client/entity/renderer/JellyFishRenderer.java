@@ -14,7 +14,6 @@ import org.confluence.mod.common.entity.monster.JellyFish;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 /// 水母脉冲状态、游动朝向和发光表现的专用渲染器。
 ///
@@ -32,7 +31,7 @@ public final class JellyFishRenderer extends GeoNormalRenderer<JellyFish> {
         super(context, model);
         this.originOffset = originOffset;
         this.luminous = luminous;
-        addRenderLayer(new AutoGlowingGeoLayer<>(this) {
+        addRenderLayer(new EntityGlowingGeoLayer<>(this) {
             @Override
             protected ResourceLocation getTextureResource(JellyFish animatable) {
                 return JellyFishRenderer.this.getTextureLocation(animatable);

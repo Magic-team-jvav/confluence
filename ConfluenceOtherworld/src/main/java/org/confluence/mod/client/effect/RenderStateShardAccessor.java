@@ -12,6 +12,7 @@ import org.confluence.mod.Confluence;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class RenderStateShardAccessor extends RenderStateShard {
     public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
@@ -55,19 +56,38 @@ public class RenderStateShardAccessor extends RenderStateShard {
                                 .createCompositeState(false));
             });
 
+    // 使用原版实体自发光着色器读取叠色，保留 eyes 的加色混合、剔除和只写颜色行为。
+    private static final Function<ResourceLocation, RenderType> ENTITY_GLOW = Util.memoize(texture ->
+            RenderType.create("confluence_entity_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                            .setCullState(CULL).setWriteMaskState(COLOR_WRITE)
+                            .setOverlayState(OVERLAY)
+                            .createCompositeState(false)));
+
+    public static RenderType entityGlow(ResourceLocation texture) {
+        return ENTITY_GLOW.apply(texture);
+    }
+
+    // 1.20.1 的 entityTranslucentCull 着色器不读取叠色；使用普通实体着色器并保留背面剔除。
+    private static final Function<ResourceLocation, RenderType> ENTITY_TRANSLUCENT_CULL_OVERLAY = Util.memoize(texture ->
+            RenderType.create("confluence_entity_translucent_cull_overlay", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true,
+                    RenderType.CompositeState.builder()
+                            .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER)
+                            .setTextureState(new TextureStateShard(texture, false, false))
+                            .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                            .setCullState(CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY)
+                            .createCompositeState(true)));
+
+    public static RenderType entityTranslucentCullOverlay(ResourceLocation texture) {
+        return ENTITY_TRANSLUCENT_CULL_OVERLAY.apply(texture);
+    }
+
     /// 通过此类读取列表，确保内置辉光已初始化后再注册缓冲区。
     public static List<ColoredGlintContext> getColoredGlintContexts() {
         return List.copyOf(ColoredGlintContext.COLORED_GLINT_CONTEXTS);
-    }
-
-    public static RenderType createTextOutline(ResourceLocation texture) {
-        return RenderType.create("confluence_outline_text", DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, 256, false, true,
-                RenderType.CompositeState.builder()
-                        .setShaderState(RENDERTYPE_TEXT_SHADER)
-                        .setTextureState(new TextureStateShard(texture, false, false))
-                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                        .setLightmapState(LIGHTMAP)
-                        .createCompositeState(true));
     }
 
     private RenderStateShardAccessor() {

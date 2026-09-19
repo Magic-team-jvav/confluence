@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.BrainDissolveTexture;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.boss.BrainOfCthulhu;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.object.Color;
@@ -21,7 +22,7 @@ public final class BrainOfCthulhuRenderer extends BossGeoRenderer<BrainOfCthulhu
 
     @Override
     public RenderType getRenderType(BrainOfCthulhu brain, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        return RenderType.entityTranslucentCull(BrainDissolveTexture.texture(texture, brain.getFadeProgress(partialTick)));
+        return RenderStateShardAccessor.entityTranslucentCullOverlay(BrainDissolveTexture.texture(texture, brain.getFadeProgress(partialTick)));
     }
 
     @Override

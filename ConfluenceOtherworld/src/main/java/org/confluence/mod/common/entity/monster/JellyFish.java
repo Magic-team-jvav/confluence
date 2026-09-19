@@ -22,6 +22,7 @@ import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.util.LibUtils;
@@ -145,6 +146,22 @@ public class JellyFish extends BaseAquaticMonster {
         if (getDeltaMovement().length() > 0.08) {
             currentMovement = getDeltaMovement();
         }
+        setBoundingBox(makeBoundingBox());
+    }
+
+    @Override
+    protected AABB makeBoundingBox() {
+        Vec3 direction = currentMovement;
+        if (direction == null || direction.lengthSqr() < 1.0E-6 || isAttackPhase())
+            return super.makeBoundingBox();
+        direction = direction.normalize();
+        double radius = getBbWidth() * 0.5;
+        double halfHeight = getBbHeight() * 0.5;
+        double x = Math.abs(direction.x) * halfHeight + Math.sqrt(Math.max(0.0, 1.0 - direction.x * direction.x)) * radius;
+        double y = Math.abs(direction.y) * halfHeight + Math.sqrt(Math.max(0.0, 1.0 - direction.y * direction.y)) * radius;
+        double z = Math.abs(direction.z) * halfHeight + Math.sqrt(Math.max(0.0, 1.0 - direction.z * direction.z)) * radius;
+        double centerY = getY() + halfHeight;
+        return new AABB(getX() - x, centerY - y, getZ() - z, getX() + x, centerY + y, getZ() + z);
     }
 
     /// 带电阶段保持上一次脉冲速度，直到碰到实体方块或离开水面。

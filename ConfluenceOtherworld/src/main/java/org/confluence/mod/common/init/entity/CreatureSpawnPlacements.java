@@ -109,7 +109,7 @@ public final class CreatureSpawnPlacements {
                 MonsterEntities.DECAYEDER, MonsterEntities.CRIMERA,
                 MonsterEntities.EATER_OF_SOULS, MonsterEntities.BLOOD_CRAWLER,
                 MonsterEntities.JUNGLE_BAT);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkBelowSurfaceMonsterSpawn,
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkCorruptionWormSpawn,
                 MonsterEntities.DEVOURER);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkAntlionChargerSpawn, MonsterEntities.ANTLION_CHARGER);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkGhostSpawn, MonsterEntities.GHOST);
@@ -146,8 +146,9 @@ public final class CreatureSpawnPlacements {
                 MonsterEntities.BIG_BONES, MonsterEntities.BIG_ANGER_BONES,
                 MonsterEntities.BIG_MUSCLE_ANGER_BONES, MonsterEntities.BIG_HELMET_ANGER_BONES,
                 MonsterEntities.CURSED_SKULL, MonsterEntities.DARK_CASTER);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkGiantWormSpawn, MonsterEntities.GIANT_WORM);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkTombCrawlerSpawn, MonsterEntities.TOMB_CRAWLER);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkCaveMonsterSpawn,
-                MonsterEntities.GIANT_WORM, MonsterEntities.TOMB_CRAWLER,
                 MonsterEntities.GIANT_SHELLY, MonsterEntities.CRAWDAD, MonsterEntities.NYMPH, MonsterEntities.CAVE_BAT);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkNetherMonsterSpawn, MonsterEntities.BONE_SERPENT, MonsterEntities.WITHER_BONE_SERPENT, MonsterEntities.HELL_BAT, MonsterEntities.FIRE_IMP);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks::checkFlyingFishSpawn, MonsterEntities.FLYING_FISH);
@@ -173,7 +174,7 @@ public final class CreatureSpawnPlacements {
 
     private static void registerHardmodeMonsters(PortRegisterSpawnPlacementsEvent event) {
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkDiggerSpawn), MonsterEntities.DIGGER);
-        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode((type, level, reason, pos, random) -> OverworldUtils.isCorruption(level.getBiome(pos)) && SpawnPlacementChecks.checkRoutineMonsterSpawn(type, level, reason, pos, random)), MonsterEntities.WORLD_FEEDER);
+        group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkCorruptionWormSpawn), MonsterEntities.WORLD_FEEDER);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode(SpawnPlacementChecks::checkBelowSurfaceMonsterSpawn), MonsterEntities.ARMORED_VIKING, MonsterEntities.ICY_MERMAN, MonsterEntities.ILLUMINANT_BAT, MonsterEntities.MOSS_HORNET, MonsterEntities.JUNGLE_CREEPER, MonsterEntities.BASILISK);
         group(event, PortSpawnPlacementTypes.ON_GROUND, SpawnPlacementChecks.hardmode((type, level, reason, pos, random) -> level instanceof ServerLevel world && world.isNight() && world.getMoonPhase() == 0 && SpawnPlacementChecks.checkGroundSpawn(type, level, reason, pos, random)), MonsterEntities.WEREWOLF);
         group(event, PortSpawnPlacementTypes.ON_GROUND, (type, level, reason, pos, random) -> KillBoard.INSTANCE.isAnyMechBossDefeated() && SpawnPlacementChecks.checkNetherMonsterSpawn(type, level, reason, pos, random), MonsterEntities.LAVA_BAT);

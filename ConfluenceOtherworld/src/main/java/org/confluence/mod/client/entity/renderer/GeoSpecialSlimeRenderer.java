@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.monster.slime.SpikedSlime;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -49,7 +50,7 @@ public class GeoSpecialSlimeRenderer<T extends Entity & GeoEntity> extends GeoNo
             return;
         }
         RenderType solid = RenderType.entityCutout(getTextureLocation(entity));
-        RenderType shell = RenderType.entityTranslucentCull(getTextureLocation(entity));
+        RenderType shell = RenderStateShardAccessor.entityTranslucentCullOverlay(getTextureLocation(entity));
         shellPass = false;
         super.actuallyRender(poses, entity, model, solid, buffers, buffers.getBuffer(solid), reRender,
                 partialTick, light, overlay, red, green, blue, alpha);

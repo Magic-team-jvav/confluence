@@ -18,7 +18,6 @@ public class BatRenderer extends GeoNormalRenderer<CaveBat> {
             }
         }, true, 1.0F, 0.0625F);
         this.luminous = luminous;
-        withNoCull();
     }
 
     @Override

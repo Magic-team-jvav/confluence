@@ -5151,7 +5151,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.FINCH_STAFF.get(), "雀杖");
         add("summon.confluence.finch", "小鸟");
         add(SummonItems.IRON_GOLEM_STAFF.get(), "铁傀儡杖");
-        add("summon.confluence.iron_golem", "铁傀儡");
+        add("summon.confluence.i_32_iron_golem", "i-32型铁傀儡");
         add(SummonItems.SLIME_STAFF.get(), "史莱姆法杖");
         add(SummonItems.NEW_HORNET_STAFF.get(), "黄蜂法杖");
         add("summon.confluence.hornet", "黄蜂");

@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.BrainDissolveTexture;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.boss.BrainFake;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.object.Color;
@@ -32,7 +33,7 @@ public final class BrainFakeRenderer extends BossGeoRenderer<BrainFake> {
     @Override
     public RenderType getRenderType(BrainFake fake, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
         var owner = fake.getOwner();
-        return RenderType.entityTranslucentCull(BrainDissolveTexture.texture(texture, owner == null ? 0.0F : owner.getFadeProgress(partialTick)));
+        return RenderStateShardAccessor.entityTranslucentCullOverlay(BrainDissolveTexture.texture(texture, owner == null ? 0.0F : owner.getFadeProgress(partialTick)));
     }
 
     @Override

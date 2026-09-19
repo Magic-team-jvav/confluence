@@ -15,8 +15,11 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
+import org.confluence.mod.common.gameevent.SandstormGameEvent;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.UUID;
 
@@ -52,7 +55,8 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
 
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-        return role == Role.SURFACE || role == Role.BONE_SERPENT || role == Role.FLYING ? 0.0F : super.getWalkTargetValue(pos, level);
+        return role == Role.CORRUPTION || role == Role.UNDERGROUND_DESERT || role == Role.UNDERWORLD
+                || role == Role.BONE_SERPENT || role == Role.FLYING ? 0.0F : super.getWalkTargetValue(pos, level);
     }
 
     @Override
@@ -82,9 +86,9 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     @Override
     protected WormMovementAction.Profile movementProfile() {
         return switch (role) {
-            case UNDERGROUND -> WormMovementAction.Profile.underground();
-            case SURFACE -> WormMovementAction.Profile.surface();
-            case BONE_SERPENT -> WormMovementAction.Profile.boneSerpent();
+            case UNDERGROUND, UNDERGROUND_DESERT -> WormMovementAction.Profile.underground();
+            case CORRUPTION -> WormMovementAction.Profile.corruption();
+            case UNDERWORLD, BONE_SERPENT -> WormMovementAction.Profile.boneSerpent();
             case FLYING -> WormMovementAction.Profile.flying();
         };
     }
@@ -161,9 +165,22 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
         if (getType().is(ModTags.EntityTypes.FLESH_ALLIANCE) && target.getType().is(ModTags.EntityTypes.FLESH_ALLIANCE)) {
             return false;
         }
+        if (!isInsideActivityRegion(target.blockPosition())) return false;
         BaseBoss owner = getBossOwner();
         return (owner == null || owner.canAttack(target))
                 && super.canAttack(target);
+    }
+
+    @Override
+    public boolean isInsideActivityRegion(BlockPos pos) {
+        return switch (role) {
+            case UNDERGROUND -> pos.getY() < OverworldUtils.getSurfaceY();
+            case UNDERGROUND_DESERT ->
+                    level().getBiome(pos).is(PortTags.Biomes.IS_DESERT) && (pos.getY() < OverworldUtils.getSurfaceY() || SandstormGameEvent.INSTANCE.started());
+            case CORRUPTION -> OverworldUtils.isCorruption(level().getBiome(pos));
+            case UNDERWORLD, BONE_SERPENT -> level().dimension() == OverworldUtils.underworld();
+            case FLYING -> pos.getY() >= OverworldUtils.getSurfaceY();
+        };
     }
 
     @Override
@@ -191,18 +208,27 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
                           EntityDimensions bodyDimensions, EntityDimensions tailDimensions,
                           double bodyDamage, double tailDamage, double bodyArmor,
                           double tailArmor) {
-        public static final Anatomy DIGGER = new Anatomy(7, 12, 0.8F,
-                EntityDimensions.scalable(1.05F, 0.7F), EntityDimensions.scalable(1.05F, 0.7F),
-                28.0 / 45.0, 26.0 / 45.0, 2.0, 3.0);
-        public static final Anatomy WORLD_FEEDER = new Anatomy(21, 26, 0.9F,
-                EntityDimensions.scalable(1.25F, 0.95F), EntityDimensions.scalable(1.65F, 0.6F),
-                55.0 / 70.0, 40.0 / 70.0, 40.0 / 36.0, 44.0 / 36.0);
+        public static final Anatomy GIANT_WORM = simple(5, 7, 2.0F);
+        public static final Anatomy DIGGER = new Anatomy(7, 12, 0.8F, EntityDimensions.scalable(1.05F, 0.7F), EntityDimensions.scalable(1.05F, 0.7F), 28.0 / 45.0, 26.0 / 45.0, 2.0, 3.0);
+        public static final Anatomy TOMB_CRAWLER = simple(6, 9, 1.5F);
+        public static final Anatomy DEVOURER = simple(9, 13, 1.6F);
+        public static final Anatomy WORLD_FEEDER = new Anatomy(21, 26, 0.9F, EntityDimensions.scalable(1.25F, 0.95F), EntityDimensions.scalable(1.65F, 0.6F), 55.0 / 70.0, 40.0 / 70.0, 40.0 / 36.0, 44.0 / 36.0);
+        public static final Anatomy BONE_SERPENT = simple(13, 19, 2.5F);
+        public static final Anatomy LEECH = simple(9, 13, 1.6F);
+
+        private static Anatomy simple(int minSegments, int maxSegments, float spacing) {
+            EntityDimensions dimensions = EntityDimensions.scalable(1.5F, 1.5F);
+            return new Anatomy(minSegments, maxSegments, spacing, dimensions, dimensions,
+                    1.0, 1.0, 1.0, 1.0);
+        }
     }
 
     /// 注册项选择实体自身已有的蠕虫行为族，不把运动参数散落到注册表。
     public enum Role {
         UNDERGROUND,
-        SURFACE,
+        UNDERGROUND_DESERT,
+        CORRUPTION,
+        UNDERWORLD,
         BONE_SERPENT,
         FLYING
     }

@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.client.effect.DivaSlimeVertexConsumer;
+import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -52,7 +53,7 @@ public final class TownSlimeRenderer extends GeoSpecialSlimeRenderer<TownSlimeNP
         if (buffers instanceof MultiBufferSource.BufferSource source) {
             ResourceLocation texture = bodyTexture(entity);
             source.endBatch(RenderType.entityCutout(texture));
-            source.endBatch(RenderType.entityTranslucentCull(texture));
+            source.endBatch(RenderStateShardAccessor.entityTranslucentCullOverlay(texture));
         }
     }
 
@@ -64,7 +65,7 @@ public final class TownSlimeRenderer extends GeoSpecialSlimeRenderer<TownSlimeNP
             boolean coloredBody = isShellCube(bone, index) || bone.getName().equals("inner") && index == 0;
             if (coloredBody) texture = bodyTexture(getAnimatable());
             buffer = rainbowBuffers.getBuffer(isShellCube(bone, index)
-                    ? RenderType.entityTranslucentCull(texture) : RenderType.entityCutout(texture));
+                    ? RenderStateShardAccessor.entityTranslucentCullOverlay(texture) : RenderType.entityCutout(texture));
             if (coloredBody)
                 buffer = new DivaSlimeVertexConsumer(buffer, rainbowLocalTransform, rainbowTime);
         }

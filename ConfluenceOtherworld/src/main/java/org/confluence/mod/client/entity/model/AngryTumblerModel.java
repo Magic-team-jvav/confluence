@@ -14,7 +14,7 @@ public final class AngryTumblerModel extends GeoNormalModel<AngryTumbler> {
         super.setCustomAnimations(entity, instanceId, state);
         getBone("all").ifPresent(bone -> {
             bone.setPivotY(8.0F);
-            bone.setRotX(state.getLimbSwing() * 2.0F);
+            bone.setRotX(-state.getLimbSwing() * 2.0F);
         });
     }
 }

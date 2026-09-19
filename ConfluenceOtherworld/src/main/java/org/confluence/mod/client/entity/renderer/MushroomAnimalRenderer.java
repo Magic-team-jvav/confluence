@@ -12,7 +12,6 @@ import software.bernie.geckolib.animatable.GeoEntity;
 public final class MushroomAnimalRenderer<T extends Animal & GeoEntity> extends GeoNormalRenderer<T> {
     public MushroomAnimalRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
         super(context, new MushroomAnimalModel<>(path));
-        withNoCull();
     }
 
     @Override

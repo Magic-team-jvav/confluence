@@ -6,9 +6,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.entity.monster.BaseWormMonster;
 import org.confluence.mod.util.OverworldUtils;
 
 import java.util.Objects;
@@ -31,6 +31,8 @@ public final class WormMovementAction extends BTNode {
     private final Profile profile;
     private Vec3 wanderTarget;
     private int wanderTicks;
+    private Vec3 recoveryTarget;
+    private int recoveryTicks;
 
     public WormMovementAction(PathfinderMob worm, Profile profile) {
         this.worm = Objects.requireNonNull(worm, "worm");
@@ -41,6 +43,8 @@ public final class WormMovementAction extends BTNode {
     public void start() {
         wanderTarget = null;
         wanderTicks = 0;
+        recoveryTarget = null;
+        recoveryTicks = 0;
     }
 
     @Override
@@ -62,11 +66,23 @@ public final class WormMovementAction extends BTNode {
             wanderTarget = null;
             return BTStatus.RUNNING;
         }
+        // 在转弯所需的距离之前选取区域内落点；保持该落点直到抵达，避免边界来回切换。
+        Vec3 forward = worm.getDeltaMovement().lengthSqr() > 1.0E-6 ? worm.getDeltaMovement().normalize() : worm.getLookAngle();
+        if (recoveryTarget != null && (--recoveryTicks <= 0
+                || worm.distanceToSqr(recoveryTarget) < 4.0 || !insideRegion(recoveryTarget)))
+            recoveryTarget = null;
+        if (recoveryTarget == null && (!insideRegion(worm.position())
+                || !insideRegion(worm.position().add(forward.scale(8.0))))) {
+            recoveryTarget = findNearbyActivityPosition();
+            recoveryTicks = 60;
+        }
+        if (recoveryTarget != null) {
+            steerTowards(recoveryTarget, profile.wanderSpeed());
+            return BTStatus.RUNNING;
+        }
         LivingEntity target = worm.getTarget();
-        // 攻击高度限制属于目标环境约束。若检查蠕虫头自身，地下蠕虫会在头部尚未出土时
-        // 持续追踪地表玩家，最终完整钻出地面。
-        if (target != null && target.isAlive() && worm.canAttack(target) && target.getY() < profile.maximumAttackHeight()) {
-            steerTowards(BossMinionCoordinator.predict(target, 5.0D, 4.0D), profile.attackSpeed());
+        if (target != null && target.isAlive() && worm.canAttack(target)) {
+            steerTowards(target.getBoundingBox().getCenter(), profile.attackSpeed());
             wanderTarget = null;
             wanderTicks = 0;
             return BTStatus.RUNNING;
@@ -117,57 +133,120 @@ public final class WormMovementAction extends BTNode {
     }
 
     private Vec3 chooseWanderTarget() {
+        for (int attempt = 0; attempt < 8; attempt++) {
+            Vec3 candidate = randomWanderTarget();
+            if (insideRegion(candidate)) {
+                return candidate;
+            }
+        }
+        Vec3 nearby = findNearbyActivityPosition();
+        // 完全找不到活动区时保留前进方向，不能给静止实体返回自身坐标。
+        return nearby == null ? worm.position().add(worm.getLookAngle().scale(8.0)) : nearby;
+    }
+
+    private boolean insideRegion(Vec3 position) {
+        BlockPos pos = BlockPos.containing(position);
+        return worm.level().hasChunkAt(pos) && (!(worm instanceof BaseWormMonster baseWorm)
+                || baseWorm.isInsideActivityRegion(pos));
+    }
+
+    /// 随机候选全部失败时搜索附近有效空间，也供越界实体返回活动区。
+    private Vec3 findNearbyActivityPosition() {
+        Vec3 best = null;
+        double bestScore = -Double.MAX_VALUE;
+        Vec3 forward = worm.getDeltaMovement().lengthSqr() > 1.0E-6
+                ? worm.getDeltaMovement().normalize() : worm.getLookAngle();
+        for (int radius = 4; radius <= 24; radius += 4) {
+            for (int y = -1; y <= 1; y++) {
+                for (int x = -1; x <= 1; x++) {
+                    for (int z = -1; z <= 1; z++) {
+                        if (x == 0 && y == 0 && z == 0) continue;
+                        Vec3 candidate = worm.position().add(x * radius, y * radius, z * radius);
+                        if (candidate.y < worm.level().getMinBuildHeight() + 16.0 || candidate.y >= worm.level().getMaxBuildHeight() - 4.0)
+                            continue;
+                        if (!insideRegion(candidate)) continue;
+                        int clearance = 0;
+                        for (var face : net.minecraft.core.Direction.values()) {
+                            if (insideRegion(candidate.add(Vec3.atLowerCornerOf(face.getNormal()).scale(4.0))))
+                                clearance++;
+                        }
+                        Vec3 offset = candidate.subtract(worm.position());
+                        double score = clearance * 10.0 + forward.dot(offset.normalize()) * 4.0 - offset.length() * 0.1;
+                        if (score > bestScore) {
+                            bestScore = score;
+                            best = candidate;
+                        }
+                    }
+                }
+            }
+        }
+        return best;
+    }
+
+    private Vec3 randomWanderTarget() {
         Vec3 forward = worm.getLookAngle().normalize().scale(10.0);
         double angle = worm.getRandom1211().nextDouble() * Mth.TWO_PI;
         double radius = 8.0 + worm.getRandom1211().nextDouble() * 12.0;
         double x = worm.getX() + forward.x + Math.cos(angle) * radius;
         double z = worm.getZ() + forward.z + Math.sin(angle) * radius;
         double baseY = switch (profile.wanderHeightMode()) {
-            case AT_MOST -> Math.min(worm.getY(), profile.wanderHeightBoundary());
-            case AT_LEAST -> Math.max(worm.getY(), profile.wanderHeightBoundary());
-            case FIXED -> profile.wanderHeightBoundary();
+            case BELOW_TERRAIN -> worm.level().hasChunk(Mth.floor(x) >> 4, Mth.floor(z) >> 4)
+                    ? Math.min(worm.getY(), worm.level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Mth.floor(x), Mth.floor(z)) + profile.wanderHeightOffset())
+                    : worm.getY();
+            case FIXED_FROM_MIN_HEIGHT ->
+                    worm.level().getMinBuildHeight() + profile.wanderHeightBoundary() + profile.wanderHeightOffset();
+            case FIXED -> profile.wanderHeightBoundary() + profile.wanderHeightOffset();
             case TERRAIN -> worm.level().hasChunk(Mth.floor(x) >> 4, Mth.floor(z) >> 4)
                     ? worm.level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mth.floor(x), Mth.floor(z))
+                    + profile.wanderHeightOffset()
                     : worm.getY();
-        } + profile.wanderHeightOffset();
-        double y = Mth.clamp(baseY + worm.getRandom1211().nextInt(9) - 3.0,
-                worm.level().getMinBuildHeight() + 16.0, worm.level().getMaxBuildHeight() - 4.0);
+        };
+        double y = Mth.clamp(baseY + worm.getRandom1211().nextInt(9) - 3.0, worm.level().getMinBuildHeight() + 16.0, worm.level().getMaxBuildHeight() - 4.0);
         return new Vec3(x, y, z);
     }
 
     /// 不同蠕虫族只声明移动边界，公共节点统一处理平滑转向和三维速度。
-    public record Profile(double attackSpeed, double wanderSpeed, double maximumAttackHeight,
-                          double wanderHeightBoundary, double wanderHeightOffset,
-                          WanderHeightMode wanderHeightMode, boolean canFly) {
+    /// @param attackSpeed        攻击时移动速度（方块/秒）
+    /// @param wanderSpeed        漫游时移动速度（方块/秒）
+    /// @param wanderHeightBoundary 漫游高度边界（与高度模式配合使用）
+    /// @param wanderHeightOffset 漫游高度偏移（如负值表示在地形下方）
+    /// @param wanderHeightMode   漫游高度模式（FIXED/ABOVE_TERRAIN/BELOW_TERRAIN/FIXED_FROM_MIN_HEIGHT）
+    /// @param canFly             是否可飞行（true 时不受重力影响）
+    public record Profile(double attackSpeed, double wanderSpeed, double wanderHeightBoundary,
+                          double wanderHeightOffset, WanderHeightMode wanderHeightMode,
+                          boolean canFly) {
         public Profile {
-            if (attackSpeed <= 0.0 || wanderSpeed <= 0.0
-                    || Double.isNaN(maximumAttackHeight) || Double.isNaN(wanderHeightBoundary)
-                    || wanderHeightMode == null) {
+            if (attackSpeed <= 0.0 || wanderSpeed <= 0.0 || wanderHeightMode == null) {
                 throw new IllegalArgumentException("Worm movement speeds must be positive");
             }
         }
 
+        // 地下蠕虫：在地形下方 10 格处漫游，不可飞行
         public static Profile underground() {
-            return new Profile(0.4, 0.34, OverworldUtils.getSurfaceY(), 20.0, 0.0, WanderHeightMode.AT_MOST, false);
+            return new Profile(0.4, 0.34, 0.0, -10.0, WanderHeightMode.BELOW_TERRAIN, false);
         }
 
-        public static Profile surface() {
-            return new Profile(0.4, 0.34, Double.POSITIVE_INFINITY, OverworldUtils.getSeaLevel(), -2.0, WanderHeightMode.TERRAIN, false);
+        // 腐化蠕虫：在地形下方 6 格处漫游，不可飞行
+        public static Profile corruption() {
+            return new Profile(0.4, 0.34, 0.0, -6.0, WanderHeightMode.BELOW_TERRAIN, false);
         }
 
+        // 飞行蠕虫：在太空高度上方 10 格处按固定高度漫游，可飞行
         public static Profile flying() {
-            return new Profile(0.4, 0.34, Double.POSITIVE_INFINITY, 95.0, 10.0, WanderHeightMode.AT_LEAST, true);
+            return new Profile(0.4, 0.34, OverworldUtils.getSpaceY() + 10.0, 0.0, WanderHeightMode.FIXED, true);
         }
 
+        // 骨蛇：以世界最低高度为基准，在固定 32 格高度漫游，不可飞行
         public static Profile boneSerpent() {
-            return new Profile(0.4, 0.34, Double.POSITIVE_INFINITY, 25.0, 7.0, WanderHeightMode.FIXED, false);
+            return new Profile(0.4, 0.34, 32.0, 0.0, WanderHeightMode.FIXED_FROM_MIN_HEIGHT, false);
         }
     }
 
     /// 地下与飞行型限制游走中心高度，地表型使用已加载地形的实际高度。
     public enum WanderHeightMode {
-        AT_MOST,
-        AT_LEAST,
+        BELOW_TERRAIN,
+        FIXED_FROM_MIN_HEIGHT,
         FIXED,
         TERRAIN
     }

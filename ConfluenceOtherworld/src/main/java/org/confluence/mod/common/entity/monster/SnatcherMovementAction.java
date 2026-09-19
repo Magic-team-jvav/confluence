@@ -1,8 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -23,7 +21,6 @@ final class SnatcherMovementAction extends BTNode {
     private final Snatcher snatcher;
     private Vec3 direction;
     private int phase;
-    private int directionSwitchTicks;
 
     SnatcherMovementAction(Snatcher snatcher) {
         this.snatcher = snatcher;
@@ -33,7 +30,6 @@ final class SnatcherMovementAction extends BTNode {
     public void start() {
         direction = snatcher.getRestDirection();
         phase = 0;
-        directionSwitchTicks = 100;
     }
 
     @Override
@@ -45,13 +41,16 @@ final class SnatcherMovementAction extends BTNode {
         phase = (phase + 1) % CYCLE_TICKS;
         boolean extended = phase >= NORMAL_PHASE_TICKS;
         LivingEntity target = snatcher.getTarget();
-        Vec3 extraVelocity = target == null
-                ? updateIdleDirection()
-                : updateTargetDirection(target, extended);
+        if (target == null) {
+            tickIdleMovement();
+            return BTStatus.RUNNING;
+        }
 
-        double frequencyMultiplier = target == null ? 1.0 : 2.0;
+        Vec3 extraVelocity = updateTargetDirection(target, extended);
+
+        double frequencyMultiplier = 2.0;
         Vec3 forward = direction.normalize().scale(0.2 * Math.sin(snatcher.tickCount * 0.05 * frequencyMultiplier));
-        double reach = target != null && extended ? snatcher.extendedReach() : snatcher.normalReach();
+        double reach = extended ? snatcher.extendedReach() : snatcher.normalReach();
         Vec3 returnPosition = snatcher.getAnchor().add(direction.scale(reach * 0.25 * (3.0 + Math.sin(snatcher.tickCount * 0.05 * frequencyMultiplier))));
         Vec3 returnVelocity = returnPosition.subtract(snatcher.position()).scale(0.1);
         Vec3 finalVelocity = extraVelocity.add(forward).add(returnVelocity);
@@ -62,6 +61,30 @@ final class SnatcherMovementAction extends BTNode {
         snatcher.setDeltaMovement(finalVelocity);
         snatcher.hasImpulse = true;
         return BTStatus.RUNNING;
+    }
+
+    /// 常态下围绕根部持续缓慢摆动和伸缩，不依赖受击或先取得战斗目标。
+    private void tickIdleMovement() {
+        Vec3 rest = snatcher.getRestDirection().normalize();
+        Vec3 reference = Math.abs(rest.y) < 0.9 ? new Vec3(0.0, 1.0, 0.0) : new Vec3(1.0, 0.0, 0.0);
+        Vec3 side = rest.cross(reference).normalize();
+        Vec3 vertical = rest.cross(side).normalize();
+        double time = snatcher.tickCount * 0.035;
+        Vec3 desiredDirection = rest
+                .add(side.scale(Math.sin(time) * 0.35))
+                .add(vertical.scale(Math.cos(time * 0.73) * 0.25))
+                .normalize();
+        direction = direction.lerp(desiredDirection, 0.08).normalize();
+
+        double distance = snatcher.normalReach() * (0.58 + Math.sin(time * 0.61) * 0.12);
+        Vec3 desiredPosition = snatcher.getAnchor().add(direction.scale(distance));
+        Vec3 velocity = desiredPosition.subtract(snatcher.position()).scale(0.08);
+        double idleSpeed = 0.12;
+        if (velocity.lengthSqr() > idleSpeed * idleSpeed)
+            velocity = velocity.normalize().scale(idleSpeed);
+        snatcher.setDeltaMovement(velocity);
+        snatcher.faceCombatDirection(direction, 8.0F, 8.0F);
+        snatcher.hasImpulse = true;
     }
 
     private Vec3 updateTargetDirection(LivingEntity target, boolean extended) {
@@ -87,21 +110,4 @@ final class SnatcherMovementAction extends BTNode {
         return velocity;
     }
 
-    private Vec3 updateIdleDirection() {
-        if (--directionSwitchTicks > 0) {
-            return Vec3.ZERO;
-        }
-        directionSwitchTicks = snatcher.getRandom1211().nextInt(200) + 100;
-        Vec3 candidate = new Vec3(snatcher.getRandom1211().nextDouble() - 0.5, snatcher.getRandom1211().nextDouble() - 0.5, snatcher.getRandom1211().nextDouble() - 0.5);
-        if (candidate.lengthSqr() < 1.0E-8) {
-            return Vec3.ZERO;
-        }
-        candidate = candidate.normalize();
-        BlockPos testPosition = BlockPos.containing(snatcher.position().add(candidate.scale(5.0)));
-        BlockState state = snatcher.level().getBlockState(testPosition);
-        if (state.isAir() && testPosition.getY() > -65) {
-            direction = candidate;
-        }
-        return Vec3.ZERO;
-    }
 }

@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.DeerClops;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 /// 独眼巨鹿专用渲染器。
 ///
@@ -20,7 +19,7 @@ public final class DeerclopsRenderer extends BossGeoRenderer<DeerClops> {
 
     public DeerclopsRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("boss/deerclops"));
-        addRenderLayer(new AutoGlowingGeoLayer<>(this) {
+        addRenderLayer(new EntityGlowingGeoLayer<>(this) {
             @Override
             protected ResourceLocation getTextureResource(DeerClops animatable) {
                 return INVULNERABLE_TEXTURE;

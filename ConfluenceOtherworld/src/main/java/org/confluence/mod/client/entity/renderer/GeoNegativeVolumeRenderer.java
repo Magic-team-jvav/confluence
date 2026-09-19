@@ -14,7 +14,6 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +68,7 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
         initializedModel = null;
         if (glowLayerAdded) return;
         glowLayerAdded = true;
-        this.addRenderLayer(new AutoGlowingGeoLayer<>(this) {
+        this.addRenderLayer(new EntityGlowingGeoLayer<>(this) {
             @Override
             protected RenderType getRenderType(T animatable) {
                 return GeoNegativeVolumeRenderer.this.getGlowRenderType(animatable, this.getTextureResource(animatable));
@@ -130,12 +129,13 @@ public class GeoNegativeVolumeRenderer<T extends Entity & GeoEntity> extends Geo
     }
 
     protected RenderType getGlowRenderType(T animatable, ResourceLocation texture) {
-        return RenderType.eyes(texture);
+        return RenderStateShardAccessor.entityGlow(texture);
     }
 
     @Override
     public RenderType getRenderType(T animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick) {
-        if (noCull) return RenderType.entityTranslucent(texture);
-        return RenderStateShardAccessor.createTextOutline(texture);
+        if (glowLayerAdded || hasNegativeCubes(animatable))
+            return RenderStateShardAccessor.entityTranslucentCullOverlay(texture);
+        return super.getRenderType(animatable, texture, bufferSource, partialTick);
     }
 }

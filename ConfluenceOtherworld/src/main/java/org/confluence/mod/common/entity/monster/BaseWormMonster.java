@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -48,6 +49,10 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     public boolean isPushable() {return false;}
 
     protected abstract int getSegmentCount();
+
+    public boolean isInsideActivityRegion(BlockPos pos) {
+        return true;
+    }
 
     protected float segmentSpacing() {
         return 1.6F;

@@ -287,10 +287,12 @@ public final class PlayerEvents {
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
             ManaStorage.of(player).receiveMana(() -> itemStack.getCount() * 100.0F);
             StarSteelSword.onManaStarPickup(player);
+            itemStack.setCount(0);
             itemEntity.discard();
             event.setCanPickup(PortTriState.FALSE);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {
             player.heal(itemStack.getCount() * 4.0F);
+            itemStack.setCount(0);
             itemEntity.discard();
             event.setCanPickup(PortTriState.FALSE);
         }

@@ -241,6 +241,20 @@ public final class SpawnPlacementChecks {
                 && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
     }
 
+    public static boolean checkGiantWormSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        var biome = level.getBiome(pos);
+        return !biome.is(PortTags.Biomes.IS_SNOWY) && !biome.is(PortTags.Biomes.IS_ICY) && checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkTombCrawlerSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (!level.getBiome(pos).is(PortTags.Biomes.IS_DESERT)) return false;
+        return pos.getY() < OverworldUtils.getSurfaceY() ? checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random) : checkSandstormSpawn(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkCorruptionWormSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return OverworldUtils.isCorruption(level.getBiome(pos)) && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
+    }
+
     /// 地下层与洞穴层共用的放置规则，适用于泰拉中标注为“地下及更深处”的敌怪。
     public static boolean checkBelowSurfaceMonsterSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return pos.getY() < OverworldUtils.getSurfaceY() && !level.canSeeSky(pos) && checkMonsterSpawnRules(type, level, spawnType, pos, random);

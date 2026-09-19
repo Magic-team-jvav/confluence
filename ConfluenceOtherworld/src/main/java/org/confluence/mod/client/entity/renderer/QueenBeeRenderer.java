@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.QueenBee;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 /// 蜂王基础模型向上校正到碰撞箱中心；离开丛林进入愤怒状态时，
 /// 眼部纹理以自发光通道叠加，普通状态不绘制该层。
@@ -18,7 +17,7 @@ public final class QueenBeeRenderer extends BossGeoRenderer<QueenBee> {
 
     public QueenBeeRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("boss/queen_bee"), false, 1.0F, 0.75F);
-        addRenderLayer(new AutoGlowingGeoLayer<>(this) {
+        addRenderLayer(new EntityGlowingGeoLayer<>(this) {
             @Override
             protected ResourceLocation getTextureResource(QueenBee animatable) {
                 return EYE_TEXTURE;

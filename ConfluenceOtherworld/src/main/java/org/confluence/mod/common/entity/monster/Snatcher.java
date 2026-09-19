@@ -86,7 +86,7 @@ public class Snatcher extends BaseMonster {
             legacyAnchor = false;
             Vec3 surface = anchor.add(0.0, -0.5, 0.0);
             BlockHitResult hit = level().clip(new ClipContext(surface.add(restDirection), surface.subtract(restDirection),
-                    ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
+                    ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             if (hit.getType() == HitResult.Type.BLOCK) {
                 initializeAnchor(hit.getLocation(), Vec3.atLowerCornerOf(hit.getDirection().getNormal()));
             } else {
@@ -105,6 +105,15 @@ public class Snatcher extends BaseMonster {
         if (level().isClientSide || !isAnchored()) {
             return;
         }
+        if (level().hasChunkAt(BlockPos.containing(anchor))) {
+            BlockHitResult support = level().clip(new ClipContext(anchor.add(restDirection.scale(0.125)), anchor.subtract(restDirection.scale(0.125)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+            if (support.getType() != HitResult.Type.BLOCK) {
+                entityData.set(ANCHORED, false);
+                if (!findAndSetAnchor()) discard();
+            } else if (anchor.distanceToSqr(support.getLocation()) > 1.0E-8) {
+                initializeAnchor(support.getLocation(), Vec3.atLowerCornerOf(support.getDirection().getNormal()));
+            }
+        }
     }
 
     @Override
@@ -121,7 +130,7 @@ public class Snatcher extends BaseMonster {
         }
         Vec3 origin = position();
         for (Vec3 direction : directions) {
-            BlockHitResult hit = level().clip(new ClipContext(origin, origin.add(direction.scale(SEARCH_DISTANCE)), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this));
+            BlockHitResult hit = level().clip(new ClipContext(origin, origin.add(direction.scale(SEARCH_DISTANCE)), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
             if (hit.getType() != HitResult.Type.BLOCK) {
                 continue;
             }

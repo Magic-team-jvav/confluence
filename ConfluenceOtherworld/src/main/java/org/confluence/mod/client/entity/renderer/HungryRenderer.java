@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.Mth;
@@ -45,6 +44,7 @@ public final class HungryRenderer<T extends TheHungry> extends GeoNormalRenderer
         Vec3 step = difference.scale(1.0 / count);
         Quaternionf rotation = new Quaternionf().rotationTo(new Vector3f(0.0F, 1.0F, 0.0F), step.toVector3f());
         BakedModel model = Minecraft.getInstance().getModelManager().getModel(SEGMENT_MODEL);
+        int overlay = getPackedOverlay(entity, 0.0F, partialTick);
         poseStack.pushPose();
         poseStack.translate(0.0, entity.getBbHeight() * 0.5, 0.0);
         for (int index = 0; index < count; index++) {
@@ -54,17 +54,17 @@ public final class HungryRenderer<T extends TheHungry> extends GeoNormalRenderer
             poseStack.mulPose(com.mojang.math.Axis.YN.rotation(index * 0.5F));
             poseStack.translate(-0.5, 0.0, -0.5);
             poseStack.scale(1.0F, -1.0F, 1.0F);
-            renderModel(model, poseStack, buffers, packedLight);
+            renderModel(model, poseStack, buffers, packedLight, overlay);
             poseStack.popPose();
         }
         poseStack.popPose();
     }
 
-    private static void renderModel(BakedModel model, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
+    private static void renderModel(BakedModel model, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int overlay) {
         ItemStack stack = ItemStack.EMPTY;
         for (RenderType renderType : model.getRenderTypes(stack, false)) {
             VertexConsumer vertices = ItemRenderer.getFoilBuffer(buffers, renderType, false, false);
-            Minecraft.getInstance().getItemRenderer().renderModelLists(model, stack, packedLight, OverlayTexture.NO_OVERLAY, poseStack, vertices);
+            Minecraft.getInstance().getItemRenderer().renderModelLists(model, stack, packedLight, overlay, poseStack, vertices);
         }
     }
 }

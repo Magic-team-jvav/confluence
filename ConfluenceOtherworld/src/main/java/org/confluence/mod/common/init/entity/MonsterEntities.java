@@ -86,7 +86,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(52).armor(16).attackDamage(24).followRange(32).attackKnockback(0.2).knockbackResistance(0.33).build());
 
     // 地下与洞穴：蠕虫
-    public static final RegistryObject<EntityType<SimpleWormMonster>> GIANT_WORM = withAttributes(registerWorm("giant_worm", 12, 2F, 2F, () -> MonsterEntities.GIANT_WORM_SEGMENT.get()),
+    public static final RegistryObject<EntityType<SimpleWormMonster>> GIANT_WORM = withAttributes(registerWorm("giant_worm", 2F, 2F, SimpleWormMonster.Role.UNDERGROUND, SimpleWormMonster.Anatomy.GIANT_WORM, MonsterEntities.GIANT_WORM_SEGMENT),
             () -> CreatureAttributeBuilder.creature().maxHealth(31).armor(3).attackDamage(9).build());
     public static final RegistryObject<EntityType<BaseWormPart>> GIANT_WORM_SEGMENT = registerWormSegment("giant_worm_segment");
     public static final RegistryObject<EntityType<SimpleWormMonster>> DIGGER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("digger", EntityType.Builder.<SimpleWormMonster>of((type, level) -> new SimpleWormMonster(type, level, SimpleWormMonster.Role.UNDERGROUND, SimpleWormMonster.Anatomy.DIGGER, MonsterEntities.DIGGER_SEGMENT.get()), MobCategory.MONSTER).sized(1.6F, 1.05F).clientTrackingRange(10).updateInterval(1))),
@@ -302,7 +302,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(166).armor(24).attackDamage(34).followRange(64).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(SandPoacher.CombatState.CLIMBING, state -> state.bonus(Attributes.MOVEMENT_SPEED, 0.25))
                     .build());
-    public static final RegistryObject<EntityType<SimpleWormMonster>> TOMB_CRAWLER = withAttributes(registerWorm("tomb_crawler", 12, 2F, 2F, () -> MonsterEntities.TOMB_CRAWLER_SEGMENT.get()),
+    public static final RegistryObject<EntityType<SimpleWormMonster>> TOMB_CRAWLER = withAttributes(registerWorm("tomb_crawler", 2F, 2F, SimpleWormMonster.Role.UNDERGROUND_DESERT, SimpleWormMonster.Anatomy.TOMB_CRAWLER, () -> MonsterEntities.TOMB_CRAWLER_SEGMENT.get()),
             () -> CreatureAttributeBuilder.creature().maxHealth(16).armor(2).attackDamage(4).build());
     public static final RegistryObject<EntityType<BaseWormPart>> TOMB_CRAWLER_SEGMENT = registerWormSegment("tomb_crawler_segment");
 
@@ -364,10 +364,10 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(120).armor(32).attackDamage(32).followRange(48).attackKnockback(1).knockbackResistance(0.51).build());
 
     // 腐化：蠕虫
-    public static final RegistryObject<EntityType<SimpleWormMonster>> DEVOURER = withAttributes(registerWorm("devourer", 12, 2F, 2F, SimpleWormMonster.Role.SURFACE, () -> MonsterEntities.DEVOURER_SEGMENT.get()),
+    public static final RegistryObject<EntityType<SimpleWormMonster>> DEVOURER = withAttributes(registerWorm("devourer", 2F, 2F, SimpleWormMonster.Role.CORRUPTION, SimpleWormMonster.Anatomy.DEVOURER, () -> MonsterEntities.DEVOURER_SEGMENT.get()),
             () -> CreatureAttributeBuilder.creature().maxHealth(52).armor(2).attackDamage(8).build());
     public static final RegistryObject<EntityType<BaseWormPart>> DEVOURER_SEGMENT = registerWormSegment("devourer_segment");
-    public static final RegistryObject<EntityType<SimpleWormMonster>> WORLD_FEEDER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("world_feeder", EntityType.Builder.<SimpleWormMonster>of((type, level) -> new SimpleWormMonster(type, level, SimpleWormMonster.Role.SURFACE, SimpleWormMonster.Anatomy.WORLD_FEEDER, MonsterEntities.WORLD_FEEDER_SEGMENT.get()), MobCategory.MONSTER).sized(2.0F, 1.1F).clientTrackingRange(10).updateInterval(1))),
+    public static final RegistryObject<EntityType<SimpleWormMonster>> WORLD_FEEDER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("world_feeder", EntityType.Builder.<SimpleWormMonster>of((type, level) -> new SimpleWormMonster(type, level, SimpleWormMonster.Role.CORRUPTION, SimpleWormMonster.Anatomy.WORLD_FEEDER, MonsterEntities.WORLD_FEEDER_SEGMENT.get()), MobCategory.MONSTER).sized(2.0F, 1.1F).clientTrackingRange(10).updateInterval(1))),
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(36).attackDamage(37).knockbackResistance(1.0).followRange(32).build());
     public static final RegistryObject<EntityType<BaseWormPart>> WORLD_FEEDER_SEGMENT = registerWormSegment("world_feeder_segment");
 
@@ -402,7 +402,7 @@ public class MonsterEntities {
 
     // 猩红水域：血蛭与血水母
     public static final RegistryObject<EntityType<Piranha>> BLOOD_FEEDER = withAttributes(registerEntity("blood_feeder", EntityType.Builder.<Piranha>of(Piranha::new, MobCategory.MONSTER).sized(0.7F, 0.5F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(78).armor(20).attackDamage(26).followRange(32).attackKnockback(0.5).knockbackResistance(0.10).build());
+            () -> CreatureAttributeBuilder.aquatic().maxHealth(78).armor(20).attackDamage(26).followRange(32).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.10).build());
     public static final RegistryObject<EntityType<JellyFish>> BLOOD_JELLY = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("blood_jelly", EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, JellyFish.Profile.ROUTINE), MobCategory.MONSTER).sized(0.55F, 0.85F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(78).armor(20).attackDamage(39).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1)
                     .state(JellyFish.CombatState.PURSUING, state -> state.duration(150))
@@ -546,10 +546,10 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(36).armor(16).attackDamage(15).followRange(20).attackKnockback(1).knockbackResistance(0.55).build());
 
     // 地狱：骨蛇与宝箱怪
-    public static final RegistryObject<EntityType<SimpleWormMonster>> BONE_SERPENT = withAttributes(registerWorm("bone_serpent", 18, 2F, 2F, SimpleWormMonster.Role.BONE_SERPENT, () -> MonsterEntities.BONE_SERPENT_SEGMENT.get()),
+    public static final RegistryObject<EntityType<SimpleWormMonster>> BONE_SERPENT = withAttributes(registerWorm("bone_serpent", 2F, 2F, SimpleWormMonster.Role.BONE_SERPENT, SimpleWormMonster.Anatomy.BONE_SERPENT, () -> MonsterEntities.BONE_SERPENT_SEGMENT.get()),
             () -> CreatureAttributeBuilder.creature().maxHealth(156).armor(12).attackDamage(18).build());
     public static final RegistryObject<EntityType<BaseWormPart>> BONE_SERPENT_SEGMENT = registerWormSegment("bone_serpent_segment");
-    public static final RegistryObject<EntityType<SimpleWormMonster>> WITHER_BONE_SERPENT = withAttributes(registerWorm("wither_bone_serpent", 18, 2F, 2F, SimpleWormMonster.Role.BONE_SERPENT, () -> MonsterEntities.WITHER_BONE_SERPENT_SEGMENT.get()),
+    public static final RegistryObject<EntityType<SimpleWormMonster>> WITHER_BONE_SERPENT = withAttributes(registerWorm("wither_bone_serpent", 2F, 2F, SimpleWormMonster.Role.BONE_SERPENT, SimpleWormMonster.Anatomy.BONE_SERPENT, () -> MonsterEntities.WITHER_BONE_SERPENT_SEGMENT.get()),
             () -> CreatureAttributeBuilder.creature().maxHealth(186).armor(15).attackDamage(22).build());
     public static final RegistryObject<EntityType<BaseWormPart>> WITHER_BONE_SERPENT_SEGMENT = registerWormSegment("wither_bone_serpent_segment");
     public static final RegistryObject<EntityType<WoodenMimic>> SHADOW_MIMIC = withAttributes(registerEntity("shadow_mimic", EntityType.Builder.of(WoodenMimic::new, MobCategory.MONSTER).sized(0.8f, 0.8f).clientTrackingRange(10)),
@@ -698,7 +698,7 @@ public class MonsterEntities {
                     .state(TheHungry.FeedingState.WOUNDED_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 1.5).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 20.0 / 16.0 : 2.0))
                     .state(TheHungry.FeedingState.CRITICAL_OWNER, state -> state.multiply(Attributes.ATTACK_DAMAGE, 2).multiply(Attributes.ARMOR, mob -> LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 30.0 / 16.0 : 3.0))
                     .build());
-    public static final RegistryObject<EntityType<SimpleWormMonster>> LEECH = withAttributes(registerWorm("leech", 12, 2F, 2F, () -> MonsterEntities.LEECH_SEGMENT.get()),
+    public static final RegistryObject<EntityType<SimpleWormMonster>> LEECH = withAttributes(registerWorm("leech", 2F, 2F, SimpleWormMonster.Role.UNDERWORLD, SimpleWormMonster.Anatomy.LEECH, () -> MonsterEntities.LEECH_SEGMENT.get()),
             () -> CreatureAttributeBuilder.creature().maxHealth(36).armor(4).attackDamage(10).movementSpeed(0.145).build());
     public static final RegistryObject<EntityType<BaseWormPart>> LEECH_SEGMENT = registerWormSegment("leech_segment");
     public static final RegistryObject<EntityType<HillHungry>> HILL_HUNGRY = withAttributes(registerEntity("hill_hungry", EntityType.Builder.of(HillHungry::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10)),
@@ -732,12 +732,16 @@ public class MonsterEntities {
                 .sized(1.5F, 1.5F).clientTrackingRange(10).updateInterval(1).noSave());
     }
 
-    private static RegistryObject<EntityType<SimpleWormMonster>> registerWorm(String name, int segments, float w, float h, java.util.function.Supplier<EntityType<BaseWormPart>> segmentType) {
-        return registerWorm(name, segments, w, h, SimpleWormMonster.Role.UNDERGROUND, segmentType);
-    }
-
     private static RegistryObject<EntityType<SimpleWormMonster>> registerWorm(String name, int segments, float width, float height, SimpleWormMonster.Role role, java.util.function.Supplier<EntityType<BaseWormPart>> segmentType) {
         return registerEntity(name, EntityType.Builder.<SimpleWormMonster>of((type, level) -> new SimpleWormMonster(type, level, segments, role, segmentType.get()), MobCategory.MONSTER).sized(width, height).clientTrackingRange(10).updateInterval(1));
+    }
+
+    private static RegistryObject<EntityType<SimpleWormMonster>> registerWorm(String name, float width, float height,
+                                                                              SimpleWormMonster.Role role, SimpleWormMonster.Anatomy anatomy,
+                                                                              java.util.function.Supplier<EntityType<BaseWormPart>> segmentType) {
+        return registerEntity(name, EntityType.Builder.<SimpleWormMonster>of(
+                        (type, level) -> new SimpleWormMonster(type, level, role, anatomy, segmentType.get()), MobCategory.MONSTER)
+                .sized(width, height).clientTrackingRange(10).updateInterval(1));
     }
 
     private static RegistryObject<EntityType<DarkCaster>> registerCaster(String name, float width, float height, DarkCaster.Profile profile) {

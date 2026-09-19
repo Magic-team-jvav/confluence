@@ -107,7 +107,7 @@ public class SpaceSpawner implements CustomSpawner {
         RandomSource random = level.random;
         --this.nextTick;
         if (nextTick > 0) return 0;
-        this.nextTick = nextTick + (5 + random.nextInt(5)) * 20;
+        this.nextTick = nextTick + (15 + random.nextInt(11)) * 20;
 
         Long2ObjectMap<NaturalSpawnerUtils.ChunkSpawnData> map = NaturalSpawnerUtils.getDimensionChunkSpawnData(level.dimension());
         if (map == null) return 0;

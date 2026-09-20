@@ -15,7 +15,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.confluence.lib.api.animation.first_person.HandAnimationAction;
 import org.confluence.lib.api.animation.first_person.HandAnimationApi;
 import org.confluence.lib.api.animation.first_person.HandAnimationChannel;
 import org.confluence.lib.api.animation.first_person.HandAnimationProfile;
@@ -40,6 +39,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class BaseGun extends Item implements GeoItem {
+    public static final String DRAW_ACTION = "draw";
+    public static final String PUT_AWAY_ACTION = "put_away";
+    public static final String SHOOT_ACTION = "shoot";
+    public static final String RELOAD_ACTION = "reload";
+    public static final String INSPECT_ACTION = "inspect";
+
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final GunDefinition definition;
     private final HandAnimationProfile animationProfile;
@@ -47,9 +52,9 @@ public class BaseGun extends Item implements GeoItem {
     public BaseGun(Properties properties, GunDefinition definition) {
         this(properties, definition, HandAnimationProfile.builder()
                 .channel(HandAnimationChannel.builder("gun")
-                        .animation(HandAnimationAction.SHOOT, "fire")
-                        .animation(HandAnimationAction.DRAW, "pick up")
-                        .animation(HandAnimationAction.RELOAD, "reloading")
+                        .animation(SHOOT_ACTION, "fire")
+                        .animation(DRAW_ACTION, "pick up")
+                        .animation(RELOAD_ACTION, "reloading")
                         .build())
                 .build());
     }
@@ -105,7 +110,7 @@ public class BaseGun extends Item implements GeoItem {
                 }
                 return PlayState.CONTINUE;
             });
-            channel.animations().forEach((action, clip) -> controller.triggerableAnim(action.id(), channel.triggeredAnimation(action)));
+            channel.animations().forEach((action, clip) -> controller.triggerableAnim(action, channel.triggeredAnimation(action)));
             controller.setSoundKeyframeHandler(event -> {
                 ResourceLocation key = ResourceLocation.tryParse(event.getKeyframeData().getSound());
                 if (key == null) return;
@@ -120,31 +125,31 @@ public class BaseGun extends Item implements GeoItem {
     }
 
     public void fireAnimator(ItemStack stack, ServerPlayer player) {
-        HandAnimationApi.stop(this, stack, player, animationProfile, HandAnimationAction.INSPECT);
-        playAnimator(stack, player, HandAnimationAction.SHOOT);
+        HandAnimationApi.stop(this, stack, player, animationProfile, INSPECT_ACTION);
+        playAnimator(stack, player, SHOOT_ACTION);
     }
 
     public void pickAnimator(ItemStack stack, ServerPlayer player) {
-        playAnimator(stack, player, HandAnimationAction.DRAW);
+        playAnimator(stack, player, DRAW_ACTION);
     }
 
     public void reloadAnimator(ItemStack stack, ServerPlayer player) {
-        playAnimator(stack, player, HandAnimationAction.RELOAD);
+        playAnimator(stack, player, RELOAD_ACTION);
     }
 
     public void putAwayAnimator(ItemStack stack, ServerPlayer player) {
-        playAnimator(stack, player, HandAnimationAction.PUT_AWAY);
+        playAnimator(stack, player, PUT_AWAY_ACTION);
     }
 
     public void inspectAnimator(ItemStack stack, ServerPlayer player) {
-        playAnimator(stack, player, HandAnimationAction.INSPECT);
+        playAnimator(stack, player, INSPECT_ACTION);
     }
 
-    public boolean playAnimator(ItemStack stack, ServerPlayer player, HandAnimationAction action) {
+    public boolean playAnimator(ItemStack stack, ServerPlayer player, String action) {
         return HandAnimationApi.play(this, stack, player, animationProfile, action);
     }
 
-    public boolean isAnimationPlaying(long instanceId, HandAnimationAction action) {
+    public boolean isAnimationPlaying(long instanceId, String action) {
         return cache.getManagerForId(instanceId).getAnimationControllers().values().stream()
                 .filter(AnimationController::isPlayingTriggeredAnimation)
                 .map(AnimationController::getCurrentAnimation)
@@ -154,22 +159,22 @@ public class BaseGun extends Item implements GeoItem {
     }
 
     public boolean isShootAnimationName(@Nullable String animationName) {
-        return animationProfile.isAnimation(HandAnimationAction.SHOOT, animationName);
+        return animationProfile.isAnimation(SHOOT_ACTION, animationName);
     }
 
     public boolean isShootAnimationPlaying(long instanceId) {
-        return isAnimationPlaying(instanceId, HandAnimationAction.SHOOT);
+        return isAnimationPlaying(instanceId, SHOOT_ACTION);
     }
 
     public boolean isCameraAnimationPlaying(long instanceId) {
-        return isAnimationPlaying(instanceId, HandAnimationAction.DRAW)
-                || isAnimationPlaying(instanceId, HandAnimationAction.PUT_AWAY)
-                || isAnimationPlaying(instanceId, HandAnimationAction.INSPECT)
-                || isAnimationPlaying(instanceId, HandAnimationAction.SHOOT);
+        return isAnimationPlaying(instanceId, DRAW_ACTION)
+                || isAnimationPlaying(instanceId, PUT_AWAY_ACTION)
+                || isAnimationPlaying(instanceId, INSPECT_ACTION)
+                || isAnimationPlaying(instanceId, SHOOT_ACTION);
     }
 
     public boolean isPutAwayAnimationPlaying(ItemStack stack) {
-        return isAnimationPlaying(GeoItem.getId(stack), HandAnimationAction.PUT_AWAY);
+        return isAnimationPlaying(GeoItem.getId(stack), PUT_AWAY_ACTION);
     }
 
     @Override

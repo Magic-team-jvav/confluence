@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.world.item.Item;
-import org.confluence.lib.api.animation.first_person.HandAnimationAction;
 import org.confluence.lib.api.animation.first_person.HandAnimationChannel;
 import org.confluence.lib.api.animation.first_person.HandAnimationProfile;
 import org.confluence.lib.common.component.ModRarity;
@@ -49,12 +48,12 @@ public class GunItems {
             HandAnimationProfile.builder()
                     .channel(HandAnimationChannel.builder("hand_pose")
                             .idle("static_idle")
-                            .animation(HandAnimationAction.DRAW, "draw", Animation.LoopType.PLAY_ONCE)
-                            .animation(HandAnimationAction.PUT_AWAY, "put_away", Animation.LoopType.PLAY_ONCE)
-                            .animation(HandAnimationAction.INSPECT, "inspect", Animation.LoopType.PLAY_ONCE)
+                            .animation(BaseGun.DRAW_ACTION, "draw", Animation.LoopType.PLAY_ONCE)
+                            .animation(BaseGun.PUT_AWAY_ACTION, "put_away", Animation.LoopType.PLAY_ONCE)
+                            .animation(BaseGun.INSPECT_ACTION, "inspect", Animation.LoopType.PLAY_ONCE)
                             .build())
                     .channel(HandAnimationChannel.builder("weapon_action")
-                            .animation(HandAnimationAction.SHOOT, "shoot", Animation.LoopType.PLAY_ONCE)
+                            .animation(BaseGun.SHOOT_ACTION, "shoot", Animation.LoopType.PLAY_ONCE)
                             .build())
                     .build()));
     public static final PortDeferredItem<BaseGun> PHOENIX_BLASTER = registerGun("phoenix_blaster", properties -> new BaseGun(properties, GunDefinition.manual(4, 16.0F, 2.5F, 0.1F, 0.04F, 0, 2.5F, ModRarity.ORANGE)));

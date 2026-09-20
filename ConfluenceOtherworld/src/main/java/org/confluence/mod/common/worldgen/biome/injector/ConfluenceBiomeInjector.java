@@ -1,6 +1,7 @@
 package org.confluence.mod.common.worldgen.biome.injector;
 
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
@@ -26,7 +27,6 @@ import org.confluence.mod.mixed.INoiseBasedChunkGenerator;
 import org.confluence.mod.util.OverworldUtils;
 
 import java.util.ArrayList;
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.UnaryOperator;
@@ -88,7 +88,7 @@ public final class ConfluenceBiomeInjector {
         // 「不是蜜蜂」世界里不做邪恶群系互换，保留腐化与猩红同时存在 ——
         // 这是替换 TerraBlender 之前的既有行为（原 OverworldUtils#replaceBiome 只在 else 分支里取互换对）。
         boolean allowEvilRemap = !ModSecretSeeds.NOT_THE_BEES.match(server);
-        Map<BiomeSource, BiomeSourceHandler> handlers = new IdentityHashMap<>();
+        Map<BiomeSource, BiomeSourceHandler> handlers = new Reference2ObjectOpenHashMap<>();
 
         for (Map.Entry<ResourceKey<LevelStem>, LevelStem> stemEntry : access.registryOrThrow(Registries.LEVEL_STEM).entrySet()) {
             LevelStem stem = stemEntry.getValue();

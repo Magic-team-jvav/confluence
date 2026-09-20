@@ -1,6 +1,8 @@
 package org.confluence.mod.client.gameevent;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.Util;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceKey;
@@ -16,10 +18,12 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.portlib.event.PortEventHandler;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public final class ClientGameEventSystem {
-    static final Map<ResourceKey<? extends GameEvent>, GameEventSyncCallback> CALLBACKS = Util.make(new IdentityHashMap<>(), map -> {
+    static final Map<ResourceKey<? extends GameEvent>, GameEventSyncCallback> CALLBACKS = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         map.put(SlimeRainGameEvent.KEY, SlimeRainSprite::handle);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerSprite::handle);
         map.put(LanternNightGameEvent.KEY, LanternNightSprite::handle);
@@ -29,7 +33,7 @@ public final class ClientGameEventSystem {
         PortEventHandler.postEvent(new GameEventSyncCallbackRegisterEvent(map));
     });
 
-    static final Map<ResourceKey<? extends GameEvent>, AfterRenderSky> RENDERERS = Util.make(new IdentityHashMap<>(), map -> {
+    static final Map<ResourceKey<? extends GameEvent>, AfterRenderSky> RENDERERS = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         map.put(SlimeRainGameEvent.KEY, SlimeRainSprite::renderSlimeRain);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerSprite::renderMeteorShower);
         map.put(LanternNightGameEvent.KEY, LanternNightSprite::renderLanternNight);
@@ -39,7 +43,7 @@ public final class ClientGameEventSystem {
     public static @Nullable ResourceLocation moonTexture;
     public static @Nullable Vector3f lightTextureColor;
     static Map<ResourceKey<? extends GameEvent>, AfterRenderSky> afterRenderSky = Map.of();
-    private static final Set<ResourceKey<? extends GameEvent>> RUNNING_EVENTS = new HashSet<>();
+    private static final Set<ResourceKey<? extends GameEvent>> RUNNING_EVENTS = new ReferenceOpenHashSet<>();
 
     public static void handle(LocalPlayer player) {
         long gameTime = player.level().getGameTime();
@@ -49,7 +53,7 @@ public final class ClientGameEventSystem {
     }
 
     public static void handlePacket(Player player, List<ResourceKey<? extends GameEvent>> keys, boolean start) {
-        Map<ResourceKey<? extends GameEvent>, AfterRenderSky> map = new IdentityHashMap<>(afterRenderSky);
+        Map<ResourceKey<? extends GameEvent>, AfterRenderSky> map = new Reference2ObjectOpenHashMap<>(afterRenderSky);
         for (ResourceKey<? extends GameEvent> key : keys) {
             if (GameEventSystem.ALL_EVENT_KEY.equals(key)) {
                 handleAllEvent(player, start);

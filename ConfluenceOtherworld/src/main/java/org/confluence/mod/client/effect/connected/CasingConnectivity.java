@@ -1,10 +1,10 @@
 package org.confluence.mod.client.effect.connected;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
@@ -12,7 +12,7 @@ public class CasingConnectivity {
     private final Map<Block, Entry> entries;
 
     public CasingConnectivity() {
-        entries = new IdentityHashMap<>();
+        entries = new Reference2ObjectOpenHashMap<>();
     }
 
     public Entry get(BlockState blockState) {

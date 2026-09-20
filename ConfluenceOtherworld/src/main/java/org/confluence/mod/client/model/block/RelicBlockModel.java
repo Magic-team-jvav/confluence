@@ -1,5 +1,6 @@
 package org.confluence.mod.client.model.block;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -9,11 +10,10 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import software.bernie.geckolib.model.GeoModel;
 
-import java.util.IdentityHashMap;
 import java.util.Map;
 
 public class RelicBlockModel extends GeoModel<RelicBlock.BEntity> {
-    public static final Map<Block, ResourceLocation[]> CACHE = Util.make(new IdentityHashMap<>(), map -> {
+    public static final Map<Block, ResourceLocation[]> CACHE = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         for (PortDeferredBlock<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {
             String path = block.getId().getPath();
             map.put(block.get(), new ResourceLocation[]{

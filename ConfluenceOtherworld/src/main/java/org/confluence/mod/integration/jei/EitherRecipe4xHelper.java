@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import it.unimi.dsi.fastutil.ints.IntObjectMutablePair;
 import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
@@ -181,7 +182,7 @@ public class EitherRecipe4xHelper {
             IStackHelper stackHelper = jeiHelpers.getStackHelper();
             List<IRecipeSlotView> slotViews = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT).stream().filter(view -> !view.isEmpty()).toList();
 
-            Map<IRecipeSlotView, IntObjectPair<Set<Object>>> slotUidCache = new IdentityHashMap<>();
+            Map<IRecipeSlotView, IntObjectPair<Set<Object>>> slotUidCache = new Reference2ObjectOpenHashMap<>();
             Set<Object> uids = new HashSet<>();
             for (IRecipeSlotView slotView : slotViews) {
                 ItemStack itemStack = slotView.getItemStacks().findAny().orElseThrow();

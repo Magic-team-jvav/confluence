@@ -1,6 +1,7 @@
 package org.confluence.mod.common.gameevent;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -36,7 +37,7 @@ public enum GameEventSystem implements IGlobalData {
     INSTANCE;
     public static final ResourceKey<GameEvent> ALL_EVENT_KEY = GameEvent.createKey(Confluence.asResource("all_event"));
 
-    private final Map<ResourceKey<? extends GameEvent>, GameEvent> events = Util.make(new IdentityHashMap<>(), map -> {
+    private final Map<ResourceKey<? extends GameEvent>, GameEvent> events = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         map.put(SlimeRainGameEvent.KEY, SlimeRainGameEvent.INSTANCE);
         map.put(BloodMoonGameEvent.KEY, BloodMoonGameEvent.INSTANCE);
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
@@ -179,7 +180,7 @@ public enum GameEventSystem implements IGlobalData {
         return "confluence:game_event_system";
     }
 
-    public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new IdentityHashMap<>(), map -> {
+    public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
         if (LibUtils.isDev())
             map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);

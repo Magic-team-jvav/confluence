@@ -5,6 +5,7 @@ import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExte
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectMutablePair;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectPair;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -27,8 +28,6 @@ import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
-import java.util.HashMap;
-import java.util.IdentityHashMap;
 import java.util.Map;
 
 public enum GlobalCloakData implements IGlobalData {
@@ -46,17 +45,17 @@ public enum GlobalCloakData implements IGlobalData {
     });
 
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Map<BlockState, BooleanObjectPair<BlockState>>> BLOCK_MAP_STREAM_CODEC = PortByteBufCodecs.map(
-            HashMap::new, LibStreamCodecUtils.BLOCK_STATE, LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
+            Reference2ObjectOpenHashMap::new, LibStreamCodecUtils.BLOCK_STATE, LibStreamCodecUtils.booleanObjectPair(LibStreamCodecUtils.BLOCK_STATE)
     );
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, Map<Item, BooleanObjectPair<Item>>> ITEM_MAP_STREAM_CODEC = LibStreamCodecUtils.lazyInitialized(() -> {
         PortStreamCodec<PortRegistryFriendlyByteBuf, Item> streamCodec = PortByteBufCodecs.registry(Registries.ITEM);
-        return PortByteBufCodecs.map(HashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
+        return PortByteBufCodecs.map(Reference2ObjectOpenHashMap::new, streamCodec, LibStreamCodecUtils.booleanObjectPair(streamCodec));
     });
     public static final int VERSION = 1;
 
-    private Map<BlockState, BooleanObjectPair<BlockState>> blockMap = new IdentityHashMap<>();
-    private Map<BlockState, BlockBehaviour.Properties> backupProperties = new IdentityHashMap<>();
-    private Map<Item, BooleanObjectPair<Item>> itemMap = new IdentityHashMap<>();
+    private Map<BlockState, BooleanObjectPair<BlockState>> blockMap = new Reference2ObjectOpenHashMap<>();
+    private Map<BlockState, BlockBehaviour.Properties> backupProperties = new Reference2ObjectOpenHashMap<>();
+    private Map<Item, BooleanObjectPair<Item>> itemMap = new Reference2ObjectOpenHashMap<>();
     private int version;
 
     public void initialize() {
@@ -132,10 +131,8 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")),
-                result -> this.blockMap = new IdentityHashMap<>(result));
-        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")),
-                result -> this.itemMap = new IdentityHashMap<>(result));
+        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("BlockMap")), result -> this.blockMap = new Reference2ObjectOpenHashMap<>(result));
+        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.parse(NbtOps.INSTANCE, tag.get("ItemMap")), result -> this.itemMap = new Reference2ObjectOpenHashMap<>(result));
         this.version = tag.getInt("Version");
 
         rollbackAllProperties();
@@ -143,19 +140,17 @@ public enum GlobalCloakData implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
-        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap),
-                nbt -> tag.put("BlockMap", nbt));
-        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap),
-                nbt -> tag.put("ItemMap", nbt));
+        PortDataResultExtension.ifSuccess(BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap), nbt -> tag.put("BlockMap", nbt));
+        PortDataResultExtension.ifSuccess(ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap), nbt -> tag.put("ItemMap", nbt));
         tag.putInt("Version", version);
     }
 
     @Override
     public void clear() {
         rollbackAllProperties();
-        this.blockMap = new IdentityHashMap<>();
-        this.backupProperties = new IdentityHashMap<>();
-        this.itemMap = new IdentityHashMap<>();
+        this.blockMap = new Reference2ObjectOpenHashMap<>();
+        this.backupProperties = new Reference2ObjectOpenHashMap<>();
+        this.itemMap = new Reference2ObjectOpenHashMap<>();
         this.version = VERSION;
         initialize();
     }

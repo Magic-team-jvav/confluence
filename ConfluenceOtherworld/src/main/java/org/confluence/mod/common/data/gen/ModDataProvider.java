@@ -2,6 +2,7 @@ package org.confluence.mod.common.data.gen;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Lifecycle;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.*;
@@ -106,8 +107,8 @@ public class ModDataProvider {
 
     private static <T> HolderLookup.RegistryLookup<T> registryLookup(ResourceKey<Registry<T>> key, HolderGetter<T> holderGetter) {
         return new HolderLookup.RegistryLookup<>() {
-            private final Map<ResourceKey<T>, Optional<Holder.Reference<T>>> holders = new IdentityHashMap<>();
-            private final Map<TagKey<T>, Optional<HolderSet.Named<T>>> tags = new IdentityHashMap<>();
+            private final Map<ResourceKey<T>, Optional<Holder.Reference<T>>> holders = new Reference2ObjectOpenHashMap<>();
+            private final Map<TagKey<T>, Optional<HolderSet.Named<T>>> tags = new Reference2ObjectOpenHashMap<>();
 
             @Override
             public ResourceKey<? extends Registry<? extends T>> key() {

@@ -5,10 +5,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.projectile.sword.PhasebladeProjectile;
 import org.mesdag.particlestorm.data.component.EmitterShape;
-import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
-
-import java.util.Map;
 
 /// 沿剑尖或剑柄末端的运动轨迹补点，粒子留在世界路径上，生命周期仍由绑定实体管理。
 public final class BladeTrailEmitter extends ParticleEmitter {
@@ -23,11 +20,7 @@ public final class BladeTrailEmitter extends ParticleEmitter {
     private float previousRoll;
 
     public BladeTrailEmitter(PhasebladeProjectile projectile, Vec3 position, ResourceLocation particle, double end) {
-        super(projectile.level(), position, particle, new MolangExp(Map.of(
-                "variable.endpoint_x", "0",
-                "variable.endpoint_y", "0",
-                "variable.endpoint_z", "0"
-        )));
+        super(projectile.level(), position, particle);
         this.projectile = projectile;
         this.end = end;
         this.shape = components.stream().filter(EmitterShape.class::isInstance).map(EmitterShape.class::cast).findFirst().orElseThrow();

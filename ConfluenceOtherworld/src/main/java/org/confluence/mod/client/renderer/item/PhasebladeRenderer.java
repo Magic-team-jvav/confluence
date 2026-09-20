@@ -99,8 +99,9 @@ public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
             super.renderInGui(context, poses, buffers, light, overlay);
             return;
         }
-        double time = BladeItemVisualState.time(Minecraft.getInstance().getFrameTime());
-        double extension = BladeItemVisualState.get(getCurrentItemStack(), time).extension(time);
+        Minecraft minecraft = Minecraft.getInstance();
+        double time = BladeItemVisualState.time(minecraft.getFrameTime());
+        double extension = minecraft.screen == null ? BladeItemVisualState.get(getCurrentItemStack(), time).extension(time) : 1;
         String suffix = extension <= 0 ? "inactive" : extension >= 1 ? "item" : "activation";
         String family = animatable instanceof Phasesaber ? "phasesaber" : "phaseblade";
         ResourceLocation texture = Confluence.asResource("textures/item/" + family + "/" + animatable.color().resourceName() + "_" + family + "_" + suffix + ".png");

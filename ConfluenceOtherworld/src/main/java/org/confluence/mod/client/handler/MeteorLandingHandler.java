@@ -101,10 +101,10 @@ public final class MeteorLandingHandler {
         Matrix4f matrix4f = poseStack.last().pose().rotate(LibRenderUtils.ANGLE_45);
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        bufferBuilder.vertex(matrix4f, -RADIUS, 100, -RADIUS).uv(0.0F, v0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
-        bufferBuilder.vertex(matrix4f, RADIUS, 100, -RADIUS).uv(1.0F, v0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
-        bufferBuilder.vertex(matrix4f, RADIUS, 100, RADIUS).uv(1.0F, v1).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
-        bufferBuilder.vertex(matrix4f, -RADIUS, 100, RADIUS).uv(0.0F, v1).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, -RADIUS, 100, -RADIUS).uv(0.0F, v1).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, RADIUS, 100, -RADIUS).uv(1.0F, v1).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, RADIUS, 100, RADIUS).uv(1.0F, v0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, -RADIUS, 100, RADIUS).uv(0.0F, v0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
         BufferUploader.drawWithShader(bufferBuilder.end());
         RenderSystem.disableBlend();
         poseStack.popPose();

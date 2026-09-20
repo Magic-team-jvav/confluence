@@ -71,10 +71,10 @@ public class PhasebladeRenderer extends GeoItemRenderer<BasePhasebladeItem> {
         float v1 = (frame + 1) / 7.0F;
         VertexConsumer vertices = buffers.getBuffer(RenderType.entityTranslucentEmissive(LIGHTNING));
         var pose = poses.last();
-        vertices.vertex(pose.pose(), u - radius, centerY - radius, z).color(255, 255, 255, 255).uv(0, v0).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
-        vertices.vertex(pose.pose(), u + radius, centerY - radius, z).color(255, 255, 255, 255).uv(1, v0).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
-        vertices.vertex(pose.pose(), u + radius, centerY + radius, z).color(255, 255, 255, 255).uv(1, v1).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
-        vertices.vertex(pose.pose(), u - radius, centerY + radius, z).color(255, 255, 255, 255).uv(0, v1).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
+        vertices.vertex(pose.pose(), u - radius, centerY - radius, z).color(255, 255, 255, 255).uv(0, v1).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
+        vertices.vertex(pose.pose(), u + radius, centerY - radius, z).color(255, 255, 255, 255).uv(1, v1).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
+        vertices.vertex(pose.pose(), u + radius, centerY + radius, z).color(255, 255, 255, 255).uv(1, v0).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
+        vertices.vertex(pose.pose(), u - radius, centerY + radius, z).color(255, 255, 255, 255).uv(0, v0).overlayCoords(overlay).uv2(15728880).normal(pose.normal(), 0, 0, 1).endVertex();
     }
 
     @Override

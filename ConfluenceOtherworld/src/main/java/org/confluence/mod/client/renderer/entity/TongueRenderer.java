@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -34,23 +35,21 @@ public final class TongueRenderer {
 
     private TongueRenderer() {}
 
-    public static void renderFirstPerson(RenderLevelStageEvent event) {
+    public static void renderFirstPerson(RenderLevelStageEvent event, Minecraft minecraft, LocalPlayer player) {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) return;
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.level == null || minecraft.player == null || !minecraft.options.getCameraType().isFirstPerson())
+        if (!minecraft.options.getCameraType().isFirstPerson())
             return;
-        LivingEntity living = minecraft.player;
-        if (!living.hasEffect(ModEffects.THE_TONGUE.get())) return;
-        WallOfFleshMouth mouth = findMouth(living);
+        if (!player.hasEffect(ModEffects.THE_TONGUE.get())) return;
+        WallOfFleshMouth mouth = findMouth(player);
         if (mouth == null) return;
 
         float partialTick = event.getPartialTick();
         Vec3 camera = event.getCamera().getPosition();
-        Vec3 livingPosition = anchorPosition(living, partialTick);
+        Vec3 livingPosition = anchorPosition(player, partialTick);
         PoseStack poseStack = event.getPoseStack();
         poseStack.pushPose();
         poseStack.translate(livingPosition.x - camera.x, livingPosition.y - camera.y, livingPosition.z - camera.z);
-        renderTongue(mouth, living, poseStack, minecraft.renderBuffers().bufferSource(), partialTick, LevelRenderer.getLightColor(living.level(), mouth.blockPosition()), true);
+        renderTongue(mouth, player, poseStack, minecraft.renderBuffers().bufferSource(), partialTick, LevelRenderer.getLightColor(player.level(), mouth.blockPosition()), true);
         poseStack.popPose();
     }
 

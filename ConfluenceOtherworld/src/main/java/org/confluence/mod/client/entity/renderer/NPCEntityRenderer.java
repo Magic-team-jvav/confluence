@@ -65,16 +65,16 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
         poseStack.scale(appearance, appearance, appearance);
         // 贴图的气泡尾位于左下方，因此气泡主体需要右移，才能让尾部准确指向 NPC 头部。
         poseStack.translate(0.44F, 0.0F, 0.0F);
-        renderQuad(CHAT_BUBBLE, poseStack, bufferSource, 1.25F, LightTexture.FULL_BRIGHT, -0.01F);
+        renderQuad(CHAT_BUBBLE, poseStack, bufferSource, 1.25F, -0.01F);
         poseStack.translate(0.0F, 0.17F, 0.0F);
         if (chat.text().isPresent()) {
             renderText(Component.translatable(chat.text().get()), poseStack, bufferSource, LightTexture.FULL_BRIGHT);
         } else if (chat.emoji().isPresent()) {
             ResourceLocation texture = ResourceLocation.tryParse(chat.emoji().get());
             if (texture != null)
-                renderQuad(texture, poseStack, bufferSource, ICON_SIZE, LightTexture.FULL_BRIGHT, 0.0F);
+                renderQuad(texture, poseStack, bufferSource, ICON_SIZE, 0.0F);
         } else
-            chat.item().ifPresent(item -> renderItem(entity, item, poseStack, bufferSource, LightTexture.FULL_BRIGHT));
+            chat.item().ifPresent(item -> renderItem(entity, item, poseStack, bufferSource));
         poseStack.popPose();
     }
 
@@ -91,18 +91,18 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
         }
     }
 
-    private static void renderQuad(ResourceLocation texture, PoseStack poseStack, MultiBufferSource bufferSource, float size, int packedLight, float z) {
+    private static void renderQuad(ResourceLocation texture, PoseStack poseStack, MultiBufferSource bufferSource, float size, float z) {
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucent(texture));
         float half = size * 0.5F;
-        vertex(consumer, poseStack.last(), packedLight, -half, -half, z, 0.0F, 0.0F);
-        vertex(consumer, poseStack.last(), packedLight, half, -half, z, 1.0F, 0.0F);
-        vertex(consumer, poseStack.last(), packedLight, half, half, z, 1.0F, 1.0F);
-        vertex(consumer, poseStack.last(), packedLight, -half, half, z, 0.0F, 1.0F);
+        vertex(consumer, poseStack.last(), LightTexture.FULL_BRIGHT, -half, -half, z, 0.0F, 1.0F);
+        vertex(consumer, poseStack.last(), LightTexture.FULL_BRIGHT, half, -half, z, 1.0F, 1.0F);
+        vertex(consumer, poseStack.last(), LightTexture.FULL_BRIGHT, half, half, z, 1.0F, 0.0F);
+        vertex(consumer, poseStack.last(), LightTexture.FULL_BRIGHT, -half, half, z, 0.0F, 0.0F);
     }
 
-    private static void renderItem(BaseNPC entity, ItemStack item, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    private static void renderItem(BaseNPC entity, ItemStack item, PoseStack poseStack, MultiBufferSource bufferSource) {
         poseStack.scale(ICON_SIZE, ICON_SIZE, ICON_SIZE);
-        Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.GUI, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), entity.getId());
+        Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemDisplayContext.GUI, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), entity.getId());
     }
 
     private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int packedLight, float x, float y, float z, float u, float v) {

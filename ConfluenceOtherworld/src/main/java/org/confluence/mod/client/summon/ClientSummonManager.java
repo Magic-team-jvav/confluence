@@ -102,7 +102,7 @@ public final class ClientSummonManager {
         if (entries.isEmpty()) CLOCK_OFFSETS.remove(ownerId);
     }
 
-    public static void render(RenderLevelStageEvent event) {
+    public static void render(RenderLevelStageEvent event, Minecraft minecraft) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
             externalShaderPipeline = RenderSystem.getShader() != null
                     && RenderSystem.getShader().getClass().getSimpleName().equals("ExtendedShader");
@@ -110,7 +110,6 @@ public final class ClientSummonManager {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || STATES.isEmpty()) {
             return;
         }
-        Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null) {
             reset();

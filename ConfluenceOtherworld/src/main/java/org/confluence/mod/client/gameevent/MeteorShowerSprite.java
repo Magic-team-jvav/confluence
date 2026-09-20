@@ -48,10 +48,10 @@ final class MeteorShowerSprite {
         poseStack.mulPose(quaternionf);
         RenderSystem.setShaderColor(1, 1, 1, alpha * a);
         Matrix4f matrix4f = poseStack.last().pose();
-        builder.vertex(matrix4f, -radius, 100, -radius).uv(0.0F, v0).endVertex();
-        builder.vertex(matrix4f, radius, 100, -radius).uv(1.0F, v0).endVertex();
-        builder.vertex(matrix4f, radius, 100, radius).uv(1.0F, v1).endVertex();
-        builder.vertex(matrix4f, -radius, 100, radius).uv(0.0F, v1).endVertex();
+        builder.vertex(matrix4f, -radius, 100, -radius).uv(0.0F, v1).endVertex();
+        builder.vertex(matrix4f, radius, 100, -radius).uv(1.0F, v1).endVertex();
+        builder.vertex(matrix4f, radius, 100, radius).uv(1.0F, v0).endVertex();
+        builder.vertex(matrix4f, -radius, 100, radius).uv(0.0F, v0).endVertex();
         poseStack.popPose();
     }
 

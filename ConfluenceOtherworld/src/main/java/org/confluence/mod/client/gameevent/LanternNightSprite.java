@@ -76,10 +76,10 @@ final class LanternNightSprite {
         poseStack.mulPose(Axis.YP.rotation(Mth.lerp(partialTick, yawO, yaw)).rotateX(-Mth.HALF_PI));
         poseStack.translate(0, 0, Mth.lerp(partialTick, yo, y));
         Matrix4f matrix4f = poseStack.last().pose();
-        builder.vertex(matrix4f, -radius, dist, -radius).uv(0, 1).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
-        builder.vertex(matrix4f, radius, dist, -radius).uv(1, 1).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
-        builder.vertex(matrix4f, radius, dist, radius).uv(1, 0).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
-        builder.vertex(matrix4f, -radius, dist, radius).uv(0, 0).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
+        builder.vertex(matrix4f, -radius, dist, -radius).uv(0, 0).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
+        builder.vertex(matrix4f, radius, dist, -radius).uv(1, 0).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
+        builder.vertex(matrix4f, radius, dist, radius).uv(1, 1).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
+        builder.vertex(matrix4f, -radius, dist, radius).uv(0, 1).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
         poseStack.popPose();
     }
 

@@ -341,12 +341,12 @@ public final class GameClientEvents {
     }
 
     private static void renderLevelStage(RenderLevelStageEvent event) {
-        TongueRenderer.renderFirstPerson(event);
-        BulletVfxManager.render(event);
-        ClientSummonManager.render(event);
         Minecraft minecraft = Minecraft.getInstance();
+        BulletVfxManager.render(event);
+        ClientSummonManager.render(event, minecraft);
         LocalPlayer player = minecraft.player;
         if (player == null) return;
+        TongueRenderer.renderFirstPerson(event, minecraft, player);
         SpelunkerHelper.renderLevel(event, player);
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             StarPhaseHandler.render(event, player.clientLevel);

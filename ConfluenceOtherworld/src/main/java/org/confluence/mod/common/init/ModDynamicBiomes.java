@@ -2,6 +2,7 @@ package org.confluence.mod.common.init;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -17,6 +18,9 @@ import org.jetbrains.annotations.Nullable;
 public final class ModDynamicBiomes {
     /// 判定阈值：4096 个方块里有多少个才算这个群系
     public static final int BIOME_THRESHOLD = 256;
+    /// 退出低于进入阈值，替换现有覆盖还需超过竞争差值，避免边界反复切换。
+    public static final int EXIT_THRESHOLD = 204;
+    public static final int REPLACEMENT_ADVANTAGE = 64;
 
     private ModDynamicBiomes() {}
 
@@ -44,6 +48,27 @@ public final class ModDynamicBiomes {
         DynamicBiomeUtils.registerPriority(ModBiomes.GLOWING_MUSHROOM, 1000);
 
         DynamicBiomeUtils.registerRule(ModDynamicBiomes::judge);
+
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.CORRUPT, true);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.CRIMSON, true);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.HALLOW, true);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.GLOWING_MUSHROOM, true);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.CORRUPT_SAND, false);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.CORRUPT_ICE, false);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.CRIMSON_SAND, false);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.CRIMSON_ICE, false);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.HALLOW_SAND, false);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.HALLOW_ICE, false);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.SUNFLOWER, false);
+        DynamicBiomeUtils.registerCounter(ModBlockCounters.WATER, false);
+
+        /// 天然感染区域的净化底图；后续动态感染使用生成时保存的逐点底图。
+        DynamicBiomeUtils.registerPureBiome(ModBiomes.THE_HALLOW_DESERT, Biomes.DESERT);
+        DynamicBiomeUtils.registerPureBiome(ModBiomes.THE_CORRUPTION_DESERT, Biomes.DESERT);
+        DynamicBiomeUtils.registerPureBiome(ModBiomes.THE_CRIMSON_DESERT, Biomes.DESERT);
+        DynamicBiomeUtils.registerPureBiome(ModBiomes.THE_HALLOW_TUNDRA, Biomes.SNOWY_PLAINS);
+        DynamicBiomeUtils.registerPureBiome(ModBiomes.THE_CORRUPTION_TUNDRA, Biomes.SNOWY_PLAINS);
+        DynamicBiomeUtils.registerPureBiome(ModBiomes.THE_CRIMSON_TUNDRA, Biomes.SNOWY_PLAINS);
     }
 
     /// Confluence 的判定规则。返回 null 表示这个 section 保持原版群系。
@@ -61,33 +86,81 @@ public final class ModDynamicBiomes {
         corrupt -= hallow;
         hallow -= evil;
 
-        HolderLookup.RegistryLookup<Biome> lookup = context.lookup();
-        if (corrupt >= BIOME_THRESHOLD && corrupt >= crimson) {
-            if (ModBlockCounters.CORRUPT_SAND.get(counts) - water >= BIOME_THRESHOLD || context.originalBiomeIs(biome -> biome.is(Biomes.DESERT))) {
-                return lookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT);
-            } else if (ModBlockCounters.CORRUPT_ICE.get(counts) >= BIOME_THRESHOLD || context.originalBiomeIs(biome -> biome.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
-                return lookup.getOrThrow(ModBiomes.THE_CORRUPTION_TUNDRA);
-            }
-            return lookup.getOrThrow(ModBiomes.THE_CORRUPTION);
-        } else if (crimson >= BIOME_THRESHOLD) {
-            if (ModBlockCounters.CRIMSON_SAND.get(counts) - water >= BIOME_THRESHOLD || context.originalBiomeIs(biome -> biome.is(Biomes.DESERT))) {
-                return lookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT);
-            } else if (ModBlockCounters.CRIMSON_ICE.get(counts) >= BIOME_THRESHOLD || context.originalBiomeIs(biome -> biome.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
-                return lookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA);
-            }
-            return lookup.getOrThrow(ModBiomes.THE_CRIMSON);
-        } else if (hallow >= BIOME_THRESHOLD) {
-            if (ModBlockCounters.HALLOW_SAND.get(counts) - water >= BIOME_THRESHOLD || context.originalBiomeIs(biome -> biome.is(Biomes.DESERT))) {
-                return lookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT);
-            } else if (ModBlockCounters.HALLOW_ICE.get(counts) >= BIOME_THRESHOLD || context.originalBiomeIs(biome -> biome.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
-                return lookup.getOrThrow(ModBiomes.THE_HALLOW_TUNDRA);
-            }
-            return lookup.getOrThrow(ModBiomes.THE_HALLOW);
-        } else if (ModBlockCounters.GLOWING_MUSHROOM.get(counts) >= BIOME_THRESHOLD) {
-            return lookup.getOrThrow(ModBiomes.GLOWING_MUSHROOM);
+        int mushroom = ModBlockCounters.GLOWING_MUSHROOM.get(counts);
+        Holder<Biome> current = context.currentBiome();
+        Family previous = current.is(ModTags.Biomes.THE_CORRUPTION) ? Family.CORRUPTION
+                : current.is(ModTags.Biomes.THE_CRIMSON) ? Family.CRIMSON
+                : current.is(ModTags.Biomes.THE_HALLOW) ? Family.HALLOW
+                : current.is(ModBiomes.GLOWING_MUSHROOM) ? Family.MUSHROOM : Family.NONE;
+        Family winner = Family.NONE;
+        int strongest = BIOME_THRESHOLD - 1;
+        /// 相同强度使用固定次序；已有覆盖在退出阈值以上时享有替换差值。
+        if (hallow > strongest) {
+            winner = Family.HALLOW;
+            strongest = hallow;
         }
-        return null;
+        if (corrupt > strongest) {
+            winner = Family.CORRUPTION;
+            strongest = corrupt;
+        }
+        if (crimson > strongest) {
+            winner = Family.CRIMSON;
+            strongest = crimson;
+        }
+        if (mushroom > strongest) {
+            winner = Family.MUSHROOM;
+            strongest = mushroom;
+        }
+        int previousStrength = switch (previous) {
+            case CORRUPTION -> corrupt;
+            case CRIMSON -> crimson;
+            case HALLOW -> hallow;
+            case MUSHROOM -> mushroom;
+            case NONE -> -1;
+        };
+        if (previous != Family.NONE && previousStrength >= EXIT_THRESHOLD
+                && (winner == Family.NONE || strongest < previousStrength + REPLACEMENT_ADVANTAGE))
+            winner = previous;
+        if (winner == Family.NONE) return null;
+
+        HolderLookup.RegistryLookup<Biome> lookup = context.lookup();
+        if (winner == Family.MUSHROOM) return lookup.getOrThrow(ModBiomes.GLOWING_MUSHROOM);
+        ResourceKey<Biome> normal;
+        ResourceKey<Biome> desert;
+        ResourceKey<Biome> snow;
+        int sand;
+        int ice;
+        switch (winner) {
+            case CORRUPTION -> {
+                normal = ModBiomes.THE_CORRUPTION;
+                desert = ModBiomes.THE_CORRUPTION_DESERT;
+                snow = ModBiomes.THE_CORRUPTION_TUNDRA;
+                sand = ModBlockCounters.CORRUPT_SAND.get(counts);
+                ice = ModBlockCounters.CORRUPT_ICE.get(counts);
+            }
+            case CRIMSON -> {
+                normal = ModBiomes.THE_CRIMSON;
+                desert = ModBiomes.THE_CRIMSON_DESERT;
+                snow = ModBiomes.THE_CRIMSON_TUNDRA;
+                sand = ModBlockCounters.CRIMSON_SAND.get(counts);
+                ice = ModBlockCounters.CRIMSON_ICE.get(counts);
+            }
+            default -> {
+                normal = ModBiomes.THE_HALLOW;
+                desert = ModBiomes.THE_HALLOW_DESERT;
+                snow = ModBiomes.THE_HALLOW_TUNDRA;
+                sand = ModBlockCounters.HALLOW_SAND.get(counts);
+                ice = ModBlockCounters.HALLOW_ICE.get(counts);
+            }
+        }
+        if (context.originalBiomeIs(biome -> biome.is(Biomes.DESERT))
+                || sand - water >= (current.is(desert) ? EXIT_THRESHOLD : BIOME_THRESHOLD))
+            return lookup.getOrThrow(desert);
+        if (context.originalBiomeIs(biome -> biome.is(Biomes.SNOWY_PLAINS) || biome.is(Biomes.ICE_SPIKES) || biome.is(BiomeTags.SPAWNS_SNOW_FOXES))
+                || ice >= (current.is(snow) ? EXIT_THRESHOLD : BIOME_THRESHOLD))
+            return lookup.getOrThrow(snow);
+        return lookup.getOrThrow(normal);
     }
 
-    // 迷你生物群系标记见 ModMiniBiomes（同样基于这套计数器）
+    private enum Family {NONE, CORRUPTION, CRIMSON, HALLOW, MUSHROOM}
 }

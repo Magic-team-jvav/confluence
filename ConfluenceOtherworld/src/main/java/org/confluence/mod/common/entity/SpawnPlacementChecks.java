@@ -12,8 +12,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
-import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
-import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -309,8 +307,7 @@ public final class SpawnPlacementChecks {
     }
 
     public static boolean checkGhostSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        ILevelChunkSection section = DynamicBiomeUtils.getISection(level, pos);
-        return ModBlockCounters.isGraveyard(section) && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
+        return ModBlockCounters.isGraveyard(level, pos) && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     public static boolean checkWeddingZombieSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {

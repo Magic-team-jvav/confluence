@@ -55,9 +55,8 @@ public class MeteoriteSpawner implements CustomSpawner {
         for (ServerPlayer player : level.players()) {
             if (player.isSpectator()) continue;
             // 节流之后，每个玩家每次尝试只查一次迷你群系
-            MiniBiome.Marker marker = MiniBiome.primaryAt(level, player.blockPosition());
-            if (marker == null || !marker.id().equals(ModMiniBiomes.METEORITE.id())) continue;
-            // 交错时想拿全部命中就用 markersAt(...)，再自己按 id 挑
+            MiniBiome.Marker marker = MiniBiome.markerAt(level, player.blockPosition(), ModMiniBiomes.METEORITE);
+            if (marker == null) continue;
             int amount = 1 + Mth.floor(marker.influence() * 2.0F);
             spawned += spawnAround(level, player, amount, random);
         }

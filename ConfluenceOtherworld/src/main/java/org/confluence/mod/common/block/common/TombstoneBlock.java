@@ -30,8 +30,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
-import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModBlockCounters;
@@ -64,9 +62,8 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (!level.isClientSide && pos.getY() < OverworldUtils.getSurfaceY() && LibDateUtils.isNight(level)) {
-            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, pos);
             RandomSource random = player.getRandom1211();
-            if (ModBlockCounters.isGraveyard(iSection) && random.nextBoolean()) {
+            if (ModBlockCounters.isGraveyard(level, pos) && random.nextBoolean()) {
                 MonsterEntities.GHOST.get().spawn((ServerLevel) level, pos.offset(
                         Mth.randomBetweenInclusive(random, -15, 15),
                         Mth.randomBetweenInclusive(random, -15, 15),

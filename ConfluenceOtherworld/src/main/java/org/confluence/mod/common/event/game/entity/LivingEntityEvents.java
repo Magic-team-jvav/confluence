@@ -29,8 +29,6 @@ import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.api.event.ProcessCriticalDamageEvent;
 import org.confluence.lib.common.LibTags;
-import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
-import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.mixed.ILibMobEffectInstance;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
@@ -55,7 +53,6 @@ import org.confluence.mod.common.effect.beneficial.DryadsBlessingEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
-import org.confluence.mod.common.item.whip.WhipDamageSource;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -86,6 +83,7 @@ import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.mana.CrystalVileShardItem;
 import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.sword.SweetSword;
+import org.confluence.mod.common.item.whip.WhipDamageSource;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -596,8 +594,7 @@ public final class LivingEntityEvents {
             return;
         }
         if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
-            if (ModBlockCounters.isGraveyard(iSection) && mob.checkSpawnObstruction(event.getLevel())) {
+            if (ModBlockCounters.isGraveyard(event.getLevel(), mob.blockPosition()) && mob.checkSpawnObstruction(event.getLevel())) {
                 event.setResult(PortMobSpawnEvent.PositionCheck.PortResult.SUCCEED.unwrap());
             }
         }
@@ -612,15 +609,8 @@ public final class LivingEntityEvents {
         if (event.getResult() == Event.Result.DENY) return;
         if (event.getSpawnType() == MobSpawnType.NATURAL && !getPlacementCheckResult(event)) {
             EntityType<?> entityType = event.getEntityType();
-//            if (entityType == TEMonsterEntities.GHOST.get()) {
-//                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
-//                event.setResult(ModBlockCounters.isGraveyard(iSection)
-//                        ? MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED
-//                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
-//            } else
             if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
-                if (ModBlockCounters.isGraveyard(iSection)) {
+                if (ModBlockCounters.isGraveyard(event.getLevel(), event.getPos())) {
                     event.setResult(PortMobSpawnEvent.SpawnPlacementCheck.PortResult.SUCCEED.unwrap());
                 }
             }

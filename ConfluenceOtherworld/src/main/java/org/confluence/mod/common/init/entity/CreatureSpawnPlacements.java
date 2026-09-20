@@ -9,7 +9,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.registries.RegistryObject;
-import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -277,8 +276,7 @@ public final class CreatureSpawnPlacements {
     private static boolean checkCalmDayCritterSpawn(EntityType<? extends Animal> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel world) || world.isRaining() || !checkSurfaceDayCritterSpawn(type, level, spawnType, pos, random))
             return false;
-        var section = DynamicBiomeUtils.getISection(level, pos);
-        if (ModBlockCounters.isGraveyard(section)) return false;
+        if (ModBlockCounters.isGraveyard(level, pos)) return false;
         ConfluenceData data = ConfluenceData.get(world);
         return data.getWindSpeedX() * data.getWindSpeedX() + data.getWindSpeedZ() * data.getWindSpeedZ() < 0.25F;
     }
@@ -294,8 +292,7 @@ public final class CreatureSpawnPlacements {
     private static boolean checkGlowBugSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (!(level instanceof ServerLevel world) || !world.isNight() || pos.getY() <= OverworldUtils.getSurfaceY() || !level.canSeeSky(pos))
             return false;
-        var section = DynamicBiomeUtils.getISection(level, pos);
-        if (ModBlockCounters.isGraveyard(section)) return false;
+        if (ModBlockCounters.isGraveyard(level, pos)) return false;
         ConfluenceData data = ConfluenceData.get(world);
         if (data.getWindSpeedX() * data.getWindSpeedX() + data.getWindSpeedZ() * data.getWindSpeedZ() >= 0.25F)
             return false;

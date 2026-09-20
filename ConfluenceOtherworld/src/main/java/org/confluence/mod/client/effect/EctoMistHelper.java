@@ -4,8 +4,6 @@ import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
-import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
-import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModParticleTypes;
@@ -36,8 +34,7 @@ public class EctoMistHelper {
         }
         turnOn = true;
         if (player.level().getGameTime() % 40 == 2) {
-            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
-            effectiveTombstones = iSection == null ? 0 : ModBlockCounters.effectiveTombstones(iSection.confluence$getBlockCounts());
+            effectiveTombstones = ModBlockCounters.effectiveTombstones(player.level(), player.blockPosition());
         }
         if (isGraveyard() && !minecraft.isPaused() && player.getRandom1211().nextInt(10) == 0) {
             player.level().addParticle(ModParticleTypes.ECTO_MIST.get(),

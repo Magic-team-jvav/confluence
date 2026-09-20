@@ -1,14 +1,14 @@
 package org.confluence.mod.common.init;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.worldgen.biome.BlockCounters;
-import org.confluence.lib.common.worldgen.biome.BlockCounts;
-import org.confluence.lib.mixed.ILevelChunkSection;
+import org.confluence.lib.common.worldgen.biome.MiniBiome;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.function.Predicate;
@@ -78,14 +78,16 @@ public final class ModBlockCounters {
     }
 
     /// 有效墓碑数：向日葵会抵消墓碑
-    public static int effectiveTombstones(BlockCounts counts) {
-        return TOMB.get(counts) - SUNFLOWER.get(counts);
+    public static int effectiveTombstones(LevelAccessor level, BlockPos pos) {
+        var type = ModMiniBiomes.GRAVEYARD;
+        int[] counts = MiniBiome.windowCounts(level, pos, type.horizontalRadius(), type.verticalRadius());
+        return counts[TOMB.index()] - counts[SUNFLOWER.index()];
     }
 
     /// 墓地判定：墓碑数（向日葵会抵消）达到阈值。
     ///
     /// 这是 Confluence 的语义，所以放在模组侧；magiclib 只负责计数。
-    public static boolean isGraveyard(@Nullable ILevelChunkSection section) {
-        return section != null && effectiveTombstones(section.confluence$getBlockCounts()) >= GRAVEYARD_THRESHOLD;
+    public static boolean isGraveyard(LevelAccessor level, BlockPos pos) {
+        return effectiveTombstones(level, pos) >= GRAVEYARD_THRESHOLD;
     }
 }

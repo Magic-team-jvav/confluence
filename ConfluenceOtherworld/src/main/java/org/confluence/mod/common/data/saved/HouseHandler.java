@@ -9,6 +9,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibCodecUtils;
@@ -37,6 +38,33 @@ public enum HouseHandler implements IGlobalData {
 
     public Map<UUID, House> getOrCreateHouses(ResourceKey<Level> dimension, NPCSpawner.Region region) {
         return getOrCreateRegions(dimension).computeIfAbsent(region, r -> new Object2ObjectOpenHashMap<>());
+    }
+
+    /// 按房屋中心统计附近实际存活的入住者，不把整个 256 格 region 当成同一个小镇。
+    public int countNearbyResidents(ServerLevel level, BlockPos pos, int horizontalRadius, int verticalRadius) {
+        var regions = data.get(level.dimension());
+        if (regions == null) return 0;
+        NPCSpawner.Region first = new NPCSpawner.Region(pos.offset(-horizontalRadius, 0, -horizontalRadius));
+        NPCSpawner.Region last = new NPCSpawner.Region(pos.offset(horizontalRadius, 0, horizontalRadius));
+        int count = 0;
+        for (int x = first.x(); x <= last.x(); x += 16) {
+            for (int z = first.z(); z <= last.z(); z += 16) {
+                var houses = regions.get(new NPCSpawner.Region(x, z));
+                if (houses == null) continue;
+                for (var entry : houses.entrySet()) {
+                    House house = entry.getValue();
+                    if (!house.isValid() || townPets.contains(entry.getKey())) continue;
+                    BlockPos center = house.center();
+                    if (Math.abs(center.getY() - pos.getY()) > verticalRadius) continue;
+                    long dx = center.getX() - pos.getX();
+                    long dz = center.getZ() - pos.getZ();
+                    if (dx * dx + dz * dz > (long) horizontalRadius * horizontalRadius) continue;
+                    if (level.getEntity(entry.getKey()) instanceof BaseNPC npc && npc.isAlive())
+                        count++;
+                }
+            }
+        }
+        return count;
     }
 
     public void setHouse(ResourceKey<Level> dimension, NPCSpawner.Region region, UUID uuid, House house) {

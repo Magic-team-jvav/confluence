@@ -13,8 +13,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
-import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.Confluence;
@@ -143,8 +141,7 @@ public final class AchievementUtils {
 
     public static void quietNeighborhood(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 40 == 2) {
-            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
-            if (ModBlockCounters.isGraveyard(iSection)) {
+            if (ModBlockCounters.isGraveyard(level, player.blockPosition())) {
                 awardAchievement(player, "quiet_neighborhood");
             }
         }

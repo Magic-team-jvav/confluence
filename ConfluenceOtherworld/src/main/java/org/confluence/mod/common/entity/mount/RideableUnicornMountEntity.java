@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.mount;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -37,24 +38,34 @@ public class RideableUnicornMountEntity extends AbstractMountEntity implements G
 
     @Override
     protected void tickRidden(Player player) {
+        standOnFluid(player, false);
         if (onGround()) extraJump = true;
         Vec3 velocity = accelerateHorizontal(player, player.xxa, player.zza, 1.1, 0.016);
         double vertical = onGround() ? -0.08 : velocity.y - 0.08;
+        boolean nativeJump = false;
         if (jumpQueued) {
-            if (onGround()) vertical = 0.9;
+            if (onGround()) {
+                vertical = 0.9 * jumpMultiplier(player);
+                nativeJump = true;
+            }
             else if (extraJump) {
-                vertical = 1.25;
+                vertical = 1.25 * jumpMultiplier(player);
                 extraJump = false;
+                nativeJump = true;
             }
             jumpQueued = false;
         }
+        vertical = accessoryJumpVelocity(player, vertical, nativeJump);
+        var previousBox = getBoundingBox();
         moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z));
         if (player instanceof ServerPlayer owner && velocity.horizontalDistanceSqr() > 1) {
+            owner.serverLevel().sendParticles(ParticleTypes.END_ROD, getX(), getY() + 0.3, getZ(), 1, 0.25, 0.15, 0.25, 0.01);
             float damage = (float) (60.0 * PrefixUtils.attributeWithoutHeldItem(owner, LibAttributes.getSummonDamage(), owner.getMainHandItem()));
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, owner);
-            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.2),
+            for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, previousBox.minmax(getBoundingBox()).inflate(0.2),
                     target -> ProjectileHitRules.canHit(player, target))) {
                 if (target.hurt(source, damage)) {
+                    protectRider();
                     target.knockback(0.6, -velocity.x, -velocity.z);
                 }
             }
@@ -72,7 +83,7 @@ public class RideableUnicornMountEntity extends AbstractMountEntity implements G
 
     @Override
     public float modifyRiderDamage(DamageSource source, float amount) {
-        return source.is(DamageTypes.FALL) ? amount * 0.2F : amount;
+        return super.modifyRiderDamage(source, source.is(DamageTypes.FALL) ? amount * 0.2F : amount);
     }
 
     @Override

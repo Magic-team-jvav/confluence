@@ -1,15 +1,17 @@
 package org.confluence.mod.common.entity.mount;
 
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -27,13 +29,11 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
 
     private static final double MAX_HORIZONTAL_SPEED = 0.225;
     private static final double HORIZONTAL_ACCELERATION = 0.09;
-    private static final double MAX_VERTICAL_SPEED = 0.2;
+    private static final double MAX_VERTICAL_SPEED = MAX_HORIZONTAL_SPEED * 41.0 / 31.0;
     private static final double POWERED_LIFT = 0.035;
-    private static final double EXHAUSTED_LIFT = 0.02;
     private static final double GRAVITY = 0.03;
-    private static final int MAX_FLIGHT_ENERGY = 200;
-    private static final int GROUND_RECOVERY = 5;
-    private static final String PLAYER_FLIGHT_ENERGY = "confluence.rideable_bee.flight_energy";
+    private static final int MAX_FLIGHT_ENERGY = 214;
+    private static final int REST_TICKS = 60;
     private static final double MOVING_RIDER_OFFSET = 0.1;
     private static final double STOPPED_RIDER_OFFSET = 0.4;
     private static final int LOWER_RIDER_DURATION = 12;
@@ -41,13 +41,14 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
 
     private static final EntityDataAccessor<Integer> FLIGHT_ENERGY = SynchedEntityData.defineId(RideableBeeMountEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> ASCENDING = SynchedEntityData.defineId(RideableBeeMountEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> FATIGUE = SynchedEntityData.defineId(RideableBeeMountEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> MAX_ENERGY = SynchedEntityData.defineId(RideableBeeMountEntity.class, EntityDataSerializers.INT);
     private static final RawAnimation WING = RawAnimation.begin().thenLoop("wing");
     private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
 
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
-    private boolean energyLoaded;
     private int movingTicks;
     private int stoppedTicks;
     private boolean moving;
@@ -60,18 +61,34 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
     protected void defineMountSynchedData() {
         entityData.define(FLIGHT_ENERGY, MAX_FLIGHT_ENERGY);
         entityData.define(ASCENDING, false);
+        entityData.define(FATIGUE, 0.0F);
+        entityData.define(MAX_ENERGY, MAX_FLIGHT_ENERGY);
+    }
+
+    @Override
+    public boolean canSummon(Player player) {
+        if (!player.isInFluidType()) return true;
+        var fluid = level().getFluidState(player.blockPosition());
+        return player.getEyeInFluidType() == ForgeMod.EMPTY_TYPE.get() && player.canStandOnFluid(fluid)
+                && level().getFluidState(player.blockPosition().above()).isEmpty()
+                && player.getY() >= player.blockPosition().getY() + fluid.getHeight(level(), player.blockPosition()) - 0.4;
+    }
+
+    @Override
+    protected void onInitialized(Player player) {
+        int duration = (int) Math.ceil(MAX_FLIGHT_ENERGY * jumpMultiplier(player));
+        for (int index = 0; index < 5; index++) {
+            var jump = accessoryJump(player, index);
+            duration += jump.getB() + (int) Math.ceil(jump.getA() / 0.08F);
+        }
+        entityData.set(MAX_ENERGY, duration);
+        entityData.set(FLIGHT_ENERGY, player.onGround() ? duration : duration / 2);
     }
 
     @Override
     protected void tickRidden(Player player) {
-        if (!level().isClientSide && !energyLoaded) {
-            int energy = player.getPersistentData().contains(PLAYER_FLIGHT_ENERGY, Tag.TAG_INT)
-                    ? Mth.clamp(player.getPersistentData().getInt(PLAYER_FLIGHT_ENERGY), 0, MAX_FLIGHT_ENERGY)
-                    : MAX_FLIGHT_ENERGY;
-            setFlightEnergy(player, energy);
-            energyLoaded = true;
-        }
-        if (isInWater()) {
+        boolean fluidGround = standOnFluid(player, false);
+        if (isInFluidType() && !fluidGround) {
             if (!level().isClientSide) {
                 player.stopRiding();
                 discard();
@@ -81,31 +98,42 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
 
         double strafe = Mth.clamp(player.xxa, -1.0F, 1.0F);
         double forward = Mth.clamp(player.zza, -0.1F, 1.0F);
-        if (onGround()) {
-            strafe *= 0.04;
-            forward *= 0.15;
-        } else {
-            strafe *= 0.25;
-        }
-        Vec3 velocity = accelerateHorizontal(player, strafe, forward, MAX_HORIZONTAL_SPEED, HORIZONTAL_ACCELERATION);
-
+        boolean grounded = onGround() || fluidGround;
+        float fatigue = entityData.get(FATIGUE);
         int energy = flightEnergy();
-        double vertical = velocity.y;
-        if (isJumpInputDown()) {
-            vertical = Math.min(MAX_VERTICAL_SPEED, vertical + (energy > 0 ? POWERED_LIFT : EXHAUSTED_LIFT));
-            if (!level().isClientSide && energy > 0) {
-                setFlightEnergy(player, energy - 1);
-            }
+        int maximum = maximumFlightEnergy();
+        if (grounded) {
+            energy = maximum;
+            int remainingRest = Math.round(fatigue * REST_TICKS);
+            fatigue = remainingRest > 0 ? (remainingRest - 1) / (float) REST_TICKS : 0;
         } else {
-            vertical = Math.max(-MAX_VERTICAL_SPEED, vertical - GRAVITY);
+            if (energy > 0) energy--;
+            if (energy < maximum / 2) {
+                float exhausted = 1.0F - energy / (maximum / 2.0F);
+                if (exhausted > fatigue) fatigue = exhausted;
+            }
         }
-        if (!level().isClientSide && onGround()) {
-            setFlightEnergy(player, Math.min(MAX_FLIGHT_ENERGY, flightEnergy() + GROUND_RECOVERY));
+        entityData.set(FLIGHT_ENERGY, energy);
+        entityData.set(FATIGUE, fatigue);
+        double speed = grounded ? MAX_HORIZONTAL_SPEED * 10.0 / 31.0 : MAX_HORIZONTAL_SPEED * (1.0 - fatigue * 0.5);
+        Vec3 velocity = accelerateHorizontal(player, strafe, forward, speed, HORIZONTAL_ACCELERATION);
+
+        double vertical = velocity.y;
+        if (isDescendInputDown() && !grounded) {
+            vertical = Math.max(-MAX_VERTICAL_SPEED * 2, vertical - GRAVITY * 2);
+        } else if (energy == 0) {
+            /// 耗尽后只能滑降；按住跳跃不能再施加向上升力。
+            vertical = Math.max(-MAX_VERTICAL_SPEED, Math.min(0, vertical) - GRAVITY);
+        } else if (isJumpInputDown()) {
+            vertical = Math.min(MAX_VERTICAL_SPEED * (1 - fatigue) - fatigue * 0.06, vertical + POWERED_LIFT);
+        } else {
+            vertical = grounded ? -GRAVITY : -fatigue * MAX_VERTICAL_SPEED;
         }
 
         moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z));
+        if (!level().isClientSide) entityData.set(ASCENDING, !onGround() && energy > 0);
         updateMovementState();
-        if (!level().isClientSide && isJumpInputDown() && (tickCount & 1) == 0) {
+        if (!level().isClientSide && isAscending() && (tickCount & 1) == 0) {
             playSound(SoundEvents.BEEHIVE_WORK, 0.5F, 2.0F);
         }
     }
@@ -121,20 +149,12 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
         }
     }
 
-    private void setFlightEnergy(Player player, int energy) {
-        int bounded = Mth.clamp(energy, 0, MAX_FLIGHT_ENERGY);
-        entityData.set(FLIGHT_ENERGY, bounded);
-        if (!level().isClientSide) {
-            player.getPersistentData().putInt(PLAYER_FLIGHT_ENERGY, bounded);
-        }
-    }
-
     public int flightEnergy() {
         return entityData.get(FLIGHT_ENERGY);
     }
 
     public int maximumFlightEnergy() {
-        return MAX_FLIGHT_ENERGY;
+        return entityData.get(MAX_ENERGY);
     }
 
     public boolean isAscending() {
@@ -142,10 +162,8 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
     }
 
     @Override
-    protected void onJumpInputChanged(Player player, boolean jumping) {
-        if (!level().isClientSide) {
-            entityData.set(ASCENDING, jumping && !isInWater());
-        }
+    public float modifyRiderDamage(DamageSource source, float amount) {
+        return source.is(DamageTypes.FALL) ? 0 : amount;
     }
 
     @Override
@@ -172,7 +190,7 @@ public final class RideableBeeMountEntity extends AbstractMountEntity implements
                         state -> isAscending() ? state.setAndContinue(WING) : PlayState.STOP),
                 new AnimationController<>(this, "movement", 10, state -> {
                     if (moving) {
-                        return state.setAndContinue(isJumpInputDown() ? FLY : WALK);
+                        return state.setAndContinue(onGround() ? WALK : FLY);
                     }
                     return state.setAndContinue(IDLE);
                 }));

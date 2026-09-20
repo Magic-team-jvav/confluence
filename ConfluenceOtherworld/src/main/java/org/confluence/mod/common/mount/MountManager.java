@@ -51,6 +51,7 @@ public final class MountManager {
         if (mount == null) {
             throw new IllegalStateException("Mount entity type failed to create an entity: " + item.entityType());
         }
+        if (!mount.canSummon(player)) return;
         mount.initialize(player, slotBound);
         if (!player.serverLevel().addFreshEntity(mount)) {
             mount.discard();

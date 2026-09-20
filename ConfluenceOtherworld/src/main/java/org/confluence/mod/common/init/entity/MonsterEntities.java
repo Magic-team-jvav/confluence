@@ -197,6 +197,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<Snatcher>> MAN_EATER = withAttributes(registerSnatcher("man_eater", Snatcher.Profile.MAN_EATER),
             () -> CreatureAttributeBuilder.creature().maxHealth(57).armor(10).attackDamage(15).followRange(20).attackKnockback(1).knockbackResistance(1).build());
 
+
     // 丛林：蜘蛛、蹦跳兽与陆龟
     public static final RegistryObject<EntityType<ClimbingSpider>> JUNGLE_CREEPER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("jungle_creeper", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.JUNGLE), MobCategory.MONSTER).sized(2.0F, 2.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(28).attackDamage(52).followRange(32).knockbackResistance(0.78).movementSpeed(0.28)

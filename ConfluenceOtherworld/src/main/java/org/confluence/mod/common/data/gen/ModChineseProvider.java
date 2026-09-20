@@ -740,6 +740,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("key.confluence.extra_inventory", "快捷打开额外栏");
         add("key.confluence.hook", "使用钩爪");
         add("key.confluence.mount", "切换坐骑");
+        add("key.confluence.mount_descend", "坐骑下降");
         add("key.confluence.specular_detail", "视觉药水细节观测");
         add("key.confluence.shoot", "射击");
         add("key.confluence.aim", "瞄准");
@@ -5006,6 +5007,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.CRAWDAD.get(), "龙虾");
         add(MonsterEntities.NYMPH.get(), "宁芙");
         add(MonsterEntities.SNATCHER.get(), "抓人草");
+        add("entity.confluence.snatcher_segment", "抓人草体节");
+        add("entity.confluence.man_eater_segment", "食人怪体节");
+        add("entity.confluence.clinger_segment", "爬藤怪体节");
+        add("entity.confluence.fungi_bulb_segment", "真菌球怪体节");
+        add("entity.confluence.giant_fungi_bulb_segment", "巨型真菌球怪体节");
         add(MonsterEntities.MAN_EATER.get(), "食人怪");
         add(MonsterEntities.FUNGI_BULB.get(), "真菌球怪");
         add(MonsterEntities.GIANT_FUNGI_BULB.get(), "巨型真菌球怪");

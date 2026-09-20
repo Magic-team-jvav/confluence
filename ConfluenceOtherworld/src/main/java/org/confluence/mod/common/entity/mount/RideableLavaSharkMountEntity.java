@@ -8,6 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModFluids;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -27,11 +28,12 @@ public class RideableLavaSharkMountEntity extends AbstractMountEntity implements
     protected void tickRidden(Player player) {
         player.clearFire();
         Vec3 velocity;
-        if (isInWater() || isInLava()) {
+        if (isInWater() || isInLava() || getFluidTypeHeight(ModFluids.HONEY.type().get()) > 0) {
             double yaw = Math.toRadians(player.getYRot());
             Vec3 side = new Vec3(Math.cos(yaw), 0, Math.sin(yaw));
             Vec3 direction = player.getLookAngle().scale(player.zza).add(side.scale(player.xxa));
             if (isJumpInputDown()) direction = direction.add(0, 1, 0);
+            if (isDescendInputDown()) direction = direction.add(0, -1, 0);
             Vec3 desired = direction.lengthSqr() > 1 ? direction.normalize().scale(1.3) : direction.scale(1.3);
             velocity = getDeltaMovement().lerp(desired, 0.2);
         } else {

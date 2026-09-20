@@ -22,7 +22,7 @@ public final class TetheredPlantRenderer extends PlantHeadRenderer {
     private final double segmentCenterY;
 
     public TetheredPlantRenderer(EntityRendererProvider.Context context, EntityType<? extends Snatcher> type) {
-        super(context, BuiltInRegistries.ENTITY_TYPE.getKey(type), headCenter(type), stemPoint(type));
+        super(context, BuiltInRegistries.ENTITY_TYPE.getKey(type), headCenter(type));
         ResourceLocation path = BuiltInRegistries.ENTITY_TYPE.getKey(type);
         segmentModel = Confluence.asResource("geo/entity/" + path.getPath() + "_segment.geo.json");
         segmentTexture = Confluence.asResource("textures/entity/" + path.getPath() + "_segment.png");
@@ -35,12 +35,6 @@ public final class TetheredPlantRenderer extends PlantHeadRenderer {
         if (type == MonsterEntities.CLINGER.get()) return new Vec3(0, 9.5, 4);
         if (type == MonsterEntities.GIANT_FUNGI_BULB.get()) return new Vec3(0, 10, 3);
         return new Vec3(0, 8, 1);
-    }
-
-    private static Vec3 stemPoint(EntityType<? extends Snatcher> type) {
-        if (type == MonsterEntities.CLINGER.get()) return new Vec3(0, 9.5, 8);
-        if (type == MonsterEntities.GIANT_FUNGI_BULB.get()) return new Vec3(0, 10, 10);
-        return new Vec3(0, 8, 6);
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -18,6 +19,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bernie.geckolib.constant.DefaultAnimations;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -50,6 +52,7 @@ public class Snatcher extends BaseMonster {
     private Vec3 anchor = Vec3.ZERO;
     private Vec3 restDirection = new Vec3(0.0, 1.0, 0.0);
     private boolean legacyAnchor;
+    private final PlantStemPart[] stemParts;
 
     public Snatcher(EntityType<? extends Snatcher> type, Level level) {
         this(type, level, Profile.SNATCHER);
@@ -58,6 +61,13 @@ public class Snatcher extends BaseMonster {
     public Snatcher(EntityType<? extends Snatcher> type, Level level, Profile profile) {
         super(type, level);
         this.profile = profile;
+        /// 固定四段，伸缩只更新受击盒，不反复创建和销毁部件。
+        stemParts = new PlantStemPart[4];
+        for (int index = 0; index < stemParts.length; index++) {
+            stemParts[index] = new PlantStemPart(this, index);
+        }
+        /// 与 Forge 末影龙相同，为父实体及部件预留连续 ID。
+        setId(ENTITY_COUNTER.getAndAdd(stemParts.length + 1) + 1);
         noPhysics = true;
     }
 
@@ -102,6 +112,9 @@ public class Snatcher extends BaseMonster {
     public void tick() {
         super.tick();
         noPhysics = true;
+        if (isAlive() && isAnchored()) {
+            for (PlantStemPart part : stemParts) part.updatePosition();
+        }
         if (level().isClientSide || !isAnchored()) {
             return;
         }
@@ -174,6 +187,34 @@ public class Snatcher extends BaseMonster {
 
     public Vec3 getRestDirection() {
         return restDirection;
+    }
+
+    @Override
+    public boolean isMultipartEntity() {return true;}
+
+    @Override
+    public PlantStemPart[] getParts() {return stemParts;}
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        for (int index = 0; index < stemParts.length; index++)
+            stemParts[index].setId(id + index + 1);
+    }
+
+    /// 茎部接点相对头部中心的偏移；渲染与受击体节共用，避免碰撞箱脱离模型。
+    public Vec3 stemOffset(float partialTick) {
+        float distance = switch (profile) {
+            case SNATCHER, MAN_EATER -> 5.5F;
+            case CLINGER -> 4.0F;
+            case FUNGI_BULB -> 5.0F;
+            case GIANT_FUNGI_BULB -> 7.0F;
+        } / 16.0F;
+        float yaw = Mth.rotLerp(partialTick, yRotO, getYRot());
+        float pitch = Mth.rotLerp(partialTick, xRotO, getXRot());
+        Vector3f offset = new Vector3f(0, 0, distance);
+        new Quaternionf().rotationY((180.0F - yaw) * Mth.DEG_TO_RAD).rotateX(-pitch * Mth.DEG_TO_RAD).transform(offset);
+        return new Vec3(offset).scale(getScale()).add(0, getBbHeight() * 0.5, 0);
     }
 
     /// 当前物种在普通阶段的最大伸展距离。

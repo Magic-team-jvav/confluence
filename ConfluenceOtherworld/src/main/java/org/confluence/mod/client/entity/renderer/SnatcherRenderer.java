@@ -28,7 +28,7 @@ public final class SnatcherRenderer extends PlantHeadRenderer {
     private static final double MAX_SEGMENT_LENGTH = 0.8;
 
     public SnatcherRenderer(EntityRendererProvider.Context context, ResourceLocation path) {
-        super(context, path, new Vec3(0, 10, 3), new Vec3(0, 10, 8.5));
+        super(context, path, new Vec3(0, 10, 3));
     }
 
     @Override

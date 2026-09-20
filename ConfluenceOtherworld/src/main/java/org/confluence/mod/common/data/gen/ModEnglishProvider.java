@@ -783,6 +783,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("key.confluence.hook", "Throwing Hook");
         add("key.confluence.mount", "Toggle Mount");
+        add("key.confluence.mount_descend", "Mount Descend");
         add("key.confluence.specular_detail", "Detail observation of visual potions");
         add("key.confluence.gameplay", "Confluence Key Settings");
         add("key.confluence.healing", "Quick Use Health Potion");
@@ -1695,6 +1696,11 @@ public class ModEnglishProvider extends LanguageProvider {
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.getEntities().forEach(register -> register.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath()))));
         add("entity.confluence.brown_cluckshroom", "Brown Cluckshroom");
+        add("entity.confluence.snatcher_segment", "Snatcher Segment");
+        add("entity.confluence.man_eater_segment", "Man Eater Segment");
+        add("entity.confluence.clinger_segment", "Clinger Segment");
+        add("entity.confluence.fungi_bulb_segment", "Fungi Bulb Segment");
+        add("entity.confluence.giant_fungi_bulb_segment", "Giant Fungi Bulb Segment");
         addOverrides();
         add(MonsterEntities.WINGLESS_SLIMER.get(), "Slimer");
 

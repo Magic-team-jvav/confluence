@@ -67,6 +67,7 @@ public final class ModKeyBindings {
 
     /// 快捷坐骑只发送切换请求，实际槽位物品和实体类型由服务端重新读取。
     public static final Lazy<KeyMapping> MOUNT = register(() -> new KeyMapping("key.confluence.mount", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, KEY_BINDINGS_CATEGORY));
+    public static final Lazy<KeyMapping> MOUNT_DESCEND = register(() -> new KeyMapping("key.confluence.mount_descend", KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_CONTROL, KEY_BINDINGS_CATEGORY));
 
     public static final Lazy<KeyMapping> SHOW_DETAIL_SPECULAR = register(() -> new KeyMapping(
             "key.confluence.specular_detail",

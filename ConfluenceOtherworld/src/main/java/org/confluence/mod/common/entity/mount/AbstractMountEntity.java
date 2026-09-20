@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.mount;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -8,12 +9,17 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -28,8 +34,15 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
     private static final EntityDataAccessor<Boolean> JUMP_INPUT = SynchedEntityData.defineId(AbstractMountEntity.class, EntityDataSerializers.BOOLEAN);
 
     private boolean localJumpInput;
+    private boolean descendInput;
+
     private boolean slotBound;
     private boolean exitSoundPlayed;
+    private int riderProtectionTicks;
+    private int accessoryJumpIndex;
+    private int accessoryLiftTicks;
+    private float accessoryLift;
+    private boolean accessoryJumpHeld;
 
     protected AbstractMountEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -41,8 +54,15 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
         setOwnerUUID(owner.getUUID());
         this.slotBound = slotBound;
         setPos(owner.getX(), owner.getY(), owner.getZ());
+        setOnGround(owner.onGround());
+        setDeltaMovement(owner.getDeltaMovement());
         setRot(owner.getYRot(), owner.getXRot() * 0.5F);
+        onInitialized(owner);
     }
+
+    protected void onInitialized(Player player) {}
+
+    public boolean canSummon(Player player) {return true;}
 
     public final boolean isSlotBound() {
         return slotBound;
@@ -111,6 +131,7 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
     @Override
     public void tick() {
         super.tick();
+        if (riderProtectionTicks > 0) riderProtectionTicks--;
         LivingEntity passenger = getControllingPassenger();
         if (!(passenger instanceof Player player)) {
             if (!level().isClientSide) {
@@ -130,7 +151,66 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
     protected abstract void tickRidden(Player player);
 
     public float modifyRiderDamage(DamageSource source, float amount) {
-        return amount;
+        return riderProtectionTicks > 0 && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) ? 0 : amount;
+    }
+
+    protected final void protectRider() {riderProtectionTicks = 2;}
+
+    protected final Tuple<Float, Integer> accessoryJump(Player player, int index) {
+        return switch (index) {
+            case 0 -> new Tuple<>(TCUtils.getValue(player, TCItems.FART), 0);
+            case 1 -> TCUtils.getValue(player, TCItems.SAND$STORM);
+            case 2 -> TCUtils.getValue(player, TCItems.BLIZZARD);
+            case 3 -> new Tuple<>(TCUtils.getValue(player, TCItems.TSUNAMI), 0);
+            case 4 -> new Tuple<>(TCUtils.getValue(player, TCItems.CLOUD), 0);
+            default -> throw new IllegalArgumentException("Unknown accessory jump: " + index);
+        };
+    }
+
+    protected final double jumpMultiplier(Player player) {
+        return player.getAttributeValue(Attributes.JUMP_STRENGTH_1211)
+                / Attributes.JUMP_STRENGTH_1211.value().getDefaultValue();
+    }
+
+    protected final double accessoryJumpVelocity(Player player, double vertical, boolean nativeJump) {
+        boolean jumping = isJumpInputDown();
+        if (onGround()) {
+            accessoryJumpIndex = 0;
+            accessoryLiftTicks = 0;
+        } else if (!nativeJump && jumping && !accessoryJumpHeld) {
+            while (accessoryJumpIndex < 5) {
+                Tuple<Float, Integer> jump = accessoryJump(player, accessoryJumpIndex++);
+                if (jump.getA() > 0) {
+                    accessoryLift = jump.getA();
+                    accessoryLiftTicks = jump.getB();
+                    vertical = accessoryLift;
+                    player.resetFallDistance();
+                    break;
+                }
+            }
+        }
+        if (!jumping) accessoryLiftTicks = 0;
+        if (jumping && accessoryLiftTicks > 0) {
+            vertical = accessoryLift;
+            accessoryLiftTicks--;
+        }
+        accessoryJumpHeld = jumping;
+        return vertical;
+    }
+
+    protected final boolean standOnFluid(Player player, boolean floats) {
+        BlockPos pos = blockPosition();
+        if (level().getFluidState(pos).isEmpty()) pos = pos.below();
+        var fluid = level().getFluidState(pos);
+        if (fluid.isEmpty() || !level().getFluidState(pos.above()).isEmpty() || !floats && !player.canStandOnFluid(fluid))
+            return false;
+        double surface = pos.getY() + fluid.getHeight(level(), pos);
+        if (getY() < surface - 0.4 || getY() > surface + 0.1 || getDeltaMovement().y > 0)
+            return false;
+        setPos(getX(), surface, getZ());
+        setOnGround(true);
+        setDeltaMovement(getDeltaMovement().multiply(1, 0, 1));
+        return true;
     }
 
     public boolean tiltsWithMovement() {
@@ -161,6 +241,12 @@ public abstract class AbstractMountEntity extends Entity implements OwnableEntit
 
     protected void onJumpInputChanged(Player player, boolean jumping) {
     }
+
+    public final void setDescendInput(Player player, boolean descending) {
+        if (player == getControllingPassenger()) descendInput = descending;
+    }
+
+    protected final boolean isDescendInputDown() {return descendInput;}
 
     /// 把玩家局部横向输入转换为世界方向，并以固定加速度逼近目标速度。
     protected final Vec3 accelerateHorizontal(Player player, double localStrafe, double localForward, double maximumSpeed, double acceleration) {

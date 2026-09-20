@@ -6,6 +6,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.handler.ScryingOrbHandler;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
@@ -34,6 +35,8 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
     private int confluence$inputMountId = Integer.MIN_VALUE;
     @Unique
     private boolean confluence$mountJumping;
+    @Unique
+    private boolean confluence$mountDescending;
 
     @Override
     public void confluence$setCanMove(boolean canMove) {
@@ -72,14 +75,17 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
         Entity vehicle = player.getVehicle();
         int mountId = vehicle instanceof AbstractMountEntity ? vehicle.getId() : -1;
         boolean jumping = mountId >= 0 && input.jumping;
+        boolean descending = mountId >= 0 && ModKeyBindings.MOUNT_DESCEND.get().isDown();
         if (vehicle instanceof AbstractMountEntity mount) {
             /// 客户端只预演运动，最终结果仍由服务端裁决。
             mount.setLocalJumpInput(player, jumping);
+            mount.setDescendInput(player, descending);
         }
-        if (mountId >= 0 && (mountId != confluence$inputMountId || jumping != confluence$mountJumping)) {
-            MountInputPacketC2S.sendToServer(jumping);
+        if (mountId >= 0 && (mountId != confluence$inputMountId || jumping != confluence$mountJumping || descending != confluence$mountDescending)) {
+            MountInputPacketC2S.sendToServer(jumping, descending);
         }
         confluence$inputMountId = mountId;
         confluence$mountJumping = jumping;
+        confluence$mountDescending = descending;
     }
 }

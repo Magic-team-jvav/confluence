@@ -39,8 +39,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.summoner.SummonerEvents;
 import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
-import org.confluence.mod.util.ModDynamicBiomes;
-import org.confluence.mod.util.ModMiniBiomes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

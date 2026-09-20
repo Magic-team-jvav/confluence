@@ -13,9 +13,9 @@ import net.minecraft.world.level.material.MapColor;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.util.ModBlockCounters;
 
 public class ChlorophyteOreBlock extends Block {
     public ChlorophyteOreBlock() {

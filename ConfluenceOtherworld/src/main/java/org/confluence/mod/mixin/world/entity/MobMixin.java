@@ -4,7 +4,7 @@ import net.minecraft.world.entity.Mob;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.mod.util.ModBlockCounters;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

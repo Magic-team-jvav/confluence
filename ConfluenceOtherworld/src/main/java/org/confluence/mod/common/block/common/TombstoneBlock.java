@@ -34,9 +34,9 @@ import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.util.ModBlockCounters;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 

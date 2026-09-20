@@ -41,6 +41,7 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;

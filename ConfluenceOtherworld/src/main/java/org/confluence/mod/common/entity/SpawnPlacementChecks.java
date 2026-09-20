@@ -22,6 +22,7 @@ import org.confluence.mod.common.entity.monster.WaterBoltMimic;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.SandstormGameEvent;
 import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -32,7 +33,6 @@ import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.DateUtils;
-import org.confluence.mod.util.ModBlockCounters;
 import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.wrapper.common.PortTags;
 

@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+package org.confluence.mod.common.init;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -8,8 +8,6 @@ import net.minecraft.world.level.biome.Biomes;
 import org.confluence.lib.common.worldgen.biome.BlockCounts;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.common.worldgen.biome.SectionContext;
-import org.confluence.mod.common.init.ModBiomes;
-import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.Nullable;
 
 /// Confluence 的动态群系规则与优先级。

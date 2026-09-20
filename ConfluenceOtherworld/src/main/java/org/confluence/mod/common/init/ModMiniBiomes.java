@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+package org.confluence.mod.common.init;
 
 import org.confluence.lib.common.worldgen.biome.MiniBiome;
 import org.confluence.lib.common.worldgen.biome.MiniBiomeType;

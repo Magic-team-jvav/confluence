@@ -22,6 +22,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.jetbrains.annotations.Nullable;

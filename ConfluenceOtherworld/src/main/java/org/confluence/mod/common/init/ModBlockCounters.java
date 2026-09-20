@@ -1,4 +1,4 @@
-package org.confluence.mod.util;
+package org.confluence.mod.common.init;
 
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -6,7 +6,6 @@ import org.confluence.lib.common.worldgen.biome.BlockCounters;
 import org.confluence.lib.common.worldgen.biome.BlockCounts;
 import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.jetbrains.annotations.Nullable;

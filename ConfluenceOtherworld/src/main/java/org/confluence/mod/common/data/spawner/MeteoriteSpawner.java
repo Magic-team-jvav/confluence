@@ -14,8 +14,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import org.confluence.lib.common.worldgen.biome.MiniBiome;
 import org.confluence.mod.common.entity.monster.MeteorHead;
+import org.confluence.mod.common.init.ModMiniBiomes;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.util.ModMiniBiomes;
 
 /// **陨石迷你群系**里生成流星头。
 ///

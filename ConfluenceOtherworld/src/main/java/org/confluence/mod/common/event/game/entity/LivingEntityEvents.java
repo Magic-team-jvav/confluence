@@ -71,6 +71,7 @@ import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntit
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
+import org.confluence.mod.common.init.ModBlockCounters;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;

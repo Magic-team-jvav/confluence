@@ -31,18 +31,13 @@ public class ShimmerEffect extends PortMobEffect {
             living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 2, 1, false, false, false));
         }
 
-        boolean shouldExpire = level.getBlockStates(living.getBoundingBox().inflate(-0.1)).allMatch(blockState -> {
-            if (blockState.isAir()) return true;
-            return blockState.liquid() && !blockState.is(ModBlocks.SHIMMER.get());
-        });
         if (amplifier > 0) {
-            if (shouldExpire) {
-                MobEffectInstance effect = living.getEffect(ModEffects.SHIMMER.get());
-                if (effect != null) effect.amplifier = 0;
-            }
-            return true;
+            return level.getBlockStates(living.getBoundingBox().inflate(0.1)).anyMatch(state -> !state.isAir());
         }
-        return !shouldExpire;
+        return !level.getBlockStates(living.getBoundingBox().inflate(-0.1)).allMatch(state -> {
+            if (state.isAir()) return true;
+            return state.liquid() && !state.is(ModBlocks.SHIMMER.get());
+        });
     }
 
     @Override
@@ -50,10 +45,10 @@ public class ShimmerEffect extends PortMobEffect {
         return true;
     }
 
-    public static void applyShimmerEffect(LivingEntity living) {
-        if (!living.level().isClientSide && living.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !living.hasEffect(ModEffects.SHIMMER.get())) {
+    public static void applyShimmerEffect(LivingEntity living, int amplifier) {
+        if (!living.level().isClientSide && !living.hasEffect(ModEffects.SHIMMER.get())) {
             if (living.isCrouching() || !TCUtils.getValue(living, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER.get())) {
-                living.addEffect(new MobEffectInstance(ModEffects.SHIMMER.get(), MobEffectInstance.INFINITE_DURATION));
+                living.addEffect(new MobEffectInstance(ModEffects.SHIMMER.get(), MobEffectInstance.INFINITE_DURATION, amplifier));
             }
         }
     }

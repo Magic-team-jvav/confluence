@@ -49,6 +49,7 @@
         "world.inventory.AnvilMenuMixin",
         "world.item.ArrowItemMixin",
         "world.item.BowItemMixin",
+        "world.item.BucketItemMixin",
         "world.item.CrossbowItemMixin",
         "world.item.FishingRodItemMixin",
         "world.item.ItemMixin",

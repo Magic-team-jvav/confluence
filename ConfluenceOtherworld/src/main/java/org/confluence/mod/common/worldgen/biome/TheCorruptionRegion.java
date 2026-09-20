@@ -26,7 +26,7 @@ import static org.confluence.mod.common.worldgen.biome.injector.ParameterBuilder
 ///
 /// - 温度 / 湿度 / 侵蚀度 / 怪异度：全区间。泰拉里的腐化本来就覆盖沙漠、雪原、丛林等各种地表。
 /// - 大陆度：{@link Continentalness#LAND}（海岸到远内陆），只排除海洋与蘑菇岛。
-/// - 深度：{@link ParameterBuilder#COLUMN}，整列接管（含天空，把最底部留给原版深暗之域）。
+/// - 深度：{@link org.confluence.mod.common.worldgen.biome.injector.ParameterBuilder#COLUMN}，整列接管（含天空，把最底部留给原版深暗之域）。
 ///
 /// ## 占比
 ///

@@ -54,9 +54,8 @@ public final class Confluence {
 
     public Confluence(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();
-        // 消费动态群系 / 迷你群系标记的方块计数。必须在任何世界加载之前调用。
-        ModDynamicBiomes.init(); // 注册计数器与判定规则（计数数组长度在此后固化）
-        ModMiniBiomes.init();    // 注册迷你生物群系标记
+        ModDynamicBiomes.init();
+        ModMiniBiomes.init();
         DynamicBiomeUtils.enable();
         StartupConfigs.register();
         CommonConfigs.register(context);

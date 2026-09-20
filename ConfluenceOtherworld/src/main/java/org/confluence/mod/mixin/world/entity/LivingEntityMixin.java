@@ -98,14 +98,16 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @WrapOperation(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;multiply(DDD)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 waterWalk(Vec3 instance, double factorX, double factorY, double factorZ, Operation<Vec3> original) {
         LivingEntity self = confluence$self();
-        FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
+        FluidType fluidType = getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
             if (!level().isClientSide) {
                 HoneyEffect.applyHoneyEffect(self);
             }
             instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
-            ShimmerEffect.applyShimmerEffect(self);
+            if (getEyeInFluidType() == ModFluids.SHIMMER.type().get()) {
+                ShimmerEffect.applyShimmerEffect(self, 0);
+            }
             instance = instance.add(0, -0.03, 0);
         }
         if (self.hasEffect(ModEffects.FLIPPER.get())) {

@@ -57,7 +57,7 @@ public final class MeteorLandingHandler {
         }
     }
 
-    public static void handlePacket(MeteoriteLocationPacketS2C packet, Player player) {
+    public static void handlePacket(MeteoriteLocationPacketS2C packet, @Nullable Player player) {
         globalPos = GlobalPos.of(OverworldUtils.dimension(), packet.location());
         if (packet.tickUntilLanding() <= 0) {
             location = null;
@@ -68,7 +68,9 @@ public final class MeteorLandingHandler {
         tickUntilLanding = packet.tickUntilLanding();
 
         totalLandingTick = tickUntilLanding;
-        calculate(player);
+        if (player != null) {
+            calculate(player);
+        }
         pitchO = pitch;
         yawO = yaw;
     }

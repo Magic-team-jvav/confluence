@@ -59,7 +59,6 @@ import org.confluence.mod.common.entity.monster.BaseMimic;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
-import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -167,7 +166,6 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         MountManager.dismiss(player);
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
-        GameEventSystem.INSTANCE.clearAll(player);
         PlayerSpecialData.of(player).setPvP(false);
         CommonConfigs.reset();
     }

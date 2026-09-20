@@ -73,7 +73,11 @@ public class BaseChestBlock extends ChestBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return super.getStateForPlacement(context).setValue(UNLOCKED, unlocked(context.getItemInHand()));
+        boolean unlocked = unlocked(context.getItemInHand());
+        if (!unlocked && context.getPlayer() != null && context.getPlayer().isCreative()) {
+            unlocked = true;
+        }
+        return super.getStateForPlacement(context).setValue(UNLOCKED, unlocked);
     }
 
     protected boolean unlocked(ItemStack stack) {

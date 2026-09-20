@@ -68,7 +68,7 @@ public record StarPhasesPacketS2C(
         }
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer, Int2ObjectMap<StarPhase> starPhases) {
-        PortPacketDistributor.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.left(starPhases)));
+    public static void sendToClient(ServerPlayer player, Int2ObjectMap<StarPhase> starPhases) {
+        PortPacketDistributor.sendToPlayer(player, new StarPhasesPacketS2C(Either.left(starPhases)));
     }
 }

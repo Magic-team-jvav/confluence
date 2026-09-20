@@ -13,7 +13,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -51,16 +50,16 @@ public interface IFishingHook extends ILibExtraSyncedData<FishingHook> {
         return false;
     }
 
-    static boolean isValidBlock(FishingHook self, BlockState instance, Block block, boolean original) {
+    static boolean isValidBlock(FishingHook self, BlockState instance, boolean original) {
         if (original || instance.is(ModBlocks.HONEY.get()) || instance.is(ModBlocks.SHIMMER.get())) {
             return true;
         }
         return of(self).confluence$isLavaHook() && self.isInLava() && instance.is(Blocks.LAVA);
     }
 
-    static TagKey<Fluid> isValidFluid(FishingHook self, TagKey<Fluid> original) {
-        if (of(self).confluence$isLavaHook()) return ModTags.Fluids.FISHING_ABLE;
-        return ModTags.Fluids.NOT_LAVA;
+    static TagKey<Fluid> isValidFluid(FishingHook self) {
+        if (of(self).confluence$isLavaHook()) return ModTags.Fluids.FISHING_ABLE_ALL;
+        return ModTags.Fluids.FISHING_ABLE_NOT_LAVA;
     }
 
     static ParticleOptions getFishingParticle(FishingHook self, ParticleOptions original) {

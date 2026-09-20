@@ -70,10 +70,6 @@ public enum GameEventSystem implements IGlobalData {
         GoblinArmyGameEvent.INSTANCE.syncProgress();
     }
 
-    public void clearAll(ServerPlayer player) {
-        GameEventSyncPacketS2C.sentToClient(player, false, ALL_EVENT_KEY);
-    }
-
     public void open(MinecraftServer server) {
         for (GameEvent event : getAllEventInstances()) {
             event.open(server);

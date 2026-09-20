@@ -40,7 +40,6 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.entity.CreatureSpawnPlacements;
 import org.confluence.mod.common.init.entity.CritterEntities;
-import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.gun.GunTrailColors;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -201,16 +200,14 @@ public final class ModEvents {
 
     private static void registerBestiaryKeys(RegisterBestiaryKeyEvent event) {
         event.register(CritterEntities.JEWEL_BUNNY.get(), (type, bunny) -> type.getDescriptionId() + '.' + bunny.getBunnyVariant().getSerializedName());
-        // todo 改成注册单独的史莱姆之母和宝宝
-        event.register(MonsterEntities.BLACK_SLIME.get(), (type, slime) -> {
-            if (slime.getSlimeSize() == 1) return "entity.confluence.baby_slime";
-            if (slime.getSlimeSize() == 4) return "entity.confluence.mother_slime";
-            return type.getDescriptionId();
-        });
     }
 
     private static void registerEvilMaterialReplaces(RegisterEvilMaterialReplacesEvent event) {
         event.register(MaterialItems.DEMONITE_INGOT, MaterialItems.CRIMTANE_INGOT);
         event.register(NatureBlocks.VILE_MUSHROOM, NatureBlocks.VICIOUS_MUSHROOM);
     }
+
+//    private static void registerConfigurationTasks (PortRegisterConfigurationTasksEvent event){
+//        event.register(new AchievementsTask(event.getListener()));
+//    }
 }

@@ -53,8 +53,7 @@ public final class ModBlockCounters {
     /// 大理石洞：结构是用**原版方解石**造的（`MarbleCaveStructure` 的调色板是 `[AIR, CALCITE]`），
     /// `NatureBlocks.MARBLE` 只是方解石的切石产物，所以天然大理石洞里必须靠方解石来认。
     /// 注意：原版紫水晶洞也有方解石外壳，阈值要压过它的量。
-    public static final BlockCounters.Counter MARBLE = register("marble", block ->
-            block.is(Blocks.CALCITE) || block.is(NatureBlocks.MARBLE.get()));
+    public static final BlockCounters.Counter MARBLE = register("marble", block -> block.is(NatureBlocks.MARBLE.get()));
     /// 蜂巢
     public static final BlockCounters.Counter HIVE = register("hive", block -> block.is(NatureBlocks.JUNGLE_HIVE_BLOCK.get()));
     /// 蜂巢里的蜂蜜
@@ -62,8 +61,7 @@ public final class ModBlockCounters {
     /// 微光
     public static final BlockCounters.Counter SHIMMER = register("shimmer", block -> block.getFluidState().is(ModTags.Fluids.SHIMMER));
     /// 陨石
-    public static final BlockCounters.Counter METEORITE = register("meteorite", block ->
-            block.is(OreBlocks.METEORITE_ORE.get()) || block.is(OreBlocks.RAW_METEORITE_BLOCK.get()) || block.is(OreBlocks.METEORITE_BLOCK.get()));
+    public static final BlockCounters.Counter METEORITE = register("meteorite", block -> block.is(OreBlocks.METEORITE_ORE.get()));
 
     private ModBlockCounters() {}
 

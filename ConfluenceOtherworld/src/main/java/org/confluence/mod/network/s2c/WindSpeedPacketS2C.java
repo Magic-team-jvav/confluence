@@ -36,7 +36,7 @@ public record WindSpeedPacketS2C(float x, float z) implements IPortPacket.S2C {
         }
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer, float windSpeedX, float windSpeedZ) {
-        PortPacketDistributor.sendToPlayer(serverPlayer, new WindSpeedPacketS2C(windSpeedX, windSpeedZ));
+    public static void sendToClient(ServerPlayer player, float windSpeedX, float windSpeedZ) {
+        PortPacketDistributor.sendToPlayer(player, new WindSpeedPacketS2C(windSpeedX, windSpeedZ));
     }
 }

@@ -496,8 +496,8 @@ public final class ModTags {
     }
 
     public static class Fluids {
-        public static final TagKey<Fluid> FISHING_ABLE = register("fishing_able");
-        public static final TagKey<Fluid> NOT_LAVA = register("not_lava");
+        public static final TagKey<Fluid> FISHING_ABLE_ALL = register("fishing_able/all");
+        public static final TagKey<Fluid> FISHING_ABLE_NOT_LAVA = register("fishing_able/not_lava");
         public static final TagKey<Fluid> SHIMMER = register("shimmer");
 
         private static TagKey<Fluid> register(String id) {

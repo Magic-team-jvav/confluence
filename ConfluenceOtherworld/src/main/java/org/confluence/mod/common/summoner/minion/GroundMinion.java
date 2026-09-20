@@ -124,15 +124,18 @@ public abstract class GroundMinion extends MomentumMinion implements IBlockColli
             boolean collisionZ = correctedMotion.z != motion.z;
             double stepHeight = getStepHeight();
             boolean stepped = false;
-            if (stepHeight > 0 && motion.y <= 0 && (collisionX || collisionZ)) {
+            if (stepHeight > 0 && isWalking() && motion.y <= 0 && (collisionX || collisionZ)) {
                 Vec3 horizontalMotion = new Vec3(motion.x, 0.0, motion.z);
                 Vec3 steppedMotion = Entity.collideBoundingBox(null, horizontalMotion, getBlockCollisionBox().move(from.add(0.0, stepHeight, 0.0)), level, List.of());
                 if (steppedMotion.x == motion.x && steppedMotion.z == motion.z) {
-                    correctedMotion = new Vec3(motion.x, stepHeight, motion.z);
-                    collisionX = false;
-                    collisionY = false;
-                    collisionZ = false;
-                    stepped = true;
+                    Vec3 steppedPos = from.add(0.0, stepHeight, 0.0).add(steppedMotion);
+                    if (Entity.collideBoundingBox(null, new Vec3(0.0, -0.05, 0.0), getBlockCollisionBox().move(steppedPos), level, List.of()).y != -0.05) {
+                        correctedMotion = new Vec3(motion.x, stepHeight, motion.z);
+                        collisionX = false;
+                        collisionY = false;
+                        collisionZ = false;
+                        stepped = true;
+                    }
                 }
             }
             Vec3 correctedPos = from.add(correctedMotion);

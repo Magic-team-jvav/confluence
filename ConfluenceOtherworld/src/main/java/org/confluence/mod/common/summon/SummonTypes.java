@@ -3,7 +3,6 @@ package org.confluence.mod.common.summon;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summon.dragon.StardustDragonSummon;
-import org.confluence.mod.common.summon.ground.*;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
@@ -13,8 +12,6 @@ import java.util.Map;
 public final class SummonTypes {
     private static final Map<ResourceLocation, SummonType> TYPES = new LinkedHashMap<>();
 
-    public static final SummonType SPIDER = register("spider", SpiderSummon::new);
-    public static final SummonType DESERT_TIGER = register("desert_tiger", DesertTigerSummon::new);
     public static final SummonType STARDUST_DRAGON = register("stardust_dragon", StardustDragonSummon::new);
 
     private SummonTypes() {}

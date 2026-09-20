@@ -36,7 +36,7 @@ public class BaseWhipItem extends Item {
     private final int hitCooldownTicks;
     private final Supplier<? extends WhipTagEffect> tagEffect;
     private final WhipAppearance appearance;
-    private Supplier<SummonMarkType> summonMarkType = null;
+    private final Supplier<SummonMarkType> summonMarkType = null;
 
     public BaseWhipItem(String name, float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends WhipTagEffect> tagEffect) {
         // 默认外观沿用 1.21 的十六像素分段模型。

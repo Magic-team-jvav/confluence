@@ -8,7 +8,7 @@ import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.item.summon.SummonItem;
 import org.confluence.mod.common.summon.SummonTypes;
 import org.confluence.mod.common.summon.dragon.StardustDragonSummon;
-import org.confluence.mod.common.summon.ground.*;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.minion.FinchMinion;
 import org.confluence.mod.common.summoner.minion.HornetMinion;
@@ -17,10 +17,12 @@ import org.confluence.mod.common.summoner.minion.MinionSlotType;
 import org.confluence.mod.common.summoner.minion.SculkWispMinion;
 import org.confluence.mod.common.summoner.minion.BloodBatMinion;
 import org.confluence.mod.common.summoner.minion.DeadlySphereMinion;
+import org.confluence.mod.common.summoner.minion.DesertTigerMinion;
 import org.confluence.mod.common.summoner.minion.ImpMinion;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
 import org.confluence.mod.common.summoner.minion.SlimeMinion;
 import org.confluence.mod.common.summoner.minion.SnowFlinxMinion;
+import org.confluence.mod.common.summoner.minion.SpiderMinion;
 import org.confluence.mod.common.summoner.minion.VampireFrogMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
@@ -28,6 +30,10 @@ import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class SummonItems {
     public static void init() {}
@@ -154,10 +160,52 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonItem> SPIDER_STAFF = ITEMS.register("spider_staff",
-            () -> new SummonItem(ModRarity.LIGHT_RED, SummonTypes.SPIDER, SpiderSummon.SLOT_COST, SpiderSummon.BASE_DAMAGE));
-    public static final PortDeferredItem<SummonItem> DESERT_TIGER_STAFF = ITEMS.register("desert_tiger_staff",
-            () -> new SummonItem(ModRarity.YELLOW, SummonTypes.DESERT_TIGER, DesertTigerSummon.SLOT_COST, DesertTigerSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonerWeaponItem<SpiderMinion>> SPIDER_STAFF = ITEMS.register("spider_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
+                    SummonerAttachmentEntityTypes.SPIDER,
+                    MinionSlotType.Minion,
+                    26.0F,
+                    1.0F,
+                    0.0F,
+                    ModSoundEvents.ROUTINE_SUMMON,
+                    null,
+                    null
+            ));
+    public static final PortDeferredItem<SummonerWeaponItem<DesertTigerMinion>> DESERT_TIGER_STAFF = ITEMS.register("desert_tiger_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW),
+                    SummonerAttachmentEntityTypes.DESERT_TIGER,
+                    MinionSlotType.Minion,
+                    41.0F,
+                    0.0F,
+                    0.0F,
+                    ModSoundEvents.ROUTINE_SUMMON,
+                    (weapon, player, itemStack) -> {
+                        DesertTigerMinion minion = weapon.createMinion(player, itemStack);
+                        SummonerHelper summonerHelper = SummonerHelper.get(player);
+                        MinionSlotType slotType = weapon.getSlotType(itemStack);
+                        List<DesertTigerMinion> tigers = summonerHelper.getEntityData().getGroups().getOrDefault(weapon.getEntityType(), List.of()).stream()
+                                .filter(DesertTigerMinion.class::isInstance)
+                                .map(DesertTigerMinion.class::cast)
+                                .toList();
+                        if (tigers.isEmpty()) {
+                            if (summonerHelper.canSummon(slotType, minion.getSlotCost())) {
+                                AABB box = player.getBoundingBox();
+                                Vec3 pos = box.getCenter();
+                                minion.init(new PathNode(pos.offsetRandom(player.getRandom(), 2), 0, 0, 0));
+                                summonerHelper.add(minion);
+                            }
+                        } else if (summonerHelper.canSummon(slotType, minion.getSlotCost())) {
+                            DesertTigerMinion tiger = tigers.get(0);
+                            tiger.setSlotCost(tiger.getSlotCost() + minion.getSlotCost());
+                            tiger.setDamage(minion.getDamage());
+                            tiger.setKnockback(minion.getKnockback());
+                            tiger.setArmorPierce(minion.getArmorPierce());
+                        }
+                    },
+                    null
+            ));
     public static final PortDeferredItem<SummonerWeaponItem<TerraprismaMinion>> TERRAPRISMA = ITEMS.register("terraprisma",
             () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK),

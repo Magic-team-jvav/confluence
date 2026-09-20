@@ -13,10 +13,12 @@ import org.confluence.mod.common.summoner.minion.IronGolemMinion;
 import org.confluence.mod.common.summoner.minion.SculkWispMinion;
 import org.confluence.mod.common.summoner.minion.BloodBatMinion;
 import org.confluence.mod.common.summoner.minion.DeadlySphereMinion;
+import org.confluence.mod.common.summoner.minion.DesertTigerMinion;
 import org.confluence.mod.common.summoner.minion.ImpMinion;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
 import org.confluence.mod.common.summoner.minion.SlimeMinion;
 import org.confluence.mod.common.summoner.minion.SnowFlinxMinion;
+import org.confluence.mod.common.summoner.minion.SpiderMinion;
 import org.confluence.mod.common.summoner.minion.VampireFrogMinion;
 import org.confluence.mod.common.summoner.projectile.HornetStinger;
 import org.confluence.mod.common.summoner.projectile.ImpFireball;
@@ -52,6 +54,10 @@ public final class SummonerAttachmentEntityTypes {
     public static final RegistryObject<AttachmentEntityType<SnowFlinxMinion>> SNOW_FLINX = register("snow_flinx", SnowFlinxMinion::new);
 
     public static final RegistryObject<AttachmentEntityType<VampireFrogMinion>> VAMPIRE_FROG = register("vampire_frog", VampireFrogMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<DesertTigerMinion>> DESERT_TIGER = register("desert_tiger", DesertTigerMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<SpiderMinion>> SPIDER = register("spider", SpiderMinion::new);
 
     private static <T extends AttachmentEntity> RegistryObject<AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return PortDeferredRegisterExtension.register(TYPES, name, id -> new AttachmentEntityType<>(id, supplier));

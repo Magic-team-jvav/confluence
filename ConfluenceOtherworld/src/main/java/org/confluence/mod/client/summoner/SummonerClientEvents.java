@@ -19,10 +19,12 @@ import org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.SculkWispRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.BloodBatRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.DeadlySphereRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.DesertTigerRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.ImpRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.TerraprismaRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.SlimeMinionRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.SnowFlinxRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.SpiderRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.VampireFrogRenderer;
 import org.confluence.mod.client.summoner.renderer.projectile.ImpFireballRenderer;
 import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
@@ -79,6 +81,8 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SLIME.get(), new SlimeMinionRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SNOW_FLINX.get(), new SnowFlinxRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.VAMPIRE_FROG.get(), new VampireFrogRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.DESERT_TIGER.get(), new DesertTigerRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SPIDER.get(), new SpiderRenderer());
         }));
         PortEventHandler.addListener((PortEntityRenderersEvent.AddLayers event) -> {
             for (PortEntityRenderersEvent.AddLayers.PortModel skin : PortEntityRenderersEvent.AddLayers.PortModel.values()) {

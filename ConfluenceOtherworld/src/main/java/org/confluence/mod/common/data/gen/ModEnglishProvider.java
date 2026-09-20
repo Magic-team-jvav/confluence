@@ -80,7 +80,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.DEADLY_SPHERE_STAFF.get(), "Deadly Sphere Staff");
         add(SummonItems.SANGUINE_STAFF.get(), "Sanguine Staff");
         add(SummonItems.SPIDER_STAFF.get(), "Spider Staff");
+        add("summon.confluence.spider", "Spider");
         add(SummonItems.DESERT_TIGER_STAFF.get(), "Desert Tiger Staff");
+        add("summon.confluence.desert_tiger", "Desert Tiger");
         add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
         add("summon.confluence.slime", "Baby Slime");

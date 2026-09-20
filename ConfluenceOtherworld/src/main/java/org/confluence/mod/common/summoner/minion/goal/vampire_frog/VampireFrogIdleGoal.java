@@ -26,7 +26,7 @@ public class VampireFrogIdleGoal extends AttachmentEntityGoal<VampireFrogMinion>
         double lateral = (minion.getOrder() - (minion.getSameSize() - 1) * 0.5) * 1.1;
         Vec3 idlePos = Vec3.atBottomCenterOf(BlockPos.containing(owner.position().subtract(forward.scale(2.5)).add(right.scale(lateral))));
         Vec3 subtract = idlePos.subtract(minion.getPos());
-        if (!owner.onGround()) {
+        if (!owner.onGround() && owner.getY() > minion.getPos().y + 6.0) {
             minion.lookAtPos(owner.getEyePosition());
             minion.flyTo(idlePos, 0.06f);
         } else {

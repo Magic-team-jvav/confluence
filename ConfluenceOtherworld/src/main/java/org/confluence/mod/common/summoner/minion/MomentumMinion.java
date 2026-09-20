@@ -10,6 +10,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.PlannedPath;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Random;
 
 /**

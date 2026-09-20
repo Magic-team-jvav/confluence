@@ -30,6 +30,13 @@ public interface IBlockCollision<T extends AttachmentEntity & IMomentumAttachmen
     }
 
     /**
+     * 水平碰撞时可抬升的最大高度，0 表示不进行台阶抬升。
+     */
+    default double getStepHeight() {
+        return 0.0;
+    }
+
+    /**
      * 碰撞轴上的速度处理：只处理与碰撞方向一致的速度，反向的速度原样保留。
      */
     default double resolveVelocity(double velocity, double motion, float elasticity) {

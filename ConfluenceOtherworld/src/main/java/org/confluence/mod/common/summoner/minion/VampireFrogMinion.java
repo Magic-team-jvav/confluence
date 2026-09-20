@@ -4,21 +4,22 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
-import org.confluence.mod.common.summoner.minion.goal.iron_golem.IronGolemAttackGoal;
-import org.confluence.mod.common.summoner.minion.goal.iron_golem.IronGolemIdleGoal;
+import org.confluence.mod.common.summoner.minion.goal.vampire_frog.VampireFrogAttackGoal;
+import org.confluence.mod.common.summoner.minion.goal.vampire_frog.VampireFrogIdleGoal;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
-/** 铁傀儡：贴身近战，命中播放动画、音效并上挑击退。 */
-public class IronGolemMinion extends GroundMinion {
+/** 吸血鬼青蛙：贴近后按冷却出手，攻击留下 3 tick 静态无敌帧。 */
+public class VampireFrogMinion extends GroundMinion {
 
     public int attackTime = -1;
 
-    public IronGolemMinion() {
-        super(SummonerAttachmentEntityTypes.IRON_GOLEM);
+    public VampireFrogMinion() {
+        super(SummonerAttachmentEntityTypes.VAMPIRE_FROG);
     }
 
     @Override
@@ -29,21 +30,29 @@ public class IronGolemMinion extends GroundMinion {
 
     @Override
     public void registerGoals(AttachmentEntityGoalSelector goalSelector) {
-        goalSelector.addGoal(0, new IronGolemAttackGoal(this));
-        goalSelector.addGoal(1, new IronGolemIdleGoal(this));
+        goalSelector.addGoal(0, new VampireFrogAttackGoal(this));
+        goalSelector.addGoal(1, new VampireFrogIdleGoal(this));
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "iron_golem", 2, state -> {
+        controllers.add(new AnimationController<>(this, "vampire_frog", 0, state -> {
             if (attackTime != -1 && getTickCount() - attackTime < 20) {
-                return state.setAndContinue(RawAnimation.begin().thenPlay("attacking"));
+                return state.setAndContinue(RawAnimation.begin().thenPlay("attack.strike"));
             }
             if (isWalking()) {
-                return state.setAndContinue(RawAnimation.begin().thenLoop("walking"));
+                return state.setAndContinue(RawAnimation.begin().thenLoop("move.walk"));
             }
-            return state.setAndContinue(RawAnimation.begin().thenLoop("standing"));
+            if (isFlying()) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop("move.fly"));
+            }
+            return state.setAndContinue(RawAnimation.begin().thenLoop("misc.idle"));
         }));
+    }
+
+    @Override
+    public Immunity.Type confluence$getImmunityType() {
+        return Immunity.Type.STATIC;
     }
 
     @Override
@@ -53,6 +62,6 @@ public class IronGolemMinion extends GroundMinion {
 
     @Override
     public @NotNull AABB getBlockCollisionBox() {
-        return new AABB(-0.7, 0, -0.7, 0.7, 2.7, 0.7);
+        return new AABB(-0.45, 0, -0.45, 0.45, 0.7, 0.45);
     }
 }

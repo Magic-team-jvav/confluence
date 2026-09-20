@@ -106,10 +106,10 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
             target.invulnerableTime = 0;
             boolean hurt = target.hurt(damageSource, damageAmount);
             target.invulnerableTime = invulnerableTime;
-            immunityDuration = 0;
             if (hurt) {
                 Immunity.apply(this, damageSource, target);
             }
+            immunityDuration = 0;
         }
     }
 

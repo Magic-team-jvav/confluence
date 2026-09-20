@@ -5166,11 +5166,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(SummonItems.DESERT_TIGER_STAFF.get(), "沙漠虎杖");
         add(SummonItems.TERRAPRISMA.get(), "泰拉棱镜");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "星尘之龙法杖");
-        add("entity.confluence.slime_baby", "史莱姆宝宝");
+        add("summon.confluence.slime", "史莱姆宝宝");
         add("entity.confluence.hornet_baby", "仆役黄蜂");
         add("summon.confluence.imp", "小鬼");
-        add("entity.confluence.summon_snow_flinx", "小雪怪");
-        add("entity.confluence.vampire_frog", "吸血鬼青蛙");
+        add("summon.confluence.snow_flinx", "小雪怪");
+        add("summon.confluence.vampire_frog", "吸血鬼青蛙");
         add("summon.confluence.terraprisma", "泰拉棱镜");
         add("entity.confluence.stardust_dragon", "星尘龙");
         add("summon.confluence.deadly_sphere", "致命球");

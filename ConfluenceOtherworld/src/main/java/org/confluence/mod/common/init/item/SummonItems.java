@@ -9,7 +9,6 @@ import org.confluence.mod.common.item.summon.SummonItem;
 import org.confluence.mod.common.summon.SummonTypes;
 import org.confluence.mod.common.summon.dragon.StardustDragonSummon;
 import org.confluence.mod.common.summon.ground.*;
-import org.confluence.mod.common.summon.slime.SlimeSummon;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.minion.FinchMinion;
 import org.confluence.mod.common.summoner.minion.HornetMinion;
@@ -20,6 +19,9 @@ import org.confluence.mod.common.summoner.minion.BloodBatMinion;
 import org.confluence.mod.common.summoner.minion.DeadlySphereMinion;
 import org.confluence.mod.common.summoner.minion.ImpMinion;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
+import org.confluence.mod.common.summoner.minion.SlimeMinion;
+import org.confluence.mod.common.summoner.minion.SnowFlinxMinion;
+import org.confluence.mod.common.summoner.minion.VampireFrogMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
 import org.mesdag.portlib.registries.PortDeferredItem;
@@ -68,8 +70,18 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonItem> SLIME_STAFF = ITEMS.register("slime_staff",
-            () -> new SummonItem(ModRarity.LIGHT_RED, SummonTypes.SLIME, SlimeSummon.SLOT_COST, SlimeSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonerWeaponItem<SlimeMinion>> SLIME_STAFF = ITEMS.register("slime_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
+                    SummonerAttachmentEntityTypes.SLIME,
+                    MinionSlotType.Minion,
+                    5.0F,
+                    0.0F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
     public static final PortDeferredItem<SummonerWeaponItem<SculkWispMinion>> SCULK_WISP_STAFF = ITEMS.register("sculk_wisp_staff",
             () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
@@ -94,10 +106,30 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonItem> SNOW_FLINX_STAFF = ITEMS.register("snow_flinx_staff",
-            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.SNOW_FLINX, SnowFlinxSummon.SLOT_COST, SnowFlinxSummon.BASE_DAMAGE));
-    public static final PortDeferredItem<SummonItem> VAMPIRE_FROG_STAFF = ITEMS.register("vampire_frog_staff",
-            () -> new SummonItem(ModRarity.ORANGE, SummonTypes.VAMPIRE_FROG, VampireFrogSummon.SLOT_COST, VampireFrogSummon.BASE_DAMAGE));
+    public static final PortDeferredItem<SummonerWeaponItem<SnowFlinxMinion>> SNOW_FLINX_STAFF = ITEMS.register("snow_flinx_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
+                    SummonerAttachmentEntityTypes.SNOW_FLINX,
+                    MinionSlotType.Minion,
+                    7.0F,
+                    0.0F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
+    public static final PortDeferredItem<SummonerWeaponItem<VampireFrogMinion>> VAMPIRE_FROG_STAFF = ITEMS.register("vampire_frog_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
+                    SummonerAttachmentEntityTypes.VAMPIRE_FROG,
+                    MinionSlotType.Minion,
+                    11.0F,
+                    0.0F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
     public static final PortDeferredItem<SummonerWeaponItem<DeadlySphereMinion>> DEADLY_SPHERE_STAFF = ITEMS.register("deadly_sphere_staff",
             () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.YELLOW),

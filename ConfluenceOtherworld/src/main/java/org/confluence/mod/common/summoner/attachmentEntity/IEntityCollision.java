@@ -4,8 +4,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.*;
 
@@ -103,13 +104,17 @@ public interface IEntityCollision<T extends AttachmentEntity> {
     private Sweep buildSweep(PathNode prev, PathNode current, Vec3 boxSize, Vec3 boxCenterOffset, boolean hasCenterOffset) {
         List<SampledOBB> result = new ArrayList<>();
 
-        // 仅使用上一tick和当前位置两个节点进行线性采样
-        double estimatedLength = prev.pos().distanceTo(current.pos());
+        // 使用上一tick和当前位置线性采样，并把旋转时最远点的弧长计入采样长度
+        double yawDelta = Math.toRadians(Math.abs(Mth.wrapDegrees(current.yaw() - prev.yaw())));
+        double pitchDelta = Math.toRadians(Math.abs(Mth.wrapDegrees(current.pitch() - prev.pitch())));
+        double rollDelta = Math.toRadians(Math.abs(Mth.wrapDegrees(current.roll() - prev.roll())));
+        double maxRadius = boxCenterOffset.length() + boxSize.length() * 0.5;
+        double estimatedLength = prev.pos().distanceTo(current.pos()) + maxRadius * (yawDelta + pitchDelta + rollDelta);
         double minDim = Math.min(Math.min(boxSize.x, boxSize.y), boxSize.z);
 
         // 计算需要的采样数量（确保相邻 OBB 50% 重合）
         // 重合 50% 意味着步进距离不超过 minDim 的一半
-        double stepSize = minDim * 0.5;
+        double stepSize = Math.max(minDim * 0.5, 1.0E-3);
         int steps = Math.max(2, (int) Math.ceil(estimatedLength / stepSize));
 
         double minX = Double.POSITIVE_INFINITY;
@@ -135,12 +140,8 @@ public interface IEntityCollision<T extends AttachmentEntity> {
         return result.isEmpty() ? null : new Sweep(result, new AABB(minX, minY, minZ, maxX, maxY, maxZ));
     }
 
-    @SuppressWarnings("unchecked")
-    private List<LivingEntity> findPotentialTargets(AttachmentEntity entity, Sweep sweep) {
-        AABB bounds = sweep.bounds();
-        Vec3 center = bounds.getCenter();
-        double radius = center.distanceTo(new Vec3(bounds.maxX, bounds.maxY, bounds.maxZ));
-        return entity.getOwner().getData(SummonerAttachmentTypes.TARGET_CACHE).getEntitiesInRadius(center, radius, target -> isValidCollisionTarget((T) entity, target));
+    private List<LivingEntity> findPotentialTargets(T entity, Sweep sweep) {
+        return entity.getTargetCache().getEntitiesInRadius(entity.getPos(), sweep.bounds().getSize() * 1.5f, target -> isValidCollisionTarget(entity, target));
     }
 
     /**
@@ -158,11 +159,23 @@ public interface IEntityCollision<T extends AttachmentEntity> {
         // 应用碰撞盒中心偏移（考虑旋转）
         Vec3 hitCenter = pos;
         if (hasCenterOffset) {
-            hitCenter = hitCenter.add(boxCenterOffset.xRot((float) Math.toRadians(-pitch)).yRot((float) Math.toRadians(-yaw)));
+            hitCenter = hitCenter.add(rotateOffset(boxCenterOffset, yaw, pitch, roll));
         }
 
         OBB obb = new OBB(hitCenter, boxSize, yaw, pitch, roll);
         return new SampledOBB(obb, obb.getBoundingBox(), t);
+    }
+
+    /**
+     * 按渲染姿态旋转碰撞盒中心偏移。
+     */
+    private Vec3 rotateOffset(Vec3 offset, float yaw, float pitch, float roll) {
+        Quaternionf rotation = new Quaternionf()
+                .rotateY((float) Math.toRadians(-yaw))
+                .rotateX((float) Math.toRadians(pitch))
+                .rotateZ((float) Math.toRadians(roll));
+        Vector3f rotated = new Vector3f((float) offset.x, (float) offset.y, (float) offset.z).rotate(rotation);
+        return new Vec3(rotated.x, rotated.y, rotated.z);
     }
 
     /**

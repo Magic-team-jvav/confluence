@@ -80,7 +80,7 @@ public class TargetCache {
 
     public List<LivingEntity> getEntitiesInRadius(Vec3 pos, double radius, @Nullable Predicate<LivingEntity> filter) {
         List<LivingEntity> result = new ArrayList<>();
-        if (radius <= 0 || serverLevel == null) {
+        if (radius <= 0 || serverLevel == null ) {
             return result;
         }
         double radiusSq = radius * radius;

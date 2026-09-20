@@ -107,13 +107,6 @@ public class AttachmentEntityRenderDispatcher {
             if (entity instanceof IBlockCollision<?> iBlockCollision) {
                 LevelRenderer.renderLineBox(poseStack, debugConsumer, iBlockCollision.getBlockCollisionBox(), 0.0F, 1.0F, 0.0F, 1.0F);
             }
-            if (entity instanceof GroundMinion ground) {
-                poseStack.pushPose();
-                poseStack.translate(0.0, ground.getEyeHeight(), 0.0);
-                Vec3 direction = ground.getEyeDirection(partialTick).scale(1.5);
-                LevelRenderer.renderLineBox(poseStack, debugConsumer, Math.min(0.0, direction.x), Math.min(0.0, direction.y), Math.min(0.0, direction.z), Math.max(0.0, direction.x), Math.max(0.0, direction.y), Math.max(0.0, direction.z), 0.0F, 1.0F, 1.0F, 1.0F);
-                poseStack.popPose();
-            }
         }
     }
 

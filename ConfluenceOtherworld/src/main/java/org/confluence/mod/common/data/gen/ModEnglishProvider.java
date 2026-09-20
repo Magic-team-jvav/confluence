@@ -83,12 +83,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.DESERT_TIGER_STAFF.get(), "Desert Tiger Staff");
         add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
         add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
-        add("entity.confluence.slime_baby", "Baby Slime");
+        add("summon.confluence.slime", "Baby Slime");
         add("entity.confluence.hornet_baby", "Hornet Minion");
         add("summon.confluence.hornet", "Hornet");
         add("summon.confluence.imp", "Imp Minion");
-        add("entity.confluence.summon_snow_flinx", "Snow Flinx Minion");
-        add("entity.confluence.vampire_frog", "Vampire Frog");
+        add("summon.confluence.snow_flinx", "Snow Flinx Minion");
+        add("summon.confluence.vampire_frog", "Vampire Frog");
         add("summon.confluence.terraprisma", "Terraprisma");
         add("entity.confluence.stardust_dragon", "Stardust Dragon");
         add("tooltip.confluence.summon.damage", "Base summon damage: %s");

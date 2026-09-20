@@ -13,18 +13,12 @@ import java.util.Map;
 final class ClientSummonModels {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
-    private static final RawAnimation FLY = RawAnimation.begin().thenLoop("move.fly");
     private static final RawAnimation STRIKE = RawAnimation.begin().thenLoop("attack.strike");
     private static final RawAnimation ROLL = RawAnimation.begin().thenLoop("attack.roll");
     private static final Animations WALKING = new Animations(IDLE, WALK, Map.of(), 4);
-    private static final Animations SLIME = new Animations(IDLE, WALK, Map.of(SummonAnimation.FLY, FLY), 0);
-    private static final Animations FROG = new Animations(IDLE, WALK, Map.of(SummonAnimation.FLY, FLY, SummonAnimation.MELEE_ATTACK, STRIKE), 4);
     private static final Animations TIGER = new Animations(IDLE, WALK, Map.of(SummonAnimation.SPIN_X, ROLL, SummonAnimation.MELEE_ATTACK, STRIKE), 4);
 
     static final Map<ResourceLocation, Binding> MODELS = Map.ofEntries(
-            Map.entry(SummonTypes.SLIME.id(), model("summon/slime_baby", Material.SLIME, SLIME)),
-            Map.entry(SummonTypes.SNOW_FLINX.id(), model("summon/summon_snow_flinx", Material.DOUBLE_SIDED, WALKING).transform(1, 0, 90, false)),
-            Map.entry(SummonTypes.VAMPIRE_FROG.id(), model("summon/vampire_frog", Material.DOUBLE_SIDED, FROG)),
             Map.entry(SpiderSummon.VENOM, model("summon/spider", Material.CUTOUT, WALKING)),
             Map.entry(SpiderSummon.JUMPER, new Binding("summon/spider", "summon/spider/jumper", "summon/spider", Material.CUTOUT, WALKING)),
             Map.entry(SpiderSummon.DANGEROUS, new Binding("summon/spider", "summon/spider/dangerous", "summon/spider", Material.CUTOUT, WALKING)),

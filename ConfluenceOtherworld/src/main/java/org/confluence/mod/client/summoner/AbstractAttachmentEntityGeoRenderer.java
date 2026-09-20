@@ -8,12 +8,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.client.summoner.trail.ModelConfig;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
-import org.confluence.mod.common.summoner.attachmentEntity.IHeadRotatable;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.Color;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoObjectRenderer;
@@ -178,23 +176,5 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
             return animation;
         }
 
-        /**
-         * 让实现了头部转动接口的虚拟实体把视角作用在头部骨骼上，避免整个模型跟着俯仰。
-         * <p>
-         * 这些 Geo 模型朝向模型空间的 -Z，渲染时靠 180 度偏航转向世界方向，
-         * 所以头部骨骼的偏航与俯仰都要取反才能对准目标。
-         * </p>
-         */
-        @Override
-        public void setCustomAnimations(T animatable, long instanceId, AnimationState<T> animationState) {
-            if (animatable instanceof IHeadRotatable rotatable) {
-                getBone("head").ifPresent(head -> {
-                    var initial = head.getInitialSnapshot();
-                    float partialTick = animationState.getPartialTick();
-                    head.setRotX(initial.getRotX() - (float) Math.toRadians(rotatable.getHeadPitch(partialTick)));
-                    head.setRotY(initial.getRotY() - (float) Math.toRadians(rotatable.getHeadYaw(partialTick)));
-                });
-            }
-        }
     }
 }

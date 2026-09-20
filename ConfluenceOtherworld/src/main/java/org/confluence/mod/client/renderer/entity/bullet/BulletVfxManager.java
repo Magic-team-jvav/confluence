@@ -5,9 +5,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.client.renderer.entity.bullet.effect.*;
 import org.confluence.mod.common.item.gun.definition.BulletImpactEffect;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +42,8 @@ public final class BulletVfxManager {
         }
     }
 
-    public static void render(PortRenderLevelStageEvent event) {
-        if (event.getStage() != PortRenderLevelStageEvent.Stage.AFTER_PARTICLES || ACTIVE_EFFECTS.isEmpty())
+    public static void render(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || ACTIVE_EFFECTS.isEmpty())
             return;
         PoseStack poseStack = event.getPoseStack();
         Vec3 cameraPosition = event.getCamera().getPosition();

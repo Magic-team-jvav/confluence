@@ -7,10 +7,9 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.data.saved.Bestiary;
-import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.common.init.item.ModItems;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
@@ -28,7 +27,7 @@ public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
 
     @Override
     public void work(ServerPlayer player) {
-        BestiaryEntry entry = Bestiary.INSTANCE.getEntries().get(key);
+        Bestiary.Entry entry = Bestiary.INSTANCE.getEntries().get(key);
         if (entry == null || !entry.isCompleted()) return;
 
         ItemStack stack = ModItems.ENEMY_BANNER.toStack();
@@ -36,7 +35,7 @@ public record GiveBannerPacketC2S(String key) implements IPortPacket.C2S {
         player.addItem(stack);
     }
 
-    public static void sendToServer(ClientBestiaryEntry entry) {
+    public static void sendToServer(ClientBestiary.Entry entry) {
         PortPacketDistributor.sendToServer(new GiveBannerPacketC2S(entry.key));
     }
 }

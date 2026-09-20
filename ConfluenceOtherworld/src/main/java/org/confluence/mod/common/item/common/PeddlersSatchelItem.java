@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 把商贩背包作为当前世界的一次性永久升级提交到 {@link NPCSpawner}。

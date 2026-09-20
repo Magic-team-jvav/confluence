@@ -15,7 +15,6 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AchievementOffset;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.util.AchievementUtils;
 import org.mesdag.portlib.client.gui.components.PortSprite;
 import org.mesdag.portlib.client.gui.components.PortWidgetSprites;
@@ -98,7 +97,7 @@ public class AchievementScreen extends Screen {
         this.leftPos = (width - imageWidth) / 2;
         this.topPos = (height - imageHeight) / 2;
         if (achievements == null) {
-            Map<ResourceLocation, AchievementOffset> map = AchievementOffsetLoader.load(getMinecraft().getResourceManager());
+            Map<ResourceLocation, AchievementOffset> map = AchievementOffset.Loader.load(getMinecraft().getResourceManager());
             Map<ResourceLocation, AchievementOffset> values = new LinkedHashMap<>(map.size());
             Map<ResourceLocation, Triple<ResourceLocation, Component, Component>> displays = new HashMap<>();
             map.entrySet().stream().sorted(Comparator.comparingInt(entry -> entry.getValue().order()))

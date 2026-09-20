@@ -8,11 +8,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.Iterator;
 import java.util.Queue;
@@ -48,14 +48,14 @@ final class MeteorShowerSprite {
         poseStack.mulPose(quaternionf);
         RenderSystem.setShaderColor(1, 1, 1, alpha * a);
         Matrix4f matrix4f = poseStack.last().pose();
-        builder.vertex(matrix4f, -radius, 100, -radius).uv(0.0F, v1);
-        builder.vertex(matrix4f, radius, 100, -radius).uv(1.0F, v1);
-        builder.vertex(matrix4f, radius, 100, radius).uv(1.0F, v0);
-        builder.vertex(matrix4f, -radius, 100, radius).uv(0.0F, v0);
+        builder.vertex(matrix4f, -radius, 100, -radius).uv(0.0F, v0).endVertex();
+        builder.vertex(matrix4f, radius, 100, -radius).uv(1.0F, v0).endVertex();
+        builder.vertex(matrix4f, radius, 100, radius).uv(1.0F, v1).endVertex();
+        builder.vertex(matrix4f, -radius, 100, radius).uv(0.0F, v1).endVertex();
         poseStack.popPose();
     }
 
-    static void renderMeteorShower(LocalPlayer player, PortRenderLevelStageEvent event) {
+    static void renderMeteorShower(LocalPlayer player, RenderLevelStageEvent event) {
         if (player.level().dimension() != OverworldUtils.dimension()) return;
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
@@ -63,10 +63,10 @@ final class MeteorShowerSprite {
         RenderSystem.setShaderTexture(0, TEXTURE);
         BufferBuilder builder = Tesselator.getInstance().getBuilder();
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         float a = Math.max(1.0F - player.level().getRainLevel(partialTick), 0.2F);
         poseStack.pushPose();
-        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
+        poseStack.mulPose(event.getPoseStack().last().pose().getUnnormalizedRotation(new Quaternionf()));
         for (MeteorShowerSprite sprite : SPRITES) {
             sprite.render(builder, a);
         }

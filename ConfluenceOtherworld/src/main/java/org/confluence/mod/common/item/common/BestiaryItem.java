@@ -15,7 +15,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.data.saved.Bestiary;
-import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 
 public class BestiaryItem extends CustomRarityItem {
@@ -43,7 +42,7 @@ public class BestiaryItem extends CustomRarityItem {
             );
             if (entityHitResult != null && entityHitResult.getLocation().distanceToSqr(from) < sqr && entityHitResult.getEntity() instanceof LivingEntity living) {
                 if (Bestiary.canBeSeenAsBestiaryEntry(living)) {
-                    BestiaryEntry entry = Bestiary.INSTANCE.getOrCreateEntry(living);
+                    Bestiary.Entry entry = Bestiary.INSTANCE.getOrCreateEntry(living);
                     entry.killedByCount += 100;
                     BestiarySyncPacketS2C.syncEntry(living, entry);
                 }

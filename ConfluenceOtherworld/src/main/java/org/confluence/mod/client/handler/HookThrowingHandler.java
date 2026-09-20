@@ -1,6 +1,5 @@
 package org.confluence.mod.client.handler;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +30,6 @@ public final class HookThrowingHandler {
     public static void handle(LocalPlayer player) {
         if (player.hasEffect(ModEffects.SHIMMER)) return;
         if (!ILocalPlayer.of(player).confluence$isCanMove()) return;
-        if (Minecraft.getInstance().isPaused()) return;
         boolean isDown = false;
         while (ModKeyBindings.HOOK.get().consumeClick()) isDown = true;
         if (isDown) HookThrowingPacketC2S.push();

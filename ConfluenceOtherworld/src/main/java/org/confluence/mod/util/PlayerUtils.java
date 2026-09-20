@@ -23,6 +23,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ToolActions;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.api.event.CustomPickupRangeEvent;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
+import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
@@ -34,9 +36,9 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.ModEffects;
@@ -48,7 +50,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.AskForSoftcorePacket;
@@ -502,7 +503,7 @@ public final class PlayerUtils {
     public static void applySunflowerEffect(ServerPlayer player, ServerLevel level, long gameTime) {
         if (gameTime % 200 == 0) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
-            if (iSection != null && iSection.confluence$getBlockCounts().sunflower > 0) {
+            if (iSection != null && ModBlockCounters.SUNFLOWER.get(iSection.confluence$getBlockCounts()) > 0) {
                 player.addEffect(new MobEffectInstance(ModEffects.HAPPY.get(), 220));
             }
         }

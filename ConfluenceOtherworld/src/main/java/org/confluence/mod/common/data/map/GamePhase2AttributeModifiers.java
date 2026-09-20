@@ -18,7 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;

@@ -12,10 +12,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
+import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.monster.WaterBoltMimic;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.SandstormGameEvent;
@@ -28,10 +30,9 @@ import org.confluence.mod.common.init.entity.CritterEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.DateUtils;
-import org.confluence.mod.util.DynamicBiomeUtils;
+import org.confluence.mod.util.ModBlockCounters;
 import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
@@ -309,7 +310,7 @@ public final class SpawnPlacementChecks {
 
     public static boolean checkGhostSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         ILevelChunkSection section = DynamicBiomeUtils.getISection(level, pos);
-        return section != null && section.confluence$isGraveyard() && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
+        return ModBlockCounters.isGraveyard(section) && checkRoutineMonsterSpawn(type, level, spawnType, pos, random);
     }
 
     public static boolean checkWeddingZombieSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {

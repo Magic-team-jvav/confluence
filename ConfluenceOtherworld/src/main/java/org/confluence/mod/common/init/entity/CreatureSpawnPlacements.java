@@ -9,9 +9,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.registries.RegistryObject;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.util.LibDateUtils;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.animal.Fairy;
@@ -21,7 +22,7 @@ import org.confluence.mod.common.entity.monster.humanoid.Zombie;
 import org.confluence.mod.common.entity.monster.slime.BaseSlime;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.util.DynamicBiomeUtils;
+import org.confluence.mod.util.ModBlockCounters;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.event.entity.PortRegisterSpawnPlacementsEvent;
@@ -277,7 +278,7 @@ public final class CreatureSpawnPlacements {
         if (!(level instanceof ServerLevel world) || world.isRaining() || !checkSurfaceDayCritterSpawn(type, level, spawnType, pos, random))
             return false;
         var section = DynamicBiomeUtils.getISection(level, pos);
-        if (section != null && section.confluence$isGraveyard()) return false;
+        if (ModBlockCounters.isGraveyard(section)) return false;
         ConfluenceData data = ConfluenceData.get(world);
         return data.getWindSpeedX() * data.getWindSpeedX() + data.getWindSpeedZ() * data.getWindSpeedZ() < 0.25F;
     }
@@ -294,7 +295,7 @@ public final class CreatureSpawnPlacements {
         if (!(level instanceof ServerLevel world) || !world.isNight() || pos.getY() <= OverworldUtils.getSurfaceY() || !level.canSeeSky(pos))
             return false;
         var section = DynamicBiomeUtils.getISection(level, pos);
-        if (section != null && section.confluence$isGraveyard()) return false;
+        if (ModBlockCounters.isGraveyard(section)) return false;
         ConfluenceData data = ConfluenceData.get(world);
         if (data.getWindSpeedX() * data.getWindSpeedX() + data.getWindSpeedZ() * data.getWindSpeedZ() >= 0.25F)
             return false;

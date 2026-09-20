@@ -29,7 +29,7 @@ import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.network.TeamPacket;

@@ -21,6 +21,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.WalkAnimationState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
@@ -29,7 +30,6 @@ import org.confluence.mod.network.s2c.SummonSyncPacketS2C;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.*;
 
@@ -102,12 +102,12 @@ public final class ClientSummonManager {
         if (entries.isEmpty()) CLOCK_OFFSETS.remove(ownerId);
     }
 
-    public static void render(PortRenderLevelStageEvent event) {
-        if (event.getStage() == PortRenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+    public static void render(RenderLevelStageEvent event) {
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
             externalShaderPipeline = RenderSystem.getShader() != null
                     && RenderSystem.getShader().getClass().getSimpleName().equals("ExtendedShader");
         }
-        if (event.getStage() != PortRenderLevelStageEvent.Stage.AFTER_PARTICLES || STATES.isEmpty()) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES || STATES.isEmpty()) {
             return;
         }
         Minecraft minecraft = Minecraft.getInstance();
@@ -151,13 +151,13 @@ public final class ClientSummonManager {
         GEO_VISUALS.remove(id);
     }
 
-    private static void renderGeoVisual(State state, ClientSummonModels.Binding binding, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
+    private static void renderGeoVisual(State state, ClientSummonModels.Binding binding, RenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null) {
             return;
         }
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         Vec3 position = state.renderPosition(partialTick);
         ClientSummonVisual visual = GEO_VISUALS.compute(state.current.id(), (id, existing) -> existing != null && existing.type().equals(state.current.type())
                 ? existing : new ClientSummonVisual(id, state.current.type(), binding.animations()));
@@ -179,13 +179,13 @@ public final class ClientSummonManager {
         poseStack.popPose();
     }
 
-    private static void renderStardustDragonPart(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
+    private static void renderStardustDragonPart(State state, RenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null) {
             return;
         }
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         Vec3 position = state.interpolatedPosition(partialTick);
         Vec3 camera = event.getCamera().getPosition();
         PoseStack poseStack = event.getPoseStack();
@@ -205,12 +205,12 @@ public final class ClientSummonManager {
         poseStack.popPose();
     }
 
-    private static void renderMissingSummon(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
+    private static void renderMissingSummon(State state, RenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) {
             return;
         }
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         Vec3 position = state.interpolatedPosition(partialTick);
         Vec3 camera = event.getCamera().getPosition();
         PoseStack poseStack = event.getPoseStack();
@@ -232,10 +232,9 @@ public final class ClientSummonManager {
     }
 
 
-
-    private static void renderTerraprisma(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource) {
+    private static void renderTerraprisma(State state, RenderLevelStageEvent event, MultiBufferSource bufferSource) {
         Minecraft minecraft = Minecraft.getInstance();
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         Vec3 position = state.renderPosition(partialTick);
         PoseStack poseStack = event.getPoseStack();
         poseStack.pushPose();
@@ -272,7 +271,7 @@ public final class ClientSummonManager {
         poseStack.popPose();
     }
 
-    private static void renderTrail(State state, PortRenderLevelStageEvent event, MultiBufferSource bufferSource, float width, int rgb) {
+    private static void renderTrail(State state, RenderLevelStageEvent event, MultiBufferSource bufferSource, float width, int rgb) {
         if (state.trailSamples.size() < 2) {
             return;
         }

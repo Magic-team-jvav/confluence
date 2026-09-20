@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RotationSegment;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.common.block.functional.enemybanner.AbstractEnemyBannerBlock;
 import org.confluence.mod.common.block.functional.enemybanner.EnemyBannerBlock;
 import org.confluence.mod.common.block.functional.enemybanner.WallEnemyBannerBlock;
@@ -66,7 +65,7 @@ public class EnemyBannerBlockRenderer implements BlockEntityRenderer<AbstractEne
         flag.xRot = 0;
         flag.y = -32.0F;
         flag.render(poseStack, consumer, packedLight, packedOverlay);
-        ClientBestiaryEntry entry = ClientBestiary.getInstance().getEntry(blockEntity.entryKey);
+        ClientBestiary.Entry entry = ClientBestiary.getInstance().getEntry(blockEntity.entryKey);
         if (entry != null) {
             LivingEntity living = entry.getRenderedEntity(Minecraft.getInstance().level);
             if (living != null) {

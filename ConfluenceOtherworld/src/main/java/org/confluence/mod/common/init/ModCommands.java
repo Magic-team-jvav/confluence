@@ -35,6 +35,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.server.command.EnumArgument;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
+import org.confluence.lib.common.worldgen.biome.MiniBiome;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkBrushData;
@@ -42,15 +44,18 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import org.confluence.mod.common.data.GameEventArgument;
-import org.confluence.mod.common.data.PrefixArgument;
+import org.confluence.mod.common.data.BrushData;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.StarPhase;
-import org.confluence.mod.common.data.saved.*;
+import org.confluence.mod.common.data.command.GameEventArgument;
+import org.confluence.mod.common.data.command.PrefixArgument;
+import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.gameevent.GameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
-import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
@@ -60,6 +65,7 @@ import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
@@ -200,6 +206,35 @@ public final class ModCommands {
                             return Component.literal(pos + " " + result);
                         }
                     }, true);
+                    return 0;
+                }))
+                .then(Commands.literal("judgeMiniBiome").executes(context -> {
+                    Level level;
+                    BlockPos pos;
+                    if (context.getSource().source instanceof Entity entity) {
+                        level = entity.level();
+                        pos = entity.blockPosition();
+                    } else if (context.getSource().source instanceof BaseCommandBlock commandBlock) {
+                        level = commandBlock.getLevel();
+                        Vec3 position = commandBlock.getPosition();
+                        pos = new BlockPos((int) position.x, (int) position.y, (int) position.z);
+                    } else {
+                        return 1;
+                    }
+                    BlockPos finalPos = pos;
+                    List<MiniBiome.Marker> markers = MiniBiome.markersAt(level, pos);
+                    context.getSource().sendSuccess(() -> {
+                        if (markers.isEmpty()) return Component.literal(finalPos + " no mini biome");
+                        StringBuilder builder = new StringBuilder(finalPos + " mini biomes:");
+                        for (MiniBiome.Marker marker : markers) {
+                            builder.append("\n  ").append(marker.id())
+                                    .append(" count=").append(marker.count())
+                                    .append(" threshold=").append(marker.threshold())
+                                    .append(" priority=").append(marker.priority())
+                                    .append(" influence=").append(String.format("%.2f", marker.influence()));
+                        }
+                        return Component.literal(builder.toString());
+                    }, false);
                     return 0;
                 }))
                 .then(Commands.literal("mana")

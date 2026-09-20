@@ -20,7 +20,7 @@ import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.BiomeChestBlock;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;

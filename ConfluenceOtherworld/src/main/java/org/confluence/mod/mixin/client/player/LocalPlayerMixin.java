@@ -6,8 +6,8 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import org.confluence.mod.client.handler.ScryingOrbHandler;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
-import org.confluence.mod.common.item.common.ScryingOrb;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.MountInputPacketC2S;
 import org.spongepowered.asm.mixin.Final;
@@ -55,14 +55,14 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
     // 使用占卜球的时候要发送自己的位置给服务端
     @ModifyExpressionValue(method = "sendPosition", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isControlledCamera()Z"))
     private boolean sendPos(boolean original) {
-        return original || ScryingOrb.spectatingPlayer != null;
+        return original || ScryingOrbHandler.spectatingPlayer != null;
     }
 
     // 客户端玩家受伤没事件的
     // 受伤让视角返回自己
     @Inject(method = "hurt", at = @At("HEAD"))
     private void hurt(CallbackInfoReturnable<Boolean> cir) {
-        ScryingOrb.stopSpectating();
+        ScryingOrbHandler.stopSpectating();
     }
 
     /// 把本体坐骑共用的跳跃键边沿发送给服务端。首次骑乘时也发送松开状态，避免沿用上一会话的输入。

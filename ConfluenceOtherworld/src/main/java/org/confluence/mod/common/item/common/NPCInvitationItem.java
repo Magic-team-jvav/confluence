@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 
 public class NPCInvitationItem extends TooltipItem {
     public NPCInvitationItem() {

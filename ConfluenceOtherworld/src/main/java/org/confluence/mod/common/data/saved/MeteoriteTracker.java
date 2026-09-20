@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
+import it.unimi.dsi.fastutil.longs.LongArrayList;
+import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -21,6 +23,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.entity.BossEntities;
+import org.confluence.mod.common.worldgen.feature.MeteoriteFeature;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.jetbrains.annotations.NotNull;
 
@@ -53,7 +56,7 @@ public enum MeteoriteTracker {
             tickUntilLanding--;
             if (tickUntilLanding == 0) {
                 ChunkPos chunkPos = new ChunkPos(location);
-                place(level, chunkPos.x, chunkPos.z, !level.getForcedChunks().contains(chunkPos.toLong()), new BlockPos(location));
+                place(level, chunkPos.x, chunkPos.z, new BlockPos(location));
                 ConfluenceData.get(level).setDirty();
             }
         }
@@ -132,15 +135,36 @@ public enum MeteoriteTracker {
         ConfluenceData.get(level).setDirty();
     }
 
-    private void place(ServerLevel level, int chunkX, int chunkZ, boolean withForceChunk, BlockPos origin) {
+    /// 陨石落地时覆盖的区块半径：1 表示 3×3 区块（与 [MeteoriteFeature.Config#radius()] 对应）。
+    public static final int LANDING_CHUNK_RADIUS = 1;
+
+    /// 落地时把整片 3×3 区域强制加载再放方块。
+    ///
+    /// 必须这样：陨石现在横跨 3 个区块（半径 23，坑心对齐到区块内 local (7,7)），
+    /// 隔着未加载的区块写方块轻则写入丢失，重则在 tick 里触发级联加载。
+    /// 只强制/释放**本来没被强制**的区块，不动别人的 ticket。
+    private void place(ServerLevel level, int chunkX, int chunkZ, BlockPos origin) {
+        LongList forced = new LongArrayList();
+        for (int dx = -LANDING_CHUNK_RADIUS; dx <= LANDING_CHUNK_RADIUS; dx++) {
+            for (int dz = -LANDING_CHUNK_RADIUS; dz <= LANDING_CHUNK_RADIUS; dz++) {
+                int cx = chunkX + dx;
+                int cz = chunkZ + dz;
+                long key = ChunkPos.asLong(cx, cz);
+                if (!level.getForcedChunks().contains(key) && level.setChunkForced(cx, cz, true)) {
+                    forced.add(key);
+                }
+            }
+        }
+
         boolean placed = false;
-        if (withForceChunk) level.setChunkForced(chunkX, chunkZ, true);
         try {
             level.registryAccess().holderOrThrow(METEORITE)
                     .value().place(level, level.getChunkSource().getGenerator(), level.random, origin);
             placed = true;
         } catch (Exception ignored) {}
-        if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);
+        for (long key : forced) {
+            level.setChunkForced(ChunkPos.getX(key), ChunkPos.getZ(key), false);
+        }
 
         if (placed) {
             Component message = Component.translatable("event.confluence.meteorite").withColor(GlobalColors.MESSAGE.get());

@@ -10,17 +10,13 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.mixin.client.renderer.entity.LivingEntityRendererAccessor;
-import org.mesdag.portlib.event.client.PortRenderPlayerEvent;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /// 忍者套装效果：移动时在玩家身后留下短暂的黑色残影。
 public final class AfterimageHelper {
@@ -59,7 +55,7 @@ public final class AfterimageHelper {
         ));
     }
 
-    public static void render(PortRenderPlayerEvent.Pre event) {
+    public static void render(RenderPlayerEvent.Pre event) {
         if (!(event.getEntity() instanceof AbstractClientPlayer player)) return;
 
         Deque<Ghost> trail = TRAILS.get(player.getUUID());
@@ -103,7 +99,7 @@ public final class AfterimageHelper {
         private final float bob;
         private final Vec3 current;
 
-        private TrailRenderer(PortRenderPlayerEvent.Pre event, AbstractClientPlayer player) {
+        private TrailRenderer(RenderPlayerEvent.Pre event, AbstractClientPlayer player) {
             PlayerRenderer renderer = event.getRenderer();
             this.model = renderer.getModel();
             this.poseStack = event.getPoseStack();

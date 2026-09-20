@@ -49,11 +49,11 @@ import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.AchievementOffset;
+import org.confluence.mod.common.data.Team;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
-import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.data.saved.Team;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.entity.monster.BaseMimic;
@@ -428,7 +428,7 @@ public final class PlayerEvents {
         Advancement advancement = event.getAdvancement();
         ServerPlayer player = (ServerPlayer) event.getEntity();
         DisplayInfo display = advancement.getDisplay();
-        if (display != null && !display.shouldAnnounceChat() && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.getId())) {
+        if (display != null && !display.shouldAnnounceChat() && AchievementOffset.Loader.getDisplayOffset().containsKey(advancement.getId())) {
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), advancement.getChatComponent()), false);
         }
     }

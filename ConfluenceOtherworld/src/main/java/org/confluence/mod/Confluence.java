@@ -12,6 +12,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
@@ -35,13 +36,11 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.SummonerEvents;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.confluence.mod.common.summoner.register.SummonerRegistries;
-import org.confluence.mod.common.summoner.register.SummonerSoundEvents;
-import org.confluence.mod.common.summoner.register.SummonerSummonMarks;
+import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
+import org.confluence.mod.util.ModDynamicBiomes;
+import org.confluence.mod.util.ModMiniBiomes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +56,10 @@ public final class Confluence {
 
     public Confluence(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();
+        // 消费动态群系 / 迷你群系标记的方块计数。必须在任何世界加载之前调用。
+        ModDynamicBiomes.init(); // 注册计数器与判定规则（计数数组长度在此后固化）
+        ModMiniBiomes.init();    // 注册迷你生物群系标记
+        DynamicBiomeUtils.enable();
         StartupConfigs.register();
         CommonConfigs.register(context);
         NetworkEvents.init();

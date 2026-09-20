@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data.spawner;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.datafixers.util.Pair;
@@ -46,6 +46,10 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.data.GamePhase;
+import org.confluence.mod.common.data.saved.Bestiary;
+import org.confluence.mod.common.data.saved.HouseHandler;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.npc.AnglerNPC;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.TravelingMerchantNPC;
@@ -75,6 +79,11 @@ import java.util.function.Predicate;
 public enum NPCSpawner implements IGlobalData {
     INSTANCE;
     public static final int CURRENT_VERSION = 1;
+    /// NPC「已存在」判定半径（方块）。玩家活动区跨 region 时，同一个 NPC 会在相邻 region 被
+    /// 重复生成；除了 region 标记之外再按附近真实实体做一次兜底检查。
+    public static final int NPC_PRESENCE_CHECK_RADIUS = 128;
+    /// 城镇（NPC 小镇）判定：region 内已入住 NPC 数量门槛。泰拉为 3。
+    public static final int TOWN_NPC_THRESHOLD = 3;
     public static final Codec<Map<Region, Reference2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC;
     public static final Codec<Set<EntityType<?>>> NPC_SPAWNED_CODEC;
 
@@ -141,6 +150,45 @@ public enum NPCSpawner implements IGlobalData {
     public boolean hasNPCAlive(Region region, EntityType<?> entityType) {
         Reference2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         return map != null && map.getOrDefault(entityType, false);
+    }
+
+    /// 任意 region 的存活标记。
+    ///
+    /// `npcSpawned` 里的 NPC 在世界范围内是唯一的（泰拉语义），只按玩家当前 region 判定，
+    /// 会让玩家活动区跨 region 时多刷出一套相同的 NPC。
+    public boolean isNpcAliveAnywhere(EntityType<?> entityType) {
+        for (Reference2BooleanMap<EntityType<?>> map : npcAlive.values()) {
+            if (map.getOrDefault(entityType, false)) return true;
+        }
+        return false;
+    }
+
+    /// 附近是否已经存在该类型的真实实体。
+    ///
+    /// `npcAlive` 是持久化的布尔表，可能因实体卸载 / 死亡未走 {@link #onNPCRemoved} 而失真，
+    /// 所以唯一性判定要拿真实实体兜底一次。
+    public static boolean isNpcNearby(Level level, BlockPos pos, EntityType<?> entityType, double radius) {
+        AABB area = new AABB(pos).inflate(radius);
+        for (BaseNPC npc : level.getEntitiesOfClass(BaseNPC.class, area)) {
+            if (npc.isAlive() && npc.getType() == entityType) return true;
+        }
+        return false;
+    }
+
+    /// NPC 是否已存在（生成前的唯一性判定），取代原先「只看玩家当前 region」的写法。
+    ///
+    /// 旅商、老人、骷髅商人等一次性 NPC 不入 `npcSpawned`，仍由各自逻辑管理，
+    /// 这里只对它们做「附近有没有实体」的检查。
+    public boolean isNpcAlreadyPresent(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
+        if (isNpcNearby(level, pos, entityType, NPC_PRESENCE_CHECK_RADIUS)) return true;
+        return npcSpawned.contains(entityType) && isNpcAliveAnywhere(entityType);
+    }
+
+    /// 城镇（NPC 小镇）判定：该 region 内已入住的 NPC 数量是否达到门槛。
+    ///
+    /// 迷你生物群系里的「小镇」标记直接用这个；`getAliveNpcCount` 已经排除了骷髅商人与城镇史莱姆。
+    public boolean isTown(Region region) {
+        return getAliveNpcCount(region, type -> true) >= TOWN_NPC_THRESHOLD;
     }
 
     public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
@@ -330,7 +378,8 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private boolean trySpawnCoolSlime(ServerLevel level, BlockPos pos, Region region) {
-        if (!PartyGameEvent.INSTANCE.isNatural() || hasNPCAlive(region, NpcEntities.COOL_SLIME.get()))
+        if (!PartyGameEvent.INSTANCE.isNatural() || hasNPCAlive(region, NpcEntities.COOL_SLIME.get())
+                || isNpcNearby(level, pos, NpcEntities.COOL_SLIME.get(), NPC_PRESENCE_CHECK_RADIUS))
             return false;
         var slime = NpcEntities.COOL_SLIME.get().create(level);
         if (slime == null) return false;
@@ -364,7 +413,7 @@ public enum NPCSpawner implements IGlobalData {
         boolean golfer = !npcSpawned.contains(NpcEntities.GOLFER.get()) && level.getBiome(player.blockPosition()).is(PortTags.Biomes.IS_DESERT);
         EntityType<? extends BaseNPC> type = golfer ? NpcEntities.GOLFER.get() : NpcEntities.SKELETON_MERCHANT.get();
         Region region = new Region(player.blockPosition());
-        if (hasNPCAlive(region, type) || player.getRandom().nextInt(8) != 0) return false;
+        if (isNpcAlreadyPresent(level, player.blockPosition(), type) || player.getRandom().nextInt(8) != 0) return false;
         BaseNPC npc = type.create(level);
         if (npc == null) return false;
         for (int attempt = 0; attempt < 32; attempt++) {
@@ -483,7 +532,7 @@ public enum NPCSpawner implements IGlobalData {
     private boolean trySpawnAngler(ServerPlayer player, Region region) {
         BlockPos playerPos = player.blockPosition();
         Region playerRegion = new Region(playerPos);
-        if (!hasNPCAlive(playerRegion, NpcEntities.ANGLER.get()) && !hasNPCAlive(region, NpcEntities.ANGLER.get())) { // 保证玩家转移渔夫区域时不再生成新的
+        if (!isNpcAlreadyPresent(player.serverLevel(), playerPos, NpcEntities.ANGLER.get())) { // 保证玩家转移渔夫区域时不再生成新的
             Level level = player.serverLevel();
             Pair<BlockPos, Holder<Biome>> closestBiome3d = player.serverLevel().findClosestBiome3d(biome -> biome.is(PortTags.Biomes.IS_OCEAN), playerPos, 64, 8, 64);
             if (closestBiome3d != null) {
@@ -598,7 +647,8 @@ public enum NPCSpawner implements IGlobalData {
                                 default -> templatePiece.templatePosition().offset(15, 6, 15);
                             };
                             Region npcRegion = new Region(offset);
-                            if (!hasNPCAlive(npcRegion, NpcEntities.OLD_MAN.get())) {
+                            if (!hasNPCAlive(npcRegion, NpcEntities.OLD_MAN.get())
+                                    && !isNpcNearby(level, offset, NpcEntities.OLD_MAN.get(), NPC_PRESENCE_CHECK_RADIUS)) {
                                 BaseNPC npc = NpcEntities.OLD_MAN.get().create(level);
                                 if (npc == null) return false;
                                 npc.setPos(offset.getBottomCenter());
@@ -634,7 +684,8 @@ public enum NPCSpawner implements IGlobalData {
                         if (piece instanceof SimpleTemplatePiece templatePiece && templatePiece.templateName.endsWith("_dungeon_underground_2_2")) {
                             BlockPos offset = templatePiece.templatePosition().offset(46, 6, -11);
                             Region npcRegion = new Region(offset);
-                            if (!hasNPCAlive(npcRegion, NpcEntities.MECHANIC.get())) {
+                            if (!hasNPCAlive(npcRegion, NpcEntities.MECHANIC.get())
+                                    && !isNpcNearby(level, offset, NpcEntities.MECHANIC.get(), NPC_PRESENCE_CHECK_RADIUS)) {
                                 BaseNPC npc = NpcEntities.MECHANIC.get().create(level);
                                 if (npc == null) return false;
                                 npc.setPos(offset.getBottomCenter());
@@ -655,6 +706,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
+        if (isNpcAlreadyPresent(level, pos, entityType)) return false; // 玩家活动区跨 region 时不再生成第二套
         if (!(entityType.create(level) instanceof BaseNPC npc)) return false;
         npc.setPos(adjustSpawnLocation(level, pos, npc).getBottomCenter());
         if (!level.addFreshEntity(npc)) return false;

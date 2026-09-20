@@ -3,6 +3,7 @@ package org.confluence.mod.mixed;
 import net.minecraft.server.MinecraftServer;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.worldgen.secret_seed.SecretSeed;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +46,7 @@ public interface IMinecraftServer {
         return server != null && matchesSecretFlag(server, flag);
     }
 
-    /// @see org.confluence.mod.common.data.saved.GamePhase#isHardmode
+    /// @see GamePhase#isHardmode
     static boolean isHardmode(MinecraftServer server) {
         return IMinecraftServer.of(server).confluence$matchesSecretFlag(IWorldOptions.HARDMODE);
     }

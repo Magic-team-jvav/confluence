@@ -2,7 +2,7 @@ package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 
 /// 未获救时留在地牢中的机械师。

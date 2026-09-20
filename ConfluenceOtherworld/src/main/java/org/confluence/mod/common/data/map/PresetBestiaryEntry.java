@@ -3,30 +3,30 @@ package org.confluence.mod.common.data.map;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import net.minecraft.world.entity.LivingEntity;
-import org.confluence.mod.common.data.saved.BestiaryEntry;
+import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.function.Function;
 
-public record PresetBestiaryEntry(Either<BestiaryEntry, Map<String, BestiaryEntry>> either) {
+public record PresetBestiaryEntry(Either<Bestiary.Entry, Map<String, Bestiary.Entry>> either) {
     public static final Codec<PresetBestiaryEntry> CODEC = Codec.either(
-            BestiaryEntry.CODEC, Codec.unboundedMap(Codec.STRING, BestiaryEntry.CODEC)
+            Bestiary.Entry.CODEC, Codec.unboundedMap(Codec.STRING, Bestiary.Entry.CODEC)
     ).xmap(PresetBestiaryEntry::new, PresetBestiaryEntry::either);
 
-    public PresetBestiaryEntry(BestiaryEntry entry) {
+    public PresetBestiaryEntry(Bestiary.Entry entry) {
         this(Either.left(entry));
     }
 
-    public PresetBestiaryEntry(Map<String, BestiaryEntry> map) {
+    public PresetBestiaryEntry(Map<String, Bestiary.Entry> map) {
         this(Either.right(map));
     }
 
-    public static @Nullable BestiaryEntry getEntry(LivingEntity living, String key) {
+    public static @Nullable Bestiary.Entry getEntry(LivingEntity living, String key) {
         PresetBestiaryEntry preset = ModDataMaps.getEntityData(ModDataMaps.BESTIARY_ENTRY, living.getType());
         if (preset == null) return null;
-        BestiaryEntry entry = preset.either.map(Function.identity(), map -> map.get(key));
+        Bestiary.Entry entry = preset.either.map(Function.identity(), map -> map.get(key));
         if (entry == null) return null;
         entry = entry.copy();
         entry.key = key;

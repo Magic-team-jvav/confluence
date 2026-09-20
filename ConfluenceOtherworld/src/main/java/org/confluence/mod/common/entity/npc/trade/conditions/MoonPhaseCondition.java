@@ -3,7 +3,7 @@ package org.confluence.mod.common.entity.npc.trade.conditions;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
-import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.data.MoonPhase;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.TradeCondition;
 import org.confluence.mod.common.init.ModTradeConditions;

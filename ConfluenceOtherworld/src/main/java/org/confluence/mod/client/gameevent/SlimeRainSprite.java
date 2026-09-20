@@ -9,11 +9,11 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.Queue;
 
@@ -69,9 +69,9 @@ final class SlimeRainSprite {
         poseStack.popPose();
     }
 
-    static void renderSlimeRain(LocalPlayer player, PortRenderLevelStageEvent event) {
+    static void renderSlimeRain(LocalPlayer player, RenderLevelStageEvent event) {
         if (player.level().dimension() != OverworldUtils.dimension()) return;
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         float rainLevel = player.level().getRainLevel(partialTick);
         if (rainLevel > 1 - Mth.EPSILON) return;
         RenderSystem.depthMask(false);
@@ -79,7 +79,7 @@ final class SlimeRainSprite {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         float a = (1.0F - rainLevel) * 0.5F;
         poseStack.pushPose();
-        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
+        poseStack.mulPose(event.getPoseStack().last().pose().getUnnormalizedRotation(new Quaternionf()));
         for (SlimeRainSprite sprite : SPRITES) {
             sprite.render(partialTick, a);
         }

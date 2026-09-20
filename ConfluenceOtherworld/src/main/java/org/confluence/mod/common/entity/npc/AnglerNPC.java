@@ -26,7 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.AnglerData;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.item.ArmorItems;

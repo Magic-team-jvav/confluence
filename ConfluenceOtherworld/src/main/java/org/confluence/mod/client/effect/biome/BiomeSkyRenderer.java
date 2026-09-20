@@ -1,9 +1,9 @@
 package org.confluence.mod.client.effect.biome;
 
 import net.minecraft.client.player.LocalPlayer;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 
 @FunctionalInterface
 public interface BiomeSkyRenderer {
-    void render(LocalPlayer player, PortRenderLevelStageEvent event, float alphaMul);
+    void render(LocalPlayer player, RenderLevelStageEvent event, float alphaMul);
 }

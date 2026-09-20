@@ -49,7 +49,6 @@ public class GraniteCaveStructure extends Structure {
             Vector3f start = new Vector3f(centerPos.getX() + random.nextInt(-3, 4), centerPos.getY() + 20, centerPos.getZ() + random.nextInt(-3, 4));
             Vector3f end = new Vector3f(centerPos.getX() + random.nextInt(-3, 4), centerPos.getY() - 20, centerPos.getZ() + random.nextInt(-3, 4));
             BlockPos checkPos;
-            int blockstate = 1;
 
             List<Vector3f> listPos = frustumSetPos(start, end, random.nextInt(38, 41) + 0.5F, random.nextInt(38, 41) + 0.5F, 0.0002F, random);
             List<Vector3f> listPos1 = new ArrayList<>();
@@ -65,7 +64,7 @@ public class GraniteCaveStructure extends Structure {
             }
             for (Vector3f vector3d : listPos2) {
                 checkPos = LibMathUtils.fromVector3f(vector3d);
-                ellipsoid(9.5F, 4.5F, 9.5F, checkPos, blockstate, true, blockMap);
+                ellipsoid(9.5F, 4.5F, 9.5F, checkPos, 1, true, blockMap);
             }
             for (Vector3f vector3d : listPos2) {
                 checkPos = LibMathUtils.fromVector3f(vector3d);
@@ -79,13 +78,12 @@ public class GraniteCaveStructure extends Structure {
             }
             for (Vector3f vector3d : listPos3) {
                 checkPos = LibMathUtils.fromVector3f(vector3d);
-                ellipsoid(random.nextInt(4, 9) + 0.5F, 0.1F, random.nextInt(4, 9) + 0.5F, checkPos, blockstate, true, blockMap);
+                ellipsoid(random.nextInt(4, 9) + 0.5F, 0.1F, random.nextInt(4, 9) + 0.5F, checkPos, 1, true, blockMap);
             }
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
-                    NatureBlocks.GRANITE.get().defaultBlockState(),
-                    Blocks.GRANITE.defaultBlockState()
+                    NatureBlocks.GRANITE.get().defaultBlockState()
             ), builder);
         });
     }

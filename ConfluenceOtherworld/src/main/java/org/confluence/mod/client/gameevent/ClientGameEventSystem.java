@@ -2,20 +2,19 @@ package org.confluence.mod.client.gameevent;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.api.event.gameevent.GameEventAfterRenderSkyRegisterEvent;
 import org.confluence.mod.api.event.gameevent.GameEventSyncCallbackRegisterEvent;
-import org.confluence.mod.common.data.saved.SpecificMoonVariant;
+import org.confluence.mod.common.data.SpecificMoonVariant;
 import org.confluence.mod.common.gameevent.*;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.portlib.event.PortEventHandler;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.*;
 
@@ -43,12 +42,10 @@ public final class ClientGameEventSystem {
     private static final Set<ResourceKey<? extends GameEvent>> RUNNING_EVENTS = new HashSet<>();
 
     public static void handle(LocalPlayer player) {
-        if (!Minecraft.getInstance().isPaused()) {
-            long gameTime = player.level().getGameTime();
-            SlimeRainSprite.tick(gameTime);
-            MeteorShowerSprite.tick(gameTime);
-            LanternNightSprite.tick(player);
-        }
+        long gameTime = player.level().getGameTime();
+        SlimeRainSprite.tick(gameTime);
+        MeteorShowerSprite.tick(gameTime);
+        LanternNightSprite.tick(player);
     }
 
     public static void handlePacket(Player player, List<ResourceKey<? extends GameEvent>> keys, boolean start) {
@@ -98,7 +95,7 @@ public final class ClientGameEventSystem {
         return RUNNING_EVENTS.contains(key);
     }
 
-    public static void afterRenderSky(PortRenderLevelStageEvent event, LocalPlayer player) {
+    public static void afterRenderSky(RenderLevelStageEvent event, LocalPlayer player) {
         if (afterRenderSky.isEmpty()) return;
         for (AfterRenderSky renderSky : afterRenderSky.values()) {
             renderSky.render(player, event);

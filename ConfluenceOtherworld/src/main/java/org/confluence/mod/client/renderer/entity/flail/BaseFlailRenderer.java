@@ -131,10 +131,10 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
 
         PoseStack.Pose pose = poseStack.last();
         VertexConsumer consumer = buffers.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(entity)));
-        spriteVertex(consumer, pose, packedLight, -1.0F, -1.0F, 0.0F, 1.0F);
-        spriteVertex(consumer, pose, packedLight, 1.0F, -1.0F, 1.0F, 1.0F);
-        spriteVertex(consumer, pose, packedLight, 1.0F, 1.0F, 1.0F, 0.0F);
-        spriteVertex(consumer, pose, packedLight, -1.0F, 1.0F, 0.0F, 0.0F);
+        spriteVertex(consumer, pose, packedLight, -1.0F, -1.0F, 0.0F, 0.0F);
+        spriteVertex(consumer, pose, packedLight, 1.0F, -1.0F, 1.0F, 0.0F);
+        spriteVertex(consumer, pose, packedLight, 1.0F, 1.0F, 1.0F, 1.0F);
+        spriteVertex(consumer, pose, packedLight, -1.0F, 1.0F, 0.0F, 1.0F);
         poseStack.popPose();
     }
 
@@ -233,15 +233,15 @@ public class BaseFlailRenderer extends GeoEntityRenderer<BaseFlailEntity> {
             float normalX = (float) Math.cos(angle);
             float normalZ = (float) Math.sin(angle);
 
-            vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u0, 1, normalX, normalZ);
-            vertex(consumer, matrix, pose, packedLight, x, 0, z, u1, 1, normalX, normalZ);
-            vertex(consumer, matrix, pose, packedLight, x, 1, z, u1, 0, normalX, normalZ);
-            vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u0, 0, normalX, normalZ);
+            vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u0, 0, normalX, normalZ);
+            vertex(consumer, matrix, pose, packedLight, x, 0, z, u1, 0, normalX, normalZ);
+            vertex(consumer, matrix, pose, packedLight, x, 1, z, u1, 1, normalX, normalZ);
+            vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u0, 1, normalX, normalZ);
 
-            vertex(consumer, matrix, pose, packedLight, x, 0, z, u0, 1, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u1, 1, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u1, 0, -normalX, -normalZ);
-            vertex(consumer, matrix, pose, packedLight, x, 1, z, u0, 0, -normalX, -normalZ);
+            vertex(consumer, matrix, pose, packedLight, x, 0, z, u0, 0, -normalX, -normalZ);
+            vertex(consumer, matrix, pose, packedLight, -x, 0, -z, u1, 0, -normalX, -normalZ);
+            vertex(consumer, matrix, pose, packedLight, -x, 1, -z, u1, 1, -normalX, -normalZ);
+            vertex(consumer, matrix, pose, packedLight, x, 1, z, u0, 1, -normalX, -normalZ);
         }
     }
 

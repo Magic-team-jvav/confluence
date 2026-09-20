@@ -1,6 +1,5 @@
 package org.confluence.mod.client.handler;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -14,8 +13,8 @@ import java.util.Map;
 public final class DropletsHandler {
     private static @Nullable Map<ChunkPos, Map<BlockPos, ParticleOptions>> droplets = null;
 
-    public static void handle(Minecraft minecraft, LocalPlayer player) {
-        if (droplets == null || minecraft.isPaused()) return;
+    public static void handle(LocalPlayer player) {
+        if (droplets == null) return;
         ClientLevel level = player.clientLevel;
         for (Map.Entry<ChunkPos, Map<BlockPos, ParticleOptions>> entry : droplets.entrySet()) {
             for (Map.Entry<BlockPos, ParticleOptions> entry1 : entry.getValue().entrySet()) {

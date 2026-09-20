@@ -11,7 +11,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.data.saved.Bestiary;
-import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
 import org.mesdag.portlib.network.PortRegistryFriendlyByteBuf;
@@ -22,10 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public record BestiarySyncPacketS2C(
-        Either<Map<String, BestiaryEntry>, String> either) implements IPortPacket.S2C {
+        Either<Map<String, Bestiary.Entry>, String> either) implements IPortPacket.S2C {
     public static final ResourceLocation ID = Confluence.asResource("bestiary_sync");
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, BestiarySyncPacketS2C> STREAM_CODEC = PortByteBufCodecs.either(
-            LibStreamCodecUtils.map(HashMap::new, PortByteBufCodecs.STRING_UTF8, BestiaryEntry.STREAM_CODEC),
+            LibStreamCodecUtils.map(HashMap::new, PortByteBufCodecs.STRING_UTF8, Bestiary.Entry.STREAM_CODEC),
             PortByteBufCodecs.STRING_UTF8
     ).map(BestiarySyncPacketS2C::new, BestiarySyncPacketS2C::either);
 
@@ -49,7 +48,7 @@ public record BestiarySyncPacketS2C(
         }
     }
 
-    public static void syncEntry(LivingEntity living, BestiaryEntry entry) {
+    public static void syncEntry(LivingEntity living, Bestiary.Entry entry) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             PortPacketDistributor.sendToAllPlayers(new BestiarySyncPacketS2C(Either.left(Map.of(RegisterBestiaryKeyEvent.getKey(living), entry))));
         }

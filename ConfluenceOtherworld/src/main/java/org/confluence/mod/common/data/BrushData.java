@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.saved;
+package org.confluence.mod.common.data;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

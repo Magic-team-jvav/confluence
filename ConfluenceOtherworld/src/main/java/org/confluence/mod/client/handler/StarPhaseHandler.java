@@ -6,18 +6,17 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.StarPhase;
 import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.mesdag.portlib.client.PortDeltaTicker;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +43,13 @@ public final class StarPhaseHandler {
     });
     public static boolean enabled = false;
 
-    public static void render(PortRenderLevelStageEvent event) {
+    public static void render(RenderLevelStageEvent event, ClientLevel level) {
         if (!enabled) return;
 
-        Minecraft minecraft = Minecraft.getInstance();
-        ClientLevel level = minecraft.level;
-        if (level == null || level.dimension() != OverworldUtils.dimension()) return;
+        if (level.dimension() != OverworldUtils.dimension()) return;
         BufferBuilder builder = Tesselator.getInstance().getBuilder();
         PoseStack poseStack = new PoseStack();
-        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
+        poseStack.mulPose(event.getPoseStack().last().pose().getUnnormalizedRotation(new Quaternionf()));
 
         float partialTick = PortDeltaTicker.INSTANCE.getGameTimeDeltaPartialTick(false);
         float gameTime = (level.getGameTime() % 24000L) + partialTick;

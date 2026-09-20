@@ -46,7 +46,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.npc.ai.*;
 import org.confluence.mod.common.entity.npc.chat.ChatLine;
 import org.confluence.mod.common.entity.npc.chat.ChatManager;

@@ -6,8 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4f;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.function.Supplier;
 
@@ -57,7 +57,7 @@ public abstract class AbstractBufferManager {
         return builder;
     }
 
-    public void render(PortRenderLevelStageEvent event) {
+    public void render(RenderLevelStageEvent event) {
         render(event.getPoseStack(), Minecraft.getInstance().gameRenderer.getMainCamera().getPosition(), event.getProjectionMatrix());
     }
 

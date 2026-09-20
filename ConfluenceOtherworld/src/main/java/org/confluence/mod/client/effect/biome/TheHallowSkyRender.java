@@ -9,12 +9,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,14 +82,14 @@ public class TheHallowSkyRender {
         }
     }
 
-    public static void render(LocalPlayer player, PortRenderLevelStageEvent event, float alphaMul) {
+    public static void render(LocalPlayer player, RenderLevelStageEvent event, float alphaMul) {
         if (alphaMul < 0.01F) return;
 
         boolean change = ClientConfigs.rainbowGradient;
         int rainbowCount = ClientConfigs.rainbowCount;
 
         PoseStack poseStack = new PoseStack();
-        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
+        poseStack.mulPose(event.getPoseStack().last().pose().getUnnormalizedRotation(new Quaternionf()));
         Matrix4f matrix4f = poseStack.last().pose();
 
         float playerX = (float) player.getX();
@@ -173,10 +173,10 @@ public class TheHallowSkyRender {
             float w3 = Mth.sin(sRotate) * innerRadius, y3 = Mth.cos(sRotate) * innerRadius;
             float w4 = Mth.sin(sRotate) * outerRadius, y4 = Mth.cos(sRotate) * outerRadius;
 
-            builder.vertex(matrix4f, w1 * mX + offsetX, y1 + offsetY, w1 * mZ + offsetZ).color(r1, g1, b1, alpha1);
-            builder.vertex(matrix4f, w2 * mX + offsetX, y2 + offsetY, w2 * mZ + offsetZ).color(r2, g2, b2, alpha2);
-            builder.vertex(matrix4f, w3 * mX + offsetX, y3 + offsetY, w3 * mZ + offsetZ).color(r2, g2, b2, alpha2);
-            builder.vertex(matrix4f, w4 * mX + offsetX, y4 + offsetY, w4 * mZ + offsetZ).color(r1, g1, b1, alpha1);
+            builder.vertex(matrix4f, w1 * mX + offsetX, y1 + offsetY, w1 * mZ + offsetZ).color(r1, g1, b1, alpha1).endVertex();
+            builder.vertex(matrix4f, w2 * mX + offsetX, y2 + offsetY, w2 * mZ + offsetZ).color(r2, g2, b2, alpha2).endVertex();
+            builder.vertex(matrix4f, w3 * mX + offsetX, y3 + offsetY, w3 * mZ + offsetZ).color(r2, g2, b2, alpha2).endVertex();
+            builder.vertex(matrix4f, w4 * mX + offsetX, y4 + offsetY, w4 * mZ + offsetZ).color(r1, g1, b1, alpha1).endVertex();
 
             outerPoint = new Vector2f(w4, y4);
             innerPoint = new Vector2f(w3, y3);

@@ -16,14 +16,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.entity.boss.WallOfFleshMouth;
 import org.confluence.mod.common.init.ModEffects;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
-import org.mesdag.portlib.event.client.PortRenderLivingEvent;
 
 /// 绘制狂卷之舌效果中嘴部到受影响实体之间的连续饿鬼叶片。
 public final class TongueRenderer {
@@ -33,8 +34,8 @@ public final class TongueRenderer {
 
     private TongueRenderer() {}
 
-    public static void renderFirstPerson(PortRenderLevelStageEvent event) {
-        if (event.getStage() != PortRenderLevelStageEvent.Stage.AFTER_ENTITIES) return;
+    public static void renderFirstPerson(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) return;
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null || minecraft.player == null || !minecraft.options.getCameraType().isFirstPerson())
             return;
@@ -43,7 +44,7 @@ public final class TongueRenderer {
         WallOfFleshMouth mouth = findMouth(living);
         if (mouth == null) return;
 
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         Vec3 camera = event.getCamera().getPosition();
         Vec3 livingPosition = anchorPosition(living, partialTick);
         PoseStack poseStack = event.getPoseStack();
@@ -53,7 +54,7 @@ public final class TongueRenderer {
         poseStack.popPose();
     }
 
-    public static void render(PortRenderLivingEvent.Post<?, ?> event) {
+    public static void render(RenderLivingEvent.Post<?, ?> event) {
         LivingEntity living = event.getEntity();
         Minecraft minecraft = Minecraft.getInstance();
         if (!living.hasEffect(ModEffects.THE_TONGUE.get()) || minecraft.player == living && minecraft.options.getCameraType().isFirstPerson())
@@ -63,7 +64,7 @@ public final class TongueRenderer {
             renderTongue(mouth, living, event.getPoseStack(), event.getMultiBufferSource(), event.getPartialTick(), event.getPackedLight(), false);
     }
 
-    private static WallOfFleshMouth findMouth(LivingEntity living) {
+    private static @Nullable WallOfFleshMouth findMouth(LivingEntity living) {
         if (!(living.level() instanceof ClientLevel level)) return null;
         WallOfFleshMouth nearest = null;
         double nearestDistance = Double.MAX_VALUE;

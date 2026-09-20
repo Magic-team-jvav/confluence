@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data;
+package org.confluence.mod.common.data.command;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;

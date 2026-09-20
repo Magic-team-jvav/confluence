@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.util.OverworldUtils;
@@ -17,7 +18,6 @@ import org.joml.Quaternionf;
 import org.mesdag.particlestorm.data.molang.compiler.value.Variable;
 import org.mesdag.particlestorm.particle.MolangParticleEngine;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -76,16 +76,16 @@ final class LanternNightSprite {
         poseStack.mulPose(Axis.YP.rotation(Mth.lerp(partialTick, yawO, yaw)).rotateX(-Mth.HALF_PI));
         poseStack.translate(0, 0, Mth.lerp(partialTick, yo, y));
         Matrix4f matrix4f = poseStack.last().pose();
-        builder.vertex(matrix4f, -radius, dist, -radius).uv(0, 1).color(255, 255, 255, (int) (alpha * a * 255));
-        builder.vertex(matrix4f, radius, dist, -radius).uv(1, 1).color(255, 255, 255, (int) (alpha * a * 255));
-        builder.vertex(matrix4f, radius, dist, radius).uv(1, 0).color(255, 255, 255, (int) (alpha * a * 255));
-        builder.vertex(matrix4f, -radius, dist, radius).uv(0, 0).color(255, 255, 255, (int) (alpha * a * 255));
+        builder.vertex(matrix4f, -radius, dist, -radius).uv(0, 1).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
+        builder.vertex(matrix4f, radius, dist, -radius).uv(1, 1).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
+        builder.vertex(matrix4f, radius, dist, radius).uv(1, 0).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
+        builder.vertex(matrix4f, -radius, dist, radius).uv(0, 0).color(255, 255, 255, (int) (alpha * a * 255)).endVertex();
         poseStack.popPose();
     }
 
-    static void renderLanternNight(LocalPlayer player, PortRenderLevelStageEvent event) {
+    static void renderLanternNight(LocalPlayer player, RenderLevelStageEvent event) {
         if (player.level().dimension() != OverworldUtils.dimension()) return;
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         float rainLevel = player.level().getRainLevel(partialTick);
         if (rainLevel > 1 - Mth.EPSILON) return;
         RenderSystem.depthMask(false);
@@ -97,7 +97,7 @@ final class LanternNightSprite {
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         float a = 1.0F - rainLevel;
         poseStack.pushPose();
-        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
+        poseStack.mulPose(event.getPoseStack().last().pose().getUnnormalizedRotation(new Quaternionf()));
         poseStack.translate(0, Mth.lerp(partialTick, globalYO, globalY), 0);
         for (LanternNightSprite sprite : SPRITES) {
             sprite.render(builder, partialTick, a);

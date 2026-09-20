@@ -4,8 +4,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
-import org.confluence.mod.mixed.ILevelChunkSection;
-import org.confluence.mod.util.DynamicBiomeUtils;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
+import org.confluence.lib.mixed.ILevelChunkSection;
+import org.confluence.mod.util.ModBlockCounters;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,9 +18,9 @@ public abstract class EnvironmentLevelAccess$MatcherMixin {
     private static void inject(Player player, Level level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, pos);
         boolean graveyard;
-        if (iSection == null || !iSection.confluence$isGraveyard()) {
+        if (!ModBlockCounters.isGraveyard(iSection)) {
             iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
-            graveyard = iSection != null && iSection.confluence$isGraveyard();
+            graveyard = ModBlockCounters.isGraveyard(iSection);
         } else {
             graveyard = true;
         }

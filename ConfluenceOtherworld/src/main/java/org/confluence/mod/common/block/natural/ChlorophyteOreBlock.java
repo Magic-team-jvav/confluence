@@ -10,11 +10,12 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.material.MapColor;
+import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.mixed.ILevelChunkSection;
+import org.confluence.mod.util.ModBlockCounters;
 
 public class ChlorophyteOreBlock extends Block {
     public ChlorophyteOreBlock() {
@@ -39,7 +40,7 @@ public class ChlorophyteOreBlock extends Block {
                 continue;
             }
             ILevelChunkSection section = ILevelChunkSection.of(chunk.getSection(level.getSectionIndex(relative.getY())));
-            if (section.confluence$getBlockCounts().chlorophyte > 125) {
+            if (ModBlockCounters.CHLOROPHYTE.get(section.confluence$getBlockCounts()) > 125) {
                 continue;
             }
             if (level.isLoaded(relative) && (relState.is(Blocks.MUD) || (relState.is(NatureBlocks.JUNGLE_GRASS_BLOCK.get()) && !level.canSeeSky(relative)))) {

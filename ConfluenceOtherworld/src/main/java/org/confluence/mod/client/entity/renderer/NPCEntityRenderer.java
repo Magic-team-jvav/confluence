@@ -94,10 +94,10 @@ public class NPCEntityRenderer<T extends BaseNPC> extends GeoNormalRenderer<T> {
     private static void renderQuad(ResourceLocation texture, PoseStack poseStack, MultiBufferSource bufferSource, float size, int packedLight, float z) {
         VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityTranslucent(texture));
         float half = size * 0.5F;
-        vertex(consumer, poseStack.last(), packedLight, -half, -half, z, 0.0F, 1.0F);
-        vertex(consumer, poseStack.last(), packedLight, half, -half, z, 1.0F, 1.0F);
-        vertex(consumer, poseStack.last(), packedLight, half, half, z, 1.0F, 0.0F);
-        vertex(consumer, poseStack.last(), packedLight, -half, half, z, 0.0F, 0.0F);
+        vertex(consumer, poseStack.last(), packedLight, -half, -half, z, 0.0F, 0.0F);
+        vertex(consumer, poseStack.last(), packedLight, half, -half, z, 1.0F, 0.0F);
+        vertex(consumer, poseStack.last(), packedLight, half, half, z, 1.0F, 1.0F);
+        vertex(consumer, poseStack.last(), packedLight, -half, half, z, 0.0F, 1.0F);
     }
 
     private static void renderItem(BaseNPC entity, ItemStack item, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {

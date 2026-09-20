@@ -30,12 +30,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
+import org.confluence.lib.mixed.ILevelChunkSection;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.mixed.ILevelChunkSection;
-import org.confluence.mod.util.DynamicBiomeUtils;
+import org.confluence.mod.util.ModBlockCounters;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,7 +66,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
         if (!level.isClientSide && pos.getY() < OverworldUtils.getSurfaceY() && LibDateUtils.isNight(level)) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, pos);
             RandomSource random = player.getRandom1211();
-            if (iSection != null && iSection.confluence$isGraveyard() && random.nextBoolean()) {
+            if (ModBlockCounters.isGraveyard(iSection) && random.nextBoolean()) {
                 MonsterEntities.GHOST.get().spawn((ServerLevel) level, pos.offset(
                         Mth.randomBetweenInclusive(random, -15, 15),
                         Mth.randomBetweenInclusive(random, -15, 15),

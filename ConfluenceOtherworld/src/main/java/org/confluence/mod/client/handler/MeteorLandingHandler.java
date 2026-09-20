@@ -3,7 +3,6 @@ package org.confluence.mod.client.handler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.GlobalPos;
@@ -11,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.util.LibRenderUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
@@ -18,7 +18,6 @@ import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 public final class MeteorLandingHandler {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
@@ -45,8 +44,7 @@ public final class MeteorLandingHandler {
         tickUntilLanding = 0;
     }
 
-    public static void handle(Minecraft minecraft, Player player) {
-        if (minecraft.isPaused()) return;
+    public static void handle(Player player) {
         if (tickUntilLanding > 0) {
             pitchO = pitch;
             yawO = yaw;
@@ -86,15 +84,13 @@ public final class MeteorLandingHandler {
         yaw = Mth.HALF_PI * ratio - (float) Math.atan2(vec.z, vec.x);
     }
 
-    public static void render(PortRenderLevelStageEvent event) {
+    public static void render(RenderLevelStageEvent event, LocalPlayer player) {
         if (location == null || vector == null) return;
-        Minecraft minecraft = Minecraft.getInstance();
-        LocalPlayer player = minecraft.player;
-        if (player == null || player.level().dimension() != OverworldUtils.dimension()) return;
+        if (player.level().dimension() != OverworldUtils.dimension()) return;
         if (distance < event.getLevelRenderer().getLastViewDistance()) return;
-        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
+        float partialTick = event.getPartialTick();
         poseStack.pushPose();
-        poseStack.mulPose(event.getModelViewMatrix().getUnnormalizedRotation(new Quaternionf()));
+        poseStack.mulPose(event.getPoseStack().last().pose().getUnnormalizedRotation(new Quaternionf()));
         poseStack.mulPose(Axis.YP
                 .rotation(Mth.lerp(partialTick, yawO, yaw))
                 .rotateX(Mth.lerp(partialTick, pitchO, pitch)));
@@ -105,10 +101,10 @@ public final class MeteorLandingHandler {
         Matrix4f matrix4f = poseStack.last().pose().rotate(LibRenderUtils.ANGLE_45);
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        bufferBuilder.vertex(matrix4f, -RADIUS, 100, -RADIUS).uv(0.0F, v1).color(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.vertex(matrix4f, RADIUS, 100, -RADIUS).uv(1.0F, v1).color(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.vertex(matrix4f, RADIUS, 100, RADIUS).uv(1.0F, v0).color(1.0F, 1.0F, 1.0F, alpha);
-        bufferBuilder.vertex(matrix4f, -RADIUS, 100, RADIUS).uv(0.0F, v0).color(1.0F, 1.0F, 1.0F, alpha);
+        bufferBuilder.vertex(matrix4f, -RADIUS, 100, -RADIUS).uv(0.0F, v0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, RADIUS, 100, -RADIUS).uv(1.0F, v0).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, RADIUS, 100, RADIUS).uv(1.0F, v1).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
+        bufferBuilder.vertex(matrix4f, -RADIUS, 100, RADIUS).uv(0.0F, v1).color(1.0F, 1.0F, 1.0F, alpha).endVertex();
         BufferUploader.drawWithShader(bufferBuilder.end());
         RenderSystem.disableBlend();
         poseStack.popPose();

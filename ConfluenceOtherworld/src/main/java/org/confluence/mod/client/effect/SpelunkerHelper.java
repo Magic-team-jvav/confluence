@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import nowebsite.makertechno.the_trackers.api.component.ComponentBuilder;
 import nowebsite.makertechno.the_trackers.api.component.StaticComponent;
 import nowebsite.makertechno.the_trackers.core.track.TrackersMonitor;
@@ -36,7 +37,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.lwjgl.opengl.GL11;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 import org.mesdag.portlib.registries.PortDeferredBlock;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.wrapper.common.PortTags;
@@ -583,8 +583,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
     @Override
     protected void afterRender(PoseStack poseStack) {}
 
-    public static void renderLevel(PortRenderLevelStageEvent event, LocalPlayer player) {
-        if (event.getStage() != PortRenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
+    public static void renderLevel(RenderLevelStageEvent event, LocalPlayer player) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
         SpelunkerHelper blockGen = SpelunkerHelper.getSingleton();
         // 效果消失，清除缓存
         if (!player.hasEffect(ModEffects.SPELUNKER.get()) && !player.hasEffect(ModEffects.DANGER_SENSE.get())

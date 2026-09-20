@@ -3,11 +3,11 @@ package org.confluence.mod.client.effect.biome;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.mesdag.portlib.event.client.PortRenderLevelStageEvent;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -130,18 +130,18 @@ public class MoonlitDrySeaSkyRender {
     private static final Matrix4f mat = new Matrix4f();
     private static final Quaternionf quat = new Quaternionf();
 
-    public static void render(LocalPlayer player, PortRenderLevelStageEvent event, float alphaMul) {
+    public static void render(LocalPlayer player, RenderLevelStageEvent event, float alphaMul) {
         if (alphaMul < 0.01F) return;
 
         long gameTime = 0;
         if (Minecraft.getInstance().level != null) {
             gameTime = Minecraft.getInstance().level.getGameTime();
         }
-        float time = event.getPartialTick().getGameTimeDeltaPartialTick(false) + gameTime;
+        float time = event.getPartialTick() + gameTime;
 
         int dreamBubbleColor = threeColor(ModClientSetups.DREAM_BUBBLE_A, ModClientSetups.DREAM_BUBBLE_B, ModClientSetups.DREAM_BUBBLE_C, time, 500);
 
-        mat.rotation(event.getModelViewMatrix().getUnnormalizedRotation(quat));
+        mat.rotation(event.getPoseStack().last().pose().getUnnormalizedRotation(quat));
 
         int alpha = (int) (alphaMul * 255 * 0.5);
         int r = (dreamBubbleColor >> 16) & 0xFF;

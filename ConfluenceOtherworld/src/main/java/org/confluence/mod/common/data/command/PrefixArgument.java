@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data;
+package org.confluence.mod.common.data.command;
 
 import com.google.gson.JsonObject;
 import com.mojang.brigadier.StringReader;

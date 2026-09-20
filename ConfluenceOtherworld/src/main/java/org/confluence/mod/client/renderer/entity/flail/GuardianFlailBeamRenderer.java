@@ -99,10 +99,10 @@ public final class GuardianFlailBeamRenderer {
         float endFourthX = Mth.cos(rotation + 5.4977875F) * 0.282F;
         float endFourthZ = Mth.sin(rotation + 5.4977875F) * 0.282F;
 
-        vertex(consumer, pose, endFirstX, end, endFirstZ, red, green, blue, 0.5F, endFrameV + 0.5F);
-        vertex(consumer, pose, endSecondX, end, endSecondZ, red, green, blue, 1.0F, endFrameV + 0.5F);
-        vertex(consumer, pose, endFourthX, end, endFourthZ, red, green, blue, 1.0F, endFrameV);
-        vertex(consumer, pose, endThirdX, end, endThirdZ, red, green, blue, 0.5F, endFrameV);
+        vertex(consumer, pose, endFirstX, end, endFirstZ, red, green, blue, 0.5F, endFrameV);
+        vertex(consumer, pose, endSecondX, end, endSecondZ, red, green, blue, 1.0F, endFrameV);
+        vertex(consumer, pose, endFourthX, end, endFourthZ, red, green, blue, 1.0F, endFrameV + 0.5F);
+        vertex(consumer, pose, endThirdX, end, endThirdZ, red, green, blue, 0.5F, endFrameV + 0.5F);
         poseStack.popPose();
     }
 

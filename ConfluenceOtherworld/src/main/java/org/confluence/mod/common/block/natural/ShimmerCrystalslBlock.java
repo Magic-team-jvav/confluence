@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.common.data.MoonPhase;
 
 public class ShimmerCrystalslBlock extends Block {
     public static final BooleanProperty VISIBLE = StateProperties.VISIBLE;

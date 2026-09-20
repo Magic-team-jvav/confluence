@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.mixed.IPlayerAdvancements;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.Final;
@@ -80,7 +80,7 @@ public abstract class PlayerAdvancementsMixin implements IPlayerAdvancements {
 
     @ModifyExpressionValue(method = "save", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/AdvancementProgress;hasProgress()Z"))
     private static boolean skipConfluence(boolean original, @Local(name = "entry") Map.Entry<Advancement, AdvancementProgress> entry) {
-        if (original && AchievementOffsetLoader.getDisplayOffset().containsKey(entry.getKey().getId())) { // 跳过保存汇流来世成就
+        if (original && AchievementOffset.Loader.getDisplayOffset().containsKey(entry.getKey().getId())) { // 跳过保存汇流来世成就
             return false;
         }
         return original;

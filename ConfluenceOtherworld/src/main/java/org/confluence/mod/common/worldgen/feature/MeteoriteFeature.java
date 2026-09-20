@@ -3,6 +3,7 @@ package org.confluence.mod.common.worldgen.feature;
 import PortLib.extensions.com.mojang.serialization.Codec.PortCodecExtension;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.longs.LongArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
@@ -35,7 +36,6 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
         Config config = context.config();
         int radius = config.radius;
         float sparse = config.sparse;
-        float lava = config.lava;
         float fire = config.fire;
         float dense = 1.0F - sparse;
         int length = radius + radius + 1;
@@ -47,6 +47,7 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
         }
         BlockState air = Blocks.AIR.defaultBlockState();
         BlockState meteorite = OreBlocks.METEORITE_ORE.get().defaultBlockState();
+        LongArrayList meteoritePositions = new LongArrayList();
         float c = length - 3.0F;
         float invRadius = 1.0F / radius;
         float outer = radius / 2.0F + 0.5F;
@@ -62,36 +63,66 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
                     if (point < sparse) {
                         if (dist > outer) {
                             if (v > point + sparse) {
-                                setBlock(level, offset, meteorite, random, lava, fire);
+                                setBlock(level, offset, meteorite, random, fire, meteoritePositions);
                             }
                         } else {
-                            setBlock(level, offset, v + sparse > point ? air : meteorite, random, lava, fire);
+                            setBlock(level, offset, v + sparse > point ? air : meteorite, random, fire, meteoritePositions);
                         }
                     } else {
-                        setBlock(level, offset, v + dense < point ? air : meteorite, random, lava, fire);
+                        setBlock(level, offset, v + dense < point ? air : meteorite, random, fire, meteoritePositions);
                     }
                 }
             }
         }
+        placeLava(level, random, meteoritePositions, config.lavaCount);
         return true;
     }
 
-    private static void setBlock(WorldGenLevel level, BlockPos pos, BlockState state, RandomSource random, float lava, float fire) {
+    private static void setBlock(WorldGenLevel level, BlockPos pos, BlockState state, RandomSource random, float fire, LongArrayList meteoritePositions) {
         boolean b = state.is(OreBlocks.METEORITE_ORE.get());
-        level.setBlock(pos, b && random.nextFloat() < lava ? Blocks.LAVA.defaultBlockState() : state, Block.UPDATE_ALL);
-        if (b && level.getBlockState(pos.above()).canBeReplaced() && random.nextFloat() < fire) {
-            level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
+        level.setBlock(pos, state, Block.UPDATE_ALL);
+        if (b) {
+            meteoritePositions.add(pos.asLong());
+            if (level.getBlockState(pos.above()).canBeReplaced() && random.nextFloat() < fire) {
+                level.setBlock(pos.above(), Blocks.FIRE.defaultBlockState(), Block.UPDATE_ALL);
+            }
+        }
+    }
+
+    /// 按**个数**放熔岩：从已生成的陨石方块里随机挑 `count` 个。
+    ///
+    /// 之前是逐格按概率（`lava = 0.1`）掷骰：半径 7 时总共才几百格、撒出几十格还看得过去，
+    /// 但半径放大到 23 之后陨石方块涨到万级，同样的概率会撒出上千格熔岩。
+    /// 用部分洗牌（Fisher-Yates）保证挑到的位置不重样。
+    private static void placeLava(WorldGenLevel level, RandomSource random, LongArrayList meteoritePositions, int count) {
+        int total = meteoritePositions.size();
+        int lavaCount = Math.min(count, total);
+        for (int i = 0; i < lavaCount; i++) {
+            int pick = i + random.nextInt(total - i);
+            long swapped = meteoritePositions.set(i, meteoritePositions.getLong(pick));
+            meteoritePositions.set(pick, swapped);
+            level.setBlock(BlockPos.of(meteoritePositions.getLong(i)), Blocks.LAVA.defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 
     public record Config(
-            int radius, float sparse, float lava,
+            int radius,
+            float sparse,
+            int lavaCount,
             float fire
     ) implements FeatureConfiguration {
+        /// 默认半径。**23 是有讲究的**：坑心被对齐到区块内 local (7, 7)，
+        /// 所以 `x ∈ [-radius, radius)` 对应的全局范围是 `[区内-16, 区内+29]`，
+        /// 正好跨 3 个区块（cx-1 / cx / cx+1）；取 24 就会多伸进第 4 个区块。
+        public static final int DEFAULT_RADIUS = 23;
+
+        /// 陨石坑里的熔岩块数。按**个数**而不是概率，免得坑变大后熔岩跟着涨。
+        public static final int DEFAULT_LAVA_COUNT = 9;
+
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.intRange(1, 7), "radius", 7).forGetter(Config::radius),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.intRange(1, 32), "radius", DEFAULT_RADIUS).forGetter(Config::radius),
                 PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.FLOAT_0_1, "sparse", 0.4F).forGetter(Config::sparse),
-                PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.FLOAT_0_1, "lava", 0.1F).forGetter(Config::lava),
+                PortCodecExtension.lenientOptionalFieldOf(ExtraCodecs.intRange(0, 4096), "lavaCount", DEFAULT_LAVA_COUNT).forGetter(Config::lavaCount),
                 PortCodecExtension.lenientOptionalFieldOf(LibCodecUtils.FLOAT_0_1, "fire", 0.15F).forGetter(Config::fire)
         ).apply(instance, Config::new));
     }

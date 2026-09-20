@@ -23,7 +23,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
-import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.data.BrushData;
 import org.confluence.mod.mixed.IStructureTemplate$StructureBlockInfo;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;

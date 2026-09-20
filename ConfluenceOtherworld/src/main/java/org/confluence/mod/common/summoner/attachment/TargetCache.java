@@ -21,9 +21,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

@@ -4,7 +4,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.minion.SnowFlinxMinion;
-import org.confluence.mod.mixed.Immunity;
 
 public class SnowFlinxAttackGoal extends AttachmentEntityGoal<SnowFlinxMinion> {
 

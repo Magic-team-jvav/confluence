@@ -5,8 +5,6 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.minion.HornetMinion;
 
-import java.util.Random;
-
 public class HornetIdleGoal extends AttachmentEntityGoal<HornetMinion> {
 
     private Vec3 offset = Vec3.ZERO;

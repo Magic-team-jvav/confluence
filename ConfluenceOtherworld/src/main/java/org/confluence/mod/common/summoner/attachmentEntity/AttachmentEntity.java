@@ -8,9 +8,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
@@ -20,8 +20,9 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 public abstract class AttachmentEntity implements Immunity, GeoAnimatable {

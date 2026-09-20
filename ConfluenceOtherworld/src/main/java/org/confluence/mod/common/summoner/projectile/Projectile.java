@@ -1,17 +1,10 @@
 package org.confluence.mod.common.summoner.projectile;
 
-import net.minecraft.core.Holder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
-import org.confluence.lib.common.LibDamageTypes;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.MomentumAttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Supplier;
 
 public abstract class Projectile extends MomentumAttachmentEntity {
 

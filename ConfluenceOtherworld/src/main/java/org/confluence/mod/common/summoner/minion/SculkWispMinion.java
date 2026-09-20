@@ -1,14 +1,11 @@
 package org.confluence.mod.common.summoner.minion;
 
-import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
-import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.confluence.mod.common.summoner.minion.goal.sculk_wisp.SculkWispAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.sculk_wisp.SculkWispIdleGoal;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
-import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;

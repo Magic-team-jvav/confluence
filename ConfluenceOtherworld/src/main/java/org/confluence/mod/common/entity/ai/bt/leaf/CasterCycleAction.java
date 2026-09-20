@@ -12,7 +12,6 @@ import org.confluence.mod.common.entity.monster.BaseCasterMonster;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 /// 执行“预施法、延迟释放、循环传送”的完整法师战斗周期。
@@ -50,14 +49,13 @@ public final class CasterCycleAction extends BTNode {
 
     public CasterCycleAction(BaseCasterMonster caster, Function<LivingEntity, @Nullable Projectile> projectileFactory,
                              HurtResponse hurtResponse, Timing timing, int castsPerCycle, int projectilesPerVolley, int projectileIntervalTicks) {
-        timing = Objects.requireNonNull(timing, "timing");
         if (castsPerCycle <= 0 || timing.firstCastPhase() - (castsPerCycle - 1) * timing.castIntervalTicks() <= 0
                 || projectilesPerVolley <= 0 || projectileIntervalTicks <= 0) {
             throw new IllegalArgumentException("Cast count, volley size and projectile interval must be positive and fit within the cycle");
         }
-        this.caster = Objects.requireNonNull(caster, "caster");
-        this.projectileFactory = Objects.requireNonNull(projectileFactory, "projectileFactory");
-        this.hurtResponse = Objects.requireNonNull(hurtResponse, "hurtResponse");
+        this.caster = caster;
+        this.projectileFactory = projectileFactory;
+        this.hurtResponse = hurtResponse;
         this.timing = timing;
         this.castsPerCycle = castsPerCycle;
         this.projectilesPerVolley = projectilesPerVolley;

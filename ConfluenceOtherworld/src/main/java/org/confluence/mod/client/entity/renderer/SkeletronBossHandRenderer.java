@@ -13,6 +13,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.model.ExplicitGeoModel;
 import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.boss.SkeletronHand;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix3f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -398,7 +399,7 @@ public class SkeletronBossHandRenderer extends BossGeoRenderer<SkeletronHand> {
                 }
             }
     }
-        return Double.isFinite(minimumX) && Double.isFinite(maximumX) && maximumX - minimumX > EPSILON
+        return maximumX - minimumX > EPSILON
                 ? new SurfaceRange(minimumX, maximumX)
                 : fallback;
     }
@@ -411,7 +412,7 @@ public class SkeletronBossHandRenderer extends BossGeoRenderer<SkeletronHand> {
         return new Quaternionf().setFromNormalized(matrix);
     }
 
-    private static GeoBone findDirectChild(GeoBone parent, String name) {
+    private static @Nullable GeoBone findDirectChild(GeoBone parent, String name) {
         for (GeoBone child : parent.getChildBones()) {
             if (child.getName().equals(name)) {
                 return child;

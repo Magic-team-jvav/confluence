@@ -5,6 +5,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -34,14 +35,7 @@ record SummonSavedState(ResourceLocation type, UUID uuid, int slotCost, SummonSt
     }
 
     static SummonSavedState fromTag(CompoundTag tag) {
-        if (!tag.contains("Type", Tag.TAG_STRING) || !tag.hasUUID("UUID")
-                || !tag.contains("SlotCost", Tag.TAG_INT) || !tag.contains("BaseDamage", Tag.TAG_FLOAT)
-                || !tag.contains("X", Tag.TAG_DOUBLE) || !tag.contains("Y", Tag.TAG_DOUBLE)
-                || !tag.contains("Z", Tag.TAG_DOUBLE) || !tag.contains("Yaw", Tag.TAG_FLOAT)
-                || !tag.contains("Pitch", Tag.TAG_FLOAT) || !tag.contains("Roll", Tag.TAG_FLOAT)) {
-            return null;
-        }
-        ResourceLocation type = ResourceLocation.tryParse(tag.getString("Type"));
+        ResourceLocation type = ResourceLocation.parse(tag.getString("Type"));
         int slotCost = tag.getInt("SlotCost");
         float baseDamage = tag.getFloat("BaseDamage");
         float weaponDamageMultiplier = tag.contains("WeaponDamageMultiplier", Tag.TAG_FLOAT) ? tag.getFloat("WeaponDamageMultiplier") : 1.0F;
@@ -54,20 +48,12 @@ record SummonSavedState(ResourceLocation type, UUID uuid, int slotCost, SummonSt
         float yaw = tag.getFloat("Yaw");
         float pitch = tag.getFloat("Pitch");
         float roll = tag.getFloat("Roll");
-        if (type == null || slotCost <= 0 || !Float.isFinite(baseDamage) || baseDamage < 0.0F
-                || !Float.isFinite(weaponDamageMultiplier) || weaponDamageMultiplier < 0.0F
-                || !Float.isFinite(penetration) || penetration < 0 || !Float.isFinite(tagDamage) || tagDamage < 0
-                || !Float.isFinite(knockback) || knockback < 0
-                || !Double.isFinite(x) || !Double.isFinite(y) || !Double.isFinite(z)
-                || !Float.isFinite(yaw) || !Float.isFinite(pitch) || !Float.isFinite(roll)) {
-            return null;
-        }
         return new SummonSavedState(type, tag.getUUID("UUID"), slotCost,
                 new SummonStats(baseDamage, weaponDamageMultiplier, penetration, tagDamage, knockback),
                 new SummonPose(new Vec3(x, y, z), yaw, pitch, roll));
     }
 
-    SummonInstance restore(ServerPlayer owner) {
+    @Nullable SummonInstance restore(ServerPlayer owner) {
         SummonInstance summon = create(owner);
         if (summon != null) {
             summon.restoreUuid(uuid);
@@ -75,7 +61,7 @@ record SummonSavedState(ResourceLocation type, UUID uuid, int slotCost, SummonSt
         return summon;
     }
 
-    private SummonInstance create(ServerPlayer owner) {
+    private @Nullable SummonInstance create(ServerPlayer owner) {
         SummonType summonType = SummonTypes.byId(type);
         return summonType == null ? null : summonType.create(owner, slotCost, stats, pose);
     }

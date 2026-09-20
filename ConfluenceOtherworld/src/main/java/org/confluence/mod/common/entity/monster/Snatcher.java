@@ -261,7 +261,7 @@ public class Snatcher extends BaseMonster {
                 }
             }
         }
-        return List.copyOf(directions);
+        return directions;
     }
 
     /// 各物种共用伸缩状态机，分别配置普通阶段与延展阶段的最大距离。

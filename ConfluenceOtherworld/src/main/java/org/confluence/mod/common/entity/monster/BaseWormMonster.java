@@ -175,7 +175,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     }
 
     public List<BaseWormPart> getSegments() {
-        return List.copyOf(segments);
+        return segments;
     }
 
     /// 客户端由已同步的体节建立索引，不使用仅由服务端生成逻辑维护的 segments。

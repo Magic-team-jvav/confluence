@@ -7,7 +7,6 @@ import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
 /// 剑气的客户端表现配置。
@@ -42,18 +41,6 @@ public interface SwordProjectileAppearance {
                 Material.CODEC.optionalFieldOf("material", Material.CUTOUT).forGetter(Geo::material)
         ).apply(instance, Geo::new));
 
-        public Geo {
-            model = Objects.requireNonNull(model, "model");
-            texture = Objects.requireNonNull(texture, "texture");
-            animation = Objects.requireNonNull(animation, "animation");
-            animationClip = Objects.requireNonNull(animationClip, "animationClip");
-            scale = positive(scale, "scale");
-            offsetY = finite(offsetY, "offsetY");
-            rollSpeed = finite(rollSpeed, "rollSpeed");
-            lifecycle = Objects.requireNonNull(lifecycle, "lifecycle");
-            material = Objects.requireNonNull(material, "material");
-        }
-
         @Override
         public Type type() {
             return Type.GEO;
@@ -74,17 +61,6 @@ public interface SwordProjectileAppearance {
                 Material.CODEC.optionalFieldOf("material", Material.CUTOUT).forGetter(Model::material)
         ).apply(instance, Model::new));
 
-        public Model {
-            model = Objects.requireNonNull(model, "model");
-            texture = Objects.requireNonNull(texture, "texture");
-            scale = positive(scale, "scale");
-            offsetY = finite(offsetY, "offsetY");
-            offsetZ = finite(offsetZ, "offsetZ");
-            rollSpeed = finite(rollSpeed, "rollSpeed");
-            lifecycle = Objects.requireNonNull(lifecycle, "lifecycle");
-            material = Objects.requireNonNull(material, "material");
-        }
-
         @Override
         public Type type() {
             return Type.MODEL;
@@ -99,12 +75,6 @@ public interface SwordProjectileAppearance {
                 ResourceLocation.CODEC.optionalFieldOf("effect").forGetter(Item::effect)
         ).apply(instance, Item::new));
 
-        public Item {
-            scale = positive(scale, "scale");
-            transform = Objects.requireNonNull(transform, "transform");
-            effect = Objects.requireNonNull(effect, "effect");
-        }
-
         @Override
         public Type type() {
             return Type.ITEM;
@@ -118,16 +88,8 @@ public interface SwordProjectileAppearance {
                 Codec.INT.optionalFieldOf("color", 0xFFFFFFFF).forGetter(Cross::color),
                 Codec.FLOAT.optionalFieldOf("scale", 1.0F).forGetter(Cross::scale),
                 Codec.FLOAT.optionalFieldOf("spinSpeed", 0.0F).forGetter(Cross::spinSpeed),
-                Codec.INT.optionalFieldOf("blockLight", -1).forGetter(Cross::blockLight)
+                Codec.intRange(-1, 15).optionalFieldOf("blockLight", -1).forGetter(Cross::blockLight)
         ).apply(instance, Cross::new));
-
-        public Cross {
-            texture = Objects.requireNonNull(texture, "texture");
-            scale = positive(scale, "scale");
-            spinSpeed = finite(spinSpeed, "spinSpeed");
-            if (blockLight < -1 || blockLight > 15)
-                throw new IllegalArgumentException("blockLight must be between -1 and 15");
-        }
 
         @Override
         public Type type() {
@@ -194,16 +156,5 @@ public interface SwordProjectileAppearance {
         public @NotNull String getSerializedName() {
             return name().toLowerCase(Locale.ROOT);
         }
-    }
-
-    private static float positive(float value, String name) {
-        if (finite(value, name) <= 0.0F)
-            throw new IllegalArgumentException(name + " must be positive");
-        return value;
-    }
-
-    private static float finite(float value, String name) {
-        if (!Float.isFinite(value)) throw new IllegalArgumentException(name + " must be finite");
-        return value;
     }
 }

@@ -401,7 +401,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     // === 交互 ===
 
     public List<NPCTradeOffer> selectTradeOffers(List<NPCTradeOffer> offers) {
-        return List.copyOf(offers);
+        return offers;
     }
 
     @Override

@@ -25,7 +25,6 @@ import org.confluence.mod.util.AchievementUtils;
 import org.mesdag.portlib.event.PortEventHandler;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /// 召唤杖的通用物品实现。
@@ -38,7 +37,7 @@ public class SummonItem extends Item {
     /// 类型标识同时用于同步、客户端渲染选择和提示文本。
     public SummonItem(ModRarity rarity, SummonType summonType, int slotCost, float baseDamage) {
         super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(1));
-        this.summonType = Objects.requireNonNull(summonType, "Summon type must not be null");
+        this.summonType = summonType;
         if (slotCost <= 0) {
             throw new IllegalArgumentException("Summon slot cost must be positive");
         }
@@ -129,7 +128,7 @@ public class SummonItem extends Item {
     }
 
     public SummonItem setSound(Supplier<SoundEvent> sound) {
-        this.summonSound = Objects.requireNonNull(sound, "Summon sound must not be null");
+        this.summonSound = sound;
         return this;
     }
 

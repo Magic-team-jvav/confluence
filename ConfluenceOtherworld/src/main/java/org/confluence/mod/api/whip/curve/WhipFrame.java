@@ -14,7 +14,6 @@ public record WhipFrame(float progress, List<Vec3> controlPoints) {
         if (progress < 0.0F || progress > 1.0F) {
             throw new IllegalArgumentException("Whip frame progress must be in [0, 1]");
         }
-        controlPoints = List.copyOf(Objects.requireNonNull(controlPoints, "controlPoints"));
         if (controlPoints.size() < 2) {
             throw new IllegalArgumentException("Whip frame requires at least two control points");
         }

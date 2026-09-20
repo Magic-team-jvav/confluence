@@ -441,7 +441,7 @@ public class BrainOfCthulhu extends BaseBoss {
             return;
         }
 
-        for (Entity entity : List.copyOf(getSubEntities())) {
+        for (Entity entity : getSubEntities()) {
             if (entity instanceof BrainFake fake && !fake.isRemoved() && fake.getOwner() == this) {
                 bindIllusion(fake);
             }

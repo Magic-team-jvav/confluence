@@ -38,8 +38,8 @@ public class OverviewNode extends SoulSkillBox {
         this.screen = screen;
         this.nodeId = builder.nodeId;
         this.soulSkillStack = builder.soulSkill.getStack();
-        this.connections = List.copyOf(builder.connections);
-        this.tooltipLines = List.copyOf(builder.tooltipLines);
+        this.connections = builder.connections;
+        this.tooltipLines = builder.tooltipLines;
         isTooltip = true;
     }
 

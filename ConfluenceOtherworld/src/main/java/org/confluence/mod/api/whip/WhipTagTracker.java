@@ -34,10 +34,6 @@ public final class WhipTagTracker {
     }
 
     public static void apply(Player owner, LivingEntity target, ItemStack whipStack, WhipTagEffect effect, boolean armExplosion) {
-        Objects.requireNonNull(owner, "Whip tag owner must not be null");
-        Objects.requireNonNull(target, "Whip tag target must not be null");
-        Objects.requireNonNull(whipStack, "Whip tag weapon must not be null");
-        Objects.requireNonNull(effect, "Whip tag effect must not be null");
         if (!(target.level() instanceof ServerLevel level)) {
             throw new IllegalStateException("Whip tags can only be applied on the logical server");
         }
@@ -78,9 +74,6 @@ public final class WhipTagTracker {
     ///
     /// @param baseDamage 已完成召唤物自身计算、尚未应用鞭痕的伤害
     public static float modifyDamage(Player owner, OwnedSummon summon, LivingEntity target, float baseDamage) {
-        Objects.requireNonNull(owner, "Whip tag owner must not be null");
-        Objects.requireNonNull(summon, "Whip tag summon must not be null");
-        Objects.requireNonNull(target, "Whip tag target must not be null");
         if (baseDamage < 0.0F) {
             throw new IllegalArgumentException("Whip tag base damage must be non-negative");
         }
@@ -202,7 +195,6 @@ public final class WhipTagTracker {
                          long applicationSequence, boolean armed) {
         private Entry {
             whipStack = whipStack.copyWithCount(1);
-            Objects.requireNonNull(effect, "Whip tag effect must not be null");
         }
 
         @Override

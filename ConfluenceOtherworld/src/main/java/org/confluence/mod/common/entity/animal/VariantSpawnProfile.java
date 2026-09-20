@@ -48,7 +48,7 @@ final class VariantSpawnProfile<T> {
         VariantSpawnProfile<T> build() {
             if (entries.isEmpty())
                 throw new IllegalStateException("Variant spawn profile cannot be empty");
-            return new VariantSpawnProfile<>(List.copyOf(entries), totalWeight);
+            return new VariantSpawnProfile<>(entries, totalWeight);
         }
     }
 

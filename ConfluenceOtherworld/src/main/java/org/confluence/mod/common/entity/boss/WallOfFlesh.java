@@ -557,7 +557,7 @@ public class WallOfFlesh extends BaseBoss {
     /// 在同列眼睛的较大空档中补嘴，保持均匀的墙面攻击分布。
     private void generateMouthsBetweenEyes(RandomSource layoutRandom) {
         Map<Integer, List<Vec3>> eyesByColumn = new HashMap<>();
-        for (Vec3 eye : List.copyOf(eyeAnchors)) {
+        for (Vec3 eye : eyeAnchors) {
             int column = (int) Math.round(eye.x / GRID_SPACING + GRID_SIZE_X * 0.5);
             if (column >= 0 && column < GRID_SIZE_X) {
                 eyesByColumn.computeIfAbsent(column, ignored -> new ArrayList<>()).add(eye);

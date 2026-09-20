@@ -6,7 +6,6 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 /// 使用线性插值连接相邻时间帧的确定性轨迹。
 ///
@@ -14,11 +13,8 @@ import java.util.Objects;
 /// {@link WhipCurveSampler} 统一生成。两层插值分离后，服务端碰撞与客户端渲染可以
 /// 使用完全相同的输入和算法。时间推进沿用 1.21 侧的线性关键帧行为，避免代码重写
 /// 改变原有挥动节奏。
-public final class KeyframedWhipCurve implements WhipCurve {
-    private final List<WhipFrame> frames;
-
+public record KeyframedWhipCurve(List<WhipFrame> frames) implements WhipCurve {
     public KeyframedWhipCurve(List<WhipFrame> frames) {
-        Objects.requireNonNull(frames, "frames");
         if (frames.size() < 2) {
             throw new IllegalArgumentException("Whip curve requires at least two frames");
         }
@@ -39,7 +35,7 @@ public final class KeyframedWhipCurve implements WhipCurve {
         if (sorted.get(0).progress() != 0.0F || sorted.get(sorted.size() - 1).progress() != 1.0F) {
             throw new IllegalArgumentException("Whip curve must start at 0 and end at 1");
         }
-        this.frames = List.copyOf(sorted);
+        this.frames = sorted;
     }
 
     @Override
@@ -68,7 +64,6 @@ public final class KeyframedWhipCurve implements WhipCurve {
         for (int index = 0; index < left.controlPoints().size(); index++) {
             result.add(left.controlPoints().get(index).lerp(right.controlPoints().get(index), local));
         }
-        return List.copyOf(result);
+        return result;
     }
-
 }

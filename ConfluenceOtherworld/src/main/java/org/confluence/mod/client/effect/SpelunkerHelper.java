@@ -584,7 +584,6 @@ public class SpelunkerHelper extends AbstractBufferManager {
     protected void afterRender(PoseStack poseStack) {}
 
     public static void renderLevel(RenderLevelStageEvent event, LocalPlayer player) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) return;
         SpelunkerHelper blockGen = SpelunkerHelper.getSingleton();
         // 效果消失，清除缓存
         if (!player.hasEffect(ModEffects.SPELUNKER.get()) && !player.hasEffect(ModEffects.DANGER_SENSE.get())

@@ -42,7 +42,6 @@ public record YoyoControlPacketC2S(Action action, int amount)
     };
 
     public YoyoControlPacketC2S {
-        java.util.Objects.requireNonNull(action, "Yoyo control action must not be null");
         if (action == Action.ADJUST_RANGE && amount != -1 && amount != 1 || action != Action.ADJUST_RANGE && amount != 0) {
             throw new IllegalArgumentException("Invalid yoyo control amount");
         }

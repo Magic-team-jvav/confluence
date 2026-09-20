@@ -9,7 +9,6 @@ import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 
 /// 剑气在指定时机生成的客户端粒子。
@@ -27,19 +26,14 @@ public record SwordProjectileParticleEffect(Event event, Optional<ParticleOption
     ).apply(instance, SwordProjectileParticleEffect::new));
 
     public SwordProjectileParticleEffect {
-        event = Objects.requireNonNull(event, "event");
-        particle = Objects.requireNonNull(particle, "particle");
-        emitter = Objects.requireNonNull(emitter, "emitter");
         if (particle.isPresent() == emitter.isPresent())
             throw new IllegalArgumentException("Exactly one particle source must be configured");
         if (emitter.isPresent() && event != Event.TRAIL)
             throw new IllegalArgumentException("Particle emitters only support trail events");
         if (interval < 1) throw new IllegalArgumentException("interval must be positive");
         if (count < 0) throw new IllegalArgumentException("count must be non-negative");
-        if (!Float.isFinite(spread) || spread < 0.0F)
+        if (spread < 0.0F)
             throw new IllegalArgumentException("spread must be finite and non-negative");
-        if (!Float.isFinite(velocityScale))
-            throw new IllegalArgumentException("velocityScale must be finite");
     }
 
     public static SwordProjectileParticleEffect particle(Event event, ParticleOptions particle, int interval, int count, float spread, float velocityScale) {

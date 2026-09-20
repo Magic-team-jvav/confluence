@@ -15,12 +15,12 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.confluence.lib.api.animation.first_person.HandAnimationAction;
+import org.confluence.lib.api.animation.first_person.HandAnimationApi;
+import org.confluence.lib.api.animation.first_person.HandAnimationChannel;
+import org.confluence.lib.api.animation.first_person.HandAnimationProfile;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.api.client.animation.HandAnimationAction;
-import org.confluence.mod.api.client.animation.HandAnimationApi;
-import org.confluence.mod.api.client.animation.HandAnimationChannel;
-import org.confluence.mod.api.client.animation.HandAnimationProfile;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTags;
@@ -45,13 +45,19 @@ public class BaseGun extends Item implements GeoItem {
     private final HandAnimationProfile animationProfile;
 
     public BaseGun(Properties properties, GunDefinition definition) {
-        this(properties, definition, HandAnimationProfile.legacy());
+        this(properties, definition, HandAnimationProfile.builder()
+                .channel(HandAnimationChannel.builder("gun")
+                        .animation(HandAnimationAction.SHOOT, "fire")
+                        .animation(HandAnimationAction.DRAW, "pick up")
+                        .animation(HandAnimationAction.RELOAD, "reloading")
+                        .build())
+                .build());
     }
 
     public BaseGun(Properties properties, GunDefinition definition, HandAnimationProfile animationProfile) {
         super(prepareProperties(properties, definition));
-        this.definition = Objects.requireNonNull(definition, "definition");
-        this.animationProfile = Objects.requireNonNull(animationProfile, "animationProfile");
+        this.definition = definition;
+        this.animationProfile = animationProfile;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 

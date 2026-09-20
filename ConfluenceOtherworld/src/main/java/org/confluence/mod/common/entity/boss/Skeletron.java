@@ -536,7 +536,7 @@ public class Skeletron extends BaseBoss {
                 stateParameters(CombatState.FLOATING).duration() + stateParameters(CombatState.SPINNING).duration());
         handMaxHealth = tag.contains(HAND_MAX_HEALTH_TAG)
                 ? tag.getFloat(HAND_MAX_HEALTH_TAG) : registeredHandMaxHealth();
-        if (!Float.isFinite(handMaxHealth) || handMaxHealth <= 0.0F) {
+        if (handMaxHealth <= 0.0F) {
             handMaxHealth = registeredHandMaxHealth();
         }
         initialRoarPlayed = tag.getBoolean(INITIAL_ROAR_PLAYED_TAG);
@@ -549,8 +549,7 @@ public class Skeletron extends BaseBoss {
             float savedHealth = (destroyedHands & 1 << index) != 0
                     ? 0.0F
                     : tag.contains(key) ? tag.getFloat(key) : handMaxHealth;
-            handHealth[index] = Float.isFinite(savedHealth)
-                    ? Mth.clamp(savedHealth, 0.0F, handMaxHealth) : handMaxHealth;
+            handHealth[index] = Mth.clamp(savedHealth, 0.0F, handMaxHealth);
         }
         leftHand = null;
         rightHand = null;

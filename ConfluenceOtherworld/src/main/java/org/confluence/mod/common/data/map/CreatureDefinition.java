@@ -17,6 +17,7 @@ import java.util.Map;
 ///
 /// 该记录只保存可安全热重载的“数值配置”，不保存实体实例、行为树节点或 Forge 对象。
 // 默认值在实体注册的 CreatureAttributeBuilder 中声明；数据包仅保存覆盖值。
+
 /// 数据文件位于 {@code data/<命名空间>/data_maps/entity_type/creature_definition.json}；
 /// KubeJS 也可以用标准实体类型 Data Map 写入相同结构，无需依赖本体内部 Java 类。
 /// 未填写的字段统一以负数表示“沿用 Java 侧默认值”，
@@ -79,7 +80,7 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
     }
 
     private static void setBaseValue(Mob mob, Attribute attribute, double value) {
-        if (!Double.isFinite(value) || value < 0.0D) return;
+        if (value < 0.0D) return;
         AttributeInstance instance = mob.getAttribute(attribute);
         if (instance != null) instance.setBaseValue(value);
     }
@@ -147,7 +148,9 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
 
         public int lifetimeOr(int fallback) {return lifetime >= 0 ? lifetime : fallback;}
 
-        private static boolean valid(double value) {return Double.isFinite(value) && value >= 0;}
+        private static boolean valid(double value) {
+            return value >= 0;
+        }
     }
 
     /// 可选的原版属性基础值覆盖。
@@ -179,7 +182,7 @@ public record CreatureDefinition(AttributeOverrides attributes, BehaviorOverride
         ).apply(instance, BossOverrides::new));
 
         public double damageMultiplierOr(double fallback) {
-            return Double.isFinite(damageMultiplier) && damageMultiplier >= 0.0D ? damageMultiplier : fallback;
+            return damageMultiplier >= 0.0D ? damageMultiplier : fallback;
         }
     }
 

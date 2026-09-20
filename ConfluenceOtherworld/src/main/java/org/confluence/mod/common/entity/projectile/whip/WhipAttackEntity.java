@@ -285,7 +285,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         for (Vec3 point : localPoints) {
             result.add(origin.add(forward.scale(-point.x)).add(up.scale(point.y)).add(right.scale(point.z * side)));
         }
-        return List.copyOf(result);
+        return result;
     }
 
     private Vec3 curveOrigin(float partialTick) {

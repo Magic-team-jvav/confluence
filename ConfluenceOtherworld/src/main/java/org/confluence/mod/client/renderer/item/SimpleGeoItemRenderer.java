@@ -11,7 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import org.confluence.mod.client.animation.GunCameraAnimation;
+import org.confluence.lib.api.animation.first_person.CameraAnimation;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -121,7 +121,7 @@ public class SimpleGeoItemRenderer<T extends Item & GeoAnimatable> implements IC
                 setHidden(List.of("lefthand_pos", "righthand_pos"), true);
 
                 if (firstPerson && animatable instanceof BaseGun baseGun && baseGun.isCameraAnimationPlaying(instanceId)) {
-                    GunCameraAnimation.capture(getAnimationProcessor().getBone("camera"));
+                    CameraAnimation.capture(getAnimationProcessor().getBone("camera"));
                 }
             }
 

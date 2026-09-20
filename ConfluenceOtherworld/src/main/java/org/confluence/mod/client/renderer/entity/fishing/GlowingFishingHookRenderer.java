@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
-import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.client.color.ExpertColorAnimation;
 import org.confluence.lib.color.IntegerRGB;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.fishing.GlowingFishingHookModel;

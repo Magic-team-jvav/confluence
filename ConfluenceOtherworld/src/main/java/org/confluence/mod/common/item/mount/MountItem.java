@@ -18,7 +18,6 @@ import org.confluence.mod.common.mount.MountManager;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /// 直接使用时召唤对应坐骑的通用坐骑物品。
@@ -32,7 +31,7 @@ public class MountItem<T extends AbstractMountEntity> extends Item {
 
     public MountItem(Supplier<? extends EntityType<T>> entityTypeSupplier) {
         super(new Properties().stacksTo(1));
-        this.entityTypeSupplier = Objects.requireNonNull(entityTypeSupplier, "Mount entity type supplier cannot be null");
+        this.entityTypeSupplier = entityTypeSupplier;
     }
 
     /// 返回该物品明确绑定的坐骑实体类型。
@@ -40,7 +39,7 @@ public class MountItem<T extends AbstractMountEntity> extends Item {
     /// 只应在注册表就绪后的服务端操作中调用。若供应器违反该约定，开发者错误
     /// 会保留完整上下文，而不是把无效物品静默当作其他坐骑。
     public EntityType<T> entityType() {
-        return Objects.requireNonNull(entityTypeSupplier.get(), "Mount entity type supplier returned null");
+        return entityTypeSupplier.get();
     }
 
     @Override

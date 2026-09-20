@@ -1,13 +1,11 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
-import java.util.Objects;
-
 /// 隔离通用剑气实体与客户端视觉实现。
 public final class SwordProjectileVisualBridge {
     private static Handler handler = Handler.NONE;
 
     public static void install(Handler handler) {
-        SwordProjectileVisualBridge.handler = Objects.requireNonNull(handler, "handler");
+        SwordProjectileVisualBridge.handler = handler;
     }
 
     public static void tick(SwordProjectile projectile) {

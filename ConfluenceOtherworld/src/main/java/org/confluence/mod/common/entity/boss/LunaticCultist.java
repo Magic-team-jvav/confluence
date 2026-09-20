@@ -1,10 +1,10 @@
 package org.confluence.mod.common.entity.boss;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -20,8 +20,6 @@ import org.confluence.mod.common.entity.projectile.AncientLightProjectile;
 import org.confluence.mod.common.entity.projectile.CultistProjectile;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
-
-import java.util.List;
 
 /// 拜月教邪教徒——传送+弹幕+召唤幻影龙。
 public class LunaticCultist extends BaseBoss {
@@ -241,7 +239,7 @@ public class LunaticCultist extends BaseBoss {
     boolean isPerformingRitual() {return combatState == CombatState.RITUAL;}
 
     private void clearClones() {
-        for (LunaticCultistClone clone : List.copyOf(subEntities).stream()
+        for (LunaticCultistClone clone : subEntities.stream()
                 .filter(LunaticCultistClone.class::isInstance)
                 .map(LunaticCultistClone.class::cast)
                 .toList()) {

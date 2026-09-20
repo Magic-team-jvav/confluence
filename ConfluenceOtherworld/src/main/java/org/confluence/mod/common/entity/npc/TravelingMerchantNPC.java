@@ -54,7 +54,7 @@ public class TravelingMerchantNPC extends BaseNPC {
             tradeStockInitialized = true;
         }
         if (!tradeStockInitialized) return List.of();
-        return List.copyOf(tradeStock);
+        return tradeStock;
     }
 
     @Override

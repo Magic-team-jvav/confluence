@@ -28,17 +28,13 @@ public record SwordDefinition(
         boolean canSweep,
         boolean specialSweep,
         boolean tooltipImage,
-        List<Consumer<MutableComponent>> tooltips) {
-    public SwordDefinition {
-        tooltips = List.copyOf(tooltips);
-    }
-
+        List<Consumer<MutableComponent>> tooltips
+) {
     public static Builder builder() {
         return new Builder();
     }
 
-    public record BuildResult(SwordDefinition definition, Item.Properties properties,
-                              SwordProjectileComponent projectile) {}
+    public record BuildResult(SwordDefinition definition, Item.Properties properties, SwordProjectileComponent projectile) {}
 
     private record AttributeEntry(Holder<Attribute> attribute, PortAttributeModifier modifier) {}
 

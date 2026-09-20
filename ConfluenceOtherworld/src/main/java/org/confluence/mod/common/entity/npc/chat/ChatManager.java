@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.npc.chat;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +10,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.jetbrains.annotations.Nullable;
@@ -75,14 +75,14 @@ public final class ChatManager {
             boolean failed = false;
             for (var entry : map.entrySet()) {
                 if (!Confluence.MODID.equals(entry.getKey().getNamespace())) continue;
-                var type = BuiltInRegistries.ENTITY_TYPE.getOptional(entry.getKey());
+                var type = ForgeRegistries.ENTITY_TYPES.getValue(entry.getKey());
                 var result = listCodec.parse(JsonOps.INSTANCE, entry.getValue());
-                if (type.isEmpty() || result.result().isEmpty()) {
+                if (type == null || result.result().isEmpty()) {
                     Confluence.LOGGER.error("Failed to reload NPC chat {}", entry.getKey());
                     failed = true;
                     continue;
                 }
-                newTable.put(type.get(), List.copyOf(result.result().get()));
+                newTable.put(type, List.copyOf(result.result().get()));
             }
             if (!failed) chatTable = Map.copyOf(newTable);
         }

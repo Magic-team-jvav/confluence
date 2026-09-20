@@ -11,28 +11,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
-import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.SculkWispRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.BloodBatRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.DeadlySphereRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.ImpRenderer;
-import org.confluence.mod.client.summoner.renderer.minion.TerraprismaRenderer;
-import org.confluence.mod.client.summoner.renderer.projectile.ImpFireballRenderer;
 import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
+import org.confluence.mod.client.summoner.renderer.minion.*;
 import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
+import org.confluence.mod.client.summoner.renderer.projectile.ImpFireballRenderer;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
 import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
 
+// todo 合并到统一订阅类中
 public final class SummonerClientEvents {
 
     public static void init() {

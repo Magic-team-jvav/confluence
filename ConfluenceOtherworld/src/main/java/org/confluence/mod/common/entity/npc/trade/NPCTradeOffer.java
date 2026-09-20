@@ -8,7 +8,6 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
 import java.util.List;
-import java.util.Objects;
 
 /// 数据包声明的 NPC 商品。
 ///
@@ -25,17 +24,12 @@ public record NPCTradeOffer(ItemStack stack, List<ItemStack> costs, TradeConditi
     }
 
     public NPCTradeOffer {
-        Objects.requireNonNull(stack, "NPC trade item must not be null");
-        Objects.requireNonNull(costs, "NPC trade costs must not be null");
-        Objects.requireNonNull(condition, "NPC trade condition must not be null");
         if (stack.isEmpty()) {
             throw new IllegalArgumentException("NPC trade result cannot be empty");
         }
         if (costs.stream().anyMatch(ItemStack::isEmpty)) {
             throw new IllegalArgumentException("NPC trade costs cannot contain empty stacks");
         }
-        stack = stack.copy();
-        costs = List.copyOf(costs.stream().map(ItemStack::copy).toList());
     }
 
     /// 返回商品结果的独立副本。

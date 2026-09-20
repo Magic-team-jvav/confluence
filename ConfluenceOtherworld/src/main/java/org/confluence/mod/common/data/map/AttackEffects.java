@@ -34,12 +34,6 @@ public record AttackEffects(List<Effect> contact, List<Effect> melee, List<Effec
             Fields.optional(Effect.CODEC.listOf(), "projectile", List.of()).forGetter(AttackEffects::projectile)
     ).apply(instance, AttackEffects::new));
 
-    public AttackEffects {
-        contact = List.copyOf(contact);
-        melee = List.copyOf(melee);
-        projectile = List.copyOf(projectile);
-    }
-
     /// 只由服务端的伤害完成事件调用；射弹查自身配置，难度使用发射者所在位置。
     public static void afterDamage(LivingEntity target, DamageSource source) {
         Entity direct = source.getDirectEntity();

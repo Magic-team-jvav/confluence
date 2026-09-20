@@ -45,7 +45,6 @@ import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRenderer
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.effect.DivaSlimeVertexConsumer;
-import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.connected.CustomBlockModels;
 import org.confluence.mod.client.effect.connected.ModConnectives;
@@ -1075,7 +1074,7 @@ public final class ModClientEvents {
     }
 
     private static void registerRenderBuffers(PortRegisterRenderBuffersEvent event) {
-        for (ColoredGlintContext context : RenderStateShardAccessor.getColoredGlintContexts()) {
+        for (ColoredGlintContext context : ColoredGlintContext.COLORED_GLINT_CONTEXTS) {
             event.registerRenderBuffer(context.renderType());
         }
     }

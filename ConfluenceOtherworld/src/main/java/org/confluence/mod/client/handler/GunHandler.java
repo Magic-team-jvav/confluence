@@ -4,9 +4,9 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.api.animation.first_person.CameraAnimation;
 import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.client.ModKeyBindings;
-import org.confluence.mod.client.animation.GunCameraAnimation;
 import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.item.gun.BaseGun;
@@ -22,7 +22,7 @@ public final class GunHandler {
 
     public static void handle(@Nullable LocalPlayer player, boolean attackHeld) {
         if (player == null) {
-            GunCameraAnimation.clear();
+            CameraAnimation.clear();
             wasDefaultGunShootHeld = false;
             return;
         }
@@ -58,7 +58,7 @@ public final class GunHandler {
     private static void updateGunCameraAnimation(LocalPlayer player) {
         ItemStack mainHandItem = player.getMainHandItem();
         if (!(mainHandItem.getItem() instanceof BaseGun gun) || !gun.isCameraAnimationPlaying(GeoItem.getId(mainHandItem))) {
-            GunCameraAnimation.clear();
+            CameraAnimation.clear();
         }
     }
 

@@ -3,7 +3,6 @@ package org.confluence.mod.common.entity.ai.bt.composite;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
 /// 根据实时条件在两个行为分支之间切换。
@@ -19,9 +18,9 @@ public final class ConditionalSwitchNode extends BTNode {
     private BTNode activeBranch;
 
     public ConditionalSwitchNode(BooleanSupplier condition, BTNode trueBranch, BTNode falseBranch) {
-        this.condition = Objects.requireNonNull(condition, "condition");
-        this.trueBranch = Objects.requireNonNull(trueBranch, "trueBranch");
-        this.falseBranch = Objects.requireNonNull(falseBranch, "falseBranch");
+        this.condition = condition;
+        this.trueBranch = trueBranch;
+        this.falseBranch = falseBranch;
     }
 
     @Override

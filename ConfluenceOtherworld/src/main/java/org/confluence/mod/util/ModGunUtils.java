@@ -1,7 +1,6 @@
 package org.confluence.mod.util;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -11,30 +10,12 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.item.BaseBullet;
 import org.confluence.mod.common.item.gun.BaseGun;
-import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.event.PortEventHandler;
-import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class ModGunUtils {
-    public static void stopAndPlayAnim(GeoItem geoItem, ItemStack itemStack, ServerPlayer serverPlayer, @Nullable String controllerName, @Nullable String animName) {
-        if (controllerName == null || animName == null) return;
-        long orAssignId = GeoItem.getOrAssignId(itemStack, serverPlayer.serverLevel());
-        AnimatableManager<GeoAnimatable> animatableManager = geoItem.getAnimatableInstanceCache().getManagerForId(orAssignId);
-        AnimationController<GeoAnimatable> gunController = animatableManager.getAnimationControllers().get(controllerName);
-        if (gunController == null) return;
-
-        if (gunController.isPlayingTriggeredAnimation()) {
-            geoItem.stopTriggeredAnim(serverPlayer, orAssignId, controllerName, animName);
-        }
-        geoItem.triggerAnim(serverPlayer, orAssignId, controllerName, animName);
-    }
-
     /// 获取玩家背包中第一个兼容该枪的子弹
     public static ItemStack getAmmo(Player player, ItemStack gun) {
         if (!(gun.getItem() instanceof BaseGun baseGun)) {

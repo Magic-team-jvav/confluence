@@ -29,7 +29,6 @@ import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 import java.util.EnumMap;
-import java.util.List;
 
 /// 本源末影龙的服务端权威战斗实现。
 ///
@@ -159,7 +158,7 @@ public final class PrimeEnderDragon extends BaseBoss {
         advanceCombatState(target);
         updateFlight();
         updateLaserAttack();
-        for (PrimeEnderDragonPart part : List.copyOf(parts.values())) {
+        for (PrimeEnderDragonPart part : parts.values()) {
             if (!part.isRemoved()) updatePartPosition(part);
         }
         updatePartContactDamage();
@@ -420,7 +419,7 @@ public final class PrimeEnderDragon extends BaseBoss {
         }
         if (getTarget() == null) return;
         boolean attacked = false;
-        for (PrimeEnderDragonPart part : List.copyOf(parts.values())) {
+        for (PrimeEnderDragonPart part : parts.values()) {
             for (net.minecraft.world.entity.Entity entity : SweptContactAttack.findTargets(part, part.getContactSweepStart(), 0.2D,
                     SweptContactAttack.DEFAULT_MAX_SWEEP_DISTANCE,
                     candidate -> candidate instanceof LivingEntity living && canAttack(living))) {

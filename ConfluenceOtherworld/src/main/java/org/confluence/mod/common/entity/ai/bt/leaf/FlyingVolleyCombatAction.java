@@ -8,7 +8,6 @@ import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.function.Function;
 
 /// 飞行敌怪的接近与定时齐射循环。
@@ -29,9 +28,9 @@ public final class FlyingVolleyCombatAction extends BTNode {
     private boolean approaching;
 
     public FlyingVolleyCombatAction(BaseMonster mob, SteeringDashAction approachAction, Function<LivingEntity, @Nullable Projectile> projectileFactory, int approachTicks, int... shotTicks) {
-        this.mob = Objects.requireNonNull(mob, "mob");
-        this.approachAction = Objects.requireNonNull(approachAction, "approachAction");
-        this.projectileFactory = Objects.requireNonNull(projectileFactory, "projectileFactory");
+        this.mob = mob;
+        this.approachAction = approachAction;
+        this.projectileFactory = projectileFactory;
         if (approachTicks < 0) {
             throw new IllegalArgumentException("Approach time cannot be negative");
         }

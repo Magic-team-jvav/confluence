@@ -21,8 +21,7 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 /// 本类统一处理飞行、实体与方块碰撞、伤害来源、阵营过滤和寿命。
 /// 具体弹幕只需要提供初始参数，并可通过 {@link #modifyVelocity(Vec3)}
 /// 实现加速、减速等运动差异，避免每种远程生物重复一整套碰撞代码。
-public abstract class StraightMonsterProjectile extends Projectile
-        implements IPortProjectileExtension {
+public abstract class StraightMonsterProjectile extends Projectile implements IPortProjectileExtension {
     private static final String DAMAGE_KEY = "Damage";
     private static final String MAXIMUM_LIFETIME_KEY = "MaximumLifetime";
     private static final String AGE_KEY = "ProjectileAge";
@@ -30,8 +29,7 @@ public abstract class StraightMonsterProjectile extends Projectile
     private float knockback;
     private int maximumLifetime = 100;
 
-    protected StraightMonsterProjectile(
-            EntityType<? extends StraightMonsterProjectile> type, Level level) {
+    protected StraightMonsterProjectile(EntityType<? extends StraightMonsterProjectile> type, Level level) {
         super(type, level);
         setNoGravity(true);
     }
@@ -46,7 +44,8 @@ public abstract class StraightMonsterProjectile extends Projectile
             float damage,
             float velocity,
             float inaccuracy,
-            int maximumLifetime) {
+            int maximumLifetime
+    ) {
         Vec3 origin = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
         configureAimed(
                 owner,
@@ -55,7 +54,8 @@ public abstract class StraightMonsterProjectile extends Projectile
                 damage,
                 velocity,
                 inaccuracy,
-                maximumLifetime);
+                maximumLifetime
+        );
     }
 
     /// 使用调用方给出的出生点和瞄准向量配置带散布的直线弹幕。
@@ -67,7 +67,8 @@ public abstract class StraightMonsterProjectile extends Projectile
             float damage,
             float velocity,
             float inaccuracy,
-            int maximumLifetime) {
+            int maximumLifetime
+    ) {
         setOwner(owner);
         ProjectileOverrides parameters = ProjectileOverrides.get(owner, getType());
         this.damage = parameters.damageOr(damage);
@@ -82,8 +83,7 @@ public abstract class StraightMonsterProjectile extends Projectile
     /// 该入口供抛射物、延迟突进物等不直接瞄准目标的弹幕使用。
     /// 调用方仍然必须显式提供伤害快照和寿命，弹幕不会在后续 tick
     /// 重新读取发射者属性。
-    public final void configure(
-            Mob owner, Vec3 origin, Vec3 velocity, float damage, int maximumLifetime) {
+    public final void configure(Mob owner, Vec3 origin, Vec3 velocity, float damage, int maximumLifetime) {
         setOwner(owner);
         ProjectileOverrides parameters = ProjectileOverrides.get(owner, getType());
         this.damage = parameters.damageOr(damage);
@@ -201,10 +201,10 @@ public abstract class StraightMonsterProjectile extends Projectile
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.contains(DAMAGE_KEY)) damage = tag.getFloat(DAMAGE_KEY);
-        knockback = Math.max(0, tag.getFloat("Knockback"));
-        if (tag.contains(MAXIMUM_LIFETIME_KEY)) maximumLifetime = tag.getInt(MAXIMUM_LIFETIME_KEY);
-        tickCount = Math.max(0, tag.getInt(AGE_KEY));
+        damage = tag.getFloat(DAMAGE_KEY);
+        knockback = tag.getFloat("Knockback");
+        maximumLifetime = tag.getInt(MAXIMUM_LIFETIME_KEY);
+        tickCount = tag.getInt(AGE_KEY);
     }
 
     @Override

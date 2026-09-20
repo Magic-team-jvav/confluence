@@ -4,8 +4,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
-import java.util.Objects;
-
 /// 将单个原版 Goal 作为行为树叶节点运行。
 ///
 /// 该适配器只复用已经稳定的原版动作实现，例如漂浮、巡游、观察、繁殖和跟随；
@@ -18,7 +16,7 @@ public final class VanillaGoalAction extends BTNode {
     private boolean firstTick;
 
     public VanillaGoalAction(Goal goal) {
-        this.goal = Objects.requireNonNull(goal, "goal");
+        this.goal = goal;
     }
 
     @Override

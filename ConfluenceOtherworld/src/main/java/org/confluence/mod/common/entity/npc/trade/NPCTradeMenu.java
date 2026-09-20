@@ -83,7 +83,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         super(ModMenuTypes.NPC_TRADE.get(), containerId);
         this.npc = npc;
         this.player = inventory.player;
-        this.offers = List.copyOf(offers);
+        this.offers = offers;
         this.shopRevision = shopRevision;
 
         for (int row = 0; row < TRADE_ROWS; row++) {

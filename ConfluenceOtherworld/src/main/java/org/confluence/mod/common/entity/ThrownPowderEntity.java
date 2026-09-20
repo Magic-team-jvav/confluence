@@ -18,7 +18,6 @@ import org.confluence.mod.common.entity.animal.Penguin;
 import org.confluence.mod.common.init.entity.ModEntities;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /// 净化粉、腐化粉等环境转化粉末的飞行实体。
@@ -44,7 +43,7 @@ public class ThrownPowderEntity extends Entity {
     }
 
     public void setSpreadableType(ISpreadable.Type type) {
-        this.type = Objects.requireNonNull(type, "Spreadable type must not be null");
+        this.type = type;
         entityData.set(DATA_TYPE, this.type.ordinal());
     }
 
@@ -135,12 +134,8 @@ public class ThrownPowderEntity extends Entity {
         ISpreadable.Type restoredType = typeId >= 0 && typeId < types.length ? types[typeId] : ISpreadable.Type.PURE;
         setSpreadableType(restoredType);
 
-        float savedDistance = compound.contains("MoveDistance", Tag.TAG_ANY_NUMERIC)
+        this.moveDist = compound.contains("MoveDistance", Tag.TAG_ANY_NUMERIC)
                 ? compound.getFloat("MoveDistance")
-                : 0.0F;
-        // 非有限数会污染后续距离比较；当前格式损坏时从尚未飞行的安全状态恢复。
-        this.moveDist = Float.isFinite(savedDistance)
-                ? Mth.clamp(savedDistance, 0.0F, MAX_TRAVEL_DISTANCE)
                 : 0.0F;
         this.lastPos = null;
         this.coveredPos.clear();
@@ -150,9 +145,7 @@ public class ThrownPowderEntity extends Entity {
     protected void addAdditionalSaveData(CompoundTag compound) {
         ISpreadable.Type savedType = type == null ? getSpreadableType() : type;
         compound.putInt("Type", savedType.ordinal());
-        compound.putFloat("MoveDistance", Float.isFinite(moveDist)
-                ? Mth.clamp(moveDist, 0.0F, MAX_TRAVEL_DISTANCE)
-                : 0.0F);
+        compound.putFloat("MoveDistance", Mth.clamp(moveDist, 0.0F, MAX_TRAVEL_DISTANCE));
     }
 
     @Override

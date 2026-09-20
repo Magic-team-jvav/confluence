@@ -71,7 +71,7 @@ public final class DirectFloatingPursuitAction extends BTNode {
         }
 
         Vec3 offset = target.position().subtract(mob.position());
-        if (Double.isFinite(maxHoverHeight) && offset.y > -0.25 && !mob.horizontalCollision && !isInsideCollision() && !hasSupportBelow()) {
+        if (offset.y > -0.25 && !mob.horizontalCollision && !isInsideCollision() && !hasSupportBelow()) {
             offset = new Vec3(offset.x, -0.25, offset.z);
         }
         if (offset.lengthSqr() < 1.0E-7) return BTStatus.RUNNING;

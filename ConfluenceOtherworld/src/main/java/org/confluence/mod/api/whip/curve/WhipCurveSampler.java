@@ -4,7 +4,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /// 将当前时间点的鞭身控制点转换为近似等弧长折线。
 ///
@@ -17,7 +16,6 @@ public final class WhipCurveSampler {
     private WhipCurveSampler() {}
 
     public static List<Vec3> sample(WhipCurve curve, double progress, double scale, double segmentSpacing) {
-        Objects.requireNonNull(curve, "curve");
         if (scale <= 0.0) {
             throw new IllegalArgumentException("Whip curve scale must be positive");
         }
@@ -48,7 +46,6 @@ public final class WhipCurveSampler {
 
     /// 将已经完成世界坐标变换的控制点重新采样成平滑折线。
     public static List<Vec3> sampleControlPoints(List<Vec3> source, double segmentSpacing) {
-        Objects.requireNonNull(source, "source");
         if (segmentSpacing <= 0.0) {
             throw new IllegalArgumentException("Whip segment spacing must be positive");
         }
@@ -143,6 +140,6 @@ public final class WhipCurveSampler {
             }
         }
         result.add(dense.get(dense.size() - 1));
-        return List.copyOf(result);
+        return result;
     }
 }

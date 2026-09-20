@@ -401,7 +401,7 @@ public class HillOfFlesh extends BaseBoss {
         float outerRadius = getOuterRadius();
         float innerRadius = getInnerRadius();
         encounterEntities.removeIf(entity -> !entity.isAlive() || entity.isRemoved() || entity.level() != level() || !canAttack(entity));
-        for (LivingEntity entity : List.copyOf(encounterEntities)) {
+        for (LivingEntity entity : encounterEntities) {
             double distanceSquared = entity.position().subtract(position()).horizontalDistanceSqr();
             float damage = 0.0F;
             if (distanceSquared > outerRadius * outerRadius) {

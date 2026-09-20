@@ -277,7 +277,7 @@ public final class AttackEffectsSubProvider {
         /// 每次有效命中的触发概率，范围 [0, 1]：0 不触发，1 必定触发，0.25 表示 25%。
         /// 写分数时使用浮点数，例如 1.0 / 12，避免整数除法得到 0。
         public ParametersBuilder chance(double chance) {
-            if (!Double.isFinite(chance) || chance < 0 || chance > 1)
+            if (chance < 0 || chance > 1)
                 throw new IllegalArgumentException("chance must be between 0 and 1");
             this.chance = Optional.of(chance);
             return this;
@@ -288,7 +288,7 @@ public final class AttackEffectsSubProvider {
             return duration(ticks, ticks);
         }
 
-        /// 随机持续时间，单位为 tick；触发后在 [min, max] 闭区间内均匀抽取整数。
+        /// 随机持续时间，单位为 tick；触发后在 \[min, max\] 闭区间内均匀抽取整数。
         /// min 必须大于 0，max 不小于 min；两者相等时等同于固定持续时间。
         public ParametersBuilder duration(int min, int max) {
             if (min <= 0 || max < min) throw new IllegalArgumentException("Invalid duration range");
@@ -329,7 +329,7 @@ public final class AttackEffectsSubProvider {
             return this;
         }
 
-        /// 设置持续时间闭区间 [min, max]，触发时均匀取整数 tick。
+        /// 设置持续时间闭区间 \[min, max\]，触发时均匀取整数 tick。
         @Override
         public EffectBuilder duration(int min, int max) {
             super.duration(min, max);

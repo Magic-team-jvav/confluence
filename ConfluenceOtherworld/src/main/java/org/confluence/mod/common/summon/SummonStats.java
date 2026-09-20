@@ -12,13 +12,12 @@ public record SummonStats(float baseDamage, float weaponDamageMultiplier, float 
         this(baseDamage, weaponDamageMultiplier, 0, 0, 1);
     }
     public SummonStats {
-        if (!Float.isFinite(armorPenetration) || armorPenetration < 0 || !Float.isFinite(tagDamage) || tagDamage < 0
-                || !Float.isFinite(knockbackMultiplier) || knockbackMultiplier < 0)
+        if (armorPenetration < 0 || tagDamage < 0 || knockbackMultiplier < 0)
             throw new IllegalArgumentException("Invalid summon modifier stats");
-        if (!Float.isFinite(baseDamage) || baseDamage < 0.0F) {
+        if (baseDamage < 0.0F) {
             throw new IllegalArgumentException("Summon damage must be non-negative");
         }
-        if (!Float.isFinite(weaponDamageMultiplier) || weaponDamageMultiplier < 0.0F) {
+        if (weaponDamageMultiplier < 0.0F) {
             throw new IllegalArgumentException("Summon weapon damage multiplier must be non-negative");
         }
     }

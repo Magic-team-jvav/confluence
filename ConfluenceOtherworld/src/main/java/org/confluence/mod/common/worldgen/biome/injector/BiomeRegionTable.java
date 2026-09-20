@@ -82,7 +82,7 @@ public final class BiomeRegionTable {
                 Confluence.LOGGER.warn("Biome region {} produced no parameter points; its weight band will fall back to vanilla", region.id());
             }
         }
-        return new BiomeRegionTable(type, allocator, List.copyOf(regions), List.copyOf(entries), List.copyOf(biomes));
+        return new BiomeRegionTable(type, allocator, regions, entries, List.copyOf(biomes));
     }
 
     public BiomeRegionType type() {

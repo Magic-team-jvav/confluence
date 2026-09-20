@@ -348,7 +348,7 @@ public final class NPCDialogProvider implements DataProvider {
     }
 
     private static String prefix(RegistryObject<? extends EntityType<?>> npc) {
-        return "dialogs.confluence." + Objects.requireNonNull(npc.getId(), "NPC registry id is unavailable").getPath() + ".";
+        return "dialogs.confluence." + npc.getId().getPath() + ".";
     }
 
     private static NPCDefinitionBuilder npc() {
@@ -381,7 +381,7 @@ public final class NPCDialogProvider implements DataProvider {
         }
 
         private NPCDefinition build() {
-            return new NPCDefinition(List.copyOf(dialogs), List.copyOf(texts));
+            return new NPCDefinition(dialogs, texts);
         }
     }
 }

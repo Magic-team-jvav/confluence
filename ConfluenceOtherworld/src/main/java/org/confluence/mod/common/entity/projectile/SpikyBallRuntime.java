@@ -35,7 +35,7 @@ final class SpikyBallRuntime {
 
     /// 记录一个唯一目标；返回 {@code true} 表示该 UUID 首次进入预算。
     boolean recordHitTarget(UUID targetUuid) {
-        return hitTargets.add(Objects.requireNonNull(targetUuid, "Hit target UUID must not be null"));
+        return hitTargets.add(targetUuid);
     }
 
     /// 返回当前已经消耗的唯一目标数量。
@@ -45,7 +45,6 @@ final class SpikyBallRuntime {
 
     /// 写出当前格式。最大年龄和目标数量由具体变体传入，以免共享格式改变两种弹幕各自的边界。
     void writeTo(CompoundTag entityTag, int age, int maximumAge, int maximumHitTargets) {
-        Objects.requireNonNull(entityTag, "Entity tag must not be null");
         validateLimits(maximumAge, maximumHitTargets);
         if (invalidReason != null) {
             return;

@@ -7,7 +7,6 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 /// 生成一个由具体生物配置好的实体弹幕。
@@ -20,8 +19,8 @@ public final class SpawnProjectileAction extends BTNode {
     private boolean done;
 
     public SpawnProjectileAction(Mob shooter, Function<LivingEntity, @Nullable Projectile> projectileFactory) {
-        this.shooter = Objects.requireNonNull(shooter, "shooter");
-        this.projectileFactory = Objects.requireNonNull(projectileFactory, "projectileFactory");
+        this.shooter = shooter;
+        this.projectileFactory = projectileFactory;
     }
 
     @Override

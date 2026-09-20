@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
 
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -83,11 +82,6 @@ public class RenderStateShardAccessor extends RenderStateShard {
 
     public static RenderType entityTranslucentCullOverlay(ResourceLocation texture) {
         return ENTITY_TRANSLUCENT_CULL_OVERLAY.apply(texture);
-    }
-
-    /// 通过此类读取列表，确保内置辉光已初始化后再注册缓冲区。
-    public static List<ColoredGlintContext> getColoredGlintContexts() {
-        return List.copyOf(ColoredGlintContext.COLORED_GLINT_CONTEXTS);
     }
 
     private RenderStateShardAccessor() {

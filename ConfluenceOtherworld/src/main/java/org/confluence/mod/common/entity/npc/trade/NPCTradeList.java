@@ -4,13 +4,13 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
@@ -41,8 +41,8 @@ public final class NPCTradeList {
         List<String> errors = new ArrayList<>();
         for (var entry : resources.entrySet()) {
             ResourceLocation npcId = entry.getKey();
-            var entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(npcId);
-            if (entityType.isEmpty()) {
+            var entityType = ForgeRegistries.ENTITY_TYPES.getValue(npcId);
+            if (entityType == null) {
                 errors.add("Unknown NPC entity type " + npcId);
                 continue;
             }
@@ -53,21 +53,16 @@ public final class NPCTradeList {
                 errors.add("Cannot load NPC shop " + npcId + ": " + reason);
                 continue;
             }
-            table.put(entityType.get(), List.copyOf(offers.get()));
+            table.put(entityType, offers.get());
         }
-        return new ParseResult(Map.copyOf(table), List.copyOf(errors));
+        return new ParseResult(table, errors);
     }
 
-    private record ParseResult(Map<EntityType<?>, List<NPCTradeOffer>> table,
-                               List<String> errors) {}
+    private record ParseResult(Map<EntityType<?>, List<NPCTradeOffer>> table, List<String> errors) {}
 
     private record State(Map<EntityType<?>, List<NPCTradeOffer>> table, int revision) {}
 
-    public record ShopSnapshot(List<NPCTradeOffer> offers, int revision) {
-        public ShopSnapshot {
-            offers = List.copyOf(offers);
-        }
-    }
+    public record ShopSnapshot(List<NPCTradeOffer> offers, int revision) {}
 
     public static final class Loader extends SimpleJsonResourceReloadListener {
         private static final Loader INSTANCE = new Loader();

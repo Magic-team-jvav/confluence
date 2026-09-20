@@ -11,8 +11,6 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.monster.BaseWormMonster;
 import org.confluence.mod.util.OverworldUtils;
 
-import java.util.Objects;
-
 /// 为可穿墙蠕虫提供不依赖原版地面导航网格的三维移动。
 ///
 /// 钻地型仅在方块或液体内主动转向，出土后按惯性下落；飞行型可持续三维追踪。
@@ -35,8 +33,8 @@ public final class WormMovementAction extends BTNode {
     private int recoveryTicks;
 
     public WormMovementAction(PathfinderMob worm, Profile profile) {
-        this.worm = Objects.requireNonNull(worm, "worm");
-        this.profile = Objects.requireNonNull(profile, "profile");
+        this.worm = worm;
+        this.profile = profile;
     }
 
     @Override

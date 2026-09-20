@@ -122,8 +122,7 @@ public class SpearEntity extends Entity {
         float savedProgress = compound.contains("Progress", Tag.TAG_ANY_NUMERIC)
                 ? compound.getFloat("Progress")
                 : 0.0F;
-        // NaN 会令伸缩分支永久无法完成；损坏数据统一回退到收起状态。
-        float progress = Float.isFinite(savedProgress) ? Mth.clamp(savedProgress, 0.0F, 1.0F) : 0.0F;
+        float progress = Mth.clamp(savedProgress, 0.0F, 1.0F);
         if (progress == 0.0F) {
             opened = false;
         }
@@ -138,8 +137,7 @@ public class SpearEntity extends Entity {
             compound.putLong("TrapPos", trapPos.asLong());
         }
         compound.putBoolean("Opened", isOpened());
-        float progress = getProgress();
-        compound.putFloat("Progress", Float.isFinite(progress) ? Mth.clamp(progress, 0.0F, 1.0F) : 0.0F);
+        compound.putFloat("Progress", Mth.clamp(getProgress(), 0.0F, 1.0F));
     }
 
     public void setDirection(Direction direction) {

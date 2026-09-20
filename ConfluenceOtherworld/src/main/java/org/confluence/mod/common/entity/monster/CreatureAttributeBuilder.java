@@ -331,28 +331,26 @@ public final class CreatureAttributeBuilder {
         private StateBuilder(Attribute attackDamage) {this.attackDamage = attackDamage;}
 
         public StateBuilder attribute(Attribute attribute, double value) {
-            if (!Double.isFinite(value) || value < 0)
+            if (value < 0)
                 throw new IllegalArgumentException("Invalid state attribute " + value);
             attributes.put(attribute, new Value(mob -> value, AttributeModifier.Operation.ADDITION, true));
             return this;
         }
 
         public StateBuilder multiply(Attribute attribute, double multiplier) {
-            if (!Double.isFinite(multiplier) || multiplier < 0)
+            if (multiplier < 0)
                 throw new IllegalArgumentException("Invalid state multiplier " + multiplier);
             attributes.put(attribute, new Value(mob -> multiplier - 1, AttributeModifier.Operation.MULTIPLY_TOTAL, false));
             return this;
         }
 
         public StateBuilder bonus(Attribute attribute, double value) {
-            if (!Double.isFinite(value))
-                throw new IllegalArgumentException("Invalid state bonus " + value);
             attributes.put(attribute, new Value(mob -> value, AttributeModifier.Operation.ADDITION, false));
             return this;
         }
 
         public StateBuilder multiplyBase(Attribute attribute, double multiplier) {
-            if (!Double.isFinite(multiplier) || multiplier < 0)
+            if (multiplier < 0)
                 throw new IllegalArgumentException("Invalid state multiplier " + multiplier);
             attributes.put(attribute, new Value(mob -> multiplier - 1, AttributeModifier.Operation.MULTIPLY_BASE, false));
             return this;

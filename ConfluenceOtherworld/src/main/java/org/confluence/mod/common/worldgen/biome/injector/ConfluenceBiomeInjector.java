@@ -70,8 +70,8 @@ public final class ConfluenceBiomeInjector {
     public static List<BiomeRegion> regionsOf(BiomeRegionType type) {
         bootstrap();
         return switch (type) {
-            case OVERWORLD -> List.copyOf(OVERWORLD_REGIONS);
-            case NETHER -> List.copyOf(NETHER_REGIONS);
+            case OVERWORLD -> OVERWORLD_REGIONS;
+            case NETHER -> NETHER_REGIONS;
         };
     }
 

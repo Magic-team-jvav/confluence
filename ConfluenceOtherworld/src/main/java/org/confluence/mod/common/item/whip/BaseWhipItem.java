@@ -121,13 +121,12 @@ public class BaseWhipItem extends Item {
         double speed = player.getAttributeValue(Attributes.ATTACK_SPEED);
         // 仅影响挥鞭速度，不给近战武器添加攻速属性。
         if (player.hasEffect(ModEffects.JUNGLES_FURY.get())) speed *= 1.12;
-        return Double.isFinite(speed) ? (float) Mth.clamp(speed / 80.0, 0.0, 1.0) : 0.0F;
+        return (float) Mth.clamp(speed / 80.0, 0.0, 1.0);
     }
 
     /// 按 1.21 的公式把玩家当前攻击速度换算为一次完整挥鞭所需的 tick 数。
     /// 物品本身、词缀、盔甲和状态效果对攻击速度的修改都会在读取属性时自然合并。
     public static int resolveDurationTicks(Player player) {
-        Objects.requireNonNull(player, "Whip player must not be null");
         float step = swingStep(player);
         return step > 0.0F ? Math.max(1, (int) Math.ceil(1.0 / step)) : Integer.MAX_VALUE;
     }

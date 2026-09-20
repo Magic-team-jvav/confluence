@@ -259,7 +259,7 @@ public abstract class BaseWormBoss extends BaseBoss implements WormSegment {
     }
 
     public List<BossWormPart> getSegments() {
-        return List.copyOf(segments);
+        return segments;
     }
 
     /// 独立同步的部件到达客户端后，按服务端索引重建相邻关系。

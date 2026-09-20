@@ -131,11 +131,10 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     }
 
     private void applyStateModifier(Attribute attribute, AttributeModifier original, double override, boolean enabled) {
-        if (original == null) return;
         AttributeInstance instance = getAttribute(attribute);
         if (instance == null) return;
         if (enabled) {
-            AttributeModifier modifier = Double.isFinite(override) && override >= 0
+            AttributeModifier modifier = override >= 0
                     ? new AttributeModifier(original.getId(), original.getName(), override - instance.getBaseValue(), AttributeModifier.Operation.ADDITION)
                     : original;
             var existing = instance.getModifier(original.getId());
@@ -329,8 +328,7 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     /// 以实际战斗方向为唯一权威，同时更新实体、身体和头部朝向。
     /// 飞行怪、冲刺怪与 Boss 共用这一入口，避免各自只写一半旋转状态。
     public final void faceCombatDirection(Vec3 direction, float maximumYawChange, float maximumPitchChange) {
-        if (!Double.isFinite(direction.x) || !Double.isFinite(direction.y) || !Double.isFinite(direction.z)
-                || direction.lengthSqr() < 1.0E-7D) {
+        if (direction.lengthSqr() < 1.0E-7D) {
             return;
         }
         double horizontal = Math.sqrt(direction.x * direction.x + direction.z * direction.z);

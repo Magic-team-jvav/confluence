@@ -18,21 +18,16 @@ public final class SweptContactAttack {
 
     private SweptContactAttack() {}
 
-    public static List<Entity> findTargets(Entity attacker, double inflation,
-                                           double maximumSweepDistance,
-                                           Predicate<Entity> filter) {
-        return findTargets(attacker, new Vec3(attacker.xo, attacker.yo, attacker.zo),
-                inflation, maximumSweepDistance, filter);
+    public static List<Entity> findTargets(Entity attacker, double inflation, double maximumSweepDistance, Predicate<Entity> filter) {
+        return findTargets(attacker, new Vec3(attacker.xo, attacker.yo, attacker.zo), inflation, maximumSweepDistance, filter);
     }
 
     /// 使用调用方保存的移动起点执行连续检测。由父实体直接重排位置的部件不能依赖
     /// {@code xo/yo/zo}，因为部件自身开始 tick 时原版会把这些字段刷新到当前位置。
-    public static List<Entity> findTargets(Entity attacker, Vec3 previousPosition, double inflation,
-                                           double maximumSweepDistance,
-                                           Predicate<Entity> filter) {
+    public static List<Entity> findTargets(Entity attacker, Vec3 previousPosition, double inflation, double maximumSweepDistance, Predicate<Entity> filter) {
         AABB currentBox = attacker.getBoundingBox();
         Vec3 displacement = attacker.position().subtract(previousPosition);
-        if (!isFinite(displacement) || displacement.lengthSqr() > maximumSweepDistance * maximumSweepDistance) {
+        if (displacement.lengthSqr() > maximumSweepDistance * maximumSweepDistance) {
             return attacker.level().getEntities(attacker, currentBox.inflate(inflation), filter);
         }
 
@@ -49,9 +44,5 @@ public final class SweptContactAttack {
             AABB expandedTarget = candidate.getBoundingBox().inflate(xExtent, verticalExtent, zExtent);
             return expandedTarget.contains(previousCenter) || expandedTarget.contains(currentCenter) || expandedTarget.clip(previousCenter, currentCenter).isPresent();
         });
-    }
-
-    private static boolean isFinite(Vec3 vector) {
-        return Double.isFinite(vector.x) && Double.isFinite(vector.y) && Double.isFinite(vector.z);
     }
 }

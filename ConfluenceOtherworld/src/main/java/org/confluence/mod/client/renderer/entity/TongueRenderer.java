@@ -36,7 +36,6 @@ public final class TongueRenderer {
     private TongueRenderer() {}
 
     public static void renderFirstPerson(RenderLevelStageEvent event, Minecraft minecraft, LocalPlayer player) {
-        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_ENTITIES) return;
         if (!minecraft.options.getCameraType().isFirstPerson())
             return;
         if (!player.hasEffect(ModEffects.THE_TONGUE.get())) return;

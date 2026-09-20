@@ -1,9 +1,11 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.world.item.Item;
+import org.confluence.lib.api.animation.first_person.HandAnimationAction;
+import org.confluence.lib.api.animation.first_person.HandAnimationChannel;
+import org.confluence.lib.api.animation.first_person.HandAnimationProfile;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.client.animation.HandAnimationProfile;
 import org.confluence.mod.common.item.BaseBullet;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.gun.StarCannonItem;
@@ -14,6 +16,7 @@ import org.confluence.mod.common.item.gun.definition.GunDefinition;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
+import software.bernie.geckolib.core.animation.Animation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +46,17 @@ public class GunItems {
     public static final PortDeferredItem<BaseGun> HAND_GUN = registerGun("hand_gun", properties -> new BaseGun(
             properties,
             GunDefinition.manual(5, 13.0F, 1.25F, 0.15F, 0.04F, 0, 0.0F, ModRarity.GREEN),
-            HandAnimationProfile.handgun()));
+            HandAnimationProfile.builder()
+                    .channel(HandAnimationChannel.builder("hand_pose")
+                            .idle("static_idle")
+                            .animation(HandAnimationAction.DRAW, "draw", Animation.LoopType.PLAY_ONCE)
+                            .animation(HandAnimationAction.PUT_AWAY, "put_away", Animation.LoopType.PLAY_ONCE)
+                            .animation(HandAnimationAction.INSPECT, "inspect", Animation.LoopType.PLAY_ONCE)
+                            .build())
+                    .channel(HandAnimationChannel.builder("weapon_action")
+                            .animation(HandAnimationAction.SHOOT, "shoot", Animation.LoopType.PLAY_ONCE)
+                            .build())
+                    .build()));
     public static final PortDeferredItem<BaseGun> PHOENIX_BLASTER = registerGun("phoenix_blaster", properties -> new BaseGun(properties, GunDefinition.manual(4, 16.0F, 2.5F, 0.1F, 0.04F, 0, 2.5F, ModRarity.ORANGE)));
     public static final PortDeferredItem<BaseGun> SHOTGUN = registerGun("shotgun", properties -> new BaseGun(
             properties,

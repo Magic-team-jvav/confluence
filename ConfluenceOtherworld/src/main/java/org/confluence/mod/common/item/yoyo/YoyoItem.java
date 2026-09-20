@@ -20,7 +20,6 @@ import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 
 /// 悠悠球物品。
 ///
@@ -31,7 +30,7 @@ public class YoyoItem extends CustomRarityItem {
 
     public YoyoItem(Properties properties, ModRarity rarity, YoyoDefinition definition) {
         super(properties.stacksTo(1), rarity);
-        this.definition = Objects.requireNonNull(definition, "Yoyo definition must not be null");
+        this.definition = definition;
     }
 
     /// 主动作按键按下时由服务端输入包调用；每名玩家同时只保留一个悠悠球。

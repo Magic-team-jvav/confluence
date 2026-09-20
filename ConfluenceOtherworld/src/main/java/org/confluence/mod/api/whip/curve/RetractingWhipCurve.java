@@ -17,7 +17,7 @@ public final class RetractingWhipCurve implements WhipCurve {
             throw new IllegalArgumentException("Return start must be between zero and one");
         this.outbound = outbound;
         this.returnStart = returnStart;
-        this.returnPoints = List.copyOf(outbound.controlPoints(returnStart));
+        this.returnPoints = outbound.controlPoints(returnStart);
     }
 
     public boolean isReturning(double progress) {
@@ -44,7 +44,7 @@ public final class RetractingWhipCurve implements WhipCurve {
             double drop = downwardArc * Math.pow(along, 1.5);
             result.add(root.add(start.scale(remaining)).add(0.0, drop, 0.0));
         }
-        return List.copyOf(result);
+        return result;
     }
 
     private static double smootherstep(double value) {

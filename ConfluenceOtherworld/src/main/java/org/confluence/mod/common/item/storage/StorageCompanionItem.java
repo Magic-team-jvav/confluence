@@ -22,7 +22,6 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 /// 随身储物入口实体的召唤物品。
@@ -35,7 +34,7 @@ public final class StorageCompanionItem<T extends StorageCompanionEntity> extend
 
     public StorageCompanionItem(Properties properties, Supplier<EntityType<T>> entityType) {
         super(properties.stacksTo(1));
-        this.entityType = Objects.requireNonNull(entityType, "Storage companion entity type must not be null");
+        this.entityType = entityType;
     }
 
     public EntityType<T> entityType() {
@@ -55,7 +54,7 @@ public final class StorageCompanionItem<T extends StorageCompanionEntity> extend
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
         }
 
-        EntityType<T> companionType = Objects.requireNonNull(entityType(), "Storage companion entity type must not be null");
+        EntityType<T> companionType = entityType();
         StorageCompanionEntity existing = null;
         for (Entity entity : serverPlayer.serverLevel().getAllEntities()) {
             // 实体管理器切换追踪状态的同一刻，遍历结果可能短暂暴露空槽。

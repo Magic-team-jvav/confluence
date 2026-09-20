@@ -21,7 +21,10 @@ import org.confluence.mod.mixed.Immunity;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /// 由玩家持有的召唤物运行实例。
@@ -50,9 +53,9 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     private int formationCount = 1;
 
     protected SummonInstance(ResourceLocation type, ServerPlayer owner, int slotCost, SummonStats stats, SummonPose initialPose) {
-        this.type = Objects.requireNonNull(type, "Summon type must not be null");
-        this.owner = Objects.requireNonNull(owner, "Summon owner must not be null");
-        this.stats = Objects.requireNonNull(stats, "Summon stats must not be null");
+        this.type = type;
+        this.owner = owner;
+        this.stats = stats;
         if (slotCost <= 0) {
             throw new IllegalArgumentException("Summon slot cost must be positive");
         }
@@ -190,7 +193,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     }
 
     public final void setPath(SummonPath path) {
-        this.path = Objects.requireNonNull(path, "Summon path must not be null");
+        this.path = path;
     }
 
     public final void setPath(String identifier, List<SummonPose> poses) {
@@ -203,10 +206,9 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
 
     /// 直接推进一个游戏刻的姿态；多节点轨迹仍使用 {@link #setPath(SummonPath)}。
     protected final void advanceTo(SummonPose pose) {
-        SummonPose next = Objects.requireNonNull(pose, "Next summon pose must not be null");
         path = null;
-        velocity = next.position().subtract(currentPose.position());
-        currentPose = next;
+        velocity = pose.position().subtract(currentPose.position());
+        currentPose = pose;
     }
 
     public final Vec3 currentVelocity() {
@@ -248,8 +250,6 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     }
 
     protected final boolean hurtEntity(Entity damageRecipient, LivingEntity encounterOwner, float damageMultiplier) {
-        Objects.requireNonNull(damageRecipient, "Summon damage recipient must not be null");
-        Objects.requireNonNull(encounterOwner, "Summon encounter owner must not be null");
         if (damageMultiplier < 0.0F) {
             throw new IllegalArgumentException("Summon damage multiplier must be non-negative");
         }
@@ -283,7 +283,6 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
 
     protected final boolean hurtTouchingTargets(AABB bounds, double targetRange, float damageMultiplier,
                                         Set<UUID> hitEntities, Consumer<LivingEntity> onSuccessfulHit) {
-        Objects.requireNonNull(onSuccessfulHit, "Successful-hit callback must not be null");
         boolean hit = false;
         for (Entity rawTarget : owner.level().getEntities((Entity) null, bounds, candidate -> ProjectileHitRules.canHit(owner, candidate))) {
             Entity damageRecipient = ProjectileHitRules.damageRecipient(rawTarget);
@@ -327,7 +326,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     }
 
     public final void initializePose(SummonPose pose) {
-        currentPose = Objects.requireNonNull(pose, "Initial summon pose must not be null");
+        currentPose = pose;
         previousPose = pose;
         previousPreviousPose = pose;
     }
@@ -374,7 +373,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     }
 
     protected final void replaceStats(SummonStats stats) {
-        this.stats = Objects.requireNonNull(stats, "Summon stats must not be null");
+        this.stats = stats;
     }
 
     public final UUID uuid() {
@@ -382,7 +381,7 @@ public abstract class SummonInstance implements OwnedSummon, Immunity {
     }
 
     final void restoreUuid(UUID uuid) {
-        this.uuid = Objects.requireNonNull(uuid, "Restored summon UUID must not be null");
+        this.uuid = uuid;
     }
 
     @Override

@@ -19,10 +19,6 @@ public record MoonPhaseCondition(List<MoonPhase> phases) implements TradeConditi
         this(List.of(phases));
     }
 
-    public MoonPhaseCondition {
-        phases = List.copyOf(phases);
-    }
-
     @Override
     public boolean test(ServerPlayer player, BaseNPC npc) {
         return phases.contains(MoonPhase.of(npc.level()));

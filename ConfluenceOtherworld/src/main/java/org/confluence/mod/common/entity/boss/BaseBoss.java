@@ -162,7 +162,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     }
 
     protected final void removeAllBossBarPlayers() {
-        for (ServerPlayer player : List.copyOf(bossEvent.getPlayers())) removeBossBarPlayer(player);
+        for (ServerPlayer player : bossEvent.getPlayers()) removeBossBarPlayer(player);
     }
 
     private void synchronizeBossBar(ServerPlayer player, boolean visible) {
@@ -219,7 +219,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     @Override
     protected void onCreatureDefinitionReload() {
         // 本体 scale 属性由 LivingEntity 同步；非生物部件没有属性表，需要主动刷新碰撞箱。
-        for (Entity part : List.copyOf(subEntities)) {
+        for (Entity part : subEntities) {
             if (!part.isRemoved()) part.refreshDimensions();
         }
     }
@@ -233,7 +233,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         }
         removingSubEntities = true;
         try {
-            for (Entity part : List.copyOf(subEntities)) {
+            for (Entity part : subEntities) {
                 /// 区块卸载时只清理可重建的临时部件；主动撤离和真正销毁必须
                 /// 清理全部尚未移除的从属。不能用 isAlive() 过滤，因为已经
                 /// 进入死亡动画但仍留在世界中的从属同样属于本场遭遇。
@@ -671,7 +671,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
                 }
             }
         }
-        return List.copyOf(participants);
+        return participants;
     }
 
     /// 尝试取得本场遭遇的死亡结算权。
@@ -793,7 +793,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// 遭遇的权威玩家目标发生变化时调用。所有已加载的生物型从属立即继承新目标；
     /// 目标消失时也同时停战，不能让仆从继续追逐已经失效的玩家。
     protected void onCombatTargetChanged(@Nullable Player target) {
-        for (Entity part : List.copyOf(subEntities)) {
+        for (Entity part : subEntities) {
             if (part instanceof Mob mob && mob.isAlive()) {
                 mob.setTarget(target);
             }

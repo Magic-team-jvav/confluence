@@ -1,7 +1,8 @@
 package org.confluence.mod.common.summon;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
-import java.util.Objects;
 
 /// 保存召唤物尚待执行的离散轨迹。
 public final class SummonPath {
@@ -10,8 +11,8 @@ public final class SummonPath {
     private int currentIndex;
 
     public SummonPath(String identifier, List<SummonPose> nodes) {
-        this.identifier = Objects.requireNonNull(identifier, "Summon path identifier must not be null");
-        this.nodes = List.copyOf(nodes);
+        this.identifier = identifier;
+        this.nodes = nodes;
     }
 
     public String identifier() {
@@ -27,14 +28,13 @@ public final class SummonPath {
     }
 
     public void updateRemainingNodes(List<SummonPose> nodes) {
-        List<SummonPose> updated = List.copyOf(nodes);
-        if (updated.size() < currentIndex) {
+        if (nodes.size() < currentIndex) {
             throw new IllegalArgumentException("Updated summon path must retain visited nodes");
         }
-        this.nodes = updated;
+        this.nodes = nodes;
     }
 
-    public SummonPose advance() {
+    public @Nullable SummonPose advance() {
         return isFinished() ? null : nodes.get(currentIndex++);
     }
 

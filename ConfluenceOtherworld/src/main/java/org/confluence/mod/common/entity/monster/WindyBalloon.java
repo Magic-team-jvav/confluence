@@ -78,7 +78,7 @@ public final class WindyBalloon extends BaseFlyingMonster {
 
     private void pop() {
         if (isRemoved()) return;
-        for (Entity passenger : java.util.List.copyOf(getPassengers())) {
+        for (Entity passenger : getPassengers()) {
             Vec3 location = passenger.position();
             passenger.stopRiding();
             passenger.setPos(location);

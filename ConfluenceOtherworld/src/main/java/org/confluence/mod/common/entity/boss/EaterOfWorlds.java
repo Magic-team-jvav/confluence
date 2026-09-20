@@ -281,8 +281,7 @@ public class EaterOfWorlds extends BaseWormBoss {
             return;
         restructuring = true;
         try {
-            List<Float> oldHealths = List.copyOf(segmentHealths);
-            List<Float> frontHealths = new ArrayList<>(oldHealths.subList(0, destroyedIndex - 1));
+            List<Float> frontHealths = new ArrayList<>(segmentHealths.subList(0, destroyedIndex - 1));
             List<Vec3> frontPositions = segments.subList(0, destroyedIndex - 1).stream()
                     .map(BossWormPart::position).toList();
             EaterOfWorlds rearHead = null;
@@ -290,8 +289,8 @@ public class EaterOfWorlds extends BaseWormBoss {
             boolean rearTakesPrimaryRole = isMainBody() && frontHealths.isEmpty();
             if (destroyedIndex < activeSegmentCount) {
                 BossWormPart rearHeadPart = segments.get(destroyedIndex);
-                float rearHeadHealth = oldHealths.get(destroyedIndex);
-                List<Float> rearHealths = new ArrayList<>(oldHealths.subList(destroyedIndex + 1, oldHealths.size()));
+                float rearHeadHealth = segmentHealths.get(destroyedIndex);
+                List<Float> rearHealths = new ArrayList<>(segmentHealths.subList(destroyedIndex + 1, segmentHealths.size()));
                 List<Vec3> rearPositions = segments.subList(destroyedIndex + 1, segments.size()).stream()
                         .map(BossWormPart::position).toList();
                 rearHead = spawnSplitHead(rearHeadPart.position(), rearHeadPart.getYRot(), rearHeadPart.getXRot(),
@@ -369,7 +368,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         BossMultiplayerEnhancement.copyEncounterScaling(this, head);
         head.setHealth(Mth.clamp(headHealth, 0.1F, (float) head.getMaxHealth()));
         head.inheritEncounterState(this);
-        head.pendingSegmentPositions = List.copyOf(bodyPositions);
+        head.pendingSegmentPositions = bodyPositions;
         // 断节新链先从自己的接近通道对齐，再冲向玩家。直接进入 DASH 会让所有分裂头
         // 同时走目标中心线，长链在玩家附近交叉成看似分叉的巨大结团。
         head.movementPhase = divergeFromSource ? MovementPhase.ALIGN : MovementPhase.DASH;
@@ -389,7 +388,6 @@ public class EaterOfWorlds extends BaseWormBoss {
         }
         head.setDeltaMovement(initialVelocity);
         head.setPersistenceRequired();
-        List<ServerPlayer> viewers = primary ? List.copyOf(bossEvent.getPlayers()) : List.of();
         if (!serverLevel.addFreshEntity(head)) {
             head.discard();
             return null;
@@ -398,7 +396,9 @@ public class EaterOfWorlds extends BaseWormBoss {
         // pending 列表只会在链条完整后消费，因此不会空跑或重复覆盖。
         head.initSegments();
         head.setPrimaryHead(primary);
-        for (ServerPlayer viewer : viewers) head.addBossBarPlayer(viewer);
+        if (primary) {
+            for (ServerPlayer viewer : bossEvent.getPlayers()) head.addBossBarPlayer(viewer);
+        }
         return head;
     }
 
@@ -458,9 +458,8 @@ public class EaterOfWorlds extends BaseWormBoss {
 
     private void transferPrimaryRoleTo(EaterOfWorlds successor) {
         if (successor == this) return;
-        List<ServerPlayer> viewers = List.copyOf(bossEvent.getPlayers());
         successor.setPrimaryHead(true);
-        for (ServerPlayer viewer : viewers) successor.addBossBarPlayer(viewer);
+        for (ServerPlayer viewer : bossEvent.getPlayers()) successor.addBossBarPlayer(viewer);
         setPrimaryHead(false);
     }
 
@@ -574,7 +573,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         state.headIds.remove(getUUID());
         if (getUUID().equals(state.primaryHeadId)) state.primaryHeadId = null;
         if (state.primaryHeadId == null) {
-            for (UUID candidateId : List.copyOf(state.headIds)) {
+            for (UUID candidateId : state.headIds) {
                 EaterOfWorlds candidate = resolveLoadedHead(serverLevel, candidateId, getEncounterUUID());
                 if (candidate != null) {
                     candidate.setPrimaryHead(true);
@@ -646,9 +645,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         for (int index = 0; index < activeSegmentCount; index++) {
             float maximum = segmentMaxHealth();
             float health = index < healths.size() ? healths.getFloat(index) : maximum;
-            segmentHealths.add(Float.isFinite(health)
-                    ? Mth.clamp(health, 0.0F, maximum)
-                    : maximum);
+            segmentHealths.add(Mth.clamp(health, 0.0F, maximum));
         }
         int phaseIndex = Mth.clamp(tag.getInt(MOVEMENT_PHASE_TAG), 0, MovementPhase.values().length - 1);
         movementPhase = MovementPhase.values()[phaseIndex];
@@ -730,7 +727,6 @@ public class EaterOfWorlds extends BaseWormBoss {
             if (!isDirectlyTargetable(player)) continue;
             var aggro = player.getAttribute(ConfluenceMagicLib.AGGRO);
             double aggroValue = aggro == null ? 0.0D : aggro.getValue();
-            if (!Double.isFinite(aggroValue)) aggroValue = 0.0D;
             double distanceSqr = distanceToSqr(player);
             int aggroComparison = Double.compare(aggroValue, maximumAggro);
             int distanceComparison = Double.compare(distanceSqr, nearestDistanceSqr);
@@ -759,9 +755,7 @@ public class EaterOfWorlds extends BaseWormBoss {
                 || !player.canBeSeenAsEnemy()) {
             return false;
         }
-        double distanceSqr = distanceToSqr(player);
-        return Double.isFinite(distanceSqr)
-                && distanceSqr < TARGET_SEARCH_RANGE * TARGET_SEARCH_RANGE;
+        return distanceToSqr(player) < TARGET_SEARCH_RANGE * TARGET_SEARCH_RANGE;
     }
 
     @Override
@@ -949,11 +943,6 @@ public class EaterOfWorlds extends BaseWormBoss {
     }
 
     private void moveDirectlyAlongCurve(Vec3 nextPosition) {
-        if (!Double.isFinite(nextPosition.x) || !Double.isFinite(nextPosition.y)
-                || !Double.isFinite(nextPosition.z)) {
-            beginPhase(MovementPhase.ALIGN);
-            return;
-        }
         Vec3 movement = nextPosition.subtract(position());
         if (movement.lengthSqr() > 1.0E-7) {
             setPos(nextPosition);
@@ -1010,9 +999,7 @@ public class EaterOfWorlds extends BaseWormBoss {
         if (!tag.contains(key, Tag.TAG_LIST)) return Vec3.ZERO;
         ListTag values = tag.getList(key, Tag.TAG_DOUBLE);
         if (values.size() != 3) return Vec3.ZERO;
-        Vec3 result = new Vec3(values.getDouble(0), values.getDouble(1), values.getDouble(2));
-        return Double.isFinite(result.x) && Double.isFinite(result.y) && Double.isFinite(result.z)
-                ? result : Vec3.ZERO;
+        return new Vec3(values.getDouble(0), values.getDouble(1), values.getDouble(2));
     }
 
     private static int phaseDuration(MovementPhase phase) {

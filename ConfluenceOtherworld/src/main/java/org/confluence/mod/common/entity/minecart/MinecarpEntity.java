@@ -12,5 +12,4 @@ public class MinecarpEntity extends BaseMinecartEntity {
     public MinecarpEntity(Level level, double x, double y, double z, Abilities<? extends BaseMinecartEntity> abilities) {
         super(level, x, y, z, abilities);
     }
-
 }

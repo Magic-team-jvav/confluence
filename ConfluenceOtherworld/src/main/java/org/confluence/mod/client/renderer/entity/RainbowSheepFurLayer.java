@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.client.color.ExpertColorAnimation;
 import org.confluence.mod.client.model.entity.RainbowSheepFurModel;
 import org.confluence.mod.client.model.entity.RainbowSheepModel;
 import org.confluence.mod.common.entity.RainbowSheep;

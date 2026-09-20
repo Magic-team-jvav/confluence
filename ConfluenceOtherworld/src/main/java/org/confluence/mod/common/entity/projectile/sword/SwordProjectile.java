@@ -286,8 +286,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         remainingHits = tag.getInt("RemainingHits");
         survivesBlockHit = tag.getBoolean("SurvivesBlockHit");
         Vec3 savedDirection = new Vec3(tag.getDouble("DirectionX"), tag.getDouble("DirectionY"), tag.getDouble("DirectionZ"));
-        if (!Double.isFinite(savedDirection.x) || !Double.isFinite(savedDirection.y) || !Double.isFinite(savedDirection.z)
-                || savedDirection.lengthSqr() <= 1.0E-7) savedDirection = getDeltaMovement();
+        if (savedDirection.lengthSqr() <= 1.0E-7) savedDirection = getDeltaMovement();
         if (savedDirection.lengthSqr() > 1.0E-7) direction = savedDirection.normalize();
         entityData.set(DATA_DIRECTION, direction.toVector3f());
         entityData.set(DATA_INITIAL_VELOCITY, getDeltaMovement().toVector3f());

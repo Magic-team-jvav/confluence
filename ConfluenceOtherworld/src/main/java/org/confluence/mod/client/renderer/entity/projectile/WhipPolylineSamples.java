@@ -4,7 +4,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 // 缓存一条鞭子曲线的累计弧长，供所有外观层共同采样。
 final class WhipPolylineSamples {
@@ -14,11 +13,10 @@ final class WhipPolylineSamples {
     private final double totalLength;
 
     private WhipPolylineSamples(List<Vec3> curve) {
-        Objects.requireNonNull(curve, "Whip curve must not be null");
         if (curve.size() < 2) {
             throw new IllegalArgumentException("Whip curve must contain at least two points");
         }
-        points = List.copyOf(curve);
+        points = curve;
         cumulative = new double[points.size()];
         for (int index = 1; index < points.size(); index++) {
             cumulative[index] = cumulative[index - 1] + points.get(index).distanceTo(points.get(index - 1));
@@ -35,7 +33,7 @@ final class WhipPolylineSamples {
     }
 
     List<Sample> fixedSpacing(double spacing) {
-        if (!Double.isFinite(spacing) || spacing <= 0.0) {
+        if (spacing <= 0.0) {
             throw new IllegalArgumentException("Whip segment spacing must be finite and positive");
         }
         if (totalLength <= EPSILON) return List.of();

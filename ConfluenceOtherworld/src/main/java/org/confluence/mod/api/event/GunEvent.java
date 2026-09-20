@@ -12,7 +12,6 @@ import org.confluence.mod.common.item.gun.BaseGun;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 public class GunEvent extends Event {
     private final Player player;
@@ -244,10 +243,8 @@ public class GunEvent extends Event {
         }
 
         public void setProjectiles(Collection<? extends Projectile> projectiles) {
-            List<Projectile> replacements = new ArrayList<>(Objects.requireNonNull(projectiles, "projectiles"));
-            replacements.removeIf(Objects::isNull);
             this.projectiles.clear();
-            this.projectiles.addAll(replacements);
+            this.projectiles.addAll(projectiles);
         }
     }
 

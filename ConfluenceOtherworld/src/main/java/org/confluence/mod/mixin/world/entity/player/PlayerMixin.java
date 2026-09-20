@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.world.entity.player;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,11 +29,6 @@ public abstract class PlayerMixin implements IPlayer {
     @Override
     public ItemStack confluence$getCurrentBait() {
         return confluence$currentBait;
-    }
-
-    @ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"), index = 1)
-    private float removeVanillaJumpCritical(float amount, @Local(name = "flag2") boolean vanillaCritical) {
-        return vanillaCritical ? amount / 1.5F : amount;
     }
 
     @ModifyArg(method = "causeFoodExhaustion", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;addExhaustion(F)V"))

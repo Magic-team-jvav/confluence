@@ -78,8 +78,8 @@ public final class BiomeRegionTable {
             }
             if (immutable.isEmpty()) {
                 // 区域一个参数点都没落地，说明群系键没注册（打错名）或声明的区间永远不满足。
-                // 这种情况下该区域仍然占着一份权重带宽，表现为「本来该出区域的地方全是原版」。
-                Confluence.LOGGER.warn("Biome region {} produced no parameter points; its weight band will fall back to vanilla", region.id());
+                // 这种情况下该区域仍然占着一份权重份额，表现为「本来该出区域的地方全是原版」。
+                Confluence.LOGGER.warn("Biome region {} produced no parameter points; its weight share will fall back to vanilla", region.id());
             }
         }
         return new BiomeRegionTable(type, allocator, regions, entries, List.copyOf(biomes));

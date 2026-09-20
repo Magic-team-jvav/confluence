@@ -26,6 +26,8 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     // 命中后保留三刻冷却；未命中时逐刻检测，扫掠只覆盖本刻实际经过的路径。
     private static final int COLLISION_INTERVAL = 3;
 
+    private static final double MIN_HEAD_DELTA_SQR = 1.0E-6;
+
     private final EntityType<BaseWormPart> segmentType;
     protected final List<BaseWormPart> segments = new ArrayList<>();
     private final java.util.Map<Integer, BaseWormPart> clientSegments = new java.util.HashMap<>();
@@ -34,6 +36,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     private @Nullable Vec3 contactSweepStart;
     private @Nullable BaseWormPart attackingPart;
     private @Nullable BaseWormPart hurtPart;
+    private @Nullable Vec3 lastHeadPosition;
 
     public BaseWormMonster(EntityType<? extends BaseWormMonster> type, Level level, EntityType<BaseWormPart> segmentType) {
         super(type, level);
@@ -93,7 +96,6 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     @Override
     public double getAttributeValue(Attribute attribute) {
         double value = super.getAttributeValue(attribute);
-        // 仅本次体节结算使用对应属性，保留本体的伤害事件、无敌帧和难度倍率。
         if (attribute == Attributes.ATTACK_DAMAGE && attackingPart != null)
             return value * segmentDamageMultiplier(attackingPart.isTail());
         if (attribute == Attributes.ARMOR && hurtPart != null)
@@ -142,6 +144,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
 
     private boolean hasCompleteSegmentChain() {
         if (segments.size() != getSegmentCount()) return false;
+        /// 身份和索引决定链条是否完整，弯道中的空间距离不能触发销毁重建。
         for (int index = 1; index <= segments.size(); index++) {
             BaseWormPart part = segments.get(index - 1);
             if (part.isRemoved() || part.getOwner() != this || part.getSegmentIndex() != index)
@@ -156,6 +159,7 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
         }
         segments.clear();
         segmentTrail.invalidate();
+        lastHeadPosition = null;
     }
 
     @Nullable
@@ -200,18 +204,24 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
         if (!level().isClientSide) {
             initSegments();
             Vec3 leaderPosition = position();
-            List<WormChainTrail.Sample> samples = segmentTrail.sample(leaderPosition, segments, segmentSpacing());
-            for (int index = 0; index < segments.size(); index++) {
-                WormChainTrail.Sample sample = samples.get(index);
-                BaseWormPart segment = segments.get(index);
-                segment.moveToChainPosition(sample.position());
-                segment.orientAlongChain(sample.tangent());
-            }
-            Vec3 tangent = segmentTrail.headTangent();
-            if (tangent.lengthSqr() > 1.0E-7D) {
-                WormSegment.orientAlong(this, tangent);
-                setYBodyRot(getYRot());
-                setYHeadRot(getYRot());
+
+            boolean headMoved = lastHeadPosition == null || lastHeadPosition.distanceToSqr(leaderPosition) > MIN_HEAD_DELTA_SQR;
+            lastHeadPosition = leaderPosition;
+
+            if (headMoved) {
+                List<WormChainTrail.Sample> samples = segmentTrail.sample(leaderPosition, segments, segmentSpacing());
+                for (int index = 0; index < segments.size(); index++) {
+                    WormChainTrail.Sample sample = samples.get(index);
+                    BaseWormPart segment = segments.get(index);
+                    segment.moveToChainPosition(sample.position());
+                    segment.orientAlongChain(sample.tangent());
+                }
+                Vec3 tangent = segmentTrail.headTangent();
+                if (tangent.lengthSqr() > 1.0E-7D) {
+                    WormSegment.orientAlong(this, tangent);
+                    setYBodyRot(getYRot());
+                    setYHeadRot(getYRot());
+                }
             }
             tickCollision();
         }
@@ -235,7 +245,6 @@ public abstract class BaseWormMonster extends BaseMonster implements WormSegment
     @Override
     public void die(DamageSource source) {
         super.die(source);
-        // 死亡结算完成后立即清理链条，不等待本体死亡动画结束。
         if (!isAlive() && !level().isClientSide) discardSegments();
     }
 

@@ -17,6 +17,7 @@ import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.gameevent.SandstormGameEvent;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
@@ -63,8 +64,7 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
     protected float segmentSpacing() {
         if (anatomy != null) return anatomy.spacing();
         // 沙虫根骨骼绕 X 旋转 90°，轴向长度是原模型的 12 像素，渲染倍率为 2。
-        if (getType() == org.confluence.mod.common.init.entity.MonsterEntities.TOMB_CRAWLER.get())
-            return 12.0F / 16.0F * 2.0F;
+        if (getType() == MonsterEntities.TOMB_CRAWLER.get()) return 12.0F / 16.0F * 2.0F;
         return role == Role.BONE_SERPENT ? 2.5F : role == Role.FLYING ? 1.25F : 1.6F;
     }
 

@@ -23,15 +23,14 @@ public class BoomerangItem extends Item {
     private final Settings settings;
 
     public BoomerangItem(Settings settings) {
-        super(settings.properties());
+        super(settings.properties().unbreakable());
         this.settings = settings;
     }
 
     /// 左键包和右键入口共用同一套发射逻辑，避免两个按键路径以后出现伤害、冷却或数量上限差异。
     public void throwBoomerang(ServerPlayer player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        int maximumActive = settings.maxCount()
-                + EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MULTI_BOOMERANG.get(), stack);
+        int maximumActive = settings.maxCount() + EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MULTI_BOOMERANG.get(), stack);
         if (player.getCooldowns().isOnCooldown(this) || activeCount(player, stack) >= maximumActive) {
             return;
         }

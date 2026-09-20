@@ -9,8 +9,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.lib.common.LibAttributes;
-import org.confluence.mod.Confluence;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.boss.*;
 import org.confluence.mod.common.entity.model.CrownOfKingSlimeModelEntity;
 import org.confluence.mod.common.entity.monster.CreatureAttributeBuilder;
@@ -161,7 +161,8 @@ public final class BossEntities {
     public static final RegistryObject<EntityType<HillOfFleshMouth>> HILL_OF_FLESH_MOUTH = registerEntity("hill_of_flesh_mouth", EntityType.Builder.of(HillOfFleshMouth::new, MobCategory.MISC).sized(4.0F, 4.0F).clientTrackingRange(10).updateInterval(1).noSave());
 
     // 扩展 Boss：机械末影龙及部位
-    public static final RegistryObject<EntityType<PrimeEnderDragon>> PRIME_ENDER_DRAGON = registerEntity("prime_ender_dragon", EntityType.Builder.of(PrimeEnderDragon::new, MobCategory.MONSTER).sized(10.0F, 10.0F).clientTrackingRange(12));
+    public static final RegistryObject<EntityType<PrimeEnderDragon>> PRIME_ENDER_DRAGON = withAttributes(registerEntity("prime_ender_dragon", EntityType.Builder.of(PrimeEnderDragon::new, MobCategory.MONSTER).sized(10.0F, 10.0F).clientTrackingRange(12)),
+            () -> CreatureAttributeBuilder.boss().maxHealth(4624).attackDamage(32).armor(20).movementSpeed(1).knockbackResistance(1).followRange(300).build());
     public static final RegistryObject<EntityType<PrimeEnderDragonPart>> PRIME_ENDER_DRAGON_PART = registerEntity("prime_ender_dragon_part", EntityType.Builder.of(PrimeEnderDragonPart::new, MobCategory.MISC).sized(2.0F, 2.0F).clientTrackingRange(12).updateInterval(1).noSave());
 
     private BossEntities() {}

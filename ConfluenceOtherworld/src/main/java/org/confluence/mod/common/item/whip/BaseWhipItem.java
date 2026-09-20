@@ -34,22 +34,21 @@ public class BaseWhipItem extends Item {
     private final float baseDamage;
     private final int durationTicks;
     private final int hitCooldownTicks;
-    private final Supplier<? extends WhipTagEffect> tagEffect;
+    private final Supplier<? extends SummonMarkType> summonMarkType;
     private final WhipAppearance appearance;
-    private final Supplier<SummonMarkType> summonMarkType = null;
 
-    public BaseWhipItem(String name, float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends WhipTagEffect> tagEffect) {
+    public BaseWhipItem(String name, float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends SummonMarkType> summonMarkType) {
         // 默认外观沿用 1.21 的十六像素分段模型。
-        this(baseDamage, attackSpeedModifier, range, hitCooldownTicks, tagEffect,
+        this(baseDamage, attackSpeedModifier, range, hitCooldownTicks, summonMarkType,
                 WhipAppearance.segments(WhipSegment.fixedSpacing(Confluence.asResource("item/whip/" + name), 16)));
     }
 
-    public BaseWhipItem(float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends WhipTagEffect> tagEffect, WhipAppearance appearance) {
+    public BaseWhipItem(float baseDamage, float attackSpeedModifier, float range, int hitCooldownTicks, Supplier<? extends SummonMarkType> summonMarkType, WhipAppearance appearance) {
         super(createProperties(attackSpeedModifier, range));
         this.baseDamage = baseDamage;
         this.durationTicks = Math.max(1, (int) (80.0 / (4.0 * (1.0 + attackSpeedModifier))));
         this.hitCooldownTicks = hitCooldownTicks;
-        this.tagEffect = Objects.requireNonNull(tagEffect);
+        this.summonMarkType = Objects.requireNonNull(summonMarkType);
         this.appearance = Objects.requireNonNull(appearance);
     }
 
@@ -62,7 +61,7 @@ public class BaseWhipItem extends Item {
     }
 
     public SummonMarkType getSummonMarkType() {
-        return summonMarkType != null ? summonMarkType.get() : null;
+        return summonMarkType.get();
     }
 
     public float baseDamage() {return baseDamage;}
@@ -70,8 +69,6 @@ public class BaseWhipItem extends Item {
     public int durationTicks() {return durationTicks;}
 
     public int hitCooldownTicks() {return hitCooldownTicks;}
-
-    public WhipTagEffect tagEffect() {return tagEffect.get();}
 
     public float damageFalloff() {return 0.8F;}
 

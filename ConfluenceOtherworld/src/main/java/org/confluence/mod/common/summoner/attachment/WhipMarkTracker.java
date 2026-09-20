@@ -51,6 +51,7 @@ public class WhipMarkTracker implements PortAttachmentSyncHandler<WhipMarkTracke
         if (owner != target && type != null) {
             setMarkTarget(target);
             setMarkType(type);
+            setUsed(false);
             setDuration(duration);
         }
     }

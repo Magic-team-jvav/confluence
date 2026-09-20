@@ -5494,8 +5494,6 @@ public class ModChineseProvider extends LanguageProvider {
 
     private void addWhipTranslation(BaseWhipItem whip, String name) {
         add(whip, name);
-        String tooltip = whip.tagEffect().fixedDamage() == 0.0F ? "召唤物优先攻击该目标" : "召唤物额外造成伤害";
-        addEffect(whip.tagEffect(), name + "标记", tooltip);
     }
 
     private void addPreviouslyMissingTranslations() {

@@ -17,9 +17,9 @@ import net.minecraftforge.fml.common.Mod;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
-import org.confluence.mod.api.whip.WhipTagEffect;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 import org.confluence.mod.mixed.Immunity;
 
 import java.util.ArrayList;
@@ -33,8 +33,8 @@ public final class FirecrackerItem extends BaseWhipItem {
     public static final float TAG_DAMAGE = 0.0F;
     private static final List<Blast> BLASTS = new ArrayList<>();
 
-    public FirecrackerItem(Supplier<? extends WhipTagEffect> tagEffect) {
-        super("firecracker", 34F, 0.5F, 1.85F, 15, tagEffect);
+    public FirecrackerItem(Supplier<? extends SummonMarkType> summonMarkType) {
+        super("firecracker", 34F, 0.5F, 1.85F, 15, summonMarkType);
     }
 
     @Override

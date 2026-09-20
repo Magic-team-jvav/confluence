@@ -14,8 +14,8 @@ public class SummonMarkTypeBuild {
     private float additionalArmorPierce;
     private float criticalHitRate;
     private @Nullable BiConsumer<LivingEntity, Player> tickConsumer;
-    private SummonMarkType.@Nullable SummonMarkDamageConsumer damagePre;
-    private SummonMarkType.@Nullable SummonMarkDamageConsumer damagePost;
+    private SummonMarkType.@Nullable SummonMarkDamagePreConsumer damagePre;
+    private SummonMarkType.@Nullable SummonMarkDamagePostConsumer damagePost;
     private @Nullable BiConsumer<LivingEntity, AttachmentEntityDamageSource> killConsumer;
 
     public SummonMarkTypeBuild(ResourceLocation identifier) {
@@ -42,12 +42,12 @@ public class SummonMarkTypeBuild {
         return this;
     }
 
-    public SummonMarkTypeBuild onDamagePre(SummonMarkType.SummonMarkDamageConsumer consumer) {
+    public SummonMarkTypeBuild onDamagePre(SummonMarkType.SummonMarkDamagePreConsumer consumer) {
         this.damagePre = consumer;
         return this;
     }
 
-    public SummonMarkTypeBuild onDamagePost(SummonMarkType.SummonMarkDamageConsumer consumer) {
+    public SummonMarkTypeBuild onDamagePost(SummonMarkType.SummonMarkDamagePostConsumer consumer) {
         this.damagePost = consumer;
         return this;
     }

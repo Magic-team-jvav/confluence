@@ -38,7 +38,6 @@ import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.api.summon.OwnedSummon;
-import org.confluence.mod.api.whip.WhipTagTracker;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -118,7 +117,6 @@ public final class LivingEntityEvents {
         PortEventHandler.addListener(PortEventPriority.LOWEST, DungeonSpirit::onDeath);
         PortEventHandler.addListener(PortEventPriority.LOWEST, LivingEntityEvents::heal);
         PortEventHandler.addListener(LivingEntityEvents::incomingDamage);
-        PortEventHandler.addListener(PortEventPriority.HIGH, LivingEntityEvents::summonTagDamage);
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::damage$Pre);
         PortEventHandler.addListener(LivingEntityEvents::damage$Post);
         PortEventHandler.addListener(PortEventPriority.LOW, LivingEntityEvents::processCriticalDamage);
@@ -311,22 +309,6 @@ public final class LivingEntityEvents {
         event.setNewDamage(amount);
     }
 
-    /// 在 MagicLib 处理召唤伤害倍率与暴击前加入玩家自己的鞭痕效果。
-    ///
-    /// 伤害来源的直接实体既可能是旧式实体召唤物，也可能是新架构使用的短生命周期弹丸。这里只识别
-    /// 显式实现 {@link OwnedSummon} 的直接实体，普通驯服生物、坐骑和 Boss 部件不会误触发召唤标记。
-    /// 非实体召唤物的近战伤害由运行时实例直接处理，不会在这里重复结算。
-    private static void summonTagDamage(PortLivingDamageEvent.Pre event) {
-        float amount = event.getNewDamage();
-        if (amount <= 0.0F || !(event.getEntity().level() instanceof ServerLevel level) || !(event.getSource().getDirectEntity() instanceof OwnedSummon summon)) {
-            return;
-        }
-        Player owner = event.getSource().getEntity() instanceof Player player
-                ? player : summon.resolveSummonOwner(level);
-        if (owner == null) return;
-        event.setNewDamage(WhipTagTracker.modifyDamage(owner, summon, event.getEntity(), amount));
-    }
-
     private static void damage$Post(PortLivingDamageEvent.Post event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
@@ -334,11 +316,6 @@ public final class LivingEntityEvents {
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
         AttackEffects.afterDamage(victim, damageSource);
-        if (damageSource.getDirectEntity() instanceof OwnedSummon summon) {
-            Player owner = damageSource.getEntity() instanceof Player player ? player : summon.resolveSummonOwner(serverLevel);
-            if (owner != null)
-                WhipTagTracker.afterHit(owner, summon, victim, victim, event.getOriginalDamage());
-        }
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
             return;
         }

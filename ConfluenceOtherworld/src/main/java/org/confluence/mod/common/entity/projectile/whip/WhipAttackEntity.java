@@ -28,7 +28,6 @@ import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.api.summon.OwnedSummon;
 import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.api.whip.WhipFriendlyHitContext;
-import org.confluence.mod.api.whip.WhipTagTracker;
 import org.confluence.mod.api.whip.curve.RetractingWhipCurve;
 import org.confluence.mod.api.whip.curve.WhipCurveSampler;
 import org.confluence.mod.api.whip.curve.WhipCurves;
@@ -426,12 +425,11 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         if (owner instanceof Player player) {
             consumeDurabilityAfterFirstEnemyHit(player);
             player.setLastHurtMob(logicalTarget);
-            WhipTagTracker.apply(player, logicalTarget, weapon(), whip.tagEffect(), whip.shouldApplyTag(hitIndex));
+            if (weapon().getItem() instanceof BaseWhipItem baseWhipItem && baseWhipItem.shouldApplyTag(hitIndex) && baseWhipItem.getSummonMarkType() != null) {
+                player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tracker(logicalTarget, baseWhipItem.getSummonMarkType(), 80);
+            }
             WhipDirectHitContext context = new WhipDirectHitContext(player, logicalTarget, weapon(), damage, hitIndex);
             whip.onDirectHit(context);
-            if (weapon().getItem() instanceof BaseWhipItem baseWhipItem) {
-                player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tracker(logicalTarget, baseWhipItem.getSummonMarkType(), 200);
-            }
         }
     }
 

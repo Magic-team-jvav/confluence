@@ -19,8 +19,8 @@ public record SummonMarkType(
         float additionalArmorPierce,
         float criticalHitRate,
         @Nullable BiConsumer<LivingEntity, Player> tickConsumer,
-        @Nullable SummonMarkDamageConsumer damagePre,
-        @Nullable SummonMarkDamageConsumer damagePost,
+        @Nullable SummonMarkType.SummonMarkDamagePreConsumer damagePre,
+        @Nullable SummonMarkType.SummonMarkDamagePostConsumer damagePost,
         @Nullable BiConsumer<LivingEntity, AttachmentEntityDamageSource> killConsumer
 ) {
     public List<Component> getTooltips() {
@@ -69,7 +69,12 @@ public record SummonMarkType(
     }
 
     @FunctionalInterface
-    public interface SummonMarkDamageConsumer {
+    public interface SummonMarkDamagePreConsumer {
         float accept(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage);
+    }
+
+    @FunctionalInterface
+    public interface SummonMarkDamagePostConsumer {
+        void accept(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage);
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
+import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;

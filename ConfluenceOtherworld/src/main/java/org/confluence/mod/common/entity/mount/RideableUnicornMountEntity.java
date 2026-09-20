@@ -8,9 +8,10 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
-import org.confluence.mod.common.summon.SummonStats;
+import org.confluence.mod.util.PrefixUtils;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -21,7 +22,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class RideableUnicornMountEntity extends AbstractMountEntity implements GeoEntity {
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation RUN = RawAnimation.begin().thenLoop("running");
-    private static final SummonStats CHARGE_DAMAGE = new SummonStats(60.0F, 1.0F);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private boolean jumpQueued;
     private boolean extraJump = true;
@@ -50,7 +50,7 @@ public class RideableUnicornMountEntity extends AbstractMountEntity implements G
         }
         moveWithVelocity(new Vec3(velocity.x, vertical, velocity.z));
         if (player instanceof ServerPlayer owner && velocity.horizontalDistanceSqr() > 1) {
-            float damage = CHARGE_DAMAGE.damage(owner);
+            float damage = (float) (60.0 * PrefixUtils.attributeWithoutHeldItem(owner, LibAttributes.getSummonDamage(), owner.getMainHandItem()));
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SUMMONER, owner);
             for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.2),
                     target -> ProjectileHitRules.canHit(player, target))) {

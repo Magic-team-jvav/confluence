@@ -98,7 +98,6 @@ import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
 import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
 import org.confluence.mod.client.renderer.tooltip.ClientRepeaterContentsTooltip;
-import org.confluence.mod.client.summon.ClientSummonManager;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.LucyTheAxeDialogCategory;
 import org.confluence.mod.common.entity.animal.Fairy;
@@ -193,7 +192,6 @@ public final class ModClientEvents {
     }
 
     private static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
-        event.register(ClientSummonManager.FINCH_STAFF_EMPTY_MODEL);
         event.register(TongueRenderer.SEGMENT_MODEL);
         WhipModelRegister.register(event);
     }

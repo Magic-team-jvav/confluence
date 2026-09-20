@@ -3,7 +3,6 @@ package org.confluence.mod.common.init;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.item.yoyo.YoyoSession;
-import org.confluence.mod.common.summon.SummonContainer;
 import org.mesdag.portlib.attachment.PortAttachmentType;
 import org.mesdag.portlib.registries.PortAttachmentRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -21,7 +20,6 @@ public final class ModAttachmentTypes {
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerPiggyBankContainer>> PIGGY_BANK = TYPES.register("piggy_bank", () -> PortAttachmentType.serializable(PlayerPiggyBankContainer::new).copyOnDeath().build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerSafeContainer>> SAFE = TYPES.register("safe", () -> PortAttachmentType.serializable(PlayerSafeContainer::new).copyOnDeath().build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerSpecialData>> SPECIAL_DATA = TYPES.register("special_data", () -> PortAttachmentType.serializable(PlayerSpecialData::new).copyOnDeath().build());
-    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<SummonContainer>> SUMMONS = TYPES.register("summons", () -> PortAttachmentType.serializable(SummonContainer::new).build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<YoyoSession>> YOYO_SESSION = TYPES.register("yoyo_session", () -> PortAttachmentType.builder(YoyoSession::new).build());
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ChunkBrushData>> CHUNK_BRUSH_DATA = TYPES.register("chunk_brush_data", () -> PortAttachmentType.serializable(ChunkBrushData::new).build());

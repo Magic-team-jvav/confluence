@@ -45,7 +45,6 @@ import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.CustomMimicSummonKeyEvent;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
-import org.confluence.mod.api.summon.SummonTargetCache;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
@@ -75,7 +74,6 @@ import org.confluence.mod.common.item.sword.StarSteelSword;
 import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.mount.MountManager;
-import org.confluence.mod.common.summon.SummonContainer;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NeverSleep;
 import org.confluence.mod.common.worldgen.secret_seed.ReallySmall;
@@ -168,8 +166,6 @@ public final class PlayerEvents {
     private static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         MountManager.dismiss(player);
-        SummonContainer.of(player).clear(player);
-        SummonTargetCache.invalidate(player.serverLevel(), player.getUUID());
         ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
         GameEventSystem.INSTANCE.clearAll(player);
         PlayerSpecialData.of(player).setPvP(false);
@@ -400,8 +396,6 @@ public final class PlayerEvents {
     private static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         MountManager.dismiss(player);
-        SummonContainer.of(player).clear(player);
-        SummonTargetCache.invalidate(player.serverLevel(), player.getUUID());
         EverBeneficial everBeneficial = EverBeneficial.of(player);
         EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
         EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
@@ -446,9 +440,7 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ServerLevel previousLevel = player.server.getLevel(event.getFrom());
         if (previousLevel != null) {
-            SummonTargetCache.invalidate(previousLevel, player.getUUID());
         }
-        SummonContainer.of(player).clear(player);
         MountManager.dismiss(player);
         PlayerUtils.flushLocalData(player, player);
         PlayerUtils.syncPlayerData(player);

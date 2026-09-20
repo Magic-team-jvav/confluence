@@ -20,7 +20,6 @@ import org.confluence.mod.api.whip.WhipDirectHitContext;
 import org.confluence.mod.api.whip.WhipTagEffect;
 import org.confluence.mod.common.entity.projectile.ProjectileHitRules;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.summon.SummonDamageSource;
 import org.confluence.mod.mixed.Immunity;
 
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public final class FirecrackerItem extends BaseWhipItem {
     public static void explode(Player owner, LivingEntity target, Entity damageRecipient, float hitDamage, float armorPenetration) {
         if (!(target.level() instanceof ServerLevel level)) return;
         float damage = hitDamage * 2.75F;
-        DamageSource source = new SummonDamageSource(owner, armorPenetration);
+        DamageSource source = new WhipDamageSource(owner, armorPenetration);
         // 爆炸是独立的一次命中，不继承触发它的召唤物局部无敌帧，也不破坏方块。
         Immunity explosion = new Immunity() {
             @Override

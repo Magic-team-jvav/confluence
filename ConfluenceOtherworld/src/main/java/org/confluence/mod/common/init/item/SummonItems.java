@@ -5,9 +5,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
-import org.confluence.mod.common.item.summon.SummonItem;
-import org.confluence.mod.common.summon.SummonTypes;
-import org.confluence.mod.common.summon.dragon.StardustDragonSummon;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.minion.FinchMinion;
@@ -227,7 +224,4 @@ public class SummonItems {
                     },
                     null
             ));
-    public static final PortDeferredItem<SummonItem> STARDUST_DRAGON_STAFF = ITEMS.register("stardust_dragon_staff",
-            () -> new SummonItem(ModRarity.RED, SummonTypes.STARDUST_DRAGON, StardustDragonSummon.SLOT_COST, StardustDragonSummon.BASE_DAMAGE));
-
 }

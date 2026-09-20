@@ -74,7 +74,6 @@ public final class NetworkEvents {
         handler.registerInGameS2C(SecretFlagSyncPacketS2C.class, SecretFlagSyncPacketS2C.ID, SecretFlagSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(ShotFeedbackPacketS2C.class, ShotFeedbackPacketS2C.ID, ShotFeedbackPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(StarPhasesPacketS2C.class, StarPhasesPacketS2C.ID, StarPhasesPacketS2C.STREAM_CODEC);
-        handler.registerInGameS2C(SummonSyncPacketS2C.class, SummonSyncPacketS2C.ID, SummonSyncPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SyncEnemyBannerEntriesPacketS2C.class, SyncEnemyBannerEntriesPacketS2C.ID, SyncEnemyBannerEntriesPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(TerraStyleExplosionPacketS2C.class, TerraStyleExplosionPacketS2C.ID, TerraStyleExplosionPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(VisibilityPacketS2C.class, VisibilityPacketS2C.ID, VisibilityPacketS2C.STREAM_CODEC);

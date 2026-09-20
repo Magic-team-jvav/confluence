@@ -56,6 +56,7 @@ import org.confluence.mod.common.effect.beneficial.DryadsBlessingEffect;
 import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
+import org.confluence.mod.common.item.whip.WhipDamageSource;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -689,8 +690,8 @@ public final class LivingEntityEvents {
 
     private static void armorPenetration(ArmorPenetrationEvent event) {
         DamageSource damageSource = event.getDamageSource();
-        if (damageSource instanceof org.confluence.mod.common.summon.SummonDamageSource summonSource) {
-            event.setPenetration(event.getPenetration() + summonSource.armorPenetration());
+        if (damageSource instanceof WhipDamageSource whipSource) {
+            event.setPenetration(event.getPenetration() + whipSource.armorPenetration());
         }
 
         @Nullable Entity direct = damageSource.getDirectEntity();

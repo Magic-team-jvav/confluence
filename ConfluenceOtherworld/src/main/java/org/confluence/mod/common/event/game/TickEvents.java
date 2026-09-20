@@ -22,7 +22,6 @@ import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.item.yoyo.YoyoSession;
 import org.confluence.mod.common.mount.MountManager;
-import org.confluence.mod.common.summon.SummonContainer;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -79,7 +78,6 @@ public final class TickEvents {
             PlayerUtils.regenerateMana(player);
             ExtraInventory.of(player).sync(player);
             MountManager.validate(player);
-            SummonContainer.of(player).tick(player);
             YoyoSession.of(player).tick(player);
             PlayerSpecialData.of(player).sync(player);
             AchievementUtils.youCanDoIt(player, level, gameTime);

@@ -15,6 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.apache.logging.log4j.util.TriConsumer;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachment.AttachmentEntityData;
@@ -180,10 +181,5 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
         tooltips.add(Component.translatable("item.confluence.tooltip.summon_slots", Component.literal(String.valueOf(helper.getUsedSlots(slotType))).withStyle(ChatFormatting.BLUE), Component.literal(String.valueOf(helper.getMaxCount(slotType))).withStyle(ChatFormatting.BLUE)).withStyle(ChatFormatting.GRAY));
         tooltips.add(Component.translatable("item.confluence.tooltip.remove_summon").withStyle(ChatFormatting.GRAY));
         return tooltips;
-    }
-
-    @FunctionalInterface
-    public interface TriConsumer<A, B, C> {
-        void accept(A first, B second, C third);
     }
 }

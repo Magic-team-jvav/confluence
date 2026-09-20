@@ -7,7 +7,7 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.summon.SummonItem;
+import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -85,7 +85,7 @@ public enum PrefixType implements StringRepresentable {
     }
 
     public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
-        if (this != SUMMON || !(stack.getItem() instanceof SummonItem))
+        if (this != SUMMON || !(stack.getItem() instanceof SummonerWeaponItem<?>))
             return randomPrefix(random);
         List<ModPrefix> allowed = new LinkedList<>();
         for (ModPrefix prefix : available) {
@@ -115,7 +115,7 @@ public enum PrefixType implements StringRepresentable {
             };
             case UNKNOWN -> null;
             case SUMMON ->
-                    itemStack.getItem() instanceof SummonItem ? Summon.EAGER : Summon.FABLED;
+                    itemStack.getItem() instanceof SummonerWeaponItem<?> ? Summon.EAGER : Summon.FABLED;
         };
     }
 

@@ -84,7 +84,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SummonItems.DESERT_TIGER_STAFF.get(), "Desert Tiger Staff");
         add("summon.confluence.desert_tiger", "Desert Tiger");
         add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
-        add(SummonItems.STARDUST_DRAGON_STAFF.get(), "Stardust Dragon Staff");
         add("summon.confluence.slime", "Baby Slime");
         add("entity.confluence.hornet_baby", "Hornet Minion");
         add("summon.confluence.hornet", "Hornet");
@@ -92,7 +91,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("summon.confluence.snow_flinx", "Snow Flinx Minion");
         add("summon.confluence.vampire_frog", "Vampire Frog");
         add("summon.confluence.terraprisma", "Terraprisma");
-        add("entity.confluence.stardust_dragon", "Stardust Dragon");
         add("tooltip.confluence.summon.damage", "Base summon damage: %s");
         add("tooltip.confluence.summon.slots", "Minion slots: %s");
         add("tooltip.confluence.summon.retrieve", "Hold right-click to release all summons");

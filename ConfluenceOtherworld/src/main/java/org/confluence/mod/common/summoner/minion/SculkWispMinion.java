@@ -16,7 +16,7 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 /**
  * 幽匿游灵：飞行仆从，靠近目标时保持距离，蓄力结束后放出音爆。
  */
-public class SculkWispMinion extends MomentumMinion implements IBlockCollision<SculkWispMinion> {
+public class SculkWispMinion extends MomentumMinion {
 
     public int castTime = -1;
 
@@ -54,10 +54,5 @@ public class SculkWispMinion extends MomentumMinion implements IBlockCollision<S
 
     public boolean isCasting() {
         return castTime != -1 && getTickCount() - castTime < 20;
-    }
-
-    @Override
-    public @NotNull AABB getBlockCollisionBox() {
-        return new AABB(-0.4, -0.4, -0.4, 0.4, 0.4, 0.4);
     }
 }

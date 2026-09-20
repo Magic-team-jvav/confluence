@@ -4,6 +4,7 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -18,30 +19,35 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.FogType;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.lib.api.event.OnGatherEffectScreenTooltipsEvent;
-import org.confluence.lib.client.color.ExpertColorAnimation;
+import org.confluence.lib.client.animate.ExpertColorAnimation;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.BulletEvent;
+import org.confluence.mod.api.event.GunEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
+import org.confluence.mod.client.animation.GunCameraAnimation;
 import org.confluence.mod.client.effect.AfterimageHelper;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
@@ -52,6 +58,7 @@ import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
+import org.confluence.mod.client.gui.container.SoulOverviewScreen;
 import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
 import org.confluence.mod.client.gui.hud.HouseSelectHud;
 import org.confluence.mod.client.handler.*;
@@ -61,7 +68,7 @@ import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
-import org.confluence.mod.client.summon.ClientSummonManager;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -69,27 +76,33 @@ import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.entity.mount.RideableLavaSharkMountEntity;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.gun.GunSounds;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.common.item.bow.ShortBowItem;
+import org.confluence.mod.common.item.common.ScryingOrb;
+import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
-import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
-import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
-import org.confluence.mod.util.DeathAnimUtils;
-import org.confluence.mod.util.ModAttributeUtils;
-import org.confluence.mod.util.PlayerUtils;
-import org.confluence.mod.util.PrefixUtils;
+import org.confluence.mod.network.c2s.*;
+import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
-import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
-import org.mesdag.portlib.event.client.PortInputEvent;
+import org.mesdag.portlib.event.client.*;
+import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
+import org.mesdag.portlib.event.entity.player.PortPlayerInteractEvent;
+import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
+import org.mesdag.portlib.wrapper.common.util.PortTriState;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Iterator;
@@ -97,6 +110,10 @@ import java.util.List;
 import java.util.Optional;
 
 public final class GameClientEvents {
+    private static boolean wasFlailKeyHeld = false;
+    private static boolean wasRepeaterKeyHeld = false;
+    private static boolean wasDefaultGunShootHeld = false;
+
     public static void init() {
         ClientWeaponInputManager.init();
         PortEventHandler.addListener(GameClientEvents::clientTick$Pre);
@@ -106,9 +123,9 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::clientPlayerNetwork$LoggingOut);
         PortEventHandler.addListener(GameClientEvents::input$InteractionKeyMappingTriggered);
         PortEventHandler.addListener(GameClientEvents::input$MouseScrolling);
-        PortEventHandler.addListener(GameClientEvents::renderGuiLayer$Pre);
-        PortEventHandler.addListener(GameClientEvents::customizeGuiOverlay$BossEventProgress);
-        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::renderTooltip$GatherComponents);
+        PortEventHandler.addListener(GameClientEvents::renderGuiOverlay$Pre);
+        PortEventHandler.addListener(GameClientEvents::bossEventProgress);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::gatherComponents);
         PortEventHandler.addListener(GameClientEvents::itemToolTip);
         PortEventHandler.addListener(PortEventPriority.LOW, GameClientEvents::addAttributeTooltips);
         PortEventHandler.addListener(GameClientEvents::movementInputUpdate);
@@ -122,21 +139,25 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::renderArm);
 //        PortEventHandler.addListener(GameClientEvents::npc$Dialog);
         PortEventHandler.addListener(GameClientEvents::onGatherEffectScreenTooltips);
+        PortEventHandler.addListener(GameClientEvents::renderNameTag);
         PortEventHandler.addListener(GameClientEvents::playerInteract$LeftClickEmpty);
         PortEventHandler.addListener(GameClientEvents::playerInteract$LeftClickBlock);
         PortEventHandler.addListener(GameClientEvents::playerInteract$RightClickItem);
         PortEventHandler.addListener(GameClientEvents::playerEmptyAutoAttack);
         PortEventHandler.addListener(GameClientEvents::afterFlushArmorSetBonus);
-        PortEventHandler.addListener(GameClientEvents::bullet$ImpactEffect);
-        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::viewport$RenderFog);
+        PortEventHandler.addListener(GameClientEvents::gunShot);
+        PortEventHandler.addListener(GameClientEvents::inspectGun);
+        PortEventHandler.addListener(GameClientEvents::applyGunCamera);
+        PortEventHandler.addListener(GameClientEvents::bulletImpact);
+        PortEventHandler.addListener(PortEventPriority.LOWEST, GameClientEvents::lavaSharkFog);
+        PortEventHandler.addListener(GameClientEvents::cancelSwap);
     }
 
-    private static void customizeGuiOverlay$BossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event) {
+    private static void bossEventProgress(CustomizeGuiOverlayEvent.BossEventProgress event) {
         CustomBossBarRenderer.render(event);
     }
 
-    private static void clientTick$Pre(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) return;
+    private static void clientTick$Pre(PortClientTickEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) return;
@@ -160,52 +181,86 @@ public final class GameClientEvents {
         }
     }
 
-    private static void clientTick$Post(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
+    private static void clientTick$Post(PortClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
 
-        boolean attackHeld = minecraft.options.keyAttack.isDown();
         if (player != null) {
-            BowHandler.releaseFullyDrawnBow(minecraft, player);
+            releaseFullyDrawnBow(minecraft, player);
+            if (Confluence.SOUL_SKILLS) {
+                SoulSkillClientHandler.INSTANCE.handle();
+                boolean isSoulOverviewScreen = false;
+                while (ModKeyBindings.SOUL_OVERVIEW.get().consumeClick()) {
+                    if (!isSoulOverviewScreen) {
+                        isSoulOverviewScreen = true;
+                    }
+                }
+                if (isSoulOverviewScreen) {
+                    minecraft.setScreen(new SoulOverviewScreen());
+                }
+            }
+            WeatherHandler.handle();
+            MeteorLandingHandler.handle(minecraft, player);
+            HookThrowingHandler.handle(player);
+            KeyRequestHandler.handle();
+            DropletsHandler.handle(minecraft, player);
             DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
-            SwordProjectileInputHandler.handle(player, attackHeld);
-            FlailHandler.handle(player, attackHeld);
-            HouseSelectHud.updatePlayerRegionAt(player);
-            ClientBiomeEffectSystem.tick(player);
-            ScryingOrbHandler.handle(minecraft, player);
-            if (Confluence.SOUL_SKILLS) {
-                SoulSkillHandler.handle(minecraft);
+            SwordProjectileInputHandler.handle(player, minecraft.options.keyAttack.isDown());
+            //连枷按键检测
+            ItemStack mainHandItem = player.getMainHandItem();
+            boolean keyHeld = minecraft.options.keyAttack.isDown();
+            boolean isRepeater = mainHandItem.getItem() instanceof BaseTerraRepeaterItem;
+            if (isRepeater && keyHeld && !wasRepeaterKeyHeld) {
+                LeftClickItemActionPacketC2S.sendPressed();
+            } else if (wasRepeaterKeyHeld && (!isRepeater || !keyHeld)) {
+                LeftClickItemActionPacketC2S.sendReleased();
             }
-            if (!minecraft.isPaused()) {
-                MeteorLandingHandler.handle(player);
-                HookThrowingHandler.handle(player);
-                KeyRequestHandler.handle();
-                DropletsHandler.handle(player);
-                ClientGameEventSystem.handle(player);
+            wasRepeaterKeyHeld = keyHeld && isRepeater;
+            ClientWeaponInputManager.tick(player);
+            boolean isFlail = mainHandItem.has(ModDataComponentTypes.FLAIL);
+            if (isFlail) {
+                BaseFlailItem flailItem = mainHandItem.getItem() instanceof BaseFlailItem item ? item : null;
+                if (flailItem != null && flailItem.isAutoSwing()) {
+                    // 自动挥舞：客户端每 tick 请求，服务端用冷却和活跃射弹上限校验。
+                    if (keyHeld && flailItem.canAutoSwing(player)) {
+                        FlailControlPacketC2S.sendHold();
+                    }
+                } else if (keyHeld && !wasFlailKeyHeld) {
+                    FlailControlPacketC2S.sendHold();
+                } else if (!keyHeld && wasFlailKeyHeld) {
+                    FlailControlPacketC2S.sendRelease();
+                }
+            }
+            wasFlailKeyHeld = keyHeld && isFlail;
+            HouseSelectHud.updatePlayerRegionAt(player);
+            ClientGameEventSystem.handle(player);
+            ClientBiomeEffectSystem.tick(player);
+            if (ScryingOrb.spectatingPlayer != null && !ScryingOrb.spectatingPlayer.isAlive()) {
+                ScryingOrb.changeTarget(minecraft.level, player);
+            }
+            if (player.isShiftKeyDown()) {
+                ScryingOrb.stopSpectating();
             }
         }
-        GunHandler.handle(player, attackHeld);
         DeathAnimUtils.clearPending();
         BackgroundLayer.tickLayers();
-        WeatherHandler.handle();
     }
 
-    private static void clientPlayerNetwork$LoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
+    private static void clientPlayerNetwork$LoggingIn(PortClientPlayerNetworkEvent.LoggingIn event) {
         WeatherHandler.initialize(event.getPlayer());
     }
 
-    private static void playerTick$Post(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        AfterimageHelper.tick(event.player);
+    private static void playerTick$Post(PortPlayerTickEvent.Post event) {
+        AfterimageHelper.tick(event.getEntity());
     }
 
-    private static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
-        FlailHandler.reset();
+    private static void clientPlayerNetwork$LoggingOut(PortClientPlayerNetworkEvent.LoggingOut event) {
+        wasFlailKeyHeld = false;
+        wasRepeaterKeyHeld = false;
         ClientWeaponInputManager.reset();
-        GunHandler.reset();
-        ClientSummonManager.reset();
+        wasDefaultGunShootHeld = false;
+        GunCameraAnimation.clear();
         WeatherHandler.reset();
         MeteorLandingHandler.reset();
         LocalBrushData.reset();
@@ -221,7 +276,7 @@ public final class GameClientEvents {
 //        AchievementUtils.saveData();
     }
 
-    private static void input$InteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
+    private static void input$InteractionKeyMappingTriggered(PortInputEvent.InteractionKeyMappingTriggered event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
@@ -255,11 +310,17 @@ public final class GameClientEvents {
                 }
             }
         }
+    }
 
-        if (player.getItemInHand(event.getHand()).getItem() instanceof BaseGun) {
-            event.setSwingHand(false);
-            if (event.isAttack()) event.setCanceled(true);
+    private static void releaseFullyDrawnBow(Minecraft minecraft, LocalPlayer player) {
+        if (minecraft.gameMode == null || !player.isUsingItem()) return;
+        ItemStack stack = player.getUseItem();
+        if (!(stack.getItem() instanceof BowItem) || (!CommonConfigs.AUTO_RELEASE_ALL_BOWS.get() && !stack.is(ModTags.Items.AUTOMATIC_BOW))) {
+            return;
         }
+        int usedTicks = stack.getUseDuration() - player.getUseItemRemainingTicks();
+        int fullDrawTicks = stack.getItem() instanceof ShortBowItem ? ShortBowItem.MAX_DRAW_DURATION : BowItem.MAX_DRAW_DURATION;
+        if (usedTicks >= fullDrawTicks) minecraft.gameMode.releaseUsingItem(player);
     }
 
     private static void input$MouseScrolling(PortInputEvent.MouseScrollingEvent event) {
@@ -275,8 +336,8 @@ public final class GameClientEvents {
         }
     }
 
-    private static void renderGuiLayer$Pre(RenderGuiOverlayEvent.Pre event) {
-        ResourceLocation name = event.getOverlay().id();
+    private static void renderGuiOverlay$Pre(PortRenderGuiLayerEvent.Pre event) {
+        ResourceLocation name = event.getName();
         if ((ClientConfigs.terraStyleHealth && VanillaGuiOverlay.PLAYER_HEALTH.id().equals(name)) ||
                 (ClientConfigs.terraStyleFood && VanillaGuiOverlay.FOOD_LEVEL.id().equals(name)) ||
                 (ClientConfigs.terraStyleArmor && VanillaGuiOverlay.ARMOR_LEVEL.id().equals(name)) ||
@@ -286,7 +347,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void renderTooltip$GatherComponents(RenderTooltipEvent.GatherComponents event) {
+    private static void gatherComponents(PortRenderTooltipEvent.GatherComponents event) {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
@@ -304,7 +365,7 @@ public final class GameClientEvents {
         }
     }
 
-    private static void itemToolTip(ItemTooltipEvent event) {
+    private static void itemToolTip(PortItemTooltipEvent event) {
         List<Component> toolTip = event.getToolTip();
         ItemStack stack = event.getItemStack();
         Holder<Item> holder = stack.getItemHolder();
@@ -324,7 +385,7 @@ public final class GameClientEvents {
     private static void movementInputUpdate(MovementInputUpdateEvent event) {
         Input input = event.getInput();
         LocalPlayer player = (LocalPlayer) event.getEntity();
-        boolean cannotMove = player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || player.hasEffect(ModEffects.WEBBED.get()) || ScryingOrbHandler.spectatingPlayer != null;
+        boolean cannotMove = player.hasEffect(ModEffects.STONED.get()) || player.hasEffect(ModEffects.FROZEN.get()) || player.hasEffect(ModEffects.WEBBED.get()) || ScryingOrb.spectatingPlayer != null;
         ILocalPlayer.of(player).confluence$setCanMove(!cannotMove);
         if (!player.hasInfiniteMaterials()) {
             if (cannotMove || player.hasEffect(ModEffects.SHIMMER.get()) || player.getInBlockState().is(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get())) {
@@ -335,22 +396,19 @@ public final class GameClientEvents {
         }
     }
 
-    private static void renderLevelStage(RenderLevelStageEvent event) {
-        Minecraft minecraft = Minecraft.getInstance();
+    private static void renderLevelStage(PortRenderLevelStageEvent event) {
+        TongueRenderer.renderFirstPerson(event);
         BulletVfxManager.render(event);
-        ClientSummonManager.render(event, minecraft);
+        Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) return;
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
-            StarPhaseHandler.render(event, player.clientLevel);
-            MeteorLandingHandler.render(event, player);
+        SpelunkerHelper.renderLevel(event, player);
+        if (event.getStage() == PortRenderLevelStageEvent.Stage.AFTER_SKY) {
+            StarPhaseHandler.render(event);
+            MeteorLandingHandler.render(event);
             ClientGameEventSystem.afterRenderSky(event, player);
             ClientBiomeEffectSystem.renderSky(player, event);
-        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
-            TongueRenderer.renderFirstPerson(event, minecraft, player);
-        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
-            SpelunkerHelper.renderLevel(event, player);
-        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+        } else if (event.getStage() == PortRenderLevelStageEvent.Stage.AFTER_PARTICLES) {
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);
@@ -358,17 +416,17 @@ public final class GameClientEvents {
         }
     }
 
-    private static void screen$Render$Post(ScreenEvent.Render.Post event) {
+    private static void screen$Render$Post(PortScreenEvent.Render.Post event) {
         LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
     }
 
-    private static void renderGui$Post(RenderGuiEvent.Post event) {
+    private static void renderGui$Post(PortRenderGuiEvent.Post event) {
         if (Minecraft.getInstance().screen == null) {
             LucyTheAxeDialogRenderer.renderDelayed(event.getGuiGraphics());
         }
     }
 
-    private static void screen$Init$Post(ScreenEvent.Init.Post event) {
+    private static void screen$Init$Post(PortScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         boolean isInventoryScreen = screen instanceof InventoryScreen;
         // 额外槽
@@ -404,17 +462,18 @@ public final class GameClientEvents {
 //        }
     }
 
-    private static void renderLiving$Post(RenderLivingEvent.Post<?, ?> event) {
+    private static void renderLiving$Post(PortRenderLivingEvent.Post<?, ?> event) {
         TongueRenderer.render(event);
         LivingEntity living = event.getEntity();
         boolean dead = living.isDeadOrDying();
-        if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
+        IClientLivingEntity i = IClientLivingEntity.of(living);
+        if (dead != i.confluence$deadO()) {
             living.level().getProfiler().push("entity_dismemberment");
-            IClientLivingEntity.of(living).confluence$deadO(dead); // 阻断下一次post
+            i.confluence$deadO(dead); // 阻断下一次post
             DeathAnimUtils.livingDeath(living);
             living.level().getProfiler().pop();
         }
-        IClientLivingEntity.of(living).confluence$deadO(dead);
+        i.confluence$deadO(dead);
     }
 
     private static void geoRender$Entity$Post(GeoRenderEvent.Entity.Post event) {
@@ -423,7 +482,6 @@ public final class GameClientEvents {
             boolean dead = living.isDeadOrDying();
             if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
                 living.level().getProfiler().push("geo_dismemberment");
-                IClientLivingEntity.of(living).confluence$deadO(dead); // 阻断下一次post
                 DeathAnimUtils.livingDeath(living);
                 living.level().getProfiler().pop();
             }
@@ -431,12 +489,12 @@ public final class GameClientEvents {
         }
     }
 
-    private static void renderPlayer$Pre(RenderPlayerEvent.Pre event) {
+    private static void renderPlayer$Pre(PortRenderPlayerEvent.Pre event) {
         ZombieArmRenderer.getInstance().render(event.getRenderer(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getEntity(), event.getPartialTick());
         AfterimageHelper.render(event);
     }
 
-    private static void renderArm(RenderArmEvent event) {
+    private static void renderArm(PortRenderArmEvent event) {
         AbstractClientPlayer player = event.getPlayer();
         PlayerRenderer renderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
         if (ZombieArmRenderer.getInstance().renderHand(renderer, event.getPoseStack(), event.getMultiBufferSource(),
@@ -482,21 +540,35 @@ public final class GameClientEvents {
         }
     }
 
-    private static void playerInteract$LeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+    private static void renderNameTag(PortRenderNameTagEvent event) {
+        if (!event.canRender().isDefault()) return;
+        Entity entity = event.getEntity();
+        if (entity.getType() == EntityType.ZOMBIE || entity.getType() == EntityType.SKELETON) {
+            if (entity.hasCustomName() && event.getContent().getContents() instanceof TranslatableContents contents && contents.getKey().contains("confluence")) {
+                if (entity == Minecraft.getInstance().getEntityRenderDispatcher().crosshairPickEntity) {
+                    event.setCanRender(PortTriState.TRUE);
+                } else {
+                    event.setCanRender(PortTriState.FALSE);
+                }
+            }
+        }
+    }
+
+    private static void playerInteract$LeftClickEmpty(PortPlayerInteractEvent.LeftClickEmpty event) {
         Player player = event.getEntity();
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
     }
 
-    private static void playerInteract$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+    private static void playerInteract$LeftClickBlock(PortPlayerInteractEvent.LeftClickBlock event) {
         Player player = event.getEntity();
         if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
     }
 
-    private static void playerInteract$RightClickItem(PlayerInteractEvent.RightClickItem event) {
+    private static void playerInteract$RightClickItem(PortPlayerInteractEvent.RightClickItem event) {
         if (event.getHand() == InteractionHand.MAIN_HAND && ClientWeaponInputManager.blocksUse(event.getItemStack())) {
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.FAIL);
@@ -521,17 +593,79 @@ public final class GameClientEvents {
         ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
     }
 
-    private static void viewport$RenderFog(ViewportEvent.RenderFog event) {
-        if (event.getCamera().getFluidInCamera() != FogType.LAVA ||
-                !(event.getCamera().getEntity().getVehicle() instanceof RideableLavaSharkMountEntity)
-        ) return;
+    private static void gunShot(PortClientTickEvent.Post event) {
+        BulletVfxManager.tick();
+        Minecraft minecraft = Minecraft.getInstance();
+        KeyMapping shoot = ModKeyBindings.GUN_SHOOT.get();
+        LocalPlayer player = minecraft.player;
+        if (player == null) {
+            GunCameraAnimation.clear();
+            wasDefaultGunShootHeld = false;
+            return;
+        }
+
+        updateGunCameraAnimation(player);
+        boolean defaultBindingHeld = shoot.isDefault() && minecraft.options.keyAttack.isDown();
+        boolean shootHeld = shoot.isDown() || defaultBindingHeld;
+        boolean defaultBindingPressed = defaultBindingHeld && !wasDefaultGunShootHeld;
+        wasDefaultGunShootHeld = defaultBindingHeld;
+        if (player.isSpectator() || !shootHeld) return;
+
+        ItemStack mainHandItem = player.getMainHandItem();
+        ItemCooldowns cooldowns = player.getCooldowns();
+        if (!(mainHandItem.getItem() instanceof BaseGun baseGun) || cooldowns.isOnCooldown(baseGun))
+            return;
+        if (!ModGunUtils.canShoot(player, mainHandItem)) return;
+        if (!baseGun.isAutomatic(mainHandItem) && !shoot.consumeClick() && !defaultBindingPressed)
+            return;
+
+        GunEvent.Use use = new GunEvent.Use(player, baseGun, baseGun.getCooldown());
+        PortEventHandler.postEvent(use);
+        if (use.isCanceled()) return;
+
+        player.playSound(GunSounds.getSound(mainHandItem), 1f, 1f);
+        ShootPacketC2S.sendToServer();
+        cooldowns.addCooldown(baseGun, Math.max(0, use.getCooldowns()));
+    }
+
+    private static void updateGunCameraAnimation(LocalPlayer player) {
+        ItemStack mainHandItem = player.getMainHandItem();
+        if (!(mainHandItem.getItem() instanceof BaseGun gun) || !gun.isCameraAnimationPlaying(GeoItem.getId(mainHandItem))) {
+            GunCameraAnimation.clear();
+        }
+    }
+
+    private static void inspectGun(PortClientTickEvent.Post event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null || player.isSpectator() || !ModKeyBindings.GUN_INSPECT.get().consumeClick())
+            return;
+        if (player.getMainHandItem().getItem() instanceof BaseGun) {
+            InspectPacketC2S.sendToServer();
+        }
+    }
+
+    private static void lavaSharkFog(PortViewportEvent.RenderFog event) {
+        if (event.getCamera().getFluidInCamera() != FogType.LAVA || !(event.getCamera().getEntity().getVehicle() instanceof RideableLavaSharkMountEntity))
+            return;
         event.setNearPlaneDistance(0.0F);
         event.setFarPlaneDistance(32.0F);
         event.setFogShape(FogShape.SPHERE);
         event.setCanceled(true);
     }
 
-    private static void bullet$ImpactEffect(BulletEvent.ImpactEffectEvent event) {
+    private static void applyGunCamera(PortViewportEvent.ComputeCameraAngles event) {
+        GunCameraAnimation.apply(event);
+    }
+
+    private static void bulletImpact(BulletEvent.ImpactEffectEvent event) {
         BulletVfxManager.play(event.getEffect(), event.getPosition());
+    }
+
+    private static void cancelSwap(PortInputEvent.InteractionKeyMappingTriggered event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.getItemInHand(event.getHand()).getItem() instanceof BaseGun) {
+            event.setSwingHand(false);
+            if (event.isAttack()) event.setCanceled(true);
+        }
     }
 }

@@ -13,10 +13,10 @@
 			"bones": [
 				{
 					"name": "body",
-					"pivot": [0, 3.5, -2],
+					"pivot": [0, -0.5, -2],
 					"cubes": [
 						{
-							"origin": [-1, 2, -5],
+							"origin": [-1, -2, -5],
 							"size": [2, 3, 6],
 							"uv": {
 								"north": {"uv": [9, 13], "uv_size": [2, 3]},
@@ -32,12 +32,12 @@
 				{
 					"name": "finL",
 					"parent": "body",
-					"pivot": [1, 2.5, -2],
+					"pivot": [1, -1.5, -2],
 					"cubes": [
 						{
-							"origin": [-0.5, 6, -5],
+							"origin": [-0.5, 2, -5],
 							"size": [0, 2, 8],
-							"pivot": [-0.5, 4, -1],
+							"pivot": [-0.5, 0, -1],
 							"rotation": [0, 0, 135],
 							"uv": {
 								"north": {"uv": [0, 0], "uv_size": [0, 2]},
@@ -53,12 +53,12 @@
 				{
 					"name": "finR",
 					"parent": "body",
-					"pivot": [-1, 2.5, -2],
+					"pivot": [-1, -1.5, -2],
 					"cubes": [
 						{
-							"origin": [0.5, 6, -5],
+							"origin": [0.5, 2, -5],
 							"size": [0, 2, 8],
-							"pivot": [0.5, 4, -1],
+							"pivot": [0.5, 0, -1],
 							"rotation": [0, 0, -135],
 							"uv": {
 								"north": {"uv": [0, 0], "uv_size": [0, 2]},
@@ -74,10 +74,10 @@
 				{
 					"name": "Dfin",
 					"parent": "body",
-					"pivot": [0, 5, -2],
+					"pivot": [0, 1, -2],
 					"cubes": [
 						{
-							"origin": [0, 5, -5],
+							"origin": [0, 1, -5],
 							"size": [0, 2, 8],
 							"uv": {
 								"north": {"uv": [0, 0], "uv_size": [0, 2]},
@@ -93,10 +93,10 @@
 				{
 					"name": "Vfin",
 					"parent": "body",
-					"pivot": [0, 2, -1],
+					"pivot": [0, -2, -1],
 					"cubes": [
 						{
-							"origin": [0, 0, -5],
+							"origin": [0, -4, -5],
 							"size": [0, 2, 8],
 							"uv": {
 								"north": {"uv": [0, 0], "uv_size": [0, 2]},
@@ -112,10 +112,10 @@
 				{
 					"name": "Cfin",
 					"parent": "body",
-					"pivot": [0, 3.5, 1],
+					"pivot": [0, -0.5, 1],
 					"cubes": [
 						{
-							"origin": [0, 2, 1],
+							"origin": [0, -2, 1],
 							"size": [0, 3, 5],
 							"uv": {
 								"north": {"uv": [0, 0], "uv_size": [0, 3]},

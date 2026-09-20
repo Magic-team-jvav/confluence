@@ -502,12 +502,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.BLOOD_TEAR)).add(EmptyLootItem.emptyItem().setWeight(24))));
         add(MonsterEntities.WANDERING_EYE_FISH.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(SummonItems.VAMPIRE_FROG_STAFF)).add(EmptyLootItem.emptyItem().setWeight(7)))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.BLOODY_SPINE).setWeight(20))
-                        .add(EmptyLootItem.emptyItem().setWeight(80))
-                )
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ENDER_EYE)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.RED_DYE)))
         );
         add(MonsterEntities.DEVOURER.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()

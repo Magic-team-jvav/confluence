@@ -61,7 +61,7 @@ public class CritterEntities {
     // 淡水与岸边：鸭、金鱼与蜻蜓
     public static final RegistryObject<EntityType<Duck>> DUCK = withAttributes(PortDeferredRegisterExtension.register(ENTITIES, "duck", id -> EntityType.Builder.of(Duck::new, MobCategory.CREATURE).sized(0.4F, 0.7F).eyeHeight(0.644F).passengerAttachments(new Vec3(0.0, 0.7, -0.1)).clientTrackingRange(10).build(id.toString())),
             () -> CreatureAttributeBuilder.critter().maxHealth(4).movementSpeed(0.25).flyingSpeed(0.35).waterMovementEfficiency(1).fallDamageMultiplier(0).build());
-    public static final RegistryObject<EntityType<Goldfish>> GOLDFISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(register("goldfish", Goldfish::new, 0.7F, 0.45F, 8)),
+    public static final RegistryObject<EntityType<Goldfish>> GOLDFISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(register("goldfish", Goldfish::new, 0.6F, 0.45F, 8)),
             () -> CreatureAttributeBuilder.critter().maxHealth(5).movementSpeed(0.2).build());
     public static final RegistryObject<EntityType<Dragonfly>> DRAGONFLY = withAttributes(registerInsect("dragonfly", Dragonfly::new),
             () -> CreatureAttributeBuilder.flyingCritter().build());

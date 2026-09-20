@@ -100,7 +100,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(312).armor(30).attackDamage(104).knockbackResistance(0.73).followRange(32).build());
 
     // 地下与洞穴：岩石巨人及稀有敌怪
-    public static final RegistryObject<EntityType<RockGolem>> ROCK_GOLEM = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("rock_golem", EntityType.Builder.of(RockGolem::new, MobCategory.MONSTER).sized(1.5F, 2.8F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<RockGolem>> ROCK_GOLEM = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("rock_golem", EntityType.Builder.of(RockGolem::new, MobCategory.MONSTER).sized(1.5F, 2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(520).armor(35).attackDamage(45).knockbackResistance(0.91).movementSpeed(0.2).followRange(32).build());
     public static final RegistryObject<EntityType<GiantShelly>> GIANT_SHELLY = withAttributes(registerEntity("giant_shelly", EntityType.Builder.of(GiantShelly::new, MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(26).armor(12).attackDamage(9).followRange(20).attackKnockback(0).knockbackResistance(0.4).movementSpeed(0.1)
@@ -137,11 +137,11 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.aquatic().maxHealth(47).armor(22).attackDamage(42).followRange(24).movementSpeed(1.5).attackKnockback(0.5).knockbackResistance(0.1).build());
 
     // 蜘蛛洞：爬墙蜘蛛与黑隐士
-    public static final RegistryObject<EntityType<ClimbingSpider>> WALL_CREEPER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("wall_creeper", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.WALL), MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<ClimbingSpider>> WALL_CREEPER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("wall_creeper", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.WALL), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(42).armor(10).attackDamage(16).followRange(32).knockbackResistance(0.78).movementSpeed(0.23)
                     .state(ClimbingSpider.CombatState.SPITTING, state -> state.attackInterval(60))
                     .build());
-    public static final RegistryObject<EntityType<ClimbingSpider>> BLACK_RECLUSE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("black_recluse", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.BLACK_RECLUSE), MobCategory.MONSTER).sized(2.0F, 2.2F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<ClimbingSpider>> BLACK_RECLUSE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("black_recluse", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.BLACK_RECLUSE), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(182).armor(40).attackDamage(47).followRange(32).knockbackResistance(0.78).movementSpeed(0.28)
                     .state(ClimbingSpider.CombatState.CLIMBING, state -> state.multiply(Attributes.ATTACK_DAMAGE, 10.0 / 9.0))
                     .state(ClimbingSpider.CombatState.SPITTING, state -> state.attackInterval(60))
@@ -159,7 +159,7 @@ public class MonsterEntities {
                     .state(GraniteElemental.DefensePhase.DEFENDING, state -> state.duration(40))
                     .state(GraniteElemental.DefensePhase.EXITING, state -> state.duration(7))
                     .build());
-    public static final RegistryObject<EntityType<GraniteGolem>> GRANITE_GOLEM = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("granite_golem", EntityType.Builder.of(GraniteGolem::new, MobCategory.MONSTER).sized(1.5F, 2.05F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<GraniteGolem>> GRANITE_GOLEM = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("granite_golem", EntityType.Builder.of(GraniteGolem::new, MobCategory.MONSTER).sized(1.7F, 2.3F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(58).armor(18).attackDamage(16).knockbackResistance(0.69).movementSpeed(0.2)
                     .state(GraniteGolem.DefensePhase.ACTIVE, state -> state.attackInterval(100))
                     .state(GraniteGolem.DefensePhase.ENTERING, state -> state.duration(5))
@@ -180,7 +180,7 @@ public class MonsterEntities {
     // 丛林：黄蜂及幼蜂
     public static final RegistryObject<EntityType<Hornet>> HORNET = withAttributes(registerEntity("hornet", EntityType.Builder.<Hornet>of(Hornet::new, MobCategory.MONSTER).sized(0.8F, 1.8F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(32).armor(6).attackDamage(13).followRange(32).attackKnockback(0).knockbackResistance(0.55).movementSpeed(0.5).build());
-    public static final RegistryObject<EntityType<Hornet>> MOSS_HORNET = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("moss_hornet", EntityType.Builder.<Hornet>of((type, level) -> new Hornet(type, level, 6.0F / 7.0F), MobCategory.MONSTER).sized(1.0F, 2.1F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<Hornet>> MOSS_HORNET = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("moss_hornet", EntityType.Builder.<Hornet>of((type, level) -> new Hornet(type, level, 6.0F / 7.0F), MobCategory.MONSTER).sized(0.8F, 1.8F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(115).armor(22).attackDamage(37).followRange(32).attackKnockback(0).knockbackResistance(0.55).movementSpeed(0.5).build());
     public static final RegistryObject<EntityType<LittleHornet>> LITTLE_HORNET = withAttributes(registerEntity("little_hornet", EntityType.Builder.of(LittleHornet::new, MobCategory.MONSTER).sized(0.4F, 0.4F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(3).armor(1).attackDamage(3).followRange(20).attackKnockback(0).knockbackResistance(0.2).build());
@@ -199,7 +199,7 @@ public class MonsterEntities {
 
 
     // 丛林：蜘蛛、蹦跳兽与陆龟
-    public static final RegistryObject<EntityType<ClimbingSpider>> JUNGLE_CREEPER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("jungle_creeper", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.JUNGLE), MobCategory.MONSTER).sized(2.0F, 2.2F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<ClimbingSpider>> JUNGLE_CREEPER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("jungle_creeper", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.JUNGLE), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(28).attackDamage(52).followRange(32).knockbackResistance(0.78).movementSpeed(0.28)
                     .state(ClimbingSpider.CombatState.SPITTING, state -> state.attackInterval(60))
                     .projectile(ModEntities.SPIDER_WEB_SPIT, projectile -> projectile.damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 54 : 36).speed(0.8).lifetime(80))
@@ -260,7 +260,7 @@ public class MonsterEntities {
                     .build());
 
     // 冰雪：冰雪精与鱼人
-    public static final RegistryObject<EntityType<IceElemental>> ICE_ELEMENTAL = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("ice_elemental", EntityType.Builder.of(IceElemental::new, MobCategory.MONSTER).sized(1.3F, 1.85F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<IceElemental>> ICE_ELEMENTAL = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("ice_elemental", EntityType.Builder.of(IceElemental::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(20).attackDamage(29).knockbackResistance(0.46).movementSpeed(0.18).followRange(40).build());
     public static final RegistryObject<EntityType<FrostFighter>> ICY_MERMAN = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("icy_merman", EntityType.Builder.<FrostFighter>of((type, level) -> new FrostFighter(type, level, FrostFighter.Kind.MERMAN), MobCategory.MONSTER).sized(0.8F, 2.1F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(146).armor(30).attackDamage(32).knockbackResistance(0.55).movementSpeed(0.23).followRange(32)
@@ -283,12 +283,12 @@ public class MonsterEntities {
                     .build());
 
     // 地下沙漠：蚁狮及幼虫
-    public static final RegistryObject<EntityType<Antlion>> ANTLION = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("antlion", EntityType.Builder.of(Antlion::new, MobCategory.MONSTER).sized(2.85F, 1.2F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<Antlion>> ANTLION = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("antlion", EntityType.Builder.of(Antlion::new, MobCategory.MONSTER).sized(1.2F, 0.8F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(24).armor(6).attackDamage(6).movementSpeed(0.0).knockbackResistance(1.0).followRange(24).projectile(ModEntities.ANTLION_SAND_BALL, projectile -> projectile.damage(mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * (LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 3 : LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 2 : 1)).speed(1.1).lifetime(120))
                     .build());
-    public static final RegistryObject<EntityType<BaseWarriorMonster>> ANTLION_LARVA = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerLand("antlion_larva", 0.6F, 0.4F, BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 1.3, true)),
+    public static final RegistryObject<EntityType<BaseWarriorMonster>> ANTLION_LARVA = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerLand("antlion_larva", 0.7F, 0.5F, BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 1.3, true)),
             () -> CreatureAttributeBuilder.creature().maxHealth(16).armor(2).attackDamage(6).movementSpeed(0.3).knockbackResistance(0.33).followRange(24).build());
-    public static final RegistryObject<EntityType<AntlionCharger>> ANTLION_CHARGER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("antlion_charger", EntityType.Builder.of(AntlionCharger::new, MobCategory.MONSTER).sized(2.85F, 1.2F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<AntlionCharger>> ANTLION_CHARGER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("antlion_charger", EntityType.Builder.of(AntlionCharger::new, MobCategory.MONSTER).sized(1.2F, 0.8F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(42).armor(10).attackDamage(13).movementSpeed(0.25).knockbackResistance(0.55).followRange(32).build());
     public static final RegistryObject<EntityType<AntlionSwarmer>> ANTLION_SWARMER = withAttributes(registerEntity("antlion_swarmer", EntityType.Builder.of(AntlionSwarmer::new, MobCategory.MONSTER).sized(3.0F, 1.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(32).armor(8).attackDamage(16).followRange(32).attackKnockback(1).knockbackResistance(0.55).build());
@@ -296,7 +296,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(47).armor(12).attackDamage(18).followRange(32).attackKnockback(1).knockbackResistance(0.73).build());
 
     // 地下沙漠：蛇蜥怪、沙贼与沙漠蠕虫
-    public static final RegistryObject<EntityType<BaseWarriorMonster>> BASILISK = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerLand("basilisk", 1.2F, 1.55F,
+    public static final RegistryObject<EntityType<BaseWarriorMonster>> BASILISK = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerLand("basilisk", 1.6F, 1.55F,
                     BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.NONE, 1.8, true)),
             () -> CreatureAttributeBuilder.creature().maxHealth(141).armor(34).attackDamage(34).followRange(32).movementSpeed(0.35).attackKnockback(1).knockbackResistance(0.73).build());
     public static final RegistryObject<EntityType<SandPoacher>> SAND_POACHER = withAttributes(registerEntity("sand_poacher", EntityType.Builder.of(SandPoacher::new, MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10)),
@@ -404,7 +404,7 @@ public class MonsterEntities {
     // 猩红水域：血蛭与血水母
     public static final RegistryObject<EntityType<Piranha>> BLOOD_FEEDER = withAttributes(registerEntity("blood_feeder", EntityType.Builder.<Piranha>of(Piranha::new, MobCategory.MONSTER).sized(0.7F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(78).armor(20).attackDamage(26).followRange(32).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.10).build());
-    public static final RegistryObject<EntityType<JellyFish>> BLOOD_JELLY = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("blood_jelly", EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, JellyFish.Profile.ROUTINE), MobCategory.MONSTER).sized(0.55F, 0.85F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<JellyFish>> BLOOD_JELLY = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("blood_jelly", EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, JellyFish.Profile.ROUTINE), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(78).armor(20).attackDamage(39).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1)
                     .state(JellyFish.CombatState.PURSUING, state -> state.duration(150))
                     .state(JellyFish.CombatState.PULSING, state -> state.duration(80).attackInterval(20))
@@ -467,7 +467,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(156).armor(20).attackDamage(37).followRange(40).knockbackResistance(1).build());
 
     // 发光蘑菇水域：蘑菇水母
-    public static final RegistryObject<EntityType<JellyFish>> FUNGO_FISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("fungo_fish", EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, JellyFish.Profile.FUNGO), MobCategory.MONSTER).sized(0.65F, 1.0F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<JellyFish>> FUNGO_FISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("fungo_fish", EntityType.Builder.<JellyFish>of((type, level) -> new JellyFish(type, level, JellyFish.Profile.FUNGO), MobCategory.MONSTER).sized(0.6F, 0.6F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(73).armor(20).attackDamage(47).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1)
                     .state(JellyFish.CombatState.PURSUING, state -> state.duration(150))
                     .state(JellyFish.CombatState.PULSING, state -> state.duration(80).attackInterval(20))
@@ -593,9 +593,9 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(37).armor(4).attackDamage(11).followRange(32).attackKnockback(1).knockbackResistance(0.1).movementSpeed(0.25).build());
     public static final RegistryObject<EntityType<EvilPenguin>> VICIOUS_PENGUIN = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("vicious_penguin", EntityType.Builder.of(EvilPenguin::new, MobCategory.MONSTER).sized(0.7F, 1.0F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(39).armor(5).attackDamage(11).followRange(32).attackKnockback(1).knockbackResistance(0.1).movementSpeed(0.25).build());
-    public static final RegistryObject<EntityType<Piranha>> CORRUPT_GOLDFISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("corrupt_goldfish", EntityType.Builder.<Piranha>of((type, level) -> new Piranha(type, level, Piranha.AnimationProfile.GOLDFISH), MobCategory.MONSTER).sized(0.7F, 0.45F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<Piranha>> CORRUPT_GOLDFISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("corrupt_goldfish", EntityType.Builder.<Piranha>of((type, level) -> new Piranha(type, level, Piranha.AnimationProfile.GOLDFISH), MobCategory.MONSTER).sized(0.6F, 0.45F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(52).armor(6).attackDamage(16).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).build());
-    public static final RegistryObject<EntityType<Piranha>> VICIOUS_GOLDFISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("vicious_goldfish", EntityType.Builder.<Piranha>of((type, level) -> new Piranha(type, level, Piranha.AnimationProfile.GOLDFISH), MobCategory.MONSTER).sized(0.7F, 0.45F).clientTrackingRange(10))),
+    public static final RegistryObject<EntityType<Piranha>> VICIOUS_GOLDFISH = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("vicious_goldfish", EntityType.Builder.<Piranha>of((type, level) -> new Piranha(type, level, Piranha.AnimationProfile.GOLDFISH), MobCategory.MONSTER).sized(0.6F, 0.45F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.aquatic().maxHealth(58).armor(7).attackDamage(17).followRange(20).movementSpeed(1.2).attackKnockback(0.5).knockbackResistance(0.1).build());
 
     // 满月：狼人

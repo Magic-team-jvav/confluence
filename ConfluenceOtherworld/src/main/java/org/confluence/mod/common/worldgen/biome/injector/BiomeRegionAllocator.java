@@ -9,24 +9,44 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 ///
 /// TerraBlender 移植了原版 `ZoomLayer` 的分层噪声栈，区域是方格状的，而且索引依赖
 /// **所有模组**注册顺序的全局加权表 —— 装/卸任意一个别的群系模组都会改变世界布局。
-/// 这里改用单个 {@link NormalNoise}：
+/// 这里改成每个区域各自一条 {@link NormalNoise}：
 ///
 /// - 区域索引只由本模组自己的区域表决定，第三方模组完全影响不到；
 /// - 边界是平滑连续的，没有网格感；
 /// - 无每区块缓存需求（每区块实际只调用约 16 次有效采样，相比 `Climate.Sampler` 的
 ///   6 个密度函数求值可以忽略）。
 ///
+/// ## 为什么不是「一条噪声 + 多条阈值」
+///
+/// 曾经的写法是三个区域共用**一条**噪声 `z`，按三条**递增**阈值切成带：
+/// `带1 = {t₀ ≤ z < t₁}`、`带2 = {t₁ ≤ z < t₂}`、`带3 = {z ≥ t₂}`。
+/// 因为 `t₀ < t₁ < t₂`，水平集必然层层嵌套
+/// `{z ≥ t₂} ⊆ {z ≥ t₁} ⊆ {z ≥ t₀}` —— 每个噪声峰值处一定长成
+/// 「第三个区域的核心 → 第二个区域的环 → 第一个区域的环」的同心结构，
+/// 俯视图上就是环状条带，而且最后一个区域永远被前两个包在里面。
+/// **这不是参数没调好**：改权重、改区域尺度都改变不了「嵌套」这个拓扑。
+///
+/// 现在给每个区域一条**独立**的 {@link NormalNoise}（种子由
+/// `seed ^ SALT ^ (i+1) × REGION_SALT_STEP` 派生），各自归一化后与**自己的入选门槛**
+/// 比较，只在多个区域同时达标的少数格点上取归一化值最大者仲裁。
+/// 各区域的达标集合之间没有包含关系，足迹因此是互不嵌套的独立斑块。
+///
 /// ## 权重语义
 ///
-/// 噪声值先按**实测标准差**归一化成 `z`，再用 logistic 分布函数近似标准正态 CDF 映射到
-/// `t ∈ (0,1)`，最后按权重把 `t` 切成若干等宽带。这样 `weight` 就近似等于**面积占比**，
+/// 每条噪声先按**实测标准差**归一化成 `z`，门槛取 `Φ⁻¹(1 − wᵢ / 总权重)`，
+/// 于是 `P(zᵢ ≥ 门槛) = wᵢ / 总权重`：`weight` 仍然近似等于**面积占比**，
 /// 与噪声的实际振幅、倍频程个数无关（实测标准差让这一点自动成立）。
+/// 归一化后是 `z` 的单调函数，所以门槛能直接反解成 `z` 上的一个数，
+/// 查询时只需一次比较，不需要 `exp`。
 ///
-/// 归一化后是 `z` 的单调函数，所以分带边界可以直接反解成 `z` 上的阈值，
-/// 查询时只需一次比较 + 顺序扫描，不需要 `exp`。
+/// 注意：各区域独立判定，因此**允许**极少数格点上两个区域同时达标（由 argmax 仲裁），
+/// 原版占比因此是 `∏(1 − wᵢ/总权重)` 而不是 `vanillaWeight / 总权重`。
 public final class BiomeRegionAllocator {
     /// 用于从世界种子派生出与群系噪声无关的独立随机源。
     private static final long SALT = 0x5EED_5EED_C0FF_EE01L;
+    /// 从世界种子派生**每个区域**的独立噪声种子用的黄金比常数。
+    /// `seed ^ SALT ^ ((i+1) * REGION_SALT_STEP)`，`i` 是区域在区域表里的下标。
+    private static final long REGION_SALT_STEP = 0x9E37_79B9_7F4A_7C15L;
     /// 抽样自检用的固定随机源种子，保证每次启动测出的占比一致、可对比。
     private static final long SAMPLE_SEED = 0x5EED_5EED_5EED_0001L;
     /// `NormalNoise` 的最低频倍频程：`-6` 对应噪声输入空间里 64 单位一个周期。
@@ -61,11 +81,13 @@ public final class BiomeRegionAllocator {
     private static final double P_LOW = 0.02425D;
     private static final double P_HIGH = 1.0D - P_LOW;
 
-    private final NormalNoise noise;
+    /// 每个区域一条**独立**的 {@link NormalNoise}，下标与区域表顺序一致。
+    private final NormalNoise[] noises;
     private final double inputScale;
-    private final double inverseSigma;
-    /// `thresholds[i]` 是「第 i 个区域」与「第 i+1 个区域」在归一化 z 上的分界（i 从 0 起）。
-    /// `z < thresholds[0]` 表示原版。
+    /// 每条噪声各自的 `1 / 实测标准差`。
+    private final double[] inverseSigma;
+    /// `thresholds[i]` 是第 i 个区域的**入选门槛**（归一化 z 上的一个数）：
+    /// 归一化值 ≥ 门槛 ⇒ 该区域在这一列出现。取值为 `Φ⁻¹(1 − wᵢ/总权重)`。
     private final double[] thresholds;
     private final int regionCount;
 
@@ -74,10 +96,7 @@ public final class BiomeRegionAllocator {
     /// @param regionWeights     每个区域的权重份额（各自 >= 1），顺序与区域表一致
     /// @param regionSizeBlocks  区域的大致格数尺度
     public BiomeRegionAllocator(long seed, int vanillaWeight, int[] regionWeights, double regionSizeBlocks) {
-        RandomSource random = RandomSource.create(seed ^ SALT);
-        this.noise = NormalNoise.create(random, FIRST_OCTAVE, 1.0D, 0.5D);
         this.inputScale = BASE_PERIOD / Math.max(16.0D, regionSizeBlocks * 0.25D);
-        this.inverseSigma = 1.0D / estimateSigma(random);
         this.regionCount = regionWeights.length;
 
         int[] weights = new int[regionCount];
@@ -87,12 +106,16 @@ public final class BiomeRegionAllocator {
             total += weights[i];
         }
 
+        this.noises = new NormalNoise[regionCount];
+        this.inverseSigma = new double[regionCount];
         this.thresholds = new double[regionCount];
-        int accumulated = Math.max(1, vanillaWeight);
         for (int i = 0; i < regionCount; i++) {
-            double t = (double) accumulated / (double) total;
-            this.thresholds[i] = normalQuantile(t);
-            accumulated += weights[i];
+            // 每个区域一条独立噪声：种子按黄金比错开，保证互不相关。
+            RandomSource random = RandomSource.create(seed ^ SALT ^ (REGION_SALT_STEP * (i + 1)));
+            this.noises[i] = NormalNoise.create(random, FIRST_OCTAVE, 1.0D, 0.5D);
+            this.inverseSigma[i] = 1.0D / estimateSigma(random, this.noises[i]);
+            // 反解「大于等于该门槛」的概率 = 该区域的名义占比。
+            this.thresholds[i] = normalQuantile(1.0D - (double) weights[i] / (double) total);
         }
     }
 
@@ -118,15 +141,25 @@ public final class BiomeRegionAllocator {
         return regionCount;
     }
 
-    /// 归一化 z 上的分带阈值，`thresholds[i]` 是「第 i 个区域」与「第 i+1 个区域」的分界。
+    /// 每个区域的入选门槛（归一化 z）。`zᵢ ≥ thresholds[i]` ⇒ 第 i 个区域在这一列出现。
     /// 仅供启动日志与调试使用。
     public double[] thresholds() {
         return this.thresholds.clone();
     }
 
-    /// 实测噪声标准差，仅供诊断：区域场被压成一条平线时这个值会明显异常。
+    /// 第 0 个区域实测噪声标准差，仅供诊断：区域场被压成一条平线时这个值会明显异常。
+    /// 每个区域各有一条噪声，需要全部时用 {@link #sigmas()}。
     public double sigma() {
-        return 1.0D / this.inverseSigma;
+        return 1.0D / this.inverseSigma[0];
+    }
+
+    /// 每个区域各自的实测噪声标准差。
+    public double[] sigmas() {
+        double[] out = new double[this.regionCount];
+        for (int i = 0; i < this.regionCount; i++) {
+            out[i] = 1.0D / this.inverseSigma[i];
+        }
+        return out;
     }
 
     /// 在真实种子上抽样测出的各带占比，`shares[0]` 是原版，`shares[i]` 是第 i 个区域。
@@ -149,31 +182,41 @@ public final class BiomeRegionAllocator {
         return shares;
     }
 
-    /// @return `0` 表示这一列归原版，`1..regionCount` 对应区域表里的第 `index-1` 个区域
+    /// @return `0` 表示这一列归原版，`1..regionCount` 对应区域表里的第 `index-1` 个区域。
+    ///
+    /// 与旧实现的关键区别：旧实现是在**一条**噪声上顺序扫描分带，所以结果必然是嵌套的
+    /// 同心环；这里每个区域各自与自己的门槛比较，达标集合之间没有包含关系，
+    /// 只在多个区域同时达标（很罕见）时取归一化值最大者仲裁。
     public int index(int quartX, int quartZ) {
-        double z = this.noise.getValue(quartX * this.inputScale, 0.0D, quartZ * this.inputScale) * this.inverseSigma;
-        int index = 0;
-        while (index < this.regionCount && z >= this.thresholds[index]) {
-            index++;
+        int best = 0;
+        double bestZ = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < this.regionCount; i++) {
+            double z = this.noises[i].getValue(quartX * this.inputScale, 0.0D, quartZ * this.inputScale)
+                    * this.inverseSigma[i];
+            if (z < this.thresholds[i]) continue;
+            if (z > bestZ) {
+                bestZ = z;
+                best = i + 1;
+            }
         }
-        return index;
+        return best;
     }
 
-    /// 在世界尺度上实测噪声标准差。这比套用理论振幅稳健：无论倍频程和振幅怎么选，
+    /// 在世界尺度上实测某条噪声的标准差。这比套用理论振幅稳健：无论倍频程和振幅怎么选，
     /// 权重到面积占比的映射都自动成立。
-    private double estimateSigma(RandomSource random) {
+    private static double estimateSigma(RandomSource random, NormalNoise noise) {
         double sum = 0.0D;
         double squareSum = 0.0D;
         for (int i = 0; i < SAMPLE_COUNT; i++) {
             double x = (random.nextDouble() * 2.0D - 1.0D) * SAMPLE_SPREAD;
             double z = (random.nextDouble() * 2.0D - 1.0D) * SAMPLE_SPREAD;
-            double value = this.noise.getValue(x, 0.0D, z);
+            double value = noise.getValue(x, 0.0D, z);
             sum += value;
             squareSum += value * value;
         }
         double mean = sum / SAMPLE_COUNT;
         double variance = Math.max(squareSum / SAMPLE_COUNT - mean * mean, 1.0E-6D);
         // 用理论上界兜底，避免极端情况下把区域切得过碎。
-        return Math.max(Math.min(Math.sqrt(variance), this.noise.maxValue()), 1.0E-3D);
+        return Math.max(Math.min(Math.sqrt(variance), noise.maxValue()), 1.0E-3D);
     }
 }

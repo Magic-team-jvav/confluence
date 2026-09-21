@@ -393,7 +393,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 小史莱姆
                 .add(TEMonsterEntities.CORRUPT_SLIME, builder -> builder.order(32600).rarity(2).background(THE_CORRUPTION).filters(FilterEntry.THE_CORRUPTION, FilterEntry.UNDERGROUND_CORRUPTION))
                 .add(TEMonsterEntities.EATER_OF_SOULS, builder -> builder.order(32700).rarity(1).background(THE_CORRUPTION).filters(FilterEntry.THE_CORRUPTION, FilterEntry.UNDERGROUND_CORRUPTION))
-                // 噬魂怪
+                // 腐化者
                 .add(TEMonsterEntities.DEVOURER, builder -> builder.order(32900).rarity(2).background(THE_CORRUPTION).filters(FilterEntry.THE_CORRUPTION, FilterEntry.UNDERGROUND_CORRUPTION))
                 // 吞世怪
                 // 爬藤怪

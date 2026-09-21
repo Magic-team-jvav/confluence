@@ -28,7 +28,7 @@ import static org.confluence.mod.common.worldgen.biome.injector.ParameterBuilder
 /// ## 生成率
 ///
 /// ```
-/// 区域带宽 weight 1 / 总计 30 = 3.3% 的列
+/// 区域名额 weight 1 / 总计 28 ≈ 3.6% 的列（实测约 3.3%）
 ///   × 深度 UNDERGROUND [0.2, 0.9]（地表以下 26–115 格，约 90 格厚）≈ 占整个地下体积 70%
 /// ⇒ 整个地下体积的约 2.3%
 /// ```

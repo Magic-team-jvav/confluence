@@ -17,7 +17,8 @@ import static org.confluence.mod.common.worldgen.biome.injector.ParameterBuilder
 /// 血腥之地的主世界噪声区域。
 ///
 /// 与 {@link TheCorruptionRegion} 使用**完全相同**的参数盒子，理由见那边的文档：
-/// 一个世界只会出现两种邪恶群系之一，盒子不承担区分职责，分布由区域分配器的噪声带决定。
+/// 一个世界只会出现两种邪恶群系之一，盒子不承担区分职责，分布由区域分配器
+/// （每个区域一条独立噪声）决定。
 /// 两者盒子一致也保证了「腐化世界」与「猩红世界」的地形骨架完全一致，
 /// 只差群系本身（贴图、音效、刷怪、地物）。
 public final class TheCrimsonRegion implements BiomeRegion {

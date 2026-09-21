@@ -41,7 +41,7 @@ public final class ModMiniBiomes {
             .window(16, 12)
             .condition((level, pos) -> pos.getY() < OverworldUtils.getSurfaceY())
             .threshold(150, 600)
-            .count(ModBlockCounters.COBWEB, 1)
+            .count(ModBlockCounters.SPIDER_NEST, 1)
             .build();
 
     public static final MiniBiomeType BEE_HIVE = MiniBiomeType

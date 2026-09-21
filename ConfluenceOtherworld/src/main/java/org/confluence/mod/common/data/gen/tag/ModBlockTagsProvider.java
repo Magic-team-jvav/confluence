@@ -951,6 +951,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 THIN_ICE_BLOCK.get(),
                 CRISPY_HONEY_BLOCK.get(),
                 NatureBlocks.GRANITE.get(),
+                NatureBlocks.SPIDER_NEST.get(),
                 MARBLE.get(),
                 POLISHED_GRANITE.get(),
                 CHISELED_GRANITE_BRICKS.get(),

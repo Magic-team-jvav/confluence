@@ -16,6 +16,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 
 import java.io.FileNotFoundException;
@@ -39,6 +40,7 @@ public final class ModBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         OreBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get()));
         DecorativeBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get()));
+        simpleBlockIfAbsent(NatureBlocks.SPIDER_NEST.get());
 
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             registerLogSet(blockSet);

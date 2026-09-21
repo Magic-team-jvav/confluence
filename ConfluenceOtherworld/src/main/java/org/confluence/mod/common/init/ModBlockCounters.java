@@ -41,8 +41,8 @@ public final class ModBlockCounters {
 
     // ---- 迷你生物群系用的计数器 ----
 
-    /// 蜘蛛窝：蛛网
-    public static final BlockCounters.Counter COBWEB = register("cobweb", block -> block.is(Blocks.COBWEB));
+    /// 蜘蛛窝：蜘蛛巢
+    public static final BlockCounters.Counter SPIDER_NEST = register("spider_nest", block -> block.is(NatureBlocks.SPIDER_NEST.get()));
     /// 花岗岩洞：**只认 `NatureBlocks.GRANITE`**。
     ///
     /// 全仓只有 `GraniteCaveStructure` 会放置这个方块，所以它是"签名方块" ——

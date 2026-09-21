@@ -17,21 +17,21 @@ import java.util.List;
 public final class InfoData {
 
     public static void record(Level level, float amount, Vec3 pos, Vec3 velocity, Type type) {
-        if (false && !level.isClientSide()) {
+        if (false && !level.isClientSide())  {
             InfoData data = level.getData(SummonerAttachmentTypes.INFO);
             data.pendingNumbers.add(new SummonerBatchedInfoPayload.Number(type, amount, pos, velocity));
         }
     }
 
     public static void record(Level level, Component text, Vec3 pos, Vec3 velocity) {
-        if (false && !level.isClientSide()) {
+        if (false && !level.isClientSide())  {
             InfoData data = level.getData(SummonerAttachmentTypes.INFO);
             data.pendingTexts.add(new SummonerBatchedInfoPayload.Text(text, pos, velocity));
         }
     }
 
     public enum Type {
-        DAMAGE(0xFFCD04),
+        DAMAGE(0xff9400),
         CRITICAL(0xFF0421),
         HEAL(0x55FF55);
 

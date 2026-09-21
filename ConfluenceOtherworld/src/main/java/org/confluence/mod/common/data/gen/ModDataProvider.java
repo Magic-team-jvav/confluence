@@ -2328,7 +2328,7 @@ public class ModDataProvider {
             register(context, "spider_nest", new StructureSet(structure.getOrThrow(ModStructures.Keys.SPIDER_NEST), new RandomSpreadStructurePlacement(
                     Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
                     83512741, Optional.of(new StructurePlacement.ExclusionZone(villages, 8)),
-                    32, 12, RandomSpreadType.TRIANGULAR
+                    24, 10, RandomSpreadType.TRIANGULAR
             )));
             register(context, "caves", new StructureSet(List.of(
                     new StructureSet.StructureSelectionEntry(structure.getOrThrow(ModStructures.Keys.GRANITE_CAVE), 1),

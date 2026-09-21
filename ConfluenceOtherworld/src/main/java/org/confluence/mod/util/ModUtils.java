@@ -115,10 +115,6 @@ public final class ModUtils {
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, boolean onSurface) {
-        summonBoss(level, pos, boss, onSurface, null);
-    }
-
-    public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, boolean onSurface, @Nullable Player summoner) {
         double x = LibMathUtils.randomFromTo(level.random, pos.getX() + 0.5, 30.0, 50.0);
         double z = LibMathUtils.randomFromTo(level.random, pos.getZ() + 0.5, 30.0, 50.0);
         double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
@@ -131,10 +127,6 @@ public final class ModUtils {
 
     public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss) {
         summonBoss(level, pos, boss, true);
-    }
-
-    public static void summonBoss(ServerLevel level, BlockPos pos, BaseBoss boss, Player summoner) {
-        summonBoss(level, pos, boss, true, summoner);
     }
 
     public static @Nullable BlockState getLeadAnvilDamage(BlockState state, DirectionProperty FACING) {

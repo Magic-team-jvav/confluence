@@ -8,6 +8,7 @@ import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.entity.renderer.GeoNegativeVolumeRenderer;
 import org.confluence.mod.common.entity.projectile.mana.MagicDaggerProjectile;
+import org.mesdag.portlib.diff.Diff;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public class MagicDaggerRenderer extends GeoNegativeVolumeRenderer<MagicDaggerProjectile> {
@@ -22,6 +23,10 @@ public class MagicDaggerRenderer extends GeoNegativeVolumeRenderer<MagicDaggerPr
             super.render(entity, entityYaw, partialTick, poseStack, bufferSource, 0xF000F0);
         }
     }
+
+    @Diff
+    @Override
+    protected void applyRotations(MagicDaggerProjectile animatable, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTick) {}
 
     /// 在父类开始 Geo 渲染后使用本帧实体计算飞刀朝向，避免读取尚未绑定的渲染状态。
     @Override

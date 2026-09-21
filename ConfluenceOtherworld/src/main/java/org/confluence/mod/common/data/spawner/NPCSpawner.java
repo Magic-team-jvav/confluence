@@ -4,16 +4,12 @@ import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExte
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.*;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.SectionPos;
+import net.minecraft.core.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -23,8 +19,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -54,10 +50,10 @@ import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.npc.AnglerNPC;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.OldManNPC;
-import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.npc.TravelingMerchantNPC;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -143,8 +139,11 @@ public enum NPCSpawner implements IGlobalData {
         if (map == null) return 0;
         int count = 0;
         for (Reference2BooleanMap.Entry<EntityType<?>> entry : map.reference2BooleanEntrySet()) {
-            if (entry.getBooleanValue() && entry.getKey() != NpcEntities.SKELETON_MERCHANT.get()
-                    && NpcEntities.TOWN_SLIMES.stream().noneMatch(type -> type.get() == entry.getKey()) && filter.test(entry.getKey())) {
+            if (entry.getBooleanValue() &&
+                    entry.getKey() != NpcEntities.SKELETON_MERCHANT.get() &&
+                    NpcEntities.TOWN_SLIMES.stream().noneMatch(type -> type.get() == entry.getKey()) &&
+                    filter.test(entry.getKey())
+            ) {
                 count++;
             }
         }
@@ -289,10 +288,8 @@ public enum NPCSpawner implements IGlobalData {
                 dungeonResidents.put(entrance, resident);
             });
         }
-        PortDataResultExtension.ifSuccess(NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcAlive")),
-                result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
-        PortDataResultExtension.ifSuccess(NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned")),
-                result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
+        PortDataResultExtension.ifSuccess(NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcAlive")), result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
+        PortDataResultExtension.ifSuccess(NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned")), result -> this.npcSpawned = new ObjectOpenHashSet<>(result));
         this.isAdvancedCombatTechniquesUsed = tag.getBoolean("AdvancedCombatTechniquesUsed");
         this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.getBoolean("AdvancedCombatTechniquesVolumeTwoUsed");
         this.isPeddlersSatchelUsed = tag.getBoolean("PeddlersSatchelUsed");
@@ -319,10 +316,8 @@ public enum NPCSpawner implements IGlobalData {
                 iterator.remove();
             }
         }
-        PortDataResultExtension.ifSuccess(NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive),
-                nbt -> tag.put("NpcAlive", nbt));
-        PortDataResultExtension.ifSuccess(NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned),
-                nbt -> tag.put("NpcSpawned", nbt));
+        PortDataResultExtension.ifSuccess(NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive), nbt -> tag.put("NpcAlive", nbt));
+        PortDataResultExtension.ifSuccess(NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned), nbt -> tag.put("NpcSpawned", nbt));
         tag.putBoolean("AdvancedCombatTechniquesUsed", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("AdvancedCombatTechniquesVolumeTwoUsed", isAdvancedCombatTechniquesVolumeTwoUsed);
         tag.putBoolean("PeddlersSatchelUsed", isPeddlersSatchelUsed);
@@ -385,7 +380,7 @@ public enum NPCSpawner implements IGlobalData {
             if (trySpawnNurse(player, pos, region)) continue;
             if (trySpawnDemolitionist(player, pos, region)) continue;
             if (trySpawnDyeTrader(player, pos, region)) continue;
-            if (trySpawnAngler(player, region)) continue;
+            if (trySpawnAngler(player)) continue;
             if (trySpawnZoologist(player, pos, region)) continue;
             if (trySpawnDryad(player, pos, region)) continue;
             if (trySpawnPainter(player, pos, region)) continue;
@@ -400,21 +395,34 @@ public enum NPCSpawner implements IGlobalData {
             // 税收官
             if (trySpawnTruffle(player, pos, region)) continue;
             if (!LibUtils.isDev()) continue;
-            if (!hasNPCAlive(region, NpcEntities.NERDY_SLIME.get()) && KillBoard.INSTANCE.isDefeated(BossEntities.KING_SLIME.get())
-                    && spawnAtPos(serverLevel, pos, NpcEntities.NERDY_SLIME.get())) continue;
+            if (trySpawnNerdySlime(serverLevel, region, pos)) continue;
             if (trySpawnCoolSlime(serverLevel, pos, region)) continue;
             // 海盗
-            if (!hasNPCAlive(region, NpcEntities.STEAMPUNKER.get()) && KillBoard.INSTANCE.isAnyMechBossDefeated()
-                    && spawnAtPos(serverLevel, pos, NpcEntities.STEAMPUNKER.get())) continue;
-            if (!hasNPCAlive(region, NpcEntities.CYBORG.get()) && KillBoard.INSTANCE.isDefeated(BossEntities.PLANTERA.get())
-                    && spawnAtPos(serverLevel, pos, NpcEntities.CYBORG.get())) continue;
+            if (trySpawnSteampumker(serverLevel, region, pos)) continue;
+            if (trySpawnCyborg(serverLevel, region, pos)) continue;
         }
     }
 
+    private boolean trySpawnCyborg(ServerLevel serverLevel, Region region, BlockPos pos) {
+        return !hasNPCAlive(region, NpcEntities.CYBORG.get()) && KillBoard.INSTANCE.isDefeated(BossEntities.PLANTERA.get())
+                && spawnAtPos(serverLevel, pos, NpcEntities.CYBORG.get());
+    }
+
+    private boolean trySpawnSteampumker(ServerLevel serverLevel, Region region, BlockPos pos) {
+        return !hasNPCAlive(region, NpcEntities.STEAMPUNKER.get()) && KillBoard.INSTANCE.isAnyMechBossDefeated()
+                && spawnAtPos(serverLevel, pos, NpcEntities.STEAMPUNKER.get());
+    }
+
+    private boolean trySpawnNerdySlime(ServerLevel serverLevel, Region region, BlockPos pos) {
+        return !hasNPCAlive(region, NpcEntities.NERDY_SLIME.get()) && KillBoard.INSTANCE.isDefeated(BossEntities.KING_SLIME.get())
+                && spawnAtPos(serverLevel, pos, NpcEntities.NERDY_SLIME.get());
+    }
+
     private boolean trySpawnCoolSlime(ServerLevel level, BlockPos pos, Region region) {
-        if (!PartyGameEvent.INSTANCE.isNatural() || hasNPCAlive(region, NpcEntities.COOL_SLIME.get())
-                || isNpcNearby(level, pos, NpcEntities.COOL_SLIME.get(), NPC_PRESENCE_CHECK_RADIUS))
-            return false;
+        if (!PartyGameEvent.INSTANCE.isNatural() ||
+                hasNPCAlive(region, NpcEntities.COOL_SLIME.get()) ||
+                isNpcNearby(level, pos, NpcEntities.COOL_SLIME.get(), NPC_PRESENCE_CHECK_RADIUS)
+        ) return false;
         var slime = NpcEntities.COOL_SLIME.get().create(level);
         if (slime == null) return false;
         Set<BlockPos> candidates = new HashSet<>();
@@ -447,7 +455,8 @@ public enum NPCSpawner implements IGlobalData {
         boolean golfer = !npcSpawned.contains(NpcEntities.GOLFER.get()) && level.getBiome(player.blockPosition()).is(PortTags.Biomes.IS_DESERT);
         EntityType<? extends BaseNPC> type = golfer ? NpcEntities.GOLFER.get() : NpcEntities.SKELETON_MERCHANT.get();
         Region region = new Region(player.blockPosition());
-        if (isNpcAlreadyPresent(level, player.blockPosition(), type) || player.getRandom().nextInt(8) != 0) return false;
+        if (isNpcAlreadyPresent(level, player.blockPosition(), type) || player.getRandom().nextInt(8) != 0)
+            return false;
         BaseNPC npc = type.create(level);
         if (npc == null) return false;
         for (int attempt = 0; attempt < 32; attempt++) {
@@ -563,7 +572,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     /// 先计入NPC列表，待玩家交互了再转移（睡眠状态，交互后唤醒）
-    private boolean trySpawnAngler(ServerPlayer player, Region region) {
+    private boolean trySpawnAngler(ServerPlayer player) {
         BlockPos playerPos = player.blockPosition();
         Region playerRegion = new Region(playerPos);
         if (!isNpcAlreadyPresent(player.serverLevel(), playerPos, NpcEntities.ANGLER.get())) { // 保证玩家转移渔夫区域时不再生成新的
@@ -684,11 +693,13 @@ public enum NPCSpawner implements IGlobalData {
                     if (!checked.add(chunk) || !level.hasChunk(x, z)) continue;
                     DungeonStructure.iterateDungeon(level, chunk, start -> {
                         for (StructurePiece piece : start.getPieces()) {
-                            if (!(piece instanceof SimpleTemplatePiece gate) || !DungeonStructure.GATE.equals(gate.templateName)) continue;
+                            if (!(piece instanceof SimpleTemplatePiece gate) || !DungeonStructure.GATE.equals(gate.templateName))
+                                continue;
                             BlockPos entrance = switch (gate.getRotation()) {
                                 case CLOCKWISE_90 -> gate.templatePosition().offset(-15, 6, 15);
                                 case CLOCKWISE_180 -> gate.templatePosition().offset(-15, 6, -15);
-                                case COUNTERCLOCKWISE_90 -> gate.templatePosition().offset(15, 6, -15);
+                                case COUNTERCLOCKWISE_90 ->
+                                        gate.templatePosition().offset(15, 6, -15);
                                 default -> gate.templatePosition().offset(15, 6, 15);
                             };
                             dungeonResidents.computeIfAbsent(GlobalPos.of(level.dimension(), entrance), key -> new DungeonResident());
@@ -702,7 +713,8 @@ public enum NPCSpawner implements IGlobalData {
             GlobalPos entrance = entry.getKey();
             if (!entrance.dimension().equals(level.dimension())) continue;
             BlockPos pos = entrance.pos();
-            if (level.players().stream().noneMatch(player -> !player.isSpectator() && player.distanceToSqr(pos.getCenter()) < 64 * 64)) continue;
+            if (level.players().stream().noneMatch(player -> !player.isSpectator() && player.distanceToSqr(pos.getCenter()) < 64 * 64))
+                continue;
             DungeonResident resident = entry.getValue();
             /// UUID 未加载不等于死亡；只由死亡或销毁事件清除，防止卸载期间复制老人。
             if (resident.oldMan != null || resident.skeletron != null) continue;
@@ -722,13 +734,15 @@ public enum NPCSpawner implements IGlobalData {
                 resident.oldMan = existing.getUUID();
                 continue;
             }
-            if (resident.respawnAfter != 0 && (level.getDayTime() < resident.respawnAfter || !LibDateUtils.isDay(level))) continue;
+            if (resident.respawnAfter != 0 && (level.getDayTime() < resident.respawnAfter || !LibDateUtils.isDay(level)))
+                continue;
             OldManNPC oldMan = NpcEntities.OLD_MAN.get().create(level);
             if (oldMan == null) continue;
             oldMan.setPos(pos.getBottomCenter());
             oldMan.setDungeonEntrance(entrance);
             oldMan.setRegion(new Region(pos));
-            if (level.noCollision(oldMan) && level.addFreshEntity(oldMan)) resident.oldMan = oldMan.getUUID();
+            if (level.noCollision(oldMan) && level.addFreshEntity(oldMan))
+                resident.oldMan = oldMan.getUUID();
         }
     }
 
@@ -736,7 +750,8 @@ public enum NPCSpawner implements IGlobalData {
     private boolean entranceEntitiesLoaded(ServerLevel level, BlockPos pos) {
         for (int x = (pos.getX() - 16) >> 4; x <= (pos.getX() + 16) >> 4; x++) {
             for (int z = (pos.getZ() - 16) >> 4; z <= (pos.getZ() + 16) >> 4; z++) {
-                if (!level.hasChunk(x, z) || !level.areEntitiesLoaded(ChunkPos.asLong(x, z))) return false;
+                if (!level.hasChunk(x, z) || !level.areEntitiesLoaded(ChunkPos.asLong(x, z)))
+                    return false;
             }
         }
         return true;

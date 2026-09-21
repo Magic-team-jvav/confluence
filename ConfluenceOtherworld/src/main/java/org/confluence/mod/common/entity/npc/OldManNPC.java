@@ -10,11 +10,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -25,8 +21,8 @@ import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.ModUtils;
-import org.mesdag.portlib.network.PortPacketDistributor;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.network.PortPacketDistributor;
 
 /// 老人 —— 地牢入口的诅咒 NPC。
 public class OldManNPC extends BaseNPC {
@@ -112,7 +108,7 @@ public class OldManNPC extends BaseNPC {
             return;
         Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level());
         skeletron.finalizeSpawn(serverLevel, level().getCurrentDifficultyAt(blockPosition()), MobSpawnType.EVENT, null, null);
-        ModUtils.summonBoss(serverLevel, blockPosition(), skeletron, player);
+        ModUtils.summonBoss(serverLevel, blockPosition(), skeletron);
         if (serverLevel.getEntity(skeletron.getUUID()) != skeletron) return;
         NPCSpawner.INSTANCE.oldManSummoned(this, skeletron);
         NPCSpawner.INSTANCE.onNPCRemoved(this);

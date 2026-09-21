@@ -21,17 +21,17 @@ public final class PhasebladeProjectileRenderer extends EntityRenderer<Phaseblad
     }
 
     @Override
-    public void render(PhasebladeProjectile entity, float entityYaw, float partialTick, PoseStack poseStack,
-                       MultiBufferSource buffers, int packedLight) {
-        poseStack.pushPose();
-        poseStack.translate(0.0D, entity.getBbHeight() * 0.5D, 0.0D);
-        poseStack.mulPose(Axis.YN.rotation(entity.visualYaw()));
-        poseStack.mulPose(Axis.ZP.rotation(entity.visualRoll(partialTick)));
-        BasePhasebladeItem.ProjectileGeometry geometry = entity.projectileGeometry();
-        poseStack.translate(-geometry.centerX() - 0.5D, -geometry.centerY() - 0.51D, -geometry.centerZ() - 0.5D);
-        bladeRenderer.renderByItem(entity.getRenderItem(), ItemDisplayContext.NONE, poseStack, buffers, packedLight, OverlayTexture.NO_OVERLAY);
-        poseStack.popPose();
-        super.render(entity, entityYaw, partialTick, poseStack, buffers, packedLight);
+    public void render(PhasebladeProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
+        if (entity.tickCount > 1) {
+            poseStack.pushPose();
+            poseStack.translate(0, entity.getBbHeight() * 0.5F, 0);
+            poseStack.mulPose(Axis.YN.rotation(entity.visualYaw()));
+            poseStack.mulPose(Axis.ZP.rotation(entity.visualRoll(partialTick)));
+            BasePhasebladeItem.ProjectileGeometry geometry = entity.projectileGeometry();
+            poseStack.translate(-geometry.centerX() - 0.5F, -geometry.centerY() - 0.51F, -geometry.centerZ() - 0.5F);
+            bladeRenderer.renderByItem(entity.getRenderItem(), ItemDisplayContext.NONE, poseStack, buffers, packedLight, OverlayTexture.NO_OVERLAY);
+            poseStack.popPose();
+        }
     }
 
     @Override

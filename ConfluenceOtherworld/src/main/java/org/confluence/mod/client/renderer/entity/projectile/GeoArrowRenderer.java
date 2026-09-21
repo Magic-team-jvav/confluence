@@ -20,11 +20,10 @@ public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
     /// 因为 GeckoLib 此时尚未为本帧赋值；直接读取会在首次渲染箭矢时触发空指针。
     @Override
     protected void adjustPose(PoseStack poseStack, HellBatArrowEntity entity, BakedGeoModel model, float partialTick) {
-        poseStack.translate(0, 0F, 0.0F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
-        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-        poseStack.mulPose(Axis.XP.rotationDegrees(60F));
-        poseStack.translate(0F, -0.5, -0.3F);
+        poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI));
+        poseStack.mulPose(Axis.XP.rotationDegrees(60));
+        poseStack.translate(0, -0.5F, -0.3F);
     }
 }

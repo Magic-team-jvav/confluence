@@ -11,6 +11,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.entity.renderer.GeoNegativeVolumeRenderer;
 import org.confluence.mod.common.entity.projectile.strip.CrystalVileShardProjectile;
+import org.mesdag.portlib.diff.Diff;
 import software.bernie.geckolib.core.object.Color;
 
 import java.util.List;
@@ -37,6 +38,10 @@ public class CrystalVileShardProjectileRenderer extends GeoNegativeVolumeRendere
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, 0xF000F0);
         poseStack.popPose();
     }
+
+    @Diff
+    @Override
+    protected void applyRotations(CrystalVileShardProjectile animatable, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTick) {}
 
     @Override
     protected RenderType getGlowRenderType(CrystalVileShardProjectile animatable, ResourceLocation texture) {

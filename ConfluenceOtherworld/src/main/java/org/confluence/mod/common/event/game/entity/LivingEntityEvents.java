@@ -192,7 +192,7 @@ public final class LivingEntityEvents {
                 ) {
                     Skeletron skeletron = new Skeletron(BossEntities.SKELETRON.get(), level);
                     skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null, null);
-                    ModUtils.summonBoss(level, attacker.blockPosition(), skeletron, player);
+                    ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
                 }
 
                 if (npc.getType() == NpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {

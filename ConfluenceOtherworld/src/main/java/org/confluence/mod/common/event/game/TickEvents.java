@@ -61,6 +61,7 @@ public final class TickEvents {
             BossDelaySpawner.spawnDeerClops(level);
         }
         NPCSpawner.respawnNPC(level, dayTime);
+        NPCSpawner.INSTANCE.tickDungeonResidents(level);
 
         TaskScheduler scheduler = TooEasy.getScheduler(false);
         if (scheduler != null) {

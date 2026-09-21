@@ -5,11 +5,14 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -21,6 +24,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -52,6 +56,8 @@ import org.confluence.mod.common.data.saved.HouseHandler;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.npc.AnglerNPC;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.OldManNPC;
+import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.npc.TravelingMerchantNPC;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -96,6 +102,8 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private Map<Region, Reference2BooleanMap<EntityType<?>>> npcAlive = new Object2ObjectOpenHashMap<>();
+    /// 老人按地牢入口独立保存，不能以城镇 region 或全世界的 NPC 类型判重。
+    private final Map<GlobalPos, DungeonResident> dungeonResidents = new Object2ObjectOpenHashMap<>();
     /// 生成过的NPC，可用于NPC复活而无需再次满足条件
     private Set<EntityType<?>> npcSpawned = new ReferenceOpenHashSet<>();
     private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
@@ -243,6 +251,10 @@ public enum NPCSpawner implements IGlobalData {
     ///   - 两种情况下，都会使用 #ff1919 颜色。
     public void onNPCRemoved(BaseNPC living) {
         HouseHandler.INSTANCE.removeHouse(living.level().dimension(), living.getUUID());
+        if (living instanceof OldManNPC oldMan) {
+            dungeonEntityRemoved(oldMan);
+            return;
+        }
         setNPCAlive(living.getRegion(), living.getType(), false);
         if (living.shouldInteract() || living.getType() == NpcEntities.SKELETON_MERCHANT.get())
             return;
@@ -266,6 +278,17 @@ public enum NPCSpawner implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
+        dungeonResidents.clear();
+        for (Tag element : tag.getList("DungeonResidents", Tag.TAG_COMPOUND)) {
+            CompoundTag entry = (CompoundTag) element;
+            GlobalPos.CODEC.parse(NbtOps.INSTANCE, entry.get("Entrance")).result().ifPresent(entrance -> {
+                DungeonResident resident = new DungeonResident();
+                if (entry.hasUUID("OldMan")) resident.oldMan = entry.getUUID("OldMan");
+                if (entry.hasUUID("Skeletron")) resident.skeletron = entry.getUUID("Skeletron");
+                resident.respawnAfter = entry.getLong("RespawnAfter");
+                dungeonResidents.put(entrance, resident);
+            });
+        }
         PortDataResultExtension.ifSuccess(NPC_ALIVE_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcAlive")),
                 result -> this.npcAlive = new Object2ObjectOpenHashMap<>(result));
         PortDataResultExtension.ifSuccess(NPC_SPAWNED_CODEC.parse(NbtOps.INSTANCE, tag.get("NpcSpawned")),
@@ -277,6 +300,16 @@ public enum NPCSpawner implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
+        ListTag residents = new ListTag();
+        dungeonResidents.forEach((entrance, resident) -> {
+            CompoundTag entry = new CompoundTag();
+            GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, entrance).result().ifPresent(value -> entry.put("Entrance", value));
+            if (resident.oldMan != null) entry.putUUID("OldMan", resident.oldMan);
+            if (resident.skeletron != null) entry.putUUID("Skeletron", resident.skeletron);
+            entry.putLong("RespawnAfter", resident.respawnAfter);
+            residents.add(entry);
+        });
+        tag.put("DungeonResidents", residents);
         tag.putInt("Version", CURRENT_VERSION);
         Iterator<Map.Entry<Region, Reference2BooleanMap<EntityType<?>>>> iterator = npcAlive.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -302,6 +335,7 @@ public enum NPCSpawner implements IGlobalData {
 
     @Override
     public void clear() {
+        dungeonResidents.clear();
         npcAlive.clear();
         npcSpawned.clear();
         this.isAdvancedCombatTechniquesUsed = false;
@@ -631,41 +665,108 @@ public enum NPCSpawner implements IGlobalData {
             if (!hasNPCAlive(region, NpcEntities.CLOTHIER.get())) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.CLOTHIER.get());
             }
-        } else {
-            ServerLevel level = player.serverLevel();
-            return DungeonStructure.iterateDungeon(level, player.chunkPosition(), structureStart -> {
-                if (IStructureStart.of(structureStart).confluence$cachedBoundingBox().isInside(player.blockPosition())) {
-                    for (StructurePiece piece : structureStart.getPieces()) {
-                        if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.GATE.equals(templatePiece.templateName)) {
-                            BlockPos offset = switch (templatePiece.getRotation()) {
-                                case CLOCKWISE_90 ->
-                                        templatePiece.templatePosition().offset(-15, 6, 15);
-                                case CLOCKWISE_180 ->
-                                        templatePiece.templatePosition().offset(-15, 6, -15);
-                                case COUNTERCLOCKWISE_90 ->
-                                        templatePiece.templatePosition().offset(15, 6, -15);
-                                default -> templatePiece.templatePosition().offset(15, 6, 15);
-                            };
-                            Region npcRegion = new Region(offset);
-                            if (!hasNPCAlive(npcRegion, NpcEntities.OLD_MAN.get())
-                                    && !isNpcNearby(level, offset, NpcEntities.OLD_MAN.get(), NPC_PRESENCE_CHECK_RADIUS)) {
-                                BaseNPC npc = NpcEntities.OLD_MAN.get().create(level);
-                                if (npc == null) return false;
-                                npc.setPos(offset.getBottomCenter());
-                                if (!level.addFreshEntity(npc)) return false;
-                                npc.setRegion(npcRegion);
-                                getRegionAliveDetails(npcRegion).put(NpcEntities.OLD_MAN.get(), true);
-                                // 没有计入spawned列表
-                                return true;
-                            }
-                            return false;
-                        }
-                    }
-                }
-                return false;
-            });
         }
         return false;
+    }
+
+    /// 只检查玩家附近已加载的地牢；初次发现昼夜均可，死亡或召唤后等下一个白天。
+    public void tickDungeonResidents(ServerLevel level) {
+        if (level.getGameTime() % 40 != 0 || !CommonConfigs.DO_NPC_SPAWNING.get()
+                || !level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
+                || KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON)) return;
+        Set<ChunkPos> checked = new HashSet<>();
+        for (ServerPlayer player : level.players()) {
+            if (player.isSpectator()) continue;
+            ChunkPos center = player.chunkPosition();
+            for (int x = center.x - 1; x <= center.x + 1; x++) {
+                for (int z = center.z - 1; z <= center.z + 1; z++) {
+                    ChunkPos chunk = new ChunkPos(x, z);
+                    if (!checked.add(chunk) || !level.hasChunk(x, z)) continue;
+                    DungeonStructure.iterateDungeon(level, chunk, start -> {
+                        for (StructurePiece piece : start.getPieces()) {
+                            if (!(piece instanceof SimpleTemplatePiece gate) || !DungeonStructure.GATE.equals(gate.templateName)) continue;
+                            BlockPos entrance = switch (gate.getRotation()) {
+                                case CLOCKWISE_90 -> gate.templatePosition().offset(-15, 6, 15);
+                                case CLOCKWISE_180 -> gate.templatePosition().offset(-15, 6, -15);
+                                case COUNTERCLOCKWISE_90 -> gate.templatePosition().offset(15, 6, -15);
+                                default -> gate.templatePosition().offset(15, 6, 15);
+                            };
+                            dungeonResidents.computeIfAbsent(GlobalPos.of(level.dimension(), entrance), key -> new DungeonResident());
+                        }
+                        return false;
+                    });
+                }
+            }
+        }
+        for (var entry : dungeonResidents.entrySet()) {
+            GlobalPos entrance = entry.getKey();
+            if (!entrance.dimension().equals(level.dimension())) continue;
+            BlockPos pos = entrance.pos();
+            if (level.players().stream().noneMatch(player -> !player.isSpectator() && player.distanceToSqr(pos.getCenter()) < 64 * 64)) continue;
+            DungeonResident resident = entry.getValue();
+            /// UUID 未加载不等于死亡；只由死亡或销毁事件清除，防止卸载期间复制老人。
+            if (resident.oldMan != null || resident.skeletron != null) continue;
+            if (!entranceEntitiesLoaded(level, pos)) continue;
+            /// 兼容旧存档：按原始出生点认领老人，不读取旧 region 的存活布尔值。
+            OldManNPC existing = null;
+            for (Entity entity : level.getAllEntities()) {
+                if (entity instanceof OldManNPC oldMan && oldMan.isAlive()
+                        && (entrance.equals(oldMan.getDungeonEntrance())
+                        || oldMan.getDungeonEntrance() == null && oldMan.getSpawnAtPos().equals(pos))) {
+                    existing = oldMan;
+                    break;
+                }
+            }
+            if (existing != null) {
+                existing.setDungeonEntrance(entrance);
+                resident.oldMan = existing.getUUID();
+                continue;
+            }
+            if (resident.respawnAfter != 0 && (level.getDayTime() < resident.respawnAfter || !LibDateUtils.isDay(level))) continue;
+            OldManNPC oldMan = NpcEntities.OLD_MAN.get().create(level);
+            if (oldMan == null) continue;
+            oldMan.setPos(pos.getBottomCenter());
+            oldMan.setDungeonEntrance(entrance);
+            oldMan.setRegion(new Region(pos));
+            if (level.noCollision(oldMan) && level.addFreshEntity(oldMan)) resident.oldMan = oldMan.getUUID();
+        }
+    }
+
+    /// 入口附近的实体读盘完成后才能判断旧存档里是否缺少老人，不强制加载区块。
+    private boolean entranceEntitiesLoaded(ServerLevel level, BlockPos pos) {
+        for (int x = (pos.getX() - 16) >> 4; x <= (pos.getX() + 16) >> 4; x++) {
+            for (int z = (pos.getZ() - 16) >> 4; z <= (pos.getZ() + 16) >> 4; z++) {
+                if (!level.hasChunk(x, z) || !level.areEntitiesLoaded(ChunkPos.asLong(x, z))) return false;
+            }
+        }
+        return true;
+    }
+
+    public void oldManSummoned(OldManNPC oldMan, Skeletron boss) {
+        GlobalPos entrance = oldMan.getDungeonEntrance();
+        if (entrance == null) return;
+        DungeonResident resident = dungeonResidents.computeIfAbsent(entrance, key -> new DungeonResident());
+        resident.oldMan = null;
+        resident.skeletron = boss.getUUID();
+    }
+
+    /// 区块卸载不调用；真正移除后只更新对应入口，不影响其他地牢。
+    public void dungeonEntityRemoved(Entity entity) {
+        for (DungeonResident resident : dungeonResidents.values()) {
+            if (entity.getUUID().equals(resident.oldMan) || entity.getUUID().equals(resident.skeletron)) {
+                if (entity.getUUID().equals(resident.oldMan)) resident.oldMan = null;
+                if (entity.getUUID().equals(resident.skeletron)) resident.skeletron = null;
+                long now = entity.level().getDayTime();
+                resident.respawnAfter = now + 24000 - Math.floorMod(now - LibDateUtils._04$30, 24000);
+            }
+        }
+    }
+
+    /// 每座地牢一条记录；实体 UUID 同时覆盖存档重载和战斗离开入口的情况。
+    private static final class DungeonResident {
+        private UUID oldMan;
+        private UUID skeletron;
+        private long respawnAfter;
     }
 
     /// 未在区域内的机械师会自动移除（因为机械师距离玩家基地可能很远）

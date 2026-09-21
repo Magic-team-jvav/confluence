@@ -11,6 +11,7 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibDamageTypes;
@@ -19,6 +20,9 @@ import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.spawner.NPCSpawner;
+import org.confluence.mod.common.entity.boss.Skeletron;
+import org.confluence.mod.common.entity.npc.OldManNPC;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
 import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -35,6 +39,7 @@ import org.mesdag.portlib.event.entity.PortEntityInvulnerabilityCheckEvent;
 public final class EntityEvents {
     public static void init() {
         PortEventHandler.addListener(EntityEvents::joinLevel);
+        PortEventHandler.addListener(EntityEvents::leaveLevel);
         PortEventHandler.addListener(EntityEvents::mount);
         PortEventHandler.addListener(EntityEvents::invulnerabilityCheck);
     }
@@ -57,6 +62,14 @@ public final class EntityEvents {
         }
         if (boss.isMainBody() && boss.shouldEnhanceMultiplayer() && entity instanceof LivingEntity living) {
             BossMultiplayerEnhancement.apply(living);
+        }
+    }
+
+    private static void leaveLevel(EntityLeaveLevelEvent event) {
+        Entity entity = event.getEntity();
+        if (!event.getLevel().isClientSide && (entity instanceof OldManNPC || entity instanceof Skeletron)
+                && entity.getRemovalReason() != null && entity.getRemovalReason().shouldDestroy()) {
+            NPCSpawner.INSTANCE.dungeonEntityRemoved(entity);
         }
     }
 

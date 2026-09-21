@@ -71,7 +71,7 @@ public final class SpiderNestStructure extends Structure {
                 if (nearWall && patch > -0.3 && random.nextFloat() < 0.65F) blocks.put(pos, 2);
             }
             /// 洞壁使用蜘蛛巢作为迷你群系的计数方块，普通蛛网只负责洞内装饰。
-            GridPiece.addPieces(blocks, new ArrayList<>(List.of(Blocks.AIR.defaultBlockState(), NatureBlocks.SPIDER_NEST.get().defaultBlockState(), Blocks.COBWEB.defaultBlockState())), builder);
+            GridPiece.addPieces(blocks, new ArrayList<>(List.of(Blocks.AIR.defaultBlockState(), NatureBlocks.SPIDER_NEST_STONE.get().defaultBlockState(), Blocks.COBWEB.defaultBlockState())), builder);
         }));
     }
 

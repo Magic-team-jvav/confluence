@@ -40,7 +40,7 @@ public final class ModBlockStateProvider extends BlockStateProvider {
     protected void registerStatesAndModels() {
         OreBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get()));
         DecorativeBlocks.BLOCKS.getEntries().forEach(entry -> simpleBlockIfAbsent(entry.get()));
-        simpleBlockIfAbsent(NatureBlocks.SPIDER_NEST.get());
+        simpleBlockIfAbsent(NatureBlocks.SPIDER_NEST_STONE.get());
 
         for (LogBlockSet blockSet : LogBlockSet.LOG_BLOCK_SETS) {
             registerLogSet(blockSet);

@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/spider_nest_stone",
+                "weight": 12
+            },
+            {
+                "model": "confluence:block/spider_nest_stone_1",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/spider_nest_stone_2",
+                "weight": 1
+            }
+        ]
+    }
+}

@@ -251,7 +251,7 @@ public class NatureBlocks {
     public static final PortDeferredBlock<AshPathBlock> ASH_PATH = registerWithItem("ash_path", () -> new AshPathBlock(BlockBehaviour.Properties.copy(SAND).strength(1.0F, 1.0F).sound(SoundType.SAND).mapColor(MapColor.COLOR_GRAY)));
 
     //蜘蛛洞
-    public static final PortDeferredBlock<Block> SPIDER_NEST = registerWithItem("spider_nest", () -> new Block(BlockBehaviour.Properties.copy(STONE).strength(1.5F, 6.0F)));
+    public static final PortDeferredBlock<Block> SPIDER_NEST_STONE = registerWithItem("spider_nest_stone", () -> new Block(BlockBehaviour.Properties.copy(STONE).strength(1.5F, 6.0F)));
 
     // 末地 - 通用
     public static final PortDeferredBlock<Block> END_DIRT = registerWithItem("end_dirt", EndDirtBlock::new);

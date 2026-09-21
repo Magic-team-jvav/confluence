@@ -7,8 +7,11 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.ai.goal.EnemyBreakDoorGoal;
 import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 哥布林族共用的陆地行为。
 ///

@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -63,7 +64,7 @@ public class MeteorHead extends BaseFlyingMonster {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSoundEvents.SOUL_DEATH.get();
+        return ModSoundEvents.METAL_DEATH.get();
     }
 
     @Override

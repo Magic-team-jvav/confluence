@@ -105,4 +105,10 @@ public class CaveBat extends BaseFlyingMonster {
     public enum Variant {
         ROUTINE, ICE, ILLUMINANT, LAVA, HELL
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.BAT_DEATH.get();
+    }
+
 }

@@ -11,7 +11,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.util.OverworldUtils;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -139,4 +142,20 @@ public final class Crawdad extends BaseWarriorMonster {
     }
 
     public enum AttackState {CLAW_ATTACK}
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.CRAWDAD_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.CRAWDAD_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.CRAWDAD_DEATH.get();
+    }
+
 }

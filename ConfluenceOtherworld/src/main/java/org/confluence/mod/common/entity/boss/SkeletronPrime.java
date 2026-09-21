@@ -16,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -346,5 +347,14 @@ public class SkeletronPrime extends BaseBoss {
 
     public enum CombatState {HOVERING, SPINNING, ENRAGED}
 
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.METAL_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.METAL_DEATH.get();
+    }
 
 }

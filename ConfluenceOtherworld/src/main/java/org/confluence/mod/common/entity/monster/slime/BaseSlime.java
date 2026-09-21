@@ -21,6 +21,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -34,6 +35,7 @@ import org.confluence.mod.common.entity.npc.TownSlimeNPC;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
@@ -529,5 +531,15 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
     }
 
     // === 属性工厂方法 ===
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
+    }
 
 }

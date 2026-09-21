@@ -36,6 +36,6 @@ public final class AntlionCharger extends BaseWarriorMonster {
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSoundEvents.ANTLION_SWARMER_DEATH.get();
+        return ModSoundEvents.ANTLION_DEATH.get();
     }
 }

@@ -4,6 +4,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 普通宝箱怪实体。
 ///
@@ -19,4 +22,15 @@ public class WoodenMimic extends BaseMimic {
     protected boolean isHardmodeVariant() {
         return false;
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.METAL_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.SOUL_DEATH.get();
+    }
+
 }

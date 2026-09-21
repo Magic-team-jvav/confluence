@@ -5,11 +5,14 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 血腥孢子爆裂后生成的静止肿瘤。
 ///
@@ -62,4 +65,15 @@ public final class BloodTumor extends BaseMonster {
             }
         };
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
+    }
+
 }

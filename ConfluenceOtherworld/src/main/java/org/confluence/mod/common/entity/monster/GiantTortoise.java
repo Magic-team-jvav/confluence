@@ -14,10 +14,12 @@ import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -291,4 +293,20 @@ public final class GiantTortoise extends BaseMonster {
         EMERGING,
         WINDING_UP
     }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.GIANT_TORTOISE_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.GIANT_TORTOISE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.GIANT_TORTOISE_DEATH.get();
+    }
+
 }

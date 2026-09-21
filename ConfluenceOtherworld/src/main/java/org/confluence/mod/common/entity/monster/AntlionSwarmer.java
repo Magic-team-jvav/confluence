@@ -58,7 +58,7 @@ public class AntlionSwarmer extends ReboundingFlyingMonster {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSoundEvents.ANTLION_HURT.get();
+        return ModSoundEvents.ANTLION_SWARMER_HURT.get();
     }
 
     @Override

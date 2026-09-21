@@ -7,7 +7,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 血肉史莱姆 —— 免疫火焰/熔岩/摔伤，不攻击血肉同盟生物。
 public class FleshSlime extends BaseSlime {
@@ -40,6 +42,16 @@ public class FleshSlime extends BaseSlime {
     public boolean canAttack(LivingEntity target) {
         return !target.getType().is(ModTags.EntityTypes.FLESH_ALLIANCE)
                 && super.canAttack(target);
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
     }
 
 }

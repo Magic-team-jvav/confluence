@@ -8,6 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -15,6 +17,7 @@ import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.projectile.AntlionSandBall;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -115,4 +118,20 @@ public final class Antlion extends BaseMonster {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "Idle/Shoot", 2, state -> state.setAndContinue(swinging ? SHOOT : IDLE)));
     }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.ANTLION_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ANTLION_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ANTLION_DEATH.get();
+    }
+
 }

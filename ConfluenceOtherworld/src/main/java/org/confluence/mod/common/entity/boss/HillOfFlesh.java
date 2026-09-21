@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -32,6 +33,7 @@ import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.world.IncrementalCylinderDestruction;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -672,5 +674,9 @@ public class HillOfFlesh extends BaseBoss {
     protected Vec3 getDisengageMovement() {
         Vec3 movement = getDeltaMovement();
         return new Vec3(movement.x * 0.25D, -0.4D, movement.z * 0.25D);
+    }
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.WALL_OF_FLESH_HURT.get();
     }
 }

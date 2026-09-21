@@ -9,6 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -18,6 +19,7 @@ import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.CircleAroundTargetAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -147,4 +149,20 @@ public final class LunaticCultistClone extends BaseFlyingMonster implements Boss
         ownerTracker.unbind(this);
         super.remove(reason);
     }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.LUNATIC_CULTIST_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.LUNATIC_CULTIST_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.LUNATIC_CULTIST_DEATH.get();
+    }
+
 }

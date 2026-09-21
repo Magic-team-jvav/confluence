@@ -10,8 +10,11 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.projectile.UnholyTridentProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public final class RedDevil extends Demon {
@@ -64,4 +67,20 @@ public final class RedDevil extends Demon {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {}
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.DEMON_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.DEMON_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.DEMON_DEATH.get();
+    }
+
 }

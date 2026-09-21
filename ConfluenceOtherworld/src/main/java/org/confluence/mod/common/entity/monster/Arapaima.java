@@ -6,6 +6,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 能从水面跃向岸边目标的巨骨舌鱼。
 ///
@@ -59,4 +62,15 @@ public final class Arapaima extends Piranha {
         return x * x + z * z <= SHORE_TARGET_RANGE * SHORE_TARGET_RANGE
                 && y >= -1.0 && y <= SHORE_TARGET_HEIGHT;
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
+    }
+
 }

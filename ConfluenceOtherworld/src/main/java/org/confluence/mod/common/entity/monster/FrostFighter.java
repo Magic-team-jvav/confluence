@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -16,6 +17,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.entity.projectile.FrostMonsterProjectile;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -136,4 +138,20 @@ public final class FrostFighter extends BaseMonster {
         MERMAN,
         GOLEM
     }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.PIXIE_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.PIXIE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.PIXIE_DEATH.get();
+    }
+
 }

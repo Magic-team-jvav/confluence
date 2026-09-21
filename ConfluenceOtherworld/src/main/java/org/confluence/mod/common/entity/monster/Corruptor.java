@@ -5,8 +5,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -50,4 +52,15 @@ public final class Corruptor extends EaterOfSouls {
             shotCooldown = creatureDefinition().behavior().shotCooldownOr(DEFAULT_SHOT_COOLDOWN);
         return accepted;
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
+    }
+
 }

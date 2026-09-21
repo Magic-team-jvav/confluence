@@ -3,9 +3,12 @@ package org.confluence.mod.common.entity.monster;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 public class Gnome extends BaseWarriorMonster {
     public Gnome(EntityType<? extends Gnome> type, Level level) {
@@ -26,4 +29,15 @@ public class Gnome extends BaseWarriorMonster {
             discard();
         }
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ROUTINE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ROUTINE_DEATH.get();
+    }
+
 }

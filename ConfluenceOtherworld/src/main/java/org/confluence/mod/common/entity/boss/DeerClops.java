@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -18,6 +19,7 @@ import org.confluence.mod.common.entity.projectile.DeerclopsIcePillarProjectile;
 import org.confluence.mod.common.entity.projectile.DeerclopsShadowHandProjectile;
 import org.confluence.mod.common.entity.projectile.DeerclopsThrownIceProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -524,4 +526,20 @@ public class DeerClops extends BaseBoss {
     /// 的实体快照来判断生成是否成功。这里保留实际被 {@code addFreshEntity}
     /// 接受的数量，使调用方可以观察确定的提交结果；正常战斗逻辑无需使用返回值。
     record AttackResult(AttackPattern pattern, int spawnedEntities) {}
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.DEERCLOPS_SCREAM.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.DEERCLOPS_HIT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.DEERCLOPS_DEATH.get();
+    }
+
 }

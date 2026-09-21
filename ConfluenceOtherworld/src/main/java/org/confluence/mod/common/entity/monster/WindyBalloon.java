@@ -12,11 +12,13 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
 public final class WindyBalloon extends BaseFlyingMonster {
@@ -87,4 +89,10 @@ public final class WindyBalloon extends BaseFlyingMonster {
         playSound(SoundEvents.SLIME_SQUISH_SMALL, 1.0F, 1.7F);
         discard();
     }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.WINDY_BALLOON_DEATH.get();
+    }
+
 }

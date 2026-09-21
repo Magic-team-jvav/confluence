@@ -1,289 +1,289 @@
 {
     "use_minion_weapon": {
         "sounds": [
-            "confluence:use_minion_weapon"
+            "confluence:summon/use_minion_weapon"
         ],
         "subtitle": "confluence.subtitle.use_minion_weapon"
     },
     "use_terraprism": {
         "sounds": [
-            "confluence:use_terraprism"
+            "confluence:item/use_terraprism"
         ],
         "subtitle": "confluence.subtitle.use_terraprism"
     },
     "transmission":  {
                          "sounds":  [
-                                        "confluence:transmission"
+                                        "confluence:item/transmission"
                                     ],
                          "subtitle":  "confluence.subtitle.transmission"
                      },
     "lightsaber_open":  {
                             "sounds":  [
-                                           "confluence:lightsaber_open"
+                                           "confluence:item/lightsaber_open"
                                        ],
                             "subtitle":  "confluence.subtitle.lightsaber_open"
                         },
     "regular_staff_shoot":  {
                                 "sounds":  [
-                                               "confluence:regular_staff_shoot"
+                                               "confluence:item/regular_staff_shoot"
                                            ],
                                 "subtitle":  "confluence.subtitle.regular_staff_shoot"
                             },
     "life_crystal_use":  {
                              "sounds":  [
-                                            "confluence:life_crystal_use"
+                                            "confluence:item/life_crystal_use"
                                         ],
                              "subtitle":  "confluence.subtitle.life_crystal_use"
                          },
     "mana_star_use":  {
                           "sounds":  [
-                                         "confluence:mana_star_use"
+                                         "confluence:item/mana_star_use"
                                      ],
                           "subtitle":  "confluence.subtitle.mana_star_use"
                       },
     "coins":  {
                   "sounds":  [
-                                 "confluence:coins"
+                                 "confluence:item/coins"
                              ],
                   "subtitle":  "confluence.subtitle.coins"
               },
     "regular_staff_shoot_2":  {
                                   "sounds":  [
-                                                 "confluence:regular_staff_shoot_2"
-                                             ],
+                                                 "confluence:item/regular_staff_shoot_2",
+                "confluence:sparkle_shoot"],
                                   "subtitle":  "confluence.subtitle.regular_staff_shoot_2"
                               },
     "regular_staff_shoot_3":  {
                                   "sounds":  [
-                                                 "confluence:regular_staff_shoot_3"
+                                                 "confluence:item/regular_staff_shoot_3"
                                              ],
                                   "subtitle":  "confluence.subtitle.regular_staff_shoot_3"
                               },
     "frozen_broken":  {
                           "sounds":  [
-                                         "confluence:frozen_broken"
+                                         "confluence:item/frozen_broken"
                                      ],
                           "subtitle":  "confluence.subtitle.frozen_broken"
                       },
     "frozen_arrow":  {
                          "sounds":  [
-                                        "confluence:frozen_arrow"
+                                        "confluence:item/frozen_arrow"
                                     ],
                          "subtitle":  "confluence.subtitle.frozen_arrow"
                      },
     "cooldown_recovery":  {
                               "sounds":  [
-                                             "confluence:cooldown_recovery"
+                                             "confluence:item/cooldown_recovery"
                                          ],
                               "subtitle":  "confluence.subtitle.cooldown_recovery"
                           },
     "shimmer_detachment":  {
                                "sounds":  [
-                                              "confluence:shimmer_detachment"
+                                              "confluence:item/shimmer_detachment"
                                           ],
                                "subtitle":  "confluence.subtitle.shimmer_detachment"
                            },
     "shimmer_evolution":  {
                               "sounds":  [
-                                             "confluence:shimmer_evolution"
+                                             "confluence:item/shimmer_evolution"
                                          ],
                               "subtitle":  "confluence.subtitle.shimmer_evolution"
                           },
     "shimmer_immersion":  {
                               "sounds":  [
-                                             "confluence:shimmer_immersion"
+                                             "confluence:item/shimmer_immersion"
                                          ],
                               "subtitle":  "confluence.subtitle.shimmer_immersion"
                           },
     "shimmer_item_interactions":  {
                                       "sounds":  [
-                                                     "confluence:shimmer_item_interactions"
+                                                     "confluence:item/shimmer_item_interactions"
                                                  ],
                                       "subtitle":  "confluence.subtitle.shimmer_item_interactions"
                                   },
     "star":  {
                  "sounds":  [
-                                "confluence:star"
+                                "confluence:item/star"
                             ],
                  "subtitle":  "confluence.subtitle.star"
              },
     "star_lands":  {
                        "sounds":  [
-                                      "confluence:star_lands"
+                                      "confluence:item/star_lands"
                                   ],
                        "subtitle":  "confluence.subtitle.star_lands"
                    },
     "terra_operation":  {
                             "sounds":  [
-                                           "confluence:terra_operation"
+                                           "confluence:item/terra_operation"
                                        ],
                             "subtitle":  "confluence.subtitle.terra_operation"
                         },
     "bow_cooldown_recovery":  {
                                   "sounds":  [
-                                                 "confluence:bow_cooldown_recovery"
+                                                 "confluence:item/bow_cooldown_recovery"
                                              ],
                                   "subtitle":  "confluence.subtitle.bow_cooldown_recovery"
                               },
     "decoupling":  {
                        "sounds":  [
-                                      "confluence:decoupling"
+                                      "confluence:item/decoupling"
                                   ],
                        "subtitle":  "confluence.subtitle.decoupling"
                    },
     "achievements":  {
                          "sounds":  [
-                                        "confluence:achievements"
+                                        "confluence:item/achievements"
                                     ],
                          "subtitle":  "confluence.subtitle.achievements"
                      },
     "transmutation_use":  {
                               "sounds":  [
-                                             "confluence:transmutation_use"
+                                             "confluence:item/transmutation_use"
                                          ],
                               "subtitle":  "confluence.subtitle.transmutation_use"
                           },
     "hook_attach":  {
                         "sounds":  [
-                                       "confluence:hook_attach_0",
-                                       "confluence:hook_attach_1",
-                                       "confluence:hook_attach_2"
+                                       "confluence:item/hook_attach_0",
+                                       "confluence:item/hook_attach_1",
+                                       "confluence:item/hook_attach_2"
                                    ],
                         "subtitle":  "confluence.subtitle.hook_attach"
                     },
     "hook_shoot":  {
                        "sounds":  [
-                                      "confluence:hook_shoot_0",
-                                      "confluence:hook_shoot_1",
-                                      "confluence:hook_shoot_2"
+                                      "confluence:item/hook_shoot_0",
+                                      "confluence:item/hook_shoot_1",
+                                      "confluence:item/hook_shoot_2"
                                   ],
                        "subtitle":  "confluence.subtitle.hook_shoot"
                    },
     "coins_large":  {
                         "sounds":  [
-                                       "confluence:coins_large_0",
-                                       "confluence:coins_large_1",
-                                       "confluence:coins_large_2"
+                                       "confluence:item/coins_large_0",
+                                       "confluence:item/coins_large_1",
+                                       "confluence:item/coins_large_2"
                                    ],
                         "subtitle":  "confluence.subtitle.coins_large"
                     },
     "coins_medium":  {
                          "sounds":  [
-                                        "confluence:coins_medium_0",
-                                        "confluence:coins_medium_1",
-                                        "confluence:coins_medium_2"
+                                        "confluence:item/coins_medium_0",
+                                        "confluence:item/coins_medium_1",
+                                        "confluence:item/coins_medium_2"
                                     ],
                          "subtitle":  "confluence.subtitle.coins_medium"
                      },
     "coins_small":  {
                         "sounds":  [
-                                       "confluence:coins_small_0",
-                                       "confluence:coins_small_1",
-                                       "confluence:coins_small_2"
+                                       "confluence:item/coins_small_0",
+                                       "confluence:item/coins_small_1",
+                                       "confluence:item/coins_small_2"
                                    ],
                         "subtitle":  "confluence.subtitle.coins_small"
                     },
     "lucyaxe_talk":  {
                          "sounds":  [
-                                        "confluence:lucyaxe_talk_0",
-                                        "confluence:lucyaxe_talk_1",
-                                        "confluence:lucyaxe_talk_2",
-                                        "confluence:lucyaxe_talk_3",
-                                        "confluence:lucyaxe_talk_4"
+                                        "confluence:item/lucyaxe_talk_0",
+                                        "confluence:item/lucyaxe_talk_1",
+                                        "confluence:item/lucyaxe_talk_2",
+                                        "confluence:item/lucyaxe_talk_3",
+                                        "confluence:item/lucyaxe_talk_4"
                                     ],
                          "subtitle":  "confluence.subtitle.lucyaxe_talk"
                      },
     "repeater_item_aerial_shooting":  {
                                           "sounds":  [
-                                                         "confluence:repeater_item_aerial_shooting"
+                                                         "confluence:item/repeater_item_aerial_shooting"
                                                      ],
                                           "volume":  0.1,
                                           "subtitle":  "confluence.subtitle.repeater_item_aerial_shooting"
                                       },
     "crystal_vile_shard_shoot":  {
                                      "sounds":  [
-                                                    "confluence:crystal_vile_shard_shoot"
+                                                    "confluence:item/crystal_vile_shard_shoot"
                                                 ],
                                      "subtitle":  "confluence.subtitle.crystal_vile_shard_shoot"
                                  },
     "gun_auto":  {
                      "sounds":  [
-                                    "confluence:gun_auto"
+                                    "confluence:item/gun_auto"
                                 ]
                  },
     "gun_fish":  {
                      "sounds":  [
-                                    "confluence:gun_fish"
+                                    "confluence:item/gun_fish"
                                 ]
                  },
     "blowgun_shot":  {
                          "sounds":  [
-                                        "confluence:blowgun_shot"
+                                        "confluence:item/blowgun_shot"
                                     ]
                      },
     "gun_space":  {
                       "sounds":  [
-                                     "confluence:gun_space"
+                                     "confluence:item/gun_space"
                                  ]
                   },
     "gun_flamethrower":  {
                              "sounds":  [
-                                            "confluence:gun_flamethrower"
+                                            "confluence:item/gun_flamethrower"
                                         ]
                          },
     "gun_generic":  {
                         "sounds":  [
-                                       "confluence:gun_generic"
+                                       "confluence:item/gun_generic"
                                    ]
                     },
     "gun_highpower":  {
                           "sounds":  [
-                                         "confluence:gun_highpower"
+                                         "confluence:item/gun_highpower"
                                      ]
                       },
     "gun_nail":  {
                      "sounds":  [
-                                    "confluence:gun_nail"
+                                    "confluence:item/gun_nail"
                                 ]
                  },
     "gun_toxic":  {
                       "sounds":  [
-                                     "confluence:gun_toxic"
+                                     "confluence:item/gun_toxic"
                                  ]
                   },
     "pistol_dart":  {
                         "sounds":  [
-                                       "confluence:pistol_dart"
+                                       "confluence:item/pistol_dart"
                                    ]
                     },
     "rifle_burst":  {
                         "sounds":  [
-                                       "confluence:rifle_burst"
+                                       "confluence:item/rifle_burst"
                                    ]
                     },
     "rifle_dart":  {
                        "sounds":  [
-                                      "confluence:rifle_dart"
+                                      "confluence:item/rifle_dart"
                                   ]
                    },
     "shotgun_alien":  {
                           "sounds":  [
-                                         "confluence:shotgun_alien"
+                                         "confluence:item/shotgun_alien"
                                      ]
                       },
     "shotgun_alien_proj":  {
                                "sounds":  [
-                                              "confluence:shotgun_alien_proj"
+                                              "confluence:item/shotgun_alien_proj"
                                           ]
                            },
     "shotgun_multi":  {
                           "sounds":  [
-                                         "confluence:shotgun_multi"
+                                         "confluence:item/shotgun_multi"
                                      ]
                       },
     "shotgun_tactical":  {
                              "sounds":  [
-                                            "confluence:shotgun_tactical"
+                                            "confluence:item/shotgun_tactical"
                                         ]
     },
     "routine_hurt": {
@@ -300,13 +300,13 @@
     },
     "roar": {
         "sounds": [
-            "confluence:roar"
+            "confluence:mob/roar"
         ],
         "subtitle": "confluence.subtitle.roar"
     },
     "hurried_roaring": {
         "sounds": [
-            "confluence:hurried_roaring"
+            "confluence:mob/hurried_roaring"
         ],
         "subtitle": "confluence.subtitle.hurried_roaring"
     },
@@ -389,7 +389,7 @@
     },
     "dig_sound": {
         "sounds": [
-            "confluence:dig_sound"
+            "confluence:mob/dig_sound"
         ],
         "subtitle": "confluence.subtitle.dig_sound"
     },
@@ -438,13 +438,13 @@
     },
     "waving": {
         "sounds": [
-            "confluence:waving"
+            "confluence:item/waving"
         ],
         "subtitle": "confluence.subtitle.waving"
     },
     "use_mounts": {
         "sounds": [
-            "confluence:use_mounts"
+            "confluence:item/use_mounts"
         ],
         "subtitle": "confluence.subtitle.use_mounts"
     },
@@ -481,7 +481,7 @@
     },
     "whip_attack": {
         "sounds": [
-            "confluence:whip_attack"
+            "confluence:item/whip_attack"
         ],
         "subtitle": "confluence.subtitle.whip_attack"
     },
@@ -566,8 +566,8 @@
     },
     "bone_serpent_death": {
         "sounds": [
-            "confluence:mob/bone_serpent_death"
-        ],
+            "confluence:mob/bone_serpent_death",
+                "confluence:mob/bone_snake_death"],
         "subtitle": "confluence.subtitle.bone_serpent_death"
     },
     "demon_death": {
@@ -723,8 +723,8 @@
     },
     "the_hungry_hurt": {
         "sounds": [
-            "confluence:mob/the_hungry_hurt"
-        ],
+            "confluence:mob/the_hungry_hurt",
+                "confluence:mob/hungry_ghost_hurt"],
         "subtitle": "confluence.subtitle.the_hungry_hurt"
     },
     "wall_of_flesh_hurt": {
@@ -735,8 +735,8 @@
     },
     "wall_of_flesh_roar": {
         "sounds": [
-            "confluence:mob/wall_of_flesh_roar"
-        ],
+            "confluence:mob/wall_of_flesh_roar",
+                "confluence:mob/wall_of_flesh_hoot"],
         "subtitle": "confluence.subtitle.wall_of_flesh_roar"
     },
     "wall_of_flesh_summon": {
@@ -744,5 +744,2573 @@
             "confluence:mob/wall_of_flesh_summon"
         ],
         "subtitle": "confluence.subtitle.wall_of_flesh_summon"
+    },
+
+    "//": "以下音效由 TerrariaSounds(ogg) 按作用重命名后导入，请勿手改翻译键",
+    "abigail_attack": {
+        "sounds": [
+            "confluence:summon/abigail_attack"
+        ],
+        "subtitle": "confluence.subtitle.abigail_attack"
+    },
+    "abigail_cry": {
+        "sounds": [
+            "confluence:summon/abigail_cry_0",
+            "confluence:summon/abigail_cry_1",
+            "confluence:summon/abigail_cry_2"
+        ],
+        "subtitle": "confluence.subtitle.abigail_cry"
+    },
+    "abigail_summon": {
+        "sounds": [
+            "confluence:summon/abigail_summon"
+        ],
+        "subtitle": "confluence.subtitle.abigail_summon"
+    },
+    "abigail_upgrade": {
+        "sounds": [
+            "confluence:summon/abigail_upgrade_0",
+            "confluence:summon/abigail_upgrade_1",
+            "confluence:summon/abigail_upgrade_2"
+        ],
+        "subtitle": "confluence.subtitle.abigail_upgrade"
+    },
+    "angry_nimbus_death": {
+        "sounds": [
+            "confluence:mob/angry_nimbus_death"
+        ],
+        "subtitle": "confluence.subtitle.angry_nimbus_death"
+    },
+    "angry_nimbus_free": {
+        "sounds": [
+            "confluence:mob/angry_nimbus_free_0",
+            "confluence:mob/angry_nimbus_free_1",
+            "confluence:mob/angry_nimbus_free_2"
+        ],
+        "subtitle": "confluence.subtitle.angry_nimbus_free"
+    },
+    "angry_nimbus_hurt": {
+        "sounds": [
+            "confluence:mob/angry_nimbus_hurt"
+        ],
+        "subtitle": "confluence.subtitle.angry_nimbus_hurt"
+    },
+    "bird_free": {
+        "sounds": [
+            "confluence:mob/bird_free_0",
+            "confluence:mob/bird_free_1",
+            "confluence:mob/bird_free_2",
+            "confluence:mob/bird_free_3",
+            "confluence:mob/bird_free_4"
+        ],
+        "subtitle": "confluence.subtitle.bird_free"
+    },
+    "black_recluse_death": {
+        "sounds": [
+            "confluence:mob/black_recluse_death"
+        ],
+        "subtitle": "confluence.subtitle.black_recluse_death"
+    },
+    "black_recluse_hurt": {
+        "sounds": [
+            "confluence:mob/black_recluse_hurt"
+        ],
+        "subtitle": "confluence.subtitle.black_recluse_hurt"
+    },
+    "blizzard_inside_building_loop": {
+        "sounds": [
+            "confluence:mob/blizzard_inside_building_loop"
+        ],
+        "subtitle": "confluence.subtitle.blizzard_inside_building_loop"
+    },
+    "blizzard_strong_loop": {
+        "sounds": [
+            "confluence:mob/blizzard_strong_loop"
+        ],
+        "subtitle": "confluence.subtitle.blizzard_strong_loop"
+    },
+    "blood_crawler_death_0": {
+        "sounds": [
+            "confluence:mob/blood_crawler_death_0"
+        ],
+        "subtitle": "confluence.subtitle.blood_crawler_death_0"
+    },
+    "blood_jelly_hurt": {
+        "sounds": [
+            "confluence:mob/blood_jelly_hurt"
+        ],
+        "subtitle": "confluence.subtitle.blood_jelly_hurt"
+    },
+    "blood_zombie_death": {
+        "sounds": [
+            "confluence:mob/blood_zombie_death"
+        ],
+        "subtitle": "confluence.subtitle.blood_zombie_death"
+    },
+    "blood_zombie_free": {
+        "sounds": [
+            "confluence:mob/blood_zombie_free_0",
+            "confluence:mob/blood_zombie_free_1",
+            "confluence:mob/blood_zombie_free_2"
+        ],
+        "subtitle": "confluence.subtitle.blood_zombie_free"
+    },
+    "blood_zombie_hurt": {
+        "sounds": [
+            "confluence:mob/blood_zombie_hurt"
+        ],
+        "subtitle": "confluence.subtitle.blood_zombie_hurt"
+    },
+    "brain_scrambler_death": {
+        "sounds": [
+            "confluence:mob/brain_scrambler_death"
+        ],
+        "subtitle": "confluence.subtitle.brain_scrambler_death"
+    },
+    "brain_scrambler_hurt": {
+        "sounds": [
+            "confluence:mob/brain_scrambler_hurt"
+        ],
+        "subtitle": "confluence.subtitle.brain_scrambler_hurt"
+    },
+    "bubble_shield_death": {
+        "sounds": [
+            "confluence:mob/bubble_shield_death"
+        ],
+        "subtitle": "confluence.subtitle.bubble_shield_death"
+    },
+    "bubble_shield_hurt": {
+        "sounds": [
+            "confluence:mob/bubble_shield_hurt"
+        ],
+        "subtitle": "confluence.subtitle.bubble_shield_hurt"
+    },
+    "burning_sphere_hurt": {
+        "sounds": [
+            "confluence:mob/burning_sphere_hurt"
+        ],
+        "subtitle": "confluence.subtitle.burning_sphere_hurt"
+    },
+    "butcher_death": {
+        "sounds": [
+            "confluence:mob/butcher_death"
+        ],
+        "subtitle": "confluence.subtitle.butcher_death"
+    },
+    "butcher_hurt": {
+        "sounds": [
+            "confluence:mob/butcher_hurt"
+        ],
+        "subtitle": "confluence.subtitle.butcher_hurt"
+    },
+    "camera": {
+        "sounds": [
+            "confluence:item/camera"
+        ],
+        "subtitle": "confluence.subtitle.camera"
+    },
+    "celestial_pillar_death": {
+        "sounds": [
+            "confluence:mob/celestial_pillar_death"
+        ],
+        "subtitle": "confluence.subtitle.celestial_pillar_death"
+    },
+    "chat": {
+        "sounds": [
+            "confluence:item/chat"
+        ],
+        "subtitle": "confluence.subtitle.chat"
+    },
+    "chattering_teeth_free": {
+        "sounds": [
+            "confluence:mob/chattering_teeth_free"
+        ],
+        "subtitle": "confluence.subtitle.chattering_teeth_free"
+    },
+    "chester_close": {
+        "sounds": [
+            "confluence:summon/chester_close_0",
+            "confluence:summon/chester_close_1"
+        ],
+        "subtitle": "confluence.subtitle.chester_close"
+    },
+    "chester_open": {
+        "sounds": [
+            "confluence:summon/chester_open_0",
+            "confluence:summon/chester_open_1"
+        ],
+        "subtitle": "confluence.subtitle.chester_open"
+    },
+    "clown_free": {
+        "sounds": [
+            "confluence:mob/clown_free_0",
+            "confluence:mob/clown_free_1",
+            "confluence:mob/clown_free_2"
+        ],
+        "subtitle": "confluence.subtitle.clown_free"
+    },
+    "cockatiel_free": {
+        "sounds": [
+            "confluence:mob/cockatiel_free_0",
+            "confluence:mob/cockatiel_free_1",
+            "confluence:mob/cockatiel_free_2"
+        ],
+        "subtitle": "confluence.subtitle.cockatiel_free"
+    },
+    "coin": {
+        "sounds": [
+            "confluence:item/coin_0",
+            "confluence:item/coin_1",
+            "confluence:item/coin_2",
+            "confluence:item/coin_3",
+            "confluence:item/coin_4"
+        ],
+        "subtitle": "confluence.subtitle.coin"
+    },
+    "crawdad_death": {
+        "sounds": [
+            "confluence:mob/crawdad_death"
+        ],
+        "subtitle": "confluence.subtitle.crawdad_death"
+    },
+    "crawdad_free": {
+        "sounds": [
+            "confluence:mob/crawdad_free"
+        ],
+        "subtitle": "confluence.subtitle.crawdad_free"
+    },
+    "crawdad_hurt": {
+        "sounds": [
+            "confluence:mob/crawdad_hurt"
+        ],
+        "subtitle": "confluence.subtitle.crawdad_hurt"
+    },
+    "critter_free": {
+        "sounds": [
+            "confluence:mob/critter_free"
+        ],
+        "subtitle": "confluence.subtitle.critter_free"
+    },
+    "dd2_ballista_tower_shot": {
+        "sounds": [
+            "confluence:summon/dd2_ballista_tower_shot_0",
+            "confluence:summon/dd2_ballista_tower_shot_1",
+            "confluence:summon/dd2_ballista_tower_shot_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ballista_tower_shot"
+    },
+    "dd2_betsy_death": {
+        "sounds": [
+            "confluence:mob/dd2_betsy_death_0",
+            "confluence:mob/dd2_betsy_death_1",
+            "confluence:mob/dd2_betsy_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_death"
+    },
+    "dd2_betsy_fireball_impact": {
+        "sounds": [
+            "confluence:mob/dd2_betsy_fireball_impact_0",
+            "confluence:mob/dd2_betsy_fireball_impact_1",
+            "confluence:mob/dd2_betsy_fireball_impact_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_fireball_impact"
+    },
+    "dd2_betsy_fireball_shot": {
+        "sounds": [
+            "confluence:mob/dd2_betsy_fireball_shot_0",
+            "confluence:mob/dd2_betsy_fireball_shot_1",
+            "confluence:mob/dd2_betsy_fireball_shot_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_fireball_shot"
+    },
+    "dd2_betsy_flame_breath": {
+        "sounds": [
+            "confluence:mob/dd2_betsy_flame_breath"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_flame_breath"
+    },
+    "dd2_betsy_flying_circle_attack": {
+        "sounds": [
+            "confluence:mob/dd2_betsy_flying_circle_attack"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_flying_circle_attack"
+    },
+    "dd2_betsy_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_betsy_hurt_0",
+            "confluence:mob/dd2_betsy_hurt_1",
+            "confluence:mob/dd2_betsy_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_hurt"
+    },
+    "dd2_betsy_scream": {
+        "sounds": [
+            "confluence:mob/dd2_betsy_scream"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_scream"
+    },
+    "dd2_betsy_summon": {
+        "sounds": [
+            "confluence:summon/dd2_betsy_summon_0",
+            "confluence:summon/dd2_betsy_summon_1",
+            "confluence:summon/dd2_betsy_summon_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_summon"
+    },
+    "dd2_betsy_wind_attack": {
+        "sounds": [
+            "confluence:mob/dd2_betsy_wind_attack_0",
+            "confluence:mob/dd2_betsy_wind_attack_1",
+            "confluence:mob/dd2_betsy_wind_attack_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_betsy_wind_attack"
+    },
+    "dd2_book_staff_cast": {
+        "sounds": [
+            "confluence:mob/dd2_book_staff_cast_0",
+            "confluence:mob/dd2_book_staff_cast_1",
+            "confluence:mob/dd2_book_staff_cast_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_book_staff_cast"
+    },
+    "dd2_book_staff_twister_loop": {
+        "sounds": [
+            "confluence:mob/dd2_book_staff_twister_loop"
+        ],
+        "subtitle": "confluence.subtitle.dd2_book_staff_twister_loop"
+    },
+    "dd2_crystal_cart_impact": {
+        "sounds": [
+            "confluence:mob/dd2_crystal_cart_impact_0",
+            "confluence:mob/dd2_crystal_cart_impact_1",
+            "confluence:mob/dd2_crystal_cart_impact_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_crystal_cart_impact"
+    },
+    "dd2_dark_mage_attack": {
+        "sounds": [
+            "confluence:mob/dd2_dark_mage_attack_0",
+            "confluence:mob/dd2_dark_mage_attack_1",
+            "confluence:mob/dd2_dark_mage_attack_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_dark_mage_attack"
+    },
+    "dd2_dark_mage_cast_heal": {
+        "sounds": [
+            "confluence:mob/dd2_dark_mage_cast_heal_0",
+            "confluence:mob/dd2_dark_mage_cast_heal_1",
+            "confluence:mob/dd2_dark_mage_cast_heal_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_dark_mage_cast_heal"
+    },
+    "dd2_dark_mage_death": {
+        "sounds": [
+            "confluence:mob/dd2_dark_mage_death_0",
+            "confluence:mob/dd2_dark_mage_death_1",
+            "confluence:mob/dd2_dark_mage_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_dark_mage_death"
+    },
+    "dd2_dark_mage_heal_impact": {
+        "sounds": [
+            "confluence:mob/dd2_dark_mage_heal_impact_0",
+            "confluence:mob/dd2_dark_mage_heal_impact_1",
+            "confluence:mob/dd2_dark_mage_heal_impact_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_dark_mage_heal_impact"
+    },
+    "dd2_dark_mage_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_dark_mage_hurt_0",
+            "confluence:mob/dd2_dark_mage_hurt_1",
+            "confluence:mob/dd2_dark_mage_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_dark_mage_hurt"
+    },
+    "dd2_dark_mage_summon_skeleton": {
+        "sounds": [
+            "confluence:summon/dd2_dark_mage_summon_skeleton_0",
+            "confluence:summon/dd2_dark_mage_summon_skeleton_1",
+            "confluence:summon/dd2_dark_mage_summon_skeleton_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_dark_mage_summon_skeleton"
+    },
+    "dd2_defeat_scene": {
+        "sounds": [
+            "confluence:mob/dd2_defeat_scene"
+        ],
+        "subtitle": "confluence.subtitle.dd2_defeat_scene"
+    },
+    "dd2_defense_tower_spawn": {
+        "sounds": [
+            "confluence:summon/dd2_defense_tower_spawn"
+        ],
+        "subtitle": "confluence.subtitle.dd2_defense_tower_spawn"
+    },
+    "dd2_drakin_breath_in": {
+        "sounds": [
+            "confluence:mob/dd2_drakin_breath_in_0",
+            "confluence:mob/dd2_drakin_breath_in_1",
+            "confluence:mob/dd2_drakin_breath_in_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_drakin_breath_in"
+    },
+    "dd2_drakin_death": {
+        "sounds": [
+            "confluence:mob/dd2_drakin_death_0",
+            "confluence:mob/dd2_drakin_death_1",
+            "confluence:mob/dd2_drakin_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_drakin_death"
+    },
+    "dd2_drakin_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_drakin_hurt_0",
+            "confluence:mob/dd2_drakin_hurt_1",
+            "confluence:mob/dd2_drakin_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_drakin_hurt"
+    },
+    "dd2_drakin_shot": {
+        "sounds": [
+            "confluence:mob/dd2_drakin_shot_0",
+            "confluence:mob/dd2_drakin_shot_1",
+            "confluence:mob/dd2_drakin_shot_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_drakin_shot"
+    },
+    "dd2_etherian_portal_dryad_touch": {
+        "sounds": [
+            "confluence:summon/dd2_etherian_portal_dryad_touch"
+        ],
+        "subtitle": "confluence.subtitle.dd2_etherian_portal_dryad_touch"
+    },
+    "dd2_etherian_portal_idle_loop": {
+        "sounds": [
+            "confluence:summon/dd2_etherian_portal_idle_loop"
+        ],
+        "subtitle": "confluence.subtitle.dd2_etherian_portal_idle_loop"
+    },
+    "dd2_etherian_portal_open": {
+        "sounds": [
+            "confluence:summon/dd2_etherian_portal_open"
+        ],
+        "subtitle": "confluence.subtitle.dd2_etherian_portal_open"
+    },
+    "dd2_etherian_portal_spawn_enemy": {
+        "sounds": [
+            "confluence:summon/dd2_etherian_portal_spawn_enemy_0",
+            "confluence:summon/dd2_etherian_portal_spawn_enemy_1",
+            "confluence:summon/dd2_etherian_portal_spawn_enemy_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_etherian_portal_spawn_enemy"
+    },
+    "dd2_explosive_trap_explode": {
+        "sounds": [
+            "confluence:mob/dd2_explosive_trap_explode_0",
+            "confluence:mob/dd2_explosive_trap_explode_1",
+            "confluence:mob/dd2_explosive_trap_explode_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_explosive_trap_explode"
+    },
+    "dd2_flameburst_tower_shot": {
+        "sounds": [
+            "confluence:summon/dd2_flameburst_tower_shot_0",
+            "confluence:summon/dd2_flameburst_tower_shot_1",
+            "confluence:summon/dd2_flameburst_tower_shot_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_flameburst_tower_shot"
+    },
+    "dd2_ghastly_glaive_impact_ghost": {
+        "sounds": [
+            "confluence:mob/dd2_ghastly_glaive_impact_ghost_0",
+            "confluence:mob/dd2_ghastly_glaive_impact_ghost_1",
+            "confluence:mob/dd2_ghastly_glaive_impact_ghost_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ghastly_glaive_impact_ghost"
+    },
+    "dd2_ghastly_glaive_pierce": {
+        "sounds": [
+            "confluence:mob/dd2_ghastly_glaive_pierce_0",
+            "confluence:mob/dd2_ghastly_glaive_pierce_1",
+            "confluence:mob/dd2_ghastly_glaive_pierce_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ghastly_glaive_pierce"
+    },
+    "dd2_goblin_bomber_death": {
+        "sounds": [
+            "confluence:mob/dd2_goblin_bomber_death_0",
+            "confluence:mob/dd2_goblin_bomber_death_1",
+            "confluence:mob/dd2_goblin_bomber_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_goblin_bomber_death"
+    },
+    "dd2_goblin_bomber_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_goblin_bomber_hurt_0",
+            "confluence:mob/dd2_goblin_bomber_hurt_1",
+            "confluence:mob/dd2_goblin_bomber_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_goblin_bomber_hurt"
+    },
+    "dd2_goblin_bomber_scream": {
+        "sounds": [
+            "confluence:mob/dd2_goblin_bomber_scream_0",
+            "confluence:mob/dd2_goblin_bomber_scream_1",
+            "confluence:mob/dd2_goblin_bomber_scream_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_goblin_bomber_scream"
+    },
+    "dd2_goblin_bomber_throw": {
+        "sounds": [
+            "confluence:mob/dd2_goblin_bomber_throw_0",
+            "confluence:mob/dd2_goblin_bomber_throw_1",
+            "confluence:mob/dd2_goblin_bomber_throw_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_goblin_bomber_throw"
+    },
+    "dd2_goblin_death": {
+        "sounds": [
+            "confluence:mob/dd2_goblin_death_0",
+            "confluence:mob/dd2_goblin_death_1",
+            "confluence:mob/dd2_goblin_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_goblin_death"
+    },
+    "dd2_goblin_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_goblin_hurt_0",
+            "confluence:mob/dd2_goblin_hurt_1",
+            "confluence:mob/dd2_goblin_hurt_2",
+            "confluence:mob/dd2_goblin_hurt_3",
+            "confluence:mob/dd2_goblin_hurt_4",
+            "confluence:mob/dd2_goblin_hurt_5"
+        ],
+        "subtitle": "confluence.subtitle.dd2_goblin_hurt"
+    },
+    "dd2_goblin_scream": {
+        "sounds": [
+            "confluence:mob/dd2_goblin_scream_0",
+            "confluence:mob/dd2_goblin_scream_1",
+            "confluence:mob/dd2_goblin_scream_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_goblin_scream"
+    },
+    "dd2_javelin_throwers_attack": {
+        "sounds": [
+            "confluence:mob/dd2_javelin_throwers_attack_0",
+            "confluence:mob/dd2_javelin_throwers_attack_1",
+            "confluence:mob/dd2_javelin_throwers_attack_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_javelin_throwers_attack"
+    },
+    "dd2_javelin_throwers_death": {
+        "sounds": [
+            "confluence:mob/dd2_javelin_throwers_death_0",
+            "confluence:mob/dd2_javelin_throwers_death_1",
+            "confluence:mob/dd2_javelin_throwers_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_javelin_throwers_death"
+    },
+    "dd2_javelin_throwers_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_javelin_throwers_hurt_0",
+            "confluence:mob/dd2_javelin_throwers_hurt_1",
+            "confluence:mob/dd2_javelin_throwers_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_javelin_throwers_hurt"
+    },
+    "dd2_javelin_throwers_taunt": {
+        "sounds": [
+            "confluence:mob/dd2_javelin_throwers_taunt_0",
+            "confluence:mob/dd2_javelin_throwers_taunt_1",
+            "confluence:mob/dd2_javelin_throwers_taunt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_javelin_throwers_taunt"
+    },
+    "dd2_kobold_death": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_death_0",
+            "confluence:mob/dd2_kobold_death_1",
+            "confluence:mob/dd2_kobold_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_death"
+    },
+    "dd2_kobold_explosion": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_explosion_0",
+            "confluence:mob/dd2_kobold_explosion_1",
+            "confluence:mob/dd2_kobold_explosion_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_explosion"
+    },
+    "dd2_kobold_flyer_charge_scream": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_flyer_charge_scream_0",
+            "confluence:mob/dd2_kobold_flyer_charge_scream_1",
+            "confluence:mob/dd2_kobold_flyer_charge_scream_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_flyer_charge_scream"
+    },
+    "dd2_kobold_flyer_death": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_flyer_death_0",
+            "confluence:mob/dd2_kobold_flyer_death_1",
+            "confluence:mob/dd2_kobold_flyer_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_flyer_death"
+    },
+    "dd2_kobold_flyer_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_flyer_hurt_0",
+            "confluence:mob/dd2_kobold_flyer_hurt_1",
+            "confluence:mob/dd2_kobold_flyer_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_flyer_hurt"
+    },
+    "dd2_kobold_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_hurt_0",
+            "confluence:mob/dd2_kobold_hurt_1",
+            "confluence:mob/dd2_kobold_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_hurt"
+    },
+    "dd2_kobold_ignite": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_ignite"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_ignite"
+    },
+    "dd2_kobold_ignite_loop": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_ignite_loop"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_ignite_loop"
+    },
+    "dd2_kobold_scream_charge_loop": {
+        "sounds": [
+            "confluence:mob/dd2_kobold_scream_charge_loop"
+        ],
+        "subtitle": "confluence.subtitle.dd2_kobold_scream_charge_loop"
+    },
+    "dd2_lightning_aura_zap": {
+        "sounds": [
+            "confluence:summon/dd2_lightning_aura_zap_0",
+            "confluence:summon/dd2_lightning_aura_zap_1",
+            "confluence:summon/dd2_lightning_aura_zap_2",
+            "confluence:summon/dd2_lightning_aura_zap_3"
+        ],
+        "subtitle": "confluence.subtitle.dd2_lightning_aura_zap"
+    },
+    "dd2_lightning_bug_death": {
+        "sounds": [
+            "confluence:mob/dd2_lightning_bug_death_0",
+            "confluence:mob/dd2_lightning_bug_death_1",
+            "confluence:mob/dd2_lightning_bug_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_lightning_bug_death"
+    },
+    "dd2_lightning_bug_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_lightning_bug_hurt_0",
+            "confluence:mob/dd2_lightning_bug_hurt_1",
+            "confluence:mob/dd2_lightning_bug_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_lightning_bug_hurt"
+    },
+    "dd2_lightning_bug_zap": {
+        "sounds": [
+            "confluence:mob/dd2_lightning_bug_zap_0",
+            "confluence:mob/dd2_lightning_bug_zap_1",
+            "confluence:mob/dd2_lightning_bug_zap_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_lightning_bug_zap"
+    },
+    "dd2_monk_staff_ground_impact": {
+        "sounds": [
+            "confluence:mob/dd2_monk_staff_ground_impact_0",
+            "confluence:mob/dd2_monk_staff_ground_impact_1",
+            "confluence:mob/dd2_monk_staff_ground_impact_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_monk_staff_ground_impact"
+    },
+    "dd2_monk_staff_ground_miss": {
+        "sounds": [
+            "confluence:mob/dd2_monk_staff_ground_miss_0",
+            "confluence:mob/dd2_monk_staff_ground_miss_1",
+            "confluence:mob/dd2_monk_staff_ground_miss_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_monk_staff_ground_miss"
+    },
+    "dd2_monk_staff_swing": {
+        "sounds": [
+            "confluence:mob/dd2_monk_staff_swing_0",
+            "confluence:mob/dd2_monk_staff_swing_1",
+            "confluence:mob/dd2_monk_staff_swing_2",
+            "confluence:mob/dd2_monk_staff_swing_3"
+        ],
+        "subtitle": "confluence.subtitle.dd2_monk_staff_swing"
+    },
+    "dd2_ogre_attack": {
+        "sounds": [
+            "confluence:mob/dd2_ogre_attack_0",
+            "confluence:mob/dd2_ogre_attack_1",
+            "confluence:mob/dd2_ogre_attack_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ogre_attack"
+    },
+    "dd2_ogre_death": {
+        "sounds": [
+            "confluence:mob/dd2_ogre_death_0",
+            "confluence:mob/dd2_ogre_death_1",
+            "confluence:mob/dd2_ogre_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ogre_death"
+    },
+    "dd2_ogre_ground_pound": {
+        "sounds": [
+            "confluence:mob/dd2_ogre_ground_pound"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ogre_ground_pound"
+    },
+    "dd2_ogre_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_ogre_hurt_0",
+            "confluence:mob/dd2_ogre_hurt_1",
+            "confluence:mob/dd2_ogre_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ogre_hurt"
+    },
+    "dd2_ogre_roar": {
+        "sounds": [
+            "confluence:mob/dd2_ogre_roar_0",
+            "confluence:mob/dd2_ogre_roar_1",
+            "confluence:mob/dd2_ogre_roar_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ogre_roar"
+    },
+    "dd2_ogre_spit": {
+        "sounds": [
+            "confluence:mob/dd2_ogre_spit"
+        ],
+        "subtitle": "confluence.subtitle.dd2_ogre_spit"
+    },
+    "dd2_phantom_phoenix_shot": {
+        "sounds": [
+            "confluence:mob/dd2_phantom_phoenix_shot_0",
+            "confluence:mob/dd2_phantom_phoenix_shot_1",
+            "confluence:mob/dd2_phantom_phoenix_shot_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_phantom_phoenix_shot"
+    },
+    "dd2_skeleton_death": {
+        "sounds": [
+            "confluence:mob/dd2_skeleton_death_0",
+            "confluence:mob/dd2_skeleton_death_1",
+            "confluence:mob/dd2_skeleton_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_skeleton_death"
+    },
+    "dd2_skeleton_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_skeleton_hurt_0",
+            "confluence:mob/dd2_skeleton_hurt_1",
+            "confluence:mob/dd2_skeleton_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_skeleton_hurt"
+    },
+    "dd2_skeleton_summoned": {
+        "sounds": [
+            "confluence:summon/dd2_skeleton_summoned"
+        ],
+        "subtitle": "confluence.subtitle.dd2_skeleton_summoned"
+    },
+    "dd2_sky_dragons_fury_circle": {
+        "sounds": [
+            "confluence:mob/dd2_sky_dragons_fury_circle_0",
+            "confluence:mob/dd2_sky_dragons_fury_circle_1",
+            "confluence:mob/dd2_sky_dragons_fury_circle_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_sky_dragons_fury_circle"
+    },
+    "dd2_sky_dragons_fury_shot": {
+        "sounds": [
+            "confluence:mob/dd2_sky_dragons_fury_shot_0",
+            "confluence:mob/dd2_sky_dragons_fury_shot_1",
+            "confluence:mob/dd2_sky_dragons_fury_shot_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_sky_dragons_fury_shot"
+    },
+    "dd2_sky_dragons_fury_swing": {
+        "sounds": [
+            "confluence:mob/dd2_sky_dragons_fury_swing_0",
+            "confluence:mob/dd2_sky_dragons_fury_swing_1",
+            "confluence:mob/dd2_sky_dragons_fury_swing_2",
+            "confluence:mob/dd2_sky_dragons_fury_swing_3"
+        ],
+        "subtitle": "confluence.subtitle.dd2_sky_dragons_fury_swing"
+    },
+    "dd2_sonic_boom_blade_slash": {
+        "sounds": [
+            "confluence:mob/dd2_sonic_boom_blade_slash_0",
+            "confluence:mob/dd2_sonic_boom_blade_slash_1",
+            "confluence:mob/dd2_sonic_boom_blade_slash_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_sonic_boom_blade_slash"
+    },
+    "dd2_win_scene": {
+        "sounds": [
+            "confluence:mob/dd2_win_scene"
+        ],
+        "subtitle": "confluence.subtitle.dd2_win_scene"
+    },
+    "dd2_wither_beast_aura_pulse": {
+        "sounds": [
+            "confluence:mob/dd2_wither_beast_aura_pulse_0",
+            "confluence:mob/dd2_wither_beast_aura_pulse_1"
+        ],
+        "subtitle": "confluence.subtitle.dd2_wither_beast_aura_pulse"
+    },
+    "dd2_wither_beast_crystal_impact": {
+        "sounds": [
+            "confluence:mob/dd2_wither_beast_crystal_impact_0",
+            "confluence:mob/dd2_wither_beast_crystal_impact_1",
+            "confluence:mob/dd2_wither_beast_crystal_impact_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_wither_beast_crystal_impact"
+    },
+    "dd2_wither_beast_death": {
+        "sounds": [
+            "confluence:mob/dd2_wither_beast_death_0",
+            "confluence:mob/dd2_wither_beast_death_1",
+            "confluence:mob/dd2_wither_beast_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_wither_beast_death"
+    },
+    "dd2_wither_beast_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_wither_beast_hurt_0",
+            "confluence:mob/dd2_wither_beast_hurt_1",
+            "confluence:mob/dd2_wither_beast_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_wither_beast_hurt"
+    },
+    "dd2_wyvern_death": {
+        "sounds": [
+            "confluence:mob/dd2_wyvern_death_0",
+            "confluence:mob/dd2_wyvern_death_1",
+            "confluence:mob/dd2_wyvern_death_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_wyvern_death"
+    },
+    "dd2_wyvern_dive_down": {
+        "sounds": [
+            "confluence:mob/dd2_wyvern_dive_down_0",
+            "confluence:mob/dd2_wyvern_dive_down_1",
+            "confluence:mob/dd2_wyvern_dive_down_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_wyvern_dive_down"
+    },
+    "dd2_wyvern_hurt": {
+        "sounds": [
+            "confluence:mob/dd2_wyvern_hurt_0",
+            "confluence:mob/dd2_wyvern_hurt_1",
+            "confluence:mob/dd2_wyvern_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_wyvern_hurt"
+    },
+    "dd2_wyvern_scream": {
+        "sounds": [
+            "confluence:mob/dd2_wyvern_scream_0",
+            "confluence:mob/dd2_wyvern_scream_1",
+            "confluence:mob/dd2_wyvern_scream_2"
+        ],
+        "subtitle": "confluence.subtitle.dd2_wyvern_scream"
+    },
+    "deadly_sphere_death": {
+        "sounds": [
+            "confluence:mob/deadly_sphere_death"
+        ],
+        "subtitle": "confluence.subtitle.deadly_sphere_death"
+    },
+    "deadly_sphere_free": {
+        "sounds": [
+            "confluence:mob/deadly_sphere_free_0",
+            "confluence:mob/deadly_sphere_free_1"
+        ],
+        "subtitle": "confluence.subtitle.deadly_sphere_free"
+    },
+    "deadly_sphere_hurt": {
+        "sounds": [
+            "confluence:mob/deadly_sphere_hurt"
+        ],
+        "subtitle": "confluence.subtitle.deadly_sphere_hurt"
+    },
+    "deerclops_death": {
+        "sounds": [
+            "confluence:mob/deerclops_death"
+        ],
+        "subtitle": "confluence.subtitle.deerclops_death"
+    },
+    "deerclops_hit": {
+        "sounds": [
+            "confluence:mob/deerclops_hit_0",
+            "confluence:mob/deerclops_hit_1",
+            "confluence:mob/deerclops_hit_2"
+        ],
+        "subtitle": "confluence.subtitle.deerclops_hit"
+    },
+    "deerclops_ice_attack": {
+        "sounds": [
+            "confluence:mob/deerclops_ice_attack_0",
+            "confluence:mob/deerclops_ice_attack_1",
+            "confluence:mob/deerclops_ice_attack_2"
+        ],
+        "subtitle": "confluence.subtitle.deerclops_ice_attack"
+    },
+    "deerclops_rubble_attack": {
+        "sounds": [
+            "confluence:mob/deerclops_rubble_attack"
+        ],
+        "subtitle": "confluence.subtitle.deerclops_rubble_attack"
+    },
+    "deerclops_scream": {
+        "sounds": [
+            "confluence:mob/deerclops_scream_0",
+            "confluence:mob/deerclops_scream_1",
+            "confluence:mob/deerclops_scream_2"
+        ],
+        "subtitle": "confluence.subtitle.deerclops_scream"
+    },
+    "deerclops_step": {
+        "sounds": [
+            "confluence:mob/deerclops_step"
+        ],
+        "subtitle": "confluence.subtitle.deerclops_step"
+    },
+    "derpling_death": {
+        "sounds": [
+            "confluence:mob/derpling_death"
+        ],
+        "subtitle": "confluence.subtitle.derpling_death"
+    },
+    "derpling_free": {
+        "sounds": [
+            "confluence:mob/derpling_free_0",
+            "confluence:mob/derpling_free_1"
+        ],
+        "subtitle": "confluence.subtitle.derpling_free"
+    },
+    "derpling_hurt": {
+        "sounds": [
+            "confluence:mob/derpling_hurt"
+        ],
+        "subtitle": "confluence.subtitle.derpling_hurt"
+    },
+    "dig": {
+        "sounds": [
+            "confluence:item/dig_0",
+            "confluence:item/dig_1",
+            "confluence:item/dig_2"
+        ],
+        "subtitle": "confluence.subtitle.dig"
+    },
+    "dolphin_free": {
+        "sounds": [
+            "confluence:mob/dolphin_free"
+        ],
+        "subtitle": "confluence.subtitle.dolphin_free"
+    },
+    "door_close": {
+        "sounds": [
+            "confluence:item/door_close"
+        ],
+        "subtitle": "confluence.subtitle.door_close"
+    },
+    "door_open": {
+        "sounds": [
+            "confluence:item/door_open"
+        ],
+        "subtitle": "confluence.subtitle.door_open"
+    },
+    "double_jump": {
+        "sounds": [
+            "confluence:item/double_jump"
+        ],
+        "subtitle": "confluence.subtitle.double_jump"
+    },
+    "dr_man_fly_death": {
+        "sounds": [
+            "confluence:mob/dr_man_fly_death"
+        ],
+        "subtitle": "confluence.subtitle.dr_man_fly_death"
+    },
+    "dr_man_fly_free": {
+        "sounds": [
+            "confluence:mob/dr_man_fly_free_0",
+            "confluence:mob/dr_man_fly_free_1",
+            "confluence:mob/dr_man_fly_free_2"
+        ],
+        "subtitle": "confluence.subtitle.dr_man_fly_free"
+    },
+    "dr_man_fly_hurt": {
+        "sounds": [
+            "confluence:mob/dr_man_fly_hurt"
+        ],
+        "subtitle": "confluence.subtitle.dr_man_fly_hurt"
+    },
+    "drip": {
+        "sounds": [
+            "confluence:item/drip_0",
+            "confluence:item/drip_1",
+            "confluence:item/drip_2"
+        ],
+        "subtitle": "confluence.subtitle.drip"
+    },
+    "drone": {
+        "sounds": [
+            "confluence:mob/drone"
+        ],
+        "subtitle": "confluence.subtitle.drone"
+    },
+    "drown": {
+        "sounds": [
+            "confluence:item/drown"
+        ],
+        "subtitle": "confluence.subtitle.drown"
+    },
+    "dst_female_hit": {
+        "sounds": [
+            "confluence:item/dst_female_hit_0",
+            "confluence:item/dst_female_hit_1",
+            "confluence:item/dst_female_hit_2"
+        ],
+        "subtitle": "confluence.subtitle.dst_female_hit"
+    },
+    "dst_male_hit": {
+        "sounds": [
+            "confluence:item/dst_male_hit_0",
+            "confluence:item/dst_male_hit_1",
+            "confluence:item/dst_male_hit_2"
+        ],
+        "subtitle": "confluence.subtitle.dst_male_hit"
+    },
+    "duck_free": {
+        "sounds": [
+            "confluence:mob/duck_free_0",
+            "confluence:mob/duck_free_1",
+            "confluence:mob/duck_free_2"
+        ],
+        "subtitle": "confluence.subtitle.duck_free"
+    },
+    "duke_fishron_death": {
+        "sounds": [
+            "confluence:mob/duke_fishron_death"
+        ],
+        "subtitle": "confluence.subtitle.duke_fishron_death"
+    },
+    "duke_fishron_free": {
+        "sounds": [
+            "confluence:mob/duke_fishron_free"
+        ],
+        "subtitle": "confluence.subtitle.duke_fishron_free"
+    },
+    "duke_fishron_hurt": {
+        "sounds": [
+            "confluence:mob/duke_fishron_hurt"
+        ],
+        "subtitle": "confluence.subtitle.duke_fishron_hurt"
+    },
+    "empress_of_light_death": {
+        "sounds": [
+            "confluence:mob/empress_of_light_death"
+        ],
+        "subtitle": "confluence.subtitle.empress_of_light_death"
+    },
+    "female_hit": {
+        "sounds": [
+            "confluence:item/female_hit_0",
+            "confluence:item/female_hit_1",
+            "confluence:item/female_hit_2"
+        ],
+        "subtitle": "confluence.subtitle.female_hit"
+    },
+    "flying_snake_death": {
+        "sounds": [
+            "confluence:mob/flying_snake_death"
+        ],
+        "subtitle": "confluence.subtitle.flying_snake_death"
+    },
+    "flying_snake_free": {
+        "sounds": [
+            "confluence:mob/flying_snake_free"
+        ],
+        "subtitle": "confluence.subtitle.flying_snake_free"
+    },
+    "frankenstein_free": {
+        "sounds": [
+            "confluence:mob/frankenstein_free"
+        ],
+        "subtitle": "confluence.subtitle.frankenstein_free"
+    },
+    "frog_free": {
+        "sounds": [
+            "confluence:mob/frog_free"
+        ],
+        "subtitle": "confluence.subtitle.frog_free"
+    },
+    "ghoul_death": {
+        "sounds": [
+            "confluence:mob/ghoul_death"
+        ],
+        "subtitle": "confluence.subtitle.ghoul_death"
+    },
+    "ghoul_free": {
+        "sounds": [
+            "confluence:mob/ghoul_free_0",
+            "confluence:mob/ghoul_free_1"
+        ],
+        "subtitle": "confluence.subtitle.ghoul_free"
+    },
+    "ghoul_hurt": {
+        "sounds": [
+            "confluence:mob/ghoul_hurt"
+        ],
+        "subtitle": "confluence.subtitle.ghoul_hurt"
+    },
+    "giant_tortoise_death": {
+        "sounds": [
+            "confluence:mob/giant_tortoise_death"
+        ],
+        "subtitle": "confluence.subtitle.giant_tortoise_death"
+    },
+    "giant_tortoise_free": {
+        "sounds": [
+            "confluence:mob/giant_tortoise_free"
+        ],
+        "subtitle": "confluence.subtitle.giant_tortoise_free"
+    },
+    "giant_tortoise_hurt": {
+        "sounds": [
+            "confluence:mob/giant_tortoise_hurt"
+        ],
+        "subtitle": "confluence.subtitle.giant_tortoise_hurt"
+    },
+    "gigazapper_free": {
+        "sounds": [
+            "confluence:mob/gigazapper_free_0",
+            "confluence:mob/gigazapper_free_1"
+        ],
+        "subtitle": "confluence.subtitle.gigazapper_free"
+    },
+    "glommer_bounce": {
+        "sounds": [
+            "confluence:summon/glommer_bounce_0",
+            "confluence:summon/glommer_bounce_1"
+        ],
+        "subtitle": "confluence.subtitle.glommer_bounce"
+    },
+    "goblin_warlock_death": {
+        "sounds": [
+            "confluence:mob/goblin_warlock_death"
+        ],
+        "subtitle": "confluence.subtitle.goblin_warlock_death"
+    },
+    "goblin_warlock_free": {
+        "sounds": [
+            "confluence:mob/goblin_warlock_free_0",
+            "confluence:mob/goblin_warlock_free_1"
+        ],
+        "subtitle": "confluence.subtitle.goblin_warlock_free"
+    },
+    "goblin_warlock_hurt": {
+        "sounds": [
+            "confluence:mob/goblin_warlock_hurt"
+        ],
+        "subtitle": "confluence.subtitle.goblin_warlock_hurt"
+    },
+    "grab": {
+        "sounds": [
+            "confluence:item/grab"
+        ],
+        "subtitle": "confluence.subtitle.grab"
+    },
+    "grass": {
+        "sounds": [
+            "confluence:item/grass"
+        ],
+        "subtitle": "confluence.subtitle.grass"
+    },
+    "item_ammo_box": {
+        "sounds": [
+            "confluence:item/item_ammo_box"
+        ],
+        "subtitle": "confluence.subtitle.item_ammo_box"
+    },
+    "item_axe_guitar": {
+        "sounds": [
+            "confluence:item/item_axe_guitar"
+        ],
+        "subtitle": "confluence.subtitle.item_axe_guitar"
+    },
+    "item_bees_knees": {
+        "sounds": [
+            "confluence:item/item_bees_knees"
+        ],
+        "subtitle": "confluence.subtitle.item_bees_knees"
+    },
+    "item_bell": {
+        "sounds": [
+            "confluence:item/item_bell"
+        ],
+        "subtitle": "confluence.subtitle.item_bell"
+    },
+    "item_blowgun": {
+        "sounds": [
+            "confluence:item/item_blowgun"
+        ],
+        "subtitle": "confluence.subtitle.item_blowgun"
+    },
+    "item_boomerang_throw": {
+        "sounds": [
+            "confluence:mob/item_boomerang_throw"
+        ],
+        "subtitle": "confluence.subtitle.item_boomerang_throw"
+    },
+    "item_boot_hover": {
+        "sounds": [
+            "confluence:item/item_boot_hover"
+        ],
+        "subtitle": "confluence.subtitle.item_boot_hover"
+    },
+    "item_boulder_impact": {
+        "sounds": [
+            "confluence:mob/item_boulder_impact"
+        ],
+        "subtitle": "confluence.subtitle.item_boulder_impact"
+    },
+    "item_brain_scrambler": {
+        "sounds": [
+            "confluence:item/item_brain_scrambler"
+        ],
+        "subtitle": "confluence.subtitle.item_brain_scrambler"
+    },
+    "item_bubble_gun": {
+        "sounds": [
+            "confluence:item/item_bubble_gun"
+        ],
+        "subtitle": "confluence.subtitle.item_bubble_gun"
+    },
+    "item_bubble_pop": {
+        "sounds": [
+            "confluence:item/item_bubble_pop"
+        ],
+        "subtitle": "confluence.subtitle.item_bubble_pop"
+    },
+    "item_celebration": {
+        "sounds": [
+            "confluence:item/item_celebration"
+        ],
+        "subtitle": "confluence.subtitle.item_celebration"
+    },
+    "item_chainsaw": {
+        "sounds": [
+            "confluence:item/item_chainsaw"
+        ],
+        "subtitle": "confluence.subtitle.item_chainsaw"
+    },
+    "item_clinger_staff": {
+        "sounds": [
+            "confluence:item/item_clinger_staff"
+        ],
+        "subtitle": "confluence.subtitle.item_clinger_staff"
+    },
+    "item_cracked_dungeon_brick": {
+        "sounds": [
+            "confluence:item/item_cracked_dungeon_brick"
+        ],
+        "subtitle": "confluence.subtitle.item_cracked_dungeon_brick"
+    },
+    "item_crystal_charge_impact": {
+        "sounds": [
+            "confluence:mob/item_crystal_charge_impact_0",
+            "confluence:mob/item_crystal_charge_impact_1"
+        ],
+        "subtitle": "confluence.subtitle.item_crystal_charge_impact"
+    },
+    "item_crystal_serpent": {
+        "sounds": [
+            "confluence:item/item_crystal_serpent"
+        ],
+        "subtitle": "confluence.subtitle.item_crystal_serpent"
+    },
+    "item_deadly_sphere_staff": {
+        "sounds": [
+            "confluence:summon/item_deadly_sphere_staff"
+        ],
+        "subtitle": "confluence.subtitle.item_deadly_sphere_staff"
+    },
+    "item_death_laser": {
+        "sounds": [
+            "confluence:mob/item_death_laser"
+        ],
+        "subtitle": "confluence.subtitle.item_death_laser"
+    },
+    "item_death_sickle": {
+        "sounds": [
+            "confluence:item/item_death_sickle"
+        ],
+        "subtitle": "confluence.subtitle.item_death_sickle"
+    },
+    "item_dreadnautilus": {
+        "sounds": [
+            "confluence:summon/item_dreadnautilus_0",
+            "confluence:summon/item_dreadnautilus_1",
+            "confluence:summon/item_dreadnautilus_2"
+        ],
+        "subtitle": "confluence.subtitle.item_dreadnautilus"
+    },
+    "item_drill": {
+        "sounds": [
+            "confluence:item/item_drill"
+        ],
+        "subtitle": "confluence.subtitle.item_drill"
+    },
+    "item_drum_closed_hihat": {
+        "sounds": [
+            "confluence:item/item_drum_closed_hihat"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_closed_hihat"
+    },
+    "item_drum_cymbal": {
+        "sounds": [
+            "confluence:item/item_drum_cymbal_0",
+            "confluence:item/item_drum_cymbal_1"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_cymbal"
+    },
+    "item_drum_floor_tom": {
+        "sounds": [
+            "confluence:item/item_drum_floor_tom"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_floor_tom"
+    },
+    "item_drum_hihat": {
+        "sounds": [
+            "confluence:item/item_drum_hihat"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_hihat"
+    },
+    "item_drum_kick": {
+        "sounds": [
+            "confluence:item/item_drum_kick"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_kick"
+    },
+    "item_drum_snare": {
+        "sounds": [
+            "confluence:item/item_drum_snare"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_snare"
+    },
+    "item_drum_tom_high": {
+        "sounds": [
+            "confluence:item/item_drum_tom_high"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_tom_high"
+    },
+    "item_drum_tom_low": {
+        "sounds": [
+            "confluence:item/item_drum_tom_low"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_tom_low"
+    },
+    "item_drum_tom_mid": {
+        "sounds": [
+            "confluence:item/item_drum_tom_mid"
+        ],
+        "subtitle": "confluence.subtitle.item_drum_tom_mid"
+    },
+    "item_electrosphere_impact": {
+        "sounds": [
+            "confluence:mob/item_electrosphere_impact"
+        ],
+        "subtitle": "confluence.subtitle.item_electrosphere_impact"
+    },
+    "item_empress_of_light": {
+        "sounds": [
+            "confluence:summon/item_empress_of_light_0",
+            "confluence:summon/item_empress_of_light_1",
+            "confluence:summon/item_empress_of_light_2",
+            "confluence:summon/item_empress_of_light_3",
+            "confluence:summon/item_empress_of_light_4",
+            "confluence:summon/item_empress_of_light_5",
+            "confluence:summon/item_empress_of_light_6"
+        ],
+        "subtitle": "confluence.subtitle.item_empress_of_light"
+    },
+    "item_fart": {
+        "sounds": [
+            "confluence:item/item_fart"
+        ],
+        "subtitle": "confluence.subtitle.item_fart"
+    },
+    "item_fireball_impact": {
+        "sounds": [
+            "confluence:mob/item_fireball_impact"
+        ],
+        "subtitle": "confluence.subtitle.item_fireball_impact"
+    },
+    "item_flame_cast": {
+        "sounds": [
+            "confluence:item/item_flame_cast"
+        ],
+        "subtitle": "confluence.subtitle.item_flame_cast"
+    },
+    "item_frost_impact": {
+        "sounds": [
+            "confluence:mob/item_frost_impact"
+        ],
+        "subtitle": "confluence.subtitle.item_frost_impact"
+    },
+    "item_fuzzy_carrot": {
+        "sounds": [
+            "confluence:item/item_fuzzy_carrot"
+        ],
+        "subtitle": "confluence.subtitle.item_fuzzy_carrot"
+    },
+    "item_golf_ball_sunk": {
+        "sounds": [
+            "confluence:item/item_golf_ball_sunk"
+        ],
+        "subtitle": "confluence.subtitle.item_golf_ball_sunk"
+    },
+    "item_golf_club_swing": {
+        "sounds": [
+            "confluence:item/item_golf_club_swing"
+        ],
+        "subtitle": "confluence.subtitle.item_golf_club_swing"
+    },
+    "item_golf_whistle": {
+        "sounds": [
+            "confluence:item/item_golf_whistle"
+        ],
+        "subtitle": "confluence.subtitle.item_golf_whistle"
+    },
+    "item_grenade_explode": {
+        "sounds": [
+            "confluence:item/item_grenade_explode"
+        ],
+        "subtitle": "confluence.subtitle.item_grenade_explode"
+    },
+    "item_grenade_launch": {
+        "sounds": [
+            "confluence:item/item_grenade_launch"
+        ],
+        "subtitle": "confluence.subtitle.item_grenade_launch"
+    },
+    "item_guitar_am": {
+        "sounds": [
+            "confluence:item/item_guitar_am"
+        ],
+        "subtitle": "confluence.subtitle.item_guitar_am"
+    },
+    "item_guitar_bm": {
+        "sounds": [
+            "confluence:item/item_guitar_bm"
+        ],
+        "subtitle": "confluence.subtitle.item_guitar_bm"
+    },
+    "item_guitar_c": {
+        "sounds": [
+            "confluence:item/item_guitar_c"
+        ],
+        "subtitle": "confluence.subtitle.item_guitar_c"
+    },
+    "item_guitar_d": {
+        "sounds": [
+            "confluence:item/item_guitar_d"
+        ],
+        "subtitle": "confluence.subtitle.item_guitar_d"
+    },
+    "item_guitar_em": {
+        "sounds": [
+            "confluence:item/item_guitar_em"
+        ],
+        "subtitle": "confluence.subtitle.item_guitar_em"
+    },
+    "item_guitar_g": {
+        "sounds": [
+            "confluence:item/item_guitar_g"
+        ],
+        "subtitle": "confluence.subtitle.item_guitar_g"
+    },
+    "item_harp": {
+        "sounds": [
+            "confluence:item/item_harp"
+        ],
+        "subtitle": "confluence.subtitle.item_harp"
+    },
+    "item_hornet_shoot": {
+        "sounds": [
+            "confluence:mob/item_hornet_shoot"
+        ],
+        "subtitle": "confluence.subtitle.item_hornet_shoot"
+    },
+    "item_ice_block_place": {
+        "sounds": [
+            "confluence:mob/item_ice_block_place"
+        ],
+        "subtitle": "confluence.subtitle.item_ice_block_place"
+    },
+    "item_ice_break": {
+        "sounds": [
+            "confluence:mob/item_ice_break"
+        ],
+        "subtitle": "confluence.subtitle.item_ice_break"
+    },
+    "item_ice_mist_summon": {
+        "sounds": [
+            "confluence:summon/item_ice_mist_summon"
+        ],
+        "subtitle": "confluence.subtitle.item_ice_mist_summon"
+    },
+    "item_inferno_bolt_impact": {
+        "sounds": [
+            "confluence:mob/item_inferno_bolt_impact"
+        ],
+        "subtitle": "confluence.subtitle.item_inferno_bolt_impact"
+    },
+    "item_inferno_fork": {
+        "sounds": [
+            "confluence:item/item_inferno_fork"
+        ],
+        "subtitle": "confluence.subtitle.item_inferno_fork"
+    },
+    "item_ko_cannon": {
+        "sounds": [
+            "confluence:item/item_ko_cannon"
+        ],
+        "subtitle": "confluence.subtitle.item_ko_cannon"
+    },
+    "item_larva_break": {
+        "sounds": [
+            "confluence:mob/item_larva_break"
+        ],
+        "subtitle": "confluence.subtitle.item_larva_break"
+    },
+    "item_laser_drill": {
+        "sounds": [
+            "confluence:item/item_laser_drill"
+        ],
+        "subtitle": "confluence.subtitle.item_laser_drill"
+    },
+    "item_laser_machinegun": {
+        "sounds": [
+            "confluence:item/item_laser_machinegun"
+        ],
+        "subtitle": "confluence.subtitle.item_laser_machinegun"
+    },
+    "item_laser_shoot": {
+        "sounds": [
+            "confluence:mob/item_laser_shoot"
+        ],
+        "subtitle": "confluence.subtitle.item_laser_shoot"
+    },
+    "item_life_crystal": {
+        "sounds": [
+            "confluence:item/item_life_crystal"
+        ],
+        "subtitle": "confluence.subtitle.item_life_crystal"
+    },
+    "item_lightning_orb_summon": {
+        "sounds": [
+            "confluence:summon/item_lightning_orb_summon"
+        ],
+        "subtitle": "confluence.subtitle.item_lightning_orb_summon"
+    },
+    "item_lightning_ritual_summon": {
+        "sounds": [
+            "confluence:summon/item_lightning_ritual_summon"
+        ],
+        "subtitle": "confluence.subtitle.item_lightning_ritual_summon"
+    },
+    "item_magic_missile": {
+        "sounds": [
+            "confluence:item/item_magic_missile"
+        ],
+        "subtitle": "confluence.subtitle.item_magic_missile"
+    },
+    "item_mana_crystal": {
+        "sounds": [
+            "confluence:item/item_mana_crystal"
+        ],
+        "subtitle": "confluence.subtitle.item_mana_crystal"
+    },
+    "item_meowmere_impact": {
+        "sounds": [
+            "confluence:mob/item_meowmere_impact_0",
+            "confluence:mob/item_meowmere_impact_1"
+        ],
+        "subtitle": "confluence.subtitle.item_meowmere_impact"
+    },
+    "item_meteor_impact": {
+        "sounds": [
+            "confluence:mob/item_meteor_impact"
+        ],
+        "subtitle": "confluence.subtitle.item_meteor_impact"
+    },
+    "item_meteor_staff": {
+        "sounds": [
+            "confluence:item/item_meteor_staff"
+        ],
+        "subtitle": "confluence.subtitle.item_meteor_staff"
+    },
+    "item_minecart_bounce": {
+        "sounds": [
+            "confluence:item/item_minecart_bounce"
+        ],
+        "subtitle": "confluence.subtitle.item_minecart_bounce"
+    },
+    "item_minecart_ride": {
+        "sounds": [
+            "confluence:item/item_minecart_ride"
+        ],
+        "subtitle": "confluence.subtitle.item_minecart_ride"
+    },
+    "item_minecart_slow": {
+        "sounds": [
+            "confluence:item/item_minecart_slow"
+        ],
+        "subtitle": "confluence.subtitle.item_minecart_slow"
+    },
+    "item_minecart_track": {
+        "sounds": [
+            "confluence:item/item_minecart_track"
+        ],
+        "subtitle": "confluence.subtitle.item_minecart_track"
+    },
+    "item_missile_launch": {
+        "sounds": [
+            "confluence:item/item_missile_launch"
+        ],
+        "subtitle": "confluence.subtitle.item_missile_launch"
+    },
+    "item_music_box": {
+        "sounds": [
+            "confluence:item/item_music_box"
+        ],
+        "subtitle": "confluence.subtitle.item_music_box"
+    },
+    "item_nebula_arcanum": {
+        "sounds": [
+            "confluence:item/item_nebula_arcanum"
+        ],
+        "subtitle": "confluence.subtitle.item_nebula_arcanum"
+    },
+    "item_nimbus_rain": {
+        "sounds": [
+            "confluence:summon/item_nimbus_rain"
+        ],
+        "subtitle": "confluence.subtitle.item_nimbus_rain"
+    },
+    "item_pet_summon": {
+        "sounds": [
+            "confluence:summon/item_pet_summon"
+        ],
+        "subtitle": "confluence.subtitle.item_pet_summon"
+    },
+    "item_phantasm_dragon_summon": {
+        "sounds": [
+            "confluence:summon/item_phantasm_dragon_summon"
+        ],
+        "subtitle": "confluence.subtitle.item_phantasm_dragon_summon"
+    },
+    "item_phantasmal_bolt": {
+        "sounds": [
+            "confluence:item/item_phantasmal_bolt_0",
+            "confluence:item/item_phantasmal_bolt_1"
+        ],
+        "subtitle": "confluence.subtitle.item_phantasmal_bolt"
+    },
+    "item_phaseblade": {
+        "sounds": [
+            "confluence:item/item_phaseblade"
+        ],
+        "subtitle": "confluence.subtitle.item_phaseblade"
+    },
+    "item_pogo_stick": {
+        "sounds": [
+            "confluence:item/item_pogo_stick"
+        ],
+        "subtitle": "confluence.subtitle.item_pogo_stick"
+    },
+    "item_poo": {
+        "sounds": [
+            "confluence:item/item_poo"
+        ],
+        "subtitle": "confluence.subtitle.item_poo"
+    },
+    "item_portal_gun": {
+        "sounds": [
+            "confluence:item/item_portal_gun_0",
+            "confluence:item/item_portal_gun_1"
+        ],
+        "subtitle": "confluence.subtitle.item_portal_gun"
+    },
+    "item_potion_drink": {
+        "sounds": [
+            "confluence:item/item_potion_drink"
+        ],
+        "subtitle": "confluence.subtitle.item_potion_drink"
+    },
+    "item_projectile_reflect": {
+        "sounds": [
+            "confluence:mob/item_projectile_reflect"
+        ],
+        "subtitle": "confluence.subtitle.item_projectile_reflect"
+    },
+    "item_pulse_bow": {
+        "sounds": [
+            "confluence:mob/item_pulse_bow"
+        ],
+        "subtitle": "confluence.subtitle.item_pulse_bow"
+    },
+    "item_queen_slime": {
+        "sounds": [
+            "confluence:summon/item_queen_slime_0",
+            "confluence:summon/item_queen_slime_1",
+            "confluence:summon/item_queen_slime_2"
+        ],
+        "subtitle": "confluence.subtitle.item_queen_slime"
+    },
+    "item_rainbow_gun": {
+        "sounds": [
+            "confluence:item/item_rainbow_gun"
+        ],
+        "subtitle": "confluence.subtitle.item_rainbow_gun"
+    },
+    "item_razorblade_typhoon": {
+        "sounds": [
+            "confluence:item/item_razorblade_typhoon"
+        ],
+        "subtitle": "confluence.subtitle.item_razorblade_typhoon"
+    },
+    "item_reforge": {
+        "sounds": [
+            "confluence:item/item_reforge"
+        ],
+        "subtitle": "confluence.subtitle.item_reforge"
+    },
+    "item_scaly_truffle": {
+        "sounds": [
+            "confluence:item/item_scaly_truffle"
+        ],
+        "subtitle": "confluence.subtitle.item_scaly_truffle"
+    },
+    "item_sentry_beam": {
+        "sounds": [
+            "confluence:summon/item_sentry_beam"
+        ],
+        "subtitle": "confluence.subtitle.item_sentry_beam"
+    },
+    "item_sentry_summon": {
+        "sounds": [
+            "confluence:summon/item_sentry_summon"
+        ],
+        "subtitle": "confluence.subtitle.item_sentry_summon"
+    },
+    "item_shadowbeam": {
+        "sounds": [
+            "confluence:mob/item_shadowbeam"
+        ],
+        "subtitle": "confluence.subtitle.item_shadowbeam"
+    },
+    "item_shadowflame_bow": {
+        "sounds": [
+            "confluence:item/item_shadowflame_bow"
+        ],
+        "subtitle": "confluence.subtitle.item_shadowflame_bow"
+    },
+    "item_shadowflame_hex": {
+        "sounds": [
+            "confluence:item/item_shadowflame_hex"
+        ],
+        "subtitle": "confluence.subtitle.item_shadowflame_hex"
+    },
+    "item_shimmer_use_2": {
+        "sounds": [
+            "confluence:item/item_shimmer_use_2"
+        ],
+        "subtitle": "confluence.subtitle.item_shimmer_use_2"
+    },
+    "item_slap_hand": {
+        "sounds": [
+            "confluence:item/item_slap_hand"
+        ],
+        "subtitle": "confluence.subtitle.item_slap_hand"
+    },
+    "item_slimy_saddle": {
+        "sounds": [
+            "confluence:item/item_slimy_saddle"
+        ],
+        "subtitle": "confluence.subtitle.item_slimy_saddle"
+    },
+    "item_snake_charmer_flute": {
+        "sounds": [
+            "confluence:summon/item_snake_charmer_flute"
+        ],
+        "subtitle": "confluence.subtitle.item_snake_charmer_flute"
+    },
+    "item_snow_break": {
+        "sounds": [
+            "confluence:mob/item_snow_break",
+            "confluence:mob/item_snow_break_2"
+        ],
+        "subtitle": "confluence.subtitle.item_snow_break"
+    },
+    "item_snowball_impact": {
+        "sounds": [
+            "confluence:mob/item_snowball_impact"
+        ],
+        "subtitle": "confluence.subtitle.item_snowball_impact"
+    },
+    "item_solar_eruption": {
+        "sounds": [
+            "confluence:item/item_solar_eruption"
+        ],
+        "subtitle": "confluence.subtitle.item_solar_eruption"
+    },
+    "item_spider_staff": {
+        "sounds": [
+            "confluence:summon/item_spider_staff"
+        ],
+        "subtitle": "confluence.subtitle.item_spider_staff"
+    },
+    "item_staff_of_earth": {
+        "sounds": [
+            "confluence:item/item_staff_of_earth"
+        ],
+        "subtitle": "confluence.subtitle.item_staff_of_earth"
+    },
+    "item_star_wrath": {
+        "sounds": [
+            "confluence:item/item_star_wrath"
+        ],
+        "subtitle": "confluence.subtitle.item_star_wrath"
+    },
+    "item_swing": {
+        "sounds": [
+            "confluence:item/item_swing_2",
+            "confluence:item/item_swing_3"
+        ],
+        "subtitle": "confluence.subtitle.item_swing"
+    },
+    "item_terra_blade": {
+        "sounds": [
+            "confluence:item/item_terra_blade"
+        ],
+        "subtitle": "confluence.subtitle.item_terra_blade"
+    },
+    "item_toxic_flask": {
+        "sounds": [
+            "confluence:item/item_toxic_flask"
+        ],
+        "subtitle": "confluence.subtitle.item_toxic_flask"
+    },
+    "item_toxic_flask_impact": {
+        "sounds": [
+            "confluence:item/item_toxic_flask_impact"
+        ],
+        "subtitle": "confluence.subtitle.item_toxic_flask_impact"
+    },
+    "item_vampire_knives": {
+        "sounds": [
+            "confluence:item/item_vampire_knives"
+        ],
+        "subtitle": "confluence.subtitle.item_vampire_knives"
+    },
+    "item_void_bag": {
+        "sounds": [
+            "confluence:item/item_void_bag"
+        ],
+        "subtitle": "confluence.subtitle.item_void_bag"
+    },
+    "item_waffle_iron": {
+        "sounds": [
+            "confluence:item/item_waffle_iron"
+        ],
+        "subtitle": "confluence.subtitle.item_waffle_iron"
+    },
+    "item_water_bolt": {
+        "sounds": [
+            "confluence:item/item_water_bolt"
+        ],
+        "subtitle": "confluence.subtitle.item_water_bolt"
+    },
+    "item_whip_attack_0": {
+        "sounds": [
+            "confluence:item/item_whip_attack_0"
+        ],
+        "subtitle": "confluence.subtitle.item_whip_attack_0"
+    },
+    "item_wings": {
+        "sounds": [
+            "confluence:item/item_wings"
+        ],
+        "subtitle": "confluence.subtitle.item_wings"
+    },
+    "item_zapinator": {
+        "sounds": [
+            "confluence:item/item_zapinator"
+        ],
+        "subtitle": "confluence.subtitle.item_zapinator"
+    },
+    "lavafall": {
+        "sounds": [
+            "confluence:item/lavafall"
+        ],
+        "subtitle": "confluence.subtitle.lavafall"
+    },
+    "lihzahrd_death": {
+        "sounds": [
+            "confluence:mob/lihzahrd_death"
+        ],
+        "subtitle": "confluence.subtitle.lihzahrd_death"
+    },
+    "lihzahrd_free": {
+        "sounds": [
+            "confluence:mob/lihzahrd_free_0",
+            "confluence:mob/lihzahrd_free_1"
+        ],
+        "subtitle": "confluence.subtitle.lihzahrd_free"
+    },
+    "lihzahrd_hurt": {
+        "sounds": [
+            "confluence:mob/lihzahrd_hurt"
+        ],
+        "subtitle": "confluence.subtitle.lihzahrd_hurt"
+    },
+    "liquids_honey_lava": {
+        "sounds": [
+            "confluence:mob/liquids_honey_lava_0",
+            "confluence:mob/liquids_honey_lava_1",
+            "confluence:mob/liquids_honey_lava_2"
+        ],
+        "subtitle": "confluence.subtitle.liquids_honey_lava"
+    },
+    "liquids_honey_water": {
+        "sounds": [
+            "confluence:mob/liquids_honey_water_0",
+            "confluence:mob/liquids_honey_water_1",
+            "confluence:mob/liquids_honey_water_2"
+        ],
+        "subtitle": "confluence.subtitle.liquids_honey_water"
+    },
+    "liquids_water_lava": {
+        "sounds": [
+            "confluence:mob/liquids_water_lava_0",
+            "confluence:mob/liquids_water_lava_1",
+            "confluence:mob/liquids_water_lava_2"
+        ],
+        "subtitle": "confluence.subtitle.liquids_water_lava"
+    },
+    "lunatic_cultist_death": {
+        "sounds": [
+            "confluence:mob/lunatic_cultist_death"
+        ],
+        "subtitle": "confluence.subtitle.lunatic_cultist_death"
+    },
+    "lunatic_cultist_free": {
+        "sounds": [
+            "confluence:mob/lunatic_cultist_free_0",
+            "confluence:mob/lunatic_cultist_free_1",
+            "confluence:mob/lunatic_cultist_free_2",
+            "confluence:mob/lunatic_cultist_free_3"
+        ],
+        "subtitle": "confluence.subtitle.lunatic_cultist_free"
+    },
+    "lunatic_cultist_hurt": {
+        "sounds": [
+            "confluence:mob/lunatic_cultist_hurt"
+        ],
+        "subtitle": "confluence.subtitle.lunatic_cultist_hurt"
+    },
+    "lunatic_cultist_summoned_free": {
+        "sounds": [
+            "confluence:mob/lunatic_cultist_summoned_free"
+        ],
+        "subtitle": "confluence.subtitle.lunatic_cultist_summoned_free"
+    },
+    "macaw_free": {
+        "sounds": [
+            "confluence:mob/macaw_free_0",
+            "confluence:mob/macaw_free_1",
+            "confluence:mob/macaw_free_2"
+        ],
+        "subtitle": "confluence.subtitle.macaw_free"
+    },
+    "martian_drone_death": {
+        "sounds": [
+            "confluence:mob/martian_drone_death"
+        ],
+        "subtitle": "confluence.subtitle.martian_drone_death"
+    },
+    "martian_drone_free": {
+        "sounds": [
+            "confluence:mob/martian_drone_free_0",
+            "confluence:mob/martian_drone_free_1",
+            "confluence:mob/martian_drone_free_2"
+        ],
+        "subtitle": "confluence.subtitle.martian_drone_free"
+    },
+    "martian_drone_hurt": {
+        "sounds": [
+            "confluence:mob/martian_drone_hurt"
+        ],
+        "subtitle": "confluence.subtitle.martian_drone_hurt"
+    },
+    "martian_walker_free": {
+        "sounds": [
+            "confluence:mob/martian_walker_free_0",
+            "confluence:mob/martian_walker_free_1",
+            "confluence:mob/martian_walker_free_2",
+            "confluence:mob/martian_walker_free_3"
+        ],
+        "subtitle": "confluence.subtitle.martian_walker_free"
+    },
+    "max_mana": {
+        "sounds": [
+            "confluence:item/max_mana"
+        ],
+        "subtitle": "confluence.subtitle.max_mana"
+    },
+    "mech": {
+        "sounds": [
+            "confluence:item/mech"
+        ],
+        "subtitle": "confluence.subtitle.mech"
+    },
+    "menu_close": {
+        "sounds": [
+            "confluence:item/menu_close"
+        ],
+        "subtitle": "confluence.subtitle.menu_close"
+    },
+    "menu_open": {
+        "sounds": [
+            "confluence:item/menu_open"
+        ],
+        "subtitle": "confluence.subtitle.menu_open"
+    },
+    "menu_tick": {
+        "sounds": [
+            "confluence:item/menu_tick"
+        ],
+        "subtitle": "confluence.subtitle.menu_tick"
+    },
+    "mister_stabby_death": {
+        "sounds": [
+            "confluence:mob/mister_stabby_death"
+        ],
+        "subtitle": "confluence.subtitle.mister_stabby_death"
+    },
+    "mister_stabby_hurt": {
+        "sounds": [
+            "confluence:mob/mister_stabby_hurt"
+        ],
+        "subtitle": "confluence.subtitle.mister_stabby_hurt"
+    },
+    "moon_lord_death": {
+        "sounds": [
+            "confluence:mob/moon_lord_death_0",
+            "confluence:mob/moon_lord_death_1"
+        ],
+        "subtitle": "confluence.subtitle.moon_lord_death"
+    },
+    "moon_lord_free": {
+        "sounds": [
+            "confluence:mob/moon_lord_free_0",
+            "confluence:mob/moon_lord_free_1",
+            "confluence:mob/moon_lord_free_2",
+            "confluence:mob/moon_lord_free_3",
+            "confluence:mob/moon_lord_free_4",
+            "confluence:mob/moon_lord_free_5",
+            "confluence:mob/moon_lord_free_6"
+        ],
+        "subtitle": "confluence.subtitle.moon_lord_free"
+    },
+    "moon_lord_hurt": {
+        "sounds": [
+            "confluence:mob/moon_lord_hurt"
+        ],
+        "subtitle": "confluence.subtitle.moon_lord_hurt"
+    },
+    "moon_lord_summoned_free": {
+        "sounds": [
+            "confluence:mob/moon_lord_summoned_free"
+        ],
+        "subtitle": "confluence.subtitle.moon_lord_summoned_free"
+    },
+    "mothron_death": {
+        "sounds": [
+            "confluence:mob/mothron_death"
+        ],
+        "subtitle": "confluence.subtitle.mothron_death"
+    },
+    "mothron_free": {
+        "sounds": [
+            "confluence:mob/mothron_free"
+        ],
+        "subtitle": "confluence.subtitle.mothron_free"
+    },
+    "mothron_hurt": {
+        "sounds": [
+            "confluence:mob/mothron_hurt"
+        ],
+        "subtitle": "confluence.subtitle.mothron_hurt"
+    },
+    "mummy_free": {
+        "sounds": [
+            "confluence:mob/mummy_free_0",
+            "confluence:mob/mummy_free_1"
+        ],
+        "subtitle": "confluence.subtitle.mummy_free"
+    },
+    "mushi_ladybug_death": {
+        "sounds": [
+            "confluence:mob/mushi_ladybug_death"
+        ],
+        "subtitle": "confluence.subtitle.mushi_ladybug_death"
+    },
+    "mushi_ladybug_free": {
+        "sounds": [
+            "confluence:mob/mushi_ladybug_free_0",
+            "confluence:mob/mushi_ladybug_free_1",
+            "confluence:mob/mushi_ladybug_free_2",
+            "confluence:mob/mushi_ladybug_free_3"
+        ],
+        "subtitle": "confluence.subtitle.mushi_ladybug_free"
+    },
+    "mushi_ladybug_hurt": {
+        "sounds": [
+            "confluence:mob/mushi_ladybug_hurt"
+        ],
+        "subtitle": "confluence.subtitle.mushi_ladybug_hurt"
+    },
+    "npc_hurt_unused": {
+        "sounds": [
+            "confluence:mob/npc_hurt_unused"
+        ],
+        "subtitle": "confluence.subtitle.npc_hurt_unused"
+    },
+    "owl_free": {
+        "sounds": [
+            "confluence:mob/owl_free_0",
+            "confluence:mob/owl_free_1",
+            "confluence:mob/owl_free_2",
+            "confluence:mob/owl_free_3",
+            "confluence:mob/owl_free_4"
+        ],
+        "subtitle": "confluence.subtitle.owl_free"
+    },
+    "parrot_death": {
+        "sounds": [
+            "confluence:mob/parrot_death"
+        ],
+        "subtitle": "confluence.subtitle.parrot_death"
+    },
+    "parrot_free": {
+        "sounds": [
+            "confluence:mob/parrot_free"
+        ],
+        "subtitle": "confluence.subtitle.parrot_free"
+    },
+    "parrot_hurt": {
+        "sounds": [
+            "confluence:mob/parrot_hurt"
+        ],
+        "subtitle": "confluence.subtitle.parrot_hurt"
+    },
+    "phantasm_dragon_death": {
+        "sounds": [
+            "confluence:mob/phantasm_dragon_death"
+        ],
+        "subtitle": "confluence.subtitle.phantasm_dragon_death"
+    },
+    "phantasm_dragon_hurt": {
+        "sounds": [
+            "confluence:mob/phantasm_dragon_hurt"
+        ],
+        "subtitle": "confluence.subtitle.phantasm_dragon_hurt"
+    },
+    "phantasmal_deathray_free": {
+        "sounds": [
+            "confluence:mob/phantasmal_deathray_free"
+        ],
+        "subtitle": "confluence.subtitle.phantasmal_deathray_free"
+    },
+    "phantasmal_eye_free": {
+        "sounds": [
+            "confluence:mob/phantasmal_eye_free"
+        ],
+        "subtitle": "confluence.subtitle.phantasmal_eye_free"
+    },
+    "phantasmal_sphere_free": {
+        "sounds": [
+            "confluence:mob/phantasmal_sphere_free"
+        ],
+        "subtitle": "confluence.subtitle.phantasmal_sphere_free"
+    },
+    "pigron_death": {
+        "sounds": [
+            "confluence:mob/pigron_death"
+        ],
+        "subtitle": "confluence.subtitle.pigron_death"
+    },
+    "pigron_free": {
+        "sounds": [
+            "confluence:mob/pigron_free_0",
+            "confluence:mob/pigron_free_1",
+            "confluence:mob/pigron_free_2",
+            "confluence:mob/pigron_free_3"
+        ],
+        "subtitle": "confluence.subtitle.pigron_free"
+    },
+    "pigron_hurt": {
+        "sounds": [
+            "confluence:mob/pigron_hurt"
+        ],
+        "subtitle": "confluence.subtitle.pigron_hurt"
+    },
+    "player_death": {
+        "sounds": [
+            "confluence:item/player_death"
+        ],
+        "subtitle": "confluence.subtitle.player_death"
+    },
+    "player_hit": {
+        "sounds": [
+            "confluence:item/player_hit_0",
+            "confluence:item/player_hit_1",
+            "confluence:item/player_hit_2"
+        ],
+        "subtitle": "confluence.subtitle.player_hit"
+    },
+    "psycho_death": {
+        "sounds": [
+            "confluence:mob/psycho_death"
+        ],
+        "subtitle": "confluence.subtitle.psycho_death"
+    },
+    "psycho_hurt": {
+        "sounds": [
+            "confluence:mob/psycho_hurt"
+        ],
+        "subtitle": "confluence.subtitle.psycho_hurt"
+    },
+    "queen_bee_death": {
+        "sounds": [
+            "confluence:mob/queen_bee_death"
+        ],
+        "subtitle": "confluence.subtitle.queen_bee_death"
+    },
+    "queen_bee_free": {
+        "sounds": [
+            "confluence:mob/queen_bee_free"
+        ],
+        "subtitle": "confluence.subtitle.queen_bee_free"
+    },
+    "queen_slime_death": {
+        "sounds": [
+            "confluence:mob/queen_slime_death"
+        ],
+        "subtitle": "confluence.subtitle.queen_slime_death"
+    },
+    "queen_slime_free": {
+        "sounds": [
+            "confluence:mob/queen_slime_free_0",
+            "confluence:mob/queen_slime_free_1",
+            "confluence:mob/queen_slime_free_2"
+        ],
+        "subtitle": "confluence.subtitle.queen_slime_free"
+    },
+    "reaper_death": {
+        "sounds": [
+            "confluence:mob/reaper_death"
+        ],
+        "subtitle": "confluence.subtitle.reaper_death"
+    },
+    "reaper_hurt": {
+        "sounds": [
+            "confluence:mob/reaper_hurt"
+        ],
+        "subtitle": "confluence.subtitle.reaper_hurt"
+    },
+    "research": {
+        "sounds": [
+            "confluence:mob/research_1",
+            "confluence:mob/research_2",
+            "confluence:mob/research_3"
+        ],
+        "subtitle": "confluence.subtitle.research"
+    },
+    "research_complete": {
+        "sounds": [
+            "confluence:item/research_complete"
+        ],
+        "subtitle": "confluence.subtitle.research_complete"
+    },
+    "roar_2": {
+        "sounds": [
+            "confluence:item/roar_2"
+        ],
+        "subtitle": "confluence.subtitle.roar_2"
+    },
+    "run": {
+        "sounds": [
+            "confluence:item/run"
+        ],
+        "subtitle": "confluence.subtitle.run"
+    },
+    "salamander_death": {
+        "sounds": [
+            "confluence:mob/salamander_death"
+        ],
+        "subtitle": "confluence.subtitle.salamander_death"
+    },
+    "salamander_free": {
+        "sounds": [
+            "confluence:mob/salamander_free_0",
+            "confluence:mob/salamander_free_1"
+        ],
+        "subtitle": "confluence.subtitle.salamander_free"
+    },
+    "salamander_hurt": {
+        "sounds": [
+            "confluence:mob/salamander_hurt"
+        ],
+        "subtitle": "confluence.subtitle.salamander_hurt"
+    },
+    "scutlix_death": {
+        "sounds": [
+            "confluence:mob/scutlix_death"
+        ],
+        "subtitle": "confluence.subtitle.scutlix_death"
+    },
+    "scutlix_free": {
+        "sounds": [
+            "confluence:mob/scutlix_free"
+        ],
+        "subtitle": "confluence.subtitle.scutlix_free"
+    },
+    "scutlix_hurt": {
+        "sounds": [
+            "confluence:mob/scutlix_hurt"
+        ],
+        "subtitle": "confluence.subtitle.scutlix_hurt"
+    },
+    "seagull_free": {
+        "sounds": [
+            "confluence:mob/seagull_free_0",
+            "confluence:mob/seagull_free_1",
+            "confluence:mob/seagull_free_2"
+        ],
+        "subtitle": "confluence.subtitle.seagull_free"
+    },
+    "shadowflame_apparition_death": {
+        "sounds": [
+            "confluence:mob/shadowflame_apparition_death"
+        ],
+        "subtitle": "confluence.subtitle.shadowflame_apparition_death"
+    },
+    "shadowflame_apparition_hurt": {
+        "sounds": [
+            "confluence:mob/shadowflame_apparition_hurt"
+        ],
+        "subtitle": "confluence.subtitle.shadowflame_apparition_hurt"
+    },
+    "shatter": {
+        "sounds": [
+            "confluence:item/shatter"
+        ],
+        "subtitle": "confluence.subtitle.shatter"
+    },
+    "splash": {
+        "sounds": [
+            "confluence:item/splash_0",
+            "confluence:item/splash_1",
+            "confluence:item/splash_2",
+            "confluence:item/splash_3",
+            "confluence:item/splash_4",
+            "confluence:item/splash_5"
+        ],
+        "subtitle": "confluence.subtitle.splash"
+    },
+    "target_dummy_hurt": {
+        "sounds": [
+            "confluence:mob/target_dummy_hurt_0",
+            "confluence:mob/target_dummy_hurt_1",
+            "confluence:mob/target_dummy_hurt_2"
+        ],
+        "subtitle": "confluence.subtitle.target_dummy_hurt"
+    },
+    "tesla_turret_death": {
+        "sounds": [
+            "confluence:mob/tesla_turret_death"
+        ],
+        "subtitle": "confluence.subtitle.tesla_turret_death"
+    },
+    "tesla_turret_hurt": {
+        "sounds": [
+            "confluence:mob/tesla_turret_hurt"
+        ],
+        "subtitle": "confluence.subtitle.tesla_turret_hurt"
+    },
+    "the_possessed_death": {
+        "sounds": [
+            "confluence:mob/the_possessed_death"
+        ],
+        "subtitle": "confluence.subtitle.the_possessed_death"
+    },
+    "the_possessed_free": {
+        "sounds": [
+            "confluence:mob/the_possessed_free_0",
+            "confluence:mob/the_possessed_free_1"
+        ],
+        "subtitle": "confluence.subtitle.the_possessed_free"
+    },
+    "the_possessed_hurt": {
+        "sounds": [
+            "confluence:mob/the_possessed_hurt"
+        ],
+        "subtitle": "confluence.subtitle.the_possessed_hurt"
+    },
+    "thunder": {
+        "sounds": [
+            "confluence:item/thunder_0",
+            "confluence:item/thunder_1",
+            "confluence:item/thunder_2",
+            "confluence:item/thunder_3",
+            "confluence:item/thunder_4",
+            "confluence:item/thunder_5",
+            "confluence:item/thunder_6"
+        ],
+        "subtitle": "confluence.subtitle.thunder"
+    },
+    "tink": {
+        "sounds": [
+            "confluence:item/tink_0",
+            "confluence:item/tink_1",
+            "confluence:item/tink_2"
+        ],
+        "subtitle": "confluence.subtitle.tink"
+    },
+    "toucan_free": {
+        "sounds": [
+            "confluence:mob/toucan_free_0",
+            "confluence:mob/toucan_free_1"
+        ],
+        "subtitle": "confluence.subtitle.toucan_free"
+    },
+    "true_eye_of_cthulhu_free": {
+        "sounds": [
+            "confluence:mob/true_eye_of_cthulhu_free_0",
+            "confluence:mob/true_eye_of_cthulhu_free_1"
+        ],
+        "subtitle": "confluence.subtitle.true_eye_of_cthulhu_free"
+    },
+    "unlock": {
+        "sounds": [
+            "confluence:item/unlock"
+        ],
+        "subtitle": "confluence.subtitle.unlock"
+    },
+    "vampire_free": {
+        "sounds": [
+            "confluence:mob/vampire_free"
+        ],
+        "subtitle": "confluence.subtitle.vampire_free"
+    },
+    "vile_spit_death": {
+        "sounds": [
+            "confluence:mob/vile_spit_death"
+        ],
+        "subtitle": "confluence.subtitle.vile_spit_death"
+    },
+    "vulture_death": {
+        "sounds": [
+            "confluence:mob/vulture_death"
+        ],
+        "subtitle": "confluence.subtitle.vulture_death"
+    },
+    "vulture_hurt": {
+        "sounds": [
+            "confluence:mob/vulture_hurt"
+        ],
+        "subtitle": "confluence.subtitle.vulture_hurt"
+    },
+    "waterfall": {
+        "sounds": [
+            "confluence:item/waterfall"
+        ],
+        "subtitle": "confluence.subtitle.waterfall"
+    },
+    "werewolf_hurt": {
+        "sounds": [
+            "confluence:mob/werewolf_hurt"
+        ],
+        "subtitle": "confluence.subtitle.werewolf_hurt"
+    },
+    "windy_balloon_death": {
+        "sounds": [
+            "confluence:mob/windy_balloon_death"
+        ],
+        "subtitle": "confluence.subtitle.windy_balloon_death"
+    },
+    "wraith_death": {
+        "sounds": [
+            "confluence:mob/wraith_death"
+        ],
+        "subtitle": "confluence.subtitle.wraith_death"
+    },
+    "wraith_free": {
+        "sounds": [
+            "confluence:mob/wraith_free_0",
+            "confluence:mob/wraith_free_1",
+            "confluence:mob/wraith_free_2"
+        ],
+        "subtitle": "confluence.subtitle.wraith_free"
+    },
+    "wraith_hurt": {
+        "sounds": [
+            "confluence:mob/wraith_hurt"
+        ],
+        "subtitle": "confluence.subtitle.wraith_hurt"
+    },
+    "zombie5_free": {
+        "sounds": [
+            "confluence:mob/zombie5_free"
+        ],
+        "subtitle": "confluence.subtitle.zombie5_free"
+    },
+    "zombie87_free": {
+        "sounds": [
+            "confluence:mob/zombie87_free"
+        ],
+        "subtitle": "confluence.subtitle.zombie87_free"
+    },
+    "antlion_swarmer_hurt": {
+        "sounds": [
+            "confluence:mob/antlion_swarmer_hurt"
+        ],
+        "subtitle": "confluence.subtitle.antlion_swarmer_hurt"
+    },
+    "summon_hornet": {
+        "sounds": [
+            "confluence:summon/summon_hornet"
+        ],
+        "subtitle": "confluence.subtitle.summon_hornet"
     }
 }

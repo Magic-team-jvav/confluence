@@ -2,9 +2,12 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.ai.bt.leaf.CasterCycleAction;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 共用法师状态机的地牢与哥布林法师。
 ///
@@ -98,4 +101,16 @@ public class DarkCaster extends BaseCasterMonster {
             this.projectileIntervalTicks = projectileIntervalTicks;
         }
     }
+
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.TR_SKELETON_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.TR_ZOMBIE_DEATH.get();
+    }
+
 }

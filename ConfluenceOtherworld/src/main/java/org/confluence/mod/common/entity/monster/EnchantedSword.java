@@ -4,6 +4,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -12,6 +13,7 @@ import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.ChargeAttackAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 先原地旋转蓄势，再锁定方向穿过地形冲锋的附魔剑。
 ///
@@ -75,4 +77,15 @@ public final class EnchantedSword extends PhasingChargeMonster {
             return BTStatus.RUNNING;
         }
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.METAL_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.SOUL_DEATH.get();
+    }
+
 }

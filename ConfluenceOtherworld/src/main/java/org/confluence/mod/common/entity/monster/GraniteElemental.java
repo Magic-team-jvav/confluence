@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -29,6 +30,7 @@ import org.confluence.mod.common.entity.ai.bt.composite.SequenceNode;
 import org.confluence.mod.common.entity.ai.bt.condition.HasTargetCondition;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyingPursuitAction;
 import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
+import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -241,4 +243,20 @@ public class GraniteElemental extends BaseFlyingMonster {
             return values[Mth.clamp(id, 0, values.length - 1)];
         }
     }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.GRANITE_GOLEM_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.GRANITE_GOLEM_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.GRANITE_GOLEM_DEATH.get();
+    }
+
 }

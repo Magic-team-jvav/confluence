@@ -8,7 +8,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.joml.Vector3f;
 
 /// 金色史莱姆 —— 高血量、快速跳跃、掉落金币，稀有。

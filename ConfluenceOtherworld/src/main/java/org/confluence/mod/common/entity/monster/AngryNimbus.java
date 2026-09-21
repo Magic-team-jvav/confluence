@@ -5,6 +5,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -13,6 +15,7 @@ import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.confluence.mod.common.entity.projectile.NimbusRain;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 public final class AngryNimbus extends BaseFlyingMonster {
     public AngryNimbus(EntityType<? extends AngryNimbus> type, Level level) {
@@ -60,4 +63,20 @@ public final class AngryNimbus extends BaseFlyingMonster {
             }
         };
     }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.ANGRY_NIMBUS_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.ANGRY_NIMBUS_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.ANGRY_NIMBUS_DEATH.get();
+    }
+
 }

@@ -8,6 +8,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -15,6 +17,7 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 public class GoblinWarlock extends BaseMonster {
     private int casting;
@@ -124,4 +127,20 @@ public class GoblinWarlock extends BaseMonster {
         }
         setNoGravity(flying > 0);
     }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.GOBLIN_WARLOCK_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.GOBLIN_WARLOCK_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.GOBLIN_WARLOCK_DEATH.get();
+    }
+
 }

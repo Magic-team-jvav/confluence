@@ -4,9 +4,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 public class ShadowflameApparition extends BaseFlyingMonster {
     public ShadowflameApparition(EntityType<? extends ShadowflameApparition> type, Level level) {
@@ -37,4 +40,15 @@ public class ShadowflameApparition extends BaseFlyingMonster {
             }
         };
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.SHADOWFLAME_APPARITION_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.SHADOWFLAME_APPARITION_DEATH.get();
+    }
+
 }

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -20,6 +21,7 @@ import org.confluence.mod.common.entity.projectile.AncientLightProjectile;
 import org.confluence.mod.common.entity.projectile.CultistProjectile;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 拜月教邪教徒——传送+弹幕+召唤幻影龙。
 public class LunaticCultist extends BaseBoss {
@@ -290,4 +292,20 @@ public class LunaticCultist extends BaseBoss {
     @Override public boolean isPushable() { return false; }
 
     public enum CombatState {CASTING, RELOCATING, RITUAL, WOUNDED}
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return ModSoundEvents.LUNATIC_CULTIST_FREE.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.LUNATIC_CULTIST_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.LUNATIC_CULTIST_DEATH.get();
+    }
+
 }

@@ -16,11 +16,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.EnemyWalkNodeEvaluator;
 import org.confluence.mod.common.entity.projectile.SpiderWebSpit;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 public class ClimbingSpider extends BaseWarriorMonster {
     private static final EntityDataAccessor<Boolean> CLIMBING = SynchedEntityData.defineId(ClimbingSpider.class, EntityDataSerializers.BOOLEAN);
@@ -131,4 +133,15 @@ public class ClimbingSpider extends BaseWarriorMonster {
     public enum Kind {
         WALL, BLACK_RECLUSE, JUNGLE
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.BLACK_RECLUSE_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.BLACK_RECLUSE_DEATH.get();
+    }
+
 }

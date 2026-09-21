@@ -10,10 +10,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.mod.common.entity.monster.BaseFlyingMonster;
 import org.confluence.mod.common.entity.projectile.TwinEyeProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
+import org.confluence.mod.common.init.ModSoundEvents;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -230,4 +233,15 @@ public class Spazmatism extends AbstractTwinEye {
         dashesRemaining = tag.getInt(DASHES_TAG);
         dashDirection = new Vec3(tag.getDouble(DASH_X_TAG), tag.getDouble(DASH_Y_TAG), tag.getDouble(DASH_Z_TAG));
     }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return ModSoundEvents.METAL_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return ModSoundEvents.METAL_DEATH.get();
+    }
+
 }

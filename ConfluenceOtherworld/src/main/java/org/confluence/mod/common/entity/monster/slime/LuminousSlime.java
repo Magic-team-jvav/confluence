@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.monster.slime;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
 /// 使用独立夜明纹理的神圣史莱姆变体。

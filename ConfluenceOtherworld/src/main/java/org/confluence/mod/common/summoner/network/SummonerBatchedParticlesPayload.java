@@ -15,12 +15,6 @@ import org.mesdag.portlib.network.codec.PortStreamCodec;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Summoner 模块的批量粒子网络包。
- * <p>
- * 服务端在一个 Level tick 内累积的粒子会统一打包为一条消息，客户端收到后逐条生成。
- * </p>
- */
 public record SummonerBatchedParticlesPayload(List<Entry> entries) implements IPortPacket.S2C {
 
     public static final ResourceLocation ID = Confluence.asResource("summoner_batched_particles");
@@ -44,7 +38,6 @@ public record SummonerBatchedParticlesPayload(List<Entry> entries) implements IP
         return ID;
     }
 
-    /** 单条粒子记录：类型、位置和速度。 */
     public record Entry(ParticleOptions options, double x, double y, double z, double vx, double vy, double vz) {
 
         @SuppressWarnings("unchecked")

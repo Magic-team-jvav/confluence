@@ -2,6 +2,7 @@ package org.confluence.mod.common.summoner.register;
 
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachment.AttachmentEntityData;
+import org.confluence.mod.common.summoner.attachment.InfoData;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.particle.SummonerParticleData;
@@ -22,6 +23,12 @@ public final class SummonerAttachmentTypes {
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<SummonerParticleData>> BATCHED_PARTICLES =
             TYPES.registerSimple("summoner_batched_particles", () -> PortAttachmentType.builder(SummonerParticleData::new));
+
+    /// 信息数据（Level 级）：服务端累积、tick 末尾发包，客户端分流为数字/文本信息。
+    ///
+    /// 当前未启用 —— 没有任何调用点，原版伤害指示粒子保持原样；要接入见 {@link InfoData}。
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<InfoData>> INFO =
+            TYPES.registerSimple("summoner_info", () -> PortAttachmentType.builder(InfoData::new));
 
     public static void init() {
     }

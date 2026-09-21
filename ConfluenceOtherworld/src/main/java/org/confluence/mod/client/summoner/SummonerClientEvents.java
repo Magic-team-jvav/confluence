@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.summoner.info.InfoRenderDispatcher;
 import org.confluence.mod.client.summoner.renderer.minion.FinchRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.HornetRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.IronGolemRenderer;
@@ -72,6 +73,7 @@ public final class SummonerClientEvents {
             if (level != null && event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
                 MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
                 AttachmentEntityRenderDispatcher.render(level, event.getCamera(), event.getPoseStack(), bufferSource, event.getPartialTick());
+                InfoRenderDispatcher.render(level, event.getCamera(), event.getPoseStack(), bufferSource, event.getPartialTick());
             }
         });
         PortEventHandler.addListener((PortFMLClientSetupEventPort event) -> event.enqueueWork(() -> {

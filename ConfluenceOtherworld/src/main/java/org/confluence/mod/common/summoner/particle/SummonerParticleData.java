@@ -4,6 +4,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.mesdag.portlib.event.tick.PortLevelTickEvent;
 import org.mesdag.portlib.network.PortPacketDistributor;
 
 import java.util.ArrayList;
@@ -16,8 +17,11 @@ public final class SummonerParticleData {
 
     private final List<SummonerBatchedParticlesPayload.Entry> entries = new ArrayList<>();
 
-    /** 将本 tick 累积的粒子打包发送给同维度玩家。 */
-    public static void tick(Level level) {
+    /**
+     * 将本 tick 累积的粒子打包发送给同维度玩家。
+     */
+    public static void tick(PortLevelTickEvent.Post event) {
+        Level level = event.getLevel();
         if (!level.isClientSide()) {
             SummonerParticleData data = level.getData(SummonerAttachmentTypes.BATCHED_PARTICLES);
             if (!data.entries.isEmpty()) {
@@ -28,7 +32,9 @@ public final class SummonerParticleData {
         }
     }
 
-    /** 累积一条粒子记录。 */
+    /**
+     * 累积一条粒子记录。
+     */
     public void add(ParticleOptions options, double x, double y, double z, double vx, double vy, double vz) {
         entries.add(new SummonerBatchedParticlesPayload.Entry(options, x, y, z, vx, vy, vz));
     }

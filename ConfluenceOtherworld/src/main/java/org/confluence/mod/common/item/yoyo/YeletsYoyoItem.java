@@ -9,7 +9,7 @@ import org.confluence.mod.common.init.ModEffects;
 
 public final class YeletsYoyoItem extends YoyoItem {
     public YeletsYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.PINK, 15, 18.125F, 0xFFFFFFFF, 14 * 20, 3.1F);
+        super(new Properties().unbreakable(), ModRarity.PINK, 28, 18.125F, 0xFFFFFFFF, 14 * 20, 3.1F);
     }
 
     @Override

@@ -14,7 +14,7 @@ public final class CascadeYoyoItem extends YoyoItem {
     protected String effectTooltip() {return "tooltip.confluence.yoyo.cascade";}
 
     public CascadeYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.ORANGE, 5.5F, 14.6875F, 0xFFC896, 13 * 20, 4.3F);
+        super(new Properties().unbreakable(), ModRarity.ORANGE, 11.5F, 14.6875F, 0xFFC896, 13 * 20, 4.3F);
     }
 
     @Override

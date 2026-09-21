@@ -4,7 +4,7 @@ import org.confluence.lib.common.component.ModRarity;
 
 public final class FormatCYoyoItem extends YoyoItem {
     public FormatCYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.PINK, 10, 20, 0xFFFFFFFF, 16 * 20, 3.25F);
+        super(new Properties().unbreakable(), ModRarity.PINK, 19, 20, 0xFFFFFFFF, 16 * 20, 3.25F);
     }
 
     @Override

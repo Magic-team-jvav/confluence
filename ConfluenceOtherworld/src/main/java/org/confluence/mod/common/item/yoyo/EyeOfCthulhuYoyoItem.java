@@ -8,7 +8,7 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 
 public final class EyeOfCthulhuYoyoItem extends YoyoItem {
     public EyeOfCthulhuYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.YELLOW, 28.75F, 22.5F, 0xFFFFFFFF, 0, 3.5F);
+        super(new Properties().unbreakable(), ModRarity.YELLOW, 55F, 22.5F, 0xFFFFFFFF, 0, 3.5F);
     }
 
     @Override

@@ -10,7 +10,7 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 
 public final class KrakenYoyoItem extends YoyoItem {
     public KrakenYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.YELLOW, 30, 23.75F, 0xFFFFFFFF, 0, 4.3F);
+        super(new Properties().unbreakable(), ModRarity.YELLOW, 47, 23.75F, 0xFFFFFFFF, 0, 4.3F);
     }
 
     @Override

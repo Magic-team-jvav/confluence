@@ -9,7 +9,7 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 
 public final class ChikYoyoItem extends YoyoItem {
     public ChikYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 8.5F, 17.1875F, 0xFFFFFFFF, 16 * 20, 3.3F);
+        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 19F, 17.1875F, 0xFFFFFFFF, 16 * 20, 3.3F);
     }
 
     @Override

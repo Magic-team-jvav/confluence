@@ -9,7 +9,7 @@ import org.confluence.mod.common.init.ModEffects;
 
 public final class AmarokYoyoItem extends YoyoItem {
     public AmarokYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 11.75F, 16.875F, 0xFFFFFFFF, 15 * 20, 2.8F);
+        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 21F, 16.875F, 0xFFFFFFFF, 15 * 20, 2.8F);
     }
 
     @Override

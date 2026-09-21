@@ -1679,7 +1679,8 @@ public record GiftSubProvider() implements LootTableSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.WEATHER_PAIN))
                         .add(LootItem.lootTableItem(AxeItems.LUCY_THE_AXE))
-                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                        .add(LootItem.lootTableItem(SummonItems.EYE_LASER_TURRET_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(1))
                 );
     }
 

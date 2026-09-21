@@ -14,7 +14,7 @@ public final class HiveFiveYoyoItem extends YoyoItem {
     protected String effectTooltip() {return "tooltip.confluence.yoyo.bees";}
 
     public HiveFiveYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.ORANGE, 5.2F, 14.0625F, 0xFFC896, 11 * 20, 3.75F);
+        super(new Properties().unbreakable(), ModRarity.ORANGE, 10F, 14.0625F, 0xFFC896, 11 * 20, 3.75F);
     }
 
     @Override

@@ -5823,7 +5823,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(YoyoItems.VALOR.get(), "英勇球");
         add(YoyoItems.WOODEN_YOYO.get(), "木悠悠球");
         add(YoyoItems.CHIK.get(), "吉克球");
-        add(YoyoItems.FORMAT_C.get(), "格式：C");
+        add(YoyoItems.FORMAT_C.get(), "好胜球");
         add(YoyoItems.HEL_FIRE.get(), "狱火球");
         add(YoyoItems.AMAROK.get(), "冰雪悠悠球");
         add(YoyoItems.GRADIENT.get(), "渐变球");

@@ -631,6 +631,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BOUNCY_CLOUD_BLOCK.get(),
                 SNOW_CLOUD_BLOCK.get(),
                 STAR_CLOUD_BLOCK.get(),
+                OPAL_ORE.get(),
 
                 VOID_GRASS_BLOCK.get(),
                 INVERSE_GRASS_BLOCK.get(),

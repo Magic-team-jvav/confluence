@@ -9,7 +9,7 @@ import org.confluence.mod.common.init.ModEffects;
 
 public final class HelFireYoyoItem extends YoyoItem {
     public HelFireYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 10.75F, 20.625F, 0xFFFFFFFF, 12 * 20, 4.5F);
+        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 19F, 20.625F, 0xFFFFFFFF, 12 * 20, 4.5F);
     }
 
     @Override

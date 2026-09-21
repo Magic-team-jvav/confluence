@@ -9,7 +9,7 @@ import org.confluence.mod.mixed.Immunity;
 
 public final class TerrarianYoyoItem extends YoyoItem implements Immunity {
     public TerrarianYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.RED, 47.5F, 25, 0xFFFFFFFF, 0, 6.5F);
+        super(new Properties().unbreakable(), ModRarity.RED, 95F, 25, 0xFFFFFFFF, 0, 6.5F);
     }
 
     /// 每 0.1 秒发射一次，副球与脱手球同样保留此能力。

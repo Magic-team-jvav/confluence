@@ -178,7 +178,13 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
         }
         tooltips.add(Component.translatable("item.confluence.tooltip.summon", typeSupplier.get().getDisplayName()).withStyle(ChatFormatting.GRAY));
         SummonerHelper helper = SummonerHelper.get(player);
-        tooltips.add(Component.translatable("item.confluence.tooltip.summon_slots", Component.literal(String.valueOf(helper.getUsedSlots(slotType))).withStyle(ChatFormatting.BLUE), Component.literal(String.valueOf(helper.getMaxCount(slotType))).withStyle(ChatFormatting.BLUE)).withStyle(ChatFormatting.GRAY));
+        tooltips.add(Component.translatable(
+                slotType == MinionSlotType.Sentry
+                        ? "item.confluence.tooltip.sentry_slots"
+                        : "item.confluence.tooltip.minion_slots",
+                Component.literal(String.valueOf(helper.getUsedSlots(slotType))).withStyle(ChatFormatting.BLUE),
+                Component.literal(String.valueOf(helper.getMaxCount(slotType))).withStyle(ChatFormatting.BLUE)
+        ).withStyle(ChatFormatting.GRAY));
         tooltips.add(Component.translatable("item.confluence.tooltip.remove_summon").withStyle(ChatFormatting.GRAY));
         return tooltips;
     }

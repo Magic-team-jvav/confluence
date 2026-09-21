@@ -5185,7 +5185,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("summon.confluence.terraprisma", "泰拉棱镜");
         add("summon.confluence.deadly_sphere", "致命球");
         add("summon.confluence.vampire_bat", "血蝙蝠");
-        add("entity.confluence.spider", "蜘蛛召唤物");
+        add("entity.confluence.spider", "蜘蛛");
         add("entity.confluence.desert_tiger", "沙漠虎");
         add("tooltip.confluence.summon.damage", "基础召唤伤害：%s");
         add("tooltip.confluence.summon.slots", "占用仆从栏：%s");
@@ -5194,7 +5194,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.tooltip.knockback", "击退");
         add("item.confluence.tooltip.armor_pierce", "护甲穿透");
         add("item.confluence.tooltip.summon", "召唤%s");
-        add("item.confluence.tooltip.summon_slots", "仆从栏：%s/%s");
+        add("item.confluence.tooltip.minion_slots", "仆从栏：%s/%s");
+        add("item.confluence.tooltip.sentry_slots", "哨兵栏：%s/%s");
         add("item.confluence.tooltip.remove_summon", "潜行右键遣散");
         add("tooltip.confluence.storage_companion.retrieve", "潜行右键以收回");
         add(ModEntities.FLOWER_POWER_PETAL.get(), "花之力花瓣");

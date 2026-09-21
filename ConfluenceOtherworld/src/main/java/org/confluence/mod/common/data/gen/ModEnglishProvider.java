@@ -102,7 +102,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("item.confluence.tooltip.knockback", "Knockback");
         add("item.confluence.tooltip.armor_pierce", "Armor Penetration");
         add("item.confluence.tooltip.summon", "Summons %s");
-        add("item.confluence.tooltip.summon_slots", "Minion slots: %s/%s");
+        add("item.confluence.tooltip.minion_slots", "Minion slots: %s/%s");
+        add("item.confluence.tooltip.sentry_slots", "Sentry slots: %s/%s");
         add("item.confluence.tooltip.remove_summon", "Sneak and right-click to dismiss");
         add("tooltip.confluence.storage_companion.retrieve", "Sneak and right-click to recall");
         add(YoyoItems.AMAZON.get(), "Amazon");

@@ -59,11 +59,8 @@ public final class Nymph extends BaseMonster {
         if (level().isClientSide) {
             return;
         }
-        if (getTarget() != null && !(getTarget() instanceof Player)) {
-            setTarget(null);
-        }
         LivingEntity target = getTarget();
-        if (!(target instanceof Player player) || !player.isAlive() || player.isCreative() || player.isSpectator()) {
+        if (target == null || !target.isAlive() || !canAttack(target) || target instanceof Player player && (player.isCreative() || player.isSpectator())) {
             setTarget(null);
             setTriggered(false);
             updatePursuitSpeed(false);

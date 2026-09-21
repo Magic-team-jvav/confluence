@@ -32,7 +32,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin implements SelfGetter<ItemRenderer> {
@@ -56,10 +55,10 @@ public abstract class ItemRendererMixin implements SelfGetter<ItemRenderer> {
             HumanoidArm arm = leftHand ? HumanoidArm.LEFT : HumanoidArm.RIGHT;
             return player.level().getEntitiesOfClass(WhipAttackEntity.class, player.getBoundingBox().inflate(8.0), attack -> attack.representsHeldWeapon(player, stack, arm)).isEmpty();
         }
-        if (stack.getItem() instanceof YoyoItem) {
+        if (stack.getItem() instanceof YoyoItem && (displayContext.firstPerson() || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) {
             return player.level().getEntitiesOfClass(YoyoEntity.class,
                     AABB.ofSize(player.position(), 128.0D, 128.0D, 128.0D),
-                    yoyo -> yoyo.belongsTo(player) && yoyo.represents(stack)).isEmpty();
+                    yoyo -> !yoyo.isDetached() && !yoyo.isCounterweight() && yoyo.belongsTo(player) && yoyo.represents(stack)).isEmpty();
         }
         if (!(stack.getItem() instanceof BasePhasebladeItem)
                 || !(displayContext.firstPerson() || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND

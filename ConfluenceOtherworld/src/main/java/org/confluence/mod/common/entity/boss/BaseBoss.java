@@ -32,9 +32,10 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.ai.bt.Blackboard;
 import org.confluence.mod.common.entity.monster.BaseMonster;
-import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.network.s2c.BossBarSyncPacketS2C;
 import org.mesdag.portlib.network.PortPacketDistributor;
@@ -68,6 +69,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     private static final byte PHASE_PARTICLE_EVENT = 60;
     private static final byte DEATH_PARTICLE_EVENT = 61;
     private @Nullable UUID synchronizedCombatTarget;
+    private @Nullable LivingEntity retaliationTarget;
     /// 本次遭遇中曾成为目标或直接攻击过 Boss 的玩家；仅存 UUID，避免跨卸载强引用。
     private final Set<UUID> combatParticipantIds = new LinkedHashSet<>();
     /// 已在机械三王同时存活期间共同参与三场遭遇的玩家。
@@ -286,27 +288,31 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             amount *= explosionResistance;
         }
         boolean hurt = super.hurt(source, amount);
-        if (hurt && source.getEntity() instanceof BaseNPC) onEncounterHurt(source);
+        if (hurt) onEncounterHurt(source);
         return hurt;
     }
 
     /// 本体和独立扣血的部件共用受击响应，不向本体重复结算部件伤害。
-    final void onEncounterHurt(DamageSource source) {
+    public final void onEncounterHurt(DamageSource source) {
         if (level().isClientSide || !isAlive()) return;
-        if (source.getEntity() instanceof Player player) registerCombatParticipant(player);
-        if (source.getEntity() instanceof BaseNPC npc && canAttack(npc)) {
-            setTarget(npc);
-        }
+        LivingEntity attacker = EnemyTargeting.attacker(source);
+        if (attacker instanceof Player player) registerCombatParticipant(player);
+        if (attacker == null || attacker == this || EnemyDamageRules.isEnemy(attacker)) return;
+        if (!(attacker instanceof Player)) retaliationTarget = attacker;
+        Player player = validCombatPlayer(getTarget());
+        if (player == null) player = findCombatPlayer();
+        if (player != null) setTarget(player);
+        else if (canAttack(attacker)) setTarget(attacker);
     }
 
-    /// Boss 遭遇攻击玩家及 NPC。部件、仆从、其他 Boss 和普通怪物即使恰好穿过
-    /// 本体的接触伤害箱，也不能被玩家战斗状态间接伤害。
+    /// Boss 优先攻击玩家，也能反击非敌怪攻击者；不主动攻击无关生物。
     @Override
     public boolean canAttack(LivingEntity target) {
         return isAlive() && shouldMaintainCombatTarget()
                 && target.level() == level() && target.isAlive() && !target.isRemoved()
                 && (!(target instanceof Player player) || !player.isCreative() && !player.isSpectator())
-                && (target instanceof Player || target instanceof BaseNPC)
+                && !EnemyDamageRules.isEnemy(target)
+                && (target instanceof Player || target == retaliationTarget || target == getLastHurtByMob())
                 && super.canAttack(target);
     }
 
@@ -402,11 +408,12 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
                 }
             }
             if (shouldMaintainCombatTarget()) {
-                targetBeforeAi = validNpcRetaliationTarget(getTarget());
-                if (targetBeforeAi == null) targetBeforeAi = validCombatPlayer(getTarget());
+                targetBeforeAi = validCombatPlayer(getTarget());
                 if (targetBeforeAi == null) {
                     targetBeforeAi = findCombatPlayer();
                 }
+                if (targetBeforeAi == null)
+                    targetBeforeAi = validRetaliationTarget(retaliationTarget);
                 if (getTarget() != targetBeforeAi) {
                     setTarget(targetBeforeAi);
                 }
@@ -453,17 +460,6 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
         // AI 运行期间可以刷新导航和攻击状态，但不能把仍然合法的权威玩家换成铁傀儡、
         // 召唤物或另一名玩家。只有原目标已经失效，才接受 AI 找到的合法玩家或重新选取。
-        BaseNPC npcTarget = validNpcRetaliationTarget(targetBeforeAi);
-        if (npcTarget == null) npcTarget = validNpcRetaliationTarget(getTarget());
-        if (npcTarget != null) {
-            if (getTarget() != npcTarget) setTarget(npcTarget);
-            synchronizeCombatTarget(null);
-            noTargetTicks = 0;
-            encounterObserverNearby = false;
-            stopDisengageRetreat();
-            return;
-        }
-
         Player combatPlayer = validCombatPlayer(targetBeforeAi);
         if (combatPlayer == null) combatPlayer = validCombatPlayer(getTarget());
         if (combatPlayer == null) combatPlayer = findCombatPlayer();
@@ -477,6 +473,16 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             stopDisengageRetreat();
             return;
         }
+
+        LivingEntity retaliation = validRetaliationTarget(retaliationTarget);
+        if (retaliation != null) {
+            setTarget(retaliation);
+            noTargetTicks = 0;
+            encounterObserverNearby = false;
+            stopDisengageRetreat();
+            return;
+        }
+        retaliationTarget = null;
 
         // 创造和旁观玩家只维持现场，不参与战斗，也绝不会进入 Mob#getTarget。
         // 该检查必须放在脱战计时之前：创造模式玩家同样“在场”，Boss 却永远找不到
@@ -702,12 +708,11 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         return target instanceof Player player && isValidCurrentCombatPlayer(player) ? player : null;
     }
 
-    private @Nullable BaseNPC validNpcRetaliationTarget(@Nullable LivingEntity target) {
-        return target instanceof BaseNPC npc
-                && npc.level() == level()
-                && npc.isAlive()
-                && combatAnchorDistanceSqr(npc) < getCombatPlayerRange() * getCombatPlayerRange()
-                && canAttack(npc) ? npc : null;
+    private @Nullable LivingEntity validRetaliationTarget(@Nullable LivingEntity target) {
+        return target != null && !(target instanceof Player)
+                && target.level() == level() && target.isAlive()
+                && combatAnchorDistanceSqr(target) < getCombatPlayerRange() * getCombatPlayerRange()
+                && canAttack(target) ? target : null;
     }
 
     private boolean isEncounterObserver(Player player) {
@@ -730,8 +735,8 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     final @Nullable LivingEntity getAuthoritativeLivingTarget() {
         if (!shouldMaintainCombatTarget()) return null;
-        BaseNPC npc = validNpcRetaliationTarget(getTarget());
-        return npc == null ? validCombatPlayer(getTarget()) : npc;
+        Player player = validCombatPlayer(getTarget());
+        return player == null ? validRetaliationTarget(getTarget()) : player;
     }
 
     private boolean isEligibleRetargetCandidate(Player player) {

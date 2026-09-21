@@ -14,6 +14,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.jetbrains.annotations.Nullable;
@@ -196,7 +197,7 @@ public class BaseWormPart extends Entity implements WormSegment, GeoEntity, Part
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (org.confluence.mod.common.entity.EnemyDamageRules.blocks(this, source)) return false;
+        if (EnemyDamageRules.blocks(this, source)) return false;
         BaseWormMonster head = getOwner();
         if (head == null || !head.isAlive() || !head.hurtSegment(this, source, amount))
             return false;

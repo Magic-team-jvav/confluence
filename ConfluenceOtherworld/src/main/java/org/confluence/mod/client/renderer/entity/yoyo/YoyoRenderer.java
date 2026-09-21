@@ -2,12 +2,16 @@ package org.confluence.mod.client.renderer.entity.yoyo;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.entity.TetherRenderHelper;
@@ -42,14 +46,34 @@ public final class YoyoRenderer extends GeoEntityRenderer<YoyoEntity> {
         }
 
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTick, player.yHeadRotO, player.yHeadRot)));
-        poseStack.translate(0.0F, 0.25F, 0.0F);
-        poseStack.mulPose(Axis.XN.rotationDegrees((entity.tickCount + partialTick) * 45.0F));
-        poseStack.translate(0.0F, -0.5F, 0.0F);
-        super.render(entity, entityYaw, partialTick, poseStack, buffers, packedLight);
+        if (entity.isCounterweight()) {
+            poseStack.translate(0, 0.25, 0);
+            poseStack.mulPose(Axis.YP.rotationDegrees((entity.tickCount + partialTick) * 24));
+            poseStack.mulPose(Axis.XP.rotationDegrees((entity.tickCount + partialTick) * 16));
+            poseStack.scale(0.3F, 0.3F, 0.3F);
+            poseStack.translate(-0.5, -0.5, -0.5);
+            /// 平衡锤专用美术未提供，先用对应颜色的原版方块显示独立弹体。
+            BlockState block = switch (entity.counterweightColor()) {
+                case 1 -> Blocks.BLACK_CONCRETE.defaultBlockState();
+                case 2 -> Blocks.BLUE_CONCRETE.defaultBlockState();
+                case 3 -> Blocks.GREEN_CONCRETE.defaultBlockState();
+                case 4 -> Blocks.PURPLE_CONCRETE.defaultBlockState();
+                case 5 -> Blocks.RED_CONCRETE.defaultBlockState();
+                case 6 -> Blocks.YELLOW_CONCRETE.defaultBlockState();
+                default -> Blocks.PINK_CONCRETE.defaultBlockState();
+            };
+            Minecraft.getInstance().getBlockRenderer().renderSingleBlock(block, poseStack, buffers, packedLight, OverlayTexture.NO_OVERLAY);
+        } else {
+            poseStack.mulPose(Axis.YP.rotationDegrees(-Mth.lerp(partialTick, player.yHeadRotO, player.yHeadRot)));
+            poseStack.translate(0.0F, 0.25F, 0.0F);
+            poseStack.mulPose(Axis.XN.rotationDegrees((entity.tickCount + partialTick) * 45.0F));
+            poseStack.translate(0.0F, -0.5F, 0.0F);
+            super.render(entity, entityYaw, partialTick, poseStack, buffers, item.fullBright() ? 0xF000F0 : packedLight);
+        }
         poseStack.popPose();
 
-        TetherRenderHelper.renderMainHandString(entityRenderDispatcher, entity, player, 0.25F, item.stringColor(), partialTick, poseStack, buffers);
+        if (!entity.isDetached())
+            TetherRenderHelper.renderMainHandString(entityRenderDispatcher, entity, player, 0.25F, entity.stringColor(), partialTick, poseStack, buffers);
     }
 
     private static final class Model extends GeoModel<YoyoEntity> {

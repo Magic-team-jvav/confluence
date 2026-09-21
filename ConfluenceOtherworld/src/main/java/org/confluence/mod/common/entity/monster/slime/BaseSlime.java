@@ -109,6 +109,9 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
     }
 
     @Override
+    protected boolean canTargetPlayer(LivingEntity player) {return canProactivelyTargetPlayer(player);}
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DATA_SIZE, 2);

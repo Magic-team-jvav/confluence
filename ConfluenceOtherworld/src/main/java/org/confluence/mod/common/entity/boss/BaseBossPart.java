@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.api.entity.Boss;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.jetbrains.annotations.Nullable;
 
@@ -162,7 +163,7 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
     }
 
     protected final boolean hurtOwnerAndPart(DamageSource source, float amount, float ownerMultiplier) {
-        if (org.confluence.mod.common.entity.EnemyDamageRules.blocks(this, source)) return false;
+        if (EnemyDamageRules.blocks(this, source)) return false;
         if (level().isClientSide || amount <= 0.0F) return false;
         T resolvedOwner = getOwner();
         if (resolvedOwner == null || !resolvedOwner.isAlive() || isRemoved()) {

@@ -49,6 +49,11 @@ public class AccessoryItems {
     public static final ValueType.UnitType PAINT$SPRAYER = ValueType.ofUnit("paint_sprayer");
     public static final ValueType.UnitType CLOTHIER$KILLER = ValueType.ofUnit("clothier_killer");
     public static final ValueType.UnitType $AFK = ValueType.ofUnit("afk"); // todo
+    public static final ValueType.UnitType YOYO$STRING = ValueType.ofUnit("yoyo_string");
+    public static final ValueType.IntegerType YOYO$STRING_COLOR = ValueType.ofInteger("yoyo_string_color", IntegerValue.GET_MAX, -1);
+    public static final ValueType.UnitType YOYO$GLOVE = ValueType.ofUnit("yoyo_glove");
+    public static final ValueType.UnitType YOYO$OFFSTRING = ValueType.ofUnit("yoyo_offstring");
+    public static final ValueType.IntegerType YOYO$COUNTERWEIGHT = ValueType.ofInteger("yoyo_counterweight", IntegerValue.GET_MAX, 0);
     public static int AFK_INDEX = -1;
 
     public static final ValueType.FloatType MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
@@ -128,6 +133,33 @@ public class AccessoryItems {
 
 
     public static final PortDeferredItem<BaseCurioItem> CLOTHIER_VOODOO_DOLL = registerCurio("clothier_voodoo_doll", builder -> builder.rarity(BLUE));
+    public static final PortDeferredItem<BaseCurioItem> WHITE_YOYO_STRING = registerCurio("white_string", builder -> builder.rarity(WHITE)),
+            RED_YOYO_STRING = registerCurio("red_string", builder -> builder.rarity(WHITE)),
+            ORANGE_YOYO_STRING = registerCurio("orange_string", builder -> builder.rarity(WHITE)),
+            YELLOW_YOYO_STRING = registerCurio("yellow_string", builder -> builder.rarity(WHITE)),
+            LIME_YOYO_STRING = registerCurio("lime_string", builder -> builder.rarity(WHITE)),
+            GREEN_YOYO_STRING = registerCurio("green_string", builder -> builder.rarity(WHITE)),
+            TEAL_YOYO_STRING = registerCurio("teal_string", builder -> builder.rarity(WHITE)),
+            CYAN_YOYO_STRING = registerCurio("cyan_string", builder -> builder.rarity(WHITE)),
+            SKY_BLUE_YOYO_STRING = registerCurio("sky_blue_string", builder -> builder.rarity(WHITE)),
+            BLUE_YOYO_STRING = registerCurio("blue_string", builder -> builder.rarity(WHITE)),
+            PURPLE_YOYO_STRING = registerCurio("purple_string", builder -> builder.rarity(WHITE)),
+            VIOLET_YOYO_STRING = registerCurio("violet_string", builder -> builder.rarity(WHITE)),
+            PINK_YOYO_STRING = registerCurio("pink_string", builder -> builder.rarity(WHITE)),
+            BROWN_YOYO_STRING = registerCurio("brown_string", builder -> builder.rarity(WHITE)),
+            RAINBOW_YOYO_STRING = registerCurio("rainbow_string", builder -> builder.rarity(WHITE)),
+            BLACK_YOYO_STRING = registerCurio("black_string", builder -> builder.rarity(WHITE)),
+            YOYO_GLOVE = registerCurio("yoyo_glove", builder -> builder.rarity(LIGHT_RED)),
+            BLACK_COUNTERWEIGHT = registerCurio("black_counterweight", builder -> builder.rarity(WHITE)),
+            BLUE_COUNTERWEIGHT = registerCurio("blue_counterweight", builder -> builder.rarity(WHITE)),
+            GREEN_COUNTERWEIGHT = registerCurio("green_counterweight", builder -> builder.rarity(WHITE)),
+            PURPLE_COUNTERWEIGHT = registerCurio("purple_counterweight", builder -> builder.rarity(WHITE)),
+            RED_COUNTERWEIGHT = registerCurio("red_counterweight", builder -> builder.rarity(WHITE)),
+            YELLOW_COUNTERWEIGHT = registerCurio("yellow_counterweight", builder -> builder.rarity(WHITE)),
+            STRUNG_COUNTERWEIGHT = registerCurio("strung_counterweight", builder -> builder.rarity(BLUE)),
+            YOYO_BAG = registerCurio("yoyo_bag", builder -> builder.rarity(LIGHT_RED)),
+            MAGIC_STRING = registerCurio("magic_string", builder -> builder.rarity(PINK)),
+            MAGIC_YOYO_BAG = registerCurio("magic_yoyo_bag", builder -> builder.rarity(PINK));
     public static final PortDeferredItem<BaseCurioItem> GUIDE_VOODOO_DOLL = registerDirectly("guide_voodoo_doll", GuideVooDooDollItem::new);
 
     private static PortDeferredItem<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {

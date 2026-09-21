@@ -61,7 +61,7 @@ public record YoyoControlPacketC2S(Action action, int amount)
                     item.press(player, stack);
                 }
             }
-            case RELEASE -> YoyoSession.of(player).release();
+            case RELEASE -> YoyoSession.of(player).release(player);
             case ADJUST_RANGE -> YoyoSession.of(player).adjustRange(player, amount);
         }
     }

@@ -10,15 +10,20 @@ import org.confluence.mod.network.c2s.YoyoControlPacketC2S;
 public final class YoyoInputHandler implements ClientWeaponInputHandler {
     public static final YoyoInputHandler INSTANCE = new YoyoInputHandler();
     private boolean held;
+    private ItemStack sourceStack = ItemStack.EMPTY;
+    private int selectedSlot = -1;
 
     private YoyoInputHandler() {}
 
     @Override
     public void tick(LocalPlayer player, ItemStack stack, boolean attackHeld) {
         boolean active = usesLeftButton(stack) && attackHeld;
-        if (active && !held) YoyoControlPacketC2S.sendPress();
+        if (active && (!held || sourceStack != stack || selectedSlot != player.getInventory().selected))
+            YoyoControlPacketC2S.sendPress();
         else if (held && !active) YoyoControlPacketC2S.sendRelease();
         held = active;
+        sourceStack = active ? stack : ItemStack.EMPTY;
+        selectedSlot = active ? player.getInventory().selected : -1;
     }
 
     @Override
@@ -45,5 +50,7 @@ public final class YoyoInputHandler implements ClientWeaponInputHandler {
     @Override
     public void reset() {
         held = false;
+        sourceStack = ItemStack.EMPTY;
+        selectedSlot = -1;
     }
 }

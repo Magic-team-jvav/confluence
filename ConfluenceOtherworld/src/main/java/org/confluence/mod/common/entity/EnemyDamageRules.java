@@ -17,7 +17,7 @@ public final class EnemyDamageRules {
         return isEnemy(victim) && isEnemy(attacker);
     }
 
-    private static boolean isEnemy(Entity entity) {
+    public static boolean isEnemy(Entity entity) {
         for (int depth = 0; entity != null && depth < 16; depth++) {
             if (entity instanceof OwnedSummon) return false;
             Entity owner = entity instanceof PartHitTarget part ? part.encounterOwner() : LibEntityUtils.getOwner(entity);

@@ -6,7 +6,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -108,7 +108,8 @@ public final class BossOwnerTracker<T extends BaseBoss> {
 
     private static boolean isBasicCombatTarget(@Nullable LivingEntity target, Mob dependent) {
         return target != null && target.level() == dependent.level() && target.isAlive() && !target.isRemoved()
-                && (target instanceof BaseNPC || target instanceof Player player && !player.isCreative() && !player.isSpectator());
+                && !EnemyDamageRules.isEnemy(target)
+                && (!(target instanceof Player player) || !player.isCreative() && !player.isSpectator());
     }
 
     public void unbind(Entity dependent) {

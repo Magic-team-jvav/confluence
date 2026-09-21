@@ -64,6 +64,90 @@ public class AccessoriesSubProvider {
                     .build());
         };
         appender.create()
+                .add(AccessoryItems.WHITE_YOYO_STRING, helper -> helper.unit(AccessoryItems.YOYO$STRING))
+                .add(AccessoryItems.RED_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0xFF4040);
+                })
+                .add(AccessoryItems.ORANGE_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0xFF9A36);
+                })
+                .add(AccessoryItems.YELLOW_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0xFFE040);
+                })
+                .add(AccessoryItems.LIME_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0xB8ED40);
+                })
+                .add(AccessoryItems.GREEN_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0x40C060);
+                })
+                .add(AccessoryItems.TEAL_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0x36B8A4);
+                })
+                .add(AccessoryItems.CYAN_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0x40D8F0);
+                })
+                .add(AccessoryItems.SKY_BLUE_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0x80BFFF);
+                })
+                .add(AccessoryItems.BLUE_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0x4870E0);
+                })
+                .add(AccessoryItems.PURPLE_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0xA45CDF);
+                })
+                .add(AccessoryItems.VIOLET_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0xD25AE0);
+                })
+                .add(AccessoryItems.PINK_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0xFF96C8);
+                })
+                .add(AccessoryItems.BROWN_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0x966040);
+                })
+                .add(AccessoryItems.RAINBOW_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0x1000000);
+                })
+                .add(AccessoryItems.BLACK_YOYO_STRING, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$STRING_COLOR, 0x242424);
+                })
+                .add(AccessoryItems.YOYO_GLOVE, helper -> helper.unit(AccessoryItems.YOYO$GLOVE))
+                .add(AccessoryItems.BLACK_COUNTERWEIGHT, helper -> helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 1))
+                .add(AccessoryItems.BLUE_COUNTERWEIGHT, helper -> helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 2))
+                .add(AccessoryItems.GREEN_COUNTERWEIGHT, helper -> helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 3))
+                .add(AccessoryItems.PURPLE_COUNTERWEIGHT, helper -> helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 4))
+                .add(AccessoryItems.RED_COUNTERWEIGHT, helper -> helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 5))
+                .add(AccessoryItems.YELLOW_COUNTERWEIGHT, helper -> helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 6))
+                .add(AccessoryItems.STRUNG_COUNTERWEIGHT, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 7);
+                })
+                .add(AccessoryItems.YOYO_BAG, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.unit(AccessoryItems.YOYO$GLOVE);
+                    helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 8);
+                })
+                .add(AccessoryItems.MAGIC_STRING, helper -> helper.unit(AccessoryItems.YOYO$OFFSTRING))
+                .add(AccessoryItems.MAGIC_YOYO_BAG, helper -> {
+                    helper.unit(AccessoryItems.YOYO$STRING);
+                    helper.unit(AccessoryItems.YOYO$GLOVE);
+                    helper.unit(AccessoryItems.YOYO$OFFSTRING);
+                    helper.of(AccessoryItems.YOYO$COUNTERWEIGHT, 8);
+                })
                 .add(TCItems.HAND_WARMER, helper -> {
                     helper.unit(TCItems.FROZEN$IMMUNE);
                     helper.of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.FROZEN.get()));

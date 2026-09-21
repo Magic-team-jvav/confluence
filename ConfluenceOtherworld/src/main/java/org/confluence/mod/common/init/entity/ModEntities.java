@@ -41,6 +41,7 @@ import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.entity.storage.ChesterEntity;
 import org.confluence.mod.common.entity.storage.FlyingPiggyBankEntity;
+import org.confluence.mod.common.entity.yoyo.YoyoEffectProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 
 import java.util.LinkedHashMap;
@@ -588,6 +589,8 @@ public final class ModEntities {
                     .build(id.toString()));
 
     // 矿车
+    public static final RegistryObject<EntityType<YoyoEffectProjectile>> YOYO_EFFECT = register("yoyo_effect", id -> EntityType.Builder
+            .of(YoyoEffectProjectile::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(8).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<YoyoEntity>> YOYO =
             register("yoyo", id -> EntityType.Builder
                     .of(YoyoEntity::new, MobCategory.MISC)

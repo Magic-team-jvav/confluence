@@ -15,6 +15,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.monster.WormSegment;
@@ -295,7 +296,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (org.confluence.mod.common.entity.EnemyDamageRules.blocks(this, source)) return false;
+        if (EnemyDamageRules.blocks(this, source)) return false;
         BaseWormBoss head = getOwner();
         return head != null && head.isAlive() && head.hurtSegment(this, source, amount);
     }

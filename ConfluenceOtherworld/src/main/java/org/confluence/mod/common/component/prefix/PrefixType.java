@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
+import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
@@ -85,6 +86,11 @@ public enum PrefixType implements StringRepresentable {
     }
 
     public ModPrefix randomPrefix(RandomSource random, ItemStack stack) {
+        if (stack.getItem() instanceof YoyoItem yoyo) {
+            ModPrefix[] universal = UNIVERSAL.getAvailable();
+            int index = random.nextInt(universal.length + (yoyo.supportsLegendaryPrefix() ? 1 : 0));
+            return index == universal.length ? Melee.LEGENDARY2 : universal[index];
+        }
         if (this != SUMMON || !(stack.getItem() instanceof SummonerWeaponItem<?>))
             return randomPrefix(random);
         List<ModPrefix> allowed = new LinkedList<>();
@@ -97,6 +103,8 @@ public enum PrefixType implements StringRepresentable {
     }
 
     public @Nullable ModPrefix bestPrefix(RandomSource random, ItemStack itemStack) {
+        if (itemStack.getItem() instanceof YoyoItem yoyo)
+            return yoyo.supportsLegendaryPrefix() ? Melee.LEGENDARY2 : random.nextBoolean() ? Universal.GODLY : Universal.DEMONIC;
         return switch (this) { // todo 没有击退的远程和魔法武器
             case UNIVERSAL -> random.nextBoolean() ? Universal.GODLY : Universal.DEMONIC;
             case MELEE ->

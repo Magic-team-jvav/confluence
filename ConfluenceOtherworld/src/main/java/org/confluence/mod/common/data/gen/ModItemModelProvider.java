@@ -208,6 +208,10 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
         customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
         customModels.add(createDir(YoyoItems.ITEMS, "yoyo/"));
+        YoyoItems.ITEMS.getEntries().forEach(item -> {
+            if (hasHandwrittenModel(Confluence.asResource("item/" + item.getId().getPath())))
+                skip.add(item.get());
+        });
 
         genModels(customModels, "item/generated");
 

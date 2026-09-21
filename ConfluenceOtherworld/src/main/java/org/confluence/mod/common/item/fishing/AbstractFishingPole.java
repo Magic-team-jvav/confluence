@@ -79,7 +79,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), getThrowSound(), SoundSource.NEUTRAL, 0.5F, 0.4F / (level.getRandom().nextFloat() * 0.4F + 0.8F));
             if (level instanceof ServerLevel) {
                 int luckBonus = EnchantmentHelper.getFishingLuckBonus(stack);
-                int speedBonus = (int) (EnchantmentHelper.getFishingSpeedBonus(stack) * 20.0F);
+                int speedBonus = EnchantmentHelper.getFishingSpeedBonus(stack);
                 FishingHook hook;
                 FishingBobber curio = CuriosUtils.findCurio(player, FishingBobber.class);
                 if (curio == null) {

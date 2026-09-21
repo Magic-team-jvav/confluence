@@ -54,6 +54,7 @@ import org.confluence.mod.common.effect.beneficial.ThornsEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.entity.boss.BossMultiplayerEnhancement;
@@ -65,6 +66,9 @@ import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
+import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
+import org.confluence.mod.common.entity.yoyo.YoyoEffectProjectile;
+import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
@@ -314,6 +318,17 @@ public final class LivingEntityEvents {
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
         AttackEffects.afterDamage(victim, damageSource);
+        /// 只记录实际造成伤害的外部攻击者，射弹和部件追溯到所有者。
+        if (victim instanceof Mob mob && EnemyTargeting.isConfluenceEnemy(mob)) {
+            LivingEntity retaliateAgainst = EnemyTargeting.attacker(damageSource);
+            if (retaliateAgainst != null && retaliateAgainst != victim && !EnemyDamageRules.isEnemy(retaliateAgainst)) {
+                mob.setLastHurtByMob(retaliateAgainst);
+                if (EnemyTargeting.applies(mob))
+                    mob.setTarget(EnemyTargeting.select(mob, retaliateAgainst));
+                if (mob instanceof BossOwnedEntity dependent && dependent.getBossOwner() != null)
+                    dependent.getBossOwner().onEncounterHurt(damageSource);
+            }
+        }
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
             return;
         }
@@ -351,6 +366,19 @@ public final class LivingEntityEvents {
     }
 
     private static void processCriticalDamage(ProcessCriticalDamageEvent event) {
+        if (event.getDamageSource().getDirectEntity() instanceof BeeKeeperProjectile bee) {
+            event.setCritical(bee.getRandom1211().nextFloat() < bee.getCriticalChance());
+            return;
+        }
+        if (event.getDamageSource().getDirectEntity() instanceof YoyoEntity yoyo) {
+            event.setCritical(yoyo.getRandom1211().nextFloat() < yoyo.getCriticalChance());
+            if (!yoyo.isCounterweight() && yoyo.getYoyoItem() != null)
+                event.setCriticalDamageMultiplier(yoyo.getYoyoItem().criticalDamageMultiplier());
+            return;
+        } else if (event.getDamageSource().getDirectEntity() instanceof YoyoEffectProjectile shot) {
+            event.setCritical(shot.getRandom1211().nextFloat() < shot.getCriticalChance());
+            return;
+        }
         if (event.getDamageSource().getEntity() instanceof ServerPlayer player) {
             StarSteelSword.processCriticalDamage(player, event.isCritical(), event::setCriticalDamageMultiplier);
         }

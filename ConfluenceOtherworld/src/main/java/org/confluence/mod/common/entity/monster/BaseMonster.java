@@ -23,6 +23,7 @@ import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.CreatureDefinition;
+import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.ai.EnemyWalkNodeEvaluator;
 import org.confluence.mod.common.entity.ai.SweptContactAttack;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
@@ -166,20 +167,31 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new HurtByTargetGoal(this));
         this.playerTargetGoal = new NearestAttackableTargetGoal<>(this, Player.class, mustSeePlayerTarget(), this::canTargetPlayer);
-        this.targetSelector.addGoal(2, playerTargetGoal);
+        this.targetSelector.addGoal(1, playerTargetGoal);
     }
 
     /// 构造参数决定索敌视线规则的实体在自身字段完成初始化后调用此方法，避免超类构造期间读取未初始化状态。
     protected final void configurePlayerTargetLineOfSight(boolean mustSee) {
         if (playerTargetGoal != null) targetSelector.removeGoal(playerTargetGoal);
         playerTargetGoal = new NearestAttackableTargetGoal<>(this, Player.class, mustSee, this::canTargetPlayer);
-        targetSelector.addGoal(2, playerTargetGoal);
+        targetSelector.addGoal(1, playerTargetGoal);
     }
 
     protected boolean canTargetPlayer(LivingEntity target) {
         return true;
+    }
+
+    /// 共用目标仲裁保留物种的视线、环境限制；被玩家攻击时允许反击该玩家。
+    public final boolean canSelectPlayerTarget(Player player) {
+        return (canTargetPlayer(player) || getLastHurtByMob() == player) && (!mustSeePlayerTarget() || getSensing().hasLineOfSight(player));
+    }
+
+    /// 在自己的实体基类仲裁目标，不修改原版 Mob；Boss 保留专用遭遇规则。
+    @Override
+    public void setTarget(LivingEntity target) {
+        super.setTarget(EnemyTargeting.applies(this) ? EnemyTargeting.select(this, target) : target);
     }
 
     protected boolean mustSeePlayerTarget() {
@@ -232,6 +244,10 @@ public abstract class BaseMonster extends Monster implements GeoEntity {
         if (!level().isClientSide && behaviorTreeRegistered && tickCount % 20 == 0 && creatureDefinition() != appliedDefinition)
             applyCreatureDefinition();
         if (!level().isClientSide) clearInvalidCombatTarget();
+        if (getTarget() != null && EnemyTargeting.applies(this)) {
+            LivingEntity selected = EnemyTargeting.select(this, getTarget());
+            if (selected != getTarget()) setTarget(selected);
+        }
         super.tick();
         if (!level().isClientSide) clearInvalidCombatTarget();
         if (!usesPostMovementContactAttack()) {

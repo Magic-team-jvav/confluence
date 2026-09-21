@@ -509,11 +509,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
                 .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
-                .add(BoomerangItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new));
+                .add(BoomerangItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
+                .add(YoyoItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new));
         tag(ModTags.Items.PREFIX_MELEE_ONLY)
                 .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL, ModTags.Items.SPEAR, ModTags.Items.TOOLS_LANCE)
                 .add(WhipItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
-                .add(YoyoItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
         /*.add(Items.MACE)*/;
         tag(ModTags.Items.PREFIX_RANGED_ONLY)
                 .addTags(PortTags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)

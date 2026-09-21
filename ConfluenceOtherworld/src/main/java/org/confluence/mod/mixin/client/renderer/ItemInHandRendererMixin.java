@@ -65,7 +65,7 @@ public abstract class ItemInHandRendererMixin {
     private static boolean confluence$hasMatchingDeployedYoyo(AbstractClientPlayer player, ItemStack stack) {
         return !player.level().getEntitiesOfClass(YoyoEntity.class,
                 AABB.ofSize(player.position(), 128.0D, 128.0D, 128.0D),
-                yoyo -> yoyo.belongsTo(player) && yoyo.represents(stack)).isEmpty();
+                yoyo -> !yoyo.isDetached() && !yoyo.isCounterweight() && yoyo.belongsTo(player) && yoyo.represents(stack)).isEmpty();
     }
 
     @WrapOperation(method = {"evaluateWhichHandsToRender", "selectionUsingItemWhileHoldingBowLike"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"))

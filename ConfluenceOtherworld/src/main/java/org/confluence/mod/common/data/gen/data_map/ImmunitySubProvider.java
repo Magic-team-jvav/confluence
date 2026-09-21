@@ -11,6 +11,7 @@ import org.mesdag.portlib.datamap.PortDataMapProvider;
 public final class ImmunitySubProvider {
     public static void gather(ModDataMapProvider.Appender<PortDataMapProvider.Builder<ImmunityDataMap, EntityType<?>>> appender) {
         appender.create()
+                .add(ModEntities.BEE, new ImmunityDataMap(Immunity.Type.STATIC, 4), false)
                 .add(ModEntities.VILETHRON, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)
                 .add(ModEntities.CRYSTAL_VILE_SHARD, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)
                 .add(TCEntities.BEE_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 8), false)

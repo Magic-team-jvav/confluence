@@ -8,6 +8,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -106,6 +107,7 @@ import org.confluence.mod.common.entity.monster.*;
 import org.confluence.mod.common.entity.mount.RideableBeeMountEntity;
 import org.confluence.mod.common.entity.mount.RideableSlimeMountEntity;
 import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
+import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.entity.BossEntities;
@@ -362,7 +364,15 @@ public final class ModClientEvents {
         event.registerEntityRenderer(ENCHANTED_SWORD.get(), SwordProjectileRenderer::new);
         event.registerEntityRenderer(LIGHTS_BANE.get(), SwordProjectileRenderer::new);
         event.registerEntityRenderer(GRASS.get(), SwordProjectileRenderer::new);
-        event.registerEntityRenderer(BEE.get(), context -> new ForwardProjectileRenderer<>(context, new BeeProjectileModel<>(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(BEE.get(), context -> new ForwardProjectileRenderer<BeeKeeperProjectile, BeeProjectileModel<BeeKeeperProjectile>>(context, new BeeProjectileModel<>(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/bee_projectile.png")) {
+            @Override
+            public void render(BeeKeeperProjectile bee, float yaw, float partialTick, PoseStack poses, MultiBufferSource buffers, int light) {
+                poses.pushPose();
+                if (bee.isGiant()) poses.scale(1.5F, 1.5F, 1.5F);
+                super.render(bee, yaw, partialTick, poses, buffers, light);
+                poses.popPose();
+            }
+        });
         event.registerEntityRenderer(NIGHTS_EDGE.get(), SwordProjectileRenderer::new);
         event.registerEntityRenderer(BASE_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjectileRenderer<>(context, new BeeProjectileModel<>(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/bee_projectile.png")));
@@ -520,6 +530,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DRIPPLER_CRIPPLER_PROJECTILE.get(), FlailAuxiliaryProjectileRenderer::new);
         event.registerEntityRenderer(FLAIRON_BUBBLE.get(), FlailAuxiliaryProjectileRenderer::new);
         event.registerEntityRenderer(YOYO.get(), YoyoRenderer::new);
+        event.registerEntityRenderer(YOYO_EFFECT.get(), context -> new ThrownItemRenderer<>(context, 0.5F, true));
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
         event.registerEntityRenderer(VANILLA_MINECART.get(), provider);

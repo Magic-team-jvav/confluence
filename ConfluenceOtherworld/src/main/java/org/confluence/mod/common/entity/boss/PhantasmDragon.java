@@ -10,6 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.common.entity.EnemyTargeting;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -112,13 +113,7 @@ public class PhantasmDragon extends BaseFlyingMonster implements BossOwnedEntity
     }
 
     private boolean isLegalIndependentTarget(@Nullable LivingEntity target) {
-        return target instanceof Player player
-                && player.level() == level()
-                && player.isAlive()
-                && !player.isCreative()
-                && !player.isSpectator()
-                && player.canBeSeenAsEnemy()
-                && canAttack(player);
+        return EnemyTargeting.valid(this, target);
     }
 
     @Override

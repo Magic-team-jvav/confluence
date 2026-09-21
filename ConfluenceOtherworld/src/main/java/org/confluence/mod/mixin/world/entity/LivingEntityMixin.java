@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.world.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -8,16 +9,17 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidType;
 import org.confluence.lib.common.effect.HoneyEffect;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
@@ -27,11 +29,14 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.hook.BaseHookItem;
+import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -39,6 +44,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
@@ -46,6 +52,24 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @Shadow
     public abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 
+    @Shadow
+    public abstract boolean wasExperienceConsumed();
+
+    @Shadow
+    protected abstract boolean isAlwaysExperienceDropper();
+
+    @Shadow
+    protected int lastHurtByPlayerTime;
+    @Shadow
+    @Nullable
+    protected Player lastHurtByPlayer;
+
+    @Shadow
+    public abstract int getExperienceReward();
+
+    @Shadow
+    @Final
+    public int invulnerableDuration;
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
     @Unique
@@ -56,6 +80,38 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     public LivingEntityMixin(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
+
+    @WrapWithCondition(
+            method = "dropAllDeathLoot",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/world/entity/LivingEntity;dropExperience()V"
+            )
+    )
+    private boolean dropExperience(LivingEntity instance, @Local(argsOnly = true) DamageSource damageSource) {
+        if (damageSource instanceof AttachmentEntityDamageSource source) {
+            Player player = source.getOwner();
+            if (player != null && instance.level() instanceof ServerLevel serverlevel && TCUtils.hasType(player, AccessoryItems.AUTO$GET$EXPERIENCE) && !wasExperienceConsumed() && (isAlwaysExperienceDropper() || lastHurtByPlayerTime > 0 && instance.shouldDropExperience() && serverlevel.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT))) {
+                int reward = ForgeEventFactory.getExperienceDrop(instance, lastHurtByPlayer, getExperienceReward());
+                Vec3 pos = instance.position();
+                int takeXpDelay = player.takeXpDelay;
+                while (reward > 0) {
+                    int i = ExperienceOrb.getExperienceValue(reward);
+                    reward -= i;
+                    if (!ExperienceOrbAccessor.callTryMergeToExisting(serverlevel, pos, i)) {
+                        ExperienceOrb experienceOrb = new ExperienceOrb(serverlevel, player.getX(), player.getY(), player.getZ(), i);
+                        player.takeXpDelay = 0;
+                        experienceOrb.playerTouch(player);
+                        player.takeXpDelay = takeXpDelay;
+                    }
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     @Override
     public void confluence$setBreakEasyCrashBlock(boolean breaking) {

@@ -816,6 +816,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.discount_card.0", "商店价格降低20%");
         add("tooltip.item.confluence.coin_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围");
         add("tooltip.item.confluence.greedy_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围，商店价格降低20%");
+        add("tooltip.item.confluence.experience_pipette.0", "召唤物会拾取被打败敌人的经验");
+        add("tooltip.item.confluence.tinsel.0", "召唤物会拾取被打败敌人的钱币");
+        add("tooltip.item.confluence.shiny_pipette.0", "召唤物会拾取被打败敌人的经验和钱币");
         add("tooltip.item.confluence.spectre_goggles.0", "提供幽灵视觉以与回声块交互");
         add("tooltip.item.terra_curio.spectre_goggles.1", "背包内右键点击可开关");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "可从藤蔓收集藤蔓绳");
@@ -4576,6 +4579,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(AccessoryItems.CLOTHIER_VOODOO_DOLL.get(), "服装商巫毒玩偶");
         add(AccessoryItems.GUIDE_VOODOO_DOLL.get(), "向导巫毒玩偶");
+        add(AccessoryItems.EXPERIENCE_PIPETTE.get(), "经验吸管");
+        add(AccessoryItems.TINSEL.get(), "金箔");
+        add(AccessoryItems.SHINY_PIPETTE.get(), "闪亮吸管");
 
 
     }

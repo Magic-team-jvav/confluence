@@ -163,7 +163,7 @@ public final class LivingEntityEvents {
                         CommonConfigs.ENEMY_DROPS_MONEY.get() &&
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
                         !(victim instanceof OwnedSummon)
-                ) ModUtils.enemyDropMoney(victim, level);
+                ) ModUtils.enemyDropMoney(victim, level, damageSource);
                 Bestiary.INSTANCE.updateEntry(victim, true);
             }
             if (attacker != null && attacker.getType().is(ModTags.EntityTypes.CORRUPT)) {

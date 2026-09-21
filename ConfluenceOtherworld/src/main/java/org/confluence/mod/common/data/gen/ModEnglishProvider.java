@@ -943,6 +943,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.discount_card.0", "Reduces shop prices by 20%");
         add("tooltip.item.confluence.coin_ring.0", "Hitting enemies may drop extra coins, increases coin pickup range");
         add("tooltip.item.confluence.greedy_ring.0", "Hitting enemies may drop extra coins, increases coin pickup range, reduces shop prices by 20%");
+        add("tooltip.item.confluence.experience_pipette.0", "Minions pick up experience from defeated enemies");
+        add("tooltip.item.confluence.tinsel.0", "Minions pick up coins from defeated enemies");
+        add("tooltip.item.confluence.shiny_pipette.0", "Minions pick up experience and coins from defeated enemies");
         add("tooltip.item.confluence.spectre_goggles.0", "Provides ghost vision to interact with echo blocks");
         add("tooltip.item.terra_curio.spectre_goggles.1", "Right-click in the backpack to toggle on/off.");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "Allows the collection of Vine Rope from vines");

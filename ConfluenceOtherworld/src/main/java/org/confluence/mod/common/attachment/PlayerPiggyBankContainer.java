@@ -1,7 +1,9 @@
 package org.confluence.mod.common.attachment;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.PlayerContainer;
@@ -11,6 +13,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.network.s2c.PiggyBankTotalMoneyPacket;
 import org.confluence.mod.util.Coins;
+import org.confluence.mod.util.PlayerUtils;
 import org.jetbrains.annotations.ApiStatus;
 
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
@@ -90,5 +93,46 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
         PlayerPiggyBankContainer data = player.getData(ModAttachmentTypes.PIGGY_BANK);
         data.setOwner(player);
         return data;
+    }
+
+    public static long placeCoins(Container container, long amount) {
+        if (amount <= 0) return 0;
+
+        IntArrayList coinSlots = new IntArrayList();
+        IntArrayList emptySlots = new IntArrayList();
+        int containerSize = container.getContainerSize();
+        long money = amount;
+        for (int i = 0; i < containerSize; i++) {
+            ItemStack stack = container.getItem(i);
+            if (stack.isEmpty()) {
+                emptySlots.add(i);
+            } else if (stack.is(ModTags.Items.COINS)) {
+                long value = CoinItem.valueOf(stack.getItem());
+                if (value <= 0L) continue;
+                money += value * stack.getCount();
+                container.setItem(i, ItemStack.EMPTY);
+                coinSlots.add(i);
+            }
+        }
+        coinSlots.addAll(emptySlots);
+
+        int slotCount = coinSlots.size();
+        int capacity = Math.min(UPGRADES_COUNT, container.getMaxStackSize());
+        int slot = 0;
+        for (Object2IntMap.Entry<CoinItem> entry : PlayerUtils.decodeCoin(money).platinum2CopperEntries()) {
+            int count = entry.getIntValue();
+            if (count <= 0) continue;
+            CoinItem coin = entry.getKey();
+            long value = CoinItem.valueOf(coin);
+            while (count > 0 && slot < slotCount) {
+                int place = Math.min(count, capacity);
+                container.setItem(coinSlots.getInt(slot++), new ItemStack(coin, place));
+                money -= value * place;
+                count -= place;
+            }
+            if (count > 0) break;
+        }
+        container.setChanged();
+        return money;
     }
 }

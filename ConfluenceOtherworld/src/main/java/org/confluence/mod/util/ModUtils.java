@@ -17,6 +17,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -54,6 +55,7 @@ import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.lib.util.LibMathUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.component.LootComponent;
@@ -64,18 +66,18 @@ import org.confluence.mod.common.entity.MoneyDropSource;
 import org.confluence.mod.common.entity.boss.BaseBoss;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.PotionItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
+import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
@@ -177,7 +179,7 @@ public final class ModUtils {
         }
     }
 
-    public static void enemyDropMoney(LivingEntity living, ServerLevel level) {
+    public static void enemyDropMoney(LivingEntity living, ServerLevel level, DamageSource damageSource) {
         double amount = getLivingBaseMoneyDrops(living, level);
 
         if (living.hasEffect(ModEffects.MIDAS.get())) {
@@ -189,8 +191,20 @@ public final class ModUtils {
         if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.PLANTERA)) {
             amount *= 1.5;
         }
-
-        dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
+        if (amount > 0 && damageSource instanceof AttachmentEntityDamageSource source && source.getOwner() != null && TCUtils.hasType(source.getOwner(), AccessoryItems.AUTO$GET$COIN)) {
+            Coins coins = PlayerUtils.decodeCoin((long) amount);
+            if (coins.platinum() > 0 || coins.gold() > 0) {
+                living.playSound(ModSoundEvents.COINS_LARGE.get());
+            } else if (coins.silver() > 0) {
+                living.playSound(ModSoundEvents.COINS_MEDIUM.get());
+            } else {
+                living.playSound(ModSoundEvents.COINS_SMALL.get());
+            }
+            amount = PlayerPiggyBankContainer.placeCoins(PlayerPiggyBankContainer.of(source.getOwner()), (int) amount);
+        }
+        if (amount > 0) {
+            dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
+        }
     }
 
     public static double getLivingBaseMoneyDrops(LivingEntity living, Level level) {

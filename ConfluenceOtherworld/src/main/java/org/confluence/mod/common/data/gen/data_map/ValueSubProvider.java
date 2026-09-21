@@ -1608,6 +1608,9 @@ public final class ValueSubProvider {
                 .add(AccessoryItems.GOLD_RING, gold1)
                 .add(AccessoryItems.DISCOUNT_CARD, gold1)
                 .add(AccessoryItems.GREEDY_RING, gold1 + gold2)
+                .add(AccessoryItems.EXPERIENCE_PIPETTE, gold1) // 经验吸管
+                .add(AccessoryItems.TINSEL, gold1) // 金箔
+                .add(AccessoryItems.SHINY_PIPETTE, gold2) // 闪亮吸管
                 .add(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE, silver50)
                 .add(AccessoryItems.SUMMONER_EMBLEM, gold2)
                 .add(AccessoryItems.APPRENTICES_SCARF, gold1 + gold2)

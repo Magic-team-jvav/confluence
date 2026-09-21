@@ -55,6 +55,8 @@ public class AccessoryItems {
     public static final ValueType.UnitType YOYO$OFFSTRING = ValueType.ofUnit("yoyo_offstring");
     public static final ValueType.IntegerType YOYO$COUNTERWEIGHT = ValueType.ofInteger("yoyo_counterweight", IntegerValue.GET_MAX, 0);
     public static int AFK_INDEX = -1;
+    public static final ValueType.UnitType AUTO$GET$EXPERIENCE = ValueType.ofUnit("auto_get_experience"); // 经验吸管：仆从击杀的经验直接归玩家
+    public static final ValueType.UnitType AUTO$GET$COIN = ValueType.ofUnit("auto_get_coin"); // 金箔：仆从击杀的钱币直接进存钱罐
 
     public static final ValueType.FloatType MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
     public static final ValueType.FloatType REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
@@ -161,6 +163,10 @@ public class AccessoryItems {
             MAGIC_STRING = registerCurio("magic_string", builder -> builder.rarity(PINK)),
             MAGIC_YOYO_BAG = registerCurio("magic_yoyo_bag", builder -> builder.rarity(PINK));
     public static final PortDeferredItem<BaseCurioItem> GUIDE_VOODOO_DOLL = registerDirectly("guide_voodoo_doll", GuideVooDooDollItem::new);
+
+    public static final PortDeferredItem<BaseCurioItem> EXPERIENCE_PIPETTE = registerCurio("experience_pipette", builder -> builder.rarity(LIME)),//经验吸管
+            TINSEL = registerCurio("tinsel", builder -> builder.rarity(LIME)),//金箔
+            SHINY_PIPETTE = registerCurio("shiny_pipette", builder -> builder.rarity(YELLOW));//闪亮吸管
 
     private static PortDeferredItem<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

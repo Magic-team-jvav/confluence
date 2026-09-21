@@ -125,8 +125,8 @@ public final class ModUtils {
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss, boolean onSurface) {
-        double x = pos.getX() + 0.5 + LibMathUtils.randomFromTo(level.random, pos.getX(), 30, 50);
-        double z = pos.getZ() + 0.5 + LibMathUtils.randomFromTo(level.random, pos.getZ(), 30, 50);
+        double x = LibMathUtils.randomFromTo(level.random, pos.getX() + 0.5, 30.0, 50.0);
+        double z = LibMathUtils.randomFromTo(level.random, pos.getZ() + 0.5, 30.0, 50.0);
         double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
         if (Math.abs(pos.getY() - y) > 50) {
             y = pos.getY();

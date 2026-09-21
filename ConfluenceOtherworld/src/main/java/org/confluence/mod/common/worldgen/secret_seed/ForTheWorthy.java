@@ -37,7 +37,7 @@ public class ForTheWorthy extends SecretSeed {
     }
 
     public static boolean summonPoweredCreeper(ServerLevel level, BlockPos pos) {
-        if (ModSecretSeeds.FOR_THE_WORTHY.match(level) && level.random.nextFloat() < 0.25F) {
+        if (ModSecretSeeds.FOR_THE_WORTHY.match(level) && level.random.nextInt(6) == 0) {
             return EntityType.CREEPER.spawn(level, null, LibEntityUtils::poweringCreeper, pos, MobSpawnType.TRIGGERED, true, false) != null;
         }
         return false;

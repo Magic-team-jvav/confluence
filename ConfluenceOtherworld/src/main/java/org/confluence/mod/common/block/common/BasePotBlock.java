@@ -41,6 +41,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.CoinPortalEntity;
 import org.confluence.mod.common.gameevent.GoblinArmyGameEvent;
+import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -53,6 +54,7 @@ import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+import java.util.function.IntSupplier;
 
 import static org.confluence.mod.common.init.block.PotBlocks.UNDERGROUND_DESERT_POT;
 import static org.confluence.mod.common.init.item.PotionItems.*;
@@ -61,13 +63,13 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final VoxelShape voxelShape;
     private final float moneyRatio;
-    private final float moneyHoleChance;
+    private final IntSupplier invMoneyHoleChance;
 
-    public BasePotBlock(float moneyRatio, float moneyHoleChance, VoxelShape voxelShape) {
+    public BasePotBlock(float moneyRatio, IntSupplier invMoneyHoleChance, VoxelShape voxelShape) {
         super(Properties.of().sound(SoundType.DECORATED_POT).instabreak().noOcclusion().isRedstoneConductor((bs, br, bp) -> false));
         this.voxelShape = voxelShape;
         this.moneyRatio = moneyRatio;
-        this.moneyHoleChance = moneyHoleChance;
+        this.invMoneyHoleChance = invMoneyHoleChance;
         registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
@@ -156,7 +158,8 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean summonHole(ServerLevel level, Vec3 center) {
-        if (level.random.nextFloat() < moneyHoleChance) {
+        int i = invMoneyHoleChance.getAsInt();
+        if (i > 0 && level.random.nextInt(i) == 0) {
             CoinPortalEntity moneyHole = new CoinPortalEntity(level, center);
             moneyHole.setDeltaMovement(0.0, 0.2, 0.0);
             level.addFreshEntity(moneyHole);
@@ -166,7 +169,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropGoldKey(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (level.random.nextFloat() < 0.0286F) {
+        if (level.random.nextInt(35) == 0) {
             Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.Keys.DUNGEON);
             if (structure != null) {
                 int chunkX = SectionPos.blockToSectionCoord(blockPos.getX());
@@ -186,7 +189,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropPotion(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (level.random.nextFloat() < (LibUtils.isAtLeastExpert(level, blockPos) ? 0.0444F : 0.0222F)) {
+        if (level.random.nextInt(45) < (LibUtils.isAtLeastExpert(level, blockPos) ? 2 : 1)) {
             double y = center.y;
             Item item = null;
             if (level.dimension() == OverworldUtils.underworld()) {
@@ -259,7 +262,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropWormhole(ServerLevel level, Vec3 center) {
-        if (level.players().size() > 1 && level.random.nextFloat() < 0.0333F) {
+        if (level.players().size() > 1 && level.random.nextInt(3) == 0) {
             LibEntityUtils.createItemEntity(WORMHOLE_POTION.toStack(), center, level, 0);
             return true;
         }
@@ -346,7 +349,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             item = PotionItems.LESSER_HEALING_POTION.get();
         }
         int amount = 1;
-        if (LibUtils.isAtLeastExpert(level, blockPos) && level.random.nextFloat() < 0.3333F) {
+        if (LibUtils.isAtLeastExpert(level, blockPos) && level.random.nextInt(3) == 0) {
             amount++;
         }
         LibEntityUtils.createItemEntity(item, amount, center, level, 0);
@@ -370,7 +373,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         if (level.dimension() == OverworldUtils.underworld() || KillBoard.INSTANCE.getGamePhase().isHardmode()) {
             return dropMoney(level, blockPos, center);
         } else {
-            LibEntityUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), level.random.nextInt(5, 11), center, level, 0);
+            LibEntityUtils.createItemEntity(ModBlocks.ROPE.asItem(), level.random.nextInt(20, 41), center, level, 0);
             return true;
         }
     }
@@ -415,12 +418,15 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 BossEntities.QUEEN_BEE.get(),
                 BossEntities.SKELETRON.get(),
                 BossEntities.THE_TWINS.get(),
+                BossEntities.THE_DESTROYER.get(),
+                BossEntities.SKELETRON_PRIME.get(),
                 BossEntities.PLANTERA.get()
         ) + KillBoard.INSTANCE.countDefeated(
-                GoblinArmyGameEvent.KEY
+                GoblinArmyGameEvent.KEY,
+                PirateInvasionGameEvent.KEY
         );
         for (int i = 0; i < defeated; i++) {
-            ratio *= 1.1F; // todo 毁灭者、机械骷髅王、石巨人、海盗入侵、雪人军团
+            ratio *= 1.1F; // todo 石巨人、雪人军团
         }
         ratio *= moneyRatio;
         int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);

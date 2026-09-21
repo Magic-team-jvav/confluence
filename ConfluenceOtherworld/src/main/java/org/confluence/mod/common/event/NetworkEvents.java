@@ -1,6 +1,7 @@
 package org.confluence.mod.common.event;
 
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
+import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
 import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
@@ -78,6 +79,7 @@ public final class NetworkEvents {
         handler.registerInGameS2C(TerraStyleExplosionPacketS2C.class, TerraStyleExplosionPacketS2C.ID, TerraStyleExplosionPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(VisibilityPacketS2C.class, VisibilityPacketS2C.ID, VisibilityPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(WindSpeedPacketS2C.class, WindSpeedPacketS2C.ID, WindSpeedPacketS2C.STREAM_CODEC);
+        handler.registerInGameS2C(SummonerBatchedParticlesPayload.class, SummonerBatchedParticlesPayload.ID, SummonerBatchedParticlesPayload.STREAM_CODEC);
 
         // Bidirectional
         handler.registerInGameBidirectional(TeamPacket.class, TeamPacket.ID, TeamPacket.STREAM_CODEC);

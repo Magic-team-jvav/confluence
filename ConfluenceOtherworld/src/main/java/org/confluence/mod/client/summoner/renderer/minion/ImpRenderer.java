@@ -17,7 +17,7 @@ public class ImpRenderer extends AbstractAttachmentEntityGeoRenderer<ImpMinion> 
         return RenderContext.<ImpMinion>builder()
                 .model(new ModelConfig<ImpMinion>()
                         .scale(0.8F)
-                        .translateOffset(0, -1, 0)
+                        .translateOffset(0, -1.15f, 0)
                         .rotationOffset(180, 0, 0)
                         .alphaDistanceFactor(1.5F))
                 .build();

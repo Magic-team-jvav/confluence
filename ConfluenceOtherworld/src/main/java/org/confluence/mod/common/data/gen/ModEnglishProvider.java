@@ -83,6 +83,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("summon.confluence.spider", "Spider");
         add(SummonItems.DESERT_TIGER_STAFF.get(), "Desert Tiger Staff");
         add("summon.confluence.desert_tiger", "Desert Tiger");
+        add(SummonItems.RUIN_STAFF.get(), "Forbidden Staff");
+        add("summon.confluence.ruin_relic", "Ruin Relic");
+        add(SummonItems.EYE_LASER_TURRET_STAFF.get(), "Eye Laser Turret Staff");
+        add("summon.confluence.eye_laser_turret", "Eye Laser Turret");
         add(SummonItems.TERRAPRISMA.get(), "Terraprisma");
         add("summon.confluence.slime", "Baby Slime");
         add("entity.confluence.hornet_baby", "Hornet Minion");

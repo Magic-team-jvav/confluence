@@ -76,7 +76,7 @@ public class TerraprismaMinion extends Minion implements IEntityCollision<Terrap
 
     @Override
     public @NotNull AABB getHitbox() {
-        return new AABB(-0.15, -0.06, -0.5, 0.15, 0.06, 1.05);
+        return new AABB(-0.2, -0.1, -1.2, 0.2, 0.1, 1.2);
     }
 
     @Override

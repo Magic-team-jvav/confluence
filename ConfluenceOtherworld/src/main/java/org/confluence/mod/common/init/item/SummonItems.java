@@ -15,7 +15,9 @@ import org.confluence.mod.common.summoner.minion.SculkWispMinion;
 import org.confluence.mod.common.summoner.minion.BloodBatMinion;
 import org.confluence.mod.common.summoner.minion.DeadlySphereMinion;
 import org.confluence.mod.common.summoner.minion.DesertTigerMinion;
+import org.confluence.mod.common.summoner.minion.EyeLaserTurretMinion;
 import org.confluence.mod.common.summoner.minion.ImpMinion;
+import org.confluence.mod.common.summoner.minion.RuinRelicMinion;
 import org.confluence.mod.common.summoner.minion.TerraprismaMinion;
 import org.confluence.mod.common.summoner.minion.SlimeMinion;
 import org.confluence.mod.common.summoner.minion.SnowFlinxMinion;
@@ -219,6 +221,38 @@ public class SummonItems {
                         if (summonerHelper.canSummon(slotType, minion.getSlotCost())) {
                             minion.init(minion.getInterpolatedIdleState(1));
                             minion.setOwner(player);
+                            summonerHelper.add(minion);
+                        }
+                    },
+                    null
+            ));
+    public static final PortDeferredItem<SummonerWeaponItem<RuinRelicMinion>> RUIN_STAFF = ITEMS.register("ruin_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE),
+                    SummonerAttachmentEntityTypes.RUIN_RELIC,
+                    MinionSlotType.Minion,
+                    4.0F,
+                    0.4F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    null,
+                    null
+            ));
+    public static final PortDeferredItem<SummonerWeaponItem<EyeLaserTurretMinion>> EYE_LASER_TURRET_STAFF = ITEMS.register("eye_laser_turret_staff",
+            () -> new SummonerWeaponItem<>(
+                    new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE),
+                    SummonerAttachmentEntityTypes.EYE_LASER_TURRET,
+                    MinionSlotType.Sentry,
+                    1.2F,
+                    0.25F,
+                    0.0F,
+                    SummonerSoundEvents.USE_MINION_WEAPON,
+                    (weapon, player, itemStack) -> {
+                        EyeLaserTurretMinion minion = weapon.createMinion(player, itemStack);
+                        SummonerHelper summonerHelper = SummonerHelper.get(player);
+                        MinionSlotType slotType = weapon.getSlotType(itemStack);
+                        if (summonerHelper.canSummon(slotType, minion.getSlotCost())) {
+                            minion.init(new PathNode(player.position().add(0.0, 1.0, 0.0), 0, 0, 0));
                             summonerHelper.add(minion);
                         }
                     },

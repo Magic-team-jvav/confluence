@@ -39,6 +39,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.summoner.SummonerEvents;
 import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
+import org.mesdag.portlib.wrapper.common.extensions.IPortItemPropertiesExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,6 +105,8 @@ public final class Confluence {
         ModFluids.initialize();
         ModPrefix.initialize();
 
+
+
         ModTabs.TABS.register(eventBus);
         ModEntities.register(eventBus);
         ModDataComponentTypes.init();
@@ -112,6 +115,7 @@ public final class Confluence {
         ModEffects.EFFECTS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.init();
+        SummonerParticleTypes.init();
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);

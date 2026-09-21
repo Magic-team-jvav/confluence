@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.common.summoner.attachmentEntity.*;
-import org.confluence.mod.common.summoner.minion.GroundMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -57,19 +56,20 @@ public class AttachmentEntityRenderDispatcher {
             List<AttachmentEntity> entities = player.getData(SummonerAttachmentTypes.ENTITY_DATA).getRenderCache();
             Vec3 cameraPos = camera.getPosition();
             boolean showHitboxes = Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes();
+            int playerLight = getLightCoords(level, player.getLightProbePosition(partialTick));
             for (AttachmentEntity entity : entities) {
                 poseStack.pushPose();
                 PathNode renderNode = entity.getRenderNode(partialTick);
                 Vec3 pos = renderNode.pos();
                 poseStack.translate(pos.x() - cameraPos.x(), pos.y() - cameraPos.y(), pos.z() - cameraPos.z());
-                int lightCoords = getLightCoords(level, BlockPos.containing(pos));
+                int lightCoords = Math.max(playerLight, getLightCoords(level, pos));
                 // 渲染实体模型
                 IAttachmentEntityRenderer<AttachmentEntity> renderer = getRenderer(entity);
                 if (renderer != null) {
                     renderer.render(entity, poseStack, bufferSource, partialTick, lightCoords, renderNode);
                 }
-                if (SummonerRenderConfig.DebugMode) {
-                    debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource, partialTick);
+                if (true) {
+                    debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource);
                 }
                 poseStack.popPose();
             }
@@ -80,14 +80,15 @@ public class AttachmentEntityRenderDispatcher {
      * 取世界坐标处的真实光照(pack 布局,等价 26.2 LightCoordsUtil.getLightCoords 的 1.21.1 适配):
      * 方块亮度(含方块自发光)+ 天空亮度,再叠加动态光源(实体路径增强)。
      */
-    private static int getLightCoords(Level level, BlockPos pos) {
-        int sky = level.getBrightness(LightLayer.SKY, pos);
-        int block = Math.max(level.getBrightness(LightLayer.BLOCK, pos), level.getBlockState(pos).getLightEmission(level, pos));
+    private static int getLightCoords(Level level, Vec3 pos) {
+        BlockPos blockPos = BlockPos.containing(pos);
+        int sky = level.getBrightness(LightLayer.SKY, blockPos);
+        int block = Math.max(level.getBrightness(LightLayer.BLOCK, blockPos), level.getBlockState(blockPos).getLightEmission(level, blockPos));
         int packed = LightTexture.pack(block, sky);
-        return DynamicLightDispatcher.getDynamicLight(Vec3.atCenterOf(pos), packed);
+        return DynamicLightDispatcher.getDynamicLight(pos, packed);
     }
 
-    private static void debugRender(PoseStack poseStack, AttachmentEntity entity, boolean showHitboxes, PathNode renderNode, MultiBufferSource bufferSource, float partialTick) {
+    private static void debugRender(PoseStack poseStack, AttachmentEntity entity, boolean showHitboxes, PathNode renderNode, MultiBufferSource bufferSource) {
         // 调试渲染（使用原始缓冲源，不受透明度影响）
         VertexConsumer debugConsumer = bufferSource.getBuffer(RenderType.lines());
         if (showHitboxes) {

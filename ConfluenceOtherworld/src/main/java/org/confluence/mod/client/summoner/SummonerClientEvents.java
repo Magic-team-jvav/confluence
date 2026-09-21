@@ -26,21 +26,29 @@ import org.confluence.mod.client.summoner.renderer.minion.SlimeMinionRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.SnowFlinxRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.SpiderRenderer;
 import org.confluence.mod.client.summoner.renderer.minion.VampireFrogRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.RuinRelicRenderer;
+import org.confluence.mod.client.summoner.renderer.minion.EyeLaserTurretRenderer;
+import org.confluence.mod.client.summoner.renderer.projectile.EyeFireballRenderer;
 import org.confluence.mod.client.summoner.renderer.projectile.ImpFireballRenderer;
 import org.confluence.mod.client.summoner.renderer.layer.BirdNestLayer;
 import org.confluence.mod.client.summoner.renderer.projectile.HornetStingerRenderer;
+import org.confluence.mod.client.summoner.particle.GenericParticleProvider;
 import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
+import org.confluence.mod.common.summoner.register.SummonerParticleTypes;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.client.PortEntityRenderersEvent;
 import org.mesdag.portlib.event.entity.player.PortItemTooltipEvent;
 import org.mesdag.portlib.event.lifecycle.PortFMLClientSetupEventPort;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 
 public final class SummonerClientEvents {
 
     public static void init() {
+        PortEventHandler.addListener((RegisterParticleProvidersEvent event) ->
+                event.registerSpriteSet(SummonerParticleTypes.GENERIC.get(), GenericParticleProvider::new));
         PortEventHandler.addListener((PortItemTooltipEvent event) -> {
             Player player = event.getEntity();
             ItemStack itemStack = event.getItemStack();
@@ -59,7 +67,7 @@ public final class SummonerClientEvents {
                     float partialTick = event.getPartialTick();
                     Vec3 targetPos = target.getPosition(partialTick).add(0, target.getBbHeight() + 0.25, 0);
                     MultiBufferSource.BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-                    RenderUtil.renderImage(Confluence.asResource("textures/summon_mark.png"), targetPos, 0.25F, 0.25F, bufferSource, true, FastColor.ARGB32.color(191, 255, 255, 255));
+                    RenderUtil.renderImageInWorld(Confluence.asResource("textures/summon_mark.png"), targetPos, event.getPoseStack(), 0.25F, 0.25F, bufferSource, true, FastColor.ARGB32.color(191, 255, 255, 255));
                 }
             }
             if (level != null && event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
@@ -83,6 +91,9 @@ public final class SummonerClientEvents {
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.VAMPIRE_FROG.get(), new VampireFrogRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.DESERT_TIGER.get(), new DesertTigerRenderer());
             AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.SPIDER.get(), new SpiderRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.RUIN_RELIC.get(), new RuinRelicRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.EYE_LASER_TURRET.get(), new EyeLaserTurretRenderer());
+            AttachmentEntityRenderDispatcher.register(SummonerAttachmentEntityTypes.EYE_FIREBALL.get(), new EyeFireballRenderer());
         }));
         PortEventHandler.addListener((PortEntityRenderersEvent.AddLayers event) -> {
             for (PortEntityRenderersEvent.AddLayers.PortModel skin : PortEntityRenderersEvent.AddLayers.PortModel.values()) {

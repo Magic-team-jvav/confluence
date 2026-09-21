@@ -16,7 +16,7 @@ public class SculkWispRenderer extends AbstractAttachmentEntityGeoRenderer<Sculk
     protected RenderContext<SculkWispMinion> createContext(SculkWispMinion wisp, float partialTick) {
         return RenderContext.<SculkWispMinion>builder()
                 .model(new ModelConfig<SculkWispMinion>()
-                        .translateOffset(0, -0.2f, 0)
+                        .translateOffset(0, -0.245f, 0)
                         .rotationOffset(-180, 0, 0)
                         .alphaDistanceFactor(1.5F))
                 .build();

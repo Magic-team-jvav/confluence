@@ -8,6 +8,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.minion.*;
+import org.confluence.mod.common.summoner.projectile.EyeFireball;
+import org.confluence.mod.common.summoner.projectile.ForbiddenOrb;
 import org.confluence.mod.common.summoner.projectile.HornetStinger;
 import org.confluence.mod.common.summoner.projectile.ImpFireball;
 
@@ -46,6 +48,14 @@ public final class SummonerAttachmentEntityTypes {
     public static final RegistryObject<AttachmentEntityType<DesertTigerMinion>> DESERT_TIGER = register("desert_tiger", DesertTigerMinion::new);
 
     public static final RegistryObject<AttachmentEntityType<SpiderMinion>> SPIDER = register("spider", SpiderMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<RuinRelicMinion>> RUIN_RELIC = register("ruin_relic", RuinRelicMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<EyeLaserTurretMinion>> EYE_LASER_TURRET = register("eye_laser_turret", EyeLaserTurretMinion::new);
+
+    public static final RegistryObject<AttachmentEntityType<ForbiddenOrb>> FORBIDDEN_ORB = register("forbidden_orb", ForbiddenOrb::new);
+
+    public static final RegistryObject<AttachmentEntityType<EyeFireball>> EYE_FIREBALL = register("eye_fireball", EyeFireball::new);
 
     private static <T extends AttachmentEntity> RegistryObject<AttachmentEntityType<T>> register(String name, Supplier<T> supplier) {
         return PortDeferredRegisterExtension.register(TYPES, name, id -> new AttachmentEntityType<>(id, supplier));

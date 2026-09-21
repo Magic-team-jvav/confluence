@@ -65,12 +65,12 @@ public class DesertTigerMinion extends GroundMinion implements IEntityCollision<
 
     @Override
     public @NotNull AABB getBlockCollisionBox() {
-        return new AABB(-0.5, 0, -0.5, 0.5, 0.8, 0.5);
+        return new AABB(-0.4, 0, -0.4, 0.4, 0.55, 0.4);
     }
 
     @Override
     public @NotNull AABB getHitbox() {
-        return getBlockCollisionBox();
+        return new AABB(-0.25, 0, -0.3, 0.25, 0.55, 0.5);
     }
 
     @Override

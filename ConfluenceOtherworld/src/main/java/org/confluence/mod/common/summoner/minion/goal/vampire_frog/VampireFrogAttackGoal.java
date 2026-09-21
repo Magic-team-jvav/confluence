@@ -24,16 +24,18 @@ public class VampireFrogAttackGoal extends AttachmentEntityGoal<VampireFrogMinio
         Vec3 targetPos = target.getBoundingBox().getCenter();
         minion.lookAtPos(targetPos);
         cooldown--;
+        if (cooldown == 10) {
+            minion.attack(target, minion.getDamage(), 3);
+        }
         if (minion.getPos().distanceTo(targetPos) < 3) {
             if (cooldown <= 0) {
                 cooldown = 20;
                 minion.attackTime = minion.getTickCount();
             }
-            if (cooldown == 10) {
-                minion.attack(target, minion.getDamage(), 3);
-            }
         } else {
-            minion.moveTo(targetPos, 0.06f);
+            if (cooldown <= 0) {
+                minion.moveTo(targetPos, 0.06f);
+            }
         }
     }
 }

@@ -43,7 +43,7 @@ public class SnowFlinxMinion extends GroundMinion implements IEntityCollision<Sn
 
     @Override
     public @NotNull AABB getHitbox() {
-        return getBlockCollisionBox();
+        return new AABB(-0.3, -0.1, -0.3, 0.3, 0.8, 0.3);
     }
 
     @Override

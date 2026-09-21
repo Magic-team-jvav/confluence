@@ -8,16 +8,19 @@ import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
+import org.confluence.mod.common.summoner.particle.SummonerParticleData;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.entity.living.PortLivingDamageEvent;
 import org.mesdag.portlib.event.entity.living.PortLivingDeathEvent;
+import org.mesdag.portlib.event.tick.PortLevelTickEvent;
 import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
 
 // todo 合并到统一订阅类中
 public final class SummonerEvents {
 
     public static void init() {
+        PortEventHandler.addListener((PortLevelTickEvent.Post event) -> SummonerParticleData.tick(event.getLevel()));
         PortEventHandler.addListener((PortPlayerTickEvent.Post event) -> {
             Player player = event.getEntity();
             if (player instanceof ServerPlayer serverPlayer) {

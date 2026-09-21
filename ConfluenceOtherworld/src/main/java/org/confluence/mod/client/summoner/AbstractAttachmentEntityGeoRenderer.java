@@ -27,6 +27,20 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
     protected final GeoObjectRenderer<T> delegate;
     protected float currentAlpha = 1.0F;
 
+    protected AbstractAttachmentEntityGeoRenderer(AttachmentEntityGeoModel<T> model) {
+        this.delegate = new GeoObjectRenderer<>(model) {
+            @Override
+            public Color getRenderColor(T animatable, float partialTick, int packedLight) {
+                return AbstractAttachmentEntityGeoRenderer.this.getRenderColor(animatable, partialTick, packedLight);
+            }
+
+            @Override
+            public void preRender(PoseStack poseStack, T animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+                this.objectRenderTranslations = new Matrix4f(poseStack.last().pose());
+            }
+        };
+    }
+
     protected AbstractAttachmentEntityGeoRenderer(ResourceLocation location) {
         this(animatable -> location);
     }
@@ -64,16 +78,15 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
     @Override
     protected void modelModify(T entity, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<T> context, float partialTick, int packedLight, float alpha) {
         ModelConfig<T> model = context.model;
-        Quaternionf rotation = new Quaternionf(Axis.YN.rotationDegrees(visualNode.yaw()))
+        poseStack.pushPose();
+        poseStack.mulPose(new Quaternionf(Axis.YN.rotationDegrees(visualNode.yaw()))
                 .mul(Axis.XP.rotationDegrees(visualNode.pitch()))
                 .mul(Axis.ZP.rotationDegrees(visualNode.roll()))
                 .mul(Axis.YN.rotationDegrees(model.yawOffset))
                 .mul(Axis.XP.rotationDegrees(model.pitchOffset))
-                .mul(Axis.ZP.rotationDegrees(model.rollOffset));
-        poseStack.pushPose();
-        poseStack.translate(model.translateX, model.translateY, model.translateZ);
-        poseStack.mulPose(rotation);
+                .mul(Axis.ZP.rotationDegrees(model.rollOffset)));
         poseStack.scale(model.scale, model.scale, model.scale);
+        poseStack.translate(model.translateX, model.translateY, model.translateZ);
         render(entity, poseStack, bufferSource, visualNode, context, partialTick, packedLight, alpha);
         poseStack.popPose();
     }
@@ -132,7 +145,7 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
      * {@code textures/entity/summon/hornet_baby.png}.
      * </p>
      */
-    public static final class AttachmentEntityGeoModel<T extends AttachmentEntity> extends GeoModel<T> {
+    public static class AttachmentEntityGeoModel<T extends AttachmentEntity> extends GeoModel<T> {
 
         private final Function<T, ResourceLocation> basePathResolver;
         private ResourceLocation cachedPath;

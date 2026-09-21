@@ -68,6 +68,8 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
+import org.confluence.mod.common.summoner.SummonerHelper;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -351,6 +353,7 @@ public final class ModClientSetups {
 
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
+        ItemProperties.register(SummonItems.FINCH_STAFF.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);

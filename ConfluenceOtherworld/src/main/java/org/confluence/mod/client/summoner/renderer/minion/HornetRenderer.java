@@ -17,7 +17,7 @@ public class HornetRenderer extends AbstractAttachmentEntityGeoRenderer<HornetMi
         return RenderContext.<HornetMinion>builder()
                 .model(new ModelConfig<HornetMinion>()
                         .scale(0.6F)
-                        .translateOffset(0, 0, 0)
+                        .translateOffset(0, -0.2f, 0.3f)
                         .rotationOffset(180, -35, 0)
                         .alphaDistanceFactor(1.5F))
                 .build();

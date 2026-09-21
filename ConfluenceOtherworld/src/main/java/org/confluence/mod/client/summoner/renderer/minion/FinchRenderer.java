@@ -16,7 +16,7 @@ public class FinchRenderer extends AbstractAttachmentEntityGeoRenderer<FinchMini
     protected RenderContext<FinchMinion> createContext(FinchMinion finch, float partialTick) {
         return RenderContext.<FinchMinion>builder()
                 .model(new ModelConfig<FinchMinion>()
-                        .translateOffset(0, -0.1f, 0)
+                        .translateOffset(0, -0.1f, 0.05f)
                         .rotationOffset(180, 0, 0)
                         .alphaDistanceFactor(1.5F))
                 .build();

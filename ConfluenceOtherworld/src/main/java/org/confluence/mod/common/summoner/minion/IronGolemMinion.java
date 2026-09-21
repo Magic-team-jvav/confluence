@@ -53,6 +53,6 @@ public class IronGolemMinion extends GroundMinion {
 
     @Override
     public @NotNull AABB getBlockCollisionBox() {
-        return new AABB(-0.7, 0, -0.7, 0.7, 2.7, 0.7);
+        return new AABB(-0.7, 0, -0.7, 0.7, 2.6, 0.7);
     }
 }

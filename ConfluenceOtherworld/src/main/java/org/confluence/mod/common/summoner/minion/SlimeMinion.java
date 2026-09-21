@@ -56,8 +56,13 @@ public class SlimeMinion extends GroundMinion implements IEntityCollision<SlimeM
     }
 
     @Override
+    public @NotNull AABB getBlockCollisionBox() {
+        return new AABB(-0.25, 0, -0.25, 0.25, 0.5, 0.25);
+    }
+
+    @Override
     public @NotNull AABB getHitbox() {
-        return new AABB(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5);
+        return new AABB(-0.25, 0, -0.25, 0.25, 0.5, 0.25);
     }
 
     @Override

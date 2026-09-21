@@ -5172,6 +5172,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("summon.confluence.spider", "蜘蛛");
         add(SummonItems.DESERT_TIGER_STAFF.get(), "沙漠虎杖");
         add("summon.confluence.desert_tiger", "沙漠虎");
+        add(SummonItems.RUIN_STAFF.get(), "禁戒法杖");
+        add("summon.confluence.ruin_relic", "禁戒遗迹");
+        add(SummonItems.EYE_LASER_TURRET_STAFF.get(), "眼球激光塔法杖");
+        add("summon.confluence.eye_laser_turret", "眼球激光塔");
         add(SummonItems.TERRAPRISMA.get(), "泰拉棱镜");
         add("summon.confluence.slime", "史莱姆宝宝");
         add("entity.confluence.hornet_baby", "仆役黄蜂");

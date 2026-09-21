@@ -56,7 +56,7 @@ public class FinchMinion extends MomentumMinion implements IEntityCollision<Finc
 
     @Override
     public @NotNull AABB getHitbox() {
-        return new AABB(-0.1, -0.1, -0.1, 0.1, 0.1, 0.2);
+        return new AABB(-0.1, -0.1, -0.15, 0.1, 0.1, 0.15);
     }
 
     @Override

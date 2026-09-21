@@ -1,19 +1,14 @@
 package org.confluence.mod.client.summoner;
 
-import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 /**
  * 通用顶点与贴图渲染工具（26.2 行为对齐）。
@@ -34,49 +29,65 @@ public final class RenderUtil {
     }
 
     /**
-     * 渲染始终面向相机的贴图（1.21.1 对应 26.2 renderImage；召唤标记等使用）。
+     * 在调用者提供的 PoseStack 原点渲染始终面向相机的贴图。
+     * <p>
+     * 这里只处理局部四边形，世界坐标由调用者平移到 PoseStack 原点。这样既适用于附件实体
+     * 已经处于相机相对坐标系的渲染栈，也适用于普通实体、方块实体等原版渲染上下文。
+     * </p>
      *
-     * @param texture      贴图路径
-     * @param center       世界坐标中心
-     * @param width        宽
-     * @param height       高
-     * @param bufferSource 渲染缓冲源
-     * @param alwaysVisible true = 自发光变体（不受光照变暗）
-     * @param tintColor    整体染色 ARGB
+     * @param texture       贴图路径
+     * @param poseStack     已经位于贴图中心、朝向由调用者决定的姿态栈
+     * @param width         宽
+     * @param height        高
+     * @param bufferSource  渲染缓冲源
+     * @param alwaysVisible true = 无深度测试变体
+     * @param tintColor     整体染色 ARGB
      */
-    public static void renderImage(ResourceLocation texture, Vec3 center, float width, float height, MultiBufferSource bufferSource, boolean alwaysVisible, int tintColor) {
-        Camera camera = Minecraft.getInstance().getEntityRenderDispatcher().camera;
+    public static void renderImage(ResourceLocation texture, PoseStack poseStack, float width, float height, MultiBufferSource bufferSource, boolean alwaysVisible, int tintColor) {
         VertexConsumer consumer = bufferSource.getBuffer(LyraRenderTypes.texture(texture, alwaysVisible));
-        Vec3 camPos = camera.getPosition();
-        // 相机朝向四元数（原版实体名牌同款）：rotation × XN(180)
-        Quaternionf rotation = new Quaternionf(camera.rotation()).mul(Axis.XN.rotationDegrees(180), new Quaternionf());
-        Matrix4f matrix = new Matrix4f().rotate(rotation).setTranslation((float) (center.x - camPos.x), (float) (center.y - camPos.y), (float) (center.z - camPos.z));
-        float halfWidth = width / 2f;
-        float halfHeight = height / 2f;
-        // 每顶点 5 float（已变换 x,y,z + u,v）+ 颜色
-        float[] xyzuvData = new float[4 * 5];
-        int[] colorData = new int[4];
-        Vector3f v = new Vector3f();
-        int vertexIndex = 0;
-        // 四边形顶点：x,y,z 偏移 + u,v（26.2 同序：u 随宽度、v 随高度）
-        float[][] corners = {
-                {-halfWidth, -halfHeight, 0f, 0f, 0f},
-                {-halfWidth, halfHeight, 0f, 0f, 1f},
-                {halfWidth, halfHeight, 0f, 1f, 1f},
-                {halfWidth, -halfHeight, 0f, 1f, 0f}
-        };
-        for (float[] corner : corners) {
-            matrix.transformPosition(corner[0], corner[1], corner[2], v);
-            int dataIndex = vertexIndex * 5;
-            xyzuvData[dataIndex] = v.x();
-            xyzuvData[dataIndex + 1] = v.y();
-            xyzuvData[dataIndex + 2] = v.z();
-            xyzuvData[dataIndex + 3] = corner[3];
-            xyzuvData[dataIndex + 4] = corner[4];
-            colorData[vertexIndex] = tintColor;
-            vertexIndex++;
-        }
-        writeVertices(consumer, xyzuvData, colorData, FULL_LIGHT, 4);
+        float halfWidth = width * 0.5F;
+        float halfHeight = height * 0.5F;
+        poseStack.pushPose();
+        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+        PoseStack.Pose pose = poseStack.last();
+        vertex(consumer, pose, tintColor, -halfWidth, -halfHeight, 0.0F, 0.0F, 1.0F);
+        vertex(consumer, pose, tintColor, halfWidth, -halfHeight, 0.0F, 1.0F, 1.0F);
+        vertex(consumer, pose, tintColor, halfWidth, halfHeight, 0.0F, 1.0F, 0.0F);
+        vertex(consumer, pose, tintColor, -halfWidth, halfHeight, 0.0F, 0.0F, 0.0F);
+        poseStack.popPose();
+    }
+
+    /**
+     * 在世界坐标处渲染始终面向相机的贴图。
+     * <p>
+     * 用于 RenderLevelStageEvent 等尚未把世界坐标平移到相机坐标系的场景。
+     * </p>
+     *
+     * @param texture       贴图路径
+     * @param center        世界坐标中心
+     * @param poseStack     世界渲染姿态栈
+     * @param width         宽
+     * @param height        高
+     * @param bufferSource  渲染缓冲源
+     * @param alwaysVisible true = 无深度测试变体
+     * @param tintColor     整体染色 ARGB
+     */
+    public static void renderImageInWorld(ResourceLocation texture, Vec3 center, PoseStack poseStack, float width, float height, MultiBufferSource bufferSource, boolean alwaysVisible, int tintColor) {
+        Vec3 cameraPos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+        poseStack.pushPose();
+        poseStack.translate(center.x - cameraPos.x, center.y - cameraPos.y, center.z - cameraPos.z);
+        renderImage(texture, poseStack, width, height, bufferSource, alwaysVisible, tintColor);
+        poseStack.popPose();
+    }
+
+    private static void vertex(VertexConsumer consumer, PoseStack.Pose pose, int color, float x, float y, float z, float u, float v) {
+        consumer.vertex(pose.pose(), x, y, z)
+                .color(color)
+                .uv(u, v)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(FULL_LIGHT)
+                .normal(pose.normal(), 0.0F, 0.0F, 1.0F)
+                .endVertex();
     }
 
     /**

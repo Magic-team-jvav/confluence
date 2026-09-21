@@ -21,7 +21,7 @@ public class DeadlySphereRenderer extends AbstractAttachmentEntityGeoRenderer<De
     protected RenderContext<DeadlySphereMinion> createContext(DeadlySphereMinion sphere, float partialTick) {
         return RenderContext.<DeadlySphereMinion>builder()
                 .model(new ModelConfig<DeadlySphereMinion>()
-                        .rotationOffset(0, 0, 0)
+                        .rotationOffset(0, (sphere.getTickCount() + partialTick) * 4.5f, 90)
                         .alphaDistanceFactor(1.5F))
                 .build();
     }

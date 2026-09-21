@@ -1,14 +1,14 @@
-package org.confluence.mod.common.summoner.minion.goal.blood_bat;
+package org.confluence.mod.common.summoner.minion.goal.sanguine_bat;
 
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
-import org.confluence.mod.common.summoner.minion.BloodBatMinion;
+import org.confluence.mod.common.summoner.minion.SanguineBatMinion;
 
-public class BloodBatIdleGoal extends AttachmentEntityGoal<BloodBatMinion> {
+public class SanguineBatIdleGoal extends AttachmentEntityGoal<SanguineBatMinion> {
 
     private final float speed = 0.4F + (float) Math.random() * 0.2F;
     private int prepTick;
 
-    public BloodBatIdleGoal(BloodBatMinion minion) {
+    public SanguineBatIdleGoal(SanguineBatMinion minion) {
         super(minion);
     }
 

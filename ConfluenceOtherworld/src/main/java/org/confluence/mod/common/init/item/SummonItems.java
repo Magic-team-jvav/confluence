@@ -12,7 +12,7 @@ import org.confluence.mod.common.summoner.minion.HornetMinion;
 import org.confluence.mod.common.summoner.minion.IronGolemMinion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
 import org.confluence.mod.common.summoner.minion.SculkWispMinion;
-import org.confluence.mod.common.summoner.minion.BloodBatMinion;
+import org.confluence.mod.common.summoner.minion.SanguineBatMinion;
 import org.confluence.mod.common.summoner.minion.DeadlySphereMinion;
 import org.confluence.mod.common.summoner.minion.DesertTigerMinion;
 import org.confluence.mod.common.summoner.minion.EyeLaserTurretMinion;
@@ -147,10 +147,10 @@ public class SummonItems {
                     null,
                     null
             ));
-    public static final PortDeferredItem<SummonerWeaponItem<BloodBatMinion>> SANGUINE_STAFF = ITEMS.register("sanguine_staff",
+    public static final PortDeferredItem<SummonerWeaponItem<SanguineBatMinion>> SANGUINE_STAFF = ITEMS.register("sanguine_staff",
             () -> new SummonerWeaponItem<>(
                     new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.LIGHT_RED),
-                    SummonerAttachmentEntityTypes.VAMPIRE_BAT,
+                    SummonerAttachmentEntityTypes.SANGUINE_BAT,
                     MinionSlotType.Minion,
                     35.0F,
                     0.0F,
@@ -252,7 +252,7 @@ public class SummonItems {
                         SummonerHelper summonerHelper = SummonerHelper.get(player);
                         MinionSlotType slotType = weapon.getSlotType(itemStack);
                         if (summonerHelper.canSummon(slotType, minion.getSlotCost())) {
-                            minion.init(new PathNode(player.position().add(0.0, 1.0, 0.0), 0, 0, 0));
+                            minion.init(new PathNode(player.position().offsetRandom(minion.getRandom(), 0.1f).add(0.0, 2, 0.0), 0, 0, 0));
                             summonerHelper.add(minion);
                         }
                     },

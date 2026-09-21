@@ -1,14 +1,14 @@
-package org.confluence.mod.common.summoner.minion.goal.blood_bat;
+package org.confluence.mod.common.summoner.minion.goal.sanguine_bat;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoal;
 import org.confluence.mod.common.summoner.attachmentEntity.Ellipse;
-import org.confluence.mod.common.summoner.minion.BloodBatMinion;
+import org.confluence.mod.common.summoner.minion.SanguineBatMinion;
 
-public class BloodBatAttackGoal extends AttachmentEntityGoal<BloodBatMinion> {
+public class SanguineBatAttackGoal extends AttachmentEntityGoal<SanguineBatMinion> {
 
-    public BloodBatAttackGoal(BloodBatMinion minion) {
+    public SanguineBatAttackGoal(SanguineBatMinion minion) {
         super(minion);
     }
 

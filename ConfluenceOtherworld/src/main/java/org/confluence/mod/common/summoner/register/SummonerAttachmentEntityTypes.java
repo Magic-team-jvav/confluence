@@ -35,7 +35,7 @@ public final class SummonerAttachmentEntityTypes {
 
     public static final RegistryObject<AttachmentEntityType<DeadlySphereMinion>> DEADLY_SPHERE = register("deadly_sphere", DeadlySphereMinion::new);
 
-    public static final RegistryObject<AttachmentEntityType<BloodBatMinion>> VAMPIRE_BAT = register("vampire_bat", BloodBatMinion::new);
+    public static final RegistryObject<AttachmentEntityType<SanguineBatMinion>> SANGUINE_BAT = register("sanguine_bat", SanguineBatMinion::new);
 
     public static final RegistryObject<AttachmentEntityType<TerraprismaMinion>> TERRAPRISMA = register("terraprisma", TerraprismaMinion::new);
 

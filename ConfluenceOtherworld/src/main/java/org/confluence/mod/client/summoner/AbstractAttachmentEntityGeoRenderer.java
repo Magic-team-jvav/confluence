@@ -157,6 +157,11 @@ public abstract class AbstractAttachmentEntityGeoRenderer<T extends AttachmentEn
             this.basePathResolver = basePathResolver;
         }
 
+        @Override
+        public RenderType getRenderType(T animatable, ResourceLocation texture) {
+            return RenderType.entityTranslucentCull(texture);
+        }
+
         /**
          * 解析当前基础路径对应的模型、贴图与动画资源，路径没变时沿用缓存。
          */

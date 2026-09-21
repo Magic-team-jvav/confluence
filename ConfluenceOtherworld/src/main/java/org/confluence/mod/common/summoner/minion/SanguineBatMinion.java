@@ -8,8 +8,8 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalS
 import org.confluence.mod.common.summoner.attachmentEntity.Ellipse;
 import org.confluence.mod.common.summoner.attachmentEntity.IEntityCollision;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import org.confluence.mod.common.summoner.minion.goal.blood_bat.BloodBatAttackGoal;
-import org.confluence.mod.common.summoner.minion.goal.blood_bat.BloodBatIdleGoal;
+import org.confluence.mod.common.summoner.minion.goal.sanguine_bat.SanguineBatAttackGoal;
+import org.confluence.mod.common.summoner.minion.goal.sanguine_bat.SanguineBatIdleGoal;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * 血蝙蝠：环绕主人待机，准备完成后沿椭圆轨迹冲向目标再折返。
  */
-public class BloodBatMinion extends Minion implements IEntityCollision<BloodBatMinion> {
+public class SanguineBatMinion extends Minion implements IEntityCollision<SanguineBatMinion> {
 
     public boolean prep = false;
     public float progress = 0;
@@ -31,19 +31,19 @@ public class BloodBatMinion extends Minion implements IEntityCollision<BloodBatM
     public boolean hasDamaged = false;
     public final Set<LivingEntity> hitTargets = new HashSet<>();
 
-    public BloodBatMinion() {
-        super(SummonerAttachmentEntityTypes.VAMPIRE_BAT);
+    public SanguineBatMinion() {
+        super(SummonerAttachmentEntityTypes.SANGUINE_BAT);
     }
 
     @Override
     public void registerGoals(AttachmentEntityGoalSelector goalSelector) {
-        goalSelector.addGoal(0, new BloodBatAttackGoal(this));
-        goalSelector.addGoal(1, new BloodBatIdleGoal(this));
+        goalSelector.addGoal(0, new SanguineBatAttackGoal(this));
+        goalSelector.addGoal(1, new SanguineBatIdleGoal(this));
     }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "blood_bat", 0, state -> state.setAndContinue(RawAnimation.begin().thenLoop("misc.idle"))));
+        controllers.add(new AnimationController<>(this, "sanguine_bat", 0, state -> state.setAndContinue(RawAnimation.begin().thenLoop("fly"))));
     }
 
     @Override
@@ -86,9 +86,10 @@ public class BloodBatMinion extends Minion implements IEntityCollision<BloodBatM
      */
     public PathNode getInterpolatedIdleState(float partialTick) {
         int total = Math.max(1, getSameSize());
-        float angle = (getOwner().tickCount + partialTick) * 0.05F + getOrder() * Mth.TWO_PI / total;
+        float angle = getOrder() * Mth.TWO_PI / total;
         Vec3 ownerPos = getOwner().getPosition(partialTick);
-        Vec3 targetPos = ownerPos.add(Math.cos(angle) * 1.2, getOwner().getBbHeight() + 0.4, Math.sin(angle) * 1.2);
+        double radio = total > 1 ? 0.8f : 0;
+        Vec3 targetPos = ownerPos.add(Math.cos(angle) * radio, getOwner().getBbHeight() + 0.4, Math.sin(angle) * radio);
         return new PathNode(targetPos, Mth.rotLerp(partialTick, getOwner().yHeadRotO, getOwner().yHeadRot), 0, 0);
     }
 

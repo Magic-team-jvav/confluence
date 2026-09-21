@@ -2,20 +2,20 @@ package org.confluence.mod.client.effect.connected;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 
-import java.util.HashSet;
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class CustomBlockModels {
     private final Multimap<ResourceLocation, NonNullFunction<BakedModel, ? extends BakedModel>> modelFuncs = MultimapBuilder.hashKeys().arrayListValues().build();
-    private final Set<Block> registered = new HashSet<>();
-    private final Map<Block, NonNullFunction<BakedModel, ? extends BakedModel>> finalModelFuncs = new IdentityHashMap<>();
+    private final Set<Block> registered = new ReferenceOpenHashSet<>();
+    private final Map<Block, NonNullFunction<BakedModel, ? extends BakedModel>> finalModelFuncs = new Reference2ObjectOpenHashMap<>();
     private boolean funcsLoaded = false;
 
     public void register(Block block, NonNullFunction<BakedModel, ? extends BakedModel> func) {

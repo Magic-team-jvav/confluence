@@ -1,6 +1,6 @@
 package org.confluence.mod.api.event.bestiary;
 
-import com.google.common.collect.Maps;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 /// 仅需要注册特殊键，如带有变种的生物
 public class RegisterBestiaryKeyEvent extends Event implements IModBusEvent {
-    private static final Map<EntityType<?>, Factory<?>> factories = Maps.newIdentityHashMap();
+    private static final Map<EntityType<?>, Factory<?>> factories = new Reference2ObjectOpenHashMap<>();
 
     public <T extends LivingEntity> void register(EntityType<T> type, Factory<T> factory) {
         if (!factories.containsKey(type)) {

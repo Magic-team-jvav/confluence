@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
 import com.google.common.collect.ImmutableList;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.common.asm.enumextension.ExtensionInfo;
@@ -8,7 +9,6 @@ import net.neoforged.fml.common.asm.enumextension.IExtensibleEnum;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.gameevent.*;
 
-import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +51,8 @@ public enum SpecificMoonVariant implements IExtensibleEnum {
 
     public static List<SpecificMoonVariant> getByGameEvent(ResourceKey<? extends GameEvent> key) {
         if (resourceKeyListMap == null) {
-            resourceKeyListMap = new IdentityHashMap<>();
-            Map<ResourceKey<? extends GameEvent>, ImmutableList.Builder<SpecificMoonVariant>> map = new IdentityHashMap<>();
+            resourceKeyListMap = new Reference2ObjectOpenHashMap<>();
+            Map<ResourceKey<? extends GameEvent>, ImmutableList.Builder<SpecificMoonVariant>> map = new Reference2ObjectOpenHashMap<>();
             for (SpecificMoonVariant variant : values()) {
                 map.computeIfAbsent(variant.associatedEventKey, m -> ImmutableList.builder()).add(variant);
             }

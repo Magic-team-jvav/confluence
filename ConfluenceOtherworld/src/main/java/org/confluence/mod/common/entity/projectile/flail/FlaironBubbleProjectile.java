@@ -73,10 +73,13 @@ public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
 
     @Override
     protected boolean onHitBlockAndContinue(BlockHitResult hit) {
+        Vec3 velocity = getDeltaMovement();
+        if (velocity.lengthSqr() < 1.0E-8) {
+            return false;
+        }
         if (--bouncesLeft < 0) {
             return false;
         }
-        Vec3 velocity = getDeltaMovement();
         Direction direction = hit.getDirection();
         Vec3 normal = Vec3.atLowerCornerOf(direction.getNormal());
         double dot = velocity.dot(normal);
@@ -87,7 +90,6 @@ public final class FlaironBubbleProjectile extends FlailAuxiliaryProjectile {
             return false;
         }
         setDeltaMovement(velocity);
-        setPos(hit.getLocation().add(normal.scale(0.05)));
         return true;
     }
 

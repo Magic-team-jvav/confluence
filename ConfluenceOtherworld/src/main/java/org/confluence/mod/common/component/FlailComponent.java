@@ -129,7 +129,12 @@ public record FlailComponent(
     public static final Supplier<FlailComponent> FLOWER_POWER = preset("flower_power", 67.0F, 1.2F, 1.5F, 1.3F, 26.0F, 1.0F, 0.2F, true, ModEntities.FLOWER_POWER_FLAIL.getId());
     public static final Supplier<FlailComponent> DRIPPLER_CRIPPLER = preset("drippler_crippler", 55.0F, 1.2F, 1.5F, 1.3F, 20.0F, 1.0F, 0.2F, true, ModEntities.DRIPPLER_CRIPPLER_FLAIL.getId());
     public static final Supplier<FlailComponent> FLAIRON = preset("flairon", 67.0F, 1.2F, 1.8F, 1.8F, 25.0F, 1.5F, 0.2F, true, ModEntities.FLAIRON_FLAIL.getId());
-    public static final Supplier<FlailComponent> CHAIN_KNIFE = preset("chain_knife", 6.0F, 1.2F, 1.2F, 1.3F, 10.0F, 1.0F, 0.0F, true, ModEntities.CHAIN_KNIFE_FLAIL.getId());
+    public static final Supplier<FlailComponent> CHAIN_KNIFE = () -> new FlailComponent(
+            6.0F, 1.2F, 1.2F, 1.3F, 10.0F, 1.0F, 0.0F,
+            20, 0.3F, 3, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+            ModEntities.CHAIN_KNIFE_FLAIL.getId(), Confluence.asResource("textures/entity/flail/chain_knife.png"),
+            Confluence.asResource("textures/block/chain/chain_knife.png"),
+            new Behavior(0.3F, true, 13, false, 0, false));
     public static final Supplier<FlailComponent> CHAIN_GUILLOTINES = launchedPreset(
             "chain_guillotines", 30.0F, 0.3F, 1.5F, 1.3F, 32.0F, 2.6F,
             new Behavior(0.3F, true, 13, true, 0, false));
@@ -139,7 +144,12 @@ public record FlailComponent(
     public static final Supplier<FlailComponent> KO_CANNON = launchedPreset(
             "ko_cannon", 20.0F, 0.45F, 2.0F, 0.95F, 17.0F, 2.5F,
             new Behavior(0.45F, true, 0, true, 1, true));
-    public static final Supplier<FlailComponent> ANCHOR = preset("anchor", 35.0F, 1.2F, 1.2F, 1.3F, 100.0F, 1.0F, 0.05F, true, ModEntities.ANCHOR_FLAIL.getId());
+    public static final Supplier<FlailComponent> ANCHOR = () -> new FlailComponent(
+            35.0F, 1.2F, 1.2F, 1.3F, 100.0F, 1.0F, 0.05F,
+            20, 0.3F, 3, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
+            ModEntities.ANCHOR_FLAIL.getId(), Confluence.asResource("textures/entity/flail/anchor.png"),
+            Confluence.asResource("textures/block/chain/anchor.png"),
+            new Behavior(0.8F, true, 13, false, 0, false));
 
     private static Supplier<FlailComponent> preset(String id, float damageFactor, float spinRadius, float spinSpeed, float throwSpeed, float maxDistance, float retractSpeed, float gravity, boolean customChain) {
         return preset(id, damageFactor, spinRadius, spinSpeed, throwSpeed, maxDistance, retractSpeed, gravity, customChain, ModEntities.FLAIL_ENTITY.getId());

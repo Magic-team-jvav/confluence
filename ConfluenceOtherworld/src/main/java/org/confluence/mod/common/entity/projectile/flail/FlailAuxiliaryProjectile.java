@@ -14,6 +14,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.entity.flail.BaseFlailEntity;
+import org.jetbrains.annotations.Nullable;
 
 /// 链锤附属弹幕共享的移动与碰撞骨架。
 ///
@@ -21,6 +22,8 @@ import org.confluence.mod.common.entity.flail.BaseFlailEntity;
 /// 伤害、重力、反弹和索敌仍由具体弹幕类实现，避免形成需要注册多份策略的第二套系统。
 public abstract class FlailAuxiliaryProjectile extends Projectile {
     protected float damage;
+    @Nullable
+    private BaseFlailEntity parentFlail;
     private int lifetime;
     private int maximumLifetime = 100;
 
@@ -30,6 +33,7 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
 
     /// 由链锤实体在服务端创建弹幕后写入本次攻击数据。
     public void initialize(BaseFlailEntity flail, Player owner, Vec3 velocity, float damage, int maximumLifetime) {
+        this.parentFlail = flail;
         setOwner(owner);
         setPos(flail.position());
         setDeltaMovement(velocity);
@@ -52,12 +56,16 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
         super.tick();
 
         HitResult hit = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        if (hit instanceof EntityHitResult entityHit && entityHit.getEntity() instanceof LivingEntity living) {
-            onHitLiving(living);
-        } else if (hit instanceof BlockHitResult blockHit
-                && !onHitBlockAndContinue(blockHit)) {
-            discard();
-            return;
+        if (hit.getType() == HitResult.Type.ENTITY) {
+            Entity target = ((EntityHitResult) hit).getEntity();
+            if (target instanceof LivingEntity living && target.isAlive()) {
+                onHitLiving(living);
+            }
+        } else if (hit.getType() == HitResult.Type.BLOCK) {
+            if (!onHitBlockAndContinue((BlockHitResult) hit)) {
+                discard();
+                return;
+            }
         }
 
         move(MoverType.SELF, getDeltaMovement());
@@ -97,8 +105,13 @@ public abstract class FlailAuxiliaryProjectile extends Projectile {
 
     protected abstract void onHitLiving(LivingEntity target);
 
+    @Nullable
+    protected final BaseFlailEntity getParentFlail() {
+        return parentFlail;
+    }
+
     @Override
     protected boolean canHitEntity(Entity target) {
-        return LibEntityUtils.canHitEntity(target, getOwner());
+        return target != parentFlail && LibEntityUtils.canHitEntity(target, getOwner());
     }
 }

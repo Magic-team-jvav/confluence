@@ -30,17 +30,19 @@ public final class DripplerCripplerProjectile extends FlailAuxiliaryProjectile {
 
     @Override
     protected boolean onHitBlockAndContinue(BlockHitResult hit) {
-        if (--bouncesLeft <= 0) {
+        Vec3 velocity = getDeltaMovement();
+        if (velocity.lengthSqr() < 1.0E-8) {
             return false;
         }
-        Vec3 velocity = getDeltaMovement();
         Direction direction = hit.getDirection();
+        if (direction.getAxis() == Direction.Axis.Y && --bouncesLeft <= 0) {
+            return false;
+        }
         switch (direction.getAxis()) {
             case X -> setDeltaMovement(-velocity.x * BOUNCE_DAMPING, velocity.y, velocity.z);
             case Y -> setDeltaMovement(velocity.x, -velocity.y * BOUNCE_DAMPING, velocity.z);
             case Z -> setDeltaMovement(velocity.x, velocity.y, -velocity.z * BOUNCE_DAMPING);
         }
-        setPos(hit.getLocation().add(Vec3.atLowerCornerOf(direction.getNormal()).scale(0.05)));
         return true;
     }
 
@@ -52,9 +54,9 @@ public final class DripplerCripplerProjectile extends FlailAuxiliaryProjectile {
         }
         if (target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage)) {
             LibEntityUtils.knockBackA2B(this, target, 0.15F, 0.08F);
-            if (--hitsLeft <= 0) {
-                discard();
-            }
+        }
+        if (--hitsLeft <= 0) {
+            discard();
         }
     }
 }

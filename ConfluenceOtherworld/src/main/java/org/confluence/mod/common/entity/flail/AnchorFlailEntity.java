@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.common.LibDamageTypes;
 import org.confluence.lib.util.LibEntityUtils;
 import org.confluence.mod.common.component.FlailComponent;
@@ -23,7 +22,7 @@ public final class AnchorFlailEntity extends LaunchedFlailEntity {
     }
 
     @Override
-    protected void onLaunchedBlockImpact(Player player, FlailComponent component, BlockHitResult hit) {
+    protected void onThrownToRetract(Player player, FlailComponent component) {
         if (tickCount <= 4) {
             return;
         }
@@ -31,12 +30,12 @@ public final class AnchorFlailEntity extends LaunchedFlailEntity {
                 * (float) player.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE)
                 * 0.6F;
         AABB area = getBoundingBox().inflate(2.0, 0.5, 2.0);
-        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area, candidate -> LibEntityUtils.canHitEntity(candidate, this))) {
+        for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, area, candidate -> candidate != player && candidate.isAlive() && LibEntityUtils.canHitEntity(candidate, this))) {
             target.hurt(LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player), damage);
         }
         level().playSound(null, blockPosition(), SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.8F, 0.9F + random.nextFloat() * 0.2F);
         if (level() instanceof ServerLevel serverLevel) {
-            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()), getX(), getY() + 0.5, getZ(), 60, 2.0, 0.5, 2.0, 0.2);
+            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()), getX(), getY() + 0.5, getZ(), 60, 4.0, 0.5, 4.0, 0.2);
         }
     }
 }

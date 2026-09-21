@@ -36,11 +36,18 @@ public final class FlaironFlailEntity extends BaseFlailEntity {
             return;
         }
 
-        Vec3 facing = movementDirection(player);
-        if (phase == PHASE_RETRACT) {
-            facing = facing.scale(-1.0);
-        }
+        float yaw = (float) Math.toRadians(getYRot());
+        float pitch = (float) Math.toRadians(getXRot());
+        double cosPitch = Math.cos(pitch);
+        Vec3 facing = new Vec3(
+                -Math.sin(yaw) * cosPitch,
+                -Math.sin(pitch),
+                Math.cos(yaw) * cosPitch
+        ).normalize();
         Vec3 direction = randomInCone(facing);
+        if (phase == PHASE_RETRACT) {
+            direction = direction.scale(-1.0);
+        }
         double speed = 0.1 + random.nextDouble() * 0.15;
 
         FlaironBubbleProjectile bubble = ModEntities.FLAIRON_BUBBLE.get().create(level());
@@ -51,13 +58,6 @@ public final class FlaironFlailEntity extends BaseFlailEntity {
         bubble.randomizeScale();
         bubble.setPos(position().add(0.0, getBbHeight() * 0.5, 0.0));
         level().addFreshEntity(bubble);
-    }
-
-    private Vec3 movementDirection(Player player) {
-        Vec3 movement = new Vec3(getX() - xo, getY() - yo, getZ() - zo);
-        return movement.lengthSqr() > 1.0E-6
-                ? movement.normalize()
-                : player.getViewVector(1.0F);
     }
 
     private Vec3 randomInCone(Vec3 axis) {

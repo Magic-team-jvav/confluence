@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -58,6 +57,8 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> DATA_SPIN_ANGLE =
             SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> DATA_LAUNCH_MODE =
+            SynchedEntityData.defineId(BaseFlailEntity.class, EntityDataSerializers.BOOLEAN);
 
     // ── 运行时状态 ──
     public float spinAngle = 0.0F;
@@ -84,16 +85,23 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     public void init(Player owner, ItemStack weapon, FlailComponent component) {
         setOwner(owner);
         this.cachedComponent = component;
+        setLaunchMode(component.behavior().launchMode());
         Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
         setPhase(PHASE_SPIN);
         if (startsLaunched()) {
             launch(owner);
         }
-        // 持续播放挖掘动画
-        if (level().isClientSide()) {
-            owner.swing(InteractionHand.MAIN_HAND);
-        }
+    }
+
+    public void initLaunch(Player owner, ItemStack weapon, FlailComponent component) {
+        setOwner(owner);
+        this.cachedComponent = component;
+        setLaunchMode(true);
+        Vec3 palm = HandPositionUtils.getPalmPosition(owner, 1.0F);
+        setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
+        setPhase(PHASE_SPIN);
+        launch(owner);
     }
 
     // ── 数据同步 ──
@@ -101,6 +109,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     protected void defineSynchedData() {
         this.entityData.define(DATA_PHASE, PHASE_SPIN);
         this.entityData.define(DATA_SPIN_ANGLE, 0.0F);
+        this.entityData.define(DATA_LAUNCH_MODE, false);
     }
 
     public int getPhase() {
@@ -120,6 +129,14 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
     public float getSyncedSpinAngle() {
         return entityData.get(DATA_SPIN_ANGLE);
+    }
+
+    public boolean isLaunchMode() {
+        return entityData.get(DATA_LAUNCH_MODE);
+    }
+
+    public void setLaunchMode(boolean launchMode) {
+        entityData.set(DATA_LAUNCH_MODE, launchMode);
     }
 
     @Nullable
@@ -149,8 +166,12 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     protected void onHitBlock(BlockHitResult result) {
         // THROWN 阶段的碰撞由 tickThrown 手动处理，此处忽略
         if (!level().isClientSide() && getPhase() == PHASE_RETRACT) {
-            setPos(result.getLocation());
-            playerDrop();
+            if (isLaunchMode()) {
+                discard();
+            } else {
+                setPos(result.getLocation());
+                playerDrop();
+            }
         }
     }
 
@@ -180,13 +201,14 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
         if (hitCooldown > 0) hitCooldown--;
 
+        this.noPhysics = false;
         switch (phase) {
             case PHASE_SPIN -> tickSpin(player, component);
             case PHASE_THROWN -> tickThrown(player, component);
             case PHASE_STAY -> tickStay(player, component);
             case PHASE_RETRACT -> tickRetract(player, component);
         }
-        tickSpecialBehavior(player, component, getPhase());
+        tickSpecialBehavior(player, component, phase);
 
         if (!level().isClientSide() && hitCooldown <= 0) {
             /// 移动阶段可能因方块命中而切换为收回。碰撞伤害必须读取切换后的阶段，
@@ -231,10 +253,6 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         setDeltaMovement(Vec3.ZERO);
         faceDirection(new Vec3(sinYaw * Math.sin(spinAngle), Math.cos(spinAngle), -cosYaw * Math.sin(spinAngle)));
 
-        // 客户端持续播放挥动动画
-        if (level().isClientSide()) {
-            player.swing(InteractionHand.MAIN_HAND);
-        }
     }
 
     /// 射线检测前方方块碰撞，返回 null 表示无碰撞
@@ -274,7 +292,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             if (dot < 0) {
                 motion = motion.subtract(normal.scale(2.0 * dot));
             }
-            motion = motion.scale(component.bounceFactor());
+            motion = motion.scale(0.6);
             setDeltaMovement(motion);
 
             // 反弹次数耗尽 或 反射后速度过低 直接收回（仅服务端判断）
@@ -293,6 +311,13 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
 
         setDeltaMovement(motion);
         move(MoverType.SELF, motion);
+
+        if (isLaunchMode() && (horizontalCollision || verticalCollision)) {
+            if (!level().isClientSide()) {
+                onLaunchedBlockImpact(player, component, BlockHitResult.miss(position(), net.minecraft.core.Direction.UP, blockPosition()));
+                setPhase(PHASE_RETRACT);
+            }
+        }
     }
 
     private void tickStay(Player player, FlailComponent component) {
@@ -311,7 +336,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         // 着地时清零垂直速度 + 施加水平摩擦，防止重力累积导致永不收回
         if (onGround()) {
             Vec3 vel = getDeltaMovement();
-            setDeltaMovement(new Vec3(vel.x * 0.5, vel.y, vel.z * 0.5));
+            setDeltaMovement(new Vec3(vel.x * 0.5, 0.0, vel.z * 0.5));
         }
 
         stayDuration++;
@@ -345,21 +370,26 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
             case PHASE_SPIN -> 0.6f;
             case PHASE_THROWN -> 1.0f;
             case PHASE_STAY -> 0.5f;
+            case PHASE_RETRACT -> 1.0f;
             default -> 0.0f;
         };
         if (damageMultiplier <= 0) return;
 
-        AABB checkBox = getBoundingBox().inflate(1.5);
-        var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox, e -> e != player && e.isAlive());
+        AABB checkBox = getBoundingBox().inflate(0.5);
+        var entities = level().getEntitiesOfClass(LivingEntity.class, checkBox,
+                e -> e != player && e.isAlive() && LibEntityUtils.canHitEntity(e, this));
 
         for (LivingEntity target : entities) {
             float baseDamage = (float) (component.damageFactor() * player.getAttributeValue(LibAttributes.getAttackDamage()));
             float finalDamage = baseDamage * damageMultiplier;
+            ItemStack held = player.getMainHandItem();
+            if (isLaunchMode() && held.getItem() instanceof BaseFlailItem flailItem) {
+                finalDamage *= flailItem.getLaunchDamageRatio(held);
+            }
             DamageSource source = LibDamageTypes.of(level(), LibDamageTypes.SWORD_PROJECTILE, this, player);
 
             if (target.hurt(source, finalDamage)) {
                 LibEntityUtils.knockBackA2B(this, target, component.behavior().knockback(), 0.15f);
-                ItemStack held = player.getMainHandItem();
                 if (held.getItem() instanceof BaseFlailItem flailItem) {
                     flailItem.onFlailHit(player, target, this);
                 }
@@ -380,8 +410,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
     /// 普通链锤先旋转再投出；链刃、锚等直接发射型由实体子类覆盖，
     /// 其参数和行为无需再写入物品注册或额外定义表。
     protected boolean startsLaunched() {
-        FlailComponent component = getComponent();
-        return component != null && component.behavior().launchMode();
+        return isLaunchMode();
     }
 
     /// 返回链锤头部是否按泰拉瑞亚原始平面精灵绘制。
@@ -472,16 +501,22 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         Vec3 look = player.getViewVector(1.0F);
         Vec3 palm = HandPositionUtils.getPalmPosition(player, 1.0F);
         setPos(palm.x, palm.y - getBbHeight() * 0.5, palm.z);
-        faceDirection(look);
+        Vec3 eye = player.getEyePosition(1.0F);
+        Vec3 launchDirection = look.scale(component.maxDistance()).add(eye.subtract(palm)).normalize();
+        faceDirection(launchDirection);
 
         float velocity = component.getVelocity(player);
-        setDeltaMovement(look.scale(velocity));
+        setDeltaMovement(launchDirection.scale(velocity));
     }
 
     /// 落地进入 STAY，不因低速自动收回。
     ///
     /// 用于玩家主动丢出（按 use）以及 RETRACT 途中撞墙落地。
     public void playerDrop() {
+        if (startsLaunched()) {
+            forceRetract();
+            return;
+        }
         setPhase(PHASE_STAY);
         Vec3 motion = getDeltaMovement();
         setDeltaMovement(motion.scale(0.15));
@@ -508,6 +543,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         if (tag.contains("StayDuration")) stayDuration = tag.getInt("StayDuration");
         if (tag.contains("BounceCount")) bounceCount = tag.getInt("BounceCount");
         if (tag.contains("PlayerDropped")) playerDropped = tag.getBoolean("PlayerDropped");
+        if (tag.contains("LaunchMode")) setLaunchMode(tag.getBoolean("LaunchMode"));
     }
 
     @Override
@@ -517,6 +553,7 @@ public class BaseFlailEntity extends Projectile implements Immunity, GeoEntity {
         tag.putInt("StayDuration", stayDuration);
         tag.putInt("BounceCount", bounceCount);
         tag.putBoolean("PlayerDropped", playerDropped);
+        tag.putBoolean("LaunchMode", isLaunchMode());
     }
 
     @Override

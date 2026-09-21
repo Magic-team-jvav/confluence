@@ -6,6 +6,7 @@ import org.confluence.mod.common.component.FlailComponent;
 import org.confluence.mod.common.item.flail.BaseFlailItem;
 import org.confluence.mod.common.item.flail.DaoOfPowItem;
 import org.confluence.mod.common.item.flail.IgnitingFlailItem;
+import org.confluence.mod.common.item.flail.FlaironItem;
 import org.mesdag.portlib.registries.PortDeferredItem;
 import org.mesdag.portlib.registries.PortItemRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;
@@ -53,7 +54,7 @@ public class FlailItems {
     public static final PortDeferredItem<BaseFlailItem> DRIPPLER_CRIPPLER = ITEMS.register("drippler_crippler", () -> new BaseFlailItem(FlailComponent.DRIPPLER_CRIPPLER.get(), ModRarity.BLUE));
 
     /// 猪鲨链球。
-    public static final PortDeferredItem<BaseFlailItem> FLAIRON = ITEMS.register("flairon", () -> new BaseFlailItem(FlailComponent.FLAIRON.get(), ModRarity.ORANGE));
+    public static final PortDeferredItem<FlaironItem> FLAIRON = ITEMS.register("flairon", () -> new FlaironItem(FlailComponent.FLAIRON.get(), ModRarity.ORANGE));
 
     /// 链刃。
     public static final PortDeferredItem<BaseFlailItem> CHAIN_KNIFE = ITEMS.register("chain_knife", () -> new BaseFlailItem(FlailComponent.CHAIN_KNIFE.get(), ModRarity.WHITE));

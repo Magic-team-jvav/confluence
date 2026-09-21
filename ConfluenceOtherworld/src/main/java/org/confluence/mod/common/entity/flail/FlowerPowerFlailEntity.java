@@ -32,10 +32,10 @@ public final class FlowerPowerFlailEntity extends BaseFlailEntity {
             return;
         }
         int interval = phase == PHASE_STAY ? 5 : 10;
-        if (++shootTimer < interval) {
+        if (--shootTimer > 0) {
             return;
         }
-        shootTimer = 0;
+        shootTimer = interval;
 
         LivingEntity target = level().getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(component.maxDistance()), candidate -> LibEntityUtils.canHitEntity(candidate, this))
                 .stream()

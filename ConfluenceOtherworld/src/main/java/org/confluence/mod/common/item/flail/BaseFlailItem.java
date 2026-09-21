@@ -50,6 +50,10 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         this.flailComponent = flailComponent;
     }
 
+    public FlailComponent getComponent() {
+        return flailComponent;
+    }
+
     /// 右键未被方块或实体消耗时，进入链锤持续使用状态。
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
@@ -123,20 +127,36 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
     }
 
     private static @Nullable BaseFlailEntity spawnFlail(Player player, ItemStack stack, FlailComponent component) {
-        EntityType<?> entityType = ForgeRegistries.ENTITY_TYPES.getValue(component.projType());
+        if (!(stack.getItem() instanceof BaseFlailItem item)) return null;
+        EntityType<?> entityType = item.getFlailEntityType(component);
         if (entityType == null) return null;
         Entity entity = entityType.create(player.level());
         if (!(entity instanceof BaseFlailEntity flail)) return null;
 
-        flail.init(player, stack, component);
+        if (component.behavior().launchMode() || item.isProjectileMode(stack)) {
+            flail.initLaunch(player, stack, component);
+        } else {
+            flail.init(player, stack, component);
+        }
         player.level().addFreshEntity(flail);
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), component.getSoundEvent(), SoundSource.PLAYERS, 1.0F, 1.0F);
-        player.swing(InteractionHand.MAIN_HAND, true);
         return flail;
+    }
+
+    protected @Nullable EntityType<?> getFlailEntityType(FlailComponent component) {
+        return ForgeRegistries.ENTITY_TYPES.getValue(component.projType());
     }
 
     public boolean isAutoSwing() {
         return flailComponent.behavior().autoSwing();
+    }
+
+    public boolean isProjectileMode(ItemStack stack) {
+        return false;
+    }
+
+    public float getLaunchDamageRatio(ItemStack stack) {
+        return 1.0F;
     }
 
     public boolean canAutoSwing(Player player) {
@@ -175,6 +195,11 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
     @Override
     public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) {
         return false;
+    }
+
+    @Override
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+        return true;
     }
 
     @Override

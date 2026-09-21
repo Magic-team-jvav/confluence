@@ -258,7 +258,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.ninja_armor", "忍者盔甲");
         add("itemGroup.confluence.spore_root_armor", "孢根盔甲");
         add("itemGroup.confluence.cold_crystal_armor", "寒晶盔甲");
-        add("itemGroup.confluence.heim_armor", "海沫盔甲");
+        add("itemGroup.confluence.heim_armor", "渊鳞盔甲");
         add("itemGroup.confluence.shadow_armor", "暗影盔甲");
         add("itemGroup.confluence.crimson_armor", "猩红盔甲");
         add("itemGroup.confluence.mining_armor", "矿工盔甲");

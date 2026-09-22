@@ -203,14 +203,8 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
         }
         if (type == MonsterEntities.DESERT_SLIME.get() && !biome.is(PortTags.Biomes.IS_DESERT))
             return false;
-        if (type == MonsterEntities.SPIKED_ICE_SLIME.get() || type == MonsterEntities.SPIKED_JUNGLE_SLIME.get()) {
-            return SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random) || SpawnPlacementChecks.checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
-        }
         if (type == MonsterEntities.ICE_SLIME.get() || type == MonsterEntities.JUNGLE_SLIME.get()) {
             return SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random);
-        }
-        if (type == MonsterEntities.DESERT_SLIME.get()) {
-            return SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random) || SpawnPlacementChecks.checkBelowSurfaceMonsterSpawn(type, level, spawnType, pos, random);
         }
         if (type == MonsterEntities.BLUE_SLIME.get()
                 || type == MonsterEntities.GREEN_SLIME.get() || type == MonsterEntities.PURPLE_SLIME.get()
@@ -224,7 +218,9 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
         if (type == MonsterEntities.YELLOW_SLIME.get() || type == MonsterEntities.RED_SLIME.get()) {
             return level.getBrightness(LightLayer.SKY, pos) == 0 && y >= OverworldUtils.getUndergroundY() && y < OverworldUtils.getSurfaceY();
         }
-        if (type == MonsterEntities.BLACK_SLIME.get() || type == MonsterEntities.MOTHER_SLIME.get() || type == MonsterEntities.DUNGEON_SLIME.get()) {
+        if (type == MonsterEntities.BLACK_SLIME.get() || type == MonsterEntities.MOTHER_SLIME.get() || type == MonsterEntities.DUNGEON_SLIME.get()
+                || type == MonsterEntities.DESERT_SLIME.get()
+                || type == MonsterEntities.SPIKED_JUNGLE_SLIME.get() || type == MonsterEntities.SPIKED_ICE_SLIME.get()) {
             return level.getBrightness(LightLayer.SKY, pos) == 0 && y <= OverworldUtils.getSurfaceY();
         }
         if (type == MonsterEntities.LAVA_SLIME.get()) {

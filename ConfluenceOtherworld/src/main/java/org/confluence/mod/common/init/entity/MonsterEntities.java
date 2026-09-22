@@ -58,7 +58,7 @@ public class MonsterEntities {
 
     // 空岛与高空：鸟妖和飞龙
     public static final RegistryObject<EntityType<Harpy>> HARPY = withAttributes(registerEntity("harpy", EntityType.Builder.of(Harpy::new, MobCategory.MONSTER).sized(1f, 2f).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(41).armor(8).attackDamage(13).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(41).armor(8).attackDamage(13).followRange(50).build());
     public static final RegistryObject<EntityType<BaseWormPart>> WYVERN_SEGMENT = registerWormSegment("wyvern_segment");
     public static final RegistryObject<EntityType<Wyvern>> WYVERN = withAttributes(registerEntity("wyvern", EntityType.Builder.<Wyvern>of((type, level) -> new Wyvern(type, level, MonsterEntities.WYVERN_SEGMENT.get()), MobCategory.MONSTER).sized(1F, 1F).clientTrackingRange(10).updateInterval(1)),
             () -> CreatureAttributeBuilder.creature().maxHealth(2080).armor(10).attackDamage(41).followRange(50).attackKnockback(1).knockbackResistance(0.28).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2).build());

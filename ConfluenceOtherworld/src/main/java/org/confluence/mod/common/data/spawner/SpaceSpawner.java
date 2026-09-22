@@ -33,9 +33,9 @@ public class SpaceSpawner implements CustomSpawner {
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
                 if (difficulty.getEffectiveDifficulty() * csd.speedMultiplier() > random.nextFloat() * 3) {
                     BlockPos spawnPos = pos.offset(
-                            -10 + random.nextInt(21),
+                            -25 + random.nextInt(51),
                             10 + random.nextInt(15),
-                            -10 + random.nextInt(21)
+                            -25 + random.nextInt(51)
                     );
                     if (level.getEntities(sd.type, new AABB(spawnPos).inflate(36.0, 36.0, 36.0), EntitySelector.NO_SPECTATORS).size() < csd.getCount(8)) {
                         BlockState blockState = level.getBlockState(spawnPos);
@@ -69,9 +69,9 @@ public class SpaceSpawner implements CustomSpawner {
                 DifficultyInstance difficulty = level.getCurrentDifficultyAt(pos);
                 if (difficulty.getEffectiveDifficulty() * csd.speedMultiplier() > random.nextFloat() * 3) {
                     BlockPos spawnPos = pos.offset(
-                            -10 + random.nextInt(21),
+                            -25 + random.nextInt(51),
                             10 + random.nextInt(15),
-                            -10 + random.nextInt(21)
+                            -25 + random.nextInt(51)
                     );
                     if (level.getEntities(sd.type, new AABB(spawnPos).inflate(36.0, 36.0, 36.0), EntitySelector.NO_SPECTATORS).size() < csd.getCount(6)) {
                         BlockState blockState = level.getBlockState(spawnPos);

@@ -3,49 +3,45 @@ package org.confluence.mod.common.summoner.register;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.whip.FirecrackerItem;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
-import org.confluence.mod.common.summoner.summonMark.SummonMarkTypeBuild;
+import org.mesdag.portlib.registries.PortRegisterHandler;
+import org.mesdag.portlib.registries.PortRegistration;
+import org.mesdag.portlib.registries.PortRegistryEntry;
 
 public final class SummonerSummonMarks {
 
-    public static final DeferredRegister<SummonMarkType> TYPES = DeferredRegister.create(SummonerRegistries.SUMMON_MARK_TYPE_KEY, Confluence.MODID);
+    public static final PortRegistration<SummonMarkType> TYPES = PortRegisterHandler.create(Confluence.MODID, SummonerRegistries.SUMMON_MARK_TYPE_KEY);
 
-    public static final RegistryObject<SummonMarkType> BASE = TYPES.register("base", () -> new SummonMarkTypeBuild(Confluence.asResource("base")).damage(1.0F).criticalRate(0.0F).armorPierce(0.0F).build());
-
-    public static final RegistryObject<SummonMarkType> LEATHER_WHIP = register("leather_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> SLUB_WHIP = register("slub_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> RUBY_WHIP = register("ruby_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> AMBER_WHIP = register("amber_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> TOPAZ_WHIP = register("topaz_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> JADE_WHIP = register("jade_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> DIAMOND_WHIP = register("diamond_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> SAPPHIRE_WHIP = register("sapphire_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> AMETHYST_WHIP = register("amethyst_whip", 1.0F);
-    public static final RegistryObject<SummonMarkType> SWAMP_WHIP = register("swamp_whip", 2.0F);
-    public static final RegistryObject<SummonMarkType> SNAPTHORN = register("snapthorn", 3.0F);
-    public static final RegistryObject<SummonMarkType> SPINAL_TAP = register("spinal_tap", 4.0F);
-    public static final RegistryObject<SummonMarkType> FIRECRACKER = TYPES.register("firecracker", () -> new SummonMarkTypeBuild(Confluence.asResource("firecracker"))
-            .damage(0.0F)
-            .armorPierce(0.0F)
-            .criticalRate(0.0F)
-            .onDamagePre((tracker, target, source, damage) -> {
-                if (!tracker.isUsed() && damage > 0.0F) {
-                    tracker.setUsed(true);
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> LEATHER_WHIP = TYPES.register("leather_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> SLUB_WHIP = TYPES.register("slub_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> RUBY_WHIP = TYPES.register("ruby_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> AMBER_WHIP = TYPES.register("amber_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> TOPAZ_WHIP = TYPES.register("topaz_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> JADE_WHIP = TYPES.register("jade_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> DIAMOND_WHIP = TYPES.register("diamond_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> SAPPHIRE_WHIP = TYPES.register("sapphire_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> AMETHYST_WHIP = TYPES.register("amethyst_whip", location -> new SummonMarkType(location, 1.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> SWAMP_WHIP = TYPES.register("swamp_whip", location -> new SummonMarkType(location, 2.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> SNAPTHORN = TYPES.register("snapthorn", location -> new SummonMarkType(location, 3.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> SPINAL_TAP = TYPES.register("spinal_tap", location -> new SummonMarkType(location, 4.0F, 0, 0, null, null, null, null));
+    public static final PortRegistryEntry<SummonMarkType, SummonMarkType> FIRECRACKER = TYPES.register("firecracker", location -> new SummonMarkType(location,
+            0,
+            0,
+            0,
+            null,
+            (tracker, markInstance, target, source, damage) -> {
+                if (!markInstance.isUsed() && damage > 0.0F) {
+                    markInstance.setUsed(true);
                     FirecrackerItem.explode(source.getAttachmentEntity().getOwner(), target, target, damage, source.getArmorPenetration());
                     return damage * 2.75F;
                 }
                 return damage;
-            })
-            .build());
+            },
+            null,
+            null));
 
-    private static RegistryObject<SummonMarkType> register(String name, float damage) {
-        return TYPES.register(name, () -> new SummonMarkTypeBuild(Confluence.asResource(name)).damage(damage).armorPierce(0.0F).criticalRate(0.0F).build());
-    }
-
-    public static void register(IEventBus eventBus) {
-        TYPES.register(eventBus);
+    public static void init() {
     }
 }

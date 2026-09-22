@@ -1,28 +1,36 @@
 package org.confluence.mod.common.summoner.summonMark;
 
+import com.mojang.datafixers.util.Function5;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.lib.util.consumer.Consumer4;
+import org.confluence.lib.util.consumer.Consumer5;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public record SummonMarkType(
-        ResourceLocation identifier,
+        ResourceLocation location,
         float additionalDamage,
         float additionalArmorPierce,
         float criticalHitRate,
-        @Nullable BiConsumer<LivingEntity, Player> tickConsumer,
-        @Nullable SummonMarkType.SummonMarkDamagePreConsumer damagePre,
-        @Nullable SummonMarkType.SummonMarkDamagePostConsumer damagePost,
-        @Nullable BiConsumer<LivingEntity, AttachmentEntityDamageSource> killConsumer
+        @Nullable Consumer4<WhipMarkTracker, SummonMarkInstance, LivingEntity, Player> tickConsumer,
+        @Nullable Function5<WhipMarkTracker, SummonMarkInstance, LivingEntity, AttachmentEntityDamageSource, Float, Float> damagePre,
+        @Nullable Consumer5<WhipMarkTracker, SummonMarkInstance, LivingEntity, AttachmentEntityDamageSource, Float> damagePost,
+        @Nullable Consumer4<WhipMarkTracker, SummonMarkInstance, LivingEntity, AttachmentEntityDamageSource> killConsumer
 ) {
+
+    //创建一个标记实例
+    public SummonMarkInstance createInstance(Player player, LivingEntity target) {
+        return new SummonMarkInstance(this, 200);
+    }
+
     public List<Component> getTooltips() {
         List<Component> tooltips = new ArrayList<>();
         if (additionalDamage > 0) {
@@ -43,38 +51,28 @@ public record SummonMarkType(
         return tooltips;
     }
 
-    public void tick(LivingEntity target, Player owner) {
+    public void tick(WhipMarkTracker tracker, SummonMarkInstance instance, LivingEntity target, Player owner) {
         if (tickConsumer != null) {
-            tickConsumer.accept(target, owner);
+            tickConsumer.accept(tracker, instance, target, owner);
         }
     }
 
-    public float damagePre(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage) {
+    public float damagePre(WhipMarkTracker tracker, SummonMarkInstance instance, LivingEntity target, AttachmentEntityDamageSource source, float damage) {
         if (damagePre != null) {
-            return damagePre.accept(tracker, target, source, damage);
+            return damagePre.apply(tracker, instance, target, source, damage);
         }
         return damage;
     }
 
-    public void damagePost(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage) {
+    public void damagePost(WhipMarkTracker tracker, SummonMarkInstance instance, LivingEntity target, AttachmentEntityDamageSource source, float damage) {
         if (damagePost != null) {
-            damagePost.accept(tracker, target, source, damage);
+            damagePost.accept(tracker, instance, target, source, damage);
         }
     }
 
-    public void kill(LivingEntity target, AttachmentEntityDamageSource source) {
+    public void kill(WhipMarkTracker tracker, SummonMarkInstance instance, LivingEntity target, AttachmentEntityDamageSource source) {
         if (killConsumer != null) {
-            killConsumer.accept(target, source);
+            killConsumer.accept(tracker, instance, target, source);
         }
-    }
-
-    @FunctionalInterface
-    public interface SummonMarkDamagePreConsumer {
-        float accept(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage);
-    }
-
-    @FunctionalInterface
-    public interface SummonMarkDamagePostConsumer {
-        void accept(WhipMarkTracker tracker, LivingEntity target, AttachmentEntityDamageSource source, float damage);
     }
 }

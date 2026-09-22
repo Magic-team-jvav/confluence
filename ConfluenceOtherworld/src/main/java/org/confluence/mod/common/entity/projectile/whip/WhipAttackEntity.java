@@ -37,6 +37,7 @@ import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
 import org.confluence.mod.mixed.Immunity;
 
 import java.util.*;
@@ -426,7 +427,8 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             consumeDurabilityAfterFirstEnemyHit(player);
             player.setLastHurtMob(logicalTarget);
             if (weapon().getItem() instanceof BaseWhipItem baseWhipItem && baseWhipItem.shouldApplyTag(hitIndex) && baseWhipItem.getSummonMarkType() != null) {
-                player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tracker(logicalTarget, baseWhipItem.getSummonMarkType(), 80);
+                SummonMarkType markType = baseWhipItem.getSummonMarkType();
+                player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tracker(logicalTarget, markType.createInstance(player, logicalTarget));
             }
             WhipDirectHitContext context = new WhipDirectHitContext(player, logicalTarget, weapon(), damage, hitIndex);
             whip.onDirectHit(context);

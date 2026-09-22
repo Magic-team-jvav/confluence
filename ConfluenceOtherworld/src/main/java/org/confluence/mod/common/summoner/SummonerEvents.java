@@ -14,12 +14,15 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.common.summoner.particle.SummonerParticleData;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
+import org.confluence.mod.common.summoner.summonMark.SummonMarkInstance;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.entity.living.PortLivingDamageEvent;
 import org.mesdag.portlib.event.entity.living.PortLivingDeathEvent;
 import org.mesdag.portlib.event.entity.living.PortLivingHealEvent;
 import org.mesdag.portlib.event.tick.PortLevelTickEvent;
 import org.mesdag.portlib.event.tick.PortPlayerTickEvent;
+
+import java.util.List;
 
 // todo 合并到统一订阅类中
 public final class SummonerEvents {
@@ -34,7 +37,7 @@ public final class SummonerEvents {
             if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.getData(SummonerAttachmentTypes.TARGET_CACHE).tick(serverPlayer);
             }
-            player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tick(player);
+            player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tick();
             SummonerHelper.get(player).getEntityData().tick(player);
         });
         PortEventHandler.addListener((PortLivingDamageEvent.Pre event) -> {
@@ -43,7 +46,10 @@ public final class SummonerEvents {
             if (!target.level().isClientSide() && source instanceof AttachmentEntityDamageSource damageSource && damageSource.getEntity() instanceof Player attacker && target != attacker) {
                 WhipMarkTracker tracker = attacker.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
                 if (tracker.isSummonMarkTarget(target)) {
-                    event.setNewDamage(tracker.getType().damagePre(tracker, target, damageSource, event.getNewDamage()));
+                    List<SummonMarkInstance> summonMarkInstances = tracker.getSummonMarkInstances();
+                    for (SummonMarkInstance instance : summonMarkInstances) {
+                        event.setNewDamage(instance.getType().damagePre(tracker, instance, target, damageSource, event.getNewDamage()));
+                    }
                 }
             }
         });
@@ -66,7 +72,10 @@ public final class SummonerEvents {
                         if (source instanceof AttachmentEntityDamageSource damageSource) {
                             WhipMarkTracker tracker = attacker.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
                             if (tracker.isSummonMarkTarget(target)) {
-                                tracker.getType().damagePost(tracker, target, damageSource, event.getNewDamage());
+                                List<SummonMarkInstance> summonMarkInstances = tracker.getSummonMarkInstances();
+                                for (SummonMarkInstance instance : summonMarkInstances) {
+                                    instance.getType().damagePost(tracker, instance, target, damageSource, event.getNewDamage());
+                                }
                             }
                         }
                     }
@@ -95,7 +104,10 @@ public final class SummonerEvents {
                 Player owner = entity.getOwner();
                 WhipMarkTracker tracker = owner.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
                 if (tracker.isSummonMarkTarget(target)) {
-                    tracker.getType().kill(target, damageSource);
+                    List<SummonMarkInstance> summonMarkInstances = tracker.getSummonMarkInstances();
+                    for (SummonMarkInstance instance : summonMarkInstances) {
+                        instance.getType().kill(tracker, instance, target, damageSource);
+                    }
                 }
             }
         });

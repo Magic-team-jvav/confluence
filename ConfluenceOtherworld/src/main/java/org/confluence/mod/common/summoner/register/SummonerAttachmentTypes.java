@@ -19,7 +19,7 @@ public final class SummonerAttachmentTypes {
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<TargetCache>> TARGET_CACHE = TYPES.registerSimple("summoner_target_cache", () -> PortAttachmentType.builder(TargetCache::new));
 
-    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<WhipMarkTracker>> SUMMON_MARK_DATA = TYPES.registerSimple("summon_mark_data", () -> PortAttachmentType.builder(WhipMarkTracker::new).sync(new WhipMarkTracker()));
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<WhipMarkTracker>> SUMMON_MARK_DATA = TYPES.registerSimple("summon_mark_data", () -> PortAttachmentType.builder(WhipMarkTracker::new).sync(new WhipMarkTracker.SyncHandler()));
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<SummonerParticleData>> BATCHED_PARTICLES =
             TYPES.registerSimple("summoner_batched_particles", () -> PortAttachmentType.builder(SummonerParticleData::new));

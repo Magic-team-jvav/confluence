@@ -66,7 +66,7 @@ public final class Confluence {
         SummonerAttachmentTypes.init();
         SummonerAttachmentEntityTypes.register(eventBus);
         SummonerSoundEvents.register(eventBus);
-        SummonerSummonMarks.register(eventBus);
+        SummonerSummonMarks.init();
         SummonerEvents.init();
         ModDataMaps.init();
         EntityEvents.init();

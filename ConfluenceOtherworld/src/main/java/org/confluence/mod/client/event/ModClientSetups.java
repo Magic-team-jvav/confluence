@@ -353,7 +353,12 @@ public final class ModClientSetups {
 
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
-        ItemProperties.register(SummonItems.FINCH_STAFF.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
+        ItemProperties.register(SummonItems.FINCH_STAFF.get(), enable, ((itemStack, clientLevel, livingEntity, seed) -> {
+            if (livingEntity instanceof Player player && !SummonerHelper.get(player).getEntityData().get(SummonerAttachmentEntityTypes.FINCH.get()).isEmpty()) {
+                return 0;
+            }
+            return 1;
+        }));
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);

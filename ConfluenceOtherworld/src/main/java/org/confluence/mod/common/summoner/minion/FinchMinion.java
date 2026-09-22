@@ -44,7 +44,11 @@ public class FinchMinion extends MomentumMinion implements IEntityCollision<Finc
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "finch", 2, state -> {
-            state.setControllerSpeed(1 - idleBlend);
+            if (idleBlend == 1) {
+                state.setControllerSpeed(0.05f);
+            } else {
+                state.setControllerSpeed(1);
+            }
             return state.setAndContinue(RawAnimation.begin().thenLoop("move.fly"));
         }));
     }

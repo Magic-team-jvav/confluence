@@ -39,6 +39,7 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.gun.ManaGunItem;
+import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.ModUtils;
@@ -91,6 +92,8 @@ public final class ItemEvents {
         if (prefix == null || prefix.type() == PrefixType.UNKNOWN
                 || prefix.type() == PrefixType.ACCESSORY // 通过curios的事件添加
                 || prefix.modifiers().isEmpty()) return;
+        /// 召唤武器不给玩家加成，词缀的加成由召唤物自己持有，避免主手词缀与召唤物词缀重复生效
+        if (itemStack.getItem() instanceof SummonerWeaponItem<?>) return;
         for (Map.Entry<Attribute, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Attribute attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {

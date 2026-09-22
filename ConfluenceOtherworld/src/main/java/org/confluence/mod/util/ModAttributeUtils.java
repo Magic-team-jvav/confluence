@@ -6,6 +6,7 @@ import net.minecraft.network.chat.MutableComponent;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.mod.common.item.summon.SummonerWeaponItem;
 import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
 
 import static net.minecraft.world.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
@@ -15,21 +16,6 @@ public final class ModAttributeUtils {
     public static void addPrefixTooltips(PortAddAttributeTooltipsEvent event) {
         PrefixComponent prefix = PrefixUtils.getPrefix(event.getStack());
         if (prefix == null) return;
-        if (prefix.type() == PrefixType.SUMMON) {
-            ModPrefix.Summon summon = ModPrefix.Summon.VALUES.get(prefix.name());
-            if (summon != null) {
-                if (summon.armorPenetration() != 0)
-                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add",
-                            ATTRIBUTE_MODIFIER_FORMAT.format(summon.armorPenetration()), Component.translatable("prefix.confluence.tooltip.armor_penetration")).withStyle(ChatFormatting.BLUE));
-                if (summon.tagDamage() != 0)
-                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add",
-                            ATTRIBUTE_MODIFIER_FORMAT.format(summon.tagDamage()), Component.translatable("prefix.confluence.tooltip.summon_tag_damage")).withStyle(ChatFormatting.BLUE));
-                if (summon.knockBack() != 0)
-                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (summon.knockBack() > 0 ? "plus" : "take"),
-                                    ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(summon.knockBack()) * 100), Component.translatable("attribute.name.generic.attack_knockback"))
-                            .withStyle(summon.knockBack() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
-            }
-        }
         if (prefix.type() == PrefixType.MAGIC) {
             if (prefix.manaCost() != 0.0) {
                 boolean positive = prefix.manaCost() > 0.0;
@@ -50,6 +36,23 @@ public final class ModAttributeUtils {
                 }
                 event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add", prefix.additionalMana(), component)
                         .withStyle(ChatFormatting.BLUE));
+            }
+        }
+        if (event.getStack().getItem() instanceof SummonerWeaponItem<?>) {
+            ModPrefix modPrefix = prefix.type() == PrefixType.SUMMON ? ModPrefix.Summon.VALUES.get(prefix.name()) : ModPrefix.Universal.VALUES.get(prefix.name());
+            // 召唤武器的伤害与击退，两类词缀都作用于召唤物
+            if (modPrefix instanceof ModPrefix.Summon summon) {
+                if (summon.armorPenetration() != 0)
+                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add", ATTRIBUTE_MODIFIER_FORMAT.format(summon.armorPenetration()), Component.translatable("prefix.confluence.tooltip.armor_penetration")).withStyle(ChatFormatting.BLUE));
+                if (summon.attackDamage() != 0)
+                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (summon.attackDamage() > 0 ? "plus" : "take"), ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(summon.attackDamage()) * 100), Component.translatable("item.confluence.tooltip.damage")).withStyle(summon.attackDamage() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
+                if (summon.knockBack() != 0)
+                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (summon.knockBack() > 0 ? "plus" : "take"), ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(summon.knockBack()) * 100), Component.translatable("item.confluence.tooltip.knockback")).withStyle(summon.knockBack() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
+            } else if (modPrefix instanceof ModPrefix.Universal universal) {
+                if (universal.attackDamage() != 0)
+                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (universal.attackDamage() > 0 ? "plus" : "take"), ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(universal.attackDamage()) * 100), Component.translatable("item.confluence.tooltip.damage")).withStyle(universal.attackDamage() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
+                if (universal.knockBack() != 0)
+                    event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (universal.knockBack() > 0 ? "plus" : "take"), ATTRIBUTE_MODIFIER_FORMAT.format(Math.abs(universal.knockBack()) * 100), Component.translatable("item.confluence.tooltip.knockback")).withStyle(universal.knockBack() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
             }
         }
     }

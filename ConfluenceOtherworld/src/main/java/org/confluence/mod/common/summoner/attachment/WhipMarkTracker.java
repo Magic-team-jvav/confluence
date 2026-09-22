@@ -3,6 +3,7 @@ package org.confluence.mod.common.summoner.attachment;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityDamageSource;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.common.summoner.summonMark.SummonMarkType;
@@ -59,6 +60,9 @@ public class WhipMarkTracker implements PortAttachmentSyncHandler<WhipMarkTracke
     public float getDamageModifier(AttachmentEntityDamageSource source, float damage) {
         if (type != null) {
             damage += type.additionalDamage();
+            if (source.getAttachmentEntity().getPrefix() instanceof ModPrefix.Summon summon) {
+                damage += summon.tagDamage();
+            }
             source.setArmorPenetration(source.getArmorPenetration() + type.additionalArmorPierce());
             if (type.criticalHitRate() > random.nextFloat()) {
                 damage *= 2;

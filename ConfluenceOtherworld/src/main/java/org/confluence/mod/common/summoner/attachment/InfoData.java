@@ -3,7 +3,6 @@ package org.confluence.mod.common.summoner.attachment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.summoner.info.NumberInfo;
 import org.confluence.mod.client.summoner.info.TextInfo;
 import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;

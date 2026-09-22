@@ -2,15 +2,12 @@ package org.confluence.mod.common.summoner;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 import org.confluence.lib.api.event.ArmorPenetrationEvent;
 import org.confluence.lib.mixed.ILibDamageSource;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.summoner.attachment.InfoData;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
@@ -43,7 +40,7 @@ public final class SummonerEvents {
         PortEventHandler.addListener((PortLivingDamageEvent.Pre event) -> {
             LivingEntity target = event.getEntity();
             DamageSource source = event.getSource();
-            if (target.level().isClientSide() && source instanceof AttachmentEntityDamageSource damageSource && damageSource.getEntity() instanceof Player attacker && target != attacker) {
+            if (!target.level().isClientSide() && source instanceof AttachmentEntityDamageSource damageSource && damageSource.getEntity() instanceof Player attacker && target != attacker) {
                 WhipMarkTracker tracker = attacker.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA);
                 if (tracker.isSummonMarkTarget(target)) {
                     event.setNewDamage(tracker.getType().damagePre(tracker, target, damageSource, event.getNewDamage()));

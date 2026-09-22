@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
+import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
@@ -37,6 +38,7 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
     protected PlannedPath currentPlannedPath = null;
     protected boolean remove = false;
     protected int immunityDuration = 0;
+    protected ModPrefix prefix = null;
 
     protected int tickCount = 0;
     protected float damage = 0;
@@ -242,6 +244,14 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
      */
     public boolean isAlive() {
         return true;
+    }
+
+    public void setPrefix(ModPrefix prefix) {
+        this.prefix = prefix;
+    }
+
+    public ModPrefix getPrefix() {
+        return prefix;
     }
 
     /**

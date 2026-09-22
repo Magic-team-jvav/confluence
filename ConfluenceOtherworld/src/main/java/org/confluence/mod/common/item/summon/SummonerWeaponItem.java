@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.summon;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -11,12 +10,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemCooldowns;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.component.prefix.PrefixComponent;
+import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.summoner.SummonerHelper;
 import org.confluence.mod.common.summoner.attachment.AttachmentEntityData;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
@@ -24,6 +25,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
+import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,21 +43,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
     private final TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonConsumer;
     private final TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeConsumer;
 
-    public SummonerWeaponItem(Properties properties, Supplier<AttachmentEntityType<T>> typeSupplier) {
-        this(properties, typeSupplier, MinionSlotType.Minion, 0, 0, 0, null, null, null);
-    }
-
-    public SummonerWeaponItem(Properties properties, Supplier<AttachmentEntityType<T>> typeSupplier,
-                              @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonAction,
-                              @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeAction) {
-        this(properties, typeSupplier, MinionSlotType.Minion, 0, 0, 0, null, summonAction, removeAction);
-    }
-
-    public SummonerWeaponItem(Properties properties, Supplier<AttachmentEntityType<T>> typeSupplier,
-                              MinionSlotType slotType, float damage, float knockback, float armorPierce,
-                              @Nullable Supplier<SoundEvent> soundEvent,
-                              @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonAction,
-                              @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeAction) {
+    public SummonerWeaponItem(Properties properties, Supplier<AttachmentEntityType<T>> typeSupplier, MinionSlotType slotType, float damage, float knockback, float armorPierce, @Nullable Supplier<SoundEvent> soundEvent, @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> summonAction, @Nullable TriConsumer<SummonerWeaponItem<T>, Player, ItemStack> removeAction) {
         super(properties);
         this.typeSupplier = typeSupplier;
         this.slotType = slotType;
@@ -96,7 +84,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
             } else {
                 summon(player, itemStack);
             }
-            SoundEvent sound = soundEvent == null ? null : soundEvent.get();
+            SoundEvent sound = getSoundEvent(itemStack);
             if (sound != null) {
                 level.playSound(null, player.getX(), player.getY(), player.getZ(), sound, player.getSoundSource(), 1.0F, 1.0F);
             }
@@ -122,6 +110,15 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
                 result *= (float) attribute.getValue();
             }
         }
+        ModPrefix prefix = getPrefix(itemStack);
+        if (prefix != null) {
+            if (prefix instanceof ModPrefix.Summon summon) {
+                result *= 1 + summon.attackDamage();
+            }
+            if (prefix instanceof ModPrefix.Universal universal) {
+                result *= 1 + universal.attackDamage();
+            }
+        }
         return result;
     }
 
@@ -133,10 +130,23 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
                 result += (float) attribute.getValue();
             }
         }
+        ModPrefix prefix = getPrefix(itemStack);
+        if (prefix != null) {
+            if (prefix instanceof ModPrefix.Summon summon) {
+                result *= 1 + summon.knockBack();
+            }
+            if (prefix instanceof ModPrefix.Universal universal) {
+                result *= 1 + universal.knockBack();
+            }
+        }
         return result;
     }
 
     public float getSummonArmorPierce(@Nullable Player player, @NotNull ItemStack itemStack) {
+        ModPrefix prefix = getPrefix(itemStack);
+        if (prefix instanceof ModPrefix.Summon summon) {
+            return armorPierce + summon.armorPenetration();
+        }
         return armorPierce;
     }
 
@@ -150,10 +160,32 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
         T minion = getEntityType().factory().get();
         minion.setOwner(player);
         minion.setSlotType(getSlotType(itemStack));
-        minion.setDamage(getSummonDamage(player, itemStack));
-        minion.setKnockback(getSummonKnockback(player, itemStack));
-        minion.setArmorPierce(getSummonArmorPierce(player, itemStack));
+        minion.setDamage(getSummonDamage(null, itemStack));
+        minion.setKnockback(getSummonKnockback(null, itemStack));
+        minion.setArmorPierce(getSummonArmorPierce(null, itemStack));
+        PrefixComponent component = PrefixUtils.getPrefix(itemStack);
+        if (component != null) {
+            ModPrefix prefix = switch (component.type()) {
+                case SUMMON -> ModPrefix.Summon.VALUES.get(component.name());
+                case UNIVERSAL -> ModPrefix.Universal.VALUES.get(component.name());
+                default -> null;
+            };
+            if (prefix != null) minion.setPrefix(prefix);
+        }
         return minion;
+    }
+
+    public ModPrefix getPrefix(@NotNull ItemStack itemStack) {
+        PrefixComponent component = PrefixUtils.getPrefix(itemStack);
+        ModPrefix prefix = null;
+        if (component != null) {
+            prefix = switch (component.type()) {
+                case SUMMON -> ModPrefix.Summon.VALUES.get(component.name());
+                case UNIVERSAL -> ModPrefix.Universal.VALUES.get(component.name());
+                default -> null;
+            };
+        }
+        return prefix;
     }
 
     public void summon(@NotNull Player player, @NotNull ItemStack itemStack) {
@@ -178,13 +210,7 @@ public class SummonerWeaponItem<T extends Minion> extends Item {
         }
         tooltips.add(Component.translatable("item.confluence.tooltip.summon", typeSupplier.get().getDisplayName()).withStyle(ChatFormatting.GRAY));
         SummonerHelper helper = SummonerHelper.get(player);
-        tooltips.add(Component.translatable(
-                slotType == MinionSlotType.Sentry
-                        ? "item.confluence.tooltip.sentry_slots"
-                        : "item.confluence.tooltip.minion_slots",
-                Component.literal(String.valueOf(helper.getUsedSlots(slotType))).withStyle(ChatFormatting.BLUE),
-                Component.literal(String.valueOf(helper.getMaxCount(slotType))).withStyle(ChatFormatting.BLUE)
-        ).withStyle(ChatFormatting.GRAY));
+        tooltips.add(Component.translatable(slotType == MinionSlotType.Sentry ? "item.confluence.tooltip.sentry_slots" : "item.confluence.tooltip.minion_slots", Component.literal(String.valueOf(helper.getUsedSlots(slotType))).withStyle(ChatFormatting.BLUE), Component.literal(String.valueOf(helper.getMaxCount(slotType))).withStyle(ChatFormatting.BLUE)).withStyle(ChatFormatting.GRAY));
         tooltips.add(Component.translatable("item.confluence.tooltip.remove_summon").withStyle(ChatFormatting.GRAY));
         return tooltips;
     }

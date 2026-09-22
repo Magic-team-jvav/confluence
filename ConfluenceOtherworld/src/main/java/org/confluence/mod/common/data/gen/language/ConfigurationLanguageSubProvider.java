@@ -187,8 +187,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goreEffect.tooltip", "The gore effect will be specially adapted to Conflux and Vanilla entities, while other mod entities will use a generic method with no guaranteed effect.");
         add("confluence.configuration.damageIndicator", "Damage Indicator");
         add("confluence.configuration.healIndicator", "Heal Indicator");
-        add("confluence.configuration.damageIndicator.tooltip", "Enable to display damage numbers");
-        add("confluence.configuration.healIndicator.tooltip", "Enable to display heal numbers");
+        add("confluence.configuration.damageIndicator.tooltip", "How damage numbers are displayed: particle indicator or virtual info");
+        add("confluence.configuration.healIndicator.tooltip", "How heal numbers are displayed: particle indicator or virtual info");
+        add("confluence.configuration.indicatorMode.particle", "Particle Info");
+        add("confluence.configuration.indicatorMode.virtual", "Virtual Info");
         add("confluence.configuration.Gameplay", "Gameplay Mechanics");
         add("confluence.configuration.Gameplay.button", "Define Gameplay Mechanics");
         add("confluence.configuration.Gameplay.tooltip", "Some gameplay mechanics can be defined by you");
@@ -514,8 +516,10 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.goreEffect.tooltip", "肢解效果会对汇流生物和原版生物特别适配，其他Mod的生物使用通用的方法，不保证效果。");
         add("confluence.configuration.damageIndicator", "伤害数值显示");
         add("confluence.configuration.healIndicator", "治疗数值显示");
-        add("confluence.configuration.damageIndicator.tooltip", "启用以观察伤害数值");
-        add("confluence.configuration.healIndicator.tooltip", "启用以观察治疗数值");
+        add("confluence.configuration.damageIndicator.tooltip", "伤害数值的显示方式：粒子信息或虚拟信息");
+        add("confluence.configuration.healIndicator.tooltip", "治疗数值的显示方式：粒子信息或虚拟信息");
+        add("confluence.configuration.indicatorMode.particle", "粒子信息");
+        add("confluence.configuration.indicatorMode.virtual", "虚拟信息");
         add("confluence.configuration.Gameplay", "游戏机制");
         add("confluence.configuration.Gameplay.button", "游戏机制定义");
         add("confluence.configuration.Gameplay.tooltip", "一些游戏机制可以由你决定");

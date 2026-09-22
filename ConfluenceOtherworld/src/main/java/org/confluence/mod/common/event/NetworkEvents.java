@@ -82,7 +82,7 @@ public final class NetworkEvents {
         handler.registerInGameS2C(VisibilityPacketS2C.class, VisibilityPacketS2C.ID, VisibilityPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(WindSpeedPacketS2C.class, WindSpeedPacketS2C.ID, WindSpeedPacketS2C.STREAM_CODEC);
         handler.registerInGameS2C(SummonerBatchedParticlesPayload.class, SummonerBatchedParticlesPayload.ID, SummonerBatchedParticlesPayload.STREAM_CODEC);
-        handler.registerInGameS2C(SummonerBatchedInfoPayload.class, Confluence.asResource("summoner_batched_info"), SummonerBatchedInfoPayload.STREAM_CODEC);
+        handler.registerInGameS2C(SummonerBatchedInfoPayload.class, SummonerBatchedInfoPayload.ID, SummonerBatchedInfoPayload.STREAM_CODEC);
 
         // Bidirectional
         handler.registerInGameBidirectional(TeamPacket.class, TeamPacket.ID, TeamPacket.STREAM_CODEC);

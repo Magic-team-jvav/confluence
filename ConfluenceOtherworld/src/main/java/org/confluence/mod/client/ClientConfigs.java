@@ -66,8 +66,9 @@ public final class ClientConfigs {
 
     public static boolean bloodyEffect = true;
     public static GoreEffect goreEffect = GoreEffect.CONFLUENCE_VANILLA;
-    public static boolean damageIndicator = true;
-    public static boolean healIndicator = true;
+    /// 伤害/治疗数值的显示方式，默认虚拟信息。
+    public static IndicatorMode damageIndicator = IndicatorMode.VIRTUAL;
+    public static IndicatorMode healIndicator = IndicatorMode.VIRTUAL;
     public static WeaponUseButton staffUseButton = WeaponUseButton.RIGHT;
     public static WeaponUseButton whipUseButton = WeaponUseButton.LEFT;
     public static WeaponUseButton yoyoUseButton = WeaponUseButton.LEFT;
@@ -109,8 +110,8 @@ public final class ClientConfigs {
 
     private static BooleanValue BLOODY_EFFECT;
     private static EnumValue<GoreEffect> GORE_EFFECT;
-    private static BooleanValue DAMAGE_INDICATOR;
-    private static BooleanValue HEAL_INDICATOR;
+    private static EnumValue<IndicatorMode> DAMAGE_INDICATOR;
+    private static EnumValue<IndicatorMode> HEAL_INDICATOR;
     private static EnumValue<WeaponUseButton> STAFF_USE_BUTTON;
     private static EnumValue<WeaponUseButton> WHIP_USE_BUTTON;
     private static EnumValue<WeaponUseButton> YOYO_USE_BUTTON;
@@ -234,8 +235,8 @@ public final class ClientConfigs {
             builder.push("Entity");
             BLOODY_EFFECT = builder.define("bloodyEffect", true);
             GORE_EFFECT = builder.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
-            DAMAGE_INDICATOR = builder.define("damageIndicator", true);
-            HEAL_INDICATOR = builder.define("healIndicator", true);
+            DAMAGE_INDICATOR = builder.defineEnum("damageIndicator", IndicatorMode.VIRTUAL);
+            HEAL_INDICATOR = builder.defineEnum("healIndicator", IndicatorMode.VIRTUAL);
             builder.pop();
         }
         {
@@ -377,6 +378,24 @@ public final class ClientConfigs {
         @Override
         public Component getTranslatedName() {
             return Component.translatable("confluence.configuration.sellPriceDisplay." + name().toLowerCase(Locale.ROOT));
+        }
+    }
+
+    public enum IndicatorMode implements PortTranslatableEnum {
+        PARTICLE,
+        VIRTUAL;
+
+        public boolean isParticle() {
+            return this == PARTICLE;
+        }
+
+        public boolean isVirtual() {
+            return this == VIRTUAL;
+        }
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.indicatorMode." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

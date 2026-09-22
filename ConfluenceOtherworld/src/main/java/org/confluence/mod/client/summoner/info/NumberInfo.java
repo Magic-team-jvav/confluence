@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.client.summoner.LyraRenderTypes;
+import org.confluence.mod.common.summoner.attachment.InfoData;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
@@ -17,8 +18,8 @@ public final class NumberInfo extends Info {
 
     private final String glyphs;
 
-    public NumberInfo(int color, float amount, Vec3 pos, Vec3 velocity) {
-        super(color, pos, velocity);
+    public NumberInfo(InfoData.Type type, float amount, Vec3 pos, Vec3 velocity) {
+        super(type.color(), pos, velocity);
         float value = Math.abs(amount);
         this.glyphs = value < 1.0F ? String.format(Locale.ROOT, "%.2f", value) : value < 10.0F ? String.format(Locale.ROOT, "%.1f", value) : String.valueOf((int) value);
     }

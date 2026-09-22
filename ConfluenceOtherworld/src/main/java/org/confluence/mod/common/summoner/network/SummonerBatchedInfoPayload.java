@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.summoner.info.NumberInfo;
 import org.confluence.mod.client.summoner.info.TextInfo;
 import org.confluence.mod.common.summoner.attachment.InfoData;
@@ -20,6 +21,8 @@ import java.util.List;
 
 public record SummonerBatchedInfoPayload(List<Number> numbers, List<Text> texts) implements IPortPacket.S2C {
 
+    public static final ResourceLocation ID = Confluence.asResource("summoner_batched_info");
+
     public static final PortStreamCodec<PortRegistryFriendlyByteBuf, SummonerBatchedInfoPayload> STREAM_CODEC = PortStreamCodec.composite(
             Number.CODEC.apply(PortByteBufCodecs.list(4096)), SummonerBatchedInfoPayload::numbers,
             Text.CODEC.apply(PortByteBufCodecs.list(4096)), SummonerBatchedInfoPayload::texts,
@@ -28,25 +31,12 @@ public record SummonerBatchedInfoPayload(List<Number> numbers, List<Text> texts)
 
     @Override
     public void work(Player player) {
-        InfoData infoData = player.level().getData(SummonerAttachmentTypes.INFO);
-        Vec3 eye = player.getEyePosition();
-        for (Number entry : numbers) {
-            NumberInfo info = new NumberInfo(entry.type().color(), entry.amount(), entry.pos(), entry.velocity());
-            if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {
-                infoData.numbers.add(info);
-            }
-        }
-        for (Text entry : texts) {
-            TextInfo info = new TextInfo(entry.text(), entry.pos(), entry.velocity());
-            if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {
-                infoData.texts.add(info);
-            }
-        }
+        InfoData.sync(player, numbers, texts);
     }
 
     @Override
     public ResourceLocation identifier() {
-        return Confluence.asResource("summoner_batched_info");
+        return ID;
     }
 
     public record Number(InfoData.Type type, float amount, Vec3 pos, Vec3 velocity) {

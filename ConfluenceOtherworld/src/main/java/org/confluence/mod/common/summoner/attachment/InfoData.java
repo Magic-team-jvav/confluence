@@ -1,8 +1,10 @@
 package org.confluence.mod.common.summoner.attachment;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.summoner.info.NumberInfo;
 import org.confluence.mod.client.summoner.info.TextInfo;
 import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
@@ -16,16 +18,35 @@ import java.util.List;
 public final class InfoData {
 
     public static void record(Level level, float amount, Vec3 pos, Vec3 velocity, Type type) {
-        if (false && !level.isClientSide())  {
+        if (!level.isClientSide()) {
             InfoData data = level.getData(SummonerAttachmentTypes.INFO);
             data.pendingNumbers.add(new SummonerBatchedInfoPayload.Number(type, amount, pos, velocity));
         }
     }
 
     public static void record(Level level, Component text, Vec3 pos, Vec3 velocity) {
-        if (false && !level.isClientSide())  {
+        if (!level.isClientSide()) {
             InfoData data = level.getData(SummonerAttachmentTypes.INFO);
             data.pendingTexts.add(new SummonerBatchedInfoPayload.Text(text, pos, velocity));
+        }
+    }
+
+    public static void sync(Player player, List<SummonerBatchedInfoPayload.Number> numbers, List<SummonerBatchedInfoPayload.Text> texts) {
+        InfoData infoData = player.level().getData(SummonerAttachmentTypes.INFO);
+        Vec3 eye = player.getEyePosition();
+        for (SummonerBatchedInfoPayload.Number entry : numbers) {
+            // 粒子信息模式下这些数字由原版指示粒子显示，同步时直接不接受，渲染时不再逐帧判断
+            if ((entry.type() == Type.HEAL ? ClientConfigs.healIndicator : ClientConfigs.damageIndicator).isParticle()) continue;
+            NumberInfo info = new NumberInfo(entry.type(), entry.amount(), entry.pos(), entry.velocity());
+            if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {
+                infoData.numbers.add(info);
+            }
+        }
+        for (SummonerBatchedInfoPayload.Text entry : texts) {
+            TextInfo info = new TextInfo(entry.text(), entry.pos(), entry.velocity());
+            if (info.getRenderPos(0.0F).distanceToSqr(eye) <= 64.0D * 64.0D) {
+                infoData.texts.add(info);
+            }
         }
     }
 

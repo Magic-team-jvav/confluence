@@ -187,7 +187,7 @@ public class TargetCache {
     public boolean isVisibility(@Nullable LivingEntity living1, @Nullable LivingEntity living2) {
         if (living1 != null && living2 != null) {
             Integer key = living1.getUUID().hashCode() + living2.getUUID().hashCode();
-            return visibilityCache.computeIfAbsent(key, k -> hasLineOfSight(living1.getBoundingBox().getCenter(), living2.getBoundingBox().getCenter()));
+            return visibilityCache.computeIfAbsent(key, k -> hasLineOfSight(living1.getEyePosition(), living2.getEyePosition()));
         }
         return false;
     }

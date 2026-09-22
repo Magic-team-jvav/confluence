@@ -95,8 +95,8 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
     public static class Provider implements ParticleProvider<DamageIndicatorOptions> {
         @Override
         public @Nullable Particle createParticle(DamageIndicatorOptions options, ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed) {
-            if (!ClientConfigs.damageIndicator && options.type() == DamageIndicatorOptions.Type.DAMAGE
-                    || !ClientConfigs.healIndicator && options.type() == DamageIndicatorOptions.Type.HEAL) {
+            // 虚拟信息模式下改由信息渲染调度器显示，这里不再生成粒子，避免同一个数字显示两遍
+            if (ClientConfigs.damageIndicator.isVirtual() && options.type() == DamageIndicatorOptions.Type.DAMAGE || ClientConfigs.healIndicator.isVirtual() && options.type() == DamageIndicatorOptions.Type.HEAL) {
                 return null;
             }
             return new DamageIndicatorParticle(pLevel, pX, pY, pZ, options.text(), options.big());

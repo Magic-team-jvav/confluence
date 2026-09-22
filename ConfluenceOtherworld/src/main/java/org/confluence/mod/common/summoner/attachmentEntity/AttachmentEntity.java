@@ -120,6 +120,7 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
         setDamage(other.getDamage());
         setKnockback(other.getKnockback());
         setArmorPierce(other.getArmorPierce());
+        setPrefix(other.getPrefix());
     }
 
     public float getDamage() {

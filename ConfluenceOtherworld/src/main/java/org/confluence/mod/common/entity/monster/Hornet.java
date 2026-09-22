@@ -233,14 +233,4 @@ public class Hornet extends BaseFlyingMonster {
         return Math.acos(Math.max(-1.0, Math.min(1.0, cosine)));
     }
 
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSoundEvents.SOUL_DEATH.get();
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return ModSoundEvents.SOUL_DEATH.get();
-    }
-
 }

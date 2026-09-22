@@ -746,7 +746,6 @@
         "subtitle": "confluence.subtitle.wall_of_flesh_summon"
     },
 
-    "//": "以下音效由 TerrariaSounds(ogg) 按作用重命名后导入，请勿手改翻译键",
     "abigail_attack": {
         "sounds": [
             "confluence:summon/abigail_attack"

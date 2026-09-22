@@ -1,10 +1,7 @@
 package org.confluence.mod.common.summoner.register;
 
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.summoner.attachment.AttachmentEntityData;
-import org.confluence.mod.common.summoner.attachment.InfoData;
-import org.confluence.mod.common.summoner.attachment.TargetCache;
-import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
+import org.confluence.mod.common.summoner.attachment.*;
 import org.confluence.mod.common.summoner.particle.SummonerParticleData;
 import org.mesdag.portlib.attachment.PortAttachmentType;
 import org.mesdag.portlib.registries.PortAttachmentRegistration;
@@ -15,7 +12,7 @@ public final class SummonerAttachmentTypes {
 
     private static final PortAttachmentRegistration TYPES = PortRegisterHandler.attachment(Confluence.MODID);
 
-    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<AttachmentEntityData>> ENTITY_DATA = TYPES.registerSimple("summoner_attachment_entity_data", () -> PortAttachmentType.builder(AttachmentEntityData::new).sync(new AttachmentEntityData()));
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<AttachmentEntityData>> ENTITY_DATA = TYPES.registerSimple("summoner_attachment_entity_data", () -> PortAttachmentType.builder(AttachmentEntityData::new).sync(new AttachmentEntityData.SyncHandler()));
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<TargetCache>> TARGET_CACHE = TYPES.registerSimple("summoner_target_cache", () -> PortAttachmentType.builder(TargetCache::new));
 

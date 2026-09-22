@@ -1,12 +1,12 @@
 package org.confluence.mod.common.summoner.minion;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.SummonerHelper;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
-import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
-import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
+import org.confluence.mod.common.summoner.attachmentEntity.*;
 import org.confluence.mod.common.summoner.minion.goal.eye_laser_turret.EyeLaserTurretAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.eye_laser_turret.EyeLaserTurretIdleGoal;
 import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;
@@ -15,13 +15,22 @@ import org.confluence.mod.common.summoner.projectile.EyeFireball;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.jetbrains.annotations.NotNull;
 
-/** 眼球激光塔：底座固定，每秒向目标发射一枚火球。 */
-public class EyeLaserTurretMinion extends MomentumMinion implements IBlockCollision<EyeLaserTurretMinion> {
+/**
+ * 眼球激光塔：底座固定，每秒向目标发射一枚火球。
+ */
+public class EyeLaserTurretMinion extends MomentumMinion implements IBlockCollision<EyeLaserTurretMinion>, ICarryMinion<EyeLaserTurretMinion> {
 
     private int cooldown;
+    private boolean isOnCarry = false;
 
     public EyeLaserTurretMinion() {
         super(SummonerAttachmentEntityTypes.EYE_LASER_TURRET);
+    }
+
+    @Override
+    protected void registerSyncFields(SyncFieldDispatcher fields) {
+        super.registerSyncFields(fields);
+        fields.field(LyraStreamCodecs.BOOL, () -> isOnCarry, value -> isOnCarry = value);
     }
 
     @Override
@@ -88,5 +97,34 @@ public class EyeLaserTurretMinion extends MomentumMinion implements IBlockCollis
     @Override
     public @NotNull AABB getBlockCollisionBox() {
         return new AABB(-0.25, -1.6, -0.25, 0.25, 0.25, 0.25);
+    }
+
+    @Override
+    public PathNode getRenderNode(float partialTick) {
+        if (isOnCarry()) {
+            return getCarryPathNode(partialTick);
+        }
+        return super.getRenderNode(partialTick);
+    }
+
+    @Override
+    public boolean isOnCarry() {
+        return isOnCarry;
+    }
+
+    @Override
+    public void setOnCarry(boolean onCarry) {
+        this.isOnCarry = onCarry;
+    }
+
+    @Override
+    public PathNode getCarryPathNode(float partialTick) {
+        return getCurrentPathNode().modifyPos(owner.getPosition(partialTick).add(0, owner.getBbHeight() + 2, 0));
+    }
+
+    @Override
+    public void onCarry() {
+        ICarryMinion.super.onCarry();
+        setVelocity(Vec3.ZERO);
     }
 }

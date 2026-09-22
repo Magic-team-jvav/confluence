@@ -25,6 +25,7 @@ import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.attachment.IPortAttachmentHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +41,18 @@ public class TargetCache {
     private final Long2ObjectOpenHashMap<List<LivingEntity>> spatialGroups = new Long2ObjectOpenHashMap<>();
     private final Long2ObjectOpenHashMap<LevelChunk> chunkCache = new Long2ObjectOpenHashMap<>();
     private final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-    private ServerPlayer owner = null;
+    private final ServerPlayer owner;
     private ServerLevel serverLevel;
 
-    public void tick(ServerPlayer player) {
-        this.owner = player;
+    public TargetCache(IPortAttachmentHolder owner) {
+        if (owner instanceof ServerPlayer player) {
+            this.owner = player;
+        } else {
+            throw new IllegalArgumentException(owner + " is not a valid TargetCache");
+        }
+    }
+
+    public void tick() {
         this.serverLevel = owner.serverLevel();
         hurterHistory.replaceAll((key, value) -> value - 1);
         hurterHistory.values().removeIf(value -> value <= 0);
@@ -60,7 +68,7 @@ public class TargetCache {
     }
 
     public boolean isTarget(@Nullable LivingEntity target) {
-        if (owner != null && target != null && owner != target && target.isAlive()) {
+        if (target != null && owner != target && target.isAlive()) {
             return targetCache.computeIfAbsent(target.getUUID().hashCode(), key -> {
                 if (target instanceof Enemy) {
                     return true;

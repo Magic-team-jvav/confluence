@@ -35,7 +35,7 @@ public final class SummonerEvents {
         PortEventHandler.addListener((PortPlayerTickEvent.Post event) -> {
             Player player = event.getEntity();
             if (player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.getData(SummonerAttachmentTypes.TARGET_CACHE).tick(serverPlayer);
+                serverPlayer.getData(SummonerAttachmentTypes.TARGET_CACHE).tick();
             }
             player.getData(SummonerAttachmentTypes.SUMMON_MARK_DATA).tick();
             SummonerHelper.get(player).getEntityData().tick(player);

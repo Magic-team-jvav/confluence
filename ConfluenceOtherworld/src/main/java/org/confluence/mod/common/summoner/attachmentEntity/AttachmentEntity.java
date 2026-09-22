@@ -9,8 +9,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
+import org.confluence.mod.common.summoner.attachment.AttachmentEntityData;
 import org.confluence.mod.common.summoner.attachment.TargetCache;
 import org.confluence.mod.common.summoner.attachment.WhipMarkTracker;
+import org.confluence.mod.common.summoner.minion.ICarryMinion;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.NotNull;
@@ -163,6 +165,13 @@ public abstract class AttachmentEntity implements Immunity, GeoAnimatable {
             }
             if (this instanceof IEntityCollision<?> iEntityCollision) {
                 iEntityCollision.entityCollision();
+            }
+            if (this instanceof ICarryMinion<?> carryMinion) {
+                carryMinion.tryCarry();
+                if (carryMinion.isOnCarry()) {
+                    carryMinion.onCarry();
+                    owner.getData(SummonerAttachmentTypes.ENTITY_DATA).setHasCarryMinion(true);
+                }
             }
         }
         historyNodes.add(0, currentPathNode);

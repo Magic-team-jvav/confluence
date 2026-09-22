@@ -17,7 +17,7 @@ public class EyeLaserTurretIdleGoal extends AttachmentEntityGoal<EyeLaserTurretM
 
     @Override
     public void tick() {
-        if (minion.getPos().distanceTo(minion.getOwner().position()) < 6.0) {
+        if (!minion.isOnCarry() && minion.getPos().distanceTo(minion.getOwner().position()) < 6.0) {
             minion.lookAtPos(minion.getOwner().getEyePosition());
         } else {
             minion.lookAtPos(minion.getPos().add(1, 0, 0));

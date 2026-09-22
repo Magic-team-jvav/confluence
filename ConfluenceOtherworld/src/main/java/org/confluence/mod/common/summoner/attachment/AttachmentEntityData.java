@@ -11,6 +11,7 @@ import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
+import org.confluence.mod.common.summoner.minion.ICarryMinion;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
@@ -32,18 +33,26 @@ import java.util.concurrent.atomic.AtomicReference;
  * 移除通过 setRemove() 标记完成，添加通过延迟队列在 tick 后统一处理。
  * </p>
  */
-public class AttachmentEntityData implements PortAttachmentSyncHandler<AttachmentEntityData> {
+public class AttachmentEntityData {
 
     private final Map<AttachmentEntityType<?>, List<AttachmentEntity>> pendingAdd = new HashMap<>();
     private final Map<AttachmentEntityType<?>, List<AttachmentEntity>> groups = new HashMap<>();
     private final List<AttachmentEntity> renderCache = new ArrayList<>();
     private final AtomicReference<List<byte[]>> pendingPayloads = new AtomicReference<>(List.of());
-    private Player player;
+    private final Player owner;
     private Level level = null;
     private boolean changed = false;
+    private boolean hasCarryMinion = false;
+
+    public AttachmentEntityData(IPortAttachmentHolder owner) {
+        if (owner instanceof Player player) {
+            this.owner = player;
+        } else {
+            throw new IllegalArgumentException(owner + " is not a valid AttachmentEntityData");
+        }
+    }
 
     public void tick(Player player) {
-        this.player = player;
         if (isClientSide()) {
             applyPendingSync();
             renderCache.clear();
@@ -57,6 +66,7 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
             }
         } else {
             if (isRunning()) {
+                hasCarryMinion = false;
                 boolean levelChange = level != null && level != player.level();
                 level = player.level();
                 Map<Long, List<Minion>> sameCache = new HashMap<>();
@@ -148,11 +158,11 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
     }
 
     public Level getLevel() {
-        return player.level();
+        return owner.level();
     }
 
     public boolean isClientSide() {
-        return player.level().isClientSide();
+        return owner.level().isClientSide();
     }
 
     public boolean isRunning() {
@@ -194,44 +204,20 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
         getGroups().getOrDefault(entityType, new ArrayList<>()).forEach(AttachmentEntity::setRemove);
     }
 
-    @Override
-    public void write(PortRegistryFriendlyByteBuf buf, AttachmentEntityData data, boolean initialSync) {
-        // 写入 AttachmentEntityType → 实体列表的结构
-        buf.writeVarInt(data.groups.size());
-        for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entityEntry : data.groups.entrySet()) {
-            buf.writeResourceLocation(entityEntry.getKey().location());
-            List<AttachmentEntity> list = entityEntry.getValue();
-            buf.writeVarInt(list.size());
-            for (AttachmentEntity entity : list) {
-                buf.writeUUID(entity.getUuid());
-                entity.getSyncFieldDispatcher().encode(buf, entity.getLevel(), initialSync);
-                buf.writeBoolean(entity.isClientInit());
-                if (!entity.isClientInit()) {
-                    entity.setClientInit(true);
-                    LyraStreamCodecs.PATH_NODE.encode(buf, entity.getHistoryNodes().get(0));
-                }
-            }
-        }
+    public Map<AttachmentEntityType<?>, List<AttachmentEntity>> getGroups() {
+        return groups;
     }
 
-    // ===================== 网络同步 =====================
+    public List<AttachmentEntity> getRenderCache() {
+        return renderCache;
+    }
 
-    @Override
-    public AttachmentEntityData read(@NotNull IPortAttachmentHolder holder, @NotNull PortRegistryFriendlyByteBuf buf, @Nullable AttachmentEntityData oldData) {
-        AttachmentEntityData data = oldData != null ? oldData : new AttachmentEntityData();
-        ByteBuf copy = buf.copy();
-        byte[] payload = new byte[copy.readableBytes()];
-        copy.readBytes(payload);
-        if (payload.length == 0) {
-            return data;
-        }
-        data.pendingPayloads.updateAndGet(payloads -> {
-            List<byte[]> updated = new ArrayList<>(payloads.size() + 1);
-            updated.addAll(payloads);
-            updated.add(payload);
-            return updated;
-        });
-        return data;
+    public boolean isHasCarryMinion() {
+        return hasCarryMinion;
+    }
+
+    public void setHasCarryMinion(boolean hasCarryMinion) {
+        this.hasCarryMinion = hasCarryMinion;
     }
 
     /**
@@ -261,7 +247,7 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
                         entity = entityType.factory().get();
                         entity.setUuid(uuid);
                     }
-                    entity.setOwner(player);
+                    entity.setOwner(owner);
                     entity.getSyncFieldDispatcher().decode(buf, level);
                     if (!buf.readBoolean()) {
                         PathNode pathNode = LyraStreamCodecs.PATH_NODE.decode(buf);
@@ -276,11 +262,45 @@ public class AttachmentEntityData implements PortAttachmentSyncHandler<Attachmen
         }
     }
 
-    public Map<AttachmentEntityType<?>, List<AttachmentEntity>> getGroups() {
-        return groups;
-    }
+    // ===================== 网络同步 =====================
+    public static final class SyncHandler implements PortAttachmentSyncHandler<AttachmentEntityData> {
 
-    public List<AttachmentEntity> getRenderCache() {
-        return renderCache;
+        @Override
+        public void write(PortRegistryFriendlyByteBuf buf, AttachmentEntityData data, boolean initialSync) {
+            // 写入 AttachmentEntityType → 实体列表的结构
+            buf.writeVarInt(data.groups.size());
+            for (Map.Entry<AttachmentEntityType<?>, List<AttachmentEntity>> entityEntry : data.groups.entrySet()) {
+                buf.writeResourceLocation(entityEntry.getKey().location());
+                List<AttachmentEntity> list = entityEntry.getValue();
+                buf.writeVarInt(list.size());
+                for (AttachmentEntity entity : list) {
+                    buf.writeUUID(entity.getUuid());
+                    entity.getSyncFieldDispatcher().encode(buf, entity.getLevel(), initialSync);
+                    buf.writeBoolean(entity.isClientInit());
+                    if (!entity.isClientInit()) {
+                        entity.setClientInit(true);
+                        LyraStreamCodecs.PATH_NODE.encode(buf, entity.getHistoryNodes().get(0));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public AttachmentEntityData read(@NotNull IPortAttachmentHolder holder, @NotNull PortRegistryFriendlyByteBuf buf, @Nullable AttachmentEntityData oldData) {
+            AttachmentEntityData data = oldData != null ? oldData : new AttachmentEntityData(holder);
+            ByteBuf copy = buf.copy();
+            byte[] payload = new byte[copy.readableBytes()];
+            copy.readBytes(payload);
+            if (payload.length == 0) {
+                return data;
+            }
+            data.pendingPayloads.updateAndGet(payloads -> {
+                List<byte[]> updated = new ArrayList<>(payloads.size() + 1);
+                updated.addAll(payloads);
+                updated.add(payload);
+                return updated;
+            });
+            return data;
+        }
     }
 }

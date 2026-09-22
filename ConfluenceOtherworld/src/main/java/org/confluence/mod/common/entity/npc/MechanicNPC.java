@@ -20,7 +20,7 @@ public class MechanicNPC extends BaseNPC {
     public void checkDespawn() {
         super.checkDespawn();
         if (isRemoved()) {
-            NPCSpawner.INSTANCE.setNPCAlive(getRegion(), getType(), false);
+            NPCSpawner.INSTANCE.forgetNPC(this);
         }
     }
 }

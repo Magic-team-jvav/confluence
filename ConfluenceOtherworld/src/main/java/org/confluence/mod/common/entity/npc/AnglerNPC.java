@@ -145,7 +145,7 @@ public class AnglerNPC extends BaseNPC {
     public void checkDespawn() {
         super.checkDespawn();
         if (isRemoved() && !isWakeUp()) {
-            NPCSpawner.INSTANCE.setNPCAlive(getRegion(), getType(), false);
+            NPCSpawner.INSTANCE.forgetNPC(this);
         }
     }
 

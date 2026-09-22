@@ -186,7 +186,7 @@ public abstract class EntityMixin implements IEntity {
                 if (sourceEntity instanceof BaseNPC sourceNpc && target instanceof BaseNPC targetNpc) {
                     targetNpc.setHouse(sourceNpc.getHouse());
                     event.setSpeedY(0.7);
-                    NPCSpawner.INSTANCE.setNPCAlive(sourceNpc.getRegion(), sourceNpc.getType(), false);
+                    NPCSpawner.INSTANCE.forgetNPC(sourceNpc);
                     if (target instanceof AnglerNPC anglerNPC) {
                         anglerNPC.setWakeUp(true);
                         anglerNPC.refreshDimensions();

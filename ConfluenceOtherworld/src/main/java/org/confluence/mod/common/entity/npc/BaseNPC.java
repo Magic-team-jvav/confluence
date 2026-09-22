@@ -103,6 +103,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Nullable
     protected NPCChat currentChat;
     protected NPCSpawner.Region region = NPCSpawner.Region.ZERO;
+    private boolean regionInitialized;
     protected boolean shouldInteract;
     protected BlockPos spawnAtPos = BlockPos.ZERO;
     private boolean spawnAtPosInitialized;
@@ -307,6 +308,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     public void setRegion(NPCSpawner.Region region) {
         this.region = region;
+        regionInitialized = true;
     }
 
     public boolean shouldInteract() {
@@ -589,6 +591,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+        if (!level().isClientSide && tickCount % 100 == 0) NPCSpawner.INSTANCE.trackNPC(this);
         if (chatDisplayTicks > 0 && --chatDisplayTicks == 0) setCurrentChat(null);
     }
 
@@ -641,7 +644,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
                     .result().ifPresent(this::setHouse);
         }
         if (tag.contains("Region")) {
-            PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("Region")), r -> this.region = r);
+            PortDataResultExtension.ifSuccess(NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("Region")), this::setRegion);
         }
         this.shouldInteract = tag.getBoolean("ShouldInteract");
         if (!relocatedFromAnotherDimension && tag.contains("SpawnAtPos")) {
@@ -665,6 +668,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
+        if (!regionInitialized) setRegion(new NPCSpawner.Region(blockPosition()));
         if (!level().isClientSide) {
             initName();
             applyCreatureDefinition();
@@ -678,5 +682,16 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             NPCSpawner.INSTANCE.moveNPCToAnotherRegion(this, region, new NPCSpawner.Region(blockPosition()));
             relocatedFromAnotherDimension = false;
         }
+        if (!level().isClientSide) NPCSpawner.INSTANCE.trackNPC(this);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        if (!level().isClientSide) {
+            if (reason.shouldDestroy() || reason == RemovalReason.CHANGED_DIMENSION)
+                NPCSpawner.INSTANCE.forgetNPC(this);
+            else NPCSpawner.INSTANCE.trackNPC(this);
+        }
+        super.remove(reason);
     }
 }

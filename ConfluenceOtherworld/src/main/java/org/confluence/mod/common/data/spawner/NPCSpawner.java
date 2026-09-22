@@ -13,9 +13,9 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -29,9 +29,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -97,6 +97,42 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private Map<Region, Reference2BooleanMap<EntityType<?>>> npcAlive = new Object2ObjectOpenHashMap<>();
+    /// UUID 记录保留卸载实体；旧区域表继续作为可修改的兼容接口与旧存档保守占用。
+    private final Map<UUID, ResidentRecord> residents = new HashMap<>();
+    private final Set<UUID> removalNotified = new HashSet<>();
+
+    private record ResidentRecord(EntityType<?> type, Region region, GlobalPos location,
+                                  boolean rescued) {}
+
+    public void trackNPC(BaseNPC npc) {
+        if (npc.level().isClientSide || npc instanceof OldManNPC || !npc.isAlive() || npc.deathTime > 0
+                || removalNotified.contains(npc.getUUID())) return;
+        ResidentRecord next = new ResidentRecord(npc.getType(), npc.getRegion(),
+                GlobalPos.of(npc.level().dimension(), npc.blockPosition()),
+                !npc.shouldInteract() && (!(npc instanceof AnglerNPC angler) || angler.isWakeUp()));
+        ResidentRecord previous = residents.put(npc.getUUID(), next);
+        if (previous != null && (!previous.region.equals(next.region) || previous.type != next.type
+                || previous.location.dimension() != next.location.dimension()))
+            refreshResidentPresence(previous);
+        if (next.location.dimension() == OverworldUtils.dimension())
+            getRegionAliveDetails(next.region).put(next.type, true);
+    }
+
+    /// 只移除这一实体，不会清除同区域其他同类 NPC 的占用。
+    public void forgetNPC(BaseNPC npc) {
+        if (npc.level().isClientSide || npc instanceof OldManNPC) return;
+        ResidentRecord previous = residents.remove(npc.getUUID());
+        if (previous != null) refreshResidentPresence(previous);
+        else refreshResidentPresence(new ResidentRecord(npc.getType(), npc.getRegion(),
+                GlobalPos.of(npc.level().dimension(), npc.blockPosition()), false));
+    }
+
+    private void refreshResidentPresence(ResidentRecord previous) {
+        if (previous.location.dimension() != OverworldUtils.dimension()) return;
+        boolean occupied = residents.values().stream().anyMatch(record -> record.type == previous.type
+                && record.region.equals(previous.region) && record.location.dimension() == previous.location.dimension());
+        getRegionAliveDetails(previous.region).put(previous.type, occupied);
+    }
     /// 老人按地牢入口独立保存，不能以城镇 region 或全世界的 NPC 类型判重。
     private final Map<GlobalPos, DungeonResident> dungeonResidents = new Object2ObjectOpenHashMap<>();
     /// 生成过的NPC，可用于NPC复活而无需再次满足条件
@@ -160,8 +196,7 @@ public enum NPCSpawner implements IGlobalData {
 
     /// 任意 region 的存活标记。
     ///
-    /// `npcSpawned` 里的 NPC 在世界范围内是唯一的（泰拉语义），只按玩家当前 region 判定，
-    /// 会让玩家活动区跨 region 时多刷出一套相同的 NPC。
+    /// 保留全局查询接口；普通城镇生成不使用它限制其他区域的同类 NPC。
     public boolean isNpcAliveAnywhere(EntityType<?> entityType) {
         for (Reference2BooleanMap<EntityType<?>> map : npcAlive.values()) {
             if (map.getOrDefault(entityType, false)) return true;
@@ -181,13 +216,15 @@ public enum NPCSpawner implements IGlobalData {
         return false;
     }
 
-    /// NPC 是否已存在（生成前的唯一性判定），取代原先「只看玩家当前 region」的写法。
-    ///
-    /// 旅商、老人、骷髅商人等一次性 NPC 不入 `npcSpawned`，仍由各自逻辑管理，
-    /// 这里只对它们做「附近有没有实体」的检查。
+    /// 按所属区域防重复，并用已加载实体兜底；不同区域允许存在同类 NPC。
     public boolean isNpcAlreadyPresent(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
-        if (isNpcNearby(level, pos, entityType, NPC_PRESENCE_CHECK_RADIUS)) return true;
-        return npcSpawned.contains(entityType) && isNpcAliveAnywhere(entityType);
+        Region region = new Region(pos);
+        if (hasNPCAlive(region, entityType)) return true;
+        for (Entity entity : level.getAllEntities()) {
+            if (entity instanceof BaseNPC npc && npc.isAlive() && npc.getType() == entityType
+                    && region.equals(npc.getRegion())) return true;
+        }
+        return false;
     }
 
     /// 城镇（NPC 小镇）判定：该 region 内已入住的 NPC 数量是否达到门槛。
@@ -219,16 +256,20 @@ public enum NPCSpawner implements IGlobalData {
 
     public void moveNPCToAnotherRegion(BaseNPC living, Region from, Region to) {
         EntityType<?> entityType = living.getType();
+        trackNPC(living);
         if (!from.equals(to)) {
-            setNPCAlive(from, entityType, false);
+            forgetNPC(living);
         }
         setNPCAlive(to, entityType, true);
         living.setRegion(to);
+        trackNPC(living);
         applyBenedictions(living);
     }
 
     public void onNPCAdded(BaseNPC living) {
         living.setRegion(new Region(living.chunkPosition()));
+        removalNotified.remove(living.getUUID());
+        trackNPC(living);
         setNPCAlive(living.getRegion(), living.getType(), true);
         applyBenedictions(living);
         broadcastMessageToRegion(living.level(), living, Component.translatable("event.confluence.npc.arrived", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
@@ -248,12 +289,13 @@ public enum NPCSpawner implements IGlobalData {
     ///   - 渔夫、公主、或城镇宠物死亡时，会改为显示讯息“<渔夫/宠物/公主的名字>已离开！”。
     ///   - 两种情况下，都会使用 #ff1919 颜色。
     public void onNPCRemoved(BaseNPC living) {
+        if (!removalNotified.add(living.getUUID())) return;
         HouseHandler.INSTANCE.removeHouse(living.level().dimension(), living.getUUID());
         if (living instanceof OldManNPC oldMan) {
             dungeonEntityRemoved(oldMan);
             return;
         }
-        setNPCAlive(living.getRegion(), living.getType(), false);
+        forgetNPC(living);
         if (living.shouldInteract() || living.getType() == NpcEntities.SKELETON_MERCHANT.get())
             return;
         if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != NpcEntities.OLD_MAN.get()) {
@@ -276,6 +318,18 @@ public enum NPCSpawner implements IGlobalData {
 
     @Override
     public void decode(CompoundTag tag) {
+        residents.clear();
+        removalNotified.clear();
+        for (Tag element : tag.getList("ResidentRecords", Tag.TAG_COMPOUND)) {
+            CompoundTag entry = (CompoundTag) element;
+            if (!entry.hasUUID("UUID")) continue;
+            ResourceLocation typeId = ResourceLocation.tryParse(entry.getString("Type"));
+            if (typeId == null) continue;
+            BuiltInRegistries.ENTITY_TYPE.getOptional(typeId).ifPresent(type ->
+                    GlobalPos.CODEC.parse(NbtOps.INSTANCE, entry.get("Location")).result().ifPresent(location ->
+                            residents.put(entry.getUUID("UUID"), new ResidentRecord(type,
+                                    new Region(entry.getLong("Region")), location, entry.getBoolean("Rescued")))));
+        }
         dungeonResidents.clear();
         for (Tag element : tag.getList("DungeonResidents", Tag.TAG_COMPOUND)) {
             CompoundTag entry = (CompoundTag) element;
@@ -296,6 +350,17 @@ public enum NPCSpawner implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
+        ListTag records = new ListTag();
+        residents.forEach((uuid, record) -> {
+            CompoundTag entry = new CompoundTag();
+            entry.putUUID("UUID", uuid);
+            entry.putString("Type", BuiltInRegistries.ENTITY_TYPE.getKey(record.type).toString());
+            entry.putLong("Region", record.region.toLong());
+            entry.putBoolean("Rescued", record.rescued);
+            GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, record.location).result().ifPresent(value -> entry.put("Location", value));
+            records.add(entry);
+        });
+        tag.put("ResidentRecords", records);
         ListTag residents = new ListTag();
         dungeonResidents.forEach((entrance, resident) -> {
             CompoundTag entry = new CompoundTag();
@@ -329,6 +394,8 @@ public enum NPCSpawner implements IGlobalData {
 
     @Override
     public void clear() {
+        residents.clear();
+        removalNotified.clear();
         dungeonResidents.clear();
         npcAlive.clear();
         npcSpawned.clear();
@@ -359,47 +426,58 @@ public enum NPCSpawner implements IGlobalData {
     public void checkNpcRespawn(ServerLevel serverLevel) {
         if (GameEventSystem.shouldDenyNatureSpawn()) return;
         Set<Region> processedRegions = new ObjectOpenHashSet<>();
-        outer:
-        for (ServerPlayer player : serverLevel.players()) {
-            if (trySpawnUndergroundVisitor(player)) continue;
+        List<ServerPlayer> players = serverLevel.players();
+        int start = players.isEmpty() ? 0 : (int) ((serverLevel.getGameTime() / CommonConfigs.NPC_SPAWN_INTERVAL.get()) % players.size());
+        for (int index = 0; index < players.size(); index++) {
+            ServerPlayer player = players.get((start + index) % players.size());
+            if (player.isSpectator()) continue;
+            trySpawnUndergroundVisitor(player);
+            if (!LibDateUtils.isDay(LibDateUtils.getDayTime(serverLevel))) continue;
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
-            // 多名玩家可能共享同一出生区域。每轮刷新只处理一次该区域，避免同一轮连续生成多名 NPC。
-            if (!processedRegions.add(region)) continue;
-            if (trySpawnTravelingMerchant(player, pos, region)) continue;
-            if (trySpawnClothier(player, pos, region)) continue;
-            if (trySpawnMechanic(player, pos, region)) continue;
-            for (EntityType<?> entityType : npcSpawned) {
-                if (!DevelopmentSpawnPolicy.allowsAutomaticSpawn(entityType)) continue;
-                if (!hasNPCAlive(region, entityType) && spawnAtPos(serverLevel, pos, entityType)) {
-                    continue outer;
-                }
-            }
-            if (trySpawnMerchant(player, pos, region)) continue;
-            if (trySpawnNurse(player, pos, region)) continue;
-            if (trySpawnDemolitionist(player, pos, region)) continue;
-            if (trySpawnDyeTrader(player, pos, region)) continue;
-            if (trySpawnAngler(player)) continue;
-            if (trySpawnZoologist(player, pos, region)) continue;
-            if (trySpawnDryad(player, pos, region)) continue;
-            if (trySpawnPainter(player, pos, region)) continue;
-            // 高尔夫球手
-            if (trySpawnArmsDealer(player, pos, region)) continue;
-            // 酒馆老板
-            // 发型师
-            if (trySpawnGoblinTinkerer(player, pos, region)) continue;
-            if (trySpawnWitchDoctor(player, pos, region)) continue;
-            if (trySpawnPartyGirl(player, pos, region)) continue;
-            if (trySpawnWizard(player, pos, region)) continue;
-            // 税收官
-            if (trySpawnTruffle(player, pos, region)) continue;
-            if (!Confluence.UNRELEASED_SPAWNS) continue;
-            if (trySpawnNerdySlime(serverLevel, region, pos)) continue;
-            if (trySpawnCoolSlime(serverLevel, pos, region)) continue;
-            // 海盗
-            if (trySpawnSteampumker(serverLevel, region, pos)) continue;
-            if (trySpawnCyborg(serverLevel, region, pos)) continue;
+            if (processedRegions.contains(region)) continue;
+            /// 只有成功生成才占用本轮名额，不能挡住同区域其他玩家的资格检查。
+            if (trySpawnForPlayer(player, pos, region)) processedRegions.add(region);
         }
+    }
+
+    private boolean trySpawnForPlayer(ServerPlayer player, BlockPos pos, Region region) {
+        ServerLevel serverLevel = player.serverLevel();
+        if (trySpawnTravelingMerchant(player, pos, region)) return true;
+        if (trySpawnClothier(player, pos, region)) return true;
+        if (trySpawnMechanic(player, pos, region)) return true;
+        for (EntityType<?> entityType : npcSpawned) {
+            if (!DevelopmentSpawnPolicy.allowsAutomaticSpawn(entityType)) continue;
+            if (!hasNPCAlive(region, entityType) && spawnAtPos(serverLevel, pos, entityType)) {
+                return true;
+            }
+        }
+        if (trySpawnMerchant(player, pos, region)) return true;
+        if (trySpawnNurse(player, pos, region)) return true;
+        if (trySpawnDemolitionist(player, pos, region)) return true;
+        if (trySpawnDyeTrader(player, pos, region)) return true;
+        if (trySpawnAngler(player)) return true;
+        if (trySpawnZoologist(player, pos, region)) return true;
+        if (trySpawnDryad(player, pos, region)) return true;
+        if (trySpawnPainter(player, pos, region)) return true;
+        // 高尔夫球手
+        if (trySpawnArmsDealer(player, pos, region)) return true;
+        // 酒馆老板
+        // 发型师
+        if (trySpawnGoblinTinkerer(player, pos, region)) return true;
+        if (trySpawnWitchDoctor(player, pos, region)) return true;
+        if (trySpawnPartyGirl(player, pos, region)) return true;
+        if (trySpawnWizard(player, pos, region)) return true;
+        // 税收官
+        if (trySpawnTruffle(player, pos, region)) return true;
+        if (!Confluence.UNRELEASED_SPAWNS) return false;
+        if (trySpawnNerdySlime(serverLevel, region, pos)) return true;
+        if (trySpawnCoolSlime(serverLevel, pos, region)) return true;
+        // 海盗
+        if (trySpawnSteampumker(serverLevel, region, pos)) return true;
+        if (trySpawnCyborg(serverLevel, region, pos)) return true;
+
+        return false;
     }
 
     private boolean trySpawnCyborg(ServerLevel serverLevel, Region region, BlockPos pos) {
@@ -419,8 +497,7 @@ public enum NPCSpawner implements IGlobalData {
 
     private boolean trySpawnCoolSlime(ServerLevel level, BlockPos pos, Region region) {
         if (!PartyGameEvent.INSTANCE.isNatural() ||
-                hasNPCAlive(region, NpcEntities.COOL_SLIME.get()) ||
-                isNpcNearby(level, pos, NpcEntities.COOL_SLIME.get(), NPC_PRESENCE_CHECK_RADIUS)
+                isNpcAlreadyPresent(level, pos, NpcEntities.COOL_SLIME.get())
         ) return false;
         var slime = NpcEntities.COOL_SLIME.get().create(level);
         if (slime == null) return false;
@@ -433,7 +510,9 @@ public enum NPCSpawner implements IGlobalData {
             var house = HouseValidater.scan(level, candidate).make(slime.getUUID());
             if (!house.isValid() || HouseHandler.INSTANCE.isOccupiedByOther(level.dimension(), house, slime.getUUID(), true))
                 continue;
-            BlockPos spawn = adjustSpawnLocation(level, house.center(), slime);
+            Optional<BlockPos> safePos = findSafeSpawnLocation(level, house.center(), slime);
+            if (safePos.isEmpty()) continue;
+            BlockPos spawn = safePos.get();
             if (!house.contains(spawn) || !level.noCollision(slime, slime.getBoundingBox().move(spawn.getBottomCenter())))
                 continue;
             slime.setPos(spawn.getBottomCenter());
@@ -586,6 +665,7 @@ public enum NPCSpawner implements IGlobalData {
                     if (!level.addFreshEntity(npc)) return false;
                     npc.setRegion(playerRegion);
                     getRegionAliveDetails(playerRegion).put(NpcEntities.ANGLER.get(), true);
+                    trackNPC(npc);
                     return true;
                 }
             }
@@ -642,7 +722,7 @@ public enum NPCSpawner implements IGlobalData {
     private boolean trySpawnPainter(ServerPlayer player, BlockPos pos, Region region) {
         Reference2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         if (map != null && !map.getOrDefault(NpcEntities.PAINTER.get(), false)) {
-            if (map.size() >= 8) {
+            if (getAliveNpcCount(region, type -> true) >= 8) {
                 return spawnAtPos(player.serverLevel(), pos, NpcEntities.PAINTER.get());
             }
         }
@@ -808,6 +888,7 @@ public enum NPCSpawner implements IGlobalData {
                                 npc.setRegion(npcRegion);
                                 npc.setShouldInteract(true); // 标记需要交互
                                 getRegionAliveDetails(npcRegion).put(NpcEntities.MECHANIC.get(), true);
+                                trackNPC(npc);
                                 return true;
                             }
                             return false;
@@ -821,9 +902,12 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
-        if (isNpcAlreadyPresent(level, pos, entityType)) return false; // 玩家活动区跨 region 时不再生成第二套
+        if (isNpcAlreadyPresent(level, pos, entityType)) return false;
         if (!(entityType.create(level) instanceof BaseNPC npc)) return false;
-        npc.setPos(adjustSpawnLocation(level, pos, npc).getBottomCenter());
+        Optional<BlockPos> safePos = findSafeSpawnLocation(level, pos, npc);
+        if (safePos.isEmpty()) return false;
+        npc.setPos(safePos.get().getBottomCenter());
+        if (!level.noCollision(npc)) return false;
         if (!level.addFreshEntity(npc)) return false;
         if (npc instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来
@@ -832,52 +916,47 @@ public enum NPCSpawner implements IGlobalData {
         return true;
     }
 
+    /// 保留旧 API 的非空返回约定；自动生成使用 findSafeSpawnLocation，失败时不生成。
     public static BlockPos adjustSpawnLocation(ServerLevel level, BlockPos pos, BaseNPC npc) {
-        AABB aabb = npc.getDimensions(Pose.STANDING).makeBoundingBox(Vec3.ZERO);
-        BlockPos blockPos = pos;
-        if (level.dimensionType().hasSkyLight() && level.getServer().getWorldData().getGameType() != GameType.ADVENTURE) {
-            int i = Math.max(0, level.getServer().getSpawnRadius(level));
-            int j = Mth.floor(level.getWorldBorder().getDistanceToBorder(pos.getX(), pos.getZ()));
-            if (j < i) {
-                i = j;
-            }
+        return findSafeSpawnLocation(level, pos, npc).orElse(pos);
+    }
 
-            if (j <= 1) {
-                i = 1;
-            }
-
-            long k = i * 2L + 1;
-            long l = k * k;
-            int spawnArea = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
-            int j1 = spawnArea <= 16 ? spawnArea - 1 : 17;
-            int k1 = RandomSource.create().nextInt(spawnArea);
-
-            for (int l1 = 0; l1 < spawnArea; l1++) {
-                int i2 = (k1 + j1 * l1) % spawnArea;
-                int j2 = i2 % (i * 2 + 1);
-                int k2 = i2 / (i * 2 + 1);
-                blockPos = PlayerRespawnLogic.getOverworldRespawnPos(level, pos.getX() + j2 - i, pos.getZ() + k2 - i);
-                if (blockPos != null && level.noCollision(npc, aabb.move(blockPos.getBottomCenter()))) {
-                    return blockPos;
+    public static Optional<BlockPos> findSafeSpawnLocation(ServerLevel level, BlockPos origin, BaseNPC npc) {
+        Region region = new Region(origin);
+        /// 普通城镇 NPC 只找地表。地下重生点只提供水平坐标，不在地下寻找空腔。
+        for (int radius = 0; radius <= 16; radius++) {
+            for (int dx = -radius; dx <= radius; dx++) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    if (Math.abs(dx) != radius && Math.abs(dz) != radius) continue;
+                    BlockPos column = origin.offset(dx, 0, dz);
+                    if (!region.isOnRegion(column) || !level.hasChunkAt(column)) continue;
+                    BlockPos candidate = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, column);
+                    if (isSafeSpawnLocation(level, candidate, npc)) return Optional.of(candidate);
                 }
             }
-
-            blockPos = pos;
         }
+        return Optional.empty();
+    }
 
-        while (!level.noCollision(npc, aabb.move(blockPos.getBottomCenter())) && blockPos.getY() < level.getMaxBuildHeight() - 1) {
-            blockPos = blockPos.above();
+    private static boolean isSafeSpawnLocation(ServerLevel level, BlockPos pos, BaseNPC npc) {
+        AABB bounds = npc.getDimensions(Pose.STANDING).makeBoundingBox(pos.getBottomCenter());
+        BlockPos min = BlockPos.containing(bounds.minX, bounds.minY - 1, bounds.minZ);
+        BlockPos max = BlockPos.containing(bounds.maxX, bounds.maxY, bounds.maxZ);
+        if (min.getY() < level.getMinBuildHeight() || max.getY() >= level.getMaxBuildHeight()
+                || !level.getWorldBorder().isWithinBounds(bounds)
+                || !level.hasChunksAt(min, max)) return false;
+        var floor = level.getBlockState(pos.below());
+        if (!floor.isFaceSturdy(level, pos.below(), Direction.UP) || floor.is(BlockTags.LEAVES) || floor.is(BlockTags.LOGS))
+            return false;
+        for (BlockPos check : BlockPos.betweenClosed(min, max)) {
+            var state = level.getBlockState(check);
+            if (!state.getFluidState().isEmpty()) return false;
         }
-
-        while (level.noCollision(npc, aabb.move(blockPos.below().getBottomCenter())) && blockPos.getY() > level.getMinBuildHeight() + 1) {
-            blockPos = blockPos.below();
-        }
-
-        return blockPos;
+        return level.noCollision(npc, bounds);
     }
 
     public static BlockPos getNpcSpawnPos(ServerPlayer player) {
-        return player.getRespawnPosition() == null ? player.serverLevel().getSharedSpawnPos() : player.getRespawnPosition();
+        return player.getRespawnPosition() == null || player.getRespawnDimension() != player.serverLevel().dimension() ? player.serverLevel().getSharedSpawnPos() : player.getRespawnPosition();
     }
 
     public static Region getNpcSpawnRegion(ServerPlayer player) {
@@ -902,25 +981,21 @@ public enum NPCSpawner implements IGlobalData {
         UUID uuid = PortAttributeModifier.rl2uuid(id);
         AttributeInstance maxHealth = living.getAttribute(Attributes.MAX_HEALTH);
         if (maxHealth != null) {
-            maxHealth.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 250,
-                    AttributeModifier.Operation.ADDITION));
+            maxHealth.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 250, AttributeModifier.Operation.ADDITION));
         }
         AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
         if (armor != null) {
-            armor.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 8,
-                    AttributeModifier.Operation.ADDITION));
+            armor.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 8, AttributeModifier.Operation.ADDITION));
         }
         AttributeInstance attackDamage = living.getAttribute(LibAttributes.getAttackDamage());
         if (attackDamage != null) {
-            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 0.25,
-                    AttributeModifier.Operation.MULTIPLY_TOTAL));
+            attackDamage.addOrReplacePermanentModifier(new AttributeModifier(uuid, id.getPath(), 0.25, AttributeModifier.Operation.MULTIPLY_TOTAL));
         }
         living.setHealth(wasFullHealth ? living.getMaxHealth() : Math.min(oldHealth, living.getMaxHealth()));
     }
 
     public static void respawnNPC(ServerLevel level, int dayTime) {
         if (CommonConfigs.DO_NPC_SPAWNING.get() &&
-                LibDateUtils.isDay(dayTime) &&
                 level.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 level.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
         ) NPCSpawner.INSTANCE.checkNpcRespawn(level);

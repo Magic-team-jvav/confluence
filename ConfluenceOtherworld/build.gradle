@@ -226,6 +226,7 @@ dependencies {
         modRuntimeOnly("curse.maven:patchouli-306770:7731017")
     }
 //    modRuntimeOnly("curse.maven:bigger-stacks-564896:8263248")
+//    modRuntimeOnly('com.github.glitchfiend:TerraBlender-forge:' + minecraft_version + '-3.0.1.10')
 }
 
 mixin {

@@ -63,6 +63,7 @@
       "world.item.enchantment.ProtectionEnchantmentMixin",
       "world.level.LevelAccessor",
       "world.level.LevelMixin",
+      "world.level.biome.BiomeSourceMixin",
       "world.level.biome.MultiNoiseBiomeSourceMixin",
       "world.level.biome.TheEndBiomeSourceMixin",
       "world.level.block.AnvilBlockMixin",

@@ -11,8 +11,11 @@ import org.confluence.mod.common.worldgen.biome.injector.BiomeSourceHandler;
 import org.confluence.mod.common.worldgen.biome.injector.BiomeSourceInjector;
 import org.spongepowered.asm.mixin.Mixin;
 
-import java.util.stream.Stream;
-
+/// 末地群系注入。
+///
+/// 这里只需要 `getNoiseBiome` 这一个切点：`possibleBiomes()` 的追加已经统一由
+/// {@link BiomeSourceMixin} 在 `BiomeSource` 层面完成（本 mixin 的处理器也是
+/// `BiomeSourceInjector` 里的一份，所以自动被覆盖到）。
 @Mixin(TheEndBiomeSource.class)
 public abstract class TheEndBiomeSourceMixin implements SelfGetter<TheEndBiomeSource> {
     @WrapMethod(method = "getNoiseBiome(IIILnet/minecraft/world/level/biome/Climate$Sampler;)Lnet/minecraft/core/Holder;")
@@ -20,12 +23,5 @@ public abstract class TheEndBiomeSourceMixin implements SelfGetter<TheEndBiomeSo
         BiomeSourceHandler handler = BiomeSourceInjector.handlerOf(confluence$self());
         if (handler == null) return original.call(x, y, z, sampler);
         return handler.resolve(x, y, z, sampler, () -> original.call(x, y, z, sampler));
-    }
-
-    @WrapMethod(method = "collectPossibleBiomes")
-    private Stream<Holder<Biome>> confluence$addPossibleBiomes(Operation<Stream<Holder<Biome>>> original) {
-        BiomeSourceHandler handler = BiomeSourceInjector.handlerOf(confluence$self());
-        Stream<Holder<Biome>> oReturn = original.call();
-        return handler == null ? oReturn : Stream.concat(oReturn, handler.extraBiomes());
     }
 }

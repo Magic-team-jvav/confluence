@@ -24,8 +24,6 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import java.util.stream.Stream;
-
 @Mixin(value = MultiNoiseBiomeSource.class, priority = 1100)
 public abstract class MultiNoiseBiomeSourceMixin implements IMultiNoiseBiomeSource {
     @Unique
@@ -38,12 +36,16 @@ public abstract class MultiNoiseBiomeSourceMixin implements IMultiNoiseBiomeSour
         return handler.resolve(x, y, z, sampler, () -> original.call(x, y, z, sampler));
     }
 
-    @WrapMethod(method = "collectPossibleBiomes")
-    private Stream<Holder<Biome>> confluence$addPossibleBiomes(Operation<Stream<Holder<Biome>>> original) {
-        BiomeSourceHandler handler = BiomeSourceInjector.handlerOf(confluence$self());
-        Stream<Holder<Biome>> oReturn = original.call();
-        return handler == null ? oReturn : Stream.concat(oReturn, handler.extraBiomes());
-    }
+    /// **不再在 `collectPossibleBiomes` 上追加本模组的群系。**
+    ///
+    /// 追加点已经挪到 {@link BiomeSourceMixin#confluence$withRegionBiomes}
+    /// （环绕 `BiomeSource#possibleBiomes`）。原因是 `possibleBiomes` 是
+    /// `Suppliers.memoize(() -> collectPossibleBiomes()...)`，**只在第一次求值时算一次**，
+    /// 而那次求值实测早于 `ConfluenceBiomeInjector#install` 注册处理器，
+    /// 于是这里追加的群系会被永久丢弃 —— 症状是区块里出得来的群系却没有地物
+    /// （`ChunkGenerator#applyBiomeDecoration` 的 `retainAll` 把它剔了），
+    /// 且 `/locate biome` 找不到它（`BiomeSource#findClosestBiome3d` 先按这份集合筛）。
+    /// 改到读端做并集后，这个问题与求值时机彻底解耦。
 
     @Override
     public Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair() {

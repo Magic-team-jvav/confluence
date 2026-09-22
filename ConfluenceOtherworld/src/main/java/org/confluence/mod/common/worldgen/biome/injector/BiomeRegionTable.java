@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.UnaryOperator;
-import java.util.stream.Stream;
 
 /// 某个维度类别下、某个 `BiomeSource` 实例专属的区域表。
 ///
@@ -97,10 +96,6 @@ public final class BiomeRegionTable {
         return biomes;
     }
 
-    public Stream<Holder<Biome>> biomeStream() {
-        return biomes.stream();
-    }
-
     public int index(int quartX, int quartZ) {
         return allocator.index(quartX, quartZ);
     }
@@ -114,8 +109,7 @@ public final class BiomeRegionTable {
     public Holder<Biome> find(int index, Climate.TargetPoint target) {
         if (index <= 0 || index >= entries.size()) return null;
         List<Entry> list = entries.get(index);
-        for (int i = 0; i < list.size(); i++) {
-            Entry entry = list.get(i);
+        for (Entry entry : list) {
             if (covers(entry.parameters(), target)) return entry.biome();
         }
         return null;

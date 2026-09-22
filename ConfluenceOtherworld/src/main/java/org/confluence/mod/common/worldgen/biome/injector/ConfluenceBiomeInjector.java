@@ -63,9 +63,7 @@ public final class ConfluenceBiomeInjector {
 
         NETHER_REGIONS.add(new AshForestRegion());
         NETHER_REGIONS.add(new AshWastelandRegion());
-
-        Confluence.LOGGER.info("Registered {} overworld biome regions and {} nether biome regions", OVERWORLD_REGIONS.size(), NETHER_REGIONS.size());
-    }
+}
 
     public static List<BiomeRegion> regionsOf(BiomeRegionType type) {
         bootstrap();

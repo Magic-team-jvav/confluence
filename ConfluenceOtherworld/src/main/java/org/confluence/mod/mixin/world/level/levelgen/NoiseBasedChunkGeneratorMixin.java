@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import org.confluence.lib.common.worldgen.biome.DynamicBiomeUtils;
 import org.confluence.lib.mixed.ILevelChunkSection;
-import org.confluence.mod.common.worldgen.biome.injector.InjectionProbe;
 import org.confluence.mod.mixed.INoiseBasedChunkGenerator;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -60,10 +59,8 @@ public abstract class NoiseBasedChunkGeneratorMixin implements INoiseBasedChunkG
     private SurfaceRules.RuleSource confluence$resolveRules(NoiseGeneratorSettings instance, Operation<SurfaceRules.RuleSource> original) {
         SurfaceRules.RuleSource composed = this.confluence$surfaceRules;
         if (composed == null) {
-            InjectionProbe.surfaceMissing();
             return original.call(instance);
         }
-        InjectionProbe.surfaceApplied();
         return composed;
     }
 }

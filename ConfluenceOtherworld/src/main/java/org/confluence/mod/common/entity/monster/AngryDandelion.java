@@ -74,8 +74,8 @@ public final class AngryDandelion extends BaseMonster {
                         Vec3 aimedVelocity = direction.scale(1.0 / flightTicks)
                                 .add(0, DandelionSeed.GRAVITY * (flightTicks + 1.0) * 0.5, 0);
                         Vec3 sideways = new Vec3(-direction.z, 0.0, direction.x).normalize();
-                        float damage = LibUtils.isMaster(level(), blockPosition()) ? 42.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 28.0F : 14.0F;
-                        damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 15.0F;
+                        float damage = LibUtils.isMaster(level(), blockPosition()) ? 11.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 8.0F : 4.0F;
+                        damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 8.0F;
                         boolean fired = false;
                         int count = 1 + random.nextInt(3);
                         for (int i = 0; i < count; i++) {

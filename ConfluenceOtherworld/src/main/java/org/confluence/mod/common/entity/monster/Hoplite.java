@@ -78,8 +78,8 @@ public final class Hoplite extends BaseWarriorMonster {
                         Vec3 offset = target.getBoundingBox().getCenter().subtract(origin);
                         double flightTicks = Math.max(1.0, offset.length() / 1.2);
                         Vec3 velocity = offset.scale(1.0 / flightTicks).add(0.0, HopliteJavelin.GRAVITY * (flightTicks + 1.0) * 0.5, 0.0);
-                        float damage = LibUtils.isMaster(level(), blockPosition()) ? 108.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 72.0F : 36.0F;
-                        damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 22.0F;
+                        float damage = LibUtils.isMaster(level(), blockPosition()) ? 29.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 19.0F : 10.0F;
+                        damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 19.0F;
                         javelin.configure(Hoplite.this, origin, velocity, damage, 100);
                         if (level().addFreshEntity(javelin)) {
                             swing(InteractionHand.MAIN_HAND);

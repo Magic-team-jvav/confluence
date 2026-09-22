@@ -41,7 +41,7 @@ public final class DesertSpirit extends BaseCasterMonster {
 
     @Override
     protected float projectileDamage() {
-        return LibUtils.isMaster(level(), blockPosition()) ? 132.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 88.0F : 60.0F;
+        return LibUtils.isMaster(level(), blockPosition()) ? 34.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 23.0F : 16.0F;
     }
 
     @Override

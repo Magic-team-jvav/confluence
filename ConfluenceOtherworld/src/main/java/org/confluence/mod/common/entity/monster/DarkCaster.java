@@ -4,6 +4,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.leaf.CasterCycleAction;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -48,9 +49,16 @@ public class DarkCaster extends BaseCasterMonster {
         return profile.projectilesPerVolley;
     }
 
+    /// 弹幕伤害按 wiki 专家值 × 26% 固定：提姆的混沌球 38、符文法师的符文爆破 42、死灵法师的暗影束 25；
+    /// 其余法师（暗黑法师、哥布林术士、魔教徒、褴褛邪教徒法师）仍沿用接触伤害口径。
     @Override
     protected float projectileDamage() {
-        return super.projectileDamage() * (profile == Profile.RUNE_WIZARD ? 0.4F : 1.0F);
+        return switch (profile) {
+            case TIM -> LibUtils.isMaster(level(), blockPosition()) ? 57.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 38.0F : 19.0F;
+            case RUNE_WIZARD -> LibUtils.isMaster(level(), blockPosition()) ? 63.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 42.0F : 21.0F;
+            case NECROMANCER -> LibUtils.isMaster(level(), blockPosition()) ? 38.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 25.0F : 13.0F;
+            default -> super.projectileDamage();
+        };
     }
 
     /// 死灵法师每次传送后连续施放五次暗影束，其他法师保持各自原有的三次周期。

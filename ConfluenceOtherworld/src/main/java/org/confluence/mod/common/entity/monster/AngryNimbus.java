@@ -43,8 +43,8 @@ public final class AngryNimbus extends BaseFlyingMonster {
                             rainTicks = 0;
                             NimbusRain rain = ModEntities.NIMBUS_RAIN.get().create(level());
                             if (rain != null) {
-                                float damage = LibUtils.isMaster(level(), blockPosition()) ? 120.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 80.0F : 40.0F;
-                                damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 50.0F;
+                                float damage = LibUtils.isMaster(level(), blockPosition()) ? 32.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 21.0F : 11.0F;
+                                damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 21.0F;
                                 Vec3 origin = new Vec3(getRandomX(0.7), getY() - 1.0, getRandomZ(0.7));
                                 rain.configure(AngryNimbus.this, origin, new Vec3(0.0, -0.6, 0.0), damage, 100);
                                 if (!level().addFreshEntity(rain)) rain.discard();

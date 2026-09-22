@@ -145,7 +145,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(182).armor(40).attackDamage(47).followRange(32).knockbackResistance(0.78).movementSpeed(0.28)
                     .state(ClimbingSpider.CombatState.CLIMBING, state -> state.multiply(Attributes.ATTACK_DAMAGE, 10.0 / 9.0))
                     .state(ClimbingSpider.CombatState.SPITTING, state -> state.attackInterval(60))
-                    .projectile(ModEntities.SPIDER_WEB_SPIT, projectile -> projectile.damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 54 : 36).speed(0.8).lifetime(80))
+                    .projectile(ModEntities.SPIDER_WEB_SPIT, projectile -> projectile.damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 14 : 10).speed(0.8).lifetime(80))
                     .build());
 
     // 生命树：侏儒
@@ -202,13 +202,13 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<ClimbingSpider>> JUNGLE_CREEPER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("jungle_creeper", EntityType.Builder.<ClimbingSpider>of((type, level) -> new ClimbingSpider(type, level, ClimbingSpider.Kind.JUNGLE), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(28).attackDamage(52).followRange(32).knockbackResistance(0.78).movementSpeed(0.28)
                     .state(ClimbingSpider.CombatState.SPITTING, state -> state.attackInterval(60))
-                    .projectile(ModEntities.SPIDER_WEB_SPIT, projectile -> projectile.damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 54 : 36).speed(0.8).lifetime(80))
+                    .projectile(ModEntities.SPIDER_WEB_SPIT, projectile -> projectile.damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 14 : 10).speed(0.8).lifetime(80))
                     .build());
     public static final RegistryObject<EntityType<Derpling>> DERPLING = withAttributes(registerEntity("derpling", EntityType.Builder.of(Derpling::new, MobCategory.MONSTER).sized(2F, 2F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(156).armor(26).attackDamage(41).followRange(48).attackKnockback(1).knockbackResistance(0.55).stepHeight(3.2).jumpStrength(0.5).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2).build());
     public static final RegistryObject<EntityType<GiantTortoise>> GIANT_TORTOISE = withAttributes(registerEntity("giant_tortoise", EntityType.Builder.of(GiantTortoise::new, MobCategory.MONSTER).sized(2.25F, 1.85F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(244).armor(30).attackDamage(41).followRange(48).attackKnockback(1).knockbackResistance(0.73).movementSpeed(0.2)
-                    .state(GiantTortoise.Phase.SPINNING, state -> state.multiply(Attributes.ATTACK_DAMAGE, 2).multiplyBase(Attributes.ARMOR, 2))
+            () -> CreatureAttributeBuilder.creature().maxHealth(244).armor(28).attackDamage(41).followRange(48).attackKnockback(1).knockbackResistance(0.73).movementSpeed(0.2)
+                    .state(GiantTortoise.Phase.SPINNING, state -> state.multiply(Attributes.ATTACK_DAMAGE, 1.8).multiplyBase(Attributes.ARMOR, 2))
                     .state(GiantTortoise.Phase.RETRACTING, state -> state.duration(10))
                     .state(GiantTortoise.Phase.WINDING_UP, state -> state.duration(12))
                     .state(GiantTortoise.Phase.EMERGING, state -> state.duration(10))
@@ -252,7 +252,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(36).armor(12).attackDamage(13).followRange(60).attackKnockback(0.1).knockbackResistance(0.1).build());
     public static final RegistryObject<EntityType<GiantTortoise>> ICE_TORTOISE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("ice_tortoise", EntityType.Builder.of(GiantTortoise::new, MobCategory.MONSTER).sized(2.25F, 1.85F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(28).attackDamage(29).followRange(48).attackKnockback(1).knockbackResistance(0.73).movementSpeed(0.2)
-                    .state(GiantTortoise.Phase.SPINNING, state -> state.multiply(Attributes.ATTACK_DAMAGE, 2).multiplyBase(Attributes.ARMOR, 2))
+                    .state(GiantTortoise.Phase.SPINNING, state -> state.multiply(Attributes.ATTACK_DAMAGE, 1.8).multiplyBase(Attributes.ARMOR, 2))
                     .state(GiantTortoise.Phase.RETRACTING, state -> state.duration(10))
                     .state(GiantTortoise.Phase.WINDING_UP, state -> state.duration(12))
                     .state(GiantTortoise.Phase.EMERGING, state -> state.duration(10))
@@ -266,7 +266,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(146).armor(30).attackDamage(32).knockbackResistance(0.55).movementSpeed(0.23).followRange(32)
                     .state(FrostFighter.CombatState.SHOOTING, state -> state.moveSpeed(1).attackInterval(35))
                     .state(FrostFighter.CombatState.WOUNDED, state -> state.moveSpeed(2).attackInterval(10))
-                    .projectile(ModEntities.ICEWATER_SPIT, projectile -> projectile.damage(mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * 74.0 / 60.0).speed(0.8).inaccuracy(0).lifetime(100))
+                    .projectile(ModEntities.ICEWATER_SPIT, projectile -> projectile.damage(mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * 148.0 / 120.0).speed(0.8).inaccuracy(0).lifetime(100))
                     .build());
 
     // 冰雪：宝箱怪
@@ -284,7 +284,7 @@ public class MonsterEntities {
 
     // 地下沙漠：蚁狮及幼虫
     public static final RegistryObject<EntityType<Antlion>> ANTLION = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("antlion", EntityType.Builder.of(Antlion::new, MobCategory.MONSTER).sized(1.2F, 0.8F).clientTrackingRange(10))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(24).armor(6).attackDamage(6).movementSpeed(0.0).knockbackResistance(1.0).followRange(24).projectile(ModEntities.ANTLION_SAND_BALL, projectile -> projectile.damage(mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * (LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 3 : LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 2 : 1)).speed(1.1).lifetime(120))
+            () -> CreatureAttributeBuilder.creature().maxHealth(24).armor(6).attackDamage(6).movementSpeed(0.0).knockbackResistance(1.0).followRange(24).projectile(ModEntities.ANTLION_SAND_BALL, projectile -> projectile.damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 15.0 : LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 10.0 : 5.0).speed(1.1).lifetime(120))
                     .build());
     public static final RegistryObject<EntityType<BaseWarriorMonster>> ANTLION_LARVA = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerLand("antlion_larva", 0.7F, 0.5F, BaseWarriorMonster.LandSoundProfile.ROUTINE, BaseWarriorMonster.LandAnimationProfile.WALK_IDLE, 1.3, true)),
             () -> CreatureAttributeBuilder.creature().maxHealth(16).armor(2).attackDamage(6).movementSpeed(0.3).knockbackResistance(0.33).followRange(24).build());
@@ -615,7 +615,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(2080).armor(32).attackDamage(32).knockbackResistance(0.96).movementSpeed(0.2).followRange(48)
                     .state(FrostFighter.CombatState.SHOOTING, state -> state.moveSpeed(0.6).attackInterval(20, 309))
                     .state(FrostFighter.CombatState.WOUNDED, state -> state.moveSpeed(2).attackInterval(10))
-                    .projectile(ModEntities.FROST_BEAM, projectile -> projectile.damage(mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * 64.0 / 60.0).speed(2.5).inaccuracy(0).lifetime(100))
+                    .projectile(ModEntities.FROST_BEAM, projectile -> projectile.damage(mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * 128.0 / 120.0).speed(2.5).inaccuracy(0).lifetime(100))
                     .build());
 
     // 大风天：大风气球怪与愤怒蒲公英

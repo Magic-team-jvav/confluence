@@ -73,7 +73,7 @@ public final class IceElemental extends BaseFlyingMonster {
             if (shotCooldown == 0 && hasLineOfSight(target)) {
                 FrostMonsterProjectile projectile = ModEntities.FROST_BLAST.get().create(level());
                 if (projectile != null) {
-                    projectile.configure(IceElemental.this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * 90.0F / 55.0F, 0.6F, 0.0F, 120);
+                    projectile.configure(IceElemental.this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * 180.0F / 110.0F, 0.6F, 0.0F, 120);
                     if (level().addFreshEntity(projectile))
                         playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 1.0F);
                 }

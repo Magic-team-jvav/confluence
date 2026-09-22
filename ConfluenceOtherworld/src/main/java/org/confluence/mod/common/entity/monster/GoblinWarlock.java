@@ -57,8 +57,8 @@ public class GoblinWarlock extends BaseMonster {
                             if (flying % 20 == 0) {
                                 HostileParticleProjectile ball = ModEntities.CHAOS_BALL_PROJECTILE.get().create(level());
                                 if (ball != null) {
-                                    float damage = LibUtils.isMaster(level(), blockPosition()) ? 180 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 120 : 60;
-                                    damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 80.0F;
+                                    float damage = LibUtils.isMaster(level(), blockPosition()) ? 63 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 42 : 21;
+                                    damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 42.0F;
                                     ball.configure(GoblinWarlock.this, target, damage);
                                     if (level().addFreshEntity(ball))
                                         playSound(SoundEvents.EVOKER_CAST_SPELL, 1, 0.8F);

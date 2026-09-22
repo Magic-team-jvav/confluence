@@ -110,9 +110,12 @@ public class PirateRangedMonster extends BaseMonster {
                             PirateShot shot = (cannon ? ModEntities.PIRATE_CANNONBALL : profile == Profile.CROSSBOWER
                                     ? ModEntities.PIRATE_FLAMING_ARROW : ModEntities.PIRATE_BULLET).get().create(level());
                             if (shot != null) {
-                                float damage = cannon ? 200 : profile == Profile.CROSSBOWER ? 70 : profile == Profile.CAPTAIN ? 30 : 50;
-                                damage *= LibUtils.isMaster(level(), blockPosition()) ? 3 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 2 : 1;
-                                damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / (profile == Profile.CAPTAIN ? 70.0F : profile == Profile.CROSSBOWER ? 35.0F : 30.0F);
+                                // 弹幕伤害按 wiki 专家值 × 26% 固定；属性变化时按当前攻击力等比缩放。
+                                float expertDamage = cannon ? 104.0F : profile == Profile.CROSSBOWER ? 37.0F : profile == Profile.CAPTAIN ? 16.0F : 25.0F;
+                                float referenceAttack = profile == Profile.CAPTAIN ? 37.0F : profile == Profile.CROSSBOWER ? 19.0F : 25.0F;
+                                float damage = expertDamage * (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / referenceAttack;
+                                if (LibUtils.isMaster(level(), blockPosition())) damage *= 2.5F;
+                                else if (!LibUtils.isAtLeastExpert(level(), blockPosition())) damage *= 0.5F;
                                 Vec3 origin = getEyePosition();
                                 Vec3 aim = target.getEyePosition().subtract(origin);
                                 double speed = cannon ? 0.8 : profile == Profile.CROSSBOWER ? 1 : 1.5;
@@ -169,5 +172,7 @@ public class PirateRangedMonster extends BaseMonster {
         recovering = tag.getBoolean("ShotRecovery");
     }
 
+    /// 海盗远程单位的弹幕口径：各自 wiki 专家接触伤害已按 26% 落在对应属性上，
+    /// 子弹/火焰箭/炮弹的伤害由射击逻辑依据本条属性等比换算。
     public enum Profile {DEADEYE, CROSSBOWER, CAPTAIN}
 }

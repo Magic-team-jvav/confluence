@@ -190,12 +190,10 @@ public class BaseArrowEntity extends PortAbstractArrow {
             if (!level().isClientSide) {
                 living.setArrowCount(living.getArrowCount() + 1);
             }
-            doKnockback(living, damageSource);
-            double additionalKnockback = getAdditionalKnockback();
-            if (additionalKnockback > 0.0) {
-                Vec3 knockback = getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale(0.6 * additionalKnockback);
-                if (knockback.lengthSqr() > 0.0) living.push(knockback.x, 0.1, knockback.z);
-            }
+            double knockback = getKnockback() + getAdditionalKnockback();
+            Vec3 horizontal = getDeltaMovement().multiply(1, 0, 1);
+            if (knockback > 0 && horizontal.lengthSqr() > 0)
+                living.knockback(knockback * 0.6, -horizontal.x, -horizontal.z);
             if (!reflectedByMimic && !level().isClientSide && owner instanceof LivingEntity) {
                 IPortEnchantmentHelperExtension.doPostAttackEffects((ServerLevel) level(), entity, damageSource);
             }

@@ -1,17 +1,10 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.monster.HillHungry;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -21,18 +14,12 @@ import java.util.UUID;
 /// 嘴部本身不进入区块存档，因此重建后先按 Boss 身份和相对锚点认领
 /// 已保存的饿鬼。只有上一只确实死亡或被移除后才进入再次生成计时，
 /// 避免每个周期无上限堆积从属。
-public class HillOfFleshMouth extends BaseBossPart<HillOfFlesh> implements GeoEntity {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+public class HillOfFleshMouth extends HillOfFlesh.Part {
     private int summonTimer;
     private @Nullable UUID hungryUUID;
 
-    public HillOfFleshMouth(EntityType<?> type, Level level) {
-        super(type, level);
-        this.noPhysics = true;
-    }
-
-    public void setMaster(HillOfFlesh master) {
-        bindTo(master);
+    public HillOfFleshMouth(HillOfFlesh master) {
+        super(master, "entity.confluence.hill_of_flesh_mouth", 4.0F);
         this.summonTimer = 100 + random.nextInt(150);
     }
 
@@ -108,21 +95,4 @@ public class HillOfFleshMouth extends BaseBossPart<HillOfFlesh> implements GeoEn
         return position().subtract(master.position());
     }
 
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        return hurtOwnerAndPart(source, amount, 2.0F);
-    }
-
-    @Override
-    protected Class<HillOfFlesh> getOwnerType() {
-        return HillOfFlesh.class;
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {}
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
 }

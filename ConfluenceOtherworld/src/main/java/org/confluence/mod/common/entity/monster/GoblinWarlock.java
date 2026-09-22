@@ -1,23 +1,22 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.ModSoundEvents;
 
 public class GoblinWarlock extends BaseMonster {
     private int casting;
@@ -57,9 +56,7 @@ public class GoblinWarlock extends BaseMonster {
                             if (flying % 20 == 0) {
                                 HostileParticleProjectile ball = ModEntities.CHAOS_BALL_PROJECTILE.get().create(level());
                                 if (ball != null) {
-                                    float damage = LibUtils.isMaster(level(), blockPosition()) ? 63 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 42 : 21;
-                                    damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 42.0F;
-                                    ball.configure(GoblinWarlock.this, target, damage);
+                                    ball.configure(GoblinWarlock.this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
                                     if (level().addFreshEntity(ball))
                                         playSound(SoundEvents.EVOKER_CAST_SPELL, 1, 0.8F);
                                 }

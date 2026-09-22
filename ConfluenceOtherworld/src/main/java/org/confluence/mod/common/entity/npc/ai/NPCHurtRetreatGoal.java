@@ -28,7 +28,7 @@ public final class NPCHurtRetreatGoal extends Goal {
     public boolean canUse() {
         int timestamp = npc.getLastHurtByMobTimestamp();
         LivingEntity source = npc.getLastHurtByMob();
-        if (timestamp == handledHurtTimestamp || npc.getTradingPlayer() != null || !isValid(source))
+        if (timestamp == handledHurtTimestamp || npc.getInteractingPlayer() != null || !isValid(source))
             return false;
         handledHurtTimestamp = timestamp;
         attacker = source;
@@ -38,7 +38,7 @@ public final class NPCHurtRetreatGoal extends Goal {
     /// 攻击者仍在十格内、撤离未超时且 NPC 没有开始交易时继续。
     @Override
     public boolean canContinueToUse() {
-        return retreatTicks < MAX_RETREAT_TICKS && npc.getTradingPlayer() == null && isValid(attacker)
+        return retreatTicks < MAX_RETREAT_TICKS && npc.getInteractingPlayer() == null && isValid(attacker)
                 && npc.distanceToSqr(attacker) < 100;
     }
 

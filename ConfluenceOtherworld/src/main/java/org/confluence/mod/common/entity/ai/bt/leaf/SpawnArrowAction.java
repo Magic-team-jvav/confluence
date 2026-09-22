@@ -9,6 +9,7 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
@@ -66,6 +67,9 @@ public final class SpawnArrowAction extends BTNode {
         }
 
         AbstractArrow arrow = createArrow();
+        /// 原版箭以 baseDamage 参与速度结算；这里只接入配置，不改变原有箭伤害语义。
+        var parameters = ProjectileOverrides.get(shooter, arrow.getType());
+        if (parameters.damage() >= 0) arrow.setBaseDamage(parameters.damage());
         double dx = target.getX() - shooter.getX();
         double dy = target.getY(1.0 / 3.0) - arrow.getY();
         double dz = target.getZ() - shooter.getZ();
@@ -73,7 +77,7 @@ public final class SpawnArrowAction extends BTNode {
         float inaccuracy = explicitInaccuracy != null
                 ? explicitInaccuracy
                 : 14.0F - shooter.level().getDifficulty().getId() * 4.0F;
-        arrow.shoot(dx, dy + horizontalDistance * 0.20000000298023224, dz, velocity, inaccuracy);
+        arrow.shoot(dx, dy + horizontalDistance * 0.20000000298023224, dz, parameters.speedOr(velocity), parameters.inaccuracyOr(inaccuracy));
         if (!shooter.level().addFreshEntity(arrow)) {
             arrow.discard();
             return BTStatus.FAILURE;

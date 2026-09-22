@@ -10,6 +10,7 @@ import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -414,7 +415,7 @@ public class TheDestroyer extends BaseWormBoss {
             return false;
         }
         Vec3 origin = segment.position().add(0.0, segment.getBbHeight() * 0.5, 0.0);
-        return fireLaser(this, origin, target, getLaserDamage());
+        return fireLaser(this, origin, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
     }
 
     /// 供回归测试和显式攻击事件使用：从首个满足条件的探测器舱发射一枚激光。
@@ -443,10 +444,6 @@ public class TheDestroyer extends BaseWormBoss {
         return serverLevel.addFreshEntity(laser);
     }
 
-    private float getLaserDamage() {
-        return isMaster() ? 22.0F
-                : isExpert() ? 18.0F : 14.0F;
-    }
 
     /// 测试和显式战斗事件使用的批量入口。它按体节顺序释放尚未使用的探测器舱，
     /// 不会绕过每个舱室仅能释放一次的约束。

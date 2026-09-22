@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -10,15 +11,14 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -36,7 +36,7 @@ public final class Gastropod extends RangedFlyingMonster {
     private boolean shotCancelled;
 
     public Gastropod(EntityType<? extends Gastropod> type, Level level) {
-        super(type, level, SHOT_COOLDOWN, 0.8);
+        super(type, level, SHOT_COOLDOWN);
     }
 
     @Override
@@ -58,7 +58,7 @@ public final class Gastropod extends RangedFlyingMonster {
         if (projectile == null) {
             return null;
         }
-        projectile.configure(this, target, (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * shotMultiplier()));
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         projectile.setDeltaMovement(projectile.getDeltaMovement().scale(4.0));
         return projectile;
     }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.bow;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -9,10 +10,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ArrowItem;
-import net.minecraft.world.item.BowItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -20,6 +18,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.mixed.IAbstractArrow;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
@@ -68,10 +67,11 @@ public class BaseTerraBowItem extends BowItem {
     public AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
         int multiShoot = getMultiShootCount();
         if (canMultiShoot(projectileStack)) {
-            arrow.setBaseDamage(baseDamage / multiShoot);
+            arrow.setBaseDamage(getFullDrawDamage() / multiShoot);
         } else {
-            arrow.setBaseDamage(baseDamage);
+            arrow.setBaseDamage(getFullDrawDamage());
         }
+        IAbstractArrow.of(arrow).confluence$setDamageNotAffectedBySpeedBonus(true);
         return arrow;
     }
 
@@ -116,7 +116,7 @@ public class BaseTerraBowItem extends BowItem {
         List<ItemStack> projectiles = IPortProjectileWeaponItemExtension.draw(stack, ammunition, player);
         if (level instanceof ServerLevel serverLevel && !projectiles.isEmpty()) {
             float velocity = this instanceof ShortBowItem shortBow ? power * shortBow.getVelocityMultiplier() : power * 3.0F;
-            shoot(serverLevel, player, player.getUsedItemHand(), stack, projectiles, velocity, 1.0F, power == 1.0F, chargeTicks >= 16, null);
+            shoot(serverLevel, player, player.getUsedItemHand(), stack, projectiles, velocity, 1.0F, power == 1.0F, chargeTicks >= 16, power, null);
         }
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS,
                 1.0F, 1.0F / (level.getRandom().nextFloat() * 0.4F + 1.2F) + power * 0.5F);
@@ -144,12 +144,12 @@ public class BaseTerraBowItem extends BowItem {
 
     @Override
     public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
-        shoot(level, shooter, hand, weapon, projectileItems, velocity, inaccuracy, isCrit, isCrit, target);
+        shoot(level, shooter, hand, weapon, projectileItems, velocity, inaccuracy, isCrit, isCrit, 1.0F, target);
     }
 
     private void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon,
                        List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit,
-                       boolean fullPull, @Nullable LivingEntity target) {
+                       boolean fullPull, float chargePower, @Nullable LivingEntity target) {
         float processProjectileSpread = 1;
         float angleIncrement = projectileItems.size() == 1 ? 0.0F : 2.0F * processProjectileSpread / (float) (projectileItems.size() - 1);
         float initialAngleOffset = (float) ((projectileItems.size() - 1) % 2) * angleIncrement / 2.0F;
@@ -167,6 +167,9 @@ public class BaseTerraBowItem extends BowItem {
             int multiShootCount = !canMultiShoot(itemstack) ? 1 : getMultiShootCount();
             for (int projectileIndex = 0; projectileIndex < multiShootCount; projectileIndex++) {
                 Projectile projectile = createProjectile(level, shooter, weapon, itemstack, isCrit, false);
+                /// 蓄力只在发射时影响武器伤害，后续箭速、下落和加速效果不再放大伤害。
+                if (projectile instanceof AbstractArrow arrow)
+                    arrow.setBaseDamage(arrow.getBaseDamage() * chargePower);
                 if (fullPullAvailable && projectile instanceof BaseArrowEntity terraArrow) {
                     terraArrow.fullPull = true;
                     fullPullAvailable = false;
@@ -194,7 +197,7 @@ public class BaseTerraBowItem extends BowItem {
         if (projectileIndex > 0) {
             abstractArrow.pickup = AbstractArrow.Pickup.DISALLOWED;
         }
-        ShortBowItem.applyToArrow(weapon, abstractArrow);
+        IAbstractArrow.of(abstractArrow).confluence$setDamageNotAffectedBySpeedBonus(true);
         processArrowSpecialEffects(shooter, abstractArrow, multiShootCount);
     }
 
@@ -235,6 +238,16 @@ public class BaseTerraBowItem extends BowItem {
 
     public float getBaseDamage() {
         return baseDamage;
+    }
+
+    /// 长弓登记值原本依赖速度倍率；改用明确的满蓄力三倍伤害，满蓄力暴击另行结算。
+    public float getFullDrawDamage() {return baseDamage * 3.0F;}
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        /// 显示满蓄力的武器伤害，不包含随机暴击和箭种自身的附加伤害。
+        tooltip.add(Component.translatable("tooltip.confluence.ranged_damage", ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(getFullDrawDamage())));
     }
 
 }

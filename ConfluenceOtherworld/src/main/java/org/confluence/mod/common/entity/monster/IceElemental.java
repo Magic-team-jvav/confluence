@@ -1,7 +1,9 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -9,16 +11,14 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.LookForwardWanderFlyAction;
 import org.confluence.mod.common.entity.projectile.FrostMonsterProjectile;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -73,7 +73,7 @@ public final class IceElemental extends BaseFlyingMonster {
             if (shotCooldown == 0 && hasLineOfSight(target)) {
                 FrostMonsterProjectile projectile = ModEntities.FROST_BLAST.get().create(level());
                 if (projectile != null) {
-                    projectile.configure(IceElemental.this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * 180.0F / 110.0F, 0.6F, 0.0F, 120);
+                    projectile.configure(IceElemental.this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 0.6F, 0.0F, 120);
                     if (level().addFreshEntity(projectile))
                         playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 1.0F);
                 }

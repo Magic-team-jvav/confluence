@@ -4,22 +4,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.projectile.DeerclopsIcePillarProjectile;
 import org.confluence.mod.common.entity.projectile.DeerclopsShadowHandProjectile;
 import org.confluence.mod.common.entity.projectile.DeerclopsThrownIceProjectile;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -60,9 +61,6 @@ public class DeerClops extends BaseBoss {
     private static final double SHADOW_HAND_HEIGHT = 5.0;
     private static final double TRAVERSAL_JUMP_SPEED = 0.85;
     private static final double TRAVERSAL_FORWARD_SPEED = 0.28;
-    private static final float ATTACK_DAMAGE = 10.0F;
-    private static final float RANGE_DAMAGE = 10.0F;
-    private static final float SHADOW_HAND_DAMAGE = 10.0F;
 
     private int stateTicks;
     private int attackCooldown;
@@ -252,7 +250,7 @@ public class DeerClops extends BaseBoss {
                 continue;
             }
             Vec3 origin = position().add(random.nextDouble() * 2.0 - 1.0, random.nextDouble() * 2.0 + 1.0, random.nextDouble() * 2.0 - 1.0);
-            projectile.configure(this, origin, RANGE_DAMAGE);
+            projectile.configure(this, origin, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
             if (level().addFreshEntity(projectile)) {
                 spawned++;
             }
@@ -271,7 +269,7 @@ public class DeerClops extends BaseBoss {
             }
             Vec3 origin = findShadowHandOrigin(center, index, formationRotation, projectile);
             Vec3 direction = center.subtract(origin);
-            projectile.configure(this, origin, direction, SHADOW_HAND_DAMAGE);
+            projectile.configure(this, origin, direction, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
             if (level().addFreshEntity(projectile)) {
                 spawned++;
             }
@@ -371,7 +369,7 @@ public class DeerClops extends BaseBoss {
         Vec3 origin = center.add(direction.scale(forwardOffset))
                 .add(random.nextDouble() - 0.5, random.nextDouble() - 0.5, random.nextDouble() - 0.5)
                 .add(side.scale((random.nextDouble() - 0.5) * horizontalRange));
-        projectile.configure(this, origin, ATTACK_DAMAGE);
+        projectile.configure(this, origin, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         level().addFreshEntity(projectile);
     }
 

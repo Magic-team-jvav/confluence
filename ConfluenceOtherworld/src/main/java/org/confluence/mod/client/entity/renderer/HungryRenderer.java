@@ -2,15 +2,18 @@ package org.confluence.mod.client.entity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.TheHungry;
@@ -22,9 +25,23 @@ public final class HungryRenderer<T extends TheHungry> extends GeoNormalRenderer
     private static final ModelResourceLocation SEGMENT_MODEL = new ModelResourceLocation(Confluence.asResource("entity/the_hungry_leaf"), "inventory");
     private static final double SEGMENT_SPACING = 0.75;
     private static final int MAX_SEGMENTS = 96;
+    private static final Quaternionf[] SEGMENT_ROTATIONS = new Quaternionf[MAX_SEGMENTS];
+    private Frustum frustum;
+
+    static {
+        for (int i = 0; i < MAX_SEGMENTS; i++) SEGMENT_ROTATIONS[i] = Axis.YN.rotation(i * 0.5F);
+    }
 
     public HungryRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("the_hungry"), true, 1.0F, 0.0F);
+    }
+
+    @Override
+    public boolean shouldRender(T entity, Frustum frustum, double x, double y, double z) {
+        this.frustum = frustum;
+        if (super.shouldRender(entity, frustum, x, y, z)) return true;
+        return !entity.isFree() && entity.shouldRender(x, y, z)
+                && frustum.isVisible(entity.getBoundingBox().minmax(new AABB(entity.getAnchor(), entity.position())).inflate(2));
     }
 
     @Override
@@ -47,24 +64,24 @@ public final class HungryRenderer<T extends TheHungry> extends GeoNormalRenderer
         int overlay = getPackedOverlay(entity, 0.0F, partialTick);
         poseStack.pushPose();
         poseStack.translate(0.0, entity.getBbHeight() * 0.5, 0.0);
-        for (int index = 0; index < count; index++) {
-            poseStack.pushPose();
-            poseStack.translate(step.x * index, step.y * index, step.z * index);
-            poseStack.mulPose(rotation);
-            poseStack.mulPose(com.mojang.math.Axis.YN.rotation(index * 0.5F));
-            poseStack.translate(-0.5, 0.0, -0.5);
-            poseStack.scale(1.0F, -1.0F, 1.0F);
-            renderModel(model, poseStack, buffers, packedLight, overlay);
-            poseStack.popPose();
+        /// 渲染层和缓冲只查询一次，不在每个叶节重复运行物品层选择。
+        ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+        for (RenderType renderType : model.getRenderTypes(ItemStack.EMPTY, false)) {
+            VertexConsumer vertices = ItemRenderer.getFoilBuffer(buffers, renderType, false, false);
+            for (int index = 0; index < count; index++) {
+                Vec3 center = entityPosition.add(step.scale(index));
+                if (frustum != null && !frustum.isVisible(new AABB(center, center).inflate(2)))
+                    continue;
+                poseStack.pushPose();
+                poseStack.translate(step.x * index, step.y * index, step.z * index);
+                poseStack.mulPose(rotation);
+                poseStack.mulPose(SEGMENT_ROTATIONS[index]);
+                poseStack.translate(-0.5, 0.0, -0.5);
+                poseStack.scale(1.0F, -1.0F, 1.0F);
+                itemRenderer.renderModelLists(model, ItemStack.EMPTY, packedLight, overlay, poseStack, vertices);
+                poseStack.popPose();
+            }
         }
         poseStack.popPose();
-    }
-
-    private static void renderModel(BakedModel model, PoseStack poseStack, MultiBufferSource buffers, int packedLight, int overlay) {
-        ItemStack stack = ItemStack.EMPTY;
-        for (RenderType renderType : model.getRenderTypes(stack, false)) {
-            VertexConsumer vertices = ItemRenderer.getFoilBuffer(buffers, renderType, false, false);
-            Minecraft.getInstance().getItemRenderer().renderModelLists(model, stack, packedLight, overlay, poseStack, vertices);
-        }
     }
 }

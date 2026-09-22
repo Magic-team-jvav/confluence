@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.levelgen.Heightmap;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.leaf.WormMovementAction;
 import org.confluence.mod.common.entity.boss.BaseBoss;
@@ -177,10 +179,25 @@ public class SimpleWormMonster extends BaseWormMonster implements BossOwnedEntit
             case UNDERGROUND -> pos.getY() < OverworldUtils.getSurfaceY();
             case UNDERGROUND_DESERT ->
                     level().getBiome(pos).is(PortTags.Biomes.IS_DESERT) && (pos.getY() < OverworldUtils.getSurfaceY() || SandstormGameEvent.INSTANCE.started());
-            case CORRUPTION -> OverworldUtils.isCorruption(level().getBiome(pos));
+            case CORRUPTION -> isNearCorruption(pos);
             case UNDERWORLD, BONE_SERPENT -> level().dimension() == OverworldUtils.underworld();
             case FLYING -> pos.getY() >= OverworldUtils.getSurfaceY();
         };
+    }
+
+    private boolean isNearCorruption(BlockPos pos) {
+        if (isCorruptionColumn(pos)) return true;
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            if (isCorruptionColumn(pos.relative(direction, 8))) return true;
+        }
+        return false;
+    }
+
+    private boolean isCorruptionColumn(BlockPos pos) {
+        if (!level().hasChunkAt(pos)) return false;
+        if (OverworldUtils.isCorruption(level().getBiome(pos))) return true;
+        int groundY = level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ()) - 1;
+        return pos.getY() > groundY && pos.getY() <= groundY + 16 && OverworldUtils.isCorruption(level().getBiome(new BlockPos(pos.getX(), groundY, pos.getZ())));
     }
 
     @Override

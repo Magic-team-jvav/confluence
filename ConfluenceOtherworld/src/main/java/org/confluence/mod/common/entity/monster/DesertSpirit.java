@@ -1,14 +1,13 @@
 package org.confluence.mod.common.entity.monster;
 
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import org.confluence.lib.util.LibUtils;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.ai.bt.leaf.CasterCycleAction;
 import org.confluence.mod.common.entity.projectile.DesertSpiritCurse;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.RawAnimation;
 
 public final class DesertSpirit extends BaseCasterMonster {
@@ -37,11 +36,6 @@ public final class DesertSpirit extends BaseCasterMonster {
     @Override
     protected boolean shouldInterruptCastingAfterHurt() {
         return random.nextInt(3) != 0;
-    }
-
-    @Override
-    protected float projectileDamage() {
-        return LibUtils.isMaster(level(), blockPosition()) ? 34.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 23.0F : 16.0F;
     }
 
     @Override

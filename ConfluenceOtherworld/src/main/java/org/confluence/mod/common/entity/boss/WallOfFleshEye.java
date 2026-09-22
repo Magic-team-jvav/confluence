@@ -1,9 +1,8 @@
 package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -19,8 +18,8 @@ public final class WallOfFleshEye extends WallOfFleshPart {
     private int shootTimer = FIRST_SHOT_DELAY;
     private int burstRemaining = 1;
 
-    public WallOfFleshEye(EntityType<?> type, Level level) {
-        super(type, level);
+    public WallOfFleshEye(WallOfFlesh parent, int index) {
+        super(parent, index, 4.0F, 4.0F);
     }
 
     @Override
@@ -64,7 +63,7 @@ public final class WallOfFleshEye extends WallOfFleshPart {
         if (direction.lengthSqr() < 1.0E-6) {
             return;
         }
-        projectile.configure(master, origin, direction.normalize().scale(1.5), master.getLaserDamage(), 100);
+        projectile.configure(master, origin, direction.normalize().scale(1.5), (float) master.getAttributeValue(Attributes.ATTACK_DAMAGE), 100);
         serverLevel.addFreshEntity(projectile);
     }
 }

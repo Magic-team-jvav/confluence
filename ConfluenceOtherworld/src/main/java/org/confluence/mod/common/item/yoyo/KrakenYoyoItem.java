@@ -1,38 +1,51 @@
 package org.confluence.mod.common.item.yoyo;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.entity.yoyo.YoyoEffectProjectile;
+import org.confluence.mod.common.entity.yoyo.KrakenWaveProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public final class KrakenYoyoItem extends YoyoItem {
-    public KrakenYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.YELLOW, 47, 23.75F, 0xFFFFFFFF, 0, 4.3F);
+    private final double hitRadius;
+    private final float duplicateSpeedMultiplier;
+    private final float bonusCriticalChance;
+    private final int hitInterval;
+    private final int waveCount;
+
+    public KrakenYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, int waveCount, double hitRadius, float duplicateSpeedMultiplier, float bonusCriticalChance) {
+        super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
+        this.hitRadius = hitRadius;
+        this.duplicateSpeedMultiplier = duplicateSpeedMultiplier;
+        this.bonusCriticalChance = bonusCriticalChance;
+        this.hitInterval = hitInterval;
+        this.waveCount = waveCount;
     }
 
     @Override
     protected void onHitTarget(YoyoEntity yoyo, ServerPlayer owner, LivingEntity target) {
         YoyoSession session = YoyoSession.of(owner);
-        if (session.isSpecialHit(4)) {
-            for (int i = 0; i < 3; i++) {
-                Vec3 direction = target.getBoundingBox().getCenter().subtract(yoyo.position()).normalize().yRot((i - 1) * 0.3F);
-                YoyoEffectProjectile.shoot(yoyo, YoyoEffectProjectile.Kind.WAVE, direction, target);
+        if (session.isSpecialHit(hitInterval)) {
+            for (int i = 0; i < waveCount; i++) {
+                Vec3 direction = target.getBoundingBox().getCenter().subtract(yoyo.position()).normalize().yRot((i - (waveCount - 1) * 0.5F) * 0.3F);
+                new KrakenWaveProjectile(ModEntities.KRAKEN_WAVE.get(), yoyo.level()).shoot(yoyo, direction, target);
             }
         }
         session.countSpecialHit();
     }
 
     @Override
-    public double hitRadius() {return 1.85;}
+    public double hitRadius() {return hitRadius;}
 
     @Override
-    public float duplicateSpeedMultiplier() {return 0.75F;}
+    public float duplicateSpeedMultiplier() {return duplicateSpeedMultiplier;}
 
     @Override
-    public float bonusCriticalChance() {return 0.1F;}
+    public float bonusCriticalChance() {return bonusCriticalChance;}
 
     @Override
     public boolean fullBright() {return true;}
@@ -49,5 +62,5 @@ public final class KrakenYoyoItem extends YoyoItem {
     }
 
     @Override
-    protected String effectTooltip() {return "tooltip.confluence.yoyo.waves";}
+    protected Component effectTooltip() {return Component.translatable("tooltip.confluence.yoyo.waves", hitInterval, waveCount);}
 }

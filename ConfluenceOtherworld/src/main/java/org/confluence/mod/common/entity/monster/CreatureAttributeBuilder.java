@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Rabbit;
 import org.confluence.lib.common.LibAttributes;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition;
 
 import java.util.LinkedHashMap;
@@ -290,6 +291,25 @@ public final class CreatureAttributeBuilder {
         public ProjectileBuilder damage(ToDoubleFunction<Mob> value) {
             damage = value;
             return this;
+        }
+
+        /// 依次为经典、专家、大师伤害；不隐含额外难度倍率。
+        public ProjectileBuilder damage(double normal, double expert, double master) {
+            return damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? master
+                    : LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? expert : normal);
+        }
+
+        /// 使用当前攻击属性的指定倍率，不再额外叠加难度倍率。
+        public ProjectileBuilder attackDamage(double multiplier) {
+            return damage(mob -> mob.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier);
+        }
+
+        /// 对已声明的弹幕伤害按攻击属性缩放；基准值显式登记，避免调接触伤害时暗中改变分母。
+        public ProjectileBuilder scaleWithAttack(double referenceAttack) {
+            if (referenceAttack <= 0)
+                throw new IllegalArgumentException("Reference attack must be positive");
+            ToDoubleFunction<Mob> baseDamage = damage;
+            return damage(mob -> baseDamage.applyAsDouble(mob) * mob.getAttributeValue(Attributes.ATTACK_DAMAGE) / referenceAttack);
         }
 
         public ProjectileBuilder speed(double value) {

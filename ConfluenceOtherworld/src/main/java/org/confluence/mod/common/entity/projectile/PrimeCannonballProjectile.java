@@ -8,6 +8,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
+import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.entity.boss.SkeletronPrime;
 import org.mesdag.portlib.event.entity.PortProjectileImpactEvent;
 import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
@@ -17,8 +18,9 @@ import org.mesdag.portlib.wrapper.common.extensions.IPortProjectileExtension;
 /// 爆炸只影响实体，不破坏地形，避免 Boss 攻击永久损坏玩家建筑与战斗场地。
 public final class PrimeCannonballProjectile extends Projectile implements IPortProjectileExtension {
     public static final int MAX_LIFETIME = 80;
-    private static final float BLAST_DAMAGE = 22.0F;
     private static final double BLAST_RADIUS = 3.0;
+    private float damage;
+    private int lifetime = MAX_LIFETIME;
 
     public PrimeCannonballProjectile(EntityType<? extends PrimeCannonballProjectile> type, Level level) {
         super(type, level);
@@ -27,9 +29,12 @@ public final class PrimeCannonballProjectile extends Projectile implements IPort
     public void configure(SkeletronPrime owner, Vec3 origin, LivingEntity target) {
         setOwner(owner);
         setPos(origin);
+        var parameters = ProjectileOverrides.get(owner, getType());
+        damage = parameters.damageOr(0);
+        lifetime = parameters.lifetimeOr(MAX_LIFETIME);
         Vec3 aim = target.getEyePosition().subtract(origin);
         double horizontal = Math.sqrt(aim.x * aim.x + aim.z * aim.z);
-        shoot(aim.x, aim.y + horizontal * 0.08, aim.z, 0.72F, 0.03F);
+        shoot(aim.x, aim.y + horizontal * 0.08, aim.z, parameters.speedOr(0.72F), parameters.inaccuracyOr(0.03F));
     }
 
     @Override
@@ -38,7 +43,7 @@ public final class PrimeCannonballProjectile extends Projectile implements IPort
     @Override
     public void tick() {
         super.tick();
-        if (tickCount > MAX_LIFETIME) {
+        if (tickCount > lifetime) {
             explodeWithoutTerrainDamage();
             return;
         }
@@ -79,7 +84,7 @@ public final class PrimeCannonballProjectile extends Projectile implements IPort
             for (LivingEntity target : level().getEntitiesOfClass(LivingEntity.class, blast, prime::canAttack)) {
                 double distance = Math.sqrt(distanceToSqr(target));
                 float scale = (float) Math.max(0.4, 1.0 - distance / (BLAST_RADIUS * 1.6));
-                target.hurt(damageSources().mobProjectile(this, prime), BLAST_DAMAGE * scale);
+                target.hurt(damageSources().mobProjectile(this, prime), damage * scale);
             }
         }
         discard();

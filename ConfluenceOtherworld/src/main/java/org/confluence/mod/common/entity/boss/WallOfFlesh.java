@@ -3,12 +3,18 @@ package org.confluence.mod.common.entity.boss;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.TicketType;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,12 +23,20 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.entity.IEntityAdditionalSpawnData;
+import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.network.PlayMessages;
 import org.confluence.mod.common.effect.harmful.HorrifiedEffect;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -30,6 +44,7 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.SimpleWormMonster;
 import org.confluence.mod.common.entity.monster.TheHungry;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
@@ -42,7 +57,7 @@ import java.util.*;
 /// 本体负责整面墙的推进、阶段和参战者管理；眼睛与嘴是可命中的临时部件，
 /// 各自维护射击或吐出水蛭的节奏。墙面布局由一个持久化种子生成，因此仍保留
 /// 墙面外观使用持久随机布局，保证区块重载后不会换成另一套眼、嘴和饿鬼位置。
-public class WallOfFlesh extends BaseBoss {
+public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData {
     private static final EntityDataAccessor<Boolean> DATA_PHASE_TWO = SynchedEntityData.defineId(WallOfFlesh.class, EntityDataSerializers.BOOLEAN);
 
     private static final String PHASE_TWO_TAG = "PhaseTwo";
@@ -53,11 +68,12 @@ public class WallOfFlesh extends BaseBoss {
     private static final String HUNGRY_TIMER_TAG = "HungryTimer";
     private static final String HUNGRY_INITIALIZED_TAG = "HungryInitialized";
 
-    private static final double BASE_SPEED = 0.125;
     private static final double FINISH_LINE_DISTANCE = 2000.0;
     private static final int GRID_SIZE_X = 40;
+    private final Map<UUID, Long> contactHits = new HashMap<>();
     private static final int GRID_SIZE_Y = 30;
     private static final double GRID_SPACING = 15.0;
+    private static final double PART_LAYOUT_SPACING = 20.0;
     private static final double PURSUIT_WIDTH = GRID_SIZE_X * GRID_SPACING;
     private static final double PURSUIT_HEIGHT = GRID_SIZE_Y * GRID_SPACING;
     private static final double PURSUIT_DEPTH = 150.0;
@@ -79,16 +95,144 @@ public class WallOfFlesh extends BaseBoss {
     private final List<Vec3> eyeAnchors = new ArrayList<>();
     private final List<Vec3> mouthAnchors = new ArrayList<>();
     private final List<Vec3> hungryAnchors = new ArrayList<>();
+    private WallOfFleshPart[] wallParts = new WallOfFleshPart[0];
+    private static final EntityDataAccessor<CompoundTag> PART_TARGETS = SynchedEntityData.defineId(WallOfFlesh.class, EntityDataSerializers.COMPOUND_TAG);
     private final List<WallOfFleshEye> eyes = new ArrayList<>();
     private final List<WallOfFleshMouth> mouths = new ArrayList<>();
     private final Map<WallOfFleshEye, Player> eyeAssignments = new HashMap<>();
     private final Map<WallOfFleshMouth, Player> mouthAssignments = new HashMap<>();
+    private Vec3 struckPartPosition;
+    private Vec3 rewardPosition;
+
+    public boolean hurtFromPart(WallOfFleshPart part, DamageSource source, float amount) {
+        struckPartPosition = part.getBoundingBox().getCenter();
+        try {
+            return hurt(source, amount);
+        } finally {
+            struckPartPosition = null;
+        }
+    }
+
+    @Override
+    public Vec3 getRewardPosition(ServerPlayer player) {
+        return rewardPosition == null ? position() : rewardPosition;
+    }
+
+    /// 公共钱币只结算一次，落在击杀来源附近的墙体部件处，不使用高空的本体中心。
+    public Vec3 getCoinDropPosition(DamageSource source) {
+        if (rewardPosition != null) return rewardPosition;
+        Entity anchor = source.getEntity();
+        if (anchor == null) anchor = getTarget();
+        if (anchor == null) {
+            List<ServerPlayer> participants = getOnlineCombatParticipants();
+            if (!participants.isEmpty()) anchor = participants.get(0);
+        }
+        if (anchor == null) return position();
+        Vec3 nearest = null;
+        double distance = Double.MAX_VALUE;
+        for (WallOfFleshPart part : wallParts) {
+            double candidateDistance = part.distanceToSqr(anchor);
+            if (candidateDistance < distance) {
+                distance = candidateDistance;
+                nearest = part.getBoundingBox().getCenter();
+            }
+        }
+        return nearest == null ? anchor.position() : nearest.add(getForwardVector().scale(2));
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        if (!level().isClientSide && rewardPosition == null) {
+            Vec3 anchor = struckPartPosition == null ? getCoinDropPosition(source)
+                    : struckPartPosition.add(getForwardVector().scale(2));
+            prepareRewardSite(BlockPos.containing(anchor));
+        }
+        super.die(source);
+    }
+
+    /// 普通战利品也落到同一奖励点，不通过移动本体来重定位掉落。
+    @Override
+    public ItemEntity spawnAtLocation(ItemStack stack, float offset) {
+        ItemEntity item = super.spawnAtLocation(stack, offset);
+        if (item != null && rewardPosition != null) item.setPos(rewardPosition);
+        return item;
+    }
+
+    /// 只在已有空腔内建框；不挖掘地形，也不覆盖容器和玩家建筑。
+    private void prepareRewardSite(BlockPos anchor) {
+        for (int radius = 0; radius <= 8; radius++) {
+            for (int dx = -radius; dx <= radius; dx++) {
+                for (int dz = -radius; dz <= radius; dz++) {
+                    for (int dy = -radius; dy <= radius; dy++) {
+                        if (Math.abs(dx) != radius && Math.abs(dy) != radius && Math.abs(dz) != radius)
+                            continue;
+                        BlockPos center = anchor.offset(dx, dy, dz);
+                        if (canBuildRewardSite(center, true)) {
+                            buildRewardSite(center, true);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        /// 大空腔不存在时只找三格宽的承托平台，保留周围原有方块。
+        for (int dy = 0; dy <= 8; dy++) {
+            for (int dx = -4; dx <= 4; dx++) {
+                for (int dz = -4; dz <= 4; dz++) {
+                    BlockPos center = anchor.offset(dx, dy, dz);
+                    if (canBuildRewardSite(center, false)) {
+                        buildRewardSite(center, false);
+                        return;
+                    }
+                }
+            }
+        }
+        /// 连小平台都无法安全放置时不强拆地形，保留战场落点。
+        rewardPosition = Vec3.atBottomCenterOf(anchor);
+    }
+
+    private boolean canBuildRewardSite(BlockPos center, boolean frame) {
+        int radius = frame ? 2 : 1;
+        int top = frame ? 3 : 1;
+        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-radius, -1, -radius), center.offset(radius, top, radius))) {
+            if (level().isOutsideBuildHeight(pos) || !level().hasChunkAt(pos)) return false;
+            BlockState state = level().getBlockState(pos);
+            if (state.is(Blocks.BEDROCK) || state.hasBlockEntity() || state.getDestroySpeed(level(), pos) < 0
+                    || state.is(BlockTags.FEATURES_CANNOT_REPLACE)) return false;
+            boolean floor = pos.getY() == center.getY() - 1;
+            if (floor && !frame && state.isFaceSturdy(level(), pos, Direction.UP)) continue;
+            if (floor && state.getBlock() instanceof LiquidBlock) continue;
+            if (!state.isAir()) return false;
+        }
+        return level().getEntities(this, new AABB(center.offset(-radius, -1, -radius), center.offset(radius + 1, top + 1, radius + 1)),
+                entity -> entity instanceof LivingEntity && entity.isAlive()).isEmpty();
+    }
+
+    private void buildRewardSite(BlockPos center, boolean frame) {
+        /// 与 1.21 一致：整座奖励保护框等概率使用魔矿砖或猩红矿砖。
+        BlockState frameState = (random.nextBoolean() ? DecorativeBlocks.DEMONITE_ORE_BRICKS
+                : DecorativeBlocks.CRIMTANE_ORE_BRICKS).FULL.get().defaultBlockState();
+        int radius = frame ? 2 : 1;
+        int top = frame ? 3 : -1;
+        for (BlockPos pos : BlockPos.betweenClosed(center.offset(-radius, -1, -radius), center.offset(radius, top, radius))) {
+            boolean shell = pos.getY() == center.getY() - 1 || pos.getY() == center.getY() + top
+                    || Math.abs(pos.getX() - center.getX()) == radius || Math.abs(pos.getZ() - center.getZ()) == radius;
+            BlockState state = level().getBlockState(pos);
+            if (shell && (state.isAir() || state.getBlock() instanceof LiquidBlock))
+                level().setBlock(pos, frameState, 3);
+        }
+        rewardPosition = Vec3.atBottomCenterOf(center).add(0, 0.5, 0);
+    }
 
     public WallOfFlesh(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         setNoGravity(true);
         noPhysics = true;
         xpReward = 3000;
+        if (!level.isClientSide) {
+            layoutSeed = random.nextLong();
+            ensureWallLayout();
+        }
     }
 
     /// 血肉墙的高度由竞技场和墙体布局决定，不能被重力逐 tick 下拉。
@@ -97,10 +241,17 @@ public class WallOfFlesh extends BaseBoss {
         return true;
     }
 
+    /// 客户端可能只加载墙面边缘；管理原点区块未加载时仍需推进本体插值。
+    @Override
+    public boolean isAlwaysTicking() {
+        return level().isClientSide;
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DATA_PHASE_TWO, false);
+        entityData.define(PART_TARGETS, new CompoundTag());
     }
 
     @Override
@@ -186,9 +337,17 @@ public class WallOfFlesh extends BaseBoss {
         boolean movingAlongX = getDirection().getAxis() == Direction.Axis.X;
         double thickness = Math.max(1.0D, getBbWidth());
         return AABB.ofSize(position(),
-                movingAlongX ? thickness : PURSUIT_WIDTH,
-                PURSUIT_HEIGHT,
-                movingAlongX ? PURSUIT_WIDTH : thickness);
+                movingAlongX ? thickness : PURSUIT_WIDTH * getScale(),
+                PURSUIT_HEIGHT * getScale(),
+                movingAlongX ? PURSUIT_WIDTH * getScale() : thickness);
+    }
+
+    public boolean isWithinTrackingRange(Player player, int range) {
+        if (player.level() != level()) return false;
+        AABB bounds = getWallBounds();
+        double x = player.getX() - Mth.clamp(player.getX(), bounds.minX, bounds.maxX);
+        double z = player.getZ() - Mth.clamp(player.getZ(), bounds.minZ, bounds.maxZ);
+        return x * x + z * z <= (double) range * range;
     }
 
     /// Removal is an explicit teardown; abandoned refreshes otherwise expire after 30 seconds.
@@ -212,6 +371,7 @@ public class WallOfFlesh extends BaseBoss {
 
         lockCardinalRotation();
         if (level().isClientSide) {
+            updatePartPositions();
             return;
         }
         if (!placementReady) {
@@ -232,6 +392,7 @@ public class WallOfFlesh extends BaseBoss {
         if (tickCount % 10 == 0) {
             updatePartAssignments();
         }
+        for (WallOfFleshPart part : wallParts) part.tickPart();
         updateMovement();
         updateHungrySlots();
         checkFinishLine();
@@ -267,7 +428,8 @@ public class WallOfFlesh extends BaseBoss {
 
     @Override
     protected Vec3 getDisengageMovement() {
-        return getForwardVector().scale(Math.max(BASE_SPEED, getAttributeValue(Attributes.MOVEMENT_SPEED)) * 2.5D);
+        /// 撤离期间基类会屏蔽普通速度写入，包括 travel 的阻力更新，因此在此保留水平阻力。
+        return getDeltaMovement().scale(0.91D).add(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.125D));
     }
 
     @Override
@@ -298,7 +460,7 @@ public class WallOfFlesh extends BaseBoss {
         WallOfFleshMouth nearestClear = null;
         double nearestDistance = Double.MAX_VALUE;
         double nearestClearDistance = Double.MAX_VALUE;
-        for (Entity entity : subEntities) {
+        for (Entity entity : wallParts) {
             if (!(entity instanceof WallOfFleshMouth mouth) || !mouth.isAlive() || mouth.getY() <= level().getMinBuildHeight())
                 continue;
             if (level().dimension() == OverworldUtils.underworld() && mouth.getY() >= NETHER_GENERATION_HEIGHT * 2.0 / 3.0)
@@ -350,88 +512,106 @@ public class WallOfFlesh extends BaseBoss {
     }
 
     private void updateMovement() {
-        /// 墙体推进量由移动速度属性决定，半血时把该属性提高 45%。
-        /// 直接写入稳定速度，保留原推进过程中达到的巡航速度，同时避免无重力实体无限累加。
-        setDeltaMovement(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 2.5D));
+        /// 半血后的属性增幅自然提高加速度与巡航速度，不直接跳到固定速度。
+        setDeltaMovement(getDeltaMovement().add(getForwardVector().scale(getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.125D)));
     }
 
     /// 根据持久化种子建立墙面布局，并补回不参与存档的眼睛与嘴部实体。
     private void ensureWallLayout() {
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        if (!layoutGenerated) {
-            if (layoutSeed == 0L) {
-                do {
-                    layoutSeed = random.nextLong();
-                } while (layoutSeed == 0L);
-            }
-            generateWallLayout(RandomSource.create(layoutSeed));
-            layoutGenerated = true;
-        }
-
-        ensurePartListSize(eyes, eyeAnchors.size());
-        ensurePartListSize(mouths, mouthAnchors.size());
-        for (int index = 0; index < eyeAnchors.size(); index++) {
-            WallOfFleshEye eye = eyes.get(index);
-            if (eye == null || !eye.isAlive()) {
-                eyes.set(index, spawnEye(serverLevel, eyeAnchors.get(index)));
-            }
-        }
-        for (int index = 0; index < mouthAnchors.size(); index++) {
-            WallOfFleshMouth mouth = mouths.get(index);
-            if (mouth == null || !mouth.isAlive()) {
-                mouths.set(index, spawnMouth(serverLevel, mouthAnchors.get(index)));
-            }
-        }
+        if (layoutGenerated) return;
+        generateWallLayout(RandomSource.create(layoutSeed));
+        buildParts();
+        /// 服务端在加入世界前分配连续 ID；客户端使用生成包携带的本体 ID。
+        setId(ENTITY_COUNTER.getAndAdd(wallParts.length + 1) + 1);
+        layoutGenerated = true;
     }
 
-    private static <T> void ensurePartListSize(List<T> parts, int expectedSize) {
-        while (parts.size() < expectedSize) {
-            parts.add(null);
+    private void buildParts() {
+        eyes.clear();
+        mouths.clear();
+        wallParts = new WallOfFleshPart[eyeAnchors.size() + mouthAnchors.size()];
+        int index = 0;
+        for (Vec3 ignored : eyeAnchors) {
+            WallOfFleshEye eye = new WallOfFleshEye(this, index);
+            eyes.add(eye);
+            wallParts[index++] = eye;
         }
+        for (Vec3 ignored : mouthAnchors) {
+            WallOfFleshMouth mouth = new WallOfFleshMouth(this, index);
+            mouths.add(mouth);
+            wallParts[index++] = mouth;
+        }
+        updatePartPositions();
     }
 
-    private @Nullable WallOfFleshEye spawnEye(ServerLevel level, Vec3 anchor) {
-        WallOfFleshEye eye = BossEntities.WALL_OF_FLESH_EYE.get().create(level);
-        if (eye == null) {
-            return null;
-        }
-        eye.setPos(position().add(rotateWallOffset(anchor).scale(getScale())));
-        eye.setMaster(this);
-        if (!level.addFreshEntity(eye)) {
-            eye.discard();
-            return null;
-        }
-        return eye;
+    @Override
+    public boolean isMultipartEntity() {return true;}
+
+    @Override
+    public WallOfFleshPart[] getParts() {return wallParts;}
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        for (int index = 0; index < wallParts.length; index++)
+            wallParts[index].setId(id + index + 1);
     }
 
-    private @Nullable WallOfFleshMouth spawnMouth(ServerLevel level, Vec3 anchor) {
-        WallOfFleshMouth mouth = BossEntities.WALL_OF_FLESH_MOUTH.get().create(level);
-        if (mouth == null) {
-            return null;
-        }
-        mouth.setPos(position().add(rotateWallOffset(anchor).scale(getScale())));
-        mouth.setMaster(this);
-        if (!level.addFreshEntity(mouth)) {
-            mouth.discard();
-            return null;
-        }
-        return mouth;
+    @Override
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+    /// Forge 在普通附加数据回调之前就注册部件，因此必须在客户端工厂中先建立布局。
+    public static WallOfFlesh createClient(PlayMessages.SpawnEntity packet, Level level) {
+        WallOfFlesh wall = new WallOfFlesh(BossEntities.WALL_OF_FLESH.get(), level);
+        wall.readSpawnData(packet.getAdditionalData());
+        return wall;
+    }
+
+    /// 初次追踪携带实际布局，晚加入玩家不依赖先前广播，也不独立生成眼嘴。
+    @Override
+    public void writeSpawnData(FriendlyByteBuf buffer) {
+        buffer.writeLong(layoutSeed);
+        writeAnchors(buffer, eyeAnchors);
+        writeAnchors(buffer, mouthAnchors);
+    }
+
+    private static void writeAnchors(FriendlyByteBuf buffer, List<Vec3> anchors) {
+        buffer.writeVarInt(anchors.size());
+        for (Vec3 anchor : anchors)
+            buffer.writeDouble(anchor.x).writeDouble(anchor.y).writeDouble(anchor.z);
+    }
+
+    @Override
+    public void readSpawnData(FriendlyByteBuf buffer) {
+        if (layoutGenerated) return;
+        layoutSeed = buffer.readLong();
+        readAnchors(buffer, eyeAnchors);
+        readAnchors(buffer, mouthAnchors);
+        buildParts();
+        setId(getId());
+        layoutGenerated = true;
+    }
+
+    private static void readAnchors(FriendlyByteBuf buffer, List<Vec3> anchors) {
+        anchors.clear();
+        int count = buffer.readVarInt();
+        for (int index = 0; index < count; index++)
+            anchors.add(new Vec3(buffer.readDouble(), buffer.readDouble(), buffer.readDouble()));
+    }
+
+    public long getLayoutSeed() {return layoutSeed;}
+
+    public @Nullable LivingEntity getPartTarget(int index) {
+        Entity target = level().getEntity(entityData.get(PART_TARGETS).getInt(Integer.toString(index)));
+        return target instanceof LivingEntity living && living.isAlive() ? living : null;
     }
 
     private void updatePartPositions() {
-        updatePartPositions(eyes, eyeAnchors);
-        updatePartPositions(mouths, mouthAnchors);
-    }
-
-    private <T extends WallOfFleshPart> void updatePartPositions(List<T> parts, List<Vec3> anchors) {
-        int count = Math.min(parts.size(), anchors.size());
-        for (int index = 0; index < count; index++) {
-            T part = parts.get(index);
-            if (part != null && part.isAlive()) {
-                part.setPos(position().add(rotateWallOffset(anchors.get(index)).scale(getScale())));
-            }
+        for (WallOfFleshPart part : wallParts) {
+            Vec3 offset = getLocalOffset(part);
+            part.updatePosition(position().add(rotateWallOffset(offset)));
         }
     }
 
@@ -441,6 +621,13 @@ public class WallOfFlesh extends BaseBoss {
         List<Player> players = level().getEntitiesOfClass(Player.class, getPursuitBox(), player -> isValidFrontTarget(player) && !player.isCreative() && !player.isSpectator());
         assignNearestParts(players, livingParts(eyes), MAX_ASSIGNED_EYES, eyeAssignments);
         assignNearestParts(players, livingParts(mouths), MAX_ASSIGNED_MOUTHS, mouthAssignments);
+        CompoundTag targets = new CompoundTag();
+        for (WallOfFleshPart part : wallParts) {
+            LivingEntity target = getAssignedTarget(part);
+            if (target != null)
+                targets.putInt(Integer.toString(part.getPartIndex()), target.getId());
+        }
+        entityData.set(PART_TARGETS, targets);
     }
 
     private static <T extends WallOfFleshPart> List<T> livingParts(List<T> parts) {
@@ -472,131 +659,42 @@ public class WallOfFlesh extends BaseBoss {
         return null;
     }
 
+    /// 每个采样区固定一个眼睛或嘴，不跳过区域，也不在生成后补点。
+    /// 采样区间距由 PART_LAYOUT_SPACING 控制，位置在中心附近 ±25% 范围内随机偏移。
     private void generateWallLayout(RandomSource layoutRandom) {
         eyeAnchors.clear();
         mouthAnchors.clear();
         hungryAnchors.clear();
-        generateLayoutRegion(layoutRandom, 0, 0, GRID_SIZE_X, GRID_SIZE_Y, 0, 6, 0.85);
-        generateMouthsBetweenEyes(layoutRandom);
+        int columns = Mth.ceil(PURSUIT_WIDTH / PART_LAYOUT_SPACING);
+        int rows = Mth.ceil(PURSUIT_HEIGHT / PART_LAYOUT_SPACING);
+        double cellWidth = PURSUIT_WIDTH / columns;
+        double cellHeight = PURSUIT_HEIGHT / rows;
+        for (int y = 0; y < rows; y++) {
+            boolean eye = false;
+            for (int x = 0; x < columns; x++) {
+                Vec3 anchor = new Vec3(
+                        (x + 0.5 + (layoutRandom.nextDouble() - 0.5) * 0.5) * cellWidth - PURSUIT_WIDTH * 0.5,
+                        (y + 0.5 + (layoutRandom.nextDouble() - 0.5) * 0.5) * cellHeight - PURSUIT_HEIGHT * 0.5, 0);
+                /// 每对位置随机决定眼嘴顺序，避免局部只出现一种部件。
+                if ((x & 1) == 0) eye = layoutRandom.nextBoolean();
+                if (eye) eyeAnchors.add(anchor);
+                else mouthAnchors.add(anchor);
+                eye = !eye;
 
-        // 极端随机结果仍必须提供三类核心战斗部件。
-        if (eyeAnchors.isEmpty()) {
-            eyeAnchors.add(new Vec3(-GRID_SPACING, 0.0, 0.0));
-            eyeAnchors.add(new Vec3(GRID_SPACING, 0.0, 0.0));
-        }
-        if (mouthAnchors.isEmpty()) {
-            mouthAnchors.add(Vec3.ZERO);
-        }
-        if (hungryAnchors.isEmpty()) {
-            hungryAnchors.add(new Vec3(0.0, GRID_SPACING, 0.0));
-        }
-    }
-
-    private void generateLayoutRegion(RandomSource layoutRandom, int x, int y, int width, int height, int depth, int maximumDepth, double subdivisionChance) {
-        if (width <= 0 || height <= 0) {
-            return;
-        }
-
-        int centerX = x + width / 2;
-        int centerY = y + height / 2;
-        double offsetScale = 1.0
-                - depth / (double) maximumDepth * 0.5;
-        double maximumOffset = GRID_SPACING * 0.8 * offsetScale;
-        long seedOffset = (long) x * 31L + (long) y * 17L
-                + depth * 7L;
-        double randomX = (layoutRandom.nextDouble() + seedOffset % 100L / 100.0) % 1.0;
-        double randomY = (layoutRandom.nextDouble() + seedOffset % 83L / 100.0) % 1.0;
-        Vec3 position = new Vec3((centerX - GRID_SIZE_X * 0.5) * GRID_SPACING + (randomX - 0.5) * maximumOffset, (centerY - GRID_SIZE_Y * 0.5) * GRID_SPACING + (randomY - 0.5) * maximumOffset, 0.0);
-
-        boolean subdivide = depth < maximumDepth
-                && width > 1
-                && height > 1
-                && layoutRandom.nextDouble() < subdivisionChance;
-        if (depth < 3 && layoutRandom.nextDouble() < 1.0 - depth * 0.25) {
-            subdivide = true;
-        }
-        if (subdivide) {
-            int halfWidth = width / 2;
-            int halfHeight = height / 2;
-            double nextChance = subdivisionChance
-                    * (1.0 - depth / (double) maximumDepth * 0.02);
-            generateLayoutRegion(layoutRandom, x, y, halfWidth, halfHeight, depth + 1, maximumDepth, nextChance);
-            generateLayoutRegion(layoutRandom, x + halfWidth, y, width - halfWidth, halfHeight, depth + 1, maximumDepth, nextChance);
-            generateLayoutRegion(layoutRandom, x, y + halfHeight, halfWidth, height - halfHeight, depth + 1, maximumDepth, nextChance);
-            generateLayoutRegion(layoutRandom, x + halfWidth, y + halfHeight, width - halfWidth, height - halfHeight, depth + 1, maximumDepth, nextChance);
-            return;
-        }
-
-        double conflictDistance = GRID_SPACING * 0.6
-                * (1.0 - depth / (double) maximumDepth * 0.4);
-        if (hasLayoutConflict(position, conflictDistance)) {
-            return;
-        }
-        double depthFactor = 0.8
-                + depth / (double) maximumDepth * 0.4;
-        double roll = layoutRandom.nextDouble();
-        double eyeChance = Math.min(0.45 * depthFactor, 1.0);
-        double mouthChance = Math.min((0.45 + 0.4) * depthFactor, 1.0);
-        double totalChance = Math.min((0.45 + 0.4 + 0.3) * depthFactor, 1.0);
-        if (roll < eyeChance) {
-            eyeAnchors.add(position);
-        } else if (roll < mouthChance) {
-            mouthAnchors.add(position);
-        } else if (roll < totalChance) {
-            hungryAnchors.add(position);
-        }
-    }
-
-    private boolean hasLayoutConflict(Vec3 position, double distance) {
-        double distanceSquared = distance * distance;
-        return eyeAnchors.stream().anyMatch(anchor -> anchor.distanceToSqr(position) < distanceSquared)
-                || mouthAnchors.stream().anyMatch(anchor -> anchor.distanceToSqr(position) < distanceSquared)
-                || hungryAnchors.stream().anyMatch(anchor -> anchor.distanceToSqr(position) < distanceSquared);
-    }
-
-    /// 在同列眼睛的较大空档中补嘴，保持均匀的墙面攻击分布。
-    private void generateMouthsBetweenEyes(RandomSource layoutRandom) {
-        Map<Integer, List<Vec3>> eyesByColumn = new HashMap<>();
-        for (Vec3 eye : eyeAnchors) {
-            int column = (int) Math.round(eye.x / GRID_SPACING + GRID_SIZE_X * 0.5);
-            if (column >= 0 && column < GRID_SIZE_X) {
-                eyesByColumn.computeIfAbsent(column, ignored -> new ArrayList<>()).add(eye);
-            }
-        }
-        for (Map.Entry<Integer, List<Vec3>> entry : eyesByColumn.entrySet()) {
-            List<Vec3> columnEyes = entry.getValue();
-            columnEyes.sort(Comparator.comparingDouble(Vec3::y));
-            for (int index = 0; index + 1 < columnEyes.size(); index++) {
-                Vec3 lower = columnEyes.get(index);
-                Vec3 upper = columnEyes.get(index + 1);
-                if (Math.abs(upper.y - lower.y) < GRID_SPACING * 1.5) {
-                    continue;
-                }
-                Vec3 mouth = new Vec3((entry.getKey() - GRID_SIZE_X * 0.5) * GRID_SPACING, (lower.y + upper.y) * 0.5, lower.z);
-                double conflictDistance = GRID_SPACING * 0.6;
-                if (!hasLayoutConflict(mouth, conflictDistance) && layoutRandom.nextDouble() < 0.8) {
-                    mouthAnchors.add(mouth);
+                /// 饿鬼独立于眼嘴覆盖，每隔两行、两列放置一个，不替代墙面部件。
+                if ((x & 1) == 0 && (y & 1) == 0) {
+                    hungryAnchors.add(anchor.add(0, cellHeight * 0.25, 0));
                 }
             }
         }
     }
 
-    float getLaserDamage() {
-        if (isMaster()) {
-            return 15.0F;
-        }
-        if (isExpert()) {
-            return 12.0F;
-        }
-        return level().getDifficulty().getId() <= 1
-                ? 8.0F : 10.0F;
-    }
 
     private void updateHungrySlots() {
         if (!hungryInitialized) {
             hungryInitialized = true;
             for (Vec3 anchor : hungryAnchors) {
-                spawnHungry(anchor);
+                spawnHungry(anchor, false);
             }
             return;
         }
@@ -606,7 +704,7 @@ public class WallOfFlesh extends BaseBoss {
         hungryTimer = HUNGRY_RESPAWN_INTERVAL;
         for (Vec3 anchor : hungryAnchors) {
             if (!hasLivingHungryAt(anchor) && random.nextFloat() < 0.4F) {
-                spawnHungry(anchor);
+                spawnHungry(anchor, true);
             }
         }
     }
@@ -615,16 +713,17 @@ public class WallOfFlesh extends BaseBoss {
         for (Entity entity : getSubEntities()) {
             if (entity instanceof TheHungry hungry
                     && hungry.isAlive()
+                    && !hungry.isFree()
                     && hungry.isOwnedBy(this)
                     && hungry.getLeashPos()
-                    .distanceToSqr(rotateWallOffset(anchor)) < 0.01) {
+                    .distanceToSqr(rotateWallOffset(anchor).scale(getScale())) < 0.01) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean spawnHungry(Vec3 localAnchor) {
+    private boolean spawnHungry(Vec3 localAnchor, boolean respawn) {
         if (!(level() instanceof ServerLevel serverLevel)) {
             return false;
         }
@@ -635,6 +734,7 @@ public class WallOfFlesh extends BaseBoss {
         Vec3 rotatedAnchor = rotateWallOffset(localAnchor).scale(getScale());
         hungry.setPos(position().add(rotatedAnchor));
         hungry.setMaster(this, rotatedAnchor);
+        hungry.setSuppressLoot(respawn);
         if (getTarget() != null) {
             hungry.setTarget(getTarget());
         }
@@ -648,6 +748,10 @@ public class WallOfFlesh extends BaseBoss {
 
     /// 把部件的世界坐标转换为墙面局部坐标，供客户端按同一布局绘制模型。
     public Vec3 getLocalOffset(Entity part) {
+        if (part instanceof WallOfFleshPart wallPart) {
+            int index = wallPart.getPartIndex();
+            return (index < eyeAnchors.size() ? eyeAnchors.get(index) : mouthAnchors.get(index - eyeAnchors.size())).scale(getScale());
+        }
         Vec3 delta = part.position().subtract(position());
         Vec3 forward = getForwardVector();
         Vec3 lateral = new Vec3(-forward.z, 0.0, forward.x);
@@ -665,6 +769,22 @@ public class WallOfFlesh extends BaseBoss {
             }
         }
         discard();
+    }
+
+    /// 本体只是整场战斗的管理原点，接触判定由实际可见的眼睛和嘴承担。
+    @Override
+    protected boolean hasEntityContactAttack() {
+        return false;
+    }
+
+    /// 所有眼睛和嘴共享受害者冷却，不改动玩家自身的受伤无敌帧。
+    public boolean hurtOnContact(LivingEntity target) {
+        long now = level().getGameTime();
+        contactHits.values().removeIf(expiry -> expiry <= now);
+        if (contactHits.containsKey(target.getUUID())) return false;
+        if (!doContactHurtTarget(target)) return false;
+        contactHits.put(target.getUUID(), now + 10);
+        return true;
     }
 
     @Override
@@ -727,6 +847,7 @@ public class WallOfFlesh extends BaseBoss {
         mouths.clear();
         eyeAssignments.clear();
         mouthAssignments.clear();
+        ensureWallLayout();
     }
 
     public enum CombatState {WOUNDED}

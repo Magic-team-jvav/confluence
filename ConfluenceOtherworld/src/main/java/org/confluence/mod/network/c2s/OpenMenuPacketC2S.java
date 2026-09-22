@@ -21,7 +21,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.DyeMixMenu;
 import org.confluence.mod.common.menu.DyeVatMenu;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
-import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import org.mesdag.portlib.network.IPortPacket;
 import org.mesdag.portlib.network.PortPacketDistributor;
@@ -34,13 +33,11 @@ import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPortPacket.C2S {
     public static final byte EXTRA_INVENTORY = 0;
     public static final byte MAID_TRADE_MENU = 1;
-    public static final byte NPC_REFORGE_MENU = 2;
     public static final byte DYE_VAT_MENU = 3;
     public static final byte DYE_MIX_MENU = 4;
     private static final Object2ObjectMap<Byte, Tuple<MenuConstructor, Component>> MENU_TYPES = Util.make(new Object2ObjectOpenHashMap<>(), map -> {
         map.put(EXTRA_INVENTORY, new Tuple<>((containerId, playerInventory, player) -> new ExtraInventoryMenu(containerId, playerInventory), Component.empty()));
 //        map.put(MAID_TRADE_MENU, new Tuple<>((containerId, playerInventory, player) -> new NPCTradesForgeMenu(containerId, playerInventory), Component.translatable("title.confluence.touhoulittlemaid")));
-        map.put(NPC_REFORGE_MENU, new Tuple<>((containerId, playerInventory, player) -> new NPCReforgeMenu(containerId, playerInventory), Component.empty()));
         map.put(DYE_VAT_MENU, new Tuple<>((containerId, playerInventory, player) -> new DyeVatMenu(containerId, playerInventory, getAccess(player)), Component.translatable("container.confluence.dye_vat")));
         map.put(DYE_MIX_MENU, new Tuple<>((containerId, playerInventory, player) -> new DyeMixMenu(containerId, playerInventory, getAccess(player)), Component.translatable("container.confluence.dye_mix")));
     });

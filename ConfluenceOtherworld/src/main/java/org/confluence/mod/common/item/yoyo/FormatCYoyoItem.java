@@ -1,18 +1,24 @@
 package org.confluence.mod.common.item.yoyo;
 
+import net.minecraft.network.chat.Component;
 import org.confluence.lib.common.component.ModRarity;
 
 public final class FormatCYoyoItem extends YoyoItem {
-    public FormatCYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.PINK, 19, 20, 0xFFFFFFFF, 16 * 20, 3.25F);
+    private final float bonusCriticalChance;
+    private final float criticalDamageMultiplier;
+
+    public FormatCYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, float bonusCriticalChance, float criticalDamageMultiplier) {
+        super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
+        this.bonusCriticalChance = bonusCriticalChance;
+        this.criticalDamageMultiplier = criticalDamageMultiplier;
     }
 
     @Override
-    public float bonusCriticalChance() {return 0.2F;}
+    public float bonusCriticalChance() {return bonusCriticalChance;}
 
     @Override
-    public float criticalDamageMultiplier() {return 2.5F;}
+    public float criticalDamageMultiplier() {return criticalDamageMultiplier;}
 
     @Override
-    protected String effectTooltip() {return "tooltip.confluence.yoyo.critical";}
+    protected Component effectTooltip() {return Component.translatable("tooltip.confluence.yoyo.critical");}
 }

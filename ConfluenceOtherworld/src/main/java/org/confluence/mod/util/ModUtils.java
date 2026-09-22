@@ -47,6 +47,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.LibAttributes;
 import org.confluence.lib.common.LibEffects;
@@ -64,6 +65,7 @@ import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.entity.MoneyDropSource;
 import org.confluence.mod.common.entity.boss.BaseBoss;
+import org.confluence.mod.common.entity.boss.WallOfFlesh;
 import org.confluence.mod.common.gameevent.SlimeRainGameEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -195,7 +197,8 @@ public final class ModUtils {
             amount = PlayerPiggyBankContainer.placeCoins(PlayerPiggyBankContainer.of(source.getOwner()), (int) amount);
         }
         if (amount > 0) {
-            dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
+            Vec3 position = living instanceof WallOfFlesh wall ? wall.getCoinDropPosition(damageSource) : new Vec3(living.getX(), living.getEyeY() - 0.3, living.getZ());
+            dropMoney((int) amount, position.x, position.y, position.z, level);
         }
     }
 

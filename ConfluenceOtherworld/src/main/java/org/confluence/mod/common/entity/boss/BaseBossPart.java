@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -45,6 +46,12 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
     private int unresolvedOwnerTicks;
     private @Nullable Vec3 contactSweepStart;
     private long contactMovementTick = Long.MIN_VALUE;
+    private int clientLerpSteps;
+    private double clientLerpX;
+    private double clientLerpY;
+    private double clientLerpZ;
+    private float clientLerpYaw;
+    private float clientLerpPitch;
 
     protected BaseBossPart(EntityType<?> type, Level level) {
         super(type, level);
@@ -72,11 +79,6 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
 
     public final float getPartHealth() {
         return entityData.get(PART_HEALTH);
-    }
-
-    public final void setPartHealth(float health) {
-        if (!isDestructible()) return;
-        entityData.set(PART_HEALTH, Math.max(0.0F, Math.min(health, getMaxPartHealth())));
     }
 
     public final void indicateHurt() {
@@ -140,9 +142,35 @@ public abstract class BaseBossPart<T extends BaseBoss> extends Entity implements
         return contactMovementTick == level().getGameTime() && contactSweepStart != null ? contactSweepStart : position();
     }
 
+    /// 非生物实体默认收到位置包就跳到终点；部件按网络给出的窗口平滑移动。
+    @Override
+    public void lerpTo(double x, double y, double z, float yaw, float pitch, int steps, boolean teleport) {
+        if (!level().isClientSide || teleport || steps <= 0) {
+            clientLerpSteps = 0;
+            super.lerpTo(x, y, z, yaw, pitch, steps, teleport);
+            return;
+        }
+        clientLerpX = x;
+        clientLerpY = y;
+        clientLerpZ = z;
+        clientLerpYaw = yaw;
+        clientLerpPitch = pitch;
+        clientLerpSteps = steps;
+    }
+
     @Override
     public final void tick() {
         super.tick();
+        /// 即使客户端尚未追踪到本体，也必须继续消费部件自身的位置同步。
+        if (level().isClientSide && clientLerpSteps > 0) {
+            double progress = 1.0D / clientLerpSteps;
+            setPos(Mth.lerp(progress, getX(), clientLerpX),
+                    Mth.lerp(progress, getY(), clientLerpY),
+                    Mth.lerp(progress, getZ(), clientLerpZ));
+            setYRot(getYRot() + Mth.wrapDegrees(clientLerpYaw - getYRot()) / clientLerpSteps);
+            setXRot(getXRot() + (clientLerpPitch - getXRot()) / clientLerpSteps);
+            --clientLerpSteps;
+        }
         if (!level().isClientSide && entityData.get(HURT_FLASH_TICKS) > 0) {
             entityData.set(HURT_FLASH_TICKS, entityData.get(HURT_FLASH_TICKS) - 1);
         }

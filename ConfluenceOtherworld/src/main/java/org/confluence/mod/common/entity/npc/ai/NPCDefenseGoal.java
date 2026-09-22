@@ -31,7 +31,7 @@ public final class NPCDefenseGoal extends Goal {
     @Override
     public boolean canUse() {
         if (!npc.getCombatProfile().reactsToEnemies(npc) || !npc.canDefendSelf()
-                || npc.getTradingPlayer() != null) return false;
+                || npc.getInteractingPlayer() != null) return false;
         target = findTarget();
         return target != null;
     }
@@ -39,7 +39,7 @@ public final class NPCDefenseGoal extends Goal {
     /// 目标仍合法且 NPC 没有开始交易时持续执行，不因暂时丢失视线而重置冷却。
     @Override
     public boolean canContinueToUse() {
-        if (npc.getTradingPlayer() != null || !npc.canDefendSelf() || !isValid(target))
+        if (npc.getInteractingPlayer() != null || !npc.canDefendSelf() || !isValid(target))
             return false;
         NPCCombatProfile.Values values = npc.getCombatProfile().values(npc);
         double range = detectionRange(values);

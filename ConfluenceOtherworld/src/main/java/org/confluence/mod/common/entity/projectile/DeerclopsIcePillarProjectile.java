@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.init.ModEffects;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -45,7 +46,7 @@ public final class DeerclopsIcePillarProjectile extends Projectile implements Ge
     public void configure(Mob owner, Vec3 origin, float damage) {
         setOwner(owner);
         setPos(origin);
-        this.damage = damage;
+        this.damage = ProjectileOverrides.get(owner, getType()).damageOr(damage);
     }
 
     public void configureWaveModel(Mob owner, Vec3 origin, Vec3 direction) {

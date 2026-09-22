@@ -14,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
@@ -50,7 +51,7 @@ public class SlimeSpikeEntity extends AbstractHurtingProjectile {
         spike.setOwner(shooter);
         spike.setPos(shooter.getX(), shooter.getY() + shooter.getEyeHeight() * 0.5, shooter.getZ());
         spike.shoot(dirX, dirY, dirZ, velocity, inaccuracy);
-        spike.damage = damage;
+        spike.damage = shooter instanceof Mob mob ? ProjectileOverrides.get(mob, type).damageOr(damage) : damage;
         spike.entityData.set(DATA_VARIANT, variant.ordinal());
         spike.entityData.set(DATA_HAS_GRAVITY, hasGravity);
         return spike;

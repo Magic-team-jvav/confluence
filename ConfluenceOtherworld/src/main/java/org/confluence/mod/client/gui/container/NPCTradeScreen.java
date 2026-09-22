@@ -3,73 +3,71 @@ package org.confluence.mod.client.gui.container;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
-import org.confluence.mod.common.init.entity.NpcEntities;
-import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
+import org.confluence.mod.common.init.item.ModItems;
 import org.lwjgl.glfw.GLFW;
 
-/// 使用原版箱子纹理显示 NPC 商店。
-///
-/// 客户端只显示服务端同步的商品、价格说明和页码，不参与报价与成交计算。
+import java.util.function.Supplier;
+
+/// 客户端只显示服务端同步的商品和价格说明，不参与报价与成交计算。
 public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
-    private static final ResourceLocation CONTAINER_TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
-    private static final ResourceLocation PIGGY_BANK_TEXTURE = Confluence.asResource("textures/gui/container/piggy_bank.png");
-    private static final int TRADE_ROWS = 4;
-    private static final int TOP_HEIGHT = TRADE_ROWS * 18 + 17;
+    private static final ResourceLocation CONTAINER_TEXTURE = Confluence.asResource("textures/gui/npc_trade_menu.png");
     private static final int HOLD_DELAY = 8;
     private static final int HOLD_INTERVAL = 2;
+    /// 相对原版容器居中位置的整体偏移；正数下移，负数上移，单位为 GUI 像素。
+    private static final int UI_OFFSET_Y = 10;
+    /// 钱币横排位于头像对面的右侧，坐标相对商店左上角。
+    private static final int MONEY_X = 90;
+    private static final int MONEY_Y = -27;
+    private static final int MONEY_SPACING = 24;
+    private static final int MONEY_COUNT_Y = 17;
+    private static final int PAGE_BUTTON_X = 190;
+    private static final int PREVIOUS_PAGE_Y = 42;
+    private static final int NEXT_PAGE_Y = PREVIOUS_PAGE_Y + 8;
+    private static final int PAGE_BUTTON_WIDTH = 8;
+    private static final int PAGE_BUTTON_HEIGHT = 8;
 
     private Button previousPage;
     private Button nextPage;
     private int heldOfferSlot = -1;
     private int heldTicks;
+    private NPCTradePortrait portrait;
+    private final ItemStack[] moneyIcons = {
+            ModItems.PLATINUM_COIN.toStack(), ModItems.GOLD_COIN.toStack(),
+            ModItems.SILVER_COIN.toStack(), ModItems.COPPER_COIN.toStack()
+    };
 
     public NPCTradeScreen(NPCTradeMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
-        imageHeight = 114 + TRADE_ROWS * 18;
-        inventoryLabelY = imageHeight - 94;
+        imageWidth = 198;
+        imageHeight = 176;
     }
 
     @Override
     protected void init() {
         super.init();
-        previousPage = addRenderableWidget(Button.builder(Component.literal("<"),
-                        button -> requestPage(menu.getCurrentPage() - 1))
-                .bounds(leftPos + imageWidth - 52, topPos + 4, 20, 14)
-                .build());
-        nextPage = addRenderableWidget(Button.builder(Component.literal(">"),
-                        button -> requestPage(menu.getCurrentPage() + 1))
-                .bounds(leftPos + imageWidth - 28, topPos + 4, 20, 14)
-                .build());
-        if (menu.getNPC().getType() == NpcEntities.GOBLIN_TINKERER.get()) {
-            // 重铸属于商店的附加入口，放在容器上方，避免覆盖 NPC 名称和页码。
-            addRenderableWidget(Button.builder(
-                            Component.translatable("button.confluence.reforge"),
-                            button -> {
-                                LocalPlayer player = minecraft.player;
-                                if (player == null) return;
-                                ItemStack stack = player.containerMenu.getCarried();
-                                player.containerMenu.setCarried(ItemStack.EMPTY);
-                                OpenMenuPacketC2S.sendToServer(
-                                        OpenMenuPacketC2S.NPC_REFORGE_MENU,
-                                        stack);
-                            })
-                    .bounds(leftPos + 4, topPos - 18, 48, 16)
-                    .build());
+        topPos += UI_OFFSET_Y;
+        if (portrait == null && menu.getNPC().getType().create(menu.getNPC().level()) instanceof BaseNPC preview) {
+            var appearance = menu.getNPC().getEntityData().getNonDefaultValues();
+            if (appearance != null) preview.getEntityData().assignValues(appearance);
+            portrait = new NPCTradePortrait(preview);
         }
+        previousPage = addRenderableWidget(createPageButton(true));
+        nextPage = addRenderableWidget(createPageButton(false));
         updatePageButtons();
     }
 
     @Override
     public void containerTick() {
         super.containerTick();
+        if (portrait != null) portrait.tick();
         updatePageButtons();
         if (heldOfferSlot < 0 || minecraft == null || minecraft.player == null || minecraft.gameMode == null)
             return;
@@ -101,21 +99,18 @@ public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> 
 
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        super.renderLabels(graphics, mouseX, mouseY);
-        String page = (menu.getCurrentPage() + 1) + " / " + menu.getPageCount();
-        graphics.drawString(font, page, imageWidth - 82 - font.width(page) / 2, 7, 0x404040, false);
     }
 
     @Override
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-        renderBackground(graphics);
-        graphics.blit(CONTAINER_TEXTURE, leftPos, topPos, 0, 0, imageWidth, TOP_HEIGHT);
-        graphics.blit(CONTAINER_TEXTURE, leftPos, topPos + TOP_HEIGHT, 0, 126, imageWidth, 96);
-        graphics.blit(PIGGY_BANK_TEXTURE, leftPos - 33, topPos + 10, 224, 0, 32, 86);
+        if (portrait != null) portrait.render(graphics, leftPos, topPos, mouseX, mouseY);
+        graphics.blit(CONTAINER_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         for (int slot = 0; slot < menu.getMoneySlotCount(); slot++) {
-            if (!menu.getSlot(menu.getMoneySlotStart() + slot).hasItem()) {
-                graphics.blit(PIGGY_BANK_TEXTURE, leftPos - 25, topPos + 18 + slot * 18, 207, 0, 16, 16);
-            }
+            int x = leftPos + MONEY_X + slot * MONEY_SPACING;
+            int y = topPos + MONEY_Y;
+            String count = Integer.toString(menu.getSlot(menu.getMoneySlotStart() + slot).getItem().getCount());
+            graphics.renderItem(moneyIcons[slot], x, y);
+            graphics.drawString(font, count, x + (16 - font.width(count)) / 2, y + MONEY_COUNT_Y, 0xFFFFFF);
         }
     }
 
@@ -127,6 +122,18 @@ public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> 
         if (!menu.getCarried().isEmpty() && hoveredSlot != null && hoveredSlot.index < 36 && !hoveredSlot.hasItem()) {
             graphics.renderTooltip(font, Component.translatable("gui.confluence.sell"), mouseX, mouseY);
         }
+    }
+
+    private Button createPageButton(boolean previous) {
+        return new Button(leftPos + PAGE_BUTTON_X, topPos + (previous ? PREVIOUS_PAGE_Y : NEXT_PAGE_Y), PAGE_BUTTON_WIDTH, PAGE_BUTTON_HEIGHT,
+                Component.translatable(previous ? "spectatorMenu.previous_page" : "spectatorMenu.next_page"),
+                button -> requestPage(menu.getCurrentPage() + (previous ? -1 : 1)), Supplier::get) {
+            @Override
+            public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+                int u = !active ? 201 : isHoveredOrFocused() ? 219 : 210;
+                graphics.blit(CONTAINER_TEXTURE, getX(), getY(), width, height, u, previous ? 54 : 62, 8, 8, 256, 256);
+            }
+        };
     }
 
     private void requestPage(int page) {
@@ -142,8 +149,6 @@ public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> 
         }
         previousPage.active = menu.getCurrentPage() > 0;
         nextPage.active = menu.getCurrentPage() + 1 < menu.getPageCount();
-        previousPage.visible = menu.getPageCount() > 1;
-        nextPage.visible = menu.getPageCount() > 1;
     }
 
     private void stopHeldPurchase() {

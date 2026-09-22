@@ -1,22 +1,30 @@
 package org.confluence.mod.common.item.yoyo;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.entity.yoyo.YoyoEffectProjectile;
+import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.mixed.Immunity;
 
 public final class TerrarianYoyoItem extends YoyoItem implements Immunity {
-    public TerrarianYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.RED, 95F, 25, 0xFFFFFFFF, 0, 6.5F);
+    private final int shotInterval;
+    private final int immunityTicks;
+    private final float bonusCriticalChance;
+
+    public TerrarianYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int shotInterval, int immunityTicks, float bonusCriticalChance) {
+        super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
+        this.shotInterval = shotInterval;
+        this.immunityTicks = immunityTicks;
+        this.bonusCriticalChance = bonusCriticalChance;
     }
 
     /// 每 0.1 秒发射一次，副球与脱手球同样保留此能力。
     @Override
     public void tickAttack(YoyoEntity yoyo) {
-        if (yoyo.tickCount % 2 == 0)
-            YoyoEffectProjectile.shootAtNearest(yoyo, YoyoEffectProjectile.Kind.TERRARIAN, null);
+        if (yoyo.tickCount % shotInterval == 0)
+            TerrarianProjectile.shootAtNearest(yoyo);
     }
 
     @Override
@@ -26,10 +34,10 @@ public final class TerrarianYoyoItem extends YoyoItem implements Immunity {
     public Type confluence$getImmunityType() {return Type.STATIC;}
 
     @Override
-    public int confluence$getImmunityDuration(DamageSource source) {return 4;}
+    public int confluence$getImmunityDuration(DamageSource source) {return immunityTicks;}
 
     @Override
-    public float bonusCriticalChance() {return 0.1F;}
+    public float bonusCriticalChance() {return bonusCriticalChance;}
 
     @Override
     public boolean fullBright() {return true;}
@@ -38,5 +46,5 @@ public final class TerrarianYoyoItem extends YoyoItem implements Immunity {
     public boolean supportsLegendaryPrefix() {return true;}
 
     @Override
-    protected String effectTooltip() {return "tooltip.confluence.yoyo.terrarian";}
+    protected Component effectTooltip() {return Component.translatable("tooltip.confluence.yoyo.terrarian");}
 }

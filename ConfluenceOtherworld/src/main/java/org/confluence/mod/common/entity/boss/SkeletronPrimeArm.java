@@ -151,7 +151,7 @@ public class SkeletronPrimeArm extends BaseLivingBossPart<SkeletronPrime> implem
         Vec3 origin = position().add(0.0, getBbHeight() * 0.5, 0.0);
         PrimeLaserProjectile laser = ModEntities.PRIME_LASER.get().create(level());
         if (laser == null) return;
-        laser.configure(master, origin, target, 8.0F);
+        laser.configure(master, origin, target, (float) master.getAttributeValue(Attributes.ATTACK_DAMAGE));
         if (!serverLevel.addFreshEntity(laser)) laser.discard();
     }
 

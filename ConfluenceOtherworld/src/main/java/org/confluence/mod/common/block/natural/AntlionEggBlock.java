@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.BaseWarriorMonster;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 
@@ -46,7 +47,7 @@ public class AntlionEggBlock extends Block {
     }
 
     private void spawnLarvae(Level level, BlockPos pos) {
-        if (!org.confluence.lib.util.LibUtils.isDev()) return;
+        if (!Confluence.UNRELEASED_SPAWNS) return;
         if (!(level instanceof ServerLevel server)) return;
         int count = 1 + level.random.nextInt(3);
         for (int i = 0; i < count; i++) {

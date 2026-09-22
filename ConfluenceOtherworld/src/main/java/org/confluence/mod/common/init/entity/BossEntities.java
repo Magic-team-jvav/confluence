@@ -42,7 +42,9 @@ public final class BossEntities {
 
     // 腐化：世界吞噬者及体节
     public static final RegistryObject<EntityType<EaterOfWorlds>> EATER_OF_WORLDS = withAttributes(registerEntity("eater_of_worlds", EntityType.Builder.of(EaterOfWorlds::new, MobCategory.MONSTER).sized(3.0F, 2.0F).clientTrackingRange(24).updateInterval(1)),
-            () -> CreatureAttributeBuilder.boss().maxHealth(54).armor(4).attackDamage(11.5).followRange(300).knockbackResistance(1).build());
+            () -> CreatureAttributeBuilder.boss().maxHealth(54).armor(4).attackDamage(11.5).followRange(300).knockbackResistance(1)
+                    .projectile(ModEntities.VILE_SPIT_PROJECTILE, projectile -> projectile.damage(5))
+                    .build());
     public static final RegistryObject<EntityType<BossWormPart>> EATER_OF_WORLDS_SEGMENT = withAttributes(registerEntity("boss_worm_segment", EntityType.Builder.of(BossWormPart::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(32).updateInterval(1).noSave()),
             () -> CreatureAttributeBuilder.boss().maxHealth(50).armor(6).attackDamage(4).followRange(300).knockbackResistance(1).build());
 
@@ -84,15 +86,17 @@ public final class BossEntities {
     public static final RegistryObject<EntityType<DeerClops>> DEERCLOPS = withAttributes(registerEntity("deerclops", EntityType.Builder.of(DeerClops::new, MobCategory.MONSTER).sized(3.0F, 7.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(3094).armor(10).attackDamage(10.4).followRange(300).knockbackResistance(1).movementSpeed(0.4)
                     .state(DeerClops.CombatState.ATTACK, state -> state.windupTicks(12).duration(15).attackInterval(30))
+                    .projectile(ModEntities.THROWN_ICE_PROJECTILE, projectile -> projectile.damage(10))
+                    .projectile(ModEntities.SHADOW_HAND, projectile -> projectile.damage(10))
+                    .projectile(ModEntities.ICE_PILLAR, projectile -> projectile.damage(10))
                     .build());
 
     // 地狱：血肉墙及眼、嘴
-    public static final RegistryObject<EntityType<WallOfFlesh>> WALL_OF_FLESH = withAttributes(registerEntity("wall_of_flesh", EntityType.Builder.of(WallOfFlesh::new, MobCategory.MONSTER).sized(8.0F, 8.0F).clientTrackingRange(48)),
+    public static final RegistryObject<EntityType<WallOfFlesh>> WALL_OF_FLESH = withAttributes(registerEntity("wall_of_flesh", EntityType.Builder.of(WallOfFlesh::new, MobCategory.MONSTER).sized(8.0F, 8.0F).clientTrackingRange(48).setCustomClientFactory(WallOfFlesh::createClient)),
             () -> CreatureAttributeBuilder.boss().maxHealth(3096).armor(6).attackDamage(39).followRange(120).knockbackResistance(1).movementSpeed(0.125).add(LibAttributes.getArmorPenetration().get(), 6)
                     .state(WallOfFlesh.CombatState.WOUNDED, state -> state.multiply(Attributes.MOVEMENT_SPEED, 1.45))
+                    .projectile(ModEntities.WALL_OF_FLESH_LASER, projectile -> projectile.damage(mob -> LibUtils.isMaster(mob.level(), mob.blockPosition()) ? 15 : LibUtils.isAtLeastExpert(mob.level(), mob.blockPosition()) ? 12 : mob.level().getDifficulty().getId() <= 1 ? 8 : 10))
                     .build());
-    public static final RegistryObject<EntityType<WallOfFleshEye>> WALL_OF_FLESH_EYE = registerEntity("wall_of_flesh_eye", EntityType.Builder.of(WallOfFleshEye::new, MobCategory.MISC).sized(4.0F, 4.0F).clientTrackingRange(48).updateInterval(1).noSave());
-    public static final RegistryObject<EntityType<WallOfFleshMouth>> WALL_OF_FLESH_MOUTH = registerEntity("wall_of_flesh_mouth", EntityType.Builder.of(WallOfFleshMouth::new, MobCategory.MISC).sized(3.0F, 4.0F).clientTrackingRange(48).updateInterval(1).noSave());
 
     // 机械 Boss：双子魔眼及双眼
     public static final RegistryObject<EntityType<TheTwins>> THE_TWINS = withAttributes(registerEntity("the_twins", EntityType.Builder.of(TheTwins::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
@@ -100,19 +104,25 @@ public final class BossEntities {
     public static final RegistryObject<EntityType<Retinazer>> RETINAZER = withAttributes(registerEntity("retinazer", EntityType.Builder.of(Retinazer::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(7800).armor(10).attackDamage(19).followRange(300).knockbackResistance(0.8).movementSpeed(0.3).flyingSpeed(0.6).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(AbstractTwinEye.Form.TRANSFORMED, state -> state.multiply(Attributes.ARMOR, 2))
+                    .projectile(ModEntities.RETINAZER_LASER, projectile -> projectile.attackDamage(1))
                     .build());
     public static final RegistryObject<EntityType<Spazmatism>> SPAZMATISM = withAttributes(registerEntity("spazmatism", EntityType.Builder.of(Spazmatism::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(8970).armor(10).attackDamage(22).followRange(300).knockbackResistance(0.8).movementSpeed(0.3).flyingSpeed(0.6).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(AbstractTwinEye.Form.TRANSFORMED, state -> state.multiply(Attributes.ARMOR, 2.8))
+                    .projectile(ModEntities.SPAZMATISM_FLAME, projectile -> projectile.attackDamage(1))
                     .build());
 
     // 机械 Boss：毁灭者、体节与探测怪
     public static final RegistryObject<EntityType<TheDestroyer>> THE_DESTROYER = withAttributes(registerEntity("the_destroyer", EntityType.Builder.of(TheDestroyer::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(32).updateInterval(1)),
-            () -> CreatureAttributeBuilder.boss().maxHealth(23333).armor(2).attackDamage(35).followRange(300).knockbackResistance(1).build());
+            () -> CreatureAttributeBuilder.boss().maxHealth(23333).armor(2).attackDamage(35).followRange(300).knockbackResistance(1)
+                    .projectile(ModEntities.DESTROYER_LASER, projectile -> projectile.damage(14, 18, 22))
+                    .build());
     public static final RegistryObject<EntityType<BossWormPart>> THE_DESTROYER_PART = withAttributes(registerEntity("the_destroyer_part", EntityType.Builder.of(BossWormPart::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(32).updateInterval(1).noSave()),
             () -> CreatureAttributeBuilder.boss().maxHealth(23333).armor(2).attackDamage(66).followRange(96).knockbackResistance(1).build());
     public static final RegistryObject<EntityType<TheDestroyerProbe>> THE_DESTROYER_PROBE = withAttributes(registerEntity("the_destroyer_probe", EntityType.Builder.of(TheDestroyerProbe::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.boss().maxHealth(100).armor(10).attackDamage(12).followRange(64).knockbackResistance(1).build());
+            () -> CreatureAttributeBuilder.boss().maxHealth(100).armor(10).attackDamage(12).followRange(64).knockbackResistance(1)
+                    .projectile(ModEntities.DESTROYER_LASER, projectile -> projectile.attackDamage(1))
+                    .build());
 
     // 机械 Boss：机械骷髅王及手臂
     public static final RegistryObject<EntityType<SkeletronPrime>> SKELETRON_PRIME = withAttributes(registerEntity("skeletron_prime", EntityType.Builder.of(SkeletronPrime::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
@@ -131,6 +141,9 @@ public final class BossEntities {
             () -> CreatureAttributeBuilder.boss().maxHealth(10920).armor(36).attackDamage(26).followRange(300).knockbackResistance(1).add(LibAttributes.getArmorPenetration().get(), 8).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(Plantera.Temperament.CALM, state -> state.moveSpeed(mob -> ((Plantera) mob).getPhase() == 0 ? 0.1 : 0.2))
                     .state(Plantera.Temperament.ENRAGED, state -> state.multiply(Attributes.ATTACK_DAMAGE, 2).multiply(Attributes.ARMOR, mob -> ((Plantera) mob).getPhase() == 0 ? 2 : 4).moveSpeed(0.2))
+                    .projectile(ModEntities.PLANTERA_SEED, projectile -> projectile.damage(mob -> (((Plantera) mob).isEnraged() ? 2 : 1) * LibUtils.switchByDifficulty(mob.level(), mob.blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F)))
+                    .projectile(ModEntities.PLANTERA_THORN_BALL, projectile -> projectile.damage(mob -> (((Plantera) mob).isEnraged() ? 2 : 1) * LibUtils.switchByDifficulty(mob.level(), mob.blockPosition(), 18.0F, 28.0F, 42.0F, 42.0F)))
+                    .projectile(ModEntities.PLANTERA_SPORE, projectile -> projectile.damage(mob -> (((Plantera) mob).isEnraged() ? 2 : 1) * LibUtils.switchByDifficulty(mob.level(), mob.blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F)))
                     .build());
     public static final RegistryObject<EntityType<PlanteraHook>> PLANTERA_HOOK = withAttributes(registerEntity("plantera_hook", EntityType.Builder.of(PlanteraHook::new, MobCategory.MONSTER).sized(1.25F, 1.25F).clientTrackingRange(10).updateInterval(1).noSave()),
             () -> CreatureAttributeBuilder.boss().maxHealth(1040).armor(24).attackDamage(15.6).followRange(64).knockbackResistance(1).build());
@@ -156,9 +169,10 @@ public final class BossEntities {
 
     // 扩展 Boss：血肉山及眼、嘴
     public static final RegistryObject<EntityType<HillOfFlesh>> HILL_OF_FLESH = withAttributes(registerEntity("hill_of_flesh", EntityType.Builder.of(HillOfFlesh::new, MobCategory.MONSTER).sized(10.0F, 10.0F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.boss().maxHealth(3824).armor(6).attackDamage(1).followRange(75).knockbackResistance(1).add(LibAttributes.getArmorPenetration().get(), 4).build());
-    public static final RegistryObject<EntityType<HillOfFleshEye>> HILL_OF_FLESH_EYE = registerEntity("hill_of_flesh_eye", EntityType.Builder.of(HillOfFleshEye::new, MobCategory.MISC).sized(3.0F, 3.0F).clientTrackingRange(10).updateInterval(1).noSave());
-    public static final RegistryObject<EntityType<HillOfFleshMouth>> HILL_OF_FLESH_MOUTH = registerEntity("hill_of_flesh_mouth", EntityType.Builder.of(HillOfFleshMouth::new, MobCategory.MISC).sized(4.0F, 4.0F).clientTrackingRange(10).updateInterval(1).noSave());
+            () -> CreatureAttributeBuilder.boss().maxHealth(3824).armor(6).attackDamage(1).followRange(75).knockbackResistance(1).add(LibAttributes.getArmorPenetration().get(), 4)
+                    .projectile(ModEntities.HILL_FIRE_BOUND, projectile -> projectile.damage(10))
+                    .projectile(ModEntities.HILL_LAVA_PILLAR, projectile -> projectile.damage(14, 17, 20))
+                    .build());
 
     // 扩展 Boss：机械末影龙及部位
     public static final RegistryObject<EntityType<PrimeEnderDragon>> PRIME_ENDER_DRAGON = withAttributes(registerEntity("prime_ender_dragon", EntityType.Builder.of(PrimeEnderDragon::new, MobCategory.MONSTER).sized(10.0F, 10.0F).clientTrackingRange(12)),

@@ -2,8 +2,6 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.map.CreatureDefinition;
@@ -21,14 +19,12 @@ import org.confluence.mod.common.entity.ai.bt.leaf.*;
 /// 之后替换渲染资源不应改变服务端战斗逻辑。
 public abstract class RangedMonster extends BaseWarriorMonster {
     private final int shotCooldown;
-    private final double shotMultiplier;
 
-    public RangedMonster(EntityType<? extends RangedMonster> type, Level level, int shotCooldown, double shotMultiplier) {
+    public RangedMonster(EntityType<? extends RangedMonster> type, Level level, int shotCooldown) {
         super(type, level);
-        if (shotCooldown <= 0 || shotMultiplier < 0.0)
-            throw new IllegalArgumentException("Ranged attack timing and multiplier are invalid");
+        if (shotCooldown <= 0)
+            throw new IllegalArgumentException("Ranged attack cooldown must be positive");
         this.shotCooldown = shotCooldown;
-        this.shotMultiplier = shotMultiplier;
     }
 
     @Override
@@ -56,7 +52,4 @@ public abstract class RangedMonster extends BaseWarriorMonster {
     /// 由具体怪物创建自己的弹幕，基类不根据实体 ID 猜测攻击类型。
     protected abstract Projectile createProjectile(LivingEntity target);
 
-    protected final double shotMultiplier() {
-        return creatureDefinition().behavior().shotMultiplierOr(shotMultiplier);
-    }
 }

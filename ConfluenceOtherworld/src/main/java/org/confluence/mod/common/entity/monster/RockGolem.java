@@ -1,7 +1,9 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,16 +12,14 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.entity.projectile.ThrownRockProjectile;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -96,7 +96,7 @@ public final class RockGolem extends BaseMonster {
                 double ticks = Mth.clamp(Math.ceil(delta.horizontalDistance() / 0.75), 8.0, 35.0);
                 Vec3 velocity = new Vec3(delta.x / ticks, delta.y / ticks + ThrownRockProjectile.GRAVITY * (ticks + 1.0) * 0.5, delta.z / ticks);
                 ThrownRockProjectile rock = new ThrownRockProjectile(ModEntities.THROWN_ROCK.get(), level());
-                rock.configure(RockGolem.this, origin, velocity, (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * 40.0F / 85.0F, 100);
+                rock.configure(RockGolem.this, origin, velocity, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 100);
                 if (level().addFreshEntity(rock))
                     playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.7F);
             }

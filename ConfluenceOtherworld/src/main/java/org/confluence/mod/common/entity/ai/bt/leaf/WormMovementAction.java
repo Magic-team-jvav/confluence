@@ -225,7 +225,7 @@ public final class WormMovementAction extends BTNode {
         }
 
         public static Profile corruption() {
-            return new Profile(0.4, 0.34, 0.0, -6.0, WanderHeightMode.BELOW_TERRAIN, false);
+            return new Profile(0.4, 0.34, 0.0, -2.0, WanderHeightMode.BELOW_TERRAIN, false);
         }
 
         public static Profile flying() {

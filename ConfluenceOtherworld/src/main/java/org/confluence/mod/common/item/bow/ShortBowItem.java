@@ -1,8 +1,5 @@
 package org.confluence.mod.common.item.bow;
 
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.ItemStack;
-import org.confluence.mod.mixed.IAbstractArrow;
 
 public class ShortBowItem extends BaseTerraBowItem {
     public static final int MAX_DRAW_DURATION = 8; // 满蓄力时间为8 tick
@@ -24,9 +21,8 @@ public class ShortBowItem extends BaseTerraBowItem {
         return 2.3F;
     }
 
-    public static void applyToArrow(ItemStack itemStack, AbstractArrow arrow) {
-        if (itemStack.getItem() instanceof ShortBowItem) {
-            IAbstractArrow.of(arrow).confluence$setDamageNotAffectedBySpeedBonus(true);
-        }
+    @Override
+    public float getFullDrawDamage() {
+        return getBaseDamage();
     }
 }

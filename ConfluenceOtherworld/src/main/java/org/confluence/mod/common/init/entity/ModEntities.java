@@ -41,8 +41,7 @@ import org.confluence.mod.common.entity.projectile.sword.*;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.entity.storage.ChesterEntity;
 import org.confluence.mod.common.entity.storage.FlyingPiggyBankEntity;
-import org.confluence.mod.common.entity.yoyo.YoyoEffectProjectile;
-import org.confluence.mod.common.entity.yoyo.YoyoEntity;
+import org.confluence.mod.common.entity.yoyo.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -589,8 +588,16 @@ public final class ModEntities {
                     .build(id.toString()));
 
     // 矿车
-    public static final RegistryObject<EntityType<YoyoEffectProjectile>> YOYO_EFFECT = register("yoyo_effect", id -> EntityType.Builder
-            .of(YoyoEffectProjectile::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(8).updateInterval(1).build(id.toString()));
+    public static final RegistryObject<EntityType<ChikCrystalProjectile>> CHIK_CRYSTAL = register("chik_crystal", id -> EntityType.Builder
+            .of(ChikCrystalProjectile::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(8).updateInterval(1).build(id.toString()));
+    public static final RegistryObject<EntityType<KrakenWaveProjectile>> KRAKEN_WAVE = register("kraken_wave", id -> EntityType.Builder
+            .of(KrakenWaveProjectile::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(8).updateInterval(1).build(id.toString()));
+    public static final RegistryObject<EntityType<CthulhuEyeProjectile>> CTHULHU_EYE_PROJECTILE = register("cthulhu_eye_projectile", id -> EntityType.Builder
+            .of(CthulhuEyeProjectile::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(8).updateInterval(1).build(id.toString()));
+    public static final RegistryObject<EntityType<CascadeFireProjectile>> CASCADE_FIRE = register("cascade_fire", id -> EntityType.Builder
+            .of(CascadeFireProjectile::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(8).updateInterval(1).build(id.toString()));
+    public static final RegistryObject<EntityType<TerrarianProjectile>> TERRARIAN_PROJECTILE = register("terrarian_projectile", id -> EntityType.Builder
+            .of(TerrarianProjectile::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(8).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<YoyoEntity>> YOYO =
             register("yoyo", id -> EntityType.Builder
                     .of(YoyoEntity::new, MobCategory.MISC)

@@ -15,8 +15,6 @@ import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -24,7 +22,6 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -37,15 +34,9 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 public class Hornet extends BaseFlyingMonster {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack.cast");
-    private final float stingerDamageMultiplier;
 
     public Hornet(EntityType<? extends BaseFlyingMonster> type, Level level) {
-        this(type, level, 1.0F);
-    }
-
-    public Hornet(EntityType<? extends BaseFlyingMonster> type, Level level, float stingerDamageMultiplier) {
         super(type, level);
-        this.stingerDamageMultiplier = stingerDamageMultiplier;
         this.moveControl = new FlyingMoveControl(this, 20, true);
     }
 
@@ -63,7 +54,7 @@ public class Hornet extends BaseFlyingMonster {
         HornetStingerProjectile projectile = new HornetStingerProjectile(ModEntities.HORNET_STINGER.get(), level());
         Vec3 origin = position();
         Vec3 aim = new Vec3(target.getX() - getX(), target.getY() + target.getEyeHeight() * 0.5F - getY(), target.getZ() - getZ());
-        projectile.configure(this, origin, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * stingerDamageMultiplier, 5.0F, 0);
+        projectile.configure(this, origin, aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 5.0F, 0);
         return projectile;
     }
 

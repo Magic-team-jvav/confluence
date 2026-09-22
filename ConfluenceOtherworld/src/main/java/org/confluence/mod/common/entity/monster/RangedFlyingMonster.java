@@ -2,8 +2,6 @@ package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.common.data.map.CreatureDefinition;
@@ -27,15 +25,13 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 /// 弹幕命中、暴击或伤害结算。
 public abstract class RangedFlyingMonster extends BaseFlyingMonster {
     private final int shotCooldown;
-    private final double shotMultiplier;
 
-    protected RangedFlyingMonster(EntityType<? extends RangedFlyingMonster> type, Level level, int shotCooldown, double shotMultiplier) {
+    protected RangedFlyingMonster(EntityType<? extends RangedFlyingMonster> type, Level level, int shotCooldown) {
         super(type, level);
-        if (shotCooldown <= 0 || shotMultiplier < 0.0)
-            throw new IllegalArgumentException("Flying ranged attack timing and multiplier are invalid");
+        if (shotCooldown <= 0)
+            throw new IllegalArgumentException("Flying ranged attack cooldown must be positive");
         setDiscardFriction(true);
         this.shotCooldown = shotCooldown;
-        this.shotMultiplier = shotMultiplier;
     }
 
     @Override
@@ -59,7 +55,4 @@ public abstract class RangedFlyingMonster extends BaseFlyingMonster {
 
     protected abstract Projectile createProjectile(LivingEntity target);
 
-    protected final double shotMultiplier() {
-        return creatureDefinition().behavior().shotMultiplierOr(shotMultiplier);
-    }
 }

@@ -3,25 +3,26 @@ package org.confluence.mod.common.entity.boss;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.projectile.AncientLightProjectile;
 import org.confluence.mod.common.entity.projectile.CultistProjectile;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
-import org.confluence.mod.common.init.ModSoundEvents;
 
 /// 拜月教邪教徒——传送+弹幕+召唤幻影龙。
 public class LunaticCultist extends BaseBoss {
@@ -205,25 +206,21 @@ public class LunaticCultist extends BaseBoss {
 
         int pattern = spellPattern++ % 3;
         CultistProjectile projectile;
-        float damage;
         float velocity;
         if (pattern == 0) {
             projectile = ModEntities.CULTIST_FIREBALL.get().create(level());
-            damage = 16.0F;
             velocity = 1.15F;
         } else if (pattern == 1) {
             projectile = ModEntities.CULTIST_ICE_MIST.get().create(level());
-            damage = 12.0F;
             velocity = 0.72F;
         } else {
             projectile = ModEntities.CULTIST_LIGHTNING_ORB.get().create(level());
-            damage = 14.0F;
             velocity = 0.88F;
         }
         if (projectile == null) {
             return false;
         }
-        projectile.configure(this, getTarget(), damage, velocity);
+        projectile.configure(this, getTarget(), (float) getAttributeValue(Attributes.ATTACK_DAMAGE), velocity);
         if (serverLevel.addFreshEntity(projectile)) {
             return true;
         }

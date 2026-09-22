@@ -19,7 +19,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.jetbrains.annotations.Nullable;
 
-public class NPCReforgeMenu extends AbstractContainerMenu {
+public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceMenu {
     public static final int DATA_PREFIX_TYPE = 0;
     public static final int DATA_PREFIX_ID = 1;
     public static final int DATA_REFORGE_COST = 2;
@@ -89,7 +89,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
     @Override
     public boolean clickMenuButton(Player player, int id) {
         // 重铸
-        if (id != 0) return false;
+        if (id != 0 || !stillValid(player) || player.containerMenu != this) return false;
         int cost = data[DATA_REFORGE_COST];
         if (cost >= 0x3F3F3F3F) return false;
         PrefixType prefixType = PrefixType.byId(data[DATA_PREFIX_TYPE]);
@@ -165,7 +165,7 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return npc == null || npc.isAlive()
+        return player.level().isClientSide || npc != null && npc.isAlive()
                 && player.isAlive()
                 && player.level() == npc.level()
                 && player.distanceToSqr(npc) <= 64.0;
@@ -175,8 +175,6 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
     public void removed(Player player) {
         super.removed(player);
         clearContainer(player, container);
-        if (npc != null && npc.getTradingPlayer() == player) {
-            npc.setTradingPlayer(null);
-        }
+        if (npc != null) npc.endServiceSession(player, this);
     }
 }

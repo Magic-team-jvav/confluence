@@ -1,8 +1,10 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -10,11 +12,9 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import org.confluence.mod.common.entity.projectile.UnholyTridentProjectile;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
 public final class RedDevil extends Demon {
@@ -60,7 +60,7 @@ public final class RedDevil extends Demon {
     @Override
     protected Projectile createVolleyProjectile(LivingEntity target) {
         UnholyTridentProjectile projectile = new UnholyTridentProjectile(ModEntities.UNHOLY_TRIDENT.get(), level());
-        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * 3.2F, 0.6F, 0.0F, 160);
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 0.6F, 0.0F, 160);
         playSound(SoundEvents.TRIDENT_THROW, 1.0F, 0.8F);
         return projectile;
     }

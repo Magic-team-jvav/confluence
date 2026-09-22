@@ -22,6 +22,7 @@ import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.menu.NPCServiceMenu;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
@@ -31,10 +32,11 @@ import java.util.List;
 /// NPC 商店菜单。
 ///
 /// 商品可购买；把物品放入任意空白商店格或 Shift 点击背包即可出售，并在本次交易中回购。
-public class NPCTradeMenu extends AbstractContainerMenu {
+public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMenu {
     public static final String BUY_PRICE_TAG = "ConfluenceShopBuyPrice";
     private static final int TRADE_COLS = 9;
     private static final int TRADE_ROWS = 4;
+    private static final int TRADE_TOP = 12;
     private static final int TRADE_SIZE = TRADE_COLS * TRADE_ROWS;
     private static final int OFFER_SLOTS = TRADE_SIZE;
     private static final int MONEY_SLOT_START = TRADE_SIZE;
@@ -75,10 +77,6 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         this(containerId, inventory, npc, List.of(), -1);
     }
 
-    public NPCTradeMenu(int containerId, Inventory inventory, BaseNPC npc, List<NPCTradeOffer> offers) {
-        this(containerId, inventory, npc, offers, NPCTradeList.getRevision());
-    }
-
     public NPCTradeMenu(int containerId, Inventory inventory, BaseNPC npc, List<NPCTradeOffer> offers, int shopRevision) {
         super(ModMenuTypes.NPC_TRADE.get(), containerId);
         this.npc = npc;
@@ -89,19 +87,19 @@ public class NPCTradeMenu extends AbstractContainerMenu {
         for (int row = 0; row < TRADE_ROWS; row++) {
             for (int col = 0; col < TRADE_COLS; col++) {
                 int index = row * TRADE_COLS + col;
-                addSlot(new TradeSlot(tradeContainer, index, 8 + col * 18, 18 + row * 18));
+                addSlot(new TradeSlot(tradeContainer, index, 19 + col * 18, TRADE_TOP + row * 18));
                 slotStates.add(SlotState.EMPTY);
             }
         }
         for (int slot = 0; slot < MONEY_SLOT_COUNT; slot++)
-            addSlot(new MoneyDisplaySlot(moneyContainer, slot, -25, 18 + slot * 18));
+            addSlot(new MoneyDisplaySlot(moneyContainer, slot, 0, 0));
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                addSlot(new Slot(inventory, col + row * 9 + 9, 8 + col * 18, 103 + row * 18));
+                addSlot(new Slot(inventory, col + row * 9 + 9, 19 + col * 18, 94 + row * 18));
             }
         }
         for (int col = 0; col < 9; col++) {
-            addSlot(new Slot(inventory, col, 8 + col * 18, 161));
+            addSlot(new Slot(inventory, col, 19 + col * 18, 152));
         }
 
         addDataSlots(pageData);
@@ -163,7 +161,7 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     @Override
     public void removed(Player player) {
         super.removed(player);
-        if (npc.getTradingPlayer() == player) npc.setTradingPlayer(null);
+        npc.endServiceSession(player, this);
         tradeContainer.clearContent();
         refundablePurchases.clear();
     }
@@ -499,6 +497,12 @@ public class NPCTradeMenu extends AbstractContainerMenu {
     private static final class MoneyDisplaySlot extends Slot {
         private MoneyDisplaySlot(Container container, int slot, int x, int y) {
             super(container, slot, x, y);
+        }
+
+        /// 仅保留服务端余额同步，界面自行绘制，不参与槽位显示和鼠标命中。
+        @Override
+        public boolean isActive() {
+            return false;
         }
 
         @Override

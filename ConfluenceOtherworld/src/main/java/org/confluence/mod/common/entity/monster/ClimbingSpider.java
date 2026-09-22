@@ -4,10 +4,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.level.Level;
@@ -16,13 +18,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.EnemyWalkNodeEvaluator;
 import org.confluence.mod.common.entity.projectile.SpiderWebSpit;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public class ClimbingSpider extends BaseWarriorMonster {
     private static final EntityDataAccessor<Boolean> CLIMBING = SynchedEntityData.defineId(ClimbingSpider.class, EntityDataSerializers.BOOLEAN);
@@ -111,7 +112,7 @@ public class ClimbingSpider extends BaseWarriorMonster {
         if (spit == null) return;
         Vec3 offset = target.getEyePosition().subtract(getEyePosition());
         Vec3 aim = offset.add(0.0, offset.horizontalDistance() * 0.12, 0.0).normalize().scale(0.8);
-        spit.configure(this, getEyePosition(), aim, LibUtils.isMaster(level(), blockPosition()) ? 54.0F : 36.0F, 80);
+        spit.configure(this, getEyePosition(), aim, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 80);
         if (level().addFreshEntity(spit)) playSound(SoundEvents.SPIDER_AMBIENT, 0.8F, 1.4F);
         else spit.discard();
     }

@@ -1,21 +1,20 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.ConditionalSwitchNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.FlyWanderAction;
 import org.confluence.mod.common.entity.projectile.NimbusRain;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public final class AngryNimbus extends BaseFlyingMonster {
     public AngryNimbus(EntityType<? extends AngryNimbus> type, Level level) {
@@ -43,10 +42,8 @@ public final class AngryNimbus extends BaseFlyingMonster {
                             rainTicks = 0;
                             NimbusRain rain = ModEntities.NIMBUS_RAIN.get().create(level());
                             if (rain != null) {
-                                float damage = LibUtils.isMaster(level(), blockPosition()) ? 32.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 21.0F : 11.0F;
-                                damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 21.0F;
                                 Vec3 origin = new Vec3(getRandomX(0.7), getY() - 1.0, getRandomZ(0.7));
-                                rain.configure(AngryNimbus.this, origin, new Vec3(0.0, -0.6, 0.0), damage, 100);
+                                rain.configure(AngryNimbus.this, origin, new Vec3(0.0, -0.6, 0.0), (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 100);
                                 if (!level().addFreshEntity(rain)) rain.discard();
                             }
                         }

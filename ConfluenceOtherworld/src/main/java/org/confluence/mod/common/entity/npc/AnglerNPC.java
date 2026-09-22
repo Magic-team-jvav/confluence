@@ -152,7 +152,9 @@ public class AnglerNPC extends BaseNPC {
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+            if (!canStartInteraction(serverPlayer)) return InteractionResult.SUCCESS;
             if (!isWakeUp()) {
+                recordInteraction(serverPlayer);
                 initName();
                 setWakeUp(true);
                 NPCSpawner.Region newRegion = NPCSpawner.getNpcSpawnRegion(serverPlayer);

@@ -34,7 +34,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.entity.EnemyTargeting;
-import org.confluence.mod.common.entity.ai.bt.Blackboard;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.network.s2c.BossBarSyncPacketS2C;
@@ -56,7 +55,6 @@ import java.util.*;
 /// {@value #DISENGAGE_TICKS} tick 的脱战，随后无死亡奖励、无击杀消息地消失。
 public abstract class BaseBoss extends BaseMonster implements Boss {
     protected final ServerBossEvent bossEvent;
-    protected final Blackboard blackboard = new Blackboard();
     protected final List<Entity> subEntities = new ArrayList<>();
     protected float ironGolemResistance = 0.4f;
     protected float explosionResistance = 0.5f;
@@ -211,7 +209,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     }
 
     public void removeSubEntity(Entity part) {
-        subEntities.remove(part);
+        if (!removingSubEntities) subEntities.remove(part);
     }
 
     public List<Entity> getSubEntities() {
@@ -665,6 +663,11 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
             return List.of();
         }
         return resolveOnlineCombatParticipants(serverLevel.players());
+    }
+
+    /// 默认在本体处掉落；大型场地 Boss 可选择参战玩家能够拾取的位置。
+    public Vec3 getRewardPosition(ServerPlayer player) {
+        return position();
     }
 
     private List<ServerPlayer> resolveOnlineCombatParticipants(List<ServerPlayer> onlinePlayers) {

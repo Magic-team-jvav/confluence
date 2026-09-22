@@ -17,7 +17,7 @@ import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.ExplosionEvent;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
@@ -130,7 +130,8 @@ public final class LevelEvents {
         if (event.getLevel().dimension() == OverworldUtils.dimension()) {
             event.addCustomSpawner(BloodMoonGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(GoblinArmyGameEvent.INSTANCE.spawner);
-            if (LibUtils.isDev()) event.addCustomSpawner(PirateInvasionGameEvent.INSTANCE.spawner);
+            if (Confluence.UNRELEASED_EVENTS)
+                event.addCustomSpawner(PirateInvasionGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(MeteorShowerGameEvent.INSTANCE.spawner);
             event.addCustomSpawner(new SpaceSpawner());
             event.addCustomSpawner(new MeteoriteSpawner());

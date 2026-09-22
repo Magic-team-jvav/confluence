@@ -8,6 +8,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.data.map.CreatureDefinition.ProjectileOverrides;
 
 /// 血肉山二阶段生成的熔岩柱。
 ///
@@ -27,7 +28,7 @@ public final class HillLavaPillarProjectile extends Projectile {
     /// 绑定生成该熔岩柱的 Boss，并保存服务端伤害值。
     public void configure(Mob owner, float damage) {
         setOwner(owner);
-        this.damage = damage;
+        this.damage = ProjectileOverrides.get(owner, getType()).damageOr(damage);
     }
 
     @Override

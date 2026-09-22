@@ -10,8 +10,9 @@ import net.minecraft.util.FormattedCharSequence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.npc.OldManNPC;
 import org.confluence.mod.common.entity.npc.dialog.NPCDialogLoader;
+import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.network.c2s.NPCDialogSessionPacketC2S;
-import org.confluence.mod.network.c2s.OpenNPCTradePacketC2S;
+import org.confluence.mod.network.c2s.OpenNPCServicePacketC2S;
 import org.confluence.mod.network.c2s.SummonSkeletronPacketC2S;
 import org.jetbrains.annotations.NotNull;
 
@@ -68,8 +69,7 @@ public class NPCDialogScreen extends Screen {
             }).width(80).pos(width / 2 - 85, buttonY).build());
             addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), button -> selectDialog(npc)).width(80).pos(width / 2 + 5, buttonY).build());
         } else if (canTrade) {
-            addRenderableWidget(Button.builder(Component.translatable("gui.confluence.shop"), button -> OpenNPCTradePacketC2S.sendToServer(entityId)).width(80).pos(width / 2 - 85, buttonY).build());
-            addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), button -> selectDialog(npc)).width(80).pos(width / 2 + 5, buttonY).build());
+            addTradeButtons(npc, buttonY);
         } else {
             addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), button -> selectDialog(npc)).width(80).pos(width / 2 - 40, buttonY).build());
         }
@@ -78,6 +78,11 @@ public class NPCDialogScreen extends Screen {
     protected void selectDialog(BaseNPC npc) {
         String key = NPCDialogLoader.getInstance().getRandomDialogKey(npc.getRandom1211(), npc.getType());
         if (key != null) dialogText = Component.translatable(key);
+    }
+
+    protected void addTradeButtons(BaseNPC npc, int buttonY) {
+        addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), button -> selectDialog(npc)).width(80).pos(width / 2 - 85, buttonY).build());
+        addRenderableWidget(Button.builder(Component.translatable("gui.confluence.shop"), button -> OpenNPCServicePacketC2S.sendToServer(entityId, OpenNPCServicePacketC2S.TRADE)).width(80).pos(width / 2 + 5, buttonY).build());
     }
 
     @Override
@@ -113,6 +118,12 @@ public class NPCDialogScreen extends Screen {
     }
 
     public static void open(int entityId, boolean canTrade) {
-        Minecraft.getInstance().setScreen(new NPCDialogScreen(entityId, canTrade));
+        Minecraft minecraft = Minecraft.getInstance();
+        if (canTrade && minecraft.level != null && minecraft.level.getEntity(entityId) instanceof BaseNPC npc
+                && npc.getType() == NpcEntities.GOBLIN_TINKERER.get()) {
+            minecraft.setScreen(new GoblinTinkererDialogScreen(entityId));
+        } else {
+            minecraft.setScreen(new NPCDialogScreen(entityId, canTrade));
+        }
     }
 }

@@ -39,7 +39,6 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.summoner.SummonerEvents;
 import org.confluence.mod.common.summoner.register.*;
 import org.confluence.mod.integration.terra_furniture.TFReferences;
-import org.mesdag.portlib.wrapper.common.extensions.IPortItemPropertiesExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +51,10 @@ public final class Confluence {
     // todo 1.3.0
     public static final boolean SOUL_SKILLS = false;
     public static final boolean THE_END_BIOMES = false;
+    /// 未发布的敌怪、小动物与 NPC 生成；刷怪蛋和手动召唤不受此开关限制。
+    public static final boolean UNRELEASED_SPAWNS = LibUtils.isDev();
+    /// 未发布事件及其生成器必须同步启停。
+    public static final boolean UNRELEASED_EVENTS = LibUtils.isDev();
 
     public Confluence(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();

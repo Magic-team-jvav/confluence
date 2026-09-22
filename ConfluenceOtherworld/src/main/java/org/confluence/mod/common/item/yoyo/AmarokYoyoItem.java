@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.yoyo;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,19 +9,26 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.init.ModEffects;
 
 public final class AmarokYoyoItem extends YoyoItem {
-    public AmarokYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 21F, 16.875F, 0xFFFFFFFF, 15 * 20, 2.8F);
+    private final int procDenominator;
+    private final int minEffectTicks;
+    private final int maxEffectTicks;
+
+    public AmarokYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int procDenominator, int minEffectTicks, int maxEffectTicks) {
+        super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
+        this.procDenominator = procDenominator;
+        this.minEffectTicks = minEffectTicks;
+        this.maxEffectTicks = maxEffectTicks;
     }
 
     @Override
     protected void onHitTarget(YoyoEntity yoyo, ServerPlayer owner, LivingEntity target) {
-        if (owner.getRandom().nextInt(3) == 0) return;
-        target.addEffect(new MobEffectInstance(ModEffects.FROSTBITE.get(), 40 + owner.getRandom().nextInt(61)), owner);
+        if (owner.getRandom().nextInt(procDenominator) == 0) return;
+        target.addEffect(new MobEffectInstance(ModEffects.FROSTBITE.get(), minEffectTicks + owner.getRandom().nextInt(maxEffectTicks - minEffectTicks + 1)), owner);
     }
 
     @Override
     public boolean fullBright() {return true;}
 
     @Override
-    protected String effectTooltip() {return "tooltip.confluence.yoyo.frostbite";}
+    protected Component effectTooltip() {return Component.translatable("tooltip.confluence.yoyo.frostbite");}
 }

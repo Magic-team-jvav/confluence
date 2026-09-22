@@ -8,7 +8,7 @@ import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.spawner.NPCSpawner;
 import org.confluence.mod.common.entity.monster.slime.BaseSlime;
 import org.confluence.mod.common.entity.npc.ai.NPCCombatProfile;
@@ -34,7 +34,7 @@ public class TownSlimeNPC extends BaseNPC {
     }
 
     public static TownSlimeNPC unlock(ServerLevel level, EntityType<TownSlimeNPC> type, Vec3 position) {
-        if (!LibUtils.isDev()) return null;
+        if (!Confluence.UNRELEASED_SPAWNS) return null;
         // 解锁记录是全局进度，不表示其他区域已经拥有这一种 NPC。
         NPCSpawner.Region region = new NPCSpawner.Region(net.minecraft.core.BlockPos.containing(position));
         if (NPCSpawner.INSTANCE.hasNPCAlive(region, type)) return null;

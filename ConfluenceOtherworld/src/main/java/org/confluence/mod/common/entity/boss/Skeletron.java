@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -42,7 +42,6 @@ public class Skeletron extends BaseBoss {
     private static final int ALL_HANDS_DESTROYED = 0b11;
     // 骷髅弹的基础发射间隔（tick）和单发基础伤害；难度修正另行计算。
     private static final int BASE_SKULL_COOLDOWN = 20;
-    private static final float SKULL_DAMAGE = 6.0F;
     private static final String DESTROYED_HANDS_TAG = "DestroyedHands";
     private static final String PHASE_TWO_TAG = "PhaseTwo";
     private static final String HAND_HEALTH_TAG = "HandHealth";
@@ -357,7 +356,7 @@ public class Skeletron extends BaseBoss {
         if (projectile == null) {
             return false;
         }
-        projectile.configure(this, target, SKULL_DAMAGE);
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         return level().addFreshEntity(projectile);
     }
 

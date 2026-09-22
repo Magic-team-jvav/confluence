@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.yoyo;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,18 +9,23 @@ import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.init.ModEffects;
 
 public final class HelFireYoyoItem extends YoyoItem {
-    public HelFireYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 19F, 20.625F, 0xFFFFFFFF, 12 * 20, 4.5F);
+    private final int minEffectTicks;
+    private final int maxEffectTicks;
+
+    public HelFireYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int minEffectTicks, int maxEffectTicks) {
+        super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
+        this.minEffectTicks = minEffectTicks;
+        this.maxEffectTicks = maxEffectTicks;
     }
 
     @Override
     protected void onHitTarget(YoyoEntity yoyo, ServerPlayer owner, LivingEntity target) {
-        target.addEffect(new MobEffectInstance(ModEffects.HELLFIRE.get(), 60 + owner.getRandom().nextInt(101)), owner);
+        target.addEffect(new MobEffectInstance(ModEffects.HELLFIRE.get(), minEffectTicks + owner.getRandom().nextInt(maxEffectTicks - minEffectTicks + 1)), owner);
     }
 
     @Override
     public boolean fullBright() {return true;}
 
     @Override
-    protected String effectTooltip() {return "tooltip.confluence.yoyo.hellfire";}
+    protected Component effectTooltip() {return Component.translatable("tooltip.confluence.yoyo.hellfire");}
 }

@@ -99,12 +99,8 @@ public abstract class BaseCasterMonster extends BaseMonster {
         if (projectile == null) {
             return null;
         }
-        projectile.configure(this, target, projectileDamage());
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         return projectile;
-    }
-
-    protected float projectileDamage() {
-        return (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
     }
 
     public void beginCastAnimation() {

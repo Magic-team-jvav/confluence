@@ -60,6 +60,7 @@ import org.confluence.mod.common.entity.npc.trade.NPCTradeOffer;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.entity.NpcEntities;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
+import org.confluence.mod.common.menu.NPCServiceMenu;
 import org.confluence.mod.network.s2c.OpenNPCDialogPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
@@ -110,8 +111,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private int chatForceCooldown = 50;
     private int chatDisplayTicks;
     @Nullable
-    private Player tradingPlayer;
-    private Player dialogPlayer;
+    private Player interactingPlayer;
     private int dialogExpiresAt;
     private final NPCCombatProfile combatProfile;
     private double healthRegenerationProgress;
@@ -418,9 +418,26 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         return InteractionResult.sidedSuccess(level().isClientSide);
     }
 
+    /// 同一 NPC 的所有服务共用占用者，不能抢占其他玩家正在进行的交互。
+    public boolean canStartInteraction(ServerPlayer player) {
+        Player current = getInteractingPlayer();
+        return isInteractionValid(player) && player.containerMenu == player.inventoryMenu
+                && (current == null || current == player);
+    }
+
+    private boolean isInteractionValid(Player player) {
+        return isAlive() && player.isAlive() && !player.isRemoved()
+                && (!(player instanceof ServerPlayer serverPlayer) || !serverPlayer.hasDisconnected())
+                && player.level() == level() && player.distanceToSqr(this) <= 64.0D;
+    }
+
+    private boolean ownsServiceMenu(Player player) {
+        return player.containerMenu instanceof NPCServiceMenu menu && menu.getNPC() == this;
+    }
+
     public boolean canTradeWith(ServerPlayer player) {
-        return isAlive() && player.isAlive() && player.level() == level() && player.distanceToSqr(this) <= 64.0D
-                && player.containerMenu == player.inventoryMenu && (tradingPlayer == null || tradingPlayer == player);
+        return getInteractingPlayer() == player && isInteractionValid(player)
+                && (player.containerMenu == player.inventoryMenu || ownsServiceMenu(player));
     }
 
     public void openTradeMenu(ServerPlayer player) {
@@ -428,35 +445,53 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
         var shop = NPCTradeList.getAvailableOffers(player, this);
         if (shop.offers().isEmpty()) return;
         NetworkHooks.openScreen(player, new SimpleMenuProvider((id, inv, ignored) -> new NPCTradeMenu(id, inv, this, shop.offers(), shop.revision()), getDisplayName()), buf -> buf.writeInt(getId()));
-        setTradingPlayer(player);
+        bindServiceMenu(player);
     }
 
-    public @Nullable Player getTradingPlayer() {
-        return tradingPlayer;
+    public void openReforgeMenu(ServerPlayer player) {
+        if (getType() != NpcEntities.GOBLIN_TINKERER.get() || !canTradeWith(player)) return;
+        ItemStack carried = player.containerMenu.getCarried();
+        player.containerMenu.setCarried(ItemStack.EMPTY);
+        player.openMenu(new SimpleMenuProvider((id, inv, ignored) -> new NPCReforgeMenu(id, inv, this), Component.empty()));
+        player.containerMenu.setCarried(carried);
+        player.containerMenu.broadcastChanges();
+        bindServiceMenu(player);
     }
 
-    public void setTradingPlayer(@Nullable Player tradingPlayer) {
-        this.tradingPlayer = tradingPlayer;
-        if (tradingPlayer != null) stopForInteraction();
+    private void bindServiceMenu(ServerPlayer player) {
+        if (!ownsServiceMenu(player)) return;
+        interactingPlayer = player;
+        dialogExpiresAt = 0;
+        stopForInteraction();
     }
 
     public @Nullable Player getInteractingPlayer() {
-        if (tradingPlayer != null && tradingPlayer.isAlive() && tradingPlayer.level() == level()
-                && distanceToSqr(tradingPlayer) <= 64.0D
-                && (tradingPlayer.containerMenu instanceof NPCTradeMenu tradeMenu && tradeMenu.getNPC() == this
-                || tradingPlayer.containerMenu instanceof NPCReforgeMenu reforgeMenu && reforgeMenu.getNPC() == this))
-            return tradingPlayer;
-        if (dialogPlayer != null && (tickCount > dialogExpiresAt || !dialogPlayer.isAlive()
-                || dialogPlayer.isRemoved() || dialogPlayer.level() != level() || distanceToSqr(dialogPlayer) > 64.0D))
-            dialogPlayer = null;
-        return dialogPlayer;
+        Player player = interactingPlayer;
+        if (player == null) return null;
+        if (!isInteractionValid(player) || !ownsServiceMenu(player)
+                && (player.containerMenu != player.inventoryMenu || tickCount >= dialogExpiresAt)) {
+            interactingPlayer = null;
+            return null;
+        }
+        return player;
+    }
+
+    public void endServiceSession(Player player, NPCServiceMenu closingMenu) {
+        if (interactingPlayer != player) return;
+        /// 旧菜单的延迟关闭不能撤销同一 NPC 已接续的新菜单。
+        if (player.containerMenu instanceof NPCServiceMenu current
+                && current != closingMenu && current.getNPC() == this) return;
+        interactingPlayer = null;
+        dialogExpiresAt = 0;
     }
 
     public void updateDialogSession(ServerPlayer player, boolean open) {
-        if (dialogPlayer != player) return;
-        if (!open) dialogPlayer = null;
-        else if (isAlive() && player.isAlive() && player.level() == level() && distanceToSqr(player) <= 64.0D)
+        if (interactingPlayer != player || ownsServiceMenu(player)) return;
+        if (!open || !isInteractionValid(player) || player.containerMenu != player.inventoryMenu) {
+            interactingPlayer = null;
+        } else {
             dialogExpiresAt = tickCount + 60;
+        }
     }
 
     public void stopForInteraction() {
@@ -472,7 +507,8 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
 
     @Nullable
     protected InteractionResult handleCommonInteraction(ServerPlayer player, InteractionHand hand) {
-        if (hand == InteractionHand.OFF_HAND) return InteractionResult.SUCCESS;
+        if (hand == InteractionHand.OFF_HAND || !canStartInteraction(player))
+            return InteractionResult.SUCCESS;
         setCustomNameVisible(hasCustomName());
         ItemStack held = player.getItemInHand(hand);
         if (held.getItem() instanceof ArmorItem armor) {
@@ -487,7 +523,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     }
 
     protected void recordInteraction(ServerPlayer player) {
-        dialogPlayer = player;
+        interactingPlayer = player;
         dialogExpiresAt = tickCount + 60;
         stopForInteraction();
         // 被"救援"的 NPC 首次交互时，将其正式加入区域

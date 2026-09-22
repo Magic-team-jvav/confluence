@@ -50,6 +50,10 @@ public class ModEnglishProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
+        add("entity.confluence.wall_of_flesh_eye", "Wall Of Flesh Eye");
+        add("entity.confluence.wall_of_flesh_mouth", "Wall Of Flesh Mouth");
+        add("entity.confluence.hill_of_flesh_eye", "Hill Of Flesh Eye");
+        add("entity.confluence.hill_of_flesh_mouth", "Hill Of Flesh Mouth");
         add("entity.confluence.model_pending", "%s (model pending)");
         add("house_validator.result_type.found", "This housing is suitable.");
         add("house_validator.result_type.too_small", "This housing is too small.");
@@ -185,12 +189,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.yoyo.hellfire", "Inflicts Hellfire for 3–8 seconds on hit");
         add("tooltip.confluence.yoyo.frostbite", "2/3 chance to inflict Frostbite for 2–5 seconds on hit");
         add("tooltip.confluence.yoyo.venom", "Inflicts Acid Venom for 2 seconds on hit");
-        add("tooltip.confluence.yoyo.crystals", "Hits charge a stronger strike that scatters five crystal shards");
+        add("tooltip.confluence.yoyo.crystals", "Every %s hits create a crystal explosion, scattering %s shards");
         add("tooltip.confluence.yoyo.critical", "+20% critical strike chance; critical strikes deal 2.5x damage");
-        add("tooltip.confluence.yoyo.waves", "A whirlpool expands attack range; charged hits fire three piercing waves");
-        add("tooltip.confluence.yoyo.afterimage", "Hits charge a stronger strike and a piercing afterimage that cannot critically strike");
+        add("tooltip.confluence.yoyo.waves", "A whirlpool expands attack range; every %s hits fire %s piercing waves");
+        add("tooltip.confluence.yoyo.afterimage", "Every %s hits spawn a second-form Eye of Cthulhu afterimage that dashes at nearby enemies");
         add("tooltip.confluence.yoyo.terrarian", "Continuously fires energy projectiles toward nearby enemies");
-        add("tooltip.confluence.yoyo.cascade", "1/3 chance to ignite; charged hits fire an explosive projectile, except while offstring");
+        add("tooltip.confluence.yoyo.cascade", "1/3 chance to ignite; every %s hits fire a fiery explosion, except while offstring");
         add("tooltip.confluence.yoyo.bees", "1/3 chance to release a bee on hit; benefits from the Hive Pack");
         add("tooltip.confluence.yoyo.hit_effect", "Hit Effect");
         add(ModEntities.RIDEABLE_SLIME.get(), "Slime Mount");

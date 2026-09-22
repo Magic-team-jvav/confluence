@@ -9,7 +9,6 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.LibEffects;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.entity.ModEntities;
 
 public final class SpittingPlant extends Snatcher {
@@ -37,10 +36,7 @@ public final class SpittingPlant extends Snatcher {
         spitCooldown = clinger ? 40 : 50;
         var projectile = (clinger ? ModEntities.CLINGER_FLAME : ModEntities.FUNGI_SPORE).get().create(level());
         if (projectile == null) return;
-        float damage = clinger ? LibUtils.isMaster(level(), blockPosition()) ? 27 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 18 : 12
-                : LibUtils.isMaster(level(), blockPosition()) ? 63 : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 42 : 21;
-        damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 37.0F;
-        projectile.configure(this, target, damage, clinger ? 0.4F : 0.12F, 0.0F, 200);
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), clinger ? 0.4F : 0.12F, 0.0F, 200);
         if (level().addFreshEntity(projectile)) playSound(SoundEvents.BLAZE_SHOOT, 0.7F, 1.0F);
     }
 

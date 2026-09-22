@@ -48,6 +48,7 @@ import org.confluence.mod.client.effect.RenderStateShardAccessor;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
+import org.confluence.mod.client.entity.renderer.WallOfFleshRenderer;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
 import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
@@ -344,6 +345,7 @@ public final class GameClientEvents {
             ClientGameEventSystem.afterRenderSky(event, player);
             ClientBiomeEffectSystem.renderSky(player, event);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES) {
+            WallOfFleshRenderer.renderWalls(event);
             TongueRenderer.renderFirstPerson(event, minecraft, player);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
             SpelunkerHelper.renderLevel(event, player);

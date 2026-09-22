@@ -12,6 +12,8 @@ public final class BowHandler {
     public static void releaseFullyDrawnBow(Minecraft minecraft, LocalPlayer player) {
         if (minecraft.gameMode == null || !player.isUsingItem()) return;
         ItemStack stack = player.getUseItem();
+        if (stack.getItem() instanceof ShortBowItem && !stack.is(ModTags.Items.AUTOMATIC_BOW))
+            return;
         if (!(stack.getItem() instanceof BowItem) || (!CommonConfigs.AUTO_RELEASE_ALL_BOWS.get() && !stack.is(ModTags.Items.AUTOMATIC_BOW))) {
             return;
         }

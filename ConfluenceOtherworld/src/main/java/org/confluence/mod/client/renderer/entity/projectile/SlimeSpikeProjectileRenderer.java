@@ -15,6 +15,8 @@ import org.confluence.mod.common.entity.projectile.SlimeSpikeEntity;
 /// 按弹丸当前运动方向绘制史莱姆尖刺。
 public class SlimeSpikeProjectileRenderer extends EntityRenderer<SlimeSpikeEntity> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/proj/slime_spiked_projectile.png");
+    private static final ResourceLocation JUNGLE_TEXTURE = Confluence.asResource("textures/entity/proj/jungle_spiked_projectile.png");
+    private static final ResourceLocation ICE_TEXTURE = Confluence.asResource("textures/entity/proj/ice_spiked_projectile.png");
     private final SlimeSpikeProjectileModel model;
 
     public SlimeSpikeProjectileRenderer(EntityRendererProvider.Context context) {
@@ -24,7 +26,11 @@ public class SlimeSpikeProjectileRenderer extends EntityRenderer<SlimeSpikeEntit
 
     @Override
     public ResourceLocation getTextureLocation(SlimeSpikeEntity entity) {
-        return TEXTURE;
+        return switch (entity.getVariant()) {
+            case NORMAL -> TEXTURE;
+            case JUNGLE -> JUNGLE_TEXTURE;
+            case ICE -> ICE_TEXTURE;
+        };
     }
 
     @Override
@@ -36,7 +42,7 @@ public class SlimeSpikeProjectileRenderer extends EntityRenderer<SlimeSpikeEntit
             poseStack.mulPose(Axis.YN.rotation((float) (Math.atan2(velocity.z, velocity.x) - Math.PI / 2.0)));
             poseStack.mulPose(Axis.ZN.rotation((float) Math.atan2(velocity.y, horizontal)));
         }
-        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }

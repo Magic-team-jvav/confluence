@@ -20,7 +20,7 @@ public final class YoyoSession implements Immunity {
     private boolean inputHeld;
     private float spinAge;
     private float gloveDrain = 1;
-    private int specialHits = -1;
+    private int specialHits;
     private YoyoEquipment equipment = new YoyoEquipment(false, false, false, 0);
 
     public static YoyoSession of(ServerPlayer player) {
@@ -97,7 +97,8 @@ public final class YoyoSession implements Immunity {
     }
 
     /// 四种连击悠悠球共用玩家计数；收回、换球不会重置，平衡锤不参与。
-    public boolean isSpecialHit(int period) {return specialHits % period == 0;}
+    /// 伤害计算和命中特效都在递增前查询，因此判断即将发生的这次命中。
+    public boolean isSpecialHit(int period) {return (specialHits + 1) % period == 0;}
 
     public void countSpecialHit() {++specialHits;}
 

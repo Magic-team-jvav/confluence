@@ -1,35 +1,44 @@
 package org.confluence.mod.common.item.yoyo;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.common.entity.yoyo.YoyoEffectProjectile;
+import org.confluence.mod.common.entity.yoyo.ChikCrystalProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
+import org.confluence.mod.common.init.entity.ModEntities;
 
 public final class ChikYoyoItem extends YoyoItem {
-    public ChikYoyoItem() {
-        super(new Properties().unbreakable(), ModRarity.LIGHT_RED, 19F, 17.1875F, 0xFFFFFFFF, 16 * 20, 3.3F);
+    private final float specialDamageMultiplier;
+    private final int hitInterval;
+    private final int shardCount;
+
+    public ChikYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, int shardCount, float specialDamageMultiplier) {
+        super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
+        this.specialDamageMultiplier = specialDamageMultiplier;
+        this.hitInterval = hitInterval;
+        this.shardCount = shardCount;
     }
 
     @Override
     protected void onHitTarget(YoyoEntity yoyo, ServerPlayer owner, LivingEntity target) {
         YoyoSession session = YoyoSession.of(owner);
-        if (session.isSpecialHit(3)) {
-            for (int i = 0; i < 5; i++) {
+        if (session.isSpecialHit(hitInterval)) {
+            for (int i = 0; i < shardCount; i++) {
                 Vec3 direction = new Vec3(owner.getRandom().nextGaussian(), owner.getRandom().nextGaussian() * 0.4, owner.getRandom().nextGaussian());
-                YoyoEffectProjectile.shoot(yoyo, YoyoEffectProjectile.Kind.CRYSTAL, direction, target);
+                new ChikCrystalProjectile(ModEntities.CHIK_CRYSTAL.get(), yoyo.level()).shoot(yoyo, direction, target);
             }
         }
         session.countSpecialHit();
     }
 
     @Override
-    public float hitMultiplier(ServerPlayer owner) {return YoyoSession.of(owner).isSpecialHit(3) ? 2 : 1;}
+    public float hitMultiplier(ServerPlayer owner) {return YoyoSession.of(owner).isSpecialHit(hitInterval) ? specialDamageMultiplier : 1;}
 
     @Override
     public boolean fullBright() {return true;}
 
     @Override
-    protected String effectTooltip() {return "tooltip.confluence.yoyo.crystals";}
+    protected Component effectTooltip() {return Component.translatable("tooltip.confluence.yoyo.crystals", hitInterval, shardCount);}
 }

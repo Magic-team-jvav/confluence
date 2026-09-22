@@ -5,9 +5,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import org.confluence.mod.common.entity.monster.SimpleWormMonster;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.jetbrains.annotations.Nullable;
@@ -24,8 +22,8 @@ public final class WallOfFleshMouth extends WallOfFleshPart {
     private int pendingSpawns;
     private int spawnTimer;
 
-    public WallOfFleshMouth(EntityType<?> type, Level level) {
-        super(type, level);
+    public WallOfFleshMouth(WallOfFlesh parent, int index) {
+        super(parent, index, 3.0F, 4.0F);
     }
 
     @Override

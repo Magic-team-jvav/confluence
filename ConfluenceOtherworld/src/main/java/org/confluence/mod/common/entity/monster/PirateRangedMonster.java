@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -110,19 +109,13 @@ public class PirateRangedMonster extends BaseMonster {
                             PirateShot shot = (cannon ? ModEntities.PIRATE_CANNONBALL : profile == Profile.CROSSBOWER
                                     ? ModEntities.PIRATE_FLAMING_ARROW : ModEntities.PIRATE_BULLET).get().create(level());
                             if (shot != null) {
-                                // 弹幕伤害按 wiki 专家值 × 26% 固定；属性变化时按当前攻击力等比缩放。
-                                float expertDamage = cannon ? 104.0F : profile == Profile.CROSSBOWER ? 37.0F : profile == Profile.CAPTAIN ? 16.0F : 25.0F;
-                                float referenceAttack = profile == Profile.CAPTAIN ? 37.0F : profile == Profile.CROSSBOWER ? 19.0F : 25.0F;
-                                float damage = expertDamage * (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / referenceAttack;
-                                if (LibUtils.isMaster(level(), blockPosition())) damage *= 2.5F;
-                                else if (!LibUtils.isAtLeastExpert(level(), blockPosition())) damage *= 0.5F;
                                 Vec3 origin = getEyePosition();
                                 Vec3 aim = target.getEyePosition().subtract(origin);
                                 double speed = cannon ? 0.8 : profile == Profile.CROSSBOWER ? 1 : 1.5;
                                 Vec3 velocity = aim.normalize().scale(speed);
                                 if (cannon || profile == Profile.CROSSBOWER)
                                     velocity = velocity.add(0, aim.horizontalDistance() * 0.0125 / speed, 0);
-                                shot.configure(PirateRangedMonster.this, origin, velocity, damage, 100);
+                                shot.configure(PirateRangedMonster.this, origin, velocity, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 100);
                                 if (level().addFreshEntity(shot))
                                     playSound(cannon ? SoundEvents.GENERIC_EXPLODE : SoundEvents.CROSSBOW_SHOOT, 0.8F, 1);
                             }
@@ -172,7 +165,5 @@ public class PirateRangedMonster extends BaseMonster {
         recovering = tag.getBoolean("ShotRecovery");
     }
 
-    /// 海盗远程单位的弹幕口径：各自 wiki 专家接触伤害已按 26% 落在对应属性上，
-    /// 子弹/火焰箭/炮弹的伤害由射击逻辑依据本条属性等比换算。
     public enum Profile {DEADEYE, CROSSBOWER, CAPTAIN}
 }

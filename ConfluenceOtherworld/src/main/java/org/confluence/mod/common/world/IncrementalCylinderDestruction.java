@@ -33,7 +33,7 @@ public final class IncrementalCylinderDestruction {
         if (minY > maxY) {
             throw new IllegalArgumentException("Cylinder minimum Y must not exceed maximum Y");
         }
-        if (startRadius < 0 || maximumRadius < startRadius) {
+        if (startRadius < -1 || maximumRadius < startRadius) {
             throw new IllegalArgumentException("Cylinder radius range is invalid");
         }
         this.level = level;
@@ -60,7 +60,8 @@ public final class IncrementalCylinderDestruction {
     }
 
     public int getCurrentRadius() {
-        return currentRadius;
+        /// 只报告整圈完成的半径，重载时允许重做未完成圈，但不能漏掉剩余列。
+        return currentColumn == null && pendingColumns.isEmpty() ? currentRadius : currentRadius - 1;
     }
 
     private boolean prepareNextColumn() {
@@ -82,7 +83,7 @@ public final class IncrementalCylinderDestruction {
         for (int offsetX = -radius; offsetX <= radius; offsetX++) {
             for (int offsetZ = -radius; offsetZ <= radius; offsetZ++) {
                 int distanceSquared = offsetX * offsetX + offsetZ * offsetZ;
-                if (distanceSquared > innerSquared && distanceSquared <= outerSquared) {
+                if ((radius == 0 || distanceSquared > innerSquared) && distanceSquared <= outerSquared) {
                     pendingColumns.add(new Column(centerX + offsetX, centerZ + offsetZ));
                 }
             }
@@ -92,7 +93,7 @@ public final class IncrementalCylinderDestruction {
     private void processCurrentBlock() {
         BlockPos pos = new BlockPos(currentColumn.x(), currentY, currentColumn.z());
         BlockState state = level.getBlockState(pos);
-        if (!state.is(BlockTags.FEATURES_CANNOT_REPLACE)) {
+        if (!state.is(Blocks.BEDROCK) && state.getDestroySpeed(level, pos) >= 0 && !state.is(BlockTags.FEATURES_CANNOT_REPLACE)) {
             if (currentY == minY) {
                 if (!state.is(Blocks.NETHERRACK)) {
                     level.setBlock(pos, Blocks.NETHERRACK.defaultBlockState(), 3);

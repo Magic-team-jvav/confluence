@@ -2,25 +2,29 @@ package org.confluence.mod.common.entity.boss;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.entity.PartEntity;
+import org.confluence.lib.api.entity.Boss;
 import org.confluence.lib.common.LibDamageTypes;
+import org.confluence.mod.common.entity.EnemyDamageRules;
+import org.confluence.mod.common.entity.PartHitTarget;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -28,12 +32,11 @@ import org.confluence.mod.common.entity.monster.SimpleWormMonster;
 import org.confluence.mod.common.entity.monster.slime.FleshSlime;
 import org.confluence.mod.common.entity.projectile.HillLavaPillarProjectile;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.common.world.IncrementalCylinderDestruction;
-import org.confluence.mod.common.init.ModSoundEvents;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -45,9 +48,82 @@ import java.util.*;
 /// 肉丘——静止的地狱 Boss，拥有环形伤害区域、5 只眼睛 + 5 张嘴巴。
 /// Phase2 (HP<50%) 时外圈扩大、攻击加速。
 public class HillOfFlesh extends BaseBoss {
+    /// 固定眼嘴只承担受击与攻击逻辑，模型由本体绘制，不独立存档、追踪或同步。
+    public abstract static class Part extends PartEntity<HillOfFlesh> implements Boss.BossPart, PartHitTarget {
+        private final String translationKey;
+        private final float size;
+
+        protected Part(HillOfFlesh parent, String translationKey, float size) {
+            super(parent);
+            this.translationKey = translationKey;
+            this.size = size;
+            noPhysics = true;
+            refreshDimensions();
+        }
+
+        protected abstract void tickPart(HillOfFlesh parent);
+
+        @Override
+        protected Component getTypeName() {return Component.translatable(translationKey);}
+
+        @Override
+        public EntityDimensions getDimensions(Pose pose) {
+            return EntityDimensions.scalable(size, size).scale(getParent().getScale());
+        }
+
+        @Override
+        public boolean hurt(DamageSource source, float amount) {
+            if (level().isClientSide || !isAttackable() || isInvulnerableTo(source) || EnemyDamageRules.blocks(this, source))
+                return false;
+            return getParent().hurt(source, amount * 2.0F);
+        }
+
+        @Override
+        public boolean isAttackable() {return !isRemoved() && getParent().isAlive() && !getParent().isInitializing();}
+
+        @Override
+        public boolean isPickable() {return isAttackable();}
+
+        @Override
+        public boolean canBeHitByProjectile() {return isAttackable();}
+
+        @Override
+        public boolean is(Entity entity) {return this == entity || getParent() == entity;}
+
+        @Override
+        public boolean fireImmune() {return true;}
+
+        @Override
+        public Entity damageRecipient() {return this;}
+
+        @Override
+        public Entity encounterOwner() {return getParent();}
+
+        @Override
+        public Entity dedupeIdentity() {return getParent();}
+
+        @Override
+        public boolean acceptsDirectHit() {return isAttackable();}
+
+        @Override
+        public boolean shouldBeSaved() {return false;}
+
+        @Override
+        protected void defineSynchedData() {}
+
+        @Override
+        protected void readAdditionalSaveData(CompoundTag tag) {}
+
+        @Override
+        protected void addAdditionalSaveData(CompoundTag tag) {}
+    }
+
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     // 两圈判定半径单位为方块；三档数值分别是附着区、内圈和外圈的基础伤害。
-    static final float INNER_RADIUS = 14.0F;
+    private static final float INITIAL_CLEARING_RADIUS = 14.0F;
+    /// 内圈距本体碰撞箱侧面的间距；两阶段均给空手三格触及距离留出余量。
+    private static final float INNER_MELEE_GAP = 1.2F;
+    private static final float PHASE_TWO_MELEE_GAP = 1.75F;
     static final float OUTER_RADIUS = 75.0F;
     private static final float ATTACHED_DAMAGE = 10.0F;
     private static final float INNER_DAMAGE = 40.0F;
@@ -67,8 +143,7 @@ public class HillOfFlesh extends BaseBoss {
     private static final String ENCOUNTER_TICKS_TAG = "EncounterTicks";
     private static final String PHASE_TWO_TAG = "PhaseTwo";
     private static final String EXPANDING_TICKS_TAG = "ExpandingTicks";
-    private static final String OUTER_RADIUS_TAG = "OuterRadius";
-    private static final String TERRAIN_DESTRUCTION_TAG = "TerrainDestruction";
+    private static final String CLEARING_RADIUS_TAG = "ClearingRadius";
     private static final String FLESH_SLIME_TIMER_TAG = "FleshSlimeTimer";
     private static final String LEECH_TIMER_TAG = "LeechTimer";
     private static final String LAVA_PILLAR_TIMER_TAG = "LavaPillarTimer";
@@ -84,13 +159,13 @@ public class HillOfFlesh extends BaseBoss {
             {-6.5, 4, 8.5}, {7, 3, -7}
     };
 
-    private final Entity[] parts = new Entity[PART_COUNT];
+    private final Part[] parts = new Part[PART_COUNT];
     private final Set<LivingEntity> encounterEntities = new HashSet<>();
     private List<LivingEntity> nearbyLivingEntities = List.of();
     private int encounterTicks;
     private int expandingTicks;
     private boolean phase2;
-    private boolean terrainDestructionEnabled;
+    private int clearingRadius = -1;
     private int damageTimer;
     private int fleshSlimeTimer = FLESH_SLIME_INTERVAL;
     private int leechTimer = LEECH_INTERVAL;
@@ -99,6 +174,11 @@ public class HillOfFlesh extends BaseBoss {
 
     public HillOfFlesh(EntityType<? extends Monster> type, Level level) {
         super(type, level);
+        for (int index = 0; index < PART_COUNT; index++) {
+            parts[index] = index < 5 ? new HillOfFleshEye(this) : new HillOfFleshMouth(this);
+        }
+        /// 与 Forge 多部件实体一致，为本体和固定部件预留连续 ID。
+        setId(ENTITY_COUNTER.getAndAdd(PART_COUNT + 1) + 1);
         xpReward = 5000;
     }
 
@@ -122,8 +202,8 @@ public class HillOfFlesh extends BaseBoss {
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DATA_INITIALIZING, true);
-        entityData.define(DATA_OUTER_RADIUS, OUTER_RADIUS);
-        entityData.define(DATA_INNER_RADIUS, INNER_RADIUS);
+        entityData.define(DATA_OUTER_RADIUS, INITIAL_CLEARING_RADIUS);
+        entityData.define(DATA_INNER_RADIUS, getType().getDimensions().width * 0.5F + INNER_MELEE_GAP);
     }
 
     @Override
@@ -158,16 +238,8 @@ public class HillOfFlesh extends BaseBoss {
     }
 
     private float calculateInnerRadius() {
-        if (!phase2 || !isExpert()) {
-            return INNER_RADIUS;
-        }
-        return Mth.lerp(Mth.clamp(expandingTicks / (float) INNER_EXPANSION_TICKS, 0.0F, 1.0F), INNER_RADIUS, OUTER_RADIUS * 0.25F);
-    }
-
-    /// 仅供正式召唤流程开启地形清场。
-    public void enableArenaDestruction() {
-        terrainDestructionEnabled = true;
-        if (isInitializing()) entityData.set(DATA_OUTER_RADIUS, INNER_RADIUS);
+        float progress = phase2 && isExpert() ? Mth.clamp(expandingTicks / (float) INNER_EXPANSION_TICKS, 0.0F, 1.0F) : 0.0F;
+        return getBbWidth() * 0.5F + Mth.lerp(progress, INNER_MELEE_GAP, PHASE_TWO_MELEE_GAP);
     }
 
     @Override
@@ -213,43 +285,19 @@ public class HillOfFlesh extends BaseBoss {
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
-        if (!level().isClientSide) {
-            spawnParts();
-        }
+        updatePartPositions();
     }
 
-    private void spawnParts() {
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            return;
-        }
-        for (int index = 0; index < PART_COUNT; index++) {
-            if (parts[index] != null && parts[index].isAlive()) {
-                continue;
-            }
-            parts[index] = spawnPart(serverLevel, index);
-        }
-    }
+    @Override
+    public boolean isMultipartEntity() {return true;}
 
-    private Entity spawnPart(ServerLevel serverLevel, int index) {
-        Entity part = index < 5
-                ? BossEntities.HILL_OF_FLESH_EYE.get().create(level())
-                : BossEntities.HILL_OF_FLESH_MOUTH.get().create(level());
-        if (part == null) {
-            return null;
-        }
-        double[] offset = PART_OFFSETS[index];
-        double scale = getScale();
-        part.setPos(position().add(offset[0] * scale, offset[1] * scale, offset[2] * scale));
-        if (part instanceof HillOfFleshEye eye) {
-            eye.setMaster(this);
-        } else if (part instanceof HillOfFleshMouth mouth) {
-            mouth.setMaster(this);
-        }
-        if (!serverLevel.addFreshEntity(part)) {
-            part.discard();
-            return null;
-        }
-        return part;
+    @Override
+    public Part[] getParts() {return parts;}
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        for (int index = 0; index < parts.length; index++) parts[index].setId(id + index + 1);
     }
 
     public Entity getPart(int index) {
@@ -263,17 +311,17 @@ public class HillOfFlesh extends BaseBoss {
         if (!isAlive()) {
             return;
         }
+        updatePartPositions();
         if (level().isClientSide) {
             showArenaBoundary();
             return;
         }
 
         encounterTicks++;
-        spawnParts();
         updateInitialization();
         updatePhase();
         updateArenaDestruction();
-        tickParts();
+        for (Part part : parts) part.tickPart(this);
 
         if (isInitializing()) {
             return;
@@ -303,7 +351,7 @@ public class HillOfFlesh extends BaseBoss {
     }
 
     private void updateArenaDestruction() {
-        if (!terrainDestructionEnabled || encounterTicks < DESTRUCTION_START_TICK || getOuterRadius() >= OUTER_RADIUS) {
+        if (encounterTicks < DESTRUCTION_START_TICK || clearingRadius >= OUTER_RADIUS) {
             return;
         }
         if (destructionTask == null) {
@@ -313,23 +361,26 @@ public class HillOfFlesh extends BaseBoss {
                     blockPosition().getZ(),
                     blockPosition().getY() - 1,
                     blockPosition().getY() + ARENA_HEIGHT - 1,
-                    Mth.floor(getOuterRadius()),
+                    clearingRadius,
                     Mth.floor(OUTER_RADIUS));
         }
         boolean complete = destructionTask.tick();
-        entityData.set(DATA_OUTER_RADIUS, (float) destructionTask.getCurrentRadius());
+        clearingRadius = destructionTask.getCurrentRadius();
+        /// 战斗边界保留初始安全范围，实际清场仍从中心列开始。
+        entityData.set(DATA_OUTER_RADIUS, clearingRadius < INITIAL_CLEARING_RADIUS ? INITIAL_CLEARING_RADIUS : (float) clearingRadius);
         if (complete) {
             entityData.set(DATA_OUTER_RADIUS, OUTER_RADIUS);
             destructionTask = null;
         }
     }
 
-    private void tickParts() {
+    private void updatePartPositions() {
         for (int index = 0; index < PART_COUNT; index++) {
-            Entity part = parts[index];
-            if (part == null || !part.isAlive()) {
-                continue;
-            }
+            Part part = parts[index];
+            part.xo = part.xOld = part.getX();
+            part.yo = part.yOld = part.getY();
+            part.zo = part.zOld = part.getZ();
+            part.refreshDimensions();
             double[] offset = PART_OFFSETS[index];
             Vec3 rotated = new Vec3(offset[0], offset[1], offset[2])
                     .scale(getScale()).yRot(-getYRot() * Mth.DEG_TO_RAD);
@@ -587,7 +638,7 @@ public class HillOfFlesh extends BaseBoss {
             return null;
         }
         pillar.setPos(target.getX(), Math.min(getY(), target.getY()), target.getZ());
-        pillar.configure(this, isMaster() ? 20.0F : isExpert() ? 17.0F : 14.0F);
+        pillar.configure(this, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         if (level().addFreshEntity(pillar)) {
             return pillar;
         }
@@ -628,8 +679,7 @@ public class HillOfFlesh extends BaseBoss {
         tag.putInt(ENCOUNTER_TICKS_TAG, encounterTicks);
         tag.putBoolean(PHASE_TWO_TAG, phase2);
         tag.putInt(EXPANDING_TICKS_TAG, expandingTicks);
-        tag.putFloat(OUTER_RADIUS_TAG, getOuterRadius());
-        tag.putBoolean(TERRAIN_DESTRUCTION_TAG, terrainDestructionEnabled);
+        tag.putInt(CLEARING_RADIUS_TAG, clearingRadius);
         tag.putInt(FLESH_SLIME_TIMER_TAG, fleshSlimeTimer);
         tag.putInt(LEECH_TIMER_TAG, leechTimer);
         tag.putInt(LAVA_PILLAR_TIMER_TAG, lavaPillarTimer);
@@ -642,8 +692,9 @@ public class HillOfFlesh extends BaseBoss {
         phase2 = tag.getBoolean(PHASE_TWO_TAG);
         expandingTicks = Mth.clamp(tag.getInt(EXPANDING_TICKS_TAG), 0, INNER_EXPANSION_TICKS);
         entityData.set(DATA_INNER_RADIUS, calculateInnerRadius());
-        terrainDestructionEnabled = tag.getBoolean(TERRAIN_DESTRUCTION_TAG);
-        entityData.set(DATA_OUTER_RADIUS, terrainDestructionEnabled ? Mth.clamp(tag.getFloat(OUTER_RADIUS_TAG), INNER_RADIUS, OUTER_RADIUS) : OUTER_RADIUS);
+        /// 旧存档未记录真实清场进度，从中心补做，避免沿用曾跳过中心的边界半径。
+        clearingRadius = tag.contains(CLEARING_RADIUS_TAG) ? tag.getInt(CLEARING_RADIUS_TAG) : -1;
+        entityData.set(DATA_OUTER_RADIUS, clearingRadius < INITIAL_CLEARING_RADIUS ? INITIAL_CLEARING_RADIUS : (float) clearingRadius);
         fleshSlimeTimer = restoreTimer(tag, FLESH_SLIME_TIMER_TAG, FLESH_SLIME_INTERVAL);
         leechTimer = restoreTimer(tag, LEECH_TIMER_TAG, LEECH_INTERVAL);
         lavaPillarTimer = restoreTimer(tag, LAVA_PILLAR_TIMER_TAG, LAVA_PILLAR_INTERVAL);
@@ -651,7 +702,6 @@ public class HillOfFlesh extends BaseBoss {
         destructionTask = null;
         nearbyLivingEntities = List.of();
         encounterEntities.clear();
-        java.util.Arrays.fill(parts, null);
     }
 
     private static int restoreTimer(CompoundTag tag, String key, int fallback) {

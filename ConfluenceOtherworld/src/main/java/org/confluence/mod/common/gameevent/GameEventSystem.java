@@ -41,7 +41,7 @@ public enum GameEventSystem implements IGlobalData {
         map.put(SlimeRainGameEvent.KEY, SlimeRainGameEvent.INSTANCE);
         map.put(BloodMoonGameEvent.KEY, BloodMoonGameEvent.INSTANCE);
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
-        if (LibUtils.isDev())
+        if (Confluence.UNRELEASED_EVENTS)
             map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);
         map.put(MeteorShowerGameEvent.KEY, MeteorShowerGameEvent.INSTANCE);
         map.put(LanternNightGameEvent.KEY, LanternNightGameEvent.INSTANCE);
@@ -50,7 +50,7 @@ public enum GameEventSystem implements IGlobalData {
         map.put(PumpkinMoonGameEvent.KEY, PumpkinMoonGameEvent.INSTANCE);
         map.put(BoulderRainGameEvent.KEY, BoulderRainGameEvent.INSTANCE);
         map.put(SolarEclipseGameEvent.KEY, SolarEclipseGameEvent.INSTANCE);
-        if (LibUtils.isDev()) {
+        if (Confluence.UNRELEASED_EVENTS) {
             map.put(SandstormGameEvent.KEY, SandstormGameEvent.INSTANCE);
             map.put(PartyGameEvent.KEY, PartyGameEvent.INSTANCE);
         }
@@ -178,7 +178,7 @@ public enum GameEventSystem implements IGlobalData {
 
     public static final Map<ResourceKey<? extends GameEvent>, GameEvent> INVASION_EVENTS = Util.make(new Reference2ObjectOpenHashMap<>(), map -> {
         map.put(GoblinArmyGameEvent.KEY, GoblinArmyGameEvent.INSTANCE);
-        if (LibUtils.isDev())
+        if (Confluence.UNRELEASED_EVENTS)
             map.put(PirateInvasionGameEvent.KEY, PirateInvasionGameEvent.INSTANCE);
         map.put(FrostMoonGameEvent.KEY, FrostMoonGameEvent.INSTANCE);
         // todo 火星

@@ -114,7 +114,7 @@ public final class YoyoEntity extends Projectile implements GeoEntity, Immunity 
         yoyo.maximumRange = equipment.range(item.maximumRange() * meleeSpeed);
         yoyo.entityData.set(RANGE, yoyo.maximumRange);
         YoyoEquipment.Appearance appearance = YoyoEquipment.appearance(owner,
-                equipment.counterweight() == 7 ? 0xFFE2E48E : equipment.string() ? 0xFFFFFFFF : item.stringColor(), equipment.counterweight());
+                equipment.counterweight() == 7 ? 0xFFE2E48E : 0xFFFFFFFF, equipment.counterweight());
         yoyo.entityData.set(STRING_COLOR, appearance.stringColor());
         yoyo.entityData.set(COUNTERWEIGHT, appearance.counterweight());
         yoyo.setDamage(item.attackDamage() * (float) owner.getAttributeValue(LibAttributes.getAttackDamage()));

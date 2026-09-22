@@ -1,14 +1,14 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.projectile.HostileParticleProjectile;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -17,7 +17,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 public final class Corruptor extends EaterOfSouls {
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     private static final int DEFAULT_SHOT_COOLDOWN = 45;
-    private static final double DEFAULT_SHOT_DAMAGE_MULTIPLIER = 0.8;
     private int shotCooldown = DEFAULT_SHOT_COOLDOWN;
 
     public Corruptor(EntityType<? extends Corruptor> type, Level level) {
@@ -34,8 +33,7 @@ public final class Corruptor extends EaterOfSouls {
         shotCooldown = creatureDefinition().behavior().shotCooldownOr(DEFAULT_SHOT_COOLDOWN);
         HostileParticleProjectile projectile = ModEntities.VILE_SPIT_PROJECTILE.get().create(level());
         if (projectile == null) return;
-        double multiplier = creatureDefinition().behavior().shotMultiplierOr(DEFAULT_SHOT_DAMAGE_MULTIPLIER);
-        projectile.configure(this, target, (float) (getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier));
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE));
         if (!level().addFreshEntity(projectile)) projectile.discard();
     }
 

@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.npc;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 
 import java.util.EnumSet;
 
@@ -15,7 +14,7 @@ public final class NPCTradeGoal extends Goal {
         setFlags(EnumSet.of(Flag.JUMP, Flag.MOVE, Flag.LOOK));
     }
 
-    /// 只有有效交易菜单仍属于该 NPC 且玩家保持在四格内时才能交易。
+    /// 对话、商店和重铸共用服务端会话，有效交互距离为八格。
     @Override
     public boolean canUse() {
         return npc.isAlive() && npc.getInteractingPlayer() != null;
@@ -41,12 +40,4 @@ public final class NPCTradeGoal extends Goal {
         if (player != null) npc.getLookControl().setLookAt(player, 30, 30);
     }
 
-    /// 交易条件失效时关闭双方菜单并清理交易者引用。
-    @Override
-    public void stop() {
-        Player player = npc.getTradingPlayer();
-        if (player != null && player.containerMenu instanceof NPCTradeMenu menu && menu.getNPC() == npc)
-            player.closeContainer();
-        npc.setTradingPlayer(null);
-    }
 }

@@ -95,6 +95,8 @@ import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.SwordProjectileRenderer;
+import org.confluence.mod.client.renderer.entity.yoyo.CthulhuEyeProjectileRenderer;
+import org.confluence.mod.client.renderer.entity.yoyo.TerrarianProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.YoyoRenderer;
 import org.confluence.mod.client.renderer.item.*;
 import org.confluence.mod.client.renderer.tooltip.AltImageTooltip;
@@ -530,7 +532,11 @@ public final class ModClientEvents {
         event.registerEntityRenderer(DRIPPLER_CRIPPLER_PROJECTILE.get(), FlailAuxiliaryProjectileRenderer::new);
         event.registerEntityRenderer(FLAIRON_BUBBLE.get(), FlailAuxiliaryProjectileRenderer::new);
         event.registerEntityRenderer(YOYO.get(), YoyoRenderer::new);
-        event.registerEntityRenderer(YOYO_EFFECT.get(), context -> new ThrownItemRenderer<>(context, 0.5F, true));
+        event.registerEntityRenderer(CHIK_CRYSTAL.get(), NoopRenderer::new);
+        event.registerEntityRenderer(KRAKEN_WAVE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(CTHULHU_EYE_PROJECTILE.get(), CthulhuEyeProjectileRenderer::new);
+        event.registerEntityRenderer(CASCADE_FIRE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(TERRARIAN_PROJECTILE.get(), TerrarianProjectileRenderer::new);
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
         event.registerEntityRenderer(VANILLA_MINECART.get(), provider);
@@ -718,8 +724,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BossEntities.SKELETRON_PRIME.get(), SkeletronPrimeBossRenderer::new);
         event.registerEntityRenderer(BossEntities.SKELETRON_PRIME_PART.get(), SkeletronPrimeArmRenderer::new);
         event.registerEntityRenderer(BossEntities.WALL_OF_FLESH.get(), WallOfFleshRenderer::new);
-        event.registerEntityRenderer(BossEntities.WALL_OF_FLESH_EYE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(BossEntities.WALL_OF_FLESH_MOUTH.get(), NoopRenderer::new);
         event.registerEntityRenderer(BossEntities.PLANTERA.get(), MissingModelRenderer::new); // todo plantera_1 资源已导出，普通与狂暴花瓣的阶段位置仍待适配
         event.registerEntityRenderer(BossEntities.PLANTERA_HOOK.get(), MissingModelRenderer::new); // todo 专用模型
         event.registerEntityRenderer(BossEntities.PLANTERA_TENTACLE.get(), MissingModelRenderer::new); // todo 专用模型
@@ -734,8 +738,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SHADOW_HAND.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/proj/shadow_hand.geo.json"), Confluence.asResource("textures/entity/proj/shadow_hand.png"), null)));
         event.registerEntityRenderer(BossEntities.HILL_OF_FLESH.get(), HillOfFleshRenderer::new);
         // 父实体模型已经包含全部眼睛和嘴部网格，这些子实体只承担命中判定，不单独渲染。
-        event.registerEntityRenderer(BossEntities.HILL_OF_FLESH_EYE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(BossEntities.HILL_OF_FLESH_MOUTH.get(), NoopRenderer::new);
         event.registerEntityRenderer(BossEntities.PRIME_ENDER_DRAGON.get(), PrimeEnderDragonRenderer::new);
         event.registerEntityRenderer(BossEntities.PRIME_ENDER_DRAGON_PART.get(), NoopRenderer::new);
         // NPC

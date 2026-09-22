@@ -6,18 +6,18 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
@@ -167,13 +167,13 @@ public class Plantera extends BaseBoss {
         }
         if (isEnraged()) {
             if (attackTicks % SEED_INTERVAL_LIMIT == 0) {
-                spawnProjectile(ModEntities.PLANTERA_SEED.get(), getSeedDamage(), SEED_SPEED, 0.02F);
+                spawnProjectile(ModEntities.PLANTERA_SEED.get(), SEED_SPEED, 0.02F);
             }
             if (attackTicks % THORN_INTERVAL_LIMIT == 0) {
-                spawnProjectile(ModEntities.PLANTERA_THORN_BALL.get(), getThornDamage(), THORN_SPEED, 0.02F);
+                spawnProjectile(ModEntities.PLANTERA_THORN_BALL.get(), THORN_SPEED, 0.02F);
             }
             if (attackTicks % SPORE_INTERVAL_LIMIT == 0) {
-                spawnProjectile(ModEntities.PLANTERA_SPORE.get(), getSporeDamage(), SPORE_SPEED, 0.04F);
+                spawnProjectile(ModEntities.PLANTERA_SPORE.get(), SPORE_SPEED, 0.04F);
             }
             return;
         }
@@ -183,10 +183,10 @@ public class Plantera extends BaseBoss {
             int seedInterval = Math.round(Mth.lerp(firstPhaseProgress, SEED_INTERVAL_LIMIT, SEED_INTERVAL_FULL_HEALTH));
             int thornInterval = Math.round(Mth.lerp(firstPhaseProgress, THORN_INTERVAL_LIMIT, THORN_INTERVAL_FULL_HEALTH));
             if (attackTicks % seedInterval == 0) {
-                spawnProjectile(ModEntities.PLANTERA_SEED.get(), getSeedDamage(), SEED_SPEED, 0.02F);
+                spawnProjectile(ModEntities.PLANTERA_SEED.get(), SEED_SPEED, 0.02F);
             }
             if (attackTicks % thornInterval == 0) {
-                spawnProjectile(ModEntities.PLANTERA_THORN_BALL.get(), getThornDamage(), THORN_SPEED, 0.02F);
+                spawnProjectile(ModEntities.PLANTERA_THORN_BALL.get(), THORN_SPEED, 0.02F);
             }
             return;
         }
@@ -194,7 +194,7 @@ public class Plantera extends BaseBoss {
         float secondPhaseProgress = Mth.clamp(healthRatio * 2.0F, 0.0F, 1.0F);
         int sporeInterval = Math.round(Mth.lerp(secondPhaseProgress, SPORE_INTERVAL_LIMIT, SPORE_INTERVAL_HALF_HEALTH));
         if (attackTicks % sporeInterval == 0) {
-            spawnProjectile(ModEntities.PLANTERA_SPORE.get(), getSporeDamage(), SPORE_SPEED, 0.04F);
+            spawnProjectile(ModEntities.PLANTERA_SPORE.get(), SPORE_SPEED, 0.04F);
         }
     }
 
@@ -204,23 +204,11 @@ public class Plantera extends BaseBoss {
     /// 第一阶段发射种子，第二阶段发射孢子，刺球仍只由独立自然节拍负责。
     boolean shootAtTarget() {
         return getPhase() == 0
-                ? spawnProjectile(ModEntities.PLANTERA_SEED.get(), getSeedDamage(), SEED_SPEED, 0.02F)
-                : spawnProjectile(ModEntities.PLANTERA_SPORE.get(), getSporeDamage(), SPORE_SPEED, 0.04F);
+                ? spawnProjectile(ModEntities.PLANTERA_SEED.get(), SEED_SPEED, 0.02F)
+                : spawnProjectile(ModEntities.PLANTERA_SPORE.get(), SPORE_SPEED, 0.04F);
     }
 
-    private float getSeedDamage() {
-        return (isEnraged() ? 2.0F : 1.0F) * LibUtils.switchByDifficulty(level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
-    }
-
-    private float getThornDamage() {
-        return (isEnraged() ? 2.0F : 1.0F) * LibUtils.switchByDifficulty(level(), blockPosition(), 18.0F, 28.0F, 42.0F, 42.0F);
-    }
-
-    private float getSporeDamage() {
-        return (isEnraged() ? 2.0F : 1.0F) * LibUtils.switchByDifficulty(level(), blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F);
-    }
-
-    private boolean spawnProjectile(EntityType<? extends PlanteraProjectile> type, float damage, float velocity, float inaccuracy) {
+    private boolean spawnProjectile(EntityType<? extends PlanteraProjectile> type, float velocity, float inaccuracy) {
         LivingEntity target = getTarget();
         if (target == null) {
             return false;
@@ -230,7 +218,7 @@ public class Plantera extends BaseBoss {
         if (projectile == null) {
             return false;
         }
-        projectile.configure(this, target, damage, velocity, inaccuracy);
+        projectile.configure(this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), velocity, inaccuracy);
         if (level().addFreshEntity(projectile)) {
             return true;
         }

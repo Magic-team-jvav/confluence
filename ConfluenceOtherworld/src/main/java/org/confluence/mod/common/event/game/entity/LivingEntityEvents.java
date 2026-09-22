@@ -62,12 +62,14 @@ import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.Skeletron;
 import org.confluence.mod.common.entity.monster.DungeonSpirit;
 import org.confluence.mod.common.entity.monster.EaterOfSouls;
+import org.confluence.mod.common.entity.monster.TheHungry;
 import org.confluence.mod.common.entity.monster.slime.GoldenSlime;
 import org.confluence.mod.common.entity.mount.AbstractMountEntity;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.entity.projectile.sword.BeeKeeperProjectile;
-import org.confluence.mod.common.entity.yoyo.YoyoEffectProjectile;
+import org.confluence.mod.common.entity.yoyo.BaseYoyoProjectile;
+import org.confluence.mod.common.entity.yoyo.TerrarianProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.gameevent.GameEventSystem;
@@ -149,6 +151,7 @@ public final class LivingEntityEvents {
         if (victim.level() instanceof ServerLevel level) {
             GameEventSystem.INSTANCE.countKilled(victim);
             if (victim instanceof Enemy && !(victim instanceof OwnedSummon)
+                    && !(victim instanceof TheHungry hungry && hungry.isLootSuppressed())
                     && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)
                     && KillBoard.INSTANCE.getGamePhase().isHardmode()
                     && level.getBiome(victim.blockPosition()).is(PortTags.Biomes.IS_OCEAN)
@@ -161,6 +164,7 @@ public final class LivingEntityEvents {
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
                         CommonConfigs.ENEMY_DROPS_MONEY.get() &&
+                        !(victim instanceof TheHungry hungry && hungry.isLootSuppressed()) &&
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
                         !(victim instanceof OwnedSummon)
                 ) ModUtils.enemyDropMoney(victim, level, damageSource);
@@ -195,7 +199,7 @@ public final class LivingEntityEvents {
                     ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
                 }
 
-                if (npc.getType() == NpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {
+                if (npc.getType() == NpcEntities.GUIDE.get() && damageSource.is(DamageTypes.LAVA)) {
                     GuideVooDooDollItem.summon(npc, level, npc.getRandom1211().nextBoolean(), () -> null);
                 }
             }
@@ -375,7 +379,10 @@ public final class LivingEntityEvents {
             if (!yoyo.isCounterweight() && yoyo.getYoyoItem() != null)
                 event.setCriticalDamageMultiplier(yoyo.getYoyoItem().criticalDamageMultiplier());
             return;
-        } else if (event.getDamageSource().getDirectEntity() instanceof YoyoEffectProjectile shot) {
+        } else if (event.getDamageSource().getDirectEntity() instanceof BaseYoyoProjectile shot) {
+            event.setCritical(shot.getRandom1211().nextFloat() < shot.getCriticalChance());
+            return;
+        } else if (event.getDamageSource().getDirectEntity() instanceof TerrarianProjectile shot) {
             event.setCritical(shot.getRandom1211().nextFloat() < shot.getCriticalChance());
             return;
         }

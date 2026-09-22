@@ -21,6 +21,16 @@ public final class HillOfFleshRenderer extends BossGeoRenderer<HillOfFlesh> {
     // 出场动画资源持续 150 tick。
     private static final float INITIALIZATION_TICKS = 150.0F;
     private static final int BOUNDARY_SEGMENTS = 128;
+    private static final float[] RING_X = new float[BOUNDARY_SEGMENTS + 1];
+    private static final float[] RING_Z = new float[BOUNDARY_SEGMENTS + 1];
+
+    static {
+        for (int i = 0; i <= BOUNDARY_SEGMENTS; i++) {
+            float angle = i / (float) BOUNDARY_SEGMENTS * Mth.TWO_PI;
+            RING_X[i] = Mth.cos(angle);
+            RING_Z[i] = Mth.sin(angle);
+        }
+    }
 
     public HillOfFleshRenderer(EntityRendererProvider.Context context) {
         super(context, Confluence.asResource("boss/hill_of_flesh"));
@@ -44,10 +54,10 @@ public final class HillOfFleshRenderer extends BossGeoRenderer<HillOfFlesh> {
         for (int i = 0; i < BOUNDARY_SEGMENTS; i++) {
             float u0 = i / (float) BOUNDARY_SEGMENTS;
             float u1 = (i + 1) / (float) BOUNDARY_SEGMENTS;
-            float x0 = Mth.cos(u0 * Mth.TWO_PI) * radius;
-            float z0 = Mth.sin(u0 * Mth.TWO_PI) * radius;
-            float x1 = Mth.cos(u1 * Mth.TWO_PI) * radius;
-            float z1 = Mth.sin(u1 * Mth.TWO_PI) * radius;
+            float x0 = RING_X[i] * radius;
+            float z0 = RING_Z[i] * radius;
+            float x1 = RING_X[i + 1] * radius;
+            float z1 = RING_Z[i + 1] * radius;
             boundaryVertex(pose, vertices, x0, bottom, z0, u0 + offsetU, offsetV, 90);
             boundaryVertex(pose, vertices, x1, bottom, z1, u1 + offsetU, offsetV, 90);
             boundaryVertex(pose, vertices, x1, top, z1, u1 + offsetU, 1 + offsetV, 0);

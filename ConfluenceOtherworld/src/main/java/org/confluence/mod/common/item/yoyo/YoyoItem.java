@@ -29,17 +29,14 @@ public class YoyoItem extends CustomRarityItem {
     private static final int USE_DURATION = 72_000;
     private final float attackDamage;
     private final float maximumRange;
-    private final int stringColor;
     private final int lifetimeTicks;
     private final float knockback;
 
     /// 射程以方块计，持续时间以 tick 计；零表示无限滞空。击退保留泰拉数值，由实体换算。
-    public YoyoItem(Properties properties, ModRarity rarity, float attackDamage, float maximumRange,
-                    int stringColor, int lifetimeTicks, float knockback) {
+    public YoyoItem(Properties properties, ModRarity rarity, float attackDamage, float maximumRange, int lifetimeTicks, float knockback) {
         super(properties.stacksTo(1), rarity);
         this.attackDamage = attackDamage;
         this.maximumRange = maximumRange;
-        this.stringColor = 0xFF000000 | stringColor & 0x00FFFFFF;
         this.lifetimeTicks = lifetimeTicks;
         this.knockback = knockback;
     }
@@ -124,8 +121,8 @@ public class YoyoItem extends CustomRarityItem {
     /// 个别悠悠球允许使用专属传奇前缀。
     public boolean supportsLegendaryPrefix() {return false;}
 
-    /// 特殊能力说明的语言键；普通悠悠球不附加能力说明。
-    protected @Nullable String effectTooltip() {return null;}
+    /// 特殊能力说明及其参数由具体悠悠球提供。
+    protected @Nullable Component effectTooltip() {return null;}
 
     /// 主动作由悠悠球控制，不允许左键配置时同时进入原版挖掘状态。
     @Override
@@ -144,9 +141,9 @@ public class YoyoItem extends CustomRarityItem {
         tooltip.add(Component.translatable("tooltip.confluence.yoyo.exist_time")
                 .append(Component.literal(lifetimeTicks == 0 ? " ∞" : " " + lifetimeTicks / 20.0F))
                 .withStyle(ChatFormatting.GREEN));
-        String effect = effectTooltip();
+        Component effect = effectTooltip();
         if (effect != null)
-            tooltip.add(Component.translatable(effect).withStyle(ChatFormatting.GRAY));
+            tooltip.add(effect.copy().withStyle(ChatFormatting.GRAY));
     }
 
     public final float attackDamage() {
@@ -155,10 +152,6 @@ public class YoyoItem extends CustomRarityItem {
 
     public final float maximumRange() {
         return maximumRange;
-    }
-
-    public final int stringColor() {
-        return stringColor;
     }
 
     public final int lifetimeTicks() {

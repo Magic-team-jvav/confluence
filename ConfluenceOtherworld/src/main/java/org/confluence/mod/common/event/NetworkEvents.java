@@ -1,9 +1,8 @@
 package org.confluence.mod.common.event;
 
-import org.confluence.mod.Confluence;
-import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.common.summoner.network.SummonerBatchedInfoPayload;
 import org.confluence.mod.common.summoner.network.SummonerBatchedParticlesPayload;
+import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.network.AskForSoftcorePacket;
 import org.confluence.mod.network.TeamPacket;
 import org.confluence.mod.network.c2s.*;
@@ -35,7 +34,7 @@ public final class NetworkEvents {
         handler.registerInGameC2S(MountInputPacketC2S.class, MountInputPacketC2S.ID, MountInputPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(MountTogglePacketC2S.class, MountTogglePacketC2S.ID, MountTogglePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(OpenMenuPacketC2S.class, OpenMenuPacketC2S.ID, OpenMenuPacketC2S.STREAM_CODEC);
-        handler.registerInGameC2S(OpenNPCTradePacketC2S.class, OpenNPCTradePacketC2S.ID, OpenNPCTradePacketC2S.STREAM_CODEC);
+        handler.registerInGameC2S(OpenNPCServicePacketC2S.class, OpenNPCServicePacketC2S.ID, OpenNPCServicePacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(RecipeTransferPacketC2S.class, RecipeTransferPacketC2S.ID, RecipeTransferPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SpearAttackPacketC2S.class, SpearAttackPacketC2S.ID, SpearAttackPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(SwordProjectilePacketC2S.class, SwordProjectilePacketC2S.ID, SwordProjectilePacketC2S.STREAM_CODEC);

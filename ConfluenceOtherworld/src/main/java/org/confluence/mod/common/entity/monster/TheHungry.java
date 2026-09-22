@@ -48,6 +48,7 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
     private static final String FREE_TAG = "Free";
     private static final EntityDataAccessor<Optional<UUID>> OWNER_UUID = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Vector3f> ANCHOR = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.VECTOR3);
+    private static final EntityDataAccessor<Boolean> IS_FREE = SynchedEntityData.defineId(TheHungry.class, EntityDataSerializers.BOOLEAN);
 
     private FeedingState appliedFeedingState;
 
@@ -58,6 +59,7 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
     private final double maximumDistance;
     private boolean suppressLoot;
     private boolean free;
+    private boolean anchorInitialized;
 
     public TheHungry(EntityType<? extends TheHungry> type, Level level) {
         super(type, level);
@@ -79,6 +81,7 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
         super.defineSynchedData();
         entityData.define(OWNER_UUID, Optional.empty());
         entityData.define(ANCHOR, new Vector3f());
+        entityData.define(IS_FREE, false);
     }
 
     public void setMaster(BaseBoss master, Vec3 relativeAnchor) {
@@ -117,6 +120,7 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
 
     private void setAnchor(Vec3 anchor) {
         this.anchor = anchor;
+        anchorInitialized = true;
         entityData.set(ANCHOR, anchor.toVector3f());
     }
 
@@ -124,6 +128,7 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
         if (key == ANCHOR) anchor = new Vec3(entityData.get(ANCHOR));
+        if (key == IS_FREE) free = entityData.get(IS_FREE);
     }
 
     public boolean isFree() {
@@ -132,6 +137,15 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
 
     public void setFree(boolean free) {
         this.free = free;
+        entityData.set(IS_FREE, free);
+    }
+
+    public void setSuppressLoot(boolean suppressLoot) {
+        this.suppressLoot = suppressLoot;
+    }
+
+    public boolean isLootSuppressed() {
+        return suppressLoot;
     }
 
     double minimumDistance() {
@@ -197,7 +211,13 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
         BaseBoss master = getMasterUUID() == null ? null : ownerTracker.tickDependent(this, !free, 100);
         updateFeedingState(master);
         if (master != null) {
-            setAnchor(free ? Vec3.ZERO : master.position().add(leashPos));
+            Vec3 nextAnchor = free ? Vec3.ZERO : master.position().add(leashPos);
+            /// 墙体平移与饿鬼自身扑击分开计算，不能让饿鬼靠自身速度追赶移动锚点。
+            /// 重载后第一次解析锚点不平移，避免把未初始化的零坐标当成旧锚点。
+            if (!free && master instanceof WallOfFlesh && anchorInitialized) {
+                setPos(position().add(nextAnchor.subtract(anchor)));
+            }
+            setAnchor(nextAnchor);
             if (free) {
                 clearIllegalFreeTarget();
             }
@@ -260,10 +280,12 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
     /// 肉丘使用独立的槽位恢复规则，因此只对血肉墙注册的饿鬼类型执行该转换。
     @Override
     public void die(DamageSource source) {
+        boolean wasDead = dead;
         BaseBoss master = getMaster();
         Vec3 deathPosition = position();
         super.die(source);
-        if (!(level() instanceof ServerLevel serverLevel) || master == null || !master.isAlive() || getType() != MonsterEntities.THE_HUNGRY.get()) {
+        if (wasDead || !dead || free || !(level() instanceof ServerLevel serverLevel)
+                || !(master instanceof WallOfFlesh) || !master.isAlive() || getType() != MonsterEntities.THE_HUNGRY.get()) {
             return;
         }
         TheHungry freeHungry = MonsterEntities.THE_HUNGRY.get().create(serverLevel);
@@ -272,7 +294,7 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
         }
         freeHungry.setPos(deathPosition);
         freeHungry.setDeltaMovement(getDeltaMovement());
-        freeHungry.setMaster(master, master.position().scale(-1.0));
+        freeHungry.setMaster(master, Vec3.ZERO);
         freeHungry.setFree(true);
         freeHungry.suppressLoot = true;
         if (!serverLevel.addFreshEntity(freeHungry)) freeHungry.discard();
@@ -301,7 +323,8 @@ public class TheHungry extends BaseFlyingMonster implements BossOwnedEntity {
         entityData.set(OWNER_UUID, Optional.ofNullable(ownerTracker.getOwnerUUID()));
         leashPos = new Vec3(tag.getDouble(LEASH_X_TAG), tag.getDouble(LEASH_Y_TAG), tag.getDouble(LEASH_Z_TAG));
         suppressLoot = tag.getBoolean(SUPPRESS_LOOT_TAG);
-        free = tag.getBoolean(FREE_TAG);
+        setFree(tag.getBoolean(FREE_TAG));
+        anchorInitialized = false;
     }
 
     @Override

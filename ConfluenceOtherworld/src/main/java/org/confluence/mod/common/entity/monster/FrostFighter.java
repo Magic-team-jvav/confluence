@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.monster;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -8,7 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.level.Level;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -16,8 +16,8 @@ import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
 import org.confluence.mod.common.entity.projectile.FrostMonsterProjectile;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -114,8 +114,7 @@ public final class FrostFighter extends BaseMonster {
                 if (canFire) {
                     FrostMonsterProjectile projectile = (kind == Kind.GOLEM ? ModEntities.FROST_BEAM : ModEntities.ICEWATER_SPIT).get().create(level());
                     if (projectile != null) {
-                        float multiplier = kind == Kind.GOLEM ? 64.0F / 60.0F : 74.0F / 60.0F;
-                        projectile.configure(FrostFighter.this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier, kind == Kind.GOLEM ? 2.5F : 0.8F, 0.0F, 100);
+                        projectile.configure(FrostFighter.this, target, (float) getAttributeValue(Attributes.ATTACK_DAMAGE), kind == Kind.GOLEM ? 2.5F : 0.8F, 0.0F, 100);
                         if (level().addFreshEntity(projectile))
                             playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.8F);
                     }

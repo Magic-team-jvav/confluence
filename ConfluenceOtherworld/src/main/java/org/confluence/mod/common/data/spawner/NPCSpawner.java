@@ -42,7 +42,6 @@ import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibDateUtils;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -394,7 +393,7 @@ public enum NPCSpawner implements IGlobalData {
             if (trySpawnWizard(player, pos, region)) continue;
             // 税收官
             if (trySpawnTruffle(player, pos, region)) continue;
-            if (!LibUtils.isDev()) continue;
+            if (!Confluence.UNRELEASED_SPAWNS) continue;
             if (trySpawnNerdySlime(serverLevel, region, pos)) continue;
             if (trySpawnCoolSlime(serverLevel, pos, region)) continue;
             // 海盗
@@ -448,7 +447,7 @@ public enum NPCSpawner implements IGlobalData {
     }
 
     private boolean trySpawnUndergroundVisitor(ServerPlayer player) {
-        if (!LibUtils.isDev()) return false;
+        if (!Confluence.UNRELEASED_SPAWNS) return false;
         ServerLevel level = player.serverLevel();
         if (level.canSeeSky(player.blockPosition()) || player.getY() >= level.getSeaLevel() - 8)
             return false;

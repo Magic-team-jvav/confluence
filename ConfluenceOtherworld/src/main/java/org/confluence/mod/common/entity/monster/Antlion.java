@@ -1,23 +1,22 @@
 package org.confluence.mod.common.entity.monster;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.projectile.AntlionSandBall;
-import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.entity.ModEntities;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -102,9 +101,7 @@ public final class Antlion extends BaseMonster {
         Vec3 direction = new Vec3(offset.x, horizontal * tangent, offset.z).normalize();
         AntlionSandBall sand = ModEntities.ANTLION_SAND_BALL.get().create(level());
         if (sand == null) return;
-        float damage = LibUtils.isMaster(level(), blockPosition()) ? 30.0F : LibUtils.isAtLeastExpert(level(), blockPosition()) ? 20.0F : 10.0F;
-        damage *= (float) getAttributeValue(Attributes.ATTACK_DAMAGE) / 10.0F;
-        sand.configure(this, getEyePosition(), direction.scale(speed), damage, 120);
+        sand.configure(this, getEyePosition(), direction.scale(speed), (float) getAttributeValue(Attributes.ATTACK_DAMAGE), 120);
         if (level().addFreshEntity(sand)) playSound(SoundEvents.SNOW_GOLEM_SHOOT, 1.0F, 0.8F);
         else sand.discard();
     }

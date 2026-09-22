@@ -42,7 +42,6 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
     // 世界吞噬者体节吐腐化物的基础周期、随机附加延迟（tick）和基础伤害。
     private static final int EATER_SPIT_INTERVAL = 200;
     private static final int EATER_SPIT_RANDOM_DELAY = 50;
-    private static final float EATER_SPIT_DAMAGE = 5.0F;
     private static final String OWNER_TAG = "Owner";
     private static final String INDEX_TAG = "SegmentIndex";
     private static final String TAIL_TAG = "Tail";
@@ -286,7 +285,7 @@ public class BossWormPart extends Monster implements WormSegment, GeoEntity, Par
         if (projectile == null) {
             return;
         }
-        projectile.configure(eater, target, EATER_SPIT_DAMAGE);
+        projectile.configure(eater, target, (float) eater.getAttributeValue(Attributes.ATTACK_DAMAGE));
         Vec3 origin = getBoundingBox().getCenter();
         projectile.setPos(origin);
         Vec3 aim = target.getEyePosition().subtract(origin);

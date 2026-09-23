@@ -36,7 +36,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.confluence.lib.color.GlobalColors;
@@ -53,6 +52,7 @@ import org.confluence.mod.common.entity.npc.chat.ChatManager;
 import org.confluence.mod.common.entity.npc.chat.NPCChat;
 import org.confluence.mod.common.entity.npc.house.House;
 import org.confluence.mod.common.entity.npc.house.HouseValidater;
+import org.confluence.mod.common.entity.npc.mood.MoodEnvironment;
 import org.confluence.mod.common.entity.npc.mood.NPCMood;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeList;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
@@ -81,6 +81,7 @@ import java.util.UUID;
 /// 城镇 NPC 的公共实体基础。
 public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     private static final EntityDataAccessor<CompoundTag> DATA_CHAT = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
+    private static final EntityDataAccessor<CompoundTag> DATA_MOOD = SynchedEntityData.defineId(BaseNPC.class, EntityDataSerializers.COMPOUND_TAG);
     private static final RawAnimation WALK = RawAnimation.begin().thenLoop("move.walk");
     private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation TAX_COLLECTOR_ATTACK = RawAnimation.begin().thenPlay("attack");
@@ -135,6 +136,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         entityData.define(DATA_CHAT, new CompoundTag());
+        entityData.define(DATA_MOOD, new CompoundTag());
     }
 
     // === Goals ===
@@ -206,13 +208,14 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     }
 
     protected void tickMood() {
-        if (tickCount % 20 != 0) return;
-        getBrain().getMemory(MemoryModuleType.HOME)
-                .filter(home -> home.dimension().equals(level().dimension()))
-                .map(GlobalPos::pos)
-                .ifPresentOrElse(home -> mood.evaluate(level().getEntitiesOfClass(BaseNPC.class,
-                                new AABB(home.offset(-16, -16, -16).getCenter(), home.offset(16, 16, 16).getCenter()))),
-                        () -> mood.evaluate(getBrain().getMemory(MemoryModuleType.NEAREST_LIVING_ENTITIES).orElseGet(List::of)));
+        if ((tickCount + getId()) % 20 != 0) return;
+        refreshMood();
+    }
+
+    private void refreshMood() {
+        mood.evaluate(MoodEnvironment.around(this, (ServerLevel) level()));
+        CompoundTag state = mood.toTag();
+        if (!state.equals(entityData.get(DATA_MOOD))) entityData.set(DATA_MOOD, state);
     }
 
     // === 对话 ===
@@ -525,6 +528,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     }
 
     protected void recordInteraction(ServerPlayer player) {
+        refreshMood();
         interactingPlayer = player;
         dialogExpiresAt = tickCount + 60;
         stopForInteraction();
@@ -602,6 +606,10 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
             CompoundTag encoded = entityData.get(DATA_CHAT);
             this.currentChat = encoded.isEmpty() ? null : NPCChat.CODEC.parse(NbtOps.INSTANCE, encoded).result().orElse(null);
             this.chatDisplayTicks = currentChat == null ? 0 : 100;
+        }
+        if (DATA_MOOD.equals(key) && level().isClientSide) {
+            CompoundTag state = entityData.get(DATA_MOOD);
+            if (!state.isEmpty()) mood.loadTag(state);
         }
     }
 

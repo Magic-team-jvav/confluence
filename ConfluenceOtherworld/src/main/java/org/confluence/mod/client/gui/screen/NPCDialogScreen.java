@@ -97,6 +97,16 @@ public class NPCDialogScreen extends Screen {
                 y += font.lineHeight;
             }
         }
+        if (minecraft != null && minecraft.level != null && minecraft.level.getEntity(entityId) instanceof BaseNPC npc) {
+            Component moodText = Component.translatable("gui.confluence.mood.value", npc.getMood().getValue());
+            int moodY = height / 2 + 55;
+            guiGraphics.drawCenteredString(font, moodText, width / 2, moodY, 0xFFFFFF);
+            if (mouseY >= moodY && mouseY < moodY + font.lineHeight
+                    && Math.abs(mouseX - width / 2) <= font.width(moodText) / 2
+                    && !npc.getMood().getReasons().isEmpty()) {
+                guiGraphics.renderComponentTooltip(font, npc.getMood().getReasons(), mouseX, mouseY);
+            }
+        }
     }
 
     @Override

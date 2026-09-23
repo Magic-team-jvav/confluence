@@ -50,7 +50,6 @@ import org.confluence.mod.client.effect.biome.ClientBiomeEffectSystem;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.entity.renderer.WallOfFleshRenderer;
 import org.confluence.mod.client.gameevent.ClientGameEventSystem;
-import org.confluence.mod.client.gui.BackgroundImageMakerScreen;
 import org.confluence.mod.client.gui.BackgroundLayer;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.gui.hud.CustomBossBarRenderer;
@@ -73,7 +72,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.gun.BaseGun;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
@@ -249,8 +247,6 @@ public final class GameClientEvents {
                 } else if (event.isAttack() && ClientWeaponInputManager.blocksAttack(stack)) {
                     event.setCanceled(true);
                     event.setSwingHand(false);
-                } else if (event.isUseItem() && stack.is(ModItems.BACKGROUND_IMAGE_MAKER)) {
-                    Minecraft.getInstance().setScreen(new BackgroundImageMakerScreen());
                 }
             }
         }

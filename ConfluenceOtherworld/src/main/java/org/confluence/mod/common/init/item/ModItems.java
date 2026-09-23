@@ -136,7 +136,6 @@ public final class ModItems {
     public static final PortDeferredItem<Item> TEST_SOUL_GUI = HIDDEN.registerSimpleItem("test_soul_gui", new Item.Properties().stacksTo(1));
 
     public static final PortDeferredItem<BestiaryItem> BESTIARY = HIDDEN.register("bestiary", BestiaryItem::new);
-    public static final PortDeferredItem<Item> BACKGROUND_IMAGE_MAKER = HIDDEN.register("background_image_maker", () -> new CustomRarityItem(new Item.Properties().stacksTo(1), ModRarity.MASTER));
 
     public static final PortDeferredItem<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final PortDeferredItem<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN.get(), ModRarity.ORANGE, ModItems.GOLD_COIN, 100));

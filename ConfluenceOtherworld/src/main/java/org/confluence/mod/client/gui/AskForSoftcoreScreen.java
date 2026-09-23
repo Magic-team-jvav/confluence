@@ -19,6 +19,7 @@ public class AskForSoftcoreScreen extends Screen {
     private int imageHeight;
     private int leftPos;
     private int topPos;
+    private int tickCount;
 
     public boolean isChooseSoftcore = false;
     private static boolean askForSoftcoreScreen = false;
@@ -34,6 +35,13 @@ public class AskForSoftcoreScreen extends Screen {
         this.imageHeight = 110;
         this.leftPos = (width - imageWidth) / 2;
         this.topPos = (height - imageHeight) / 2 - 33;
+    }
+
+    @Override
+    public void tick() {
+        if (tickCount < 200) {
+            ++tickCount;
+        }
     }
 
     public static void createAskingScreen() {
@@ -127,6 +135,6 @@ public class AskForSoftcoreScreen extends Screen {
 
     @Override
     public boolean isPauseScreen() {
-        return false;
+        return tickCount >= 200;
     }
 }

@@ -29,9 +29,9 @@ public enum AnglerData implements IGlobalData {
 
     public void refreshIfNeeded(ServerLevel level) {
         long today = currentDay(level);
-        if (questGameDay != today || AnglerQuestLoader.getInstance().find(questFish).isEmpty()) {
+        List<Item> candidates = collectCandidates(level);
+        if (questGameDay != today || !candidates.contains(questFish)) {
             this.questGameDay = today;
-            List<Item> candidates = collectCandidates(level);
             if (candidates.isEmpty()) {
                 this.questFish = Items.AIR;
                 return;
@@ -48,7 +48,7 @@ public enum AnglerData implements IGlobalData {
     private static List<Item> collectCandidates(ServerLevel level) {
         List<Item> candidates = new ArrayList<>();
         long secretFlag = IMinecraftServer.of(level.getServer()).confluence$getSecretFlag();
-        boolean bothEvil = IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL);
+        boolean bothEvil = IMinecraftServer.equalsSecretFlag(secretFlag, IWorldOptions.DOUBLE_EVIL);
         boolean corruption = !bothEvil && IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.THE_CORRUPTION);
         boolean crimson = !bothEvil && IMinecraftServer.matchesSecretFlag(secretFlag, IWorldOptions.THE_CRIMSON);
         for (Map.Entry<Item, AnglerQuestLoader.Entry> entry : AnglerQuestLoader.getInstance().getEntries().entrySet()) {

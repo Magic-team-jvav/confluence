@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.container;
+package org.confluence.mod.client.gui.container.npc_screen;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -17,19 +17,20 @@ import org.lwjgl.glfw.GLFW;
 import java.util.function.Supplier;
 
 /// 客户端只显示服务端同步的商品和价格说明，不参与报价与成交计算。
-public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
-    private static final ResourceLocation CONTAINER_TEXTURE = Confluence.asResource("textures/gui/npc_trade_menu.png");
+public class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
+    private static final ResourceLocation CONTAINER_TEXTURE = Confluence.asResource("textures/gui/trade/npc_trade_menu.png");
     private static final int HOLD_DELAY = 8;
     private static final int HOLD_INTERVAL = 2;
     /// 相对原版容器居中位置的整体偏移；正数下移，负数上移，单位为 GUI 像素。
     private static final int UI_OFFSET_Y = 10;
-    /// 钱币横排位于头像对面的右侧，坐标相对商店左上角。
-    private static final int MONEY_X = 90;
-    private static final int MONEY_Y = -27;
-    private static final int MONEY_SPACING = 24;
-    private static final int MONEY_COUNT_Y = 17;
+    /// 钱币纵排位于商店左侧，数量右对齐并显示在图标左边。
+    private static final int MONEY_ICON_X = -20;
+    private static final int MONEY_FIRST_Y = 42;
+    private static final int MONEY_ROW_SPACING = 15;
+    private static final int MONEY_TEXT_GAP = 3;
+    private static final int MONEY_TEXT_Y = 4;
     private static final int PAGE_BUTTON_X = 190;
-    private static final int PREVIOUS_PAGE_Y = 42;
+    private static final int PREVIOUS_PAGE_Y = 42 + NPCTradeMenu.CONTENT_OFFSET_Y;
     private static final int NEXT_PAGE_Y = PREVIOUS_PAGE_Y + 8;
     private static final int PAGE_BUTTON_WIDTH = 8;
     private static final int PAGE_BUTTON_HEIGHT = 8;
@@ -47,7 +48,7 @@ public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> 
     public NPCTradeScreen(NPCTradeMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
         imageWidth = 198;
-        imageHeight = 176;
+        imageHeight = 176 + NPCTradeMenu.CONTENT_OFFSET_Y;
     }
 
     @Override
@@ -105,12 +106,13 @@ public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> 
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         if (portrait != null) portrait.render(graphics, leftPos, topPos, mouseX, mouseY);
         graphics.blit(CONTAINER_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        NPCTradeScreens.renderOverlay(menu, graphics, leftPos, topPos, imageWidth, imageHeight - NPCTradeMenu.CONTENT_OFFSET_Y);
         for (int slot = 0; slot < menu.getMoneySlotCount(); slot++) {
-            int x = leftPos + MONEY_X + slot * MONEY_SPACING;
-            int y = topPos + MONEY_Y;
+            int x = leftPos + MONEY_ICON_X;
+            int y = topPos + MONEY_FIRST_Y + slot * MONEY_ROW_SPACING;
             String count = Integer.toString(menu.getSlot(menu.getMoneySlotStart() + slot).getItem().getCount());
             graphics.renderItem(moneyIcons[slot], x, y);
-            graphics.drawString(font, count, x + (16 - font.width(count)) / 2, y + MONEY_COUNT_Y, 0xFFFFFF);
+            graphics.drawString(font, count, x - MONEY_TEXT_GAP - font.width(count), y + MONEY_TEXT_Y, 0xFFFFFF);
         }
     }
 
@@ -131,7 +133,8 @@ public final class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> 
             @Override
             public void renderWidget(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
                 int u = !active ? 201 : isHoveredOrFocused() ? 219 : 210;
-                graphics.blit(CONTAINER_TEXTURE, getX(), getY(), width, height, u, previous ? 54 : 62, 8, 8, 256, 256);
+                graphics.blit(CONTAINER_TEXTURE, getX(), getY(), width, height,
+                        u, (previous ? 54 : 62) + NPCTradeMenu.CONTENT_OFFSET_Y, 8, 8, 256, 256);
             }
         };
     }

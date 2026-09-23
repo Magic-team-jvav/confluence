@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.container;
+package org.confluence.mod.client.gui.container.npc_screen;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LightTexture;
 import org.confluence.mod.common.entity.npc.BaseNPC;
+import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
@@ -15,7 +16,7 @@ public final class NPCTradePortrait {
     /// 位置相对商店左上角；调整取景和转头范围只改此处。
     private static final int PORTRAIT_HEIGHT = 52;
     private static final int PORTRAIT_CENTER_X = 49;
-    private static final int PORTRAIT_TOP = -51;
+    private static final int PORTRAIT_TOP = -60 + NPCTradeMenu.CONTENT_OFFSET_Y;
     private static final int PORTRAIT_WIDTH = 84;
     private static final float PORTRAIT_LOOK_DISTANCE = 40.0F;
     private static final float PORTRAIT_MAX_YAW = 45.0F;
@@ -24,7 +25,6 @@ public final class NPCTradePortrait {
     private static final float PORTRAIT_EYE_OFFSET_FRACTION = 0.40F;
     private static final Vector3f PORTRAIT_TOP_LIGHT = new Vector3f(0.2F, -1.0F, 0.7F).normalize();
     private static final Vector3f PORTRAIT_FILL_LIGHT = new Vector3f(-0.2F, -0.2F, 1.0F).normalize();
-
     private final BaseNPC npc;
 
     public NPCTradePortrait(BaseNPC npc) {
@@ -60,8 +60,8 @@ public final class NPCTradePortrait {
         graphics.enableScissor(centerX - PORTRAIT_WIDTH / 2, portraitTop, centerX + PORTRAIT_WIDTH / 2, portraitTop + PORTRAIT_HEIGHT);
         graphics.pose().pushPose();
         try {
-            graphics.pose().translate(centerX, portraitTop + PORTRAIT_HEIGHT / 2.0F, 50.0F);
             float actualScale = scale / npc.getScale();
+            graphics.pose().translate(centerX, portraitTop + PORTRAIT_HEIGHT / 2.0F, 50.0F);
             graphics.pose().scale(actualScale, actualScale, -actualScale);
             graphics.pose().translate(0, npc.getBbHeight() / 2.0F + offset * npc.getScale(), 0);
             graphics.pose().mulPose(new Quaternionf().rotateZ((float) Math.PI));

@@ -34,9 +34,11 @@ import java.util.List;
 /// 商品可购买；把物品放入任意空白商店格或 Shift 点击背包即可出售，并在本次交易中回购。
 public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMenu {
     public static final String BUY_PRICE_TAG = "ConfluenceShopBuyPrice";
+    /// 商店贴图内容在画布中整体下移，槽位与客户端装饰共用此偏移。
+    public static final int CONTENT_OFFSET_Y = 37;
     private static final int TRADE_COLS = 9;
     private static final int TRADE_ROWS = 4;
-    private static final int TRADE_TOP = 12;
+    private static final int TRADE_TOP = 12 + CONTENT_OFFSET_Y;
     private static final int TRADE_SIZE = TRADE_COLS * TRADE_ROWS;
     private static final int OFFER_SLOTS = TRADE_SIZE;
     private static final int MONEY_SLOT_START = TRADE_SIZE;
@@ -95,11 +97,11 @@ public class NPCTradeMenu extends AbstractContainerMenu implements NPCServiceMen
             addSlot(new MoneyDisplaySlot(moneyContainer, slot, 0, 0));
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                addSlot(new Slot(inventory, col + row * 9 + 9, 19 + col * 18, 94 + row * 18));
+                addSlot(new Slot(inventory, col + row * 9 + 9, 19 + col * 18, 94 + CONTENT_OFFSET_Y + row * 18));
             }
         }
         for (int col = 0; col < 9; col++) {
-            addSlot(new Slot(inventory, col, 19 + col * 18, 152));
+            addSlot(new Slot(inventory, col, 19 + col * 18, 152 + CONTENT_OFFSET_Y));
         }
 
         addDataSlots(pageData);

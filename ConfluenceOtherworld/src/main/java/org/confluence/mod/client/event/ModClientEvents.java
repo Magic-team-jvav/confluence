@@ -57,6 +57,8 @@ import org.confluence.mod.client.entity.model.*;
 import org.confluence.mod.client.entity.renderer.*;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
+import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
+import org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreens;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SoulSkillClientHandler;
 import org.confluence.mod.client.handler.StarPhaseHandler;
@@ -219,7 +221,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.DYE_MIX.get(), DyeMixScreen::new);
         event.register(ModMenuTypes.PIGGY_BANK.get(), PiggyBankScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
-        event.register(ModMenuTypes.NPC_TRADE.get(), NPCTradeScreen::new);
+        event.register(ModMenuTypes.NPC_TRADE.get(), NPCTradeScreens::create);
     }
 
     private static void registerGuiLayers(PortRegisterGuiLayersEvent event) {

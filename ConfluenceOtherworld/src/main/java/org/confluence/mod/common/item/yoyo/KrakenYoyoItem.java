@@ -16,14 +16,18 @@ public final class KrakenYoyoItem extends YoyoItem {
     private final float bonusCriticalChance;
     private final int hitInterval;
     private final int waveCount;
+    private final float projectileDamageMultiplier;
+    private final double projectileSpeed;
 
-    public KrakenYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, int waveCount, double hitRadius, float duplicateSpeedMultiplier, float bonusCriticalChance) {
+    public KrakenYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, int waveCount, double hitRadius, float duplicateSpeedMultiplier, float bonusCriticalChance, float projectileDamageMultiplier, double projectileSpeed) {
         super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
         this.hitRadius = hitRadius;
         this.duplicateSpeedMultiplier = duplicateSpeedMultiplier;
         this.bonusCriticalChance = bonusCriticalChance;
         this.hitInterval = hitInterval;
         this.waveCount = waveCount;
+        this.projectileDamageMultiplier = projectileDamageMultiplier;
+        this.projectileSpeed = projectileSpeed;
     }
 
     @Override
@@ -32,7 +36,7 @@ public final class KrakenYoyoItem extends YoyoItem {
         if (session.isSpecialHit(hitInterval)) {
             for (int i = 0; i < waveCount; i++) {
                 Vec3 direction = target.getBoundingBox().getCenter().subtract(yoyo.position()).normalize().yRot((i - (waveCount - 1) * 0.5F) * 0.3F);
-                new KrakenWaveProjectile(ModEntities.KRAKEN_WAVE.get(), yoyo.level()).shoot(yoyo, direction, target);
+                new KrakenWaveProjectile(ModEntities.KRAKEN_WAVE.get(), yoyo.level()).shoot(yoyo, direction, target, projectileDamageMultiplier, projectileSpeed);
             }
         }
         session.countSpecialHit();

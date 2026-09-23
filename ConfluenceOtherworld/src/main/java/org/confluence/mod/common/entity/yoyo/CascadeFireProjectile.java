@@ -7,22 +7,28 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 
 public final class CascadeFireProjectile extends BaseYoyoProjectile {
+    private int fireChanceDenominator;
+    private int minFireSeconds;
+    private int maxFireSeconds;
+
     public CascadeFireProjectile(EntityType<? extends CascadeFireProjectile> type, Level level) {super(type, level);}
+
+    public CascadeFireProjectile configureIgnition(int chanceDenominator, int minimumSeconds, int maximumSeconds) {
+        fireChanceDenominator = chanceDenominator;
+        minFireSeconds = minimumSeconds;
+        maxFireSeconds = maximumSeconds;
+        return this;
+    }
 
     @Override
     protected ParticleOptions particle() {return ParticleTypes.FLAME;}
-
-    @Override
-    protected float damageMultiplier() {return 2;}
-
-    @Override
-    protected double targetRange() {return 13;}
 
     @Override
     protected boolean requiresLineOfSight() {return true;}
 
     @Override
     protected void onHit(Entity recipient) {
-        if (random.nextInt(3) == 0) recipient.setSecondsOnFire(1 + random.nextInt(4));
+        if (fireChanceDenominator > 0 && random.nextInt(fireChanceDenominator) == 0)
+            recipient.setSecondsOnFire(minFireSeconds + random.nextInt(maxFireSeconds - minFireSeconds + 1));
     }
 }

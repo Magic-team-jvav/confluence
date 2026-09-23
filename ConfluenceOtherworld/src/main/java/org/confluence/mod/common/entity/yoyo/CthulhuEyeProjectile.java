@@ -29,13 +29,7 @@ public final class CthulhuEyeProjectile extends BaseYoyoProjectile implements Ge
     protected ParticleOptions particle() {return ParticleTypes.GLOW;}
 
     @Override
-    protected float damageMultiplier() {return 2;}
-
-    @Override
-    protected double speed() {return 1.2;}
-
-    @Override
-    protected double targetRange() {return 5;}
+    protected double velocityRetention() {return 0.88;}
 
     @Override
     protected boolean fallsBackToExcludedTarget() {return true;}

@@ -162,7 +162,7 @@ public class LunaticCultist extends BaseBoss {
     }
 
     private boolean hasLivingDragon() {
-        return subEntities.stream()
+        return getSubEntities().stream()
                 .filter(PhantasmDragon.class::isInstance)
                 .map(PhantasmDragon.class::cast)
                 .anyMatch(dragon -> dragon.isAlive() && !dragon.isRemoved());
@@ -238,7 +238,7 @@ public class LunaticCultist extends BaseBoss {
     boolean isPerformingRitual() {return combatState == CombatState.RITUAL;}
 
     private void clearClones() {
-        for (LunaticCultistClone clone : subEntities.stream()
+        for (LunaticCultistClone clone : getSubEntities().stream()
                 .filter(LunaticCultistClone.class::isInstance)
                 .map(LunaticCultistClone.class::cast)
                 .toList()) {

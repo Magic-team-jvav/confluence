@@ -5,6 +5,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,19 +16,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
-import net.minecraft.tags.BiomeTags;
-import org.confluence.mod.common.data.map.CreatureDefinition;
-import org.confluence.mod.util.OverworldUtils;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
+import org.confluence.mod.common.data.map.CreatureDefinition;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.monster.LittleHornet;
 import org.confluence.mod.common.entity.projectile.HornetStingerProjectile;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.init.entity.MonsterEntities;
-import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.util.OverworldUtils;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -296,7 +296,7 @@ public class QueenBee extends BaseBoss {
 
     private int countOwnedHornets() {
         int count = 0;
-        for (var entity : subEntities) {
+        for (var entity : getSubEntities()) {
             if (entity instanceof LittleHornet hornet && hornet.isAlive() && hornet.getMasterUUID() != null && hornet.getMasterUUID().equals(getUUID())) {
                 count++;
             }

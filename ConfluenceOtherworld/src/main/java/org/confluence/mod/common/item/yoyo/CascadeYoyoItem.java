@@ -13,6 +13,9 @@ public final class CascadeYoyoItem extends YoyoItem {
     private final int minFireSeconds;
     private final int maxFireSeconds;
     private final int hitInterval;
+    private final float projectileDamageMultiplier;
+    private final double projectileSpeed;
+    private final double projectileTargetRange;
 
     @Override
     public boolean fullBright() {return true;}
@@ -20,12 +23,15 @@ public final class CascadeYoyoItem extends YoyoItem {
     @Override
     protected Component effectTooltip() {return Component.translatable("tooltip.confluence.yoyo.cascade", hitInterval);}
 
-    public CascadeYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, int procDenominator, int minFireSeconds, int maxFireSeconds) {
+    public CascadeYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, int procDenominator, int minFireSeconds, int maxFireSeconds, float projectileDamageMultiplier, double projectileSpeed, double projectileTargetRange) {
         super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
         this.procDenominator = procDenominator;
         this.minFireSeconds = minFireSeconds;
         this.maxFireSeconds = maxFireSeconds;
         this.hitInterval = hitInterval;
+        this.projectileDamageMultiplier = projectileDamageMultiplier;
+        this.projectileSpeed = projectileSpeed;
+        this.projectileTargetRange = projectileTargetRange;
     }
 
     @Override
@@ -35,7 +41,9 @@ public final class CascadeYoyoItem extends YoyoItem {
         if (!yoyo.isDetached()) {
             YoyoSession session = YoyoSession.of(owner);
             if (session.isSpecialHit(hitInterval))
-                new CascadeFireProjectile(ModEntities.CASCADE_FIRE.get(), yoyo.level()).shootAtNearest(yoyo, target);
+                new CascadeFireProjectile(ModEntities.CASCADE_FIRE.get(), yoyo.level())
+                        .configureIgnition(procDenominator, minFireSeconds, maxFireSeconds)
+                        .shootAtNearest(yoyo, target, projectileDamageMultiplier, projectileSpeed, projectileTargetRange);
             session.countSpecialHit();
         }
     }

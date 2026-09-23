@@ -13,12 +13,18 @@ public final class ChikYoyoItem extends YoyoItem {
     private final float specialDamageMultiplier;
     private final int hitInterval;
     private final int shardCount;
+    private final float projectileDamageMultiplier;
+    private final double projectileSpeed;
+    private final int projectileImmunityTicks;
 
-    public ChikYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, int shardCount, float specialDamageMultiplier) {
+    public ChikYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, int shardCount, float specialDamageMultiplier, float projectileDamageMultiplier, double projectileSpeed, int projectileImmunityTicks) {
         super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
         this.specialDamageMultiplier = specialDamageMultiplier;
         this.hitInterval = hitInterval;
         this.shardCount = shardCount;
+        this.projectileDamageMultiplier = projectileDamageMultiplier;
+        this.projectileSpeed = projectileSpeed;
+        this.projectileImmunityTicks = projectileImmunityTicks;
     }
 
     @Override
@@ -27,7 +33,9 @@ public final class ChikYoyoItem extends YoyoItem {
         if (session.isSpecialHit(hitInterval)) {
             for (int i = 0; i < shardCount; i++) {
                 Vec3 direction = new Vec3(owner.getRandom().nextGaussian(), owner.getRandom().nextGaussian() * 0.4, owner.getRandom().nextGaussian());
-                new ChikCrystalProjectile(ModEntities.CHIK_CRYSTAL.get(), yoyo.level()).shoot(yoyo, direction, target);
+                new ChikCrystalProjectile(ModEntities.CHIK_CRYSTAL.get(), yoyo.level())
+                        .configureImmunity(projectileImmunityTicks)
+                        .shoot(yoyo, direction, target, projectileDamageMultiplier, projectileSpeed);
             }
         }
         session.countSpecialHit();

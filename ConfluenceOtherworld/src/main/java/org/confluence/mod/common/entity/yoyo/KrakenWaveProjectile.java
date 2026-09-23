@@ -12,9 +12,6 @@ public final class KrakenWaveProjectile extends BaseYoyoProjectile {
     protected ParticleOptions particle() {return ParticleTypes.SPLASH;}
 
     @Override
-    protected float damageMultiplier() {return 0.5F;}
-
-    @Override
     protected boolean excludesInitialTarget() {return false;}
 
     @Override

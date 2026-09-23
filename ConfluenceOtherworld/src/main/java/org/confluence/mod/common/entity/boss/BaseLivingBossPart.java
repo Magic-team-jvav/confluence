@@ -112,6 +112,10 @@ public abstract class BaseLivingBossPart<T extends BaseBoss> extends Monster imp
         return hurt;
     }
 
+    /// 活体部件由 Boss 定位，命中时不允许独立偏离本体。
+    @Override
+    public void knockback(double strength, double x, double z) {}
+
     /// 部件位置由 tickPart 更新，不能先让普通生物移动再叠加一次专用位移。
     @Override
     public void travel(Vec3 travelVector) {}

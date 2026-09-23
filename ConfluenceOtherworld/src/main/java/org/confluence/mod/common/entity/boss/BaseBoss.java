@@ -55,7 +55,9 @@ import java.util.*;
 /// {@value #DISENGAGE_TICKS} tick 的脱战，随后无死亡奖励、无击杀消息地消失。
 public abstract class BaseBoss extends BaseMonster implements Boss {
     protected final ServerBossEvent bossEvent;
-    protected final List<Entity> subEntities = new ArrayList<>();
+    private final List<Entity> subEntities = new ArrayList<>();
+    /// 只在成员变化时重建，供渲染和其他 Boss 逻辑安全遍历，避免回调中解绑实体修改迭代器。
+    private List<Entity> subEntitiesSnapshot = List.of();
     protected float ironGolemResistance = 0.4f;
     protected float explosionResistance = 0.5f;
     protected int noTargetTicks = 0;
@@ -162,7 +164,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     }
 
     protected final void removeAllBossBarPlayers() {
-        for (ServerPlayer player : bossEvent.getPlayers()) removeBossBarPlayer(player);
+        for (ServerPlayer player : List.copyOf(bossEvent.getPlayers())) removeBossBarPlayer(player);
     }
 
     private void synchronizeBossBar(ServerPlayer player, boolean visible) {
@@ -205,21 +207,28 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     // === 多部件生命周期 ===
 
     public void addSubEntity(Entity part) {
-        if (!subEntities.contains(part)) subEntities.add(part);
+        if (!subEntities.contains(part)) {
+            subEntities.add(part);
+            refreshSubEntitiesSnapshot();
+        }
     }
 
     public void removeSubEntity(Entity part) {
-        if (!removingSubEntities) subEntities.remove(part);
+        if (!removingSubEntities && subEntities.remove(part)) refreshSubEntitiesSnapshot();
     }
 
     public List<Entity> getSubEntities() {
-        return subEntities;
+        return subEntitiesSnapshot;
+    }
+
+    private void refreshSubEntitiesSnapshot() {
+        subEntitiesSnapshot = List.copyOf(subEntities);
     }
 
     @Override
     protected void onCreatureDefinitionReload() {
         // 本体 scale 属性由 LivingEntity 同步；非生物部件没有属性表，需要主动刷新碰撞箱。
-        for (Entity part : subEntities) {
+        for (Entity part : subEntitiesSnapshot) {
             if (!part.isRemoved()) part.refreshDimensions();
         }
     }
@@ -233,7 +242,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         }
         removingSubEntities = true;
         try {
-            for (Entity part : subEntities) {
+            for (Entity part : subEntitiesSnapshot) {
                 /// 区块卸载时只清理可重建的临时部件；主动撤离和真正销毁必须
                 /// 清理全部尚未移除的从属。不能用 isAlive() 过滤，因为已经
                 /// 进入死亡动画但仍留在世界中的从属同样属于本场遭遇。
@@ -242,6 +251,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
                 }
             }
             subEntities.clear();
+            refreshSubEntitiesSnapshot();
             super.remove(reason);
         } finally {
             removingSubEntities = false;
@@ -330,6 +340,10 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     public boolean isPushable() {
         return false;
     }
+
+    /// Boss 的位移只由自身技能控制，忽略武器与弹幕施加的受击击退。
+    @Override
+    public void knockback(double strength, double x, double z) {}
 
     /// Boss 通过自身伤害箱处理接触攻击，不使用 Minecraft 的实体互推。
     /// 否则大型或悬浮 Boss 会把玩家持续压向地面和方块缝隙，
@@ -424,7 +438,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
         if (level().isClientSide) {
             if (tickCount == 1) spawnParticleBurst(ParticleTypes.POOF, 24, 0.16);
         } else {
-            subEntities.removeIf(Entity::isRemoved);
+            if (subEntities.removeIf(Entity::isRemoved)) refreshSubEntitiesSnapshot();
             if (maintainsEncounterChunkTicket() && noTargetTicks <= DISENGAGE_TICKS) {
                 encounterChunkTicket.refresh(this, BossChunkTicket.REGION_DISTANCE);
             } else {
@@ -756,7 +770,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// Boss 本体和部件时不会因只远离本体而错误脱战；普通仆从不会扩大整场战斗的保留范围。
     protected double combatAnchorDistanceSqr(LivingEntity target) {
         double nearest = distanceToSqr(target);
-        for (Entity part : subEntities) {
+        for (Entity part : subEntitiesSnapshot) {
             if (part.isAlive() && isCombatAnchor(part)) {
                 nearest = Math.min(nearest, part.distanceToSqr(target));
             }
@@ -801,7 +815,7 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
     /// 遭遇的权威玩家目标发生变化时调用。所有已加载的生物型从属立即继承新目标；
     /// 目标消失时也同时停战，不能让仆从继续追逐已经失效的玩家。
     protected void onCombatTargetChanged(@Nullable Player target) {
-        for (Entity part : subEntities) {
+        for (Entity part : subEntitiesSnapshot) {
             if (part instanceof Mob mob && mob.isAlive()) {
                 mob.setTarget(target);
             }

@@ -12,19 +12,25 @@ public final class TerrarianYoyoItem extends YoyoItem implements Immunity {
     private final int shotInterval;
     private final int immunityTicks;
     private final float bonusCriticalChance;
+    private final float projectileDamageMultiplier;
+    private final double projectileSpeed;
+    private final double projectileTargetRange;
 
-    public TerrarianYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int shotInterval, int immunityTicks, float bonusCriticalChance) {
+    public TerrarianYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int shotInterval, int immunityTicks, float bonusCriticalChance, float projectileDamageMultiplier, double projectileSpeed, double projectileTargetRange) {
         super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
         this.shotInterval = shotInterval;
         this.immunityTicks = immunityTicks;
         this.bonusCriticalChance = bonusCriticalChance;
+        this.projectileDamageMultiplier = projectileDamageMultiplier;
+        this.projectileSpeed = projectileSpeed;
+        this.projectileTargetRange = projectileTargetRange;
     }
 
     /// 每 0.1 秒发射一次，副球与脱手球同样保留此能力。
     @Override
     public void tickAttack(YoyoEntity yoyo) {
         if (yoyo.tickCount % shotInterval == 0)
-            TerrarianProjectile.shootAtNearest(yoyo);
+            TerrarianProjectile.shootAtNearest(yoyo, projectileDamageMultiplier, projectileSpeed, projectileTargetRange);
     }
 
     @Override

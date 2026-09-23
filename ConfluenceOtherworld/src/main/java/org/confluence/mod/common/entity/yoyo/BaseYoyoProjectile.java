@@ -39,23 +39,23 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
         setNoGravity(true);
     }
 
-    public void shoot(YoyoEntity source, Vec3 direction, @Nullable LivingEntity excluded) {
+    public void shoot(YoyoEntity source, Vec3 direction, @Nullable LivingEntity excluded, float damageMultiplier, double speed) {
         BaseYoyoProjectile shot = this;
         shot.setOwner(source.getOwner());
         shot.criticalChance = source.getCriticalChance();
         shot.knockback = source.getKnockback();
         shot.excludedTarget = excluded == null || !excludesInitialTarget() ? null : excluded.getUUID();
-        shot.damage = source.getDamage() * damageMultiplier();
+        shot.damage = source.getDamage() * damageMultiplier;
         shot.setPos(source.position().add(0, source.getBbHeight() * 0.5, 0));
-        shot.setDeltaMovement(direction.normalize().scale(speed()));
+        shot.setDeltaMovement(direction.normalize().scale(speed));
         source.level().addFreshEntity(shot);
     }
 
     /// 只在发射时选择目标，发射后沿直线运动。
-    public void shootAtNearest(YoyoEntity source, @Nullable LivingEntity excluded) {
+    public void shootAtNearest(YoyoEntity source, @Nullable LivingEntity excluded, float damageMultiplier, double speed, double targetRange) {
         Entity owner = source.getOwner();
         if (owner == null) return;
-        double range = targetRange();
+        double range = targetRange;
         double distance = range * range;
         LivingEntity nearest = null;
         for (LivingEntity candidate : source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(range))) {
@@ -76,7 +76,7 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
             direction = excluded.getBoundingBox().getCenter().subtract(source.position());
         else
             direction = new Vec3(source.getRandom1211().nextGaussian(), source.getRandom1211().nextGaussian(), source.getRandom1211().nextGaussian());
-        shoot(source, direction, excluded);
+        shoot(source, direction, excluded, damageMultiplier, speed);
     }
 
     @Override
@@ -123,18 +123,15 @@ public abstract class BaseYoyoProjectile extends Projectile implements Immunity 
             }
         }
         setPos(position().add(motion));
-        if (tickCount > 10) setDeltaMovement(motion.scale(0.85));
+        setDeltaMovement(motion.scale(velocityRetention()));
     }
 
     public float getCriticalChance() {return criticalChance;}
 
     protected abstract ParticleOptions particle();
 
-    protected float damageMultiplier() {return 1;}
-
-    protected double speed() {return 0.8;}
-
-    protected double targetRange() {return 25;}
+    /// 默认射弹在后半程减速；特殊射弹可从出现时开始逐渐减速。
+    protected double velocityRetention() {return tickCount > 10 ? 0.85 : 1.0;}
 
     protected boolean requiresLineOfSight() {return false;}
 

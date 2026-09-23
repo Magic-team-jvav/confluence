@@ -11,18 +11,24 @@ import org.confluence.mod.common.init.entity.ModEntities;
 public final class EyeOfCthulhuYoyoItem extends YoyoItem {
     private final float specialDamageMultiplier;
     private final int hitInterval;
+    private final float projectileDamageMultiplier;
+    private final double projectileSpeed;
+    private final double projectileTargetRange;
 
-    public EyeOfCthulhuYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, float specialDamageMultiplier) {
+    public EyeOfCthulhuYoyoItem(ModRarity rarity, float damage, float range, int lifetimeTicks, float knockback, int hitInterval, float specialDamageMultiplier, float projectileDamageMultiplier, double projectileSpeed, double projectileTargetRange) {
         super(new Properties().unbreakable(), rarity, damage, range, lifetimeTicks, knockback);
         this.specialDamageMultiplier = specialDamageMultiplier;
         this.hitInterval = hitInterval;
+        this.projectileDamageMultiplier = projectileDamageMultiplier;
+        this.projectileSpeed = projectileSpeed;
+        this.projectileTargetRange = projectileTargetRange;
     }
 
     @Override
     protected void onHitTarget(YoyoEntity yoyo, ServerPlayer owner, LivingEntity target) {
         YoyoSession session = YoyoSession.of(owner);
         if (session.isSpecialHit(hitInterval))
-            new CthulhuEyeProjectile(ModEntities.CTHULHU_EYE_PROJECTILE.get(), yoyo.level()).shootAtNearest(yoyo, target);
+            new CthulhuEyeProjectile(ModEntities.CTHULHU_EYE_PROJECTILE.get(), yoyo.level()).shootAtNearest(yoyo, target, projectileDamageMultiplier, projectileSpeed, projectileTargetRange);
         session.countSpecialHit();
     }
 

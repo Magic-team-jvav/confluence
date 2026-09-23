@@ -39,12 +39,12 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
         setNoGravity(true);
     }
 
-    public static void shootAtNearest(YoyoEntity source) {
+    public static void shootAtNearest(YoyoEntity source, float damageMultiplier, double speed, double targetRange) {
         Entity owner = source.getOwner();
         if (owner == null || source.level().isClientSide) return;
-        double distance = 25 * 25;
+        double distance = targetRange * targetRange;
         LivingEntity nearest = null;
-        for (LivingEntity candidate : source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(25))) {
+        for (LivingEntity candidate : source.level().getEntitiesOfClass(LivingEntity.class, source.getBoundingBox().inflate(targetRange))) {
             if (!EnemyDamageRules.isEnemy(candidate) || !ProjectileHitRules.canHit(owner, candidate))
                 continue;
             double next = source.distanceToSqr(candidate);
@@ -58,11 +58,11 @@ public final class TerrarianProjectile extends Projectile implements Immunity, G
         TerrarianProjectile shot = new TerrarianProjectile(ModEntities.TERRARIAN_PROJECTILE.get(), source.level());
         shot.setOwner(owner);
         shot.sourceYoyo = source;
-        shot.damage = source.getDamage();
+        shot.damage = source.getDamage() * damageMultiplier;
         shot.criticalChance = source.getCriticalChance();
         shot.knockback = source.getKnockback();
         shot.setPos(source.position().add(0, source.getBbHeight() * 0.5, 0));
-        shot.setDeltaMovement(direction.normalize().scale(0.8));
+        shot.setDeltaMovement(direction.normalize().scale(speed));
         source.level().addFreshEntity(shot);
     }
 

@@ -19,7 +19,8 @@ public final class CthulhuEyeProjectileRenderer extends GeoNormalRenderer<Cthulh
     @Override
     public Color getRenderColor(CthulhuEyeProjectile projectile, float partialTick, int packedLight) {
         float age = projectile.tickCount + partialTick;
-        int alpha = age <= 10 ? 160 : (int) (160 * Mth.clamp((20 - age) / 10, 0, 1));
+        float remaining = Mth.clamp(1.0F - age / 20.0F, 0.0F, 1.0F);
+        int alpha = (int) (160 * remaining * remaining);
         return Color.ofRGBA(255, 255, 255, alpha);
     }
 

@@ -335,15 +335,15 @@ public final class ModCommands {
                 CommandSourceStack source = context.getSource();
                 ServerPlayer player = source.getPlayer();
                 if (cannotBeReforged(source, player)) return 0;
-                ItemStack itemStack = player.getMainHandItem();
-                PrefixType type = PrefixUtils.getPrefixType(itemStack);
+                ItemStack stack = player.getMainHandItem();
+                PrefixType type = PrefixUtils.getPrefixType(stack);
                 if (!type.isGroupAvailable(group)) {
                     source.sendFailure(Component.translatable("commands.confluence.reforge.set.unavailable_group").withStyle(ChatFormatting.RED));
                     return 0;
                 }
-                PrefixComponent prefix = PrefixUtils.setAndUpdate(itemStack, type, context.getArgument("group", ModPrefix.class));
+                PrefixComponent prefix = PrefixUtils.setAndUpdate(stack, type, context.getArgument("group", ModPrefix.class));
                 if (unknownPrefixType(source, prefix)) return 0;
-                source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", ModRarity.withColor(itemStack, prefix.getName())), false);
+                source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", ModRarity.withColor(stack, prefix.getName())), false);
                 return 1;
             })));
         }

@@ -70,17 +70,17 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
     public void slotsChanged(Container container) {
         // 提前决定下一个词条
         if (!player.level().isClientSide) {
-            ItemStack itemStack = getReforgeItem();
-            if (PrefixUtils.couldReforge(itemStack)) {
-                RandomSource randomSource = RandomSource.create(itemStack.hashCode() | player.getRandom1211().nextInt());
-                PrefixType prefixType = PrefixUtils.getPrefixType(itemStack);
-                data[0] = prefixType.ordinal();
-                data[1] = ModPrefix.ID_MAP.inverse().getOrDefault(prefixType.randomPrefix(randomSource, itemStack), -1);
-                data[2] = PrefixUtils.getReforgeCost(player, itemStack);
+            ItemStack stack = getReforgeItem();
+            if (PrefixUtils.couldReforge(stack)) {
+                RandomSource random = RandomSource.create(stack.hashCode() | player.getRandom1211().nextInt());
+                PrefixType type = PrefixUtils.getPrefixType(stack);
+                data[DATA_PREFIX_TYPE] = type.ordinal();
+                data[DATA_PREFIX_ID] = ModPrefix.ID_MAP.inverse().getOrDefault(type.randomPrefix(random, stack), -1);
+                data[DATA_REFORGE_COST] = PrefixUtils.getReforgeCost(player, stack);
             } else {
-                data[0] = PrefixType.UNKNOWN.ordinal();
-                data[1] = -1;
-                data[2] = 0x3F3F3F3F;
+                data[DATA_PREFIX_TYPE] = PrefixType.UNKNOWN.ordinal();
+                data[DATA_PREFIX_ID] = -1;
+                data[DATA_REFORGE_COST] = 0x3F3F3F3F;
             }
         }
         super.slotsChanged(container);
@@ -92,20 +92,20 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
         if (id != 0 || !stillValid(player) || player.containerMenu != this) return false;
         int cost = data[DATA_REFORGE_COST];
         if (cost >= 0x3F3F3F3F) return false;
-        PrefixType prefixType = PrefixType.byId(data[DATA_PREFIX_TYPE]);
-        if (prefixType == PrefixType.UNKNOWN) return false;
-        ItemStack itemStack = getReforgeItem();
-        if (PrefixUtils.couldReforge(itemStack)) {
-            ModPrefix modPrefix = ModPrefix.ID_MAP.get(data[DATA_PREFIX_ID]);
-            if (modPrefix == null) return false;
+        PrefixType type = PrefixType.byId(data[DATA_PREFIX_TYPE]);
+        if (type == PrefixType.UNKNOWN) return false;
+        ItemStack stack = getReforgeItem();
+        if (PrefixUtils.couldReforge(stack)) {
+            ModPrefix prefix = ModPrefix.ID_MAP.get(data[DATA_PREFIX_ID]);
+            if (prefix == null) return false;
             if (!(player instanceof ServerPlayer)) {
                 return PlayerUtils.getMoney(player, true) >= cost;
             } else if (!PlayerUtils.tryCostMoney(player, cost, true)) {
                 return false;
             }
-            PrefixUtils.setAndUpdate(itemStack, prefixType, modPrefix);
-            setRemoteSlot(0, itemStack);
-            ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, itemStack));
+            PrefixUtils.setAndUpdate(stack, type, prefix);
+            setRemoteSlot(0, stack);
+            ((ServerPlayer) player).connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 0, stack));
             slotsChanged(container);
         }
         return true;
@@ -139,11 +139,11 @@ public class NPCReforgeMenu extends AbstractContainerMenu implements NPCServiceM
                 if (!moveItemStackTo(itemstack1, 0, 1, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= 1 && index < 28) {
+            } else if (index < 28) {
                 if (!moveItemStackTo(itemstack1, 28, 37, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (index >= 28 && index < 38 && !moveItemStackTo(itemstack1, 1, 28, false)) {
+            } else if (index < 38 && !moveItemStackTo(itemstack1, 1, 28, false)) {
                 return ItemStack.EMPTY;
             }
 

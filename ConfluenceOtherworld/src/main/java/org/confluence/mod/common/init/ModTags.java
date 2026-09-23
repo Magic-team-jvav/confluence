@@ -342,30 +342,29 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT = common("raw_materials/raw_materials_floating_wheat");
 
         public static final TagKey<Item> TOOLS_HAMMER = common("tools/hammer");
-        public static final TagKey<Item> TOOLS_LANCE = common("tools/lance");
         public static final TagKey<Item> TOOLS_DRILL = common("tools/drill");
         public static final TagKey<Item> TOOLS_CHAINSAW = common("tools/tools_chainsaw");
-        public static final TagKey<Item> TOOLS_REPEATER_CROSSBOW = common("tools/repeater_crossbow");
-        public static final TagKey<Item> TOOLS_REPEATER = register("tools/repeater");
-
+        public static final TagKey<Item> TOOLS_REPEATER = common( "tools/repeater");
+        public static final TagKey<Item> TOOLS_KNIFE = common("tools/knife");
         public static final TagKey<Item> TOOLS_SHEAR = common("tools/shear");
+        public static final TagKey<Item> TOOLS_HOOK = common("tools/hook");
 
+        public static final TagKey<Item> LANCE = register("lance");
         public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
         public static final TagKey<Item> FLAIL = register("flail");
+        public static final TagKey<Item> SHORT_SWORD = register("short_sword");
+        public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
+        public static final TagKey<Item> WHIP = register("whip");
+        public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon"); // 有鞭子
+        public static final TagKey<Item> YOYO = register("yoyo");
+
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
         public static final TagKey<Item> PET = register("pet");
         public static final TagKey<Item> LIGHT_PET = register("light_pet");
         public static final TagKey<Item> MINECART = register("minecart");
-        public static final TagKey<Item> HOOK = register("hook");
-        /// 允许作为坐骑物品处理的物品。
-        ///
-        /// 标签只负责给数据包和联动物品一个统一分类；真正要召唤的实体类型由
-        /// {@link org.confluence.mod.common.item.mount.MountItem} 显式绑定，坐骑参数
-        /// 仍由对应坐骑实体自己维护。
         public static final TagKey<Item> MOUNT = register("mount");
         public static final TagKey<Item> DYE = register("dye");
-        public static final TagKey<Item> SHORT_SWORD = register("short_sword");
 
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
@@ -395,7 +394,6 @@ public final class ModTags {
         public static final TagKey<Item> GOLD_AND_PLATINUM = register("gold_and_platinum");
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
         public static final TagKey<Item> EVIL_INGOT = register("evil_ingot");
-        public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
         public static final TagKey<Item> HARDMODE_RAW_MATERIALS = register("hardmode_raw_materials");
         public static final TagKey<Item> BOSS_SUMMONING = register("boss_summoning");
         public static final TagKey<Item> COAL_ORE_SMELTING = register("coal_ore_smelting");
@@ -415,10 +413,12 @@ public final class ModTags {
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
         public static final TagKey<Item> LAPIS_ORE_SMELTING = register("lapis_ore_smelting");
 
+        /// Flails, spears, yoyos, boomerangs, chainsaws, drills (including the Drax), and the Chlorophyte Jackhammer can only have universal modifiers
         public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
         public static final TagKey<Item> PREFIX_MELEE_ONLY = register("prefix_melee_only");
         public static final TagKey<Item> PREFIX_RANGED_ONLY = register("prefix_ranged_only");
         public static final TagKey<Item> PREFIX_MAGIC_ONLY = register("prefix_magic_only");
+        public static final TagKey<Item> PREFIX_SUMMON_ONLY = register("prefix_summon_only"); // 没有鞭子
         public static final TagKey<Item> PREFIX_ACCESSORY_ONLY = register("prefix_accessory_only");
 
         public static final TagKey<Item> COBALT_ORE_SMELTING = common("cobalt_ore_smelting");
@@ -429,7 +429,6 @@ public final class ModTags {
         public static final TagKey<Item> TITANIUM_ORE_SMELTING = common("titanium_ore_smelting");
 
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
-        public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
@@ -457,8 +456,6 @@ public final class ModTags {
         public static final TagKey<Item> SNOW_AMMO = register("snow_ammo");
         public static final TagKey<Item> BULLET = register("bullet");
 
-        public static final TagKey<Item> WHIP = register("whip");
-        public static final TagKey<Item> TOOLS_KNIFE = register("tools/knife");
         public static final TagKey<Item> BOOMERANG = register("boomerang");
 
         private static TagKey<Item> common(String name) {

@@ -82,7 +82,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                         return stack.is(switch (j) {
                             case LIGHT_PET_INDEX -> ModTags.Items.LIGHT_PET;
                             case MINECART_INDEX -> ModTags.Items.MINECART;
-                            case HOOK_INDEX -> ModTags.Items.HOOK;
+                            case HOOK_INDEX -> ModTags.Items.TOOLS_HOOK;
                             case MOUNT_INDEX -> ModTags.Items.MOUNT;
                             default -> ModTags.Items.PET;
                         });

@@ -49,8 +49,5 @@ public final class TerrarianYoyoItem extends YoyoItem implements Immunity {
     public boolean fullBright() {return true;}
 
     @Override
-    public boolean supportsLegendaryPrefix() {return true;}
-
-    @Override
     protected Component effectTooltip() {return Component.translatable("tooltip.confluence.yoyo.terrarian");}
 }

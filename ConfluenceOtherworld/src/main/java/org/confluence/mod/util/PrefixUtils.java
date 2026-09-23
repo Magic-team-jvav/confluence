@@ -1,6 +1,7 @@
 package org.confluence.mod.util;
 
 import net.minecraft.core.Holder;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -22,11 +23,9 @@ import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
 public final class PrefixUtils {
-    private static final float MERCY = 2.0F / 3.0F;
-
-    public static boolean canInit(ItemStack itemStack) {
-        if (PrefixUtils.getPrefix(itemStack) != null) return false;
-        return couldReforge(itemStack);
+    public static boolean canInit(ItemStack stack) {
+        if (PrefixUtils.getPrefix(stack) != null) return false;
+        return couldReforge(stack);
     }
 
     public static boolean couldReforge(ItemStack stack) {
@@ -35,77 +34,77 @@ public final class PrefixUtils {
                         stack.is(ModTags.Items.PREFIX_MELEE_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_RANGED_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_MAGIC_ONLY) ||
+                        stack.is(ModTags.Items.PREFIX_SUMMON_ONLY) ||
                         stack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY));
     }
 
-    public static @Nullable PrefixComponent initPrefix(RandomSource random, ItemStack itemStack) {
-        if (random.nextFloat() < 0.75F) {
-            PrefixType prefixType = getPrefixType(itemStack);
-            if (prefixType != PrefixType.UNKNOWN) {
-                return createWithMercy(random, itemStack, prefixType);
-            }
+    public static @Nullable PrefixComponent initPrefix(RandomSource random, ItemStack stack) {
+        if (random.nextInt(4) == 0) {
+            unknown(stack);
         } else {
-            unknown(itemStack);
-        }
-        return null;
-    }
-
-    public static @Nullable PrefixComponent best(RandomSource random, ItemStack itemStack) {
-        PrefixType prefixType = getPrefixType(itemStack);
-        if (prefixType != PrefixType.UNKNOWN) {
-            ModPrefix modPrefix = prefixType.bestPrefix(random, itemStack);
-            if (modPrefix == null) {
-                unknown(itemStack);
-            } else {
-                return setAndUpdate(itemStack, prefixType, modPrefix);
+            PrefixType type = getPrefixType(stack);
+            if (type != PrefixType.UNKNOWN) {
+                return createWithMercy(random, stack, type);
             }
         }
         return null;
     }
 
-    public static PrefixType getPrefixType(ItemStack itemStack) {
-        if (itemStack.is(ModTags.Items.SUMMONER_WEAPON) && !itemStack.is(ModTags.Items.WHIP))
-            return PrefixType.SUMMON;
-        if (itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
+    public static @Nullable PrefixComponent best(RandomSource random, ItemStack stack) {
+        PrefixType type = getPrefixType(stack);
+        if (type != PrefixType.UNKNOWN) {
+            ModPrefix prefix = type.bestPrefix(random, stack);
+            if (prefix == null) {
+                unknown(stack);
+            } else {
+                return setAndUpdate(stack, type, prefix);
+            }
+        }
+        return null;
+    }
+
+    public static PrefixType getPrefixType(ItemStack stack) {
+        if (stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
             return PrefixType.UNIVERSAL;
-        } else if (itemStack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
+        } else if (stack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
             return PrefixType.MELEE;
-        } else if (itemStack.is(ModTags.Items.PREFIX_RANGED_ONLY)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
+        } else if (stack.is(ModTags.Items.PREFIX_RANGED_ONLY)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
             return PrefixType.RANGED;
-        } else if (itemStack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
+        } else if (stack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
             return PrefixType.MAGIC;
-        } else if (itemStack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY)) {
+        } else if (stack.is(ModTags.Items.PREFIX_SUMMON_ONLY)) {
+            return PrefixType.SUMMON;
+        } else if (stack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY)) {
             return PrefixType.ACCESSORY;
         }
         return PrefixType.UNKNOWN;
     }
 
-    public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        ModPrefix modPrefix = prefixType.randomPrefix(random, itemStack);
-        if (modPrefix.canBeMercy() && random.nextFloat() < MERCY) {
-            unknown(itemStack);
-        } else {
-            return setAndUpdate(itemStack, prefixType, modPrefix);
+    public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack stack, PrefixType type) {
+        ModPrefix prefix = type.randomPrefix(random, stack);
+        if (prefix.canBeMercy() && random.nextInt(3) != 0) {
+            unknown(stack);
+            return null;
         }
-        return null;
+        return setAndUpdate(stack, type, prefix);
     }
 
-    public static @Nullable PrefixComponent getPrefix(ItemStack itemStack) {
-        return itemStack.isEmpty() ? null : itemStack.get(ModDataComponentTypes.PREFIX);
+    public static @Nullable PrefixComponent getPrefix(ItemStack stack) {
+        return stack.isEmpty() ? null : stack.get(ModDataComponentTypes.PREFIX);
     }
 
     /// 取实体在指定属性上的加成，并剔除手持物品自身对该属性的贡献。
     public static double attributeWithoutHeldItem(LivingEntity entity, Holder<Attribute> attribute, ItemStack heldItem) {
-        double heldValue = PrefixUtils.heldItemContribution(heldItem, 1.0D, attribute.value());
-        return heldValue > 0.0D ? entity.getAttributeValue(attribute) / heldValue : entity.getAttributeValue(attribute);
+        double heldValue = PrefixUtils.heldItemContribution(heldItem, 1, attribute.value());
+        return heldValue > 0 ? entity.getAttributeValue(attribute) / heldValue : entity.getAttributeValue(attribute);
     }
 
     /// 以基准值反推手持物品在该属性上的贡献，等价于原版对物品修饰符的结算。
     public static double heldItemContribution(ItemStack heldItem, double baseValue, Attribute attribute) {
         double value = baseValue;
-        PrefixComponent prefix = getPrefix(heldItem);
-        if (prefix != null) {
-            for (AttributeModifier modifier : prefix.modifiers().get().get(attribute)) {
+        PrefixComponent component = getPrefix(heldItem);
+        if (component != null) {
+            for (AttributeModifier modifier : component.modifiers().get().get(attribute)) {
                 value += switch (modifier.getOperation()) {
                     case ADDITION -> modifier.getAmount();
                     case MULTIPLY_BASE -> modifier.getAmount() * baseValue;
@@ -126,335 +125,41 @@ public final class PrefixUtils {
         return Math.max(1, (int) Math.ceil(baseTicks * baseSpeed / attackSpeed));
     }
 
-    public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack) {
-        PrefixType prefixType = getPrefixType(itemStack);
-        if (prefixType != PrefixType.UNKNOWN) {
-            return random(random, itemStack, prefixType);
+    public static @Nullable PrefixComponent random(RandomSource random, ItemStack stack) {
+        PrefixType type = getPrefixType(stack);
+        if (type != PrefixType.UNKNOWN) {
+            return setAndUpdate(stack, type, type.randomPrefix(random, stack));
         }
         return null;
     }
 
-    public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        return setAndUpdate(itemStack, prefixType, prefixType.randomPrefix(random, itemStack));
-    }
+    public static PrefixComponent setAndUpdate(ItemStack stack, PrefixType type, ModPrefix prefix) {
+        PrefixComponent component = prefix.createComponent(type, stack);
+        stack.set(ModDataComponentTypes.PREFIX, component);
 
-    public static @Nullable PrefixComponent setAndUpdate(ItemStack itemStack, @Nullable PrefixType prefixType, ModPrefix modPrefix) {
-        if (prefixType == null) return null;
-        PrefixComponent prefix = modPrefix.createComponent(prefixType, itemStack);
-        itemStack.set(ModDataComponentTypes.PREFIX, prefix);
-        int num1 = ModPrefix.ID_MAP.inverse().getOrDefault(modPrefix, 0);
-        float num2 = 1;
-        float num3 = 1;
-        float num4 = 1;
-        float num5 = 1;
-        float num6 = 1;
-        float num7 = 1;
-        float num8 = 0;
-
-        switch (num1) {
-            case 1:
-                num5 = 1.12f;
-                break;
-            case 2:
-                num5 = 1.18f;
-                break;
-            case 3:
-                num2 = 1.05f;
-                num8 = 2;
-                num5 = 1.05f;
-                break;
-            case 4:
-                num2 = 1.1f;
-                num5 = 1.1f;
-                num3 = 1.1f;
-                break;
-            case 5:
-                num2 = 1.15f;
-                break;
-            case 6, 53:
-                num2 = 1.1f;
-                break;
-            case 7:
-                num5 = 0.82f;
-                break;
-            case 8:
-                num3 = 0.85f;
-                num2 = 0.85f;
-                num5 = 0.87f;
-                break;
-            case 9:
-                num5 = 0.9f;
-                break;
-            case 10, 40:
-                num2 = 0.85f;
-                break;
-            case 11:
-                num4 = 1.1f;
-                num3 = 0.9f;
-                num5 = 0.9f;
-                break;
-            case 12:
-                num3 = 1.1f;
-                num2 = 1.05f;
-                num5 = 1.1f;
-                num4 = 1.15f;
-                break;
-            case 13:
-                num3 = 0.8f;
-                num2 = 0.9f;
-                num5 = 1.1f;
-                break;
-            case 14:
-                num3 = 1.15f;
-                num4 = 1.1f;
-                break;
-            case 15:
-                num3 = 0.9f;
-                num4 = 0.85f;
-                break;
-            case 16:
-                num2 = 1.1f;
-                num8 = 3;
-                break;
-            case 17:
-                num4 = 0.85f;
-                num6 = 1.1f;
-                break;
-            case 18:
-                num4 = 0.9f;
-                num6 = 1.15f;
-                break;
-            case 19:
-                num3 = 1.15f;
-                num6 = 1.05f;
-                break;
-            case 20:
-                num3 = 1.05f;
-                num6 = 1.05f;
-                num2 = 1.1f;
-                num4 = 0.95f;
-                num8 = 2;
-                break;
-            case 21:
-                num3 = 1.15f;
-                num2 = 1.1f;
-                break;
-            case 22:
-                num3 = 0.9f;
-                num6 = 0.9f;
-                num2 = 0.85f;
-                break;
-            case 23:
-                num4 = 1.15f;
-                num6 = 0.9f;
-                break;
-            case 24:
-                num4 = 1.1f;
-                num3 = 0.8f;
-                break;
-            case 25:
-                num4 = 1.1f;
-                num2 = 1.15f;
-                num8 = 1;
-                break;
-            case 26:
-                num7 = 0.85f;
-                num2 = 1.1f;
-                break;
-            case 27:
-                num7 = 0.85f;
-                break;
-            case 28:
-                num7 = 0.85f;
-                num2 = 1.15f;
-                num3 = 1.05f;
-                break;
-            case 29:
-                num7 = 1.1f;
-                break;
-            case 30:
-                num7 = 1.2f;
-                num2 = 0.9f;
-                break;
-            case 31:
-                num3 = 0.9f;
-                num2 = 0.9f;
-                break;
-            case 32:
-                num7 = 1.15f;
-                num2 = 1.1f;
-                break;
-            case 33:
-                num7 = 1.1f;
-                num3 = 1.1f;
-                num4 = 0.9f;
-                break;
-            case 34:
-                num7 = 0.9f;
-                num3 = 1.1f;
-                num4 = 1.1f;
-                num2 = 1.1f;
-                break;
-            case 35:
-                num7 = 1.2f;
-                num2 = 1.15f;
-                num3 = 1.15f;
-                break;
-            case 36:
-                num8 = 3;
-                break;
-            case 37:
-                num2 = 1.1f;
-                num8 = 3;
-                num3 = 1.1f;
-                break;
-            case 38, 54:
-                num3 = 1.15f;
-                break;
-            case 39:
-                num2 = 0.7f;
-                num3 = 0.8f;
-                break;
-            case 41:
-                num3 = 0.85f;
-                num2 = 0.9f;
-                break;
-            case 42:
-                num4 = 0.9f;
-                break;
-            case 43:
-                num2 = 1.1f;
-                num4 = 0.9f;
-                break;
-            case 44:
-                num4 = 0.9f;
-                num8 = 3;
-                break;
-            case 45:
-                num4 = 0.95f;
-                break;
-            case 46:
-                num8 = 3;
-                num4 = 0.94f;
-                num2 = 1.07f;
-                break;
-            case 47:
-                num4 = 1.15f;
-                break;
-            case 48:
-                num4 = 1.2f;
-                break;
-            case 49:
-                num4 = 1.08f;
-                break;
-            case 50:
-                num2 = 0.8f;
-                num4 = 1.15f;
-                break;
-            case 51:
-                num3 = 0.9f;
-                num4 = 0.9f;
-                num2 = 1.05f;
-                num8 = 2;
-                break;
-            case 52:
-                num7 = 0.9f;
-                num2 = 0.9f;
-                num4 = 0.9f;
-                break;
-            case 55:
-                num3 = 1.15f;
-                num2 = 1.05f;
-                break;
-            case 56:
-                num3 = 0.8f;
-                break;
-            case 57:
-                num3 = 0.9f;
-                num2 = 1.18f;
-                break;
-            case 58:
-                num4 = 0.85f;
-                num2 = 0.85f;
-                break;
-            case 59:
-                num3 = 1.15f;
-                num2 = 1.15f;
-                num8 = 5;
-                break;
-            case 60:
-                num2 = 1.15f;
-                num8 = 5;
-                break;
-            case 61:
-                num8 = 5;
-                break;
-            case 81:
-                num3 = 1.15f;
-                num2 = 1.15f;
-                num8 = 5;
-                num4 = 0.9f;
-                num5 = 1.1f;
-                break;
-            case 82:
-                num3 = 1.15f;
-                num2 = 1.15f;
-                num8 = 5;
-                num4 = 0.9f;
-                num6 = 1.1f;
-                break;
-            case 83:
-                num3 = 1.15f;
-                num2 = 1.15f;
-                num8 = 5;
-                num4 = 0.9f;
-                num7 = 0.9f;
-                break;
-            case 84:
-                num3 = 1.17f;
-                num2 = 1.17f;
-                num8 = 8;
-                break;
+        int tier = ModRarity.TIER.inverse().getOrDefault(ModRarity.getRarity(stack, true), -2);
+        if (tier > -2) {
+            tier += prefix.tier();
+            if (tier < -1) tier = -1;
+            else if (tier > 11) tier = 11;
         }
-
-        float num14 = (float) ((double) num2 * (2.0 - (double) num4) * (2.0 - (double) num7) * (double) num5 * (double) num3 * (double) num6 * (1.0 + (double) num8 * 0.0199999995529652));
-        if (modPrefix instanceof ModPrefix.Summon) num14 = (float) Math.sqrt(1.0F + prefix.value());
-        if (num1 == 62 || num1 == 69 || num1 == 73 || num1 == 77) num14 *= 1.05f;
-        if (num1 == 63 || num1 == 70 || num1 == 74 || num1 == 78 || num1 == 67) num14 *= 1.1f;
-        if (num1 == 64 || num1 == 71 || num1 == 75 || num1 == 79 || num1 == 66) num14 *= 1.15f;
-        if (num1 == 65 || num1 == 72 || num1 == 76 || num1 == 80 || num1 == 68) num14 *= 1.2f;
-
-        int rarity = ModRarity.ID_MAP.inverse().getOrDefault(ModRarity.getRarity(itemStack, true), 0);
-        if (rarity > -11) {
-            if (rarity == -10) rarity = 0;
-            else if (rarity == -9) rarity = 2;
-            else if (rarity == -8) rarity = 4;
-            else if (rarity == -7) rarity = 6;
-
-            if ((double) num14 >= 1.2) rarity += 2;
-            else if ((double) num14 >= 1.05) ++rarity;
-            else if ((double) num14 <= 0.8) rarity -= 2;
-            else if ((double) num14 <= 0.95) --rarity;
-            if (rarity < -1) rarity = -1;
-            else if (rarity > 11) rarity = 11;
-        }
-        itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
-        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(itemStack, 50, true) * num14 * num14)));
-        return prefix;
+        stack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.TIER.get(tier));
+        stack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(stack, 50, true) * Mth.square(prefix.value()))));
+        return component;
     }
 
-    public static void unknown(ItemStack itemStack) {
-        itemStack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0.0F, 0, 0, 0.0F));
+    public static void unknown(ItemStack stack) {
+        stack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0, 0));
     }
 
-    public static float calculateManaCost(ItemStack itemStack, float amount) {
-        PrefixComponent prefix = itemStack.get(ModDataComponentTypes.PREFIX);
+    public static float calculateManaCost(ItemStack stack, float amount) {
+        PrefixComponent prefix = stack.get(ModDataComponentTypes.PREFIX);
         if (prefix != null) return amount * (1.0F + prefix.manaCost());
         return amount;
     }
 
-    public static int getReforgeCost(Player player, ItemStack itemStack) {
-        int price = ValueComponent.getValue(itemStack, 5000);
+    public static int getReforgeCost(Player player, ItemStack stack) {
+        int price = ValueComponent.getValue(stack, 5000);
         if (TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }

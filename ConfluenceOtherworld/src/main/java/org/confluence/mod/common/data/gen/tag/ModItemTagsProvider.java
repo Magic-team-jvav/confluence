@@ -41,7 +41,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        IntrinsicTagAppender<Item> hook = tag(ModTags.Items.HOOK);
+        IntrinsicTagAppender<Item> hook = tag(ModTags.Items.TOOLS_HOOK);
         HookItems.ITEMS.getEntries().forEach(item -> {
             hook.add(item.get());
         });
@@ -505,23 +505,43 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> repeater_crossbow_enchantable = tag(ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE);
         IntrinsicTagAppender<Item> tools_crossbow = tag(PortTags.Items.TOOLS_CROSSBOW);
         IntrinsicTagAppender<Item> tools_repeater = tag(ModTags.Items.TOOLS_REPEATER);
-        IntrinsicTagAppender<Item> repeater_crossbow = tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW);
 
-        tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
-                .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
-                .add(BoomerangItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
-                .add(YoyoItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new));
-        tag(ModTags.Items.PREFIX_MELEE_ONLY)
-                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES, ModTags.Items.FLAIL, ModTags.Items.SPEAR, ModTags.Items.TOOLS_LANCE)
-                .add(WhipItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new))
-        /*.add(Items.MACE)*/;
+        IntrinsicTagAppender<Item> yoyo = tag(ModTags.Items.YOYO);
+        YoyoItems.ITEMS.getEntries().forEach(item -> yoyo.add(item.get()));
+
+        tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY).addTags(
+                ModTags.Items.FLAIL,
+                ModTags.Items.SPEAR,
+                ModTags.Items.YOYO,
+                ModTags.Items.BOOMERANG,
+                ModTags.Items.TOOLS_CHAINSAW,
+                ModTags.Items.TOOLS_DRILL
+        );
+        tag(ModTags.Items.PREFIX_MELEE_ONLY).addTags(
+                ItemTags.SWORDS,
+                ItemTags.AXES,
+                ItemTags.PICKAXES,
+                ItemTags.SHOVELS,
+                ItemTags.HOES,
+                ModTags.Items.LANCE,
+                ModTags.Items.WHIP
+        );
+        /*.add(Items.MACE)*/
         tag(ModTags.Items.PREFIX_RANGED_ONLY)
                 .addTags(PortTags.Items.RANGED_WEAPON_TOOLS, ModTags.Items.GUN)
                 .add(Items.TRIDENT);
-        tag(ModTags.Items.PREFIX_MAGIC_ONLY)
-                .addTags(ModTags.Items.MANA_WEAPON, ModTags.Items.SUMMONER_WEAPON);
-        tag(ModTags.Items.PREFIX_ACCESSORY_ONLY)
-                .addTag(TCTags.Items.ACCESSORY);
+        tag(ModTags.Items.PREFIX_MAGIC_ONLY).addTags(ModTags.Items.MANA_WEAPON);
+        IntrinsicTagAppender<Item> prefix_summon_only = tag(ModTags.Items.PREFIX_SUMMON_ONLY);
+        SummonItems.ITEMS.getEntries().forEach(item -> prefix_summon_only.add(item.get()));
+        IntrinsicTagAppender<Item> summoner_weapon = tag(ModTags.Items.SUMMONER_WEAPON);
+        summoner_weapon.addTags(ModTags.Items.PREFIX_SUMMON_ONLY);
+        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
+        WhipItems.ITEMS.getEntries().forEach(item -> {
+            whip.add(item.get());
+            melee_weapon_tools.add(item.get());
+            summoner_weapon.add(item.get());
+        });
+        tag(ModTags.Items.PREFIX_ACCESSORY_ONLY).addTag(TCTags.Items.ACCESSORY);
 
         IntrinsicTagAppender<Item> boomerang = tag(ModTags.Items.BOOMERANG);
         BoomerangItems.ITEMS.getEntries().forEach(item -> boomerang.add(item.get()));
@@ -635,10 +655,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         });
 
         IntrinsicTagAppender<Item> swords = tag(ItemTags.SWORDS);
+        IntrinsicTagAppender<Item> short_sword = tag(ModTags.Items.SHORT_SWORD);
         SwordItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             melee_weapon_tools.add(value);
             swords.add(value);
+            if (SwordItems.isShortSword(item)) {
+                short_sword.add(item.get());
+            }
         });
 
         IntrinsicTagAppender<Item> head_armor = tag(PortTags.Items.HEAD_ARMOR);
@@ -684,15 +708,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         sharp_weapon_enchantable.addTag(ModTags.Items.SPEAR);
         SpearItems.ITEMS.getEntries().forEach(item -> spear.add(item.get()));
 
-        IntrinsicTagAppender<Item> lances = tag(ModTags.Items.TOOLS_LANCE);
-        skip_reset_strength.addTag(ModTags.Items.TOOLS_LANCE);
-        melee_weapon_tools.addTag(ModTags.Items.TOOLS_LANCE);
-        weapon_enchantable.addTag(ModTags.Items.TOOLS_LANCE);
+        IntrinsicTagAppender<Item> lances = tag(ModTags.Items.LANCE);
+        skip_reset_strength.addTag(ModTags.Items.LANCE);
+        melee_weapon_tools.addTag(ModTags.Items.LANCE);
+        weapon_enchantable.addTag(ModTags.Items.LANCE);
         LanceItems.ITEMS.getEntries().forEach(item -> lances.add(item.get()));
 
         TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
 
-        SummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 
         copy(ModTags.Blocks.COINS, ModTags.Items.COINS);
         tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
@@ -1466,12 +1489,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 GunItems.THE_UNDERTAKER.get(),
                 GunItems.MUSKET.get()
         );
-        IntrinsicTagAppender<Item> whip = tag(ModTags.Items.WHIP);
-        WhipItems.ITEMS.getEntries().forEach(item -> {
-            Item value = item.get();
-            whip.add(value);
-            melee_weapon_tools.add(value);
-        });
         YoyoItems.ITEMS.getEntries().forEach(item -> melee_weapon_tools.add(item.get()));
         IntrinsicTagAppender<Item> bullet = tag(ModTags.Items.BULLET);
         GunItems.BULLET_ITEMS.forEach(item -> bullet.add(item.get()));
@@ -1593,20 +1610,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE).addTag(
                 ModTags.Items.REPEATER_ENCHANTABLE
         );
-        tag(ModTags.Items.TOOLS_REPEATER_CROSSBOW).addTag(
-                ModTags.Items.TOOLS_REPEATER
-        );
         tag(PortTags.Items.TOOLS_CROSSBOW).addTag(
-                ModTags.Items.TOOLS_REPEATER_CROSSBOW
+                ModTags.Items.TOOLS_REPEATER
         );
         tag(PortTags.Items.CROSSBOW_ENCHANTABLE).addTag(
                 ModTags.Items.REPEATER_CROSSBOW_ENCHANTABLE
         );
-        IntrinsicTagAppender<Item> short_sword = tag(ModTags.Items.SHORT_SWORD);
-        SwordItems.ITEMS.getEntries().forEach(item -> {
-            if (SwordItems.isShortSword(item)) {
-                short_sword.add(item.get());
-            }
-        });
     }
 }

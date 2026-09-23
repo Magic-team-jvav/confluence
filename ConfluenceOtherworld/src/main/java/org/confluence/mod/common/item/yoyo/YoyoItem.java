@@ -118,9 +118,6 @@ public class YoyoItem extends CustomRarityItem {
     /// 暴击时使用的总伤害倍率。
     public float criticalDamageMultiplier() {return 2;}
 
-    /// 个别悠悠球允许使用专属传奇前缀。
-    public boolean supportsLegendaryPrefix() {return false;}
-
     /// 特殊能力说明及其参数由具体悠悠球提供。
     protected @Nullable Component effectTooltip() {return null;}
 

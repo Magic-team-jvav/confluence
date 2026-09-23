@@ -38,7 +38,7 @@ public abstract class MultiNoiseBiomeSourceMixin implements IMultiNoiseBiomeSour
 
     /// **不再在 `collectPossibleBiomes` 上追加本模组的群系。**
     ///
-    /// 追加点已经挪到 {@link BiomeSourceMixin#confluence$withRegionBiomes}
+    /// 追加点已经挪到 [BiomeSourceMixin#confluence$withRegionBiomes]
     /// （环绕 `BiomeSource#possibleBiomes`）。原因是 `possibleBiomes` 是
     /// `Suppliers.memoize(() -> collectPossibleBiomes()...)`，**只在第一次求值时算一次**，
     /// 而那次求值实测早于 `ConfluenceBiomeInjector#install` 注册处理器，

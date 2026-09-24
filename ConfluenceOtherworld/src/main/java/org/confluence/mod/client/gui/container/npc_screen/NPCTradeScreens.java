@@ -18,7 +18,8 @@ public final class NPCTradeScreens {
             NpcEntities.DRYAD.get(), Confluence.asResource("textures/gui/trade/dryad_trade.png"),
             NpcEntities.MERCHANT.get(), Confluence.asResource("textures/gui/trade/merchant_trade.png"),
             NpcEntities.DYE_TRADER.get(), Confluence.asResource("textures/gui/trade/dye_trader_trade.png"),
-            NpcEntities.ZOOLOGIST.get(), Confluence.asResource("textures/gui/trade/zoologist_trade.png")
+            NpcEntities.ZOOLOGIST.get(), Confluence.asResource("textures/gui/trade/zoologist_trade.png"),
+            NpcEntities.DEMOLITIONIST.get(), Confluence.asResource("textures/gui/trade/demolitionist_trade.png")
     );
 
     private NPCTradeScreens() {}

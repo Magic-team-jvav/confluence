@@ -7,8 +7,8 @@ import org.confluence.mod.common.entity.ai.bt.BTStatus;
 
 /// 抓人草的两阶段锚定摆动行为。
 ///
-/// 一个完整周期持续 150 tick：普通伸展五秒，扩大伸展二点五秒。头部同时叠加
-/// 朝向、往复摆动和根部回拉速度，最终速度限制为 0.3，形成连续的藤蔓式运动，而不是直接追逐一个被硬截断的目标点。
+/// 一个完整周期持续 150 tick：普通伸展五秒，扩大伸展二点五秒。
+/// 有目标时向伸展范围内的目标位置移动，无目标时围绕根部摆动；速度上限为 0.3。
 ///
 /// 该状态只保存在行为节点内，不写入实体存档；
 /// 重新加载后从新周期开始。根部和初始方向仍由实体同步与持久化。
@@ -46,14 +46,12 @@ final class SnatcherMovementAction extends BTNode {
             return BTStatus.RUNNING;
         }
 
-        Vec3 extraVelocity = updateTargetDirection(target, extended);
-
-        double frequencyMultiplier = 2.0;
-        Vec3 forward = direction.normalize().scale(0.2 * Math.sin(snatcher.tickCount * 0.05 * frequencyMultiplier));
         double reach = extended ? snatcher.extendedReach() : snatcher.normalReach();
-        Vec3 returnPosition = snatcher.getAnchor().add(direction.scale(reach * 0.25 * (3.0 + Math.sin(snatcher.tickCount * 0.05 * frequencyMultiplier))));
-        Vec3 returnVelocity = returnPosition.subtract(snatcher.position()).scale(0.1);
-        Vec3 finalVelocity = extraVelocity.add(forward).add(returnVelocity);
+        Vec3 targetPosition = target.position().add(0.0, target.getEyeHeight() * 0.5, 0.0);
+        snatcher.faceCombatPosition(targetPosition, 12.0F, 85.0F);
+        Vec3 fromAnchorToTarget = targetPosition.subtract(snatcher.getAnchor());
+        Vec3 desiredPosition = snatcher.getAnchor().add(fromAnchorToTarget.lengthSqr() > reach * reach ? fromAnchorToTarget.normalize().scale(reach) : fromAnchorToTarget);
+        Vec3 finalVelocity = desiredPosition.subtract(snatcher.position()).scale(0.1);
         if (finalVelocity.lengthSqr() > MAX_SPEED * MAX_SPEED) {
             finalVelocity = finalVelocity.normalize().scale(MAX_SPEED);
         }
@@ -85,29 +83,6 @@ final class SnatcherMovementAction extends BTNode {
         snatcher.setDeltaMovement(velocity);
         snatcher.faceCombatDirection(direction, 8.0F, 8.0F);
         snatcher.hasImpulse = true;
-    }
-
-    private Vec3 updateTargetDirection(LivingEntity target, boolean extended) {
-        Vec3 targetPosition = target.position().add(0.0, target.getEyeHeight() * 0.5, 0.0);
-        snatcher.faceCombatPosition(targetPosition, 12.0F, 85.0F);
-
-        Vec3 fromHeadToAnchor = snatcher.getAnchor().subtract(snatcher.position());
-        Vec3 fromHeadToTarget = targetPosition.subtract(snatcher.position());
-        Vec3 fromAnchorToTarget = targetPosition.subtract(snatcher.getAnchor());
-        /// 分母必须是“根部到目标”的局部距离。把单位方向与世界坐标相减会让
-        /// 运动强度随世界原点距离变化，同一只抓人草换个坐标就会得到不同追踪表现。
-        double divisor = fromAnchorToTarget.length();
-        Vec3 perpendicular = fromHeadToAnchor.cross(fromHeadToTarget).cross(fromAnchorToTarget);
-        Vec3 velocity = Vec3.ZERO;
-        if (divisor > 1.0E-6 && perpendicular.lengthSqr() > 1.0E-8) {
-            double scale = fromHeadToAnchor.dot(fromHeadToTarget)
-                    / divisor * (extended ? 0.25 : 5.0);
-            velocity = perpendicular.normalize().scale(-scale);
-        }
-        if (fromAnchorToTarget.lengthSqr() > 1.0E-8) {
-            direction = fromAnchorToTarget.normalize();
-        }
-        return velocity;
     }
 
 }

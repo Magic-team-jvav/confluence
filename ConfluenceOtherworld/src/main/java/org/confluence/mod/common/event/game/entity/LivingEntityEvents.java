@@ -321,6 +321,7 @@ public final class LivingEntityEvents {
         LivingEntity victim = event.getEntity();
         if (!(victim.level() instanceof ServerLevel serverLevel)) return;
         DamageSource damageSource = event.getSource();
+        SwordItems.afterSuccessfulDamage(damageSource, damageSource.getEntity(), victim);
         AttackEffects.afterDamage(victim, damageSource);
         /// 只记录实际造成伤害的外部攻击者，射弹和部件追溯到所有者。
         if (victim instanceof Mob mob && EnemyTargeting.isConfluenceEnemy(mob)) {
@@ -699,6 +700,11 @@ public final class LivingEntityEvents {
         @Nullable Entity direct = damageSource.getDirectEntity();
         if (direct != null && direct.getType() == ModEntities.CRYSTAL_VILE_SHARD.get()) {
             event.setPenetration(event.getPenetration() + CrystalVileShardItem.ARMOR_PENETRATION);
+        }
+        if (direct instanceof org.confluence.mod.common.entity.projectile.sword.GrassSwordProjectile) {
+            event.setPenetration(event.getPenetration() + 20.0F);
+        } else if (direct instanceof org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile) {
+            event.setPenetration(event.getPenetration() + 5.0F);
         }
 
         if (damageSource.getEntity() instanceof LivingEntity living &&

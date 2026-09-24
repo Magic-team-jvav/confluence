@@ -12,6 +12,18 @@ public class StarFuryProjectile extends SwordProjectile {
     }
 
     @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        clearKnockback();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (isInWater() && !isRemoved()) setDeltaMovement(getDeltaMovement().scale(1.25));
+    }
+
+    @Override
     public Type confluence$getImmunityType() {
         return Type.LOCAL;
     }

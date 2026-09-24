@@ -26,7 +26,7 @@ public class GrassSwordProjectile extends SwordProjectile {
     public GrassSwordProjectile(EntityType<GrassSwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
         survivesBlockHit = true;
-        remainingHits = 99999;
+        remainingHits = 2;
         configureCollision(10, 1.0);
     }
 
@@ -83,8 +83,8 @@ public class GrassSwordProjectile extends SwordProjectile {
 
     @Override
     protected void applyHitEffect(Entity target) {
-        if (target instanceof LivingEntity living && random.nextFloat() < 0.5F) {
-            living.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 1), getOwner());
+        if (target instanceof LivingEntity living && random.nextFloat() < 0.25F) {
+            living.addEffect(new MobEffectInstance(MobEffects.POISON, 140, 0), getOwner());
         }
     }
 

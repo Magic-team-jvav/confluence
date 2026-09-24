@@ -2,6 +2,9 @@ package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -14,11 +17,22 @@ import java.util.Set;
 import java.util.UUID;
 
 public class LightBaneProjectile extends SwordProjectile {
+    private static final EntityDataAccessor<Boolean> BIG_SLASH = SynchedEntityData.defineId(LightBaneProjectile.class, EntityDataSerializers.BOOLEAN);
     private final Set<UUID> hitTargets = new HashSet<>();
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        entityData.define(BIG_SLASH, false);
+    }
+
+    public void makeBigSlash() {entityData.set(BIG_SLASH, true);}
+
+    public boolean isBigSlash() {return entityData.get(BIG_SLASH);}
 
     public LightBaneProjectile(EntityType<LightBaneProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
-        remainingHits = 99999;
+        remainingHits = 2;
     }
 
     @Override

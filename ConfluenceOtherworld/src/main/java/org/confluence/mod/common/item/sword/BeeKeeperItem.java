@@ -23,10 +23,13 @@ public class BeeKeeperItem extends EffectSwordItem {
 
     @Override
     protected void onDamage(ItemStack weapon, LivingEntity attacker, LivingEntity victim, DamageSource source) {
-        for (int index = 0; index < 3; index++) {
+        boolean hivePack = CuriosUtils.hasCurio(attacker, TCItems.HIVE_PACK.get());
+        int beeCount = 1 + attacker.getRandom().nextInt(3);
+        if (hivePack && attacker.getRandom().nextInt(3) == 0) beeCount++;
+        for (int index = 0; index < beeCount; index++) {
             BeeKeeperProjectile projectile = ModEntities.BEE.get().create(attacker.level());
             if (projectile == null) continue;
-            boolean giant = CuriosUtils.hasCurio(attacker, TCItems.HIVE_PACK.get()) && attacker.getRandom().nextBoolean();
+            boolean giant = hivePack && attacker.getRandom().nextBoolean();
             projectile.configure(attacker, 2.0F, (float) attacker.getAttributeValue(LibAttributes.getCriticalChance()),
                     (float) attacker.getAttributeValue(Attributes.ATTACK_KNOCKBACK), giant);
             projectile.setPos(victim.position().add(victim.getRandom1211().nextFloat() * 0.2F,

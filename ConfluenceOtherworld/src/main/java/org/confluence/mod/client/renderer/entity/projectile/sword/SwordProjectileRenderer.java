@@ -25,6 +25,7 @@ import org.confluence.mod.client.model.entity.projectile.IceBladeSwordProjectile
 import org.confluence.mod.client.model.entity.projectile.SwordProjectileGeoModel;
 import org.confluence.mod.common.component.SwordProjectileAppearance;
 import org.confluence.mod.common.entity.projectile.sword.GeoSwordProjectile;
+import org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.jetbrains.annotations.Nullable;
@@ -72,6 +73,7 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
         if (model == null) return;
         poseStack.pushPose();
         float scale = appearance.scale() * lifecycleScale(entity, appearance.lifecycle(), partialTick);
+        if (entity instanceof LightBaneProjectile slash && slash.isBigSlash()) scale *= 1.7F;
         poseStack.scale(scale, scale, scale);
         poseStack.translate(0.0F, appearance.offsetY(), appearance.offsetZ());
         if (appearance.lifecycle() == SwordProjectileAppearance.Lifecycle.GROW_FADE
@@ -121,7 +123,7 @@ public final class SwordProjectileRenderer<T extends SwordProjectile> extends En
         poseStack.popPose();
     }
 
-    private static void renderNightEdge(NightEdgeProjectile entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    static void renderNightEdge(NightEdgeProjectile entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         Entity owner = entity.getOwner();
         float yaw = -(owner == null ? entity.getYRot() : Mth.lerp(partialTick, owner.yRotO, owner.getYRot())) + 70.0F;
         Vec3 entityPosition = owner == null ? Vec3.ZERO : new Vec3(

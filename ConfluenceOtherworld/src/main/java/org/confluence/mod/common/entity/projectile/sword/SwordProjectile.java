@@ -297,6 +297,9 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         buffer.writeBoolean(component != null);
         if (component != null) SwordProjectileComponent.STREAM_CODEC.encode(buffer, component);
         buffer.writeItem(firedFromWeapon);
+        Entity owner = getOwner();
+        buffer.writeBoolean(owner != null);
+        if (owner != null) buffer.writeVarInt(owner.getId());
     }
 
     @Override
@@ -304,6 +307,11 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         if (buffer.readBoolean())
             setProjectileComponent(SwordProjectileComponent.STREAM_CODEC.decode(buffer));
         firedFromWeapon = buffer.readItem();
+        /// Forge 自定义生成包不携带原版射弹的 owner ID，永夜剑客户端无 owner 就不会生成拖尾。
+        if (buffer.readBoolean()) {
+            Entity owner = level().getEntity(buffer.readVarInt());
+            if (owner != null) setOwner(owner);
+        }
     }
 
     @Override

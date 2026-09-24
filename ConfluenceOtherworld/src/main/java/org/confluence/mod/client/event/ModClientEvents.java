@@ -96,6 +96,7 @@ import org.confluence.mod.client.renderer.entity.flail.FlailModel;
 import org.confluence.mod.client.renderer.entity.hook.*;
 import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
+import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.SwordProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.CthulhuEyeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.yoyo.TerrarianProjectileRenderer;
@@ -377,7 +378,7 @@ public final class ModClientEvents {
                 poses.popPose();
             }
         });
-        event.registerEntityRenderer(NIGHTS_EDGE.get(), SwordProjectileRenderer::new);
+        event.registerEntityRenderer(NIGHTS_EDGE.get(), NightEdgeProjectileRenderer::new);
         event.registerEntityRenderer(BASE_ARROW.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjectileRenderer<>(context, new BeeProjectileModel<>(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/bee_projectile.png")));
         event.registerEntityRenderer(HELL_BAT_ARROW.get(), context -> new GeoArrowRenderer(context, MonsterEntities.HELL_BAT.getId()));

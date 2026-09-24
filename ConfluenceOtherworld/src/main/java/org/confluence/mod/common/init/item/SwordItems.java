@@ -1,5 +1,6 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -12,10 +13,18 @@ import net.minecraft.world.item.Tier;
 import org.confluence.lib.common.LibEffects;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.component.SwordProjectileAppearance;
+import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.component.SwordProjectileParticleEffect;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.init.entity.ModEntities;
 import org.confluence.mod.common.item.sword.*;
+import org.confluence.mod.util.generation.variant.AboveFallenGeneration;
+import org.confluence.mod.util.generation.variant.ForwardGeneration;
+import org.confluence.mod.util.track.variant.SimpleTrack;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.diff.IPortFoodProperties;
 import org.mesdag.portlib.registries.PortDeferredItem;
@@ -24,6 +33,8 @@ import org.mesdag.portlib.registries.PortRegisterHandler;
 import org.mesdag.portlib.registries.PortRegistryEntry;
 import org.mesdag.portlib.wrapper.world.entity.ai.attributes.PortAttributeModifier;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 /// 允许空挥的剑都属于特殊横扫剑。
@@ -153,12 +164,7 @@ public class SwordItems {
                     .specialSweep(0.0F)
                     .attribute(Attributes.ENTITY_INTERACTION_RANGE, -1.4F, PortAttributeModifier.Operation.ADD_VALUE));
 
-    public static final PortDeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED,
-            () -> SwordDefinition.builder()
-                    .specialSweep(0.8F)
-                    .tooltipImage()
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 9, PortAttributeModifier.Operation.ADD_VALUE)
-                    .attribute(Attributes.ATTACK_KNOCKBACK, 0.8F, PortAttributeModifier.Operation.ADD_VALUE));
+    public static final PortDeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", BreakerBladeItem::new);
 
     // 效果剑
     public static final PortDeferredItem<BaseSwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish",
@@ -166,11 +172,7 @@ public class SwordItems {
                     .tooltipImage()
                     .attribute(Attributes.ENTITY_INTERACTION_RANGE, 2, PortAttributeModifier.Operation.ADD_VALUE)
                     .specialSweep(0.8F), LibEffects.CONFUSED, 40, 1, 0.5F));
-    public static final PortDeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE,
-            () -> SwordDefinition.builder()
-                    .projectile(SwordProjectileDefinitions.LIGHTS_BANE)
-                    .tooltipImage()
-                    .specialSweep(0.8F));
+    public static final PortDeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", LightsBaneItem::new);
     public static final PortDeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer",
             () -> new EffectSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 14, 1.3F, SwordDefinition.builder()
                     .tooltipImage()
@@ -185,37 +187,52 @@ public class SwordItems {
     // 弹幕剑
     public static final PortDeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.BLUE,
             () -> SwordDefinition.builder()
-                    .projectile(SwordProjectileDefinitions.ICE_BLADE)
+                    .projectile(new SwordProjectileComponent(1.0F, 0.6F, 0.9F, 40, 0.0F, 15,
+                            ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
+                            new SwordProjectileAppearance.Model(Confluence.asResource("ice_blade_sword_projectile"),
+                                    Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1.0F, 0.0F, 0.0F, 0.0F,
+                                    SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
+                            List.of(SwordProjectileParticleEffect.emitter(Confluence.asResource("ball_of_frost_trail")))))
                     .tooltipImage()
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.0F, ModRarity.GREEN,
             () -> SwordDefinition.builder()
-                    .projectile(SwordProjectileDefinitions.STARFURY)
+                    .projectile(new SwordProjectileComponent(1.5F, 2.0F, 0.9F, 100, 0.0F, 15,
+                            ModSoundEvents.STAR.getId(), ModEntities.STAR_FURY.getId(), Optional.empty(),
+                            new AboveFallenGeneration(30.0F, 30.0F, 10.0F, 1.0F, 20.0F, 5.0F),
+                            new SwordProjectileAppearance.Cross(Confluence.asResource("textures/entity/star_fury_projectile.png"),
+                                    0xFFFF9696, 2.0F, 18.0F, 10)))
                     .tooltip(p -> p.withColor(0xe44189))
                     .tooltip(p -> p.withColor(0xe44189))
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.0F, ModRarity.ORANGE,
             () -> SwordDefinition.builder()
-                    .projectile(SwordProjectileDefinitions.ENCHANTED_SWORD)
+                    .projectile(new SwordProjectileComponent(1.0F, 0.8F, 0.9F, 40, 0.0F, 10,
+                            ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
+                            new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
+                                    Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
+                                    SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
+                            List.of(SwordProjectileParticleEffect.emitter(Confluence.asResource("falling_star")))))
                     .tooltip(p -> p.withColor(0x4156e4))
                     .tooltip(p -> p.withColor(0x4156e4))
                     .specialSweep(0.8F));
-    public static final PortDeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.GREEN,
-            () -> SwordDefinition.builder()
-                    .projectile(SwordProjectileDefinitions.BLADE_OF_GRASS)
-                    .tooltipImage()
-                    .attribute(Attributes.ENTITY_INTERACTION_RANGE, 2, PortAttributeModifier.Operation.ADD_VALUE)
-                    .specialSweep(0.8F));
+    public static final PortDeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", BladeOfGrassItem::new);
     public static final PortDeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN,
             () -> SwordDefinition.builder()
-                    .projectile(SwordProjectileDefinitions.NIGHTS_EDGE)
+                    .projectile(new SwordProjectileComponent(1.0F, 0.8F, 0.9F, 20, 0.0F, 10,
+                            ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHTS_EDGE.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 20.0F),
+                            new SwordProjectileAppearance.Item(0.8F, SwordProjectileAppearance.Transform.OWNER_SWING,
+                                    Optional.of(Confluence.asResource("nights_edge")))))
                     .tooltipImage()
                     .attribute(Attributes.ENTITY_INTERACTION_RANGE, 4, PortAttributeModifier.Operation.ADD_VALUE)
                     .specialSweep(0.8F));
-    public static final PortDeferredItem<BaseSwordItem> WAFFLES_IRON = register("waffles_iron", ModTiers.UNBREAKABLE, 27, 2.5F, ModRarity.PINK,
-            () -> SwordDefinition.builder()
-                    .projectile(SwordProjectileDefinitions.ICE_BLADE)
-                    .tooltipImage());
+    public static final PortDeferredItem<BaseSwordItem> WAFFLES_IRON = register("waffles_iron",
+            () -> new EffectSwordItem(ModTiers.UNBREAKABLE, ModRarity.PINK, 27, 2.5F,
+                    SwordDefinition.builder().projectile(new SwordProjectileComponent(1.0F, 0.8F, 1.0F, 60, 0.06F, 10,
+                            ModSoundEvents.ITEM_WAFFLE_IRON.getId(), ModEntities.ICE_BLADE_SWORD.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 0.0F),
+                            new SwordProjectileAppearance.Cross(Confluence.asResource("textures/entity/waffle.png"),
+                                    0xFFFFFFFF, 1.0F, 0.0F, 0))).tooltipImage(),
+                    ModEffects.HELLFIRE, 100, 0, 1.0F / 3.0F));
 
     // 陨石光剑
     public static final PortDeferredItem<BaseSwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, BasePhasebladeItem.PhaseColor.RED));
@@ -247,7 +264,12 @@ public class SwordItems {
                     .specialSweep(1.0F)
                     .attribute(Attributes.ENTITY_INTERACTION_RANGE, 7, PortAttributeModifier.Operation.ADD_VALUE)
                     .tooltipImage()
-                    .projectile(SwordProjectileDefinitions.DEVELOPER));
+                    .projectile(new SwordProjectileComponent(1.0F, 0.3F, 1.0F, 50, 0.0F, 20,
+                            ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD.getId(),
+                            Optional.of(new SimpleTrack(Mth.HALF_PI, 0.8F, 0.2F, Optional.empty(), 0.1)), ForwardGeneration.of(0.0F, 0.0F),
+                            new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
+                                    Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
+                                    SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT))));
 
     // 赞助者物品
     public static final PortDeferredItem<BaseSwordItem> BROKEN_SWEET_SWORD = register("broken_sweet_sword",
@@ -296,5 +318,14 @@ public class SwordItems {
             amount = sword.modifyDamage(weapon, damageSource, attacker, victim, amount);
         }
         return amount;
+    }
+
+    public static void afterSuccessfulDamage(DamageSource damageSource, @Nullable Entity attacker, LivingEntity victim) {
+        ItemStack weapon = damageSource.getWeaponItem();
+        if (weapon != null && attacker instanceof LivingEntity living
+                && damageSource.is(org.mesdag.portlib.wrapper.common.PortTags.DamageTypes.IS_PLAYER_ATTACK)) {
+            if (weapon.getItem() instanceof VolcanoItem volcano)
+                volcano.afterSuccessfulDamage(living, victim);
+        }
     }
 }

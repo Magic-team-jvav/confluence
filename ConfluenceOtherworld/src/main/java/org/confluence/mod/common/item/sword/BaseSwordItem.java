@@ -107,8 +107,11 @@ public class BaseSwordItem extends SwordItem {
         }
         float damage = (float) (component.damageFactor() * owner.getAttributeValue(LibAttributes.getAttackDamage()));
         projectile.configure(owner, weapon, component, damage);
+        customizeProjectile(owner, weapon, projectile);
         return projectile;
     }
+
+    protected void customizeProjectile(LivingEntity owner, ItemStack weapon, SwordProjectile projectile) {}
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {

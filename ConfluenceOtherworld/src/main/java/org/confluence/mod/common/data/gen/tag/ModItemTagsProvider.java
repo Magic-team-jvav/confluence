@@ -13,6 +13,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TorchBlock;
+import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
@@ -278,7 +280,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.GOLD_AND_PLATINUM).addTags(PortTags.Items.INGOTS_GOLD, ModTags.Items.INGOTS_PLATINUM);
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
-//        for (Torches torches : Torches.values()) torch.add(torches.item.get());
+        TorchBlocks.BLOCKS.getEntries().forEach(entry -> {
+            Block block = entry.get();
+            if (block instanceof TorchBlock && !(block instanceof WallTorchBlock)) {
+                torch.add(block.asItem());
+            }
+        });
         tag(ModTags.Items.PROVIDE_LIGHT).addTag(ModTags.Items.TORCH).add(
                 Items.LANTERN,
                 Items.SOUL_LANTERN,

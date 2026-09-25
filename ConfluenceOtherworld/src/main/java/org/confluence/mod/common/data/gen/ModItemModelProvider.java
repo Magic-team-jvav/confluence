@@ -258,6 +258,13 @@ public class ModItemModelProvider extends ItemModelProvider {
                         withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
                     } else if (block instanceof ChainBlock) {
                         withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));
+                    } else if (block instanceof TorchBlock) {
+                        ResourceLocation torchTexture = Confluence.asResource("block/torch/" + path);
+                        if (existingFileHelper.exists(torchTexture, PackType.CLIENT_RESOURCES, ".png", "textures")) {
+                            withExistingParent(path, "item/generated").texture("layer0", torchTexture);
+                        } else {
+                            withExistingParent(path, Confluence.asResource("block/" + path));
+                        }
                     } else {
                         withExistingParent(path, Confluence.asResource("block/" + path));
                     }

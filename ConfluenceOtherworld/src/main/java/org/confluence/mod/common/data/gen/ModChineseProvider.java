@@ -207,6 +207,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.storage", "存储");
         add("itemGroup.confluence.souls", "灵魂瓶");
         add("itemGroup.confluence.misc_functional", "杂项功能方块");
+        add("itemGroup.confluence.torches", "火把");
         add("itemGroup.confluence.pylon", "晶塔");
         // 材料
         add("itemGroup.confluence.metal_materials", "金属材料");
@@ -2884,31 +2885,30 @@ public class ModChineseProvider extends LanguageProvider {
         // 带效果的蜡烛
         add(FunctionalBlocks.WATER_CANDLE.get(), "水蜡烛");
         add(FunctionalBlocks.PEACE_CANDLE.get(), "和平蜡烛");
-/*
-        add(Torches.RED_TORCH.item.get(), "红火把");
-        add(Torches.ORANGE_TORCH.item.get(), "橙火把");
-        add(Torches.YELLOW_TORCH.item.get(), "黄火把");
-        add(Torches.GREEN_TORCH.item.get(), "绿火把");
-        add(Torches.BLUE_TORCH.item.get(), "蓝火把");
-        add(Torches.WHITE_TORCH.item.get(), "白火把");
-        add(Torches.PURPLE_TORCH.item.get(), "紫火把");
-        add(Torches.ICE_TORCH.item.get(), "冰雪火把");
-        add(Torches.PINK_TORCH.item.get(), "粉火把");
-        add(Torches.BONE_TORCH.item.get(), "骨头火把");
-        add(Torches.ULTRABRIGHT_TORCH.item.get(), "超亮火把");
-        add(Torches.DEMON_TORCH.item.get(), "恶魔火把");
-        add(Torches.CURSED_TORCH.item.get(), "诅咒火把");
-        add(Torches.ICHOR_TORCH.item.get(), "灵液火把");
-        add(Torches.RAINBOW_TORCH.item.get(), "彩虹火把");
-        add(Torches.DESERT_TORCH.item.get(), "沙漠火把");
-        add(Torches.CORAL_TORCH.item.get(), "珊瑚火把");
-        add(Torches.CORRUPT_TORCH.item.get(), "腐化火把");
-        add(Torches.CRIMSON_TORCH.item.get(), "猩红火把");
-        add(Torches.HALLOWED_TORCH.item.get(), "神圣火把");
-        add(Torches.JUNGLE_TORCH.item.get(), "丛林火把");
-        add(Torches.MUSHROOM_TORCH.item.get(), "蘑菇火把");
-        add(Torches.AETHER_TORCH.item.get(), "以太火把");
-        */
+
+        add(TorchBlocks.RED_TORCH.get(), "红火把");
+        add(TorchBlocks.ORANGE_TORCH.get(), "橙火把");
+        add(TorchBlocks.YELLOW_TORCH.get(), "黄火把");
+        add(TorchBlocks.GREEN_TORCH.get(), "绿火把");
+        add(TorchBlocks.BLUE_TORCH.get(), "蓝火把");
+        add(TorchBlocks.WHITE_TORCH.get(), "白火把");
+        add(TorchBlocks.PURPLE_TORCH.get(), "紫火把");
+        add(TorchBlocks.PINK_TORCH.get(), "粉火把");
+        add(TorchBlocks.ICE_TORCH.get(), "冰雪火把");
+        add(TorchBlocks.BONE_TORCH.get(), "骨头火把");
+        add(TorchBlocks.ULTRABRIGHT_TORCH.get(), "超亮火把");
+        add(TorchBlocks.DEMON_TORCH.get(), "恶魔火把");
+        add(TorchBlocks.CURSED_TORCH.get(), "诅咒火把");
+        add(TorchBlocks.ICHOR_TORCH.get(), "灵液火把");
+        add(TorchBlocks.RAINBOW_TORCH.get(), "彩虹火把");
+        add(TorchBlocks.DESERT_TORCH.get(), "沙漠火把");
+        add(TorchBlocks.CORAL_TORCH.get(), "珊瑚火把");
+        add(TorchBlocks.CORRUPT_TORCH.get(), "腐化火把");
+        add(TorchBlocks.CRIMSON_TORCH.get(), "猩红火把");
+        add(TorchBlocks.HALLOWED_TORCH.get(), "神圣火把");
+        add(TorchBlocks.JUNGLE_TORCH.get(), "丛林火把");
+        add(TorchBlocks.MUSHROOM_TORCH.get(), "蘑菇火把");
+        add(TorchBlocks.AETHER_TORCH.get(), "以太火把");
 
         add(PotBlocks.FOREST_POT.get(), "森林罐子");
         add(PotBlocks.TUNDRA_POT.get(), "苔原罐子");

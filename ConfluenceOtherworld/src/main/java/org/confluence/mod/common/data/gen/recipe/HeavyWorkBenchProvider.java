@@ -61,6 +61,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> writer) {
         buildBaseStatues(writer);
+        buildTorches(writer);
 
         // 玻璃窑
         shaped(writer, PortShapedRecipePattern.of(Map.of(
@@ -1477,6 +1478,52 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         for (PortDeferredBlock<StatueBlock> statue : status) {
             shaped(writer, baseStatuePattern, statue.toStack());
         }
+    }
+
+    /// 泰拉瑞亚火把：固定为「上格材料、下格火把」的有序配方，火把消耗量与产出量一致，
+    /// 配比取自官方 wiki（宝石火把 10、彩虹 10、生物群系与恶魔类 3、丛林 25、诅咒/灵液 33）。
+    private void buildTorches(Consumer<FinishedRecipe> writer) {
+        // 宝石火把：火把 ×10 + 对应宝石 ×1 = 火把 ×10
+        buildTorch(writer, TorchBlocks.RED_TORCH, Ingredient.of(MaterialItems.RUBY), 10);
+        buildTorch(writer, TorchBlocks.ORANGE_TORCH, Ingredient.of(MaterialItems.AMBER), 10);
+        buildTorch(writer, TorchBlocks.YELLOW_TORCH, Ingredient.of(MaterialItems.TOPAZ), 10);
+        buildTorch(writer, TorchBlocks.GREEN_TORCH, Ingredient.of(Items.EMERALD), 10);
+        buildTorch(writer, TorchBlocks.BLUE_TORCH, Ingredient.of(MaterialItems.SAPPHIRE), 10);
+        buildTorch(writer, TorchBlocks.WHITE_TORCH, Ingredient.of(Items.DIAMOND), 10);
+        buildTorch(writer, TorchBlocks.PURPLE_TORCH, Ingredient.of(MaterialItems.AMETHYST), 10);
+        buildTorch(writer, TorchBlocks.RAINBOW_TORCH, Ingredient.of(DecorativeBlocks.RAINBOW_BRICKS.FULL.get()), 10);
+        /// 粉火把是唯一不用宝石的：粉凝胶 ×1 + 木材 ×1 = 火把 ×3。
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.PINK_GEL),
+                '#', Ingredient.of(Items.STICK)
+        ), List.of(
+                "a",
+                "#"
+        )), TorchBlocks.PINK_TORCH.toStack(3));
+        // 火把 ×3 + 对应材料 ×1
+        buildTorch(writer, TorchBlocks.ICE_TORCH, Ingredient.of(Blocks.ICE), 3);
+        buildTorch(writer, TorchBlocks.DESERT_TORCH, Ingredient.of(NatureBlocks.HARDENED_SAND_BLOCK), 3);
+        buildTorch(writer, TorchBlocks.DEMON_TORCH, Ingredient.of(Blocks.OBSIDIAN), 3);
+        buildTorch(writer, TorchBlocks.MUSHROOM_TORCH, Ingredient.of(MaterialItems.GLOWING_MUSHROOM), 3);
+        /// 腐化/猩红/神圣用「被侵蚀的石块、冰块或硬化沙」中任意一种（wiki 脚注）。
+        buildTorch(writer, TorchBlocks.CORRUPT_TORCH, Ingredient.of(NatureBlocks.EBONSTONE, NatureBlocks.PURPLE_ICE, NatureBlocks.HARDENED_EBONSAND_BLOCK), 3);
+        buildTorch(writer, TorchBlocks.CRIMSON_TORCH, Ingredient.of(NatureBlocks.CRIMSTONE, NatureBlocks.RED_ICE, NatureBlocks.HARDENED_CRIMSAND_BLOCK), 3);
+        buildTorch(writer, TorchBlocks.HALLOWED_TORCH, Ingredient.of(NatureBlocks.PEARLSTONE, NatureBlocks.PINK_ICE, NatureBlocks.HARDENED_PEARLSAND_BLOCK), 3);
+        // 火把 ×25 + 丛林孢子 ×1
+        buildTorch(writer, TorchBlocks.JUNGLE_TORCH, Ingredient.of(MaterialItems.JUNGLE_SPORE), 25);
+        // 火把 ×33 + 诅咒焰 / 灵液 ×1
+        buildTorch(writer, TorchBlocks.CURSED_TORCH, Ingredient.of(ModBlocks.CURSED_FLAME), 33);
+        buildTorch(writer, TorchBlocks.ICHOR_TORCH, Ingredient.of(MaterialItems.ICHOR), 33);
+    }
+
+    private void buildTorch(Consumer<FinishedRecipe> writer, PortDeferredBlock<?> torch, Ingredient material, int count) {
+        shaped(writer, PortShapedRecipePattern.of(Map.of(
+                'a', material,
+                '#', AmountIngredient.of(count, Items.TORCH)
+        ), List.of(
+                "a",
+                "#"
+        )), torch.toStack(count));
     }
 
     protected void shaped(Consumer<FinishedRecipe> writer, String suffix, PortShapedRecipePattern pattern, ItemStack result) {

@@ -10,10 +10,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CaveVines;
-import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.storage.loot.IntRange;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -994,6 +991,13 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         addCoinPileDrop(GOLD_COIN.get());
         addCoinPileDrop(PLATINUM_COIN.get());
         addGreenDumplingDrop();
+
+        /// 火把掉落自身；墙挂形态通过 Properties#lootFrom 复用直立形态的战利品表，这里只登记直立形态。
+        TorchBlocks.BLOCKS.getEntries().forEach(entry -> {
+            if (!(entry.get() instanceof WallTorchBlock)) {
+                dropSelf(entry.get());
+            }
+        });
     }
 
     @Override
@@ -1007,7 +1011,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                 getStreamFromRegister(StatueBlocks.BLOCKS),
                 getStreamFromRegister(FunctionalBlocks.BLOCKS),
                 getStreamFromRegister(NatureBlocks.BLOCKS),
-                getStreamFromRegister(PotBlocks.BLOCKS)
+                getStreamFromRegister(PotBlocks.BLOCKS),
+                getStreamFromRegister(TorchBlocks.BLOCKS)
         )::iterator;
     }
 

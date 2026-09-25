@@ -117,4 +117,8 @@ public class ConsumableItems {
     public static final PortDeferredItem<GameEventItem> BLOOD_TEAR = ITEMS.register("blood_tear", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("blood_tear", 2, ChatFormatting.GRAY), BloodMoonGameEvent.KEY));
     public static final PortDeferredItem<GameEventItem> GOBLIN_BATTLE_STANDARD = ITEMS.register("goblin_battle_standard", () -> new GameEventItem(new Item.Properties(), ModRarity.GREEN, TooltipItem.getTooltipsFromString("goblin_battle_standard", 1, ChatFormatting.GRAY), GoblinArmyGameEvent.KEY));
     public static final PortDeferredItem<GameEventItem> PIRATE_MAP = ITEMS.register("pirate_map", () -> new GameEventItem(new Item.Properties(), ModRarity.LIGHT_RED, TooltipItem.getTooltipsFromString("pirate_map", 1, ChatFormatting.GRAY), PirateInvasionGameEvent.KEY));
+
+    // todo
+    public static final PortDeferredItem<Item> GLOWSTICK = ITEMS.registerSimpleItem("glowstick", new Item.Properties().stacksTo(9999));
+    public static final PortDeferredItem<Item> STICKY_GLOWSTICK = ITEMS.registerSimpleItem("sticky_glowstick", new Item.Properties().stacksTo(9999));
 }

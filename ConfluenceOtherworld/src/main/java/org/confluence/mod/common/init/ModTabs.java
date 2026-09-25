@@ -781,6 +781,31 @@ public final class ModTabs {
                         misc_functional.accept(FunctionalBlocks.WATER_CANDLE);
                         misc_functional.accept(FunctionalBlocks.PEACE_CANDLE);
                         misc_functional.accept(FunctionalBlocks.ECHO_BLOCK.get());
+
+                        CreativeModeTab.Output torches = GroupItem.belongsTo("torches", output);
+                        torches.accept(TorchBlocks.RED_TORCH.get());
+                        torches.accept(TorchBlocks.ORANGE_TORCH.get());
+                        torches.accept(TorchBlocks.YELLOW_TORCH.get());
+                        torches.accept(TorchBlocks.GREEN_TORCH.get());
+                        torches.accept(TorchBlocks.BLUE_TORCH.get());
+                        torches.accept(TorchBlocks.WHITE_TORCH.get());
+                        torches.accept(TorchBlocks.PURPLE_TORCH.get());
+                        torches.accept(TorchBlocks.PINK_TORCH.get());
+                        torches.accept(TorchBlocks.ICE_TORCH.get());
+                        torches.accept(TorchBlocks.BONE_TORCH.get());
+                        torches.accept(TorchBlocks.ULTRABRIGHT_TORCH.get());
+                        torches.accept(TorchBlocks.DEMON_TORCH.get());
+                        torches.accept(TorchBlocks.CURSED_TORCH.get());
+                        torches.accept(TorchBlocks.ICHOR_TORCH.get());
+                        torches.accept(TorchBlocks.RAINBOW_TORCH.get());
+                        torches.accept(TorchBlocks.DESERT_TORCH.get());
+                        torches.accept(TorchBlocks.CORAL_TORCH.get());
+                        torches.accept(TorchBlocks.CORRUPT_TORCH.get());
+                        torches.accept(TorchBlocks.CRIMSON_TORCH.get());
+                        torches.accept(TorchBlocks.HALLOWED_TORCH.get());
+                        torches.accept(TorchBlocks.JUNGLE_TORCH.get());
+                        torches.accept(TorchBlocks.MUSHROOM_TORCH.get());
+                        torches.accept(TorchBlocks.AETHER_TORCH.get());
                     })
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
                     .build());

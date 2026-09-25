@@ -38,6 +38,31 @@ public final class ValueSubProvider {
                 .add(Items.NETHER_STAR, silver20)
                 .add(Items.ANVIL, silver1 * 10)
                 .add(Items.TORCH, 10);
+        /// 火把售价取自泰拉瑞亚官方 wiki（单位：铜币，白火把为 1 银）。
+        builder
+                .add(TorchBlocks.RED_TORCH, 40)
+                .add(TorchBlocks.ORANGE_TORCH, 12)
+                .add(TorchBlocks.YELLOW_TORCH, 40)
+                .add(TorchBlocks.GREEN_TORCH, 40)
+                .add(TorchBlocks.BLUE_TORCH, 40)
+                .add(TorchBlocks.WHITE_TORCH, silver1)
+                .add(TorchBlocks.PURPLE_TORCH, 40)
+                .add(TorchBlocks.PINK_TORCH, 16)
+                .add(TorchBlocks.ICE_TORCH, 12)
+                .add(TorchBlocks.BONE_TORCH, 20)
+                .add(TorchBlocks.ULTRABRIGHT_TORCH, 60)
+                .add(TorchBlocks.DEMON_TORCH, 60)
+                .add(TorchBlocks.CURSED_TORCH, 30)
+                .add(TorchBlocks.ICHOR_TORCH, 32)
+                .add(TorchBlocks.RAINBOW_TORCH, 50)
+                .add(TorchBlocks.DESERT_TORCH, 12)
+                .add(TorchBlocks.CORAL_TORCH, 12)
+                .add(TorchBlocks.CORRUPT_TORCH, 12)
+                .add(TorchBlocks.CRIMSON_TORCH, 12)
+                .add(TorchBlocks.HALLOWED_TORCH, 12)
+                .add(TorchBlocks.JUNGLE_TORCH, 12)
+                .add(TorchBlocks.MUSHROOM_TORCH, 12)
+                .add(TorchBlocks.AETHER_TORCH, 12);
         builder
                 .add(Items.COPPER_INGOT, silver1 + 50)
                 .add(MaterialItems.CRIMTANE_INGOT, 3900)

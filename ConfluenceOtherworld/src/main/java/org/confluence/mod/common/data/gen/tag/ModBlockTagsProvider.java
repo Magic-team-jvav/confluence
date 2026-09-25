@@ -1924,7 +1924,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         Blocks.OCHRE_FROGLIGHT,
                         Blocks.VERDANT_FROGLIGHT,
                         Blocks.REDSTONE_LAMP
-                );
+                )
+                /// 模组火把同样算作 NPC 房屋的光源，直立与墙挂都要加进来。
+                .add(TorchBlocks.BLOCKS.getEntries().stream().map(entry -> (Block) entry.get()).toArray(Block[]::new));
         tag(ModTags.Blocks.NPC_HOUSE_CHAIR)
                 .addTag(BlockTags.BEDS)
                 .addOptionalTag(ResourceLocation.parse("terra_furniture:house_chair"));

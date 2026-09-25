@@ -202,6 +202,10 @@ dependencies {
     modImplementation("org.mesdag:ParticleStorm-forge-${minecraft_version}:${particlestorm_version}")
     jarJar("org.mesdag:ParticleStorm-forge-${minecraft_version}:${particlestorm_version}")
 
+    // OpalLight 由 Confluence-Magic-Lib 以 jarJar 内嵌，这里显式声明是为了让开发环境拿到
+    // 已 remap 到命名映射的副本（否则 JarInJar 会载入 devlibs 里那份 SRG 的嵌套 jar）
+    modImplementation("org.mesdag:OpalLight-forge-${minecraft_version}:${opallight_version}")
+
     modImplementation("org.mesdag:ThreeDimensionParticle-forge-${minecraft_version}:${thr_dim_particle_version}")
     jarJar("org.mesdag:ThreeDimensionParticle-forge-${minecraft_version}:${thr_dim_particle_version}")
 

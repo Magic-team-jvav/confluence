@@ -7,6 +7,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -45,6 +46,7 @@ import org.confluence.mod.common.gameevent.PirateInvasionGameEvent;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.TorchBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
@@ -56,7 +58,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.function.IntSupplier;
 
-import static org.confluence.mod.common.init.block.PotBlocks.UNDERGROUND_DESERT_POT;
+import static org.confluence.mod.common.init.block.PotBlocks.*;
 import static org.confluence.mod.common.init.item.PotionItems.*;
 
 public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
@@ -290,32 +292,32 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         return false;
     }
 
-    // todo 掉火把
     private boolean dropTorch(ServerLevel level, BlockPos blockPos, Vec3 center) {
-//        boolean tundra = this == TUNDRA_POTS.get();
-        int amount = /*tundra ? level.random.nextInt(2, 7) : */level.random.nextInt(4, 13);
+        int amount = this == TUNDRA_POT.get()
+                ? level.random.nextInt(2, 7)
+                : level.random.nextInt(4, 13);
         Item item;
-//        if (level.getFluidState(blockPos).is(FluidTags.WATER)) {
-//            if (tundra) {
-//                item = ModItems.STICKY_GLOW_STICK.get();
-//            } else {
-//                item = ModItems.GLOW_STICK.get();
-//            }
-//        } else {
-//            if (tundra) {
-//                item = Torches.ICE_TORCH.item.get();
-//            } else if (this == TR_CRIMSON_POTS.get()) {
-//                item = Torches.CRIMSON_TORCH.item.get();
-//            } else if (this == JUNGLE_POTS.get()) {
-//                item = Torches.JUNGLE_TORCH.item.get();
-//            } else if (this == CORRUPTION_POTS.get()) {
-//                item = Torches.CORRUPT_TORCH.item.get();
-//            } else if (this == UNDERGROUND_DESERT_POTS.get()) {
-//                item = Torches.DESERT_TORCH.item.get();
-//            } else {
-        item = Items.TORCH;
-//            }
-//        }
+        if (level.getFluidState(blockPos).is(FluidTags.WATER)) {
+            if (this == TUNDRA_POT.get()) {
+                item = ConsumableItems.STICKY_GLOWSTICK.get();
+            } else {
+                item = ConsumableItems.GLOWSTICK.get();
+            }
+        } else {
+            if (this == TUNDRA_POT.get()) {
+                item = TorchBlocks.ICE_TORCH.asItem();
+            } else if (this == CRIMSON_POT.get()) {
+                item = TorchBlocks.CRIMSON_TORCH.asItem();
+            } else if (this == JUNGLE_POT.get()) {
+                item = TorchBlocks.JUNGLE_TORCH.asItem();
+            } else if (this == CORRUPTION_POT.get()) {
+                item = TorchBlocks.CORRUPT_TORCH.asItem();
+            } else if (this == UNDERGROUND_DESERT_POT.get()) {
+                item = TorchBlocks.DESERT_TORCH.asItem();
+            } else {
+                item = Items.TORCH;
+            }
+        }
         LibEntityUtils.createItemEntity(item, amount, center, level, 0);
         return true;
     }

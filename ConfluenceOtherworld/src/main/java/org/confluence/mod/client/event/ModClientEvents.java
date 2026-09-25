@@ -972,12 +972,10 @@ public final class ModClientEvents {
             }
         }), AxeItems.LUCY_THE_AXE.get());
         event.registerItem(ModClientSetups.BREATHING_REED, SwordItems.BREATHING_REED);
-        // 长矛的 Geo 渲染器与手臂姿态由 AbstractSpearItem 的同一个客户端扩展提供。
         event.registerItem(ModClientSetups.DRILL_O_CHAINSAW, Streams.stream(Iterables.concat(
                 DrillItems.ITEMS.getEntries(),
                 ChainsawItems.ITEMS.getEntries()
         )).filter(Objects::nonNull).map(PortRegistryEntry::get).toArray(Item[]::new));
-        event.registerItem(ModClientSetups.LANCE, LanceItems.ITEMS.getEntries().stream().map(PortRegistryEntry::get).toArray(Item[]::new));
         for (PortRegistryEntry<Item, ? extends Item> holder : SwordItems.ITEMS.getEntries()) {
             if (SwordItems.isShortSword(holder)) {
                 event.registerItem(ShortSwordInHandRenderer.INSTANCE, holder.get());

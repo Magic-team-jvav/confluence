@@ -53,6 +53,7 @@ public final class ModBlocks {
         OreBlocks.init();
         PotBlocks.init();
         StatueBlocks.init();
+        TorchBlocks.init();
     }
 
     public static final PortBlockRegistration BLOCKS = PortRegisterHandler.block(Confluence.MODID);

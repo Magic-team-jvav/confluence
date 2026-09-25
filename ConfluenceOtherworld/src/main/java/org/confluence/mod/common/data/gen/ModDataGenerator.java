@@ -50,6 +50,7 @@ public final class ModDataGenerator {
         generator.addProvider(client, new ModEnUdProvider(output, lookup));
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
+        generator.addProvider(client, new ModOpalDataProvider(output, lookup));
         generator.addProvider(client, new CollectRecipeProvider(Confluence.asPlainId("client"), output, lookup,
                 ModClientBestiaryEntryProvider::new,
                 ModAchievementOffsetProvider::client

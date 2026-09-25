@@ -4,9 +4,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CeilingHangingSignBlock;
-import net.minecraft.world.level.block.WallHangingSignBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -18,6 +16,7 @@ import org.confluence.mod.common.block.palettes.DecoBlockSet;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.block.TorchBlocks;
 
 import java.io.FileNotFoundException;
 import java.util.function.Supplier;
@@ -48,6 +47,16 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         for (DecoBlockSet blockSet : DecoBlockSet.DECO_BLOCK_SETS) {
             registerDecorationSet(blockSet);
         }
+        TorchBlocks.BLOCKS.getEntries().forEach(entry -> {
+            Block block = entry.get();
+            String path = entry.getId().getPath();
+            /// WallTorchBlock 是 TorchBlock 的子类，必须先判断墙挂形态。
+            if (block instanceof WallTorchBlock) {
+                registerWallTorch(block, path, torchTexture(path));
+            } else if (block instanceof TorchBlock) {
+                registerTorch(block, path, torchTexture(path));
+            }
+        });
     }
 
     private void registerLogSet(LogBlockSet blockSet) {
@@ -217,6 +226,46 @@ public final class ModBlockStateProvider extends BlockStateProvider {
         ModelFile model = models().sign(ForgeRegistries.BLOCKS.getKey(hangingSign).getPath(), texture);
         simpleBlock(hangingSign, model);
         simpleBlock(wallHangingSign, model);
+    }
+
+    /// 火把没有可随机化的属性，模型只是继承原版模板并引用同一张纹理，因此整组资源都能由注册
+    /// 信息完整推导：直立形态只有一个状态，墙挂形态只有朝向。
+    private void registerTorch(Block block, String path, ResourceLocation texture) {
+        if (!shouldGenerate(block) || !hasTexture(texture)) {
+            return;
+        }
+        getVariantBuilder(block).partialState()
+                .setModels(new ConfiguredModel(torchModel(path, "block/template_torch", texture)));
+    }
+
+    private void registerWallTorch(Block block, String path, ResourceLocation texture) {
+        if (!shouldGenerate(block) || !hasTexture(texture)) {
+            return;
+        }
+        ModelFile model = torchModel(path, "block/template_torch_wall", texture);
+        /// 原版墙挂火把以朝东为 0 度（east 0 / south 90 / west 180 / north 270），而 Forge 的
+        /// horizontalBlock 会在此基础上再多转 180 度，故这里按原版映射显式给出角度。
+        getVariantBuilder(block).forAllStates(state -> ConfiguredModel.builder()
+                .modelFile(model)
+                .rotationY(switch (state.getValue(WallTorchBlock.FACING)) {
+                    case EAST -> 0;
+                    case SOUTH -> 90;
+                    case WEST -> 180;
+                    default -> 270;
+                })
+                .build());
+    }
+
+    private ModelFile torchModel(String path, String parent, ResourceLocation texture) {
+        ResourceLocation location = Confluence.asResource("block/" + path);
+        return hasHandwrittenModel(location)
+                ? models().getExistingFile(location)
+                : models().withExistingParent(path, parent).renderType("cutout").texture("torch", texture);
+    }
+
+    /// 火把纹理统一放在 `textures/block/torch/` 下，墙挂形态与直立形态共用同一张图。
+    private ResourceLocation torchTexture(String path) {
+        return Confluence.asResource("block/torch/" + path.replace("_wall_torch", "_torch"));
     }
 
     private boolean shouldGenerate(Block block) {

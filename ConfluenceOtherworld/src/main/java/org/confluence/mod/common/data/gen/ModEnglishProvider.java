@@ -363,6 +363,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.storage", "Storage");
         add("itemGroup.confluence.souls", "Soul Bottles");
         add("itemGroup.confluence.misc_functional", "Misc Functional");
+        add("itemGroup.confluence.torches", "Torches");
         add("itemGroup.confluence.pylon", "Pylon");
 // 材料
         add("itemGroup.confluence.metal_materials", "Metal Materials");
@@ -1793,6 +1794,30 @@ public class ModEnglishProvider extends LanguageProvider {
         addAll(ToolItems.ITEMS);
         addAll(TreasureBagItems.ITEMS);
         addAll(VanityArmorItems.ITEMS);
+
+        add(TorchBlocks.RED_TORCH.get(), "Red Torch");
+        add(TorchBlocks.ORANGE_TORCH.get(), "Orange Torch");
+        add(TorchBlocks.YELLOW_TORCH.get(), "Yellow Torch");
+        add(TorchBlocks.GREEN_TORCH.get(), "Green Torch");
+        add(TorchBlocks.BLUE_TORCH.get(), "Blue Torch");
+        add(TorchBlocks.WHITE_TORCH.get(), "White Torch");
+        add(TorchBlocks.PURPLE_TORCH.get(), "Purple Torch");
+        add(TorchBlocks.PINK_TORCH.get(), "Pink Torch");
+        add(TorchBlocks.ICE_TORCH.get(), "Ice Torch");
+        add(TorchBlocks.BONE_TORCH.get(), "Bone Torch");
+        add(TorchBlocks.ULTRABRIGHT_TORCH.get(), "Ultrabright Torch");
+        add(TorchBlocks.DEMON_TORCH.get(), "Demon Torch");
+        add(TorchBlocks.CURSED_TORCH.get(), "Cursed Torch");
+        add(TorchBlocks.ICHOR_TORCH.get(), "Ichor Torch");
+        add(TorchBlocks.RAINBOW_TORCH.get(), "Rainbow Torch");
+        add(TorchBlocks.DESERT_TORCH.get(), "Desert Torch");
+        add(TorchBlocks.CORAL_TORCH.get(), "Coral Torch");
+        add(TorchBlocks.CORRUPT_TORCH.get(), "Corrupt Torch");
+        add(TorchBlocks.CRIMSON_TORCH.get(), "Crimson Torch");
+        add(TorchBlocks.HALLOWED_TORCH.get(), "Hallowed Torch");
+        add(TorchBlocks.JUNGLE_TORCH.get(), "Jungle Torch");
+        add(TorchBlocks.MUSHROOM_TORCH.get(), "Mushroom Torch");
+        add(TorchBlocks.AETHER_TORCH.get(), "Aether Torch");
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.getEntities().forEach(register -> register.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath()))));

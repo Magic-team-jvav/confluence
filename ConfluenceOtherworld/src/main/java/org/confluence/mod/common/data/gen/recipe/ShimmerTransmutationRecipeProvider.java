@@ -200,6 +200,8 @@ public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
         item(writer, ToolItems.MECHANIC_SAFE_KEY, ChestBlocks.MECHANIC_SAFE_CHEST);
         // 微光箭转化
         item(writer, "shimmer_arrow", addItem(ItemTags.ARROWS, ArrowItems.SHIMMER_ARROW.get(), 1));
+        /// 以太火把：任意火把扔进微光转化而成（泰拉瑞亚 1.4.4），火把标签在 ModItemTagsProvider 里维护。
+        item(writer, "aether_torch", addItem(ModTags.Items.TORCH, TorchBlocks.AETHER_TORCH.get().asItem(), 1));
         // 匣子转化
         item(writer, CrateBlocks.PEARLWOOD_CRATE, CrateBlocks.WOODEN_CRATE);
         item(writer, CrateBlocks.MYTHRIL_CRATE, CrateBlocks.IRON_CRATE);

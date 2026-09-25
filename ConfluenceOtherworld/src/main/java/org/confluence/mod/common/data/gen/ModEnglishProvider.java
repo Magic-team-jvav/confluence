@@ -1804,6 +1804,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.giant_fungi_bulb_segment", "Giant Fungi Bulb Segment");
         addOverrides();
         add(MonsterEntities.WINGLESS_SLIMER.get(), "Slimer");
+        add(MonsterEntities.MARTIAN_PROBE.get(), "Martian Probe");
 
         add(QuestedFishes.CAPN_TUNABEARD.get(), "Cap'n Tunabeard");
         add(FoodItems.PINA_COLADA.get(), "Piña Colada");
@@ -2753,6 +2754,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.PIRATE_CAPTAIN_SPAWN_EGG.get(), "Pirate Captain Spawn Egg");
         add(SpawnEggItems.PIRATE_PARROT_SPAWN_EGG.get(), "Pirate Parrot Spawn Egg");
         add(SpawnEggItems.PIRATES_CURSE_SPAWN_EGG.get(), "Pirate's Curse Spawn Egg");
+        add(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get(), "Martian Probe Spawn Egg");
         add(SpawnEggItems.SHADOWFLAME_APPARITION_SPAWN_EGG.get(), "Shadowflame Apparition Spawn Egg");
         add(SpawnEggItems.GOBLIN_ARCHER_SPAWN_EGG.get(), "Goblin Archer Spawn Egg");
         add(SpawnEggItems.GOBLIN_PEON_SPAWN_EGG.get(), "Goblin Peon Spawn Egg");

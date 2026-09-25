@@ -5079,6 +5079,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.PIRATE_CAPTAIN.get(), "海盗船长");
         add(MonsterEntities.PIRATE_PARROT.get(), "海盗鹦鹉");
         add(MonsterEntities.PIRATES_CURSE.get(), "海盗诅咒");
+        add(MonsterEntities.MARTIAN_PROBE.get(), "火星探测器");
         add(MonsterEntities.SHADOWFLAME_APPARITION.get(), "暗影焰幻鬼");
         add(MonsterEntities.GIANT_SHELLY.get(), "巨型卷壳怪");
         add(MonsterEntities.CRAWDAD.get(), "龙虾");
@@ -6269,6 +6270,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.PIRATE_CAPTAIN_SPAWN_EGG.get(), "海盗船长刷怪蛋");
         add(SpawnEggItems.PIRATE_PARROT_SPAWN_EGG.get(), "海盗鹦鹉刷怪蛋");
         add(SpawnEggItems.PIRATES_CURSE_SPAWN_EGG.get(), "海盗诅咒刷怪蛋");
+        add(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get(), "火星探测器刷怪蛋");
         add(SpawnEggItems.SHADOWFLAME_APPARITION_SPAWN_EGG.get(), "暗影焰幻鬼刷怪蛋");
         add(SpawnEggItems.GOBLIN_ARCHER_SPAWN_EGG.get(), "哥布林弓箭手刷怪蛋");
         add(SpawnEggItems.GOBLIN_PEON_SPAWN_EGG.get(), "哥布林苦力刷怪蛋");

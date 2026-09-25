@@ -761,6 +761,9 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<PirateFlyingMonster>> PIRATES_CURSE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("pirates_curse", EntityType.Builder.<PirateFlyingMonster>of((type, level) -> new PirateFlyingMonster(type, level, true), MobCategory.MONSTER).sized(0.8F, 1.3F))),
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(10).attackDamage(39).add(LibAttributes.getArmorPenetration().get(), 12).movementSpeed(0.3).followRange(40).knockbackResistance(0.82).add(Attributes.ARMOR_TOUGHNESS, 4).build());
 
+    public static final RegistryObject<EntityType<MartianProbe>> MARTIAN_PROBE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_probe", EntityType.Builder.of(MartianProbe::new, MobCategory.MONSTER).sized(1.4F, 1.0F).clientTrackingRange(12))),
+            () -> CreatureAttributeBuilder.creature().maxHealth(520).armor(5).attackDamage(5).followRange(48).movementSpeed(0.25).flyingSpeed(0.65).knockbackResistance(0.4).build());
+
     // 新年：大飞龙
     public static final RegistryObject<EntityType<BaseWormPart>> ARCH_WYVERN_SEGMENT = registerWormSegment("arch_wyvern_segment");
     public static final RegistryObject<EntityType<SimpleWormMonster>> ARCH_WYVERN = withAttributes(registerWorm("arch_wyvern", 12, 1.8F, 1.8F, SimpleWormMonster.Role.FLYING, () -> MonsterEntities.ARCH_WYVERN_SEGMENT.get()),

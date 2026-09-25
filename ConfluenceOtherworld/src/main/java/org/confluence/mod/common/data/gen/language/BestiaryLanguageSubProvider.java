@@ -507,7 +507,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.confluence.red_devil.desc", "Conjuring potent spears of dark magic, these elite demons are a serious threat to any who dare enter their abode.");
         add("bestiary.entity.confluence.wyvern.desc", "A colossal dragon-like creature unleashed along with the ancient spirits. It rules the skies with its unrivaled might.");
         add("bestiary.entity.confluence.harpy.desc", "Winged, demi-human women defend their territory against invaders by impaling them with their razor-sharp feathers.");
-//        add("bestiary.entity.confluence.martian_probe.desc", "Sensing growing power on the planet, otherworldly beings send space-age technology to scan for advanced lifeforms.");
+        add("bestiary.entity.confluence.martian_probe.desc", "Sensing growing power on the planet, otherworldly beings send space-age technology to scan for advanced lifeforms.");
 //        add("bestiary.entity.confluence.slimeling.desc", "The still-animate severed pieces of an injured Corrupt Slime, Slimelings can still put up a fight, and have strength in numbers.");
         add("bestiary.entity.confluence.corrupt_slime.desc", "Steeped in the power of Corruption, these slimes can survive being cut apart into smaller pieces, unlike their untainted brethren.");
         add("bestiary.entity.confluence.eater_of_souls.desc", "Birthed from the Corruption as a being of pure malice, its sole instincts are to pursue, punish, and kill.");
@@ -1293,7 +1293,7 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
         add("bestiary.entity.confluence.red_devil.desc", "红魔鬼作为精英恶魔，能召唤出蕴含强大黑魔法的长矛，对任何胆敢闯入其领地的生物而言，都是极具威胁的存在。");
         add("bestiary.entity.confluence.wyvern.desc", "飞龙是与古老灵魂一同被释放的巨型类龙生物，凭借无可匹敌的力量统治着整片天空。");
         add("bestiary.entity.confluence.harpy.desc", "鸟妖是长有翅膀的亚人女性，会用锋利如刀的羽毛刺穿入侵者，以此守护自己的领地。");
-//        add("bestiary.entity.confluence.martian_probe.desc", "异界生物察觉到这颗星球上的力量正不断增强，便派出具备太空时代技术的火星探测器，用于扫描寻找先进生命形态。");
+        add("bestiary.entity.confluence.martian_probe.desc", "异界生物察觉到这颗星球上的力量正不断增强，便派出具备太空时代技术的火星探测器，用于扫描寻找先进生命形态。");
 //        add("bestiary.entity.confluence.slimeling.desc", "小史莱姆是受伤腐化史莱姆脱落的残块，即便只剩部分躯体仍能活动，不仅能发起攻击，还具备群体作战的优势。");
         add("bestiary.entity.confluence.corrupt_slime.desc", "腐化史莱姆被腐化之力深度浸染，与未受污染的同类不同，即便被切割成小块，每一部分都能独立存活。");
         add("bestiary.entity.confluence.eater_of_souls.desc", "噬魂怪诞生于腐化之地，是纯粹由恶意构成的生物，其唯一本能便是追逐、惩罚并杀戮一切活物。");

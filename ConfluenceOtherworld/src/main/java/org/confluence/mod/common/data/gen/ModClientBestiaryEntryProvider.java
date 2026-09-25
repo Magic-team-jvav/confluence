@@ -511,6 +511,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(MonsterEntities.PIRATE_CAPTAIN, builder -> builder.order(40900).rarity(3).background(SURFACE).filters(FilterEntry.RARE_CREATURE, FilterEntry.PIRATE_INVASION))
                 .add(MonsterEntities.PIRATES_CURSE, builder -> builder.order(40901).rarity(3).background(SURFACE).filters(FilterEntry.PIRATE_INVASION))
                 .add(MonsterEntities.PIRATE_PARROT, builder -> builder.order(41000).rarity(2).background(SURFACE).filters(FilterEntry.PIRATE_INVASION))
+                .add(MonsterEntities.MARTIAN_PROBE, builder -> builder.order(33000).rarity(3).background(SURFACE).filters(FilterEntry.RARE_CREATURE))
                 // 荷兰飞盗船.add(MonsterEntities.FLYING_DUTCHMAN, builder -> builder.order(41100).rarity(4).background(SURFACE).filters(FilterEntry.PIRATE_INVASION))
                 // 扰脑怪.add(MonsterEntities.BRAIN_SCRAMBLER, builder -> builder.order(41200).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))
                 // 激光枪手.add(MonsterEntities.RAY_GUNNER, builder -> builder.order(41300).rarity(2).background(SURFACE).filters(FilterEntry.MARTIAN_MADNESS))

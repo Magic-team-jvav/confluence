@@ -50,6 +50,7 @@ import org.confluence.mod.common.init.block.TorchBlocks;
 import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.worldgen.secret_seed.ForTheWorthy;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -325,12 +326,11 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     private boolean dropAmmo(ServerLevel level, Vec3 center) {
         int amount = level.random.nextInt(10, 21);
         Item item;
-        boolean isHardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
         if (level.random.nextBoolean()) {
-            item = isHardmode ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
+            item = IMinecraftServer.isHardmode(level.getServer()) ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
         } else if (level.dimension() == OverworldUtils.underworld()) {
             item = ArrowItems.HELLFIRE_ARROW.get();
-        } else if (isHardmode) {
+        } else if (IMinecraftServer.isHardmode(level.getServer())) {
             if (level.random.nextBoolean()) {
                 item = ArrowItems.UNHOLY_ARROW.get();
             } else {
@@ -345,7 +345,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropHeal(ServerLevel level, BlockPos blockPos, Vec3 center) {
         Item item;
-        if (level.dimension() == OverworldUtils.underworld() || KillBoard.INSTANCE.getGamePhase().isHardmode()) {
+        if (level.dimension() == OverworldUtils.underworld() || IMinecraftServer.isHardmode(level.getServer())) {
             item = PotionItems.HEALING_POTION.get();
         } else {
             item = PotionItems.LESSER_HEALING_POTION.get();
@@ -372,12 +372,11 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropRope(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (level.dimension() == OverworldUtils.underworld() || KillBoard.INSTANCE.getGamePhase().isHardmode()) {
+        if (level.dimension() == OverworldUtils.underworld() || IMinecraftServer.isHardmode(level.getServer())) {
             return dropMoney(level, blockPos, center);
-        } else {
-            LibEntityUtils.createItemEntity(ModBlocks.ROPE.asItem(), level.random.nextInt(20, 41), center, level, 0);
-            return true;
         }
+        LibEntityUtils.createItemEntity(ModBlocks.ROPE.asItem(), level.random.nextInt(20, 41), center, level, 0);
+        return true;
     }
 
     private boolean dropMoney(ServerLevel level, BlockPos blockPos, Vec3 center) {

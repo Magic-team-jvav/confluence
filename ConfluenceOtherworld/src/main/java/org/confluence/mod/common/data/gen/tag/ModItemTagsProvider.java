@@ -1473,7 +1473,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HoeShovelItems.TITANIUM_HOE_SHOVEL.get(),
                 HoeShovelItems.HALLOWED_HOE_SHOVEL.get(),
                 HoeShovelItems.CHLOROPHYTE_HOE_SHOVEL.get(),
-                MountItems.FUZZY_CARROT.get()
+                MountItems.FUZZY_CARROT.get(),
+                ConsumableItems.GLOWSTICK.get(),
+                ConsumableItems.STICKY_GLOWSTICK.get()
         );
         Consumer<PortRegistryEntry<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraftforge.common.IExtensibleEnum;
-import org.jetbrains.annotations.NotNull;
 import org.mesdag.portlib.network.codec.PortByteBufCodecs;
 import org.mesdag.portlib.network.codec.PortStreamCodec;
 
@@ -39,7 +38,7 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
     }
 
     @Override
-    public @NotNull String getSerializedName() {
+    public String getSerializedName() {
         return name().toLowerCase(Locale.ROOT);
     }
 

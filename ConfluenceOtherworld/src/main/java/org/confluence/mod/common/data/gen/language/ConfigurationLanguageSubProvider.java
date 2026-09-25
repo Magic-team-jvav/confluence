@@ -84,6 +84,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.doNPCSpawning.tooltip", "When enabled, NPCs will spawn");
         add("confluence.configuration.npcSpawnInterval", "NPC Spawn Interval");
         add("confluence.configuration.npcSpawnInterval.tooltip", "Defines the interval between NPC spawns");
+        add("confluence.configuration.npcAttackBlacklist", "NPC Attack Blacklist");
+        add("confluence.configuration.npcAttackBlacklist.tooltip", "Enter a mod ID, an entity ID such as minecraft:zombie, a tag such as #forge:bosses, or regex: followed by a full-ID pattern");
         add("confluence.configuration.broadcastNpcMsg", "Broadcast NPC Messages");
         add("confluence.configuration.broadcastNpcMsg.tooltip", "When enabled, NPC-related messages will be broadcast in the chat window.");
         add("confluence.configuration.doMeteoriteSpawning", "Meteorite Spawning");
@@ -413,6 +415,8 @@ public class ConfigurationLanguageSubProvider implements LanguageSubProvider {
         add("confluence.configuration.doNPCSpawning.tooltip", "启用时，NPC将会生成");
         add("confluence.configuration.npcSpawnInterval", "NPC生成间隔");
         add("confluence.configuration.npcSpawnInterval.tooltip", "定义NPC生成间隔");
+        add("confluence.configuration.npcAttackBlacklist", "NPC主动攻击黑名单");
+        add("confluence.configuration.npcAttackBlacklist.tooltip", "填写模组 ID、实体 ID（如 minecraft:zombie）、实体标签（如 #forge:bosses），或以 regex: 开头的完整 ID 正则表达式");
         add("confluence.configuration.broadcastNpcMsg", "广播NPC消息");
         add("confluence.configuration.broadcastNpcMsg.tooltip", "启用后，NPC相关信息将会广播在聊天框");
         add("confluence.configuration.doMeteoriteSpawning", "陨石生成");

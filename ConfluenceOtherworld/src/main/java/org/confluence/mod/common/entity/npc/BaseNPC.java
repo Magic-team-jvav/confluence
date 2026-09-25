@@ -325,7 +325,7 @@ public abstract class BaseNPC extends PathfinderMob implements GeoEntity {
     @Override
     public boolean canAttack(LivingEntity target) {
         if (target instanceof Player || target instanceof BaseNPC) return false;
-        return target.canBeSeenAsEnemy();
+        return target.canBeSeenAsEnemy() && !NPCAttackBlacklist.contains(target.getType());
     }
 
     /// 在基础护甲和永久增益之外实时加入当前世界进度提供的 NPC 防御。

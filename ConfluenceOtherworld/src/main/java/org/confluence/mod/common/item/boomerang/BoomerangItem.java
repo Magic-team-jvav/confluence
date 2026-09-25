@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.common.entity.projectile.BoomerangProjectile;
 import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.entity.ModEntities;
@@ -19,13 +20,22 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BoomerangItem extends Item {
+public class BoomerangItem extends Item implements ILeftClickStateItem {
     private final Settings settings;
 
     public BoomerangItem(Settings settings) {
         super(settings.properties().unbreakable());
         this.settings = settings;
     }
+
+    @Override
+    public void onLeftClick(Player player, ItemStack stack) {
+        if (player instanceof ServerPlayer serverPlayer)
+            throwBoomerang(serverPlayer, InteractionHand.MAIN_HAND);
+    }
+
+    @Override
+    public void onLeftRelease(Player player, ItemStack stack) {}
 
     /// 左键包和右键入口共用同一套发射逻辑，避免两个按键路径以后出现伤害、冷却或数量上限差异。
     public void throwBoomerang(ServerPlayer player, InteractionHand hand) {

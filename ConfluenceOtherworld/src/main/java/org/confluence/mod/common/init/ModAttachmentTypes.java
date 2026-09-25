@@ -21,6 +21,7 @@ public final class ModAttachmentTypes {
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerSafeContainer>> SAFE = TYPES.register("safe", () -> PortAttachmentType.serializable(PlayerSafeContainer::new).copyOnDeath().build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<PlayerSpecialData>> SPECIAL_DATA = TYPES.register("special_data", () -> PortAttachmentType.serializable(PlayerSpecialData::new).copyOnDeath().build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<YoyoSession>> YOYO_SESSION = TYPES.register("yoyo_session", () -> PortAttachmentType.builder(YoyoSession::new).build());
+    public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<LeftClickState>> LEFT_CLICK_STATE = TYPES.register("left_click_state", () -> PortAttachmentType.builder(LeftClickState::new).build());
 
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ChunkBrushData>> CHUNK_BRUSH_DATA = TYPES.register("chunk_brush_data", () -> PortAttachmentType.serializable(ChunkBrushData::new).build());
     public static final PortRegistryEntry<PortAttachmentType<?>, PortAttachmentType<ChunkDropletsData>> CHUNK_DROPLETS_DATA = TYPES.register("chunk_droplets_data", () -> PortAttachmentType.serializable(ChunkDropletsData::new).build());

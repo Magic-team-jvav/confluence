@@ -3,6 +3,7 @@ package org.confluence.mod.common.entity.npc.ai;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.npc.BaseNPC;
 
@@ -72,9 +73,9 @@ public final class NPCHurtRetreatGoal extends Goal {
         return true;
     }
 
-    /// 只把 NPC 可以反击的存活实体视为有效攻击者，排除玩家和其他城镇 NPC。
+    /// 受击撤退与主动攻击黑名单无关；即使不会反击，也必须能逃离敌怪。
     private boolean isValid(LivingEntity entity) {
-        return entity != null && entity.isAlive() && npc.canAttack(entity);
+        return entity != null && entity.isAlive() && entity instanceof Enemy && entity.canBeSeenAsEnemy();
     }
 
     /// 在八格水平、四格垂直范围内寻找远离攻击者的可达位置。

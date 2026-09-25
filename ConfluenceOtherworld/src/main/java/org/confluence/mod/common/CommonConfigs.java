@@ -11,6 +11,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.monster.MonsterAttributeScaling;
+import org.confluence.mod.common.entity.npc.NPCAttackBlacklist;
 import org.confluence.mod.network.s2c.DragonChargePlayerConfigPacketS2C;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
@@ -64,6 +65,7 @@ public final class CommonConfigs {
     public static BooleanValue DO_NPC_SPAWNING;
     public static IntValue NPC_SPAWN_INTERVAL;
     public static BooleanValue BROADCAST_NPC_MSG;
+    private static ConfigValue<List<? extends String>> NPC_ATTACK_BLACKLIST;
 
     public static BooleanValue EYE_OF_CTHULHU_NATURE_SPAWNING;
     public static BooleanValue DEERCLOPS_NATURE_SPAWNING;
@@ -147,6 +149,7 @@ public final class CommonConfigs {
         ammoSlotsItemBlackList = a;
         ammoSlotsTagBlackList = b;
         MonsterAttributeScaling.reload();
+        NPCAttackBlacklist.reload(NPC_ATTACK_BLACKLIST.get());
 
         if (isSingleplayerOwner) {
             dragonChargePlayer = DRAGON_CHARGE_PLAYER.get();
@@ -261,6 +264,7 @@ public final class CommonConfigs {
                 builder.push("NPC");
                 DO_NPC_SPAWNING = builder.define("doNPCSpawning", true);
                 NPC_SPAWN_INTERVAL = builder.defineInRange("npcSpawnInterval", 2400, 20, 20000);
+                NPC_ATTACK_BLACKLIST = builder.defineListAllowEmpty("npcAttackBlacklist", List::of, value -> value instanceof String entry && NPCAttackBlacklist.isValid(entry));
                 BROADCAST_NPC_MSG = builder.define("broadcastNpcMsg", true);
                 builder.pop();
             }

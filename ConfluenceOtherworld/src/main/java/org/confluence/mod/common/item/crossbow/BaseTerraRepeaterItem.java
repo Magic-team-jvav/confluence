@@ -34,6 +34,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.DelayTaskHolder;
 import org.confluence.lib.util.LibEnchantmentUtils;
+import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.common.component.RepeaterContents;
 import org.confluence.mod.common.entity.projectile.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
@@ -57,7 +58,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-public class BaseTerraRepeaterItem extends CrossbowItem {
+public class BaseTerraRepeaterItem extends CrossbowItem implements ILeftClickStateItem {
     public static final List<Component> TOOLTIP = TooltipItem.getTooltipsFromString("repeater", 2, ChatFormatting.GRAY);
 
     public static final String ATTACK_SPEED_TEXT = "attribute.name.repeater.attack_speed";
@@ -369,6 +370,7 @@ public class BaseTerraRepeaterItem extends CrossbowItem {
         shooter.level().playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, shooter.getSoundSource(), 1.0F, f);
     }
 
+    @Override
     public void onLeftClick(Player player, ItemStack itemStack) {
         if (player.level().isClientSide) return;
         if (getContents(itemStack).isEmpty()) {
@@ -404,12 +406,18 @@ public class BaseTerraRepeaterItem extends CrossbowItem {
                 }).build());
     }
 
+    @Override
     public void onLeftRelease(Player player, ItemStack itemStack) {
         if (player.level().isClientSide) return;
-        InteractionHand hand = getHand(player, itemStack);
+        InteractionHand hand = InteractionHand.MAIN_HAND;
         DelayTaskHolder delayTaskHolder = DelayTaskHolder.of((IPortAttachmentHolder) player);
         delayTaskHolder.removeTask(hand, REPEATER_SHOOTING);
         delayTaskHolder.removeTask(hand, REPEATER_CONTINUOUS_SHOOTING);
+    }
+
+    @Override
+    public boolean canSwitchWithoutRelease(Player player, ItemStack stack) {
+        return false;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
@@ -40,6 +41,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.api.event.BulletEvent;
+import org.confluence.mod.api.item.ILeftClickStateItem;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.client.effect.AfterimageHelper;
@@ -84,6 +86,7 @@ import org.confluence.mod.util.ModAttributeUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
+import org.lwjgl.glfw.GLFW;
 import org.mesdag.portlib.event.PortEventHandler;
 import org.mesdag.portlib.event.PortEventPriority;
 import org.mesdag.portlib.event.client.PortAddAttributeTooltipsEvent;
@@ -103,6 +106,7 @@ public final class GameClientEvents {
         PortEventHandler.addListener(GameClientEvents::clientPlayerNetwork$LoggingIn);
         PortEventHandler.addListener(GameClientEvents::clientPlayerNetwork$LoggingOut);
         PortEventHandler.addListener(GameClientEvents::input$InteractionKeyMappingTriggered);
+        PortEventHandler.addListener(GameClientEvents::input$MouseButtonPre);
         PortEventHandler.addListener(GameClientEvents::input$MouseScrolling);
         PortEventHandler.addListener(GameClientEvents::renderGuiLayer$Pre);
         PortEventHandler.addListener(GameClientEvents::customizeGuiOverlay$BossEventProgress);
@@ -169,6 +173,7 @@ public final class GameClientEvents {
             DeathAnimUtils.handle(player.clientLevel);
             LucyTheAxeHandler.handle(player.getId());
             SwordProjectileInputHandler.handle(player, attackHeld);
+            LeftClickItemHandler.tick(player, attackHeld);
             FlailHandler.handle(player, attackHeld);
             HouseSelectHud.updatePlayerRegionAt(player);
             ClientBiomeEffectSystem.tick(player);
@@ -201,6 +206,7 @@ public final class GameClientEvents {
 
     private static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
         FlailHandler.reset();
+        LeftClickItemHandler.reset();
         ClientWeaponInputManager.reset();
         GunHandler.reset();
         WeatherHandler.reset();
@@ -244,7 +250,7 @@ public final class GameClientEvents {
                         event.setCanceled(true);
                     }
                     event.setSwingHand(false);
-                } else if (event.isAttack() && ClientWeaponInputManager.blocksAttack(stack)) {
+                } else if (event.isAttack() && (stack.getItem() instanceof ILeftClickStateItem || ClientWeaponInputManager.blocksAttack(stack))) {
                     event.setCanceled(true);
                     event.setSwingHand(false);
                 }
@@ -257,11 +263,19 @@ public final class GameClientEvents {
         }
     }
 
+    private static void input$MouseButtonPre(PortInputEvent.PortMouseButton.Pre event) {
+        if (event.getButton() != GLFW.GLFW_MOUSE_BUTTON_LEFT) return;
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && (event.getAction() == InputConstants.PRESS || event.getAction() == InputConstants.RELEASE)) {
+            LeftClickItemHandler.mouseButton(player, event.getAction() == InputConstants.PRESS);
+        }
+    }
+
     private static void input$MouseScrolling(PortInputEvent.MouseScrollingEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         double scrollDeltaY = event.getScrollDeltaY();
-        if (ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
+        if (LeftClickItemHandler.scroll(player, scrollDeltaY > 0 ? 1 : -1) || ClientWeaponInputManager.scroll(player, scrollDeltaY)) {
             event.setCanceled(true);
         } else if (Confluence.SOUL_SKILLS) {
             if (SoulSkillClientHandler.INSTANCE.scrolling(scrollDeltaY)) {

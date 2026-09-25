@@ -16,8 +16,10 @@ import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
-
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.VariantHolder;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +39,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTags;
 
@@ -63,14 +64,6 @@ public class Fairy extends BaseFlyingCritter implements VariantHolder<Fairy.Vari
         /// 仙灵需要跨越普通方块把玩家引向宝箱。该标记只改变实体碰撞，
         /// 导航目标、脱离距离和移动节奏仍由引导目标负责。
         setGuiding(true);
-    }
-
-    /**
-     * 地下生成的仙灵只出现在地下层下半段及洞穴层。
-     */
-    public static boolean checkFairySpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, net.minecraft.util.RandomSource random) {
-        int lowerUndergroundBoundary = (OverworldUtils.getSurfaceY() + OverworldUtils.getUndergroundY()) / 2;
-        return pos.getY() < lowerUndergroundBoundary && !level.canSeeSky(pos) && Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     @Override

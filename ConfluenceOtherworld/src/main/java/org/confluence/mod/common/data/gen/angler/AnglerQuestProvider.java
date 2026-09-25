@@ -12,7 +12,9 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.material.Fluid;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.AnglerQuestLoader;
+import org.confluence.mod.common.data.GamePhase;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.entity.BossEntities;
 import org.confluence.mod.common.init.item.QuestedFishes;
 import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.portlib.wrapper.common.PortTags;
@@ -59,46 +61,61 @@ public class AnglerQuestProvider implements DataProvider {
         int surfaceY = OverworldUtils.getSurfaceY();
         int spaceY = OverworldUtils.getSpaceY();
         int ultraY = OverworldUtils.getUltraY();
+        int surfaceMaxY = spaceY - 1;
+        int undergroundMaxY = surfaceY - 1;
+        int cavernMaxY = undergroundY - 1;
+        AnglerQuestLoader.Availability hardmode = availability(GamePhase.WALL_OF_FLESH);
+        AnglerQuestLoader.Availability corruptionQuest = availability(AnglerQuestLoader.WorldEvil.CORRUPTION);
+        AnglerQuestLoader.Availability crimsonQuest = availability(AnglerQuestLoader.WorldEvil.CRIMSON);
+        AnglerQuestLoader.Availability hardmodeCorruption = availability(GamePhase.WALL_OF_FLESH, AnglerQuestLoader.WorldEvil.CORRUPTION);
+        AnglerQuestLoader.Availability hardmodeCrimson = availability(GamePhase.WALL_OF_FLESH, AnglerQuestLoader.WorldEvil.CRIMSON);
 
-        add(entries, QuestedFishes.SLIMEFISH, water(forest, List.of(), surfaceY, spaceY));
-        add(entries, QuestedFishes.ZOMBIE_FISH, water(forest, List.of(), surfaceY, spaceY));
-        add(entries, QuestedFishes.BUNNYFISH, water(forest, List.of(), surfaceY, spaceY));
-        add(entries, QuestedFishes.DYNAMITE_FISH, water(List.of(), EVIL_BIOMES, surfaceY, spaceY));
-        add(entries, QuestedFishes.ANGELFISH, water(List.of(), EVIL_BIOMES, spaceY, ultraY));
-        add(entries, QuestedFishes.CLOUDFISH, water(List.of(), EVIL_BIOMES, spaceY, ultraY));
-        add(entries, QuestedFishes.WYVERNTAIL, water(List.of(), EVIL_BIOMES, spaceY, ultraY));
-        add(entries, QuestedFishes.FALLEN_STARFISH, water(List.of(), List.of(), spaceY, ultraY));
+        /// 天使鱼与云鱼在击败任意一个肉前主要 Boss 后才进入任务池。
+        AnglerQuestLoader.Availability afterAnyEarlyBoss = new AnglerQuestLoader.Availability(GamePhase.BEFORE_SKELETRON, List.of(
+                BossEntities.KING_SLIME.get(), BossEntities.EYE_OF_CTHULHU.get(), BossEntities.EATER_OF_WORLDS.get(),
+                BossEntities.BRAIN_OF_CTHULHU.get(), BossEntities.QUEEN_BEE.get(), BossEntities.SKELETRON.get(),
+                BossEntities.WALL_OF_FLESH.get(), BossEntities.HILL_OF_FLESH.get()
+        ), AnglerQuestLoader.WorldEvil.ANY);
+
+        add(entries, QuestedFishes.SLIMEFISH, water(forest, EVIL_BIOMES, surfaceY, surfaceMaxY));
+        add(entries, QuestedFishes.ZOMBIE_FISH, water(forest, EVIL_BIOMES, surfaceY, surfaceMaxY));
+        add(entries, QuestedFishes.BUNNYFISH, water(forest, EVIL_BIOMES, surfaceY, surfaceMaxY));
+        add(entries, QuestedFishes.DYNAMITE_FISH, water(List.of(), EVIL_BIOMES, surfaceY, surfaceMaxY));
+        add(entries, QuestedFishes.ANGELFISH, water(List.of(), EVIL_BIOMES, spaceY, ultraY), afterAnyEarlyBoss);
+        add(entries, QuestedFishes.CLOUDFISH, water(List.of(), EVIL_BIOMES, spaceY, ultraY), afterAnyEarlyBoss);
+        add(entries, QuestedFishes.WYVERNTAIL, water(List.of(), EVIL_BIOMES, surfaceY, ultraY), hardmode);
+        add(entries, QuestedFishes.FALLEN_STARFISH, water(List.of(PortTags.Biomes.IS_FOREST, PortTags.Biomes.IS_OCEAN, PortTags.Biomes.IS_BEACH), EVIL_BIOMES, surfaceY, ultraY));
         add(entries, QuestedFishes.THE_FISH_OF_CTHULHU, water(List.of(), EVIL_BIOMES, surfaceY, ultraY));
         add(entries, QuestedFishes.HARPYFISH, water(List.of(), EVIL_BIOMES, surfaceY, ultraY));
-        add(entries, QuestedFishes.BATFISH, water(List.of(), EVIL_BIOMES, caveY, surfaceY));
-        add(entries, QuestedFishes.BONEFISH, water(List.of(), EVIL_BIOMES, caveY, surfaceY));
-        add(entries, QuestedFishes.JEWELFISH, water(List.of(), EVIL_BIOMES, caveY, surfaceY));
-        add(entries, QuestedFishes.SPIDERFISH, water(List.of(), EVIL_BIOMES, caveY, surfaceY));
-        add(entries, QuestedFishes.DIRTFISH, water(List.of(), EVIL_BIOMES, undergroundY, spaceY));
-        add(entries, QuestedFishes.DEMONIC_HELLFISH, water(List.of(), EVIL_BIOMES, caveY, undergroundY));
-        add(entries, QuestedFishes.FISHOTRON, water(List.of(), EVIL_BIOMES, caveY, undergroundY));
-        add(entries, QuestedFishes.GUIDE_VOODOO_FISH, water(List.of(), EVIL_BIOMES, caveY, undergroundY));
-        add(entries, QuestedFishes.HUNGERFISH, water(List.of(), EVIL_BIOMES, caveY, undergroundY));
-        add(entries, QuestedFishes.CATFISH, water(jungle, List.of(), surfaceY, spaceY));
-        add(entries, QuestedFishes.DERPFISH, water(jungle, List.of(), surfaceY, spaceY));
-        add(entries, QuestedFishes.TROPICAL_BARRACUDA, water(jungle, List.of(), surfaceY, spaceY));
+        add(entries, QuestedFishes.BATFISH, water(List.of(), EVIL_BIOMES, caveY, undergroundMaxY));
+        add(entries, QuestedFishes.BONEFISH, water(List.of(), EVIL_BIOMES, caveY, undergroundMaxY));
+        add(entries, QuestedFishes.JEWELFISH, water(List.of(), EVIL_BIOMES, caveY, undergroundMaxY));
+        add(entries, QuestedFishes.SPIDERFISH, water(List.of(), EVIL_BIOMES, caveY, undergroundMaxY));
+        add(entries, QuestedFishes.DIRTFISH, water(List.of(), EVIL_BIOMES, undergroundY, surfaceMaxY));
+        add(entries, QuestedFishes.DEMONIC_HELLFISH, water(List.of(), EVIL_BIOMES, caveY, cavernMaxY));
+        add(entries, QuestedFishes.FISHOTRON, water(List.of(), EVIL_BIOMES, caveY, cavernMaxY));
+        add(entries, QuestedFishes.GUIDE_VOODOO_FISH, water(List.of(), EVIL_BIOMES, caveY, cavernMaxY));
+        add(entries, QuestedFishes.HUNGERFISH, water(List.of(), EVIL_BIOMES, caveY, cavernMaxY), hardmode);
+        add(entries, QuestedFishes.CATFISH, water(jungle, List.of(), surfaceY, surfaceMaxY));
+        add(entries, QuestedFishes.DERPFISH, water(jungle, List.of(), surfaceY, surfaceMaxY), hardmode);
+        add(entries, QuestedFishes.TROPICAL_BARRACUDA, water(jungle, List.of(), surfaceY, surfaceMaxY));
         add(entries, QuestedFishes.MUDFISH, water(jungle, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
         add(entries, QuestedFishes.SCARAB_FISH, water(desert, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
         add(entries, QuestedFishes.SCORPIO_FISH, water(desert, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
-        add(entries, QuestedFishes.CAPN_TUNABEARD, water(ocean, List.of(), surfaceY, ultraY));
+        add(entries, QuestedFishes.CAPN_TUNABEARD, water(ocean, List.of(), surfaceY, ultraY), hardmode);
         add(entries, QuestedFishes.CLOWNFISH, water(ocean, List.of(), surfaceY, ultraY));
-        add(entries, QuestedFishes.PENGFISH, water(snowy, List.of(), surfaceY, spaceY));
-        add(entries, QuestedFishes.TUNDRA_TROUT, water(snowy, List.of(), surfaceY, spaceY));
-        add(entries, QuestedFishes.FISHRON, water(snowy, List.of(), caveY, surfaceY));
-        add(entries, QuestedFishes.MUTANT_FLINXFIN, water(snowy, List.of(), caveY, surfaceY));
-        add(entries, QuestedFishes.EATER_OF_PLANKTON, water(corruption, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
-        add(entries, QuestedFishes.INFECTED_SCABBARDFISH, water(corruption, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
-        add(entries, QuestedFishes.CURSEDFISH, water(corruption, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
-        add(entries, QuestedFishes.BLOODY_MANOWAR, water(crimson, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
-        add(entries, QuestedFishes.ICHORFISH, water(crimson, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
-        add(entries, QuestedFishes.PIXIEFISH, water(hallow, List.of(), surfaceY, ultraY));
-        add(entries, QuestedFishes.UNICORN_FISH, water(hallow, List.of(), surfaceY, spaceY));
-        add(entries, QuestedFishes.MIRAGE_FISH, water(hallow, List.of(), caveY, surfaceY));
+        add(entries, QuestedFishes.PENGFISH, water(snowy, EVIL_BIOMES, surfaceY, surfaceMaxY));
+        add(entries, QuestedFishes.TUNDRA_TROUT, water(snowy, EVIL_BIOMES, surfaceY, surfaceMaxY));
+        add(entries, QuestedFishes.FISHRON, water(snowy, EVIL_BIOMES, caveY, undergroundMaxY), hardmode);
+        add(entries, QuestedFishes.MUTANT_FLINXFIN, water(snowy, EVIL_BIOMES, caveY, undergroundMaxY));
+        add(entries, QuestedFishes.EATER_OF_PLANKTON, water(corruption, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE), corruptionQuest);
+        add(entries, QuestedFishes.INFECTED_SCABBARDFISH, water(corruption, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE), corruptionQuest);
+        add(entries, QuestedFishes.CURSEDFISH, water(corruption, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE), hardmodeCorruption);
+        add(entries, QuestedFishes.BLOODY_MANOWAR, water(crimson, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE), crimsonQuest);
+        add(entries, QuestedFishes.ICHORFISH, water(crimson, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE), hardmodeCrimson);
+        add(entries, QuestedFishes.PIXIEFISH, water(hallow, List.of(), surfaceY, ultraY), hardmode);
+        add(entries, QuestedFishes.UNICORN_FISH, water(hallow, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE), hardmode);
+        add(entries, QuestedFishes.MIRAGE_FISH, water(hallow, List.of(), caveY, undergroundMaxY), hardmode);
         add(entries, QuestedFishes.AMANITA_FUNGIFIN, water(mushroom, List.of(), Integer.MIN_VALUE, Integer.MAX_VALUE));
         add(entries, QuestedFishes.BUMBLEBEE_TUNA, fluid(PortTags.Fluids.HONEY));
     }
@@ -112,7 +129,23 @@ public class AnglerQuestProvider implements DataProvider {
     }
 
     protected void add(List<AnglerQuestLoader.Entry> entries, ItemLike fish, AnglerQuestLoader.CatchCondition condition) {
-        entries.add(new AnglerQuestLoader.Entry(fish.asItem(), condition));
+        add(entries, fish, condition, availability(GamePhase.BEFORE_SKELETRON));
+    }
+
+    protected void add(List<AnglerQuestLoader.Entry> entries, ItemLike fish, AnglerQuestLoader.CatchCondition condition, AnglerQuestLoader.Availability availability) {
+        entries.add(new AnglerQuestLoader.Entry(fish.asItem(), condition, availability));
+    }
+
+    protected AnglerQuestLoader.Availability availability(GamePhase minPhase) {
+        return new AnglerQuestLoader.Availability(minPhase, List.of(), AnglerQuestLoader.WorldEvil.ANY);
+    }
+
+    protected AnglerQuestLoader.Availability availability(AnglerQuestLoader.WorldEvil worldEvil) {
+        return availability(GamePhase.BEFORE_SKELETRON, worldEvil);
+    }
+
+    protected AnglerQuestLoader.Availability availability(GamePhase minPhase, AnglerQuestLoader.WorldEvil worldEvil) {
+        return new AnglerQuestLoader.Availability(minPhase, List.of(), worldEvil);
     }
 
     @Override

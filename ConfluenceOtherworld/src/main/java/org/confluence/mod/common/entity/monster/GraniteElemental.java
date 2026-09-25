@@ -1,26 +1,18 @@
 package org.confluence.mod.common.entity.monster;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
@@ -53,30 +45,12 @@ public class GraniteElemental extends BaseFlyingMonster {
     private static final RawAnimation DEFENSE = RawAnimation.begin().thenLoop("misc.idle");
     private static final RawAnimation FROM_DEFENSE = RawAnimation.begin().thenPlayAndHold("from_defense");
 
-    /**
-     * 同一洞穴群的水平密度检查半径，远处独立洞穴不共享数量上限。
-     */
-    private static final double LOCAL_POPULATION_RADIUS = 64.0;
-    /**
-     * 密度检查采用较短的垂直半径，避免上下相隔很远的洞穴互相占用名额。
-     */
-    private static final double LOCAL_POPULATION_HEIGHT = 32.0;
-
     private int defenseTicks;
 
     public GraniteElemental(EntityType<? extends BaseFlyingMonster> type, Level level) {
         super(type, level);
         setDiscardFriction(true);
         this.moveControl = new FlyingMoveControl(this, 180, true);
-    }
-
-    /// 花岗精只会在洞穴层生成；同一片活动区域最多存在一只，不限制远处独立花岗岩洞。
-    public static boolean checkSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!SpawnPlacementChecks.checkCaveMonsterSpawn(type, level, spawnType, pos, random))
-            return false;
-        if (!(level instanceof ServerLevel serverLevel)) return true;
-        AABB activeArea = new AABB(pos).inflate(LOCAL_POPULATION_RADIUS, LOCAL_POPULATION_HEIGHT, LOCAL_POPULATION_RADIUS);
-        return serverLevel.getEntities(type, activeArea, entity -> entity.isAlive()).isEmpty();
     }
 
     @Override

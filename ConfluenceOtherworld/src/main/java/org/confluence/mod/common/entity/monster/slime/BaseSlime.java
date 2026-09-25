@@ -5,9 +5,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -18,11 +18,7 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.sounds.SoundEvent;
-import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.BossMinionCoordinator;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
@@ -32,12 +28,11 @@ import org.confluence.mod.common.entity.boss.BossOwnedEntity;
 import org.confluence.mod.common.entity.boss.BossOwnerTracker;
 import org.confluence.mod.common.entity.monster.BaseMonster;
 import org.confluence.mod.common.entity.npc.TownSlimeNPC;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.entity.MonsterEntities;
 import org.confluence.mod.util.OverworldUtils;
-import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.portlib.wrapper.common.PortTags;
 
 import java.util.UUID;
 
@@ -180,57 +175,6 @@ public class BaseSlime extends BaseMonster implements BossOwnedEntity {
             setSlimeSize(tag.getInt(SIZE_KEY));
         }
         bossOwnerTracker.load(tag);
-    }
-
-    /// 按史莱姆类型执行自然生成分层规则。
-    ///
-    /// 生物群系数据只决定某种史莱姆能否进入候选列表；亮度、高度、昼夜和露天条件仍在
-    /// 此处统一判定。未列入任何分支的类型保持不可自然生成。
-    public static boolean checkSlimeSpawn(EntityType<? extends Mob> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (!(level instanceof Level world)) {
-            return false;
-        }
-
-        int y = pos.getY();
-        var biome = level.getBiome(pos);
-        if (type == MonsterEntities.ICE_SLIME.get() || type == MonsterEntities.SPIKED_ICE_SLIME.get()) {
-            if (!biome.is(PortTags.Biomes.IS_SNOWY) && !biome.is(PortTags.Biomes.IS_ICY))
-                return false;
-        }
-        if (type == MonsterEntities.JUNGLE_SLIME.get() || type == MonsterEntities.SPIKED_JUNGLE_SLIME.get()) {
-            if (!biome.is(PortTags.Biomes.IS_JUNGLE) && !biome.is(PortTags.Biomes.IS_LUSH))
-                return false;
-        }
-        if (type == MonsterEntities.DESERT_SLIME.get() && !biome.is(PortTags.Biomes.IS_DESERT))
-            return false;
-        if (type == MonsterEntities.ICE_SLIME.get() || type == MonsterEntities.JUNGLE_SLIME.get()) {
-            return SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random);
-        }
-        if (type == MonsterEntities.BLUE_SLIME.get()
-                || type == MonsterEntities.GREEN_SLIME.get() || type == MonsterEntities.PURPLE_SLIME.get()
-                || type == MonsterEntities.PINK_SLIME.get() || type == MonsterEntities.SWAMP_SLIME.get()
-                || type == MonsterEntities.TROPIC_SLIME.get()) {
-            return level.canSeeSky(pos) && SpawnPlacementChecks.checkSurfaceDayMobSpawn(type, level, spawnType, pos, random);
-        }
-        if (!SpawnPlacementChecks.checkMonsterSpawnRules(type, level, spawnType, pos, random)) {
-            return false;
-        }
-        if (type == MonsterEntities.YELLOW_SLIME.get() || type == MonsterEntities.RED_SLIME.get()) {
-            return level.getBrightness(LightLayer.SKY, pos) == 0 && y >= OverworldUtils.getUndergroundY() && y < OverworldUtils.getSurfaceY();
-        }
-        if (type == MonsterEntities.BLACK_SLIME.get() || type == MonsterEntities.MOTHER_SLIME.get() || type == MonsterEntities.DUNGEON_SLIME.get()
-                || type == MonsterEntities.DESERT_SLIME.get()
-                || type == MonsterEntities.SPIKED_JUNGLE_SLIME.get() || type == MonsterEntities.SPIKED_ICE_SLIME.get()) {
-            return level.getBrightness(LightLayer.SKY, pos) == 0 && y <= OverworldUtils.getSurfaceY();
-        }
-        if (type == MonsterEntities.LAVA_SLIME.get()) {
-            return world.dimension() == OverworldUtils.underworld() && y >= 30 && y < 100;
-        }
-        if (type == MonsterEntities.CRIMSLIME.get() || type == MonsterEntities.CORRUPT_SLIME.get()) {
-            return y < OverworldUtils.getSpaceY() && (y > OverworldUtils.getSurfaceY() || SpawnPlacementChecks.checkMonsterSpawnRules(type, level, spawnType, pos, random));
-        }
-        // 未被上面任何分支覆盖的类型保持不可自然生成，避免误用其他分层的条件。
-        return false;
     }
 
     @Override

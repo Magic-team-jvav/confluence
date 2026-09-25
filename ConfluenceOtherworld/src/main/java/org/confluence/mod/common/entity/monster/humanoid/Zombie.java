@@ -2,7 +2,6 @@ package org.confluence.mod.common.entity.monster.humanoid;
 
 import PortLib.extensions.com.mojang.serialization.DataResult.PortDataResultExtension;
 import com.mojang.serialization.Codec;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,9 +20,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.SpawnPlacementChecks;
 import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTRoot;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
@@ -36,7 +33,6 @@ import org.confluence.mod.common.entity.ai.bt.leaf.WaitAction;
 import org.confluence.mod.common.entity.ai.goal.EnemyOpenDoorGoal;
 import org.confluence.mod.common.gameevent.BloodMoonGameEvent;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 /// 拥有同步外观和属性变体的泰拉瑞亚僵尸。
@@ -72,11 +68,6 @@ public class Zombie extends BaseHumanoidMonster implements VariantHolder<Zombie.
     public Zombie(EntityType<? extends Zombie> type, Level level, Variant variant) {
         super(type, level);
         setVariant(variant);
-    }
-
-    public static boolean checkZombieSpawnRules(EntityType<Zombie> type, ServerLevelAccessor level, MobSpawnType reason, BlockPos pos, RandomSource random) {
-        if (LibDateUtils.isDay(level) || pos.getY() < OverworldUtils.getSurfaceY()) return false;
-        return SpawnPlacementChecks.checkMonsterSpawnRules(type, level, reason, pos, random);
     }
 
     protected void applyVariantStats(Variant v) {

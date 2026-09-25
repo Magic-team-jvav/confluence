@@ -414,7 +414,7 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
 
     private void acquireFrontTarget() {
         LivingEntity current = getTarget();
-        if (isValidFrontTarget(current) && (!(current instanceof Player player) || isValidCurrentCombatPlayer(player))) {
+        if (current instanceof Player player ? isValidCurrentCombatPlayer(player) : isValidFrontTarget(current)) {
             return;
         }
         setTarget(findCombatPlayer());
@@ -434,7 +434,13 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
 
     @Override
     protected boolean isValidCurrentCombatPlayer(Player player) {
-        return super.isValidCurrentCombatPlayer(player) && isValidFrontTarget(player);
+        return super.isValidCurrentCombatPlayer(player)
+                && (isValidFrontTarget(player) || HorrifiedEffect.isBoundTo(player, this));
+    }
+
+    /// 墙后的参战者仍属于当前战斗，必须由狂卷之舌拉回墙前，而不是被当作无目标脱战。
+    public boolean isBehindWall(LivingEntity living) {
+        return living.position().subtract(position()).dot(getForwardVector()) < 0.0;
     }
 
     boolean isValidFrontTarget(@Nullable LivingEntity target) {
@@ -491,22 +497,23 @@ public class WallOfFlesh extends BaseBoss implements IEntityAdditionalSpawnData 
     }
 
     private void updateHorrifiedPlayers() {
-        if (tickCount % 20 != 0) {
-            return;
-        }
         AABB pursuitBox = getPursuitBox();
         for (Player player : level().players()) {
             if (player.isCreative() || player.isSpectator()) {
                 continue;
             }
-            if (player.getBoundingBox().intersects(pursuitBox)) {
-                HorrifiedEffect.bind(player, this);
-                registerCombatParticipant(player);
+            if (tickCount % 20 == 0) {
+                if (player.getBoundingBox().intersects(pursuitBox)) {
+                    HorrifiedEffect.bind(player, this);
+                    registerCombatParticipant(player);
+                }
+                if (HorrifiedEffect.isBoundTo(player, this)) {
+                    player.addEffect(new MobEffectInstance(ModEffects.HORRIFIED.get(), 100), this);
+                }
             }
-            /// 离开区域后仍要续期，舌头才能持续把该参战者拉回；只给区域内玩家
-            /// 续期会让其等待五秒后直接摆脱整场遭遇。
-            if (HorrifiedEffect.isBoundTo(player, this)) {
-                player.addEffect(new MobEffectInstance(ModEffects.HORRIFIED.get(), 100), this);
+            if (HorrifiedEffect.isBoundTo(player, this) && isBehindWall(player)
+                    && !player.hasEffect(ModEffects.THE_TONGUE.get())) {
+                player.addEffect(new MobEffectInstance(ModEffects.THE_TONGUE.get(), 60), this);
             }
         }
     }

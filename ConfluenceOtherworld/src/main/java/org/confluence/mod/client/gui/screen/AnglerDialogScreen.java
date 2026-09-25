@@ -39,10 +39,10 @@ public class AnglerDialogScreen extends NPCDialogScreen {
             initDialog(npc);
         }
 
-        // 任务按钮
+        // 沿用普通 NPC 对话界面的双按钮布局，给下方的心情文本留出空间。
         addRenderableWidget(Button.builder(Component.translatable("gui.confluence.quest"), b -> {
             showQuestText();
-        }).width(60).pos(width / 2 - 30, height / 2 + 20).build());
+        }).width(80).pos(width / 2 - 85, height / 2 + 20).build());
 
         // 对话按钮
         addRenderableWidget(Button.builder(Component.translatable("gui.confluence.dialog"), b -> {
@@ -53,7 +53,7 @@ public class AnglerDialogScreen extends NPCDialogScreen {
                     showQuestFish = false;
                 }
             }
-        }).width(60).pos(width / 2 - 30, height / 2 + 50).build());
+        }).width(80).pos(width / 2 + 5, height / 2 + 20).build());
     }
 
     private void initDialog(BaseNPC npc) {

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.effect.harmful;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,11 +49,6 @@ public class TheTongueEffect extends PortMobEffect {
             living.kill();
             return;
         }
-        if (living.isInWall() && living.getY() < NETHER_GENERATION_HEIGHT * 2.0 / 3.0) {
-            living.setDeltaMovement(0.0, 1.25, 0.0);
-            living.hurtMarked = true;
-            return;
-        }
         Vec3 toTarget = targetPosition.subtract(living.position());
         double distance = toTarget.length();
         if (distance <= RELEASE_DISTANCE) {
@@ -62,7 +58,15 @@ public class TheTongueEffect extends PortMobEffect {
 
         double wallSpeed = wall.getAttributeValue(Attributes.MOVEMENT_SPEED);
         double strength = Mth.clamp(distance / 15.0 + wallSpeed + 0.35, wallSpeed + 0.15, wallSpeed + 0.5);
-        living.setDeltaMovement(living.getDeltaMovement().add(toTarget.normalize().scale(strength)));
+        Vec3 next = living.position().add(toTarget.normalize().scale(Math.min(distance, strength)));
+        /// 狂卷之舌本就需要无视方块；普通速度会在墙面碰撞后把玩家卡在墙后。
+        if (living instanceof ServerPlayer player) {
+            player.connection.teleport(next.x, next.y, next.z, player.getYRot(), player.getXRot());
+        } else {
+            living.setPos(next);
+        }
+        living.setDeltaMovement(Vec3.ZERO);
+        living.fallDistance = 0.0F;
         living.hurtMarked = true;
         if (living.tickCount % 10 == 0) {
             living.hurt(living.damageSources().mobAttack(wall), 2.0F);

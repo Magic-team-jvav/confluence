@@ -145,12 +145,12 @@ public final class FrostFighter extends BaseMonster {
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSoundEvents.PIXIE_HURT.get();
+        return kind == Kind.GOLEM ? ModSoundEvents.ROUTINE_HURT.get() : ModSoundEvents.PIXIE_HURT.get();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return ModSoundEvents.PIXIE_DEATH.get();
+        return kind == Kind.GOLEM ? ModSoundEvents.SOUL_DEATH.get() : ModSoundEvents.PIXIE_DEATH.get();
     }
 
 }

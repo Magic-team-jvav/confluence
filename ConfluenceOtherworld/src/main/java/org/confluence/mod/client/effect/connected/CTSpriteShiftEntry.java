@@ -17,12 +17,12 @@ public class CTSpriteShiftEntry extends SpriteShiftEntry {
     /// [TextureAtlasSprite#getU]
     public float getTargetU(float localU, int indicesIndex, int targetIndex) {
         float uOffset = (float) (indicesIndex % type.getSheetSize());
-        return getTarget(targetIndex).getU((getUnInterpolatedU(getOriginal(), localU) + uOffset) / type.getSheetSize());
+        return getTarget(targetIndex).getU((getUnInterpolatedU(getOriginal(), localU) + uOffset * 16) / type.getSheetSize());
     }
 
     /// [TextureAtlasSprite#getV]
     public float getTargetV(float localV, int indicesIndex, int targetIndex) {
         float vOffset = (float) (indicesIndex / type.getSheetSize());
-        return getTarget(targetIndex).getV((getUnInterpolatedV(getOriginal(), localV) + vOffset) / type.getSheetSize());
+        return getTarget(targetIndex).getV((getUnInterpolatedV(getOriginal(), localV) + vOffset * 16) / type.getSheetSize());
     }
 }

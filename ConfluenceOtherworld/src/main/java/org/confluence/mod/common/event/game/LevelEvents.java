@@ -113,7 +113,7 @@ public final class LevelEvents {
             }
 
             BlockPos pos = event.getPos();
-            NoTraps.dropBombWhenLeavesDestroy(serverPlayer, state, pos);
+            NoTraps.dropPoweredCreeperWhenLeavesDestroy(serverPlayer, state, pos);
             BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, state, pos);
             BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, state);
             LucyTheAxe.onDestroyBlock(serverPlayer, state);

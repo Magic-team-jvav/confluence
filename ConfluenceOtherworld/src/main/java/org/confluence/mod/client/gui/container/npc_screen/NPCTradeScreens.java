@@ -16,6 +16,7 @@ public final class NPCTradeScreens {
     private static final Map<EntityType<?>, ResourceLocation> OVERLAYS = Map.of(
             NpcEntities.GOBLIN_TINKERER.get(), Confluence.asResource("textures/gui/trade/goblin_tinkerer_trade.png"),
             NpcEntities.MECHANIC.get(), Confluence.asResource("textures/gui/trade/mechanic_trade.png"),
+            NpcEntities.ARMS_DEALER.get(), Confluence.asResource("textures/gui/trade/arms_dealer_trade.png"),
             NpcEntities.DRYAD.get(), Confluence.asResource("textures/gui/trade/dryad_trade.png"),
             NpcEntities.MERCHANT.get(), Confluence.asResource("textures/gui/trade/merchant_trade.png"),
             NpcEntities.DYE_TRADER.get(), Confluence.asResource("textures/gui/trade/dye_trader_trade.png"),

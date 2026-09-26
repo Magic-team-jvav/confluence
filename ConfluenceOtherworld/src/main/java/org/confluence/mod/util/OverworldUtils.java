@@ -150,6 +150,8 @@ public final class OverworldUtils {
         return server.getLevel(dimension());
     }
 
+    // 分层 太空层y320-y260 地表y260-y40 地下y40- y0 洞穴y0-y-64
+
     /// default 320
     public static int getUltraY() {
         return 320;

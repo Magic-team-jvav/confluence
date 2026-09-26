@@ -24,11 +24,11 @@ import static org.confluence.mod.common.init.entity.ModEntities.withAttributes;
 public class MonsterEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(Registries.ENTITY_TYPE, Confluence.MODID);
 
-    // 参数说明：
+    // 基本参数说明：
     // 敌怪生命，攻击（wiki专家模式26%向上取整为基础值微调）
     // 敌怪护甲（wiki专家模式防御45%向上取整）
     // 敌怪韧性（wiki专家模式防御20%向下取整）上限为8
-    // 敌怪穿透护甲（转化后的伤害x35%后向上取整）上限12
+    // 敌怪穿透护甲（转化后的伤害x35%后向上取整，为初步值，随后初步值-2得出基础值，初步值为1的穿透数值保留1）上限12
     // 地表与森林：史莱姆（passiveByDay 控制白天是否被动）
     public static final RegistryObject<EntityType<BaseSlime>> GREEN_SLIME = withAttributes(registerSlime("green_slime", true, 2, true),
             () -> CreatureAttributeBuilder.slime().maxHealth(9).armor(0).attackDamage(3).build());

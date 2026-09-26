@@ -64,7 +64,7 @@ public class BaseFoodItem extends Item {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         if (stack.is(FoodItems.CHERRY) && level instanceof ServerLevel serverLevel && ModSecretSeeds.NO_TRAPS.match(serverLevel) && level.random.nextFloat() < 0.7F) {
-            level.explode(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), 2.5F, false, Level.ExplosionInteraction.MOB);
+            level.explode(null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), 2.5F, false, Level.ExplosionInteraction.NONE);
         }
         if (builder.finishUsingCallback != null) {
             builder.finishUsingCallback.accept(stack, level, livingEntity);

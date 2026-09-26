@@ -58,6 +58,7 @@ import org.confluence.mod.client.entity.renderer.*;
 import org.confluence.mod.client.gameevent.GoblinArmyProgressRenderer;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.container.npc_screen.NPCReforgeScreen;
+import org.confluence.mod.client.gui.container.npc_screen.NPCTradeItemOutline;
 import org.confluence.mod.client.gui.container.npc_screen.NPCTradeScreens;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SoulSkillClientHandler;
@@ -1149,6 +1150,7 @@ public final class ModClientEvents {
     private static void registerShaders(RegisterShadersEvent event) {
         try {
             event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("boss_bar_flow"), DefaultVertexFormat.POSITION_TEX), CustomBossBarRenderer::setShader);
+            event.registerShader(new ShaderInstance(event.getResourceProvider(), Confluence.asResource("trade_item_outline"), DefaultVertexFormat.POSITION_TEX_COLOR), NPCTradeItemOutline::setShader);
         } catch (IOException e) {
             Confluence.LOGGER.error("Failed to register shader", e);
         }

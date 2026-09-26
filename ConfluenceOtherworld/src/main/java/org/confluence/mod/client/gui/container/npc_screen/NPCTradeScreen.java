@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.npc.BaseNPC;
@@ -40,6 +41,7 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
     private int heldOfferSlot = -1;
     private int heldTicks;
     private NPCTradePortrait portrait;
+    private final NPCTradeItemOutline itemOutline = new NPCTradeItemOutline();
     private final ItemStack[] moneyIcons = {
             ModItems.PLATINUM_COIN.toStack(), ModItems.GOLD_COIN.toStack(),
             ModItems.SILVER_COIN.toStack(), ModItems.COPPER_COIN.toStack()
@@ -114,6 +116,14 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
             graphics.renderItem(moneyIcons[slot], x, y);
             graphics.drawString(font, count, x - MONEY_TEXT_GAP - font.width(count), y + MONEY_TEXT_Y, 0xFFFFFF);
         }
+        itemOutline.prepare(graphics, menu, imageWidth);
+        graphics.pose().pushPose();
+        graphics.pose().translate(leftPos, topPos, 0);
+        for (Slot slot : menu.slots) {
+            if (menu.isOfferSlot(slot.index) && slot.hasItem() && slot.isActive())
+                itemOutline.render(graphics, slot);
+        }
+        graphics.pose().popPose();
     }
 
     @Override
@@ -124,6 +134,12 @@ public class NPCTradeScreen extends AbstractContainerScreen<NPCTradeMenu> {
         if (!menu.getCarried().isEmpty() && hoveredSlot != null && hoveredSlot.index < 36 && !hoveredSlot.hasItem()) {
             graphics.renderTooltip(font, Component.translatable("gui.confluence.sell"), mouseX, mouseY);
         }
+    }
+
+    @Override
+    public void removed() {
+        itemOutline.close();
+        super.removed();
     }
 
     private Button createPageButton(boolean previous) {

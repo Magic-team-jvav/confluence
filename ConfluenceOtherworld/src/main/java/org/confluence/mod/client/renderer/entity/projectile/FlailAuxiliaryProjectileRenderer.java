@@ -22,6 +22,8 @@ public final class FlailAuxiliaryProjectileRenderer<T extends FlailAuxiliaryProj
     private static final ResourceLocation DRIPPLER = Confluence.asResource("textures/entity/projectile/flail/drippler_crippler.png");
     private static final ResourceLocation FLAIRON = Confluence.asResource("textures/entity/projectile/flail/flairon_bubble.png");
 
+    private static final RenderType BUBBLE_RENDER_TYPE = RenderType.entityTranslucent(FLAIRON);
+
     public FlailAuxiliaryProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
@@ -39,16 +41,18 @@ public final class FlailAuxiliaryProjectileRenderer<T extends FlailAuxiliaryProj
 
     @Override
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        float scale = entity instanceof FlaironBubbleProjectile bubble
-                ? bubble.getRenderScale()
-                : 0.3F;
+        FlaironBubbleProjectile bubble = entity instanceof FlaironBubbleProjectile bubbleEntity ? bubbleEntity : null;
+        float scale = bubble != null ? bubble.getRenderScale() : 0.3F;
         poseStack.pushPose();
         poseStack.scale(scale, scale, scale);
         poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
 
         PoseStack.Pose pose = poseStack.last();
-        VertexConsumer consumer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(entity)));
+        RenderType renderType = bubble != null
+                ? BUBBLE_RENDER_TYPE
+                : RenderType.entityCutoutNoCull(getTextureLocation(entity));
+        VertexConsumer consumer = bufferSource.getBuffer(renderType);
         vertex(consumer, pose, packedLight, -1.0F, -1.0F, 0.0F, 1.0F);
         vertex(consumer, pose, packedLight, 1.0F, -1.0F, 1.0F, 1.0F);
         vertex(consumer, pose, packedLight, 1.0F, 1.0F, 1.0F, 0.0F);

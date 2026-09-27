@@ -34,10 +34,8 @@ import java.util.function.Consumer;
 /// 链锤物品的共享输入与状态转换入口。
 ///
 /// 按下主动作键时创建并旋转链锤，松开时投出；再次按下可让投出或回收中的链锤落入停留阶段，
-/// 再次松开则收回。左键配置通过控制包调用同一组方法，右键配置通过原版物品使用生命周期调用，
-/// 因此不会绕过箱子、门与工作台的方块交互优先级。
+/// 再次松开则收回。
 public class BaseFlailItem extends TooltipItem implements GeoItem {
-    private static final int USE_DURATION = 72_000;
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
     private final FlailComponent flailComponent;
 
@@ -54,15 +52,9 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
         return flailComponent;
     }
 
-    /// 右键未被方块或实体消耗时，进入链锤持续使用状态。
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        player.startUsingItem(hand);
-        if (!level.isClientSide()) {
-            press(player, stack);
-        }
-        return InteractionResultHolder.consume(stack);
+        return InteractionResultHolder.pass(player.getItemInHand(hand));
     }
 
     /// 按下主动作键时创建链锤，或让已投出与回收中的链锤落入停留阶段。
@@ -98,24 +90,6 @@ public class BaseFlailItem extends TooltipItem implements GeoItem {
                 == BaseFlailEntity.PHASE_RETRACT) {
             existing.playerDrop();
         }
-    }
-
-    /// 松开右键或切换物品时，复用与左键控制包完全相同的释放语义。
-    @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int remainingUseDuration) {
-        if (!level.isClientSide() && living instanceof Player player) {
-            release(player, stack);
-        }
-    }
-
-    @Override
-    public int getUseDuration(ItemStack stack) {
-        return USE_DURATION;
-    }
-
-    @Override
-    public UseAnim getUseAnimation(ItemStack stack) {
-        return UseAnim.NONE;
     }
 
     /// 查找当前玩家唯一仍在世界中的链锤实体。

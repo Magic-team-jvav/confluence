@@ -245,7 +245,7 @@ public final class GameClientEvents {
                 }
             } else {
                 ItemStack stack = player.getMainHandItem();
-                if (stack.is(ModTags.Items.SPEAR) || stack.is(ModTags.Items.FLAIL)) {
+                if (stack.is(ModTags.Items.SPEAR) || stack.is(ModTags.Items.FLAIL) || stack.is(ModTags.Items.YOYO)) {
                     if (event.isAttack()) {
                         event.setCanceled(true);
                     }

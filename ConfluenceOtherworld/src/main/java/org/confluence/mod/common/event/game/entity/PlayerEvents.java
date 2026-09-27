@@ -70,7 +70,6 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.mod.common.item.sword.StarSteelSword;
-import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.mount.MountManager;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
@@ -374,7 +373,8 @@ public final class PlayerEvents {
         if (player instanceof ServerPlayer serverPlayer) {
             AccessoryItems.applyLuckyCoin(serverPlayer, event.getTarget());
         }
-        if (player.getMainHandItem().is(ModTags.Items.SPEAR) || player.getMainHandItem().getItem() instanceof YoyoItem) {
+        ItemStack stack = player.getMainHandItem();
+        if (stack.is(ModTags.Items.SPEAR) || stack.is(ModTags.Items.FLAIL) || stack.is(ModTags.Items.YOYO)) {
             event.setCanceled(true);
         }
     }

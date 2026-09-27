@@ -141,7 +141,16 @@ repositories {
             includeGroup "com.github.rtyley"
         }
     }
-    maven { url = "https://maven.bawnorton.com/releases" }
+    maven {
+        // MixinSquared 等 bawnorton 制品所在仓库
+        url = "https://maven.bawnorton.com/releases"
+        content {
+            // 该仓库当前持续返回 530(Cloudflare 源站错误), 若不限定组, Gradle 解析
+            // 任何制品时都会问到它, 拿到 530 后直接把仓库标记为失败并中断解析:
+            // "Repository maven8 is disabled due to earlier error below"
+            includeGroupByRegex "com\\.bawnorton.*"
+        }
+    }
     maven { url = 'https://maven.minecraftforge.net/' }
     maven {
         name = "Curios"
@@ -172,6 +181,20 @@ repositories {
     maven {
         name = "Ageratum" // 藿香
         url = "https://server.cjsah.net:1002/maven"
+    }
+    exclusiveContent { // 本团队制品(ParticleStorm / ThreeDimensionParticle / OpalLight / PortLib)
+        forRepository {
+            mavenLocal()
+        }
+        forRepository {
+            maven {
+                name "org.confluenceReleases"
+                url "https://maven.confluence.ink/releases"
+            }
+        }
+        filter {
+            includeGroup("org.mesdag")
+        }
     }
     exclusiveContent { // Sable
         forRepository {

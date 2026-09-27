@@ -20,7 +20,7 @@ public class PureConversionTable extends ConversionTable {
         Block block = source.getBlock();
 
         if (block == Blocks.TALL_GRASS) {
-            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.GRASS_BLOCK : Blocks.AIR;
+            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.GRASS : Blocks.AIR;
         }
         if (block instanceof CattailBlock && block != NatureBlocks.CATTAIL_BLOCK.get()) {
             return NatureBlocks.CATTAIL_BLOCK.get();
@@ -34,7 +34,7 @@ public class PureConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_JUNGLE_GRASS_BLOCK)) {
             return NatureBlocks.JUNGLE_GRASS_BLOCK.get();
         }
-        if (holder.is(ModTags.Blocks.PURE_CONVERSION_SHORT_GRASS)) return Blocks.GRASS_BLOCK;
+        if (holder.is(ModTags.Blocks.PURE_CONVERSION_SHORT_GRASS)) return Blocks.GRASS;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_PACKED_ICE)) return Blocks.PACKED_ICE;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_ICE)) return Blocks.ICE;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SAND)) return Blocks.SAND;

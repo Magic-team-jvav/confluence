@@ -12,7 +12,6 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.SurfaceRules;
-import org.confluence.mod.common.worldgen.biome.injector.InjectionProbe;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.INoiseBasedChunkGenerator;
 import org.confluence.mod.util.DynamicBiomeUtils;
@@ -44,20 +43,14 @@ public abstract class NoiseBasedChunkGeneratorMixin implements INoiseBasedChunkG
     }
 
     /// 建面时的规则替换点：原版 7 参 `buildSurface` 里唯一一处 `settings.surfaceRule()`。
-    @WrapOperation(
-            method = "buildSurface(Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/world/level/levelgen/WorldGenerationContext;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/biome/BiomeManager;Lnet/minecraft/core/Registry;Lnet/minecraft/world/level/levelgen/blending/Blender;)V",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/NoiseGeneratorSettings;surfaceRule()Lnet/minecraft/world/level/levelgen/SurfaceRules$RuleSource;")
-    )
+    @WrapOperation(method = "buildSurface(Lnet/minecraft/world/level/chunk/ChunkAccess;Lnet/minecraft/world/level/levelgen/WorldGenerationContext;Lnet/minecraft/world/level/levelgen/RandomState;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/biome/BiomeManager;Lnet/minecraft/core/Registry;Lnet/minecraft/world/level/levelgen/blending/Blender;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/NoiseGeneratorSettings;surfaceRule()Lnet/minecraft/world/level/levelgen/SurfaceRules$RuleSource;"))
     private SurfaceRules.RuleSource confluence$replaceBuildSurfaceRules(NoiseGeneratorSettings instance, Operation<SurfaceRules.RuleSource> original) {
         return confluence$resolveRules(instance, original);
     }
 
     /// 挖洞时的规则替换点：`applyCarvers` 会把同一份 `surfaceRule()` 塞进 `CarvingContext`，
     /// 供 `SurfaceSystem#topMaterial` 使用。一并替换，保证挖洞与建面的表层材料判定一致。
-    @WrapOperation(
-            method = "applyCarvers",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/NoiseGeneratorSettings;surfaceRule()Lnet/minecraft/world/level/levelgen/SurfaceRules$RuleSource;")
-    )
+    @WrapOperation(method = "applyCarvers", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/NoiseGeneratorSettings;surfaceRule()Lnet/minecraft/world/level/levelgen/SurfaceRules$RuleSource;"))
     private SurfaceRules.RuleSource confluence$replaceCarverRules(NoiseGeneratorSettings instance, Operation<SurfaceRules.RuleSource> original) {
         return confluence$resolveRules(instance, original);
     }
@@ -66,10 +59,8 @@ public abstract class NoiseBasedChunkGeneratorMixin implements INoiseBasedChunkG
     private SurfaceRules.RuleSource confluence$resolveRules(NoiseGeneratorSettings instance, Operation<SurfaceRules.RuleSource> original) {
         SurfaceRules.RuleSource composed = this.confluence$surfaceRules;
         if (composed == null) {
-            InjectionProbe.surfaceMissing();
             return original.call(instance);
         }
-        InjectionProbe.surfaceApplied();
         return composed;
     }
 }

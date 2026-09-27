@@ -4,8 +4,8 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Climate;
 
+import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 /// 挂在单个 `BiomeSource` 实例上的群系注入处理器。
 ///
@@ -17,9 +17,14 @@ public interface BiomeSourceHandler {
 
     /// 需要额外并入 `possibleBiomes()` 的群系。
     ///
-    /// 原版 `ChunkGenerator` 会用它做地物步骤排序（`FeatureSorter.buildFeaturesPerStep`），
-    /// 以及结构集筛选（`ChunkGeneratorStructureState`），漏掉会导致地物不生成。
-    default Stream<Holder<Biome>> extraBiomes() {
-        return Stream.empty();
+    /// 原版 `ChunkGenerator` 会用它做地物步骤排序（`FeatureSorter.buildFeaturesPerStep`）、
+    /// 建面时的群系筛选（`ChunkGenerator#applyBiomeDecoration` 里那句 `retainAll`），
+    /// 以及结构集筛选（`ChunkGeneratorStructureState`），漏掉会导致地物不生成、
+    /// `/locate biome` 找不到。
+    ///
+    /// 返回 `List` 而不是 `Stream`：这个方法是 `BiomeSource#possibleBiomes` 的读路径上的，
+    /// 按区块被调用，实现方应当返回一个**稳定的、建好就不再变**的列表，避免每次分配。
+    default List<Holder<Biome>> extraBiomes() {
+        return List.of();
     }
 }

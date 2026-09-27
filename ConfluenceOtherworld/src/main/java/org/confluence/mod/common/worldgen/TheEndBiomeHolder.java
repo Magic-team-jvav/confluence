@@ -17,8 +17,8 @@ import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.worldgen.biome.injector.BiomeSourceHandler;
 import org.confluence.mod.mixin.world.level.dimension.DimensionTypeAccessor;
 
+import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class TheEndBiomeHolder {
     private static Holder<Biome> chorusForest;
@@ -78,9 +78,9 @@ public class TheEndBiomeHolder {
         }
 
         @Override
-        public Stream<Holder<Biome>> extraBiomes() {
-            if (!initialized) return Stream.empty();
-            return Stream.of(
+        public List<Holder<Biome>> extraBiomes() {
+            if (!initialized) return List.of();
+            return List.of(
                     chorusForest,
                     inverseForest,
                     moonlightForest,

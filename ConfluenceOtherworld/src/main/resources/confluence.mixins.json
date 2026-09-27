@@ -110,7 +110,6 @@
     "client.model.geom.ModelPartMixin",
     "client.multiplayer.ClientAdvancementsMixin",
     "client.multiplayer.ClientLevelMixin",
-    "client.multiplayer.MultiPlayerGameModeMixin",
     "client.player.LocalPlayerMixin",
     "client.renderer.GameRendererMixin",
     "client.renderer.ItemInHandRendererMixin",

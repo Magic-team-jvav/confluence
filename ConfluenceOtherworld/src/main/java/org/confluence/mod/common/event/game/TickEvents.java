@@ -8,6 +8,7 @@ import org.confluence.lib.util.TaskScheduler;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.attachment.YoyoSession;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
@@ -20,7 +21,7 @@ import org.confluence.mod.common.gameevent.GameEventSystem;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.axe.LucyTheAxe;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
-import org.confluence.mod.common.item.yoyo.YoyoSession;
+import org.confluence.mod.common.item.whip.WhipSession;
 import org.confluence.mod.common.mount.MountManager;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.secret_seed.TooEasy;
@@ -112,5 +113,6 @@ public final class TickEvents {
     private static void serverTick$Post(TickEvent.ServerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         PathService.INSTANCE.pathFindingTick();
+        WhipSession.handle();
     }
 }

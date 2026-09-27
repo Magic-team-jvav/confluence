@@ -20,11 +20,10 @@ import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.renderer.item.SpecialItemRenderingUtil;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.bow.BaseTerraBowItem;
 import org.confluence.mod.common.item.crossbow.BaseTerraRepeaterItem;
 import org.confluence.mod.common.item.sword.BasePhasebladeItem;
-import org.confluence.mod.common.item.whip.BaseWhipItem;
-import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,24 +45,24 @@ public abstract class ItemRendererMixin implements SelfGetter<ItemRenderer> {
     public abstract BakedModel getModel(ItemStack stack, @Nullable Level level, @Nullable LivingEntity entity, int seed);
 
     @WrapWithCondition(method = "renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V"))
-    private boolean hideTransientWeaponModel(ItemRenderer instance, ItemStack stack, ItemDisplayContext displayContext,
-                                         boolean leftHand, PoseStack poseStack, MultiBufferSource bufferSource,
-                                         int combinedLight, int combinedOverlay, BakedModel model,
-                                         @Local(argsOnly = true) @Nullable LivingEntity entity) {
-        if (!(entity instanceof Player player)) return true;
-        if (stack.getItem() instanceof BaseWhipItem && (displayContext.firstPerson() || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) {
-            HumanoidArm arm = leftHand ? HumanoidArm.LEFT : HumanoidArm.RIGHT;
-            return player.level().getEntitiesOfClass(WhipAttackEntity.class, player.getBoundingBox().inflate(8.0), attack -> attack.representsHeldWeapon(player, stack, arm)).isEmpty();
+    private boolean hideTransientWeaponModel(ItemRenderer instance, ItemStack itemStack, ItemDisplayContext displayContext,
+                                             boolean leftHand, PoseStack poseStack, MultiBufferSource buffer,
+                                             int combinedLight, int combinedOverlay, BakedModel p_model,
+                                             @Local(argsOnly = true) @Nullable LivingEntity entity) {
+        if (entity instanceof Player player && (displayContext.firstPerson() || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) {
+            // todo 换成类似player.fishing来避免实体查找
+            if (itemStack.is(ModTags.Items.WHIP)) {
+                HumanoidArm arm = leftHand ? HumanoidArm.LEFT : HumanoidArm.RIGHT;
+                return player.level().getEntitiesOfClass(WhipAttackEntity.class, player.getBoundingBox().inflate(8.0), attack -> attack.representsHeldWeapon(player, itemStack, arm)).isEmpty();
+            } else if (itemStack.is(ModTags.Items.YOYO)) {
+                return player.level().getEntitiesOfClass(YoyoEntity.class,
+                        AABB.ofSize(player.position(), 128.0D, 128.0D, 128.0D),
+                        yoyo -> !yoyo.isDetached() && !yoyo.isCounterweight() && yoyo.belongsTo(player) && yoyo.represents(itemStack)).isEmpty();
+            } else if (itemStack.getItem() instanceof BasePhasebladeItem) {
+                return !BasePhasebladeItem.isThrown(player, itemStack);
+            }
         }
-        if (stack.getItem() instanceof YoyoItem && (displayContext.firstPerson() || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) {
-            return player.level().getEntitiesOfClass(YoyoEntity.class,
-                    AABB.ofSize(player.position(), 128.0D, 128.0D, 128.0D),
-                    yoyo -> !yoyo.isDetached() && !yoyo.isCounterweight() && yoyo.belongsTo(player) && yoyo.represents(stack)).isEmpty();
-        }
-        if (!(stack.getItem() instanceof BasePhasebladeItem)
-                || !(displayContext.firstPerson() || displayContext == ItemDisplayContext.THIRD_PERSON_LEFT_HAND
-                || displayContext == ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)) return true;
-        return !BasePhasebladeItem.isThrown(player, stack);
+        return true;
     }
 
     @Inject(method = "renderStatic(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/level/Level;III)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;render(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemDisplayContext;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;IILnet/minecraft/client/resources/model/BakedModel;)V", shift = At.Shift.AFTER))

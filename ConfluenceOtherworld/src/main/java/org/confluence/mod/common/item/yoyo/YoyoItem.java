@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.mod.common.attachment.YoyoSession;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;

@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.common.attachment.YoyoSession;
 import org.confluence.mod.common.entity.yoyo.ChikCrystalProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.init.entity.ModEntities;

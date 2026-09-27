@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.whip.BaseWhipItem;
 import org.confluence.mod.network.c2s.WhipControlPacketC2S;
 
@@ -36,12 +37,12 @@ public final class WhipInputHandler implements ClientWeaponInputHandler {
 
     @Override
     public boolean blocksAttack(ItemStack stack) {
-        return stack.getItem() instanceof BaseWhipItem;
+        return stack.is(ModTags.Items.WHIP);
     }
 
     @Override
     public boolean blocksUse(ItemStack stack) {
-        return stack.getItem() instanceof BaseWhipItem;
+        return stack.is(ModTags.Items.WHIP);
     }
 
     @Override

@@ -100,12 +100,6 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
 
     /// 保存本次挥动的初始时长与鞭距。
     public void initialize(ItemStack weapon, Vec3 direction, HumanoidArm arm, int durationTicks, float rangeAttribute) {
-        if (!(weapon.getItem() instanceof BaseWhipItem)) {
-            throw new IllegalArgumentException("Whip attack weapon must be a BaseWhipItem");
-        }
-        if (direction.lengthSqr() <= 1.0E-12) {
-            throw new IllegalArgumentException("Whip attack direction must be non-zero");
-        }
         Vec3 normalized = direction.normalize();
         setYRot(getOwner() == null ? (float) (Mth.atan2(-normalized.x, normalized.z) * Mth.RAD_TO_DEG) : getOwner().getYRot());
         entityData.set(WEAPON, weapon.copyWithCount(1));
@@ -113,15 +107,9 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
         entityData.set(DIRECTION_Y, (float) normalized.y);
         entityData.set(DIRECTION_Z, (float) normalized.z);
         entityData.set(RIGHT_ARM, arm == HumanoidArm.RIGHT);
-        if (durationTicks <= 0) {
-            throw new IllegalArgumentException("Whip duration must be positive");
-        }
         entityData.set(DURATION_TICKS, durationTicks);
-        if (rangeAttribute <= 0.0F) {
-            throw new IllegalArgumentException("Whip range must be positive");
-        }
         entityData.set(RANGE_ATTRIBUTE, rangeAttribute);
-        int enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.WHIP_SWEEP.get(), weapon);
+        int enchantmentLevel = EnchantmentHelper.getTagEnchantmentLevel(ModEnchantments.WHIP_SWEEP.get(), weapon);
         entityData.set(SWEEP_LEVEL, enchantmentLevel > 0 && getRandom1211().nextFloat() < 0.2F ? enchantmentLevel : 0);
         setDeltaMovement(normalized);
     }
@@ -160,9 +148,7 @@ public final class WhipAttackEntity extends DamageSettableProjectile implements 
             setPos(BaseWhipItem.handPosition(player, attackArm(), 1.0F));
         if (level().isClientSide) {
             advanceClientProgress();
-            return;
-        }
-        if (!level().isClientSide) {
+        } else {
             float previous = entityData.get(SWING_PROGRESS);
             if (previous >= 1.0F) {
                 // 正常等待持有者播放完成；非玩家来源及异常客户端保留有界清理。

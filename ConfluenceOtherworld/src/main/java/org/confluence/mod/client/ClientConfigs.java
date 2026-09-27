@@ -1,6 +1,7 @@
 package org.confluence.mod.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -19,11 +20,6 @@ import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.SoulSkillClientHandler;
 import org.confluence.mod.common.entity.npc.trade.NPCTradeMenu;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.flail.BaseFlailItem;
-import org.confluence.mod.common.item.gun.BaseGun;
-import org.confluence.mod.common.item.mana.ManaStaffItem;
-import org.confluence.mod.common.item.whip.BaseWhipItem;
-import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.portlib.wrapper.common.PortTranslatableEnum;
@@ -264,19 +260,16 @@ public final class ClientConfigs {
 
     /// 返回当前物品配置的主要动作键；不属于这五类武器时返回 {@code null}。
     public static @Nullable WeaponUseButton weaponUseButton(ItemStack stack) {
-        if (stack.getItem() instanceof ManaStaffItem<?>) {
+        Holder<Item> holder = stack.getItem().builtInRegistryHolder();
+        if (holder.is(ModTags.Items.MANA_WEAPON)) {
             return staffUseButton;
-        }
-        if (stack.getItem() instanceof BaseWhipItem || stack.is(ModTags.Items.WHIP)) {
+        } else if (holder.is(ModTags.Items.WHIP)) {
             return whipUseButton;
-        }
-        if (stack.getItem() instanceof YoyoItem) {
+        } else if (holder.is(ModTags.Items.YOYO)) {
             return yoyoUseButton;
-        }
-        if (stack.getItem() instanceof BaseGun) {
+        } else if (holder.is(ModTags.Items.GUN)) {
             return gunUseButton;
-        }
-        if (stack.getItem() instanceof BaseFlailItem) {
+        } else if (holder.is(ModTags.Items.FLAIL)) {
             return flailUseButton;
         }
         return null;

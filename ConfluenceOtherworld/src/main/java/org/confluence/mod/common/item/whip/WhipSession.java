@@ -3,18 +3,16 @@ package org.confluence.mod.common.item.whip;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.whip.WhipAttackEntity;
+import org.confluence.mod.common.init.ModTags;
 
 import java.util.HashMap;
 import java.util.Map;
 
+// todo 换成attachment，正好解决渲染端需要查询WhipAttackEntity的问题
 /// 每个玩家共用一个挥动周期，松开只停止续挥，不打断当前攻击。
-@Mod.EventBusSubscriber(modid = Confluence.MODID)
 public final class WhipSession {
     private static final Map<ServerPlayer, WhipSession> SESSIONS = new HashMap<>();
     private WhipAttackEntity attack;
@@ -30,7 +28,7 @@ public final class WhipSession {
             if (session != null) session.held = false;
             return;
         }
-        if (!canSwing(player) || !(player.getMainHandItem().getItem() instanceof BaseWhipItem))
+        if (!canSwing(player) || !(player.getMainHandItem().is(ModTags.Items.WHIP)))
             return;
         WhipSession session = SESSIONS.computeIfAbsent(player, ignored -> new WhipSession());
         session.held = true;
@@ -40,7 +38,7 @@ public final class WhipSession {
     }
 
     public static void requestSwing(ServerPlayer player, InteractionHand hand) {
-        if (!canSwing(player) || !(player.getItemInHand(hand).getItem() instanceof BaseWhipItem))
+        if (!canSwing(player) || !(player.getItemInHand(hand).is(ModTags.Items.WHIP)))
             return;
         SESSIONS.computeIfAbsent(player, ignored -> new WhipSession()).startSwing(player, hand);
     }
@@ -53,13 +51,10 @@ public final class WhipSession {
     }
 
     private static boolean canSwing(ServerPlayer player) {
-        return player.isAlive() && !player.isRemoved() && !player.isSpectator() && player.getServer() != null
-                && player.getServer().getPlayerList().getPlayer(player.getUUID()) == player;
+        return player.isAlive() && !player.isRemoved() && !player.isSpectator() && player.server.getPlayerList().getPlayer(player.getUUID()) == player;
     }
 
-    @SubscribeEvent
-    public static void tick(TickEvent.ServerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
+    public static void handle() {
         var iterator = SESSIONS.entrySet().iterator();
         while (iterator.hasNext()) {
             var entry = iterator.next();

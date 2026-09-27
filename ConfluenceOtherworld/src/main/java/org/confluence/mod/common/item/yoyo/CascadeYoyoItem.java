@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.common.attachment.YoyoSession;
 import org.confluence.mod.common.entity.yoyo.CascadeFireProjectile;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.init.entity.ModEntities;

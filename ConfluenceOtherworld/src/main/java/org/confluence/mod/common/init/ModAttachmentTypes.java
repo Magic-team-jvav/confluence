@@ -2,7 +2,6 @@ package org.confluence.mod.common.init;
 
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.*;
-import org.confluence.mod.common.item.yoyo.YoyoSession;
 import org.mesdag.portlib.attachment.PortAttachmentType;
 import org.mesdag.portlib.registries.PortAttachmentRegistration;
 import org.mesdag.portlib.registries.PortRegisterHandler;

@@ -1,10 +1,13 @@
-package org.confluence.mod.common.item.yoyo;
+package org.confluence.mod.common.attachment;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.entity.yoyo.YoyoEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.yoyo.YoyoEquipment;
+import org.confluence.mod.common.item.yoyo.YoyoItem;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,7 +31,7 @@ public final class YoyoSession implements Immunity {
     }
 
     public boolean press(ServerPlayer player, ItemStack stack) {
-        if (!(stack.getItem() instanceof YoyoItem) || !player.isAlive() || player.isSpectator())
+        if (!stack.is(ModTags.Items.YOYO) || !player.isAlive() || player.isSpectator())
             return false;
         boolean sameSource = selectedSlot == player.getInventory().selected && sourceStack == stack;
         if (!sameSource) retract();
@@ -106,7 +109,7 @@ public final class YoyoSession implements Immunity {
     public void consumeSpin(boolean obstructed) {spinAge += obstructed ? 20 : 20.0F / 3;}
 
     private boolean isSourceSelected(ServerPlayer player) {
-        return selectedSlot == player.getInventory().selected && sourceStack == player.getMainHandItem() && sourceStack.getItem() instanceof YoyoItem;
+        return selectedSlot == player.getInventory().selected && sourceStack == player.getMainHandItem() && sourceStack.is(ModTags.Items.YOYO);
     }
 
     private boolean spawn(ServerPlayer player) {

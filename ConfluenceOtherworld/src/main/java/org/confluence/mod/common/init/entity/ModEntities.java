@@ -57,6 +57,8 @@ public final class ModEntities {
     // 牢枕专用
     public static final RegistryObject<EntityType<EmptyEntity>> EMPTY_ENTITY = register("empty_entity", id -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(id.toString()));
 
+    public static final RegistryObject<EntityType<MartianElectricBolt>> MARTIAN_ELECTRIC_BOLT = register("martian_electric_bolt", id -> EntityType.Builder.of(MartianElectricBolt::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
+
     public static final RegistryObject<EntityType<ThrownRockProjectile>> THROWN_ROCK = register("thrown_rock", id -> EntityType.Builder.<ThrownRockProjectile>of(ThrownRockProjectile::new, MobCategory.MISC).sized(0.4F, 0.4F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<DandelionSeed>> DANDELION_SEED = register("dandelion_seed", id -> EntityType.Builder.<DandelionSeed>of(DandelionSeed::new, MobCategory.MISC).sized(0.3F, 0.3F).clientTrackingRange(10).updateInterval(1).build(id.toString()));
     public static final RegistryObject<EntityType<HopliteJavelin>> HOPLITE_JAVELIN = register("hoplite_javelin", id -> EntityType.Builder.<HopliteJavelin>of(HopliteJavelin::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).updateInterval(1).build(id.toString()));

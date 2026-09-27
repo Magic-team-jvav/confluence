@@ -358,6 +358,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("itemGroup.confluence.blood_moon_entity", "血月生物");
         add("itemGroup.confluence.goblin_entity", "哥布林军队");
         add("itemGroup.confluence.pirate_entity", "海盗入侵");
+        add("itemGroup.confluence.martian_entity", "火星暴乱");
         add("event.confluence.pirate_invasion", "海盗入侵");
         add("message.confluence.pirate_invasion.ready", "海盗正向这里逼近！");
         add("message.confluence.party.started", "派对开始了！");
@@ -5080,6 +5081,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.PIRATE_PARROT.get(), "海盗鹦鹉");
         add(MonsterEntities.PIRATES_CURSE.get(), "海盗诅咒");
         add(MonsterEntities.MARTIAN_PROBE.get(), "火星探测器");
+        add(MonsterEntities.MARTIAN_ENGINEER.get(), "火星工程师");
+        add(MonsterEntities.TESLA_TURRET.get(), "特斯拉炮塔");
+        add(ModEffects.ELECTRIFIED.get(), "带电");
         add(MonsterEntities.SHADOWFLAME_APPARITION.get(), "暗影焰幻鬼");
         add(MonsterEntities.GIANT_SHELLY.get(), "巨型卷壳怪");
         add(MonsterEntities.CRAWDAD.get(), "龙虾");
@@ -6271,6 +6275,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.PIRATE_PARROT_SPAWN_EGG.get(), "海盗鹦鹉刷怪蛋");
         add(SpawnEggItems.PIRATES_CURSE_SPAWN_EGG.get(), "海盗诅咒刷怪蛋");
         add(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get(), "火星探测器刷怪蛋");
+        add(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get(), "火星工程师刷怪蛋");
+        add(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get(), "特斯拉炮塔刷怪蛋");
         add(SpawnEggItems.SHADOWFLAME_APPARITION_SPAWN_EGG.get(), "暗影焰幻鬼刷怪蛋");
         add(SpawnEggItems.GOBLIN_ARCHER_SPAWN_EGG.get(), "哥布林弓箭手刷怪蛋");
         add(SpawnEggItems.GOBLIN_PEON_SPAWN_EGG.get(), "哥布林苦力刷怪蛋");

@@ -2125,6 +2125,10 @@ public final class ModTabs {
                         pirate.accept(SpawnEggItems.PIRATE_CAPTAIN_SPAWN_EGG.get());
                         pirate.accept(SpawnEggItems.PIRATE_PARROT_SPAWN_EGG.get());
                         pirate.accept(SpawnEggItems.PIRATES_CURSE_SPAWN_EGG.get());
+                        CreativeModeTab.Output martian = GroupItem.belongsTo("martian_entity", output);
+                        martian.accept(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get());
                         CreativeModeTab.Output ocean = GroupItem.belongsTo("ocean_entity", output);
                         ocean.accept(SpawnEggItems.SHARK_SPAWN_EGG.get());
                         ocean.accept(SpawnEggItems.CRAB_SPAWN_EGG.get());

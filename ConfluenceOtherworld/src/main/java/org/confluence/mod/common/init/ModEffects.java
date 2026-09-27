@@ -35,6 +35,7 @@ public final class ModEffects {
     public static final PortEffectCure FLASK = PortEffectCure.get("confluence:flask");
     public static final RegistryObject<MobEffect> JUNGLES_FURY = EFFECTS.register("jungles_fury",
             () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x669933));
+    public static final RegistryObject<MobEffect> ELECTRIFIED = EFFECTS.register("electrified", ElectrifiedEffect::new);
     public static final PortEffectCure CANNOT_REMOVE_BY_NURSE = PortEffectCure.get("confluence:cannot_remove_by_nurse");
 
     public static final RegistryObject<MobEffect> EXQUISITELY_STUFFED = register("exquisitely_stuffed", id -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00)

@@ -839,6 +839,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(MonsterEntities.PIRATE_PARROT.get(), LootTable.lootTable());
         add(MonsterEntities.PIRATES_CURSE.get(), LootTable.lootTable());
         add(MonsterEntities.MARTIAN_PROBE.get(), LootTable.lootTable());
+        add(MonsterEntities.MARTIAN_ENGINEER.get(), LootTable.lootTable());
+        add(MonsterEntities.TESLA_TURRET.get(), LootTable.lootTable());
         add(NpcEntities.MECHANIC.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(BoomerangItems.COMBAT_WRENCH))

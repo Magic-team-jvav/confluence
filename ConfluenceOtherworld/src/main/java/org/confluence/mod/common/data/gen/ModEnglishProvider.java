@@ -515,6 +515,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("itemGroup.confluence.blood_moon_entity", "Blood Moon");
         add("itemGroup.confluence.goblin_entity", "Goblin Army");
         add("itemGroup.confluence.pirate_entity", "Pirate Invasion");
+        add("itemGroup.confluence.martian_entity", "Martian");
         add("event.confluence.pirate_invasion", "Pirate Invasion");
         add("message.confluence.pirate_invasion.ready", "Pirates are approaching!");
         add("message.confluence.party.started", "It's party time!");
@@ -1830,6 +1831,9 @@ public class ModEnglishProvider extends LanguageProvider {
         addOverrides();
         add(MonsterEntities.WINGLESS_SLIMER.get(), "Slimer");
         add(MonsterEntities.MARTIAN_PROBE.get(), "Martian Probe");
+        add(MonsterEntities.MARTIAN_ENGINEER.get(), "Martian Engineer");
+        add(MonsterEntities.TESLA_TURRET.get(), "Tesla Turret");
+        add(ModEffects.ELECTRIFIED.get(), "Electrified");
 
         add(QuestedFishes.CAPN_TUNABEARD.get(), "Cap'n Tunabeard");
         add(FoodItems.PINA_COLADA.get(), "Piña Colada");
@@ -2780,6 +2784,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.PIRATE_PARROT_SPAWN_EGG.get(), "Pirate Parrot Spawn Egg");
         add(SpawnEggItems.PIRATES_CURSE_SPAWN_EGG.get(), "Pirate's Curse Spawn Egg");
         add(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get(), "Martian Probe Spawn Egg");
+        add(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get(), "Martian Engineer Spawn Egg");
+        add(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get(), "Tesla Turret Spawn Egg");
         add(SpawnEggItems.SHADOWFLAME_APPARITION_SPAWN_EGG.get(), "Shadowflame Apparition Spawn Egg");
         add(SpawnEggItems.GOBLIN_ARCHER_SPAWN_EGG.get(), "Goblin Archer Spawn Egg");
         add(SpawnEggItems.GOBLIN_PEON_SPAWN_EGG.get(), "Goblin Peon Spawn Egg");

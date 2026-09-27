@@ -457,6 +457,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FIRE_IMP_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(GASTROPOD_PROJECTILE.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xF091CF, 0xF44BB9));
         event.registerEntityRenderer(FROST_BEAM.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xA7E9FF, 0x408EFF));
+        event.registerEntityRenderer(MARTIAN_ELECTRIC_BOLT.get(), MartianElectricBoltRenderer::new);
         event.registerEntityRenderer(FROST_BLAST.get(), NoopRenderer::new);
         event.registerEntityRenderer(THROWN_ROCK.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ANTLION_SAND_BALL.get(), ThrownItemRenderer::new);
@@ -699,6 +700,14 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MonsterEntities.PIRATE_PARROT.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.PIRATE_PARROT.getId()));
         event.registerEntityRenderer(MonsterEntities.PIRATES_CURSE.get(), c -> new FullbrightGeoRenderer<PirateFlyingMonster>(c, MonsterEntities.PIRATES_CURSE.getId(), -0.75F));
         event.registerEntityRenderer(MonsterEntities.MARTIAN_PROBE.get(), MartianProbeRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.MARTIAN_ENGINEER.get(), c -> new GeoNormalRenderer<>(c,
+                new ExplicitGeoModel<>(Confluence.asResource("geo/entity/martian_engineer.geo.json"),
+                        Confluence.asResource("textures/entity/martian_engineer.png"),
+                        Confluence.asResource("animations/entity/martian_engineer.animation.json"))));
+        event.registerEntityRenderer(MonsterEntities.TESLA_TURRET.get(), c -> new GeoNormalRenderer<>(c,
+                new ExplicitGeoModel<>(Confluence.asResource("geo/entity/tesla_turret.geo.json"),
+                        Confluence.asResource("textures/entity/tesla_turret.png"),
+                        Confluence.asResource("animations/entity/tesla_turret.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.PIRATE_DEADEYE.get(), c -> new GeoNormalRenderer<>(c, VanillaHumanoidGeoModel.armor(c, Confluence.asResource("geo/entity/pirate_deadeye.geo.json"), Confluence.asResource("textures/entity/pirate_deadeye.png"), true)));
         event.registerEntityRenderer(MonsterEntities.PIRATE_DECKHAND.get(), c -> new GeoNormalRenderer<>(c, new ExplicitGeoModel<>(Confluence.asResource("geo/entity/pirate_corsair.geo.json"), Confluence.asResource("textures/entity/pirate_deckhand.png"), Confluence.asResource("animations/entity/pirate_corsair.animation.json"))));
         event.registerEntityRenderer(MonsterEntities.SHADOWFLAME_APPARITION.get(), c -> new GeoNormalRenderer<>(c, MonsterEntities.SHADOWFLAME_APPARITION.getId()));

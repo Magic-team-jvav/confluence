@@ -23,6 +23,7 @@ public final class NetworkEvents {
         handler.registerInGameC2S(NPCDialogSessionPacketC2S.class, NPCDialogSessionPacketC2S.ID, NPCDialogSessionPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(ApplySelectionPacketC2S.class, ApplySelectionPacketC2S.ID, ApplySelectionPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(DyeMixPacketC2S.class, DyeMixPacketC2S.ID, DyeMixPacketC2S.STREAM_CODEC);
+        handler.registerInGameC2S(ElectrifiedInputPacketC2S.class, ElectrifiedInputPacketC2S.ID, ElectrifiedInputPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(EmptyTargetSweepPacketC2S.class, EmptyTargetSweepPacketC2S.ID, EmptyTargetSweepPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(FlailControlPacketC2S.class, FlailControlPacketC2S.ID, FlailControlPacketC2S.STREAM_CODEC);
         handler.registerInGameC2S(GiveBannerPacketC2S.class, GiveBannerPacketC2S.ID, GiveBannerPacketC2S.STREAM_CODEC);

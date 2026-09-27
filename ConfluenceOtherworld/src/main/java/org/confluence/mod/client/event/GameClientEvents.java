@@ -80,6 +80,7 @@ import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
+import org.confluence.mod.network.c2s.ElectrifiedInputPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModAttributeUtils;
@@ -182,6 +183,13 @@ public final class GameClientEvents {
                 SoulSkillHandler.handle(minecraft);
             }
             if (!minecraft.isPaused()) {
+                if (player.hasEffect(ModEffects.ELECTRIFIED.get())) {
+                    boolean moving = minecraft.screen == null && (player.input.forwardImpulse != 0.0F
+                            || player.input.leftImpulse != 0.0F || minecraft.options.keyUp.isDown()
+                            || minecraft.options.keyDown.isDown() || minecraft.options.keyLeft.isDown()
+                            || minecraft.options.keyRight.isDown());
+                    ElectrifiedInputPacketC2S.send(moving);
+                }
                 MeteorLandingHandler.handle(player);
                 HookThrowingHandler.handle(player);
                 KeyRequestHandler.handle();

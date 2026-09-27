@@ -211,6 +211,8 @@ public final class SpawnEggItems {
     public static final PortDeferredItem<ForgeSpawnEggItem> PIRATE_PARROT_SPAWN_EGG = register(MonsterEntities.PIRATE_PARROT);
     public static final PortDeferredItem<ForgeSpawnEggItem> PIRATES_CURSE_SPAWN_EGG = register(MonsterEntities.PIRATES_CURSE);
     public static final PortDeferredItem<ForgeSpawnEggItem> MARTIAN_PROBE_SPAWN_EGG = register(MonsterEntities.MARTIAN_PROBE);
+    public static final PortDeferredItem<ForgeSpawnEggItem> MARTIAN_ENGINEER_SPAWN_EGG = register(MonsterEntities.MARTIAN_ENGINEER);
+    public static final PortDeferredItem<ForgeSpawnEggItem> TESLA_TURRET_SPAWN_EGG = register(MonsterEntities.TESLA_TURRET);
     public static final PortDeferredItem<ForgeSpawnEggItem> SHADOWFLAME_APPARITION_SPAWN_EGG = register(MonsterEntities.SHADOWFLAME_APPARITION);
     public static final PortDeferredItem<ForgeSpawnEggItem> GOBLIN_ARCHER_SPAWN_EGG = register(MonsterEntities.GOBLIN_ARCHER);
     public static final PortDeferredItem<ForgeSpawnEggItem> GOBLIN_PEON_SPAWN_EGG = register(MonsterEntities.GOBLIN_PEON);

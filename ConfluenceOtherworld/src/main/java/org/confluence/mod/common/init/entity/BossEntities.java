@@ -29,7 +29,7 @@ public final class BossEntities {
 
     // 地表夜间：克苏鲁之眼及仆从
     public static final RegistryObject<EntityType<EyeOfCthulhu>> EYE_OF_CTHULHU = withAttributes(registerEntity("eye_of_cthulhu", EntityType.Builder.of(EyeOfCthulhu::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.boss().maxHealth(728).armor(6).attackDamage(4).add(LibAttributes.getArmorPenetration().get(), 2).followRange(300).attackKnockback(2).add(Attributes.ARMOR_TOUGHNESS, 2)
+            () -> CreatureAttributeBuilder.boss().maxHealth(946).armor(6).attackDamage(8).add(LibAttributes.getArmorPenetration().get(), 2).followRange(300).attackKnockback(2).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .state(EyeOfCthulhu.CombatState.IDLE, state -> state.multiply(Attributes.ATTACK_DAMAGE, mob -> (((EyeOfCthulhu) mob).getCombatStage() == 2 ? 1.5 : 1.0)).attribute(Attributes.ARMOR, mob -> ((EyeOfCthulhu) mob).getCombatStage() == 2 ? 0 : mob.getAttribute(Attributes.ARMOR).getBaseValue()))
                     .state(EyeOfCthulhu.CombatState.STARING, state -> state.multiply(Attributes.ATTACK_DAMAGE, mob -> (((EyeOfCthulhu) mob).getCombatStage() == 2 ? 1.5 : 1.0)).attribute(Attributes.ARMOR, mob -> ((EyeOfCthulhu) mob).getCombatStage() == 2 ? 0 : mob.getAttribute(Attributes.ARMOR).getBaseValue()))
                     .state(EyeOfCthulhu.CombatState.DASH_WINDUP, state -> state.multiply(Attributes.ATTACK_DAMAGE, mob -> (((EyeOfCthulhu) mob).getCombatStage() == 2 ? 1.5 : 1.0)).attribute(Attributes.ARMOR, mob -> ((EyeOfCthulhu) mob).getCombatStage() == 2 ? 0 : mob.getAttribute(Attributes.ARMOR).getBaseValue()))
@@ -114,11 +114,11 @@ public final class BossEntities {
 
     // 机械 Boss：毁灭者、体节与探测怪
     public static final RegistryObject<EntityType<TheDestroyer>> THE_DESTROYER = withAttributes(registerEntity("the_destroyer", EntityType.Builder.of(TheDestroyer::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(32).updateInterval(1)),
-            () -> CreatureAttributeBuilder.boss().maxHealth(23333).armor(0).attackDamage(35).add(LibAttributes.getArmorPenetration().get(), 12).followRange(300)
+            () -> CreatureAttributeBuilder.boss().maxHealth(31200).armor(0).attackDamage(72.8).add(LibAttributes.getArmorPenetration().get(), 12).followRange(300)
                     .projectile(ModEntities.DESTROYER_LASER, projectile -> projectile.damage(14, 18, 22))
                     .build());
     public static final RegistryObject<EntityType<BossWormPart>> THE_DESTROYER_PART = withAttributes(registerEntity("the_destroyer_part", EntityType.Builder.of(BossWormPart::new, MobCategory.MONSTER).sized(3.0F, 3.0F).clientTrackingRange(32).updateInterval(1).noSave()),
-            () -> CreatureAttributeBuilder.boss().maxHealth(23333).armor(1).attackDamage(66).add(LibAttributes.getArmorPenetration().get(), 12).followRange(96).build());
+            () -> CreatureAttributeBuilder.boss().maxHealth(31200).armor(1).attackDamage(66).add(LibAttributes.getArmorPenetration().get(), 12).followRange(96).build());
     public static final RegistryObject<EntityType<TheDestroyerProbe>> THE_DESTROYER_PROBE = withAttributes(registerEntity("the_destroyer_probe", EntityType.Builder.of(TheDestroyerProbe::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.boss().maxHealth(100).armor(5).attackDamage(12).add(LibAttributes.getArmorPenetration().get(), 5).followRange(64).add(Attributes.ARMOR_TOUGHNESS, 2)
                     .projectile(ModEntities.DESTROYER_LASER, projectile -> projectile.attackDamage(1))
@@ -134,7 +134,7 @@ public final class BossEntities {
                     .projectile(ModEntities.PRIME_CANNONBALL, projectile -> projectile.damage(22).speed(0.72).inaccuracy(0.03).lifetime(80))
                     .build());
     public static final RegistryObject<EntityType<SkeletronPrimeArm>> SKELETRON_PRIME_PART = withAttributes(registerEntity("skeletron_prime_arm", EntityType.Builder.of(SkeletronPrimeArm::new, MobCategory.MONSTER).sized(2.6F, 2.6F).clientTrackingRange(10).updateInterval(1).noSave()),
-            () -> CreatureAttributeBuilder.boss().maxHealth(2080).armor(12).attackDamage(8).add(LibAttributes.getArmorPenetration().get(), 3).followRange(64).add(Attributes.ARMOR_TOUGHNESS, 5).build());
+            () -> CreatureAttributeBuilder.boss().maxHealth(3510).armor(12).attackDamage(22.88).add(LibAttributes.getArmorPenetration().get(), 3).followRange(64).add(Attributes.ARMOR_TOUGHNESS, 5).build());
 
     // 困难模式丛林：世纪之花及钩爪、触手
     public static final RegistryObject<EntityType<Plantera>> PLANTERA = withAttributes(registerEntity("plantera", EntityType.Builder.of(Plantera::new, MobCategory.MONSTER).sized(10.0F, 10.0F).clientTrackingRange(10)),
@@ -146,9 +146,9 @@ public final class BossEntities {
                     .projectile(ModEntities.PLANTERA_SPORE, projectile -> projectile.damage(mob -> (((Plantera) mob).isEnraged() ? 2 : 1) * LibUtils.switchByDifficulty(mob.level(), mob.blockPosition(), 12.0F, 19.0F, 28.0F, 28.0F)))
                     .build());
     public static final RegistryObject<EntityType<PlanteraHook>> PLANTERA_HOOK = withAttributes(registerEntity("plantera_hook", EntityType.Builder.of(PlanteraHook::new, MobCategory.MONSTER).sized(1.25F, 1.25F).clientTrackingRange(10).updateInterval(1).noSave()),
-            () -> CreatureAttributeBuilder.boss().maxHealth(1040).armor(11).attackDamage(15.6).add(LibAttributes.getArmorPenetration().get(), 6).followRange(64).add(Attributes.ARMOR_TOUGHNESS, 5).build());
+            () -> CreatureAttributeBuilder.boss().maxHealth(2080).armor(11).attackDamage(31.2).add(LibAttributes.getArmorPenetration().get(), 6).followRange(64).add(Attributes.ARMOR_TOUGHNESS, 5).build());
     public static final RegistryObject<EntityType<PlanteraTentacle>> PLANTERA_TENTACLE = withAttributes(registerEntity("plantera_tentacle", EntityType.Builder.of(PlanteraTentacle::new, MobCategory.MONSTER).sized(2.0F, 2.0F).clientTrackingRange(10).updateInterval(1).noSave()),
-            () -> CreatureAttributeBuilder.boss().maxHealth(260).armor(9).attackDamage(15.6).add(LibAttributes.getArmorPenetration().get(), 6).followRange(64).add(Attributes.ARMOR_TOUGHNESS, 4).build());
+            () -> CreatureAttributeBuilder.boss().maxHealth(520).armor(9).attackDamage(35.88).add(LibAttributes.getArmorPenetration().get(), 6).followRange(64).add(Attributes.ARMOR_TOUGHNESS, 4).build());
 
     // 拜月教事件：拜月教邪教徒、分身与幻影龙
     public static final RegistryObject<EntityType<LunaticCultist>> LUNATIC_CULTIST = withAttributes(registerEntity("lunatic_cultist", EntityType.Builder.of(LunaticCultist::new, MobCategory.MONSTER).sized(1.0F, 2.0F).clientTrackingRange(10)),

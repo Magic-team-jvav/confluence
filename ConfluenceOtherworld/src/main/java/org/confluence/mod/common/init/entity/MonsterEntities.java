@@ -99,7 +99,7 @@ public class MonsterEntities {
     // 地下与洞穴：蠕虫
     public static final RegistryObject<EntityType<BaseWormPart>> GIANT_WORM_SEGMENT = registerWormSegment("giant_worm_segment");
     public static final RegistryObject<EntityType<SimpleWormMonster>> GIANT_WORM = withAttributes(registerWorm("giant_worm", 2F, 2F, SimpleWormMonster.Role.UNDERGROUND, SimpleWormMonster.Anatomy.GIANT_WORM, MonsterEntities.GIANT_WORM_SEGMENT),
-            () -> CreatureAttributeBuilder.creature().maxHealth(31).armor(2).attackDamage(9).add(Attributes.ARMOR_TOUGHNESS, 1).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(16).armor(2).attackDamage(9).add(Attributes.ARMOR_TOUGHNESS, 1).build());
     public static final RegistryObject<EntityType<BaseWormPart>> DIGGER_SEGMENT = registerWormSegment("digger_segment");
     public static final RegistryObject<EntityType<SimpleWormMonster>> DIGGER = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("digger", EntityType.Builder.<SimpleWormMonster>of((type, level) -> new SimpleWormMonster(type, level, SimpleWormMonster.Role.UNDERGROUND, SimpleWormMonster.Anatomy.DIGGER, MonsterEntities.DIGGER_SEGMENT.get()), MobCategory.MONSTER).sized(1.6F, 1.05F).clientTrackingRange(10).updateInterval(1))),
             () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(5).attackDamage(24).add(LibAttributes.getArmorPenetration().get(), 9).knockbackResistance(1.0).followRange(32).add(Attributes.ARMOR_TOUGHNESS, 2).build());
@@ -214,7 +214,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<CaveBat>> JUNGLE_BAT = withAttributes(registerEntity("jungle_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(17).armor(2).attackDamage(8).add(LibAttributes.getArmorPenetration().get(), 3).followRange(16).attackKnockback(0.2).knockbackResistance(0.5).build());
     public static final RegistryObject<EntityType<CaveBat>> GIANT_FLYING_FOX = withAttributes(registerEntity("giant_flying_fox", EntityType.Builder.<CaveBat>of((type, level) -> new CaveBat(type, level, CaveBat.Variant.ROUTINE), MobCategory.MONSTER).sized(1.8F, 1.2F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(221).armor(11).attackDamage(38).add(LibAttributes.getArmorPenetration().get(), 12).followRange(48).attackKnockback(0.5).knockbackResistance(0.64).add(Attributes.ARMOR_TOUGHNESS, 4).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(114).armor(11).attackDamage(38).add(LibAttributes.getArmorPenetration().get(), 12).followRange(48).attackKnockback(0.5).knockbackResistance(0.64).add(Attributes.ARMOR_TOUGHNESS, 4).build());
 
     // 丛林：食人植物
     public static final RegistryObject<EntityType<Snatcher>> SNATCHER = withAttributes(registerSnatcher("snatcher", Snatcher.Profile.SNATCHER),
@@ -432,7 +432,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<EaterOfSouls>> CRIMERA = withAttributes(registerEntity("crimera", EntityType.Builder.of(EaterOfSouls::new, MobCategory.MONSTER).sized(1.2F, 1.2F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(20).armor(4).attackDamage(11).add(LibAttributes.getArmorPenetration().get(), 4).followRange(30).attackKnockback(0.5).knockbackResistance(0.1).add(Attributes.ARMOR_TOUGHNESS, 1).build());
     public static final RegistryObject<EntityType<BloodySpore>> BLOODY_SPORE = withAttributes(registerEntity("bloody_spore", EntityType.Builder.of(BloodySpore::new, MobCategory.MONSTER).sized(1, 1.5f).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(100).armor(3).attackDamage(0).followRange(32).attackKnockback(0).knockbackResistance(0.8).spawnReinforcementsChance(0.01).add(Attributes.ARMOR_TOUGHNESS, 1).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(47).armor(3).attackDamage(0).followRange(32).attackKnockback(0).knockbackResistance(0.8).spawnReinforcementsChance(0.01).add(Attributes.ARMOR_TOUGHNESS, 1).build());
     public static final RegistryObject<EntityType<BloodTumor>> BLOOD_TUMORS = withAttributes(registerEntity("blood_tumors", EntityType.Builder.of(BloodTumor::new, MobCategory.MONSTER).sized(0.5F, 0.5F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(5).armor(1).attackDamage(0).followRange(0).attackKnockback(0).knockbackResistance(0).movementSpeed(0).safeFallDistance(100).build());
 
@@ -463,7 +463,7 @@ public class MonsterEntities {
 
     // 神圣：独角兽与腹足怪
     public static final RegistryObject<EntityType<Unicorn>> UNICORN = withAttributes(registerEntity("unicorn", EntityType.Builder.of(Unicorn::new, MobCategory.MONSTER).sized(1.4F, 2.25F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(416).armor(14).attackDamage(65).add(LibAttributes.getArmorPenetration().get(), 12).followRange(64).attackKnockback(1).knockbackResistance(0.82).movementSpeed(0.35).add(Attributes.ARMOR_TOUGHNESS, 6)
+            () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(14).attackDamage(65).add(LibAttributes.getArmorPenetration().get(), 12).followRange(64).attackKnockback(1).knockbackResistance(0.82).movementSpeed(0.35).add(Attributes.ARMOR_TOUGHNESS, 6)
                     .state(Unicorn.MovementState.PURSUING, state -> state.chargeSpeed(0.36).duration(40))
                     .state(Unicorn.MovementState.RECOVERING, state -> state.duration(12))
                     .build());
@@ -474,7 +474,7 @@ public class MonsterEntities {
 
     // 地下神圣：附魔剑、混沌精与宝箱怪
     public static final RegistryObject<EntityType<EnchantedSword>> ENCHANTED_SWORD = withAttributes(registerEntity("enchanted_sword_monster", EntityType.Builder.of(EnchantedSword::new, MobCategory.MONSTER).sized(0.35F, 1.4F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(9).attackDamage(41).add(LibAttributes.getArmorPenetration().get(), 12).followRange(48).attackKnockback(1).knockbackResistance(0.82).add(Attributes.ARMOR_TOUGHNESS, 3)
+            () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(9).attackDamage(41).add(LibAttributes.getArmorPenetration().get(), 12).followRange(48).attackKnockback(1).knockbackResistance(0.82).add(Attributes.ARMOR_TOUGHNESS, 3)
                     .state(EnchantedSword.CombatState.WINDUP, state -> state.duration(40))
                     .state(EnchantedSword.CombatState.CHARGING, state -> state.chargeSpeed(0.8))
                     .build());
@@ -495,7 +495,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<MeleeSkeleton>> SPORE_SKELETON = withAttributes(registerEntity("spore_skeleton", EntityType.Builder.<MeleeSkeleton>of((type, level) -> new MeleeSkeleton(type, level, true, MeleeSkeleton.BehaviorProfile.OPEN_DOORS), MobCategory.MONSTER).sized(0.65F, 1.85F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(31).armor(4).attackDamage(11).add(LibAttributes.getArmorPenetration().get(), 4).followRange(60).attackKnockback(0.5).knockbackResistance(0.28).add(Attributes.ARMOR_TOUGHNESS, 1).build());
     public static final RegistryObject<EntityType<CaveBat>> SPORE_BAT = withAttributes(registerEntity("spore_bat", EntityType.Builder.<CaveBat>of(CaveBat::new, MobCategory.MONSTER).sized(1.6F, 1.6F).clientTrackingRange(10)),
-            () -> CreatureAttributeBuilder.creature().maxHealth(15).armor(1).attackDamage(7).add(LibAttributes.getArmorPenetration().get(), 3).followRange(16).attackKnockback(0.2).knockbackResistance(0.5).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(8).armor(1).attackDamage(7).add(LibAttributes.getArmorPenetration().get(), 3).followRange(16).attackKnockback(0.2).knockbackResistance(0.5).build());
 
     // 发光蘑菇：真菌球怪
     public static final RegistryObject<EntityType<Snatcher>> FUNGI_BULB = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerSnatcher("fungi_bulb", Snatcher.Profile.FUNGI_BULB)),
@@ -549,7 +549,7 @@ public class MonsterEntities {
                     .projectile(ModEntities.SHADOW_BEAM_PROJECTILE, projectile -> projectile.damage(13, 25, 38))
                     .build());
     public static final RegistryObject<EntityType<DarkCaster>> DIABOLIST = withAttributes(registerCaster("diabolist", 0.7F, 1.9F, DarkCaster.Profile.DIABOLIST),
-            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(13).attackDamage(52).followRange(48).attackKnockback(1).knockbackResistance(0.73).add(Attributes.ARMOR_TOUGHNESS, 5)
+            () -> CreatureAttributeBuilder.creature().maxHealth(130).armor(13).attackDamage(52).followRange(48).attackKnockback(1).knockbackResistance(0.73).add(Attributes.ARMOR_TOUGHNESS, 5)
                     .projectile(ModEntities.INFERNO_BOLT_PROJECTILE, projectile -> projectile.attackDamage(1))
                     .build());
     public static final RegistryObject<EntityType<DarkCaster>> RAGGED_CASTER = withAttributes(registerCaster("ragged_caster", 0.7F, 1.9F, DarkCaster.Profile.RAGGED_CASTER),
@@ -561,7 +561,7 @@ public class MonsterEntities {
     public static final RegistryObject<EntityType<CursedSkull>> CURSED_SKULL = withAttributes(registerEntity("cursed_skull", EntityType.Builder.of(CursedSkull::new, MobCategory.MONSTER).sized(1.0F, 1.0F).clientTrackingRange(10)),
             () -> CreatureAttributeBuilder.creature().maxHealth(21).armor(3).attackDamage(18).add(LibAttributes.getArmorPenetration().get(), 7).followRange(32).attackKnockback(1).knockbackResistance(0.82).add(Attributes.ARMOR_TOUGHNESS, 1).build());
     public static final RegistryObject<EntityType<DungeonSpirit>> DUNGEON_SPIRIT = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("dungeon_spirit", EntityType.Builder.of(DungeonSpirit::new, MobCategory.MONSTER).sized(0.8F, 0.7F).clientTrackingRange(10))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(200).armor(14).attackDamage(70).add(LibAttributes.getArmorPenetration().get(), 12).movementSpeed(0.35).followRange(32).knockbackResistance(0.8).gravity(0).add(Attributes.ARMOR_TOUGHNESS, 6).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(104).armor(14).attackDamage(70).add(LibAttributes.getArmorPenetration().get(), 12).movementSpeed(0.35).followRange(32).knockbackResistance(0.8).gravity(0).add(Attributes.ARMOR_TOUGHNESS, 6).build());
 
     // 地牢：圣骑士与骷髅李
     public static final RegistryObject<EntityType<Paladin>> PALADIN = withAttributes(registerEntity("paladin", EntityType.Builder.of(Paladin::new, MobCategory.MONSTER).sized(1.2F, 2.4F).clientTrackingRange(10)),
@@ -762,7 +762,7 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(10).attackDamage(39).add(LibAttributes.getArmorPenetration().get(), 12).movementSpeed(0.3).followRange(40).knockbackResistance(0.82).add(Attributes.ARMOR_TOUGHNESS, 4).build());
 
     public static final RegistryObject<EntityType<MartianProbe>> MARTIAN_PROBE = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_probe", EntityType.Builder.of(MartianProbe::new, MobCategory.MONSTER).sized(1.4F, 1.0F).clientTrackingRange(12))),
-            () -> CreatureAttributeBuilder.creature().maxHealth(520).armor(5).attackDamage(5).followRange(48).movementSpeed(0.25).flyingSpeed(0.65).knockbackResistance(0.4).build());
+            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(5).attackDamage(5).followRange(48).movementSpeed(0.25).flyingSpeed(0.65).knockbackResistance(0.4).build());
 
     // 新年：大飞龙
     public static final RegistryObject<EntityType<BaseWormPart>> ARCH_WYVERN_SEGMENT = registerWormSegment("arch_wyvern_segment");

@@ -198,10 +198,27 @@ public abstract class BaseBoss extends BaseMonster implements Boss {
 
     /// 返回生成时玩家数量对应的最大生命倍率。
     ///
-    /// 默认按玩家数量线性放大；具有特殊多人公式的 Boss
-    /// 可以单独覆写。传入值已经限制在一至八人。
+    /// 沿用泰拉瑞亚的多人曲线（wiki Expert Mode § Bosses）：
+    /// `MF = 1 + Σ HealthAdded[2..n]`，`HealthAdded[2] = 0.35`，
+    /// `HealthAdded[n+1] = HealthAdded[n] + (1 - HealthAdded[n]) / 3`，
+    /// 十人及以上再取 `(MF * 2 + 8) / 3`，上限 1000。
+    /// 相比原先的线性 ×N：1→2 人只加 35% 而不是翻倍。
+    /// 具有特殊多人公式的 Boss 仍可单独覆写。
     double getBossHealthPlayerMultiplier(int playerCount) {
-        return playerCount;
+        return multiplayerFactor(playerCount);
+    }
+
+    /// 泰拉瑞亚多人生命倍率。闭式等价于 `n - 39/20 + (39/20) * (2/3)^(n-1)`。
+    public static double multiplayerFactor(int playerCount) {
+        if (playerCount <= 1) return 1.0D;
+        double added = 0.35D;
+        double factor = 1.0D + added;
+        for (int i = 3; i <= playerCount; i++) {
+            added += (1.0D - added) / 3.0D;
+            factor += added;
+        }
+        if (playerCount >= 10) factor = (factor * 2.0D + 8.0D) / 3.0D;
+        return Math.min(factor, 1000.0D);
     }
 
     // === 多部件生命周期 ===

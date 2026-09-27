@@ -1,7 +1,6 @@
 package org.confluence.mod.util;
 
 import net.minecraft.core.Holder;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -144,7 +143,9 @@ public final class PrefixUtils {
             else if (tier > 11) tier = 11;
         }
         stack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.TIER.get(tier));
-        stack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(stack, 50, true) * Mth.square(prefix.value()))));
+        int value = ValueComponent.getValue(stack, 50, true);
+        float finalValue = value + value * prefix.value();
+        stack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) finalValue));
         return component;
     }
 
@@ -169,6 +170,6 @@ public final class PrefixUtils {
 //            priceAdjustment = 100.0F / holder.getMood().getValue();
 //        }
 //        return (int) (price * priceAdjustment / 3);
-        return price;
+        return price / 3;
     }
 }

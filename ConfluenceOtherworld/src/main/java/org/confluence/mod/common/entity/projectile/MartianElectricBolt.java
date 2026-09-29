@@ -8,9 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.entity.monster.MartianEngineer;
-import org.confluence.mod.common.entity.monster.MartianProbe;
-import org.confluence.mod.common.entity.monster.TeslaTurret;
+import org.confluence.mod.common.entity.EnemyDamageRules;
 import org.confluence.mod.common.init.ModEffects;
 
 /** Imprecise Tesla shot; native projectile owner persistence prevents orphaned damage. */
@@ -50,11 +48,10 @@ public final class MartianElectricBolt extends StraightMonsterProjectile {
         }
     }
 
+    /// 敌怪阵营不互伤：电弧穿过所有同类敌怪，只命中玩家、玩家召唤物等敌对目标。
     @Override
     public boolean canHitEntity(Entity target) {
-        return !(target instanceof MartianEngineer || target instanceof TeslaTurret || target instanceof MartianProbe)
-                && !target.getTags().contains(MartianEngineer.EVENT_TAG)
-                && super.canHitEntity(target);
+        return !EnemyDamageRules.isEnemy(target) && super.canHitEntity(target);
     }
 
     @Override

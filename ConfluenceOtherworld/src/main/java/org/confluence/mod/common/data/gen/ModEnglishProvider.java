@@ -1833,6 +1833,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add(MonsterEntities.MARTIAN_PROBE.get(), "Martian Probe");
         add(MonsterEntities.MARTIAN_ENGINEER.get(), "Martian Engineer");
         add(MonsterEntities.TESLA_TURRET.get(), "Tesla Turret");
+        add(MonsterEntities.RAY_GUNNER.get(), "Ray Gunner");
+        add(MonsterEntities.SCUTLIX.get(), "Scutlix");
+        add(ModEntities.RAY_GUNNER_LASER.get(), "Ray Gunner Laser");
         add(ModEffects.ELECTRIFIED.get(), "Electrified");
 
         add(QuestedFishes.CAPN_TUNABEARD.get(), "Cap'n Tunabeard");
@@ -2786,6 +2789,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get(), "Martian Probe Spawn Egg");
         add(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get(), "Martian Engineer Spawn Egg");
         add(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get(), "Tesla Turret Spawn Egg");
+        add(SpawnEggItems.RAY_GUNNER_SPAWN_EGG.get(), "Ray Gunner Spawn Egg");
+        add(SpawnEggItems.SCUTLIX_SPAWN_EGG.get(), "Scutlix Spawn Egg");
         add(SpawnEggItems.SHADOWFLAME_APPARITION_SPAWN_EGG.get(), "Shadowflame Apparition Spawn Egg");
         add(SpawnEggItems.GOBLIN_ARCHER_SPAWN_EGG.get(), "Goblin Archer Spawn Egg");
         add(SpawnEggItems.GOBLIN_PEON_SPAWN_EGG.get(), "Goblin Peon Spawn Egg");

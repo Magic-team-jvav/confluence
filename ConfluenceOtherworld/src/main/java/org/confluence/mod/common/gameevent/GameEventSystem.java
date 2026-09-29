@@ -26,6 +26,7 @@ import org.confluence.lib.util.NaturalSpawnerUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.gameevent.CustomGameEventRegisterEvent;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.monster.Scutlix;
 import org.confluence.mod.common.init.entity.DevelopmentSpawnPolicy;
 import org.confluence.mod.network.s2c.GameEventSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
@@ -255,11 +256,16 @@ public enum GameEventSystem implements IGlobalData {
                 BlockPos pos = NaturalSpawner.getTopNonCollidingPos(level, spawnerData.type, Mth.floor(x), Mth.floor(z));
                 Entity entity = spawnerData.type.spawn(level, pos, MobSpawnType.EVENT);
                 if (entity != null) {
-                    entity.addTag(entityTag);
-                    spawned.add(entity);
-                    if (setTarget && entity instanceof Mob mob && player.canBeSeenAsEnemy()) {
-                        mob.setTarget(player);
+                    if (entity instanceof Scutlix scutlix && !scutlix.ensureRider(level)) {
+                        entity.getPassengers().forEach(Entity::discard);
+                        entity.discard();
+                        continue;
                     }
+                    entity.getSelfAndPassengers().forEach(member -> {
+                        member.addTag(entityTag);
+                        spawned.add(member);
+                        if (setTarget && member instanceof Mob mob && player.canBeSeenAsEnemy()) mob.setTarget(player);
+                    });
                 }
             }
         }

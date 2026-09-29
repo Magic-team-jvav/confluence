@@ -767,6 +767,14 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(520).armor(20).attackDamage(16).followRange(40).movementSpeed(0.24).knockbackResistance(0.55).build());
     public static final RegistryObject<EntityType<TeslaTurret>> TESLA_TURRET = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("tesla_turret", EntityType.Builder.of(TeslaTurret::new, MobCategory.MONSTER).sized(1.0F, 1.2F).clientTrackingRange(10))),
             () -> CreatureAttributeBuilder.creature().maxHealth(208).armor(24).attackDamage(28).followRange(36).movementSpeed(0.01).knockbackResistance(1.0).build());
+    public static final RegistryObject<EntityType<RayGunner>> RAY_GUNNER = withAttributes(registerEntity("ray_gunner", EntityType.Builder.of(RayGunner::new, MobCategory.MONSTER).sized(0.8F, 1.6F).clientTrackingRange(12)),
+            () -> CreatureAttributeBuilder.creature().maxHealth(200).armor(16).attackDamage(20).followRange(44).movementSpeed(0.25).knockbackResistance(0.65)
+                    .state(RayGunner.CombatState.MOUNTED, state -> state.attackDamage(13).armor(18).knockbackResistance(0.0))
+                    .build());
+    public static final RegistryObject<EntityType<Scutlix>> SCUTLIX = withAttributes(registerEntity("scutlix", EntityType.Builder.of(Scutlix::new, MobCategory.MONSTER).sized(1.8F, 1.7F).clientTrackingRange(12)),
+            () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(20).attackDamage(20).followRange(44).movementSpeed(0.32).knockbackResistance(0.9)
+                    .state(Scutlix.CombatState.MOUNTED, state -> state.attackDamage(13))
+                    .build());
 
     // 新年：大飞龙
     public static final RegistryObject<EntityType<BaseWormPart>> ARCH_WYVERN_SEGMENT = registerWormSegment("arch_wyvern_segment");

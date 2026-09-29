@@ -5083,6 +5083,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.MARTIAN_PROBE.get(), "火星探测器");
         add(MonsterEntities.MARTIAN_ENGINEER.get(), "火星工程师");
         add(MonsterEntities.TESLA_TURRET.get(), "特斯拉炮塔");
+        add(MonsterEntities.RAY_GUNNER.get(), "激光枪手");
+        add(MonsterEntities.SCUTLIX.get(), "鳞甲怪");
+        add(ModEntities.RAY_GUNNER_LASER.get(), "激光射线");
         add(ModEffects.ELECTRIFIED.get(), "带电");
         add(MonsterEntities.SHADOWFLAME_APPARITION.get(), "暗影焰幻鬼");
         add(MonsterEntities.GIANT_SHELLY.get(), "巨型卷壳怪");
@@ -6277,6 +6280,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get(), "火星探测器刷怪蛋");
         add(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get(), "火星工程师刷怪蛋");
         add(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get(), "特斯拉炮塔刷怪蛋");
+        add(SpawnEggItems.RAY_GUNNER_SPAWN_EGG.get(), "激光枪手刷怪蛋");
+        add(SpawnEggItems.SCUTLIX_SPAWN_EGG.get(), "鳞甲怪刷怪蛋");
         add(SpawnEggItems.SHADOWFLAME_APPARITION_SPAWN_EGG.get(), "暗影焰幻鬼刷怪蛋");
         add(SpawnEggItems.GOBLIN_ARCHER_SPAWN_EGG.get(), "哥布林弓箭手刷怪蛋");
         add(SpawnEggItems.GOBLIN_PEON_SPAWN_EGG.get(), "哥布林苦力刷怪蛋");

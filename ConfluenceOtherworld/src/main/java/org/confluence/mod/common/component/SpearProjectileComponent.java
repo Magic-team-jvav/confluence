@@ -82,7 +82,7 @@ public record SpearProjectileComponent(
     public static final Supplier<SpearProjectileComponent> MUSHROOM_SPEAR_PROJ =
             () -> new SpearProjectileComponent(1.0f, 0.0f, 0.95f, 20, 0.0f, 12,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    Confluence.asResource("mushroom_projectile"),
+                    Confluence.asResource("mushroom"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.empty());
 
@@ -90,7 +90,7 @@ public record SpearProjectileComponent(
     public static final Supplier<SpearProjectileComponent> NORTH_POLE_PROJ =
             () -> new SpearProjectileComponent(1.0f, 1.0f, 0.99f, 120, 0.03f, 18,
                     ModSoundEvents.FROZEN_ARROW.getId(),
-                    Confluence.asResource("north_pole_projectile"),
+                    Confluence.asResource("north_pole"),
                     Optional.empty(), ForwardGeneration.of(0, 0),
                     Optional.of(3));
 
@@ -98,7 +98,7 @@ public record SpearProjectileComponent(
     public static final Supplier<SpearProjectileComponent> SPORE_CLOUD_PROJ =
             () -> new SpearProjectileComponent(0.8f, 1.2f, 1.0f, 200, 0.0f, 20,//注意，该弹射物的生命管理使用速度控制。
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),
-                    Confluence.asResource("spore_cloud_projectile"),
+                    Confluence.asResource("spore_cloud"),
                     Optional.empty(), ForwardGeneration.of(0, (float) 1.5),
                     Optional.of(Integer.MAX_VALUE));
 

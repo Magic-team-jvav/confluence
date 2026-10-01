@@ -160,7 +160,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
             compound.putUUID("TargetUUID", targetUUID);
         }
         if (rainType == null) {
-            compound.putString("RainType", "confluence:blood_rain_projectile");
+            compound.putString("RainType", "confluence:blood_rain");
         } else {
             compound.putString("RainType", BuiltInRegistries.ENTITY_TYPE.getKey(rainType).toString());
         }

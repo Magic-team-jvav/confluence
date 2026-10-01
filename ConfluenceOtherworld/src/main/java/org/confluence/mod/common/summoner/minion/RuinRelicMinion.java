@@ -4,15 +4,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.summoner.SummonerHelper;
-import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityGoalSelector;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
 import org.confluence.mod.common.summoner.minion.goal.ruin_relic.RuinRelicAttackGoal;
 import org.confluence.mod.common.summoner.minion.goal.ruin_relic.RuinRelicIdleGoal;
 import org.confluence.mod.common.summoner.particle.GenericParticleBuilder;
 import org.confluence.mod.common.summoner.particle.ParticleHelper;
-import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 import org.confluence.mod.common.summoner.projectile.ForbiddenOrb;
+import org.confluence.mod.common.summoner.register.SummonerAttachmentEntityTypes;
 
 import java.util.List;
 

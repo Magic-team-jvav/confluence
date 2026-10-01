@@ -11,7 +11,6 @@ import org.confluence.mod.common.summoner.LyraStreamCodecs;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntity;
 import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
 import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
-import org.confluence.mod.common.summoner.minion.ICarryMinion;
 import org.confluence.mod.common.summoner.minion.Minion;
 import org.confluence.mod.common.summoner.minion.MinionSlotType;
 import org.confluence.mod.common.summoner.register.SummonerAttachmentTypes;
@@ -42,7 +41,6 @@ public class AttachmentEntityData {
     private final Player owner;
     private Level level = null;
     private boolean changed = false;
-    private boolean hasCarryMinion = false;
 
     public AttachmentEntityData(IPortAttachmentHolder owner) {
         if (owner instanceof Player player) {
@@ -66,7 +64,6 @@ public class AttachmentEntityData {
             }
         } else {
             if (isRunning()) {
-                hasCarryMinion = false;
                 boolean levelChange = level != null && level != player.level();
                 level = player.level();
                 Map<Long, List<Minion>> sameCache = new HashMap<>();
@@ -210,14 +207,6 @@ public class AttachmentEntityData {
 
     public List<AttachmentEntity> getRenderCache() {
         return renderCache;
-    }
-
-    public boolean isHasCarryMinion() {
-        return hasCarryMinion;
-    }
-
-    public void setHasCarryMinion(boolean hasCarryMinion) {
-        this.hasCarryMinion = hasCarryMinion;
     }
 
     /**

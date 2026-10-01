@@ -6,7 +6,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.RegistryObject;
 import org.confluence.mod.common.summoner.LyraStreamCodecs;
-import org.confluence.mod.common.summoner.attachmentEntity.*;
+import org.confluence.mod.common.summoner.attachmentEntity.AttachmentEntityType;
+import org.confluence.mod.common.summoner.attachmentEntity.IBlockCollision;
+import org.confluence.mod.common.summoner.attachmentEntity.PathNode;
+import org.confluence.mod.common.summoner.attachmentEntity.SyncFieldDispatcher;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

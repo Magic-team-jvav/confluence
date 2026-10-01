@@ -62,15 +62,13 @@ public class AttachmentEntityRenderDispatcher {
                 PathNode renderNode = entity.getRenderNode(partialTick);
                 Vec3 pos = renderNode.pos();
                 poseStack.translate(pos.x() - cameraPos.x(), pos.y() - cameraPos.y(), pos.z() - cameraPos.z());
-                int lightCoords = Math.max(playerLight, getLightCoords(level, pos));
                 // 渲染实体模型
                 IAttachmentEntityRenderer<AttachmentEntity> renderer = getRenderer(entity);
                 if (renderer != null) {
+                    int lightCoords = Math.max(playerLight, getLightCoords(level, pos));
                     renderer.render(entity, poseStack, bufferSource, partialTick, lightCoords, renderNode);
                 }
-                if (true) {
-                    debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource);
-                }
+                debugRender(poseStack, entity, showHitboxes, renderNode, bufferSource);
                 poseStack.popPose();
             }
         }
@@ -85,7 +83,7 @@ public class AttachmentEntityRenderDispatcher {
         int sky = level.getBrightness(LightLayer.SKY, blockPos);
         int block = Math.max(level.getBrightness(LightLayer.BLOCK, blockPos), level.getBlockState(blockPos).getLightEmission(level, blockPos));
         int packed = LightTexture.pack(block, sky);
-        return DynamicLightDispatcher.getDynamicLight(pos, packed);
+        return DynamicLightDispatcher.INSTANCE.getDynamicLight(pos, packed);
     }
 
     private static void debugRender(PoseStack poseStack, AttachmentEntity entity, boolean showHitboxes, PathNode renderNode, MultiBufferSource bufferSource) {

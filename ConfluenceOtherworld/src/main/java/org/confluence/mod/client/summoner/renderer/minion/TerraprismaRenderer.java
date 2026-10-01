@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.summon.TerraprismaModel;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityRenderer;
@@ -45,6 +46,7 @@ public class TerraprismaRenderer extends AbstractAttachmentEntityRenderer<Terrap
 
     @Override
     protected void render(TerraprismaMinion prism, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<TerraprismaMinion> context, float partialTick, int packedLight, float alpha) {
+        DynamicLightDispatcher.INSTANCE.addLightSource(new DynamicLightDispatcher.LightSource(visualNode.pos(), 8));
         int color = prism.getColor(partialTick);
         if (model == null) {
             model = new TerraprismaModel(Minecraft.getInstance().getEntityModels().bakeLayer(TerraprismaModel.LAYER_LOCATION));

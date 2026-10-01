@@ -3,6 +3,7 @@ package org.confluence.mod.client.summoner.renderer.minion;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import org.confluence.lib.client.DynamicLightDispatcher;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.summoner.AbstractAttachmentEntityGeoRenderer;
 import org.confluence.mod.client.summoner.RenderContext;
@@ -30,5 +31,6 @@ public class SanguineBatRenderer extends AbstractAttachmentEntityGeoRenderer<San
     @Override
     protected void render(SanguineBatMinion entity, PoseStack poseStack, MultiBufferSource bufferSource, PathNode visualNode, RenderContext<SanguineBatMinion> context, float partialTick, int packedLight, float alpha) {
         super.render(entity, poseStack, bufferSource, visualNode, context, partialTick, LightTexture.FULL_BRIGHT, alpha);
+        DynamicLightDispatcher.INSTANCE.addLightSource(new DynamicLightDispatcher.LightSource(visualNode.pos(), 8));
     }
 }

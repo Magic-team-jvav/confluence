@@ -101,7 +101,7 @@ public class BilayerOreFeature extends Feature<BilayerOreFeature.Config> {
                 BlockStateProvider outerOre,
                 TagKey<Block> replaceTag
         ) {
-            this(innerCount, innerCountMore, innerOre, innerOre, Optional.of(replaceTag));
+            this(innerCount, innerCountMore, innerOre, outerOre, Optional.of(replaceTag));
         }
 
         public Config(
@@ -110,7 +110,7 @@ public class BilayerOreFeature extends Feature<BilayerOreFeature.Config> {
                 BlockStateProvider innerOre,
                 BlockStateProvider outerOre
         ) {
-            this(innerCount, innerCountMore, innerOre, innerOre, Optional.empty());
+            this(innerCount, innerCountMore, innerOre, outerOre, Optional.empty());
         }
     }
 }

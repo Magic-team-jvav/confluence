@@ -1,0 +1,52 @@
+{
+	"format_version": "1.10.0",
+	"particle_effect": {
+		"description": {
+			"identifier": "confluence:grass_sword_trail",
+			"basic_render_parameters": {
+				"material": "particles_alpha",
+				"texture": "confluence:grass_sword_trail"
+			}
+		},
+		"components": {
+			"minecraft:emitter_rate_steady": {
+				"spawn_rate": 40,
+				"max_particles": 60
+			},
+			"minecraft:emitter_lifetime_expression": {},
+			"minecraft:emitter_shape_point": {
+				"offset": ["math.lerp(query.attached_xo, query.attached_x, variable.particle_random_1)-query.attached_xo", "math.lerp(query.attached_yo, query.attached_y, variable.particle_random_1)-query.attached_yo", "math.lerp(query.attached_zo, query.attached_z, variable.particle_random_1)-query.attached_zo"]
+			},
+			"minecraft:particle_lifetime_expression": {
+				"max_lifetime": "math.random(0.4, 0.9)"
+			},
+			"minecraft:particle_initial_speed": "math.random(0.5, 1.5)",
+			"minecraft:particle_initial_spin": {
+				"rotation": "math.random(-180, 180)",
+				"rotation_rate": "math.random(-120, 120)"
+			},
+			"minecraft:particle_motion_dynamic": {
+				"linear_acceleration": [0, -6, 0],
+				"linear_drag_coefficient": 1.5
+			},
+			"minecraft:particle_appearance_billboard": {
+				"size": ["math.random(0.12, 0.2)", "math.random(0.12, 0.2)"],
+				"facing_camera_mode": "rotate_xyz",
+				"uv": {
+					"texture_width": 8,
+					"texture_height": 8,
+					"uv": [0, 0],
+					"uv_size": [8, 8]
+				}
+			},
+			"minecraft:particle_appearance_tinting": {
+				"color": [
+					"0.30 + variable.particle_random_1 * 0.12",
+					"0.69 + variable.particle_random_1 * 0.10",
+					"0.31 + variable.particle_random_2 * 0.08",
+					1
+				]
+			}
+		}
+	}
+}

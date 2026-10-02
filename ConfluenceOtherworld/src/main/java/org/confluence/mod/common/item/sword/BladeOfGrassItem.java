@@ -7,6 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileAppearance;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.component.SwordProjectileParticleEffect;
@@ -26,7 +27,7 @@ public class BladeOfGrassItem extends BaseSwordItem {
                 .projectile(new SwordProjectileComponent(0.25F, 0.8F, 0.9F, 20, 0.0F, 10,
                         ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS.getId(), Optional.empty(), ForwardGeneration.of(0.0F, 20.0F),
                         SwordProjectileAppearance.Hidden.INSTANCE,
-                        List.of(SwordProjectileParticleEffect.particle(SwordProjectileParticleEffect.Event.TRAIL, ModParticleTypes.LEAVES.get(), 2, 1, 0.0F, 0.0F))))
+                        List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("grass_sword_trail")))))
                 .tooltipImage()
                 .attribute(Attributes.ENTITY_INTERACTION_RANGE, 2, PortAttributeModifier.Operation.ADD_VALUE)
                 .specialSweep(0.8F));

@@ -192,7 +192,7 @@ public class SwordItems {
                             new SwordProjectileAppearance.Model(Confluence.asResource("ice_blade_sword_projectile"),
                                     Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1.0F, 0.0F, 0.0F, 0.0F,
                                     SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
-                            List.of(SwordProjectileParticleEffect.emitter(Confluence.asResource("ball_of_frost_trail")))))
+                            List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("ball_of_frost_trail")))))
                     .tooltipImage()
                     .specialSweep(0.8F));
     public static final PortDeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.0F, ModRarity.GREEN,
@@ -212,7 +212,7 @@ public class SwordItems {
                             new SwordProjectileAppearance.Model(Confluence.asResource("enchanted_sword_projectile"),
                                     Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1.0F, 0.2F, 0.0F, 0.89F,
                                     SwordProjectileAppearance.Lifecycle.GROW, SwordProjectileAppearance.Material.CUTOUT),
-                            List.of(SwordProjectileParticleEffect.emitter(Confluence.asResource("falling_star")))))
+                            List.of(SwordProjectileParticleEffect.emitter(SwordProjectileParticleEffect.Event.TRAIL, Confluence.asResource("falling_star")))))
                     .tooltip(p -> p.withColor(0x4156e4))
                     .tooltip(p -> p.withColor(0x4156e4))
                     .specialSweep(0.8F));

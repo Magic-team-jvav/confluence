@@ -5,7 +5,7 @@
 			"identifier": "confluence:grass_sword_trail",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:grass_sword_trail"
+				"texture": "confluence:leaves/particle_0"
 			}
 		},
 		"components": {

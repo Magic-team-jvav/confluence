@@ -63,6 +63,7 @@ import org.confluence.mod.client.renderer.entity.bullet.BulletVfxManager;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.LucyTheAxeDialogRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
+import org.confluence.mod.client.entity.renderer.MartianOfficerRenderer;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -368,6 +369,7 @@ public final class GameClientEvents {
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS) {
             SpelunkerHelper.renderLevel(event, player);
         } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            MartianOfficerRenderer.renderShields(event);
             PoseStack poseStack = event.getPoseStack();
             DungeonCompassRenderer.renderInWorld(poseStack, player, minecraft);
             LucyTheAxeDialogRenderer.renderInWorld(minecraft, poseStack);

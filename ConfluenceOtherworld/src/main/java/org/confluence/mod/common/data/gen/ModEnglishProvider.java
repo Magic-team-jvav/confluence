@@ -1262,6 +1262,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.undead_miner", "Undead Miner");
         add(MonsterEntities.BABY_SLIME.get(), "Baby Slime");
         add(MonsterEntities.MOTHER_SLIME.get(), "Mother Slime");
+        add(MonsterEntities.MARTIAN_OFFICER.get(), "Martian Officer");
+        add(MonsterEntities.MARTIAN_WALKER.get(), "Martian Walker");
+        add(MonsterEntities.WALKER_WEAPON.get(), "Martian Walker Weapon");
+        add("entity.confluence.martian_walker_weapon.left", "Martian Walker Left Laser Cannon");
+        add("entity.confluence.martian_walker_weapon.right", "Martian Walker Right Laser Cannon");
+        add(ModEntities.MONSTER_LASER.get(), "Monster Laser");
 
         NPCDialogProvider.addTranslations(this::add, true);
         LucyTheAxeLanguageSubProvider.addTranslations(this::add, true);
@@ -1835,7 +1841,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(MonsterEntities.TESLA_TURRET.get(), "Tesla Turret");
         add(MonsterEntities.RAY_GUNNER.get(), "Ray Gunner");
         add(MonsterEntities.SCUTLIX.get(), "Scutlix");
-        add(ModEntities.RAY_GUNNER_LASER.get(), "Ray Gunner Laser");
+        add(ModEntities.MONSTER_LASER.get(), "Monster Laser");
         add(ModEffects.ELECTRIFIED.get(), "Electrified");
 
         add(QuestedFishes.CAPN_TUNABEARD.get(), "Cap'n Tunabeard");
@@ -2788,6 +2794,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add(SpawnEggItems.PIRATES_CURSE_SPAWN_EGG.get(), "Pirate's Curse Spawn Egg");
         add(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get(), "Martian Probe Spawn Egg");
         add(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get(), "Martian Engineer Spawn Egg");
+        add(SpawnEggItems.MARTIAN_OFFICER_SPAWN_EGG.get(), "Martian Officer Spawn Egg");
+        add(SpawnEggItems.MARTIAN_WALKER_SPAWN_EGG.get(), "Martian Walker Spawn Egg");
         add(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get(), "Tesla Turret Spawn Egg");
         add(SpawnEggItems.RAY_GUNNER_SPAWN_EGG.get(), "Ray Gunner Spawn Egg");
         add(SpawnEggItems.SCUTLIX_SPAWN_EGG.get(), "Scutlix Spawn Egg");

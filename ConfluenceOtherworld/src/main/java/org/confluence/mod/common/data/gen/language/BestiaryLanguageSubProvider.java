@@ -429,6 +429,8 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.confluence.sand_elemental.desc", "The most intense sandstorms draw forth powerful earth elementals. With this feminine form, her tornadoes tear all asunder.");
         add("bestiary.entity.confluence.sand_shark.desc", "In ancient times, a saltwater river once ran through the desert. These powerful creatures evolved to survive in the now dry sand.");
         add("bestiary.entity.confluence.crab.desc", "This hard shelled coastal creature could snip the toes right off a man, among other things. They are not to be trifled with.");
+        add("bestiary.entity.confluence.martian_officer.desc", "A tactical officer protected by a regenerating personal shield.");
+        add("bestiary.entity.confluence.martian_walker.desc", "A fast biomechanical walker that stops briefly to fire laser bursts.");
 //        add("bestiary.entity.confluence.sea_snail.desc", "This unusually large snail makes its home deep in the ocean. Its mucus can be manufactured into a purple dye.");
         add("bestiary.entity.confluence.shark.desc", "Once these ocean predators catch a whiff of blood, they become relentless and unstoppable in their ravenous pursuit.");
 //        add("bestiary.entity.confluence.squid.desc", "A betentacled marine creature which discharges a thick, black ink when threatened. The ink is collected for aesthetic purposes.");
@@ -1217,6 +1219,8 @@ public class BestiaryLanguageSubProvider implements LanguageSubProvider {
 //        add("bestiary.entity.confluence.sand_elemental.desc", "最强烈的沙尘暴会召唤出强大的土元素——沙尘精。以雌性形态显现的它，能召唤龙卷风撕碎一切。");
         add("bestiary.entity.confluence.sand_shark.desc", "远古时期曾有一条咸水河贯穿沙漠，如今这些沙鲨已进化出在干燥沙层中生存的能力。");
         add("bestiary.entity.confluence.crab.desc", "这种生活在海岸的硬壳生物，能轻易剪断人的脚趾，甚至造成更严重的伤害，绝不可轻视。");
+        add("bestiary.entity.confluence.martian_officer.desc", "受到可再生个人护盾保护的火星战术军官。");
+        add("bestiary.entity.confluence.martian_walker.desc", "高速生物机械步行机，会短暂停下并连续发射激光。");
 //        add("bestiary.entity.confluence.sea_snail.desc", "这种异常巨大的海蜗牛栖息在深海之中，其分泌的黏液可被加工成紫色染料。");
         add("bestiary.entity.confluence.shark.desc", "这些海洋掠食者一旦嗅到血腥味，便会陷入疯狂的追逐，既不知疲倦也无法阻挡。");
 //        add("bestiary.entity.confluence.squid.desc", "这种长有触手的海洋生物，遇袭时会喷出浓稠的黑色墨汁。人们会收集这种墨汁用于装饰用途。");

@@ -164,7 +164,7 @@ public final class MartianEngineer extends BaseWarriorMonster {
         if (level == null || site == null || site.getY() <= level.getMinBuildHeight()
                 || site.getY() + 2 > level.getMaxBuildHeight()) return false;
         BlockPos floor = site.below();
-        if (!level.hasChunkAt(floor)) return false;
+        if (!level.isLoaded(floor)) return false;
         BlockState support = level.getBlockState(floor);
         if (!support.isFaceSturdy(level, floor, Direction.UP)
                 || !level.getFluidState(floor).isEmpty()) return false;
@@ -174,7 +174,7 @@ public final class MartianEngineer extends BaseWarriorMonster {
                 int x = site.getX() + dx;
                 int z = site.getZ() + dz;
                 cursor.set(x, site.getY(), z);
-                if (!level.hasChunkAt(cursor)) return false;
+                if (!level.isLoaded(cursor)) return false;
                 for (int dy = 0; dy < 2; dy++) {
                     cursor.set(x, site.getY() + dy, z);
                     if (!level.getBlockState(cursor).isAir() || !level.getFluidState(cursor).isEmpty()) return false;

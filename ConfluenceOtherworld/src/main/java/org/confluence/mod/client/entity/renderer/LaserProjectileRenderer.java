@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.RenderStateShardAccessor;
+import org.confluence.mod.common.entity.projectile.MonsterLaser;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import software.bernie.geckolib.cache.GeckoLibCache;
@@ -31,6 +32,11 @@ public final class LaserProjectileRenderer<T extends Entity> extends EntityRende
         this.outerColor = outerColor;
     }
 
+    /// 颜色改由实体动态提供（{@link MonsterLaser} 按变种取色）。
+    public LaserProjectileRenderer(EntityRendererProvider.Context context) {
+        this(context, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF);
+    }
+
     @Override
     public boolean shouldRender(T entity, Frustum frustum, double cameraX, double cameraY, double cameraZ) {
         return entity.shouldRender(cameraX, cameraY, cameraZ)
@@ -41,7 +47,14 @@ public final class LaserProjectileRenderer<T extends Entity> extends EntityRende
     public void render(T entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
         Vec3 direction = entity.getDeltaMovement();
         if (direction.lengthSqr() < 1.0E-8) direction = entity.getViewVector(partialTick);
-        renderBeam(poseStack, buffers, direction, LENGTH, RADIUS, innerColor, middleColor, outerColor);
+        int inner = innerColor, middle = middleColor, outer = outerColor;
+        if (entity instanceof MonsterLaser laser) {
+            MonsterLaser.Variant variant = laser.variant();
+            inner = variant.innerColor();
+            middle = variant.middleColor();
+            outer = variant.outerColor();
+        }
+        renderBeam(poseStack, buffers, direction, LENGTH, RADIUS, inner, middle, outer);
         super.render(entity, entityYaw, partialTick, poseStack, buffers, packedLight);
     }
 

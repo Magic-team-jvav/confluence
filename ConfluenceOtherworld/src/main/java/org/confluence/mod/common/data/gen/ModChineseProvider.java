@@ -5082,10 +5082,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(MonsterEntities.PIRATES_CURSE.get(), "海盗诅咒");
         add(MonsterEntities.MARTIAN_PROBE.get(), "火星探测器");
         add(MonsterEntities.MARTIAN_ENGINEER.get(), "火星工程师");
+        add(MonsterEntities.MARTIAN_OFFICER.get(), "火星军官");
+        add(MonsterEntities.MARTIAN_WALKER.get(), "火星走妖");
+        add(MonsterEntities.WALKER_WEAPON.get(), "火星走妖炮座");
+        add("entity.confluence.martian_walker_weapon.left", "火星走妖左激光炮");
+        add("entity.confluence.martian_walker_weapon.right", "火星走妖右激光炮");
         add(MonsterEntities.TESLA_TURRET.get(), "特斯拉炮塔");
         add(MonsterEntities.RAY_GUNNER.get(), "激光枪手");
         add(MonsterEntities.SCUTLIX.get(), "鳞甲怪");
-        add(ModEntities.RAY_GUNNER_LASER.get(), "激光射线");
+        add(ModEntities.MONSTER_LASER.get(), "怪物激光");
         add(ModEffects.ELECTRIFIED.get(), "带电");
         add(MonsterEntities.SHADOWFLAME_APPARITION.get(), "暗影焰幻鬼");
         add(MonsterEntities.GIANT_SHELLY.get(), "巨型卷壳怪");
@@ -6271,6 +6276,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(SpawnEggItems.GOBLIN_SORCERER_SPAWN_EGG.get(), "哥布林巫士刷怪蛋");
         add(SpawnEggItems.GOBLIN_WARLOCK_SPAWN_EGG.get(), "哥布林术士刷怪蛋");
         add(SpawnEggItems.PIRATE_DECKHAND_SPAWN_EGG.get(), "海盗水手刷怪蛋");
+        add(SpawnEggItems.MARTIAN_OFFICER_SPAWN_EGG.get(), "火星军官刷怪蛋");
+        add(SpawnEggItems.MARTIAN_WALKER_SPAWN_EGG.get(), "火星走妖刷怪蛋");
         add(SpawnEggItems.PIRATE_DEADEYE_SPAWN_EGG.get(), "海盗神射手刷怪蛋");
         add(SpawnEggItems.PIRATE_CROSSBOWER_SPAWN_EGG.get(), "海盗弩手刷怪蛋");
         add(SpawnEggItems.PIRATE_CORSAIR_SPAWN_EGG.get(), "私船海盗刷怪蛋");

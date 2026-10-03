@@ -775,6 +775,12 @@ public class MonsterEntities {
             () -> CreatureAttributeBuilder.creature().maxHealth(260).armor(20).attackDamage(20).followRange(44).movementSpeed(0.32).knockbackResistance(0.9)
                     .state(Scutlix.CombatState.MOUNTED, state -> state.attackDamage(13))
                     .build());
+    public static final RegistryObject<EntityType<MartianOfficer>> MARTIAN_OFFICER = withAttributes(registerEntity("martian_officer", EntityType.Builder.of(MartianOfficer::new, MobCategory.MONSTER).sized(0.85F, 2.05F).clientTrackingRange(10)),
+            () -> CreatureAttributeBuilder.creature().maxHealth(60).armor(10).attackDamage(15).followRange(36).movementSpeed(0.25).knockbackResistance(0.75).build());
+    public static final RegistryObject<EntityType<MartianWalker>> MARTIAN_WALKER = withAttributes(registerEntity("martian_walker", EntityType.Builder.of(MartianWalker::new, MobCategory.MONSTER).sized(2.8F, 7.5F).clientTrackingRange(16)),
+            () -> CreatureAttributeBuilder.creature().maxHealth(400).armor(8).attackDamage(12).followRange(48).movementSpeed(0.55).knockbackResistance(1).build());
+    public static final RegistryObject<EntityType<WalkerWeapon>> WALKER_WEAPON = withAttributes(DevelopmentSpawnPolicy.developmentOnly(registerEntity("martian_walker_weapon", EntityType.Builder.of(WalkerWeapon::new, MobCategory.MONSTER).sized(0.8F, 1.0F).clientTrackingRange(16))),
+            () -> CreatureAttributeBuilder.creature().maxHealth(100).armor(8).attackDamage(0).followRange(0).movementSpeed(0).knockbackResistance(1).build());
 
     // 新年：大飞龙
     public static final RegistryObject<EntityType<BaseWormPart>> ARCH_WYVERN_SEGMENT = registerWormSegment("arch_wyvern_segment");

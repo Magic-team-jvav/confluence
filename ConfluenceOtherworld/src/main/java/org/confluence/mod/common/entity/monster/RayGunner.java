@@ -17,7 +17,7 @@ import org.confluence.mod.common.entity.ai.bt.BTNode;
 import org.confluence.mod.common.entity.ai.bt.BTStatus;
 import org.confluence.mod.common.entity.ai.bt.composite.SelectorNode;
 import org.confluence.mod.common.entity.ai.bt.leaf.VanillaGoalAction;
-import org.confluence.mod.common.entity.projectile.RayGunnerLaser;
+import org.confluence.mod.common.entity.projectile.MonsterLaser;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
@@ -210,12 +210,10 @@ public final class RayGunner extends BaseWarriorMonster {
     }
 
     private boolean shoot(ServerLevel serverLevel, LivingEntity target) {
-        if (target == null || !ModEntities.RAY_GUNNER_LASER.isPresent()) return false;
-        EntityType<RayGunnerLaser> type = ModEntities.RAY_GUNNER_LASER.get();
-        if (type == null) return false;
-        RayGunnerLaser laser = type.create(serverLevel);
+        if (target == null || !ModEntities.MONSTER_LASER.isPresent()) return false;
+        MonsterLaser laser = ModEntities.MONSTER_LASER.get().create(serverLevel);
         if (laser == null) return false;
-        laser.configureShot(this, target);
+        laser.configureShot(this, target, new Vec3(getX(), getEyeY() - 0.1D, getZ()), MonsterLaser.Variant.RAY_GUNNER);
         if (!serverLevel.addFreshEntity(laser)) {
             laser.discard();
             return false;

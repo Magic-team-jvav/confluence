@@ -457,7 +457,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FIRE_IMP_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(GASTROPOD_PROJECTILE.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xF091CF, 0xF44BB9));
         event.registerEntityRenderer(FROST_BEAM.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xA7E9FF, 0x408EFF));
-        event.registerEntityRenderer(RAY_GUNNER_LASER.get(), c -> new LaserProjectileRenderer<>(c, 0xFFFFFF, 0xFF5B4D, 0xB50000));
         event.registerEntityRenderer(MARTIAN_ELECTRIC_BOLT.get(), MartianElectricBoltRenderer::new);
         event.registerEntityRenderer(FROST_BLAST.get(), NoopRenderer::new);
         event.registerEntityRenderer(THROWN_ROCK.get(), ThrownItemRenderer::new);
@@ -705,6 +704,10 @@ public final class ModClientEvents {
                 new ExplicitGeoModel<>(Confluence.asResource("geo/entity/martian_engineer.geo.json"),
                         Confluence.asResource("textures/entity/martian_engineer.png"),
                         Confluence.asResource("animations/entity/martian_engineer.animation.json"))));
+        event.registerEntityRenderer(MonsterEntities.MARTIAN_OFFICER.get(), MartianOfficerRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.MARTIAN_WALKER.get(), MartianWalkerRenderer::new);
+        event.registerEntityRenderer(MonsterEntities.WALKER_WEAPON.get(), NoopRenderer::new);
+        event.registerEntityRenderer(MONSTER_LASER.get(), c -> new LaserProjectileRenderer<>(c));
         event.registerEntityRenderer(MonsterEntities.TESLA_TURRET.get(), c -> new GeoNormalRenderer<>(c,
                 new ExplicitGeoModel<>(Confluence.asResource("geo/entity/tesla_turret.geo.json"),
                         Confluence.asResource("textures/entity/tesla_turret.png"),

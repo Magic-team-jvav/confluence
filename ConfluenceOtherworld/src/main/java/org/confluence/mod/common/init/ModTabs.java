@@ -2128,6 +2128,8 @@ public final class ModTabs {
                         CreativeModeTab.Output martian = GroupItem.belongsTo("martian_entity", output);
                         martian.accept(SpawnEggItems.MARTIAN_PROBE_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.MARTIAN_ENGINEER_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.MARTIAN_OFFICER_SPAWN_EGG.get());
+                        martian.accept(SpawnEggItems.MARTIAN_WALKER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.TESLA_TURRET_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.RAY_GUNNER_SPAWN_EGG.get());
                         martian.accept(SpawnEggItems.SCUTLIX_SPAWN_EGG.get());

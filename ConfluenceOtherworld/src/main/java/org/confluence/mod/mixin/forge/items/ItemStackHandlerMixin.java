@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin.neoforge.items;
+package org.confluence.mod.mixin.forge.items;
 
 import net.minecraftforge.items.ItemStackHandler;
 import org.confluence.lib.util.LibUtils;

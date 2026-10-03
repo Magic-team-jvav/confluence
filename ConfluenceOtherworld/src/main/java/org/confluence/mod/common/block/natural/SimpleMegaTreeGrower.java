@@ -5,7 +5,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.grower.AbstractMegaTreeGrower;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.portlib.diff.Diff;
 
+@Diff(reason = "1.20 API")
 public class SimpleMegaTreeGrower extends AbstractMegaTreeGrower {
     private final ResourceKey<ConfiguredFeature<?, ?>> megaFeature;
     private final ResourceKey<ConfiguredFeature<?, ?>> feature;

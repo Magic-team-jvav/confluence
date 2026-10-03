@@ -24,7 +24,6 @@ public final class ServerEvents {
     }
 
     public static void serverAboutToStart(ServerAboutToStartEvent event) {
-        PathService.INSTANCE.onServerStart();
         NetworkService.INSTANCE.onServerStart();
         MinecraftServer server = event.getServer();
         if (Confluence.THE_END_BIOMES) {

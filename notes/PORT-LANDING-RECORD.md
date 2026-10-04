@@ -4454,3 +4454,49 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6；本批**无代码落地**。
 - 下一批：**行 11–20（lib 中段：药水效果/战斗/饰品 datamap 系列）**，随后转 TerraFurniture 行 123–148（含 `CherryChestBlock`／`ModelLightBlock` 疑似缺口）。
 
+## 一百一十八、子模块行走 行 11–30（Confluence-Magic-Lib 中段）⇒ 19 `COVERED` + 1 `REVERSE-ALIGNED`
+
+### 118.1 清单
+
+| 行 | 提交 | 日期 | 主题 | GAP/文件 | 符号/缺失 | 裁定 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 11 | `389b3c230` | 2026-08-23 | 调整版本 | 0 / 0 | 0 / 0 | `COVERED` |
+| 12 | `1dc696fc5` | 2026-08-23 | 饰品能力全改为 datamap，修复潜行属性 | 0 / 0 | 0 / 0 | `COVERED` |
+| 13 | `d4e048a89` | 2026-08-23 | 同步 1.21.1 翅膀迁移，部分饰品添加粒子 | 0 / 0 | 2 / 0 | `REVERSE-ALIGNED` |
+| 14 | `ebad0b193` | 2026-08-24 | 玩家动画测试 | 13 / 5 | 11 / 0 | `COVERED` |
+| 15 | `92d3adbf3` | 2026-08-28 | 玩家动画（未注册永夜动画） | 4 / 3 | 8 / 0 | `COVERED` |
+| 16 | `e28501469` | 2026-08-30 | feat(entity)：完善普通敌怪、NPC 与召唤物的行为和渲染 | 2 / 2 | 0 / 0 | `COVERED` |
+| 17 | `b14b25a66` | 2026-09-02 | 删除一些 Extension 类 | 2 / 1 | 0 / 0 | `COVERED` |
+| 18 | `3f1a8e5f9` | 2026-09-03 | 渔夫任务系统修改 | 0 / 0 | 0 / 0 | `COVERED` |
+| 19 | `9fd8ac593` | 2026-09-04 | 修部分服务端报错 | 0 / 0 | 0 / 0 | `COVERED` |
+| 20 | `9d5dee1a2` | 2026-09-06 | 静态方法改接口 | 1 / 1 | 4 / 0 | `COVERED` |
+| 21 | `8fe6eb995` | 2026-09-06 | 属性静态字段注入 | 5 / 3 | 1 / 0 | `COVERED` |
+| 22 | `0425c71c4` | 2026-09-06 | 删除多余内容 | 5 / 1 | 0 / 0 | `COVERED` |
+| 23 | `30d45a9fa` | 2026-09-06 | 处理一些胡乱改动 | 1 / 1 | 0 / 0 | `COVERED` |
+| 24 | `4ede8fad4` | 2026-09-07 | 生产环境修复 | 0 / 0 | 0 / 0 | `COVERED` |
+| 25 | `80a53446f` | 2026-09-07 | 泰拉饰品掉落不再影响本体，为 screen 加半透明黑遮罩 | 14 / 2 | 5 / 1 | `COVERED` |
+| 26 | `f2ef458a2` | 2026-09-07 | 修数量合成 | 2 / 1 | 0 / 0 | `COVERED` |
+| 27 | `351847f01` | 2026-09-07 | 修复 CustomRarityItem 的属性问题 | 4 / 2 | 0 / 0 | `COVERED` |
+| 28 | `e3d54fe60` | 2026-09-08 | fix(otherworld)：修复战斗结算并统一生物属性与鞭子判定 | 1 / 1 | 0 / 0 | `COVERED` |
+| 29 | `e1757f1c1` | 2026-09-08 | 修复汇流箱子打不开、魔法武器不能附魔等 | 3 / 1 | 0 / 0 | `COVERED` |
+| 30 | `361c05c8d` | 2026-09-08 | 修复灯笼粒子往下掉的问题 | 0 / 0 | 0 / 0 | `COVERED` |
+
+### 118.2 gap 归类（本批 20 行合计仅 53 行 gap，且无一项是真缺口）
+
+| 类别 | 实例 | 判定依据 |
+| --- | --- | --- |
+| **Forge 时代构建脚本** | 行 14／15／16 的 `build.gradle`：`forge.logging.markers`、`modCompileOnly("software.bernie.geckolib:geckolib-forge-…")`、`mclib:20`、`ParticleStorm-forge-…` | 1.21 用 NeoForge 变体与 `neoforge` 坐标 ⇒ 平台 |
+| **Forge/NeoForge 事件与扩展点改名** | 行 15 的 `FMLClientSetupEvent`／`RegisterParticleProvidersEvent`；行 22 的 `FMLJavaModLoadingContext` + `ConfigScreenHandler.ConfigScreenFactory`；行 23 的 `ViewportEvent.ComputeCameraAngles` | 1.21 用 `IConfigScreenFactory` 等扩展点，事件在，形态不同 ⇒ 平台 |
+| **GeckoLib 4.7 渲染管线** | 行 14 的 `player.confluence$getAnimatable().handleAnimations(Minecraft.getInstance().getFrameTime())`；行 16 的 `model.getItem(arm)` | GeckoLib 1.21 走 render-state 管线 ⇒ 平台 |
+| **SRG AT / 旧 mixin 级别** | 行 14 的 `f_103373_ # cloak`、`"compatibilityLevel": "JAVA_17"` | 1.21 AT named、mixin 用 JAVA_21 ⇒ 平台 |
+| **PortLib 包装/扩展** | 行 21 的 `AttributeHolder.wrap(Attributes.ATTACK_DAMAGE)`（`org.mesdag.portlib.wrapper.…AttributeHolder`）→ 1.21 的 `LibAttributes.getAttackDamage()` **直接 `return Attributes.ATTACK_DAMAGE`**（1.21 该类本身就是 `Holder`）；行 27 的 `stack.getPortAttributeModifiers()`；行 28 的 `IPortHolderExtension.of(holder).is(attribute)` → `Holder#is` | 平台（PortLib 一律不移植） |
+| **1.20 战利品 `Serializer` → 1.21 codec** | 行 25 的 `CraftingLootItemCondition.SERIALIZER`（1.21 lib 全仓 `SERIALIZER` **0 命中**） | 1.21 lib **有** `CraftingLootItemCondition.java`（7 处）并在 `ConfluenceMagicLib` 用 `LOOT_ITEM_CONDITION` + `MapCodec`（49 处 codec 用法）注册 ⇒ 等价 |
+| **编解码/网络形态** | 行 17 `INGREDIENTS_CODEC`／`LibStreamCodecUtils`（1.21 lib 分别 5／8 处）；行 20 `MobEffect.DIRECT_STREAM_CODEC` → 1.21 的 `Holder<MobEffect>` + `MobEffect.STREAM_CODEC`（`SwitchEffectEnabledPackedC2S` 全文已核） | 等价 |
+| **1.21 附魔数据驱动** | 行 29 `EnchantedBookItem.createForEnchantment(new EnchantmentInstance(…))` | 1.21 附魔入注册表 + 组件（§110.3） ⇒ 平台/设计 |
+
+### 118.3 状态
+
+- 台账（双写）：行 11–30 落状态（`COVERED` 19、`REVERSE-ALIGNED` 1）；剩余 TODO **117**（lib 尚余 37 行、TerraCurio 55、TerraFurniture 26）。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 下一批：**行 31–45（lib 后段：端口表注册、`IPort` 清理、JEI 兼容、动态光照系列）**。
+

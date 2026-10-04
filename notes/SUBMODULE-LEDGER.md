@@ -21,26 +21,26 @@
 | 8 | Confluence-Magic-Lib | `1c97b2e51` | 2026-08-22 | refactor(confluence): 拉通 1.21 战斗、召唤与实体体系 | 2 | +17 −2 |  | COVERED |
 | 9 | Confluence-Magic-Lib | `0718c593a` | 2026-08-22 | 将饰品的药水效果转移至lib | 30 | +803 −122 | PortLib×23 | COVERED |
 | 10 | Confluence-Magic-Lib | `5f2d48bbf` | 2026-08-22 | 可开关的药水效果移到lib | 23 | +520 −11 | PortLib×19 | COVERED |
-| 11 | Confluence-Magic-Lib | `389b3c230` | 2026-08-23 | 调整版本 | 2 | +3 −3 | PortLib×8 | TODO |
-| 12 | Confluence-Magic-Lib | `1dc696fc5` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | 1 | +1 −5 |  | TODO |
-| 13 | Confluence-Magic-Lib | `d4e048a89` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 5 | +15 −22 |  | TODO |
-| 14 | Confluence-Magic-Lib | `ebad0b193` | 2026-08-24 | 玩家动画测试 | 15 | +1249 −4 | PortLib×3 | TODO |
-| 15 | Confluence-Magic-Lib | `92d3adbf3` | 2026-08-28 | 玩家动画（未注册永夜动画） | 16 | +405 −921 | PortLib×10 | TODO |
-| 16 | Confluence-Magic-Lib | `e28501469` | 2026-08-30 | feat(entity): 完善普通敌怪、NPC与召唤物的行为和渲染 | 3 | +4 −2 |  | TODO |
-| 17 | Confluence-Magic-Lib | `b14b25a66` | 2026-09-02 | 删除一些Extension类 | 5 | +19 −19 | PortLib×25 | TODO |
-| 18 | Confluence-Magic-Lib | `3f1a8e5f9` | 2026-09-03 | 渔夫任务系统修改 | 4 | +12 −16 | PortLib×19 | TODO |
-| 19 | Confluence-Magic-Lib | `9fd8ac593` | 2026-09-04 | 修部分服务端报错 | 2 | +7 −10 | PortLib×5 | TODO |
-| 20 | Confluence-Magic-Lib | `9d5dee1a2` | 2026-09-06 | 静态方法改接口 | 11 | +19 −27 | PortLib×24 | TODO |
-| 21 | Confluence-Magic-Lib | `8fe6eb995` | 2026-09-06 | 属性静态字段注入 | 5 | +10 −13 | PortLib×11 | TODO |
-| 22 | Confluence-Magic-Lib | `0425c71c4` | 2026-09-06 | 删除多余内容 | 1 | +15 −0 | PortLib×1 | TODO |
-| 23 | Confluence-Magic-Lib | `30d45a9fa` | 2026-09-06 | 处理一些胡乱改动 | 3 | +15 −11 | PortLib×1 | TODO |
-| 24 | Confluence-Magic-Lib | `4ede8fad4` | 2026-09-07 | 生产环境修复 | 3 | +5 −5 |  | TODO |
-| 25 | Confluence-Magic-Lib | `80a53446f` | 2026-09-07 | 泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩 | 3 | +50 −4 |  | TODO |
-| 26 | Confluence-Magic-Lib | `f2ef458a2` | 2026-09-07 | 修数量合成 | 1 | +7 −0 | PortLib×4 | TODO |
-| 27 | Confluence-Magic-Lib | `351847f01` | 2026-09-07 | 修复CustomRarityItem的属性问题 | 2 | +13 −18 |  | TODO |
-| 28 | Confluence-Magic-Lib | `e3d54fe60` | 2026-09-08 | fix(otherworld): 修复战斗结算并统一生物属性与鞭子判定 | 1 | +2 −1 | PortLib×4 | TODO |
-| 29 | Confluence-Magic-Lib | `e1757f1c1` | 2026-09-08 | 修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题 | 2 | +4 −5 | PortLib×1 | TODO |
-| 30 | Confluence-Magic-Lib | `361c05c8d` | 2026-09-08 | 修复灯笼粒子往下掉的问题 | 1 | +1 −1 | PortLib×1 | TODO |
+| 11 | Confluence-Magic-Lib | `389b3c230` | 2026-08-23 | 调整版本 | 2 | +3 −3 | PortLib×8 | COVERED |
+| 12 | Confluence-Magic-Lib | `1dc696fc5` | 2026-08-23 | 饰品能力全改为datamap，修复潜行属性 | 1 | +1 −5 |  | COVERED |
+| 13 | Confluence-Magic-Lib | `d4e048a89` | 2026-08-23 | 同步1.21.1翅膀迁移，部分饰品添加粒子 | 5 | +15 −22 |  | REVERSE-ALIGNED |
+| 14 | Confluence-Magic-Lib | `ebad0b193` | 2026-08-24 | 玩家动画测试 | 15 | +1249 −4 | PortLib×3 | COVERED |
+| 15 | Confluence-Magic-Lib | `92d3adbf3` | 2026-08-28 | 玩家动画（未注册永夜动画） | 16 | +405 −921 | PortLib×10 | COVERED |
+| 16 | Confluence-Magic-Lib | `e28501469` | 2026-08-30 | feat(entity): 完善普通敌怪、NPC与召唤物的行为和渲染 | 3 | +4 −2 |  | COVERED |
+| 17 | Confluence-Magic-Lib | `b14b25a66` | 2026-09-02 | 删除一些Extension类 | 5 | +19 −19 | PortLib×25 | COVERED |
+| 18 | Confluence-Magic-Lib | `3f1a8e5f9` | 2026-09-03 | 渔夫任务系统修改 | 4 | +12 −16 | PortLib×19 | COVERED |
+| 19 | Confluence-Magic-Lib | `9fd8ac593` | 2026-09-04 | 修部分服务端报错 | 2 | +7 −10 | PortLib×5 | COVERED |
+| 20 | Confluence-Magic-Lib | `9d5dee1a2` | 2026-09-06 | 静态方法改接口 | 11 | +19 −27 | PortLib×24 | COVERED |
+| 21 | Confluence-Magic-Lib | `8fe6eb995` | 2026-09-06 | 属性静态字段注入 | 5 | +10 −13 | PortLib×11 | COVERED |
+| 22 | Confluence-Magic-Lib | `0425c71c4` | 2026-09-06 | 删除多余内容 | 1 | +15 −0 | PortLib×1 | COVERED |
+| 23 | Confluence-Magic-Lib | `30d45a9fa` | 2026-09-06 | 处理一些胡乱改动 | 3 | +15 −11 | PortLib×1 | COVERED |
+| 24 | Confluence-Magic-Lib | `4ede8fad4` | 2026-09-07 | 生产环境修复 | 3 | +5 −5 |  | COVERED |
+| 25 | Confluence-Magic-Lib | `80a53446f` | 2026-09-07 | 泰拉饰品掉落不再能影响本体，为screen添加半透明黑色遮罩 | 3 | +50 −4 |  | COVERED |
+| 26 | Confluence-Magic-Lib | `f2ef458a2` | 2026-09-07 | 修数量合成 | 1 | +7 −0 | PortLib×4 | COVERED |
+| 27 | Confluence-Magic-Lib | `351847f01` | 2026-09-07 | 修复CustomRarityItem的属性问题 | 2 | +13 −18 |  | COVERED |
+| 28 | Confluence-Magic-Lib | `e3d54fe60` | 2026-09-08 | fix(otherworld): 修复战斗结算并统一生物属性与鞭子判定 | 1 | +2 −1 | PortLib×4 | COVERED |
+| 29 | Confluence-Magic-Lib | `e1757f1c1` | 2026-09-08 | 修复汇流箱子打不开、魔法武器不能附魔、附魔文本重复的、宝石法杖没粒子的问题 | 2 | +4 −5 | PortLib×1 | COVERED |
+| 30 | Confluence-Magic-Lib | `361c05c8d` | 2026-09-08 | 修复灯笼粒子往下掉的问题 | 1 | +1 −1 | PortLib×1 | COVERED |
 | 31 | Confluence-Magic-Lib | `efe1372ad` | 2026-09-08 | 修复右键功能物品失效问题 | 4 | +45 −35 | PortLib×23 | TODO |
 | 32 | Confluence-Magic-Lib | `6b7b52517` | 2026-09-10 | 修汇流熔炉不能放燃料的问题 | 1 | +2 −1 |  | TODO |
 | 33 | Confluence-Magic-Lib | `fb10030ce` | 2026-09-10 | 修复mixin，修复跳跃属性 | 3 | +15 −7 | PortLib×8 | TODO |

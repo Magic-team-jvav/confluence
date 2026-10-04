@@ -214,16 +214,16 @@
 | 54 | `4298126f9` | 2026-06-24 | IPortItemExtension | (repo-root), Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +2 ~110 -0 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 6 | content+submodule |  | COVERED |
 | 55 | `f6e114cdb` | 2026-06-24 | part21 | ConfluenceOtherworld, PortLib | +143 ~46 -0 |  | PortLib×1 | ⚠️ 2 | content+submodule |  | COVERED |
 | 56 | `2569be361` | 2026-06-27 | part22 | Confluence-Magic-Lib, ConfluenceOtherworld | +38 ~41 -1 | `TrapDamageHelper.java`→`TrapDamageHelper.java` 等137处 | Confluence-Magic-Lib×1 |  | content+submodule | （归 Phase 1/3，不逐提交移植） — part22：137 处改名（实体整体迁移到 util/entity），架构级搬迁 -> 归 Phase 1/3 | DEFER-ARCH |
-| 57 | `b20c0cefd` | 2026-06-27 | remove all entity part | ConfluenceOtherworld | +0 ~4 -244 | `AmmoDataContext.java`→`AmmoDataContext.java` 等2处 |  | ⚠️ 2 | content |  | TODO |
-| 58 | `7f83b379a` | 2026-06-27 | part23 | (repo-root), ConfluenceOtherworld | +56 ~13 -0 |  |  | ⚠️ 10 | content |  | TODO |
-| 59 | `c0c6a321d` | 2026-06-28 | part24 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +42 ~92 -1 | `MonstersEntities.java`→`MonsterEntities.java` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 19 | content+submodule+integration |  | TODO |
-| 60 | `ac7767860` | 2026-06-28 | part25 | ConfluenceOtherworld | +0 ~2 -0 |  |  | ⚠️ 1 | content |  | TODO |
-| 61 | `058000c5c` | 2026-06-29 | part enchantment | ConfluenceOtherworld | +9 ~10 -0 |  |  | ⚠️ 2 | content |  | TODO |
-| 62 | `1516cbd2f` | 2026-06-30 | part fluid type | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +0 ~22 -1 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 3 | content+submodule |  | TODO |
-| 63 | `231c505ca` | 2026-06-30 | part npc | (repo-root), ConfluenceOtherworld | +30 ~13 -1 |  |  |  | content+integration |  | TODO |
-| 64 | `6568d3ad1` | 2026-06-30 | part critters & monsters | ConfluenceOtherworld | +37 ~9 -1 |  |  | ⚠️ 7 | content |  | TODO |
-| 65 | `8ce7f4d7f` | 2026-07-01 | part recipe datagen | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +0 ~24 -2 | `CrimsonMimic.java`→`BaseMimic.java` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | content+submodule |  | TODO |
-| 66 | `9a48d8619` | 2026-07-01 | part npc1 | (repo-root), ConfluenceOtherworld, PortLib | +22 ~50 -16 |  | PortLib×1 | ⚠️ 2 | content+submodule+integration |  | TODO |
+| 57 | `b20c0cefd` | 2026-06-27 | remove all entity part | ConfluenceOtherworld | +0 ~4 -244 | `AmmoDataContext.java`→`AmmoDataContext.java` 等2处 |  | ⚠️ 2 | content |  | COVERED |
+| 58 | `7f83b379a` | 2026-06-27 | part23 | (repo-root), ConfluenceOtherworld | +56 ~13 -0 |  |  | ⚠️ 10 | content |  | COVERED |
+| 59 | `c0c6a321d` | 2026-06-28 | part24 | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +42 ~92 -1 | `MonstersEntities.java`→`MonsterEntities.java` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 19 | content+submodule+integration |  | COVERED |
+| 60 | `ac7767860` | 2026-06-28 | part25 | ConfluenceOtherworld | +0 ~2 -0 |  |  | ⚠️ 1 | content |  | COVERED |
+| 61 | `058000c5c` | 2026-06-29 | part enchantment | ConfluenceOtherworld | +9 ~10 -0 |  |  | ⚠️ 2 | content |  | COVERED |
+| 62 | `1516cbd2f` | 2026-06-30 | part fluid type | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +0 ~22 -1 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 3 | content+submodule |  | COVERED |
+| 63 | `231c505ca` | 2026-06-30 | part npc | (repo-root), ConfluenceOtherworld | +30 ~13 -1 |  |  |  | content+integration |  | COVERED |
+| 64 | `6568d3ad1` | 2026-06-30 | part critters & monsters | ConfluenceOtherworld | +37 ~9 -1 |  |  | ⚠️ 7 | content |  | COVERED |
+| 65 | `8ce7f4d7f` | 2026-07-01 | part recipe datagen | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +0 ~24 -2 | `CrimsonMimic.java`→`BaseMimic.java` | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 |  | content+submodule |  | COVERED |
+| 66 | `9a48d8619` | 2026-07-01 | part npc1 | (repo-root), ConfluenceOtherworld, PortLib | +22 ~50 -16 |  | PortLib×1 | ⚠️ 2 | content+submodule+integration |  | COVERED |
 | 67 | `fac72523a` | 2026-07-02 | part critters | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +51 ~39 -0 | `Fairy.java`→`Dragonfly.java` 等5处 | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 14 | content+submodule+integration |  | PORTED |
 | 68 | `911437e03` | 2026-07-04 | able to start game | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio, TerraFurniture | +3 ~351 -71 | `RegistryAwareItemModelShaperMixin.java`→`ForgeItemModelShaperMixin.java` 等2处 | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1, TerraFurniture×1 | ⚠️ 49 | content+submodule+integration |  | PORTED |
 | 69 | `1284d08a9` | 2026-07-04 | able to into world | Confluence-Magic-Lib, ConfluenceOtherworld, PortLib, TerraCurio | +816 ~76 -2 |  | PortLib×1, Confluence-Magic-Lib×1, TerraCurio×1 | ⚠️ 27 | content+submodule+integration |  | PORTED |

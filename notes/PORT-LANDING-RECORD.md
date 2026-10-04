@@ -4084,3 +4084,69 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6；本批**无代码落地**。
 - 下一批：**行 57–66**（10 行，part23／part24／part25／enchantment／fluid type／npc／critters & monsters／recipe datagen）。
 
+## 一百一十、台账续走：行 57–66 十行 ⇒ 全部 `COVERED`（含首个"疑似真缺口"行 61 的甄别）
+
+> 本批出现了行走到现在**最像真缺口**的一行：行 61 `058000c5c`（part enchantment）的全部自定义附魔类（`ManaMendingEnchantment`／`ArcaneProtectionEnchantment`／`MagicAttackEnchantment`／`ManaAffectiveEnchantment`／`ManaAttackEnchantment`／`ManaIOEnchantment`）在 1.21 java 里 **0 命中**，且 1.21 没有任何 `Enchantment` 子类。查清后仍判 `COVERED`：**1.21 的附魔是数据驱动的**，同一批附魔改由 `ResourceKey<Enchantment>` + 自定义效果组件 + 生成的 json 实现。
+
+### 110.1 筛查与符号核查总表
+
+| 行 | 提交 | 说明 | 筛查后 real | 定义型符号 | 全仓缺失 |
+| --- | --- | --- | --- | --- | --- |
+| 57 | `b20c0cefd` | remove all entity part | 0 / 0 文件 | 2 | 0 |
+| 58 | `7f83b379a` | part23 | 11 / 6 文件 | 53 | 11 |
+| 59 | `c0c6a321d` | part24 | 486 / 56 文件 | 100 | 15 |
+| 60 | `ac7767860` | part25 | 31 / 2 文件 | 1 | 0 |
+| 61 | `058000c5c` | part enchantment | 166 / 16 文件 | 43 | 10 |
+| 62 | `1516cbd2f` | part fluid type | 48 / 14 文件 | 37 | 0 |
+| 63 | `231c505ca` | part npc | 8 / 6 文件 | 98 | 10 |
+| 64 | `6568d3ad1` | part critters & monsters | 10 / 7 文件 | 82 | 2 |
+| 65 | `8ce7f4d7f` | part recipe datagen | 1056 / 14 文件 | 5 | 0 |
+| 66 | `9a48d8619` | part npc1 | 33 / 10 文件 | 45 | 7 |
+
+### 110.2 缺符号的 alive/DEAD 复核（**除行 61 全是 DEAD**）
+
+对每行缺符号做"1.20 HEAD 是否有定义 × 1.21 是否有定义"双向核查：
+
+| 行 | 缺符号 | 1.20 HEAD | 判定 |
+| --- | --- | --- | --- |
+| 58 | `BossPhase`／`CollisionAttack`／`ConditionNode`／`ConfluenceBoss`／`GeoBossRenderer`／`IBlackboardHolder`／`IsDaytimeCondition`／`JEWEL_VARIANTS`／`MobSkill`／`SummonCreature`／`SyncFlagAction` | 全部**无** | DEAD ⇒ 后续提交已改名/移除，不作移植源 |
+| 59 | `BABY_SIZE`／`BlackSlime`／`CanBeHostileCondition`／`EVIL_SLIME`／`HONEY_SLIME`／`HoneySlime`／`IceSlime`／`MOTHER_SIZE`／`PRE_JUMP_TICKS`／`Pinky`／`SLIMELING_ID`／`SUMMON_FOCUS`／`SpikedIceSlime`／`SpikedJungleSlime`／`SummonFocusEffect` | 全部**无** | DEAD |
+| 61 | `ARMOR_N_MANA`／`ArcaneProtectionEnchantment`／`MagicAttackEnchantment`／`ManaAffectiveEnchantment`／`ManaAttackEnchantment`／`ManaIOEnchantment`／`ManaMendingEnchantment`／`ProtectionEnchantmentMixin` | 全部**有** | **alive ⇒ 必须查 1.21 等价物**（见 110.3） |
+| 61 | `AbstractEnchantment`／`SHOOTERS` | 无 | DEAD |
+| 63 | `AlwaysCondition`／`DEFAULT_MOODS`／`FIND_HOUSE_INTERVAL`／`HOTBAR_SIZE`／`INVENTORY_SIZE`／`MoodCount`／`REFUND`／`SELL`／`TRY_INTERVAL`／`TradeConditionTypes` | 全部**无** | DEAD |
+| 64 | `COLLISION_DAMAGE`／`CrimsonMimic` | 无 | DEAD |
+| 66 | `AnglerQuestEntry`／`AnglerQuestPool`／`ArmsDealerNPC`／`DemolitionistNPC`／`GoblinTinkererNPC`／`GuideNPC`／`NPCGrenadeGoal` | 全部**无** | DEAD（`GuideNPC` 在 1.21 侧只出现在本记录里） |
+
+### 110.3 行 61：1.21 的数据驱动附魔（等价物）
+
+| 1.20 HEAD（10 个 `Enchantment` 子类） | 1.21 |
+| --- | --- |
+| `AbstractManaEnchantment`／`ArcaneProtectionEnchantment`／`MagicAttackEnchantment`／`ManaAffectiveEnchantment`／`ManaAttackEnchantment`／`ManaIOEnchantment`／`ManaMendingEnchantment`／`MultiBoomerangEnchantment`／`SummonerPactEnchantment`／`WhipSweepEnchantment` | `init/ModEnchantments.java`（85 行）声明 **13 个 `ResourceKey<Enchantment>`**：`MANA_REGENERATION`／`EFFICIENT_MAGIC`／`MANA_MENDING`／`CELESTIAL_ABSORPTION`／`SOOTHED_MANA`／`ARCANE_PROTECTION`／`SPELL_DESPERATION`／`MYSTIC_SURGE`／`WHIP_SWEEP`／`SUMMONER_PACT`／`FLAIL_WIND_BURST`／`FLAIL_TURBINE`／`MULTI_BOOMERANG`；另有自定义附魔效果组件（`EffectComponentTypes`）与实体效果类型（`EntityEffectTypes`：`summon_item`／`wind_burst_at_hit`） |
+| 附魔数据本体 | datagen 生成 13 份 `data/confluence/enchantment/*.json`（本地 `src/generated` 实测：`arcane_protection`／`celestial_absorption`／`efficient_magic`／`flail_turbine`／`flail_wind_burst`／`mana_mending`／`mana_regeneration`／`multi_boomerang`／`mystic_surge`／`soothed_mana`／`spell_desperation`／`summoner_pact`／`whip_sweep`） |
+| `super(EnchantmentCategory.ARMOR, …)` 等构造 | 1.21 **已移除 `EnchantmentCategory`**（java 侧 0 命中，仅存于 notes）；改为 `supportedItems` 标签 + 效果组件 |
+| `ProtectionEnchantmentMixin`（1.20 改 vanilla `ProtectionEnchantment`） | 1.21 **vanilla 已删 `ProtectionEnchantment`**（全仓 0 引用：`git grep ProtectionEnchantment` 空）⇒ mixin 无目标，不可移植也无需移植 |
+| 引用面 | 1.21：`MANA_MENDING` 6 文件（`ModDataProvider`／`ChestSubProvider`／`ModEnchantmentTagsProvider`／`ModEnchantments`／`ModTabs`／`EnchantmentUtils`）、`ARCANE_PROTECTION` 5 文件、译文含 `de_de`／`es_es`／`lzh` |
+
+> 遗留登记（非本行债务）：附魔 json 属 datagen 产物，`src/generated` 未入库 ⇒ 需跑 `runData` 才会落盘（与 §107 的 phaseblade 模型清理同批处理）。
+
+### 110.4 其余各行的平台改写实证
+
+| 1.20 写法 | 1.21 实测 |
+| --- | --- |
+| `output.accept(Confluence.asResource("chests/…"), …)`（行 60 的 25 行、行 59 的 144 行） | loot datagen 改 `BiConsumer<ResourceKey<LootTable>, LootTable.Builder>`（`GiftSubProvider.java:38`，全仓 9 处） |
+| `Consumer<FinishedRecipe>`／`import FinishedRecipe`（行 59） | 1.21 用 `RecipeOutput`（81 命中）；`FinishedRecipe` **0 命中**；`ModRecipeProvider` 已拆成 `CraftingRecipeProvider`／`HeavyWorkBenchProvider` 等分站 provider |
+| `public void onAddedToWorld()`（行 59／64 各 4+2 处） | NeoForge 改名 `onAddedToLevel`（40 命中）；`onAddedToWorld` 仅剩 2 处 |
+| `getGravity1211()`（行 59） | `getGravity()` + `1211-shims.json`（10 命中） |
+| `this.entityData.define(…)`（行 58／59／64） | `defineSynchedData(SynchedEntityData.Builder)` + `builder.define(…)` |
+| GeckoLib `preRender(…, red, green, blue, alpha)`（行 58／64） | 1.21 `GeoNormalRenderer.preRender`（`:111`）按 GeckoLib 4.7 签名重写，`:136` 调 `super.preRender(…)` |
+| `ForgeMod.WATER_TYPE`／`LAVA_TYPE`、`IForgeMenuType.create` | NeoForge 形态（`NeoForgeMod`／`IMenuTypeExtension`） |
+| SRG 式 AT（行 58／59／66：`f_286957_ # luck`／`f_37244_ # ownerUUID`／`f_150163_ # cachedOwner`／`f_140760_ # playersPerChunk`／`f_221845_ # LAVA_TRANSFER_PROBABILITY_PER_RANDOM_TICK`） | 1.21 AT 用 named 成员（与 §108／§109 同类） |
+| `package-info.java` 的 `@ParametersAreNonnullByDefault` 等（行 58×2、59×2、61） | 纯注解/文档，无运行期语义 |
+
+### 110.5 状态
+
+- 台账（双写）：上述十行 = `COVERED`（状态条目 367 → **377**，剩余 TODO **33 → 23**）。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 剩余 TODO：**70／74／76／84／93／97–100／102–103／105–106／108–110／159–162／166／168–169**（23 行）。
+- 下一批：**行 70／74／76／84**（2026-07-05 之后）。
+

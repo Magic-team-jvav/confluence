@@ -1835,6 +1835,56 @@
       "status": "COVERED",
       "target": "（1.21 已有等价实现）",
       "note": "台账行 55；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "b20c0cefd5104f2957b42654d3e4627708ce5409": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 57；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "7f83b379a6764a6563cffc23396d38e6fe734966": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 58；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "c0c6a321d65df47de83545d7ae5e7ae46f0d7b0d": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 59；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "ac7767860c701975348cf2e19bd782bf367d8d38": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 60；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "058000c5cbb5b0c42ef987cb814a1793c18f469e": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 61；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "1516cbd2ffae85762e69875101a5e7bfcbe82102": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 62；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "231c505ca9abde720c36b9bcd051e8e1c4fb6b75": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 63；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "6568d3ad1b63a9f2dd9931da4f1a7cdcfc8a4a42": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 64；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "8ce7f4d7f8ab5873f4f91b90ffe6fb5010ea3ddf": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 65；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "9a48d86198564eab0f5e71ee74fe3ce9a633ca69": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 66；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
     }
   }
 }

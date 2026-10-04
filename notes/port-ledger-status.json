@@ -1810,6 +1810,31 @@
       "status": "COVERED",
       "target": "（1.21 已有等价实现）",
       "note": "台账行 49；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "f6b8f73b09d34007aff282b4e217518eb6aa3fe0": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 51；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "dffefea8dc4b73036f3e306d86de07659397480e": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 52；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "0e370c928c3f020b3cc73a43e5c1c7c6262d8047": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 53；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "4298126f93036624446f3d0a3306ae5c09506962": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 54；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
+    },
+    "f6e114cdb6154b0eb0ebd148d02594019fab64e7": {
+      "status": "COVERED",
+      "target": "（1.21 已有等价实现）",
+      "note": "台账行 55；依据见 notes/PORT-LANDING-RECORD.md §十二/§十三"
     }
   }
 }

@@ -4023,3 +4023,64 @@ provider 的 `add(X, 名)` 重载会按 X 的类型落到**不同键族**：
 - `fix_eol --check` 候选 6（未变）；本轮**无代码落地**。
 - 下一批：**行 51–55 → 57–66**（57–66 是最大的一段，10 行）→ 70／74／76／84…
 
+## 一百零九、台账续走：行 51–55 五行 ⇒ 全部 `COVERED`（含"旧 AI 框架被 1.20 后续改写"的甄别）
+
+> 本批第一次遇到"符号大面积缺失"（行 52 缺 81、行 55 缺 161），已查清成因：**这两行是 2026-06-22…24 加进来的旧实体 AI 框架**（`common/entity/ai/goal/behavior/**`、`ai/fsm/**`、`ai/keyframe/**`、`api/entity/**`），1.20 在 06-27 之后把它**整体改写成 `common/entity/ai/bt/**`**，所以 rowaudit 判定这些新增行已 DEAD；1.21 是从改写后的 1.20 复制出来的，因此**两侧 `common/entity/ai/` 都是 62 个文件、路径逐个一致**。
+
+### 109.1 筛查与符号核查总表
+
+| 行 | 提交 | 说明 | 筛查后 real | 定义型符号 | 全仓缺失 |
+| --- | --- | --- | --- | --- | --- |
+| 51 | `f6b8f73b0` | part20 | 4 / 1 文件 | 39 | 11 |
+| 52 | `dffefea8d` | feat 怪物实体+AI（⚠️多） | 50 / 26 文件 | 306 | 81 |
+| 53 | `0e370c928` | data component method rename | 7 / 7 文件 | 1 | 0 |
+| 54 | `4298126f9` | IPortItemExtension | 27 / 26 文件 | 43 | 8 |
+| 55 | `f6e114cdb` | part21 | **4 / 2 文件** | 194 | 161 |
+
+> 行 55 的筛查后 real 只有 4 行（一个 `package-info.java` 的注解 + 一条 `import java.util.List;`），而它的 194 个"定义型符号"全部来自旧框架文件 ⇒ 再次印证"**符号数 ≠ 缺口**，必须与 rowaudit 的 alive/DEAD 一起看"（§106.4 教训 2 的同一条）。
+
+### 109.2 旧框架名在 1.20 HEAD 已不存在（决定性证据）
+
+`git ls-files` 于 **1.20 HEAD**：
+
+| 旧名（行 51／52 新增） | 1.20 HEAD | 1.21 |
+| --- | --- | --- |
+| `MonstersEntities.java` | **0** | 实体注册已并入 `ModEntities.java` |
+| `HoneySlime.java`／`BlackSlime.java`／`SpikedJungleSlime.java` | **0** | 史莱姆族在 `common/entity/monster/**` 重排 |
+| `AbstractMonster.java`／`AbstractPrefab.java`／`BaseWorm.java` | **0** | `BaseHumanoidMonster.java`／`BaseWormMonster.java` 等 |
+| `api/entity/**`（`IWorm`／`IMinion`／`ISkill`／`IFSMGeoMob`…） | **0** | `common/entity/ai/WormChainTrail.java`／`bt/leaf/WormMovementAction.java` 等具体类取代接口层 |
+| `ai/goal/behavior/**`、`ai/fsm/**`、`ai/keyframe/**` | **0** | `ai/bt/**`（62 文件，与 1.20 HEAD 逐路径相同） |
+
+⇒ 行 51／52／55 的"缺符号"是**1.20 自己后来删掉/改名的东西**，按两问法 Q1=否 ⇒ 不作移植源。
+
+### 109.3 逐类落点（不是缺口的实证）
+
+| gap 类别 | 1.20 写法 | 1.21 实测 |
+| --- | --- | --- |
+| `entityData.define(…)`（行 52，约 30 个文件各 1 行） | 构造函数里 `this.entityData.define(DATA_X, v)` | `defineSynchedData(SynchedEntityData.Builder)` + `builder.define(…)`（1.21 全仓 223 处；`SpearProjectile.java` 的 `builder.define(DATA_INIT_SPEED, …)` 已命中） |
+| Forge 接口方法（行 52） | `getDefaultGravity()`／`getDefaultLootTable()`／`onSheared(…)`／`isShearable(…)` | 1.21：`getDefaultGravity` 27 处、掉落表方法 23 处、剪羊毛接口 19 处（含 `RainbowSheep`／`Cluckshroom`／`GlowingMooshroom`） |
+| SRG 式 AT（行 52 的 5 行） | `m_21304_()I # getCurrentSwingDuration`／`f_147134_ # hitEntities`／`m_32070_()Z # isMergable`／`AbstractSkeleton f_32131_ meleeGoal`／`f_32130_ bowGoal` | 1.21 AT 用 named：`hitEntities`／`isMergable` 均命中 `accesstransformer.cfg`；骷髅的 goal 字段**不再需要**——1.21 的 `MeleeSkeleton.java`（203 行）改为直接 `@Override getCurrentSwingDuration()`（`:117`）并用 `BTRoot`/`SelectorNode`/`VanillaGoalAction` 建树 |
+| 行 51 的 4 条 import（`ModBiomes`／`ModFluids`／`ModGunProperties`／`ModRecipes`） | `ModEvents.java` 顶部 import | 1.21 `ModEvents.java` 直接调用 `ModGunProperties.init()`（`:102`）、`ModFluids.registerInteraction()`／`registerShimmerTransform()`（`:106–107`）、`ModBiomes.registerRegionAndSurface()`（`:108`）、`ModRecipes.Brewing.initialize()`（`:150`） |
+| 行 54 的构造器 `super(…)`（26 文件） | `new Properties().unbreakable()`／`.dyedColor(rgb, true)`／`canPerformAction(ItemStack, ToolAction)` | 1.21 组件化：`new Properties().component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)`（`ChumCaster.java:21`、`DevFishingRod.java:15`）、`.component(ConfluenceMagicLib.MOD_RARITY, rarity)`（`CoinItem.java:31`）、`canPerformAction(ItemStack, ItemAbility)`（`BinocularsItem.java:20`，1.21 无 `ToolAction`） |
+| 行 54 的 `convert_port_properties.py` 常量（`IMPORT_EXT`／`IMPORT_PORTITEM`／`REPLACEMENTS`／`SRC_DIRS`） | 一次性转换脚本 | 与 §108 行 49 同类：工具，不移植 |
+| `AccelerateOnSeeingGoal`（行 54） | `common/entity/ai/goal/AccelerateOnSeeingGoal.java` | 1.21 改名 `AcceleratingMeleeAttackGoal.java`（6 处引用：`AngryTumbler`／`AntlionCharger`…） |
+
+### 109.4 1.20 HEAD 与 1.21 的实体树逐项对齐
+
+| 目录 | 1.20 HEAD | 1.21 | 仅 1.20 有 |
+| --- | --- | --- | --- |
+| `common/entity/monster/*` | 126 | 123 | `package-info.java`（3 个，纯注解/文档） |
+| `common/entity/animal/*` | 41 | 40 | `package-info.java` |
+| `common/entity/boss/*` | 47 | 47 | 无 |
+| `common/entity/npc/*` | 66 | 66 | 无 |
+| `common/entity/projectile/*` | 158 | 158 | 无 |
+| `common/entity/*.java`（顶层） | 563 | 560 | 无 |
+
+⇒ 行 51／52／53／54／55 **全部 `COVERED`**。
+
+### 109.5 状态
+
+- 台账（双写）：上述五行 = `COVERED`（状态条目 362 → **367**，剩余 TODO **38 → 33**）。
+- `fix_eol --check` 候选 6；本批**无代码落地**。
+- 下一批：**行 57–66**（10 行，part23／part24／part25／enchantment／fluid type／npc／critters & monsters／recipe datagen）。
+
